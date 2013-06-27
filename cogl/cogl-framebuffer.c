@@ -643,34 +643,27 @@ _cogl_offscreen_new_with_texture_full (CoglTexture *texture,
   CoglContext *ctx = texture->context;
   CoglOffscreen *offscreen;
   CoglFramebuffer *fb;
-  int level_width;
-  int level_height;
   CoglOffscreen *ret;
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_texture (texture), NULL);
-  _COGL_RETURN_VAL_IF_FAIL (level < _cogl_texture_get_n_levels (texture),
-                            NULL);
-
-  _cogl_texture_get_level_size (texture,
-                                level,
-                                &level_width,
-                                &level_height,
-                                NULL);
 
   offscreen = g_new0 (CoglOffscreen, 1);
   offscreen->texture = cogl_object_ref (texture);
   offscreen->texture_level = level;
-  offscreen->texture_level_width = level_width;
-  offscreen->texture_level_height = level_height;
   offscreen->create_flags = create_flags;
 
   fb = COGL_FRAMEBUFFER (offscreen);
 
+  /* NB: we can't assume we can query the texture's width yet, since
+   * it might not have been allocated yet and for example if the
+   * texture is being loaded from a file then the file might not
+   * have been read yet. */
+
   _cogl_framebuffer_init (fb,
                           ctx,
                           COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
-                          level_width,
-                          level_height);
+                          -1, /* unknown width, until allocation */
+                          -1); /* unknown height until allocation */
 
   ret = _cogl_offscreen_object_new (offscreen);
 
@@ -779,6 +772,13 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
                            "sliced texture");
           return FALSE;
         }
+
+      /* Now that the texture has been allocated we can determine a
+       * size for the framebuffer... */
+      framebuffer->width = cogl_texture_get_width (offscreen->texture);
+      framebuffer->height = cogl_texture_get_height (offscreen->texture);
+      framebuffer->viewport_width = framebuffer->width;
+      framebuffer->viewport_height = framebuffer->height;
 
       /* Forward the texture format as the internal format of the
        * framebuffer */

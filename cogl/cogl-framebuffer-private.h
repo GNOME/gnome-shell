@@ -205,8 +205,6 @@ struct _CoglOffscreen
 
   CoglTexture    *texture;
   int             texture_level;
-  int             texture_level_width;
-  int             texture_level_height;
 
   CoglTexture *depth_texture;
 

@@ -1693,6 +1693,8 @@ _cogl_gles2_offscreen_allocate (CoglOffscreen *offscreen,
   const CoglWinsysVtable *winsys;
   CoglError *internal_error = NULL;
   CoglGLES2Offscreen *gles2_offscreen;
+  int level_width;
+  int level_height;
 
   if (!framebuffer->allocated &&
       !cogl_framebuffer_allocate (framebuffer, error))
@@ -1722,11 +1724,18 @@ _cogl_gles2_offscreen_allocate (CoglOffscreen *offscreen,
     }
 
   gles2_offscreen = g_slice_new0 (CoglGLES2Offscreen);
+
+  _cogl_texture_get_level_size (offscreen->texture,
+                                offscreen->texture_level,
+                                &level_width,
+                                &level_height,
+                                NULL);
+
   if (!_cogl_framebuffer_try_creating_gl_fbo (gles2_context->context,
                                               offscreen->texture,
                                               offscreen->texture_level,
-                                              offscreen->texture_level_width,
-                                              offscreen->texture_level_height,
+                                              level_width,
+                                              level_height,
                                               offscreen->depth_texture,
                                               &COGL_FRAMEBUFFER (offscreen)->config,
                                               offscreen->allocation_flags,
