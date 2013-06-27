@@ -40,13 +40,10 @@
 #include <clutter/clutter.h>
 G_BEGIN_DECLS
 
-CLUTTER_AVAILABLE_IN_1_10
 struct wl_seat *clutter_wayland_input_device_get_wl_seat (ClutterInputDevice *device);
 
-CLUTTER_AVAILABLE_IN_1_10
 struct wl_shell_surface *clutter_wayland_stage_get_wl_shell_surface (ClutterStage *stage);
 
-CLUTTER_AVAILABLE_IN_1_10
 struct wl_surface *clutter_wayland_stage_get_wl_surface (ClutterStage *stage);
 G_END_DECLS
 
