@@ -185,7 +185,7 @@ _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
 
       entry->texture = cogl_object_ref (texture);
 
-      if (cogl_texture_get_format (entry->texture) == COGL_PIXEL_FORMAT_A_8)
+      if (_cogl_texture_get_format (entry->texture) == COGL_PIXEL_FORMAT_A_8)
         base = get_base_texture_alpha_pipeline (cache);
       else
         base = get_base_texture_rgba_pipeline (cache);

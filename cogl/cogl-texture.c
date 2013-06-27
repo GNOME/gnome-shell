@@ -102,35 +102,6 @@ cogl_is_texture (void *object)
   return FALSE;
 }
 
-void *
-cogl_texture_ref (void *object)
-{
-  if (!cogl_is_texture (object))
-    return NULL;
-
-  _COGL_OBJECT_DEBUG_REF (CoglTexture, object);
-
-  cogl_object_ref (object);
-
-  return object;
-}
-
-void
-cogl_texture_unref (void *object)
-{
-  if (!cogl_is_texture (object))
-    {
-      g_warning (G_STRINGIFY (cogl_texture_unref)
-                 ": Ignoring unref of CoglObject "
-                 "due to type mismatch");
-      return;
-    }
-
-  _COGL_OBJECT_DEBUG_UNREF (CoglTexture, object);
-
-  cogl_object_unref (object);
-}
-
 void
 _cogl_texture_init (CoglTexture *texture,
                     CoglContext *context,
@@ -227,24 +198,11 @@ cogl_texture_get_height (CoglTexture *texture)
 }
 
 CoglPixelFormat
-cogl_texture_get_format (CoglTexture *texture)
+_cogl_texture_get_format (CoglTexture *texture)
 {
   if (!texture->allocated)
     cogl_texture_allocate (texture, NULL);
   return texture->vtable->get_format (texture);
-}
-
-unsigned int
-cogl_texture_get_rowstride (CoglTexture *texture)
-{
-  CoglPixelFormat format = cogl_texture_get_format (texture);
-  /* FIXME: This function should go away. It previously just returned
-     the rowstride that was used to upload the data as far as I can
-     tell. This is not helpful */
-
-  /* Just guess at a suitable rowstride */
-  return (_cogl_pixel_format_get_bytes_per_pixel (format)
-          * cogl_texture_get_width (texture));
 }
 
 int
@@ -416,7 +374,7 @@ _cogl_texture_set_region_from_bitmap (CoglTexture *texture,
   /* Note that we don't prepare the bitmap for upload here because
      some backends may be internally using a different format for the
      actual GL texture than that reported by
-     cogl_texture_get_format. For example the atlas textures are
+     _cogl_texture_get_format. For example the atlas textures are
      always stored in an RGBA texture even if the texture format is
      advertised as RGB. */
 
@@ -750,7 +708,7 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
    *
    * TODO: verify if this is still an issue
    */
-  if ((cogl_texture_get_format (texture) & COGL_A_BIT)/* && a_bits == 0*/)
+  if ((_cogl_texture_get_format (texture) & COGL_A_BIT)/* && a_bits == 0*/)
     {
       uint8_t *srcdata;
       uint8_t *dstdata;
@@ -1040,7 +998,7 @@ cogl_texture_get_data (CoglTexture *texture,
 
   CoglTextureGetData tg_data;
 
-  texture_format = cogl_texture_get_format (texture);
+  texture_format = _cogl_texture_get_format (texture);
 
   /* Default to internal format if none specified */
   if (format == COGL_PIXEL_FORMAT_ANY)

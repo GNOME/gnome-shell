@@ -783,7 +783,7 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
       /* Forward the texture format as the internal format of the
        * framebuffer */
       framebuffer->internal_format =
-        cogl_texture_get_format (offscreen->texture);
+        _cogl_texture_get_format (offscreen->texture);
 
       if (!ctx->driver_vtable->offscreen_allocate (offscreen, error))
         return FALSE;

@@ -308,4 +308,7 @@ void
 _cogl_texture_set_allocated (CoglTexture *texture,
                              CoglBool allocated);
 
+CoglPixelFormat
+_cogl_texture_get_format (CoglTexture *texture);
+
 #endif /* __COGL_TEXTURE_PRIVATE_H */

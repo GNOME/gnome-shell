@@ -151,8 +151,8 @@ _cogl_blit_framebuffer_begin (CoglBlitData *data)
 
   /* We can only blit between FBOs if both textures are the same
      format and the blit framebuffer extension is supported */
-  if ((cogl_texture_get_format (data->src_tex) & ~COGL_A_BIT) !=
-      (cogl_texture_get_format (data->dst_tex) & ~COGL_A_BIT) ||
+  if ((_cogl_texture_get_format (data->src_tex) & ~COGL_A_BIT) !=
+      (_cogl_texture_get_format (data->dst_tex) & ~COGL_A_BIT) ||
       !_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT))
     return FALSE;
 
@@ -269,7 +269,7 @@ _cogl_blit_copy_tex_sub_image_end (CoglBlitData *data)
 static CoglBool
 _cogl_blit_get_tex_data_begin (CoglBlitData *data)
 {
-  data->format = cogl_texture_get_format (data->src_tex);
+  data->format = _cogl_texture_get_format (data->src_tex);
   data->bpp = _cogl_pixel_format_get_bytes_per_pixel (data->format);
 
   data->image_data = g_malloc (data->bpp * data->src_width *

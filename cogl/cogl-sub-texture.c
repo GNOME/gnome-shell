@@ -419,7 +419,7 @@ _cogl_sub_texture_get_format (CoglTexture *tex)
 {
   CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
 
-  return cogl_texture_get_format (sub_tex->full_texture);
+  return _cogl_texture_get_format (sub_tex->full_texture);
 }
 
 static GLenum

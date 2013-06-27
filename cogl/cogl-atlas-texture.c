@@ -524,7 +524,7 @@ _cogl_atlas_texture_convert_bitmap_for_upload (CoglAtlasTexture *atlas_tex,
 
   /* We'll prepare to upload using the format of the actual texture of
      the atlas texture instead of the format reported by
-     cogl_texture_get_format which would be the original internal
+     _cogl_texture_get_format which would be the original internal
      format specified when the texture was created. However we'll
      preserve the premult status of the internal format because the
      images are all stored in the original premult format of the

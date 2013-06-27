@@ -994,7 +994,7 @@ _cogl_texture_pixmap_x11_get_format (CoglTexture *tex)
   CoglTexture *child_tex = _cogl_texture_pixmap_x11_get_texture (tex_pixmap);
 
   /* Forward on to the child texture */
-  return cogl_texture_get_format (child_tex);
+  return _cogl_texture_get_format (child_tex);
 }
 
 static GLenum

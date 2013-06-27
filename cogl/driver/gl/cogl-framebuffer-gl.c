@@ -416,7 +416,7 @@ attach_depth_texture (CoglContext *ctx,
     {
       /* attach a GL_DEPTH_STENCIL texture to the GL_DEPTH_ATTACHMENT and
        * GL_STENCIL_ATTACHMENT attachement points */
-      g_assert (cogl_texture_get_format (depth_texture) ==
+      g_assert (_cogl_texture_get_format (depth_texture) ==
                 COGL_PIXEL_FORMAT_DEPTH_24_STENCIL_8);
 
       cogl_texture_get_gl_texture (depth_texture,
@@ -435,7 +435,7 @@ attach_depth_texture (CoglContext *ctx,
     {
       /* attach a newly created GL_DEPTH_COMPONENT16 texture to the
        * GL_DEPTH_ATTACHMENT attachement point */
-      g_assert (cogl_texture_get_format (depth_texture) ==
+      g_assert (_cogl_texture_get_format (depth_texture) ==
                 COGL_PIXEL_FORMAT_DEPTH_16);
 
       cogl_texture_get_gl_texture (COGL_TEXTURE (depth_texture),

@@ -80,6 +80,7 @@
 #include <cogl/deprecated/cogl-material-compat.h>
 #include <cogl/deprecated/cogl-shader.h>
 #include <cogl/deprecated/cogl-framebuffer-deprecated.h>
+#include <cogl/deprecated/cogl-texture-deprecated.h>
 #endif
 
 /* It would be good to move these casts up into 1.x only api if we can

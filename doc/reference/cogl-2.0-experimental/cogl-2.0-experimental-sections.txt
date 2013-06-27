@@ -402,7 +402,6 @@ cogl_is_texture
 <SUBSECTION>
 cogl_texture_get_width
 cogl_texture_get_height
-cogl_texture_get_format
 cogl_texture_is_sliced
 cogl_texture_get_data
 cogl_texture_set_data
