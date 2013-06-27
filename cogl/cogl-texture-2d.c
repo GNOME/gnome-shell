@@ -259,18 +259,22 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
 CoglTexture2D *
 cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
-                                         struct wl_buffer *buffer,
+                                         struct wl_resource *buffer_resource,
                                          CoglError **error)
 {
-  int format;
+  struct wl_shm_buffer *shm_buffer;
 
-  if (wl_buffer_is_shm (buffer))
+  shm_buffer = wl_shm_buffer_get (buffer_resource);
+
+  if (shm_buffer)
     {
-      int stride = wl_shm_buffer_get_stride (buffer);
+      int stride = wl_shm_buffer_get_stride (shm_buffer);
       CoglPixelFormat format;
       CoglPixelFormat internal_format = COGL_PIXEL_FORMAT_ANY;
+      int width = wl_shm_buffer_get_width (shm_buffer);
+      int height = wl_shm_buffer_get_height (shm_buffer);
 
-      switch (wl_shm_buffer_get_format (buffer))
+      switch (wl_shm_buffer_get_format (shm_buffer))
         {
 #if G_BYTE_ORDER == G_BIG_ENDIAN
           case WL_SHM_FORMAT_ARGB8888:
@@ -295,55 +299,68 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
         }
 
       return cogl_texture_2d_new_from_data (ctx,
-                                            buffer->width,
-                                            buffer->height,
+                                            width, height,
                                             format,
                                             internal_format,
                                             stride,
-                                            wl_shm_buffer_get_data (buffer),
+                                            wl_shm_buffer_get_data (shm_buffer),
                                             error);
     }
-  else if (_cogl_egl_query_wayland_buffer (ctx, buffer,
-                                           EGL_TEXTURE_FORMAT,
-                                           &format))
+  else
     {
-      EGLImageKHR image;
-      CoglTexture2D *tex = NULL;
-      CoglPixelFormat internal_format;
+      struct wl_buffer *buffer = (struct wl_buffer *) buffer_resource;
+      int format, width, height;
 
-      _COGL_RETURN_VAL_IF_FAIL (_cogl_context_get_winsys (ctx)->constraints &
-                                COGL_RENDERER_CONSTRAINT_USES_EGL,
-                                NULL);
-
-      switch (format)
+      if (_cogl_egl_query_wayland_buffer (ctx,
+                                          buffer,
+                                          EGL_TEXTURE_FORMAT,
+                                          &format) &&
+          _cogl_egl_query_wayland_buffer (ctx,
+                                          buffer,
+                                          EGL_WIDTH,
+                                          &width) &&
+          _cogl_egl_query_wayland_buffer (ctx,
+                                          buffer,
+                                          EGL_HEIGHT,
+                                          &height))
         {
-          case EGL_TEXTURE_RGB:
-            internal_format = COGL_PIXEL_FORMAT_RGB_888;
-            break;
-          case EGL_TEXTURE_RGBA:
-            internal_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
-            break;
-          default:
-            _cogl_set_error (error,
-                             COGL_SYSTEM_ERROR,
-                             COGL_SYSTEM_ERROR_UNSUPPORTED,
-                             "Can't create texture from unknown "
-                             "wayland buffer format %d\n", format);
-            return NULL;
-        }
+          EGLImageKHR image;
+          CoglTexture2D *tex = NULL;
+          CoglPixelFormat internal_format;
 
-      image = _cogl_egl_create_image (ctx,
-                                      EGL_WAYLAND_BUFFER_WL,
-                                      buffer,
-                                      NULL);
-      tex = _cogl_egl_texture_2d_new_from_image (ctx,
-                                                 buffer->width,
-                                                 buffer->height,
-                                                 internal_format,
-                                                 image,
-                                                 error);
-      _cogl_egl_destroy_image (ctx, image);
-      return tex;
+          _COGL_RETURN_VAL_IF_FAIL (_cogl_context_get_winsys (ctx)->constraints &
+                                    COGL_RENDERER_CONSTRAINT_USES_EGL,
+                                    NULL);
+
+          switch (format)
+            {
+            case EGL_TEXTURE_RGB:
+              internal_format = COGL_PIXEL_FORMAT_RGB_888;
+              break;
+            case EGL_TEXTURE_RGBA:
+              internal_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
+              break;
+            default:
+              _cogl_set_error (error,
+                               COGL_SYSTEM_ERROR,
+                               COGL_SYSTEM_ERROR_UNSUPPORTED,
+                               "Can't create texture from unknown "
+                               "wayland buffer format %d\n", format);
+              return NULL;
+            }
+
+          image = _cogl_egl_create_image (ctx,
+                                          EGL_WAYLAND_BUFFER_WL,
+                                          buffer,
+                                          NULL);
+          tex = _cogl_egl_texture_2d_new_from_image (ctx,
+                                                     width, height,
+                                                     internal_format,
+                                                     image,
+                                                     error);
+          _cogl_egl_destroy_image (ctx, image);
+          return tex;
+        }
     }
 
   _cogl_set_error (error,

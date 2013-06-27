@@ -51,10 +51,12 @@ cogl_wayland_display_set_compositor_display (CoglDisplay *display,
 /**
  * cogl_wayland_texture_2d_new_from_buffer:
  * @ctx: A #CoglContext
- * @buffer: A Wayland buffer
+ * @buffer: A Wayland resource for a buffer
  * @error: A #CoglError for exceptions
  *
- * Uploads the given Wayland @buffer to a #CoglTexture2D.
+ * Uploads the @buffer referenced by the given Wayland resource to a
+ * #CoglTexture2D. The buffer resource may refer to a wl_buffer or a
+ * wl_shm_buffer.
  *
  * <note>The results are undefined for passing an invalid @buffer
  * pointer</note>
@@ -74,7 +76,7 @@ cogl_wayland_display_set_compositor_display (CoglDisplay *display,
  */
 CoglTexture2D *
 cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
-                                         struct wl_buffer *buffer,
+                                         struct wl_resource *buffer,
                                          CoglError **error);
 
 COGL_END_DECLS
