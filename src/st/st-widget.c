@@ -385,7 +385,7 @@ st_widget_finalize (GObject *gobject)
   g_free (priv->inline_style);
 
   for (i = 0; i < G_N_ELEMENTS (priv->paint_states); i++)
-    st_theme_node_paint_state_init (&priv->paint_states[i]);
+    st_theme_node_paint_state_free (&priv->paint_states[i]);
 
   G_OBJECT_CLASS (st_widget_parent_class)->finalize (gobject);
 }
