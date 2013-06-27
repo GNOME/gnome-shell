@@ -316,6 +316,7 @@ AS_IF([test "x$enable_wayland" = "xyes"],
         experimental_backend="yes"
 
         SUPPORT_WAYLAND=1
+        SUPPORT_COGL=1
 
         PKG_CHECK_EXISTS([wayland-client wayland-cursor xkbcommon gdk-pixbuf-2.0],
                          [
@@ -343,7 +344,10 @@ AS_IF([test "x$enable_wayland_compositor" = "xyes"],
       [
         PKG_CHECK_EXISTS([wayland-server],
 			 [BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-server"], [])
+
         SUPPORT_WAYLAND_COMPOSITOR=1
+        SUPPORT_COGL=1
+
 	CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT 1"
         AC_DEFINE([HAVE_CLUTTER_WAYLAND_COMPOSITOR], [1], [Have Wayland compositor support])
@@ -365,8 +369,8 @@ AS_IF([test "x$enable_cex100" = "xyes"],
 
         experimental_backend="yes"
 
-        SUPPORT_COGL=1
         SUPPORT_CEX100=1
+        SUPPORT_COGL=1
 
         have_gdl=no
         AC_CHECK_HEADERS([libgdl.h], [have_gdl=yes])
