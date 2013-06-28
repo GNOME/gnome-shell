@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-06-26 15:46+0000\n"
-"PO-Revision-Date: 2013-06-26 19:12+0200\n"
+"POT-Creation-Date: 2013-06-27 11:02+0000\n"
+"PO-Revision-Date: 2013-06-28 18:32+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -363,18 +363,22 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Pomocí rozbalovacího seznamu výše zvolte rozšíření, které chete nastavit."
 
-#: ../js/gdm/loginDialog.js:371
-msgid "Session…"
-msgstr "Sezení…"
+#: ../js/gdm/loginDialog.js:308
+msgid "Choose Session"
+msgstr "Vybrat sezení"
+
+#: ../js/gdm/loginDialog.js:326
+msgid "Session"
+msgstr "Sezení"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:613
+#: ../js/gdm/loginDialog.js:528
 msgid "Not listed?"
 msgstr "Nejste na seznamu?"
 
-#: ../js/gdm/loginDialog.js:825 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:810 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:449 ../js/ui/unlockDialog.js:95
@@ -382,18 +386,18 @@ msgstr "Nejste na seznamu?"
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: ../js/gdm/loginDialog.js:851
+#: ../js/gdm/loginDialog.js:833
 msgctxt "button"
 msgid "Sign In"
 msgstr "Přihlásit se"
 
-#: ../js/gdm/loginDialog.js:851
+#: ../js/gdm/loginDialog.js:833
 msgid "Next"
 msgstr "Následující"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:954
+#: ../js/gdm/loginDialog.js:934
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(např. uživatel nebo %s)"
@@ -401,12 +405,12 @@ msgstr "(např. uživatel nebo %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:958 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:938 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Uživatelské jméno: "
 
-#: ../js/gdm/loginDialog.js:1225
+#: ../js/gdm/loginDialog.js:1205
 msgid "Login Window"
 msgstr "Přihlašovací okno"
 
@@ -1317,11 +1321,11 @@ msgstr "GNOME potřebuje uzamknout obrazovku"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:773 ../js/ui/screenShield.js:1213
+#: ../js/ui/screenShield.js:775 ../js/ui/screenShield.js:1215
 msgid "Unable to lock"
 msgstr "Nelze uzamknout obrazovku"
 
-#: ../js/ui/screenShield.js:774 ../js/ui/screenShield.js:1214
+#: ../js/ui/screenShield.js:776 ../js/ui/screenShield.js:1216
 msgid "Lock was blocked by an application"
 msgstr "Zamknutí bylo zablokováno některou z aplikací"
 
