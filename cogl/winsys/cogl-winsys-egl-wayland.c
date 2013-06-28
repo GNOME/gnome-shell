@@ -100,8 +100,18 @@ static void
 _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 {
   CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererWayland *wayland_renderer = egl_renderer->platform;
 
-  eglTerminate (egl_renderer->edpy);
+  if (wayland_renderer->wayland_display)
+    {
+      _cogl_poll_renderer_remove_fd (renderer, wayland_renderer->fd);
+
+      if (renderer->foreign_wayland_display == NULL)
+        wl_display_disconnect (wayland_renderer->wayland_display);
+    }
+
+  if (egl_renderer->edpy)
+    eglTerminate (egl_renderer->edpy);
 
   g_slice_free (CoglRendererWayland, egl_renderer->platform);
   g_slice_free (CoglRendererEGL, egl_renderer);
