@@ -43,6 +43,11 @@ _cogl_poll_renderer_add_fd (CoglRenderer *renderer,
                             CoglPollDispatchCallback dispatch,
                             void *user_data);
 
+void
+_cogl_poll_renderer_modify_fd (CoglRenderer *renderer,
+                               int fd,
+                               CoglPollFDEvent events);
+
 typedef struct _CoglPollSource CoglPollSource;
 
 CoglPollSource *

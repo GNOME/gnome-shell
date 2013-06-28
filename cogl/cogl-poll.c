@@ -152,6 +152,25 @@ _cogl_poll_renderer_remove_fd (CoglRenderer *renderer, int fd)
 }
 
 void
+_cogl_poll_renderer_modify_fd (CoglRenderer *renderer,
+                               int fd,
+                               CoglPollFDEvent events)
+{
+  int fd_index = find_pollfd (renderer, fd);
+
+  if (fd_index == -1)
+    g_warn_if_reached ();
+  else
+    {
+      CoglPollFD *pollfd =
+        &g_array_index (renderer->poll_sources, CoglPollFD, fd_index);
+
+      pollfd->events = events;
+      renderer->poll_fds_age++;
+    }
+}
+
+void
 _cogl_poll_renderer_add_fd (CoglRenderer *renderer,
                             int fd,
                             CoglPollFDEvent events,
