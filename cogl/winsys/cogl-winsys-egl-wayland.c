@@ -32,6 +32,7 @@
 #include <wayland-client.h>
 #include <wayland-egl.h>
 #include <string.h>
+#include <errno.h>
 
 #include "cogl-winsys-egl-wayland-private.h"
 #include "cogl-winsys-egl-private.h"
@@ -121,6 +122,35 @@ static const struct wl_registry_listener registry_listener = {
   registry_handle_global_cb,
 };
 
+static int64_t
+prepare_wayland_display_events (void *user_data)
+{
+  CoglRenderer *renderer = user_data;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererWayland *wayland_renderer = egl_renderer->platform;
+  int flush_ret;
+
+  flush_ret = wl_display_flush (wayland_renderer->wayland_display);
+
+  /* If the socket buffer became full then we need to wake up the main
+   * loop once it is writable again */
+  if (flush_ret == -1 && errno == EAGAIN)
+    _cogl_poll_renderer_modify_fd (renderer,
+                                   wayland_renderer->fd,
+                                   COGL_POLL_FD_EVENT_IN |
+                                   COGL_POLL_FD_EVENT_OUT);
+
+  /* Calling this here is a bit dodgy because Cogl usually tries to
+   * say that it won't do any event processing until
+   * cogl_poll_renderer_dispatch is called. However Wayland doesn't
+   * seem to provide any way to query whether the event queue is empty
+   * and we would need to do that in order to force the main loop to
+   * wake up to call it from dispatch. */
+  wl_display_dispatch_pending (wayland_renderer->wayland_display);
+
+  return -1;
+}
+
 static void
 dispatch_wayland_display_events (void *user_data, int revents)
 {
@@ -128,10 +158,20 @@ dispatch_wayland_display_events (void *user_data, int revents)
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglRendererWayland *wayland_renderer = egl_renderer->platform;
 
-  if (!revents)
-    return;
+  if ((revents & COGL_POLL_FD_EVENT_IN))
+    wl_display_dispatch (wayland_renderer->wayland_display);
 
-  wl_display_dispatch (wayland_renderer->wayland_display);
+  if ((revents & COGL_POLL_FD_EVENT_OUT))
+    {
+      int ret = wl_display_flush (wayland_renderer->wayland_display);
+
+      if (ret != -1 || errno != EAGAIN)
+        /* There is no more data to write so we don't need to wake up
+         * when the write buffer is emptied anymore */
+        _cogl_poll_renderer_modify_fd (renderer,
+                                       wayland_renderer->fd,
+                                       COGL_POLL_FD_EVENT_IN);
+    }
 }
 
 static CoglBool
@@ -206,7 +246,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   _cogl_poll_renderer_add_fd (renderer,
                               wayland_renderer->fd,
                               COGL_POLL_FD_EVENT_IN,
-                              NULL, /* no prepare callback */
+                              prepare_wayland_display_events,
                               dispatch_wayland_display_events,
                               renderer);
 
@@ -470,25 +510,11 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
                                                 const int *rectangles,
                                                 int n_rectangles)
 {
-  CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
-  CoglContext *context = fb->context;
-  CoglRenderer *renderer = context->display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererWayland *wayland_renderer = egl_renderer->platform;
-
   flush_pending_resize (onscreen);
 
   parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
                                                     rectangles,
                                                     n_rectangles);
-
-  /*
-   * The implementation of eglSwapBuffers may do a flush however the semantics
-   * of eglSwapBuffers on Wayland has changed in the past. So to be safe to
-   * the implementation changing we should explicitly ensure all messages are
-   * sent.
-   */
-  wl_display_flush (wayland_renderer->wayland_display);
 }
 
 static void
