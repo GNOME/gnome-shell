@@ -58,10 +58,7 @@ cogl_poll_renderer_get_info (CoglRenderer *renderer,
   *timeout = -1;
 
   if (!_cogl_list_empty (&renderer->idle_closures))
-    {
-      *timeout = 0;
-      return renderer->poll_fds_age;
-    }
+    *timeout = 0;
 
   for (l = renderer->poll_sources; l; l = l->next)
     {
@@ -69,13 +66,8 @@ cogl_poll_renderer_get_info (CoglRenderer *renderer,
       if (source->prepare)
         {
           int64_t source_timeout = source->prepare (source->user_data);
-          if (source_timeout == 0)
-            {
-              *timeout = 0;
-              return renderer->poll_fds_age;
-            }
-          else if (source_timeout > 0 &&
-                   (*timeout == -1 || *timeout > source_timeout))
+          if (source_timeout >= 0 &&
+              (*timeout == -1 || *timeout > source_timeout))
             *timeout = source_timeout;
         }
     }
