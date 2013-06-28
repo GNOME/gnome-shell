@@ -660,6 +660,9 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
     XISetMask (mask.mask, XI_FocusIn);
     XISetMask (mask.mask, XI_FocusOut);
     XISetMask (mask.mask, XI_Motion);
+    XIClearMask (mask.mask, XI_TouchBegin);
+    XIClearMask (mask.mask, XI_TouchEnd);
+    XIClearMask (mask.mask, XI_TouchUpdate);
     XISelectEvents (xdisplay, xwin, &mask, 1);
 
     event_mask = ExposureMask | PropertyChangeMask | StructureNotifyMask;
