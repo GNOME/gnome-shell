@@ -17,7 +17,7 @@ typedef struct
 
 typedef struct
 {
-  struct wl_resource resource;
+  struct wl_resource *resource;
   CoglandRegion region;
 } CoglandSharedRegion;
 
@@ -47,13 +47,15 @@ typedef struct
 {
   CoglandCompositor *compositor;
 
-  struct wl_resource resource;
+  struct wl_resource *resource;
   int x;
   int y;
   CoglandBufferReference buffer_ref;
   CoglTexture2D *texture;
 
   CoglBool has_shell_surface;
+
+  struct wl_signal destroy_signal;
 
   /* All the pending state, that wl_surface.commit will apply. */
   struct
@@ -76,7 +78,7 @@ typedef struct
 typedef struct
 {
   CoglandSurface *surface;
-  struct wl_resource resource;
+  struct wl_resource *resource;
   struct wl_listener surface_destroy_listener;
 } CoglandShellSurface;
 
@@ -371,7 +373,7 @@ typedef struct _CoglandFrameCallback
   /* Pointer back to the compositor */
   CoglandCompositor *compositor;
 
-  struct wl_resource resource;
+  struct wl_resource *resource;
 } CoglandFrameCallback;
 
 static CoglBool
@@ -414,9 +416,8 @@ paint_cb (void *user_data)
       CoglandFrameCallback *callback =
         wl_container_of (compositor->frame_callbacks.next, callback, link);
 
-      wl_resource_post_event (&callback->resource,
-                              WL_CALLBACK_DONE, get_time ());
-      wl_resource_destroy (&callback->resource);
+      wl_callback_send_done (callback->resource, get_time ());
+      wl_resource_destroy (callback->resource);
     }
 
   compositor->redraw_idle = 0;
@@ -537,7 +538,8 @@ cogland_surface_damage (struct wl_client *client,
 static void
 destroy_frame_callback (struct wl_resource *callback_resource)
 {
-  CoglandFrameCallback *callback = callback_resource->data;
+  CoglandFrameCallback *callback =
+    wl_resource_get_user_data (callback_resource);
 
   wl_list_remove (&callback->link);
   g_slice_free (CoglandFrameCallback, callback);
@@ -553,12 +555,13 @@ cogland_surface_frame (struct wl_client *client,
 
   callback = g_slice_new0 (CoglandFrameCallback);
   callback->compositor = surface->compositor;
-  callback->resource.object.interface = &wl_callback_interface;
-  callback->resource.object.id = callback_id;
-  callback->resource.destroy = destroy_frame_callback;
-  callback->resource.data = callback;
+  callback->resource = wl_client_add_object (client,
+                                             &wl_callback_interface,
+                                             NULL, /* no implementation */
+                                             callback_id,
+                                             callback);
+  wl_resource_set_destructor (callback->resource, destroy_frame_callback);
 
-  wl_client_add_resource (client, &callback->resource);
   wl_list_insert (surface->pending.frame_callback_list.prev, &callback->link);
 }
 
@@ -679,6 +682,8 @@ cogland_surface_free (CoglandSurface *surface)
   CoglandCompositor *compositor = surface->compositor;
   CoglandFrameCallback *cb, *next;
 
+  wl_signal_emit (&surface->destroy_signal, &surface->resource);
+
   compositor->surfaces = g_list_remove (compositor->surfaces, surface);
 
   cogland_buffer_reference (&surface->buffer_ref, NULL);
@@ -690,7 +695,7 @@ cogland_surface_free (CoglandSurface *surface)
 
   wl_list_for_each_safe (cb, next,
                          &surface->pending.frame_callback_list, link)
-    wl_resource_destroy (&cb->resource);
+    wl_resource_destroy (cb->resource);
 
   g_slice_free (CoglandSurface, surface);
 
@@ -724,20 +729,20 @@ cogland_compositor_create_surface (struct wl_client *wayland_client,
 
   surface->compositor = compositor;
 
-  surface->resource.destroy =
-    cogland_surface_resource_destroy_cb;
-  surface->resource.object.id = id;
-  surface->resource.object.interface = &wl_surface_interface;
-  surface->resource.object.implementation =
-          (void (**)(void)) &cogland_surface_interface;
-  surface->resource.data = surface;
+  wl_signal_init (&surface->destroy_signal);
+
+  surface->resource = wl_client_add_object (wayland_client,
+                                            &wl_surface_interface,
+                                            &cogland_surface_interface,
+                                            id,
+                                            surface);
+  wl_resource_set_destructor (surface->resource,
+                              cogland_surface_resource_destroy_cb);
 
   surface->pending.buffer_destroy_listener.notify =
     surface_handle_pending_buffer_destroy;
   wl_list_init (&surface->pending.frame_callback_list);
   region_init (&surface->pending.damage);
-
-  wl_client_add_resource (wayland_client, &surface->resource);
 
   compositor->surfaces = g_list_prepend (compositor->surfaces,
                                          surface);
@@ -797,17 +802,15 @@ cogland_compositor_create_region (struct wl_client *wayland_client,
 {
   CoglandSharedRegion *region = g_slice_new0 (CoglandSharedRegion);
 
-  region->resource.destroy =
-    cogland_region_resource_destroy_cb;
-  region->resource.object.id = id;
-  region->resource.object.interface = &wl_region_interface;
-  region->resource.object.implementation =
-          (void (**)(void)) &cogland_region_interface;
-  region->resource.data = region;
+  region->resource = wl_client_add_object (wayland_client,
+                                           &wl_region_interface,
+                                           &cogland_region_interface,
+                                           id,
+                                           region);
+  wl_resource_set_destructor (region->resource,
+                              cogland_region_resource_destroy_cb);
 
   region_init (&region->region);
-
-  wl_client_add_resource (wayland_client, &region->resource);
 }
 
 static void
@@ -1020,22 +1023,8 @@ static const struct wl_shell_surface_interface cogl_shell_surface_interface =
 };
 
 static void
-shell_handle_surface_destroy (struct wl_listener *listener,
-                              void *data)
+destroy_shell_surface (CoglandShellSurface *shell_surface)
 {
-  CoglandShellSurface *shell_surface =
-    wl_container_of (listener, shell_surface, surface_destroy_listener);
-
-  shell_surface->surface->has_shell_surface = FALSE;
-  shell_surface->surface = NULL;
-  wl_resource_destroy (&shell_surface->resource);
-}
-
-static void
-destroy_shell_surface (struct wl_resource *resource)
-{
-  CoglandShellSurface *shell_surface = resource->data;
-
   /* In case cleaning up a dead client destroys shell_surface first */
   if (shell_surface->surface)
     {
@@ -1044,6 +1033,28 @@ destroy_shell_surface (struct wl_resource *resource)
     }
 
   g_free (shell_surface);
+}
+
+static void
+destroy_shell_surface_cb (struct wl_resource *resource)
+{
+  destroy_shell_surface (resource->data);
+}
+
+static void
+shell_handle_surface_destroy (struct wl_listener *listener,
+                              void *data)
+{
+  CoglandShellSurface *shell_surface =
+    wl_container_of (listener, shell_surface, surface_destroy_listener);
+
+  shell_surface->surface->has_shell_surface = FALSE;
+  shell_surface->surface = NULL;
+
+  if (shell_surface->resource)
+    wl_resource_destroy (shell_surface->resource);
+  else
+    destroy_shell_surface (shell_surface);
 }
 
 static void
@@ -1064,21 +1075,22 @@ get_shell_surface (struct wl_client *client,
     }
 
   shell_surface = g_new0 (CoglandShellSurface, 1);
-  shell_surface->resource.destroy = destroy_shell_surface;
-  shell_surface->resource.object.id = id;
-  shell_surface->resource.object.interface = &wl_shell_surface_interface;
-  shell_surface->resource.object.implementation =
-    (void (**) (void)) &cogl_shell_surface_interface;
-  shell_surface->resource.data = shell_surface;
 
   shell_surface->surface = surface;
-  shell_surface->surface_destroy_listener.notify = shell_handle_surface_destroy;
-  wl_signal_add (&surface->resource.destroy_signal,
+  shell_surface->surface_destroy_listener.notify =
+    shell_handle_surface_destroy;
+  wl_signal_add (&surface->destroy_signal,
                  &shell_surface->surface_destroy_listener);
 
   surface->has_shell_surface = TRUE;
 
-  wl_client_add_resource (client, &shell_surface->resource);
+  shell_surface->resource = wl_client_add_object (client,
+                                                  &wl_shell_surface_interface,
+                                                  &cogl_shell_surface_interface,
+                                                  id,
+                                                  shell_surface);
+  wl_resource_set_destructor (shell_surface->resource,
+                              destroy_shell_surface_cb);
 }
 
 static const struct wl_shell_interface cogland_shell_interface =
