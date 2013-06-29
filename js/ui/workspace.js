@@ -127,7 +127,7 @@ const WindowClone = new Lang.Class({
         if (this._stackAbove == null)
             return null;
 
-        if (this.inDrag || this._zooming) {
+        if (this.inDrag) {
             if (this._stackAbove._delegate)
                 return this._stackAbove._delegate.getActualStackAbove();
             else
