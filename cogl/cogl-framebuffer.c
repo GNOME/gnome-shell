@@ -451,15 +451,43 @@ cogl_framebuffer_clear (CoglFramebuffer *framebuffer,
                             cogl_color_get_alpha_float (color));
 }
 
+/* We will lazily allocate framebuffers if necessary when querying
+ * their size/viewport but note we need to be careful in the case of
+ * onscreen framebuffers that are instantiated with an initial request
+ * size that we don't trigger an allocation when this is queried since
+ * that would lead to a recursion when the winsys backend queries this
+ * requested size during allocation. */
+static void
+ensure_size_initialized (CoglFramebuffer *framebuffer)
+{
+  /* In the case of offscreen framebuffers backed by a texture then
+   * until that texture has been allocated we might not know the size
+   * of the framebuffer */
+  if (framebuffer->width < 0)
+    {
+      /* Currently we assume the size is always initialized for
+       * onscreen framebuffers. */
+      _COGL_RETURN_IF_FAIL (cogl_is_offscreen (framebuffer));
+
+      /* We also assume the size would have been initialized if the
+       * framebuffer were allocated. */
+      _COGL_RETURN_IF_FAIL (!framebuffer->allocated);
+
+      cogl_framebuffer_allocate (framebuffer, NULL);
+    }
+}
+
 int
 cogl_framebuffer_get_width (CoglFramebuffer *framebuffer)
 {
+  ensure_size_initialized (framebuffer);
   return framebuffer->width;
 }
 
 int
 cogl_framebuffer_get_height (CoglFramebuffer *framebuffer)
 {
+  ensure_size_initialized (framebuffer);
   return framebuffer->height;
 }
 
@@ -527,12 +555,14 @@ cogl_framebuffer_get_viewport_y (CoglFramebuffer *framebuffer)
 float
 cogl_framebuffer_get_viewport_width (CoglFramebuffer *framebuffer)
 {
+  ensure_size_initialized (framebuffer);
   return framebuffer->viewport_width;
 }
 
 float
 cogl_framebuffer_get_viewport_height (CoglFramebuffer *framebuffer)
 {
+  ensure_size_initialized (framebuffer);
   return framebuffer->viewport_height;
 }
 
@@ -540,6 +570,8 @@ void
 cogl_framebuffer_get_viewport4fv (CoglFramebuffer *framebuffer,
                                   float *viewport)
 {
+  ensure_size_initialized (framebuffer);
+
   viewport[0] = framebuffer->viewport_x;
   viewport[1] = framebuffer->viewport_y;
   viewport[2] = framebuffer->viewport_width;
