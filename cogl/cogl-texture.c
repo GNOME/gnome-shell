@@ -229,6 +229,8 @@ cogl_texture_get_height (CoglTexture *texture)
 CoglPixelFormat
 cogl_texture_get_format (CoglTexture *texture)
 {
+  if (!texture->allocated)
+    cogl_texture_allocate (texture, NULL);
   return texture->vtable->get_format (texture);
 }
 
@@ -309,6 +311,8 @@ _cogl_texture_get_level_size (CoglTexture *texture,
 CoglBool
 cogl_texture_is_sliced (CoglTexture *texture)
 {
+  if (!texture->allocated)
+    cogl_texture_allocate (texture, NULL);
   return texture->vtable->is_sliced (texture);
 }
 
@@ -319,6 +323,8 @@ cogl_texture_is_sliced (CoglTexture *texture)
 CoglBool
 _cogl_texture_can_hardware_repeat (CoglTexture *texture)
 {
+  if (!texture->allocated)
+    cogl_texture_allocate (texture, NULL);
   return texture->vtable->can_hardware_repeat (texture);
 }
 
