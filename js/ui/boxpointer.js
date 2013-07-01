@@ -589,12 +589,12 @@ const BoxPointer = new Lang.Class({
                 return St.Side.TOP;
             break;
         case St.Side.LEFT:
-            if (sourceAllocation.y2 + boxWidth > monitor.x + monitor.width &&
+            if (sourceAllocation.x2 + boxWidth > monitor.x + monitor.width &&
                 boxWidth < sourceAllocation.x1 - monitor.x)
                 return St.Side.RIGHT;
             break;
         case St.Side.RIGHT:
-            if (sourceAllocation.y1 - boxWidth < monitor.x &&
+            if (sourceAllocation.x1 - boxWidth < monitor.x &&
                 boxWidth < monitor.x + monitor.width - sourceAllocation.x2)
                 return St.Side.LEFT;
             break;
