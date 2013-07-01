@@ -127,7 +127,6 @@ StScrollBar StButton#vhandle:active {
 
 .slider {
     height: 1em;
-    min-width: 15em;
     -slider-height: 0.3em;
     -slider-background-color: #333333;
     -slider-border-color: #5f5f5f;
@@ -629,6 +628,10 @@ StScrollBar StButton#vhandle:active {
 
 .system-status-icon {
     icon-size: 1.09em;
+}
+
+.aggregate-menu {
+    width: 320px;
 }
 
 .system-switch-user-submenu-icon {

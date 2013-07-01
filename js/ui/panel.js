@@ -846,6 +846,7 @@ const AggregateMenu = new Lang.Class({
 
     _init: function() {
         this.parent(0.0, _("Settings Menu"), false);
+        this.menu.actor.add_style_class_name('aggregate-menu');
 
         this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
         this.actor.add_child(this._indicators);
