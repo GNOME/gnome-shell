@@ -93,6 +93,7 @@ m4_define([xcomposite_req_version],     [0.4])
 m4_define([xrandr_req_version],         [1.2])
 m4_define([cairo_req_version],          [1.10])
 m4_define([wayland_req_version],        [1.0.0])
+m4_define([wayland_server_req_version], [1.1.90])
 
 dnl These variables get copied into the generated README
 AC_SUBST([GLIB_REQ_VERSION], [glib_req_version])
@@ -105,6 +106,7 @@ AC_SUBST([GTK_DOC_REQ_VERSION], [gtk_doc_req_version])
 AC_SUBST([GI_REQ_VERSION], [gi_req_version])
 AC_SUBST([UPROF_REQ_VERSION], [uprof_req_version])
 AC_SUBST([WAYLAND_REQ_VERSION], [wayland_req_version])
+AC_SUBST([WAYLAND_SERVER_REQ_VERSION], [wayland_server_req_version])
 
 # Save this value here, since automake will set cflags later and we
 # want to know if the user specified custom cflags or not.
@@ -1089,8 +1091,8 @@ AS_IF([test "x$enable_wayland_egl_server" = "xyes"],
         NEED_EGL=yes
 
         PKG_CHECK_MODULES(WAYLAND_SERVER,
-                          [wayland-server >= wayland_req_version])
-        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES wayland-server >= wayland_req_version"
+                          [wayland-server >= wayland_server_req_version])
+        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES wayland-server >= wayland_server_req_version"
 
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT"
       ])
