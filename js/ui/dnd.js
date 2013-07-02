@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const St = imports.gi.St;
 const Lang = imports.lang;
@@ -358,60 +359,65 @@ const _Draggable = new Lang.Class({
         return true;
     },
 
+    _updateDragHover : function () {
+        let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
+                                                                  this._dragX, this._dragY);
+        let dragEvent = {
+            x: this._dragX,
+            y: this._dragY,
+            dragActor: this._dragActor,
+            source: this.actor._delegate,
+            targetActor: target
+        };
+        for (let i = 0; i < dragMonitors.length; i++) {
+            let motionFunc = dragMonitors[i].dragMotion;
+            if (motionFunc) {
+                let result = motionFunc(dragEvent);
+                if (result != DragMotionResult.CONTINUE) {
+                    global.set_cursor(DRAG_CURSOR_MAP[result]);
+                    return false;
+                }
+            }
+        }
+
+        while (target) {
+            if (target._delegate && target._delegate.handleDragOver) {
+                let [r, targX, targY] = target.transform_stage_point(this._dragX, this._dragY);
+                // We currently loop through all parents on drag-over even if one of the children has handled it.
+                // We can check the return value of the function and break the loop if it's true if we don't want
+                // to continue checking the parents.
+                let result = target._delegate.handleDragOver(this.actor._delegate,
+                                                             this._dragActor,
+                                                             targX,
+                                                             targY,
+                                                             0);
+                if (result != DragMotionResult.CONTINUE) {
+                    global.set_cursor(DRAG_CURSOR_MAP[result]);
+                    return false;
+                }
+            }
+            target = target.get_parent();
+        }
+        global.set_cursor(Shell.Cursor.DND_IN_DRAG);
+        return false;
+    },
+
+    _queueUpdateDragHover: function() {
+        if (this._updateHoverId)
+            GLib.source_remove(this._updateHoverId);
+
+        this._updateHoverId = GLib.idle_add(GLib.PRIORITY_DEFAULT,
+                                            Lang.bind(this, this._updateDragHover));
+    },
+
     _updateDragPosition : function (event) {
         let [stageX, stageY] = event.get_coords();
         this._dragX = stageX;
         this._dragY = stageY;
+        this._dragActor.set_position(stageX + this._dragOffsetX,
+                                     stageY + this._dragOffsetY);
 
-        // If we are dragging, update the position
-        if (this._dragActor) {
-            this._dragActor.set_position(stageX + this._dragOffsetX,
-                                         stageY + this._dragOffsetY);
-
-            let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
-                                                                      stageX, stageY);
-
-            // We call observers only once per motion with the innermost
-            // target actor. If necessary, the observer can walk the
-            // parent itself.
-            let dragEvent = {
-                x: stageX,
-                y: stageY,
-                dragActor: this._dragActor,
-                source: this.actor._delegate,
-                targetActor: target
-            };
-            for (let i = 0; i < dragMonitors.length; i++) {
-                let motionFunc = dragMonitors[i].dragMotion;
-                if (motionFunc) {
-                    let result = motionFunc(dragEvent);
-                    if (result != DragMotionResult.CONTINUE) {
-                        global.set_cursor(DRAG_CURSOR_MAP[result]);
-                        return true;
-                    }
-                }
-            }
-            while (target) {
-                if (target._delegate && target._delegate.handleDragOver) {
-                    let [r, targX, targY] = target.transform_stage_point(stageX, stageY);
-                    // We currently loop through all parents on drag-over even if one of the children has handled it.
-                    // We can check the return value of the function and break the loop if it's true if we don't want
-                    // to continue checking the parents.
-                    let result = target._delegate.handleDragOver(this.actor._delegate,
-                                                                 this._dragActor,
-                                                                 targX,
-                                                                 targY,
-                                                                 event.get_time());
-                    if (result != DragMotionResult.CONTINUE) {
-                        global.set_cursor(DRAG_CURSOR_MAP[result]);
-                        return true;
-                    }
-                }
-                target = target.get_parent();
-            }
-            global.set_cursor(Shell.Cursor.DND_IN_DRAG);
-        }
-
+        this._queueUpdateDragHover();
         return true;
     },
 
@@ -511,6 +517,11 @@ const _Draggable = new Lang.Class({
     },
 
     _cancelDrag: function(eventTime) {
+        if (this._updateHoverId) {
+            GLib.source_remove(this._updateHoverId);
+            this._updateHoverId = 0;
+        }
+
         this.emit('drag-cancelled', eventTime);
         this._dragInProgress = false;
         let [snapBackX, snapBackY, snapBackScale] = this._getRestoreLocation();
