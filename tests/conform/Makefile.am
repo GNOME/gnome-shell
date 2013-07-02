@@ -155,8 +155,7 @@ TEST_PROGS = test-conformance
 
 .PHONY: test
 
-EXTRA_DIST = test-launcher.sh.in run-tests.sh
-DISTCLEANFILES = test-launcher.sh .gitignore
+DISTCLEANFILES = .gitignore
 
 dist-hook: ../../build/win32/vs9/test-conformance-cogl.vcproj ../../build/win32/vs10/test-conformance-cogl.vcxproj ../../build/win32/vs10/test-conformance-cogl.vcxproj.filters
 
