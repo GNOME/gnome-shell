@@ -15,7 +15,7 @@ struct _TestState
 
   gint in_validation;
 
-  guint is_running : 1;
+  guint was_painted : 1;
 };
 
 static TestState *
@@ -23,9 +23,6 @@ test_state_new (void)
 {
   return g_slice_new0 (TestState);
 }
-
-static void validate_state (ClutterActor *stage,
-                            TestState    *state);
 
 static void
 test_state_free (TestState *state)
@@ -40,12 +37,7 @@ test_state_free (TestState *state)
     g_ptr_array_unref (state->colors);
 
   if (state->stage != NULL)
-    {
-      g_signal_handlers_disconnect_by_func (state->stage,
-                                            G_CALLBACK (validate_state),
-                                            state);
-      clutter_actor_destroy (state->stage);
-    }
+    clutter_actor_destroy (state->stage);
 
   g_slice_free (TestState, state);
 }
@@ -54,7 +46,7 @@ static void
 test_state_set_stage (TestState    *state,
                       ClutterActor *stage)
 {
-  g_assert (!state->is_running);
+  g_assert (!state->was_painted);
 
   state->stage = stage;
 }
@@ -64,7 +56,7 @@ test_state_add_actor (TestState          *state,
                       ClutterActor       *actor,
                       const ClutterColor *color)
 {
-  g_assert (!state->is_running);
+  g_assert (!state->was_painted);
 
   if (state->actors == NULL)
     {
@@ -139,17 +131,16 @@ check_color_at (ClutterActor *stage,
   return TRUE;
 }
 
-static void
-validate_state (ClutterActor *stage,
-                TestState    *state)
+static gboolean
+validate_state (gpointer data)
 {
+  TestState *state = data;
   int i;
 
   /* avoid recursion */
   if (test_state_in_validation (state))
     return;
 
-  g_assert (stage == state->stage);
   g_assert (state->actors != NULL);
   g_assert (state->colors != NULL);
 
@@ -168,26 +159,27 @@ validate_state (ClutterActor *stage,
 
       clutter_actor_get_allocation_box (actor, &box);
 
-      check_color_at (stage, actor, color, box.x1 + 2, box.y1 + 2);
-      check_color_at (stage, actor, color, box.x2 - 2, box.y2 - 2);
+      check_color_at (state->stage, actor, color, box.x1 + 2, box.y1 + 2);
+      check_color_at (state->stage, actor, color, box.x2 - 2, box.y2 - 2);
     }
 
   test_state_pop_validation (state);
 
-  state->is_running = FALSE;
+  state->was_painted = TRUE;
+
+  return G_SOURCE_REMOVE;
 }
 
 static gboolean
 test_state_run (TestState *state)
 {
-  g_signal_connect_after (state->stage, "paint", G_CALLBACK (validate_state), state);
+  clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
+                                         validate_state,
+                                         state,
+                                         NULL);
 
-  while (state->is_running)
-    {
-      clutter_actor_queue_redraw (state->stage);
-
-      g_main_context_iteration (NULL, FALSE);
-    }
+  while (!state->was_painted)
+    g_main_context_iteration (NULL, FALSE);
 
   return TRUE;
 }
