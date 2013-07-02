@@ -16,7 +16,6 @@ struct _TestState
   gint in_validation;
 
   guint is_running : 1;
-  guint success    : 1;
 };
 
 static TestState *
@@ -169,38 +168,28 @@ validate_state (ClutterActor *stage,
 
       clutter_actor_get_allocation_box (actor, &box);
 
-      g_assert (check_color_at (stage, actor, color, box.x1 + 2, box.y1 + 2));
-      g_assert (check_color_at (stage, actor, color, box.x2 - 2, box.y2 - 2));
+      check_color_at (stage, actor, color, box.x1 + 2, box.y1 + 2);
+      check_color_at (stage, actor, color, box.x2 - 2, box.y2 - 2);
     }
 
   test_state_pop_validation (state);
 
-  state->success = TRUE;
-
-  clutter_main_quit ();
-}
-
-static gboolean
-queue_redraw (gpointer data_)
-{
-  TestState *state = data_;
-
-  clutter_actor_queue_redraw (state->stage);
-
-  return TRUE;
+  state->is_running = FALSE;
 }
 
 static gboolean
 test_state_run (TestState *state)
 {
-  state->is_running = TRUE;
-
   g_signal_connect_after (state->stage, "paint", G_CALLBACK (validate_state), state);
-  state->id = clutter_threads_add_idle (queue_redraw, state);
 
-  clutter_main ();
+  while (state->is_running)
+    {
+      clutter_actor_queue_redraw (state->stage);
 
-  return state->success;
+      g_main_context_iteration (NULL, FALSE);
+    }
+
+  return TRUE;
 }
 
 void

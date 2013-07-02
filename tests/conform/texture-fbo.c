@@ -24,6 +24,7 @@ typedef struct _TestState
 {
   ClutterActor *stage;
   guint frame;
+  gboolean was_painted;
 } TestState;
 
 static ClutterActor *
@@ -137,16 +138,12 @@ validate_result (TestState *state)
     g_print ("Testing onscreen clone with path clip...\n");
   validate_part (state, SOURCE_SIZE, ypos * SOURCE_SIZE, 1);
   ypos++;
-
-  /* Comment this out if you want visual feedback of what this test
-   * paints.
-   */
-  clutter_main_quit ();
 }
 
-static void
-on_paint (ClutterActor *actor, TestState *state)
+static gboolean
+on_paint (gpointer data)
 {
+  TestState *state = data;
   int frame_num;
 
   /* XXX: validate_result calls clutter_stage_read_pixels which will result in
@@ -155,14 +152,10 @@ on_paint (ClutterActor *actor, TestState *state)
   frame_num = state->frame++;
   if (frame_num == 1)
     validate_result (state);
-}
 
-static gboolean
-queue_redraw (gpointer stage)
-{
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+  state->was_painted = TRUE;
 
-  return G_SOURCE_CONTINUE;
+  return G_SOURCE_REMOVE;
 }
 
 void
@@ -174,7 +167,12 @@ texture_fbo (TestConformSimpleFixture *fixture,
   int ypos = 0;
 
   if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
-    return;
+    {
+      if (g_test_verbose ())
+        g_print ("Offscreen buffers are not available, skipping.\n");
+
+      return;
+    }
 
   state.frame = 0;
 
@@ -224,18 +222,15 @@ texture_fbo (TestConformSimpleFixture *fixture,
   clutter_container_add (CLUTTER_CONTAINER (state.stage), actor, NULL);
   ypos++;
 
-  /* We force continuous redrawing of the stage, since we need to skip
-   * the first few frames, and we wont be doing anything else that
-   * will trigger redrawing. */
-  clutter_threads_add_idle (queue_redraw, state.stage);
-  g_signal_connect_after (state.stage, "paint", G_CALLBACK (on_paint), &state);
+  clutter_actor_show (state.stage);
 
-  clutter_actor_show_all (state.stage);
+  clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
+                                         on_paint,
+                                         &state,
+                                         NULL);
 
-  clutter_main ();
+  while (!state.was_painted)
+    g_main_context_iteration (NULL, FALSE);
 
   clutter_actor_destroy (state.stage);
-
-  if (g_test_verbose ())
-    g_print ("OK\n");
 }
