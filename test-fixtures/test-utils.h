@@ -81,8 +81,7 @@ test_utils_fini (void);
  * @width: width of texture in pixels.
  * @height: height of texture in pixels.
  * @flags: Optional flags for the texture, or %TEST_UTILS_TEXTURE_NONE
- * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
- *    texture.
+ * @components: What texture components are required
  *
  * Creates a new #CoglTexture with the specified dimensions and pixel format.
  *
@@ -100,7 +99,7 @@ test_utils_texture_new_with_size (CoglContext *ctx,
                                   int width,
                                   int height,
                                   TestUtilsTextureFlags flags,
-                                  CoglPixelFormat internal_format);
+                                  CoglTextureComponents components);
 
 /*
  * test_utils_texture_new_from_data:
@@ -109,20 +108,19 @@ test_utils_texture_new_with_size (CoglContext *ctx,
  * @height: height of texture in pixels
  * @flags: Optional flags for the texture, or %TEST_UTILS_TEXTURE_NONE
  * @format: the #CoglPixelFormat the buffer is stored in in RAM
- * @internal_format: the #CoglPixelFormat that will be used for storing
- *    the buffer on the GPU. If COGL_PIXEL_FORMAT_ANY is given then a
- *    premultiplied format similar to the format of the source data will
- *    be used. The default blending equations of Cogl expect premultiplied
- *    color data; the main use of passing a non-premultiplied format here
- *    is if you have non-premultiplied source data and are going to adjust
- *    the blend mode (see cogl_material_set_blend()) or use the data for
- *    something other than straight blending.
  * @rowstride: the memory offset in bytes between the starts of
  *    scanlines in @data
  * @data: pointer the memory region where the source buffer resides
  * @error: A #CoglError to catch exceptional errors or %NULL
  *
  * Creates a new #CoglTexture based on data residing in memory.
+ *
+ * Note: If the given @format has an alpha channel then the data
+ * will be loaded into a premultiplied internal format. If you want
+ * to avoid having the source data be premultiplied then you can
+ * either specify that the data is already premultiplied or use
+ * test_utils_texture_new_from_bitmap which lets you explicitly
+ * request whether the data should internally be premultipled or not.
  *
  * Return value: A newly created #CoglTexture or %NULL on failure
  */
@@ -132,7 +130,6 @@ test_utils_texture_new_from_data (CoglContext *ctx,
                                   int height,
                                   TestUtilsTextureFlags flags,
                                   CoglPixelFormat format,
-                                  CoglPixelFormat internal_format,
                                   int rowstride,
                                   const uint8_t *data);
 
@@ -140,9 +137,12 @@ test_utils_texture_new_from_data (CoglContext *ctx,
  * test_utils_texture_new_from_bitmap:
  * @bitmap: A #CoglBitmap pointer
  * @flags: Optional flags for the texture, or %TEST_UTILS_TEXTURE_NONE
- * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
- * texture
- * @error: A #CoglError to catch exceptional errors or %NULL
+ * @premultiplied: Whether the texture should hold premultipled data.
+ *                 (if the bitmap already holds premultiplied data
+ *                 and %TRUE is given then no premultiplication will
+ *                 be done. The data will be premultipled while
+ *                 uploading if the bitmap has an alpha channel but
+ *                 does not already have a premultiplied format.)
  *
  * Creates a #CoglTexture from a #CoglBitmap.
  *
@@ -151,7 +151,7 @@ test_utils_texture_new_from_data (CoglContext *ctx,
 CoglTexture *
 test_utils_texture_new_from_bitmap (CoglBitmap *bitmap,
                                     TestUtilsTextureFlags flags,
-                                    CoglPixelFormat internal_format);
+                                    CoglBool premultiplied);
 
 /*
  * test_utils_check_pixel:

@@ -174,7 +174,6 @@ test_paint (TestState *state)
                                           2, 1, /* size */
                                           TEST_UTILS_TEXTURE_NO_ATLAS,
                                           COGL_PIXEL_FORMAT_RGB_888,
-                                          COGL_PIXEL_FORMAT_ANY,
                                           6, /* rowstride */
                                           tex_data);
   pipeline = cogl_pipeline_new (test_ctx);

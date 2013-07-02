@@ -79,9 +79,7 @@ create_texture_from_bitmap (CoglBitmap *bitmap)
 {
   CoglTexture2D *texture;
 
-  texture = cogl_texture_2d_new_from_bitmap (bitmap,
-                                             COGL_PIXEL_FORMAT_RGBA_8888,
-                                             NULL); /* don't catch errors */
+  texture = cogl_texture_2d_new_from_bitmap (bitmap);
 
   g_assert (texture != NULL);
 
@@ -221,7 +219,6 @@ create_white_texture (void)
                                            BITMAP_SIZE,
                                            BITMAP_SIZE,
                                            COGL_PIXEL_FORMAT_RGBA_8888,
-                                           COGL_PIXEL_FORMAT_ANY,
                                            BITMAP_SIZE * 4, /* rowstride */
                                            data,
                                            NULL); /* don't catch errors */

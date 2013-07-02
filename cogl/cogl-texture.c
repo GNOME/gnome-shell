@@ -107,7 +107,7 @@ _cogl_texture_init (CoglTexture *texture,
                     CoglContext *context,
                     int width,
                     int height,
-                    CoglPixelFormat internal_format,
+                    CoglPixelFormat src_format,
                     CoglTextureLoader *loader,
                     const CoglTextureVtable *vtable)
 {
@@ -121,7 +121,22 @@ _cogl_texture_init (CoglTexture *texture,
 
   texture->loader = loader;
 
-  _cogl_texture_set_internal_format (texture, internal_format);
+  _cogl_texture_set_internal_format (texture, src_format);
+
+  /* Although we want to initialize texture::components according
+   * to the source format, we always want the internal layout to
+   * be considered premultiplied by default.
+   *
+   * NB: this ->premultiplied state is user configurable so to avoid
+   * awkward documentation, setting this to 'true' does not depend on
+   * ->components having an alpha component (we will simply ignore the
+   * premultiplied status later if there is no alpha component).
+   * This way we don't have to worry about updating the
+   * ->premultiplied state in _set_components().  Similarly we don't
+   * have to worry about updating the ->components state in
+   * _set_premultiplied().
+   */
+  texture->premultiplied = TRUE;
 }
 
 static void
@@ -1502,4 +1517,12 @@ CoglBool
 cogl_texture_get_premultiplied (CoglTexture *texture)
 {
   return texture->premultiplied;
+}
+
+void
+_cogl_texture_copy_internal_format (CoglTexture *src,
+                                    CoglTexture *dest)
+{
+  cogl_texture_set_components (dest, src->components);
+  cogl_texture_set_premultiplied (dest, src->premultiplied);
 }

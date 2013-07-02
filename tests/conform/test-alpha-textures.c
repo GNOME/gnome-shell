@@ -16,7 +16,6 @@ create_pipeline (CoglTexture **tex_out,
   tex = cogl_texture_2d_new_from_data (test_ctx,
                                        2, 2, /* width/height */
                                        COGL_PIXEL_FORMAT_A_8, /* format */
-                                       COGL_PIXEL_FORMAT_ANY, /* int. format */
                                        2, /* rowstride */
                                        tex_data,
                                        NULL);

@@ -681,9 +681,7 @@ _cogl_atlas_texture_create_base (CoglContext *ctx,
 CoglAtlasTexture *
 cogl_atlas_texture_new_with_size (CoglContext *ctx,
                                   int width,
-                                  int height,
-                                  CoglPixelFormat internal_format,
-                                  CoglError **error)
+                                  int height)
 {
   CoglTextureLoader *loader;
 
@@ -697,7 +695,8 @@ cogl_atlas_texture_new_with_size (CoglContext *ctx,
   loader->src.sized.height = height;
 
   return _cogl_atlas_texture_create_base (ctx, width, height,
-                                          internal_format, loader);
+                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                          loader);
 }
 
 static CoglBool
@@ -886,9 +885,7 @@ _cogl_atlas_texture_allocate (CoglTexture *tex,
 
 CoglAtlasTexture *
 _cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
-                                     CoglPixelFormat internal_format,
-                                     CoglBool can_convert_in_place,
-                                     CoglError **error)
+                                     CoglBool can_convert_in_place)
 {
   CoglTextureLoader *loader;
 
@@ -902,17 +899,14 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
   return _cogl_atlas_texture_create_base (_cogl_bitmap_get_context (bmp),
                                           cogl_bitmap_get_width (bmp),
                                           cogl_bitmap_get_height (bmp),
-                                          internal_format,
+                                          cogl_bitmap_get_format (bmp),
                                           loader);
 }
 
 CoglAtlasTexture *
-cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
-                                    CoglPixelFormat internal_format,
-                                    CoglError **error)
+cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp)
 {
-  return _cogl_atlas_texture_new_from_bitmap (bmp, internal_format,
-                                              FALSE, error);
+  return _cogl_atlas_texture_new_from_bitmap (bmp, FALSE);
 }
 
 CoglAtlasTexture *
@@ -920,7 +914,6 @@ cogl_atlas_texture_new_from_data (CoglContext *ctx,
                                   int width,
                                   int height,
                                   CoglPixelFormat format,
-                                  CoglPixelFormat internal_format,
                                   int rowstride,
                                   const uint8_t *data,
                                   CoglError **error)
@@ -942,7 +935,7 @@ cogl_atlas_texture_new_from_data (CoglContext *ctx,
                                   rowstride,
                                   (uint8_t *) data);
 
-  atlas_tex = cogl_atlas_texture_new_from_bitmap (bmp, internal_format, error);
+  atlas_tex = cogl_atlas_texture_new_from_bitmap (bmp);
 
   cogl_object_unref (bmp);
 
@@ -959,7 +952,6 @@ cogl_atlas_texture_new_from_data (CoglContext *ctx,
 CoglAtlasTexture *
 cogl_atlas_texture_new_from_file (CoglContext *ctx,
                                   const char *filename,
-                                  CoglPixelFormat internal_format,
                                   CoglError **error)
 {
   CoglBitmap *bmp;
@@ -972,9 +964,7 @@ cogl_atlas_texture_new_from_file (CoglContext *ctx,
     return NULL;
 
   atlas_tex = _cogl_atlas_texture_new_from_bitmap (bmp,
-                                                   internal_format,
-                                                   TRUE, /* convert in-place */
-                                                   error);
+                                                   TRUE); /* convert in-place */
 
   cogl_object_unref (bmp);
 

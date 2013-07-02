@@ -271,7 +271,6 @@ make_texture (void)
                                           TEXTURE_SIZE,
                                           TEST_UTILS_TEXTURE_NO_ATLAS,
                                           COGL_PIXEL_FORMAT_RGBA_8888,
-                                          COGL_PIXEL_FORMAT_ANY,
                                           TEXTURE_SIZE * 4,
                                           tex_data);
 
@@ -296,8 +295,7 @@ test_backface_culling (void)
   tex = test_utils_texture_new_with_size (test_ctx,
                                           state.width, state.height,
                                           TEST_UTILS_TEXTURE_NO_SLICING,
-                                          COGL_PIXEL_FORMAT_ANY); /* internal
-                                                                     format */
+                                          COGL_TEXTURE_COMPONENTS_RGBA);
   state.offscreen = cogl_offscreen_new_with_texture (tex);
   state.offscreen_tex = tex;
 

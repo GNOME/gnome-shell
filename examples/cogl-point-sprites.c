@@ -82,7 +82,6 @@ generate_round_texture (CoglContext *context)
   tex = cogl_texture_2d_new_from_data (context,
                                        TEXTURE_SIZE, TEXTURE_SIZE,
                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                       COGL_PIXEL_FORMAT_ANY,
                                        TEXTURE_SIZE * 4,
                                        data,
                                        NULL /* error */);

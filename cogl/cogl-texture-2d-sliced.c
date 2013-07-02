@@ -881,8 +881,10 @@ allocate_slices (CoglTexture2DSliced *tex_2ds,
 
           slice = COGL_TEXTURE (
             cogl_texture_2d_new_with_size (ctx,
-                                           x_span->size, y_span->size,
-                                           internal_format));
+                                           x_span->size, y_span->size));
+
+          _cogl_texture_copy_internal_format (tex, slice);
+
           g_array_append_val (tex_2ds->slice_textures, slice);
           if (!cogl_texture_allocate (slice, error))
             {
@@ -927,16 +929,9 @@ CoglTexture2DSliced *
 cogl_texture_2d_sliced_new_with_size (CoglContext *ctx,
                                       int width,
                                       int height,
-                                      int max_waste,
-                                      CoglPixelFormat internal_format)
+                                      int max_waste)
 {
-  CoglTextureLoader *loader;
-
-  /* Since no data, we need some internal format */
-  if (internal_format == COGL_PIXEL_FORMAT_ANY)
-    internal_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
-
-  loader = _cogl_texture_create_loader ();
+  CoglTextureLoader *loader = _cogl_texture_create_loader ();
   loader->src_type = COGL_TEXTURE_SOURCE_TYPE_SIZED;
   loader->src.sized.width = width;
   loader->src.sized.height = height;
@@ -945,16 +940,14 @@ cogl_texture_2d_sliced_new_with_size (CoglContext *ctx,
                                               width,
                                               height,
                                               max_waste,
-                                              internal_format,
+                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                               loader);
 }
 
 CoglTexture2DSliced *
 _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
                                          int max_waste,
-                                         CoglPixelFormat internal_format,
-                                         CoglBool can_convert_in_place,
-                                         CoglError **error)
+                                         CoglBool can_convert_in_place)
 {
   CoglTextureLoader *loader;
 
@@ -969,21 +962,17 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
                                               cogl_bitmap_get_width (bmp),
                                               cogl_bitmap_get_height (bmp),
                                               max_waste,
-                                              internal_format,
+                                              cogl_bitmap_get_format (bmp),
                                               loader);
 }
 
 CoglTexture2DSliced *
 cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
-                                        int max_waste,
-                                        CoglPixelFormat internal_format,
-                                        CoglError **error)
+                                        int max_waste)
 {
   return _cogl_texture_2d_sliced_new_from_bitmap (bmp,
                                                   max_waste,
-                                                  internal_format,
-                                                  FALSE,
-                                                  error);
+                                                  FALSE);
 }
 
 CoglTexture2DSliced *
@@ -994,8 +983,7 @@ _cogl_texture_2d_sliced_new_from_foreign (CoglContext *ctx,
                                           int height,
                                           int x_pot_waste,
                                           int y_pot_waste,
-                                          CoglPixelFormat format,
-                                          CoglError **error)
+                                          CoglPixelFormat format)
 {
   CoglTextureLoader *loader;
 
@@ -1039,7 +1027,6 @@ cogl_texture_2d_sliced_new_from_data (CoglContext *ctx,
                                       int height,
                                       int max_waste,
                                       CoglPixelFormat format,
-                                      CoglPixelFormat internal_format,
                                       int rowstride,
                                       const uint8_t *data,
                                       CoglError **error)
@@ -1061,9 +1048,7 @@ cogl_texture_2d_sliced_new_from_data (CoglContext *ctx,
                                   rowstride,
                                   (uint8_t *) data);
 
-  tex_2ds = cogl_texture_2d_sliced_new_from_bitmap (bmp, max_waste,
-                                                    internal_format,
-                                                    error);
+  tex_2ds = cogl_texture_2d_sliced_new_from_bitmap (bmp, max_waste);
 
   cogl_object_unref (bmp);
 
@@ -1081,7 +1066,6 @@ CoglTexture2DSliced *
 cogl_texture_2d_sliced_new_from_file (CoglContext *ctx,
                                       const char *filename,
                                       int max_waste,
-                                      CoglPixelFormat internal_format,
                                       CoglError **error)
 {
   CoglBitmap *bmp;
@@ -1095,9 +1079,7 @@ cogl_texture_2d_sliced_new_from_file (CoglContext *ctx,
 
   tex_2ds = _cogl_texture_2d_sliced_new_from_bitmap (bmp,
                                            max_waste,
-                                           internal_format,
-                                           TRUE, /* can convert in-place */
-                                           error);
+                                           TRUE); /* can convert in-place */
 
   cogl_object_unref (bmp);
 
@@ -1198,18 +1180,17 @@ allocate_from_gl_foreign (CoglTexture2DSliced *tex_2ds,
   CoglSpan x_span;
   CoglSpan y_span;
   CoglTexture2D *tex_2d =
-    cogl_texture_2d_new_from_foreign (ctx,
-                                      loader->src.gl_foreign.gl_handle,
-                                      gl_width,
-                                      gl_height,
-                                      format,
-                                      error);
-
-  if (!tex_2d)
-    return FALSE;
+    cogl_texture_2d_gl_new_from_foreign (ctx,
+                                         loader->src.gl_foreign.gl_handle,
+                                         gl_width,
+                                         gl_height,
+                                         format);
 
   if (!cogl_texture_allocate (COGL_TEXTURE (tex_2d), error))
-    return FALSE;
+    {
+      cogl_object_unref (tex_2d);
+      return FALSE;
+    }
 
   /* The texture 2d backend may use a different pixel format if it
      queries the actual texture so we'll refetch the format it

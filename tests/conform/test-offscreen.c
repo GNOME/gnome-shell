@@ -46,8 +46,7 @@ test_paint (TestState *state)
 
   tex_2d = cogl_texture_2d_new_with_size (test_ctx,
                                           state->fb_width,
-                                          state->fb_height,
-                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+                                          state->fb_height);
   tex = tex_2d;
 
   offscreen = cogl_offscreen_new_with_texture (tex);
@@ -127,8 +126,7 @@ test_flush (TestState *state)
          journal */
 
       tex_2d = cogl_texture_2d_new_with_size (test_ctx,
-                                              16, 16, /* width/height */
-                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+                                              16, 16); /* width/height */
       tex = tex_2d;
 
       offscreen = cogl_offscreen_new_with_texture (tex);

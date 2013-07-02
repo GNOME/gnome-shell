@@ -386,20 +386,11 @@ create_depth_texture (CoglContext *ctx,
                       int width,
                       int height)
 {
-  CoglPixelFormat format;
-  CoglTexture2D *depth_texture;
+  CoglTexture2D *depth_texture =
+    cogl_texture_2d_new_with_size (ctx, width, height);
 
-  if (_cogl_has_private_feature
-      (ctx, COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL) ||
-      _cogl_has_private_feature
-      (ctx, COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL))
-    format = COGL_PIXEL_FORMAT_DEPTH_24_STENCIL_8;
-  else
-    format = COGL_PIXEL_FORMAT_DEPTH_16;
-
-  depth_texture =  cogl_texture_2d_new_with_size (ctx,
-                                                  width, height,
-                                                  format);
+  cogl_texture_set_components (COGL_TEXTURE (depth_texture),
+                               COGL_TEXTURE_COMPONENTS_DEPTH);
 
   return COGL_TEXTURE (depth_texture);
 }

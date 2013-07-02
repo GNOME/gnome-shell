@@ -226,11 +226,8 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
 
   texture = cogl_atlas_texture_new_with_size (cache->ctx,
                                               value->draw_width,
-                                              value->draw_height,
-                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                              &ignore_error);
-
-  if (texture == NULL)
+                                              value->draw_height);
+  if (!cogl_texture_allocate (COGL_TEXTURE (texture), &ignore_error))
     {
       cogl_error_free (ignore_error);
       return FALSE;

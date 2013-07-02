@@ -32,8 +32,6 @@ test_texture_no_allocate (void)
                                       BIG_TEX_HEIGHT,
                                       /* format */
                                       COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                      /* internal format */
-                                      COGL_PIXEL_FORMAT_ANY,
                                       /* rowstride */
                                       BIG_TEX_WIDTH * 4,
                                       tex_data,
@@ -54,14 +52,12 @@ test_texture_no_allocate (void)
     cogl_texture_2d_sliced_new_with_size (test_ctx,
                                           BIG_TEX_WIDTH,
                                           BIG_TEX_HEIGHT,
-                                          COGL_TEXTURE_MAX_WASTE,
-                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+                                          COGL_TEXTURE_MAX_WASTE);
   cogl_object_unref (texture);
 
   /* 2D texture */
   texture_2d = cogl_texture_2d_new_with_size (test_ctx,
-                                              64, 64,
-                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+                                              64, 64);
   cogl_object_unref (texture_2d);
 
   /* 3D texture */
@@ -69,8 +65,7 @@ test_texture_no_allocate (void)
     {
       CoglTexture3D *texture_3d =
         cogl_texture_3d_new_with_size (test_ctx,
-                                       64, 64, 64,
-                                       COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+                                       64, 64, 64);
       cogl_object_unref (texture_3d);
     }
 

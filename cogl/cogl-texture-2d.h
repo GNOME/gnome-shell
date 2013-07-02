@@ -73,7 +73,6 @@ cogl_is_texture_2d (void *object);
  * @ctx: A #CoglContext
  * @width: Width of the texture to allocate
  * @height: Height of the texture to allocate
- * @internal_format: The format of the texture
  *
  * Creates a low-level #CoglTexture2D texture with a given @width and
  * @height that your GPU can texture from directly.
@@ -101,21 +100,12 @@ cogl_is_texture_2d (void *object);
 CoglTexture2D *
 cogl_texture_2d_new_with_size (CoglContext *ctx,
                                int width,
-                               int height,
-                               CoglPixelFormat internal_format);
+                               int height);
 
 /**
  * cogl_texture_2d_new_from_file:
  * @ctx: A #CoglContext
  * @filename: the file to load
- * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
- *    texture. If %COGL_PIXEL_FORMAT_ANY is given then a premultiplied
- *    format similar to the format of the source data will be used. The
- *    default blending equations of Cogl expect premultiplied color data;
- *    the main use of passing a non-premultiplied format here is if you
- *    have non-premultiplied source data and are going to adjust the blend
- *    mode (see cogl_material_set_blend()) or use the data for something
- *    other than straight blending.
  * @error: A #CoglError to catch exceptional errors or %NULL
  *
  * Creates a low-level #CoglTexture2D texture from an image file.
@@ -144,7 +134,6 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
 CoglTexture2D *
 cogl_texture_2d_new_from_file (CoglContext *ctx,
                                const char *filename,
-                               CoglPixelFormat internal_format,
                                CoglError **error);
 
 /**
@@ -153,14 +142,6 @@ cogl_texture_2d_new_from_file (CoglContext *ctx,
  * @width: width of texture in pixels
  * @height: height of texture in pixels
  * @format: the #CoglPixelFormat the buffer is stored in in RAM
- * @internal_format: the #CoglPixelFormat that will be used for storing
- *    the buffer on the GPU. If %COGL_PIXEL_FORMAT_ANY is given then a
- *    premultiplied format similar to the format of the source data will
- *    be used. The default blending equations of Cogl expect premultiplied
- *    color data; the main use of passing a non-premultiplied format here
- *    is if you have non-premultiplied source data and are going to adjust
- *    the blend mode (see cogl_pipeline_set_blend()) or use the data for
- *    something other than straight blending.
  * @rowstride: the memory offset in bytes between the starts of
  *    scanlines in @data. A value of 0 will make Cogl automatically
  *    calculate @rowstride from @width and @format.
@@ -198,7 +179,6 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                int width,
                                int height,
                                CoglPixelFormat format,
-                               CoglPixelFormat internal_format,
                                int rowstride,
                                const uint8_t *data,
                                CoglError **error);
@@ -206,15 +186,6 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
 /**
  * cogl_texture_2d_new_from_bitmap:
  * @bitmap: A #CoglBitmap
- * @internal_format: the #CoglPixelFormat that will be used for storing
- *    the buffer on the GPU. If %COGL_PIXEL_FORMAT_ANY is given then a
- *    premultiplied format similar to the format of the source data will
- *    be used. The default blending equations of Cogl expect premultiplied
- *    color data; the main use of passing a non-premultiplied format here
- *    is if you have non-premultiplied source data and are going to adjust
- *    the blend mode (see cogl_pipeline_set_blend()) or use the data for
- *    something other than straight blending.
- * @error: A #CoglError for exceptions
  *
  * Creates a low-level #CoglTexture2D texture based on data residing
  * in a #CoglBitmap.
@@ -235,18 +206,13 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
  * checking for the %COGL_FEATURE_ID_TEXTURE_NPOT feature via
  * cogl_has_feature().</note>
  *
- * Returns: (transfer full): A newly allocated #CoglTexture2D, or if
- *          the size is not supported (because it is too large or a
- *          non-power-of-two size that the hardware doesn't support)
- *          it will return %NULL and set @error.
+ * Returns: (transfer full): A newly allocated #CoglTexture2D
  *
  * Since: 2.0
  * Stability: unstable
  */
 CoglTexture2D *
-cogl_texture_2d_new_from_bitmap (CoglBitmap *bitmap,
-                                 CoglPixelFormat internal_format,
-                                 CoglError **error);
+cogl_texture_2d_new_from_bitmap (CoglBitmap *bitmap);
 
 COGL_END_DECLS
 

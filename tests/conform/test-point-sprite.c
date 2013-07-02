@@ -51,7 +51,6 @@ do_test (CoglBool check_orientation,
   tex_2d = cogl_texture_2d_new_from_data (test_ctx,
                                           2, tex_height, /* width/height */
                                           COGL_PIXEL_FORMAT_RGB_888,
-                                          COGL_PIXEL_FORMAT_ANY,
                                           6, /* row stride */
                                           tex_data,
                                           &error);

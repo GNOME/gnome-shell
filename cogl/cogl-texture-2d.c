@@ -110,14 +110,9 @@ _cogl_texture_2d_create_base (CoglContext *ctx,
 CoglTexture2D *
 cogl_texture_2d_new_with_size (CoglContext *ctx,
                                int width,
-                               int height,
-                               CoglPixelFormat internal_format)
+                               int height)
 {
   CoglTextureLoader *loader;
-
-  /* Since no data, we need some internal format */
-  if (internal_format == COGL_PIXEL_FORMAT_ANY)
-    internal_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
 
   loader = _cogl_texture_create_loader ();
   loader->src_type = COGL_TEXTURE_SOURCE_TYPE_SIZED;
@@ -125,7 +120,7 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
   loader->src.sized.height = height;
 
   return _cogl_texture_2d_create_base (ctx, width, height,
-                                       internal_format, loader);
+                                       COGL_PIXEL_FORMAT_RGBA_8888_PRE, loader);
 }
 
 static CoglBool
@@ -139,9 +134,7 @@ _cogl_texture_2d_allocate (CoglTexture *tex,
 
 CoglTexture2D *
 _cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
-                                  CoglPixelFormat internal_format,
-                                  CoglBool can_convert_in_place,
-                                  CoglError **error)
+                                  CoglBool can_convert_in_place)
 {
   CoglTextureLoader *loader;
 
@@ -155,22 +148,20 @@ _cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
   return  _cogl_texture_2d_create_base (_cogl_bitmap_get_context (bmp),
                                         cogl_bitmap_get_width (bmp),
                                         cogl_bitmap_get_height (bmp),
-                                        internal_format,
+                                        cogl_bitmap_get_format (bmp),
                                         loader);
 }
 
 CoglTexture2D *
-cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
-                                 CoglPixelFormat internal_format,
-                                 CoglError **error)
+cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp)
 {
-  return _cogl_texture_2d_new_from_bitmap (bmp, internal_format, FALSE, error);
+  return _cogl_texture_2d_new_from_bitmap (bmp,
+                                           FALSE); /* can't convert in place */
 }
 
 CoglTexture2D *
 cogl_texture_2d_new_from_file (CoglContext *ctx,
                                const char *filename,
-                               CoglPixelFormat internal_format,
                                CoglError **error)
 {
   CoglBitmap *bmp;
@@ -183,9 +174,7 @@ cogl_texture_2d_new_from_file (CoglContext *ctx,
     return NULL;
 
   tex_2d = _cogl_texture_2d_new_from_bitmap (bmp,
-                                             internal_format,
-                                             TRUE, /* can convert in-place */
-                                             error);
+                                             TRUE); /* can convert in-place */
 
   cogl_object_unref (bmp);
 
@@ -197,7 +186,6 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                int width,
                                int height,
                                CoglPixelFormat format,
-                               CoglPixelFormat internal_format,
                                int rowstride,
                                const uint8_t *data,
                                CoglError **error)
@@ -219,9 +207,7 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                   rowstride,
                                   (uint8_t *) data);
 
-  tex_2d = cogl_texture_2d_new_from_bitmap (bmp,
-                                            internal_format,
-                                            error);
+  tex_2d = cogl_texture_2d_new_from_bitmap (bmp);
 
   cogl_object_unref (bmp);
 
@@ -273,10 +259,10 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
 static void
 shm_buffer_get_cogl_pixel_format (struct wl_shm_buffer *shm_buffer,
                                   CoglPixelFormat *format_out,
-                                  CoglPixelFormat *internal_format_out)
+                                  CoglTextureComponents *components_out)
 {
   CoglPixelFormat format;
-  CoglPixelFormat internal_format = COGL_PIXEL_FORMAT_ANY;
+  CoglTextureComponents components = COGL_TEXTURE_COMPONENTS_RGBA;
 
   switch (wl_shm_buffer_get_format (shm_buffer))
     {
@@ -286,7 +272,7 @@ shm_buffer_get_cogl_pixel_format (struct wl_shm_buffer *shm_buffer,
       break;
     case WL_SHM_FORMAT_XRGB8888:
       format = COGL_PIXEL_FORMAT_ARGB_8888;
-      internal_format = COGL_PIXEL_FORMAT_RGB_888;
+      components = COGL_TEXTURE_COMPONENTS_RGB;
       break;
 #elif G_BYTE_ORDER == G_LITTLE_ENDIAN
     case WL_SHM_FORMAT_ARGB8888:
@@ -294,7 +280,7 @@ shm_buffer_get_cogl_pixel_format (struct wl_shm_buffer *shm_buffer,
       break;
     case WL_SHM_FORMAT_XRGB8888:
       format = COGL_PIXEL_FORMAT_BGRA_8888;
-      internal_format = COGL_PIXEL_FORMAT_BGR_888;
+      components = COGL_TEXTURE_COMPONENTS_RGB;
       break;
 #endif
     default:
@@ -304,8 +290,8 @@ shm_buffer_get_cogl_pixel_format (struct wl_shm_buffer *shm_buffer,
 
   if (format_out)
     *format_out = format;
-  if (internal_format_out)
-    *internal_format_out = internal_format;
+  if (components_out)
+    *components_out = components;
 }
 
 CoglBool
@@ -345,6 +331,7 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
                                          CoglError **error)
 {
   struct wl_shm_buffer *shm_buffer;
+  CoglTexture2D *tex = NULL;
 
   shm_buffer = wl_shm_buffer_get (buffer);
 
@@ -353,17 +340,31 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
       int stride = wl_shm_buffer_get_stride (shm_buffer);
       int width = wl_shm_buffer_get_width (shm_buffer);
       int height = wl_shm_buffer_get_height (shm_buffer);
-      CoglPixelFormat format, internal_format;
+      CoglPixelFormat format;
+      CoglTextureComponents components;
+      CoglBitmap *bmp;
 
-      shm_buffer_get_cogl_pixel_format (shm_buffer, &format, &internal_format);
+      shm_buffer_get_cogl_pixel_format (shm_buffer, &format, &components);
 
-      return cogl_texture_2d_new_from_data (ctx,
-                                            width, height,
-                                            format,
-                                            internal_format,
-                                            stride,
-                                            wl_shm_buffer_get_data (shm_buffer),
-                                            error);
+      bmp = cogl_bitmap_new_for_data (ctx,
+                                      width, height,
+                                      format,
+                                      stride,
+                                      wl_shm_buffer_get_data (shm_buffer));
+
+      tex = cogl_texture_2d_new_from_bitmap (bmp);
+
+      cogl_texture_set_components (COGL_TEXTURE (tex), components);
+
+      cogl_object_unref (bmp);
+
+      if (!cogl_texture_allocate (COGL_TEXTURE (tex), error))
+        {
+          cogl_object_unref (tex);
+          return NULL;
+        }
+      else
+        return tex;
     }
   else
     {
@@ -383,7 +384,6 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
                                           &height))
         {
           EGLImageKHR image;
-          CoglTexture2D *tex = NULL;
           CoglPixelFormat internal_format;
 
           _COGL_RETURN_VAL_IF_FAIL (_cogl_context_get_winsys (ctx)->constraints &

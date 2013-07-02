@@ -22,7 +22,6 @@ create_dummy_texture (void)
                                            1, 1, /* size */
                                            TEST_UTILS_TEXTURE_NONE,
                                            COGL_PIXEL_FORMAT_RGB_888,
-                                           COGL_PIXEL_FORMAT_ANY,
                                            4, /* rowstride */
                                            data);
 }

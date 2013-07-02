@@ -92,7 +92,6 @@ make_texture (void)
                                           TEXTURE_SIZE,
                                           TEST_UTILS_TEXTURE_NO_ATLAS,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                          COGL_PIXEL_FORMAT_ANY,
                                           TEXTURE_SIZE * 4,
                                           tex_data);
 

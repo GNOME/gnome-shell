@@ -409,7 +409,7 @@ allocate_from_gl_foreign (CoglTexture2D *tex_2d,
      whether it has GL_GENERATE_MIPMAP enabled to determine whether to
      auto-generate the mipmap. This doesn't make much sense any more
      since Cogl switch to using glGenerateMipmap. Ideally I think
-     cogl_texture_2d_new_from_foreign should take a flags parameter so
+     cogl_texture_2d_gl_new_from_foreign should take a flags parameter so
      that the application can decide whether it wants
      auto-mipmapping. To be compatible with existing code, Cogl now
      disables its own auto-mipmapping but leaves the value of
@@ -521,12 +521,11 @@ _cogl_texture_2d_gl_flush_legacy_texobj_wrap_modes (CoglTexture *tex,
 }
 
 CoglTexture2D *
-cogl_texture_2d_new_from_foreign (CoglContext *ctx,
-                                  unsigned int gl_handle,
-                                  int width,
-                                  int height,
-                                  CoglPixelFormat format,
-                                  CoglError **error)
+cogl_texture_2d_gl_new_from_foreign (CoglContext *ctx,
+                                     unsigned int gl_handle,
+                                     int width,
+                                     int height,
+                                     CoglPixelFormat format)
 {
   CoglTextureLoader *loader;
 

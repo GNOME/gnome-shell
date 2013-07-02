@@ -2508,6 +2508,8 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
                                                   texture_format,
                                                   &error));
 
+          _cogl_texture_set_internal_format (tex, texture_format);
+
           if (glx_tex_pixmap->glx_tex)
             COGL_NOTE (TEXTURE_PIXMAP, "Created a texture rectangle for %p",
                        tex_pixmap);
@@ -2526,8 +2528,9 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
           glx_tex_pixmap->glx_tex = COGL_TEXTURE (
             cogl_texture_2d_new_with_size (ctx,
                                            tex->width,
-                                           tex->height,
-                                           texture_format));
+                                           tex->height));
+
+          _cogl_texture_set_internal_format (tex, texture_format);
 
           if (cogl_texture_allocate (glx_tex_pixmap->glx_tex, &error))
             COGL_NOTE (TEXTURE_PIXMAP, "Created a texture 2d for %p",

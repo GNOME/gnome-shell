@@ -299,11 +299,17 @@ _cogl_atlas_create_texture (CoglAtlas *atlas,
                                             width * bpp,
                                             clear_data);
 
-      tex = cogl_texture_2d_new_from_bitmap (clear_bmp,
-                                             atlas->texture_format,
-                                             &ignore_error);
-      if (!tex)
-        cogl_error_free (ignore_error);
+      tex = cogl_texture_2d_new_from_bitmap (clear_bmp);
+
+      _cogl_texture_set_internal_format (COGL_TEXTURE (tex),
+                                         atlas->texture_format);
+
+      if (!cogl_texture_allocate (COGL_TEXTURE (tex), &ignore_error))
+        {
+          cogl_error_free (ignore_error);
+          cogl_object_unref (tex);
+          tex = NULL;
+        }
 
       cogl_object_unref (clear_bmp);
 
@@ -311,9 +317,11 @@ _cogl_atlas_create_texture (CoglAtlas *atlas,
     }
   else
     {
-      tex = cogl_texture_2d_new_with_size (ctx,
-                                           width, height,
-                                           atlas->texture_format);
+      tex = cogl_texture_2d_new_with_size (ctx, width, height);
+
+      _cogl_texture_set_internal_format (COGL_TEXTURE (tex),
+                                         atlas->texture_format);
+
       if (!cogl_texture_allocate (COGL_TEXTURE (tex), &ignore_error))
         {
           cogl_error_free (ignore_error);
@@ -557,8 +565,9 @@ create_migration_texture (CoglContext *ctx,
     {
       /* First try creating a fast-path non-sliced texture */
       tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx,
-                                                         width, height,
-                                                         internal_format));
+                                                         width, height));
+
+      _cogl_texture_set_internal_format (tex, internal_format);
 
       /* TODO: instead of allocating storage here it would be better
        * if we had some api that let us just check that the size is
@@ -580,8 +589,11 @@ create_migration_texture (CoglContext *ctx,
         cogl_texture_2d_sliced_new_with_size (ctx,
                                               width,
                                               height,
-                                              COGL_TEXTURE_MAX_WASTE,
-                                              internal_format);
+                                              COGL_TEXTURE_MAX_WASTE);
+
+      _cogl_texture_set_internal_format (COGL_TEXTURE (tex_2ds),
+                                         internal_format);
+
       tex = COGL_TEXTURE (tex_2ds);
     }
 
@@ -594,7 +606,7 @@ _cogl_atlas_copy_rectangle (CoglAtlas *atlas,
                             int y,
                             int width,
                             int height,
-                            CoglPixelFormat format)
+                            CoglPixelFormat internal_format)
 {
   CoglTexture *tex;
   CoglBlitData blit_data;
@@ -603,7 +615,7 @@ _cogl_atlas_copy_rectangle (CoglAtlas *atlas,
   _COGL_GET_CONTEXT (ctx, NULL);
 
   /* Create a new texture at the right size */
-  tex = create_migration_texture (ctx, width, height, format);
+  tex = create_migration_texture (ctx, width, height, internal_format);
   if (!cogl_texture_allocate (tex, &ignore_error))
     {
       cogl_error_free (ignore_error);

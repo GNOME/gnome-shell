@@ -16,6 +16,12 @@
 #define MASK_BLUE(COLOR)  ((COLOR & 0xff00) >> 8)
 #define MASK_ALPHA(COLOR) (COLOR & 0xff)
 
+typedef enum _MakeTextureFlags
+{
+  TEXTURE_FLAG_SET_PREMULTIPLIED = 1,
+  TEXTURE_FLAG_SET_UNPREMULTIPLIED = 1<<1,
+} MakeTextureFlags;
+
 static guchar *
 gen_tex_data (uint32_t color)
 {
@@ -41,20 +47,25 @@ gen_tex_data (uint32_t color)
 static CoglTexture *
 make_texture (uint32_t color,
 	      CoglPixelFormat src_format,
-	      CoglPixelFormat internal_format)
+              MakeTextureFlags flags)
 {
   CoglTexture2D *tex_2d;
   guchar *tex_data = gen_tex_data (color);
+  CoglBitmap *bmp = cogl_bitmap_new_for_data (test_ctx,
+                                              QUAD_WIDTH,
+                                              QUAD_WIDTH,
+                                              src_format,
+                                              QUAD_WIDTH * 4,
+                                              tex_data);
 
-  tex_2d = cogl_texture_2d_new_from_data (test_ctx,
-                                          QUAD_WIDTH,
-                                          QUAD_WIDTH,
-                                          src_format,
-                                          internal_format,
-                                          QUAD_WIDTH * 4,
-                                          tex_data,
-                                          NULL);
+  tex_2d = cogl_texture_2d_new_from_bitmap (bmp);
 
+  if (flags & TEXTURE_FLAG_SET_PREMULTIPLIED)
+    cogl_texture_set_premultiplied (tex_2d, TRUE);
+  else if (flags & TEXTURE_FLAG_SET_UNPREMULTIPLIED)
+    cogl_texture_set_premultiplied (tex_2d, FALSE);
+
+  cogl_object_unref (bmp);
   g_free (tex_data);
 
   return tex_2d;
@@ -144,7 +155,7 @@ test_premult (void)
                             "src = RGBA_8888, internal = RGBA_8888)\n");
   tex = make_texture (0xff00ff80,
                       COGL_PIXEL_FORMAT_RGBA_8888, /* src format */
-                      COGL_PIXEL_FORMAT_RGBA_8888); /* internal format */
+                      TEXTURE_FLAG_SET_UNPREMULTIPLIED);
   check_texture (pipeline, material, 0, 0, /* position */
 		 tex,
 		 0xff00ff80); /* expected */
@@ -157,21 +168,21 @@ test_premult (void)
                             "src = RGBA_8888, internal = RGBA_8888_PRE)\n");
   tex = make_texture (0xff00ff80,
                       COGL_PIXEL_FORMAT_RGBA_8888, /* src format */
-                      COGL_PIXEL_FORMAT_RGBA_8888_PRE); /* internal format */
+                      TEXTURE_FLAG_SET_PREMULTIPLIED);
   check_texture (pipeline, material, 1, 0, /* position */
 		 tex,
 		 0x80008080); /* expected */
 
-  /* If the user gives COGL_PIXEL_FORMAT_ANY for the internal format then
-   * by default Cogl should premultiply the given texture data...
-   * (In the future there will be additional Cogl API to control this
-   *  behaviour) */
+  /* If the user doesn't explicitly declare that the texture is premultiplied
+   * then Cogl should assume it is by default should premultiply
+   * unpremultiplied texture data...
+   */
   if (cogl_test_verbose ())
     g_print ("make_texture (0xff00ff80, "
                             "src = RGBA_8888, internal = ANY)\n");
   tex = make_texture (0xff00ff80,
                       COGL_PIXEL_FORMAT_RGBA_8888, /* src format */
-                      COGL_PIXEL_FORMAT_ANY); /* internal format */
+                      0); /* default premultiplied status */
   check_texture (pipeline, material, 2, 0, /* position */
 		 tex,
 		 0x80008080); /* expected */
@@ -185,7 +196,7 @@ test_premult (void)
                             "internal = RGBA_8888_PRE)\n");
   tex = make_texture (0x80008080,
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* src format */
-                      COGL_PIXEL_FORMAT_RGBA_8888_PRE); /* internal format */
+                      TEXTURE_FLAG_SET_PREMULTIPLIED);
   check_texture (pipeline, material, 3, 0, /* position */
 		 tex,
 		 0x80008080); /* expected */
@@ -198,7 +209,7 @@ test_premult (void)
                             "src = RGBA_8888_PRE, internal = RGBA_8888)\n");
   tex = make_texture (0x80008080,
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* src format */
-                      COGL_PIXEL_FORMAT_RGBA_8888); /* internal format */
+                      TEXTURE_FLAG_SET_UNPREMULTIPLIED);
   check_texture (pipeline, material, 4, 0, /* position */
 		 tex,
 		 0xff00ff80); /* expected */
@@ -212,7 +223,7 @@ test_premult (void)
                             "src = RGBA_8888_PRE, internal = ANY)\n");
   tex = make_texture (0x80008080,
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* src format */
-                      COGL_PIXEL_FORMAT_ANY); /* internal format */
+                      0); /* default premultiplied status */
   check_texture (pipeline, material, 5, 0, /* position */
 		 tex,
 		 0x80008080); /* expected */
@@ -226,7 +237,7 @@ test_premult (void)
                             "src = RGBA_8888, internal = RGBA_8888)\n");
   tex = make_texture (0xDEADBEEF,
                       COGL_PIXEL_FORMAT_RGBA_8888, /* src format */
-                      COGL_PIXEL_FORMAT_RGBA_8888); /* internal format */
+                      TEXTURE_FLAG_SET_UNPREMULTIPLIED);
   if (cogl_test_verbose ())
     g_print ("set_region (0xff00ff80, RGBA_8888)\n");
   set_region (tex, 0xff00ff80, COGL_PIXEL_FORMAT_RGBA_8888);
@@ -242,7 +253,7 @@ test_premult (void)
                             "src = RGBA_8888, internal = RGBA_8888)\n");
   tex = make_texture (0xDEADBEEF,
                       COGL_PIXEL_FORMAT_RGBA_8888, /* src format */
-                      COGL_PIXEL_FORMAT_RGBA_8888); /* internal format */
+                      TEXTURE_FLAG_SET_UNPREMULTIPLIED);
   if (cogl_test_verbose ())
     g_print ("set_region (0x80008080, RGBA_8888_PRE)\n");
   set_region (tex, 0x80008080, COGL_PIXEL_FORMAT_RGBA_8888_PRE);
@@ -257,7 +268,7 @@ test_premult (void)
                             "internal = RGBA_8888_PRE)\n");
   tex = make_texture (0xDEADBEEF,
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* src format */
-                      COGL_PIXEL_FORMAT_RGBA_8888_PRE); /* internal format */
+                      TEXTURE_FLAG_SET_PREMULTIPLIED);
   if (cogl_test_verbose ())
     g_print ("set_region (0x80008080, RGBA_8888_PRE)\n");
   set_region (tex, 0x80008080, COGL_PIXEL_FORMAT_RGBA_8888_PRE);
@@ -275,7 +286,7 @@ test_premult (void)
                             "internal = RGBA_8888_PRE)\n");
   tex = make_texture (0xDEADBEEF,
                       COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* src format */
-                      COGL_PIXEL_FORMAT_RGBA_8888_PRE); /* internal format */
+                      TEXTURE_FLAG_SET_PREMULTIPLIED);
   if (cogl_test_verbose ())
     g_print ("set_region (0xff00ff80, RGBA_8888)\n");
   set_region (tex, 0xff00ff80, COGL_PIXEL_FORMAT_RGBA_8888);

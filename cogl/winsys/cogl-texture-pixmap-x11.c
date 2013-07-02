@@ -516,8 +516,9 @@ create_fallback_texture (CoglContext *ctx,
     {
       /* First try creating a fast-path non-sliced texture */
       tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx,
-                                                         width, height,
-                                                         internal_format));
+                                                         width, height));
+
+      _cogl_texture_set_internal_format (tex, internal_format);
 
       /* TODO: instead of allocating storage here it would be better
        * if we had some api that let us just check that the size is
@@ -539,9 +540,10 @@ create_fallback_texture (CoglContext *ctx,
         cogl_texture_2d_sliced_new_with_size (ctx,
                                               width,
                                               height,
-                                              COGL_TEXTURE_MAX_WASTE,
-                                              internal_format);
+                                              COGL_TEXTURE_MAX_WASTE);
       tex = COGL_TEXTURE (tex_2ds);
+
+      _cogl_texture_set_internal_format (tex, internal_format);
     }
 
   return tex;

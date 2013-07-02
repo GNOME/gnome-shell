@@ -80,14 +80,10 @@ cogl_texture_new_with_size (unsigned int width,
        cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP)))
     {
       /* First try creating a fast-path non-sliced texture */
-      tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx,
-                                                         width, height,
-                                                         internal_format));
+      tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx, width, height));
 
-      /* TODO: instead of allocating storage here it would be better
-       * if we had some api that let us just check that the size is
-       * supported by the hardware so storage could be allocated
-       * lazily when uploading data. */
+      _cogl_texture_set_internal_format (tex, internal_format);
+
       if (!cogl_texture_allocate (tex, &skip_error))
         {
           cogl_error_free (skip_error);
@@ -105,8 +101,9 @@ cogl_texture_new_with_size (unsigned int width,
       tex = COGL_TEXTURE (cogl_texture_2d_sliced_new_with_size (ctx,
                                                                 width,
                                                                 height,
-                                                                max_waste,
-                                                                internal_format));
+                                                                max_waste));
+
+      _cogl_texture_set_internal_format (tex, internal_format);
     }
 
   /* NB: This api existed before Cogl introduced lazy allocation of
@@ -206,7 +203,6 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
                                CoglError **error)
 {
   CoglContext *ctx = _cogl_bitmap_get_context (bitmap);
-  CoglAtlasTexture *atlas_tex;
   CoglTexture *tex;
   CoglError *internal_error = NULL;
 
@@ -214,14 +210,19 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
       !COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_ATLAS))
     {
       /* First try putting the texture in the atlas */
-      if ((atlas_tex = _cogl_atlas_texture_new_from_bitmap (bitmap,
-                                                            internal_format,
-                                                            can_convert_in_place,
-                                                            &internal_error)))
+      CoglAtlasTexture *atlas_tex =
+        _cogl_atlas_texture_new_from_bitmap (bitmap,
+                                             can_convert_in_place);
+
+      _cogl_texture_set_internal_format (COGL_TEXTURE (atlas_tex),
+                                         internal_format);
+
+      if (cogl_texture_allocate (COGL_TEXTURE (atlas_tex), &internal_error))
         return COGL_TEXTURE (atlas_tex);
 
       cogl_error_free (internal_error);
       internal_error = NULL;
+      cogl_object_unref (atlas_tex);
     }
 
   /* If that doesn't work try a fast path 2D texture */
@@ -231,14 +232,16 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
        cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP)))
     {
       tex = COGL_TEXTURE (_cogl_texture_2d_new_from_bitmap (bitmap,
-                                                            internal_format,
-                                                            can_convert_in_place,
-                                                            &internal_error));
+                                                            can_convert_in_place));
 
-      if (!tex)
+      _cogl_texture_set_internal_format (tex, internal_format);
+
+      if (!cogl_texture_allocate (tex, &internal_error))
         {
           cogl_error_free (internal_error);
           internal_error = NULL;
+          cogl_object_unref (tex);
+          tex = NULL;
         }
     }
   else
@@ -250,9 +253,15 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
       int max_waste = flags & COGL_TEXTURE_NO_SLICING ? -1 : COGL_TEXTURE_MAX_WASTE;
       tex = COGL_TEXTURE (_cogl_texture_2d_sliced_new_from_bitmap (bitmap,
                                                              max_waste,
-                                                             internal_format,
-                                                             can_convert_in_place,
-                                                             error));
+                                                             can_convert_in_place));
+
+      _cogl_texture_set_internal_format (tex, internal_format);
+
+      if (!cogl_texture_allocate (tex, error))
+        {
+          cogl_object_unref (tex);
+          tex = NULL;
+        }
     }
 
   if (tex &&
@@ -343,8 +352,9 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
                                                                    gl_handle,
                                                                    width,
                                                                    height,
-                                                                   format,
-                                                                   NULL);
+                                                                   format);
+      _cogl_texture_set_internal_format (COGL_TEXTURE (texture_rectangle),
+                                         format);
 
       /* CoglTextureRectangle textures work with non-normalized
        * coordinates, but the semantics for this function that people
@@ -358,20 +368,32 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
 #endif
 
   if (x_pot_waste != 0 || y_pot_waste != 0)
-    return COGL_TEXTURE (_cogl_texture_2d_sliced_new_from_foreign (ctx,
-                                                                   gl_handle,
-                                                                   gl_target,
-                                                                   width,
-                                                                   height,
-                                                                   x_pot_waste,
-                                                                   y_pot_waste,
-                                                                   format,
-                                                                   NULL));
+    {
+      CoglTexture *tex =
+        COGL_TEXTURE (_cogl_texture_2d_sliced_new_from_foreign (ctx,
+                                                                gl_handle,
+                                                                gl_target,
+                                                                width,
+                                                                height,
+                                                                x_pot_waste,
+                                                                y_pot_waste,
+                                                                format));
+      _cogl_texture_set_internal_format (tex, format);
+
+      cogl_texture_allocate (tex, NULL);
+      return tex;
+    }
   else
-    return COGL_TEXTURE (cogl_texture_2d_new_from_foreign (ctx,
+    {
+      CoglTexture *tex =
+        COGL_TEXTURE (cogl_texture_2d_gl_new_from_foreign (ctx,
                                                            gl_handle,
                                                            width,
                                                            height,
-                                                           format,
-                                                           NULL));
+                                                           format));
+      _cogl_texture_set_internal_format (tex, format);
+
+      cogl_texture_allocate (tex, NULL);
+      return tex;
+    }
 }

@@ -434,7 +434,6 @@ cogl_context_new (CoglDisplay *display,
     cogl_texture_2d_new_from_data (context,
                                    1, 1,
                                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                   COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                    0, /* rowstride */
                                    white_pixel,
                                    NULL); /* abort on error */
@@ -445,7 +444,6 @@ cogl_context_new (CoglDisplay *display,
   context->default_gl_texture_3d_tex =
     cogl_texture_3d_new_from_data (context,
                                    1, 1, 1, /* width, height, depth */
-                                   COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                    0, /* rowstride */
                                    0, /* image stride */
@@ -464,9 +462,7 @@ cogl_context_new (CoglDisplay *display,
 
   internal_error = NULL;
   context->default_gl_texture_rect_tex =
-    cogl_texture_rectangle_new_from_bitmap (white_pixel_bitmap,
-                                            COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                            NULL); /* legacy error argument */
+    cogl_texture_rectangle_new_from_bitmap (white_pixel_bitmap);
 
   /* XXX: we need to allocate the texture now because the white_pixel
    * data is on the stack */

@@ -223,7 +223,6 @@ main (int argc, char **argv)
   data.texture =
     cogl_texture_2d_new_from_file (ctx,
                                    COGL_EXAMPLES_DATA "crate.jpg",
-                                   COGL_PIXEL_FORMAT_ANY,
                                    &error);
   if (!data.texture)
     g_error ("Failed to load texture: %s", error->message);

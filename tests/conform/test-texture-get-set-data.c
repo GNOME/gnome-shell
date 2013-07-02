@@ -11,6 +11,7 @@ check_texture (int width, int height, TestUtilsTextureFlags flags)
   uint8_t *data, *p;
   int y, x;
   int rowstride;
+  CoglBitmap *bmp;
 
   p = data = g_malloc (width * height * 4);
   for (y = 0; y < height; y++)
@@ -22,13 +23,14 @@ check_texture (int width, int height, TestUtilsTextureFlags flags)
         *(p++) = (x ^ y);
       }
 
-  tex = test_utils_texture_new_from_data (test_ctx,
-                                          width, height,
-                                          flags,
-                                          COGL_PIXEL_FORMAT_RGBA_8888,
-                                          COGL_PIXEL_FORMAT_RGBA_8888,
-                                          width * 4,
-                                          data);
+  bmp = cogl_bitmap_new_for_data (test_ctx,
+                                  width, height,
+                                  COGL_PIXEL_FORMAT_RGBA_8888,
+                                  width * 4,
+                                  data);
+
+  tex = test_utils_texture_new_from_bitmap (bmp, flags,
+                                            FALSE);
 
   /* Replace the bottom right quarter of the data with negated data to
      test set_region */

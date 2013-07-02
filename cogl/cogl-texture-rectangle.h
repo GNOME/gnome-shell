@@ -84,10 +84,10 @@ cogl_is_texture_rectangle (void *object);
  * @internal_format: The desired internal texture format
  * @error: An optional CoglError pointer for reporting exceptions
  *
- * Allocates a new #CoglTextureRectangle texture with a given @width, @height
- * and @internal_format. This texture is a low-level texture that
- * the GPU can sample from directly unlike high-level textures such
- * as #CoglTexture2DSliced and #CoglAtlasTexture.
+ * Allocates a new #CoglTextureRectangle texture with a given @width,
+ * @height and @internal_format. This texture is a low-level texture
+ * that the GPU can sample from directly unlike high-level textures
+ * such as #CoglTexture2DSliced and #CoglAtlasTexture.
  *
  * <note>Unlike for #CoglTexture2D textures, coordinates for
  * #CoglTextureRectangle textures should not be normalized. So instead
@@ -125,16 +125,12 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
 /**
  * cogl_texture_rectangle_new_from_bitmap:
  * @bitmap: A #CoglBitmap
- * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
- *    texture
- * @error: A return location for a CoglError or %NULL
  *
  * Allocates a new #CoglTextureRectangle texture which will be
- * initialized with the pixel data from @bitmap. Internally the data
- * will be stored in the format given by @internal_format. This
- * texture is a low-level texture that the GPU can sample from
- * directly unlike high-level textures such as #CoglTexture2DSliced
- * and #CoglAtlasTexture.
+ * initialized with the pixel data from @bitmap. This texture is a
+ * low-level texture that the GPU can sample from directly unlike
+ * high-level textures such as #CoglTexture2DSliced and
+ * #CoglAtlasTexture.
  *
  * <note>Unlike for #CoglTexture2D textures, coordinates for
  * #CoglTextureRectangle textures should not be normalized. So instead
@@ -156,18 +152,13 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
  * how the texture is going to be used and can optimize how it is
  * allocated.
  *
- * Return value: (transfer full): A pointer to a newly allocated
- *          #CoglTextureRectangle texture or if the size was too large
- *          or there wasn't enough memory %NULL is returned and @error
- *          set.
- *
+ * Return value: (transfer full): A pointer to a new
+ *               #CoglTextureRectangle texture.
  * Since: 2.0
  * Stability: unstable
  */
 CoglTextureRectangle *
-cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bitmap,
-                                        CoglPixelFormat internal_format,
-                                        CoglError **error);
+cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bitmap);
 
 /**
  * cogl_texture_rectangle_new_from_foreign:
@@ -176,7 +167,6 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bitmap,
  * @width: Width of the foreign GL texture
  * @height: Height of the foreign GL texture
  * @format: The format of the texture
- * @error: A #CoglError for exceptions
  *
  * Wraps an existing GL_TEXTURE_RECTANGLE texture object as a
  * #CoglTextureRectangle.  This can be used for integrating Cogl with
@@ -203,18 +193,14 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bitmap,
  * for example you can declare whether the texture is premultiplied
  * with cogl_texture_set_premultiplied().
  *
- * Return value: (transfer full): A newly allocated
- *          #CoglTextureRectangle, or if Cogl could not validate the
- *          @gl_handle in some way (perhaps because of an unsupported
- *          format) it will return %NULL and set @error.
+ * Return value: (transfer full): A new #CoglTextureRectangle texture
  */
 CoglTextureRectangle *
 cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
                                          unsigned int gl_handle,
                                          int width,
                                          int height,
-                                         CoglPixelFormat format,
-                                         CoglError **error);
+                                         CoglPixelFormat format);
 
 COGL_END_DECLS
 

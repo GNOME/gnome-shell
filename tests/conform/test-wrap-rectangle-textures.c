@@ -24,10 +24,7 @@ create_base_pipeline (void)
                                   2 * 3, /* rowstride */
                                   tex_data);
 
-  tex = cogl_texture_rectangle_new_from_bitmap (bmp,
-                                                /* internal format */
-                                                COGL_PIXEL_FORMAT_ANY,
-                                                NULL);
+  tex = cogl_texture_rectangle_new_from_bitmap (bmp);
 
   cogl_object_unref (bmp);
 

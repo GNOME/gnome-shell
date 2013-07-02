@@ -98,8 +98,7 @@ main (int argc, char **argv)
     data.offscreen_texture =
       cogl_texture_2d_new_with_size (data.ctx,
                                      OFFSCREEN_WIDTH,
-                                     OFFSCREEN_HEIGHT,
-                                     COGL_PIXEL_FORMAT_ANY);
+                                     OFFSCREEN_HEIGHT);
     data.offscreen = cogl_offscreen_new_with_texture (data.offscreen_texture);
 
     data.gles2_ctx = cogl_gles2_context_new (data.ctx, &error);

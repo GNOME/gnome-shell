@@ -52,7 +52,6 @@ create_texture_3d (CoglContext *context)
   tex = cogl_texture_3d_new_from_data (context,
                                        TEX_WIDTH, TEX_HEIGHT, TEX_DEPTH,
                                        COGL_PIXEL_FORMAT_RGBA_8888,
-                                       COGL_PIXEL_FORMAT_ANY,
                                        TEX_ROWSTRIDE,
                                        TEX_IMAGE_STRIDE,
                                        data,
@@ -217,7 +216,6 @@ test_multi_texture (TestState *state)
   tex_2d = cogl_texture_2d_new_from_data (test_ctx,
                                           1, 1, /* width/height */
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                           4, /* rowstride */
                                           tex_data,
                                           NULL);
@@ -229,7 +227,6 @@ test_multi_texture (TestState *state)
   tex_data[3] = 0xff;
   tex_3d = cogl_texture_3d_new_from_data (test_ctx,
                                           1, 1, 1, /* width/height/depth */
-                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                           4, /* rowstride */
                                           4, /* image_stride */

@@ -58,9 +58,7 @@ create_texture (int size)
                                               size, /* height */
                                               TEST_UTILS_TEXTURE_NONE, /* flags */
                                               /* format */
-                                              COGL_PIXEL_FORMAT_RGBA_8888,
-                                              /* internal format */
-                                              COGL_PIXEL_FORMAT_RGBA_8888,
+                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                               /* rowstride */
                                               size * 4,
                                               data);
@@ -82,7 +80,7 @@ verify_texture (CoglTexture *texture, int size)
   p = data = g_malloc (size * size * 4);
 
   cogl_texture_get_data (texture,
-                         COGL_PIXEL_FORMAT_RGBA_8888,
+                         COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                          size * 4,
                          data);
 

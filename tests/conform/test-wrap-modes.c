@@ -33,7 +33,6 @@ create_texture (TestUtilsTextureFlags flags)
   tex = test_utils_texture_new_from_data (test_ctx,
                                           TEX_SIZE, TEX_SIZE, flags,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                          COGL_PIXEL_FORMAT_ANY,
                                           TEX_SIZE * 4,
                                           data);
   g_free (data);

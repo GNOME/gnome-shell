@@ -320,8 +320,7 @@ copy_flipped_texture (CoglGLES2Context *gles2_ctx,
                                            tex_id,
                                            tex_object_data->width,
                                            tex_object_data->height,
-                                           internal_format,
-                                           NULL /* error */);
+                                           internal_format);
 
   if (dst_texture)
     {
@@ -1941,15 +1940,13 @@ cogl_gles2_texture_2d_new_from_handle (CoglContext *ctx,
                                        unsigned int handle,
                                        int width,
                                        int height,
-                                       CoglPixelFormat internal_format,
-                                       CoglError **error)
+                                       CoglPixelFormat format)
 {
-  return cogl_texture_2d_new_from_foreign (ctx,
-                                           handle,
-                                           width,
-                                           height,
-                                           internal_format,
-                                           error);
+  return cogl_texture_2d_gl_new_from_foreign (ctx,
+                                              handle,
+                                              width,
+                                              height,
+                                              format);
 }
 
 CoglBool

@@ -53,8 +53,6 @@ typedef struct _CoglTexture3D CoglTexture3D;
  * @width: width of the texture in pixels.
  * @height: height of the texture in pixels.
  * @depth: depth of the texture in pixels.
- * @internal_format: the #CoglPixelFormat to use for the GPU
- *    storage of the texture.
  *
  * Creates a low-level #CoglTexture3D texture with the specified
  * dimensions and pixel format.
@@ -84,8 +82,7 @@ CoglTexture3D *
 cogl_texture_3d_new_with_size (CoglContext *context,
                                int width,
                                int height,
-                               int depth,
-                               CoglPixelFormat internal_format);
+                               int depth);
 
 /**
  * cogl_texture_3d_new_from_data:
@@ -94,14 +91,6 @@ cogl_texture_3d_new_with_size (CoglContext *context,
  * @height: height of the texture in pixels.
  * @depth: depth of the texture in pixels.
  * @format: the #CoglPixelFormat the buffer is stored in in RAM
- * @internal_format: the #CoglPixelFormat that will be used for storing
- *    the buffer on the GPU. If %COGL_PIXEL_FORMAT_ANY is given then a
- *    premultiplied format similar to the format of the source data will
- *    be used. The default blending equations of Cogl expect premultiplied
- *    color data; the main use of passing a non-premultiplied format here
- *    is if you have non-premultiplied source data and are going to adjust
- *    the blend mode (see cogl_pipeline_set_blend()) or use the data for
- *    something other than straight blending.
  * @rowstride: the memory offset in bytes between the starts of
  *    scanlines in @data or 0 to infer it from the width and format
  * @image_stride: the number of bytes from one image to the next. This
@@ -137,7 +126,6 @@ cogl_texture_3d_new_from_data (CoglContext *context,
                                int height,
                                int depth,
                                CoglPixelFormat format,
-                               CoglPixelFormat internal_format,
                                int rowstride,
                                int image_stride,
                                const uint8_t *data,
@@ -148,15 +136,6 @@ cogl_texture_3d_new_from_data (CoglContext *context,
  * @bitmap: A #CoglBitmap object.
  * @height: height of the texture in pixels.
  * @depth: depth of the texture in pixels.
- * @internal_format: the #CoglPixelFormat that will be used for storing
- *    the buffer on the GPU. If %COGL_PIXEL_FORMAT_ANY is given then a
- *    premultiplied format similar to the format of the source data will
- *    be used. The default blending equations of Cogl expect premultiplied
- *    color data; the main use of passing a non-premultiplied format here
- *    is if you have non-premultiplied source data and are going to adjust
- *    the blend mode (see cogl_pipeline_set_blend()) or use the data for
- *    something other than straight blending.
- * @error: A CoglError return location.
  *
  * Creates a low-level 3D texture and initializes it with the images
  * in @bitmap. The images are assumed to be packed together after one
@@ -182,17 +161,14 @@ cogl_texture_3d_new_from_data (CoglContext *context,
  * fail if the requested dimensions are not supported by the
  * GPU.</note>
  *
- * Return value: (transfer full): the newly created texture or %NULL
- *   if there was an error.
+ * Return value: (transfer full): a newly created #CoglTexture3D
  * Since: 2.0
  * Stability: unstable
  */
 CoglTexture3D *
 cogl_texture_3d_new_from_bitmap (CoglBitmap *bitmap,
                                  int height,
-                                 int depth,
-                                 CoglPixelFormat internal_format,
-                                 CoglError **error);
+                                 int depth);
 
 /**
  * cogl_is_texture_3d:

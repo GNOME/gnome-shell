@@ -37,7 +37,6 @@ test_map_buffer_range (void)
   tex = cogl_texture_2d_new_from_data (test_ctx,
                                        2, 2, /* width/height */
                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                       COGL_PIXEL_FORMAT_ANY,
                                        2 * 4, /* rowstride */
                                        tex_data,
                                        NULL /* error */);

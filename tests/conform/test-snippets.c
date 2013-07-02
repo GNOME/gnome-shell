@@ -26,7 +26,6 @@ create_texture_pipeline (TestState *state)
                                           2, 2, /* width/height */
                                           TEST_UTILS_TEXTURE_NO_ATLAS,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                          COGL_PIXEL_FORMAT_ANY,
                                           8, /* rowstride */
                                           tex_data);
 

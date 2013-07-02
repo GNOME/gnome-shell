@@ -57,7 +57,6 @@ create_source (TestState *state)
   tex = cogl_texture_2d_new_from_data (test_ctx,
                                        SOURCE_SIZE, SOURCE_SIZE,
                                        COGL_PIXEL_FORMAT_RGBA_8888,
-                                       COGL_PIXEL_FORMAT_ANY,
                                        SOURCE_SIZE * 4,
                                        data,
                                        NULL);
@@ -87,7 +86,6 @@ create_test_texture (TestState *state)
   tex = cogl_texture_2d_new_from_data (test_ctx,
                                        256, 256,
                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                       COGL_PIXEL_FORMAT_ANY,
                                        256 * 4,
                                        data,
                                        NULL);
