@@ -43,8 +43,6 @@ struct _ShellNetworkAgentClass
 /* used by SHELL_TYPE_NETWORK_AGENT */
 GType shell_network_agent_get_type (void);
 
-ShellNetworkAgent *shell_network_agent_new (void);
-
 void               shell_network_agent_set_password (ShellNetworkAgent *self,
                                                      gchar             *request_id,
                                                      gchar             *setting_key,
