@@ -500,7 +500,8 @@ cogland_surface_attach (struct wl_client *wayland_client,
                         struct wl_resource *wayland_buffer_resource,
                         int32_t sx, int32_t sy)
 {
-  CoglandSurface *surface = wayland_surface_resource->data;
+  CoglandSurface *surface =
+    wl_resource_get_user_data (wayland_surface_resource);
   CoglandBuffer *buffer;
 
   if (wayland_buffer_resource)
@@ -530,7 +531,7 @@ cogland_surface_damage (struct wl_client *client,
                         int32_t width,
                         int32_t height)
 {
-  CoglandSurface *surface = resource->data;
+  CoglandSurface *surface = wl_resource_get_user_data (resource);
 
   region_add (&surface->pending.damage, x, y, width, height);
 }
@@ -551,7 +552,7 @@ cogland_surface_frame (struct wl_client *client,
                        uint32_t callback_id)
 {
   CoglandFrameCallback *callback;
-  CoglandSurface *surface = surface_resource->data;
+  CoglandSurface *surface = wl_resource_get_user_data (surface_resource);
 
   callback = g_slice_new0 (CoglandFrameCallback);
   callback->compositor = surface->compositor;
@@ -583,7 +584,7 @@ static void
 cogland_surface_commit (struct wl_client *client,
                         struct wl_resource *resource)
 {
-  CoglandSurface *surface = resource->data;
+  CoglandSurface *surface = wl_resource_get_user_data (resource);
   CoglandCompositor *compositor = surface->compositor;
 
   /* wl_surface.attach */
@@ -705,7 +706,7 @@ cogland_surface_free (CoglandSurface *surface)
 static void
 cogland_surface_resource_destroy_cb (struct wl_resource *resource)
 {
-  CoglandSurface *surface = resource->data;
+  CoglandSurface *surface = wl_resource_get_user_data (resource);
   cogland_surface_free (surface);
 }
 
@@ -724,7 +725,8 @@ cogland_compositor_create_surface (struct wl_client *wayland_client,
                                    struct wl_resource *wayland_compositor_resource,
                                    uint32_t id)
 {
-  CoglandCompositor *compositor = wayland_compositor_resource->data;
+  CoglandCompositor *compositor =
+    wl_resource_get_user_data (wayland_compositor_resource);
   CoglandSurface *surface = g_slice_new0 (CoglandSurface);
 
   surface->compositor = compositor;
@@ -763,7 +765,7 @@ cogland_region_add (struct wl_client *client,
 		    int32_t width,
 		    int32_t height)
 {
-  CoglandSharedRegion *shared_region = resource->data;
+  CoglandSharedRegion *shared_region = wl_resource_get_user_data (resource);
 
   region_add (&shared_region->region, x, y, width, height);
 }
@@ -776,7 +778,7 @@ cogland_region_subtract (struct wl_client *client,
 			 int32_t width,
 			 int32_t height)
 {
-  CoglandSharedRegion *shared_region = resource->data;
+  CoglandSharedRegion *shared_region = wl_resource_get_user_data (resource);
 
   region_subtract (&shared_region->region, x, y, width, height);
 }
@@ -790,7 +792,7 @@ const struct wl_region_interface cogland_region_interface = {
 static void
 cogland_region_resource_destroy_cb (struct wl_resource *resource)
 {
-  CoglandSharedRegion *region = resource->data;
+  CoglandSharedRegion *region = wl_resource_get_user_data (resource);
 
   g_slice_free (CoglandSharedRegion, region);
 }
@@ -1038,7 +1040,7 @@ destroy_shell_surface (CoglandShellSurface *shell_surface)
 static void
 destroy_shell_surface_cb (struct wl_resource *resource)
 {
-  destroy_shell_surface (resource->data);
+  destroy_shell_surface (wl_resource_get_user_data (resource));
 }
 
 static void
@@ -1063,7 +1065,7 @@ get_shell_surface (struct wl_client *client,
                    uint32_t id,
                    struct wl_resource *surface_resource)
 {
-  CoglandSurface *surface = surface_resource->data;
+  CoglandSurface *surface = wl_resource_get_user_data (surface_resource);
   CoglandShellSurface *shell_surface;
 
   if (surface->has_shell_surface)
