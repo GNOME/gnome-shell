@@ -283,9 +283,16 @@ shell_global_init (ShellGlobal *global)
                            NULL);
   ca_context_open (global->sound_context);
 
-  if (!shell_js)
-    shell_js = JSDIR;
-  search_path = g_strsplit (shell_js, ":", -1);
+  if (shell_js)
+    {
+      search_path = g_strsplit (shell_js, ":", -1);
+    }
+  else
+    {
+      search_path = g_malloc0 (2 * sizeof (char *));
+      search_path[0] = g_strdup ("resource:///org/gnome/shell");
+    }
+
   global->js_context = g_object_new (GJS_TYPE_CONTEXT,
                                      "search-path", search_path,
                                      "js-version", "1.8",

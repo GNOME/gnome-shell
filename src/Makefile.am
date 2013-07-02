@@ -75,8 +75,7 @@ gnome_shell_cflags =				\
 	-DDATADIR=\"$(datadir)\"		\
 	-DGNOME_SHELL_LIBEXECDIR=\"$(libexecdir)\"	\
 	-DGNOME_SHELL_DATADIR=\"$(pkgdatadir)\"	\
-	-DGNOME_SHELL_PKGLIBDIR=\"$(pkglibdir)\" \
-	-DJSDIR=\"$(pkgdatadir)/js\"
+	-DGNOME_SHELL_PKGLIBDIR=\"$(pkglibdir)\"
 
 privlibdir = $(pkglibdir)
 privlib_LTLIBRARIES = libgnome-shell-js.la libgnome-shell-menu.la libgnome-shell.la
@@ -171,6 +170,8 @@ libgnome_shell_sources =		\
 	shell-util.c			\
 	shell-window-tracker.c		\
 	shell-wm.c			\
+	../js/js-resources.c		\
+	../js/js-resources.h		\
 	$(NULL)
 
 libgnome_shell_la_SOURCES = $(libgnome_shell_sources)
@@ -207,7 +208,7 @@ endif HAVE_MUTTER_WAYLAND
 
 libgnome_shell_js_la_SOURCES =		\
 	shell-js.h			\
-	shell-js.cpp		\
+	shell-js.cpp			\
 	$(NULL)
 
 libgnome_shell_js_la_LIBADD =		\
