@@ -15,23 +15,6 @@ test_conform_skip_test (TestConformSimpleFixture *fixture,
   /* void */
 }
 
-static void
-test_conform_todo_test (TestConformSimpleFixture *fixture,
-                        gconstpointer             data)
-{
-#ifdef G_OS_UNIX
-  const TestConformTodo *todo = data;
-
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
-    {
-      todo->func (fixture, NULL);
-      exit (0);
-    }
-
-  g_test_trap_assert_failed ();
-#endif
-}
-
 void
 verify_failure (TestConformSimpleFixture *fixture,
                 gconstpointer             data)
@@ -76,18 +59,6 @@ static TestConformSharedState *shared_state = NULL;
                 test_conform_simple_fixture_teardown);                  \
   }                                                     } G_STMT_END
 
-#define TEST_CONFORM_TODO(NAMESPACE, FUNC)              G_STMT_START {  \
-   extern void FUNC (TestConformSimpleFixture *, gconstpointer);        \
-   TestConformTodo *_clos = g_new0 (TestConformTodo, 1);                \
-   _clos->name = g_strdup ( #FUNC );                                    \
-   _clos->func = FUNC;                                                  \
-   g_test_add ("/todo" NAMESPACE "/" #FUNC,                             \
-              TestConformSimpleFixture,                                 \
-              _clos,                                                    \
-              test_conform_simple_fixture_setup,                        \
-              test_conform_todo_test,                                   \
-              test_conform_simple_fixture_teardown);    } G_STMT_END
-
 gchar *
 clutter_test_get_data_file (const gchar *filename)
 {
@@ -123,11 +94,8 @@ main (int argc, char **argv)
 
   /* This file is run through a sed script during the make step so the
      lines containing the tests need to be formatted on a single line
-     each. To comment out a test use the SKIP or TODO macros. Using
+     each. To comment out a test use the SKIP macro. Using
      #if 0 would break the script. */
-
-  /* sanity check for the test suite itself */
-  TEST_CONFORM_TODO ("/suite", verify_failure);
 
   TEST_CONFORM_SIMPLE ("/actor", actor_add_child);
   TEST_CONFORM_SIMPLE ("/actor", actor_insert_child);
@@ -244,10 +212,10 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/events", events_touch);
 
+#if 0
   /* FIXME - see bug https://bugzilla.gnome.org/show_bug.cgi?id=655588 */
   TEST_CONFORM_TODO ("/cally", cally_text);
 
-#if 0
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_object);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_fixed);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_materials);
