@@ -26,26 +26,6 @@ units_sources += \
 	timeline-rewind.c 		\
 	$(NULL)
 
-# cogl tests
-units_sources += \
-	test-cogl-fixed.c 			\
-	test-cogl-materials.c			\
-	test-cogl-viewport.c			\
-	test-cogl-multitexture.c        	\
-	test-cogl-npot-texture.c        	\
-	test-cogl-object.c			\
-	test-cogl-premult.c			\
-	test-cogl-readpixels.c			\
-	test-cogl-texture-get-set-data.c 	\
-	test-cogl-texture-mipmaps.c     	\
-	test-cogl-texture-pixmap-x11.c  	\
-	test-cogl-texture-rectangle.c   	\
-	test-cogl-atlas-migration.c		\
-	test-cogl-vertex-buffer-contiguous.c 	\
-	test-cogl-vertex-buffer-interleved.c 	\
-	test-cogl-vertex-buffer-mutability.c 	\
-	$(NULL)
-
 # actors tests
 units_sources += \
 	actor-anchors.c                	\

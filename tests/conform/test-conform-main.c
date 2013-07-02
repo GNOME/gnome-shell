@@ -212,32 +212,5 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/events", events_touch);
 
-#if 0
-  /* FIXME - see bug https://bugzilla.gnome.org/show_bug.cgi?id=655588 */
-  TEST_CONFORM_TODO ("/cally", cally_text);
-
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_object);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_fixed);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_materials);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_premult);
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_readpixels);
-
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_npot_texture);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_multitexture);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_mipmaps);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_rectangle);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_pixmap_x11);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_texture_get_set_data);
-  TEST_CONFORM_SIMPLE ("/cogl/texture", test_cogl_atlas_migration);
-
-  TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_contiguous);
-  TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_interleved);
-  TEST_CONFORM_SIMPLE ("/cogl/vertex-buffer", test_cogl_vertex_buffer_mutability);
-
-  /* left to the end because they aren't currently very orthogonal and tend to
-   * break subsequent tests! */
-  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_viewport);
-#endif
-
   return g_test_run ();
 }
