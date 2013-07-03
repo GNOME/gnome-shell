@@ -1069,7 +1069,7 @@ AS_IF([test "x$enable_kms_egl_platform" = "xyes"],
         GBM_VERSION=`$PKG_CONFIG --modversion gbm`
         GBM_MAJOR=`echo $GBM_VERSION | cut -d'.' -f1`
         GBM_MINOR=`echo $GBM_VERSION | cut -d'.' -f2`
-        GBM_MICRO=`echo $GBM_VERSION | cut -d'.' -f3`
+        GBM_MICRO=`echo $GBM_VERSION | cut -d'.' -f3 | sed 's/-.*//'`
 
         AC_DEFINE_UNQUOTED([COGL_GBM_MAJOR], [$GBM_MAJOR], [The major version for libgbm])
         AC_DEFINE_UNQUOTED([COGL_GBM_MINOR], [$GBM_MINOR], [The minor version for libgbm])
