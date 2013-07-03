@@ -489,7 +489,6 @@ const Notification = new Lang.Class({
         this.source = source;
         this.title = title;
         this.urgency = Urgency.NORMAL;
-        this.resident = false;
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
         this.isMusic = false;
@@ -846,14 +845,8 @@ const Notification = new Lang.Class({
         button.connect('clicked', Lang.bind(this, function() {
             callback();
 
-            if (!this.resident) {
-                // We don't hide a resident notification when the user invokes one of its actions,
-                // because it is common for such notifications to update themselves with new
-                // information based on the action. We'd like to display the updated information
-                // in place, rather than pop-up a new notification.
-                this.emit('done-displaying');
-                this.destroy();
-            }
+            this.emit('done-displaying');
+            this.destroy();
         }));
 
         this.updated();
@@ -877,10 +870,6 @@ const Notification = new Lang.Class({
 
     setUrgency: function(urgency) {
         this.urgency = urgency;
-    },
-
-    setResident: function(resident) {
-        this.resident = resident;
     },
 
     setTransient: function(isTransient) {
@@ -1120,12 +1109,8 @@ const Notification = new Lang.Class({
 
     _onClicked: function() {
         this.emit('clicked');
-        // We hide all types of notifications once the user clicks on them because the common
-        // outcome of clicking should be the relevant window being brought forward and the user's
-        // attention switching to the window.
         this.emit('done-displaying');
-        if (!this.resident)
-            this.destroy();
+        this.destroy();
     },
 
     _onDestroy: function() {
@@ -1293,7 +1278,7 @@ const Source = new Lang.Class({
     },
 
     get indicatorCount() {
-        let notifications = this.notifications.filter(function(n) { return !n.isTransient && !n.resident; });
+        let notifications = this.notifications.filter(function(n) { return !n.isTransient; });
         return notifications.length;
     },
 
@@ -1306,7 +1291,7 @@ const Source = new Lang.Class({
     },
 
     get isClearable() {
-        return !this.trayIcon && !this.isChat && !this.resident;
+        return !this.trayIcon && !this.isChat;
     },
 
     countUpdated: function() {
@@ -1450,10 +1435,9 @@ const Source = new Lang.Class({
     open: function() {
     },
 
-    destroyNonResidentNotifications: function() {
+    destroyNotifications: function() {
         for (let i = this.notifications.length - 1; i >= 0; i--)
-            if (!this.notifications[i].resident)
-                this.notifications[i].destroy();
+            this.notifications[i].destroy();
 
         this.countUpdated();
     },
