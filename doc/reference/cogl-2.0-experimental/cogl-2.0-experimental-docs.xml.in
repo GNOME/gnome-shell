@@ -72,7 +72,6 @@
     <section id="cogl-context-apis">
       <title>Setting Up A Drawing Context</title>
       <xi:include href="xml/cogl-renderer.xml"/>
-      <xi:include href="xml/cogl-swap-chain.xml"/>
       <xi:include href="xml/cogl-onscreen-template.xml"/>
       <xi:include href="xml/cogl-display.xml"/>
       <xi:include href="xml/cogl-context.xml"/>
