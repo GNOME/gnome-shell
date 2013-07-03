@@ -617,6 +617,7 @@ _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
   int level_width;
   int level_height;
   CoglOffscreen *ret;
+  CoglError *error = NULL;
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_texture (texture), NULL);
   _COGL_RETURN_VAL_IF_FAIL (level < _cogl_texture_get_n_levels (texture),
@@ -647,6 +648,13 @@ _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
   ret = _cogl_offscreen_object_new (offscreen);
 
   _cogl_texture_associate_framebuffer (texture, fb);
+
+  if (!cogl_framebuffer_allocate (ret, &error))
+    {
+      cogl_object_unref (offscreen);
+      cogl_error_free (error);
+      ret = NULL;
+    }
 
   return ret;
 }
