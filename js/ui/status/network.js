@@ -1528,7 +1528,7 @@ const NMApplet = new Lang.Class({
         this._client.connect('notify::manager-running', Lang.bind(this, this._syncNMState));
         this._client.connect('notify::networking-enabled', Lang.bind(this, this._syncNMState));
         this._client.connect('notify::state', Lang.bind(this, this._syncNMState));
-        this._client.connect('notify::active-connections', Lang.bind(this, this._updateIcon));
+        this._client.connect('notify::active-connections', Lang.bind(this, this._syncActiveConnections));
         this._client.connect('device-added', Lang.bind(this, this._deviceAdded));
         this._client.connect('device-removed', Lang.bind(this, this._deviceRemoved));
         this._settings.connect('new-connection', Lang.bind(this, this._newConnection));
@@ -1761,8 +1761,8 @@ const NMApplet = new Lang.Class({
             let a = this._activeConnections[i];
 
             if (!a._inited) {
-                a._notifyDefaultId = a.connect('notify::default', Lang.bind(this, this._updateIcon));
-                a._notifyDefault6Id = a.connect('notify::default6', Lang.bind(this, this._updateIcon));
+                a._notifyDefaultId = a.connect('notify::default', Lang.bind(this, this._syncActiveConnections));
+                a._notifyDefault6Id = a.connect('notify::default6', Lang.bind(this, this._syncActiveConnections));
                 a._notifyStateId = a.connect('notify::state', Lang.bind(this, this._notifyActivated));
 
                 a._inited = true;
@@ -1814,6 +1814,7 @@ const NMApplet = new Lang.Class({
         if (this._mainConnection) {
             let dev = this._mainConnection._primaryDevice;
             this._mainConnectionIconChangedId = dev.connect('icon-changed', Lang.bind(this, this._updateIcon));
+            this._updateIcon();
         }
     },
 
@@ -1824,7 +1825,7 @@ const NMApplet = new Lang.Class({
             activeConnection._primaryDevice._notification = null;
         }
 
-        this._updateIcon();
+        this._syncActiveConnections();
     },
 
     _ignoreConnection: function(connection) {
@@ -1861,7 +1862,7 @@ const NMApplet = new Lang.Class({
 
     _newConnection: function(settings, connection) {
         this._addConnection(connection);
-        this._updateIcon();
+        this._syncActiveConnections();
     },
 
     _connectionRemoved: function(connection) {
@@ -1940,11 +1941,10 @@ const NMApplet = new Lang.Class({
         }
 
         this._showNormal();
-        this._updateIcon();
+        this._syncActiveConnections();
     },
 
     _updateIcon: function() {
-        this._syncActiveConnections();
         let hasApIcon = false;
         let hasMobileIcon = false;
 
