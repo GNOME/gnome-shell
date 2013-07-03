@@ -52,16 +52,6 @@ static void                  cally_stage_activate_cb     (ClutterStage *stage,
 static void                  cally_stage_deactivate_cb   (ClutterStage *stage,
                                                           gpointer      data);
 
-
-G_DEFINE_TYPE_WITH_CODE (CallyStage,
-                         cally_stage,
-                         CALLY_TYPE_GROUP,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_WINDOW,
-                                                cally_stage_window_interface_init));
-
-#define CALLY_STAGE_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CALLY_TYPE_STAGE, CallyStagePrivate))
-
 struct _CallyStagePrivate
 {
   /* NULL means that the stage will receive the focus */
@@ -70,24 +60,27 @@ struct _CallyStagePrivate
   gboolean active;
 };
 
+G_DEFINE_TYPE_WITH_CODE (CallyStage,
+                         cally_stage,
+                         CALLY_TYPE_GROUP,
+                         G_ADD_PRIVATE (CallyStage)
+                         G_IMPLEMENT_INTERFACE (ATK_TYPE_WINDOW,
+                                                cally_stage_window_interface_init));
+
 static void
 cally_stage_class_init (CallyStageClass *klass)
 {
-  GObjectClass   *gobject_class = G_OBJECT_CLASS (klass);
-  AtkObjectClass *class         = ATK_OBJECT_CLASS (klass);
-/*   CallyActorClass *cally_class  = CALLY_ACTOR_CLASS (klass); */
+  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
 
   /* AtkObject */
   class->initialize = cally_stage_real_initialize;
   class->ref_state_set = cally_stage_ref_state_set;
-
-  g_type_class_add_private (gobject_class, sizeof (CallyStagePrivate));
 }
 
 static void
 cally_stage_init (CallyStage *cally_stage)
 {
-  CallyStagePrivate *priv = CALLY_STAGE_GET_PRIVATE (cally_stage);
+  CallyStagePrivate *priv = cally_stage_get_instance_private (cally_stage);
 
   cally_stage->priv = priv;
 

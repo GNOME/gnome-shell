@@ -172,17 +172,6 @@ static int                  _cally_misc_get_index_at_point (ClutterText *clutter
                                                             gint         y,
                                                             AtkCoordType coords);
 
-G_DEFINE_TYPE_WITH_CODE (CallyText,
-                         cally_text,
-                         CALLY_TYPE_ACTOR,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_TEXT,
-                                                cally_text_text_interface_init)
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_EDITABLE_TEXT,
-                                                cally_text_editable_text_interface_init));
-
-#define CALLY_TEXT_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CALLY_TYPE_TEXT, CallyTextPrivate))
-
 struct _CallyTextPrivate
 {
   /* Cached ClutterText values*/
@@ -204,6 +193,15 @@ struct _CallyTextPrivate
   guint activate_action_id;
 };
 
+G_DEFINE_TYPE_WITH_CODE (CallyText,
+                         cally_text,
+                         CALLY_TYPE_ACTOR,
+                         G_ADD_PRIVATE (CallyText)
+                         G_IMPLEMENT_INTERFACE (ATK_TYPE_TEXT,
+                                                cally_text_text_interface_init)
+                         G_IMPLEMENT_INTERFACE (ATK_TYPE_EDITABLE_TEXT,
+                                                cally_text_editable_text_interface_init));
+
 static void
 cally_text_class_init (CallyTextClass *klass)
 {
@@ -217,14 +215,12 @@ cally_text_class_init (CallyTextClass *klass)
   class->ref_state_set = cally_text_ref_state_set;
 
   cally_class->notify_clutter = cally_text_notify_clutter;
-
-  g_type_class_add_private (gobject_class, sizeof (CallyTextPrivate));
 }
 
 static void
 cally_text_init (CallyText *cally_text)
 {
-  CallyTextPrivate *priv = CALLY_TEXT_GET_PRIVATE (cally_text);
+  CallyTextPrivate *priv = cally_text_get_instance_private (cally_text);
 
   cally_text->priv = priv;
 

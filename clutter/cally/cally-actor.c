@@ -173,18 +173,6 @@ static void cally_actor_notify_clutter          (GObject    *obj,
 static void cally_actor_real_notify_clutter     (GObject    *obj,
                                                  GParamSpec *pspec);
 
-G_DEFINE_TYPE_WITH_CODE (CallyActor,
-                         cally_actor,
-                         ATK_TYPE_GOBJECT_ACCESSIBLE,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_COMPONENT,
-                                                cally_actor_component_interface_init)
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION,
-                                                cally_actor_action_interface_init));
-
-#define CALLY_ACTOR_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CALLY_TYPE_ACTOR, CallyActorPrivate))
-
-
 struct _CallyActorPrivate
 {
   GQueue *action_queue;
@@ -193,6 +181,15 @@ struct _CallyActorPrivate
 
   GList *children;
 };
+
+G_DEFINE_TYPE_WITH_CODE (CallyActor,
+                         cally_actor,
+                         ATK_TYPE_GOBJECT_ACCESSIBLE,
+                         G_ADD_PRIVATE (CallyActor)
+                         G_IMPLEMENT_INTERFACE (ATK_TYPE_COMPONENT,
+                                                cally_actor_component_interface_init)
+                         G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION,
+                                                cally_actor_action_interface_init));
 
 /**
  * cally_actor_new:
@@ -287,25 +284,22 @@ cally_actor_class_init (CallyActorClass *klass)
   class->get_n_children      = cally_actor_get_n_children;
   class->ref_child           = cally_actor_ref_child;
   class->get_attributes      = cally_actor_get_attributes;
-
-  g_type_class_add_private (gobject_class, sizeof (CallyActorPrivate));
 }
 
 static void
 cally_actor_init (CallyActor *cally_actor)
 {
-  CallyActorPrivate *priv = CALLY_ACTOR_GET_PRIVATE (cally_actor);
+  CallyActorPrivate *priv = cally_actor_get_instance_private (cally_actor);
 
   cally_actor->priv = priv;
 
-  priv->action_queue        = NULL;
+  priv->action_queue = NULL;
   priv->action_idle_handler = 0;
 
   priv->action_list = NULL;
 
   priv->children = NULL;
 }
-
 
 static void
 cally_actor_finalize (GObject *obj)

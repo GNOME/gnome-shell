@@ -58,10 +58,6 @@ static void             cally_util_stage_removed_cb     (ClutterStageManager *st
                                                          ClutterStage *stage,
                                                          gpointer data);
 
-#define CALLY_ROOT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CALLY_TYPE_ROOT, CallyRootPrivate))
-
-G_DEFINE_TYPE (CallyRoot, cally_root,  ATK_TYPE_GOBJECT_ACCESSIBLE)
-
 struct _CallyRootPrivate
 {
 /* We save the CallyStage objects. Other option could save the stage
@@ -77,6 +73,8 @@ struct _CallyRootPrivate
   guint stage_removed_id;
 };
 
+G_DEFINE_TYPE_WITH_PRIVATE (CallyRoot, cally_root,  ATK_TYPE_GOBJECT_ACCESSIBLE)
+
 static void
 cally_root_class_init (CallyRootClass *klass)
 {
@@ -91,14 +89,12 @@ cally_root_class_init (CallyRootClass *klass)
   class->get_parent = cally_root_get_parent;
   class->initialize = cally_root_initialize;
   class->get_name = cally_root_get_name;
-
-  g_type_class_add_private (gobject_class, sizeof (CallyRootPrivate));
 }
 
 static void
-cally_root_init (CallyRoot      *root)
+cally_root_init (CallyRoot *root)
 {
-  root->priv = CALLY_ROOT_GET_PRIVATE (root);
+  root->priv = cally_root_get_instance_private (root);
 
   root->priv->stage_list = NULL;
   root->priv->stage_added_id = 0;
