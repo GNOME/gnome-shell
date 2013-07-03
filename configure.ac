@@ -1295,7 +1295,10 @@ dnl ================================================================
 AC_PATH_X
 AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h limits.h unistd.h)
-
+AC_CHECK_HEADER([endian.h],
+                [AC_CHECK_DECL([__FLOAT_WORD_ORDER],
+                               AC_DEFINE([HAVE_FLOAT_WORD_ORDER], [1],
+                                         [Has the __FLOAT_WORD_ORDER macro]))])
 
 dnl ================================================================
 dnl Checks for library functions.

@@ -30,6 +30,10 @@
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
+#ifdef HAVE_FLOAT_WORD_ORDER
+#include <endian.h>
+#endif
+
 #include "cogl-fixed.h"
 
 /* pre-computed sin table for 1st quadrant
@@ -306,6 +310,7 @@ static const double _magic = 68719476736.0 * 1.5;
  *
  * FIXME - this should go inside the configure.ac
  */
+#ifdef HAVE_FLOAT_WORD_ORDER
 #if (__FLOAT_WORD_ORDER == 1234)
 #define _COGL_MAN			0
 #elif (__FLOAT_WORD_ORDER == 4321)
@@ -313,6 +318,9 @@ static const double _magic = 68719476736.0 * 1.5;
 #else
 #define COGL_NO_FAST_CONVERSIONS
 #endif
+#else /* HAVE_FLOAT_WORD_ORDER */
+#define COGL_NO_FAST_CONVERSIONS
+#endif /* HAVE_FLOAT_WORD_ORDER */
 
 /*
  * cogl_double_to_fixed :
