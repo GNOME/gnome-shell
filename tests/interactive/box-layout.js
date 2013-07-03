@@ -45,12 +45,6 @@ function test() {
                                      style: 'border: 1px solid #aaaaaa; '
                                      + 'background: #cceeff' }));
 
-    b2.add(new St.Label({ x: 50,
-                          y: 50,
-                          text: "Fixed",
-                          style: 'border: 1px solid #aaaaaa;'
-                          + 'background: #ffffcc' }));
-
     ////////////////////////////////////////////////////////////////////////////////
 
     function createCollapsableBox(width) {
