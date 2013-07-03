@@ -634,33 +634,29 @@ cogl_wayland_renderer_get_shell (CoglRenderer *renderer)
 struct wl_surface *
 cogl_wayland_onscreen_get_surface (CoglOnscreen *onscreen)
 {
-  CoglFramebuffer *fb;
+  CoglOnscreenEGL *egl_onscreen;
+  CoglOnscreenWayland *wayland_onscreen;
 
-  fb = COGL_FRAMEBUFFER (onscreen);
-  if (fb->allocated)
-    {
-      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
-      CoglOnscreenWayland *wayland_onscreen = egl_onscreen->platform;
-      return wayland_onscreen->wayland_surface;
-    }
-  else
-    return NULL;
+  cogl_framebuffer_allocate (COGL_FRAMEBUFFER (onscreen), NULL);
+
+  egl_onscreen = onscreen->winsys;
+  wayland_onscreen = egl_onscreen->platform;
+
+  return wayland_onscreen->wayland_surface;
 }
 
 struct wl_shell_surface *
 cogl_wayland_onscreen_get_shell_surface (CoglOnscreen *onscreen)
 {
-  CoglFramebuffer *fb;
+  CoglOnscreenEGL *egl_onscreen;
+  CoglOnscreenWayland *wayland_onscreen;
 
-  fb = COGL_FRAMEBUFFER (onscreen);
-  if (fb->allocated)
-    {
-      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
-      CoglOnscreenWayland *wayland_onscreen = egl_onscreen->platform;
-      return wayland_onscreen->wayland_shell_surface;
-    }
-  else
-    return NULL;
+  cogl_framebuffer_allocate (COGL_FRAMEBUFFER (onscreen), NULL);
+
+  egl_onscreen = onscreen->winsys;
+  wayland_onscreen = egl_onscreen->platform;
+
+  return wayland_onscreen->wayland_shell_surface;
 }
 
 void
