@@ -20,7 +20,7 @@ test $TEST_TYPE $FILE || {
 # https://bugzilla.gnome.org/show_bug.cgi?id=661128
 touch -t 200001010000 po/cogl.pot
 
-AUTOMAKE_VERSIONS="1.13 1.12 1.11"
+AUTOMAKE_VERSIONS="1.14 1.13 1.12 1.11"
 for version in $AUTOMAKE_VERSIONS; do
 	if automake-$version --version < /dev/null > /dev/null 2>&1 ; then
 		AUTOMAKE=automake-$version
