@@ -849,8 +849,9 @@ const LookingGlass = new Lang.Class({
         this._updateFont();
 
         // We want it to appear to slide out from underneath the panel
-        Main.layoutManager.panelBox.add_actor(this.actor);
-        this.actor.lower_bottom();
+        Main.uiGroup.add_actor(this.actor);
+        Main.uiGroup.set_child_below_sibling(this.actor,
+                                             Main.layoutManager.panelBox);
         Main.layoutManager.panelBox.connect('allocation-changed',
                                             Lang.bind(this, this._queueResize));
         Main.layoutManager.keyboardBox.connect('allocation-changed',
@@ -1072,7 +1073,7 @@ const LookingGlass = new Lang.Class({
         let availableHeight = primary.height - Main.layoutManager.keyboardBox.height;
         let myHeight = Math.min(primary.height * 0.7, availableHeight * 0.9);
         this.actor.x = (primary.width - myWidth) / 2;
-        this._hiddenY = this.actor.get_parent().height - myHeight - 4; // -4 to hide the top corners
+        this._hiddenY = Main.layoutManager.panelBox.height - myHeight - 4; // -4 to hide the top corners
         this._targetY = this._hiddenY + myHeight;
         this.actor.y = this._hiddenY;
         this.actor.width = myWidth;
