@@ -475,7 +475,7 @@ const FdoNotificationDaemon = new Lang.Class({
         for (let i = 0; i < this._sources.length; i++) {
             let source = this._sources[i];
             if (source.app == tracker.focus_app) {
-                source.destroyNonResidentNotifications();
+                source.destroyNotifications();
                 return;
             }
         }
@@ -630,7 +630,7 @@ const FdoNotificationDaemonSource = new Lang.Class({
 
     open: function() {
         this.openApp();
-        this.destroyNonResidentNotifications();
+        this.destroyNotifications();
     },
 
     _lastNotificationRemoved: function() {

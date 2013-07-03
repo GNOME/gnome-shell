@@ -586,7 +586,6 @@ const ChatNotification = new Lang.Class({
 
     _init: function(source) {
         this.parent(source, source.title, null, { customContent: true, secondaryGIcon: source.getSecondaryIcon() });
-        this.setResident(true);
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response',
                                              can_focus: true });
