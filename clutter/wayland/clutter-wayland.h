@@ -45,6 +45,9 @@ struct wl_seat *clutter_wayland_input_device_get_wl_seat (ClutterInputDevice *de
 struct wl_shell_surface *clutter_wayland_stage_get_wl_shell_surface (ClutterStage *stage);
 
 struct wl_surface *clutter_wayland_stage_get_wl_surface (ClutterStage *stage);
-G_END_DECLS
 
+CLUTTER_AVAILABLE_IN_1_16
+void clutter_wayland_set_display (struct wl_display *display);
+
+G_END_DECLS
 #endif /* __CLUTTER_WAYLAND_H__ */
