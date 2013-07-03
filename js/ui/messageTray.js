@@ -1377,10 +1377,6 @@ const Source = new Lang.Class({
         this.destroy();
     },
 
-    hasResidentNotification: function() {
-        return this.notifications.some(function(n) { return n.resident; });
-    },
-
     getMusicNotification: function() {
         for (let i = 0; i < this.notifications.length; i++) {
             if (this.notifications[i].isMusic)
