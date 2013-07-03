@@ -337,17 +337,10 @@ Signals.addSignalMethods(NotificationPolicy.prototype);
 // convenience method addButton() for adding a button to the action
 // area.
 //
-// @params can contain values for 'customContent', 'body', 'icon',
-// 'titleMarkup', 'bannerMarkup', 'bodyMarkup', and 'clear'
-// parameters.
-//
 // If @params contains a 'customContent' parameter with the value %true,
 // then @banner will not be shown in the body of the notification when the
 // notification is expanded and calls to update() will not clear the content
 // unless 'clear' parameter with value %true is explicitly specified.
-//
-// If @params contains a 'body' parameter, then that text will be added to
-// the content area (as with addBody()).
 //
 // By default, the icon shown is the same as the source's.
 // However, if @params contains a 'gicon' parameter, the passed in gicon
@@ -356,11 +349,10 @@ Signals.addSignalMethods(NotificationPolicy.prototype);
 // You can add a secondary icon to the banner with 'secondaryGIcon'. There
 // is no fallback for this icon.
 //
-// If @params contains a 'titleMarkup', 'bannerMarkup', or
-// 'bodyMarkup' parameter with the value %true, then the corresponding
-// element is assumed to use pango markup. If the parameter is not
-// present for an element, then anything that looks like markup in
-// that element will appear literally in the output.
+// If @params contains 'bannerMarkup', with the value %true, then
+// the corresponding element is assumed to use pango markup. If the
+// parameter is not present for an element, then anything that looks
+// like markup in that element will appear literally in the output.
 //
 // If @params contains a 'clear' parameter with the value %true, then
 // the content and the action area of the notification will be cleared.
@@ -458,12 +450,9 @@ const Notification = new Lang.Class({
     // remove any additional actors/action buttons previously added.
     update: function(title, banner, params) {
         params = Params.parse(params, { customContent: false,
-                                        body: null,
                                         gicon: null,
                                         secondaryGIcon: null,
-                                        titleMarkup: false,
                                         bannerMarkup: false,
-                                        bodyMarkup: false,
                                         clear: false,
                                         soundName: null,
                                         soundFile: null });
@@ -530,7 +519,7 @@ const Notification = new Lang.Class({
         }
 
         this.title = title;
-        title = title ? _fixMarkup(title.replace(/\n/g, ' '), params.titleMarkup) : '';
+        title = title ? _fixMarkup(title.replace(/\n/g, ' '), false) : '';
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
 
         if (Pango.find_base_dir(title, -1) == Pango.Direction.RTL)
@@ -562,9 +551,6 @@ const Notification = new Lang.Class({
         // Add the bannerBody now if we know for sure we'll need it
         if (this.bannerBodyText && this.bannerBodyText.indexOf('\n') > -1)
             this._addBannerBody();
-
-        if (params.body)
-            this.addBody(params.body, params.bodyMarkup);
 
         if (this._soundName != params.soundName ||
             this._soundFile != params.soundFile) {
