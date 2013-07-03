@@ -99,6 +99,7 @@ stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 	   echo "*.o" ; \
 	   echo "*.xml" ; \
 	   echo "*.html" ; \
+	   echo "*.test" ; \
 	   echo ".gitignore" ; \
 	   echo "unit-tests" ; \
 	   echo "/wrappers/" ) > .gitignore
