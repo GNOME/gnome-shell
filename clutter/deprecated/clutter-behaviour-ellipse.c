@@ -60,15 +60,6 @@
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
 
-G_DEFINE_TYPE (ClutterBehaviourEllipse,
-               clutter_behaviour_ellipse,
-	       CLUTTER_TYPE_BEHAVIOUR);
-
-#define CLUTTER_BEHAVIOUR_ELLIPSE_GET_PRIVATE(obj)    \
-              (G_TYPE_INSTANCE_GET_PRIVATE ((obj),    \
-               CLUTTER_TYPE_BEHAVIOUR_ELLIPSE,        \
-               ClutterBehaviourEllipsePrivate))
-
 enum
 {
   PROP_0,
@@ -107,6 +98,10 @@ struct _ClutterBehaviourEllipsePrivate
 
   ClutterRotateDirection direction;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterBehaviourEllipse,
+                            clutter_behaviour_ellipse,
+                            CLUTTER_TYPE_BEHAVIOUR)
 
 typedef struct _knot3d
 {
@@ -382,8 +377,6 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
   ClutterBehaviourClass *behave_class = CLUTTER_BEHAVIOUR_CLASS (klass);
   GParamSpec            *pspec        = NULL;
 
-  g_type_class_add_private (klass, sizeof (ClutterBehaviourEllipsePrivate));
-
   object_class->set_property = clutter_behaviour_ellipse_set_property;
   object_class->get_property = clutter_behaviour_ellipse_get_property;
 
@@ -539,7 +532,7 @@ clutter_behaviour_ellipse_init (ClutterBehaviourEllipse * self)
 {
   ClutterBehaviourEllipsePrivate *priv;
 
-  self->priv = priv = CLUTTER_BEHAVIOUR_ELLIPSE_GET_PRIVATE (self);
+  self->priv = priv = clutter_behaviour_ellipse_get_instance_private (self);
 
   priv->direction = CLUTTER_ROTATE_CW;
 

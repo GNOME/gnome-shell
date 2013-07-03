@@ -86,9 +86,17 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 
-G_DEFINE_TYPE (ClutterCairoTexture,
-               clutter_cairo_texture,
-               CLUTTER_TYPE_TEXTURE);
+struct _ClutterCairoTexturePrivate
+{
+  cairo_surface_t *cr_surface;
+
+  guint surface_width;
+  guint surface_height;
+
+  cairo_t *cr_context;
+
+  guint auto_resize : 1;
+};
 
 enum
 {
@@ -113,6 +121,10 @@ static GParamSpec *obj_props[PROP_LAST] = { NULL, };
 
 static guint cairo_signals[LAST_SIGNAL] = { 0, };
 
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterCairoTexture,
+                            clutter_cairo_texture,
+                            CLUTTER_TYPE_TEXTURE)
+
 #ifdef CLUTTER_ENABLE_DEBUG
 #define clutter_warn_if_paint_fail(obj)                 G_STMT_START {  \
   if (CLUTTER_ACTOR_IN_PAINT (obj)) {                                   \
@@ -123,20 +135,6 @@ static guint cairo_signals[LAST_SIGNAL] = { 0, };
 #else
 #define clutter_warn_if_paint_fail(obj)         /* void */
 #endif /* CLUTTER_ENABLE_DEBUG */
-
-#define CLUTTER_CAIRO_TEXTURE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_CAIRO_TEXTURE, ClutterCairoTexturePrivate))
-
-struct _ClutterCairoTexturePrivate
-{
-  cairo_surface_t *cr_surface;
-
-  guint surface_width;
-  guint surface_height;
-
-  cairo_t *cr_context;
-
-  guint auto_resize : 1;
-};
 
 typedef struct {
   ClutterCairoTexture *texture;
@@ -580,8 +578,6 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
 
   klass->create_surface = clutter_cairo_texture_create_surface;
 
-  g_type_class_add_private (gobject_class, sizeof (ClutterCairoTexturePrivate));
-
   /**
    * ClutterCairoTexture:surface-width:
    *
@@ -711,7 +707,7 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
 static void
 clutter_cairo_texture_init (ClutterCairoTexture *self)
 {
-  self->priv = CLUTTER_CAIRO_TEXTURE_GET_PRIVATE (self);
+  self->priv = clutter_cairo_texture_get_instance_private (self);
 
   /* FIXME - we are hardcoding the format; it would be good to have
    * a :surface-format construct-only property for creating

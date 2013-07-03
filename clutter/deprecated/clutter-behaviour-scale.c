@@ -51,10 +51,6 @@
 #include "clutter-main.h"
 #include "clutter-private.h"
 
-G_DEFINE_TYPE (ClutterBehaviourScale,
-               clutter_behaviour_scale,
-	       CLUTTER_TYPE_BEHAVIOUR);
-
 struct _ClutterBehaviourScalePrivate
 {
   gdouble x_scale_start;
@@ -63,8 +59,6 @@ struct _ClutterBehaviourScalePrivate
   gdouble x_scale_end;
   gdouble y_scale_end;
 };
-
-#define CLUTTER_BEHAVIOUR_SCALE_GET_PRIVATE(obj)        (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScalePrivate))
 
 enum
 {
@@ -79,6 +73,10 @@ enum
 };
 
 static GParamSpec *obj_props[PROP_LAST];
+
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterBehaviourScale,
+                            clutter_behaviour_scale,
+                            CLUTTER_TYPE_BEHAVIOUR)
 
 typedef struct {
   gdouble scale_x;
@@ -208,8 +206,6 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
   ClutterBehaviourClass *behave_class = CLUTTER_BEHAVIOUR_CLASS (klass);
   GParamSpec *pspec = NULL;
 
-  g_type_class_add_private (klass, sizeof (ClutterBehaviourScalePrivate));
-
   gobject_class->set_property = clutter_behaviour_scale_set_property;
   gobject_class->get_property = clutter_behaviour_scale_get_property;
 
@@ -298,7 +294,7 @@ clutter_behaviour_scale_init (ClutterBehaviourScale *self)
 {
   ClutterBehaviourScalePrivate *priv;
 
-  self->priv = priv = CLUTTER_BEHAVIOUR_SCALE_GET_PRIVATE (self);
+  self->priv = priv = clutter_behaviour_scale_get_instance_private (self);
 
   priv->x_scale_start = priv->x_scale_end = 1.0;
   priv->y_scale_start = priv->y_scale_end = 1.0;

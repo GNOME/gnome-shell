@@ -287,14 +287,10 @@ static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
 static guint state_signals[LAST_SIGNAL] = {0, };
 
-#define CLUTTER_STATE_GET_PRIVATE(obj)            \
-              (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
-               CLUTTER_TYPE_STATE,                \
-               ClutterStatePrivate))
-
 G_DEFINE_TYPE_WITH_CODE (ClutterState, clutter_state, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (ClutterState)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                clutter_scriptable_iface_init));
+                                                clutter_scriptable_iface_init))
 
 /**
  * clutter_state_new:
@@ -1462,8 +1458,6 @@ clutter_state_class_init (ClutterStateClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GParamSpec   *pspec;
 
-  g_type_class_add_private (klass, sizeof (ClutterStatePrivate));
-
   gobject_class->finalize     = clutter_state_finalize;
   gobject_class->set_property = clutter_state_set_property;
   gobject_class->get_property = clutter_state_get_property;
@@ -1533,7 +1527,7 @@ clutter_state_init (ClutterState *self)
 {
   ClutterStatePrivate *priv;
 
-  priv = self->priv = CLUTTER_STATE_GET_PRIVATE (self);
+  priv = self->priv = clutter_state_get_instance_private (self);
 
   priv->states = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                         NULL,

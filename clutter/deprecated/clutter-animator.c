@@ -143,8 +143,6 @@
 #include "clutter-script-private.h"
 #include "clutter-scriptable.h"
 
-#define CLUTTER_ANIMATOR_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ANIMATOR, ClutterAnimatorPrivate))
-
 /* progress values varying by less than this are considered equal */
 #define PROGRESS_EPSILON  0.00001
 
@@ -203,6 +201,7 @@ static void clutter_scriptable_init (ClutterScriptableIface *iface);
 G_DEFINE_TYPE_WITH_CODE (ClutterAnimator,
                          clutter_animator,
                          G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (ClutterAnimator)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
                                                 clutter_scriptable_init));
 /**
@@ -1783,8 +1782,6 @@ clutter_animator_class_init (ClutterAnimatorClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterAnimatorPrivate));
-
   gobject_class->set_property = clutter_animator_set_property;
   gobject_class->get_property = clutter_animator_get_property;
   gobject_class->dispose = clutter_animator_dispose;
@@ -1834,7 +1831,7 @@ clutter_animator_init (ClutterAnimator *animator)
   ClutterAnimatorPrivate *priv;
   ClutterTimeline *timeline;
 
-  animator->priv = priv = CLUTTER_ANIMATOR_GET_PRIVATE (animator);
+  animator->priv = priv = clutter_animator_get_instance_private (animator);
 
   priv->properties = g_hash_table_new_full (prop_actor_hash,
                                             prop_actor_equal,

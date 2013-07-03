@@ -83,24 +83,11 @@
 
 #include <math.h>
 
-static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterBehaviourPath,
-                         clutter_behaviour_path,
-                         CLUTTER_TYPE_BEHAVIOUR,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                clutter_scriptable_iface_init));
-
 struct _ClutterBehaviourPathPrivate
 {
   ClutterPath *path;
   guint        last_knot_passed;
 };
-
-#define CLUTTER_BEHAVIOUR_PATH_GET_PRIVATE(obj)    \
-              (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
-               CLUTTER_TYPE_BEHAVIOUR_PATH,        \
-               ClutterBehaviourPathPrivate))
 
 enum
 {
@@ -121,6 +108,15 @@ enum
 };
 
 static GParamSpec *obj_props[PROP_LAST];
+
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterBehaviourPath,
+                         clutter_behaviour_path,
+                         CLUTTER_TYPE_BEHAVIOUR,
+                         G_ADD_PRIVATE (ClutterBehaviourPath)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init))
 
 static void
 actor_apply_knot_foreach (ClutterBehaviour *behaviour,
@@ -253,8 +249,6 @@ clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
                   G_TYPE_UINT);
 
   behave_class->alpha_notify = clutter_behaviour_path_alpha_notify;
-
-  g_type_class_add_private (klass, sizeof (ClutterBehaviourPathPrivate));
 }
 
 static ClutterScriptableIface *parent_scriptable_iface = NULL;
@@ -310,12 +304,8 @@ clutter_scriptable_iface_init (ClutterScriptableIface *iface)
 static void
 clutter_behaviour_path_init (ClutterBehaviourPath *self)
 {
-  ClutterBehaviourPathPrivate *priv;
-
-  self->priv = priv = CLUTTER_BEHAVIOUR_PATH_GET_PRIVATE (self);
-
-  priv->path = NULL;
-  priv->last_knot_passed = G_MAXUINT;
+  self->priv = clutter_behaviour_path_get_instance_private (self);
+  self->priv->last_knot_passed = G_MAXUINT;
 }
 
 /**

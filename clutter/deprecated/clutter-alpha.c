@@ -122,14 +122,6 @@
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
 
-static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterAlpha,
-                         clutter_alpha,
-                         G_TYPE_INITIALLY_UNOWNED,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                clutter_scriptable_iface_init));
-
 struct _ClutterAlphaPrivate
 {
   ClutterTimeline *timeline;
@@ -158,6 +150,15 @@ enum
 };
 
 static GParamSpec *obj_props[PROP_LAST];
+
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterAlpha,
+                         clutter_alpha,
+                         G_TYPE_INITIALLY_UNOWNED,
+                         G_ADD_PRIVATE (ClutterAlpha)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init));
 
 static void
 timeline_new_frame_cb (ClutterTimeline *timeline,
@@ -339,8 +340,6 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
   object_class->finalize     = clutter_alpha_finalize;
   object_class->dispose      = clutter_alpha_dispose;
 
-  g_type_class_add_private (klass, sizeof (ClutterAlphaPrivate));
-
   /**
    * ClutterAlpha:timeline:
    *
@@ -405,10 +404,7 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
 static void
 clutter_alpha_init (ClutterAlpha *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-					    CLUTTER_TYPE_ALPHA,
-					    ClutterAlphaPrivate);
-
+  self->priv = clutter_alpha_get_instance_private (self);
   self->priv->mode = CLUTTER_CUSTOM_MODE;
   self->priv->alpha = 0.0;
 }

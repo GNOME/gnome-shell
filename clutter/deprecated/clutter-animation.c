@@ -190,8 +190,6 @@ enum
   LAST_SIGNAL
 };
 
-#define CLUTTER_ANIMATION_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ANIMATION, ClutterAnimationPrivate))
-
 struct _ClutterAnimationPrivate
 {
   GObject *object;
@@ -218,6 +216,7 @@ static ClutterAlpha *           clutter_animation_get_alpha_internal    (Clutter
 static ClutterTimeline *        clutter_animation_get_timeline_internal (ClutterAnimation *animation);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterAnimation, clutter_animation, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (ClutterAnimation)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
                                                 clutter_scriptable_init));
 
@@ -489,8 +488,6 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
   quark_object_animation =
     g_quark_from_static_string ("clutter-actor-animation");
 
-  g_type_class_add_private (klass, sizeof (ClutterAnimationPrivate));
-
   klass->completed = clutter_animation_real_completed;
 
   gobject_class->set_property = clutter_animation_set_property;
@@ -643,7 +640,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
 static void
 clutter_animation_init (ClutterAnimation *self)
 {
-  self->priv = CLUTTER_ANIMATION_GET_PRIVATE (self);
+  self->priv = clutter_animation_get_instance_private (self);
 
   self->priv->properties =
     g_hash_table_new_full (g_str_hash, g_str_equal,

@@ -48,7 +48,15 @@
 
 #include "cogl/cogl.h"
 
-G_DEFINE_TYPE (ClutterRectangle, clutter_rectangle, CLUTTER_TYPE_ACTOR);
+struct _ClutterRectanglePrivate
+{
+  ClutterColor color;
+  ClutterColor border_color;
+
+  guint border_width;
+
+  guint has_border : 1;
+};
 
 enum
 {
@@ -62,21 +70,10 @@ enum
   /* FIXME: Add gradient, rounded corner props etc */
 };
 
-#define CLUTTER_RECTANGLE_GET_PRIVATE(obj) \
-(G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_RECTANGLE, ClutterRectanglePrivate))
-
-struct _ClutterRectanglePrivate
-{
-  ClutterColor color;
-  ClutterColor border_color;
-
-  guint border_width;
-
-  guint has_border : 1;
-};
-
 static const ClutterColor default_color        = { 255, 255, 255, 255 };
 static const ClutterColor default_border_color = {   0,   0,   0, 255 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterRectangle, clutter_rectangle, CLUTTER_TYPE_ACTOR)
 
 static void
 clutter_rectangle_paint (ClutterActor *self)
@@ -319,8 +316,6 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
                                                          P_("Whether the rectangle should have a border"),
                                                          FALSE,
                                                          CLUTTER_PARAM_READWRITE));
-
-  g_type_class_add_private (gobject_class, sizeof (ClutterRectanglePrivate));
 }
 
 static void
@@ -328,7 +323,7 @@ clutter_rectangle_init (ClutterRectangle *self)
 {
   ClutterRectanglePrivate *priv;
 
-  self->priv = priv = CLUTTER_RECTANGLE_GET_PRIVATE (self);
+  self->priv = priv = clutter_rectangle_get_instance_private (self);
 
   priv->color = default_color;
   priv->border_color = default_border_color;

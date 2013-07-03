@@ -78,16 +78,6 @@
 #include "deprecated/clutter-texture.h"
 #include "deprecated/clutter-util.h"
 
-static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterTexture,
-                         clutter_texture,
-                         CLUTTER_TYPE_ACTOR,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                clutter_scriptable_iface_init));
-
-#define CLUTTER_TEXTURE_GET_PRIVATE(obj)        (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TEXTURE, ClutterTexturePrivate))
-
 typedef struct _ClutterTextureAsyncData ClutterTextureAsyncData;
 
 struct _ClutterTexturePrivate
@@ -193,6 +183,16 @@ static CoglPipeline *texture_template_pipeline = NULL;
 
 static void
 texture_fbo_free_resources (ClutterTexture *texture);
+
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterTexture,
+                         clutter_texture,
+                         CLUTTER_TYPE_ACTOR,
+                         G_ADD_PRIVATE (ClutterTexture)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init));
+
 
 GQuark
 clutter_texture_error_quark (void)
@@ -972,8 +972,6 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec *pspec;
 
-  g_type_class_add_private (klass, sizeof (ClutterTexturePrivate));
-
   actor_class->paint            = clutter_texture_paint;
   actor_class->pick             = clutter_texture_pick;
   actor_class->get_paint_volume = clutter_texture_get_paint_volume;
@@ -1296,7 +1294,7 @@ clutter_texture_init (ClutterTexture *self)
 {
   ClutterTexturePrivate *priv;
 
-  self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self);
+  self->priv = priv = clutter_texture_get_instance_private (self);
 
   priv->repeat_x          = FALSE;
   priv->repeat_y          = FALSE;

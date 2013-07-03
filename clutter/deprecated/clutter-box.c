@@ -89,8 +89,6 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 
-#define CLUTTER_BOX_GET_PRIVATE(obj)    (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_BOX, ClutterBoxPrivate))
-
 struct _ClutterBoxPrivate
 {
   ClutterLayoutManager *manager;
@@ -112,7 +110,7 @@ static GParamSpec *obj_props[PROP_LAST] = { NULL, };
 
 static const ClutterColor default_box_color = { 255, 255, 255, 255 };
 
-G_DEFINE_TYPE (ClutterBox, clutter_box, CLUTTER_TYPE_ACTOR);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterBox, clutter_box, CLUTTER_TYPE_ACTOR)
 
 static inline void
 clutter_box_set_color_internal (ClutterBox         *box,
@@ -238,8 +236,6 @@ clutter_box_class_init (ClutterBoxClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterBoxPrivate));
-
   actor_class->destroy = clutter_box_real_destroy;
   actor_class->get_paint_volume = clutter_box_real_get_paint_volume;
 
@@ -282,7 +278,7 @@ clutter_box_class_init (ClutterBoxClass *klass)
 static void
 clutter_box_init (ClutterBox *self)
 {
-  self->priv = CLUTTER_BOX_GET_PRIVATE (self);
+  self->priv = clutter_box_get_instance_private (self);
 }
 
 /**
