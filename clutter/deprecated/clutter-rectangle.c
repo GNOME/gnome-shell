@@ -36,6 +36,7 @@
 #include "config.h"
 #endif
 
+#define COGL_DISABLE_DEPRECATION_WARNINGS
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "deprecated/clutter-rectangle.h"
 #include "deprecated/clutter-actor.h"

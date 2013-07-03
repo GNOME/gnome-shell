@@ -52,6 +52,7 @@
 #include <unistd.h>
 #endif
 
+#define COGL_DISABLE_DEPRECATION_WARNINGS
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
 #include <glib.h>

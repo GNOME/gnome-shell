@@ -47,6 +47,10 @@
 #include "config.h"
 #endif
 
+/* sadly, we are still using ClutterShader internally */
+#define COGL_DISABLE_DEPRECATION_WARNINGS
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 /* This file depends on the glib enum types which aren't exposed
  * by cogl.h when COGL_ENABLE_EXPERIMENTAL_2_0_API is defined.
  *
@@ -57,9 +61,6 @@
 #include <cogl/cogl.h>
 
 #define CLUTTER_ENABLE_EXPERIMENTAL_API
-
-/* sadly, we are still using ClutterShader internally */
-#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
 #include "clutter-texture.h"
 
