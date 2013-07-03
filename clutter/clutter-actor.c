@@ -8303,9 +8303,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor::touch-event:
    * @actor: a #ClutterActor
+   * @event: a #ClutterEvent
    *
    * The ::touch-event signal is emitted each time a touch
    * begin/end/update/cancel event.
+   *
+   * Return value: %CLUTTER_EVENT_STOP if the event has been handled by
+   *   the actor, or %CLUTTER_EVENT_PROPAGATE to continue the emission.
    *
    * Since: 1.12
    */

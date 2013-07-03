@@ -649,6 +649,10 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
   /**
    * ClutterX11TexturePixmap::update-area:
    * @texture: the object which received the signal
+   * @x: X coordinate of the area to update
+   * @y: Y coordinate of the area to update
+   * @width: width of the area to update
+   * @height: height of the area to update
    *
    * The ::update-area signal is emitted to ask the texture to update its
    * content from its source pixmap.
