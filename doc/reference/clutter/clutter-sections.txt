@@ -1429,6 +1429,7 @@ clutter_glx_texture_pixmap_get_type
 clutter_wayland_input_device_get_wl_seat
 clutter_wayland_stage_get_wl_shell_surface
 clutter_wayland_stage_get_wl_surface
+clutter_wayland_set_display
 </SECTION>
 
 <SECTION>

@@ -46,6 +46,7 @@
 #include "wayland/clutter-device-manager-wayland.h"
 #include "wayland/clutter-event-wayland.h"
 #include "wayland/clutter-stage-wayland.h"
+#include "wayland/clutter-wayland.h"
 #include "cogl/clutter-stage-cogl.h"
 
 #include <wayland-client.h>
@@ -58,6 +59,8 @@
 #define clutter_backend_wayland_get_type     _clutter_backend_wayland_get_type
 
 G_DEFINE_TYPE (ClutterBackendWayland, clutter_backend_wayland, CLUTTER_TYPE_BACKEND);
+
+static struct wl_display *_foreign_display = NULL;
 
 static void clutter_backend_wayland_load_cursor (ClutterBackendWayland *backend_wayland);
 
@@ -175,7 +178,10 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
 
   /* TODO: expose environment variable/commandline option for this... */
-  backend_wayland->wayland_display = wl_display_connect (NULL);
+  backend_wayland->wayland_display = _foreign_display;
+  if (backend_wayland->wayland_display == NULL)
+    backend_wayland->wayland_display = wl_display_connect (NULL);
+
   if (!backend_wayland->wayland_display)
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
@@ -321,4 +327,32 @@ clutter_backend_wayland_load_cursor (ClutterBackendWayland *backend_wayland)
 static void
 clutter_backend_wayland_init (ClutterBackendWayland *backend_wayland)
 {
+}
+
+/**
+ * clutter_wayland_set_display
+ * @display: pointer to a wayland display
+ *
+ * Sets the display connection Clutter should use; must be called
+ * before clutter_init(), clutter_init_with_args() or other functions
+ * pertaining Clutter's initialization process.
+ *
+ * If you are parsing the command line arguments by retrieving Clutter's
+ * #GOptionGroup with clutter_get_option_group() and calling
+ * g_option_context_parse() yourself, you should also call
+ * clutter_wayland_set_display() before g_option_context_parse().
+ *
+ * Since: 1.16
+ */
+void
+clutter_wayland_set_display (struct wl_display *display)
+{
+  if (_clutter_context_is_initialized ())
+    {
+      g_warning ("%s() can only be used before calling clutter_init()",
+                 G_STRFUNC);
+      return;
+    }
+
+  _foreign_display = display;
 }
