@@ -102,6 +102,9 @@ struct _StThemeNodePaintState {
   float alloc_width;
   float alloc_height;
 
+  float box_shadow_width;
+  float box_shadow_height;
+
   CoglHandle box_shadow_material;
   CoglHandle prerendered_texture;
   CoglHandle prerendered_material;

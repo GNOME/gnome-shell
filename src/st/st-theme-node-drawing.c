@@ -1370,6 +1370,8 @@ st_theme_node_load_background_image (StThemeNode *node)
   return node->background_texture != COGL_INVALID_HANDLE;
 }
 
+static void st_theme_node_prerender_shadow (StThemeNode *node, StThemeNodePaintState *state);
+
 static void
 st_theme_node_render_resources (StThemeNode           *node,
                                 StThemeNodePaintState *state,
@@ -1474,38 +1476,54 @@ st_theme_node_render_resources (StThemeNode           *node,
         state->box_shadow_material = _st_create_shadow_material (box_shadow_spec,
                                                                  state->prerendered_texture);
       else if (node->background_color.alpha > 0 || has_border)
+        st_theme_node_prerender_shadow (node, state);
+    }
+}
+
+static void
+st_theme_node_update_resources (StThemeNode *node, StThemeNodePaintState *state, float width, float height)
+{
+  gboolean had_prerendered_texture = FALSE;
+  gboolean had_box_shadow = FALSE;
+  StShadow *box_shadow_spec;
+
+  g_return_if_fail (width > 0 && height > 0);
+
+  /* Free handles we can't reuse */
+  if (state->prerendered_texture != COGL_INVALID_HANDLE)
+    {
+      cogl_handle_unref (state->prerendered_texture);
+      state->prerendered_texture = COGL_INVALID_HANDLE;
+      had_prerendered_texture = TRUE;
+    }
+  if (state->prerendered_material != COGL_INVALID_HANDLE)
+    {
+      cogl_handle_unref (state->prerendered_material);
+      state->prerendered_material = COGL_INVALID_HANDLE;
+
+      if (node->border_slices_texture == COGL_INVALID_HANDLE &&
+          state->box_shadow_material != COGL_INVALID_HANDLE)
         {
-          CoglHandle buffer, offscreen;
-          int texture_width = ceil (width);
-          int texture_height = ceil (height);
-
-          buffer = cogl_texture_new_with_size (texture_width,
-                                               texture_height,
-                                               COGL_TEXTURE_NO_SLICING,
-                                               COGL_PIXEL_FORMAT_ANY);
-          offscreen = cogl_offscreen_new_to_texture (buffer);
-
-          if (offscreen != COGL_INVALID_HANDLE)
-            {
-              ClutterActorBox box = { 0, 0, width, height };
-              CoglColor clear_color;
-
-              cogl_push_framebuffer (offscreen);
-              cogl_ortho (0, width, height, 0, 0, 1.0);
-
-              cogl_color_set_from_4ub (&clear_color, 0, 0, 0, 0);
-              cogl_clear (&clear_color, COGL_BUFFER_BIT_COLOR);
-
-              st_theme_node_paint_borders (node, state, &box, 0xFF);
-              cogl_pop_framebuffer ();
-              cogl_handle_unref (offscreen);
-
-              state->box_shadow_material = _st_create_shadow_material (box_shadow_spec,
-                                                                       buffer);
-            }
-          cogl_handle_unref (buffer);
+          cogl_handle_unref (state->box_shadow_material);
+          state->box_shadow_material = COGL_INVALID_HANDLE;
+          had_box_shadow = TRUE;
         }
     }
+
+  state->alloc_width = width;
+  state->alloc_height = height;
+
+  box_shadow_spec = st_theme_node_get_box_shadow (node);
+
+  if (had_prerendered_texture)
+    {
+      state->prerendered_texture = st_theme_node_prerender_background (node, width, height);
+      state->prerendered_material = _st_create_texture_material (state->prerendered_texture);
+    }
+
+  if (had_box_shadow)
+    state->box_shadow_material = _st_create_shadow_material (box_shadow_spec,
+                                                             state->prerendered_texture);
 }
 
 static void
@@ -1793,6 +1811,352 @@ st_theme_node_paint_borders (StThemeNode           *node,
 }
 
 static void
+st_theme_node_paint_sliced_shadow (StThemeNode           *node,
+                                   StThemeNodePaintState *state,
+                                   const ClutterActorBox *box,
+                                   guint8                 paint_opacity)
+{
+  guint border_radius[4];
+  CoglColor color;
+  StShadow *box_shadow_spec;
+  gfloat xoffset, yoffset;
+  gfloat width, height;
+  gfloat shadow_width, shadow_height;
+  gfloat xend, yend, top, bottom, left, right;
+  gfloat s_top, s_bottom, s_left, s_right;
+  gfloat shadow_blur_radius, x_spread_factor, y_spread_factor;
+  float rectangles[8 * 9];
+  gint idx;
+
+  if (paint_opacity == 0)
+    return;
+
+  st_theme_node_reduce_border_radius (node, box->x2 - box->x1, box->y2 - box->y1, border_radius);
+
+  box_shadow_spec = st_theme_node_get_box_shadow (node);
+
+  /* Compute input & output areas :
+   *
+   *        yoffset ----------------------------
+   *                |      |            |      |
+   *                |      |            |      |
+   *                |      |            |      |
+   *           top  ----------------------------
+   *                |      |            |      |
+   *                |      |            |      |
+   *                |      |            |      |
+   *         bottom ----------------------------
+   *                |      |            |      |
+   *                |      |            |      |
+   *                |      |            |      |
+   *           yend ----------------------------
+   *            xoffset   left        right    xend
+   *
+   *      s_top    = top in offscreen's coordinates (0.0 - 1.0)
+   *      s_bottom = bottom in offscreen's coordinates (0.0 - 1.0)
+   *      s_left   = left in offscreen's coordinates (0.0 - 1.0)
+   *      s_right  = right in offscreen's coordinates (0.0 - 1.0)
+   */
+  if (box_shadow_spec->blur == 0)
+    shadow_blur_radius = 0;
+  else
+    shadow_blur_radius = (5 * (box_shadow_spec->blur / 2.0)) / 2;
+
+  shadow_width = state->box_shadow_width + 2 * shadow_blur_radius;
+  shadow_height = state->box_shadow_height + 2 * shadow_blur_radius;
+
+  /* Compute input regions parameters */
+  s_top = shadow_blur_radius + box_shadow_spec->blur +
+    MAX (node->border_radius[ST_CORNER_TOPLEFT],
+         node->border_radius[ST_CORNER_TOPRIGHT]);
+  s_bottom = shadow_blur_radius + box_shadow_spec->blur +
+    MAX (node->border_radius[ST_CORNER_BOTTOMLEFT],
+         node->border_radius[ST_CORNER_BOTTOMRIGHT]);
+  s_left = shadow_blur_radius + box_shadow_spec->blur +
+    MAX (node->border_radius[ST_CORNER_TOPLEFT],
+         node->border_radius[ST_CORNER_BOTTOMLEFT]);
+  s_right = shadow_blur_radius + box_shadow_spec->blur +
+    MAX (node->border_radius[ST_CORNER_TOPRIGHT],
+         node->border_radius[ST_CORNER_BOTTOMRIGHT]);
+
+  /* Compute output regions parameters */
+  xoffset = box->x1 + box_shadow_spec->xoffset - shadow_blur_radius - box_shadow_spec->spread;
+  yoffset = box->y1 + box_shadow_spec->yoffset - shadow_blur_radius - box_shadow_spec->spread;
+  width = box->x2 - box->x1 + 2 * shadow_blur_radius;
+  height = box->y2 - box->y1 + 2 * shadow_blur_radius;
+
+  x_spread_factor = (width + 2 * box_shadow_spec->spread) / width;
+  y_spread_factor = (height + 2 * box_shadow_spec->spread) / height;
+
+  width += 2 * box_shadow_spec->spread;
+  height += 2 * box_shadow_spec->spread;
+
+  xend = xoffset + width;
+  yend = yoffset + height;
+
+  top = s_top * y_spread_factor;
+  bottom = s_bottom * y_spread_factor;
+  left = s_left * x_spread_factor;
+  right = s_right * x_spread_factor;
+
+  bottom = height - bottom;
+  right  = width - right;
+
+  /* Final adjustments */
+  s_top /= shadow_height;
+  s_bottom /= shadow_height;
+  s_left /= shadow_width;
+  s_right /= shadow_width;
+
+  s_bottom = 1.0 - s_bottom;
+  s_right  = 1.0 - s_right;
+
+  top += yoffset;
+  bottom += yoffset;
+  left += xoffset;
+  right += xoffset;
+
+  /* Setup pipeline */
+  cogl_color_set_from_4ub (&color,
+                           box_shadow_spec->color.red   * paint_opacity / 255,
+                           box_shadow_spec->color.green * paint_opacity / 255,
+                           box_shadow_spec->color.blue  * paint_opacity / 255,
+                           box_shadow_spec->color.alpha * paint_opacity / 255);
+  cogl_color_premultiply (&color);
+
+  cogl_material_set_layer_combine_constant (state->box_shadow_material, 0, &color);
+
+  cogl_set_source (state->box_shadow_material);
+
+  idx = 0;
+
+  if (top > 0)
+    {
+      if (left > 0)
+        {
+          /* Top left corner */
+          rectangles[idx++] = xoffset;
+          rectangles[idx++] = yoffset;
+          rectangles[idx++] = left;
+          rectangles[idx++] = top;
+
+          rectangles[idx++] = 0;
+          rectangles[idx++] = 0;
+          rectangles[idx++] = s_left;
+          rectangles[idx++] = s_top;
+        }
+
+      /* Top middle */
+      rectangles[idx++] = left;
+      rectangles[idx++] = yoffset;
+      rectangles[idx++] = right;
+      rectangles[idx++] = top;
+
+      rectangles[idx++] = s_left;
+      rectangles[idx++] = 0;
+      rectangles[idx++] = s_right;
+      rectangles[idx++] = s_top;
+
+      if (right > 0)
+        {
+          /* Top right corner */
+          rectangles[idx++] = right;
+          rectangles[idx++] = yoffset;
+          rectangles[idx++] = xend;
+          rectangles[idx++] = top;
+
+          rectangles[idx++] = s_right;
+          rectangles[idx++] = 0;
+          rectangles[idx++] = 1;
+          rectangles[idx++] = s_top;
+        }
+    }
+
+  if (left > 0)
+    {
+      /* Left middle */
+      rectangles[idx++] = xoffset;
+      rectangles[idx++] = top;
+      rectangles[idx++] = left;
+      rectangles[idx++] = bottom;
+
+      rectangles[idx++] = 0;
+      rectangles[idx++] = s_top;
+      rectangles[idx++] = s_left;
+      rectangles[idx++] = s_bottom;
+    }
+
+  /* Center middle */
+  rectangles[idx++] = left;
+  rectangles[idx++] = top;
+  rectangles[idx++] = right;
+  rectangles[idx++] = bottom;
+
+  rectangles[idx++] = s_left;
+  rectangles[idx++] = s_top;
+  rectangles[idx++] = s_right;
+  rectangles[idx++] = s_bottom;
+
+
+  if (right > 0)
+    {
+      /* Right middle */
+      rectangles[idx++] = right;
+      rectangles[idx++] = top;
+      rectangles[idx++] = xend;
+      rectangles[idx++] = bottom;
+
+      rectangles[idx++] = s_right;
+      rectangles[idx++] = s_top;
+      rectangles[idx++] = 1;
+      rectangles[idx++] = s_bottom;
+    }
+
+  if (bottom > 0)
+    {
+      if (left > 0)
+        {
+          /* Bottom left corner */
+          rectangles[idx++] = xoffset;
+          rectangles[idx++] = bottom;
+          rectangles[idx++] = left;
+          rectangles[idx++] = yend;
+
+          rectangles[idx++] = 0;
+          rectangles[idx++] = s_bottom;
+          rectangles[idx++] = s_left;
+          rectangles[idx++] = 1;
+        }
+
+      /* Bottom middle */
+      rectangles[idx++] = left;
+      rectangles[idx++] = bottom;
+      rectangles[idx++] = right;
+      rectangles[idx++] = yend;
+
+      rectangles[idx++] = s_left;
+      rectangles[idx++] = s_bottom;
+      rectangles[idx++] = s_right;
+      rectangles[idx++] = 1;
+
+      if (right > 0)
+        {
+          /* Bottom right corner */
+          rectangles[idx++] = right;
+          rectangles[idx++] = bottom;
+          rectangles[idx++] = xend;
+          rectangles[idx++] = yend;
+
+          rectangles[idx++] = s_right;
+          rectangles[idx++] = s_bottom;
+          rectangles[idx++] = 1;
+          rectangles[idx++] = 1;
+        }
+    }
+
+  cogl_rectangles_with_texture_coords (rectangles, idx / 8);
+
+#if 0
+  /* Visual feedback on shadow's 9-slice and orignal offscreen buffer,
+     for debug purposes */
+  cogl_rectangle (xend, yoffset, xend + shadow_width, yoffset + shadow_height);
+
+  cogl_set_source_color4ub (0xff, 0x0, 0x0, 0xff);
+
+  cogl_rectangle (xoffset, top, xend, top + 1);
+  cogl_rectangle (xoffset, bottom, xend, bottom + 1);
+  cogl_rectangle (left, yoffset, left + 1, yend);
+  cogl_rectangle (right, yoffset, right + 1, yend);
+
+  cogl_rectangle (xend, yoffset, xend + shadow_width, yoffset + 1);
+  cogl_rectangle (xend, yoffset + shadow_height, xend + shadow_width, yoffset + shadow_height + 1);
+  cogl_rectangle (xend, yoffset, xend + 1, yoffset + shadow_height);
+  cogl_rectangle (xend + shadow_width, yoffset, xend + shadow_width + 1, yoffset + shadow_height);
+
+  s_top *= shadow_height;
+  s_bottom *= shadow_height;
+  s_left *= shadow_width;
+  s_right *= shadow_width;
+
+  cogl_rectangle (xend, yoffset + s_top, xend + shadow_width, yoffset + s_top + 1);
+  cogl_rectangle (xend, yoffset + s_bottom, xend + shadow_width, yoffset + s_bottom + 1);
+  cogl_rectangle (xend + s_left, yoffset, xend + s_left + 1, yoffset + shadow_height);
+  cogl_rectangle (xend + s_right, yoffset, xend + s_right + 1, yoffset + shadow_height);
+
+#endif
+}
+
+static void
+st_theme_node_prerender_shadow (StThemeNode *node, StThemeNodePaintState *state)
+{
+  guint border_radius[4];
+  int max_borders[4];
+  int center_radius, corner_id;
+  CoglHandle buffer, offscreen;
+
+  /* Get infos from the node */
+  if (state->alloc_width < node->box_shadow_min_width ||
+      state->alloc_height < node->box_shadow_min_height)
+    st_theme_node_reduce_border_radius (node, state->alloc_width, state->alloc_height, border_radius);
+  else
+    for (corner_id = 0; corner_id < 4; corner_id++)
+      border_radius[corner_id] = node->border_radius[corner_id];
+
+  /* Compute maximum borders sizes */
+  max_borders[ST_SIDE_TOP] = MAX (node->border_radius[ST_CORNER_TOPLEFT],
+                                  node->border_radius[ST_CORNER_TOPRIGHT]);
+  max_borders[ST_SIDE_BOTTOM] = MAX (node->border_radius[ST_CORNER_BOTTOMLEFT],
+                                     node->border_radius[ST_CORNER_BOTTOMRIGHT]);
+  max_borders[ST_SIDE_LEFT] = MAX (node->border_radius[ST_CORNER_TOPLEFT],
+                                   node->border_radius[ST_CORNER_BOTTOMLEFT]);
+  max_borders[ST_SIDE_RIGHT] = MAX (node->border_radius[ST_CORNER_TOPRIGHT],
+                                    node->border_radius[ST_CORNER_BOTTOMRIGHT]);
+
+  center_radius = (node->box_shadow->blur > 0) ? (2 * node->box_shadow->blur + 1) : 1;
+  node->box_shadow_min_width = max_borders[ST_SIDE_LEFT] + max_borders[ST_SIDE_RIGHT] + center_radius;
+  node->box_shadow_min_height = max_borders[ST_SIDE_TOP] + max_borders[ST_SIDE_BOTTOM] + center_radius;
+
+  if (state->alloc_width < node->box_shadow_min_width ||
+      state->alloc_height < node->box_shadow_min_height)
+    {
+      state->box_shadow_width = state->alloc_width;
+      state->box_shadow_height = state->alloc_height;
+    }
+  else
+    {
+      state->box_shadow_width = node->box_shadow_min_width;
+      state->box_shadow_height = node->box_shadow_min_height;
+    }
+
+  /* Render offscreen */
+  buffer = cogl_texture_new_with_size (state->box_shadow_width,
+                                       state->box_shadow_height,
+                                       COGL_TEXTURE_NO_SLICING,
+                                       COGL_PIXEL_FORMAT_ANY);
+  offscreen = cogl_offscreen_new_to_texture (buffer);
+
+  if (offscreen != COGL_INVALID_HANDLE)
+    {
+      ClutterActorBox box = { 0, 0, state->box_shadow_width, state->box_shadow_height};
+      CoglColor clear_color;
+
+      cogl_push_framebuffer (offscreen);
+      cogl_ortho (0, state->box_shadow_width, state->box_shadow_height, 0, 0, 1.0);
+
+      cogl_color_set_from_4ub (&clear_color, 0, 0, 0, 0);
+      cogl_clear (&clear_color, COGL_BUFFER_BIT_COLOR);
+
+      st_theme_node_paint_borders (node, state, &box, 0xFF);
+      cogl_pop_framebuffer ();
+      cogl_handle_unref (offscreen);
+
+      state->box_shadow_material = _st_create_shadow_material (st_theme_node_get_box_shadow (node),
+                                                               buffer);
+    }
+  cogl_handle_unref (buffer);
+}
+
+static void
 st_theme_node_paint_sliced_border_image (StThemeNode           *node,
                                          float                  width,
                                          float                  height,
@@ -1945,6 +2309,43 @@ st_theme_node_paint_outline (StThemeNode           *node,
   cogl_rectangles (rects, 4);
 }
 
+static gboolean
+st_theme_node_needs_new_box_shadow_for_size (StThemeNode *node,
+                                             StThemeNodePaintState *state,
+                                             float        width,
+                                             float        height)
+{
+  if (!node->rendered_once)
+    return TRUE;
+
+  /* The allocation hasn't changed, no need to recompute a new
+     box-shadow. */
+  if (state->alloc_width == width ||
+      state->alloc_height == height)
+    return FALSE;
+
+  /* If there is no shadow, no need to recompute a new box-shadow. */
+  if (node->box_shadow_min_width == 0 ||
+      node->box_shadow_min_height == 0)
+    return FALSE;
+
+  /* If the new size is inferior to the box-shadow minimum size (we
+     already know the size has changed), we need to recompute the
+     box-shadow. */
+  if (width < node->box_shadow_min_width ||
+      height < node->box_shadow_min_height)
+    return TRUE;
+
+  /* Now checking whether the size of the node has crossed the minimum
+     box-shadow size boundary, from below to above the minimum size .
+     If that's the case, we need to recompute the box-shadow */
+  if (state->alloc_width < node->box_shadow_min_width ||
+      state->alloc_height < node->box_shadow_min_height)
+    return TRUE;
+
+  return FALSE;
+}
+
 void
 st_theme_node_paint (StThemeNode           *node,
                      StThemeNodePaintState *state,
@@ -1964,11 +2365,13 @@ st_theme_node_paint (StThemeNode           *node,
   if (width <= 0 || height <= 0)
     return;
 
-  if (state->alloc_width != width || state->alloc_height != height)
-    {
-      state->node = node;
-      st_theme_node_render_resources (node, state, width, height);
-    }
+  state->node = node;
+  if (st_theme_node_needs_new_box_shadow_for_size (node, state, width, height))
+    st_theme_node_render_resources (node, state, width, height);
+  else
+    st_theme_node_update_resources (node, state, width, height);
+
+  node->rendered_once = TRUE;
 
   /* Rough notes about the relationship of borders and backgrounds in CSS3;
    * see http://www.w3.org/TR/css3-background/ for more accurate details.
@@ -1997,10 +2400,19 @@ st_theme_node_paint (StThemeNode           *node,
    */
 
   if (state->box_shadow_material)
-    _st_paint_shadow_with_opacity (node->box_shadow,
-                                   state->box_shadow_material,
-                                   &allocation,
-                                   paint_opacity);
+    {
+      if (state->alloc_width < node->box_shadow_min_width ||
+          state->alloc_height < node->box_shadow_min_height)
+        _st_paint_shadow_with_opacity (node->box_shadow,
+                                       state->box_shadow_material,
+                                       &allocation,
+                                       paint_opacity);
+      else
+        st_theme_node_paint_sliced_shadow (node,
+                                           state,
+                                           &allocation,
+                                           paint_opacity);
+    }
 
   if (state->prerendered_material != COGL_INVALID_HANDLE ||
       st_theme_node_load_border_image (node))
@@ -2124,6 +2536,8 @@ st_theme_node_paint_state_copy (StThemeNodePaintState *state,
 
   state->alloc_width = other->alloc_width;
   state->alloc_height = other->alloc_height;
+  state->box_shadow_width = other->box_shadow_width;
+  state->box_shadow_height = other->box_shadow_height;
 
   if (other->box_shadow_material)
     state->box_shadow_material = cogl_handle_ref (other->box_shadow_material);

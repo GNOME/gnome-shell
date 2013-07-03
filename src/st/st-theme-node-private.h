@@ -99,6 +99,10 @@ struct _StThemeNode {
   guint background_image_shadow_computed : 1;
   guint text_shadow_computed : 1;
   guint link_type : 2;
+  guint rendered_once : 1;
+
+  int box_shadow_min_width;
+  int box_shadow_min_height;
 
   CoglHandle border_slices_texture;
   CoglHandle border_slices_material;
