@@ -82,7 +82,7 @@ expand_content_files=\
 
 AM_CPPFLAGS=\
 	-I$(top_srcdir) \
-	-I$(top_builddir)/cogl \
+	-I$(top_builddir) \
 	-DCOGL_ENABLE_EXPERIMENTAL_API \
 	$(COGL_DEP_CFLAGS) \
 	$(COGL_GST_DEP_CFLAGS)
