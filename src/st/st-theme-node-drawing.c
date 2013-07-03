@@ -1268,8 +1268,7 @@ st_theme_node_prerender_background (StThemeNode *node,
   return texture;
 }
 
-static void st_theme_node_paint_borders (StThemeNode           *node,
-                                         StThemeNodePaintState *state,
+static void st_theme_node_paint_borders (StThemeNodePaintState *state,
                                          const ClutterActorBox *box,
                                          guint8                 paint_opacity);
 
@@ -1370,11 +1369,11 @@ st_theme_node_load_background_image (StThemeNode *node)
   return node->background_texture != COGL_INVALID_HANDLE;
 }
 
-static void st_theme_node_prerender_shadow (StThemeNode *node, StThemeNodePaintState *state);
+static void st_theme_node_prerender_shadow (StThemeNodePaintState *state);
 
 static void
-st_theme_node_render_resources (StThemeNode           *node,
-                                StThemeNodePaintState *state,
+st_theme_node_render_resources (StThemeNodePaintState *state,
+                                StThemeNode           *node,
                                 float                  width,
                                 float                  height)
 {
@@ -1392,6 +1391,7 @@ st_theme_node_render_resources (StThemeNode           *node,
    */
   st_theme_node_paint_state_free (state);
 
+  state->node = node;
   state->alloc_width = width;
   state->alloc_height = height;
 
@@ -1476,12 +1476,15 @@ st_theme_node_render_resources (StThemeNode           *node,
         state->box_shadow_material = _st_create_shadow_material (box_shadow_spec,
                                                                  state->prerendered_texture);
       else if (node->background_color.alpha > 0 || has_border)
-        st_theme_node_prerender_shadow (node, state);
+        st_theme_node_prerender_shadow (state);
     }
 }
 
 static void
-st_theme_node_update_resources (StThemeNode *node, StThemeNodePaintState *state, float width, float height)
+st_theme_node_update_resources (StThemeNodePaintState *state,
+                                StThemeNode           *node,
+                                float                  width,
+                                float                  height)
 {
   gboolean had_prerendered_texture = FALSE;
   gboolean had_box_shadow = FALSE;
@@ -1510,6 +1513,7 @@ st_theme_node_update_resources (StThemeNode *node, StThemeNodePaintState *state,
         }
     }
 
+  state->node = node;
   state->alloc_width = width;
   state->alloc_height = height;
 
@@ -1545,11 +1549,11 @@ paint_material_with_opacity (CoglHandle       material,
 }
 
 static void
-st_theme_node_paint_borders (StThemeNode           *node,
-                             StThemeNodePaintState *state,
+st_theme_node_paint_borders (StThemeNodePaintState *state,
                              const ClutterActorBox *box,
                              guint8                 paint_opacity)
 {
+  StThemeNode *node = state->node;
   float width, height;
   int border_width[4];
   guint border_radius[4];
@@ -1811,11 +1815,11 @@ st_theme_node_paint_borders (StThemeNode           *node,
 }
 
 static void
-st_theme_node_paint_sliced_shadow (StThemeNode           *node,
-                                   StThemeNodePaintState *state,
+st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
                                    const ClutterActorBox *box,
                                    guint8                 paint_opacity)
 {
+  StThemeNode *node = state->node;
   guint border_radius[4];
   CoglColor color;
   StShadow *box_shadow_spec;
@@ -2087,8 +2091,9 @@ st_theme_node_paint_sliced_shadow (StThemeNode           *node,
 }
 
 static void
-st_theme_node_prerender_shadow (StThemeNode *node, StThemeNodePaintState *state)
+st_theme_node_prerender_shadow (StThemeNodePaintState *state)
 {
+  StThemeNode *node = state->node;
   guint border_radius[4];
   int max_borders[4];
   int center_radius, corner_id;
@@ -2146,7 +2151,7 @@ st_theme_node_prerender_shadow (StThemeNode *node, StThemeNodePaintState *state)
       cogl_color_set_from_4ub (&clear_color, 0, 0, 0, 0);
       cogl_clear (&clear_color, COGL_BUFFER_BIT_COLOR);
 
-      st_theme_node_paint_borders (node, state, &box, 0xFF);
+      st_theme_node_paint_borders (state, &box, 0xFF);
       cogl_pop_framebuffer ();
       cogl_handle_unref (offscreen);
 
@@ -2310,10 +2315,10 @@ st_theme_node_paint_outline (StThemeNode           *node,
 }
 
 static gboolean
-st_theme_node_needs_new_box_shadow_for_size (StThemeNode *node,
-                                             StThemeNodePaintState *state,
-                                             float        width,
-                                             float        height)
+st_theme_node_needs_new_box_shadow_for_size (StThemeNodePaintState *state,
+                                             StThemeNode           *node,
+                                             float                  width,
+                                             float                  height)
 {
   if (!node->rendered_once)
     return TRUE;
@@ -2365,11 +2370,10 @@ st_theme_node_paint (StThemeNode           *node,
   if (width <= 0 || height <= 0)
     return;
 
-  state->node = node;
-  if (st_theme_node_needs_new_box_shadow_for_size (node, state, width, height))
-    st_theme_node_render_resources (node, state, width, height);
+  if (st_theme_node_needs_new_box_shadow_for_size (state, node, width, height))
+    st_theme_node_render_resources (state, node, width, height);
   else
-    st_theme_node_update_resources (node, state, width, height);
+    st_theme_node_update_resources (state, node, width, height);
 
   node->rendered_once = TRUE;
 
@@ -2408,8 +2412,7 @@ st_theme_node_paint (StThemeNode           *node,
                                        &allocation,
                                        paint_opacity);
       else
-        st_theme_node_paint_sliced_shadow (node,
-                                           state,
+        st_theme_node_paint_sliced_shadow (state,
                                            &allocation,
                                            paint_opacity);
     }
@@ -2436,7 +2439,7 @@ st_theme_node_paint (StThemeNode           *node,
     }
   else
     {
-      st_theme_node_paint_borders (node, state, box, paint_opacity);
+      st_theme_node_paint_borders (state, box, paint_opacity);
     }
 
   st_theme_node_paint_outline (node, box, paint_opacity);
