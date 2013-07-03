@@ -637,7 +637,7 @@ cogl_wayland_onscreen_get_surface (CoglOnscreen *onscreen)
   CoglFramebuffer *fb;
 
   fb = COGL_FRAMEBUFFER (onscreen);
-  if (fb->allocated && !onscreen->foreign_surface)
+  if (fb->allocated)
     {
       CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
       CoglOnscreenWayland *wayland_onscreen = egl_onscreen->platform;
