@@ -1,7 +1,10 @@
 #ifndef _TEST_UTILS_H_
 #define _TEST_UTILS_H_
 
-#include <cogl/cogl.h>
+#include <cogl/cogl-context.h>
+#include <cogl/cogl-onscreen.h>
+#include <cogl/cogl-offscreen.h>
+#include <cogl/cogl-texture-2d.h>
 #include <glib.h>
 
 /* We don't really care about functions that are defined without a
