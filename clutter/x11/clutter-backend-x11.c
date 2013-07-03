@@ -128,10 +128,11 @@ cogl_xlib_filter (XEvent       *xevent,
                   ClutterEvent *event,
                   gpointer      data)
 {
+  ClutterBackend *backend = data;
   ClutterX11FilterReturn retval;
   CoglFilterReturn ret;
 
-  ret = cogl_xlib_handle_event (xevent);
+  ret = cogl_xlib_renderer_handle_event (backend->cogl_renderer, xevent);
   switch (ret)
     {
     case COGL_FILTER_REMOVE:
@@ -391,7 +392,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
   settings = clutter_settings_get_default ();
 
   /* add event filter for Cogl events */
-  clutter_x11_add_filter (cogl_xlib_filter, NULL);
+  clutter_x11_add_filter (cogl_xlib_filter, backend);
 
   if (clutter_screen == -1)
     backend_x11->xscreen = DefaultScreenOfDisplay (backend_x11->xdpy);
@@ -542,7 +543,7 @@ clutter_backend_x11_finalize (GObject *gobject)
 
   g_free (backend_x11->display_name);
 
-  clutter_x11_remove_filter (cogl_xlib_filter, NULL);
+  clutter_x11_remove_filter (cogl_xlib_filter, gobject);
 
   clutter_x11_remove_filter (xsettings_filter, backend_x11);
   _clutter_xsettings_client_destroy (backend_x11->xsettings);
