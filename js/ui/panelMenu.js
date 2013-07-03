@@ -110,6 +110,7 @@ const Button = new Lang.Class({
 
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('key-press-event', Lang.bind(this, this._onSourceKeyPress));
+        this.actor.connect('notify::visible', Lang.bind(this, this._onVisibilityChanged));
 
         if (dontCreateMenu)
             this.menu = new PopupMenu.PopupDummyMenu(this.actor);
@@ -181,6 +182,14 @@ const Button = new Lang.Class({
             return true;
         } else
             return false;
+    },
+
+    _onVisibilityChanged: function() {
+        if (!this.menu)
+            return;
+
+        if (!this.actor.visible)
+            this.menu.close();
     },
 
     _onMenuKeyPress: function(actor, event) {
