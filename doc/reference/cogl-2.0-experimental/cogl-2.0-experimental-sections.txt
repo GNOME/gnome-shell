@@ -90,10 +90,6 @@ cogl_win32_renderer_set_event_retrieval_enabled
 <SUBSECTION>
 cogl_wayland_renderer_set_foreign_display
 cogl_wayland_renderer_get_display
-cogl_wayland_renderer_set_foreign_compositor
-cogl_wayland_renderer_get_compositor
-cogl_wayland_renderer_set_foreign_shell
-cogl_wayland_renderer_get_shell
 </SECTION>
 
 <SECTION>

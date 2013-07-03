@@ -76,8 +76,6 @@ struct _CoglRenderer
 
 #if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
   struct wl_display *foreign_wayland_display;
-  struct wl_compositor *foreign_wayland_compositor;
-  struct wl_shell *foreign_wayland_shell;
 #endif
 
 #ifdef COGL_HAS_SDL_SUPPORT
