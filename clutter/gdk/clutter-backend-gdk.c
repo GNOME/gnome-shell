@@ -128,9 +128,10 @@ cogl_gdk_filter (GdkXEvent  *xevent,
 		 gpointer    data)
 {
 #ifdef GDK_WINDOWING_X11
+  ClutterBackend *backend = data;
   CoglFilterReturn ret;
 
-  ret = cogl_xlib_handle_event ((XEvent*)xevent);
+  ret = cogl_xlib_renderer_handle_event (backend->cogl_renderer, (XEvent *) xevent);
   switch (ret)
     {
     case COGL_FILTER_REMOVE:
@@ -170,7 +171,7 @@ _clutter_backend_gdk_post_parse (ClutterBackend  *backend,
   backend_gdk->screen = gdk_display_get_default_screen (backend_gdk->display);
 
   /* add event filter for Cogl events */
-  gdk_window_add_filter (NULL, cogl_gdk_filter, NULL);
+  gdk_window_add_filter (NULL, cogl_gdk_filter, backend_gdk);
 
   clutter_backend_gdk_init_settings (backend_gdk);
 
@@ -210,7 +211,7 @@ clutter_backend_gdk_finalize (GObject *gobject)
 {
   ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (gobject);
 
-  gdk_window_remove_filter (NULL, cogl_gdk_filter, NULL);
+  gdk_window_remove_filter (NULL, cogl_gdk_filter, backend_gdk);
   g_object_unref (backend_gdk->display);
 
   G_OBJECT_CLASS (clutter_backend_gdk_parent_class)->finalize (gobject);
