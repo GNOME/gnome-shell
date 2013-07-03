@@ -35,7 +35,7 @@
  * They are only intended for internal use and should not be used by
  * other projects.
  */
-#ifdef COGL_DISABLE_DEPRECATION_WARNINGS
+#if defined(COGL_DISABLE_DEPRECATION_WARNINGS) || defined(COGL_COMPILATION)
 
 #define COGL_DEPRECATED
 #define COGL_DEPRECATED_FOR(f)

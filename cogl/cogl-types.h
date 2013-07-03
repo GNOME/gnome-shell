@@ -99,7 +99,8 @@ typedef int CoglBool;
 #define COGL_GNUC_NULL_TERMINATED
 #endif
 
-#if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1)
+#if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1)) && \
+  !defined (COGL_COMPILATION)
 #define COGL_GNUC_DEPRECATED                       \
   __attribute__((__deprecated__))
 #else
