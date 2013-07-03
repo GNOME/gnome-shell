@@ -807,7 +807,7 @@ CoglFixed
 cogl_fixed_mul (CoglFixed a,
                 CoglFixed b)
 {
-#ifdef __arm__ && !defined(__thumb__)
+#if defined(__arm__) && !defined(__thumb__)
   /* This provides about 12% speedeup on the gcc -O2 optimised
    * C version
    *
