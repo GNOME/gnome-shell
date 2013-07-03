@@ -85,8 +85,6 @@
 #define CLUTTER_BOX_CHILD(obj)          (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BOX_CHILD, ClutterBoxChild))
 #define CLUTTER_IS_BOX_CHILD(obj)       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BOX_CHILD))
 
-#define CLUTTER_BOX_LAYOUT_GET_PRIVATE(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_BOX_LAYOUT, ClutterBoxLayoutPrivate))
-
 typedef struct _ClutterBoxChild         ClutterBoxChild;
 typedef struct _ClutterLayoutMetaClass  ClutterBoxChildClass;
 
@@ -153,11 +151,11 @@ GType clutter_box_child_get_type (void);
 
 G_DEFINE_TYPE (ClutterBoxChild,
                clutter_box_child,
-               CLUTTER_TYPE_LAYOUT_META);
+               CLUTTER_TYPE_LAYOUT_META)
 
-G_DEFINE_TYPE (ClutterBoxLayout,
-               clutter_box_layout,
-               CLUTTER_TYPE_LAYOUT_MANAGER);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterBoxLayout,
+                            clutter_box_layout,
+                            CLUTTER_TYPE_LAYOUT_MANAGER)
 
 
 typedef struct _RequestedSize
@@ -1348,8 +1346,6 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
   layout_class->set_container = clutter_box_layout_set_container;
   layout_class->get_child_meta_type = clutter_box_layout_get_child_meta_type;
 
-  g_type_class_add_private (klass, sizeof (ClutterBoxLayoutPrivate));
-
   /**
    * ClutterBoxLayout:vertical:
    *
@@ -1503,20 +1499,18 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
 }
 
 static void
-clutter_box_layout_init (ClutterBoxLayout *layout)
+clutter_box_layout_init (ClutterBoxLayout *self)
 {
-  ClutterBoxLayoutPrivate *priv;
+  self->priv = clutter_box_layout_get_instance_private (self);
 
-  layout->priv = priv = CLUTTER_BOX_LAYOUT_GET_PRIVATE (layout);
+  self->priv->orientation = CLUTTER_ORIENTATION_HORIZONTAL;
+  self->priv->is_homogeneous = FALSE;
+  self->priv->is_pack_start = FALSE;
+  self->priv->spacing = 0;
 
-  priv->orientation = CLUTTER_ORIENTATION_HORIZONTAL;
-  priv->is_homogeneous = FALSE;
-  priv->is_pack_start = FALSE;
-  priv->spacing = 0;
-
-  priv->use_animations = FALSE;
-  priv->easing_mode = CLUTTER_EASE_OUT_CUBIC;
-  priv->easing_duration = 500;
+  self->priv->use_animations = FALSE;
+  self->priv->easing_mode = CLUTTER_EASE_OUT_CUBIC;
+  self->priv->easing_duration = 500;
 }
 
 /**

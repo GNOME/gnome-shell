@@ -96,6 +96,7 @@ static ClutterAnimatableIface *parent_animatable_iface = NULL;
 static void     clutter_animatable_iface_init   (ClutterAnimatableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterScrollActor, clutter_scroll_actor, CLUTTER_TYPE_ACTOR,
+                         G_ADD_PRIVATE (ClutterScrollActor)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
                                                 clutter_animatable_iface_init))
 
@@ -173,8 +174,6 @@ clutter_scroll_actor_class_init (ClutterScrollActorClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterScrollActorPrivate));
-
   gobject_class->set_property = clutter_scroll_actor_set_property;
   gobject_class->get_property = clutter_scroll_actor_get_property;
 
@@ -200,9 +199,7 @@ clutter_scroll_actor_class_init (ClutterScrollActorClass *klass)
 static void
 clutter_scroll_actor_init (ClutterScrollActor *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_SCROLL_ACTOR,
-                                            ClutterScrollActorPrivate);
-
+  self->priv = clutter_scroll_actor_get_instance_private (self);
   self->priv->scroll_mode = CLUTTER_SCROLL_BOTH;
 
   clutter_actor_set_clip_to_allocation (CLUTTER_ACTOR (self), TRUE);

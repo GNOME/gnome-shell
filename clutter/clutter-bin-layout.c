@@ -83,8 +83,6 @@
 #define CLUTTER_BIN_LAYER(obj)          (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BIN_LAYER, ClutterBinLayer))
 #define CLUTTER_IS_BIN_LAYER(obj)       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BIN_LAYER))
 
-#define CLUTTER_BIN_LAYOUT_GET_PRIVATE(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_BIN_LAYOUT, ClutterBinLayoutPrivate))
-
 typedef struct _ClutterBinLayer         ClutterBinLayer;
 typedef struct _ClutterLayoutMetaClass  ClutterBinLayerClass;
 
@@ -131,11 +129,11 @@ GType clutter_bin_layer_get_type (void);
 
 G_DEFINE_TYPE (ClutterBinLayer,
                clutter_bin_layer,
-               CLUTTER_TYPE_LAYOUT_META);
+               CLUTTER_TYPE_LAYOUT_META)
 
-G_DEFINE_TYPE (ClutterBinLayout,
-               clutter_bin_layout,
-               CLUTTER_TYPE_LAYOUT_MANAGER);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterBinLayout,
+                            clutter_bin_layout,
+                            CLUTTER_TYPE_LAYOUT_MANAGER)
 
 /*
  * ClutterBinLayer
@@ -637,8 +635,6 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
   ClutterLayoutManagerClass *layout_class =
     CLUTTER_LAYOUT_MANAGER_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterBinLayoutPrivate));
-
   /**
    * ClutterBinLayout:x-align:
    *
@@ -694,7 +690,7 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
 static void
 clutter_bin_layout_init (ClutterBinLayout *self)
 {
-  self->priv = CLUTTER_BIN_LAYOUT_GET_PRIVATE (self);
+  self->priv = clutter_bin_layout_get_instance_private (self);
 
   self->priv->x_align = CLUTTER_BIN_ALIGNMENT_CENTER;
   self->priv->y_align = CLUTTER_BIN_ALIGNMENT_CENTER;

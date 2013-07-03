@@ -66,8 +66,7 @@ enum
 
 static guint swipe_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (ClutterSwipeAction, clutter_swipe_action,
-               CLUTTER_TYPE_GESTURE_ACTION);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterSwipeAction, clutter_swipe_action, CLUTTER_TYPE_GESTURE_ACTION)
 
 static gboolean
 gesture_begin (ClutterGestureAction  *action,
@@ -184,8 +183,6 @@ clutter_swipe_action_class_init (ClutterSwipeActionClass *klass)
   ClutterGestureActionClass *gesture_class =
       CLUTTER_GESTURE_ACTION_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterSwipeActionPrivate));
-
   gesture_class->gesture_begin = gesture_begin;
   gesture_class->gesture_progress = gesture_progress;
   gesture_class->gesture_end = gesture_end;
@@ -247,8 +244,7 @@ clutter_swipe_action_class_init (ClutterSwipeActionClass *klass)
 static void
 clutter_swipe_action_init (ClutterSwipeAction *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_SWIPE_ACTION,
-                                            ClutterSwipeActionPrivate);
+  self->priv = clutter_swipe_action_get_instance_private (self);
 }
 
 /**

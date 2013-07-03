@@ -628,9 +628,6 @@
 #include "deprecated/clutter-behaviour.h"
 #include "deprecated/clutter-container.h"
 
-#define CLUTTER_ACTOR_GET_PRIVATE(obj) \
-(G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ACTOR, ClutterActorPrivate))
-
 /* Internal enum used to control mapped state update.  This is a hint
  * which indicates when to do something other than just enforce
  * invariants.
@@ -1086,6 +1083,7 @@ static GQuark quark_actor_animation_info = 0;
 G_DEFINE_TYPE_WITH_CODE (ClutterActor,
                          clutter_actor,
                          G_TYPE_INITIALLY_UNOWNED,
+                         G_ADD_PRIVATE (ClutterActor)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
                                                 clutter_container_iface_init)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
@@ -6149,8 +6147,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->paint = clutter_actor_real_paint;
   klass->destroy = clutter_actor_real_destroy;
 
-  g_type_class_add_private (klass, sizeof (ClutterActorPrivate));
-
   /**
    * ClutterActor:x:
    *
@@ -8329,7 +8325,7 @@ clutter_actor_init (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
 
-  self->priv = priv = CLUTTER_ACTOR_GET_PRIVATE (self);
+  self->priv = priv = clutter_actor_get_instance_private (self);
 
   priv->id = _clutter_context_acquire_id (self);
   priv->pick_id = -1;
@@ -16104,7 +16100,7 @@ clutter_actor_get_text_direction (ClutterActor *self)
  *   static void
  *   my_actor_init (MyActor *self)
  *   {
- *     self->priv = SELF_ACTOR_GET_PRIVATE (self);
+ *     self->priv = my_actor_get_instance_private (self);
  *
  *     clutter_actor_push_internal (CLUTTER_ACTOR (self));
  *

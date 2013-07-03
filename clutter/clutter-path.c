@@ -88,10 +88,6 @@
 #include "clutter-bezier.h"
 #include "clutter-private.h"
 
-#define CLUTTER_PATH_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_PATH, \
-                                ClutterPathPrivate))
-
 #define CLUTTER_PATH_NODE_TYPE_IS_VALID(t) \
   ((((t) & ~CLUTTER_PATH_RELATIVE) >= CLUTTER_PATH_MOVE_TO      \
     && ((t) & ~CLUTTER_PATH_RELATIVE) <= CLUTTER_PATH_CURVE_TO) \
@@ -149,6 +145,7 @@ G_DEFINE_BOXED_TYPE (ClutterPathNode, clutter_path_node,
 G_DEFINE_TYPE_WITH_CODE (ClutterPath,
                          clutter_path,
                          G_TYPE_INITIALLY_UNOWNED,
+                         G_ADD_PRIVATE (ClutterPath)
                          CLUTTER_REGISTER_VALUE_TRANSFORM_TO (G_TYPE_STRING, clutter_value_transform_path_string)
                          CLUTTER_REGISTER_VALUE_TRANSFORM_FROM (G_TYPE_STRING, clutter_value_transform_string_path));
 
@@ -220,14 +217,12 @@ clutter_path_class_init (ClutterPathClass *klass)
                              CLUTTER_PARAM_READABLE);
   obj_props[PROP_LENGTH] = pspec;
   g_object_class_install_property (gobject_class, PROP_LENGTH, pspec);
-
-  g_type_class_add_private (klass, sizeof (ClutterPathPrivate));
 }
 
 static void
 clutter_path_init (ClutterPath *self)
 {
-  self->priv = CLUTTER_PATH_GET_PRIVATE (self);
+  self->priv = clutter_path_get_instance_private (self);
 }
 
 static void

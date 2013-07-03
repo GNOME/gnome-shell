@@ -112,12 +112,6 @@
 
 #include "deprecated/clutter-timeline.h"
 
-static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                clutter_scriptable_iface_init));
-
 struct _ClutterTimelinePrivate
 {
   ClutterTimelineDirection direction;
@@ -209,6 +203,13 @@ enum
 };
 
 static guint timeline_signals[LAST_SIGNAL] = { 0, };
+
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (ClutterTimeline)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init))
 
 static TimelineMarker *
 timeline_marker_new_time (const gchar *name,
@@ -575,8 +576,6 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterTimelinePrivate));
-
   /**
    * ClutterTimeline:loop:
    *
@@ -846,21 +845,17 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 static void
 clutter_timeline_init (ClutterTimeline *self)
 {
-  ClutterTimelinePrivate *priv;
+  self->priv = clutter_timeline_get_instance_private (self);
 
-  self->priv = priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_TIMELINE,
-                                 ClutterTimelinePrivate);
-
-  priv->progress_mode = CLUTTER_LINEAR;
+  self->priv->progress_mode = CLUTTER_LINEAR;
 
   /* default steps() parameters are 1, end */
-  priv->n_steps = 1;
-  priv->step_mode = CLUTTER_STEP_MODE_END;
+  self->priv->n_steps = 1;
+  self->priv->step_mode = CLUTTER_STEP_MODE_END;
 
   /* default cubic-bezier() paramereters are (0, 0, 1, 1) */
-  clutter_point_init (&priv->cb_1, 0, 0);
-  clutter_point_init (&priv->cb_2, 1, 1);
+  clutter_point_init (&self->priv->cb_1, 0, 0);
+  clutter_point_init (&self->priv->cb_2, 1, 1);
 }
 
 struct CheckIfMarkerHitClosure

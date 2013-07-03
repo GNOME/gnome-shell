@@ -85,8 +85,6 @@
 #include "clutter-layout-meta.h"
 #include "clutter-private.h"
 
-#define CLUTTER_FLOW_LAYOUT_GET_PRIVATE(obj)    (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_FLOW_LAYOUT, ClutterFlowLayoutPrivate))
-
 struct _ClutterFlowLayoutPrivate
 {
   ClutterContainer *container;
@@ -139,9 +137,9 @@ enum
 
 static GParamSpec *flow_properties[N_PROPERTIES] = { NULL, };
 
-G_DEFINE_TYPE (ClutterFlowLayout,
-               clutter_flow_layout,
-               CLUTTER_TYPE_LAYOUT_MANAGER);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterFlowLayout,
+                            clutter_flow_layout,
+                            CLUTTER_TYPE_LAYOUT_MANAGER)
 
 static gint
 get_columns (ClutterFlowLayout *self,
@@ -919,8 +917,6 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
   GObjectClass *gobject_class;
   ClutterLayoutManagerClass *layout_class;
 
-  g_type_class_add_private (klass, sizeof (ClutterFlowLayoutPrivate));
-
   gobject_class = G_OBJECT_CLASS (klass);
   layout_class = CLUTTER_LAYOUT_MANAGER_CLASS (klass);
 
@@ -1088,7 +1084,7 @@ clutter_flow_layout_init (ClutterFlowLayout *self)
 {
   ClutterFlowLayoutPrivate *priv;
 
-  self->priv = priv = CLUTTER_FLOW_LAYOUT_GET_PRIVATE (self);
+  self->priv = priv = clutter_flow_layout_get_instance_private (self);
 
   priv->orientation = CLUTTER_FLOW_HORIZONTAL;
 

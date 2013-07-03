@@ -76,8 +76,6 @@
 typedef struct _ClutterListModelIter    ClutterListModelIter;
 typedef struct _ClutterModelIterClass   ClutterListModelIterClass;
 
-#define CLUTTER_LIST_MODEL_GET_PRIVATE(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_LIST_MODEL, ClutterListModelPrivate))
-
 struct _ClutterListModelPrivate
 {
   GSequence *sequence;
@@ -102,7 +100,7 @@ GType clutter_list_model_iter_get_type (void);
 
 G_DEFINE_TYPE (ClutterListModelIter,
                clutter_list_model_iter,
-               CLUTTER_TYPE_MODEL_ITER);
+               CLUTTER_TYPE_MODEL_ITER)
 
 static void
 clutter_list_model_iter_get_value (ClutterModelIter *iter,
@@ -434,7 +432,7 @@ clutter_list_model_iter_init (ClutterListModelIter *iter)
  * ClutterListModel
  */
 
-G_DEFINE_TYPE (ClutterListModel, clutter_list_model, CLUTTER_TYPE_MODEL);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterListModel, clutter_list_model, CLUTTER_TYPE_MODEL)
 
 static ClutterModelIter *
 clutter_list_model_get_iter_at_row (ClutterModel *model,
@@ -698,24 +696,21 @@ clutter_list_model_class_init (ClutterListModelClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterModelClass *model_class = CLUTTER_MODEL_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterListModelPrivate));
-
   gobject_class->finalize = clutter_list_model_finalize;
   gobject_class->dispose = clutter_list_model_dispose;
 
   model_class->get_iter_at_row = clutter_list_model_get_iter_at_row;
-  model_class->insert_row      = clutter_list_model_insert_row;
-  model_class->remove_row      = clutter_list_model_remove_row;
-  model_class->resort          = clutter_list_model_resort;
-  model_class->get_n_rows      = clutter_list_model_get_n_rows;
-
-  model_class->row_removed     = clutter_list_model_row_removed;
+  model_class->insert_row = clutter_list_model_insert_row;
+  model_class->remove_row = clutter_list_model_remove_row;
+  model_class->resort = clutter_list_model_resort;
+  model_class->get_n_rows = clutter_list_model_get_n_rows;
+  model_class->row_removed = clutter_list_model_row_removed;
 }
 
 static void
 clutter_list_model_init (ClutterListModel *model)
 {
-  model->priv = CLUTTER_LIST_MODEL_GET_PRIVATE (model);
+  model->priv = clutter_list_model_get_instance_private (model);
 
   model->priv->sequence = g_sequence_new (NULL);
   model->priv->temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,

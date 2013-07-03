@@ -67,7 +67,7 @@ static GParamSpec *obj_props[PROP_LAST] = { NULL, };
 
 static GQuark quark_animatable_set = 0;
 
-G_DEFINE_ABSTRACT_TYPE (ClutterTransition, clutter_transition, CLUTTER_TYPE_TIMELINE)
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterTransition, clutter_transition, CLUTTER_TYPE_TIMELINE)
 
 static void
 clutter_transition_attach (ClutterTransition *transition,
@@ -220,8 +220,6 @@ clutter_transition_class_init (ClutterTransitionClass *klass)
   quark_animatable_set =
     g_quark_from_static_string ("-clutter-transition-animatable-set");
 
-  g_type_class_add_private (klass, sizeof (ClutterTransitionPrivate));
-
   klass->compute_value = clutter_transition_real_compute_value;
   klass->attached = clutter_transition_real_attached;
   klass->detached = clutter_transition_real_detached;
@@ -291,8 +289,7 @@ clutter_transition_class_init (ClutterTransitionClass *klass)
 static void
 clutter_transition_init (ClutterTransition *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_TRANSITION,
-                                            ClutterTransitionPrivate);
+  self->priv = clutter_transition_get_instance_private (self);
 }
 
 /**

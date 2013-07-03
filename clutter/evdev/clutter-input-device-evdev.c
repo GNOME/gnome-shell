@@ -33,11 +33,6 @@
 typedef struct _ClutterInputDeviceClass        ClutterInputDeviceEvdevClass;
 typedef struct _ClutterInputDeviceEvdevPrivate ClutterInputDeviceEvdevPrivate;
 
-#define INPUT_DEVICE_EVDEV_PRIVATE(o)                             \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o),                              \
-                                CLUTTER_TYPE_INPUT_DEVICE_EVDEV,  \
-                                ClutterInputDeviceEvdevPrivate))
-
 enum
 {
   PROP_0,
@@ -61,9 +56,9 @@ struct _ClutterInputDeviceEvdev
   ClutterInputDeviceEvdevPrivate *priv;
 };
 
-G_DEFINE_TYPE (ClutterInputDeviceEvdev,
-               clutter_input_device_evdev,
-               CLUTTER_TYPE_INPUT_DEVICE)
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterInputDeviceEvdev,
+                            clutter_input_device_evdev,
+                            CLUTTER_TYPE_INPUT_DEVICE)
 
 static GParamSpec *obj_props[PROP_LAST];
 
@@ -140,8 +135,6 @@ clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GParamSpec *pspec;
 
-  g_type_class_add_private (klass, sizeof (ClutterInputDeviceEvdevPrivate));
-
   object_class->get_property = clutter_input_device_evdev_get_property;
   object_class->set_property = clutter_input_device_evdev_set_property;
   object_class->finalize = clutter_input_device_evdev_finalize;
@@ -183,7 +176,7 @@ clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
 static void
 clutter_input_device_evdev_init (ClutterInputDeviceEvdev *self)
 {
-  self->priv = INPUT_DEVICE_EVDEV_PRIVATE (self);
+  self->priv = clutter_input_device_evdev_get_instance_private (self);
 }
 
 ClutterInputDeviceEvdev *

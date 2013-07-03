@@ -66,7 +66,6 @@
 #define CLUTTER_TYPE_GRID_CHILD          (clutter_grid_child_get_type ())
 #define CLUTTER_GRID_CHILD(obj)          (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_GRID_CHILD, ClutterGridChild))
 #define CLUTTER_IS_GRID_CHILD(obj)       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_GRID_CHILD))
-#define CLUTTER_GRID_LAYOUT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_GRID_LAYOUT, ClutterGridLayoutPrivate))
 
 typedef struct _ClutterGridChild        ClutterGridChild;
 typedef struct _ClutterLayoutMetaClass  ClutterGridChildClass;
@@ -173,9 +172,11 @@ static GParamSpec *child_props[PROP_CHILD_LAST];
 GType clutter_grid_child_get_type (void);
 
 G_DEFINE_TYPE (ClutterGridChild, clutter_grid_child,
-               CLUTTER_TYPE_LAYOUT_META);
-G_DEFINE_TYPE (ClutterGridLayout, clutter_grid_layout,
-               CLUTTER_TYPE_LAYOUT_MANAGER);
+               CLUTTER_TYPE_LAYOUT_META)
+
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterGridLayout,
+                            clutter_grid_layout,
+                            CLUTTER_TYPE_LAYOUT_MANAGER)
 
 
 #define GET_GRID_CHILD(grid, child) \
@@ -1527,8 +1528,6 @@ clutter_grid_layout_class_init (ClutterGridLayoutClass *klass)
 
   layout_class = CLUTTER_LAYOUT_MANAGER_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterGridLayoutPrivate));
-
   object_class->set_property = clutter_grid_layout_set_property;
   object_class->get_property = clutter_grid_layout_get_property;
 
@@ -1616,17 +1615,15 @@ clutter_grid_layout_class_init (ClutterGridLayoutClass *klass)
 static void
 clutter_grid_layout_init (ClutterGridLayout *self)
 {
-  ClutterGridLayoutPrivate *priv;
+  self->priv = clutter_grid_layout_get_instance_private (self);
 
-  self->priv = priv = CLUTTER_GRID_LAYOUT_GET_PRIVATE (self);
+  self->priv->orientation = CLUTTER_ORIENTATION_HORIZONTAL;
 
-  priv->orientation = CLUTTER_ORIENTATION_HORIZONTAL;
+  self->priv->linedata[0].spacing = 0;
+  self->priv->linedata[1].spacing = 0;
 
-  priv->linedata[0].spacing = 0;
-  priv->linedata[1].spacing = 0;
-
-  priv->linedata[0].homogeneous = FALSE;
-  priv->linedata[1].homogeneous = FALSE;
+  self->priv->linedata[0].homogeneous = FALSE;
+  self->priv->linedata[1].homogeneous = FALSE;
 }
 
 /**

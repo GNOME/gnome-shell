@@ -170,13 +170,6 @@
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
 
-static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
-
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE
-        (ClutterModel, clutter_model, G_TYPE_OBJECT,
-         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                clutter_scriptable_iface_init));
-
 enum
 {
   PROP_0,
@@ -197,9 +190,6 @@ enum
 };
 
 static guint model_signals[LAST_SIGNAL] = { 0, };
-
-#define CLUTTER_MODEL_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_MODEL, ClutterModelPrivate))
 
 struct _ClutterModelPrivate
 {
@@ -225,6 +215,13 @@ struct _ClutterModelPrivate
   gpointer                sort_data;
   GDestroyNotify          sort_notify;
 };
+
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterModel, clutter_model, G_TYPE_OBJECT,
+                                  G_ADD_PRIVATE (ClutterModel)
+                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                         clutter_scriptable_iface_init))
 
 static GType
 clutter_model_real_get_column_type (ClutterModel *model,
@@ -347,8 +344,6 @@ clutter_model_class_init (ClutterModelClass *klass)
   gobject_class->get_property = clutter_model_get_property;
   gobject_class->finalize = clutter_model_finalize;
 
-  g_type_class_add_private (gobject_class, sizeof (ClutterModelPrivate));
-
   klass->get_column_name  = clutter_model_real_get_column_name;
   klass->get_column_type  = clutter_model_real_get_column_type;
   klass->get_n_columns    = clutter_model_real_get_n_columns;
@@ -470,7 +465,7 @@ clutter_model_init (ClutterModel *self)
 {
   ClutterModelPrivate *priv;
   
-  self->priv = priv = CLUTTER_MODEL_GET_PRIVATE (self);
+  self->priv = priv = clutter_model_get_instance_private (self);
 
   priv->n_columns = -1;
   priv->column_types = NULL;
@@ -1757,18 +1752,14 @@ clutter_model_get_filter_set (ClutterModel *model)
  * #ClutterModelIter is available since Clutter 0.6
  */
 
-G_DEFINE_ABSTRACT_TYPE (ClutterModelIter, clutter_model_iter, G_TYPE_OBJECT);
-
-#define CLUTTER_MODEL_ITER_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
-  CLUTTER_TYPE_MODEL_ITER, ClutterModelIterPrivate))
-
 struct _ClutterModelIterPrivate
 {
   ClutterModel  *model;
 
   gint row;
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterModelIter, clutter_model_iter, G_TYPE_OBJECT)
 
 enum
 {
@@ -1964,19 +1955,12 @@ clutter_model_iter_class_init (ClutterModelIterClass *klass)
                              0, G_MAXUINT, 0,
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, ITER_PROP_ROW, pspec);
-  
-  g_type_class_add_private (gobject_class, sizeof (ClutterModelIterPrivate));
 }
 
 static void
 clutter_model_iter_init (ClutterModelIter *self)
 {
-  ClutterModelIterPrivate *priv;
-  
-  self->priv = priv = CLUTTER_MODEL_ITER_GET_PRIVATE (self);
-
-  priv->model = NULL;
-  priv->row = 0;
+  self->priv = clutter_model_iter_get_instance_private (self);
 }
 
 /*

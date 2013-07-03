@@ -50,7 +50,12 @@
 
 #include "cogl/cogl.h"
 
-G_DEFINE_TYPE (ClutterClone, clutter_clone, CLUTTER_TYPE_ACTOR);
+struct _ClutterClonePrivate
+{
+  ClutterActor *clone_source;
+};
+
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterClone, clutter_clone, CLUTTER_TYPE_ACTOR)
 
 enum
 {
@@ -62,13 +67,6 @@ enum
 };
 
 static GParamSpec *obj_props[PROP_LAST];
-
-#define CLUTTER_CLONE_GET_PRIVATE(obj)  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_CLONE, ClutterClonePrivate))
-
-struct _ClutterClonePrivate
-{
-  ClutterActor *clone_source;
-};
 
 static void clutter_clone_set_source_internal (ClutterClone *clone,
 					       ClutterActor *source);
@@ -319,8 +317,6 @@ clutter_clone_class_init (ClutterCloneClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  g_type_class_add_private (gobject_class, sizeof (ClutterClonePrivate));
-
   actor_class->apply_transform = clutter_clone_apply_transform;
   actor_class->paint = clutter_clone_paint;
   actor_class->get_paint_volume = clutter_clone_get_paint_volume;
@@ -354,11 +350,7 @@ clutter_clone_class_init (ClutterCloneClass *klass)
 static void
 clutter_clone_init (ClutterClone *self)
 {
-  ClutterClonePrivate *priv;
-
-  self->priv = priv = CLUTTER_CLONE_GET_PRIVATE (self);
-
-  priv->clone_source = NULL;
+  self->priv = clutter_clone_get_instance_private (self);
 }
 
 /**

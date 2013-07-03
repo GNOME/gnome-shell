@@ -101,6 +101,7 @@ static guint canvas_signals[LAST_SIGNAL] = { 0, };
 static void clutter_content_iface_init (ClutterContentIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterCanvas, clutter_canvas, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (ClutterCanvas)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTENT,
                                                 clutter_content_iface_init))
 
@@ -211,8 +212,6 @@ clutter_canvas_class_init (ClutterCanvasClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterCanvasPrivate));
-
   /**
    * ClutterCanvas:width:
    *
@@ -286,9 +285,7 @@ clutter_canvas_class_init (ClutterCanvasClass *klass)
 static void
 clutter_canvas_init (ClutterCanvas *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_CANVAS,
-                                            ClutterCanvasPrivate);
-
+  self->priv = clutter_canvas_get_instance_private (self);
   self->priv->width = -1;
   self->priv->height = -1;
 }

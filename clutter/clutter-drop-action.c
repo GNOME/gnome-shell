@@ -108,7 +108,7 @@ enum
 
 static guint drop_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (ClutterDropAction, clutter_drop_action, CLUTTER_TYPE_ACTION)
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterDropAction, clutter_drop_action, CLUTTER_TYPE_ACTION)
 
 static void
 drop_target_free (gpointer _data)
@@ -384,8 +384,6 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
 {
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterDropActionPrivate));
-
   meta_class->set_actor = clutter_drop_action_set_actor;
 
   klass->can_drop = clutter_drop_action_real_can_drop;
@@ -518,8 +516,7 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
 static void
 clutter_drop_action_init (ClutterDropAction *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_DROP_ACTION,
-                                            ClutterDropActionPrivate);
+  self->priv = clutter_drop_action_get_instance_private (self);
 }
 
 /**

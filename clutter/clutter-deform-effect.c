@@ -102,9 +102,9 @@ enum
 
 static GParamSpec *obj_props[PROP_LAST];
 
-G_DEFINE_ABSTRACT_TYPE (ClutterDeformEffect,
-                        clutter_deform_effect,
-                        CLUTTER_TYPE_OFFSCREEN_EFFECT);
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterDeformEffect,
+                                     clutter_deform_effect,
+                                     CLUTTER_TYPE_OFFSCREEN_EFFECT)
 
 static void
 clutter_deform_effect_real_deform_vertex (ClutterDeformEffect *effect,
@@ -577,8 +577,6 @@ clutter_deform_effect_class_init (ClutterDeformEffectClass *klass)
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
   ClutterOffscreenEffectClass *offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterDeformEffectPrivate));
-
   klass->deform_vertex = clutter_deform_effect_real_deform_vertex;
 
   /**
@@ -645,9 +643,7 @@ clutter_deform_effect_class_init (ClutterDeformEffectClass *klass)
 static void
 clutter_deform_effect_init (ClutterDeformEffect *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_DEFORM_EFFECT,
-                                            ClutterDeformEffectPrivate);
-
+  self->priv = clutter_deform_effect_get_instance_private (self);
   self->priv->x_tiles = self->priv->y_tiles = DEFAULT_N_TILES;
   self->priv->back_pipeline = NULL;
 

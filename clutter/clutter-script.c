@@ -287,7 +287,7 @@ struct _ClutterScriptPrivate
   guint is_filename : 1;
 };
 
-G_DEFINE_TYPE (ClutterScript, clutter_script, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterScript, clutter_script, G_TYPE_OBJECT)
 
 static GType
 clutter_script_real_get_type_from_name (ClutterScript *script,
@@ -448,8 +448,6 @@ clutter_script_class_init (ClutterScriptClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterScriptPrivate));
-
   klass->get_type_from_name = clutter_script_real_get_type_from_name;
 
   /**
@@ -515,7 +513,7 @@ clutter_script_init (ClutterScript *script)
 {
   ClutterScriptPrivate *priv;
 
-  script->priv = priv = CLUTTER_SCRIPT_GET_PRIVATE (script);
+  script->priv = priv = clutter_script_get_instance_private (script);
 
   priv->parser = g_object_new (CLUTTER_TYPE_SCRIPT_PARSER, NULL);
   priv->parser->script = script;

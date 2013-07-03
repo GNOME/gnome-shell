@@ -79,15 +79,6 @@
 
 #include "cogl/cogl.h"
 
-static void clutter_container_iface_init (ClutterContainerIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                clutter_container_iface_init))
-
-#define CLUTTER_STAGE_GET_PRIVATE(obj) \
-(G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_STAGE, ClutterStagePrivate))
-
 /* <private>
  * ClutterStageHint:
  * @CLUTTER_STAGE_NONE: No hint set
@@ -217,6 +208,13 @@ static const ClutterColor default_stage_color = { 255, 255, 255, 255 };
 static void clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage);
 static void free_queue_redraw_entry (ClutterStageQueueRedrawEntry *entry);
 static void clutter_stage_invoke_paint_callback (ClutterStage *stage);
+
+static void clutter_container_iface_init (ClutterContainerIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP,
+                         G_ADD_PRIVATE (ClutterStage)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
+                                                clutter_container_iface_init))
 
 static void
 clutter_stage_real_add (ClutterContainer *container,
@@ -2244,8 +2242,6 @@ clutter_stage_class_init (ClutterStageClass *klass)
   klass->activate = clutter_stage_real_activate;
   klass->deactivate = clutter_stage_real_deactivate;
   klass->delete_event = clutter_stage_real_delete_event;
-
-  g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }
 
 static void
@@ -2266,7 +2262,7 @@ clutter_stage_init (ClutterStage *self)
   /* a stage is a top-level object */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IS_TOPLEVEL);
 
-  self->priv = priv = CLUTTER_STAGE_GET_PRIVATE (self);
+  self->priv = priv = clutter_stage_get_instance_private (self);
 
   CLUTTER_NOTE (BACKEND, "Creating stage from the default backend");
   backend = clutter_get_default_backend ();

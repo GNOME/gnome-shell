@@ -345,11 +345,6 @@
                    G_OBJECT_TYPE_NAME (_obj),                           \
                    (method));                           } G_STMT_END
 
-struct _ClutterLayoutManagerPrivate
-{
-  gpointer dummy;
-};
-
 enum
 {
   LAYOUT_CHANGED,
@@ -359,7 +354,7 @@ enum
 
 G_DEFINE_ABSTRACT_TYPE (ClutterLayoutManager,
                         clutter_layout_manager,
-                        G_TYPE_INITIALLY_UNOWNED);
+                        G_TYPE_INITIALLY_UNOWNED)
 
 static GQuark quark_layout_meta  = 0;
 static GQuark quark_layout_alpha = 0;
@@ -595,8 +590,6 @@ clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
   quark_layout_alpha =
     g_quark_from_static_string ("clutter-layout-manager-alpha");
 
-  g_type_class_add_private (klass, sizeof (ClutterLayoutManagerPrivate));
-
   klass->get_preferred_width = layout_manager_real_get_preferred_width;
   klass->get_preferred_height = layout_manager_real_get_preferred_height;
   klass->allocate = layout_manager_real_allocate;
@@ -652,9 +645,6 @@ clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
 static void
 clutter_layout_manager_init (ClutterLayoutManager *manager)
 {
-  manager->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (manager, CLUTTER_TYPE_LAYOUT_MANAGER,
-                                 ClutterLayoutManagerPrivate);
 }
 
 /**

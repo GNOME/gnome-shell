@@ -60,7 +60,7 @@ enum
 
 static GParamSpec *obj_props[PROP_LAST] = { NULL, };
 
-G_DEFINE_TYPE (ClutterPropertyTransition, clutter_property_transition, CLUTTER_TYPE_TRANSITION)
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterPropertyTransition, clutter_property_transition, CLUTTER_TYPE_TRANSITION)
 
 static inline void
 clutter_property_transition_ensure_interval (ClutterPropertyTransition *transition,
@@ -249,8 +249,6 @@ clutter_property_transition_class_init (ClutterPropertyTransitionClass *klass)
   ClutterTransitionClass *transition_class = CLUTTER_TRANSITION_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterPropertyTransitionPrivate));
-
   transition_class->attached = clutter_property_transition_attached;
   transition_class->detached = clutter_property_transition_detached;
   transition_class->compute_value = clutter_property_transition_compute_value;
@@ -279,9 +277,7 @@ clutter_property_transition_class_init (ClutterPropertyTransitionClass *klass)
 static void
 clutter_property_transition_init (ClutterPropertyTransition *self)
 {
-  self->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_PROPERTY_TRANSITION,
-                                 ClutterPropertyTransitionPrivate);
+  self->priv = clutter_property_transition_get_instance_private (self);
 }
 
 /**

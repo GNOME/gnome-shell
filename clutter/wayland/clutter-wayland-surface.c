@@ -78,9 +78,9 @@ struct _ClutterWaylandSurfacePrivate
   CoglPipeline *pipeline;
 };
 
-G_DEFINE_TYPE (ClutterWaylandSurface,
-               clutter_wayland_surface,
-               CLUTTER_TYPE_ACTOR);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterWaylandSurface,
+                            clutter_wayland_surface,
+                            CLUTTER_TYPE_ACTOR)
 
 static gboolean
 clutter_wayland_surface_get_paint_volume (ClutterActor *self,
@@ -156,11 +156,9 @@ opacity_change_cb (ClutterWaylandSurface *self)
 static void
 clutter_wayland_surface_init (ClutterWaylandSurface *self)
 {
-  ClutterWaylandSurfacePrivate *priv =
-      G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                   CLUTTER_WAYLAND_TYPE_SURFACE,
-                                   ClutterWaylandSurfacePrivate);
-
+  ClutterWaylandSurfacePrivate *priv;
+  
+  priv = clutter_wayland_surface_get_instance_private (self);
   priv->surface = NULL;
   priv->width = 0;
   priv->height = 0;
@@ -404,8 +402,6 @@ clutter_wayland_surface_class_init (ClutterWaylandSurfaceClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec *pspec;
-
-  g_type_class_add_private (klass, sizeof (ClutterWaylandSurfacePrivate));
 
   actor_class->get_paint_volume = clutter_wayland_surface_get_paint_volume;
   actor_class->paint = clutter_wayland_surface_paint;

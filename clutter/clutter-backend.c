@@ -93,12 +93,7 @@
 #include "wayland/clutter-wayland-compositor.h"
 #endif
 
-G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);
-
 #define DEFAULT_FONT_NAME       "Sans 10"
-
-#define CLUTTER_BACKEND_GET_PRIVATE(obj) \
-(G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_BACKEND, ClutterBackendPrivate))
 
 struct _ClutterBackendPrivate
 {
@@ -120,6 +115,8 @@ enum
 
   LAST_SIGNAL
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterBackend, clutter_backend, G_TYPE_OBJECT)
 
 static guint backend_signals[LAST_SIGNAL] = { 0, };
 
@@ -591,8 +588,6 @@ clutter_backend_class_init (ClutterBackendClass *klass)
   gobject_class->dispose = clutter_backend_dispose;
   gobject_class->finalize = clutter_backend_finalize;
 
-  g_type_class_add_private (gobject_class, sizeof (ClutterBackendPrivate));
-
   klass->stage_window_type = G_TYPE_INVALID;
 
   /**
@@ -662,14 +657,11 @@ clutter_backend_class_init (ClutterBackendClass *klass)
 }
 
 static void
-clutter_backend_init (ClutterBackend *backend)
+clutter_backend_init (ClutterBackend *self)
 {
-  ClutterBackendPrivate *priv;
-
-  priv = backend->priv = CLUTTER_BACKEND_GET_PRIVATE (backend);
-
-  priv->units_per_em = -1.0;
-  priv->units_serial = 1;
+  self->priv = clutter_backend_get_instance_private (self);
+  self->priv->units_per_em = -1.0;
+  self->priv->units_serial = 1;
 }
 
 void

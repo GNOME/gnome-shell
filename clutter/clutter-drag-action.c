@@ -150,7 +150,7 @@ static gboolean on_captured_event (ClutterActor      *stage,
                                    ClutterEvent      *event,
                                    ClutterDragAction *action);
 
-G_DEFINE_TYPE (ClutterDragAction, clutter_drag_action, CLUTTER_TYPE_ACTION);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterDragAction, clutter_drag_action, CLUTTER_TYPE_ACTION)
 
 static void
 get_drag_threshold (ClutterDragAction *action,
@@ -710,8 +710,6 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterDragActionPrivate));
-
   meta_class->set_actor = clutter_drag_action_set_actor;
 
   klass->drag_progress = clutter_drag_action_real_drag_progress;
@@ -991,8 +989,7 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
 static void
 clutter_drag_action_init (ClutterDragAction *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_DRAG_ACTION,
-                                            ClutterDragActionPrivate);
+  self->priv = clutter_drag_action_get_instance_private (self);
 }
 
 /**

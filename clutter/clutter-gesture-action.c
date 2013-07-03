@@ -150,7 +150,7 @@ enum
 static GParamSpec *gesture_props[PROP_LAST];
 static guint gesture_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (ClutterGestureAction, clutter_gesture_action, CLUTTER_TYPE_ACTION);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterGestureAction, clutter_gesture_action, CLUTTER_TYPE_ACTION)
 
 static GesturePoint *
 gesture_register_point (ClutterGestureAction *action, ClutterEvent *event)
@@ -624,8 +624,6 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterGestureActionPrivate));
-
   gobject_class->finalize = clutter_gesture_action_finalize;
   gobject_class->set_property = clutter_gesture_action_set_property;
   gobject_class->get_property = clutter_gesture_action_get_property;
@@ -750,8 +748,7 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
 static void
 clutter_gesture_action_init (ClutterGestureAction *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_GESTURE_ACTION,
-                                            ClutterGestureActionPrivate);
+  self->priv = clutter_gesture_action_get_instance_private (self);
 
   self->priv->points = g_array_sized_new (FALSE, TRUE, sizeof (GesturePoint), 3);
   g_array_set_clear_func (self->priv->points, (GDestroyNotify) gesture_point_unset);

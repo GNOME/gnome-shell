@@ -62,8 +62,7 @@ enum
 
 static guint rotate_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (ClutterRotateAction, clutter_rotate_action,
-               CLUTTER_TYPE_GESTURE_ACTION);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterRotateAction, clutter_rotate_action, CLUTTER_TYPE_GESTURE_ACTION)
 
 static gboolean
 clutter_rotate_action_real_rotate (ClutterRotateAction *action,
@@ -178,8 +177,6 @@ clutter_rotate_action_class_init (ClutterRotateActionClass *klass)
   ClutterGestureActionClass *gesture_class =
     CLUTTER_GESTURE_ACTION_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterRotateActionPrivate));
-
   klass->rotate = clutter_rotate_action_real_rotate;
 
   gesture_class->gesture_begin = clutter_rotate_action_gesture_begin;
@@ -217,8 +214,7 @@ clutter_rotate_action_class_init (ClutterRotateActionClass *klass)
 static void
 clutter_rotate_action_init (ClutterRotateAction *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_ROTATE_ACTION,
-                                            ClutterRotateActionPrivate);
+  self->priv = clutter_rotate_action_get_instance_private (self);
 
   clutter_gesture_action_set_n_touch_points (CLUTTER_GESTURE_ACTION (self), 2);
 }

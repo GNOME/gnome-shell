@@ -171,6 +171,7 @@ static GParamSpec *obj_props[PROP_LAST];
 G_DEFINE_TYPE_WITH_CODE (ClutterShaderEffect,
                          clutter_shader_effect,
                          CLUTTER_TYPE_OFFSCREEN_EFFECT,
+                         G_ADD_PRIVATE (ClutterShaderEffect)
                          g_type_add_class_private (g_define_type_id,
                                                    sizeof (ClutterShaderEffectClassPrivate)))
 
@@ -470,8 +471,6 @@ clutter_shader_effect_class_init (ClutterShaderEffectClass *klass)
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterShaderEffectPrivate));
-
   /**
    * ClutterShaderEffect:shader-type:
    *
@@ -503,9 +502,7 @@ clutter_shader_effect_class_init (ClutterShaderEffectClass *klass)
 static void
 clutter_shader_effect_init (ClutterShaderEffect *effect)
 {
-  effect->priv = G_TYPE_INSTANCE_GET_PRIVATE (effect,
-                                              CLUTTER_TYPE_SHADER_EFFECT,
-                                              ClutterShaderEffectPrivate);
+  effect->priv = clutter_shader_effect_get_instance_private (effect);
 }
 
 /**

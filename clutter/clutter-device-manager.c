@@ -48,8 +48,6 @@
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
-#define CLUTTER_DEVICE_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_DEVICE_MANAGER, ClutterDeviceManagerPrivate))
-
 struct _ClutterDeviceManagerPrivate
 {
   /* back-pointer to the backend */
@@ -77,9 +75,9 @@ enum
 
 static guint manager_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_ABSTRACT_TYPE (ClutterDeviceManager,
-                        clutter_device_manager,
-                        G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterDeviceManager,
+                                     clutter_device_manager,
+                                     G_TYPE_OBJECT)
 
 static void
 clutter_device_manager_set_property (GObject      *gobject,
@@ -123,8 +121,6 @@ static void
 clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (ClutterDeviceManagerPrivate));
 
   obj_props[PROP_BACKEND] =
     g_param_spec_object ("backend",
@@ -183,7 +179,7 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
 static void
 clutter_device_manager_init (ClutterDeviceManager *self)
 {
-  self->priv = CLUTTER_DEVICE_MANAGER_GET_PRIVATE (self);
+  self->priv = clutter_device_manager_get_instance_private (self);
 }
 
 /**

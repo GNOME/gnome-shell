@@ -75,9 +75,9 @@ enum
 
 static GParamSpec *obj_props[PROP_LAST];
 
-G_DEFINE_ABSTRACT_TYPE (ClutterActorMeta,
-                        clutter_actor_meta,
-                        G_TYPE_INITIALLY_UNOWNED);
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterActorMeta,
+                                     clutter_actor_meta,
+                                     G_TYPE_INITIALLY_UNOWNED)
 
 static void
 on_actor_destroy (ClutterActor     *actor,
@@ -177,8 +177,6 @@ clutter_actor_meta_class_init (ClutterActorMetaClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterActorMetaPrivate));
-
   klass->set_actor = clutter_actor_meta_real_set_actor;
 
   /**
@@ -234,12 +232,8 @@ clutter_actor_meta_class_init (ClutterActorMetaClass *klass)
 void
 clutter_actor_meta_init (ClutterActorMeta *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                            CLUTTER_TYPE_ACTOR_META,
-                                            ClutterActorMetaPrivate);
-
+  self->priv = clutter_actor_meta_get_instance_private (self);
   self->priv->is_enabled = TRUE;
-
   self->priv->priority = CLUTTER_ACTOR_META_PRIORITY_DEFAULT;
 }
 

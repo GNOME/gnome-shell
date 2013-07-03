@@ -127,8 +127,7 @@ enum
 
 static guint pan_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (ClutterPanAction, clutter_pan_action,
-               CLUTTER_TYPE_GESTURE_ACTION);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterPanAction, clutter_pan_action, CLUTTER_TYPE_GESTURE_ACTION)
 
 static void
 emit_pan (ClutterPanAction *self,
@@ -424,8 +423,6 @@ clutter_pan_action_class_init (ClutterPanActionClass *klass)
   ClutterGestureActionClass *gesture_class =
       CLUTTER_GESTURE_ACTION_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterPanActionPrivate));
-
   klass->pan = clutter_pan_action_real_pan;
 
   gesture_class->gesture_prepare = gesture_prepare;
@@ -559,12 +556,10 @@ clutter_pan_action_class_init (ClutterPanActionClass *klass)
 static void
 clutter_pan_action_init (ClutterPanAction *self)
 {
-  ClutterPanActionPrivate *priv = self->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_PAN_ACTION,
-                                 ClutterPanActionPrivate);
-  priv->deceleration_rate = default_deceleration_rate;
-  priv->acceleration_factor = default_acceleration_factor;
-  priv->state = PAN_STATE_INACTIVE;
+  self->priv = clutter_pan_action_get_instance_private (self);
+  self->priv->deceleration_rate = default_deceleration_rate;
+  self->priv->acceleration_factor = default_acceleration_factor;
+  self->priv->state = PAN_STATE_INACTIVE;
 }
 
 /**

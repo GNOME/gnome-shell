@@ -108,9 +108,9 @@ struct _ClutterOffscreenEffectPrivate
   CoglMatrix last_matrix_drawn;
 };
 
-G_DEFINE_ABSTRACT_TYPE (ClutterOffscreenEffect,
-                        clutter_offscreen_effect,
-                        CLUTTER_TYPE_EFFECT);
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterOffscreenEffect,
+                                     clutter_offscreen_effect,
+                                     CLUTTER_TYPE_EFFECT)
 
 static void
 clutter_offscreen_effect_set_actor (ClutterActorMeta *meta,
@@ -483,8 +483,6 @@ clutter_offscreen_effect_class_init (ClutterOffscreenEffectClass *klass)
   ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterOffscreenEffectPrivate));
-
   klass->create_texture = clutter_offscreen_effect_real_create_texture;
   klass->paint_target = clutter_offscreen_effect_real_paint_target;
 
@@ -500,9 +498,7 @@ clutter_offscreen_effect_class_init (ClutterOffscreenEffectClass *klass)
 static void
 clutter_offscreen_effect_init (ClutterOffscreenEffect *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                            CLUTTER_TYPE_OFFSCREEN_EFFECT,
-                                            ClutterOffscreenEffectPrivate);
+  self->priv = clutter_offscreen_effect_get_instance_private (self);
 }
 
 /**

@@ -86,8 +86,6 @@ enum
   N_VALUES
 };
 
-#define CLUTTER_INTERVAL_GET_PRIVATE(obj)  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_INTERVAL, ClutterIntervalPrivate))
-
 struct _ClutterIntervalPrivate
 {
   GType value_type;
@@ -95,7 +93,7 @@ struct _ClutterIntervalPrivate
   GValue *values;
 };
 
-G_DEFINE_TYPE (ClutterInterval, clutter_interval, G_TYPE_INITIALLY_UNOWNED);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterInterval, clutter_interval, G_TYPE_INITIALLY_UNOWNED)
 
 static gboolean
 clutter_interval_real_validate (ClutterInterval *interval,
@@ -420,7 +418,8 @@ clutter_interval_set_property (GObject      *gobject,
                                const GValue *value,
                                GParamSpec   *pspec)
 {
-  ClutterIntervalPrivate *priv = CLUTTER_INTERVAL_GET_PRIVATE (gobject);
+  ClutterInterval *self = CLUTTER_INTERVAL (gobject);
+  ClutterIntervalPrivate *priv = clutter_interval_get_instance_private (self);
 
   switch (prop_id)
     {
@@ -430,16 +429,14 @@ clutter_interval_set_property (GObject      *gobject,
 
     case PROP_INITIAL:
       if (g_value_get_boxed (value) != NULL)
-        clutter_interval_set_initial_value (CLUTTER_INTERVAL (gobject),
-                                            g_value_get_boxed (value));
+        clutter_interval_set_initial_value (self, g_value_get_boxed (value));
       else if (G_IS_VALUE (&priv->values[INITIAL]))
         g_value_unset (&priv->values[INITIAL]);
       break;
 
     case PROP_FINAL:
       if (g_value_get_boxed (value) != NULL)
-        clutter_interval_set_final_value (CLUTTER_INTERVAL (gobject),
-                                          g_value_get_boxed (value));
+        clutter_interval_set_final_value (self, g_value_get_boxed (value));
       else if (G_IS_VALUE (&priv->values[FINAL]))
         g_value_unset (&priv->values[FINAL]);
       break;
@@ -456,7 +453,9 @@ clutter_interval_get_property (GObject    *gobject,
                                GValue     *value,
                                GParamSpec *pspec)
 {
-  ClutterIntervalPrivate *priv = CLUTTER_INTERVAL_GET_PRIVATE (gobject);
+  ClutterIntervalPrivate *priv;
+  
+  priv = clutter_interval_get_instance_private (CLUTTER_INTERVAL (gobject));
 
   switch (prop_id)
     {
@@ -484,8 +483,6 @@ static void
 clutter_interval_class_init (ClutterIntervalClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (ClutterIntervalPrivate));
 
   klass->validate = clutter_interval_real_validate;
   klass->compute_value = clutter_interval_real_compute_value;
@@ -546,12 +543,10 @@ clutter_interval_class_init (ClutterIntervalClass *klass)
 static void
 clutter_interval_init (ClutterInterval *self)
 {
-  ClutterIntervalPrivate *priv;
+  self->priv = clutter_interval_get_instance_private (self);
 
-  self->priv = priv = CLUTTER_INTERVAL_GET_PRIVATE (self);
-
-  priv->value_type = G_TYPE_INVALID;
-  priv->values = g_malloc0 (sizeof (GValue) * N_VALUES);
+  self->priv->value_type = G_TYPE_INVALID;
+  self->priv->values = g_malloc0 (sizeof (GValue) * N_VALUES);
 }
 
 static inline void

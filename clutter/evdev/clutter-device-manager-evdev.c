@@ -51,15 +51,6 @@
 
 #include "clutter-device-manager-evdev.h"
 
-#define CLUTTER_DEVICE_MANAGER_EVDEV_GET_PRIVATE(obj)               \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj),                              \
-                                CLUTTER_TYPE_DEVICE_MANAGER_EVDEV,  \
-                                ClutterDeviceManagerEvdevPrivate))
-
-G_DEFINE_TYPE (ClutterDeviceManagerEvdev,
-               clutter_device_manager_evdev,
-               CLUTTER_TYPE_DEVICE_MANAGER);
-
 struct _ClutterDeviceManagerEvdevPrivate
 {
   GUdevClient *udev_client;
@@ -77,6 +68,10 @@ struct _ClutterDeviceManagerEvdevPrivate
   guint stage_added_handler;
   guint stage_removed_handler;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterDeviceManagerEvdev,
+                            clutter_device_manager_evdev,
+                            CLUTTER_TYPE_DEVICE_MANAGER)
 
 static const gchar *subsystems[] = { "input", NULL };
 
@@ -914,10 +909,8 @@ clutter_device_manager_evdev_finalize (GObject *object)
 static void
 clutter_device_manager_evdev_class_init (ClutterDeviceManagerEvdevClass *klass)
 {
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterDeviceManagerClass *manager_class;
-  GObjectClass *gobject_class = (GObjectClass *) klass;
-
-  g_type_class_add_private (klass, sizeof (ClutterDeviceManagerEvdevPrivate));
 
   gobject_class->constructed = clutter_device_manager_evdev_constructed;
   gobject_class->finalize = clutter_device_manager_evdev_finalize;
@@ -989,7 +982,7 @@ clutter_device_manager_evdev_init (ClutterDeviceManagerEvdev *self)
 {
   ClutterDeviceManagerEvdevPrivate *priv;
 
-  priv = self->priv = CLUTTER_DEVICE_MANAGER_EVDEV_GET_PRIVATE (self);
+  priv = self->priv = clutter_device_manager_evdev_get_instance_private (self);
 
   priv->stage_manager = clutter_stage_manager_get_default ();
   g_object_ref (priv->stage_manager);

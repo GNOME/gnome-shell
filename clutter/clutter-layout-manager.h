@@ -40,7 +40,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_LAYOUT_MANAGER_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_LAYOUT_MANAGER))
 #define CLUTTER_LAYOUT_MANAGER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_LAYOUT_MANAGER, ClutterLayoutManagerClass))
 
-typedef struct _ClutterLayoutManagerPrivate     ClutterLayoutManagerPrivate;
 typedef struct _ClutterLayoutManagerClass       ClutterLayoutManagerClass;
 
 /**
@@ -56,7 +55,7 @@ struct _ClutterLayoutManager
   /*< private >*/
   GInitiallyUnowned parent_instance;
 
-  ClutterLayoutManagerPrivate *priv;
+  gpointer CLUTTER_PRIVATE_FIELD (dummy);
 };
 
 /**

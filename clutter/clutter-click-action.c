@@ -150,7 +150,7 @@ enum
 
 static guint click_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (ClutterClickAction, clutter_click_action, CLUTTER_TYPE_ACTION);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterClickAction, clutter_click_action, CLUTTER_TYPE_ACTION)
 
 /* forward declaration */
 static gboolean on_captured_event (ClutterActor       *stage,
@@ -540,8 +540,6 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterClickActionPrivate));
-
   meta_class->set_actor = clutter_click_action_set_actor;
 
   gobject_class->set_property = clutter_click_action_set_property;
@@ -680,9 +678,7 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
 static void
 clutter_click_action_init (ClutterClickAction *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_CLICK_ACTION,
-                                            ClutterClickActionPrivate);
-
+  self->priv = clutter_click_action_get_instance_private (self);
   self->priv->long_press_threshold = -1;
   self->priv->long_press_duration = -1;
 }

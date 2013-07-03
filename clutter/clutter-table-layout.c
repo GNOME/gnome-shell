@@ -98,8 +98,6 @@
 #define CLUTTER_TABLE_CHILD(obj)          (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_TABLE_CHILD, ClutterTableChild))
 #define CLUTTER_IS_TABLE_CHILD(obj)       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_TABLE_CHILD))
 
-#define CLUTTER_TABLE_LAYOUT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TABLE_LAYOUT, ClutterTableLayoutPrivate))
-
 typedef struct _ClutterTableChild         ClutterTableChild;
 typedef struct _ClutterLayoutMetaClass    ClutterTableChildClass;
 
@@ -184,13 +182,9 @@ enum
 
 GType clutter_table_child_get_type (void);
 
-G_DEFINE_TYPE (ClutterTableChild,
-               clutter_table_child,
-               CLUTTER_TYPE_LAYOUT_META);
+G_DEFINE_TYPE (ClutterTableChild, clutter_table_child, CLUTTER_TYPE_LAYOUT_META)
 
-G_DEFINE_TYPE (ClutterTableLayout,
-               clutter_table_layout,
-               CLUTTER_TYPE_LAYOUT_MANAGER);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterTableLayout, clutter_table_layout, CLUTTER_TYPE_LAYOUT_MANAGER)
 
 /*
  * ClutterBoxChild
@@ -1624,8 +1618,6 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
   layout_class->get_child_meta_type =
     clutter_table_layout_get_child_meta_type;
 
-  g_type_class_add_private (klass, sizeof (ClutterTableLayoutPrivate));
-
   /**
    * ClutterTableLayout:column-spacing:
    *
@@ -1731,7 +1723,7 @@ clutter_table_layout_init (ClutterTableLayout *layout)
 {
   ClutterTableLayoutPrivate *priv;
 
-  layout->priv = priv = CLUTTER_TABLE_LAYOUT_GET_PRIVATE (layout);
+  layout->priv = priv = clutter_table_layout_get_instance_private (layout);
 
   priv->row_spacing = 0;
   priv->col_spacing = 0;

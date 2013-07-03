@@ -82,28 +82,7 @@
  */
 #define N_CACHED_LAYOUTS        6
 
-#define CLUTTER_TEXT_GET_PRIVATE(obj)   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TEXT, ClutterTextPrivate))
-
 typedef struct _LayoutCache     LayoutCache;
-
-static const ClutterColor default_cursor_color    = {   0,   0,   0, 255 };
-static const ClutterColor default_selection_color = {   0,   0,   0, 255 };
-static const ClutterColor default_text_color      = {   0,   0,   0, 255 };
-static const ClutterColor default_selected_text_color = {   0,   0,   0, 255 };
-
-static ClutterAnimatableIface *parent_animatable_iface = NULL;
-static ClutterScriptableIface *parent_scriptable_iface = NULL;
-
-static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
-static void clutter_animatable_iface_init (ClutterAnimatableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterText,
-                         clutter_text,
-                         CLUTTER_TYPE_ACTOR,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                clutter_scriptable_iface_init)
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
-                                                clutter_animatable_iface_init));
 
 struct _LayoutCache
 {
@@ -280,6 +259,26 @@ static void clutter_text_settings_changed_cb (ClutterText *text);
 static void buffer_connect_signals (ClutterText *self);
 static void buffer_disconnect_signals (ClutterText *self);
 static ClutterTextBuffer *get_buffer (ClutterText *self);
+
+static const ClutterColor default_cursor_color    = {   0,   0,   0, 255 };
+static const ClutterColor default_selection_color = {   0,   0,   0, 255 };
+static const ClutterColor default_text_color      = {   0,   0,   0, 255 };
+static const ClutterColor default_selected_text_color = {   0,   0,   0, 255 };
+
+static ClutterAnimatableIface *parent_animatable_iface = NULL;
+static ClutterScriptableIface *parent_scriptable_iface = NULL;
+
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+static void clutter_animatable_iface_init (ClutterAnimatableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterText,
+                         clutter_text,
+                         CLUTTER_TYPE_ACTOR,
+                         G_ADD_PRIVATE (ClutterText)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
+                                                clutter_animatable_iface_init));
 
 static inline void
 clutter_text_dirty_paint_volume (ClutterText *text)
@@ -3325,8 +3324,6 @@ clutter_text_class_init (ClutterTextClass *klass)
   ClutterBindingPool *binding_pool;
   GParamSpec *pspec;
 
-  g_type_class_add_private (klass, sizeof (ClutterTextPrivate));
-
   gobject_class->set_property = clutter_text_set_property;
   gobject_class->get_property = clutter_text_get_property;
   gobject_class->dispose = clutter_text_dispose;
@@ -4060,7 +4057,7 @@ clutter_text_init (ClutterText *self)
   gchar *font_name;
   int i, password_hint_time;
 
-  self->priv = priv = CLUTTER_TEXT_GET_PRIVATE (self);
+  self->priv = priv = clutter_text_get_instance_private (self);
 
   priv->alignment     = PANGO_ALIGN_LEFT;
   priv->wrap          = FALSE;

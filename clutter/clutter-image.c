@@ -62,6 +62,7 @@ struct _ClutterImagePrivate
 static void clutter_content_iface_init (ClutterContentIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterImage, clutter_image, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (ClutterImage)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTENT,
                                                 clutter_content_iface_init))
 
@@ -88,16 +89,13 @@ clutter_image_finalize (GObject *gobject)
 static void
 clutter_image_class_init (ClutterImageClass *klass)
 {
-  g_type_class_add_private (klass, sizeof (ClutterImagePrivate));
-
   G_OBJECT_CLASS (klass)->finalize = clutter_image_finalize;
 }
 
 static void
 clutter_image_init (ClutterImage *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_IMAGE,
-                                            ClutterImagePrivate);
+  self->priv = clutter_image_get_instance_private (self);
 }
 
 static void
