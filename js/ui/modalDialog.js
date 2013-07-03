@@ -79,9 +79,8 @@ const ModalDialog = new Lang.Class({
 
         this.dialogLayout = new St.BoxLayout({ style_class: 'modal-dialog',
                                                vertical:    true });
-        if (params.styleClass != null) {
+        if (params.styleClass != null)
             this.dialogLayout.add_style_class_name(params.styleClass);
-        }
 
         if (!this._shellReactive) {
             this._lightbox = new Lightbox.Lightbox(this._group,
@@ -357,8 +356,9 @@ const ModalDialog = new Lang.Class({
         if (this._savedKeyFocus) {
             this._savedKeyFocus.grab_key_focus();
             this._savedKeyFocus = null;
-        } else
+        } else {
             this._initialKeyFocus.grab_key_focus();
+        }
 
         if (!this._shellReactive)
             this._eventBlocker.lower_bottom();
