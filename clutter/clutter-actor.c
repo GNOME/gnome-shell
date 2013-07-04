@@ -1066,6 +1066,9 @@ static void clutter_actor_set_child_transform_internal (ClutterActor        *sel
 
 static inline gboolean clutter_actor_has_mapped_clones (ClutterActor *self);
 
+static void     clutter_actor_realize_internal          (ClutterActor *self);
+static void     clutter_actor_unrealize_internal        (ClutterActor *self);
+
 /* Helper macro which translates by the anchor coord, applies the
    given transformation and then translates back */
 #define TRANSFORM_ABOUT_ANCHOR_COORD(a,m,c,_transform)  G_STMT_START { \
@@ -1879,15 +1882,22 @@ clutter_actor_hide_all (ClutterActor *self)
  * This function does not realize child actors, except in the special
  * case that realizing the stage, when the stage is visible, will
  * suddenly map (and thus realize) the children of the stage.
- **/
+ *
+ * Deprecated: 1.16: Actors are automatically realized, and nothing
+ *   requires explicit realization.
+ */
 void
 clutter_actor_realize (ClutterActor *self)
 {
-  ClutterActorPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
+  clutter_actor_realize_internal (self);
+}
+
+static void
+clutter_actor_realize_internal (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
 
 #ifdef CLUTTER_ENABLE_DEBUG
   clutter_actor_verify_map_state (self);
@@ -1959,14 +1969,8 @@ clutter_actor_real_unrealize (ClutterActor *self)
  * may not be expecting.
  *
  * This function should not be called by application code.
- */
-void
-clutter_actor_unrealize (ClutterActor *self)
-{
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (!CLUTTER_ACTOR_IS_MAPPED (self));
-
-/* This function should not really be in the public API, because
+ *
+ * This function should not really be in the public API, because
  * there isn't a good reason to call it. ClutterActor will already
  * unrealize things for you when it's important to do so.
  *
@@ -1978,12 +1982,26 @@ clutter_actor_unrealize (ClutterActor *self)
  * unrealizing children of your container, then don't, ClutterActor
  * will already take care of that.
  *
- * If you were using clutter_actor_unrealize() to re-realize to
+ * Deprecated: 1.16: Actors are automatically unrealized, and nothing
+ *   requires explicit realization.
+ */
+void
+clutter_actor_unrealize (ClutterActor *self)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (!CLUTTER_ACTOR_IS_MAPPED (self));
+
+  clutter_actor_unrealize_internal (self);
+}
+
+/* If you were using clutter_actor_unrealize() to re-realize to
  * create your resources in a different way, then use
  * _clutter_actor_rerealize() (inside Clutter) or just call your
  * code that recreates your resources directly (outside Clutter).
  */
-
+static void
+clutter_actor_unrealize_internal (ClutterActor *self)
+{
 #ifdef CLUTTER_ENABLE_DEBUG
   clutter_actor_verify_map_state (self);
 #endif
@@ -8169,11 +8187,14 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * realized.
    *
    * Since: 0.8
+   *
+   * Deprecated: 1.16: The signal should not be used in newly
+   *   written code
    */
   actor_signals[REALIZE] =
     g_signal_new (I_("realize"),
                   G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_DEPRECATED,
                   G_STRUCT_OFFSET (ClutterActorClass, realize),
                   NULL, NULL,
                   _clutter_marshal_VOID__VOID,
@@ -8186,11 +8207,14 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * unrealized.
    *
    * Since: 0.8
+   *
+   * Deprecated: 1.16: The signal should not be used in newly
+   *   written code
    */
   actor_signals[UNREALIZE] =
     g_signal_new (I_("unrealize"),
                   G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_DEPRECATED,
                   G_STRUCT_OFFSET (ClutterActorClass, unrealize),
                   NULL, NULL,
                   _clutter_marshal_VOID__VOID,

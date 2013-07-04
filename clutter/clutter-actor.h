@@ -129,9 +129,13 @@ struct _ClutterActor
  *   clutter_actor_hide(). This virtual function is deprecated and it
  *   should not be overridden.
  * @realize: virtual function, used to allocate resources for the actor;
- *   it should chain up to the parent's implementation
+ *   it should chain up to the parent's implementation. This virtual
+ *   function is deprecated and should not be overridden in newly
+ *   written code.
  * @unrealize: virtual function, used to deallocate resources allocated
- *   in ::realize; it should chain up to the parent's implementation
+ *   in ::realize; it should chain up to the parent's implementation. This
+ *   function is deprecated and should not be overridden in newly
+ *   written code.
  * @map: virtual function for containers and composite actors, to
  *   map their children; it must chain up to the parent's implementation.
  *   Overriding this function is optional.
@@ -147,12 +151,13 @@ struct _ClutterActor
  *   clutter_actor_get_preferred_height()
  * @allocate: virtual function, used when settings the coordinates of an
  *   actor; it is used by clutter_actor_allocate(); it must chain up to
- *   the parent's implementation
+ *   the parent's implementation, or call clutter_actor_set_allocation()
  * @apply_transform: virtual function, used when applying the transformations
  *   to an actor before painting it or when transforming coordinates or
  *   the allocation; it must chain up to the parent's implementation
  * @parent_set: signal class handler for the #ClutterActor::parent-set
- * @destroy: signal class handler for #ClutterActor::destroy
+ * @destroy: signal class handler for #ClutterActor::destroy. It must
+ *   chain up to the parent's implementation
  * @pick: virtual function, used to draw an outline of the actor with
  *   the given color
  * @queue_redraw: class handler for #ClutterActor::queue-redraw
