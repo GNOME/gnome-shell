@@ -244,10 +244,6 @@ clutter_backend_wayland_get_renderer (ClutterBackend  *backend,
 
   cogl_wayland_renderer_set_foreign_display (renderer,
                                              backend_wayland->wayland_display);
-  cogl_wayland_renderer_set_foreign_compositor (renderer,
-                                                backend_wayland->wayland_compositor);
-  cogl_wayland_renderer_set_foreign_shell (renderer,
-                                           backend_wayland->wayland_shell);
 
   return renderer;
 }
