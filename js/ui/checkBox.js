@@ -42,12 +42,6 @@ const CheckBoxContainer = new Lang.Class({
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
-        /* FIXME: StBoxlayout currently does not handle
-           height-for-width children correctly, so hard-code
-           two lines for the label until that problem is fixed.
-
-           https://bugzilla.gnome.org/show_bug.cgi?id=672543 */
-/*
         let [minBoxHeight, natBoxHeight] =
             this._box.get_preferred_height(forWidth);
         let [minLabelHeight, natLabelHeight] =
@@ -55,14 +49,6 @@ const CheckBoxContainer = new Lang.Class({
 
         alloc.min_size = Math.max(minBoxHeight, minLabelHeight);
         alloc.natural_size = Math.max(natBoxHeight, natLabelHeight);
-*/
-        let [minBoxHeight, natBoxHeight] =
-            this._box.get_preferred_height(-1);
-        let [minLabelHeight, natLabelHeight] =
-            this.label.get_preferred_height(-1);
-
-        alloc.min_size = Math.max(minBoxHeight, 2 * minLabelHeight);
-        alloc.natural_size = Math.max(natBoxHeight, 2 * natLabelHeight);
     },
 
     _allocate: function(actor, box, flags) {
