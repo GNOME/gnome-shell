@@ -186,6 +186,19 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
     </key>
   </schema>
 
+  <schema id="org.gnome.shell.app-switcher"
+          path="/org/gnome/shell/app-switcher/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key type="b" name="current-workspace-only">
+      <default>false</default>
+      <summary>Limit switcher to current workspace.</summary>
+      <description>
+	If true, only applications that have windows on the current workspace are shown in the switcher.
+	Otherwise, all applications are included.
+      </description>
+    </key>
+  </schema>
+
   <enum id="org.gnome.shell.window-switcher.AppIconMode">
     <value value="1" nick="thumbnail-only"/>
     <value value="2" nick="app-icon-only"/>
