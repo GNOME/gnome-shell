@@ -125,6 +125,7 @@ clean-wrappers:
 		rm -f $$unit$(SHEXT) ; \
 		rm -f wrappers/$$unit$(SHEXT) ; \
 	done \
+	&& rmdir wrappers \
 	&& rm -f unit-tests \
 	&& rm -f $(top_builddir)/build/win32/*.bat \
 	&& rm -f stamp-test-conformance
