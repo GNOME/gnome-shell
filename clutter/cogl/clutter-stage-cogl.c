@@ -395,7 +395,6 @@ static void
 clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-  ClutterBackend *backend = clutter_get_default_backend ();
   gboolean may_use_clipped_redraw;
   gboolean use_clipped_redraw;
   gboolean can_blit_sub_buffer;
@@ -420,18 +419,17 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
                         "The time spent in blit_sub_buffer",
                         0 /* no application private data */);
 
+  wrapper = CLUTTER_ACTOR (stage_cogl->wrapper);
+
   if (!stage_cogl->onscreen)
     return;
 
   CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
 
-  wrapper = CLUTTER_ACTOR (stage_cogl->wrapper);
+  can_blit_sub_buffer =
+    cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION);
 
-  can_blit_sub_buffer = cogl_has_feature (backend->cogl_context,
-                                          COGL_WINSYS_FEATURE_SWAP_REGION);
-
-  has_buffer_age = cogl_has_feature (backend->cogl_context,
-                                     COGL_WINSYS_FEATURE_BUFFER_AGE);
+  has_buffer_age = cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_BUFFER_AGE);
 
   may_use_clipped_redraw = FALSE;
   if (_clutter_stage_window_can_clip_redraws (stage_window) &&
@@ -515,8 +513,6 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
   if (use_clipped_redraw)
     {
-      CoglFramebuffer *fb = COGL_FRAMEBUFFER (stage_cogl->onscreen);
-
       CLUTTER_NOTE (CLIPPING,
                     "Stage clip pushed: x=%d, y=%d, width=%d, height=%d\n",
                     clip_region->x,
@@ -526,14 +522,13 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
       stage_cogl->using_clipped_redraw = TRUE;
 
-      cogl_framebuffer_push_scissor_clip (fb,
-                                          clip_region->x,
-                                          clip_region->y,
-                                          clip_region->width,
-                                          clip_region->height);
-      _clutter_stage_do_paint (CLUTTER_STAGE (wrapper), clip_region);
-
-      cogl_framebuffer_pop_clip (fb);
+      cogl_clip_push_window_rectangle (clip_region->x,
+                                       clip_region->y,
+                                       clip_region->width,
+                                       clip_region->height);
+      _clutter_stage_do_paint (CLUTTER_STAGE (wrapper),
+                               clip_region);
+      cogl_clip_pop ();
 
       stage_cogl->using_clipped_redraw = FALSE;
     }
@@ -678,23 +673,20 @@ static void
 clutter_stage_cogl_get_dirty_pixel (ClutterStageWindow *stage_window,
                                     int *x, int *y)
 {
-  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-  ClutterBackend *backend = clutter_get_default_backend ();
-  gboolean has_buffer_age;
-
-  has_buffer_age = cogl_has_feature (backend->cogl_context, COGL_WINSYS_FEATURE_BUFFER_AGE);
-  if ((stage_cogl->damage_history == NULL && has_buffer_age) || !has_buffer_age)
-    {
-      *x = 0;
-      *y = 0;
-    }
-  else
-   {
-      cairo_rectangle_int_t *rect;
-      rect = (cairo_rectangle_int_t *) (stage_cogl->damage_history->data);
-      *x = rect->x;
-      *y = rect->y;
-   }
+    ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+    gboolean has_buffer_age = cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_BUFFER_AGE);
+    if ((stage_cogl->damage_history == NULL && has_buffer_age) || !has_buffer_age)
+      {
+        *x = 0;
+        *y = 0;
+      }
+    else
+     {
+        cairo_rectangle_int_t *rect;
+        rect = (cairo_rectangle_int_t *) (stage_cogl->damage_history->data);
+        *x = rect->x;
+        *y = rect->y;
+     }
 }
 
 static void
