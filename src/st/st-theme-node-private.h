@@ -100,6 +100,7 @@ struct _StThemeNode {
   guint text_shadow_computed : 1;
   guint link_type : 2;
   guint rendered_once : 1;
+  guint cached_textures : 1;
 
   int box_shadow_min_width;
   int box_shadow_min_height;
@@ -109,6 +110,8 @@ struct _StThemeNode {
   CoglHandle background_texture;
   CoglHandle background_material;
   CoglHandle background_shadow_material;
+
+  StThemeNodePaintState cached_state;
 };
 
 struct _StThemeNodeClass {

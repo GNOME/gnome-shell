@@ -1478,6 +1478,19 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
       else if (node->background_color.alpha > 0 || has_border)
         st_theme_node_prerender_shadow (state);
     }
+
+  /* If we don't have cached textures yet, check whether we can cache
+     them. */
+  if (!node->cached_textures)
+    {
+      if (state->prerendered_material == COGL_INVALID_HANDLE &&
+          width >= node->box_shadow_min_width &&
+          height >= node->box_shadow_min_height)
+        {
+          st_theme_node_paint_state_copy (&node->cached_state, state);
+          node->cached_textures = TRUE;
+        }
+    }
 }
 
 static void
@@ -2371,11 +2384,21 @@ st_theme_node_paint (StThemeNode           *node,
     return;
 
   if (st_theme_node_needs_new_box_shadow_for_size (state, node, width, height))
-    st_theme_node_render_resources (state, node, width, height);
+    {
+      /* If we had the ability to cache textures on the node, then we
+         can just copy them over to the paint state and avoid all
+         rendering. We end up sharing textures a cross different
+         widgets. */
+      if (node->rendered_once && node->cached_textures &&
+          width >= node->box_shadow_min_width && height >= node->box_shadow_min_height)
+        st_theme_node_paint_state_copy (state, &node->cached_state);
+      else
+        st_theme_node_render_resources (state, node, width, height);
+
+      node->rendered_once = TRUE;
+    }
   else
     st_theme_node_update_resources (state, node, width, height);
-
-  node->rendered_once = TRUE;
 
   /* Rough notes about the relationship of borders and backgrounds in CSS3;
    * see http://www.w3.org/TR/css3-background/ for more accurate details.

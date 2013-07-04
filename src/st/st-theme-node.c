@@ -101,6 +101,8 @@ st_theme_node_dispose (GObject *gobject)
     g_signal_handlers_disconnect_by_func (node->theme,
                                           on_custom_stylesheets_changed, node);
 
+  st_theme_node_paint_state_free (&node->cached_state);
+
   g_clear_object (&node->theme);
 
   G_OBJECT_CLASS (st_theme_node_parent_class)->dispose (gobject);
