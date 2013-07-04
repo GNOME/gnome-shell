@@ -197,6 +197,10 @@ cogl_renderer_new (void)
   renderer->win32_enable_event_retrieval = TRUE;
 #endif
 
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+  renderer->wayland_enable_event_dispatch = TRUE;
+#endif
+
   return _cogl_renderer_object_new (renderer);
 }
 

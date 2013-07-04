@@ -233,13 +233,15 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   if (!_cogl_winsys_egl_renderer_connect_common (renderer, error))
     goto error;
 
-  wayland_renderer->fd = wl_display_get_fd(wayland_renderer->wayland_display);
-  _cogl_poll_renderer_add_fd (renderer,
-                              wayland_renderer->fd,
-                              COGL_POLL_FD_EVENT_IN,
-                              prepare_wayland_display_events,
-                              dispatch_wayland_display_events,
-                              renderer);
+  wayland_renderer->fd = wl_display_get_fd (wayland_renderer->wayland_display);
+
+  if (renderer->wayland_enable_event_dispatch)
+    _cogl_poll_renderer_add_fd (renderer,
+                                wayland_renderer->fd,
+                                COGL_POLL_FD_EVENT_IN,
+                                prepare_wayland_display_events,
+                                dispatch_wayland_display_events,
+                                renderer);
 
   return TRUE;
 
@@ -545,6 +547,17 @@ cogl_wayland_renderer_set_foreign_display (CoglRenderer *renderer,
   _COGL_RETURN_IF_FAIL (!renderer->connected);
 
   renderer->foreign_wayland_display = display;
+}
+
+void
+cogl_wayland_renderer_set_event_dispatch_enabled (CoglRenderer *renderer,
+                                                  CoglBool enable)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
+  /* NB: Renderers are considered immutable once connected */
+  _COGL_RETURN_IF_FAIL (!renderer->connected);
+
+  renderer->wayland_enable_event_dispatch = enable;
 }
 
 struct wl_display *

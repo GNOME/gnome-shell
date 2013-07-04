@@ -52,6 +52,28 @@ cogl_wayland_renderer_set_foreign_display (CoglRenderer *renderer,
                                            struct wl_display *display);
 
 /**
+ * cogl_wayland_renderer_set_event_dispatch_enabled:
+ * @renderer: A #CoglRenderer
+ * @enable: The new value
+ *
+ * Sets whether Cogl should handle calling wl_display_dispatch() and
+ * wl_display_flush() as part of its main loop integration via
+ * cogl_poll_renderer_get_info() and cogl_poll_renderer_dispatch().
+ * The default value is %TRUE. When it is enabled the application can
+ * register listeners for Wayland interfaces and the callbacks will be
+ * invoked during cogl_poll_renderer_dispatch(). If the application
+ * wants to integrate with its own code that is already handling
+ * reading from the Wayland display socket, it should disable this to
+ * avoid having competing code read from the socket.
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+void
+cogl_wayland_renderer_set_event_dispatch_enabled (CoglRenderer *renderer,
+                                                  CoglBool enable);
+
+/**
  * cogl_wayland_renderer_get_display:
  * @renderer: A #CoglRenderer
  *
