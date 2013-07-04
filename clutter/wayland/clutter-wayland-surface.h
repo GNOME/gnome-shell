@@ -95,10 +95,10 @@ void          clutter_wayland_surface_set_surface       (ClutterWaylandSurface *
                                                          struct wl_surface *surface);
 struct wl_surface *clutter_wayland_surface_get_surface  (ClutterWaylandSurface *self);
 gboolean      clutter_wayland_surface_attach_buffer     (ClutterWaylandSurface *self,
-                                                         struct wl_buffer *buffer,
+                                                         struct wl_resource *buffer,
                                                          GError **error);
 void          clutter_wayland_surface_damage_buffer     (ClutterWaylandSurface *self,
-                                                         struct wl_buffer *buffer,
+                                                         struct wl_resource *buffer,
                                                          gint32 x,
                                                          gint32 y,
                                                          gint32 width,
