@@ -246,6 +246,8 @@ void
 cogl_gst_video_sink_set_first_layer (CoglGstVideoSink *sink,
                                      int first_layer)
 {
+  g_return_if_fail (COGL_GST_IS_VIDEO_SINK (sink));
+
   if (first_layer != sink->priv->custom_start)
     {
       sink->priv->custom_start = first_layer;
@@ -261,6 +263,8 @@ void
 cogl_gst_video_sink_set_default_sample (CoglGstVideoSink *sink,
                                         CoglBool default_sample)
 {
+  g_return_if_fail (COGL_GST_IS_VIDEO_SINK (sink));
+
   if (default_sample != sink->priv->default_sample)
     {
       sink->priv->default_sample = default_sample;
@@ -272,7 +276,10 @@ void
 cogl_gst_video_sink_setup_pipeline (CoglGstVideoSink *sink,
                                     CoglPipeline *pipeline)
 {
-  sink->priv->renderer->setup_pipeline (sink, pipeline);
+  g_return_if_fail (COGL_GST_IS_VIDEO_SINK (sink));
+
+  if (sink->priv->renderer)
+    sink->priv->renderer->setup_pipeline (sink, pipeline);
 }
 
 static SnippetCacheEntry *
@@ -368,7 +375,11 @@ setup_pipeline_from_cache_entry (CoglGstVideoSink *sink,
 CoglPipeline *
 cogl_gst_video_sink_get_pipeline (CoglGstVideoSink *vt)
 {
-  CoglGstVideoSinkPrivate *priv = vt->priv;
+  CoglGstVideoSinkPrivate *priv;
+
+  g_return_val_if_fail (COGL_GST_IS_VIDEO_SINK (vt), NULL);
+
+  priv = vt->priv;
 
   if (priv->pipeline == NULL)
     {
@@ -1272,7 +1283,11 @@ cogl_gst_video_sink_new (CoglContext *ctx)
 float
 cogl_gst_video_sink_get_aspect (CoglGstVideoSink *vt)
 {
-  GstVideoInfo *info = &vt->priv->info;
+  GstVideoInfo *info;
+
+  g_return_val_if_fail (COGL_GST_IS_VIDEO_SINK (vt), 0.);
+
+  info = &vt->priv->info;
   return ((float)info->width * (float)info->par_n) /
     ((float)info->height * (float)info->par_d);
 }
@@ -1281,7 +1296,11 @@ float
 cogl_gst_video_sink_get_width_for_height (CoglGstVideoSink *vt,
                                           float height)
 {
-  float aspect = cogl_gst_video_sink_get_aspect (vt);
+  float aspect;
+
+  g_return_val_if_fail (COGL_GST_IS_VIDEO_SINK (vt), 0.);
+
+  aspect = cogl_gst_video_sink_get_aspect (vt);
   return height * aspect;
 }
 
@@ -1289,7 +1308,11 @@ float
 cogl_gst_video_sink_get_height_for_width (CoglGstVideoSink *vt,
                                           float width)
 {
-  float aspect = cogl_gst_video_sink_get_aspect (vt);
+  float aspect;
+
+  g_return_val_if_fail (COGL_GST_IS_VIDEO_SINK (vt), 0.);
+
+  aspect = cogl_gst_video_sink_get_aspect (vt);
   return width / aspect;
 }
 
@@ -1298,6 +1321,10 @@ cogl_gst_video_sink_fit_size (CoglGstVideoSink *vt,
                               const CoglGstRectangle *available,
                               CoglGstRectangle *output)
 {
+  g_return_if_fail (COGL_GST_IS_VIDEO_SINK (vt));
+  g_return_if_fail (available != NULL);
+  g_return_if_fail (output != NULL);
+
   if (available->height == 0.0f)
     {
       output->x = available->x;
