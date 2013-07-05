@@ -327,10 +327,6 @@ StScrollBar StButton#vhandle:active {
     border-width: 2px;
 }
 
-.app-view-control:focus {
-    padding: 3px;
-}
-
 .app-view-control:first-child:ltr:focus,
 .app-view-control:last-child:rtl:focus {
     border-right-width: 1px;
@@ -910,6 +906,11 @@ StScrollBar StButton#vhandle:active {
 .app-view-control {
     padding: 4px 32px;
 }
+
+.app-view-control:focus {
+    padding: 3px 31px;
+}
+
 
 .search-display > StBoxLayout,
 .all-apps > StBoxLayout,
