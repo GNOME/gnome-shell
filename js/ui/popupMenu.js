@@ -870,7 +870,8 @@ const PopupSubMenu = new Lang.Class({
         this.parent(sourceActor);
 
         this._arrow = sourceArrow;
-        this._arrow.rotation_center_z_gravity = Clutter.Gravity.CENTER;
+        this._arrow.pivot_point = new Clutter.Point({ x: 0.3,
+                                                      y: 0.5 });
 
         // Since a function of a submenu might be to provide a "More.." expander
         // with long content, we make it scrollable - the scrollbar will only take
