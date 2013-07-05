@@ -15398,16 +15398,10 @@ clutter_actor_allocate_align_fill (ClutterActor           *self,
     x_align = 1.0 - x_align;
 
   if (!x_fill)
-    {
-      allocation.x1 += ((available_width - child_width) * x_align);
-      allocation.x2 = allocation.x1 + child_width;
-    }
+    allocation.x1 += ((available_width - child_width) * x_align);
 
   if (!y_fill)
-    {
-      allocation.y1 += ((available_height - child_height) * y_align);
-      allocation.y2 = allocation.y1 + child_height;
-    }
+    allocation.y1 += ((available_height - child_height) * y_align);
 
 out:
 
