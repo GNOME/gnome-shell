@@ -1100,7 +1100,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
   if (priv->orientation == CLUTTER_ORIENTATION_VERTICAL)
     {
       child_allocation.x1 = box->x1;
-      child_allocation.x2 = MAX (1.0, box->x2 - box->x1);
+      child_allocation.x2 = MAX (1.0, box->x2);
       if (priv->is_pack_start)
         y = box->y2 - box->y1;
       else
@@ -1109,7 +1109,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
   else
     {
       child_allocation.y1 = box->y1;
-      child_allocation.y2 = MAX (1.0, box->y2 - box->y1);
+      child_allocation.y2 = MAX (1.0, box->y2);
       if (priv->is_pack_start)
         x = box->x2 - box->x1;
       else
