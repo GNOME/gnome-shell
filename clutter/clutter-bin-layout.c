@@ -489,8 +489,8 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       else
         child_alloc.y1 = allocation_y;
 
-      child_alloc.x2 = available_w;
-      child_alloc.y2 = available_h;
+      child_alloc.x2 = allocation_x + available_w;
+      child_alloc.y2 = allocation_y + available_h;
 
       if (clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_HORIZONTAL))
         {
