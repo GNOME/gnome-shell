@@ -408,9 +408,9 @@ const Calendar = new Lang.Class({
 
         this._shouldDateGrabFocus = false;
 
-        this.actor = new St.Table({ homogeneous: false,
-                                    style_class: 'calendar',
-                                    reactive: true });
+        this.actor = new St.Widget({ style_class: 'calendar',
+                                     layout_manager: new Clutter.TableLayout(),
+                                     reactive: true });
 
         this.actor.connect('scroll-event',
                            Lang.bind(this, this._onScroll));
@@ -441,13 +441,14 @@ const Calendar = new Lang.Class({
     },
 
     _buildHeader: function() {
+        let layout = this.actor.layout_manager;
         let offsetCols = this._useWeekdate ? 1 : 0;
         this.actor.destroy_all_children();
 
         // Top line of the calendar '<| September 2009 |>'
         this._topBox = new St.BoxLayout();
-        this.actor.add(this._topBox,
-                       { row: 0, col: 0, col_span: offsetCols + 7 });
+        layout.pack(this._topBox, 0, 0);
+        layout.set_span(this._topBox, offsetCols + 7, 1);
 
         this._backButton = new St.Button({ style_class: 'calendar-change-month-back',
                                            accessible_name: _("Previous month"),
@@ -479,10 +480,8 @@ const Calendar = new Lang.Class({
             let customDayAbbrev = _getCalendarDayAbbreviation(iter.getDay());
             let label = new St.Label({ style_class: 'calendar-day-base calendar-day-heading',
                                        text: customDayAbbrev });
-            this.actor.add(label,
-                           { row: 1,
-                             col: offsetCols + (7 + iter.getDay() - this._weekStart) % 7,
-                             x_fill: false, x_align: St.Align.MIDDLE });
+            let col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
+            layout.pack(label, col, 1);
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
         }
 
@@ -601,6 +600,7 @@ const Calendar = new Lang.Class({
 
         beginDate.setTime(beginDate.getTime() - (weekPadding + daysToWeekStart) * MSECS_IN_DAY);
 
+        let layout = this.actor.layout_manager;
         let iter = new Date(beginDate);
         let row = 2;
         // nRows here means 6 weeks + one header + one navbar
@@ -648,16 +648,15 @@ const Calendar = new Lang.Class({
             button.style_class = styleClass;
 
             let offsetCols = this._useWeekdate ? 1 : 0;
-            this.actor.add(button,
-                           { row: row, col: offsetCols + (7 + iter.getDay() - this._weekStart) % 7 });
+            let col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
+            layout.pack(button, col, row);
 
             this._buttons.push(button);
 
             if (this._useWeekdate && iter.getDay() == 4) {
                 let label = new St.Label({ text: _getCalendarWeekForDate(iter).toString(),
                                            style_class: 'calendar-day-base calendar-week-number'});
-                this.actor.add(label,
-                               { row: row, col: 0, y_align: St.Align.MIDDLE });
+                layout.pack(label, 0, row);
             }
 
             iter.setTime(iter.getTime() + MSECS_IN_DAY);

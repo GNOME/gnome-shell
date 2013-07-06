@@ -1300,8 +1300,6 @@ StScrollBar StButton#vhandle:active {
 
 .calendar {
     padding: .4em 1.75em .8em 1.75em;
-    spacing-rows: 0px;
-    spacing-columns: 0px;
 }
 
 .calendar-month-label {
