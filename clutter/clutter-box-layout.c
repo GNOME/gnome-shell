@@ -1164,7 +1164,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
       if (priv->orientation == CLUTTER_ORIENTATION_VERTICAL)
         {
           if (clutter_actor_needs_expand (child, priv->orientation) ||
-              box_child->y_fill)
+              box_child->expand)
             {
               child_allocation.y1 = y;
               child_allocation.y2 = child_allocation.y1 + MAX (1.0, child_size);
@@ -1190,7 +1190,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
       else /* CLUTTER_ORIENTATION_HORIZONTAL */
         {
           if (clutter_actor_needs_expand (child, priv->orientation) ||
-              box_child->x_fill)
+              box_child->expand)
             {
               child_allocation.x1 = x;
               child_allocation.x2 = child_allocation.x1 + MAX (1.0, child_size);
