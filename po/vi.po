@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-06-26 18:42+0000\n"
-"PO-Revision-Date: 2013-07-06 18:24+0700\n"
+"POT-Creation-Date: 2013-07-05 15:25+0000\n"
+"PO-Revision-Date: 2013-07-06 18:28+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <translation-team-vi@lists.sourceforge.net>\n"
 "Language: vi\n"
@@ -19,14 +19,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.5.5\n"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
 msgid "Screenshots"
-msgstr "Chụp hình"
+msgstr "Chụp màn hình"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:2
 msgid "Record a screencast"
-msgstr "Thu screencast"
+msgstr "Quay phim màn hình"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -42,7 +43,7 @@ msgstr "Tập trung vào thông báo hoạt động"
 
 #: ../data/50-gnome-shell-system.xml.in.h:4
 msgid "Show the overview"
-msgstr ""
+msgstr "Hiển thị tổng quan"
 
 #: ../data/50-gnome-shell-system.xml.in.h:5
 msgid "Show all applications"
@@ -153,7 +154,7 @@ msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
 msgstr ""
-"Khóa này sẽ đè lên việc tự động ẩn trình đơn 'Đăng xuất' ở chế độ đơn-người-"
+"Khóa này sẽ đè lên việc tự động ẩn trình đơn “Đăng xuất” ở chế độ đơn-người-"
 "dùng, đơn-phiên-làm-việc. "
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
@@ -181,7 +182,7 @@ msgstr "Hiện tuần trên lịch"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "If true, display the ISO week date in the calendar."
-msgstr "Nếu đúng (true), hiện tuần ISO trong lịch."
+msgstr "Nếu đúng (true), hiện tuần theo chuẩn ISO trong lịch."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the application menu"
@@ -201,48 +202,44 @@ msgid ""
 msgstr "Phím hiện ứng dụng trong tổng quan hoạt động."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
-#, fuzzy
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the overview"
-msgstr "Phím hiện ứng dụng"
+msgstr "Phím mở tổng quan"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:24
-#, fuzzy
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the Activities Overview."
-msgstr "Phím hiện ứng dụng"
+msgstr "Phím mở tổng quan hoạt động."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Phím bật/tắt hiện khay thông báo"
+msgstr "Phím để bật/tắt hiện khay thông báo"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Phím bật/tắt hiện khay thông báo."
+msgstr "Phím để bật/tắt hiện khay thông báo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
-msgstr "Phím tập trung vào thông báo hoạt động"
+msgstr "Phím để tập trung vào thông báo hoạt động"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to focus the active notification."
-msgstr "Phím tập trung vào thông báo hoạt động."
+msgstr "Phím để tập trung vào thông báo hoạt động."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Keybinding to toggle the screen recorder"
-msgstr "Phím bật/tắt trình thu màn hình"
+msgstr "Phím để bật/tắt trình quay phim màn hình"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Keybinding to start/stop the builtin screen recorder."
-msgstr "Phím chạy hoặc ngừng trình thu màn hình."
+msgstr "Phím để quay/dừng việc quay phim màn hình."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Which keyboard to use"
-msgstr "Bàn phím cần dùng"
+msgstr "Bàn phím được dùng"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid "The type of keyboard to use."
-msgstr "Kiểu bàn phím cần dùng."
+msgstr "Kiểu bàn phím được dùng."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Framerate used for recording screencasts."
@@ -309,8 +306,8 @@ msgid ""
 "only' (shows only the application icon) or 'both'."
 msgstr ""
 "Cấu hình về cách hiển thị các cửa sổ ở bảng chuyển đổi. Các kiểu có thể là "
-"'thumbnail-only' (hiển thị ảnh thu nhỏ của cửa sổ), 'app-icon-only' (chỉ "
-"hiển thị biểu tượng của ứng dụng) hoặc 'both' (cả hai)."
+"“thumbnail-only” (hiển thị ảnh thu nhỏ của cửa sổ), “app-icon-only” (chỉ "
+"hiển thị biểu tượng của ứng dụng) hoặc “both” (cả hai)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Attach modal dialog to the parent window"
@@ -359,26 +356,22 @@ msgstr "Phần mở rộng"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Chọn phần mở rộng để cấu hình dùng hộp chọn."
 
-#: ../js/gdm/loginDialog.js:302
-#, fuzzy
-#| msgid "Switch Session"
+#: ../js/gdm/loginDialog.js:308
 msgid "Choose Session"
-msgstr "Chuyển phiên làm việc"
+msgstr "Chọn phiên làm việc"
 
-#: ../js/gdm/loginDialog.js:320
-#, fuzzy
-#| msgid "Session…"
+#: ../js/gdm/loginDialog.js:326
 msgid "Session"
-msgstr "Phiên làm việc…"
+msgstr "Phiên làm việc"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:522
+#: ../js/gdm/loginDialog.js:528
 msgid "Not listed?"
 msgstr "Không có trong danh sách?"
 
-#: ../js/gdm/loginDialog.js:739 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:810 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:449 ../js/ui/unlockDialog.js:95
@@ -386,18 +379,18 @@ msgstr "Không có trong danh sách?"
 msgid "Cancel"
 msgstr "Thôi"
 
-#: ../js/gdm/loginDialog.js:768
+#: ../js/gdm/loginDialog.js:833
 msgctxt "button"
 msgid "Sign In"
 msgstr "Đăng nhập"
 
-#: ../js/gdm/loginDialog.js:768
+#: ../js/gdm/loginDialog.js:833
 msgid "Next"
 msgstr "Kế tiếp"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:869
+#: ../js/gdm/loginDialog.js:934
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(ví dụ: tài khoản hoặc %s)"
@@ -405,12 +398,12 @@ msgstr "(ví dụ: tài khoản hoặc %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:873 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:938 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Tài khoản: "
 
-#: ../js/gdm/loginDialog.js:1140
+#: ../js/gdm/loginDialog.js:1205
 msgid "Login Window"
 msgstr "Cửa sổ đăng nhập"
 
@@ -422,7 +415,7 @@ msgstr "Nguồn"
 #: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:651 ../js/ui/userMenu.js:655
 #: ../js/ui/userMenu.js:768
 msgid "Suspend"
-msgstr "Ngưng"
+msgstr "Tạm dừng"
 
 #: ../js/gdm/powerMenu.js:98
 msgid "Restart"
@@ -772,7 +765,7 @@ msgstr "Rất tiếc, không được. Vui lòng thử lại."
 #: ../js/ui/components/recorder.js:47
 #, no-c-format
 msgid "Screencast from %d %t"
-msgstr "Screencast from %d %t"
+msgstr "Screencast từ %d %t"
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
@@ -792,7 +785,7 @@ msgstr "Truyền tập tin"
 
 #: ../js/ui/components/telepathyClient.js:418
 msgid "Chat"
-msgstr "Tán gẫu"
+msgstr "Chat"
 
 #: ../js/ui/components/telepathyClient.js:480
 msgid "Unmute"
@@ -865,7 +858,7 @@ msgstr "Đồng ý"
 #: ../js/ui/components/telepathyClient.js:1130
 #, c-format
 msgid "Video call from %s"
-msgstr "Cuộc gọi video từ %s"
+msgstr "Cuộc gọi có hình từ %s"
 
 #. translators: argument is a contact name like Alice for example.
 #: ../js/ui/components/telepathyClient.js:1133
@@ -1009,7 +1002,7 @@ msgstr "Xem tài khoản"
 
 #: ../js/ui/components/telepathyClient.js:1399
 msgid "Unknown reason"
-msgstr "Lý do không biết"
+msgstr "Không rõ nguyên nhân"
 
 #: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
 msgid "Windows"
@@ -1035,7 +1028,7 @@ msgstr "Mở đồng hồ"
 
 #: ../js/ui/dateMenu.js:96
 msgid "Date & Time Settings"
-msgstr "Thiết lập ngày giờ"
+msgstr "Cài đặt ngày giờ"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
@@ -1117,7 +1110,8 @@ msgstr "Khởi động lại"
 #: ../js/ui/endSessionDialog.js:101
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
-"Nhấn Khởi động lại để thoát những ứng dụng này và khởi động lại hệ thống."
+"Bấm vào \"Khởi động lại\" để thoát khỏi những ứng dụng này và khởi động lại "
+"hệ thống."
 
 #: ../js/ui/endSessionDialog.js:103
 #, c-format
@@ -1205,7 +1199,7 @@ msgstr "Xoá thông báo"
 
 #: ../js/ui/messageTray.js:1528
 msgid "Notification Settings"
-msgstr "Thiết lập thông báo"
+msgstr "Cài đặt thông báo"
 
 #: ../js/ui/messageTray.js:1711
 msgid "No Messages"
@@ -1291,7 +1285,7 @@ msgstr[0] "%d thông báo mới"
 
 #: ../js/ui/screenShield.js:449 ../js/ui/userMenu.js:759
 msgid "Lock"
-msgstr "Khoá"
+msgstr "Khóa"
 
 #: ../js/ui/screenShield.js:652
 msgid "GNOME needs to lock the screen"
@@ -1304,11 +1298,11 @@ msgstr "GNOME cần khoá màn hình"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:773 ../js/ui/screenShield.js:1213
+#: ../js/ui/screenShield.js:788 ../js/ui/screenShield.js:1215
 msgid "Unable to lock"
 msgstr "Không thể khoá"
 
-#: ../js/ui/screenShield.js:774 ../js/ui/screenShield.js:1214
+#: ../js/ui/screenShield.js:789 ../js/ui/screenShield.js:1216
 msgid "Lock was blocked by an application"
 msgstr "Một ứng dụng đã ngăn cản khoá"
 
@@ -1386,7 +1380,7 @@ msgstr "Phím chuột"
 
 #: ../js/ui/status/accessibility.js:72
 msgid "Universal Access Settings"
-msgstr "Thiết lập hỗ trợ truy cập"
+msgstr "Cài đặt hỗ trợ truy cập"
 
 #: ../js/ui/status/accessibility.js:129
 msgid "High Contrast"
@@ -1413,11 +1407,11 @@ msgstr "Gửi tập tin đến thiết bị…"
 
 #: ../js/ui/status/bluetooth.js:60
 msgid "Set Up a New Device…"
-msgstr "Thiết lập thiết bị mới…"
+msgstr "Cài đặt thiết bị mới…"
 
 #: ../js/ui/status/bluetooth.js:84
 msgid "Bluetooth Settings"
-msgstr "Thiết lập Bluetooth"
+msgstr "Cài đặt Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
 #: ../js/ui/status/bluetooth.js:105 ../js/ui/status/network.js:140
@@ -1443,15 +1437,15 @@ msgstr "Gửi tập tin…"
 
 #: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
-msgstr "Thiết lập bàn phím"
+msgstr "Cài đặt bàn phím"
 
 #: ../js/ui/status/bluetooth.js:250
 msgid "Mouse Settings"
-msgstr "Thiết lập chuột"
+msgstr "Cài đặt chuột"
 
 #: ../js/ui/status/bluetooth.js:255 ../js/ui/status/volume.js:313
 msgid "Sound Settings"
-msgstr "Thiết lập âm thanh"
+msgstr "Cài đặt âm thanh"
 
 #: ../js/ui/status/bluetooth.js:328 ../js/ui/status/bluetooth.js:356
 #, c-format
@@ -1466,11 +1460,11 @@ msgstr "Thiết bị %s muốn kết nối với máy tính này"
 
 #: ../js/ui/status/bluetooth.js:336
 msgid "Allow"
-msgstr ""
+msgstr "Cho phép"
 
 #: ../js/ui/status/bluetooth.js:337
 msgid "Deny"
-msgstr ""
+msgstr "Từ chối"
 
 #: ../js/ui/status/bluetooth.js:362
 #, c-format
@@ -1496,11 +1490,10 @@ msgid "Pairing confirmation for %s"
 msgstr "Xác nhận kết nối cho %s"
 
 #: ../js/ui/status/bluetooth.js:400
-#, fuzzy, c-format
-#| msgid "Please confirm whether the PIN '%06d' matches the one on the device."
+#, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
-msgstr "Vui lòng xác nhận PIN “%06d” khớp với số trên thiết bị."
+msgstr "Vui lòng xác nhận Passkey “%06d” nào tương ứng với nó trên thiết bị."
 
 #. Translators: this is the verb, not the noun
 #: ../js/ui/status/bluetooth.js:403
@@ -1526,11 +1519,11 @@ msgstr "OK"
 
 #: ../js/ui/status/keyboard.js:396
 msgid "Show Keyboard Layout"
-msgstr "Hiện bố trí bàn phím"
+msgstr "Hiện bố cục của bàn phím"
 
 #: ../js/ui/status/keyboard.js:401
 msgid "Region & Language Settings"
-msgstr "Thiết lập Lãnh thổ và Ngôn ngữ"
+msgstr "Cài đặt Lãnh thổ và Ngôn ngữ"
 
 #: ../js/ui/status/lockScreenMenu.js:43
 msgid "Volume, network, battery"
@@ -1600,7 +1593,7 @@ msgstr "Bật nối mạng"
 
 #: ../js/ui/status/network.js:1522
 msgid "Network Settings"
-msgstr "Thiết lập mạng"
+msgstr "Cài đặt mạng"
 
 #: ../js/ui/status/network.js:1539
 msgid "Network Manager"
@@ -1614,7 +1607,7 @@ msgstr "Lỗi kết nối"
 msgid "Activation of network connection failed"
 msgstr "Lỗi kích hoạt kết nối mạng"
 
-#: ../js/ui/status/network.js:1937
+#: ../js/ui/status/network.js:1938
 msgid "Networking is disabled"
 msgstr "Mạng bị tắt"
 
@@ -1624,7 +1617,7 @@ msgstr "Pin"
 
 #: ../js/ui/status/power.js:81
 msgid "Power Settings"
-msgstr "Thiết lập năng lượng"
+msgstr "Cài đặt Nguồn điện"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
@@ -1672,7 +1665,7 @@ msgstr "Nguồn AC"
 
 #: ../js/ui/status/power.js:203
 msgid "Laptop Battery"
-msgstr "Pin laptop"
+msgstr "Pin Máy tính xách tay"
 
 #: ../js/ui/status/power.js:205
 msgid "UPS"
@@ -1796,13 +1789,13 @@ msgstr "Tắt sẽ làm mất những kết quả chưa được lưu."
 #: ../js/ui/userMenu.js:867
 #, c-format
 msgid "%s (remote)"
-msgstr "%s (ở xa)"
+msgstr "%s (máy khác)"
 
 #. Translators: Console here refers to a tty like a VT console
 #: ../js/ui/userMenu.js:870
 #, c-format
 msgid "%s (console)"
-msgstr "%s (console)"
+msgstr "%s (bàn điều khiển)"
 
 #: ../js/ui/viewSelector.js:100
 msgid "Applications"
@@ -1818,7 +1811,7 @@ msgid ""
 "Sorry, no wisdom for you today:\n"
 "%s"
 msgstr ""
-"Rất tiếc, không có lời thông thái nào hôm nay:\n"
+"Rất tiếc, hôm nay không có lời thông thái nào:\n"
 "%s"
 
 #: ../js/ui/wanda.js:81
@@ -1857,11 +1850,11 @@ msgstr "Âm thanh hệ thống"
 
 #: ../src/main.c:353
 msgid "Print version"
-msgstr "In phiên bản"
+msgstr "Hiển thị phiên bản"
 
 #: ../src/main.c:359
 msgid "Mode used by GDM for login screen"
-msgstr "Chể độ dùng bởi GDM cho màn hình đăng nhập"
+msgstr "Chế độ được dùng bởi GDM cho màn hình đăng nhập"
 
 #: ../src/main.c:365
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
@@ -1869,20 +1862,20 @@ msgstr "Dùng chế độ đặc biệt, ví dụ “gdm” cho màn hình đăn
 
 #: ../src/main.c:371
 msgid "List possible modes"
-msgstr "Danh sách chế độ"
+msgstr "Danh sách chế độ có thể"
 
 #: ../src/shell-app.c:626
 #, c-format
 msgid "Failed to launch '%s'"
-msgstr "Lỗi chạy “%s”"
+msgstr "Gặp lỗi khi khởi chạy “%s”"
 
 #: ../src/shell-keyring-prompt.c:714
 msgid "Passwords do not match."
-msgstr "Mật khẩu không khớp"
+msgstr "Mật khẩu không đúng."
 
 #: ../src/shell-keyring-prompt.c:722
 msgid "Password cannot be blank"
-msgstr "Mật khẩu không thể không có"
+msgstr "Mật khẩu không thể trống rỗng"
 
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
