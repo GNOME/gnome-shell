@@ -672,6 +672,7 @@ const PopupMenuBase = new Lang.Class({
 
     _init: function(sourceActor, styleClass) {
         this.sourceActor = sourceActor;
+        this._parent = null;
 
         if (styleClass !== undefined) {
             this.box = new St.BoxLayout({ style_class: styleClass,
@@ -692,6 +693,13 @@ const PopupMenuBase = new Lang.Class({
         this._settingsActions = { };
 
         this._sessionUpdatedId = Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+    },
+
+    _getTopMenu: function() {
+        if (this._parent)
+            return this._parent._getTopMenu();
+        else
+            return this;
     },
 
     _sessionUpdated: function() {
@@ -902,6 +910,8 @@ const PopupMenuBase = new Lang.Class({
             this._connectItemSignals(menuItem);
         else
             throw TypeError("Invalid argument to PopupMenuBase.addMenuItem()");
+
+        menuItem._parent = this;
 
         this.length++;
     },
@@ -1152,18 +1162,6 @@ const PopupSubMenu = new Lang.Class({
         this.actor.clip_to_allocation = true;
         this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
         this.actor.hide();
-    },
-
-    _getTopMenu: function() {
-        let actor = this.actor.get_parent();
-        while (actor) {
-            if (actor._delegate && actor._delegate instanceof PopupMenu)
-                return actor._delegate;
-
-            actor = actor.get_parent();
-        }
-
-        return null;
     },
 
     _needsScrollbar: function() {
