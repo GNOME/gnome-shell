@@ -54,6 +54,8 @@ st_theme_node_init (StThemeNode *node)
   node->background_shadow_material = COGL_INVALID_HANDLE;
   node->border_slices_texture = COGL_INVALID_HANDLE;
   node->border_slices_material = COGL_INVALID_HANDLE;
+
+  st_theme_node_paint_state_init (&node->cached_state);
 }
 
 static void
