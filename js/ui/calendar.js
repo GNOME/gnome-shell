@@ -699,7 +699,10 @@ const EventsList = new Lang.Class({
     Name: 'EventsList',
 
     _init: function() {
-        this.actor = new St.Table({ style_class: 'events-table' });
+        let layout = new Clutter.TableLayout();
+        this.actor = new St.Widget({ style_class: 'events-table',
+                                     layout_manager: layout });
+        layout.hookup_style(this.actor);
         this._date = new Date();
         this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed', Lang.bind(this, this._update));
@@ -723,9 +726,11 @@ const EventsList = new Lang.Class({
         dayLabel.clutter_text.line_wrap = false;
         dayLabel.clutter_text.ellipsize = false;
 
-        this.actor.add(dayLabel, { row: index, col: 0,
-                                   x_expand: false, x_align: St.Align.END,
-                                   y_fill: false, y_align: St.Align.START });
+        let layout = this.actor.layout_manager;
+        layout.pack(dayLabel, 0, index);
+        layout.child_set(dayLabel, { x_expand: false,
+                                     x_align: Clutter.TableAlignment.END,
+                                     y_align: Clutter.TableAlignment.START });
 
         let clockFormat = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);
         let timeString = _formatEventTime(event, clockFormat);
@@ -734,18 +739,17 @@ const EventsList = new Lang.Class({
         timeLabel.clutter_text.line_wrap = false;
         timeLabel.clutter_text.ellipsize = false;
 
-        this.actor.add(timeLabel, { row: index, col: 1,
-                                    x_expand: false, x_align: St.Align.MIDDLE,
-                                    y_fill: false, y_align: St.Align.START });
+        layout.pack(timeLabel, 1, index);
+        layout.child_set(timeLabel, { x_expand: false,
+                                      y_align: Clutter.TableAlignment.START });
 
         let titleLabel = new St.Label({ style_class: 'events-day-task',
                                         text: event.summary });
         titleLabel.clutter_text.line_wrap = true;
         titleLabel.clutter_text.ellipsize = false;
 
-        this.actor.add(titleLabel, { row: index, col: 2,
-                                     x_expand: true, x_align: St.Align.START,
-                                     y_fill: false, y_align: St.Align.START });
+        layout.pack(titleLabel, 2, index);
+        layout.child_set(titleLabel, { x_expand: true });
     },
 
     _addPeriod: function(header, index, begin, end, includeDayName, showNothingScheduled) {
@@ -754,13 +758,10 @@ const EventsList = new Lang.Class({
         if (events.length == 0 && !showNothingScheduled)
             return index;
 
-        this.actor.add(new St.Label({ style_class: 'events-day-header', text: header }),
-                       { row: index, col: 0, col_span: 3,
-                         // In theory, x_expand should be true here, but x_expand
-                         // is a property of the column for StTable, ie all day cells
-                         // get it too
-                         x_expand: false, x_align: St.Align.START,
-                         y_fill: false, y_align: St.Align.START });
+        let label = new St.Label({ style_class: 'events-day-header', text: header });
+        let layout = this.actor.layout_manager;
+        layout.pack(label, 0, index);
+        layout.child_set(label, { column_span: 3, x_expand: false });
         index++;
 
         for (let n = 0; n < events.length; n++) {
