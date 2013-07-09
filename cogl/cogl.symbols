@@ -228,7 +228,6 @@ cogl_framebuffer_clear
 cogl_framebuffer_discard_buffers
 cogl_framebuffer_draw_attributes
 cogl_framebuffer_draw_indexed_attributes
-cogl_framebuffer_draw_primitive
 cogl_framebuffer_draw_rectangle
 cogl_framebuffer_draw_rectangles
 cogl_framebuffer_draw_textured_rectangle
@@ -684,6 +683,7 @@ cogl_primitive_set_first_vertex
 cogl_primitive_set_indices
 cogl_primitive_set_mode
 cogl_primitive_set_n_vertices
+cogl_primitive_draw
 
 cogl_primitive_texture_set_auto_mipmap
 

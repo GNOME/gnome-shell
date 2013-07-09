@@ -79,9 +79,7 @@ test_point_size (void)
 
       cogl_pipeline_set_point_size (pipeline, point_size);
       cogl_pipeline_set_color4ub (pipeline, 0, 255, 0, 255);
-      cogl_framebuffer_draw_primitive (test_fb,
-                                       pipeline,
-                                       prim);
+      cogl_primitive_draw (prim, test_fb, pipeline);
 
       cogl_object_unref (prim);
       cogl_object_unref (pipeline);

@@ -392,8 +392,8 @@ paint_cb (void *user_data)
 
       cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
-      cogl_framebuffer_draw_primitive (fb, compositor->triangle_pipeline,
-                                       compositor->triangle);
+      cogl_primitive_draw (compositor->triangle,
+                           fb, compositor->triangle_pipeline);
 
       for (l2 = compositor->surfaces; l2; l2 = l2->next)
         {

@@ -298,6 +298,7 @@ cogl_primitive_set_indices
 cogl_primitive_copy
 CoglPrimitiveAttributeCallback
 cogl_primitive_foreach_attribute
+cogl_primitive_draw
 </SECTION>
 
 <SECTION>
@@ -541,7 +542,6 @@ cogl_framebuffer_set_dither_enabled
 cogl_framebuffer_get_dither_enabled
 
 <SUBSECTION>
-cogl_framebuffer_draw_primitive
 cogl_framebuffer_draw_attributes
 cogl_framebuffer_vdraw_attributes
 cogl_framebuffer_draw_indexed_attributes

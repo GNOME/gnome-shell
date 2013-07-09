@@ -156,7 +156,7 @@ draw_frame (TestState *state)
                                                           TEX_DEPTH),
                               6 * TEX_DEPTH);
 
-  cogl_framebuffer_draw_primitive (test_fb, pipeline, primitive);
+  cogl_primitive_draw (primitive, test_fb, pipeline);
 
   g_free (verts);
 

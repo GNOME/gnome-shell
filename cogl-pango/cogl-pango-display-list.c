@@ -373,9 +373,9 @@ emit_vertex_buffer_geometry (CoglFramebuffer *fb,
       cogl_object_unref (attributes[1]);
     }
 
-  cogl_framebuffer_draw_primitive (fb,
-                                   pipeline,
-                                   node->d.texture.primitive);
+  cogl_primitive_draw (node->d.texture.primitive,
+                       fb,
+                       pipeline);
 }
 
 static void

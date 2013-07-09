@@ -32,14 +32,16 @@
 #ifndef __COGL_PIXEL_BUFFER_H__
 #define __COGL_PIXEL_BUFFER_H__
 
+/* XXX: We forward declare CoglPixelBuffer here to allow for circular
+ * dependencies between some headers */
+typedef struct _CoglPixelBuffer CoglPixelBuffer;
+
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-context.h>
 
 COGL_BEGIN_DECLS
 
 #define COGL_PIXEL_BUFFER(buffer) ((CoglPixelBuffer *)(buffer))
-
-typedef struct _CoglPixelBuffer CoglPixelBuffer;
 
 /**
  * cogl_pixel_buffer_new:

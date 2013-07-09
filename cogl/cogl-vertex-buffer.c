@@ -105,6 +105,7 @@
 #include "cogl-pipeline-private.h"
 #include "cogl-primitives.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-primitive-private.h"
 #include "cogl-journal-private.h"
 #include "cogl1-context.h"
 
@@ -1627,10 +1628,10 @@ update_primitive_and_draw (CoglVertexBuffer *buffer,
    *  to enable it) */
   cogl_push_source (pipeline_priv->real_source);
 
-  _cogl_framebuffer_draw_primitive (cogl_get_draw_framebuffer (),
-                                    pipeline_priv->real_source,
-                                    buffer->primitive,
-                                    0 /* no draw flags */);
+  _cogl_primitive_draw (buffer->primitive,
+                        cogl_get_draw_framebuffer (),
+                        pipeline_priv->real_source,
+                        0 /* no draw flags */);
 
   cogl_pop_source ();
 }

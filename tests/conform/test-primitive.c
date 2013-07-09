@@ -195,7 +195,7 @@ test_paint (TestState *state)
 
       cogl_framebuffer_push_matrix (test_fb);
       cogl_framebuffer_translate (test_fb, i * 10, 0, 0);
-      cogl_framebuffer_draw_primitive (test_fb, pipeline, prim);
+      cogl_primitive_draw (prim, test_fb, pipeline);
       cogl_framebuffer_pop_matrix (test_fb);
 
       test_utils_check_pixel (test_fb, i * 10 + 2, 2, expected_color);

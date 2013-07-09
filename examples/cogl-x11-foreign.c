@@ -195,7 +195,7 @@ main (int argc, char **argv)
                                    poll_fds, n_poll_fds);
 
       cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
-      cogl_framebuffer_draw_primitive (fb, pipeline, triangle);
+      cogl_primitive_draw (triangle, fb, pipeline);
       cogl_onscreen_swap_buffers (onscreen);
     }
 

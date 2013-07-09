@@ -38,6 +38,7 @@ typedef struct _CoglPrimitive CoglPrimitive;
 
 #include <cogl/cogl-vertex-buffer.h> /* for CoglVerticesMode */
 #include <cogl/cogl-attribute.h>
+#include <cogl/cogl-framebuffer.h>
 
 COGL_BEGIN_DECLS
 
@@ -859,6 +860,30 @@ void
 cogl_primitive_foreach_attribute (CoglPrimitive *primitive,
                                   CoglPrimitiveAttributeCallback callback,
                                   void *user_data);
+
+/**
+ * cogl_primitive_draw:
+ * @primitive: A #CoglPrimitive geometry object
+ * @framebuffer: A destination #CoglFramebuffer
+ * @pipeline: A #CoglPipeline state object
+ *
+ * Draws the given @primitive geometry to the specified destination
+ * @framebuffer using the graphics processing state described by @pipeline.
+ *
+ * This drawing api doesn't support high-level meta texture types such
+ * as #CoglTexture2DSliced so it is the user's responsibility to
+ * ensure that only low-level textures that can be directly sampled by
+ * a GPU such as #CoglTexture2D, #CoglTextureRectangle or #CoglTexture3D
+ * are associated with layers of the given @pipeline.
+ *
+ * Stability: unstable
+ * Since: 1.16
+ */
+void
+cogl_primitive_draw (CoglPrimitive *primitive,
+                     CoglFramebuffer *framebuffer,
+                     CoglPipeline *pipeline);
+
 
 COGL_END_DECLS
 

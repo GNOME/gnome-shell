@@ -122,7 +122,7 @@ do_test (const char *attribute_name,
   cogl_pipeline_set_per_vertex_point_size (pipeline, TRUE, NULL);
   if (pipeline_setup_func)
     pipeline_setup_func (pipeline);
-  cogl_framebuffer_draw_primitive (test_fb, pipeline, primitive);
+  cogl_primitive_draw (primitive, test_fb, pipeline);
   cogl_object_unref (pipeline);
   cogl_object_unref (primitive);
 

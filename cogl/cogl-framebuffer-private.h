@@ -406,12 +406,6 @@ _cogl_framebuffer_restore_clip_stack (CoglFramebuffer *framebuffer);
 void
 _cogl_framebuffer_unref (CoglFramebuffer *framebuffer);
 
-void
-_cogl_framebuffer_draw_primitive (CoglFramebuffer *framebuffer,
-                                  CoglPipeline *pipeline,
-                                  CoglPrimitive *primitive,
-                                  CoglDrawFlags flags);
-
 /* This can be called directly by the CoglJournal to draw attributes
  * skipping the implicit journal flush, the framebuffer flush and
  * pipeline validation. */

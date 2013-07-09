@@ -81,9 +81,7 @@ test_primitive_and_journal (void)
   cogl_framebuffer_push_rectangle_clip (test_fb,
                                         0, 50, 300, 100);
 
-  cogl_framebuffer_draw_primitive (test_fb,
-                                   pipeline,
-                                   primitives[0]);
+  cogl_primitive_draw (primitives[0], test_fb, pipeline);
 
   /* Draw a rectangle using the journal in-between the two primitives.
    * This should test that the journal gets flushed correctly and that
@@ -94,9 +92,7 @@ test_primitive_and_journal (void)
                                    100, 0, /* x1/y1 */
                                    300, 100 /* x2/y2 */);
 
-  cogl_framebuffer_draw_primitive (test_fb,
-                                   pipeline,
-                                   primitives[1]);
+  cogl_primitive_draw (primitives[1], test_fb, pipeline);
 
   /* Check the three rectangles */
   test_utils_check_region (test_fb,

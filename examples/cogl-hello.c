@@ -24,9 +24,9 @@ paint_cb (void *user_data)
     data->draw_ready = FALSE;
 
     cogl_framebuffer_clear4f (data->fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
-    cogl_framebuffer_draw_primitive (data->fb,
-                                     data->pipeline,
-                                     data->triangle);
+    cogl_primitive_draw (data->triangle,
+                         data->fb,
+                         data->pipeline);
     cogl_onscreen_swap_buffers (COGL_ONSCREEN (data->fb));
 
     return G_SOURCE_REMOVE;

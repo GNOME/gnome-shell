@@ -46,7 +46,7 @@ paint_cb (void *user_data)
     cogl_pop_gles2_context (data->ctx);
 
     /* Draw scene with Cogl */
-    cogl_framebuffer_draw_primitive (data->fb, data->pipeline, data->triangle);
+    cogl_primitive_draw (data->triangle, data->fb, data->pipeline);
 
     cogl_onscreen_swap_buffers (COGL_ONSCREEN (data->fb));
 

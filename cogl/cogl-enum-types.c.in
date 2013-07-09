@@ -3,6 +3,12 @@
 #include "config.h"
 #endif
 
+/* We need to undefine this so that we will be sure to include
+ * cogl-path.h instead of cogl2-path.h when we include the framebuffer
+ * header. Otherwise it will include both headers and it won't
+ * compile. */
+#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
+
 #include "cogl-enum-types.h"
 /*** END file-header ***/
 

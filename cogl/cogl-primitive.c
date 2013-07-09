@@ -34,6 +34,7 @@
 #include "cogl-primitive.h"
 #include "cogl-primitive-private.h"
 #include "cogl-attribute-private.h"
+#include "cogl-framebuffer-private.h"
 
 #include <stdarg.h>
 #include <string.h>
@@ -598,4 +599,39 @@ cogl_primitive_foreach_attribute (CoglPrimitive *primitive,
   for (i = 0; i < primitive->n_attributes; i++)
     if (!callback (primitive, primitive->attributes[i], user_data))
       break;
+}
+
+void
+_cogl_primitive_draw (CoglPrimitive *primitive,
+                      CoglFramebuffer *framebuffer,
+                      CoglPipeline *pipeline,
+                      CoglDrawFlags flags)
+{
+  if (primitive->indices)
+    _cogl_framebuffer_draw_indexed_attributes (framebuffer,
+                                               pipeline,
+                                               primitive->mode,
+                                               primitive->first_vertex,
+                                               primitive->n_vertices,
+                                               primitive->indices,
+                                               primitive->attributes,
+                                               primitive->n_attributes,
+                                               flags);
+  else
+    _cogl_framebuffer_draw_attributes (framebuffer,
+                                       pipeline,
+                                       primitive->mode,
+                                       primitive->first_vertex,
+                                       primitive->n_vertices,
+                                       primitive->attributes,
+                                       primitive->n_attributes,
+                                       flags);
+}
+
+void
+cogl_primitive_draw (CoglPrimitive *primitive,
+                     CoglFramebuffer *framebuffer,
+                     CoglPipeline *pipeline)
+{
+  _cogl_primitive_draw (primitive, framebuffer, pipeline, 0 /* flags */);
 }

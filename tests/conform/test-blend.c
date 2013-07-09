@@ -41,8 +41,8 @@ paint (void)
    * primitive will be drawn with blending still disabled.
    */
 
-  cogl_framebuffer_draw_primitive (test_fb, pipeline, tri0);
-  cogl_framebuffer_draw_primitive (test_fb, pipeline, tri1);
+  cogl_primitive_draw (tri0, test_fb, pipeline);
+  cogl_primitive_draw (tri1, test_fb, pipeline);
 
   test_utils_check_pixel_and_alpha (test_fb,
                                     half_width + 5,

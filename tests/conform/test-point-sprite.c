@@ -81,9 +81,7 @@ do_test (CoglBool check_orientation)
                                   1, /* n_vertices */
                                   &point);
 
-  cogl_framebuffer_draw_primitive (test_fb,
-                                   pipeline,
-                                   prim);
+  cogl_primitive_draw (prim, test_fb, pipeline);
 
   /* Render the primitive again without point sprites to make sure
      disabling it works */
@@ -99,9 +97,7 @@ do_test (CoglBool check_orientation)
                               POINT_SIZE * 2, /* x */
                               0.0f, /* y */
                               0.0f /* z */);
-  cogl_framebuffer_draw_primitive (test_fb,
-                                   solid_pipeline,
-                                   prim);
+  cogl_primitive_draw (prim, test_fb, solid_pipeline);
   cogl_framebuffer_pop_matrix (test_fb);
 
   cogl_object_unref (prim);

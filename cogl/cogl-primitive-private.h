@@ -31,6 +31,7 @@
 #include "cogl-object-private.h"
 #include "cogl-attribute-buffer-private.h"
 #include "cogl-attribute-private.h"
+#include "cogl-framebuffer.h"
 
 struct _CoglPrimitive
 {
@@ -58,6 +59,8 @@ _cogl_primitive_immutable_unref (CoglPrimitive *primitive);
 
 void
 _cogl_primitive_draw (CoglPrimitive *primitive,
+                      CoglFramebuffer *framebuffer,
+                      CoglPipeline *pipeline,
                       CoglDrawFlags flags);
 
 #endif /* __COGL_PRIMITIVE_PRIVATE_H */

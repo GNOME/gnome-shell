@@ -32,6 +32,11 @@
 #include <windows.h>
 #endif /* COGL_HAS_WIN32_SUPPORT */
 
+/* We forward declare the CoglFramebuffer type here to avoid some circular
+ * dependency issues with the following headers.
+ */
+typedef struct _CoglFramebuffer CoglFramebuffer;
+
 #ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl2-path.h>
 #else
@@ -86,8 +91,6 @@ COGL_BEGIN_DECLS
  * also catch any possible errors that may arise from your
  * configuration.
  */
-
-typedef struct _CoglFramebuffer CoglFramebuffer;
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
@@ -1387,9 +1390,8 @@ cogl_framebuffer_draw_rectangle (CoglFramebuffer *framebuffer,
  * This is a high level drawing api that can handle any kind of
  * #CoglMetaTexture texture such as #CoglTexture2DSliced textures
  * which may internally be comprised of multiple low-level textures.
- * This is unlike low-level drawing apis such as
- * cogl_framebuffer_draw_primitive() or
- * cogl_framebuffer_draw_attributes() which only support low level
+ * This is unlike low-level drawing apis such as cogl_primitive_draw()
+ * or cogl_framebuffer_draw_attributes() which only support low level
  * texture types that are directly supported by GPUs such as
  * #CoglTexture2D.
  *
@@ -1454,10 +1456,9 @@ cogl_framebuffer_draw_textured_rectangle (CoglFramebuffer *framebuffer,
  * #CoglMetaTexture texture for the first layer such as
  * #CoglTexture2DSliced textures which may internally be comprised of
  * multiple low-level textures.  This is unlike low-level drawing apis
- * such as cogl_framebuffer_draw_primitive() or
- * cogl_framebuffer_draw_attributes() which only support low level
- * texture types that are directly supported by GPUs such as
- * #CoglTexture2D.
+ * such as cogl_primitive_draw() or cogl_framebuffer_draw_attributes()
+ * which only support low level texture types that are directly
+ * supported by GPUs such as #CoglTexture2D.
  *
  * <note>This api can not currently handle multiple high-level meta
  * texture layers. The first layer may be a high level meta texture
@@ -1562,9 +1563,8 @@ cogl_framebuffer_draw_rectangles (CoglFramebuffer *framebuffer,
  * This is a high level drawing api that can handle any kind of
  * #CoglMetaTexture texture such as #CoglTexture2DSliced textures
  * which may internally be comprised of multiple low-level textures.
- * This is unlike low-level drawing apis such as
- * cogl_framebuffer_draw_primitive() or
- * cogl_framebuffer_draw_attributes() which only support low level
+ * This is unlike low-level drawing apis such as cogl_primitive_draw()
+ * or cogl_framebuffer_draw_attributes() which only support low level
  * texture types that are directly supported by GPUs such as
  * #CoglTexture2D.
  *
