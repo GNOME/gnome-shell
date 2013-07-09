@@ -192,6 +192,26 @@ CoglGstVideoSink *
 cogl_gst_video_sink_new (CoglContext *ctx);
 
 /**
+ * cogl_gst_video_sink_is_ready:
+ * @sink: The #CoglGstVideoSink
+ *
+ * Returns whether the pipeline is ready and so
+ * cogl_gst_video_sink_get_pipeline() and
+ * cogl_gst_video_sink_setup_pipeline() can be called without causing error.
+ *
+ * Note: Normally an application will wait until the
+ * #CoglGstVideoSink::pipeline-ready signal is emitted instead of
+ * polling the ready status with this api, but sometimes when a sink
+ * is passed between components that didn't have an opportunity to
+ * connect a signal handler this can be useful.
+ *
+ * Return value: %TRUE if the sink is ready, else %FALSE
+ * Since: 1.16
+ */
+CoglBool
+cogl_gst_video_sink_is_ready (CoglGstVideoSink *sink);
+
+/**
  * cogl_gst_video_sink_get_pipeline:
  * @vt: The #CoglGstVideoSink
  *

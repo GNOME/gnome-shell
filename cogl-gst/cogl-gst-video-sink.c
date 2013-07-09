@@ -1352,3 +1352,9 @@ cogl_gst_video_sink_fit_size (CoglGstVideoSink *vt,
         }
     }
 }
+
+CoglBool
+cogl_gst_video_sink_is_ready (CoglGstVideoSink *sink)
+{
+  return !!sink->priv->renderer;
+}
