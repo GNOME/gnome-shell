@@ -72,7 +72,11 @@ const NetworkSecretDialog = new Lang.Class({
                              expand: true });
         }
 
-        let secretTable = new St.Table({ style_class: 'network-dialog-secret-table' });
+        let layout = new Clutter.TableLayout();
+        let secretTable = new St.Widget({ style_class: 'network-dialog-secret-table',
+                                          layout_manager: layout });
+        layout.hookup_style(secretTable);
+
         let initialFocusSet = false;
         let pos = 0;
         for (let i = 0; i < this._content.secrets.length; i++) {
@@ -111,11 +115,10 @@ const NetworkSecretDialog = new Lang.Class({
             } else
                 secret.valid = true;
 
-            secretTable.add(label, { row: pos, col: 0,
-                                     x_expand: false, x_fill: true,
-                                     x_align: St.Align.START,
-                                     y_fill: false, y_align: St.Align.MIDDLE });
-            secretTable.add(secret.entry, { row: pos, col: 1, x_expand: true, x_fill: true, y_align: St.Align.END });
+            layout.pack(label, 0, pos);
+            layout.child_set(label, { x_expand: false, y_fill: false,
+                                      x_align: Clutter.TableAlignment.START });
+            layout.pack(secret.entry, 1, pos);
             pos++;
 
             if (secret.password)
