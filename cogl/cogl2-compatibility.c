@@ -31,6 +31,7 @@
 
 #include "cogl2-compatibility.h"
 #include "cogl-framebuffer.h"
+#include "cogl-framebuffer-private.h"
 #include "cogl-index-buffer.h"
 #include "cogl-pipeline.h"
 
@@ -137,12 +138,13 @@ cogl_vdraw_indexed_attributes (CoglFramebuffer *framebuffer,
     attributes[i] = attribute;
   va_end (ap);
 
-  cogl_framebuffer_draw_indexed_attributes (framebuffer,
-                                            pipeline,
-                                            mode,
-                                            first_vertex,
-                                            n_vertices,
-                                            indices,
-                                            attributes,
-                                            n_attributes);
+  _cogl_framebuffer_draw_indexed_attributes (framebuffer,
+                                             pipeline,
+                                             mode,
+                                             first_vertex,
+                                             n_vertices,
+                                             indices,
+                                             attributes,
+                                             n_attributes,
+                                             COGL_DRAW_SKIP_LEGACY_STATE);
 }

@@ -46,9 +46,9 @@ COGL_BEGIN_DECLS
  * as #CoglAtlasTexture and #CoglTexture2DSliced.
  *
  * A texture that implements this interface can be directly used with
- * the attributes API such as cogl_framebuffer_draw_attributes().
- * Other types of textures need to be first resolved to primitive
- * textures using the #CoglMetaTexture interface.
+ * the low level cogl_primitive_draw() API. Other types of textures
+ * need to be first resolved to primitive textures using the
+ * #CoglMetaTexture interface.
  *
  * <note>Most developers won't need to use this interface directly but
  * still it is worth understanding the distinction between high-level

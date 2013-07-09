@@ -31,6 +31,7 @@ test_float_verts (TestState *state, int offset_x, int offset_y)
 {
   CoglAttribute *attributes[2];
   CoglAttributeBuffer *buffer;
+  CoglPrimitive *primitive;
 
   static const FloatVert float_verts[] =
     {
@@ -61,13 +62,12 @@ test_float_verts (TestState *state, int offset_x, int offset_y)
   cogl_framebuffer_push_matrix (test_fb);
   cogl_framebuffer_translate (test_fb, offset_x, offset_y, 0.0f);
 
-  cogl_framebuffer_draw_attributes (test_fb,
-                                    state->pipeline,
-                                    COGL_VERTICES_MODE_TRIANGLES,
-                                    0, /* first_vertex */
-                                    6, /* n_vertices */
-                                    attributes,
-                                    2 /* n_attributes */);
+  primitive = cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLES,
+                                                  6, /* n_vertices */
+                                                  attributes,
+                                                  2); /* n_attributes */
+  cogl_primitive_draw (primitive, test_fb, state->pipeline);
+  cogl_object_unref (primitive);
 
   cogl_framebuffer_pop_matrix (test_fb);
 
@@ -84,6 +84,7 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
 {
   CoglAttribute *attributes[2];
   CoglAttributeBuffer *buffer, *unnorm_buffer;
+  CoglPrimitive *primitive;
 
   static const ByteVert norm_verts[] =
     {
@@ -122,13 +123,12 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
   cogl_framebuffer_push_matrix (test_fb);
   cogl_framebuffer_translate (test_fb, offset_x, offset_y, 0.0f);
 
-  cogl_framebuffer_draw_attributes (test_fb,
-                                    state->pipeline,
-                                    COGL_VERTICES_MODE_TRIANGLES,
-                                    0, /* first_vertex */
-                                    6, /* n_vertices */
-                                    attributes,
-                                    2 /* n_attributes */);
+  primitive = cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLES,
+                                                  6, /* n_vertices */
+                                                  attributes,
+                                                  2); /* n_attributes */
+  cogl_primitive_draw (primitive, test_fb, state->pipeline);
+  cogl_object_unref (primitive);
 
   cogl_object_unref (attributes[1]);
 
@@ -145,13 +145,12 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
 
   cogl_framebuffer_translate (test_fb, 20, 0, 0);
 
-  cogl_framebuffer_draw_attributes (test_fb,
-                                    state->pipeline,
-                                    COGL_VERTICES_MODE_TRIANGLES,
-                                    0, /* first_vertex */
-                                    3, /* n_vertices */
-                                    attributes,
-                                    2 /* n_attributes */);
+  primitive = cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLES,
+                                                  3, /* n_vertices */
+                                                  attributes,
+                                                  2); /* n_attributes */
+  cogl_primitive_draw (primitive, test_fb, state->pipeline);
+  cogl_object_unref (primitive);
 
   cogl_framebuffer_pop_matrix (test_fb);
 
@@ -172,6 +171,7 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
   CoglAttributeBuffer *buffer;
   CoglPipeline *pipeline, *pipeline2;
   CoglSnippet *snippet;
+  CoglPrimitive *primitive;
 
   static const ShortVert short_verts[] =
     {
@@ -208,13 +208,12 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
                               offset_y + 10.0f,
                               0.0f);
 
-  cogl_framebuffer_draw_attributes (test_fb,
-                                    pipeline,
-                                    COGL_VERTICES_MODE_TRIANGLES,
-                                    0, /* first_vertex */
-                                    3, /* n_vertices */
-                                    attributes,
-                                    1 /* n_attributes */);
+  primitive = cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLES,
+                                                  3, /* n_vertices */
+                                                  attributes,
+                                                  1); /* n_attributes */
+  cogl_primitive_draw (primitive, test_fb, pipeline);
+  cogl_object_unref (primitive);
 
   cogl_framebuffer_pop_matrix (test_fb);
 
@@ -237,13 +236,12 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
                               offset_y - 65525,
                               0.0f);
 
-  cogl_framebuffer_draw_attributes (test_fb,
-                                    pipeline2,
-                                    COGL_VERTICES_MODE_TRIANGLES,
-                                    0, /* first_vertex */
-                                    3, /* n_vertices */
-                                    attributes,
-                                    1 /* n_attributes */);
+  primitive = cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLES,
+                                                  3, /* n_vertices */
+                                                  attributes,
+                                                  1); /* n_attributes */
+  cogl_primitive_draw (primitive, test_fb, pipeline2);
+  cogl_object_unref (primitive);
 
   cogl_framebuffer_pop_matrix (test_fb);
 

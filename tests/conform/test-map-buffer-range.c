@@ -32,6 +32,7 @@ test_map_buffer_range (void)
   CoglVertexP2T2 *data;
   CoglAttribute *pos_attribute;
   CoglAttribute *tex_coord_attribute;
+  CoglPrimitive *primitive;
 
   tex = cogl_texture_2d_new_from_data (test_ctx,
                                        2, 2, /* width/height */
@@ -95,14 +96,14 @@ test_map_buffer_range (void)
                             COGL_BUFFER_BIT_COLOR,
                             0, 0, 0, 1);
 
-  cogl_framebuffer_vdraw_attributes (test_fb,
-                                     pipeline,
-                                     COGL_VERTICES_MODE_TRIANGLE_STRIP,
-                                     0, /* first_vertex */
-                                     4, /* n_vertices */
-                                     pos_attribute,
-                                     tex_coord_attribute,
-                                     NULL);
+  primitive =
+    cogl_primitive_new (COGL_VERTICES_MODE_TRIANGLE_STRIP,
+                        4, /* n_vertices */
+                        pos_attribute,
+                        tex_coord_attribute,
+                        NULL);
+  cogl_primitive_draw (primitive, test_fb, pipeline);
+  cogl_object_unref (primitive);
 
   /* Top left pixel should be the one that is replaced to be green */
   test_utils_check_pixel (test_fb, 1, 1, 0x00ff00ff);

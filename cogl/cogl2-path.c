@@ -225,14 +225,17 @@ _cogl_path_stroke_nodes (CoglPath *path,
        path_start < data->path_nodes->len;
        path_start += node->path_size)
     {
+      CoglPrimitive *primitive;
+
       node = &g_array_index (data->path_nodes, CoglPathNode, path_start);
 
-      cogl_framebuffer_vdraw_attributes (framebuffer,
-                                         pipeline,
-                                         COGL_VERTICES_MODE_LINE_STRIP,
-                                         0, node->path_size,
-                                         data->stroke_attributes[path_num],
-                                         NULL);
+      primitive =
+        cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_LINE_STRIP,
+                                            node->path_size,
+                                            &data->stroke_attributes[path_num],
+                                            1);
+      cogl_primitive_draw (primitive, framebuffer, pipeline);
+      cogl_object_unref (primitive);
 
       path_num++;
     }
