@@ -29,11 +29,13 @@ gboolean shell_app_is_window_backed (ShellApp *app);
 
 void shell_app_activate_window (ShellApp *app, MetaWindow *window, guint32 timestamp);
 
-void shell_app_activate (ShellApp      *app);
+void shell_app_activate (ShellApp      *app,
+                         GError       **error);
 
 void shell_app_activate_full (ShellApp      *app,
                               int            workspace,
-                              guint32        timestamp);
+                              guint32        timestamp,
+                              GError       **error);
 
 void shell_app_open_new_window (ShellApp *app,
                                 int       workspace);
