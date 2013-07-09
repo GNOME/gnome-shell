@@ -34,7 +34,7 @@ const MIN_COLUMNS = 4;
 const MIN_ROWS = 4;
 
 const INACTIVE_GRID_OPACITY = 77;
-const INACTIVE_GRID_OPACITY_ANIMATION_TIME = 0.15;
+const INACTIVE_GRID_OPACITY_ANIMATION_TIME = 0.40;
 const FOLDER_SUBICON_FRACTION = .4;
 
 const INDICATORS_ANIMATION_TIME = 0.5;
@@ -323,12 +323,22 @@ const AllView = new Lang.Class({
         }));
         this._eventBlocker.add_action(this._clickAction);
 
+        this._displayingPopup = false;
+
         this._availWidth = 0;
         this._availHeight = 0;
 
         Main.overview.connect('hidden', Lang.bind(this,
             function() {
                 this.goToPage(0);
+            }));
+        this._grid.connect('space-opened', Lang.bind(this,
+            function() {
+                this.emit('space-ready');
+            }));
+        this._grid.connect('space-closed', Lang.bind(this,
+            function() {
+                this._displayingPopup = false;
             }));
     },
 
@@ -337,6 +347,11 @@ const AllView = new Lang.Class({
     },
 
     goToPage: function(pageNumber) {
+        if (this._currentPage == pageNumber && this._displayingPopup && this._currentPopup)
+            return;
+        if (this._displayingPopup && this._currentPopup)
+            this._currentPopup.popdown();
+
         let velocity;
         if (!this._panning)
             velocity = 0;
@@ -378,7 +393,20 @@ const AllView = new Lang.Class({
         return Math.abs(currentScrollPosition - this._grid.getPageY(pageNumber));
     },
 
+    openSpaceForPopup: function(item, side, nRows) {
+        this._updateIconOpacities(true);
+        this._displayingPopup = true;
+        this._grid.openExtraSpace(item, side, nRows);
+    },
+
+    _closeSpaceForPopup: function() {
+        this._updateIconOpacities(false);
+        this._grid.closeExtraSpace();
+    },
+
     _onScroll: function(actor, event) {
+         if(this._displayingPopup)
+            return;
         let direction = event.get_scroll_direction();
         if (direction == Clutter.ScrollDirection.UP) {
             if (this._currentPage > 0)
@@ -392,6 +420,8 @@ const AllView = new Lang.Class({
     },
 
     _onPan: function(action) {
+        if (this._displayingPopup)
+            return false;
         this._panning = true;
         this._clickAction.release();
         let [dist, dx, dy] = action.get_motion_delta(0);
@@ -401,6 +431,8 @@ const AllView = new Lang.Class({
     },
 
     _onPanEnd: function(action) {
+         if (this._displayingPopup)
+            return;
         let diffCurrentPage = this._diffToPage(this._currentPage);
         if (diffCurrentPage > this._pagesBin.height * PAGE_SWITCH_TRESHOLD) {
             if (action.get_velocity(0)[2] > 0 && this._currentPage > 0)
@@ -466,6 +498,8 @@ const AllView = new Lang.Class({
                 this._eventBlocker.reactive = isOpen;
                 this._currentPopup = isOpen ? popup : null;
                 this._updateIconOpacities(isOpen);
+                if(!isOpen)
+                    this._closeSpaceForPopup();
             }));
     },
 
@@ -528,6 +562,7 @@ const AllView = new Lang.Class({
             this._folderIcons[i].adaptToSize(availWidth, availHeight);
     }
 });
+Signals.addSignalMethods(AllView.prototype);
 
 const FrequentView = new Lang.Class({
     Name: 'FrequentView',
@@ -964,8 +999,8 @@ const FolderIcon = new Lang.Class({
         this.actor.connect('clicked', Lang.bind(this,
             function() {
                 this._ensurePopup();
-                this._popup.toggle();
                 this.view.actor.vscroll.adjustment.value = 0;
+                this._openSpaceForPopup();
             }));
         this.actor.connect('notify::mapped', Lang.bind(this,
             function() {
@@ -981,6 +1016,16 @@ const FolderIcon = new Lang.Class({
     _popupHeight: function() {
         let usedHeight = this.view.usedHeight() + this._popup.getOffset(St.Side.TOP) + this._popup.getOffset(St.Side.BOTTOM);
         return usedHeight;
+    },
+
+    _openSpaceForPopup: function() {
+        let id = this._parentView.connect('space-ready', Lang.bind(this,
+            function() {
+                this._parentView.disconnect(id);
+                this._popup.popup();
+                this._updatePopupPosition();
+            }));
+        this._parentView.openSpaceForPopup(this, this._boxPointerArrowside, this.view.nRowsDisplayedAtOnce());
     },
 
     _calculateBoxPointerArrowSide: function() {
@@ -1007,9 +1052,9 @@ const FolderIcon = new Lang.Class({
             return;
 
         if (this._boxPointerArrowside == St.Side.BOTTOM)
-            this._popup.actor.y = this.actor.y - this._popupHeight();
+            this._popup.actor.y = this.actor.allocation.y1 + this.actor.translation_y - this._popupHeight();
         else
-            this._popup.actor.y = this.actor.y + this.actor.height;
+            this._popup.actor.y = this.actor.allocation.y1 + this.actor.translation_y + this.actor.height;
     },
 
     _ensurePopup: function() {
@@ -1114,11 +1159,12 @@ const AppFolderPopup = new Lang.Class({
             return;
 
         this.actor.show();
-        this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
 
         this._boxPointer.setArrowActor(this._source.actor);
         this._boxPointer.show(BoxPointer.PopupAnimation.FADE |
                               BoxPointer.PopupAnimation.SLIDE);
+
+        this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
 
         this._isOpen = true;
         this.emit('open-state-changed', true);
