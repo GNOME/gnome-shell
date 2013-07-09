@@ -485,14 +485,16 @@ shell_app_update_window_actions (ShellApp *app, MetaWindow *window)
 /**
  * shell_app_activate:
  * @app: a #ShellApp
+ * @error: a #GError
  *
  * Like shell_app_activate_full(), but using the default workspace and
  * event timestamp.
  */
 void
-shell_app_activate (ShellApp      *app)
+shell_app_activate (ShellApp      *app,
+                    GError       **error)
 {
-  return shell_app_activate_full (app, -1, 0);
+  return shell_app_activate_full (app, -1, 0, error);
 }
 
 /**
@@ -501,6 +503,7 @@ shell_app_activate (ShellApp      *app)
  * @workspace: launch on this workspace, or -1 for default. Ignored if
  *   activating an existing window
  * @timestamp: Event timestamp
+ * @error: a #GError
  *
  * Perform an appropriate default action for operating on this application,
  * dependent on its current state.  For example, if the application is not
@@ -511,7 +514,8 @@ shell_app_activate (ShellApp      *app)
 void
 shell_app_activate_full (ShellApp      *app,
                          int            workspace,
-                         guint32        timestamp)
+                         guint32        timestamp,
+                         GError       **error)
 {
   ShellGlobal *global;
 
@@ -524,16 +528,16 @@ shell_app_activate_full (ShellApp      *app,
     {
       case SHELL_APP_STATE_STOPPED:
         {
-          GError *error = NULL;
-          if (!shell_app_launch (app, timestamp, workspace, FALSE, &error))
+          GError *my_error = NULL;
+          if (!shell_app_launch (app, timestamp, workspace, FALSE, &my_error))
             {
               char *msg;
               msg = g_strdup_printf (_("Failed to launch “%s”"), shell_app_get_name (app));
               shell_global_notify_error (global,
                                          msg,
-                                         error->message);
+                                         my_error->message);
               g_free (msg);
-              g_clear_error (&error);
+              g_propagate_error (error, my_error);
             }
         }
         break;
