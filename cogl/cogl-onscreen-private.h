@@ -96,6 +96,11 @@ _cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
                                       int width, int height);
 
 void
+_cogl_onscreen_queue_event (CoglOnscreen *onscreen,
+                            CoglFrameEvent type,
+                            CoglFrameInfo *info);
+
+void
 _cogl_onscreen_notify_frame_sync (CoglOnscreen *onscreen, CoglFrameInfo *info);
 
 void

@@ -41,6 +41,7 @@
 #include "cogl-wayland-renderer.h"
 #include "cogl-error-private.h"
 #include "cogl-poll-private.h"
+#include "cogl-frame-info-private.h"
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 
@@ -77,7 +78,17 @@ typedef struct _CoglOnscreenWayland
   CoglBool has_pending;
 
   CoglBool shell_surface_type_set;
+
+  CoglList frame_callbacks;
 } CoglOnscreenWayland;
+
+typedef struct
+{
+  CoglList link;
+  CoglFrameInfo *frame_info;
+  struct wl_callback *callback;
+  CoglOnscreen *onscreen;
+} FrameCallbackData;
 
 static void
 registry_handle_global_cb (void *data,
@@ -404,6 +415,9 @@ _cogl_winsys_egl_context_init (CoglContext *context,
   COGL_FLAGS_SET (context->winsys_features,
                   COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
                   TRUE);
+  COGL_FLAGS_SET (context->winsys_features,
+                  COGL_WINSYS_FEATURE_SYNC_AND_COMPLETE_EVENT,
+                  TRUE);
 
   /* We'll manually handle queueing dirty events when the surface is
    * first shown or when it is resized. Note that this is slightly
@@ -433,6 +447,8 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
 
   wayland_onscreen = g_slice_new0 (CoglOnscreenWayland);
   egl_onscreen->platform = wayland_onscreen;
+
+  _cogl_list_init (&wayland_onscreen->frame_callbacks);
 
   if (onscreen->foreign_surface)
     wayland_onscreen->wayland_surface = onscreen->foreign_surface;
@@ -477,10 +493,26 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
 }
 
 static void
+free_frame_callback_data (FrameCallbackData *callback_data)
+{
+  cogl_object_unref (callback_data->frame_info);
+  wl_callback_destroy (callback_data->callback);
+  _cogl_list_remove (&callback_data->link);
+  g_slice_free (FrameCallbackData, callback_data);
+}
+
+static void
 _cogl_winsys_egl_onscreen_deinit (CoglOnscreen *onscreen)
 {
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenWayland *wayland_onscreen = egl_onscreen->platform;
+  FrameCallbackData *frame_callback_data, *tmp;
+
+  _cogl_list_for_each_safe (frame_callback_data,
+                            tmp,
+                            &wayland_onscreen->frame_callbacks,
+                            link)
+    free_frame_callback_data (frame_callback_data);
 
   if (wayland_onscreen->wayland_egl_native_window)
     {
@@ -536,11 +568,58 @@ flush_pending_resize (CoglOnscreen *onscreen)
 }
 
 static void
+frame_cb (void *data,
+          struct wl_callback *callback,
+          uint32_t time)
+{
+  FrameCallbackData *callback_data = data;
+  CoglFrameInfo *info = callback_data->frame_info;
+  CoglOnscreen *onscreen = callback_data->onscreen;
+
+  g_assert (callback_data->callback == callback);
+
+  _cogl_onscreen_queue_event (onscreen, COGL_FRAME_EVENT_SYNC, info);
+  _cogl_onscreen_queue_event (onscreen, COGL_FRAME_EVENT_COMPLETE, info);
+
+  free_frame_callback_data (callback_data);
+}
+
+static const struct wl_callback_listener
+frame_listener =
+{
+  frame_cb
+};
+
+static void
 _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
                                                 const int *rectangles,
                                                 int n_rectangles)
 {
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglOnscreenWayland *wayland_onscreen = egl_onscreen->platform;
+  FrameCallbackData *frame_callback_data = g_slice_new (FrameCallbackData);
+
   flush_pending_resize (onscreen);
+
+  /* Before calling the winsys function,
+   * cogl_onscreen_swap_buffers_with_damage() will have pushed the
+   * frame info object onto the end of the pending frames. We can grab
+   * it out of the queue now because we don't care about the order and
+   * we will just directly queue the event corresponding to the exact
+   * frame that Wayland reports as completed. This will steal the
+   * reference */
+  frame_callback_data->frame_info =
+    g_queue_pop_tail (&onscreen->pending_frame_infos);
+  frame_callback_data->onscreen = onscreen;
+
+  frame_callback_data->callback =
+    wl_surface_frame (wayland_onscreen->wayland_surface);
+  wl_callback_add_listener (frame_callback_data->callback,
+                            &frame_listener,
+                            frame_callback_data);
+
+  _cogl_list_insert (&wayland_onscreen->frame_callbacks,
+                     &frame_callback_data->link);
 
   parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
                                                     rectangles,

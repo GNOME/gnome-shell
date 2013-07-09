@@ -242,7 +242,7 @@ _cogl_onscreen_queue_full_dirty (CoglOnscreen *onscreen)
   _cogl_onscreen_queue_dirty (onscreen, &info);
 }
 
-static void
+void
 _cogl_onscreen_queue_event (CoglOnscreen *onscreen,
                             CoglFrameEvent type,
                             CoglFrameInfo *info)
