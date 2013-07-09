@@ -568,28 +568,28 @@ clutter_table_child_class_init (ClutterTableChildClass *klass)
   pspec = g_param_spec_boolean ("x-expand",
                                 P_("Horizontal Expand"),
                                 P_("Allocate extra space for the child in horizontal axis"),
-                                FALSE,
+                                TRUE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CHILD_X_EXPAND, pspec);
 
   pspec = g_param_spec_boolean ("y-expand",
                                 P_("Vertical Expand"),
                                 P_("Allocate extra space for the child in vertical axis"),
-                                FALSE,
+                                TRUE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CHILD_Y_EXPAND, pspec);
 
   pspec = g_param_spec_boolean ("x-fill",
                                 P_("Horizontal Fill"),
                                 P_("Whether the child should receive priority when the container is allocating spare space on the horizontal axis"),
-                                FALSE,
+                                TRUE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CHILD_X_FILL, pspec);
 
   pspec = g_param_spec_boolean ("y-fill",
                                 P_("Vertical Fill"),
                                 P_("Whether the child should receive priority when the container is allocating spare space on the vertical axis"),
-                                FALSE,
+                                TRUE,
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CHILD_Y_FILL, pspec);
 
