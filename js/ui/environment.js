@@ -81,7 +81,6 @@ function init() {
 
     // Miscellaneous monkeypatching
     _patchContainerClass(St.BoxLayout);
-    _patchContainerClass(St.Table);
 
     _patchLayoutClass(Clutter.TableLayout, { row_spacing: 'spacing-rows',
                                              column_spacing: 'spacing-columns' });

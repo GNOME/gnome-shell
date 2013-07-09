@@ -64,8 +64,6 @@ st_source_h =					\
 	st/st-scroll-bar.h			\
 	st/st-scroll-view.h			\
 	st/st-shadow.h				\
-	st/st-table.h				\
-	st/st-table-child.h			\
 	st/st-texture-cache.h			\
 	st/st-theme.h				\
 	st/st-theme-context.h			\
@@ -106,7 +104,6 @@ EXTRA_DIST += 					\
 
 st_source_private_h =				\
 	st/st-private.h				\
-	st/st-table-private.h			\
 	st/st-theme-private.h			\
 	st/st-theme-node-private.h		\
 	st/st-theme-node-transition.h
@@ -133,8 +130,6 @@ st_source_c =					\
 	st/st-scroll-bar.c			\
 	st/st-scroll-view.c			\
 	st/st-shadow.c				\
-	st/st-table.c				\
-	st/st-table-child.c			\
 	st/st-texture-cache.c			\
 	st/st-theme.c				\
 	st/st-theme-context.c			\
