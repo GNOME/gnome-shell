@@ -344,12 +344,31 @@ clutter_text_clear_selection (ClutterText *self)
     }
 }
 
+static gboolean
+clutter_text_is_empty (ClutterText *self)
+{
+  if (self->priv->buffer == NULL)
+    return TRUE;
+
+  if (clutter_text_buffer_get_length (self->priv->buffer) == 0)
+    return TRUE;
+
+  return FALSE;
+}
+
 static gchar *
 clutter_text_get_display_text (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
   ClutterTextBuffer *buffer;
   const gchar *text;
+
+  /* short-circuit the case where the buffer is unset or it's empty,
+   * to avoid creating a pointless TextBuffer and emitting
+   * notifications with it
+   */
+  if (clutter_text_is_empty (self))
+    return g_strdup ("");
 
   buffer = get_buffer (self);
   text = clutter_text_buffer_get_text (buffer);
