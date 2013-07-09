@@ -1066,6 +1066,8 @@ cogl_gst_video_sink_init (CoglGstVideoSink *sink)
   sink->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (sink,
                                                    COGL_GST_TYPE_VIDEO_SINK,
                                                    CoglGstVideoSinkPrivate);
+  priv->custom_start = 0;
+  priv->default_sample = TRUE;
 }
 
 static GstFlowReturn
@@ -1274,8 +1276,6 @@ cogl_gst_video_sink_new (CoglContext *ctx)
 {
   CoglGstVideoSink *sink = g_object_new (COGL_GST_TYPE_VIDEO_SINK, NULL);
   cogl_gst_video_sink_set_context (sink, ctx);
-  sink->priv->custom_start = 0;
-  sink->priv->default_sample = TRUE;
 
   return sink;
 }
