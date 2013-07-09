@@ -80,23 +80,25 @@ const KeyringDialog = new Lang.Class({
     },
 
     _buildControlTable: function() {
-        let table = new St.Table({ style_class: 'keyring-dialog-control-table' });
+        let layout = new Clutter.TableLayout();
+        let table = new St.Widget({ style_class: 'keyring-dialog-control-table',
+                                    layout_manager: layout });
+        layout.hookup_style(table);
         let row = 0;
 
         if (this.prompt.password_visible) {
-            let label = new St.Label(({ style_class: 'prompt-dialog-password-label' }));
+            let label = new St.Label({ style_class: 'prompt-dialog-password-label' });
             label.set_text(_("Password:"));
-            table.add(label, { row: row, col: 0,
-                               x_expand: false, x_fill: true,
-                               x_align: St.Align.START,
-                               y_fill: false, y_align: St.Align.MIDDLE });
+            layout.pack(label, 0, row);
+            layout.child_set(label, { x_expand: false, y_fill: false,
+                                      x_align: Clutter.TableAlignment.START });
             this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                                  text: '',
-                                                 can_focus: true});
+                                                 can_focus: true });
             this._passwordEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
             ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
             this._passwordEntry.clutter_text.connect('activate', Lang.bind(this, this._onPasswordActivate));
-            table.add(this._passwordEntry, { row: row, col: 1, x_expand: true, x_fill: true, x_align: St.Align.START });
+            layout.pack(this._passwordEntry, 1, row);
             row++;
         } else {
             this._passwordEntry = null;
@@ -105,17 +107,16 @@ const KeyringDialog = new Lang.Class({
         if (this.prompt.confirm_visible) {
             var label = new St.Label(({ style_class: 'prompt-dialog-password-label' }));
             label.set_text(_("Type again:"));
-            table.add(label, { row: row, col: 0,
-                               x_expand: false, x_fill: true,
-                               x_align: St.Align.START,
-                               y_fill: false, y_align: St.Align.MIDDLE });
+            layout.pack(label, 0, row);
+            layout.child_set(label, { x_expand: false, y_fill: false,
+                                      x_align: Clutter.TableAlignment.START });
             this._confirmEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                                 text: '',
-                                                can_focus: true});
+                                                can_focus: true });
             this._confirmEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
             ShellEntry.addContextMenu(this._confirmEntry, { isPassword: true });
             this._confirmEntry.clutter_text.connect('activate', Lang.bind(this, this._onConfirmActivate));
-            table.add(this._confirmEntry, { row: row, col: 1, x_expand: true, x_fill: true, x_align: St.Align.START });
+            layout.pack(this._confirmEntry, 1, row);
             row++;
         } else {
             this._confirmEntry = null;
@@ -128,14 +129,14 @@ const KeyringDialog = new Lang.Class({
             let choice = new CheckBox.CheckBox();
             this.prompt.bind_property('choice-label', choice.getLabelActor(), 'text', GObject.BindingFlags.SYNC_CREATE);
             this.prompt.bind_property('choice-chosen', choice.actor, 'checked', GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL);
-            table.add(choice.actor, { row: row, col: 1, x_expand: false, x_fill: true, x_align: St.Align.START });
+            layout.pack(choice.actor, 1, row);
             row++;
         }
 
         let warning = new St.Label({ style_class: 'prompt-dialog-error-label' });
         warning.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         warning.clutter_text.line_wrap = true;
-        table.add(warning, { row: row, col: 1, x_expand: false, x_fill: false, x_align: St.Align.START });
+        layout.pack(warning, 1, row);
         this.prompt.bind_property('warning-visible', warning, 'visible', GObject.BindingFlags.SYNC_CREATE);
         this.prompt.bind_property('warning', warning, 'text', GObject.BindingFlags.SYNC_CREATE);
 
