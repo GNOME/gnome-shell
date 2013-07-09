@@ -358,17 +358,6 @@ const ControlsBoxLayout = Lang.Class({
         let totalSpacing = this.spacing * (childrenCount - 1);
         return [maxMinWidth * childrenCount + totalSpacing,
                 maxNaturalWidth * childrenCount + totalSpacing];
-    },
-
-    vfunc_set_container: function(container) {
-        if(this._styleChangedId) {
-            this._container.disconnect(this._styleChangedId);
-            this._styleChangedId = 0;
-        }
-        if(container != null)
-            this._styleChangedId = container.connect('style-changed', Lang.bind(this,
-                    function() { this.spacing = this._container.get_theme_node().get_length('spacing'); }));
-        this._container = container;
     }
 });
 
@@ -416,8 +405,9 @@ const AppDisplay = new Lang.Class({
         this.actor.add(this._viewStack, { expand: true });
 
         let layout = new ControlsBoxLayout({ homogeneous: true });
-        this._controls = new St.Widget({ style_class: 'app-view-controls' });
-        this._controls.set_layout_manager(layout);
+        this._controls = new St.Widget({ style_class: 'app-view-controls',
+                                         layout_manager: layout });
+        layout.hookup_style(this._controls);
         this.actor.add(new St.Bin({ child: this._controls }));
 
 
