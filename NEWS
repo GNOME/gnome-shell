@@ -1,3 +1,61 @@
+Cogl 1.15.2                                                        2013-07-09
+
+  • List of changes since Cogl 1.14.0
+
+  » Lots of Wayland backend work, including updated compositor support
+  » Updated cogland, a simple example wayland compositor using Cogl
+  » Made the onscreen resize callback work the same as the frame callback
+  » New cogl_onscreen_swap_buffers_with_damage api
+  » New fence API
+  » New Emscripten support (only basic at the moment)
+  » Improved blend state tracking
+  » New cogl_onscreen_add_dirty_callback() api for window systems
+    that need to notify application of dirty/damaged regions that must
+    be redrawn by the application
+  » Started adding internal unit tests to complement the conformance
+    tests
+  » New support for per-vertex point sizes
+  » New cogl-gst sub-library added enabling gstreamer integration into
+    Cogl based applications. Notably the design is compatible with
+    applications adding custom shader snippets to a CoglPipeline that
+    handles video sampling so application will be able to chain
+    together shader based affects without requiring intermediate
+    renderers.
+  » Adds HSL color conversion apis
+  » The Conformance test suite can now be installed with a .test file
+    enabling them to be run by the gnome-desktop-testing-runner for example.
+
+  • Bugzilla bugs closed since 1.14.0:
+
+  #691752 - add fence/sync API
+  #696730 - Compile failure with 1.14.0 due to extra arg in bitmap functions
+  #697330 - Fails to build with the gold linker due to missing reference to libm
+  #699431 - [PATCH] xlib: Don't crash just because the display doesn't expose RANDR
+  #700088 - compile failure: 'wayland_surface' has incomplete type
+  #702570 - cogl 1.16: Regression with event propagation in champlain
+  #702942 - Install conformance tests
+  #702999 - undefined reference to `wl_buffer_is_shm'
+  #703553 - Add support for automake 1.14
+
+Many thanks to:
+
+  Neil Roberts
+  Robert Bragg
+  Andreas Oberritter
+  Chris Cummins
+  Damien Lespiau
+  Emanuele Aina
+  Plamena Manolova
+  Roy.Li
+  Adam Jackson
+  Daniel Stone
+  Inaki Larranaga Murgoitio
+  Lionel Landwerlin
+  Matthias Clasen
+  Milo Casagrande
+  Rico Tzschichholz
+  Yosef Or Boczko
+
 Cogl 1.14.0                                                        2013-03-25
 
   • List of changes since Cogl 1.13.4
