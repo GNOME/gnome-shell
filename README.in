@@ -30,12 +30,13 @@ REQUIREMENTS
 
 Cogl currently only requires:
 
-  • GLib ≥ @GLIB_REQ_VERSION@
   • OpenGL ≥ 1.3 (or 1.2 + multitexturing), or OpenGL ES 2.0 (or 1.1)
   • GLX, AGL, WGL or an EGL implementation
 
 Cogl also has optional dependencies:
 
+  • GLib ≥ @GLIB_REQ_VERSION@
+     - for gtype integration
   • GDK-Pixbuf ≥ @GDK_PIXBUF_REQ_VERSION@
      - for image loading
   • Cairo ≥ @CAIRO_REQ_VERSION@
@@ -44,6 +45,10 @@ Cogl also has optional dependencies:
 The optional Cogl Pango library requires:
   • Cairo ≥ @CAIRO_REQ_VERSION@
   • PangoCairo ≥ @PANGOCAIRO_REQ_VERSION@
+
+The optional Cogl GStreamer library requires:
+
+  • GStreamer 1.0
 
 On X11, Cogl depends on the following extensions
 
@@ -96,12 +101,11 @@ The 1.x stable API is documented here:
 
 The 1.x development API is documented here:
 
-  http://developer.gnome.org/cogl/1.$(COGL_1_MINOR_VERSION)
+  http://developer.gnome.org/cogl/1.@COGL_1_MINOR_VERSION@
 
-The experimental 2.0 API is currently not hosted online but can be built
-by passing the --enable-gtk-doc option to ./configure when building
-and the documentation can then be found under
-doc/reference/cogl-2.0-experimental/html/index.html
+The experimental 2.0 API is documented here:
+
+  http://cogl3d.org/cogl2-reference/
 
 --
 LICENSE
