@@ -504,6 +504,8 @@ const LoginDialog = new Lang.Class({
                               y_fill: false,
                               x_align: St.Align.START });
 
+        this._promptEntry.grab_key_focus();
+
         this._promptMessage = new St.Label({ visible: false });
         this._promptBox.add(this._promptMessage, { x_fill: true });
 
@@ -596,10 +598,6 @@ const LoginDialog = new Lang.Class({
 
     _updateDisableUserList: function() {
         let disableUserList = this._settings.get_boolean(GdmUtil.DISABLE_USER_LIST_KEY);
-
-        // If this is the first time around, set initial focus
-        if (this._disableUserList == undefined && disableUserList)
-            this.setInitialKeyFocus(this._promptEntry);
 
         if (disableUserList != this._disableUserList) {
             this._disableUserList = disableUserList;
