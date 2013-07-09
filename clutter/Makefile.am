@@ -19,6 +19,7 @@ AM_CPPFLAGS = \
 	-DCLUTTER_SYSCONFDIR=\""$(sysconfdir)"\" \
 	-DCLUTTER_COMPILATION=1			\
 	-DCOGL_ENABLE_EXPERIMENTAL_API		\
+	-DCOGL_DISABLE_DEPRECATION_WARNINGS	\
 	-DG_LOG_DOMAIN=\"Clutter\" 		\
 	-I$(top_srcdir) 			\
 	-I$(top_srcdir)/clutter			\

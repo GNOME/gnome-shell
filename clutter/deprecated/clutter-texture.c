@@ -48,7 +48,6 @@
 #endif
 
 /* sadly, we are still using ClutterShader internally */
-#define COGL_DISABLE_DEPRECATION_WARNINGS
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
 /* This file depends on the glib enum types which aren't exposed
