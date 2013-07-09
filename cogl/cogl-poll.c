@@ -46,23 +46,26 @@ cogl_poll_renderer_get_info (CoglRenderer *renderer,
                              int *n_poll_fds,
                              int64_t *timeout)
 {
-  GList *l;
+  GList *l, *next;
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), 0);
   _COGL_RETURN_VAL_IF_FAIL (poll_fds != NULL, 0);
   _COGL_RETURN_VAL_IF_FAIL (n_poll_fds != NULL, 0);
   _COGL_RETURN_VAL_IF_FAIL (timeout != NULL, 0);
 
-  *poll_fds = (void *)renderer->poll_fds->data;
-  *n_poll_fds = renderer->poll_fds->len;
   *timeout = -1;
 
   if (!_cogl_list_empty (&renderer->idle_closures))
     *timeout = 0;
 
-  for (l = renderer->poll_sources; l; l = l->next)
+  /* This loop needs to cope with the prepare callback removing its
+   * own fd */
+  for (l = renderer->poll_sources; l; l = next)
     {
       CoglPollSource *source = l->data;
+
+      next = l->next;
+
       if (source->prepare)
         {
           int64_t source_timeout = source->prepare (source->user_data);
@@ -72,6 +75,11 @@ cogl_poll_renderer_get_info (CoglRenderer *renderer,
         }
     }
 
+  /* This is deliberately set after calling the prepare callbacks in
+   * case one of them removes its fd */
+  *poll_fds = (void *)renderer->poll_fds->data;
+  *n_poll_fds = renderer->poll_fds->len;
+
   return renderer->poll_fds_age;
 }
 
@@ -80,16 +88,20 @@ cogl_poll_renderer_dispatch (CoglRenderer *renderer,
                              const CoglPollFD *poll_fds,
                              int n_poll_fds)
 {
-  GList *l;
+  GList *l, *next;
 
   _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
 
   _cogl_closure_list_invoke_no_args (&renderer->idle_closures);
 
-  for (l = renderer->poll_sources; l; l = l->next)
+  /* This loop needs to cope with the dispatch callback removing its
+   * own fd */
+  for (l = renderer->poll_sources; l; l = next)
     {
       CoglPollSource *source = l->data;
       int i;
+
+      next = l->next;
 
       if (source->fd == -1)
         {

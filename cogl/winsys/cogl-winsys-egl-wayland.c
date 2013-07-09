@@ -132,13 +132,28 @@ prepare_wayland_display_events (void *user_data)
 
   flush_ret = wl_display_flush (wayland_renderer->wayland_display);
 
-  /* If the socket buffer became full then we need to wake up the main
-   * loop once it is writable again */
-  if (flush_ret == -1 && errno == EAGAIN)
-    _cogl_poll_renderer_modify_fd (renderer,
-                                   wayland_renderer->fd,
-                                   COGL_POLL_FD_EVENT_IN |
-                                   COGL_POLL_FD_EVENT_OUT);
+  if (flush_ret == -1)
+    {
+      /* If the socket buffer became full then we need to wake up the
+       * main loop once it is writable again */
+      if (errno == EAGAIN)
+        {
+          _cogl_poll_renderer_modify_fd (renderer,
+                                         wayland_renderer->fd,
+                                         COGL_POLL_FD_EVENT_IN |
+                                         COGL_POLL_FD_EVENT_OUT);
+        }
+      else if (errno != EINTR)
+        {
+          /* If the flush failed for some other reason then it's
+           * likely that it's going to consistently fail so we'll stop
+           * waiting on the file descriptor instead of making the
+           * application take up 100% CPU. FIXME: it would be nice if
+           * there was some way to report this to the application so
+           * that it can quit or recover */
+          _cogl_poll_renderer_remove_fd (renderer, wayland_renderer->fd);
+        }
+    }
 
   /* Calling this here is a bit dodgy because Cogl usually tries to
    * say that it won't do any event processing until
@@ -159,19 +174,41 @@ dispatch_wayland_display_events (void *user_data, int revents)
   CoglRendererWayland *wayland_renderer = egl_renderer->platform;
 
   if ((revents & COGL_POLL_FD_EVENT_IN))
-    wl_display_dispatch (wayland_renderer->wayland_display);
+    {
+      if (wl_display_dispatch (wayland_renderer->wayland_display) == -1 &&
+          errno != EAGAIN &&
+          errno != EINTR)
+        goto socket_error;
+    }
 
   if ((revents & COGL_POLL_FD_EVENT_OUT))
     {
       int ret = wl_display_flush (wayland_renderer->wayland_display);
 
-      if (ret != -1 || errno != EAGAIN)
-        /* There is no more data to write so we don't need to wake up
-         * when the write buffer is emptied anymore */
-        _cogl_poll_renderer_modify_fd (renderer,
-                                       wayland_renderer->fd,
-                                       COGL_POLL_FD_EVENT_IN);
+      if (ret == -1)
+        {
+          if (errno != EAGAIN && errno != EINTR)
+            goto socket_error;
+        }
+      else
+        {
+          /* There is no more data to write so we don't need to wake
+           * up when the write buffer is emptied anymore */
+          _cogl_poll_renderer_modify_fd (renderer,
+                                         wayland_renderer->fd,
+                                         COGL_POLL_FD_EVENT_IN);
+        }
     }
+
+  return;
+
+ socket_error:
+  /* If there was an error on the wayland socket then it's likely that
+   * it's going to consistently fail so we'll stop waiting on the file
+   * descriptor instead of making the application take up 100% CPU.
+   * FIXME: it would be nice if there was some way to report this to
+   * the application so that it can quit or recover */
+  _cogl_poll_renderer_remove_fd (renderer, wayland_renderer->fd);
 }
 
 static CoglBool
