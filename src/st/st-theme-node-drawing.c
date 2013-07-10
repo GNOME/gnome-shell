@@ -2397,7 +2397,7 @@ st_theme_node_paint (StThemeNode           *node,
 
       node->rendered_once = TRUE;
     }
-  else
+  else if (state->alloc_width != width || state->alloc_height != height)
     st_theme_node_update_resources (state, node, width, height);
 
   /* Rough notes about the relationship of borders and backgrounds in CSS3;
