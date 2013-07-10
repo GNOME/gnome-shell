@@ -855,6 +855,9 @@ const LoginDialog = new Lang.Class({
             this._promptEntry.clutter_text.connect('activate', function() {
                 hold.release();
             });
+
+        if (this._initialAnswer && this._initialAnswer['text'])
+            hold.release();
     },
 
     _updateSensitivity: function(sensitive) {
@@ -903,7 +906,13 @@ const LoginDialog = new Lang.Class({
         this._promptLabel.set_text(question);
 
         this._updateSensitivity(true);
-        this._promptEntry.set_text('');
+        if (!this._initialAnswer) {
+            this._promptEntry.set_text('');
+        } else if (this._initialAnswer['activate-id']) {
+            this._promptEntry.clutter_text.disconnect(this._initialAnswer['activate-id']);
+            delete this._initialAnswer['activate-id'];
+        }
+
         this._promptEntry.clutter_text.set_password_char(passwordChar);
 
         let tasks = [function() {
@@ -911,7 +920,14 @@ const LoginDialog = new Lang.Class({
                      },
 
                      function() {
-                         let text = this._promptEntry.get_text();
+                         let text;
+
+                         if (this._initialAnswer && this._initialAnswer['text']) {
+                             text = this._initialAnswer['text'];
+                             this._initialAnswer = null;
+                         } else {
+                             text = this._promptEntry.get_text();
+                         }
                          this._updateSensitivity(false);
                          this._setDefaultButtonWellMode(DefaultButtonWellMode.SPINNER, false);
                          this._userVerifier.answerQuery(serviceName, text);
@@ -1216,7 +1232,22 @@ const LoginDialog = new Lang.Class({
     },
 
     addCharacter: function(unichar) {
+        if (!this._promptEntry.visible)
+            return;
+
+        if (!this._initialAnswer)
+            this._initialAnswer = {};
+
         this._promptEntry.clutter_text.insert_unichar(unichar);
+
+        if (!this._initialAnswer['activate-id'])
+            this._initialAnswer['activate-id'] =
+                this._promptEntry.clutter_text.connect('activate', Lang.bind(this, function() {
+                                                           this._promptEntry.clutter_text.disconnect(this._initialAnswer['activate-id']);
+                                                           delete this._initialAnswer['activate-id'];
+
+                                                           this._initialAnswer['text'] = this._promptEntry.get_text();
+                                                       }));
     },
 });
 Signals.addSignalMethods(LoginDialog.prototype);
