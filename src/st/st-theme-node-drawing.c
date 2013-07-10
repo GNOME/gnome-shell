@@ -2347,7 +2347,7 @@ st_theme_node_needs_new_box_shadow_for_size (StThemeNodePaintState *state,
 
   /* The allocation hasn't changed, no need to recompute a new
      box-shadow. */
-  if (state->alloc_width == width ||
+  if (state->alloc_width == width &&
       state->alloc_height == height)
     return FALSE;
 
