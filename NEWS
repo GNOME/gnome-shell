@@ -1,3 +1,32 @@
+3.9.4
+=====
+* Fix chat entries not being focused when expanded [Jasper; #698778]
+* Fix alignment of "Not Listed?" label [Mathieu; #702307]
+* Fix alignment of time stamps in chat notifications [Carlos; #687809]
+* Round the ends of slider trough [Jasper; #702825]
+* Add support for "box-shadow: none" [Cosimo; #702782]
+* Keep chrome below popup windows [Florian; #702338]
+* Move the session list to a popup menu [Ray; #702818]
+* Fix autorun notifications for "non-native" volumes [Matthias; #703418]
+* dnd: Speed up by not picking on each motion event [Jasper; #703443]
+* Fix management of asynchronous background loading [Lionel; #703001]
+* Rework focus handling [Jasper; #700735]
+* Optimize box-shadow rendering [Lionel; #689858]
+* Remove support for fixed positioning in BoxLayouts [Florian; #703808]
+* Misc bug fixes and cleanups [Adel, Jasper, Florian, Ray, Lionel, Emilio;
+  #702849, #610279, #703132, #703105, #703160, #703126, #703304, #703403,
+  #698593, #703442, #703565, #700901, #703874, #703807, #703893, #703909]
+
+Contributors:
+  Mathieu Bridon, Giovanni Campagna, Cosimo Cecchi, Matthias Clasen,
+  Fran Diéguez, Adel Gadllah, Lionel Landwerlin, Florian Müllner,
+  Emilio Pozuelo Monfort, Carlos Soriano, Jasper St. Pierre, Ray Strode
+
+Translations:
+  Baurzhan Muftakhidinov [kk], Marek Černocký [cs], Daniel Mustieles [es],
+  Fran Diéguez [gl], Kjartan Maraas [nb], Andika Triwidada [id],
+  Benjamin Steinwender [de], Nguyễn Thái Ngọc Duy [vi], Trần Ngọc Quân [vi]
+
 3.9.3
 =====
 * Don't push window thumbs when workspace switcher is hidden [Jasper; #701167]
