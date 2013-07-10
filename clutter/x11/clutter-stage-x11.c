@@ -547,14 +547,10 @@ _clutter_stage_x11_events_device_changed (ClutterStageX11 *stage_x11,
                                           ClutterDeviceManager *device_manager)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_x11);
-  int event_flags = 0;
 
   if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_FLOATING)
-    event_flags = CLUTTER_STAGE_X11_EVENT_MASK;
-
-  _clutter_device_manager_select_stage_events (device_manager,
-                                               stage_cogl->wrapper,
-                                               event_flags);
+    _clutter_device_manager_select_stage_events (device_manager,
+                                                 stage_cogl->wrapper);
 }
 
 static void
@@ -564,12 +560,10 @@ stage_events_device_added (ClutterDeviceManager *device_manager,
 {
   ClutterStageWindow *stage_window = user_data;
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-  int event_flags = CLUTTER_STAGE_X11_EVENT_MASK;
 
   if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_FLOATING)
     _clutter_device_manager_select_stage_events (device_manager,
-                                                 stage_cogl->wrapper,
-                                                 event_flags);
+                                                 stage_cogl->wrapper);
 }
 
 static gboolean
@@ -580,7 +574,6 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
   ClutterBackend *backend = CLUTTER_BACKEND (stage_cogl->backend);
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterDeviceManager *device_manager;
-  int event_flags;
   gfloat width, height;
 
   clutter_actor_get_size (CLUTTER_ACTOR (stage_cogl->wrapper),
@@ -623,14 +616,6 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
   set_wm_title (stage_x11);
   set_cursor_visible (stage_x11);
 
-
-  /* the masks for the events we want to select on a stage window;
-   * KeyPressMask and KeyReleaseMask are necessary even with XI1
-   * because key events are broken with that extension, and will
-   * be fixed by XI2
-   */
-  event_flags = CLUTTER_STAGE_X11_EVENT_MASK;
-
   /* we unconditionally select input events even with event retrieval
    * disabled because we need to guarantee that the Clutter internal
    * state is maintained when calling clutter_x11_handle_event() without
@@ -648,7 +633,7 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
    * for an example of things that break if we do conditional event
    * selection.
    */
-  XSelectInput (backend_x11->xdpy, stage_x11->xwin, event_flags);
+  XSelectInput (backend_x11->xdpy, stage_x11->xwin, CLUTTER_STAGE_X11_EVENT_MASK);
 
   /* input events also depent on the actual device, so we need to
    * use the device manager to let every device select them, using
@@ -658,8 +643,7 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
   if (G_UNLIKELY (device_manager != NULL))
     {
       _clutter_device_manager_select_stage_events (device_manager,
-                                                   stage_cogl->wrapper,
-                                                   event_flags);
+                                                   stage_cogl->wrapper);
 
       g_signal_connect (device_manager, "device-added",
                         G_CALLBACK (stage_events_device_added),

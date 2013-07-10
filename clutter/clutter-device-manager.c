@@ -304,8 +304,7 @@ clutter_device_manager_get_core_device (ClutterDeviceManager   *device_manager,
 
 void
 _clutter_device_manager_select_stage_events (ClutterDeviceManager *device_manager,
-                                             ClutterStage         *stage,
-                                             gint                  event_flags)
+                                             ClutterStage         *stage)
 {
   ClutterDeviceManagerClass *manager_class;
   const GSList *devices, *d;
@@ -320,7 +319,7 @@ _clutter_device_manager_select_stage_events (ClutterDeviceManager *device_manage
       ClutterInputDevice *device = d->data;
 
       if (device->is_enabled)
-        _clutter_input_device_select_stage_events (device, stage, event_flags);
+        _clutter_input_device_select_stage_events (device, stage);
     }
 }
 

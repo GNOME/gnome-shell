@@ -1619,7 +1619,6 @@ clutter_input_device_get_associated_device (ClutterInputDevice *device)
  * clutter_input_device_select_stage_events:
  * @device: a #ClutterInputDevice
  * @stage: the #ClutterStage to select events on
- * @event_mask: platform-specific mask of events
  *
  * Selects input device events on @stage.
  *
@@ -1627,14 +1626,13 @@ clutter_input_device_get_associated_device (ClutterInputDevice *device)
  */
 void
 _clutter_input_device_select_stage_events (ClutterInputDevice *device,
-                                           ClutterStage       *stage,
-                                           gint                event_mask)
+                                           ClutterStage       *stage)
 {
   ClutterInputDeviceClass *device_class;
 
   device_class = CLUTTER_INPUT_DEVICE_GET_CLASS (device);
   if (device_class->select_stage_events != NULL)
-    device_class->select_stage_events (device, stage, event_mask);
+    device_class->select_stage_events (device, stage);
 }
 
 /**

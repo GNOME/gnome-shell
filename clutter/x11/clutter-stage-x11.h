@@ -86,7 +86,7 @@ struct _ClutterStageX11Class
   KeyReleaseMask | \
   ButtonPressMask | \
   ButtonReleaseMask | \
-  PointerMotionMask;
+  PointerMotionMask
 
 GType _clutter_stage_x11_get_type (void) G_GNUC_CONST;
 

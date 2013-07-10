@@ -138,8 +138,7 @@ struct _ClutterInputDeviceClass
   GObjectClass parent_class;
 
   void (* select_stage_events) (ClutterInputDevice *device,
-                                ClutterStage       *stage,
-                                gint                event_mask);
+                                ClutterStage       *stage);
   gboolean (* keycode_to_evdev) (ClutterInputDevice *device,
                                  guint               hardware_keycode,
                                  guint              *evdev_keycode);
@@ -152,8 +151,7 @@ void            _clutter_device_manager_remove_device           (ClutterDeviceMa
                                                                  ClutterInputDevice   *device);
 void            _clutter_device_manager_update_devices          (ClutterDeviceManager *device_manager);
 void            _clutter_device_manager_select_stage_events     (ClutterDeviceManager *device_manager,
-                                                                 ClutterStage         *stage,
-                                                                 gint                  event_mask);
+                                                                 ClutterStage         *stage);
 ClutterBackend *_clutter_device_manager_get_backend             (ClutterDeviceManager *device_manager);
 
 /* input device */
@@ -199,8 +197,7 @@ void            _clutter_input_device_remove_slave              (ClutterInputDev
                                                                  ClutterInputDevice   *slave);
 
 void            _clutter_input_device_select_stage_events       (ClutterInputDevice   *device,
-                                                                 ClutterStage         *stage,
-                                                                 gint                  event_flags);
+                                                                 ClutterStage         *stage);
 
 gboolean        _clutter_input_device_translate_axis            (ClutterInputDevice   *device,
                                                                  guint                 index_,
