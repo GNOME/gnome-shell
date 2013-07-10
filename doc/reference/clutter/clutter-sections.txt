@@ -297,6 +297,7 @@ clutter_actor_unrealize
 clutter_actor_paint
 clutter_actor_continue_paint
 clutter_actor_queue_redraw
+clutter_actor_queue_redraw_with_clip
 clutter_actor_queue_relayout
 clutter_actor_destroy
 clutter_actor_event
@@ -624,26 +625,14 @@ clutter_texture_get_type
 <TITLE>ClutterStage</TITLE>
 ClutterStage
 ClutterStageClass
-CLUTTER_STAGE_WIDTH
-CLUTTER_STAGE_HEIGHT
-clutter_stage_get_default
 clutter_stage_new
-clutter_stage_is_default
 
 <SUBSECTION>
-clutter_stage_set_color
-clutter_stage_get_color
-clutter_stage_set_fullscreen
-clutter_stage_get_fullscreen
-clutter_stage_show_cursor
-clutter_stage_hide_cursor
 ClutterPickMode
 clutter_stage_get_actor_at_pos
 clutter_stage_ensure_current
 clutter_stage_ensure_viewport
 clutter_stage_ensure_redraw
-clutter_stage_queue_redraw
-clutter_actor_queue_redraw_with_clip
 clutter_stage_event
 clutter_stage_set_key_focus
 clutter_stage_get_key_focus
@@ -657,8 +646,6 @@ clutter_stage_get_minimum_size
 clutter_stage_set_no_clear_hint
 clutter_stage_get_no_clear_hint
 clutter_stage_get_redraw_clip_bounds
-clutter_stage_set_accept_focus
-clutter_stage_get_accept_focus
 clutter_stage_get_motion_events_enabled
 clutter_stage_set_motion_events_enabled
 
@@ -672,8 +659,27 @@ clutter_stage_set_title
 clutter_stage_get_title
 clutter_stage_set_user_resizable
 clutter_stage_get_user_resizable
+clutter_stage_set_fullscreen
+clutter_stage_get_fullscreen
+clutter_stage_show_cursor
+clutter_stage_hide_cursor
+clutter_stage_set_accept_focus
+clutter_stage_get_accept_focus
 
 <SUBSECTION>
+ClutterStagePaintFunc
+clutter_stage_set_paint_callback
+clutter_stage_set_sync_delay
+clutter_stage_skip_sync_delay
+
+<SUBSECTION>
+CLUTTER_STAGE_WIDTH
+CLUTTER_STAGE_HEIGHT
+clutter_stage_get_default
+clutter_stage_is_default
+clutter_stage_set_color
+clutter_stage_get_color
+clutter_stage_queue_redraw
 ClutterFog
 clutter_stage_set_use_fog
 clutter_stage_get_use_fog
@@ -1510,6 +1516,7 @@ CLUTTER_VERSION_1_8
 CLUTTER_VERSION_1_10
 CLUTTER_VERSION_1_12
 CLUTTER_VERSION_1_14
+CLUTTER_VERSION_1_16
 CLUTTER_VERSION_MAX_ALLOWED
 CLUTTER_VERSION_MIN_REQUIRED
 
@@ -1530,6 +1537,7 @@ CLUTTER_AVAILABLE_IN_1_8
 CLUTTER_AVAILABLE_IN_1_10
 CLUTTER_AVAILABLE_IN_1_12
 CLUTTER_AVAILABLE_IN_1_14
+CLUTTER_AVAILABLE_IN_1_16
 CLUTTER_DEPRECATED_IN_1_0
 CLUTTER_DEPRECATED_IN_1_0_FOR
 CLUTTER_DEPRECATED_IN_1_2
@@ -1546,6 +1554,8 @@ CLUTTER_DEPRECATED_IN_1_12
 CLUTTER_DEPRECATED_IN_1_12_FOR
 CLUTTER_DEPRECATED_IN_1_14
 CLUTTER_DEPRECATED_IN_1_14_FOR
+CLUTTER_DEPRECATED_IN_1_16
+CLUTTER_DEPRECATED_IN_1_16_FOR
 CLUTTER_UNAVAILABLE
 </SECTION>
 
@@ -2047,6 +2057,7 @@ clutter_text_set_cursor_visible
 clutter_text_get_cursor_visible
 clutter_text_set_cursor_size
 clutter_text_get_cursor_size
+clutter_text_get_cursor_rect
 
 <SUBSECTION>
 clutter_text_activate
