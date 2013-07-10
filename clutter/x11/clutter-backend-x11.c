@@ -50,10 +50,6 @@
 #include <X11/extensions/Xcomposite.h>
 #endif
 
-#if HAVE_XINPUT
-#include <X11/extensions/XInput.h>
-#endif
-
 #if HAVE_XINPUT_2
 #include <X11/extensions/XInput2.h>
 #endif
@@ -226,7 +222,7 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
   ClutterEventTranslator *translator;
   ClutterBackend *backend;
 
-#if defined(HAVE_XINPUT) || defined(HAVE_XINPUT_2)
+#ifdef HAVE_XINPUT_2
   if (clutter_enable_xinput)
     {
       int event_base, first_event, first_error;
@@ -236,7 +232,6 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
                            &first_event,
                            &first_error))
         {
-#ifdef HAVE_XINPUT_2
           int major = 2;
           int minor = 3;
 
@@ -252,23 +247,11 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
 
               backend_x11->xi_minor = minor;
             }
-          else
-#endif /* HAVE_XINPUT_2 */
-            {
-              CLUTTER_NOTE (BACKEND, "Creating Core+XI device manager");
-              backend_x11->has_xinput = TRUE;
-              backend_x11->device_manager =
-                g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_X11,
-                              "backend", backend_x11,
-                              "event-base", first_event,
-                              NULL);
-
-              backend_x11->xi_minor = -1;
-            }
         }
     }
-  else
-#endif /* HAVE_XINPUT || HAVE_XINPUT_2 */
+
+  if (backend_x11->device_manager == NULL)
+#endif /* HAVE_XINPUT_2 */
     {
       CLUTTER_NOTE (BACKEND, "Creating Core device manager");
       backend_x11->has_xinput = FALSE;
@@ -515,14 +498,14 @@ static const GOptionEntry entries[] =
     G_OPTION_ARG_NONE, &clutter_synchronise,
     N_("Make X calls synchronous"), NULL
   },
-#if defined(HAVE_XINPUT) || defined(HAVE_XINPUT_2)
+#ifdef HAVE_XINPUT_2
   {
     "disable-xinput", 0,
     G_OPTION_FLAG_REVERSE,
     G_OPTION_ARG_NONE, &clutter_enable_xinput,
     N_("Disable XInput support"), NULL
   },
-#endif /* HAVE_XINPUT */
+#endif /* HAVE_XINPUT_2 */
   { NULL }
 };
 
@@ -1189,7 +1172,7 @@ clutter_x11_get_input_devices (void)
 gboolean
 clutter_x11_has_xinput (void)
 {
-#if defined(HAVE_XINPUT) || defined(HAVE_XINPUT_2)
+#ifdef HAVE_XINPUT_2
  ClutterBackend *backend = clutter_get_default_backend ();
 
   if (backend == NULL)

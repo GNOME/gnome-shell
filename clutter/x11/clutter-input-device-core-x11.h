@@ -45,11 +45,6 @@ void _clutter_input_device_x11_set_keycodes (ClutterInputDeviceX11 *device_x11,
 int _clutter_input_device_x11_get_min_keycode (ClutterInputDeviceX11 *device_x11);
 int _clutter_input_device_x11_get_max_keycode (ClutterInputDeviceX11 *device_x11);
 
-gboolean _clutter_input_device_x11_translate_xi_event (ClutterInputDeviceX11 *device_x11,
-                                                       ClutterStageX11       *stage_x11,
-                                                       XEvent                *xevent,
-                                                       ClutterEvent          *event);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_INPUT_DEVICE_X11_H__ */

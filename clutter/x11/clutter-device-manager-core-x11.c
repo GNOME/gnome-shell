@@ -37,17 +37,6 @@
 #include "clutter-stage-private.h"
 #include "clutter-private.h"
 
-#ifdef HAVE_XINPUT
-#include <X11/extensions/XInput.h>
-
-/* old versions of XI.h don't define these */
-#ifndef IsXExtensionKeyboard
-#define IsXExtensionKeyboard 3
-#define IsXExtensionPointer  4
-#endif
-
-#endif /* HAVE_XINPUT */
-
 enum
 {
   PROP_0,
@@ -68,146 +57,6 @@ G_DEFINE_TYPE_WITH_CODE (ClutterDeviceManagerX11,
                          CLUTTER_TYPE_DEVICE_MANAGER,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_EVENT_TRANSLATOR,
                                                 clutter_event_translator_iface_init));
-
-#ifdef HAVE_XINPUT
-static void
-translate_class_info (ClutterInputDevice *device,
-                      XDeviceInfo        *info)
-{
-  XAnyClassPtr any_class;
-  gint i;
-
-  any_class = info->inputclassinfo;
-
-  for (i = 0; i < info->num_classes; i++)
-    {
-      switch (any_class->class)
-        {
-        case ButtonClass:
-          break;
-
-        case KeyClass:
-          {
-            XKeyInfo *xk_info = (XKeyInfo *) any_class;
-            ClutterInputDeviceX11 *device_x11;
-            guint n_keys;
-
-            device_x11 = CLUTTER_INPUT_DEVICE_X11 (device);
-
-            n_keys = xk_info->max_keycode - xk_info->min_keycode + 1;
-
-            _clutter_input_device_set_n_keys (device, n_keys);
-            _clutter_input_device_x11_set_keycodes (device_x11,
-                                                    xk_info->min_keycode,
-                                                    xk_info->max_keycode);
-          }
-          break;
-
-        case ValuatorClass:
-          {
-            XValuatorInfo *xv_info = (XValuatorInfo *) any_class;
-            gint j;
-
-            for (j = 0; j < xv_info->num_axes; j++)
-              {
-                ClutterInputAxis axis;
-
-                switch (j)
-                  {
-                  case 0:
-                    axis = CLUTTER_INPUT_AXIS_X;
-                    break;
-
-                  case 1:
-                    axis = CLUTTER_INPUT_AXIS_Y;
-                    break;
-
-                  case 2:
-                    axis = CLUTTER_INPUT_AXIS_PRESSURE;
-                    break;
-
-                  case 3:
-                    axis = CLUTTER_INPUT_AXIS_XTILT;
-                    break;
-
-                  case 4:
-                    axis = CLUTTER_INPUT_AXIS_YTILT;
-                    break;
-
-                  case 5:
-                    axis = CLUTTER_INPUT_AXIS_WHEEL;
-                    break;
-
-                  default:
-                    axis = CLUTTER_INPUT_AXIS_IGNORE;
-                    break;
-                  }
-
-                _clutter_input_device_add_axis (device, axis,
-                                                xv_info->axes[j].min_value,
-                                                xv_info->axes[j].max_value,
-                                                xv_info->axes[j].resolution);
-              }
-          }
-          break;
-        }
-
-      any_class = (XAnyClassPtr) (((char *) any_class) + any_class->length);
-    }
-}
-
-static ClutterInputDevice *
-create_device (ClutterDeviceManagerX11 *manager_x11,
-               ClutterBackendX11       *backend_x11,
-               XDeviceInfo             *info)
-{
-  ClutterInputDeviceType source;
-  ClutterInputDevice *retval;
-
-  if (info->use != IsXExtensionPointer &&
-      info->use != IsXExtensionKeyboard)
-    return NULL;
-
-  if (info->use == IsXExtensionKeyboard)
-    source = CLUTTER_KEYBOARD_DEVICE;
-  else
-    {
-      gchar *name;
-
-      name = g_ascii_strdown (info->name, -1);
-
-      if (strstr (name, "eraser") != NULL)
-        source = CLUTTER_ERASER_DEVICE;
-      else if (strstr (name, "cursor") != NULL)
-        source = CLUTTER_CURSOR_DEVICE;
-      else if (strstr (name, "wacom") != NULL || strstr (name, "pen") != NULL)
-        source = CLUTTER_PEN_DEVICE;
-      else
-        source = CLUTTER_POINTER_DEVICE;
-
-      g_free (name);
-    }
-
-  retval = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
-                         "name", info->name,
-                         "id", info->id,
-                         "has-cursor", FALSE,
-                         "device-manager", manager_x11,
-                         "device-type", source,
-                         "device-mode", CLUTTER_INPUT_MODE_FLOATING,
-                         "backend", backend_x11,
-                         "enabled", FALSE,
-                         NULL);
-  translate_class_info (retval, info);
-
-  CLUTTER_NOTE (BACKEND,
-                "XI Device '%s' (id: %d) created",
-                info->name,
-                (int) info->id);
-
-  return retval;
-}
-#endif /* HAVE_XINPUT */
 
 static inline void
 translate_key_event (ClutterBackendX11       *backend_x11,
@@ -275,20 +124,6 @@ out:
   return;
 }
 
-#ifdef HAVE_XINPUT
-static ClutterInputDevice *
-get_device_from_event (ClutterDeviceManagerX11 *manager_x11,
-                       XEvent                  *xevent)
-{
-  guint32 device_id;
-
-  device_id = ((XDeviceButtonEvent *) xevent)->deviceid;
-
-  return g_hash_table_lookup (manager_x11->devices_by_id,
-                              GINT_TO_POINTER (device_id));
-}
-#endif /* HAVE_XINPUT */
-
 static ClutterTranslateReturn
 clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
                                             gpointer                native,
@@ -300,9 +135,6 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
   ClutterTranslateReturn res;
   ClutterStage *stage;
   XEvent *xevent;
-#ifdef HAVE_XINPUT
-  ClutterInputDevice *device;
-#endif
 
   manager_x11 = CLUTTER_DEVICE_MANAGER_X11 (translator);
   backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
@@ -321,23 +153,6 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
   event->any.stage = stage;
 
   res = CLUTTER_TRANSLATE_CONTINUE;
-
-#ifdef HAVE_XINPUT
-  device = get_device_from_event (manager_x11, xevent);
-  if (device != NULL)
-    {
-      ClutterInputDeviceX11 *device_x11;
-      gboolean retval;
-
-      device_x11 = CLUTTER_INPUT_DEVICE_X11 (device);
-      retval = _clutter_input_device_x11_translate_xi_event (device_x11,
-                                                             stage_x11,
-                                                             xevent,
-                                                             event);
-      if (retval)
-        return CLUTTER_TRANSLATE_QUEUE;
-    }
-#endif /* HAVE_XINPUT */
 
   switch (xevent->type)
     {
@@ -537,57 +352,12 @@ clutter_device_manager_x11_constructed (GObject *gobject)
 {
   ClutterDeviceManagerX11 *manager_x11;
   ClutterBackendX11 *backend_x11;
-#ifdef HAVE_XINPUT
-  ClutterDeviceManager *manager;
-  XDeviceInfo *x_devices = NULL;
-  int i, n_devices;
-#endif /* HAVE_XINPUT */
 
   manager_x11 = CLUTTER_DEVICE_MANAGER_X11 (gobject);
 
   g_object_get (gobject, "backend", &backend_x11, NULL);
   g_assert (backend_x11 != NULL);
 
-#ifdef HAVE_XINPUT
-  manager = CLUTTER_DEVICE_MANAGER (gobject);
-  x_devices = XListInputDevices (backend_x11->xdpy, &n_devices);
-  if (n_devices == 0)
-    {
-      CLUTTER_NOTE (BACKEND, "No XInput devices found");
-      goto default_device;
-    }
-
-  for (i = 0; i < n_devices; i++)
-    {
-      XDeviceInfo *info = x_devices + i;
-      ClutterInputDevice *device;
-
-      CLUTTER_NOTE (BACKEND,
-                    "Considering device %li with type %d, %d of %d",
-                    info->id,
-                    info->use,
-                    i, n_devices);
-
-      device = create_device (manager_x11, backend_x11, info);
-      if (device != NULL)
-        _clutter_device_manager_add_device (manager, device);
-    }
-
-  XFreeDeviceList (x_devices);
-
-default_device:
-#endif /* HAVE_XINPUT */
-
-  /* fallback code in case:
-   *
-   *  - we do not have XInput support compiled in
-   *  - we do not have the XInput extension
-   *
-   * we register two default devices, one for the pointer
-   * and one for the keyboard. this block must also be
-   * executed for the XInput support because XI does not
-   * cover core devices
-   */
   manager_x11->core_pointer =
     g_object_new (CLUTTER_TYPE_INPUT_DEVICE_X11,
                   "name", "Core Pointer",

@@ -723,12 +723,6 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
                                      AC_DEFINE([HAVE_XINPUT_2],
                                                [1],
                                                [Define to 1 if XI2 is available])
-                                   ],
-                                   [
-                                     have_xinput2=no
-                                     AC_DEFINE([HAVE_XINPUT],
-                                               [1],
-                                               [Define to 1 if XInput is available])
                                    ])
 
                   clutter_save_LIBS="$LIBS"

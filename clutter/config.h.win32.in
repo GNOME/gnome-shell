@@ -117,9 +117,6 @@
 /* Define to 1 if X Generic Extensions is available */
 /* #undef HAVE_XGE */
 
-/* Define to 1 if XInput is available */
-/*#undef HAVE_XINPUT*/
-
 /* Define to 1 if XI2 is available */
 /*#undef HAVE_XINPUT_2*/
 
