@@ -1391,7 +1391,7 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
    */
   st_theme_node_paint_state_free (state);
 
-  state->node = node;
+  st_theme_node_paint_state_set_node (state, node);
   state->alloc_width = width;
   state->alloc_height = height;
 
@@ -1526,7 +1526,7 @@ st_theme_node_update_resources (StThemeNodePaintState *state,
         }
     }
 
-  state->node = node;
+  st_theme_node_paint_state_set_node (state, node);
   state->alloc_width = width;
   state->alloc_height = height;
 
@@ -2523,8 +2523,9 @@ st_theme_node_paint (StThemeNode           *node,
     }
 }
 
-void
-st_theme_node_paint_state_free (StThemeNodePaintState *state)
+static void
+st_theme_node_paint_state_node_free_internal (StThemeNodePaintState *state,
+                                              gboolean               unref_node)
 {
   int corner_id;
 
@@ -2539,7 +2540,37 @@ st_theme_node_paint_state_free (StThemeNodePaintState *state)
     if (state->corner_material[corner_id] != COGL_INVALID_HANDLE)
       cogl_handle_unref (state->corner_material[corner_id]);
 
+  if (unref_node)
+    st_theme_node_paint_state_set_node (state, NULL);
+
   st_theme_node_paint_state_init (state);
+}
+
+static void
+st_theme_node_paint_state_node_freed (StThemeNodePaintState *state)
+{
+  st_theme_node_paint_state_node_free_internal (state, FALSE);
+}
+
+void
+st_theme_node_paint_state_set_node (StThemeNodePaintState *state, StThemeNode *node)
+{
+  if (state->node)
+    g_object_weak_unref (G_OBJECT (state->node),
+                         (GWeakNotify) st_theme_node_paint_state_node_freed,
+                         state);
+
+  state->node = node;
+  if (state->node)
+    g_object_weak_ref (G_OBJECT (state->node),
+                       (GWeakNotify) st_theme_node_paint_state_node_freed,
+                       state);
+}
+
+void
+st_theme_node_paint_state_free (StThemeNodePaintState *state)
+{
+  st_theme_node_paint_state_node_free_internal (state, TRUE);
 }
 
 void
@@ -2567,7 +2598,7 @@ st_theme_node_paint_state_copy (StThemeNodePaintState *state,
 
   st_theme_node_paint_state_free (state);
 
-  state->node = other->node;
+  st_theme_node_paint_state_set_node (state, other->node);
 
   state->alloc_width = other->alloc_width;
   state->alloc_height = other->alloc_height;
