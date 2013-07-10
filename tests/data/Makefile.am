@@ -1,4 +1,5 @@
 NULL =
+EXTRA_DIST =
 
 json_files = \
 	test-script-animation.json		\
@@ -19,15 +20,19 @@ json_files = \
 	test-script-margin.json 		\
 	$(NULL)
 
+EXTRA_DIST += $(json_files)
+
 png_files = \
 	redhand.png 		\
 	redhand_alpha.png	\
 	light0.png 		\
 	$(NULL)
 
-EXTRA_DIST = $(json_files) $(png_files) clutter-1.0.suppressions
+EXTRA_DIST += $(png_files)
 
 if ENABLE_INSTALLED_TESTS
 insttestdir = $(libexecdir)/installed-tests/$(PACKAGE)/data
 insttest_DATA = $(json_files) $(png_files)
 endif
+
+EXTRA_DIST += clutter-1.0.suppressions

@@ -153,11 +153,15 @@ test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION
 test_conformance_LDFLAGS = -export-dynamic
 
 test: wrappers
-	@$(top_srcdir)/tests/conform/run-tests.sh \
+	@export G_TEST_SRCDIR="$(abs_srcdir)" ; \
+	 export G_TEST_BUILDDIR="$(abs_builddir)" ; \
+	 $(top_srcdir)/tests/conform/run-tests.sh \
 	  ./test-conformance$(EXEEXT) -o test-report.xml
 
 test-verbose: wrappers
-	@$(top_srcdir)/tests/conform/run-tests.sh \
+	@export G_TEST_SRCDIR="$(abs_srcdir)" ; \
+	 export G_TEST_BUILDDIR="$(abs_builddir)" ; \
+	 $(top_srcdir)/tests/conform/run-tests.sh \
 	  ./test-conformance$(EXEEXT) -o test-report.xml --verbose
 
 GTESTER = gtester
@@ -188,6 +192,8 @@ test-report perf-report full-report:	${TEST_PROGS}
 	  perf-report) test_options="-k -m=perf";; \
 	  full-report) test_options="-k -m=perf -m=slow";; \
 	  esac ; \
+	  export G_TEST_SRCDIR="$(abs_srcdir)" ; \
+	  export G_TEST_BUILDDIR="$(abs_builddir)" ; \
 	  $(top_srcdir)/tests/conform/run-tests.sh \
 	    ./test-conformance$(EXEEXT) \
 	    --verbose \
@@ -227,6 +233,8 @@ test-report-npot perf-report-npot full-report-npot:	${TEST_PROGS}
 	  perf-report-npot) test_options="-k -m=perf";; \
 	  full-report-npot) test_options="-k -m=perf -m=slow";; \
 	  esac ; \
+	  export G_TEST_SRCDIR="$(abs_srcdir)" ; \
+	  export G_TEST_BUILDDIR="$(abs_builddir)" ; \
 	  $(top_srcdir)/tests/conform/run-tests.sh \
 	    ./test-conformance$(EXEEXT) \
 	    --verbose \
