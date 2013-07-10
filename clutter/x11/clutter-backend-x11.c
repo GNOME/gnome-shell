@@ -223,71 +223,68 @@ clutter_backend_x11_xsettings_notify (const char       *name,
 static void
 clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
 {
-  if (G_UNLIKELY (backend_x11->device_manager == NULL))
-    {
-      ClutterEventTranslator *translator;
-      ClutterBackend *backend;
+  ClutterEventTranslator *translator;
+  ClutterBackend *backend;
 
 #if defined(HAVE_XINPUT) || defined(HAVE_XINPUT_2)
-      if (clutter_enable_xinput)
+  if (clutter_enable_xinput)
+    {
+      int event_base, first_event, first_error;
+
+      if (XQueryExtension (backend_x11->xdpy, "XInputExtension",
+                           &event_base,
+                           &first_event,
+                           &first_error))
         {
-          int event_base, first_event, first_error;
-
-          if (XQueryExtension (backend_x11->xdpy, "XInputExtension",
-                               &event_base,
-                               &first_event,
-                               &first_error))
-            {
 #ifdef HAVE_XINPUT_2
-              int major = 2;
-              int minor = 3;
+          int major = 2;
+          int minor = 3;
 
-              if (XIQueryVersion (backend_x11->xdpy, &major, &minor) != BadRequest)
-                {
-                  CLUTTER_NOTE (BACKEND, "Creating XI2 device manager");
-                  backend_x11->has_xinput = TRUE;
-                  backend_x11->device_manager =
-                    g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_XI2,
-                                  "backend", backend_x11,
-                                  "opcode", event_base,
-                                  NULL);
+          if (XIQueryVersion (backend_x11->xdpy, &major, &minor) != BadRequest)
+            {
+              CLUTTER_NOTE (BACKEND, "Creating XI2 device manager");
+              backend_x11->has_xinput = TRUE;
+              backend_x11->device_manager =
+                g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_XI2,
+                              "backend", backend_x11,
+                              "opcode", event_base,
+                              NULL);
 
-                  backend_x11->xi_minor = minor;
-                }
-              else
+              backend_x11->xi_minor = minor;
+            }
+          else
 #endif /* HAVE_XINPUT_2 */
-                {
-                  CLUTTER_NOTE (BACKEND, "Creating Core+XI device manager");
-                  backend_x11->has_xinput = TRUE;
-                  backend_x11->device_manager =
-                    g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_X11,
-                                  "backend", backend_x11,
-                                  "event-base", first_event,
-                                  NULL);
+            {
+              CLUTTER_NOTE (BACKEND, "Creating Core+XI device manager");
+              backend_x11->has_xinput = TRUE;
+              backend_x11->device_manager =
+                g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_X11,
+                              "backend", backend_x11,
+                              "event-base", first_event,
+                              NULL);
 
-                  backend_x11->xi_minor = -1;
-                }
+              backend_x11->xi_minor = -1;
             }
         }
-      else
-#endif /* HAVE_XINPUT || HAVE_XINPUT_2 */
-        {
-          CLUTTER_NOTE (BACKEND, "Creating Core device manager");
-          backend_x11->has_xinput = FALSE;
-          backend_x11->device_manager =
-            g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_X11,
-                          "backend", backend_x11,
-                          NULL);
-
-          backend_x11->xi_minor = -1;
-        }
-
-      backend = CLUTTER_BACKEND (backend_x11);
-      backend->device_manager = backend_x11->device_manager;
-
-      translator = CLUTTER_EVENT_TRANSLATOR (backend_x11->device_manager);
-      _clutter_backend_add_event_translator (backend, translator);
     }
+  else
+#endif /* HAVE_XINPUT || HAVE_XINPUT_2 */
+    {
+      CLUTTER_NOTE (BACKEND, "Creating Core device manager");
+      backend_x11->has_xinput = FALSE;
+      backend_x11->device_manager =
+        g_object_new (CLUTTER_TYPE_DEVICE_MANAGER_X11,
+                      "backend", backend_x11,
+                      NULL);
+
+      backend_x11->xi_minor = -1;
+    }
+
+  backend = CLUTTER_BACKEND (backend_x11);
+  backend->device_manager = backend_x11->device_manager;
+
+  translator = CLUTTER_EVENT_TRANSLATOR (backend_x11->device_manager);
+  _clutter_backend_add_event_translator (backend, translator);
 }
 
 static void
