@@ -1,3 +1,75 @@
+Clutter 1.15.2                                                       2013-07-10
+===============================================================================
+
+  • List of changes since Clutter 1.14
+
+    - Improve state tracking and short circuiting
+    ClutterActor now tracks clones and unmapped actors more aggressively, to
+    reduce the amount of work necessary when updating the scene graph.
+
+    - Wayland backend improvements and updates
+
+    - Documentation updates
+    Clean up the API reference for readability, and improve the comments in
+    the inlined example code. Also, include the cookbook in the distribution
+    tarball.
+
+    - Allow installation of conformance tests
+    Clutter now allows installing its conformance tests into a well-known
+    location; this allows running the conformance test suite against an
+    installed version of Clutter.
+
+    - Add ClutterFlowLayout:snap-to-grid
+    ClutterFlowLayout users can now ask the layout manager to not align the
+    actors to a grid.
+
+    - Improve gesture recognizers
+
+    - Deprecations
+    ClutterText::cursor-event has been replaced by ClutterText::cursor-changed;
+    ClutterGeometry has been deprecated; ClutterActor::realize and ::unrealize,
+    along with their virtual functions, have been deprecated.
+
+  • List of bugs fixed since Clutter 1.14
+
+    #682789 - Deprecate ClutterGeometry (and remove it for 2.0)
+    #698668 - A few improvements to ClutterGestureAction
+    #698669 - Fix "trigger edge after" behavior with more than 1 touch point
+    #698671 - Refactor event handling code in ClutterGestureAction
+    #698674 - Improve ClutterZoomAction behavior
+    #698783 - Add a paint callback for ClutterStage
+    #698766 - Implicit transitions queued on invisible actors should be ignored
+    #648873 - Feature request: ClutterFlowLayout not aligning on a grid
+    #699675 - Offscreen effects allocating too much memory
+    #692706 - Frequent crash in cally_stage_notify_key_focus_cb
+    #701974 - x11: trap errors when calling XIQueryDevice
+    #696813 - clutter_actor_set_child_above/below_sibling leaking a reference
+              on the actor
+    #701208 - deform-effect: correctly set the cull-face mode of the back
+              pipeline
+    #700980 - Tap action now longer works
+    #702016 - ClutterText reset font when dpi changes and font was set using
+              a pango description
+    #702610 - text: relayout on cursor visibility change
+    #702941 - Install conformance tests
+    RH#975171 - gnome-shell: screen magnifier can cause crash with Cogl error
+    #702202 - conform tests hang on wayland
+    #703188 - Stage doesn't appear when running under Wayland
+    #703476 - tests/actor-offscreen-redirect: Fix race condition
+    #703566 - Need to be able to share Wayland display between GTK and Clutter
+    #697285 - Inconsistent setting of the time member on the events
+    #703882 - Prevent buffer/text/max-length properties notification in the
+              allocation cycle
+
+Many thanks to:
+
+  Lionel Landwerlin, Chris Cummins, Matthias Clasen, Rob Bradford, Alejandro
+  Piñeiro, Jasper St. Pierre, Bastian Winkler, Colin Walters, Craig R. Hughes,
+  Daniel Mustieles, Marek Černocký, Adel Gadllah, Ask H. Larsen, Bastien
+  Nocera, Cosimo Cecchi, Dimitris Spingos, Duarte Loreto, Emanuele Aina, Fran
+  Diéguez, Gil Forcada, Matej Urbančič, Milo Casagrande, Neil Roberts, Rui
+  Matos, Samuel Degrande, Sebastian Keller, Sjoerd Simons.
+
 Clutter 1.13.2                                                       2012-12-18
 ===============================================================================
 
