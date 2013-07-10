@@ -1537,6 +1537,15 @@ st_theme_node_update_resources (StThemeNodePaintState *state,
       state->prerendered_texture = st_theme_node_prerender_background (node, width, height);
       state->prerendered_material = _st_create_texture_material (state->prerendered_texture);
     }
+  else
+    {
+      int corner_id;
+
+      for (corner_id = 0; corner_id < 4; corner_id++)
+        if (state->corner_material[corner_id] == COGL_INVALID_HANDLE)
+          state->corner_material[corner_id] =
+            st_theme_node_lookup_corner (node, width, height, corner_id);
+    }
 
   if (had_box_shadow)
     state->box_shadow_material = _st_create_shadow_material (box_shadow_spec,
