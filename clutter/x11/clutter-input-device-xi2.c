@@ -54,53 +54,6 @@ G_DEFINE_TYPE (ClutterInputDeviceXI2,
                CLUTTER_TYPE_INPUT_DEVICE);
 
 static void
-clutter_input_device_xi2_select_stage_events (ClutterInputDevice *device,
-                                              ClutterStage       *stage)
-{
-  ClutterInputDeviceXI2 *device_xi2 = CLUTTER_INPUT_DEVICE_XI2 (device);
-  ClutterBackendX11 *backend_x11;
-  ClutterStageX11 *stage_x11;
-  XIEventMask xi_event_mask;
-  unsigned char *mask;
-  int len;
-
-  backend_x11 = CLUTTER_BACKEND_X11 (device->backend);
-  stage_x11 = CLUTTER_STAGE_X11 (_clutter_stage_get_window (stage));
-
-  len = XIMaskLen (XI_LASTEVENT);
-  mask = g_new0 (unsigned char, len);
-
-  XISetMask (mask, XI_Motion);
-  XISetMask (mask, XI_ButtonPress);
-  XISetMask (mask, XI_ButtonRelease);
-  XISetMask (mask, XI_KeyPress);
-  XISetMask (mask, XI_KeyRelease);
-  XISetMask (mask, XI_Enter);
-  XISetMask (mask, XI_Leave);
-
-#ifdef HAVE_XINPUT_2_2
-  /* enable touch event support if we're running on XInput 2.2 */
-  if (backend_x11->xi_minor >= 2)
-    {
-      XISetMask (mask, XI_TouchBegin);
-      XISetMask (mask, XI_TouchUpdate);
-      XISetMask (mask, XI_TouchEnd);
-    }
-#endif /* HAVE_XINPUT_2_2 */
-
-  xi_event_mask.deviceid = device_xi2->device_id;
-  xi_event_mask.mask = mask;
-  xi_event_mask.mask_len = len;
-
-  CLUTTER_NOTE (BACKEND, "Selecting device id '%d' events",
-                device_xi2->device_id);
-
-  XISelectEvents (backend_x11->xdpy, stage_x11->xwin, &xi_event_mask, 1);
-
-  g_free (mask);
-}
-
-static void
 clutter_input_device_xi2_constructed (GObject *gobject)
 {
   ClutterInputDeviceXI2 *device_xi2 = CLUTTER_INPUT_DEVICE_XI2 (gobject);
@@ -133,7 +86,6 @@ clutter_input_device_xi2_class_init (ClutterInputDeviceXI2Class *klass)
 
   gobject_class->constructed = clutter_input_device_xi2_constructed;
 
-  device_class->select_stage_events = clutter_input_device_xi2_select_stage_events;
   device_class->keycode_to_evdev = clutter_input_device_xi2_keycode_to_evdev;
 }
 

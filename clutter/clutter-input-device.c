@@ -1615,26 +1615,6 @@ clutter_input_device_get_associated_device (ClutterInputDevice *device)
   return device->associated;
 }
 
-/*< internal >
- * clutter_input_device_select_stage_events:
- * @device: a #ClutterInputDevice
- * @stage: the #ClutterStage to select events on
- *
- * Selects input device events on @stage.
- *
- * The implementation of this function depends on the backend used.
- */
-void
-_clutter_input_device_select_stage_events (ClutterInputDevice *device,
-                                           ClutterStage       *stage)
-{
-  ClutterInputDeviceClass *device_class;
-
-  device_class = CLUTTER_INPUT_DEVICE_GET_CLASS (device);
-  if (device_class->select_stage_events != NULL)
-    device_class->select_stage_events (device, stage);
-}
-
 /**
  * clutter_input_device_keycode_to_evdev:
  * @device: A #ClutterInputDevice

@@ -307,20 +307,12 @@ _clutter_device_manager_select_stage_events (ClutterDeviceManager *device_manage
                                              ClutterStage         *stage)
 {
   ClutterDeviceManagerClass *manager_class;
-  const GSList *devices, *d;
 
   g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager));
 
   manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
-  devices = manager_class->get_devices (device_manager);
-
-  for (d = devices; d != NULL; d = d->next)
-    {
-      ClutterInputDevice *device = d->data;
-
-      if (device->is_enabled)
-        _clutter_input_device_select_stage_events (device, stage);
-    }
+  if (manager_class->select_stage_events)
+    manager_class->select_stage_events (device_manager, stage);
 }
 
 /*

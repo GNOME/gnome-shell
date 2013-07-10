@@ -137,8 +137,6 @@ struct _ClutterInputDeviceClass
 {
   GObjectClass parent_class;
 
-  void (* select_stage_events) (ClutterInputDevice *device,
-                                ClutterStage       *stage);
   gboolean (* keycode_to_evdev) (ClutterInputDevice *device,
                                  guint               hardware_keycode,
                                  guint              *evdev_keycode);
@@ -195,9 +193,6 @@ void            _clutter_input_device_add_slave                 (ClutterInputDev
                                                                  ClutterInputDevice   *slave);
 void            _clutter_input_device_remove_slave              (ClutterInputDevice   *master,
                                                                  ClutterInputDevice   *slave);
-
-void            _clutter_input_device_select_stage_events       (ClutterInputDevice   *device,
-                                                                 ClutterStage         *stage);
 
 gboolean        _clutter_input_device_translate_axis            (ClutterInputDevice   *device,
                                                                  guint                 index_,

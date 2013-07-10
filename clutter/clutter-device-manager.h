@@ -81,9 +81,11 @@ struct _ClutterDeviceManagerClass
                                            ClutterInputDevice     *device);
   void                (* remove_device)   (ClutterDeviceManager   *manager,
                                            ClutterInputDevice     *device);
+  void                (* select_stage_events) (ClutterDeviceManager *manager,
+                                               ClutterStage       *stage);
 
   /* padding */
-  gpointer _padding[8];
+  gpointer _padding[7];
 };
 
 
