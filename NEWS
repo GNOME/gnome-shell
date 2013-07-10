@@ -1,3 +1,16 @@
+3.9.4
+=====
+* Tweak window shadows [Allan; #702141]
+* Ignore our own focus events for focus prediction [Jasper; #701017]
+* Add API to query if the stage is focused [Jasper; #700735]
+* Add API to query the monitor for a given position [Adel]
+* Don't force attached dialogs to be border-only [Florian; #702764]
+* Allow slicing of backgrounds to avoid texture size limits [Ray; #702283]
+* Miscellaneous bug fixes and cleanups [Adel; #701224, #702564]
+
+Contributors:
+  Allan Day, Adel Gadllah, Florian Müllner, Jasper St. Pierre, Ray Strode
+
 3.9.3
 =====
 * Ensure events are always reported to the grab window [Rui; #701219]
