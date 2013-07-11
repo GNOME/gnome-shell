@@ -2578,6 +2578,8 @@ st_theme_node_paint_state_init (StThemeNodePaintState *state)
 {
   int corner_id;
 
+  state->alloc_width = 0;
+  state->alloc_height = 0;
   state->node = NULL;
   state->box_shadow_material = COGL_INVALID_HANDLE;
   state->prerendered_texture = COGL_INVALID_HANDLE;
