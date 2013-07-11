@@ -62,14 +62,9 @@ const NetworkSecretDialog = new Lang.Class({
 
         if (this._content.message != null) {
             let descriptionLabel = new St.Label({ style_class: 'prompt-dialog-description',
-                                                  text: this._content.message,
-                                                  // HACK: for reasons unknown to me, the label
-                                                  // is not asked the correct height for width,
-                                                  // and thus is underallocated
-                                                  // place a fixed height to avoid overflowing
-                                                  style: 'height: 3em'
-                                                });
+                                                  text: this._content.message });
             descriptionLabel.clutter_text.line_wrap = true;
+            descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
             messageBox.add(descriptionLabel,
                            { y_fill:  true,
