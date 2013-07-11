@@ -101,7 +101,7 @@ StScrollBar StButton#vhandle:active {
 
 /* Check Boxes */
 
-.check-box ShellGenericContainer {
+.check-box StBoxLayout {
     spacing: .8em;
 }
 
