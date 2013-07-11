@@ -79,6 +79,11 @@ const ModalDialog = new Lang.Class({
 
         this.dialogLayout = new St.BoxLayout({ style_class: 'modal-dialog',
                                                vertical:    true });
+        // modal dialogs are fixed width and grow vertically; set the request
+        // mode accordingly so wrapped labels are handled correctly during
+        // size requests.
+        this.dialogLayout.request_mode = Clutter.RequestMode.HEIGHT_FOR_WIDTH;
+
         if (params.styleClass != null)
             this.dialogLayout.add_style_class_name(params.styleClass);
 
