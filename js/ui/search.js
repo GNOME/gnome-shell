@@ -31,7 +31,7 @@ const SearchSystem = new Lang.Class({
 
         let remoteIndex = this._remoteProviders.indexOf(provider);
         if (remoteIndex != -1)
-            this._remoteProviders.splice(index, 1);
+            this._remoteProviders.splice(remoteIndex, 1);
     },
 
     getProviders: function() {
