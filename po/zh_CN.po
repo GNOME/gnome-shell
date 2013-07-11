@@ -11,15 +11,16 @@
 # StarBrilliant <m13253@hotmail.com>, 2011
 # YunQiang Su <wzssyqa@gmail.com>, 2010, 2011, 2012.
 # Aron Xu <aronxu@gnome.org>, 2010, 2011, 2012, 2013.
-# eternalhui <www.eternalhui@gmail.com>, 2013
+# Wylmer Wang <wantinghard@gmail.com>, 2013.
+# eternalhui <www.eternalhui@gmail.com>, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-06-05 13:34+0000\n"
-"PO-Revision-Date: 2013-05-28 16:14+0800\n"
+"POT-Creation-Date: 2013-07-09 16:52+0000\n"
+"PO-Revision-Date: 2013-07-07 22:59+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -50,10 +51,14 @@ msgid "Focus the active notification"
 msgstr "聚焦到活动的提示"
 
 #: ../data/50-gnome-shell-system.xml.in.h:4
+msgid "Show the overview"
+msgstr "显示活动概览"
+
+#: ../data/50-gnome-shell-system.xml.in.h:5
 msgid "Show all applications"
 msgstr "显示全部应用程序"
 
-#: ../data/50-gnome-shell-system.xml.in.h:5
+#: ../data/50-gnome-shell-system.xml.in.h:6
 msgid "Open the application menu"
 msgstr "打开应用程序菜单"
 
@@ -100,35 +105,20 @@ msgstr ""
 "EnableExtension 和 DisableExtension 的值进行修改，以修改此列表。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
-msgid "Whether to collect stats about applications usage"
-msgstr "是否收集应用程序的使用情况"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"Gnome Shell 一般将监视活动应用程序，以便呈现最常用的(例如，在启动器中)。同"
-"时，此数据将保持私密，您可能因为隐私原因想要禁用此项。请注意，这么做，并不会"
-"移除已经保存的数据。"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
 msgstr "收藏夹中的应用程序的 desktop 文件 ID 的列表"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr "符合这些标示的应用程序将显示在收藏区中。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of categories that should be displayed as folders"
 msgstr "应显示为文件夹的类别列表"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid ""
 "Each category name in this list will be represented as folder in the "
 "application view, rather than being displayed inline in the main view."
@@ -136,16 +126,16 @@ msgstr ""
 "在应用程序视图中，这个列表中的每个类别的名称都会显示为文件夹，而不是在主视图"
 "中内嵌显示。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
 msgstr "命令对话框(Alt-F2)的历史记录"
 
 # http://live.gnome.org/GnomeShell/LookingGlass
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "History for the looking glass dialog"
 msgstr "Looking Glass 控制台历史"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
@@ -153,30 +143,30 @@ msgstr ""
 "用于内部保存用户自主设置的即时通信程序上次的在线状态。这里的值取自 "
 "TpConnectionPresenceType 枚举变量。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
 msgstr ""
 "用于内部保存上次会话用户的在线状态。这里的值取自 GsmPresenceStatus 枚举变量。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Always show the 'Log out' menuitem in the user menu."
 msgstr "总在用户菜单中显示“注销”。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
 msgstr ""
 "单用户、单会话情形下，“注销”菜单项默认隐藏，使用这个按键会覆盖这种行为。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr "是否记住挂载加密文件系统或远程文件系统时所使用的密码"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -186,30 +176,38 @@ msgstr ""
 "挂载加密设备或远程文件系统时 Gnome Shell 将要求输入密码。如果该密码可以记住并"
 "在今后使用，则会有“记住密码”复选框出现。这个键设置了该复选框的默认状态。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Show the week date in the calendar"
 msgstr "在日历中显示星期"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "If true, display the ISO week date in the calendar."
 msgstr "如果为真，在日历中显示 ISO 周日期。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the application menu"
 msgstr "用于打开应用程序菜单的按键组合"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to open the application menu."
 msgstr "用于打开应用程序菜单的按键组合。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "用于打开应用程序菜单的按键组合"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr "用于在活动视图中打开应用程序菜单的按键组合。"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+msgid "Keybinding to open the overview"
+msgstr "用于打开概览的按键组合"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+msgid "Keybinding to open the Activities Overview."
+msgstr "用于打开活动概览的按键组合。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to toggle the visibility of the message tray"
@@ -350,37 +348,41 @@ msgstr "扩展"
 msgid "Select an extension to configure using the combobox above."
 msgstr "使用上面的下拉框选择一个要配置的扩展。"
 
-#: ../js/gdm/loginDialog.js:371
-msgid "Session…"
-msgstr "会话..."
+#: ../js/gdm/loginDialog.js:308
+msgid "Choose Session"
+msgstr "选择会话"
+
+#: ../js/gdm/loginDialog.js:326
+msgid "Session"
+msgstr "会话"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:601
+#: ../js/gdm/loginDialog.js:530
 msgid "Not listed?"
 msgstr "未列出？"
 
-#: ../js/gdm/loginDialog.js:776 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:808 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:96
-#: ../js/ui/userMenu.js:938
+#: ../js/ui/status/bluetooth.js:449 ../js/ui/unlockDialog.js:95
+#: ../js/ui/userMenu.js:884
 msgid "Cancel"
 msgstr "取消"
 
-#: ../js/gdm/loginDialog.js:791
+#: ../js/gdm/loginDialog.js:831
 msgctxt "button"
 msgid "Sign In"
 msgstr "登录"
 
-#: ../js/gdm/loginDialog.js:791
+#: ../js/gdm/loginDialog.js:831
 msgid "Next"
 msgstr "下一步"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:888
+#: ../js/gdm/loginDialog.js:932
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(如 user 或 %s)"
@@ -388,12 +390,12 @@ msgstr "(如 user 或 %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:892 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:936 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "用户名："
 
-#: ../js/gdm/loginDialog.js:1158
+#: ../js/gdm/loginDialog.js:1203
 msgid "Login Window"
 msgstr "登录窗口"
 
@@ -402,8 +404,8 @@ msgstr "登录窗口"
 msgid "Power"
 msgstr "电源"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:696 ../js/ui/userMenu.js:700
-#: ../js/ui/userMenu.js:816
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:651 ../js/ui/userMenu.js:655
+#: ../js/ui/userMenu.js:768
 msgid "Suspend"
 msgstr "挂起"
 
@@ -411,18 +413,18 @@ msgstr "挂起"
 msgid "Restart"
 msgstr "重启"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:698
-#: ../js/ui/userMenu.js:700 ../js/ui/userMenu.js:815 ../js/ui/userMenu.js:942
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:653
+#: ../js/ui/userMenu.js:655 ../js/ui/userMenu.js:767 ../js/ui/userMenu.js:888
 msgid "Power Off"
 msgstr "关机"
 
-#: ../js/gdm/util.js:247
+#: ../js/gdm/util.js:248
 msgid "Authentication error"
 msgstr "认证出错"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:364
+#: ../js/gdm/util.js:365
 msgid "(or swipe finger)"
 msgstr "(或滑动手指)"
 
@@ -441,23 +443,23 @@ msgstr "不能解析命令："
 msgid "Execution of '%s' failed:"
 msgstr "运行“%s”失败："
 
-#: ../js/ui/appDisplay.js:392
+#: ../js/ui/appDisplay.js:397
 msgid "Frequent"
 msgstr "常用"
 
-#: ../js/ui/appDisplay.js:399
+#: ../js/ui/appDisplay.js:404
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:977
+#: ../js/ui/appDisplay.js:996
 msgid "New Window"
 msgstr "新窗口"
 
-#: ../js/ui/appDisplay.js:980 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:999 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: ../js/ui/appDisplay.js:981
+#: ../js/ui/appDisplay.js:1000
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
@@ -471,7 +473,7 @@ msgstr "%s 已经添加到了您的收藏夹。"
 msgid "%s has been removed from your favorites."
 msgstr "%s 已经从您的收藏夹移除。"
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:789
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:744
 msgid "Settings"
 msgstr "设置"
 
@@ -596,35 +598,35 @@ msgid "S"
 msgstr "星期六"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:750
 msgid "Nothing Scheduled"
 msgstr "无计划"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:736
+#: ../js/ui/calendar.js:768
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:739
+#: ../js/ui/calendar.js:771
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%Y年%m月%d日%A"
 
-#: ../js/ui/calendar.js:749
+#: ../js/ui/calendar.js:782
 msgid "Today"
 msgstr "今天"
 
-#: ../js/ui/calendar.js:753
+#: ../js/ui/calendar.js:786
 msgid "Tomorrow"
 msgstr "明天"
 
-#: ../js/ui/calendar.js:764
+#: ../js/ui/calendar.js:797
 msgid "This week"
 msgstr "本周"
 
-#: ../js/ui/calendar.js:772
+#: ../js/ui/calendar.js:805
 msgid "Next week"
 msgstr "下周"
 
@@ -811,14 +813,14 @@ msgstr "<b>%Y年%B%d日 %H:%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:985
+#: ../js/ui/components/telepathyClient.js:986
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s 现在叫做 %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1088
+#: ../js/ui/components/telepathyClient.js:1089
 #, c-format
 msgid "Invitation to %s"
 msgstr "邀请 %s"
@@ -826,38 +828,38 @@ msgstr "邀请 %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1096
+#: ../js/ui/components/telepathyClient.js:1097
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s 要请您加入 %s"
 
-#: ../js/ui/components/telepathyClient.js:1098
-#: ../js/ui/components/telepathyClient.js:1137
-#: ../js/ui/components/telepathyClient.js:1177
-#: ../js/ui/components/telepathyClient.js:1240
+#: ../js/ui/components/telepathyClient.js:1099
+#: ../js/ui/components/telepathyClient.js:1138
+#: ../js/ui/components/telepathyClient.js:1178
+#: ../js/ui/components/telepathyClient.js:1241
 msgid "Decline"
 msgstr "拒绝"
 
-#: ../js/ui/components/telepathyClient.js:1099
-#: ../js/ui/components/telepathyClient.js:1178
-#: ../js/ui/components/telepathyClient.js:1241
+#: ../js/ui/components/telepathyClient.js:1100
+#: ../js/ui/components/telepathyClient.js:1179
+#: ../js/ui/components/telepathyClient.js:1242
 msgid "Accept"
 msgstr "接受"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1129
+#: ../js/ui/components/telepathyClient.js:1130
 #, c-format
 msgid "Video call from %s"
 msgstr "来自 %s 的视频呼叫"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1132
+#: ../js/ui/components/telepathyClient.js:1133
 #, c-format
 msgid "Call from %s"
 msgstr "来自 %s 的呼叫"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1139
+#: ../js/ui/components/telepathyClient.js:1140
 msgid "Answer"
 msgstr "接听"
 
@@ -866,129 +868,129 @@ msgstr "接听"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1171
+#: ../js/ui/components/telepathyClient.js:1172
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s 正在向您发送 %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1206
+#: ../js/ui/components/telepathyClient.js:1207
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s 想得到授权来查看您的在线状态"
 
-#: ../js/ui/components/telepathyClient.js:1298
+#: ../js/ui/components/telepathyClient.js:1299
 msgid "Network error"
 msgstr "网络错误"
 
-#: ../js/ui/components/telepathyClient.js:1300
+#: ../js/ui/components/telepathyClient.js:1301
 msgid "Authentication failed"
 msgstr "认证失败"
 
-#: ../js/ui/components/telepathyClient.js:1302
+#: ../js/ui/components/telepathyClient.js:1303
 msgid "Encryption error"
 msgstr "加密错误"
 
-#: ../js/ui/components/telepathyClient.js:1304
+#: ../js/ui/components/telepathyClient.js:1305
 msgid "Certificate not provided"
 msgstr "未提供证书"
 
-#: ../js/ui/components/telepathyClient.js:1306
+#: ../js/ui/components/telepathyClient.js:1307
 msgid "Certificate untrusted"
 msgstr "证书不受信任"
 
-#: ../js/ui/components/telepathyClient.js:1308
+#: ../js/ui/components/telepathyClient.js:1309
 msgid "Certificate expired"
 msgstr "证书过期"
 
-#: ../js/ui/components/telepathyClient.js:1310
+#: ../js/ui/components/telepathyClient.js:1311
 msgid "Certificate not activated"
 msgstr "证书未激活"
 
-#: ../js/ui/components/telepathyClient.js:1312
+#: ../js/ui/components/telepathyClient.js:1313
 msgid "Certificate hostname mismatch"
 msgstr "证书的主机名不匹配"
 
-#: ../js/ui/components/telepathyClient.js:1314
+#: ../js/ui/components/telepathyClient.js:1315
 msgid "Certificate fingerprint mismatch"
 msgstr "证书的指纹不匹配"
 
-#: ../js/ui/components/telepathyClient.js:1316
+#: ../js/ui/components/telepathyClient.js:1317
 msgid "Certificate self-signed"
 msgstr "证书是自已签发的"
 
-#: ../js/ui/components/telepathyClient.js:1318
+#: ../js/ui/components/telepathyClient.js:1319
 msgid "Status is set to offline"
 msgstr "已将状态设为离线。"
 
-#: ../js/ui/components/telepathyClient.js:1320
+#: ../js/ui/components/telepathyClient.js:1321
 msgid "Encryption is not available"
 msgstr "加密不可用"
 
-#: ../js/ui/components/telepathyClient.js:1322
+#: ../js/ui/components/telepathyClient.js:1323
 msgid "Certificate is invalid"
 msgstr "证书无效"
 
-#: ../js/ui/components/telepathyClient.js:1324
+#: ../js/ui/components/telepathyClient.js:1325
 msgid "Connection has been refused"
 msgstr "连接被拒绝"
 
-#: ../js/ui/components/telepathyClient.js:1326
+#: ../js/ui/components/telepathyClient.js:1327
 msgid "Connection can't be established"
 msgstr "无法建立连接"
 
-#: ../js/ui/components/telepathyClient.js:1328
+#: ../js/ui/components/telepathyClient.js:1329
 msgid "Connection has been lost"
 msgstr "连接丢失"
 
-#: ../js/ui/components/telepathyClient.js:1330
+#: ../js/ui/components/telepathyClient.js:1331
 msgid "This account is already connected to the server"
 msgstr "此帐号已经连接到服务器"
 
-#: ../js/ui/components/telepathyClient.js:1332
+#: ../js/ui/components/telepathyClient.js:1333
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "连接已经被使用相同资源的新连接所替换"
 
-#: ../js/ui/components/telepathyClient.js:1334
+#: ../js/ui/components/telepathyClient.js:1335
 msgid "The account already exists on the server"
 msgstr "服务器上已经存在该账户"
 
-#: ../js/ui/components/telepathyClient.js:1336
+#: ../js/ui/components/telepathyClient.js:1337
 msgid "Server is currently too busy to handle the connection"
 msgstr "服务器太忙，暂时无法处理该连接"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1339
 msgid "Certificate has been revoked"
 msgstr "证书已撤销"
 
-#: ../js/ui/components/telepathyClient.js:1340
+#: ../js/ui/components/telepathyClient.js:1341
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "证书使用了不安全的加密算法或加密很弱"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1343
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
 msgstr "服务器证书的长度或证书链的长度超过了加密算法库的额定限制"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1345
 msgid "Internal error"
 msgstr "内部错误"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1355
 #, c-format
 msgid "Unable to connect to %s"
 msgstr "无法连接到 %s"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "View account"
 msgstr "查看帐户"
 
-#: ../js/ui/components/telepathyClient.js:1398
+#: ../js/ui/components/telepathyClient.js:1399
 msgid "Unknown reason"
 msgstr "未知原因"
 
@@ -1002,26 +1004,26 @@ msgstr "显示应用程序"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/dash.js:445
+#: ../js/ui/dash.js:439
 msgid "Dash"
 msgstr "Dash"
 
-#: ../js/ui/dateMenu.js:91
+#: ../js/ui/dateMenu.js:85
 msgid "Open Calendar"
 msgstr "打开日历"
 
-#: ../js/ui/dateMenu.js:96
+#: ../js/ui/dateMenu.js:89
 msgid "Open Clocks"
 msgstr "打开时钟"
 
-#: ../js/ui/dateMenu.js:104
+#: ../js/ui/dateMenu.js:96
 msgid "Date & Time Settings"
 msgstr "日期和时间设置"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:216
+#: ../js/ui/dateMenu.js:201
 msgid "%A %B %e, %Y"
 msgstr "%Y年%m月%d日%A"
 
@@ -1123,98 +1125,98 @@ msgstr "从 extensions.gnome.org 下载并安装 %s？"
 msgid "Keyboard"
 msgstr "键盘"
 
-#: ../js/ui/lookingGlass.js:693
+#: ../js/ui/lookingGlass.js:689
 msgid "No extensions installed"
 msgstr "未安装扩展"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:747
+#: ../js/ui/lookingGlass.js:743
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s 没有传出任何错误信息。"
 
-#: ../js/ui/lookingGlass.js:753
+#: ../js/ui/lookingGlass.js:749
 msgid "Hide Errors"
 msgstr "隐藏错误"
 
-#: ../js/ui/lookingGlass.js:757 ../js/ui/lookingGlass.js:817
+#: ../js/ui/lookingGlass.js:753 ../js/ui/lookingGlass.js:813
 msgid "Show Errors"
 msgstr "显示错误"
 
-#: ../js/ui/lookingGlass.js:766
+#: ../js/ui/lookingGlass.js:762
 msgid "Enabled"
 msgstr "已启用"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:769 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:765 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "已禁用"
 
-#: ../js/ui/lookingGlass.js:771
+#: ../js/ui/lookingGlass.js:767
 msgid "Error"
 msgstr "错误"
 
-#: ../js/ui/lookingGlass.js:773
+#: ../js/ui/lookingGlass.js:769
 msgid "Out of date"
 msgstr "过时"
 
-#: ../js/ui/lookingGlass.js:775
+#: ../js/ui/lookingGlass.js:771
 msgid "Downloading"
 msgstr "正在下载"
 
-#: ../js/ui/lookingGlass.js:799
+#: ../js/ui/lookingGlass.js:795
 msgid "View Source"
 msgstr "查看源"
 
-#: ../js/ui/lookingGlass.js:808
+#: ../js/ui/lookingGlass.js:804
 msgid "Web Page"
 msgstr "网页"
 
-#: ../js/ui/messageTray.js:1182
+#: ../js/ui/messageTray.js:1241
 msgid "Open"
 msgstr "打开"
 
-#: ../js/ui/messageTray.js:1189
+#: ../js/ui/messageTray.js:1248
 msgid "Remove"
 msgstr "移除"
 
-#: ../js/ui/messageTray.js:1501
+#: ../js/ui/messageTray.js:1560
 msgid "Clear Messages"
 msgstr "清空消息"
 
-#: ../js/ui/messageTray.js:1528
+#: ../js/ui/messageTray.js:1587
 msgid "Notification Settings"
 msgstr "提示设置"
 
-#: ../js/ui/messageTray.js:1709
+#: ../js/ui/messageTray.js:1770
 msgid "No Messages"
 msgstr "无消息"
 
-#: ../js/ui/messageTray.js:1785
+#: ../js/ui/messageTray.js:1842
 msgid "Message Tray"
 msgstr "消息托盘"
 
-#: ../js/ui/messageTray.js:2818
+#: ../js/ui/messageTray.js:2854
 msgid "System Information"
 msgstr "系统信息"
 
-#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:374
+#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:378
 msgctxt "program"
 msgid "Unknown"
 msgstr "未知"
 
-#: ../js/ui/overviewControls.js:463 ../js/ui/screenShield.js:149
+#: ../js/ui/overviewControls.js:474 ../js/ui/screenShield.js:150
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d 条新消息"
 
-#: ../js/ui/overview.js:84
+#: ../js/ui/overview.js:82
 msgid "Undo"
 msgstr "撤销"
 
-#: ../js/ui/overview.js:129
+#: ../js/ui/overview.js:127
 msgid "Overview"
 msgstr "概览"
 
@@ -1222,21 +1224,21 @@ msgstr "概览"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:271
+#: ../js/ui/overview.js:258
 msgid "Type to search…"
 msgstr "搜索..."
 
-#: ../js/ui/panel.js:635
+#: ../js/ui/panel.js:567
 msgid "Quit"
 msgstr "退出"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:686
+#: ../js/ui/panel.js:618
 msgid "Activities"
 msgstr "活动"
 
-#: ../js/ui/panel.js:982
+#: ../js/ui/panel.js:914
 msgid "Top Bar"
 msgstr "顶栏"
 
@@ -1245,7 +1247,7 @@ msgstr "顶栏"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:740
+#: ../js/ui/popupMenu.js:549
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -1259,21 +1261,21 @@ msgstr "关闭"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:86
+#: ../js/ui/screenShield.js:87
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
-#: ../js/ui/screenShield.js:151
+#: ../js/ui/screenShield.js:152
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d 个新提示"
 
-#: ../js/ui/screenShield.js:438 ../js/ui/userMenu.js:807
+#: ../js/ui/screenShield.js:449 ../js/ui/userMenu.js:759
 msgid "Lock"
 msgstr "锁定"
 
-#: ../js/ui/screenShield.js:641
+#: ../js/ui/screenShield.js:652
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME 需要锁定屏幕"
 
@@ -1284,19 +1286,19 @@ msgstr "GNOME 需要锁定屏幕"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:762 ../js/ui/screenShield.js:1198
+#: ../js/ui/screenShield.js:788 ../js/ui/screenShield.js:1215
 msgid "Unable to lock"
 msgstr "无法锁定"
 
-#: ../js/ui/screenShield.js:763 ../js/ui/screenShield.js:1199
+#: ../js/ui/screenShield.js:789 ../js/ui/screenShield.js:1216
 msgid "Lock was blocked by an application"
 msgstr "一个应用程序阻止了锁定"
 
-#: ../js/ui/searchDisplay.js:453
+#: ../js/ui/searchDisplay.js:445
 msgid "Searching…"
 msgstr "正在搜索..."
 
-#: ../js/ui/searchDisplay.js:497
+#: ../js/ui/searchDisplay.js:489
 msgid "No results."
 msgstr "无结果。"
 
@@ -1324,7 +1326,7 @@ msgstr "密码"
 msgid "Remember Password"
 msgstr "记住密码"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:109
+#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:108
 msgid "Unlock"
 msgstr "解锁"
 
@@ -1377,9 +1379,9 @@ msgid "Large Text"
 msgstr "大号文本"
 
 #: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
-#: ../js/ui/status/bluetooth.js:289 ../js/ui/status/bluetooth.js:321
-#: ../js/ui/status/bluetooth.js:357 ../js/ui/status/bluetooth.js:388
-#: ../js/ui/status/network.js:826
+#: ../js/ui/status/bluetooth.js:290 ../js/ui/status/bluetooth.js:327
+#: ../js/ui/status/bluetooth.js:355 ../js/ui/status/bluetooth.js:391
+#: ../js/ui/status/bluetooth.js:422 ../js/ui/status/network.js:713
 msgid "Bluetooth"
 msgstr "蓝牙"
 
@@ -1400,96 +1402,106 @@ msgid "Bluetooth Settings"
 msgstr "蓝牙设置"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:104 ../js/ui/status/network.js:178
+#: ../js/ui/status/bluetooth.js:105 ../js/ui/status/network.js:140
 msgid "hardware disabled"
 msgstr "已通过硬件开关禁用"
 
-#: ../js/ui/status/bluetooth.js:197
+#: ../js/ui/status/bluetooth.js:198
 msgid "Connection"
 msgstr "连接"
 
-#: ../js/ui/status/bluetooth.js:208 ../js/ui/status/network.js:460
+#: ../js/ui/status/bluetooth.js:209 ../js/ui/status/network.js:399
 msgid "disconnecting..."
 msgstr "正在断开..."
 
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:466
-#: ../js/ui/status/network.js:1546
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:405
+#: ../js/ui/status/network.js:1298
 msgid "connecting..."
 msgstr "正在连接..."
 
-#: ../js/ui/status/bluetooth.js:239
+#: ../js/ui/status/bluetooth.js:240
 msgid "Send Files…"
 msgstr "发送文件..."
 
-#: ../js/ui/status/bluetooth.js:246
+#: ../js/ui/status/bluetooth.js:247
 msgid "Keyboard Settings"
 msgstr "键盘设置"
 
-#: ../js/ui/status/bluetooth.js:249
+#: ../js/ui/status/bluetooth.js:250
 msgid "Mouse Settings"
 msgstr "鼠标设置"
 
-#: ../js/ui/status/bluetooth.js:254 ../js/ui/status/volume.js:316
+#: ../js/ui/status/bluetooth.js:255 ../js/ui/status/volume.js:313
 msgid "Sound Settings"
 msgstr "声音设置"
 
-#: ../js/ui/status/bluetooth.js:322
+#: ../js/ui/status/bluetooth.js:328 ../js/ui/status/bluetooth.js:356
 #, c-format
 msgid "Authorization request from %s"
 msgstr "来自 %s 的认证请求"
 
-#: ../js/ui/status/bluetooth.js:328
-#, c-format
-msgid "Device %s wants access to the service '%s'"
-msgstr "设备 %s 希望访问 %s 服务"
-
-#: ../js/ui/status/bluetooth.js:330
-msgid "Always grant access"
-msgstr "始终允许"
-
-#: ../js/ui/status/bluetooth.js:331
-msgid "Grant this time only"
-msgstr "允许一次"
-
-#: ../js/ui/status/bluetooth.js:332
-msgid "Reject"
-msgstr "拒绝"
-
-#. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:359
-#, c-format
-msgid "Pairing confirmation for %s"
-msgstr "%s 的配对确认"
-
-#: ../js/ui/status/bluetooth.js:365 ../js/ui/status/bluetooth.js:396
+#: ../js/ui/status/bluetooth.js:334 ../js/ui/status/bluetooth.js:399
+#: ../js/ui/status/bluetooth.js:430
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "设备 %s 希望与此电脑配对"
 
-#: ../js/ui/status/bluetooth.js:366
+#: ../js/ui/status/bluetooth.js:336
+msgid "Allow"
+msgstr "允许"
+
+#: ../js/ui/status/bluetooth.js:337
+msgid "Deny"
+msgstr "拒绝"
+
+#: ../js/ui/status/bluetooth.js:362
 #, c-format
-msgid "Please confirm whether the PIN '%06d' matches the one on the device."
-msgstr "请确认要配对的设备上的 PIN 码是否也是“%06d”。"
+msgid "Device %s wants access to the service '%s'"
+msgstr "设备 %s 希望访问 %s 服务"
+
+#: ../js/ui/status/bluetooth.js:364
+msgid "Always grant access"
+msgstr "始终允许"
+
+#: ../js/ui/status/bluetooth.js:365
+msgid "Grant this time only"
+msgstr "允许一次"
+
+#: ../js/ui/status/bluetooth.js:366
+msgid "Reject"
+msgstr "拒绝"
+
+#. Translators: argument is the device short name
+#: ../js/ui/status/bluetooth.js:393
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "%s 的配对确认"
+
+#: ../js/ui/status/bluetooth.js:400
+#, c-format
+msgid ""
+"Please confirm whether the Passkey '%06d' matches the one on the device."
+msgstr "请确认密钥“%06d”是否与设备上的相符。"
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:369
+#: ../js/ui/status/bluetooth.js:403
 msgid "Matches"
 msgstr "相同"
 
-#: ../js/ui/status/bluetooth.js:370
+#: ../js/ui/status/bluetooth.js:404
 msgid "Does not match"
 msgstr "不同"
 
-#: ../js/ui/status/bluetooth.js:389
+#: ../js/ui/status/bluetooth.js:423
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s 的配对请求"
 
-#: ../js/ui/status/bluetooth.js:397
+#: ../js/ui/status/bluetooth.js:431
 msgid "Please enter the PIN mentioned on the device."
 msgstr "请输入设备上的 PIN 码。"
 
-#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:448
 msgid "OK"
 msgstr "确定"
 
@@ -1505,117 +1517,85 @@ msgstr "区域和语言设置"
 msgid "Volume, network, battery"
 msgstr "Volume, network, battery, 卷, 网络, 电源"
 
-#: ../js/ui/status/network.js:104
+#: ../js/ui/status/network.js:75
 msgid "<unknown>"
 msgstr "<未知>"
 
+#: ../js/ui/status/network.js:125
+msgid "Wi-Fi"
+msgstr "Wi-Fi"
+
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:200
+#: ../js/ui/status/network.js:162
 msgid "disabled"
 msgstr "已禁用"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:458
+#: ../js/ui/status/network.js:397
 msgid "unmanaged"
 msgstr "设备未托管"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1549
+#: ../js/ui/status/network.js:408 ../js/ui/status/network.js:1301
 msgid "authentication required"
 msgstr "需要认证"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:419
 msgid "firmware missing"
 msgstr "固件缺失"
 
-#. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:486
-msgid "cable unplugged"
-msgstr "线缆被拔出"
-
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/network.js:423
 msgid "unavailable"
 msgstr "不可用"
 
-#: ../js/ui/status/network.js:493 ../js/ui/status/network.js:1551
+#: ../js/ui/status/network.js:425 ../js/ui/status/network.js:1303
 msgid "connection failed"
 msgstr "连接失败"
 
-#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1435
-#: ../js/ui/status/network.js:1627
+#: ../js/ui/status/network.js:478 ../js/ui/status/network.js:1190
 msgid "More…"
 msgstr "更多..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1365
+#: ../js/ui/status/network.js:506 ../js/ui/status/network.js:1142
 msgid "Connected (private)"
 msgstr "已连接(私有网络)"
 
-#: ../js/ui/status/network.js:667
+#: ../js/ui/status/network.js:572
 msgid "Wired"
 msgstr "有线"
 
-#: ../js/ui/status/network.js:668
-msgid "Auto Ethernet"
-msgstr "自动以太网"
-
-#: ../js/ui/status/network.js:695
+#: ../js/ui/status/network.js:592
 msgid "Mobile broadband"
 msgstr "移动宽带"
 
-#: ../js/ui/status/network.js:728
-msgid "Auto broadband"
-msgstr "自动移动宽带"
-
-#: ../js/ui/status/network.js:731
-msgid "Auto dial-up"
-msgstr "自动拨号"
-
-#. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:861 ../js/ui/status/network.js:1382
-#, c-format
-msgid "Auto %s"
-msgstr "自动 %s"
-
-#: ../js/ui/status/network.js:863
-msgid "Auto bluetooth"
-msgstr "自动蓝牙"
-
-#: ../js/ui/status/network.js:1384
-msgid "Auto wireless"
-msgstr "自动无线"
-
-#: ../js/ui/status/network.js:1729
+#: ../js/ui/status/network.js:1474
 msgid "Enable networking"
 msgstr "启用联网"
 
-#: ../js/ui/status/network.js:1771
-msgid "Wi-Fi"
-msgstr "Wi-Fi"
-
-#: ../js/ui/status/network.js:1790
+#: ../js/ui/status/network.js:1522
 msgid "Network Settings"
 msgstr "网络设置"
 
-#: ../js/ui/status/network.js:1807
+#: ../js/ui/status/network.js:1539
 msgid "Network Manager"
 msgstr "网络管理器"
 
-#: ../js/ui/status/network.js:1897
+#: ../js/ui/status/network.js:1623
 msgid "Connection failed"
 msgstr "连接失败"
 
-#: ../js/ui/status/network.js:1898
+#: ../js/ui/status/network.js:1624
 msgid "Activation of network connection failed"
 msgstr "启用网络连接失败"
 
-#: ../js/ui/status/network.js:2282
+#: ../js/ui/status/network.js:1938
 msgid "Networking is disabled"
 msgstr "联网已禁用"
 
@@ -1712,72 +1692,72 @@ msgctxt "device"
 msgid "Unknown"
 msgstr "未知"
 
-#: ../js/ui/status/volume.js:124
+#: ../js/ui/status/volume.js:121
 msgid "Volume changed"
 msgstr "音量已变更"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:249 ../js/ui/status/volume.js:297
+#: ../js/ui/status/volume.js:246 ../js/ui/status/volume.js:294
 msgid "Volume"
 msgstr "音量"
 
-#: ../js/ui/status/volume.js:258
+#: ../js/ui/status/volume.js:255
 msgid "Microphone"
 msgstr "麦克风"
 
-#: ../js/ui/unlockDialog.js:120
+#: ../js/ui/unlockDialog.js:119
 msgid "Log in as another user"
 msgstr "以另一个用户身份登录"
 
-#: ../js/ui/unlockDialog.js:141
+#: ../js/ui/unlockDialog.js:140
 msgid "Unlock Window"
 msgstr "解锁窗口"
 
-#: ../js/ui/userMenu.js:193
+#: ../js/ui/userMenu.js:149
 msgid "Available"
 msgstr "可用"
 
-#: ../js/ui/userMenu.js:196
+#: ../js/ui/userMenu.js:152
 msgid "Busy"
 msgstr "忙碌"
 
-#: ../js/ui/userMenu.js:199
+#: ../js/ui/userMenu.js:155
 msgid "Invisible"
 msgstr "隐身"
 
-#: ../js/ui/userMenu.js:202
+#: ../js/ui/userMenu.js:158
 msgid "Away"
 msgstr "离开"
 
-#: ../js/ui/userMenu.js:205
+#: ../js/ui/userMenu.js:161
 msgid "Idle"
 msgstr "空闲"
 
-#: ../js/ui/userMenu.js:208
+#: ../js/ui/userMenu.js:164
 msgid "Offline"
 msgstr "离线"
 
-#: ../js/ui/userMenu.js:781
+#: ../js/ui/userMenu.js:736
 msgid "Notifications"
 msgstr "提示"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:749
 msgid "Switch User"
 msgstr "切换用户"
 
-#: ../js/ui/userMenu.js:802
+#: ../js/ui/userMenu.js:754
 msgid "Log Out"
 msgstr "注销"
 
-#: ../js/ui/userMenu.js:822
+#: ../js/ui/userMenu.js:774
 msgid "Install Updates & Restart"
 msgstr "安装更新并重启"
 
-#: ../js/ui/userMenu.js:840
+#: ../js/ui/userMenu.js:792
 msgid "Your chat status will be set to busy"
 msgstr "您的聊天状态将被设置为忙碌"
 
-#: ../js/ui/userMenu.js:841
+#: ../js/ui/userMenu.js:793
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1785,22 +1765,22 @@ msgstr ""
 "提示现已禁用，聊天消息也同时被禁用。您的在线状态已被自动调整，以便他人知道您"
 "可能无法看到消息。"
 
-#: ../js/ui/userMenu.js:888
+#: ../js/ui/userMenu.js:834
 msgid "Other users are logged in."
 msgstr "有其他用户登录。"
 
-#: ../js/ui/userMenu.js:893
+#: ../js/ui/userMenu.js:839
 msgid "Shutting down might cause them to lose unsaved work."
 msgstr "关机可能导致他们丢失尚未保存的工作内容。"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/userMenu.js:921
+#: ../js/ui/userMenu.js:867
 #, c-format
 msgid "%s (remote)"
 msgstr "%s (远程)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/userMenu.js:924
+#: ../js/ui/userMenu.js:870
 #, c-format
 msgid "%s (console)"
 msgstr "%s (控制台)"
@@ -1856,23 +1836,23 @@ msgstr[0] "%u 个输入"
 msgid "System Sounds"
 msgstr "系统声音"
 
-#: ../src/main.c:347
+#: ../src/main.c:353
 msgid "Print version"
 msgstr "打印版本"
 
-#: ../src/main.c:353
+#: ../src/main.c:359
 msgid "Mode used by GDM for login screen"
 msgstr "GDM 用于登录屏幕的模式"
 
-#: ../src/main.c:359
+#: ../src/main.c:365
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "使用指定模式，如 “gdm”用于登录屏幕的模式"
 
-#: ../src/main.c:365
+#: ../src/main.c:371
 msgid "List possible modes"
 msgstr "列出可用的模式"
 
-#: ../src/shell-app.c:622
+#: ../src/shell-app.c:626
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "启动 %s 失败"
@@ -1888,3 +1868,37 @@ msgstr "密码不能为空"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "认证对话框被用户驳回"
+
+#~ msgid "cable unplugged"
+#~ msgstr "线缆被拔出"
+
+#~ msgid "Whether to collect stats about applications usage"
+#~ msgstr "是否收集应用程序的使用情况"
+
+#~ msgid ""
+#~ "The shell normally monitors active applications in order to present the "
+#~ "most used ones (e.g. in launchers). While this data will be kept private, "
+#~ "you may want to disable this for privacy reasons. Please note that doing "
+#~ "so won't remove already saved data."
+#~ msgstr ""
+#~ "Gnome Shell 一般将监视活动应用程序，以便呈现最常用的(例如，在启动器中)。同"
+#~ "时，此数据将保持私密，您可能因为隐私原因想要禁用此项。请注意，这么做，并不"
+#~ "会移除已经保存的数据。"
+
+#~ msgid "Auto Ethernet"
+#~ msgstr "自动以太网"
+
+#~ msgid "Auto broadband"
+#~ msgstr "自动移动宽带"
+
+#~ msgid "Auto dial-up"
+#~ msgstr "自动拨号"
+
+#~ msgid "Auto %s"
+#~ msgstr "自动 %s"
+
+#~ msgid "Auto bluetooth"
+#~ msgstr "自动蓝牙"
+
+#~ msgid "Auto wireless"
+#~ msgstr "自动无线"
