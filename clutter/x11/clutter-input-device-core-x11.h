@@ -39,12 +39,6 @@ typedef struct _ClutterInputDeviceX11           ClutterInputDeviceX11;
 
 GType _clutter_input_device_x11_get_type (void) G_GNUC_CONST;
 
-void _clutter_input_device_x11_set_keycodes (ClutterInputDeviceX11 *device_x11,
-                                             int                    min_keycode,
-                                             int                    max_keycode);
-int _clutter_input_device_x11_get_min_keycode (ClutterInputDeviceX11 *device_x11);
-int _clutter_input_device_x11_get_max_keycode (ClutterInputDeviceX11 *device_x11);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_INPUT_DEVICE_X11_H__ */
