@@ -717,8 +717,8 @@ const Source = new Lang.Class({
             this.notifications.length > 0)
             return false;
 
-        let id = global.connect('notify::stage-input-mode', Lang.bind(this, function () {
-            global.disconnect(id);
+        let id = global.stage.connect('deactivate', Lang.bind(this, function () {
+            global.stage.disconnect(id);
             this.trayIcon.click(event);
         }));
 
