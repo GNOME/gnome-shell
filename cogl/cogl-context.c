@@ -196,6 +196,7 @@ cogl_context_new (CoglDisplay *display,
         }
 
       display = cogl_display_new (renderer, NULL);
+      cogl_object_unref(renderer);
     }
   else
     cogl_object_ref (display);
