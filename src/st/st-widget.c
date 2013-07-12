@@ -67,6 +67,8 @@ struct _StWidgetPrivate
   gboolean      hover : 1;
   gboolean      can_focus : 1;
 
+  gulong texture_file_changed_id;
+
   AtkObject *accessible;
   AtkRole accessible_role;
   AtkStateSet *local_state_set;
@@ -362,9 +364,11 @@ st_widget_dispose (GObject *gobject)
       priv->label_actor = NULL;
     }
 
-  g_signal_handlers_disconnect_by_func (st_texture_cache_get_default (),
-                                        st_widget_texture_cache_changed,
-                                        actor);
+  if (priv->texture_file_changed_id != 0)
+    {
+      g_signal_handler_disconnect (st_texture_cache_get_default (), priv->texture_file_changed_id);
+      priv->texture_file_changed_id = 0;
+    }
 
   g_clear_object (&priv->prev_first_child);
   g_clear_object (&priv->prev_last_child);
@@ -1552,8 +1556,8 @@ st_widget_init (StWidget *actor)
 
   g_signal_connect (actor, "notify::first-child", G_CALLBACK (st_widget_first_child_notify), NULL);
   g_signal_connect (actor, "notify::last-child", G_CALLBACK (st_widget_last_child_notify), NULL);
-  g_signal_connect (st_texture_cache_get_default (), "texture-file-changed",
-                    G_CALLBACK (st_widget_texture_cache_changed), actor);
+  priv->texture_file_changed_id = g_signal_connect (st_texture_cache_get_default (), "texture-file-changed",
+                                                    G_CALLBACK (st_widget_texture_cache_changed), actor);
 
   for (i = 0; i < G_N_ELEMENTS (priv->paint_states); i++)
     st_theme_node_paint_state_init (&priv->paint_states[i]);
