@@ -67,7 +67,6 @@ clutter_input_device_x11_keycode_to_evdev (ClutterInputDevice *device,
 static void
 clutter_input_device_x11_class_init (ClutterInputDeviceX11Class *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterInputDeviceClass *device_class = CLUTTER_INPUT_DEVICE_CLASS (klass);
 
   device_class->keycode_to_evdev = clutter_input_device_x11_keycode_to_evdev;
