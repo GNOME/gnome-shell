@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Tajik Gnome\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-06-14 18:16+0000\n"
-"PO-Revision-Date: 2013-06-16 23:32+0500\n"
+"POT-Creation-Date: 2013-07-03 17:55+0000\n"
+"PO-Revision-Date: 2013-07-12 16:00+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: \n"
 "Language: Tajik\n"
@@ -375,18 +375,23 @@ msgstr ""
 "Пасвандеро интихоб кунед, то ин ки бо ҷаъбаи мураккаби боло онро "
 "конфигуратсия кунед."
 
-#: ../js/gdm/loginDialog.js:370
-msgid "Session…"
-msgstr "Ҷаласа..."
+#: ../js/gdm/loginDialog.js:308
+msgid "Choose Session"
+msgstr "Интихоби ҷаласа"
+
+#: ../js/gdm/loginDialog.js:326
+#| msgid "Session…"
+msgid "Session"
+msgstr "Ҷаласа"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:600
+#: ../js/gdm/loginDialog.js:528
 msgid "Not listed?"
 msgstr "Вуҷуд надора?"
 
-#: ../js/gdm/loginDialog.js:775 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:810 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:449 ../js/ui/unlockDialog.js:95
@@ -394,18 +399,18 @@ msgstr "Вуҷуд надора?"
 msgid "Cancel"
 msgstr "Бекор кардан"
 
-#: ../js/gdm/loginDialog.js:790
+#: ../js/gdm/loginDialog.js:833
 msgctxt "button"
 msgid "Sign In"
 msgstr "Ворид шудан"
 
-#: ../js/gdm/loginDialog.js:790
+#: ../js/gdm/loginDialog.js:833
 msgid "Next"
 msgstr "Навбатӣ"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:887
+#: ../js/gdm/loginDialog.js:934
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(масалан, корбар ё %s)"
@@ -413,12 +418,12 @@ msgstr "(масалан, корбар ё %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:891 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:938 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Номи корбар:"
 
-#: ../js/gdm/loginDialog.js:1157
+#: ../js/gdm/loginDialog.js:1205
 msgid "Login Window"
 msgstr "Равзанаи воридшавӣ"
 
@@ -441,13 +446,13 @@ msgstr "Бозоғозидан"
 msgid "Power Off"
 msgstr "Хомӯш кардан"
 
-#: ../js/gdm/util.js:247
+#: ../js/gdm/util.js:248
 msgid "Authentication error"
 msgstr "Хатои санҷиши ҳаққоният"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:364
+#: ../js/gdm/util.js:365
 msgid "(or swipe finger)"
 msgstr "(ё бо ангут ламс кунед)"
 
@@ -838,14 +843,14 @@ msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:985
+#: ../js/ui/components/telepathyClient.js:986
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s аллакой бо номи %s номида мешавад"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1088
+#: ../js/ui/components/telepathyClient.js:1089
 #, c-format
 msgid "Invitation to %s"
 msgstr "Даъватнома барои to %s"
@@ -853,38 +858,38 @@ msgstr "Даъватнома барои to %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1096
+#: ../js/ui/components/telepathyClient.js:1097
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s шуморо барои ҳамроҳ шудан ба %s даъват мекунад"
 
-#: ../js/ui/components/telepathyClient.js:1098
-#: ../js/ui/components/telepathyClient.js:1137
-#: ../js/ui/components/telepathyClient.js:1177
-#: ../js/ui/components/telepathyClient.js:1240
+#: ../js/ui/components/telepathyClient.js:1099
+#: ../js/ui/components/telepathyClient.js:1138
+#: ../js/ui/components/telepathyClient.js:1178
+#: ../js/ui/components/telepathyClient.js:1241
 msgid "Decline"
 msgstr "Рад кардан"
 
-#: ../js/ui/components/telepathyClient.js:1099
-#: ../js/ui/components/telepathyClient.js:1178
-#: ../js/ui/components/telepathyClient.js:1241
+#: ../js/ui/components/telepathyClient.js:1100
+#: ../js/ui/components/telepathyClient.js:1179
+#: ../js/ui/components/telepathyClient.js:1242
 msgid "Accept"
 msgstr "Қабул кардан"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1129
+#: ../js/ui/components/telepathyClient.js:1130
 #, c-format
 msgid "Video call from %s"
 msgstr "Занги видеоӣ аз %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1132
+#: ../js/ui/components/telepathyClient.js:1133
 #, c-format
 msgid "Call from %s"
 msgstr "Занг аз %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1139
+#: ../js/ui/components/telepathyClient.js:1140
 msgid "Answer"
 msgstr "Ҷавоб"
 
@@ -893,110 +898,110 @@ msgstr "Ҷавоб"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1171
+#: ../js/ui/components/telepathyClient.js:1172
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s ба шумо %s-ро мефиристад"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1206
+#: ../js/ui/components/telepathyClient.js:1207
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s аз шумо иҷозат мепурсад, ки тавонад шуморо дар онлайн бинад"
 
-#: ../js/ui/components/telepathyClient.js:1298
+#: ../js/ui/components/telepathyClient.js:1299
 msgid "Network error"
 msgstr "Хатои шабака"
 
-#: ../js/ui/components/telepathyClient.js:1300
+#: ../js/ui/components/telepathyClient.js:1301
 msgid "Authentication failed"
 msgstr "Санҷиши ҳаққоният қатъ шудааст."
 
-#: ../js/ui/components/telepathyClient.js:1302
+#: ../js/ui/components/telepathyClient.js:1303
 msgid "Encryption error"
 msgstr "Хатои рамзгузорӣ"
 
-#: ../js/ui/components/telepathyClient.js:1304
+#: ../js/ui/components/telepathyClient.js:1305
 msgid "Certificate not provided"
 msgstr "Гувоҳинома таъмин нашудааст"
 
-#: ../js/ui/components/telepathyClient.js:1306
+#: ../js/ui/components/telepathyClient.js:1307
 msgid "Certificate untrusted"
 msgstr "Гувоҳиномаи беэътибор"
 
-#: ../js/ui/components/telepathyClient.js:1308
+#: ../js/ui/components/telepathyClient.js:1309
 msgid "Certificate expired"
 msgstr "Гувоҳинома аз мӯҳлаташ гузашт"
 
-#: ../js/ui/components/telepathyClient.js:1310
+#: ../js/ui/components/telepathyClient.js:1311
 msgid "Certificate not activated"
 msgstr "Гувоҳинома фаъол нашудааст"
 
-#: ../js/ui/components/telepathyClient.js:1312
+#: ../js/ui/components/telepathyClient.js:1313
 msgid "Certificate hostname mismatch"
 msgstr "Номувофиқати гувоҳиномаи номи мизоҷон"
 
-#: ../js/ui/components/telepathyClient.js:1314
+#: ../js/ui/components/telepathyClient.js:1315
 msgid "Certificate fingerprint mismatch"
 msgstr "Номувофиқати гувоҳиномаи нақши ангуштон"
 
-#: ../js/ui/components/telepathyClient.js:1316
+#: ../js/ui/components/telepathyClient.js:1317
 msgid "Certificate self-signed"
 msgstr "Гувоҳиномаи худимзошуда"
 
-#: ../js/ui/components/telepathyClient.js:1318
+#: ../js/ui/components/telepathyClient.js:1319
 msgid "Status is set to offline"
 msgstr "Вазъият ба \"офлайн\" гузаштааст"
 
-#: ../js/ui/components/telepathyClient.js:1320
+#: ../js/ui/components/telepathyClient.js:1321
 msgid "Encryption is not available"
 msgstr "Рамзгузорӣ дастрас нест"
 
-#: ../js/ui/components/telepathyClient.js:1322
+#: ../js/ui/components/telepathyClient.js:1323
 msgid "Certificate is invalid"
 msgstr "Гувоҳинома нодуруст аст"
 
-#: ../js/ui/components/telepathyClient.js:1324
+#: ../js/ui/components/telepathyClient.js:1325
 msgid "Connection has been refused"
 msgstr "Пайваст рад карда шудааст"
 
-#: ../js/ui/components/telepathyClient.js:1326
+#: ../js/ui/components/telepathyClient.js:1327
 msgid "Connection can't be established"
 msgstr "Пайвастшавӣ имконнопазир аст"
 
-#: ../js/ui/components/telepathyClient.js:1328
+#: ../js/ui/components/telepathyClient.js:1329
 msgid "Connection has been lost"
 msgstr "Пайваст гум шудааст"
 
-#: ../js/ui/components/telepathyClient.js:1330
+#: ../js/ui/components/telepathyClient.js:1331
 msgid "This account is already connected to the server"
 msgstr "Ин ҳисоб аллакай ба сервер пайваст шудааст"
 
-#: ../js/ui/components/telepathyClient.js:1332
+#: ../js/ui/components/telepathyClient.js:1333
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Пайваст тавассути сарчашмаи якхела бо пайвасти нав ҷойиваз карда шуд"
 
-#: ../js/ui/components/telepathyClient.js:1334
+#: ../js/ui/components/telepathyClient.js:1335
 msgid "The account already exists on the server"
 msgstr "Ҳисоб дар сервер аллакай мавҷуд аст"
 
-#: ../js/ui/components/telepathyClient.js:1336
+#: ../js/ui/components/telepathyClient.js:1337
 msgid "Server is currently too busy to handle the connection"
 msgstr "Барои коркарди ин пайваст сервер дар айни ҳол хеле машғул мебошад"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1339
 msgid "Certificate has been revoked"
 msgstr "Гувоҳинома лағв карда шуд"
 
-#: ../js/ui/components/telepathyClient.js:1340
+#: ../js/ui/components/telepathyClient.js:1341
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Гувоҳинома алгоритми хатарноки рамзро истифода мебарад, ё ки рамзгузории "
 "суст дорад"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1343
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1004,22 +1009,22 @@ msgstr ""
 "Дарозии гувоҳиномаи сервер, ё ки чуқурии занҷири гувоҳиномаи сервер, аз "
 "маҳдудиятҳое, ки бо китобхонаи рамзгузорӣ таъин шудаанд, дарозтар мебошад"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1345
 msgid "Internal error"
 msgstr "Хатогии дохилӣ"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1355
 #, c-format
 msgid "Unable to connect to %s"
 msgstr "Пайвастшавӣ ба %s имконнопазир аст"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "View account"
 msgstr "Намоиш додани ҳисоб"
 
-#: ../js/ui/components/telepathyClient.js:1398
+#: ../js/ui/components/telepathyClient.js:1399
 msgid "Unknown reason"
 msgstr "Сабаби номаълум"
 
@@ -1052,7 +1057,7 @@ msgstr "Танзимоти сана ва вақт"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:202
+#: ../js/ui/dateMenu.js:201
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
 
@@ -1263,17 +1268,17 @@ msgstr "Хулоса"
 msgid "Type to search…"
 msgstr "Ҷустуҷӯ кардан..."
 
-#: ../js/ui/panel.js:642
+#: ../js/ui/panel.js:567
 msgid "Quit"
 msgstr "Баромад"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:693
+#: ../js/ui/panel.js:618
 msgid "Activities"
 msgstr "Фаъолиятҳо"
 
-#: ../js/ui/panel.js:989
+#: ../js/ui/panel.js:914
 msgid "Top Bar"
 msgstr "Панели боло"
 
@@ -1282,7 +1287,7 @@ msgstr "Панели боло"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:545
+#: ../js/ui/popupMenu.js:549
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -1321,11 +1326,11 @@ msgstr "GNOME бояд экранро қулф кунад"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:773 ../js/ui/screenShield.js:1213
+#: ../js/ui/screenShield.js:775 ../js/ui/screenShield.js:1215
 msgid "Unable to lock"
 msgstr "Қулф карда намешавад"
 
-#: ../js/ui/screenShield.js:774 ../js/ui/screenShield.js:1214
+#: ../js/ui/screenShield.js:776 ../js/ui/screenShield.js:1216
 msgid "Lock was blocked by an application"
 msgstr "Қулф аз тарави барнома баста шудааст"
 
@@ -1632,7 +1637,7 @@ msgstr "Пайваст қатъ шудааст"
 msgid "Activation of network connection failed"
 msgstr "Фаъолсозии пайвасти шабака қатъ шудааст."
 
-#: ../js/ui/status/network.js:1933
+#: ../js/ui/status/network.js:1938
 msgid "Networking is disabled"
 msgstr "Шабака ғайрифаъол аст"
 
