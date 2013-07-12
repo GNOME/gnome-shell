@@ -367,6 +367,7 @@ _cogl_pipeline_copy (CoglPipeline *src, CoglBool is_weak)
    * every pipeline node so we have fast access to it. */
   pipeline->real_blend_enable = src->real_blend_enable;
   pipeline->dirty_real_blend_enable = src->dirty_real_blend_enable;
+  pipeline->unknown_color_alpha = src->unknown_color_alpha;
 
   /* XXX:
    * consider generalizing the idea of "cached" properties. These
