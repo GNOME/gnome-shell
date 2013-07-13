@@ -90,6 +90,12 @@ const GnomeShell = new Lang.Class({
             function(display, action, deviceid, timestamp) {
                 this._emitAcceleratorActivated(action, deviceid, timestamp);
             }));
+
+        this._cachedOverviewVisible = false;
+        Main.overview.connect('showing',
+                              Lang.bind(this, this._checkOverviewVisibleChanged));
+        Main.overview.connect('hidden',
+                              Lang.bind(this, this._checkOverviewVisibleChanged));
     },
 
     /**
@@ -235,8 +241,15 @@ const GnomeShell = new Lang.Class({
 
     Mode: global.session_mode,
 
+    _checkOverviewVisibleChanged: function() {
+        if (Main.overview.visible !== this._cachedOverviewVisible) {
+            this._cachedOverviewVisible = Main.overview.visible;
+            this._dbusImpl.emit_property_changed('OverviewActive', new GLib.Variant('b', this._cachedOverviewVisible));
+        }
+    },
+
     get OverviewActive() {
-        return Main.overview.visible;
+        return this._cachedOverviewVisible;
     },
 
     set OverviewActive(visible) {
