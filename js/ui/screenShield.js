@@ -305,7 +305,9 @@ const NotificationsBox = new Lang.Class({
                                },
                                onCompleteScope: this
                              });
+
             this._updateVisibility();
+            Shell.util_wake_up_screen();
         }
     },
 
@@ -328,7 +330,10 @@ const NotificationsBox = new Lang.Class({
 
         obj.sourceBox.visible = obj.visible &&
             (source.unseenCount > (obj.musicNotification ? 1 : 0));
+
         this._updateVisibility();
+        if (obj.sourceBox.visible)
+            Shell.util_wake_up_screen();
     },
 
     _visibleChanged: function(source, obj) {
@@ -342,6 +347,8 @@ const NotificationsBox = new Lang.Class({
             source.unseenCount > (obj.musicNotification ? 1 : 0);
 
         this._updateVisibility();
+        if (obj.sourceBox.visible)
+            Shell.util_wake_up_screen();
     },
 
     _detailedChanged: function(source, obj) {

@@ -44,6 +44,8 @@ GdkPixbuf *shell_util_create_pixbuf_from_data (const guchar      *data,
                                                int                height,
                                                int                rowstride);
 
+void    shell_util_wake_up_screen             (void);
+
 G_END_DECLS
 
 #endif /* __SHELL_UTIL_H__ */
