@@ -722,6 +722,8 @@ const PopupMenuBase = new Lang.Class({
 
     isEmpty: function() {
         let hasVisibleChildren = this.box.get_children().some(function(child) {
+            if (child._delegate instanceof PopupSeparatorMenuItem)
+                return false;
             return child.visible;
         });
 
