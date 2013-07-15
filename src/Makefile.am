@@ -247,6 +247,17 @@ bin_PROGRAMS=mutter-wayland
 mutter_wayland_SOURCES = core/mutter.c
 mutter_wayland_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
 
+bin_PROGRAMS+=mutter-launch
+
+mutter_launch_SOURCES = wayland/weston-launch.c wayland/weston-launch.h
+
+mutter_launch_CFLAGS = $(MUTTER_LAUNCH_CFLAGS)
+mutter_launch_LDFLAGS = $(MUTTER_LAUNCH_LIBS) -lpam
+
+install-exec-hook:
+	-chown root $(DESTDIR)$(bindir)/mutter-launch
+	-chmod u+s $(DESTDIR)$(bindir)/mutter-launch
+
 if HAVE_INTROSPECTION
 include $(INTROSPECTION_MAKEFILE)
 

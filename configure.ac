@@ -139,6 +139,7 @@ AM_GLIB_GNU_GETTEXT
 ## here we get the flags we'll actually use
 # GRegex requires Glib-2.14.0
 PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.14.0)
+PKG_CHECK_MODULES(MUTTER_LAUNCH, libdrm libsystemd-login)
 
 # Unconditionally use this dir to avoid a circular dep with gnomecc
 GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
