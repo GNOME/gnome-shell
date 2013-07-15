@@ -61,7 +61,6 @@ const PopupBaseMenuItem = new Lang.Class({
         this._ornament = Ornament.NONE;
         this._ornamentLabel = new St.Label({ style_class: 'popup-menu-ornament' });
         this.actor.add_actor(this._ornamentLabel);
-        this._columnWidths = null;
         this._spacing = 0;
         this.active = false;
         this._activatable = params.reactive && params.activate;
@@ -213,38 +212,14 @@ const PopupBaseMenuItem = new Lang.Class({
         }
     },
 
-    // This returns column widths in logical order (i.e. from the dot
-    // to the image), not in visual order (left to right)
-    getColumnWidths: function() {
-        let widths = [];
-        for (let i = 0, col = 0; i < this._children.length; i++) {
-            let child = this._children[i];
-            let [min, natural] = child.actor.get_preferred_width(-1);
-            widths[col++] = natural;
-        }
-        return widths;
-    },
-
-    setColumnWidths: function(widths) {
-        this._columnWidths = widths;
-    },
-
     _getPreferredWidth: function(actor, forHeight, alloc) {
         let width = 0;
-        if (this._columnWidths) {
-            for (let i = 0; i < this._columnWidths.length; i++) {
-                if (i > 0)
-                    width += this._spacing;
-                width += this._columnWidths[i];
-            }
-        } else {
-            for (let i = 0; i < this._children.length; i++) {
-                let child = this._children[i];
-                if (i > 0)
-                    width += this._spacing;
-                let [min, natural] = child.actor.get_preferred_width(-1);
-                width += natural;
-            }
+        for (let i = 0; i < this._children.length; i++) {
+            let child = this._children[i];
+            if (i > 0)
+                width += this._spacing;
+            let [min, natural] = child.actor.get_preferred_width(-1);
+            width += natural;
         }
         alloc.min_size = alloc.natural_size = width;
     },
@@ -253,19 +228,10 @@ const PopupBaseMenuItem = new Lang.Class({
         let height = 0, x = 0, minWidth, childWidth;
         for (let i = 0; i < this._children.length; i++) {
             let child = this._children[i];
-            if (this._columnWidths) {
-                if (child.expand) {
-                    childWidth = 0;
-                    for (let j = i; j < this._columnWidths.length; j++)
-                        childWidth += this._columnWidths[j];
-                } else
-                    childWidth = this._columnWidths[i];
-            } else {
-                if (child.expand)
-                    childWidth = forWidth - x;
-                else
-                    [minWidth, childWidth] = child.actor.get_preferred_width(-1);
-            }
+            if (child.expand)
+                childWidth = forWidth - x;
+            else
+                [minWidth, childWidth] = child.actor.get_preferred_width(-1);
             x += childWidth;
 
             let [min, natural] = child.actor.get_preferred_height(childWidth);
@@ -307,14 +273,10 @@ const PopupBaseMenuItem = new Lang.Class({
             let [minWidth, naturalWidth] = child.actor.get_preferred_width(-1);
 
             let availWidth;
-            if (child.expand) {
+            if (child.expand)
                 availWidth = box.x2 - x;
-            } else {
-                if (this._columnWidths)
-                    availWidth = this._columnWidths[col++];
-                else
-                    availWidth = naturalWidth;
-            }
+            else
+                availWidth = naturalWidth;
 
             if (direction == Clutter.TextDirection.RTL)
                 childBox.x1 = box.x1 + (box.x2 - x - availWidth);
@@ -618,7 +580,6 @@ const PopupMenuBase = new Lang.Class({
         } else {
             this.box = new St.BoxLayout({ vertical: true });
         }
-        this.box.connect_after('queue-relayout', Lang.bind(this, this._menuQueueRelayout));
         this.length = 0;
 
         this.isOpen = false;
@@ -879,48 +840,6 @@ const PopupMenuBase = new Lang.Class({
         this.length++;
     },
 
-    getColumnWidths: function() {
-        let columnWidths = [];
-        let items = this.box.get_children();
-        for (let i = 0; i < items.length; i++) {
-            if (!items[i].visible)
-                continue;
-
-            if (items[i]._delegate instanceof PopupSubMenu)
-                continue;
-
-            if (items[i]._delegate instanceof PopupBaseMenuItem || items[i]._delegate instanceof PopupMenuBase) {
-                let itemColumnWidths = items[i]._delegate.getColumnWidths();
-                for (let j = 0; j < itemColumnWidths.length; j++) {
-                    if (j >= columnWidths.length || itemColumnWidths[j] > columnWidths[j])
-                        columnWidths[j] = itemColumnWidths[j];
-                }
-            }
-        }
-        return columnWidths;
-    },
-
-    setColumnWidths: function(widths) {
-        let items = this.box.get_children();
-        for (let i = 0; i < items.length; i++) {
-            if (items[i]._delegate instanceof PopupSubMenu)
-                continue;
-
-            if (items[i]._delegate instanceof PopupBaseMenuItem || items[i]._delegate instanceof PopupMenuBase)
-                items[i]._delegate.setColumnWidths(widths);
-        }
-    },
-
-    // Because of the above column-width funniness, we need to do a
-    // queue-relayout on every item whenever the menu itself changes
-    // size, to force clutter to drop its cached size requests. (The
-    // menuitems will in turn call queue_relayout on their parent, the
-    // menu, but that call will be a no-op since the menu already
-    // has a relayout queued, so we won't get stuck in a loop.
-    _menuQueueRelayout: function() {
-        this.box.get_children().map(function (actor) { actor.queue_relayout(); });
-    },
-
     addActor: function(actor) {
         this.box.add(actor);
     },
@@ -991,12 +910,7 @@ const PopupMenu = new Lang.Class({
         this.actor._delegate = this;
         this.actor.style_class = 'popup-menu-boxpointer';
 
-        this._boxWrapper = new Shell.GenericContainer();
-        this._boxWrapper.connect('get-preferred-width', Lang.bind(this, this._boxGetPreferredWidth));
-        this._boxWrapper.connect('get-preferred-height', Lang.bind(this, this._boxGetPreferredHeight));
-        this._boxWrapper.connect('allocate', Lang.bind(this, this._boxAllocate));
-        this._boxPointer.bin.set_child(this._boxWrapper);
-        this._boxWrapper.add_actor(this.box);
+        this._boxPointer.bin.set_child(this.box);
         this.actor.add_style_class_name('popup-menu');
 
         global.focus_manager.add_group(this.actor);
@@ -1010,22 +924,6 @@ const PopupMenu = new Lang.Class({
             this._openedSubMenu.close(true);
 
         this._openedSubMenu = submenu;
-    },
-
-    _boxGetPreferredWidth: function (actor, forHeight, alloc) {
-        let columnWidths = this.getColumnWidths();
-        this.setColumnWidths(columnWidths);
-
-        // Now they will request the right sizes
-        [alloc.min_size, alloc.natural_size] = this.box.get_preferred_width(forHeight);
-    },
-
-    _boxGetPreferredHeight: function (actor, forWidth, alloc) {
-        [alloc.min_size, alloc.natural_size] = this.box.get_preferred_height(forWidth);
-    },
-
-    _boxAllocate: function (actor, box, flags) {
-        this.box.allocate(box, flags);
     },
 
     setArrowOrigin: function(origin) {
