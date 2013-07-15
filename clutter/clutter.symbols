@@ -1598,6 +1598,7 @@ clutter_wayland_input_device_get_wl_seat
 clutter_wayland_stage_get_wl_shell_surface
 clutter_wayland_stage_get_wl_surface
 clutter_wayland_set_display
+clutter_wayland_disable_event_retrieval
 #endif
 #ifdef CLUTTER_WINDOWING_WIN32
 clutter_win32_disable_event_retrieval
