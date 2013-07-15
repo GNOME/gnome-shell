@@ -470,10 +470,6 @@ StScrollBar StButton#vhandle:active {
     height: 1.86em;
 }
 
-#panel.lock-screen {
-    background-color: rgba(0,0,0,0.3);
-}
-
 #panel.unlock-screen,
 #panel.login-screen {
     background-color: transparent;
@@ -2432,6 +2428,11 @@ StScrollBar StButton#vhandle:active {
 
 /* Screen shield */
 
+#panel.lock-screen,
+#screenShieldNotifications {
+    background-color: rgba(0,0,0,0.3);
+}
+
 .screen-shield-background {
     background: black;
     box-shadow: 0px 4px 8px rgba(0,0,0,0.9);
@@ -2477,11 +2478,8 @@ StScrollBar StButton#vhandle:active {
 
 #screenShieldNotifications {
     border-radius: 8px;
-    background-color: rgba(0.0, 0.0, 0.0, 0.9);
-    border: 2px solid #868686;
     max-height: 500px;
     padding: 18px 0;
-    box-shadow: .5em .5em 20px rgba(0, 0, 0, 0.5);
 }
 
 .screen-shield-notifications-box {
