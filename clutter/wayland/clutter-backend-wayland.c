@@ -61,6 +61,7 @@
 G_DEFINE_TYPE (ClutterBackendWayland, clutter_backend_wayland, CLUTTER_TYPE_BACKEND);
 
 static struct wl_display *_foreign_display = NULL;
+static gboolean _no_event_dispatch = FALSE;
 
 static void clutter_backend_wayland_load_cursor (ClutterBackendWayland *backend_wayland);
 
@@ -240,6 +241,7 @@ clutter_backend_wayland_get_renderer (ClutterBackend  *backend,
 
   renderer = cogl_renderer_new ();
 
+  cogl_wayland_renderer_set_event_dispatch_enabled (renderer, !_no_event_dispatch);
   cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_EGL_WAYLAND);
 
   cogl_wayland_renderer_set_foreign_display (renderer,
@@ -355,4 +357,33 @@ clutter_wayland_set_display (struct wl_display *display)
     }
 
   _foreign_display = display;
+}
+
+/**
+ * clutter_wayland_disable_event_retrieval:
+ *
+ * Disables the dispatch of the events in the main loop.
+ *
+ * This is useful for integrating Clutter with another library that will do the
+ * event dispatch; in general only a single source should be acting on changes
+ * on the Wayland file descriptor.
+ *
+ * <warning>This function can only be called before calling
+ * clutter_init().</warning>
+ *
+ * This function should not be normally used by applications.
+ *
+ * Since: 1.16
+ */
+void
+clutter_wayland_disable_event_retrieval (void)
+{
+  if (_clutter_context_is_initialized ())
+    {
+      g_warning ("%s() can only be used before calling clutter_init()",
+                 G_STRFUNC);
+      return;
+    }
+
+  _no_event_dispatch = TRUE;
 }
