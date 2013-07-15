@@ -66,7 +66,6 @@ const PopupBaseMenuItem = new Lang.Class({
         this.active = false;
         this._activatable = params.reactive && params.activate;
         this._sensitive = true;
-        this.parentSensitive = true;
 
         if (!this._activatable)
             this.actor.add_style_class_name('popup-inactive-menu-item');
@@ -156,7 +155,8 @@ const PopupBaseMenuItem = new Lang.Class({
     },
 
     getSensitive: function() {
-        return this._activatable && this._sensitive && this.parentSensitive;
+        let parentSensitive = this._parent ? this._parent.getSensitive() : true;
+        return this._activatable && this._sensitive && parentSensitive;
     },
 
     setSensitive: function(sensitive) {
@@ -671,7 +671,6 @@ const PopupMenuBase = new Lang.Class({
         this._settingsActions = { };
 
         this._sensitive = true;
-        this.parentSensitive = true;
 
         this._sessionUpdatedId = Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
     },
@@ -688,7 +687,8 @@ const PopupMenuBase = new Lang.Class({
     },
 
     getSensitive: function() {
-        return this._sensitive && this.parentSensitive;
+        let parentSensitive = this._parent ? this._parent.getSensitive() : true;
+        return this._sensitive && parentSensitive;
     },
 
     setSensitive: function(sensitive) {
@@ -794,7 +794,6 @@ const PopupMenuBase = new Lang.Class({
         }));
 
         menuItem._parentSensitiveChangeId = this.connect('sensitive-changed', Lang.bind(this, function() {
-            menuItem.parentSensitive = this.getSensitive();
             menuItem.syncSensitive();
         }));
 
@@ -879,7 +878,6 @@ const PopupMenuBase = new Lang.Class({
                 menuItem.emit('menu-closed');
             });
             let subMenuSensitiveChangedId = this.connect('sensitive-changed', Lang.bind(this, function() {
-                menuItem.parentSensitive = this.getSensitive();
                 menuItem.emit('sensitive-changed');
             }));
 
