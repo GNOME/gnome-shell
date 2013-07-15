@@ -56,6 +56,7 @@ const PopupBaseMenuItem = new Lang.Class({
         this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
         this.actor._delegate = this;
 
+        this._parent = null;
         this._children = [];
         this._ornament = Ornament.NONE;
         this._ornamentLabel = new St.Label({ style_class: 'popup-menu-ornament' });
@@ -82,6 +83,17 @@ const PopupBaseMenuItem = new Lang.Class({
 
         this.actor.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
         this.actor.connect('key-focus-out', Lang.bind(this, this._onKeyFocusOut));
+    },
+
+    _getTopMenu: function() {
+        if (this._parent)
+            return this._parent._getTopMenu();
+        else
+            return this;
+    },
+
+    _setParent: function(parent) {
+        this._parent = parent;
     },
 
     _onStyleChanged: function (actor) {
@@ -671,6 +683,10 @@ const PopupMenuBase = new Lang.Class({
             return this;
     },
 
+    _setParent: function(parent) {
+        this._parent = parent;
+    },
+
     getSensitive: function() {
         return this._sensitive && this.parentSensitive;
     },
@@ -908,7 +924,7 @@ const PopupMenuBase = new Lang.Class({
         else
             throw TypeError("Invalid argument to PopupMenuBase.addMenuItem()");
 
-        menuItem._parent = this;
+        menuItem._setParent(this);
 
         this.length++;
     },
@@ -1340,6 +1356,11 @@ const PopupSubMenuMenuItem = new Lang.Class({
 
         this.menu = new PopupSubMenu(this.actor, this._triangle);
         this.menu.connect('open-state-changed', Lang.bind(this, this._subMenuOpenStateChanged));
+    },
+
+    _setParent: function(parent) {
+        this.parent(parent);
+        this.menu._setParent(parent);
     },
 
     syncSensitive: function() {
