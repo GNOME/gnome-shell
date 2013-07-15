@@ -53,7 +53,7 @@ const Magnifier = new Lang.Class({
         this._zoomRegions = [];
 
         // Create small clutter tree for the magnified mouse.
-        let xfixesCursor = Shell.XFixesCursor.get_for_stage(global.stage);
+        let xfixesCursor = Shell.XFixesCursor.get_for_screen(global.screen);
         this._mouseSprite = new Clutter.Texture();
         xfixesCursor.update_texture_image(this._mouseSprite);
         this._cursorRoot = new Clutter.Actor();
@@ -83,7 +83,7 @@ const Magnifier = new Lang.Class({
      * Show the system mouse pointer.
      */
     showSystemCursor: function() {
-        this._xfixesCursor.show();
+        global.stage.show_cursor();
     },
 
     /**
@@ -91,7 +91,7 @@ const Magnifier = new Lang.Class({
      * Hide the system mouse pointer.
      */
     hideSystemCursor: function() {
-        this._xfixesCursor.hide();
+        global.stage.hide_cursor();
     },
 
     /**
@@ -112,7 +112,7 @@ const Magnifier = new Lang.Class({
         // Make sure system mouse pointer is shown when all zoom regions are
         // invisible.
         if (!activate)
-            this._xfixesCursor.show();
+            global.stage.show_cursor();
 
         // Notify interested parties of this change
         this.emit('active-changed', activate);

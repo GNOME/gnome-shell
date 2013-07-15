@@ -4,6 +4,7 @@
 
 #include <clutter/clutter.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <meta/screen.h>
 
 G_BEGIN_DECLS
 
@@ -19,10 +20,8 @@ typedef struct _ShellXFixesCursorClass   ShellXFixesCursorClass;
 
 GType               shell_xfixes_cursor_get_type     (void) G_GNUC_CONST;
 
-ShellXFixesCursor   *shell_xfixes_cursor_get_for_stage (ClutterStage *stage);
+ShellXFixesCursor   *shell_xfixes_cursor_get_for_screen (MetaScreen *screen);
 
-void                shell_xfixes_cursor_show (ShellXFixesCursor *xfixes_cursor);
-void                shell_xfixes_cursor_hide (ShellXFixesCursor *xfixes_cursor);
 int                 shell_xfixes_cursor_get_hot_x (ShellXFixesCursor *xfixes_cursor);
 int                 shell_xfixes_cursor_get_hot_y (ShellXFixesCursor *xfixes_cursor);
 void                shell_xfixes_cursor_update_texture_image (ShellXFixesCursor *xfixes_cursor,

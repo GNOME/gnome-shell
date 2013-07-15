@@ -4,8 +4,11 @@
 
 #include "shell-xfixes-cursor.h"
 
-#include <clutter/x11/clutter-x11.h>
+#include <gdk/gdkx.h>
 #include <X11/extensions/Xfixes.h>
+#include <meta/display.h>
+#include <meta/screen.h>
+#include <meta/util.h>
 
 /**
  * SECTION:shell-xfixes-cursor
@@ -24,7 +27,7 @@ struct _ShellXFixesCursorClass
 struct _ShellXFixesCursor {
   GObject parent;
 
-  ClutterStage *stage;
+  MetaScreen *screen;
 
   gboolean have_xfixes;
   int xfixes_event_base;
@@ -36,17 +39,14 @@ struct _ShellXFixesCursor {
   int cursor_hot_y;
 };
 
-static void xfixes_cursor_show        (ShellXFixesCursor *xfixes_cursor);
-static void xfixes_cursor_hide        (ShellXFixesCursor *xfixes_cursor);
-
-static void xfixes_cursor_set_stage   (ShellXFixesCursor *xfixes_cursor,
-                                       ClutterStage  *stage);
+static void xfixes_cursor_set_screen   (ShellXFixesCursor *xfixes_cursor,
+                                        MetaScreen        *screen);
 
 static void xfixes_cursor_reset_image (ShellXFixesCursor *xfixes_cursor);
 
 enum {
   PROP_0,
-  PROP_STAGE,
+  PROP_SCREEN,
 };
 
 G_DEFINE_TYPE(ShellXFixesCursor, shell_xfixes_cursor, G_TYPE_OBJECT);
@@ -71,31 +71,22 @@ shell_xfixes_cursor_finalize (GObject  *object)
 {
   ShellXFixesCursor *xfixes_cursor = SHELL_XFIXES_CURSOR (object);
 
-  // Make sure the system cursor is showing before leaving the stage.
-  xfixes_cursor_show (xfixes_cursor);
-  xfixes_cursor_set_stage (xfixes_cursor, NULL);
+  xfixes_cursor_set_screen (xfixes_cursor, NULL);
   if (xfixes_cursor->cursor_sprite != NULL)
     cogl_handle_unref (xfixes_cursor->cursor_sprite);
 
   G_OBJECT_CLASS (shell_xfixes_cursor_parent_class)->finalize (object);
 }
 
-static void
-xfixes_cursor_on_stage_destroy (ClutterActor  *actor,
-                                ShellXFixesCursor *xfixes_cursor)
-{
-  xfixes_cursor_set_stage (xfixes_cursor, NULL);
-}
-
-static ClutterX11FilterReturn
-xfixes_cursor_event_filter (XEvent        *xev,
-                            ClutterEvent  *cev,
-                            gpointer       data)
+static GdkFilterReturn
+xfixes_cursor_event_filter (XEvent     *xev,
+                            GdkEvent   *ev,
+                            gpointer    data)
 {
   ShellXFixesCursor *xfixes_cursor = data;
 
-  if (xev->xany.window != clutter_x11_get_stage_window (xfixes_cursor->stage))
-    return CLUTTER_X11_FILTER_CONTINUE;
+  if (xev->xany.window != meta_get_overlay_window (xfixes_cursor->screen))
+    return GDK_FILTER_CONTINUE;
 
   if (xev->xany.type == xfixes_cursor->xfixes_event_base + XFixesCursorNotify)
     {
@@ -103,90 +94,40 @@ xfixes_cursor_event_filter (XEvent        *xev,
       if (notify_event->subtype == XFixesDisplayCursorNotify)
         xfixes_cursor_reset_image (xfixes_cursor);
     }
-    return CLUTTER_X11_FILTER_CONTINUE;
+
+  return GDK_FILTER_CONTINUE;
 }
 
 static void
-xfixes_cursor_set_stage (ShellXFixesCursor *xfixes_cursor,
-                         ClutterStage  *stage)
+xfixes_cursor_set_screen (ShellXFixesCursor *xfixes_cursor,
+                          MetaScreen        *screen)
 {
-  if (xfixes_cursor->stage == stage)
+  if (xfixes_cursor->screen == screen)
     return;
 
-  if (xfixes_cursor->stage)
+  if (xfixes_cursor->screen)
     {
-      g_signal_handlers_disconnect_by_func (xfixes_cursor->stage,
-                                            (void *)xfixes_cursor_on_stage_destroy,
-                                            xfixes_cursor);
-
-      clutter_x11_remove_filter (xfixes_cursor_event_filter, xfixes_cursor);
+      gdk_window_remove_filter (NULL, (GdkFilterFunc)xfixes_cursor_event_filter, xfixes_cursor);
     }
-  xfixes_cursor->stage = stage;
-  if (xfixes_cursor->stage)
+
+  xfixes_cursor->screen = screen;
+  if (xfixes_cursor->screen)
     {
       int error_base;
 
-      xfixes_cursor->stage = stage;
-      g_signal_connect (xfixes_cursor->stage, "destroy",
-                        G_CALLBACK (xfixes_cursor_on_stage_destroy), xfixes_cursor);
+      gdk_window_add_filter (NULL, (GdkFilterFunc)xfixes_cursor_event_filter, xfixes_cursor);
 
-      clutter_x11_add_filter (xfixes_cursor_event_filter, xfixes_cursor);
-
-      xfixes_cursor->have_xfixes = XFixesQueryExtension (clutter_x11_get_default_display (),
+      xfixes_cursor->have_xfixes = XFixesQueryExtension (gdk_x11_get_default_xdisplay (),
                                                          &xfixes_cursor->xfixes_event_base,
                                                          &error_base);
-      if (xfixes_cursor->have_xfixes)
-        XFixesSelectCursorInput (clutter_x11_get_default_display (),
-                                 clutter_x11_get_stage_window (stage),
+
+      /* FIXME: this needs to be moved down to mutter as a whole */
+      if (xfixes_cursor->have_xfixes && !meta_is_display_server())
+        XFixesSelectCursorInput (gdk_x11_get_default_xdisplay (),
+                                 meta_get_overlay_window (screen),
                                  XFixesDisplayCursorNotifyMask);
 
       xfixes_cursor_reset_image (xfixes_cursor);
-    }
-}
-
-static void
-xfixes_cursor_show (ShellXFixesCursor *xfixes_cursor)
-{
-  int minor, major;
-  Display *xdisplay;
-  Window xwindow;
-
-  if (xfixes_cursor->is_showing == TRUE)
-      return;
-
-  if (!xfixes_cursor->have_xfixes || !xfixes_cursor->stage)
-      return;
-
-  xdisplay = clutter_x11_get_default_display ();
-  xwindow = clutter_x11_get_stage_window (xfixes_cursor->stage);
-  XFixesQueryVersion (xdisplay, &major, &minor);
-  if (major >= 4)
-    {
-      XFixesShowCursor (xdisplay, xwindow);
-      xfixes_cursor->is_showing = TRUE;
-    }
-}
-
-static void
-xfixes_cursor_hide (ShellXFixesCursor *xfixes_cursor)
-{
-  int minor, major;
-  Display *xdisplay;
-  Window xwindow;
-
-  if (xfixes_cursor->is_showing == FALSE)
-      return;
-
-  if (!xfixes_cursor->have_xfixes || !xfixes_cursor->stage)
-      return;
-
-  xdisplay = clutter_x11_get_default_display ();
-  xwindow = clutter_x11_get_stage_window (xfixes_cursor->stage);
-  XFixesQueryVersion (xdisplay, &major, &minor);
-  if (major >= 4)
-    {
-      XFixesHideCursor (xdisplay, xwindow);
-      xfixes_cursor->is_showing = FALSE;
     }
 }
 
@@ -201,7 +142,7 @@ xfixes_cursor_reset_image (ShellXFixesCursor *xfixes_cursor)
   if (!xfixes_cursor->have_xfixes)
     return;
 
-  cursor_image = XFixesGetCursorImage (clutter_x11_get_default_display ());
+  cursor_image = XFixesGetCursorImage (gdk_x11_get_default_xdisplay ());
   if (!cursor_image)
     return;
 
@@ -265,8 +206,8 @@ shell_xfixes_cursor_set_property (GObject      *object,
 
   switch (prop_id)
     {
-    case PROP_STAGE:
-      xfixes_cursor_set_stage (xfixes_cursor, g_value_get_object (value));
+    case PROP_SCREEN:
+      xfixes_cursor_set_screen (xfixes_cursor, g_value_get_object (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -284,8 +225,8 @@ shell_xfixes_cursor_get_property (GObject         *object,
 
   switch (prop_id)
     {
-    case PROP_STAGE:
-      g_value_set_object (value, G_OBJECT (xfixes_cursor->stage));
+    case PROP_SCREEN:
+      g_value_set_object (value, G_OBJECT (xfixes_cursor->screen));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -311,22 +252,22 @@ shell_xfixes_cursor_class_init (ShellXFixesCursorClass *klass)
   gobject_class->set_property = shell_xfixes_cursor_set_property;
 
   g_object_class_install_property (gobject_class,
-                                   PROP_STAGE,
-                                   g_param_spec_object ("stage",
-                                                        "Stage",
-                                                        "Stage for mouse cursor",
-                                                        CLUTTER_TYPE_STAGE,
+                                   PROP_SCREEN,
+                                   g_param_spec_object ("screen",
+                                                        "Screen",
+                                                        "Screen for mouse cursor",
+                                                        META_TYPE_SCREEN,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }
 
 /**
- * shell_xfixes_cursor_get_for_stage:
- * @stage: (transfer none): The #ClutterStage to get the cursor for
+ * shell_xfixes_cursor_get_for_screen:
+ * @screen: (transfer none): The #MetaScreen to get the cursor for
  *
  * Return value: (transfer none): A #ShellXFixesCursor instance
  */
 ShellXFixesCursor *
-shell_xfixes_cursor_get_for_stage (ClutterStage *stage)
+shell_xfixes_cursor_get_for_screen (MetaScreen *screen)
 {
   ShellXFixesCursor *instance;
   static GQuark xfixes_cursor_quark;
@@ -334,45 +275,17 @@ shell_xfixes_cursor_get_for_stage (ClutterStage *stage)
   if (G_UNLIKELY (xfixes_cursor_quark == 0))
     xfixes_cursor_quark = g_quark_from_static_string ("gnome-shell-xfixes-cursor");
 
-  instance = g_object_get_qdata (G_OBJECT (stage), xfixes_cursor_quark);
+  instance = g_object_get_qdata (G_OBJECT (screen), xfixes_cursor_quark);
 
   if (instance == NULL)
     {
       instance = g_object_new (SHELL_TYPE_XFIXES_CURSOR,
-                               "stage", stage,
+                               "screen", screen,
                                NULL);
-      g_object_set_qdata (G_OBJECT (stage), xfixes_cursor_quark, instance);
+      g_object_set_qdata (G_OBJECT (screen), xfixes_cursor_quark, instance);
     }
 
   return instance;
-}
-
-/**
- * shell_xfixes_cursor_hide:
- * @xfixes_cursor: the #ShellXFixesCursor
- *
- * Hide the system mouse cursor.
- */
-void
-shell_xfixes_cursor_hide (ShellXFixesCursor *xfixes_cursor)
-{
-  g_return_if_fail (SHELL_IS_XFIXES_CURSOR (xfixes_cursor));
-
-  xfixes_cursor_hide (xfixes_cursor);
-}
-
-/**
- * shell_xfixes_cursor_show:
- * @xfixes_cursor: the #ShellXFixesCursor
- *
- * Show the system mouse cursor to show
- */
-void
-shell_xfixes_cursor_show (ShellXFixesCursor *xfixes_cursor)
-{
-  g_return_if_fail (SHELL_IS_XFIXES_CURSOR (xfixes_cursor));
-
-  xfixes_cursor_show (xfixes_cursor);
 }
 
 /**
