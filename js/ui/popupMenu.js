@@ -1369,12 +1369,13 @@ const PopupSubMenuMenuItem = new Lang.Class({
     },
 
     _subMenuOpenStateChanged: function(menu, open) {
-        if (open)
+        if (open) {
             this.actor.add_style_pseudo_class('open');
-        else
+            this._getTopMenu()._setOpenedSubMenu(this.menu);
+        } else {
             this.actor.remove_style_pseudo_class('open');
-
-        this._getTopMenu()._setOpenedSubMenu(this.menu);
+            this._getTopMenu()._setOpenedSubMenu(null);
+        }
     },
 
     destroy: function() {
