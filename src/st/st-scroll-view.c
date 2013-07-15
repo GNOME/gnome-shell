@@ -598,7 +598,7 @@ st_scroll_view_allocate (ClutterActor          *actor,
    */
 
   /* Vertical scrollbar */
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
+  if (vscrollbar_visible)
     {
       if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
         {
@@ -617,7 +617,7 @@ st_scroll_view_allocate (ClutterActor          *actor,
     }
 
   /* Horizontal scrollbar */
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->hscroll))
+  if (hscrollbar_visible)
     {
       if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
         {
