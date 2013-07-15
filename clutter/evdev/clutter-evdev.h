@@ -30,6 +30,23 @@
 
 G_BEGIN_DECLS
 
+/**
+ * ClutterOpenDeviceCallback:
+ * @path: the device path
+ * @flags: flags to be passed to open
+ *
+ * This callback will be called when Clutter needs to access an input
+ * device. It should return an open file descriptor for the file at @path,
+ * or -1 if opening failed.
+ */
+typedef int (*ClutterOpenDeviceCallback) (const char  *path,
+					  int          flags,
+					  gpointer     user_data,
+					  GError     **error);
+
+void  clutter_evdev_set_open_callback (ClutterOpenDeviceCallback callback,
+				       gpointer                  user_data);
+
 void  clutter_evdev_release_devices (void);
 void  clutter_evdev_reclaim_devices (void);
 

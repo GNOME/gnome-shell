@@ -73,6 +73,9 @@ G_DEFINE_TYPE_WITH_PRIVATE (ClutterDeviceManagerEvdev,
                             clutter_device_manager_evdev,
                             CLUTTER_TYPE_DEVICE_MANAGER)
 
+static ClutterOpenDeviceCallback open_callback;
+static gpointer                  open_callback_data;
+
 static const gchar *subsystems[] = { "input", NULL };
 
 /*
@@ -465,17 +468,33 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
   ClutterInputDeviceType type;
   const gchar *node_path;
   gint fd;
+  GError *error;
 
   /* grab the udev input device node and open it */
   node_path = _clutter_input_device_evdev_get_device_path (input_device);
 
   CLUTTER_NOTE (EVENT, "Creating GSource for device %s", node_path);
 
-  fd = open (node_path, O_RDONLY | O_NONBLOCK);
-  if (fd < 0)
+  if (open_callback)
     {
-      g_warning ("Could not open device %s: %s", node_path, strerror (errno));
-      return NULL;
+      error = NULL;
+      fd = open_callback (node_path, O_RDONLY | O_NONBLOCK, open_callback_data, &error);
+
+      if (fd < 0)
+	{
+	  g_warning ("Could not open device %s: %s", node_path, error->message);
+	  g_error_free (error);
+	  return NULL;
+	}
+    }
+  else
+    {
+      fd = open (node_path, O_RDONLY | O_NONBLOCK);
+      if (fd < 0)
+	{
+	  g_warning ("Could not open device %s: %s", node_path, strerror (errno));
+	  return NULL;
+	}
     }
 
   /* setup the source */
@@ -1118,4 +1137,26 @@ clutter_evdev_reclaim_devices (void)
 
   priv->released = FALSE;
   clutter_device_manager_evdev_probe_devices (evdev_manager);
+}
+
+/**
+ * clutter_evdev_set_open_callback: (skip)
+ * @callback: the user replacement for open()
+ * @user_data: user data for @callback
+ *
+ * Through this function, the application can set a custom callback
+ * to invoked when Clutter is about to open an evdev device. It can do
+ * so if special handling is needed, for example to circumvent permission
+ * problems.
+ *
+ * Setting @callback to %NULL will reset the default behavior.
+ *
+ * For reliable effects, this function must be called before clutter_init().
+ */
+void
+clutter_evdev_set_open_callback (ClutterOpenDeviceCallback callback,
+                                 gpointer                  user_data)
+{
+  open_callback = callback;
+  open_callback_data = user_data;
 }
