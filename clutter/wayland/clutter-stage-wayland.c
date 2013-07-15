@@ -113,15 +113,17 @@ clutter_stage_wayland_realize (ClutterStageWindow *stage_window)
 
   wl_surface = cogl_wayland_onscreen_get_surface (stage_cogl->onscreen);
   wl_surface_set_user_data (wl_surface, stage_wayland);
-
-  wl_shell_surface =
-    cogl_wayland_onscreen_get_shell_surface (stage_cogl->onscreen);
-  wl_shell_surface_add_listener (wl_shell_surface,
-                                 &shell_surface_listener,
-                                 stage_wayland);
-
   stage_wayland->wayland_surface = wl_surface;
-  stage_wayland->wayland_shell_surface = wl_shell_surface;
+
+  if (!stage_wayland->foreign_wl_surface)
+    {
+      wl_shell_surface =
+        cogl_wayland_onscreen_get_shell_surface (stage_cogl->onscreen);
+      wl_shell_surface_add_listener (wl_shell_surface,
+                                     &shell_surface_listener,
+                                     stage_wayland);
+      stage_wayland->wayland_shell_surface = wl_shell_surface;
+    }
 
   if (stage_wayland->fullscreen)
     clutter_stage_wayland_set_fullscreen (stage_window, TRUE);
@@ -138,8 +140,8 @@ clutter_stage_wayland_show (ClutterStageWindow *stage_window,
 
   clutter_stage_window_parent_iface->show (stage_window, do_raise);
 
-  /* TODO: must not call this on foreign surfaces when we add that support */
-  wl_shell_surface_set_toplevel (stage_wayland->wayland_shell_surface);
+  if (stage_wayland->wayland_shell_surface)
+    wl_shell_surface_set_toplevel (stage_wayland->wayland_shell_surface);
 
   /* We need to queue a redraw after the stage is shown because all of
    * the other queue redraws up to this point will have been ignored
@@ -161,7 +163,7 @@ clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
 
   stage_wayland->fullscreen = fullscreen;
 
-  if (!stage_wayland->wayland_shell_surface) /* Not realized yet */
+  if (!stage_wayland->wayland_shell_surface)
     return;
 
   if (fullscreen)
