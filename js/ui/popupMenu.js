@@ -1190,7 +1190,7 @@ const PopupSubMenu = new Lang.Class({
     },
 
     getSensitive: function() {
-        return this._sensitive && return this.sourceActor._delegate.getSensitive();
+        return this._sensitive && this.sourceActor._delegate.getSensitive();
     },
 
     open: function(animate) {
