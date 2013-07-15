@@ -6,12 +6,15 @@ const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
+const St = imports.gi.St;
 
+const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
 const Fprint = imports.gdm.fingerprint;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
+const UserWidget = imports.ui.userWidget;
 
 const PASSWORD_SERVICE_NAME = 'gdm-password';
 const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
@@ -29,6 +32,10 @@ const DISABLE_USER_LIST_KEY = 'disable-user-list';
 
 // Give user 16ms to read each character of a PAM message
 const USER_READ_TIME = 16
+
+const DEFAULT_BUTTON_WELL_ICON_SIZE = 24;
+const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1.0;
+const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 0.3;
 
 function fadeInActor(actor) {
     if (actor.opacity == 255 && actor.visible)
@@ -459,3 +466,335 @@ const ShellUserVerifier = new Lang.Class({
     },
 });
 Signals.addSignalMethods(ShellUserVerifier.prototype);
+
+const AuthPrompt = new Lang.Class({
+    Name: 'AuthPrompt',
+
+    _init: function(params) {
+        params = Params.parse(params,
+                              { style_class: 'login-dialog-prompt-layout',
+                                vertical: true }, true);
+        this.actor = new St.BoxLayout(params);
+        this.actor.connect('button-press-event',
+                           Lang.bind(this, function(actor, event) {
+                               if (event.get_key_symbol() == Clutter.KEY_Escape) {
+                                   this.emit('cancel');
+                               }
+                           }));
+
+        this._userWell = new St.Bin({ x_fill: true,
+                                      x_align: St.Align.START });
+        this.actor.add(this._userWell,
+                       { x_align: St.Align.START,
+                         x_fill: true,
+                         y_fill: true,
+                         expand: true });
+        this._label = new St.Label({ style_class: 'login-dialog-prompt-label' });
+
+        this.actor.add(this._label,
+                       { expand: true,
+                         x_fill: true,
+                         y_fill: true,
+                         x_align: St.Align.START });
+        this._entry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
+                                     can_focus: true });
+        this._entryTextChangedId = 0;
+        this._entryActivateId = 0;
+        this.actor.add(this._entry,
+                       { expand: true,
+                         x_fill: true,
+                         y_fill: false,
+                         x_align: St.Align.START });
+
+        this._entry.grab_key_focus();
+
+        this._message = new St.Label({ opacity: 0 });
+        this.actor.add(this._message, { x_fill: true });
+
+        this._loginHint = new St.Label({ style_class: 'login-dialog-prompt-login-hint-message' });
+        this.actor.add(this._loginHint);
+
+        this._buttonBox = new St.BoxLayout({ style_class: 'login-dialog-button-box',
+                                             vertical: false });
+        this.actor.add(this._buttonBox,
+                       { expand:  true,
+                         x_align: St.Align.MIDDLE,
+                         y_align: St.Align.END });
+        this._cancelButton = null;
+        this._nextButton = null;
+
+        this._defaultButtonWell = new St.Widget();
+        this._defaultButtonWellActor = null;
+
+        let spinnerIcon = global.datadir + '/theme/process-working.svg';
+        this._spinner = new Animation.AnimatedIcon(spinnerIcon, DEFAULT_BUTTON_WELL_ICON_SIZE);
+        this._spinner.actor.opacity = 0;
+        this._spinner.actor.show();
+        this._defaultButtonWell.add_child(this._spinner.actor);
+    },
+
+    addActorToDefaultButtonWell: function(actor) {
+        this._defaultButtonWell.add_child(actor);
+
+        actor.add_constraint(new Clutter.AlignConstraint({ source: this._spinner.actor,
+                                                           align_axis: Clutter.AlignAxis.BOTH,
+                                                           factor: 0.5 }));
+    },
+
+    setActorInDefaultButtonWell: function(actor, immediately) {
+        if (!this._defaultButtonWellActor &&
+            !actor)
+            return;
+
+        let oldActor = this._defaultButtonWellActor;
+
+        if (oldActor)
+            Tweener.removeTweens(oldActor);
+
+        let isWorkSpinner;
+        if (actor == this._spinner.actor)
+            isWorkSpinner = true;
+        else
+            isWorkSpinner = false;
+
+        if (this._defaultButtonWellActor != actor && oldActor) {
+            if (immediately)
+                oldActor.opacity = 0;
+            else
+                Tweener.addTween(oldActor,
+                                 { opacity: 0,
+                                   time: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                                   delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
+                                   transition: 'linear',
+                                   onCompleteScope: this,
+                                   onComplete: function() {
+                                       if (isWorkSpinner) {
+                                           if (this._spinner)
+                                               this._spinner.stop();
+                                       }
+                                   }
+                                 });
+        }
+
+        if (actor) {
+            if (isWorkSpinner)
+                this._spinner.play();
+
+            if (immediately)
+                actor.opacity = 255;
+            else
+                Tweener.addTween(actor,
+                                 { opacity: 255,
+                                   time: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                                   delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
+                                   transition: 'linear' });
+        }
+
+        this._defaultButtonWellActor = actor;
+    },
+
+    startSpinning: function() {
+        this.setActorInDefaultButtonWell(this._spinner.actor, true);
+    },
+
+    stopSpinning: function() {
+        this.setActorInDefaultButtonWell(null, true);
+    },
+
+    clear: function() {
+        this._entry.text = '';
+    },
+
+    setPasswordChar: function(passwordChar) {
+        this._entry.clutter_text.set_password_char(passwordChar);
+    },
+
+    setQuestion: function(question) {
+        if (!this._initialAnswer) {
+            this.clear();
+        } else if (this._initialAnswer['activate-id']) {
+            this._entry.clutter_text.disconnect(this._initialAnswer['activate-id']);
+            delete this._initialAnswer['activate-id'];
+        }
+
+        this._label.set_text(question);
+
+        this._label.show();
+        this._entry.show();
+
+        this._loginHint.opacity = 0;
+        this._loginHint.show();
+
+        this._entry.grab_key_focus();
+    },
+
+    getAnswer: function() {
+        let text;
+
+        if (this._initialAnswer && this._initialAnswer['text']) {
+            text = this._initialAnswer['text'];
+            this._initialAnswer = null;
+        } else {
+            text = this._entry.get_text();
+        }
+
+        return text;
+    },
+
+    setMessage: function(message, styleClass) {
+        if (message) {
+            this._message.text = message;
+            this._message.styleClass = styleClass;
+            this._message.opacity = 255;
+        } else {
+            this._message.opacity = 0;
+        }
+    },
+
+    resetButtons: function(cancelLabel, nextLabel) {
+        if (this._initialAnswer && this._initialAnswer['text']) {
+            this.emit('next');
+            return;
+        }
+
+        this._buttonBox.visible = true;
+        this._buttonBox.remove_all_children();
+
+        if (cancelLabel) {
+            this._cancelButton = new St.Button({ style_class: 'modal-dialog-button',
+                                                 button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+                                                 reactive: true,
+                                                 can_focus: true,
+                                                 label: cancelLabel });
+            this._cancelButton.connect('clicked',
+                                       Lang.bind(this, function() {
+                                           this.emit('cancel');
+                                       }));
+            this._buttonBox.add(this._cancelButton,
+                                { expand: false,
+                                  x_fill: false,
+                                  y_fill: false,
+                                  x_align: St.Align.START,
+                                  y_align: St.Align.END });
+        }
+
+        this._buttonBox.add(this._defaultButtonWell,
+                            { expand: true,
+                              x_fill: false,
+                              y_fill: false,
+                              x_align: St.Align.END,
+                              y_align: St.Align.MIDDLE });
+        this._nextButton = new St.Button({ style_class: 'modal-dialog-button',
+                                             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+                                             reactive: true,
+                                             can_focus: true,
+                                             label: nextLabel });
+        this._nextButton.connect('clicked',
+                                 Lang.bind(this, function() {
+                                     this.emit('next');
+                                 }));
+        this._nextButton.add_style_pseudo_class('default');
+        this._buttonBox.add(this._nextButton,
+                            { expand: false,
+                              x_fill: false,
+                              y_fill: false,
+                              x_align: St.Align.END,
+                              y_align: St.Align.END });
+
+        this._updateNextButtonSensitivity(this._entry.text.length > 0);
+
+        this._entryTextChangedId =
+            this._entry.clutter_text.connect('text-changed',
+                                             Lang.bind(this, function() {
+                                                 this._updateNextButtonSensitivity(this._entry.text.length > 0);
+                                             }));
+
+        this._entryActivateId =
+            this._entry.clutter_text.connect('activate', Lang.bind(this, function() {
+                this.emit('next');
+            }));
+    },
+
+    _updateNextButtonSensitivity: function(sensitive) {
+        if (this._nextButton) {
+            this._nextButton.reactive = sensitive;
+            this._nextButton.can_focus = sensitive;
+        }
+    },
+
+    updateSensitivity: function(sensitive) {
+        this._updateNextButtonSensitivity(sensitive);
+        this._entry.reactive = sensitive;
+        this._entry.clutter_text.editable = sensitive;
+    },
+
+    hide: function() {
+        if (this._entryTextChangedId > 0) {
+            this._entry.clutter_text.disconnect(this._entryTextChangedId);
+            this._entryTextChangedId = 0;
+        }
+
+        if (this._entryActivateId > 0) {
+            this._entry.clutter_text.disconnect(this._entryActivateId);
+            this._entryActivateId = 0;
+        }
+
+        this.setActorInDefaultButtonWell(null, true);
+        this.actor.hide();
+        this._loginHint.opacity = 0;
+
+        this.setUser(null);
+
+        this.updateSensitivity(true);
+        this._entry.set_text('');
+
+        this._buttonBox.remove_all_children();
+        this._nextButton = null;
+        this._cancelButton = null;
+    },
+
+    setUser: function(user) {
+        if (user) {
+            let userWidget = new UserWidget.UserWidget(user);
+            this._userWell.set_child(userWidget.actor);
+        } else {
+            this._userWell.set_child(null);
+        }
+    },
+
+    setHint: function(message) {
+        if (message) {
+            this._loginHint.set_text(message)
+            this._loginHint.opacity = 255;
+        } else {
+            this._loginHint.opacity = 0;
+            this._loginHint.set_text('');
+        }
+    },
+
+    reset: function() {
+        this._message.opacity = 0;
+        this.setUser(null);
+    },
+
+    addCharacter: function(unichar) {
+        if (!this._entry.visible)
+            return;
+
+        if (!this._initialAnswer)
+            this._initialAnswer = {};
+
+        this._entry.grab_key_focus();
+        this._entry.clutter_text.insert_unichar(unichar);
+
+        if (!this._initialAnswer['activate-id'])
+            this._initialAnswer['activate-id'] =
+                this._entry.clutter_text.connect('activate', Lang.bind(this, function() {
+                                                     this._entry.clutter_text.disconnect(this._initialAnswer['activate-id']);
+                                                     delete this._initialAnswer['activate-id'];
+
+                                                     this._initialAnswer['text'] = this._entry.get_text();
+                                                 }));
+    }
+});
+Signals.addSignalMethods(AuthPrompt.prototype);
