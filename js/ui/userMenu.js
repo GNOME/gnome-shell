@@ -92,7 +92,7 @@ const IMUserNameItem = new Lang.Class({
                               Lang.bind(this, this._wrapperGetPreferredHeight));
         this._wrapper.connect('allocate',
                               Lang.bind(this, this._wrapperAllocate));
-        this.addActor(this._wrapper, { expand: true, span: -1 });
+        this.addActor(this._wrapper, { expand: true });
 
         this.label = new St.Label();
         this.label.clutter_text.set_line_wrap(true);

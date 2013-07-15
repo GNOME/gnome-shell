@@ -172,14 +172,11 @@ const PopupBaseMenuItem = new Lang.Class({
         this.emit('destroy');
     },
 
-    // adds an actor to the menu item; @params can contain %span
-    // (column span; defaults to 1, -1 means "all the remaining width"),
+    // adds an actor to the menu item; @params can contain
     // %expand (defaults to #false), and %align (defaults to
     // #St.Align.START)
     addActor: function(child, params) {
-        params = Params.parse(params, { span: 1,
-                                        expand: false,
-                                        align: St.Align.START });
+        params = Params.parse(params, { expand: false, align: St.Align.START });
         params.actor = child;
         this._children.push(params);
         this.actor.connect('destroy', Lang.bind(this, function () { this._removeChild(child); }));
@@ -226,10 +223,6 @@ const PopupBaseMenuItem = new Lang.Class({
             let child = this._children[i];
             let [min, natural] = child.actor.get_preferred_width(-1);
             widths[col++] = natural;
-            if (child.span > 1) {
-                for (let j = 1; j < child.span; j++)
-                    widths[col++] = 0;
-            }
         }
         return widths;
     },
@@ -263,14 +256,14 @@ const PopupBaseMenuItem = new Lang.Class({
         for (let i = 0; i < this._children.length; i++) {
             let child = this._children[i];
             if (this._columnWidths) {
-                if (child.span == -1) {
+                if (child.expand) {
                     childWidth = 0;
                     for (let j = i; j < this._columnWidths.length; j++)
-                        childWidth += this._columnWidths[j]
+                        childWidth += this._columnWidths[j];
                 } else
                     childWidth = this._columnWidths[i];
             } else {
-                if (child.span == -1)
+                if (child.expand)
                     childWidth = forWidth - x;
                 else
                     [minWidth, childWidth] = child.actor.get_preferred_width(-1);
@@ -316,16 +309,13 @@ const PopupBaseMenuItem = new Lang.Class({
             let [minWidth, naturalWidth] = child.actor.get_preferred_width(-1);
 
             let availWidth;
-            if (child.span == -1) {
+            if (child.expand) {
                 availWidth = box.x2 - x;
             } else {
-                if (this._columnWidths) {
-                    availWidth = 0;
-                    for (let j = 0; j < child.span; j++)
-                        availWidth += this._columnWidths[col++];
-                } else {
+                if (this._columnWidths)
+                    availWidth += this._columnWidths[col++];
+                else
                     availWidth = naturalWidth;
-                }
             }
 
             if (direction == Clutter.TextDirection.RTL)
@@ -375,7 +365,7 @@ const PopupSeparatorMenuItem = new Lang.Class({
                       can_focus: false});
 
         this._box = new St.BoxLayout();
-        this.addActor(this._box, { span: -1, expand: true });
+        this.addActor(this._box, { expand: true });
 
         this.label = new St.Label({ text: text || '' });
         this._box.add(this.label);
@@ -558,8 +548,7 @@ const PopupSwitchMenuItem = new Lang.Class({
         this.addActor(this.label);
 
         this._statusBin = new St.Bin({ x_align: St.Align.END });
-        this.addActor(this._statusBin,
-                      { expand: true, span: -1, align: St.Align.END });
+        this.addActor(this._statusBin, { expand: true, align: St.Align.END });
 
         this._statusLabel = new St.Label({ text: '',
                                            style_class: 'popup-status-menu-item'
@@ -1546,8 +1535,7 @@ const PopupComboBoxMenuItem = new Lang.Class({
         this.addActor(this._itemBox);
 
         let expander = new St.Label({ text: '\u2304' });
-        this.addActor(expander, { align: St.Align.END,
-                                  span: -1 });
+        this.addActor(expander, { align: St.Align.END });
 
         this._menu = new PopupComboMenu(this.actor);
         Main.uiGroup.add_actor(this._menu.actor);
