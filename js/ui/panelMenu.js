@@ -241,13 +241,22 @@ const SystemIndicator = new Lang.Class({
     _init: function() {
         this.indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box',
                                              reactive: true });
+        this.indicators.hide();
         this.menu = new PopupMenu.PopupMenuSection();
+    },
+
+    _syncIndicatorsVisible: function() {
+        this.indicators.visible = this.indicators.get_children().some(function(actor) {
+            return actor.visible;
+        });
     },
 
     addIndicator: function(gicon) {
         let icon = new St.Icon({ gicon: gicon,
                                  style_class: 'system-status-icon' });
         this.indicators.add_actor(icon);
+        icon.connect('notify::visible', Lang.bind(this, this._syncIndicatorsVisible));
+        this._syncIndicatorsVisible();
         return icon;
     }
 });
