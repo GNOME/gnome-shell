@@ -306,10 +306,6 @@ const NMDevice = new Lang.Class({
                 GObject.Object.prototype.disconnect.call(this._device, this._activeConnectionChangedId);
                 this._stateChangedId = 0;
             }
-            if (this._firmwareChangedId) {
-                GObject.Object.prototype.disconnect.call(this._device, this._firmwareChangedId);
-                this._firmwareChangedId = 0;
-            }
 
             this._device = null;
         }
@@ -375,14 +371,6 @@ const NMDevice = new Lang.Class({
         // in the majority of cases (wired, wwan)
     },
 
-    _firmwareChanged: function() {
-        if (this._firmwareChangedId) {
-            GObject.Object.prototype.disconnect.call(this._device, this._firmwareChangedId);
-            this._firmwareChangedId = 0;
-        }
-        this._substateChanged();
-    },
-
     getStatusLabel: function() {
         if (!this._device)
             return null;
@@ -411,9 +399,6 @@ const NMDevice = new Lang.Class({
             // firmware missing), that are exposed by different properties (whose state may
             // or may not updated when we receive state-changed).
             if (this._device.firmware_missing) {
-                if (!this._firmwareChangedId)
-                    this._firmwareChangedId = this._device.connect('notify::firmware-missing', Lang.bind(this, this._firmwareChanged));
-
                 /* Translators: this is for devices that require some kind of firmware or kernel
                    module, which is missing */
                 return _("firmware missing");
