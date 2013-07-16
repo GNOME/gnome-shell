@@ -2496,7 +2496,6 @@ StScrollBar StButton#vhandle:active {
     font-size: 1.2em;
     font-weight: bold;
     padding: 0px 18px;
-    color: #babdb6;
 }
 
 .screen-shield-notification-count-text {
@@ -2516,6 +2515,11 @@ StScrollBar StButton#vhandle:active {
 .screen-shield-notifications-box .summary-notification-stack-scrollview {
     padding-top: 0px;
     padding-bottom: 0px;
+}
+
+#screenShieldNotifications .notification-button,
+#screenShieldNotifications .notification-icon-button {
+    border: 1px rgba(255,255,255,0.5);
 }
 
 .input-source-switcher-symbol {
