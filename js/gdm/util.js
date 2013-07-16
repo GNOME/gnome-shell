@@ -13,6 +13,7 @@ const Batch = imports.gdm.batch;
 const Fprint = imports.gdm.fingerprint;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
+const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
 
@@ -498,6 +499,7 @@ const AuthPrompt = new Lang.Class({
                          x_align: St.Align.START });
         this._entry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
                                      can_focus: true });
+        ShellEntry.addContextMenu(this._entry, { isPassword: true });
         this._entryTextChangedId = 0;
         this._entryActivateId = 0;
         this.actor.add(this._entry,
@@ -607,6 +609,7 @@ const AuthPrompt = new Lang.Class({
 
     setPasswordChar: function(passwordChar) {
         this._entry.clutter_text.set_password_char(passwordChar);
+        this._entry.menu.isPassword = passwordChar != '';
     },
 
     setQuestion: function(question) {
