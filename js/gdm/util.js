@@ -163,7 +163,7 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     answerQuery: function(serviceName, answer) {
-        if (!this._userVerifier.hasPendingMessages) {
+        if (!this.hasPendingMessages) {
             this._clearMessageQueue();
             this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
         } else {
@@ -423,7 +423,7 @@ const ShellUserVerifier = new Lang.Class({
             this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY);
 
         if (canRetry) {
-            if (!this._userVerifier.hasPendingMessages) {
+            if (!this.hasPendingMessages) {
                 this._retry();
             } else {
                 let signalId = this._userVerifier.connect('no-more-messages',
@@ -433,7 +433,7 @@ const ShellUserVerifier = new Lang.Class({
                                                           }));
             }
         } else {
-            if (!this._userVerifier.hasPendingMessages) {
+            if (!this.hasPendingMessages) {
                 this._cancelAndReset();
             } else {
                 let signalId = this._userVerifier.connect('no-more-messages',
