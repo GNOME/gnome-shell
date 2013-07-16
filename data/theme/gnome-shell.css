@@ -361,7 +361,8 @@ StScrollBar StButton#vhandle:active {
 .modal-dialog-button,
 .notification-button,
 .hotplug-notification-item,
-.app-view-controls {
+.app-view-controls,
+#screenShieldNotifications {
     border-radius: 18px;
 }
 
@@ -2477,29 +2478,27 @@ StScrollBar StButton#vhandle:active {
 }
 
 #screenShieldNotifications {
-    border-radius: 8px;
     max-height: 500px;
-    padding: 18px 0;
+    padding: 12px;
 }
 
 .screen-shield-notifications-box {
-    spacing: 18px;
-    max-width: 34em;
+    spacing: 12px;
+    width: 30em;
 }
 
 .screen-shield-notification-source {
-    padding: 13px 24px;
+    padding: 3px 6px;
     spacing: 5px;
 }
 
 .screen-shield-notification-label {
-    font-size: 1.2em;
     font-weight: bold;
-    padding: 0px 18px;
+    padding: 0px 0px 0px 12px;
 }
 
 .screen-shield-notification-count-text {
-    padding: 0px 18px;
+    padding: 0px 0px 0px 12px;
 }
 
 /* Remove background from notifications, otherwise
