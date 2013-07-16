@@ -53,8 +53,13 @@
 #include <X11/XKBlib.h>
 #endif
 
+#ifdef HAVE_WAYLAND
+#include "meta-wayland-private.h"
+#endif
+
 #define SCHEMA_COMMON_KEYBINDINGS "org.gnome.desktop.wm.keybindings"
 #define SCHEMA_MUTTER_KEYBINDINGS "org.gnome.mutter.keybindings"
+#define SCHEMA_MUTTER_WAYLAND_KEYBINDINGS "org.gnome.mutter.wayland.keybindings"
 
 static gboolean add_builtin_keybinding (MetaDisplay          *display,
                                         const char           *name,
@@ -4098,6 +4103,40 @@ handle_set_spew_mark (MetaDisplay    *display,
   meta_verbose ("-- MARK MARK MARK MARK --\n");
 }
 
+#ifdef HAVE_WAYLAND
+static void
+handle_switch_vt (MetaDisplay    *display,
+                  MetaScreen     *screen,
+                  MetaWindow     *window,
+                  XIDeviceEvent  *event,
+                  MetaKeyBinding *binding,
+                  gpointer        dummy)
+{
+    gint vt = binding->handler->data;
+    MetaWaylandCompositor *compositor;
+    MetaLauncher *launcher;
+
+    compositor = meta_wayland_compositor_get_default ();
+    launcher = meta_wayland_compositor_get_launcher (compositor);
+
+    if (launcher)
+      {
+        GError *error;
+
+        error = NULL;
+        if (!meta_launcher_activate_vt (launcher, vt, &error))
+          {
+            g_warning ("Failed to switch VT: %s", error->message);
+            g_error_free (error);
+          }
+      }
+    else
+      {
+        g_debug ("Ignoring VT switch keybinding, not running as VT manager");
+      }
+}
+#endif
+
 /**
  * meta_keybindings_set_custom_handler:
  * @name: The name of the keybinding to set
@@ -4161,6 +4200,7 @@ init_builtin_key_bindings (MetaDisplay *display)
                                META_KEY_BINDING_IS_REVERSED)
   GSettings *common_keybindings = g_settings_new (SCHEMA_COMMON_KEYBINDINGS);
   GSettings *mutter_keybindings = g_settings_new (SCHEMA_MUTTER_KEYBINDINGS);
+  GSettings *mutter_wayland_keybindings = g_settings_new (SCHEMA_MUTTER_WAYLAND_KEYBINDINGS);
 
   add_builtin_keybinding (display,
                           "switch-to-workspace-1",
@@ -4421,6 +4461,60 @@ init_builtin_key_bindings (MetaDisplay *display)
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_SET_SPEW_MARK,
                           handle_set_spew_mark, 0);
+
+#ifdef HAVE_WAYLAND
+  if (meta_is_wayland_compositor ())
+    {
+      add_builtin_keybinding (display,
+                              "switch-to-session-1",
+                              mutter_wayland_keybindings,
+                              META_KEY_BINDING_NONE,
+                              META_KEYBINDING_ACTION_NONE,
+                              handle_switch_vt, 1);
+
+      add_builtin_keybinding (display,
+                              "switch-to-session-2",
+                              mutter_wayland_keybindings,
+                              META_KEY_BINDING_NONE,
+                              META_KEYBINDING_ACTION_NONE,
+                              handle_switch_vt, 2);
+
+      add_builtin_keybinding (display,
+                              "switch-to-session-3",
+                              mutter_wayland_keybindings,
+                              META_KEY_BINDING_NONE,
+                              META_KEYBINDING_ACTION_NONE,
+                              handle_switch_vt, 3);
+
+      add_builtin_keybinding (display,
+                              "switch-to-session-4",
+                              mutter_wayland_keybindings,
+                              META_KEY_BINDING_NONE,
+                              META_KEYBINDING_ACTION_NONE,
+                              handle_switch_vt, 4);
+
+      add_builtin_keybinding (display,
+                              "switch-to-session-5",
+                              mutter_wayland_keybindings,
+                              META_KEY_BINDING_NONE,
+                              META_KEYBINDING_ACTION_NONE,
+                              handle_switch_vt, 5);
+
+      add_builtin_keybinding (display,
+                              "switch-to-session-6",
+                              mutter_wayland_keybindings,
+                              META_KEY_BINDING_NONE,
+                              META_KEYBINDING_ACTION_NONE,
+                              handle_switch_vt, 6);
+
+      add_builtin_keybinding (display,
+                              "switch-to-session-7",
+                              mutter_wayland_keybindings,
+                              META_KEY_BINDING_NONE,
+                              META_KEYBINDING_ACTION_NONE,
+                              handle_switch_vt, 7);
+    }
+#endif
 
 #undef REVERSES_AND_REVERSED
 

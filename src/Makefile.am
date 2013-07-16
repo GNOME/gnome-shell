@@ -319,7 +319,7 @@ xml_DATA     = $(xml_in_files:.xml.in=.xml)
 
 dbus_idle_built_sources = meta-dbus-idle-monitor.c meta-dbus-idle-monitor.h
 
-gsettings_SCHEMAS = org.gnome.mutter.gschema.xml
+gsettings_SCHEMAS = org.gnome.mutter.gschema.xml org.gnome.mutter.wayland.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
 
