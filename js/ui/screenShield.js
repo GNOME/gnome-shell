@@ -670,7 +670,9 @@ const ScreenShield = new Lang.Class({
         if (this._lockScreenState != MessageTray.State.SHOWN)
             return Clutter.EVENT_PROPAGATE;
 
-        let isEnter = (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_KP_Enter);
+        let isEnter = (symbol == Clutter.KEY_Return ||
+                       symbol == Clutter.KEY_KP_Enter ||
+                       symbol == Clutter.KEY_ISO_Enter);
         if (!isEnter && !(GLib.unichar_isprint(unichar) || symbol == Clutter.KEY_Escape))
             return Clutter.EVENT_PROPAGATE;
 
