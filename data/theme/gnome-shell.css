@@ -133,7 +133,7 @@ StScrollBar StButton#vhandle:active {
     -slider-active-background-color: #76b0ec;
     -slider-active-border-color: #1f6dbc;
     -slider-border-width: 1px;
-    -slider-handle-radius: 0.5em;
+    -slider-handle-radius: 6px;
 }
 
 /* PopupMenu */
@@ -155,6 +155,10 @@ StScrollBar StButton#vhandle:active {
 
 .popup-menu {
     min-width: 200px;
+}
+
+.popup-submenu-menu-item-triangle {
+    font-size: 120%;
 }
 
 .popup-submenu-menu-item:open {
@@ -197,7 +201,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .popup-menu-item {
-    spacing: 1em;
+    spacing: 12px;
 }
 
 .popup-menu-item:ltr {
@@ -633,7 +637,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .aggregate-menu {
-    width: 320px;
+    width: 340px;
 }
 
 .aggregate-menu .popup-menu-icon {

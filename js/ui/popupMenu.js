@@ -870,8 +870,6 @@ const PopupSubMenu = new Lang.Class({
         this.parent(sourceActor);
 
         this._arrow = sourceArrow;
-        this._arrow.pivot_point = new Clutter.Point({ x: 0.3,
-                                                      y: 0.5 });
 
         // Since a function of a submenu might be to provide a "More.." expander
         // with long content, we make it scrollable - the scrollbar will only take
@@ -1052,8 +1050,14 @@ const PopupSubMenuMenuItem = new Lang.Class({
         this.status = new St.Label({ style_class: 'popup-status-menu-item' });
         this.actor.add_child(this.status);
 
-        this._triangle = new St.Label({ text: '\u25B8' });
-        this.actor.add_child(this._triangle);
+        this._triangle = new St.Label({ text: '\u25B8',
+                                        style_class: 'popup-submenu-menu-item-triangle' });
+        this._triangle.pivot_point = new Clutter.Point({ x: 0.5, y: 0.6 });
+
+        this._triangleBin = new St.Widget({ y_expand: true,
+                                            y_align: Clutter.ActorAlign.CENTER });
+        this._triangleBin.add_child(this._triangle);
+        this.actor.add_child(this._triangleBin);
 
         this.menu = new PopupSubMenu(this.actor, this._triangle);
         this.menu.connect('open-state-changed', Lang.bind(this, this._subMenuOpenStateChanged));
