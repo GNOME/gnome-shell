@@ -120,7 +120,7 @@ const RemoteMenuItemMapper = new Lang.Class({
 
         this.menuItem = new PopupMenu.PopupBaseMenuItem();
         this._label = new St.Label();
-        this.menuItem.addActor(this._label);
+        this.menuItem.actor.add_child(this._label);
         this.menuItem.actor.label_actor = this._label;
 
         this.menuItem.connect('activate', Lang.bind(this, function() {

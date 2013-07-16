@@ -140,7 +140,8 @@ StScrollBar StButton#vhandle:active {
 /* PopupMenu */
 
 .popup-menu-ornament {
-    text-align: center;
+    text-align: right;
+    width: 1em;
 }
 
 .popup-menu-boxpointer,
@@ -197,8 +198,15 @@ StScrollBar StButton#vhandle:active {
 }
 
 .popup-menu-item {
-    padding: .4em 1.75em;
     spacing: 1em;
+}
+
+.popup-menu-item:ltr {
+    padding: .4em 1.75em .4em 0em;
+}
+
+.popup-menu-item:rtl {
+    padding: .4em 0em .4em 1.75em;
 }
 
 .popup-menu-item:active {

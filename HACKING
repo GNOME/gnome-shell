@@ -138,8 +138,8 @@ GObjects, although this feature isn't used very often in the Shell itself.
 
         _init: function(icon, label) {
             this.parent({ reactive: false });
-            this.addActor(icon);
-            this.addActor(label);
+            this.actor.add_child(icon);
+            this.actor.add_child(label);
         },
 
         open: function() {

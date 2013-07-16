@@ -261,11 +261,12 @@ const Indicator = new Lang.Class({
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        let hbox = new St.BoxLayout({ style_class: 'system-menu-actions-box' });
+        item = new PopupMenu.PopupBaseMenuItem({ reactive: false,
+                                                 can_focus: false });
 
         this._settingsAction = this._createActionButton('preferences-system-symbolic', _("Settings"));
         this._settingsAction.connect('clicked', Lang.bind(this, this._onSettingsClicked));
-        hbox.add(this._settingsAction, { expand: true, x_fill: false });
+        item.actor.add(this._settingsAction, { expand: true, x_fill: false });
 
         this._orientationLockAction = this._createActionButton('', _("Orientation Lock"));
         this._orientationLockAction.connect('clicked', Lang.bind(this, this._onOrientationLockClicked));
@@ -273,15 +274,11 @@ const Indicator = new Lang.Class({
 
         this._lockScreenAction = this._createActionButton('changes-prevent-symbolic', _("Lock"));
         this._lockScreenAction.connect('clicked', Lang.bind(this, this._onLockScreenClicked));
-        hbox.add(this._lockScreenAction, { expand: true, x_fill: false });
+        item.actor.add(this._lockScreenAction, { expand: true, x_fill: false });
 
         this._powerOffAction = this._createActionButton('system-shutdown-symbolic', _("Power Off"));
         this._powerOffAction.connect('clicked', Lang.bind(this, this._onPowerOffClicked));
-        hbox.add(this._powerOffAction, { expand: true, x_fill: false });
-
-        item = new PopupMenu.PopupBaseMenuItem({ reactive: false,
-                                                 can_focus: false });
-        item.addActor(hbox, { expand: true });
+        item.actor.add(this._powerOffAction, { expand: true, x_fill: false });
 
         this._actionsItem = item;
         this.menu.addMenuItem(item);

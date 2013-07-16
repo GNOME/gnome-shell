@@ -45,23 +45,19 @@ const PopupBaseMenuItem = new Lang.Class({
                                          style_class: null,
                                          can_focus: true
                                        });
-        this.actor = new Shell.GenericContainer({ style_class: 'popup-menu-item',
-                                                  reactive: params.reactive,
-                                                  track_hover: params.reactive,
-                                                  can_focus: params.can_focus,
-                                                  accessible_role: Atk.Role.MENU_ITEM});
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
-        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
+
+        this.actor = new St.BoxLayout({ style_class: 'popup-menu-item',
+                                        reactive: params.reactive,
+                                        track_hover: params.reactive,
+                                        can_focus: params.can_focus,
+                                        accessible_role: Atk.Role.MENU_ITEM });
         this.actor._delegate = this;
 
-        this._parent = null;
-        this._children = [];
         this._ornament = Ornament.NONE;
         this._ornamentLabel = new St.Label({ style_class: 'popup-menu-ornament' });
-        this.actor.add_actor(this._ornamentLabel);
-        this._spacing = 0;
+        this.actor.add(this._ornamentLabel);
+
+        this._parent = null;
         this.active = false;
         this._activatable = params.reactive && params.activate;
         this._sensitive = true;
@@ -92,10 +88,6 @@ const PopupBaseMenuItem = new Lang.Class({
 
     _setParent: function(parent) {
         this._parent = parent;
-    },
-
-    _onStyleChanged: function (actor) {
-        this._spacing = Math.round(actor.get_theme_node().get_length('spacing'));
     },
 
     _onButtonReleaseEvent: function (actor, event) {
@@ -169,31 +161,6 @@ const PopupBaseMenuItem = new Lang.Class({
         this.emit('destroy');
     },
 
-    // adds an actor to the menu item; @params can contain
-    // %expand (defaults to #false), and %align (defaults to
-    // #St.Align.START)
-    addActor: function(child, params) {
-        params = Params.parse(params, { expand: false, align: St.Align.START });
-        params.actor = child;
-        this._children.push(params);
-        this.actor.connect('destroy', Lang.bind(this, function () { this._removeChild(child); }));
-        this.actor.add_actor(child);
-    },
-
-    _removeChild: function(child) {
-        for (let i = 0; i < this._children.length; i++) {
-            if (this._children[i].actor == child) {
-                this._children.splice(i, 1);
-                return;
-            }
-        }
-    },
-
-    removeActor: function(child) {
-        this.actor.remove_actor(child);
-        this._removeChild(child);
-    },
-
     setOrnament: function(ornament) {
         if (ornament == this._ornament)
             return;
@@ -210,95 +177,6 @@ const PopupBaseMenuItem = new Lang.Class({
             this._ornamentLabel.text = '';
             this.actor.remove_accessible_state(Atk.StateType.CHECKED);
         }
-    },
-
-    _getPreferredWidth: function(actor, forHeight, alloc) {
-        let width = 0;
-        for (let i = 0; i < this._children.length; i++) {
-            let child = this._children[i];
-            if (i > 0)
-                width += this._spacing;
-            let [min, natural] = child.actor.get_preferred_width(-1);
-            width += natural;
-        }
-        alloc.min_size = alloc.natural_size = width;
-    },
-
-    _getPreferredHeight: function(actor, forWidth, alloc) {
-        let height = 0, x = 0, minWidth, childWidth;
-        for (let i = 0; i < this._children.length; i++) {
-            let child = this._children[i];
-            if (child.expand)
-                childWidth = forWidth - x;
-            else
-                [minWidth, childWidth] = child.actor.get_preferred_width(-1);
-            x += childWidth;
-
-            let [min, natural] = child.actor.get_preferred_height(childWidth);
-            if (natural > height)
-                height = natural;
-        }
-        alloc.min_size = alloc.natural_size = height;
-    },
-
-    _allocate: function(actor, box, flags) {
-        let width = box.x2 - box.x1;
-        let height = box.y2 - box.y1;
-        let direction = this.actor.get_text_direction();
-
-        // The ornament is placed outside box
-        // one quarter of padding from the border of the container
-        // (so 3/4 from the inner border)
-        // (padding is box.x1)
-        let ornamentBox = new Clutter.ActorBox();
-        let ornamentWidth = box.x1;
-
-        ornamentBox.x1 = 0;
-        ornamentBox.x2 = ornamentWidth;
-        ornamentBox.y1 = box.y1;
-        ornamentBox.y2 = box.y2;
-
-        if (direction == Clutter.TextDirection.RTL) {
-            ornamentBox.x1 += box.x2;
-            ornamentBox.x2 += box.x2;
-        }
-
-        this._ornamentLabel.allocate(ornamentBox, flags);
-
-        let x = box.x1;
-        for (let i = 0, col = 0; i < this._children.length; i++) {
-            let child = this._children[i];
-            let childBox = new Clutter.ActorBox();
-
-            let [minWidth, naturalWidth] = child.actor.get_preferred_width(-1);
-
-            let availWidth;
-            if (child.expand)
-                availWidth = box.x2 - x;
-            else
-                availWidth = naturalWidth;
-
-            if (direction == Clutter.TextDirection.RTL)
-                childBox.x1 = box.x1 + (box.x2 - x - availWidth);
-            else
-                childBox.x1 = x;
-            childBox.x2 = childBox.x1 + availWidth;
-
-            let [minHeight, naturalHeight] = child.actor.get_preferred_height(childBox.x2 - childBox.x1);
-            childBox.y1 = Math.round(box.y1 + (height - naturalHeight) / 2);
-            childBox.y2 = childBox.y1 + naturalHeight;
-
-            let [xAlign, yAlign] = St.get_align_factors(child.align,
-                                                        St.Align.MIDDLE);
-
-            // It's called "expand", but it's really more like "fill"
-            let xFill = child.expand;
-            child.actor.allocate_align_fill(childBox,
-                                            xAlign, yAlign,
-                                            xFill, true,
-                                            flags);
-            x += availWidth + this._spacing;
-        }
     }
 });
 Signals.addSignalMethods(PopupBaseMenuItem.prototype);
@@ -311,7 +189,7 @@ const PopupMenuItem = new Lang.Class({
         this.parent(params);
 
         this.label = new St.Label({ text: text });
-        this.addActor(this.label);
+        this.actor.add_child(this.label);
         this.actor.label_actor = this.label
     }
 });
@@ -324,15 +202,12 @@ const PopupSeparatorMenuItem = new Lang.Class({
         this.parent({ reactive: false,
                       can_focus: false});
 
-        this._box = new St.BoxLayout();
-        this.addActor(this._box, { expand: true });
-
         this.label = new St.Label({ text: text || '' });
-        this._box.add(this.label);
+        this.actor.add(this.label);
         this.actor.label_actor = this.label;
 
         this._separator = new Separator.HorizontalSeparator({ style_class: 'popup-separator-menu-item' });
-        this._box.add(this._separator.actor, { expand: true });
+        this.actor.add(this._separator.actor, { expand: true });
     }
 });
 
@@ -353,7 +228,7 @@ const PopupAlternatingMenuItem = new Lang.Class({
         this._alternateText = alternateText;
         this.label = new St.Label({ text: text });
         this.state = PopupAlternatingMenuItemState.DEFAULT;
-        this.addActor(this.label);
+        this.actor.add_child(this.label);
         this.actor.label_actor = this.label;
 
         this.actor.connect('notify::mapped', Lang.bind(this, this._onMapped));
@@ -478,10 +353,10 @@ const PopupSwitchMenuItem = new Lang.Class({
         this.checkAccessibleState();
         this.actor.label_actor = this.label;
 
-        this.addActor(this.label);
+        this.actor.add_child(this.label);
 
         this._statusBin = new St.Bin({ x_align: St.Align.END });
-        this.addActor(this._statusBin, { expand: true, align: St.Align.END });
+        this.actor.add(this._statusBin, { expand: true, x_align: St.Align.END });
 
         this._statusLabel = new St.Label({ text: '',
                                            style_class: 'popup-status-menu-item'
@@ -840,10 +715,6 @@ const PopupMenuBase = new Lang.Class({
         this.length++;
     },
 
-    addActor: function(actor) {
-        this.box.add(actor);
-    },
-
     _getMenuItems: function() {
         return this.box.get_children().map(function (actor) {
             return actor._delegate;
@@ -1167,18 +1038,21 @@ const PopupSubMenuMenuItem = new Lang.Class({
 
         if (wantIcon) {
             this.icon = new St.Icon({ style_class: 'popup-menu-icon' });
-            this.addActor(this.icon, { align: St.Align.MIDDLE });
+            this.actor.add_child(this.icon);
         }
 
         this.label = new St.Label({ text: text });
-        this.addActor(this.label);
+        this.actor.add_child(this.label);
         this.actor.label_actor = this.label;
 
+        let expander = new St.Bin({ style_class: 'popup-menu-item-expander' });
+        this.actor.add(expander, { expand: true });
+
         this.status = new St.Label({ style_class: 'popup-status-menu-item' });
-        this.addActor(this.status, { align: St.Align.END });
+        this.actor.add_child(this.status);
 
         this._triangle = new St.Label({ text: '\u25B8' });
-        this.addActor(this._triangle, { align: St.Align.END });
+        this.actor.add_child(this._triangle);
 
         this.menu = new PopupSubMenu(this.actor, this._triangle);
         this.menu.connect('open-state-changed', Lang.bind(this, this._subMenuOpenStateChanged));

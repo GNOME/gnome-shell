@@ -203,8 +203,8 @@ const LayoutMenuItem = new Lang.Class({
 
         this.label = new St.Label({ text: displayName });
         this.indicator = new St.Label({ text: shortName });
-        this.addActor(this.label);
-        this.addActor(this.indicator);
+        this.actor.add(this.label, { expand: true });
+        this.actor.add(this.indicator);
         this.actor.label_actor = this.label;
     }
 });

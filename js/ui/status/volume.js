@@ -39,10 +39,8 @@ const StreamSlider = new Lang.Class({
         this._slider.connect('drag-end', Lang.bind(this, this._notifyVolumeChange));
 
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
-
-        this.item.addActor(this._icon, { align: St.Align.MIDDLE });
-        this.item.addActor(this._slider.actor, { expand: true });
-
+        this.item.actor.add(this._icon);
+        this.item.actor.add(this._slider.actor, { expand: true });
         this.item.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
             this._slider.startDragging(event);
         }));
