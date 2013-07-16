@@ -777,6 +777,11 @@ const NMDeviceWireless = new Lang.Class({
             this._apRemovedId = 0;
         }
 
+        if (this._strengthChangedId) {
+            this._activeAccessPoint.disconnect(this._strengthChangedId);
+            this._strengthChangedId = 0;
+        }
+
         this.parent();
     },
 
@@ -806,18 +811,31 @@ const NMDeviceWireless = new Lang.Class({
     },
 
     _activeApChanged: function() {
-        this._activeNetwork = null;
+        let ap = this._device.active_access_point;
+        if (this._activeAccessPoint == ap)
+            return;
 
-        let activeAp = this._device.active_access_point;
+        if (this._activeAccessPoint) {
+            this._activeAccessPoint.disconnect(this._strengthChangedId);
+            this._strengthChangedId = 0;
+        }
 
-        if (activeAp) {
+        this._activeAccessPoint = ap;
+
+        if (this._activeAccessPoint) {
+            this._strengthChangedId = this._activeAccessPoint.connect('notify::strength',
+                                                                      Lang.bind(this, this._strengthChanged));
+
             let res = this._findExistingNetwork(activeAp);
-
             if (res != null)
                 this._activeNetwork = this._networks[res.network];
         }
 
-        // we don't refresh the view here, _activeConnectionChanged will
+        this.emit('icon-changed');
+    },
+
+    _strengthChanged: function() {
+        this.emit('icon-changed');
     },
 
     _getApSecurityType: function(accessPoint) {
@@ -1215,30 +1233,6 @@ const NMDeviceWireless = new Lang.Class({
 
             this._createNetworkItem(network, j + activeOffset);
         }
-    },
-
-    _updateAccessPoint: function() {
-        let ap = this._device.active_access_point;
-        if (this._activeAccessPoint == ap)
-            return;
-
-        if (this._activeAccessPoint) {
-            this._activeAccessPoint.disconnect(this._strengthChangedId);
-            this._strengthChangedId = 0;
-        }
-
-        this._activeAccessPoint = ap;
-
-        if (this._activeAccessPoint) {
-            this._strengthChangedId = this._activeAccessPoint.connect('notify::strength',
-                                                                      Lang.bind(this, this._strengthChanged));
-        }
-
-        this._syncStatusLabel();
-    },
-
-    _strengthChanged: function() {
-        this.emit('icon-changed');
     },
 
     getIndicatorIcon: function() {
