@@ -50,6 +50,7 @@ const Indicator = new Lang.Class({
         this._screenSaverSettings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
         this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
         this._privacySettings = new Gio.Settings({ schema: PRIVACY_SCHEMA });
+        this._orientationSettings = new Gio.Settings({ schema: 'org.gnome.settings-daemon.peripherals.touchscreen' });
 
         this._session = new GnomeSession.SessionManager();
         this._haveShutdown = true;
@@ -92,6 +93,21 @@ const Indicator = new Lang.Class({
             }));
         this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
                                        Lang.bind(this, this._updateHaveShutdown));
+
+        this._orientationSettings.connect('changed::orientation-lock',
+                                          Lang.bind(this, this._updateOrientationLock));
+        this._orientationExists = false;
+        Gio.DBus.session.watch_name('org.gnome.SettingsDaemon.Orientation',
+                                    Gio.BusNameWatcherFlags.NONE,
+                                    Lang.bind(this, function() {
+                                        this._orentationExists = true;
+                                        this._updateOrientationLock();
+                                    }),
+                                    Lang.bind(this, function() {
+                                        this._orentationExists = false;
+                                        this._updateOrientationLock();
+                                    }));
+        this._updateOrientationLock();
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
         this._sessionUpdated();
@@ -148,6 +164,14 @@ const Indicator = new Lang.Class({
         } else {
             this._switchUserSubMenu.icon.icon_name = 'avatar-default-symbolic';
         }
+    },
+
+    _updateOrientationLock: function() {
+        this._orientationLockAction.visible = this._orientationExists;
+
+        let locked = this._orientationSettings.get_boolean('orientation-lock');
+        let icon = this._orientationLockAction.child;
+        icon.icon_name = locked ? 'rotation-locked-symbolic' : 'rotation-allowed-symbolic';
     },
 
     _updateLockScreen: function() {
@@ -209,6 +233,10 @@ const Indicator = new Lang.Class({
         this._settingsAction.connect('clicked', Lang.bind(this, this._onSettingsClicked));
         hbox.add(this._settingsAction, { expand: true, x_fill: false });
 
+        this._orientationLockAction = this._createActionButton('', _("Orientation Lock"));
+        this._orientationLockAction.connect('clicked', Lang.bind(this, this._onOrientationLockClicked));
+        item.actor.add(this._orientationLockAction, { expand: true, x_fill: false });
+
         this._lockScreenAction = this._createActionButton('changes-prevent-symbolic', _("Lock"));
         this._lockScreenAction.connect('clicked', Lang.bind(this, this._onLockScreenClicked));
         hbox.add(this._lockScreenAction, { expand: true, x_fill: false });
@@ -229,6 +257,13 @@ const Indicator = new Lang.Class({
         let app = Shell.AppSystem.get_default().lookup_app('gnome-control-center.desktop');
         Main.overview.hide();
         app.activate();
+    },
+
+    _onOrientationLockClicked: function() {
+        this.menu.itemActivated();
+        let locked = this._orientationSettings.get_boolean('orientation-lock');
+        this._orientationSettings.set_boolean('orientation-lock', !locked);
+        this._updateOrientationLock();
     },
 
     _onLockScreenClicked: function() {
