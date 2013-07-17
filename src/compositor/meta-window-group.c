@@ -91,8 +91,9 @@ meta_window_group_paint (ClutterActor *actor)
 {
   cairo_region_t *visible_region;
   ClutterActor *stage;
+  ClutterActorIter iter;
+  ClutterActor *child;
   cairo_rectangle_int_t visible_rect;
-  GList *children, *l;
   int paint_x_origin, paint_y_origin;
   int actor_x_origin, actor_y_origin;
   int paint_x_offset, paint_y_offset;
@@ -123,13 +124,6 @@ meta_window_group_paint (ClutterActor *actor)
   paint_x_offset = paint_x_origin - actor_x_origin;
   paint_y_offset = paint_y_origin - actor_y_origin;
 
-  /* We walk the list from top to bottom (opposite of painting order),
-   * and subtract the opaque area of each window out of the visible
-   * region that we pass to the windows below.
-   */
-  children = clutter_actor_get_children (actor);
-  children = g_list_reverse (children);
-
   /* Get the clipped redraw bounds from Clutter so that we can avoid
    * painting shadows on windows that don't need to be painted in this
    * frame. In the case of a multihead setup with mismatched monitor
@@ -151,12 +145,17 @@ meta_window_group_paint (ClutterActor *actor)
       cairo_region_subtract_rectangle (visible_region, &unredirected_rect);
     }
 
-  for (l = children; l; l = l->next)
+  /* We walk the list from top to bottom (opposite of painting order),
+   * and subtract the opaque area of each window out of the visible
+   * region that we pass to the windows below.
+   */
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_prev (&iter, &child))
     {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (l->data))
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
-      if (l->data == info->unredirected_window)
+      if (child == info->unredirected_window)
         continue;
 
       /* If an actor has effects applied, then that can change the area
@@ -175,12 +174,12 @@ meta_window_group_paint (ClutterActor *actor)
        * as well for the same reason, but omitted for simplicity in the
        * hopes that no-one will do that.
        */
-      if (clutter_actor_has_effects (l->data))
+      if (clutter_actor_has_effects (child))
         continue;
 
-      if (META_IS_WINDOW_ACTOR (l->data))
+      if (META_IS_WINDOW_ACTOR (child))
         {
-          MetaWindowActor *window_actor = l->data;
+          MetaWindowActor *window_actor = META_WINDOW_ACTOR (child);
           int x, y;
 
           if (!meta_actor_is_untransformed (CLUTTER_ACTOR (window_actor), &x, &y))
@@ -204,13 +203,12 @@ meta_window_group_paint (ClutterActor *actor)
           meta_window_actor_set_visible_region_beneath (window_actor, visible_region);
           cairo_region_translate (visible_region, x, y);
         }
-      else if (META_IS_BACKGROUND_ACTOR (l->data) ||
-               META_IS_BACKGROUND_GROUP (l->data))
+      else if (META_IS_BACKGROUND_ACTOR (child) ||
+               META_IS_BACKGROUND_GROUP (child))
         {
-          ClutterActor *background_actor = l->data;
           int x, y;
 
-          if (!meta_actor_is_untransformed (CLUTTER_ACTOR (background_actor), &x, &y))
+          if (!meta_actor_is_untransformed (child, &x, &y))
             continue;
 
           x += paint_x_offset;
@@ -218,10 +216,10 @@ meta_window_group_paint (ClutterActor *actor)
 
           cairo_region_translate (visible_region, - x, - y);
 
-          if (META_IS_BACKGROUND_GROUP (background_actor))
-            meta_background_group_set_visible_region (META_BACKGROUND_GROUP (background_actor), visible_region);
+          if (META_IS_BACKGROUND_GROUP (child))
+            meta_background_group_set_visible_region (META_BACKGROUND_GROUP (child), visible_region);
           else
-            meta_background_actor_set_visible_region (META_BACKGROUND_ACTOR (background_actor), visible_region);
+            meta_background_actor_set_visible_region (META_BACKGROUND_ACTOR (child), visible_region);
           cairo_region_translate (visible_region, x, y);
         }
     }
@@ -233,21 +231,20 @@ meta_window_group_paint (ClutterActor *actor)
   /* Now that we are done painting, unset the visible regions (they will
    * mess up painting clones of our actors)
    */
-  for (l = children; l; l = l->next)
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
     {
-      if (META_IS_WINDOW_ACTOR (l->data))
+      if (META_IS_WINDOW_ACTOR (child))
         {
-          MetaWindowActor *window_actor = l->data;
+          MetaWindowActor *window_actor = META_WINDOW_ACTOR (child);
           meta_window_actor_reset_visible_regions (window_actor);
         }
-      else if (META_IS_BACKGROUND_ACTOR (l->data))
+      else if (META_IS_BACKGROUND_ACTOR (child))
         {
-          MetaBackgroundActor *background_actor = l->data;
+          MetaBackgroundActor *background_actor = META_BACKGROUND_ACTOR (child);
           meta_background_actor_set_visible_region (background_actor, NULL);
         }
     }
-
-  g_list_free (children);
 }
 
 static gboolean
