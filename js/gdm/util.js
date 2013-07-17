@@ -164,7 +164,6 @@ const ShellUserVerifier = new Lang.Class({
 
     answerQuery: function(serviceName, answer) {
         if (!this.hasPendingMessages) {
-            this._clearMessageQueue();
             this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
         } else {
             let signalId = this.connect('no-more-messages',
