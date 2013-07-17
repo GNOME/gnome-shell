@@ -45,6 +45,8 @@
 
 #include "meta-wayland-pointer.h"
 
+#include <string.h>
+
 static MetaWaylandSeat *
 meta_wayland_pointer_get_seat (MetaWaylandPointer *pointer)
 {
