@@ -470,7 +470,7 @@ const LoginDialog = new Lang.Class({
         this._promptBox = new St.BoxLayout({ style_class: 'login-dialog-prompt-layout',
                                              vertical: true });
 
-        this._promptBox.connect('button-press-event',
+        this._promptBox.connect('key-press-event',
                                  Lang.bind(this, function(actor, event) {
                                     if (event.get_key_symbol() == Clutter.KEY_Escape) {
                                         this.cancel();
