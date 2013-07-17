@@ -2392,7 +2392,13 @@ st_theme_node_paint (StThemeNode           *node,
   if (width <= 0 || height <= 0)
     return;
 
-  if (st_theme_node_needs_new_box_shadow_for_size (state, node, width, height))
+  /* Check whether we need to recreate the textures of the paint
+   * state, either because :
+   *  1) the theme node associated to the paint state has changed
+   *  2) the allocation size change requires recreating textures
+   */
+  if (state->node != node ||
+      st_theme_node_needs_new_box_shadow_for_size (state, node, width, height))
     {
       /* If we had the ability to cache textures on the node, then we
          can just copy them over to the paint state and avoid all
