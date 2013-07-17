@@ -179,6 +179,7 @@ const NMConnectionSection = new Lang.Class({
 
         this.item.status.text = this._getStatus();
         this.item.icon.icon_name = this._getMenuIcon();
+        this.item.label.text = this._getDescription();
     },
 
     _getStatus: function() {
@@ -209,10 +210,6 @@ const NMConnectionSection = new Lang.Class({
 
     _makeConnectionItem: function(connection) {
         return new NMConnectionItem(this, connection);
-    },
-
-    syncDescription: function() {
-        this.item.label.text = this._getDescription();
     },
 
     checkConnection: function(connection) {
@@ -328,8 +325,13 @@ const NMConnectionDevice = new Lang.Class({
         this._device.disconnect(null);
     },
 
+    setDeviceDescription: function(desc) {
+        this._description = desc;
+        this._sync();
+    },
+
     _getDescription: function() {
-        return this._device._description;
+        return this._description;
     },
 
     _sync: function() {
@@ -574,8 +576,6 @@ const NMVPNSection = new Lang.Class({
 
     _init: function(client) {
         this.parent(client);
-
-        this.syncDescription();
         this._sync();
     },
 
@@ -768,9 +768,9 @@ const NMApplet = new Lang.Class({
         let names = NMGtk.utils_disambiguate_device_names(this._nmDevices);
         for (let i = 0; i < this._nmDevices.length; i++) {
             let device = this._nmDevices[i];
-            device._description = names[i];
+            let description = names[i];
             if (device._delegate)
-                device._delegate.syncDescription();
+                device._delegate.setDeviceDescription(description);
         }
     },
 
