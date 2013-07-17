@@ -117,12 +117,11 @@ const NMDevice = new Lang.Class({
     Name: 'NMDevice',
     Abstract: true,
 
-    _init: function(client, device, connections) {
+    _init: function(client, device) {
         this._client = client;
         this._setDevice(device);
 
         this._connections = [];
-        connections.forEach(Lang.bind(this, this.checkConnection));
 
         this._activeConnection = null;
         this._activeConnectionItem = null;
@@ -463,7 +462,8 @@ const NMDeviceModem = new Lang.Class({
     Extends: NMDevice,
     category: NMConnectionCategory.WWAN,
 
-    _init: function(client, device, connections) {
+    _init: function(client, device) {
+        this.parent(client, device);
         device._description = _("Mobile broadband");
         this.mobileDevice = null;
 
@@ -497,8 +497,6 @@ const NMDeviceModem = new Lang.Class({
                 this.emit('icon-changed');
             }));
         }
-
-        this.parent(client, device, connections);
     },
 
     destroy: function() {
@@ -565,13 +563,11 @@ const NMDeviceModem = new Lang.Class({
 const NMDeviceBluetooth = new Lang.Class({
     Name: 'NMDeviceBluetooth',
     Extends: NMDevice,
+    category: NMConnectionCategory.WWAN,
 
-    _init: function(client, device, connections) {
+    _init: function(client, device) {
+        this.parent(client, device);
         device._description = _("Bluetooth");
-
-        this.category = NMConnectionCategory.WWAN;
-
-        this.parent(client, device, connections);
     },
 
     _activateAutomaticConnection: function() {
@@ -595,13 +591,12 @@ const NMDeviceBluetooth = new Lang.Class({
 const NMDeviceWireless = new Lang.Class({
     Name: 'NMDeviceWireless',
     Extends: NMDevice,
+    category: NMConnectionCategory.WIRELESS,
 
-    _init: function(client, device, connections) {
-        this.category = NMConnectionCategory.WIRELESS;
+    _init: function(client, device) {
+        this.parent(client, device);
 
         this._networks = [ ];
-
-        this.parent(client, device, connections);
 
         let accessPoints = device.get_access_points() || [ ];
         accessPoints.forEach(Lang.bind(this, function(ap) {
@@ -1378,12 +1373,16 @@ const NMApplet = new Lang.Class({
 
         let wrapperClass = this._dtypes[device.get_device_type()];
         if (wrapperClass) {
-            let wrapper = new wrapperClass(this._client, device, this._connections);
+            let wrapper = new wrapperClass(this._client, device);
             this._addDeviceWrapper(wrapper);
 
             this._nmDevices.push(device);
             if (!skipSyncDeviceNames)
                 this._syncDeviceNames();
+
+            this._connections.forEach(function(connection) {
+                wrapper.checkConnection(connection);
+            });
         }
     },
 
