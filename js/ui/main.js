@@ -28,6 +28,7 @@ const LoginManager = imports.misc.loginManager;
 const LookingGlass = imports.ui.lookingGlass;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
+const Screencast = imports.ui.screencast;
 const ScreenShield = imports.ui.screenShield;
 const Scripting = imports.ui.scripting;
 const SessionMode = imports.ui.sessionMode;
@@ -59,6 +60,7 @@ let sessionMode = null;
 let shellDBusService = null;
 let shellMountOpDBusService = null;
 let screenSaverDBus = null;
+let screencastService = null;
 let modalCount = 0;
 let keybindingMode = Shell.KeyBindingMode.NONE;
 let modalActorFocusStack = [];
@@ -151,6 +153,7 @@ function _initializeUI() {
     // working until it's updated.
     uiGroup = layoutManager.uiGroup;
 
+    screencastService = new Screencast.ScreencastService();
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     osdWindow = new OsdWindow.OsdWindow();

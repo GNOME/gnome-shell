@@ -12,7 +12,6 @@ const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Hash = imports.misc.hash;
 const Main = imports.ui.main;
-const Screencast = imports.ui.screencast;
 const Screenshot = imports.ui.screenshot;
 
 const GnomeShellIface = <interface name="org.gnome.Shell">
@@ -73,7 +72,6 @@ const GnomeShell = new Lang.Class({
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
 
         this._extensionsService = new GnomeShellExtensions();
-        this._screencastService = new Screencast.ScreencastService();
         this._screenshotService = new Screenshot.ScreenshotService();
 
         this._grabbedAccelerators = new Hash.Map();

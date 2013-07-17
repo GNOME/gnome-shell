@@ -660,6 +660,10 @@ StScrollBar StButton#vhandle:active {
     icon-size: 32px;
 }
 
+.screencast-indicator {
+    color: #ff0000;
+}
+
 /* Overview */
 
 #overview {

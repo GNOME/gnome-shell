@@ -69,15 +69,11 @@ struct _ShellRecorder {
 
   int xinput_opcode;
 
-  CoglHandle recording_icon; /* icon shown while playing */
-
   GSettings *a11y_settings;
   gboolean draw_cursor;
   cairo_surface_t *cursor_image;
   int cursor_hot_x;
   int cursor_hot_y;
-
-  gboolean only_paint; /* Used to temporarily suppress recording */
 
   int framerate;
   char *pipeline_description;
@@ -170,57 +166,6 @@ G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
  */
 #define DEFAULT_MEMORY_TARGET (512*1024)
 
-/* Create an emblem to show at the lower-left corner of the stage while
- * recording. The emblem is drawn *after* we record the frame so doesn't
- * show up in the frame.
- */
-static CoglHandle
-create_recording_icon (void)
-{
-  cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 32, 32);
-  cairo_t *cr;
-  cairo_pattern_t *pat;
-  CoglHandle texture;
-
-  cr = cairo_create (surface);
-
-  /* clear to transparent */
-  cairo_save (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
-  cairo_restore (cr);
-
-  /* radial "glow" */
-  pat = cairo_pattern_create_radial (16, 16, 6,
-                                     16, 16, 14);
-  cairo_pattern_add_color_stop_rgba (pat, 0.0,
-                                     1, 0, 0, 1); /* opaque red */
-  cairo_pattern_add_color_stop_rgba (pat, 1.0,
-                                     1, 0, 0, 0); /* transparent red */
-
-  cairo_set_source (cr, pat);
-  cairo_paint (cr);
-  cairo_pattern_destroy (pat);
-
-  /* red circle */
-  cairo_arc (cr, 16, 16, 8,
-             0, 2 * M_PI);
-  cairo_set_source_rgb (cr, 1, 0, 0);
-  cairo_fill (cr);
-
-  cairo_destroy (cr);
-
-  texture = cogl_texture_new_from_data (32, 32,
-                                        COGL_TEXTURE_NONE,
-                                        CLUTTER_CAIRO_FORMAT_ARGB32,
-                                        COGL_PIXEL_FORMAT_ANY,
-                                        cairo_image_surface_get_stride (surface),
-                                        cairo_image_surface_get_data (surface));
-  cairo_surface_destroy (surface);
-
-  return texture;
-}
-
 static guint
 get_memory_target (void)
 {
@@ -278,7 +223,6 @@ shell_recorder_init (ShellRecorder *recorder)
 
   recorder->gdk_screen = gdk_screen_get_default ();
 
-  recorder->recording_icon = create_recording_icon ();
   recorder->memory_target = get_memory_target();
 
   recorder->a11y_settings = g_settings_new (A11Y_APPS_SCHEMA);
@@ -302,8 +246,6 @@ shell_recorder_finalize (GObject  *object)
   recorder_set_stage (recorder, NULL);
   recorder_set_pipeline (recorder, NULL);
   recorder_set_file_template (recorder, NULL);
-
-  cogl_handle_unref (recorder->recording_icon);
 
   g_clear_object (&recorder->a11y_settings);
 
@@ -340,20 +282,7 @@ recorder_update_memory_used (ShellRecorder *recorder,
     }
 
   if (memory_used != recorder->memory_used)
-    {
-      recorder->memory_used = memory_used;
-      if (repaint)
-        {
-          /* In other cases we just queue a redraw even if we only need
-           * to repaint and not redraw a frame, but having changes in
-           * memory usage cause frames to be painted and memory used
-           * seems like a bad idea.
-           */
-          recorder->only_paint = TRUE;
-          clutter_stage_ensure_redraw (recorder->stage);
-          recorder->only_paint = FALSE;
-        }
-    }
+    recorder->memory_used = memory_used;
 }
 
 /* Timeout used to avoid not drawing for more than MAXIMUM_PAUSE_TIME
@@ -475,56 +404,6 @@ recorder_draw_cursor (ShellRecorder *recorder,
   gst_buffer_unmap (buffer, &info);
 }
 
-/* Draw an overlay indicating how much of the target memory is used
- * for buffering frames.
- */
-static void
-recorder_draw_buffer_meter (ShellRecorder *recorder)
-{
-  int fill_level;
-  GdkRectangle primary_monitor;
-  float rects[16];
-
-  gdk_screen_get_monitor_workarea (recorder->gdk_screen,
-                                   gdk_screen_get_primary_monitor (recorder->gdk_screen),
-                                   &primary_monitor);
-
-  recorder_update_memory_used (recorder, FALSE);
-
-  /* As the buffer gets more full, we go from green, to yellow, to red */
-  if (recorder->memory_used > (recorder->memory_target * 3) / 4)
-    cogl_set_source_color4f (1, 0, 0, 1);
-  else if (recorder->memory_used > recorder->memory_target / 2)
-    cogl_set_source_color4f (1, 1, 0, 1);
-  else
-    cogl_set_source_color4f (0, 1, 0, 1);
-
-  fill_level = MIN (60, (recorder->memory_used * 60) / recorder->memory_target);
-
-  /* A hollow rectangle filled from the left to fill_level */
-  rects[0] = primary_monitor.x + primary_monitor.width - 64;
-  rects[1] = primary_monitor.y + primary_monitor.height - 10;
-  rects[2] = primary_monitor.x + primary_monitor.width - 2;
-  rects[3] = primary_monitor.y + primary_monitor.height - 9;
-
-  rects[4] = primary_monitor.x + primary_monitor.width - 64;
-  rects[5] = primary_monitor.y + primary_monitor.height - 9;
-  rects[6] = primary_monitor.x + primary_monitor.width - (63 - fill_level);
-  rects[7] = primary_monitor.y + primary_monitor.height - 3;
-
-  rects[8] = primary_monitor.x + primary_monitor.width - 3;
-  rects[9] = primary_monitor.y + primary_monitor.height - 9;
-  rects[10] = primary_monitor.x + primary_monitor.width - 2;
-  rects[11] = primary_monitor.y + primary_monitor.height - 3;
-
-  rects[12] = primary_monitor.x + primary_monitor.width - 64;
-  rects[13] = primary_monitor.y + primary_monitor.height - 3;
-  rects[14] = primary_monitor.x + primary_monitor.width - 2;
-  rects[15] = primary_monitor.y + primary_monitor.height - 2;
-
-  cogl_rectangles (rects, 4);
-}
-
 /* We want to time-stamp each frame based on the actual time it was
  * recorded. We probably should use the pipeline clock rather than
  * gettimeofday(): that would be needed to get sync'ed audio correct.
@@ -608,22 +487,7 @@ recorder_on_stage_paint (ClutterActor  *actor,
                          ShellRecorder *recorder)
 {
   if (recorder->state == RECORDER_STATE_RECORDING)
-    {
-      GdkRectangle primary_monitor;
-
-      gdk_screen_get_monitor_workarea (recorder->gdk_screen,
-                                       gdk_screen_get_primary_monitor (recorder->gdk_screen),
-                                       &primary_monitor);
-      if (!recorder->only_paint)
-        recorder_record_frame (recorder);
-
-      cogl_set_source_texture (recorder->recording_icon);
-      cogl_rectangle (primary_monitor.x + primary_monitor.width - 32, primary_monitor.y + primary_monitor.height - 42,
-                      primary_monitor.x + primary_monitor.width,      primary_monitor.y + primary_monitor.height - 10);
-    }
-
-  if (recorder->state == RECORDER_STATE_RECORDING || recorder->memory_used != 0)
-    recorder_draw_buffer_meter (recorder);
+    recorder_record_frame (recorder);
 }
 
 static void

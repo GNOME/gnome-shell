@@ -815,7 +815,9 @@ const AggregateMenu = new Lang.Class({
         this._volume = new imports.ui.status.volume.Indicator();
         this._brightness = new imports.ui.status.brightness.Indicator();
         this._system = new imports.ui.status.system.Indicator();
+        this._screencast = new imports.ui.status.screencast.Indicator();
 
+        this._indicators.add_child(this._screencast.indicators);
         this._indicators.add_child(this._network.indicators);
         this._indicators.add_child(this._bluetooth.indicators);
         this._indicators.add_child(this._rfkill.indicators);

@@ -4,6 +4,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 
 const Hash = imports.misc.hash;
 const Main = imports.ui.main;
@@ -44,6 +45,10 @@ const ScreencastService = new Lang.Class({
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
     },
 
+    get isRecording() {
+        return this._recorders.size() > 0;
+    },
+
     _ensureRecorderForSender: function(sender) {
         let recorder = this._recorders.get(sender);
         if (!recorder) {
@@ -52,6 +57,7 @@ const ScreencastService = new Lang.Class({
                 Gio.bus_watch_name(Gio.BusType.SESSION, sender, 0, null,
                                    Lang.bind(this, this._onNameVanished));
             this._recorders.set(sender, recorder);
+            this.emit('updated');
         }
         return recorder;
     },
@@ -62,6 +68,7 @@ const ScreencastService = new Lang.Class({
 
         for (let sender in this._recorders.keys())
             this._recorders.delete(sender);
+        this.emit('updated');
     },
 
     _onNameVanished: function(connection, name) {
@@ -76,6 +83,7 @@ const ScreencastService = new Lang.Class({
         Gio.bus_unwatch_name(recorder._watchNameId);
         recorder.close();
         this._recorders.delete(sender);
+        this.emit('updated');
 
         return true;
     },
@@ -137,3 +145,4 @@ const ScreencastService = new Lang.Class({
         invocation.return_value(GLib.Variant.new('(b)', [success]));
     }
 });
+Signals.addSignalMethods(ScreencastService.prototype);

@@ -96,6 +96,7 @@ nobase_dist_js_DATA = 	\
 	ui/status/rfkill.js	\
 	ui/status/volume.js	\
 	ui/status/bluetooth.js	\
+	ui/status/screencast.js	\
 	ui/status/system.js	\
 	ui/switcherPopup.js	\
 	ui/tweener.js		\
