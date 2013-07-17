@@ -41,7 +41,6 @@ const UnlockDialog = new Lang.Class({
         this._userName = GLib.get_user_name();
         this._user = this._userManager.get_user(this._userName);
 
-        this._failCounter = 0;
         this._firstQuestion = true;
 
         this._greeterClient = new Gdm.Client();
