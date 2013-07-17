@@ -148,9 +148,13 @@ st_theme_node_transition_update (StThemeNodeTransition *transition,
   if (st_theme_node_equal (new_node, old_node))
     {
       {
-        StThemeNodePaintState tmp = priv->old_paint_state;
-        priv->old_paint_state = priv->new_paint_state;
-        priv->new_paint_state = tmp;
+        StThemeNodePaintState tmp;
+
+        st_theme_node_paint_state_init (&tmp);
+        st_theme_node_paint_state_copy (&tmp, &priv->old_paint_state);
+        st_theme_node_paint_state_copy (&priv->old_paint_state, &priv->new_paint_state);
+        st_theme_node_paint_state_copy (&priv->new_paint_state, &tmp);
+        st_theme_node_paint_state_free (&tmp);
       }
 
       if (clutter_timeline_get_elapsed_time (priv->timeline) > 0)
