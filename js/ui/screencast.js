@@ -41,8 +41,7 @@ const ScreencastService = new Lang.Class({
 
         this._recorders = new Hash.Map();
 
-        Main.sessionMode.connect('updated',
-                                 Lang.bind(this, this._sessionModeChanged));
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
     },
 
     _ensureRecorderForSender: function(sender) {
@@ -57,7 +56,7 @@ const ScreencastService = new Lang.Class({
         return recorder;
     },
 
-    _sessionModeChanged: function() {
+    _sessionUpdated: function() {
         if (Main.sessionMode.allowScreencast)
             return;
 
