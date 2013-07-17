@@ -735,6 +735,13 @@ void                            clutter_actor_remove_transition                 
 CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_remove_all_transitions            (ClutterActor               *self);
 
+
+/* Experimental API */
+#ifdef CLUTTER_ENABLE_EXPERIMENTAL_API
+CLUTTER_AVAILABLE_IN_1_16
+gboolean                        clutter_actor_has_mapped_clones                 (ClutterActor *self);
+#endif
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_H__ */
