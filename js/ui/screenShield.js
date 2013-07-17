@@ -927,7 +927,6 @@ const ScreenShield = new Lang.Class({
             }
 
             this._dialog.connect('failed', Lang.bind(this, this._onUnlockFailed));
-            this._dialog.connect('unlocked', Lang.bind(this, this._onUnlockSucceded));
         }
 
         this._dialog.allowCancel = allowCancel;
@@ -935,10 +934,6 @@ const ScreenShield = new Lang.Class({
 
     _onUnlockFailed: function() {
         this._resetLockScreen(true, false);
-    },
-
-    _onUnlockSucceded: function() {
-        this.deactivate(true);
     },
 
     _resetLockScreen: function(animateLockScreen, animateLockDialog) {

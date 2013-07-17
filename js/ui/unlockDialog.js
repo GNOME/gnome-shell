@@ -223,22 +223,8 @@ const UnlockDialog = new Lang.Class({
         this._userVerifier.answerQuery(query, this._promptEntry.text);
     },
 
-    _finishUnlock: function() {
-        this._userVerifier.clear();
-        this.emit('unlocked');
-    },
-
     _onVerificationComplete: function() {
         this._userVerified = true;
-        if (!this._userVerifier.hasPendingMessages) {
-            this._finishUnlock();
-        } else {
-            let signalId = this._userVerifier.connect('no-more-messages',
-                                                      Lang.bind(this, function() {
-                                                          this._userVerifier.disconnect(signalId);
-                                                          this._finishUnlock();
-                                                      }));
-        }
     },
 
     _onReset: function() {
