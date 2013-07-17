@@ -167,11 +167,11 @@ const ShellUserVerifier = new Lang.Class({
             this._clearMessageQueue();
             this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
         } else {
-            let signalId = this._userVerifier.connect('no-more-messages',
-                                                      Lang.bind(this, function() {
-                                                          this._userVerifier.disconnect(signalId);
-                                                          this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
-                                                      }));
+            let signalId = this.connect('no-more-messages',
+                                        Lang.bind(this, function() {
+                                            this.disconnect(signalId);
+                                            this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
+                                        }));
         }
     },
 
@@ -426,21 +426,21 @@ const ShellUserVerifier = new Lang.Class({
             if (!this.hasPendingMessages) {
                 this._retry();
             } else {
-                let signalId = this._userVerifier.connect('no-more-messages',
-                                                          Lang.bind(this, function() {
-                                                              this._userVerifier.disconnect(signalId);
-                                                              this._retry();
-                                                          }));
+                let signalId = this.connect('no-more-messages',
+                                            Lang.bind(this, function() {
+                                                this.disconnect(signalId);
+                                                this._retry();
+                                            }));
             }
         } else {
             if (!this.hasPendingMessages) {
                 this._cancelAndReset();
             } else {
-                let signalId = this._userVerifier.connect('no-more-messages',
-                                                          Lang.bind(this, function() {
-                                                              this._userVerifier.disconnect(signalId);
-                                                              this._cancelAndReset();
-                                                          }));
+                let signalId = this.connect('no-more-messages',
+                                            Lang.bind(this, function() {
+                                                this.disconnect(signalId);
+                                                this._cancelAndReset();
+                                            }));
             }
         }
 
