@@ -1025,8 +1025,6 @@ static void clutter_actor_set_transform_internal (ClutterActor        *self,
 static void clutter_actor_set_child_transform_internal (ClutterActor        *self,
                                                         const ClutterMatrix *transform);
 
-static inline gboolean clutter_actor_has_mapped_clones (ClutterActor *self);
-
 static GQuark quark_actor_layout_info = 0;
 static GQuark quark_actor_transform_info = 0;
 static GQuark quark_actor_animation_info = 0;
@@ -17950,12 +17948,24 @@ _clutter_actor_queue_relayout_on_clones (ClutterActor *self)
     clutter_actor_queue_relayout (key);
 }
 
-static inline gboolean
+/**
+ * clutter_actor_has_mapped_clones:
+ * @self: a #ClutterActor
+ *
+ * Returns whether the actor has any mapped clones.
+ *
+ * Since: 1.16
+ */
+gboolean
 clutter_actor_has_mapped_clones (ClutterActor *self)
 {
-  ClutterActorPrivate *priv = self->priv;
+  ClutterActorPrivate *priv;
   GHashTableIter iter;
   gpointer key;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  priv = self->priv;
 
   if (priv->clones == NULL)
     return FALSE;
