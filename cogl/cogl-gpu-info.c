@@ -28,6 +28,8 @@
 #include <string.h>
 #include <errno.h>
 
+#include <test-fixtures/test-unit.h>
+
 #include "cogl-gpu-info-private.h"
 #include "cogl-context-private.h"
 #include "cogl-version.h"
@@ -415,8 +417,10 @@ check_mesa_driver_package (const CoglGpuInfoStrings *strings,
                                             NULL /* version_ret */))
     return FALSE;
 
-  /* In mesa this will be followed by a space and the name "Mesa" */
-  if (!g_str_has_prefix (v, " Mesa "))
+  /* In mesa this will be followed optionally by "(Core Profile)" and
+   * then "Mesa" */
+  v = strstr (v, " Mesa ");
+  if (!v)
     return FALSE;
 
   v += 6;
@@ -449,6 +453,24 @@ check_mesa_driver_package (const CoglGpuInfoStrings *strings,
                                       micro_part);
 
   return TRUE;
+}
+
+UNIT_TEST (check_mesa_driver_package_parser,
+           0, /* no requirements */
+           0 /* no failure cases */)
+{
+  const CoglGpuInfoStrings test_strings[] = {
+    { .version_string = "3.1 Mesa 9.2-devel15436ad" },
+    { .version_string = "3.1 (Core Profile) Mesa 9.2.0-devel (git-15436ad)" }
+  };
+  int i;
+  int version;
+
+  for (i = 0; i < G_N_ELEMENTS (test_strings); i++)
+    {
+      g_assert (check_mesa_driver_package (&test_strings[i], &version));
+      g_assert_cmpint (version, ==, COGL_VERSION_ENCODE (9, 2, 0));
+    }
 }
 
 static CoglBool
