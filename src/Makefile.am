@@ -3,7 +3,7 @@
 
 lib_LTLIBRARIES = libmutter.la
 
-SUBDIRS=wm-tester tools compositor/plugins
+SUBDIRS=compositor/plugins
 
 INCLUDES=								\
 	-DCLUTTER_ENABLE_EXPERIMENTAL_API				\
@@ -156,8 +156,6 @@ libmutter_la_SOURCES =				\
 	meta/theme.h				\
 	ui/theme-private.h			\
 	ui/ui.c					\
-	meta/preview-widget.h			\
-	ui/preview-widget.c			\
 	$(mutter_built_sources)
 
 libmutter_la_LDFLAGS = -no-undefined
@@ -195,7 +193,6 @@ libmutterinclude_base_headers =		\
 # Excluded from scanning for introspection but installed
 # atomnames.h: macros cause problems for scanning process
 libmutterinclude_extra_headers =		\
-	meta/preview-widget.h			\
 	meta/atomnames.h
 
 libmutterincludedir = $(includedir)/mutter/meta
@@ -203,11 +200,6 @@ libmutterincludedir = $(includedir)/mutter/meta
 libmutterinclude_HEADERS =			\
 	$(libmutterinclude_base_headers)	\
 	$(libmutterinclude_extra_headers)
-
-mutter_theme_viewer_SOURCES=  \
-	ui/theme-viewer.c
-
-bin_PROGRAMS=mutter mutter-theme-viewer
 
 mutter_SOURCES = core/mutter.c
 mutter_LDADD = $(MUTTER_LIBS) libmutter.la
@@ -244,8 +236,6 @@ Meta-$(api_version).gir: libmutter.la
 @META_GIR@_SCANNERFLAGS = --warn-all --warn-error
 
 endif
-
-mutter_theme_viewer_LDADD= $(MUTTER_LIBS) libmutter.la
 
 testboxes_SOURCES = core/testboxes.c
 testgradient_SOURCES = ui/testgradient.c

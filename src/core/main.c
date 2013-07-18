@@ -514,14 +514,14 @@ meta_run (void)
   if (g_getenv ("MUTTER_G_FATAL_WARNINGS") != NULL)
     g_log_set_always_fatal (G_LOG_LEVEL_MASK);
   
-  meta_ui_set_current_theme (meta_prefs_get_theme (), FALSE);
+  meta_ui_set_current_theme (meta_prefs_get_theme ());
 
   /* Try to find some theme that'll work if the theme preference
    * doesn't exist.  First try Simple (the default theme) then just
    * try anything in the themes directory.
    */
   if (!meta_ui_have_a_theme ())
-    meta_ui_set_current_theme ("Simple", FALSE);
+    meta_ui_set_current_theme ("Simple");
   
   if (!meta_ui_have_a_theme ())
     {
@@ -539,7 +539,7 @@ meta_run (void)
           while (((dir_entry = g_dir_read_name (themes_dir)) != NULL) && 
                  (!meta_ui_have_a_theme ()))
             {
-              meta_ui_set_current_theme (dir_entry, FALSE);
+              meta_ui_set_current_theme (dir_entry);
             }
           
           g_dir_close (themes_dir);
@@ -598,7 +598,7 @@ prefs_changed_callback (MetaPreference pref,
     {
     case META_PREF_THEME:
     case META_PREF_DRAGGABLE_BORDER_WIDTH:
-      meta_ui_set_current_theme (meta_prefs_get_theme (), FALSE);
+      meta_ui_set_current_theme (meta_prefs_get_theme ());
       meta_display_retheme_all ();
       break;
 

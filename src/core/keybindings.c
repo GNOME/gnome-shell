@@ -56,8 +56,6 @@
 #define SCHEMA_COMMON_KEYBINDINGS "org.gnome.desktop.wm.keybindings"
 #define SCHEMA_MUTTER_KEYBINDINGS "org.gnome.mutter.keybindings"
 
-static gboolean all_bindings_disabled = FALSE;
-
 static gboolean add_builtin_keybinding (MetaDisplay          *display,
                                         const char           *name,
                                         GSettings            *settings,
@@ -2045,21 +2043,6 @@ meta_display_process_key_event (MetaDisplay   *display,
   gboolean handled;
   const char *str;
   MetaScreen *screen;
-
-  if (all_bindings_disabled)
-    {
-      /* In this mode, we try to pretend we don't have grabs, so we
-       * immediately replay events and drop the grab. (This still
-       * messes up global passive grabs from other clients.) The
-       * FALSE return here is a little suspect, but we don't really
-       * know if we'll see the event again or not, and it's pretty
-       * poorly defined how this mode is supposed to interact with
-       * plugins.
-       */
-      XIAllowEvents (display->xdisplay, event->deviceid,
-                     XIReplayDevice, event->time);
-      return FALSE;
-    }
 
   /* if key event was on root window, we have a shortcut */
   screen = meta_display_screen_for_root (display, event->event);
@@ -4096,14 +4079,6 @@ handle_set_spew_mark (MetaDisplay    *display,
                       gpointer        dummy)
 {
   meta_verbose ("-- MARK MARK MARK MARK --\n");
-}
-
-void
-meta_set_keybindings_disabled (gboolean setting)
-{
-  all_bindings_disabled = setting;
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Keybindings %s\n", all_bindings_disabled ? "disabled" : "enabled");
 }
 
 /**

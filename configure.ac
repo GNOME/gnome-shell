@@ -118,9 +118,6 @@ AM_GLIB_GNU_GETTEXT
 ## here we get the flags we'll actually use
 # GRegex requires Glib-2.14.0
 PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.14.0)
-# gtk_window_set_icon_name requires gtk2+-2.6.0
-PKG_CHECK_MODULES(MUTTER_MESSAGE, gtk+-3.0)
-PKG_CHECK_MODULES(MUTTER_WINDOW_DEMO, gtk+-3.0)
 
 # Unconditionally use this dir to avoid a circular dep with gnomecc
 GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
@@ -307,9 +304,6 @@ if test "x$found_xsync" = "xyes"; then
 fi
 
 MUTTER_LIBS="$MUTTER_LIBS $XSYNC_LIBS $RANDR_LIBS $SHAPE_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS -lm"
-MUTTER_MESSAGE_LIBS="$MUTTER_MESSAGE_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS"
-MUTTER_WINDOW_DEMO_LIBS="$MUTTER_WINDOW_DEMO_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS -lm"
-MUTTER_PROPS_LIBS="$MUTTER_PROPS_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS"
 
 found_sm=no
 case "$MUTTER_LIBS" in
@@ -439,10 +433,8 @@ doc/man/Makefile
 doc/reference/Makefile
 doc/reference/meta-docs.sgml
 src/Makefile
-src/wm-tester/Makefile
 src/libmutter.pc
 src/mutter-plugins.pc
-src/tools/Makefile
 src/compositor/plugins/Makefile
 po/Makefile.in
 ])

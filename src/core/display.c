@@ -3043,27 +3043,6 @@ event_callback (XEvent   *event,
                         }
                     }
                   else if (event->xclient.message_type ==
-                           display->atom__MUTTER_RELOAD_THEME_MESSAGE)
-                    {
-                      meta_verbose ("Received reload theme request\n");
-                      meta_ui_set_current_theme (meta_prefs_get_theme (),
-                                                 TRUE);
-                      meta_display_retheme_all ();
-                    }
-                  else if (event->xclient.message_type ==
-                           display->atom__MUTTER_SET_KEYBINDINGS_MESSAGE)
-                    {
-                      meta_verbose ("Received set keybindings request = %d\n",
-                                    (int) event->xclient.data.l[0]);
-                      meta_set_keybindings_disabled (!event->xclient.data.l[0]);
-                    }
-                  else if (event->xclient.message_type ==
-                           display->atom__MUTTER_TOGGLE_VERBOSE)
-                    {
-                      meta_verbose ("Received toggle verbose message\n");
-                      meta_set_verbose (!meta_is_verbose ());
-                    }
-                  else if (event->xclient.message_type ==
                            display->atom_WM_PROTOCOLS) 
                     {
                       meta_verbose ("Received WM_PROTOCOLS message\n");

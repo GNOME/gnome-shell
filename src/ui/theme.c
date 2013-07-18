@@ -5071,8 +5071,7 @@ meta_theme_set_current (const char *name,
 
   meta_topic (META_DEBUG_THEMES, "Setting current theme to \"%s\"\n", name);
   
-  if (!force_reload &&
-      meta_current_theme &&
+  if (meta_current_theme &&
       strcmp (name, meta_current_theme->name) == 0)
     return;
   

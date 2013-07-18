@@ -1,7 +1,0 @@
-Makefile
-Makefile.in
-focus-window
-test-gravity
-test-resizing
-wm-tester
-test-size-hints

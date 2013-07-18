@@ -769,10 +769,9 @@ meta_ui_theme_get_frame_borders (MetaUI *ui,
 }
 
 void
-meta_ui_set_current_theme (const char *name,
-                           gboolean    force_reload)
+meta_ui_set_current_theme (const char *name)
 {
-  meta_theme_set_current (name, force_reload);
+  meta_theme_set_current (name);
   meta_invalidate_default_icons ();
 }
 
