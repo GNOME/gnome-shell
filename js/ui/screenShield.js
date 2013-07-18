@@ -5,6 +5,7 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GnomeDesktop = imports.gi.GnomeDesktop;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -104,7 +105,8 @@ const NotificationsBox = new Lang.Class({
         this._musicBin = new St.Bin({ style_class: 'screen-shield-notifications-box',
                                       visible: false });
 
-        let scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START });
+        let scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START,
+                                             hscrollbar_policy: Gtk.PolicyType.NEVER });
         this._notificationBox = new St.BoxLayout({ vertical: true,
                                                    style_class: 'screen-shield-notifications-box' });
         scrollView.add_actor(this._notificationBox);
