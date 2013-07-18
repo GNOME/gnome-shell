@@ -1150,7 +1150,7 @@ const LookingGlass = new Lang.Class({
 
         Main.popModal(this._entry);
 
-        Tweener.addTween(this.actor, { time: 0.5 / St.get_slow_down_factor(),
+        Tweener.addTween(this.actor, { time: Math.max(0.5 / St.get_slow_down_factor(), 0.5),
                                        transition: 'easeOutQuad',
                                        y: this._hiddenY,
                                        onComplete: Lang.bind(this, function () {
