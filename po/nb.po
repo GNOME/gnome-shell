@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.9.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-04 11:09+0200\n"
+"POT-Creation-Date: 2013-07-18 15:29+0200\n"
 "PO-Revision-Date: 2013-07-04 11:09+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
@@ -342,7 +342,7 @@ msgstr "Økt"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:528
+#: ../js/gdm/loginDialog.js:533
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
@@ -401,13 +401,13 @@ msgstr "Start på nytt"
 msgid "Power Off"
 msgstr "Slå av"
 
-#: ../js/gdm/util.js:248
+#: ../js/gdm/util.js:247
 msgid "Authentication error"
 msgstr "Autentiseringsfeil"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:365
+#: ../js/gdm/util.js:364
 msgid "(or swipe finger)"
 msgstr "(eller dra finger)"
 
@@ -1170,31 +1170,31 @@ msgstr "Vis kildekode"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/messageTray.js:1182
+#: ../js/ui/messageTray.js:1241
 msgid "Open"
 msgstr "Åpne"
 
-#: ../js/ui/messageTray.js:1189
+#: ../js/ui/messageTray.js:1248
 msgid "Remove"
 msgstr "Fjern"
 
-#: ../js/ui/messageTray.js:1501
+#: ../js/ui/messageTray.js:1560
 msgid "Clear Messages"
 msgstr "Tøm meldinger"
 
-#: ../js/ui/messageTray.js:1528
+#: ../js/ui/messageTray.js:1587
 msgid "Notification Settings"
 msgstr "Innstillinger for varsling"
 
-#: ../js/ui/messageTray.js:1711
+#: ../js/ui/messageTray.js:1770
 msgid "No Messages"
 msgstr "Ingen meldinger"
 
-#: ../js/ui/messageTray.js:1784
+#: ../js/ui/messageTray.js:1842
 msgid "Message Tray"
 msgstr "Meldingstrau"
 
-#: ../js/ui/messageTray.js:2811
+#: ../js/ui/messageTray.js:2854
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -1245,7 +1245,7 @@ msgstr "Topp-panel"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:549
+#: ../js/ui/popupMenu.js:517
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1285,11 +1285,11 @@ msgstr "GNOME må låse skjermen"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:775 ../js/ui/screenShield.js:1215
+#: ../js/ui/screenShield.js:788 ../js/ui/screenShield.js:1216
 msgid "Unable to lock"
 msgstr "Kan ikke låse"
 
-#: ../js/ui/screenShield.js:776 ../js/ui/screenShield.js:1216
+#: ../js/ui/screenShield.js:789 ../js/ui/screenShield.js:1217
 msgid "Lock was blocked by an application"
 msgstr "Låsing ble stoppet av et program"
 
