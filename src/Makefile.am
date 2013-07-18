@@ -139,7 +139,6 @@ libmutter_la_SOURCES =				\
 	meta/common.h				\
 	core/core.h				\
 	ui/ui.h					\
-	inlinepixbufs.h				\
 	ui/frames.c				\
 	ui/frames.h				\
 	ui/menu.c				\
@@ -284,14 +283,7 @@ gsettings_SCHEMAS = org.gnome.mutter.gschema.xml
 convertdir = $(datadir)/GConf/gsettings
 convert_DATA = mutter-schemas.convert
 
-IMAGES=stock_maximize.png stock_minimize.png stock_delete.png
-VARIABLES=stock_maximize_data $(srcdir)/stock_maximize.png \
-          stock_minimize_data $(srcdir)/stock_minimize.png \
-          stock_delete_data $(srcdir)/stock_delete.png
-
-BUILT_SOURCES = inlinepixbufs.h
 CLEANFILES =					\
-	inlinepixbufs.h				\
 	mutter.desktop				\
 	mutter-wm.desktop			\
 	org.gnome.mutter.gschema.xml		\
@@ -299,9 +291,6 @@ CLEANFILES =					\
 	$(mutter_built_sources)			\
 	$(typelib_DATA)				\
 	$(gir_DATA)
-
-inlinepixbufs.h: $(IMAGES)
-	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 
@@ -320,7 +309,7 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	mutter-enum-types.h.in \
 	mutter-enum-types.c.in
 
-BUILT_SOURCES += $(mutter_built_sources)
+BUILT_SOURCES = $(mutter_built_sources)
 MUTTER_STAMP_FILES = stamp-mutter-enum-types.h
 CLEANFILES += $(MUTTER_STAMP_FILES)
 

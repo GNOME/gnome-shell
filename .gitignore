@@ -46,7 +46,6 @@ POTFILES
 po/*.pot
 50-metacity-desktop-key.xml
 50-metacity-key.xml
-inlinepixbufs.h
 libmutter.pc
 mutter
 mutter-theme-viewer
