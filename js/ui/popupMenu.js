@@ -313,7 +313,7 @@ const PopupBaseMenuItem = new Lang.Class({
                 availWidth = box.x2 - x;
             } else {
                 if (this._columnWidths)
-                    availWidth += this._columnWidths[col++];
+                    availWidth = this._columnWidths[col++];
                 else
                     availWidth = naturalWidth;
             }
