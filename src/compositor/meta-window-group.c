@@ -155,7 +155,8 @@ meta_window_group_paint (ClutterActor *actor)
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
-      if (META_WINDOW_ACTOR (child) == info->unredirected_window)
+      if (info->unredirected_window != NULL &&
+          child == CLUTTER_ACTOR (info->unredirected_window))
         continue;
 
       /* If an actor has effects applied, then that can change the area
