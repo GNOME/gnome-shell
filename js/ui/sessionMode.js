@@ -21,6 +21,7 @@ const _modes = {
         showCalendarEvents: false,
         allowSettings: false,
         allowExtensions: false,
+        allowScreencast: false,
         enabledExtensions: [],
         hasRunDialog: false,
         hasWorkspaces: false,
@@ -83,6 +84,7 @@ const _modes = {
         showCalendarEvents: true,
         allowSettings: true,
         allowExtensions: true,
+        allowScreencast: true,
         hasRunDialog: true,
         hasWorkspaces: true,
         hasWindows: true,
@@ -91,7 +93,7 @@ const _modes = {
         isPrimary: true,
         unlockDialog: imports.ui.unlockDialog.UnlockDialog,
         components: ['networkAgent', 'polkitAgent', 'telepathyClient',
-                     'keyring', 'recorder', 'autorunManager', 'automountManager'],
+                     'keyring', 'autorunManager', 'automountManager'],
         panel: {
             left: ['activities', 'appMenu'],
             center: ['dateMenu'],
@@ -181,10 +183,6 @@ const SessionMode = new Lang.Class({
 
     get currentMode() {
         return this._modeStack[this._modeStack.length - 1];
-    },
-
-    get allowScreencast() {
-        return this.components.indexOf('recorder') != -1;
     },
 
     _sync: function() {

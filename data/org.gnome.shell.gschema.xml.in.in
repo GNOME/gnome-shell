@@ -74,7 +74,6 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
       </_description>
     </key>
     <child name="calendar" schema="org.gnome.shell.calendar"/>
-    <child name="recorder" schema="org.gnome.shell.recorder"/>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
     <child name="keyboard" schema="org.gnome.shell.keyboard"/>
   </schema>
@@ -128,13 +127,6 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
         Keybinding to focus the active notification.
       </_description>
     </key>
-    <key name="toggle-recording" type="as">
-      <default><![CDATA[['<Control><Shift><Alt>r']]]></default>
-      <_summary>Keybinding to toggle the screen recorder</_summary>
-      <_description>
-        Keybinding to start/stop the builtin screen recorder.
-      </_description>
-    </key>
   </schema>
 
   <schema id="org.gnome.shell.keyboard" path="/org/gnome/shell/keyboard/"
@@ -144,44 +136,6 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
       <_summary>Which keyboard to use</_summary>
       <_description>
         The type of keyboard to use.
-      </_description>
-    </key>
-  </schema>
-
-  <schema id="org.gnome.shell.recorder" path="/org/gnome/shell/recorder/"
-          gettext-domain="@GETTEXT_PACKAGE@">
-    <key name="framerate" type="i">
-      <default>30</default>
-      <_summary>Framerate used for recording screencasts.</_summary>
-      <_description>
-        The framerate of the resulting screencast recordered
-        by GNOME Shell's screencast recorder in frames-per-second.
-      </_description>
-    </key>
-    <key name="pipeline" type="s">
-      <default>''</default>
-      <_summary>The gstreamer pipeline used to encode the screencast</_summary>
-      <_description>
-        Sets the GStreamer pipeline used to encode recordings.
-        It follows the syntax used for gst-launch. The pipeline should have
-        an unconnected sink pad where the recorded video is recorded. It will
-        normally have a unconnected source pad; output from that pad
-        will be written into the output file. However the pipeline can also
-        take care of its own output - this might be used to send the output
-        to an icecast server via shout2send or similar. When unset or set
-        to an empty value, the default pipeline will be used. This is currently
-        'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux'
-        and records to WEBM using the VP8 codec. %T is used as a placeholder
-        for a guess at the optimal thread count on the system.
-      </_description>
-    </key>
-    <key name="file-extension" type="s">
-      <default>'webm'</default>
-      <_summary>File extension used for storing the screencast</_summary>
-      <_description>
-        The filename for recorded screencasts will be a unique filename
-        based on the current date, and use this extension. It should be
-        changed when recording to a different container format.
       </_description>
     </key>
   </schema>

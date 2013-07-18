@@ -115,7 +115,6 @@ nobase_dist_js_DATA = 	\
 	ui/components/automountManager.js	\
 	ui/components/networkAgent.js		\
 	ui/components/polkitAgent.js		\
-	ui/components/recorder.js		\
 	ui/components/telepathyClient.js	\
 	ui/components/keyring.js		\
 	$(NULL)
