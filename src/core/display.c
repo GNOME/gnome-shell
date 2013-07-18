@@ -2495,8 +2495,7 @@ event_callback (XEvent   *event,
                    * it has no modifiers and was on the client window
                    */
 
-                  meta_verbose ("Allowing events mode %s time %u\n",
-                                mode == AsyncPointer ? "AsyncPointer" : "ReplayPointer",
+                  meta_verbose ("Allowing events time %u\n",
                                 (unsigned int)device_event->time);
 
                   XIAllowEvents (display->xdisplay, device_event->deviceid,
