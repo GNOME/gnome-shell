@@ -449,7 +449,8 @@ const LoginDialog = new Lang.Class({
                                    Lang.bind(this, this._updateLogoTexture));
 
         this._userSelectionBox = new St.BoxLayout({ style_class: 'login-dialog-user-selection-box',
-                                                    vertical: true });
+                                                    vertical: true,
+                                                    visible: false });
         this._userSelectionBox.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
                                                                             align_axis: Clutter.AlignAxis.BOTH,
                                                                             factor: 0.5 }));
@@ -1127,7 +1128,8 @@ const LoginDialog = new Lang.Class({
 
     _hideUserListAndLogIn: function() {
         this._setUserListExpanded(false);
-        GdmUtil.cloneAndFadeOutActor(this._userSelectionBox);
+        if (this._userSelectionBox.visible)
+            GdmUtil.cloneAndFadeOutActor(this._userSelectionBox);
         this._askForUsernameAndLogIn();
     },
 
