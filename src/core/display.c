@@ -2494,30 +2494,13 @@ event_callback (XEvent   *event,
                   /* This is from our synchronous grab since
                    * it has no modifiers and was on the client window
                    */
-                  int mode;
-              
-                  /* When clicking a different app in click-to-focus
-                   * in application-based mode, and the different
-                   * app is not a dock or desktop, eat the focus click.
-                   */
-                  if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_CLICK &&
-                      meta_prefs_get_application_based () &&
-                      !window->has_focus &&
-                      window->type != META_WINDOW_DOCK &&
-                      window->type != META_WINDOW_DESKTOP &&
-                      (display->focus_window == NULL ||
-                       !meta_window_same_application (window,
-                                                      display->focus_window)))
-                    mode = XIAsyncDevice; /* eat focus click */
-                  else
-                    mode = XIReplayDevice; /* give event back */
 
                   meta_verbose ("Allowing events mode %s time %u\n",
                                 mode == AsyncPointer ? "AsyncPointer" : "ReplayPointer",
                                 (unsigned int)device_event->time);
 
                   XIAllowEvents (display->xdisplay, device_event->deviceid,
-                                 mode, device_event->time);
+                                 XIReplayDevice, device_event->time);
                 }
 
               if (begin_move && window->has_move_func)

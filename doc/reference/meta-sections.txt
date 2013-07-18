@@ -409,7 +409,6 @@ meta_prefs_get_theme
 meta_prefs_get_titlebar_font
 meta_prefs_get_num_workspaces
 meta_prefs_get_dynamic_workspaces
-meta_prefs_get_application_based
 meta_prefs_get_disable_workarounds
 meta_prefs_get_auto_raise
 meta_prefs_get_auto_raise_delay

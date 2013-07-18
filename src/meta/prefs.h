@@ -49,7 +49,6 @@
  * @META_PREF_TITLEBAR_FONT: title-bar font
  * @META_PREF_NUM_WORKSPACES: number of workspaces
  * @META_PREF_DYNAMIC_WORKSPACES: dynamic workspaces
- * @META_PREF_APPLICATION_BASED: application-based
  * @META_PREF_KEYBINDINGS: keybindings
  * @META_PREF_DISABLE_WORKAROUNDS: disable workarounds
  * @META_PREF_BUTTON_LAYOUT: button layout
@@ -88,7 +87,6 @@ typedef enum
   META_PREF_TITLEBAR_FONT,
   META_PREF_NUM_WORKSPACES,
   META_PREF_DYNAMIC_WORKSPACES,
-  META_PREF_APPLICATION_BASED,
   META_PREF_KEYBINDINGS,
   META_PREF_DISABLE_WORKAROUNDS,
   META_PREF_BUTTON_LAYOUT,
@@ -136,7 +134,6 @@ const char*                 meta_prefs_get_theme              (void);
 const PangoFontDescription* meta_prefs_get_titlebar_font      (void);
 int                         meta_prefs_get_num_workspaces     (void);
 gboolean                    meta_prefs_get_dynamic_workspaces (void);
-gboolean                    meta_prefs_get_application_based  (void);
 gboolean                    meta_prefs_get_disable_workarounds (void);
 gboolean                    meta_prefs_get_auto_raise         (void);
 int                         meta_prefs_get_auto_raise_delay   (void);

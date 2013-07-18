@@ -89,7 +89,6 @@ static GDesktopTitlebarAction action_double_click_titlebar = G_DESKTOP_TITLEBAR_
 static GDesktopTitlebarAction action_middle_click_titlebar = G_DESKTOP_TITLEBAR_ACTION_LOWER;
 static GDesktopTitlebarAction action_right_click_titlebar = G_DESKTOP_TITLEBAR_ACTION_MENU;
 static gboolean dynamic_workspaces = FALSE;
-static gboolean application_based = FALSE;
 static gboolean disable_workarounds = FALSE;
 static gboolean auto_raise = FALSE;
 static gboolean auto_raise_delay = 500;
@@ -297,13 +296,6 @@ static MetaBoolPreference preferences_bool[] =
         META_PREF_DYNAMIC_WORKSPACES,
       },
       &dynamic_workspaces,
-    },
-    {
-      { "application-based",
-        SCHEMA_GENERAL,
-        META_PREF_APPLICATION_BASED,
-      },
-      NULL, /* feature is known but disabled */
     },
     {
       { "disable-workarounds",
@@ -1724,14 +1716,6 @@ meta_prefs_get_dynamic_workspaces (void)
 }
 
 gboolean
-meta_prefs_get_application_based (void)
-{
-  return FALSE; /* For now, we never want this to do anything */
-  
-  return application_based;
-}
-
-gboolean
 meta_prefs_get_disable_workarounds (void)
 {
   return disable_workarounds;
@@ -1767,9 +1751,6 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_NUM_WORKSPACES:
       return "NUM_WORKSPACES";
-
-    case META_PREF_APPLICATION_BASED:
-      return "APPLICATION_BASED";
 
     case META_PREF_KEYBINDINGS:
       return "KEYBINDINGS";
