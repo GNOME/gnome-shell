@@ -281,4 +281,18 @@ const UnlockDialog = new Lang.Class({
     addCharacter: function(unichar) {
         this._promptEntry.clutter_text.insert_unichar(unichar);
     },
+
+    finish: function(onComplete) {
+        if (!this._userVerifier.hasPendingMessages) {
+            onComplete();
+            return;
+        }
+
+        let signalId = this._userVerifier.connect('no-more-messages',
+                                                  Lang.bind(this, function() {
+                                                      this._userVerifier.disconnect(signalId);
+                                                      onComplete();
+                                                  }));
+
+    }
 });
