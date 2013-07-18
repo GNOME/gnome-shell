@@ -371,11 +371,7 @@ const ShellUserVerifier = new Lang.Class({
             // to indicate the user can swipe their finger instead
             this.emit('show-login-hint', _("(or swipe finger)"));
         } else if (serviceName == PASSWORD_SERVICE_NAME) {
-        GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                         10000,
-                         Lang.bind(this, function() {
             this._queueMessage(info, 'login-dialog-message-info');
-            }));
         }
     },
 
@@ -384,11 +380,7 @@ const ShellUserVerifier = new Lang.Class({
         // users who haven't enrolled their fingerprint.
         if (serviceName != PASSWORD_SERVICE_NAME)
             return;
-        GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                         10000,
-                         Lang.bind(this, function() {
         this._queueMessage(problem, 'login-dialog-message-warning');
-        }));
     },
 
     _onInfoQuery: function(client, serviceName, question) {
@@ -396,11 +388,7 @@ const ShellUserVerifier = new Lang.Class({
         if (serviceName != PASSWORD_SERVICE_NAME)
             return;
 
-        GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                         10000,
-                         Lang.bind(this, function() {
         this.emit('ask-question', serviceName, question, '');
-        }));
     },
 
     _onSecretInfoQuery: function(client, serviceName, secretQuestion) {
@@ -408,11 +396,7 @@ const ShellUserVerifier = new Lang.Class({
         if (serviceName != PASSWORD_SERVICE_NAME)
             return;
 
-        GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                         10000,
-                         Lang.bind(this, function() {
         this.emit('ask-question', serviceName, secretQuestion, '\u25cf');
-        }));
     },
 
     _onReset: function() {
