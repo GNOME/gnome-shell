@@ -1157,8 +1157,8 @@ const NMApplet = new Lang.Class({
     _init: function() {
         this.parent();
 
-        this._primaryIndicator = this.addIndicator(null);
-        this._vpnIndicator = this.addIndicator(null);
+        this._primaryIndicator = this._addIndicator();
+        this._vpnIndicator = this._addIndicator();
 
         // Device types
         this._dtypes = { };

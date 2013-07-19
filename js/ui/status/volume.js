@@ -301,7 +301,7 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent();
 
-        this._primaryIndicator = this.addIndicator(null);
+        this._primaryIndicator = this._addIndicator();
 
         this._control = getMixerControl();
         this._volumeMenu = new VolumeMenu(this._control);

@@ -251,9 +251,8 @@ const SystemIndicator = new Lang.Class({
         });
     },
 
-    addIndicator: function(gicon) {
-        let icon = new St.Icon({ gicon: gicon,
-                                 style_class: 'system-status-icon' });
+    _addIndicator: function() {
+        let icon = new St.Icon({ style_class: 'system-status-icon' });
         this.indicators.add_actor(icon);
         icon.connect('notify::visible', Lang.bind(this, this._syncIndicatorsVisible));
         this._syncIndicatorsVisible();

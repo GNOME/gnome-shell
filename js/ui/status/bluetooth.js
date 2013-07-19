@@ -20,7 +20,8 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent();
 
-        this._indicator = this.addIndicator(new Gio.ThemedIcon({ name: 'bluetooth-active-symbolic' }));
+        this._indicator = this._addIndicator();
+        this._indicator.icon_name = 'bluetooth-active-symbolic';
 
         // The Bluetooth menu only appears when Bluetooth is in use,
         // so just statically build it with a "Turn Off" menu item.

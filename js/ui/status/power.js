@@ -30,7 +30,7 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent();
 
-        this._indicator = this.addIndicator(null);
+        this._indicator = this._addIndicator();
 
         this._proxy = new PowerManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
                                             Lang.bind(this, function(proxy, error) {
