@@ -76,6 +76,11 @@
 	* s name: the name of the connector to which the output is attached
 	          (like VGA1 or HDMI)
 	* au modes: valid modes for this output
+	* au clones: valid clones for this output, ie other outputs that
+	             can be assigned the same CRTC as this one; if you
+	             want to mirror two outputs that don't have each other
+	             in the clone list, you must configure two different
+	             CRTCs for the same geometry
 	* a{sv} properties: other high-level properties that affect this
 	                    output; they are not necessarily reflected in
 			    the hardware.
@@ -123,7 +128,7 @@
     <method name="GetResources">
       <arg name="serial" direction="out" type="u" />
       <arg name="crtcs" direction="out" type="a(uxiiiiiuaua{sv})" />
-      <arg name="outputs" direction="out" type="a(uxiausaua{sv})" />
+      <arg name="outputs" direction="out" type="a(uxiausauaua{sv})" />
       <arg name="modes" direction="out" type="a(uxuud)" />
     </method>
 

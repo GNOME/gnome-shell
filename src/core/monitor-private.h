@@ -70,6 +70,9 @@ struct _MetaOutput
   MetaCRTC **possible_crtcs;
   unsigned int n_possible_crtcs;
 
+  MetaOutput **possible_clones;
+  unsigned int n_possible_clones;
+
   /* The low-level bits used to build the high-level info
      in MetaMonitorInfo
 
