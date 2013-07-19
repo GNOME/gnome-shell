@@ -317,7 +317,7 @@ const PopupBaseMenuItem = new Lang.Class({
             }
 
             if (direction == Clutter.TextDirection.RTL)
-                childBox.x1 = width - x - availWidth;
+                childBox.x1 = box.x1 + (box.x2 - x - availWidth);
             else
                 childBox.x1 = x;
             childBox.x2 = childBox.x1 + availWidth;
