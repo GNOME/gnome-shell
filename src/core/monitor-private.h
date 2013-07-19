@@ -37,35 +37,99 @@
 #ifndef META_MONITOR_PRIVATE_H
 #define META_MONITOR_PRIVATE_H
 
+#include <cogl/cogl.h>
+
 #include "display-private.h"
 #include <meta/screen.h>
 #include "stack-tracker.h"
 #include "ui.h"
 
-#include <cogl/cogl.h>
-
 typedef struct _MetaOutput MetaOutput;
+typedef struct _MetaCRTC MetaCRTC;
+typedef struct _MetaMonitorMode MetaMonitorMode;
 typedef struct _MetaMonitorInfo MetaMonitorInfo;
 
 struct _MetaOutput
 {
-  MetaMonitorInfo *monitor;
+  /* The CRTC driving this output, NULL if the output is not enabled */
+  MetaCRTC *crtc;
+  /* The low-level ID of this output, used to apply back configuration */
+  glong output_id;
   char *name;
+  char *vendor;
+  char *product;
+  char *serial;
   int width_mm;
   int height_mm;
   CoglSubpixelOrder subpixel_order;
+
+  MetaMonitorMode *preferred_mode;
+  MetaMonitorMode **modes;
+  unsigned int n_modes;
+
+  MetaCRTC **possible_crtcs;
+  unsigned int n_possible_crtcs;
+
+  /* The low-level bits used to build the high-level info
+     in MetaMonitorInfo
+
+     XXX: flags maybe?
+     There is a lot of code that uses MonitorInfo->is_primary,
+     but nobody uses MetaOutput yet
+  */
+  gboolean is_primary;
+  gboolean is_presentation;
 };
 
+struct _MetaCRTC
+{
+  glong crtc_id;
+  MetaRectangle rect;
+  MetaMonitorMode *current_mode;
+
+  /* Only used to build the logical configuration
+     from the HW one
+  */
+  MetaMonitorInfo *logical_monitor;
+};
+
+struct _MetaMonitorMode
+{
+  /* The low-level ID of this mode, used to apply back configuration */
+  glong mode_id;
+
+  int width;
+  int height;
+  float refresh_rate;
+};
+
+/**
+ * MetaMonitorInfo:
+ *
+ * A structure with high-level information about monitors.
+ * This corresponds to a subset of the compositor coordinate space.
+ * Clones are only reported once, irrespective of the way
+ * they're implemented (two CRTCs configured for the same
+ * coordinates or one CRTCs driving two outputs). Inactive CRTCs
+ * are ignored, and so are disabled outputs.
+ */
 struct _MetaMonitorInfo
 {
   int number;
   int xinerama_index;
   MetaRectangle rect;
   gboolean is_primary;
+  gboolean is_presentation; /* XXX: not yet used */
   gboolean in_fullscreen;
-  float refresh_rate;
 
-  /* The primary or first output for this crtc, 0 if we can't figure out. */
+  /* The primary or first output for this monitor, 0 if we can't figure out.
+     It can be matched to an output_id of a MetaOutput.
+
+     This is used as an opaque token on reconfiguration when switching from
+     clone to extened, to decide on what output the windows should go next
+     (it's an attempt to keep windows on the same monitor, and preferably on
+     the primary one).
+  */
   glong output_id;
 };
 

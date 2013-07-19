@@ -1,0 +1,131 @@
+<!DOCTYPE node PUBLIC
+'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<node>
+  <!--
+      org.gnome.Mutter.DisplayConfig:
+      @short_description: display configuration interface
+
+      This interface is used by mutter and gnome-settings-daemon
+      to apply multiple monitor configuration.
+  -->
+
+  <interface name="org.gnome.Mutter.DisplayConfig">
+
+    <!--
+        GetResources:
+	@serial: configuration serial
+	@crtcs: available CRTCs
+	@outputs: available outputs
+	@modes: available modes
+
+        Retrieves the current layout of the hardware.
+
+        @serial is an unique identifier representing the current state
+        of the screen. It must be passed back to ApplyConfiguration()
+	and will be increased for every configuration change (so that
+	mutter can detect that the new configuration is based on old
+	state).
+
+	A CRTC (CRT controller) is a logical monitor, ie a portion
+	of the compositor coordinate space. It might correspond
+	to multiple monitors, when in clone mode, but not that
+	it is possible to implement clone mode also by setting different
+	CRTCs to the same coordinates.
+
+	The number of CRTCs represent the maximum number of monitors
+	that can be set to expand and it is a HW constraint; if more
+	monitors are connected,	then necessarily some will clone. This
+	is complementary to the concept of the encoder (not exposed in
+	the API), which groups outputs that necessarily will show the
+	same image (again a HW constraint).
+
+	A CRTC is represented by a DBus structure with the following
+	layout:
+	* u ID: the ID in the API of this CRTC
+	* x winsys_id: the low-level ID of this CRTC (which might
+	               be a XID, a KMS handle or something entirely
+		       different)
+	* i x, y, width, height: the geometry of this CRTC
+	                         (might be invalid if the CRTC is not in
+				 use)
+	* i current_mode: the current mode of the CRTC, or -1 if this
+	                  CRTC is not used
+			  Note: the size of the mode will always correspond
+			  to the width and height of the CRTC
+	* u current_transform: the current transform (espressed according
+	                       to the wayland protocol)
+	* au transforms: all possible transforms
+	* a{sv} properties: other high-level properties that affect this
+	                    CRTC; they are not necessarily reflected in
+			    the hardware.
+			    No property is specified in this version of the API.
+        FIXME: gamma?
+
+        Note: all geometry information refers to the untransformed
+	display.
+
+	An output represents a physical screen, connected somewhere to
+	the computer. Floating connectors are not exposed in the API.
+	An output is a DBus struct with the following fields:
+	* u ID: the ID in the API
+	* x winsys_id: the low-level ID of this output (XID or KMS handle)
+	* i current_crtc: the CRTC that is currently driving this output,
+	                  or -1 if the output is disabled
+	* au possible_crtcs: all CRTCs that can control this output
+	* s name: the name of the connector to which the output is attached
+	          (like VGA1 or HDMI)
+	* au modes: valid modes for this output
+	* a{sv} properties: other high-level properties that affect this
+	                    output; they are not necessarily reflected in
+			    the hardware.
+			    Known properties:
+                            - "vendor" (s): (readonly) the human readable name
+                                            of the manufacturer
+                            - "product" (s): (readonly) the human readable name
+                                             of the display model
+                            - "serial" (s): (readonly) the serial number of this
+                                            particular hardware part
+			    - "display-name" (s): (readonly) a human readable name
+			                          of this output, to be shown in the UI
+			    - "primary" (b): whether this output is primary
+			                     or not
+			    - "presentation" (b): whether this output is
+			                          for presentation only
+			    Note: properties might be ignored if not consistenly
+			    applied to all outputs in the same clone group. In
+			    general, it's expected that presentation or primary
+			    outputs will not be cloned.
+
+        A mode represents a set of parameters that are applied to
+	each output, such as resolution and refresh rate. It is a separate
+	object so that it can be referenced by CRTCs and outputs.
+	Multiple outputs in the same CRTCs must all have the same mode.
+	A mode is exposed as:
+	* u ID: the ID in the API
+	* x winsys_id: the low-level ID of this mode
+	* u width, height: the resolution
+	* d frequency: refresh rate
+
+        Output and modes are read-only objects (except for output properties),
+	they can change only in accordance to HW changes (such as hotplugging
+	a monitor), while CRTCs can be changed with ApplyConfiguration().
+
+        XXX: actually, if you insist enough, you can add new modes
+	through xrandr command line or the KMS API, overriding what the
+	kernel driver and the EDID say.
+	Usually, it only matters with old cards with broken drivers, or
+	old monitors with broken EDIDs, but it happens more often with
+	projectors (if for example the kernel driver doesn't add the
+	640x480 - 800x600 - 1024x768 default modes). Probably something
+	that we need to handle in mutter anyway.
+    -->
+
+    <method name="GetResources">
+      <arg name="serial" direction="out" type="u" />
+      <arg name="crtcs" direction="out" type="a(uxiiiiiuaua{sv})" />
+      <arg name="outputs" direction="out" type="a(uxiausaua{sv})" />
+      <arg name="modes" direction="out" type="a(uxuud)" />
+    </method>
+  </interface>
+</node>
