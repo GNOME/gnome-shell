@@ -120,12 +120,69 @@
 	640x480 - 800x600 - 1024x768 default modes). Probably something
 	that we need to handle in mutter anyway.
     -->
-
     <method name="GetResources">
       <arg name="serial" direction="out" type="u" />
       <arg name="crtcs" direction="out" type="a(uxiiiiiuaua{sv})" />
       <arg name="outputs" direction="out" type="a(uxiausaua{sv})" />
       <arg name="modes" direction="out" type="a(uxuud)" />
+    </method>
+
+    <!--
+        ApplyConfiguration:
+	@serial: configuration serial
+	@persistent: whether this configuration should be saved on disk
+	@crtcs: new data for CRTCs
+	@outputs: new data for outputs
+
+	Applies the requested configuration changes.
+
+	@serial must match the serial from the last GetResources() call,
+	or org.freedesktop.DBus.AccessDenied will be generated.
+
+	If @persistent is true, mutter will attempt to replicate this
+	configuration the next time this HW layout appears.
+
+	@crtcs represents the new logical configuration, as a list
+	of structures containing:
+	- u ID: the API ID from the corresponding GetResources() call
+	- i new_mode: the API ID of the new mode to configure the CRTC
+	              with, or -1 if the CRTC should be disabled
+        - i x, y: the new coordinates of the top left corner
+	          the geometry will be completed with the size information
+		  from @new_mode
+	- au outputs: the API ID of outputs that should be assigned to
+	              this CRTC
+        - a{sv} properties: properties whose value should be changed
+
+	Note: CRTCs not referenced in the array will be	disabled.
+
+	@outputs represent the output property changes as:
+	- u ID: the API ID of the output to change
+	- a{sv} properties: properties whose value should be changed
+
+	Note: both for CRTCs and outputs, properties not included in
+	the dictionary will not be changed.
+
+	Note: unrecognized properties will have no effect, but if the
+	configuration change succeeds the property will be reported
+	by the next GetResources() call, and if @persistent is true,
+	it will also be saved to disk.
+
+	If the configuration is invalid according to the previous
+	GetResources() call, for example because a CRTC references
+	an output it cannot drive, or not all outputs support the
+	chosen mode, the error org.freedesktop.DBus.InvalidArgs will
+	be generated.
+
+	If the configuration cannot be applied for any other reason
+	(eg. the screen size would exceed texture limits), the error
+	org.freedesktop.DBus.Error.LimitsExceeded will be generated.
+    -->
+    <method name="ApplyConfiguration">
+      <arg name="serial" direction="in" type="u" />
+      <arg name="persistent" direction="in" type="b" />
+      <arg name="crtcs" direction="in" type="a(uiiiaua{sv})" />
+      <arg name="outputs" direction="in" type="a(ua{sv})" />
     </method>
   </interface>
 </node>
