@@ -48,9 +48,9 @@ js/ui/status/keyboard.js
 js/ui/status/lockScreenMenu.js
 js/ui/status/network.js
 js/ui/status/power.js
+js/ui/status/system.js
 js/ui/status/volume.js
 js/ui/unlockDialog.js
-js/ui/userMenu.js
 js/ui/viewSelector.js
 js/ui/wanda.js
 js/ui/windowAttentionHandler.js
