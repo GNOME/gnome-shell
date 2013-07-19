@@ -214,6 +214,7 @@ shell_app_create_icon_texture (ShellApp   *app,
 typedef struct {
   ShellApp *app;
   int size;
+  ClutterTextDirection direction;
 } CreateFadedIconData;
 
 static CoglHandle
@@ -231,7 +232,7 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
   guint8 n_channels;
   gboolean have_alpha;
   gint fade_start;
-  gint fade_range;
+  gint fade_end;
   guint i, j;
   guint pixbuf_byte_size;
   guint8 *orig_pixels;
@@ -283,14 +284,26 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
   pixels = g_malloc0 (rowstride * height);
   memcpy (pixels, orig_pixels, pixbuf_byte_size);
 
-  fade_start = width / 2;
-  fade_range = width - fade_start;
-  for (i = fade_start; i < width; i++)
+  /* fade on the right side for LTR, left side for RTL */
+  if (data->direction == CLUTTER_TEXT_DIRECTION_LTR)
+    {
+      fade_start = width / 2;
+      fade_end = width;
+    }
+  else
+    {
+      fade_start = 0;
+      fade_end = width / 2;
+    }
+
+  for (i = fade_start; i < fade_end; i++)
     {
       for (j = 0; j < height; j++)
         {
           guchar *pixel = &pixels[j * rowstride + i * n_channels];
-          float fade = 1.0 - ((float) i - fade_start) / fade_range;
+          float fade = ((float) i - fade_start) / (fade_end - fade_start);
+          if (data->direction == CLUTTER_TEXT_DIRECTION_LTR)
+            fade = 1.0 - fade;
           pixel[0] = 0.5 + pixel[0] * fade;
           pixel[1] = 0.5 + pixel[1] * fade;
           pixel[2] = 0.5 + pixel[2] * fade;
@@ -316,13 +329,14 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
  * shell_app_get_faded_icon:
  * @app: A #ShellApp
  * @size: Size in pixels
+ * @direction: Whether to fade on the left or right
  *
  * Return an actor with a horizontally faded look.
  *
  * Return value: (transfer none): A floating #ClutterActor, or %NULL if no icon
  */
 ClutterActor *
-shell_app_get_faded_icon (ShellApp *app, int size)
+shell_app_get_faded_icon (ShellApp *app, int size, ClutterTextDirection direction)
 {
   CoglHandle texture;
   ClutterActor *result;
@@ -338,9 +352,13 @@ shell_app_get_faded_icon (ShellApp *app, int size)
 
   /* Use icon: prefix so that we get evicted from the cache on
    * icon theme changes. */
-  cache_key = g_strdup_printf ("icon:%s,size=%d,faded", shell_app_get_id (app), size);
+  cache_key = g_strdup_printf ("icon:%s,size=%d,faded-%s",
+                               shell_app_get_id (app),
+                               size,
+                               direction == CLUTTER_TEXT_DIRECTION_RTL ? "rtl" : "ltr");
   data.app = app;
   data.size = size;
+  data.direction = direction;
   texture = st_texture_cache_load (st_texture_cache_get_default (),
                                    cache_key,
                                    ST_TEXTURE_CACHE_POLICY_FOREVER,
