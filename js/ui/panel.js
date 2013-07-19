@@ -371,13 +371,16 @@ const AppMenuButton = new Lang.Class({
         this._updateIconBoxClip();
     },
 
+    _syncIcon: function() {
+        let icon = this._targetApp.get_faded_icon(2 * PANEL_ICON_SIZE, this._iconBox.text_direction);
+        this._iconBox.set_child(icon);
+    },
+
     _onIconThemeChanged: function() {
         if (this._iconBox.child == null)
             return;
 
-        this._iconBox.child.destroy();
-        let icon = this._targetApp.get_faded_icon(2 * PANEL_ICON_SIZE);
-        this._iconBox.set_child(icon);
+        this._syncIcon();
     },
 
     _updateIconBoxClip: function() {
@@ -595,12 +598,10 @@ const AppMenuButton = new Lang.Class({
         }
 
         this._targetApp = targetApp;
-        let icon = targetApp.get_faded_icon(2 * PANEL_ICON_SIZE);
-
         this._label.setText(targetApp.get_name());
         this.setName(targetApp.get_name());
 
-        this._iconBox.set_child(icon);
+        this._syncIcon();
         this._iconBox.show();
 
         if (targetApp.get_state() == Shell.AppState.STARTING)
