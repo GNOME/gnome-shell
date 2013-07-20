@@ -1712,8 +1712,8 @@ meta_window_actor_set_visible_region_beneath (MetaWindowActor *self,
  * meta_window_actor_reset_visible_regions:
  * @self: a #MetaWindowActor
  *
- * Unsets the regions set by meta_window_actor_reset_visible_region() and
- * meta_window_actor_reset_visible_region_beneath()
+ * Unsets the regions set by meta_window_actor_set_visible_region() and
+ * meta_window_actor_set_visible_region_beneath()
  */
 void
 meta_window_actor_reset_visible_regions (MetaWindowActor *self)
