@@ -104,7 +104,6 @@ struct _ClutterRootNode
 
   CoglBufferBit clear_flags;
   CoglColor clear_color;
-  CoglMatrix modelview;
 };
 
 G_DEFINE_TYPE (ClutterRootNode, clutter_root_node, CLUTTER_TYPE_PAINT_NODE)
@@ -113,11 +112,6 @@ static gboolean
 clutter_root_node_pre_draw (ClutterPaintNode *node)
 {
   ClutterRootNode *rnode = (ClutterRootNode *) node;
-
-  cogl_push_matrix ();
-
-  cogl_framebuffer_set_modelview_matrix (rnode->framebuffer,
-                                         &rnode->modelview);
 
   cogl_framebuffer_clear (rnode->framebuffer,
                           rnode->clear_flags,
@@ -129,7 +123,6 @@ clutter_root_node_pre_draw (ClutterPaintNode *node)
 static void
 clutter_root_node_post_draw (ClutterPaintNode *node)
 {
-  cogl_pop_matrix ();
 }
 
 static void
@@ -155,14 +148,12 @@ clutter_root_node_class_init (ClutterRootNodeClass *klass)
 static void
 clutter_root_node_init (ClutterRootNode *self)
 {
-  cogl_matrix_init_identity (&self->modelview);
 }
 
 ClutterPaintNode *
 _clutter_root_node_new (CoglFramebuffer    *framebuffer,
                         const ClutterColor *clear_color,
-                        CoglBufferBit       clear_flags,
-                        const CoglMatrix   *matrix)
+                        CoglBufferBit       clear_flags)
 {
   ClutterRootNode *res;
 
@@ -177,7 +168,6 @@ _clutter_root_node_new (CoglFramebuffer    *framebuffer,
 
   res->framebuffer = cogl_object_ref (framebuffer);
   res->clear_flags = clear_flags;
-  res->modelview = *matrix;
 
   return (ClutterPaintNode *) res;
 }

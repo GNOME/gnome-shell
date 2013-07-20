@@ -107,8 +107,7 @@ gpointer                _clutter_paint_node_create                      (GType g
 
 ClutterPaintNode *      _clutter_root_node_new                          (CoglFramebuffer             *framebuffer,
                                                                          const ClutterColor          *clear_color,
-                                                                         CoglBufferBit                clear_flags,
-                                                                         const CoglMatrix            *matrix);
+                                                                         CoglBufferBit                clear_flags);
 ClutterPaintNode *      _clutter_transform_node_new                     (const CoglMatrix            *matrix);
 ClutterPaintNode *      _clutter_dummy_node_new                         (ClutterActor                *actor);
 
