@@ -27,8 +27,8 @@ static int cur_gravity = 0;
 
 static void
 on_tap (ClutterTapAction *action,
-        ClutterActor       *actor,
-        ClutterText        *label)
+        ClutterActor     *actor,
+        ClutterText      *label)
 {
   gchar *str;
 
@@ -49,7 +49,7 @@ on_tap (ClutterTapAction *action,
 int
 main (int argc, char *argv[])
 {
-  ClutterActor *stage, *box, *text;
+  ClutterActor *stage, *text;
   ClutterContent *image;
   ClutterAction *action;
   GdkPixbuf *pixbuf;
@@ -63,16 +63,11 @@ main (int argc, char *argv[])
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Content Box");
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
+  clutter_actor_set_margin_top (stage, 12);
+  clutter_actor_set_margin_right (stage, 12);
+  clutter_actor_set_margin_bottom (stage, 12);
+  clutter_actor_set_margin_left (stage, 12);
   clutter_actor_show (stage);
-
-  box = clutter_actor_new ();
-  clutter_actor_set_name (box, "Image");
-  clutter_actor_set_margin_top (box, 12);
-  clutter_actor_set_margin_right (box, 12);
-  clutter_actor_set_margin_bottom (box, 12);
-  clutter_actor_set_margin_left (box, 12);
-  clutter_actor_add_constraint (box, clutter_bind_constraint_new (stage, CLUTTER_BIND_SIZE, 0.0));
-  clutter_actor_add_child (stage, box);
 
   pixbuf = gdk_pixbuf_new_from_file (TESTS_DATADIR G_DIR_SEPARATOR_S "redhand.png", NULL);
   image = clutter_image_new ();
@@ -87,11 +82,11 @@ main (int argc, char *argv[])
                           NULL);
   g_object_unref (pixbuf);
 
-  clutter_actor_set_content_scaling_filters (box,
+  clutter_actor_set_content_scaling_filters (stage,
                                              CLUTTER_SCALING_FILTER_TRILINEAR,
                                              CLUTTER_SCALING_FILTER_LINEAR);
-  clutter_actor_set_content_gravity (box, gravities[n_gravities - 1].gravity);
-  clutter_actor_set_content (box, image);
+  clutter_actor_set_content_gravity (stage, gravities[n_gravities - 1].gravity);
+  clutter_actor_set_content (stage, image);
   g_object_unref (image);
 
   str = g_strconcat ("Content gravity: ",
@@ -107,8 +102,7 @@ main (int argc, char *argv[])
 
   action = clutter_tap_action_new ();
   g_signal_connect (action, "tap", G_CALLBACK (on_tap), text);
-  clutter_actor_set_reactive (box, TRUE);
-  clutter_actor_add_action (box, action);
+  clutter_actor_add_action (stage, action);
 
   clutter_main ();
 
