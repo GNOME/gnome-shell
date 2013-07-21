@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Tajik Gnome\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-07-03 17:55+0000\n"
-"PO-Revision-Date: 2013-07-12 16:00+0500\n"
+"POT-Creation-Date: 2013-07-19 18:59+0000\n"
+"PO-Revision-Date: 2013-07-21 11:18+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: \n"
 "Language: Tajik\n"
@@ -27,7 +27,7 @@ msgstr "Суратҳои экран"
 msgid "Record a screencast"
 msgstr "Сабти рӯйдодҳои экран"
 
-#: ../data/50-gnome-shell-system.xml.in.h:1
+#: ../data/50-gnome-shell-system.xml.in.h:1 ../js/ui/status/system.js:48
 msgid "System"
 msgstr "Система"
 
@@ -375,42 +375,33 @@ msgstr ""
 "Пасвандеро интихоб кунед, то ин ки бо ҷаъбаи мураккаби боло онро "
 "конфигуратсия кунед."
 
-#: ../js/gdm/loginDialog.js:308
+#: ../js/gdm/loginDialog.js:298
 msgid "Choose Session"
 msgstr "Интихоби ҷаласа"
 
-#: ../js/gdm/loginDialog.js:326
-#| msgid "Session…"
+#: ../js/gdm/loginDialog.js:316
 msgid "Session"
 msgstr "Ҷаласа"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:528
+#: ../js/gdm/loginDialog.js:478
 msgid "Not listed?"
 msgstr "Вуҷуд надора?"
 
-#: ../js/gdm/loginDialog.js:810 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:449 ../js/ui/unlockDialog.js:95
-#: ../js/ui/userMenu.js:884
-msgid "Cancel"
-msgstr "Бекор кардан"
-
-#: ../js/gdm/loginDialog.js:833
+#: ../js/gdm/loginDialog.js:663
 msgctxt "button"
 msgid "Sign In"
 msgstr "Ворид шудан"
 
-#: ../js/gdm/loginDialog.js:833
+#: ../js/gdm/loginDialog.js:665 ../js/gdm/util.js:561
 msgid "Next"
 msgstr "Навбатӣ"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:934
+#: ../js/gdm/loginDialog.js:716
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(масалан, корбар ё %s)"
@@ -418,12 +409,12 @@ msgstr "(масалан, корбар ё %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:938 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:721 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Номи корбар:"
 
-#: ../js/gdm/loginDialog.js:1205
+#: ../js/gdm/loginDialog.js:987
 msgid "Login Window"
 msgstr "Равзанаи воридшавӣ"
 
@@ -432,8 +423,7 @@ msgstr "Равзанаи воридшавӣ"
 msgid "Power"
 msgstr "Барқ"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:651 ../js/ui/userMenu.js:655
-#: ../js/ui/userMenu.js:768
+#: ../js/gdm/powerMenu.js:93
 msgid "Suspend"
 msgstr "Таваққуф"
 
@@ -441,20 +431,27 @@ msgstr "Таваққуф"
 msgid "Restart"
 msgstr "Бозоғозидан"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:653
-#: ../js/ui/userMenu.js:655 ../js/ui/userMenu.js:767 ../js/ui/userMenu.js:888
+#: ../js/gdm/powerMenu.js:103 ../js/ui/status/system.js:215
+#: ../js/ui/status/system.js:309
 msgid "Power Off"
 msgstr "Хомӯш кардан"
 
-#: ../js/gdm/util.js:248
+#: ../js/gdm/util.js:255
 msgid "Authentication error"
 msgstr "Хатои санҷиши ҳаққоният"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:365
+#: ../js/gdm/util.js:372
 msgid "(or swipe finger)"
 msgstr "(ё бо ангут ламс кунед)"
+
+#: ../js/gdm/util.js:539 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
+#: ../js/ui/status/bluetooth.js:431 ../js/ui/status/system.js:305
+msgid "Cancel"
+msgstr "Бекор кардан"
 
 #: ../js/misc/util.js:97
 msgid "Command not found"
@@ -501,7 +498,7 @@ msgstr "%s ба баргузидаҳои шумо илова шудааст."
 msgid "%s has been removed from your favorites."
 msgstr "%s аз баргузидаҳои шумо тоза шудааст."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:744
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:207
 msgid "Settings"
 msgstr "Танзимот"
 
@@ -1161,7 +1158,6 @@ msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "\"%s\"-ро аз extensions.gnome.org боргирӣ ва насб мекунед?"
 
 #: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
-#: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Клавиатура"
 
@@ -1213,31 +1209,31 @@ msgstr "Намоиш додани манбаъ"
 msgid "Web Page"
 msgstr "Саҳифаи веб"
 
-#: ../js/ui/messageTray.js:1182
+#: ../js/ui/messageTray.js:1241
 msgid "Open"
 msgstr "Кушодани файл"
 
-#: ../js/ui/messageTray.js:1189
+#: ../js/ui/messageTray.js:1248
 msgid "Remove"
 msgstr "Тоза кардан"
 
-#: ../js/ui/messageTray.js:1501
+#: ../js/ui/messageTray.js:1560
 msgid "Clear Messages"
 msgstr "Пок кардани паёмҳо"
 
-#: ../js/ui/messageTray.js:1528
+#: ../js/ui/messageTray.js:1587
 msgid "Notification Settings"
 msgstr "Танзимоти огоҳиҳо"
 
-#: ../js/ui/messageTray.js:1711
+#: ../js/ui/messageTray.js:1770
 msgid "No Messages"
 msgstr "Ягон паём нест"
 
-#: ../js/ui/messageTray.js:1784
+#: ../js/ui/messageTray.js:1842
 msgid "Message Tray"
 msgstr "Қуттии паёмҳо"
 
-#: ../js/ui/messageTray.js:2811
+#: ../js/ui/messageTray.js:2854
 msgid "System Information"
 msgstr "Маълумоти система"
 
@@ -1287,7 +1283,7 @@ msgstr "Панели боло"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:549
+#: ../js/ui/popupMenu.js:488
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -1311,7 +1307,7 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d огоҳии нав"
 
-#: ../js/ui/screenShield.js:449 ../js/ui/userMenu.js:759
+#: ../js/ui/screenShield.js:449 ../js/ui/status/system.js:211
 msgid "Lock"
 msgstr "Қулф кардан"
 
@@ -1326,11 +1322,11 @@ msgstr "GNOME бояд экранро қулф кунад"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:775 ../js/ui/screenShield.js:1215
+#: ../js/ui/screenShield.js:788 ../js/ui/screenShield.js:1216
 msgid "Unable to lock"
 msgstr "Қулф карда намешавад"
 
-#: ../js/ui/screenShield.js:776 ../js/ui/screenShield.js:1216
+#: ../js/ui/screenShield.js:789 ../js/ui/screenShield.js:1217
 msgid "Lock was blocked by an application"
 msgstr "Қулф аз тарави барнома баста шудааст"
 
@@ -1366,7 +1362,7 @@ msgstr "Парол"
 msgid "Remember Password"
 msgstr "Ба ёд гирифтани парол"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:108
+#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:68
 msgid "Unlock"
 msgstr "Кушодан"
 
@@ -1406,22 +1402,18 @@ msgstr "Тугмаҳои ҷастухез"
 msgid "Mouse Keys"
 msgstr "Тугмаҳои муш"
 
-#: ../js/ui/status/accessibility.js:72
-msgid "Universal Access Settings"
-msgstr "Танзимоти дастрасии универсалӣ"
-
-#: ../js/ui/status/accessibility.js:129
+#: ../js/ui/status/accessibility.js:126
 msgid "High Contrast"
 msgstr "Контрасти баланд"
 
-#: ../js/ui/status/accessibility.js:178
+#: ../js/ui/status/accessibility.js:175
 msgid "Large Text"
 msgstr "Матни бузург"
 
 #: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
-#: ../js/ui/status/bluetooth.js:290 ../js/ui/status/bluetooth.js:327
-#: ../js/ui/status/bluetooth.js:355 ../js/ui/status/bluetooth.js:391
-#: ../js/ui/status/bluetooth.js:422 ../js/ui/status/network.js:713
+#: ../js/ui/status/bluetooth.js:272 ../js/ui/status/bluetooth.js:309
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:373
+#: ../js/ui/status/bluetooth.js:404 ../js/ui/status/network.js:713
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1437,87 +1429,71 @@ msgstr "Фиристодани файлҳо ба дастгоҳ..."
 msgid "Set Up a New Device…"
 msgstr "Насб кардани дастгоҳи нав…"
 
-#: ../js/ui/status/bluetooth.js:84
-msgid "Bluetooth Settings"
-msgstr "Танзимоти Bluetooth"
-
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:105 ../js/ui/status/network.js:140
+#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:140
 msgid "hardware disabled"
 msgstr "сахтафзор ғайрифаъол шудааст"
 
-#: ../js/ui/status/bluetooth.js:198
+#: ../js/ui/status/bluetooth.js:196
 msgid "Connection"
 msgstr "Пайвастшавӣ"
 
-#: ../js/ui/status/bluetooth.js:209 ../js/ui/status/network.js:399
+#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:399
 msgid "disconnecting..."
 msgstr "қатъ кардани пайваст..."
 
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:405
+#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:405
 #: ../js/ui/status/network.js:1298
 msgid "connecting..."
 msgstr "пайвастшавӣ..."
 
-#: ../js/ui/status/bluetooth.js:240
+#: ../js/ui/status/bluetooth.js:238
 msgid "Send Files…"
 msgstr "Фиристодани файлҳо…"
 
-#: ../js/ui/status/bluetooth.js:247
-msgid "Keyboard Settings"
-msgstr "Танзимоти клавиатура"
-
-#: ../js/ui/status/bluetooth.js:250
-msgid "Mouse Settings"
-msgstr "Танзимоти муш"
-
-#: ../js/ui/status/bluetooth.js:255 ../js/ui/status/volume.js:313
-msgid "Sound Settings"
-msgstr "Танзимоти садо"
-
-#: ../js/ui/status/bluetooth.js:328 ../js/ui/status/bluetooth.js:356
+#: ../js/ui/status/bluetooth.js:310 ../js/ui/status/bluetooth.js:338
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Дархости санҷиши ҳаққоният аз %s"
 
-#: ../js/ui/status/bluetooth.js:334 ../js/ui/status/bluetooth.js:399
-#: ../js/ui/status/bluetooth.js:430
+#: ../js/ui/status/bluetooth.js:316 ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:412
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Дастгоҳи %s мехоҳад, ки бо ин компютер ҷуфт кунад"
 
-#: ../js/ui/status/bluetooth.js:336
+#: ../js/ui/status/bluetooth.js:318
 msgid "Allow"
 msgstr "Иҷозат додан"
 
-#: ../js/ui/status/bluetooth.js:337
+#: ../js/ui/status/bluetooth.js:319
 msgid "Deny"
 msgstr "Манъ кардан"
 
-#: ../js/ui/status/bluetooth.js:362
+#: ../js/ui/status/bluetooth.js:344
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Дастгоҳи %s дастрасиро ба хидмати \"%s\" дархост мекунад"
 
-#: ../js/ui/status/bluetooth.js:364
+#: ../js/ui/status/bluetooth.js:346
 msgid "Always grant access"
 msgstr "Ҳамеша иҷозат додан"
 
-#: ../js/ui/status/bluetooth.js:365
+#: ../js/ui/status/bluetooth.js:347
 msgid "Grant this time only"
 msgstr "Танҳо дар ин маротиба иҷозат додан"
 
-#: ../js/ui/status/bluetooth.js:366
+#: ../js/ui/status/bluetooth.js:348
 msgid "Reject"
 msgstr "Рад кардан"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:393
+#: ../js/ui/status/bluetooth.js:375
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Тасдиқи ҷуфтсозӣ барои %s"
 
-#: ../js/ui/status/bluetooth.js:400
+#: ../js/ui/status/bluetooth.js:382
 #, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
@@ -1526,34 +1502,30 @@ msgstr ""
 "мавҷудбуда мувофиқат мекунад."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:403
+#: ../js/ui/status/bluetooth.js:385
 msgid "Matches"
 msgstr "Мутобиқаткунанда"
 
-#: ../js/ui/status/bluetooth.js:404
+#: ../js/ui/status/bluetooth.js:386
 msgid "Does not match"
 msgstr "Мувофиқат намекунад"
 
-#: ../js/ui/status/bluetooth.js:423
+#: ../js/ui/status/bluetooth.js:405
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Дархости ҷуфтсозӣ барои %s"
 
-#: ../js/ui/status/bluetooth.js:431
+#: ../js/ui/status/bluetooth.js:413
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Лутфан, рамзи PIN-ро, ки дар дастгоҳ гуфта шудааст, ворид кунед."
 
-#: ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:430
 msgid "OK"
 msgstr "OK"
 
 #: ../js/ui/status/keyboard.js:396
 msgid "Show Keyboard Layout"
 msgstr "Намоиш додани тарҳбандии клавиатура"
-
-#: ../js/ui/status/keyboard.js:401
-msgid "Region & Language Settings"
-msgstr "Танзимоти забон ва минтақа"
 
 #: ../js/ui/status/lockScreenMenu.js:43
 msgid "Volume, network, battery"
@@ -1621,212 +1593,96 @@ msgstr "Паҳннавори мобилӣ"
 msgid "Enable networking"
 msgstr "Фаъол кардани шабака"
 
-#: ../js/ui/status/network.js:1522
-msgid "Network Settings"
-msgstr "Танзимоти шабака"
-
-#: ../js/ui/status/network.js:1539
+#: ../js/ui/status/network.js:1537
 msgid "Network Manager"
 msgstr "Мудири шабака"
 
-#: ../js/ui/status/network.js:1623
+#: ../js/ui/status/network.js:1621
 msgid "Connection failed"
 msgstr "Пайваст қатъ шудааст"
 
-#: ../js/ui/status/network.js:1624
+#: ../js/ui/status/network.js:1622
 msgid "Activation of network connection failed"
 msgstr "Фаъолсозии пайвасти шабака қатъ шудааст."
 
-#: ../js/ui/status/network.js:1938
+#: ../js/ui/status/network.js:1936
 msgid "Networking is disabled"
 msgstr "Шабака ғайрифаъол аст"
 
-#: ../js/ui/status/power.js:55
+#: ../js/ui/status/power.js:31 ../js/ui/status/power.js:44
 msgid "Battery"
 msgstr "Батарея"
 
-#: ../js/ui/status/power.js:81
+#: ../js/ui/status/power.js:45
 msgid "Power Settings"
 msgstr "Танзимоти барқ"
 
+#: ../js/ui/status/power.js:61
+msgid "Fully Charged"
+msgstr "Пуррагӣ заряд гирифтааст"
+
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:99
+#. state is one of PENDING_CHARGING, PENDING_DISCHARGING
+#: ../js/ui/status/power.js:67 ../js/ui/status/power.js:84
 msgid "Estimating…"
 msgstr "Ҳисоб шуда истодааст..."
 
-#: ../js/ui/status/power.js:106
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: ../js/ui/status/power.js:75
 #, c-format
-msgid "%d hour remaining"
-msgid_plural "%d hours remaining"
-msgstr[0] "%d соати боқимонда"
+msgid "%d\\u2236%d Remaining (%d%%)"
+msgstr "%d\\u2236%d Боқӣ мондааст (%d%%)"
 
-#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:109
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: ../js/ui/status/power.js:80
 #, c-format
-msgid "%d %s %d %s remaining"
-msgstr "%d %s %d %s боқӣ мондааст"
+msgid "%d\\u2236%d Until Full (%d%%)"
+msgstr "%d\\u2236%d То пур шудан (%d%%)"
 
-#: ../js/ui/status/power.js:111
-msgid "hour"
-msgid_plural "hours"
-msgstr[0] "соат"
-
-#: ../js/ui/status/power.js:111
-msgid "minute"
-msgid_plural "minutes"
-msgstr[0] "дақиқа"
-
-#: ../js/ui/status/power.js:114
-#, c-format
-msgid "%d minute remaining"
-msgid_plural "%d minutes remaining"
-msgstr[0] "%d дақиқаи боқимонда"
-
-#: ../js/ui/status/power.js:117 ../js/ui/status/power.js:191
-#, c-format
-msgctxt "percent of battery remaining"
-msgid "%d%%"
-msgstr "%d%%"
-
-#: ../js/ui/status/power.js:201
-msgid "AC Adapter"
-msgstr "Адаптери AC"
-
-#: ../js/ui/status/power.js:203
-msgid "Laptop Battery"
-msgstr "Батареяи лэптоп"
-
-#: ../js/ui/status/power.js:205
-msgid "UPS"
-msgstr "UPS"
-
-#: ../js/ui/status/power.js:207
-msgid "Monitor"
-msgstr "Монитор"
-
-#: ../js/ui/status/power.js:209
-msgid "Mouse"
-msgstr "Муш"
-
-#: ../js/ui/status/power.js:213
-msgid "PDA"
-msgstr "PDA"
-
-#: ../js/ui/status/power.js:215
-msgid "Cell Phone"
-msgstr "Телефони мобилӣ"
-
-#: ../js/ui/status/power.js:217
-msgid "Media Player"
-msgstr "Плеери мултимедиа"
-
-#: ../js/ui/status/power.js:219
-msgid "Tablet"
-msgstr "Планшет"
-
-#: ../js/ui/status/power.js:221
-msgid "Computer"
-msgstr "Компютер"
-
-#: ../js/ui/status/power.js:223
-msgctxt "device"
-msgid "Unknown"
-msgstr "Номаълум"
-
-#: ../js/ui/status/volume.js:121
-msgid "Volume changed"
-msgstr "Ҳаҷм тағйир ёфт"
-
-#. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:246 ../js/ui/status/volume.js:294
-msgid "Volume"
-msgstr "Баландии садо"
-
-#: ../js/ui/status/volume.js:255
-msgid "Microphone"
-msgstr "Микрофон"
-
-#: ../js/ui/unlockDialog.js:119
-msgid "Log in as another user"
-msgstr "Ворид шудан бо корбари дигар"
-
-#: ../js/ui/unlockDialog.js:140
-msgid "Unlock Window"
-msgstr "Кушодани равзана"
-
-#: ../js/ui/userMenu.js:149
-msgid "Available"
-msgstr "Дастрас"
-
-#: ../js/ui/userMenu.js:152
-msgid "Busy"
-msgstr "Машғул"
-
-#: ../js/ui/userMenu.js:155
-msgid "Invisible"
-msgstr "Ноаён"
-
-#: ../js/ui/userMenu.js:158
-msgid "Away"
-msgstr "Ғоиб"
-
-#: ../js/ui/userMenu.js:161
-msgid "Idle"
-msgstr "Ғайрифаъол"
-
-#: ../js/ui/userMenu.js:164
-msgid "Offline"
-msgstr "Офлайн"
-
-#: ../js/ui/userMenu.js:736
-msgid "Notifications"
-msgstr "Огоҳиҳо"
-
-#: ../js/ui/userMenu.js:749
+#: ../js/ui/status/system.js:188
 msgid "Switch User"
 msgstr "Таъвизи корбар"
 
-#: ../js/ui/userMenu.js:754
+#: ../js/ui/status/system.js:193
 msgid "Log Out"
 msgstr "Баромад"
 
-#: ../js/ui/userMenu.js:774
-msgid "Install Updates & Restart"
-msgstr "Насб кардани навсозиҳо ва бозоғозидан"
-
-#: ../js/ui/userMenu.js:792
-msgid "Your chat status will be set to busy"
-msgstr "Вазъияти чати шумо ба \"машғул\" тағйир дода мешавад"
-
-#: ../js/ui/userMenu.js:793
-msgid ""
-"Notifications are now disabled, including chat messages. Your online status "
-"has been adjusted to let others know that you might not see their messages."
-msgstr ""
-"Акнун огоҳиҳо ғайрифаъол мебошанд, аз он ҷумла паёмҳои чат. Вазъияти онлайни "
-"шумо ба тавре танзим карда шуд, ки дигарон фаҳманд, ки эҳтимолан шумо "
-"паёмҳои онҳоро намебинед."
-
-#: ../js/ui/userMenu.js:834
+#: ../js/ui/status/system.js:255
 msgid "Other users are logged in."
 msgstr "Корбарони дигар ворид шудаанд."
 
-#: ../js/ui/userMenu.js:839
+#: ../js/ui/status/system.js:260
 msgid "Shutting down might cause them to lose unsaved work."
 msgstr "Анҷоми кор метавонад сабаби гум шудани кори захиранашуда гардад."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/userMenu.js:867
+#: ../js/ui/status/system.js:288
 #, c-format
 msgid "%s (remote)"
 msgstr "%s (дурдаст)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/userMenu.js:870
+#: ../js/ui/status/system.js:291
 #, c-format
 msgid "%s (console)"
 msgstr "%s (консол)"
+
+#: ../js/ui/status/volume.js:126
+msgid "Volume changed"
+msgstr "Ҳаҷм тағйир ёфт"
+
+#: ../js/ui/status/volume.js:302
+msgid "Volume"
+msgstr "Баландии садо"
+
+#: ../js/ui/unlockDialog.js:78
+msgid "Log in as another user"
+msgstr "Ворид шудан бо корбари дигар"
+
+#: ../js/ui/unlockDialog.js:97
+msgid "Unlock Window"
+msgstr "Кушодани равзана"
 
 #: ../js/ui/viewSelector.js:100
 msgid "Applications"
@@ -1912,6 +1768,123 @@ msgstr "Парол бояд холӣ набошад"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Равзанаи гуфтугӯи санҷиши ҳакконият бо корбар бекор карда шуд"
+
+#~ msgid "Universal Access Settings"
+#~ msgstr "Танзимоти дастрасии универсалӣ"
+
+#~ msgid "Bluetooth Settings"
+#~ msgstr "Танзимоти Bluetooth"
+
+#~ msgid "Keyboard Settings"
+#~ msgstr "Танзимоти клавиатура"
+
+#~ msgid "Mouse Settings"
+#~ msgstr "Танзимоти муш"
+
+#~ msgid "Sound Settings"
+#~ msgstr "Танзимоти садо"
+
+#~ msgid "Region & Language Settings"
+#~ msgstr "Танзимоти забон ва минтақа"
+
+#~ msgid "Network Settings"
+#~ msgstr "Танзимоти шабака"
+
+#~ msgid "%d hour remaining"
+#~ msgid_plural "%d hours remaining"
+#~ msgstr[0] "%d соати боқимонда"
+
+#~ msgid "%d %s %d %s remaining"
+#~ msgstr "%d %s %d %s боқӣ мондааст"
+
+#~ msgid "hour"
+#~ msgid_plural "hours"
+#~ msgstr[0] "соат"
+
+#~ msgid "minute"
+#~ msgid_plural "minutes"
+#~ msgstr[0] "дақиқа"
+
+#~ msgid "%d minute remaining"
+#~ msgid_plural "%d minutes remaining"
+#~ msgstr[0] "%d дақиқаи боқимонда"
+
+#~ msgctxt "percent of battery remaining"
+#~ msgid "%d%%"
+#~ msgstr "%d%%"
+
+#~ msgid "AC Adapter"
+#~ msgstr "Адаптери AC"
+
+#~ msgid "Laptop Battery"
+#~ msgstr "Батареяи лэптоп"
+
+#~ msgid "UPS"
+#~ msgstr "UPS"
+
+#~ msgid "Monitor"
+#~ msgstr "Монитор"
+
+#~ msgid "Mouse"
+#~ msgstr "Муш"
+
+#~ msgid "PDA"
+#~ msgstr "PDA"
+
+#~ msgid "Cell Phone"
+#~ msgstr "Телефони мобилӣ"
+
+#~ msgid "Media Player"
+#~ msgstr "Плеери мултимедиа"
+
+#~ msgid "Tablet"
+#~ msgstr "Планшет"
+
+#~ msgid "Computer"
+#~ msgstr "Компютер"
+
+#~ msgctxt "device"
+#~ msgid "Unknown"
+#~ msgstr "Номаълум"
+
+#~ msgid "Microphone"
+#~ msgstr "Микрофон"
+
+#~ msgid "Available"
+#~ msgstr "Дастрас"
+
+#~ msgid "Busy"
+#~ msgstr "Машғул"
+
+#~ msgid "Invisible"
+#~ msgstr "Ноаён"
+
+#~ msgid "Away"
+#~ msgstr "Ғоиб"
+
+#~ msgid "Idle"
+#~ msgstr "Ғайрифаъол"
+
+#~ msgid "Offline"
+#~ msgstr "Офлайн"
+
+#~ msgid "Notifications"
+#~ msgstr "Огоҳиҳо"
+
+#~ msgid "Install Updates & Restart"
+#~ msgstr "Насб кардани навсозиҳо ва бозоғозидан"
+
+#~ msgid "Your chat status will be set to busy"
+#~ msgstr "Вазъияти чати шумо ба \"машғул\" тағйир дода мешавад"
+
+#~ msgid ""
+#~ "Notifications are now disabled, including chat messages. Your online "
+#~ "status has been adjusted to let others know that you might not see their "
+#~ "messages."
+#~ msgstr ""
+#~ "Акнун огоҳиҳо ғайрифаъол мебошанд, аз он ҷумла паёмҳои чат. Вазъияти "
+#~ "онлайни шумо ба тавре танзим карда шуд, ки дигарон фаҳманд, ки эҳтимолан "
+#~ "шумо паёмҳои онҳоро намебинед."
 
 #~ msgid "cable unplugged"
 #~ msgstr "сим ҷудо шудааст"
