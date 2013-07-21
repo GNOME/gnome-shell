@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-06-27 11:02+0000\n"
-"PO-Revision-Date: 2013-06-28 18:32+0200\n"
+"POT-Creation-Date: 2013-07-19 18:59+0000\n"
+"PO-Revision-Date: 2013-07-21 21:11+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -32,7 +32,7 @@ msgstr "Snímky obrazovky"
 msgid "Record a screencast"
 msgstr "Nahrát dění na obrazovce"
 
-#: ../data/50-gnome-shell-system.xml.in.h:1
+#: ../data/50-gnome-shell-system.xml.in.h:1 ../js/ui/status/system.js:48
 msgid "System"
 msgstr "Systém"
 
@@ -363,41 +363,33 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Pomocí rozbalovacího seznamu výše zvolte rozšíření, které chete nastavit."
 
-#: ../js/gdm/loginDialog.js:308
+#: ../js/gdm/loginDialog.js:298
 msgid "Choose Session"
 msgstr "Vybrat sezení"
 
-#: ../js/gdm/loginDialog.js:326
+#: ../js/gdm/loginDialog.js:316
 msgid "Session"
 msgstr "Sezení"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:528
+#: ../js/gdm/loginDialog.js:478
 msgid "Not listed?"
 msgstr "Nejste na seznamu?"
 
-#: ../js/gdm/loginDialog.js:810 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:449 ../js/ui/unlockDialog.js:95
-#: ../js/ui/userMenu.js:884
-msgid "Cancel"
-msgstr "Zrušit"
-
-#: ../js/gdm/loginDialog.js:833
+#: ../js/gdm/loginDialog.js:663
 msgctxt "button"
 msgid "Sign In"
 msgstr "Přihlásit se"
 
-#: ../js/gdm/loginDialog.js:833
+#: ../js/gdm/loginDialog.js:665 ../js/gdm/util.js:561
 msgid "Next"
 msgstr "Následující"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:934
+#: ../js/gdm/loginDialog.js:716
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(např. uživatel nebo %s)"
@@ -405,12 +397,12 @@ msgstr "(např. uživatel nebo %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:938 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:721 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Uživatelské jméno: "
 
-#: ../js/gdm/loginDialog.js:1205
+#: ../js/gdm/loginDialog.js:987
 msgid "Login Window"
 msgstr "Přihlašovací okno"
 
@@ -419,8 +411,7 @@ msgstr "Přihlašovací okno"
 msgid "Power"
 msgstr "Vypnout"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:651 ../js/ui/userMenu.js:655
-#: ../js/ui/userMenu.js:768
+#: ../js/gdm/powerMenu.js:93
 msgid "Suspend"
 msgstr "Uspat do paměti"
 
@@ -428,20 +419,27 @@ msgstr "Uspat do paměti"
 msgid "Restart"
 msgstr "Restartovat"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:653
-#: ../js/ui/userMenu.js:655 ../js/ui/userMenu.js:767 ../js/ui/userMenu.js:888
+#: ../js/gdm/powerMenu.js:103 ../js/ui/status/system.js:215
+#: ../js/ui/status/system.js:309
 msgid "Power Off"
 msgstr "Vypnout"
 
-#: ../js/gdm/util.js:248
+#: ../js/gdm/util.js:255
 msgid "Authentication error"
 msgstr "Chyba ověření"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:365
+#: ../js/gdm/util.js:372
 msgid "(or swipe finger)"
 msgstr "(nebo otiskněte prst)"
+
+#: ../js/gdm/util.js:539 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
+#: ../js/ui/status/bluetooth.js:431 ../js/ui/status/system.js:305
+msgid "Cancel"
+msgstr "Zrušit"
 
 #: ../js/misc/util.js:97
 msgid "Command not found"
@@ -488,7 +486,7 @@ msgstr "%s byl přidán mezi oblíbené."
 msgid "%s has been removed from your favorites."
 msgstr "%s byl odstraněn z oblíbených."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:744
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:207
 msgid "Settings"
 msgstr "Nastavení"
 
@@ -1152,7 +1150,6 @@ msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Stáhnout a nainstalovat „%s“ z extensions.gnome.org?"
 
 #: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
-#: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Klávesnice"
 
@@ -1204,31 +1201,31 @@ msgstr "Zobrazit zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
-#: ../js/ui/messageTray.js:1182
+#: ../js/ui/messageTray.js:1241
 msgid "Open"
 msgstr "Otevřít"
 
-#: ../js/ui/messageTray.js:1189
+#: ../js/ui/messageTray.js:1248
 msgid "Remove"
 msgstr "Odstranit"
 
-#: ../js/ui/messageTray.js:1501
+#: ../js/ui/messageTray.js:1560
 msgid "Clear Messages"
 msgstr "Vymazat zprávy"
 
-#: ../js/ui/messageTray.js:1528
+#: ../js/ui/messageTray.js:1587
 msgid "Notification Settings"
 msgstr "Nastavení upozornění"
 
-#: ../js/ui/messageTray.js:1711
+#: ../js/ui/messageTray.js:1770
 msgid "No Messages"
 msgstr "Žádné zprávy"
 
-#: ../js/ui/messageTray.js:1784
+#: ../js/ui/messageTray.js:1842
 msgid "Message Tray"
 msgstr "Lišta zpráv"
 
-#: ../js/ui/messageTray.js:2811
+#: ../js/ui/messageTray.js:2854
 msgid "System Information"
 msgstr "Informace o systému"
 
@@ -1280,7 +1277,7 @@ msgstr "Horní lišta"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:549
+#: ../js/ui/popupMenu.js:488
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1306,7 +1303,7 @@ msgstr[0] "%d nové upozornění"
 msgstr[1] "%d nová upozornění"
 msgstr[2] "%d nových upozornění"
 
-#: ../js/ui/screenShield.js:449 ../js/ui/userMenu.js:759
+#: ../js/ui/screenShield.js:449 ../js/ui/status/system.js:211
 msgid "Lock"
 msgstr "Uzamknout"
 
@@ -1321,11 +1318,11 @@ msgstr "GNOME potřebuje uzamknout obrazovku"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:775 ../js/ui/screenShield.js:1215
+#: ../js/ui/screenShield.js:788 ../js/ui/screenShield.js:1216
 msgid "Unable to lock"
 msgstr "Nelze uzamknout obrazovku"
 
-#: ../js/ui/screenShield.js:776 ../js/ui/screenShield.js:1216
+#: ../js/ui/screenShield.js:789 ../js/ui/screenShield.js:1217
 msgid "Lock was blocked by an application"
 msgstr "Zamknutí bylo zablokováno některou z aplikací"
 
@@ -1361,7 +1358,7 @@ msgstr "Heslo"
 msgid "Remember Password"
 msgstr "Pamatovat si heslo"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:108
+#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:68
 msgid "Unlock"
 msgstr "Odemknout"
 
@@ -1401,22 +1398,18 @@ msgstr "Vícenásobné stisky kláves"
 msgid "Mouse Keys"
 msgstr "Myš klávesnicí"
 
-#: ../js/ui/status/accessibility.js:72
-msgid "Universal Access Settings"
-msgstr "Nastavení zpřístupnění"
-
-#: ../js/ui/status/accessibility.js:129
+#: ../js/ui/status/accessibility.js:126
 msgid "High Contrast"
 msgstr "Vysoký kontrast"
 
-#: ../js/ui/status/accessibility.js:178
+#: ../js/ui/status/accessibility.js:175
 msgid "Large Text"
 msgstr "Styl velkého textu"
 
 #: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
-#: ../js/ui/status/bluetooth.js:290 ../js/ui/status/bluetooth.js:327
-#: ../js/ui/status/bluetooth.js:355 ../js/ui/status/bluetooth.js:391
-#: ../js/ui/status/bluetooth.js:422 ../js/ui/status/network.js:713
+#: ../js/ui/status/bluetooth.js:272 ../js/ui/status/bluetooth.js:309
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:373
+#: ../js/ui/status/bluetooth.js:404 ../js/ui/status/network.js:713
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1432,121 +1425,101 @@ msgstr "Odeslat soubory do zařízení…"
 msgid "Set Up a New Device…"
 msgstr "Nastavit nové zařízení…"
 
-#: ../js/ui/status/bluetooth.js:84
-msgid "Bluetooth Settings"
-msgstr "Nastavit Bluetooth"
-
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:105 ../js/ui/status/network.js:140
+#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:140
 msgid "hardware disabled"
 msgstr "zařízení zakázáno"
 
-#: ../js/ui/status/bluetooth.js:198
+#: ../js/ui/status/bluetooth.js:196
 msgid "Connection"
 msgstr "Připojení"
 
-#: ../js/ui/status/bluetooth.js:209 ../js/ui/status/network.js:399
+#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:399
 msgid "disconnecting..."
 msgstr "odpojování…"
 
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:405
+#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:405
 #: ../js/ui/status/network.js:1298
 msgid "connecting..."
 msgstr "připojování…"
 
-#: ../js/ui/status/bluetooth.js:240
+#: ../js/ui/status/bluetooth.js:238
 msgid "Send Files…"
 msgstr "Odeslat soubory…"
 
-#: ../js/ui/status/bluetooth.js:247
-msgid "Keyboard Settings"
-msgstr "Nastavení klávesnice"
-
-#: ../js/ui/status/bluetooth.js:250
-msgid "Mouse Settings"
-msgstr "Nastavení myši"
-
-#: ../js/ui/status/bluetooth.js:255 ../js/ui/status/volume.js:313
-msgid "Sound Settings"
-msgstr "Nastavení zvuku"
-
-#: ../js/ui/status/bluetooth.js:328 ../js/ui/status/bluetooth.js:356
+#: ../js/ui/status/bluetooth.js:310 ../js/ui/status/bluetooth.js:338
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Požadavek na autorizaci od %s"
 
-#: ../js/ui/status/bluetooth.js:334 ../js/ui/status/bluetooth.js:399
-#: ../js/ui/status/bluetooth.js:430
+#: ../js/ui/status/bluetooth.js:316 ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:412
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Zařízení %s se chce spárovat s tímto počítačem"
 
-#: ../js/ui/status/bluetooth.js:336
+#: ../js/ui/status/bluetooth.js:318
 msgid "Allow"
 msgstr "Povolit"
 
-#: ../js/ui/status/bluetooth.js:337
+#: ../js/ui/status/bluetooth.js:319
 msgid "Deny"
 msgstr "Zamítnout"
 
-#: ../js/ui/status/bluetooth.js:362
+#: ../js/ui/status/bluetooth.js:344
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Zařízení %s požaduje přístup ke službě „%s“"
 
-#: ../js/ui/status/bluetooth.js:364
+#: ../js/ui/status/bluetooth.js:346
 msgid "Always grant access"
 msgstr "Vždy udělovat přístup"
 
-#: ../js/ui/status/bluetooth.js:365
+#: ../js/ui/status/bluetooth.js:347
 msgid "Grant this time only"
 msgstr "Udělit pouze tentokrát"
 
-#: ../js/ui/status/bluetooth.js:366
+#: ../js/ui/status/bluetooth.js:348
 msgid "Reject"
 msgstr "Odmítnout"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:393
+#: ../js/ui/status/bluetooth.js:375
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Potvrzení spárování pro %s"
 
-#: ../js/ui/status/bluetooth.js:400
+#: ../js/ui/status/bluetooth.js:382
 #, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr "Ověřte prosím, zda klíč „%06d“ odpovídá tomu na zařízení."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:403
+#: ../js/ui/status/bluetooth.js:385
 msgid "Matches"
 msgstr "Souhlasí"
 
-#: ../js/ui/status/bluetooth.js:404
+#: ../js/ui/status/bluetooth.js:386
 msgid "Does not match"
 msgstr "Nesouhlasí"
 
-#: ../js/ui/status/bluetooth.js:423
+#: ../js/ui/status/bluetooth.js:405
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Požadavek na spárování pro %s"
 
-#: ../js/ui/status/bluetooth.js:431
+#: ../js/ui/status/bluetooth.js:413
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Zadejte prosím PIN, který je uveden na zařízení."
 
-#: ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:430
 msgid "OK"
 msgstr "Budiž"
 
 #: ../js/ui/status/keyboard.js:396
 msgid "Show Keyboard Layout"
 msgstr "Zobrazit rozložení klávesnice"
-
-#: ../js/ui/status/keyboard.js:401
-msgid "Region & Language Settings"
-msgstr "Místní a jazyková nastavení"
 
 #: ../js/ui/status/lockScreenMenu.js:43
 msgid "Volume, network, battery"
@@ -1614,219 +1587,96 @@ msgstr "Mobilní širokopásmová"
 msgid "Enable networking"
 msgstr "Povolit síť"
 
-#: ../js/ui/status/network.js:1522
-msgid "Network Settings"
-msgstr "Nastavení sítě"
-
-#: ../js/ui/status/network.js:1539
+#: ../js/ui/status/network.js:1537
 msgid "Network Manager"
 msgstr "Network Manager"
 
-#: ../js/ui/status/network.js:1623
+#: ../js/ui/status/network.js:1621
 msgid "Connection failed"
 msgstr "Připojení selhalo"
 
-#: ../js/ui/status/network.js:1624
+#: ../js/ui/status/network.js:1622
 msgid "Activation of network connection failed"
 msgstr "Aktivace síťového připojení selhala"
 
-#: ../js/ui/status/network.js:1937
+#: ../js/ui/status/network.js:1936
 msgid "Networking is disabled"
 msgstr "Síť je zakázána"
 
-#: ../js/ui/status/power.js:55
+#: ../js/ui/status/power.js:31 ../js/ui/status/power.js:44
 msgid "Battery"
 msgstr "Baterie"
 
-#: ../js/ui/status/power.js:81
+#: ../js/ui/status/power.js:45
 msgid "Power Settings"
 msgstr "Nastavení napájení"
 
+#: ../js/ui/status/power.js:61
+msgid "Fully Charged"
+msgstr "Plně nabito"
+
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:99
+#. state is one of PENDING_CHARGING, PENDING_DISCHARGING
+#: ../js/ui/status/power.js:67 ../js/ui/status/power.js:84
 msgid "Estimating…"
 msgstr "Odhaduje se…"
 
-#: ../js/ui/status/power.js:106
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: ../js/ui/status/power.js:75
 #, c-format
-msgid "%d hour remaining"
-msgid_plural "%d hours remaining"
-msgstr[0] "Zbývá %d hodina"
-msgstr[1] "Zbývají %d hodiny"
-msgstr[2] "Zbývá %d hodin"
+msgid "%d\\u2236%d Remaining (%d%%)"
+msgstr "Zbývá %d\\u2236%d (%d %%)"
 
-#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:109
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: ../js/ui/status/power.js:80
 #, c-format
-msgid "%d %s %d %s remaining"
-msgstr "Zbývá %d %s %d %s"
+msgid "%d\\u2236%d Until Full (%d%%)"
+msgstr "%d\\u2236%d do nabití (%d %%)"
 
-#: ../js/ui/status/power.js:111
-msgid "hour"
-msgid_plural "hours"
-msgstr[0] "hodina"
-msgstr[1] "hodiny"
-msgstr[2] "hodin"
-
-#: ../js/ui/status/power.js:111
-msgid "minute"
-msgid_plural "minutes"
-msgstr[0] "minuta"
-msgstr[1] "minuty"
-msgstr[2] "minut"
-
-#: ../js/ui/status/power.js:114
-#, c-format
-msgid "%d minute remaining"
-msgid_plural "%d minutes remaining"
-msgstr[0] "zbývá %d minuta"
-msgstr[1] "zbývají %d minuty"
-msgstr[2] "zbývá %d minut"
-
-#: ../js/ui/status/power.js:117 ../js/ui/status/power.js:191
-#, c-format
-msgctxt "percent of battery remaining"
-msgid "%d%%"
-msgstr "%d%%"
-
-#: ../js/ui/status/power.js:201
-msgid "AC Adapter"
-msgstr "Napájecí adaptér"
-
-#: ../js/ui/status/power.js:203
-msgid "Laptop Battery"
-msgstr "Baterie notebooku"
-
-#: ../js/ui/status/power.js:205
-msgid "UPS"
-msgstr "Záložní zdroj"
-
-#: ../js/ui/status/power.js:207
-msgid "Monitor"
-msgstr "Monitor"
-
-#: ../js/ui/status/power.js:209
-msgid "Mouse"
-msgstr "Myš"
-
-#: ../js/ui/status/power.js:213
-msgid "PDA"
-msgstr "PDA"
-
-#: ../js/ui/status/power.js:215
-msgid "Cell Phone"
-msgstr "Mobilní telefon"
-
-#: ../js/ui/status/power.js:217
-msgid "Media Player"
-msgstr "Multimediální přehrávač"
-
-#: ../js/ui/status/power.js:219
-msgid "Tablet"
-msgstr "Tablet"
-
-#: ../js/ui/status/power.js:221
-msgid "Computer"
-msgstr "Počítač"
-
-#: ../js/ui/status/power.js:223
-msgctxt "device"
-msgid "Unknown"
-msgstr "Neznámé"
-
-#: ../js/ui/status/volume.js:121
-msgid "Volume changed"
-msgstr "Hlasitost změněna"
-
-#. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:246 ../js/ui/status/volume.js:294
-msgid "Volume"
-msgstr "Hlasitost"
-
-#: ../js/ui/status/volume.js:255
-msgid "Microphone"
-msgstr "Mikrofon"
-
-#: ../js/ui/unlockDialog.js:119
-msgid "Log in as another user"
-msgstr "Přihlásit se jako jiný uživatel"
-
-#: ../js/ui/unlockDialog.js:140
-msgid "Unlock Window"
-msgstr "Odemykací okno"
-
-#: ../js/ui/userMenu.js:149
-msgid "Available"
-msgstr "Přítomen"
-
-#: ../js/ui/userMenu.js:152
-msgid "Busy"
-msgstr "Zaneprázdněn"
-
-#: ../js/ui/userMenu.js:155
-msgid "Invisible"
-msgstr "Neviditelný"
-
-#: ../js/ui/userMenu.js:158
-msgid "Away"
-msgstr "Nepřítomen"
-
-#: ../js/ui/userMenu.js:161
-msgid "Idle"
-msgstr "Nečinný"
-
-#: ../js/ui/userMenu.js:164
-msgid "Offline"
-msgstr "Odpojen"
-
-#: ../js/ui/userMenu.js:736
-msgid "Notifications"
-msgstr "Upozornění"
-
-#: ../js/ui/userMenu.js:749
+#: ../js/ui/status/system.js:188
 msgid "Switch User"
 msgstr "Přepnout uživatele"
 
-#: ../js/ui/userMenu.js:754
+#: ../js/ui/status/system.js:193
 msgid "Log Out"
 msgstr "Odhlásit se"
 
-#: ../js/ui/userMenu.js:774
-msgid "Install Updates & Restart"
-msgstr "Nainstalovat aktualizace a restartovat"
-
-#: ../js/ui/userMenu.js:792
-msgid "Your chat status will be set to busy"
-msgstr "Váš stav v konverzacích byl nastaven na „Zaneprázdněn“"
-
-#: ../js/ui/userMenu.js:793
-msgid ""
-"Notifications are now disabled, including chat messages. Your online status "
-"has been adjusted to let others know that you might not see their messages."
-msgstr ""
-"Upozornění jsou nyní vypnuta, včetně zpráv v konverzacích. Váš stav on-line "
-"byl změněn tak, aby ostatní věděli, že si jejich zprávy nemusíte přečíst."
-
-#: ../js/ui/userMenu.js:834
+#: ../js/ui/status/system.js:255
 msgid "Other users are logged in."
 msgstr "Jsou přihlášeni jiní uživatelé."
 
-#: ../js/ui/userMenu.js:839
+#: ../js/ui/status/system.js:260
 msgid "Shutting down might cause them to lose unsaved work."
 msgstr "Vypnutí by mohlo způsobit ztrátu jejich neuložené práce."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/userMenu.js:867
+#: ../js/ui/status/system.js:288
 #, c-format
 msgid "%s (remote)"
 msgstr "%s (vzdálený)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/userMenu.js:870
+#: ../js/ui/status/system.js:291
 #, c-format
 msgid "%s (console)"
 msgstr "%s (konzole)"
+
+#: ../js/ui/status/volume.js:126
+msgid "Volume changed"
+msgstr "Hlasitost změněna"
+
+#: ../js/ui/status/volume.js:302
+msgid "Volume"
+msgstr "Hlasitost"
+
+#: ../js/ui/unlockDialog.js:78
+msgid "Log in as another user"
+msgstr "Přihlásit se jako jiný uživatel"
+
+#: ../js/ui/unlockDialog.js:97
+msgid "Unlock Window"
+msgstr "Odemykací okno"
 
 #: ../js/ui/viewSelector.js:100
 msgid "Applications"
