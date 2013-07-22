@@ -1424,6 +1424,10 @@ const SummaryItem = new Lang.Class({
         this.notificationStackWidget.add_actor(this.notificationStackView);
 
         this.closeButton = Util.makeCloseButton();
+            this.closeButton.connect('clicked', Lang.bind(this, function() {
+            source.destroy();
+            source.emit('done-displaying-content');
+        }));
         this.notificationStackWidget.add_actor(this.closeButton);
         this._stackedNotifications = [];
 
@@ -1915,9 +1919,8 @@ const MessageTray = new Lang.Class({
     _closeNotification: function() {
         if (this._notificationState == State.SHOWN) {
             this._closeButton.hide();
-            this._notificationClosed = true;
-            this._updateState();
-            this._notificationClosed = false;
+            this._notification.emit('done-displaying');
+            this._notification.destroy();
         }
     },
 
@@ -2698,11 +2701,9 @@ const MessageTray = new Lang.Class({
 
             let closeButton = summaryItem.closeButton;
             closeButton.show();
-            this._summaryBoxPointerCloseClickedId = closeButton.connect('clicked', Lang.bind(this, this._hideSummaryBoxPointer));
             summaryItem.prepareNotificationStackForShowing();
         } else if (this._clickedSummaryItemMouseButton == 3) {
             child = summaryItem.rightClickMenu;
-            this._summaryBoxPointerCloseClickedId = 0;
         }
 
         // If the user clicked the middle mouse button, or the item
@@ -2796,10 +2797,7 @@ const MessageTray = new Lang.Class({
             this._summaryBoxPointerItem.disconnect(this._summaryBoxPointerContentUpdatedId);
             this._summaryBoxPointerContentUpdatedId = 0;
         }
-        if (this._summaryBoxPointerCloseClickedId != 0) {
-            this._summaryBoxPointerItem.closeButton.disconnect(this._summaryBoxPointerCloseClickedId);
-            this._summaryBoxPointerCloseClickedId = 0;
-        }
+
         if (this._sourceDoneDisplayingId) {
             this._summaryBoxPointerItem.source.disconnect(this._sourceDoneDisplayingId);
             this._sourceDoneDisplayingId = 0;
