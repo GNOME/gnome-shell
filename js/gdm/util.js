@@ -121,6 +121,7 @@ const ShellUserVerifier = new Lang.Class({
         this._messageQueue = [];
         this._messageQueueTimeoutId = 0;
         this.hasPendingMessages = false;
+        this.reauthenticating = false;
 
         this._failCounter = 0;
     },
@@ -129,6 +130,7 @@ const ShellUserVerifier = new Lang.Class({
         this._cancellable = new Gio.Cancellable();
         this._hold = hold;
         this._userName = userName;
+        this.reauthenticating = false;
 
         this._checkForFingerprintReader();
 
@@ -267,6 +269,7 @@ const ShellUserVerifier = new Lang.Class({
             return;
         }
 
+        this.reauthenticating = true;
         this._connectSignals();
         this._beginVerification();
         this._hold.release();

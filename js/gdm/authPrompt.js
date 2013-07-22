@@ -198,9 +198,9 @@ const AuthPrompt = new Lang.Class({
             this.cancelButton.hide();
 
         if (passwordChar) {
-            if (this._mode == AuthPromptMode.UNLOCK_ONLY)
+            if (this._userVerifier.reauthenticating)
                 this.nextButton.label = _("Unlock");
-            else if (this._mode == AuthPromptMode.UNLOCK_OR_LOG_IN)
+            else
                 this.nextButton.label = C_("button", "Sign In");
         } else {
             this.nextButton.label = _("Next");
