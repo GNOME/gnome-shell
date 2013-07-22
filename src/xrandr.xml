@@ -18,6 +18,8 @@
 	@crtcs: available CRTCs
 	@outputs: available outputs
 	@modes: available modes
+	@max_screen_width:
+	@max_screen_height:
 
         Retrieves the current layout of the hardware.
 
@@ -130,6 +132,8 @@
       <arg name="crtcs" direction="out" type="a(uxiiiiiuaua{sv})" />
       <arg name="outputs" direction="out" type="a(uxiausauaua{sv})" />
       <arg name="modes" direction="out" type="a(uxuud)" />
+      <arg name="max_screen_width" direction="out" type="i" />
+      <arg name="max_screen_height" direction="out" type="i" />
     </method>
 
     <!--
@@ -155,6 +159,7 @@
         - i x, y: the new coordinates of the top left corner
 	          the geometry will be completed with the size information
 		  from @new_mode
+        - u transform: the desired transform
 	- au outputs: the API ID of outputs that should be assigned to
 	              this CRTC
         - a{sv} properties: properties whose value should be changed
@@ -186,7 +191,7 @@
     <method name="ApplyConfiguration">
       <arg name="serial" direction="in" type="u" />
       <arg name="persistent" direction="in" type="b" />
-      <arg name="crtcs" direction="in" type="a(uiiiaua{sv})" />
+      <arg name="crtcs" direction="in" type="a(uiiiuaua{sv})" />
       <arg name="outputs" direction="in" type="a(ua{sv})" />
     </method>
   </interface>

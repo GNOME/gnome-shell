@@ -37,19 +37,44 @@
 
 #include <meta/main.h>
 #include <meta/util.h>
+#include <meta/errors.h>
 #include "monitor-private.h"
 
 #include "meta-dbus-xrandr.h"
 
+#ifndef HAVE_WAYLAND
+enum wl_output_transform {
+  WL_OUTPUT_TRANSFORM_NORMAL,
+  WL_OUTPUT_TRANSFORM_90,
+  WL_OUTPUT_TRANSFORM_180,
+  WL_OUTPUT_TRANSFORM_270,
+  WL_OUTPUT_TRANSFORM_FLIPPED,
+  WL_OUTPUT_TRANSFORM_FLIPPED_90,
+  WL_OUTPUT_TRANSFORM_FLIPPED_180,
+  WL_OUTPUT_TRANSFORM_FLIPPED_270
+};
+#endif
+
+typedef enum {
+  META_BACKEND_DUMMY,
+  META_BACKEND_XRANDR,
+  META_BACKEND_COGL
+} MetaBackend;
+
 struct _MetaMonitorManager
 {
   GObject parent_instance;
+
+  MetaBackend backend;
 
   /* XXX: this structure is very badly
      packed, but I like the logical organization
      of fields */
 
   unsigned int serial;
+
+  int max_screen_width;
+  int max_screen_height;
 
   /* Outputs refer to physical screens,
      CRTCs refer to stuff that can drive outputs
@@ -73,6 +98,8 @@ struct _MetaMonitorManager
 
 #ifdef HAVE_RANDR
   Display *xdisplay;
+  XRRScreenResources *resources;
+  int time;
 #endif
 
   int dbus_name_id;
@@ -96,6 +123,8 @@ G_DEFINE_TYPE (MetaMonitorManager, meta_monitor_manager, G_TYPE_OBJECT);
 static void
 make_dummy_monitor_config (MetaMonitorManager *manager)
 {
+  manager->backend = META_BACKEND_DUMMY;
+
   manager->modes = g_new0 (MetaMonitorMode, 1);
   manager->n_modes = 1;
 
@@ -124,6 +153,8 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->crtcs[0].rect.width = manager->modes[0].width;
   manager->crtcs[0].rect.height = manager->modes[0].height;
   manager->crtcs[0].current_mode = &manager->modes[0];
+  manager->crtcs[0].is_dirty = FALSE;
+  manager->crtcs[0].logical_monitor = NULL;
 
   manager->outputs = g_new0 (MetaOutput, 1);
   manager->n_outputs = 1;
@@ -146,6 +177,9 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->outputs[0].possible_crtcs[0] = &manager->crtcs[0];
   manager->outputs[0].n_possible_clones = 0;
   manager->outputs[0].possible_clones = g_new0 (MetaOutput *, 0);
+
+  manager->max_screen_width = manager->modes[0].width;
+  manager->max_screen_height = manager->modes[0].height;
 }
 
 #ifdef HAVE_RANDR
@@ -157,12 +191,26 @@ read_monitor_infos_from_xrandr (MetaMonitorManager *manager)
     RROutput primary_output;
     unsigned int i, j, k;
     unsigned int n_actual_outputs;
+    int min_width, min_height;
+
+    if (manager->resources)
+      XRRFreeScreenResources (manager->resources);
+    manager->resources = NULL;
+
+    XRRGetScreenSizeRange (manager->xdisplay, DefaultRootWindow (manager->xdisplay),
+                           &min_width,
+                           &min_height,
+                           &manager->max_screen_width,
+                           &manager->max_screen_height);
 
     resources = XRRGetScreenResourcesCurrent (manager->xdisplay,
                                               DefaultRootWindow (manager->xdisplay));
     if (!resources)
       return make_dummy_monitor_config (manager);
 
+    manager->backend = META_BACKEND_XRANDR;
+    manager->resources = resources;
+    manager->time = resources->configTimestamp;
     manager->n_outputs = resources->noutput;
     manager->n_crtcs = resources->ncrtc;
     manager->n_modes = resources->nmode;
@@ -198,6 +246,7 @@ read_monitor_infos_from_xrandr (MetaMonitorManager *manager)
         meta_crtc->rect.y = crtc->y;
         meta_crtc->rect.width = crtc->width;
         meta_crtc->rect.height = crtc->height;
+        meta_crtc->is_dirty = FALSE;
 
         for (j = 0; j < (unsigned)resources->nmode; j++)
           {
@@ -318,8 +367,6 @@ read_monitor_infos_from_xrandr (MetaMonitorManager *manager)
               }
           }
       }
-
-    XRRFreeScreenResources (resources);
 }
 
 #endif
@@ -689,9 +736,334 @@ handle_get_resources (MetaDBusDisplayConfig *skeleton,
                                                    manager->serial,
                                                    g_variant_builder_end (&crtc_builder),
                                                    g_variant_builder_end (&output_builder),
-                                                   g_variant_builder_end (&mode_builder));
-  return FALSE;
-}                     
+                                                   g_variant_builder_end (&mode_builder),
+                                                   manager->max_screen_width,
+                                                   manager->max_screen_height);
+  return TRUE;
+}
+
+static gboolean
+output_can_config (MetaOutput      *output,
+                   MetaCRTC        *crtc,
+                   MetaMonitorMode *mode)
+{
+  unsigned int i;
+  gboolean ok = FALSE;
+
+  for (i = 0; i < output->n_possible_crtcs && !ok; i++)
+    ok = output->possible_crtcs[i] == crtc;
+
+  if (!ok)
+    return FALSE;
+
+  if (mode == NULL)
+    return TRUE;
+
+  ok = FALSE;
+  for (i = 0; i < output->n_modes && !ok; i++)
+    ok = output->modes[i] == mode;
+
+  return ok;
+}
+
+static gboolean
+output_can_clone (MetaOutput *output,
+                  MetaOutput *clone)
+{
+  unsigned int i;
+  gboolean ok = FALSE;
+
+  for (i = 0; i < output->n_possible_clones && !ok; i++)
+    ok = output->possible_clones[i] == clone;
+
+  return ok;
+}
+
+#ifdef HAVE_RANDR
+static Rotation
+wl_transform_to_xrandr (enum wl_output_transform transform)
+{
+  switch (transform)
+    {
+    case WL_OUTPUT_TRANSFORM_NORMAL:
+      return RR_Rotate_0;
+    case WL_OUTPUT_TRANSFORM_90:
+      return RR_Rotate_90;
+    case WL_OUTPUT_TRANSFORM_180:
+      return RR_Rotate_180;
+    case WL_OUTPUT_TRANSFORM_270:
+      return RR_Rotate_270;
+    case WL_OUTPUT_TRANSFORM_FLIPPED:
+      return RR_Reflect_X | RR_Rotate_0;
+    case WL_OUTPUT_TRANSFORM_FLIPPED_90:
+      return RR_Reflect_X | RR_Rotate_90;
+    case WL_OUTPUT_TRANSFORM_FLIPPED_180:
+      return RR_Reflect_X | RR_Rotate_180;
+    case WL_OUTPUT_TRANSFORM_FLIPPED_270:
+      return RR_Reflect_X | RR_Rotate_270;
+    }
+
+  g_assert_not_reached ();
+}
+     
+static void
+apply_config_xrandr (MetaMonitorManager *manager,
+                     GVariantIter       *crtcs,
+                     GVariantIter       *outputs)
+{
+  GVariant *nested_outputs, *properties;
+  guint crtc_id, output_id, transform;
+  int new_mode, x, y;
+  unsigned i;
+
+  while (g_variant_iter_loop (crtcs, "(uiiiu@aua{sv})",
+                              &crtc_id, &new_mode, &x, &y,
+                              &transform, &nested_outputs, NULL))
+    {
+      MetaCRTC *crtc = &manager->crtcs[crtc_id];
+      crtc->is_dirty = TRUE;
+
+      if (new_mode == -1)
+        {
+          XRRSetCrtcConfig (manager->xdisplay,
+                            manager->resources,
+                            (XID)crtc->crtc_id,
+                            manager->time,
+                            0, 0,
+                            None,
+                            RR_Rotate_0,
+                            NULL, 0);
+        }
+      else
+        {
+          MetaMonitorMode *mode;
+          XID *outputs;
+          int i, n_outputs;
+          guint output_id;
+          Status ok;
+
+          mode = &manager->modes[new_mode];
+
+          n_outputs = g_variant_n_children (nested_outputs);
+          outputs = g_new (XID, n_outputs);
+
+          for (i = 0; i < n_outputs; i++)
+            {
+              g_variant_get_child (nested_outputs, i, "u", &output_id);
+
+              outputs[i] = manager->outputs[output_id].output_id;
+            }
+
+          meta_error_trap_push (meta_get_display ());
+          ok = XRRSetCrtcConfig (manager->xdisplay,
+                                 manager->resources,
+                                 (XID)crtc->crtc_id,
+                                 manager->time,
+                                 x, y,
+                                 (XID)mode->mode_id,
+                                 wl_transform_to_xrandr (transform),
+                                 outputs, n_outputs);
+          meta_error_trap_pop (meta_get_display ());
+
+          if (ok != Success)
+            meta_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transfrom %u failed\n",
+                          (unsigned)(crtc->crtc_id), (unsigned)(mode->mode_id),
+                          mode->width, mode->height, (float)mode->refresh_rate, x, y, transform);
+
+          g_free (outputs);
+        }
+    }
+
+  while (g_variant_iter_loop (outputs, "(u@a{sv})",
+                              &output_id, &properties))
+    {
+      gboolean primary;
+
+      if (g_variant_lookup (properties, "primary", "b", &primary) && primary)
+        {
+          MetaOutput *output = &manager->outputs[output_id];
+
+          XRRSetOutputPrimary (manager->xdisplay,
+                               DefaultRootWindow (manager->xdisplay),
+                               (XID)output->output_id);
+        }
+    }
+
+  /* Disable CRTCs not mentioned in the list */
+  for (i = 0; i < manager->n_crtcs; i++)
+    {
+      MetaCRTC *crtc = &manager->crtcs[i];
+
+      if (crtc->is_dirty)
+        continue;
+      if (crtc->current_mode == NULL)
+        continue;
+
+      XRRSetCrtcConfig (manager->xdisplay,
+                        manager->resources,
+                        (XID)crtc->crtc_id,
+                        manager->time,
+                        0, 0,
+                        None,
+                        RR_Rotate_0,
+                        NULL, 0);
+    }
+}
+#endif
+
+static gboolean
+handle_apply_configuration  (MetaDBusDisplayConfig *skeleton,
+                             GDBusMethodInvocation *invocation,
+                             guint                  serial,
+                             gboolean               persistent,
+                             GVariant              *crtcs,
+                             GVariant              *outputs,
+                             MetaMonitorManager    *manager)
+{
+  GVariantIter crtc_iter, output_iter, *nested_outputs;
+  guint crtc_id;
+  int new_mode, x, y;
+  guint transform;
+  guint output_id;
+
+  if (serial != manager->serial)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "The requested configuration is based on stale information");
+      return TRUE;
+    }
+
+  if (persistent)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_NOT_SUPPORTED,
+                                             "Persistent configuration is not yet implemented");
+      return TRUE;
+    }
+
+  if (manager->backend != META_BACKEND_XRANDR)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_NOT_SUPPORTED,
+                                             "Changing configuration is not supported by the backend");
+      return TRUE;
+    }
+
+  /* Validate all arguments */
+  g_variant_iter_init (&crtc_iter, crtcs);
+  while (g_variant_iter_loop (&crtc_iter, "(uiiiuaua{sv})",
+                              &crtc_id, &new_mode, &x, &y, &transform,
+                              &nested_outputs, NULL))
+    {
+      MetaOutput *first_output;
+      MetaCRTC *crtc;
+      MetaMonitorMode *mode;
+      guint output_id;
+
+      if (crtc_id >= manager->n_crtcs)
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                 G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Invalid CRTC id");
+          return TRUE;
+        }
+      crtc = &manager->crtcs[crtc_id];
+
+      if (new_mode != -1 && (new_mode < 0 || (unsigned)new_mode >= manager->n_modes))
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                 G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Invalid mode id");
+          return TRUE;
+        }
+      mode = new_mode != -1 ? &manager->modes[new_mode] : NULL;
+
+      if (mode &&
+          (x < 0 ||
+           x + mode->width > manager->max_screen_width ||
+           y < 0 ||
+           y + mode->height > manager->max_screen_height))
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                 G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Invalid CRTC geometry");
+          return TRUE;
+        }
+
+      if (transform < WL_OUTPUT_TRANSFORM_NORMAL ||
+          transform > WL_OUTPUT_TRANSFORM_FLIPPED_270)
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                 G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Invalid transform");
+          return TRUE;
+        }
+
+      first_output = NULL;
+      while (g_variant_iter_loop (nested_outputs, "u", &output_id))
+        {
+          MetaOutput *output;
+
+          if (output_id >= manager->n_outputs)
+            {
+              g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                     G_DBUS_ERROR_INVALID_ARGS,
+                                                     "Invalid output id");
+              return TRUE;
+            }
+          output = &manager->outputs[output_id];
+
+          if (!output_can_config (output, crtc, mode))
+            {
+              g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                     G_DBUS_ERROR_INVALID_ARGS,
+                                                     "Output cannot be assigned to this CRTC or mode");
+              return TRUE;
+            }
+
+          if (first_output)
+            {
+              if (!output_can_clone (output, first_output))
+                {
+                  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                         G_DBUS_ERROR_INVALID_ARGS,
+                                                         "Outputs cannot be cloned");
+                  return TRUE;
+                }
+            }
+          else
+            first_output = output;
+        }
+
+      if (!first_output && mode)
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                 G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Mode specified without outputs?");
+          return TRUE;
+        }
+    }
+
+  g_variant_iter_init (&output_iter, outputs);
+  while (g_variant_iter_loop (&output_iter, "(ua{sv})", &output_id, NULL))
+    {
+      if (output_id >= manager->n_outputs)
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                 G_DBUS_ERROR_INVALID_ARGS,
+                                                 "Invalid output id");
+          return TRUE;
+        }
+    }
+
+  g_variant_iter_init (&crtc_iter, crtcs);
+  g_variant_iter_init (&output_iter, outputs);
+  apply_config_xrandr (manager, &crtc_iter, &output_iter);
+
+  meta_dbus_display_config_complete_apply_configuration (skeleton, invocation);
+  return TRUE;
+}
 
 static void
 on_bus_acquired (GDBusConnection *connection,
@@ -704,6 +1076,8 @@ on_bus_acquired (GDBusConnection *connection,
 
   g_signal_connect_object (manager->skeleton, "handle-get-resources",
                            G_CALLBACK (handle_get_resources), manager, 0);
+  g_signal_connect_object (manager->skeleton, "handle-apply-configuration",
+                           G_CALLBACK (handle_apply_configuration), manager, 0);
 
   g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (manager->skeleton),
                                     connection,
