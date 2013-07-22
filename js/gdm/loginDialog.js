@@ -401,10 +401,10 @@ const LoginDialog = new Lang.Class({
         parentActor.add_child(this.actor);
 
         this._userManager = AccountsService.UserManager.get_default()
-        this._greeterClient = new Gdm.Client();
+        let gdmClient = new Gdm.Client();
 
         if (GLib.getenv('GDM_GREETER_TEST') != '1') {
-            this._greeter = this._greeterClient.get_greeter_sync(null);
+            this._greeter = gdmClient.get_greeter_sync(null);
 
             this._greeter.connect('default-session-name-changed',
                                   Lang.bind(this, this._onDefaultSessionChanged));
@@ -414,15 +414,6 @@ const LoginDialog = new Lang.Class({
             this._greeter.connect('timed-login-requested',
                                   Lang.bind(this, this._onTimedLoginRequested));
         }
-
-        this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient);
-        this._userVerifier.connect('ask-question', Lang.bind(this, this._askQuestion));
-        this._userVerifier.connect('show-message', Lang.bind(this, this._showMessage));
-        this._userVerifier.connect('verification-failed', Lang.bind(this, this._verificationFailed));
-        this._userVerifier.connect('reset', Lang.bind(this, this._reset));
-        this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
-        this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._hideLoginHint));
-        this._verifyingUser = false;
 
         this._settings = new Gio.Settings({ schema: GdmUtil.LOGIN_SCREEN_SCHEMA });
 
@@ -458,12 +449,10 @@ const LoginDialog = new Lang.Class({
                                      x_fill: true,
                                      y_fill: true });
 
-        this._authPrompt = new AuthPrompt.AuthPrompt();
+        this._authPrompt = new AuthPrompt.AuthPrompt(gdmClient, AuthPrompt.AuthPromptMode.UNLOCK_OR_LOGIN);
+        this._authPrompt.connect('prompted', Lang.bind(this, this._onPrompted));
+        this._authPrompt.connect('reset', Lang.bind(this, this._reset));
         this._authPrompt.hide();
-        this._authPrompt.connect('cancel',
-                                 Lang.bind(this, function() {
-                                        this.cancel();
-                                 }));
 
         this._authPrompt.actor.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
                                                                             align_axis: Clutter.AlignAxis.BOTH,
@@ -540,7 +529,7 @@ const LoginDialog = new Lang.Class({
         if (disableUserList != this._disableUserList) {
             this._disableUserList = disableUserList;
 
-            if (!this._verifyingUser)
+            if (!this._authPrompt.verifyingUser)
                 this._reset();
         }
     },
@@ -575,14 +564,24 @@ const LoginDialog = new Lang.Class({
         this._updateLogoTexture(this._textureCache, this._logoFileUri);
     },
 
-    _reset: function() {
-        this._userVerifier.clear();
+    _onPrompted: function() {
+        this._sessionMenuButton.updateSensitivity(true);
 
-        this._updateSensitivity(true);
-        this._authPrompt.reset();
+        if (this._shouldShowSessionMenuButton())
+            this._authPrompt.setActorInDefaultButtonWell(this._sessionMenuButton.actor);
+
+        this._authPrompt.cancelButton.show();
+
+        this._showPrompt();
+    },
+
+    _reset: function() {
+        if (this._authPrompt.verifyingUser)
+            return;
+
+        this._sessionMenuButton.updateSensitivity(true);
 
         this._user = null;
-        this._verifyingUser = false;
 
         if (this._disableUserList)
             this._hideUserListAndLogIn();
@@ -590,38 +589,12 @@ const LoginDialog = new Lang.Class({
             this._showUserList();
     },
 
-    _verificationFailed: function() {
-        this._authPrompt.clear();
-
-        this._updateSensitivity(true);
-        this._authPrompt.setActorInDefaultButtonWell(null);
-    },
-
     _onDefaultSessionChanged: function(client, sessionId) {
         this._sessionMenuButton.setActiveSession(sessionId);
     },
 
-    _showMessage: function(userVerifier, message, styleClass) {
-        this._authPrompt.setMessage(message, styleClass);
-    },
-
-    _showLoginHint: function(verifier, message) {
-        this._authPrompt.setHint(message);
-    },
-
-    _hideLoginHint: function() {
-        this._authPrompt.setHint(null);
-    },
-
-    cancel: function() {
-        if (this._verifyingUser)
-            this._userVerifier.cancel();
-        else
-            this._reset();
-    },
-
     _shouldShowSessionMenuButton: function() {
-        if (this._verifyingUser)
+        if (this._authPrompt.verifyingUser)
           return true;
 
         if (!this._user)
@@ -633,75 +606,15 @@ const LoginDialog = new Lang.Class({
         return true;
     },
 
-    _showPrompt: function(forSecret) {
+    _showPrompt: function() {
+        if (this._authPrompt.actor.visible)
+            return;
         this._authPrompt.actor.opacity = 0;
         this._authPrompt.actor.show();
         Tweener.addTween(this._authPrompt.actor,
                          { opacity: 255,
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad' });
-
-        let hold = new Batch.Hold();
-        let tasks = [function() {
-                         this._preparePrompt(forSecret, hold);
-                     },
-
-                     hold];
-
-        let batch = new Batch.ConcurrentBatch(this, tasks);
-
-        return batch.run();
-    },
-
-    _preparePrompt: function(forSecret, hold) {
-        if (!this._disableUserList || this._verifyingUser) {
-            this._authPrompt.cancelButton.show();
-        } else {
-            this._authPrompt.cancelButton.hide();
-        }
-
-        if (forSecret) {
-            this._authPrompt.nextButton.label = C_("button", "Sign In");
-        } else {
-            this._authPrompt.nextButton.label = _("Next");
-        }
-
-        let signalId = this._authPrompt.connect('next', Lang.bind(this, function() {
-                                                    this._authPrompt.disconnect(signalId);
-                                                    hold.release();
-                                                }));
-    },
-
-    _updateSensitivity: function(sensitive) {
-        this._sessionMenuButton.updateSensitivity(sensitive);
-        this._authPrompt.updateSensitivity(sensitive);
-    },
-
-    _askQuestion: function(verifier, serviceName, question, passwordChar) {
-        this._authPrompt.setPasswordChar(passwordChar);
-        this._authPrompt.setQuestion(question);
-
-        this._updateSensitivity(true);
-
-        if (this._shouldShowSessionMenuButton())
-            this._authPrompt.setActorInDefaultButtonWell(this._sessionMenuButton.actor);
-        else
-            this._authPrompt.setActorInDefaultButtonWell(null);
-
-        let tasks = [function() {
-                         return this._showPrompt(!!passwordChar);
-                     },
-
-                     function() {
-                         let text = this._authPrompt.getAnswer();
-
-                         this._updateSensitivity(false);
-                         this._authPrompt.startSpinning();
-                         this._userVerifier.answerQuery(serviceName, text);
-                     }];
-
-        let batch = new Batch.ConsecutiveBatch(this, tasks);
-        return batch.run();
     },
 
     _showRealmLoginHint: function(realmManager, hint) {
@@ -714,7 +627,7 @@ const LoginDialog = new Lang.Class({
 
         // Translators: this message is shown below the username entry field
         // to clue the user in on how to login to the local network realm
-        this._showLoginHint(null, _("(e.g., user or %s)").format(hint));
+        this._authPrompt.setHint(_("(e.g., user or %s)").format(hint));
     },
 
     _askForUsernameAndLogIn: function() {
@@ -722,25 +635,24 @@ const LoginDialog = new Lang.Class({
         this._authPrompt.setQuestion(_("Username: "));
 
         let realmManager = new Realmd.Manager();
-        let signalId = realmManager.connect('login-format-changed',
-	                                        Lang.bind(this, this._showRealmLoginHint));
+        let realmSignalId = realmManager.connect('login-format-changed',
+                                                 Lang.bind(this, this._showRealmLoginHint));
         this._showRealmLoginHint(realmManager.loginFormat);
 
-        let tasks = [this._showPrompt,
+        let nextSignalId = this._authPrompt.connect('next',
+                                                    Lang.bind(this, function() {
+                                                        this._authPrompt.disconnect(nextSignalId);
+                                                        this._authPrompt.updateSensitivity(false);
+                                                        let answer = this._authPrompt.getAnswer();
+                                                        this._authPrompt.clear();
+                                                        this._authPrompt.startSpinning();
+                                                        this._authPrompt.begin({ userName: answer });
 
-                     function() {
-                         let userName = this._authPrompt.getAnswer();
-                         this._authPrompt._entry.reactive = false;
-                         return this._beginVerificationForUser(userName);
-                     },
-
-                     function() {
-                         realmManager.disconnect(signalId)
-                         realmManager.release();
-                     }];
-
-        let batch = new Batch.ConsecutiveBatch(this, tasks);
-        return batch.run();
+                                                        realmManager.disconnect(realmSignalId)
+                                                        realmManager.release();
+                                                    }));
+        this._authPrompt.cancelButton.hide();
+        this._showPrompt();
     },
 
     _startSession: function(serviceName) {
@@ -767,15 +679,9 @@ const LoginDialog = new Lang.Class({
     },
 
     _onSessionOpened: function(client, serviceName) {
-        if (!this._userVerifier.hasPendingMessages) {
+        this._authPrompt.finish(Lang.bind(this, function() {
             this._startSession(serviceName);
-        } else {
-            let signalId = this._userVerifier.connect('no-more-messages',
-                                                      Lang.bind(this, function() {
-                                                          this._userVerifier.disconnect(signalId);
-                                                          this._startSession(serviceName);
-                                                      }));
-        }
+        }));
     },
 
     _waitForItemForUser: function(userName) {
@@ -922,23 +828,15 @@ const LoginDialog = new Lang.Class({
         this._userList.actor.grab_key_focus();
     },
 
-    _beginVerificationForUser: function(userName) {
-        let hold = new Batch.Hold();
-
-        this._userVerifier.begin(userName, hold);
-        this._verifyingUser = true;
-        return hold;
-    },
-
     _beginVerificationForItem: function(item) {
         this._authPrompt.setUser(item.user);
 
-        let tasks = [function() {
-                         let userName = item.user.get_user_name();
-                         return this._beginVerificationForUser(userName);
-                     }];
-        let batch = new Batch.ConsecutiveBatch(this, tasks);
-        return batch.run();
+        let userName = item.user.get_user_name();
+        let hold = new Batch.Hold();
+
+        this._authPrompt.begin({ userName: userName,
+                                 hold: hold });
+        return hold;
     },
 
     _onUserListActivated: function(activatedItem) {

@@ -42,33 +42,17 @@ const UnlockDialog = new Lang.Class({
         this._userName = GLib.get_user_name();
         this._user = this._userManager.get_user(this._userName);
 
-        this._firstQuestion = true;
-
-        this._greeterClient = new Gdm.Client();
-        this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient, { reauthenticationOnly: true });
-        this._userVerified = false;
-
-        this._userVerifier.connect('ask-question', Lang.bind(this, this._onAskQuestion));
-        this._userVerifier.connect('show-message', Lang.bind(this, this._showMessage));
-        this._userVerifier.connect('verification-complete', Lang.bind(this, this._onVerificationComplete));
-        this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
-        this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
-
-        this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
-        this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._hideLoginHint));
-
         this._promptBox = new St.BoxLayout({ vertical: true });
         this.actor.add_child(this._promptBox);
         this._promptBox.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
                                                                      align_axis: Clutter.AlignAxis.BOTH,
                                                                      factor: 0.5 }));
 
-        this._authPrompt = new AuthPrompt.AuthPrompt();
+        this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
+        this._authPrompt.connect('reset', Lang.bind(this, this._onReset));
         this._authPrompt.setUser(this._user);
         this._authPrompt.setPasswordChar('\u25cf');
         this._authPrompt.nextButton.label = _("Unlock");
-        this._authPrompt.connect('cancel', Lang.bind(this, this._escape));
-        this._authPrompt.connect('next', Lang.bind(this, this._doUnlock));
 
         this._promptBox.add_child(this._authPrompt.actor);
 
@@ -90,10 +74,8 @@ const UnlockDialog = new Lang.Class({
             this._otherUserButton = null;
         }
 
+        this._authPrompt.begin({ userName: this._userName });
         this._updateSensitivity(true);
-
-        let batch = new Batch.Hold();
-        this._userVerifier.begin(this._userName, batch);
 
         Main.ctrlAltTabManager.addGroup(this.actor, _("Unlock Window"), 'dialog-password-symbolic');
 
@@ -110,88 +92,13 @@ const UnlockDialog = new Lang.Class({
         }
     },
 
-    _showMessage: function(userVerifier, message, styleClass) {
-        this._authPrompt.setMessage(message, styleClass);
-    },
-
-    _onAskQuestion: function(verifier, serviceName, question, passwordChar) {
-        if (this._firstQuestion && this._firstQuestionAnswer) {
-            this._userVerifier.answerQuery(serviceName, this._firstQuestionAnswer);
-            this._firstQuestionAnswer = null;
-            this._firstQuestion = false;
-            return;
-        }
-
-        if (!this._firstQuestion)
-            this._promptEntry.text = '';
-        else
-            this._firstQuestion = false;
-
-        this._authPrompt.setPasswordChar(passwordChar);
-        this._authPrompt.setQuestion(question);
-
-        this._currentQuery = serviceName;
-
-        this._updateSensitivity(true);
-        this._authPrompt.stopSpinning();
-    },
-
-    _showLoginHint: function(verifier, message) {
-        this._authPrompt.setHint(message);
-    },
-
-    _hideLoginHint: function() {
-        this._authPrompt.setHint(null);
-    },
-
-    _doUnlock: function() {
-        if (this._firstQuestion) {
-            // we haven't received a query yet, so stash the answer
-            // and make ourself non-reactive
-            // the actual reply to GDM will be sent as soon as asked
-            this._firstQuestionAnswer = this._promptEntry.text;
-            this._updateSensitivity(false);
-            this._authPrompt.startSpinning();
-            return;
-        }
-
-        if (!this._currentQuery)
-            return;
-
-        let query = this._currentQuery;
-        this._currentQuery = null;
-
-        this._updateSensitivity(false);
-        this._authPrompt.startSpinning();
-
-        this._userVerifier.answerQuery(query, this._authPrompt.getAnswer());
-    },
-
-    _onVerificationComplete: function() {
-        this._userVerified = true;
-    },
-
     _onReset: function() {
-        if (!this._userVerified) {
-            this._userVerifier.clear();
-            this.emit('failed');
-        }
-    },
-
-    _onVerificationFailed: function() {
-        this._currentQuery = null;
-        this._firstQuestion = true;
-        this._userVerified = false;
-
-        this._authPrompt.clear();
-
-        this._updateSensitivity(false);
-        this._authPrompt.stopSpinning();
+        this.emit('failed');
     },
 
     _escape: function() {
         if (this.allowCancel) {
-            this._userVerifier.cancel();
+            this._authPrompt.cancel();
             this.emit('failed');
         }
     },
@@ -199,12 +106,11 @@ const UnlockDialog = new Lang.Class({
     _otherUserClicked: function(button, event) {
         Gdm.goto_login_session_sync(null);
 
-        this._userVerifier.cancel();
-        this.emit('failed');
+        this._authPrompt.cancel();
     },
 
     destroy: function() {
-        this._userVerifier.clear();
+        this.popModal();
         this.actor.destroy();
 
         if (this._idleWatchId) {
@@ -214,7 +120,7 @@ const UnlockDialog = new Lang.Class({
     },
 
     cancel: function() {
-        this._userVerifier.cancel(null);
+        this._authPrompt.cancel();
 
         this.destroy();
     },
@@ -224,16 +130,7 @@ const UnlockDialog = new Lang.Class({
     },
 
     finish: function(onComplete) {
-        if (!this._userVerifier.hasPendingMessages) {
-            onComplete();
-            return;
-        }
-
-        let signalId = this._userVerifier.connect('no-more-messages',
-                                                  Lang.bind(this, function() {
-                                                      this._userVerifier.disconnect(signalId);
-                                                      onComplete();
-                                                  }));
+        this._authPrompt.finish(onComplete);
     },
 
     open: function(timestamp) {

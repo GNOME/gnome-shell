@@ -6,6 +6,9 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 
 const Animation = imports.ui.animation;
+const Batch = imports.gdm.batch;
+const GdmUtil = imports.gdm.util;
+const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
@@ -14,16 +17,53 @@ const DEFAULT_BUTTON_WELL_ICON_SIZE = 24;
 const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1.0;
 const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 0.3;
 
+const AuthPromptMode = {
+    UNLOCK_ONLY: 0,
+    UNLOCK_OR_LOG_IN: 1
+};
+
 const AuthPrompt = new Lang.Class({
     Name: 'AuthPrompt',
 
-    _init: function() {
+    _init: function(gdmClient, mode) {
+        this.verifyingUser = false;
+
+        this._gdmClient = gdmClient;
+        this._mode = mode;
+
+        let reauthenticationOnly;
+        if (this._mode == AuthPromptMode.UNLOCK_ONLY)
+            reauthenticationOnly = true;
+        else if (this._mode == AuthPromptMode.UNLOCK_OR_LOG_IN)
+            reauthenticationOnly = false;
+
+        this._userVerifier = new GdmUtil.ShellUserVerifier(this._gdmClient, { reauthenticationOnly: reauthenticationOnly });
+
+        this._userVerifier.connect('ask-question', Lang.bind(this, this._onAskQuestion));
+        this._userVerifier.connect('show-message', Lang.bind(this, this._onShowMessage));
+        this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
+        this._userVerifier.connect('verification-complete', Lang.bind(this, this._onVerificationComplete));
+        this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
+        this._userVerifier.connect('show-login-hint', Lang.bind(this, this._onShowLoginHint));
+        this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._onHideLoginHint));
+
+        this.connect('next', Lang.bind(this, function() {
+                         this.updateSensitivity(false);
+                         this.startSpinning();
+                         if (this._queryingService) {
+                             this._userVerifier.answerQuery(this._queryingService, this._entry.text);
+                         } else {
+                             this._preemptiveAnswer = this._entry.text;
+                         }
+                     }));
+
         this.actor = new St.BoxLayout({ style_class: 'login-dialog-prompt-layout',
                                         vertical: true });
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         this.actor.connect('key-press-event',
                            Lang.bind(this, function(actor, event) {
                                if (event.get_key_symbol() == Clutter.KEY_Escape) {
-                                   this.emit('cancel');
+                                   this.cancel();
                                }
                            }));
 
@@ -78,6 +118,10 @@ const AuthPrompt = new Lang.Class({
         this._defaultButtonWell.add_child(this._spinner.actor);
     },
 
+    _onDestroy: function() {
+        this._userVerifier.clear();
+    },
+
     _initButtons: function() {
         this.cancelButton = new St.Button({ style_class: 'modal-dialog-button',
                                             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
@@ -86,7 +130,7 @@ const AuthPrompt = new Lang.Class({
                                             label: _("Cancel") });
         this.cancelButton.connect('clicked',
                                    Lang.bind(this, function() {
-                                       this.emit('cancel');
+                                       this.cancel();
                                    }));
         this._buttonBox.add(this.cancelButton,
                             { expand: false,
@@ -127,6 +171,67 @@ const AuthPrompt = new Lang.Class({
         this._entry.clutter_text.connect('activate', Lang.bind(this, function() {
             this.emit('next');
         }));
+    },
+
+    _onAskQuestion: function(verifier, serviceName, question, passwordChar) {
+        if (this._preemptiveAnswer) {
+            this._userVerifier.answerQuery(this._queryingService, this._preemptiveAnswer);
+            this._preemptiveAnswer = null;
+            return;
+        }
+
+        if (this._queryingService)
+            this.clear();
+
+        this._queryingService = serviceName;
+        this.setPasswordChar(passwordChar);
+        this.setQuestion(question);
+
+        if (this.verifyingUser)
+            this.cancelButton.show();
+        else
+            this.cancelButton.hide();
+
+        if (passwordChar) {
+            if (this._mode == AuthPromptMode.UNLOCK_ONLY)
+                this.nextButton.label = _("Unlock");
+            else if (this._mode == AuthPromptMode.UNLOCK_OR_LOG_IN)
+                this.nextButton.label = C_("button", "Sign In");
+        } else {
+            this.nextButton.label = _("Next");
+        }
+
+        this.updateSensitivity(true);
+        this.emit('prompted');
+    },
+
+    _onShowMessage: function(userVerifier, message, styleClass) {
+        this.setMessage(message, styleClass);
+    },
+
+    _onVerificationFailed: function() {
+        this.clear();
+
+        this.updateSensitivity(true);
+        this.setActorInDefaultButtonWell(null);
+        this.userVerified = false;
+    },
+
+    _onVerificationComplete: function() {
+        this.userVerified = true;
+    },
+
+    _onReset: function() {
+        if (!this.userVerified)
+            this.reset();
+    },
+
+    _onShowLoginHint: function(verifier, message) {
+        this.setHint(message);
+    },
+
+    _onHideLoginHint: function() {
+        this.setHint(null);
     },
 
     addActorToDefaultButtonWell: function(actor) {
@@ -278,9 +383,16 @@ const AuthPrompt = new Lang.Class({
     },
 
     reset: function() {
+        this.verifyingUser = false;
+        this.userVerified = false;
+        this._queryingService = null;
+        this.clear();
         this._message.opacity = 0;
         this.setUser(null);
         this.stopSpinning();
+        this.setHint(null);
+
+        this.emit('reset');
     },
 
     addCharacter: function(unichar) {
@@ -289,6 +401,40 @@ const AuthPrompt = new Lang.Class({
 
         this._entry.grab_key_focus();
         this._entry.clutter_text.insert_unichar(unichar);
+    },
+
+    begin: function(params) {
+        params = Params.parse(params, { userName: null,
+                                        hold: null });
+
+        this.updateSensitivity(false);
+
+        let hold = params.hold;
+        if (!hold)
+            hold = new Batch.Hold();
+
+        this._userVerifier.begin(params.userName, hold);
+        this.verifyingUser = true;
+    },
+
+    finish: function(onComplete) {
+        if (!this._userVerifier.hasPendingMessages) {
+            onComplete();
+            return;
+        }
+
+        let signalId = this._userVerifier.connect('no-more-messages',
+                                                  Lang.bind(this, function() {
+                                                      this._userVerifier.disconnect(signalId);
+                                                      onComplete();
+                                                  }));
+    },
+
+    cancel: function() {
+        if (this.verifyingUser)
+            this._userVerifier.cancel();
+
+        this.reset();
     }
 });
 Signals.addSignalMethods(AuthPrompt.prototype);
