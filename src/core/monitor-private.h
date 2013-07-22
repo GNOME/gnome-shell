@@ -162,6 +162,11 @@ MetaOutput         *meta_monitor_manager_get_outputs       (MetaMonitorManager *
 
 int                 meta_monitor_manager_get_primary_index (MetaMonitorManager *manager);
 
-void                meta_monitor_manager_invalidate        (MetaMonitorManager *manager);
+gboolean            meta_monitor_manager_handle_xevent     (MetaMonitorManager *manager,
+                                                            XEvent             *event);
+
+void                meta_monitor_manager_get_screen_size   (MetaMonitorManager *manager,
+                                                            int                *width,
+                                                            int                *height);
 
 #endif

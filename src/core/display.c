@@ -2146,6 +2146,7 @@ event_callback (XEvent   *event,
   gboolean bypass_compositor;
   gboolean filter_out_event;
   XIEvent *input_event;
+  MetaMonitorManager *monitor;
 
   display = data;
   
@@ -2157,6 +2158,14 @@ event_callback (XEvent   *event,
 #ifdef HAVE_STARTUP_NOTIFICATION
   sn_display_process_event (display->sn_display, event);
 #endif
+
+  /* Intercept XRandR events early and don't attempt any
+     processing for them. We still let them through to Gdk though,
+     so it can update its own internal state.
+  */
+  monitor = meta_monitor_manager_get ();
+  if (meta_monitor_manager_handle_xevent (monitor, event))
+    return FALSE;
   
   bypass_compositor = FALSE;
   filter_out_event = FALSE;
@@ -2822,32 +2831,10 @@ event_callback (XEvent   *event,
                 meta_stack_tracker_configure_event (screen->stack_tracker,
                                                     &event->xconfigure);
             }
+
           if (window && window->override_redirect)
             meta_window_configure_notify (window, &event->xconfigure);
-          else
-            /* Handle screen resize */
-            {
-              MetaScreen *screen;
 
-              screen = meta_display_screen_for_root (display,
-                                                     event->xconfigure.window);
-
-              if (screen != NULL)
-                {
-#ifdef HAVE_RANDR
-                  /* do the resize the official way */
-                  XRRUpdateConfiguration (event);
-#else
-                  /* poke around in Xlib */
-                  screen->xscreen->width   = event->xconfigure.width;
-                  screen->xscreen->height  = event->xconfigure.height;
-#endif
-	      
-                  meta_screen_resize (screen, 
-                                      event->xconfigure.width,
-                                      event->xconfigure.height);
-                }
-            }
           break;
         case ConfigureRequest:
           /* This comment and code is found in both twm and fvwm */

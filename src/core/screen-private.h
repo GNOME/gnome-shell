@@ -222,10 +222,6 @@ void meta_screen_calc_workspace_layout (MetaScreen          *screen,
                                         MetaWorkspaceLayout *layout);
 void meta_screen_free_workspace_layout (MetaWorkspaceLayout *layout);
 
-void meta_screen_resize (MetaScreen *screen,
-                         int         width,
-                         int         height);
-
 void     meta_screen_minimize_all_on_active_workspace_except (MetaScreen *screen,
                                                               MetaWindow *keep);
 
