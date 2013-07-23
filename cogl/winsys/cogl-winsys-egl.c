@@ -456,8 +456,9 @@ _cogl_winsys_display_setup (CoglDisplay *display,
       struct wl_display *wayland_display = display->wayland_compositor_display;
       CoglRendererEGL *egl_renderer = display->renderer->winsys;
 
-      egl_renderer->pf_eglBindWaylandDisplay (egl_renderer->edpy,
-                                              wayland_display);
+      if (egl_renderer->pf_eglBindWaylandDisplay)
+	egl_renderer->pf_eglBindWaylandDisplay (egl_renderer->edpy,
+						wayland_display);
     }
 #endif
 
