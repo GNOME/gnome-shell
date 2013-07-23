@@ -9711,47 +9711,50 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
   switch (xev->evtype)
     {
     case XI_ButtonRelease:
-      meta_display_check_threshold_reached (window->display,
-                                            xev->root_x,
-                                            xev->root_y);
-      /* If the user was snap moving then ignore the button release
-       * because they may have let go of shift before releasing the
-       * mouse button and they almost certainly do not want a
-       * non-snapped movement to occur from the button release.
-       */
-      if (!window->display->grab_last_user_action_was_snap)
+      if (xev->detail == 1)
         {
-          if (meta_grab_op_is_moving (window->display->grab_op))
+          meta_display_check_threshold_reached (window->display,
+                                                xev->root_x,
+                                                xev->root_y);
+          /* If the user was snap moving then ignore the button
+           * release because they may have let go of shift before
+           * releasing the mouse button and they almost certainly do
+           * not want a non-snapped movement to occur from the button
+           * release.
+           */
+          if (!window->display->grab_last_user_action_was_snap)
             {
-              if (window->tile_mode != META_TILE_NONE)
-                meta_window_tile (window);
-              else if (xev->root == window->screen->xroot)
-                update_move (window,
-                             xev->mods.effective & ShiftMask,
-                             xev->root_x,
-                             xev->root_y);
-            }
-          else if (meta_grab_op_is_resizing (window->display->grab_op))
-            {
-              if (xev->root == window->screen->xroot)
-                update_resize (window,
-                               xev->mods.effective & ShiftMask,
-                               xev->root_x,
-                               xev->root_y,
-                               TRUE);
+              if (meta_grab_op_is_moving (window->display->grab_op))
+                {
+                  if (window->tile_mode != META_TILE_NONE)
+                    meta_window_tile (window);
+                  else if (xev->root == window->screen->xroot)
+                    update_move (window,
+                                 xev->mods.effective & ShiftMask,
+                                 xev->root_x,
+                                 xev->root_y);
+                }
+              else if (meta_grab_op_is_resizing (window->display->grab_op))
+                {
+                  if (xev->root == window->screen->xroot)
+                    update_resize (window,
+                                   xev->mods.effective & ShiftMask,
+                                   xev->root_x,
+                                   xev->root_y,
+                                   TRUE);
 
-              /* If a tiled window has been dragged free with a
-               * mouse resize without snapping back to the tiled
-               * state, it will end up with an inconsistent tile
-               * mode on mouse release; cleaning the mode earlier
-               * would break the ability to snap back to the tiled
-               * state, so we wait until mouse release.
-               */
-              update_tile_mode (window);
+                  /* If a tiled window has been dragged free with a
+                   * mouse resize without snapping back to the tiled
+                   * state, it will end up with an inconsistent tile
+                   * mode on mouse release; cleaning the mode earlier
+                   * would break the ability to snap back to the tiled
+                   * state, so we wait until mouse release.
+                   */
+                  update_tile_mode (window);
+                }
             }
+          meta_display_end_grab_op (window->display, xev->time);
         }
-
-      meta_display_end_grab_op (window->display, xev->time);
       break;
 
     case XI_Motion:
