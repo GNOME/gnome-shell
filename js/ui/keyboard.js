@@ -23,6 +23,12 @@ const KEYBOARD_TYPE = 'keyboard-type';
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
 
+const CURSOR_BUS_NAME = 'org.gnome.SettingsDaemon.Cursor';
+const CURSOR_OBJECT_PATH = '/org/gnome/SettingsDaemon/Cursor';
+
+const CARIBOU_BUS_NAME = 'org.gnome.Caribou.Daemon';
+const CARIBOU_OBJECT_PATH = '/org/gnome/Caribou/Daemon';
+
 const CaribouKeyboardIface = '<node> \
 <interface name="org.gnome.Caribou.Keyboard"> \
 <method name="Show"> \
@@ -46,6 +52,22 @@ const CaribouKeyboardIface = '<node> \
 <property name="Name" access="read" type="s" /> \
 </interface> \
 </node>';
+
+const CaribouDaemonIface = '<node> \
+<interface name="org.gnome.Caribou.Daemon"> \
+<method name="Run" /> \
+<method name="Quit" /> \
+</interface> \
+</node>';
+
+const CursorManagerIface = '<node> \
+<interface name="org.gnome.SettingsDaemon.Cursor"> \
+<property name="ShowOSK" type="b" access="read" /> \
+</interface> \
+</node>';
+
+const CaribouDaemonProxy = Gio.DBusProxy.makeProxyWrapper(CaribouDaemonIface);
+const CursorManagerProxy = Gio.DBusProxy.makeProxyWrapper(CursorManagerIface);
 
 const Key = new Lang.Class({
     Name: 'Key',
@@ -151,10 +173,32 @@ const Keyboard = new Lang.Class({
         this._timestamp = global.display.get_current_time_roundtrip();
 
         this._keyboardSettings = new Gio.Settings({ schema_id: KEYBOARD_SCHEMA });
-        this._keyboardSettings.connect('changed', Lang.bind(this, this._settingsChanged));
+        this._keyboardSettings.connect('changed', Lang.bind(this, this._sync));
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
-        this._a11yApplicationsSettings.connect('changed', Lang.bind(this, this._settingsChanged));
-        this._settingsChanged();
+        this._a11yApplicationsSettings.connect('changed', Lang.bind(this, this._sync));
+        this._watchNameId = Gio.bus_watch_name(Gio.BusType.SESSION, CURSOR_BUS_NAME, 0,
+                                               Lang.bind(this, this._sync),
+                                               Lang.bind(this, this._sync));
+        this._daemonProxy = new CaribouDaemonProxy(Gio.DBus.session, CARIBOU_BUS_NAME,
+                                                   CARIBOU_OBJECT_PATH,
+                                                   Lang.bind(this, function(proxy, error) {
+                                                       if (error) {
+                                                           log(error.message);
+                                                           return;
+                                                       }
+                                                   }));
+        this._cursorProxy = new CursorManagerProxy(Gio.DBus.session, CURSOR_BUS_NAME,
+                                                   CURSOR_OBJECT_PATH,
+                                                   Lang.bind(this, function(proxy, error) {
+                                                       if (error) {
+                                                           log(error.message);
+                                                           return;
+                                                       }
+                                                       this._cursorProxy.connect('g-properties-changed',
+                                                                                 Lang.bind(this, this._sync));
+                                                       this._cursorChanged();
+                                                   }));
+        this._sync();
 
         this._showIdleId = 0;
         this._subkeysBoxPointer = null;
@@ -172,8 +216,9 @@ const Keyboard = new Lang.Class({
         this._redraw();
     },
 
-    _settingsChanged: function (settings, key) {
-        this._enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD);
+    _sync: function () {
+        this._enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD) ||
+                               this._cursorProxy.ShowOSK;
         if (!this._enableKeyboard && !this._keyboard)
             return;
         if (this._enableKeyboard && this._keyboard &&
@@ -203,9 +248,22 @@ const Keyboard = new Lang.Class({
         this.actor = null;
 
         this._destroySource();
+        this._daemonProxy.QuitRemote(function (result, error) {
+            if (error) {
+                log(error.message);
+                return;
+            }
+        });
     },
 
     _setupKeyboard: function() {
+        this._daemonProxy.RunRemote(function (result, error) {
+            if (error) {
+                log(error.message);
+                return;
+            }
+        });
+
         this.actor = new St.BoxLayout({ name: 'keyboard', vertical: true, reactive: true });
         Main.layoutManager.keyboardBox.add_actor(this.actor);
         Main.layoutManager.trackChrome(this.actor);
