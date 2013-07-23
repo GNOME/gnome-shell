@@ -124,9 +124,22 @@ static int signals[SIGNALS_LAST];
 
 G_DEFINE_TYPE (MetaMonitorManager, meta_monitor_manager, G_TYPE_OBJECT);
 
+static void invalidate_logical_config (MetaMonitorManager *manager);
+
 static void
 make_dummy_monitor_config (MetaMonitorManager *manager)
 {
+  /* The dummy monitor config has:
+     - one enabled output, LVDS, primary, at 0x0 and 1024x768
+     - one free CRTC
+     - two disabled outputs
+     - three modes, 1024x768, 800x600 and 640x480
+     - no clones are possible (use different CRTCs)
+
+     Low-level IDs should be assigned sequentially, to
+     mimick what XRandR and KMS do
+  */
+
   manager->backend = META_BACKEND_DUMMY;
 
   manager->max_screen_width = 65535;
@@ -134,18 +147,28 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->screen_width = 1024;
   manager->screen_height = 768;
 
-  manager->modes = g_new0 (MetaMonitorMode, 1);
-  manager->n_modes = 1;
+  manager->modes = g_new0 (MetaMonitorMode, 3);
+  manager->n_modes = 3;
 
   manager->modes[0].mode_id = 1;
-  manager->modes[0].width = manager->screen_width;
-  manager->modes[0].height = manager->screen_height;
+  manager->modes[0].width = 1024;
+  manager->modes[0].height = 768;
   manager->modes[0].refresh_rate = 60.0;
 
-  manager->crtcs = g_new0 (MetaCRTC, 1);
-  manager->n_crtcs = 1;
+  manager->modes[1].mode_id = 2;
+  manager->modes[1].width = 800;
+  manager->modes[1].height = 600;
+  manager->modes[1].refresh_rate = 60.0;
 
-  manager->crtcs[0].crtc_id = 2;
+  manager->modes[2].mode_id = 3;
+  manager->modes[2].width = 640;
+  manager->modes[2].height = 480;
+  manager->modes[2].refresh_rate = 60.0;
+
+  manager->crtcs = g_new0 (MetaCRTC, 2);
+  manager->n_crtcs = 2;
+
+  manager->crtcs[0].crtc_id = 4;
   manager->crtcs[0].rect.x = 0;
   manager->crtcs[0].rect.y = 0;
   manager->crtcs[0].rect.width = manager->modes[0].width;
@@ -154,11 +177,20 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->crtcs[0].is_dirty = FALSE;
   manager->crtcs[0].logical_monitor = NULL;
 
-  manager->outputs = g_new0 (MetaOutput, 1);
-  manager->n_outputs = 1;
+  manager->crtcs[1].crtc_id = 5;
+  manager->crtcs[1].rect.x = 0;
+  manager->crtcs[1].rect.y = 0;
+  manager->crtcs[1].rect.width = 0;
+  manager->crtcs[1].rect.height = 0;
+  manager->crtcs[1].current_mode = NULL;
+  manager->crtcs[1].is_dirty = FALSE;
+  manager->crtcs[1].logical_monitor = NULL;
+
+  manager->outputs = g_new0 (MetaOutput, 3);
+  manager->n_outputs = 3;
 
   manager->outputs[0].crtc = &manager->crtcs[0];
-  manager->outputs[0].output_id = 3;
+  manager->outputs[0].output_id = 6;
   manager->outputs[0].name = g_strdup ("LVDS");
   manager->outputs[0].vendor = g_strdup ("unknown");
   manager->outputs[0].product = g_strdup ("unknown");
@@ -167,14 +199,61 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->outputs[0].height_mm = 125;
   manager->outputs[0].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
   manager->outputs[0].preferred_mode = &manager->modes[0];
-  manager->outputs[0].n_modes = 1;
-  manager->outputs[0].modes = g_new0 (MetaMonitorMode *, 1);
+  manager->outputs[0].n_modes = 3;
+  manager->outputs[0].modes = g_new0 (MetaMonitorMode *, 3);
   manager->outputs[0].modes[0] = &manager->modes[0];
-  manager->outputs[0].n_possible_crtcs = 1;
-  manager->outputs[0].possible_crtcs = g_new0 (MetaCRTC *, 1);
+  manager->outputs[0].modes[1] = &manager->modes[1];
+  manager->outputs[0].modes[2] = &manager->modes[2];
+  manager->outputs[0].n_possible_crtcs = 2;
+  manager->outputs[0].possible_crtcs = g_new0 (MetaCRTC *, 2);
   manager->outputs[0].possible_crtcs[0] = &manager->crtcs[0];
+  manager->outputs[0].possible_crtcs[1] = &manager->crtcs[1];
   manager->outputs[0].n_possible_clones = 0;
   manager->outputs[0].possible_clones = g_new0 (MetaOutput *, 0);
+
+  manager->outputs[1].crtc = NULL;
+  manager->outputs[1].output_id = 7;
+  manager->outputs[1].name = g_strdup ("HDMI");
+  manager->outputs[1].vendor = g_strdup ("unknown");
+  manager->outputs[1].product = g_strdup ("unknown");
+  manager->outputs[1].serial = g_strdup ("");
+  manager->outputs[1].width_mm = 510;
+  manager->outputs[1].height_mm = 287;
+  manager->outputs[1].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
+  manager->outputs[1].preferred_mode = &manager->modes[0];
+  manager->outputs[1].n_modes = 3;
+  manager->outputs[1].modes = g_new0 (MetaMonitorMode *, 3);
+  manager->outputs[1].modes[0] = &manager->modes[0];
+  manager->outputs[1].modes[1] = &manager->modes[1];
+  manager->outputs[1].modes[2] = &manager->modes[2];
+  manager->outputs[1].n_possible_crtcs = 2;
+  manager->outputs[1].possible_crtcs = g_new0 (MetaCRTC *, 2);
+  manager->outputs[1].possible_crtcs[0] = &manager->crtcs[0];
+  manager->outputs[1].possible_crtcs[1] = &manager->crtcs[1];
+  manager->outputs[1].n_possible_clones = 0;
+  manager->outputs[1].possible_clones = g_new0 (MetaOutput *, 0);
+
+  manager->outputs[2].crtc = NULL;
+  manager->outputs[2].output_id = 8;
+  manager->outputs[2].name = g_strdup ("VGA");
+  manager->outputs[2].vendor = g_strdup ("unknown");
+  manager->outputs[2].product = g_strdup ("unknown");
+  manager->outputs[2].serial = g_strdup ("");
+  manager->outputs[2].width_mm = 309;
+  manager->outputs[2].height_mm = 174;
+  manager->outputs[2].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
+  manager->outputs[2].preferred_mode = &manager->modes[0];
+  manager->outputs[2].n_modes = 3;
+  manager->outputs[2].modes = g_new0 (MetaMonitorMode *, 3);
+  manager->outputs[2].modes[0] = &manager->modes[0];
+  manager->outputs[2].modes[1] = &manager->modes[1];
+  manager->outputs[2].modes[2] = &manager->modes[2];
+  manager->outputs[2].n_possible_crtcs = 2;
+  manager->outputs[2].possible_crtcs = g_new0 (MetaCRTC *, 2);
+  manager->outputs[2].possible_crtcs[0] = &manager->crtcs[0];
+  manager->outputs[2].possible_crtcs[1] = &manager->crtcs[1];
+  manager->outputs[2].n_possible_clones = 0;
+  manager->outputs[2].possible_clones = g_new0 (MetaOutput *, 0);
 }
 
 #ifdef HAVE_RANDR
@@ -927,7 +1006,10 @@ apply_config_xrandr (MetaMonitorManager *manager,
       MetaCRTC *crtc = &manager->crtcs[i];
 
       if (crtc->is_dirty)
-        continue;
+        {
+          crtc->is_dirty = FALSE;
+          continue;
+        }
       if (crtc->current_mode == NULL)
         continue;
 
@@ -942,6 +1024,117 @@ apply_config_xrandr (MetaMonitorManager *manager,
     }
 }
 #endif
+
+static void
+apply_config_dummy (MetaMonitorManager *manager,
+                    GVariantIter       *crtcs,
+                    GVariantIter       *outputs)
+{
+  GVariant *nested_outputs, *properties;
+  guint crtc_id, output_id, transform;
+  int new_mode, x, y;
+  unsigned i;
+  int screen_width = 0, screen_height = 0;
+
+  while (g_variant_iter_loop (crtcs, "(uiiiu@aua{sv})",
+                              &crtc_id, &new_mode, &x, &y,
+                              &transform, &nested_outputs, NULL))
+    {
+      MetaCRTC *crtc = &manager->crtcs[crtc_id];
+      crtc->is_dirty = TRUE;
+
+      if (new_mode == -1)
+        {
+          crtc->rect.x = 0;
+          crtc->rect.y = 0;
+          crtc->rect.width = 0;
+          crtc->rect.height = 0;
+          crtc->current_mode = NULL;
+        }
+      else
+        {
+          MetaMonitorMode *mode;
+          MetaOutput *output;
+          int i, n_outputs;
+          guint output_id;
+
+          mode = &manager->modes[new_mode];
+
+          crtc->rect.x = x;
+          crtc->rect.y = y;
+          crtc->rect.width = mode->width;
+          crtc->rect.height = mode->height;
+          crtc->current_mode = mode;
+
+          screen_width = MAX (screen_width, x + mode->width);
+          screen_height = MAX (screen_height, y + mode->height);
+
+          n_outputs = g_variant_n_children (nested_outputs);
+          for (i = 0; i < n_outputs; i++)
+            {
+              g_variant_get_child (nested_outputs, i, "u", &output_id);
+
+              output = &manager->outputs[output_id];
+
+              output->is_dirty = TRUE;
+              output->crtc = crtc;
+            }
+        }
+    }
+
+  while (g_variant_iter_loop (outputs, "(u@a{sv})",
+                              &output_id, &properties))
+    {
+      MetaOutput *output = &manager->outputs[output_id];
+      gboolean primary, presentation;
+
+      if (g_variant_lookup (properties, "primary", "b", &primary))
+        output->is_primary = primary;
+
+      if (g_variant_lookup (properties, "presentation", "b", &presentation))
+        output->is_presentation = presentation;
+    }
+
+  /* Disable CRTCs not mentioned in the list */
+  for (i = 0; i < manager->n_crtcs; i++)
+    {
+      MetaCRTC *crtc = &manager->crtcs[i];
+
+      crtc->logical_monitor = NULL;
+
+      if (crtc->is_dirty)
+        {
+          crtc->is_dirty = FALSE;
+          continue;
+        }
+
+      crtc->rect.x = 0;
+      crtc->rect.y = 0;
+      crtc->rect.width = 0;
+      crtc->rect.height = 0;
+      crtc->current_mode = NULL;
+    }
+
+  /* Disable outputs not mentioned in the list */
+  for (i = 0; i < manager->n_outputs; i++)
+    {
+      MetaOutput *output = &manager->outputs[i];
+
+      if (output->is_dirty)
+        {
+          output->is_dirty = FALSE;
+          continue;
+        }
+
+      output->crtc = NULL;
+      output->is_primary = FALSE;
+    }
+
+  manager->screen_width = screen_width;
+  manager->screen_height = screen_height;
+
+  invalidate_logical_config (manager);
+}
 
 static gboolean
 handle_apply_configuration  (MetaDBusDisplayConfig *skeleton,
@@ -971,14 +1164,6 @@ handle_apply_configuration  (MetaDBusDisplayConfig *skeleton,
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_NOT_SUPPORTED,
                                              "Persistent configuration is not yet implemented");
-      return TRUE;
-    }
-
-  if (manager->backend != META_BACKEND_XRANDR)
-    {
-      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                             G_DBUS_ERROR_NOT_SUPPORTED,
-                                             "Changing configuration is not supported by the backend");
       return TRUE;
     }
 
@@ -1091,7 +1276,11 @@ handle_apply_configuration  (MetaDBusDisplayConfig *skeleton,
 
   g_variant_iter_init (&crtc_iter, crtcs);
   g_variant_iter_init (&output_iter, outputs);
-  apply_config_xrandr (manager, &crtc_iter, &output_iter);
+
+  if (manager->backend == META_BACKEND_XRANDR)
+    apply_config_xrandr (manager, &crtc_iter, &output_iter);
+  else
+    apply_config_dummy (manager, &crtc_iter, &output_iter);
 
   meta_dbus_display_config_complete_apply_configuration (skeleton, invocation);
   return TRUE;
@@ -1197,13 +1386,28 @@ meta_monitor_manager_get_screen_size (MetaMonitorManager *manager,
   *height = manager->screen_height;
 }
 
+static void
+invalidate_logical_config (MetaMonitorManager *manager)
+{
+  MetaMonitorInfo *old_monitor_infos;
+
+  old_monitor_infos = manager->monitor_infos;
+
+  manager->serial++;
+  make_logical_config (manager);
+
+  g_signal_emit (manager, signals[MONITORS_CHANGED], 0);
+
+  g_free (old_monitor_infos);
+}
+
 gboolean
 meta_monitor_manager_handle_xevent (MetaMonitorManager *manager,
                                     XEvent             *event)
 {
   MetaOutput *old_outputs;
   MetaCRTC *old_crtcs;
-  MetaMonitorInfo *old_monitor_infos;
+
   MetaMonitorMode *old_modes;
   int n_old_outputs;
 
@@ -1219,17 +1423,12 @@ meta_monitor_manager_handle_xevent (MetaMonitorManager *manager,
   /* Save the old structures, so they stay valid during the update */
   old_outputs = manager->outputs;
   n_old_outputs = manager->n_outputs;
-  old_monitor_infos = manager->monitor_infos;
   old_modes = manager->modes;
   old_crtcs = manager->crtcs;
 
-  manager->serial ++;
   read_current_config (manager);
-  make_logical_config (manager);
+  invalidate_logical_config (manager);
 
-  g_signal_emit (manager, signals[MONITORS_CHANGED], 0);
-
-  g_free (old_monitor_infos);
   free_output_array (old_outputs, n_old_outputs);
   g_free (old_modes);
   g_free (old_crtcs);

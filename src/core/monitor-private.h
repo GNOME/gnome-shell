@@ -73,6 +73,9 @@ struct _MetaOutput
   MetaOutput **possible_clones;
   unsigned int n_possible_clones;
 
+  /* Used when changing configuration */
+  gboolean is_dirty;
+
   /* The low-level bits used to build the high-level info
      in MetaMonitorInfo
 
