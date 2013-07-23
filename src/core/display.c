@@ -2349,6 +2349,7 @@ event_callback (XEvent   *event,
 
           if ((window &&
                meta_grab_op_is_mouse (display->grab_op) &&
+               (device_event->mods.effective & display->window_grab_modifiers) &&
                display->grab_button != device_event->detail &&
                display->grab_window == window) ||
               grab_op_is_keyboard (display->grab_op))
