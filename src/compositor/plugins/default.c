@@ -24,6 +24,8 @@
 #include <meta/meta-plugin.h>
 #include <meta/window.h>
 #include <meta/util.h>
+#include <meta/meta-background-group.h>
+#include <meta/meta-background-actor.h>
 
 #include <libintl.h>
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
@@ -112,6 +114,8 @@ struct _MetaDefaultPluginPrivate
   ClutterTimeline       *tml_switch_workspace2;
   ClutterActor          *desktop1;
   ClutterActor          *desktop2;
+
+  ClutterActor          *background_group;
 
   MetaPluginInfo         info;
 };
@@ -300,8 +304,57 @@ show_stage (MetaPlugin *plugin)
 }
 
 static void
+on_monitors_changed (MetaScreen *screen,
+                     MetaPlugin *plugin)
+{
+  MetaDefaultPlugin *self = META_DEFAULT_PLUGIN (plugin);
+  int i, n;
+
+  clutter_actor_destroy_all_children (self->priv->background_group);
+
+  n = meta_screen_get_n_monitors (screen);
+  for (i = 0; i < n; i++)
+    {
+      MetaRectangle rect;
+      ClutterActor *background;
+      ClutterColor color;
+
+      meta_screen_get_monitor_geometry (screen, i, &rect);
+
+      background = meta_background_actor_new ();
+
+      clutter_actor_set_position (background, rect.x, rect.y);
+      clutter_actor_set_size (background, rect.width, rect.height);
+
+      /* Don't use rand() here, mesa calls srand() internally when
+         parsing the driconf XML, but it's nice if the colors are
+         reproducible.
+      */
+      clutter_color_init (&color,
+                          g_random_int () % 255,
+                          g_random_int () % 255,
+                          g_random_int () % 255,
+                          255);
+      clutter_actor_set_background_color (background, &color);
+
+      clutter_actor_add_child (self->priv->background_group, background);
+    }
+}
+
+static void
 start (MetaPlugin *plugin)
 {
+  MetaDefaultPlugin *self = META_DEFAULT_PLUGIN (plugin);
+  MetaScreen *screen = meta_plugin_get_screen (plugin);
+
+  self->priv->background_group = meta_background_group_new ();
+  clutter_actor_insert_child_below (meta_get_window_group_for_screen (screen),
+                                    self->priv->background_group, NULL);
+
+  g_signal_connect (screen, "monitors-changed",
+                    G_CALLBACK (on_monitors_changed), plugin);
+  on_monitors_changed (screen, plugin);
+
   meta_later_add (META_LATER_BEFORE_REDRAW,
                   (GSourceFunc) show_stage,
                   plugin,
