@@ -42,18 +42,7 @@
 
 #include "meta-dbus-xrandr.h"
 
-#ifndef HAVE_WAYLAND
-enum wl_output_transform {
-  WL_OUTPUT_TRANSFORM_NORMAL,
-  WL_OUTPUT_TRANSFORM_90,
-  WL_OUTPUT_TRANSFORM_180,
-  WL_OUTPUT_TRANSFORM_270,
-  WL_OUTPUT_TRANSFORM_FLIPPED,
-  WL_OUTPUT_TRANSFORM_FLIPPED_90,
-  WL_OUTPUT_TRANSFORM_FLIPPED_180,
-  WL_OUTPUT_TRANSFORM_FLIPPED_270
-};
-#endif
+#define ALL_WL_TRANSFORMS ((1 << (WL_OUTPUT_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
 typedef enum {
   META_BACKEND_UNSPECIFIED,
@@ -174,6 +163,8 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->crtcs[0].rect.width = manager->modes[0].width;
   manager->crtcs[0].rect.height = manager->modes[0].height;
   manager->crtcs[0].current_mode = &manager->modes[0];
+  manager->crtcs[0].transform = WL_OUTPUT_TRANSFORM_NORMAL;
+  manager->crtcs[0].all_transforms = ALL_WL_TRANSFORMS;
   manager->crtcs[0].is_dirty = FALSE;
   manager->crtcs[0].logical_monitor = NULL;
 
@@ -183,6 +174,8 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->crtcs[1].rect.width = 0;
   manager->crtcs[1].rect.height = 0;
   manager->crtcs[1].current_mode = NULL;
+  manager->crtcs[1].transform = WL_OUTPUT_TRANSFORM_NORMAL;
+  manager->crtcs[1].all_transforms = ALL_WL_TRANSFORMS;
   manager->crtcs[1].is_dirty = FALSE;
   manager->crtcs[1].logical_monitor = NULL;
 
@@ -257,6 +250,76 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
 }
 
 #ifdef HAVE_RANDR
+static enum wl_output_transform
+wl_transform_from_xrandr (Rotation rotation)
+{
+  static const enum wl_output_transform y_reflected_map[4] = {
+    WL_OUTPUT_TRANSFORM_FLIPPED_180,
+    WL_OUTPUT_TRANSFORM_FLIPPED_90,
+    WL_OUTPUT_TRANSFORM_FLIPPED,
+    WL_OUTPUT_TRANSFORM_FLIPPED_270
+  };
+  enum wl_output_transform ret;
+
+  switch (rotation & 0x7F)
+    {
+    default:
+    case RR_Rotate_0:
+      ret = WL_OUTPUT_TRANSFORM_NORMAL;
+      break;
+    case RR_Rotate_90:
+      ret = WL_OUTPUT_TRANSFORM_90;
+      break;
+    case RR_Rotate_180:
+      ret = WL_OUTPUT_TRANSFORM_180;
+      break;
+    case RR_Rotate_270:
+      ret = WL_OUTPUT_TRANSFORM_270;
+      break;
+    }
+
+  if (rotation & RR_Reflect_X)
+    return ret + 4;
+  else if (rotation & RR_Reflect_Y)
+    return y_reflected_map[ret];
+  else
+    return ret;
+}
+
+#define ALL_ROTATIONS (RR_Rotate_0 | RR_Rotate_90 | RR_Rotate_180 | RR_Rotate_270)
+
+static unsigned int
+wl_transform_from_xrandr_all (Rotation rotation)
+{
+  unsigned ret;
+
+  /* Handle the common cases first (none or all) */
+  if (rotation == 0 || rotation == RR_Rotate_0)
+    return (1 << WL_OUTPUT_TRANSFORM_NORMAL);
+
+  /* All rotations and one reflection -> all of them by composition */
+  if ((rotation & ALL_ROTATIONS) &&
+      ((rotation & RR_Reflect_X) || (rotation & RR_Reflect_Y)))
+    return ALL_WL_TRANSFORMS;
+
+  ret = 1 << WL_OUTPUT_TRANSFORM_NORMAL;
+  if (rotation & RR_Rotate_90)
+    ret |= 1 << WL_OUTPUT_TRANSFORM_90;
+  if (rotation & RR_Rotate_180)
+    ret |= 1 << WL_OUTPUT_TRANSFORM_180;
+  if (rotation & RR_Rotate_270)
+    ret |= 1 << WL_OUTPUT_TRANSFORM_270;
+  if (rotation & (RR_Rotate_0 | RR_Reflect_X))
+    ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED;
+  if (rotation & (RR_Rotate_90 | RR_Reflect_X))
+    ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED_90;
+  if (rotation & (RR_Rotate_180 | RR_Reflect_X))
+    ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED_180;
+  if (rotation & (RR_Rotate_270 | RR_Reflect_X))
+    ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED_270;
+
+  return ret;
+}
 
 static void
 read_monitor_infos_from_xrandr (MetaMonitorManager *manager)
@@ -327,6 +390,8 @@ read_monitor_infos_from_xrandr (MetaMonitorManager *manager)
         meta_crtc->rect.width = crtc->width;
         meta_crtc->rect.height = crtc->height;
         meta_crtc->is_dirty = FALSE;
+        meta_crtc->transform = wl_transform_from_xrandr (crtc->rotation);
+        meta_crtc->all_transforms = wl_transform_from_xrandr_all (crtc->rotations);
 
         for (j = 0; j < (unsigned)resources->nmode; j++)
           {
@@ -770,7 +835,9 @@ handle_get_resources (MetaDBusDisplayConfig *skeleton,
       GVariantBuilder transforms;
 
       g_variant_builder_init (&transforms, G_VARIANT_TYPE ("au"));
-      g_variant_builder_add (&transforms, "u", 0); /* 0 = WL_OUTPUT_TRANSFORM_NORMAL */
+      for (j = 0; j <= WL_OUTPUT_TRANSFORM_FLIPPED_270; j++)
+        if (crtc->all_transforms & (1 << j))
+          g_variant_builder_add (&transforms, "u", j);
 
       g_variant_builder_add (&crtc_builder, "(uxiiiiiuaua{sv})",
                              i, /* ID */
@@ -780,7 +847,7 @@ handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              (int)crtc->rect.width,
                              (int)crtc->rect.height,
                              (int)(crtc->current_mode ? crtc->current_mode - manager->modes : -1),
-                             0, /* 0 = WL_OUTPUT_TRANSFORM_NORMAL */
+                             crtc->transform,
                              &transforms,
                              NULL /* properties */);
     }
@@ -1057,17 +1124,30 @@ apply_config_dummy (MetaMonitorManager *manager,
           MetaOutput *output;
           int i, n_outputs;
           guint output_id;
+          int width, height;
 
           mode = &manager->modes[new_mode];
 
+          if (meta_monitor_transform_is_rotated (transform))
+            {
+              width = mode->height;
+              height = mode->width;
+            }
+          else
+            {
+              width = mode->width;
+              height = mode->height;
+            }
+
           crtc->rect.x = x;
           crtc->rect.y = y;
-          crtc->rect.width = mode->width;
-          crtc->rect.height = mode->height;
+          crtc->rect.width = width;
+          crtc->rect.height = height;
           crtc->current_mode = mode;
+          crtc->transform = transform;
 
-          screen_width = MAX (screen_width, x + mode->width);
-          screen_height = MAX (screen_height, y + mode->height);
+          screen_width = MAX (screen_width, x + width);
+          screen_height = MAX (screen_height, y + height);
 
           n_outputs = g_variant_n_children (nested_outputs);
           for (i = 0; i < n_outputs; i++)
@@ -1196,20 +1276,36 @@ handle_apply_configuration  (MetaDBusDisplayConfig *skeleton,
         }
       mode = new_mode != -1 ? &manager->modes[new_mode] : NULL;
 
-      if (mode &&
-          (x < 0 ||
-           x + mode->width > manager->max_screen_width ||
-           y < 0 ||
-           y + mode->height > manager->max_screen_height))
+      if (mode)
         {
-          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                                 G_DBUS_ERROR_INVALID_ARGS,
-                                                 "Invalid CRTC geometry");
-          return TRUE;
+          int width, height;
+
+          if (meta_monitor_transform_is_rotated (transform))
+            {
+              width = mode->height;
+              height = mode->width;
+            }
+          else
+            {
+              width = mode->width;
+              height = mode->height;
+            }
+
+          if (x < 0 ||
+              x + width > manager->max_screen_width ||
+              y < 0 ||
+              y + height > manager->max_screen_height)
+            {
+              g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                     G_DBUS_ERROR_INVALID_ARGS,
+                                                     "Invalid CRTC geometry");
+              return TRUE;
+            }
         }
 
       if (transform < WL_OUTPUT_TRANSFORM_NORMAL ||
-          transform > WL_OUTPUT_TRANSFORM_FLIPPED_270)
+          transform > WL_OUTPUT_TRANSFORM_FLIPPED_270 ||
+          ((crtc->all_transforms & (1 << transform)) == 0))
         {
           g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                                  G_DBUS_ERROR_INVALID_ARGS,

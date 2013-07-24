@@ -43,6 +43,22 @@
 #include <meta/screen.h>
 #include "stack-tracker.h"
 #include "ui.h"
+#ifdef HAVE_WAYLAND
+#include <wayland-server.h>
+#endif
+
+#ifndef HAVE_WAYLAND
+enum wl_output_transform {
+  WL_OUTPUT_TRANSFORM_NORMAL,
+  WL_OUTPUT_TRANSFORM_90,
+  WL_OUTPUT_TRANSFORM_180,
+  WL_OUTPUT_TRANSFORM_270,
+  WL_OUTPUT_TRANSFORM_FLIPPED,
+  WL_OUTPUT_TRANSFORM_FLIPPED_90,
+  WL_OUTPUT_TRANSFORM_FLIPPED_180,
+  WL_OUTPUT_TRANSFORM_FLIPPED_270
+};
+#endif
 
 typedef struct _MetaOutput MetaOutput;
 typedef struct _MetaCRTC MetaCRTC;
@@ -92,6 +108,8 @@ struct _MetaCRTC
   glong crtc_id;
   MetaRectangle rect;
   MetaMonitorMode *current_mode;
+  enum wl_output_transform transform;
+  unsigned int all_transforms;
 
   /* Only used to build the logical configuration
      from the HW one
@@ -171,5 +189,13 @@ gboolean            meta_monitor_manager_handle_xevent     (MetaMonitorManager *
 void                meta_monitor_manager_get_screen_size   (MetaMonitorManager *manager,
                                                             int                *width,
                                                             int                *height);
+
+/* Returns true if transform causes width and height to be inverted
+   This is true for the odd transforms in the enum */
+static inline gboolean
+meta_monitor_transform_is_rotated (enum wl_output_transform transform)
+{
+  return (transform % 2);
+}
 
 #endif
