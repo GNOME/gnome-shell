@@ -32,6 +32,7 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
+const AuthPrompt = imports.gdm.authPrompt;
 const Batch = imports.gdm.batch;
 const BoxPointer = imports.ui.boxpointer;
 const CtrlAltTab = imports.ui.ctrlAltTab;
@@ -457,7 +458,7 @@ const LoginDialog = new Lang.Class({
                                      x_fill: true,
                                      y_fill: true });
 
-        this._authPrompt = new GdmUtil.AuthPrompt();
+        this._authPrompt = new AuthPrompt.AuthPrompt();
         this._authPrompt.hide();
         this._authPrompt.connect('cancel',
                                  Lang.bind(this, function() {

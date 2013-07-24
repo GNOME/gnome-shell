@@ -19,6 +19,7 @@ const Panel = imports.ui.panel;
 const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
 
+const AuthPrompt = imports.gdm.authPrompt;
 const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
 const LoginDialog = imports.gdm.loginDialog;
@@ -62,7 +63,7 @@ const UnlockDialog = new Lang.Class({
                                                                      align_axis: Clutter.AlignAxis.BOTH,
                                                                      factor: 0.5 }));
 
-        this._authPrompt = new GdmUtil.AuthPrompt();
+        this._authPrompt = new AuthPrompt.AuthPrompt();
         this._authPrompt.setUser(this._user);
         this._authPrompt.setPasswordChar('\u25cf');
         this._authPrompt.nextButton.label = _("Unlock");

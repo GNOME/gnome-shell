@@ -17,6 +17,7 @@ misc/config.js: misc/config.js.in Makefile
 jsdir = $(pkgdatadir)/js
 
 nobase_dist_js_DATA = 	\
+	gdm/authPrompt.js	\
 	gdm/batch.js		\
 	gdm/fingerprint.js	\
 	gdm/loginDialog.js	\
