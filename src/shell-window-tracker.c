@@ -824,6 +824,12 @@ shell_window_tracker_is_window_interesting (MetaWindow *window)
   if (meta_window_is_skip_taskbar (window))
     return FALSE;
 
+  /* HACK: see https://github.com/endlessm/eos-shell/issues/548 and
+   * https://github.com/linuxmint/Cinnamon/issues/728
+   */
+  if (g_strcmp0 (meta_window_get_title (window), "JavaEmbeddedFrame") == 0)
+    return FALSE;
+
   return TRUE;
 }
 
