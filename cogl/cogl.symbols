@@ -131,6 +131,7 @@ cogl_color_get_green_float
 cogl_color_get_red
 cogl_color_get_red_byte
 cogl_color_get_red_float
+cogl_color_init_from_hsl
 cogl_color_init_from_4f
 cogl_color_init_from_4fv
 cogl_color_init_from_4ub
@@ -151,6 +152,7 @@ cogl_color_set_green_float
 cogl_color_set_red
 cogl_color_set_red_byte
 cogl_color_set_red_float
+cogl_color_to_hsl
 cogl_color_unpremultiply
 
 
@@ -159,6 +161,7 @@ cogl_egl_context_get_egl_display
 #endif
 
 cogl_context_get_display
+cogl_context_get_renderer
 cogl_context_new
 
 cogl_create_program
@@ -205,6 +208,7 @@ cogl_euler_init_from_quaternion
 
 cogl_features_available
 cogl_feature_flags_get_type
+cogl_fence_closure_get_user_data
 cogl_fixed_atan
 cogl_fixed_atan2
 cogl_fixed_cos
@@ -222,7 +226,9 @@ cogl_foreach_feature
 
 cogl_flush
 
+cogl_framebuffer_add_fence_callback
 cogl_framebuffer_allocate
+cogl_framebuffer_cancel_fence_callback
 cogl_framebuffer_clear4f
 cogl_framebuffer_clear
 cogl_framebuffer_discard_buffers
@@ -324,6 +330,7 @@ cogl_gles2_texture_get_handle
 cogl_gles2_texture_2d_new_from_handle
 
 #ifdef COGL_HAS_GLIB_SUPPORT
+cogl_glib_renderer_source_new
 cogl_glib_source_new
 #endif
 
@@ -515,8 +522,9 @@ cogl_object_unref
 
 cogl_offscreen_new_with_texture
 
+cogl_onscreen_add_dirty_callback
 cogl_onscreen_add_frame_callback
-cogl_onscreen_add_resize_handler
+cogl_onscreen_add_resize_callback
 cogl_onscreen_add_swap_buffers_callback
 #ifndef COGL_WINSYS_INTEGRATED
 cogl_onscreen_clutter_backend_set_size_CLUTTER
@@ -527,13 +535,15 @@ cogl_onscreen_get_resizable
 cogl_onscreen_hide
 cogl_onscreen_new
 cogl_onscreen_set_swap_throttled
+cogl_onscreen_remove_dirty_callback
 cogl_onscreen_remove_frame_callback
-cogl_onscreen_remove_resize_handler
+cogl_onscreen_remove_resize_callback
 cogl_onscreen_remove_swap_buffers_callback
 cogl_onscreen_set_resizable
 cogl_onscreen_set_swap_throttled
 cogl_onscreen_show
 cogl_onscreen_swap_buffers
+cogl_onscreen_swap_buffers_with_damage
 cogl_onscreen_swap_region
 cogl_onscreen_template_new
 cogl_onscreen_template_set_samples_per_pixel
@@ -598,6 +608,7 @@ cogl_pipeline_get_layer_wrap_mode_p
 cogl_pipeline_get_layer_wrap_mode_s
 cogl_pipeline_get_layer_wrap_mode_t
 cogl_pipeline_get_n_layers
+cogl_pipeline_get_per_vertex_point_size
 cogl_pipeline_get_point_size
 cogl_pipeline_get_shininess
 cogl_pipeline_get_specular
@@ -629,6 +640,7 @@ cogl_pipeline_set_layer_wrap_mode
 cogl_pipeline_set_layer_wrap_mode_p
 cogl_pipeline_set_layer_wrap_mode_s
 cogl_pipeline_set_layer_wrap_mode_t
+cogl_pipeline_set_per_vertex_point_size
 cogl_pipeline_set_point_size
 cogl_pipeline_remove_layer
 cogl_pipeline_set_shininess
@@ -647,8 +659,8 @@ cogl_pixel_buffer_set_region
 #endif
 cogl_pixel_format_get_type
 
-cogl_poll_renderer_get_info
 cogl_poll_renderer_dispatch
+cogl_poll_renderer_get_info
 
 cogl_polygon
 
@@ -927,13 +939,21 @@ cogl_winsys_feature_get_type
 
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
 cogl_wayland_display_set_compositor_display
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+cogl_wayland_onscreen_get_shell_surface
+cogl_wayland_onscreen_get_surface
+#endif
+#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
 cogl_wayland_onscreen_resize
-cogl_wayland_renderer_get_compositor
+#endif
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+cogl_wayland_onscreen_set_foreign_surface
+#endif
+#ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
 cogl_wayland_renderer_get_display
-cogl_wayland_renderer_get_shell
-cogl_wayland_renderer_set_foreign_compositor
+cogl_wayland_renderer_set_event_dispatch_enabled
 cogl_wayland_renderer_set_foreign_display
-cogl_wayland_renderer_set_foreign_shell
 cogl_wayland_texture_2d_new_from_buffer
 #endif
 
@@ -945,6 +965,7 @@ cogl_win32_onscreen_set_foreign_window
 cogl_win32_renderer_add_filter
 cogl_win32_renderer_handle_event
 cogl_win32_renderer_remove_filter
+cogl_win32_renderer_set_event_retrieval_enabled
 #endif
 
 #ifdef COGL_HAS_XLIB
@@ -971,10 +992,8 @@ cogl_x11_onscreen_set_foreign_window_xid
 /* will link without the following) */
 _cogl_atlas_add_reorganize_callback
 _cogl_atlas_new
-_cogl_atlas_remove_reorganize_callback
 _cogl_atlas_reserve_space
 _cogl_atlas_texture_add_reorganize_callback
-_cogl_atlas_texture_new_from_bitmap
 _cogl_atlas_texture_new_with_size
 _cogl_atlas_texture_remove_reorganize_callback
 _cogl_context_get_default
