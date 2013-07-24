@@ -65,6 +65,8 @@ typedef struct _MetaOutput MetaOutput;
 typedef struct _MetaCRTC MetaCRTC;
 typedef struct _MetaMonitorMode MetaMonitorMode;
 typedef struct _MetaMonitorInfo MetaMonitorInfo;
+typedef struct _MetaCRTCInfo MetaCRTCInfo;
+typedef struct _MetaOutputInfo MetaOutputInfo;
 
 struct _MetaOutput
 {
@@ -161,6 +163,33 @@ struct _MetaMonitorInfo
   glong output_id;
 };
 
+/*
+ * MetaCRTCInfo:
+ * This represents the writable part of a CRTC, as deserialized from DBus
+ * or built by MetaMonitorConfig
+ *
+ * Note: differently from the other structures in this file, MetaCRTCInfo
+ * is handled by pointer. This is to accomodate the usage in MetaMonitorConfig
+ */
+struct _MetaCRTCInfo {
+  MetaCRTC                 *crtc;
+  MetaMonitorMode          *mode;
+  int                       x;
+  int                       y;
+  enum wl_output_transform  transform;
+  GPtrArray                *outputs;
+};
+
+/*
+ * MetaOutputInfo:
+ * this is the same as MetaOutputInfo, but for CRTCs
+ */
+struct _MetaOutputInfo {
+  MetaOutput  *output;
+  gboolean     is_primary;
+  gboolean     is_presentation;
+};
+
 #define META_TYPE_MONITOR_MANAGER            (meta_monitor_manager_get_type ())
 #define META_MONITOR_MANAGER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_MANAGER, MetaMonitorManager))
 #define META_MONITOR_MANAGER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_MANAGER, MetaMonitorManagerClass))
@@ -182,6 +211,14 @@ MetaMonitorInfo    *meta_monitor_manager_get_monitor_infos (MetaMonitorManager *
 MetaOutput         *meta_monitor_manager_get_outputs       (MetaMonitorManager *manager,
 							    unsigned int       *n_outputs);
 
+void                meta_monitor_manager_get_resources     (MetaMonitorManager  *manager,
+                                                            MetaMonitorMode    **modes,
+                                                            unsigned int        *n_modes,
+                                                            MetaCRTC           **crtcs,
+                                                            unsigned int        *n_crtcs,
+                                                            MetaOutput         **outputs,
+                                                            unsigned int        *n_outputs);
+
 int                 meta_monitor_manager_get_primary_index (MetaMonitorManager *manager);
 
 gboolean            meta_monitor_manager_handle_xevent     (MetaMonitorManager *manager,
@@ -191,9 +228,11 @@ void                meta_monitor_manager_get_screen_size   (MetaMonitorManager *
                                                             int                *width,
                                                             int                *height);
 
-void                meta_monitor_manager_apply_configuration (MetaMonitorManager *manager,
-                                                              GVariant           *crtcs,
-                                                              GVariant           *outputs);
+void                meta_monitor_manager_apply_configuration (MetaMonitorManager  *manager,
+                                                              MetaCRTCInfo       **crtcs,
+                                                              unsigned int         n_crtcs,
+                                                              MetaOutputInfo     **outputs,
+                                                              unsigned int         n_outputs);
 
 #define META_TYPE_MONITOR_CONFIG            (meta_monitor_config_get_type ())
 #define META_MONITOR_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_CONFIG, MetaMonitorConfig))
@@ -221,6 +260,9 @@ void               meta_monitor_config_make_default (MetaMonitorConfig  *config,
 void               meta_monitor_config_update_current (MetaMonitorConfig  *config,
                                                        MetaMonitorManager *manager);
 void               meta_monitor_config_make_persistent (MetaMonitorConfig *config);
+
+void               meta_crtc_info_free   (MetaCRTCInfo   *info);
+void               meta_output_info_free (MetaOutputInfo *info);
 
 /* Returns true if transform causes width and height to be inverted
    This is true for the odd transforms in the enum */

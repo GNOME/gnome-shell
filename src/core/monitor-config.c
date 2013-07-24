@@ -25,6 +25,15 @@
  * 02111-1307, USA.
  */
 
+/*
+ * Portions of this file are derived from gnome-desktop/libgnome-desktop/gnome-rr-config.c
+ *
+ * Copyright 2007, 2008, Red Hat, Inc.
+ * Copyright 2010 Giovanni Campagna
+ *
+ * Author: Soren Sandmann <sandmann@redhat.com>
+ */
+
 #include "config.h"
 
 #include <string.h>
@@ -89,6 +98,11 @@ struct _MetaMonitorConfigClass {
 };
 
 G_DEFINE_TYPE (MetaMonitorConfig, meta_monitor_config, G_TYPE_OBJECT);
+
+static gboolean meta_monitor_config_assign_crtcs (MetaConfiguration  *config,
+                                                  MetaMonitorManager *manager,
+                                                  GPtrArray          *crtcs,
+                                                  GPtrArray          *outputs);
 
 static void
 free_output_key (MetaOutputKey *key)
@@ -774,35 +788,37 @@ meta_monitor_config_get_stored (MetaMonitorConfig *self,
   return stored;
 }
 
-static void
-make_crtcs (MetaConfiguration   *config,
-	    MetaMonitorManager  *manager,
-	    GVariant           **crtcs,
-	    GVariant           **outputs)
-{
-  *crtcs = NULL;
-  *outputs = NULL;
-  /* FIXME */
-}
-
-static void
+static gboolean
 apply_configuration (MetaMonitorConfig  *self,
                      MetaConfiguration  *config,
 		     MetaMonitorManager *manager,
                      gboolean            stored)
 {
-  GVariant *crtcs, *outputs;
-		     
-  make_crtcs (config, manager, &crtcs, &outputs);
-  meta_monitor_manager_apply_configuration (manager, crtcs, outputs);
+  GPtrArray *crtcs, *outputs;
+
+  crtcs = g_ptr_array_new_full (config->n_outputs, (GDestroyNotify)meta_crtc_info_free);
+  outputs = g_ptr_array_new_full (config->n_outputs, (GDestroyNotify)meta_output_info_free);
+
+  if (!meta_monitor_config_assign_crtcs (config, manager, crtcs, outputs))
+    {
+      g_ptr_array_unref (crtcs);
+      g_ptr_array_unref (outputs);
+
+      return FALSE;
+    }
+
+  meta_monitor_manager_apply_configuration (manager,
+                                            (MetaCRTCInfo**)crtcs->pdata, crtcs->len,
+                                            (MetaOutputInfo**)outputs->pdata, outputs->len);
 
   if (self->current && !self->current_is_stored)
     config_free (self->current);
   self->current = config;
   self->current_is_stored = stored;
 
-  g_variant_unref (crtcs);
-  g_variant_unref (outputs);
+  g_ptr_array_unref (crtcs);
+  g_ptr_array_unref (outputs);
+  return TRUE;
 }
 
 gboolean
@@ -818,8 +834,7 @@ meta_monitor_config_apply_stored (MetaMonitorConfig  *self,
 
   if (stored)
     {
-      apply_configuration (self, stored, manager, TRUE);
-      return TRUE;
+      return apply_configuration (self, stored, manager, TRUE);
     }
   else
     return FALSE;
@@ -1038,4 +1053,330 @@ meta_monitor_config_make_persistent (MetaMonitorConfig *self)
   g_hash_table_replace (self->configs, self->current, self->current);
 
   meta_monitor_config_save (self);
+}
+
+/*
+ * CRTC assignment
+ */
+typedef struct
+{
+  MetaConfiguration  *config;
+  MetaMonitorManager *manager;
+  GHashTable         *info;
+} CrtcAssignment;
+
+static gboolean
+output_can_clone (MetaOutput *output,
+                  MetaOutput *clone)
+{
+  unsigned int i;
+
+  for (i = 0; i < output->n_possible_clones; i++)
+    if (output->possible_clones[i] == clone)
+      return TRUE;
+
+  return FALSE;
+}
+
+static gboolean
+can_clone (MetaCRTCInfo *info,
+	   MetaOutput   *output)
+{
+  unsigned int i;
+
+  for (i = 0; i < info->outputs->len; ++i)
+    {
+      MetaOutput *clone = info->outputs->pdata[i];
+
+	if (!output_can_clone (clone, output))
+	    return FALSE;
+    }
+
+    return TRUE;
+}
+
+static gboolean
+crtc_can_drive_output (MetaCRTC   *crtc,
+                       MetaOutput *output)
+{
+  unsigned int i;
+
+  for (i = 0; i < output->n_possible_crtcs; i++)
+    if (output->possible_crtcs[i] == crtc)
+      return TRUE;
+
+  return FALSE;
+}
+
+static gboolean
+output_supports_mode (MetaOutput      *output,
+                      MetaMonitorMode *mode)
+{
+  unsigned int i;
+
+  for (i = 0; i < output->n_modes; i++)
+    if (output->modes[i] == mode)
+      return TRUE;
+
+  return FALSE;
+}
+
+static gboolean
+crtc_assignment_assign (CrtcAssignment            *assign,
+			MetaCRTC                  *crtc,
+			MetaMonitorMode           *mode,
+			int                        x,
+			int                        y,
+			enum wl_output_transform   transform,
+			MetaOutput                *output)
+{
+  MetaCRTCInfo *info = g_hash_table_lookup (assign->info, crtc);
+
+  if (!crtc_can_drive_output (crtc, output))
+    return FALSE;
+
+  if (!output_supports_mode (output, mode))
+    return FALSE;
+
+  if ((crtc->all_transforms & (1 << transform)) == 0)
+    return FALSE;
+
+  if (info)
+    {
+      if (!(info->mode == mode	&&
+            info->x == x		&&
+            info->y == y		&&
+            info->transform == transform))
+        return FALSE;
+
+      if (!can_clone (info, output))
+        return FALSE;
+
+      g_ptr_array_add (info->outputs, output);
+      return TRUE;
+    }
+  else
+    {
+      MetaCRTCInfo *info = g_slice_new0 (MetaCRTCInfo);
+
+      info->crtc = crtc;
+      info->mode = mode;
+      info->x = x;
+      info->y = y;
+      info->transform = transform;
+      info->outputs = g_ptr_array_new ();
+
+      g_ptr_array_add (info->outputs, output);
+      g_hash_table_insert (assign->info, crtc, info);
+
+      return TRUE;
+    }
+}
+
+static void
+crtc_assignment_unassign (CrtcAssignment *assign,
+                          MetaCRTC       *crtc,
+                          MetaOutput     *output)
+{
+  MetaCRTCInfo *info = g_hash_table_lookup (assign->info, crtc);
+
+  if (info)
+    {
+      g_ptr_array_remove (info->outputs, output);
+
+      if (info->outputs->len == 0)
+        g_hash_table_remove (assign->info, crtc);
+    }
+}
+
+static MetaOutput *
+find_output_by_key (MetaOutput    *outputs,
+                    unsigned int   n_outputs,
+                    MetaOutputKey *key)
+{
+  unsigned int i;
+
+  for (i = 0; i < n_outputs; i++)
+    {
+      if (strcmp (outputs[i].name, key->connector) == 0)
+        {
+          /* This should be checked a lot earlier! */
+
+          g_warn_if_fail (strcmp (outputs[i].vendor, key->vendor) == 0 &&
+                          strcmp (outputs[i].product, key->product) == 0 &&
+                          strcmp (outputs[i].serial, key->serial) == 0);
+          return &outputs[i];
+        }
+    }
+
+  /* Just to satisfy GCC - this is a fatal error if occurs */
+  return NULL;
+}
+
+/* Check whether the given set of settings can be used
+ * at the same time -- ie. whether there is an assignment
+ * of CRTC's to outputs.
+ *
+ * Brute force - the number of objects involved is small
+ * enough that it doesn't matter.
+ */
+static gboolean
+real_assign_crtcs (CrtcAssignment     *assignment,
+                   unsigned int        output_num)
+{
+  MetaMonitorMode *modes;
+  MetaCRTC *crtcs;
+  MetaOutput *outputs;
+  unsigned int n_crtcs, n_modes, n_outputs;
+  MetaOutputKey *output_key;
+  MetaOutputConfig *output_config;
+  unsigned int i;
+  gboolean success;
+
+  if (output_num == assignment->config->n_outputs)
+    return TRUE;
+
+  output_key = &assignment->config->keys[output_num];
+  output_config = &assignment->config->outputs[output_num];
+
+  /* It is always allowed for an output to be turned off */
+  if (!output_config->enabled)
+    return real_assign_crtcs (assignment, output_num + 1);
+
+  meta_monitor_manager_get_resources (assignment->manager,
+                                      &modes, &n_modes,
+                                      &crtcs, &n_crtcs,
+                                      &outputs, &n_outputs);
+
+  success = FALSE;
+
+  for (i = 0; i < n_crtcs; i++)
+    {
+      MetaCRTC *crtc = &crtcs[i];
+      unsigned int pass;
+
+      /* Make two passes, one where frequencies must match, then
+       * one where they don't have to
+       */
+      for (pass = 0; pass < 2; pass++)
+	{
+          MetaOutput *output = find_output_by_key (outputs, n_outputs, output_key);
+          unsigned int j;
+
+          for (j = 0; j < n_modes; j++)
+	    {
+              MetaMonitorMode *mode = &modes[j];
+              int width, height;
+
+              if (meta_monitor_transform_is_rotated (output_config->transform))
+                {
+                  width = mode->height;
+                  height = mode->width;
+                }
+              else
+                {
+                  width = mode->width;
+                  height = mode->height;
+                }
+
+              if (width == output_config->rect.width &&
+                  height == output_config->rect.height &&
+                  (pass == 1 || mode->refresh_rate == output_config->refresh_rate))
+		{
+                  meta_verbose ("CRTC %ld: trying mode %dx%d@%fHz with output at %dx%d@%fHz (transform %d) (pass %d)\n",
+                                crtc->crtc_id,
+                                mode->width, mode->height, mode->refresh_rate,
+                                output_config->rect.width, output_config->rect.height, output_config->refresh_rate,
+                                output_config->transform,
+                                pass);
+
+
+                  if (crtc_assignment_assign (assignment, crtc, &modes[j],
+                                              output_config->rect.x, output_config->rect.y,
+                                              output_config->transform,
+                                              output))
+                    {
+                      if (real_assign_crtcs (assignment, output_num + 1))
+                        {
+                          success = TRUE;
+                          goto out;
+                        }
+
+                      crtc_assignment_unassign (assignment, crtc, output);
+                    }
+                }
+            }
+	}
+    }
+
+out:
+  if (!success)
+    meta_warning ("Could not assign CRTC to outputs, ignoring configuration\n");
+
+  return success;
+}
+
+static gboolean
+meta_monitor_config_assign_crtcs (MetaConfiguration  *config,
+                                  MetaMonitorManager *manager,
+                                  GPtrArray          *crtcs,
+                                  GPtrArray          *outputs)
+{
+  CrtcAssignment assignment;
+  GHashTableIter iter;
+  MetaCRTC *crtc;
+  MetaCRTCInfo *info;
+  unsigned int i;
+  MetaOutput *all_outputs;
+  unsigned int n_outputs;
+
+  assignment.config = config;
+  assignment.manager = manager;
+  assignment.info = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify)meta_crtc_info_free);
+
+  if (!real_assign_crtcs (&assignment, 0))
+    {
+      g_hash_table_destroy (assignment.info);
+      return FALSE;
+    }
+
+  g_hash_table_iter_init (&iter, assignment.info);
+  while (g_hash_table_iter_next (&iter, (void**)&crtc, (void**)&info))
+    {
+      g_hash_table_iter_steal (&iter);
+      g_ptr_array_add (crtcs, info);
+    }
+
+  all_outputs = meta_monitor_manager_get_outputs (manager,
+                                                  &n_outputs);
+  g_assert (n_outputs == config->n_outputs);
+
+  for (i = 0; i < n_outputs; i++)
+    {
+      MetaOutputInfo *output_info = g_slice_new (MetaOutputInfo);
+      MetaOutputConfig *output_config = &config->outputs[0];
+
+      output_info->output = find_output_by_key (all_outputs, n_outputs,
+                                                &config->keys[0]);
+      output_info->is_primary = output_config->is_primary;
+      output_info->is_presentation = output_config->is_presentation;
+
+      g_ptr_array_add (outputs, output_info);
+    }
+
+  g_hash_table_destroy (assignment.info);
+  return TRUE;
+}
+
+void
+meta_crtc_info_free (MetaCRTCInfo *info)
+{
+  g_ptr_array_free (info->outputs, TRUE);
+  g_slice_free (MetaCRTCInfo, info);
+}
+
+void
+meta_output_info_free (MetaOutputInfo *info)
+{
+  g_slice_free (MetaOutputInfo, info);
 }

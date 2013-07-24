@@ -1160,22 +1160,20 @@ wl_transform_to_xrandr (enum wl_output_transform transform)
      
 static void
 apply_config_xrandr (MetaMonitorManager *manager,
-                     GVariantIter       *crtcs,
-                     GVariantIter       *outputs)
+                     MetaCRTCInfo       **crtcs,
+                     unsigned int         n_crtcs,
+                     MetaOutputInfo     **outputs,
+                     unsigned int         n_outputs)
 {
-  GVariant *nested_outputs, *properties;
-  guint crtc_id, output_id, transform;
-  int new_mode, x, y;
   unsigned i;
 
-  while (g_variant_iter_loop (crtcs, "(uiiiu@aua{sv})",
-                              &crtc_id, &new_mode, &x, &y,
-                              &transform, &nested_outputs, NULL))
+  for (i = 0; i < n_crtcs; i++)
     {
-      MetaCRTC *crtc = &manager->crtcs[crtc_id];
+      MetaCRTCInfo *crtc_info = crtcs[i];
+      MetaCRTC *crtc = crtc_info->crtc;
       crtc->is_dirty = TRUE;
 
-      if (new_mode == -1)
+      if (crtc_info->mode == NULL)
         {
           XRRSetCrtcConfig (manager->xdisplay,
                             manager->resources,
@@ -1190,54 +1188,47 @@ apply_config_xrandr (MetaMonitorManager *manager,
         {
           MetaMonitorMode *mode;
           XID *outputs;
-          int i, n_outputs;
-          guint output_id;
+          int j, n_outputs;
           Status ok;
 
-          mode = &manager->modes[new_mode];
+          mode = crtc_info->mode;
 
-          n_outputs = g_variant_n_children (nested_outputs);
+          n_outputs = crtc_info->outputs->len;
           outputs = g_new (XID, n_outputs);
 
-          for (i = 0; i < n_outputs; i++)
-            {
-              g_variant_get_child (nested_outputs, i, "u", &output_id);
-
-              outputs[i] = manager->outputs[output_id].output_id;
-            }
+          for (j = 0; j < n_outputs; j++)
+            outputs[i] = ((MetaOutput**)crtc_info->outputs->pdata)[i]->output_id;
 
           meta_error_trap_push (meta_get_display ());
           ok = XRRSetCrtcConfig (manager->xdisplay,
                                  manager->resources,
                                  (XID)crtc->crtc_id,
                                  manager->time,
-                                 x, y,
+                                 crtc_info->x, crtc_info->y,
                                  (XID)mode->mode_id,
-                                 wl_transform_to_xrandr (transform),
+                                 wl_transform_to_xrandr (crtc_info->transform),
                                  outputs, n_outputs);
           meta_error_trap_pop (meta_get_display ());
 
           if (ok != Success)
             meta_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transfrom %u failed\n",
                           (unsigned)(crtc->crtc_id), (unsigned)(mode->mode_id),
-                          mode->width, mode->height, (float)mode->refresh_rate, x, y, transform);
+                          mode->width, mode->height, (float)mode->refresh_rate,
+                          crtc_info->x, crtc_info->y, crtc_info->transform);
 
           g_free (outputs);
         }
     }
 
-  while (g_variant_iter_loop (outputs, "(u@a{sv})",
-                              &output_id, &properties))
+  for (i = 0; i < n_outputs; i++)
     {
-      gboolean primary;
+      MetaOutputInfo *output_info = outputs[i];
 
-      if (g_variant_lookup (properties, "primary", "b", &primary) && primary)
+      if (output_info->is_primary)
         {
-          MetaOutput *output = &manager->outputs[output_id];
-
           XRRSetOutputPrimary (manager->xdisplay,
                                DefaultRootWindow (manager->xdisplay),
-                               (XID)output->output_id);
+                               (XID)output_info->output->output_id);
         }
     }
 
@@ -1268,23 +1259,21 @@ apply_config_xrandr (MetaMonitorManager *manager,
 
 static void
 apply_config_dummy (MetaMonitorManager *manager,
-                    GVariantIter       *crtcs,
-                    GVariantIter       *outputs)
+                    MetaCRTCInfo       **crtcs,
+                    unsigned int         n_crtcs,
+                    MetaOutputInfo     **outputs,
+                    unsigned int         n_outputs)
 {
-  GVariant *nested_outputs, *properties;
-  guint crtc_id, output_id, transform;
-  int new_mode, x, y;
   unsigned i;
   int screen_width = 0, screen_height = 0;
 
-  while (g_variant_iter_loop (crtcs, "(uiiiu@aua{sv})",
-                              &crtc_id, &new_mode, &x, &y,
-                              &transform, &nested_outputs, NULL))
+  for (i = 0; i < n_crtcs; i++)
     {
-      MetaCRTC *crtc = &manager->crtcs[crtc_id];
+      MetaCRTCInfo *crtc_info = crtcs[i];
+      MetaCRTC *crtc = crtc_info->crtc;
       crtc->is_dirty = TRUE;
 
-      if (new_mode == -1)
+      if (crtc_info->mode == NULL)
         {
           crtc->rect.x = 0;
           crtc->rect.y = 0;
@@ -1297,12 +1286,11 @@ apply_config_dummy (MetaMonitorManager *manager,
           MetaMonitorMode *mode;
           MetaOutput *output;
           int i, n_outputs;
-          guint output_id;
           int width, height;
 
-          mode = &manager->modes[new_mode];
+          mode = crtc_info->mode;
 
-          if (meta_monitor_transform_is_rotated (transform))
+          if (meta_monitor_transform_is_rotated (crtc_info->transform))
             {
               width = mode->height;
               height = mode->width;
@@ -1313,22 +1301,20 @@ apply_config_dummy (MetaMonitorManager *manager,
               height = mode->height;
             }
 
-          crtc->rect.x = x;
-          crtc->rect.y = y;
+          crtc->rect.x = crtc_info->x;
+          crtc->rect.y = crtc_info->y;
           crtc->rect.width = width;
           crtc->rect.height = height;
           crtc->current_mode = mode;
-          crtc->transform = transform;
+          crtc->transform = crtc_info->transform;
 
-          screen_width = MAX (screen_width, x + width);
-          screen_height = MAX (screen_height, y + height);
+          screen_width = MAX (screen_width, crtc_info->x + width);
+          screen_height = MAX (screen_height, crtc_info->y + height);
 
-          n_outputs = g_variant_n_children (nested_outputs);
+          n_outputs = crtc_info->outputs->len;
           for (i = 0; i < n_outputs; i++)
             {
-              g_variant_get_child (nested_outputs, i, "u", &output_id);
-
-              output = &manager->outputs[output_id];
+              output = ((MetaOutput**)crtc_info->outputs->pdata)[i];
 
               output->is_dirty = TRUE;
               output->crtc = crtc;
@@ -1336,17 +1322,13 @@ apply_config_dummy (MetaMonitorManager *manager,
         }
     }
 
-  while (g_variant_iter_loop (outputs, "(u@a{sv})",
-                              &output_id, &properties))
+  for (i = 0; i < n_outputs; i++)
     {
-      MetaOutput *output = &manager->outputs[output_id];
-      gboolean primary, presentation;
+      MetaOutputInfo *output_info = outputs[i];
+      MetaOutput *output = output_info->output;
 
-      if (g_variant_lookup (properties, "primary", "b", &primary))
-        output->is_primary = primary;
-
-      if (g_variant_lookup (properties, "presentation", "b", &presentation))
-        output->is_presentation = presentation;
+      output->is_primary = output_info->is_primary;
+      output->is_presentation = output_info->is_presentation;
     }
 
   /* Disable CRTCs not mentioned in the list */
@@ -1392,18 +1374,15 @@ apply_config_dummy (MetaMonitorManager *manager,
 
 void
 meta_monitor_manager_apply_configuration (MetaMonitorManager *manager,
-                                          GVariant           *crtcs,
-                                          GVariant           *outputs)
+                                          MetaCRTCInfo       **crtcs,
+                                          unsigned int         n_crtcs,
+                                          MetaOutputInfo     **outputs,
+                                          unsigned int         n_outputs)
 {
-  GVariantIter crtc_iter, output_iter;
-
-  g_variant_iter_init (&crtc_iter, crtcs);
-  g_variant_iter_init (&output_iter, outputs);
-
  if (manager->backend == META_BACKEND_XRANDR)
-    apply_config_xrandr (manager, &crtc_iter, &output_iter);
+   apply_config_xrandr (manager, crtcs, n_crtcs, outputs, n_outputs);
   else
-    apply_config_dummy (manager, &crtc_iter, &output_iter);
+    apply_config_dummy (manager, crtcs, n_crtcs, outputs, n_outputs);
 }
 
 static gboolean
@@ -1426,10 +1405,12 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
   GVariantIter crtc_iter, output_iter, *nested_outputs;
+  GVariant *properties;
   guint crtc_id;
   int new_mode, x, y;
   guint transform;
   guint output_id;
+  GPtrArray *crtc_infos, *output_infos;
 
   if (serial != manager->serial)
     {
@@ -1439,16 +1420,25 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
       return TRUE;
     }
 
+  crtc_infos = g_ptr_array_new_full (g_variant_n_children (crtcs),
+                                     (GDestroyNotify) meta_crtc_info_free);
+  output_infos = g_ptr_array_new_full (g_variant_n_children (outputs),
+                                       (GDestroyNotify) meta_output_info_free);
+
   /* Validate all arguments */
   g_variant_iter_init (&crtc_iter, crtcs);
   while (g_variant_iter_loop (&crtc_iter, "(uiiiuaua{sv})",
                               &crtc_id, &new_mode, &x, &y, &transform,
                               &nested_outputs, NULL))
     {
+      MetaCRTCInfo *crtc_info;
       MetaOutput *first_output;
       MetaCRTC *crtc;
       MetaMonitorMode *mode;
       guint output_id;
+
+      crtc_info = g_slice_new (MetaCRTCInfo);
+      crtc_info->outputs = g_ptr_array_new ();
 
       if (crtc_id >= manager->n_crtcs)
         {
@@ -1458,6 +1448,7 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
           return TRUE;
         }
       crtc = &manager->crtcs[crtc_id];
+      crtc_info->crtc = crtc;
 
       if (new_mode != -1 && (new_mode < 0 || (unsigned)new_mode >= manager->n_modes))
         {
@@ -1467,6 +1458,7 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
           return TRUE;
         }
       mode = new_mode != -1 ? &manager->modes[new_mode] : NULL;
+      crtc_info->mode = mode;
 
       if (mode)
         {
@@ -1494,6 +1486,8 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
               return TRUE;
             }
         }
+      crtc_info->x = x;
+      crtc_info->y = y;
 
       if (transform < WL_OUTPUT_TRANSFORM_NORMAL ||
           transform > WL_OUTPUT_TRANSFORM_FLIPPED_270 ||
@@ -1504,6 +1498,7 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
                                                  "Invalid transform");
           return TRUE;
         }
+      crtc_info->transform = transform;
 
       first_output = NULL;
       while (g_variant_iter_loop (nested_outputs, "u", &output_id))
@@ -1526,6 +1521,7 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
                                                      "Output cannot be assigned to this CRTC or mode");
               return TRUE;
             }
+          g_ptr_array_add (crtc_info->outputs, output);
 
           if (first_output)
             {
@@ -1551,8 +1547,11 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
     }
 
   g_variant_iter_init (&output_iter, outputs);
-  while (g_variant_iter_loop (&output_iter, "(ua{sv})", &output_id, NULL))
+  while (g_variant_iter_loop (&output_iter, "(u@a{sv})", &output_id, &properties))
     {
+      MetaOutputInfo *output_info;
+      gboolean primary, presentation;
+
       if (output_id >= manager->n_outputs)
         {
           g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
@@ -1560,6 +1559,15 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
                                                  "Invalid output id");
           return TRUE;
         }
+
+      output_info = g_slice_new0 (MetaOutputInfo);
+      output_info->output = &manager->outputs[output_id];
+
+      if (g_variant_lookup (properties, "primary", "b", &primary))
+        output_info->is_primary = primary;
+
+      if (g_variant_lookup (properties, "presentation", "b", &presentation))
+        output_info->is_presentation = presentation;
     }
 
   /* If we were in progress of making a persistent change and we see a
@@ -1572,7 +1580,14 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
       manager->persistent_timeout_id = 0;
     }
 
-  meta_monitor_manager_apply_configuration (manager, crtcs, outputs);
+  meta_monitor_manager_apply_configuration (manager,
+                                            (MetaCRTCInfo**)crtc_infos->pdata,
+                                            crtc_infos->len,
+                                            (MetaOutputInfo**)output_infos->pdata,
+                                            output_infos->len);
+
+  g_ptr_array_unref (crtc_infos);
+  g_ptr_array_unref (output_infos);
 
   /* Update MetaMonitorConfig data structures immediately so that we
      don't revert the change at the next XRandR event, then wait 20
@@ -1669,6 +1684,23 @@ meta_monitor_manager_get_outputs (MetaMonitorManager *manager,
 {
   *n_outputs = manager->n_outputs;
   return manager->outputs;
+}
+
+void
+meta_monitor_manager_get_resources (MetaMonitorManager  *manager,
+                                    MetaMonitorMode    **modes,
+                                    unsigned int        *n_modes,
+                                    MetaCRTC           **crtcs,
+                                    unsigned int        *n_crtcs,
+                                    MetaOutput         **outputs,
+                                    unsigned int        *n_outputs)
+{
+  *modes = manager->modes;
+  *n_modes = manager->n_modes;
+  *crtcs = manager->crtcs;
+  *n_crtcs = manager->n_crtcs;
+  *outputs = manager->outputs;
+  *n_outputs = manager->n_outputs;
 }
 
 int
