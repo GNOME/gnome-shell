@@ -93,6 +93,14 @@
       </_description>
     </key>
 
+    <key name="always-on-top" type="s">
+      <default>'Super_W'</default>
+      <_summary>Modifier to toggle Always on Top status on windows</_summary>
+      <_description>
+        This key will toggle the "Always on Top" status of a window.
+      </_description>
+    </key>
+
     <child name="keybindings" schema="org.gnome.mutter.keybindings"/>
 
   </schema>
