@@ -111,6 +111,7 @@ libmutter_la_SOURCES =				\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
 	core/main.c				\
+	core/meta-xrandr-shared.h		\
 	core/monitor.c				\
 	core/monitor-private.h			\
 	core/mutter-Xatomtype.h			\

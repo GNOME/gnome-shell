@@ -33,6 +33,7 @@
 
 #ifdef HAVE_RANDR
 #include <X11/extensions/Xrandr.h>
+#include <X11/extensions/dpms.h>
 #endif
 
 #include <meta/main.h>
@@ -61,6 +62,8 @@ struct _MetaMonitorManager
      of fields */
 
   unsigned int serial;
+
+  MetaPowerSave power_save_mode;
 
   int max_screen_width;
   int max_screen_height;
@@ -106,6 +109,12 @@ struct _MetaMonitorManagerClass
 enum {
   MONITORS_CHANGED,
   SIGNALS_LAST
+};
+
+enum {
+  PROP_0,
+  PROP_POWER_SAVE_MODE,
+  PROP_LAST
 };
 
 static int signals[SIGNALS_LAST];
@@ -332,10 +341,39 @@ read_monitor_infos_from_xrandr (MetaMonitorManager *manager)
     unsigned int n_actual_outputs;
     int min_width, min_height;
     Screen *screen;
+    BOOL dpms_capable, dpms_enabled;
+    CARD16 dpms_state;
 
     if (manager->resources)
       XRRFreeScreenResources (manager->resources);
     manager->resources = NULL;
+
+    meta_error_trap_push (meta_get_display ());
+    dpms_capable = DPMSCapable (manager->xdisplay);
+    meta_error_trap_pop (meta_get_display ());
+
+    if (dpms_capable &&
+        DPMSInfo (manager->xdisplay, &dpms_state, &dpms_enabled) &&
+        dpms_enabled)
+      {
+        switch (dpms_state)
+          {
+          case DPMSModeOn:
+            manager->power_save_mode = META_POWER_SAVE_ON;
+          case DPMSModeStandby:
+            manager->power_save_mode = META_POWER_SAVE_STANDBY;
+          case DPMSModeSuspend:
+            manager->power_save_mode = META_POWER_SAVE_SUSPEND;
+          case DPMSModeOff:
+            manager->power_save_mode = META_POWER_SAVE_OFF;
+          default:
+            manager->power_save_mode = META_POWER_SAVE_UNKNOWN;
+          }
+      }
+    else
+      {
+        manager->power_save_mode = META_POWER_SAVE_UNKNOWN;
+      }
 
     XRRGetScreenSizeRange (manager->xdisplay, DefaultRootWindow (manager->xdisplay),
                            &min_width,
@@ -710,6 +748,49 @@ meta_monitor_manager_new (Display *display)
 }
 
 static void
+meta_monitor_manager_set_power_save_mode (MetaMonitorManager *manager,
+                                          MetaPowerSave       mode)
+{
+  if (mode == manager->power_save_mode)
+    return;
+
+  if (manager->power_save_mode == META_POWER_SAVE_UNKNOWN ||
+      mode == META_POWER_SAVE_UNKNOWN)
+    return;
+
+#ifdef HAVE_RANDR
+  if (manager->backend == META_BACKEND_XRANDR)
+    {
+      CARD16 state;
+
+      switch (mode) {
+      case META_POWER_SAVE_ON:
+        state = DPMSModeOn;
+        break;
+      case META_POWER_SAVE_STANDBY:
+        state = DPMSModeStandby;
+        break;
+      case META_POWER_SAVE_SUSPEND:
+        state = DPMSModeSuspend;
+        break;
+      case META_POWER_SAVE_OFF:
+        state = DPMSModeOff;
+        break;
+      default:
+        return;
+      }
+
+      meta_error_trap_push (meta_get_display ());
+      DPMSForceLevel (manager->xdisplay, state);
+      DPMSSetTimeouts (manager->xdisplay, 0, 0, 0);
+      meta_error_trap_pop (meta_get_display ());
+    }
+#endif
+
+  manager->power_save_mode = mode;
+}
+
+static void
 free_output_array (MetaOutput *old_outputs,
                    int         n_old_outputs)
 {
@@ -757,10 +838,50 @@ meta_monitor_manager_dispose (GObject *object)
 }
 
 static void
+meta_monitor_manager_set_property (GObject      *object,
+                                   guint         prop_id,
+                                   const GValue *value,
+                                   GParamSpec   *pspec)
+{
+  MetaMonitorManager *self = META_MONITOR_MANAGER (object);
+
+  switch (prop_id)
+    {
+    case PROP_POWER_SAVE_MODE:
+      meta_monitor_manager_set_power_save_mode (self, g_value_get_int (value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+meta_monitor_manager_get_property (GObject      *object,
+                                   guint         prop_id,
+                                   GValue       *value,
+                                   GParamSpec   *pspec)
+{
+  MetaMonitorManager *self = META_MONITOR_MANAGER (object);
+
+  switch (prop_id)
+    {
+    case PROP_POWER_SAVE_MODE:
+      g_value_set_int (value, self->power_save_mode);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+  object_class->get_property = meta_monitor_manager_get_property;
+  object_class->set_property = meta_monitor_manager_set_property;
   object_class->dispose = meta_monitor_manager_dispose;
   object_class->finalize = meta_monitor_manager_finalize;
 
@@ -771,6 +892,8 @@ meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
 		  0,
                   NULL, NULL, NULL,
 		  G_TYPE_NONE, 0);
+
+  g_object_class_override_property (object_class, PROP_POWER_SAVE_MODE, "power-save-mode");
 }
 
 static const double known_diagonals[] = {

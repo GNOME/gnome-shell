@@ -194,5 +194,35 @@
       <arg name="crtcs" direction="in" type="a(uiiiuaua{sv})" />
       <arg name="outputs" direction="in" type="a(ua{sv})" />
     </method>
+
+    <!--
+        PowerSaveMode:
+
+	Contains the current power saving mode for the screen, and
+	allows changing it.
+
+        Possible values:
+	- 0: on
+	- 1: standby
+	- 2: suspend
+	- 3: off
+	- -1: unknown (unsupported)
+
+        A client should not attempt to change the powersave mode
+	from -1 (unknown) to any other value, and viceversa.
+	Note that the actual effects of the different values
+	depend on the hardware and the kernel driver in use, and
+	it's perfectly possible that all values different than on
+	have the same effect.
+	Also, setting the PowerSaveMode to 3 (off) may or may
+	not have the same effect as disabling all outputs by
+	setting no CRTC on them with ApplyConfiguration(), and
+	may or may not cause a configuration change.
+
+        Also note that this property might become out of date
+	if changed through different means (for example using the
+	XRandR interface directly).
+    -->
+    <property name="PowerSaveMode" type="i" access="readwrite" />
   </interface>
 </node>

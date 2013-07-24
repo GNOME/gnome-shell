@@ -46,6 +46,7 @@
 #ifdef HAVE_WAYLAND
 #include <wayland-server.h>
 #endif
+#include "meta-xrandr-shared.h"
 
 #ifndef HAVE_WAYLAND
 enum wl_output_transform {
