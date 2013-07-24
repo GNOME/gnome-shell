@@ -17,6 +17,8 @@ const DEFAULT_BUTTON_WELL_ICON_SIZE = 24;
 const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1.0;
 const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 0.3;
 
+const MESSAGE_FADE_OUT_ANIMATION_TIME = 0.5;
+
 const AuthPromptMode = {
     UNLOCK_ONLY: 0,
     UNLOCK_OR_LOG_IN: 1
@@ -166,6 +168,9 @@ const AuthPrompt = new Lang.Class({
 
         this._entry.clutter_text.connect('text-changed',
                                          Lang.bind(this, function() {
+                                             if (!this._userVerifier.hasPendingMessages)
+                                                 this._fadeOutMessage();
+
                                              this._updateNextButtonSensitivity(this._entry.text.length > 0);
                                          }));
         this._entry.clutter_text.connect('activate', Lang.bind(this, function() {
@@ -331,8 +336,20 @@ const AuthPrompt = new Lang.Class({
         return text;
     },
 
+    _fadeOutMessage: function() {
+        if (this._message.opacity == 0)
+            return;
+        Tweener.removeTweens(this._message);
+        Tweener.addTween(this._message,
+                         { opacity: 0,
+                           time: MESSAGE_FADE_OUT_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
+    },
+
     setMessage: function(message, styleClass) {
         if (message) {
+            Tweener.removeTweens(this._message);
             this._message.text = message;
             this._message.styleClass = styleClass;
             this._message.opacity = 255;
