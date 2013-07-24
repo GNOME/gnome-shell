@@ -459,9 +459,10 @@ UNIT_TEST (check_mesa_driver_package_parser,
            0, /* no requirements */
            0 /* no failure cases */)
 {
-  const CoglGpuInfoStrings test_strings[] = {
-    { .version_string = "3.1 Mesa 9.2-devel15436ad" },
-    { .version_string = "3.1 (Core Profile) Mesa 9.2.0-devel (git-15436ad)" }
+  /* renderer_string, version_string, vendor_string;*/
+  const CoglGpuInfoStrings test_strings[2] = {
+    { NULL, "3.1 Mesa 9.2-devel15436ad", NULL },
+    { NULL, "3.1 (Core Profile) Mesa 9.2.0-devel (git-15436ad)", NULL }
   };
   int i;
   int version;
