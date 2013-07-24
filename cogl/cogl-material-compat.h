@@ -137,8 +137,9 @@ typedef enum {
  * Return value: a pointer to a new #CoglMaterial
  * Deprecated: 1.16: Use cogl_pipeline_new() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_new)
 CoglMaterial *
-cogl_material_new (void) COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_new);
+cogl_material_new (void);
 
 /**
  * cogl_material_copy:
@@ -158,9 +159,9 @@ cogl_material_new (void) COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_new);
  * Since: 1.2
  * Deprecated: 1.16: Use cogl_pipeline_copy() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_copy)
 CoglMaterial *
-cogl_material_copy (CoglMaterial *source)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_copy);
+cogl_material_copy (CoglMaterial *source);
 
 /**
  * cogl_material_ref:
@@ -174,8 +175,9 @@ cogl_material_copy (CoglMaterial *source)
  *
  * Deprecated: 1.2: Use cogl_object_ref() instead
  */
+COGL_DEPRECATED
 CoglHandle
-cogl_material_ref (CoglHandle material) COGL_DEPRECATED;
+cogl_material_ref (CoglHandle material);
 
 /**
  * cogl_material_unref:
@@ -187,8 +189,9 @@ cogl_material_ref (CoglHandle material) COGL_DEPRECATED;
  *
  * Deprecated: 1.2: Use cogl_object_unref() instead
  */
+COGL_DEPRECATED
 void
-cogl_material_unref (CoglHandle material) COGL_DEPRECATED;
+cogl_material_unref (CoglHandle material);
 
 /**
  * cogl_is_material:
@@ -200,9 +203,9 @@ cogl_material_unref (CoglHandle material) COGL_DEPRECATED;
  *   %FALSE otherwise
  * Deprecated: 1.16: Use cogl_is_pipeline() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_is_pipeline)
 CoglBool
-cogl_is_material (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_is_pipeline);
+cogl_is_material (CoglHandle handle);
 
 /**
  * cogl_material_set_color:
@@ -221,10 +224,10 @@ cogl_is_material (CoglHandle handle)
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pipeline_set_color() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_color)
 void
 cogl_material_set_color (CoglMaterial    *material,
-                         const CoglColor *color)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_color);
+                         const CoglColor *color);
 
 /**
  * cogl_material_set_color4ub:
@@ -241,13 +244,13 @@ cogl_material_set_color (CoglMaterial    *material,
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pipeline_set_color4ub() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_color4ub)
 void
 cogl_material_set_color4ub (CoglMaterial *material,
 			    uint8_t red,
                             uint8_t green,
                             uint8_t blue,
-                            uint8_t alpha)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_color4ub);
+                            uint8_t alpha);
 
 /**
  * cogl_material_set_color4f:
@@ -264,13 +267,13 @@ cogl_material_set_color4ub (CoglMaterial *material,
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pipeline_set_color4f() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_color4f)
 void
 cogl_material_set_color4f (CoglMaterial *material,
                            float         red,
                            float         green,
                            float         blue,
-                           float         alpha)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_color4f);
+                           float         alpha);
 
 /**
  * cogl_material_get_color:
@@ -282,10 +285,10 @@ cogl_material_set_color4f (CoglMaterial *material,
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pipeline_get_color() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_color)
 void
 cogl_material_get_color (CoglMaterial *material,
-                         CoglColor    *color)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_color);
+                         CoglColor    *color);
 
 /**
  * cogl_material_set_ambient:
@@ -304,10 +307,10 @@ cogl_material_get_color (CoglMaterial *material,
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglSnippet shader api for lighting
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_material_set_ambient (CoglMaterial    *material,
-			   const CoglColor *ambient)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+			   const CoglColor *ambient);
 
 /**
  * cogl_material_get_ambient:
@@ -319,10 +322,10 @@ cogl_material_set_ambient (CoglMaterial    *material,
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglSnippet shader api for lighting
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_material_get_ambient (CoglMaterial *material,
-                           CoglColor    *ambient)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                           CoglColor    *ambient);
 
 /**
  * cogl_material_set_diffuse:
@@ -338,10 +341,10 @@ cogl_material_get_ambient (CoglMaterial *material,
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglSnippet shader api for lighting
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_material_set_diffuse (CoglMaterial    *material,
-			   const CoglColor *diffuse)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+			   const CoglColor *diffuse);
 
 /**
  * cogl_material_get_diffuse:
@@ -353,10 +356,10 @@ cogl_material_set_diffuse (CoglMaterial    *material,
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglSnippet shader api for lighting
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_material_get_diffuse (CoglMaterial *material,
-                           CoglColor    *diffuse)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                           CoglColor    *diffuse);
 
 /**
  * cogl_material_set_ambient_and_diffuse:
@@ -373,10 +376,10 @@ cogl_material_get_diffuse (CoglMaterial *material,
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglSnippet shader api for lighting
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_material_set_ambient_and_diffuse (CoglMaterial    *material,
-				       const CoglColor *color)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+				       const CoglColor *color);
 
 /**
  * cogl_material_set_specular:
@@ -392,10 +395,10 @@ cogl_material_set_ambient_and_diffuse (CoglMaterial    *material,
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglSnippet shader api for lighting
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_material_set_specular (CoglMaterial    *material,
-			    const CoglColor *specular)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+			    const CoglColor *specular);
 
 /**
  * cogl_material_get_specular:
@@ -407,10 +410,10 @@ cogl_material_set_specular (CoglMaterial    *material,
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglSnippet shader api for lighting
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_material_get_specular (CoglMaterial *material,
-                            CoglColor    *specular)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                            CoglColor    *specular);
 
 /**
  * cogl_material_set_shininess:
@@ -427,10 +430,10 @@ cogl_material_get_specular (CoglMaterial *material,
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglSnippet shader api for lighting
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_material_set_shininess (CoglMaterial *material,
-			     float         shininess)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+			     float         shininess);
 
 /**
  * cogl_material_get_shininess:
@@ -443,9 +446,9 @@ cogl_material_set_shininess (CoglMaterial *material,
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglSnippet shader api for lighting
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 float
-cogl_material_get_shininess (CoglMaterial *material)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_material_get_shininess (CoglMaterial *material);
 
 /**
  * cogl_material_set_emission:
@@ -461,10 +464,10 @@ cogl_material_get_shininess (CoglMaterial *material)
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglSnippet shader api for lighting
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_material_set_emission (CoglMaterial    *material,
-			    const CoglColor *emission)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+			    const CoglColor *emission);
 
 /**
  * cogl_material_get_emission:
@@ -476,10 +479,10 @@ cogl_material_set_emission (CoglMaterial    *material,
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglSnippet shader api for lighting
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_material_get_emission (CoglMaterial *material,
-                            CoglColor    *emission)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                            CoglColor    *emission);
 
 /**
  * CoglMaterialAlphaFunc:
@@ -532,11 +535,11 @@ typedef enum {
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pipeline_set_alpha_test_function() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_alpha_test_function)
 void
 cogl_material_set_alpha_test_function (CoglMaterial         *material,
 				       CoglMaterialAlphaFunc alpha_func,
-				       float                 alpha_reference)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_alpha_test_function);
+				       float                 alpha_reference);
 
 /**
  * cogl_material_set_blend:
@@ -623,11 +626,11 @@ cogl_material_set_alpha_test_function (CoglMaterial         *material,
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pipeline_set_blend() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_blend)
 CoglBool
 cogl_material_set_blend (CoglMaterial *material,
                          const char   *blend_string,
-                         CoglError   **error)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_blend);
+                         CoglError   **error);
 
 /**
  * cogl_material_set_blend_constant:
@@ -640,10 +643,10 @@ cogl_material_set_blend (CoglMaterial *material,
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pipeline_set_blend_constant() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_blend_constant)
 void
 cogl_material_set_blend_constant (CoglMaterial *material,
-                                  const CoglColor *constant_color)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_blend_constant);
+                                  const CoglColor *constant_color);
 
 /**
  * cogl_material_set_point_size:
@@ -661,10 +664,10 @@ cogl_material_set_blend_constant (CoglMaterial *material,
  * Since: 1.4
  * Deprecated: 1.16: Use cogl_pipeline_set_point_size() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_point_size)
 void
 cogl_material_set_point_size (CoglMaterial *material,
-                              float         point_size)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_point_size);
+                              float         point_size);
 
 /**
  * cogl_material_get_point_size:
@@ -678,9 +681,9 @@ cogl_material_set_point_size (CoglMaterial *material,
  * Since: 1.4
  * Deprecated: 1.16: Use cogl_pipeline_get_point_size() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_point_size)
 float
-cogl_material_get_point_size (CoglMaterial *material)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_point_size);
+cogl_material_get_point_size (CoglMaterial *material);
 
 /**
  * cogl_material_get_user_program:
@@ -695,9 +698,9 @@ cogl_material_get_point_size (CoglMaterial *material)
  * Since: 1.4
  * Deprecated: 1.16: Use #CoglSnippet api instead instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 CoglHandle
-cogl_material_get_user_program (CoglMaterial *material)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_material_get_user_program (CoglMaterial *material);
 
 /**
  * cogl_material_set_user_program:
@@ -746,10 +749,10 @@ cogl_material_get_user_program (CoglMaterial *material)
  * Since: 1.4
  * Deprecated: 1.16: Use #CoglSnippet api instead instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_material_set_user_program (CoglMaterial *material,
-                                CoglHandle program)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                                CoglHandle program);
 
 /**
  * cogl_material_set_layer:
@@ -771,11 +774,11 @@ cogl_material_set_user_program (CoglMaterial *material,
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pipeline_set_layer() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer)
 void
 cogl_material_set_layer (CoglMaterial *material,
 			 int           layer_index,
-			 CoglHandle    texture)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer);
+			 CoglHandle    texture);
 
 /**
  * cogl_material_remove_layer:
@@ -785,10 +788,10 @@ cogl_material_set_layer (CoglMaterial *material,
  * This function removes a layer from your material
  * Deprecated: 1.16: Use cogl_pipeline_remove_layer() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_remove_layer)
 void
 cogl_material_remove_layer (CoglMaterial *material,
-			    int           layer_index)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_remove_layer);
+			    int           layer_index);
 
 
 /**
@@ -884,12 +887,12 @@ cogl_material_remove_layer (CoglMaterial *material,
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pipeline_set_layer_combine() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_combine)
 CoglBool
 cogl_material_set_layer_combine (CoglMaterial *material,
 				 int           layer_index,
 				 const char   *blend_string,
-                                 CoglError   **error)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_combine);
+                                 CoglError   **error);
 
 /**
  * cogl_material_set_layer_combine_constant:
@@ -905,11 +908,11 @@ cogl_material_set_layer_combine (CoglMaterial *material,
  * Deprecated: 1.16: Use cogl_pipeline_set_layer_combine_constant()
  * instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_combine_constant)
 void
 cogl_material_set_layer_combine_constant (CoglMaterial    *material,
                                           int              layer_index,
-                                          const CoglColor *constant)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_combine_constant);
+                                          const CoglColor *constant);
 
 /**
  * cogl_material_set_layer_matrix:
@@ -921,11 +924,11 @@ cogl_material_set_layer_combine_constant (CoglMaterial    *material,
  * and rotate a single layer of a material used to fill your geometry.
  * Deprecated: 1.16: Use cogl_pipeline_set_layer_matrix() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_matrix)
 void
 cogl_material_set_layer_matrix (CoglMaterial     *material,
 				int               layer_index,
-				const CoglMatrix *matrix)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_matrix);
+				const CoglMatrix *matrix);
 
 /**
  * cogl_material_get_layers:
@@ -949,9 +952,9 @@ cogl_material_set_layer_matrix (CoglMaterial     *material,
  *    should not be modified or freed
  *    Deprecated: 1.16: Use cogl_pipeline_get_layers() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_layers)
 const GList *
-cogl_material_get_layers (CoglMaterial *material)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_layers);
+cogl_material_get_layers (CoglMaterial *material);
 
 /**
  * cogl_material_get_n_layers:
@@ -964,9 +967,9 @@ cogl_material_get_layers (CoglMaterial *material)
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pipeline_get_n_layers() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_n_layers)
 int
-cogl_material_get_n_layers (CoglMaterial *material)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_n_layers);
+cogl_material_get_n_layers (CoglMaterial *material);
 
 /**
  * CoglMaterialLayerType:
@@ -997,9 +1000,9 @@ typedef enum {
  * Return value: the type of the layer
  * Deprecated: 1.16: No replacement
  */
+COGL_DEPRECATED_IN_1_16
 CoglMaterialLayerType
-cogl_material_layer_get_type (CoglMaterialLayer *layer)
-     COGL_DEPRECATED_IN_1_16;
+cogl_material_layer_get_type (CoglMaterialLayer *layer);
 
 /**
  * cogl_material_layer_get_texture:
@@ -1016,9 +1019,9 @@ cogl_material_layer_get_type (CoglMaterialLayer *layer)
  * Return value: (transfer none): a #CoglHandle for the texture inside the layer
  * Deprecated: 1.16: No replacement
  */
+COGL_DEPRECATED_IN_1_16
 CoglHandle
-cogl_material_layer_get_texture (CoglMaterialLayer *layer)
-     COGL_DEPRECATED_IN_1_16;
+cogl_material_layer_get_texture (CoglMaterialLayer *layer);
 
 /**
  * cogl_material_layer_get_min_filter:
@@ -1029,9 +1032,9 @@ cogl_material_layer_get_texture (CoglMaterialLayer *layer)
  * Return value: the current downscaling filter
  * Deprecated: 1.16: No replacement
  */
+COGL_DEPRECATED_IN_1_16
 CoglMaterialFilter
-cogl_material_layer_get_min_filter (CoglMaterialLayer *layer)
-     COGL_DEPRECATED_IN_1_16;
+cogl_material_layer_get_min_filter (CoglMaterialLayer *layer);
 
 /**
  * cogl_material_layer_get_mag_filter:
@@ -1042,9 +1045,9 @@ cogl_material_layer_get_min_filter (CoglMaterialLayer *layer)
  * Return value: the current downscaling filter
  * Deprecated: 1.16: No replacement
  */
+COGL_DEPRECATED_IN_1_16
 CoglMaterialFilter
-cogl_material_layer_get_mag_filter (CoglMaterialLayer *layer)
-     COGL_DEPRECATED_IN_1_16;
+cogl_material_layer_get_mag_filter (CoglMaterialLayer *layer);
 
 /**
  * cogl_material_set_layer_filters:
@@ -1057,12 +1060,12 @@ cogl_material_layer_get_mag_filter (CoglMaterialLayer *layer)
  * drawn at other scales than 100%.
  * Deprecated: 1.16: Use cogl_pipeline_set_layer_filters() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_filters)
 void
 cogl_material_set_layer_filters (CoglMaterial      *material,
                                  int                layer_index,
                                  CoglMaterialFilter min_filter,
-                                 CoglMaterialFilter mag_filter)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_filters);
+                                 CoglMaterialFilter mag_filter);
 
 /**
  * cogl_material_set_layer_point_sprite_coords_enabled:
@@ -1087,12 +1090,12 @@ cogl_material_set_layer_filters (CoglMaterial      *material,
  * Deprecated: 1.16: Use cogl_pipeline_set_layer_point_sprite_coords_enabled()
  *                  instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_point_sprite_coords_enabled)
 CoglBool
 cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
                                                      int           layer_index,
                                                      CoglBool      enable,
-                                                     CoglError   **error)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_point_sprite_coords_enabled);
+                                                     CoglError   **error);
 
 /**
  * cogl_material_get_layer_point_sprite_coords_enabled:
@@ -1109,10 +1112,10 @@ cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
  * Deprecated: 1.16: Use cogl_pipeline_get_layer_point_sprite_coords_enabled()
  *                  instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_layer_point_sprite_coords_enabled)
 CoglBool
 cogl_material_get_layer_point_sprite_coords_enabled (CoglMaterial *material,
-                                                     int           layer_index)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_layer_point_sprite_coords_enabled);
+                                                     int           layer_index);
 
 /**
  * cogl_material_get_layer_wrap_mode_s:
@@ -1128,10 +1131,10 @@ cogl_material_get_layer_point_sprite_coords_enabled (CoglMaterial *material,
  * Since: 1.6
  * Deprecated: 1.16: Use cogl_pipeline_get_layer_wrap_mode_s() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_layer_wrap_mode_s)
 CoglMaterialWrapMode
 cogl_material_get_layer_wrap_mode_s (CoglMaterial *material,
-                                     int           layer_index)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_layer_wrap_mode_s);
+                                     int           layer_index);
 
 /**
  * cogl_material_set_layer_wrap_mode_s:
@@ -1144,11 +1147,11 @@ cogl_material_get_layer_wrap_mode_s (CoglMaterial *material,
  * Since: 1.4
  * Deprecated: 1.16: Use cogl_pipeline_set_layer_wrap_mode_s() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_wrap_mode_s)
 void
 cogl_material_set_layer_wrap_mode_s (CoglMaterial        *material,
                                      int                  layer_index,
-                                     CoglMaterialWrapMode mode)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_wrap_mode_s);
+                                     CoglMaterialWrapMode mode);
 
 /**
  * cogl_material_get_layer_wrap_mode_t:
@@ -1164,10 +1167,10 @@ cogl_material_set_layer_wrap_mode_s (CoglMaterial        *material,
  * Since: 1.6
  * Deprecated: 1.16: Use cogl_pipeline_get_layer_wrap_mode_t() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_layer_wrap_mode_t)
 CoglMaterialWrapMode
 cogl_material_get_layer_wrap_mode_t (CoglMaterial *material,
-                                     int           layer_index)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_layer_wrap_mode_t);
+                                     int           layer_index);
 
 
 /**
@@ -1181,11 +1184,11 @@ cogl_material_get_layer_wrap_mode_t (CoglMaterial *material,
  * Since: 1.4
  * Deprecated: 1.16: Use cogl_pipeline_set_layer_wrap_mode_t() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_wrap_mode_t)
 void
 cogl_material_set_layer_wrap_mode_t (CoglMaterial        *material,
                                      int                  layer_index,
-                                     CoglMaterialWrapMode mode)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_wrap_mode_t);
+                                     CoglMaterialWrapMode mode);
 
 /**
  * cogl_material_get_layer_wrap_mode_p:
@@ -1201,10 +1204,10 @@ cogl_material_set_layer_wrap_mode_t (CoglMaterial        *material,
  * Since: 1.6
  * Deprecated: 1.16: Use cogl_pipeline_get_layer_wrap_mode_p() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_layer_wrap_mode_p)
 CoglMaterialWrapMode
 cogl_material_get_layer_wrap_mode_p (CoglMaterial *material,
-                                     int           layer_index)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_layer_wrap_mode_p);
+                                     int           layer_index);
 
 /**
  * cogl_material_set_layer_wrap_mode_p:
@@ -1218,11 +1221,11 @@ cogl_material_get_layer_wrap_mode_p (CoglMaterial *material,
  * Since: 1.4
  * Deprecated: 1.16: Use cogl_pipeline_set_layer_wrap_mode_p() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_wrap_mode_p)
 void
 cogl_material_set_layer_wrap_mode_p (CoglMaterial        *material,
                                      int                  layer_index,
-                                     CoglMaterialWrapMode mode)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_wrap_mode_p);
+                                     CoglMaterialWrapMode mode);
 
 /**
  * cogl_material_set_layer_wrap_mode:
@@ -1239,11 +1242,11 @@ cogl_material_set_layer_wrap_mode_p (CoglMaterial        *material,
  * Since: 1.4
  * Deprecated: 1.16: Use cogl_pipeline_set_layer_wrap_mode() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_wrap_mode)
 void
 cogl_material_set_layer_wrap_mode (CoglMaterial        *material,
                                    int                  layer_index,
-                                   CoglMaterialWrapMode mode)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_layer_wrap_mode);
+                                   CoglMaterialWrapMode mode);
 
 /**
  * cogl_material_layer_get_wrap_mode_s:
@@ -1256,9 +1259,9 @@ cogl_material_set_layer_wrap_mode (CoglMaterial        *material,
  * Since: 1.4
  * Deprecated: 1.16: Use cogl_pipeline_layer_get_wrap_mode_s() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_layer_get_wrap_mode_s)
 CoglMaterialWrapMode
-cogl_material_layer_get_wrap_mode_s (CoglMaterialLayer *layer)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_layer_get_wrap_mode_s);
+cogl_material_layer_get_wrap_mode_s (CoglMaterialLayer *layer);
 
 /**
  * cogl_material_layer_get_wrap_mode_t:
@@ -1271,9 +1274,10 @@ cogl_material_layer_get_wrap_mode_s (CoglMaterialLayer *layer)
  * Since: 1.4
  * Deprecated: 1.16: Use cogl_pipeline_layer_get_wrap_mode_t() instead
  */
+
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_layer_get_wrap_mode_t)
 CoglMaterialWrapMode
-cogl_material_layer_get_wrap_mode_t (CoglMaterialLayer *layer)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_layer_get_wrap_mode_t);
+cogl_material_layer_get_wrap_mode_t (CoglMaterialLayer *layer);
 
 /**
  * cogl_material_layer_get_wrap_mode_p:
@@ -1287,9 +1291,9 @@ cogl_material_layer_get_wrap_mode_t (CoglMaterialLayer *layer)
  * Since: 1.4
  * Deprecated: 1.16: Use cogl_pipeline_layer_get_wrap_mode_p() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_layer_get_wrap_mode_p)
 CoglMaterialWrapMode
-cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_layer_get_wrap_mode_p);
+cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer);
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
@@ -1314,11 +1318,11 @@ cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer)
  * Stability: Unstable
  * Deprecated: 1.16: Use cogl_pipeline_set_depth_state() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_depth_state)
 CoglBool
 cogl_material_set_depth_state (CoglMaterial *material,
                                const CoglDepthState *state,
-                               CoglError **error)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_depth_state);
+                               CoglError **error);
 
 /**
  * cogl_material_get_depth_state:
@@ -1332,10 +1336,10 @@ cogl_material_set_depth_state (CoglMaterial *material,
  * Stability: Unstable
  * Deprecated: 1.16: Use cogl_pipeline_get_depth_state() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_depth_state)
 void
 cogl_material_get_depth_state (CoglMaterial *material,
-                               CoglDepthState *state_out)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_depth_state);
+                               CoglDepthState *state_out);
 
 /**
  * CoglMaterialLayerCallback:
@@ -1367,11 +1371,11 @@ typedef CoglBool (*CoglMaterialLayerCallback) (CoglMaterial *material,
  * Stability: Unstable
  * Deprecated: 1.16: No replacement
  */
+COGL_DEPRECATED_IN_1_16
 void
 cogl_material_foreach_layer (CoglMaterial *material,
                              CoglMaterialLayerCallback callback,
-                             void *user_data)
-     COGL_DEPRECATED_IN_1_16;
+                             void *user_data);
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 

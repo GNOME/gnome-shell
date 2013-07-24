@@ -224,13 +224,13 @@ GType cogl_pango_renderer_get_type (void) G_GNUC_CONST;
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pango_show_layout() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pango_show_layout)
 void
 cogl_pango_render_layout_subpixel (PangoLayout *layout,
                                    int x,
                                    int y,
                                    const CoglColor *color,
-                                   int flags)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pango_show_layout);
+                                   int flags);
 
 /**
  * cogl_pango_render_layout:
@@ -247,13 +247,13 @@ cogl_pango_render_layout_subpixel (PangoLayout *layout,
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pango_show_layout() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pango_show_layout)
 void
 cogl_pango_render_layout (PangoLayout *layout,
                           int x,
                           int y,
                           const CoglColor *color,
-                          int flags)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pango_show_layout);
+                          int flags);
 
 /**
  * cogl_pango_render_layout_line:
@@ -267,12 +267,12 @@ cogl_pango_render_layout (PangoLayout *layout,
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_pango_show_layout() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pango_show_layout_line)
 void
 cogl_pango_render_layout_line (PangoLayoutLine *line,
                                int x,
                                int y,
-                               const CoglColor *color)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pango_show_layout_line);
+                               const CoglColor *color);
 
 COGL_END_DECLS
 

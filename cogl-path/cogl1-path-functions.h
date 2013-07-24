@@ -435,9 +435,9 @@ cogl_path_copy (CoglPath *path);
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_framebuffer_push_path_clip() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_path_clip)
 void
-cogl_clip_push_from_path_preserve (void)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_path_clip);
+cogl_clip_push_from_path_preserve (void);
 
 /**
  * cogl_clip_push_from_path:
@@ -450,9 +450,9 @@ cogl_clip_push_from_path_preserve (void)
  * Since: 1.0
  * Deprecated: 1.16: Use cogl_framebuffer_push_path_clip() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_path_clip)
 void
-cogl_clip_push_from_path (void)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_path_clip);
+cogl_clip_push_from_path (void);
 
 COGL_END_DECLS
 

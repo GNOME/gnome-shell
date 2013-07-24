@@ -404,6 +404,7 @@ cogl_matrix_orthographic (CoglMatrix *matrix,
  *
  * Deprecated: 1.10: Use cogl_matrix_orthographic()
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_matrix_orthographic)
 void
 cogl_matrix_ortho (CoglMatrix *matrix,
                    float       left,
@@ -411,8 +412,7 @@ cogl_matrix_ortho (CoglMatrix *matrix,
                    float       bottom,
                    float       top,
                    float       near,
-                   float       far)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_matrix_orthographic);
+                   float       far);
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 /**

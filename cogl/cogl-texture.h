@@ -314,8 +314,9 @@ cogl_texture_get_format (CoglTexture *texture);
  *                   also no known need for API either. It was just
  *                   a mistake that it was ever published.
  */
+COGL_DEPRECATED_IN_1_10
 unsigned int
-cogl_texture_get_rowstride (CoglTexture *texture) COGL_DEPRECATED_IN_1_10;
+cogl_texture_get_rowstride (CoglTexture *texture);
 
 /**
  * cogl_texture_get_max_waste:
@@ -566,8 +567,9 @@ cogl_texture_new_from_sub_texture (CoglTexture *full_texture,
  *
  * Return value: the @texture pointer.
  */
+COGL_DEPRECATED_FOR (cogl_object_ref)
 void *
-cogl_texture_ref (void *texture) COGL_DEPRECATED_FOR (cogl_object_ref);
+cogl_texture_ref (void *texture);
 
 /**
  * cogl_texture_unref:
@@ -577,8 +579,9 @@ cogl_texture_ref (void *texture) COGL_DEPRECATED_FOR (cogl_object_ref);
  *
  * Deprecated: 1.2: Use cogl_object_unref() instead
  */
+COGL_DEPRECATED_FOR (cogl_object_unref)
 void
-cogl_texture_unref (void *texture) COGL_DEPRECATED_FOR (cogl_object_unref);
+cogl_texture_unref (void *texture);
 
 /**
  * cogl_texture_allocate:

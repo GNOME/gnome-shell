@@ -130,8 +130,9 @@ cogl_is_offscreen (void *object);
  *
  * Deprecated: 1.2: cogl_object_ref() should be used in new code.
  */
+COGL_DEPRECATED_FOR (cogl_object_ref)
 void *
-cogl_offscreen_ref (void *offscreen) COGL_DEPRECATED_FOR (cogl_object_ref);
+cogl_offscreen_ref (void *offscreen);
 
 /**
  * cogl_offscreen_unref:
@@ -142,8 +143,9 @@ cogl_offscreen_ref (void *offscreen) COGL_DEPRECATED_FOR (cogl_object_ref);
  *
  * Deprecated: 1.2: cogl_object_unref() should be used in new code.
  */
+COGL_DEPRECATED_FOR (cogl_object_unref)
 void
-cogl_offscreen_unref (void *offscreen) COGL_DEPRECATED_FOR (cogl_object_unref);
+cogl_offscreen_unref (void *offscreen);
 
 COGL_END_DECLS
 

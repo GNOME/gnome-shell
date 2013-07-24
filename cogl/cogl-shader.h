@@ -242,9 +242,9 @@ typedef enum {
  * Returns: a new shader handle.
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 CoglHandle
-cogl_create_shader (CoglShaderType shader_type)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_create_shader (CoglShaderType shader_type);
 
 /**
  * cogl_shader_ref:
@@ -255,9 +255,9 @@ cogl_create_shader (CoglShaderType shader_type)
  * Returns: @handle
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 CoglHandle
-cogl_shader_ref (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_shader_ref (CoglHandle handle);
 
 /**
  * cogl_shader_unref:
@@ -268,9 +268,9 @@ cogl_shader_ref (CoglHandle handle)
  *
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
-cogl_shader_unref (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_shader_unref (CoglHandle handle);
 
 /**
  * cogl_is_shader:
@@ -282,9 +282,9 @@ cogl_shader_unref (CoglHandle handle)
  *   %FALSE otherwise
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 CoglBool
-cogl_is_shader (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_is_shader (CoglHandle handle);
 
 /**
  * cogl_shader_source:
@@ -299,10 +299,10 @@ cogl_is_shader (CoglHandle handle)
  * for a description of the recommended format for the shader code.
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_shader_source (CoglHandle  shader,
-                    const char *source)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                    const char *source);
 
 /**
  * cogl_shader_compile:
@@ -314,9 +314,9 @@ cogl_shader_source (CoglHandle  shader,
  * compiled when it is linked.
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
-cogl_shader_compile (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_shader_compile (CoglHandle handle);
 
 /**
  * cogl_shader_get_info_log:
@@ -331,9 +331,9 @@ cogl_shader_compile (CoglHandle handle)
  *   g_free() to free it
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 char *
-cogl_shader_get_info_log (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_shader_get_info_log (CoglHandle handle);
 
 /**
  * cogl_shader_get_type:
@@ -345,9 +345,9 @@ cogl_shader_get_info_log (CoglHandle handle)
  *          or %COGL_SHADER_TYPE_FRAGMENT if the shader is a frament processor
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 CoglShaderType
-cogl_shader_get_type (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_shader_get_type (CoglHandle handle);
 
 /**
  * cogl_shader_is_compiled:
@@ -358,9 +358,9 @@ cogl_shader_get_type (CoglHandle handle)
  * Return value: %TRUE if the shader object has sucessfully be compiled
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 CoglBool
-cogl_shader_is_compiled (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_shader_is_compiled (CoglHandle handle);
 
 /**
  * cogl_create_program:
@@ -371,9 +371,9 @@ cogl_shader_is_compiled (CoglHandle handle)
  * Returns: a new cogl program.
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 CoglHandle
-cogl_create_program (void)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_create_program (void);
 
 /**
  * cogl_program_ref:
@@ -386,9 +386,9 @@ cogl_create_program (void)
  * Returns: @handle
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 CoglHandle
-cogl_program_ref (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_program_ref (CoglHandle handle);
 
 /**
  * cogl_program_unref:
@@ -399,10 +399,9 @@ cogl_program_ref (CoglHandle handle)
  *
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
-cogl_program_unref (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_4_FOR (cogl_object_unref)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_program_unref (CoglHandle handle);
 
 /**
  * cogl_is_program:
@@ -415,9 +414,9 @@ cogl_program_unref (CoglHandle handle)
  *
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 CoglBool
-cogl_is_program (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_is_program (CoglHandle handle);
 
 /**
  * cogl_program_attach_shader:
@@ -431,10 +430,10 @@ cogl_is_program (CoglHandle handle)
  *
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_program_attach_shader (CoglHandle program_handle,
-                            CoglHandle shader_handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                            CoglHandle shader_handle);
 
 /**
  * cogl_program_link:
@@ -446,9 +445,9 @@ cogl_program_attach_shader (CoglHandle program_handle,
  *
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
-cogl_program_link (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_program_link (CoglHandle handle);
 
 /**
  * cogl_program_use:
@@ -465,9 +464,9 @@ cogl_program_link (CoglHandle handle)
  *
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
-cogl_program_use (CoglHandle handle)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+cogl_program_use (CoglHandle handle);
 
 /**
  * cogl_program_get_uniform_location:
@@ -483,10 +482,10 @@ cogl_program_use (CoglHandle handle)
  *   program is in use.
  * Deprecated: 1.16: Use #CoglSnippet api instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 int
 cogl_program_get_uniform_location (CoglHandle  handle,
-                                   const char *uniform_name)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                                   const char *uniform_name);
 
 /**
  * cogl_program_set_uniform_1f:
@@ -501,11 +500,11 @@ cogl_program_get_uniform_location (CoglHandle  handle,
  * Since: 1.4
  * Deprecated: 1.16: Use #CoglSnippet api instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_program_set_uniform_1f (CoglHandle program,
                              int uniform_location,
-                             float value)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                             float value);
 
 /**
  * cogl_program_set_uniform_1i:
@@ -520,11 +519,11 @@ cogl_program_set_uniform_1f (CoglHandle program,
  * Since: 1.4
  * Deprecated: 1.16: Use #CoglSnippet api instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_program_set_uniform_1i (CoglHandle program,
                              int uniform_location,
-                             int value)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                             int value);
 
 /**
  * cogl_program_set_uniform_float:
@@ -543,13 +542,13 @@ cogl_program_set_uniform_1i (CoglHandle program,
  * Since: 1.4
  * Deprecated: 1.16: Use #CoglSnippet api instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_program_set_uniform_float (CoglHandle program,
                                 int uniform_location,
                                 int n_components,
                                 int count,
-                                const float *value)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                                const float *value);
 
 /**
  * cogl_program_set_uniform_int:
@@ -568,13 +567,13 @@ cogl_program_set_uniform_float (CoglHandle program,
  * Since: 1.4
  * Deprecated: 1.16: Use #CoglSnippet api instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_program_set_uniform_int (CoglHandle program,
                               int uniform_location,
                               int n_components,
                               int count,
-                              const int *value)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                              const int *value);
 
 /**
  * cogl_program_set_uniform_matrix:
@@ -594,14 +593,14 @@ cogl_program_set_uniform_int (CoglHandle program,
  * Since: 1.4
  * Deprecated: 1.16: Use #CoglSnippet api instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_program_set_uniform_matrix (CoglHandle program,
                                  int uniform_location,
                                  int dimensions,
                                  int count,
                                  CoglBool transpose,
-                                 const float *value)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                                 const float *value);
 
 /**
  * cogl_program_uniform_1f:
@@ -613,10 +612,10 @@ cogl_program_set_uniform_matrix (CoglHandle program,
  *
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_program_uniform_1f (int   uniform_no,
-                         float value)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                         float value);
 
 /**
  * cogl_program_uniform_1i:
@@ -628,10 +627,10 @@ cogl_program_uniform_1f (int   uniform_no,
  *
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_program_uniform_1i (int uniform_no,
-                         int value)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                         int value);
 
 /**
  * cogl_program_uniform_float:
@@ -645,12 +644,12 @@ cogl_program_uniform_1i (int uniform_no,
  *
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_program_uniform_float (int            uniform_no,
                             int            size,
                             int            count,
-                            const float   *value)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                            const float   *value);
 
 /**
  * cogl_program_uniform_int:
@@ -664,12 +663,12 @@ cogl_program_uniform_float (int            uniform_no,
  *
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_program_uniform_int (int        uniform_no,
                           int        size,
                           int        count,
-                          const int *value)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                          const int *value);
 
 /**
  * cogl_program_uniform_matrix:
@@ -685,13 +684,13 @@ cogl_program_uniform_int (int        uniform_no,
  *
  * Deprecated: 1.16: Use #CoglSnippet api
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void
 cogl_program_uniform_matrix (int          uniform_no,
                              int          size,
                              int          count,
                              CoglBool     transpose,
-                             const float *value)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_);
+                             const float *value);
 
 COGL_END_DECLS
 

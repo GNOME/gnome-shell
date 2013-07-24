@@ -50,8 +50,9 @@ COGL_BEGIN_DECLS
  * Since: 1.0
  * Deprecated: 1.16: Not replaced
  */
+COGL_DEPRECATED_IN_1_16
 GOptionGroup *
-cogl_get_option_group (void) COGL_DEPRECATED_IN_1_16;
+cogl_get_option_group (void);
 
 /* Misc */
 /**
@@ -64,9 +65,9 @@ cogl_get_option_group (void) COGL_DEPRECATED_IN_1_16;
  * Since: 0.8
  * Deprecated: 1.10: Use cogl_foreach_feature() instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_foreach_feature)
 CoglFeatureFlags
-cogl_get_features (void)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_foreach_feature);
+cogl_get_features (void);
 
 /**
  * cogl_features_available:
@@ -80,9 +81,9 @@ cogl_get_features (void)
  * Return value: %TRUE if the features are available, %FALSE otherwise.
  * Deprecated: 1.10: Use cogl_has_feature() instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_has_feature)
 CoglBool
-cogl_features_available (CoglFeatureFlags features)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_has_feature);
+cogl_features_available (CoglFeatureFlags features);
 
 /**
  * cogl_get_proc_address:
@@ -118,9 +119,10 @@ cogl_get_proc_address (const char *name);
  *   CoglBool retval = (strstr (ext, name) != NULL) ? TRUE : FALSE;
  * ]|
  */
+COGL_DEPRECATED
 CoglBool
 cogl_check_extension (const char *name,
-                      const char *ext) COGL_DEPRECATED;
+                      const char *ext);
 
 /**
  * cogl_get_bitmasks:
@@ -136,12 +138,12 @@ cogl_check_extension (const char *name,
  * Deprecated: 1.8: Use cogl_framebuffer_get_red/green/blue/alpha_bits()
  *                  instead
  */
+COGL_DEPRECATED_IN_1_8_FOR (cogl_framebuffer_get_red_OR_green_OR_blue_OR_alpha_bits)
 void
 cogl_get_bitmasks (int *red,
                    int *green,
                    int *blue,
-                   int *alpha)
-    COGL_DEPRECATED_IN_1_8_FOR (cogl_framebuffer_get_red_OR_green_OR_blue_OR_alpha_bits);
+                   int *alpha);
 
 /**
  * cogl_perspective:
@@ -160,12 +162,12 @@ cogl_get_bitmasks (int *red,
  *
  * Deprecated: 1.10: Use cogl_framebuffer_perspective() instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_perspective)
 void
 cogl_perspective (float fovy,
                   float aspect,
                   float z_near,
-                  float z_far)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_perspective);
+                  float z_far);
 
 /**
  * cogl_frustum:
@@ -187,14 +189,14 @@ cogl_perspective (float fovy,
  * Since: 0.8.2
  * Deprecated: 1.10: Use cogl_framebuffer_frustum() instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_frustum)
 void
 cogl_frustum (float left,
               float right,
               float bottom,
               float top,
               float z_near,
-              float z_far)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_frustum);
+              float z_far);
 
 /**
  * cogl_ortho:
@@ -226,14 +228,14 @@ cogl_frustum (float left,
  * Since: 1.0
  * Deprecated: 1.10: Use cogl_framebuffer_orthographic() instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_orthographic)
 void
 cogl_ortho (float left,
             float right,
             float bottom,
             float top,
             float near,
-            float far)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_orthographic);
+            float far);
 
 /**
  * cogl_viewport:
@@ -245,10 +247,10 @@ cogl_ortho (float left,
  * Since: 0.8.2
  * Deprecated: 1.8: Use cogl_framebuffer_set_viewport instead
  */
+COGL_DEPRECATED_IN_1_8_FOR (cogl_framebuffer_set_viewport)
 void
 cogl_viewport (unsigned int width,
-	       unsigned int height)
-     COGL_DEPRECATED_IN_1_8_FOR (cogl_framebuffer_set_viewport);
+	       unsigned int height);
 
 /**
  * cogl_set_viewport:
@@ -262,12 +264,12 @@ cogl_viewport (unsigned int width,
  * Since: 1.2
  * Deprecated: 1.8: Use cogl_framebuffer_set_viewport() instead
  */
+COGL_DEPRECATED_IN_1_8_FOR (cogl_framebuffer_set_viewport)
 void
 cogl_set_viewport (int x,
                    int y,
                    int width,
-                   int height)
-     COGL_DEPRECATED_IN_1_8_FOR (cogl_framebuffer_set_viewport);
+                   int height);
 
 /**
  * cogl_push_matrix:
@@ -277,9 +279,9 @@ cogl_set_viewport (int x,
  *
  * Deprecated: 1.10: Use cogl_framebuffer_push_matrix() instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_push_matrix)
 void
-cogl_push_matrix (void)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_push_matrix);
+cogl_push_matrix (void);
 
 /**
  * cogl_pop_matrix:
@@ -288,9 +290,9 @@ cogl_push_matrix (void)
  *
  * Deprecated: 1.10: Use cogl_framebuffer_pop_matrix() instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_push_matrix)
 void
-cogl_pop_matrix (void)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_push_matrix);
+cogl_pop_matrix (void);
 
 /**
  * cogl_scale:
@@ -303,11 +305,11 @@ cogl_pop_matrix (void)
  *
  * Deprecated: 1.10: Use cogl_framebuffer_pop_matrix() instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_scale)
 void
 cogl_scale (float x,
             float y,
-            float z)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_scale);
+            float z);
 
 /**
  * cogl_translate:
@@ -320,11 +322,11 @@ cogl_scale (float x,
  *
  * Deprecated: 1.10: Use cogl_framebuffer_translate() instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_translate)
 void
 cogl_translate (float x,
                 float y,
-                float z)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_translate);
+                float z);
 
 /**
  * cogl_rotate:
@@ -341,12 +343,12 @@ cogl_translate (float x,
  *
  * Deprecated: 1.10: Use cogl_framebuffer_rotate() instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_rotate)
 void
 cogl_rotate (float angle,
              float x,
              float y,
-             float z)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_rotate);
+             float z);
 
 /**
  * cogl_transform:
@@ -357,9 +359,9 @@ cogl_rotate (float angle,
  * Since: 1.4
  * Deprecated: 1.10: Use cogl_framebuffer_transform() instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_transform)
 void
-cogl_transform (const CoglMatrix *matrix)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_transform);
+cogl_transform (const CoglMatrix *matrix);
 
 /**
  * cogl_get_modelview_matrix:
@@ -370,9 +372,9 @@ cogl_transform (const CoglMatrix *matrix)
  * Deprecated: 1.10: Use cogl_framebuffer_get_modelview_matrix()
  *                   instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_get_modelview_matrix)
 void
-cogl_get_modelview_matrix (CoglMatrix *matrix)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_get_modelview_matrix);
+cogl_get_modelview_matrix (CoglMatrix *matrix);
 
 /**
  * cogl_set_modelview_matrix:
@@ -383,9 +385,9 @@ cogl_get_modelview_matrix (CoglMatrix *matrix)
  * Deprecated: 1.10: Use cogl_framebuffer_set_modelview_matrix()
  *                   instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_set_modelview_matrix)
 void
-cogl_set_modelview_matrix (CoglMatrix *matrix)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_set_modelview_matrix);
+cogl_set_modelview_matrix (CoglMatrix *matrix);
 
 /**
  * cogl_get_projection_matrix:
@@ -396,9 +398,9 @@ cogl_set_modelview_matrix (CoglMatrix *matrix)
  * Deprecated: 1.10: Use cogl_framebuffer_get_projection_matrix()
  *                   instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_get_projection_matrix)
 void
-cogl_get_projection_matrix (CoglMatrix *matrix)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_get_projection_matrix);
+cogl_get_projection_matrix (CoglMatrix *matrix);
 
 /**
  * cogl_set_projection_matrix:
@@ -409,9 +411,9 @@ cogl_get_projection_matrix (CoglMatrix *matrix)
  * Deprecated: 1.10: Use cogl_framebuffer_set_projection_matrix()
  *                   instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_set_projection_matrix)
 void
-cogl_set_projection_matrix (CoglMatrix *matrix)
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_set_projection_matrix);
+cogl_set_projection_matrix (CoglMatrix *matrix);
 
 /**
  * cogl_get_viewport:
@@ -425,9 +427,9 @@ cogl_set_projection_matrix (CoglMatrix *matrix)
  * Deprecated: 1.10: Use cogl_framebuffer_get_viewport4fv()
  *                   instead
  */
+COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_get_viewport4fv)
 void
-cogl_get_viewport (float v[4])
-     COGL_DEPRECATED_IN_1_10_FOR (cogl_framebuffer_get_viewport4fv);
+cogl_get_viewport (float v[4]);
 
 /**
  * cogl_set_depth_test_enabled:
@@ -441,9 +443,9 @@ cogl_get_viewport (float v[4])
  *
  * Deprecated: 1.16: Use cogl_pipeline_set_depth_state() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_depth_state)
 void
-cogl_set_depth_test_enabled (CoglBool setting)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_depth_state);
+cogl_set_depth_test_enabled (CoglBool setting);
 
 /**
  * cogl_get_depth_test_enabled:
@@ -454,9 +456,9 @@ cogl_set_depth_test_enabled (CoglBool setting)
  *
  * Deprecated: 1.16: Use cogl_pipeline_set_depth_state() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_depth_state)
 CoglBool
-cogl_get_depth_test_enabled (void)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_depth_state);
+cogl_get_depth_test_enabled (void);
 
 /**
  * cogl_set_backface_culling_enabled:
@@ -470,9 +472,9 @@ cogl_get_depth_test_enabled (void)
  *
  * Deprecated: 1.16: Use cogl_pipeline_set_cull_face_mode() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_cull_face_mode)
 void
-cogl_set_backface_culling_enabled (CoglBool setting)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_set_cull_face_mode);
+cogl_set_backface_culling_enabled (CoglBool setting);
 
 /**
  * cogl_get_backface_culling_enabled:
@@ -484,9 +486,9 @@ cogl_set_backface_culling_enabled (CoglBool setting)
  *
  * Deprecated: 1.16: Use cogl_pipeline_get_cull_face_mode() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_cull_face_mode)
 CoglBool
-cogl_get_backface_culling_enabled (void)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_get_cull_face_mode);
+cogl_get_backface_culling_enabled (void);
 
 /**
  * cogl_set_fog:
@@ -515,13 +517,13 @@ cogl_get_backface_culling_enabled (void)
  *
  * Deprecated: 1.16: Use #CoglSnippet shader api for fog
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_API)
 void
 cogl_set_fog (const CoglColor *fog_color,
               CoglFogMode mode,
               float density,
               float z_near,
-              float z_far)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_API);
+              float z_far);
 
 /**
  * cogl_disable_fog:
@@ -531,9 +533,9 @@ cogl_set_fog (const CoglColor *fog_color,
  *
  * Deprecated: 1.16: Use #CoglSnippet shader api for fog
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_API)
 void
-cogl_disable_fog (void)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_API);
+cogl_disable_fog (void);
 
 /**
  * cogl_clear:
@@ -546,10 +548,10 @@ cogl_disable_fog (void)
  *
  * Deprecated: 1.16: Use cogl_framebuffer_clear() api instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_clear)
 void
 cogl_clear (const CoglColor *color,
-            unsigned long buffers)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_clear);
+            unsigned long buffers);
 
 /**
  * cogl_set_source:
@@ -565,8 +567,9 @@ cogl_clear (const CoglColor *color,
  *                   #CoglPipeline argument so this stack of
  *                   #CoglMaterial<!-- -->s shouldn't be used.
  */
+COGL_DEPRECATED_IN_1_16
 void
-cogl_set_source (void *material) COGL_DEPRECATED_IN_1_16;
+cogl_set_source (void *material);
 
 /**
  * cogl_get_source:
@@ -587,8 +590,9 @@ cogl_set_source (void *material) COGL_DEPRECATED_IN_1_16;
  *                   #CoglPipeline argument so this stack of
  *                   #CoglMaterial<!-- -->s shouldn't be used.
  */
+COGL_DEPRECATED_IN_1_16
 void *
-cogl_get_source (void) COGL_DEPRECATED_IN_1_16;
+cogl_get_source (void);
 
 /**
  * cogl_push_source:
@@ -603,8 +607,9 @@ cogl_get_source (void) COGL_DEPRECATED_IN_1_16;
  *                   #CoglPipeline argument so this stack of
  *                   #CoglMaterial<!-- -->s shouldn't be used.
  */
+COGL_DEPRECATED_IN_1_16
 void
-cogl_push_source (void *material) COGL_DEPRECATED_IN_1_16;
+cogl_push_source (void *material);
 
 /**
  * cogl_pop_source:
@@ -618,8 +623,9 @@ cogl_push_source (void *material) COGL_DEPRECATED_IN_1_16;
  *                   #CoglPipeline argument so this stack of
  *                   #CoglMaterial<!-- -->s shouldn't be used.
  */
+COGL_DEPRECATED_IN_1_16
 void
-cogl_pop_source (void) COGL_DEPRECATED_IN_1_16;
+cogl_pop_source (void);
 
 /**
  * cogl_set_source_color:
@@ -641,8 +647,9 @@ cogl_pop_source (void) COGL_DEPRECATED_IN_1_16;
  *                   #CoglPipeline argument so this stack of
  *                   #CoglMaterial<!-- -->s shouldn't be used.
  */
+COGL_DEPRECATED_IN_1_16
 void
-cogl_set_source_color (const CoglColor *color) COGL_DEPRECATED_IN_1_16;
+cogl_set_source_color (const CoglColor *color);
 
 /**
  * cogl_set_source_color4ub:
@@ -663,11 +670,12 @@ cogl_set_source_color (const CoglColor *color) COGL_DEPRECATED_IN_1_16;
  *                   #CoglPipeline argument so this stack of
  *                   #CoglMaterial<!-- -->s shouldn't be used.
  */
+COGL_DEPRECATED_IN_1_16
 void
 cogl_set_source_color4ub (uint8_t red,
                           uint8_t green,
                           uint8_t blue,
-                          uint8_t alpha) COGL_DEPRECATED_IN_1_16;
+                          uint8_t alpha);
 
 /**
  * cogl_set_source_color4f:
@@ -689,11 +697,12 @@ cogl_set_source_color4ub (uint8_t red,
  *                   #CoglPipeline argument so this stack of
  *                   #CoglMaterial<!-- -->s shouldn't be used.
  */
+COGL_DEPRECATED_IN_1_16
 void
 cogl_set_source_color4f (float red,
                          float green,
                          float blue,
-                         float alpha) COGL_DEPRECATED_IN_1_16;
+                         float alpha);
 
 /**
  * cogl_set_source_texture:
@@ -718,8 +727,9 @@ cogl_set_source_color4f (float red,
  *                   #CoglPipeline argument so this stack of
  *                   #CoglMaterial<!-- -->s shouldn't be used.
  */
+COGL_DEPRECATED_IN_1_16
 void
-cogl_set_source_texture (CoglTexture *texture) COGL_DEPRECATED_IN_1_16;
+cogl_set_source_texture (CoglTexture *texture);
 
 
 /**
@@ -749,12 +759,12 @@ cogl_set_source_texture (CoglTexture *texture) COGL_DEPRECATED_IN_1_16;
  *
  * Deprecated: 1.16: Use cogl_framebuffer_push_scissor_clip() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_scissor_clip)
 void
 cogl_clip_push_window_rect (float x_offset,
                             float y_offset,
                             float width,
-                            float height)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_scissor_clip);
+                            float height);
 
 /**
  * cogl_clip_push_window_rectangle:
@@ -775,12 +785,12 @@ cogl_clip_push_window_rect (float x_offset,
  * Since: 1.2
  * Deprecated: 1.16: Use cogl_framebuffer_push_scissor_clip() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_scissor_clip)
 void
 cogl_clip_push_window_rectangle (int x_offset,
                                  int y_offset,
                                  int width,
-                                 int height)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_scissor_clip);
+                                 int height);
 
 /**
  * cogl_clip_push:
@@ -804,12 +814,12 @@ cogl_clip_push_window_rectangle (int x_offset,
  *   extending up, it's awkward to use. Please use
  *   cogl_framebuffer_push_rectangle_clip()
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_rectangle_clip)
 void
 cogl_clip_push (float x_offset,
                 float y_offset,
                 float width,
-                float height)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_rectangle_clip);
+                float height);
 
 /**
  * cogl_clip_push_rectangle:
@@ -831,12 +841,12 @@ cogl_clip_push (float x_offset,
  * Deprecated: 1.16: Use cogl_framebuffer_push_rectangle_clip()
  *                   instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_rectangle_clip)
 void
 cogl_clip_push_rectangle (float x0,
                           float y0,
                           float x1,
-                          float y1)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_rectangle_clip);
+                          float y1);
 
 /**
  * cogl_clip_push_primitive:
@@ -870,13 +880,13 @@ cogl_clip_push_rectangle (float x0,
  * Deprecated: 1.16: Use cogl_framebuffer_push_primitive_clip()
  *                   instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_primitive_clip)
 void
 cogl_clip_push_primitive (CoglPrimitive *primitive,
                           float bounds_x1,
                           float bounds_y1,
                           float bounds_x2,
-                          float bounds_y2)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_primitive_clip);
+                          float bounds_y2);
 
 /**
  * cogl_clip_pop:
@@ -886,9 +896,9 @@ cogl_clip_push_primitive (CoglPrimitive *primitive,
  *
  * Deprecated: 1.16: Use cogl_framebuffer_pop_clip() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_pop_clip)
 void
-cogl_clip_pop (void)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_pop_clip);
+cogl_clip_pop (void);
 
 /**
  * cogl_clip_ensure:
@@ -902,8 +912,9 @@ cogl_clip_pop (void)
  *
  * Since: 1.0
  */
+COGL_DEPRECATED
 void
-cogl_clip_ensure (void) COGL_DEPRECATED;
+cogl_clip_ensure (void);
 
 /**
  * cogl_clip_stack_save:
@@ -922,8 +933,9 @@ cogl_clip_ensure (void) COGL_DEPRECATED;
  *
  * Since: 0.8.2
  */
+COGL_DEPRECATED
 void
-cogl_clip_stack_save (void) COGL_DEPRECATED;
+cogl_clip_stack_save (void);
 
 /**
  * cogl_clip_stack_restore:
@@ -939,8 +951,9 @@ cogl_clip_stack_save (void) COGL_DEPRECATED;
  *
  * Since: 0.8.2
  */
+COGL_DEPRECATED
 void
-cogl_clip_stack_restore (void) COGL_DEPRECATED;
+cogl_clip_stack_restore (void);
 
 /**
  * cogl_set_framebuffer:
@@ -955,8 +968,9 @@ cogl_clip_stack_restore (void) COGL_DEPRECATED;
  *                   #CoglFramebuffer arguments so this stack of
  *                   framebuffers shouldn't be used anymore.
  */
+COGL_DEPRECATED_IN_1_16
 void
-cogl_set_framebuffer (CoglFramebuffer *buffer) COGL_DEPRECATED_IN_1_16;
+cogl_set_framebuffer (CoglFramebuffer *buffer);
 
 /**
  * cogl_push_framebuffer:
@@ -1039,8 +1053,9 @@ cogl_set_framebuffer (CoglFramebuffer *buffer) COGL_DEPRECATED_IN_1_16;
  *                   #CoglFramebuffer arguments so this stack of
  *                   framebuffers shouldn't be used anymore.
  */
+COGL_DEPRECATED_IN_1_16
 void
-cogl_push_framebuffer (CoglFramebuffer *buffer) COGL_DEPRECATED_IN_1_16;
+cogl_push_framebuffer (CoglFramebuffer *buffer);
 
 /**
  * cogl_pop_framebuffer:
@@ -1053,8 +1068,9 @@ cogl_push_framebuffer (CoglFramebuffer *buffer) COGL_DEPRECATED_IN_1_16;
  *                   #CoglFramebuffer arguments so this stack of
  *                   framebuffers shouldn't be used anymore.
  */
+COGL_DEPRECATED_IN_1_16
 void
-cogl_pop_framebuffer (void) COGL_DEPRECATED_IN_1_16;
+cogl_pop_framebuffer (void);
 
 /**
  * cogl_set_draw_buffer:
@@ -1072,9 +1088,10 @@ cogl_pop_framebuffer (void) COGL_DEPRECATED_IN_1_16;
  *                   #CoglFramebuffer arguments so this stack of
  *                   framebuffers shouldn't be used anymore.
  */
+COGL_DEPRECATED_IN_1_16
 void
 cogl_set_draw_buffer (CoglBufferTarget target,
-                      CoglHandle offscreen) COGL_DEPRECATED_IN_1_16;
+                      CoglHandle offscreen);
 
 /**
  * cogl_push_draw_buffer:
@@ -1085,8 +1102,9 @@ cogl_set_draw_buffer (CoglBufferTarget target,
  *                   #CoglFramebuffer arguments so this stack of
  *                   framebuffers shouldn't be used anymore.
  */
+COGL_DEPRECATED_IN_1_16
 void
-cogl_push_draw_buffer (void) COGL_DEPRECATED_IN_1_16;
+cogl_push_draw_buffer (void);
 
 /**
  * cogl_pop_draw_buffer:
@@ -1097,8 +1115,9 @@ cogl_push_draw_buffer (void) COGL_DEPRECATED_IN_1_16;
  *                   #CoglFramebuffer arguments so this stack of
  *                   framebuffers shouldn't be used anymore.
  */
+COGL_DEPRECATED_IN_1_16
 void
-cogl_pop_draw_buffer (void) COGL_DEPRECATED_IN_1_16;
+cogl_pop_draw_buffer (void);
 
 /**
  * cogl_read_pixels:
@@ -1124,6 +1143,7 @@ cogl_pop_draw_buffer (void) COGL_DEPRECATED_IN_1_16;
  *
  * Deprecated: 1.16: Use cogl_framebuffer_read_pixels() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_read_pixels)
 void
 cogl_read_pixels (int x,
                   int y,
@@ -1131,8 +1151,7 @@ cogl_read_pixels (int x,
                   int height,
                   CoglReadPixelsFlags source,
                   CoglPixelFormat format,
-                  uint8_t *pixels)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_read_pixels);
+                  uint8_t *pixels);
 
 /**
  * cogl_flush:
@@ -1237,8 +1256,9 @@ cogl_flush (void);
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglGLES2Context api instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (CoglGLES2Context_API)
 void
-cogl_begin_gl (void) COGL_DEPRECATED_IN_1_16_FOR (CoglGLES2Context_API);
+cogl_begin_gl (void);
 
 /**
  * cogl_end_gl:
@@ -1249,8 +1269,9 @@ cogl_begin_gl (void) COGL_DEPRECATED_IN_1_16_FOR (CoglGLES2Context_API);
  * Since: 1.0
  * Deprecated: 1.16: Use the #CoglGLES2Context api instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (CoglGLES2Context_API)
 void
-cogl_end_gl (void) COGL_DEPRECATED_IN_1_16_FOR (CoglGLES2Context_API);
+cogl_end_gl (void);
 
 COGL_END_DECLS
 

@@ -49,10 +49,10 @@
  * and we have the following functions annotated in the Cogl headers:
  *
  * |[
- *   void cogl_function_A (void) COGL_DEPRECATED_IN_1_4;
- *   void cogl_function_B (void) COGL_DEPRECATED_IN_1_6;
- *   void cogl_function_C (void) COGL_AVAILABLE_IN_1_8;
- *   void cogl_function_D (void) COGL_AVAILABLE_IN_1_10;
+ *   COGL_DEPRECATED_IN_1_4 void cogl_function_A (void);
+ *   COGL_DEPRECATED_IN_1_6 void cogl_function_B (void);
+ *   COGL_AVAILABLE_IN_1_8 void cogl_function_C (void);
+ *   COGL_AVAILABLE_IN_1_10 void cogl_function_D (void);
  * ]|
  *
  * then any application code using the functions above will get the output:

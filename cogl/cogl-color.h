@@ -113,13 +113,13 @@ cogl_color_init_from_4ub (CoglColor *color,
  * Since: 1.0
  * Deprecated: 1.4: Use cogl_color_init_from_4ub instead.
  */
+COGL_DEPRECATED_IN_1_4_FOR (cogl_color_init_from_4ub)
 void
 cogl_color_set_from_4ub (CoglColor *color,
                          uint8_t red,
                          uint8_t green,
                          uint8_t blue,
-                         uint8_t alpha)
-     COGL_DEPRECATED_IN_1_4_FOR (cogl_color_init_from_4ub);
+                         uint8_t alpha);
 
 /**
  * cogl_color_init_from_4f:
@@ -153,13 +153,13 @@ cogl_color_init_from_4f (CoglColor *color,
  * Since: 1.0
  * Deprecated: 1.4: Use cogl_color_init_from_4f instead.
  */
+COGL_DEPRECATED_IN_1_4_FOR (cogl_color_init_from_4f)
 void
 cogl_color_set_from_4f (CoglColor *color,
                         float red,
                         float green,
                         float blue,
-                        float alpha)
-     COGL_DEPRECATED_IN_1_4_FOR (cogl_color_init_from_4f);
+                        float alpha);
 
 /**
  * cogl_color_init_from_4fv:
