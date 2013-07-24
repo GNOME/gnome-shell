@@ -24,7 +24,9 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_STRINGS_H
 #include <strings.h>
+#endif
 
 #include "cogl-context-private.h"
 #include "cogl-util-gl-private.h"
