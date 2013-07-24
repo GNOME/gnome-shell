@@ -13,14 +13,15 @@
 # Wolfgang Stöggl <c72578@yahoo.de>, 2012.
 # Tobias Endrigkeit <tobiasendrigkeit@googlemail.com>, 2012, 2013.
 # Christian Kirbach <christian.kirbach@gmail.com>, 2009, 2010, 2011, 2012, 2013.
+# Benjamin Steinwender <b@stbe.at>, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-07-04 13:18+0000\n"
-"PO-Revision-Date: 2013-07-02 06:35+0100\n"
+"POT-Creation-Date: 2013-07-24 18:16+0000\n"
+"PO-Revision-Date: 2013-07-23 19:42+0100\n"
 "Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
@@ -28,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.7\n"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
 msgid "Screenshots"
@@ -38,7 +39,7 @@ msgstr "Bildschirmfotos"
 msgid "Record a screencast"
 msgstr "Eine Bildschirmaufzeichnung erstellen"
 
-#: ../data/50-gnome-shell-system.xml.in.h:1
+#: ../data/50-gnome-shell-system.xml.in.h:1 ../js/ui/status/system.js:48
 msgid "System"
 msgstr "System"
 
@@ -387,41 +388,45 @@ msgstr "Erweiterung"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Wählen Sie oben eine Erweiterung aus, die Sie konfigurieren wollen."
 
-#: ../js/gdm/loginDialog.js:308
+#: ../js/gdm/authPrompt.js:132 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
+#: ../js/ui/status/bluetooth.js:431 ../js/ui/status/system.js:305
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: ../js/gdm/authPrompt.js:154 ../js/gdm/authPrompt.js:206
+msgid "Next"
+msgstr "Nächstes"
+
+#: ../js/gdm/authPrompt.js:202 ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:55
+msgid "Unlock"
+msgstr "Entsperren"
+
+#: ../js/gdm/authPrompt.js:204
+msgctxt "button"
+msgid "Sign In"
+msgstr "Anmelden"
+
+#: ../js/gdm/loginDialog.js:299
 msgid "Choose Session"
 msgstr "Sitzung wählen"
 
-#: ../js/gdm/loginDialog.js:326
+#: ../js/gdm/loginDialog.js:317
 msgid "Session"
 msgstr "Sitzung"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:528
+#: ../js/gdm/loginDialog.js:468
 msgid "Not listed?"
 msgstr "Nicht aufgeführt?"
 
-#: ../js/gdm/loginDialog.js:810 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:449 ../js/ui/unlockDialog.js:95
-#: ../js/ui/userMenu.js:884
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: ../js/gdm/loginDialog.js:833
-msgctxt "button"
-msgid "Sign In"
-msgstr "Anmelden"
-
-#: ../js/gdm/loginDialog.js:833
-msgid "Next"
-msgstr "Nächstes"
-
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:934
+#: ../js/gdm/loginDialog.js:630
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(z.B. Benutzer oder %s)"
@@ -429,12 +434,12 @@ msgstr "(z.B. Benutzer oder %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:938 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:635 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Benutzername:"
 
-#: ../js/gdm/loginDialog.js:1205
+#: ../js/gdm/loginDialog.js:886
 msgid "Login Window"
 msgstr "Anmeldefenster"
 
@@ -443,8 +448,7 @@ msgstr "Anmeldefenster"
 msgid "Power"
 msgstr "Ausschalten"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:651 ../js/ui/userMenu.js:655
-#: ../js/ui/userMenu.js:768
+#: ../js/gdm/powerMenu.js:93
 msgid "Suspend"
 msgstr "Bereitschaft"
 
@@ -452,18 +456,18 @@ msgstr "Bereitschaft"
 msgid "Restart"
 msgstr "Neu starten"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:653
-#: ../js/ui/userMenu.js:655 ../js/ui/userMenu.js:767 ../js/ui/userMenu.js:888
+#: ../js/gdm/powerMenu.js:103 ../js/ui/status/system.js:215
+#: ../js/ui/status/system.js:309
 msgid "Power Off"
 msgstr "Ausschalten"
 
-#: ../js/gdm/util.js:248
+#: ../js/gdm/util.js:249
 msgid "Authentication error"
 msgstr "Legitimationsfehler"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:365
+#: ../js/gdm/util.js:366
 msgid "(or swipe finger)"
 msgstr "(oder benutzen Sie den Fingerabdruckleser)"
 
@@ -482,23 +486,23 @@ msgstr "Befehl konnte nicht verarbeitet werden:"
 msgid "Execution of '%s' failed:"
 msgstr "Ausführung von »%s« ist gescheitert:"
 
-#: ../js/ui/appDisplay.js:397
+#: ../js/ui/appDisplay.js:386
 msgid "Frequent"
 msgstr "Häufig"
 
-#: ../js/ui/appDisplay.js:404
+#: ../js/ui/appDisplay.js:393
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:996
+#: ../js/ui/appDisplay.js:986
 msgid "New Window"
 msgstr "Neues Fenster"
 
-#: ../js/ui/appDisplay.js:999 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:989 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Aus Favoriten entfernen"
 
-#: ../js/ui/appDisplay.js:1000
+#: ../js/ui/appDisplay.js:990
 msgid "Add to Favorites"
 msgstr "Zu Favoriten hinzufügen"
 
@@ -512,7 +516,7 @@ msgstr "%s wurde zu Ihren Favoriten hinzugefügt"
 msgid "%s has been removed from your favorites."
 msgstr "%s wurde aus Ihren Favoriten entfernt"
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:744
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:207
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -1184,7 +1188,6 @@ msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "»%s« von extensions.gnome.org herunterladen und installieren?"
 
 #: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
-#: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -1236,35 +1239,35 @@ msgstr "Quelle zeigen"
 msgid "Web Page"
 msgstr "Webseite"
 
-#: ../js/ui/messageTray.js:1182
+#: ../js/ui/messageTray.js:1241
 msgid "Open"
 msgstr "Öffnen"
 
-#: ../js/ui/messageTray.js:1189
+#: ../js/ui/messageTray.js:1248
 msgid "Remove"
 msgstr "Entfernen"
 
-#: ../js/ui/messageTray.js:1501
+#: ../js/ui/messageTray.js:1564
 msgid "Clear Messages"
 msgstr "Nachrichten leeren"
 
-#: ../js/ui/messageTray.js:1528
+#: ../js/ui/messageTray.js:1591
 msgid "Notification Settings"
 msgstr "Benachrichtigungseinstellungen"
 
-#: ../js/ui/messageTray.js:1711
+#: ../js/ui/messageTray.js:1774
 msgid "No Messages"
 msgstr "Keine Nachrichten"
 
-#: ../js/ui/messageTray.js:1784
+#: ../js/ui/messageTray.js:1846
 msgid "Message Tray"
 msgstr "Benachrichtigungsfeld"
 
-#: ../js/ui/messageTray.js:2811
+#: ../js/ui/messageTray.js:2852
 msgid "System Information"
 msgstr "Systeminformationen"
 
-#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:378
+#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:396
 msgctxt "program"
 msgid "Unknown"
 msgstr "Unbekannt"
@@ -1292,17 +1295,17 @@ msgstr "Übersicht"
 msgid "Type to search…"
 msgstr "Suchbegriff eingeben …"
 
-#: ../js/ui/panel.js:567
+#: ../js/ui/panel.js:568
 msgid "Quit"
 msgstr "Beenden"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:618
+#: ../js/ui/panel.js:619
 msgid "Activities"
 msgstr "Aktivitäten"
 
-#: ../js/ui/panel.js:914
+#: ../js/ui/panel.js:915
 msgid "Top Bar"
 msgstr "Oberes Panel"
 
@@ -1311,7 +1314,7 @@ msgstr "Oberes Panel"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:549
+#: ../js/ui/popupMenu.js:488
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1339,7 +1342,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d neue Benachrichtigung"
 msgstr[1] "%d neue Benachrichtigungen"
 
-#: ../js/ui/screenShield.js:449 ../js/ui/userMenu.js:759
+#: ../js/ui/screenShield.js:449 ../js/ui/status/system.js:211
 msgid "Lock"
 msgstr "Sperren"
 
@@ -1354,11 +1357,11 @@ msgstr "GNOME muss den Bildschirm sperren"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:788 ../js/ui/screenShield.js:1215
+#: ../js/ui/screenShield.js:788 ../js/ui/screenShield.js:1216
 msgid "Unable to lock"
 msgstr "Sperrung fehlgeschlagen"
 
-#: ../js/ui/screenShield.js:789 ../js/ui/screenShield.js:1216
+#: ../js/ui/screenShield.js:789 ../js/ui/screenShield.js:1217
 msgid "Lock was blocked by an application"
 msgstr "Sperrung wurde von einer Anwendung blockiert"
 
@@ -1393,10 +1396,6 @@ msgstr "Passwort"
 #: ../js/ui/shellMountOperation.js:391
 msgid "Remember Password"
 msgstr "An Passwort erinnern"
-
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:108
-msgid "Unlock"
-msgstr "Entsperren"
 
 #: ../js/ui/status/accessibility.js:36
 msgid "Accessibility"
@@ -1434,22 +1433,18 @@ msgstr "Springende Tasten"
 msgid "Mouse Keys"
 msgstr "Tastaturmaus"
 
-#: ../js/ui/status/accessibility.js:72
-msgid "Universal Access Settings"
-msgstr "Einstellungen zur Barrierefreiheit"
-
-#: ../js/ui/status/accessibility.js:129
+#: ../js/ui/status/accessibility.js:126
 msgid "High Contrast"
 msgstr "Hoher Kontrast"
 
-#: ../js/ui/status/accessibility.js:178
+#: ../js/ui/status/accessibility.js:175
 msgid "Large Text"
 msgstr "Große Schrift"
 
 #: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
-#: ../js/ui/status/bluetooth.js:290 ../js/ui/status/bluetooth.js:327
-#: ../js/ui/status/bluetooth.js:355 ../js/ui/status/bluetooth.js:391
-#: ../js/ui/status/bluetooth.js:422 ../js/ui/status/network.js:713
+#: ../js/ui/status/bluetooth.js:272 ../js/ui/status/bluetooth.js:309
+#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:373
+#: ../js/ui/status/bluetooth.js:404 ../js/ui/status/network.js:713
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1465,87 +1460,71 @@ msgstr "Dateien an Gerät senden …"
 msgid "Set Up a New Device…"
 msgstr "Ein neues Gerät einrichten …"
 
-#: ../js/ui/status/bluetooth.js:84
-msgid "Bluetooth Settings"
-msgstr "Bluetooth-Einstellungen"
-
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:105 ../js/ui/status/network.js:140
+#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:140
 msgid "hardware disabled"
 msgstr "Hardware deaktiviert"
 
-#: ../js/ui/status/bluetooth.js:198
+#: ../js/ui/status/bluetooth.js:196
 msgid "Connection"
 msgstr "Verbindung"
 
-#: ../js/ui/status/bluetooth.js:209 ../js/ui/status/network.js:399
+#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:399
 msgid "disconnecting..."
 msgstr "Verbindungsabbau …"
 
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:405
+#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:405
 #: ../js/ui/status/network.js:1298
 msgid "connecting..."
 msgstr "Verbindungsaufbau …"
 
-#: ../js/ui/status/bluetooth.js:240
+#: ../js/ui/status/bluetooth.js:238
 msgid "Send Files…"
 msgstr "Dateien senden …"
 
-#: ../js/ui/status/bluetooth.js:247
-msgid "Keyboard Settings"
-msgstr "Tastatureinstellungen"
-
-#: ../js/ui/status/bluetooth.js:250
-msgid "Mouse Settings"
-msgstr "Maus-Einstellungen"
-
-#: ../js/ui/status/bluetooth.js:255 ../js/ui/status/volume.js:313
-msgid "Sound Settings"
-msgstr "Klangeinstellungen"
-
-#: ../js/ui/status/bluetooth.js:328 ../js/ui/status/bluetooth.js:356
+#: ../js/ui/status/bluetooth.js:310 ../js/ui/status/bluetooth.js:338
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Legitimierungsanfrage von %s"
 
-#: ../js/ui/status/bluetooth.js:334 ../js/ui/status/bluetooth.js:399
-#: ../js/ui/status/bluetooth.js:430
+#: ../js/ui/status/bluetooth.js:316 ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:412
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Gerät »%s« möchte mit diesem Rechner gekoppelt werden"
 
-#: ../js/ui/status/bluetooth.js:336
+#: ../js/ui/status/bluetooth.js:318
 msgid "Allow"
 msgstr "Erlauben"
 
-#: ../js/ui/status/bluetooth.js:337
+#: ../js/ui/status/bluetooth.js:319
 msgid "Deny"
 msgstr "Verweigern"
 
-#: ../js/ui/status/bluetooth.js:362
+#: ../js/ui/status/bluetooth.js:344
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Gerät »%s« bittet um Zugriff auf den Dienst »%s«"
 
-#: ../js/ui/status/bluetooth.js:364
+#: ../js/ui/status/bluetooth.js:346
 msgid "Always grant access"
 msgstr "Immer Zugriff gewähren"
 
-#: ../js/ui/status/bluetooth.js:365
+#: ../js/ui/status/bluetooth.js:347
 msgid "Grant this time only"
 msgstr "Nur dieses Mal gewähren"
 
-#: ../js/ui/status/bluetooth.js:366
+#: ../js/ui/status/bluetooth.js:348
 msgid "Reject"
 msgstr "Abweisen"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:393
+#: ../js/ui/status/bluetooth.js:375
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Koppelungsbestätigung für %s"
 
-#: ../js/ui/status/bluetooth.js:400
+#: ../js/ui/status/bluetooth.js:382
 #, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
@@ -1553,34 +1532,30 @@ msgstr ""
 "Bitte bestätigen Sie, ob die PIN »%06d« mit der des Gerätes übereinstimmt."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:403
+#: ../js/ui/status/bluetooth.js:385
 msgid "Matches"
 msgstr "Stimmt überein"
 
-#: ../js/ui/status/bluetooth.js:404
+#: ../js/ui/status/bluetooth.js:386
 msgid "Does not match"
 msgstr "Stimmt nicht überein"
 
-#: ../js/ui/status/bluetooth.js:423
+#: ../js/ui/status/bluetooth.js:405
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Koppelungsanfrage für %s"
 
-#: ../js/ui/status/bluetooth.js:431
+#: ../js/ui/status/bluetooth.js:413
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Bitte geben Sie die auf dem Gerät angezeigte PIN ein."
 
-#: ../js/ui/status/bluetooth.js:448
+#: ../js/ui/status/bluetooth.js:430
 msgid "OK"
 msgstr "OK"
 
 #: ../js/ui/status/keyboard.js:396
 msgid "Show Keyboard Layout"
 msgstr "Tastaturbelegung zeigen"
-
-#: ../js/ui/status/keyboard.js:401
-msgid "Region & Language Settings"
-msgstr "Einstellungen für Region und Sprache"
 
 #: ../js/ui/status/lockScreenMenu.js:43
 msgid "Volume, network, battery"
@@ -1648,216 +1623,96 @@ msgstr "Mobiles Breitband"
 msgid "Enable networking"
 msgstr "Netzwerk aktivieren"
 
-#: ../js/ui/status/network.js:1522
-msgid "Network Settings"
-msgstr "Netzwerkeinstellungen"
-
-#: ../js/ui/status/network.js:1539
+#: ../js/ui/status/network.js:1537
 msgid "Network Manager"
 msgstr "Netzwerk-Verwaltung"
 
-#: ../js/ui/status/network.js:1623
+#: ../js/ui/status/network.js:1621
 msgid "Connection failed"
 msgstr "Verbindung gescheitert"
 
-#: ../js/ui/status/network.js:1624
+#: ../js/ui/status/network.js:1622
 msgid "Activation of network connection failed"
 msgstr "Aktivierung der Netzwerkverbindung ist gescheitert"
 
-#: ../js/ui/status/network.js:1938
+#: ../js/ui/status/network.js:1936
 msgid "Networking is disabled"
 msgstr "Netzwerk ist deaktiviert"
 
-#: ../js/ui/status/power.js:55
+#: ../js/ui/status/power.js:31 ../js/ui/status/power.js:44
 msgid "Battery"
 msgstr "Akku"
 
-#: ../js/ui/status/power.js:81
+#: ../js/ui/status/power.js:45
 msgid "Power Settings"
 msgstr "Energieeinstellungen"
 
+#: ../js/ui/status/power.js:61
+msgid "Fully Charged"
+msgstr "Vollständig geladen"
+
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:99
+#. state is one of PENDING_CHARGING, PENDING_DISCHARGING
+#: ../js/ui/status/power.js:67 ../js/ui/status/power.js:84
 msgid "Estimating…"
 msgstr "Schätzung …"
 
-#: ../js/ui/status/power.js:106
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: ../js/ui/status/power.js:75
 #, c-format
-msgid "%d hour remaining"
-msgid_plural "%d hours remaining"
-msgstr[0] "%d Stunde verbleibend"
-msgstr[1] "%d Stunden verbleibend"
+msgid "%d\\u2236%d Remaining (%d%%)"
+msgstr "%d\\u2236%d verbleibend (%d%%)"
 
-#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:109
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: ../js/ui/status/power.js:80
 #, c-format
-msgid "%d %s %d %s remaining"
-msgstr "%d %s %d %s verbleibend"
+msgid "%d\\u2236%d Until Full (%d%%)"
+msgstr "%d\\u2236%d bis geladen (%d%%)"
 
-#: ../js/ui/status/power.js:111
-msgid "hour"
-msgid_plural "hours"
-msgstr[0] "Stunde"
-msgstr[1] "Stunden"
-
-#: ../js/ui/status/power.js:111
-msgid "minute"
-msgid_plural "minutes"
-msgstr[0] "Minute"
-msgstr[1] "Minuten"
-
-#: ../js/ui/status/power.js:114
-#, c-format
-msgid "%d minute remaining"
-msgid_plural "%d minutes remaining"
-msgstr[0] "%d Minute verbleibend"
-msgstr[1] "%d Minuten verbleibend"
-
-#: ../js/ui/status/power.js:117 ../js/ui/status/power.js:191
-#, c-format
-msgctxt "percent of battery remaining"
-msgid "%d%%"
-msgstr "%d%%"
-
-#: ../js/ui/status/power.js:201
-msgid "AC Adapter"
-msgstr "Netzteil"
-
-#: ../js/ui/status/power.js:203
-msgid "Laptop Battery"
-msgstr "Laptop-Akku"
-
-#: ../js/ui/status/power.js:205
-msgid "UPS"
-msgstr "Notstromversorgung"
-
-#: ../js/ui/status/power.js:207
-msgid "Monitor"
-msgstr "Bildschirm"
-
-#: ../js/ui/status/power.js:209
-msgid "Mouse"
-msgstr "Maus"
-
-#: ../js/ui/status/power.js:213
-msgid "PDA"
-msgstr "PDA"
-
-#: ../js/ui/status/power.js:215
-msgid "Cell Phone"
-msgstr "Mobiltelefon"
-
-#: ../js/ui/status/power.js:217
-msgid "Media Player"
-msgstr "Medienwiedergabe"
-
-#: ../js/ui/status/power.js:219
-msgid "Tablet"
-msgstr "Tablet"
-
-#: ../js/ui/status/power.js:221
-msgid "Computer"
-msgstr "Rechner"
-
-#: ../js/ui/status/power.js:223
-msgctxt "device"
-msgid "Unknown"
-msgstr "Unbekannt"
-
-#: ../js/ui/status/volume.js:121
-msgid "Volume changed"
-msgstr "Lautstärke geändert"
-
-#. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:246 ../js/ui/status/volume.js:294
-msgid "Volume"
-msgstr "Lautstärke"
-
-#: ../js/ui/status/volume.js:255
-msgid "Microphone"
-msgstr "Mikrofon"
-
-#: ../js/ui/unlockDialog.js:119
-msgid "Log in as another user"
-msgstr "Als anderer Benutzer anmelden"
-
-#: ../js/ui/unlockDialog.js:140
-msgid "Unlock Window"
-msgstr "Fenster entsperren"
-
-#: ../js/ui/userMenu.js:149
-msgid "Available"
-msgstr "Verfügbar"
-
-#: ../js/ui/userMenu.js:152
-msgid "Busy"
-msgstr "Beschäftigt"
-
-#: ../js/ui/userMenu.js:155
-msgid "Invisible"
-msgstr "Unsichtbar"
-
-#: ../js/ui/userMenu.js:158
-msgid "Away"
-msgstr "Abwesend"
-
-#: ../js/ui/userMenu.js:161
-msgid "Idle"
-msgstr "Untätig"
-
-#: ../js/ui/userMenu.js:164
-msgid "Offline"
-msgstr "Abgemeldet"
-
-#: ../js/ui/userMenu.js:736
-msgid "Notifications"
-msgstr "Benachrichtigungen"
-
-#: ../js/ui/userMenu.js:749
+#: ../js/ui/status/system.js:188
 msgid "Switch User"
 msgstr "Benutzer wechseln"
 
-#: ../js/ui/userMenu.js:754
+#: ../js/ui/status/system.js:193
 msgid "Log Out"
 msgstr "Abmelden"
 
-#: ../js/ui/userMenu.js:774
-msgid "Install Updates & Restart"
-msgstr "Aktualisierungen installieren und neustarten"
-
-#: ../js/ui/userMenu.js:792
-msgid "Your chat status will be set to busy"
-msgstr "Ihr Anwesenheitsstatus wird auf »Beschäftigt« gesetzt"
-
-#: ../js/ui/userMenu.js:793
-msgid ""
-"Notifications are now disabled, including chat messages. Your online status "
-"has been adjusted to let others know that you might not see their messages."
-msgstr ""
-"Benachrichtigungen sind nun deaktiviert, einschließlich Sofortnachrichten. "
-"Ihr Anwesenheitsstatus wurde nun dahingehend geändert, dass andere darüber "
-"informiert werden, dass Sie deren Nachrichten nicht sehen könnten."
-
-#: ../js/ui/userMenu.js:834
+#: ../js/ui/status/system.js:255
 msgid "Other users are logged in."
 msgstr "Andere Benutzer sind angemeldet."
 
-#: ../js/ui/userMenu.js:839
+#: ../js/ui/status/system.js:260
 msgid "Shutting down might cause them to lose unsaved work."
 msgstr "Herunterfahren könnte Datenverlust herbeiführen."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/userMenu.js:867
+#: ../js/ui/status/system.js:288
 #, c-format
 msgid "%s (remote)"
 msgstr "%s (Entfernt)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/userMenu.js:870
+#: ../js/ui/status/system.js:291
 #, c-format
 msgid "%s (console)"
 msgstr "%s (Konsole)"
+
+#: ../js/ui/status/volume.js:126
+msgid "Volume changed"
+msgstr "Lautstärke geändert"
+
+#: ../js/ui/status/volume.js:302
+msgid "Volume"
+msgstr "Lautstärke"
+
+#: ../js/ui/unlockDialog.js:63
+msgid "Log in as another user"
+msgstr "Als anderer Benutzer anmelden"
+
+#: ../js/ui/unlockDialog.js:80
+msgid "Unlock Window"
+msgstr "Fenster entsperren"
 
 #: ../js/ui/viewSelector.js:100
 msgid "Applications"
@@ -1929,7 +1784,7 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Die möglichen Modi auflisten"
 
-#: ../src/shell-app.c:626
+#: ../src/shell-app.c:644
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "»%s« konnte nicht gestartet werden"
@@ -1945,6 +1800,128 @@ msgstr "Das Passwort darf nicht leer sein"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Der Dialog zur Legitimierung wurde vom Benutzer geschlossen"
+
+#~ msgid "Universal Access Settings"
+#~ msgstr "Einstellungen zur Barrierefreiheit"
+
+#~ msgid "Bluetooth Settings"
+#~ msgstr "Bluetooth-Einstellungen"
+
+#~ msgid "Keyboard Settings"
+#~ msgstr "Tastatureinstellungen"
+
+#~ msgid "Mouse Settings"
+#~ msgstr "Maus-Einstellungen"
+
+#~ msgid "Sound Settings"
+#~ msgstr "Klangeinstellungen"
+
+#~ msgid "Region & Language Settings"
+#~ msgstr "Einstellungen für Region und Sprache"
+
+#~ msgid "Network Settings"
+#~ msgstr "Netzwerkeinstellungen"
+
+#~ msgid "%d hour remaining"
+#~ msgid_plural "%d hours remaining"
+#~ msgstr[0] "%d Stunde verbleibend"
+#~ msgstr[1] "%d Stunden verbleibend"
+
+#~ msgid "%d %s %d %s remaining"
+#~ msgstr "%d %s %d %s verbleibend"
+
+#~ msgid "hour"
+#~ msgid_plural "hours"
+#~ msgstr[0] "Stunde"
+#~ msgstr[1] "Stunden"
+
+#~ msgid "minute"
+#~ msgid_plural "minutes"
+#~ msgstr[0] "Minute"
+#~ msgstr[1] "Minuten"
+
+#~ msgid "%d minute remaining"
+#~ msgid_plural "%d minutes remaining"
+#~ msgstr[0] "%d Minute verbleibend"
+#~ msgstr[1] "%d Minuten verbleibend"
+
+#~ msgctxt "percent of battery remaining"
+#~ msgid "%d%%"
+#~ msgstr "%d%%"
+
+#~ msgid "AC Adapter"
+#~ msgstr "Netzteil"
+
+#~ msgid "Laptop Battery"
+#~ msgstr "Laptop-Akku"
+
+#~ msgid "UPS"
+#~ msgstr "Notstromversorgung"
+
+#~ msgid "Monitor"
+#~ msgstr "Bildschirm"
+
+#~ msgid "Mouse"
+#~ msgstr "Maus"
+
+#~ msgid "PDA"
+#~ msgstr "PDA"
+
+#~ msgid "Cell Phone"
+#~ msgstr "Mobiltelefon"
+
+#~ msgid "Media Player"
+#~ msgstr "Medienwiedergabe"
+
+#~ msgid "Tablet"
+#~ msgstr "Tablet"
+
+#~ msgid "Computer"
+#~ msgstr "Rechner"
+
+#~ msgctxt "device"
+#~ msgid "Unknown"
+#~ msgstr "Unbekannt"
+
+#~ msgid "Microphone"
+#~ msgstr "Mikrofon"
+
+#~ msgid "Available"
+#~ msgstr "Verfügbar"
+
+#~ msgid "Busy"
+#~ msgstr "Beschäftigt"
+
+#~ msgid "Invisible"
+#~ msgstr "Unsichtbar"
+
+#~ msgid "Away"
+#~ msgstr "Abwesend"
+
+#~ msgid "Idle"
+#~ msgstr "Untätig"
+
+#~ msgid "Offline"
+#~ msgstr "Abgemeldet"
+
+#~ msgid "Notifications"
+#~ msgstr "Benachrichtigungen"
+
+#~ msgid "Install Updates & Restart"
+#~ msgstr "Aktualisierungen installieren und neustarten"
+
+#~ msgid "Your chat status will be set to busy"
+#~ msgstr "Ihr Anwesenheitsstatus wird auf »Beschäftigt« gesetzt"
+
+#~ msgid ""
+#~ "Notifications are now disabled, including chat messages. Your online "
+#~ "status has been adjusted to let others know that you might not see their "
+#~ "messages."
+#~ msgstr ""
+#~ "Benachrichtigungen sind nun deaktiviert, einschließlich "
+#~ "Sofortnachrichten. Ihr Anwesenheitsstatus wurde nun dahingehend geändert, "
+#~ "dass andere darüber informiert werden, dass Sie deren Nachrichten nicht "
+#~ "sehen könnten."
 
 #~ msgid "cable unplugged"
 #~ msgstr "Kabel nicht angeschlossen"
