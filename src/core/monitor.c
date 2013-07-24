@@ -29,6 +29,7 @@
 
 #include <string.h>
 #include <math.h>
+#include <stdlib.h>
 #include <clutter/clutter.h>
 
 #ifdef HAVE_RANDR
@@ -99,6 +100,9 @@ struct _MetaMonitorManager
 #endif
 
   int dbus_name_id;
+
+  int persistent_timeout_id;
+  MetaMonitorConfig *config;
 };
 
 struct _MetaMonitorManagerClass
@@ -124,6 +128,8 @@ static void meta_monitor_manager_display_config_init (MetaDBusDisplayConfigIface
 G_DEFINE_TYPE_WITH_CODE (MetaMonitorManager, meta_monitor_manager, META_DBUS_TYPE_DISPLAY_CONFIG_SKELETON,
                          G_IMPLEMENT_INTERFACE (META_DBUS_TYPE_DISPLAY_CONFIG, meta_monitor_manager_display_config_init));
 
+static void free_output_array (MetaOutput *old_outputs,
+                               int         n_old_outputs);
 static void invalidate_logical_config (MetaMonitorManager *manager);
 
 static void
@@ -193,14 +199,14 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->outputs = g_new0 (MetaOutput, 3);
   manager->n_outputs = 3;
 
-  manager->outputs[0].crtc = &manager->crtcs[0];
+  manager->outputs[0].crtc = 0;
   manager->outputs[0].output_id = 6;
-  manager->outputs[0].name = g_strdup ("LVDS");
-  manager->outputs[0].vendor = g_strdup ("unknown");
+  manager->outputs[0].name = g_strdup ("HDMI");
+  manager->outputs[0].vendor = g_strdup ("MetaProducts Inc.");
   manager->outputs[0].product = g_strdup ("unknown");
-  manager->outputs[0].serial = g_strdup ("");
-  manager->outputs[0].width_mm = 222;
-  manager->outputs[0].height_mm = 125;
+  manager->outputs[0].serial = g_strdup ("0xC0F01A");
+  manager->outputs[0].width_mm = 510;
+  manager->outputs[0].height_mm = 287;
   manager->outputs[0].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
   manager->outputs[0].preferred_mode = &manager->modes[0];
   manager->outputs[0].n_modes = 3;
@@ -215,14 +221,14 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->outputs[0].n_possible_clones = 0;
   manager->outputs[0].possible_clones = g_new0 (MetaOutput *, 0);
 
-  manager->outputs[1].crtc = NULL;
+  manager->outputs[1].crtc = &manager->crtcs[0];
   manager->outputs[1].output_id = 7;
-  manager->outputs[1].name = g_strdup ("HDMI");
-  manager->outputs[1].vendor = g_strdup ("unknown");
+  manager->outputs[1].name = g_strdup ("LVDS");
+  manager->outputs[1].vendor = g_strdup ("MetaProducts Inc.");
   manager->outputs[1].product = g_strdup ("unknown");
-  manager->outputs[1].serial = g_strdup ("");
-  manager->outputs[1].width_mm = 510;
-  manager->outputs[1].height_mm = 287;
+  manager->outputs[1].serial = g_strdup ("0xC0FFEE");
+  manager->outputs[1].width_mm = 222;
+  manager->outputs[1].height_mm = 125;
   manager->outputs[1].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
   manager->outputs[1].preferred_mode = &manager->modes[0];
   manager->outputs[1].n_modes = 3;
@@ -240,9 +246,9 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->outputs[2].crtc = NULL;
   manager->outputs[2].output_id = 8;
   manager->outputs[2].name = g_strdup ("VGA");
-  manager->outputs[2].vendor = g_strdup ("unknown");
+  manager->outputs[2].vendor = g_strdup ("MetaProducts Inc.");
   manager->outputs[2].product = g_strdup ("unknown");
-  manager->outputs[2].serial = g_strdup ("");
+  manager->outputs[2].serial = g_strdup ("0xC4FE");
   manager->outputs[2].width_mm = 309;
   manager->outputs[2].height_mm = 174;
   manager->outputs[2].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
@@ -330,6 +336,15 @@ wl_transform_from_xrandr_all (Rotation rotation)
     ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED_270;
 
   return ret;
+}
+
+static int
+compare_outputs (const void *one,
+                 const void *two)
+{
+  const MetaOutput *o_one = one, *o_two = two;
+
+  return strcmp (o_one->name, o_two->name);
 }
 
 static void
@@ -531,6 +546,9 @@ read_monitor_infos_from_xrandr (MetaMonitorManager *manager)
 
     manager->n_outputs = n_actual_outputs;
 
+    /* Sort the outputs for easier handling in MetaMonitorConfig */
+    qsort (manager->outputs, manager->n_outputs, sizeof (MetaOutput), compare_outputs);
+
     /* Now fix the clones */
     for (i = 0; i < manager->n_outputs; i++)
       {
@@ -596,6 +614,8 @@ make_debug_config (MetaMonitorManager *manager)
 static void
 read_current_config (MetaMonitorManager *manager)
 {
+  manager->serial++;
+
 #ifdef HAVE_RANDR
   if (manager->backend == META_BACKEND_XRANDR)
     return read_monitor_infos_from_xrandr (manager);
@@ -741,8 +761,39 @@ meta_monitor_manager_new (Display *display)
         }
     }
 #endif
+  manager->config = meta_monitor_config_new ();
 
   read_current_config (manager);
+
+  if (!meta_monitor_config_apply_stored (manager->config, manager))
+    meta_monitor_config_make_default (manager->config, manager);
+
+  /* Under XRandR, we don't rebuild our data structures until we see
+     the RRScreenNotify event, but at least at startup we want to have
+     the right configuration immediately.
+
+     The other backends keep the data structures always updated,
+     so this is not needed.
+  */
+  if (manager->backend == META_BACKEND_XRANDR)
+    {
+      MetaOutput *old_outputs;
+      MetaCRTC *old_crtcs;
+      MetaMonitorMode *old_modes;
+      int n_old_outputs;
+
+      old_outputs = manager->outputs;
+      n_old_outputs = manager->n_outputs;
+      old_modes = manager->modes;
+      old_crtcs = manager->crtcs;
+
+      read_current_config (manager);
+
+      free_output_array (old_outputs, n_old_outputs);
+      g_free (old_modes);
+      g_free (old_crtcs);
+    }
+      
   make_logical_config (manager);
   return manager;
 }
@@ -1339,6 +1390,32 @@ apply_config_dummy (MetaMonitorManager *manager,
   invalidate_logical_config (manager);
 }
 
+void
+meta_monitor_manager_apply_configuration (MetaMonitorManager *manager,
+                                          GVariant           *crtcs,
+                                          GVariant           *outputs)
+{
+  GVariantIter crtc_iter, output_iter;
+
+  g_variant_iter_init (&crtc_iter, crtcs);
+  g_variant_iter_init (&output_iter, outputs);
+
+ if (manager->backend == META_BACKEND_XRANDR)
+    apply_config_xrandr (manager, &crtc_iter, &output_iter);
+  else
+    apply_config_dummy (manager, &crtc_iter, &output_iter);
+}
+
+static gboolean
+save_config_timeout (gpointer user_data)
+{
+  MetaMonitorManager *manager = user_data;
+
+  meta_monitor_config_make_persistent (manager->config);
+
+  return G_SOURCE_REMOVE;
+}
+
 static gboolean
 meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleton,
                                                   GDBusMethodInvocation *invocation,
@@ -1359,14 +1436,6 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_ACCESS_DENIED,
                                              "The requested configuration is based on stale information");
-      return TRUE;
-    }
-
-  if (persistent)
-    {
-      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                             G_DBUS_ERROR_NOT_SUPPORTED,
-                                             "Persistent configuration is not yet implemented");
       return TRUE;
     }
 
@@ -1493,13 +1562,25 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
         }
     }
 
-  g_variant_iter_init (&crtc_iter, crtcs);
-  g_variant_iter_init (&output_iter, outputs);
+  /* If we were in progress of making a persistent change and we see a
+     new request, it's likely that the old one failed in some way, so
+     don't save it.
+  */ 
+  if (manager->persistent_timeout_id && persistent)
+    {
+      g_source_remove (manager->persistent_timeout_id);
+      manager->persistent_timeout_id = 0;
+    }
 
-  if (manager->backend == META_BACKEND_XRANDR)
-    apply_config_xrandr (manager, &crtc_iter, &output_iter);
-  else
-    apply_config_dummy (manager, &crtc_iter, &output_iter);
+  meta_monitor_manager_apply_configuration (manager, crtcs, outputs);
+
+  /* Update MetaMonitorConfig data structures immediately so that we
+     don't revert the change at the next XRandR event, then wait 20
+     seconds and save the change to disk
+  */
+  meta_monitor_config_update_current (manager->config, manager);
+  if (persistent)
+    manager->persistent_timeout_id = g_timeout_add_seconds (20, save_config_timeout, manager);
 
   meta_dbus_display_config_complete_apply_configuration (skeleton, invocation);
   return TRUE;
@@ -1576,7 +1657,7 @@ meta_monitor_manager_get (void)
 
 MetaMonitorInfo *
 meta_monitor_manager_get_monitor_infos (MetaMonitorManager *manager,
-                                        int                *n_infos)
+                                        unsigned int       *n_infos)
 {
   *n_infos = manager->n_monitor_infos;
   return manager->monitor_infos;
@@ -1584,7 +1665,7 @@ meta_monitor_manager_get_monitor_infos (MetaMonitorManager *manager,
 
 MetaOutput *
 meta_monitor_manager_get_outputs (MetaMonitorManager *manager,
-                                  int                *n_outputs)
+                                  unsigned int       *n_outputs)
 {
   *n_outputs = manager->n_outputs;
   return manager->outputs;
@@ -1612,7 +1693,6 @@ invalidate_logical_config (MetaMonitorManager *manager)
 
   old_monitor_infos = manager->monitor_infos;
 
-  manager->serial++;
   make_logical_config (manager);
 
   g_signal_emit (manager, signals[MONITORS_CHANGED], 0);
@@ -1626,7 +1706,6 @@ meta_monitor_manager_handle_xevent (MetaMonitorManager *manager,
 {
   MetaOutput *old_outputs;
   MetaCRTC *old_crtcs;
-
   MetaMonitorMode *old_modes;
   int n_old_outputs;
 
@@ -1646,7 +1725,24 @@ meta_monitor_manager_handle_xevent (MetaMonitorManager *manager,
   old_crtcs = manager->crtcs;
 
   read_current_config (manager);
-  invalidate_logical_config (manager);
+
+  /* Check if the current intended configuration has the same outputs
+     as the new real one. If so, this was a result of an ApplyConfiguration
+     call (or a change from ourselves), and we can go straight to rebuild
+     the logical config and tell the outside world.
+
+     Otherwise, this event was caused by hotplug, so give a chance to
+     MetaMonitorConfig.
+  */
+  if (meta_monitor_config_match_current (manager->config, manager))
+    {
+      invalidate_logical_config (manager);
+    }
+  else
+    {
+      if (!meta_monitor_config_apply_stored (manager->config, manager))
+        meta_monitor_config_make_default (manager->config, manager);
+    }
 
   free_output_array (old_outputs, n_old_outputs);
   g_free (old_modes);

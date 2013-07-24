@@ -434,7 +434,7 @@ reload_monitor_infos (MetaScreen *screen)
   manager = meta_monitor_manager_get ();
 
   screen->monitor_infos = meta_monitor_manager_get_monitor_infos (manager,
-                                                                  &screen->n_monitor_infos);
+                                                                  (unsigned*)&screen->n_monitor_infos);
   screen->primary_monitor_index = meta_monitor_manager_get_primary_index (manager);
 }
 

@@ -177,10 +177,10 @@ void                meta_monitor_manager_initialize (Display *display);
 MetaMonitorManager *meta_monitor_manager_get  (void);
 
 MetaMonitorInfo    *meta_monitor_manager_get_monitor_infos (MetaMonitorManager *manager,
-							    int                *n_infos);
+							    unsigned int       *n_infos);
 
 MetaOutput         *meta_monitor_manager_get_outputs       (MetaMonitorManager *manager,
-							    int                *n_outputs);
+							    unsigned int       *n_outputs);
 
 int                 meta_monitor_manager_get_primary_index (MetaMonitorManager *manager);
 
@@ -190,6 +190,37 @@ gboolean            meta_monitor_manager_handle_xevent     (MetaMonitorManager *
 void                meta_monitor_manager_get_screen_size   (MetaMonitorManager *manager,
                                                             int                *width,
                                                             int                *height);
+
+void                meta_monitor_manager_apply_configuration (MetaMonitorManager *manager,
+                                                              GVariant           *crtcs,
+                                                              GVariant           *outputs);
+
+#define META_TYPE_MONITOR_CONFIG            (meta_monitor_config_get_type ())
+#define META_MONITOR_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_CONFIG, MetaMonitorConfig))
+#define META_MONITOR_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_CONFIG, MetaMonitorConfigClass))
+#define META_IS_MONITOR_CONFIG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_MONITOR_CONFIG))
+#define META_IS_MONITOR_CONFIG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_MONITOR_CONFIG))
+#define META_MONITOR_CONFIG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_MONITOR_CONFIG, MetaMonitorConfigClass))
+
+typedef struct _MetaMonitorConfigClass    MetaMonitorConfigClass;
+typedef struct _MetaMonitorConfig         MetaMonitorConfig;
+
+GType meta_monitor_config_get_type (void) G_GNUC_CONST;
+
+MetaMonitorConfig *meta_monitor_config_new (void);
+
+gboolean           meta_monitor_config_match_current (MetaMonitorConfig  *config,
+                                                      MetaMonitorManager *manager);
+
+gboolean           meta_monitor_config_apply_stored (MetaMonitorConfig  *config,
+                                                     MetaMonitorManager *manager);
+
+void               meta_monitor_config_make_default (MetaMonitorConfig  *config,
+                                                     MetaMonitorManager *manager);
+
+void               meta_monitor_config_update_current (MetaMonitorConfig  *config,
+                                                       MetaMonitorManager *manager);
+void               meta_monitor_config_make_persistent (MetaMonitorConfig *config);
 
 /* Returns true if transform causes width and height to be inverted
    This is true for the odd transforms in the enum */
