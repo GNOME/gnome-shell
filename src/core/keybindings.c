@@ -3094,6 +3094,20 @@ handle_maximize_horizontally (MetaDisplay     *display,
     }
 }
 
+static void
+handle_always_on_top          (MetaDisplay    *display,
+                              MetaScreen     *screen,
+                              MetaWindow     *window,
+                              XIDeviceEvent  *event,
+                              MetaKeyBinding *binding,
+                              gpointer        dummy)
+{
+  if (window->wm_state_above == FALSE)
+    meta_window_make_above (window);
+  else
+    meta_window_unmake_above (window);
+}
+
 /* Move a window to a corner; to_bottom/to_right are FALSE for the
  * top or left edge, or TRUE for the bottom/right edge.  xchange/ychange
  * are FALSE if that dimension is not to be changed, TRUE otherwise.
@@ -4690,6 +4704,13 @@ init_builtin_key_bindings (MetaDisplay *display)
                           META_KEY_BINDING_PER_WINDOW,
                           META_KEYBINDING_ACTION_MAXIMIZE_HORIZONTALLY,
                           handle_maximize_horizontally, 0);
+
+  add_builtin_keybinding (display,
+                          "always-on-top",
+                          common_keybindings,
+                          META_KEY_BINDING_PER_WINDOW,
+                          META_KEYBINDING_ACTION_ALWAYS_ON_TOP,
+                          handle_always_on_top, 0);
 
   add_builtin_keybinding (display,
                           "move-to-corner-nw",
