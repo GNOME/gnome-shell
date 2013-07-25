@@ -95,6 +95,9 @@
                                             particular hardware part
 			    - "display-name" (s): (readonly) a human readable name
 			                          of this output, to be shown in the UI
+	                    - "backlight" (i): (readonly, use the specific interface)
+                                               the backlight value as a percentage
+                                               (-1 if not supported)
 			    - "primary" (b): whether this output is primary
 			                     or not
 			    - "presentation" (b): whether this output is
@@ -193,6 +196,21 @@
       <arg name="persistent" direction="in" type="b" />
       <arg name="crtcs" direction="in" type="a(uiiiuaua{sv})" />
       <arg name="outputs" direction="in" type="a(ua{sv})" />
+    </method>
+
+    <!--
+        ChangeBacklight:
+	@serial: configuration serial
+	@output: the API id of the output
+	@value: the new backlight value
+
+	Changes the backlight of @output to @value, which is
+	expressed as a percentage and rounded to the HW limits.
+    -->
+    <method name="ChangeBacklight">
+      <arg name="serial" direction="in" type="u" />
+      <arg name="output" direction="in" type="u" />
+      <arg name="value" direction="in" type="i" />
     </method>
 
     <!--

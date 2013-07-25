@@ -251,6 +251,9 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->outputs[0].possible_crtcs[2] = &manager->crtcs[2];
   manager->outputs[0].n_possible_clones = 0;
   manager->outputs[0].possible_clones = g_new0 (MetaOutput *, 0);
+  manager->outputs[0].backlight = -1;
+  manager->outputs[0].backlight_min = 0;
+  manager->outputs[0].backlight_max = 0;
 
   manager->outputs[1].crtc = &manager->crtcs[0];
   manager->outputs[1].output_id = 7;
@@ -275,6 +278,9 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->outputs[1].possible_crtcs[2] = &manager->crtcs[2];
   manager->outputs[1].n_possible_clones = 0;
   manager->outputs[1].possible_clones = g_new0 (MetaOutput *, 0);
+  manager->outputs[1].backlight = -1;
+  manager->outputs[1].backlight_min = 0;
+  manager->outputs[1].backlight_max = 0;
 
   manager->outputs[2].crtc = NULL;
   manager->outputs[2].output_id = 8;
@@ -298,6 +304,9 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->outputs[2].possible_crtcs[2] = &manager->crtcs[2];
   manager->outputs[2].n_possible_clones = 0;
   manager->outputs[2].possible_clones = g_new0 (MetaOutput *, 0);
+  manager->outputs[2].backlight = -1;
+  manager->outputs[2].backlight_min = 0;
+  manager->outputs[2].backlight_max = 0;
 }
 
 #ifdef HAVE_RANDR
@@ -398,6 +407,74 @@ output_get_presentation_xrandr (MetaMonitorManager *manager,
 
   XFree (buffer);
   return value;
+}
+
+static int
+normalize_backlight (MetaOutput *output,
+                     int         hw_value)
+{
+  return round ((double)(hw_value - output->backlight_min) /
+                (output->backlight_max - output->backlight_min) * 100.0);
+}
+
+static int
+output_get_backlight_xrandr (MetaMonitorManager *manager,
+                             MetaOutput         *output)
+{
+  MetaDisplay *display = meta_get_display ();
+  gboolean value;
+  Atom actual_type;
+  int actual_format;
+  unsigned long nitems, bytes_after;
+  unsigned char *buffer;
+
+  XRRGetOutputProperty (manager->xdisplay,
+                        (XID)output->output_id,
+                        display->atom_BACKLIGHT,
+                        0, G_MAXLONG, False, False, XA_INTEGER,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &buffer);
+
+  if (actual_type != XA_INTEGER || actual_format != 32 ||
+      nitems < 1)
+    return -1;
+
+  value = ((int*)buffer)[0];
+
+  XFree (buffer);
+  return normalize_backlight (output, value);
+}
+
+static void
+output_get_backlight_limits_xrandr (MetaMonitorManager *manager,
+                                    MetaOutput         *output)
+{
+  MetaDisplay *display = meta_get_display ();
+  XRRPropertyInfo *info;
+
+  meta_error_trap_push (display);
+  info = XRRQueryOutputProperty (manager->xdisplay,
+                                 (XID)output->output_id,
+                                 display->atom_BACKLIGHT);
+  meta_error_trap_pop (display);
+
+  if (info == NULL)
+    {
+      meta_warning ("could not get output property for %s\n", output->name);
+      return;
+    }
+
+  if (!info->range || info->num_values != 2)
+    {
+      meta_verbose ("backlight %s was not range\n", output->name);
+      goto out;
+    }
+
+  output->backlight_min = info->values[0];
+  output->backlight_max = info->values[1];
+
+out:
+  XFree (info);
 }
 
 static int
@@ -602,6 +679,12 @@ read_monitor_infos_from_xrandr (MetaMonitorManager *manager)
 
             meta_output->is_primary = ((XID)meta_output->output_id == primary_output);
             meta_output->is_presentation = output_get_presentation_xrandr (manager, meta_output);
+            output_get_backlight_limits_xrandr (manager, meta_output);
+
+            if (!(meta_output->backlight_min == 0 && meta_output->backlight_max == 0))
+              meta_output->backlight = output_get_backlight_xrandr (manager, meta_output);
+            else
+              meta_output->backlight = -1;
 
             n_actual_outputs++;
           }
@@ -1123,6 +1206,8 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              g_variant_new_string (output->serial));
       g_variant_builder_add (&properties, "{sv}", "display-name",
                              g_variant_new_take_string (make_display_name (output)));
+      g_variant_builder_add (&properties, "{sv}", "backlight",
+                             g_variant_new_int32 (output->backlight));
       g_variant_builder_add (&properties, "{sv}", "primary",
                              g_variant_new_boolean (output->is_primary));
       g_variant_builder_add (&properties, "{sv}", "presentation",
@@ -1466,8 +1551,8 @@ meta_monitor_manager_apply_configuration (MetaMonitorManager *manager,
                                           MetaOutputInfo     **outputs,
                                           unsigned int         n_outputs)
 {
- if (manager->backend == META_BACKEND_XRANDR)
-   apply_config_xrandr (manager, crtcs, n_crtcs, outputs, n_outputs);
+  if (manager->backend == META_BACKEND_XRANDR)
+    apply_config_xrandr (manager, crtcs, n_crtcs, outputs, n_outputs);
   else
     apply_config_dummy (manager, crtcs, n_crtcs, outputs, n_outputs);
 }
@@ -1692,11 +1777,97 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
   return TRUE;
 }
 
+#ifdef HAVE_RANDR
+static void
+handle_change_backlight_xrandr (MetaMonitorManager *manager,
+                                MetaOutput         *output,
+                                gint                value)
+{
+  MetaDisplay *display = meta_get_display ();
+  int hw_value;
+
+  hw_value = round ((double)value / 100.0 * output->backlight_max + output->backlight_min);
+
+  meta_error_trap_push (display);
+  XRRChangeOutputProperty (manager->xdisplay,
+                           (XID)output->output_id,
+                           display->atom_BACKLIGHT,
+                           XA_INTEGER, 32, PropModeReplace,
+                           (unsigned char *) &hw_value, 1);
+  meta_error_trap_pop (display);
+
+  /* We're not selecting for property notifies, so update the value immediately */
+  output->backlight = normalize_backlight (output, hw_value);
+}
+#endif
+
+static void
+handle_change_backlight_dummy (MetaMonitorManager *manager,
+                               MetaOutput         *output,
+                               gint                value)
+{
+  g_assert_not_reached ();
+}
+
+static gboolean
+meta_monitor_manager_handle_change_backlight  (MetaDBusDisplayConfig *skeleton,
+                                               GDBusMethodInvocation *invocation,
+                                               guint                  serial,
+                                               guint                  output_id,
+                                               gint                   value)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
+  MetaOutput *output;
+
+  if (serial != manager->serial)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "The requested configuration is based on stale information");
+      return TRUE;
+    }
+
+  if (output_id >= manager->n_outputs)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Invalid output id");
+      return TRUE;
+    }
+  output = &manager->outputs[output_id];
+
+  if (value < 0 || value > 100)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Invalid backlight value");
+      return TRUE;
+    }
+
+  if (output->backlight == -1 ||
+      (output->backlight_min == 0 && output->backlight_max == 0))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Output does not support changing backlight");
+      return TRUE;
+    }
+
+  if (manager->backend == META_BACKEND_XRANDR)
+    handle_change_backlight_xrandr (manager, output, value);
+  else
+    handle_change_backlight_dummy (manager, output, value);
+
+  meta_dbus_display_config_complete_change_backlight (skeleton, invocation);
+  return TRUE;
+}
+
 static void
 meta_monitor_manager_display_config_init (MetaDBusDisplayConfigIface *iface)
 {
   iface->handle_get_resources = meta_monitor_manager_handle_get_resources;
   iface->handle_apply_configuration = meta_monitor_manager_handle_apply_configuration;
+  iface->handle_change_backlight = meta_monitor_manager_handle_change_backlight;
 }
 
 static void

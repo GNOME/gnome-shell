@@ -92,6 +92,10 @@ struct _MetaOutput
   MetaOutput **possible_clones;
   unsigned int n_possible_clones;
 
+  int backlight;
+  int backlight_min;
+  int backlight_max;
+
   /* Used when changing configuration */
   gboolean is_dirty;
 
