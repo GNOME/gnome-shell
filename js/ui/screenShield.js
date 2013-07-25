@@ -1335,6 +1335,8 @@ const ScreenShield = new Lang.Class({
 
     // If the previous shell crashed, and gnome-session restarted us, then re-lock
     lockIfWasLocked: function() {
+        if (!this._settings.get_boolean(LOCK_ENABLED_KEY))
+            return;
         let wasLocked = global.get_runtime_state('b', LOCKED_STATE_STR);
         if (wasLocked === null)
             return;
