@@ -228,6 +228,10 @@ void                meta_monitor_manager_get_screen_size   (MetaMonitorManager *
                                                             int                *width,
                                                             int                *height);
 
+void                meta_monitor_manager_get_screen_limits (MetaMonitorManager *manager,
+                                                            int                *width,
+                                                            int                *height);
+
 void                meta_monitor_manager_apply_configuration (MetaMonitorManager  *manager,
                                                               MetaCRTCInfo       **crtcs,
                                                               unsigned int         n_crtcs,

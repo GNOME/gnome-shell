@@ -62,6 +62,7 @@ struct _MetaMonitorManager
      packed, but I like the logical organization
      of fields */
 
+  gboolean in_init;
   unsigned int serial;
 
   MetaPowerSave power_save_mode;
@@ -500,6 +501,9 @@ read_monitor_infos_from_xrandr (MetaMonitorManager *manager)
               }
             meta_output->preferred_mode = meta_output->modes[0];
 
+            if (meta_output->preferred_mode == NULL)
+              meta_output->preferred_mode = meta_output->modes[0];
+
             meta_output->n_possible_crtcs = output->ncrtc;
             meta_output->possible_crtcs = g_new0 (MetaCRTC *, meta_output->n_possible_crtcs);
             for (j = 0; j < (unsigned)output->ncrtc; j++)
@@ -726,6 +730,7 @@ meta_monitor_manager_new (Display *display)
 
   manager = g_object_new (META_TYPE_MONITOR_MANAGER, NULL);
 
+  manager->in_init = TRUE;
   manager->xdisplay = display;
 
   manager->backend = make_debug_config (manager);
@@ -793,8 +798,10 @@ meta_monitor_manager_new (Display *display)
       g_free (old_modes);
       g_free (old_crtcs);
     }
-      
+
   make_logical_config (manager);
+
+  manager->in_init = FALSE;
   return manager;
 }
 
@@ -1544,6 +1551,8 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
                                                  "Mode specified without outputs?");
           return TRUE;
         }
+
+      g_ptr_array_add (crtc_infos, crtc_info);
     }
 
   g_variant_iter_init (&output_iter, outputs);
@@ -1568,6 +1577,8 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
 
       if (g_variant_lookup (properties, "presentation", "b", &presentation))
         output_info->is_presentation = presentation;
+
+      g_ptr_array_add (output_infos, output_info);
     }
 
   /* If we were in progress of making a persistent change and we see a
@@ -1718,12 +1729,24 @@ meta_monitor_manager_get_screen_size (MetaMonitorManager *manager,
   *height = manager->screen_height;
 }
 
+void
+meta_monitor_manager_get_screen_limits (MetaMonitorManager *manager,
+                                        int                *width,
+                                        int                *height)
+{
+  *width = manager->max_screen_width;
+  *height = manager->max_screen_height;
+}
+
 static void
 invalidate_logical_config (MetaMonitorManager *manager)
 {
   MetaMonitorInfo *old_monitor_infos;
 
   old_monitor_infos = manager->monitor_infos;
+
+  if (manager->in_init)
+    return;
 
   make_logical_config (manager);
 

@@ -740,16 +740,21 @@ init_key_from_output (MetaOutputKey *key,
 static void
 make_config_key (MetaConfiguration *key,
                  MetaOutput        *outputs,
-                 unsigned           n_outputs)
+                 unsigned           n_outputs,
+                 unsigned           skip)
 {
-  unsigned int i;
+  unsigned int o, i;
 
-  key->n_outputs = n_outputs;
   key->outputs = NULL;
   key->keys = g_new0 (MetaOutputKey, n_outputs);
 
-  for (i = 0; i < key->n_outputs; i++)
-    init_key_from_output (&key->keys[i], &outputs[i]);
+  for (o = 0, i = 0; i < n_outputs; o++, i++)
+    if (i == skip)
+      o--;
+    else
+      init_key_from_output (&key->keys[o], &outputs[i]);
+
+  key->n_outputs = o;
 }
 
 gboolean
@@ -766,7 +771,7 @@ meta_monitor_config_match_current (MetaMonitorConfig  *self,
 
   outputs = meta_monitor_manager_get_outputs (manager, &n_outputs);
 
-  make_config_key (&key, outputs, n_outputs);
+  make_config_key (&key, outputs, n_outputs, -1);
   ok = config_equal (&key, self->current);
 
   config_clear (&key);
@@ -781,7 +786,7 @@ meta_monitor_config_get_stored (MetaMonitorConfig *self,
   MetaConfiguration key;
   MetaConfiguration *stored;
 
-  make_config_key (&key, outputs, n_outputs);
+  make_config_key (&key, outputs, n_outputs, -1);
   stored = g_hash_table_lookup (self->configs, &key);
 
   config_clear (&key);
@@ -840,12 +845,223 @@ meta_monitor_config_apply_stored (MetaMonitorConfig  *self,
     return FALSE;
 }
 
-static MetaConfiguration *
-make_default_config (MetaOutput *outputs,
-		     unsigned    n_outputs)
+/*
+ * Tries to find the primary output according to the current layout,
+ * or failing that, an output that is good to be a primary (LVDS or eDP,
+ * which are internal monitors), or failing that, the one with the
+ * best resolution
+ */
+static MetaOutput *
+find_primary_output (MetaOutput *outputs,
+                     unsigned    n_outputs)
 {
-  /* FIXME */
-  return NULL;
+  unsigned i;
+  MetaOutput *best;
+  int best_width, best_height;
+
+  g_assert (n_outputs >= 1);
+
+  for (i = 0; i < n_outputs; i++)
+    {
+      if (outputs[i].is_primary)
+        return &outputs[i];
+    }
+
+  for (i = 0; i < n_outputs; i++)
+    {
+      if (g_str_has_prefix (outputs[i].name, "LVDS") ||
+          g_str_has_prefix (outputs[i].name, "eDP"))
+        return &outputs[i];
+    }
+
+  best = NULL;
+  best_width = 0; best_height = 0;
+  for (i = 0; i < n_outputs; i++)
+    {
+      if (outputs[i].preferred_mode->width * outputs[i].preferred_mode->height >
+          best_width * best_height)
+        {
+          best = &outputs[i];
+          best_width = outputs[i].preferred_mode->width;
+          best_height = outputs[i].preferred_mode->height;
+        }
+    }
+
+  return best;
+}
+
+static MetaConfiguration *
+make_default_config (MetaMonitorConfig *self,
+                     MetaOutput        *outputs,
+                     unsigned           n_outputs,
+                     int                max_width,
+                     int                max_height)
+{
+  unsigned i, j;
+  int x, y;
+  MetaConfiguration *ret;
+  MetaOutput *primary;
+
+  ret = g_slice_new (MetaConfiguration);
+  make_config_key (ret, outputs, n_outputs, -1);
+  ret->outputs = g_new0 (MetaOutputConfig, n_outputs);
+
+  /* Special case the simple case: one output, primary at preferred mode,
+     nothing else to do */
+  if (n_outputs == 1)
+    {
+      ret->outputs[0].enabled = TRUE;
+      ret->outputs[0].rect.x = 0;
+      ret->outputs[0].rect.y = 0;
+      ret->outputs[0].rect.width = outputs[0].preferred_mode->width;
+      ret->outputs[0].rect.height = outputs[0].preferred_mode->height;
+      ret->outputs[0].refresh_rate = outputs[0].preferred_mode->refresh_rate;
+      ret->outputs[0].transform = WL_OUTPUT_TRANSFORM_NORMAL;
+      ret->outputs[0].is_primary = TRUE;
+
+      return ret;
+    }
+
+  /* If we reach this point, this is either the first time mutter runs
+     on this system ever, or we just hotplugged a new screen.
+     In the latter case, search for a configuration that includes one
+     less screen, then add the new one as a presentation screen
+     in preferred mode.
+
+     XXX: but presentation mode is not implemented in the control-center
+     or in mutter core, so let's do extended for now.
+  */
+  x = 0;
+  y = 0;
+  for (i = 0; i < n_outputs; i++)
+    {
+      MetaConfiguration key;
+      MetaConfiguration *ref;
+
+      make_config_key (&key, outputs, n_outputs, i);
+      ref = g_hash_table_lookup (self->configs, &key);
+      config_clear (&key);
+
+      if (ref)
+        {
+          for (j = 0; j < n_outputs; j++)
+            {
+              if (j < i)
+                {
+                  g_assert (output_key_equal (&ret->keys[j], &ref->keys[j]));
+                  ret->outputs[j] = ref->outputs[j];
+                  x = MAX (x, ref->outputs[j].rect.x + ref->outputs[j].rect.width);
+                  y = MAX (y, ref->outputs[j].rect.y + ref->outputs[j].rect.height);
+                }
+              else if (j > i)
+                {
+                  g_assert (output_key_equal (&ret->keys[j], &ref->keys[j - 1]));
+                  ret->outputs[j] = ref->outputs[j - 1];
+                  x = MAX (x, ref->outputs[j - 1].rect.x + ref->outputs[j - 1].rect.width);
+                  y = MAX (y, ref->outputs[j - 1].rect.y + ref->outputs[j - 1].rect.height);
+                }
+              else
+                {
+                  ret->outputs[j].enabled = TRUE;
+                  ret->outputs[j].rect.x = 0;
+                  ret->outputs[j].rect.y = 0;
+                  ret->outputs[j].rect.width = outputs[0].preferred_mode->width;
+                  ret->outputs[j].rect.height = outputs[0].preferred_mode->height;
+                  ret->outputs[j].refresh_rate = outputs[0].preferred_mode->refresh_rate;
+                  ret->outputs[j].transform = WL_OUTPUT_TRANSFORM_NORMAL;
+                  ret->outputs[j].is_primary = FALSE;
+                  ret->outputs[j].is_presentation = FALSE;
+                }
+            }
+
+          /* Place the new output at the right end of the screen, if it fits,
+             otherwise below it, otherwise disable it (or apply_configuration will fail) */
+          if (x + ret->outputs[i].rect.width <= max_width)
+            ret->outputs[i].rect.x = x;
+          else if (y + ret->outputs[i].rect.height <= max_height)
+            ret->outputs[i].rect.y = y;
+          else
+            ret->outputs[i].enabled = FALSE;
+
+          return ret;
+        }
+    }
+
+  /* No previous configuration found, try with a really default one, which
+     is one primary that goes first and the rest to the right of it, extended.
+  */
+  primary = find_primary_output (outputs, n_outputs);
+
+  x = primary->preferred_mode->width;
+  for (i = 0; i < n_outputs; i++)
+    {
+      MetaOutput *output = &outputs[i];
+
+      ret->outputs[i].enabled = TRUE;
+      ret->outputs[i].rect.x = (output == primary) ? 0 : x;
+      ret->outputs[i].rect.y = 0;
+      ret->outputs[i].rect.width = output->preferred_mode->width;
+      ret->outputs[i].rect.height = output->preferred_mode->height;
+      ret->outputs[i].refresh_rate = output->preferred_mode->refresh_rate;
+      ret->outputs[i].transform = WL_OUTPUT_TRANSFORM_NORMAL;
+      ret->outputs[i].is_primary = (output == primary);
+
+      /* Disable outputs that would go beyond framebuffer limits */
+      if (ret->outputs[i].rect.x + ret->outputs[i].rect.width > max_width)
+        ret->outputs[i].enabled = FALSE;
+      else if (output != primary)
+        x += output->preferred_mode->width;
+    }
+
+  return ret;
+}
+
+static gboolean
+ensure_at_least_one_output (MetaMonitorConfig  *self,
+                            MetaMonitorManager *manager,
+                            MetaOutput         *outputs,
+                            unsigned            n_outputs)
+{
+  MetaConfiguration *ret;
+  MetaOutput *primary;
+  unsigned i;
+
+  /* Check that we have at least one active output */
+  for (i = 0; i < n_outputs; i++)
+    if (outputs[i].crtc != NULL)
+      return TRUE;
+
+  /* Oh no, we don't! Activate the primary one and disable everything else */
+
+  ret = g_slice_new (MetaConfiguration);
+  make_config_key (ret, outputs, n_outputs, -1);
+  ret->outputs = g_new0 (MetaOutputConfig, n_outputs);
+
+  primary = find_primary_output (outputs, n_outputs);
+
+  for (i = 0; i < n_outputs; i++)
+    {
+      MetaOutput *output = &outputs[i];
+
+      if (output == primary)
+        {
+          ret->outputs[i].enabled = TRUE;
+          ret->outputs[i].rect.x = 0;
+          ret->outputs[i].rect.y = 0;
+          ret->outputs[i].rect.width = output->preferred_mode->width;
+          ret->outputs[i].rect.height = output->preferred_mode->height;
+          ret->outputs[i].refresh_rate = output->preferred_mode->refresh_rate;
+          ret->outputs[i].transform = WL_OUTPUT_TRANSFORM_NORMAL;
+          ret->outputs[i].is_primary = TRUE;
+        }
+      else
+        {
+          ret->outputs[i].enabled = FALSE;
+        }
+    }
+
+  apply_configuration (self, ret, manager, FALSE);
+  return FALSE;
 }
 
 void
@@ -855,16 +1071,24 @@ meta_monitor_config_make_default (MetaMonitorConfig  *self,
   MetaOutput *outputs;
   MetaConfiguration *default_config;
   unsigned n_outputs;
+  gboolean ok;
+  int max_width, max_height;
 
   outputs = meta_monitor_manager_get_outputs (manager, &n_outputs);
-  default_config = make_default_config (outputs, n_outputs);
+  meta_monitor_manager_get_screen_limits (manager, &max_width, &max_height);
+
+  default_config = make_default_config (self, outputs, n_outputs, max_width, max_height);
 
   if (default_config != NULL)
-    apply_configuration (self, default_config, manager, FALSE);
+    ok = apply_configuration (self, default_config, manager, FALSE);
   else
+    ok = FALSE;
+
+  if (!ok)
     {
       meta_warning ("Could not make default configuration for current output layout, leaving unconfigured\n");
-      meta_monitor_config_update_current (self, manager);
+      if (ensure_at_least_one_output (self, manager, outputs, n_outputs))
+        meta_monitor_config_update_current (self, manager);
     }
 }
 
@@ -1310,9 +1534,6 @@ real_assign_crtcs (CrtcAssignment     *assignment,
     }
 
 out:
-  if (!success)
-    meta_warning ("Could not assign CRTC to outputs, ignoring configuration\n");
-
   return success;
 }
 
@@ -1336,6 +1557,8 @@ meta_monitor_config_assign_crtcs (MetaConfiguration  *config,
 
   if (!real_assign_crtcs (&assignment, 0))
     {
+      meta_warning ("Could not assign CRTC to outputs, ignoring configuration\n");
+
       g_hash_table_destroy (assignment.info);
       return FALSE;
     }
@@ -1354,10 +1577,10 @@ meta_monitor_config_assign_crtcs (MetaConfiguration  *config,
   for (i = 0; i < n_outputs; i++)
     {
       MetaOutputInfo *output_info = g_slice_new (MetaOutputInfo);
-      MetaOutputConfig *output_config = &config->outputs[0];
+      MetaOutputConfig *output_config = &config->outputs[i];
 
       output_info->output = find_output_by_key (all_outputs, n_outputs,
-                                                &config->keys[0]);
+                                                &config->keys[i]);
       output_info->is_primary = output_config->is_primary;
       output_info->is_presentation = output_config->is_presentation;
 
