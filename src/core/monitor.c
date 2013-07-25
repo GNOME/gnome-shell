@@ -155,8 +155,8 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->screen_width = 1024;
   manager->screen_height = 768;
 
-  manager->modes = g_new0 (MetaMonitorMode, 3);
-  manager->n_modes = 3;
+  manager->modes = g_new0 (MetaMonitorMode, 6);
+  manager->n_modes = 6;
 
   manager->modes[0].mode_id = 1;
   manager->modes[0].width = 1024;
@@ -173,8 +173,23 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->modes[2].height = 480;
   manager->modes[2].refresh_rate = 60.0;
 
-  manager->crtcs = g_new0 (MetaCRTC, 2);
-  manager->n_crtcs = 2;
+  manager->modes[3].mode_id = 4;
+  manager->modes[3].width = 1920;
+  manager->modes[3].height = 1080;
+  manager->modes[3].refresh_rate = 60.0;
+
+  manager->modes[4].mode_id = 5;
+  manager->modes[4].width = 1920;
+  manager->modes[4].height = 1080;
+  manager->modes[4].refresh_rate = 55.0;
+
+  manager->modes[5].mode_id = 6;
+  manager->modes[5].width = 1600;
+  manager->modes[5].height = 900;
+  manager->modes[5].refresh_rate = 60.0;
+
+  manager->crtcs = g_new0 (MetaCRTC, 3);
+  manager->n_crtcs = 3;
 
   manager->crtcs[0].crtc_id = 4;
   manager->crtcs[0].rect.x = 0;
@@ -198,10 +213,21 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->crtcs[1].is_dirty = FALSE;
   manager->crtcs[1].logical_monitor = NULL;
 
+  manager->crtcs[2].crtc_id = 5;
+  manager->crtcs[2].rect.x = 0;
+  manager->crtcs[2].rect.y = 0;
+  manager->crtcs[2].rect.width = 0;
+  manager->crtcs[2].rect.height = 0;
+  manager->crtcs[2].current_mode = NULL;
+  manager->crtcs[2].transform = WL_OUTPUT_TRANSFORM_NORMAL;
+  manager->crtcs[2].all_transforms = ALL_WL_TRANSFORMS;
+  manager->crtcs[2].is_dirty = FALSE;
+  manager->crtcs[2].logical_monitor = NULL;
+
   manager->outputs = g_new0 (MetaOutput, 3);
   manager->n_outputs = 3;
 
-  manager->outputs[0].crtc = 0;
+  manager->outputs[0].crtc = NULL;
   manager->outputs[0].output_id = 6;
   manager->outputs[0].name = g_strdup ("HDMI");
   manager->outputs[0].vendor = g_strdup ("MetaProducts Inc.");
@@ -210,16 +236,19 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->outputs[0].width_mm = 510;
   manager->outputs[0].height_mm = 287;
   manager->outputs[0].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
-  manager->outputs[0].preferred_mode = &manager->modes[0];
-  manager->outputs[0].n_modes = 3;
-  manager->outputs[0].modes = g_new0 (MetaMonitorMode *, 3);
+  manager->outputs[0].preferred_mode = &manager->modes[3];
+  manager->outputs[0].n_modes = 5;
+  manager->outputs[0].modes = g_new0 (MetaMonitorMode *, 5);
   manager->outputs[0].modes[0] = &manager->modes[0];
   manager->outputs[0].modes[1] = &manager->modes[1];
   manager->outputs[0].modes[2] = &manager->modes[2];
-  manager->outputs[0].n_possible_crtcs = 2;
-  manager->outputs[0].possible_crtcs = g_new0 (MetaCRTC *, 2);
+  manager->outputs[0].modes[3] = &manager->modes[3];
+  manager->outputs[0].modes[4] = &manager->modes[4];
+  manager->outputs[0].n_possible_crtcs = 3;
+  manager->outputs[0].possible_crtcs = g_new0 (MetaCRTC *, 3);
   manager->outputs[0].possible_crtcs[0] = &manager->crtcs[0];
   manager->outputs[0].possible_crtcs[1] = &manager->crtcs[1];
+  manager->outputs[0].possible_crtcs[2] = &manager->crtcs[2];
   manager->outputs[0].n_possible_clones = 0;
   manager->outputs[0].possible_clones = g_new0 (MetaOutput *, 0);
 
@@ -232,16 +261,18 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->outputs[1].width_mm = 222;
   manager->outputs[1].height_mm = 125;
   manager->outputs[1].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
-  manager->outputs[1].preferred_mode = &manager->modes[0];
-  manager->outputs[1].n_modes = 3;
-  manager->outputs[1].modes = g_new0 (MetaMonitorMode *, 3);
+  manager->outputs[1].preferred_mode = &manager->modes[5];
+  manager->outputs[1].n_modes = 4;
+  manager->outputs[1].modes = g_new0 (MetaMonitorMode *, 4);
   manager->outputs[1].modes[0] = &manager->modes[0];
   manager->outputs[1].modes[1] = &manager->modes[1];
   manager->outputs[1].modes[2] = &manager->modes[2];
-  manager->outputs[1].n_possible_crtcs = 2;
-  manager->outputs[1].possible_crtcs = g_new0 (MetaCRTC *, 2);
+  manager->outputs[1].modes[3] = &manager->modes[5];
+  manager->outputs[1].n_possible_crtcs = 3;
+  manager->outputs[1].possible_crtcs = g_new0 (MetaCRTC *, 3);
   manager->outputs[1].possible_crtcs[0] = &manager->crtcs[0];
   manager->outputs[1].possible_crtcs[1] = &manager->crtcs[1];
+  manager->outputs[1].possible_crtcs[2] = &manager->crtcs[2];
   manager->outputs[1].n_possible_clones = 0;
   manager->outputs[1].possible_clones = g_new0 (MetaOutput *, 0);
 
@@ -260,10 +291,11 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->outputs[2].modes[0] = &manager->modes[0];
   manager->outputs[2].modes[1] = &manager->modes[1];
   manager->outputs[2].modes[2] = &manager->modes[2];
-  manager->outputs[2].n_possible_crtcs = 2;
-  manager->outputs[2].possible_crtcs = g_new0 (MetaCRTC *, 2);
+  manager->outputs[2].n_possible_crtcs = 3;
+  manager->outputs[2].possible_crtcs = g_new0 (MetaCRTC *, 3);
   manager->outputs[2].possible_crtcs[0] = &manager->crtcs[0];
   manager->outputs[2].possible_crtcs[1] = &manager->crtcs[1];
+  manager->outputs[2].possible_crtcs[2] = &manager->crtcs[2];
   manager->outputs[2].n_possible_clones = 0;
   manager->outputs[2].possible_clones = g_new0 (MetaOutput *, 0);
 }
