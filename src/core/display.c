@@ -254,7 +254,7 @@ meta_display_class_init (MetaDisplayClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL, NULL,
-                  G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
+                  G_TYPE_NONE, 3, G_TYPE_UINT, G_TYPE_UINT, G_TYPE_UINT);
 
   /**
    * MetaDisplay::modifiers-accelerator-activated:
@@ -5892,10 +5892,11 @@ meta_display_overlay_key_activate (MetaDisplay *display)
 void
 meta_display_accelerator_activate (MetaDisplay *display,
                                    guint        action,
-                                   guint        deviceid)
+                                   guint        deviceid,
+                                   guint        timestamp)
 {
   g_signal_emit (display, display_signals[ACCELERATOR_ACTIVATED],
-                 0, action, deviceid);
+                 0, action, deviceid, timestamp);
 }
 
 gboolean

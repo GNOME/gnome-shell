@@ -1312,7 +1312,7 @@ handle_external_grab (MetaDisplay    *display,
   guint action = meta_display_get_keybinding_action (display,
                                                      binding->keycode,
                                                      binding->mask);
-  meta_display_accelerator_activate (display, action, event->deviceid);
+  meta_display_accelerator_activate (display, action, event->deviceid, event->time);
 }
 
 
