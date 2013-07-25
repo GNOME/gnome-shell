@@ -30,6 +30,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\..\test-fixtures"
 				Optimization="0"
 				PreprocessorDefinitions="_DEBUG;COGL_ENABLE_EXPERIMENTAL_API;$(TestProgDef)"
 				MinimalRebuild="true"
@@ -59,6 +60,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\..\test-fixtures"
 				Optimization="0"
 				PreprocessorDefinitions="_DEBUG;COGL_ENABLE_EXPERIMENTAL_API;$(TestProgDef)"
 				MinimalRebuild="true"
@@ -92,6 +94,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\..\test-fixtures"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="COGL_ENABLE_EXPERIMENTAL_API;$(TestProgDef)"
@@ -124,6 +127,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\..\test-fixtures"
 				PreprocessorDefinitions="COGL_ENABLE_EXPERIMENTAL_API;$(TestProgDef)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -154,6 +158,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 #include "testconformance.sourcefiles"
+			<File RelativePath="..\..\..\test-fixtures\test-utils.c" />
 		</Filter>
 	</Files>
 	<Globals>
