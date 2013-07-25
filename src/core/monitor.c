@@ -33,6 +33,7 @@
 #include <clutter/clutter.h>
 
 #ifdef HAVE_RANDR
+#include <X11/Xatom.h>
 #include <X11/extensions/Xrandr.h>
 #include <X11/extensions/dpms.h>
 #endif
@@ -339,6 +340,34 @@ wl_transform_from_xrandr_all (Rotation rotation)
   return ret;
 }
 
+static gboolean
+output_get_presentation_xrandr (MetaMonitorManager *manager,
+                                MetaOutput         *output)
+{
+  MetaDisplay *display = meta_get_display ();
+  gboolean value;
+  Atom actual_type;
+  int actual_format;
+  unsigned long nitems, bytes_after;
+  unsigned char *buffer;
+
+  XRRGetOutputProperty (manager->xdisplay,
+                        (XID)output->output_id,
+                        display->atom__MUTTER_PRESENTATION_OUTPUT,
+                        0, G_MAXLONG, False, False, XA_CARDINAL,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &buffer);
+
+  if (actual_type != XA_CARDINAL || actual_format != 32 ||
+      nitems < 1)
+    return FALSE;
+
+  value = ((int*)buffer)[0];
+
+  XFree (buffer);
+  return value;
+}
+
 static int
 compare_outputs (const void *one,
                  const void *two)
@@ -540,7 +569,7 @@ read_monitor_infos_from_xrandr (MetaMonitorManager *manager)
               }
 
             meta_output->is_primary = ((XID)meta_output->output_id == primary_output);
-            meta_output->is_presentation = FALSE;
+            meta_output->is_presentation = output_get_presentation_xrandr (manager, meta_output);
 
             n_actual_outputs++;
           }
@@ -1164,7 +1193,22 @@ wl_transform_to_xrandr (enum wl_output_transform transform)
 
   g_assert_not_reached ();
 }
-     
+
+static void
+output_set_presentation_xrandr (MetaMonitorManager *manager,
+                                MetaOutput         *output,
+                                gboolean            presentation)
+{
+  MetaDisplay *display = meta_get_display ();
+  int value = presentation;
+
+  XRRChangeOutputProperty (manager->xdisplay,
+                           (XID)output->output_id,
+                           display->atom__MUTTER_PRESENTATION_OUTPUT,
+                           XA_CARDINAL, 32, PropModeReplace,
+                           (unsigned char*) &value, 1);
+}
+
 static void
 apply_config_xrandr (MetaMonitorManager *manager,
                      MetaCRTCInfo       **crtcs,
@@ -1237,6 +1281,10 @@ apply_config_xrandr (MetaMonitorManager *manager,
                                DefaultRootWindow (manager->xdisplay),
                                (XID)output_info->output->output_id);
         }
+
+      output_set_presentation_xrandr (manager,
+                                      output_info->output,
+                                      output_info->is_presentation);
     }
 
   /* Disable CRTCs not mentioned in the list */
