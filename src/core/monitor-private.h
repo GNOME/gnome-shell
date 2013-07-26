@@ -269,6 +269,9 @@ void               meta_monitor_config_update_current (MetaMonitorConfig  *confi
                                                        MetaMonitorManager *manager);
 void               meta_monitor_config_make_persistent (MetaMonitorConfig *config);
 
+void               meta_monitor_config_restore_previous (MetaMonitorConfig  *config,
+                                                         MetaMonitorManager *manager);
+
 void               meta_crtc_info_free   (MetaCRTCInfo   *info);
 void               meta_output_info_free (MetaOutputInfo *info);
 

@@ -38,6 +38,7 @@
 
 #include <string.h>
 #include <clutter/clutter.h>
+#include <libupower-glib/upower.h>
 
 #ifdef HAVE_RANDR
 #include <X11/extensions/Xrandr.h>
@@ -88,9 +89,13 @@ struct _MetaMonitorConfig {
   GHashTable *configs;
   MetaConfiguration *current;
   gboolean current_is_stored;
+  MetaConfiguration *previous;
 
   GFile *file;
   GCancellable *save_cancellable;
+
+  UpClient *up_client;
+  gboolean lid_is_closed;
 };
 
 struct _MetaMonitorConfigClass {
@@ -103,6 +108,9 @@ static gboolean meta_monitor_config_assign_crtcs (MetaConfiguration  *config,
                                                   MetaMonitorManager *manager,
                                                   GPtrArray          *crtcs,
                                                   GPtrArray          *outputs);
+
+static void     power_client_changed_cb (UpClient *client,
+                                         gpointer  user_data);
 
 static void
 free_output_key (MetaOutputKey *key)
@@ -199,6 +207,12 @@ meta_monitor_config_init (MetaMonitorConfig *self)
   path = g_build_filename (g_get_user_config_dir (), filename, NULL);
   self->file = g_file_new_for_path (path);
   g_free (path);
+
+  self->up_client = up_client_new ();
+  self->lid_is_closed = up_client_get_lid_is_closed (self->up_client);
+
+  g_signal_connect_object (self->up_client, "changed",
+                           G_CALLBACK (power_client_changed_cb), self, 0);
 }
 
 static void
@@ -808,6 +822,8 @@ apply_configuration (MetaMonitorConfig  *self,
     {
       g_ptr_array_unref (crtcs);
       g_ptr_array_unref (outputs);
+      if (!stored)
+        config_free (config);
 
       return FALSE;
     }
@@ -816,14 +832,106 @@ apply_configuration (MetaMonitorConfig  *self,
                                             (MetaCRTCInfo**)crtcs->pdata, crtcs->len,
                                             (MetaOutputInfo**)outputs->pdata, outputs->len);
 
-  if (self->current && !self->current_is_stored)
-    config_free (self->current);
+  /* Stored (persistent) configurations override the previous one always.
+     Also, we clear the previous configuration if the current one (which is
+     about to become previous) is stored.
+  */
+  if (stored ||
+      (self->current && self->current_is_stored))
+    {
+      if (self->previous)
+        config_free (self->previous);
+      self->previous = NULL;
+    }
+  else
+    {
+      self->previous = self->current;
+    }
+
   self->current = config;
   self->current_is_stored = stored;
+
+  if (self->current == self->previous)
+    self->previous = NULL;
 
   g_ptr_array_unref (crtcs);
   g_ptr_array_unref (outputs);
   return TRUE;
+}
+
+static gboolean
+key_is_laptop (MetaOutputKey *key)
+{
+  /* FIXME: extend with better heuristics */
+  return g_str_has_prefix (key->connector, "LVDS") ||
+    g_str_has_prefix (key->connector, "eDP");
+}
+
+static gboolean
+laptop_display_is_on (MetaConfiguration *config)
+{
+  unsigned int i;
+
+  for (i = 0; i < config->n_outputs; i++)
+    {
+      MetaOutputKey *key = &config->keys[i];
+      MetaOutputConfig *output = &config->outputs[i];
+
+      if (key_is_laptop (key) && output->enabled)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static MetaConfiguration *
+make_laptop_lid_config (MetaConfiguration  *reference)
+{
+  MetaConfiguration *new;
+  unsigned int i;
+  gboolean has_primary;
+
+  g_assert (reference->n_outputs > 1);
+
+  new = g_slice_new0 (MetaConfiguration);
+  new->n_outputs = reference->n_outputs;
+  new->keys = g_new0 (MetaOutputKey, reference->n_outputs);
+  new->outputs = g_new0 (MetaOutputConfig, reference->n_outputs);
+
+  for (i = 0; i < new->n_outputs; i++)
+    {
+      MetaOutputKey *current_key = &reference->keys[i];
+      MetaOutputConfig *current_output = &reference->outputs[i];
+
+      new->keys[i].connector = g_strdup (current_key->connector);
+      new->keys[i].vendor = g_strdup (current_key->vendor);
+      new->keys[i].product = g_strdup (current_key->product);
+      new->keys[i].serial = g_strdup (current_key->serial);
+
+      if (g_str_has_prefix (current_key->connector, "LVDS") ||
+          g_str_has_prefix (current_key->connector, "eDP"))
+        new->outputs[i].enabled = FALSE;
+      else
+        /* This can potentially leave a "hole" in the screen,
+           but this is actually a good thing, as it means windows
+           don't move around.
+        */
+        new->outputs[i] = *current_output;
+    }
+
+  has_primary = FALSE;
+  for (i = 0; i < new->n_outputs; i++)
+    {
+      if (new->outputs[i].is_primary)
+        {
+          has_primary = TRUE;
+          break;
+        }
+    }
+  if (!has_primary)
+    new->outputs[0].is_primary = TRUE;
+
+  return new;
 }
 
 gboolean
@@ -839,7 +947,13 @@ meta_monitor_config_apply_stored (MetaMonitorConfig  *self,
 
   if (stored)
     {
-      return apply_configuration (self, stored, manager, TRUE);
+      if (self->lid_is_closed &&
+          stored->n_outputs > 1 &&
+          laptop_display_is_on (stored))
+        return apply_configuration (self, make_laptop_lid_config (stored),
+                                    manager, FALSE);
+      else
+        return apply_configuration (self, stored, manager, TRUE);
     }
   else
     return FALSE;
@@ -1080,7 +1194,18 @@ meta_monitor_config_make_default (MetaMonitorConfig  *self,
   default_config = make_default_config (self, outputs, n_outputs, max_width, max_height);
 
   if (default_config != NULL)
-    ok = apply_configuration (self, default_config, manager, FALSE);
+    {
+      if (self->lid_is_closed &&
+          default_config->n_outputs > 1 &&
+          laptop_display_is_on (default_config))
+        {
+          ok = apply_configuration (self, make_laptop_lid_config (default_config),
+                                    manager, FALSE);
+          config_free (default_config);
+        }
+      else
+        ok = apply_configuration (self, default_config, manager, FALSE);
+    }
   else
     ok = FALSE;
 
@@ -1135,6 +1260,53 @@ meta_monitor_config_update_current (MetaMonitorConfig  *self,
 
   self->current = current;
   self->current_is_stored = FALSE;
+}
+
+void
+meta_monitor_config_restore_previous (MetaMonitorConfig  *self,
+                                      MetaMonitorManager *manager)
+{
+  if (self->previous)
+    apply_configuration (self, self->previous, manager, FALSE);
+  else
+    {
+      if (!meta_monitor_config_apply_stored (self, manager))
+        meta_monitor_config_make_default (self, manager);
+    }
+}
+
+static void
+turn_off_laptop_display (MetaMonitorConfig  *self,
+                         MetaMonitorManager *manager)
+{
+  MetaConfiguration *new;
+
+  if (self->current->n_outputs == 1)
+    return;
+
+  new = make_laptop_lid_config (self->current);
+  apply_configuration (self, new, manager, FALSE);
+}
+
+static void
+power_client_changed_cb (UpClient *client,
+                         gpointer  user_data)
+{
+  MetaMonitorManager *manager = meta_monitor_manager_get ();
+  MetaMonitorConfig *self = user_data;
+  gboolean is_closed;
+
+  is_closed = up_client_get_lid_is_closed (self->up_client);
+
+  if (is_closed != self->lid_is_closed)
+    {
+      self->lid_is_closed = is_closed;
+
+      if (is_closed)
+        turn_off_laptop_display (self, manager);
+      else
+        meta_monitor_config_restore_previous (self, manager);
+    }
 }
 
 typedef struct {
@@ -1275,6 +1447,10 @@ meta_monitor_config_make_persistent (MetaMonitorConfig *self)
 
   self->current_is_stored = TRUE;
   g_hash_table_replace (self->configs, self->current, self->current);
+
+  if (self->previous)
+    config_free (self->previous);
+  self->previous = NULL;
 
   meta_monitor_config_save (self);
 }
