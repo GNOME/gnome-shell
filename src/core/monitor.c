@@ -1880,12 +1880,192 @@ meta_monitor_manager_handle_change_backlight  (MetaDBusDisplayConfig *skeleton,
   return TRUE;
 }
 
+#ifdef HAVE_RANDR
+static void
+handle_get_crtc_gamma_xrandr (MetaMonitorManager  *manager,
+                              MetaCRTC            *crtc,
+                              gsize               *size,
+                              unsigned short     **red,
+                              unsigned short     **green,
+                              unsigned short     **blue)
+{
+  XRRCrtcGamma *gamma;
+
+  gamma = XRRGetCrtcGamma (manager->xdisplay, (XID)crtc->crtc_id);
+
+  *size = gamma->size;
+  *red = g_memdup (gamma->red, sizeof (unsigned short) * gamma->size);
+  *green = g_memdup (gamma->green, sizeof (unsigned short) * gamma->size);
+  *blue = g_memdup (gamma->blue, sizeof (unsigned short) * gamma->size);
+
+  XRRFreeGamma (gamma);
+}
+#endif
+
+static void
+handle_get_crtc_gamma_dummy (MetaMonitorManager  *manager,
+                             MetaCRTC            *crtc,
+                             gsize               *size,
+                             unsigned short     **red,
+                             unsigned short     **green,
+                             unsigned short     **blue)
+{
+  *size = 0;
+  *red = g_new0 (unsigned short, 0);
+  *green = g_new0 (unsigned short, 0);
+  *blue = g_new0 (unsigned short, 0);
+}
+
+static gboolean
+meta_monitor_manager_handle_get_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
+                                             GDBusMethodInvocation *invocation,
+                                             guint                  serial,
+                                             guint                  crtc_id)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
+  MetaCRTC *crtc;
+  gsize size;
+  unsigned short *red;
+  unsigned short *green;
+  unsigned short *blue;
+  GBytes *red_bytes, *green_bytes, *blue_bytes;
+  GVariant *red_v, *green_v, *blue_v;
+
+  if (serial != manager->serial)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "The requested configuration is based on stale information");
+      return TRUE;
+    }
+
+  if (crtc_id >= manager->n_crtcs)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Invalid crtc id");
+      return TRUE;
+    }
+  crtc = &manager->crtcs[crtc_id];
+
+  if (manager->backend == META_BACKEND_XRANDR)
+    handle_get_crtc_gamma_xrandr (manager, crtc, &size, &red, &green, &blue);
+  else
+    handle_get_crtc_gamma_dummy (manager, crtc, &size, &red, &green, &blue);
+
+  red_bytes = g_bytes_new_take (red, size * sizeof (unsigned short));
+  green_bytes = g_bytes_new_take (green, size * sizeof (unsigned short));
+  blue_bytes = g_bytes_new_take (blue, size * sizeof (unsigned short));
+
+  red_v = g_variant_new_from_bytes (G_VARIANT_TYPE ("aq"), red_bytes, TRUE);
+  green_v = g_variant_new_from_bytes (G_VARIANT_TYPE ("aq"), green_bytes, TRUE);
+  blue_v = g_variant_new_from_bytes (G_VARIANT_TYPE ("aq"), blue_bytes, TRUE);
+
+  meta_dbus_display_config_complete_get_crtc_gamma (skeleton, invocation,
+                                                    red_v, green_v, blue_v);
+
+  g_bytes_unref (red_bytes);
+  g_bytes_unref (green_bytes);
+  g_bytes_unref (blue_bytes);
+
+  return TRUE;
+}
+
+#ifdef HAVE_RANDR
+static void
+handle_set_crtc_gamma_xrandr (MetaMonitorManager *manager,
+                              MetaCRTC           *crtc,
+                              gsize               size,
+                              unsigned short     *red,
+                              unsigned short     *green,
+                              unsigned short     *blue)
+{
+  XRRCrtcGamma gamma;
+
+  gamma.size = size;
+  gamma.red = red;
+  gamma.green = green;
+  gamma.blue = blue;
+
+  XRRSetCrtcGamma (manager->xdisplay, (XID)crtc->crtc_id, &gamma);
+}
+#endif
+
+static void
+handle_set_crtc_gamma_dummy (MetaMonitorManager *manager,
+                             MetaCRTC           *crtc,
+                             gsize               size,
+                             unsigned short     *red,
+                             unsigned short     *green,
+                             unsigned short     *blue)
+{
+}
+
+static gboolean
+meta_monitor_manager_handle_set_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
+                                             GDBusMethodInvocation *invocation,
+                                             guint                  serial,
+                                             guint                  crtc_id,
+                                             GVariant              *red_v,
+                                             GVariant              *green_v,
+                                             GVariant              *blue_v)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
+  MetaCRTC *crtc;
+  gsize size, dummy;
+  unsigned short *red;
+  unsigned short *green;
+  unsigned short *blue;
+  GBytes *red_bytes, *green_bytes, *blue_bytes;
+
+  if (serial != manager->serial)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "The requested configuration is based on stale information");
+      return TRUE;
+    }
+
+  if (crtc_id >= manager->n_crtcs)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Invalid crtc id");
+      return TRUE;
+    }
+  crtc = &manager->crtcs[crtc_id];
+
+  red_bytes = g_variant_get_data_as_bytes (red_v);
+  green_bytes = g_variant_get_data_as_bytes (green_v);
+  blue_bytes = g_variant_get_data_as_bytes (blue_v);
+
+  size = g_bytes_get_size (red_bytes) / sizeof (unsigned short);
+  red = (unsigned short*) g_bytes_get_data (red_bytes, &dummy);
+  green = (unsigned short*) g_bytes_get_data (green_bytes, &dummy);
+  blue = (unsigned short*) g_bytes_get_data (blue_bytes, &dummy);
+
+  if (manager->backend == META_BACKEND_XRANDR)
+    handle_set_crtc_gamma_xrandr (manager, crtc, size, red, green, blue);
+  else
+    handle_set_crtc_gamma_dummy (manager, crtc, size, red, green, blue);
+
+  meta_dbus_display_config_complete_set_crtc_gamma (skeleton, invocation);
+
+  g_bytes_unref (red_bytes);
+  g_bytes_unref (green_bytes);
+  g_bytes_unref (blue_bytes);
+
+  return TRUE;
+}
+
 static void
 meta_monitor_manager_display_config_init (MetaDBusDisplayConfigIface *iface)
 {
   iface->handle_get_resources = meta_monitor_manager_handle_get_resources;
   iface->handle_apply_configuration = meta_monitor_manager_handle_apply_configuration;
   iface->handle_change_backlight = meta_monitor_manager_handle_change_backlight;
+  iface->handle_get_crtc_gamma = meta_monitor_manager_handle_get_crtc_gamma;
+  iface->handle_set_crtc_gamma = meta_monitor_manager_handle_set_crtc_gamma;
 }
 
 static void

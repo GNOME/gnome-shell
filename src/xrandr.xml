@@ -62,7 +62,6 @@
 	                    CRTC; they are not necessarily reflected in
 			    the hardware.
 			    No property is specified in this version of the API.
-        FIXME: gamma?
 
         Note: all geometry information refers to the untransformed
 	display.
@@ -211,6 +210,42 @@
       <arg name="serial" direction="in" type="u" />
       <arg name="output" direction="in" type="u" />
       <arg name="value" direction="in" type="i" />
+    </method>
+
+    <!--
+        GetCrtcGamma:
+	@serial: configuration serial
+	@crtc: API id of the crtc
+	@red: red gamma ramp
+	@green: green gamma ramp
+	@blue: blue gamma ramp
+
+	Requests the current gamma ramps of @crtc.
+    -->
+    <method name="GetCrtcGamma">
+      <arg name="serial" direction="in" type="u" />
+      <arg name="crtc" direction="in" type="u" />
+      <arg name="red" direction="out" type="aq" />
+      <arg name="green" direction="out" type="aq" />
+      <arg name="blue" direction="out" type="aq" />
+    </method>
+
+    <!--
+        SetCrtcGamma:
+	@serial: configuration serial
+	@crtc: API id of the crtc
+	@red: red gamma ramp
+	@green: green gamma ramp
+	@blue: blue gamma ramp
+
+	Changes the gamma ramps of @crtc.
+    -->
+    <method name="SetCrtcGamma">
+      <arg name="serial" direction="in" type="u" />
+      <arg name="crtc" direction="in" type="u" />
+      <arg name="red" direction="in" type="aq" />
+      <arg name="green" direction="in" type="aq" />
+      <arg name="blue" direction="in" type="aq" />
     </method>
 
     <!--
