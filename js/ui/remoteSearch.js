@@ -7,7 +7,6 @@ const Lang = imports.lang;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
-const FileUtils = imports.misc.fileUtils;
 const Search = imports.ui.search;
 
 const KEY_FILE_GROUP = 'Shell Search Provider';
@@ -60,108 +59,107 @@ var SearchProviderProxy = Gio.DBusProxy.makeProxyWrapper(SearchProviderIface);
 var SearchProvider2Proxy = Gio.DBusProxy.makeProxyWrapper(SearchProvider2Iface);
 
 function loadRemoteSearchProviders(addProviderCallback) {
-    let data = { loadedProviders: [],
-                 objectPaths: {},
-                 addProviderCallback: addProviderCallback };
-    FileUtils.collectFromDatadirsAsync('search-providers',
-                                       { loadedCallback: remoteProvidersLoaded,
-                                         processFile: loadRemoteSearchProvider,
-                                         data: data
-                                       });
-}
+    let objectPaths = {};
+    let loadedProviders = [];
 
-function loadRemoteSearchProvider(file, info, data) {
-    let keyfile = new GLib.KeyFile();
-    let path = file.get_path();
+    function loadRemoteSearchProvider(file) {
+        let keyfile = new GLib.KeyFile();
+        let path = file.get_path();
 
-    try {
-        keyfile.load_from_file(path, 0);
-    } catch(e) {
-        return;
-    }
-
-    if (!keyfile.has_group(KEY_FILE_GROUP))
-        return;
-
-    let remoteProvider;
-    try {
-        let group = KEY_FILE_GROUP;
-        let busName = keyfile.get_string(group, 'BusName');
-        let objectPath = keyfile.get_string(group, 'ObjectPath');
-
-        if (data.objectPaths[objectPath])
-            return;
-
-        let appInfo = null;
         try {
-            let desktopId = keyfile.get_string(group, 'DesktopId');
-            appInfo = Gio.DesktopAppInfo.new(desktopId);
-        } catch (e) {
-            log('Ignoring search provider ' + path + ': missing DesktopId');
+            keyfile.load_from_file(path, 0);
+        } catch(e) {
             return;
         }
 
-        let version = '1';
+        if (!keyfile.has_group(KEY_FILE_GROUP))
+            return;
+
+        let remoteProvider;
         try {
-            version = keyfile.get_string(group, 'Version');
-        } catch (e) {
-            // ignore error
+            let group = KEY_FILE_GROUP;
+            let busName = keyfile.get_string(group, 'BusName');
+            let objectPath = keyfile.get_string(group, 'ObjectPath');
+
+            if (objectPaths[objectPath])
+                return;
+
+            let appInfo = null;
+            try {
+                let desktopId = keyfile.get_string(group, 'DesktopId');
+                appInfo = Gio.DesktopAppInfo.new(desktopId);
+            } catch (e) {
+                log('Ignoring search provider ' + path + ': missing DesktopId');
+                return;
+            }
+
+            let version = '1';
+            try {
+                version = keyfile.get_string(group, 'Version');
+            } catch (e) {
+                // ignore error
+            }
+
+            if (version >= 2)
+                remoteProvider = new RemoteSearchProvider2(appInfo, busName, objectPath);
+            else
+                remoteProvider = new RemoteSearchProvider(appInfo, busName, objectPath);
+
+            objectPaths[objectPath] = remoteProvider;
+            loadedProviders.push(remoteProvider);
+        } catch(e) {
+            log('Failed to add search provider %s: %s'.format(path, e.toString()));
         }
-
-        if (version >= 2)
-            remoteProvider = new RemoteSearchProvider2(appInfo, busName, objectPath);
-        else
-            remoteProvider = new RemoteSearchProvider(appInfo, busName, objectPath);
-
-        data.objectPaths[objectPath] = remoteProvider;
-        data.loadedProviders.push(remoteProvider);
-    } catch(e) {
-        log('Failed to add search provider %s: %s'.format(path, e.toString()));
     }
-}
 
-function remoteProvidersLoaded(loadState) {
+    let dataDirs = GLib.get_system_data_dirs();
+    dataDirs.forEach(function(dataDir) {
+        let path = GLib.build_filenamev([dataDir, 'gnome-shell', 'search-providers']);
+        let dir = Gio.File.new_for_path(path);
+        let fileEnum = dir.enumerate_children('standard::name,standard::type',
+                                              Gio.FileQueryInfoFlags.NONE, null);
+        let info;
+        while ((info = fileEnum.next_file(null)))
+            loadRemoteSearchProvider(fileEnum.get_child(info));
+    });
+
     let searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
     let sortOrder = searchSettings.get_strv('sort-order');
 
     // Special case gnome-control-center to be always active and always first
     sortOrder.unshift('gnome-control-center.desktop');
 
-    loadState.loadedProviders.sort(
-        function(providerA, providerB) {
-            let idxA, idxB;
-            let appIdA, appIdB;
+    loadedProviders.sort(function(providerA, providerB) {
+        let idxA, idxB;
+        let appIdA, appIdB;
 
-            appIdA = providerA.appInfo.get_id();
-            appIdB = providerB.appInfo.get_id();
+        appIdA = providerA.appInfo.get_id();
+        appIdB = providerB.appInfo.get_id();
 
-            idxA = sortOrder.indexOf(appIdA);
-            idxB = sortOrder.indexOf(appIdB);
+        idxA = sortOrder.indexOf(appIdA);
+        idxB = sortOrder.indexOf(appIdB);
 
-            // if no provider is found in the order, use alphabetical order
-            if ((idxA == -1) && (idxB == -1)) {
-                let nameA = providerA.appInfo.get_name();
-                let nameB = providerB.appInfo.get_name();
+        // if no provider is found in the order, use alphabetical order
+        if ((idxA == -1) && (idxB == -1)) {
+            let nameA = providerA.appInfo.get_name();
+            let nameB = providerB.appInfo.get_name();
 
-                return GLib.utf8_collate(nameA, nameB);
-            }
+            return GLib.utf8_collate(nameA, nameB);
+        }
 
-            // if providerA isn't found, it's sorted after providerB
-            if (idxA == -1)
-                return 1;
+        // if providerA isn't found, it's sorted after providerB
+        if (idxA == -1)
+            return 1;
 
-            // if providerB isn't found, it's sorted after providerA
-            if (idxB == -1)
-                return -1;
+        // if providerB isn't found, it's sorted after providerA
+        if (idxB == -1)
+            return -1;
 
-            // finally, if both providers are found, return their order in the list
-            return (idxA - idxB);
-        });
+        // finally, if both providers are found, return their order in the list
+        return (idxA - idxB);
+    });
 
-    loadState.loadedProviders.forEach(
-        function(provider) {
-            loadState.addProviderCallback(provider);
-        });
+    loadedProviders.forEach(addProviderCallback);
 }
 
 const RemoteSearchProvider = new Lang.Class({
