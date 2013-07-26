@@ -82,22 +82,14 @@ const SearchSystem = new Lang.Class({
         if (isSubSearch) {
             for (let i = 0; i < this._providers.length; i++) {
                 let [provider, previousResults] = previousResultsArr[i];
-                try {
-                    results.push([provider, []]);
-                    provider.getSubsearchResultSet(previousResults, terms);
-                } catch (error) {
-                    log('A ' + error.name + ' has occured in ' + provider.id + ': ' + error.message);
-                }
+                results.push([provider, []]);
+                provider.getSubsearchResultSet(previousResults, terms);
             }
         } else {
             for (let i = 0; i < this._providers.length; i++) {
                 let provider = this._providers[i];
-                try {
-                    results.push([provider, []]);
-                    provider.getInitialResultSet(terms);
-                } catch (error) {
-                    log('A ' + error.name + ' has occured in ' + provider.id + ': ' + error.message);
-                }
+                results.push([provider, []]);
+                provider.getInitialResultSet(terms);
             }
         }
     }
