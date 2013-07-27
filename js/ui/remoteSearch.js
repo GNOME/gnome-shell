@@ -116,11 +116,18 @@ function loadRemoteSearchProviders(addProviderCallback) {
     dataDirs.forEach(function(dataDir) {
         let path = GLib.build_filenamev([dataDir, 'gnome-shell', 'search-providers']);
         let dir = Gio.File.new_for_path(path);
-        let fileEnum = dir.enumerate_children('standard::name,standard::type',
+        let fileEnum;
+        try {
+            fileEnum = dir.enumerate_children('standard::name,standard::type',
                                               Gio.FileQueryInfoFlags.NONE, null);
-        let info;
-        while ((info = fileEnum.next_file(null)))
-            loadRemoteSearchProvider(fileEnum.get_child(info));
+        } catch (e) {
+            fileEnum = null;
+        }
+        if (fileEnum != null) {
+            let info;
+            while ((info = fileEnum.next_file(null)))
+                loadRemoteSearchProvider(fileEnum.get_child(info));
+        }
     });
 
     let searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
