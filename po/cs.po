@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-07-19 18:59+0000\n"
-"PO-Revision-Date: 2013-07-21 21:11+0200\n"
+"POT-Creation-Date: 2013-07-26 08:43+0000\n"
+"PO-Revision-Date: 2013-07-28 13:09+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -363,33 +363,45 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Pomocí rozbalovacího seznamu výše zvolte rozšíření, které chete nastavit."
 
-#: ../js/gdm/loginDialog.js:298
+#: ../js/gdm/authPrompt.js:132 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
+#: ../js/ui/status/bluetooth.js:218 ../js/ui/status/system.js:305
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: ../js/gdm/authPrompt.js:154 ../js/gdm/authPrompt.js:206
+msgid "Next"
+msgstr "Následující"
+
+#: ../js/gdm/authPrompt.js:202 ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:55
+msgid "Unlock"
+msgstr "Odemknout"
+
+#: ../js/gdm/authPrompt.js:204
+msgctxt "button"
+msgid "Sign In"
+msgstr "Přihlásit se"
+
+#: ../js/gdm/loginDialog.js:299
 msgid "Choose Session"
 msgstr "Vybrat sezení"
 
-#: ../js/gdm/loginDialog.js:316
+#: ../js/gdm/loginDialog.js:317
 msgid "Session"
 msgstr "Sezení"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:478
+#: ../js/gdm/loginDialog.js:468
 msgid "Not listed?"
 msgstr "Nejste na seznamu?"
 
-#: ../js/gdm/loginDialog.js:663
-msgctxt "button"
-msgid "Sign In"
-msgstr "Přihlásit se"
-
-#: ../js/gdm/loginDialog.js:665 ../js/gdm/util.js:561
-msgid "Next"
-msgstr "Následující"
-
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:716
+#: ../js/gdm/loginDialog.js:630
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(např. uživatel nebo %s)"
@@ -397,12 +409,12 @@ msgstr "(např. uživatel nebo %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:721 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:635 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Uživatelské jméno: "
 
-#: ../js/gdm/loginDialog.js:987
+#: ../js/gdm/loginDialog.js:886
 msgid "Login Window"
 msgstr "Přihlašovací okno"
 
@@ -424,22 +436,15 @@ msgstr "Restartovat"
 msgid "Power Off"
 msgstr "Vypnout"
 
-#: ../js/gdm/util.js:255
+#: ../js/gdm/util.js:251
 msgid "Authentication error"
 msgstr "Chyba ověření"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:372
+#: ../js/gdm/util.js:369
 msgid "(or swipe finger)"
 msgstr "(nebo otiskněte prst)"
-
-#: ../js/gdm/util.js:539 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:431 ../js/ui/status/system.js:305
-msgid "Cancel"
-msgstr "Zrušit"
 
 #: ../js/misc/util.js:97
 msgid "Command not found"
@@ -456,23 +461,23 @@ msgstr "Nelze analyzovat příkaz:"
 msgid "Execution of '%s' failed:"
 msgstr "Vykonání „%s“ selhalo:"
 
-#: ../js/ui/appDisplay.js:397
+#: ../js/ui/appDisplay.js:386
 msgid "Frequent"
 msgstr "Časté"
 
-#: ../js/ui/appDisplay.js:404
+#: ../js/ui/appDisplay.js:393
 msgid "All"
 msgstr "Všechny"
 
-#: ../js/ui/appDisplay.js:996
+#: ../js/ui/appDisplay.js:986
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appDisplay.js:999 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:989 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: ../js/ui/appDisplay.js:1000
+#: ../js/ui/appDisplay.js:990
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
@@ -1209,27 +1214,27 @@ msgstr "Otevřít"
 msgid "Remove"
 msgstr "Odstranit"
 
-#: ../js/ui/messageTray.js:1560
+#: ../js/ui/messageTray.js:1564
 msgid "Clear Messages"
 msgstr "Vymazat zprávy"
 
-#: ../js/ui/messageTray.js:1587
+#: ../js/ui/messageTray.js:1591
 msgid "Notification Settings"
 msgstr "Nastavení upozornění"
 
-#: ../js/ui/messageTray.js:1770
+#: ../js/ui/messageTray.js:1774
 msgid "No Messages"
 msgstr "Žádné zprávy"
 
-#: ../js/ui/messageTray.js:1842
+#: ../js/ui/messageTray.js:1846
 msgid "Message Tray"
 msgstr "Lišta zpráv"
 
-#: ../js/ui/messageTray.js:2854
+#: ../js/ui/messageTray.js:2852
 msgid "System Information"
 msgstr "Informace o systému"
 
-#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:378
+#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:396
 msgctxt "program"
 msgid "Unknown"
 msgstr "Neznámé"
@@ -1258,17 +1263,17 @@ msgstr "Přehled"
 msgid "Type to search…"
 msgstr "Vyhledávejte psaním…"
 
-#: ../js/ui/panel.js:567
+#: ../js/ui/panel.js:568
 msgid "Quit"
 msgstr "Ukončit"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:618
+#: ../js/ui/panel.js:619
 msgid "Activities"
 msgstr "Činnosti"
 
-#: ../js/ui/panel.js:914
+#: ../js/ui/panel.js:915
 msgid "Top Bar"
 msgstr "Horní lišta"
 
@@ -1358,10 +1363,6 @@ msgstr "Heslo"
 msgid "Remember Password"
 msgstr "Pamatovat si heslo"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:68
-msgid "Unlock"
-msgstr "Odemknout"
-
 #: ../js/ui/status/accessibility.js:36
 msgid "Accessibility"
 msgstr "Zpřístupnění"
@@ -1406,114 +1407,100 @@ msgstr "Vysoký kontrast"
 msgid "Large Text"
 msgstr "Styl velkého textu"
 
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
-#: ../js/ui/status/bluetooth.js:272 ../js/ui/status/bluetooth.js:309
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:373
-#: ../js/ui/status/bluetooth.js:404 ../js/ui/status/network.js:713
+#. The Bluetooth menu only appears when Bluetooth is in use,
+#. so just statically build it with a "Turn Off" menu item.
+#: ../js/ui/status/bluetooth.js:21 ../js/ui/status/bluetooth.js:25
+#: ../js/ui/status/bluetooth.js:59 ../js/ui/status/bluetooth.js:96
+#: ../js/ui/status/bluetooth.js:124 ../js/ui/status/bluetooth.js:160
+#: ../js/ui/status/bluetooth.js:191 ../js/ui/status/network.js:713
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:45
-msgid "Visibility"
-msgstr "Viditelnost"
+#: ../js/ui/status/bluetooth.js:27
+msgid "Turn Off"
+msgstr "Vypnout"
 
-#: ../js/ui/status/bluetooth.js:59
-msgid "Send Files to Device…"
-msgstr "Odeslat soubory do zařízení…"
+#: ../js/ui/status/bluetooth.js:30
+#| msgid "Bluetooth"
+msgid "Bluetooth Settings"
+msgstr "Nastavení Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:60
-msgid "Set Up a New Device…"
-msgstr "Nastavit nové zařízení…"
+#: ../js/ui/status/bluetooth.js:54
+#, c-format
+#| msgid "Connected (private)"
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "% připojené zařízení"
+msgstr[1] "% připojená zařízení"
+msgstr[2] "% připojených zařízení"
 
-#. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:140
-msgid "hardware disabled"
-msgstr "zařízení zakázáno"
-
-#: ../js/ui/status/bluetooth.js:196
-msgid "Connection"
-msgstr "Připojení"
-
-#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:399
-msgid "disconnecting..."
-msgstr "odpojování…"
-
-#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:405
-#: ../js/ui/status/network.js:1298
-msgid "connecting..."
-msgstr "připojování…"
-
-#: ../js/ui/status/bluetooth.js:238
-msgid "Send Files…"
-msgstr "Odeslat soubory…"
-
-#: ../js/ui/status/bluetooth.js:310 ../js/ui/status/bluetooth.js:338
+#: ../js/ui/status/bluetooth.js:97 ../js/ui/status/bluetooth.js:125
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Požadavek na autorizaci od %s"
 
-#: ../js/ui/status/bluetooth.js:316 ../js/ui/status/bluetooth.js:381
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/bluetooth.js:168
+#: ../js/ui/status/bluetooth.js:199
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Zařízení %s se chce spárovat s tímto počítačem"
 
-#: ../js/ui/status/bluetooth.js:318
+#: ../js/ui/status/bluetooth.js:105
 msgid "Allow"
 msgstr "Povolit"
 
-#: ../js/ui/status/bluetooth.js:319
+#: ../js/ui/status/bluetooth.js:106
 msgid "Deny"
 msgstr "Zamítnout"
 
-#: ../js/ui/status/bluetooth.js:344
+#: ../js/ui/status/bluetooth.js:131
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Zařízení %s požaduje přístup ke službě „%s“"
 
-#: ../js/ui/status/bluetooth.js:346
+#: ../js/ui/status/bluetooth.js:133
 msgid "Always grant access"
 msgstr "Vždy udělovat přístup"
 
-#: ../js/ui/status/bluetooth.js:347
+#: ../js/ui/status/bluetooth.js:134
 msgid "Grant this time only"
 msgstr "Udělit pouze tentokrát"
 
-#: ../js/ui/status/bluetooth.js:348
+#: ../js/ui/status/bluetooth.js:135
 msgid "Reject"
 msgstr "Odmítnout"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:375
+#: ../js/ui/status/bluetooth.js:162
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Potvrzení spárování pro %s"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:169
 #, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr "Ověřte prosím, zda klíč „%06d“ odpovídá tomu na zařízení."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:385
+#: ../js/ui/status/bluetooth.js:172
 msgid "Matches"
 msgstr "Souhlasí"
 
-#: ../js/ui/status/bluetooth.js:386
+#: ../js/ui/status/bluetooth.js:173
 msgid "Does not match"
 msgstr "Nesouhlasí"
 
-#: ../js/ui/status/bluetooth.js:405
+#: ../js/ui/status/bluetooth.js:192
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Požadavek na spárování pro %s"
 
-#: ../js/ui/status/bluetooth.js:413
+#: ../js/ui/status/bluetooth.js:200
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Zadejte prosím PIN, který je uveden na zařízení."
 
-#: ../js/ui/status/bluetooth.js:430
+#: ../js/ui/status/bluetooth.js:217
 msgid "OK"
 msgstr "Budiž"
 
@@ -1533,6 +1520,10 @@ msgstr "<neznámé>"
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
+#: ../js/ui/status/network.js:140
+msgid "hardware disabled"
+msgstr "zařízení zakázáno"
+
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
 #: ../js/ui/status/network.js:162
 msgid "disabled"
@@ -1543,6 +1534,14 @@ msgstr "zakázáno"
 #: ../js/ui/status/network.js:397
 msgid "unmanaged"
 msgstr "nespravováno"
+
+#: ../js/ui/status/network.js:399
+msgid "disconnecting..."
+msgstr "odpojování…"
+
+#: ../js/ui/status/network.js:405 ../js/ui/status/network.js:1298
+msgid "connecting..."
+msgstr "připojování…"
 
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:408 ../js/ui/status/network.js:1301
@@ -1670,11 +1669,11 @@ msgstr "Hlasitost změněna"
 msgid "Volume"
 msgstr "Hlasitost"
 
-#: ../js/ui/unlockDialog.js:78
+#: ../js/ui/unlockDialog.js:63
 msgid "Log in as another user"
 msgstr "Přihlásit se jako jiný uživatel"
 
-#: ../js/ui/unlockDialog.js:97
+#: ../js/ui/unlockDialog.js:80
 msgid "Unlock Window"
 msgstr "Odemykací okno"
 
@@ -1749,7 +1748,7 @@ msgstr "Použít pro přihlašovací obrazovku určitý mód, např. „gdm“."
 msgid "List possible modes"
 msgstr "Vypsat možné režimy"
 
-#: ../src/shell-app.c:626
+#: ../src/shell-app.c:644
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Nelze spustit „%s“"
@@ -1765,3 +1764,18 @@ msgstr "Heslo nemůže být prázdné."
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialogové okno ověření bylo uživatelem zrušeno"
+
+#~ msgid "Visibility"
+#~ msgstr "Viditelnost"
+
+#~ msgid "Send Files to Device…"
+#~ msgstr "Odeslat soubory do zařízení…"
+
+#~ msgid "Set Up a New Device…"
+#~ msgstr "Nastavit nové zařízení…"
+
+#~ msgid "Connection"
+#~ msgstr "Připojení"
+
+#~ msgid "Send Files…"
+#~ msgstr "Odeslat soubory…"
