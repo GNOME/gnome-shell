@@ -116,6 +116,7 @@ const ShellUserVerifier = new Lang.Class({
         this._client = client;
 
         this._settings = new Gio.Settings({ schema: LOGIN_SCREEN_SCHEMA });
+        this._updateDefaultService();
 
         this._fprintManager = new Fprint.FprintManager();
         this._messageQueue = [];
@@ -302,11 +303,23 @@ const ShellUserVerifier = new Lang.Class({
         this._userVerifier.connect('verification-complete', Lang.bind(this, this._onVerificationComplete));
     },
 
+    _getForegroundService: function() {
+        return this._defaultService;
+    },
+
+    serviceIsForeground: function(serviceName) {
+        return serviceName == this._getForegroundService();
+    },
+
+    _updateDefaultService: function() {
+        this._defaultService = PASSWORD_SERVICE_NAME;
+    },
+
     _beginVerification: function() {
         this._hold.acquire();
 
         if (this._userName) {
-            this._userVerifier.call_begin_verification_for_user(PASSWORD_SERVICE_NAME,
+            this._userVerifier.call_begin_verification_for_user(this._getForegroundService(),
                                                                 this._userName,
                                                                 this._cancellable,
                                                                 Lang.bind(this, function(obj, result) {
@@ -342,7 +355,7 @@ const ShellUserVerifier = new Lang.Class({
                 }));
             }
         } else {
-            this._userVerifier.call_begin_verification(PASSWORD_SERVICE_NAME,
+            this._userVerifier.call_begin_verification(this._getForegroundService(),
                                                        this._cancellable,
                                                        Lang.bind(this, function(obj, result) {
                 try {
@@ -369,30 +382,27 @@ const ShellUserVerifier = new Lang.Class({
             // Translators: this message is shown below the password entry field
             // to indicate the user can swipe their finger instead
             this.emit('show-login-hint', _("(or swipe finger)"));
-        } else if (serviceName == PASSWORD_SERVICE_NAME) {
+        } else if (this.serviceIsForeground(serviceName)) {
             this._queueMessage(info, 'login-dialog-message-info');
         }
     },
 
     _onProblem: function(client, serviceName, problem) {
-        // we don't want to show auth failed messages to
-        // users who haven't enrolled their fingerprint.
-        if (serviceName != PASSWORD_SERVICE_NAME)
+        if (!this.serviceIsForeground(serviceName))
             return;
+
         this._queueMessage(problem, 'login-dialog-message-warning');
     },
 
     _onInfoQuery: function(client, serviceName, question) {
-        // We only expect questions to come from the main auth service
-        if (serviceName != PASSWORD_SERVICE_NAME)
+        if (!this.serviceIsForeground(serviceName))
             return;
 
         this.emit('ask-question', serviceName, question, '');
     },
 
     _onSecretInfoQuery: function(client, serviceName, secretQuestion) {
-        // We only expect secret requests to come from the main auth service
-        if (serviceName != PASSWORD_SERVICE_NAME)
+        if (!this.serviceIsForeground(serviceName))
             return;
 
         this.emit('ask-question', serviceName, secretQuestion, '\u25cf');
@@ -401,6 +411,7 @@ const ShellUserVerifier = new Lang.Class({
     _onReset: function() {
         // Clear previous attempts to authenticate
         this._failCounter = 0;
+        this._updateDefaultService();
 
         this.emit('reset');
     },
@@ -457,7 +468,7 @@ const ShellUserVerifier = new Lang.Class({
         // if the password service fails, then cancel everything.
         // But if, e.g., fingerprint fails, still give
         // password authentication a chance to succeed
-        if (serviceName == PASSWORD_SERVICE_NAME) {
+        if (this.serviceIsForeground(serviceName)) {
             this._verificationFailed(true);
         }
 
