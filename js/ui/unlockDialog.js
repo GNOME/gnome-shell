@@ -51,7 +51,7 @@ const UnlockDialog = new Lang.Class({
         this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
         this._authPrompt.connect('failed', Lang.bind(this, this._fail));
         this._authPrompt.connect('cancelled', Lang.bind(this, this._fail));
-        this._authPrompt.setUser(this._user);
+        this._authPrompt.connect('reset', Lang.bind(this, this._onReset));
         this._authPrompt.setPasswordChar('\u25cf');
         this._authPrompt.nextButton.label = _("Unlock");
 
@@ -75,7 +75,7 @@ const UnlockDialog = new Lang.Class({
             this._otherUserButton = null;
         }
 
-        this._authPrompt.begin({ userName: this._userName });
+        this._authPrompt.reset();
         this._updateSensitivity(true);
 
         Main.ctrlAltTabManager.addGroup(this.actor, _("Unlock Window"), 'dialog-password-symbolic');
@@ -95,6 +95,18 @@ const UnlockDialog = new Lang.Class({
 
     _fail: function() {
         this.emit('failed');
+    },
+
+    _onReset: function(authPrompt, beginRequest) {
+        let userName;
+        if (beginRequest == AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
+            this._authPrompt.setUser(this._user);
+            userName = this._userName;
+        } else {
+            userName = null;
+        }
+
+        this._authPrompt.begin({ userName: userName });
     },
 
     _escape: function() {

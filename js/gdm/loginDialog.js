@@ -475,7 +475,12 @@ const LoginDialog = new Lang.Class({
                                                 x_align: St.Align.START,
                                                 x_fill: true });
 
-        this._notListedButton.connect('clicked', Lang.bind(this, this._hideUserListAndLogIn));
+        this._notListedButton.connect('clicked',
+                                      Lang.bind(this, function() {
+            this._authPrompt.cancelButton.show();
+            this._hideUserListAndLogIn();
+        }));
+
         this._notListedButton.hide();
 
         this._userSelectionBox.add(this._notListedButton,
@@ -585,15 +590,17 @@ const LoginDialog = new Lang.Class({
         this._showPrompt();
     },
 
-    _onReset: function() {
+    _onReset: function(authPrompt, beginRequest) {
         this._sessionMenuButton.updateSensitivity(true);
 
         this._user = null;
 
-        if (this._disableUserList)
+        if (this._disableUserList) {
+            this._authPrompt.cancelButton.hide();
             this._hideUserListAndLogIn();
-        else
+        } else {
             this._showUserList();
+        }
     },
 
     _onDefaultSessionChanged: function(client, sessionId) {
@@ -634,7 +641,7 @@ const LoginDialog = new Lang.Class({
         this._authPrompt.setHint(_("(e.g., user or %s)").format(hint));
     },
 
-    _askForUsernameAndLogIn: function() {
+    _askForUsernameAndBeginVerification: function() {
         this._authPrompt.setPasswordChar('');
         this._authPrompt.setQuestion(_("Username: "));
 
@@ -818,11 +825,20 @@ const LoginDialog = new Lang.Class({
         this._userSelectionBox.visible = expanded;
     },
 
-    _hideUserListAndLogIn: function() {
+    _hideUserList: function() {
         this._setUserListExpanded(false);
         if (this._userSelectionBox.visible)
             GdmUtil.cloneAndFadeOutActor(this._userSelectionBox);
-        this._askForUsernameAndLogIn();
+    },
+
+    _hideUserListAskForUsernameAndBeginVerification: function() {
+        this._hideUserList();
+        this._askForUsernameAndBeginVerification();
+    },
+
+    _hideUserListAndBeginVerification: function() {
+        this._hideUserList();
+        this._authPrompt.begin();
     },
 
     _showUserList: function() {
