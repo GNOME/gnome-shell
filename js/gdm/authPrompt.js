@@ -24,11 +24,18 @@ const AuthPromptMode = {
     UNLOCK_OR_LOG_IN: 1
 };
 
+const AuthPromptStatus = {
+    NOT_VERIFYING: 0,
+    VERIFYING: 1,
+    VERIFICATION_FAILED: 2,
+    VERIFICATION_SUCCEEDED: 3
+};
+
 const AuthPrompt = new Lang.Class({
     Name: 'AuthPrompt',
 
     _init: function(gdmClient, mode) {
-        this.verifyingUser = false;
+        this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
 
         this._gdmClient = gdmClient;
         this._mode = mode;
@@ -217,15 +224,15 @@ const AuthPrompt = new Lang.Class({
 
         this.updateSensitivity(true);
         this.setActorInDefaultButtonWell(null);
-        this.userVerified = false;
+        this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
     },
 
     _onVerificationComplete: function() {
-        this.userVerified = true;
+        this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
     },
 
     _onReset: function() {
-        if (!this.userVerified)
+        if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
             this.reset();
     },
 
@@ -398,8 +405,7 @@ const AuthPrompt = new Lang.Class({
     },
 
     reset: function() {
-        this.verifyingUser = false;
-        this.userVerified = false;
+        this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this._queryingService = null;
         this.clear();
         this._message.opacity = 0;
@@ -429,7 +435,7 @@ const AuthPrompt = new Lang.Class({
             hold = new Batch.Hold();
 
         this._userVerifier.begin(params.userName, hold);
-        this.verifyingUser = true;
+        this.verificationStatus = AuthPromptStatus.VERIFYING;
     },
 
     finish: function(onComplete) {
@@ -446,7 +452,7 @@ const AuthPrompt = new Lang.Class({
     },
 
     cancel: function() {
-        if (this.verifyingUser)
+        if (this.verificationStatus == AuthPromptStatus.VERIFYING)
             this._userVerifier.cancel();
 
         this.reset();
