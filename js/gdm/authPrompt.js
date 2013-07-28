@@ -203,11 +203,6 @@ const AuthPrompt = new Lang.Class({
         this.setPasswordChar(passwordChar);
         this.setQuestion(question);
 
-        if (this.verifyingUser)
-            this.cancelButton.show();
-        else
-            this.cancelButton.hide();
-
         if (passwordChar) {
             if (this._userVerifier.reauthenticating)
                 this.nextButton.label = _("Unlock");
