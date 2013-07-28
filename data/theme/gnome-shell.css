@@ -2345,15 +2345,12 @@ StScrollBar StButton#vhandle:active {
     padding-top: 24px;
     padding-bottom: 12px;
     spacing: 8px;
+    width: 23em;
 }
 
 .login-dialog-prompt-label {
     color: #eeeeee;
     font-size: 14px;
-}
-
-.login-dialog-prompt-entry {
-    width: 20em;
 }
 
 .login-dialog-session-list-button StIcon {

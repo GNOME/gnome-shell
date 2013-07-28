@@ -96,6 +96,7 @@ const AuthPrompt = new Lang.Class({
         this._entry.grab_key_focus();
 
         this._message = new St.Label({ opacity: 0 });
+        this._message.clutter_text.line_wrap = true;
         this.actor.add(this._message, { x_fill: true });
 
         this._loginHint = new St.Label({ style_class: 'login-dialog-prompt-login-hint-message' });
