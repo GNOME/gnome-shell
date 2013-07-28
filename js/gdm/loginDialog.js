@@ -529,7 +529,7 @@ const LoginDialog = new Lang.Class({
         if (disableUserList != this._disableUserList) {
             this._disableUserList = disableUserList;
 
-            if (!this._authPrompt.verifyingUser)
+            if (this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
                 this._authPrompt.reset();
         }
     },
