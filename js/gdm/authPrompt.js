@@ -428,6 +428,9 @@ const AuthPrompt = new Lang.Class({
         this.stopSpinning();
         this.setHint(null);
 
+        if (oldStatus == AuthPromptStatus.VERIFICATION_FAILED)
+            this.emit('failed');
+
         this.emit('reset');
     },
 
@@ -468,6 +471,7 @@ const AuthPrompt = new Lang.Class({
 
     cancel: function() {
         this.reset();
+        this.emit('cancelled');
     }
 });
 Signals.addSignalMethods(AuthPrompt.prototype);
