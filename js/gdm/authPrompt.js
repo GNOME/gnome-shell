@@ -31,6 +31,11 @@ const AuthPromptStatus = {
     VERIFICATION_SUCCEEDED: 3
 };
 
+const BeginRequestType = {
+    PROVIDE_USERNAME: 0,
+    DONT_PROVIDE_USERNAME: 1
+};
+
 const AuthPrompt = new Lang.Class({
     Name: 'AuthPrompt',
 
@@ -423,7 +428,7 @@ const AuthPrompt = new Lang.Class({
         if (oldStatus == AuthPromptStatus.VERIFICATION_FAILED)
             this.emit('failed');
 
-        this.emit('reset');
+        this.emit('reset', BeginRequestType.PROVIDE_USERNAME);
     },
 
     addCharacter: function(unichar) {
