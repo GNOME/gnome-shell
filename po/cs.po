@@ -1427,12 +1427,11 @@ msgstr "Nastavení Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:54
 #, c-format
-#| msgid "Connected (private)"
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
-msgstr[0] "% připojené zařízení"
-msgstr[1] "% připojená zařízení"
-msgstr[2] "% připojených zařízení"
+msgstr[0] "%d připojené zařízení"
+msgstr[1] "%d připojená zařízení"
+msgstr[2] "%d připojených zařízení"
 
 #: ../js/ui/status/bluetooth.js:97 ../js/ui/status/bluetooth.js:125
 #, c-format
@@ -1764,18 +1763,3 @@ msgstr "Heslo nemůže být prázdné."
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialogové okno ověření bylo uživatelem zrušeno"
-
-#~ msgid "Visibility"
-#~ msgstr "Viditelnost"
-
-#~ msgid "Send Files to Device…"
-#~ msgstr "Odeslat soubory do zařízení…"
-
-#~ msgid "Set Up a New Device…"
-#~ msgstr "Nastavit nové zařízení…"
-
-#~ msgid "Connection"
-#~ msgstr "Připojení"
-
-#~ msgid "Send Files…"
-#~ msgstr "Odeslat soubory…"
