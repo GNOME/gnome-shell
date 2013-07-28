@@ -451,7 +451,7 @@ const LoginDialog = new Lang.Class({
 
         this._authPrompt = new AuthPrompt.AuthPrompt(gdmClient, AuthPrompt.AuthPromptMode.UNLOCK_OR_LOG_IN);
         this._authPrompt.connect('prompted', Lang.bind(this, this._onPrompted));
-        this._authPrompt.connect('reset', Lang.bind(this, this._reset));
+        this._authPrompt.connect('reset', Lang.bind(this, this._onReset));
         this._authPrompt.hide();
 
         this._authPrompt.actor.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
@@ -535,7 +535,7 @@ const LoginDialog = new Lang.Class({
             this._disableUserList = disableUserList;
 
             if (!this._authPrompt.verifyingUser)
-                this._reset();
+                this._authPrompt.reset();
         }
     },
 
@@ -577,10 +577,7 @@ const LoginDialog = new Lang.Class({
         this._showPrompt();
     },
 
-    _reset: function() {
-        if (this._authPrompt.verifyingUser)
-            return;
-
+    _onReset: function() {
         this._sessionMenuButton.updateSensitivity(true);
 
         this._user = null;
