@@ -49,7 +49,8 @@ const UnlockDialog = new Lang.Class({
                                                                      factor: 0.5 }));
 
         this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
-        this._authPrompt.connect('reset', Lang.bind(this, this._onReset));
+        this._authPrompt.connect('failed', Lang.bind(this, this._fail));
+        this._authPrompt.connect('cancelled', Lang.bind(this, this._fail));
         this._authPrompt.setUser(this._user);
         this._authPrompt.setPasswordChar('\u25cf');
         this._authPrompt.nextButton.label = _("Unlock");
@@ -92,15 +93,13 @@ const UnlockDialog = new Lang.Class({
         }
     },
 
-    _onReset: function() {
+    _fail: function() {
         this.emit('failed');
     },
 
     _escape: function() {
-        if (this.allowCancel) {
+        if (this.allowCancel)
             this._authPrompt.cancel();
-            this.emit('failed');
-        }
     },
 
     _otherUserClicked: function(button, event) {
