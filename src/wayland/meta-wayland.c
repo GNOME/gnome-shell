@@ -211,6 +211,16 @@ surface_process_damage (MetaWaylandSurface *surface,
     {
       MetaWindowActor *window_actor =
         META_WINDOW_ACTOR (meta_window_get_compositor_private (surface->window));
+      MetaRectangle rect;
+      cairo_rectangle_int_t cairo_rect;
+
+      meta_window_get_input_rect (surface->window, &rect);
+      cairo_rect.x = 0;
+      cairo_rect.y = 0;
+      cairo_rect.width = rect.width;
+      cairo_rect.height = rect.height;
+
+      cairo_region_intersect_rectangle (region, &cairo_rect);
 
       if (window_actor)
         {
