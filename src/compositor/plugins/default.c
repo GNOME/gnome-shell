@@ -100,6 +100,8 @@ static void kill_window_effects   (MetaPlugin      *plugin,
                                    MetaWindowActor *actor);
 static void kill_switch_workspace (MetaPlugin      *plugin);
 
+static void confirm_display_change (MetaPlugin *plugin);
+
 static const MetaPluginInfo * plugin_info (MetaPlugin *plugin);
 
 META_PLUGIN_DECLARE(MetaDefaultPlugin, meta_default_plugin);
@@ -207,6 +209,7 @@ meta_default_plugin_class_init (MetaDefaultPluginClass *klass)
   plugin_class->plugin_info      = plugin_info;
   plugin_class->kill_window_effects   = kill_window_effects;
   plugin_class->kill_switch_workspace = kill_switch_workspace;
+  plugin_class->confirm_display_change = confirm_display_change;
 
   g_type_class_add_private (gobject_class, sizeof (MetaDefaultPluginPrivate));
 }
@@ -834,4 +837,34 @@ plugin_info (MetaPlugin *plugin)
   MetaDefaultPluginPrivate *priv = META_DEFAULT_PLUGIN (plugin)->priv;
 
   return &priv->info;
+}
+
+static void
+on_dialog_closed (GPid     pid,
+                  gint     status,
+                  gpointer user_data)
+{
+  MetaPlugin *plugin = user_data;
+  gboolean ok;
+
+  ok = g_spawn_check_exit_status (status, NULL);
+  meta_plugin_complete_display_change (plugin, ok);
+}
+
+static void
+confirm_display_change (MetaPlugin *plugin)
+{
+  GPid pid;
+
+  pid = meta_show_dialog ("--question",
+                          "Does the display look OK?",
+                          "20",
+                          NULL,
+                          "_Keep This Configuration",
+                          "_Restore Previous Configuration",
+                          "preferences-desktop-display",
+                          0,
+                          NULL, NULL);
+
+  g_child_watch_add (pid, on_dialog_closed, plugin);
 }

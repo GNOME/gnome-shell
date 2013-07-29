@@ -41,6 +41,7 @@
 
 #include "compositor-private.h"
 #include "meta-window-actor-private.h"
+#include "monitor-private.h"
 
 G_DEFINE_ABSTRACT_TYPE (MetaPlugin, meta_plugin, G_TYPE_OBJECT);
 
@@ -337,4 +338,14 @@ meta_plugin_get_screen (MetaPlugin *plugin)
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   return priv->screen;
+}
+
+void
+meta_plugin_complete_display_change (MetaPlugin *plugin,
+                                     gboolean    ok)
+{
+  MetaMonitorManager *manager;
+
+  manager = meta_monitor_manager_get ();
+  meta_monitor_manager_confirm_configuration (manager, ok);
 }

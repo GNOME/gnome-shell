@@ -639,8 +639,13 @@ meta_show_dialog (const char *type,
 
   append_argument (args, "zenity");
   append_argument (args, type);
-  append_argument (args, "--display");
-  append_argument (args, display);
+
+  if (display)
+    {
+      append_argument (args, "--display");
+      append_argument (args, display);
+    }
+
   append_argument (args, "--class");
   append_argument (args, "mutter-dialog");
   append_argument (args, "--title");

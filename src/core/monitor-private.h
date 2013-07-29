@@ -242,6 +242,9 @@ void                meta_monitor_manager_apply_configuration (MetaMonitorManager
                                                               MetaOutputInfo     **outputs,
                                                               unsigned int         n_outputs);
 
+void                meta_monitor_manager_confirm_configuration (MetaMonitorManager *manager,
+                                                                gboolean            ok);
+
 #define META_TYPE_MONITOR_CONFIG            (meta_monitor_config_get_type ())
 #define META_MONITOR_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_CONFIG, MetaMonitorConfig))
 #define META_MONITOR_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_CONFIG, MetaMonitorConfigClass))

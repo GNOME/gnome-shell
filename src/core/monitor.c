@@ -114,6 +114,7 @@ struct _MetaMonitorManagerClass
 
 enum {
   MONITORS_CHANGED,
+  CONFIRM_DISPLAY_CHANGE,
   SIGNALS_LAST
 };
 
@@ -1095,6 +1096,14 @@ meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
                   NULL, NULL, NULL,
 		  G_TYPE_NONE, 0);
 
+  signals[CONFIRM_DISPLAY_CHANGE] =
+    g_signal_new ("confirm-display-change",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  0,
+                  NULL, NULL, NULL,
+		  G_TYPE_NONE, 0);
+
   g_object_class_override_property (object_class, PROP_POWER_SAVE_MODE, "power-save-mode");
 }
 
@@ -1562,8 +1571,9 @@ save_config_timeout (gpointer user_data)
 {
   MetaMonitorManager *manager = user_data;
 
-  meta_monitor_config_make_persistent (manager->config);
+  meta_monitor_config_restore_previous (manager->config, manager);
 
+  manager->persistent_timeout_id = 0;
   return G_SOURCE_REMOVE;
 }
 
@@ -1766,7 +1776,7 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
 
   /* If we were in progress of making a persistent change and we see a
      new request, it's likely that the old one failed in some way, so
-     don't save it.
+     don't save it, but also don't queue for restoring it.
   */ 
   if (manager->persistent_timeout_id && persistent)
     {
@@ -1784,15 +1794,39 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
   g_ptr_array_unref (output_infos);
 
   /* Update MetaMonitorConfig data structures immediately so that we
-     don't revert the change at the next XRandR event, then wait 20
-     seconds and save the change to disk
+     don't revert the change at the next XRandR event, then ask the plugin
+     manager (through MetaScreen) to confirm the display change with the
+     appropriate UI. Then wait 20 seconds and if not confirmed, revert the
+     configuration.
   */
   meta_monitor_config_update_current (manager->config, manager);
   if (persistent)
-    manager->persistent_timeout_id = g_timeout_add_seconds (20, save_config_timeout, manager);
+    {
+      manager->persistent_timeout_id = g_timeout_add_seconds (20, save_config_timeout, manager);
+      g_signal_emit (manager, signals[CONFIRM_DISPLAY_CHANGE], 0);
+    }
 
   meta_dbus_display_config_complete_apply_configuration (skeleton, invocation);
   return TRUE;
+}
+
+void
+meta_monitor_manager_confirm_configuration (MetaMonitorManager *manager,
+                                            gboolean            ok)
+{
+  if (!manager->persistent_timeout_id)
+    {
+      /* too late */
+      return;
+    }
+
+  g_source_remove (manager->persistent_timeout_id);
+  manager->persistent_timeout_id = 0;
+
+  if (ok)
+    meta_monitor_config_make_persistent (manager->config);
+  else
+    meta_monitor_config_restore_previous (manager->config, manager);
 }
 
 #ifdef HAVE_RANDR
