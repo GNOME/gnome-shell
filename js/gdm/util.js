@@ -21,6 +21,7 @@ const FADE_ANIMATION_TIME = 0.16;
 const CLONE_FADE_ANIMATION_TIME = 0.25;
 
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
+const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
 const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
 const BANNER_MESSAGE_KEY = 'banner-message-enable';
 const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
@@ -116,6 +117,10 @@ const ShellUserVerifier = new Lang.Class({
         this._client = client;
 
         this._settings = new Gio.Settings({ schema: LOGIN_SCREEN_SCHEMA });
+        this._settings.connect('changed',
+                               Lang.bind(this, function() {
+                                   this._updateDefaultService();
+                               }));
         this._updateDefaultService();
 
         this._fprintManager = new Fprint.FprintManager();
@@ -312,7 +317,10 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _updateDefaultService: function() {
-        this._defaultService = PASSWORD_SERVICE_NAME;
+        if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
+            this._defaultService = PASSWORD_SERVICE_NAME;
+        else if (this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY))
+            this._defaultService = FINGERPRINT_SERVICE_NAME;
     },
 
     _beginVerification: function() {
@@ -335,7 +343,7 @@ const ShellUserVerifier = new Lang.Class({
                 this._hold.release();
             }));
 
-            if (this._haveFingerprintReader) {
+            if (this._haveFingerprintReader && !this.serviceIsForeground(FINGERPRINT_SERVICE_NAME)) {
                 this._hold.acquire();
 
                 this._userVerifier.call_begin_verification_for_user(FINGERPRINT_SERVICE_NAME,
