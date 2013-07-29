@@ -375,17 +375,17 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _onInfo: function(client, serviceName, info) {
-        // We don't display fingerprint messages, because they
-        // have words like UPEK in them. Instead we use the messages
-        // as a cue to display our own message.
-        if (serviceName == FINGERPRINT_SERVICE_NAME &&
+        if (this.serviceIsForeground(serviceName)) {
+            this._queueMessage(info, 'login-dialog-message-info');
+        } else if (serviceName == FINGERPRINT_SERVICE_NAME &&
             this._haveFingerprintReader) {
+            // We don't show fingerprint messages directly since it's
+            // not the main auth service. Instead we use the messages
+            // as a cue to display our own message.
 
             // Translators: this message is shown below the password entry field
             // to indicate the user can swipe their finger instead
             this.emit('show-login-hint', _("(or swipe finger)"));
-        } else if (this.serviceIsForeground(serviceName)) {
-            this._queueMessage(info, 'login-dialog-message-info');
         }
     },
 
