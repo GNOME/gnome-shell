@@ -222,6 +222,7 @@ const AuthPrompt = new Lang.Class({
 
     _onShowMessage: function(userVerifier, message, styleClass) {
         this.setMessage(message, styleClass);
+        this.emit('prompted');
     },
 
     _onVerificationFailed: function() {
