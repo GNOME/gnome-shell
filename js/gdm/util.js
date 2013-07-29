@@ -148,8 +148,10 @@ const ShellUserVerifier = new Lang.Class({
         if (this._cancellable)
             this._cancellable.cancel();
 
-        if (this._userVerifier)
+        if (this._userVerifier) {
             this._userVerifier.call_cancel_sync(null);
+            this.clear();
+        }
     },
 
     clear: function() {
