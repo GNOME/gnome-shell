@@ -475,7 +475,12 @@ const LoginDialog = new Lang.Class({
                                                 x_align: St.Align.START,
                                                 x_fill: true });
 
-        this._notListedButton.connect('clicked', Lang.bind(this, this._hideUserListAndLogIn));
+        this._notListedButton.connect('clicked',
+                                      Lang.bind(this, function() {
+            this._authPrompt.cancelButton.show();
+            this._hideUserListAndLogIn();
+        }));
+
         this._notListedButton.hide();
 
         this._userSelectionBox.add(this._notListedButton,
@@ -569,9 +574,6 @@ const LoginDialog = new Lang.Class({
 
         if (this._shouldShowSessionMenuButton())
             this._authPrompt.setActorInDefaultButtonWell(this._sessionMenuButton.actor);
-
-        this._authPrompt.cancelButton.show();
-
         this._showPrompt();
     },
 
@@ -583,10 +585,12 @@ const LoginDialog = new Lang.Class({
 
         this._user = null;
 
-        if (this._disableUserList)
+        if (this._disableUserList) {
+            this._authPrompt.cancelButton.hide();
             this._hideUserListAndLogIn();
-        else
+        } else {
             this._showUserList();
+        }
     },
 
     _onDefaultSessionChanged: function(client, sessionId) {
@@ -645,13 +649,13 @@ const LoginDialog = new Lang.Class({
                                                         this._authPrompt.updateSensitivity(false);
                                                         let answer = this._authPrompt.getAnswer();
                                                         this._authPrompt.clear();
+                                                        this._authPrompt.cancelButton.show();
                                                         this._authPrompt.startSpinning();
                                                         this._authPrompt.begin({ userName: answer });
 
                                                         realmManager.disconnect(realmSignalId)
                                                         realmManager.release();
                                                     }));
-        this._authPrompt.cancelButton.hide();
         this._showPrompt();
     },
 
@@ -823,6 +827,7 @@ const LoginDialog = new Lang.Class({
     _showUserList: function() {
         this._authPrompt.hide();
         this._sessionMenuButton.close();
+        this._authPrompt.cancelButton.show();
         this._setUserListExpanded(true);
         this._notListedButton.show();
         this._userList.actor.grab_key_focus();
