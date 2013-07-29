@@ -534,6 +534,19 @@ const LoginDialog = new Lang.Class({
         }
     },
 
+    _updateCancelButton: function() {
+        let cancelVisible;
+
+        // Hide the cancel button if the user list is disabled and we're asking for
+        // a username
+        if (this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING && this._disableUserList)
+            cancelVisible = false;
+        else
+            cancelVisible = true;
+
+        this._authPrompt.cancelButton.visible = cancelVisible;
+    },
+
     _updateBanner: function() {
         let enabled = this._settings.get_boolean(GdmUtil.BANNER_MESSAGE_KEY);
         let text = this._settings.get_string(GdmUtil.BANNER_MESSAGE_TEXT_KEY);
@@ -569,9 +582,6 @@ const LoginDialog = new Lang.Class({
 
         if (this._shouldShowSessionMenuButton())
             this._authPrompt.setActorInDefaultButtonWell(this._sessionMenuButton.actor);
-
-        this._authPrompt.cancelButton.show();
-
         this._showPrompt();
     },
 
@@ -644,11 +654,12 @@ const LoginDialog = new Lang.Class({
                                                         this._authPrompt.clear();
                                                         this._authPrompt.startSpinning();
                                                         this._authPrompt.begin({ userName: answer });
+                                                        this._updateCancelButton();
 
                                                         realmManager.disconnect(realmSignalId)
                                                         realmManager.release();
                                                     }));
-        this._authPrompt.cancelButton.hide();
+        this._updateCancelButton();
         this._showPrompt();
     },
 
@@ -845,6 +856,8 @@ const LoginDialog = new Lang.Class({
                      }];
 
         this._user = activatedItem.user;
+
+        this._updateCancelButton();
 
         let batch = new Batch.ConcurrentBatch(this, [new Batch.ConsecutiveBatch(this, tasks),
                                                      this._beginVerificationForItem(activatedItem)]);
