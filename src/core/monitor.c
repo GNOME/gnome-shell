@@ -32,12 +32,6 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 
-#ifdef HAVE_RANDR
-#include <X11/Xatom.h>
-#include <X11/extensions/Xrandr.h>
-#include <X11/extensions/dpms.h>
-#endif
-
 #include <meta/main.h>
 #include <meta/util.h>
 #include <meta/errors.h>
@@ -46,71 +40,6 @@
 #include "meta-dbus-xrandr.h"
 
 #define ALL_WL_TRANSFORMS ((1 << (WL_OUTPUT_TRANSFORM_FLIPPED_270 + 1)) - 1)
-
-typedef enum {
-  META_BACKEND_UNSPECIFIED,
-  META_BACKEND_DUMMY,
-  META_BACKEND_XRANDR
-} MetaMonitorBackend;
-
-struct _MetaMonitorManager
-{
-  MetaDBusDisplayConfigSkeleton parent_instance;
-
-  MetaMonitorBackend backend;
-
-  /* XXX: this structure is very badly
-     packed, but I like the logical organization
-     of fields */
-
-  gboolean in_init;
-  unsigned int serial;
-
-  MetaPowerSave power_save_mode;
-
-  int max_screen_width;
-  int max_screen_height;
-  int screen_width;
-  int screen_height;
-
-  /* Outputs refer to physical screens,
-     CRTCs refer to stuff that can drive outputs
-     (like encoders, but less tied to the HW),
-     while monitor_infos refer to logical ones.
-
-     See also the comment in monitor-private.h
-  */
-  MetaOutput *outputs;
-  unsigned int n_outputs;
-
-  MetaMonitorMode *modes;
-  unsigned int n_modes;
-
-  MetaCRTC *crtcs;
-  unsigned int n_crtcs;
-
-  MetaMonitorInfo *monitor_infos;
-  unsigned int n_monitor_infos;
-  int primary_monitor_index;
-
-#ifdef HAVE_RANDR
-  Display *xdisplay;
-  XRRScreenResources *resources;
-  int time;
-  int rr_event_base;
-  int rr_error_base;
-#endif
-
-  int dbus_name_id;
-
-  int persistent_timeout_id;
-  MetaMonitorConfig *config;
-};
-
-struct _MetaMonitorManagerClass
-{
-  MetaDBusDisplayConfigSkeletonClass parent_class;
-};
 
 enum {
   MONITORS_CHANGED,
@@ -134,9 +63,10 @@ G_DEFINE_TYPE_WITH_CODE (MetaMonitorManager, meta_monitor_manager, META_DBUS_TYP
 static void free_output_array (MetaOutput *old_outputs,
                                int         n_old_outputs);
 static void invalidate_logical_config (MetaMonitorManager *manager);
+static void initialize_dbus_interface (MetaMonitorManager *manager);
 
 static void
-make_dummy_monitor_config (MetaMonitorManager *manager)
+read_current_dummy (MetaMonitorManager *manager)
 {
   /* The dummy monitor config has:
      - one enabled output, LVDS, primary, at 0x0 and 1024x768
@@ -148,8 +78,6 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
      Low-level IDs should be assigned sequentially, to
      mimick what XRandR and KMS do
   */
-
-  manager->backend = META_BACKEND_DUMMY;
 
   manager->max_screen_width = 65535;
   manager->max_screen_height = 65535;
@@ -310,429 +238,119 @@ make_dummy_monitor_config (MetaMonitorManager *manager)
   manager->outputs[2].backlight_max = 0;
 }
 
-#ifdef HAVE_RANDR
-static enum wl_output_transform
-wl_transform_from_xrandr (Rotation rotation)
-{
-  static const enum wl_output_transform y_reflected_map[4] = {
-    WL_OUTPUT_TRANSFORM_FLIPPED_180,
-    WL_OUTPUT_TRANSFORM_FLIPPED_90,
-    WL_OUTPUT_TRANSFORM_FLIPPED,
-    WL_OUTPUT_TRANSFORM_FLIPPED_270
-  };
-  enum wl_output_transform ret;
-
-  switch (rotation & 0x7F)
-    {
-    default:
-    case RR_Rotate_0:
-      ret = WL_OUTPUT_TRANSFORM_NORMAL;
-      break;
-    case RR_Rotate_90:
-      ret = WL_OUTPUT_TRANSFORM_90;
-      break;
-    case RR_Rotate_180:
-      ret = WL_OUTPUT_TRANSFORM_180;
-      break;
-    case RR_Rotate_270:
-      ret = WL_OUTPUT_TRANSFORM_270;
-      break;
-    }
-
-  if (rotation & RR_Reflect_X)
-    return ret + 4;
-  else if (rotation & RR_Reflect_Y)
-    return y_reflected_map[ret];
-  else
-    return ret;
-}
-
-#define ALL_ROTATIONS (RR_Rotate_0 | RR_Rotate_90 | RR_Rotate_180 | RR_Rotate_270)
-
-static unsigned int
-wl_transform_from_xrandr_all (Rotation rotation)
-{
-  unsigned ret;
-
-  /* Handle the common cases first (none or all) */
-  if (rotation == 0 || rotation == RR_Rotate_0)
-    return (1 << WL_OUTPUT_TRANSFORM_NORMAL);
-
-  /* All rotations and one reflection -> all of them by composition */
-  if ((rotation & ALL_ROTATIONS) &&
-      ((rotation & RR_Reflect_X) || (rotation & RR_Reflect_Y)))
-    return ALL_WL_TRANSFORMS;
-
-  ret = 1 << WL_OUTPUT_TRANSFORM_NORMAL;
-  if (rotation & RR_Rotate_90)
-    ret |= 1 << WL_OUTPUT_TRANSFORM_90;
-  if (rotation & RR_Rotate_180)
-    ret |= 1 << WL_OUTPUT_TRANSFORM_180;
-  if (rotation & RR_Rotate_270)
-    ret |= 1 << WL_OUTPUT_TRANSFORM_270;
-  if (rotation & (RR_Rotate_0 | RR_Reflect_X))
-    ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED;
-  if (rotation & (RR_Rotate_90 | RR_Reflect_X))
-    ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED_90;
-  if (rotation & (RR_Rotate_180 | RR_Reflect_X))
-    ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED_180;
-  if (rotation & (RR_Rotate_270 | RR_Reflect_X))
-    ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED_270;
-
-  return ret;
-}
-
-static gboolean
-output_get_presentation_xrandr (MetaMonitorManager *manager,
-                                MetaOutput         *output)
-{
-  MetaDisplay *display = meta_get_display ();
-  gboolean value;
-  Atom actual_type;
-  int actual_format;
-  unsigned long nitems, bytes_after;
-  unsigned char *buffer;
-
-  XRRGetOutputProperty (manager->xdisplay,
-                        (XID)output->output_id,
-                        display->atom__MUTTER_PRESENTATION_OUTPUT,
-                        0, G_MAXLONG, False, False, XA_CARDINAL,
-                        &actual_type, &actual_format,
-                        &nitems, &bytes_after, &buffer);
-
-  if (actual_type != XA_CARDINAL || actual_format != 32 ||
-      nitems < 1)
-    return FALSE;
-
-  value = ((int*)buffer)[0];
-
-  XFree (buffer);
-  return value;
-}
-
-static int
-normalize_backlight (MetaOutput *output,
-                     int         hw_value)
-{
-  return round ((double)(hw_value - output->backlight_min) /
-                (output->backlight_max - output->backlight_min) * 100.0);
-}
-
-static int
-output_get_backlight_xrandr (MetaMonitorManager *manager,
-                             MetaOutput         *output)
-{
-  MetaDisplay *display = meta_get_display ();
-  gboolean value;
-  Atom actual_type;
-  int actual_format;
-  unsigned long nitems, bytes_after;
-  unsigned char *buffer;
-
-  XRRGetOutputProperty (manager->xdisplay,
-                        (XID)output->output_id,
-                        display->atom_BACKLIGHT,
-                        0, G_MAXLONG, False, False, XA_INTEGER,
-                        &actual_type, &actual_format,
-                        &nitems, &bytes_after, &buffer);
-
-  if (actual_type != XA_INTEGER || actual_format != 32 ||
-      nitems < 1)
-    return -1;
-
-  value = ((int*)buffer)[0];
-
-  XFree (buffer);
-  return normalize_backlight (output, value);
-}
-
 static void
-output_get_backlight_limits_xrandr (MetaMonitorManager *manager,
-                                    MetaOutput         *output)
+apply_config_dummy (MetaMonitorManager *manager,
+                    MetaCRTCInfo       **crtcs,
+                    unsigned int         n_crtcs,
+                    MetaOutputInfo     **outputs,
+                    unsigned int         n_outputs)
 {
-  MetaDisplay *display = meta_get_display ();
-  XRRPropertyInfo *info;
+  unsigned i;
+  int screen_width = 0, screen_height = 0;
 
-  meta_error_trap_push (display);
-  info = XRRQueryOutputProperty (manager->xdisplay,
-                                 (XID)output->output_id,
-                                 display->atom_BACKLIGHT);
-  meta_error_trap_pop (display);
-
-  if (info == NULL)
+  for (i = 0; i < n_crtcs; i++)
     {
-      meta_warning ("could not get output property for %s\n", output->name);
-      return;
+      MetaCRTCInfo *crtc_info = crtcs[i];
+      MetaCRTC *crtc = crtc_info->crtc;
+      crtc->is_dirty = TRUE;
+
+      if (crtc_info->mode == NULL)
+        {
+          crtc->rect.x = 0;
+          crtc->rect.y = 0;
+          crtc->rect.width = 0;
+          crtc->rect.height = 0;
+          crtc->current_mode = NULL;
+        }
+      else
+        {
+          MetaMonitorMode *mode;
+          MetaOutput *output;
+          int i, n_outputs;
+          int width, height;
+
+          mode = crtc_info->mode;
+
+          if (meta_monitor_transform_is_rotated (crtc_info->transform))
+            {
+              width = mode->height;
+              height = mode->width;
+            }
+          else
+            {
+              width = mode->width;
+              height = mode->height;
+            }
+
+          crtc->rect.x = crtc_info->x;
+          crtc->rect.y = crtc_info->y;
+          crtc->rect.width = width;
+          crtc->rect.height = height;
+          crtc->current_mode = mode;
+          crtc->transform = crtc_info->transform;
+
+          screen_width = MAX (screen_width, crtc_info->x + width);
+          screen_height = MAX (screen_height, crtc_info->y + height);
+
+          n_outputs = crtc_info->outputs->len;
+          for (i = 0; i < n_outputs; i++)
+            {
+              output = ((MetaOutput**)crtc_info->outputs->pdata)[i];
+
+              output->is_dirty = TRUE;
+              output->crtc = crtc;
+            }
+        }
     }
 
-  if (!info->range || info->num_values != 2)
+  for (i = 0; i < n_outputs; i++)
     {
-      meta_verbose ("backlight %s was not range\n", output->name);
-      goto out;
+      MetaOutputInfo *output_info = outputs[i];
+      MetaOutput *output = output_info->output;
+
+      output->is_primary = output_info->is_primary;
+      output->is_presentation = output_info->is_presentation;
     }
 
-  output->backlight_min = info->values[0];
-  output->backlight_max = info->values[1];
+  /* Disable CRTCs not mentioned in the list */
+  for (i = 0; i < manager->n_crtcs; i++)
+    {
+      MetaCRTC *crtc = &manager->crtcs[i];
 
-out:
-  XFree (info);
-}
+      crtc->logical_monitor = NULL;
 
-static int
-compare_outputs (const void *one,
-                 const void *two)
-{
-  const MetaOutput *o_one = one, *o_two = two;
+      if (crtc->is_dirty)
+        {
+          crtc->is_dirty = FALSE;
+          continue;
+        }
 
-  return strcmp (o_one->name, o_two->name);
-}
+      crtc->rect.x = 0;
+      crtc->rect.y = 0;
+      crtc->rect.width = 0;
+      crtc->rect.height = 0;
+      crtc->current_mode = NULL;
+    }
 
-static void
-read_monitor_infos_from_xrandr (MetaMonitorManager *manager)
-{
-    XRRScreenResources *resources;
-    RROutput primary_output;
-    unsigned int i, j, k;
-    unsigned int n_actual_outputs;
-    int min_width, min_height;
-    Screen *screen;
-    BOOL dpms_capable, dpms_enabled;
-    CARD16 dpms_state;
+  /* Disable outputs not mentioned in the list */
+  for (i = 0; i < manager->n_outputs; i++)
+    {
+      MetaOutput *output = &manager->outputs[i];
 
-    if (manager->resources)
-      XRRFreeScreenResources (manager->resources);
-    manager->resources = NULL;
+      if (output->is_dirty)
+        {
+          output->is_dirty = FALSE;
+          continue;
+        }
 
-    meta_error_trap_push (meta_get_display ());
-    dpms_capable = DPMSCapable (manager->xdisplay);
-    meta_error_trap_pop (meta_get_display ());
+      output->crtc = NULL;
+      output->is_primary = FALSE;
+    }
 
-    if (dpms_capable &&
-        DPMSInfo (manager->xdisplay, &dpms_state, &dpms_enabled) &&
-        dpms_enabled)
-      {
-        switch (dpms_state)
-          {
-          case DPMSModeOn:
-            manager->power_save_mode = META_POWER_SAVE_ON;
-          case DPMSModeStandby:
-            manager->power_save_mode = META_POWER_SAVE_STANDBY;
-          case DPMSModeSuspend:
-            manager->power_save_mode = META_POWER_SAVE_SUSPEND;
-          case DPMSModeOff:
-            manager->power_save_mode = META_POWER_SAVE_OFF;
-          default:
-            manager->power_save_mode = META_POWER_SAVE_UNKNOWN;
-          }
-      }
-    else
-      {
-        manager->power_save_mode = META_POWER_SAVE_UNKNOWN;
-      }
+  manager->screen_width = screen_width;
+  manager->screen_height = screen_height;
 
-    XRRGetScreenSizeRange (manager->xdisplay, DefaultRootWindow (manager->xdisplay),
-                           &min_width,
-                           &min_height,
-                           &manager->max_screen_width,
-                           &manager->max_screen_height);
-
-    screen = ScreenOfDisplay (manager->xdisplay,
-                              DefaultScreen (manager->xdisplay));
-    /* This is updated because we called RRUpdateConfiguration below */
-    manager->screen_width = WidthOfScreen (screen);
-    manager->screen_height = HeightOfScreen (screen);
-
-    resources = XRRGetScreenResourcesCurrent (manager->xdisplay,
-                                              DefaultRootWindow (manager->xdisplay));
-    if (!resources)
-      return make_dummy_monitor_config (manager);
-
-    manager->resources = resources;
-    manager->time = resources->configTimestamp;
-    manager->n_outputs = resources->noutput;
-    manager->n_crtcs = resources->ncrtc;
-    manager->n_modes = resources->nmode;
-    manager->outputs = g_new0 (MetaOutput, manager->n_outputs);
-    manager->modes = g_new0 (MetaMonitorMode, manager->n_modes);
-    manager->crtcs = g_new0 (MetaCRTC, manager->n_crtcs);
-
-    for (i = 0; i < (unsigned)resources->nmode; i++)
-      {
-        XRRModeInfo *xmode = &resources->modes[i];
-        MetaMonitorMode *mode;
-
-        mode = &manager->modes[i];
-
-        mode->mode_id = xmode->id;
-        mode->width = xmode->width;
-        mode->height = xmode->height;
-        mode->refresh_rate = (xmode->dotClock /
-                              ((float)xmode->hTotal * xmode->vTotal));
-      }
-
-    for (i = 0; i < (unsigned)resources->ncrtc; i++)
-      {
-        XRRCrtcInfo *crtc;
-        MetaCRTC *meta_crtc;
-
-        crtc = XRRGetCrtcInfo (manager->xdisplay, resources, resources->crtcs[i]);
-
-        meta_crtc = &manager->crtcs[i];
-
-        meta_crtc->crtc_id = resources->crtcs[i];
-        meta_crtc->rect.x = crtc->x;
-        meta_crtc->rect.y = crtc->y;
-        meta_crtc->rect.width = crtc->width;
-        meta_crtc->rect.height = crtc->height;
-        meta_crtc->is_dirty = FALSE;
-        meta_crtc->transform = wl_transform_from_xrandr (crtc->rotation);
-        meta_crtc->all_transforms = wl_transform_from_xrandr_all (crtc->rotations);
-
-        for (j = 0; j < (unsigned)resources->nmode; j++)
-          {
-            if (resources->modes[j].id == crtc->mode)
-              {
-                meta_crtc->current_mode = &manager->modes[j];
-                break;
-              }
-          }
-
-        XRRFreeCrtcInfo (crtc);
-      }
-
-    primary_output = XRRGetOutputPrimary (manager->xdisplay,
-                                          DefaultRootWindow (manager->xdisplay));
-
-    n_actual_outputs = 0;
-    for (i = 0; i < (unsigned)resources->noutput; i++)
-      {
-        XRROutputInfo *output;
-        MetaOutput *meta_output;
-
-        output = XRRGetOutputInfo (manager->xdisplay, resources, resources->outputs[i]);
-
-        meta_output = &manager->outputs[n_actual_outputs];
-
-        if (output->connection != RR_Disconnected)
-          {
-            meta_output->output_id = resources->outputs[i];
-            meta_output->name = g_strdup (output->name);
-            /* FIXME: to fill useful values for these we need an EDID parser */
-            meta_output->vendor = g_strdup ("unknown");
-            meta_output->product = g_strdup ("unknown");
-            meta_output->serial = g_strdup ("");
-            meta_output->width_mm = output->mm_width;
-            meta_output->height_mm = output->mm_height;
-            meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
-
-            meta_output->n_modes = output->nmode;
-            meta_output->modes = g_new0 (MetaMonitorMode *, meta_output->n_modes);
-            for (j = 0; j < meta_output->n_modes; j++)
-              {
-                for (k = 0; k < manager->n_modes; k++)
-                  {
-                    if (output->modes[j] == (XID)manager->modes[k].mode_id)
-                      {
-                        meta_output->modes[j] = &manager->modes[k];
-                        break;
-                      }
-                  }
-              }
-            meta_output->preferred_mode = meta_output->modes[0];
-
-            if (meta_output->preferred_mode == NULL)
-              meta_output->preferred_mode = meta_output->modes[0];
-
-            meta_output->n_possible_crtcs = output->ncrtc;
-            meta_output->possible_crtcs = g_new0 (MetaCRTC *, meta_output->n_possible_crtcs);
-            for (j = 0; j < (unsigned)output->ncrtc; j++)
-              {
-                for (k = 0; k < manager->n_crtcs; k++)
-                  {
-                    if ((XID)manager->crtcs[k].crtc_id == output->crtcs[j])
-                      {
-                        meta_output->possible_crtcs[j] = &manager->crtcs[k];
-                        break;
-                      }
-                  }
-              }
-
-            meta_output->crtc = NULL;
-            for (j = 0; j < manager->n_crtcs; j++)
-              {
-                if ((XID)manager->crtcs[j].crtc_id == output->crtc)
-                  {
-                    meta_output->crtc = &manager->crtcs[j];
-                    break;
-                  }
-              }
-
-            meta_output->n_possible_clones = output->nclone;
-            meta_output->possible_clones = g_new0 (MetaOutput *, meta_output->n_possible_clones);
-            /* We can build the list of clones now, because we don't have the list of outputs
-               yet, so temporarily set the pointers to the bare XIDs, and then we'll fix them
-               in a second pass
-            */
-            for (j = 0; j < (unsigned)output->nclone; j++)
-              {
-                meta_output->possible_clones = GINT_TO_POINTER (output->clones[j]);
-              }
-
-            meta_output->is_primary = ((XID)meta_output->output_id == primary_output);
-            meta_output->is_presentation = output_get_presentation_xrandr (manager, meta_output);
-            output_get_backlight_limits_xrandr (manager, meta_output);
-
-            if (!(meta_output->backlight_min == 0 && meta_output->backlight_max == 0))
-              meta_output->backlight = output_get_backlight_xrandr (manager, meta_output);
-            else
-              meta_output->backlight = -1;
-
-            n_actual_outputs++;
-          }
-
-        XRRFreeOutputInfo (output);
-      }
-
-    manager->n_outputs = n_actual_outputs;
-
-    /* Sort the outputs for easier handling in MetaMonitorConfig */
-    qsort (manager->outputs, manager->n_outputs, sizeof (MetaOutput), compare_outputs);
-
-    /* Now fix the clones */
-    for (i = 0; i < manager->n_outputs; i++)
-      {
-        MetaOutput *meta_output;
-
-        meta_output = &manager->outputs[i];
-
-        for (j = 0; j < meta_output->n_possible_clones; j++)
-          {
-            RROutput clone = GPOINTER_TO_INT (meta_output->possible_clones[j]);
-
-            for (k = 0; k < manager->n_outputs; k++)
-              {
-                if (clone == (XID)manager->outputs[k].output_id)
-                  {
-                    meta_output->possible_clones[j] = &manager->outputs[k];
-                    break;
-                  }
-              }
-          }
-      }
-}
-
-#endif
-
-/*
- * meta_has_dummy_output:
- *
- * Returns TRUE if the only available monitor is the dummy one
- * backing the ClutterStage window.
- */
-static gboolean
-has_dummy_output (void)
-{
-  return FALSE;
+  invalidate_logical_config (manager);
 }
 
 static void
@@ -740,37 +358,12 @@ meta_monitor_manager_init (MetaMonitorManager *manager)
 {
 }
 
-static MetaMonitorBackend
-make_debug_config (MetaMonitorManager *manager)
-{
-  const char *env;
-
-  env = g_getenv ("META_DEBUG_MULTIMONITOR");
-
-  if (env == NULL)
-    return META_BACKEND_UNSPECIFIED;
-
-#ifdef HAVE_RANDR
-  if (strcmp (env, "xrandr") == 0)
-    return META_BACKEND_XRANDR;
-  else
-#endif
-    return META_BACKEND_DUMMY;
-
-  return TRUE;
-}
-
 static void
 read_current_config (MetaMonitorManager *manager)
 {
   manager->serial++;
 
-#ifdef HAVE_RANDR
-  if (manager->backend == META_BACKEND_XRANDR)
-    return read_monitor_infos_from_xrandr (manager);
-#endif
-
-  return make_dummy_monitor_config (manager);
+  META_MONITOR_MANAGER_GET_CLASS (manager)->read_current (manager);
 }
 
 /*
@@ -869,48 +462,30 @@ make_logical_config (MetaMonitorManager *manager)
 }
 
 static MetaMonitorManager *
-meta_monitor_manager_new (Display *display)
+meta_monitor_manager_new (void)
 {
-  MetaMonitorManager *manager;
+  const char *env;
+  GType type;
 
-  manager = g_object_new (META_TYPE_MONITOR_MANAGER, NULL);
+  env = g_getenv ("META_DEBUG_MULTIMONITOR");
+
+  if (env == NULL)
+    type = META_TYPE_MONITOR_MANAGER_XRANDR;
+  else if (strcmp (env, "xrandr") == 0)
+    type = META_TYPE_MONITOR_MANAGER_XRANDR;
+  else
+    type = META_TYPE_MONITOR_MANAGER;
+
+  return g_object_new (type, NULL);
+}
+
+static void
+meta_monitor_manager_constructed (GObject *object)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
 
   manager->in_init = TRUE;
-  manager->xdisplay = display;
 
-  manager->backend = make_debug_config (manager);
-
-  if (manager->backend == META_BACKEND_UNSPECIFIED)
-    {
-#ifdef HAVE_XRANDR
-      if (display)
-        manager->backend = META_BACKEND_XRANDR;
-      else
-#endif
-        if (has_dummy_output ())
-          manager->backend = META_BACKEND_DUMMY;
-    }
-
-#ifdef HAVE_XRANDR
-  if (manager->backend == META_BACKEND_XRANDR)
-    {
-      if (!XRRQueryExtension (display,
-                              &manager->rr_event_base,
-                              &manager->rr_error_base))
-        {
-          manager->backend = META_BACKEND_DUMMY;
-        }
-      else
-        {
-          /* We only use ScreenChangeNotify, but GDK uses the others,
-             and we don't want to step on its toes */
-          XRRSelectInput (display, DefaultRootWindow (display),
-                          RRScreenChangeNotifyMask
-                          | RRCrtcChangeNotifyMask
-                          | RROutputPropertyNotifyMask);
-        }
-    }
-#endif
   manager->config = meta_monitor_config_new ();
 
   read_current_config (manager);
@@ -925,7 +500,7 @@ meta_monitor_manager_new (Display *display)
      The other backends keep the data structures always updated,
      so this is not needed.
   */
-  if (manager->backend == META_BACKEND_XRANDR)
+  if (META_IS_MONITOR_MANAGER_XRANDR (manager))
     {
       MetaOutput *old_outputs;
       MetaCRTC *old_crtcs;
@@ -945,15 +520,17 @@ meta_monitor_manager_new (Display *display)
     }
 
   make_logical_config (manager);
+  initialize_dbus_interface (manager);
 
   manager->in_init = FALSE;
-  return manager;
 }
 
 static void
 meta_monitor_manager_set_power_save_mode (MetaMonitorManager *manager,
                                           MetaPowerSave       mode)
 {
+  MetaMonitorManagerClass *klass;
+
   if (mode == manager->power_save_mode)
     return;
 
@@ -961,34 +538,9 @@ meta_monitor_manager_set_power_save_mode (MetaMonitorManager *manager,
       mode == META_POWER_SAVE_UNKNOWN)
     return;
 
-#ifdef HAVE_RANDR
-  if (manager->backend == META_BACKEND_XRANDR)
-    {
-      CARD16 state;
-
-      switch (mode) {
-      case META_POWER_SAVE_ON:
-        state = DPMSModeOn;
-        break;
-      case META_POWER_SAVE_STANDBY:
-        state = DPMSModeStandby;
-        break;
-      case META_POWER_SAVE_SUSPEND:
-        state = DPMSModeSuspend;
-        break;
-      case META_POWER_SAVE_OFF:
-        state = DPMSModeOff;
-        break;
-      default:
-        return;
-      }
-
-      meta_error_trap_push (meta_get_display ());
-      DPMSForceLevel (manager->xdisplay, state);
-      DPMSSetTimeouts (manager->xdisplay, 0, 0, 0);
-      meta_error_trap_pop (meta_get_display ());
-    }
-#endif
+  klass = META_MONITOR_MANAGER_GET_CLASS (manager);
+  if (klass->set_power_save_mode)
+    klass->set_power_save_mode (manager, mode);
 
   manager->power_save_mode = mode;
 }
@@ -1083,10 +635,14 @@ meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+  object_class->constructed = meta_monitor_manager_constructed;
   object_class->get_property = meta_monitor_manager_get_property;
   object_class->set_property = meta_monitor_manager_set_property;
   object_class->dispose = meta_monitor_manager_dispose;
   object_class->finalize = meta_monitor_manager_finalize;
+
+  klass->read_current = read_current_dummy;
+  klass->apply_configuration = apply_config_dummy;
 
   signals[MONITORS_CHANGED] =
     g_signal_new ("monitors-changed",
@@ -1293,266 +849,6 @@ output_can_clone (MetaOutput *output,
   return ok;
 }
 
-#ifdef HAVE_RANDR
-static Rotation
-wl_transform_to_xrandr (enum wl_output_transform transform)
-{
-  switch (transform)
-    {
-    case WL_OUTPUT_TRANSFORM_NORMAL:
-      return RR_Rotate_0;
-    case WL_OUTPUT_TRANSFORM_90:
-      return RR_Rotate_90;
-    case WL_OUTPUT_TRANSFORM_180:
-      return RR_Rotate_180;
-    case WL_OUTPUT_TRANSFORM_270:
-      return RR_Rotate_270;
-    case WL_OUTPUT_TRANSFORM_FLIPPED:
-      return RR_Reflect_X | RR_Rotate_0;
-    case WL_OUTPUT_TRANSFORM_FLIPPED_90:
-      return RR_Reflect_X | RR_Rotate_90;
-    case WL_OUTPUT_TRANSFORM_FLIPPED_180:
-      return RR_Reflect_X | RR_Rotate_180;
-    case WL_OUTPUT_TRANSFORM_FLIPPED_270:
-      return RR_Reflect_X | RR_Rotate_270;
-    }
-
-  g_assert_not_reached ();
-}
-
-static void
-output_set_presentation_xrandr (MetaMonitorManager *manager,
-                                MetaOutput         *output,
-                                gboolean            presentation)
-{
-  MetaDisplay *display = meta_get_display ();
-  int value = presentation;
-
-  XRRChangeOutputProperty (manager->xdisplay,
-                           (XID)output->output_id,
-                           display->atom__MUTTER_PRESENTATION_OUTPUT,
-                           XA_CARDINAL, 32, PropModeReplace,
-                           (unsigned char*) &value, 1);
-}
-
-static void
-apply_config_xrandr (MetaMonitorManager *manager,
-                     MetaCRTCInfo       **crtcs,
-                     unsigned int         n_crtcs,
-                     MetaOutputInfo     **outputs,
-                     unsigned int         n_outputs)
-{
-  unsigned i;
-
-  for (i = 0; i < n_crtcs; i++)
-    {
-      MetaCRTCInfo *crtc_info = crtcs[i];
-      MetaCRTC *crtc = crtc_info->crtc;
-      crtc->is_dirty = TRUE;
-
-      if (crtc_info->mode == NULL)
-        {
-          XRRSetCrtcConfig (manager->xdisplay,
-                            manager->resources,
-                            (XID)crtc->crtc_id,
-                            manager->time,
-                            0, 0,
-                            None,
-                            RR_Rotate_0,
-                            NULL, 0);
-        }
-      else
-        {
-          MetaMonitorMode *mode;
-          XID *outputs;
-          int j, n_outputs;
-          Status ok;
-
-          mode = crtc_info->mode;
-
-          n_outputs = crtc_info->outputs->len;
-          outputs = g_new (XID, n_outputs);
-
-          for (j = 0; j < n_outputs; j++)
-            outputs[i] = ((MetaOutput**)crtc_info->outputs->pdata)[i]->output_id;
-
-          meta_error_trap_push (meta_get_display ());
-          ok = XRRSetCrtcConfig (manager->xdisplay,
-                                 manager->resources,
-                                 (XID)crtc->crtc_id,
-                                 manager->time,
-                                 crtc_info->x, crtc_info->y,
-                                 (XID)mode->mode_id,
-                                 wl_transform_to_xrandr (crtc_info->transform),
-                                 outputs, n_outputs);
-          meta_error_trap_pop (meta_get_display ());
-
-          if (ok != Success)
-            meta_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transfrom %u failed\n",
-                          (unsigned)(crtc->crtc_id), (unsigned)(mode->mode_id),
-                          mode->width, mode->height, (float)mode->refresh_rate,
-                          crtc_info->x, crtc_info->y, crtc_info->transform);
-
-          g_free (outputs);
-        }
-    }
-
-  for (i = 0; i < n_outputs; i++)
-    {
-      MetaOutputInfo *output_info = outputs[i];
-
-      if (output_info->is_primary)
-        {
-          XRRSetOutputPrimary (manager->xdisplay,
-                               DefaultRootWindow (manager->xdisplay),
-                               (XID)output_info->output->output_id);
-        }
-
-      output_set_presentation_xrandr (manager,
-                                      output_info->output,
-                                      output_info->is_presentation);
-    }
-
-  /* Disable CRTCs not mentioned in the list */
-  for (i = 0; i < manager->n_crtcs; i++)
-    {
-      MetaCRTC *crtc = &manager->crtcs[i];
-
-      if (crtc->is_dirty)
-        {
-          crtc->is_dirty = FALSE;
-          continue;
-        }
-      if (crtc->current_mode == NULL)
-        continue;
-
-      XRRSetCrtcConfig (manager->xdisplay,
-                        manager->resources,
-                        (XID)crtc->crtc_id,
-                        manager->time,
-                        0, 0,
-                        None,
-                        RR_Rotate_0,
-                        NULL, 0);
-    }
-}
-#endif
-
-static void
-apply_config_dummy (MetaMonitorManager *manager,
-                    MetaCRTCInfo       **crtcs,
-                    unsigned int         n_crtcs,
-                    MetaOutputInfo     **outputs,
-                    unsigned int         n_outputs)
-{
-  unsigned i;
-  int screen_width = 0, screen_height = 0;
-
-  for (i = 0; i < n_crtcs; i++)
-    {
-      MetaCRTCInfo *crtc_info = crtcs[i];
-      MetaCRTC *crtc = crtc_info->crtc;
-      crtc->is_dirty = TRUE;
-
-      if (crtc_info->mode == NULL)
-        {
-          crtc->rect.x = 0;
-          crtc->rect.y = 0;
-          crtc->rect.width = 0;
-          crtc->rect.height = 0;
-          crtc->current_mode = NULL;
-        }
-      else
-        {
-          MetaMonitorMode *mode;
-          MetaOutput *output;
-          int i, n_outputs;
-          int width, height;
-
-          mode = crtc_info->mode;
-
-          if (meta_monitor_transform_is_rotated (crtc_info->transform))
-            {
-              width = mode->height;
-              height = mode->width;
-            }
-          else
-            {
-              width = mode->width;
-              height = mode->height;
-            }
-
-          crtc->rect.x = crtc_info->x;
-          crtc->rect.y = crtc_info->y;
-          crtc->rect.width = width;
-          crtc->rect.height = height;
-          crtc->current_mode = mode;
-          crtc->transform = crtc_info->transform;
-
-          screen_width = MAX (screen_width, crtc_info->x + width);
-          screen_height = MAX (screen_height, crtc_info->y + height);
-
-          n_outputs = crtc_info->outputs->len;
-          for (i = 0; i < n_outputs; i++)
-            {
-              output = ((MetaOutput**)crtc_info->outputs->pdata)[i];
-
-              output->is_dirty = TRUE;
-              output->crtc = crtc;
-            }
-        }
-    }
-
-  for (i = 0; i < n_outputs; i++)
-    {
-      MetaOutputInfo *output_info = outputs[i];
-      MetaOutput *output = output_info->output;
-
-      output->is_primary = output_info->is_primary;
-      output->is_presentation = output_info->is_presentation;
-    }
-
-  /* Disable CRTCs not mentioned in the list */
-  for (i = 0; i < manager->n_crtcs; i++)
-    {
-      MetaCRTC *crtc = &manager->crtcs[i];
-
-      crtc->logical_monitor = NULL;
-
-      if (crtc->is_dirty)
-        {
-          crtc->is_dirty = FALSE;
-          continue;
-        }
-
-      crtc->rect.x = 0;
-      crtc->rect.y = 0;
-      crtc->rect.width = 0;
-      crtc->rect.height = 0;
-      crtc->current_mode = NULL;
-    }
-
-  /* Disable outputs not mentioned in the list */
-  for (i = 0; i < manager->n_outputs; i++)
-    {
-      MetaOutput *output = &manager->outputs[i];
-
-      if (output->is_dirty)
-        {
-          output->is_dirty = FALSE;
-          continue;
-        }
-
-      output->crtc = NULL;
-      output->is_primary = FALSE;
-    }
-
-  manager->screen_width = screen_width;
-  manager->screen_height = screen_height;
-
-  invalidate_logical_config (manager);
-}
-
 void
 meta_monitor_manager_apply_configuration (MetaMonitorManager *manager,
                                           MetaCRTCInfo       **crtcs,
@@ -1560,10 +856,9 @@ meta_monitor_manager_apply_configuration (MetaMonitorManager *manager,
                                           MetaOutputInfo     **outputs,
                                           unsigned int         n_outputs)
 {
-  if (manager->backend == META_BACKEND_XRANDR)
-    apply_config_xrandr (manager, crtcs, n_crtcs, outputs, n_outputs);
-  else
-    apply_config_dummy (manager, crtcs, n_crtcs, outputs, n_outputs);
+  META_MONITOR_MANAGER_GET_CLASS (manager)->apply_configuration (manager,
+                                                                 crtcs, n_crtcs,
+                                                                 outputs, n_outputs);
 }
 
 static gboolean
@@ -1829,38 +1124,6 @@ meta_monitor_manager_confirm_configuration (MetaMonitorManager *manager,
     meta_monitor_config_restore_previous (manager->config, manager);
 }
 
-#ifdef HAVE_RANDR
-static void
-handle_change_backlight_xrandr (MetaMonitorManager *manager,
-                                MetaOutput         *output,
-                                gint                value)
-{
-  MetaDisplay *display = meta_get_display ();
-  int hw_value;
-
-  hw_value = round ((double)value / 100.0 * output->backlight_max + output->backlight_min);
-
-  meta_error_trap_push (display);
-  XRRChangeOutputProperty (manager->xdisplay,
-                           (XID)output->output_id,
-                           display->atom_BACKLIGHT,
-                           XA_INTEGER, 32, PropModeReplace,
-                           (unsigned char *) &hw_value, 1);
-  meta_error_trap_pop (display);
-
-  /* We're not selecting for property notifies, so update the value immediately */
-  output->backlight = normalize_backlight (output, hw_value);
-}
-#endif
-
-static void
-handle_change_backlight_dummy (MetaMonitorManager *manager,
-                               MetaOutput         *output,
-                               gint                value)
-{
-  g_assert_not_reached ();
-}
-
 static gboolean
 meta_monitor_manager_handle_change_backlight  (MetaDBusDisplayConfig *skeleton,
                                                GDBusMethodInvocation *invocation,
@@ -1905,49 +1168,10 @@ meta_monitor_manager_handle_change_backlight  (MetaDBusDisplayConfig *skeleton,
       return TRUE;
     }
 
-  if (manager->backend == META_BACKEND_XRANDR)
-    handle_change_backlight_xrandr (manager, output, value);
-  else
-    handle_change_backlight_dummy (manager, output, value);
+  META_MONITOR_MANAGER_GET_CLASS (manager)->change_backlight (manager, output, value);
 
   meta_dbus_display_config_complete_change_backlight (skeleton, invocation);
   return TRUE;
-}
-
-#ifdef HAVE_RANDR
-static void
-handle_get_crtc_gamma_xrandr (MetaMonitorManager  *manager,
-                              MetaCRTC            *crtc,
-                              gsize               *size,
-                              unsigned short     **red,
-                              unsigned short     **green,
-                              unsigned short     **blue)
-{
-  XRRCrtcGamma *gamma;
-
-  gamma = XRRGetCrtcGamma (manager->xdisplay, (XID)crtc->crtc_id);
-
-  *size = gamma->size;
-  *red = g_memdup (gamma->red, sizeof (unsigned short) * gamma->size);
-  *green = g_memdup (gamma->green, sizeof (unsigned short) * gamma->size);
-  *blue = g_memdup (gamma->blue, sizeof (unsigned short) * gamma->size);
-
-  XRRFreeGamma (gamma);
-}
-#endif
-
-static void
-handle_get_crtc_gamma_dummy (MetaMonitorManager  *manager,
-                             MetaCRTC            *crtc,
-                             gsize               *size,
-                             unsigned short     **red,
-                             unsigned short     **green,
-                             unsigned short     **blue)
-{
-  *size = 0;
-  *red = g_new0 (unsigned short, 0);
-  *green = g_new0 (unsigned short, 0);
-  *blue = g_new0 (unsigned short, 0);
 }
 
 static gboolean
@@ -1957,6 +1181,7 @@ meta_monitor_manager_handle_get_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
                                              guint                  crtc_id)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
+  MetaMonitorManagerClass *klass;
   MetaCRTC *crtc;
   gsize size;
   unsigned short *red;
@@ -1982,10 +1207,14 @@ meta_monitor_manager_handle_get_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
     }
   crtc = &manager->crtcs[crtc_id];
 
-  if (manager->backend == META_BACKEND_XRANDR)
-    handle_get_crtc_gamma_xrandr (manager, crtc, &size, &red, &green, &blue);
+  klass = META_MONITOR_MANAGER_GET_CLASS (manager);
+  if (klass->get_crtc_gamma)
+    klass->get_crtc_gamma (manager, crtc, &size, &red, &green, &blue);
   else
-    handle_get_crtc_gamma_dummy (manager, crtc, &size, &red, &green, &blue);
+    {
+      size = 0;
+      red = green = blue = NULL;
+    }
 
   red_bytes = g_bytes_new_take (red, size * sizeof (unsigned short));
   green_bytes = g_bytes_new_take (green, size * sizeof (unsigned short));
@@ -2005,36 +1234,6 @@ meta_monitor_manager_handle_get_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
   return TRUE;
 }
 
-#ifdef HAVE_RANDR
-static void
-handle_set_crtc_gamma_xrandr (MetaMonitorManager *manager,
-                              MetaCRTC           *crtc,
-                              gsize               size,
-                              unsigned short     *red,
-                              unsigned short     *green,
-                              unsigned short     *blue)
-{
-  XRRCrtcGamma gamma;
-
-  gamma.size = size;
-  gamma.red = red;
-  gamma.green = green;
-  gamma.blue = blue;
-
-  XRRSetCrtcGamma (manager->xdisplay, (XID)crtc->crtc_id, &gamma);
-}
-#endif
-
-static void
-handle_set_crtc_gamma_dummy (MetaMonitorManager *manager,
-                             MetaCRTC           *crtc,
-                             gsize               size,
-                             unsigned short     *red,
-                             unsigned short     *green,
-                             unsigned short     *blue)
-{
-}
-
 static gboolean
 meta_monitor_manager_handle_set_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
                                              GDBusMethodInvocation *invocation,
@@ -2045,6 +1244,7 @@ meta_monitor_manager_handle_set_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
                                              GVariant              *blue_v)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
+  MetaMonitorManagerClass *klass;
   MetaCRTC *crtc;
   gsize size, dummy;
   unsigned short *red;
@@ -2078,10 +1278,9 @@ meta_monitor_manager_handle_set_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
   green = (unsigned short*) g_bytes_get_data (green_bytes, &dummy);
   blue = (unsigned short*) g_bytes_get_data (blue_bytes, &dummy);
 
-  if (manager->backend == META_BACKEND_XRANDR)
-    handle_set_crtc_gamma_xrandr (manager, crtc, size, red, green, blue);
-  else
-    handle_set_crtc_gamma_dummy (manager, crtc, size, red, green, blue);
+  klass = META_MONITOR_MANAGER_GET_CLASS (manager);
+  if (klass->set_crtc_gamma)
+    klass->set_crtc_gamma (manager, crtc, size, red, green, blue);
 
   meta_dbus_display_config_complete_set_crtc_gamma (skeleton, invocation);
 
@@ -2149,11 +1348,9 @@ initialize_dbus_interface (MetaMonitorManager *manager)
 static MetaMonitorManager *global_monitor_manager;
 
 void
-meta_monitor_manager_initialize (Display *display)
+meta_monitor_manager_initialize (void)
 {
-  global_monitor_manager = meta_monitor_manager_new (display);
-
-  initialize_dbus_interface (global_monitor_manager);
+  global_monitor_manager = meta_monitor_manager_new ();
 }
 
 MetaMonitorManager *
@@ -2242,19 +1439,21 @@ gboolean
 meta_monitor_manager_handle_xevent (MetaMonitorManager *manager,
                                     XEvent             *event)
 {
+  MetaMonitorManagerClass *klass;
   MetaOutput *old_outputs;
   MetaCRTC *old_crtcs;
   MetaMonitorMode *old_modes;
   int n_old_outputs;
+  gboolean changed;
 
-  if (manager->backend != META_BACKEND_XRANDR)
+  klass = META_MONITOR_MANAGER_GET_CLASS (manager);
+  if (klass->handle_xevent)
+    changed = klass->handle_xevent (manager, event);
+  else
+    changed = FALSE;
+
+  if (!changed)
     return FALSE;
-
-#ifdef HAVE_RANDR
-  if ((event->type - manager->rr_event_base) != RRScreenChangeNotify)
-    return FALSE;
-
-  XRRUpdateConfiguration (event);
 
   /* Save the old structures, so they stay valid during the update */
   old_outputs = manager->outputs;
@@ -2287,8 +1486,5 @@ meta_monitor_manager_handle_xevent (MetaMonitorManager *manager,
   g_free (old_crtcs);
 
   return TRUE;
-#else
-  return FALSE;
-#endif
 }
 

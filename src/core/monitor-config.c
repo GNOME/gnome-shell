@@ -40,23 +40,11 @@
 #include <clutter/clutter.h>
 #include <libupower-glib/upower.h>
 
-#ifdef HAVE_RANDR
-#include <X11/extensions/Xrandr.h>
-#include <X11/extensions/dpms.h>
-#endif
-
 #include <meta/main.h>
 #include <meta/errors.h>
 #include "monitor-private.h"
-#ifdef HAVE_WAYLAND
-#include "meta-wayland-private.h"
-#endif
 
-#include "meta-dbus-xrandr.h"
-
-#define ALL_WL_TRANSFORMS ((1 << (WL_OUTPUT_TRANSFORM_FLIPPED_270 + 1)) - 1)
-
-/* These two structures represent the intended/persistent configuration,
+/* These structures represent the intended/persistent configuration,
    as stored in the monitors.xml file.
 */
 

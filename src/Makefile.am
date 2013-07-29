@@ -115,6 +115,7 @@ libmutter_la_SOURCES =				\
 	core/monitor.c				\
 	core/monitor-config.c			\
 	core/monitor-private.h			\
+	core/monitor-xrandr.c			\
 	core/mutter-Xatomtype.h			\
 	core/place.c				\
 	core/place.h				\

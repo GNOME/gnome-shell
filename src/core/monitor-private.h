@@ -48,6 +48,13 @@
 #endif
 #include "meta-xrandr-shared.h"
 
+#include "meta-dbus-xrandr.h"
+
+typedef struct _MetaMonitorManagerClass    MetaMonitorManagerClass;
+typedef struct _MetaMonitorManager         MetaMonitorManager;
+typedef struct _MetaMonitorConfigClass    MetaMonitorConfigClass;
+typedef struct _MetaMonitorConfig         MetaMonitorConfig;
+
 #ifndef HAVE_WAYLAND
 enum wl_output_transform {
   WL_OUTPUT_TRANSFORM_NORMAL,
@@ -201,12 +208,88 @@ struct _MetaOutputInfo {
 #define META_IS_MONITOR_MANAGER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_MONITOR_MANAGER))
 #define META_MONITOR_MANAGER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_MONITOR_MANAGER, MetaMonitorManagerClass))
 
-typedef struct _MetaMonitorManagerClass    MetaMonitorManagerClass;
-typedef struct _MetaMonitorManager         MetaMonitorManager;
+struct _MetaMonitorManager
+{
+  MetaDBusDisplayConfigSkeleton parent_instance;
+
+  /* XXX: this structure is very badly
+     packed, but I like the logical organization
+     of fields */
+
+  gboolean in_init;
+  unsigned int serial;
+
+  MetaPowerSave power_save_mode;
+
+  int max_screen_width;
+  int max_screen_height;
+  int screen_width;
+  int screen_height;
+
+  /* Outputs refer to physical screens,
+     CRTCs refer to stuff that can drive outputs
+     (like encoders, but less tied to the HW),
+     while monitor_infos refer to logical ones.
+
+     See also the comment in monitor-private.h
+  */
+  MetaOutput *outputs;
+  unsigned int n_outputs;
+
+  MetaMonitorMode *modes;
+  unsigned int n_modes;
+
+  MetaCRTC *crtcs;
+  unsigned int n_crtcs;
+
+  MetaMonitorInfo *monitor_infos;
+  unsigned int n_monitor_infos;
+  int primary_monitor_index;
+
+  int dbus_name_id;
+
+  int persistent_timeout_id;
+  MetaMonitorConfig *config;
+};
+
+struct _MetaMonitorManagerClass
+{
+  MetaDBusDisplayConfigSkeletonClass parent_class;
+
+  void (*read_current) (MetaMonitorManager *);
+  void (*apply_configuration) (MetaMonitorManager  *,
+                               MetaCRTCInfo       **,
+                               unsigned int         ,
+                               MetaOutputInfo     **,
+                               unsigned int);
+
+  void (*set_power_save_mode) (MetaMonitorManager *,
+                               MetaPowerSave);
+
+  void (*change_backlight) (MetaMonitorManager *,
+                            MetaOutput         *,
+                            int);
+
+  void (*get_crtc_gamma) (MetaMonitorManager  *,
+                          MetaCRTC            *,
+                          gsize               *,
+                          unsigned short     **,
+                          unsigned short     **,
+                          unsigned short     **);
+  void (*set_crtc_gamma) (MetaMonitorManager *,
+                          MetaCRTC           *,
+                          gsize               ,
+                          unsigned short     *,
+                          unsigned short     *,
+                          unsigned short     *);
+
+  gboolean (*handle_xevent) (MetaMonitorManager *,
+                             XEvent             *);
+};
 
 GType meta_monitor_manager_get_type (void);
 
-void                meta_monitor_manager_initialize (Display *display);
+void                meta_monitor_manager_initialize (void);
 MetaMonitorManager *meta_monitor_manager_get  (void);
 
 MetaMonitorInfo    *meta_monitor_manager_get_monitor_infos (MetaMonitorManager *manager,
@@ -245,15 +328,24 @@ void                meta_monitor_manager_apply_configuration (MetaMonitorManager
 void                meta_monitor_manager_confirm_configuration (MetaMonitorManager *manager,
                                                                 gboolean            ok);
 
+#define META_TYPE_MONITOR_MANAGER_XRANDR            (meta_monitor_manager_xrandr_get_type ())
+#define META_MONITOR_MANAGER_XRANDR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_MANAGER_XRANDR, MetaMonitorManagerXrandr))
+#define META_MONITOR_MANAGER_XRANDR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_MANAGER_XRANDR, MetaMonitorManagerXrandrClass))
+#define META_IS_MONITOR_MANAGER_XRANDR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_MONITOR_MANAGER_XRANDR))
+#define META_IS_MONITOR_MANAGER_XRANDR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_MONITOR_MANAGER_XRANDR))
+#define META_MONITOR_MANAGER_XRANDR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_MONITOR_MANAGER_XRANDR, MetaMonitorManagerXrandrClass))
+
+typedef struct _MetaMonitorManagerXrandrClass    MetaMonitorManagerXrandrClass;
+typedef struct _MetaMonitorManagerXrandr         MetaMonitorManagerXrandr;
+
+GType meta_monitor_manager_xrandr_get_type (void);
+
 #define META_TYPE_MONITOR_CONFIG            (meta_monitor_config_get_type ())
 #define META_MONITOR_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_CONFIG, MetaMonitorConfig))
 #define META_MONITOR_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_CONFIG, MetaMonitorConfigClass))
 #define META_IS_MONITOR_CONFIG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_MONITOR_CONFIG))
 #define META_IS_MONITOR_CONFIG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_MONITOR_CONFIG))
 #define META_MONITOR_CONFIG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_MONITOR_CONFIG, MetaMonitorConfigClass))
-
-typedef struct _MetaMonitorConfigClass    MetaMonitorConfigClass;
-typedef struct _MetaMonitorConfig         MetaMonitorConfig;
 
 GType meta_monitor_config_get_type (void) G_GNUC_CONST;
 
