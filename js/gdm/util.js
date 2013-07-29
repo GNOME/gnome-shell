@@ -21,6 +21,7 @@ const FADE_ANIMATION_TIME = 0.16;
 const CLONE_FADE_ANIMATION_TIME = 0.25;
 
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
+const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
 const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
 const BANNER_MESSAGE_KEY = 'banner-message-enable';
 const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
@@ -116,6 +117,8 @@ const ShellUserVerifier = new Lang.Class({
         this._client = client;
 
         this._settings = new Gio.Settings({ schema: LOGIN_SCREEN_SCHEMA });
+        this._settings.connect('changed',
+                               Lang.bind(this, this._updateDefaultService));
         this._updateDefaultService();
 
         this._fprintManager = new Fprint.FprintManager();
@@ -237,13 +240,16 @@ const ShellUserVerifier = new Lang.Class({
     _checkForFingerprintReader: function() {
         this._haveFingerprintReader = false;
 
-        if (!this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY))
+        if (!this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY)) {
+            this._updateDefaultService();
             return;
+        }
 
         this._fprintManager.GetDefaultDeviceRemote(Gio.DBusCallFlags.NONE, this._cancellable, Lang.bind(this,
             function(device, error) {
                 if (!error && device)
                     this._haveFingerprintReader = true;
+                    this._updateDefaultService();
             }));
     },
 
@@ -313,8 +319,10 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _updateDefaultService: function() {
-        // For now, the default service is always the password service
-        this._defaultService = PASSWORD_SERVICE_NAME;
+        if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
+            this._defaultService = PASSWORD_SERVICE_NAME;
+        else if (this._haveFingerprintReader)
+            this._defaultService = FINGERPRINT_SERVICE_NAME;
     },
 
     _startService: function(serviceName) {
@@ -339,7 +347,7 @@ const ShellUserVerifier = new Lang.Class({
     _beginVerification: function() {
         this._startService(this._getForegroundService());
 
-        if (this._userName && this._haveFingerprintReader)
+        if (this._userName && this._haveFingerprintReader && !this.serviceIsForeground(FINGERPRINT_SERVICE_NAME))
             this._startService(FINGERPRINT_SERVICE_NAME);
     },
 
