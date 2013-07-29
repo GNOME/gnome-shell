@@ -233,8 +233,10 @@ const AuthPrompt = new Lang.Class({
     },
 
     _onReset: function() {
-        if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
+        if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED) {
+            this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
             this.reset();
+        }
     },
 
     _onShowLoginHint: function(verifier, message) {
@@ -413,7 +415,12 @@ const AuthPrompt = new Lang.Class({
     },
 
     reset: function() {
+        let oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
+
+        if (oldStatus == AuthPromptStatus.VERIFYING)
+            this._userVerifier.cancel();
+
         this._queryingService = null;
         this.clear();
         this._message.opacity = 0;
@@ -460,9 +467,6 @@ const AuthPrompt = new Lang.Class({
     },
 
     cancel: function() {
-        if (this.verificationStatus == AuthPromptStatus.VERIFYING)
-            this._userVerifier.cancel();
-
         this.reset();
     }
 });
