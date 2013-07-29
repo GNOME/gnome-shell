@@ -123,6 +123,8 @@ const AuthPrompt = new Lang.Class({
 
     _onDestroy: function() {
         this._userVerifier.clear();
+        this._userVerifier.disconnectAll();
+        this._userVerifier = null;
     },
 
     _initButtons: function() {
