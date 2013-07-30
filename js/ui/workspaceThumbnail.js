@@ -742,7 +742,7 @@ const ThumbnailsBox = new Lang.Class({
                 // If the window is attached to an ancestor, we don't need/want to move it
                 if (!!win.meta_window.get_transient_for())
                     return false;
-                
+
                 if (isWindow)
                     return win.get_workspace() >= newWorkspaceIndex && win != source;
                 else
