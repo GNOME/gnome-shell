@@ -36,6 +36,7 @@
 #include "util-private.h"
 #include <meta/errors.h>
 #include "monitor-private.h"
+#include "meta-wayland-private.h"
 
 #include "meta-dbus-xrandr.h"
 
@@ -358,7 +359,16 @@ static GType
 get_default_backend (void)
 {
   if (meta_is_wayland_compositor ())
-    return META_TYPE_MONITOR_MANAGER; /* FIXME: KMS */
+    {
+      MetaWaylandCompositor *compositor;
+
+      compositor = meta_wayland_compositor_get_default ();
+
+      if (meta_wayland_compositor_is_native (compositor))
+        return META_TYPE_MONITOR_MANAGER_KMS;
+      else
+        return META_TYPE_MONITOR_MANAGER;
+    }
   else
     return META_TYPE_MONITOR_MANAGER_XRANDR;
 }
@@ -407,17 +417,18 @@ meta_monitor_manager_constructed (GObject *object)
       MetaOutput *old_outputs;
       MetaCRTC *old_crtcs;
       MetaMonitorMode *old_modes;
-      int n_old_outputs;
+      unsigned int n_old_outputs, n_old_modes;
 
       old_outputs = manager->outputs;
       n_old_outputs = manager->n_outputs;
       old_modes = manager->modes;
+      n_old_modes = manager->n_modes;
       old_crtcs = manager->crtcs;
 
       read_current_config (manager);
 
       meta_monitor_manager_free_output_array (old_outputs, n_old_outputs);
-      g_free (old_modes);
+      meta_monitor_manager_free_mode_array (old_modes, n_old_modes);
       g_free (old_crtcs);
     }
 
@@ -459,9 +470,29 @@ meta_monitor_manager_free_output_array (MetaOutput *old_outputs,
       g_free (old_outputs[i].modes);
       g_free (old_outputs[i].possible_crtcs);
       g_free (old_outputs[i].possible_clones);
+
+      if (old_outputs[i].driver_notify)
+        old_outputs[i].driver_notify (&old_outputs[i]);
     }
 
   g_free (old_outputs);
+}
+
+void
+meta_monitor_manager_free_mode_array (MetaMonitorMode *old_modes,
+                                      int              n_old_modes)
+{
+  int i;
+
+  for (i = 0; i < n_old_modes; i++)
+    {
+      g_free (old_modes[i].name);
+
+      if (old_modes[i].driver_notify)
+        old_modes[i].driver_notify (&old_modes[i]);
+    }
+
+  g_free (old_modes);
 }
 
 static void
@@ -470,8 +501,8 @@ meta_monitor_manager_finalize (GObject *object)
   MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
 
   meta_monitor_manager_free_output_array (manager->outputs, manager->n_outputs);
+  meta_monitor_manager_free_mode_array (manager->modes, manager->n_modes);
   g_free (manager->monitor_infos);
-  g_free (manager->modes);
   g_free (manager->crtcs);
 
   G_OBJECT_CLASS (meta_monitor_manager_parent_class)->finalize (object);

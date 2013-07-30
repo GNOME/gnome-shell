@@ -106,6 +106,7 @@ void                    meta_wayland_compositor_set_input_focus (MetaWaylandComp
                                                                  MetaWindow            *window);
 
 MetaLauncher           *meta_wayland_compositor_get_launcher    (MetaWaylandCompositor *compositor);
+gboolean                meta_wayland_compositor_is_native       (MetaWaylandCompositor *compositor);
 
 MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource *resource);
 

@@ -977,7 +977,7 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManager *manager,
   MetaOutput *old_outputs;
   MetaCRTC *old_crtcs;
   MetaMonitorMode *old_modes;
-  int n_old_outputs;
+  unsigned int n_old_outputs, n_old_modes;
 
   if ((event->type - manager_xrandr->rr_event_base) != RRScreenChangeNotify)
     return FALSE;
@@ -988,6 +988,7 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManager *manager,
   old_outputs = manager->outputs;
   n_old_outputs = manager->n_outputs;
   old_modes = manager->modes;
+  n_old_modes = manager->n_modes;
   old_crtcs = manager->crtcs;
 
   manager->serial++;
@@ -1022,7 +1023,7 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManager *manager,
     }
 
   meta_monitor_manager_free_output_array (old_outputs, n_old_outputs);
-  g_free (old_modes);
+  meta_monitor_manager_free_mode_array (old_modes, n_old_modes);
   g_free (old_crtcs);
 
   return TRUE;
