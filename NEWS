@@ -1,3 +1,32 @@
+Cogl 1.15.4                                                        2013-07-30
+
+  • List of changes since Cogl 1.15.2
+
+  » Added experimental API to directly expose atlas textures.
+  » Added new_from_file/data/bitmap APIs for sliced textures.
+  » Added new_from_file APIs for 2D textures.
+  » Added cogl_primitive_draw as a new name for the
+    cogl_framebuffer_draw_primitive function.
+  » Removed the attribute drawing APIs. Instead applications should
+    create a primitive and draw that.
+  » Fixed bug where Cogl would busy-wait with 100% CPU if the Wayland
+    compositor is closed.
+  » The COGL_FRAME_EVENT_SYNC events are now sent based on the frame
+    callback with the Wayland backend.
+  » New cogl_gst_video_sink_is_ready() function to determine whether a
+    Cogl-GST video sink is ready to have the pipeline queried.
+  » Fixed a potential bug with the blending enabled state when copying
+    a pipeline.
+  » Fixed detecting the Mesa vendor when GL 3 is used.
+  » Fixed a reference leak on the CoglRenderer.
+  » Fixes to the Visual Studio build files.
+
+Many thanks to:
+
+  Robert Bragg
+  Chun-wei Fan
+  Damien Lespiau
+
 Cogl 1.15.2                                                        2013-07-09
 
   • List of changes since Cogl 1.14.0
