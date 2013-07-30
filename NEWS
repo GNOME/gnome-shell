@@ -1,3 +1,33 @@
+3.9.5
+=====
+* Fix width changes of the calendar popup [Florian; #704200]
+* Work towards aggregate status menu [Jasper; #702539, #704336, #704368,
+  #704670]
+* Update design of lock screen notifications [Allan; #702305]
+* Don't show empty backgroundMenu [Michael; #703868]
+* Add option to limit app switcher to current workspace [Adel; #703538]
+* Consolidate design of login screen and unlock dialog [Ray; #702308, #704795]
+* Respect hasWorkspace property of session mode [Jasper; #698593]
+* Fix fade of app menu icon in RTL locales [Jasper; #704583]
+* Destroy notifications when the close button is clicked [Adel; #687016]
+* Fix clicks on legacy tray icons in the message tray [Florian; #704095]
+* authPrompt: Fade out message if users start to type [Ray; #704817]
+* Export timestamps of global shortcuts on DBus [Bastien; #704859]
+* Fix duplicate search provider results [Jasper; #700283]
+* Misc bug fixes and cleanups [Lionel, Florian, Emilio, Ray, Jasper; #703859,
+  #703540, #704077, #703997, #704318, #704347, #704265, #704411, #704430,
+  #704347, #704453, #704471, #704542, #704707, #703905, #705037]
+
+Contributors:
+  Allan Day, Adel Gadllah, Lionel Landwerlin, Florian Müllner, Bastien Nocera,
+  Emilio Pozuelo Monfort, Jasper St. Pierre, Ray Strode, Colin Walters,
+  Michael Wood
+
+Translations:
+  eternalhui [zh_CN], Victor Ibragimov [tg], Dušan Kazik [sk],
+  Jiro Matsuzawa [ja], Kjartan Maraas [nb], Milo Casagrande [it],
+  Marek Černocký [cs], Daniel Mustieles [es], Benjamin Steinwender [de]
+
 3.9.4
 =====
 * Fix chat entries not being focused when expanded [Jasper; #698778]
