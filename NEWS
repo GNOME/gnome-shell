@@ -1,3 +1,27 @@
+3.8.4
+=====
+* Fix initial text in logout dialog [Matthias; #702056]
+* Clear login messages when the user answers [John; #702458]
+* Align the "Not Listed?" label properly in the login screen [Mathieu; #702307]
+* Workaround crash causing bugs in code [Florian; #610279]
+* Improve time stamp in chat messages (frequency and formatting)
+  [Carlos; #687809, #687809]
+* Fix unlock screen after prematurely stopping curtain drag [Lionel; #703126]
+* Fix autorun notification [Matthis; 703418
+* Fix background occasionally turning solid blue on monitor changes [Lionel: #703001]
+* Increase message tray performance [Giovanni; #700194]
+* Fix focus of notifications after they're expanded [Jasper; #698778]
+* Fix orientation of gradient on app menu in RTL locales [Jasper; #704583]
+* Support filenames in addition to file uris for background
+  [Giovanni, Ray; #702121]
+* misc bug fixes [Adel, Florian, Emilio, Alban, Jasper; #702338, #704265,
+  #698863, #698484]
+
+Contributors:
+  Mathieu Bridon, Alban Browaeys, Giovanni Campagna, Matthias Clasen, Adel Gadllah,
+  Emilio Pozuelo Monfort, Linonel Landwerlin, Carlos Soriano, Ray Strode,
+  John Wendell
+
 3.8.3
 =====
 * Fix child menu regression introduced in 3.8.2 [Florian; #699678]
