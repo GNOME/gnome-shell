@@ -32,6 +32,8 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-display.h>
 
+#include <xf86drmMode.h>
+
 COGL_BEGIN_DECLS
 
 /**
@@ -53,6 +55,43 @@ COGL_BEGIN_DECLS
  */
 void
 cogl_kms_display_queue_modes_reset (CoglDisplay *display);
+
+typedef struct {
+  uint32_t id;
+  uint32_t x, y;
+  drmModeModeInfo mode;
+
+  uint32_t *connectors;
+  uint32_t  count;
+} CoglKmsCrtc;
+
+/**
+ * cogl_kms_display_set_layout:
+ * @onscreen: a #CoglDisplay
+ * @width: the framebuffer width
+ * @height: the framebuffer height
+ * @crtcs: the array of #CoglKmsCrtc structure with the desired CRTC layout
+ *
+ * Configures @display to use a framebuffer sized @width x @height, covering
+ * the CRTCS in @crtcs.
+ * @width and @height must be within the driver framebuffer limits, and @crtcs
+ * must be valid KMS API IDs.
+ *
+ * Calling this function overrides the automatic mode setting done by Cogl,
+ * and for this reason must be called before the first call to cogl_onscreen_swap_buffers().
+ *
+ * If you want to restore the default behaviour, you can call this function
+ * with @width and @height set to -1.
+ *
+ * Stability: unstable
+ */
+CoglBool
+cogl_kms_display_set_layout (CoglDisplay *display,
+                             int width,
+                             int height,
+                             CoglKmsCrtc **crtcs,
+                             int n_crtcs,
+                             CoglError **error);
 
 COGL_END_DECLS
 #endif /* __COGL_KMS_DISPLAY_H__ */

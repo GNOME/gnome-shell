@@ -79,9 +79,13 @@ typedef struct _CoglOutputKMS
 typedef struct _CoglDisplayKMS
 {
   GList *outputs;
+  GList *crtcs;
+
   int width, height;
   CoglBool pending_set_crtc;
   struct gbm_surface *dummy_gbm_surface;
+
+  CoglOnscreen *onscreen;
 } CoglDisplayKMS;
 
 typedef struct _CoglFlipKMS
@@ -393,13 +397,13 @@ find_mirror_modes (drmModeModeInfo *modes0,
 
 static drmModeModeInfo builtin_1024x768 =
 {
-	63500,			/* clock */
-	1024, 1072, 1176, 1328, 0,
-	768, 771, 775, 798, 0,
-	59920,
-	DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC,
-	0,
-	"1024x768"
+        63500,                        /* clock */
+        1024, 1072, 1176, 1328, 0,
+        768, 771, 775, 798, 0,
+        59920,
+        DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC,
+        0,
+        "1024x768"
 };
 
 static CoglBool
@@ -520,17 +524,69 @@ setup_crtc_modes (CoglDisplay *display, int fb_id)
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
   GList *l;
 
-  for (l = kms_display->outputs; l; l = l->next)
+  for (l = kms_display->crtcs; l; l = l->next)
     {
-      CoglOutputKMS *output = l->data;
+      CoglKmsCrtc *crtc = l->data;
+
       int ret = drmModeSetCrtc (kms_renderer->fd,
-                                output->encoder->crtc_id,
-                                fb_id, 0, 0,
-                                &output->connector->connector_id, 1,
-                                &output->mode);
+                                crtc->id,
+                                fb_id, crtc->x, crtc->y,
+                                crtc->connectors, crtc->count,
+                                crtc->count ? &crtc->mode : NULL);
       if (ret)
-        g_warning ("Failed to set crtc mode %s: %m", output->mode.name);
+        g_warning ("Failed to set crtc mode %s: %m", crtc->mode.name);
     }
+}
+
+static void
+flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
+{
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglDisplayKMS *kms_display = egl_display->platform;
+  CoglRendererEGL *egl_renderer = display->renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  GList *l;
+
+  for (l = kms_display->crtcs; l; l = l->next)
+    {
+      CoglKmsCrtc *crtc = l->data;
+      int ret;
+
+      if (crtc->count == 0)
+        continue;
+
+      ret = drmModePageFlip (kms_renderer->fd,
+                             crtc->id, fb_id,
+                             DRM_MODE_PAGE_FLIP_EVENT, flip);
+
+      if (ret)
+        {
+          g_warning ("Failed to flip: %m");
+          continue;
+        }
+
+      flip->pending++;
+    }
+}
+
+static void
+crtc_free (CoglKmsCrtc *crtc)
+{
+  g_free (crtc->connectors);
+  g_slice_free (CoglKmsCrtc, crtc);
+}
+
+static CoglKmsCrtc *
+crtc_copy (CoglKmsCrtc *from)
+{
+  CoglKmsCrtc *new;
+
+  new = g_slice_new (CoglKmsCrtc);
+
+  *new = *from;
+  new->connectors = g_memdup (from->connectors, from->count * sizeof(uint32_t));
+
+  return new;
 }
 
 static CoglBool
@@ -544,6 +600,7 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
   drmModeRes *resources;
   CoglOutputKMS *output0, *output1;
   CoglBool mirror;
+  CoglKmsCrtc *crtc0, *crtc1;
 
   kms_display = g_slice_new0 (CoglDisplayKMS);
   egl_display->platform = kms_display;
@@ -598,7 +655,33 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
         }
     }
   else
-    output0->mode = output0->modes[0];
+    {
+      output0->mode = output0->modes[0];
+      output1 = NULL;
+    }
+
+  crtc0 = g_slice_new (CoglKmsCrtc);
+  crtc0->id = output0->encoder->crtc_id;
+  crtc0->x = 0;
+  crtc0->y = 0;
+  crtc0->mode = output0->mode;
+  crtc0->connectors = g_new (uint32_t, 1);
+  crtc0->connectors[0] = output0->connector->connector_id;
+  crtc0->count = 1;
+  kms_display->crtcs = g_list_prepend (kms_display->crtcs, crtc0);
+
+  if (output1)
+    {
+      crtc1 = g_slice_new (CoglKmsCrtc);
+      crtc1->id = output1->encoder->crtc_id;
+      crtc1->x = 0;
+      crtc1->y = 0;
+      crtc1->mode = output1->mode;
+      crtc1->connectors = g_new (uint32_t, 1);
+      crtc1->connectors[0] = output1->connector->connector_id;
+      crtc1->count = 1;
+      kms_display->crtcs = g_list_prepend (kms_display->crtcs, crtc1);
+    }
 
   kms_display->width = output0->mode.hdisplay;
   kms_display->height = output0->mode.vdisplay;
@@ -653,6 +736,8 @@ _cogl_winsys_egl_display_destroy (CoglDisplay *display)
     output_free (kms_renderer->fd, l->data);
   g_list_free (kms_display->outputs);
   kms_display->outputs = NULL;
+
+  g_list_free_full (kms_display->crtcs, (GDestroyNotify) crtc_free);
 
   g_slice_free (CoglDisplayKMS, egl_display->platform);
 }
@@ -742,7 +827,6 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
   CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
   uint32_t handle, stride;
   CoglFlipKMS *flip;
-  GList *l;
 
   /* If we already have a pending swap then block until it completes */
   while (kms_onscreen->next_fb_id != 0)
@@ -781,7 +865,7 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
     }
 
   /* If this is the first framebuffer to be presented then we now setup the
-   * crtc modes... */
+   * crtc modes, else we flip from the previous buffer */
   if (kms_display->pending_set_crtc)
     {
       setup_crtc_modes (context->display, kms_onscreen->next_fb_id);
@@ -791,22 +875,7 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
   flip = g_slice_new0 (CoglFlipKMS);
   flip->onscreen = onscreen;
 
-  for (l = kms_display->outputs; l; l = l->next)
-    {
-      CoglOutputKMS *output = l->data;
-
-      if (drmModePageFlip (kms_renderer->fd,
-                           output->encoder->crtc_id,
-                           kms_onscreen->next_fb_id,
-                           DRM_MODE_PAGE_FLIP_EVENT,
-                           flip))
-        {
-          g_warning ("Failed to flip: %m");
-          continue;
-        }
-
-      flip->pending++;
-    }
+  flip_all_crtcs (context->display, flip, kms_onscreen->next_fb_id);
 
   if (flip->pending == 0)
     {
@@ -859,6 +928,16 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context, FALSE);
 
+  if (kms_display->onscreen)
+    {
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                       "Cannot have multiple onscreens in the KMS platform");
+      return FALSE;
+    }
+
+  kms_display->onscreen = onscreen;
+
   onscreen->winsys = g_slice_new0 (CoglOnscreenEGL);
   egl_onscreen = onscreen->winsys;
 
@@ -906,6 +985,9 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
+  CoglDisplay *display = context->display;
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
@@ -914,6 +996,8 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   /* If we never successfully allocated then there's nothing to do */
   if (egl_onscreen == NULL)
     return;
+
+  kms_display->onscreen = NULL;
 
   kms_onscreen = egl_onscreen->platform;
 
@@ -1008,4 +1092,86 @@ cogl_kms_display_queue_modes_reset (CoglDisplay *display)
       CoglDisplayKMS *kms_display = egl_display->platform;
       kms_display->pending_set_crtc = TRUE;
     }
+}
+
+CoglBool
+cogl_kms_display_set_layout (CoglDisplay *display,
+                             int width,
+                             int height,
+                             CoglKmsCrtc **crtcs,
+                             int n_crtcs,
+                             CoglError **error)
+{
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglDisplayKMS *kms_display = egl_display->platform;
+  CoglRenderer *renderer = display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  GList *crtc_list;
+  int i;
+
+  if ((width != kms_display->width ||
+       height != kms_display->height) &&
+      kms_display->onscreen)
+    {
+      CoglOnscreenEGL *egl_onscreen = kms_display->onscreen->winsys;
+      CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
+      struct gbm_surface *new_surface;
+      EGLSurface new_egl_surface;
+
+      /* Need to drop the GBM surface and create a new one */
+
+      new_surface = gbm_surface_create (kms_renderer->gbm,
+                                        width, height,
+                                        GBM_BO_FORMAT_XRGB8888,
+                                        GBM_BO_USE_SCANOUT |
+                                        GBM_BO_USE_RENDERING);
+
+      if (!new_surface)
+        {
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
+                           COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                           "Failed to allocate new surface");
+          return FALSE;
+        }
+
+      new_egl_surface =
+        eglCreateWindowSurface (egl_renderer->edpy,
+                                egl_display->egl_config,
+                                (NativeWindowType) new_surface,
+                                NULL);
+      if (new_egl_surface == EGL_NO_SURFACE)
+        {
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
+                           COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                           "Failed to allocate new surface");
+          gbm_surface_destroy (new_surface);
+          return FALSE;
+        }
+
+      eglDestroySurface (egl_renderer->edpy, egl_onscreen->egl_surface);
+      gbm_surface_destroy (kms_onscreen->surface);
+
+      kms_onscreen->surface = new_surface;
+      egl_onscreen->egl_surface = new_egl_surface;
+
+      _cogl_framebuffer_winsys_update_size (COGL_FRAMEBUFFER (kms_display->onscreen), width, height);
+    }
+
+  kms_display->width = width;
+  kms_display->height = height;
+
+  g_list_free_full (kms_display->crtcs, (GDestroyNotify) crtc_free);
+
+  crtc_list = NULL;
+  for (i = 0; i < n_crtcs; i++)
+    {
+      crtc_list = g_list_prepend (crtc_list, crtc_copy (crtcs[i]));
+    }
+  crtc_list = g_list_reverse (crtc_list);
+  kms_display->crtcs = crtc_list;
+
+  kms_display->pending_set_crtc = TRUE;
+
+  return TRUE;
 }
