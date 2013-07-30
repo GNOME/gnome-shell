@@ -1,3 +1,13 @@
+3.9.5
+=====
+* Don't select for touch events on the stage [Jasper; #697192]
+* Don't queue redraws for obscured regions [Adel; #703332]
+* Export timestamp of global keybinding events [Bastien; #704858]
+* Misc bug fixes and cleanups [Jasper, Rico; #703970]
+
+Contributors:
+  Adel Gadllah, Bastien Nocera, Jasper St. Pierre, Rico Tzschichholz
+
 3.9.4
 =====
 * Tweak window shadows [Allan; #702141]
