@@ -1889,6 +1889,5 @@ shell_global_get_runtime_state (ShellGlobal  *global,
       g_mapped_file_unref (mfile);
     }
 
- out:
   return res;
 }
