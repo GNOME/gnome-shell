@@ -1031,7 +1031,6 @@ const Notification = new Lang.Class({
 
         // Restore height requisition
         this.actor.add_style_class_name('notification-unexpanded');
-        this.emit('collapsed');
     },
 
     _onActionInvoked: function(actor, mouseButtonClicked, id) {
@@ -1361,8 +1360,8 @@ const Source = new Lang.Class({
         this.iconUpdated();
     },
 
-    open: function(notification) {
-        this.emit('opened', notification);
+    // To be overridden by subclasses
+    open: function() {
     },
 
     destroyNonResidentNotifications: function() {
@@ -2760,7 +2759,6 @@ const MessageTray = new Lang.Class({
         this._clickedSummaryItemMouseButton = button;
 
         if (this._clickedSummaryItem) {
-            this._clickedSummaryItem.source.emit('summary-item-clicked', button);
             this._clickedSummaryItem.actor.add_style_pseudo_class('selected');
             this._clickedSummaryItemAllocationChangedId =
                 this._clickedSummaryItem.actor.connect('allocation-changed',
