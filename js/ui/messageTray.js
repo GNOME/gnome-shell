@@ -1460,7 +1460,6 @@ const SummaryItem = new Lang.Class({
             let stackedNotification = this._stackedNotifications[i];
             let notification = stackedNotification.notification;
             notification.collapseCompleted();
-            notification.disconnect(stackedNotification.notificationExpandedId);
             notification.disconnect(stackedNotification.notificationDoneDisplayingId);
             notification.disconnect(stackedNotification.notificationDestroyedId);
             if (notification.actor.get_parent() == this.notificationStack)
@@ -1479,7 +1478,6 @@ const SummaryItem = new Lang.Class({
     _appendNotificationToStack: function(notification) {
         let stackedNotification = {};
         stackedNotification.notification = notification;
-        stackedNotification.notificationExpandedId = notification.connect('expanded', Lang.bind(this, this._contentUpdated));
         stackedNotification.notificationDoneDisplayingId = notification.connect('done-displaying', Lang.bind(this, this._notificationDoneDisplaying));
         stackedNotification.notificationDestroyedId = notification.connect('destroy', Lang.bind(this, this._notificationDestroyed));
         this._stackedNotifications.push(stackedNotification);
@@ -1515,7 +1513,6 @@ const SummaryItem = new Lang.Class({
         for (let i = 0; i < this._stackedNotifications.length; i++) {
             if (this._stackedNotifications[i].notification == notification) {
                 let stackedNotification = this._stackedNotifications[i];
-                notification.disconnect(stackedNotification.notificationExpandedId);
                 notification.disconnect(stackedNotification.notificationDoneDisplayingId);
                 notification.disconnect(stackedNotification.notificationDestroyedId);
                 this._stackedNotifications.splice(i, 1);
@@ -2699,7 +2696,6 @@ const MessageTray = new Lang.Class({
         this._adjustSummaryBoxPointerPosition();
 
         this._summaryBoxPointerState = State.SHOWING;
-        this._clickedSummaryItem.actor.add_style_pseudo_class('selected');
         this._summaryBoxPointer.show(BoxPointer.PopupAnimation.FULL, Lang.bind(this, function() {
             this._summaryBoxPointerState = State.SHOWN;
         }));
@@ -2708,14 +2704,10 @@ const MessageTray = new Lang.Class({
     _onSummaryBoxPointerContentUpdated: function() {
         if (this._summaryBoxPointerItem.notificationStack.get_n_children() == 0)
             this._hideSummaryBoxPointer();
-        this._adjustSummaryBoxPointerPosition();
     },
 
     _adjustSummaryBoxPointerPosition: function() {
-        if (!this._clickedSummaryItem)
-            return;
-
-        this._summaryBoxPointer.setPosition(this._clickedSummaryItem.actor, 0);
+        this._summaryBoxPointer.setPosition(this._summaryBoxPointerItem.actor, 0);
     },
 
     _setClickedSummaryItem: function(item, button) {
