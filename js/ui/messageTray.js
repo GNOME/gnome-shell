@@ -1409,7 +1409,7 @@ const SummaryItem = new Lang.Class({
         this._closeButton = Util.makeCloseButton();
         this._closeButton.connect('clicked', Lang.bind(this, function() {
             source.destroy();
-            source.emit('done-displaying-content');
+            source.emit('done-displaying-content', false);
         }));
         this.notificationStackWidget.add_actor(this._closeButton);
         this._stackedNotifications = [];
@@ -1460,7 +1460,6 @@ const SummaryItem = new Lang.Class({
             let stackedNotification = this._stackedNotifications[i];
             let notification = stackedNotification.notification;
             notification.collapseCompleted();
-            notification.disconnect(stackedNotification.notificationDoneDisplayingId);
             notification.disconnect(stackedNotification.notificationDestroyedId);
             if (notification.actor.get_parent() == this.notificationStack)
                 this.notificationStack.remove_actor(notification.actor);
@@ -1478,7 +1477,6 @@ const SummaryItem = new Lang.Class({
     _appendNotificationToStack: function(notification) {
         let stackedNotification = {};
         stackedNotification.notification = notification;
-        stackedNotification.notificationDoneDisplayingId = notification.connect('done-displaying', Lang.bind(this, this._notificationDoneDisplaying));
         stackedNotification.notificationDestroyedId = notification.connect('destroy', Lang.bind(this, this._notificationDestroyed));
         this._stackedNotifications.push(stackedNotification);
         if (!this.source.isChat)
@@ -1505,15 +1503,10 @@ const SummaryItem = new Lang.Class({
         this.emit('content-updated');
     },
 
-    _notificationDoneDisplaying: function() {
-        this.source.emit('done-displaying-content', true);
-    },
-
     _notificationDestroyed: function(notification) {
         for (let i = 0; i < this._stackedNotifications.length; i++) {
             if (this._stackedNotifications[i].notification == notification) {
                 let stackedNotification = this._stackedNotifications[i];
-                notification.disconnect(stackedNotification.notificationDoneDisplayingId);
                 notification.disconnect(stackedNotification.notificationDestroyedId);
                 this._stackedNotifications.splice(i, 1);
                 if (notification.actor.get_parent() == this.notificationStack)
