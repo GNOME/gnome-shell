@@ -2236,39 +2236,37 @@ const MessageTray = new Lang.Class({
     // _updateState() figures out what (if anything) needs to be done
     // at the present time.
     _updateState: function() {
-        // Notifications
-        let notificationQueue = this._notificationQueue.filter(function(n) {
+        // Filter out acknowledged notifications.
+        this._notificationQueue = this._notificationQueue.filter(function(n) {
             return !n.acknowledged;
         });
+
         let hasNotifications = Main.sessionMode.hasNotifications;
 
-        this._notificationQueue = notificationQueue;
-        let notificationUrgent = notificationQueue.length > 0 && notificationQueue[0].urgency == Urgency.CRITICAL;
-        let notificationForFeedback = notificationQueue.length > 0 && notificationQueue[0].forFeedback;
-        let notificationsLimited = this._busy || Main.layoutManager.bottomMonitor.inFullscreen;
-        let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent || notificationForFeedback) && hasNotifications;
-        let nextNotification = notificationQueue.length > 0 ? notificationQueue[0] : null;
-        let notificationPinned = this._pointerInNotification && !this._notificationRemoved;
-        let notificationExpanded = this._notification && this._notification.expanded;
-        let notificationExpired = (this._userActiveWhileNotificationShown &&
-                                   this._notificationTimeoutId == 0 &&
-                                   !(this._notification && this._notification.urgency == Urgency.CRITICAL) &&
-                                   !(this._notification && this._notification.focused) &&
-                                   !this._pointerInNotification);
-        let notificationLockedOut = !hasNotifications && this._notification;
-        let notificationMustClose = (this._notificationRemoved || notificationLockedOut || notificationExpired || this._traySummoned);
-        let canShowNotification = notificationsPending && this._trayState == State.HIDDEN && !this._traySummoned;
-
         if (this._notificationState == State.HIDDEN) {
-            if (canShowNotification)
-                this._showNotification();
+            let shouldShowNotification = (hasNotifications && this._trayState == State.HIDDEN && !this._traySummoned);
+            let nextNotification = this._notificationQueue[0] || null;
+            if (shouldShowNotification && nextNotification) {
+                let limited = this._busy || Main.layoutManager.bottomMonitor.inFullscreen;
+                let showNextNotification = (!limited || nextNotification.forFeedback || nextNotification.urgency == Urgency.CRITICAL);
+                if (showNextNotification)
+                    this._showNotification();
+            }
         } else if (this._notificationState == State.SHOWN) {
-            if (notificationMustClose) {
-                let animate = !(this._notificationRemoved || notificationLockedOut);
+            let pinned = this._pointerInNotification && !this._notificationRemoved;
+            let expired = (this._userActiveWhileNotificationShown &&
+                           this._notificationTimeoutId == 0 &&
+                           !(this._notification.urgency == Urgency.CRITICAL) &&
+                           !this._notification.focused &&
+                           !this._pointerInNotification);
+            let mustClose = (this._notificationRemoved || !hasNotifications || expired || this._traySummoned);
+
+            if (mustClose) {
+                let animate = hasNotifications && !this._notificationRemoved;
                 this._hideNotification(animate);
-            } else if (notificationPinned && !notificationExpanded) {
+            } else if (pinned && !this._notification.expanded) {
                 this._expandNotification(false);
-            } else if (notificationPinned) {
+            } else if (pinned) {
                 this._ensureNotificationFocused();
             }
         }
