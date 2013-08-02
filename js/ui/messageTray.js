@@ -1709,7 +1709,6 @@ const MessageTray = new Lang.Class({
         this._notificationHovered = false;
 
         this._keyboardVisible = false;
-        this._notificationClosed = false;
         this._notificationState = State.HIDDEN;
         this._notificationTimeoutId = 0;
         this._notificationExpandedId = 0;
@@ -2286,7 +2285,7 @@ const MessageTray = new Lang.Class({
         let notificationLockedOut = !hasNotifications && this._notification;
         let notificationMustClose = (this._notificationRemoved || notificationLockedOut ||
                                      (notificationExpired && this._userActiveWhileNotificationShown) ||
-                                     this._notificationClosed || this._traySummoned);
+                                     this._traySummoned);
         let canShowNotification = notificationsPending && this._trayState == State.HIDDEN && !this._traySummoned;
 
         if (this._notificationState == State.HIDDEN) {
