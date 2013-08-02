@@ -2250,26 +2250,27 @@ const MessageTray = new Lang.Class({
         let nextNotification = notificationQueue.length > 0 ? notificationQueue[0] : null;
         let notificationPinned = this._pointerInNotification && !this._notificationRemoved;
         let notificationExpanded = this._notification && this._notification.expanded;
-        let notificationExpired = this._notificationTimeoutId == 0 &&
-                                  !(this._notification && this._notification.urgency == Urgency.CRITICAL) &&
-                                  !(this._notification && this._notification.focused) &&
-                                  !this._pointerInNotification;
+        let notificationExpired = (this._userActiveWhileNotificationShown &&
+                                   this._notificationTimeoutId == 0 &&
+                                   !(this._notification && this._notification.urgency == Urgency.CRITICAL) &&
+                                   !(this._notification && this._notification.focused) &&
+                                   !this._pointerInNotification);
         let notificationLockedOut = !hasNotifications && this._notification;
-        let notificationMustClose = (this._notificationRemoved || notificationLockedOut ||
-                                     (notificationExpired && this._userActiveWhileNotificationShown) ||
-                                     this._traySummoned);
+        let notificationMustClose = (this._notificationRemoved || notificationLockedOut || notificationExpired || this._traySummoned);
         let canShowNotification = notificationsPending && this._trayState == State.HIDDEN && !this._traySummoned;
 
         if (this._notificationState == State.HIDDEN) {
             if (canShowNotification)
                 this._showNotification();
         } else if (this._notificationState == State.SHOWN) {
-            if (notificationMustClose)
-                this._hideNotification();
-            else if (notificationPinned && !notificationExpanded)
+            if (notificationMustClose) {
+                let animate = !(this._notificationRemoved || notificationLockedOut);
+                this._hideNotification(animate);
+            } else if (notificationPinned && !notificationExpanded) {
                 this._expandNotification(false);
-            else if (notificationPinned)
+            } else if (notificationPinned) {
                 this._ensureNotificationFocused();
+            }
         }
 
         // Summary notification
@@ -2549,7 +2550,7 @@ const MessageTray = new Lang.Class({
         return false;
     },
 
-    _hideNotification: function() {
+    _hideNotification: function(animate) {
         this._notificationFocusGrabber.ungrabFocus();
 
         if (this._notificationExpandedId) {
@@ -2573,13 +2574,7 @@ const MessageTray = new Lang.Class({
             this._notificationLeftMouseY = -1;
         }
 
-        if (this._notificationRemoved) {
-            Tweener.removeTweens(this._notificationWidget);
-            this._notificationWidget.y = this.actor.height;
-            this._notificationWidget.opacity = 0;
-            this._notificationState = State.HIDDEN;
-            this._hideNotificationCompleted();
-        } else {
+        if (animate) {
             this._tween(this._notificationWidget, '_notificationState', State.HIDDEN,
                         { y: this.actor.height,
                           opacity: 0,
@@ -2588,7 +2583,12 @@ const MessageTray = new Lang.Class({
                           onComplete: this._hideNotificationCompleted,
                           onCompleteScope: this
                         });
-
+        } else {
+            Tweener.removeTweens(this._notificationWidget);
+            this._notificationWidget.y = this.actor.height;
+            this._notificationWidget.opacity = 0;
+            this._notificationState = State.HIDDEN;
+            this._hideNotificationCompleted();
         }
     },
 
