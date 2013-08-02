@@ -1406,12 +1406,12 @@ const SummaryItem = new Lang.Class({
         this.notificationStackView.add_actor(this.notificationStack);
         this.notificationStackWidget.add_actor(this.notificationStackView);
 
-        this.closeButton = Util.makeCloseButton();
-            this.closeButton.connect('clicked', Lang.bind(this, function() {
+        this._closeButton = Util.makeCloseButton();
+        this._closeButton.connect('clicked', Lang.bind(this, function() {
             source.destroy();
             source.emit('done-displaying-content');
         }));
-        this.notificationStackWidget.add_actor(this.closeButton);
+        this.notificationStackWidget.add_actor(this._closeButton);
         this._stackedNotifications = [];
 
         this._oldMaxScrollAdjustment = 0;
@@ -2666,12 +2666,8 @@ const MessageTray = new Lang.Class({
         if (this._clickedSummaryItemMouseButton == 1) {
             // Acknowledge all our notifications
             summaryItem.source.notifications.forEach(function(n) { n.acknowledged = true; });
-
-            child = summaryItem.notificationStackWidget;
-
-            let closeButton = summaryItem.closeButton;
-            closeButton.show();
             summaryItem.prepareNotificationStackForShowing();
+            child = summaryItem.notificationStackWidget;
         } else if (this._clickedSummaryItemMouseButton == 3) {
             child = summaryItem.rightClickMenu;
         }
