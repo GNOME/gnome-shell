@@ -2273,29 +2273,29 @@ const MessageTray = new Lang.Class({
 
         // Summary notification
         let haveClickedSummaryItem = this._clickedSummaryItem != null;
-        // We only have sources with empty notification stacks for legacy tray icons. Currently, we never attempt
-        // to show notifications for legacy tray icons, but this would be necessary if we did.
         let requestedNotificationStackIsEmpty = (haveClickedSummaryItem &&
                                                  this._clickedSummaryItemMouseButton == 1 &&
                                                  this._clickedSummaryItem.source.notifications.length == 0);
-        let wrongSummaryNotificationStack = (haveClickedSummaryItem &&
-                                             this._clickedSummaryItemMouseButton == 1 &&
-                                             this._summaryBoxPointer.bin.child != this._clickedSummaryItem.notificationStackWidget);
-        let wrongSummaryRightClickMenu = (haveClickedSummaryItem &&
-                                          this._clickedSummaryItemMouseButton == 3 &&
-                                          this._clickedSummaryItem.rightClickMenu != null &&
-                                          this._summaryBoxPointer.bin.child != this._clickedSummaryItem.rightClickMenu);
-        let wrongSummaryBoxPointer = (haveClickedSummaryItem &&
-                                      (wrongSummaryNotificationStack || wrongSummaryRightClickMenu));
 
         if (this._summaryBoxPointerState == State.HIDDEN) {
             if (haveClickedSummaryItem && !requestedNotificationStackIsEmpty)
                 this._showSummaryBoxPointer();
         } else if (this._summaryBoxPointerState == State.SHOWN) {
-            if (!haveClickedSummaryItem || wrongSummaryBoxPointer || !hasNotifications) {
-                this._hideSummaryBoxPointer();
-                if (wrongSummaryBoxPointer)
+            if (haveClickedSummaryItem && hasNotifications) {
+                let wrongSummaryNotificationStack = (this._clickedSummaryItemMouseButton == 1 &&
+                                                     this._summaryBoxPointer.bin.child != this._clickedSummaryItem.notificationStackWidget &&
+                                                     requestedNotificationStackIsEmpty);
+                let wrongSummaryRightClickMenu = (this._clickedSummaryItemMouseButton == 3 &&
+                                                  this._clickedSummaryItem.rightClickMenu != null &&
+                                                  this._summaryBoxPointer.bin.child != this._clickedSummaryItem.rightClickMenu);
+                let wrongSummaryBoxPointer = (wrongSummaryNotificationStack || wrongSummaryRightClickMenu);
+
+                if (wrongSummaryBoxPointer) {
+                    this._hideSummaryBoxPointer();
                     this._showSummaryBoxPointer();
+                }
+            } else {
+                this._hideSummaryBoxPointer();
             }
         }
 
