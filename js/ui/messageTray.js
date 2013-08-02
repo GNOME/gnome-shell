@@ -2302,9 +2302,6 @@ const MessageTray = new Lang.Class({
 
         // Summary notification
         let haveClickedSummaryItem = this._clickedSummaryItem != null;
-        let summarySourceIsMainNotificationSource = (haveClickedSummaryItem && this._notification &&
-                                                     this._clickedSummaryItem.source == this._notification.source);
-        let canShowSummaryBoxPointer = this._trayState == State.SHOWN;
         // We only have sources with empty notification stacks for legacy tray icons. Currently, we never attempt
         // to show notifications for legacy tray icons, but this would be necessary if we did.
         let requestedNotificationStackIsEmpty = (haveClickedSummaryItem &&
@@ -2321,10 +2318,10 @@ const MessageTray = new Lang.Class({
                                       (wrongSummaryNotificationStack || wrongSummaryRightClickMenu));
 
         if (this._summaryBoxPointerState == State.HIDDEN) {
-            if (haveClickedSummaryItem && !summarySourceIsMainNotificationSource && canShowSummaryBoxPointer && !requestedNotificationStackIsEmpty)
+            if (haveClickedSummaryItem && !requestedNotificationStackIsEmpty)
                 this._showSummaryBoxPointer();
         } else if (this._summaryBoxPointerState == State.SHOWN) {
-            if (!haveClickedSummaryItem || !canShowSummaryBoxPointer || wrongSummaryBoxPointer || !hasNotifications) {
+            if (!haveClickedSummaryItem || wrongSummaryBoxPointer || !hasNotifications) {
                 this._hideSummaryBoxPointer();
                 if (wrongSummaryBoxPointer)
                     this._showSummaryBoxPointer();
