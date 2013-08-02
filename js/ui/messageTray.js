@@ -2717,15 +2717,9 @@ const MessageTray = new Lang.Class({
             this._sourceDoneDisplayingId = 0;
         }
 
-        if (this._summaryBoxPointerItem.source.notifications.length == 0) {
-            this._summaryBoxPointer.actor.hide();
-            this._hideSummaryBoxPointerCompleted();
-        } else {
-            if (global.stage.key_focus &&
-                !this.actor.contains(global.stage.key_focus))
-                this._setClickedSummaryItem(null);
-            this._summaryBoxPointer.hide(BoxPointer.PopupAnimation.FULL, Lang.bind(this, this._hideSummaryBoxPointerCompleted));
-        }
+        let animate = (this._summaryBoxPointerItem.source.notifications.length > 0);
+        this._summaryBoxPointer.hide(animate ? BoxPointer.PopupAnimation.FULL : BoxPointer.PopupAnimation.NONE,
+                                     Lang.bind(this, this._hideSummaryBoxPointerCompleted));
     },
 
     _hideSummaryBoxPointer: function() {
