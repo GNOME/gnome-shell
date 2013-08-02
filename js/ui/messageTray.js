@@ -1448,25 +1448,17 @@ const SummaryItem = new Lang.Class({
         if (this.notificationStack.get_n_children() > 0)
             return;
 
-        for (let i = 0; i < this.source.notifications.length; i++) {
-            this._appendNotificationToStack(this.source.notifications[i]);
-        }
-
+        this.source.notifications.forEach(Lang.bind(this, this._appendNotificationToStack));
         this.scrollTo(St.Side.BOTTOM);
     },
 
     doneShowingNotificationStack: function() {
-        for (let i = 0; i < this._stackedNotifications.length; i++) {
-            let stackedNotification = this._stackedNotifications[i];
-            let notification = stackedNotification.notification;
+        this.source.notifications.forEach(Lang.bind(this, function(notification) {
             notification.collapseCompleted();
-            notification.disconnect(stackedNotification.notificationDestroyedId);
-            if (notification.actor.get_parent() == this.notificationStack)
-                this.notificationStack.remove_actor(notification.actor);
             notification.setIconVisible(true);
             notification.enableScrolling(true);
-        }
-        this._stackedNotifications = [];
+            this.notificationStack.remove_actor(notification.actor);
+        }));
     },
 
     _notificationAddedToSource: function(source, notification) {
@@ -1474,17 +1466,21 @@ const SummaryItem = new Lang.Class({
             this._appendNotificationToStack(notification);
     },
 
+    _contentUpdated: function() {
+        this.source.notifications.forEach(function(notification, i) {
+            notification.setIconVisible(i == 0);
+        });
+
+        this.emit('content-updated');
+    },
+
     _appendNotificationToStack: function(notification) {
-        let stackedNotification = {};
-        stackedNotification.notification = notification;
-        stackedNotification.notificationDestroyedId = notification.connect('destroy', Lang.bind(this, this._notificationDestroyed));
-        this._stackedNotifications.push(stackedNotification);
+        notification.connect('destroy', Lang.bind(this, this._contentUpdated));
         if (!this.source.isChat)
             notification.enableScrolling(false);
-        if (this.notificationStack.get_n_children() > 0)
-            notification.setIconVisible(false);
-        this.notificationStack.add(notification.actor);
         notification.expand(false);
+        this.notificationStack.add(notification.actor);
+        this._contentUpdated();
     },
 
     // scrollTo:
@@ -1498,28 +1494,6 @@ const SummaryItem = new Lang.Class({
         else if (side == St.Side.BOTTOM)
             adjustment.value = adjustment.upper;
     },
-
-    _contentUpdated: function() {
-        this.emit('content-updated');
-    },
-
-    _notificationDestroyed: function(notification) {
-        for (let i = 0; i < this._stackedNotifications.length; i++) {
-            if (this._stackedNotifications[i].notification == notification) {
-                let stackedNotification = this._stackedNotifications[i];
-                notification.disconnect(stackedNotification.notificationDestroyedId);
-                this._stackedNotifications.splice(i, 1);
-                if (notification.actor.get_parent() == this.notificationStack)
-                    this.notificationStack.remove_actor(notification.actor);
-                this._contentUpdated();
-                break;
-            }
-        }
-
-        let firstNotification = this._stackedNotifications[0];
-        if (firstNotification)
-            firstNotification.notification.setIconVisible(true);
-    }
 });
 Signals.addSignalMethods(SummaryItem.prototype);
 
