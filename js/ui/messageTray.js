@@ -1950,26 +1950,11 @@ const MessageTray = new Lang.Class({
         source.disconnect(obj.destroyId);
         source.disconnect(obj.mutedChangedId);
 
-        let needUpdate = false;
-
-        if (this._notification && this._notification.source == source) {
-            this._updateNotificationTimeout(0);
-            this._notificationRemoved = true;
-            needUpdate = true;
-        }
-        if (this._clickedSummaryItem == summaryItem) {
-            this._setClickedSummaryItem(null);
-            needUpdate = true;
-        }
-
         summaryItem.destroy();
 
         this.emit('source-removed', source);
 
         this._updateNoMessagesLabel();
-
-        if (needUpdate)
-            this._updateState();
     },
 
     getSources: function() {
@@ -2689,6 +2674,10 @@ const MessageTray = new Lang.Class({
 
         if (this._clickedSummaryItem) {
             this._clickedSummaryItem.actor.add_style_pseudo_class('selected');
+            this._clickedSummaryItem.actor.connect('destroy', Lang.bind(this, function() {
+                this._setClickedSummaryItem(null);
+                this._updateState();
+            }));
             this._clickedSummaryItemAllocationChangedId =
                 this._clickedSummaryItem.actor.connect('allocation-changed',
                                                        Lang.bind(this, this._adjustSummaryBoxPointerPosition));
