@@ -190,7 +190,8 @@ const AuthPrompt = new Lang.Class({
 
     _onAskQuestion: function(verifier, serviceName, question, passwordChar) {
         if (this._preemptiveAnswer) {
-            this._userVerifier.answerQuery(this._queryingService, this._preemptiveAnswer);
+            if (this._queryingService)
+                this._userVerifier.answerQuery(this._queryingService, this._preemptiveAnswer);
             this._preemptiveAnswer = null;
             return;
         }
@@ -341,7 +342,14 @@ const AuthPrompt = new Lang.Class({
     },
 
     getAnswer: function() {
-        let text = this._entry.get_text();
+        let text;
+
+        if (this._preemptiveAnswer) {
+            text = this._preemptiveAnswer;
+            this._preemptiveAnswer = null;
+        } else {
+            text = this._entry.get_text();
+        }
 
         return text;
     },
