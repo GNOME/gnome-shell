@@ -49,7 +49,7 @@ const DateMenuButton = new Lang.Class({
             menuAlignment = 1.0 - menuAlignment;
         this.parent(menuAlignment);
 
-        this._clockDisplay = new St.Label();
+        this._clockDisplay = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
         this.actor.add_actor(this._clockDisplay);
         this.actor.add_style_class_name ('clock-display');
 

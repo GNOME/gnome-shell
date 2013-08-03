@@ -214,7 +214,9 @@ const AppMenuButton = new Lang.Class({
         this._label = new TextShadower();
         this._label.actor.y_align = Clutter.ActorAlign.CENTER;
         this._hbox.add_actor(this._label.actor);
-        this._arrow = new St.Label({ text: '\u25BE' });
+        this._arrow = new St.Label({ text: '\u25BE',
+                                     y_expand: true,
+                                     y_align: Clutter.ActorAlign.CENTER });
         this._hbox.add_actor(this._arrow);
 
         this._iconBottomClip = 0;
@@ -606,7 +608,8 @@ const ActivitiesButton = new Lang.Class({
 
         /* Translators: If there is no suitable word for "Activities"
            in your language, you can use the word for "Overview". */
-        this._label = new St.Label({ text: _("Activities") });
+        this._label = new St.Label({ text: _("Activities"),
+                                     y_align: Clutter.ActorAlign.CENTER });
         this.actor.add_actor(this._label);
 
         this.actor.label_actor = this._label;
@@ -858,7 +861,9 @@ const AggregateMenu = new Lang.Class({
         this._indicators.add_child(this._power.indicators);
         this._indicators.add_child(this._volume.indicators);
         this._indicators.add_child(this._system.indicators);
-        this._indicators.add_child(new St.Label({ text: '\u25BE' }));
+        this._indicators.add_child(new St.Label({ text: '\u25BE',
+                                                  y_expand: true,
+                                                  y_align: Clutter.ActorAlign.CENTER }));
 
         this.menu.addMenuItem(this._volume.menu);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());

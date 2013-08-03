@@ -340,9 +340,11 @@ const InputSourceIndicator = new Lang.Class({
 
         this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
         this._hbox.add_child(this._container);
-        this._hbox.add_child(new St.Label({ text: '\u25BE' }));
+        this._hbox.add_child(new St.Label({ text: '\u25BE',
+                                            y_expand: true,
+                                            y_align: Clutter.ActorAlign.CENTER }));
 
-        this.actor.add(this._hbox, { y_expand: true });
+        this.actor.add_child(this._hbox);
         this.actor.add_style_class_name('panel-status-button');
 
         // All valid input sources currently in the gsettings
@@ -906,7 +908,7 @@ const InputSourceIndicator = new Lang.Class({
 
         for (let i in this._inputSources) {
             let is = this._inputSources[i];
-            is.indicatorLabel.allocate_align_fill(box, 0.5, 0, false, false, flags);
+            is.indicatorLabel.allocate_align_fill(box, 0.5, 0.5, false, false, flags);
         }
     }
 });

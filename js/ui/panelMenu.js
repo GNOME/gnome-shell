@@ -86,13 +86,8 @@ const ButtonBox = new Lang.Class({
             childBox.x2 = availWidth - this._minHPadding;
         }
 
-        if (natHeight <= availHeight) {
-            childBox.y1 = Math.floor((availHeight - natHeight) / 2);
-            childBox.y2 = childBox.y1 + natHeight;
-        } else {
-            childBox.y1 = 0;
-            childBox.y2 = availHeight;
-        }
+        childBox.y1 = 0;
+        childBox.y2 = availHeight;
 
         child.allocate(childBox, flags);
     },
