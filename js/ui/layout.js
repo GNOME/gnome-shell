@@ -811,13 +811,10 @@ const LayoutManager = new Lang.Class({
 
         let actorData = Params.parse(params, defaultParams);
         actorData.actor = actor;
-        actorData.isToplevel = actor.get_parent() == this.uiGroup;
         actorData.visibleId = actor.connect('notify::visible',
                                             Lang.bind(this, this._queueUpdateRegions));
         actorData.allocationId = actor.connect('notify::allocation',
                                                Lang.bind(this, this._queueUpdateRegions));
-        actorData.parentSetId = actor.connect('parent-set',
-                                              Lang.bind(this, this._actorReparented));
         // Note that destroying actor will unset its parent, so we don't
         // need to connect to 'destroy' too.
 
@@ -840,17 +837,6 @@ const LayoutManager = new Lang.Class({
         this._queueUpdateRegions();
     },
 
-    _actorReparented: function(actor, oldParent) {
-        let newParent = actor.get_parent();
-        if (!newParent) {
-            this._untrackActor(actor);
-        } else {
-            let i = this._findActor(actor);
-            let actorData = this._trackedActors[i];
-            actorData.isToplevel = (newParent == this.uiGroup);
-        }
-    },
-
     _updateVisibility: function() {
         let windowsVisible = Main.sessionMode.hasWindows && !this._inOverview;
 
@@ -860,8 +846,6 @@ const LayoutManager = new Lang.Class({
         for (let i = 0; i < this._trackedActors.length; i++) {
             let actorData = this._trackedActors[i], visible;
             if (!actorData.trackFullscreen)
-                continue;
-            if (!actorData.isToplevel)
                 continue;
 
             if (!windowsVisible)
