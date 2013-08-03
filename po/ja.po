@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-22 10:02+0000\n"
-"PO-Revision-Date: 2013-03-25 17:02+0000\n"
+"POT-Creation-Date: 2013-07-30 12:29+0000\n"
+"PO-Revision-Date: 2013-07-30 23:01+0900\n"
 "Last-Translator: Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -133,7 +133,7 @@ msgstr "コマンド実行プロンプトを表示する"
 
 #: ../src/50-mutter-system.xml.in.h:3
 msgid "Show the activities overview"
-msgstr "アクティビティを表示する"
+msgstr "アクティビティ画面を表示する"
 
 #: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
@@ -213,12 +213,12 @@ msgstr "画面右半分に表示する"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:568
+#: ../src/compositor/compositor.c:589
 #, c-format
 msgid "Another compositing manager is already running on screen %i on display \"%s\"."
 msgstr "既に別の合成マネージャーがディスプレイ \"%2$s\" 上のスクリーン %1$i で起動中です"
 
-#: ../src/compositor/meta-background.c:1191
+#: ../src/compositor/meta-background.c:1076
 msgid "background texture could not be created from file"
 msgstr ""
 
@@ -252,22 +252,22 @@ msgstr "待機する(_W)"
 msgid "_Force Quit"
 msgstr "強制終了する(_F)"
 
-#: ../src/core/display.c:401
+#: ../src/core/display.c:421
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "ウィンドウの合成に必要な %s という拡張モジュールが存在しません"
 
-#: ../src/core/display.c:493
+#: ../src/core/display.c:513
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X Window System のディスプレイ '%s' のオープンに失敗しました\n"
 
-#: ../src/core/keybindings.c:935
+#: ../src/core/keybindings.c:1138
 #, c-format
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "既にバインディングとして別のプログラムでキー %s (修飾キー %x) を使っています\n"
 
-#: ../src/core/keybindings.c:1135
+#: ../src/core/keybindings.c:1335
 #, fuzzy, c-format
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "\"%s\" はフォーカス属性のためには有効な値ではありません"
@@ -328,26 +328,26 @@ msgstr "バージョンを表示する"
 msgid "Mutter plugin to use"
 msgstr "使用する Mutter のプラグイン"
 
-#: ../src/core/prefs.c:1095
+#: ../src/core/prefs.c:1202
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "仕様に準拠していないアプリケーションに対する次善策は無効になっています。一部のアプリケーションは正常に動作しない可能性があります\n"
 
-#: ../src/core/prefs.c:1170
+#: ../src/core/prefs.c:1277
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "GSettings の %2$s キーからフォント名 \"%1$s\" を解析できませんでした\n"
 
-#: ../src/core/prefs.c:1236
+#: ../src/core/prefs.c:1343
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "設定データベース中の \"%s\" はマウスボタンの修飾キーとして妥当な値ではありません\n"
 
-#: ../src/core/prefs.c:1788
+#: ../src/core/prefs.c:1909
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "設定データベース中の \"%s\" はキーバインド \"%s\" に有効な値ではありません\n"
 
-#: ../src/core/prefs.c:1887
+#: ../src/core/prefs.c:1999
 #, c-format
 msgid "Workspace %d"
 msgstr "ワークスペース %d"
@@ -465,7 +465,7 @@ msgid "Window manager error: "
 msgstr "ウィンドウマネージャーのエラー: "
 
 #. first time through
-#: ../src/core/window.c:7596
+#: ../src/core/window.c:7513
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "ウィンドウ %s は ICCCM で指定されていたような WM_CLIENT_LEADER ウィンドウの代わりに自分自身で SM_CLIENT_ID を設定しています\n"
@@ -477,7 +477,7 @@ msgstr "ウィンドウ %s は ICCCM で指定されていたような WM_CLIENT
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8320
+#: ../src/core/window.c:8237
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "ウィンドウ %s はリサイズ可能ではない MWM ヒント指示を設定していますが、最小サイズ %d x %d と最大サイズ %d x %dも設定しています。これはあまり意味がありません\n"
