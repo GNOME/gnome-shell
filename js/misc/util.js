@@ -139,31 +139,6 @@ function _handleSpawnError(command, err) {
     Main.notifyError(title, err.message);
 }
 
-// killall:
-// @processName: a process name
-//
-// Kills @processName. If no process with the given name is found,
-// this will fail silently.
-function killall(processName) {
-    try {
-        // pkill is more portable than killall, but on Linux at least
-        // it won't match if you pass more than 15 characters of the
-        // process name... However, if you use the '-f' flag to match
-        // the entire command line, it will work, but we have to be
-        // careful in that case that we can match
-        // '/usr/bin/processName' but not 'gedit processName.c' or
-        // whatever...
-
-        let argv = ['pkill', '-f', '^([^ ]*/)?' + processName + '($| )'];
-        GLib.spawn_sync(null, argv, null, GLib.SpawnFlags.SEARCH_PATH, null);
-        // It might be useful to return success/failure, but we'd need
-        // a wrapper around WIFEXITED and WEXITSTATUS. Since none of
-        // the current callers care, we don't bother.
-    } catch (e) {
-        logError(e, 'Failed to kill ' + processName);
-    }
-}
-
 // lowerBound:
 // @array: an array or array-like object, already sorted
 //         according to @cmp
