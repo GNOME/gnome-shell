@@ -74,8 +74,13 @@ clutter_wayland_handle_motion (void *data,
                                wl_fixed_t x, wl_fixed_t y)
 {
   ClutterInputDeviceWayland *device = data;
-  ClutterStageCogl          *stage_cogl = device->pointer_focus;
+  ClutterStageCogl          *stage_cogl;
   ClutterEvent              *event;
+
+  if (!device->pointer_focus)
+    return;
+
+  stage_cogl = device->pointer_focus;
 
   event = clutter_event_new (CLUTTER_MOTION);
   event->motion.stage = stage_cogl->wrapper;
@@ -98,9 +103,14 @@ clutter_wayland_handle_button (void *data,
                                uint32_t button, uint32_t state)
 {
   ClutterInputDeviceWayland *device = data;
-  ClutterStageCogl          *stage_cogl = device->pointer_focus;
+  ClutterStageCogl          *stage_cogl;
   ClutterEvent              *event;
   ClutterEventType           type;
+
+  if (!device->pointer_focus)
+    return;
+
+  stage_cogl = device->pointer_focus;
 
   if (state)
     type = CLUTTER_BUTTON_PRESS;
@@ -140,10 +150,14 @@ clutter_wayland_handle_axis (void *data,
                              wl_fixed_t value)
 {
   ClutterInputDeviceWayland *device = data;
-  ClutterStageCogl          *stage_cogl = device->pointer_focus;
+  ClutterStageCogl          *stage_cogl;
   ClutterEvent              *event;
   gdouble                    delta_x, delta_y;
 
+  if (!device->pointer_focus)
+    return;
+
+  stage_cogl = device->pointer_focus;
   event = clutter_event_new (CLUTTER_SCROLL);
   event->scroll.time = _clutter_wayland_get_time();
   event->scroll.stage = stage_cogl->wrapper;
@@ -272,6 +286,8 @@ clutter_wayland_handle_key (void *data,
   ClutterStageCogl          *stage_cogl = device->keyboard_focus;
   ClutterEvent              *event;
 
+  if (!device->keyboard_focus)
+    return;
   if (!device->xkb)
     return;
 
