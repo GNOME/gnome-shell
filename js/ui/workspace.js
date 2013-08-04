@@ -1094,6 +1094,7 @@ const Workspace = new Lang.Class({
                 Tweener.removeTweens(clone.actor);
                 clone.actor.set_position(x, y);
                 clone.actor.set_scale(scale, scale);
+                clone.actor.set_opacity(255);
                 clone.overlay.relayout(false);
                 this._showWindowOverlay(clone, overlay, isOnCurrentWorkspace);
             }
