@@ -356,6 +356,9 @@ clutter_wayland_handle_pointer_enter (void *data,
   ClutterBackend            *backend;
   ClutterBackendWayland     *backend_wayland;
 
+  if (!CLUTTER_IS_STAGE_COGL (wl_surface_get_user_data (surface)))
+    return;
+
   stage_cogl = wl_surface_get_user_data (surface);
 
   device->pointer_focus = stage_cogl;
@@ -407,6 +410,9 @@ clutter_wayland_handle_pointer_leave (void *data,
   ClutterStageCogl          *stage_cogl;
   ClutterEvent              *event;
 
+  if (!CLUTTER_IS_STAGE_COGL (wl_surface_get_user_data (surface)))
+    return;
+
   stage_cogl = wl_surface_get_user_data (surface);
   g_assert (device->pointer_focus == stage_cogl);
 
@@ -434,6 +440,9 @@ clutter_wayland_handle_keyboard_enter (void *data,
   ClutterInputDeviceWayland *device = data;
   ClutterStageCogl          *stage_cogl;
 
+  if (!CLUTTER_IS_STAGE_COGL (wl_surface_get_user_data (surface)))
+    return;
+
   stage_cogl = wl_surface_get_user_data (surface);
   g_assert (device->keyboard_focus == NULL);
   device->keyboard_focus = stage_cogl;
@@ -451,6 +460,11 @@ clutter_wayland_handle_keyboard_leave (void *data,
 {
   ClutterInputDeviceWayland *device = data;
   ClutterStageCogl          *stage_cogl;
+
+  if (!surface)
+    return;
+  if (!CLUTTER_IS_STAGE_COGL (wl_surface_get_user_data (surface)))
+    return;
 
   stage_cogl = wl_surface_get_user_data (surface);
   g_assert (device->keyboard_focus == stage_cogl);
