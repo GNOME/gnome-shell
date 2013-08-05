@@ -1244,7 +1244,7 @@ msgstr "Ezezaguna"
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
-msgstr[0] "Mezu berri &d"
+msgstr[0] "Mezu berri %d"
 msgstr[1] "%d mezu berri"
 
 #: ../js/ui/overview.js:84
