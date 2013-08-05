@@ -1965,6 +1965,23 @@ process_overlay_key (MetaDisplay *display,
             return TRUE;
           meta_display_overlay_key_activate (display);
         }
+      else
+        {
+          /* In some rare race condition, mutter might not receive the Super_L
+           * KeyRelease event because:
+           * - the compositor might end the modal mode and call XIUngrabDevice
+           *   while the key is still down
+           * - passive grabs are only activated on KeyPress and not KeyRelease.
+           *
+           * In this case, display->overlay_key_only_pressed might be wrong.
+           * Mutter still ought to acknowledge events, otherwise the X server
+           * will not send the next events.
+           *
+           * https://bugzilla.gnome.org/show_bug.cgi?id=666101
+           */
+          XIAllowEvents (display->xdisplay, event->deviceid,
+                         XIAsyncDevice, event->time);
+        }
 
       return TRUE;
     }
