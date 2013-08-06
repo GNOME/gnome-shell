@@ -117,7 +117,6 @@ function recursivelyMoveDir(srcDir, destDir) {
         let type = info.get_file_type();
         let srcChild = srcDir.get_child(info.get_name());
         let destChild = destDir.get_child(info.get_name());
-        log([srcChild.get_path(), destChild.get_path()]);
         if (type == Gio.FileType.REGULAR)
             srcChild.move(destChild, Gio.FileCopyFlags.NONE, null, null);
         else if (type == Gio.FileType.DIRECTORY)
