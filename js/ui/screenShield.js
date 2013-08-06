@@ -1125,13 +1125,13 @@ const ScreenShield = new Lang.Class({
     deactivate: function(animate) {
         if (this._dialog)
             this._dialog.finish(Lang.bind(this, function() {
-                this._finishDeactivate(animate);
+                this._continueDeactivate(animate);
             }));
         else
-            this._finishDeactivate(animate);
+            this._continueDeactivate(animate);
     },
 
-    _finishDeactivate: function(animate) {
+    _continueDeactivate: function(animate) {
         this._hideLockScreen(animate, 0);
 
         if (this._hasLockScreen)
