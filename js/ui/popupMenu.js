@@ -872,7 +872,11 @@ const PopupMenuBase = new Lang.Class({
             // separator's adjacent siblings change visibility or position.
             // open-state-changed isn't exactly that, but doing it in more
             // precise ways would require a lot more bookkeeping.
-            this.connect('open-state-changed', Lang.bind(this, function() { this._updateSeparatorVisibility(menuItem); }));
+            let openStateChangeId = this.connect('open-state-changed', Lang.bind(this, function() { this._updateSeparatorVisibility(menuItem); }));
+            let destroyId = menuItem.connect('destroy', Lang.bind(this, function() {
+                this.disconnect(openStateChangeId);
+                menuItem.disconnect(destroyId);
+            }));
         } else if (menuItem instanceof PopupBaseMenuItem)
             this._connectItemSignals(menuItem);
         else
