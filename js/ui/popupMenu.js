@@ -819,9 +819,6 @@ const PopupMenuBase = new Lang.Class({
         }
 
         if (menuItem instanceof PopupMenuSection) {
-            let activateId = menuItem.connect('activate', Lang.bind(this, function() {
-                this.emit('activate');
-            }));
             let activeChangeId = menuItem.connect('active-changed', Lang.bind(this, this._subMenuActiveChanged));
 
             let parentOpenStateChangedId = this.connect('open-state-changed', function(self, open) {
@@ -838,7 +835,6 @@ const PopupMenuBase = new Lang.Class({
             }));
 
             menuItem.connect('destroy', Lang.bind(this, function() {
-                menuItem.disconnect(activateId);
                 menuItem.disconnect(activeChangeId);
                 this.disconnect(subMenuSensitiveChangedId);
                 this.disconnect(parentOpenStateChangedId);
@@ -852,16 +848,12 @@ const PopupMenuBase = new Lang.Class({
                 this.box.insert_child_below(menuItem.menu.actor, before_item);
 
             this._connectItemSignals(menuItem);
-            let subMenuActivateId = menuItem.connect('activate', Lang.bind(this, function() {
-                this.emit('activate');
-            }));
             let subMenuActiveChangeId = menuItem.menu.connect('active-changed', Lang.bind(this, this._subMenuActiveChanged));
             let closingId = this.connect('menu-closed', function() {
                 menuItem.menu.close(BoxPointer.PopupAnimation.NONE);
             });
 
             menuItem.connect('destroy', Lang.bind(this, function() {
-                menuItem.menu.disconnect(subMenuActivateId);
                 menuItem.menu.disconnect(subMenuActiveChangeId);
                 this.disconnect(closingId);
             }));
