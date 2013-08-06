@@ -1123,9 +1123,12 @@ const ScreenShield = new Lang.Class({
     },
 
     deactivate: function(animate) {
-        this._dialog.finish(Lang.bind(this, function() {
+        if (this._dialog)
+            this._dialog.finish(Lang.bind(this, function() {
+                this._finishDeactivate(animate);
+            }));
+        else
             this._finishDeactivate(animate);
-        }));
     },
 
     _finishDeactivate: function(animate) {
