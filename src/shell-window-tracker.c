@@ -374,7 +374,7 @@ get_app_for_window (ShellWindowTracker    *tracker,
    */
   result = get_app_from_window_wmclass (window);
   if (result != NULL)
-    return g_object_ref (result);
+    return result;
 
   result = get_app_from_window_pid (tracker, window);
   if (result != NULL)
