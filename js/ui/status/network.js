@@ -1571,9 +1571,10 @@ const NMApplet = new Lang.Class({
             this._vpnSection.checkConnection(connection);
         } else {
             let devices = this._devices[section].devices;
-            for (let i = 0; i < devices.length; i++) {
-                devices[i].checkConnection(connection);
-            }
+            devices.forEach(function(wrapper) {
+                if (wrapper instanceof NMConnectionSection)
+                    wrapper.checkConnection(connection);
+            });
         }
     },
 
