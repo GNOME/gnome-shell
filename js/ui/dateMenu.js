@@ -51,6 +51,7 @@ const DateMenuButton = new Lang.Class({
 
         this._clockDisplay = new St.Label();
         this.actor.add_actor(this._clockDisplay);
+        this.actor.add_style_class_name ('clock-display');
 
         hbox = new St.BoxLayout({name: 'calendarArea' });
         this.menu.addActor(hbox);
