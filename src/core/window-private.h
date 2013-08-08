@@ -394,6 +394,9 @@ struct _MetaWindow
    */
   MetaRectangle rect;
 
+  gboolean has_custom_frame_extents;
+  GtkBorder custom_frame_extents;
+
   /* The geometry to restore when we unmaximize.  The position is in
    * root window coords, even if there's a frame, which contrasts with
    * window->rect above.  Note that this gives the position and size
