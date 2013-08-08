@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-07-19 18:59+0000\n"
-"PO-Revision-Date: 2013-07-22 13:22+0200\n"
+"POT-Creation-Date: 2013-08-05 08:28+0000\n"
+"PO-Revision-Date: 2013-08-08 10:39+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -369,33 +369,46 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Seleccione una extensión que configurar usando la caja combinada de arriba."
 
-#: ../js/gdm/loginDialog.js:298
+#: ../js/gdm/authPrompt.js:142 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
+#: ../js/ui/status/bluetooth.js:218 ../js/ui/status/network.js:635
+#: ../js/ui/status/system.js:305
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: ../js/gdm/authPrompt.js:164 ../js/gdm/authPrompt.js:216
+msgid "Next"
+msgstr "Siguiente"
+
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:55
+msgid "Unlock"
+msgstr "Desbloquear"
+
+#: ../js/gdm/authPrompt.js:214
+msgctxt "button"
+msgid "Sign In"
+msgstr "Iniciar sesión"
+
+#: ../js/gdm/loginDialog.js:299
 msgid "Choose Session"
 msgstr "Elegir sesión"
 
-#: ../js/gdm/loginDialog.js:316
+#: ../js/gdm/loginDialog.js:317
 msgid "Session"
 msgstr "Sesión"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:478
+#: ../js/gdm/loginDialog.js:468
 msgid "Not listed?"
 msgstr "¿No está en la lista?"
 
-#: ../js/gdm/loginDialog.js:663
-msgctxt "button"
-msgid "Sign In"
-msgstr "Iniciar sesión"
-
-#: ../js/gdm/loginDialog.js:665 ../js/gdm/util.js:561
-msgid "Next"
-msgstr "Siguiente"
-
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:716
+#: ../js/gdm/loginDialog.js:627
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(ej., usuario o %s)"
@@ -403,12 +416,12 @@ msgstr "(ej., usuario o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:721 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:632 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Nombre de usuario:"
 
-#: ../js/gdm/loginDialog.js:987
+#: ../js/gdm/loginDialog.js:883
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
@@ -430,22 +443,15 @@ msgstr "Reiniciar"
 msgid "Power Off"
 msgstr "Apagar"
 
-#: ../js/gdm/util.js:255
+#: ../js/gdm/util.js:253
 msgid "Authentication error"
 msgstr "Error de autenticación"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:372
+#: ../js/gdm/util.js:371
 msgid "(or swipe finger)"
 msgstr "(o pase el dedo)"
-
-#: ../js/gdm/util.js:539 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:431 ../js/ui/status/system.js:305
-msgid "Cancel"
-msgstr "Cancelar"
 
 #: ../js/misc/util.js:97
 msgid "Command not found"
@@ -462,23 +468,23 @@ msgstr "No se pudo analizar el comando:"
 msgid "Execution of '%s' failed:"
 msgstr "Falló la ejecución de «%s»:"
 
-#: ../js/ui/appDisplay.js:397
+#: ../js/ui/appDisplay.js:386
 msgid "Frequent"
 msgstr "Frecuentes"
 
-#: ../js/ui/appDisplay.js:404
+#: ../js/ui/appDisplay.js:393
 msgid "All"
 msgstr "Todas"
 
-#: ../js/ui/appDisplay.js:996
+#: ../js/ui/appDisplay.js:986
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:999 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:989 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:1000
+#: ../js/ui/appDisplay.js:990
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
@@ -678,7 +684,8 @@ msgstr "Contraseña:"
 msgid "Type again:"
 msgstr "Escriba de nuevo:"
 
-#: ../js/ui/components/networkAgent.js:132
+#: ../js/ui/components/networkAgent.js:132 ../js/ui/status/network.js:112
+#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:638
 msgid "Connect"
 msgstr "Conectar"
 
@@ -1215,32 +1222,32 @@ msgstr "Abrir"
 msgid "Remove"
 msgstr "Quitar"
 
-#: ../js/ui/messageTray.js:1560
+#: ../js/ui/messageTray.js:1564
 msgid "Clear Messages"
 msgstr "Limpiar mensajes"
 
-#: ../js/ui/messageTray.js:1587
+#: ../js/ui/messageTray.js:1591
 msgid "Notification Settings"
 msgstr "Configuración de las notificaciones"
 
-#: ../js/ui/messageTray.js:1770
+#: ../js/ui/messageTray.js:1774
 msgid "No Messages"
 msgstr "No hay mensajes"
 
-#: ../js/ui/messageTray.js:1842
+#: ../js/ui/messageTray.js:1846
 msgid "Message Tray"
 msgstr "Bandeja de mensajes"
 
-#: ../js/ui/messageTray.js:2854
+#: ../js/ui/messageTray.js:2852
 msgid "System Information"
 msgstr "Información del sistema"
 
-#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:378
+#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:396
 msgctxt "program"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../js/ui/overviewControls.js:474 ../js/ui/screenShield.js:150
+#: ../js/ui/overviewControls.js:474 ../js/ui/screenShield.js:152
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1263,17 +1270,17 @@ msgstr "Vista general"
 msgid "Type to search…"
 msgstr "Escribir para buscar…"
 
-#: ../js/ui/panel.js:567
+#: ../js/ui/panel.js:568
 msgid "Quit"
 msgstr "Salir"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:618
+#: ../js/ui/panel.js:619
 msgid "Activities"
 msgstr "Actividades"
 
-#: ../js/ui/panel.js:914
+#: ../js/ui/panel.js:915
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1296,22 +1303,22 @@ msgstr "Cerrar"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:87
+#: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/screenShield.js:152
+#: ../js/ui/screenShield.js:154
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nueva"
 msgstr[1] "%d notificaciones nuevas"
 
-#: ../js/ui/screenShield.js:449 ../js/ui/status/system.js:211
+#: ../js/ui/screenShield.js:451 ../js/ui/status/system.js:211
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/screenShield.js:652
+#: ../js/ui/screenShield.js:654
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME necesita bloquear la pantalla"
 
@@ -1322,11 +1329,11 @@ msgstr "GNOME necesita bloquear la pantalla"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:788 ../js/ui/screenShield.js:1216
+#: ../js/ui/screenShield.js:790 ../js/ui/screenShield.js:1218
 msgid "Unable to lock"
 msgstr "No se pudo bloquear"
 
-#: ../js/ui/screenShield.js:789 ../js/ui/screenShield.js:1217
+#: ../js/ui/screenShield.js:791 ../js/ui/screenShield.js:1219
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
@@ -1361,10 +1368,6 @@ msgstr "Contraseña"
 #: ../js/ui/shellMountOperation.js:391
 msgid "Remember Password"
 msgstr "Recordar contraseña"
-
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:68
-msgid "Unlock"
-msgstr "Desbloquear"
 
 #: ../js/ui/status/accessibility.js:36
 msgid "Accessibility"
@@ -1410,90 +1413,75 @@ msgstr "Contraste alto"
 msgid "Large Text"
 msgstr "Texto grande"
 
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
-#: ../js/ui/status/bluetooth.js:272 ../js/ui/status/bluetooth.js:309
-#: ../js/ui/status/bluetooth.js:337 ../js/ui/status/bluetooth.js:373
-#: ../js/ui/status/bluetooth.js:404 ../js/ui/status/network.js:713
+#. The Bluetooth menu only appears when Bluetooth is in use,
+#. so just statically build it with a "Turn Off" menu item.
+#: ../js/ui/status/bluetooth.js:21 ../js/ui/status/bluetooth.js:25
+#: ../js/ui/status/bluetooth.js:59 ../js/ui/status/bluetooth.js:96
+#: ../js/ui/status/bluetooth.js:124 ../js/ui/status/bluetooth.js:160
+#: ../js/ui/status/bluetooth.js:191
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:45
-msgid "Visibility"
-msgstr "Visibilidad"
+#: ../js/ui/status/bluetooth.js:27 ../js/ui/status/network.js:112
+#: ../js/ui/status/network.js:978
+msgid "Turn Off"
+msgstr "Apagar"
 
-#: ../js/ui/status/bluetooth.js:59
-msgid "Send Files to Device…"
-msgstr "Enviar archivos al dispositivo…"
+#: ../js/ui/status/bluetooth.js:30
+msgid "Bluetooth Settings"
+msgstr "Configuración de Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:60
-msgid "Set Up a New Device…"
-msgstr "Configurar un dispositivo nuevo…"
+#: ../js/ui/status/bluetooth.js:54
+#, c-format
+#| msgid "Connected (private)"
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "%d dispositivo conectado"
+msgstr[1] "%d dispositivos conectados"
 
-#. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:140
-msgid "hardware disabled"
-msgstr "hardware desactivado"
-
-#: ../js/ui/status/bluetooth.js:196
-msgid "Connection"
-msgstr "Conexión"
-
-#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:399
-msgid "disconnecting..."
-msgstr "deconectando…"
-
-#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:405
-#: ../js/ui/status/network.js:1298
-msgid "connecting..."
-msgstr "conectando…"
-
-#: ../js/ui/status/bluetooth.js:238
-msgid "Send Files…"
-msgstr "Enviar archivos…"
-
-#: ../js/ui/status/bluetooth.js:310 ../js/ui/status/bluetooth.js:338
+#: ../js/ui/status/bluetooth.js:97 ../js/ui/status/bluetooth.js:125
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Solicitud de autorización de %s"
 
-#: ../js/ui/status/bluetooth.js:316 ../js/ui/status/bluetooth.js:381
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/bluetooth.js:168
+#: ../js/ui/status/bluetooth.js:199
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "El dispositivo «%s» quiere emparejarse con este equipo"
 
-#: ../js/ui/status/bluetooth.js:318
+#: ../js/ui/status/bluetooth.js:105
 msgid "Allow"
 msgstr "Permitir"
 
-#: ../js/ui/status/bluetooth.js:319
+#: ../js/ui/status/bluetooth.js:106
 msgid "Deny"
 msgstr "Denegar"
 
-#: ../js/ui/status/bluetooth.js:344
+#: ../js/ui/status/bluetooth.js:131
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "El dispositivo %s quiere acceder al servicio «%s»"
 
-#: ../js/ui/status/bluetooth.js:346
+#: ../js/ui/status/bluetooth.js:133
 msgid "Always grant access"
 msgstr "Conceder acceso siempre"
 
-#: ../js/ui/status/bluetooth.js:347
+#: ../js/ui/status/bluetooth.js:134
 msgid "Grant this time only"
 msgstr "Conceder sólo esta vez"
 
-#: ../js/ui/status/bluetooth.js:348
+#: ../js/ui/status/bluetooth.js:135
 msgid "Reject"
 msgstr "Rechazar"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:375
+#: ../js/ui/status/bluetooth.js:162
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Confirmación de emparejamiento para «%s»"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:169
 #, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
@@ -1501,24 +1489,24 @@ msgstr ""
 "Confirme que la clave mostrada en «%06d» coincide con la del dispositivo."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:385
+#: ../js/ui/status/bluetooth.js:172
 msgid "Matches"
 msgstr "Coincide"
 
-#: ../js/ui/status/bluetooth.js:386
+#: ../js/ui/status/bluetooth.js:173
 msgid "Does not match"
 msgstr "No coincide"
 
-#: ../js/ui/status/bluetooth.js:405
+#: ../js/ui/status/bluetooth.js:192
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Solicitud de emparejamiento para «%s»"
 
-#: ../js/ui/status/bluetooth.js:413
+#: ../js/ui/status/bluetooth.js:200
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Introduzca el PIN mencionado en el dispositivo."
 
-#: ../js/ui/status/bluetooth.js:430
+#: ../js/ui/status/bluetooth.js:217
 msgid "OK"
 msgstr "Aceptar"
 
@@ -1530,83 +1518,88 @@ msgstr "Mostrar la distribución del teclado"
 msgid "Volume, network, battery"
 msgstr "Volumen, red, batería"
 
-#: ../js/ui/status/network.js:75
+#: ../js/ui/status/network.js:72
 msgid "<unknown>"
 msgstr "<desconocido>"
 
-#: ../js/ui/status/network.js:125
-msgid "Wi-Fi"
-msgstr "Wi-Fi"
+#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:993
+#| msgid "Offline"
+msgid "Off"
+msgstr "Desconectado"
 
-#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:162
-msgid "disabled"
-msgstr "desactivada"
+#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:899
+msgid "Network Settings"
+msgstr "Configuración de la red"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:397
+#: ../js/ui/status/network.js:357
 msgid "unmanaged"
 msgstr "no gestionada"
 
+#: ../js/ui/status/network.js:359
+msgid "disconnecting..."
+msgstr "deconectando…"
+
+#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1044
+msgid "connecting..."
+msgstr "conectando…"
+
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:408 ../js/ui/status/network.js:1301
+#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1047
 msgid "authentication required"
 msgstr "se necesita autenticación"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:419
+#: ../js/ui/status/network.js:376
 msgid "firmware missing"
 msgstr "falta el «firmware»"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:423
+#: ../js/ui/status/network.js:380
 msgid "unavailable"
 msgstr "no disponible"
 
-#: ../js/ui/status/network.js:425 ../js/ui/status/network.js:1303
+#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1049
 msgid "connection failed"
 msgstr "falló la conexión"
 
-#: ../js/ui/status/network.js:478 ../js/ui/status/network.js:1190
-msgid "More…"
-msgstr "Más…"
+#: ../js/ui/status/network.js:615
+#| msgid "Network"
+msgid "Wi-Fi Networks"
+msgstr "Redes Wi-Fi"
 
-#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
-#. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:506 ../js/ui/status/network.js:1142
-msgid "Connected (private)"
-msgstr "Conectada (privada)"
+#: ../js/ui/status/network.js:617
+#| msgid "Enable networking"
+msgid "Select a network"
+msgstr "Seleccionar una red"
 
-#: ../js/ui/status/network.js:572
-msgid "Wired"
-msgstr "Cableada"
+#: ../js/ui/status/network.js:893
+#| msgid "Network"
+msgid "Select Network"
+msgstr "Seleccionar red"
 
-#: ../js/ui/status/network.js:592
-msgid "Mobile broadband"
-msgstr "Banda ancha móvil"
+#: ../js/ui/status/network.js:978
+msgid "Turn On"
+msgstr "Enceder"
 
-#: ../js/ui/status/network.js:1474
-msgid "Enable networking"
-msgstr "Activar red"
+#: ../js/ui/status/network.js:1111
+msgid "VPN"
+msgstr "VPN"
 
-#: ../js/ui/status/network.js:1537
+#: ../js/ui/status/network.js:1250
 msgid "Network Manager"
 msgstr "Gestor de la red"
 
-#: ../js/ui/status/network.js:1621
+#: ../js/ui/status/network.js:1292
 msgid "Connection failed"
 msgstr "Falló la conexión"
 
-#: ../js/ui/status/network.js:1622
+#: ../js/ui/status/network.js:1293
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
-
-#: ../js/ui/status/network.js:1936
-msgid "Networking is disabled"
-msgstr "La red está desactivada"
 
 #: ../js/ui/status/power.js:31 ../js/ui/status/power.js:44
 msgid "Battery"
@@ -1675,11 +1668,11 @@ msgstr "Volumen modificado"
 msgid "Volume"
 msgstr "Volumen"
 
-#: ../js/ui/unlockDialog.js:78
+#: ../js/ui/unlockDialog.js:63
 msgid "Log in as another user"
 msgstr "Iniciar sesión como otro usuario"
 
-#: ../js/ui/unlockDialog.js:97
+#: ../js/ui/unlockDialog.js:80
 msgid "Unlock Window"
 msgstr "Desbloquear ventana"
 
@@ -1754,7 +1747,7 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Listar los modos posibles"
 
-#: ../src/shell-app.c:626
+#: ../src/shell-app.c:644
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Falló al lanzar «%s»"
@@ -1771,11 +1764,44 @@ msgstr "La contraseña no puede estar vacía"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "El usuario rechazó el diálogo de autenticación"
 
+#~ msgid "Visibility"
+#~ msgstr "Visibilidad"
+
+#~ msgid "Send Files to Device…"
+#~ msgstr "Enviar archivos al dispositivo…"
+
+#~ msgid "Set Up a New Device…"
+#~ msgstr "Configurar un dispositivo nuevo…"
+
+#~ msgid "hardware disabled"
+#~ msgstr "hardware desactivado"
+
+#~ msgid "Connection"
+#~ msgstr "Conexión"
+
+#~ msgid "Send Files…"
+#~ msgstr "Enviar archivos…"
+
+#~ msgid "Wi-Fi"
+#~ msgstr "Wi-Fi"
+
+#~ msgid "disabled"
+#~ msgstr "desactivada"
+
+#~ msgid "More…"
+#~ msgstr "Más…"
+
+#~ msgid "Wired"
+#~ msgstr "Cableada"
+
+#~ msgid "Mobile broadband"
+#~ msgstr "Banda ancha móvil"
+
+#~ msgid "Networking is disabled"
+#~ msgstr "La red está desactivada"
+
 #~ msgid "Universal Access Settings"
 #~ msgstr "Configuración del acceso universal"
-
-#~ msgid "Bluetooth Settings"
-#~ msgstr "Configuración de Bluetooth"
 
 #~ msgid "Keyboard Settings"
 #~ msgstr "Configuración del teclado"
@@ -1788,9 +1814,6 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 
 #~ msgid "Region & Language Settings"
 #~ msgstr "Configuración de región e idioma"
-
-#~ msgid "Network Settings"
-#~ msgstr "Configuración de la red"
 
 #~ msgid "%d hour remaining"
 #~ msgid_plural "%d hours remaining"
@@ -1870,9 +1893,6 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 
 #~ msgid "Idle"
 #~ msgstr "Inactivo"
-
-#~ msgid "Offline"
-#~ msgstr "Desconectado"
 
 #~ msgid "Notifications"
 #~ msgstr "Notificaciones"
@@ -2095,9 +2115,6 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 
 #~ msgid "Wrong password, please try again"
 #~ msgstr "Contraseña incorrecta; inténtelo de nuevo"
-
-#~ msgid "Network"
-#~ msgstr "Red"
 
 #~ msgid "Power Off..."
 #~ msgstr "Apagar…"
