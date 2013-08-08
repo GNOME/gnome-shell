@@ -225,28 +225,33 @@ get_app_from_window_wmclass (MetaWindow  *window)
      with
 
      StartupWMClass=crx_blpcfgokakmgnkcojhhkbfbldkacnbeo
+
+     Note that chromium (but not google-chrome!) includes a StartupWMClass=chromium
+     in their .desktop file, so we must match the instance first.
+
+     Also note that in the good case (regular gtk+ app without hacks), instance and
+     class are the same except for case and there is no StartupWMClass at all.
   */
 
-  /* first try a match from WM_CLASS to StartupWMClass */
-  wm_class = meta_window_get_wm_class (window);
-  app = shell_app_system_lookup_startup_wmclass (appsys, wm_class);
-  if (app != NULL)
-    return g_object_ref (app);
-
-  /* then try a match from WM_CLASS (instance part) to StartupWMClass */
+  /* first try a match from WM_CLASS (instance part) to StartupWMClass */
   wm_instance = meta_window_get_wm_class_instance (window);
   app = shell_app_system_lookup_startup_wmclass (appsys, wm_instance);
   if (app != NULL)
     return g_object_ref (app);
 
-  /* then try a match from WM_CLASS to .desktop */
-  app = shell_app_system_lookup_desktop_wmclass (appsys, wm_class);
+  /* then try a match from WM_CLASS to StartupWMClass */
+  wm_class = meta_window_get_wm_class (window);
+  app = shell_app_system_lookup_startup_wmclass (appsys, wm_class);
   if (app != NULL)
     return g_object_ref (app);
 
-  /* finally, try a match from WM_CLASS (instance part) to .desktop
-     (unlikely to find anything at this point, but still worth a try) */
+  /* then try a match from WM_CLASS (instance part) to .desktop */
   app = shell_app_system_lookup_desktop_wmclass (appsys, wm_instance);
+  if (app != NULL)
+    return g_object_ref (app);
+
+  /* finally, try a match from WM_CLASS to .desktop */
+  app = shell_app_system_lookup_desktop_wmclass (appsys, wm_class);
   if (app != NULL)
     return g_object_ref (app);
 
