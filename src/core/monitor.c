@@ -353,6 +353,20 @@ apply_config_dummy (MetaMonitorManager *manager,
   invalidate_logical_config (manager);
 }
 
+static GBytes *
+read_edid_dummy (MetaMonitorManager *manager,
+                 MetaOutput         *output)
+{
+  return NULL;
+}
+
+static char *
+get_edid_file_dummy (MetaMonitorManager *manager,
+                     MetaOutput         *output)
+{
+  return NULL;
+}
+
 static void
 meta_monitor_manager_init (MetaMonitorManager *manager)
 {
@@ -643,6 +657,8 @@ meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
 
   klass->read_current = read_current_dummy;
   klass->apply_configuration = apply_config_dummy;
+  klass->get_edid_file = get_edid_file_dummy;
+  klass->read_edid = read_edid_dummy;
 
   signals[MONITORS_CHANGED] =
     g_signal_new ("monitors-changed",
@@ -712,6 +728,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                                            GDBusMethodInvocation *invocation)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
+  MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_GET_CLASS (skeleton);
   GVariantBuilder crtc_builder, output_builder, mode_builder;
   unsigned int i, j;
 
@@ -746,6 +763,8 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
     {
       MetaOutput *output = &manager->outputs[i];
       GVariantBuilder crtcs, modes, clones, properties;
+      GBytes *edid;
+      char *edid_file;
 
       g_variant_builder_init (&crtcs, G_VARIANT_TYPE ("au"));
       for (j = 0; j < output->n_possible_crtcs; j++)
@@ -777,6 +796,25 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              g_variant_new_boolean (output->is_primary));
       g_variant_builder_add (&properties, "{sv}", "presentation",
                              g_variant_new_boolean (output->is_presentation));
+
+      edid_file = manager_class->get_edid_file (manager, output);
+      if (edid_file)
+        {
+          g_variant_builder_add (&properties, "{sv}", "edid-file",
+                                 g_variant_new_take_string (edid_file));
+        }
+      else
+        {
+          edid = manager_class->read_edid (manager, output);
+
+          if (edid)
+            {
+              g_variant_builder_add (&properties, "{sv}", "edid",
+                                     g_variant_new_from_bytes (G_VARIANT_TYPE ("ay"),
+                                                               edid, TRUE));
+              g_bytes_unref (edid);
+            }
+        }
 
       g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
                              i, /* ID */

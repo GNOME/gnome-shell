@@ -257,6 +257,12 @@ struct _MetaMonitorManagerClass
   MetaDBusDisplayConfigSkeletonClass parent_class;
 
   void (*read_current) (MetaMonitorManager *);
+
+  char* (*get_edid_file) (MetaMonitorManager *,
+                          MetaOutput         *);
+  GBytes* (*read_edid) (MetaMonitorManager *,
+                        MetaOutput         *);
+
   void (*apply_configuration) (MetaMonitorManager  *,
                                MetaCRTCInfo       **,
                                unsigned int         ,

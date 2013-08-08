@@ -467,6 +467,75 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
     }
 }
 
+static guint8 *
+get_edid_property (Display  *dpy,
+                   RROutput  output,
+                   Atom      atom,
+                   gsize    *len)
+{
+  unsigned char *prop;
+  int actual_format;
+  unsigned long nitems, bytes_after;
+  Atom actual_type;
+  guint8 *result;
+
+  XRRGetOutputProperty (dpy, output, atom,
+                        0, 100, False, False,
+                        AnyPropertyType,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &prop);
+
+  if (actual_type == XA_INTEGER && actual_format == 8)
+    {
+      result = g_memdup (prop, nitems);
+      if (len)
+        *len = nitems;
+    }
+  else
+    {
+      result = NULL;
+    }
+
+  XFree (prop);
+    
+  return result;
+}
+
+static GBytes *
+meta_monitor_manager_xrandr_read_edid (MetaMonitorManager *manager,
+                                       MetaOutput         *output)
+{
+  MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
+  Atom edid_atom;
+  guint8 *result;
+  gsize len;
+
+  edid_atom = XInternAtom (manager_xrandr->xdisplay, "EDID", FALSE);
+  result = get_edid_property (manager_xrandr->xdisplay, output->output_id, edid_atom, &len);
+
+  if (!result)
+    {
+      edid_atom = XInternAtom (manager_xrandr->xdisplay, "EDID_DATA", FALSE);
+      result = get_edid_property (manager_xrandr->xdisplay, output->output_id, edid_atom, &len);
+    }
+
+  if (!result)
+    {
+      edid_atom = XInternAtom (manager_xrandr->xdisplay, "XFree86_DDC_EDID1_RAWDATA", FALSE);
+      result = get_edid_property (manager_xrandr->xdisplay, output->output_id, edid_atom, &len);
+    }
+
+  if (result)
+    {
+      if (len > 0 && len % 128 == 0)
+        return g_bytes_new_take (result, len);
+      else
+        g_free (result);
+    }
+
+  return NULL;
+}
+
 static void
 meta_monitor_manager_xrandr_set_power_save_mode (MetaMonitorManager *manager,
 						 MetaPowerSave       mode)
@@ -767,6 +836,7 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
   object_class->finalize = meta_monitor_manager_xrandr_finalize;
 
   manager_class->read_current = meta_monitor_manager_xrandr_read_current;
+  manager_class->read_edid = meta_monitor_manager_xrandr_read_edid;
   manager_class->apply_configuration = meta_monitor_manager_xrandr_apply_configuration;
   manager_class->set_power_save_mode = meta_monitor_manager_xrandr_set_power_save_mode;
   manager_class->change_backlight = meta_monitor_manager_xrandr_change_backlight;
