@@ -1584,7 +1584,8 @@ meta_wayland_init (void)
 
   meta_wayland_data_device_manager_init (compositor->wayland_display);
 
-  compositor->seat = meta_wayland_seat_new (compositor->wayland_display);
+  compositor->seat = meta_wayland_seat_new (compositor->wayland_display,
+					    compositor->drm_fd >= 0);
 
   g_signal_connect (compositor->stage,
                     "captured-event",
