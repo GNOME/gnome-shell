@@ -123,9 +123,11 @@ clutter_input_device_evdev_keycode_to_evdev (ClutterInputDevice *device,
                                              guint hardware_keycode,
                                              guint *evdev_keycode)
 {
-  /* The hardware keycodes from the evdev backend are already evdev
-     keycodes */
-  *evdev_keycode = hardware_keycode;
+  /* The hardware keycodes from the evdev backend are almost evdev
+     keycodes: we use the evdev keycode file, but xkb rules have an
+     offset by 8. See the comment in _clutter_key_event_new_from_evdev()
+  */
+  *evdev_keycode = hardware_keycode - 8;
   return TRUE;
 }
 
