@@ -32,6 +32,8 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include <wayland-server.h>
 

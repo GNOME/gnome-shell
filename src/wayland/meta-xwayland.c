@@ -269,7 +269,7 @@ bind_to_unix_socket (int display)
 }
 
 static void
-uncloexec_and_setpgid (gpointer user_data)
+uncloexec (gpointer user_data)
 {
   int fd = GPOINTER_TO_INT (user_data);
 
@@ -278,10 +278,6 @@ uncloexec_and_setpgid (gpointer user_data)
   int flags = fcntl (fd, F_GETFD);
   if (flags != -1)
     fcntl (fd, F_SETFD, flags & ~FD_CLOEXEC);
-
-  /* Put this process in a background process group, so that Ctrl-C
-     goes to mutter only */
-  setpgid (0, 0);
 }
 
 static void
@@ -402,7 +398,7 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
                      G_SPAWN_DO_NOT_REAP_CHILD |
                      G_SPAWN_STDOUT_TO_DEV_NULL |
                      G_SPAWN_STDERR_TO_DEV_NULL,
-                     uncloexec_and_setpgid,
+                     uncloexec,
                      GINT_TO_POINTER (sp[1]),
                      &pid,
                      &error))
