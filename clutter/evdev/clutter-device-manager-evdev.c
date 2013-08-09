@@ -177,7 +177,7 @@ notify_key (ClutterEventSource *source,
                                          stage,
                                          source->xkb,
                                          time_, key, state);
-    xkb_state_update_key (source->xkb, key, state ? XKB_KEY_DOWN : XKB_KEY_UP);
+    xkb_state_update_key (source->xkb, event->key.hardware_keycode, state ? XKB_KEY_DOWN : XKB_KEY_UP);
   }
 
   queue_event (event);
