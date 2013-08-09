@@ -26,6 +26,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <xkbcommon/xkbcommon.h>
 #include <clutter/clutter.h>
 
 G_BEGIN_DECLS
@@ -49,6 +50,10 @@ void  clutter_evdev_set_open_callback (ClutterOpenDeviceCallback callback,
 
 void  clutter_evdev_release_devices (void);
 void  clutter_evdev_reclaim_devices (void);
+
+struct xkb_state * clutter_evdev_get_keyboard_state (ClutterDeviceManager *evdev);
+void               clutter_evdev_set_keyboard_map   (ClutterDeviceManager *evdev,
+						     struct xkb_keymap    *keymap);
 
 G_END_DECLS
 

@@ -75,6 +75,7 @@ struct _ClutterDeviceManagerEvdevPrivate
   guint stage_added_handler;
   guint stage_removed_handler;
 
+  GArray *keys;
   struct xkb_state *xkb;              /* XKB state object */
   uint32_t button_state;
 };
@@ -158,6 +159,29 @@ queue_event (ClutterEvent *event)
 }
 
 static void
+add_key (GArray  *keys,
+	 guint32  key)
+{
+  g_array_append_val (keys, key);
+}
+
+static void
+remove_key (GArray  *keys,
+	    guint32  key)
+{
+  unsigned int i;
+
+  for (i = 0; i < keys->len; i++)
+    {
+      if (g_array_index (keys, guint32, i) == key)
+	{
+	  g_array_remove_index_fast (keys, i);
+	  return;
+	}
+    }
+}
+
+static void
 notify_key (ClutterEventSource *source,
             guint32             time_,
             guint32             key,
@@ -187,6 +211,11 @@ notify_key (ClutterEventSource *source,
 					   manager_evdev->priv->button_state,
 					   time_, key, state);
       xkb_state_update_key (manager_evdev->priv->xkb, event->key.hardware_keycode, state ? XKB_KEY_DOWN : XKB_KEY_UP);
+
+      if (state)
+	add_key (manager_evdev->priv->keys, event->key.hardware_keycode);
+      else
+	remove_key (manager_evdev->priv->keys, event->key.hardware_keycode);
 
       queue_event (event);
     }
@@ -874,6 +903,7 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
   _clutter_device_manager_add_device (CLUTTER_DEVICE_MANAGER (manager_evdev), device);
   priv->core_keyboard = device;
 
+  priv->keys = g_array_new (FALSE, FALSE, sizeof (guint32));
   priv->xkb = _clutter_xkb_state_new (NULL,
 				      option_xkb_layout,
 				      option_xkb_variant,
@@ -1185,4 +1215,48 @@ clutter_evdev_set_open_callback (ClutterOpenDeviceCallback callback,
 {
   open_callback = callback;
   open_callback_data = user_data;
+}
+
+/**
+ * clutter_evdev_get_keyboard_state: (skip)
+ * @evdev: the #ClutterDeviceManager created by the evdev backend
+ *
+ * Returns the xkb state tracking object for keyboard devices.
+ * The object must be treated as read only, and should be used only
+ * for reading out the detailed group and modifier state.
+ */
+struct xkb_state *
+clutter_evdev_get_keyboard_state (ClutterDeviceManager *evdev)
+{
+  g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev), NULL);
+
+  return (CLUTTER_DEVICE_MANAGER_EVDEV (evdev))->priv->xkb;
+}
+
+/**
+ * clutter_evdev_set_keyboard_map: (skip)
+ * @evdev: the #ClutterDeviceManager created by the evdev backend
+ * @keymap: the new keymap
+ *
+ * Instructs @evdev to use the speficied keyboard map. This will cause
+ * the backend to drop the state and create a new one with the new map.
+ */
+void
+clutter_evdev_set_keyboard_map (ClutterDeviceManager *evdev,
+				struct xkb_keymap    *keymap)
+{
+  ClutterDeviceManagerEvdev *manager_evdev;
+  ClutterDeviceManagerEvdevPrivate *priv;
+  unsigned int i;
+
+  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev));
+
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (evdev);
+  priv = manager_evdev->priv;
+
+  xkb_state_unref (priv->xkb);
+  priv->xkb = xkb_state_new (keymap);
+
+  for (i = 0; i < priv->keys->len; i++)
+    xkb_state_update_key (priv->xkb, g_array_index (priv->keys, guint32, i), XKB_KEY_DOWN);
 }
