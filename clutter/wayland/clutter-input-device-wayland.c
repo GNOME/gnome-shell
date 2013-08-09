@@ -256,8 +256,9 @@ clutter_wayland_repeat_key (void *data)
   ClutterEvent              *event;
 
   event = _clutter_key_event_new_from_evdev ((ClutterInputDevice *) device,
+					     (ClutterInputDevice*) device,
                                              stage_cogl->wrapper,
-                                             device->xkb,
+                                             device->xkb, 0,
                                              device->repeat_time,
                                              device->repeat_key,
                                              1);
@@ -292,8 +293,9 @@ clutter_wayland_handle_key (void *data,
     return;
 
   event = _clutter_key_event_new_from_evdev ((ClutterInputDevice *) device,
+					     (ClutterInputDevice *) device,
                                              stage_cogl->wrapper,
-                                             device->xkb,
+                                             device->xkb, 0,
                                              _clutter_wayland_get_time(),
                                              key, state);
 

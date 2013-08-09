@@ -32,8 +32,10 @@
 #include "clutter-input-device.h"
 
 ClutterEvent *    _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
+						     ClutterInputDevice *core_keyboard,
                                                      ClutterStage       *stage,
                                                      struct xkb_state   *xkb_state,
+						     uint32_t            button_state,
                                                      uint32_t            _time,
                                                      uint32_t            key,
                                                      uint32_t            state);

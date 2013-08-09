@@ -42,8 +42,10 @@
  */
 ClutterEvent *
 _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
+				   ClutterInputDevice *core_device,
                                    ClutterStage       *stage,
                                    struct xkb_state   *xkb_state,
+				   uint32_t            button_state,
                                    uint32_t            _time,
                                    xkb_keycode_t       key,
                                    uint32_t            state)
@@ -71,13 +73,15 @@ _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
   else
     sym = XKB_KEY_NoSymbol;
 
-  event->key.device = device;
+  event->key.device = core_device;
   event->key.stage = stage;
   event->key.time = _time;
   event->key.modifier_state =
     xkb_state_serialize_mods (xkb_state, XKB_STATE_EFFECTIVE);
+  event->key.modifier_state |= button_state;
   event->key.hardware_keycode = key;
   event->key.keyval = sym;
+  clutter_event_set_source_device (event, device);
 
   n = xkb_keysym_to_utf8 (sym, buffer, sizeof (buffer));
 

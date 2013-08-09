@@ -51,6 +51,13 @@
 
 #include "clutter-device-manager-evdev.h"
 
+/* These are the same as the XInput2 IDs */
+#define CORE_POINTER_ID 2
+#define CORE_KEYBOARD_ID 3
+
+#define FIRST_SLAVE_ID 4
+#define INVALID_SLAVE_ID 255
+
 struct _ClutterDeviceManagerEvdevPrivate
 {
   GUdevClient *udev_client;
@@ -67,6 +74,9 @@ struct _ClutterDeviceManagerEvdevPrivate
   ClutterStageManager *stage_manager;
   guint stage_added_handler;
   guint stage_removed_handler;
+
+  struct xkb_state *xkb;              /* XKB state object */
+  uint32_t button_state;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (ClutterDeviceManagerEvdev,
@@ -105,11 +115,8 @@ struct _ClutterEventSource
 {
   GSource source;
 
-  ClutterInputDeviceEvdev *device;    /* back pointer to the evdev device */
+  ClutterInputDeviceEvdev *device;    /* back pointer to the slave evdev device */
   GPollFD event_poll_fd;              /* file descriptor of the /dev node */
-  struct xkb_state *xkb;              /* XKB state object */
-  gint x, y;                          /* last x, y position for pointers */
-  guint32 modifier_state;             /* key modifiers */
 };
 
 static gboolean
@@ -147,9 +154,6 @@ clutter_event_check (GSource *source)
 static void
 queue_event (ClutterEvent *event)
 {
-  if (event == NULL)
-    return;
-
   _clutter_event_push (event, FALSE);
 }
 
@@ -160,6 +164,7 @@ notify_key (ClutterEventSource *source,
             guint32             state)
 {
   ClutterInputDevice *input_device = (ClutterInputDevice *) source->device;
+  ClutterDeviceManagerEvdev *manager_evdev;
   ClutterStage *stage;
   ClutterEvent *event = NULL;
 
@@ -169,31 +174,37 @@ notify_key (ClutterEventSource *source,
   if (!stage)
     return;
 
-  /* if we have a mapping for that device, use it to generate the event */
-  if (source->xkb)
-  {
-    event =
-      _clutter_key_event_new_from_evdev (input_device,
-                                         stage,
-                                         source->xkb,
-                                         time_, key, state);
-    xkb_state_update_key (source->xkb, event->key.hardware_keycode, state ? XKB_KEY_DOWN : XKB_KEY_UP);
-  }
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (input_device->device_manager);
 
-  queue_event (event);
+  /* if we have keyboard state, use it to generate the event */
+  if (manager_evdev->priv->xkb)
+    {
+      event =
+	_clutter_key_event_new_from_evdev (input_device,
+					   manager_evdev->priv->core_keyboard,
+					   stage,
+					   manager_evdev->priv->xkb,
+					   manager_evdev->priv->button_state,
+					   time_, key, state);
+      xkb_state_update_key (manager_evdev->priv->xkb, event->key.hardware_keycode, state ? XKB_KEY_DOWN : XKB_KEY_UP);
+
+      queue_event (event);
+    }
 }
 
 
 static void
-notify_motion (ClutterEventSource *source,
-               guint32             time_,
-               gint                x,
-               gint                y)
+notify_relative_motion (ClutterEventSource *source,
+			guint32             time_,
+			gint                dx,
+			gint                dy)
 {
   ClutterInputDevice *input_device = (ClutterInputDevice *) source->device;
   gfloat stage_width, stage_height, new_x, new_y;
-  ClutterEvent *event;
+  ClutterDeviceManagerEvdev *manager_evdev;
   ClutterStage *stage;
+  ClutterEvent *event = NULL;
+  ClutterPoint point;
 
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
@@ -201,34 +212,27 @@ notify_motion (ClutterEventSource *source,
   if (!stage)
     return;
 
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (input_device->device_manager);
+
   stage_width = clutter_actor_get_width (CLUTTER_ACTOR (stage));
   stage_height = clutter_actor_get_height (CLUTTER_ACTOR (stage));
 
   event = clutter_event_new (CLUTTER_MOTION);
 
-  if (x < 0)
-    new_x = 0.f;
-  else if (x >= stage_width)
-    new_x = stage_width - 1;
-  else
-    new_x = x;
-
-  if (y < 0)
-    new_y = 0.f;
-  else if (y >= stage_height)
-    new_y = stage_height - 1;
-  else
-    new_y = y;
-
-  source->x = new_x;
-  source->y = new_y;
+  clutter_input_device_get_coords (manager_evdev->priv->core_pointer, NULL, &point);
+  new_x = point.x + dx;
+  new_y = point.y + dy;
+  new_x = CLAMP (new_x, 0.f, stage_width - 1);
+  new_y = CLAMP (new_y, 0.f, stage_height - 1);
 
   event->motion.time = time_;
   event->motion.stage = stage;
-  event->motion.device = input_device;
-  event->motion.modifier_state = source->modifier_state;
+  event->motion.device = manager_evdev->priv->core_pointer;
+  event->motion.modifier_state = xkb_state_serialize_mods (manager_evdev->priv->xkb, XKB_STATE_EFFECTIVE);
+  event->motion.modifier_state |= manager_evdev->priv->button_state;
   event->motion.x = new_x;
   event->motion.y = new_y;
+  clutter_event_set_source_device (event, input_device);
 
   queue_event (event);
 }
@@ -240,8 +244,10 @@ notify_button (ClutterEventSource *source,
                guint32             state)
 {
   ClutterInputDevice *input_device = (ClutterInputDevice *) source->device;
-  ClutterEvent *event;
+  ClutterDeviceManagerEvdev *manager_evdev;
   ClutterStage *stage;
+  ClutterEvent *event = NULL;
+  ClutterPoint point;
   gint button_nr;
   static gint maskmap[8] =
     {
@@ -254,6 +260,8 @@ notify_button (ClutterEventSource *source,
   stage = _clutter_input_device_get_stage (input_device);
   if (!stage)
     return;
+
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (input_device->device_manager);
 
   /* The evdev button numbers don't map sequentially to clutter button
    * numbers (the right and middle mouse buttons are in the opposite
@@ -290,17 +298,20 @@ notify_button (ClutterEventSource *source,
 
   /* Update the modifiers */
   if (state)
-    source->modifier_state |= maskmap[button - BTN_LEFT];
+    manager_evdev->priv->button_state |= maskmap[button - BTN_LEFT];
   else
-    source->modifier_state &= ~maskmap[button - BTN_LEFT];
+    manager_evdev->priv->button_state &= ~maskmap[button - BTN_LEFT];
 
   event->button.time = time_;
   event->button.stage = CLUTTER_STAGE (stage);
-  event->button.device = (ClutterInputDevice *) source->device;
-  event->button.modifier_state = source->modifier_state;
+  event->button.device = manager_evdev->priv->core_pointer;
+  event->motion.modifier_state = xkb_state_serialize_mods (manager_evdev->priv->xkb, XKB_STATE_EFFECTIVE);
+  event->button.modifier_state |= manager_evdev->priv->button_state;
   event->button.button = button_nr;
-  event->button.x = source->x;
-  event->button.y = source->y;
+  clutter_input_device_get_coords (manager_evdev->priv->core_pointer, NULL, &point);
+  event->button.x = point.x;
+  event->button.y = point.y;
+  clutter_event_set_source_device (event, (ClutterInputDevice*) source->device);
 
   queue_event (event);
 }
@@ -363,7 +374,6 @@ clutter_event_dispatch (GSource     *g_source,
            struct input_event *e = &ev[i];
 
            _time = e->time.tv_sec * 1000 + e->time.tv_usec / 1000;
-           event = NULL;
 
            switch (e->type)
              {
@@ -430,12 +440,10 @@ clutter_event_dispatch (GSource     *g_source,
                g_warning ("Unhandled event of type %d", e->type);
                break;
              }
-
-           queue_event (event);
          }
 
        if (dx != 0 || dy != 0)
-         notify_motion (source, _time, source->x + dx, source->y + dy);
+         notify_relative_motion (source, _time, dx, dy);
     }
 
   /* Pop an event off the queue if any */
@@ -465,7 +473,6 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
 {
   GSource *source = g_source_new (&event_funcs, sizeof (ClutterEventSource));
   ClutterEventSource *event_source = (ClutterEventSource *) source;
-  ClutterInputDeviceType type;
   const gchar *node_path;
   gint fd;
   GError *error;
@@ -501,31 +508,6 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
   event_source->device = input_device;
   event_source->event_poll_fd.fd = fd;
   event_source->event_poll_fd.events = G_IO_IN;
-
-  type =
-    clutter_input_device_get_device_type (CLUTTER_INPUT_DEVICE (input_device));
-
-  if (type == CLUTTER_KEYBOARD_DEVICE)
-    {
-      /* create the xkb description */
-      event_source->xkb = _clutter_xkb_state_new (NULL,
-                                                  option_xkb_layout,
-                                                  option_xkb_variant,
-                                                  option_xkb_options);
-      if (G_UNLIKELY (event_source->xkb == NULL))
-        {
-          g_warning ("Could not compile keymap %s:%s:%s", option_xkb_layout,
-                     option_xkb_variant, option_xkb_options);
-          close (fd);
-          g_source_unref (source);
-          return NULL;
-        }
-    }
-  else if (type == CLUTTER_POINTER_DEVICE)
-    {
-      event_source->x = 0;
-      event_source->y = 0;
-    }
 
   /* and finally configure and attach the GSource */
   g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
@@ -593,6 +575,7 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
   ClutterInputDeviceType type = CLUTTER_EXTENSION_DEVICE;
   ClutterInputDevice *device;
   const gchar *device_file, *sysfs_path, *device_name;
+  int id, ok;
 
   device_file = g_udev_device_get_device_file (udev_device);
   sysfs_path = g_udev_device_get_sysfs_path (udev_device);
@@ -625,10 +608,18 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
   else if (g_udev_device_has_property (udev_device, "ID_INPUT_TOUCHSCREEN"))
     type = CLUTTER_TOUCHSCREEN_DEVICE;
 
+  ok = sscanf (device_file, "/dev/input/event%d", &id);
+  if (ok == 1)
+    id += FIRST_SLAVE_ID;
+  else
+    id = INVALID_SLAVE_ID;
+
   device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV,
-                         "id", 0,
+                         "id", id,
                          "name", device_name,
+			 "device-manager", manager,
                          "device-type", type,
+			 "device-mode", CLUTTER_INPUT_MODE_SLAVE,
                          "sysfs-path", sysfs_path,
                          "device-path", device_file,
                          "enabled", TRUE,
@@ -637,6 +628,16 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
   _clutter_input_device_set_stage (device, manager_evdev->priv->stage);
 
   _clutter_device_manager_add_device (manager, device);
+  if (type == CLUTTER_KEYBOARD_DEVICE)
+    {
+      _clutter_input_device_set_associated_device (device, manager_evdev->priv->core_keyboard);
+      _clutter_input_device_add_slave (manager_evdev->priv->core_keyboard, device);
+    }
+  else
+    {
+      _clutter_input_device_set_associated_device (device, manager_evdev->priv->core_pointer);
+      _clutter_input_device_add_slave (manager_evdev->priv->core_pointer, device);
+    }
 
   CLUTTER_NOTE (EVENT, "Added device %s, type %d, sysfs %s",
                 device_file, type, sysfs_path);
@@ -715,9 +716,7 @@ clutter_device_manager_evdev_add_device (ClutterDeviceManager *manager,
 {
   ClutterDeviceManagerEvdev *manager_evdev;
   ClutterDeviceManagerEvdevPrivate *priv;
-  ClutterInputDeviceType device_type;
   ClutterInputDeviceEvdev *device_evdev;
-  gboolean is_pointer, is_keyboard;
   GSource *source;
 
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (manager);
@@ -725,22 +724,16 @@ clutter_device_manager_evdev_add_device (ClutterDeviceManager *manager,
 
   device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (device);
 
-  device_type = clutter_input_device_get_device_type (device);
-  is_pointer  = device_type == CLUTTER_POINTER_DEVICE;
-  is_keyboard = device_type == CLUTTER_KEYBOARD_DEVICE;
-
   priv->devices = g_slist_prepend (priv->devices, device);
 
-  if (is_pointer && priv->core_pointer == NULL)
-    priv->core_pointer = device;
+  if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_SLAVE)
+    {
+      /* Install the GSource for this device */
+      source = clutter_event_source_new (device_evdev);
+      g_assert (source != NULL);
 
-  if (is_keyboard && priv->core_keyboard == NULL)
-    priv->core_keyboard = device;
-
-  /* Install the GSource for this device */
-  source = clutter_event_source_new (device_evdev);
-  if (G_LIKELY (source))
-    priv->event_sources = g_slist_prepend (priv->event_sources, source);
+      priv->event_sources = g_slist_prepend (priv->event_sources, source);
+    }
 }
 
 static void
@@ -757,16 +750,19 @@ clutter_device_manager_evdev_remove_device (ClutterDeviceManager *manager,
   /* Remove the device */
   priv->devices = g_slist_remove (priv->devices, device);
 
-  /* Remove the source */
-  source = find_source_by_device (manager_evdev, device);
-  if (G_UNLIKELY (source == NULL))
+  if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_SLAVE)
     {
-      g_warning ("Trying to remove a device without a source installed ?!");
-      return;
-    }
+      /* Remove the source */
+      source = find_source_by_device (manager_evdev, device);
+      if (G_UNLIKELY (source == NULL))
+	{
+	  g_warning ("Trying to remove a device without a source installed ?!");
+	  return;
+	}
 
-  clutter_event_source_free (source);
-  priv->event_sources = g_slist_remove (priv->event_sources, source);
+      clutter_event_source_free (source);
+      priv->event_sources = g_slist_remove (priv->event_sources, source);
+    }
 }
 
 static const GSList *
@@ -849,9 +845,39 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
 {
   ClutterDeviceManagerEvdev *manager_evdev;
   ClutterDeviceManagerEvdevPrivate *priv;
+  ClutterInputDevice *device;
 
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (gobject);
   priv = manager_evdev->priv;
+
+  device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV,
+                         "id", CORE_POINTER_ID,
+                         "name", "input/core_pointer",
+			 "device-manager", manager_evdev,
+                         "device-type", CLUTTER_POINTER_DEVICE,
+			 "device-mode", CLUTTER_INPUT_MODE_MASTER,
+                         "enabled", TRUE,
+                         NULL);  
+  _clutter_input_device_set_stage (device, priv->stage);
+  _clutter_device_manager_add_device (CLUTTER_DEVICE_MANAGER (manager_evdev), device);
+  priv->core_pointer = device;
+
+  device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV,
+                         "id", CORE_KEYBOARD_ID,
+                         "name", "input/core_keyboard",
+			 "device-manager", manager_evdev,
+                         "device-type", CLUTTER_KEYBOARD_DEVICE,
+			 "device-mode", CLUTTER_INPUT_MODE_MASTER,
+                         "enabled", TRUE,
+                         NULL);
+  _clutter_input_device_set_stage (device, priv->stage);
+  _clutter_device_manager_add_device (CLUTTER_DEVICE_MANAGER (manager_evdev), device);
+  priv->core_keyboard = device;
+
+  priv->xkb = _clutter_xkb_state_new (NULL,
+				      option_xkb_layout,
+				      option_xkb_variant,
+				      option_xkb_options);
 
   priv->udev_client = g_udev_client_new (subsystems);
 
