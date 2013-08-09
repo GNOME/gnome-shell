@@ -57,7 +57,6 @@ typedef struct _ClutterInputDeviceEvdev ClutterInputDeviceEvdev;
 
 GType                     clutter_input_device_evdev_get_type         (void) G_GNUC_CONST;
 
-ClutterInputDeviceEvdev * _clutter_input_device_evdev_new             (void);
 const gchar *             _clutter_input_device_evdev_get_sysfs_path  (ClutterInputDeviceEvdev *device);
 const gchar *             _clutter_input_device_evdev_get_device_path (ClutterInputDeviceEvdev *device);
 

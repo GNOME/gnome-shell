@@ -181,12 +181,6 @@ clutter_input_device_evdev_init (ClutterInputDeviceEvdev *self)
   self->priv = clutter_input_device_evdev_get_instance_private (self);
 }
 
-ClutterInputDeviceEvdev *
-_clutter_input_device_evdev_new (void)
-{
-  return g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV, NULL);
-}
-
 const gchar *
 _clutter_input_device_evdev_get_sysfs_path (ClutterInputDeviceEvdev *device)
 {
