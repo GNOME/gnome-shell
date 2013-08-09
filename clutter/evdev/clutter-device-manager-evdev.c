@@ -58,6 +58,8 @@
 #define FIRST_SLAVE_ID 4
 #define INVALID_SLAVE_ID 255
 
+#define AUTOREPEAT_VALUE 2
+
 struct _ClutterDeviceManagerEvdevPrivate
 {
   GUdevClient *udev_client;
@@ -210,12 +212,18 @@ notify_key (ClutterEventSource *source,
 					   manager_evdev->priv->xkb,
 					   manager_evdev->priv->button_state,
 					   time_, key, state);
-      xkb_state_update_key (manager_evdev->priv->xkb, event->key.hardware_keycode, state ? XKB_KEY_DOWN : XKB_KEY_UP);
 
-      if (state)
-	add_key (manager_evdev->priv->keys, event->key.hardware_keycode);
-      else
-	remove_key (manager_evdev->priv->keys, event->key.hardware_keycode);
+      /* We must be careful and not pass multiple releases to xkb, otherwise it gets
+	 confused and locks the modifiers */
+      if (state != AUTOREPEAT_VALUE)
+	{
+	  xkb_state_update_key (manager_evdev->priv->xkb, event->key.hardware_keycode, state ? XKB_KEY_DOWN : XKB_KEY_UP);
+
+	  if (state)
+	    add_key (manager_evdev->priv->keys, event->key.hardware_keycode);
+	  else
+	    remove_key (manager_evdev->priv->keys, event->key.hardware_keycode);
+	}
 
       queue_event (event);
     }
@@ -410,7 +418,7 @@ clutter_event_dispatch (GSource     *g_source,
 
                /* don't repeat mouse buttons */
                if (e->code >= BTN_MOUSE && e->code < KEY_OK)
-                 if (e->value == 2)
+                 if (e->value == AUTOREPEAT_VALUE)
                    continue;
 
                switch (e->code)
