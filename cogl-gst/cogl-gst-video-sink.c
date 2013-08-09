@@ -1027,6 +1027,7 @@ cogl_gst_source_dispatch (GSource *source,
   CoglGstSource *gst_source= (CoglGstSource*) source;
   CoglGstVideoSinkPrivate *priv = gst_source->sink->priv;
   GstBuffer *buffer;
+  gboolean pipeline_ready = FALSE;
 
   g_mutex_lock (&gst_source->buffer_lock);
 
@@ -1048,9 +1049,7 @@ cogl_gst_source_dispatch (GSource *source,
        * the application requests it so we can emit the signal.
        * However we'll actually generate the pipeline lazily only if
        * the application actually asks for it. */
-      g_signal_emit (gst_source->sink,
-                     video_sink_signals[PIPELINE_READY_SIGNAL],
-                     0 /* detail */);
+      pipeline_ready = TRUE;
     }
 
   buffer = gst_source->buffer;
@@ -1063,13 +1062,18 @@ cogl_gst_source_dispatch (GSource *source,
       if (!priv->renderer->upload (gst_source->sink, buffer))
         goto fail_upload;
 
-      g_signal_emit (gst_source->sink,
-                     video_sink_signals[NEW_FRAME_SIGNAL], 0,
-                     NULL);
       gst_buffer_unref (buffer);
     }
   else
     GST_WARNING_OBJECT (gst_source->sink, "No buffers available for display");
+
+  if (G_UNLIKELY (pipeline_ready))
+    g_signal_emit (gst_source->sink,
+                   video_sink_signals[PIPELINE_READY_SIGNAL],
+                   0 /* detail */);
+  g_signal_emit (gst_source->sink,
+                 video_sink_signals[NEW_FRAME_SIGNAL], 0,
+                 NULL);
 
   return TRUE;
 
