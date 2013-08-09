@@ -275,6 +275,41 @@ notify_relative_motion (ClutterEventSource *source,
 }
 
 static void
+notify_scroll (ClutterEventSource *source,
+	       guint32             time_,
+	       gint32              value)
+{
+  ClutterInputDevice *input_device = (ClutterInputDevice *) source->device;
+  ClutterDeviceManagerEvdev *manager_evdev;
+  ClutterStage *stage;
+  ClutterEvent *event = NULL;
+  ClutterPoint point;
+
+  /* We can drop the event on the floor if no stage has been
+   * associated with the device yet. */
+  stage = _clutter_input_device_get_stage (input_device);
+  if (!stage)
+    return;
+
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (input_device->device_manager);
+
+  event = clutter_event_new (CLUTTER_SCROLL);
+
+  event->scroll.time = time_;
+  event->scroll.stage = CLUTTER_STAGE (stage);
+  event->scroll.device = manager_evdev->priv->core_pointer;
+  event->motion.modifier_state = xkb_state_serialize_mods (manager_evdev->priv->xkb, XKB_STATE_EFFECTIVE);
+  event->scroll.modifier_state |= manager_evdev->priv->button_state;
+  event->scroll.direction = value < 0 ? CLUTTER_SCROLL_DOWN : CLUTTER_SCROLL_UP;
+  clutter_input_device_get_coords (manager_evdev->priv->core_pointer, NULL, &point);
+  event->scroll.x = point.x;
+  event->scroll.y = point.y;
+  clutter_event_set_source_device (event, (ClutterInputDevice*) source->device);
+
+  queue_event (event);
+}
+
+static void
 notify_button (ClutterEventSource *source,
                guint32             time_,
                guint32             button,
@@ -469,6 +504,14 @@ clutter_event_dispatch (GSource     *g_source,
                  case REL_Y:
                    dy += e->value;
                    break;
+
+		 /* Note: we assume that REL_WHEEL is for *vertical* scroll wheels.
+		    To implement horizontal scroll, we'll need a different enum
+		    value.
+		 */
+		 case REL_WHEEL:
+		   notify_scroll (source, _time, e->value);
+		   break;
                  }
                break;
 
