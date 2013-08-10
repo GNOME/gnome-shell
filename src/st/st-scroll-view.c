@@ -598,42 +598,36 @@ st_scroll_view_allocate (ClutterActor          *actor,
    */
 
   /* Vertical scrollbar */
-  if (vscrollbar_visible)
-    {
-      if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
-        {
-          child_box.x1 = content_box.x1;
-          child_box.x2 = content_box.x1 + sb_width;
-        }
-      else
-        {
-          child_box.x1 = content_box.x2 - sb_width;
-          child_box.x2 = content_box.x2;
-        }
-      child_box.y1 = content_box.y1;
-      child_box.y2 = content_box.y2 - (hscrollbar_visible ? sb_height : 0);
+    if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
+      {
+        child_box.x1 = content_box.x1;
+        child_box.x2 = content_box.x1 + sb_width;
+      }
+    else
+      {
+        child_box.x1 = content_box.x2 - sb_width;
+        child_box.x2 = content_box.x2;
+      }
+    child_box.y1 = content_box.y1;
+    child_box.y2 = content_box.y2 - (hscrollbar_visible ? sb_height : 0);
 
-      clutter_actor_allocate (priv->vscroll, &child_box, flags);
-    }
+    clutter_actor_allocate (priv->vscroll, &child_box, flags);
 
   /* Horizontal scrollbar */
-  if (hscrollbar_visible)
-    {
-      if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
-        {
-          child_box.x1 = content_box.x1 + (vscrollbar_visible ? sb_width : 0);
-          child_box.x2 = content_box.x2;
-        }
-      else
-        {
-          child_box.x1 = content_box.x1;
-          child_box.x2 = content_box.x2 - (vscrollbar_visible ? sb_width : 0);
-        }
-      child_box.y1 = content_box.y2 - sb_height;
-      child_box.y2 = content_box.y2;
+    if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
+      {
+        child_box.x1 = content_box.x1 + (vscrollbar_visible ? sb_width : 0);
+        child_box.x2 = content_box.x2;
+      }
+    else
+      {
+        child_box.x1 = content_box.x1;
+        child_box.x2 = content_box.x2 - (vscrollbar_visible ? sb_width : 0);
+      }
+    child_box.y1 = content_box.y2 - sb_height;
+    child_box.y2 = content_box.y2;
 
-      clutter_actor_allocate (priv->hscroll, &child_box, flags);
-    }
+    clutter_actor_allocate (priv->hscroll, &child_box, flags);
 
   /* In case the scrollbar policy is NEVER or scrollbars should be
    * overlayed, we don't trim the content box allocation by the
