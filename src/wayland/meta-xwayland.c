@@ -19,8 +19,6 @@
  * 02111-1307, USA.
  */
 
-#include "meta-xwayland-private.h"
-
 #include <glib.h>
 
 #include <unistd.h>
@@ -30,6 +28,91 @@
 #include <sys/un.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+
+#include "meta-xwayland-private.h"
+#include "meta-window-actor-private.h"
+#include "xserver-server-protocol.h"
+
+static void
+xserver_set_window_id (struct wl_client *client,
+                       struct wl_resource *compositor_resource,
+                       struct wl_resource *surface_resource,
+                       guint32 xid)
+{
+  MetaWaylandCompositor *compositor =
+    wl_resource_get_user_data (compositor_resource);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  MetaDisplay *display = meta_get_display ();
+  MetaWindow *window;
+
+  g_return_if_fail (surface->xid == None);
+
+  surface->xid = xid;
+
+  window  = meta_display_lookup_x_window (display, xid);
+  if (window)
+    {
+      MetaWindowActor *window_actor =
+        META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
+
+      meta_window_actor_set_wayland_surface (window_actor, surface);
+
+      surface->window = window;
+      window->surface = surface;
+
+      /* If the window is already meant to have focus then the
+       * original attempt to call this in response to the FocusIn
+       * event will have been lost because there was no surface
+       * yet. */
+      if (window->has_focus)
+        meta_wayland_compositor_set_input_focus (compositor, window);
+
+    }
+}
+
+static const struct xserver_interface xserver_implementation = {
+    xserver_set_window_id
+};
+
+static void
+bind_xserver (struct wl_client *client,
+	      void *data,
+              guint32 version,
+              guint32 id)
+{
+  MetaWaylandCompositor *compositor = data;
+
+  /* If it's a different client than the xserver we launched,
+   * don't start the wm. */
+  if (client != compositor->xwayland_client)
+    return;
+
+  compositor->xserver_resource =
+    wl_resource_create (client, &xserver_interface, version, id);
+  wl_resource_set_implementation (compositor->xserver_resource,
+				  &xserver_implementation, compositor, NULL);
+
+  wl_resource_post_event (compositor->xserver_resource,
+                          XSERVER_LISTEN_SOCKET,
+                          compositor->xwayland_abstract_fd);
+
+  wl_resource_post_event (compositor->xserver_resource,
+                          XSERVER_LISTEN_SOCKET,
+                          compositor->xwayland_unix_fd);
+
+  /* Make sure xwayland will recieve the above sockets in a finite
+   * time before unblocking the initialization mainloop since we are
+   * then going to immediately try and connect to those as the window
+   * manager. */
+  wl_client_flush (client);
+
+  /* At this point xwayland is all setup to start accepting
+   * connections so we can quit the transient initialization mainloop
+   * and unblock meta_wayland_init() to continue initializing mutter.
+   * */
+  g_main_loop_quit (compositor->init_loop);
+  compositor->init_loop = NULL;
+}
 
 static char *
 create_lockfile (int display, int *display_out)
@@ -231,6 +314,10 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
   char *args[11];
   GError *error;
 
+  wl_global_create (compositor->wayland_display,
+		    &xserver_interface, 1,
+		    compositor, bind_xserver);
+
   do
     {
       lockfile = create_lockfile (display, &display);
@@ -327,6 +414,13 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
 
   g_strfreev (env);
   g_free (display_name);
+
+  /* We need to run a mainloop until we know xwayland has a binding
+   * for our xserver interface at which point we can assume it's
+   * ready to start accepting connections. */
+  compositor->init_loop = g_main_loop_new (NULL, FALSE);
+
+  g_main_loop_run (compositor->init_loop);
 
   return TRUE;
 }
