@@ -28,6 +28,9 @@ gboolean
 meta_xwayland_start (MetaWaylandCompositor *compositor);
 
 void
+meta_xwayland_complete_init (void);
+
+void
 meta_xwayland_stop (MetaWaylandCompositor *compositor);
 
 #endif /* META_XWAYLAND_PRIVATE_H */

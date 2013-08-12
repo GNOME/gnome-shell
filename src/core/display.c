@@ -75,6 +75,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "meta-xwayland-private.h"
+
 #define GRAB_OP_IS_WINDOW_SWITCH(g)                     \
         (g == META_GRAB_OP_KEYBOARD_TABBING_NORMAL  ||  \
          g == META_GRAB_OP_KEYBOARD_TABBING_DOCK    ||  \
@@ -515,6 +517,9 @@ meta_display_open (void)
 		    XDisplayName (NULL));
       return FALSE;
     }
+
+  if (meta_is_wayland_compositor ())
+    meta_xwayland_complete_init ();
 
   if (meta_is_syncing ())
     XSynchronize (xdisplay, True);

@@ -301,6 +301,14 @@ xserver_died (GPid     pid,
     }
 }
 
+static int
+x_io_error (Display *display)
+{
+  g_error ("Connection to xwayland lost");
+
+  return 0;
+}
+
 gboolean
 meta_xwayland_start (MetaWaylandCompositor *compositor)
 {
@@ -423,6 +431,18 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
   g_main_loop_run (compositor->init_loop);
 
   return TRUE;
+}
+
+/* To be called right after connecting */
+void
+meta_xwayland_complete_init (void)
+{
+  /* We install an X IO error handler in addition to the child watch,
+     because after Xlib connects our child watch may not be called soon
+     enough, and therefore we won't crash when X exits (and most important
+     we won't reset the tty).
+  */
+  XSetIOErrorHandler (x_io_error);
 }
 
 void
