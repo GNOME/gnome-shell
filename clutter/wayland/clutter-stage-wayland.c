@@ -143,6 +143,8 @@ clutter_stage_wayland_show (ClutterStageWindow *stage_window,
   if (stage_wayland->wayland_shell_surface)
     wl_shell_surface_set_toplevel (stage_wayland->wayland_shell_surface);
 
+  stage_wayland->shown = TRUE;
+
   /* We need to queue a redraw after the stage is shown because all of
    * the other queue redraws up to this point will have been ignored
    * because the actor was not visible. The other backends do not need
@@ -205,12 +207,16 @@ clutter_stage_wayland_resize (ClutterStageWindow *stage_window,
                               gint                height)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
 
   /* Resize preserving top left */
   if (stage_cogl->onscreen)
     {
       cogl_wayland_onscreen_resize (stage_cogl->onscreen, width, height, 0, 0);
-      _clutter_stage_window_redraw (stage_window);
+
+      /* Only trigger a redraw if the stage window has been shown */
+      if (stage_wayland->shown)
+        _clutter_stage_window_redraw (stage_window);
     }
 }
 
