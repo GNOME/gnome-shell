@@ -145,7 +145,7 @@ const Indicator = new Lang.Class({
             let gicon = new Gio.FileIcon({ file: file });
             this._switchUserSubMenu.icon.gicon = gicon;
         } else {
-            this._switchUserSubMenu.icon_name = 'avatar-default-symbolic';
+            this._switchUserSubMenu.icon.icon_name = 'avatar-default-symbolic';
         }
     },
 
