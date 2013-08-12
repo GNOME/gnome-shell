@@ -723,21 +723,6 @@ shell_surface_pong (struct wl_client *client,
 {
 }
 
-/* TODO: consider adding this to window.c */
-static void
-meta_window_get_surface_rect (const MetaWindow *window,
-                              MetaRectangle    *rect)
-{
-  if (window->frame)
-    {
-      MetaFrameBorders borders;
-      *rect = window->frame->rect;
-      meta_frame_calc_borders (window->frame, &borders);
-    }
-  else
-    *rect = window->rect;
-}
-
 typedef struct _MetaWaylandGrab
 {
   MetaWaylandPointerGrab grab;
@@ -883,8 +868,8 @@ start_surface_move (MetaWaylandShellSurface *shell_surface,
 
   move = g_slice_new (MetaWaylandMoveGrab);
 
-  meta_window_get_surface_rect (shell_surface->surface->window,
-                                &rect);
+  meta_window_get_input_rect (shell_surface->surface->window,
+                              &rect);
 
   move->dx = wl_fixed_from_int (rect.x) - seat->pointer.grab_x;
   move->dy = wl_fixed_from_int (rect.y) - seat->pointer.grab_y;
