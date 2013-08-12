@@ -164,7 +164,6 @@ struct _MetaWaylandCompositor
   pid_t xwayland_pid;
   struct wl_client *xwayland_client;
   struct wl_resource *xserver_resource;
-  GHashTable *window_surfaces;
 
   MetaWaylandSeat *seat;
 
@@ -351,8 +350,6 @@ void                    meta_wayland_finalize                   (void);
 MetaWaylandCompositor  *meta_wayland_compositor_get_default     (void);
 
 void                    meta_wayland_handle_sig_child           (void);
-
-MetaWaylandSurface     *meta_wayland_lookup_surface_for_xid     (guint32 xid);
 
 void                    meta_wayland_compositor_repick          (MetaWaylandCompositor *compositor);
 

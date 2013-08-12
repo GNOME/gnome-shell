@@ -503,15 +503,7 @@ meta_shaped_texture_get_wayland_surface (MetaShapedTexture *stex)
 ClutterActor *
 meta_shaped_texture_new_with_xwindow (Window xwindow)
 {
-#ifdef HAVE_WAYLAND
-  if (meta_is_wayland_compositor ())
-    {
-      MetaWaylandSurface *surface = meta_wayland_lookup_surface_for_xid (xwindow);
-      return meta_shaped_texture_new_with_wayland_surface (surface);
-    }
-  else
-#endif
-    return g_object_new (META_TYPE_SHAPED_TEXTURE, NULL);
+  return g_object_new (META_TYPE_SHAPED_TEXTURE, NULL);
 }
 
 void

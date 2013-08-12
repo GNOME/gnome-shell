@@ -1138,8 +1138,6 @@ xserver_set_window_id (struct wl_client *client,
 
   surface->xid = xid;
 
-  g_hash_table_insert (compositor->window_surfaces, &xid, surface);
-
   window  = meta_display_lookup_x_window (display, xid);
   if (window)
     {
@@ -1166,13 +1164,6 @@ xserver_set_window_id (struct wl_client *client,
         meta_wayland_compositor_set_input_focus (compositor, window);
 
     }
-#warning "FIXME: Handle surface destroy and remove window_surfaces mapping"
-}
-
-MetaWaylandSurface *
-meta_wayland_lookup_surface_for_xid (guint32 xid)
-{
-  return g_hash_table_lookup (_meta_wayland_compositor.window_surfaces, &xid);
 }
 
 static const struct xserver_interface xserver_implementation = {
@@ -1542,9 +1533,6 @@ meta_wayland_init (void)
   wl_global_create (compositor->wayland_display,
 		    &xserver_interface, 1,
 		    compositor, bind_xserver);
-
-  /* We need a mapping from xids to wayland surfaces... */
-  compositor->window_surfaces = g_hash_table_new (g_int_hash, g_int_equal);
 
   /* XXX: It's important that we only try and start xwayland after we
    * have initialized EGL because EGL implements the "wl_drm"

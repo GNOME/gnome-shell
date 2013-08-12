@@ -371,12 +371,12 @@ meta_window_actor_constructed (GObject *object)
 
   if (!priv->actor)
     {
-      if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
-        priv->actor = meta_shaped_texture_new_with_xwindow (xwindow);
 #ifdef HAVE_WAYLAND
-      else
+      if (meta_is_wayland_compositor ())
         priv->actor = meta_shaped_texture_new_with_wayland_surface (window->surface);
+      else
 #endif
+        priv->actor = meta_shaped_texture_new_with_xwindow (xwindow);
 
       clutter_actor_add_child (CLUTTER_ACTOR (self), priv->actor);
 
