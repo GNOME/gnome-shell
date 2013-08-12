@@ -152,6 +152,17 @@ const Indicator = new Lang.Class({
 
     _updateSwitchUserSubMenu: function() {
         this._switchUserSubMenu.label.text = this._user.get_real_name();
+        let clutterText = this._switchUserSubMenu.label.clutter_text;
+
+        // XXX -- for some reason, the ClutterText's width changes
+        // rapidly unless we force a relayout of the actor. Probably
+        // a size cache issue or something. Moving this to be a layout
+        // manager would be a much better idea.
+        clutterText.get_allocation_box();
+
+        let layout = clutterText.get_layout();
+        if (layout.is_ellipsized())
+            this._switchUserSubMenu.label.text = this._user.get_user_name();
 
         let iconFile = this._user.get_icon_file();
         if (iconFile && !GLib.file_test(iconFile, GLib.FileTest.EXISTS))
@@ -209,6 +220,15 @@ const Indicator = new Lang.Class({
 
         this._switchUserSubMenu = new PopupMenu.PopupSubMenuMenuItem('', true);
         this._switchUserSubMenu.icon.style_class = 'system-switch-user-submenu-icon';
+
+        // Since the label of the switch user submenu depends on the width of
+        // the popup menu, and we can't easily connect on allocation-changed
+        // or notify::width without creating layout cycles, simply update the
+        // label whenever the menu is opened.
+        this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
+            if (isOpen)
+                this._updateSwitchUserSubMenu();
+        }));
 
         item = new PopupMenu.PopupMenuItem(_("Switch User"));
         item.connect('activate', Lang.bind(this, this._onLoginScreenActivate));
