@@ -54,6 +54,7 @@ struct _ClutterStageWayland
   struct wl_shell_surface *wayland_shell_surface;
   gboolean fullscreen;
   gboolean foreign_wl_surface;
+  gboolean shown;
 };
 
 struct _ClutterStageWaylandClass
