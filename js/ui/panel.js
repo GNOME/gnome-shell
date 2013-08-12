@@ -207,8 +207,13 @@ const AppMenuButton = new Lang.Class({
         this._iconBox.connect('notify::allocation',
                               Lang.bind(this, this._updateIconBoxClip));
         this._container.add_actor(this._iconBox);
+
+        this._hbox = new St.BoxLayout();
+        this._container.add_actor(this._hbox);
+
         this._label = new TextShadower();
-        this._container.add_actor(this._label.actor);
+        this._label.actor.y_align = Clutter.ActorAlign.CENTER;
+        this._hbox.add_actor(this._label.actor);
 
         this._iconBottomClip = 0;
 
@@ -286,9 +291,8 @@ const AppMenuButton = new Lang.Class({
             return;
         this._spinnerIcon = icon;
         this._spinner = new Animation.AnimatedIcon(this._spinnerIcon, PANEL_ICON_SIZE);
-        this._container.add_actor(this._spinner.actor);
+        this._hbox.add_actor(this._spinner.actor);
         this._spinner.actor.hide();
-        this._spinner.actor.lower_bottom();
     },
 
     _onIconBoxStyleChanged: function() {
@@ -357,7 +361,7 @@ const AppMenuButton = new Lang.Class({
         let [minSize, naturalSize] = this._iconBox.get_preferred_width(forHeight);
         alloc.min_size = minSize;
         alloc.natural_size = naturalSize;
-        [minSize, naturalSize] = this._label.actor.get_preferred_width(forHeight);
+        [minSize, naturalSize] = this._hbox.get_preferred_width(forHeight);
         alloc.min_size = alloc.min_size + Math.max(0, minSize - Math.floor(alloc.min_size / 2));
         alloc.natural_size = alloc.natural_size + Math.max(0, naturalSize - Math.floor(alloc.natural_size / 2));
     },
@@ -366,7 +370,7 @@ const AppMenuButton = new Lang.Class({
         let [minSize, naturalSize] = this._iconBox.get_preferred_height(forWidth);
         alloc.min_size = minSize;
         alloc.natural_size = naturalSize;
-        [minSize, naturalSize] = this._label.actor.get_preferred_height(forWidth);
+        [minSize, naturalSize] = this._hbox.get_preferred_height(forWidth);
         if (minSize > alloc.min_size)
             alloc.min_size = minSize;
         if (naturalSize > alloc.natural_size)
@@ -396,11 +400,10 @@ const AppMenuButton = new Lang.Class({
 
         let iconWidth = childBox.x2 - childBox.x1;
 
-        [minWidth, minHeight, naturalWidth, naturalHeight] = this._label.actor.get_preferred_size();
+        [minWidth, naturalWidth] = this._hbox.get_preferred_width(-1);
 
-        yPadding = Math.floor(Math.max(0, allocHeight - naturalHeight) / 2);
-        childBox.y1 = yPadding;
-        childBox.y2 = childBox.y1 + Math.min(naturalHeight, allocHeight);
+        childBox.y1 = 0;
+        childBox.y2 = allocHeight;
 
         if (direction == Clutter.TextDirection.LTR) {
             childBox.x1 = Math.floor(iconWidth / 2);
@@ -409,24 +412,7 @@ const AppMenuButton = new Lang.Class({
             childBox.x2 = allocWidth - Math.floor(iconWidth / 2);
             childBox.x1 = Math.max(0, childBox.x2 - naturalWidth);
         }
-        this._label.actor.allocate(childBox, flags);
-
-        if (this._spinner == null)
-            return;
-
-        if (direction == Clutter.TextDirection.LTR) {
-            childBox.x1 = Math.floor(iconWidth / 2) + this._label.actor.width;
-            childBox.x2 = childBox.x1 + this._spinner.actor.width;
-            childBox.y1 = box.y1;
-            childBox.y2 = box.y2 - 1;
-            this._spinner.actor.allocate(childBox, flags);
-        } else {
-            childBox.x1 = -this._spinner.actor.width;
-            childBox.x2 = childBox.x1 + this._spinner.actor.width;
-            childBox.y1 = box.y1;
-            childBox.y2 = box.y2 - 1;
-            this._spinner.actor.allocate(childBox, flags);
-        }
+        this._hbox.allocate(childBox, flags);
     },
 
     _onAppStateChanged: function(appSys, app) {
