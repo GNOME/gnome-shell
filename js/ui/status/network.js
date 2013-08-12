@@ -604,6 +604,10 @@ const NMWirelessDialog = new Lang.Class({
         this._connectButton.can_focus = connectSensitive;
     },
 
+    _updateVisibility: function() {
+        this._noNetworksLabel.visible = (this._networks.length == 0);
+    },
+
     _buildLayout: function() {
         let headline = new St.BoxLayout({ style_class: 'nm-dialog-header-hbox' });
 
@@ -624,12 +628,24 @@ const NMWirelessDialog = new Lang.Class({
         this.contentLayout.style_class = 'nm-dialog-content';
         this.contentLayout.add(headline);
 
+        this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+
         this._itemBox = new St.BoxLayout({ vertical: true });
         this._scrollView = new St.ScrollView({ style_class: 'nm-dialog-scroll-view' });
+        this._scrollView.set_x_expand(true);
+        this._scrollView.set_y_expand(true);
         this._scrollView.set_policy(Gtk.PolicyType.NEVER,
                                     Gtk.PolicyType.AUTOMATIC);
         this._scrollView.add_actor(this._itemBox);
-        this.contentLayout.add(this._scrollView);
+        this._stack.add_child(this._scrollView);
+
+        this._noNetworksLabel = new St.Label({ style_class: 'no-networks-label',
+                                               x_align: Clutter.ActorAlign.CENTER,
+                                               y_align: Clutter.ActorAlign.CENTER,
+                                               text: _("No Networks") });
+        this._stack.add_child(this._noNetworksLabel);
+
+        this.contentLayout.add(this._stack, { expand: true });
 
         this._disconnectButton = this.addButton({ action: Lang.bind(this, this.close),
                                                   label: _("Cancel"),
@@ -824,6 +840,8 @@ const NMWirelessDialog = new Lang.Class({
             this._createNetworkItem(network);
             this._itemBox.insert_child_at_index(network.item.actor, newPos);
         }
+
+        this._updateVisibility();
     },
 
     _accessPointRemoved: function(device, accessPoint) {
@@ -844,6 +862,8 @@ const NMWirelessDialog = new Lang.Class({
             network.item.updateBestAP(network.accessPoints[0]);
             this._resortItems();
         }
+
+        this._updateVisibility();
     },
 
     _resortItems: function() {

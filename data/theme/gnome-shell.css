@@ -272,7 +272,9 @@ StScrollBar StButton#vhandle:active {
 /* Network */
 
 .nm-dialog {
-    max-height: 400px;
+    max-height: 500px;
+    min-height: 450px;
+    min-width: 470px;
 }
 
 .nm-dialog-content {
@@ -1369,9 +1371,8 @@ StScrollBar StButton#vhandle:active {
     height: 72px;
 }
 
-.no-messages-label {
-    font-family: cantarell, sans-serif;
-    font-size: 11pt;
+.no-messages-label,
+.no-networks-label {
     color: #999999;
 }
 
