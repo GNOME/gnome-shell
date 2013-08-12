@@ -356,4 +356,6 @@ void                    meta_wayland_compositor_repick          (MetaWaylandComp
 void                    meta_wayland_compositor_set_input_focus (MetaWaylandCompositor *compositor,
                                                                  MetaWindow            *window);
 
+void                    meta_wayland_surface_free               (MetaWaylandSurface    *surface);
+
 #endif /* META_WAYLAND_PRIVATE_H */

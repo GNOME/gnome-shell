@@ -60,6 +60,7 @@ lose_pointer_focus (struct wl_listener *listener, void *data)
     wl_container_of (listener, pointer, focus_listener);
 
   pointer->focus_resource = NULL;
+  pointer->focus = NULL;
 }
 
 static void
@@ -138,6 +139,9 @@ meta_wayland_pointer_release (MetaWaylandPointer *pointer)
   /* XXX: What about pointer->resource_list? */
   if (pointer->focus_resource)
     wl_list_remove (&pointer->focus_listener.link);
+
+  pointer->focus = NULL;
+  pointer->focus_resource = NULL;
 }
 
 static struct wl_resource *
@@ -148,9 +152,7 @@ find_resource_for_surface (struct wl_list *list, MetaWaylandSurface *surface)
   if (!surface)
     return NULL;
 
-  if (!surface->resource)
-    return NULL;
-
+  g_assert (surface->resource);
   client = wl_resource_get_client (surface->resource);
 
   return wl_resource_find_for_client (list, client);

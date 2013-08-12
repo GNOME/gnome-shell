@@ -1320,6 +1320,11 @@ meta_window_actor_destroy (MetaWindowActor *self)
 
   priv = self->priv;
 
+#ifdef HAVE_WAYLAND
+  if (meta_is_wayland_compositor ())
+    meta_shaped_texture_set_wayland_surface (META_SHAPED_TEXTURE (priv->actor), NULL);
+#endif
+
   window = priv->window;
   window_type = meta_window_get_window_type (window);
   meta_window_set_compositor_private (window, NULL);
@@ -2466,7 +2471,7 @@ meta_window_actor_set_wayland_surface (MetaWindowActor *self,
 
   meta_shaped_texture_set_wayland_surface (META_SHAPED_TEXTURE (priv->actor),
                                            surface);
-  if (surface->buffer_ref.buffer)
+  if (surface && surface->buffer_ref.buffer)
     maybe_emit_size_changed (self, surface->buffer_ref.buffer);
 }
 

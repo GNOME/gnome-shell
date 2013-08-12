@@ -1902,9 +1902,14 @@ update_focus_window (MetaDisplay *display,
                      Window       xwindow,
                      gulong       serial)
 {
+#ifdef HAVE_WAYLAND
+  MetaWaylandCompositor *compositor;
+#endif
+
   display->focus_serial = serial;
 
-  if (display->focus_xwindow == xwindow)
+  if (display->focus_xwindow == xwindow &&
+      display->focus_window == window)
     return;
 
   if (display->focus_window)
@@ -1937,6 +1942,20 @@ update_focus_window (MetaDisplay *display,
     }
   else
     meta_topic (META_DEBUG_FOCUS, "* Focus --> NULL with serial %lu\n", serial);
+
+#ifdef HAVE_WAYLAND
+  if (meta_is_wayland_compositor ())
+    {
+      compositor = meta_wayland_compositor_get_default ();
+
+      if (meta_display_xwindow_is_a_no_focus_window (display, xwindow))
+        meta_wayland_compositor_set_input_focus (compositor, NULL);
+      else if (window && window->surface)
+        meta_wayland_compositor_set_input_focus (compositor, window);
+      else
+        meta_topic (META_DEBUG_FOCUS, "Focus change has no effect, because there is no matching wayland surface");
+     }
+#endif
 
   g_object_notify (G_OBJECT (display), "focus-window");
   meta_display_update_active_window_hint (display);
@@ -1974,16 +1993,14 @@ timestamp_too_old (MetaDisplay *display,
 static void
 request_xserver_input_focus_change (MetaDisplay *display,
                                     MetaScreen  *screen,
+                                    MetaWindow  *meta_window,
                                     Window       xwindow,
                                     guint32      timestamp)
 {
-  MetaWindow *meta_window;
   gulong serial;
 
   if (timestamp_too_old (display, &timestamp))
     return;
-
-  meta_window = meta_display_lookup_x_window (display, xwindow);
 
   meta_error_trap_push (display);
 
@@ -2651,15 +2668,6 @@ meta_display_handle_event (MetaDisplay *display,
             }
           break;
         case XI_FocusIn:
-#ifdef HAVE_WAYLAND
-          if (meta_is_wayland_compositor ())
-            {
-              MetaWaylandCompositor *compositor =
-                meta_wayland_compositor_get_default ();
-              meta_wayland_compositor_set_input_focus (compositor, window);
-            }
-#endif
-          /* fall through */
         case XI_FocusOut:
           /* libXi does not properly copy the serial to the XIEnterEvent, so pull it
            * from the parent XAnyEvent.
@@ -5884,6 +5892,7 @@ meta_display_set_input_focus_window (MetaDisplay *display,
 {
   request_xserver_input_focus_change (display,
                                       window->screen,
+                                      window,
                                       focus_frame ? window->frame->xwindow : window->xwindow,
                                       timestamp);
 }
@@ -5931,6 +5940,7 @@ meta_display_set_input_focus_xwindow (MetaDisplay *display,
 {
   request_xserver_input_focus_change (display,
                                       screen,
+                                      NULL,
                                       window,
                                       timestamp);
 }
@@ -5942,6 +5952,7 @@ meta_display_focus_the_no_focus_window (MetaDisplay *display,
 {
   request_xserver_input_focus_change (display,
                                       screen,
+                                      NULL,
                                       screen->no_focus_window,
                                       timestamp);
 }

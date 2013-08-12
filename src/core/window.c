@@ -62,6 +62,10 @@
 
 #include <X11/extensions/Xcomposite.h>
 
+#ifdef HAVE_WAYLAND
+#include "meta-wayland-private.h"
+#endif
+
 /* Windows that unmaximize to a size bigger than that fraction of the workarea
  * will be scaled down to that size (while maintaining aspect ratio).
  * Windows that cover an area greater then this size are automaximized on map.
@@ -2102,6 +2106,11 @@ meta_window_unmanage (MetaWindow  *window,
 
       meta_error_trap_pop (window->display);
     }
+
+#ifdef HAVE_WAYLAND
+  if (window->surface)
+    meta_wayland_surface_free (window->surface);
+#endif
 
   meta_prefs_remove_listener (prefs_changed_callback, window);
 

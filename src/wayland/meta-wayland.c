@@ -247,6 +247,10 @@ meta_wayland_surface_attach (struct wl_client *wayland_client,
     wl_resource_get_user_data (wayland_surface_resource);
   MetaWaylandBuffer *buffer;
 
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
+
   if (wayland_buffer_resource)
     buffer = meta_wayland_buffer_from_resource (wayland_buffer_resource);
   else
@@ -277,6 +281,10 @@ meta_wayland_surface_damage (struct wl_client *client,
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
   cairo_rectangle_int_t rectangle = { x, y, width, height };
 
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
+
   cairo_region_union_rectangle (surface->pending.damage, &rectangle);
 }
 
@@ -297,6 +305,10 @@ meta_wayland_surface_frame (struct wl_client *client,
 {
   MetaWaylandFrameCallback *callback;
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
 
   callback = g_slice_new0 (MetaWaylandFrameCallback);
   callback->compositor = surface->compositor;
@@ -337,7 +349,13 @@ meta_wayland_surface_commit (struct wl_client *client,
                              struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  MetaWaylandCompositor *compositor = surface->compositor;
+  MetaWaylandCompositor *compositor;
+
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
+
+  compositor = surface->compositor;
 
   /* wl_surface.attach */
   if (surface->pending.newly_attached &&
@@ -432,14 +450,6 @@ meta_wayland_compositor_set_input_focus (MetaWaylandCompositor *compositor,
   meta_wayland_data_device_set_keyboard_focus (compositor->seat);
 }
 
-static void
-window_destroyed_cb (void *user_data, GObject *old_object)
-{
-  MetaWaylandSurface *surface = user_data;
-
-  surface->window = NULL;
-}
-
 void
 meta_wayland_compositor_repick (MetaWaylandCompositor *compositor)
 {
@@ -448,7 +458,7 @@ meta_wayland_compositor_repick (MetaWaylandCompositor *compositor)
                             NULL);
 }
 
-static void
+void
 meta_wayland_surface_free (MetaWaylandSurface *surface)
 {
   MetaWaylandCompositor *compositor = surface->compositor;
@@ -457,21 +467,6 @@ meta_wayland_surface_free (MetaWaylandSurface *surface)
   compositor->surfaces = g_list_remove (compositor->surfaces, surface);
 
   meta_wayland_buffer_reference (&surface->buffer_ref, NULL);
-
-  if (surface->window)
-    g_object_weak_unref (G_OBJECT (surface->window),
-                         window_destroyed_cb,
-                         surface);
-
-  /* NB: If the surface corresponds to an X window then we will be
-   * sure to free the MetaWindow according to some X event. */
-  if (surface->window &&
-      surface->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
-    {
-      MetaDisplay *display = meta_get_display ();
-      guint32 timestamp = meta_display_get_current_time_roundtrip (display);
-      meta_window_unmanage (surface->window, timestamp);
-    }
 
   if (surface->pending.buffer)
     wl_list_remove (&surface->pending.buffer_destroy_listener.link);
@@ -482,19 +477,51 @@ meta_wayland_surface_free (MetaWaylandSurface *surface)
                          &surface->pending.frame_callback_list, link)
     wl_resource_destroy (cb->resource);
 
-  g_slice_free (MetaWaylandSurface, surface);
-
   meta_wayland_compositor_repick (compositor);
+
+  /* Check that repick didn't pick the freed surface */
+  g_assert (surface != compositor->seat->pointer.focus);
+  g_assert (surface != compositor->seat->keyboard.focus);
 
  if (compositor->implicit_grab_surface == surface)
    compositor->implicit_grab_surface = compositor->seat->pointer.current;
+
+  if (surface->resource)
+    wl_resource_set_user_data (surface->resource, NULL);
+  g_slice_free (MetaWaylandSurface, surface);
 }
 
 static void
 meta_wayland_surface_resource_destroy_cb (struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  meta_wayland_surface_free (surface);
+
+  /* There are four cases here:
+     - An X11 unmanaged window -> surface is NULL, nothing to do
+     - An X11 unmanaged window, but we got the wayland event first ->
+       just clear the resource pointer
+     - A wayland surface without window (destroyed before set_toplevel) ->
+       need to free the surface itself
+     - A wayland window -> need to unmanage
+  */
+
+  if (surface)
+    {
+      surface->resource = NULL;
+
+      /* NB: If the surface corresponds to an X window then we will be
+       * sure to free the MetaWindow according to some X event. */
+      if (surface->window &&
+	  surface->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+	{
+	  MetaDisplay *display = meta_get_display ();
+	  guint32 timestamp = meta_display_get_current_time_roundtrip (display);
+
+	  meta_window_unmanage (surface->window, timestamp);
+	}
+      else
+	meta_wayland_surface_free (surface);
+    }
 }
 
 static void
@@ -929,13 +956,6 @@ ensure_surface_window (MetaWaylandSurface *surface)
       surface->window =
         meta_window_new_for_wayland (display, width, height, surface);
 
-      /* If the MetaWindow becomes unmanaged (surface->window will be
-       * freed in this case) we need to make sure to clear our
-       * ->window pointers. */
-      g_object_weak_ref (G_OBJECT (surface->window),
-                         window_destroyed_cb,
-                         surface);
-
       meta_window_calc_showing (surface->window);
     }
 }
@@ -1149,13 +1169,6 @@ xserver_set_window_id (struct wl_client *client,
       surface->window = window;
       window->surface = surface;
 
-      /* If the MetaWindow becomes unmanaged (surface->window will be
-       * freed in this case) we need to make sure to clear our
-       * ->window pointers in this case. */
-      g_object_weak_ref (G_OBJECT (surface->window),
-                         window_destroyed_cb,
-                         surface);
-
       /* If the window is already meant to have focus then the
        * original attempt to call this in response to the FocusIn
        * event will have been lost because there was no surface
@@ -1342,7 +1355,7 @@ event_cb (ClutterActor *stage,
   meta_wayland_seat_handle_event (compositor->seat, event);
 
   /* HACK: for now, the surfaces from Wayland clients aren't
-     integrated into Mutter's stacking and Mutter won't give them
+     integrated into Mutter's event handling and Mutter won't give them
      focus on mouse clicks. As a hack to work around this we can just
      give them input focus on mouse clicks so we can at least test the
      keyboard support */
@@ -1350,12 +1363,13 @@ event_cb (ClutterActor *stage,
     {
       surface = pointer->current;
 
-      /* Only focus surfaces that wouldn't be handled by the
-         corresponding X events */
-      if (surface && surface->xid == 0)
+      if (surface && surface->window &&
+	  surface->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
         {
-          meta_wayland_keyboard_set_focus (&seat->keyboard, surface);
-          meta_wayland_data_device_set_keyboard_focus (seat);
+	  MetaDisplay *display = meta_get_display ();
+	  guint32 timestamp = meta_display_get_current_time_roundtrip (display);
+
+	  meta_window_focus (surface->window, timestamp);
         }
     }
 
