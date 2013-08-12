@@ -518,6 +518,7 @@ const ScreenShield = new Lang.Class({
 
         this._lockDialogGroup = new St.Widget({ x_expand: true,
                                                 y_expand: true,
+                                                reactive: true,
                                                 opacity: 0,
                                                 pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
                                                 name: 'lockDialogGroup' });
