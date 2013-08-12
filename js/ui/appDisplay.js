@@ -43,6 +43,9 @@ const INDICATORS_ANIMATION_TIME = 0.5;
 // at once without delay
 const INDICATORS_ANIMATION_DELAY_PERCENTAGE = 50;
 
+// Fraction of page height the finger or mouse must reach
+// to change page
+const PAGE_SWITCH_TRESHOLD = 0.2;
 const PAGE_SWITCH_TIME = 0.3;
 
 // Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
@@ -298,6 +301,13 @@ const AllView = new Lang.Class({
 
         this._pagesBin.connect('scroll-event', Lang.bind(this, this._onScroll));
 
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', Lang.bind(this, this._onPan));
+        panAction.connect('gesture-cancel', Lang.bind(this, this._onPanEnd));
+        panAction.connect('gesture-end', Lang.bind(this, this._onPanEnd));
+        this._panAction = panAction;
+        this._pagesBin.add_action(panAction);
+        this._panning = false;
         this._clickAction = new Clutter.ClickAction();
         this._clickAction.connect('clicked', Lang.bind(this, function() {
             if (!this._currentPopup)
@@ -315,12 +325,45 @@ const AllView = new Lang.Class({
     },
 
     goToPage: function(pageNumber) {
-        this._currentPage = pageNumber;
-        Tweener.addTween(this._verticalAdjustment,
-                         { value: this._grid.getPageY(this._currentPage),
-                           time: PAGE_SWITCH_TIME,
-                           transition: 'easeOutQuad' });
-        this._pageIndicators.setCurrentPage(pageNumber);
+        let velocity;
+        if (!this._panning)
+            velocity = 0;
+        else
+            velocity = Math.abs(this._panAction.get_velocity(0)[2]);
+        // Tween the change between pages.
+        // If velocity is not specified (i.e. scrolling with mouse wheel),
+        // use the same speed regardless of original position
+        // if velocity is specified, it's in pixels per milliseconds
+        let diffToPage = this._diffToPage(pageNumber);
+        let childBox = this._pagesBin.get_allocation_box();
+        let totalHeight = childBox.y2 - childBox.y1;
+        let time;
+        // Only take the velocity into account on page changes, otherwise
+        // return smoothly to the current page using the default velocity
+        if (this._currentPage != pageNumber) {
+            let minVelocity = totalHeight / (PAGE_SWITCH_TIME * 1000);
+            velocity = Math.max(minVelocity, velocity);
+            time = (diffToPage / velocity) / 1000;
+        } else {
+            time = PAGE_SWITCH_TIME * diffToPage / totalHeight;
+        }
+        // When changing more than one page, make sure to not take
+        // longer than PAGE_SWITCH_TIME
+        time = Math.min(time, PAGE_SWITCH_TIME);
+
+        if (pageNumber < this._grid.nPages() && pageNumber >= 0) {
+            this._currentPage = pageNumber;
+            Tweener.addTween(this._verticalAdjustment,
+                             { value: this._grid.getPageY(this._currentPage),
+                               time: time,
+                               transition: 'easeOutQuad' });
+            this._pageIndicators.setCurrentPage(pageNumber);
+        }
+    },
+
+    _diffToPage: function (pageNumber) {
+        let currentScrollPosition = this._verticalAdjustment.value;
+        return Math.abs(currentScrollPosition - this._grid.getPageY(pageNumber));
     },
 
     _onScroll: function(actor, event) {
@@ -334,6 +377,28 @@ const AllView = new Lang.Class({
                     this.goToPage(this._currentPage + 1);
             }
         }
+    },
+
+    _onPan: function(action) {
+        this._panning = true;
+        this._clickAction.release();
+        let [dist, dx, dy] = action.get_motion_delta(0);
+        let adjustment = this._verticalAdjustment;
+        adjustment.value -= (dy / this._pagesBin.height) * adjustment.page_size;
+        return false;
+    },
+
+    _onPanEnd: function(action) {
+        let diffCurrentPage = this._diffToPage(this._currentPage);
+        if (diffCurrentPage > this._pagesBin.height * PAGE_SWITCH_TRESHOLD) {
+            if (action.get_velocity(0)[2] > 0 && this._currentPage > 0)
+                this.goToPage(this._currentPage - 1);
+            else if (this._currentPage < this._grid.nPages() - 1)
+                this.goToPage(this._currentPage + 1);
+        } else {
+            this.goToPage(this._currentPage);
+        }
+        this._panning = false;
     },
 
     _getItemId: function(item) {
