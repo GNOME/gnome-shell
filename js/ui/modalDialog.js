@@ -95,7 +95,8 @@ const ModalDialog = new Lang.Class({
 
         this.contentLayout = new St.BoxLayout({ vertical: true });
         this.dialogLayout.add(this.contentLayout,
-                              { x_fill:  true,
+                              { expand:  true,
+                                x_fill:  true,
                                 y_fill:  true,
                                 x_align: St.Align.MIDDLE,
                                 y_align: St.Align.START });
@@ -103,8 +104,7 @@ const ModalDialog = new Lang.Class({
         this.buttonLayout = new St.BoxLayout({ style_class: 'modal-dialog-button-box',
                                                vertical: false });
         this.dialogLayout.add(this.buttonLayout,
-                              { expand:  true,
-                                x_align: St.Align.MIDDLE,
+                              { x_align: St.Align.MIDDLE,
                                 y_align: St.Align.END });
 
         global.focus_manager.add_group(this.dialogLayout);
