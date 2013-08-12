@@ -100,6 +100,7 @@ const Indicator = new Lang.Class({
     _sessionUpdated: function() {
         this._updateLockScreen();
         this._updatePowerOff();
+        this._updateMultiUser();
         this._settingsAction.visible = Main.sessionMode.allowSettings;
     },
 
