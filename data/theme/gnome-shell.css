@@ -634,6 +634,10 @@ StScrollBar StButton#vhandle:active {
     width: 320px;
 }
 
+.aggregate-menu .popup-menu-icon {
+    padding: 0 4px;
+}
+
 .system-switch-user-submenu-icon {
     icon-size: 24px;
     border: 1px solid #8b8b8b;
