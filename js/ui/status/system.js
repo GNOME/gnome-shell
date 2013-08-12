@@ -113,11 +113,21 @@ const Indicator = new Lang.Class({
         this._sessionUpdated();
     },
 
+    _updateActionsVisibility: function() {
+        let visible = (this._settingsAction.visible ||
+                       this._orientationLockAction.visible ||
+                       this._lockScreenAction.visible ||
+                       this._powerOffAction.visible);
+
+        this._actionsItem.actor.visible = visible;
+    },
+
     _sessionUpdated: function() {
         this._updateLockScreen();
         this._updatePowerOff();
         this._updateMultiUser();
         this._settingsAction.visible = Main.sessionMode.allowSettings;
+        this._updateActionsVisibility();
     },
 
     _updateMultiUser: function() {
@@ -183,12 +193,15 @@ const Indicator = new Lang.Class({
         let locked = this._orientationSettings.get_boolean('orientation-lock');
         let icon = this._orientationLockAction.child;
         icon.icon_name = locked ? 'rotation-locked-symbolic' : 'rotation-allowed-symbolic';
+
+        this._updateActionsVisibility();
     },
 
     _updateLockScreen: function() {
         let showLock = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
         let allowLockScreen = !this._lockdownSettings.get_boolean(DISABLE_LOCK_SCREEN_KEY);
         this._lockScreenAction.visible = showLock && allowLockScreen && LoginManager.canLock();
+        this._updateActionsVisibility();
     },
 
     _updateHaveShutdown: function() {
@@ -203,6 +216,7 @@ const Indicator = new Lang.Class({
 
     _updatePowerOff: function() {
         this._powerOffAction.visible = this._haveShutdown && !Main.sessionMode.isLocked;
+        this._updateActionsVisibility();
     },
 
     _createActionButton: function(iconName, accessibleName) {
@@ -269,6 +283,7 @@ const Indicator = new Lang.Class({
                                                  can_focus: false });
         item.addActor(hbox, { expand: true });
 
+        this._actionsItem = item;
         this.menu.addMenuItem(item);
     },
 
