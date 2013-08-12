@@ -37,6 +37,12 @@ const INACTIVE_GRID_OPACITY = 77;
 const INACTIVE_GRID_OPACITY_ANIMATION_TIME = 0.15;
 const FOLDER_SUBICON_FRACTION = .4;
 
+const INDICATORS_ANIMATION_TIME = 0.5;
+// 100% means indicators wait for be animated until the previous one
+// is animated completely. 0% means all animators are animated
+// at once without delay
+const INDICATORS_ANIMATION_DELAY_PERCENTAGE = 50;
+
 const PAGE_SWITCH_TIME = 0.3;
 
 // Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
@@ -169,6 +175,90 @@ const PagesBin = new Lang.Class({
     }
 });
 
+const PageIndicators = new Lang.Class({
+    Name:'PageIndicators',
+
+    _init: function() {
+        this.actor = new St.BoxLayout({ style_class: 'page-indicators',
+                                        vertical: true,
+                                        x_expand: true, y_expand: true,
+                                        x_align: Clutter.ActorAlign.END,
+                                        y_align: Clutter.ActorAlign.CENTER });
+        this._nPages = 0;
+        this._currentPage = undefined;
+
+        this.actor.connect('notify::mapped',
+                           Lang.bind(this, this._animateIndicators));
+    },
+
+    setNPages: function(nPages) {
+        if (this._nPages == nPages)
+            return;
+
+        let diff = nPages - this._nPages;
+        if (diff > 0) {
+            for (let i = 0; i < diff; i++) {
+                let pageIndex = this._nPages + i;
+                let indicator = new St.Button({ style_class: 'page-indicator',
+                                                button_mask: St.ButtonMask.ONE |
+                                                             St.ButtonMask.TWO |
+                                                             St.ButtonMask.THREE,
+                                                toggle_mode: true,
+                                                checked: pageIndex == this._currentPage });
+                indicator.connect('clicked', Lang.bind(this,
+                    function() {
+                        this.emit('page-activated', pageIndex);
+                    }));
+                this.actor.add_actor(indicator);
+            }
+        } else {
+            let children = this.actor.get_children().splice(diff);
+            for (let i = 0; i < children.length; i++)
+                children[i].destroy();
+        }
+        this._nPages = nPages;
+    },
+
+    setCurrentPage: function(currentPage) {
+        this._currentPage = currentPage;
+
+        let children = this.actor.get_children();
+        for (let i = 0; i < children.length; i++)
+            children[i].set_checked(i == this._currentPage);
+    },
+
+    _animateIndicators: function() {
+        if (!this.actor.mapped)
+            return;
+
+        let children = this.actor.get_children();
+        if (children.length == 0)
+            return;
+
+        let timePerChild = INDICATORS_ANIMATION_TIME / this._nPages;
+        let delay = INDICATORS_ANIMATION_DELAY_PERCENTAGE / 100 * timePerChild;
+
+        let [stageX, ] = children[0].get_transformed_position();
+        let offset;
+        let monitor = Main.layoutManager.primaryMonitor;
+        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
+            offset = monitor.x - stageX - children[0].width;
+        else
+            offset = monitor.x + monitor.width - stageX;
+
+        for (let i = 0; i < this._nPages; i++) {
+            children[i].translation_x = offset;
+            Tweener.addTween(children[i],
+                             { translation_x: 0,
+                               time: timePerChild,
+                               delay: delay * i,
+                               transition: 'easeOutQuad'
+                             });
+        }
+    }
+});
+Signals.addSignalMethods(PageIndicators.prototype);
+
 const AllView = new Lang.Class({
     Name: 'AllView',
     Extends: BaseAppView,
@@ -185,6 +275,13 @@ const AllView = new Lang.Class({
         this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                      x_expand:true, y_expand:true });
         this.actor.add_actor(this._pagesBin);
+
+        this._pageIndicators = new PageIndicators();
+        this._pageIndicators.connect('page-activated', Lang.bind(this,
+            function(indicators, pageIndex) {
+                this.goToPage(pageIndex);
+            }));
+        this.actor.add_actor(this._pageIndicators.actor);
 
         this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         let box = new St.BoxLayout({ vertical: true });
@@ -223,6 +320,7 @@ const AllView = new Lang.Class({
                          { value: this._grid.getPageY(this._currentPage),
                            time: PAGE_SWITCH_TIME,
                            transition: 'easeOutQuad' });
+        this._pageIndicators.setCurrentPage(pageNumber);
     },
 
     _onScroll: function(actor, event) {
@@ -331,8 +429,14 @@ const AllView = new Lang.Class({
         this._grid.computePages(availWidth, availHeight);
         // Make sure the view doesn't have a bad adjustment value after screen size changes
         // and therefore the pages computation.
-        if (this._availWidth != availWidth || this._availHeight != availHeight || oldNPages != this._grid.nPages())
+        if (this._availWidth != availWidth || this._availHeight != availHeight || oldNPages != this._grid.nPages()) {
             this._verticalAdjustment.value = 0;
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
+                function() {
+                    this._pageIndicators.setNPages(this._grid.nPages());
+                    this._pageIndicators.setCurrentPage(0);
+                }));
+        }
 
         this._availWidth = availWidth;
         this._availHeight = availHeight;

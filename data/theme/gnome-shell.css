@@ -941,6 +941,22 @@ StScrollBar StButton#vhandle:active {
     padding: 0px 88px 10px 88px;
 }
 
+.page-indicator {
+    width: 18px;
+    height: 18px;
+    background-image: url(page-indicator-inactive.svg);
+}
+
+.page-indicator:hover,
+.page-indicator:checked{
+    background-image: url(page-indicator-active.svg);
+}
+
+.page-indicators {
+    spacing: 30px;
+    padding: 0px 30px;
+}
+
 .app-folder-icon {
     padding: 5px;
 }
