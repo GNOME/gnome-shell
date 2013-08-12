@@ -228,13 +228,6 @@ if test x$enable_wayland = "xyes"; then
   fi
   AC_MSG_RESULT(yes)
 
-  CLUTTER_WAYLAND_VERSION=1.9.3
-  AC_MSG_CHECKING([Clutter Wayland Compositor >= $CLUTTER_WAYLAND_VERSION])
-  if ! $PKG_CONFIG --atleast-version $CLUTTER_WAYLAND_VERSION clutter-wayland-compositor-1.0; then
-    AC_MSG_ERROR([wayland support enabled but no suitable clutter-wayland-compositor package found])
-  fi
-  AC_MSG_RESULT(yes)
-
   AC_PATH_PROG([WAYLAND_SCANNER],[wayland-scanner],[no])
   AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
         AC_MSG_ERROR([Could not find wayland-scanner in your PATH, required for parsing wayland extension protocols]))
