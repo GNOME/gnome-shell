@@ -368,9 +368,6 @@ signal_handler (int signum)
         case SIGTERM:
           write (signal_pipe_fds[1], "T", 1);
           break;
-        case SIGCHLD:
-          write (signal_pipe_fds[1], "C", 1);
-          break;
         default:
           break;
         }
@@ -407,11 +404,6 @@ on_signal (GIOChannel *source,
     case 'T': /* SIGTERM */
       meta_quit (META_EXIT_SUCCESS);
       break;
-#ifdef HAVE_WAYLAND
-    case 'C': /* SIGCHLD */
-      meta_wayland_handle_sig_child ();
-      break;
-#endif
     default:
       g_warning ("Spurious character '%c' read from signal pipe", signal);
     }
@@ -459,13 +451,6 @@ meta_init (void)
   if (sigaction (SIGTERM, &act, NULL) < 0)
     g_printerr ("Failed to register SIGTERM handler: %s\n",
 		g_strerror (errno));
-
-  if (meta_is_wayland_compositor ())
-    {
-      if (sigaction (SIGCHLD, &act, NULL) < 0)
-        g_printerr ("Failed to register SIGCHLD handler: %s\n",
-                    g_strerror (errno));
-    }
 
   if (g_getenv ("MUTTER_VERBOSE"))
     meta_set_verbose (TRUE);

@@ -349,8 +349,6 @@ void                    meta_wayland_finalize                   (void);
  * API after meta_wayland_init() has been called. */
 MetaWaylandCompositor  *meta_wayland_compositor_get_default     (void);
 
-void                    meta_wayland_handle_sig_child           (void);
-
 void                    meta_wayland_compositor_repick          (MetaWaylandCompositor *compositor);
 
 void                    meta_wayland_compositor_set_input_focus (MetaWaylandCompositor *compositor,

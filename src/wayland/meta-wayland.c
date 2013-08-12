@@ -1576,27 +1576,3 @@ meta_wayland_finalize (void)
 {
   meta_xwayland_stop (meta_wayland_compositor_get_default ());
 }
-
-void
-meta_wayland_handle_sig_child (void)
-{
-  int status;
-  pid_t pid = waitpid (-1, &status, WNOHANG);
-  MetaWaylandCompositor *compositor = &_meta_wayland_compositor;
-
-  /* The simplest measure to avoid infinitely re-spawning a crashing
-   * X server */
-  if (pid == compositor->xwayland_pid)
-    {
-      if (!WIFEXITED (status))
-        g_critical ("X Wayland crashed; aborting");
-      else
-        {
-          /* For now we simply abort if we see the server exit.
-           *
-           * In the future X will only be loaded lazily for legacy X support
-           * but for now it's a hard requirement. */
-          g_critical ("Spurious exit of X Wayland server");
-        }
-    }
-}
