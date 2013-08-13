@@ -69,7 +69,6 @@ void     meta_window_ungrab_all_keys        (MetaWindow  *window,
 gboolean meta_display_process_key_event     (MetaDisplay   *display,
                                              MetaWindow    *window,
                                              XIDeviceEvent *event);
-void     meta_set_keybindings_disabled      (gboolean     setting);
 void     meta_display_process_mapping_event (MetaDisplay *display,
                                              XEvent      *event);
 

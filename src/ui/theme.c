@@ -5063,16 +5063,14 @@ meta_theme_get_current (void)
 }
 
 void
-meta_theme_set_current (const char *name,
-                        gboolean    force_reload)
+meta_theme_set_current (const char *name)
 {
   MetaTheme *new_theme;
   GError *err;
 
   meta_topic (META_DEBUG_THEMES, "Setting current theme to \"%s\"\n", name);
   
-  if (!force_reload &&
-      meta_current_theme &&
+  if (meta_current_theme &&
       strcmp (name, meta_current_theme->name) == 0)
     return;
   

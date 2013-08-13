@@ -6002,7 +6002,18 @@ meta_window_get_outer_rect (const MetaWindow *window,
       rect->height -= borders.invisible.top  + borders.invisible.bottom;
     }
   else
-    *rect = window->rect;
+    {
+      *rect = window->rect;
+
+      if (window->has_custom_frame_extents)
+        {
+          GtkBorder *extents = &window->custom_frame_extents;
+          rect->x += extents->left;
+          rect->y += extents->top;
+          rect->width -= extents->left + extents->right;
+          rect->height -= extents->top + extents->bottom;
+        }
+    }
 }
 
 const char*

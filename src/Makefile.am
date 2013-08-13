@@ -3,7 +3,7 @@
 
 lib_LTLIBRARIES = libmutter.la
 
-SUBDIRS=wm-tester tools compositor/plugins
+SUBDIRS=compositor/plugins
 
 INCLUDES=								\
 	-DCLUTTER_ENABLE_EXPERIMENTAL_API				\
@@ -152,7 +152,6 @@ libmutter_la_SOURCES =				\
 	meta/common.h				\
 	core/core.h				\
 	ui/ui.h					\
-	inlinepixbufs.h				\
 	ui/frames.c				\
 	ui/frames.h				\
 	ui/menu.c				\
@@ -170,8 +169,6 @@ libmutter_la_SOURCES =				\
 	meta/theme.h				\
 	ui/theme-private.h			\
 	ui/ui.c					\
-	meta/preview-widget.h			\
-	ui/preview-widget.c			\
 	$(mutter_built_sources)
 
 if HAVE_WAYLAND
@@ -227,7 +224,6 @@ libmutterinclude_base_headers =		\
 # Excluded from scanning for introspection but installed
 # atomnames.h: macros cause problems for scanning process
 libmutterinclude_extra_headers =		\
-	meta/preview-widget.h			\
 	meta/atomnames.h
 
 libmutterincludedir = $(includedir)/mutter/meta
@@ -236,10 +232,7 @@ libmutterinclude_HEADERS =			\
 	$(libmutterinclude_base_headers)	\
 	$(libmutterinclude_extra_headers)
 
-mutter_theme_viewer_SOURCES=  \
-	ui/theme-viewer.c
-
-bin_PROGRAMS=mutter mutter-theme-viewer
+bin_PROGRAMS=mutter
 
 mutter_SOURCES = core/mutter.c
 mutter_LDADD = $(MUTTER_LIBS) libmutter.la
@@ -277,8 +270,6 @@ Meta-$(api_version).gir: libmutter.la
 
 endif
 
-mutter_theme_viewer_LDADD= $(MUTTER_LIBS) libmutter.la
-
 testboxes_SOURCES = core/testboxes.c
 testgradient_SOURCES = ui/testgradient.c
 testasyncgetprop_SOURCES = core/testasyncgetprop.c
@@ -315,14 +306,7 @@ gsettings_SCHEMAS = org.gnome.mutter.gschema.xml
 convertdir = $(datadir)/GConf/gsettings
 convert_DATA = mutter-schemas.convert
 
-IMAGES=stock_maximize.png stock_minimize.png stock_delete.png
-VARIABLES=stock_maximize_data $(srcdir)/stock_maximize.png \
-          stock_minimize_data $(srcdir)/stock_minimize.png \
-          stock_delete_data $(srcdir)/stock_delete.png
-
-BUILT_SOURCES = inlinepixbufs.h
 CLEANFILES =					\
-	inlinepixbufs.h				\
 	mutter.desktop				\
 	mutter-wm.desktop			\
 	org.gnome.mutter.gschema.xml		\
@@ -330,9 +314,6 @@ CLEANFILES =					\
 	$(mutter_built_sources)			\
 	$(typelib_DATA)				\
 	$(gir_DATA)
-
-inlinepixbufs.h: $(IMAGES)
-	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 
@@ -351,7 +332,7 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	mutter-enum-types.h.in \
 	mutter-enum-types.c.in
 
-BUILT_SOURCES += $(mutter_built_sources)
+BUILT_SOURCES = $(mutter_built_sources)
 MUTTER_STAMP_FILES = stamp-mutter-enum-types.h
 CLEANFILES += $(MUTTER_STAMP_FILES)
 
