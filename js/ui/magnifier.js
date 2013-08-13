@@ -7,6 +7,7 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -53,9 +54,9 @@ const Magnifier = new Lang.Class({
         this._zoomRegions = [];
 
         // Create small clutter tree for the magnified mouse.
-        let xfixesCursor = Shell.XFixesCursor.get_for_stage(global.stage);
+        let cursorTracker = Meta.CursorTracker.get_for_screen(global.screen);
         this._mouseSprite = new Clutter.Texture();
-        xfixesCursor.update_texture_image(this._mouseSprite);
+        Shell.util_cursor_tracker_to_clutter(cursorTracker, this._mouseSprite);
         this._cursorRoot = new Clutter.Actor();
         this._cursorRoot.add_actor(this._mouseSprite);
 
@@ -70,8 +71,8 @@ const Magnifier = new Lang.Class({
         let showAtLaunch = this._settingsInit(aZoomRegion);
         aZoomRegion.scrollContentsTo(this.xMouse, this.yMouse);
 
-        xfixesCursor.connect('cursor-change', Lang.bind(this, this._updateMouseSprite));
-        this._xfixesCursor = xfixesCursor;
+        cursorTracker.connect('cursor-changed', Lang.bind(this, this._updateMouseSprite));
+        this._cursorTracker = cursorTracker;
 
         // Export to dbus.
         magDBusService = new MagnifierDBus.ShellMagnifier();
@@ -83,7 +84,7 @@ const Magnifier = new Lang.Class({
      * Show the system mouse pointer.
      */
     showSystemCursor: function() {
-        this._xfixesCursor.show();
+        global.stage.show_cursor();
     },
 
     /**
@@ -91,7 +92,7 @@ const Magnifier = new Lang.Class({
      * Hide the system mouse pointer.
      */
     hideSystemCursor: function() {
-        this._xfixesCursor.hide();
+        global.stage.hide_cursor();
     },
 
     /**
@@ -112,7 +113,7 @@ const Magnifier = new Lang.Class({
         // Make sure system mouse pointer is shown when all zoom regions are
         // invisible.
         if (!activate)
-            this._xfixesCursor.show();
+            global.stage.show_cursor();
 
         // Notify interested parties of this change
         this.emit('active-changed', activate);
@@ -422,9 +423,8 @@ const Magnifier = new Lang.Class({
     //// Private methods ////
 
     _updateMouseSprite: function() {
-        this._xfixesCursor.update_texture_image(this._mouseSprite);
-        let xHot = this._xfixesCursor.get_hot_x();
-        let yHot = this._xfixesCursor.get_hot_y();
+        Shell.util_cursor_tracker_to_clutter(this._cursorTracker, this._mouseSprite);
+        let [xHot, yHot] = this._cursorTracker.get_hot();
         this._mouseSprite.set_anchor_point(xHot, yHot);
     },
 

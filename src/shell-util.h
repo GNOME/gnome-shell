@@ -7,6 +7,7 @@
 #include <clutter/clutter.h>
 #include <libsoup/soup.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <meta/meta-cursor-tracker.h>
 
 G_BEGIN_DECLS
 
@@ -45,6 +46,9 @@ GdkPixbuf *shell_util_create_pixbuf_from_data (const guchar      *data,
                                                int                rowstride);
 
 void    shell_util_wake_up_screen             (void);
+
+void    shell_util_cursor_tracker_to_clutter (MetaCursorTracker *tracker,
+                                              ClutterTexture    *texture);
 
 G_END_DECLS
 

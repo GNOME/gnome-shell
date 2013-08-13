@@ -431,3 +431,13 @@ shell_util_wake_up_screen (void)
   first_keycode = !first_keycode;
   gdk_error_trap_pop_ignored ();
 }
+
+void
+shell_util_cursor_tracker_to_clutter (MetaCursorTracker *tracker,
+                                      ClutterTexture    *texture)
+{
+  CoglTexture *sprite;
+
+  sprite = meta_cursor_tracker_get_sprite (tracker);
+  clutter_texture_set_cogl_texture (texture, sprite);
+}
