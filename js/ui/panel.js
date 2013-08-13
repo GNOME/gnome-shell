@@ -189,7 +189,6 @@ const AppMenuButton = new Lang.Class({
 
         this.actor.bind_property("reactive", this.actor, "can-focus", 0);
         this.actor.reactive = false;
-        this._targetIsCurrent = false;
 
         this._container = new Shell.GenericContainer();
         bin.set_child(this._container);
@@ -224,12 +223,8 @@ const AppMenuButton = new Lang.Class({
         this._visible = !Main.overview.visible;
         if (!this._visible)
             this.actor.hide();
-        this._overviewHidingId = Main.overview.connect('hiding', Lang.bind(this, function () {
-            this.show();
-        }));
-        this._overviewShowingId = Main.overview.connect('showing', Lang.bind(this, function () {
-            this.hide();
-        }));
+        this._overviewHidingId = Main.overview.connect('hiding', Lang.bind(this, this._sync));
+        this._overviewShowingId = Main.overview.connect('showing', Lang.bind(this, this._sync));
 
         this._stop = true;
 
@@ -252,14 +247,8 @@ const AppMenuButton = new Lang.Class({
             return;
 
         this._visible = true;
-        this.actor.show();
-
-        if (!this._targetIsCurrent)
-            return;
-
         this.actor.reactive = true;
-
-        Tweener.removeTweens(this.actor);
+        this.actor.show();
         Tweener.addTween(this.actor,
                          { opacity: 255,
                            time: Overview.ANIMATION_TIME,
@@ -272,12 +261,6 @@ const AppMenuButton = new Lang.Class({
 
         this._visible = false;
         this.actor.reactive = false;
-        if (!this._targetIsCurrent) {
-            this.actor.hide();
-            return;
-        }
-
-        Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor,
                          { opacity: 0,
                            time: Overview.ANIMATION_TIME,
@@ -306,6 +289,9 @@ const AppMenuButton = new Lang.Class({
     },
 
     _syncIcon: function() {
+        if (!this._targetApp)
+            return;
+
         let icon = this._targetApp.get_faded_icon(2 * PANEL_ICON_SIZE, this._iconBox.text_direction);
         this._iconBox.set_child(icon);
     },
@@ -332,7 +318,6 @@ const AppMenuButton = new Lang.Class({
             return;
 
         this._stop = true;
-        this.actor.reactive = true;
 
         if (this._spinner == null)
             return;
@@ -352,7 +337,6 @@ const AppMenuButton = new Lang.Class({
 
     startAnimation: function() {
         this._stop = false;
-        this.actor.reactive = false;
 
         if (this._spinner == null)
             return;
@@ -448,98 +432,70 @@ const AppMenuButton = new Lang.Class({
         this._sync();
     },
 
-    _sync: function() {
+    _findTargetApp: function() {
+        let workspace = global.screen.get_active_workspace();
         let tracker = Shell.WindowTracker.get_default();
         let focusedApp = tracker.focus_app;
-        let lastStartedApp = null;
-        let workspace = global.screen.get_active_workspace();
+        if (focusedApp && focusedApp.is_on_workspace(workspace))
+            return focusedApp;
+
         for (let i = 0; i < this._startingApps.length; i++)
             if (this._startingApps[i].is_on_workspace(workspace))
-                lastStartedApp = this._startingApps[i];
+                return this._startingApps[i];
 
-        let targetApp = focusedApp != null ? focusedApp : lastStartedApp;
+        return null;
+    },
 
-        if (targetApp == null) {
-            if (!this._targetIsCurrent)
-                return;
+    _sync: function() {
+        let targetApp = this._findTargetApp();
 
-            this.actor.reactive = false;
-            this._targetIsCurrent = false;
-
-            Tweener.removeTweens(this.actor);
-            Tweener.addTween(this.actor, { opacity: 0,
-                                           time: Overview.ANIMATION_TIME,
-                                           transition: 'easeOutQuad' });
-            return;
-        }
-
-        if (!targetApp.is_on_workspace(workspace))
-            return;
-
-        if (!this._targetIsCurrent) {
-            this.actor.reactive = true;
-            this._targetIsCurrent = true;
-
-            Tweener.removeTweens(this.actor);
-            Tweener.addTween(this.actor, { opacity: 255,
-                                           time: Overview.ANIMATION_TIME,
-                                           transition: 'easeOutQuad' });
-        }
-
-        if (targetApp == this._targetApp) {
-            if (targetApp &&
-                targetApp.get_state() != Shell.AppState.STARTING &&
-                targetApp.get_state() != Shell.AppState.BUSY) {
-                this.stopAnimation();
-                this._maybeSetMenu();
-            } else if (targetApp &&
-                       targetApp.get_state() == Shell.AppState.BUSY) {
-                this.startAnimation();
+        if (this._targetApp != targetApp) {
+            if (this._appMenuNotifyId) {
+                this._targetApp.disconnect(this._appMenuNotifyId);
+                this._appMenuNotifyId = 0;
             }
-            return;
+            if (this._actionGroupNotifyId) {
+                this._targetApp.disconnect(this._actionGroupNotifyId);
+                this._actionGroupNotifyId = 0;
+            }
+
+            this._targetApp = targetApp;
+
+            if (this._targetApp) {
+                this._appMenuNotifyId = this._targetApp.connect('notify::menu', Lang.bind(this, this._sync));
+                this._actionGroupNotifyId = this._targetApp.connect('notify::action-group', Lang.bind(this, this._sync));
+                this._label.setText(this._targetApp.get_name());
+                this.actor.set_accessible_name(this._targetApp.get_name());
+            }
         }
 
-        if (this._spinner)
-            this._spinner.actor.hide();
-        if (this._iconBox.child != null)
-            this._iconBox.child.destroy();
-        this._iconBox.hide();
-        this._arrow.hide();
-        this._label.setText('');
+        let visible = (this._targetApp != null && !Main.overview.visibleTarget);
+        if (visible)
+            this.show();
+        else
+            this.hide();
 
-        if (this._appMenuNotifyId)
-            this._targetApp.disconnect(this._appMenuNotifyId);
-        if (this._actionGroupNotifyId)
-            this._targetApp.disconnect(this._actionGroupNotifyId);
-        if (targetApp) {
-            this._appMenuNotifyId = targetApp.connect('notify::menu', Lang.bind(this, this._sync));
-            this._actionGroupNotifyId = targetApp.connect('notify::action-group', Lang.bind(this, this._sync));
-        } else {
-            this._appMenuNotifyId = 0;
-            this._actionGroupNotifyId = 0;
-        }
-
-        this._targetApp = targetApp;
-        this._label.setText(targetApp.get_name());
-        this.actor.set_accessible_name(targetApp.get_name());
-
-        this._syncIcon();
-        this._arrow.show();
-        this._iconBox.show();
-
-        if (targetApp.get_state() == Shell.AppState.STARTING ||
-            targetApp.get_state() == Shell.AppState.BUSY)
+        let isBusy = (this._targetApp != null &&
+                      (this._targetApp.get_state() == Shell.AppState.STARTING ||
+                       this._targetApp.get_state() == Shell.AppState.BUSY));
+        if (isBusy)
             this.startAnimation();
         else
-            this._maybeSetMenu();
+            this.stopAnimation();
 
+        this.actor.reactive = (visible && !isBusy);
+
+        this._syncIcon();
+        this._maybeSetMenu();
         this.emit('changed');
     },
 
     _maybeSetMenu: function() {
         let menu;
 
-        if (this._targetApp.action_group && this._targetApp.menu) {
+        if (this._targetApp == null) {
+            menu = null;
+        } else if (this._targetApp.action_group && this._targetApp.menu) {
             if (this.menu instanceof RemoteMenu.RemoteMenu &&
                 this.menu.actionGroup == this._targetApp.action_group)
                 return;
@@ -551,7 +507,7 @@ const AppMenuButton = new Lang.Class({
             }));
 
         } else {
-            if (this.menu.isDummyQuitMenu)
+            if (this.menu && this.menu.isDummyQuitMenu)
                 return;
 
             // fallback to older menu
@@ -563,7 +519,8 @@ const AppMenuButton = new Lang.Class({
         }
 
         this.setMenu(menu);
-        this._menuManager.addMenu(menu);
+        if (menu)
+            this._menuManager.addMenu(menu);
     },
 
     destroy: function() {
