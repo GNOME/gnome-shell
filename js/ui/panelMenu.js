@@ -101,6 +101,7 @@ const Button = new Lang.Class({
         this.parent({ reactive: true,
                       can_focus: true,
                       track_hover: true,
+                      accessible_name: nameText ? nameText : "",
                       accessible_role: Atk.Role.MENU });
 
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
@@ -111,30 +112,12 @@ const Button = new Lang.Class({
             this.menu = new PopupMenu.PopupDummyMenu(this.actor);
         else
             this.setMenu(new PopupMenu.PopupMenu(this.actor, menuAlignment, St.Side.TOP, 0));
-
-        this.setName(nameText);
     },
 
     setSensitive: function(sensitive) {
         this.actor.reactive = sensitive;
         this.actor.can_focus = sensitive;
         this.actor.track_hover = sensitive;
-    },
-
-    setName: function(text) {
-        if (text != null) {
-            // This is the easiest way to provide a accessible name to
-            // this widget. The label could be also used for other
-            // purposes in the future.
-            if (!this.label) {
-                this.label = new St.Label({ text: text });
-                this.actor.label_actor = this.label;
-            } else
-                this.label.text = text;
-        } else {
-            this.label = null;
-            this.actor.label_actor = null;
-        }
     },
 
     setMenu: function(menu) {

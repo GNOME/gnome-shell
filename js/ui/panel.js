@@ -521,7 +521,7 @@ const AppMenuButton = new Lang.Class({
 
         this._targetApp = targetApp;
         this._label.setText(targetApp.get_name());
-        this.setName(targetApp.get_name());
+        this.actor.set_accessible_name(targetApp.get_name());
 
         this._syncIcon();
         this._arrow.show();
