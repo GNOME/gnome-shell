@@ -45,6 +45,7 @@
 #include <meta/compositor.h>
 #include "mutter-enum-types.h"
 #include "core.h"
+#include "meta-cursor-tracker-private.h"
 
 #include <X11/extensions/Xinerama.h>
 
@@ -705,7 +706,8 @@ meta_screen_new (MetaDisplay *display,
   screen->guard_window = None;
 
   reload_monitor_infos (screen);
-  
+
+  meta_cursor_tracker_get_for_screen (screen);
   meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
 
   /* Handle creating a no_focus_window for this screen */  
@@ -1461,29 +1463,18 @@ void
 meta_screen_set_cursor (MetaScreen *screen,
                         MetaCursor  cursor)
 {
-  Cursor xcursor;
-
   if (cursor == screen->current_cursor)
     return;
 
   screen->current_cursor = cursor;
-  
-  xcursor = meta_display_create_x_cursor (screen->display, cursor);
-  XDefineCursor (screen->display->xdisplay, screen->xroot, xcursor);
-  XFlush (screen->display->xdisplay);
-  XFreeCursor (screen->display->xdisplay, xcursor);
+  meta_cursor_tracker_set_root_cursor (screen->cursor_tracker, cursor);
 }
 
 void
 meta_screen_update_cursor (MetaScreen *screen)
 {
-  Cursor xcursor;
-
-  xcursor = meta_display_create_x_cursor (screen->display, 
-					  screen->current_cursor);
-  XDefineCursor (screen->display->xdisplay, screen->xroot, xcursor);
-  XFlush (screen->display->xdisplay);
-  XFreeCursor (screen->display->xdisplay, xcursor);
+  meta_cursor_tracker_set_root_cursor (screen->cursor_tracker,
+                                       screen->current_cursor);
 }
 
 void
@@ -3687,4 +3678,18 @@ meta_screen_get_monitor_in_fullscreen (MetaScreen  *screen,
 
   /* We use -1 as a flag to mean "not known yet" for notification purposes */
   return screen->monitor_infos[monitor].in_fullscreen == TRUE;
+}
+
+gboolean
+meta_screen_handle_xevent (MetaScreen *screen,
+                           XEvent     *xevent)
+{
+  /* Go through our helpers and see if they want this event.
+     Currently, only MetaCursorTracker.
+  */
+
+  if (meta_cursor_tracker_handle_xevent (screen->cursor_tracker, xevent))
+    return TRUE;
+
+  return FALSE;
 }

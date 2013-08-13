@@ -2147,6 +2147,7 @@ event_callback (XEvent   *event,
   gboolean filter_out_event;
   XIEvent *input_event;
   MetaMonitorManager *monitor;
+  MetaScreen *screen;
 
   display = data;
   
@@ -2182,6 +2183,13 @@ event_callback (XEvent   *event,
                            meta_display_lookup_x_window (display, display->server_focus_window),
                            display->server_focus_window,
                            display->server_focus_serial);
+    }
+
+  screen = meta_display_screen_for_root (display, event->xany.window);
+  if (screen)
+    {
+      if (meta_screen_handle_xevent (screen, event))
+        return TRUE;
     }
 
   modified = event_get_modified_window (display, event);

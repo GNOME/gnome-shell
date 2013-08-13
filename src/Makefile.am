@@ -113,6 +113,8 @@ libmutter_la_SOURCES =				\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
 	core/main.c				\
+	core/meta-cursor-tracker.c		\
+	core/meta-cursor-tracker-private.h	\
 	core/meta-xrandr-shared.h		\
 	core/monitor.c				\
 	core/monitor-config.c			\
@@ -186,6 +188,7 @@ libmutterinclude_base_headers =		\
 	meta/meta-background-actor.h		\
 	meta/meta-background-group.h		\
 	meta/meta-background.h			\
+	meta/meta-cursor-tracker.h		\
 	meta/meta-plugin.h			\
 	meta/meta-shaped-texture.h		\
 	meta/meta-shadow-factory.h		\

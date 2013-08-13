@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Copyright (C) 2008 Iain Holmes
+ * Copyright (C) 2013 Red Hat, Inc.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,27 +17,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
- */
-
-#ifndef META_TYPES_H
-#define META_TYPES_H
-
-/**
- * MetaCompositor: (skip)
  *
+ * Author: Giovanni Campagna <gcampagn@redhat.com>
  */
-typedef struct _MetaCompositor  MetaCompositor;
-typedef struct _MetaDisplay     MetaDisplay;
-typedef struct _MetaFrame       MetaFrame;
-typedef struct _MetaScreen      MetaScreen;
-typedef struct _MetaWindow      MetaWindow;
-typedef struct _MetaWorkspace   MetaWorkspace;
-/**
- * MetaGroup: (skip)
- *
- */
-typedef struct _MetaGroup       MetaGroup;
-typedef struct _MetaKeyBinding  MetaKeyBinding;
-typedef struct _MetaCursorTracker MetaCursorTracker;
 
+#ifndef META_CURSOR_TRACKER_PRIVATE_H
+#define META_CURSOR_TRACKER_PRIVATE_H
+
+#include <meta/meta-cursor-tracker.h>
+
+gboolean meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
+					    XEvent            *xevent);
+
+void     meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
+                                              MetaCursor         cursor);
 #endif
