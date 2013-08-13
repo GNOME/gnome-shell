@@ -5063,8 +5063,7 @@ meta_theme_get_current (void)
 }
 
 void
-meta_theme_set_current (const char *name,
-                        gboolean    force_reload)
+meta_theme_set_current (const char *name)
 {
   MetaTheme *new_theme;
   GError *err;
