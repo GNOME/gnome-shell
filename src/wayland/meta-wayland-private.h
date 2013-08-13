@@ -28,6 +28,7 @@
 #include <cairo.h>
 
 #include "window-private.h"
+#include <meta/meta-cursor-tracker.h>
 
 typedef struct _MetaWaylandCompositor MetaWaylandCompositor;
 
@@ -335,6 +336,7 @@ struct _MetaWaylandSeat
 
   struct wl_display *display;
 
+  MetaCursorTracker *cursor_tracker;
   MetaWaylandSurface *sprite;
   int hotspot_x, hotspot_y;
   struct wl_listener sprite_destroy_listener;

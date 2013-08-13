@@ -93,6 +93,7 @@ struct _MetaScreen
   MetaStack *stack;
   MetaStackTracker *stack_tracker;
 
+  MetaCursorTracker *cursor_tracker;
   MetaCursor current_cursor;
 
   Window flash_window;
@@ -258,5 +259,8 @@ void     meta_screen_workspace_switched (MetaScreen         *screen,
 void meta_screen_set_active_workspace_hint (MetaScreen *screen);
 
 Window   meta_screen_create_guard_window (Display *xdisplay, MetaScreen *screen);
+
+gboolean meta_screen_handle_xevent (MetaScreen *screen,
+                                    XEvent     *xevent);
 
 #endif

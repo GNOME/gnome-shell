@@ -43,6 +43,7 @@
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-data-device.h"
+#include "meta-cursor-tracker-private.h"
 #include "display-private.h"
 #include "window-private.h"
 #include <meta/types.h>
@@ -1290,12 +1291,17 @@ event_cb (ClutterActor *stage,
         }
     }
 
-  meta_wayland_stage_set_cursor_position (META_WAYLAND_STAGE (stage),
-                                          wl_fixed_to_int (pointer->x),
-                                          wl_fixed_to_int (pointer->y));
+  if (seat->cursor_tracker)
+    {
+      meta_cursor_tracker_update_position (seat->cursor_tracker,
+					   wl_fixed_to_int (pointer->x),
+					   wl_fixed_to_int (pointer->y));
 
-  if (pointer->current == NULL)
-    meta_wayland_stage_set_default_cursor (META_WAYLAND_STAGE (stage));
+      if (pointer->current == NULL)
+	meta_cursor_tracker_revert_root (seat->cursor_tracker);
+
+      meta_cursor_tracker_queue_redraw (seat->cursor_tracker, stage);
+    }
 
   display = meta_get_display ();
   if (!display)

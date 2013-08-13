@@ -36,6 +36,7 @@
 #include "meta-window-actor-private.h"
 #include "meta/meta-shaped-texture.h"
 #include "meta-wayland-stage.h"
+#include "meta-cursor-tracker-private.h"
 
 #define DEFAULT_AXIS_STEP_DISTANCE wl_fixed_from_int (10)
 
@@ -73,10 +74,14 @@ transform_stage_point_fixed (MetaWaylandSurface *surface,
 static void
 pointer_unmap_sprite (MetaWaylandSeat *seat)
 {
-  if (seat->current_stage)
+  if (seat->cursor_tracker)
     {
-      MetaWaylandStage *stage = META_WAYLAND_STAGE (seat->current_stage);
-      meta_wayland_stage_set_invisible_cursor (stage);
+      meta_cursor_tracker_set_sprite (seat->cursor_tracker,
+				      NULL, 0, 0);
+
+      if (seat->current_stage)
+	meta_cursor_tracker_queue_redraw (seat->cursor_tracker,
+					  CLUTTER_ACTOR (seat->current_stage));
     }
 
   if (seat->sprite)
@@ -89,22 +94,29 @@ pointer_unmap_sprite (MetaWaylandSeat *seat)
 void
 meta_wayland_seat_update_sprite (MetaWaylandSeat *seat)
 {
+  ClutterBackend *backend;
+  CoglContext *context;
+  struct wl_resource *buffer;
+  CoglTexture2D *texture;
+
+  if (seat->cursor_tracker == NULL)
+    return;
+
+  backend = clutter_get_default_backend ();
+  context = clutter_backend_get_cogl_context (backend);
+  buffer = seat->sprite->buffer_ref.buffer->resource;
+  texture = cogl_wayland_texture_2d_new_from_buffer (context, buffer, NULL);
+
+  meta_cursor_tracker_set_sprite (seat->cursor_tracker,
+				  texture,
+				  seat->hotspot_x,
+				  seat->hotspot_y);
+
   if (seat->current_stage)
-    {
-      MetaWaylandStage *stage = META_WAYLAND_STAGE (seat->current_stage);
-      ClutterBackend *backend = clutter_get_default_backend ();
-      CoglContext *context = clutter_backend_get_cogl_context (backend);
-      struct wl_resource *buffer = seat->sprite->buffer_ref.buffer->resource;
-      CoglTexture2D *texture =
-        cogl_wayland_texture_2d_new_from_buffer (context, buffer, NULL);
+    meta_cursor_tracker_queue_redraw (seat->cursor_tracker,
+				      CLUTTER_ACTOR (seat->current_stage));
 
-      meta_wayland_stage_set_cursor_from_texture (stage,
-                                                  COGL_TEXTURE (texture),
-                                                  seat->hotspot_x,
-                                                  seat->hotspot_y);
-
-      cogl_object_unref (texture);
-    }
+  cogl_object_unref (texture);
 }
 
 static void

@@ -59,52 +59,11 @@ struct _MetaWaylandStageClass
 struct _MetaWaylandStage
 {
   ClutterStage parent;
-
-  /* A pipeline containing the cursor texture that will be used when
-     the cursor is not over a surface */
-  CoglPipeline *default_cursor_pipeline;
-  int default_cursor_width;
-  int default_cursor_height;
-
-  CoglPipeline *texture_cursor_pipeline;
-
-  int cursor_x;
-  int cursor_y;
-  int cursor_width;
-  int cursor_height;
-  int cursor_hotspot_x;
-  int cursor_hotspot_y;
-
-  enum
-  {
-    /* No cursor will be drawn */
-    META_WAYLAND_STAGE_CURSOR_INVISIBLE,
-    /* The cursor will be drawn from our default cursor image */
-    META_WAYLAND_STAGE_CURSOR_DEFAULT,
-    /* The cursor will be drawn using a custom texture */
-    META_WAYLAND_STAGE_CURSOR_TEXTURE
-  } cursor_type;
-
-  gboolean has_last_cursor_position;
-  cairo_rectangle_int_t last_cursor_position;
 };
 
 GType             meta_wayland_stage_get_type                (void) G_GNUC_CONST;
 
 ClutterActor     *meta_wayland_stage_new                     (void);
-
-void              meta_wayland_stage_set_cursor_position     (MetaWaylandStage *stage,
-                                                              int               x,
-                                                              int               y);
-
-void              meta_wayland_stage_set_default_cursor      (MetaWaylandStage *self);
-
-void              meta_wayland_stage_set_cursor_from_texture (MetaWaylandStage *self,
-                                                              CoglTexture      *texture,
-                                                              int               hotspot_x,
-                                                              int               hotspot_y);
-
-void              meta_wayland_stage_set_invisible_cursor    (MetaWaylandStage *self);
 
 G_END_DECLS
 

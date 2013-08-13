@@ -2177,6 +2177,7 @@ meta_display_handle_event (MetaDisplay *display,
   gboolean bypass_compositor;
   gboolean filter_out_event;
   XIEvent *input_event;
+  MetaScreen *screen;
 
 #ifdef WITH_VERBOSE_MODE
   if (dump_events)
@@ -2202,6 +2203,13 @@ meta_display_handle_event (MetaDisplay *display,
                            meta_display_lookup_x_window (display, display->server_focus_window),
                            display->server_focus_window,
                            display->server_focus_serial);
+    }
+
+  screen = meta_display_screen_for_root (display, event->xany.window);
+  if (screen)
+    {
+      if (meta_screen_handle_xevent (screen, event))
+        return TRUE;
     }
 
   modified = event_get_modified_window (display, event);

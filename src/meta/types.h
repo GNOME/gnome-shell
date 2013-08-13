@@ -38,5 +38,6 @@ typedef struct _MetaWorkspace   MetaWorkspace;
  */
 typedef struct _MetaGroup       MetaGroup;
 typedef struct _MetaKeyBinding  MetaKeyBinding;
+typedef struct _MetaCursorTracker MetaCursorTracker;
 
 #endif
