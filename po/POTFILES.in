@@ -23,12 +23,9 @@ src/core/xprops.c
 src/mutter.desktop.in
 src/mutter-wm.desktop.in
 src/org.gnome.mutter.gschema.xml.in
-src/tools/mutter-message.c
 src/ui/frames.c
 src/ui/menu.c
 src/ui/metaaccellabel.c
 src/ui/resizepopup.c
 src/ui/theme.c
 src/ui/theme-parser.c
-src/ui/theme-viewer.c
-
