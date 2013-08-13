@@ -274,6 +274,29 @@ static const MetaWaylandKeyboardGrabInterface
   default_grab_modifiers,
 };
 
+static void
+modal_key (MetaWaylandKeyboardGrab *grab,
+	   uint32_t                 time,
+	   uint32_t                 key,
+	   uint32_t                 state)
+{
+}
+
+static void
+modal_modifiers (MetaWaylandKeyboardGrab *grab,
+		 uint32_t                 serial,
+		 uint32_t                 mods_depressed,
+		 uint32_t                 mods_latched,
+		 uint32_t                 mods_locked,
+		 uint32_t                 group)
+{
+}
+
+static MetaWaylandKeyboardGrabInterface modal_grab = {
+  modal_key,
+  modal_modifiers,
+};
+
 gboolean
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
                             struct wl_display   *display,
@@ -515,13 +538,29 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
 
       display = wl_client_get_display (client);
       serial = wl_display_next_serial (display);
-      wl_keyboard_send_modifiers (resource, serial,
-                                  keyboard->modifier_state.mods_depressed,
-                                  keyboard->modifier_state.mods_latched,
-                                  keyboard->modifier_state.mods_locked,
-                                  keyboard->modifier_state.group);
-      wl_keyboard_send_enter (resource, serial, surface->resource,
-                              &keyboard->keys);
+
+      /* If we're in a modal grab, the client is focused but doesn't see
+	 modifiers or pressed keys (and fix that up when we exit the modal) */
+      if (keyboard->grab->interface == &modal_grab)
+	{
+	  struct wl_array empty;
+	  wl_array_init (&empty);
+
+	  wl_keyboard_send_modifiers (resource, serial,
+				      0, 0, 0, 0);
+	  wl_keyboard_send_enter (resource, serial, surface->resource,
+				  &empty);
+	}
+      else
+	{
+	  wl_keyboard_send_modifiers (resource, serial,
+				      keyboard->modifier_state.mods_depressed,
+				      keyboard->modifier_state.mods_latched,
+				      keyboard->modifier_state.mods_locked,
+				      keyboard->modifier_state.group);
+	  wl_keyboard_send_enter (resource, serial, surface->resource,
+				  &keyboard->keys);
+	}
       wl_resource_add_destroy_listener (resource, &keyboard->focus_listener);
       keyboard->focus_serial = serial;
     }
@@ -564,4 +603,73 @@ meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
   if (keyboard->focus_resource)
     wl_list_remove (&keyboard->focus_listener.link);
   wl_array_release (&keyboard->keys);
+}
+
+gboolean
+meta_wayland_keyboard_begin_modal (MetaWaylandKeyboard *keyboard,
+				   guint32              timestamp)
+{
+  MetaWaylandKeyboardGrab *grab;
+  uint32_t *end = (void *) ((char *) keyboard->keys.data +
+			    keyboard->keys.size);
+  uint32_t *k;
+  uint32_t serial;
+
+  if (keyboard->grab != &keyboard->default_grab)
+    return FALSE; 
+
+  if (keyboard->focus)
+    {
+      /* Fake key release events for the focused app */
+      serial = wl_display_next_serial (keyboard->display);
+      keyboard->grab->interface->modifiers (keyboard->grab,
+					    serial,
+					    0, 0, 0, 0);
+
+      for (k = keyboard->keys.data; k < end; k++)
+	keyboard->grab->interface->key (keyboard->grab,
+					timestamp,
+					*k, 0);
+    }
+
+  grab = g_slice_new0 (MetaWaylandKeyboardGrab);
+  grab->interface = &modal_grab;
+  meta_wayland_keyboard_start_grab (keyboard, grab);
+
+  return TRUE;
+}
+
+void
+meta_wayland_keyboard_end_modal (MetaWaylandKeyboard *keyboard,
+				 guint32              timestamp)
+{
+  MetaWaylandKeyboardGrab *grab;
+  uint32_t *end = (void *) ((char *) keyboard->keys.data +
+			    keyboard->keys.size);
+  uint32_t *k;
+  uint32_t serial;
+
+  grab = keyboard->grab;
+
+  g_assert (grab->interface == &modal_grab);
+
+  meta_wayland_keyboard_end_grab (keyboard);
+  g_slice_free (MetaWaylandKeyboardGrab, grab);
+
+  if (keyboard->focus)
+    {
+      /* Fake key press events for the focused app */
+      serial = wl_display_next_serial (keyboard->display);
+      keyboard->grab->interface->modifiers (keyboard->grab,
+					    serial,
+					    keyboard->modifier_state.mods_depressed,
+					    keyboard->modifier_state.mods_latched, 
+					    keyboard->modifier_state.mods_locked,
+					    keyboard->modifier_state.group);
+
+      for (k = keyboard->keys.data; k < end; k++)
+	keyboard->grab->interface->key (keyboard->grab,
+					timestamp,
+					*k, 1);
+    }
 }

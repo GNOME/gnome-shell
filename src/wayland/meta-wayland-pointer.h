@@ -42,6 +42,11 @@ meta_wayland_pointer_start_grab (MetaWaylandPointer *pointer,
 void
 meta_wayland_pointer_end_grab (MetaWaylandPointer *pointer);
 
+gboolean
+meta_wayland_pointer_begin_modal (MetaWaylandPointer *pointer);
+void
+meta_wayland_pointer_end_modal   (MetaWaylandPointer *pointer);
+
 void
 meta_wayland_pointer_set_current (MetaWaylandPointer *pointer,
                                   MetaWaylandSurface *surface);

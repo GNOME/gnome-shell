@@ -85,6 +85,8 @@
 #include "window-private.h" /* to check window->hidden */
 #include "display-private.h" /* for meta_display_lookup_x_window() */
 #include "meta-wayland-private.h"
+#include "meta-wayland-pointer.h"
+#include "meta-wayland-keyboard.h"
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 
@@ -424,34 +426,20 @@ meta_stage_is_focused (MetaScreen *screen)
   return (screen->display->focus_type == META_FOCUS_STAGE);
 }
 
-gboolean
-meta_begin_modal_for_plugin (MetaScreen       *screen,
-                             MetaPlugin       *plugin,
-                             MetaModalOptions  options,
-                             guint32           timestamp)
+static gboolean
+begin_modal_x11 (MetaScreen       *screen,
+                 MetaPlugin       *plugin,
+                 MetaModalOptions  options,
+                 guint32           timestamp)
 {
-  /* To some extent this duplicates code in meta_display_begin_grab_op(), but there
-   * are significant differences in how we handle grabs that make it difficult to
-   * merge the two.
-   */
-  MetaDisplay    *display    = meta_screen_get_display (screen);
-  Display        *xdpy       = meta_display_get_xdisplay (display);
-  MetaCompositor *compositor = display->compositor;
-  ClutterStage *stage;
-  Window grab_window;
-  Cursor cursor = None;
-  gboolean pointer_grabbed = FALSE;
-  gboolean keyboard_grabbed = FALSE;
-  int result;
-
-  stage = CLUTTER_STAGE (meta_get_stage_for_screen (screen));
-  if (!stage)
-    return FALSE;
-
-  grab_window = clutter_x11_get_stage_window (stage);
-
-  if (compositor->modal_plugin != NULL || display->grab_op != META_GRAB_OP_NONE)
-    return FALSE;
+  MetaDisplay    *display     = meta_screen_get_display (screen);
+  Display        *xdpy        = meta_display_get_xdisplay (display);
+  MetaCompScreen *info        = meta_screen_get_compositor_data (screen);
+  Window          grab_window = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
+  Cursor          cursor      = None;
+  int             result;
+  gboolean        pointer_grabbed = FALSE;
+  gboolean        keyboard_grabbed = FALSE;
 
   if ((options & META_MODAL_POINTER_ALREADY_GRABBED) == 0)
     {
@@ -501,14 +489,6 @@ meta_begin_modal_for_plugin (MetaScreen       *screen,
       keyboard_grabbed = TRUE;
     }
 
-  display->grab_op = META_GRAB_OP_COMPOSITOR;
-  display->grab_window = NULL;
-  display->grab_screen = screen;
-  display->grab_have_pointer = TRUE;
-  display->grab_have_keyboard = TRUE;
-
-  compositor->modal_plugin = plugin;
-
   return TRUE;
 
  fail:
@@ -518,6 +498,80 @@ meta_begin_modal_for_plugin (MetaScreen       *screen,
     XIUngrabDevice (xdpy, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
 
   return FALSE;
+}
+
+static gboolean
+begin_modal_wayland (MetaScreen       *screen,
+                     MetaPlugin       *plugin,
+                     MetaModalOptions  options,
+                     guint32           timestamp)
+{
+  MetaWaylandCompositor *compositor;
+  gboolean pointer_grabbed = FALSE;
+  gboolean keyboard_grabbed = FALSE;
+
+  compositor = meta_wayland_compositor_get_default ();
+
+  if ((options & META_MODAL_POINTER_ALREADY_GRABBED) == 0)
+    {
+      if (!meta_wayland_pointer_begin_modal (&compositor->seat->pointer))
+        goto fail;
+
+      pointer_grabbed = TRUE;
+    }
+  if ((options & META_MODAL_KEYBOARD_ALREADY_GRABBED) == 0)
+    {
+      if (!meta_wayland_keyboard_begin_modal (&compositor->seat->keyboard,
+                                              timestamp))
+        goto fail;
+
+      keyboard_grabbed = TRUE;
+    }
+
+  return TRUE;
+
+ fail:
+  if (pointer_grabbed)
+    meta_wayland_pointer_end_modal (&compositor->seat->pointer);
+  if (keyboard_grabbed)
+    meta_wayland_keyboard_end_modal (&compositor->seat->keyboard, timestamp);
+
+  return FALSE;
+}
+
+gboolean
+meta_begin_modal_for_plugin (MetaScreen       *screen,
+                             MetaPlugin       *plugin,
+                             MetaModalOptions  options,
+                             guint32           timestamp)
+{
+  /* To some extent this duplicates code in meta_display_begin_grab_op(), but there
+   * are significant differences in how we handle grabs that make it difficult to
+   * merge the two.
+   */
+  MetaDisplay    *display    = meta_screen_get_display (screen);
+  MetaCompositor *compositor = display->compositor;
+  gboolean ok;
+
+  if (compositor->modal_plugin != NULL || display->grab_op != META_GRAB_OP_NONE)
+    return FALSE;
+
+  if (meta_is_wayland_compositor ())
+    ok = begin_modal_wayland (screen, plugin, options, timestamp);
+  else
+    ok = begin_modal_x11 (screen, plugin, options, timestamp);
+  if (!ok)
+    return FALSE;
+
+  display->grab_op = META_GRAB_OP_COMPOSITOR;
+  display->grab_window = NULL;
+  display->grab_screen = screen;
+  display->grab_have_pointer = TRUE;
+  display->grab_have_keyboard = TRUE;
+
+  compositor->modal_plugin = plugin;
+
+  return TRUE;
 }
 
 void
@@ -531,8 +585,19 @@ meta_end_modal_for_plugin (MetaScreen     *screen,
 
   g_return_if_fail (compositor->modal_plugin == plugin);
 
-  XIUngrabDevice (xdpy, META_VIRTUAL_CORE_POINTER_ID, timestamp);
-  XIUngrabDevice (xdpy, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
+  if (meta_is_wayland_compositor ())
+    {
+      MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+
+      meta_wayland_pointer_end_modal (&compositor->seat->pointer);
+      meta_wayland_keyboard_end_modal (&compositor->seat->keyboard,
+                                       timestamp);
+    }
+  else
+    {
+      XIUngrabDevice (xdpy, META_VIRTUAL_CORE_POINTER_ID, timestamp);
+      XIUngrabDevice (xdpy, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
+    }
 
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_window = NULL;

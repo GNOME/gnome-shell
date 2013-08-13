@@ -262,3 +262,65 @@ meta_wayland_pointer_set_current (MetaWaylandPointer *pointer,
                                     &pointer->current_listener);
   pointer->current_listener.notify = current_surface_destroy;
 }
+
+static void
+modal_focus (MetaWaylandPointerGrab *grab,
+	     MetaWaylandSurface     *surface,
+	     wl_fixed_t              x,
+	     wl_fixed_t              y)
+{
+}
+
+static void
+modal_motion (MetaWaylandPointerGrab *grab,
+	      uint32_t                time,
+	      wl_fixed_t              x,
+	      wl_fixed_t              y)
+{
+}
+
+static void
+modal_button (MetaWaylandPointerGrab *grab,
+	      uint32_t                time,
+	      uint32_t                button,
+	      uint32_t                state)
+{
+}
+
+static MetaWaylandPointerGrabInterface modal_grab = {
+  modal_focus,
+  modal_motion,
+  modal_button
+};
+
+gboolean
+meta_wayland_pointer_begin_modal (MetaWaylandPointer *pointer)
+{
+  MetaWaylandPointerGrab *grab;
+
+  if (pointer->grab != &pointer->default_grab)
+    return FALSE;
+
+  meta_wayland_pointer_set_focus (pointer, NULL,
+				  wl_fixed_from_int (0),
+				  wl_fixed_from_int (0));
+
+  grab = g_slice_new0 (MetaWaylandPointerGrab);
+  grab->interface = &modal_grab;
+  meta_wayland_pointer_start_grab (pointer, grab);
+
+  return TRUE;
+}
+
+void
+meta_wayland_pointer_end_modal (MetaWaylandPointer *pointer)
+{
+  MetaWaylandPointerGrab *grab;
+
+  grab = pointer->grab;
+
+  g_assert (grab->interface == &modal_grab);
+
+  meta_wayland_pointer_end_grab (pointer);
+  g_slice_free (MetaWaylandPointerGrab, grab);
+}
