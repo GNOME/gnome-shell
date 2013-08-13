@@ -1003,7 +1003,7 @@ shell_global_begin_modal (ShellGlobal       *global,
   if (global->has_modal)
     return FALSE;
 
-  global->has_modal = meta_plugin_begin_modal (global->plugin, global->stage_xwindow, None, options, timestamp);
+  global->has_modal = meta_plugin_begin_modal (global->plugin, options, timestamp);
   sync_input_region (global);
   return global->has_modal;
 }
