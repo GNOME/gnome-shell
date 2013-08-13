@@ -201,6 +201,8 @@ libmutterinclude_HEADERS =			\
 	$(libmutterinclude_base_headers)	\
 	$(libmutterinclude_extra_headers)
 
+bin_PROGRAMS=mutter
+
 mutter_SOURCES = core/mutter.c
 mutter_LDADD = $(MUTTER_LIBS) libmutter.la
 
