@@ -1897,10 +1897,11 @@ get_input_event (MetaDisplay *display,
 }
 
 static void
-update_focus_window (MetaDisplay *display,
-                     MetaWindow  *window,
-                     Window       xwindow,
-                     gulong       serial)
+update_focus_window (MetaDisplay   *display,
+                     MetaFocusType  type,
+                     MetaWindow    *window,
+                     Window         xwindow,
+                     gulong         serial)
 {
 #ifdef HAVE_WAYLAND
   MetaWaylandCompositor *compositor;
@@ -1909,6 +1910,7 @@ update_focus_window (MetaDisplay *display,
   display->focus_serial = serial;
 
   if (display->focus_xwindow == xwindow &&
+      display->focus_type == type &&
       display->focus_window == window)
     return;
 
@@ -1931,6 +1933,7 @@ update_focus_window (MetaDisplay *display,
       meta_window_set_focused_internal (previous, FALSE);
     }
 
+  display->focus_type = type;
   display->focus_window = window;
   display->focus_xwindow = xwindow;
 
@@ -1948,7 +1951,8 @@ update_focus_window (MetaDisplay *display,
     {
       compositor = meta_wayland_compositor_get_default ();
 
-      if (meta_display_xwindow_is_a_no_focus_window (display, xwindow))
+      if (display->focus_type == META_FOCUS_NO_FOCUS_WINDOW ||
+          display->focus_type == META_FOCUS_STAGE)
         meta_wayland_compositor_set_input_focus (compositor, NULL);
       else if (window && window->surface)
         meta_wayland_compositor_set_input_focus (compositor, window);
@@ -1991,11 +1995,12 @@ timestamp_too_old (MetaDisplay *display,
 }
 
 static void
-request_xserver_input_focus_change (MetaDisplay *display,
-                                    MetaScreen  *screen,
-                                    MetaWindow  *meta_window,
-                                    Window       xwindow,
-                                    guint32      timestamp)
+request_xserver_input_focus_change (MetaDisplay   *display,
+                                    MetaScreen    *screen,
+                                    MetaFocusType  type,
+                                    MetaWindow    *meta_window,
+                                    Window         xwindow,
+                                    guint32        timestamp)
 {
   gulong serial;
 
@@ -2028,6 +2033,7 @@ request_xserver_input_focus_change (MetaDisplay *display,
   meta_display_ungrab (display);
 
   update_focus_window (display,
+                       type,
                        meta_window,
                        xwindow,
                        serial);
@@ -2048,8 +2054,11 @@ handle_window_focus_event (MetaDisplay  *display,
                            unsigned long serial)
 {
   MetaWindow *focus_window;
+  MetaFocusType type;
 #ifdef WITH_VERBOSE_MODE
   const char *window_type;
+
+  type = META_FOCUS_NONE;
 
   /* Note the event can be on either the window or the frame,
    * we focus the frame for shaded windows
@@ -2062,13 +2071,25 @@ handle_window_focus_event (MetaDisplay  *display,
         window_type = "frame window";
       else
         window_type = "unknown client window";
+
+      if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+        type = META_FOCUS_WAYLAND_CLIENT;
+      else
+        type = META_FOCUS_X_CLIENT;
     }
   else if (meta_display_xwindow_is_a_no_focus_window (display, event->event))
-    window_type = "no_focus_window";
+    {
+      window_type = "no_focus_window";
+      type = META_FOCUS_NO_FOCUS_WINDOW;
+    }
   else if (meta_display_screen_for_root (display, event->event))
     window_type = "root window";
   else
     window_type = "unknown window";
+
+  /* Don't change type if we don't know the new window */
+  if (type == META_FOCUS_NONE)
+    type = display->focus_type;
 
   meta_topic (META_DEBUG_FOCUS,
               "Focus %s event received on %s 0x%lx (%s) "
@@ -2147,6 +2168,7 @@ handle_window_focus_event (MetaDisplay  *display,
   if (display->server_focus_serial > display->focus_serial)
     {
       update_focus_window (display,
+                           type,
                            focus_window,
                            focus_window ? focus_window->xwindow : None,
                            display->server_focus_serial);
@@ -2200,6 +2222,7 @@ meta_display_handle_event (MetaDisplay *display,
       meta_topic (META_DEBUG_FOCUS, "Earlier attempt to focus %s failed\n",
                   display->focus_window->desc);
       update_focus_window (display,
+                           META_FOCUS_NONE,
                            meta_display_lookup_x_window (display, display->server_focus_window),
                            display->server_focus_window,
                            display->server_focus_serial);
@@ -5879,6 +5902,8 @@ meta_display_set_input_focus_window (MetaDisplay *display,
 {
   request_xserver_input_focus_change (display,
                                       window->screen,
+                                      window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND ?
+                                      META_FOCUS_WAYLAND_CLIENT : META_FOCUS_X_CLIENT,
                                       window,
                                       focus_frame ? window->frame->xwindow : window->xwindow,
                                       timestamp);
@@ -5920,13 +5945,15 @@ meta_display_request_take_focus (MetaDisplay *display,
 }
 
 void
-meta_display_set_input_focus_xwindow (MetaDisplay *display,
-                                      MetaScreen  *screen,
-                                      Window       window,
-                                      guint32      timestamp)
+meta_display_set_input_focus_xwindow (MetaDisplay   *display,
+                                      MetaScreen    *screen,
+                                      MetaFocusType  type,
+                                      Window         window,
+                                      guint32        timestamp)
 {
   request_xserver_input_focus_change (display,
                                       screen,
+                                      type,
                                       NULL,
                                       window,
                                       timestamp);
@@ -5939,6 +5966,7 @@ meta_display_focus_the_no_focus_window (MetaDisplay *display,
 {
   request_xserver_input_focus_change (display,
                                       screen,
+                                      META_FOCUS_NO_FOCUS_WINDOW,
                                       NULL,
                                       screen->no_focus_window,
                                       timestamp);

@@ -86,6 +86,14 @@ typedef enum {
   META_TILE_MAXIMIZED
 } MetaTileMode;
 
+typedef enum {
+  META_FOCUS_NONE = 0,
+  META_FOCUS_X_CLIENT = 1,
+  META_FOCUS_WAYLAND_CLIENT = 2,
+  META_FOCUS_NO_FOCUS_WINDOW = 3,
+  META_FOCUS_STAGE = 4
+} MetaFocusType;
+
 struct _MetaDisplay
 {
   GObject parent_instance;
@@ -117,6 +125,7 @@ struct _MetaDisplay
    * like the no_focus_window or the stage X window. */
   Window focus_xwindow;
   gulong focus_serial;
+  MetaFocusType focus_type;
 
   /* last timestamp passed to XSetInputFocus */
   guint32 last_focus_time;
@@ -475,9 +484,10 @@ gboolean meta_display_process_barrier_event (MetaDisplay    *display,
                                              XIBarrierEvent *event);
 #endif /* HAVE_XI23 */
 
-void meta_display_set_input_focus_xwindow (MetaDisplay *display,
-                                           MetaScreen  *screen,
-                                           Window       window,
-                                           guint32      timestamp);
+void meta_display_set_input_focus_xwindow (MetaDisplay   *display,
+                                           MetaScreen    *screen,
+                                           MetaFocusType  type,
+                                           Window         window,
+                                           guint32        timestamp);
 
 #endif
