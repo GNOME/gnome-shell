@@ -37,7 +37,8 @@ INCLUDES += \
 endif
 
 mutter_built_sources = \
-	mutter-enum-types.h \
+	$(dbus_idle_built_sources)	\
+	mutter-enum-types.h		\
 	mutter-enum-types.c
 
 if HAVE_WAYLAND
@@ -306,6 +307,8 @@ xml_in_files = \
         50-mutter-windows.xml.in
 xml_DATA     = $(xml_in_files:.xml.in=.xml)
 
+dbus_idle_built_sources = meta-dbus-idle-monitor.c meta-dbus-idle-monitor.h
+
 gsettings_SCHEMAS = org.gnome.mutter.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
@@ -361,6 +364,16 @@ mutter-enum-types.c: stamp-mutter-enum-types.h mutter-enum-types.c.in
 	  $(libmutterinclude_base_headers) ) >> xgen-tetc && \
 	cp xgen-tetc mutter-enum-types.c && \
 	rm -f xgen-tetc
+
+dbus_idle_built_sources = meta-dbus-idle-monitor.c meta-dbus-idle-monitor.h
+
+$(dbus_idle_built_sources) : Makefile.am idle-monitor.xml
+	$(AM_V_GEN)gdbus-codegen							\
+		--interface-prefix org.gnome.Mutter					\
+		--c-namespace MetaDBus							\
+		--generate-c-code meta-dbus-idle-monitor				\
+		--c-generate-object-manager						\
+		$(srcdir)/idle-monitor.xml
 
 if HAVE_WAYLAND
 wayland/%-protocol.c : $(top_builddir)/protocol/%.xml
