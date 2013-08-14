@@ -507,14 +507,14 @@ meta_wayland_seat_repick (MetaWaylandSeat *seat,
       surface = meta_shaped_texture_get_wayland_surface (shaped_texture);
     }
 
-  if (surface != pointer->current)
+  pointer->current = surface;
+  if (surface != pointer->focus)
     {
       const MetaWaylandPointerGrabInterface *interface =
         pointer->grab->interface;
       interface->focus (pointer->grab,
                         surface,
                         pointer->current_x, pointer->current_y);
-      pointer->current = surface;
     }
 
   if (pointer->grab->focus)
