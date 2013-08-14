@@ -119,6 +119,9 @@ gboolean                _clutter_stage_update_state     (ClutterStage      *stag
                                                          ClutterStageState  unset_state,
                                                          ClutterStageState  set_state);
 
+void                    _clutter_stage_set_scale_factor (ClutterStage      *stage,
+                                                         int                factor);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_PRIVATE_H__ */
