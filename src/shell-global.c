@@ -1243,9 +1243,6 @@ void shell_global_init_xdnd (ShellGlobal *global)
  * @mods: (out): the current set of modifier keys that are pressed down
  *
  * Gets the pointer coordinates and current modifier key state.
- * This is a wrapper around gdk_display_get_pointer() that strips
- * out any un-declared modifier flags, to make gjs happy; see
- * https://bugzilla.gnome.org/show_bug.cgi?id=597292.
  */
 void
 shell_global_get_pointer (ShellGlobal         *global,
@@ -1253,18 +1250,13 @@ shell_global_get_pointer (ShellGlobal         *global,
                           int                 *y,
                           ClutterModifierType *mods)
 {
-  GdkDeviceManager *gmanager;
-  GdkDevice *gdevice;
-  GdkScreen *gscreen;
-  GdkModifierType raw_mods;
+  ClutterModifierType raw_mods;
+  MetaCursorTracker *tracker;
 
-  gmanager = gdk_display_get_device_manager (global->gdk_display);
-  gdevice = gdk_device_manager_get_client_pointer (gmanager);
-  gdk_device_get_position (gdevice, &gscreen, x, y);
-  gdk_device_get_state (gdevice,
-                        gdk_screen_get_root_window (gscreen),
-                        NULL, &raw_mods);
-  *mods = raw_mods & GDK_MODIFIER_MASK;
+  tracker = meta_cursor_tracker_get_for_screen (global->meta_screen);
+  meta_cursor_tracker_get_pointer (tracker, x, y, &raw_mods);
+
+  *mods = raw_mods & CLUTTER_MODIFIER_MASK;
 }
 
 /**
@@ -1279,19 +1271,10 @@ void
 shell_global_sync_pointer (ShellGlobal *global)
 {
   int x, y;
-  GdkModifierType mods;
-  GdkDeviceManager *gmanager;
-  GdkDevice *gdevice;
-  GdkScreen *gscreen;
+  ClutterModifierType mods;
   ClutterMotionEvent event;
 
-  gmanager = gdk_display_get_device_manager (global->gdk_display);
-  gdevice = gdk_device_manager_get_client_pointer (gmanager);
-
-  gdk_device_get_position (gdevice, &gscreen, &x, &y);
-  gdk_device_get_state (gdevice,
-                        gdk_screen_get_root_window (gscreen),
-                        NULL, &mods);
+  shell_global_get_pointer (global, &x, &y, &mods);
 
   event.type = CLUTTER_MOTION;
   event.time = shell_global_get_current_time (global);

@@ -584,6 +584,7 @@ const ScreenShield = new Lang.Class({
         this._shortLightbox.connect('shown', Lang.bind(this, this._onShortLightboxShown));
 
         this.idleMonitor = Meta.IdleMonitor.get_core();
+        this._cursorTracker = Meta.CursorTracker.get_for_screen(global.screen);
     },
 
     _createBackground: function(monitorIndex) {
@@ -953,7 +954,7 @@ const ScreenShield = new Lang.Class({
             this._hideLockScreenComplete();
         }
 
-        global.stage.show_cursor();
+        this._cursorTracker.set_pointer_visible(true);
     },
 
     _ensureUnlockDialog: function(onPrimary, allowCancel) {
@@ -1094,7 +1095,7 @@ const ScreenShield = new Lang.Class({
 
             return false;
         });
-        global.stage.hide_cursor();
+        this._cursorTracker.set_pointer_tracker(false);
 
         this._lockScreenState = MessageTray.State.SHOWN;
         this._lockScreenGroup.fixed_position_set = false;

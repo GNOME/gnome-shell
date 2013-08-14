@@ -88,7 +88,7 @@ const Magnifier = new Lang.Class({
      * Show the system mouse pointer.
      */
     showSystemCursor: function() {
-        global.stage.show_cursor();
+        this._cursorTracker.set_pointer_visible(true);
     },
 
     /**
@@ -96,7 +96,7 @@ const Magnifier = new Lang.Class({
      * Hide the system mouse pointer.
      */
     hideSystemCursor: function() {
-        global.stage.hide_cursor();
+        this._cursorTracker.set_pointer_visible(false);
     },
 
     /**
@@ -117,7 +117,7 @@ const Magnifier = new Lang.Class({
         // Make sure system mouse pointer is shown when all zoom regions are
         // invisible.
         if (!activate)
-            global.stage.show_cursor();
+            this._cursorTracker.set_pointer_visible(true);
 
         // Notify interested parties of this change
         this.emit('active-changed', activate);
