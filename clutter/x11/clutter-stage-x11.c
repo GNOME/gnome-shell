@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <math.h>
+#include <stdlib.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -151,10 +152,10 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
                                       &min_height);
 
       if (new_width <= 0)
-        new_width = min_width;
+        new_width = min_width * stage_x11->scale_factor;
 
       if (new_height <= 0)
-        new_height = min_height;
+        new_height = min_height * stage_x11->scale_factor;
 
       size_hints->flags = 0;
 
@@ -164,8 +165,8 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
         {
           if (resize)
             {
-              size_hints->min_width = min_width;
-              size_hints->min_height = min_height;
+              size_hints->min_width = min_width * stage_x11->scale_factor;
+              size_hints->min_height = min_height * stage_x11->scale_factor;
               size_hints->flags = PMinSize;
             }
           else
@@ -225,8 +226,8 @@ clutter_stage_x11_get_geometry (ClutterStageWindow    *stage_window,
       return;
     }
 
-  geometry->width = stage_x11->xwin_width;
-  geometry->height = stage_x11->xwin_height;
+  geometry->width = stage_x11->xwin_width / stage_x11->scale_factor;
+  geometry->height = stage_x11->xwin_height / stage_x11->scale_factor;
 }
 
 static void
@@ -244,8 +245,8 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
        * so we need to manually set the size and queue a relayout on the
        * stage here (as is normally done in response to ConfigureNotify).
        */
-      stage_x11->xwin_width = width;
-      stage_x11->xwin_height = height;
+      stage_x11->xwin_width = width * stage_x11->scale_factor;
+      stage_x11->xwin_height = height * stage_x11->scale_factor;
       clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_cogl->wrapper));
       return;
     }
@@ -265,6 +266,9 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
     }
 
   CLUTTER_NOTE (BACKEND, "New size received: (%d, %d)", width, height);
+
+  width *= stage_x11->scale_factor;
+  height *= stage_x11->scale_factor;
 
   if (stage_x11->xwin != None)
     {
@@ -576,11 +580,18 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
   ClutterDeviceManager *device_manager;
   gfloat width, height;
 
-  clutter_actor_get_size (CLUTTER_ACTOR (stage_cogl->wrapper),
-			  &width, &height);
+  clutter_actor_get_size (CLUTTER_ACTOR (stage_cogl->wrapper), &width, &height);
 
-  stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
-                                            width, height);
+  CLUTTER_NOTE (BACKEND, "Wrapper size: %.2f x %.2f", width, height);
+
+  width = width * (float) stage_x11->scale_factor;
+  height = height * (float) stage_x11->scale_factor;
+
+  CLUTTER_NOTE (BACKEND, "Creating a new Cogl onscreen surface: %.2f x %.2f (factor: %d)",
+                width, height,
+                stage_x11->scale_factor);
+
+  stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context, width, height);
 
   /* We just created a window of the size of the actor. No need to fix
      the size of the stage, just update it. */
@@ -823,6 +834,26 @@ clutter_stage_x11_can_clip_redraws (ClutterStageWindow *stage_window)
 }
 
 static void
+clutter_stage_x11_set_scale_factor (ClutterStageWindow *stage_window,
+                                    int                 factor)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  if (stage_x11->fixed_scale_factor)
+    return;
+
+  stage_x11->scale_factor = factor;
+}
+
+static int
+clutter_stage_x11_get_scale_factor (ClutterStageWindow *stage_window)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  return stage_x11->scale_factor;
+}
+
+static void
 clutter_stage_x11_finalize (GObject *gobject)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (gobject);
@@ -855,6 +886,8 @@ clutter_stage_x11_class_init (ClutterStageX11Class *klass)
 static void
 clutter_stage_x11_init (ClutterStageX11 *stage)
 {
+  const char *scale_str;
+
   stage->xwin = None;
   stage->xwin_width = 640;
   stage->xwin_height = 480;
@@ -868,6 +901,20 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->accept_focus = TRUE;
 
   stage->title = NULL;
+
+  scale_str = g_getenv ("CLUTTER_SCALE");
+  if (scale_str != NULL)
+    {
+      CLUTTER_NOTE (BACKEND, "Scale factor set using environment variable: %d ('%s')",
+                    atol (scale_str),
+                    scale_str);
+      stage->fixed_scale_factor = TRUE;
+      stage->scale_factor = atol (scale_str);
+      stage->xwin_width *= stage->scale_factor;
+      stage->xwin_height *= stage->scale_factor;
+    }
+  else
+    stage->scale_factor = 1;
 }
 
 static void
@@ -887,6 +934,8 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->realize = clutter_stage_x11_realize;
   iface->unrealize = clutter_stage_x11_unrealize;
   iface->can_clip_redraws = clutter_stage_x11_can_clip_redraws;
+  iface->set_scale_factor = clutter_stage_x11_set_scale_factor;
+  iface->get_scale_factor = clutter_stage_x11_get_scale_factor;
 }
 
 static inline void
@@ -1008,8 +1057,8 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
             }
 
           clutter_actor_set_size (CLUTTER_ACTOR (stage),
-                                  xevent->xconfigure.width,
-                                  xevent->xconfigure.height);
+                                  xevent->xconfigure.width / stage_x11->scale_factor,
+                                  xevent->xconfigure.height / stage_x11->scale_factor);
 
           CLUTTER_UNSET_PRIVATE_FLAGS (stage_cogl->wrapper, CLUTTER_IN_RESIZE);
 
@@ -1181,10 +1230,10 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
                       expose->width,
                       expose->height);
 
-        clip.x = expose->x;
-        clip.y = expose->y;
-        clip.width = expose->width;
-        clip.height = expose->height;
+        clip.x = expose->x / stage_x11->scale_factor;
+        clip.y = expose->y / stage_x11->scale_factor;
+        clip.width = expose->width / stage_x11->scale_factor;
+        clip.height = expose->height / stage_x11->scale_factor;
         clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stage), &clip);
       }
       break;
@@ -1350,8 +1399,8 @@ set_foreign_window_callback (ClutterActor *actor,
   fwd->stage_x11->xwin = fwd->xwindow;
   fwd->stage_x11->is_foreign_xwin = TRUE;
 
-  fwd->stage_x11->xwin_width = fwd->geom.width;
-  fwd->stage_x11->xwin_height = fwd->geom.height;
+  fwd->stage_x11->xwin_width = fwd->geom.width * fwd->stage_x11->scale_factor;
+  fwd->stage_x11->xwin_height = fwd->geom.height * fwd->stage_x11->scale_factor;
 
   clutter_actor_set_size (actor, fwd->geom.width, fwd->geom.height);
 
@@ -1451,8 +1500,8 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
 
   fwd.geom.x = x;
   fwd.geom.y = y;
-  fwd.geom.width = width;
-  fwd.geom.height = height;
+  fwd.geom.width = width / stage_x11->scale_factor;
+  fwd.geom.height = height / stage_x11->scale_factor;
 
   actor = CLUTTER_ACTOR (stage);
 

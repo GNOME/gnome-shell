@@ -135,6 +135,7 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
   ClutterTranslateReturn res;
   ClutterStage *stage;
   XEvent *xevent;
+  int window_scale;
 
   manager_x11 = CLUTTER_DEVICE_MANAGER_X11 (translator);
   backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
@@ -149,6 +150,8 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
     return CLUTTER_TRANSLATE_CONTINUE;
 
   stage_x11 = CLUTTER_STAGE_X11 (_clutter_stage_get_window (stage));
+
+  window_scale = stage_x11->scale_factor;
 
   event->any.stage = stage;
 
@@ -222,8 +225,8 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
             event->scroll.direction = CLUTTER_SCROLL_RIGHT;
 
           event->scroll.time = xevent->xbutton.time;
-          event->scroll.x = xevent->xbutton.x;
-          event->scroll.y = xevent->xbutton.y;
+          event->scroll.x = xevent->xbutton.x / window_scale;
+          event->scroll.y = xevent->xbutton.y / window_scale;
           event->scroll.modifier_state = xevent->xbutton.state;
           event->scroll.axes = NULL;
           break;
@@ -231,8 +234,8 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
         default:
           event->button.type = event->type = CLUTTER_BUTTON_PRESS;
           event->button.time = xevent->xbutton.time;
-          event->button.x = xevent->xbutton.x;
-          event->button.y = xevent->xbutton.y;
+          event->button.x = xevent->xbutton.x / window_scale;
+          event->button.y = xevent->xbutton.y / window_scale;
           event->button.modifier_state = xevent->xbutton.state;
           event->button.button = xevent->xbutton.button;
           event->button.axes = NULL;
@@ -265,8 +268,8 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
 
       event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
       event->button.time = xevent->xbutton.time;
-      event->button.x = xevent->xbutton.x;
-      event->button.y = xevent->xbutton.y;
+      event->button.x = xevent->xbutton.x / window_scale;
+      event->button.y = xevent->xbutton.y / window_scale;
       event->button.modifier_state = xevent->xbutton.state;
       event->button.button = xevent->xbutton.button;
       event->button.axes = NULL;
@@ -283,8 +286,8 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
 
       event->motion.type = event->type = CLUTTER_MOTION;
       event->motion.time = xevent->xmotion.time;
-      event->motion.x = xevent->xmotion.x;
-      event->motion.y = xevent->xmotion.y;
+      event->motion.x = xevent->xmotion.x / window_scale;
+      event->motion.y = xevent->xmotion.y / window_scale;
       event->motion.modifier_state = xevent->xmotion.state;
       event->motion.axes = NULL;
       clutter_event_set_device (event, manager_x11->core_pointer);
@@ -297,8 +300,8 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
 
       event->crossing.type = CLUTTER_ENTER;
       event->crossing.time = xevent->xcrossing.time;
-      event->crossing.x = xevent->xcrossing.x;
-      event->crossing.y = xevent->xcrossing.y;
+      event->crossing.x = xevent->xcrossing.x / window_scale;
+      event->crossing.y = xevent->xcrossing.y / window_scale;
       event->crossing.source = CLUTTER_ACTOR (stage);
       event->crossing.related = NULL;
       clutter_event_set_device (event, manager_x11->core_pointer);
@@ -323,8 +326,8 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
 
       event->crossing.type = CLUTTER_LEAVE;
       event->crossing.time = xevent->xcrossing.time;
-      event->crossing.x = xevent->xcrossing.x;
-      event->crossing.y = xevent->xcrossing.y;
+      event->crossing.x = xevent->xcrossing.x / window_scale;
+      event->crossing.y = xevent->xcrossing.y / window_scale;
       event->crossing.source = CLUTTER_ACTOR (stage);
       event->crossing.related = NULL;
       clutter_event_set_device (event, manager_x11->core_pointer);

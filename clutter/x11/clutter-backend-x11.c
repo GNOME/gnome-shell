@@ -165,7 +165,7 @@ clutter_backend_x11_xsettings_notify (const char       *name,
     {
       if (g_strcmp0 (name, CLUTTER_SETTING_X11_NAME (i)) == 0)
         {
-          GValue value = { 0, };
+          GValue value = G_VALUE_INIT;
 
           switch (setting->type)
             {
