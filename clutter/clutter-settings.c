@@ -31,6 +31,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-settings-private.h"
+#include "clutter-stage-private.h"
 #include "clutter-private.h"
 
 #define DEFAULT_FONT_NAME       "Sans 12"
@@ -61,6 +62,7 @@ struct _ClutterSettings
   gdouble resolution;
 
   gchar *font_name;
+  gint font_dpi;
 
   gint xft_hinting;
   gint xft_antialias;
@@ -72,6 +74,9 @@ struct _ClutterSettings
   guint last_fontconfig_timestamp;
 
   guint password_hint_time;
+
+  gint window_scaling_factor;
+  gint unscaled_font_dpi;
 };
 
 struct _ClutterSettingsClass
@@ -103,6 +108,9 @@ enum
   PROP_FONTCONFIG_TIMESTAMP,
 
   PROP_PASSWORD_HINT_TIME,
+
+  PROP_WINDOW_SCALING_FACTOR,
+  PROP_UNSCALED_FONT_DPI,
 
   PROP_LAST
 };
@@ -173,14 +181,12 @@ settings_update_font_options (ClutterSettings *self)
                 " - antialias:  %d\n"
                 " - hinting:    %d\n"
                 " - hint-style: %s\n"
-                " - rgba:       %s\n"
-                " - dpi:        %.2f",
+                " - rgba:       %s\n",
                 self->font_name != NULL ? self->font_name : DEFAULT_FONT_NAME,
                 self->xft_antialias,
                 self->xft_hinting,
                 self->xft_hint_style != NULL ? self->xft_hint_style : "<null>",
-                self->xft_rgba != NULL ? self->xft_rgba : "<null>",
-                self->resolution);
+                self->xft_rgba != NULL ? self->xft_rgba : "<null>");
 
   clutter_backend_set_font_options (self->backend, options);
   cairo_font_options_destroy (options);
@@ -198,7 +204,16 @@ settings_update_font_name (ClutterSettings *self)
 static void
 settings_update_resolution (ClutterSettings *self)
 {
-  CLUTTER_NOTE (BACKEND, "New resolution: %.2f", self->resolution);
+  if (self->unscaled_font_dpi > 0)
+    self->resolution = (gdouble) self->unscaled_font_dpi / 1024.0;
+  else if (self->font_dpi > 0)
+    self->resolution = (gdouble) self->font_dpi / 1024.0;
+  else
+    self->resolution = 96.0;
+
+  CLUTTER_NOTE (BACKEND, "New resolution: %.2f (%s)",
+                self->resolution,
+                self->unscaled_font_dpi > 0 ? "unscaled" : "scaled");
 
   if (self->backend != NULL)
     g_signal_emit_by_name (self->backend, "resolution-changed");
@@ -244,6 +259,22 @@ settings_update_fontmap (ClutterSettings *self,
         g_signal_emit_by_name (self->backend, "font-changed");
     }
 #endif /* HAVE_PANGO_FT2 */
+}
+
+static void
+settings_update_window_scale (ClutterSettings *self)
+{
+  ClutterStageManager *manager;
+  const GSList *stages, *l;
+
+  manager = clutter_stage_manager_get_default ();
+  stages = clutter_stage_manager_peek_stages (manager);
+  for (l = stages; l != NULL; l = l->next)
+    {
+      ClutterStage *stage = l->data;
+
+      _clutter_stage_set_scale_factor (stage, self->window_scaling_factor);
+    }
 }
 
 static void
@@ -296,7 +327,7 @@ clutter_settings_set_property (GObject      *gobject,
       break;
 
     case PROP_FONT_DPI:
-      self->resolution = (gdouble) g_value_get_int (value) / 1024.0;
+      self->font_dpi = g_value_get_int (value);
       settings_update_resolution (self);
       break;
 
@@ -327,6 +358,16 @@ clutter_settings_set_property (GObject      *gobject,
 
     case PROP_PASSWORD_HINT_TIME:
       self->password_hint_time = g_value_get_uint (value);
+      break;
+
+    case PROP_WINDOW_SCALING_FACTOR:
+      self->window_scaling_factor = g_value_get_int (value);
+      settings_update_window_scale (self);
+      break;
+
+    case PROP_UNSCALED_FONT_DPI:
+      self->unscaled_font_dpi = g_value_get_int (value);
+      settings_update_resolution (self);
       break;
 
     default:
@@ -533,6 +574,23 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                       CLUTTER_PARAM_READWRITE);
 
   /**
+   * ClutterSettings:unscaled-font-dpi:
+   *
+   * The DPI used when rendering unscaled text, as a value of 1024 * dots/inch.
+   *
+   * If set to -1, the system's default will be used instead
+   *
+   * Since: 1.4
+   */
+  obj_props[PROP_UNSCALED_FONT_DPI] =
+    g_param_spec_int ("unscaled-font-dpi",
+                      P_("Font DPI"),
+                      P_("The resolution of the font, in 1024 * dots/inch, or -1 to use the default"),
+                      -1, 1024 * 1024,
+                      -1,
+                      CLUTTER_PARAM_WRITABLE);
+
+  /**
    * ClutterSettings:font-hinting:
    *
    * Whether or not to use hinting when rendering text; a value of 1
@@ -609,6 +667,14 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                       0, G_MAXINT,
                       500,
                       CLUTTER_PARAM_READWRITE);
+
+  obj_props[PROP_WINDOW_SCALING_FACTOR] =
+    g_param_spec_int ("window-scaling-factor",
+                      P_("Window Scaling Factor"),
+                      P_("The scaling factor to be applied to windows"),
+                      1, G_MAXINT,
+                      1,
+                      CLUTTER_PARAM_WRITABLE);
 
   obj_props[PROP_FONTCONFIG_TIMESTAMP] =
     g_param_spec_uint ("fontconfig-timestamp",
