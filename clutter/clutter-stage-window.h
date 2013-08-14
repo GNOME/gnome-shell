@@ -84,6 +84,10 @@ struct _ClutterStageWindowIface
   CoglFramebuffer  *(* get_active_framebuffer)  (ClutterStageWindow *stage_window);
 
   gboolean          (* can_clip_redraws)        (ClutterStageWindow *stage_window);
+
+  void              (* set_scale_factor)        (ClutterStageWindow *stage_window,
+                                                 int                 factor);
+  int               (* get_scale_factor)        (ClutterStageWindow *stage_window);
 };
 
 GType _clutter_stage_window_get_type (void) G_GNUC_CONST;
@@ -136,6 +140,10 @@ void              _clutter_stage_window_get_dirty_pixel         (ClutterStageWin
 CoglFramebuffer  *_clutter_stage_window_get_active_framebuffer  (ClutterStageWindow *window);
 
 gboolean          _clutter_stage_window_can_clip_redraws        (ClutterStageWindow *window);
+
+void              _clutter_stage_window_set_scale_factor        (ClutterStageWindow *window,
+                                                                 int                 factor);
+int               _clutter_stage_window_get_scale_factor        (ClutterStageWindow *window);
 
 G_END_DECLS
 
