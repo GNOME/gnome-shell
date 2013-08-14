@@ -27,3 +27,4 @@
 void meta_idle_monitor_handle_xevent_all (XEvent *xevent);
 
 
+void meta_idle_monitor_init_dbus (void);

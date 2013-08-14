@@ -975,8 +975,10 @@ meta_display_open (void)
 
     meta_error_trap_pop (the_display);
   }
-  
-  meta_display_ungrab (the_display);  
+
+  meta_idle_monitor_init_dbus ();
+
+  meta_display_ungrab (the_display);
 
   /* Done opening new display */
   the_display->display_opening = FALSE;
@@ -2265,8 +2267,8 @@ event_callback (XEvent   *event,
           meta_window_update_sync_request_counter (alarm_window, new_counter_value);
           filter_out_event = TRUE; /* GTK doesn't want to see this really */
         }
-
-      meta_idle_monitor_handle_xevent_all (event);
+      else
+        meta_idle_monitor_handle_xevent_all (event);
     }
 #endif /* HAVE_XSYNC */
 
