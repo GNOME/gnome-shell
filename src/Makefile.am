@@ -226,14 +226,6 @@ shell_recorder_private_sources =  \
 
 shell_private_sources += $(shell_recorder_private_sources)
 
-noinst_PROGRAMS += test-recorder
-
-test_recorder_CPPFLAGS = $(TEST_SHELL_RECORDER_CFLAGS)
-test_recorder_LDADD = $(TEST_SHELL_RECORDER_LIBS)
-
-test_recorder_SOURCES =     \
-	$(shell_recorder_sources) $(shell_recorder_private_sources) \
-	test-recorder.c
 endif BUILD_RECORDER
 
 ########################################

@@ -14,11 +14,14 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
+#include <cogl/cogl.h>
+#include <meta/screen.h>
+#include <meta/meta-cursor-tracker.h>
+
 #include "shell-recorder-src.h"
 #include "shell-recorder.h"
 
 #include <clutter/x11/clutter-x11.h>
-#include <X11/extensions/Xfixes.h>
 #include <X11/extensions/XInput.h>
 #include <X11/extensions/XInput2.h>
 
@@ -64,14 +67,13 @@ struct _ShellRecorder {
   int pointer_x;
   int pointer_y;
 
-  gboolean have_xfixes;
-  int xfixes_event_base;
-
   int xinput_opcode;
 
   GSettings *a11y_settings;
   gboolean draw_cursor;
+  MetaCursorTracker *cursor_tracker;
   cairo_surface_t *cursor_image;
+  guint8 *cursor_memory;
   int cursor_hot_x;
   int cursor_hot_y;
 
@@ -121,6 +123,7 @@ static void recorder_pipeline_closed   (RecorderPipeline *pipeline);
 
 enum {
   PROP_0,
+  PROP_SCREEN,
   PROP_STAGE,
   PROP_FRAMERATE,
   PROP_PIPELINE,
@@ -242,6 +245,8 @@ shell_recorder_finalize (GObject  *object)
 
   if (recorder->cursor_image)
     cairo_surface_destroy (recorder->cursor_image);
+  if (recorder->cursor_memory)
+    g_free (recorder->cursor_memory);
 
   recorder_set_stage (recorder, NULL);
   recorder_set_pipeline (recorder, NULL);
@@ -322,38 +327,24 @@ recorder_remove_redraw_timeout (ShellRecorder *recorder)
 static void
 recorder_fetch_cursor_image (ShellRecorder *recorder)
 {
-  XFixesCursorImage *cursor_image;
-  guchar *data;
+  CoglTexture *texture;
+  int width, height;
   int stride;
-  int i, j;
+  guint8 *data;
 
-  if (!recorder->have_xfixes)
-    return;
+  texture = meta_cursor_tracker_get_sprite (recorder->cursor_tracker);
+  width = cogl_texture_get_width (texture);
+  height = cogl_texture_get_height (texture);
+  stride = 4 * width;
+  data = g_new (guint8, stride * height);
+  cogl_texture_get_data (texture, CLUTTER_CAIRO_FORMAT_ARGB32, stride, data);
 
-  cursor_image = XFixesGetCursorImage (clutter_x11_get_default_display ());
-  if (!cursor_image)
-    return;
-
-  recorder->cursor_hot_x = cursor_image->xhot;
-  recorder->cursor_hot_y = cursor_image->yhot;
-
-  recorder->cursor_image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                                       cursor_image->width,
-                                                       cursor_image->height);
-
-  /* The pixel data (in typical Xlib breakage) is longs even on
-   * 64-bit platforms, so we have to data-convert there. For simplicity,
-   * just do it always
-   */
-  data = cairo_image_surface_get_data (recorder->cursor_image);
-  stride = cairo_image_surface_get_stride (recorder->cursor_image);
-  for (i = 0; i < cursor_image->height; i++)
-    for (j = 0; j < cursor_image->width; j++)
-      *(guint32 *)(data + i * stride + 4 * j) = cursor_image->pixels[i * cursor_image->width + j];
-
-  cairo_surface_mark_dirty (recorder->cursor_image);
-
-  XFree (cursor_image);
+  /* FIXME: cairo-gl? */
+  recorder->cursor_image = cairo_image_surface_create_for_data (data,
+                                                                CAIRO_FORMAT_ARGB32,
+                                                                width, height,
+                                                                stride);
+  recorder->cursor_memory = data;
 }
 
 /* Overlay the cursor image on the frame. We draw the cursor image
@@ -546,6 +537,24 @@ recorder_queue_redraw (ShellRecorder *recorder)
                                              recorder_idle_redraw, recorder, NULL);
 }
 
+static void
+on_cursor_changed (MetaCursorTracker *tracker,
+                   ShellRecorder     *recorder)
+{
+  if (recorder->cursor_image)
+    {
+      cairo_surface_destroy (recorder->cursor_image);
+      recorder->cursor_image = NULL;
+    }
+  if (recorder->cursor_memory)
+    {
+      g_free (recorder->cursor_memory);
+      recorder->cursor_memory = NULL;
+    }
+
+  recorder_queue_redraw (recorder);
+}
+
 /* We use an event filter on the stage to get the XFixesCursorNotifyEvent
  * and also to track cursor position (when the cursor is over the stage's
  * input area); tracking cursor position here rather than with ClutterEvent
@@ -567,23 +576,8 @@ recorder_event_filter (XEvent        *xev,
       xev->xcookie.extension == recorder->xinput_opcode)
     input_event = (XIEvent *) xev->xcookie.data;
 
-  if (xev->xany.type == recorder->xfixes_event_base + XFixesCursorNotify)
-    {
-      XFixesCursorNotifyEvent *notify_event = (XFixesCursorNotifyEvent *)xev;
-
-      if (notify_event->subtype == XFixesDisplayCursorNotify)
-        {
-          if (recorder->cursor_image)
-            {
-              cairo_surface_destroy (recorder->cursor_image);
-              recorder->cursor_image = NULL;
-            }
-
-          recorder_queue_redraw (recorder);
-        }
-    }
-  else if (input_event != NULL &&
-           input_event->evtype == XI_Motion)
+  if (input_event != NULL &&
+      input_event->evtype == XI_Motion)
     {
       XIDeviceEvent *device_event = (XIDeviceEvent *) input_event;
       if (device_event->deviceid == VIRTUAL_CORE_POINTER_ID)
@@ -807,14 +801,6 @@ recorder_set_stage (ShellRecorder *recorder,
 
       recorder_update_size (recorder);
 
-      recorder->have_xfixes = XFixesQueryExtension (clutter_x11_get_default_display (),
-                                                    &recorder->xfixes_event_base,
-                                                    &error_base);
-      if (recorder->have_xfixes)
-        XFixesSelectCursorInput (clutter_x11_get_default_display (),
-                                   clutter_x11_get_stage_window (stage),
-                                 XFixesDisplayCursorNotifyMask);
-
       if (XQueryExtension (clutter_x11_get_default_display (),
                            "XInputExtension",
                            &recorder->xinput_opcode,
@@ -841,6 +827,22 @@ recorder_set_stage (ShellRecorder *recorder,
 
       recorder_get_initial_cursor_position (recorder);
     }
+}
+
+static void
+recorder_set_screen (ShellRecorder *recorder,
+                     MetaScreen    *screen)
+{
+  MetaCursorTracker *tracker;
+
+  tracker = meta_cursor_tracker_get_for_screen (screen);
+
+  if (tracker == recorder->cursor_tracker)
+    return;
+
+  recorder->cursor_tracker = tracker;
+  g_signal_connect_object (tracker, "cursor-changed",
+                           G_CALLBACK (on_cursor_changed), recorder, 0);
 }
 
 static void
@@ -918,6 +920,9 @@ shell_recorder_set_property (GObject      *object,
 
   switch (prop_id)
     {
+    case PROP_SCREEN:
+      recorder_set_screen (recorder, g_value_get_object (value));
+      break;
     case PROP_STAGE:
       recorder_set_stage (recorder, g_value_get_object (value));
       break;
@@ -978,6 +983,14 @@ shell_recorder_class_init (ShellRecorderClass *klass)
   gobject_class->finalize = shell_recorder_finalize;
   gobject_class->get_property = shell_recorder_get_property;
   gobject_class->set_property = shell_recorder_set_property;
+
+  g_object_class_install_property (gobject_class,
+                                   PROP_SCREEN,
+                                   g_param_spec_object ("screen",
+                                                        "Screen",
+                                                        "Screen to record",
+                                                        META_TYPE_SCREEN,
+                                                        G_PARAM_WRITABLE));
 
   g_object_class_install_property (gobject_class,
                                    PROP_STAGE,
