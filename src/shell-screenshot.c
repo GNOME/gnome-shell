@@ -3,14 +3,13 @@
 #define COGL_ENABLE_EXPERIMENTAL_API
 #define CLUTTER_ENABLE_EXPERIMENTAL_API
 
-#include <X11/extensions/Xfixes.h>
-#include <clutter/x11/clutter-x11.h>
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
 #include <meta/display.h>
 #include <meta/util.h>
 #include <meta/meta-plugin.h>
 #include <meta/meta-shaped-texture.h>
+#include <meta/meta-cursor-tracker.h>
 
 #include "shell-global.h"
 #include "shell-screenshot.h"
@@ -246,58 +245,70 @@ do_grab_screenshot (_screenshot_data *screenshot_data,
 }
 
 static void
-_draw_cursor_image (cairo_surface_t *surface,
-                    cairo_rectangle_int_t area)
+get_pointer_coords (int *x,
+                    int *y)
 {
-  XFixesCursorImage *cursor_image;
+  ClutterDeviceManager *manager;
+  ClutterInputDevice *device;
+  ClutterPoint point;
 
+  manager = clutter_device_manager_get_default ();
+  device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
+
+  clutter_input_device_get_coords (device, NULL, &point);
+  *x = point.x;
+  *y = point.y;
+}
+
+static void
+_draw_cursor_image (MetaCursorTracker     *tracker,
+                    cairo_surface_t       *surface,
+                    cairo_rectangle_int_t  area)
+{
+  CoglTexture *texture;
+  int width, height;
+  int stride;
+  guint8 *data;
   cairo_surface_t *cursor_surface;
   cairo_region_t *screenshot_region;
   cairo_t *cr;
-
-  guchar *data;
-  int stride;
-  int i, j;
-
-  cursor_image = XFixesGetCursorImage (clutter_x11_get_default_display ());
-
-  if (!cursor_image)
-    return;
+  int x, y;
+  int xhot, yhot;
 
   screenshot_region = cairo_region_create_rectangle (&area);
+  get_pointer_coords (&x, &y);
 
-  if (!cairo_region_contains_point (screenshot_region, cursor_image->x, cursor_image->y))
+  if (!cairo_region_contains_point (screenshot_region, x, y))
     {
-       XFree (cursor_image);
-       cairo_region_destroy (screenshot_region);
-       return;
+      cairo_region_destroy (screenshot_region);
+      return;
     }
 
-  cursor_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, cursor_image->width, cursor_image->height);
+  texture = meta_cursor_tracker_get_sprite (tracker);
+  meta_cursor_tracker_get_hot (tracker, &xhot, &yhot);
+  width = cogl_texture_get_width (texture);
+  height = cogl_texture_get_height (texture);
+  stride = 4 * width;
+  data = g_new (guint8, stride * height);
+  cogl_texture_get_data (texture, CLUTTER_CAIRO_FORMAT_ARGB32, stride, data);
 
-  /* The pixel data (in typical Xlib breakage) is longs even on
-   * 64-bit platforms, so we have to data-convert there. For simplicity,
-   * just do it always
-   */
-  data = cairo_image_surface_get_data (cursor_surface);
-  stride = cairo_image_surface_get_stride (cursor_surface);
-  for (i = 0; i < cursor_image->height; i++)
-    for (j = 0; j < cursor_image->width; j++)
-      *(guint32 *)(data + i * stride + 4 * j) = cursor_image->pixels[i * cursor_image->width + j];
-
-  cairo_surface_mark_dirty (cursor_surface);
+  /* FIXME: cairo-gl? */
+  cursor_surface = cairo_image_surface_create_for_data (data,
+                                                        CAIRO_FORMAT_ARGB32,
+                                                        width, height,
+                                                        stride);
 
   cr = cairo_create (surface);
   cairo_set_source_surface (cr,
                             cursor_surface,
-                            cursor_image->x - cursor_image->xhot - area.x,
-                            cursor_image->y - cursor_image->yhot - area.y);
+                            x - xhot - area.x,
+                            y - yhot - area.y);
   cairo_paint (cr);
 
   cairo_destroy (cr);
   cairo_surface_destroy (cursor_surface);
   cairo_region_destroy (screenshot_region);
-  XFree (cursor_image);
+  g_free (data);
 }
 
 static void
@@ -305,6 +316,7 @@ grab_screenshot (ClutterActor *stage,
                  _screenshot_data *screenshot_data)
 {
   MetaScreen *screen = shell_global_get_screen (screenshot_data->screenshot->global);
+  MetaCursorTracker *tracker;
   int width, height;
   GSimpleAsyncResult *result;
   GSettings *settings;
@@ -359,7 +371,10 @@ grab_screenshot (ClutterActor *stage,
   settings = g_settings_new (A11Y_APPS_SCHEMA);
   if (screenshot_data->include_cursor &&
       !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
-    _draw_cursor_image (screenshot_data->image, screenshot_data->screenshot_area);
+    {
+      tracker = meta_cursor_tracker_get_for_screen (screen);
+      _draw_cursor_image (tracker, screenshot_data->image, screenshot_data->screenshot_area);
+    }
   g_object_unref (settings);
 
   g_signal_handlers_disconnect_by_func (stage, (void *)grab_screenshot, (gpointer)screenshot_data);
@@ -488,6 +503,7 @@ shell_screenshot_screenshot_window (ShellScreenshot *screenshot,
   _screenshot_data *screenshot_data = g_new0 (_screenshot_data, 1);
 
   MetaScreen *screen = shell_global_get_screen (screenshot->global);
+  MetaCursorTracker *tracker;
   MetaDisplay *display = meta_screen_get_display (screen);
   MetaWindow *window = meta_display_get_focus_window (display);
   ClutterActor *window_actor;
@@ -543,7 +559,10 @@ shell_screenshot_screenshot_window (ShellScreenshot *screenshot,
 
   settings = g_settings_new (A11Y_APPS_SCHEMA);
   if (include_cursor && !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
-    _draw_cursor_image (screenshot_data->image, screenshot_data->screenshot_area);
+    {
+      tracker = meta_cursor_tracker_get_for_screen (screen);
+      _draw_cursor_image (tracker, screenshot_data->image, screenshot_data->screenshot_area);
+    }
   g_object_unref (settings);
 
   result = g_simple_async_result_new (NULL, on_screenshot_written, (gpointer)screenshot_data, shell_screenshot_screenshot_window);
