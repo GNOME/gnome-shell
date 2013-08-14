@@ -467,6 +467,25 @@ _clutter_input_device_set_state (ClutterInputDevice  *device,
   device->current_state = state;
 }
 
+/**
+ * clutter_input_device_get_modifier_state:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the current modifiers state of the device, as seen
+ * by the last event Clutter processed.
+ *
+ * Return value: the last known modifier state
+ *
+ * Since: 1.16
+ */
+ClutterModifierType
+clutter_input_device_get_modifier_state (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), 0);
+
+  return device->current_state;
+}
+
 /*< private >
  * clutter_input_device_set_time:
  * @device: a #ClutterInputDevice
