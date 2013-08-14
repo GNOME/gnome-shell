@@ -2,6 +2,7 @@
 
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Meta = imports.gi.Meta;
 const GnomeDesktop = imports.gi.GnomeDesktop;
 const Shell = imports.gi.Shell;
 
@@ -41,7 +42,7 @@ const PointerWatcher = new Lang.Class({
     Name: 'PointerWatcher',
 
     _init: function() {
-        this._idleMonitor = new GnomeDesktop.IdleMonitor();
+        this._idleMonitor = Meta.IdleMonitor.get_core();
         this._idleMonitor.add_idle_watch(IDLE_TIME, Lang.bind(this, this._onIdleMonitorBecameIdle));
         this._idle = this._idleMonitor.get_idletime() > IDLE_TIME;
         this._watches = [];

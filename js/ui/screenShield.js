@@ -592,7 +592,7 @@ const ScreenShield = new Lang.Class({
                                                       fadeFactor: 1 });
         this._shortLightbox.connect('shown', Lang.bind(this, this._onShortLightboxShown));
 
-        this.idleMonitor = new GnomeDesktop.IdleMonitor();
+        this.idleMonitor = Meta.IdleMonitor.get_core();
     },
 
     _createBackground: function(monitorIndex) {
