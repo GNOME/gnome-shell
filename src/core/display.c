@@ -53,6 +53,7 @@
 #include <X11/Xatom.h>
 #include <X11/cursorfont.h>
 #include "mutter-enum-types.h"
+#include "meta-idle-monitor-private.h"
 
 #ifdef HAVE_RANDR
 #include <X11/extensions/Xrandr.h>
@@ -2264,6 +2265,8 @@ event_callback (XEvent   *event,
           meta_window_update_sync_request_counter (alarm_window, new_counter_value);
           filter_out_event = TRUE; /* GTK doesn't want to see this really */
         }
+
+      meta_idle_monitor_handle_xevent_all (event);
     }
 #endif /* HAVE_XSYNC */
 
