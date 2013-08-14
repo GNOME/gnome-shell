@@ -126,6 +126,8 @@ libmutter_la_SOURCES =				\
 	core/main.c				\
 	core/meta-cursor-tracker.c		\
 	core/meta-cursor-tracker-private.h	\
+	core/meta-idle-monitor.c		\
+	core/meta-idle-monitor-private.h	\
 	core/mutter-Xatomtype.h			\
 	core/place.c				\
 	core/place.h				\
@@ -213,6 +215,7 @@ libmutterinclude_base_headers =		\
 	meta/meta-background-group.h		\
 	meta/meta-background.h			\
 	meta/meta-cursor-tracker.h		\
+	meta/meta-idle-monitor.h		\
 	meta/meta-plugin.h			\
 	meta/meta-shaped-texture.h		\
 	meta/meta-shadow-factory.h		\
