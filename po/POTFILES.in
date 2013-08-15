@@ -1,7 +1,6 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 [encoding: UTF-8]
-data/50-gnome-shell-screenshot.xml.in
 data/50-gnome-shell-system.xml.in
 data/gnome-shell.desktop.in.in
 data/gnome-shell-extension-prefs.desktop.in.in
@@ -20,7 +19,6 @@ js/ui/components/autorunManager.js
 js/ui/components/keyring.js
 js/ui/components/networkAgent.js
 js/ui/components/polkitAgent.js
-js/ui/components/recorder.js
 js/ui/components/telepathyClient.js
 js/ui/ctrlAltTab.js
 js/ui/dash.js
