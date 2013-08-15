@@ -142,20 +142,23 @@ const BackgroundCache = new Lang.Class({
                                         cancellable: null,
                                         onFinished: null });
 
-        let fileLoad = { filename: params.filename,
-                         style: params.style,
-                         shouldCopy: false,
-                         monitorIndex: params.monitorIndex,
-                         effects: params.effects,
-                         onFinished: params.onFinished,
-                         cancellable: new Gio.Cancellable(), };
-        this._pendingFileLoads.push(fileLoad);
-
-        if (params.cancellable) {
-            params.cancellable.connect(Lang.bind(this, function(c) {
-               fileLoad.cancellable.cancel();
-            }));
+        for (let i = 0; i < this._pendingFileLoads.length; i++) {
+            if (this._pendingFileLoads[i].filename == params.filename &&
+                this._pendingFileLoads[i].style == params.style) {
+                this._pendingFileLoads[i].callers.push({ shouldCopy: true,
+                                                         monitorIndex: params.monitorIndex,
+                                                         effects: params.effects,
+                                                         onFinished: params.onFinished });
+                return;
+            }
         }
+
+        this._pendingFileLoads.push({ filename: params.filename,
+                                      style: params.style,
+                                      callers: [{ shouldCopy: false,
+                                                  monitorIndex: params.monitorIndex,
+                                                  effects: params.effects,
+                                                  onFinished: params.onFinished }] });
 
         let content = new Meta.Background({ meta_screen: global.screen,
                                             monitor: params.monitorIndex,
@@ -163,19 +166,9 @@ const BackgroundCache = new Lang.Class({
 
         content.load_file_async(params.filename,
                                 params.style,
-                                fileLoad.cancellable,
+                                params.cancellable,
                                 Lang.bind(this,
                                           function(object, result) {
-                                              if (fileLoad.cancellable.is_cancelled()) {
-                                                  if (params.cancellable && params.cancellable.is_cancelled()) {
-                                                      if (params.onFinished)
-                                                          params.onFinished(null);
-                                                      this._removePendingFileLoad(fileLoad);
-                                                      return;
-                                                  }
-                                                  return;
-                                              }
-
                                               try {
                                                   content.load_file_finish(result);
 
@@ -185,39 +178,27 @@ const BackgroundCache = new Lang.Class({
                                                   content = null;
                                               }
 
-                                              let needsCopy = false;
                                               for (let i = 0; i < this._pendingFileLoads.length; i++) {
                                                   let pendingLoad = this._pendingFileLoads[i];
                                                   if (pendingLoad.filename != params.filename ||
                                                       pendingLoad.style != params.style)
                                                       continue;
 
-                                                  if (pendingLoad.cancellable.is_cancelled())
-                                                      continue;
+                                                  for (let j = 0; j < pendingLoad.callers.length; j++) {
+                                                      if (pendingLoad.callers[j].onFinished) {
+                                                          if (content && pendingLoad.callers[j].shouldCopy) {
+                                                              content = object.copy(pendingLoad.callers[j].monitorIndex,
+                                                                                    pendingLoad.callers[j].effects);
 
-                                                  pendingLoad.cancellable.cancel();
-                                                  if (pendingLoad.onFinished) {
-                                                      if (content && needsCopy) {
-                                                          content = object.copy(pendingLoad.monitorIndex,
-                                                                                pendingLoad.effects);
+                                                          }
+
+                                                          pendingLoad.callers[j].onFinished(content);
                                                       }
-
-                                                      needsCopy = true;
-                                                      pendingLoad.onFinished(content);
                                                   }
 
                                                   this._pendingFileLoads.splice(i, 1);
                                               }
                                           }));
-    },
-
-    _removePendingFileLoad: function(fileLoad) {
-        for (let i = 0; i < this._pendingFileLoads.length; i++) {
-            if (this._pendingFileLoads[i].cancellable == fileLoad.cancellable) {
-                this._pendingFileLoads.splice(i, 1);
-                break;
-            }
-        }
     },
 
     getImageContent: function(params) {
