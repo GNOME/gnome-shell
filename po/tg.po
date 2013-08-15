@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Tajik Gnome\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-13 19:16+0000\n"
-"PO-Revision-Date: 2013-08-14 13:53+0500\n"
+"POT-Creation-Date: 2013-08-15 02:54+0000\n"
+"PO-Revision-Date: 2013-08-15 11:56+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: \n"
 "Language: Tajik\n"
@@ -18,14 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=1;\n"
 "X-Generator: Poedit 1.5.7\n"
-
-#: ../data/50-gnome-shell-screenshot.xml.in.h:1
-msgid "Screenshots"
-msgstr "Суратҳои экран"
-
-#: ../data/50-gnome-shell-screenshot.xml.in.h:2
-msgid "Record a screencast"
-msgstr "Сабти рӯйдодҳои экран"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -231,86 +223,18 @@ msgid "Keybinding to focus the active notification."
 msgstr "Тугма барои гузоштани фокус ба огоҳии фаъол."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
-msgid "Keybinding to toggle the screen recorder"
-msgstr "Тугма барои иваз кардани сабткунандаи экран"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
-msgid "Keybinding to start/stop the builtin screen recorder."
-msgstr "Тугма барои оғоз/қатъ кардани сабткунандаи экрани дарунсохт."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Which keyboard to use"
 msgstr "Клавиатураро интихоб кунед"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "The type of keyboard to use."
 msgstr "Намуди клавиатура барои истифода."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
-msgid "Framerate used for recording screencasts."
-msgstr ""
-"Миқдори кадрҳо дар сония, ки барои сабти рӯйдодҳои экран истифода мешавад."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
-"Миқдори кадрҳо дар як сония барои сабти рӯйдодҳои экран, ки бо сабткунандаи "
-"рӯйдодҳои экрани GNOME Shell сабт шудааст, дар кадрҳо дар як сония."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr ""
-"Лӯламаҷрои gstreamer, ки барои рамзӣ кардани рӯйдодҳои экран истифода мешавад"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
-#, no-c-format
-msgid ""
-"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
-"used for gst-launch. The pipeline should have an unconnected sink pad where "
-"the recorded video is recorded. It will normally have a unconnected source "
-"pad; output from that pad will be written into the output file. However the "
-"pipeline can also take care of its own output - this might be used to send "
-"the output to an icecast server via shout2send or similar. When unset or set "
-"to an empty value, the default pipeline will be used. This is currently "
-"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
-"threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
-"used as a placeholder for a guess at the optimal thread count on the system."
-msgstr ""
-"Лӯламаҷрои GStreamer-ро, ки барои рамзӣ кардани сабтҳо истифода мешаванд, "
-"таъин мекунад. Он наҳвро, ки барои gst-launch истифода мешавад, риоя "
-"мекунад. Лӯламаҷро бояд қабати қабулкунандаи пайвастнашуда дошта бошад, ки "
-"дар он видеои сабтшаванда сабт мешавад. Одатан он дорои қабати "
-"пайвастнашудаи аслӣ мешавад; натиҷаи он қабат ба файли натиҷаҳо навишта "
-"мешавад. Аммо лӯламаҷро метавонад инчунин натиҷаи худро истифода барад - ин "
-"метавонад барои фиристодани натиҷа ба сервери icecast тавассути shout2send ё "
-"монанд истифода шавад. Агар ин таъин шуда набошад, ё ки ба қимати холӣ таъин "
-"шуда бошад, лӯламаҷрои пешфарз истифода мешавад. Дар айни ҳол ин чунин "
-"мебошад: \"vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 "
-"deadline=1000000 threads=%T ! queue ! webmmux\", ва тавассути кодеки VP8 ба "
-"формати WEBM сабт мекунад. %T ҳамчун пуркунандаи фазо барои ҳисоби тақрибӣ "
-"дар миқдори беҳтарини риштаҳо дар система истифода мешавад."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
-msgid "File extension used for storing the screencast"
-msgstr "Пасванди файл, ки барои нигоҳ доштани рӯйдодҳои экран истифода мешавад"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
-msgid ""
-"The filename for recorded screencasts will be a unique filename based on the "
-"current date, and use this extension. It should be changed when recording to "
-"a different container format."
-msgstr ""
-"Номи файл барои рӯйдодҳои экрани сабтшуда номи ягонаи файл мебошад, ки бо "
-"санаи ҷорӣ асос меёбад ва ин пасвандро истифода мебарад. Вақте ки ба формати "
-"дигари дарбаргиранда сабт рафта истода бошад, он бояд тағйир дода шавад."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "The application icon mode."
 msgstr "Ҳолати нишонаи барнома."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -321,22 +245,22 @@ msgstr ""
 "равзанаро намоиш медиҳад), \"танҳо нишонаи барнома\" (танҳо нишонаи "
 "барномаро намоиш медиҳад) ё \"ҳар ду\"."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Attach modal dialog to the parent window"
 msgstr "Замима кардани равзанаи гуфтугӯи модалӣ ба равзанаи асосӣ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Ин калид ҳангоми иҷроиши GNOME Shell калиди дар org.gnome.mutter "
 "ҷойгирбударо бекор мекунад."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Мураттабсозии тугмаҳо дар сарлавҳаи равзана"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
@@ -344,17 +268,17 @@ msgstr ""
 "Ин калид ҳангоми иҷроиши GNOME Shell калиди дар org.gnome.desktop.wm."
 "preferences ҷойгирбударо бекор мекунад."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:46
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Фаъол кардани лавҳабандии канорӣ ҳангоми гузоштани равзанаҳо ба канорҳои "
 "экран"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:47
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "Workspaces are managed dynamically"
 msgstr "Фазоҳои корӣ ба таври серамалӣ идора мешаванд"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:48
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid "Workspaces only on primary monitor"
 msgstr "Танҳо фазоҳои корӣ дар монитори асосӣ"
 
@@ -378,7 +302,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:142 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:635
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:651
 #: ../js/ui/status/system.js:373
 msgid "Cancel"
 msgstr "Бекор кардан"
@@ -673,7 +597,7 @@ msgid "Type again:"
 msgstr "Аз нав ворид кунед:"
 
 #: ../js/ui/components/networkAgent.js:132 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:638
+#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:654
 msgid "Connect"
 msgstr "Пайваст шудан"
 
@@ -768,12 +692,6 @@ msgstr "Санҷиши ҳаққоният"
 #: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Мутаассифона, ин амал иҷро нашуд. Лутфан, амалро такрор кунед."
-
-#. Translators: this is a filename used for screencast recording
-#: ../js/ui/components/recorder.js:47
-#, no-c-format
-msgid "Screencast from %d %t"
-msgstr "Рӯйдодҳои экран аз %d %t"
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
@@ -1269,11 +1187,10 @@ msgid "Activities"
 msgstr "Фаъолиятҳо"
 
 #: ../js/ui/panel.js:805
-#| msgid "Settings"
 msgid "Settings Menu"
 msgstr "Менюи танзимот"
 
-#: ../js/ui/panel.js:890
+#: ../js/ui/panel.js:892
 msgid "Top Bar"
 msgstr "Панели боло"
 
@@ -1415,7 +1332,7 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:978 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/network.js:998 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Хомӯш кардан"
 
@@ -1510,11 +1427,11 @@ msgstr "Намоиш додани тарҳбандии клавиатура"
 msgid "<unknown>"
 msgstr "<номаълум>"
 
-#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:993
+#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1013
 msgid "Off"
 msgstr "Хомӯш"
 
-#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:899
+#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:919
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Танзимоти шабака"
@@ -1529,12 +1446,12 @@ msgstr "идоранашуда"
 msgid "disconnecting..."
 msgstr "қатъ кардани пайваст..."
 
-#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1044
+#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1064
 msgid "connecting..."
 msgstr "пайвастшавӣ..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1047
+#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1067
 msgid "authentication required"
 msgstr "санҷиши ҳаққоният лозим аст"
 
@@ -1550,39 +1467,44 @@ msgstr "нармафзори дарунсохт вуҷуд надорад"
 msgid "unavailable"
 msgstr "дастнорас"
 
-#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1049
+#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1069
 msgid "connection failed"
 msgstr "пайваст қатъ шудааст"
 
-#: ../js/ui/status/network.js:615
+#: ../js/ui/status/network.js:619
 msgid "Wi-Fi Networks"
 msgstr "Шабакаҳои Wi-Fi"
 
-#: ../js/ui/status/network.js:617
+#: ../js/ui/status/network.js:621
 msgid "Select a network"
 msgstr "Интихоб кардани шабака"
 
-#: ../js/ui/status/network.js:893
+#: ../js/ui/status/network.js:645
+#| msgid "Wi-Fi Networks"
+msgid "No Networks"
+msgstr "Ягон шабака нест"
+
+#: ../js/ui/status/network.js:913
 msgid "Select Network"
 msgstr "Интихоби шабака"
 
-#: ../js/ui/status/network.js:978
+#: ../js/ui/status/network.js:998
 msgid "Turn On"
 msgstr "Фаъол кардан"
 
-#: ../js/ui/status/network.js:1111
+#: ../js/ui/status/network.js:1131
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1247
+#: ../js/ui/status/network.js:1267
 msgid "Network Manager"
 msgstr "Мудири шабака"
 
-#: ../js/ui/status/network.js:1289
+#: ../js/ui/status/network.js:1309
 msgid "Connection failed"
 msgstr "Пайваст қатъ шудааст"
 
-#: ../js/ui/status/network.js:1290
+#: ../js/ui/status/network.js:1310
 msgid "Activation of network connection failed"
 msgstr "Фаъолсозии пайвасти шабака қатъ шудааст."
 
@@ -1625,7 +1547,6 @@ msgid "Airplane Mode"
 msgstr "Ҳолати ҳавопаймо"
 
 #: ../js/ui/status/rfkill.js:45
-#| msgid "Open"
 msgid "On"
 msgstr "Фаъол"
 
@@ -1763,6 +1684,79 @@ msgstr "Парол бояд холӣ набошад"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Равзанаи гуфтугӯи санҷиши ҳакконият бо корбар бекор карда шуд"
+
+#~ msgid "Screenshots"
+#~ msgstr "Суратҳои экран"
+
+#~ msgid "Record a screencast"
+#~ msgstr "Сабти рӯйдодҳои экран"
+
+#~ msgid "Keybinding to toggle the screen recorder"
+#~ msgstr "Тугма барои иваз кардани сабткунандаи экран"
+
+#~ msgid "Keybinding to start/stop the builtin screen recorder."
+#~ msgstr "Тугма барои оғоз/қатъ кардани сабткунандаи экрани дарунсохт."
+
+#~ msgid "Framerate used for recording screencasts."
+#~ msgstr ""
+#~ "Миқдори кадрҳо дар сония, ки барои сабти рӯйдодҳои экран истифода мешавад."
+
+#~ msgid ""
+#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
+#~ "screencast recorder in frames-per-second."
+#~ msgstr ""
+#~ "Миқдори кадрҳо дар як сония барои сабти рӯйдодҳои экран, ки бо "
+#~ "сабткунандаи рӯйдодҳои экрани GNOME Shell сабт шудааст, дар кадрҳо дар як "
+#~ "сония."
+
+#~ msgid "The gstreamer pipeline used to encode the screencast"
+#~ msgstr ""
+#~ "Лӯламаҷрои gstreamer, ки барои рамзӣ кардани рӯйдодҳои экран истифода "
+#~ "мешавад"
+
+#~ msgid ""
+#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
+#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
+#~ "pad where the recorded video is recorded. It will normally have a "
+#~ "unconnected source pad; output from that pad will be written into the "
+#~ "output file. However the pipeline can also take care of its own output - "
+#~ "this might be used to send the output to an icecast server via shout2send "
+#~ "or similar. When unset or set to an empty value, the default pipeline "
+#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
+#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
+#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
+#~ "optimal thread count on the system."
+#~ msgstr ""
+#~ "Лӯламаҷрои GStreamer-ро, ки барои рамзӣ кардани сабтҳо истифода мешаванд, "
+#~ "таъин мекунад. Он наҳвро, ки барои gst-launch истифода мешавад, риоя "
+#~ "мекунад. Лӯламаҷро бояд қабати қабулкунандаи пайвастнашуда дошта бошад, "
+#~ "ки дар он видеои сабтшаванда сабт мешавад. Одатан он дорои қабати "
+#~ "пайвастнашудаи аслӣ мешавад; натиҷаи он қабат ба файли натиҷаҳо навишта "
+#~ "мешавад. Аммо лӯламаҷро метавонад инчунин натиҷаи худро истифода барад - "
+#~ "ин метавонад барои фиристодани натиҷа ба сервери icecast тавассути "
+#~ "shout2send ё монанд истифода шавад. Агар ин таъин шуда набошад, ё ки ба "
+#~ "қимати холӣ таъин шуда бошад, лӯламаҷрои пешфарз истифода мешавад. Дар "
+#~ "айни ҳол ин чунин мебошад: \"vp8enc min_quantizer=13 max_quantizer=13 cpu-"
+#~ "used=5 deadline=1000000 threads=%T ! queue ! webmmux\", ва тавассути "
+#~ "кодеки VP8 ба формати WEBM сабт мекунад. %T ҳамчун пуркунандаи фазо барои "
+#~ "ҳисоби тақрибӣ дар миқдори беҳтарини риштаҳо дар система истифода мешавад."
+
+#~ msgid "File extension used for storing the screencast"
+#~ msgstr ""
+#~ "Пасванди файл, ки барои нигоҳ доштани рӯйдодҳои экран истифода мешавад"
+
+#~ msgid ""
+#~ "The filename for recorded screencasts will be a unique filename based on "
+#~ "the current date, and use this extension. It should be changed when "
+#~ "recording to a different container format."
+#~ msgstr ""
+#~ "Номи файл барои рӯйдодҳои экрани сабтшуда номи ягонаи файл мебошад, ки бо "
+#~ "санаи ҷорӣ асос меёбад ва ин пасвандро истифода мебарад. Вақте ки ба "
+#~ "формати дигари дарбаргиранда сабт рафта истода бошад, он бояд тағйир дода "
+#~ "шавад."
+
+#~ msgid "Screencast from %d %t"
+#~ msgstr "Рӯйдодҳои экран аз %d %t"
 
 #~ msgid "Power"
 #~ msgstr "Барқ"
