@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
@@ -10,7 +11,8 @@ const Lang = imports.lang;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
-const ICON_SIZE = 48;
+const ICON_SIZE = 96;
+const MIN_ICON_SIZE = 16;
 
 const EXTRA_SPACE_ANIMATION_TIME = 0.25;
 
@@ -209,6 +211,7 @@ const IconGrid = new Lang.Class({
         // Pulled from CSS, but hardcode some defaults here
         this._spacing = 0;
         this._hItemSize = this._vItemSize = ICON_SIZE;
+        this._fixedHItemSize = this._fixedVItemSize = undefined;
         this._grid = new Shell.GenericContainer();
         this.actor.add(this._grid, { expand: true, y_align: St.Align.START });
         this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
@@ -232,8 +235,8 @@ const IconGrid = new Lang.Class({
         // Kind of a lie, but not really an issue right now.  If
         // we wanted to support some sort of hidden/overflow that would
         // need higher level design
-        alloc.min_size = this._hItemSize + this.leftPadding + this.rightPadding;
-        alloc.natural_size = nColumns * this._hItemSize + totalSpacing + this.leftPadding + this.rightPadding;
+        alloc.min_size = this._getHItemSize() + this.leftPadding + this.rightPadding;
+        alloc.natural_size = nColumns * this._getHItemSize() + totalSpacing + this.leftPadding + this.rightPadding;
     },
 
     _getVisibleChildren: function() {
@@ -265,7 +268,7 @@ const IconGrid = new Lang.Class({
         if (this._rowLimit)
             nRows = Math.min(nRows, this._rowLimit);
         let totalSpacing = Math.max(0, nRows - 1) * this._getSpacing();
-        let height = nRows * this._vItemSize + totalSpacing + this.topPadding + this.bottomPadding;
+        let height = nRows * this._getVItemSize() + totalSpacing + this.topPadding + this.bottomPadding;
         alloc.min_size = height;
         alloc.natural_size = height;
     },
@@ -318,10 +321,10 @@ const IconGrid = new Lang.Class({
             }
 
             if (columnIndex == 0) {
-                y += this._vItemSize + spacing;
+                y += this._getVItemSize() + spacing;
                 x = box.x1 + leftEmptySpace + this.leftPadding;
             } else {
-                x += this._hItemSize + spacing;
+                x += this._getHItemSize() + spacing;
             }
         }
     },
@@ -331,9 +334,9 @@ const IconGrid = new Lang.Class({
              child.get_preferred_size();
 
         /* Center the item in its allocation horizontally */
-        let width = Math.min(this._hItemSize, childNaturalWidth);
+        let width = Math.min(this._getHItemSize(), childNaturalWidth);
         let childXSpacing = Math.max(0, width - childNaturalWidth) / 2;
-        let height = Math.min(this._vItemSize, childNaturalHeight);
+        let height = Math.min(this._getVItemSize(), childNaturalHeight);
         let childYSpacing = Math.max(0, height - childNaturalHeight) / 2;
 
         let childBox = new Clutter.ActorBox();
@@ -363,8 +366,8 @@ const IconGrid = new Lang.Class({
         let spacing = this._getSpacing();
 
         while ((this._colLimit == null || nColumns < this._colLimit) &&
-               (usedWidth + this._hItemSize <= forWidth)) {
-            usedWidth += this._hItemSize + spacing;
+               (usedWidth + this._getHItemSize() <= forWidth)) {
+            usedWidth += this._getHItemSize() + spacing;
             nColumns += 1;
         }
 
@@ -392,15 +395,19 @@ const IconGrid = new Lang.Class({
     },
 
     rowsForHeight: function(forHeight) {
-        return Math.floor((forHeight -(this.topPadding + this.bottomPadding) + this._getSpacing()) / (this._vItemSize + this._getSpacing()));
+        return Math.floor((forHeight - (this.topPadding + this.bottomPadding) + this._getSpacing()) / (this._getVItemSize() + this._getSpacing()));
     },
 
     usedHeightForNRows: function(nRows) {
-        return (this._vItemSize + this._getSpacing()) * nRows - this._getSpacing() + this.topPadding + this.bottomPadding;
+        return (this._getVItemSize() + this._getSpacing()) * nRows - this._getSpacing() + this.topPadding + this.bottomPadding;
     },
 
     usedWidth: function(forWidth) {
-        let usedWidth = this.columnsForWidth(forWidth) * (this._hItemSize + this._getSpacing());
+        return this.usedWidthForNColumns(this.columnsForWidth(forWidth));
+    },
+
+    usedWidthForNColumns: function(columns) {
+        let usedWidth = columns  * (this._getHItemSize() + this._getSpacing());
         usedWidth -= this._getSpacing();
         return usedWidth + this.leftPadding + this.rightPadding;
     },
@@ -439,13 +446,17 @@ const IconGrid = new Lang.Class({
         return this._fixedSpacing ? this._fixedSpacing : this._spacing;
     },
 
-    /**
-     * This function must to be called before iconGrid allocation,
-     * to know how much spacing can the grid has
-     */
-    updateSpacingForSize: function(availWidth, availHeight) {
-        let maxEmptyVArea = availHeight - this._minRows * this._vItemSize;
-        let maxEmptyHArea = availWidth - this._minColumns * this._hItemSize;
+    _getHItemSize: function() {
+        return this._fixedHItemSize ? this._fixedHItemSize : this._hItemSize;
+    },
+
+    _getVItemSize: function() {
+        return this._fixedVItemSize ? this._fixedVItemSize : this._vItemSize;
+    },
+
+    _updateSpacingForSize: function(availWidth, availHeight) {
+        let maxEmptyVArea = availHeight - this._minRows * this._getVItemSize();
+        let maxEmptyHArea = availWidth - this._minColumns * this._getHItemSize();
         let maxHSpacing, maxVSpacing;
 
         if (this._padWithSpacing) {
@@ -467,13 +478,51 @@ const IconGrid = new Lang.Class({
 
         let maxSpacing = Math.min(maxHSpacing, maxVSpacing);
         // Limit spacing to the item size
-        maxSpacing = Math.min(maxSpacing, Math.min(this._vItemSize, this._hItemSize));
-        // The minimum spacing, regardless of whether it satisfies the row/column minima,
+        maxSpacing = Math.min(maxSpacing, Math.min(this._getVItemSize(), this._getHItemSize()));
+        // The minimum spacing, regardless of whether it satisfies the row/columng minima,
         // is the spacing we get from CSS.
         let spacing = Math.max(this._spacing, maxSpacing);
         this.setSpacing(spacing);
         if (this._padWithSpacing)
             this.topPadding = this.rightPadding = this.bottomPadding = this.leftPadding = spacing;
+    },
+
+    /**
+     * This function must to be called before iconGrid allocation,
+     * to know how much spacing can the grid has
+     */
+    adaptToSize: function(availWidth, availHeight) {
+        this._fixedHItemSize = this._hItemSize;
+        this._fixedVItemSize = this._vItemSize;
+        this._updateSpacingForSize(availWidth, availHeight);
+        let spacing = this._getSpacing();
+
+        if (this.columnsForWidth(availWidth) < this._minColumns || this.rowsForHeight(availHeight) < this._minRows) {
+            let neededWidth = this.usedWidthForNColumns(this._minColumns) - availWidth ;
+            let neededHeight = this.usedHeightForNRows(this._minRows) - availHeight ;
+
+            let neededSpacePerItem = (neededWidth > neededHeight) ? Math.ceil(neededWidth / this._minColumns)
+                                                                  : Math.ceil(neededHeight / this._minRows);
+            this._fixedHItemSize = Math.max(this._hItemSize - neededSpacePerItem, MIN_ICON_SIZE);
+            this._fixedVItemSize = Math.max(this._vItemSize - neededSpacePerItem, MIN_ICON_SIZE);
+
+            if (this._fixedHItemSize < MIN_ICON_SIZE)
+                this._fixedHItemSize = MIN_ICON_SIZE;
+            if (this._fixedVItemSize < MIN_ICON_SIZE)
+                this._fixedVItemSize = MIN_ICON_SIZE;
+
+            this._updateSpacingForSize(availWidth, availHeight);
+        }
+        let scale = Math.min(this._fixedHItemSize, this._fixedVItemSize) / Math.max(this._hItemSize, this._vItemSize);
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() { this._updateChildrenScale(scale); }));
+    },
+
+    // Note that this is ICON_SIZE as used by BaseIcon, not elsewhere in IconGrid; it's a bit messed up
+    _updateChildrenScale: function(scale) {
+        for (let i in this._items) {
+            let newIconSize = Math.floor(ICON_SIZE * scale);
+            this._items[i].icon.setIconSize(newIconSize);
+        }
     }
 });
 
@@ -535,17 +584,16 @@ const PaginatedIconGrid = new Lang.Class({
                 rowIndex++;
             }
             if (columnIndex == 0) {
-                y += this._vItemSize + spacing;
+                y += this._getVItemSize() + spacing;
                 if ((i + 1) % this._childrenPerPage == 0)
-                    y += this._spaceBetweenPages - spacing  + this.bottomPadding + this.topPadding;
+                    y +=  this._spaceBetweenPages - spacing + this.bottomPadding + this.topPadding;
                 x = box.x1 + leftEmptySpace + this.leftPadding;
-            } else {
-                x += this._hItemSize + spacing;
-            }
+            } else
+                x += this._getHItemSize() + spacing;
         }
     },
 
-    computePages: function (availWidthPerPage, availHeightPerPage) {
+    _computePages: function (availWidthPerPage, availHeightPerPage) {
         let [nColumns, usedWidth] = this._computeLayout(availWidthPerPage);
         let nRows;
         let children = this._getVisibleChildren();
@@ -562,6 +610,11 @@ const PaginatedIconGrid = new Lang.Class({
         this._nPages = Math.ceil(nRows / this._rowsPerPage);
         this._spaceBetweenPages = availHeightPerPage - (this.topPadding + this.bottomPadding) - this._availableHeightPerPageForItems();
         this._childrenPerPage = nColumns * this._rowsPerPage;
+    },
+
+    adaptToSize: function(availWidth, availHeight) {
+        this.parent(availWidth, availHeight);
+        this._computePages(availWidth, availHeight);
     },
 
     _availableHeightPerPageForItems: function() {

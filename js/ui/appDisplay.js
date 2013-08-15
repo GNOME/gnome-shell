@@ -542,10 +542,9 @@ const AllView = new Lang.Class({
         let oldNPages = this._grid.nPages();
 
         this._updateAdjustment(availHeight);
-        this._grid.updateSpacingForSize(availWidth, availHeight);
-        this._grid.computePages(availWidth, availHeight);
-        // Make sure the view doesn't have a bad adjustment value after screen size changes
-        // and therefore the pages computation.
+
+        this._grid.adaptToSize(availWidth, availHeight);
+
         if (this._availWidth != availWidth || this._availHeight != availHeight || oldNPages != this._grid.nPages()) {
             this._verticalAdjustment.value = 0;
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
@@ -597,7 +596,7 @@ const FrequentView = new Lang.Class({
         box = this._grid.actor.get_theme_node().get_content_box(box);
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
-        this._grid.updateSpacingForSize(availWidth, availHeight);
+        this._grid.adaptToSize(availWidth, availHeight);
     }
 });
 
@@ -935,7 +934,7 @@ const FolderView = new Lang.Class({
         this._parentAvailableWidth = width;
         this._parentAvailableHeight = height;
 
-        this._grid.updateSpacingForSize(width, height);
+        this._grid.adaptToSize(width, height);
 
         // Set extra padding to avoid popup or close button being cut off
         this._grid.topPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
@@ -998,7 +997,7 @@ const FolderIcon = new Lang.Class({
 
         let label = this._dir.get_name();
         this.icon = new IconGrid.BaseIcon(label,
-                                          { createIcon: Lang.bind(this, this._createIcon) });
+                                          { createIcon: Lang.bind(this, this._createIcon), setSizeManually: true });
         this.actor.set_child(this.icon.actor);
         this.actor.label_actor = this.icon.label;
 
@@ -1019,8 +1018,8 @@ const FolderIcon = new Lang.Class({
             }));
     },
 
-    _createIcon: function(size) {
-        return this.view.createFolderIcon(size, this);
+    _createIcon: function(iconSize) {
+        return this.view.createFolderIcon(iconSize, this);
     },
 
     _popupHeight: function() {
@@ -1225,6 +1224,7 @@ const AppIcon = new Lang.Class({
             iconParams = {};
 
         iconParams['createIcon'] = Lang.bind(this, this._createIcon);
+        iconParams['setSizeManually'] = true;
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this.actor.set_child(this.icon.actor);
 
