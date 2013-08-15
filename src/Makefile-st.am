@@ -2,7 +2,6 @@ st_cflags =					\
 	-I$(top_srcdir)/src			\
 	-DPREFIX=\""$(prefix)"\"		\
 	-DLIBDIR=\""$(libdir)"\"		\
-	-DG_DISABLE_DEPRECATED			\
 	-DG_LOG_DOMAIN=\"St\"			\
 	-DST_COMPILATION			\
 	-DPACKAGE_DATA_DIR=\"$(pkgdatadir)\"	\

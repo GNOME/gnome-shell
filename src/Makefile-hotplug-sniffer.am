@@ -11,7 +11,6 @@ gnome_shell_hotplug_sniffer_SOURCES =								\
 
 gnome_shell_hotplug_sniffer_CFLAGS =		\
 	-I$(top_srcdir)/src			\
-	-DG_DISABLE_DEPRECATED			\
 	$(SHELL_HOTPLUG_SNIFFER_CFLAGS)		\
 	$(NULL)
 

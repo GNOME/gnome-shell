@@ -1,6 +1,5 @@
 tray_cflags =					\
 	-I$(top_srcdir)/src			\
-	-DG_DISABLE_DEPRECATED			\
 	-DG_LOG_DOMAIN=\"notification_area\"	\
 	$(TRAY_CFLAGS)				\
 	$(NULL)

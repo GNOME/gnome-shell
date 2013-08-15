@@ -17,5 +17,4 @@ libgnome_shell_browser_plugin_la_SOURCES = 	\
 
 libgnome_shell_browser_plugin_la_CFLAGS = 	\
 	$(BROWSER_PLUGIN_CFLAGS)		\
-	-DG_DISABLE_DEPRECATED			\
 	-DG_LOG_DOMAIN=\"GnomeShellBrowserPlugin\"

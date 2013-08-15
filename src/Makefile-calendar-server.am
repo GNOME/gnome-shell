@@ -19,7 +19,6 @@ gnome_shell_calendar_server_CFLAGS =		\
 	-DPREFIX=\""$(prefix)"\"		\
 	-DLIBDIR=\""$(libdir)"\"		\
 	-DDATADIR=\""$(datadir)"\"		\
-	-DG_DISABLE_DEPRECATED			\
 	-DG_LOG_DOMAIN=\"ShellCalendarServer\"	\
 	$(CALENDAR_SERVER_CFLAGS)		\
 	$(NULL)
