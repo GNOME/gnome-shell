@@ -56,10 +56,7 @@ dist_theme_DATA =				\
 	theme/ws-switch-arrow-down.png
 
 keysdir = @GNOME_KEYBINDINGS_KEYSDIR@
-keys_in_files =					\
-	50-gnome-shell-screenshot.xml.in	\
-	50-gnome-shell-system.xml.in		\
-	$(NULL)
+keys_in_files = 50-gnome-shell-system.xml.in
 keys_DATA = $(keys_in_files:.xml.in=.xml)
 
 gsettings_SCHEMAS = org.gnome.shell.gschema.xml
