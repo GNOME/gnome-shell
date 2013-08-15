@@ -1583,13 +1583,13 @@ meta_window_actor_new (MetaWindow *window)
                        NULL);
 
   priv = self->priv;
+  priv->mapped = meta_window_toplevel_is_mapped (priv->window);
 
   if (!meta_is_wayland_compositor ())
     {
       priv->last_width = -1;
       priv->last_height = -1;
 
-      priv->mapped = meta_window_toplevel_is_mapped (priv->window);
       if (priv->mapped)
         meta_window_actor_queue_create_x11_pixmap (self);
 
