@@ -33,23 +33,7 @@ bin_SCRIPTS += gnome-shell-extension-tool gnome-shell-extension-prefs \
 	       gnome-shell-perf-tool
 EXTRA_DIST += gnome-shell-extension-tool.in gnome-shell-extension-prefs.in \
 	      gnome-shell-perf-tool.in
-bin_PROGRAMS = gnome-shell-real
-
-if USE_JHBUILD_WRAPPER_SCRIPT
-gnome_shell = gnome-shell-jhbuild
-bin_SCRIPTS += gnome-shell-jhbuild
-else
-gnome_shell = gnome-shell-real
-endif
-EXTRA_DIST += gnome-shell-jhbuild.in
-
-noinst_DATA = gnome-shell
-gnome-shell: $(gnome_shell) Makefile
-	$(AM_V_GEN) cp $< $@.tmp && mv $@.tmp $@
-install-exec-hook:
-	mv $(DESTDIR)$(bindir)/$(gnome_shell) $(DESTDIR)$(bindir)/gnome-shell
-uninstall-hook:
-	rm -f $(DESTDIR)$(bindir)/gnome-shell
+bin_PROGRAMS = gnome-shell
 
 generated_script_substitutions = \
 	    -e "s|@bindir[@]|$(bindir)|g" \
@@ -62,11 +46,6 @@ generated_script_substitutions = \
 	    -e "s|@VERSION[@]|$(VERSION)|g" \
 	    -e "s|@sysconfdir[@]|$(sysconfdir)|g" \
 	    -e "s|@GJS_CONSOLE[@]|$(GJS_CONSOLE)|g"
-
-gnome-shell-jhbuild: gnome-shell-jhbuild.in gnome-shell-real Makefile
-	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
-	@# Regenerate libtool wrapper so Alt+F2 restart will work
-	@$(LIBTOOL) --mode=execute test -f gnome-shell-real
 
 gnome-shell-extension-tool: gnome-shell-extension-tool.in Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
@@ -185,11 +164,10 @@ libgnome_shell_la_SOURCES =		\
 libgnome_shell_la_gir_sources = \
 	$(filter-out %-private.h $(shell_private_sources), $(shell_public_headers_h) $(libgnome_shell_la_SOURCES))
 
-gnome_shell_real_SOURCES =		\
-	main.c
-gnome_shell_real_CPPFLAGS = $(gnome_shell_cflags)
-gnome_shell_real_LDADD = libgnome-shell.la libgnome-shell-js.la $(libgnome_shell_la_LIBADD)
-gnome_shell_real_DEPENDENCIES = libgnome-shell.la
+gnome_shell_SOURCES = main.c
+gnome_shell_CPPFLAGS = $(gnome_shell_cflags)
+gnome_shell_LDADD = libgnome-shell.la libgnome-shell-js.la $(libgnome_shell_la_LIBADD)
+gnome_shell_DEPENDENCIES = libgnome-shell.la
 
 ########################################
 

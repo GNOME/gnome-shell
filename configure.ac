@@ -171,10 +171,6 @@ AM_CONDITIONAL(ENABLE_MAN, test "$enable_man" != no)
 
 GNOME_COMPILE_WARNINGS([error])
 
-AC_ARG_ENABLE(jhbuild-wrapper-script,
-  AS_HELP_STRING([--enable-jhbuild-wrapper-script],[Make "gnome-shell" script work for jhbuild]),,enable_jhbuild_wrapper_script=no)
-AM_CONDITIONAL(USE_JHBUILD_WRAPPER_SCRIPT, test "x$enable_jhbuild_wrapper_script" = xyes)
-
 BROWSER_PLUGIN_DIR="${BROWSER_PLUGIN_DIR:-"\${libdir}/mozilla/plugins"}"
 AC_ARG_VAR([BROWSER_PLUGIN_DIR],[Where to install the plugin to])
 
