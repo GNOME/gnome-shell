@@ -660,10 +660,13 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
 
   meta_display_grab (meta_get_display ());
 
+  /* First compute the new size of the screen (framebuffer) */
   width = 0; height = 0;
   for (i = 0; i < n_crtcs; i++)
     {
       MetaCRTCInfo *crtc_info = crtcs[i];
+      MetaCRTC *crtc = crtc_info->crtc;
+      crtc->is_dirty = TRUE;
 
       if (crtc_info->mode == NULL)
         continue;
@@ -680,25 +683,19 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
         }
     }
 
-  g_assert (width > 0 && height > 0);
-  /* The 'physical size' of an X screen is meaningless if that screen
-   * can consist of many monitors. So just pick a size that make the
-   * dpi 96.
-   *
-   * Firefox and Evince apparently believe what X tells them.
-   */
-  width_mm = (width / DPI_FALLBACK) * 25.4 + 0.5;
-  height_mm = (height / DPI_FALLBACK) * 25.4 + 0.5;
-  XRRSetScreenSize (manager_xrandr->xdisplay, DefaultRootWindow (manager_xrandr->xdisplay),
-                    width, height, width_mm, height_mm);
-
+  /* Second disable all newly disabled CRTCs, or CRTCs that in the previous
+     configuration would be outside the new framebuffer (otherwise X complains
+     loudly when resizing)
+     CRTC will be enabled again after resizing the FB
+  */
   for (i = 0; i < n_crtcs; i++)
     {
       MetaCRTCInfo *crtc_info = crtcs[i];
       MetaCRTC *crtc = crtc_info->crtc;
-      crtc->is_dirty = TRUE;
 
-      if (crtc_info->mode == NULL)
+      if (crtc_info->mode == NULL ||
+          crtc->rect.x + crtc->rect.width > width ||
+          crtc->rect.y + crtc->rect.height > height)
         {
           XRRSetCrtcConfig (manager_xrandr->xdisplay,
                             manager_xrandr->resources,
@@ -709,7 +706,51 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
                             RR_Rotate_0,
                             NULL, 0);
         }
-      else
+    }
+
+  /* Disable CRTCs not mentioned in the list */
+  for (i = 0; i < manager->n_crtcs; i++)
+    {
+      MetaCRTC *crtc = &manager->crtcs[i];
+
+      if (crtc->is_dirty)
+        {
+          crtc->is_dirty = FALSE;
+          continue;
+        }
+      if (crtc->current_mode == NULL)
+        continue;
+
+      XRRSetCrtcConfig (manager_xrandr->xdisplay,
+                        manager_xrandr->resources,
+                        (XID)crtc->crtc_id,
+                        manager_xrandr->time,
+                        0, 0,
+                        None,
+                        RR_Rotate_0,
+                        NULL, 0);
+    }
+
+  g_assert (width > 0 && height > 0);
+  /* The 'physical size' of an X screen is meaningless if that screen
+   * can consist of many monitors. So just pick a size that make the
+   * dpi 96.
+   *
+   * Firefox and Evince apparently believe what X tells them.
+   */
+  width_mm = (width / DPI_FALLBACK) * 25.4 + 0.5;
+  height_mm = (height / DPI_FALLBACK) * 25.4 + 0.5;
+  meta_error_trap_push (meta_get_display ());
+  XRRSetScreenSize (manager_xrandr->xdisplay, DefaultRootWindow (manager_xrandr->xdisplay),
+                    width, height, width_mm, height_mm);
+  meta_error_trap_pop (meta_get_display ());
+
+  for (i = 0; i < n_crtcs; i++)
+    {
+      MetaCRTCInfo *crtc_info = crtcs[i];
+      MetaCRTC *crtc = crtc_info->crtc;
+
+      if (crtc_info->mode != NULL)
         {
           MetaMonitorMode *mode;
           XID *outputs;
@@ -759,29 +800,6 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
       output_set_presentation_xrandr (manager_xrandr,
                                       output_info->output,
                                       output_info->is_presentation);
-    }
-
-  /* Disable CRTCs not mentioned in the list */
-  for (i = 0; i < manager->n_crtcs; i++)
-    {
-      MetaCRTC *crtc = &manager->crtcs[i];
-
-      if (crtc->is_dirty)
-        {
-          crtc->is_dirty = FALSE;
-          continue;
-        }
-      if (crtc->current_mode == NULL)
-        continue;
-
-      XRRSetCrtcConfig (manager_xrandr->xdisplay,
-                        manager_xrandr->resources,
-                        (XID)crtc->crtc_id,
-                        manager_xrandr->time,
-                        0, 0,
-                        None,
-                        RR_Rotate_0,
-                        NULL, 0);
     }
 
   meta_display_ungrab (meta_get_display ());
