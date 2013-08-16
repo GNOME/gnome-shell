@@ -317,61 +317,30 @@ const ShellUserVerifier = new Lang.Class({
         this._defaultService = PASSWORD_SERVICE_NAME;
     },
 
-    _beginVerification: function() {
+    _startService: function(serviceName) {
         this._hold.acquire();
-
-        if (this._userName) {
-            this._userVerifier.call_begin_verification_for_user(this._getForegroundService(),
-                                                                this._userName,
-                                                                this._cancellable,
-                                                                Lang.bind(this, function(obj, result) {
-                try {
-                    obj.call_begin_verification_for_user_finish(result);
-                } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
-                    return;
-                } catch(e) {
-                    this._reportInitError('Failed to start verification for user', e);
-                    return;
-                }
-
-                this._hold.release();
-            }));
-
-            if (this._haveFingerprintReader) {
-                this._hold.acquire();
-
-                this._userVerifier.call_begin_verification_for_user(FINGERPRINT_SERVICE_NAME,
-                                                                    this._userName,
-                                                                    this._cancellable,
-                                                                    Lang.bind(this, function(obj, result) {
-                    try {
-                        obj.call_begin_verification_for_user_finish(result);
-                    } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
-                        return;
-                    } catch(e) {
-                        this._reportInitError('Failed to start fingerprint verification for user', e);
-                        return;
-                    }
-
-                    this._hold.release();
-                }));
+        this._userVerifier.call_begin_verification_for_user(serviceName,
+                                                            this._userName,
+                                                            this._cancellable,
+                                                            Lang.bind(this, function(obj, result) {
+            try {
+                obj.call_begin_verification_for_user_finish(result);
+            } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+                return;
+            } catch(e) {
+                this._reportInitError('Failed to start verification for user', e);
+                return;
             }
-        } else {
-            this._userVerifier.call_begin_verification(this._getForegroundService(),
-                                                       this._cancellable,
-                                                       Lang.bind(this, function(obj, result) {
-                try {
-                    obj.call_begin_verification_finish(result);
-                } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
-                    return;
-                } catch(e) {
-                    this._reportInitError('Failed to start verification', e);
-                    return;
-                }
 
-                this._hold.release();
-            }));
-        }
+            this._hold.release();
+        }));
+    },
+
+    _beginVerification: function() {
+        this._startService(this._getForegroundService());
+
+        if (this._userName && this._haveFingerprintReader)
+            this._startService(FINGERPRINT_SERVICE_NAME);
     },
 
     _onInfo: function(client, serviceName, info) {
