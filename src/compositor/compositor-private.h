@@ -66,8 +66,6 @@ void meta_switch_workspace_completed (MetaScreen    *screen);
 
 gboolean meta_begin_modal_for_plugin (MetaScreen       *screen,
                                       MetaPlugin       *plugin,
-                                      Window            grab_window,
-                                      Cursor            cursor,
                                       MetaModalOptions  options,
                                       guint32           timestamp);
 void     meta_end_modal_for_plugin   (MetaScreen       *screen,

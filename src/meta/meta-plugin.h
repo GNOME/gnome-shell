@@ -396,8 +396,6 @@ typedef enum {
 
 gboolean
 meta_plugin_begin_modal (MetaPlugin      *plugin,
-                         Window           grab_window,
-                         Cursor           cursor,
                          MetaModalOptions options,
                          guint32          timestamp);
 

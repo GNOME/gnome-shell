@@ -412,8 +412,6 @@ meta_stage_is_focused (MetaScreen *screen)
 gboolean
 meta_begin_modal_for_plugin (MetaScreen       *screen,
                              MetaPlugin       *plugin,
-                             Window            grab_window,
-                             Cursor            cursor,
                              MetaModalOptions  options,
                              guint32           timestamp)
 {
@@ -424,9 +422,18 @@ meta_begin_modal_for_plugin (MetaScreen       *screen,
   MetaDisplay    *display    = meta_screen_get_display (screen);
   Display        *xdpy       = meta_display_get_xdisplay (display);
   MetaCompositor *compositor = display->compositor;
+  ClutterStage *stage;
+  Window grab_window;
+  Cursor cursor = None;
   gboolean pointer_grabbed = FALSE;
   gboolean keyboard_grabbed = FALSE;
   int result;
+
+  stage = CLUTTER_STAGE (meta_get_stage_for_screen (screen));
+  if (!stage)
+    return FALSE;
+
+  grab_window = clutter_x11_get_stage_window (stage);
 
   if (compositor->modal_plugin != NULL || display->grab_op != META_GRAB_OP_NONE)
     return FALSE;
