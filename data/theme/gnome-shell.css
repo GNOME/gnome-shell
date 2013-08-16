@@ -2294,7 +2294,7 @@ StScrollBar StButton#vhandle:active {
 
 .login-dialog-user-list-item .login-dialog-user-list-item-name {
     font-size: 20pt;
-    padding-left: 1em;
+    padding-left: 9px;
 }
 
 .login-dialog-user-list:expanded .login-dialog-user-list-item {
@@ -2376,6 +2376,7 @@ StScrollBar StButton#vhandle:active {
 .login-dialog-prompt-label {
     color: #eeeeee;
     font-size: 14px;
+    padding-top: 11px;
 }
 
 .login-dialog-session-list-button StIcon {
@@ -2439,10 +2440,6 @@ StScrollBar StButton#vhandle:active {
 
 .login-dialog-message-warning {
     color: orange;
-}
-
-.user-widget {
-    spacing: .4em;
 }
 
 .user-widget-label {
