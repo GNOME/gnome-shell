@@ -1498,8 +1498,9 @@ const NMApplet = new Lang.Class({
         if (this._mainConnection) {
             let dev = this._mainConnection._primaryDevice;
             this._mainConnectionIconChangedId = dev.connect('icon-changed', Lang.bind(this, this._updateIcon));
-            this._updateIcon();
         }
+
+        this._updateIcon();
     },
 
     _notifyActivated: function(activeConnection) {
