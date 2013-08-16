@@ -1820,8 +1820,6 @@ StScrollBar StButton#vhandle:active {
 }
 
 .modal-dialog-button {
-    margin-left: 10px;
-    margin-right: 10px;
     padding: 4px 32px 5px;
 }
 
