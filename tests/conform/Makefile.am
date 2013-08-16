@@ -2,7 +2,16 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 NULL =
 
-noinst_PROGRAMS = test-conformance
+BUILT_SOURCES =
+
+TESTS =
+check_PROGRAMS =
+check_SCRIPTS =
+
+EXTRA_DIST =
+DISTCLEANFILES =
+
+TEST_PROGS =
 
 # the common sources
 common_sources = \
@@ -71,13 +80,14 @@ units_sources += \
 	events-touch.c			\
 	$(NULL)
 
-test_conformance_SOURCES = $(common_sources) $(units_sources)
-
 if OS_WIN32
 SHEXT =
 else
 SHEXT = $(EXEEXT)
 endif
+
+EXTRA_DIST += ADDING_NEW_TESTS test-launcher.sh.in run-tests.sh
+DISTCLEANFILES += test-launcher.sh .gitignore
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers clean-wrappers
@@ -101,6 +111,7 @@ stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 	   echo "*.html" ; \
 	   echo "*.test" ; \
 	   echo ".gitignore" ; \
+	   echo "test-suite.log" ; \
 	   echo "unit-tests" ; \
 	   echo "/wrappers/" ) > .gitignore
 	@for i in `cat unit-tests`; \
@@ -118,21 +129,19 @@ stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 	&& echo timestamp > $(@F)
 
 clean-wrappers:
-	@for i in `cat unit-tests`; \
-	do \
+	@if test -f "unit-tests"; then \
+	  for i in `cat unit-tests`; \
+	  do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "  RM       $$unit"; \
 		rm -f $$unit$(SHEXT) ; \
 		rm -f wrappers/$$unit$(SHEXT) ; \
-	done \
-	&& rmdir wrappers \
+	  done \
+	fi \
+	&& rm -rf wrappers \
 	&& rm -f unit-tests \
 	&& rm -f $(top_builddir)/build/win32/*.bat \
 	&& rm -f stamp-test-conformance
-
-# NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
-# a phony rule that will generate symlink scripts for running individual tests
-BUILT_SOURCES = wrappers
 
 test_conformance_CPPFLAGS = \
 	-DG_DISABLE_SINGLE_INCLUDES \
@@ -147,10 +156,17 @@ test_conformance_CPPFLAGS = \
 	-I$(top_builddir)/clutter
 
 test_conformance_CFLAGS = -g $(CLUTTER_CFLAGS)
-
 test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS) -lm
-
 test_conformance_LDFLAGS = -export-dynamic
+test_conformance_SOURCES = $(common_sources) $(units_sources)
+
+if OS_WIN32
+TESTS += test-conformance
+endif
+
+TEST_PROGS += test-conformance
+check_PROGRAMS += test-conformance
+check_SCRIPTS += wrappers
 
 test: wrappers
 	@export G_TEST_SRCDIR="$(abs_srcdir)" ; \
@@ -164,21 +180,18 @@ test-verbose: wrappers
 	 $(top_srcdir)/tests/conform/run-tests.sh \
 	  ./test-conformance$(EXEEXT) -o test-report.xml --verbose
 
-GTESTER = gtester
-GTESTER_REPORT = gtester-report
-
-# XXX: we could prevent the conformance test suite from running
-#      by simply defining this variable conditionally
-TEST_PROGS = test-conformance
-
 .PHONY: test
 .PHONY: test-report perf-report full-report
-.PHONY: test-report-npot perf-report-npot full-report-npot
+
+check-local: test
+
+GTESTER = gtester
+GTESTER_REPORT = gtester-report
 
 # test-report: run tests and generate report
 # perf-report: run tests with -m perf and generate report
 # full-report: like test-report: with -m perf and -m slow
-test-report perf-report full-report:	${TEST_PROGS}
+test-report perf-report full-report: ${TEST_PROGS}
 	@test -z "${TEST_PROGS}" || { \
 	  export GTESTER_LOGDIR=`mktemp -d "$(srcdir)/.testlogs-XXXXXX"` ; \
 	  if test -d "$(top_srcdir)/.git"; then \
@@ -191,47 +204,6 @@ test-report perf-report full-report:	${TEST_PROGS}
 	  test-report) test_options="-k";; \
 	  perf-report) test_options="-k -m=perf";; \
 	  full-report) test_options="-k -m=perf -m=slow";; \
-	  esac ; \
-	  export G_TEST_SRCDIR="$(abs_srcdir)" ; \
-	  export G_TEST_BUILDDIR="$(abs_builddir)" ; \
-	  $(top_srcdir)/tests/conform/run-tests.sh \
-	    ./test-conformance$(EXEEXT) \
-	    --verbose \
-	    $$test_options \
-	    -o `mktemp "$$GTESTER_LOGDIR/log-XXXXXX"` ; \
-	  echo '<?xml version="1.0"?>'              > $@.xml ; \
-	  echo '<report-collection>'               >> $@.xml ; \
-	  echo '<info>'                            >> $@.xml ; \
-	  echo '  <package>$(PACKAGE)</package>'   >> $@.xml ; \
-	  echo '  <version>$(VERSION)</version>'   >> $@.xml ; \
-	  echo "  <revision>$$REVISION</revision>" >> $@.xml ; \
-	  echo "  <date>$$TIMESTAMP</date>"        >> $@.xml ; \
-	  echo '</info>'                           >> $@.xml ; \
-	  for lf in `ls -L "$$GTESTER_LOGDIR"/.` ; do \
-	    sed '1,1s/^<?xml\b[^>?]*?>//' <"$$GTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
-	  done ; \
-	  echo >> $@.xml ; \
-	  echo '</report-collection>' >> $@.xml ; \
-	  ${GTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${GTESTER_REPORT} $@.xml >$@.html ; \
-	  rm -rf "$$GTESTER_LOGDIR" ; \
-	}
-
-# same as above, but with a wrapper that forcibly disables non-power of
-# two textures
-test-report-npot perf-report-npot full-report-npot:	${TEST_PROGS}
-	@test -z "${TEST_PROGS}" || { \
-	  export COGL_DEBUG="$COGL_DEBUG,disable-npot-textures"; \
-	  export GTESTER_LOGDIR=`mktemp -d "$(srcdir)/.testlogs-XXXXXX"` ; \
-	  if test -d "$(top_srcdir)/.git"; then \
-	    export REVISION="`git describe`" ;  \
-	  else \
-	    export REVISION="$(VERSION) $(CLUTTER_RELEASE_STATUS)" ; \
-	  fi ; \
-	  export TIMESTAMP=`date +%Y-%m-%dT%H:%M:%S%z` ; \
-	  case $@ in \
-	  test-report-npot) test_options="-k";; \
-	  perf-report-npot) test_options="-k -m=perf";; \
-	  full-report-npot) test_options="-k -m=perf -m=slow";; \
 	  esac ; \
 	  export G_TEST_SRCDIR="$(abs_srcdir)" ; \
 	  export G_TEST_BUILDDIR="$(abs_builddir)" ; \
@@ -272,9 +244,6 @@ HTML_REPORTS = \
 	test-report-npot.html 	\
 	perf-report-npot.html 	\
 	full-report-npot.html
-
-EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh.in run-tests.sh
-DISTCLEANFILES = test-launcher.sh .gitignore
 
 dist-hook: $(top_builddir)/build/win32/vs9/test-conformance-clutter.vcproj $(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj $(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj.filters
 

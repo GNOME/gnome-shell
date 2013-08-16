@@ -1,6 +1,6 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
 
-noinst_PROGRAMS = \
+check_PROGRAMS = \
 	test-picking \
 	test-text-perf \
 	test-state \

@@ -67,7 +67,7 @@ SHEXT = $(EXEEXT)
 endif
 
 # For convenience, this provides a way to easily run individual unit tests:
-wrappers: stamp-test-interactive $(top_builddir)/build/win32/test-interactive-clutter.bat
+wrappers: stamp-test-interactive
 	@true
 
 stamp-test-interactive: Makefile
@@ -91,7 +91,7 @@ stamp-test-interactive: Makefile
 	done \
 	&& echo timestamp > $(@F)
 
-$(top_builddir)/build/win32/test-interactive-clutter.bat: Makefile test-interactive$(EXEEXT)
+$(top_builddir)/build/win32/test-interactive-clutter.bat: Makefile
 	@echo "  GEN      test-interactive-clutter.bat" ; \
 	for i in $(UNIT_TESTS); \
 	do \
@@ -138,7 +138,8 @@ clean-wrappers:
 
 common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 
-noinst_PROGRAMS = test-interactive
+check_PROGRAMS = test-interactive
+check_SCRIPTS = wrappers $(top_builddir)/build/win32/test-interactive-clutter.bat
 
 test_interactive_SOURCES = test-main.c $(UNIT_TESTS)
 nodist_test_interactive_SOURCES = test-unit-names.h
@@ -162,7 +163,7 @@ EXTRA_DIST = \
 
 DISTCLEANFILES = wrapper.sh .gitignore test-unit-names.h
 
-BUILT_SOURCES = test-unit-names.h wrappers
+BUILT_SOURCES = test-unit-names.h
 
 dist-hook: $(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters
 

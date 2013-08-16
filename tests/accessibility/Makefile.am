@@ -7,18 +7,20 @@ common_sources = \
 	cally-examples-util.c	\
 	cally-examples-util.h
 
-INCLUDES = \
+AM_CPPFLAGS = \
+	-DPREFIXDIR=\"$(libdir)\" \
+	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS \
+	-DGLIB_DISABLE_DEPRECATION_WARNINGS \
 	-I$(top_srcdir)	\
 	-I$(top_builddir) \
 	-I$(top_srcdir)/clutter \
 	-I$(top_builddir)/clutter \
 	-I$(top_srcdir)/tests/accessibility
 
-AM_CPPFLAGS = -DPREFIXDIR=\"$(libdir)\" -DCLUTTER_DISABLE_DEPRECATION_WARNINGS -DGLIB_DISABLE_DEPRECATION_WARNINGS
 AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 LDADD = $(common_ldadd) $(CLUTTER_LIBS)
 
-noinst_PROGRAMS = \
+check_PROGRAMS = \
 	cally-atkcomponent-example	\
 	cally-atkeditabletext-example   \
 	cally-atkevents-example		\

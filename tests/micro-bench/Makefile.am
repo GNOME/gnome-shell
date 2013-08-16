@@ -2,7 +2,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 
-noinst_PROGRAMS = \
+check_PROGRAMS = \
 	test-text \
 	test-picking \
 	test-text-perf \
