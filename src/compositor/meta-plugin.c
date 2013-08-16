@@ -266,10 +266,6 @@ meta_plugin_destroy_completed (MetaPlugin      *plugin,
 /**
  * meta_plugin_begin_modal:
  * @plugin: a #MetaPlugin
- * @grab_window: the X window to grab the keyboard and mouse on
- * @cursor: the cursor to use for the pointer grab, or None,
- *          to use the normal cursor for the grab window and
- *          its descendants.
  * @options: flags that modify the behavior of the modal grab
  * @timestamp: the timestamp used for establishing grabs
  *
@@ -290,15 +286,13 @@ meta_plugin_destroy_completed (MetaPlugin      *plugin,
  */
 gboolean
 meta_plugin_begin_modal (MetaPlugin       *plugin,
-                         Window            grab_window,
-                         Cursor            cursor,
                          MetaModalOptions  options,
                          guint32           timestamp)
 {
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   return meta_begin_modal_for_plugin (priv->screen, plugin,
-                                      grab_window, cursor, options, timestamp);
+                                      options, timestamp);
 }
 
 /**
