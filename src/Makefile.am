@@ -1,7 +1,7 @@
 # Flag build for parallelism; see https://savannah.gnu.org/patch/?6905
 .AUTOPARALLEL:
 
-lib_LTLIBRARIES = libmutter.la
+lib_LTLIBRARIES = libmutter-wayland.la
 
 SUBDIRS=compositor/plugins
 
@@ -10,6 +10,7 @@ INCLUDES=								\
 	-DCOGL_ENABLE_EXPERIMENTAL_API					\
 	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API                              \
 	$(MUTTER_CFLAGS)						\
+	-I$(top_builddir)						\
 	-I$(srcdir)							\
 	-I$(srcdir)/core						\
 	-I$(srcdir)/ui							\
@@ -42,7 +43,7 @@ mutter_built_sources = \
 	wayland/xserver-server-protocol.h	\
 	wayland/xserver-client-protocol.h
 
-libmutter_la_SOURCES =				\
+libmutter_wayland_la_SOURCES =			\
 	core/async-getprop.c			\
 	core/async-getprop.h			\
 	core/barrier.c				\
@@ -172,7 +173,7 @@ libmutter_la_SOURCES =				\
 	ui/ui.c					\
 	$(mutter_built_sources)
 
-libmutter_la_SOURCES +=				\
+libmutter_wayland_la_SOURCES +=			\
 	wayland/meta-wayland.c			\
 	wayland/meta-wayland-private.h		\
 	wayland/meta-xwayland-private.h		\
@@ -188,8 +189,8 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-stage.h		\
 	wayland/meta-wayland-stage.c
 
-libmutter_la_LDFLAGS = -no-undefined
-libmutter_la_LIBADD  = $(MUTTER_LIBS)
+libmutter_wayland_la_LDFLAGS = -no-undefined
+libmutter_wayland_la_LIBADD  = $(MUTTER_LIBS)
 
 # Headers installed for plugins; introspected information will
 # be extracted into Mutter-<version>.gir
@@ -227,16 +228,16 @@ libmutterinclude_base_headers =		\
 libmutterinclude_extra_headers =		\
 	meta/atomnames.h
 
-libmutterincludedir = $(includedir)/mutter/meta
+libmutterincludedir = $(includedir)/mutter-wayland/meta
 
 libmutterinclude_HEADERS =			\
 	$(libmutterinclude_base_headers)	\
 	$(libmutterinclude_extra_headers)
 
-bin_PROGRAMS=mutter
+bin_PROGRAMS=mutter-wayland
 
-mutter_SOURCES = core/mutter.c
-mutter_LDADD = $(MUTTER_LIBS) libmutter.la
+mutter_wayland_SOURCES = core/mutter.c
+mutter_wayland_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
 
 if HAVE_INTROSPECTION
 include $(INTROSPECTION_MAKEFILE)
@@ -258,15 +259,15 @@ typelib_DATA = Meta-$(api_version).typelib
 
 INTROSPECTION_GIRS = Meta-$(api_version).gir
 
-Meta-$(api_version).gir: libmutter.la
+Meta-$(api_version).gir: libmutter-wayland.la
 @META_GIR@_INCLUDES = GObject-2.0 GDesktopEnums-3.0 Gdk-3.0 Gtk-3.0 Clutter-1.0 xlib-2.0 xfixes-4.0 Cogl-1.0
-@META_GIR@_EXPORT_PACKAGES = libmutter
+@META_GIR@_EXPORT_PACKAGES = libmutter-wayland
 @META_GIR@_CFLAGS = $(INCLUDES)
-@META_GIR@_LIBS = libmutter.la
+@META_GIR@_LIBS = libmutter-wayland.la
 @META_GIR@_FILES =				\
 	mutter-enum-types.h			\
 	$(libmutterinclude_base_headers)	\
-	$(filter %.c,$(libmutter_la_SOURCES))
+	$(filter %.c,$(libmutter_wayland_la_SOURCES))
 @META_GIR@_SCANNERFLAGS = --warn-all --warn-error
 
 endif
@@ -277,14 +278,14 @@ testasyncgetprop_SOURCES = core/testasyncgetprop.c
 
 noinst_PROGRAMS=testboxes testgradient testasyncgetprop
 
-testboxes_LDADD = $(MUTTER_LIBS) libmutter.la
-testgradient_LDADD = $(MUTTER_LIBS) libmutter.la
-testasyncgetprop_LDADD = $(MUTTER_LIBS) libmutter.la
+testboxes_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
+testgradient_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
+testasyncgetprop_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
 
 @INTLTOOL_DESKTOP_RULE@
 
 desktopfilesdir=$(datadir)/applications
-desktopfiles_in_files=mutter.desktop.in
+desktopfiles_in_files=mutter-wayland.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 desktopfiles_DATA = $(desktopfiles_files)
 
@@ -305,7 +306,7 @@ convertdir = $(datadir)/GConf/gsettings
 convert_DATA = mutter-schemas.convert
 
 CLEANFILES =					\
-	mutter.desktop				\
+	mutter-wayland.desktop			\
 	mutter-wm.desktop			\
 	org.gnome.mutter.gschema.xml		\
 	$(xml_DATA)				\
@@ -315,7 +316,7 @@ CLEANFILES =					\
 
 pkgconfigdir = $(libdir)/pkgconfig
 
-pkgconfig_DATA = libmutter.pc
+pkgconfig_DATA = libmutter-wayland.pc
 
 EXTRA_DIST=$(desktopfiles_files) 	\
 	$(wmproperties_files)		\
@@ -325,8 +326,7 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(xml_in_files)			\
 	org.gnome.mutter.gschema.xml.in \
 	mutter-schemas.convert \
-	libmutter.pc.in \
-	mutter-plugins.pc.in  \
+	libmutter-wayland.pc.in \
 	mutter-enum-types.h.in \
 	mutter-enum-types.c.in
 

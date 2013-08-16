@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-_Name=Mutter
-Exec=mutter
+_Name=Mutter (wayland compositor)
+Exec=mutter-launch -- mutter --nested
 NoDisplay=true
 # name of loadable control center module
 X-GNOME-WMSettingsModule=metacity
@@ -12,6 +12,5 @@ X-GnomeWMSettingsLibrary=metacity
 X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-Bugzilla-Product=mutter
 X-GNOME-Bugzilla-Component=general
-X-GNOME-Autostart-Phase=WindowManager
-X-GNOME-Provides=windowmanager
+X-GNOME-Autostart-Phase=DisplayServer
 X-GNOME-Autostart-Notify=true

@@ -23,7 +23,7 @@ src/50-mutter-navigation.xml
 src/50-mutter-system.xml
 src/50-mutter-windows.xml
 src/mutter-wm.desktop
-src/mutter.desktop
+src/mutter-wayland.desktop
 *.o
 *.a
 *.lo
@@ -46,10 +46,10 @@ POTFILES
 po/*.pot
 50-metacity-desktop-key.xml
 50-metacity-key.xml
-libmutter.pc
-mutter
+libmutter-wayland.pc
+mutter-wayland
 mutter-theme-viewer
-mutter.desktop
+mutter-wayland.desktop
 org.gnome.mutter.gschema.valid
 org.gnome.mutter.gschema.xml
 testasyncgetprop
