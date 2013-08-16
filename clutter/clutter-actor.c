@@ -18869,12 +18869,10 @@ _clutter_actor_create_transition (ClutterActor *actor,
   clos = g_hash_table_lookup (info->transitions, pspec->name);
   if (clos == NULL)
     {
-      interval = clutter_interval_new_with_values (ptype, &initial, &final);
-
       res = clutter_property_transition_new (pspec->name);
 
+      interval = clutter_interval_new_with_values (ptype, &initial, &final);
       clutter_transition_set_interval (res, interval);
-      clutter_transition_set_remove_on_complete (res, TRUE);
 
       timeline = CLUTTER_TIMELINE (res);
       clutter_timeline_set_delay (timeline, info->cur_state->easing_delay);
