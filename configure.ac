@@ -459,7 +459,6 @@ doc/reference/Makefile
 doc/reference/meta-docs.sgml
 src/Makefile
 src/libmutter.pc
-src/mutter-plugins.pc
 src/compositor/plugins/Makefile
 protocol/Makefile
 data/Makefile
