@@ -28,6 +28,7 @@
 #include "xprops.h"
 
 #include "compositor-private.h"
+#include "meta-shaped-texture-private.h"
 #include "meta-shadow-factory-private.h"
 #include "meta-window-actor-private.h"
 #include "meta-texture-rectangle.h"

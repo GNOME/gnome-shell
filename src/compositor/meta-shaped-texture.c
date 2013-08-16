@@ -33,6 +33,7 @@
 #include <meta/util.h>
 #include "meta-texture-tower.h"
 
+#include "meta-shaped-texture-private.h"
 #ifdef HAVE_WAYLAND
 #include "meta-wayland-private.h"
 #include <cogl/cogl-wayland-server.h>

@@ -35,6 +35,7 @@
 #include "meta-wayland-data-device.h"
 #include "meta-window-actor-private.h"
 #include "meta/meta-shaped-texture.h"
+#include "meta-shaped-texture-private.h"
 #include "meta-wayland-stage.h"
 #include "meta-cursor-tracker-private.h"
 
