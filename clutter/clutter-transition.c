@@ -267,7 +267,7 @@ clutter_transition_class_init (ClutterTransitionClass *klass)
    *
    * Whether the #ClutterTransition should be automatically detached
    * from the #ClutterTransition:animatable instance whenever the
-   * #ClutterTimeline::completed signal is emitted.
+   * #ClutterTimeline::stopped signal is emitted.
    *
    * The #ClutterTransition:remove-on-complete property takes into
    * account the value of the #ClutterTimeline:repeat-count property,
