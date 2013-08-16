@@ -1245,6 +1245,7 @@ if test "x$enable_tests" = "xyes"; then
 echo "        Build X11-specific tests: ${x11_tests}"
 echo "        Build tests using GDK-Pixbuf: ${pixbuf_tests}"
 fi
+echo "        Install test suites: ${enable_installed_tests}"
 echo "        Build examples: ${enable_examples}"
 
 # Clutter backend related flags
