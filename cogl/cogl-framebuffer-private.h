@@ -56,7 +56,7 @@ typedef struct
   CoglBool depth_texture_enabled;
 } CoglFramebufferConfig;
 
-/* Flags to pass to _cogl_offscreen_new_to_texture_full */
+/* Flags to pass to _cogl_offscreen_new_with_texture_full */
 typedef enum
 {
   COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL = 1
@@ -209,7 +209,7 @@ struct _CoglOffscreen
 
   CoglOffscreenAllocateFlags allocation_flags;
 
-  /* FIXME: _cogl_offscreen_new_to_texture_full should be made to use
+  /* FIXME: _cogl_offscreen_new_with_texture_full should be made to use
    * fb->config to configure if we want a depth or stencil buffer so
    * we can get rid of these flags */
   CoglOffscreenFlags create_flags;
@@ -302,7 +302,7 @@ void
 _cogl_free_framebuffer_stack (GSList *stack);
 
 /*
- * _cogl_offscreen_new_to_texture_full:
+ * _cogl_offscreen_new_with_texture_full:
  * @texture: A #CoglTexture pointer
  * @create_flags: Flags specifying how to create the FBO
  * @level: The mipmap level within the texture to target
@@ -315,9 +315,9 @@ _cogl_free_framebuffer_stack (GSList *stack);
  * Return value: the new CoglOffscreen object.
  */
 CoglOffscreen *
-_cogl_offscreen_new_to_texture_full (CoglTexture *texture,
-                                     CoglOffscreenFlags create_flags,
-                                     int level);
+_cogl_offscreen_new_with_texture_full (CoglTexture *texture,
+                                       CoglOffscreenFlags create_flags,
+                                       int level);
 
 /*
  * _cogl_push_framebuffers:

@@ -179,7 +179,7 @@ test_utils_init (TestFlags requirement_flags,
       CoglTexture2D *tex = cogl_texture_2d_new_with_size (test_ctx,
                                                           FB_WIDTH, FB_HEIGHT,
                                                           COGL_PIXEL_FORMAT_ANY);
-      offscreen = cogl_offscreen_new_to_texture (COGL_TEXTURE (tex));
+      offscreen = cogl_offscreen_new_with_texture (COGL_TEXTURE (tex));
       test_fb = COGL_FRAMEBUFFER (offscreen);
     }
 

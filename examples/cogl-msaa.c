@@ -65,7 +65,7 @@ main (int argc, char **argv)
     tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx,
                                                        320, 480,
                                                        COGL_PIXEL_FORMAT_ANY));
-    offscreen = cogl_offscreen_new_to_texture (tex);
+    offscreen = cogl_offscreen_new_with_texture (tex);
     offscreen_fb = COGL_FRAMEBUFFER (offscreen);
     cogl_framebuffer_set_samples_per_pixel (offscreen_fb, 4);
     if (!cogl_framebuffer_allocate (offscreen_fb, &error))

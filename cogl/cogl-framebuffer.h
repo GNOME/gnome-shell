@@ -70,7 +70,7 @@ COGL_BEGIN_DECLS
  *
  * If you want to create a new framebuffer then you should start by
  * looking at the #CoglOnscreen and #CoglOffscreen constructor
- * functions, such as cogl_offscreen_new_to_texture() or
+ * functions, such as cogl_offscreen_new_with_texture() or
  * cogl_onscreen_new(). The #CoglFramebuffer interface deals with
  * all aspects that are common between those two types of framebuffer.
  *
@@ -795,7 +795,7 @@ cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
  *
  * Queries the common #CoglPixelFormat of all color buffers attached
  * to this framebuffer. For an offscreen framebuffer created with
- * cogl_offscreen_new_to_texture() this will correspond to the format
+ * cogl_offscreen_new_with_texture() this will correspond to the format
  * of the texture.
  *
  * Since: 1.8

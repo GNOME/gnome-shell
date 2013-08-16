@@ -10,14 +10,14 @@ test_framebuffer_get_bits (void)
                                    16, 16, /* width/height */
                                    COGL_PIXEL_FORMAT_A_8);
   CoglOffscreen *offscreen_a =
-    cogl_offscreen_new_to_texture (COGL_TEXTURE (tex_a));
+    cogl_offscreen_new_with_texture (COGL_TEXTURE (tex_a));
   CoglFramebuffer *fb_a = COGL_FRAMEBUFFER (offscreen_a);
   CoglTexture2D *tex_rgba =
     cogl_texture_2d_new_with_size (test_ctx,
                                    16, 16, /* width/height */
                                    COGL_PIXEL_FORMAT_RGBA_8888);
   CoglOffscreen *offscreen_rgba =
-    cogl_offscreen_new_to_texture (COGL_TEXTURE (tex_rgba));
+    cogl_offscreen_new_with_texture (COGL_TEXTURE (tex_rgba));
   CoglFramebuffer *fb_rgba = COGL_FRAMEBUFFER (offscreen_rgba);
 
   cogl_framebuffer_allocate (fb_a, NULL);

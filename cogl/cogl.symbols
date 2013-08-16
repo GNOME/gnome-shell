@@ -513,7 +513,7 @@ cogl_object_ref
 cogl_object_set_user_data
 cogl_object_unref
 
-cogl_offscreen_new_to_texture
+cogl_offscreen_new_with_texture
 
 cogl_onscreen_add_frame_callback
 cogl_onscreen_add_resize_handler

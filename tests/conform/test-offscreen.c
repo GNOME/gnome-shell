@@ -50,7 +50,7 @@ test_paint (TestState *state)
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE);
   tex = COGL_TEXTURE (tex_2d);
 
-  offscreen = cogl_offscreen_new_to_texture (tex);
+  offscreen = cogl_offscreen_new_with_texture (tex);
 
   /* Set a scale and translate transform on the window framebuffer
    * before switching to the offscreen framebuffer so we can verify it
@@ -131,7 +131,7 @@ test_flush (TestState *state)
                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE);
       tex = COGL_TEXTURE (tex_2d);
 
-      offscreen = cogl_offscreen_new_to_texture (tex);
+      offscreen = cogl_offscreen_new_with_texture (tex);
 
       cogl_push_framebuffer (COGL_FRAMEBUFFER (offscreen));
 

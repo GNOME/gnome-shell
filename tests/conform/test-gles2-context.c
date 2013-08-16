@@ -28,7 +28,7 @@ test_push_pop_single_context (void)
                                    cogl_framebuffer_get_width (test_fb),
                                    cogl_framebuffer_get_height (test_fb),
                                    COGL_PIXEL_FORMAT_ANY));
-  offscreen = cogl_offscreen_new_to_texture (offscreen_texture);
+  offscreen = cogl_offscreen_new_with_texture (offscreen_texture);
 
   pipeline = cogl_pipeline_new (test_ctx);
   cogl_pipeline_set_layer_texture (pipeline, 0, offscreen_texture);
@@ -152,7 +152,7 @@ create_gles2_context (CoglTexture **offscreen_texture,
                                    cogl_framebuffer_get_width (test_fb),
                                    cogl_framebuffer_get_height (test_fb),
                                    COGL_PIXEL_FORMAT_ANY));
-  *offscreen = cogl_offscreen_new_to_texture (*offscreen_texture);
+  *offscreen = cogl_offscreen_new_with_texture (*offscreen_texture);
 
   *pipeline = cogl_pipeline_new (test_ctx);
   cogl_pipeline_set_layer_texture (*pipeline, 0, *offscreen_texture);

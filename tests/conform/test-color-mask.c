@@ -87,7 +87,7 @@ test_color_mask (void)
 
 
       state.fbo[i] = COGL_FRAMEBUFFER (
-        cogl_offscreen_new_to_texture (state.tex[i]));
+        cogl_offscreen_new_with_texture (state.tex[i]));
 
       /* Clear the texture color bits */
       cogl_framebuffer_clear4f (state.fbo[i],

@@ -650,7 +650,7 @@ CoglOffscreen
 cogl_is_offscreen
 
 <SUBSECTION>
-cogl_offscreen_new_to_texture
+cogl_offscreen_new_with_texture
 </SECTION>
 
 <SECTION>

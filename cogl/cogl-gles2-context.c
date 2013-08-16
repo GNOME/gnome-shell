@@ -330,7 +330,7 @@ copy_flipped_texture (CoglGLES2Context *gles2_ctx,
       CoglPipeline *pipeline = cogl_pipeline_new (ctx);
       const CoglOffscreenFlags flags = COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL;
       CoglOffscreen *offscreen =
-        _cogl_offscreen_new_to_texture_full (COGL_TEXTURE (dst_texture),
+        _cogl_offscreen_new_with_texture_full (COGL_TEXTURE (dst_texture),
                                              flags, level);
       int src_width = cogl_texture_get_width (src_texture);
       int src_height = cogl_texture_get_height (src_texture);

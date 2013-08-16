@@ -267,6 +267,7 @@ cogl_program_set_uniform_matrix
 <SECTION>
 <FILE>cogl-offscreen</FILE>
 <TITLE>Offscreen Buffers</TITLE>
+cogl_offscreen_new_with_texture
 cogl_offscreen_new_to_texture
 cogl_is_offscreen
 cogl_set_framebuffer

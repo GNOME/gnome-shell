@@ -51,7 +51,7 @@ on_paint (ClutterActor *actor, void *state)
                                     FRAMEBUFFER_WIDTH * 4, /* rowstride */
                                     data);
   g_free (data);
-  offscreen = cogl_offscreen_new_to_texture (tex);
+  offscreen = cogl_offscreen_new_with_texture (tex);
 
   cogl_push_framebuffer (offscreen);
 
