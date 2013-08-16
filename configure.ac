@@ -75,26 +75,29 @@ NETWORKMANAGER_MIN_VERSION=0.9.8
 PULSE_MIN_VERS=2.0
 
 # Collect more than 20 libraries for a prize!
-PKG_CHECK_MODULES(GNOME_SHELL, gio-unix-2.0 >= $GIO_MIN_VERSION
-			       libxml-2.0
-                               gtk+-3.0 >= $GTK_MIN_VERSION
-                               atk-bridge-2.0
-                               libmutter >= $MUTTER_MIN_VERSION
-                               gjs-internals-1.0 >= $GJS_MIN_VERSION
-			       libgnome-menu-3.0 >= $GNOME_MENUS_REQUIRED_VERSION
-                               $recorder_modules
-                               gdk-x11-3.0 libsoup-2.4
-                               xtst
-			       clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
-			       clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
-                               libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_MIN_VERSION
-                               gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
-			       libcanberra libcanberra-gtk3
-                               telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
-                               polkit-agent-1 >= $POLKIT_MIN_VERSION
-                               libnm-glib libnm-util >= $NETWORKMANAGER_MIN_VERSION
-                               libnm-gtk >= $NETWORKMANAGER_MIN_VERSION
-                               libsecret-unstable gcr-base-3 >= $GCR_MIN_VERSION)
+SHARED_PCS="gio-unix-2.0 >= $GIO_MIN_VERSION
+            libxml-2.0
+            gtk+-3.0 >= $GTK_MIN_VERSION
+            atk-bridge-2.0
+            gjs-internals-1.0 >= $GJS_MIN_VERSION
+            libgnome-menu-3.0 >= $GNOME_MENUS_REQUIRED_VERSION
+            $recorder_modules
+            gdk-x11-3.0 libsoup-2.4
+            xtst
+            clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
+            clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
+            libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_MIN_VERSION
+            gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
+            libcanberra libcanberra-gtk3
+            telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
+            polkit-agent-1 >= $POLKIT_MIN_VERSION
+            libnm-glib libnm-util >= $NETWORKMANAGER_MIN_VERSION
+            libnm-gtk >= $NETWORKMANAGER_MIN_VERSION
+            libsecret-unstable gcr-base-3 >= $GCR_MIN_VERSION"
+
+PKG_CHECK_MODULES(GNOME_SHELL, $SHARED_PCS)
+PKG_CHECK_MODULES(MUTTER, libmutter >= $MUTTER_MIN_VERSION)
+PKG_CHECK_MODULES(MUTTER_WAYLAND, libmutter-wayland >= $MUTTER_MIN_VERSION)
 
 PKG_CHECK_MODULES(GNOME_SHELL_JS, gio-2.0 gjs-internals-1.0 >= $GJS_MIN_VERSION)
 PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 >= 0.6.8 x11)
@@ -133,6 +136,10 @@ MUTTER_GIR_DIR=`$PKG_CONFIG --variable=girdir libmutter`
 MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter`
 AC_SUBST(MUTTER_GIR_DIR)
 AC_SUBST(MUTTER_TYPELIB_DIR)
+MUTTER_WAYLAND_GIR_DIR=`$PKG_CONFIG --variable=girdir libmutter`
+MUTTER_WAYLAND_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter-wayland`
+AC_SUBST(MUTTER_WAYLAND_GIR_DIR)
+AC_SUBST(MUTTER_WAYLAND_TYPELIB_DIR)
 
 GJS_CONSOLE=`$PKG_CONFIG --variable=gjs_console gjs-1.0`
 AC_SUBST(GJS_CONSOLE)

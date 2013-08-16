@@ -99,6 +99,9 @@ function start() {
     global.logError = window.log;
     global.log = window.log;
 
+    if (!Meta.is_wayland_compositor)
+        Meta.is_wayland_compositor = function () { return false; };
+
     // Chain up async errors reported from C
     global.connect('notify-error', function (global, msg, detail) { notifyError(msg, detail); });
 

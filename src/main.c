@@ -388,6 +388,7 @@ main (int argc, char **argv)
 
   ctx = meta_get_option_context ();
   g_option_context_add_main_entries (ctx, gnome_shell_options, GETTEXT_PACKAGE);
+  g_option_context_add_group (ctx, g_irepository_get_option_group ());
   if (!g_option_context_parse (ctx, &argc, &argv, &error))
     {
       g_printerr ("%s: %s\n", argv[0], error->message);

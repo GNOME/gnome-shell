@@ -4,7 +4,6 @@
 
 #include "shell-tray-icon.h"
 #include "shell-gtk-embed.h"
-#include "shell-window-tracker.h"
 #include "tray/na-tray-child.h"
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
