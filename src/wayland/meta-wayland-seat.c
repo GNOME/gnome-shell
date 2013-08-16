@@ -357,30 +357,24 @@ handle_button_event (MetaWaylandSeat *seat,
       break;
     }
 
-  if (state)
+  /* FIXME: synth a XI2 event and handle in display.c */
+  if (state && pointer->button_count == 1)
     {
-      if (pointer->button_count == 0)
-        {
-          MetaWaylandSurface *surface = pointer->current;
+      MetaWaylandSurface *surface = pointer->current;
 
-          pointer->grab_button = button;
-          pointer->grab_time = event->time;
-          pointer->grab_x = pointer->x;
-          pointer->grab_y = pointer->y;
+      pointer->grab_button = button;
+      pointer->grab_time = event->time;
+      pointer->grab_x = pointer->x;
+      pointer->grab_y = pointer->y;
 
-          if (button == BTN_LEFT &&
-              surface &&
-              surface->window &&
-              surface->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
-            {
-              meta_window_raise (surface->window);
-            }
-        }
-
-      pointer->button_count++;
+      if (button == BTN_LEFT &&
+	  surface &&
+	  surface->window &&
+	  surface->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+	{
+	  meta_window_raise (surface->window);
+	}
     }
-  else
-    pointer->button_count--;
 
   pointer->grab->interface->button (pointer->grab, event->time, button, state);
 
@@ -430,10 +424,34 @@ handle_scroll_event (MetaWaylandSeat *seat,
                           value);
 }
 
+static int
+count_buttons (const ClutterEvent *event)
+{
+  static gint maskmap[5] =
+    {
+      CLUTTER_BUTTON1_MASK, CLUTTER_BUTTON2_MASK, CLUTTER_BUTTON3_MASK,
+      CLUTTER_BUTTON4_MASK, CLUTTER_BUTTON5_MASK
+    };
+  ClutterModifierType mod_mask;
+  int i, count;
+
+  mod_mask = clutter_event_get_state (event);
+  count = 0;
+  for (i = 0; i < 5; i++)
+    {
+      if (mod_mask & maskmap[i])
+	count++;
+    }
+
+  return count;
+}
+
 void
 meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
                                 const ClutterEvent *event)
 {
+  seat->pointer.button_count = count_buttons (event);
+
   switch (event->type)
     {
     case CLUTTER_MOTION:
