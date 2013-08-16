@@ -38,6 +38,7 @@
 #define META_MONITOR_PRIVATE_H
 
 #include <cogl/cogl.h>
+#include <libgnome-desktop/gnome-pnp-ids.h>
 
 #include "display-private.h"
 #include <meta/screen.h>
@@ -250,6 +251,8 @@ struct _MetaMonitorManager
 
   int persistent_timeout_id;
   MetaMonitorConfig *config;
+
+  GnomePnpIds *pnp_ids;
 };
 
 struct _MetaMonitorManagerClass
