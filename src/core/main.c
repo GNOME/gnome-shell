@@ -55,9 +55,7 @@
 #include "session.h"
 #include <meta/prefs.h>
 #include <meta/compositor.h>
-#ifdef HAVE_WAYLAND
 #include "meta-wayland-private.h"
-#endif
 
 #include <glib-object.h>
 #include <gdk/gdkx.h>
@@ -350,10 +348,8 @@ meta_finalize (void)
     meta_display_close (display,
                         CurrentTime); /* I doubt correct timestamps matter here */
 
-#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     meta_wayland_finalize ();
-#endif
 }
 
 static int signal_pipe_fds[2] = { -1, -1 };
@@ -468,7 +464,6 @@ meta_init (void)
   g_irepository_prepend_search_path (MUTTER_PKGLIBDIR);
 #endif
 
-#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     {
       /* NB: When running as a hybrid wayland compositor we run our own headless X
@@ -476,7 +471,6 @@ meta_init (void)
       meta_wayland_init ();
     }
   else
-#endif
     meta_select_display (opt_display_name);
 
   meta_set_syncing (opt_sync || (g_getenv ("MUTTER_SYNC") != NULL));

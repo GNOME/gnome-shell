@@ -84,9 +84,7 @@
 #include "meta-window-group.h"
 #include "window-private.h" /* to check window->hidden */
 #include "display-private.h" /* for meta_display_lookup_x_window() */
-#ifdef HAVE_WAYLAND
 #include "meta-wayland-private.h"
-#endif
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 
@@ -633,9 +631,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   Display        *xdisplay      = meta_display_get_xdisplay (display);
   Window          xwin;
   gint            width, height;
-#ifdef HAVE_WAYLAND
   MetaWaylandCompositor *wayland_compositor;
-#endif
 
   /* Check if the screen is already managed */
   if (meta_screen_get_compositor_data (screen))
@@ -668,14 +664,12 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   /* We will have already created a stage if running as a wayland
    * compositor... */
-#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     {
       wayland_compositor = meta_wayland_compositor_get_default ();
       info->stage = wayland_compositor->stage;
     }
   else
-#endif /* HAVE_WAYLAND */
     {
       info->stage = clutter_stage_new ();
 

@@ -28,23 +28,17 @@
 #define __META_SHAPED_TEXTURE_PRIVATE_H__
 
 #include <meta/meta-shaped-texture.h>
-#ifdef HAVE_WAYLAND
 #include "meta-wayland-private.h"
-#endif
 
 ClutterActor *meta_shaped_texture_new_with_xwindow (Window xwindow);
-#ifdef HAVE_WAYLAND
 ClutterActor *meta_shaped_texture_new_with_wayland_surface  (MetaWaylandSurface *surface);
 void meta_shaped_texture_set_wayland_surface                (MetaShapedTexture  *stex,
                                                              MetaWaylandSurface *surface);
 MetaWaylandSurface *meta_shaped_texture_get_wayland_surface (MetaShapedTexture *stex);
-#endif
 
 void meta_shaped_texture_set_pixmap (MetaShapedTexture *stex,
                                      Pixmap             pixmap);
-#ifdef HAVE_WAYLAND
 void meta_shaped_texture_attach_wayland_buffer (MetaShapedTexture  *stex,
                                                 MetaWaylandBuffer  *buffer);
-#endif
 
 #endif

@@ -33,9 +33,7 @@
 #include "meta-window-actor-private.h"
 #include "meta-texture-rectangle.h"
 #include "region-utils.h"
-#ifdef HAVE_WAYLAND
 #include "meta-wayland-private.h"
-#endif
 
 enum {
   POSITION_CHANGED,
@@ -372,11 +370,9 @@ meta_window_actor_constructed (GObject *object)
 
   if (!priv->actor)
     {
-#ifdef HAVE_WAYLAND
       if (meta_is_wayland_compositor ())
         priv->actor = meta_shaped_texture_new_with_wayland_surface (window->surface);
       else
-#endif
         priv->actor = meta_shaped_texture_new_with_xwindow (xwindow);
 
       clutter_actor_add_child (CLUTTER_ACTOR (self), priv->actor);
@@ -1321,10 +1317,8 @@ meta_window_actor_destroy (MetaWindowActor *self)
 
   priv = self->priv;
 
-#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     meta_shaped_texture_set_wayland_surface (META_SHAPED_TEXTURE (priv->actor), NULL);
-#endif
 
   window = priv->window;
   window_type = meta_window_get_window_type (window);
@@ -1568,14 +1562,12 @@ meta_window_actor_new (MetaWindow *window)
 
       meta_verbose ("add window: Meta %p, xwin 0x%x\n", window, (guint)top_window);
     }
-#ifdef HAVE_WAYLAND
   else
     {
       meta_verbose ("add window: Meta %p, wayland surface %p\n",
                     window, window->surface);
       top_window = None;
     }
-#endif
 
   self = g_object_new (META_TYPE_WINDOW_ACTOR,
                        "meta-window",         window,
@@ -2023,7 +2015,6 @@ meta_window_actor_process_x11_damage (MetaWindowActor    *self,
   priv->repaint_scheduled = TRUE;
 }
 
-#ifdef HAVE_WAYLAND
 void
 meta_window_actor_process_wayland_damage (MetaWindowActor *self,
                                           int x,
@@ -2040,7 +2031,6 @@ meta_window_actor_process_wayland_damage (MetaWindowActor *self,
                                    x, y, width, height);
   priv->repaint_scheduled = TRUE;
 }
-#endif
 
 void
 meta_window_actor_sync_visibility (MetaWindowActor *self)
@@ -2430,7 +2420,6 @@ meta_window_actor_update_shape (MetaWindowActor *self)
   clutter_actor_queue_redraw (priv->actor);
 }
 
-#ifdef HAVE_WAYLAND
 static void
 maybe_emit_size_changed (MetaWindowActor *self,
                          MetaWaylandBuffer *new_buffer)
@@ -2491,7 +2480,6 @@ meta_window_actor_attach_wayland_buffer (MetaWindowActor *self,
 
   maybe_emit_size_changed (self, buffer);
 }
-#endif /* HAVE_WAYLAND */
 
 static void
 meta_window_actor_handle_updates (MetaWindowActor *self)

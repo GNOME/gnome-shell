@@ -62,9 +62,7 @@
 
 #include <X11/extensions/Xcomposite.h>
 
-#ifdef HAVE_WAYLAND
 #include "meta-wayland-private.h"
-#endif
 
 /* Windows that unmaximize to a size bigger than that fraction of the workarea
  * will be scaled down to that size (while maintaining aspect ratio).
@@ -853,9 +851,7 @@ meta_window_new_shared (MetaDisplay         *display,
   window->dialog_pid = -1;
 
   window->client_type = client_type;
-#ifdef HAVE_WAYLAND
   window->surface = surface;
-#endif
   window->xwindow = xwindow;
 
   /* this is in window->screen->display, but that's too annoying to
@@ -1375,7 +1371,6 @@ display_notify_window (MetaDisplay *display, MetaWindow *window)
     g_signal_emit_by_name (window->display, "window-marked-urgent", window);
 }
 
-#ifdef HAVE_WAYLAND
 MetaWindow *
 meta_window_new_for_wayland (MetaDisplay        *display,
                              int                 width,
@@ -1447,7 +1442,6 @@ meta_window_new_for_wayland (MetaDisplay        *display,
 
   return window;
 }
-#endif
 
 MetaWindow*
 meta_window_new_with_attrs (MetaDisplay       *display,
@@ -2107,10 +2101,8 @@ meta_window_unmanage (MetaWindow  *window,
       meta_error_trap_pop (window->display);
     }
 
-#ifdef HAVE_WAYLAND
   if (window->surface)
     meta_wayland_surface_free (window->surface);
-#endif
 
   meta_prefs_remove_listener (prefs_changed_callback, window);
 

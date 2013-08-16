@@ -45,9 +45,7 @@
 #include <meta/compositor.h>
 #include "mutter-enum-types.h"
 #include "core.h"
-#ifdef HAVE_WAYLAND
 #include "meta-wayland-private.h"
-#endif
 #include "meta-cursor-tracker-private.h"
 
 #include <X11/extensions/Xinerama.h>
@@ -675,9 +673,7 @@ meta_screen_new (MetaDisplay *display,
   char buf[128];
   guint32 manager_timestamp;
   gulong current_workspace;
-#ifdef HAVE_WAYLAND
   MetaWaylandCompositor *compositor;
-#endif
   
   replace_current_wm = meta_get_replace_current_wm ();
   
@@ -837,7 +833,6 @@ meta_screen_new (MetaDisplay *display,
   screen->xroot = xroot;
   screen->rect.x = screen->rect.y = 0;
   
-#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     {
       compositor = meta_wayland_compositor_get_default ();
@@ -845,7 +840,6 @@ meta_screen_new (MetaDisplay *display,
       screen->rect.height = clutter_actor_get_height (compositor->stage);
     }
   else
-#endif
     {
       screen->rect.width = WidthOfScreen (screen->xscreen);
       screen->rect.height = HeightOfScreen (screen->xscreen);

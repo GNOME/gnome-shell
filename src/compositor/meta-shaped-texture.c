@@ -34,10 +34,8 @@
 #include "meta-texture-tower.h"
 
 #include "meta-shaped-texture-private.h"
-#ifdef HAVE_WAYLAND
 #include "meta-wayland-private.h"
 #include <cogl/cogl-wayland-server.h>
-#endif
 
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
@@ -65,9 +63,7 @@ static gboolean meta_shaped_texture_get_paint_volume (ClutterActor *self, Clutte
 typedef enum _MetaShapedTextureType
 {
   META_SHAPED_TEXTURE_TYPE_X11_PIXMAP,
-#ifdef HAVE_WAYLAND
   META_SHAPED_TEXTURE_TYPE_WAYLAND_SURFACE,
-#endif
 } MetaShapedTextureType;
 
 
@@ -87,11 +83,9 @@ struct _MetaShapedTexturePrivate
     struct {
       Pixmap pixmap;
     } x11;
-#ifdef HAVE_WAYLAND
     struct {
       MetaWaylandSurface *surface;
     } wayland;
-#endif
   };
 
   CoglTexture *texture;
@@ -463,7 +457,6 @@ meta_shaped_texture_get_paint_volume (ClutterActor *self,
   return clutter_paint_volume_set_from_allocation (volume, self);
 }
 
-#ifdef HAVE_WAYLAND
 ClutterActor *
 meta_shaped_texture_new_with_wayland_surface (MetaWaylandSurface *surface)
 {
@@ -499,7 +492,6 @@ meta_shaped_texture_get_wayland_surface (MetaShapedTexture *stex)
   MetaShapedTexturePrivate *priv = stex->priv;
   return priv->wayland.surface;
 }
-#endif /* HAVE_WAYLAND */
 
 ClutterActor *
 meta_shaped_texture_new_with_xwindow (Window xwindow)
@@ -549,7 +541,6 @@ meta_shaped_texture_set_mask_texture (MetaShapedTexture *stex,
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
 }
 
-#ifdef HAVE_WAYLAND
 static void
 wayland_surface_update_area (MetaShapedTexture *stex,
                              int                x,
@@ -609,7 +600,6 @@ wayland_surface_update_area (MetaShapedTexture *stex,
         }
     }
 }
-#endif /* HAVE_WAYLAND */
 
 static void
 queue_damage_redraw_with_clip (MetaShapedTexture *stex,
@@ -679,11 +669,9 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
       cogl_texture_pixmap_x11_update_area (COGL_TEXTURE_PIXMAP_X11 (priv->texture),
                                            x, y, width, height);
       break;
-#ifdef HAVE_WAYLAND
     case META_SHAPED_TEXTURE_TYPE_WAYLAND_SURFACE:
       wayland_surface_update_area (stex, x, y, width, height);
       break;
-#endif
     }
 
   meta_texture_tower_update_area (priv->paint_tower, x, y, width, height);
@@ -727,7 +715,6 @@ meta_shaped_texture_set_pixmap (MetaShapedTexture *stex,
                                          COGL_TEXTURE (priv->texture));
 }
 
-#ifdef HAVE_WAYLAND
 void
 meta_shaped_texture_attach_wayland_buffer (MetaShapedTexture  *stex,
                                            MetaWaylandBuffer  *buffer)
@@ -773,7 +760,6 @@ meta_shaped_texture_attach_wayland_buffer (MetaShapedTexture  *stex,
     meta_texture_tower_set_base_texture (priv->paint_tower,
                                          COGL_TEXTURE (priv->texture));
 }
-#endif /* HAVE_WAYLAND */
 
 /**
  * meta_shaped_texture_get_texture:

@@ -44,9 +44,7 @@
 #include <X11/Xutil.h>
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#ifdef HAVE_WAYLAND
 #include "meta-wayland-private.h"
-#endif
 
 /* XXX: We should find a nicer approach to deal with the
  * circular dependency we have with the current headers
