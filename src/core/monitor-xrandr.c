@@ -40,6 +40,8 @@
 #include <meta/errors.h>
 #include "monitor-private.h"
 
+#include "edid.h"
+
 #define ALL_WL_TRANSFORMS ((1 << (WL_OUTPUT_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
 struct _MetaMonitorManagerXrandr
@@ -236,6 +238,74 @@ compare_outputs (const void *one,
   return strcmp (o_one->name, o_two->name);
 }
 
+static guint8 *
+get_edid_property (Display  *dpy,
+                   RROutput  output,
+                   Atom      atom,
+                   gsize    *len)
+{
+  unsigned char *prop;
+  int actual_format;
+  unsigned long nitems, bytes_after;
+  Atom actual_type;
+  guint8 *result;
+
+  XRRGetOutputProperty (dpy, output, atom,
+                        0, 100, False, False,
+                        AnyPropertyType,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &prop);
+
+  if (actual_type == XA_INTEGER && actual_format == 8)
+    {
+      result = g_memdup (prop, nitems);
+      if (len)
+        *len = nitems;
+    }
+  else
+    {
+      result = NULL;
+    }
+
+  XFree (prop);
+    
+  return result;
+}
+
+static GBytes *
+read_output_edid (MetaMonitorManagerXrandr *manager_xrandr,
+                  XID                       output_id)
+{
+  Atom edid_atom;
+  guint8 *result;
+  gsize len;
+
+  edid_atom = XInternAtom (manager_xrandr->xdisplay, "EDID", FALSE);
+  result = get_edid_property (manager_xrandr->xdisplay, output_id, edid_atom, &len);
+
+  if (!result)
+    {
+      edid_atom = XInternAtom (manager_xrandr->xdisplay, "EDID_DATA", FALSE);
+      result = get_edid_property (manager_xrandr->xdisplay, output_id, edid_atom, &len);
+    }
+
+  if (!result)
+    {
+      edid_atom = XInternAtom (manager_xrandr->xdisplay, "XFree86_DDC_EDID1_RAWDATA", FALSE);
+      result = get_edid_property (manager_xrandr->xdisplay, output_id, edid_atom, &len);
+    }
+
+  if (result)
+    {
+      if (len > 0 && len % 128 == 0)
+        return g_bytes_new_take (result, len);
+      else
+        g_free (result);
+    }
+
+  return NULL;
+}
+
 static void
 meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 {
@@ -365,11 +435,36 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 
       if (output->connection != RR_Disconnected)
 	{
+          GBytes *edid;
+          MonitorInfo *parsed_edid;
+
 	  meta_output->output_id = resources->outputs[i];
 	  meta_output->name = g_strdup (output->name);
-	  meta_output->vendor = g_strdup ("unknown");
-	  meta_output->product = g_strdup ("unknown");
-	  meta_output->serial = g_strdup ("");
+
+          edid = read_output_edid (manager_xrandr, meta_output->output_id);
+          if (edid)
+            {
+              gsize len;
+
+              parsed_edid = decode_edid (g_bytes_get_data (edid, &len));
+              if (parsed_edid)
+                {
+                  meta_output->vendor = g_strndup (parsed_edid->manufacturer_code, 4);
+                  meta_output->product = g_strndup (parsed_edid->dsc_product_name, 14);
+                  meta_output->serial = g_strndup (parsed_edid->dsc_serial_number, 14);
+
+                  g_free (parsed_edid);
+                }
+
+              g_bytes_unref (edid);
+            }
+
+          if (!meta_output->vendor)
+            {
+              meta_output->vendor = g_strdup ("unknown");
+              meta_output->product = g_strdup ("unknown");
+              meta_output->serial = g_strdup ("unknown");
+            }
 	  meta_output->width_mm = output->mm_width;
 	  meta_output->height_mm = output->mm_height;
 	  meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
@@ -467,73 +562,13 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
     }
 }
 
-static guint8 *
-get_edid_property (Display  *dpy,
-                   RROutput  output,
-                   Atom      atom,
-                   gsize    *len)
-{
-  unsigned char *prop;
-  int actual_format;
-  unsigned long nitems, bytes_after;
-  Atom actual_type;
-  guint8 *result;
-
-  XRRGetOutputProperty (dpy, output, atom,
-                        0, 100, False, False,
-                        AnyPropertyType,
-                        &actual_type, &actual_format,
-                        &nitems, &bytes_after, &prop);
-
-  if (actual_type == XA_INTEGER && actual_format == 8)
-    {
-      result = g_memdup (prop, nitems);
-      if (len)
-        *len = nitems;
-    }
-  else
-    {
-      result = NULL;
-    }
-
-  XFree (prop);
-    
-  return result;
-}
-
 static GBytes *
 meta_monitor_manager_xrandr_read_edid (MetaMonitorManager *manager,
                                        MetaOutput         *output)
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
-  Atom edid_atom;
-  guint8 *result;
-  gsize len;
 
-  edid_atom = XInternAtom (manager_xrandr->xdisplay, "EDID", FALSE);
-  result = get_edid_property (manager_xrandr->xdisplay, output->output_id, edid_atom, &len);
-
-  if (!result)
-    {
-      edid_atom = XInternAtom (manager_xrandr->xdisplay, "EDID_DATA", FALSE);
-      result = get_edid_property (manager_xrandr->xdisplay, output->output_id, edid_atom, &len);
-    }
-
-  if (!result)
-    {
-      edid_atom = XInternAtom (manager_xrandr->xdisplay, "XFree86_DDC_EDID1_RAWDATA", FALSE);
-      result = get_edid_property (manager_xrandr->xdisplay, output->output_id, edid_atom, &len);
-    }
-
-  if (result)
-    {
-      if (len > 0 && len % 128 == 0)
-        return g_bytes_new_take (result, len);
-      else
-        g_free (result);
-    }
-
-  return NULL;
+  return read_output_edid (manager_xrandr, output->output_id);
 }
 
 static void

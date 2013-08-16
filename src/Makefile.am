@@ -95,6 +95,8 @@ libmutter_la_SOURCES =				\
 	ui/draw-workspace.h			\
 	core/edge-resistance.c			\
 	core/edge-resistance.h			\
+	core/edid-parse.c			\
+	core/edid.h				\
 	core/errors.c				\
 	meta/errors.h				\
 	core/frame.c				\
