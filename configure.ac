@@ -113,11 +113,6 @@ AC_ARG_ENABLE(shape,
                  [disable mutter's use of the shaped window extension]),,
   enable_shape=auto)
 
-AC_ARG_ENABLE(wayland,
-  AC_HELP_STRING([--enable-wayland],
-                 [Enable support for running as a hybrid X and Wayland compositor]),,
-  enable_wayland=no)
-
 ## Wayland support requires the xserver.xml protocol extension found in the weston
 ## repository but since there aren't currently established conventions for
 ## installing and discovering these we simply require a location to be given
@@ -216,29 +211,16 @@ if test x$have_xcursor = xyes; then
   AC_DEFINE(HAVE_XCURSOR, , [Building with Xcursor support])
 fi
 
-have_wayland=no
-if test x$enable_wayland = "xyes"; then
-  WAYLAND_VERSION=0.1
-  AC_MSG_CHECKING([Wayland >= $WAYLAND_VERSION])
-  if ! $PKG_CONFIG --atleast-version $WAYLAND_VERSION wayland-server; then
-    AC_MSG_ERROR([wayland support enabled but no suitable wayland-server package found])
-  fi
-  AC_MSG_RESULT(yes)
+# We always build with wayland enabled
+AC_DEFINE(HAVE_WAYLAND, , [Building with Wayland support])
 
-  AC_PATH_PROG([WAYLAND_SCANNER],[wayland-scanner],[no])
-  AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
-        AC_MSG_ERROR([Could not find wayland-scanner in your PATH, required for parsing wayland extension protocols]))
-  AC_SUBST([WAYLAND_SCANNER])
+AC_PATH_PROG([WAYLAND_SCANNER],[wayland-scanner],[no])
+AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
+  AC_MSG_ERROR([Could not find wayland-scanner in your PATH, required for parsing wayland extension protocols]))
+AC_SUBST([WAYLAND_SCANNER])
+AC_SUBST(XWAYLAND_PATH)
 
-  AC_SUBST(XWAYLAND_PATH)
-
-  MUTTER_PC_MODULES="$MUTTER_PC_MODULES wayland-server"
-  AC_DEFINE(HAVE_WAYLAND, , [Building with Wayland support])
-  have_wayland=yes
-fi
-
-AM_CONDITIONAL(HAVE_WAYLAND, test x$have_wayland = "xyes")
-
+MUTTER_PC_MODULES="$MUTTER_PC_MODULES wayland-server"
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
 
 PKG_CHECK_EXISTS([xi >= 1.6.99.1],
@@ -496,13 +478,11 @@ fi
 
 dnl ==========================================================================
 echo "
-mutter-$VERSION
+mutter-wayland-$VERSION
 
 	prefix:                   ${prefix}
 	source code location:	  ${srcdir}
 	compiler:		  ${CC}
-
-	Wayland:		  ${have_wayland}
 
 	Startup notification:     ${have_startup_notification}
 	libcanberra:              ${have_libcanberra}

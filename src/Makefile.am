@@ -29,24 +29,18 @@ INCLUDES=								\
 	-DMUTTER_PLUGIN_DIR=\"@MUTTER_PLUGIN_DIR@\"			\
 	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"
 
-if HAVE_WAYLAND
 INCLUDES += \
 	-I$(srcdir)/wayland						\
 	-I$(builddir)/wayland						\
 	-DXWAYLAND_PATH='"@XWAYLAND_PATH@"'
-endif
 
 mutter_built_sources = \
-	$(dbus_idle_built_sources)	\
-	mutter-enum-types.h		\
-	mutter-enum-types.c
-
-if HAVE_WAYLAND
-mutter_built_sources += \
+	$(dbus_idle_built_sources)		\
+	mutter-enum-types.h 			\
+	mutter-enum-types.c			\
 	wayland/xserver-protocol.c		\
 	wayland/xserver-server-protocol.h	\
 	wayland/xserver-client-protocol.h
-endif
 
 libmutter_la_SOURCES =				\
 	core/async-getprop.c			\
@@ -178,7 +172,6 @@ libmutter_la_SOURCES =				\
 	ui/ui.c					\
 	$(mutter_built_sources)
 
-if HAVE_WAYLAND
 libmutter_la_SOURCES +=				\
 	wayland/meta-wayland.c			\
 	wayland/meta-wayland-private.h		\
@@ -194,7 +187,6 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-seat.h		\
 	wayland/meta-wayland-stage.h		\
 	wayland/meta-wayland-stage.c
-endif
 
 libmutter_la_LDFLAGS = -no-undefined
 libmutter_la_LIBADD  = $(MUTTER_LIBS)
@@ -376,7 +368,6 @@ $(dbus_idle_built_sources) : Makefile.am idle-monitor.xml
 		--c-generate-object-manager						\
 		$(srcdir)/idle-monitor.xml
 
-if HAVE_WAYLAND
 wayland/%-protocol.c : $(top_builddir)/protocol/%.xml
 	mkdir -p wayland
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
@@ -386,4 +377,3 @@ wayland/%-server-protocol.h : $(top_builddir)/protocol/%.xml
 wayland/%-client-protocol.h : $(top_builddir)/protocol/%.xml
 	mkdir -p wayland
 	$(AM_V_GEN)$(WAYLAND_SCANNER) client-header < $< > $@
-endif
