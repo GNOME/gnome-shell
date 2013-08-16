@@ -742,6 +742,13 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       if ((backend_shader = _cogl_pipeline_vertend_glsl_get_shader (pipeline)))
         GE( ctx, glAttachShader (program_state->program, backend_shader) );
 
+      /* XXX: OpenGL as a special case requires the vertex position to
+       * be bound to generic attribute 0 so for simplicity we
+       * unconditionally bind the cogl_position_in attribute here...
+       */
+      GE( ctx, glBindAttribLocation (program_state->program,
+                                     0, "cogl_position_in"));
+
       link_program (program_state->program);
 
       program_changed = TRUE;

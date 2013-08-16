@@ -24,6 +24,7 @@ typedef struct
 typedef struct
 {
   int16_t x, y;
+  int16_t r, g, b, a;
 } ShortVert;
 
 static void
@@ -167,7 +168,7 @@ test_byte_verts (TestState *state, int offset_x, int offset_y)
 static void
 test_short_verts (TestState *state, int offset_x, int offset_y)
 {
-  CoglAttribute *attributes[1];
+  CoglAttribute *attributes[2];
   CoglAttributeBuffer *buffer;
   CoglPipeline *pipeline, *pipeline2;
   CoglSnippet *snippet;
@@ -175,32 +176,31 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
 
   static const ShortVert short_verts[] =
     {
-      { -10, -10 },
-      { -1, -10 },
-      { -5, -1 }
+      { -10, -10, /**/ 0xffff, 0, 0, 0xffff },
+      { -1, -10,  /**/ 0xffff, 0, 0, 0xffff },
+      { -5, -1, /**/ 0xffff, 0, 0, 0xffff }
     };
 
-  pipeline = cogl_pipeline_new (test_ctx);
-  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX_TRANSFORM,
-                              "attribute vec2 pos;",
-                              NULL);
-  cogl_snippet_set_replace (snippet,
-                            "cogl_position_out = "
-                            "cogl_modelview_projection_matrix * "
-                            "vec4 (pos, 0.0, 1.0);");
-  cogl_pipeline_add_snippet (pipeline, snippet);
-  cogl_object_unref (snippet);
+
+  pipeline = cogl_pipeline_copy (state->pipeline);
 
   cogl_pipeline_set_color4ub (pipeline, 255, 0, 0, 255);
 
   buffer = cogl_attribute_buffer_new (test_ctx,
                                       sizeof (short_verts), short_verts);
   attributes[0] = cogl_attribute_new (buffer,
-                                      "pos",
+                                      "cogl_position_in",
                                       sizeof (ShortVert),
                                       G_STRUCT_OFFSET (ShortVert, x),
                                       2, /* n_components */
                                       COGL_ATTRIBUTE_TYPE_SHORT);
+  attributes[1] = cogl_attribute_new (buffer,
+                                      "color",
+                                      sizeof (ShortVert),
+                                      G_STRUCT_OFFSET (ShortVert, r),
+                                      4, /* n_components */
+                                      COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT);
+  cogl_attribute_set_normalized (attributes[1], TRUE);
 
   cogl_framebuffer_push_matrix (test_fb);
   cogl_framebuffer_translate (test_fb,
@@ -211,7 +211,7 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
   primitive = cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLES,
                                                   3, /* n_vertices */
                                                   attributes,
-                                                  1); /* n_attributes */
+                                                  2); /* n_attributes */
   cogl_primitive_draw (primitive, test_fb, pipeline);
   cogl_object_unref (primitive);
 
@@ -221,14 +221,21 @@ test_short_verts (TestState *state, int offset_x, int offset_y)
 
   /* Test again treating the attribute as unsigned */
   attributes[0] = cogl_attribute_new (buffer,
-                                      "pos",
+                                      "cogl_position_in",
                                       sizeof (ShortVert),
                                       G_STRUCT_OFFSET (ShortVert, x),
                                       2, /* n_components */
                                       COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT);
 
-  pipeline2 = cogl_pipeline_copy (pipeline);
-  cogl_pipeline_set_color4ub (pipeline2, 0, 255, 0, 255);
+  /* XXX: this is a hack to force the pipeline to use the glsl backend
+   * because we know it's not possible to test short vertex position
+   * components with the legacy GL backend since which might otherwise
+   * be used internally... */
+  pipeline2 = cogl_pipeline_new (test_ctx);
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX,
+                              "attribute vec4 color;",
+                              "cogl_color_out = vec4 (0.0, 1.0, 0.0, 1.0);");
+  cogl_pipeline_add_snippet (pipeline2, snippet);
 
   cogl_framebuffer_push_matrix (test_fb);
   cogl_framebuffer_translate (test_fb,
