@@ -44,6 +44,11 @@
 
 #define ALL_WL_TRANSFORMS ((1 << (WL_OUTPUT_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
+/* Look for DPI_FALLBACK in:
+ * http://git.gnome.org/browse/gnome-settings-daemon/tree/plugins/xsettings/gsd-xsettings-manager.c
+ * for the reasoning */
+#define DPI_FALLBACK 96.0
+
 struct _MetaMonitorManagerXrandr
 {
   MetaMonitorManager parent_instance;
@@ -651,8 +656,41 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
   unsigned i;
+  int width, height, width_mm, height_mm;
 
   meta_display_grab (meta_get_display ());
+
+  width = 0; height = 0;
+  for (i = 0; i < n_crtcs; i++)
+    {
+      MetaCRTCInfo *crtc_info = crtcs[i];
+
+      if (crtc_info->mode == NULL)
+        continue;
+
+      if (meta_monitor_transform_is_rotated (crtc_info->transform))
+        {
+          width = MAX (width, crtc_info->x + crtc_info->mode->height);
+          height = MAX (height, crtc_info->y + crtc_info->mode->width);
+        }
+      else
+        {
+          width = MAX (width, crtc_info->x + crtc_info->mode->width);
+          height = MAX (height, crtc_info->y + crtc_info->mode->height);
+        }
+    }
+
+  g_assert (width > 0 && height > 0);
+  /* The 'physical size' of an X screen is meaningless if that screen
+   * can consist of many monitors. So just pick a size that make the
+   * dpi 96.
+   *
+   * Firefox and Evince apparently believe what X tells them.
+   */
+  width_mm = (width / DPI_FALLBACK) * 25.4 + 0.5;
+  height_mm = (height / DPI_FALLBACK) * 25.4 + 0.5;
+  XRRSetScreenSize (manager_xrandr->xdisplay, DefaultRootWindow (manager_xrandr->xdisplay),
+                    width, height, width_mm, height_mm);
 
   for (i = 0; i < n_crtcs; i++)
     {
