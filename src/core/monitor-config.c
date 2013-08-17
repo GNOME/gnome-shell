@@ -190,7 +190,7 @@ meta_monitor_config_init (MetaMonitorConfig *self)
 
   filename = g_getenv ("MUTTER_MONITOR_FILENAME");
   if (filename == NULL)
-    filename = "monitors-test.xml"; /* FIXME after testing */
+    filename = "monitors.xml";
 
   path = g_build_filename (g_get_user_config_dir (), filename, NULL);
   self->file = g_file_new_for_path (path);
