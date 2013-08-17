@@ -705,6 +705,12 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
                             None,
                             RR_Rotate_0,
                             NULL, 0);
+
+          crtc->rect.x = 0;
+          crtc->rect.y = 0;
+          crtc->rect.width = 0;
+          crtc->rect.height = 0;
+          crtc->current_mode = NULL;
         }
     }
 
@@ -729,6 +735,12 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
                         None,
                         RR_Rotate_0,
                         NULL, 0);
+
+      crtc->rect.x = 0;
+      crtc->rect.y = 0;
+      crtc->rect.width = 0;
+      crtc->rect.height = 0;
+      crtc->current_mode = NULL;
     }
 
   g_assert (width > 0 && height > 0);
@@ -755,6 +767,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
           MetaMonitorMode *mode;
           XID *outputs;
           int j, n_outputs;
+          int width, height;
           Status ok;
 
           mode = crtc_info->mode;
@@ -777,18 +790,50 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
           meta_error_trap_pop (meta_get_display ());
 
           if (ok != Success)
-            meta_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transfrom %u failed\n",
-                          (unsigned)(crtc->crtc_id), (unsigned)(mode->mode_id),
-                          mode->width, mode->height, (float)mode->refresh_rate,
-                          crtc_info->x, crtc_info->y, crtc_info->transform);
+            {
+              meta_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transfrom %u failed\n",
+                            (unsigned)(crtc->crtc_id), (unsigned)(mode->mode_id),
+                            mode->width, mode->height, (float)mode->refresh_rate,
+                            crtc_info->x, crtc_info->y, crtc_info->transform);
+              continue;
+            }
 
           g_free (outputs);
+
+          if (meta_monitor_transform_is_rotated (crtc_info->transform))
+            {
+              width = mode->height;
+              height = mode->width;
+            }
+          else
+            {
+              width = mode->width;
+              height = mode->height;
+            }
+
+          crtc->rect.x = crtc_info->x;
+          crtc->rect.y = crtc_info->y;
+          crtc->rect.width = width;
+          crtc->rect.height = height;
+          crtc->current_mode = mode;
+          crtc->transform = crtc_info->transform;
+
+          for (j = 0; j < n_outputs; j++)
+            {
+              MetaOutput *output;
+
+              output = ((MetaOutput**)crtc_info->outputs->pdata)[j];
+
+              output->is_dirty = TRUE;
+              output->crtc = crtc;
+            }
         }
     }
 
   for (i = 0; i < n_outputs; i++)
     {
       MetaOutputInfo *output_info = outputs[i];
+      MetaOutput *output = output_info->output;
 
       if (output_info->is_primary)
         {
@@ -800,6 +845,24 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
       output_set_presentation_xrandr (manager_xrandr,
                                       output_info->output,
                                       output_info->is_presentation);
+
+      output->is_primary = output_info->is_primary;
+      output->is_presentation = output_info->is_presentation;
+    }
+
+  /* Disable outputs not mentioned in the list */
+  for (i = 0; i < manager->n_outputs; i++)
+    {
+      MetaOutput *output = &manager->outputs[i];
+
+      if (output->is_dirty)
+        {
+          output->is_dirty = FALSE;
+          continue;
+        }
+
+      output->crtc = NULL;
+      output->is_primary = FALSE;
     }
 
   meta_display_ungrab (meta_get_display ());
