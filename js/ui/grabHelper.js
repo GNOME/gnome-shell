@@ -10,6 +10,31 @@ const St = imports.gi.St;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
+let _capturedEventId = 0;
+let _grabHelperStack = [];
+function _onCapturedEvent(actor, event) {
+    let grabHelper = _grabHelperStack[_grabHelperStack.length - 1];
+    return grabHelper.onCapturedEvent(event);
+}
+
+function _pushGrabHelper(grabHelper) {
+    _grabHelperStack.push(grabHelper);
+
+    if (_capturedEventId == 0)
+        _capturedEventId = global.stage.connect('captured-event', _onCapturedEvent);
+}
+
+function _popGrabHelper(grabHelper) {
+    let poppedHelper = _grabHelperStack.pop();
+    if (poppedHelper != grabHelper)
+        throw new Error("incorrect grab helper pop");
+
+    if (_grabHelperStack.length == 0) {
+        global.stage.disconnect(_capturedEventId);
+        _capturedEventId = 0;
+    }
+}
+
 // GrabHelper:
 // @owner: the actor that owns the GrabHelper
 // @params: optional parameters to pass to Main.pushModal()
@@ -31,7 +56,6 @@ const GrabHelper = new Lang.Class({
         this._grabStack = [];
 
         this._actors = [];
-        this._capturedEventId = 0;
         this._ignoreRelease = false;
 
         this._modalCount = 0;
@@ -177,7 +201,7 @@ const GrabHelper = new Lang.Class({
             if (!Main.pushModal(this._owner, this._modalParams))
                 return false;
 
-            this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
+            _pushGrabHelper(this);
         }
 
         this._modalCount++;
@@ -189,8 +213,7 @@ const GrabHelper = new Lang.Class({
         if (this._modalCount > 0)
             return;
 
-        global.stage.disconnect(this._capturedEventId);
-        this._capturedEventId = 0;
+        _popGrabHelper(this);
 
         this._ignoreRelease = false;
 
@@ -251,7 +274,7 @@ const GrabHelper = new Lang.Class({
         }
     },
 
-    _onCapturedEvent: function(actor, event) {
+    onCapturedEvent: function(event) {
         let type = event.type();
 
         if (type == Clutter.EventType.KEY_PRESS &&
