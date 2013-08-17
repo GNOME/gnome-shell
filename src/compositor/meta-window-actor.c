@@ -32,6 +32,7 @@
 #include "meta-window-actor-private.h"
 #include "meta-texture-rectangle.h"
 #include "region-utils.h"
+#include "monitor-private.h"
 
 enum {
   POSITION_CHANGED,
@@ -80,6 +81,9 @@ struct _MetaWindowActorPrivate
 
   /* The region that is visible, used to optimize out redraws */
   cairo_region_t   *unobscured_region;
+
+  guint              send_frame_messages_timer;
+  gint64             frame_drawn_time;
 
   /* Extracted size-invariant shape used for shadows */
   MetaWindowShape  *shadow_shape;
@@ -179,6 +183,12 @@ static gboolean meta_window_actor_has_shadow (MetaWindowActor *self);
 static void meta_window_actor_handle_updates (MetaWindowActor *self);
 
 static void check_needs_reshape (MetaWindowActor *self);
+
+static void do_send_frame_drawn (MetaWindowActor *self, FrameData *frame);
+static void do_send_frame_timings (MetaWindowActor  *self,
+                                   FrameData        *frame,
+                                   gint             refresh_interval,
+                                   gint64           presentation_time);
 
 G_DEFINE_TYPE (MetaWindowActor, meta_window_actor, CLUTTER_TYPE_ACTOR);
 
@@ -415,6 +425,12 @@ meta_window_actor_dispose (GObject *object)
 
   meta_window_actor_detach (self);
 
+  if (priv->send_frame_messages_timer != 0)
+    {
+      g_source_remove (priv->send_frame_messages_timer);
+      priv->send_frame_messages_timer = 0;
+    }
+
   g_clear_pointer (&priv->unobscured_region, cairo_region_destroy);
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
   g_clear_pointer (&priv->opaque_region, cairo_region_destroy);
@@ -638,6 +654,16 @@ meta_window_actor_paint (ClutterActor *actor)
   MetaWindowActorPrivate *priv = self->priv;
   gboolean appears_focused = meta_window_appears_focused (priv->window);
   MetaShadow *shadow = appears_focused ? priv->focused_shadow : priv->unfocused_shadow;
+
+ /* This window got damage when obscured; we set up a timer
+  * to send frame completion events, but since we're drawing
+  * the window now (for some other reason) cancel the timer
+  * and send the completion events normally */
+  if (priv->send_frame_messages_timer != 0)
+    {
+      g_source_remove (priv->send_frame_messages_timer);
+      priv->send_frame_messages_timer = 0;
+    }
 
   if (shadow != NULL)
     {
@@ -900,11 +926,66 @@ meta_window_actor_freeze (MetaWindowActor *self)
   self->priv->freeze_count++;
 }
 
+static
+gboolean send_frame_messages_timeout (gpointer data)
+{
+  MetaWindowActor *self = (MetaWindowActor *) data;
+  MetaWindowActorPrivate *priv = self->priv;
+  FrameData *frame = g_slice_new0 (FrameData);
+
+  frame->sync_request_serial = priv->window->sync_request_serial;
+
+  do_send_frame_drawn (self, frame);
+  do_send_frame_timings (self, frame, 0, 0);
+
+  priv->needs_frame_drawn = FALSE;
+  priv->send_frame_messages_timer = 0;
+  frame_data_free (frame);
+
+  return FALSE;
+}
+
+static void
+queue_send_frame_messages_timeout (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaScreen  *screen  = priv->screen;
+  MetaDisplay *display = meta_screen_get_display (screen);
+  gint64 current_time = meta_compositor_monotonic_time_to_server_time (display, g_get_monotonic_time ());
+  MetaMonitorManager *monitor_manager = meta_monitor_manager_get ();
+  MetaWindow *window = priv->window;
+
+  MetaOutput *outputs;
+  guint n_outputs, i;
+  float refresh_rate = 60.0f;
+  gint interval, offset;
+
+  outputs = meta_monitor_manager_get_outputs (monitor_manager, &n_outputs);
+  for (i = 0; i < n_outputs; i++)
+    {
+      if (outputs[i].output_id == window->monitor->output_id && outputs[i].crtc)
+        {
+          refresh_rate = outputs[i].crtc->current_mode->refresh_rate;
+          break;
+        }
+    }
+
+  interval = (int)(1000000 / refresh_rate) * 6;
+  offset = MAX (0, current_time - priv->frame_drawn_time + interval) / 1000;
+
+ /* The clutter master clock source has already been added with META_PRIORITY_REDRAW,
+  * so the timer will run *after* the clutter frame handling, if a frame is ready
+  * to be drawn when the timer expires.
+  */
+  priv->send_frame_messages_timer = g_timeout_add_full (META_PRIORITY_REDRAW, offset, send_frame_messages_timeout, self, NULL);
+}
+
 static void
 meta_window_actor_damage_all (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
   CoglTexture *texture;
+  gboolean redraw_queued;
 
   if (!priv->needs_damage_all)
     return;
@@ -914,14 +995,16 @@ meta_window_actor_damage_all (MetaWindowActor *self)
   if (!priv->mapped || priv->needs_pixmap)
     return;
 
-  meta_shaped_texture_update_area (META_SHAPED_TEXTURE (priv->actor),
-                                   0, 0,
-                                   cogl_texture_get_width (texture),
-                                   cogl_texture_get_height (texture),
-                                   clutter_actor_has_mapped_clones (priv->actor) ? NULL : priv->unobscured_region);
+  redraw_queued = meta_shaped_texture_update_area (META_SHAPED_TEXTURE (priv->actor),
+                                                   0, 0,
+                                                   cogl_texture_get_width (texture),
+                                                   cogl_texture_get_height (texture),
+                                                   clutter_actor_has_mapped_clones (priv->actor) ?
+                                                   NULL : priv->unobscured_region);
+
+  priv->repaint_scheduled = priv->repaint_scheduled  || redraw_queued;
 
   priv->needs_damage_all = FALSE;
-  priv->repaint_scheduled = TRUE;
 }
 
 static void
@@ -974,14 +1057,31 @@ meta_window_actor_queue_frame_drawn (MetaWindowActor *self,
 
   if (!priv->repaint_scheduled)
     {
+      gboolean is_obscured = FALSE;
+
+      /* Find out whether the window is completly obscured */
+      if (priv->unobscured_region)
+        {
+          cairo_region_t *unobscured_window_region;
+          unobscured_window_region = cairo_region_copy (priv->shape_region);
+          cairo_region_intersect (unobscured_window_region, priv->unobscured_region);
+          is_obscured = cairo_region_is_empty (unobscured_window_region);
+          cairo_region_destroy (unobscured_window_region);
+        }
+
       /* A frame was marked by the client without actually doing any
-       * damage, or while we had the window frozen (e.g. during an
-       * interactive resize.) We need to make sure that the
+       * damage or any unobscured, or while we had the window frozen
+       * (e.g. during an interactive resize.) We need to make sure that the
        * pre_paint/post_paint functions get called, enabling us to
        * send a _NET_WM_FRAME_DRAWN. We do a 1-pixel redraw to get
-       * consistent timing with non-empty frames.
+       * consistent timing with non-empty frames. If the window
+       * is completely obscured we fire off the send_frame_messages timeout.
        */
-      if (priv->mapped && !priv->needs_pixmap)
+      if (is_obscured)
+        {
+          queue_send_frame_messages_timeout (self);
+        }
+      else if (priv->mapped && !priv->needs_pixmap)
         {
           const cairo_rectangle_int_t clip = { 0, 0, 1, 1 };
           clutter_actor_queue_redraw_with_clip (priv->actor, &clip);
@@ -1920,6 +2020,7 @@ meta_window_actor_process_damage (MetaWindowActor    *self,
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaCompScreen *info = meta_screen_get_compositor_data (priv->screen);
+  gboolean redraw_queued;
 
   priv->received_damage = TRUE;
 
@@ -1967,13 +2068,16 @@ meta_window_actor_process_damage (MetaWindowActor    *self,
   if (!priv->mapped || priv->needs_pixmap)
     return;
 
-  meta_shaped_texture_update_area (META_SHAPED_TEXTURE (priv->actor),
-                                   event->area.x,
-                                   event->area.y,
-                                   event->area.width,
-                                   event->area.height,
-                                   clutter_actor_has_mapped_clones (priv->actor) ? NULL : priv->unobscured_region);
-  priv->repaint_scheduled = TRUE;
+  redraw_queued = meta_shaped_texture_update_area (META_SHAPED_TEXTURE (priv->actor),
+                                                   event->area.x,
+                                                   event->area.y,
+                                                   event->area.width,
+                                                   event->area.height,
+                                                   clutter_actor_has_mapped_clones (priv->actor) ?
+                                                   NULL : priv->unobscured_region);
+
+  priv->repaint_scheduled = priv->repaint_scheduled  || redraw_queued;
+
 }
 
 void
@@ -2337,6 +2441,35 @@ meta_window_actor_pre_paint (MetaWindowActor *self)
     }
 }
 
+static void
+do_send_frame_drawn (MetaWindowActor *self, FrameData *frame)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaScreen  *screen  = priv->screen;
+  MetaDisplay *display = meta_screen_get_display (screen);
+  Display *xdisplay = meta_display_get_xdisplay (display);
+
+  XClientMessageEvent ev = { 0, };
+
+  frame->frame_drawn_time = meta_compositor_monotonic_time_to_server_time (display,
+                                                                           g_get_monotonic_time ());
+  priv->frame_drawn_time = frame->frame_drawn_time;
+
+  ev.type = ClientMessage;
+  ev.window = meta_window_get_xwindow (priv->window);
+  ev.message_type = display->atom__NET_WM_FRAME_DRAWN;
+  ev.format = 32;
+  ev.data.l[0] = frame->sync_request_serial & G_GUINT64_CONSTANT(0xffffffff);
+  ev.data.l[1] = frame->sync_request_serial >> 32;
+  ev.data.l[2] = frame->frame_drawn_time & G_GUINT64_CONSTANT(0xffffffff);
+  ev.data.l[3] = frame->frame_drawn_time >> 32;
+
+  meta_error_trap_push (display);
+  XSendEvent (xdisplay, ev.window, False, 0, (XEvent*) &ev);
+  XFlush (xdisplay);
+  meta_error_trap_pop (display);
+}
+
 void
 meta_window_actor_post_paint (MetaWindowActor *self)
 {
@@ -2344,47 +2477,29 @@ meta_window_actor_post_paint (MetaWindowActor *self)
 
   priv->repaint_scheduled = FALSE;
 
+ /* This window had damage, but wasn't actually redrawn because
+  * it is obscured. So we should wait until timer expiration
+  * before sending _NET_WM_FRAME_* messages.
+  */
+  if (priv->send_frame_messages_timer != 0)
+    return;
+
   if (priv->needs_frame_drawn)
     {
-      MetaScreen  *screen  = priv->screen;
-      MetaDisplay *display = meta_screen_get_display (screen);
-      Display *xdisplay = meta_display_get_xdisplay (display);
-
-      XClientMessageEvent ev = { 0, };
-
-      FrameData *frame = priv->frames->data;
-
-      frame->frame_drawn_time = meta_compositor_monotonic_time_to_server_time (display,
-                                                                               g_get_monotonic_time ());
-      ev.type = ClientMessage;
-      ev.window = meta_window_get_xwindow (priv->window);
-      ev.message_type = display->atom__NET_WM_FRAME_DRAWN;
-      ev.format = 32;
-      ev.data.l[0] = frame->sync_request_serial & G_GUINT64_CONSTANT(0xffffffff);
-      ev.data.l[1] = frame->sync_request_serial >> 32;
-      ev.data.l[2] = frame->frame_drawn_time & G_GUINT64_CONSTANT(0xffffffff);
-      ev.data.l[3] = frame->frame_drawn_time >> 32;
-
-      meta_error_trap_push (display);
-      XSendEvent (xdisplay, ev.window, False, 0, (XEvent*) &ev);
-      XFlush (xdisplay);
-      meta_error_trap_pop (display);
-
+      do_send_frame_drawn (self, priv->frames->data);
       priv->needs_frame_drawn = FALSE;
     }
 }
 
 static void
-send_frame_timings (MetaWindowActor  *self,
-                    FrameData        *frame,
-                    CoglFrameInfo    *frame_info,
-                    gint64            presentation_time)
+do_send_frame_timings (MetaWindowActor  *self,
+                       FrameData        *frame,
+                       gint             refresh_interval,
+                       gint64           presentation_time)
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaDisplay *display = meta_screen_get_display (priv->screen);
   Display *xdisplay = meta_display_get_xdisplay (display);
-  float refresh_rate;
-  int refresh_interval;
 
   XClientMessageEvent ev = { 0, };
 
@@ -2394,13 +2509,6 @@ send_frame_timings (MetaWindowActor  *self,
   ev.format = 32;
   ev.data.l[0] = frame->sync_request_serial & G_GUINT64_CONSTANT(0xffffffff);
   ev.data.l[1] = frame->sync_request_serial >> 32;
-
-  refresh_rate = cogl_frame_info_get_refresh_rate (frame_info);
-  /* 0.0 is a flag for not known, but sanity-check against other odd numbers */
-  if (refresh_rate >= 1.0)
-    refresh_interval = (int) (0.5 + 1000000 / refresh_rate);
-  else
-    refresh_interval = 0;
 
   if (presentation_time != 0)
     {
@@ -2421,6 +2529,25 @@ send_frame_timings (MetaWindowActor  *self,
   XSendEvent (xdisplay, ev.window, False, 0, (XEvent*) &ev);
   XFlush (xdisplay);
   meta_error_trap_pop (display);
+}
+
+static void
+send_frame_timings (MetaWindowActor  *self,
+                    FrameData        *frame,
+                    CoglFrameInfo    *frame_info,
+                    gint64            presentation_time)
+{
+  float refresh_rate;
+  int refresh_interval;
+
+  refresh_rate = cogl_frame_info_get_refresh_rate (frame_info);
+  /* 0.0 is a flag for not known, but sanity-check against other odd numbers */
+  if (refresh_rate >= 1.0)
+    refresh_interval = (int) (0.5 + 1000000 / refresh_rate);
+  else
+    refresh_interval = 0;
+
+  do_send_frame_timings (self, frame, refresh_interval, presentation_time);
 }
 
 void
