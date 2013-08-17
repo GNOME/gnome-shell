@@ -392,10 +392,10 @@ meta_window_actor_constructed (GObject *object)
        */
       g_object_ref (priv->actor);
 
-      g_signal_connect (window, "notify::decorated",
-                        G_CALLBACK (window_decorated_notify), self);
-      g_signal_connect (window, "notify::appears-focused",
-                        G_CALLBACK (window_appears_focused_notify), self);
+      g_signal_connect_object (window, "notify::decorated",
+                               G_CALLBACK (window_decorated_notify), self, 0);
+      g_signal_connect_object (window, "notify::appears-focused",
+                               G_CALLBACK (window_appears_focused_notify), self, 0);
     }
   else
     {
