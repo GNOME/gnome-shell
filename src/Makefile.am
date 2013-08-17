@@ -339,4 +339,4 @@ $(dbus_xrandr_built_sources) : Makefile.am xrandr.xml
 		--interface-prefix org.gnome.Mutter					\
 		--c-namespace MetaDBus							\
 		--generate-c-code meta-dbus-xrandr					\
-		xrandr.xml
+		$(srcdir)/xrandr.xml
