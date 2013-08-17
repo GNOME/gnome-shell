@@ -39,6 +39,9 @@ void     shell_wm_completed_destroy          (ShellWM         *wm,
                                               MetaWindowActor *actor);
 void     shell_wm_completed_switch_workspace (ShellWM         *wm);
 
+void     shell_wm_complete_display_change    (ShellWM         *wm,
+                                              gboolean         ok);
+
 G_END_DECLS
 
 #endif /* __SHELL_WM_H__ */

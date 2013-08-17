@@ -27,6 +27,7 @@ enum
   KILL_SWITCH_WORKSPACE,
   KILL_WINDOW_EFFECTS,
   FILTER_KEYBINDING,
+  CONFIRM_DISPLAY_CHANGE,
 
   LAST_SIGNAL
 };
@@ -124,6 +125,13 @@ shell_wm_class_init (ShellWMClass *klass)
                   g_signal_accumulator_true_handled, NULL, NULL,
                   G_TYPE_BOOLEAN, 1,
                   META_TYPE_KEY_BINDING);
+  shell_wm_signals[CONFIRM_DISPLAY_CHANGE] =
+    g_signal_new ("confirm-display-change",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
 }
 
 void
@@ -219,6 +227,20 @@ shell_wm_completed_destroy (ShellWM         *wm,
   meta_plugin_destroy_completed (wm->plugin, actor);
 }
 
+/**
+ * shell_wm_complete_display_change:
+ * @wm: the ShellWM
+ * @ok: if the new configuration was OK
+ *
+ * The plugin must call this after the user responded to the confirmation dialog.
+ */
+void
+shell_wm_complete_display_change (ShellWM  *wm,
+                                  gboolean  ok)
+{
+  meta_plugin_complete_display_change (wm->plugin, ok);
+}
+
 void
 _shell_wm_kill_switch_workspace (ShellWM      *wm)
 {
@@ -285,6 +307,12 @@ _shell_wm_filter_keybinding (ShellWM             *wm,
   g_signal_emit (wm, shell_wm_signals[FILTER_KEYBINDING], 0, binding, &rv);
 
   return rv;
+}
+
+void
+_shell_wm_confirm_display_change (ShellWM *wm)
+{
+  g_signal_emit (wm, shell_wm_signals[CONFIRM_DISPLAY_CHANGE], 0);
 }
 
 /**

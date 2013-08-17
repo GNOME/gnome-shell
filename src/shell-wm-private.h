@@ -38,6 +38,8 @@ void _shell_wm_kill_switch_workspace (ShellWM             *wm);
 gboolean _shell_wm_filter_keybinding (ShellWM             *wm,
                                       MetaKeyBinding      *binding);
 
+void _shell_wm_confirm_display_change (ShellWM            *wm);
+
 G_END_DECLS
 
 #endif /* __SHELL_WM_PRIVATE_H__ */
