@@ -32,6 +32,7 @@ INCLUDES=								\
 if HAVE_WAYLAND
 INCLUDES += \
 	-I$(srcdir)/wayland						\
+	-I$(builddir)/wayland						\
 	-DXWAYLAND_PATH='"@XWAYLAND_PATH@"'
 endif
 
@@ -357,9 +358,12 @@ mutter-enum-types.c: stamp-mutter-enum-types.h mutter-enum-types.c.in
 
 if HAVE_WAYLAND
 wayland/%-protocol.c : $(top_builddir)/protocol/%.xml
+	mkdir -p wayland
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
 wayland/%-server-protocol.h : $(top_builddir)/protocol/%.xml
+	mkdir -p wayland
 	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@
 wayland/%-client-protocol.h : $(top_builddir)/protocol/%.xml
+	mkdir -p wayland
 	$(AM_V_GEN)$(WAYLAND_SCANNER) client-header < $< > $@
 endif
