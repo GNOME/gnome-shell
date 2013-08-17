@@ -580,11 +580,17 @@ const ScreenShield = new Lang.Class({
         this._becameActiveId = 0;
         this._lockTimeoutId = 0;
 
-        this._lightbox = new Lightbox.Lightbox(Main.uiGroup,
-                                               { inhibitEvents: true,
-                                                 fadeInTime: STANDARD_FADE_TIME,
-                                                 fadeFactor: 1 });
-        this._lightbox.connect('shown', Lang.bind(this, this._onLightboxShown));
+        // The "long" lightbox is used for the longer (20 seconds) fade from session
+        // to idle status, the "short" is used for quickly fading to black when locking
+        // manually
+        this._longLightbox = new Lightbox.Lightbox(Main.uiGroup,
+                                                   { inhibitEvents: true,
+                                                     fadeFactor: 1 });
+        this._longLightbox.connect('shown', Lang.bind(this, this._onLongLightboxShown));
+        this._shortLightbox = new Lightbox.Lightbox(Main.uiGroup,
+                                                    { inhibitEvents: true,
+                                                      fadeFactor: 1 });
+        this._shortLightbox.connect('shown', Lang.bind(this, this._onShortLightboxShown));
 
         this.idleMonitor = new GnomeDesktop.IdleMonitor();
     },
@@ -807,7 +813,7 @@ const ScreenShield = new Lang.Class({
 
         this._maybeCancelDialog();
 
-        if (this._lightbox.actor.visible ||
+        if (this._longLightbox.actor.visible ||
             this._isActive) {
             // We're either shown and active, or in the process of
             // showing.
@@ -825,7 +831,7 @@ const ScreenShield = new Lang.Class({
             // screenshield. The user is probably very upset at this
             // point, but any application using global grabs is broken
             // Just tell him to stop using this app
-            // 
+            //
             // XXX: another option is to kick the user into the gdm login
             // screen, where we're not affected by grabs
             Main.notifyError(_("Unable to lock"),
@@ -833,12 +839,8 @@ const ScreenShield = new Lang.Class({
             return;
         }
 
-        this._lightbox.show();
-
         if (this._activationTime == 0)
             this._activationTime = GLib.get_monotonic_time();
-
-        this._becameActiveId = this.idleMonitor.add_user_active_watch(Lang.bind(this, this._onUserBecameActive));
 
         let shouldLock = this._settings.get_boolean(LOCK_ENABLED_KEY) && !this._isLocked;
 
@@ -847,46 +849,57 @@ const ScreenShield = new Lang.Class({
             this._lockTimeoutId = Mainloop.timeout_add(lockTimeout * 1000,
                                                        Lang.bind(this, function() {
                                                            this._lockTimeoutId = 0;
-                                                           this.lock(true);
+                                                           this.lock(false);
                                                            return false;
                                                        }));
         }
+
+        this._activateFade(this._longLightbox, STANDARD_FADE_TIME);
+    },
+
+    _activateFade: function(lightbox, time) {
+        lightbox.show(time);
+
+        if (this._becameActiveId == 0)
+            this._becameActiveId = this.idleMonitor.add_user_active_watch(Lang.bind(this, this._onUserBecameActive));
     },
 
     _onUserBecameActive: function() {
         // This function gets called here when the user becomes active
-        // after gnome-session changed the status to IDLE
-        // There are four possibilities here:
-        // - we're called when already locked; isActive and isLocked are true,
+        // after we activated a lightbox
+        // There are two possibilities here:
+        // - we're called when already locked/active; isLocked or isActive is true,
         //   we just go back to the lock screen curtain
-        // - we're called before the lightbox is fully shown; at this point
-        //   isActive is false, so we just hide the ligthbox, reset the activationTime
-        //   and go back to the unlocked desktop
-        // - we're called after showing the lightbox, but before the lock
-        //   delay; this is mostly like the case above, but isActive is true now
-        //   so we need to notify gnome-settings-daemon to go back to the normal
-        //   policies for blanking
-        //   (they're handled by the same code, and we emit one extra ActiveChanged
-        //   signal in the case above)
-        // - we're called after showing the lightbox and after lock-delay; the
-        //   session is effectivelly locked now, it's time to build and show
-        //   the lock screen
+        //   (isActive == isLocked == true: normal case
+        //    isActive == false, isLocked == true: during the fade for manual locking
+        //    isActive == true, isLocked == false: after session idle, before lock-delay)
+        // - we're called because the session is IDLE but before the lightbox
+        //   is fully shown; at this point isActive is false, so we just hide
+        //   the lightbox, reset the activationTime and go back to the unlocked
+        //   desktop
+        //   using deactivate() is a little of overkill, but it ensures we
+        //   don't forget of some bit like modal, DBus properties or idle watches
+        //
+        // Note: if the (long) lightbox is shown then we're necessarily
+        // active, because we call activate() without animation.
 
         this.idleMonitor.remove_watch(this._becameActiveId);
         this._becameActiveId = 0;
 
-        let lightboxWasShown = this._lightbox.shown;
-        this._lightbox.hide();
-
-        // Shortcircuit in case the mouse was moved before the fade completed
-        if (!lightboxWasShown) {
+        if (this._isActive || this._isLocked) {
+            this._longLightbox.hide();
+            this._shortLightbox.hide();
+        } else {
             this.deactivate(false);
-            return;
         }
     },
 
-    _onLightboxShown: function() {
+    _onLongLightboxShown: function() {
         this.activate(false);
+    },
+
+    _onShortLightboxShown: function() {
+        this._completeLockScreenShown();
     },
 
     showDialog: function() {
@@ -980,7 +993,8 @@ const ScreenShield = new Lang.Class({
 
     _onUnlockFailed: function() {
         this._resetLockScreen({ animateLockScreen: true,
-                                animateLockDialog: false });
+                                animateLockDialog: false,
+                                fadeToBlack: false });
     },
 
     _resetLockScreen: function(params) {
@@ -998,6 +1012,8 @@ const ScreenShield = new Lang.Class({
         this._lockScreenGroup.show();
         this._lockScreenState = MessageTray.State.SHOWING;
 
+        let fadeToBlack = params.fadeToBlack;
+
         if (params.animateLockScreen) {
             this._lockScreenGroup.y = -global.screen_height;
             Tweener.removeTweens(this._lockScreenGroup);
@@ -1006,13 +1022,15 @@ const ScreenShield = new Lang.Class({
                                time: MANUAL_FADE_TIME,
                                transition: 'easeOutQuad',
                                onComplete: function() {
-                                   this._lockScreenShown();
+                                   this._lockScreenShown({ fadeToBlack: fadeToBlack,
+                                                           animateFade: true });
                                },
                                onCompleteScope: this
                              });
         } else {
             this._lockScreenGroup.fixed_position_set = false;
-            this._lockScreenShown();
+            this._lockScreenShown({ fadeToBlack: fadeToBlack,
+                                    animateFade: false });
         }
 
         if (params.animateLockDialog) {
@@ -1079,7 +1097,7 @@ const ScreenShield = new Lang.Class({
             this._pauseArrowAnimation();
     },
 
-    _lockScreenShown: function() {
+    _lockScreenShown: function(params) {
         if (this._dialog && !this._isGreeter) {
             this._dialog.destroy();
             this._dialog = null;
@@ -1101,6 +1119,21 @@ const ScreenShield = new Lang.Class({
         this._lockScreenGroup.fixed_position_set = false;
         this._lockScreenScrollCounter = 0;
 
+        if (params.fadeToBlack && params.animateFade) {
+            // Take a beat
+
+            Mainloop.timeout_add(1000 * MANUAL_FADE_TIME, Lang.bind(this, function() {
+                this._activateFade(this._shortLightbox, MANUAL_FADE_TIME);
+            }));
+        } else {
+            if (params.fadeToBlack)
+                this._activateFade(this._shortLightbox, 0);
+
+            this._completeLockScreenShown();
+        }
+    },
+
+    _completeLockScreenShown: function() {
         let prevIsActive = this._isActive;
         this._isActive = true;
 
@@ -1225,7 +1258,8 @@ const ScreenShield = new Lang.Class({
             this._dialog = null;
         }
 
-        this._lightbox.hide();
+        this._longLightbox.hide();
+        this._shortLightbox.hide();
         this.actor.hide();
 
         if (this._becameActiveId != 0) {
@@ -1260,7 +1294,8 @@ const ScreenShield = new Lang.Class({
         }
 
         this._resetLockScreen({ animateLockScreen: animate,
-                                animateLockDialog: animate });
+                                animateLockDialog: animate,
+                                fadeToBlack: true });
         global.set_runtime_state(LOCKED_STATE_STR, GLib.Variant.new('b', true));
 
         // We used to set isActive and emit active-changed here,
