@@ -455,8 +455,14 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
               if (parsed_edid)
                 {
                   meta_output->vendor = g_strndup (parsed_edid->manufacturer_code, 4);
-                  meta_output->product = g_strndup (parsed_edid->dsc_product_name, 14);
-                  meta_output->serial = g_strndup (parsed_edid->dsc_serial_number, 14);
+                  if (parsed_edid->dsc_product_name[0])
+                    meta_output->product = g_strndup (parsed_edid->dsc_product_name, 14);
+                  else
+                    meta_output->product = g_strdup_printf ("0x%04x", (unsigned)parsed_edid->product_code);
+                  if (parsed_edid->dsc_serial_number[0])
+                    meta_output->serial = g_strndup (parsed_edid->dsc_serial_number, 14);
+                  else
+                    meta_output->serial = g_strdup_printf ("0x%08x", parsed_edid->serial_number);
 
                   g_free (parsed_edid);
                 }
