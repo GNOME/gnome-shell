@@ -878,6 +878,7 @@ const AppIcon = new Lang.Class({
         this.actor.set_hover(true);
         this._menu.popup();
         this._menuManager.ignoreRelease();
+        this.emit('sync-tooltip');
 
         return false;
     },
@@ -924,7 +925,11 @@ const AppIcon = new Lang.Class({
     // we show as the item is being dragged.
     getDragActorSource: function() {
         return this.icon.icon;
-    }
+    },
+
+    shouldShowTooltip: function() {
+        return this.actor.hover && (!this._menu || !this._menu.isOpen);
+    },
 });
 Signals.addSignalMethods(AppIcon.prototype);
 

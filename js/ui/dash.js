@@ -502,15 +502,21 @@ const Dash = new Lang.Class({
         Main.queueDeferredWork(this._workId);
     },
 
-    _hookUpLabel: function(item) {
+    _hookUpLabel: function(item, appIcon) {
         item.child.connect('notify::hover', Lang.bind(this, function() {
-            this._onHover(item);
+            this._syncLabel(item, appIcon);
         }));
 
         Main.overview.connect('hiding', Lang.bind(this, function() {
             this._labelShowing = false;
             item.hideLabel();
         }));
+
+        if (appIcon) {
+            appIcon.connect('sync-tooltip', Lang.bind(this, function() {
+                this._syncLabel(item, appIcon);
+            }));
+        }
     },
 
     _createAppItem: function(app) {
@@ -539,7 +545,7 @@ const Dash = new Lang.Class({
         item.setLabelText(app.get_name());
 
         appIcon.icon.setIconSize(this.iconSize);
-        this._hookUpLabel(item);
+        this._hookUpLabel(item, appIcon);
 
         return item;
     },
@@ -557,8 +563,10 @@ const Dash = new Lang.Class({
         }
     },
 
-    _onHover: function (item) {
-        if (item.child.get_hover()) {
+    _syncLabel: function (item, appIcon) {
+        let shouldShow = appIcon ? appIcon.shouldShowTooltip() : item.child.get_hover();
+
+        if (shouldShow) {
             if (this._showLabelTimeoutId == 0) {
                 let timeout = this._labelShowing ? 0 : DASH_ITEM_HOVER_TIMEOUT;
                 this._showLabelTimeoutId = Mainloop.timeout_add(timeout,
