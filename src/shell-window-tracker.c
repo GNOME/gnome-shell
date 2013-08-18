@@ -258,6 +258,27 @@ get_app_from_window_wmclass (MetaWindow  *window)
   return NULL;
 }
 
+static ShellApp *
+get_app_from_gapplication_id (MetaWindow  *window)
+{
+  ShellApp *app;
+  ShellAppSystem *appsys;
+  const char *id;
+  char *desktop_file;
+
+  appsys = shell_app_system_get_default ();
+
+  id = meta_window_get_gtk_application_id (window);
+  if (!id)
+    return FALSE;
+
+  desktop_file = g_strconcat (id, ".desktop", NULL);
+  app = shell_app_system_lookup_app (appsys, desktop_file);
+
+  g_free (desktop_file);
+  return app;
+}
+
 /**
  * get_app_from_window_group:
  * @monitor: a #ShellWindowTracker
@@ -373,6 +394,13 @@ get_app_for_window (ShellWindowTracker    *tracker,
 
   if (meta_window_is_remote (window))
     return _shell_app_new_for_window (window);
+
+  /* Check if the window has a GApplication ID attached; this is
+   * canonical if it does
+   */
+  result = get_app_from_gapplication_id (window);
+  if (result != NULL)
+    return result;
 
   /* Check if the app's WM_CLASS specifies an app; this is
    * canonical if it does.
