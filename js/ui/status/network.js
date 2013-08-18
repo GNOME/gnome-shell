@@ -187,7 +187,7 @@ const NMConnectionSection = new Lang.Class({
 
     _getStatus: function() {
         let values = this._connectionItems.values();
-        for (let i = 0; i < values; i++) {
+        for (let i = 0; i < values.length; i++) {
             let item = values[i];
             if (item.isActive())
                 return item.getName();
