@@ -9,29 +9,29 @@ const St = imports.gi.St;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-const A11Y_SCHEMA = 'org.gnome.desktop.a11y'
-const KEY_ALWAYS_SHOW = 'always-show-universal-access-status';
+const A11Y_SCHEMA                   = 'org.gnome.desktop.a11y';
+const KEY_ALWAYS_SHOW               = 'always-show-universal-access-status';
 
-const A11Y_KEYBOARD_SCHEMA = 'org.gnome.desktop.a11y.keyboard'
-const KEY_STICKY_KEYS_ENABLED = 'stickykeys-enable';
-const KEY_BOUNCE_KEYS_ENABLED = 'bouncekeys-enable';
-const KEY_SLOW_KEYS_ENABLED   = 'slowkeys-enable';
-const KEY_MOUSE_KEYS_ENABLED  = 'mousekeys-enable';
+const A11Y_KEYBOARD_SCHEMA          = 'org.gnome.desktop.a11y.keyboard';
+const KEY_STICKY_KEYS_ENABLED       = 'stickykeys-enable';
+const KEY_BOUNCE_KEYS_ENABLED       = 'bouncekeys-enable';
+const KEY_SLOW_KEYS_ENABLED         = 'slowkeys-enable';
+const KEY_MOUSE_KEYS_ENABLED        = 'mousekeys-enable';
 
-const APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
+const APPLICATIONS_SCHEMA           = 'org.gnome.desktop.a11y.applications';
 
-const DPI_FACTOR_LARGE   = 1.25;
+const DPI_FACTOR_LARGE              = 1.25;
 
-const WM_SCHEMA            = 'org.gnome.desktop.wm.preferences';
-const KEY_VISUAL_BELL      = 'visual-bell';
+const WM_SCHEMA                     = 'org.gnome.desktop.wm.preferences';
+const KEY_VISUAL_BELL               = 'visual-bell';
 
-const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
-const KEY_GTK_THEME      = 'gtk-theme';
-const KEY_ICON_THEME     = 'icon-theme';
-const KEY_WM_THEME       = 'theme';
-const KEY_TEXT_SCALING_FACTOR = 'text-scaling-factor';
+const DESKTOP_INTERFACE_SCHEMA      = 'org.gnome.desktop.interface';
+const KEY_GTK_THEME                 = 'gtk-theme';
+const KEY_ICON_THEME                = 'icon-theme';
+const KEY_WM_THEME                  = 'theme';
+const KEY_TEXT_SCALING_FACTOR       = 'text-scaling-factor';
 
-const HIGH_CONTRAST_THEME = 'HighContrast';
+const HIGH_CONTRAST_THEME           = 'HighContrast';
 
 const ATIndicator = new Lang.Class({
     Name: 'ATIndicator',
