@@ -182,7 +182,14 @@ const NMConnectionSection = new Lang.Class({
 
         this.item.status.text = this._getStatus();
         this.item.icon.icon_name = this._getMenuIcon();
-        this.item.label.text = this._getDescription();
+
+        // desc can be undefined at cold-plug, before we called
+        // NMGtk.disambiguate_device_names() at least once
+        let desc = this._getDescription();
+        if (desc)
+            this.item.label.text = desc;
+        else
+            this.item.label.text = '';
     },
 
     _getStatus: function() {
