@@ -921,14 +921,16 @@ meta_monitor_manager_xrandr_set_crtc_gamma (MetaMonitorManager *manager,
 					    unsigned short     *blue)
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
-  XRRCrtcGamma gamma;
+  XRRCrtcGamma *gamma;
 
-  gamma.size = size;
-  gamma.red = red;
-  gamma.green = green;
-  gamma.blue = blue;
+  gamma = XRRAllocGamma (size);
+  memcpy (gamma->red, red, sizeof (unsigned short) * size);
+  memcpy (gamma->green, green, sizeof (unsigned short) * size);
+  memcpy (gamma->blue, blue, sizeof (unsigned short) * size);
 
-  XRRSetCrtcGamma (manager_xrandr->xdisplay, (XID)crtc->crtc_id, &gamma);
+  XRRSetCrtcGamma (manager_xrandr->xdisplay, (XID)crtc->crtc_id, gamma);
+
+  XRRFreeGamma (gamma);
 }
 
 static gboolean
