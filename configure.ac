@@ -250,7 +250,7 @@ dnl     ============================================================
 
 AC_ARG_ENABLE(
   [standalone],
-  [AC_HELP_STRING([--enable-debug=@<:@no/yes@:>@], [Build Cogl without any external depedency @<:@default=no@:>@])],
+  [AC_HELP_STRING([--enable-standalone=@<:@no/yes@:>@], [Build Cogl without any external depedency @<:@default=no@:>@])],
   [],
   enable_standalone=no
 )
