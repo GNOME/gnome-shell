@@ -1091,11 +1091,238 @@ cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
  *
  * Stability: unstable
  * Since: 1.10
+ * Deprecated: 1.16: Use #CoglPrimitive<!-- -->s and
+ *                   cogl_primitive_draw() instead
  */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_draw)
 void
 cogl_framebuffer_draw_primitive (CoglFramebuffer *framebuffer,
                                  CoglPipeline *pipeline,
                                  CoglPrimitive *primitive);
+
+/**
+ * cogl_framebuffer_vdraw_attributes:
+ * @framebuffer: A destination #CoglFramebuffer
+ * @pipeline: A #CoglPipeline state object
+ * @mode: The #CoglVerticesMode defining the topology of vertices
+ * @first_vertex: The vertex offset within the given attributes to draw from
+ * @n_vertices: The number of vertices to draw from the given attributes
+ * @...: A set of vertex #CoglAttribute<!-- -->s defining vertex geometry
+ *
+ * First defines a geometry primitive by grouping a set of vertex attributes;
+ * specifying a @first_vertex; a number of vertices (@n_vertices) and
+ * specifying  what kind of topology the vertices have via @mode.
+ *
+ * Then the function draws the given @primitive geometry to the specified
+ * destination @framebuffer using the graphics processing pipeline described by
+ * @pipeline.
+ *
+ * The list of #CoglAttribute<!-- -->s define the attributes of the vertices to
+ * be drawn, such as positions, colors and normals and should be %NULL
+ * terminated.
+ *
+ * This drawing api doesn't support high-level meta texture types such
+ * as #CoglTexture2DSliced so it is the user's responsibility to
+ * ensure that only low-level textures that can be directly sampled by
+ * a GPU such as #CoglTexture2D, #CoglTextureRectangle or #CoglTexture3D
+ * are associated with layers of the given @pipeline.
+ *
+ * Stability: unstable
+ * Since: 1.10
+ * Deprecated: 1.16: Use #CoglPrimitive<!-- -->s and
+ *                   cogl_primitive_draw() instead
+ */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_draw)
+void
+cogl_framebuffer_vdraw_attributes (CoglFramebuffer *framebuffer,
+                                   CoglPipeline *pipeline,
+                                   CoglVerticesMode mode,
+                                   int first_vertex,
+                                   int n_vertices,
+                                   ...) COGL_GNUC_NULL_TERMINATED;
+
+/**
+ * cogl_framebuffer_draw_attributes:
+ * @framebuffer: A destination #CoglFramebuffer
+ * @pipeline: A #CoglPipeline state object
+ * @mode: The #CoglVerticesMode defining the topology of vertices
+ * @first_vertex: The vertex offset within the given attributes to draw from
+ * @n_vertices: The number of vertices to draw from the given attributes
+ * @attributes: An array of pointers to #CoglAttribute<-- -->s defining vertex
+ *              geometry
+ * @n_attributes: The number of attributes in the @attributes array.
+ *
+ * First defines a geometry primitive by grouping a set of vertex @attributes;
+ * specifying a @first_vertex; a number of vertices (@n_vertices) and
+ * specifying  what kind of topology the vertices have via @mode.
+ *
+ * Then the function draws the given @primitive geometry to the specified
+ * destination @framebuffer using the graphics processing pipeline described by
+ * @pipeline.
+ *
+ * The list of #CoglAttribute<!-- -->s define the attributes of the vertices to
+ * be drawn, such as positions, colors and normals and the number of attributes
+ * is given as @n_attributes.
+ *
+ * This drawing api doesn't support high-level meta texture types such
+ * as #CoglTexture2DSliced so it is the user's responsibility to
+ * ensure that only low-level textures that can be directly sampled by
+ * a GPU such as #CoglTexture2D, #CoglTextureRectangle or #CoglTexture3D
+ * are associated with layers of the given @pipeline.
+ *
+ * <note>This api doesn't support any of the legacy global state options such
+ * as cogl_set_depth_test_enabled(), cogl_set_backface_culling_enabled() or
+ * cogl_program_use()</note>
+ *
+ * Stability: unstable
+ * Since: 1.10
+ * Deprecated: 1.16: Use #CoglPrimitive<!-- -->s and
+ *                   cogl_primitive_draw() instead
+ */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_draw)
+void
+cogl_framebuffer_draw_attributes (CoglFramebuffer *framebuffer,
+                                  CoglPipeline *pipeline,
+                                  CoglVerticesMode mode,
+                                  int first_vertex,
+                                  int n_vertices,
+                                  CoglAttribute **attributes,
+                                  int n_attributes);
+
+/**
+ * cogl_framebuffer_vdraw_indexed_attributes:
+ * @framebuffer: A destination #CoglFramebuffer
+ * @pipeline: A #CoglPipeline state object
+ * @mode: The #CoglVerticesMode defining the topology of vertices
+ * @first_vertex: The vertex offset within the given attributes to draw from
+ * @n_vertices: The number of vertices to draw from the given attributes
+ * @indices: The array of indices used by the GPU to lookup attribute
+ *           data for each vertex.
+ * @...: A set of vertex #CoglAttribute<!-- -->s defining vertex geometry
+ *
+ * Behaves the same as cogl_framebuffer_vdraw_attributes() except that
+ * instead of reading vertex data sequentially from the specified
+ * attributes the @indices provide an indirection for how the data
+ * should be indexed allowing a random access order to be
+ * specified.
+ *
+ * For example an indices array of [0, 1, 2, 0, 2, 3] could be used
+ * used to draw two triangles (@mode = %COGL_VERTICES_MODE_TRIANGLES +
+ * @n_vertices = 6) but only provide attribute data for the 4 corners
+ * of a rectangle. When the GPU needs to read in each of the 6
+ * vertices it will read the @indices array for each vertex in
+ * sequence and use the index to look up the vertex attribute data. So
+ * here you can see that first and fourth vertex will point to the
+ * same data and third and fifth vertex will also point to shared
+ * data.
+ *
+ * Drawing with indices can be a good way of minimizing the size of a
+ * mesh by allowing you to avoid data for duplicate vertices because
+ * multiple entries in the index array can refer back to a single
+ * shared vertex.
+ *
+ * <note>The @indices array must be at least as long as @first_vertex
+ * + @n_vertices otherwise the GPU will overrun the indices array when
+ * looking up vertex data.</note>
+ *
+ * Since it's very common to want to draw a run of rectangles using
+ * indices to avoid duplicating vertex data you can use
+ * cogl_get_rectangle_indices() to get a set of indices that can be
+ * shared.
+ *
+ * This drawing api doesn't support high-level meta texture types such
+ * as #CoglTexture2DSliced so it is the user's responsibility to
+ * ensure that only low-level textures that can be directly sampled by
+ * a GPU such as #CoglTexture2D, #CoglTextureRectangle or
+ * #CoglTexture3D are associated with layers of the given @pipeline.
+ *
+ * <note>This api doesn't support any of the legacy global state
+ * options such as cogl_set_depth_test_enabled(),
+ * cogl_set_backface_culling_enabled() or cogl_program_use()</note>
+ *
+ * Stability: unstable
+ * Since: 1.10
+ * Deprecated: 1.16: Use #CoglPrimitive<!-- -->s and
+ *                   cogl_primitive_draw() instead
+ */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_draw)
+void
+cogl_framebuffer_vdraw_indexed_attributes (CoglFramebuffer *framebuffer,
+                                           CoglPipeline *pipeline,
+                                           CoglVerticesMode mode,
+                                           int first_vertex,
+                                           int n_vertices,
+                                           CoglIndices *indices,
+                                           ...) COGL_GNUC_NULL_TERMINATED;
+
+/**
+ * cogl_framebuffer_draw_indexed_attributes:
+ * @framebuffer: A destination #CoglFramebuffer
+ * @pipeline: A #CoglPipeline state object
+ * @mode: The #CoglVerticesMode defining the topology of vertices
+ * @first_vertex: The vertex offset within the given attributes to draw from
+ * @n_vertices: The number of vertices to draw from the given attributes
+ * @indices: The array of indices used by the GPU to lookup attribute
+ *           data for each vertex.
+ * @attributes: An array of pointers to #CoglAttribute<-- -->s defining vertex
+ *              geometry
+ * @n_attributes: The number of attributes in the @attributes array.
+ *
+ * Behaves the same as cogl_framebuffer_draw_attributes() except that
+ * instead of reading vertex data sequentially from the specified
+ * @attributes the @indices provide an indirection for how the data
+ * should be indexed allowing a random access order to be
+ * specified.
+ *
+ * For example an indices array of [0, 1, 2, 0, 2, 3] could be used
+ * used to draw two triangles (@mode = %COGL_VERTICES_MODE_TRIANGLES +
+ * @n_vertices = 6) but only provide attribute data for the 4 corners
+ * of a rectangle. When the GPU needs to read in each of the 6
+ * vertices it will read the @indices array for each vertex in
+ * sequence and use the index to look up the vertex attribute data. So
+ * here you can see that first and fourth vertex will point to the
+ * same data and third and fifth vertex will also point to shared
+ * data.
+ *
+ * Drawing with indices can be a good way of minimizing the size of a
+ * mesh by allowing you to avoid data for duplicate vertices because
+ * multiple entries in the index array can refer back to a single
+ * shared vertex.
+ *
+ * <note>The @indices array must be at least as long as @first_vertex
+ * + @n_vertices otherwise the GPU will overrun the indices array when
+ * looking up vertex data.</note>
+ *
+ * Since it's very common to want to draw a run of rectangles using
+ * indices to avoid duplicating vertex data you can use
+ * cogl_get_rectangle_indices() to get a set of indices that can be
+ * shared.
+ *
+ * This drawing api doesn't support high-level meta texture types such
+ * as #CoglTexture2DSliced so it is the user's responsibility to
+ * ensure that only low-level textures that can be directly sampled by
+ * a GPU such as #CoglTexture2D, #CoglTextureRectangle or
+ * #CoglTexture3D are associated with layers of the given @pipeline.
+ *
+ * <note>This api doesn't support any of the legacy global state
+ * options such as cogl_set_depth_test_enabled(),
+ * cogl_set_backface_culling_enabled() or cogl_program_use()</note>
+ *
+ * Stability: unstable
+ * Since: 1.10
+ * Deprecated: 1.16: Use #CoglPrimitive<!-- -->s and
+ *                   cogl_primitive_draw() instead
+ */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_draw)
+void
+cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
+                                          CoglPipeline *pipeline,
+                                          CoglVerticesMode mode,
+                                          int first_vertex,
+                                          int n_vertices,
+                                          CoglIndices *indices,
+                                          CoglAttribute **attributes,
+                                          int n_attributes);
 
 /**
  * cogl_framebuffer_draw_rectangle:

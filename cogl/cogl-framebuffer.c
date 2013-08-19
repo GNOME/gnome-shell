@@ -2394,6 +2394,59 @@ _cogl_framebuffer_draw_attributes (CoglFramebuffer *framebuffer,
     }
 }
 
+/* XXX: deprecated */
+void
+cogl_framebuffer_draw_attributes (CoglFramebuffer *framebuffer,
+                                  CoglPipeline *pipeline,
+                                  CoglVerticesMode mode,
+                                  int first_vertex,
+                                  int n_vertices,
+                                  CoglAttribute **attributes,
+                                  int n_attributes)
+{
+  _cogl_framebuffer_draw_attributes (framebuffer,
+                                     pipeline,
+                                     mode,
+                                     first_vertex,
+                                     n_vertices,
+                                     attributes, n_attributes,
+                                     COGL_DRAW_SKIP_LEGACY_STATE);
+}
+
+/* XXX: deprecated */
+void
+cogl_framebuffer_vdraw_attributes (CoglFramebuffer *framebuffer,
+                                   CoglPipeline *pipeline,
+                                   CoglVerticesMode mode,
+                                   int first_vertex,
+                                   int n_vertices,
+                                   ...)
+{
+  va_list ap;
+  int n_attributes;
+  CoglAttribute *attribute;
+  CoglAttribute **attributes;
+  int i;
+
+  va_start (ap, n_vertices);
+  for (n_attributes = 0; va_arg (ap, CoglAttribute *); n_attributes++)
+    ;
+  va_end (ap);
+
+  attributes = g_alloca (sizeof (CoglAttribute *) * n_attributes);
+
+  va_start (ap, n_vertices);
+  for (i = 0; (attribute = va_arg (ap, CoglAttribute *)); i++)
+    attributes[i] = attribute;
+  va_end (ap);
+
+  _cogl_framebuffer_draw_attributes (framebuffer,
+                                     pipeline,
+                                     mode, first_vertex, n_vertices,
+                                     attributes, n_attributes,
+                                     COGL_DRAW_SKIP_LEGACY_STATE);
+}
+
 void
 _cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
                                            CoglPipeline *pipeline,
@@ -2431,6 +2484,65 @@ _cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
                                                                n_attributes,
                                                                flags);
     }
+}
+
+/* XXX: deprecated */
+void
+cogl_framebuffer_draw_indexed_attributes (CoglFramebuffer *framebuffer,
+                                          CoglPipeline *pipeline,
+                                          CoglVerticesMode mode,
+                                          int first_vertex,
+                                          int n_vertices,
+                                          CoglIndices *indices,
+                                          CoglAttribute **attributes,
+                                          int n_attributes)
+{
+  _cogl_framebuffer_draw_indexed_attributes (framebuffer,
+                                             pipeline,
+                                             mode, first_vertex,
+                                             n_vertices, indices,
+                                             attributes, n_attributes,
+                                             COGL_DRAW_SKIP_LEGACY_STATE);
+}
+
+/* XXX: deprecated */
+void
+cogl_framebuffer_vdraw_indexed_attributes (CoglFramebuffer *framebuffer,
+                                           CoglPipeline *pipeline,
+                                           CoglVerticesMode mode,
+                                           int first_vertex,
+                                           int n_vertices,
+                                           CoglIndices *indices,
+                                           ...)
+
+{
+  va_list ap;
+  int n_attributes;
+  CoglAttribute **attributes;
+  int i;
+  CoglAttribute *attribute;
+
+  va_start (ap, indices);
+  for (n_attributes = 0; va_arg (ap, CoglAttribute *); n_attributes++)
+    ;
+  va_end (ap);
+
+  attributes = g_alloca (sizeof (CoglAttribute *) * n_attributes);
+
+  va_start (ap, indices);
+  for (i = 0; (attribute = va_arg (ap, CoglAttribute *)); i++)
+    attributes[i] = attribute;
+  va_end (ap);
+
+  _cogl_framebuffer_draw_indexed_attributes (framebuffer,
+                                             pipeline,
+                                             mode,
+                                             first_vertex,
+                                             n_vertices,
+                                             indices,
+                                             attributes,
+                                             n_attributes,
+                                             COGL_DRAW_SKIP_LEGACY_STATE);
 }
 
 void
