@@ -36,6 +36,13 @@ const DISABLE_USER_LIST_KEY = 'disable-user-list';
 // Give user 16ms to read each character of a PAM message
 const USER_READ_TIME = 16
 
+const MessageType = {
+    NONE: 0,
+    ERROR: 1,
+    INFO: 2,
+    HINT: 3
+};
+
 function fadeInActor(actor) {
     if (actor.opacity == 255 && actor.visible)
         return null;
@@ -225,7 +232,8 @@ const ShellUserVerifier = new Lang.Class({
             return;
 
         let message = this._messageQueue.shift();
-        this.emit('show-message', message.text, message.iconName);
+
+        this.emit('show-message', message.text, message.type);
 
         this._messageQueueTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                        message.interval,
@@ -235,11 +243,11 @@ const ShellUserVerifier = new Lang.Class({
                                                        }));
     },
 
-    _queueMessage: function(message, iconName) {
+    _queueMessage: function(message, messageType) {
         let interval = this._getIntervalForMessage(message);
 
         this.hasPendingMessages = true;
-        this._messageQueue.push({ text: message, interval: interval, iconName: iconName });
+        this._messageQueue.push({ text: message, type: messageType, interval: interval });
         this._queueMessageTimeout();
     },
 
@@ -250,7 +258,7 @@ const ShellUserVerifier = new Lang.Class({
             GLib.source_remove(this._messageQueueTimeoutId);
             this._messageQueueTimeoutId = 0;
         }
-        this.emit('show-message', null, null);
+        this.emit('show-message', null, MessageType.NONE);
     },
 
     _checkForFingerprintReader: function() {
@@ -295,7 +303,7 @@ const ShellUserVerifier = new Lang.Class({
         logError(error, where);
         this._hold.release();
 
-        this._queueMessage(_("Authentication error"), 'login-dialog-message-warning');
+        this._queueMessage(_("Authentication error"), MessageType.ERROR);
         this._verificationFailed(false);
     },
 
@@ -399,7 +407,7 @@ const ShellUserVerifier = new Lang.Class({
 
     _onInfo: function(client, serviceName, info) {
         if (this.serviceIsForeground(serviceName)) {
-            this._queueMessage(info, 'login-dialog-message-info');
+            this._queueMessage(info, MessageType.INFO);
         } else if (serviceName == FINGERPRINT_SERVICE_NAME &&
             this._haveFingerprintReader) {
             // We don't show fingerprint messages directly since it's
@@ -408,7 +416,7 @@ const ShellUserVerifier = new Lang.Class({
 
             // Translators: this message is shown below the password entry field
             // to indicate the user can swipe their finger instead
-            this.emit('show-login-hint', _("(or swipe finger)"));
+            this._queueMessage(_("(or swipe finger)"), MessageType.HINT);
         }
     },
 
@@ -416,7 +424,7 @@ const ShellUserVerifier = new Lang.Class({
         if (!this.serviceIsForeground(serviceName))
             return;
 
-        this._queueMessage(problem, 'login-dialog-message-warning');
+        this._queueMessage(problem, MessageType.ERROR);
     },
 
     _onInfoQuery: function(client, serviceName, question) {
@@ -496,8 +504,6 @@ const ShellUserVerifier = new Lang.Class({
         if (this.serviceIsForeground(serviceName)) {
             this._verificationFailed(true);
         }
-
-        this.emit('hide-login-hint');
     },
 });
 Signals.addSignalMethods(ShellUserVerifier.prototype);

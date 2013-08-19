@@ -36,6 +36,8 @@ const BeginRequestType = {
     DONT_PROVIDE_USERNAME: 1
 };
 
+let _messageStyleMap;
+
 const AuthPrompt = new Lang.Class({
     Name: 'AuthPrompt',
 
@@ -58,8 +60,6 @@ const AuthPrompt = new Lang.Class({
         this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
         this._userVerifier.connect('verification-complete', Lang.bind(this, this._onVerificationComplete));
         this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
-        this._userVerifier.connect('show-login-hint', Lang.bind(this, this._onShowLoginHint));
-        this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._onHideLoginHint));
         this._userVerifier.connect('smartcard-status-changed', Lang.bind(this, this._onSmartcardStatusChanged));
         this.smartcardDetected = this._userVerifier.smartcardDetected;
 
@@ -111,10 +111,7 @@ const AuthPrompt = new Lang.Class({
 
         this._message = new St.Label({ opacity: 0 });
         this._message.clutter_text.line_wrap = true;
-        this.actor.add(this._message, { x_fill: true });
-
-        this._loginHint = new St.Label({ style_class: 'login-dialog-prompt-login-hint-message' });
-        this.actor.add(this._loginHint);
+        this.actor.add(this._message, { x_fill: true, y_align: St.Align.START });
 
         this._buttonBox = new St.BoxLayout({ style_class: 'login-dialog-button-box',
                                              vertical: false });
@@ -242,8 +239,8 @@ const AuthPrompt = new Lang.Class({
             this.reset();
     },
 
-    _onShowMessage: function(userVerifier, message, styleClass) {
-        this.setMessage(message, styleClass);
+    _onShowMessage: function(userVerifier, message, type) {
+        this.setMessage(message, type);
         this.emit('prompted');
     },
 
@@ -264,14 +261,6 @@ const AuthPrompt = new Lang.Class({
             this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
             this.reset();
         }
-    },
-
-    _onShowLoginHint: function(verifier, message) {
-        this.setHint(message);
-    },
-
-    _onHideLoginHint: function() {
-        this.setHint(null);
     },
 
     addActorToDefaultButtonWell: function(actor) {
@@ -359,9 +348,6 @@ const AuthPrompt = new Lang.Class({
         this._label.show();
         this._entry.show();
 
-        this._loginHint.opacity = 0;
-        this._loginHint.show();
-
         this._entry.grab_key_focus();
     },
 
@@ -389,13 +375,27 @@ const AuthPrompt = new Lang.Class({
                          });
     },
 
-    setMessage: function(message, styleClass) {
+    _initMessageStyleMap: function() {
+        if (_messageStyleMap)
+            return;
+
+        _messageStyleMap = {};
+        _messageStyleMap[GdmUtil.MessageType.NONE] = '';
+        _messageStyleMap[GdmUtil.MessageType.ERROR] = 'login-dialog-message-warning';
+        _messageStyleMap[GdmUtil.MessageType.INFO] = 'login-dialog-message-info';
+        _messageStyleMap[GdmUtil.MessageType.HINT] = 'login-dialog-message-hint';
+
+    },
+
+    setMessage: function(message, type) {
+        this._initMessageStyleMap();
         if (message) {
             Tweener.removeTweens(this._message);
             this._message.text = message;
-            this._message.styleClass = styleClass;
+            this._message.styleClass = _messageStyleMap[type];
             this._message.opacity = 255;
         } else {
+            this._message.styleClass = null;
             this._message.opacity = 0;
         }
     },
@@ -414,7 +414,7 @@ const AuthPrompt = new Lang.Class({
     hide: function() {
         this.setActorInDefaultButtonWell(null, true);
         this.actor.hide();
-        this._loginHint.opacity = 0;
+        this._message.opacity = 0;
 
         this.setUser(null);
 
@@ -431,16 +431,6 @@ const AuthPrompt = new Lang.Class({
         }
     },
 
-    setHint: function(message) {
-        if (message) {
-            this._loginHint.set_text(message)
-            this._loginHint.opacity = 255;
-        } else {
-            this._loginHint.opacity = 0;
-            this._loginHint.set_text('');
-        }
-    },
-
     reset: function() {
         let oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
@@ -453,7 +443,6 @@ const AuthPrompt = new Lang.Class({
         this._message.opacity = 0;
         this.setUser(null);
         this.stopSpinning();
-        this.setHint(null);
 
         if (oldStatus == AuthPromptStatus.VERIFICATION_FAILED)
             this.emit('failed');

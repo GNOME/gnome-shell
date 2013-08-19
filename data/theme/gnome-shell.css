@@ -2281,10 +2281,6 @@ StScrollBar StButton#vhandle:active {
     spacing: 5px;
 }
 
-.login-dialog-prompt-login-hint-message {
-    font-size: 10.5pt;
-}
-
 .login-dialog-user-list-view {
     -st-vfade-offset: 1em;
 }
@@ -2453,8 +2449,20 @@ StScrollBar StButton#vhandle:active {
     background-color: rgba(102, 102, 102, 0.15);
 }
 
+.login-dialog-message-warning,
+.login-dialog-message-info {
+    padding-top: 4px;
+    padding-bottom: 16px;
+    min-height: 2em;
+}
+
 .login-dialog-message-warning {
     color: orange;
+}
+
+.login-dialog-message-hint {
+    padding-bottom: 16px;
+    min-height: 2em;
 }
 
 .user-widget-label {
