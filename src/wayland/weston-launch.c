@@ -53,9 +53,7 @@
 
 #include <xf86drm.h>
 
-#ifdef HAVE_SYSTEMD_LOGIN
 #include <systemd/sd-login.h>
-#endif
 
 #include "weston-launch.h"
 
@@ -78,60 +76,15 @@ struct weston_launch {
 
 union cmsg_data { unsigned char b[4]; int fd; };
 
-static gid_t *
-read_groups(void)
-{
-	int n;
-	gid_t *groups;
-	
-	n = getgroups(0, NULL);
-
-	if (n < 0) {
-		fprintf(stderr, "Unable to retrieve groups: %m\n");
-		return NULL;
-	}
-
-	groups = malloc(n * sizeof(gid_t));
-	if (!groups)
-		return NULL;
-
-	if (getgroups(n, groups) < 0) {
-		fprintf(stderr, "Unable to retrieve groups: %m\n");
-		free(groups);
-		return NULL;
-	}
-	return groups;
-}
-
 static int
 weston_launch_allowed(struct weston_launch *wl)
 {
-	struct group *gr;
-	gid_t *groups;
-	int i;
-#ifdef HAVE_SYSTEMD_LOGIN
 	char *session, *seat;
 	int err;
-#endif
 
 	if (getuid() == 0)
 		return 1;
 
-	gr = getgrnam("weston-launch");
-	if (gr) {
-		groups = read_groups();
-		if (groups) {
-			for (i = 0; groups[i]; ++i) {
-				if (groups[i] == gr->gr_gid) {
-					free(groups);
-					return 1;
-				}
-			}
-			free(groups);
-		}
-	}
-
-#ifdef HAVE_SYSTEMD_LOGIN
 	err = sd_pid_get_session(getpid(), &session);
 	if (err == 0 && session) {
 		if (sd_session_is_active(session) &&
@@ -142,49 +95,7 @@ weston_launch_allowed(struct weston_launch *wl)
 		}
 		free(session);
 	}
-#endif
 	
-	return 0;
-}
-
-static int
-pam_conversation_fn(int msg_count,
-		    const struct pam_message **messages,
-		    struct pam_response **responses,
-		    void *user_data)
-{
-	return PAM_SUCCESS;
-}
-
-static int
-setup_pam(struct weston_launch *wl)
-{
-	int err;
-
-	wl->pc.conv = pam_conversation_fn;
-	wl->pc.appdata_ptr = wl;
-
-	err = pam_start("login", wl->pw->pw_name, &wl->pc, &wl->ph);
-	if (err != PAM_SUCCESS) {
-		fprintf(stderr, "failed to start pam transaction: %d: %s\n",
-			err, pam_strerror(wl->ph, err));
-		return -1;
-	}
-
-	err = pam_set_item(wl->ph, PAM_TTY, ttyname(wl->tty));
-	if (err != PAM_SUCCESS) {
-		fprintf(stderr, "failed to set PAM_TTY item: %d: %s\n",
-			err, pam_strerror(wl->ph, err));
-		return -1;
-	}
-
-	err = pam_open_session(wl->ph, 0);
-	if (err != PAM_SUCCESS) {
-		fprintf(stderr, "failed to open pam session: %d: %s\n",
-			err, pam_strerror(wl->ph, err));
-		return -1;
-	}
-
 	return 0;
 }
 
@@ -468,27 +379,14 @@ setup_tty(struct weston_launch *wl, const char *tty)
 	struct stat buf;
 	char *t;
 
-	if (!wl->new_user) {
-		wl->tty = STDIN_FILENO;
-	} else if (tty) {
+	if (tty) {
 		t = ttyname(STDIN_FILENO);
 		if (t && strcmp(t, tty) == 0)
 			wl->tty = STDIN_FILENO;
 		else
 			wl->tty = open(tty, O_RDWR | O_NOCTTY);
 	} else {
-		int tty0 = open("/dev/tty0", O_WRONLY | O_CLOEXEC);
-		char filename[16];
-
-		if (tty0 < 0)
-			error(1, errno, "could not open tty0");
-
-		if (ioctl(tty0, VT_OPENQRY, &wl->ttynr) < 0 || wl->ttynr == -1)
-			error(1, errno, "failed to find non-opened console"); 
-
-		snprintf(filename, sizeof filename, "/dev/tty%d", wl->ttynr);
-		wl->tty = open(filename, O_RDWR | O_NOCTTY);
-		close(tty0);
+		wl->tty = STDIN_FILENO;
 	}
 
 	if (wl->tty < 0)
@@ -505,39 +403,6 @@ setup_tty(struct weston_launch *wl, const char *tty)
 	}
 
 	return 0;
-}
-
-static void
-setup_session(struct weston_launch *wl)
-{
-	char **env;
-	char *term;
-	int i;
-
-	if (wl->tty != STDIN_FILENO) {
-		if (setsid() < 0)
-			error(1, errno, "setsid failed");
-		if (ioctl(wl->tty, TIOCSCTTY, 0) < 0)
-			error(1, errno, "TIOCSCTTY failed - tty is in use");
-	}
-
-	term = getenv("TERM");
-	clearenv();
-	if (term)
-		setenv("TERM", term, 1);
-	setenv("USER", wl->pw->pw_name, 1);
-	setenv("LOGNAME", wl->pw->pw_name, 1);
-	setenv("HOME", wl->pw->pw_dir, 1);
-	setenv("SHELL", wl->pw->pw_shell, 1);
-
-	env = pam_getenvlist(wl->ph);
-	if (env) {
-		for (i = 0; env[i]; ++i) {
-			if (putenv(env[i]) < 0)
-				error(0, 0, "putenv %s failed", env[i]);
-		}
-		free(env);
-	}
 }
 
 static void
@@ -561,8 +426,6 @@ launch_compositor(struct weston_launch *wl, int argc, char *argv[])
 
 	if (wl->verbose)
 		printf("weston-launch: spawned weston with pid: %d\n", getpid());
-	if (wl->new_user)
-		setup_session(wl);
 
 	drop_privileges(wl);
 
@@ -611,7 +474,6 @@ main(int argc, char *argv[])
 	int i, c;
 	char *tty = NULL;
 	struct option opts[] = {
-		{ "user",    required_argument, NULL, 'u' },
 		{ "tty",     required_argument, NULL, 't' },
 		{ "verbose", no_argument,       NULL, 'v' },
 		{ "help",    no_argument,       NULL, 'h' },
@@ -622,11 +484,6 @@ main(int argc, char *argv[])
 
 	while ((c = getopt_long(argc, argv, "u:t::vh", opts, &i)) != -1) {
 		switch (c) {
-		case 'u':
-			wl.new_user = optarg;
-			if (getuid() != 0)
-				error(1, 0, "Permission denied. -u allowed for root only");
-			break;
 		case 't':
 			tty = optarg;
 			break;
@@ -646,26 +503,14 @@ main(int argc, char *argv[])
 	    strcmp (argv[optind], "gnome-shell-wayland"))
 	  error(1, 0, "mutter-launch can only be used to launch mutter or gnome-shell");
 
-	if (wl.new_user)
-		wl.pw = getpwnam(wl.new_user);
-	else
-		wl.pw = getpwuid(getuid());
+	wl.pw = getpwuid(getuid());
 	if (wl.pw == NULL)
 		error(1, errno, "failed to get username");
 
 	if (!weston_launch_allowed(&wl))
-		error(1, 0, "Permission denied. You should either:\n"
-#ifdef HAVE_SYSTEMD_LOGIN
-		      " - run from an active and local (systemd) session.\n"
-#else
-		      " - enable systemd session support for weston-launch.\n"
-#endif
-		      " - or add yourself to the 'weston-launch' group.");
+		error(1, 0, "Permission denied. You must run from an active and local (systemd) session.");
 
 	if (setup_tty(&wl, tty) < 0)
-		exit(EXIT_FAILURE);
-
-	if (wl.new_user && setup_pam(&wl) < 0)
 		exit(EXIT_FAILURE);
 
 	if (setup_launcher_socket(&wl) < 0)
