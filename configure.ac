@@ -542,7 +542,7 @@ dnl     ============================================================
 
 AC_ARG_ENABLE(
   [cogl-path],
-  [AC_HELP_STRING([--enable-cogl-path=@<:@no/yes@:>@], [Enable 2D path support @<:@default=no@:>@])],
+  [AC_HELP_STRING([--enable-cogl-path=@<:@no/yes@:>@], [Enable 2D path support @<:@default=yes@:>@])],
   [],
   enable_cogl_path=yes
 )
