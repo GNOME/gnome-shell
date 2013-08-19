@@ -166,7 +166,11 @@ _clutter_root_node_new (CoglFramebuffer    *framebuffer,
                             clear_color->alpha);
   cogl_color_premultiply (&res->clear_color);
 
-  res->framebuffer = cogl_object_ref (framebuffer);
+  if (G_LIKELY (framebuffer != NULL))
+    res->framebuffer = cogl_object_ref (framebuffer);
+  else
+    res->framebuffer = cogl_object_ref (cogl_get_draw_framebuffer ());
+
   res->clear_flags = clear_flags;
 
   return (ClutterPaintNode *) res;
