@@ -53,7 +53,7 @@ if $PKG_CONFIG --exists gstreamer-1.0 '>=' $GSTREAMER_MIN_VERSION ; then
    AC_MSG_RESULT(yes)
    build_recorder=true
    recorder_modules="gstreamer-1.0 gstreamer-base-1.0 x11 gtk+-3.0"
-   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules clutter-1.0 xfixes)
+   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules clutter-1.0)
 else
    AC_MSG_RESULT(no)
 fi
@@ -94,7 +94,7 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-unix-2.0 >= $GIO_MIN_VERSION
                                gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
 			       libcanberra libcanberra-gtk3
                                telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
-                               polkit-agent-1 >= $POLKIT_MIN_VERSION xfixes
+                               polkit-agent-1 >= $POLKIT_MIN_VERSION
                                libnm-glib libnm-util >= $NETWORKMANAGER_MIN_VERSION
                                libnm-gtk >= $NETWORKMANAGER_MIN_VERSION
                                libsecret-unstable gcr-base-3 >= $GCR_MIN_VERSION)
