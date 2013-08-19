@@ -56,6 +56,8 @@ struct _MetaUI
 void
 meta_ui_init (void)
 {
+  gdk_set_allowed_backends ("x11");
+
   if (!gtk_init_check (NULL, NULL))
     meta_fatal ("Unable to open X display %s\n", XDisplayName (NULL));
 }
