@@ -1388,15 +1388,15 @@ StScrollBar StButton#vhandle:active {
     height: 72px;
 }
 
-.message-tray-menu-button {
-    padding: 0 16px;
+.message-tray-menu-button StIcon {
+    padding: 0 20px;
     color: #aaaaaa;
-    icon-size: 32px;
+    icon-size: 24px;
 }
 
-.message-tray-menu-button:hover,
-.message-tray-menu-button:active,
-.message-tray-menu-button:focus {
+.message-tray-menu-button:hover StIcon,
+.message-tray-menu-button:active StIcon,
+.message-tray-menu-button:focus StIcon {
     color: #eeeeee;
 }
 
