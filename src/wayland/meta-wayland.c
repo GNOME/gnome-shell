@@ -50,6 +50,7 @@
 #include <meta/main.h>
 #include "frame.h"
 #include "meta-idle-monitor-private.h"
+#include "meta-weston-launch.h"
 #include "monitor-private.h"
 
 static MetaWaylandCompositor _meta_wayland_compositor;
@@ -1545,6 +1546,9 @@ meta_wayland_init (void)
   MetaWaylandCompositor *compositor = &_meta_wayland_compositor;
   guint event_signal;
   MetaMonitorManager *monitors;
+  ClutterBackend *backend;
+  CoglContext *cogl_context;
+  CoglRenderer *cogl_renderer;
 
   memset (compositor, 0, sizeof (MetaWaylandCompositor));
 
@@ -1581,8 +1585,32 @@ meta_wayland_init (void)
 
   clutter_wayland_set_compositor_display (compositor->wayland_display);
 
+  if (getenv ("WESTON_LAUNCHER_SOCK"))
+      compositor->launcher = meta_launcher_new ();
+
   if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
     g_error ("Failed to initialize Clutter");
+
+  backend = clutter_get_default_backend ();
+  cogl_context = clutter_backend_get_cogl_context (backend);
+  cogl_renderer = cogl_display_get_renderer (cogl_context_get_display (cogl_context));
+
+  if (cogl_renderer_get_winsys_id (cogl_renderer) == COGL_WINSYS_ID_EGL_KMS)
+    compositor->drm_fd = cogl_kms_renderer_get_kms_fd (cogl_renderer);
+  else
+    compositor->drm_fd = -1;
+
+  if (compositor->drm_fd >= 0)
+    {
+      GError *error;
+
+      error = NULL;
+      if (!meta_launcher_set_drm_fd (compositor->launcher, compositor->drm_fd, &error))
+	{
+	  g_error ("Failed to set DRM fd to weston-launch and become DRM master: %s", error->message);
+	  g_error_free (error);
+	}
+    }
 
   meta_monitor_manager_initialize ();
   monitors = meta_monitor_manager_get ();
@@ -1646,5 +1674,16 @@ meta_wayland_init (void)
 void
 meta_wayland_finalize (void)
 {
-  meta_xwayland_stop (meta_wayland_compositor_get_default ());
+  MetaWaylandCompositor *compositor;
+
+  compositor = meta_wayland_compositor_get_default ();
+
+  meta_xwayland_stop (compositor);
+  g_clear_object (&compositor->launcher);
+}
+
+MetaLauncher *
+meta_wayland_compositor_get_launcher (MetaWaylandCompositor *compositor)
+{
+  return compositor->launcher;
 }

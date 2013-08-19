@@ -24,16 +24,21 @@
 #ifndef _WESTON_LAUNCH_H_
 #define _WESTON_LAUNCH_H_
 
+enum weston_launcher_message_type {
+	WESTON_LAUNCHER_REQUEST,
+	WESTON_LAUNCHER_EVENT,
+};
+
 enum weston_launcher_opcode {
-	WESTON_LAUNCHER_OPEN,
-	WESTON_LAUNCHER_DRM_SET_FD,
-	WESTON_LAUNCHER_ACTIVATE_VT,
-	WESTON_LAUNCHER_CONFIRM_VT_SWITCH, 
+	WESTON_LAUNCHER_OPEN              = (1 << 1 | WESTON_LAUNCHER_REQUEST),
+	WESTON_LAUNCHER_DRM_SET_FD        = (2 << 1 | WESTON_LAUNCHER_REQUEST),
+	WESTON_LAUNCHER_ACTIVATE_VT       = (3 << 1 | WESTON_LAUNCHER_REQUEST),
+	WESTON_LAUNCHER_CONFIRM_VT_SWITCH = (4 << 1 | WESTON_LAUNCHER_REQUEST),
 };
 
 enum weston_launcher_server_opcode {
-	WESTON_LAUNCHER_SERVER_REQUEST_VT_SWITCH,
-	WESTON_LAUNCHER_SERVER_VT_ENTER,
+	WESTON_LAUNCHER_SERVER_REQUEST_VT_SWITCH = (1 << 1 | WESTON_LAUNCHER_EVENT),
+	WESTON_LAUNCHER_SERVER_VT_ENTER          = (2 << 1 | WESTON_LAUNCHER_EVENT),
 };
 
 struct weston_launcher_message {
@@ -49,6 +54,16 @@ struct weston_launcher_open {
 struct weston_launcher_activate_vt {
 	struct weston_launcher_message header;
 	int vt;
+};
+
+struct weston_launcher_reply {
+	struct weston_launcher_message header;
+	int ret;
+};
+
+struct weston_launcher_event {
+	struct weston_launcher_message header;
+	int detail; /* unused, but makes sure replies and events are serialized the same */
 };
 
 #endif

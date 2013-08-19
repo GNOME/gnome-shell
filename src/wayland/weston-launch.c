@@ -171,14 +171,17 @@ setenv_fd(const char *env, int fd)
 static int
 handle_setdrmfd(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 {
-	int ret = -1;
+        struct weston_launcher_reply reply;
 	struct cmsghdr *cmsg;
 	union cmsg_data *data;
 	struct stat s;
 
+	reply.header.opcode = WESTON_LAUNCHER_DRM_SET_FD;
+	reply.ret = -1;
+
 	if (wl->drm_fd != -1) {
 		error(0, 0, "DRM FD already set");
-		ret = -EINVAL;
+		reply.ret = -EINVAL;
 		goto out;
 	}
 
@@ -187,40 +190,40 @@ handle_setdrmfd(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 	    cmsg->cmsg_level != SOL_SOCKET ||
 	    cmsg->cmsg_type != SCM_RIGHTS) {
 		error(0, 0, "invalid control message");
-		ret = -EINVAL;
+		reply.ret = -EINVAL;
 		goto out;
 	}
 
 	data = (union cmsg_data *) CMSG_DATA(cmsg);
 	if (data->fd < 0) {
 		error(0, 0, "missing drm fd in socket request");
-		ret = -EINVAL;
+		reply.ret = -EINVAL;
 		goto out;
 	}
 
 	if (fstat(data->fd, &s) < 0) {
-		ret = -errno;
+		reply.ret = -errno;
 		goto out;
 	}
 
 	if (major(s.st_rdev) != DRM_MAJOR) {
 		fprintf(stderr, "FD is not for DRM\n");
-		ret = -EPERM;
+		reply.ret = -EPERM;
 		goto out;
 	}
 
 	wl->drm_fd = data->fd;
-	ret = drmSetMaster(data->fd);
-	if (ret < 0)
-		ret = -errno;
+	reply.ret = drmSetMaster(data->fd);
+	if (reply.ret < 0)
+		reply.ret = -errno;
 
 	if (wl->verbose)
 		fprintf(stderr, "weston-launch: set drm FD, ret: %d, fd: %d\n",
-			ret, data->fd);
+			reply.ret, data->fd);
 
 out:
 	do {
-		len = send(wl->sock[0], &ret, sizeof ret, 0);
+		len = send(wl->sock[0], &reply, sizeof reply, 0);
 	} while (len < 0 && errno == EINTR);
 	if (len < 0)
 		return -1;
@@ -231,7 +234,10 @@ out:
 static int
 handle_confirm_vt_switch(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 {
-	int ret = -1;
+        struct weston_launcher_reply reply;
+
+	reply.header.opcode = WESTON_LAUNCHER_CONFIRM_VT_SWITCH;
+	reply.ret = -1;
 
 	if (wl->vt_state != VT_PENDING_CONFIRM) {
 		error(0, 0, "unexpected CONFIRM_VT_SWITCH");
@@ -255,11 +261,11 @@ handle_confirm_vt_switch(struct weston_launch *wl, struct msghdr *msg, ssize_t l
 	if (wl->verbose)
 		fprintf(stderr, "weston-launcher: confirmed VT switch\n");
 
-	ret = 0;
+	reply.ret = 0;
 
 out:
 	do {
-		len = send(wl->sock[0], &ret, sizeof ret, 0);
+		len = send(wl->sock[0], &reply, sizeof reply, 0);
 	} while (len < 0 && errno == EINTR);
 	if (len < 0)
 		return -1;
@@ -270,8 +276,11 @@ out:
 static int
 handle_activate_vt(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 {
-	int ret = -1;
+        struct weston_launcher_reply reply;
 	struct weston_launcher_activate_vt *message;
+
+	reply.header.opcode = WESTON_LAUNCHER_ACTIVATE_VT;
+	reply.ret = -1;
 
 	if (len != sizeof(*message)) {
 		error(0, 0, "missing value in activate_vt request");
@@ -280,16 +289,16 @@ handle_activate_vt(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 
 	message = msg->msg_iov->iov_base;
 
-	ret = ioctl(wl->tty, VT_ACTIVATE, message->vt);
-	if (ret < 0)
-		ret = -errno;
+	reply.ret = ioctl(wl->tty, VT_ACTIVATE, message->vt);
+	if (reply.ret < 0)
+		reply.ret = -errno;
 
 	if (wl->verbose)
-		fprintf(stderr, "weston-launch: activate VT, ret: %d\n", ret);
+		fprintf(stderr, "weston-launch: activate VT, ret: %d\n", reply.ret);
 
 out:
 	do {
-		len = send(wl->sock[0], &ret, sizeof ret, 0);
+		len = send(wl->sock[0], &reply, sizeof reply, 0);
 	} while (len < 0 && errno == EINTR);
 	if (len < 0)
 		return -1;
@@ -301,7 +310,8 @@ out:
 static int
 handle_open(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 {
-	int fd = -1, ret = -1;
+        struct weston_launcher_reply reply;
+	int fd = -1;
 	char control[CMSG_SPACE(sizeof(fd))];
 	struct cmsghdr *cmsg;
 	struct stat s;
@@ -309,6 +319,9 @@ handle_open(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 	struct iovec iov;
 	struct weston_launcher_open *message;
 	union cmsg_data *data;
+
+	reply.header.opcode = WESTON_LAUNCHER_OPEN;
+	reply.ret = -1;
 
 	message = msg->msg_iov->iov_base;
 	if ((size_t)len < sizeof(*message))
@@ -318,7 +331,7 @@ handle_open(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 	((char *) message)[len-1] = '\0';
 
 	if (stat(message->path, &s) < 0) {
-		ret = -errno;
+		reply.ret = -errno;
 		goto err0;
 	}
 
@@ -326,7 +339,7 @@ handle_open(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 	if (fd < 0) {
 		fprintf(stderr, "Error opening device %s: %m\n",
 			message->path);
-		ret = -errno;
+		reply.ret = -errno;
 		goto err0;
 	}
 
@@ -335,7 +348,7 @@ handle_open(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 		fd = -1;
 		fprintf(stderr, "Device %s is not an input device\n",
 			message->path);
-		ret = -EPERM;
+		reply.ret = -EPERM;
 		goto err0;
 	}
 
@@ -353,14 +366,14 @@ err0:
 		data = (union cmsg_data *) CMSG_DATA(cmsg);
 		data->fd = fd;
 		nmsg.msg_controllen = cmsg->cmsg_len;
-		ret = 0;
+		reply.ret = 0;
 	}
-	iov.iov_base = &ret;
-	iov.iov_len = sizeof ret;
+	iov.iov_base = &reply;
+	iov.iov_len = sizeof reply;
 
 	if (wl->verbose)
 		fprintf(stderr, "weston-launch: opened %s: ret: %d, fd: %d\n",
-			message->path, ret, fd);
+			message->path, reply.ret, fd);
 	do {
 		len = sendmsg(wl->sock[0], &nmsg, 0);
 	} while (len < 0 && errno == EINTR);
@@ -467,12 +480,12 @@ quit(struct weston_launch *wl, int status)
 static int
 handle_vt_switch(struct weston_launch *wl)
 {
-	struct weston_launcher_message message;
+	struct weston_launcher_event message;
 	ssize_t len;
 
 	if (wl->vt_state == VT_HAS_VT) {
 		wl->vt_state = VT_PENDING_CONFIRM;
-		message.opcode = WESTON_LAUNCHER_SERVER_REQUEST_VT_SWITCH;
+		message.header.opcode = WESTON_LAUNCHER_SERVER_REQUEST_VT_SWITCH;
 	} else if (wl->vt_state == VT_NOT_HAVE_VT) {
 		wl->vt_state = VT_HAS_VT;
 		ioctl(wl->tty, VT_RELDISP, VT_ACKACQ);
@@ -490,9 +503,11 @@ handle_vt_switch(struct weston_launch *wl)
 			}
 		}
 
-		message.opcode = WESTON_LAUNCHER_SERVER_VT_ENTER;
+		message.header.opcode = WESTON_LAUNCHER_SERVER_VT_ENTER;
 	} else
 		return -1;
+
+	message.detail = 0;
 
 	do {
 		len = send(wl->sock[0], &message, sizeof(message), 0);
