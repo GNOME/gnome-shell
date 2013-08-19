@@ -813,6 +813,10 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              g_variant_new_string (output->product));
       g_variant_builder_add (&properties, "{sv}", "serial",
                              g_variant_new_string (output->serial));
+      g_variant_builder_add (&properties, "{sv}", "width-mm",
+                             g_variant_new_int32 (output->width_mm));
+      g_variant_builder_add (&properties, "{sv}", "height-mm",
+                             g_variant_new_int32 (output->height_mm));
       g_variant_builder_add (&properties, "{sv}", "display-name",
                              g_variant_new_take_string (make_display_name (manager, output)));
       g_variant_builder_add (&properties, "{sv}", "backlight",
