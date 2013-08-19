@@ -104,7 +104,7 @@ const NMConnectionItem = new Lang.Class({
         if (this._activeConnection == null)
             return false;
 
-        return this._activeConnection.state == NetworkManager.ActiveConnectionState.ACTIVATED;
+        return this._activeConnection.state <= NetworkManager.ActiveConnectionState.ACTIVATED;
     },
 
     _sync: function() {
@@ -1083,7 +1083,7 @@ const NMVPNConnectionItem = new Lang.Class({
         if (this._activeConnection == null)
             return false;
 
-        return this._activeConnection.vpn_state == NetworkManager.VPNConnectionState.ACTIVATED;
+        return this._activeConnection.vpn_state != NetworkManager.VPNConnectionState.DISCONNECTED;
     },
 
     _getStatus: function() {
