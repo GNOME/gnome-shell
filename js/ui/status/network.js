@@ -141,7 +141,7 @@ const NMConnectionItem = new Lang.Class({
         this._activeConnection = activeConnection;
 
         if (this._activeConnection)
-            this._activeConnectionChangedId = this._activeConnection.connect('state-changed',
+            this._activeConnectionChangedId = this._activeConnection.connect('notify::state',
                                                                              Lang.bind(this, this._connectionStateChanged));
 
         this._sync();
