@@ -2,15 +2,15 @@
 # Copyright (C) 2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Matej Urbančič <mateju@svn.gnome.org>, 2009 - 2013.
+# Matej Urbančič <mateju@svn.gnome.org>, 2009-2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-17 03:02+0000\n"
-"PO-Revision-Date: 2013-08-17 16:50+0100\n"
+"POT-Creation-Date: 2013-08-19 19:13+0000\n"
+"PO-Revision-Date: 2013-08-19 21:49+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -28,7 +28,7 @@ msgstr "Sistem"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
 msgid "Show the message tray"
-msgstr "Pokaži sporočilno vrstico"
+msgstr "Pokaži sistemsko sporočilno vrstico"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -207,11 +207,11 @@ msgstr "Tipkovna bližnjica, ki odpre pogled pregleda dejavnosti."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Tipkovna bližnjica za preklop vidnosti vrstice sporočanja"
+msgstr "Tipkovna bližnjica za preklop vidnosti sistemske sporočilne vrstice"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Tipkovna bližnjica za preklop vidnosti vrstice sporočanja."
+msgstr "Tipkovna bližnjica za preklop vidnosti sistemske sporočilne vrstice."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
@@ -291,24 +291,24 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Razširitev za nastavljanje je mogoče izbrati iz spustnega seznama zgoraj."
 
-#: ../js/gdm/authPrompt.js:142 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/authPrompt.js:146 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:651
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
 #: ../js/ui/status/system.js:373
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: ../js/gdm/authPrompt.js:164 ../js/gdm/authPrompt.js:212
+#: ../js/gdm/authPrompt.js:168 ../js/gdm/authPrompt.js:216
 msgid "Next"
 msgstr "Naslednji"
 
-#: ../js/gdm/authPrompt.js:208 ../js/ui/shellMountOperation.js:403
-#: ../js/ui/unlockDialog.js:55
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:56
 msgid "Unlock"
 msgstr "Odkleni"
 
-#: ../js/gdm/authPrompt.js:210
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prijava"
@@ -330,7 +330,7 @@ msgstr "Ali je ni na seznamu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:634
+#: ../js/gdm/loginDialog.js:641
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(na primer, uporabnika ali %s)"
@@ -338,22 +338,25 @@ msgstr "(na primer, uporabnika ali %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:639 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:646 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Uporabniško ime: "
 
-#: ../js/gdm/loginDialog.js:893
+#: ../js/gdm/loginDialog.js:909
 msgid "Login Window"
 msgstr "Prijavno okno"
 
-#: ../js/gdm/util.js:253
+#: ../js/gdm/util.js:306
 msgid "Authentication error"
 msgstr "Napaka overitve"
 
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:371
+#: ../js/gdm/util.js:419
 msgid "(or swipe finger)"
 msgstr "(ali pa povlecite prst)"
 
@@ -589,7 +592,7 @@ msgid "Type again:"
 msgstr "Vpišite znova:"
 
 #: ../js/ui/components/networkAgent.js:132 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:654
+#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:682
 msgid "Connect"
 msgstr "Poveži"
 
@@ -760,15 +763,15 @@ msgid "%s is inviting you to join %s"
 msgstr "%s vas vabi, da se pridružite v %s"
 
 #: ../js/ui/components/telepathyClient.js:1099
-#: ../js/ui/components/telepathyClient.js:1138
-#: ../js/ui/components/telepathyClient.js:1178
-#: ../js/ui/components/telepathyClient.js:1241
+#: ../js/ui/components/telepathyClient.js:1140
+#: ../js/ui/components/telepathyClient.js:1180
+#: ../js/ui/components/telepathyClient.js:1243
 msgid "Decline"
 msgstr "Zavrni"
 
 #: ../js/ui/components/telepathyClient.js:1100
-#: ../js/ui/components/telepathyClient.js:1179
-#: ../js/ui/components/telepathyClient.js:1242
+#: ../js/ui/components/telepathyClient.js:1181
+#: ../js/ui/components/telepathyClient.js:1244
 msgid "Accept"
 msgstr "Sprejmi"
 
@@ -785,7 +788,7 @@ msgid "Call from %s"
 msgstr "%s kliče"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1140
+#: ../js/ui/components/telepathyClient.js:1142
 msgid "Answer"
 msgstr "Odgovori"
 
@@ -794,109 +797,109 @@ msgstr "Odgovori"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1172
+#: ../js/ui/components/telepathyClient.js:1174
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s pošilja %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1207
+#: ../js/ui/components/telepathyClient.js:1209
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s želi dovoljenje za pogled dosegljivosti"
 
-#: ../js/ui/components/telepathyClient.js:1299
+#: ../js/ui/components/telepathyClient.js:1301
 msgid "Network error"
 msgstr "Napaka omrežja"
 
-#: ../js/ui/components/telepathyClient.js:1301
+#: ../js/ui/components/telepathyClient.js:1303
 msgid "Authentication failed"
 msgstr "Overitev je spodletela"
 
-#: ../js/ui/components/telepathyClient.js:1303
+#: ../js/ui/components/telepathyClient.js:1305
 msgid "Encryption error"
 msgstr "Napaka šifriranja"
 
-#: ../js/ui/components/telepathyClient.js:1305
+#: ../js/ui/components/telepathyClient.js:1307
 msgid "Certificate not provided"
 msgstr "Potrdilo ni na voljo"
 
-#: ../js/ui/components/telepathyClient.js:1307
+#: ../js/ui/components/telepathyClient.js:1309
 msgid "Certificate untrusted"
 msgstr "Potrdilo ni zaupljivo"
 
-#: ../js/ui/components/telepathyClient.js:1309
+#: ../js/ui/components/telepathyClient.js:1311
 msgid "Certificate expired"
 msgstr "Potrdilo je preteklo"
 
-#: ../js/ui/components/telepathyClient.js:1311
+#: ../js/ui/components/telepathyClient.js:1313
 msgid "Certificate not activated"
 msgstr "Potrdilo ni potrjeno"
 
-#: ../js/ui/components/telepathyClient.js:1313
+#: ../js/ui/components/telepathyClient.js:1315
 msgid "Certificate hostname mismatch"
 msgstr "Neustrezno ime gostitelja potrdila"
 
-#: ../js/ui/components/telepathyClient.js:1315
+#: ../js/ui/components/telepathyClient.js:1317
 msgid "Certificate fingerprint mismatch"
 msgstr "Neustrezen prstni odtis potrdila"
 
-#: ../js/ui/components/telepathyClient.js:1317
+#: ../js/ui/components/telepathyClient.js:1319
 msgid "Certificate self-signed"
 msgstr "Potrdilo je samo-podpisano"
 
-#: ../js/ui/components/telepathyClient.js:1319
+#: ../js/ui/components/telepathyClient.js:1321
 msgid "Status is set to offline"
 msgstr "Stanje je nastavljeno na brez povezave"
 
-#: ../js/ui/components/telepathyClient.js:1321
+#: ../js/ui/components/telepathyClient.js:1323
 msgid "Encryption is not available"
 msgstr "Šifriranje ni na voljo."
 
-#: ../js/ui/components/telepathyClient.js:1323
+#: ../js/ui/components/telepathyClient.js:1325
 msgid "Certificate is invalid"
 msgstr "Potrdilo je neveljavno."
 
-#: ../js/ui/components/telepathyClient.js:1325
+#: ../js/ui/components/telepathyClient.js:1327
 msgid "Connection has been refused"
 msgstr "Povezava je zavrnjena."
 
-#: ../js/ui/components/telepathyClient.js:1327
+#: ../js/ui/components/telepathyClient.js:1329
 msgid "Connection can't be established"
 msgstr "Povezave ni mogoče vzpostaviti."
 
-#: ../js/ui/components/telepathyClient.js:1329
+#: ../js/ui/components/telepathyClient.js:1331
 msgid "Connection has been lost"
 msgstr "Povezava je prekinjena."
 
-#: ../js/ui/components/telepathyClient.js:1331
+#: ../js/ui/components/telepathyClient.js:1333
 msgid "This account is already connected to the server"
 msgstr "Račun je s strežnikom že povezan"
 
-#: ../js/ui/components/telepathyClient.js:1333
+#: ../js/ui/components/telepathyClient.js:1335
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Povezava je zamenjana z novo povezavo, ki uporablja isti vir."
 
-#: ../js/ui/components/telepathyClient.js:1335
+#: ../js/ui/components/telepathyClient.js:1337
 msgid "The account already exists on the server"
 msgstr "Račun na strežniku že obstaja"
 
-#: ../js/ui/components/telepathyClient.js:1337
+#: ../js/ui/components/telepathyClient.js:1339
 msgid "Server is currently too busy to handle the connection"
 msgstr "Strežnik je trenutno preveč zaposlen za upravljanje s povezavo."
 
-#: ../js/ui/components/telepathyClient.js:1339
+#: ../js/ui/components/telepathyClient.js:1341
 msgid "Certificate has been revoked"
 msgstr "Potrdilo je preklicano"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1343
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Potrdilo ne uporablja varnega algoritma ali pa uporablja šibko šifriranje."
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1345
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -904,22 +907,22 @@ msgstr ""
 "Dolžina potrdila strežnika ali pa globina verige potrdila presega omejitev, "
 "ki je določena s šifrirno knjižnico."
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1347
 msgid "Internal error"
 msgstr "Notranja napaka"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1357
 #, c-format
 msgid "Unable to connect to %s"
 msgstr "Povezava z %s ni mogoča."
 
-#: ../js/ui/components/telepathyClient.js:1360
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "View account"
 msgstr "Poglej račun"
 
-#: ../js/ui/components/telepathyClient.js:1399
+#: ../js/ui/components/telepathyClient.js:1401
 msgid "Unknown reason"
 msgstr "Neznan vzrok"
 
@@ -1116,31 +1119,35 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/messageTray.js:1221
+#: ../js/ui/messageTray.js:1222
 msgid "Open"
 msgstr "Odpri"
 
-#: ../js/ui/messageTray.js:1228
+#: ../js/ui/messageTray.js:1229
 msgid "Remove"
 msgstr "Odstrani"
 
-#: ../js/ui/messageTray.js:1514
+#: ../js/ui/messageTray.js:1513
 msgid "Clear Messages"
 msgstr "Počisti sporočila"
 
-#: ../js/ui/messageTray.js:1541
+#: ../js/ui/messageTray.js:1540
 msgid "Notification Settings"
 msgstr "Nastavitve obvestil"
 
-#: ../js/ui/messageTray.js:1723
+#: ../js/ui/messageTray.js:1559
+msgid "Tray Menu"
+msgstr "Meni sistemske vrstice"
+
+#: ../js/ui/messageTray.js:1777
 msgid "No Messages"
 msgstr "Ni sporočil"
 
-#: ../js/ui/messageTray.js:1786
+#: ../js/ui/messageTray.js:1814
 msgid "Message Tray"
-msgstr "Vrstica sporočanja"
+msgstr "Sporočilna vrstica"
 
-#: ../js/ui/messageTray.js:2760
+#: ../js/ui/messageTray.js:2788
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -1149,7 +1156,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Neznano"
 
-#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:153
+#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:154
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1211,11 +1218,11 @@ msgstr "Zapri"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:89
+#: ../js/ui/screenShield.js:90
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
-#: ../js/ui/screenShield.js:155
+#: ../js/ui/screenShield.js:156
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1224,11 +1231,11 @@ msgstr[1] "%d novo obvestilo"
 msgstr[2] "%d novi obvestili"
 msgstr[3] "%d nova obvestila"
 
-#: ../js/ui/screenShield.js:478 ../js/ui/status/system.js:275
+#: ../js/ui/screenShield.js:479 ../js/ui/status/system.js:275
 msgid "Lock"
 msgstr "Zakleni"
 
-#: ../js/ui/screenShield.js:697
+#: ../js/ui/screenShield.js:705
 msgid "GNOME needs to lock the screen"
 msgstr "Zakleniti je treba zaslon"
 
@@ -1239,11 +1246,11 @@ msgstr "Zakleniti je treba zaslon"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:822 ../js/ui/screenShield.js:1270
+#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1278
 msgid "Unable to lock"
 msgstr "Zaklep ni mogoč"
 
-#: ../js/ui/screenShield.js:823 ../js/ui/screenShield.js:1271
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1279
 msgid "Lock was blocked by an application"
 msgstr "Zaklep je preprečil program"
 
@@ -1332,7 +1339,7 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:998 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/network.js:1027 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Onemogoči"
 
@@ -1427,11 +1434,11 @@ msgstr "Pokaži razporeditev tipkovnice"
 msgid "<unknown>"
 msgstr "<neznano>"
 
-#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1013
+#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1042
 msgid "Off"
 msgstr "Nepovezano"
 
-#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:919
+#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:948
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Omrežne nastavitve"
@@ -1446,12 +1453,12 @@ msgstr "neupravljano"
 msgid "disconnecting..."
 msgstr "prekinjanje povezave ..."
 
-#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1064
+#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1093
 msgid "connecting..."
 msgstr "povezovanje ..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1067
+#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1096
 msgid "authentication required"
 msgstr "zahtevana je overitev"
 
@@ -1467,43 +1474,43 @@ msgstr "manjka strojna programska oprema"
 msgid "unavailable"
 msgstr "ni na voljo"
 
-#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1069
+#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1098
 msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
-#: ../js/ui/status/network.js:619
+#: ../js/ui/status/network.js:647
 msgid "Wi-Fi Networks"
 msgstr "Omrežja Wi-Fi"
 
-#: ../js/ui/status/network.js:621
+#: ../js/ui/status/network.js:649
 msgid "Select a network"
 msgstr "Izbor omrežja"
 
-#: ../js/ui/status/network.js:645
+#: ../js/ui/status/network.js:673
 msgid "No Networks"
 msgstr "Ni omrežij"
 
-#: ../js/ui/status/network.js:913
+#: ../js/ui/status/network.js:942
 msgid "Select Network"
 msgstr "Izbor omrežja"
 
-#: ../js/ui/status/network.js:998
+#: ../js/ui/status/network.js:1027
 msgid "Turn On"
 msgstr "Omogoči"
 
-#: ../js/ui/status/network.js:1131
+#: ../js/ui/status/network.js:1160
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1267
+#: ../js/ui/status/network.js:1296
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
-#: ../js/ui/status/network.js:1309
+#: ../js/ui/status/network.js:1338
 msgid "Connection failed"
 msgstr "Povezava je spodletela"
 
-#: ../js/ui/status/network.js:1310
+#: ../js/ui/status/network.js:1339
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
@@ -1589,11 +1596,11 @@ msgstr "%s (konzola)"
 msgid "Volume changed"
 msgstr "Glasnost je spremenjena"
 
-#: ../js/ui/unlockDialog.js:63
+#: ../js/ui/unlockDialog.js:64
 msgid "Log in as another user"
 msgstr "Prijava kot drug uporabnik"
 
-#: ../js/ui/unlockDialog.js:80
+#: ../js/ui/unlockDialog.js:81
 msgid "Unlock Window"
 msgstr "Odkleni okno"
 
