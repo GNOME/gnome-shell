@@ -958,6 +958,9 @@ const PopupSubMenuMenuItem = new Lang.Class({
         this._triangleBin = new St.Widget({ y_expand: true,
                                             y_align: Clutter.ActorAlign.CENTER });
         this._triangleBin.add_child(this._triangle);
+        if (this._triangleBin.get_text_direction() == Clutter.TextDirection.RTL)
+            this._triangleBin.set_scale(-1.0, 1.0);
+
         this.actor.add_child(this._triangleBin);
 
         this.menu = new PopupSubMenu(this.actor, this._triangle);
