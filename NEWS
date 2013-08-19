@@ -1,3 +1,43 @@
+Cogl 1.15.6                                                        2013-08-19
+
+  • List of changes since Cogl 1.15.4
+
+  » Fixed runtime selection of egl-kms backend
+  » Split out the CoglPath api in-line with cogl master to reduce
+    divergence, but updated to not break the 1.x API/ABI
+  » Reverted the semantic change to cogl_offscreen_new_to_texture to
+    make it synchronously allocate as it did in cogl-1.14. A
+    replacement cogl_offscreen_new_with_texture api has been
+    introduced to support the asynchronous allocation behaviour
+    required to allow configuration of a framebuffer before
+    allocation.
+  » Fixed a problem with binding attribute locations with desktop GL
+    drivers, required to work with the latest Mesa.
+  » Some configure.ac documentation fixes
+  » In cogl-gst we make sure to only emit the "pipeline-ready" signal
+    once the new textures have actually been uploaded.
+  » Various MSVC build fixes
+
+  Note: we took some care to try and avoid breaking the ABI and
+  chaning the soname relative to the last 1.15.4 snapshot.
+
+  • Gnome Bugzilla bugs closed since 1.15.4:
+
+  #703500 - 49 Conform Tests Regressed (FAIL)
+  #703174 - Crash when switching user with gnome 3.8 using nvidia drivers
+  #705836 - egl-kms: set the EGL_PLATFORM explicitly
+  #705591 - SIGSEGV in various conformance tests on wayland
+
+Many thanks to:
+
+  Chun-wei Fan
+  Neil Roberts
+  Robert Bragg
+  Adel Gadllah
+  Fan Chun-wei
+  Giovanni Campagna
+  Lionel Landwerlin
+
 Cogl 1.15.4                                                        2013-07-30
 
   • List of changes since Cogl 1.15.2
@@ -143,7 +183,7 @@ Cogl 1.13.4                                                        2013-02-21
 
   #669122 - Clipped redraws and tearing
   #692420 - Build fails on Mac OS Mountain Lion:
-            error: 'GL_NUM_EXTENSIONS' undeclared 
+            error: 'GL_NUM_EXTENSIONS' undeclared
   #693360 - cogl-pango: Fix some doc/introspection comments
   #693612 - cogl-pango: wrong rendering on the second line of an
             underlined layout
