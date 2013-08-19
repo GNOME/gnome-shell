@@ -1,3 +1,55 @@
+Clutter 1.15.90                                                      2013-08-19
+===============================================================================
+
+  • List of changes since Clutter 1.15.2
+
+    - Update the Wayland backend
+    Use the new 1.2 behaviour and API, and improve the coverage of windowing
+    system features, alongside a slew of bugs.
+
+    - Drop support for XInput 1.x
+    The XInput 1.x extension was never really used after the introduction of
+    the 2.x version.
+
+    - Fix event and device handling when using evdev
+
+    - Allow using ClutterContent on a ClutterStage
+
+    - Fixes for the Windows backend
+    The build script has also been updated with the required dependencies.
+
+    - Documentation fixes
+
+    - Translations updated
+
+  • List of bugs fixed since Clutter 1.15.2
+
+    #703809 - Some LayoutManager fixes
+    #704625 - Cannot assign a ClutterContent to a stage
+    #698836 - Add interactive test for ClutterZoomAction/ClutterRotateAction
+    #705739 - Crash when removing a ClutterActor from a scene at the end of
+              an animation
+    #705710 - evdev: fix X11 to evdev keycode translation
+    #704269 - evdev: add a way for applications to tweak how devices are
+              opened
+    #704457 - Setting the size of the stage causes it to not be shown on
+              wayland
+    #699578 - Implement foreign surface support for stages
+    #704279 - wayland: Add API for disabling the event dispatching
+    #703336 - clutter-actor: Make clutter_actor_has_mapped_clones public
+    #701356 - Update the windows backend to work with latest Cogl
+    #703969 - Select for events with XIAllMasterDevices under XI2
+    #703878 - wayland: Don't pass the shell and compositor down to Cogl
+    #703608 - Update ClutterWaylandSurface to use a resource instead of
+              wl_buffer
+    #703877 - Bump the required Cogl version to 1.15.1
+
+Many thanks to:
+
+  Giovanni Campagna, Neil Roberts, Florian Müllner, Jasper St. Pierre, Rob
+  Bradford, Matej Urbančič, Adel Gadllah, Chao-Hsiung Liao, Chris Cummins,
+  Chun-wei Fan, Lionel Landwerlin, Rafael Ferreira
+
 Clutter 1.15.2                                                       2013-07-10
 ===============================================================================
 
