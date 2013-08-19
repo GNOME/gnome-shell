@@ -627,7 +627,7 @@ const NMWirelessDialog = new Lang.Class({
     },
 
     _updateSensitivity: function() {
-        let connectSensitive = this._selectedNetwork != null;
+        let connectSensitive = this._selectedNetwork && (this._selectedNetwork != this._activeNetwork);
         this._connectButton.reactive = connectSensitive;
         this._connectButton.can_focus = connectSensitive;
     },
