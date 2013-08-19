@@ -325,6 +325,11 @@ const AllView = new Lang.Class({
 
         this._availWidth = 0;
         this._availHeight = 0;
+
+        Main.overview.connect('hidden', Lang.bind(this,
+            function() {
+                this.goToPage(0);
+            }));
     },
 
     getCurrentPageY: function() {
