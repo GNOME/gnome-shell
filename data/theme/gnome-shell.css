@@ -312,6 +312,10 @@ StScrollBar StButton#vhandle:active {
     background-color: #333;
 }
 
+.nm-dialog-item-box {
+    spacing: 20px;
+}
+
 .nm-dialog-icons {
     spacing: .5em;
 }

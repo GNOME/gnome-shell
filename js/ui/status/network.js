@@ -524,24 +524,31 @@ const NMWirelessDialogItem = new Lang.Class({
         this._label = new St.Label({ text: title });
 
         this.actor.label_actor = this._label;
-        this._content.add(this._label, { expand: true, x_align: St.Align.START });
+        this._content.add(this._label, { x_align: St.Align.START });
+
+        this._selectedIcon = new St.Icon({ style_class: 'nm-dialog-icon',
+                                           icon_name: 'object-select-symbolic' });
+        this._content.add(this._selectedIcon);
 
         this._icons = new St.BoxLayout({ style_class: 'nm-dialog-icons' });
-        this._content.add(this._icons, { x_fill: false, x_align: St.Align.END });
+        this._content.add(this._icons, { expand: true, x_fill: false, x_align: St.Align.END });
 
         this._secureIcon = new St.Icon({ style_class: 'nm-dialog-icon' });
         if (this._ap._secType != NMAccessPointSecurity.NONE)
             this._secureIcon.icon_name = 'network-wireless-encrypted-symbolic';
         this._icons.add_actor(this._secureIcon);
 
-        this._signalIcon = new St.Icon({ icon_name: this._getIcon(),
-                                         style_class: 'nm-dialog-icon' });
+        this._signalIcon = new St.Icon({ style_class: 'nm-dialog-icon' });
         this._icons.add_actor(this._signalIcon);
     },
 
     updateBestAP: function(ap) {
         this._ap = ap;
         this._signalIcon.icon_name = this._getIcon();
+    },
+
+    setActive: function(isActive) {
+        this._selectedIcon.opacity = isActive ? 255 : 0;
     },
 
     _getIcon: function() {
@@ -573,6 +580,7 @@ const NMWirelessDialog = new Lang.Class({
 
         this._apAddedId = device.connect('access-point-added', Lang.bind(this, this._accessPointAdded));
         this._apRemovedId = device.connect('access-point-removed', Lang.bind(this, this._accessPointRemoved));
+        this._activeApChangedId = device.connect('notify::active-access-point', Lang.bind(this, this._activeApChanged));
 
         // accessPointAdded will also create dialog items
         let accessPoints = device.get_access_points() || [ ];
@@ -581,6 +589,7 @@ const NMWirelessDialog = new Lang.Class({
         }));
 
         this._selectedNetwork = null;
+        this._activeApChanged();
         this._updateSensitivity();
     },
 
@@ -589,13 +598,32 @@ const NMWirelessDialog = new Lang.Class({
             GObject.Object.prototype.disconnect.call(this._device, this._apAddedId);
             this._apAddedId = 0;
         }
-
         if (this._apRemovedId) {
             GObject.Object.prototype.disconnect.call(this._device, this._apRemovedId);
             this._apRemovedId = 0;
         }
+        if (this._activeApChangedId) {
+            GObject.Object.prototype.disconnect.call(this._device, this._activeApChangedId);
+            this._activeApChangedId = 0;
+        }
 
         this.parent();
+    },
+
+    _activeApChanged: function() {
+        if (this._activeNetwork)
+            this._activeNetwork.item.setActive(false);
+
+        this._activeNetwork = null;
+        if (this._device.active_access_point) {
+            let idx = this._findNetwork(this._device.active_access_point);
+            if (idx >= 0)
+                this._activeNetwork = this._networks[idx];
+        }
+
+        if (this._activeNetwork)
+            this._activeNetwork.item.setActive(true);
+        this._updateSensitivity();
     },
 
     _updateSensitivity: function() {
@@ -891,6 +919,7 @@ const NMWirelessDialog = new Lang.Class({
 
     _createNetworkItem: function(network) {
         network.item = new NMWirelessDialogItem(network);
+        network.item.setActive(network == this._selectedNetwork);
         network.item.connect('selected', Lang.bind(this, function() {
             Util.ensureActorVisibleInScrollView(this._scrollView, network.item.actor);
             this._selectNetwork(network);
