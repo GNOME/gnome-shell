@@ -282,11 +282,11 @@ StScrollBar StButton#vhandle:active {
 }
 
 .nm-dialog-content {
-    spacing: 8px;
+    spacing: 20px;
 }
 
 .nm-dialog-header-hbox {
-    spacing: 4px;
+    spacing: 10px;
 }
 
 .nm-dialog-header-icon {
