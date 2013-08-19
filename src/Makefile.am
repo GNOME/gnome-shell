@@ -251,7 +251,7 @@ bin_PROGRAMS+=mutter-launch
 
 mutter_launch_SOURCES = wayland/weston-launch.c wayland/weston-launch.h
 
-mutter_launch_CFLAGS = $(MUTTER_LAUNCH_CFLAGS)
+mutter_launch_CFLAGS = $(MUTTER_LAUNCH_CFLAGS) -DLIBDIR=\"$(libdir)\"
 mutter_launch_LDFLAGS = $(MUTTER_LAUNCH_LIBS) -lpam
 
 install-exec-hook:

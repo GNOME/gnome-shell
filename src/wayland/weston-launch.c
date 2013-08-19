@@ -433,7 +433,7 @@ launch_compositor(struct weston_launch *wl, int argc, char *argv[])
 		setenv_fd("WESTON_TTY_FD", wl->tty);
 
 	setenv_fd("WESTON_LAUNCHER_SOCK", wl->sock[1]);
-
+	setenv("LD_LIBRARY_PATH", LIBDIR, 1);
 	unsetenv("DISPLAY");
 
 	/* Do not give our signal mask to the new process. */
