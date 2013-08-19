@@ -97,7 +97,7 @@ const NMConnectionItem = new Lang.Class({
     },
 
     getName: function() {
-        return this.connection.get_id();
+        return this._connection.get_id();
     },
 
     isActive: function() {
