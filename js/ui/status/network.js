@@ -1137,7 +1137,7 @@ const NMVPNConnectionItem = new Lang.Class({
 
     getIndicatorIcon: function() {
         if (this._activeConnection) {
-            if (this._activeConnection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
+            if (this._activeConnection.vpn_state < NetworkManager.VPNConnectionState.ACTIVATED)
                 return 'network-vpn-acquiring-symbolic';
             else
                 return 'network-vpn-symbolic';
