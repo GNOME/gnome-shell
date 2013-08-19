@@ -305,6 +305,7 @@ clutter_actor_should_pick_paint
 clutter_actor_map
 clutter_actor_unmap
 clutter_actor_has_overlaps
+clutter_actor_has_mapped_clones
 
 <SUBSECTION>
 ClutterAllocationFlags
