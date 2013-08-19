@@ -599,7 +599,8 @@ const ScreenShield = new Lang.Class({
 
         let bgManager = new Background.BackgroundManager({ container: widget,
                                                            monitorIndex: monitorIndex,
-                                                           controlPosition: false });
+                                                           controlPosition: false,
+                                                           settingsSchema: SCREENSAVER_SCHEMA });
 
         this._bgManagers.push(bgManager);
 
