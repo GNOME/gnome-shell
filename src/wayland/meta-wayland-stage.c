@@ -55,6 +55,7 @@ meta_wayland_stage_class_init (MetaWaylandStageClass *klass)
 static void
 meta_wayland_stage_init (MetaWaylandStage *self)
 {
+  clutter_stage_set_user_resizable (CLUTTER_STAGE (self), FALSE);
 }
 
 ClutterActor *

@@ -114,26 +114,6 @@ typedef struct
 
 typedef struct
 {
-  guint32 flags;
-  int width;
-  int height;
-  int refresh;
-} MetaWaylandMode;
-
-typedef struct
-{
-  struct wl_object wayland_output;
-  int x;
-  int y;
-  int width_mm;
-  int height_mm;
-  /* XXX: with sliced stages we'd reference a CoglFramebuffer here. */
-
-  GList *modes;
-} MetaWaylandOutput;
-
-typedef struct
-{
   GSource source;
   GPollFD pfd;
   struct wl_display *display;
@@ -155,7 +135,7 @@ struct _MetaWaylandCompositor
   struct wl_event_loop *wayland_loop;
   GMainLoop *init_loop;
   ClutterActor *stage;
-  GList *outputs;
+  GHashTable *outputs;
   GSource *wayland_event_source;
   GList *surfaces;
   struct wl_list frame_callbacks;

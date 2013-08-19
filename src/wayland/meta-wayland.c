@@ -50,6 +50,7 @@
 #include <meta/main.h>
 #include "frame.h"
 #include "meta-idle-monitor-private.h"
+#include "monitor-private.h"
 
 static MetaWaylandCompositor _meta_wayland_compositor;
 
@@ -629,84 +630,186 @@ meta_wayland_compositor_create_region (struct wl_client *wayland_client,
   region->region = cairo_region_create ();
 }
 
+typedef struct {
+  MetaOutput               *output;
+  struct wl_global         *global;
+  int                       x, y;
+  enum wl_output_transform  transform;
+
+  GList                    *resources;
+} MetaWaylandOutput;
+
+static void
+output_resource_destroy (struct wl_resource *res)
+{
+  MetaWaylandOutput *wayland_output;
+
+  wayland_output = wl_resource_get_user_data (res);
+  wayland_output->resources = g_list_remove (wayland_output->resources, res);
+}
+
 static void
 bind_output (struct wl_client *client,
              void *data,
              guint32 version,
              guint32 id)
 {
-  MetaWaylandOutput *output = data;
-  struct wl_resource *resource =
-    wl_resource_create (client, &wl_output_interface, version, id);
-  GList *l;
+  MetaWaylandOutput *wayland_output = data;
+  MetaOutput *output = wayland_output->output;
+  struct wl_resource *resource;
+  guint mode_flags;
+
+  resource = wl_resource_create (client, &wl_output_interface, version, id);
+  wayland_output->resources = g_list_prepend (wayland_output->resources, resource);
+
+  wl_resource_set_user_data (resource, wayland_output);
+  wl_resource_set_destructor (resource, output_resource_destroy);
+
+  meta_verbose ("Binding output %p/%s (%u, %u, %u, %u) x %f\n",
+                output, output->name,
+                output->crtc->rect.x, output->crtc->rect.y,
+                output->crtc->rect.width, output->crtc->rect.height,
+                output->crtc->current_mode->refresh_rate);
 
   wl_resource_post_event (resource,
                           WL_OUTPUT_GEOMETRY,
-                          output->x, output->y,
+                          (int)output->crtc->rect.x,
+                          (int)output->crtc->rect.y,
                           output->width_mm,
                           output->height_mm,
-                          0, /* subpixel: unknown */
-                          "unknown", /* make */
-                          "unknown"); /* model */
+                          /* Cogl values reflect XRandR values,
+                             and so does wayland */
+                          output->subpixel_order,
+                          output->vendor,
+                          output->product,
+                          output->crtc->transform);
 
-  for (l = output->modes; l; l = l->next)
-    {
-      MetaWaylandMode *mode = l->data;
-      wl_resource_post_event (resource,
-                              WL_OUTPUT_MODE,
-                              mode->flags,
-                              mode->width,
-                              mode->height,
-                              mode->refresh);
-    }
+  g_assert (output->crtc->current_mode != NULL);
+
+  mode_flags = WL_OUTPUT_MODE_CURRENT;
+  if (output->crtc->current_mode == output->preferred_mode)
+    mode_flags |= WL_OUTPUT_MODE_PREFERRED;
+
+  wl_resource_post_event (resource,
+                          WL_OUTPUT_MODE,
+                          mode_flags,
+                          (int)output->crtc->current_mode->width,
+                          (int)output->crtc->current_mode->height,
+                          (int)output->crtc->current_mode->refresh_rate);
+
+  if (version >= 2)
+    wl_resource_post_event (resource,
+                            WL_OUTPUT_DONE);
 }
 
 static void
-meta_wayland_compositor_create_output (MetaWaylandCompositor *compositor,
-                                       int x,
-                                       int y,
-                                       int width,
-                                       int height,
-                                       int width_mm,
-                                       int height_mm)
+wayland_output_destroy_notify (gpointer data)
 {
-  MetaWaylandOutput *output = g_slice_new0 (MetaWaylandOutput);
-  MetaWaylandMode *mode;
-  float final_width, final_height;
+  MetaWaylandOutput *wayland_output = data;
+  GList *resources;
 
-  /* XXX: eventually we will support sliced stages and an output should
-   * correspond to a slice/CoglFramebuffer, but for now we only support
-   * one output so we make sure it always matches the size of the stage
-   */
-  clutter_actor_set_size (compositor->stage, width, height);
+  /* Make sure the destructors don't mess with the list */
+  resources = wayland_output->resources;
+  wayland_output->resources = NULL;
 
-  /* Read back the actual size we were given.
-   * XXX: This really needs re-thinking later though so we know the
-   * correct output geometry to use. */
-  clutter_actor_get_size (compositor->stage, &final_width, &final_height);
-  width = final_width;
-  height = final_height;
+  wl_global_destroy (wayland_output->global);
+  g_list_free (resources);
 
-  output->wayland_output.interface = &wl_output_interface;
+  g_slice_free (MetaWaylandOutput, wayland_output);
+}
 
-  output->x = x;
-  output->y = y;
-  output->width_mm = width_mm;
-  output->height_mm = height_mm;
+static void
+wayland_output_update_for_output (MetaWaylandOutput *wayland_output,
+                                  MetaOutput        *output)
+{
+  GList *iter;
+  guint mode_flags;
 
-  wl_global_create (compositor->wayland_display,
-		    &wl_output_interface, 2,
-		    output, bind_output);
+  g_assert (output->crtc->current_mode != NULL);
 
-  mode = g_slice_new0 (MetaWaylandMode);
-  mode->flags = WL_OUTPUT_MODE_CURRENT | WL_OUTPUT_MODE_PREFERRED;
-  mode->width = width;
-  mode->height = height;
-  mode->refresh = 60;
+  mode_flags = WL_OUTPUT_MODE_CURRENT;
+  if (output->crtc->current_mode == output->preferred_mode)
+    mode_flags |= WL_OUTPUT_MODE_PREFERRED;
 
-  output->modes = g_list_prepend (output->modes, mode);
+  for (iter = wayland_output->resources; iter; iter = iter->next)
+    {
+      struct wl_resource *resource = iter->data;
 
-  compositor->outputs = g_list_prepend (compositor->outputs, output);
+      if (wayland_output->x != output->crtc->rect.x ||
+          wayland_output->y != output->crtc->rect.y ||
+          wayland_output->transform != output->crtc->transform)
+        {
+            wl_resource_post_event (resource,
+                                    WL_OUTPUT_GEOMETRY,
+                                    (int)output->crtc->rect.x,
+                                    (int)output->crtc->rect.y,
+                                    output->width_mm,
+                                    output->height_mm,
+                                    output->subpixel_order,
+                                    output->vendor,
+                                    output->product,
+                                    output->crtc->transform);
+        }
+
+      wl_resource_post_event (resource,
+                              WL_OUTPUT_MODE,
+                              mode_flags,
+                              (int)output->crtc->current_mode->width,
+                              (int)output->crtc->current_mode->height,
+                              (int)output->crtc->current_mode->refresh_rate);
+    }
+
+  /* It's very important that we change the output pointer here, as
+     the old structure is about to be freed by MetaMonitorManager */
+  wayland_output->output = output;
+  wayland_output->x = output->crtc->rect.x;
+  wayland_output->y = output->crtc->rect.y;
+  wayland_output->transform = output->crtc->transform;
+}
+
+static GHashTable *
+meta_wayland_compositor_update_outputs (MetaWaylandCompositor *compositor,
+                                        MetaMonitorManager    *monitors)
+{
+  MetaOutput *outputs;
+  unsigned int i, n_outputs;
+  GHashTable *new_table;
+
+  outputs = meta_monitor_manager_get_outputs (monitors, &n_outputs);
+  new_table = g_hash_table_new_full (NULL, NULL, NULL, wayland_output_destroy_notify);
+
+  for (i = 0; i < n_outputs; i++)
+    {
+      MetaOutput *output = &outputs[i];
+      MetaWaylandOutput *wayland_output;
+
+      /* wayland does not expose disabled outputs */
+      if (output->crtc == NULL)
+        {
+          g_hash_table_remove (compositor->outputs, GSIZE_TO_POINTER (output->output_id));
+          continue;
+        }
+
+      wayland_output = g_hash_table_lookup (compositor->outputs, GSIZE_TO_POINTER (output->output_id));
+
+      if (wayland_output)
+        {
+          g_hash_table_steal (compositor->outputs, GSIZE_TO_POINTER (output->output_id));
+        }
+      else
+        {
+          wayland_output = g_slice_new0 (MetaWaylandOutput);
+          wayland_output->global = wl_global_create (compositor->wayland_display,
+                                                     &wl_output_interface, 2,
+                                                     wayland_output, bind_output);
+        }
+
+      wayland_output_update_for_output (wayland_output, output);
+      g_hash_table_insert (new_table, GSIZE_TO_POINTER (output->output_id), wayland_output);
+    }
+
+  g_hash_table_destroy (compositor->outputs);
+  return new_table;
 }
 
 const static struct wl_compositor_interface meta_wayland_compositor_interface = {
@@ -1413,11 +1516,19 @@ event_emission_hook_cb (GSignalInvocationHint *ihint,
   return TRUE /* stay connected */;
 }
 
+static void
+on_monitors_changed (MetaMonitorManager    *monitors,
+                     MetaWaylandCompositor *compositor)
+{
+  compositor->outputs = meta_wayland_compositor_update_outputs (compositor, monitors);
+}
+
 void
 meta_wayland_init (void)
 {
   MetaWaylandCompositor *compositor = &_meta_wayland_compositor;
   guint event_signal;
+  MetaMonitorManager *monitors;
 
   memset (compositor, 0, sizeof (MetaWaylandCompositor));
 
@@ -1457,8 +1568,15 @@ meta_wayland_init (void)
   if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
     g_error ("Failed to initialize Clutter");
 
+  meta_monitor_manager_initialize ();
+  monitors = meta_monitor_manager_get ();
+  g_signal_connect (monitors, "monitors-changed",
+                    G_CALLBACK (on_monitors_changed), compositor);
+
+  compositor->outputs = g_hash_table_new_full (NULL, NULL, NULL, wayland_output_destroy_notify);
+  compositor->outputs = meta_wayland_compositor_update_outputs (compositor, monitors);
+
   compositor->stage = meta_wayland_stage_new ();
-  clutter_stage_set_user_resizable (CLUTTER_STAGE (compositor->stage), FALSE);
   g_signal_connect_after (compositor->stage, "paint",
                           G_CALLBACK (paint_finished_cb), compositor);
   g_signal_connect (compositor->stage, "destroy",
@@ -1482,8 +1600,6 @@ meta_wayland_init (void)
                               event_emission_hook_cb,
                               compositor, /* hook_data */
                               NULL /* data_destroy */);
-
-  meta_wayland_compositor_create_output (compositor, 0, 0, 1024, 600, 222, 125);
 
   if (wl_global_create (compositor->wayland_display,
 			&wl_shell_interface, 1,

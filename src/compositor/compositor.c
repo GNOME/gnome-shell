@@ -668,6 +668,9 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
     {
       wayland_compositor = meta_wayland_compositor_get_default ();
       info->stage = wayland_compositor->stage;
+
+      meta_screen_get_size (screen, &width, &height);
+      clutter_actor_set_size (info->stage, width, height);
     }
   else
     {
@@ -1416,18 +1419,25 @@ meta_compositor_sync_screen_size (MetaCompositor  *compositor,
 				  guint		   width,
 				  guint		   height)
 {
+  MetaDisplay    *display = meta_screen_get_display (screen);
+  MetaCompScreen *info    = meta_screen_get_compositor_data (screen);
+
   if (meta_is_wayland_compositor ())
     {
-      /* It's not clear at the moment how we will be dealing with screen
-       * resizing as a Wayland compositor so for now just abort if we
-       * hit this code. */
-      g_critical ("Unexpected call to meta_compositor_sync_screen_size() "
-                  "when running as a wayland compositor");
+      /* FIXME: when we support a sliced stage, this is the place to do it
+         But! This is not the place to apply KMS config, here we only
+         notify Clutter/Cogl/GL that the framebuffer sizes changed.
+
+         And because for now clutter does not do sliced, we use one
+         framebuffer the size of the whole screen, and when running on
+         bare metal MetaMonitorManager will do the necessary tricks to
+         show the right portions on the right screens.
+      */
+
+      clutter_actor_set_size (info->stage, width, height);
     }
   else
     {
-      MetaDisplay    *display = meta_screen_get_display (screen);
-      MetaCompScreen *info    = meta_screen_get_compositor_data (screen);
       Display        *xdisplay;
       Window          xwin;
 
@@ -1438,11 +1448,11 @@ meta_compositor_sync_screen_size (MetaCompositor  *compositor,
       xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
 
       XResizeWindow (xdisplay, xwin, width, height);
-
-      meta_verbose ("Changed size for stage on screen %d to %dx%d\n",
-                    meta_screen_get_screen_number (screen),
-                    width, height);
     }
+
+  meta_verbose ("Changed size for stage on screen %d to %dx%d\n",
+                meta_screen_get_screen_number (screen),
+                width, height);
 }
 
 static void

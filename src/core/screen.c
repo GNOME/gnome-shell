@@ -675,8 +675,9 @@ meta_screen_new (MetaDisplay *display,
   screen->xscreen = ScreenOfDisplay (xdisplay, number);
   screen->xroot = xroot;
   screen->rect.x = screen->rect.y = 0;
-  
-  meta_monitor_manager_initialize ();
+
+  if (!meta_is_wayland_compositor ())
+    meta_monitor_manager_initialize ();
 
   manager = meta_monitor_manager_get ();
   g_signal_connect (manager, "monitors-changed",

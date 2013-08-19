@@ -474,6 +474,15 @@ make_logical_config (MetaMonitorManager *manager)
   manager->monitor_infos = (void*)g_array_free (monitor_infos, FALSE);
 }
 
+static GType
+get_default_backend (void)
+{
+  if (meta_is_wayland_compositor ())
+    return META_TYPE_MONITOR_MANAGER; /* FIXME: KMS */
+  else
+    return META_TYPE_MONITOR_MANAGER_XRANDR;
+}
+
 static MetaMonitorManager *
 meta_monitor_manager_new (void)
 {
@@ -483,7 +492,7 @@ meta_monitor_manager_new (void)
   env = g_getenv ("META_DEBUG_MULTIMONITOR");
 
   if (env == NULL)
-    type = META_TYPE_MONITOR_MANAGER_XRANDR;
+    type = get_default_backend ();
   else if (strcmp (env, "xrandr") == 0)
     type = META_TYPE_MONITOR_MANAGER_XRANDR;
   else
