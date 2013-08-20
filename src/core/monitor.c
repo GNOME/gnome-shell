@@ -42,7 +42,6 @@
 #define ALL_WL_TRANSFORMS ((1 << (WL_OUTPUT_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
 enum {
-  MONITORS_CHANGED,
   CONFIRM_DISPLAY_CHANGE,
   SIGNALS_LAST
 };
@@ -659,14 +658,6 @@ meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
   klass->apply_configuration = apply_config_dummy;
   klass->get_edid_file = get_edid_file_dummy;
   klass->read_edid = read_edid_dummy;
-
-  signals[MONITORS_CHANGED] =
-    g_signal_new ("monitors-changed",
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_LAST,
-		  0,
-                  NULL, NULL, NULL,
-		  G_TYPE_NONE, 0);
 
   signals[CONFIRM_DISPLAY_CHANGE] =
     g_signal_new ("confirm-display-change",
@@ -1497,7 +1488,7 @@ invalidate_logical_config (MetaMonitorManager *manager)
 
   make_logical_config (manager);
 
-  g_signal_emit (manager, signals[MONITORS_CHANGED], 0);
+  g_signal_emit_by_name (manager, "monitors-changed");
 
   g_free (old_monitor_infos);
 }
