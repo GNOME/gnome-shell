@@ -400,5 +400,109 @@ const IconGrid = new Lang.Class({
             spacing = Math.round(spacing);
         }
         this.setSpacing(spacing);
+    },
+});
+
+const PaginatedIconGrid = new Lang.Class({
+    Name: 'PaginatedIconGrid',
+    Extends: IconGrid,
+
+    _init: function(params) {
+        this.parent(params);
+        this._nPages = 0;
+    },
+
+    _getPreferredHeight: function (grid, forWidth, alloc) {
+        alloc.min_size = this._availableHeightPerPageForItems() * this._nPages + this._spaceBetweenPages * this._nPages;
+        alloc.natural_size = this._availableHeightPerPageForItems() * this._nPages + this._spaceBetweenPages * this._nPages;
+    },
+
+    _allocate: function (grid, box, flags) {
+         if (this._childrenPerPage == 0)
+            log('computePages() must be called before allocate(); pagination will not work.');
+
+        if (this._fillParent) {
+            // Reset the passed in box to fill the parent
+            let parentBox = this.actor.get_parent().allocation;
+            let gridBox = this.actor.get_theme_node().get_content_box(parentBox);
+            box = this._grid.get_theme_node().get_content_box(gridBox);
+        }
+        let children = this._getVisibleChildren();
+        let availWidth = box.x2 - box.x1;
+        let availHeight = box.y2 - box.y1;
+        let spacing = this._getSpacing();
+        let [nColumns, usedWidth] = this._computeLayout(availWidth);
+
+        let leftPadding;
+        switch(this._xAlign) {
+            case St.Align.START:
+                leftPadding = 0;
+                break;
+            case St.Align.MIDDLE:
+                leftPadding = Math.floor((availWidth - usedWidth) / 2);
+                break;
+            case St.Align.END:
+                leftPadding = availWidth - usedWidth;
+        }
+
+        let x = box.x1 + leftPadding;
+        let y = box.y1;
+        let columnIndex = 0;
+        let rowIndex = 0;
+
+        for (let i = 0; i < children.length; i++) {
+            let childBox = this._calculateChildBox(children[i], x, y, box);
+            children[i].allocate(childBox, flags);
+            this._grid.set_skip_paint(children[i], false);
+
+            columnIndex++;
+            if (columnIndex == nColumns) {
+                columnIndex = 0;
+                rowIndex++;
+            }
+            if (columnIndex == 0) {
+                y += this._vItemSize + spacing;
+                if ((i + 1) % this._childrenPerPage == 0)
+                    y += this._spaceBetweenPages - spacing;
+                x = box.x1 + leftPadding;
+            } else {
+                x += this._hItemSize + spacing;
+            }
+        }
+    },
+
+    computePages: function (availWidthPerPage, availHeightPerPage) {
+        let [nColumns, usedWidth] = this._computeLayout(availWidthPerPage);
+        let nRows;
+        let children = this._getVisibleChildren();
+        if (nColumns > 0)
+            nRows = Math.ceil(children.length / nColumns);
+        else
+            nRows = 0;
+        if (this._rowLimit)
+            nRows = Math.min(nRows, this._rowLimit);
+
+        let spacing = this._getSpacing();
+        this._rowsPerPage = Math.floor((availHeightPerPage + spacing) / (this._vItemSize + spacing));
+        this._nPages = Math.ceil(nRows / this._rowsPerPage);
+        this._spaceBetweenPages = availHeightPerPage - (this._rowsPerPage * (this._vItemSize + spacing) - spacing);
+        this._childrenPerPage = nColumns * this._rowsPerPage;
+    },
+
+    _availableHeightPerPageForItems: function() {
+        return this._rowsPerPage * this._vItemSize + (this._rowsPerPage - 1) * this._getSpacing();
+    },
+
+    nPages: function() {
+        return this._nPages;
+    },
+
+    getPageY: function(pageNumber) {
+        if (!this._nPages)
+            return 0;
+
+        let firstPageItem = pageNumber * this._childrenPerPage
+        let childBox = this._getVisibleChildren()[firstPageItem].get_allocation_box();
+        return childBox.y1;
     }
 });
