@@ -52,6 +52,7 @@ js/ui/unlockDialog.js
 js/ui/viewSelector.js
 js/ui/wanda.js
 js/ui/windowAttentionHandler.js
+js/ui/windowManager.js
 src/calendar-server/evolution-calendar.desktop.in.in
 # Please do not remove this file from POTFILES.in. Run "git submodule init && git submodule update" to get it.
 src/gvc/gvc-mixer-control.c
