@@ -373,7 +373,7 @@ texture_tower_create_texture (MetaTextureTower *tower,
   tower->invalid[level].y2 = height;
 }
 
-static gboolean
+static void
 texture_tower_revalidate_fbo (MetaTextureTower *tower,
                               int               level)
 {
@@ -408,150 +408,13 @@ texture_tower_revalidate_fbo (MetaTextureTower *tower,
                                       (2. * invalid->y2) / source_texture_height);
 
   cogl_pop_framebuffer ();
-
-  return TRUE;
-}
-
-static void
-fill_copy (guchar       *buf,
-           const guchar *source,
-           int           width)
-{
-  memcpy (buf, source, width * 4);
-}
-
-static void
-fill_scale_down (guchar       *buf,
-                 const guchar *source,
-                 int           width)
-{
-  while (width > 1)
-    {
-      buf[0] = (source[0] + source[4]) / 2;
-      buf[1] = (source[1] + source[5]) / 2;
-      buf[2] = (source[2] + source[6]) / 2;
-      buf[3] = (source[3] + source[7]) / 2;
-
-      buf += 4;
-      source += 8;
-      width -= 2;
-    }
-
-  if (width > 0)
-    {
-      buf[0] = source[0] / 2;
-      buf[1] = source[1] / 2;
-      buf[2] = source[2] / 2;
-      buf[3] = source[3] / 2;
-    }
-}
-
-static void
-texture_tower_revalidate_client (MetaTextureTower *tower,
-                                 int               level)
-{
-  CoglTexture *source_texture = tower->textures[level - 1];
-  int source_texture_width = cogl_texture_get_width (source_texture);
-  int source_texture_height = cogl_texture_get_height (source_texture);
-  guint source_rowstride;
-  guchar *source_data;
-  CoglTexture *dest_texture = tower->textures[level];
-  int dest_texture_width = cogl_texture_get_width (dest_texture);
-  int dest_texture_height = cogl_texture_get_height (dest_texture);
-  int dest_x = tower->invalid[level].x1;
-  int dest_y = tower->invalid[level].y1;
-  int dest_width = tower->invalid[level].x2 - tower->invalid[level].x1;
-  int dest_height = tower->invalid[level].y2 - tower->invalid[level].y1;
-  guchar *dest_data;
-  guchar *source_tmp1 = NULL, *source_tmp2 = NULL;
-  int i, j;
-
-  source_rowstride = source_texture_width * 4;
-
-  source_data = g_malloc (source_texture_height * source_rowstride);
-  cogl_texture_get_data (source_texture, TEXTURE_FORMAT, source_rowstride,
-                         source_data);
-
-  dest_data = g_malloc (dest_height * dest_width * 4);
-
-  if (dest_texture_height < source_texture_height)
-    {
-      source_tmp1 = g_malloc (dest_width * 4);
-      source_tmp2 = g_malloc (dest_width * 4);
-    }
-
-  for (i = 0; i < dest_height; i++)
-    {
-      guchar *dest_row = dest_data + i * dest_width * 4;
-      if (dest_texture_height < source_texture_height)
-        {
-          guchar *source1, *source2;
-          guchar *dest;
-
-          if (dest_texture_width < source_texture_width)
-            {
-              fill_scale_down (source_tmp1,
-                               source_data + ((i + dest_y) * 2) * source_rowstride + dest_x * 2 * 4,
-                               dest_width * 2);
-              fill_scale_down (source_tmp2,
-                               source_data + ((i + dest_y) * 2 + 1) * source_rowstride + dest_x * 2 * 4,
-                               dest_width * 2);
-            }
-          else
-            {
-              fill_copy (source_tmp1,
-                         source_data + ((i + dest_y) * 2) * source_rowstride + dest_x * 4,
-                         dest_width);
-              fill_copy (source_tmp2,
-                         source_data + ((i + dest_y) * 2 + 1) * source_rowstride + dest_x * 4,
-                         dest_width);
-            }
-
-          source1 = source_tmp1;
-          source2 = source_tmp2;
-
-          dest = dest_row;
-          for (j = 0; j < dest_width * 4; j++)
-            *(dest++) = (*(source1++) + *(source2++)) / 2;
-        }
-      else
-        {
-          if (dest_texture_width < source_texture_width)
-            fill_scale_down (dest_row,
-                             source_data + (i + dest_y) * source_rowstride + dest_x * 2 * 4,
-                             dest_width * 2);
-          else
-            fill_copy (dest_row,
-                       source_data + (i + dest_y) * source_rowstride,
-                       dest_width);
-        }
-    }
-
-  cogl_texture_set_region (dest_texture,
-                           0, 0,
-                           dest_x, dest_y,
-                           dest_width, dest_height,
-                           dest_width, dest_height,
-                           TEXTURE_FORMAT,
-                           4 * dest_width,
-                           dest_data);
-
-  if (dest_texture_height < source_texture_height)
-    {
-      g_free (source_tmp1);
-      g_free (source_tmp2);
-    }
-
-  g_free (source_data);
-  g_free (dest_data);
 }
 
 static void
 texture_tower_revalidate (MetaTextureTower *tower,
                           int               level)
 {
-  if (!texture_tower_revalidate_fbo (tower, level))
-    texture_tower_revalidate_client (tower, level);
+  texture_tower_revalidate_fbo (tower, level);
 }
 
 /**
