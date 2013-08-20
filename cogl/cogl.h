@@ -139,8 +139,7 @@
  * The cogl_path_ api used to be part of the core Cogl api so for
  * compatability we include cogl-path.h via cogl.h
  */
-#if !defined (COGL_ENABLE_EXPERIMENTAL_2_0_API) && \
-    defined (COGL_HAS_COGL_PATH_SUPPORT)
+#if defined (COGL_HAS_COGL_PATH_SUPPORT)
 #include <cogl-path/cogl-path.h>
 #endif
 
