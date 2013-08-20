@@ -600,6 +600,8 @@ const LayoutManager = new Lang.Class({
         if (Main.sessionMode.isGreeter) {
             this.panelBox.translation_y = -this.panelBox.height;
         } else {
+            this._createPrimaryBackground();
+
             // We need to force an update of the regions now before we scale
             // the UI group to get the coorect allocation for the struts.
             this._updateRegions();
@@ -649,7 +651,6 @@ const LayoutManager = new Lang.Class({
     },
 
     _startupAnimationSession: function() {
-        this._createPrimaryBackground();
         Tweener.addTween(this.uiGroup,
                          { scale_x: 1,
                            scale_y: 1,
