@@ -211,7 +211,8 @@ experimental_backend=no
 experimental_input_backend=no
 
 # base dependencies for core
-CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
+CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >=
+$PANGO_REQ_VERSION cogl-pango-1.0 cogl-path-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
 
 # private base dependencies
 CLUTTER_BASE_PC_FILES_PRIVATE=""
