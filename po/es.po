@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-16 23:35+0000\n"
-"PO-Revision-Date: 2013-08-19 11:26+0200\n"
+"POT-Creation-Date: 2013-08-19 13:35+0000\n"
+"PO-Revision-Date: 2013-08-20 17:35+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -297,7 +297,7 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Seleccione una extensión que configurar usando la caja combinada de arriba."
 
-#: ../js/gdm/authPrompt.js:142 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/authPrompt.js:149 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:651
@@ -305,16 +305,16 @@ msgstr ""
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/authPrompt.js:164 ../js/gdm/authPrompt.js:212
+#: ../js/gdm/authPrompt.js:171 ../js/gdm/authPrompt.js:219
 msgid "Next"
 msgstr "Siguiente"
 
-#: ../js/gdm/authPrompt.js:208 ../js/ui/shellMountOperation.js:403
-#: ../js/ui/unlockDialog.js:55
+#: ../js/gdm/authPrompt.js:215 ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:56
 msgid "Unlock"
 msgstr "Desbloquear"
 
-#: ../js/gdm/authPrompt.js:210
+#: ../js/gdm/authPrompt.js:217
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
@@ -336,7 +336,7 @@ msgstr "¿No está en la lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:634
+#: ../js/gdm/loginDialog.js:641
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(ej., usuario o %s)"
@@ -344,22 +344,25 @@ msgstr "(ej., usuario o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:639 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:646 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Nombre de usuario:"
 
-#: ../js/gdm/loginDialog.js:893
+#: ../js/gdm/loginDialog.js:909
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
-#: ../js/gdm/util.js:253
+#: ../js/gdm/util.js:298
 msgid "Authentication error"
 msgstr "Error de autenticación"
 
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:371
+#: ../js/gdm/util.js:411
 msgid "(or swipe finger)"
 msgstr "(o pase el dedo)"
 
@@ -766,15 +769,15 @@ msgid "%s is inviting you to join %s"
 msgstr "%s le está invitando a unirse a %s"
 
 #: ../js/ui/components/telepathyClient.js:1099
-#: ../js/ui/components/telepathyClient.js:1138
-#: ../js/ui/components/telepathyClient.js:1178
-#: ../js/ui/components/telepathyClient.js:1241
+#: ../js/ui/components/telepathyClient.js:1140
+#: ../js/ui/components/telepathyClient.js:1180
+#: ../js/ui/components/telepathyClient.js:1243
 msgid "Decline"
 msgstr "Rechazar"
 
 #: ../js/ui/components/telepathyClient.js:1100
-#: ../js/ui/components/telepathyClient.js:1179
-#: ../js/ui/components/telepathyClient.js:1242
+#: ../js/ui/components/telepathyClient.js:1181
+#: ../js/ui/components/telepathyClient.js:1244
 msgid "Accept"
 msgstr "Aceptar"
 
@@ -791,7 +794,7 @@ msgid "Call from %s"
 msgstr "Llamada de %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1140
+#: ../js/ui/components/telepathyClient.js:1142
 msgid "Answer"
 msgstr "Responder"
 
@@ -800,112 +803,112 @@ msgstr "Responder"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1172
+#: ../js/ui/components/telepathyClient.js:1174
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s le está enviando %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1207
+#: ../js/ui/components/telepathyClient.js:1209
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s solicita permiso para ver cuándo está en línea"
 
-#: ../js/ui/components/telepathyClient.js:1299
+#: ../js/ui/components/telepathyClient.js:1301
 msgid "Network error"
 msgstr "Error de la red"
 
-#: ../js/ui/components/telepathyClient.js:1301
+#: ../js/ui/components/telepathyClient.js:1303
 msgid "Authentication failed"
 msgstr "Falló la autenticación"
 
-#: ../js/ui/components/telepathyClient.js:1303
+#: ../js/ui/components/telepathyClient.js:1305
 msgid "Encryption error"
 msgstr "Error de cifrado"
 
-#: ../js/ui/components/telepathyClient.js:1305
+#: ../js/ui/components/telepathyClient.js:1307
 msgid "Certificate not provided"
 msgstr "Certificado no proporcionado"
 
-#: ../js/ui/components/telepathyClient.js:1307
+#: ../js/ui/components/telepathyClient.js:1309
 msgid "Certificate untrusted"
 msgstr "No se confía en el certificado"
 
-#: ../js/ui/components/telepathyClient.js:1309
+#: ../js/ui/components/telepathyClient.js:1311
 msgid "Certificate expired"
 msgstr "Certificado caducado"
 
-#: ../js/ui/components/telepathyClient.js:1311
+#: ../js/ui/components/telepathyClient.js:1313
 msgid "Certificate not activated"
 msgstr "Certificado no activado"
 
-#: ../js/ui/components/telepathyClient.js:1313
+#: ../js/ui/components/telepathyClient.js:1315
 msgid "Certificate hostname mismatch"
 msgstr "El nombre del servidor dle certificado no coincide"
 
-#: ../js/ui/components/telepathyClient.js:1315
+#: ../js/ui/components/telepathyClient.js:1317
 msgid "Certificate fingerprint mismatch"
 msgstr "La huella del certificado no coincide"
 
-#: ../js/ui/components/telepathyClient.js:1317
+#: ../js/ui/components/telepathyClient.js:1319
 msgid "Certificate self-signed"
 msgstr "Certificado autofirmado"
 
-#: ../js/ui/components/telepathyClient.js:1319
+#: ../js/ui/components/telepathyClient.js:1321
 msgid "Status is set to offline"
 msgstr "El estado está establecido a «desconectado»"
 
-#: ../js/ui/components/telepathyClient.js:1321
+#: ../js/ui/components/telepathyClient.js:1323
 msgid "Encryption is not available"
 msgstr "El cifrado no está disponible"
 
-#: ../js/ui/components/telepathyClient.js:1323
+#: ../js/ui/components/telepathyClient.js:1325
 msgid "Certificate is invalid"
 msgstr "El certificado no es válido"
 
-#: ../js/ui/components/telepathyClient.js:1325
+#: ../js/ui/components/telepathyClient.js:1327
 msgid "Connection has been refused"
 msgstr "Se ha rechazado la conexión"
 
-#: ../js/ui/components/telepathyClient.js:1327
+#: ../js/ui/components/telepathyClient.js:1329
 msgid "Connection can't be established"
 msgstr "No se puede establecer la conexión"
 
-#: ../js/ui/components/telepathyClient.js:1329
+#: ../js/ui/components/telepathyClient.js:1331
 msgid "Connection has been lost"
 msgstr "Se ha perdido la conexión"
 
-#: ../js/ui/components/telepathyClient.js:1331
+#: ../js/ui/components/telepathyClient.js:1333
 msgid "This account is already connected to the server"
 msgstr "Esta cuenta ya está conectada al servidor"
 
-#: ../js/ui/components/telepathyClient.js:1333
+#: ../js/ui/components/telepathyClient.js:1335
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Se ha sustituido la conexión por una nueva conexión usando el mismo recurso"
 
-#: ../js/ui/components/telepathyClient.js:1335
+#: ../js/ui/components/telepathyClient.js:1337
 msgid "The account already exists on the server"
 msgstr "La cuenta ya existe en el servidor"
 
-#: ../js/ui/components/telepathyClient.js:1337
+#: ../js/ui/components/telepathyClient.js:1339
 msgid "Server is currently too busy to handle the connection"
 msgstr ""
 "Actualmente el servidor está muy ocupado intentando gestionar la conexión"
 
-#: ../js/ui/components/telepathyClient.js:1339
+#: ../js/ui/components/telepathyClient.js:1341
 msgid "Certificate has been revoked"
 msgstr "Se ha revocado el certificado"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1343
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "El certificado usa un algoritmo de cifrado inseguro o es criptográficamente "
 "débil"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1345
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -914,22 +917,22 @@ msgstr ""
 "certificado del servidor exceden los límites impuestos por la biblioteca de "
 "criptografía"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1347
 msgid "Internal error"
 msgstr "Error interno"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1357
 #, c-format
 msgid "Unable to connect to %s"
 msgstr "No se pudo conectar a %s"
 
-#: ../js/ui/components/telepathyClient.js:1360
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "View account"
 msgstr "Ver cuenta"
 
-#: ../js/ui/components/telepathyClient.js:1399
+#: ../js/ui/components/telepathyClient.js:1401
 msgid "Unknown reason"
 msgstr "Razón desconocida"
 
@@ -1118,31 +1121,35 @@ msgstr "Ver fuente"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:1221
+#: ../js/ui/messageTray.js:1222
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:1228
+#: ../js/ui/messageTray.js:1229
 msgid "Remove"
 msgstr "Quitar"
 
-#: ../js/ui/messageTray.js:1514
+#: ../js/ui/messageTray.js:1513
 msgid "Clear Messages"
 msgstr "Limpiar mensajes"
 
-#: ../js/ui/messageTray.js:1541
+#: ../js/ui/messageTray.js:1540
 msgid "Notification Settings"
 msgstr "Configuración de las notificaciones"
 
-#: ../js/ui/messageTray.js:1723
+#: ../js/ui/messageTray.js:1559
+msgid "Tray Menu"
+msgstr "Bandeja de menú"
+
+#: ../js/ui/messageTray.js:1777
 msgid "No Messages"
 msgstr "No hay mensajes"
 
-#: ../js/ui/messageTray.js:1786
+#: ../js/ui/messageTray.js:1814
 msgid "Message Tray"
 msgstr "Bandeja de mensajes"
 
-#: ../js/ui/messageTray.js:2760
+#: ../js/ui/messageTray.js:2788
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -1151,7 +1158,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:153
+#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:154
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1197,7 +1204,7 @@ msgstr "Barra superior"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:325
+#: ../js/ui/popupMenu.js:226
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1211,22 +1218,22 @@ msgstr "Cerrar"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:89
+#: ../js/ui/screenShield.js:90
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/screenShield.js:155
+#: ../js/ui/screenShield.js:156
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nueva"
 msgstr[1] "%d notificaciones nuevas"
 
-#: ../js/ui/screenShield.js:478 ../js/ui/status/system.js:275
+#: ../js/ui/screenShield.js:479 ../js/ui/status/system.js:275
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/screenShield.js:697
+#: ../js/ui/screenShield.js:705
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME necesita bloquear la pantalla"
 
@@ -1237,11 +1244,11 @@ msgstr "GNOME necesita bloquear la pantalla"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:822 ../js/ui/screenShield.js:1270
+#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1278
 msgid "Unable to lock"
 msgstr "No se pudo bloquear"
 
-#: ../js/ui/screenShield.js:823 ../js/ui/screenShield.js:1271
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1279
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
@@ -1477,7 +1484,6 @@ msgid "Select a network"
 msgstr "Seleccionar una red"
 
 #: ../js/ui/status/network.js:645
-#| msgid "Wi-Fi Networks"
 msgid "No Networks"
 msgstr "No hay redes"
 
@@ -1587,11 +1593,11 @@ msgstr "%s (consola)"
 msgid "Volume changed"
 msgstr "Volumen modificado"
 
-#: ../js/ui/unlockDialog.js:63
+#: ../js/ui/unlockDialog.js:64
 msgid "Log in as another user"
 msgstr "Iniciar sesión como otro usuario"
 
-#: ../js/ui/unlockDialog.js:80
+#: ../js/ui/unlockDialog.js:81
 msgid "Unlock Window"
 msgstr "Desbloquear ventana"
 
