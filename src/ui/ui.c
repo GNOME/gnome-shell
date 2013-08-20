@@ -58,6 +58,11 @@ meta_ui_init (void)
 {
   if (!gtk_init_check (NULL, NULL))
     meta_fatal ("Unable to open X display %s\n", XDisplayName (NULL));
+
+  /* We need to be able to fully trust that the window and monitor sizes
+     that Gdk reports corresponds to the X ones, so we disable the automatic
+     scale handling */
+  gdk_x11_display_set_window_scale (gdk_display_get_default (), 1);
 }
 
 Display*
