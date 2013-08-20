@@ -6,22 +6,23 @@
 # Petr Tomeš <ptomes@gmail.com>, 2006.
 # Jakub Friedl <jfriedl@suse.cz>, 2006, 2007.
 # Petr Kovar <pknbe@volny.cz>, 2007, 2008, 2009, 2010, 2011, 2012, 2013.
-# Marek Černocký <marek@manet.cz>, 2012.
+# Marek Černocký <marek@manet.cz>, 2012, 2013.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
-"&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-22 10:02+0000\n"
-"PO-Revision-Date: 2013-03-24 20:55+0200\n"
-"Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-08-18 20:03+0000\n"
+"PO-Revision-Date: 2013-08-20 08:50+0200\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Gtranslator 2.91.6\n"
 "X-Project-Style: gnome\n"
 
 #: ../src/50-mutter-navigation.xml.in.h:1
@@ -186,7 +187,8 @@ msgstr "Přepnout výskyt okna na všech plochách nebo jen na jedné"
 
 #: ../src/50-mutter-windows.xml.in.h:13
 msgid "Raise window if covered, otherwise lower it"
-msgstr "Přenést okno do popředí, pokud je zakryté, jinak jej odsunout do pozadí"
+msgstr ""
+"Přenést okno do popředí, pokud je zakryté, jinak jej odsunout do pozadí"
 
 #: ../src/50-mutter-windows.xml.in.h:14
 msgid "Raise window above other windows"
@@ -214,14 +216,14 @@ msgstr "Zobrazit rozdělení napravo"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:568
+#: ../src/compositor/compositor.c:589
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "Jiný kompozitní správce již běží na obrazovce %i displeje „%s“."
 
-#: ../src/compositor/meta-background.c:1191
+#: ../src/compositor/meta-background.c:1076
 msgid "background texture could not be created from file"
 msgstr "textura pozadí nemohla být ze souboru vytvořena"
 
@@ -259,17 +261,17 @@ msgstr "_Počkat"
 msgid "_Force Quit"
 msgstr "_Vynutit ukončení"
 
-#: ../src/core/display.c:401
+#: ../src/core/display.c:421
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Schází rozšíření %s vyžadované funkcemi kompozitoru"
 
-#: ../src/core/display.c:493
+#: ../src/core/display.c:513
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nelze otevřít displej X Window System „%s“\n"
 
-#: ../src/core/keybindings.c:935
+#: ../src/core/keybindings.c:1136
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -277,9 +279,8 @@ msgid ""
 msgstr ""
 "Klávesu %s s modifikátory %x již jako zkratku používá nějaký jiný program\n"
 
-#: ../src/core/keybindings.c:1135
+#: ../src/core/keybindings.c:1333
 #, c-format
-#| msgid "\"%s\" is not a valid value for focus attribute"
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "„%s“ není platný akcelerátor\n"
 
@@ -320,6 +321,19 @@ msgstr ""
 "Nelze najít motiv! Ujistěte se prosím, že existuje %s a obsahuje obvyklé "
 "motivy.\n"
 
+#: ../src/core/monitor.c:711
+msgid "Built-in display"
+msgstr "Vestavěný displej"
+
+#. TRANSLATORS: this is a monitor name (in case we don't know
+#. the vendor), it's Unknown followed by a size in inches,
+#. like 'Unknown 15"'
+#.
+#: ../src/core/monitor.c:739
+#, c-format
+msgid "Unknown %s"
+msgstr "Neznámý %s"
+
 #: ../src/core/mutter.c:40
 #, c-format
 msgid ""
@@ -344,7 +358,7 @@ msgstr "Vypíše verzi"
 msgid "Mutter plugin to use"
 msgstr "Zásuvný modul Mutter, který se má použít"
 
-#: ../src/core/prefs.c:1095
+#: ../src/core/prefs.c:1202
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -352,12 +366,12 @@ msgstr ""
 "Bylo zakázáno obcházení chyb aplikací. Některé aplikace se možná nebudou "
 "chovat správně.\n"
 
-#: ../src/core/prefs.c:1170
+#: ../src/core/prefs.c:1277
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Nelze zpracovat popis písma „%s“ v klíči GSettings %s\n"
 
-#: ../src/core/prefs.c:1236
+#: ../src/core/prefs.c:1343
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -366,7 +380,7 @@ msgstr ""
 "„%s“ nalezené v databázi nastavení není platnou hodnotou modifikátoru "
 "tlačítka myši\n"
 
-#: ../src/core/prefs.c:1788
+#: ../src/core/prefs.c:1909
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -375,17 +389,17 @@ msgstr ""
 "„%s“ nalezené v databázi nastavení není platnou hodnotou klávesové zkratky "
 "„%s“\n"
 
-#: ../src/core/prefs.c:1887
+#: ../src/core/prefs.c:1999
 #, c-format
 msgid "Workspace %d"
 msgstr "Plocha %d"
 
-#: ../src/core/screen.c:691
+#: ../src/core/screen.c:534
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Obrazovka %d na displeji „%s“ je neplatná\n"
 
-#: ../src/core/screen.c:707
+#: ../src/core/screen.c:550
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -394,18 +408,18 @@ msgstr ""
 "Obrazovka %d na displeji „%s“ již správce oken má; zkuste prosím nahradit "
 "aktuálního správce oken pomocí přepínače --replace.\n"
 
-#: ../src/core/screen.c:734
+#: ../src/core/screen.c:577
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Nelze získat výběr správce oken na obrazovce %d displeje „%s“\n"
 
-#: ../src/core/screen.c:812
+#: ../src/core/screen.c:655
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Obrazovka %d na displeji „%s“ již má správce oken\n"
 
-#: ../src/core/screen.c:998
+#: ../src/core/screen.c:846
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nelze uvolnit obrazovku %d na displeji „%s“\n"
@@ -480,8 +494,7 @@ msgstr "Nelze provést fdopen() soubor záznamu %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Otevřen soubor záznamu %s\n"
 
-#: ../src/core/util.c:119 ../src/tools/mutter-message.c:149
-#, c-format
+#: ../src/core/util.c:119
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter bylo přeloženo bez podpory podrobného režimu\n"
 
@@ -489,20 +502,20 @@ msgstr "Mutter bylo přeloženo bez podpory podrobného režimu\n"
 msgid "Window manager: "
 msgstr "Správce oken: "
 
-#: ../src/core/util.c:412
+#: ../src/core/util.c:414
 msgid "Bug in window manager: "
 msgstr "Chyba ve správci oken: "
 
-#: ../src/core/util.c:443
+#: ../src/core/util.c:445
 msgid "Window manager warning: "
 msgstr "Varování správce oken: "
 
-#: ../src/core/util.c:471
+#: ../src/core/util.c:473
 msgid "Window manager error: "
 msgstr "Chyba správce oken: "
 
 #. first time through
-#: ../src/core/window.c:7596
+#: ../src/core/window.c:7533
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -518,7 +531,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8320
+#: ../src/core/window.c:8257
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -528,22 +541,22 @@ msgstr ""
 "velikost, ale nastavuje min. velikost %d × %d a max. velikost %d × %d; to "
 "nedává smysl.\n"
 
-#: ../src/core/window-props.c:318
+#: ../src/core/window-props.c:347
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:434
+#: ../src/core/window-props.c:463
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
 
-#: ../src/core/window-props.c:1517
+#: ../src/core/window-props.c:1546
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Neplatné okno WM_TRANSIENT_FOR 0x%lx specifikováno pro %s.\n"
 
-#: ../src/core/window-props.c:1528
+#: ../src/core/window-props.c:1557
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "Okno WM_TRANSIENT_FOR 0x%lx by vytvořilo smyčku pro %s.\n"
@@ -707,109 +720,104 @@ msgstr "Vybrat okno z překryvné nabídky tabulátoru"
 msgid "Cancel tab popup"
 msgstr "Zrušit překryvné okno tabulátoru"
 
-#: ../src/tools/mutter-message.c:123
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Použití: %s\n"
-
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:69
+#: ../src/ui/menu.c:67
 msgid "Mi_nimize"
 msgstr "Mi_nimalizovat"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:71
+#: ../src/ui/menu.c:69
 msgid "Ma_ximize"
 msgstr "Ma_ximalizovat"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:73
+#: ../src/ui/menu.c:71
 msgid "Unma_ximize"
 msgstr "Zrušit ma_ximalizaci"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:75
+#: ../src/ui/menu.c:73
 msgid "Roll _Up"
 msgstr "Sv_inout"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:77
+#: ../src/ui/menu.c:75
 msgid "_Unroll"
 msgstr "Rozv_inout"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:79
+#: ../src/ui/menu.c:77
 msgid "_Move"
 msgstr "_Přesunout"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:81
+#: ../src/ui/menu.c:79
 msgid "_Resize"
 msgstr "Z_měnit velikost"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:83
+#: ../src/ui/menu.c:81
 msgid "Move Titlebar On_screen"
 msgstr "Přesunout záhlaví okna na _obrazovku"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:86 ../src/ui/menu.c:88
+#: ../src/ui/menu.c:84 ../src/ui/menu.c:86
 msgid "Always on _Top"
 msgstr "_Vždy navrchu"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:90
+#: ../src/ui/menu.c:88
 msgid "_Always on Visible Workspace"
 msgstr "Vžd_y na viditelné ploše"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:92
+#: ../src/ui/menu.c:90
 msgid "_Only on This Workspace"
 msgstr "_Jen na této ploše"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:94
+#: ../src/ui/menu.c:92
 msgid "Move to Workspace _Left"
 msgstr "Přesunout na plochu v_levo"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:96
+#: ../src/ui/menu.c:94
 msgid "Move to Workspace R_ight"
 msgstr "Přesunout na plochu vp_ravo"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:98
+#: ../src/ui/menu.c:96
 msgid "Move to Workspace _Up"
 msgstr "Přesunout na plochu na_hoře"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:100
+#: ../src/ui/menu.c:98
 msgid "Move to Workspace _Down"
 msgstr "Přesunout na plochu _dole"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:104
+#: ../src/ui/menu.c:102
 msgid "_Close"
 msgstr "_Zavřít"
 
-#: ../src/ui/menu.c:204
+#: ../src/ui/menu.c:202
 #, c-format
 msgid "Workspace %d%n"
 msgstr "Plocha %d%n"
 
-#: ../src/ui/menu.c:214
+#: ../src/ui/menu.c:212
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Plocha 1_0"
 
-#: ../src/ui/menu.c:216
+#: ../src/ui/menu.c:214
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Plocha %s%d"
 
-#: ../src/ui/menu.c:397
+#: ../src/ui/menu.c:384
 msgid "Move to Another _Workspace"
 msgstr "Přes_unout na jinou plochu"
 
@@ -985,8 +993,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"Specifikace GTK barvy musí mít stav v hranatých závorkách, např. gtk:fg"
-"[NORMAL], kde NORMAL je stav; nelze analyzovat „%s“"
+"Specifikace GTK barvy musí mít stav v hranatých závorkách, např. gtk:"
+"fg[NORMAL], kde NORMAL je stav; nelze analyzovat „%s“"
 
 #: ../src/ui/theme.c:1292
 #, c-format
@@ -994,8 +1002,8 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"Specifikace GTK barvy musí mít za stavem hranatou závorku, např. gtk:fg"
-"[NORMAL], kde NORMAL je stav; nelze analyzovat „%s“"
+"Specifikace GTK barvy musí mít za stavem hranatou závorku, např. gtk:"
+"fg[NORMAL], kde NORMAL je stav; nelze analyzovat „%s“"
 
 #: ../src/ui/theme.c:1303
 #, c-format
@@ -1165,18 +1173,18 @@ msgid ""
 msgstr ""
 "Chybí <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"cokoliv\"/>"
 
-#: ../src/ui/theme.c:5084
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Nelze načíst motiv „%s“: %s\n"
 
-#: ../src/ui/theme.c:5220 ../src/ui/theme.c:5227 ../src/ui/theme.c:5234
-#: ../src/ui/theme.c:5241 ../src/ui/theme.c:5248
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Není nastaveno <%s> motivu „%s“"
 
-#: ../src/ui/theme.c:5256
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1185,7 +1193,7 @@ msgstr ""
 "U typu okna „%s“ motivu „%s“ není nastaven typ rámu, přidejte prosím prvek "
 "<window type=\"%s\" style_set=\"cokoliv\"/>"
 
-#: ../src/ui/theme.c:5663 ../src/ui/theme.c:5725 ../src/ui/theme.c:5788
+#: ../src/ui/theme.c:5661 ../src/ui/theme.c:5723 ../src/ui/theme.c:5786
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1193,7 +1201,7 @@ msgstr ""
 "Uživatelem definované konstanty musí začínat velkým písmenem; „%s“ toto "
 "nesplňuje"
 
-#: ../src/ui/theme.c:5671 ../src/ui/theme.c:5733 ../src/ui/theme.c:5796
+#: ../src/ui/theme.c:5669 ../src/ui/theme.c:5731 ../src/ui/theme.c:5794
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta „%s“ již byla definována"
@@ -1573,204 +1581,3 @@ msgstr "<%s> u tohoto motivu definováno dvakrát"
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Nelze nalézt platný soubor motivu %s\n"
-
-#: ../src/ui/theme-viewer.c:99
-msgid "_Windows"
-msgstr "_Okna"
-
-#: ../src/ui/theme-viewer.c:100
-msgid "_Dialog"
-msgstr "_Dialogové okno"
-
-#: ../src/ui/theme-viewer.c:101
-msgid "_Modal dialog"
-msgstr "_Modální dialogové okno"
-
-#: ../src/ui/theme-viewer.c:102
-msgid "_Utility"
-msgstr "_Nástroje"
-
-#: ../src/ui/theme-viewer.c:103
-msgid "_Splashscreen"
-msgstr "_Spouštěcí obrazovka"
-
-#: ../src/ui/theme-viewer.c:104
-msgid "_Top dock"
-msgstr "_Horní dok"
-
-#: ../src/ui/theme-viewer.c:105
-msgid "_Bottom dock"
-msgstr "Dolní do_k"
-
-#: ../src/ui/theme-viewer.c:106
-msgid "_Left dock"
-msgstr "_Levý dok"
-
-#: ../src/ui/theme-viewer.c:107
-msgid "_Right dock"
-msgstr "P_ravý dok"
-
-#: ../src/ui/theme-viewer.c:108
-msgid "_All docks"
-msgstr "_Všechny doky"
-
-#: ../src/ui/theme-viewer.c:109
-msgid "Des_ktop"
-msgstr "Pra_covní prostředí"
-
-#: ../src/ui/theme-viewer.c:115
-msgid "Open another one of these windows"
-msgstr "Otevřít další takové okno"
-
-#: ../src/ui/theme-viewer.c:117
-msgid "This is a demo button with an 'open' icon"
-msgstr "Toto je demonstrační tlačítko s ikonou „otevřít“"
-
-#: ../src/ui/theme-viewer.c:119
-msgid "This is a demo button with a 'quit' icon"
-msgstr "Toto je demonstrační tlačítko s ikonou „ukončit“"
-
-#: ../src/ui/theme-viewer.c:248
-msgid "This is a sample message in a sample dialog"
-msgstr "Toto je ukázková zpráva v ukázkovém dialogu"
-
-#: ../src/ui/theme-viewer.c:328
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr "Falešná položka nabídky %d\n"
-
-#: ../src/ui/theme-viewer.c:363
-msgid "Border-only window"
-msgstr "Okno jen s okrajem"
-
-#: ../src/ui/theme-viewer.c:365
-msgid "Bar"
-msgstr "Lišta"
-
-#: ../src/ui/theme-viewer.c:382
-msgid "Normal Application Window"
-msgstr "Normální okno aplikace"
-
-#: ../src/ui/theme-viewer.c:386
-msgid "Dialog Box"
-msgstr "Dialogové okno"
-
-#: ../src/ui/theme-viewer.c:390
-msgid "Modal Dialog Box"
-msgstr "Modální dialogové okno"
-
-#: ../src/ui/theme-viewer.c:394
-msgid "Utility Palette"
-msgstr "Paleta nástrojů"
-
-#: ../src/ui/theme-viewer.c:398
-msgid "Torn-off Menu"
-msgstr "Odtržení nabídky"
-
-#: ../src/ui/theme-viewer.c:402
-msgid "Border"
-msgstr "Okraj"
-
-#: ../src/ui/theme-viewer.c:406
-msgid "Attached Modal Dialog"
-msgstr "Připojené modální dialogové okno"
-
-#: ../src/ui/theme-viewer.c:737
-#, c-format
-msgid "Button layout test %d"
-msgstr "Test rozložení tlačítek %d"
-
-#: ../src/ui/theme-viewer.c:766
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr "%g milisekund na nakreslení jednoho rámu okna"
-
-#: ../src/ui/theme-viewer.c:811
-#, c-format
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Použití: metacity-theme-viewer [NÁZEVMOTIVU]\n"
-
-#: ../src/ui/theme-viewer.c:818
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "Chyba při načítání motivu: %s\n"
-
-#: ../src/ui/theme-viewer.c:824
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Načten motiv „%s“ za %g sekund\n"
-
-#: ../src/ui/theme-viewer.c:869
-msgid "Normal Title Font"
-msgstr "Normální písmo nadpisu"
-
-#: ../src/ui/theme-viewer.c:875
-msgid "Small Title Font"
-msgstr "Malé písmo nadpisu"
-
-#: ../src/ui/theme-viewer.c:881
-msgid "Large Title Font"
-msgstr "Velké písmo nadpisu"
-
-#: ../src/ui/theme-viewer.c:886
-msgid "Button Layouts"
-msgstr "Rozložení tlačítek"
-
-#: ../src/ui/theme-viewer.c:891
-msgid "Benchmark"
-msgstr "Test výkonnosti"
-
-#: ../src/ui/theme-viewer.c:947
-msgid "Window Title Goes Here"
-msgstr "Sem patří nadpis okna"
-
-#: ../src/ui/theme-viewer.c:1053
-#, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"Nakresleno %d rámů za %g sekund na straně klienta (%g milisekund na rám) a "
-"%g sekund reálného času včetně zdrojů serveru X (%g milisekund na rám)\n"
-
-#: ../src/ui/theme-viewer.c:1273
-msgid "position expression test returned TRUE but set error"
-msgstr "test výrazu umístění vrátil TRUE, ale nastavil chybu"
-
-#: ../src/ui/theme-viewer.c:1275
-msgid "position expression test returned FALSE but didn't set error"
-msgstr "test výrazu umístění vrátil FALSE, ale nenastavil chybu"
-
-#: ../src/ui/theme-viewer.c:1279
-msgid "Error was expected but none given"
-msgstr "Byla očekávána chyba, ale nebyla přijata"
-
-#: ../src/ui/theme-viewer.c:1281
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr "Byla očekávána chyba %d, ale bylo přijato %d"
-
-#: ../src/ui/theme-viewer.c:1287
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr "Chyba nebyla očekávána, ale byla vrácena: %s"
-
-#: ../src/ui/theme-viewer.c:1291
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr "Hodnota x byla %d, bylo očekáváno %d"
-
-#: ../src/ui/theme-viewer.c:1294
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr "Hodnota y byla %d, bylo očekáváno %d"
-
-#: ../src/ui/theme-viewer.c:1359
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "Zpracováno %d výrazů souřadnic za %g sekund (průměr %g sekund)\n"
-
-#, fuzzy
-#~ msgid "Minimize window"
-#~ msgstr "Minimalizovat okno"
