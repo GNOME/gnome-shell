@@ -74,6 +74,7 @@ src/mutter-enum-types.[ch]
 src/stamp-mutter-enum-types.h
 src/mutter-marshal.[ch]
 src/stamp-mutter-marshal.h
+src/meta-dbus-xrandr.[ch]
 src/mutter-plugins.pc
 doc/reference/*.args
 doc/reference/*.bak
