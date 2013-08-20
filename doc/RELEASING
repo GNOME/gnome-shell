@@ -24,7 +24,10 @@ When making a new release;
 
  - Run:
 
-     $ ./autogen.sh --enable-gtk-doc --enable-profile --enable-gles1 --enable-gles2 --enable-gl --enable-xlib-egl-platform --enable-wayland-egl-platform --enable-glx --enable-wayland-egl-server
+     $ ./autogen.sh --enable-gtk-doc --enable-profile --enable-gles1 \
+                    --enable-gles2 --enable-gl --enable-xlib-egl-platform \
+                    --enable-wayland-egl-platform --enable-glx \
+                    --enable-wayland-egl-server --enable-cogl-gst
      $ make all
      $ make install
 
@@ -73,7 +76,7 @@ done
    then commit the changes.
 
  - Read the release comments in configure.ac
-    - Bump cogl_1_minor_version to the next even number
+    - Bump cogl_1_micro_version to the next even number
     - Don't change the 2.0 version number
     - Update the libtool versioning
     - Update the cogl_release_status status to "release" or "snapshot"
