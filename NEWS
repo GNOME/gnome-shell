@@ -1,3 +1,16 @@
+Cogl 1.15.8                                                        2013-08-20
+
+  • List of changes since Cogl 1.15.8
+
+  Brown bag release to fix a problem with including cogl-path.h from
+  cogl.h that meant only code defining
+  COGL_ENABLE_EXPERIMENTAL_2_0_API would get access to the CoglPath
+  API.
+
+  We now ignore whether COGL_ENABLE_EXPERIMENTAL_2_0_API is defined so
+  clutter which does define it will see the api and so will clutter
+  users that don't define it.
+
 Cogl 1.15.6                                                        2013-08-19
 
   • List of changes since Cogl 1.15.4
