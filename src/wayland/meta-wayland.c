@@ -805,6 +805,35 @@ on_monitors_changed (MetaMonitorManager    *monitors,
   compositor->outputs = meta_wayland_compositor_update_outputs (compositor, monitors);
 }
 
+static void
+set_gnome_env (const char *name,
+	       const char *value)
+{
+  GDBusConnection *session_bus;
+  GError *error;
+
+  setenv (name, value, TRUE);
+
+  session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  g_assert (session_bus);
+
+  error = NULL;
+  g_dbus_connection_call_sync (session_bus,
+			       "org.gnome.SessionManager",
+			       "/org/gnome/SessionManager",
+			       "org.gnome.SessionManager",
+			       "Setenv",
+			       g_variant_new ("(ss)", name, value),
+			       NULL,
+			       G_DBUS_CALL_FLAGS_NONE,
+			       -1, NULL, &error);
+  if (error)
+    {
+      meta_warning ("Failed to set environment variable %s for gnome-session: %s\n", name, error->message);
+      g_clear_error (&error);
+    }
+}
+
 void
 meta_wayland_init (void)
 {
@@ -814,6 +843,7 @@ meta_wayland_init (void)
   ClutterBackend *backend;
   CoglContext *cogl_context;
   CoglRenderer *cogl_renderer;
+  char *display_name;
 
   memset (compositor, 0, sizeof (MetaWaylandCompositor));
 
@@ -916,7 +946,9 @@ meta_wayland_init (void)
 
   clutter_actor_show (compositor->stage);
 
-  if (wl_display_add_socket (compositor->wayland_display, "wayland-0"))
+  /* FIXME: find the first free name instead */
+  compositor->display_name = g_strdup ("wayland-0");
+  if (wl_display_add_socket (compositor->wayland_display, compositor->display_name))
     g_error ("Failed to create socket");
 
   /* XXX: It's important that we only try and start xwayland after we
@@ -932,7 +964,11 @@ meta_wayland_init (void)
   if (!meta_xwayland_start (compositor))
     g_error ("Failed to start X Wayland");
 
-  putenv (g_strdup_printf ("DISPLAY=:%d", compositor->xwayland_display_index));
+  display_name = g_strdup_printf (":%d", compositor->xwayland_display_index);
+  set_gnome_env ("DISPLAY", display_name);
+  g_free (display_name);
+
+  set_gnome_env ("WAYLAND_DISPLAY", compositor->display_name);
 }
 
 void

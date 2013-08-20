@@ -62,6 +62,7 @@ typedef struct
 struct _MetaWaylandCompositor
 {
   struct wl_display *wayland_display;
+  char *display_name;
   struct wl_event_loop *wayland_loop;
   GMainLoop *init_loop;
   ClutterActor *stage;
