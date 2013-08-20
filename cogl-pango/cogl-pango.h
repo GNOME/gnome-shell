@@ -210,7 +210,7 @@ typedef struct _CoglPangoRendererClass CoglPangoRendererClass;
 GType cogl_pango_renderer_get_type (void) G_GNUC_CONST;
 
 /**
- * cogl_pango_render_layout:
+ * cogl_pango_render_layout_subpixel:
  * @layout: a #PangoLayout
  * @x: X coordinate (in Pango units) to render the layout at
  * @y: Y coordinate (in Pango units) to render the layout at

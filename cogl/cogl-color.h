@@ -21,6 +21,13 @@
  *
  */
 
+#if !defined(__COGL_H_INSIDE__) && !defined(COGL_COMPILATION)
+#error "Only <cogl/cogl.h> can be included directly."
+#endif
+
+#ifndef __COGL_COLOR_H__
+#define __COGL_COLOR_H__
+
 /**
  * SECTION:cogl-color
  * @short_description: A generic color definition
@@ -30,13 +37,6 @@
  *
  * Since: 1.0
  */
-
-#if !defined(__COGL_H_INSIDE__) && !defined(COGL_COMPILATION)
-#error "Only <cogl/cogl.h> can be included directly."
-#endif
-
-#ifndef __COGL_COLOR_H__
-#define __COGL_COLOR_H__
 
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-macros.h>
