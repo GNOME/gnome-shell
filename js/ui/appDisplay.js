@@ -141,51 +141,6 @@ const AlphabeticalView = new Lang.Class({
 });
 Signals.addSignalMethods(AlphabeticalView.prototype);
 
-const FolderView = new Lang.Class({
-    Name: 'FolderView',
-    Extends: AlphabeticalView,
-
-    _init: function() {
-        this.parent();
-        this.actor = this._grid.actor;
-    },
-
-    _getItemId: function(item) {
-        return item.get_id();
-    },
-
-    _createItemIcon: function(item) {
-        return new AppIcon(item);
-    },
-
-    _compareItems: function(a, b) {
-        return a.compare_by_name(b);
-    },
-
-    addApp: function(app) {
-        this._addItem(app);
-    },
-
-    createFolderIcon: function(size) {
-        let icon = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                   style_class: 'app-folder-icon',
-                                   width: size, height: size });
-        let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
-
-        let aligns = [ Clutter.ActorAlign.START, Clutter.ActorAlign.END ];
-        for (let i = 0; i < Math.min(this._allItems.length, 4); i++) {
-            let texture = this._allItems[i].create_icon_texture(subSize);
-            let bin = new St.Bin({ child: texture,
-                                   x_expand: true, y_expand: true });
-            bin.set_x_align(aligns[i % 2]);
-            bin.set_y_align(aligns[Math.floor(i / 2)]);
-            icon.add_actor(bin);
-        }
-
-        return icon;
-    }
-});
-
 const AllViewLayout = new Lang.Class({
     Name: 'AllViewLayout',
     Extends: Clutter.BinLayout,
@@ -600,6 +555,51 @@ const AppSearchProvider = new Lang.Class({
         let app = resultMeta['id'];
         let icon = new AppIcon(app);
         return icon.actor;
+    }
+});
+
+const FolderView = new Lang.Class({
+    Name: 'FolderView',
+    Extends: AlphabeticalView,
+
+    _init: function() {
+        this.parent();
+        this.actor = this._grid.actor;
+    },
+
+    _getItemId: function(item) {
+        return item.get_id();
+    },
+
+    _createItemIcon: function(item) {
+        return new AppIcon(item);
+    },
+
+    _compareItems: function(a, b) {
+        return a.compare_by_name(b);
+    },
+
+    addApp: function(app) {
+        this._addItem(app);
+    },
+
+    createFolderIcon: function(size) {
+        let icon = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+                                   style_class: 'app-folder-icon',
+                                   width: size, height: size });
+        let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
+
+        let aligns = [ Clutter.ActorAlign.START, Clutter.ActorAlign.END ];
+        for (let i = 0; i < Math.min(this._allItems.length, 4); i++) {
+            let texture = this._allItems[i].create_icon_texture(subSize);
+            let bin = new St.Bin({ child: texture,
+                                   x_expand: true, y_expand: true });
+            bin.set_x_align(aligns[i % 2]);
+            bin.set_y_align(aligns[Math.floor(i / 2)]);
+            icon.add_actor(bin);
+        }
+
+        return icon;
     }
 });
 
