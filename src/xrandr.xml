@@ -277,5 +277,14 @@
 	XRandR interface directly).
     -->
     <property name="PowerSaveMode" type="i" access="readwrite" />
+
+    <!--
+        MonitorsChanged:
+
+	The signal is emitted every time the screen configuration
+	changes.
+	The client should then call GetResources() to read the new layout.
+    -->
+    <signal name="MonitorsChanged" />
   </interface>
 </node>
