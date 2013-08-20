@@ -374,33 +374,52 @@ handle_signal(struct weston_launch *wl)
 }
 
 static int
-setup_tty(struct weston_launch *wl, const char *tty)
+setup_tty(struct weston_launch *wl)
 {
 	struct stat buf;
-	char *t;
+	char *session, *tty;
+	char path[PATH_MAX];
+	int ok;
 
-	if (tty) {
-		t = ttyname(STDIN_FILENO);
-		if (t && strcmp(t, tty) == 0)
-			wl->tty = STDIN_FILENO;
-		else
-			wl->tty = open(tty, O_RDWR | O_NOCTTY);
-	} else {
-		wl->tty = STDIN_FILENO;
-	}
+	ok = sd_pid_get_session(getpid(), &session);
+	if (ok < 0)
+	  error(1, -ok, "could not determine current session");
+
+	ok = sd_session_get_tty(session, &tty);
+	if (ok == 0) {
+		snprintf(path, PATH_MAX, "/dev/%s", tty);
+		wl->tty = open(path, O_RDWR | O_NOCTTY);
+		free(tty);
+#ifdef HAVE_SD_SESSION_GET_VT
+	} else if (ok == -ENOENT) {
+		/* Negative errnos are cool, right?
+		   So cool that we can't distinguish "session not found"
+		   from "key does not exist in the session file"!
+		   Let's assume the latter, as we got the value
+		   from sd_pid_get_session()...
+		*/
+
+		ok = sd_session_get_vt(session, &tty);
+		if (ok < 0)
+			error(1, -ok, "could not determine current TTY");
+
+		snprintf(path, PATH_MAX, "/dev/tty%s", tty);
+		wl->tty = open(path, O_RDWR | O_NOCTTY);
+		free(tty);
+#endif
+	} else
+		error(1, -ok, "could not determine current TTY");
 
 	if (wl->tty < 0)
 		error(1, errno, "failed to open tty");
 
-	if (tty) {
-		if (fstat(wl->tty, &buf) < 0)
-			error(1, errno, "stat %s failed", tty);
+	if (fstat(wl->tty, &buf) < 0)
+		error(1, errno, "stat %s failed", path);
 
-		if (major(buf.st_rdev) != TTY_MAJOR)
-			error(1, 0, "invalid tty device: %s", tty);
+	if (major(buf.st_rdev) != TTY_MAJOR)
+		error(1, 0, "invalid tty device: %s", path);
 
-		wl->ttynr = minor(buf.st_rdev);
-	}
+	wl->ttynr = minor(buf.st_rdev);
 
 	return 0;
 }
@@ -429,9 +448,7 @@ launch_compositor(struct weston_launch *wl, int argc, char *argv[])
 
 	drop_privileges(wl);
 
-	if (wl->tty != STDIN_FILENO)
-		setenv_fd("WESTON_TTY_FD", wl->tty);
-
+	setenv_fd("WESTON_TTY_FD", wl->tty);
 	setenv_fd("WESTON_LAUNCHER_SOCK", wl->sock[1]);
 	setenv("LD_LIBRARY_PATH", LIBDIR, 1);
 	unsetenv("DISPLAY");
@@ -462,7 +479,6 @@ help(const char *name)
 {
 	fprintf(stderr, "Usage: %s [args...] [-- [weston args..]]\n", name);
 	fprintf(stderr, "  -u, --user      Start session as specified username\n");
-	fprintf(stderr, "  -t, --tty       Start session on alternative tty\n");
 	fprintf(stderr, "  -v, --verbose   Be verbose\n");
 	fprintf(stderr, "  -h, --help      Display this help message\n");
 }
@@ -472,9 +488,7 @@ main(int argc, char *argv[])
 {
 	struct weston_launch wl;
 	int i, c;
-	char *tty = NULL;
 	struct option opts[] = {
-		{ "tty",     required_argument, NULL, 't' },
 		{ "verbose", no_argument,       NULL, 'v' },
 		{ "help",    no_argument,       NULL, 'h' },
 		{ 0,         0,                 NULL,  0  }
@@ -484,9 +498,6 @@ main(int argc, char *argv[])
 
 	while ((c = getopt_long(argc, argv, "u:t::vh", opts, &i)) != -1) {
 		switch (c) {
-		case 't':
-			tty = optarg;
-			break;
 		case 'v':
 			wl.verbose = 1;
 			break;
@@ -510,7 +521,7 @@ main(int argc, char *argv[])
 	if (!weston_launch_allowed(&wl))
 		error(1, 0, "Permission denied. You must run from an active and local (systemd) session.");
 
-	if (setup_tty(&wl, tty) < 0)
+	if (setup_tty(&wl) < 0)
 		exit(EXIT_FAILURE);
 
 	if (setup_launcher_socket(&wl) < 0)
@@ -529,8 +540,7 @@ main(int argc, char *argv[])
 		launch_compositor(&wl, argc - optind, argv + optind);
 
 	close(wl.sock[1]);
-	if (wl.tty != STDIN_FILENO)
-		close(wl.tty);
+	close(wl.tty);
 
 	while (1) {
 		struct pollfd fds[2];
