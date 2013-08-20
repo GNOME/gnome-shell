@@ -2,7 +2,7 @@ wandadir = $(pkgdatadir)
 dist_wanda_DATA = wanda.png
 
 desktopdir=$(datadir)/applications
-desktop_DATA = gnome-shell.desktop gnome-shell-extension-prefs.desktop
+desktop_DATA = gnome-shell.desktop gnome-shell-wayland.desktop gnome-shell-extension-prefs.desktop
 
 # We substitute in bindir so it works as an autostart
 # file when built in a non-system prefix
