@@ -1458,8 +1458,10 @@ _cogl_clip_stack_push_from_path (CoglClipStack *stack,
                                             viewport);
   else
     {
+      CoglPrimitive *primitive = _cogl_path_get_fill_primitive (path);
+
       return _cogl_clip_stack_push_primitive (stack,
-                                              path->data->fill_primitive,
+                                              primitive,
                                               x_1, y_1, x_2, y_2,
                                               modelview_entry,
                                               projection_entry,
