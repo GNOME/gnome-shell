@@ -1,3 +1,29 @@
+3.9.90
+======
+* First release from the wayland branch, includes basic support for running
+  as a wayland compositor [Robert, Neil, Giovanni]
+* Add support for _GTK_FRAME_EXTENTS [Jasper; #705766]
+* Fix quick consecutive <super> presses breaking keyboard input [Alban; #666101]
+* Work towards running as wayland compositor [Giovanni]
+ - Add DBus API for display configuration
+   [#705670, #706231, #706233, #706322, #706382]
+ - Add abstraction layer for cursor tracking [#705911]
+ - Add support for plugin modality under wayland [#705917]
+* Disable GTK+ scaling [Alexander; #706388]
+* Disable blending while updating tower [Robert]
+* Misc bug fixes and cleanups [Adel, Jasper, Giovanni, Colin, Rico, Florian;
+  #703332, #704437, #706207]
+
+Contributors:
+  Robert Bragg, Giovanni Campagna, Alban Crequy, Adel Gadllah,
+  Alexander Larsson, Florian Müllner, Jasper St. Pierre, Neil Roberts,
+  Rico Tzschichholz, Colin Walters
+
+Translations:
+  Jiro Matsuzawa [ja], Kjartan Maraas [nb], Matej Urbančič [sl],
+  Marek Černocký [cs], Daniel Mustieles [es], Rafael Ferreira [pt_BR],
+  Yaron Shahrabani [he], Ján Kyselica [sk]
+
 3.9.5
 =====
 * Don't select for touch events on the stage [Jasper; #697192]
