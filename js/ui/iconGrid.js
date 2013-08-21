@@ -283,25 +283,7 @@ const IconGrid = new Lang.Class({
         let columnIndex = 0;
         let rowIndex = 0;
         for (let i = 0; i < children.length; i++) {
-            let [childMinWidth, childMinHeight, childNaturalWidth, childNaturalHeight]
-                = children[i].get_preferred_size();
-
-            /* Center the item in its allocation horizontally */
-            let width = Math.min(this._hItemSize, childNaturalWidth);
-            let childXSpacing = Math.max(0, width - childNaturalWidth) / 2;
-            let height = Math.min(this._vItemSize, childNaturalHeight);
-            let childYSpacing = Math.max(0, height - childNaturalHeight) / 2;
-
-            let childBox = new Clutter.ActorBox();
-            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
-                let _x = box.x2 - (x + width);
-                childBox.x1 = Math.floor(_x - childXSpacing);
-            } else {
-                childBox.x1 = Math.floor(x + childXSpacing);
-            }
-            childBox.y1 = Math.floor(y + childYSpacing);
-            childBox.x2 = childBox.x1 + width;
-            childBox.y2 = childBox.y1 + height;
+            let childBox = this._calculateChildBox(children[i], x, y, box);
 
             if (this._rowLimit && rowIndex >= this._rowLimit ||
                 this._fillParent && childBox.y2 > availHeight) {
@@ -324,6 +306,29 @@ const IconGrid = new Lang.Class({
                 x += this._hItemSize + spacing;
             }
         }
+    },
+
+    _calculateChildBox: function(child, x, y, box) {
+        let [childMinWidth, childMinHeight, childNaturalWidth, childNaturalHeight] =
+             child.get_preferred_size();
+
+        /* Center the item in its allocation horizontally */
+        let width = Math.min(this._hItemSize, childNaturalWidth);
+        let childXSpacing = Math.max(0, width - childNaturalWidth) / 2;
+        let height = Math.min(this._vItemSize, childNaturalHeight);
+        let childYSpacing = Math.max(0, height - childNaturalHeight) / 2;
+
+        let childBox = new Clutter.ActorBox();
+        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
+            let _x = box.x2 - (x + width);
+            childBox.x1 = Math.floor(_x - childXSpacing);
+        } else {
+            childBox.x1 = Math.floor(x + childXSpacing);
+        }
+        childBox.y1 = Math.floor(y + childYSpacing);
+        childBox.x2 = childBox.x1 + width;
+        childBox.y2 = childBox.y1 + height;
+        return childBox;
     },
 
     childrenInRow: function(rowWidth) {
