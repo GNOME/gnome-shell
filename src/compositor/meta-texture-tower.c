@@ -400,7 +400,7 @@ texture_tower_revalidate_fbo (MetaTextureTower *tower,
   if (!cogl_framebuffer_allocate (fb, &catch_error))
     {
       cogl_error_free (catch_error);
-      return FALSE;
+      return;
     }
 
   cogl_framebuffer_orthographic (fb, 0, 0, dest_texture_width, dest_texture_height, -1., 1.);
