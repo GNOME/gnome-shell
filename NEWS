@@ -1,3 +1,52 @@
+3.9.90
+======
+* workspaceThumbnails: Exclude transient windows when shifting workspaces
+  [Bradley; #705174]
+* Never show a horizontal scrollbar on lock screen [Jasper; #704327]
+* authPrompt: Fix disable-user-list / Not Listed? [Ray; #705370]
+* Animate the lock screen notification transitions [Giovanni; #687660]
+* Wake up the screen when new notifications appear [Giovanni; #703084]
+* Use StartupWMClass for application matching [Giovanni; #673657, #705801]
+* dateMenu: Add style class for the clock label [Jonh; #705634]
+* keyboard: Translate IBus IME name if possible [Daiki; #695673]
+* power: Display single digit minutes correctly [Sebastian; #705803]
+* Implement new aggregate status menu [Jasper; #705845]
+* Improve triangle animation when expanding sub-menus [Tarun; #703109]
+* Fix alignment of search provider icons [Tarun; #695760]
+* Slide dash and workspace switcher on overview transitions [Tarun; #694262]
+* Respect always-show-universal-access-status setting [Tanner; #705733]
+* Handle .desktop files with capital letters [Giovanni; #706252]
+* authPrompt: Add smartcard support [Ray; #683437]
+* Fix call notifications in busy mode [Emilio; #666221]
+* Improve triangle animation when expanding sub-menus [Tarun; #703109]
+* Move message tray menu to a tray button [Jasper; #699272]
+* Wi-fi dialog improvements [Jasper, Allan; #705916, #706136]
+* Work towards running as wayland compositor [Giovanni]
+ - Switch to Mutter abstraction layer for cursor tracking [#705911]
+ - Add confirmation dialog for display changes [#706208]
+* Use a different background in screen shield [Giovanni; #688210]
+* Add fade animation before blanking the screen [Giovanni; #699112]
+* Misc. bugfixes and cleanups [Jasper, Giovanni, Adel, Colin, Ray, Florian,
+  Magdalen; #704448, #702536, #686855, #695581, #700901, #701761, #701495,
+  #701848, #697833, #701731, #705664, #705840, #705898, #706089, #706153,
+  #704646, #706262, #706324, #703810, #703811, #704015, #706232, #705917,
+  #706536]
+
+Contributors:
+  Magdalen Berns, Giovanni Campagna, Allan Day, Tanner Doshier, Adel Gadllah,
+  Sebastian Keller, Tarun Kumar Joshi, Florian Müllner, Bradley Pankow,
+  Emilio Pozuelo Monfort, Jasper St. Pierre, Ray Strode, Rico Tzschichholz,
+  Daiki Ueno, Colin Walters, Jonh Wendell
+
+Translations:
+  Kjartan Maraas [nb], Aurimas Černius [lt], Yaron Shahrabani [he],
+  Fran Diéguez [gl], Gabor Kelemen [hu],
+  Juan Diego Martins da Costa Cruz [pt_BR], Inaki Larranaga Murgoitio [eu],
+  Yuri Myasoedov [ru], Daniel Mustieles [es], Seán de Búrca [ga],
+  Khaled Hosny [ar], Victor Ibragimov [tg], Friedel Wolff [af],
+  Marek Černocký [cs], Matej Urbančič [sl], A S Alam [pa],
+  Rafael Ferreira [pt_BR], Andika Triwidada [id], Dušan Kazik [sk]
+
 3.9.5
 =====
 * Fix width changes of the calendar popup [Florian; #704200]
