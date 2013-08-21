@@ -73,8 +73,11 @@ const ObjectManager = new Lang.Class({
     _addInterface: function(objectPath, interfaceName, onFinished) {
            let info = this._interfaceInfos[interfaceName];
 
-           if (!info)
+           if (!info) {
+               if (onFinished)
+                   onFinished();
                return;
+           }
 
            let proxy = new Gio.DBusProxy({ g_connection: this._connection,
                                            g_name: this._serviceName,
