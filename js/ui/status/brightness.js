@@ -39,6 +39,7 @@ const Indicator = new Lang.Class({
 
         this._slider = new Slider.Slider(0);
         this._slider.connect('value-changed', Lang.bind(this, this._sliderChanged));
+        this._slider.actor.accessible_name = _("Brightness");
 
         let icon = new St.Icon({ icon_name: 'display-brightness-symbolic',
                                  style_class: 'popup-menu-icon' });

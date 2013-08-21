@@ -157,6 +157,11 @@ const OutputStreamSlider = new Lang.Class({
     Name: 'OutputStreamSlider',
     Extends: StreamSlider,
 
+    _init: function(control) {
+        this.parent(control);
+        this._slider.actor.accessible_name = _("Volume");
+    },
+
     _connectStream: function(stream) {
         this.parent(stream);
         this._portChangedId = stream.connect('notify::port', Lang.bind(this, this._portChanged));
@@ -205,6 +210,7 @@ const InputStreamSlider = new Lang.Class({
 
     _init: function(control) {
         this.parent(control);
+        this._slider.actor.accessible_name = _("Microphone");
         this._control.connect('stream-added', Lang.bind(this, this._maybeShowInput));
         this._control.connect('stream-removed', Lang.bind(this, this._maybeShowInput));
         this._icon.icon_name = 'audio-input-microphone-symbolic';
