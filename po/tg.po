@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Tajik Gnome\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-19 13:35+0000\n"
-"PO-Revision-Date: 2013-08-19 23:46+0500\n"
+"POT-Creation-Date: 2013-08-20 18:21+0000\n"
+"PO-Revision-Date: 2013-08-21 12:07+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: \n"
 "Language: Tajik\n"
@@ -299,24 +299,24 @@ msgstr ""
 "Пасвандеро интихоб кунед, то ин ки бо ҷаъбаи мураккаби боло онро "
 "конфигуратсия кунед."
 
-#: ../js/gdm/authPrompt.js:149 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/authPrompt.js:146 ../js/ui/components/networkAgent.js:132
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:651
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
 #: ../js/ui/status/system.js:373
 msgid "Cancel"
 msgstr "Бекор кардан"
 
-#: ../js/gdm/authPrompt.js:171 ../js/gdm/authPrompt.js:219
+#: ../js/gdm/authPrompt.js:168 ../js/gdm/authPrompt.js:216
 msgid "Next"
 msgstr "Навбатӣ"
 
-#: ../js/gdm/authPrompt.js:215 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:56
 msgid "Unlock"
 msgstr "Кушодан"
 
-#: ../js/gdm/authPrompt.js:217
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "Ворид шудан"
@@ -346,8 +346,8 @@ msgstr "(масалан, корбар ё %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:646 ../js/ui/components/networkAgent.js:260
-#: ../js/ui/components/networkAgent.js:278
+#: ../js/gdm/loginDialog.js:646 ../js/ui/components/networkAgent.js:255
+#: ../js/ui/components/networkAgent.js:273
 msgid "Username: "
 msgstr "Номи корбар:"
 
@@ -355,7 +355,7 @@ msgstr "Номи корбар:"
 msgid "Login Window"
 msgstr "Равзанаи воридшавӣ"
 
-#: ../js/gdm/util.js:298
+#: ../js/gdm/util.js:306
 msgid "Authentication error"
 msgstr "Хатои санҷиши ҳаққоният"
 
@@ -364,7 +364,7 @@ msgstr "Хатои санҷиши ҳаққоният"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:411
+#: ../js/gdm/util.js:419
 msgid "(or swipe finger)"
 msgstr "(ё бо ангут ламс кунед)"
 
@@ -599,42 +599,42 @@ msgstr "Парол:"
 msgid "Type again:"
 msgstr "Аз нав ворид кунед:"
 
-#: ../js/ui/components/networkAgent.js:132 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:654
+#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
+#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:682
 msgid "Connect"
 msgstr "Пайваст шудан"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:223
-#: ../js/ui/components/networkAgent.js:235
-#: ../js/ui/components/networkAgent.js:262
-#: ../js/ui/components/networkAgent.js:282
-#: ../js/ui/components/networkAgent.js:292
+#: ../js/ui/components/networkAgent.js:218
+#: ../js/ui/components/networkAgent.js:230
+#: ../js/ui/components/networkAgent.js:257
+#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:287
 msgid "Password: "
 msgstr "Парол:"
 
 #. static WEP
-#: ../js/ui/components/networkAgent.js:228
+#: ../js/ui/components/networkAgent.js:223
 msgid "Key: "
 msgstr "Калид:"
 
-#: ../js/ui/components/networkAgent.js:266
+#: ../js/ui/components/networkAgent.js:261
 msgid "Identity: "
 msgstr "Шахсият:"
 
-#: ../js/ui/components/networkAgent.js:268
+#: ../js/ui/components/networkAgent.js:263
 msgid "Private key password: "
 msgstr "Пароли калиди шахсӣ:"
 
-#: ../js/ui/components/networkAgent.js:280
+#: ../js/ui/components/networkAgent.js:275
 msgid "Service: "
 msgstr "Хидмат:"
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:304
 msgid "Authentication required by wireless network"
 msgstr "Шабакаи бесим санҷиши ҳаққониятро талаб мекунад"
 
-#: ../js/ui/components/networkAgent.js:310
+#: ../js/ui/components/networkAgent.js:305
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -643,35 +643,35 @@ msgstr ""
 "Барои пайдо кардани дастрасӣ ба шабакаи бесими \"%s\" паролҳо ё калидҳои "
 "рамзгузорӣ лозиманд."
 
-#: ../js/ui/components/networkAgent.js:314
+#: ../js/ui/components/networkAgent.js:309
 msgid "Wired 802.1X authentication"
 msgstr "Санҷиши ҳаққонияти 802.1X-и симдор"
 
-#: ../js/ui/components/networkAgent.js:316
+#: ../js/ui/components/networkAgent.js:311
 msgid "Network name: "
 msgstr "Номи шабака:"
 
-#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:316
 msgid "DSL authentication"
 msgstr "Санҷиши ҳаққонияти DSL"
 
-#: ../js/ui/components/networkAgent.js:328
+#: ../js/ui/components/networkAgent.js:323
 msgid "PIN code required"
 msgstr "Рамзи PIN ҳатмист"
 
-#: ../js/ui/components/networkAgent.js:329
+#: ../js/ui/components/networkAgent.js:324
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Барои дастгоҳи паҳннавори мобилӣ рамзи PIN лозим аст"
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:325
 msgid "PIN: "
 msgstr "PIN:"
 
-#: ../js/ui/components/networkAgent.js:336
+#: ../js/ui/components/networkAgent.js:331
 msgid "Mobile broadband network password"
 msgstr "Пароли шабакаи паҳннавори мобилӣ"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:332
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Барои пайваст шудан ба '%s' парол лозим аст."
@@ -1235,7 +1235,7 @@ msgstr[1] "%d огоҳии нав"
 msgid "Lock"
 msgstr "Қулф кардан"
 
-#: ../js/ui/screenShield.js:705
+#: ../js/ui/screenShield.js:706
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME бояд экранро қулф кунад"
 
@@ -1246,11 +1246,11 @@ msgstr "GNOME бояд экранро қулф кунад"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1278
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1279
 msgid "Unable to lock"
 msgstr "Қулф карда намешавад"
 
-#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1279
+#: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1280
 msgid "Lock was blocked by an application"
 msgstr "Қулф аз тарави барнома баста шудааст"
 
@@ -1339,7 +1339,7 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:998 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/network.js:1027 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Хомӯш кардан"
 
@@ -1434,11 +1434,11 @@ msgstr "Намоиш додани тарҳбандии клавиатура"
 msgid "<unknown>"
 msgstr "<номаълум>"
 
-#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1013
+#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1042
 msgid "Off"
 msgstr "Хомӯш"
 
-#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:919
+#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:948
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Танзимоти шабака"
@@ -1453,12 +1453,12 @@ msgstr "идоранашуда"
 msgid "disconnecting..."
 msgstr "қатъ кардани пайваст..."
 
-#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1064
+#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1093
 msgid "connecting..."
 msgstr "пайвастшавӣ..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1067
+#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1096
 msgid "authentication required"
 msgstr "санҷиши ҳаққоният лозим аст"
 
@@ -1474,43 +1474,43 @@ msgstr "нармафзори дарунсохт вуҷуд надорад"
 msgid "unavailable"
 msgstr "дастнорас"
 
-#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1069
+#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1098
 msgid "connection failed"
 msgstr "пайваст қатъ шудааст"
 
-#: ../js/ui/status/network.js:619
+#: ../js/ui/status/network.js:647
 msgid "Wi-Fi Networks"
 msgstr "Шабакаҳои Wi-Fi"
 
-#: ../js/ui/status/network.js:621
+#: ../js/ui/status/network.js:649
 msgid "Select a network"
 msgstr "Интихоб кардани шабака"
 
-#: ../js/ui/status/network.js:645
+#: ../js/ui/status/network.js:673
 msgid "No Networks"
 msgstr "Ягон шабака нест"
 
-#: ../js/ui/status/network.js:913
+#: ../js/ui/status/network.js:942
 msgid "Select Network"
 msgstr "Интихоби шабака"
 
-#: ../js/ui/status/network.js:998
+#: ../js/ui/status/network.js:1027
 msgid "Turn On"
 msgstr "Фаъол кардан"
 
-#: ../js/ui/status/network.js:1131
+#: ../js/ui/status/network.js:1160
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1267
+#: ../js/ui/status/network.js:1296
 msgid "Network Manager"
 msgstr "Мудири шабака"
 
-#: ../js/ui/status/network.js:1309
+#: ../js/ui/status/network.js:1338
 msgid "Connection failed"
 msgstr "Пайваст қатъ шудааст"
 
-#: ../js/ui/status/network.js:1310
+#: ../js/ui/status/network.js:1339
 msgid "Activation of network connection failed"
 msgstr "Фаъолсозии пайвасти шабака қатъ шудааст."
 
@@ -1630,6 +1630,29 @@ msgstr "Паёми паёмовар: %s"
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' омода аст"
+
+#: ../js/ui/windowManager.js:56
+msgid "Do you want to keep these display settings?"
+msgstr "Шумо мехоҳед, ки ин танзимоти дисплейро нигоҳ доред?"
+
+#. Translators: this and the following message should be limited in lenght,
+#. to avoid ellipsizing the labels.
+#.
+#: ../js/ui/windowManager.js:75
+#| msgid "Power Settings"
+msgid "Revert Settings"
+msgstr "Барқарор кардани тағйирот"
+
+#: ../js/ui/windowManager.js:79
+msgid "Keep Changes"
+msgstr "Нигоҳ доштани тағйирот"
+
+#: ../js/ui/windowManager.js:97
+#, c-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "Тағйироти танзимот баъд аз %d сония барқарор мешаванд"
+msgstr[1] "Тағйироти танзимот баъд аз %d сония барқарор мешаванд"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
