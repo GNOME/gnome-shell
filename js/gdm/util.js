@@ -381,21 +381,38 @@ const ShellUserVerifier = new Lang.Class({
 
     _startService: function(serviceName) {
         this._hold.acquire();
-        this._userVerifier.call_begin_verification_for_user(serviceName,
-                                                            this._userName,
-                                                            this._cancellable,
-                                                            Lang.bind(this, function(obj, result) {
-            try {
-                obj.call_begin_verification_for_user_finish(result);
-            } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
-                return;
-            } catch(e) {
-                this._reportInitError('Failed to start verification for user', e);
-                return;
-            }
+        if (this._userName) {
+           this._userVerifier.call_begin_verification_for_user(serviceName,
+                                                               this._userName,
+                                                               this._cancellable,
+                                                               Lang.bind(this, function(obj, result) {
+               try {
+                   obj.call_begin_verification_for_user_finish(result);
+               } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+                   return;
+               } catch(e) {
+                   this._reportInitError('Failed to start verification for user', e);
+                   return;
+               }
 
-            this._hold.release();
-        }));
+               this._hold.release();
+           }));
+        } else {
+           this._userVerifier.call_begin_verification(serviceName,
+                                                      this._cancellable,
+                                                      Lang.bind(this, function(obj, result) {
+               try {
+                   obj.call_begin_verification_finish(result);
+               } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+                   return;
+               } catch(e) {
+                   this._reportInitError('Failed to start verification', e);
+                   return;
+               }
+
+               this._hold.release();
+           }));
+        }
     },
 
     _beginVerification: function() {
