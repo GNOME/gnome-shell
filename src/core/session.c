@@ -26,6 +26,7 @@
 #include <config.h>
 
 #include "util-private.h"
+#include <meta/main.h>
 #include "session.h"
 #include <X11/Xatom.h>
 
@@ -532,6 +533,12 @@ die_callback (SmcConn smc_conn, SmPointer client_data)
    * Anything that wants us to go away outside of session management
    * can use kill().
    */
+
+  /* All of that is true - unless we're a wayland compositor. In which
+   * case the X server won't go down until we do, so we must die first.
+   */
+  if (meta_is_wayland_compositor ())
+    meta_quit (0);
 }
 
 static void
