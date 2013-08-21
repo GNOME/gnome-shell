@@ -18,7 +18,6 @@ const XdndHandler = new Lang.Class({
         // Used as a drag actor in case we don't have a cursor window clone
         this._dummy = new Clutter.Actor({ width: 1, height: 1, opacity: 0 });
         Main.uiGroup.add_actor(this._dummy);
-        Shell.util_set_hidden_from_pick(this._dummy, true);
         this._dummy.hide();
 
         global.init_xdnd();
@@ -69,7 +68,6 @@ const XdndHandler = new Lang.Class({
 
             this._cursorWindowClone = new Clutter.Clone({ source: cursorWindow });
             Main.uiGroup.add_actor(this._cursorWindowClone);
-            Shell.util_set_hidden_from_pick(this._cursorWindowClone, true);
 
             // Make sure that the clone has the same position as the source
             this._cursorWindowClone.add_constraint(constraint_position);
