@@ -106,6 +106,9 @@ shell_gtk_embed_window_created_cb (MetaDisplay   *display,
                                              0, 0 /* offset x/y */);
       cairo_region_destroy (empty_region);
 
+      /* Set the actor as unreative so Clutter doesn't pick it, either */
+      clutter_actor_set_reactive (window_actor, FALSE);
+
       gdk_window_lower (gdk_window);
 
       /* Now that we've found the window we don't need to listen for
