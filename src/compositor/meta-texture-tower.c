@@ -62,6 +62,7 @@ struct _MetaTextureTower
   CoglTexture *textures[MAX_TEXTURE_LEVELS];
   CoglOffscreen *fbos[MAX_TEXTURE_LEVELS];
   Box invalid[MAX_TEXTURE_LEVELS];
+  CoglPipeline *pipeline_template;
 };
 
 /**
@@ -92,6 +93,9 @@ void
 meta_texture_tower_free (MetaTextureTower *tower)
 {
   g_return_if_fail (tower != NULL);
+
+  if (tower->pipeline_template != NULL)
+    cogl_object_unref (tower->pipeline_template);
 
   meta_texture_tower_set_base_texture (tower, NULL);
 
@@ -394,30 +398,43 @@ texture_tower_revalidate_fbo (MetaTextureTower *tower,
   int dest_texture_width = cogl_texture_get_width (dest_texture);
   int dest_texture_height = cogl_texture_get_height (dest_texture);
   Box *invalid = &tower->invalid[level];
-  CoglMatrix modelview;
+  CoglFramebuffer *fb;
+  CoglError *catch_error = NULL;
+  CoglPipeline *pipeline;
 
   if (tower->fbos[level] == NULL)
-    tower->fbos[level] = cogl_offscreen_new_to_texture (dest_texture);
+    tower->fbos[level] = cogl_offscreen_new_with_texture (dest_texture);
 
-  if (tower->fbos[level] == NULL)
-    return FALSE;
+  fb = COGL_FRAMEBUFFER (tower->fbos[level]);
 
-  cogl_push_framebuffer (COGL_FRAMEBUFFER (tower->fbos[level]));
+  if (!cogl_framebuffer_allocate (fb, &catch_error))
+    {
+      cogl_error_free (catch_error);
+      return FALSE;
+    }
 
-  cogl_ortho (0, dest_texture_width, dest_texture_height, 0, -1., 1.);
+  cogl_framebuffer_orthographic (fb, 0, 0, dest_texture_width, dest_texture_height, -1., 1.);
 
-  cogl_matrix_init_identity (&modelview);
-  cogl_set_modelview_matrix (&modelview);
+  if (!tower->pipeline_template)
+    {
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      tower->pipeline_template = cogl_pipeline_new (ctx);
+      cogl_pipeline_set_blend (tower->pipeline_template, "RGBA = ADD (SRC_COLOR, 0)", NULL);
+    }
 
-  cogl_set_source_texture (tower->textures[level - 1]);
-  cogl_rectangle_with_texture_coords (invalid->x1, invalid->y1,
-                                      invalid->x2, invalid->y2,
-                                      (2. * invalid->x1) / source_texture_width,
-                                      (2. * invalid->y1) / source_texture_height,
-                                      (2. * invalid->x2) / source_texture_width,
-                                      (2. * invalid->y2) / source_texture_height);
+  pipeline = cogl_pipeline_copy (tower->pipeline_template);
+  cogl_pipeline_set_layer_texture (pipeline, 0, tower->textures[level - 1]);
 
-  cogl_pop_framebuffer ();
+  cogl_framebuffer_draw_textured_rectangle (fb, pipeline,
+                                            invalid->x1, invalid->y1,
+                                            invalid->x2, invalid->y2,
+                                            (2. * invalid->x1) / source_texture_width,
+                                            (2. * invalid->y1) / source_texture_height,
+                                            (2. * invalid->x2) / source_texture_width,
+                                            (2. * invalid->y2) / source_texture_height);
+
+  cogl_object_unref (pipeline);
 }
 
 static void
