@@ -337,18 +337,23 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
       dpms_enabled)
     {
       switch (dpms_state)
-	{
-	case DPMSModeOn:
-	  manager->power_save_mode = META_POWER_SAVE_ON;
-	case DPMSModeStandby:
-	  manager->power_save_mode = META_POWER_SAVE_STANDBY;
-	case DPMSModeSuspend:
-	  manager->power_save_mode = META_POWER_SAVE_SUSPEND;
-	case DPMSModeOff:
-	  manager->power_save_mode = META_POWER_SAVE_OFF;
-	default:
-	  manager->power_save_mode = META_POWER_SAVE_UNKNOWN;
-	}
+        {
+        case DPMSModeOn:
+          manager->power_save_mode = META_POWER_SAVE_ON;
+          break;
+        case DPMSModeStandby:
+          manager->power_save_mode = META_POWER_SAVE_STANDBY;
+          break;
+        case DPMSModeSuspend:
+          manager->power_save_mode = META_POWER_SAVE_SUSPEND;
+          break;
+        case DPMSModeOff:
+          manager->power_save_mode = META_POWER_SAVE_OFF;
+          break;
+        default:
+          manager->power_save_mode = META_POWER_SAVE_UNKNOWN;
+          break;
+        }
     }
   else
     {
