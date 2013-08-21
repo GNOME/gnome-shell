@@ -321,38 +321,6 @@ gnome_shell_plugin_kill_switch_workspace (MetaPlugin         *plugin)
 }
 
 static gboolean
-ignore_crossing_event (MetaPlugin   *plugin,
-                       XIEnterEvent *enter_event)
-{
-  MetaScreen *screen = meta_plugin_get_screen (plugin);
-  ClutterStage *stage = CLUTTER_STAGE (meta_get_stage_for_screen (screen));
-
-  if (enter_event->event == clutter_x11_get_stage_window (stage))
-    {
-      /* If the pointer enters a child of the stage window (eg, a
-       * trayicon), we want to consider it to still be in the stage,
-       * so don't let Clutter see the event.
-       */
-      if (enter_event->detail == XINotifyInferior)
-        return TRUE;
-
-      /* If the pointer is grabbed by a window it is not currently in,
-       * filter that out as well. In particular, if a trayicon grabs
-       * the pointer after a click on its label, we don't want to hide
-       * the message tray. Filtering out this event will leave Clutter
-       * out of sync, but that happens fairly often with grabs, and we
-       * can work around it. (Eg, shell_global_sync_pointer().)
-       */
-      if (enter_event->mode == XINotifyGrab &&
-          (enter_event->detail == XINotifyNonlinear ||
-           enter_event->detail == XINotifyNonlinearVirtual))
-        return TRUE;
-    }
-
-  return FALSE;
-}
-
-static gboolean
 gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
                                   XEvent     *xev)
 {
@@ -376,18 +344,6 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
                                 swap_complete_event->ust);
     }
 #endif
-
-  /* Make sure that Clutter doesn't see certain focus change events,
-   * so that when we're moving into something like a tray icon, we
-   * don't unfocus the container. */
-  if (xev->type == GenericEvent &&
-      xev->xcookie.extension == meta_display_get_xinput_opcode (display))
-    {
-      XIEvent *input_event = (XIEvent *) xev->xcookie.data;
-      if ((input_event->evtype == XI_Enter || input_event->evtype == XI_Leave) &&
-          ignore_crossing_event (plugin, (XIEnterEvent *) input_event))
-        return TRUE;
-    }
 
   /*
    * Pass the event to shell-global
