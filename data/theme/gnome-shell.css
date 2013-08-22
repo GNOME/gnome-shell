@@ -167,7 +167,7 @@ StScrollBar StButton#vhandle:active {
 
 .popup-sub-menu {
     background-gradient-start: rgba(80,80,80,0.3);
-    background-gradient-end: rgba(80,80,80,0.7);
+    background-gradient-end: rgba(80,80,80,0.4);
     background-gradient-direction: vertical;
     box-shadow: inset 0px 2px 4px rgba(0,0,0,0.9);
 }
