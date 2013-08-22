@@ -2582,6 +2582,43 @@ st_widget_get_accessible (ClutterActor *actor)
   return widget->priv->accessible;
 }
 
+/**
+ * st_widget_set_accessible:
+ * @widget: A #StWidget
+ * @accessible: an accessible (#AtkObject)
+ *
+ * This method allows to set a customly created accessible object to
+ * this widget. For example if you define a new subclass of
+ * #StWidgetAccessible at the javascript code.
+ *
+ * NULL is a valid value for @accessible. That contemplates the
+ * hypothetical case of not needing anymore a custom accessible object
+ * for the widget. Next call of st_widget_get_accessible() would
+ * create and return a default accessible.
+ *
+ * It assumes that the call to atk_object_initialize that bound the
+ * gobject with the custom accessible object was already called, so
+ * not a responsibility of this method.
+ *
+ */
+void
+st_widget_set_accessible (StWidget    *widget,
+                          AtkObject   *accessible)
+{
+  g_return_if_fail (ST_IS_WIDGET (widget));
+
+  if (widget->priv->accessible != accessible)
+    {
+      if (widget->priv->accessible)
+        g_object_unref (widget->priv->accessible);
+
+      if (accessible)
+        widget->priv->accessible =  g_object_ref (accessible);
+      else
+        widget->priv->accessible = NULL;
+    }
+}
+
 static const gchar *
 st_widget_accessible_get_name (AtkObject *obj)
 {
