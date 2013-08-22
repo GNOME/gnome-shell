@@ -242,11 +242,8 @@ const EndSessionDialog = new Lang.Class({
         this.connect('opened',
                      Lang.bind(this, this._onOpened));
 
-        this._userLoadedId = this._user.connect('notify::is_loaded',
-                                                Lang.bind(this, this._updateContent));
-
-        this._userChangedId = this._user.connect('changed',
-                                                 Lang.bind(this, this._updateContent));
+        this._userLoadedId = this._user.connect('notify::is_loaded', Lang.bind(this, this._sync));
+        this._userChangedId = this._user.connect('changed', Lang.bind(this, this._sync));
 
         let mainContentLayout = new St.BoxLayout({ vertical: false });
         this.contentLayout.add(mainContentLayout,
@@ -314,18 +311,17 @@ const EndSessionDialog = new Lang.Class({
         return (this._inhibitors.length > 0) || (this._sessions.length > 0);
     },
 
-    _updateDescription: function() {
-        if (this.state != ModalDialog.State.OPENING &&
-            this.state != ModalDialog.State.OPENED)
+    _sync: function() {
+        let open = (this.state == ModalDialog.State.OPENING || this.state == ModalDialog.State.OPENED);
+        if (!open)
             return;
 
         let dialogContent = DialogContent[this._type];
 
         let subject = dialogContent.subject;
-        let description;
 
+        let description;
         if (this._hasInhibitors()) {
-            this._stopTimer();
             description = dialogContent.inhibitedDescription;
         } else if (this._secondsLeft > 0) {
             let displayTime = _roundSecondsToInterval(this._totalSecondsToStayOpen,
@@ -352,14 +348,8 @@ const EndSessionDialog = new Lang.Class({
             description = dialogContent.endDescription;
         }
 
-        _setLabelText(this._subjectLabel, subject);
         _setLabelText(this._descriptionLabel, description);
-    },
-
-    _updateContent: function() {
-        if (this.state != ModalDialog.State.OPENING &&
-            this.state != ModalDialog.State.OPENED)
-            return;
+        _setLabelText(this._subjectLabel, subject);
 
         let dialogContent = DialogContent[this._type];
         if (dialogContent.iconName) {
@@ -374,7 +364,10 @@ const EndSessionDialog = new Lang.Class({
             avatarWidget.update();
         }
 
-        this._updateDescription();
+        if (this._hasInhibitors())
+            this._stopTimer();
+        else
+            this._startTimer();
     },
 
     _updateButtons: function() {
@@ -420,14 +413,12 @@ const EndSessionDialog = new Lang.Class({
     },
 
     _onOpened: function() {
-        if (!this._hasInhibitors())
-            this._startTimer();
+        this._sync();
     },
 
     _startTimer: function() {
         let startTime = GLib.get_monotonic_time();
         this._secondsLeft = this._totalSecondsToStayOpen;
-        this._updateDescription();
 
         this._timerId = Mainloop.timeout_add_seconds(1, Lang.bind(this,
             function() {
@@ -436,7 +427,7 @@ const EndSessionDialog = new Lang.Class({
 
                 this._secondsLeft = this._totalSecondsToStayOpen - secondsElapsed;
                 if (this._secondsLeft > 0) {
-                    this._updateDescription();
+                    this._sync();
                     return true;
                 }
 
@@ -469,13 +460,12 @@ const EndSessionDialog = new Lang.Class({
             let [reason] = inhibitor.GetReasonSync();
             let item = new ListItem(app.create_icon_texture(_ITEM_ICON_SIZE), app.get_name(), reason);
             this._applicationList.add(item.actor, { x_fill: true });
-            this._stopTimer();
         } else {
             // inhibiting app is a service, not an application
             this._inhibitors.splice(this._inhibitors.indexOf(inhibitor), 1);
         }
 
-        this._updateContent();
+        this._sync();
     },
 
     _loadSessions: function() {
@@ -526,8 +516,7 @@ const EndSessionDialog = new Lang.Class({
                     break;
             }
 
-            if (n > 0)
-                this._stopTimer();
+            this._sync();
         }));
     },
 
@@ -562,7 +551,7 @@ const EndSessionDialog = new Lang.Class({
             return;
         }
 
-        this._updateContent();
+        this._sync();
 
         let signalId = this.connect('opened',
                                     Lang.bind(this, function() {
