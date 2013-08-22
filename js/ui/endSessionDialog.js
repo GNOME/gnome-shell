@@ -442,7 +442,7 @@ const EndSessionDialog = new Lang.Class({
     },
 
     _stopTimer: function() {
-        if (this._timerId != 0) {
+        if (this._timerId > 0) {
             Mainloop.source_remove(this._timerId);
             this._timerId = 0;
         }
