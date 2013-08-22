@@ -23,7 +23,7 @@ const Slider = new Lang.Class({
         this.actor.connect('repaint', Lang.bind(this, this._sliderRepaint));
         this.actor.connect('button-press-event', Lang.bind(this, this._startDragging));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
-        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
+        this.actor.connect('key-press-event', Lang.bind(this, this.onKeyPressEvent));
 
         this._releaseId = this._motionId = 0;
         this._dragging = false;
@@ -168,7 +168,7 @@ const Slider = new Lang.Class({
         return true;
     },
 
-    _onKeyPressEvent: function (actor, event) {
+    onKeyPressEvent: function (actor, event) {
         let key = event.get_key_symbol();
         if (key == Clutter.KEY_Right || key == Clutter.KEY_Left) {
             let delta = key == Clutter.KEY_Right ? 0.1 : -0.1;
