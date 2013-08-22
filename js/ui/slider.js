@@ -173,7 +173,7 @@ const Slider = new Lang.Class({
         if (key == Clutter.KEY_Right || key == Clutter.KEY_Left) {
             let delta = key == Clutter.KEY_Right ? 0.1 : -0.1;
             this._value = Math.max(0, Math.min(this._value + delta, 1));
-            this._slider.queue_repaint();
+            this.actor.queue_repaint();
             this.emit('value-changed', this._value);
             this.emit('drag-end');
             return true;
