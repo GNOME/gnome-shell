@@ -320,7 +320,7 @@ const GridSearchResults = new Lang.Class({
     },
 
     _getMaxDisplayedResults: function() {
-        return this._grid.childrenInRow(this._bin.width) * this._grid.getRowLimit();
+        return this._grid.columnsForWidth(this._bin.width) * this._grid.getRowLimit();
     },
 
     _renderResults: function(metas) {

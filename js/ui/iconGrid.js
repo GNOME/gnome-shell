@@ -330,7 +330,7 @@ const IconGrid = new Lang.Class({
         return childBox;
     },
 
-    childrenInRow: function(rowWidth) {
+    columnsForWidth: function(rowWidth) {
         return this._computeLayout(rowWidth)[0];
     },
 
