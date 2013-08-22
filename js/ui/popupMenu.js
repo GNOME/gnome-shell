@@ -872,20 +872,20 @@ const PopupSubMenu = new Lang.Class({
                              { _arrow_rotation: 0,
                                height: 0,
                                time: 0.25,
+                               onUpdateScope: this,
+                               onUpdate: function() {
+                                   this._arrow.rotation_angle_z = this.actor._arrow_rotation;
+                               },
                                onCompleteScope: this,
                                onComplete: function() {
                                    this.actor.hide();
                                    this.actor.set_height(-1);
                                },
-                               onUpdateScope: this,
-                               onUpdate: function() {
-                                   this._arrow.rotation_angle_z = this.actor._arrow_rotation;
-                               }
                              });
-            } else {
-                this._arrow.rotation_angle_z = 0;
-                this.actor.hide();
-            }
+        } else {
+            this._arrow.rotation_angle_z = 0;
+            this.actor.hide();
+        }
     },
 
     _onKeyPressEvent: function(actor, event) {
