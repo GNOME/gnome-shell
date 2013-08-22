@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter 3.9.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-08 22:14+0200\n"
-"PO-Revision-Date: 2013-05-28 09:48+0200\n"
+"POT-Creation-Date: 2013-08-22 16:11+0200\n"
+"PO-Revision-Date: 2013-08-22 16:12+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "Language: \n"
@@ -205,7 +205,7 @@ msgstr "Visning delt til høyre"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:589
+#: ../src/compositor/compositor.c:596
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -260,7 +260,7 @@ msgstr "Mangler utvidelsen %s som kreves for komposittfunksjon"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
 
-#: ../src/core/keybindings.c:1138
+#: ../src/core/keybindings.c:1136
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -269,7 +269,7 @@ msgstr ""
 "Et annet program bruker allerede nøkkelen %s med modifikatorer %x som "
 "binding\n"
 
-#: ../src/core/keybindings.c:1335
+#: ../src/core/keybindings.c:1333
 #, c-format
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "«%s» er ikke en gyldig aksellerator\n"
@@ -310,6 +310,19 @@ msgid ""
 msgstr ""
 "Kunne ikke finne et tema! Sjekk at %s eksisterer og inneholder de vanlige "
 "temaene.\n"
+
+#: ../src/core/monitor.c:702
+msgid "Built-in display"
+msgstr "Innebygget skjerm"
+
+#. TRANSLATORS: this is a monitor name (in case we don't know
+#. the vendor), it's Unknown followed by a size in inches,
+#. like 'Unknown 15"'
+#.
+#: ../src/core/monitor.c:730
+#, c-format
+msgid "Unknown %s"
+msgstr "Ukjent %s"
 
 #: ../src/core/mutter.c:40
 #, c-format
@@ -369,12 +382,12 @@ msgstr ""
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: ../src/core/screen.c:691
+#: ../src/core/screen.c:537
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
-#: ../src/core/screen.c:707
+#: ../src/core/screen.c:553
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -383,19 +396,19 @@ msgstr ""
 "Skjerm %d på display «%s» har allerede en vindushåndterer; prøv å bruke "
 "flagget --replace for å erstatte aktiv vindushåndterer.\n"
 
-#: ../src/core/screen.c:734
+#: ../src/core/screen.c:580
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Kunne ikke hente utvalg fra vinduhåndterer på skjerm %d, display «%s»\n"
 
-#: ../src/core/screen.c:812
+#: ../src/core/screen.c:658
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skjerm %d på display «%s» har allerede en vinduhåndterer\n"
 
-#: ../src/core/screen.c:998
+#: ../src/core/screen.c:850
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
@@ -470,8 +483,7 @@ msgstr "Feil under fdopen() av loggfil %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Åpnet loggfil %s\n"
 
-#: ../src/core/util.c:119 ../src/tools/mutter-message.c:149
-#, c-format
+#: ../src/core/util.c:119
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter er kompilert uten støtte for «verbose» modus\n"
 
@@ -479,20 +491,20 @@ msgstr "Mutter er kompilert uten støtte for «verbose» modus\n"
 msgid "Window manager: "
 msgstr "Vindushåndterer: "
 
-#: ../src/core/util.c:412
+#: ../src/core/util.c:414
 msgid "Bug in window manager: "
 msgstr "Feil i vindushåndterer: "
 
-#: ../src/core/util.c:443
+#: ../src/core/util.c:445
 msgid "Window manager warning: "
 msgstr "Advarsel fra vindushåndterer: "
 
-#: ../src/core/util.c:471
+#: ../src/core/util.c:473
 msgid "Window manager error: "
 msgstr "Feil i vindushåndterer: "
 
 #. first time through
-#: ../src/core/window.c:7513
+#: ../src/core/window.c:7533
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -508,7 +520,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8237
+#: ../src/core/window.c:8257
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -518,22 +530,22 @@ msgstr ""
 "men setter minste størrelse %d x %d og maks størrelse %d x %d; dette virker "
 "ikke fornuftig.\n"
 
-#: ../src/core/window-props.c:318
+#: ../src/core/window-props.c:347
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Programmet satte en feil _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:434
+#: ../src/core/window-props.c:463
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
 
-#: ../src/core/window-props.c:1517
+#: ../src/core/window-props.c:1546
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ugyldig WM_TRANSIENT_FOR vindu 0x%lx oppgitt for %s.\n"
 
-#: ../src/core/window-props.c:1528
+#: ../src/core/window-props.c:1557
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR vindu 0x%lx for %s ville skapt en løkke.\n"
@@ -696,109 +708,104 @@ msgstr "Fjern vindu fra tabulatordialog"
 msgid "Cancel tab popup"
 msgstr "Avbryt tabulatordialog"
 
-#: ../src/tools/mutter-message.c:123
-#, c-format
-msgid "Usage: %s\n"
-msgstr " Bruk: %s\n"
-
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:69
+#: ../src/ui/menu.c:67
 msgid "Mi_nimize"
 msgstr "Mi_nimer"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:71
+#: ../src/ui/menu.c:69
 msgid "Ma_ximize"
 msgstr "Ma_ksimer"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:73
+#: ../src/ui/menu.c:71
 msgid "Unma_ximize"
 msgstr "G_jenopprett"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:75
+#: ../src/ui/menu.c:73
 msgid "Roll _Up"
 msgstr "Rull _opp"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:77
+#: ../src/ui/menu.c:75
 msgid "_Unroll"
 msgstr "R_ull ned"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:79
+#: ../src/ui/menu.c:77
 msgid "_Move"
 msgstr "_Flytt"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:81
+#: ../src/ui/menu.c:79
 msgid "_Resize"
 msgstr "End_re størrelse"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:83
+#: ../src/ui/menu.c:81
 msgid "Move Titlebar On_screen"
 msgstr "Flytt tittellinje på _skjermen"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:86 ../src/ui/menu.c:88
+#: ../src/ui/menu.c:84 ../src/ui/menu.c:86
 msgid "Always on _Top"
 msgstr "All_tid øverst"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:90
+#: ../src/ui/menu.c:88
 msgid "_Always on Visible Workspace"
 msgstr "_Alltid på synlig arbeidsområde"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:92
+#: ../src/ui/menu.c:90
 msgid "_Only on This Workspace"
 msgstr "K_un på dette arbeidsområdet"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:94
+#: ../src/ui/menu.c:92
 msgid "Move to Workspace _Left"
 msgstr "Flytt til arbeidsområdet ti_l venstre"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:96
+#: ../src/ui/menu.c:94
 msgid "Move to Workspace R_ight"
 msgstr "Flytt til a_rbeidsområdet til høyre"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:98
+#: ../src/ui/menu.c:96
 msgid "Move to Workspace _Up"
 msgstr "Flytt til arbeidsområdet _over"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:100
+#: ../src/ui/menu.c:98
 msgid "Move to Workspace _Down"
 msgstr "Flytt til arbeidsområdet ne_denfor"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:104
+#: ../src/ui/menu.c:102
 msgid "_Close"
 msgstr "_Lukk"
 
-#: ../src/ui/menu.c:204
+#: ../src/ui/menu.c:202
 #, c-format
 msgid "Workspace %d%n"
 msgstr "Arbeidsområde %d%n"
 
-#: ../src/ui/menu.c:214
+#: ../src/ui/menu.c:212
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Arbeidsområde 1_0"
 
-#: ../src/ui/menu.c:216
+#: ../src/ui/menu.c:214
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbeidsområde %s%d"
 
-#: ../src/ui/menu.c:397
+#: ../src/ui/menu.c:384
 msgid "Move to Another _Workspace"
 msgstr "Flytt til et annet ar_beidsområde"
 
@@ -1151,18 +1158,18 @@ msgid ""
 msgstr ""
 "Mangler <frame state=«%s» resize=«%s» focus=«%s» stil=«ett-eller-annet»/>"
 
-#: ../src/ui/theme.c:5084
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Klarte ikke å laste tema «%s»: %s\n"
 
-#: ../src/ui/theme.c:5220 ../src/ui/theme.c:5227 ../src/ui/theme.c:5234
-#: ../src/ui/theme.c:5241 ../src/ui/theme.c:5248
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "<%s> er ikke satt for tema «%s»"
 
-#: ../src/ui/theme.c:5256
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1171,14 +1178,14 @@ msgstr ""
 "Ingen rammestil satt for vindutype «%s» i tema «%s», legg til et <window "
 "type=«%s» style_set=«ett-eller-annet»/>-element"
 
-#: ../src/ui/theme.c:5663 ../src/ui/theme.c:5725 ../src/ui/theme.c:5788
+#: ../src/ui/theme.c:5661 ../src/ui/theme.c:5723 ../src/ui/theme.c:5786
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Brukerdefinerte konstanter må begynne med stor bokstav; «%s» gjør ikke det"
 
-#: ../src/ui/theme.c:5671 ../src/ui/theme.c:5733 ../src/ui/theme.c:5796
+#: ../src/ui/theme.c:5669 ../src/ui/theme.c:5731 ../src/ui/theme.c:5794
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstant «%s» er allerede definert"
@@ -1563,201 +1570,3 @@ msgstr "<%s> spesifisert to ganger for dette temaet"
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Fant ikke en gyldig fil for tema %s\n"
-
-#: ../src/ui/theme-viewer.c:99
-msgid "_Windows"
-msgstr "_Vinduer"
-
-#: ../src/ui/theme-viewer.c:100
-msgid "_Dialog"
-msgstr "_Dialog"
-
-#: ../src/ui/theme-viewer.c:101
-msgid "_Modal dialog"
-msgstr "_Modal dialog"
-
-#: ../src/ui/theme-viewer.c:102
-msgid "_Utility"
-msgstr "_Verktøy"
-
-#: ../src/ui/theme-viewer.c:103
-msgid "_Splashscreen"
-msgstr "Opp_startskjerm"
-
-#: ../src/ui/theme-viewer.c:104
-msgid "_Top dock"
-msgstr "_Toppdokk"
-
-#: ../src/ui/theme-viewer.c:105
-msgid "_Bottom dock"
-msgstr "_Bunndokk"
-
-#: ../src/ui/theme-viewer.c:106
-msgid "_Left dock"
-msgstr "_Venstre dokk"
-
-#: ../src/ui/theme-viewer.c:107
-msgid "_Right dock"
-msgstr "Høy_re dokk"
-
-#: ../src/ui/theme-viewer.c:108
-msgid "_All docks"
-msgstr "_Alle dokker"
-
-#: ../src/ui/theme-viewer.c:109
-msgid "Des_ktop"
-msgstr "S_krivebord"
-
-#: ../src/ui/theme-viewer.c:115
-msgid "Open another one of these windows"
-msgstr "Åpne et til av disse vinduene"
-
-#: ../src/ui/theme-viewer.c:117
-msgid "This is a demo button with an 'open' icon"
-msgstr "Dette er en demoknapp med et «åpne»-ikon"
-
-#: ../src/ui/theme-viewer.c:119
-msgid "This is a demo button with a 'quit' icon"
-msgstr "Dette er en demoknapp med et «avslutt»-ikon"
-
-#: ../src/ui/theme-viewer.c:248
-msgid "This is a sample message in a sample dialog"
-msgstr "Dette er en eksempelbeskjed i en eksempeldialog"
-
-#: ../src/ui/theme-viewer.c:328
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr "Falsk menyoppføring %d\n"
-
-#: ../src/ui/theme-viewer.c:363
-msgid "Border-only window"
-msgstr "Vindu uten innhold"
-
-#: ../src/ui/theme-viewer.c:365
-msgid "Bar"
-msgstr "Linje"
-
-#: ../src/ui/theme-viewer.c:382
-msgid "Normal Application Window"
-msgstr "Normalt programvindu"
-
-#: ../src/ui/theme-viewer.c:386
-msgid "Dialog Box"
-msgstr "Dialogboks"
-
-#: ../src/ui/theme-viewer.c:390
-msgid "Modal Dialog Box"
-msgstr "Modal dialogboks"
-
-#: ../src/ui/theme-viewer.c:394
-msgid "Utility Palette"
-msgstr "Verktøypalett"
-
-#: ../src/ui/theme-viewer.c:398
-msgid "Torn-off Menu"
-msgstr "Avrevet meny"
-
-#: ../src/ui/theme-viewer.c:402
-msgid "Border"
-msgstr "Kant"
-
-#: ../src/ui/theme-viewer.c:406
-msgid "Attached Modal Dialog"
-msgstr "Festet modal dialog"
-
-#: ../src/ui/theme-viewer.c:737
-#, c-format
-msgid "Button layout test %d"
-msgstr "Test av knappeplassering %d"
-
-#: ../src/ui/theme-viewer.c:766
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr "%g millisekunder for å tegne en vindusramme"
-
-#: ../src/ui/theme-viewer.c:811
-#, c-format
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Bruk: metacity-theme-viewer [TEMANAVN]\n"
-
-#: ../src/ui/theme-viewer.c:818
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "Feil under lasting av tema: %s\n"
-
-#: ../src/ui/theme-viewer.c:824
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Lastet tema «%s» på %g sekunder\n"
-
-#: ../src/ui/theme-viewer.c:869
-msgid "Normal Title Font"
-msgstr "Normal tittelskrift"
-
-#: ../src/ui/theme-viewer.c:875
-msgid "Small Title Font"
-msgstr "Liten tittelskrift"
-
-#: ../src/ui/theme-viewer.c:881
-msgid "Large Title Font"
-msgstr "Stor tittelskrift"
-
-#: ../src/ui/theme-viewer.c:886
-msgid "Button Layouts"
-msgstr "Knappeplasseringer"
-
-#: ../src/ui/theme-viewer.c:891
-msgid "Benchmark"
-msgstr "Ytelsestest"
-
-#: ../src/ui/theme-viewer.c:947
-msgid "Window Title Goes Here"
-msgstr "Vindutittel skal her"
-
-#: ../src/ui/theme-viewer.c:1053
-#, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"Tegnet %d rammer på %g sekunder hos klienten (%g millisekunder per ramme) og "
-"%g sekunder på klokken inklusive ressurser på X-tjener (%g millisekunder per "
-"ramme)\n"
-
-#: ../src/ui/theme-viewer.c:1273
-msgid "position expression test returned TRUE but set error"
-msgstr "test av posisjonsuttrykk returnerte TRUE, men satte en feilkode"
-
-#: ../src/ui/theme-viewer.c:1275
-msgid "position expression test returned FALSE but didn't set error"
-msgstr "test av posisjonsuttrykk returnerte FALSE, men satte ikke en feilkode"
-
-#: ../src/ui/theme-viewer.c:1279
-msgid "Error was expected but none given"
-msgstr "Feil var ventet men ingen ble gitt"
-
-#: ../src/ui/theme-viewer.c:1281
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr "Feil %d var ventet men %d ble gitt"
-
-#: ../src/ui/theme-viewer.c:1287
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr "Feil ikke ventet men en ble returnert: %s"
-
-#: ../src/ui/theme-viewer.c:1291
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr "x-verdi var %d, %d var ventet"
-
-#: ../src/ui/theme-viewer.c:1294
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr "y-verdi var %d, %d var ventet"
-
-#: ../src/ui/theme-viewer.c:1359
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d koordinatuttrykk lest på %g sekunder (%g sekunder i snitt)\n"
