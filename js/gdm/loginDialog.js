@@ -591,11 +591,14 @@ const LoginDialog = new Lang.Class({
 
         this._user = null;
 
-        if (!this._disableUserList &&
-            beginRequest == AuthPrompt.BeginRequestType.PROVIDE_USERNAME)
-            this._showUserList();
-        else
+        if (beginRequest == AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
+            if (!this._disableUserList)
+                this._showUserList();
+            else
+                this._hideUserListAskForUsernameAndBeginVerification();
+        } else {
             this._hideUserListAndBeginVerification();
+        }
     },
 
     _onDefaultSessionChanged: function(client, sessionId) {
@@ -606,7 +609,7 @@ const LoginDialog = new Lang.Class({
         if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFYING)
           return false;
 
-        if (this._user && this._user.is_logged_in())
+        if (this._user && this._user.is_loaded && this._user.is_logged_in())
           return false;
 
         return true;
@@ -650,6 +653,7 @@ const LoginDialog = new Lang.Class({
                                                         this._authPrompt.disconnect(nextSignalId);
                                                         this._authPrompt.updateSensitivity(false);
                                                         let answer = this._authPrompt.getAnswer();
+                                                        this._user = this._userManager.get_user(answer);
                                                         this._authPrompt.clear();
                                                         this._authPrompt.startSpinning();
                                                         this._authPrompt.begin({ userName: answer });
