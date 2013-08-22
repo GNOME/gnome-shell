@@ -32,6 +32,7 @@ const MENU_POPUP_TIMEOUT = 600;
 const MAX_COLUMNS = 6;
 
 const INACTIVE_GRID_OPACITY = 77;
+const INACTIVE_GRID_OPACITY_ANIMATION_TIME = 0.15;
 const FOLDER_SUBICON_FRACTION = .4;
 
 
@@ -279,10 +280,15 @@ const AllView = new Lang.Class({
 
     _updateIconOpacities: function(folderOpen) {
         for (let id in this._items) {
+            let params, opacity;
             if (folderOpen && !this._items[id].actor.checked)
-                this._items[id].actor.opacity = INACTIVE_GRID_OPACITY;
+                opacity =  INACTIVE_GRID_OPACITY;
             else
-                this._items[id].actor.opacity = 255;
+                opacity = 255;
+            params = { opacity: opacity,
+                       time: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
+                       transition: 'easeOutQuad' };
+            Tweener.addTween(this._items[id].actor, params);
         }
     }
 });
