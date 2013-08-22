@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.9.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-14 14:53+0200\n"
-"PO-Revision-Date: 2013-08-14 14:54+0200\n"
+"POT-Creation-Date: 2013-08-22 15:19+0200\n"
+"PO-Revision-Date: 2013-08-22 15:21+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -17,14 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: ../data/50-gnome-shell-screenshot.xml.in.h:1
-msgid "Screenshots"
-msgstr "Skjermbilder"
-
-#: ../data/50-gnome-shell-screenshot.xml.in.h:2
-msgid "Record a screencast"
-msgstr "Ta en film av skjermen"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -211,94 +203,39 @@ msgid "Keybinding to focus the active notification."
 msgstr "Tastaturbinding som fokuserer aktiv varsling."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
-msgid "Keybinding to toggle the screen recorder"
-msgstr "Tastaturbinding som slår av/på skjermopptak"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
-msgid "Keybinding to start/stop the builtin screen recorder."
-msgstr "Tastaturbinding som starter/stopper innebygget opptak av skjerm."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Which keyboard to use"
 msgstr "Tastatur som skal brukes"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "The type of keyboard to use."
 msgstr "Type tastatur som skal brukes."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
-msgid "Framerate used for recording screencasts."
-msgstr "Bildefrekvens i bruk ved lagring av skjermvideoer."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
-"Bildefrekvensen i den ferdige skjermvideoen tatt opp med GNOME Shells "
-"skjermvideoopptaker i bilder per sekund."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr "Gstreamer-kommandokø brukt til å kode skjermvideoen"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
-#, fuzzy, no-c-format
-msgid ""
-"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
-"used for gst-launch. The pipeline should have an unconnected sink pad where "
-"the recorded video is recorded. It will normally have a unconnected source "
-"pad; output from that pad will be written into the output file. However the "
-"pipeline can also take care of its own output - this might be used to send "
-"the output to an icecast server via shout2send or similar. When unset or set "
-"to an empty value, the default pipeline will be used. This is currently "
-"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
-"threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
-"used as a placeholder for a guess at the optimal thread count on the system."
-msgstr ""
-"Setter GStreamer-rør som brukes til å kode opptak. Den følger syntaksen som "
-"brukes for gst-launch. Røret må ha en..."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
-msgid "File extension used for storing the screencast"
-msgstr "Filendelse i bruk ved lagring av skjermvideo"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
-msgid ""
-"The filename for recorded screencasts will be a unique filename based on the "
-"current date, and use this extension. It should be changed when recording to "
-"a different container format."
-msgstr ""
-"Filnavnet for skjermvideoopptak vil være unikt og bestå av gjeldende dato, "
-"og bruke denne filendelsen. Den bør endres når du gjør opptak til et nytt "
-"oppbevaringsformat."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "The application icon mode."
 msgstr "Ikonmodus for programmet."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
 "only' (shows only the application icon) or 'both'."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Attach modal dialog to the parent window"
 msgstr "Fest modal dialog til opphavsvinduet"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Denne nøkkelen overstyrer nøkkelen i org.gnome.mutter når GNOME Shell kjøres."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Plassering av knappene på tittellinjen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
@@ -306,15 +243,15 @@ msgstr ""
 "Denne nøkkelen overstyrer nøkkelen i org.gnome.desktop.wm.preferences når "
 "GNOME Shell kjøres."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:46
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:47
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "Workspaces are managed dynamically"
 msgstr "Arbeidsområder håndteres dynamisk"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:48
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid "Workspaces only on primary monitor"
 msgstr "Arbeidsområder vises kun på hovedskjerm"
 
@@ -331,24 +268,24 @@ msgstr "Utvidelse"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Velg en utvidelse som skal konfigureres med komboboksen over."
 
-#: ../js/gdm/authPrompt.js:142 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/authPrompt.js:146 ../js/ui/components/networkAgent.js:132
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:635
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
 #: ../js/ui/status/system.js:373
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../js/gdm/authPrompt.js:164 ../js/gdm/authPrompt.js:212
+#: ../js/gdm/authPrompt.js:168 ../js/gdm/authPrompt.js:216
 msgid "Next"
 msgstr "Neste"
 
-#: ../js/gdm/authPrompt.js:208 ../js/ui/shellMountOperation.js:403
-#: ../js/ui/unlockDialog.js:55
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:56
 msgid "Unlock"
 msgstr "Lås opp"
 
-#: ../js/gdm/authPrompt.js:210
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "Logg inn"
@@ -370,7 +307,7 @@ msgstr "Ikke listet?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:637
+#: ../js/gdm/loginDialog.js:641
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(f.eks. bruker eller %s)"
@@ -378,22 +315,25 @@ msgstr "(f.eks. bruker eller %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:642 ../js/ui/components/networkAgent.js:260
-#: ../js/ui/components/networkAgent.js:278
+#: ../js/gdm/loginDialog.js:646 ../js/ui/components/networkAgent.js:255
+#: ../js/ui/components/networkAgent.js:273
 msgid "Username: "
 msgstr "Brukernavn: "
 
-#: ../js/gdm/loginDialog.js:896
+#: ../js/gdm/loginDialog.js:909
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
-#: ../js/gdm/util.js:253
+#: ../js/gdm/util.js:306
 msgid "Authentication error"
 msgstr "Autentiseringsfeil"
 
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:371
+#: ../js/gdm/util.js:419
 msgid "(or swipe finger)"
 msgstr "(eller dra finger)"
 
@@ -628,42 +568,42 @@ msgstr "Passord:"
 msgid "Type again:"
 msgstr "Skriv på nytt:"
 
-#: ../js/ui/components/networkAgent.js:132 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:638
+#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
+#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:682
 msgid "Connect"
 msgstr "Koble til"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:223
-#: ../js/ui/components/networkAgent.js:235
-#: ../js/ui/components/networkAgent.js:262
-#: ../js/ui/components/networkAgent.js:282
-#: ../js/ui/components/networkAgent.js:292
+#: ../js/ui/components/networkAgent.js:218
+#: ../js/ui/components/networkAgent.js:230
+#: ../js/ui/components/networkAgent.js:257
+#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:287
 msgid "Password: "
 msgstr "Passord: "
 
 #. static WEP
-#: ../js/ui/components/networkAgent.js:228
+#: ../js/ui/components/networkAgent.js:223
 msgid "Key: "
 msgstr "Nøkkel: "
 
-#: ../js/ui/components/networkAgent.js:266
+#: ../js/ui/components/networkAgent.js:261
 msgid "Identity: "
 msgstr "Identitet: "
 
-#: ../js/ui/components/networkAgent.js:268
+#: ../js/ui/components/networkAgent.js:263
 msgid "Private key password: "
 msgstr "Passord for privat nøkkel: "
 
-#: ../js/ui/components/networkAgent.js:280
+#: ../js/ui/components/networkAgent.js:275
 msgid "Service: "
 msgstr "Tjeneste: "
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:304
 msgid "Authentication required by wireless network"
 msgstr "Autentisering kreves av trådløst nettverk"
 
-#: ../js/ui/components/networkAgent.js:310
+#: ../js/ui/components/networkAgent.js:305
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -672,35 +612,35 @@ msgstr ""
 "Passord eller krypteringsnøkler kreves for å koble til trådløst nettverk "
 "«%s»."
 
-#: ../js/ui/components/networkAgent.js:314
+#: ../js/ui/components/networkAgent.js:309
 msgid "Wired 802.1X authentication"
 msgstr "802.1X autentisering for trådbundet nettverk"
 
-#: ../js/ui/components/networkAgent.js:316
+#: ../js/ui/components/networkAgent.js:311
 msgid "Network name: "
 msgstr "Navn på nettverk: "
 
-#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:316
 msgid "DSL authentication"
 msgstr "DSL-autentisering"
 
-#: ../js/ui/components/networkAgent.js:328
+#: ../js/ui/components/networkAgent.js:323
 msgid "PIN code required"
 msgstr "PIN-kode kreves"
 
-#: ../js/ui/components/networkAgent.js:329
+#: ../js/ui/components/networkAgent.js:324
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN-kode kreves for mobil bredbåndsenhet"
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:325
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:336
+#: ../js/ui/components/networkAgent.js:331
 msgid "Mobile broadband network password"
 msgstr "Nettverkspassord for mobilt bredbånd"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:332
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Et passord kreves for å koble til «%s»."
@@ -724,12 +664,6 @@ msgstr "Autentiser"
 #: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Beklager, det virket ikke. Vennligst prøv igjen."
-
-#. Translators: this is a filename used for screencast recording
-#: ../js/ui/components/recorder.js:47
-#, no-c-format
-msgid "Screencast from %d %t"
-msgstr "Skjermvideo fra %d %t"
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
@@ -806,15 +740,15 @@ msgid "%s is inviting you to join %s"
 msgstr "%s inviterer deg til å bli med i %s"
 
 #: ../js/ui/components/telepathyClient.js:1099
-#: ../js/ui/components/telepathyClient.js:1138
-#: ../js/ui/components/telepathyClient.js:1178
-#: ../js/ui/components/telepathyClient.js:1241
+#: ../js/ui/components/telepathyClient.js:1140
+#: ../js/ui/components/telepathyClient.js:1180
+#: ../js/ui/components/telepathyClient.js:1243
 msgid "Decline"
 msgstr "Avslå"
 
 #: ../js/ui/components/telepathyClient.js:1100
-#: ../js/ui/components/telepathyClient.js:1179
-#: ../js/ui/components/telepathyClient.js:1242
+#: ../js/ui/components/telepathyClient.js:1181
+#: ../js/ui/components/telepathyClient.js:1244
 msgid "Accept"
 msgstr "Godta"
 
@@ -831,7 +765,7 @@ msgid "Call from %s"
 msgstr "Samtale fra %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1140
+#: ../js/ui/components/telepathyClient.js:1142
 msgid "Answer"
 msgstr "Svar"
 
@@ -840,110 +774,110 @@ msgstr "Svar"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1172
+#: ../js/ui/components/telepathyClient.js:1174
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s sender deg %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1207
+#: ../js/ui/components/telepathyClient.js:1209
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s vil ha rettigheter til å se når du er tilkoblet"
 
-#: ../js/ui/components/telepathyClient.js:1299
+#: ../js/ui/components/telepathyClient.js:1301
 msgid "Network error"
 msgstr "Nettverksfeil"
 
-#: ../js/ui/components/telepathyClient.js:1301
+#: ../js/ui/components/telepathyClient.js:1303
 msgid "Authentication failed"
 msgstr "Autentisering feilet"
 
-#: ../js/ui/components/telepathyClient.js:1303
+#: ../js/ui/components/telepathyClient.js:1305
 msgid "Encryption error"
 msgstr "Feil ved kryptering"
 
-#: ../js/ui/components/telepathyClient.js:1305
+#: ../js/ui/components/telepathyClient.js:1307
 msgid "Certificate not provided"
 msgstr "Sertifikat ikke oppgitt"
 
-#: ../js/ui/components/telepathyClient.js:1307
+#: ../js/ui/components/telepathyClient.js:1309
 msgid "Certificate untrusted"
 msgstr "Stoler ikke på sertifikatet"
 
-#: ../js/ui/components/telepathyClient.js:1309
+#: ../js/ui/components/telepathyClient.js:1311
 msgid "Certificate expired"
 msgstr "Sertifikatet er utløpt"
 
-#: ../js/ui/components/telepathyClient.js:1311
+#: ../js/ui/components/telepathyClient.js:1313
 msgid "Certificate not activated"
 msgstr "Sertifikatet er ikke aktivert"
 
-#: ../js/ui/components/telepathyClient.js:1313
+#: ../js/ui/components/telepathyClient.js:1315
 msgid "Certificate hostname mismatch"
 msgstr "Feil vertsnavn for sertifikat"
 
-#: ../js/ui/components/telepathyClient.js:1315
+#: ../js/ui/components/telepathyClient.js:1317
 msgid "Certificate fingerprint mismatch"
 msgstr "Feil fingeravtrykk for sertifikat"
 
-#: ../js/ui/components/telepathyClient.js:1317
+#: ../js/ui/components/telepathyClient.js:1319
 msgid "Certificate self-signed"
 msgstr "Sertifikatet er selvsignert"
 
-#: ../js/ui/components/telepathyClient.js:1319
+#: ../js/ui/components/telepathyClient.js:1321
 msgid "Status is set to offline"
 msgstr "Status er satt til frakoblet"
 
-#: ../js/ui/components/telepathyClient.js:1321
+#: ../js/ui/components/telepathyClient.js:1323
 msgid "Encryption is not available"
 msgstr "Kryptering er ikke tilgjengelig"
 
-#: ../js/ui/components/telepathyClient.js:1323
+#: ../js/ui/components/telepathyClient.js:1325
 msgid "Certificate is invalid"
 msgstr "Sertifikatet er ugyldig"
 
-#: ../js/ui/components/telepathyClient.js:1325
+#: ../js/ui/components/telepathyClient.js:1327
 msgid "Connection has been refused"
 msgstr "Tilkobling ble nektet"
 
-#: ../js/ui/components/telepathyClient.js:1327
+#: ../js/ui/components/telepathyClient.js:1329
 msgid "Connection can't be established"
 msgstr "Tilkobling kan ikke etableres"
 
-#: ../js/ui/components/telepathyClient.js:1329
+#: ../js/ui/components/telepathyClient.js:1331
 msgid "Connection has been lost"
 msgstr "Tilkobling tapt"
 
-#: ../js/ui/components/telepathyClient.js:1331
+#: ../js/ui/components/telepathyClient.js:1333
 msgid "This account is already connected to the server"
 msgstr "Denne kontoen er allerede koblet til tjeneren"
 
-#: ../js/ui/components/telepathyClient.js:1333
+#: ../js/ui/components/telepathyClient.js:1335
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Tilkoblingen har blitt erstattet av en ny tilkobling som bruker samme ressurs"
 
-#: ../js/ui/components/telepathyClient.js:1335
+#: ../js/ui/components/telepathyClient.js:1337
 msgid "The account already exists on the server"
 msgstr "Kontoen eksisterer allerede på tjeneren"
 
-#: ../js/ui/components/telepathyClient.js:1337
+#: ../js/ui/components/telepathyClient.js:1339
 msgid "Server is currently too busy to handle the connection"
 msgstr "Tjener er for opptatt til å håndtere tilkoblingen"
 
-#: ../js/ui/components/telepathyClient.js:1339
+#: ../js/ui/components/telepathyClient.js:1341
 msgid "Certificate has been revoked"
 msgstr "Sertifikatet er tilbaketrukket"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1343
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Sertifikatet bruker en usikker sifferalgoritme eller er krytografisk svakt"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1345
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -951,22 +885,22 @@ msgstr ""
 "Lengden eller dybden på tjenersertifikatet oversteg grensen som er satt i "
 "kryptografibiblioteket"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1347
 msgid "Internal error"
 msgstr "Intern feil"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1357
 #, c-format
 msgid "Unable to connect to %s"
 msgstr "Kan ikke koble til %s"
 
-#: ../js/ui/components/telepathyClient.js:1360
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "View account"
 msgstr "Vis konto"
 
-#: ../js/ui/components/telepathyClient.js:1399
+#: ../js/ui/components/telepathyClient.js:1401
 msgid "Unknown reason"
 msgstr "Ukjent årsak"
 
@@ -1156,31 +1090,35 @@ msgstr "Vis kildekode"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: ../js/ui/messageTray.js:1221
+#: ../js/ui/messageTray.js:1222
 msgid "Open"
 msgstr "Åpne"
 
-#: ../js/ui/messageTray.js:1228
+#: ../js/ui/messageTray.js:1229
 msgid "Remove"
 msgstr "Fjern"
 
-#: ../js/ui/messageTray.js:1550
+#: ../js/ui/messageTray.js:1513
 msgid "Clear Messages"
 msgstr "Tøm meldinger"
 
-#: ../js/ui/messageTray.js:1577
+#: ../js/ui/messageTray.js:1540
 msgid "Notification Settings"
 msgstr "Innstillinger for varsling"
 
-#: ../js/ui/messageTray.js:1759
+#: ../js/ui/messageTray.js:1559
+msgid "Tray Menu"
+msgstr "Meny for varslingsområde"
+
+#: ../js/ui/messageTray.js:1775
 msgid "No Messages"
 msgstr "Ingen meldinger"
 
-#: ../js/ui/messageTray.js:1822
+#: ../js/ui/messageTray.js:1812
 msgid "Message Tray"
 msgstr "Meldingstrau"
 
-#: ../js/ui/messageTray.js:2824
+#: ../js/ui/messageTray.js:2786
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -1189,7 +1127,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: ../js/ui/overviewControls.js:474 ../js/ui/screenShield.js:153
+#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:154
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1226,7 +1164,7 @@ msgstr "Aktiviteter"
 msgid "Settings Menu"
 msgstr "Meny for innstillinger"
 
-#: ../js/ui/panel.js:890
+#: ../js/ui/panel.js:892
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -1235,7 +1173,7 @@ msgstr "Topp-panel"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:325
+#: ../js/ui/popupMenu.js:226
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1249,22 +1187,22 @@ msgstr "Lukk"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:89
+#: ../js/ui/screenShield.js:90
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:155
+#: ../js/ui/screenShield.js:156
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d ny varsling"
 msgstr[1] "%d nye varslinger"
 
-#: ../js/ui/screenShield.js:478 ../js/ui/status/system.js:275
+#: ../js/ui/screenShield.js:479 ../js/ui/status/system.js:275
 msgid "Lock"
 msgstr "Lås"
 
-#: ../js/ui/screenShield.js:697
+#: ../js/ui/screenShield.js:712
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME må låse skjermen"
 
@@ -1275,11 +1213,11 @@ msgstr "GNOME må låse skjermen"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:822 ../js/ui/screenShield.js:1270
+#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1316
 msgid "Unable to lock"
 msgstr "Kan ikke låse"
 
-#: ../js/ui/screenShield.js:823 ../js/ui/screenShield.js:1271
+#: ../js/ui/screenShield.js:838 ../js/ui/screenShield.js:1317
 msgid "Lock was blocked by an application"
 msgstr "Låsing ble stoppet av et program"
 
@@ -1315,47 +1253,47 @@ msgstr "Passord"
 msgid "Remember Password"
 msgstr "Husk passord"
 
-#: ../js/ui/status/accessibility.js:38
+#: ../js/ui/status/accessibility.js:41
 msgid "Accessibility"
 msgstr "Tilgjengelighet"
 
-#: ../js/ui/status/accessibility.js:52
+#: ../js/ui/status/accessibility.js:58
 msgid "Zoom"
 msgstr "Zoom"
 
-#: ../js/ui/status/accessibility.js:59
+#: ../js/ui/status/accessibility.js:65
 msgid "Screen Reader"
 msgstr "Skjermleser"
 
-#: ../js/ui/status/accessibility.js:63
+#: ../js/ui/status/accessibility.js:69
 msgid "Screen Keyboard"
 msgstr "Tastatur på skjermen"
 
-#: ../js/ui/status/accessibility.js:67
+#: ../js/ui/status/accessibility.js:73
 msgid "Visual Alerts"
 msgstr "Synlig varsling"
 
-#: ../js/ui/status/accessibility.js:70
+#: ../js/ui/status/accessibility.js:76
 msgid "Sticky Keys"
 msgstr "Klebrige taster"
 
-#: ../js/ui/status/accessibility.js:73
+#: ../js/ui/status/accessibility.js:79
 msgid "Slow Keys"
 msgstr "Trege taster"
 
-#: ../js/ui/status/accessibility.js:76
+#: ../js/ui/status/accessibility.js:82
 msgid "Bounce Keys"
 msgstr "Spretne taster"
 
-#: ../js/ui/status/accessibility.js:79
+#: ../js/ui/status/accessibility.js:85
 msgid "Mouse Keys"
 msgstr "Mustaster"
 
-#: ../js/ui/status/accessibility.js:137
+#: ../js/ui/status/accessibility.js:144
 msgid "High Contrast"
 msgstr "Høy kontrast"
 
-#: ../js/ui/status/accessibility.js:186
+#: ../js/ui/status/accessibility.js:193
 msgid "Large Text"
 msgstr "Stor tekst"
 
@@ -1368,7 +1306,7 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:978 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/network.js:1027 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Slå av"
 
@@ -1461,11 +1399,11 @@ msgstr "Vis tastaturutforming"
 msgid "<unknown>"
 msgstr "<ukjent>"
 
-#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:993
+#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1042
 msgid "Off"
 msgstr "Av"
 
-#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:899
+#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:948
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
@@ -1480,12 +1418,12 @@ msgstr "ikke håndtert"
 msgid "disconnecting..."
 msgstr "kobler fra …"
 
-#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1044
+#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1093
 msgid "connecting..."
 msgstr "kobler til …"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1047
+#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1096
 msgid "authentication required"
 msgstr "autentisering kreves"
 
@@ -1501,39 +1439,43 @@ msgstr "fastvare mangler"
 msgid "unavailable"
 msgstr "ikke tilgjengelig"
 
-#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1049
+#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1098
 msgid "connection failed"
 msgstr "tilkobling feilet"
 
-#: ../js/ui/status/network.js:615
+#: ../js/ui/status/network.js:647
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi nettverk"
 
-#: ../js/ui/status/network.js:617
+#: ../js/ui/status/network.js:649
 msgid "Select a network"
 msgstr "Velg et nettverk"
 
-#: ../js/ui/status/network.js:893
+#: ../js/ui/status/network.js:673
+msgid "No Networks"
+msgstr "Ingen nettverk"
+
+#: ../js/ui/status/network.js:942
 msgid "Select Network"
 msgstr "Velg nettverk"
 
-#: ../js/ui/status/network.js:978
+#: ../js/ui/status/network.js:1027
 msgid "Turn On"
 msgstr "Slå på"
 
-#: ../js/ui/status/network.js:1111
+#: ../js/ui/status/network.js:1160
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1247
+#: ../js/ui/status/network.js:1296
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
-#: ../js/ui/status/network.js:1289
+#: ../js/ui/status/network.js:1338
 msgid "Connection failed"
 msgstr "Tilkobling feilet"
 
-#: ../js/ui/status/network.js:1290
+#: ../js/ui/status/network.js:1339
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling feilet"
 
@@ -1621,11 +1563,11 @@ msgstr "%s (konsoll)"
 msgid "Volume changed"
 msgstr "Volum endret"
 
-#: ../js/ui/unlockDialog.js:63
+#: ../js/ui/unlockDialog.js:64
 msgid "Log in as another user"
 msgstr "Logg inn som en annen bruker"
 
-#: ../js/ui/unlockDialog.js:80
+#: ../js/ui/unlockDialog.js:81
 msgid "Unlock Window"
 msgstr "Lås opp vindu"
 
@@ -1655,6 +1597,28 @@ msgstr "Orakelet sier %s"
 #, c-format
 msgid "'%s' is ready"
 msgstr "«%s» er klar"
+
+#: ../js/ui/windowManager.js:56
+msgid "Do you want to keep these display settings?"
+msgstr "Vil du beholde disse innstillingene for skjerm?"
+
+#. Translators: this and the following message should be limited in lenght,
+#. to avoid ellipsizing the labels.
+#.
+#: ../js/ui/windowManager.js:75
+msgid "Revert Settings"
+msgstr "Forkast innstillinger"
+
+#: ../js/ui/windowManager.js:79
+msgid "Keep Changes"
+msgstr "Behold endringer"
+
+#: ../js/ui/windowManager.js:97
+#, c-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "Endringer i innstillingene vil forkastes om %d sekund"
+msgstr[1] "Endringer i innstillingene vil forkastes om %d sekunder"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
