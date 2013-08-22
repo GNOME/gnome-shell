@@ -475,11 +475,7 @@ const LoginDialog = new Lang.Class({
                                                 x_align: St.Align.START,
                                                 x_fill: true });
 
-        this._notListedButton.connect('clicked',
-                                      Lang.bind(this, function() {
-            this._authPrompt.cancelButton.show();
-            this._hideUserListAndLogIn();
-        }));
+        this._notListedButton.connect('clicked', Lang.bind(this, this._hideUserListAskForUsernameAndBeginVerification));
 
         this._notListedButton.hide();
 
@@ -595,12 +591,11 @@ const LoginDialog = new Lang.Class({
 
         this._user = null;
 
-        if (this._disableUserList) {
-            this._authPrompt.cancelButton.hide();
-            this._hideUserListAndLogIn();
-        } else {
+        if (!this._disableUserList &&
+            beginRequest == AuthPrompt.BeginRequestType.PROVIDE_USERNAME)
             this._showUserList();
-        }
+        else
+            this._hideUserListAndBeginVerification();
     },
 
     _onDefaultSessionChanged: function(client, sessionId) {
