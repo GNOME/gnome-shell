@@ -52,6 +52,7 @@ st_source_h =					\
 	st/st-drawing-area.h			\
 	st/st-entry.h				\
 	st/st-focus-manager.h			\
+	st/st-generic-accessible.h		\
 	st/st-icon.h				\
 	st/st-icon-colors.h			\
 	st/st-im-text.h				\
@@ -120,6 +121,7 @@ st_source_c =					\
 	st/st-drawing-area.c			\
 	st/st-entry.c				\
 	st/st-focus-manager.c			\
+	st/st-generic-accessible.c		\
 	st/st-icon.c				\
 	st/st-icon-colors.c			\
 	st/st-im-text.c				\
