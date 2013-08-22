@@ -162,7 +162,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .popup-submenu-menu-item:open {
-    background-color: #4c4c4c;
+    background-color: #333333;
 }
 
 .popup-sub-menu {
