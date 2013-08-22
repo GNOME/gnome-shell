@@ -31,7 +31,7 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
 const GnomeSession = imports.misc.gnomeSession;
-const Main = imports.ui.main;
+const LoginManager = imports.misc.loginManager;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
@@ -116,6 +116,18 @@ const DialogContent = {
     2 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_RESTART */: restartDialogContent
 };
 
+const MAX_USERS_IN_SESSION_DIALOG = 5;
+
+const LogindSessionIface = <interface name='org.freedesktop.login1.Session'>
+    <property name="Id" type="s" access="read"/>
+    <property name="Remote" type="b" access="read"/>
+    <property name="Class" type="s" access="read"/>
+    <property name="Type" type="s" access="read"/>
+    <property name="State" type="s" access="read"/>
+</interface>;
+
+const LogindSession = Gio.DBusProxy.makeProxyWrapper(LogindSessionIface);
+
 function findAppFromInhibitor(inhibitor) {
     let desktopFile;
     try {
@@ -136,43 +148,33 @@ function findAppFromInhibitor(inhibitor) {
 const ListItem = new Lang.Class({
     Name: 'ListItem',
 
-    _init: function(app, reason) {
-        this._app = app;
-        this._reason = reason;
-
-        if (this._reason == null)
-          this._reason = '';
-
-        let layout = new St.BoxLayout({ vertical: false});
+    _init: function(icon, name, description) {
+        let layout = new St.BoxLayout({ vertical: false });
 
         this.actor = new St.Bin({ style_class: 'end-session-dialog-app-list-item',
-                                  can_focus:   true,
-                                  child:       layout,
-                                  x_align:     St.Align.START,
-                                  x_fill:      true });
-
-        this._icon = this._app.create_icon_texture(_ITEM_ICON_SIZE);
+                                  can_focus: true,
+                                  child: layout,
+                                  x_align: St.Align.START,
+                                  x_fill: true });
 
         let iconBin = new St.Bin({ style_class: 'end-session-dialog-app-list-item-icon',
-                                   child:       this._icon });
+                                   child: icon });
         layout.add(iconBin);
 
         let textLayout = new St.BoxLayout({ style_class: 'end-session-dialog-app-list-item-text-box',
-                                            vertical:    true });
+                                            vertical: true });
         layout.add(textLayout);
 
-        this._nameLabel = new St.Label({ text:        this._app.get_name(),
-                                         style_class: 'end-session-dialog-app-list-item-name' });
-        textLayout.add(this._nameLabel,
-                       { expand: false,
-                         x_fill: true });
+        let nameLabel = new St.Label({ text: name,
+                                       style_class: 'end-session-dialog-app-list-item-name' });
+        textLayout.add(nameLabel, { expand: false, x_fill: true });
+        this.actor.label_actor = nameLabel;
 
-        this._descriptionLabel = new St.Label({ text:        this._reason,
-                                                style_class: 'end-session-dialog-app-list-item-description' });
-        this.actor.label_actor = this._nameLabel;
-        textLayout.add(this._descriptionLabel,
-                       { expand: true,
-                         x_fill: true });
+        if (description) {
+            let descriptionLabel = new St.Label({ text: description,
+                                                  style_class: 'end-session-dialog-app-list-item-description' });
+            textLayout.add(descriptionLabel, { expand: true, x_fill: true });
+        }
     },
 });
 
@@ -226,11 +228,14 @@ const EndSessionDialog = new Lang.Class({
         this.parent({ styleClass: 'end-session-dialog',
                       destroyOnClose: false });
 
-        this._user = AccountsService.UserManager.get_default().get_user(GLib.get_user_name());
+        this._loginManager = LoginManager.getLoginManager();
+        this._userManager = AccountsService.UserManager.get_default();
+        this._user = this._userManager.get_user(GLib.get_user_name());
 
         this._secondsLeft = 0;
         this._totalSecondsToStayOpen = 0;
         this._inhibitors = [];
+        this._sessions = [];
 
         this.connect('destroy',
                      Lang.bind(this, this._onDestroy));
@@ -305,6 +310,10 @@ const EndSessionDialog = new Lang.Class({
         this._user.disconnect(this._userChangedId);
     },
 
+    _hasInhibitors: function() {
+        return (this._inhibitors.length > 0) || (this._sessions.length > 0);
+    },
+
     _updateDescription: function() {
         if (this.state != ModalDialog.State.OPENING &&
             this.state != ModalDialog.State.OPENED)
@@ -315,10 +324,10 @@ const EndSessionDialog = new Lang.Class({
         let subject = dialogContent.subject;
         let description;
 
-        if (this._inhibitors.length > 0) {
+        if (this._hasInhibitors()) {
             this._stopTimer();
             description = dialogContent.inhibitedDescription;
-        } else if (this._secondsLeft > 0 && this._inhibitors.length == 0) {
+        } else if (this._secondsLeft > 0) {
             let displayTime = _roundSecondsToInterval(this._totalSecondsToStayOpen,
                                                       this._secondsLeft,
                                                       10);
@@ -411,7 +420,7 @@ const EndSessionDialog = new Lang.Class({
     },
 
     _onOpened: function() {
-        if (this._inhibitors.length == 0)
+        if (!this._hasInhibitors())
             this._startTimer();
     },
 
@@ -458,7 +467,7 @@ const EndSessionDialog = new Lang.Class({
 
         if (app) {
             let [reason] = inhibitor.GetReasonSync();
-            let item = new ListItem(app, reason);
+            let item = new ListItem(app.create_icon_texture(_ITEM_ICON_SIZE), app.get_name(), reason);
             this._applicationList.add(item.actor, { x_fill: true });
             this._stopTimer();
         } else {
@@ -467,6 +476,59 @@ const EndSessionDialog = new Lang.Class({
         }
 
         this._updateContent();
+    },
+
+    _loadSessions: function() {
+        this._loginManager.listSessions(Lang.bind(this, function(result) {
+            let n = 0;
+            for (let i = 0; i < result.length; i++) {
+                let[id, uid, userName, seat, sessionPath] = result[i];
+                let proxy = new LogindSession(Gio.DBus.system, 'org.freedesktop.login1', sessionPath);
+
+                if (proxy.Class != 'user')
+                    continue;
+
+                if (proxy.State == 'closing')
+                    continue;
+
+                if (proxy.Id == GLib.getenv('XDG_SESSION_ID'))
+                    continue;
+
+                let session = { user: this._userManager.get_user(userName),
+                                username: userName,
+                                type: proxy.Type,
+                                remote: proxy.Remote };
+                this._sessions.push(session);
+
+                let avatar = new UserWidget.Avatar(session.user, { iconSize: _ITEM_ICON_SIZE });
+                avatar.update();
+
+                let userLabel = session.user.get_real_name() ? session.user.get_real_name() : userName;
+                let userLabelText;
+
+                if (session.remote)
+                    /* Translators: Remote here refers to a remote session, like a ssh login */
+                    userLabelText = _("%s (remote)").format(userName);
+                else if (session.type == "tty")
+                    /* Translators: Console here refers to a tty like a VT console */
+                    userLabelText = _("%s (console)").format(userName);
+                else
+                    userLabelText = userName;
+
+                let item = new ListItem(avatar.actor, userLabelText);
+
+                // XXX -- put them in their own inhibitor section
+                this._applicationList.add(item.actor, { x_fill: true });
+
+                // limit the number of entries
+                n++;
+                if (n == MAX_USERS_IN_SESSION_DIALOG)
+                    break;
+            }
+
+            if (n > 0)
+                this._stopTimer();
+        }));
     },
 
     OpenAsync: function(parameters, invocation) {
@@ -489,6 +551,8 @@ const EndSessionDialog = new Lang.Class({
 
             this._inhibitors.push(inhibitor);
         }
+
+        this._loadSessions();
 
         this._updateButtons();
 
