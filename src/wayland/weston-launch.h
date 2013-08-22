@@ -1,5 +1,6 @@
 /*
  * Copyright © 2012 Benjamin Franzke
+ *             2013 Red Hat, Inc.
  *
  * Permission to use, copy, modify, distribute, and sell this software and
  * its documentation for any purpose is hereby granted without fee, provided
@@ -25,7 +26,14 @@
 
 enum weston_launcher_opcode {
 	WESTON_LAUNCHER_OPEN,
-	WESTON_LAUNCHER_DRM_SET_MASTER
+	WESTON_LAUNCHER_DRM_SET_FD,
+	WESTON_LAUNCHER_ACTIVATE_VT,
+	WESTON_LAUNCHER_CONFIRM_VT_SWITCH, 
+};
+
+enum weston_launcher_server_opcode {
+	WESTON_LAUNCHER_SERVER_REQUEST_VT_SWITCH,
+	WESTON_LAUNCHER_SERVER_VT_ENTER,
 };
 
 struct weston_launcher_message {
@@ -38,9 +46,9 @@ struct weston_launcher_open {
 	char path[0];
 };
 
-struct weston_launcher_set_master {
+struct weston_launcher_activate_vt {
 	struct weston_launcher_message header;
-	int set_master;
+	int vt;
 };
 
 #endif
