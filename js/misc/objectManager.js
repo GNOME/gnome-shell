@@ -71,24 +71,24 @@ const ObjectManager = new Lang.Class({
     },
 
     _addInterface: function(objectPath, interfaceName, onFinished) {
-           let info = this._interfaceInfos[interfaceName];
+        let info = this._interfaceInfos[interfaceName];
 
-           if (!info) {
-               if (onFinished)
-                   onFinished();
-               return;
-           }
+        if (!info) {
+           if (onFinished)
+               onFinished();
+           return;
+        }
 
-           let proxy = new Gio.DBusProxy({ g_connection: this._connection,
-                                           g_name: this._serviceName,
-                                           g_object_path: objectPath,
-                                           g_interface_name: interfaceName,
-                                           g_interface_info: info,
-                                           g_flags: Gio.DBusProxyFlags.NONE });
+        let proxy = new Gio.DBusProxy({ g_connection: this._connection,
+                                       g_name: this._serviceName,
+                                       g_object_path: objectPath,
+                                       g_interface_name: interfaceName,
+                                       g_interface_info: info,
+                                       g_flags: Gio.DBusProxyFlags.NONE });
 
-           proxy.init_async(GLib.PRIORITY_DEFAULT,
-                            this._cancellable,
-                            Lang.bind(this, function(initable, result) {
+        proxy.init_async(GLib.PRIORITY_DEFAULT,
+                         this._cancellable,
+                         Lang.bind(this, function(initable, result) {
                let error = null;
                try {
                    initable.init_finish(result);
