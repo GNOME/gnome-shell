@@ -532,7 +532,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	  */
 	  for (j = 0; j < (unsigned)output->nclone; j++)
 	    {
-	      meta_output->possible_clones = GINT_TO_POINTER (output->clones[j]);
+	      meta_output->possible_clones[j] = GINT_TO_POINTER (output->clones[j]);
 	    }
 
 	  meta_output->is_primary = ((XID)meta_output->output_id == primary_output);
