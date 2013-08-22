@@ -20,7 +20,6 @@
 
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
-const Signals = imports.signals;
 
 const AccountsService = imports.gi.AccountsService;
 const Clutter = imports.gi.Clutter;
@@ -146,12 +145,11 @@ const ListItem = new Lang.Class({
 
         let layout = new St.BoxLayout({ vertical: false});
 
-        this.actor = new St.Button({ style_class: 'end-session-dialog-app-list-item',
-                                     can_focus:   true,
-                                     child:       layout,
-                                     reactive:    true,
-                                     x_align:     St.Align.START,
-                                     x_fill:      true });
+        this.actor = new St.Bin({ style_class: 'end-session-dialog-app-list-item',
+                                  can_focus:   true,
+                                  child:       layout,
+                                  x_align:     St.Align.START,
+                                  x_fill:      true });
 
         this._icon = this._app.create_icon_texture(_ITEM_ICON_SIZE);
 
@@ -175,16 +173,8 @@ const ListItem = new Lang.Class({
         textLayout.add(this._descriptionLabel,
                        { expand: true,
                          x_fill: true });
-
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
     },
-
-    _onClicked: function() {
-        this.emit('activate');
-        this._app.activate();
-    }
 });
-Signals.addSignalMethods(ListItem.prototype);
 
 // The logout timer only shows updates every 10 seconds
 // until the last 10 seconds, then it shows updates every
@@ -469,10 +459,6 @@ const EndSessionDialog = new Lang.Class({
         if (app) {
             let [reason] = inhibitor.GetReasonSync();
             let item = new ListItem(app, reason);
-            item.connect('activate',
-                         Lang.bind(this, function() {
-                             this.close();
-                         }));
             this._applicationList.add(item.actor, { x_fill: true });
             this._stopTimer();
         } else {

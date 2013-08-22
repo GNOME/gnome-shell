@@ -1934,10 +1934,6 @@ StScrollBar StButton#vhandle:active {
     color: #ccc;
 }
 
-.end-session-dialog-app-list-item:hover {
-    color: white;
-}
-
 .end-session-dialog-app-list-item:ltr {
     padding-right: 1em;
 }
