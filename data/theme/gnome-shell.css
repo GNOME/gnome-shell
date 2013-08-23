@@ -1884,6 +1884,10 @@ StScrollBar StButton#vhandle:active {
     spacing: 42px;
 }
 
+.end-session-dialog-list {
+    padding-top: 20px;
+}
+
 .end-session-dialog-subject {
     padding-left: 17px;
     padding-bottom: 20px;
@@ -1917,46 +1921,30 @@ StScrollBar StButton#vhandle:active {
     height: 32px;
 }
 
-.end-session-dialog-app-list {
-    font-size: 10pt;
+.end-session-dialog-inhibitor-layout {
+    spacing: 16px;
     max-height: 200px;
-    padding-top: 42px;
-    padding-left: 49px;
-    padding-right: 32px;
+    padding-right: 50px;
+    padding-left: 50px;
 }
 
-.end-session-dialog-app-list:rtl {
-    padding-right: 49px;
-    padding-left: 32px;
+.end-session-dialog-list-header {
+    font-weight: bold;
 }
 
-.end-session-dialog-app-list-item {
-    color: #ccc;
+.end-session-dialog-app-list-item,
+.end-session-dialog-session-list-item {
+    spacing: 1em;
 }
 
-.end-session-dialog-app-list-item:ltr {
-    padding-right: 1em;
-}
-
-.end-session-dialog-app-list-item:rtl {
-    padding-left: 1em;
-}
-
-.end-session-dialog-app-list-item-icon:ltr {
-    padding-right: 17px;
-}
-
-.end-session-dialog-app-list-item-icon:rtl {
-    padding-left: 17px;
-}
-
-.end-session-dialog-app-list-item-name {
-    font-size: 10pt;
+.end-session-dialog-app-list-item-name,
+.end-session-dialog-session-list-item-name {
+    font-weight: bold;
 }
 
 .end-session-dialog-app-list-item-description {
-    font-size: 8pt;
-    color: #444444;
+    color: #cccccc;
+    font-size: 10pt;
 }
 
 /* ShellMountOperation Dialogs */
