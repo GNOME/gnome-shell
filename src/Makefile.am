@@ -357,4 +357,4 @@ $(dbus_idle_built_sources) : Makefile.am idle-monitor.xml
 		--c-namespace MetaDBus							\
 		--generate-c-code meta-dbus-idle-monitor				\
 		--c-generate-object-manager						\
-		idle-monitor.xml
+		$(srcdir)/idle-monitor.xml
