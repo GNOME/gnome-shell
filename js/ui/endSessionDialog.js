@@ -61,18 +61,16 @@ const EndSessionDialogIface = <interface name="org.gnome.SessionManager.EndSessi
 const logoutDialogContent = {
     subjectWithUser: C_("title", "Log Out %s"),
     subject: C_("title", "Log Out"),
-    inhibitedDescription: _("Click Log Out to quit these applications and log out of the system."),
-    uninhibitedDescriptionWithUser: function(user, seconds) {
+    descriptionWithUser: function(user, seconds) {
         return ngettext("%s will be logged out automatically in %d second.",
                         "%s will be logged out automatically in %d seconds.",
                         seconds).format(user, seconds);
     },
-    uninhibitedDescription: function(seconds) {
+    description: function(seconds) {
         return ngettext("You will be logged out automatically in %d second.",
                         "You will be logged out automatically in %d seconds.",
                         seconds).format(seconds);
     },
-    endDescription: _("Logging out of the system."),
     confirmButtons: [{ signal: 'ConfirmedLogout',
                        label:  C_("button", "Log Out") }],
     iconStyleClass: 'end-session-dialog-logout-icon'
@@ -80,13 +78,11 @@ const logoutDialogContent = {
 
 const shutdownDialogContent = {
     subject: C_("title", "Power Off"),
-    inhibitedDescription: _("Click Power Off to quit these applications and power off the system."),
-    uninhibitedDescription: function(seconds) {
+    description: function(seconds) {
         return ngettext("The system will power off automatically in %d second.",
                         "The system will power off automatically in %d seconds.",
                         seconds).format(seconds);
     },
-    endDescription: _("Powering off the system."),
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  C_("button", "Restart") },
                      { signal: 'ConfirmedShutdown',
@@ -97,13 +93,11 @@ const shutdownDialogContent = {
 
 const restartDialogContent = {
     subject: C_("title", "Restart"),
-    inhibitedDescription: _("Click Restart to quit these applications and restart the system."),
-    uninhibitedDescription: function(seconds) {
+    description: function(seconds) {
         return ngettext("The system will restart automatically in %d second.",
                         "The system will restart automatically in %d seconds.",
                         seconds).format(seconds);
     },
-    endDescription: _("Restarting the system."),
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  C_("button", "Restart") }],
     iconName: 'view-refresh-symbolic',
@@ -307,10 +301,6 @@ const EndSessionDialog = new Lang.Class({
         this._user.disconnect(this._userChangedId);
     },
 
-    _hasInhibitors: function() {
-        return (this._inhibitors.length > 0) || (this._sessions.length > 0);
-    },
-
     _sync: function() {
         let open = (this.state == ModalDialog.State.OPENING || this.state == ModalDialog.State.OPENED);
         if (!open)
@@ -321,32 +311,26 @@ const EndSessionDialog = new Lang.Class({
         let subject = dialogContent.subject;
 
         let description;
-        if (this._hasInhibitors()) {
-            description = dialogContent.inhibitedDescription;
-        } else if (this._secondsLeft > 0) {
-            let displayTime = _roundSecondsToInterval(this._totalSecondsToStayOpen,
-                                                      this._secondsLeft,
-                                                      10);
+        let displayTime = _roundSecondsToInterval(this._totalSecondsToStayOpen,
+                                                  this._secondsLeft,
+                                                  10);
 
-            if (this._user.is_loaded) {
-                let realName = this._user.get_real_name();
+        if (this._user.is_loaded) {
+            let realName = this._user.get_real_name();
 
-                if (realName != null) {
-                    if (dialogContent.subjectWithUser)
-                        subject = dialogContent.subjectWithUser.format(realName);
+            if (realName != null) {
+                if (dialogContent.subjectWithUser)
+                    subject = dialogContent.subjectWithUser.format(realName);
 
-                    if (dialogContent.uninhibitedDescriptionWithUser)
-                        description = dialogContent.uninhibitedDescriptionWithUser(realName, displayTime);
-                    else
-                        description = dialogContent.uninhibitedDescription(displayTime);
-                }
+                if (dialogContent.descriptionWithUser)
+                    description = dialogContent.descriptionWithUser(realName, displayTime);
+                else
+                    description = dialogContent.description(displayTime);
             }
-
-            if (!description)
-                description = dialogContent.uninhibitedDescription(displayTime);
-        } else {
-            description = dialogContent.endDescription;
         }
+
+        if (!description)
+            description = dialogContent.description(displayTime);
 
         _setLabelText(this._descriptionLabel, description);
         _setLabelText(this._subjectLabel, subject);
@@ -363,11 +347,6 @@ const EndSessionDialog = new Lang.Class({
             this._iconBin.child = avatarWidget.actor;
             avatarWidget.update();
         }
-
-        if (this._hasInhibitors())
-            this._stopTimer();
-        else
-            this._startTimer();
     },
 
     _updateButtons: function() {
@@ -551,6 +530,7 @@ const EndSessionDialog = new Lang.Class({
             return;
         }
 
+        this._startTimer();
         this._sync();
 
         let signalId = this.connect('opened',
