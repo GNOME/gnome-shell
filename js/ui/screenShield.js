@@ -732,6 +732,8 @@ const ScreenShield = new Lang.Class({
             this.lock(true);
         } else {
             this._inhibitSuspend();
+
+            this._onUserBecameActive();
         }
     },
 
