@@ -284,7 +284,7 @@ meta_wayland_seat_new (struct wl_display *display,
   wl_list_init (&seat->drag_resource_list);
   wl_signal_init (&seat->drag_icon_signal);
 
-  meta_wayland_pointer_init (&seat->pointer);
+  meta_wayland_pointer_init (&seat->pointer, is_native);
 
   meta_wayland_keyboard_init (&seat->keyboard, display, is_native);
 

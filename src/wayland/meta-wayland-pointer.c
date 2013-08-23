@@ -43,6 +43,9 @@
 
 #include "config.h"
 
+#include <clutter/clutter.h>
+#include <clutter/evdev/clutter-evdev.h>
+
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-private.h"
 
@@ -120,9 +123,115 @@ static const MetaWaylandPointerGrabInterface default_pointer_grab_interface = {
   default_grab_button
 };
 
-void
-meta_wayland_pointer_init (MetaWaylandPointer *pointer)
+/*
+ * The pointer constrain code is mostly a rip-off of the XRandR code from Xorg.
+ * (from xserver/randr/rrcrtc.c, RRConstrainCursorHarder)
+ *
+ * Copyright © 2006 Keith Packard
+ * Copyright 2010 Red Hat, Inc
+ *
+ */
+
+static gboolean
+check_all_screen_monitors(MetaMonitorInfo *monitors,
+			  unsigned         n_monitors,
+			  float            x,
+			  float            y)
 {
+  unsigned int i;
+
+  for (i = 0; i < n_monitors; i++)
+    {
+      MetaMonitorInfo *monitor = &monitors[i];
+      int left, right, top, bottom;
+
+      left = monitor->rect.x;
+      right = left + monitor->rect.width;
+      top = monitor->rect.y;
+      bottom = left + monitor->rect.height;
+
+      if ((x >= left) && (x < right) && (y >= top) && (y < bottom))
+	return TRUE;
+    }
+
+  return FALSE;
+}
+
+static void
+constrain_all_screen_monitors (ClutterInputDevice *device,
+			       MetaMonitorInfo    *monitors,
+			       unsigned            n_monitors,
+			       float              *x,
+			       float              *y)
+{
+  ClutterPoint current;
+  unsigned int i;
+
+  clutter_input_device_get_coords (device, NULL, &current);
+
+  /* if we're trying to escape, clamp to the CRTC we're coming from */
+  for (i = 0; i < n_monitors; i++)
+    {
+      MetaMonitorInfo *monitor = &monitors[i];
+      int left, right, top, bottom;
+      float nx, ny;
+
+      left = monitor->rect.x;
+      right = left + monitor->rect.width;
+      top = monitor->rect.y;
+      bottom = left + monitor->rect.height;
+
+      nx = current.x;
+      ny = current.y;
+
+      if ((nx >= left) && (nx < right) && (ny >= top) && (ny < bottom))
+	{
+	  if (*x < left)
+	    *x = left;
+	  if (*x >= right)
+	    *x = right - 1;
+	  if (*y < top)
+	    *y = top;
+	  if (*y >= bottom)
+	    *y = bottom - 1;
+
+	  return;
+        }
+    }
+}
+
+static void
+pointer_constrain_callback (ClutterInputDevice *device,
+			    guint32             time,
+			    float              *new_x,
+			    float              *new_y,
+			    gpointer            user_data)
+{
+  MetaMonitorManager *monitor_manager;
+  MetaMonitorInfo *monitors;
+  unsigned int n_monitors;
+  gboolean ret;
+
+  monitor_manager = meta_monitor_manager_get ();
+  monitors = meta_monitor_manager_get_monitor_infos (monitor_manager, &n_monitors);
+
+  /* if we're moving inside a monitor, we're fine */
+  ret = check_all_screen_monitors(monitors, n_monitors, *new_x, *new_y);
+  if (ret == TRUE)
+    return;
+
+  /* if we're trying to escape, clamp to the CRTC we're coming from */
+  constrain_all_screen_monitors(device, monitors, n_monitors, new_x, new_y);
+}
+
+void
+meta_wayland_pointer_init (MetaWaylandPointer *pointer,
+			   gboolean            is_native)
+{
+  ClutterDeviceManager *manager;
+  ClutterInputDevice *device;
+  ClutterPoint current;
+
   memset (pointer, 0, sizeof *pointer);
   wl_list_init (&pointer->resource_list);
   pointer->focus_listener.notify = lose_pointer_focus;
@@ -131,9 +240,16 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer)
   pointer->grab = &pointer->default_grab;
   wl_signal_init (&pointer->focus_signal);
 
-  /* FIXME: Pick better co-ords. */
-  pointer->x = wl_fixed_from_int (100);
-  pointer->y = wl_fixed_from_int (100);
+  manager = clutter_device_manager_get_default ();
+  device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
+
+  if (is_native)
+    clutter_evdev_set_pointer_constrain_callback (manager, pointer_constrain_callback,
+						  pointer, NULL);
+
+  clutter_input_device_get_coords (device, NULL, &current);
+  pointer->x = wl_fixed_from_double (current.x);
+  pointer->y = wl_fixed_from_double (current.y);
 }
 
 void

@@ -60,7 +60,7 @@ struct _MetaWaylandPointer
   guint32 grab_serial;
   guint32 grab_time;
 
-  wl_fixed_t x, y;
+  wl_fixed_t x, y; /* TODO: remove, use ClutterInputDevice instead */
   MetaWaylandSurface *current;
   struct wl_listener current_listener;
   wl_fixed_t current_x, current_y;
@@ -69,7 +69,8 @@ struct _MetaWaylandPointer
 };
 
 void
-meta_wayland_pointer_init (MetaWaylandPointer *pointer);
+meta_wayland_pointer_init (MetaWaylandPointer *pointer,
+			   gboolean            is_native);
 
 void
 meta_wayland_pointer_release (MetaWaylandPointer *pointer);
