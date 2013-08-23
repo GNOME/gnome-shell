@@ -53,7 +53,7 @@
   "attribute vec3 cogl_normal_in;\n"
 
 #define _COGL_FRAGMENT_SHADER_BOILERPLATE \
-  "#if __VERSION__ == 100\n" \
+  "#ifdef GL_ES\n" \
   "precision highp float;\n" \
   "#endif\n" \
   _COGL_COMMON_SHADER_BOILERPLATE \
