@@ -1172,14 +1172,14 @@ const NMVPNSection = new Lang.Class({
         this._client.deactivate_connection(activeConnection);
     },
 
-    addActiveConnection: function(activeConnection) {
-        let item = this._connectionItems.get(activeConnection._connection.get_uuid());
-        item.setActiveConnection(activeConnection);
-    },
-
-    removeActiveConnection: function(activeConnection) {
-        let item = this._connectionItems.get(activeConnection._connection.get_uuid());
-        item.setActiveConnection(null);
+    setActiveConnections: function(vpnConnections) {
+        this._connectionItems.values().forEach(function(item) {
+            item.setActiveConnection(null);
+        });
+        vpnConnections.forEach(Lang.bind(this, function(a) {
+            let item = this._connectionItems.get(a._connection.get_uuid());
+            item.setActiveConnection(a);
+        }));
     },
 
     _makeConnectionItem: function(connection) {
@@ -1277,7 +1277,8 @@ const NMApplet = new Lang.Class({
         this._client.connect('notify::manager-running', Lang.bind(this, this._syncNMState));
         this._client.connect('notify::networking-enabled', Lang.bind(this, this._syncNMState));
         this._client.connect('notify::state', Lang.bind(this, this._syncNMState));
-        this._client.connect('notify::active-connections', Lang.bind(this, this._syncActiveConnections));
+        this._client.connect('notify::physical-connection', Lang.bind(this, this._syncMainConnection));
+        this._client.connect('notify::active-connections', Lang.bind(this, this._syncVPNConnections));
         this._client.connect('device-added', Lang.bind(this, this._deviceAdded));
         this._client.connect('device-removed', Lang.bind(this, this._deviceRemoved));
         this._settings.connect('new-connection', Lang.bind(this, this._newConnection));
@@ -1410,136 +1411,77 @@ const NMApplet = new Lang.Class({
         devices.splice(pos, 1);
     },
 
-    _getSupportedActiveConnections: function() {
-        let activeConnections = this._client.get_active_connections() || [ ];
-        let supportedConnections = [];
+    _ensureActiveConnectionProps: function(a) {
+        if (!a._connection) {
+            a._connection = this._settings.get_connection_by_path(a.connection);
 
-        for (let i = 0; i < activeConnections.length; i++) {
-            let devices = activeConnections[i].get_devices();
-            if (!devices || !devices[0])
-                continue;
-            // Ignore connections via unrecognized device types
-            if (!this._dtypes[devices[0].device_type])
-                continue;
-
-            // Ignore slave connections
-            let connectionPath = activeConnections[i].connection;
-            let connection = this._settings.get_connection_by_path(connectionPath);
-
-            // connection might be null, if libnm-glib fails to create
-            // the object due to version incompatibility, or if the
-            // connection is not visible to the current user
-            if (connection && this._ignoreConnection(connection))
-                continue;
-
-            supportedConnections.push(activeConnections[i]);
+            // This list is guaranteed to have only one device in it.
+            let device = a.get_devices()[0]._delegate;
+            a._primaryDevice = device;
         }
-        return supportedConnections;
     },
 
-    _syncActiveConnections: function() {
-        let closedConnections = [ ];
-        let newActiveConnections = this._getSupportedActiveConnections();
-        for (let i = 0; i < this._activeConnections.length; i++) {
-            let a = this._activeConnections[i];
-            if (newActiveConnections.indexOf(a) == -1) // connection is removed
-                closedConnections.push(a);
+    _getMainConnection: function() {
+        let connection;
+
+        connection = this._client.get_physical_connection();
+        if (connection) {
+            this._ensureActiveConnectionProps(connection);
+            return connection;
         }
 
-        for (let i = 0; i < closedConnections.length; i++) {
-            let a = closedConnections[i];
-            if (a._type == NetworkManager.SETTING_VPN_SETTING_NAME)
-                this._vpnSection.removeActiveConnection(a);
-            if (a._inited) {
-                a.disconnect(a._notifyStateId);
-                a.disconnect(a._notifyDefaultId);
-                a.disconnect(a._notifyDefault6Id);
-                a._inited = false;
-            }
+        connection = this._client.get_activating_connection();
+        if (connection) {
+            this._ensureActiveConnectionProps(connection);
+            return connection;
         }
 
+        return null;
+    },
+
+    _syncMainConnection: function() {
         if (this._mainConnectionIconChangedId > 0) {
             this._mainConnection._primaryDevice.disconnect(this._mainConnectionIconChangedId);
             this._mainConnectionIconChangedId = 0;
         }
 
-        this._activeConnections = newActiveConnections;
-        this._mainConnection = null;
-
-        let activating = null;
-        let default_ip4 = null;
-        let default_ip6 = null;
-        let active_any = null;
-        for (let i = 0; i < this._activeConnections.length; i++) {
-            let a = this._activeConnections[i];
-
-            if (!a._inited) {
-                a._notifyDefaultId = a.connect('notify::default', Lang.bind(this, this._syncActiveConnections));
-                a._notifyDefault6Id = a.connect('notify::default6', Lang.bind(this, this._syncActiveConnections));
-                a._notifyStateId = a.connect('notify::state', Lang.bind(this, this._notifyActivated));
-
-                a._inited = true;
-            }
-
-            if (!a._connection) {
-                a._connection = this._settings.get_connection_by_path(a.connection);
-
-                if (a._connection) {
-                    a._type = a._connection._type;
-                    a._section = this._ctypes[a._type];
-                } else {
-                    a._connection = null;
-                    a._type = null;
-                    a._section = null;
-                    log('Cannot find connection for active (or connection cannot be read)');
-                }
-            }
-
-            if (a['default'])
-                default_ip4 = a;
-            if (a.default6)
-                default_ip6 = a;
-
-            if (a.state == NetworkManager.ActiveConnectionState.ACTIVATING)
-                activating = a;
-            else if (a.state == NetworkManager.ActiveConnectionState.ACTIVATED)
-                active_any = a;
-
-            if (!a._primaryDevice) {
-                if (a._type != NetworkManager.SETTING_VPN_SETTING_NAME) {
-                    // This list is guaranteed to have one device in it.
-                    a._primaryDevice = a.get_devices()[0]._delegate;
-                } else {
-                    a._primaryDevice = this._vpnSection;
-                    this._vpnSection.addActiveConnection(a);
-                }
-
-                if (a.state == NetworkManager.ActiveConnectionState.ACTIVATED
-                    && a._primaryDevice && a._primaryDevice._notification) {
-                    a._primaryDevice._notification.destroy();
-                    a._primaryDevice._notification = null;
-                }
-            }
+        if (this._mainConnectionStateChangedId > 0) {
+            this._mainConnection.disconnect(this._mainConnectionStateChangedId);
+            this._mainConnectionStateChangedId = 0;
         }
 
-        this._mainConnection = default_ip4 || default_ip6 || active_any || activating || null;
+        this._mainConnection = this._getMainConnection();
 
         if (this._mainConnection) {
-            let dev = this._mainConnection._primaryDevice;
-            this._mainConnectionIconChangedId = dev.connect('icon-changed', Lang.bind(this, this._updateIcon));
+            if (this._mainConnection._primaryDevice)
+                this._mainConnectionIconChangedId = this._mainConnection._primaryDevice.connect('icon-changed', Lang.bind(this, this._updateIcon));
+            this._mainConnectionStateChangedId = this._mainConnection.connect('notify::state', Lang.bind(this, this._mainConnectionStateChanged));
+            this._mainConnectionStateChanged();
         }
 
         this._updateIcon();
     },
 
-    _notifyActivated: function(activeConnection) {
-        if (activeConnection.state == NetworkManager.ActiveConnectionState.ACTIVATED
-            && activeConnection._primaryDevice && activeConnection._primaryDevice._notification) {
-            activeConnection._primaryDevice._notification.destroy();
-            activeConnection._primaryDevice._notification = null;
-        }
+    _syncVPNConnections: function() {
+        let activeConnections = this._client.get_active_connections() || [];
+        let vpnConnections = activeConnections.filter(function(a) {
+            return (a instanceof NMClient.VPNConnection);
+        });
+        vpnConnections.forEach(Lang.bind(this, function(a) {
+            this._ensureActiveConnectionProps(a);
+        }));
+        this._vpnSection.setActiveConnections(vpnConnections);
 
-        this._syncActiveConnections();
+        this._updateIcon();
+    },
+
+    _mainConnectionStateChanged: function() {
+        let a = this._mainConnection;
+        let dev = a._primaryDevice;
+        if (a.state == NetworkManager.ActiveConnectionState.ACTIVATED && dev && dev._notification) {
+            dev._notification.destroy();
+            dev._notification = null;
+        }
     },
 
     _ignoreConnection: function(connection) {
@@ -1576,7 +1518,6 @@ const NMApplet = new Lang.Class({
 
     _newConnection: function(settings, connection) {
         this._addConnection(connection);
-        this._syncActiveConnections();
     },
 
     _connectionRemoved: function(connection) {
@@ -1627,24 +1568,18 @@ const NMApplet = new Lang.Class({
     },
 
     _syncNMState: function() {
-        this._syncActiveConnections();
-
         this.indicators.visible = this._client.manager_running;
         this.menu.actor.visible = this._client.networking_enabled;
     },
 
     _updateIcon: function() {
-        let mc = this._mainConnection;
-
-        if (!this._client.networking_enabled || !mc) {
+        if (!this._client.networking_enabled || !this._mainConnection) {
             this._primaryIndicator.icon_name = 'network-offline-symbolic';
         } else {
             let dev = this._mainConnection._primaryDevice;
-            if (!dev) {
-                log('Active connection with no primary device?');
-                return;
-            }
-            this._primaryIndicator.icon_name = dev.getIndicatorIcon(mc);
+            this._primaryIndicator.visible = (dev != null);
+            if (dev)
+                this._primaryIndicator.icon_name = dev.getIndicatorIcon();
         }
 
         this._vpnIndicator.icon_name = this._vpnSection.getIndicatorIcon();
