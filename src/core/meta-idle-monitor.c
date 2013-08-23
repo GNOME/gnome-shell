@@ -57,6 +57,9 @@ struct _MetaIdleMonitor
   int          sync_event_base;
   XSyncCounter counter;
   XSyncAlarm   user_active_alarm;
+
+  /* Wayland implementation */
+  guint64      last_event_time;
 };
 
 struct _MetaIdleMonitorClass
@@ -75,6 +78,9 @@ typedef struct
 
   /* x11 */
   XSyncAlarm	            xalarm;
+
+  /* wayland */
+  GSource                  *timeout_source;
 } MetaIdleMonitorWatch;
 
 enum
@@ -290,6 +296,9 @@ idle_monitor_watch_free (MetaIdleMonitorWatch *watch)
       g_hash_table_remove (monitor->alarms, (gpointer) watch->xalarm);
     }
 
+  if (watch->timeout_source != NULL)
+    g_source_destroy (watch->timeout_source);
+
   g_slice_free (MetaIdleMonitorWatch, watch);
 }
 
@@ -368,8 +377,11 @@ meta_idle_monitor_constructed (GObject *object)
 {
   MetaIdleMonitor *monitor = META_IDLE_MONITOR (object);
 
-  monitor->display = meta_get_display ()->xdisplay;
-  init_xsync (monitor);
+  if (!meta_is_wayland_compositor ())
+    {
+      monitor->display = meta_get_display ()->xdisplay;
+      init_xsync (monitor);
+    }
 }
 
 static void
@@ -448,6 +460,25 @@ meta_idle_monitor_get_for_device (int device_id)
   return device_monitors[device_id];
 }
 
+static gboolean
+wayland_dispatch_timeout (GSource     *source,
+                          GSourceFunc  callback,
+                          gpointer     user_data)
+{
+  MetaIdleMonitorWatch *watch = user_data;
+
+  fire_watch (watch);
+  g_source_set_ready_time (watch->timeout_source, -1);
+  return TRUE;
+}
+
+static GSourceFuncs wayland_source_funcs = {
+  NULL, /* prepare */
+  NULL, /* check */
+  wayland_dispatch_timeout,
+  NULL, /* finalize */
+};
+
 static MetaIdleMonitorWatch *
 make_watch (MetaIdleMonitor           *monitor,
             guint64                    timeout_msec,
@@ -465,17 +496,34 @@ make_watch (MetaIdleMonitor           *monitor,
   watch->notify = notify;
   watch->timeout_msec = timeout_msec;
 
-  if (timeout_msec != 0)
+  if (meta_is_wayland_compositor ())
     {
-      watch->xalarm = _xsync_alarm_set (monitor, XSyncPositiveTransition, timeout_msec, TRUE);
+      if (timeout_msec != 0)
+        {
+          GSource *source = g_source_new (&wayland_source_funcs, sizeof (GSource));
 
-      g_hash_table_add (monitor->alarms, (gpointer) watch->xalarm);
+          g_source_set_callback (source, NULL, watch, NULL);
+          g_source_set_ready_time (source, monitor->last_event_time + timeout_msec * 1000);
+          g_source_attach (source, NULL);
+          g_source_unref (source);
+
+          watch->timeout_source = source;
+        }
     }
   else
     {
-      watch->xalarm = monitor->user_active_alarm;
+      if (timeout_msec != 0)
+        {
+          watch->xalarm = _xsync_alarm_set (monitor, XSyncPositiveTransition, timeout_msec, TRUE);
 
-      set_alarm_enabled (monitor->display, monitor->user_active_alarm, TRUE);
+          g_hash_table_add (monitor->alarms, (gpointer) watch->xalarm);
+        }
+      else
+        {
+          watch->xalarm = monitor->user_active_alarm;
+
+          set_alarm_enabled (monitor->display, monitor->user_active_alarm, TRUE);
+        }
     }
 
   g_hash_table_insert (monitor->watches,
@@ -592,10 +640,69 @@ meta_idle_monitor_get_idletime (MetaIdleMonitor *monitor)
 {
   XSyncValue value;
 
-  if (!XSyncQueryCounter (monitor->display, monitor->counter, &value))
-    return -1;
+  if (meta_is_wayland_compositor ())
+    {
+      return (g_get_monotonic_time () - monitor->last_event_time) / 1000;
+    }
+  else
+    {
+      if (!XSyncQueryCounter (monitor->display, monitor->counter, &value))
+        return -1;
 
-  return _xsyncvalue_to_int64 (value);
+      return _xsyncvalue_to_int64 (value);
+    }
+}
+
+typedef struct {
+  MetaIdleMonitor *monitor;
+  GList *fired_watches;
+} CheckWaylandClosure;
+
+static gboolean
+check_wayland_watch (gpointer key,
+                     gpointer value,
+                     gpointer user_data)
+{
+  MetaIdleMonitorWatch *watch = value;
+  CheckWaylandClosure *closure = user_data;
+  gboolean steal;
+
+  if (watch->timeout_msec == 0)
+    {
+      closure->fired_watches = g_list_prepend (closure->fired_watches, watch);
+      steal = TRUE;
+    }
+  else
+    {
+      g_source_set_ready_time (watch->timeout_source,
+                               closure->monitor->last_event_time +
+                               watch->timeout_msec * 1000);
+      steal = FALSE;
+    }
+
+  return steal;
+}
+
+static void
+fire_wayland_watch (gpointer watch,
+                    gpointer data)
+{
+  fire_watch (watch);
+}
+
+void
+meta_idle_monitor_reset_idletime (MetaIdleMonitor *monitor)
+{
+  CheckWaylandClosure closure;
+
+  monitor->last_event_time = g_get_monotonic_time ();
+
+  closure.monitor = monitor;
+  closure.fired_watches = NULL;
+  g_hash_table_foreach_steal (monitor->watches, check_wayland_watch, &closure);
+
+  g_list_foreach (closure.fired_watches, fire_wayland_watch, NULL);
+  g_list_free (closure.fired_watches);
 }
 
 static gboolean
