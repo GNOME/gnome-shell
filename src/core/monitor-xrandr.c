@@ -777,17 +777,51 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
         {
           MetaMonitorMode *mode;
           XID *outputs;
-          int j, n_outputs;
+          unsigned int j, n_outputs;
           int width, height;
           Status ok;
+          unsigned long old_controlled_mask;
+          unsigned long new_controlled_mask;
 
           mode = crtc_info->mode;
 
           n_outputs = crtc_info->outputs->len;
           outputs = g_new (XID, n_outputs);
 
+          old_controlled_mask = 0;
+          for (j = 0; j < manager->n_outputs; j++)
+            {
+              MetaOutput *output;
+
+              output = &manager->outputs[j];
+
+              if (output->crtc == crtc)
+                old_controlled_mask |= 1UL << j;
+            }
+
+          new_controlled_mask = 0;
           for (j = 0; j < n_outputs; j++)
-            outputs[j] = ((MetaOutput**)crtc_info->outputs->pdata)[j]->output_id;
+            {
+              MetaOutput *output;
+
+              output = ((MetaOutput**)crtc_info->outputs->pdata)[j];
+
+              output->is_dirty = TRUE;
+              output->crtc = crtc;
+              new_controlled_mask |= 1UL << j;
+
+              outputs[j] = output->output_id;
+            }
+
+          if (crtc->current_mode == mode &&
+              crtc->rect.x == crtc_info->x &&
+              crtc->rect.y == crtc_info->y &&
+              crtc->transform == crtc_info->transform &&
+              old_controlled_mask == new_controlled_mask)
+            {
+              /* No change */
+              goto next;
+            }
 
           meta_error_trap_push (meta_get_display ());
           ok = XRRSetCrtcConfig (manager_xrandr->xdisplay,
@@ -806,10 +840,8 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
                             (unsigned)(crtc->crtc_id), (unsigned)(mode->mode_id),
                             mode->width, mode->height, (float)mode->refresh_rate,
                             crtc_info->x, crtc_info->y, crtc_info->transform);
-              continue;
+              goto next;
             }
-
-          g_free (outputs);
 
           if (meta_monitor_transform_is_rotated (crtc_info->transform))
             {
@@ -829,15 +861,8 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
           crtc->current_mode = mode;
           crtc->transform = crtc_info->transform;
 
-          for (j = 0; j < n_outputs; j++)
-            {
-              MetaOutput *output;
-
-              output = ((MetaOutput**)crtc_info->outputs->pdata)[j];
-
-              output->is_dirty = TRUE;
-              output->crtc = crtc;
-            }
+        next:
+          g_free (outputs);
         }
     }
 
