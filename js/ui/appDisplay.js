@@ -884,6 +884,10 @@ const FolderView = new Lang.Class({
         let scrollableContainer = new St.BoxLayout({ vertical: true, reactive: true });
         scrollableContainer.add_actor(this._grid.actor);
         this.actor.add_actor(scrollableContainer);
+
+        let action = new Clutter.PanAction({ interpolate: true });
+        action.connect('pan', Lang.bind(this, this._onPan));
+        this.actor.add_action(action);
     },
 
     _getItemId: function(item) {
@@ -919,6 +923,13 @@ const FolderView = new Lang.Class({
         }
 
         return icon;
+    },
+
+    _onPan: function(action) {
+        let [dist, dx, dy] = action.get_motion_delta(0);
+        let adjustment = this.actor.vscroll.adjustment;
+        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
+        return false;
     },
 
     adaptToSize: function(width, height) {
