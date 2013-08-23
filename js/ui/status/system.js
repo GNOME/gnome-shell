@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const AccountsService = imports.gi.AccountsService;
+const Clutter = imports.gi.Clutter;
 const Gdm = imports.gi.Gdm;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -23,6 +24,63 @@ const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
 const DISABLE_LOG_OUT_KEY = 'disable-log-out';
 const ALWAYS_SHOW_LOG_OUT_KEY = 'always-show-log-out';
 
+const AltSwitcher = new Lang.Class({
+    Name: 'AltSwitcher',
+
+    _init: function(standard, alternate) {
+        this._standard = standard;
+        this._standard.connect('notify::visible', Lang.bind(this, this._sync));
+
+        this._alternate = alternate;
+        this._alternate.connect('notify::visible', Lang.bind(this, this._sync));
+
+        this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
+
+        this.actor = new St.Bin();
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+    },
+
+    _sync: function() {
+        let childToShow = null;
+
+        if (this._standard.visible && this._alternate.visible) {
+            let [x, y, mods] = global.get_pointer();
+            let altPressed = (mods & Clutter.ModifierType.MOD1_MASK) != 0;
+            childToShow = altPressed ? this._alternate : this._standard;
+        } else if (this._standard.visible) {
+            childToShow = this._standard;
+        } else if (this._alternate.visible) {
+            childToShow = this._alternate;
+        }
+
+        if (this.actor.get_child() != childToShow) {
+            this.actor.set_child(childToShow);
+
+            // The actors might respond to hover, so
+            // sync the pointer to make sure they update.
+            global.sync_pointer();
+        }
+    },
+
+    _onDestroy: function() {
+        if (this._capturedEventId > 0) {
+            global.stage.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
+    },
+
+    _onCapturedEvent: function(actor, event) {
+        let type = event.type();
+        if (type == Clutter.EventType.KEY_PRESS || type == Clutter.EventType.KEY_RELEASE) {
+            let key = event.get_key_symbol();
+            if (key == Clutter.KEY_Alt_L || key == Clutter.KEY_Alt_R)
+                this._sync();
+        }
+
+        return false;
+    },
+});
+
 const Indicator = new Lang.Class({
     Name: 'SystemIndicator',
     Extends: PanelMenu.SystemIndicator,
@@ -36,7 +94,9 @@ const Indicator = new Lang.Class({
         this._orientationSettings = new Gio.Settings({ schema: 'org.gnome.settings-daemon.peripherals.touchscreen' });
 
         this._session = new GnomeSession.SessionManager();
+        this._loginManager = LoginManager.getLoginManager();
         this._haveShutdown = true;
+        this._haveSuspend = true;
 
         this._userManager = AccountsService.UserManager.get_default();
         this._user = this._userManager.get_user(GLib.get_user_name());
@@ -72,6 +132,7 @@ const Indicator = new Lang.Class({
                     return;
 
                 this._updateHaveShutdown();
+                this._updateHaveSuspend();
             }));
         this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
                                        Lang.bind(this, this._updateHaveShutdown));
@@ -99,7 +160,7 @@ const Indicator = new Lang.Class({
         let visible = (this._settingsAction.visible ||
                        this._orientationLockAction.visible ||
                        this._lockScreenAction.visible ||
-                       this._powerOffAction.visible);
+                       this._altSwitcher.actor.visible);
 
         this._actionsItem.actor.visible = visible;
     },
@@ -107,6 +168,7 @@ const Indicator = new Lang.Class({
     _sessionUpdated: function() {
         this._updateLockScreen();
         this._updatePowerOff();
+        this._updateSuspend();
         this._updateMultiUser();
         this._settingsAction.visible = Main.sessionMode.allowSettings;
         this._updateActionsVisibility();
@@ -187,17 +249,29 @@ const Indicator = new Lang.Class({
     },
 
     _updateHaveShutdown: function() {
-        this._session.CanShutdownRemote(Lang.bind(this,
-            function(result, error) {
-                if (!error) {
-                    this._haveShutdown = result[0];
-                    this._updatePowerOff();
-                }
-            }));
+        this._session.CanShutdownRemote(Lang.bind(this, function(result, error) {
+            if (error)
+                return;
+
+            this._haveShutdown = result[0];
+            this._updatePowerOff();
+        }));
     },
 
     _updatePowerOff: function() {
         this._powerOffAction.visible = this._haveShutdown && !Main.sessionMode.isLocked;
+        this._updateActionsVisibility();
+    },
+
+    _updateHaveSuspend: function() {
+        this._loginManager.canSuspend(Lang.bind(this, function(result) {
+            this._haveSuspend = result;
+            this._updateSuspend();
+        }));
+    },
+
+    _updateSuspend: function() {
+        this._suspendAction.visible = this._haveSuspend && !Main.sessionMode.isLocked;
         this._updateActionsVisibility();
     },
 
@@ -258,9 +332,14 @@ const Indicator = new Lang.Class({
         this._lockScreenAction.connect('clicked', Lang.bind(this, this._onLockScreenClicked));
         item.actor.add(this._lockScreenAction, { expand: true, x_fill: false });
 
+        this._suspendAction = this._createActionButton('media-playback-pause-symbolic', _("Suspend"));
+        this._suspendAction.connect('clicked', Lang.bind(this, this._onSuspendClicked));
+
         this._powerOffAction = this._createActionButton('system-shutdown-symbolic', _("Power Off"));
         this._powerOffAction.connect('clicked', Lang.bind(this, this._onPowerOffClicked));
-        item.actor.add(this._powerOffAction, { expand: true, x_fill: false });
+
+        this._altSwitcher = new AltSwitcher(this._powerOffAction, this._suspendAction);
+        item.actor.add(this._altSwitcher.actor, { expand: true, x_fill: false });
 
         this._actionsItem = item;
         this.menu.addMenuItem(item);
@@ -303,5 +382,10 @@ const Indicator = new Lang.Class({
         this.menu.itemActivated();
         Main.overview.hide();
         this._session.ShutdownRemote(0);
-    }
+    },
+
+    _onSuspendClicked: function() {
+        this.menu.itemActivated();
+        this._loginManager.suspend();
+    },
 });
