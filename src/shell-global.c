@@ -1018,8 +1018,6 @@ void
 shell_global_end_modal (ShellGlobal *global,
                         guint32      timestamp)
 {
-  ClutterActor *actor;
-
   if (!global->has_modal)
     return;
 

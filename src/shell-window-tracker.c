@@ -191,10 +191,8 @@ get_app_from_window_wmclass (MetaWindow  *window)
 {
   ShellApp *app;
   ShellAppSystem *appsys;
-  char *appid;
   const char *wm_class;
   const char *wm_instance;
-  char *with_desktop;
 
   appsys = shell_app_system_get_default ();
 
@@ -372,11 +370,8 @@ static ShellApp *
 get_app_for_window (ShellWindowTracker    *tracker,
                     MetaWindow            *window)
 {
-  ShellAppSystem *app_system;
   ShellApp *result = NULL;
   const char *startup_id;
-
-  app_system = shell_app_system_get_default ();
 
   /* First, we check whether we already know about this window,
    * if so, just return that.

@@ -419,13 +419,12 @@ shell_app_usage_init (ShellAppUsage *self)
   self->currently_idle = FALSE;
   self->enable_monitoring = FALSE;
 
-  g_object_get (shell_global_get(), "userdatadir", &shell_userdata_dir, NULL),
+  g_object_get (global, "userdatadir", &shell_userdata_dir, NULL),
   path = g_build_filename (shell_userdata_dir, DATA_FILENAME, NULL);
   g_free (shell_userdata_dir);
   self->configfile = g_file_new_for_path (path);
   g_free (path);
   restore_from_file (self);
-
 
   self->privacy_settings = g_settings_new(PRIVACY_SCHEMA);
   g_signal_connect (self->privacy_settings,
