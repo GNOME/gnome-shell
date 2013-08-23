@@ -2244,8 +2244,6 @@ StScrollBar StButton#vhandle:active {
 .framed-user-icon {
     border: 2px solid #8b8b8b;
     border-radius: 5px;
-    width: 48pt;
-    height: 48pt;
     background-size: contain;
 }
 

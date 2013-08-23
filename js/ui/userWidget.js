@@ -29,7 +29,9 @@ const Avatar = new Lang.Class({
 
         this.actor = new St.Bin({ style_class: params.styleClass,
                                   track_hover: params.reactive,
-                                  reactive: params.reactive });
+                                  reactive: params.reactive,
+                                  width: this._iconSize,
+                                  height: this._iconSize });
     },
 
     setSensitive: function(sensitive) {
