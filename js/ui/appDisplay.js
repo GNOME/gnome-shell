@@ -76,7 +76,8 @@ const BaseAppView = new Lang.Class({
                                                 columnLimit: MAX_COLUMNS,
                                                 minRows: MIN_ROWS,
                                                 minColumns: MIN_COLUMNS,
-                                                fillParent: false });
+                                                fillParent: false,
+                                                padWithSpacing: true });
         params = Params.parse(params, { usePagination: false });
 
         if(params.usePagination)
