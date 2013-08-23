@@ -51,6 +51,33 @@ void  clutter_evdev_set_open_callback (ClutterOpenDeviceCallback callback,
 void  clutter_evdev_release_devices (void);
 void  clutter_evdev_reclaim_devices (void);
 
+/**
+ * ClutterPointerConstrainCallback:
+ * @device: the core pointer device
+ * @time: the event time in milliseconds
+ * @x: (inout): the new X coordinate
+ * @y: (inout): the new Y coordinate
+ * @user_data:
+ *
+ * This callback will be called for all pointer motion events, and should
+ * update (@x, @y) to constrain the pointer position appropriately.
+ * The subsequent motion event will use the updated values as the new coordinates.
+ * Note that the coordinates are not clamped to the stage size, and the callback
+ * must make sure that this happens before it returns.
+ * Also note that the event will be emitted even if the pointer is constrained
+ * to be in the same position.
+ */
+typedef void (*ClutterPointerConstrainCallback) (ClutterInputDevice *device,
+						 guint32             time,
+						 float              *x,
+						 float              *y,
+						 gpointer            user_data);
+
+void  clutter_evdev_set_pointer_constrain_callback (ClutterDeviceManager            *evdev,
+						    ClutterPointerConstrainCallback  callback,
+						    gpointer                         user_data,
+						    GDestroyNotify                   user_data_notify);
+
 struct xkb_state * clutter_evdev_get_keyboard_state (ClutterDeviceManager *evdev);
 void               clutter_evdev_set_keyboard_map   (ClutterDeviceManager *evdev,
 						     struct xkb_keymap    *keymap);

@@ -73,6 +73,10 @@ struct _ClutterDeviceManagerEvdevPrivate
   ClutterInputDevice *core_pointer;
   ClutterInputDevice *core_keyboard;
 
+  ClutterPointerConstrainCallback constrain_callback;
+  gpointer                        constrain_data;
+  GDestroyNotify                  constrain_data_notify;
+
   ClutterStageManager *stage_manager;
   guint stage_added_handler;
   guint stage_removed_handler;
@@ -259,8 +263,17 @@ notify_relative_motion (ClutterEventSource *source,
   clutter_input_device_get_coords (manager_evdev->priv->core_pointer, NULL, &point);
   new_x = point.x + dx;
   new_y = point.y + dy;
-  new_x = CLAMP (new_x, 0.f, stage_width - 1);
-  new_y = CLAMP (new_y, 0.f, stage_height - 1);
+
+  if (manager_evdev->priv->constrain_callback)
+    {
+      manager_evdev->priv->constrain_callback (manager_evdev->priv->core_pointer, time_, &new_x, &new_y,
+					       manager_evdev->priv->constrain_data);
+    }
+  else
+    {
+      new_x = CLAMP (new_x, 0.f, stage_width - 1);
+      new_y = CLAMP (new_y, 0.f, stage_height - 1);
+    }
 
   event->motion.time = time_;
   event->motion.stage = stage;
@@ -1029,6 +1042,9 @@ clutter_device_manager_evdev_finalize (GObject *object)
     }
   g_slist_free (priv->event_sources);
 
+  if (priv->constrain_data_notify)
+    priv->constrain_data_notify (priv->constrain_data);
+
   G_OBJECT_CLASS (clutter_device_manager_evdev_parent_class)->finalize (object);
 }
 
@@ -1312,4 +1328,37 @@ clutter_evdev_set_keyboard_map (ClutterDeviceManager *evdev,
 
   for (i = 0; i < priv->keys->len; i++)
     xkb_state_update_key (priv->xkb, g_array_index (priv->keys, guint32, i), XKB_KEY_DOWN);
+}
+
+/**
+ * clutter_evdev_set_pointer_constrain_callback:
+ * @evdev: the #ClutterDeviceManager created by the evdev backend
+ * @callback: the callback
+ * @user_data:
+ * @user_data_notify:
+ *
+ * Sets a callback to be invoked for every pointer motion. The callback
+ * can then modify the new pointer coordinates to constrain movement within
+ * a specific region.
+ */
+void
+clutter_evdev_set_pointer_constrain_callback (ClutterDeviceManager            *evdev,
+					      ClutterPointerConstrainCallback  callback,
+					      gpointer                         user_data,
+					      GDestroyNotify                   user_data_notify)
+{
+  ClutterDeviceManagerEvdev *manager_evdev;
+  ClutterDeviceManagerEvdevPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev));
+
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (evdev);
+  priv = manager_evdev->priv;
+
+  if (priv->constrain_data_notify)
+    priv->constrain_data_notify (priv->constrain_data);
+
+  priv->constrain_callback = callback;
+  priv->constrain_data = user_data;
+  priv->constrain_data_notify = user_data_notify;
 }
