@@ -56,6 +56,13 @@ COGL_BEGIN_DECLS
 
 /**
  * CoglQuaternion:
+ * @w: based on the angle of rotation it is cos(𝜃/2)
+ * @x: based on the angle of rotation and x component of the axis of
+ *     rotation it is sin(𝜃/2)*axis.x
+ * @y: based on the angle of rotation and y component of the axis of
+ *     rotation it is sin(𝜃/2)*axis.y
+ * @z: based on the angle of rotation and z component of the axis of
+ *     rotation it is sin(𝜃/2)*axis.z
  *
  * A quaternion is comprised of a scalar component and a 3D vector
  * component. The scalar component is normally referred to as w and the
@@ -113,13 +120,6 @@ COGL_BEGIN_DECLS
  * </listitem>
  * </itemizedlist>
  *
- * @w: based on the angle of rotation it is cos(𝜃/2)
- * @x: based on the angle of rotation and x component of the axis of
- * rotation it is sin(𝜃/2)*axis.x
- * @y: based on the angle of rotation and y component of the axis of
- * rotation it is sin(𝜃/2)*axis.y
- * @z: based on the angle of rotation and z component of the axis of
- * rotation it is sin(𝜃/2)*axis.z
  */
 struct _CoglQuaternion
 {
