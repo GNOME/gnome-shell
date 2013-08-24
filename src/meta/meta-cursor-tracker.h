@@ -27,6 +27,7 @@
 #include <glib-object.h>
 #include <meta/types.h>
 #include <meta/workspace.h>
+#include <cogl/cogl.h>
 
 #define META_TYPE_CURSOR_TRACKER            (meta_cursor_tracker_get_type ())
 #define META_CURSOR_TRACKER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_CURSOR_TRACKER, MetaCursorTracker))

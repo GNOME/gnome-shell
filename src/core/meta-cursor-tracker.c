@@ -39,7 +39,10 @@
 
 #include "meta-cursor-tracker-private.h"
 #include "screen-private.h"
+
+#ifdef HAVE_WAYLAND
 #include "meta-wayland-private.h"
+#endif
 
 #define META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_X 7
 #define META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_Y 4
@@ -123,6 +126,7 @@ meta_cursor_tracker_class_init (MetaCursorTrackerClass *klass)
                                           G_TYPE_NONE, 0);
 }
 
+#ifdef HAVE_WAYLAND
 static MetaCursorTracker *
 make_wayland_cursor_tracker (MetaScreen *screen)
 {
@@ -139,6 +143,7 @@ make_wayland_cursor_tracker (MetaScreen *screen)
 
   return self;
 }
+#endif
 
 static MetaCursorTracker *
 make_x11_cursor_tracker (MetaScreen *screen)
@@ -169,9 +174,11 @@ meta_cursor_tracker_get_for_screen (MetaScreen *screen)
   if (screen->cursor_tracker)
     return screen->cursor_tracker;
 
+#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     self = make_wayland_cursor_tracker (screen);
   else
+#endif
     self = make_x11_cursor_tracker (screen);
 
   screen->cursor_tracker = self;

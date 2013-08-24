@@ -25,6 +25,7 @@
 #define META_CURSOR_TRACKER_PRIVATE_H
 
 #include <meta/meta-cursor-tracker.h>
+#include <clutter/clutter.h>
 
 gboolean meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
 					    XEvent            *xevent);
