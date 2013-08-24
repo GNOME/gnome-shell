@@ -51,7 +51,9 @@ typedef struct
   union
   {
     struct wl_shm_buffer *shm_buffer;
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
     struct wl_buffer *legacy_buffer;
+G_GNUC_END_IGNORE_DEPRECATIONS;
   };
 
   int32_t width, height;
