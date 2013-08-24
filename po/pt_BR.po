@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-21 00:22+0000\n"
-"PO-Revision-Date: 2013-08-03 10:03-0300\n"
+"POT-Creation-Date: 2013-08-23 17:31+0000\n"
+"PO-Revision-Date: 2013-08-23 16:28-0300\n"
 "Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -57,7 +57,7 @@ msgstr "Abre o menu do aplicativo"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
-msgstr "Shell do GNOME"
+msgstr "GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
@@ -66,11 +66,11 @@ msgstr "Gerenciamento de janelas e lançador de aplicativos"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extension Preferences"
-msgstr "Preferências de extensões do Shell do GNOME"
+msgstr "Preferências de extensões do GNOME Shell"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
-msgstr "Configurar extensões do Shell do GNOME"
+msgstr "Configurar extensões do GNOME Shell"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -97,7 +97,7 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
-"As extensões do Shell do GNOME tem uma propriedade uuid; esta chave lista as "
+"As extensões do GNOME Shell tem uma propriedade uuid; esta chave lista as "
 "extensões que devem ser carregadas. Qualquer extensão que quiser ser "
 "carregada precisa estar nessa lista. Você pode também manipular essa lista "
 "com os métodos EnableExtension e DisableExtensions do DBus em org.gnome."
@@ -309,7 +309,7 @@ msgstr ""
 "Selecione uma extensão para configurar usando a caixa de seleção abaixo."
 
 #: ../js/gdm/authPrompt.js:146 ../js/ui/components/networkAgent.js:132
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:374
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
 #: ../js/ui/status/system.js:373
@@ -321,7 +321,7 @@ msgid "Next"
 msgstr "Próximo"
 
 #: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
-#: ../js/ui/unlockDialog.js:56
+#: ../js/ui/unlockDialog.js:57
 msgid "Unlock"
 msgstr "Desbloquear"
 
@@ -347,7 +347,7 @@ msgstr "Não está listado?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:641
+#: ../js/gdm/loginDialog.js:639
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(ex.: usuário ou %s)"
@@ -355,12 +355,12 @@ msgstr "(ex.: usuário ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:646 ../js/ui/components/networkAgent.js:255
+#: ../js/gdm/loginDialog.js:644 ../js/ui/components/networkAgent.js:255
 #: ../js/ui/components/networkAgent.js:273
 msgid "Username: "
 msgstr "Nome de usuário: "
 
-#: ../js/gdm/loginDialog.js:909
+#: ../js/gdm/loginDialog.js:908
 msgid "Login Window"
 msgstr "Janela de sessão"
 
@@ -373,7 +373,7 @@ msgstr "Erro de autenticação"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:419
+#: ../js/gdm/util.js:436
 msgid "(or swipe finger)"
 msgstr "(ou deslize o dedo)"
 
@@ -978,92 +978,92 @@ msgstr "Configurações de data & hora"
 msgid "%A %B %e, %Y"
 msgstr "%A, %e de %B de %Y"
 
-#: ../js/ui/endSessionDialog.js:63
+#: ../js/ui/endSessionDialog.js:62
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Encerrar sessão de %s"
 
-#: ../js/ui/endSessionDialog.js:64
+#: ../js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Log Out"
 msgstr "Encerrar sessão"
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:64
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Clique em Encerrar sessão para finalizar estes aplicativos e sair do sistema."
 
-#: ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:66
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s encerrará a sessão automaticamente em %d segundo."
 msgstr[1] "%s encerrará a sessão automaticamente em %d segundos."
 
-#: ../js/ui/endSessionDialog.js:72
+#: ../js/ui/endSessionDialog.js:71
 #, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Sua sessão será encerrada automaticamente em %d segundo."
 msgstr[1] "Sua sessão será encerrada automaticamente em %d segundos."
 
-#: ../js/ui/endSessionDialog.js:76
+#: ../js/ui/endSessionDialog.js:75
 msgid "Logging out of the system."
 msgstr "Encerrando sessão do sistema."
 
-#: ../js/ui/endSessionDialog.js:78
+#: ../js/ui/endSessionDialog.js:77
 msgctxt "button"
 msgid "Log Out"
 msgstr "Encerrar sessão"
 
-#: ../js/ui/endSessionDialog.js:83
+#: ../js/ui/endSessionDialog.js:82
 msgctxt "title"
 msgid "Power Off"
 msgstr "Desligar"
 
-#: ../js/ui/endSessionDialog.js:84
+#: ../js/ui/endSessionDialog.js:83
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Clique em Desligar para fechar os aplicativos e desligar o sistema."
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:85
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "O sistema será desligado automaticamente em %d segundo."
 msgstr[1] "O sistema será desligado automaticamente em %d segundos."
 
-#: ../js/ui/endSessionDialog.js:90
+#: ../js/ui/endSessionDialog.js:89
 msgid "Powering off the system."
 msgstr "Desligando o sistema."
 
-#: ../js/ui/endSessionDialog.js:92 ../js/ui/endSessionDialog.js:109
+#: ../js/ui/endSessionDialog.js:91 ../js/ui/endSessionDialog.js:108
 msgctxt "button"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/ui/endSessionDialog.js:94
+#: ../js/ui/endSessionDialog.js:93
 msgctxt "button"
 msgid "Power Off"
 msgstr "Desligar"
 
-#: ../js/ui/endSessionDialog.js:100
+#: ../js/ui/endSessionDialog.js:99
 msgctxt "title"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/ui/endSessionDialog.js:101
+#: ../js/ui/endSessionDialog.js:100
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "Clique em Reiniciar para fechar os aplicativos e reiniciar o sistema."
 
-#: ../js/ui/endSessionDialog.js:103
+#: ../js/ui/endSessionDialog.js:102
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "O sistema irá reiniciar automaticamente em %d segundo."
 msgstr[1] "O sistema irá reiniciar automaticamente em %d segundos."
 
-#: ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:106
 msgid "Restarting the system."
 msgstr "Reiniciando o sistema."
 
@@ -1251,11 +1251,11 @@ msgstr "GNOME precisa bloquear a tela"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1316
+#: ../js/ui/screenShield.js:839 ../js/ui/screenShield.js:1318
 msgid "Unable to lock"
 msgstr "Não foi possível bloquear"
 
-#: ../js/ui/screenShield.js:838 ../js/ui/screenShield.js:1317
+#: ../js/ui/screenShield.js:840 ../js/ui/screenShield.js:1319
 msgid "Lock was blocked by an application"
 msgstr "O bloqueio foi impedido por um aplicativo"
 
@@ -1431,6 +1431,10 @@ msgstr "Por favor, informe o PIN mencionado no dispositivo."
 msgid "OK"
 msgstr "OK"
 
+#: ../js/ui/status/brightness.js:42
+msgid "Brightness"
+msgstr "Brilho"
+
 #: ../js/ui/status/keyboard.js:404
 msgid "Show Keyboard Layout"
 msgstr "Exibir disposição de teclado"
@@ -1598,15 +1602,23 @@ msgstr "%s (remoto)"
 msgid "%s (console)"
 msgstr "%s (console)"
 
-#: ../js/ui/status/volume.js:124
+#: ../js/ui/status/volume.js:127
 msgid "Volume changed"
 msgstr "Volume alterado"
 
-#: ../js/ui/unlockDialog.js:64
+#: ../js/ui/status/volume.js:162
+msgid "Volume"
+msgstr "Volume"
+
+#: ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Microfone"
+
+#: ../js/ui/unlockDialog.js:65
 msgid "Log in as another user"
 msgstr "Iniciar sessão como outro usuário"
 
-#: ../js/ui/unlockDialog.js:81
+#: ../js/ui/unlockDialog.js:82
 msgid "Unlock Window"
 msgstr "Desbloquear janela"
 
@@ -1795,9 +1807,6 @@ msgstr "O diálogo de autenticação foi descartado pelo usuário"
 
 #~ msgid "Volume, network, battery"
 #~ msgstr "Volume, rede, bateria"
-
-#~ msgid "Volume"
-#~ msgstr "Volume"
 
 #~ msgid "Visibility"
 #~ msgstr "Visibilidade"
