@@ -2283,32 +2283,7 @@ event_callback (XEvent   *event,
           XShapeEvent *sev = (XShapeEvent*) event;
 
           if (sev->kind == ShapeBounding)
-            {
-              if (sev->shaped && !window->has_shape)
-                {
-                  window->has_shape = TRUE;                  
-                  meta_topic (META_DEBUG_SHAPES,
-                              "Window %s now has a shape\n",
-                              window->desc);
-                }
-              else if (!sev->shaped && window->has_shape)
-                {
-                  window->has_shape = FALSE;
-                  meta_topic (META_DEBUG_SHAPES,
-                              "Window %s no longer has a shape\n",
-                              window->desc);
-                }
-              else
-                {
-                  meta_topic (META_DEBUG_SHAPES,
-                              "Window %s shape changed\n",
-                              window->desc);
-                }
-
-              if (display->compositor)
-                meta_compositor_window_shape_changed (display->compositor,
-                                                      window);
-            }
+            meta_window_update_shape_region_x11 (window);
         }
       else
         {

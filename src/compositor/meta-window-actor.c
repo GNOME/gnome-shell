@@ -10,7 +10,6 @@
 
 #include <math.h>
 
-#include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/Xrender.h>
@@ -400,7 +399,7 @@ meta_window_actor_constructed (GObject *object)
 
   /* Start off with an empty region to maintain the invariant that
      the shape region is always set */
-  priv->shape_region = cairo_region_create();
+  priv->shape_region = cairo_region_create ();
 }
 
 static void
@@ -1332,7 +1331,7 @@ meta_window_actor_should_unredirect (MetaWindowActor *self)
   if (priv->opacity != 0xff)
     return FALSE;
 
-  if (metaWindow->has_shape)
+  if (metaWindow->shape_region != NULL)
     return FALSE;
 
   if (priv->argb32 && !meta_window_requested_bypass_compositor (metaWindow))
@@ -2220,101 +2219,53 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
 }
 
 static void
-check_needs_reshape (MetaWindowActor *self)
+meta_window_actor_update_shape_region (MetaWindowActor       *self,
+                                       cairo_rectangle_int_t *client_area)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  MetaScreen *screen = priv->screen;
-  MetaDisplay *display = meta_screen_get_display (screen);
-  MetaFrameBorders borders;
   cairo_region_t *region = NULL;
-  cairo_rectangle_int_t client_area;
-  gboolean needs_mask;
 
-  if (!priv->mapped)
-    return;
-
-  if (!priv->needs_reshape)
-    return;
-
-  g_clear_pointer (&priv->shadow_shape, meta_window_shape_unref);
-
-  meta_frame_calc_borders (priv->window->frame, &borders);
-
-  client_area.x = borders.total.left;
-  client_area.y = borders.total.top;
-  client_area.width = priv->window->rect.width;
-  if (priv->window->shaded)
-    client_area.height = 0;
-  else
-    client_area.height = priv->window->rect.height;
-
-  meta_shaped_texture_set_mask_texture (META_SHAPED_TEXTURE (priv->actor), NULL);
-  g_clear_pointer (&priv->shape_region, cairo_region_destroy);
-  g_clear_pointer (&priv->opaque_region, cairo_region_destroy);
-
-#ifdef HAVE_SHAPE
-  if (priv->window->has_shape)
+  if (priv->window->frame != NULL && priv->window->shape_region != NULL)
     {
-      /* Translate the set of XShape rectangles that we
-       * get from the X server to a cairo_region. */
-      Display *xdisplay = meta_display_get_xdisplay (display);
-      XRectangle *rects;
-      int n_rects, ordering;
-
-      meta_error_trap_push (display);
-      rects = XShapeGetRectangles (xdisplay,
-                                   priv->window->xwindow,
-                                   ShapeBounding,
-                                   &n_rects,
-                                   &ordering);
-      meta_error_trap_pop (display);
-
-      if (rects)
-        {
-          int i;
-          cairo_rectangle_int_t *cairo_rects = g_new (cairo_rectangle_int_t, n_rects);
-
-          for (i = 0; i < n_rects; i ++)
-            {
-              cairo_rects[i].x = rects[i].x + client_area.x;
-              cairo_rects[i].y = rects[i].y + client_area.y;
-              cairo_rects[i].width = rects[i].width;
-              cairo_rects[i].height = rects[i].height;
-            }
-
-          XFree (rects);
-          region = cairo_region_create_rectangles (cairo_rects, n_rects);
-          g_free (cairo_rects);
-        }
+      region = cairo_region_copy (priv->window->shape_region);
+      cairo_region_translate (region, client_area->x, client_area->y);
     }
-#endif
-
-  needs_mask = (region != NULL) || (priv->window->frame != NULL);
-
-  if (region != NULL)
+  else if (priv->window->shape_region != NULL)
     {
-      /* The shape we get back from the client may have coordinates
-       * outside of the frame. The X SHAPE Extension requires that
-       * the overall shape the client provides never exceeds the
-       * "bounding rectangle" of the window -- the shape that the
-       * window would have gotten if it was unshaped. In our case,
-       * this is simply the client area.
-       */
-      cairo_region_intersect_rectangle (region, &client_area);
+      region = cairo_region_reference (priv->window->shape_region);
     }
   else
     {
       /* If we don't have a shape on the server, that means that
        * we have an implicit shape of one rectangle covering the
        * entire window. */
-      region = cairo_region_create_rectangle (&client_area);
+      region = cairo_region_create_rectangle (client_area);
     }
 
-  /* The region at this point should be constrained to the
-   * bounds of the client rectangle. */
+  meta_shaped_texture_set_mask_texture (META_SHAPED_TEXTURE (priv->actor), NULL);
+  if ((priv->window->shape_region != NULL) || (priv->window->frame != NULL))
+    build_and_scan_frame_mask (self, client_area, region);
+
+  g_clear_pointer (&priv->shape_region, cairo_region_destroy);
+  priv->shape_region = region;
+
+  g_clear_pointer (&priv->shadow_shape, meta_window_shape_unref);
+  meta_window_actor_invalidate_shadow (self);
+}
+
+static void
+meta_window_actor_update_opaque_region (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+
+  g_clear_pointer (&priv->opaque_region, cairo_region_destroy);
 
   if (priv->argb32 && priv->window->opaque_region != NULL)
     {
+      MetaFrameBorders borders;
+
+      meta_frame_calc_borders (priv->window->frame, &borders);
+
       /* The opaque region is defined to be a part of the
        * window which ARGB32 will always paint with opaque
        * pixels. For these regions, we want to avoid painting
@@ -2326,24 +2277,40 @@ check_needs_reshape (MetaWindowActor *self)
        * case, graphical glitches will occur.
        */
       priv->opaque_region = cairo_region_copy (priv->window->opaque_region);
-      cairo_region_translate (priv->opaque_region, client_area.x, client_area.y);
-      cairo_region_intersect (priv->opaque_region, region);
+      cairo_region_translate (priv->opaque_region, borders.total.left, borders.total.top);
+      cairo_region_intersect (priv->opaque_region, priv->shape_region);
     }
   else if (priv->argb32)
     priv->opaque_region = NULL;
   else
-    priv->opaque_region = cairo_region_reference (region);
+    priv->opaque_region = cairo_region_reference (priv->shape_region);
+}
 
-  if (needs_mask)
-    {
-      /* This takes the region, generates a mask using GTK+
-       * and scans the mask looking for all opaque pixels,
-       * adding it to region.
-       */
-      build_and_scan_frame_mask (self, &client_area, region);
-    }
+static void
+check_needs_reshape (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaFrameBorders borders;
+  cairo_rectangle_int_t client_area;
 
-  priv->shape_region = region;
+  if (!priv->mapped)
+    return;
+
+  if (!priv->needs_reshape)
+    return;
+
+  meta_frame_calc_borders (priv->window->frame, &borders);
+
+  client_area.x = borders.total.left;
+  client_area.y = borders.total.top;
+  client_area.width = priv->window->rect.width;
+  if (priv->window->shaded)
+    client_area.height = 0;
+  else
+    client_area.height = priv->window->rect.height;
+
+  meta_window_actor_update_shape_region (self, &client_area);
+  meta_window_actor_update_opaque_region (self);
 
   priv->needs_reshape = FALSE;
   meta_window_actor_invalidate_shadow (self);
