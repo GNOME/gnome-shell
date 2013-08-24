@@ -40,7 +40,7 @@ COGL_BEGIN_DECLS
  */
 
 /**
- * CoglDepthState
+ * CoglDepthState:
  *
  * Since: 2.0
  */

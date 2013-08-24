@@ -61,7 +61,7 @@ typedef struct _CoglOutput CoglOutput;
 #define COGL_OUTPUT(X) ((CoglOutput *)(X))
 
 /**
- * CoglSubpixelOrder
+ * CoglSubpixelOrder:
  * @COGL_SUBPIXEL_ORDER_UNKNOWN: the layout of subpixel
  *   components for the device is unknown.
  * @COGL_SUBPIXEL_ORDER_NONE: the device displays colors
