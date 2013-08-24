@@ -186,7 +186,6 @@ meta_window_group_paint (ClutterActor *actor)
 
       if (META_IS_WINDOW_ACTOR (child))
         {
-          MetaWindow *meta_window;
           MetaWindowActor *window_actor = META_WINDOW_ACTOR (child);
           int x, y;
 
@@ -201,14 +200,7 @@ meta_window_group_paint (ClutterActor *actor)
 
           meta_window_actor_set_visible_region (window_actor, visible_region);
 
-          /* TODO: Track the opaque regions of wayland clients.
-           * Although wayland clients can report opaque window
-           * regions, for now we assume that all wayland clients are
-           * transparent... */
-          meta_window = meta_window_actor_get_meta_window (window_actor);
-
-          if (meta_window->client_type != META_WINDOW_CLIENT_TYPE_WAYLAND &&
-              clutter_actor_get_paint_opacity (CLUTTER_ACTOR (window_actor)) == 0xff)
+          if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (window_actor)) == 0xff)
             {
               cairo_region_t *obscured_region = meta_window_actor_get_obscured_region (window_actor);
               if (obscured_region)

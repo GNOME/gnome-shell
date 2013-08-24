@@ -324,18 +324,34 @@ meta_wayland_surface_frame (struct wl_client *client,
 
 static void
 meta_wayland_surface_set_opaque_region (struct wl_client *client,
-                                        struct wl_resource *resource,
-                                        struct wl_resource *region)
+                                        struct wl_resource *surface_resource,
+                                        struct wl_resource *region_resource)
 {
-  g_warning ("TODO: support set_opaque_region request");
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  MetaWaylandRegion *region = wl_resource_get_user_data (region_resource);
+
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
+
+  if (surface->window)
+    meta_window_set_opaque_region (surface->window, cairo_region_copy (region->region));
 }
 
 static void
 meta_wayland_surface_set_input_region (struct wl_client *client,
-                                       struct wl_resource *resource,
-                                       struct wl_resource *region)
+                                       struct wl_resource *surface_resource,
+                                       struct wl_resource *region_resource)
 {
-  g_warning ("TODO: support set_input_region request");
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  MetaWaylandRegion *region = wl_resource_get_user_data (region_resource);
+
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
+
+  if (surface->window)
+    meta_window_set_input_region (surface->window, cairo_region_copy (region->region));
 }
 
 static void

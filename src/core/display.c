@@ -2336,59 +2336,9 @@ meta_display_handle_event (MetaDisplay *display,
           XShapeEvent *sev = (XShapeEvent*) event;
 
           if (sev->kind == ShapeBounding)
-            {
-              if (sev->shaped && !window->has_shape)
-                {
-                  window->has_shape = TRUE;                  
-                  meta_topic (META_DEBUG_SHAPES,
-                              "Window %s now has a shape\n",
-                              window->desc);
-                }
-              else if (!sev->shaped && window->has_shape)
-                {
-                  window->has_shape = FALSE;
-                  meta_topic (META_DEBUG_SHAPES,
-                              "Window %s no longer has a shape\n",
-                              window->desc);
-                }
-              else
-                {
-                  meta_topic (META_DEBUG_SHAPES,
-                              "Window %s shape changed\n",
-                              window->desc);
-                }
-
-              if (display->compositor)
-                meta_compositor_window_x11_shape_changed (display->compositor,
-                                                          window);
-            }
+            meta_window_update_shape_region_x11 (window);
           else if (sev->kind == ShapeInput)
-            {
-              if (sev->shaped && !window->has_input_shape)
-                {
-                  window->has_input_shape = TRUE;                  
-                  meta_topic (META_DEBUG_SHAPES,
-                              "Window %s now has an input shape\n",
-                              window->desc);
-                }
-              else if (!sev->shaped && window->has_input_shape)
-                {
-                  window->has_input_shape = FALSE;
-                  meta_topic (META_DEBUG_SHAPES,
-                              "Window %s no longer has an input shape\n",
-                              window->desc);
-                }
-              else
-                {
-                  meta_topic (META_DEBUG_SHAPES,
-                              "Window %s input shape changed\n",
-                              window->desc);
-                }
-
-              if (display->compositor)
-                meta_compositor_window_x11_shape_changed (display->compositor,
-                                                          window);
-            }
+            meta_window_update_input_region_x11 (window);
         }
       else
         {

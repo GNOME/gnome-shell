@@ -339,11 +339,6 @@ struct _MetaWindow
   guint using_net_wm_icon_name         : 1; /* vs. plain wm_icon_name */
   guint using_net_wm_visible_icon_name : 1; /* tracked so we can clear it */
 
-  /* has a bounding shape mask */
-  guint has_shape : 1;
-  /* has an input shape mask */
-  guint has_input_shape : 1;
-
   /* icon props have changed */
   guint need_reread_icon : 1;
   
@@ -365,8 +360,14 @@ struct _MetaWindow
   /* if non-NULL, the bounds of the window frame */
   cairo_region_t *frame_bounds;
 
+  /* if non-NULL, the bounding shape region of the window */
+  cairo_region_t *shape_region;
+
   /* if non-NULL, the opaque region _NET_WM_OPAQUE_REGION */
   cairo_region_t *opaque_region;
+
+  /* the input shape region for picking */
+  cairo_region_t *input_region;
 
   /* if TRUE, the we have the new form of sync request counter which
    * also handles application frames */
@@ -685,7 +686,6 @@ void meta_window_update_icon_now (MetaWindow *window);
 
 void meta_window_update_role (MetaWindow *window);
 void meta_window_update_net_wm_type (MetaWindow *window);
-void meta_window_update_opaque_region (MetaWindow *window);
 void meta_window_update_for_monitors_changed (MetaWindow *window);
 void meta_window_update_on_all_workspaces (MetaWindow *window);
 
@@ -698,5 +698,17 @@ gboolean meta_window_can_tile_side_by_side   (MetaWindow *window);
 void meta_window_compute_tile_match (MetaWindow *window);
 
 gboolean meta_window_updates_are_frozen (MetaWindow *window);
+
+void meta_window_set_opaque_region        (MetaWindow     *window,
+                                           cairo_region_t *region);
+void meta_window_update_opaque_region_x11 (MetaWindow *window);
+
+void meta_window_set_input_region         (MetaWindow     *window,
+                                           cairo_region_t *region);
+void meta_window_update_input_region_x11  (MetaWindow *window);
+
+void meta_window_set_shape_region         (MetaWindow     *window,
+                                           cairo_region_t *region);
+void meta_window_update_shape_region_x11  (MetaWindow *window);
 
 #endif

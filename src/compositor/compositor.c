@@ -930,8 +930,8 @@ is_grabbed_event (MetaDisplay *display,
 }
 
 void
-meta_compositor_window_x11_shape_changed (MetaCompositor *compositor,
-                                          MetaWindow     *window)
+meta_compositor_window_shape_changed (MetaCompositor *compositor,
+                                      MetaWindow     *window)
 {
   MetaWindowActor *window_actor;
   window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
