@@ -855,11 +855,9 @@ cogl_clip_push_rectangle (float x0,
  *             bounds
  * @bounds_y1: y coordinate for the top-left corner of the primitives
  *             bounds
- * @bounds_x2: x coordinate for the top-left corner of the primitives
+ * @bounds_x2: x coordinate for the bottom-right corner of the primitives
  *             bounds
- * @bounds_y2: x coordinate for the bottom-right corner of the
- *             primitives bounds.
- * @bounds_x1: y coordinate for the bottom-right corner of the
+ * @bounds_y2: y coordinate for the bottom-right corner of the
  *             primitives bounds.
  *
  * Sets a new clipping area using a 2D shaped described with a
