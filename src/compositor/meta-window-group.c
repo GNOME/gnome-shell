@@ -187,7 +187,7 @@ meta_window_group_paint (ClutterActor *actor)
       if (META_IS_WINDOW_ACTOR (child))
         {
           MetaWindow *meta_window;
-          MetaWindowActor *window_actor = child;
+          MetaWindowActor *window_actor = META_WINDOW_ACTOR (child);
           int x, y;
 
           if (!meta_actor_is_untransformed (CLUTTER_ACTOR (window_actor), &x, &y))
