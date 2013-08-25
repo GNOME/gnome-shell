@@ -66,7 +66,9 @@
   "#define cogl_color_out gl_FragColor\n" \
   "#define cogl_depth_out gl_FragDepth\n" \
   "\n" \
-  "#define cogl_front_facing gl_FrontFacing\n"
+  "#define cogl_front_facing gl_FrontFacing\n" \
+  "\n" \
+  "#define cogl_point_coord gl_PointCoord\n"
 #if 0
   /* GLSL 1.2 has a bottom left origin, though later versions
    * allow use of an origin_upper_left keyword which would be

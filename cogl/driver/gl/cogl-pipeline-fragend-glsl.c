@@ -421,7 +421,7 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
   if (cogl_pipeline_get_layer_point_sprite_coords_enabled (pipeline,
                                                            layer->index))
     g_string_append_printf (shader_state->source,
-                            "vec4 (gl_PointCoord, 0.0, 1.0)");
+                            "vec4 (cogl_point_coord, 0.0, 1.0)");
   else
     g_string_append_printf (shader_state->source,
                             "cogl_tex_coord%i_in",

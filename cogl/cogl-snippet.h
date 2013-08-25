@@ -279,6 +279,19 @@ COGL_BEGIN_DECLS
  *    coloring algorithms. This is equivalent to #gl_FrontFacing.
  *   </para></glossdef>
  *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>vec2 <emphasis>cogl_point_coord</emphasis></glossterm>
+ *   <glossdef><para>
+ *    When rendering points, this will contain a vec2 which represents
+ *    the position within the point of the current fragment.
+ *    vec2(0.0,0.0) will be the topleft of the point and vec2(1.0,1.0)
+ *    will be the bottom right. Note that there is currently a bug in
+ *    Cogl where when rendering to an offscreen buffer these
+ *    coordinates will be upside-down. The value is undefined when not
+ *    rendering points. This builtin can only be used if the
+ *    %COGL_FEATURE_ID_POINT_SPRITE feature is available.
+ *   </para></glossdef>
+ *  </glossentry>
  * </glosslist>
  *
  * Here is an example of using a snippet to add a desaturate effect to the
