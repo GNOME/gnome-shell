@@ -414,6 +414,13 @@ _cogl_driver_update_features (CoglContext *ctx,
       parse_gl_version (glsl_version, &ctx->glsl_major, &ctx->glsl_minor);
     }
 
+  if (COGL_CHECK_GL_VERSION (ctx->glsl_major, ctx->glsl_minor, 1, 2))
+    /* We want to use version 120 if it is available so that the
+     * gl_PointCoord can be used. */
+    ctx->glsl_version_to_use = 120;
+  else
+    ctx->glsl_version_to_use = 110;
+
   flags = (COGL_FEATURE_TEXTURE_READ_PIXELS
            | COGL_FEATURE_UNSIGNED_INT_INDICES
            | COGL_FEATURE_DEPTH_RANGE);

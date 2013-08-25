@@ -507,7 +507,6 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
       source_strings[1] = shader_state->source->str;
 
       _cogl_glsl_shader_set_source_with_boilerplate (ctx,
-                                                     NULL,
                                                      shader, GL_VERTEX_SHADER,
                                                      pipeline,
                                                      2, /* count */

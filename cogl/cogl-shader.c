@@ -185,7 +185,6 @@ _cogl_shader_compile_real (CoglHandle handle,
                            CoglPipeline *pipeline)
 {
   CoglShader *shader = handle;
-  const char *version;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -263,18 +262,7 @@ _cogl_shader_compile_real (CoglHandle handle,
 
       shader->gl_handle = ctx->glCreateShader (gl_type);
 
-      if ((ctx->driver == COGL_DRIVER_GL ||
-           ctx->driver == COGL_DRIVER_GL3 ) &&
-          ctx->glsl_major == 1 &&
-          ctx->glsl_minor >= 2)
-        {
-          version = "#version 120\n";
-        }
-      else
-        version = NULL;
-
       _cogl_glsl_shader_set_source_with_boilerplate (ctx,
-                                                     version,
                                                      shader->gl_handle,
                                                      gl_type,
                                                      pipeline,

@@ -81,6 +81,14 @@ struct _CoglContext
   int glsl_major;
   int glsl_minor;
 
+  /* This is the GLSL version that we will claim that snippets are
+   * written against using the #version pragma. This will be the
+   * largest version that is less than or equal to the version
+   * provided by the driver without massively altering the syntax. Eg,
+   * we wouldn't use version 1.3 even if it is available because that
+   * removes the ‘attribute’ and ‘varying’ keywords. */
+  int glsl_version_to_use;
+
   /* Features cache */
   unsigned long features[COGL_FLAGS_N_LONGS_FOR_SIZE (_COGL_N_FEATURE_IDS)];
   CoglFeatureFlags feature_flags; /* legacy/deprecated feature flags */

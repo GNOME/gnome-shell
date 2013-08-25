@@ -90,8 +90,6 @@ typedef struct
   GString *header, *source;
   UnitState *unit_state;
 
-  CoglBool ref_point_coord;
-
   /* List of layers that we haven't generated code for yet. These are
      in reverse order. As soon as we're about to generate code for
      layer we'll remove it from the list so we don't generate it
@@ -113,7 +111,6 @@ shader_state_new (int n_layers)
   shader_state = g_slice_new0 (CoglPipelineShaderState);
   shader_state->ref_count = 1;
   shader_state->unit_state = g_new0 (UnitState, n_layers);
-  shader_state->ref_point_coord = FALSE;
 
   return shader_state;
 }
@@ -423,11 +420,8 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
 
   if (cogl_pipeline_get_layer_point_sprite_coords_enabled (pipeline,
                                                            layer->index))
-    {
-      shader_state->ref_point_coord = TRUE;
-      g_string_append_printf (shader_state->source,
-                              "vec4 (gl_PointCoord, 0.0, 1.0)");
-    }
+    g_string_append_printf (shader_state->source,
+                            "vec4 (gl_PointCoord, 0.0, 1.0)");
   else
     g_string_append_printf (shader_state->source,
                             "cogl_tex_coord%i_in",
@@ -990,7 +984,6 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       GLint compile_status;
       GLuint shader;
       CoglPipelineSnippetData snippet_data;
-      const char *version_string;
 
       COGL_STATIC_COUNTER (fragend_glsl_compile_counter,
                            "glsl fragment compile counter",
@@ -1053,14 +1046,7 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       lengths[1] = shader_state->source->len;
       source_strings[1] = shader_state->source->str;
 
-      if (shader_state->ref_point_coord &&
-          !(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_EMBEDDED))
-        version_string = "#version 120\n";
-      else
-        version_string = NULL;
-
       _cogl_glsl_shader_set_source_with_boilerplate (ctx,
-                                                     version_string,
                                                      shader, GL_FRAGMENT_SHADER,
                                                      pipeline,
                                                      2, /* count */
