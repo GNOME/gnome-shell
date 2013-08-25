@@ -310,6 +310,7 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(wmproperties_in_files)	\
 	$(xml_in_files)			\
 	org.gnome.mutter.gschema.xml.in \
+	idle-monitor.xml \
 	xrandr.xml \
 	mutter-schemas.convert \
 	libmutter.pc.in \
