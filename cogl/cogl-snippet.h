@@ -173,17 +173,17 @@ COGL_BEGIN_DECLS
  *   <glossterm>attribute vec4
  *         <emphasis>cogl_tex_coord_in</emphasis></glossterm>
  *   <glossdef><para>
- *    The texture coordinate for the first texture unit. This is
- *    equivalent to #gl_MultiTexCoord0.
+ *    The texture coordinate for layer 0. This is an alternative name
+ *    for #cogl_tex_coord0_in.
  *   </para></glossdef>
  *  </glossentry>
  *  <glossentry>
  *   <glossterm>attribute vec4
  *         <emphasis>cogl_tex_coord0_in</emphasis></glossterm>
  *   <glossdef><para>
- *    The texture coordinate for the first texture unit. This is
- *    equivalent to #gl_MultiTexCoord0. There is also
- *    #cogl_tex_coord1_in and so on.
+ *    The texture coordinate for the layer 0. This is equivalent to
+ *    #gl_MultiTexCoord0. There will also be #cogl_tex_coord1_in and
+ *    so on if more layers are added to the pipeline.
  *   </para></glossdef>
  *  </glossentry>
  *  <glossentry>
@@ -227,10 +227,13 @@ COGL_BEGIN_DECLS
  *  </glossentry>
  *  <glossentry>
  *   <glossterm>varying vec4
- *         <emphasis>cogl_tex_coord_out</emphasis>[]</glossterm>
+ *         <emphasis>cogl_tex_coord0_out</emphasis></glossterm>
  *   <glossdef><para>
- *    An array of calculated texture coordinates for a vertex. This is
- *    equivalent to #gl_TexCoord.
+ *    The calculated texture coordinate for layer 0 of the pipeline.
+ *    This is equivalent to #gl_TexCoord[0]. There will also be
+ *    #cogl_tex_coord1_out and so on if more layers are added to the
+ *    pipeline. In the fragment shader, this varying is called
+ *    #cogl_tex_coord0_in.
  *   </para></glossdef>
  *  </glossentry>
  * </glosslist>
@@ -246,10 +249,11 @@ COGL_BEGIN_DECLS
  *  </glossentry>
  *  <glossentry>
  *   <glossterm>varying vec4
- *              <emphasis>cogl_tex_coord_in</emphasis>[]</glossterm>
+ *              <emphasis>cogl_tex_coord0_in</emphasis></glossterm>
  *   <glossdef><para>
- *    An array of calculated texture coordinates for a vertex. This is
- *    equivalent to #gl_TexCoord.
+ *    The texture coordinate for layer 0. This is equivalent to
+ *    #gl_TexCoord[0]. There will also be #cogl_tex_coord1_in and so
+ *    on if more layers are added to the pipeline.
  *   </para></glossdef>
  *  </glossentry>
  *  <glossentry>
