@@ -2258,14 +2258,6 @@ StScrollBar StButton#vhandle:active {
     /* Reset border and background */
     border: none;
     background-color: transparent;
-
-    padding-bottom: 80px;
-    padding-top: 80px;
-
-    border-radius: 16px;
-    min-height: 150px;
-    max-height: 700px;
-    min-width: 350px;
 }
 
 .login-dialog-button-box {

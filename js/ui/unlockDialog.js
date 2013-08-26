@@ -34,6 +34,7 @@ const UnlockDialog = new Lang.Class({
     _init: function(parentActor) {
         this.actor = new St.Widget({ accessible_role: Atk.Role.WINDOW,
                                      style_class: 'login-dialog',
+                                     layout_manager: new Clutter.BoxLayout(),
                                      visible: false });
 
         this.actor.add_constraint(new Layout.MonitorConstraint({ primary: true }));
@@ -43,11 +44,12 @@ const UnlockDialog = new Lang.Class({
         this._userName = GLib.get_user_name();
         this._user = this._userManager.get_user(this._userName);
 
-        this._promptBox = new St.BoxLayout({ vertical: true });
+        this._promptBox = new St.BoxLayout({ vertical: true,
+                                             x_align: Clutter.ActorAlign.CENTER,
+                                             y_align: Clutter.ActorAlign.CENTER,
+                                             x_expand: true,
+                                             y_expand: true });
         this.actor.add_child(this._promptBox);
-        this._promptBox.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
-                                                                     align_axis: Clutter.AlignAxis.BOTH,
-                                                                     factor: 0.5 }));
 
         this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
         this._authPrompt.connect('failed', Lang.bind(this, this._fail));
