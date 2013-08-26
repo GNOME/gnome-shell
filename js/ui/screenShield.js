@@ -52,12 +52,10 @@ const SUMMARY_ICON_SIZE = 48;
 //   or when cancelling the dialog
 // - BACKGROUND_FADE_TIME is used when the background changes to crossfade to new background
 // - CURTAIN_SLIDE_TIME is used when raising the shield before unlocking
-// - INITIAL_FADE_IN_TIME is used for the initial fade in at startup
 const STANDARD_FADE_TIME = 10;
 const MANUAL_FADE_TIME = 0.3;
 const BACKGROUND_FADE_TIME = 1.0;
 const CURTAIN_SLIDE_TIME = 0.3;
-const INITIAL_FADE_IN_TIME = 0.25;
 
 const Clock = new Lang.Class({
     Name: 'ScreenShieldClock',
@@ -520,15 +518,8 @@ const ScreenShield = new Lang.Class({
         this._lockDialogGroup = new St.Widget({ x_expand: true,
                                                 y_expand: true,
                                                 reactive: true,
-                                                opacity: 0,
                                                 pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
                                                 name: 'lockDialogGroup' });
-
-        Tweener.addTween(this._lockDialogGroup,
-                         { opacity: 255,
-                           time: INITIAL_FADE_IN_TIME,
-                           transition: 'easeInQuad',
-                         });
 
         this.actor.add_actor(this._lockDialogGroup);
         this.actor.add_actor(this._lockScreenGroup);
@@ -995,7 +986,6 @@ const ScreenShield = new Lang.Class({
 
     _onUnlockFailed: function() {
         this._resetLockScreen({ animateLockScreen: true,
-                                animateLockDialog: false,
                                 fadeToBlack: false });
     },
 
@@ -1033,17 +1023,6 @@ const ScreenShield = new Lang.Class({
             this._lockScreenGroup.fixed_position_set = false;
             this._lockScreenShown({ fadeToBlack: fadeToBlack,
                                     animateFade: false });
-        }
-
-        if (params.animateLockDialog) {
-            this._lockDialogGroup.opacity = 0;
-            Tweener.removeTweens(this._lockDialogGroup);
-            Tweener.addTween(this._lockDialogGroup,
-                             { opacity: 255,
-                               time: MANUAL_FADE_TIME,
-                               transition: 'easeOutQuad' });
-        } else {
-            this._lockDialogGroup.opacity = 255;
         }
 
         this._lockScreenGroup.grab_key_focus();
@@ -1296,7 +1275,6 @@ const ScreenShield = new Lang.Class({
         }
 
         this._resetLockScreen({ animateLockScreen: animate,
-                                animateLockDialog: animate,
                                 fadeToBlack: true });
         global.set_runtime_state(LOCKED_STATE_STR, GLib.Variant.new('b', true));
 
