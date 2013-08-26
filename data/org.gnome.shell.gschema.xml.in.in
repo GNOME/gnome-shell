@@ -45,16 +45,6 @@
       <default>[]</default>
       <_summary>History for the looking glass dialog</_summary>
     </key>
-    <key name="saved-im-presence" type="i">
-      <default>1</default>
-      <_summary>Internally used to store the last IM presence explicitly set by the user. The
-value here is from the TpConnectionPresenceType enumeration.</_summary>
-    </key>
-    <key name="saved-session-presence" type="i">
-      <default>0</default>
-      <_summary>Internally used to store the last session presence status for the user. The
-value here is from the GsmPresenceStatus enumeration.</_summary>
-    </key>
     <key name="always-show-log-out" type="b">
       <default>false</default>
       <_summary>Always show the 'Log out' menuitem in the user menu.</_summary>
