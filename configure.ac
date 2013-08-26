@@ -12,6 +12,7 @@ m4_define([mutter_plugin_api_version], [3])
 AC_INIT([mutter], [mutter_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=mutter])
 
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR(src/core/display.c)
 AC_CONFIG_HEADERS(config.h)
 
