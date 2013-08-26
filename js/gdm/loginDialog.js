@@ -59,7 +59,7 @@ const UserListItem = new Lang.Class({
         this._userChangedId = this.user.connect('changed',
                                                  Lang.bind(this, this._onUserChanged));
 
-        let layout = new St.BoxLayout({ vertical: false });
+        let layout = new St.BoxLayout({ vertical: true });
         this.actor = new St.Button({ style_class: 'login-dialog-user-list-item',
                                      button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
                                      can_focus: true,
@@ -68,39 +68,18 @@ const UserListItem = new Lang.Class({
                                      x_align: St.Align.START,
                                      x_fill: true });
 
-        this._userAvatar = new UserWidget.Avatar(this.user,
-                                                 { styleClass: 'login-dialog-user-list-item-icon' });
-        layout.add(this._userAvatar.actor);
-        let textLayout = new St.BoxLayout({ style_class: 'login-dialog-user-list-item-text-box',
-                                            vertical:    true });
-        layout.add(textLayout, { expand: true });
-
-        this._nameLabel = new St.Label({ style_class: 'login-dialog-user-list-item-name' });
-        this.actor.label_actor = this._nameLabel;
-        textLayout.add(this._nameLabel,
-                       { y_fill: false,
-                         y_align: St.Align.MIDDLE,
-                         expand: true });
+        this._userWidget = new UserWidget.UserWidget(this.user);
+        layout.add(this._userWidget.actor);
 
         this._timedLoginIndicator = new St.Bin({ style_class: 'login-dialog-timed-login-indicator',
                                                  scale_x: 0 });
-        textLayout.add(this._timedLoginIndicator,
-                       { x_fill: true,
-                         x_align: St.Align.MIDDLE,
-                         y_fill: false,
-                         y_align: St.Align.END });
+        layout.add(this._timedLoginIndicator);
 
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this._onUserChanged();
     },
 
     _onUserChanged: function() {
-        this._nameLabel.set_text(this.user.get_real_name());
-        this._userAvatar.update();
-        this._updateLoggedIn();
-    },
-
-    syncStyleClasses: function() {
         this._updateLoggedIn();
     },
 
@@ -189,7 +168,6 @@ const UserList = new Lang.Class({
         for (let userName in this._items) {
             let item = this._items[userName];
             item.actor.sync_hover();
-            item.syncStyleClasses();
         }
     },
 
