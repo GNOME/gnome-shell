@@ -1031,7 +1031,6 @@ meta_background_load_file_finish (MetaBackground  *self,
                                   GAsyncResult    *result,
                                   GError         **error)
 {
-  static CoglUserDataKey key;
   GTask *task;
   LoadFileTaskData *task_data;
   CoglTexture *texture;
@@ -1076,12 +1075,6 @@ meta_background_load_file_finish (MetaBackground  *self,
                            _("background texture could not be created from file"));
       goto out;
     }
-
-  cogl_object_set_user_data (COGL_OBJECT (texture),
-                             &key,
-                             g_object_ref (pixbuf),
-                             (CoglUserDataDestroyCallback)
-                             g_object_unref);
 
   ensure_pipeline (self);
   unset_texture (self);
