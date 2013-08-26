@@ -921,10 +921,19 @@ const PopupMenuSection = new Lang.Class({
         this.isOpen = true;
     },
 
+    _syncVisibility: function() {
+        this.actor.visible = !this.isEmpty();
+    },
+
     // deliberately ignore any attempt to open() or close(), but emit the
     // corresponding signal so children can still pick it up
-    open: function() { this.emit('open-state-changed', true); },
-    close: function() { this.emit('open-state-changed', false); },
+    open: function() {
+        this._syncVisibility();
+        this.emit('open-state-changed', true);
+    },
+    close: function() {
+        this.emit('open-state-changed', false);
+    },
 });
 
 const PopupSubMenuMenuItem = new Lang.Class({
