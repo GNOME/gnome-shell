@@ -13,4 +13,7 @@
   <ItemGroup>
 #include "coglpango.vs10.sourcefiles.filters"
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\cogl-pango\cogl-pango.symbols"><Filter>Resource Files</Filter></CustomBuild>
+  </ItemGroup>
 </Project>

@@ -82,9 +82,6 @@
 			<WarningLevel>Level3</WarningLevel>
 			<DebugInformationFormat>EditAndContinue</DebugInformationFormat>
 		</ClCompile>
-		<PreLinkEvent>
-			<Command>$(GenerateCoglPangoDef)</Command>
-		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
@@ -110,9 +107,6 @@
 			<WarningLevel>Level3</WarningLevel>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 		</ClCompile>
-		<PreLinkEvent>
-			<Command>$(GenerateCoglPangoDef)</Command>
-		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
@@ -138,9 +132,6 @@
 			<WarningLevel>Level3</WarningLevel>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 		</ClCompile>
-		<PreLinkEvent>
-			<Command>$(GenerateCoglPangoDef)</Command>
-		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
@@ -165,9 +156,6 @@
 			<WarningLevel>Level3</WarningLevel>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 		</ClCompile>
-		<PreLinkEvent>
-			<Command>$(GenerateCoglPangoDef)</Command>
-		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
@@ -182,6 +170,22 @@
 	</ItemDefinitionGroup>
 	<ItemGroup>
 #include "coglpango.vs10.sourcefiles"
+	</ItemGroup>
+	<ItemGroup>
+		<CustomBuild Include="..\..\..\cogl-pango\cogl-pango.symbols">
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating $(IntDir)\cogl-pango.def</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenerateCoglPangoDef)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\cogl-pango.def;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating $(IntDir)\cogl-pango.def</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenerateCoglPangoDef)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)\cogl-pango.def;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating $(IntDir)\cogl-pango.def</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenerateCoglPangoDef)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\cogl-pango.def;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating $(IntDir)\cogl-pango.def</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenerateCoglPangoDef)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)\cogl-pango.def;%(Outputs)</Outputs>
+		</CustomBuild>
 	</ItemGroup>
 	<ItemGroup>
 		<ResourceCompile Include="..\..\..\cogl-pango\cogl-pango.rc" />

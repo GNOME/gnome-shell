@@ -29,4 +29,9 @@
     <ClCompile Include="..\..\..\cogl\driver\gl\cogl-texture-2d-gl.c"><Filter>Sources\Driver_GL</Filter></ClCompile>
     <ClCompile Include="..\..\..\cogl\driver\gl\cogl-util-gl.c"><Filter>Sources\Driver_GL</Filter></ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\cogl\cogl.symbols"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="..\..\..\cogl\cogl-enum-types.h.in"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="..\..\..\cogl\cogl-enum-types.c.in"><Filter>Resource Files</Filter></CustomBuild>
+  </ItemGroup>
 </Project>

@@ -143,9 +143,6 @@
 			<WarningLevel>Level3</WarningLevel>
 			<DebugInformationFormat>EditAndContinue</DebugInformationFormat>
 		</ClCompile>
-		<PreLinkEvent>
-			<Command>$(GenerateCoglDef)</Command>
-		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
@@ -175,9 +172,6 @@
 			<WarningLevel>Level3</WarningLevel>
 			<DebugInformationFormat>EditAndContinue</DebugInformationFormat>
 		</ClCompile>
-		<PreLinkEvent>
-			<Command>$(GenerateCoglSDLDef)</Command>
-		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>SDL.lib;opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
@@ -207,9 +201,6 @@
 			<WarningLevel>Level3</WarningLevel>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 		</ClCompile>
-		<PreLinkEvent>
-			<Command>$(GenerateCoglDef)</Command>
-		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
@@ -239,9 +230,6 @@
 			<WarningLevel>Level3</WarningLevel>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 		</ClCompile>
-		<PreLinkEvent>
-			<Command>$(GenerateCoglSDLDef)</Command>
-		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>SDL.lib;opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
@@ -271,9 +259,6 @@
 			<WarningLevel>Level3</WarningLevel>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 		</ClCompile>
-		<PreLinkEvent>
-			<Command>$(GenerateCoglDef)</Command>
-		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
@@ -305,9 +290,6 @@
 			<WarningLevel>Level3</WarningLevel>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 		</ClCompile>
-		<PreLinkEvent>
-			<Command>$(GenerateCoglSDLDef)</Command>
-		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>SDL.lib;opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
@@ -336,9 +318,6 @@
 			<WarningLevel>Level3</WarningLevel>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 		</ClCompile>
-		<PreLinkEvent>
-			<Command>$(GenerateCoglDef)</Command>
-		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
@@ -367,9 +346,6 @@
 			<WarningLevel>Level3</WarningLevel>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 		</ClCompile>
-		<PreLinkEvent>
-			<Command>$(GenerateCoglSDLDef)</Command>
-		</PreLinkEvent>
 		<Link>
 			<AdditionalDependencies>SDL.lib;opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
@@ -407,6 +383,86 @@
 		<ClCompile Include="..\..\..\cogl\driver\gl\cogl-texture-gl.c" />
 		<ClCompile Include="..\..\..\cogl\driver\gl\cogl-texture-2d-gl.c" />
 		<ClCompile Include="..\..\..\cogl\driver\gl\cogl-util-gl.c" />
+	</ItemGroup>
+	<ItemGroup>
+		<CustomBuild Include="..\..\..\cogl\cogl.symbols">
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">Generating $(IntDir)\cogl.def</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">$(GenerateCoglDef)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">Generating $(IntDir)\cogl.def</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">$(GenerateCoglDef)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating $(IntDir)\cogl.def</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenerateCoglDef)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating $(IntDir)\cogl.def</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenerateCoglDef)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">Generating $(IntDir)\cogl.def</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">$(GenerateCoglDef)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">Generating $(IntDir)\cogl.def</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">$(GenerateCoglDef)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating $(IntDir)\cogl.def</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenerateCoglDef)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating $(IntDir)\cogl.def</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenerateCoglDef)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
+		</CustomBuild>
+		<CustomBuild Include="..\..\..\cogl\cogl-enum-types.h.in">
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">Generating ..\..\..\cogl\cogl-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">$(GenCoglEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">..\..\..\cogl\cogl-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">Generating ..\..\..\cogl\cogl-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">$(GenCoglEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">..\..\..\cogl\cogl-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating ..\..\..\cogl\cogl-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenCoglEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\cogl\cogl-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating ..\..\..\cogl\cogl-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenCoglEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\cogl\cogl-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">Generating ..\..\..\cogl\cogl-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">$(GenCoglEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">..\..\..\cogl\cogl-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">Generating ..\..\..\cogl\cogl-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">$(GenCoglEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">..\..\..\cogl\cogl-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating ..\..\..\cogl\cogl-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenCoglEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\cogl\cogl-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating ..\..\..\cogl\cogl-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenCoglEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\cogl\cogl-enum-types.h;%(Outputs)</Outputs>
+		</CustomBuild>
+		<CustomBuild Include="..\..\..\cogl\cogl-enum-types.c.in">
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">Generating ..\..\..\cogl\cogl-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">$(GenCoglEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">..\..\..\cogl\cogl-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">Generating ..\..\..\cogl\cogl-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">$(GenCoglEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">..\..\..\cogl\cogl-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating ..\..\..\cogl\cogl-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenCoglEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\cogl\cogl-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating ..\..\..\cogl\cogl-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenCoglEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\cogl\cogl-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">Generating ..\..\..\cogl\cogl-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">$(GenCoglEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">..\..\..\cogl\cogl-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">Generating ..\..\..\cogl\cogl-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">$(GenCoglEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">..\..\..\cogl\cogl-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating ..\..\..\cogl\cogl-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenCoglEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\cogl\cogl-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating ..\..\..\cogl\cogl-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenCoglEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\cogl\cogl-enum-types.c;%(Outputs)</Outputs>
+		</CustomBuild>
 	</ItemGroup>
 	<ItemGroup>
 		<ResourceCompile Include="..\..\..\cogl\cogl.rc" />
