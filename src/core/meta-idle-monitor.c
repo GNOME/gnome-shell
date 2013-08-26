@@ -110,19 +110,20 @@ static void
 fire_watch (MetaIdleMonitorWatch *watch)
 {
   MetaIdleMonitor *monitor;
+  guint id;
+  gboolean is_user_active_watch;
 
   monitor = watch->monitor;
   g_object_ref (monitor);
 
-  if (watch->callback)
-    {
-      watch->callback (watch->monitor,
-                       watch->id,
-                       watch->user_data);
-    }
+  id = watch->id;
+  is_user_active_watch = (watch->timeout_msec == 0);
 
-  if (watch->timeout_msec == 0)
-    meta_idle_monitor_remove_watch (watch->monitor, watch->id);
+  if (watch->callback)
+    watch->callback (monitor, id, watch->user_data);
+
+  if (is_user_active_watch)
+    meta_idle_monitor_remove_watch (monitor, id);
 
   g_object_unref (monitor);
 }
