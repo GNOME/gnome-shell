@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
     <VSVer>10</VSVer>
-    <GlibEtcInstallRoot>..\..\..\..\vs$(VSVer)\$(Platform)</GlibEtcInstallRoot>
+    <GlibEtcInstallRoot>$(SolutionDir)\..\..\..\..\vs$(VSVer)\$(Platform)</GlibEtcInstallRoot>
     <GlibEtcInstallRootFromBuildWin32>..\..\..\vs$(VSVer)\$(Platform)</GlibEtcInstallRootFromBuildWin32>
     <ApiVersion>1.0</ApiVersion>
     <BaseBuildDefines>_WIN32_WINNT=0x0500;COGL_ENABLE_DEBUG</BaseBuildDefines>
@@ -10,6 +10,7 @@
     <ReleaseLibBuildDefines>$(LibBuildDefines);G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS</ReleaseLibBuildDefines>
     <DebugLibBuildDefines>_DEBUG;$(LibBuildDefines);COGL_GL_DEBUG;COGL_OBJECT_DEBUG;COGL_HANDLE_DEBUG</DebugLibBuildDefines>
     <CoglBuildDefines>G_LOG_DOMAIN="Cogl";COGL_HAS_WIN32_SUPPORT;COGL_BUILD_EXP;COGL_GL_LIBNAME="";COGL_LOCALEDIR="/some/random/dir"</CoglBuildDefines>
+    <CoglPathBuildDefines>G_LOG_DOMAIN="CoglPath"</CoglPathBuildDefines>
     <CoglPangoBuildDefines>G_LOG_DOMAIN="Cogl-Pango"</CoglPangoBuildDefines>
     <TestProgDef>COGL_COMPILATION</TestProgDef>
     <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
@@ -42,16 +43,56 @@ copy ..\..\..\config.h.win32 ..\..\..\config.h
 :DONE_CONFIG_H
 
 if not exist ..\..\..\cogl\cogl-gl-header.h copy ..\..\..\cogl\cogl-gl-header.h.win32 ..\..\..\cogl\cogl-gl-header.h
-
-
-cd ..
-
-gen-enums.bat $(GlibEtcInstallRootFromBuildWin32)
-
-cd .\vs$(VSVer)
-
-
     </PreBuildCmd>
+
+<GenCoglPathEnumsH>
+if exist ..\..\..\cogl-path\cogl-path-enum-types.h goto DONE_COGLPATH_ENUMS_H
+
+cd ..\..\..\cogl-path
+
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-path-enum-types.h.in cogl-path-types.h cogl1-path-functions.h &gt; cogl-path-enum-types.h
+
+cd $(SolutionDir)
+
+:DONE_COGLPATH_ENUMS_H
+</GenCoglPathEnumsH>
+
+<GenCoglPathEnumsC>
+if exist ..\..\..\cogl-path\cogl-path-enum-types.c goto DONE_COGLPATH_ENUMS_C
+
+cd ..\..\..\cogl-path
+
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-path-enum-types.c.in cogl-path-types.h cogl1-path-functions.h &gt; cogl-path-enum-types.c
+
+cd $(SolutionDir)
+
+:DONE_COGLPATH_ENUMS_C
+</GenCoglPathEnumsC>
+
+<GenCoglEnumsH>
+if exist ..\..\..\cogl\cogl-enum-types.h goto DONE_COGL_ENUMS_H
+
+cd ..\..\..\cogl
+
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-enum-types.h.in cogl1-context.h cogl-bitmap.h cogl-color.h cogl-fixed.h cogl-material-compat.h cogl-matrix.h cogl-offscreen.h cogl-primitives.h cogl-shader.h cogl-texture.h cogl-types.h cogl-vertex-buffer.h cogl-clutter.h cogl.h cogl-win32-renderer.h &gt; cogl-enum-types.h
+
+cd $(SolutionDir)
+
+:DONE_COGL_ENUMS_H
+</GenCoglEnumsH>
+
+<GenCoglEnumsC>
+if exist ..\..\..\cogl\cogl-enum-types.c goto DONE_COGL_ENUMS_C
+
+cd ..\..\..\cogl
+
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-enum-types.c.in cogl1-context.h cogl-bitmap.h cogl-color.h cogl-fixed.h cogl-material-compat.h cogl-matrix.h cogl-offscreen.h cogl-primitives.h cogl-shader.h cogl-texture.h cogl-types.h cogl-vertex-buffer.h cogl-clutter.h cogl.h cogl-win32-renderer.h &gt; cogl-enum-types.c
+
+cd $(SolutionDir)
+
+:DONE_COGL_ENUMS_C
+</GenCoglEnumsC>
+
 <CoglDoInstall>
 mkdir $(CopyDir)
 
@@ -83,6 +124,8 @@ mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango
 copy ..\..\..\cogl-pango\cogl-pango.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango
 
 copy ..\..\..\cogl\cogl-object.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-atlas-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-attribute-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
@@ -300,6 +343,9 @@ cd vs$(VSVer)
     <BuildMacro Include="CoglBuildDefines">
       <Value>$(CoglBuildDefines)</Value>
     </BuildMacro>
+    <BuildMacro Include="CoglPathBuildDefines">
+      <Value>$(CoglPathBuildDefines)</Value>
+    </BuildMacro>
     <BuildMacro Include="CoglPangoBuildDefines">
       <Value>$(CoglPangoBuildDefines)</Value>
     </BuildMacro>
@@ -314,6 +360,18 @@ cd vs$(VSVer)
     </BuildMacro>
     <BuildMacro Include="PreBuildCmd">
       <Value>$(PreBuildCmd)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenCoglPathEnumsH">
+      <Value>$(GenCoglPathEnumsH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenCoglPathEnumsC">
+      <Value>$(GenCoglPathEnumsC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenCoglEnumsH">
+      <Value>$(GenCoglEnumsH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenCoglEnumsC">
+      <Value>$(GenCoglEnumsC)</Value>
     </BuildMacro>
     <BuildMacro Include="CoglDoInstall">
       <Value>$(CoglDoInstall)</Value>

@@ -23,7 +23,7 @@
 	/>
 	<UserMacro
 		Name="GlibEtcInstallRoot"
-		Value="..\..\..\..\vs$(VSVer)\$(PlatformName)"
+		Value="$(SolutionDir)\..\..\..\..\vs$(VSVer)\$(PlatformName)"
 	/>
 	<UserMacro
 		Name="GlibEtcInstallRootFromBuildWin32"
@@ -60,6 +60,10 @@
 	<UserMacro
 		Name="CoglBuildDefines"
 		Value="G_LOG_DOMAIN=\&quot;Cogl\&quot;;COGL_HAS_WIN32_SUPPORT;COGL_BUILD_EXP;COGL_GL_LIBNAME=\&quot;\&quot;;COGL_LOCALEDIR=\&quot;/some/random/dir\&quot;"
+	/>
+	<UserMacro
+		Name="CoglPathBuildDefines"
+		Value="G_LOG_DOMAIN=\&quot;CoglPath\&quot;"
 	/>
 	<UserMacro
 		Name="CoglPangoBuildDefines"
@@ -102,12 +106,47 @@ if exist ..\..\..\config.h goto DONE_CONFIG_H&#x0D;&#x0A;
 copy ..\..\..\config.h.win32 ..\..\..\config.h&#x0D;&#x0A;
 if not exist ..\..\..\cogl\cogl-gl-header.h copy ..\..\..\cogl\cogl-gl-header.h.win32 ..\..\..\cogl\cogl-gl-header.h&#x0D;&#x0A;
 :DONE_CONFIG_H&#x0D;&#x0A;
-
-cd ..&#x0D;&#x0A;
-gen-enums.bat $(GlibEtcInstallRootFromBuildWin32)&#x0D;&#x0A;
-cd .\vs$(VSVer)&#x0D;&#x0A;
-
 "
+	/>
+	<UserMacro
+		Name="GenCoglPathEnumsH"
+		Value="
+if exist ..\..\..\cogl-path\cogl-path-enum-types.h goto DONE_COGLPATH_ENUMS_H&#x0D;&#x0A;
+cd ..\..\..\cogl-path&#x0D;&#x0A;
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-path-enum-types.h.in cogl-path-types.h cogl1-path-functions.h &gt; cogl-path-enum-types.h&#x0D;&#x0A;
+cd $(SolutionDir)&#x0D;&#x0A;
+:DONE_COGLPATH_ENUMS_H&#x0D;&#x0A;
+		      "
+	/>
+	<UserMacro
+		Name="GenCoglPathEnumsC"
+		Value="
+if exist ..\..\..\cogl-path\cogl-path-enum-types.c goto DONE_COGLPATH_ENUMS_C&#x0D;&#x0A;
+cd ..\..\..\cogl-path&#x0D;&#x0A;
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-path-enum-types.c.in cogl-path-types.h cogl1-path-functions.h &gt; cogl-path-enum-types.c&#x0D;&#x0A;
+cd $(SolutionDir)&#x0D;&#x0A;
+:DONE_COGLPATH_ENUMS_C&#x0D;&#x0A;
+		      "
+	/>
+	<UserMacro
+		Name="GenCoglEnumsH"
+		Value="
+if exist ..\..\..\cogl\cogl-enum-types.h goto DONE_COGL_ENUMS_H&#x0D;&#x0A;
+cd ..\..\..\cogl&#x0D;&#x0A;
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-enum-types.h.in cogl1-context.h cogl-bitmap.h cogl-color.h cogl-fixed.h cogl-material-compat.h cogl-matrix.h cogl-offscreen.h cogl-primitives.h cogl-shader.h cogl-texture.h cogl-types.h cogl-vertex-buffer.h cogl-clutter.h cogl.h cogl-win32-renderer.h &gt; cogl-enum-types.h&#x0D;&#x0A;
+cd $(SolutionDir)&#x0D;&#x0A;
+:DONE_COGL_ENUMS_H&#x0D;&#x0A;
+		      "
+	/>
+	<UserMacro
+		Name="GenCoglEnumsC"
+		Value="
+if exist ..\..\..\cogl\cogl-enum-types.c goto DONE_COGL_ENUMS_C&#x0D;&#x0A;
+cd ..\..\..\cogl&#x0D;&#x0A;
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-enum-types.c.in cogl1-context.h cogl-bitmap.h cogl-color.h cogl-fixed.h cogl-material-compat.h cogl-matrix.h cogl-offscreen.h cogl-primitives.h cogl-shader.h cogl-texture.h cogl-types.h cogl-vertex-buffer.h cogl-clutter.h cogl.h cogl-win32-renderer.h &gt; cogl-enum-types.c&#x0D;&#x0A;
+cd $(SolutionDir)&#x0D;&#x0A;
+:DONE_COGL_ENUMS_C&#x0D;&#x0A;
+		      "
 	/>
 	<UserMacro
 		Name="CoglDoInstall"
@@ -130,6 +169,7 @@ mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango&#x0D;&#x0A;
 copy ..\..\..\cogl-pango\cogl-pango.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-object.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
+copy ..\..\..\cogl\cogl-atlas-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-attribute-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-bitmap.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
