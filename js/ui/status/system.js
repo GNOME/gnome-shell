@@ -60,6 +60,8 @@ const AltSwitcher = new Lang.Class({
             // sync the pointer to make sure they update.
             global.sync_pointer();
         }
+
+        this.actor.visible = (childToShow != null);
     },
 
     _onDestroy: function() {
