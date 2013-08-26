@@ -102,11 +102,6 @@ const UserListItem = new Lang.Class({
 
     syncStyleClasses: function() {
         this._updateLoggedIn();
-
-        if (global.stage.get_key_focus() == this.actor)
-            this.actor.add_style_pseudo_class('focus');
-        else
-            this.actor.remove_style_pseudo_class('focus');
     },
 
     _updateLoggedIn: function() {
