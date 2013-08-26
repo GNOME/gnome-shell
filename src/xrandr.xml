@@ -205,11 +205,14 @@
 
 	Changes the backlight of @output to @value, which is
 	expressed as a percentage and rounded to the HW limits.
+
+        Returns the new value after rounding.
     -->
     <method name="ChangeBacklight">
       <arg name="serial" direction="in" type="u" />
       <arg name="output" direction="in" type="u" />
       <arg name="value" direction="in" type="i" />
+      <arg name="new_value" direction="out" type="i" />
     </method>
 
     <!--
