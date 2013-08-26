@@ -104,10 +104,25 @@ const restartDialogContent = {
     iconStyleClass: 'end-session-dialog-shutdown-icon'
 };
 
+const restartInstallDialogContent = {
+
+    subject: C_("title", "Restart & Install Updates"),
+    description: function(seconds) {
+        return ngettext("The system will automatically restart and install updates in %d second.",
+                        "The system will automatically restart and install updates in %d seconds.",
+                        seconds).format(seconds);
+    },
+    confirmButtons: [{ signal: 'ConfirmedReboot',
+                       label:  C_("button", "Restart & Install") }],
+    iconName: 'view-refresh-symbolic',
+    iconStyleClass: 'end-session-dialog-shutdown-icon'
+};
+
 const DialogContent = {
     0 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_LOGOUT */: logoutDialogContent,
     1 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_SHUTDOWN */: shutdownDialogContent,
-    2 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_RESTART */: restartDialogContent
+    2 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_RESTART */: restartDialogContent,
+    3: restartInstallDialogContent
 };
 
 const MAX_USERS_IN_SESSION_DIALOG = 5;
@@ -192,6 +207,7 @@ const EndSessionDialog = new Lang.Class({
         this._loginManager = LoginManager.getLoginManager();
         this._userManager = AccountsService.UserManager.get_default();
         this._user = this._userManager.get_user(GLib.get_user_name());
+        this._updatesFile = Gio.File.new_for_path('/system-update');
 
         this._secondsLeft = 0;
         this._totalSecondsToStayOpen = 0;
@@ -272,6 +288,9 @@ const EndSessionDialog = new Lang.Class({
         let open = (this.state == ModalDialog.State.OPENING || this.state == ModalDialog.State.OPENED);
         if (!open)
             return;
+
+        if (this._type == 2 && this._updatesFile.query_exists(null))
+            this._type = 3;
 
         let dialogContent = DialogContent[this._type];
 
