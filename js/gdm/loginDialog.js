@@ -921,5 +921,9 @@ const LoginDialog = new Lang.Class({
     addCharacter: function(unichar) {
         this._authPrompt.addCharacter(unichar);
     },
+
+    finish: function(onComplete) {
+        this._authPrompt.finish(onComplete);
+    },
 });
 Signals.addSignalMethods(LoginDialog.prototype);
