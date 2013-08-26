@@ -905,6 +905,12 @@ const LoginDialog = new Lang.Class({
                                         { sortGroup: CtrlAltTab.SortGroup.MIDDLE });
         this._userList.actor.grab_key_focus();
         this.actor.show();
+        this.actor.opacity = 0;
+
+        Tweener.addTween(this.actor,
+                         { opacity: 255,
+                           time: 1,
+                           transition: 'easeInQuad' });
 
         return true;
     },
