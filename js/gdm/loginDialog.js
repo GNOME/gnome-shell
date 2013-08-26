@@ -388,6 +388,7 @@ const LoginDialog = new Lang.Class({
 
     _init: function(parentActor) {
         this.actor = new St.Widget({ accessible_role: Atk.Role.WINDOW,
+                                     layout_manager: new Clutter.BinLayout(),
                                      style_class: 'login-dialog',
                                      visible: false });
 
@@ -426,11 +427,12 @@ const LoginDialog = new Lang.Class({
                                    Lang.bind(this, this._updateLogoTexture));
 
         this._userSelectionBox = new St.BoxLayout({ style_class: 'login-dialog-user-selection-box',
+                                                    x_align: Clutter.ActorAlign.CENTER,
+                                                    y_align: Clutter.ActorAlign.CENTER,
+                                                    x_expand: true,
+                                                    y_expand: true,
                                                     vertical: true,
                                                     visible: false });
-        this._userSelectionBox.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
-                                                                            align_axis: Clutter.AlignAxis.BOTH,
-                                                                            factor: 0.5 }));
         this.actor.add_child(this._userSelectionBox);
 
         this._bannerLabel = new St.Label({ style_class: 'login-dialog-banner',
@@ -448,14 +450,7 @@ const LoginDialog = new Lang.Class({
         this._authPrompt.connect('prompted', Lang.bind(this, this._onPrompted));
         this._authPrompt.connect('reset', Lang.bind(this, this._onReset));
         this._authPrompt.hide();
-
-        this._authPrompt.actor.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
-                                                                            align_axis: Clutter.AlignAxis.BOTH,
-                                                                            factor: 0.5 }));
-
         this.actor.add_child(this._authPrompt.actor);
-        this._userList.actor.add_constraint(new Clutter.BindConstraint({ source: this._authPrompt.actor,
-                                                                         coordinate: Clutter.BindCoordinate.WIDTH }));
 
         // translators: this message is shown below the user list on the
         // login screen. It can be activated to reveal an entry for
@@ -479,14 +474,11 @@ const LoginDialog = new Lang.Class({
                                      x_align: St.Align.START,
                                      x_fill: true });
 
-        this._logoBin = new St.Bin({ style_class: 'login-dialog-logo-bin', y_expand: true });
-        this._logoBin.set_y_align(Clutter.ActorAlign.END);
-        this._logoBin.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
-                                                                   align_axis: Clutter.AlignAxis.X_AXIS,
-                                                                   factor: 0.5 }));
-        this._logoBin.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
-                                                                   align_axis: Clutter.AlignAxis.Y_AXIS,
-                                                                   factor: 1.0 }));
+        this._logoBin = new St.Widget({ style_class: 'login-dialog-logo-bin',
+                                        x_align: Clutter.ActorAlign.CENTER,
+                                        y_align: Clutter.ActorAlign.END,
+                                        x_expand: true,
+                                        y_expand: true });
         this.actor.add_child(this._logoBin);
         this._updateLogo();
 
@@ -559,11 +551,10 @@ const LoginDialog = new Lang.Class({
         if (this._logoFileUri != uri)
             return;
 
-        let icon = null;
+        this._logoBin.destroy_all_children();
         if (this._logoFileUri)
-            icon = this._textureCache.load_uri_async(this._logoFileUri,
-                                                     -1, _LOGO_ICON_HEIGHT);
-        this._logoBin.set_child(icon);
+            this._logoBin.add_child(this._textureCache.load_uri_async(this._logoFileUri,
+                                                                      -1, _LOGO_ICON_HEIGHT));
     },
 
     _updateLogo: function() {

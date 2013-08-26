@@ -120,7 +120,7 @@ const AuthPrompt = new Lang.Class({
                          x_align: St.Align.MIDDLE,
                          y_align: St.Align.END });
 
-        this._defaultButtonWell = new St.Widget();
+        this._defaultButtonWell = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._defaultButtonWellActor = null;
 
         this._initButtons();
@@ -265,10 +265,6 @@ const AuthPrompt = new Lang.Class({
 
     addActorToDefaultButtonWell: function(actor) {
         this._defaultButtonWell.add_child(actor);
-
-        actor.add_constraint(new Clutter.AlignConstraint({ source: this._spinner.actor,
-                                                           align_axis: Clutter.AlignAxis.BOTH,
-                                                           factor: 0.5 }));
     },
 
     setActorInDefaultButtonWell: function(actor, animate) {

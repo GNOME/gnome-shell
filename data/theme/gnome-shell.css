@@ -2271,6 +2271,7 @@ StScrollBar StButton#vhandle:active {
 .login-dialog-user-list {
     spacing: 12px;
     padding: .2em;
+    width: 23em;
 }
 
 .login-dialog-user-list-item {
