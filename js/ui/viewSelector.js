@@ -85,8 +85,12 @@ const ViewSelector = new Lang.Class({
 
         this._entry.set_primary_icon(new St.Icon({ style_class: 'search-entry-icon',
                                                    icon_name: 'edit-find-symbolic' }));
-        this._clearIcon = new St.Icon({ style_class: 'search-entry-icon',
-                                        icon_name: 'edit-clear-symbolic' });
+        if (this._entry.get_text_direction() == Clutter.TextDirection.RTL)
+            this._clearIcon = new St.Icon({ style_class: 'search-entry-icon',
+                                            icon_name: 'edit-clear-rtl-symbolic' });
+        else
+            this._clearIcon = new St.Icon({ style_class: 'search-entry-icon',
+                                            icon_name: 'edit-clear-symbolic' });
 
         this._iconClickedId = 0;
         this._capturedEventId = 0;
