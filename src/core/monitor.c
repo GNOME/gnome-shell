@@ -1228,7 +1228,7 @@ meta_monitor_manager_handle_change_backlight  (MetaDBusDisplayConfig *skeleton,
 
   META_MONITOR_MANAGER_GET_CLASS (manager)->change_backlight (manager, output, value);
 
-  meta_dbus_display_config_complete_change_backlight (skeleton, invocation);
+  meta_dbus_display_config_complete_change_backlight (skeleton, invocation, output->backlight);
   return TRUE;
 }
 
