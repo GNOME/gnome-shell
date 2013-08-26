@@ -174,6 +174,7 @@ _cogl_texture_rectangle_create_base (CoglContext *ctx,
   _cogl_texture_init (tex, ctx, width, height, &cogl_texture_rectangle_vtable);
 
   tex_rect->gl_texture = 0;
+  tex_rect->is_foreign = FALSE;
 
   /* We default to GL_LINEAR for both filters */
   tex_rect->gl_legacy_texobj_min_filter = GL_LINEAR;
