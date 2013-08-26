@@ -28,6 +28,7 @@
 #include "cogl-private.h"
 #include "cogl-bitmap-private.h"
 #include "cogl-context-private.h"
+#include "cogl-texture-private.h"
 
 #include <string.h>
 
