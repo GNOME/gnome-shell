@@ -94,6 +94,7 @@ struct _MetaShapedTexturePrivate
 
   cairo_region_t *clip_region;
   cairo_region_t *input_shape_region;
+  cairo_region_t *opaque_region;
 
   guint tex_width, tex_height;
 
@@ -172,6 +173,55 @@ get_masked_pipeline (CoglContext *ctx)
   return cogl_pipeline_copy (template);
 }
 
+static CoglPipeline *
+get_unblended_pipeline (CoglContext *ctx)
+{
+  static CoglPipeline *template = NULL;
+  if (G_UNLIKELY (template == NULL))
+    {
+      CoglColor color;
+      template = cogl_pipeline_new (ctx);
+      cogl_color_init_from_4ub (&color, 255, 255, 255, 255);
+      cogl_pipeline_set_blend (template,
+                               "RGBA = ADD (SRC_COLOR, 0)",
+                               NULL);
+      cogl_pipeline_set_color (template, &color);
+    }
+
+  return cogl_pipeline_copy (template);
+}
+
+static void
+paint_clipped_rectangle (CoglFramebuffer       *fb,
+                         CoglPipeline          *pipeline,
+                         cairo_rectangle_int_t *rect,
+                         ClutterActorBox       *alloc)
+{
+  float coords[8];
+  float x1, y1, x2, y2;
+
+  x1 = rect->x;
+  y1 = rect->y;
+  x2 = rect->x + rect->width;
+  y2 = rect->y + rect->height;
+
+  coords[0] = rect->x / (alloc->x2 - alloc->x1);
+  coords[1] = rect->y / (alloc->y2 - alloc->y1);
+  coords[2] = (rect->x + rect->width) / (alloc->x2 - alloc->x1);
+  coords[3] = (rect->y + rect->height) / (alloc->y2 - alloc->y1);
+
+  coords[4] = coords[0];
+  coords[5] = coords[1];
+  coords[6] = coords[2];
+  coords[7] = coords[3];
+
+  cogl_framebuffer_draw_multitextured_rectangle (fb, pipeline,
+                                                 x1, y1, x2, y2,
+                                                 &coords[0], 8);
+
+}
+
+
 static void
 set_cogl_texture (MetaShapedTexture *stex,
                   CoglTexture       *cogl_tex)
@@ -222,11 +272,13 @@ meta_shaped_texture_paint (ClutterActor *actor)
   MetaShapedTexture *stex = (MetaShapedTexture *) actor;
   MetaShapedTexturePrivate *priv = stex->priv;
   guint tex_width, tex_height;
+  guchar opacity;
   CoglContext *ctx;
   CoglFramebuffer *fb;
   CoglPipeline *pipeline = NULL;
   CoglTexture *paint_tex;
   ClutterActorBox alloc;
+  cairo_region_t *blended_region = NULL;
 
   if (priv->clip_region && cairo_region_is_empty (priv->clip_region))
     return;
@@ -266,6 +318,64 @@ meta_shaped_texture_paint (ClutterActor *actor)
   ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
   fb = cogl_get_draw_framebuffer ();
 
+  opacity = clutter_actor_get_paint_opacity (actor);
+  clutter_actor_get_allocation_box (actor, &alloc);
+
+  if (priv->opaque_region != NULL && opacity == 255)
+    {
+      CoglPipeline *opaque_pipeline;
+      cairo_region_t *region;
+      int n_rects;
+      int i;
+
+      if (priv->clip_region != NULL)
+        {
+          region = cairo_region_copy (priv->clip_region);
+          cairo_region_intersect (region, priv->opaque_region);
+        }
+      else
+        {
+          region = cairo_region_reference (priv->opaque_region);
+        }
+
+      if (cairo_region_is_empty (region))
+        goto paint_blended;
+
+      opaque_pipeline = get_unblended_pipeline (ctx);
+      cogl_pipeline_set_layer_texture (opaque_pipeline, 0, paint_tex);
+
+      n_rects = cairo_region_num_rectangles (region);
+      for (i = 0; i < n_rects; i++)
+        {
+          cairo_rectangle_int_t rect;
+          cairo_region_get_rectangle (region, i, &rect);
+          paint_clipped_rectangle (fb, opaque_pipeline, &rect, &alloc);
+        }
+
+      cogl_object_unref (opaque_pipeline);
+
+      if (priv->clip_region != NULL)
+        {
+          blended_region = cairo_region_copy (priv->clip_region);
+        }
+      else
+        {
+          cairo_rectangle_int_t rect = { 0, 0, tex_width, tex_height };
+          blended_region = cairo_region_create_rectangle (&rect);
+        }
+
+      cairo_region_subtract (blended_region, priv->opaque_region);
+
+    paint_blended:
+      cairo_region_destroy (region);
+    }
+
+  if (blended_region == NULL && priv->clip_region != NULL)
+    blended_region = cairo_region_reference (priv->clip_region);
+
+  if (blended_region != NULL && cairo_region_is_empty (blended_region))
+    goto out;
+
   if (priv->mask_texture == NULL)
     {
       pipeline = get_unmasked_pipeline (ctx);
@@ -280,18 +390,13 @@ meta_shaped_texture_paint (ClutterActor *actor)
 
   {
     CoglColor color;
-    guchar opacity = clutter_actor_get_paint_opacity (actor);
     cogl_color_init_from_4ub (&color, opacity, opacity, opacity, opacity);
     cogl_pipeline_set_color (pipeline, &color);
   }
 
-  clutter_actor_get_allocation_box (actor, &alloc);
-
-  if (priv->clip_region)
+  if (blended_region != NULL)
     {
       int n_rects;
-      int i;
-      cairo_rectangle_int_t tex_rect = { 0, 0, tex_width, tex_height };
 
       /* Limit to how many separate rectangles we'll draw; beyond this just
        * fall back and draw the whole thing */
@@ -300,8 +405,8 @@ meta_shaped_texture_paint (ClutterActor *actor)
       n_rects = cairo_region_num_rectangles (priv->clip_region);
       if (n_rects <= MAX_RECTS)
 	{
-	  float coords[8];
-          float x1, y1, x2, y2;
+          int i;
+          cairo_rectangle_int_t tex_rect = { 0, 0, tex_width, tex_height };
 
 	  for (i = 0; i < n_rects; i++)
 	    {
@@ -312,24 +417,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
 	      if (!gdk_rectangle_intersect (&tex_rect, &rect, &rect))
 		continue;
 
-	      x1 = rect.x;
-	      y1 = rect.y;
-	      x2 = rect.x + rect.width;
-	      y2 = rect.y + rect.height;
-
-	      coords[0] = rect.x / (alloc.x2 - alloc.x1);
-	      coords[1] = rect.y / (alloc.y2 - alloc.y1);
-	      coords[2] = (rect.x + rect.width) / (alloc.x2 - alloc.x1);
-	      coords[3] = (rect.y + rect.height) / (alloc.y2 - alloc.y1);
-
-              coords[4] = coords[0];
-              coords[5] = coords[1];
-              coords[6] = coords[2];
-              coords[7] = coords[3];
-
-              cogl_framebuffer_draw_multitextured_rectangle (fb, pipeline,
-                                                             x1, y1, x2, y2,
-                                                             &coords[0], 8);
+              paint_clipped_rectangle (fb, pipeline, &rect, &alloc);
             }
 
           goto out;
@@ -344,6 +432,8 @@ meta_shaped_texture_paint (ClutterActor *actor)
  out:
   if (pipeline != NULL)
     cogl_object_unref (pipeline);
+  if (blended_region != NULL)
+    cairo_region_destroy (blended_region);
 }
 
 static void
@@ -842,6 +932,36 @@ meta_shaped_texture_set_clip_region (MetaShapedTexture *stex,
     priv->clip_region = cairo_region_copy (clip_region);
   else
     priv->clip_region = NULL;
+}
+
+/**
+ * meta_shaped_texture_set_opaque_region:
+ * @stex: a #MetaShapedTexture
+ * @opaque_region: (transfer full): the region of the texture that
+ *   can have blending turned off.
+ *
+ * As most windows have a large portion that does not require blending,
+ * we can easily turn off blending if we know the areas that do not
+ * require blending. This sets the region where we will not blend for
+ * optimization purposes.
+ */
+void
+meta_shaped_texture_set_opaque_region (MetaShapedTexture *stex,
+                                       cairo_region_t    *opaque_region)
+{
+  MetaShapedTexturePrivate *priv;
+
+  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
+
+  priv = stex->priv;
+
+  if (priv->opaque_region)
+    cairo_region_destroy (priv->opaque_region);
+
+  if (opaque_region)
+    priv->opaque_region = cairo_region_reference (opaque_region);
+  else
+    priv->opaque_region = NULL;
 }
 
 /**

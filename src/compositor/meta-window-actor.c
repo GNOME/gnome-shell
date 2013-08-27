@@ -2286,6 +2286,9 @@ meta_window_actor_update_opaque_region (MetaWindowActor *self)
     priv->opaque_region = NULL;
   else
     priv->opaque_region = cairo_region_reference (priv->shape_region);
+
+  meta_shaped_texture_set_opaque_region (META_SHAPED_TEXTURE (priv->actor),
+                                         priv->opaque_region);
 }
 
 static void

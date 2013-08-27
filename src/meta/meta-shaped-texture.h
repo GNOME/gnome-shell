@@ -84,6 +84,9 @@ void meta_shaped_texture_set_input_shape_region (MetaShapedTexture *stex,
 void meta_shaped_texture_set_clip_region (MetaShapedTexture *stex,
 					  cairo_region_t    *clip_region);
 
+void meta_shaped_texture_set_opaque_region (MetaShapedTexture *stex,
+                                            cairo_region_t    *opaque_region);
+
 cairo_surface_t * meta_shaped_texture_get_image (MetaShapedTexture     *stex,
                                                  cairo_rectangle_int_t *clip);
 
