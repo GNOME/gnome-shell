@@ -449,7 +449,8 @@ const Calendar = new Lang.Class({
         this._topBox.add(this._backButton);
         this._backButton.connect('clicked', Lang.bind(this, this._onPrevMonthButtonClicked));
 
-        this._monthLabel = new St.Label({style_class: 'calendar-month-label'});
+        this._monthLabel = new St.Label({style_class: 'calendar-month-label',
+                                         can_focus: true });
         this._topBox.add(this._monthLabel, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
 
         this._forwardButton = new St.Button({ style_class: 'calendar-change-month-forward',

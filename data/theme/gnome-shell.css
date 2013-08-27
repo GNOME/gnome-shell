@@ -1212,6 +1212,10 @@ StScrollBar StButton#vhandle:active {
     padding-top: 8px;
 }
 
+.calendar-month-label:focus {
+    background-color: #999999;
+}
+
 .calendar-change-month-back {
     width: 18px;
     height: 12px;
