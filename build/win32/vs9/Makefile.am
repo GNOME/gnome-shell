@@ -4,6 +4,8 @@ EXTRA_DIST = \
 	cogl.vsprops	\
 	cogl.vcproj		\
 	cogl.vcprojin		\
+	cogl-path.vcproj	\
+	cogl-path.vcprojin	\
 	cogl-pango.vcproj	\
 	cogl-pango.vcprojin	\
 	test-conformance-cogl.vcproj	\

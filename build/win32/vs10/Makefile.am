@@ -4,8 +4,12 @@ EXTRA_DIST = \
 	cogl.props	\
 	cogl.vcxproj		\
 	cogl.vcxprojin		\
-	cogl.vcxproj.filters		\
-	cogl.vcxproj.filtersin		\
+	cogl.vcxproj.filters	\
+	cogl.vcxproj.filtersin	\
+	cogl-path.vcxproj		\
+	cogl-path.vcxprojin		\
+	cogl-path.vcxproj.filters		\
+	cogl-path.vcxproj.filtersin		\
 	cogl-pango.vcxproj	\
 	cogl-pango.vcxprojin	\
 	cogl-pango.vcxproj.filters	\
