@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-21 01:10+0200\n"
-"PO-Revision-Date: 2013-08-21 01:12+0200\n"
+"POT-Creation-Date: 2013-08-27 02:53+0200\n"
+"PO-Revision-Date: 2013-08-27 02:55+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -127,27 +127,10 @@ msgid "History for the looking glass dialog"
 msgstr "Historial do diálogo de «looking glass»"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-msgid ""
-"Internally used to store the last IM presence explicitly set by the user. "
-"The value here is from the TpConnectionPresenceType enumeration."
-msgstr ""
-"Usado internamente para gardar o último IM de presenza estabelecido "
-"explícitamente polo usuario. O valor aquí é da enumeración "
-"TpConnectionPresenceType."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
-msgid ""
-"Internally used to store the last session presence status for the user. The "
-"value here is from the GsmPresenceStatus enumeration."
-msgstr ""
-"Usado internamente para gardar o último estado de presenza da sesión do "
-"usuario. O valor aquí é da GsmPresenceStatus."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Always show the 'Log out' menuitem in the user menu."
 msgstr "Mostrar sempre o elemento de menú «Saír da sesión» no menú de usuario."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
@@ -156,14 +139,14 @@ msgstr ""
 "sesión» en situacións de existir un único usuario ou existir unha única "
 "sesión. "
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Indica se se debe lembrar o contrasinal para montar os sistemas de ficheiros "
 "cifrados ou remotos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -175,70 +158,70 @@ msgstr ""
 "futuro aparecerá a opción «Lembrar contrasinal» Esta chave estabelece o "
 "estado por omisión da opción. "
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Mostrar a data da semana no calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Se é verdadeiro, móstrase a data da semana ISO no calendario."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Keybinding to open the application menu"
 msgstr "Combinación de teclas para abrir o menú de aplicativo"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "Keybinding to open the application menu."
 msgstr "Combinación de teclas para abrir o menú de aplicativo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Combinación de teclas para abrir a vista «Mostrar aplicativos»"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "Combinación de teclas para abrir a vista \"Mostrar aplicativos\" da Vista "
 "xera de Actividades."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to open the overview"
 msgstr "Combinación de teclas para abrir a Vista xeral"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Keybinding to open the Activities Overview."
 msgstr "Combinación de teclas para abrir a Vista de actividades."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "Combinación de teclas para mostrar/ocultar a área de mensaxes"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "Combinación de teclas para mostrar/ocultar a área de mensaxes."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to focus the active notification"
 msgstr "Combinación de teclas para enfocar a notificación activa"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to focus the active notification."
 msgstr "Combinación de teclas para enfocar a notificación activa."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Which keyboard to use"
 msgstr "Que teclado usar"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "The type of keyboard to use."
 msgstr "O tipo de teclado a usar."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "The application icon mode."
 msgstr "O modo da icona do aplicativo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -248,21 +231,21 @@ msgstr ""
 "son «thumbnail-only» (mostra unha miniatura da xanela, «app-icon-only» (só "
 "mostra a icona do aplicativo) ou «both» (móstranse ambas cosas)."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Attach modal dialog to the parent window"
 msgstr "Anexar o diálogo modal á xanela pai"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Esta chave sobrescribe a chave en org.gnome.mutter cando executa GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Distribución dos botóns na barra de títulos"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
@@ -270,15 +253,15 @@ msgstr ""
 "Esta chave sobrescribe a chave en org.gnome.wm.preferences cando executa "
 "GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Activar o mosaico nos bordos ao arrastrar xanelas aos bordos da xanela"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "Workspaces are managed dynamically"
 msgstr "Os espazos de traballo xestiónanse dinamicamente"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Workspaces only on primary monitor"
 msgstr "Espazos de traballo só no monitor primario"
 
@@ -297,10 +280,9 @@ msgstr ""
 "Seleccione unha extensión que configurar usando a caixa combinada de arriba."
 
 #: ../js/gdm/authPrompt.js:146 ../js/ui/components/networkAgent.js:132
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:347
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
-#: ../js/ui/status/system.js:373
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -309,7 +291,7 @@ msgid "Next"
 msgstr "Seguinte"
 
 #: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
-#: ../js/ui/unlockDialog.js:56
+#: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Desbloquear"
 
@@ -318,24 +300,24 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
-#: ../js/gdm/loginDialog.js:299
+#: ../js/gdm/loginDialog.js:294
 msgid "Choose Session"
 msgstr "Escolla unha sesión"
 
-#: ../js/gdm/loginDialog.js:317
+#: ../js/gdm/loginDialog.js:312
 msgid "Session"
 msgstr "Sesión"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:468
+#: ../js/gdm/loginDialog.js:458
 msgid "Not listed?"
 msgstr "Non está na lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:641
+#: ../js/gdm/loginDialog.js:625
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(p.ex., usuario ou %s)"
@@ -343,12 +325,12 @@ msgstr "(p.ex., usuario ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:646 ../js/ui/components/networkAgent.js:255
+#: ../js/gdm/loginDialog.js:630 ../js/ui/components/networkAgent.js:255
 #: ../js/ui/components/networkAgent.js:273
 msgid "Username: "
 msgstr "Nome de usuario: "
 
-#: ../js/gdm/loginDialog.js:909
+#: ../js/gdm/loginDialog.js:894
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
 
@@ -361,7 +343,7 @@ msgstr "Erro de autenticación"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:419
+#: ../js/gdm/util.js:436
 msgid "(or swipe finger)"
 msgstr "(ou pase o dedo)"
 
@@ -388,15 +370,15 @@ msgstr "Frecuentes"
 msgid "All"
 msgstr "Todos"
 
-#: ../js/ui/appDisplay.js:986
+#: ../js/ui/appDisplay.js:991
 msgid "New Window"
 msgstr "Xanela nova"
 
-#: ../js/ui/appDisplay.js:989 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:994 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Retirar dos marcadores"
 
-#: ../js/ui/appDisplay.js:990
+#: ../js/ui/appDisplay.js:995
 msgid "Add to Favorites"
 msgstr "Engadir aos favoritos"
 
@@ -410,7 +392,7 @@ msgstr "%s foi engadido aos seus favoritos."
 msgid "%s has been removed from your favorites."
 msgstr "%s retirouse dos seus marcadores."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:267
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:323
 msgid "Settings"
 msgstr "Preferencias"
 
@@ -968,95 +950,111 @@ msgstr "Preferencias de data e hora"
 msgid "%A %B %e, %Y"
 msgstr "%a, %e de %B, %Y"
 
-#: ../js/ui/endSessionDialog.js:63
+#: ../js/ui/endSessionDialog.js:62
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Saír da sesión %s"
 
-#: ../js/ui/endSessionDialog.js:64
+#: ../js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Log Out"
 msgstr "Saír da sesión"
 
 #: ../js/ui/endSessionDialog.js:65
-msgid "Click Log Out to quit these applications and log out of the system."
-msgstr ""
-"Prema en «Saír da sesión» para pechar estes aplicativos e saír da sesión do "
-"sistema."
-
-#: ../js/ui/endSessionDialog.js:67
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "Vaise pechar a sesión de %s en %d segundo."
 msgstr[1] "Vaise pechar a sesión de %s en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:72
+#: ../js/ui/endSessionDialog.js:70
 #, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "A súa sesión pecharase automaticamente en %d segundo."
 msgstr[1] "A súa sesión pecharase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:76
-msgid "Logging out of the system."
-msgstr "Saíndo da sesión do sistema."
-
-#: ../js/ui/endSessionDialog.js:78
+#: ../js/ui/endSessionDialog.js:75
 msgctxt "button"
 msgid "Log Out"
 msgstr "Saír da sesión"
 
-#: ../js/ui/endSessionDialog.js:83
+#: ../js/ui/endSessionDialog.js:80
 msgctxt "title"
 msgid "Power Off"
 msgstr "Apagar"
 
-#: ../js/ui/endSessionDialog.js:84
-msgid "Click Power Off to quit these applications and power off the system."
-msgstr "Prema sobre «Apagar» para pechar estes aplicativos e apagar o sistema."
-
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:82
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "O sistema apagarase automaticamente en %d segundo."
 msgstr[1] "O sistema apagarase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:90
-msgid "Powering off the system."
-msgstr "Apagando o sistema."
-
-#: ../js/ui/endSessionDialog.js:92 ../js/ui/endSessionDialog.js:109
+#: ../js/ui/endSessionDialog.js:87 ../js/ui/endSessionDialog.js:102
 msgctxt "button"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/ui/endSessionDialog.js:94
+#: ../js/ui/endSessionDialog.js:89
 msgctxt "button"
 msgid "Power Off"
 msgstr "Apagar"
 
-#: ../js/ui/endSessionDialog.js:100
+#: ../js/ui/endSessionDialog.js:95
 msgctxt "title"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/ui/endSessionDialog.js:101
-msgid "Click Restart to quit these applications and restart the system."
-msgstr "Prema «Reiniciar» para pechar estes aplicativos e reiniciar o sistema."
-
-#: ../js/ui/endSessionDialog.js:103
+#: ../js/ui/endSessionDialog.js:97
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "O sistema reiniciarase automaticamente en %d segundo."
 msgstr[1] "O sistema reiniciarase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:107
-msgid "Restarting the system."
-msgstr "Reiniciando o sistema."
+#: ../js/ui/endSessionDialog.js:109
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "Reiniciar e instalar actualizacións"
+
+#: ../js/ui/endSessionDialog.js:111
+#, c-format
+msgid "The system will automatically restart and install updates in %d second."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] ""
+"O sistema reiniciarase automaticamente e instalará as actualizacións en %d "
+"segundo."
+msgstr[1] ""
+"O sistema reiniciarase automaticamente e instalará as actualizacións en %d "
+"segundos."
+
+#: ../js/ui/endSessionDialog.js:116
+msgctxt "button"
+msgid "Restart & Install"
+msgstr "Reiniciar e instalar"
+
+#: ../js/ui/endSessionDialog.js:267
+msgid "Some applications are busy or have unsaved work."
+msgstr "Algúns aplicativos están ocupados ou teñen traballo sen gardar."
+
+#: ../js/ui/endSessionDialog.js:273
+msgid "Other users are logged in."
+msgstr "Hai outros usuarios conectados."
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: ../js/ui/endSessionDialog.js:475
+#, c-format
+msgid "%s (remote)"
+msgstr "%s (remoto)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: ../js/ui/endSessionDialog.js:478
+#, c-format
+msgid "%s (console)"
+msgstr "%s (consola)"
 
 #: ../js/ui/extensionDownloader.js:199
 msgid "Install"
@@ -1156,7 +1154,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Descoñecido"
 
-#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:154
+#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:152
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1216,22 +1214,22 @@ msgstr "Pechar"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:90
+#: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/screenShield.js:156
+#: ../js/ui/screenShield.js:154
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nova"
 msgstr[1] "%d notificacións novas"
 
-#: ../js/ui/screenShield.js:479 ../js/ui/status/system.js:275
+#: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:331
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/screenShield.js:712
+#: ../js/ui/screenShield.js:703
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME precisa bloquear a pantalla"
 
@@ -1242,11 +1240,11 @@ msgstr "GNOME precisa bloquear a pantalla"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1316
+#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
 msgid "Unable to lock"
 msgstr "Non foi posíbel bloquear"
 
-#: ../js/ui/screenShield.js:838 ../js/ui/screenShield.js:1317
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Lock was blocked by an application"
 msgstr "Un aplicativo impediu o bloqueo"
 
@@ -1421,6 +1419,10 @@ msgstr "Escriba o PIN mencionado no dispositivo."
 msgid "OK"
 msgstr "Aceptar"
 
+#: ../js/ui/status/brightness.js:42
+msgid "Brightness"
+msgstr "Brillo"
+
 #: ../js/ui/status/keyboard.js:404
 msgid "Show Keyboard Layout"
 msgstr "Mostrar a distribución do teclado"
@@ -1551,51 +1553,43 @@ msgstr "Modo avión"
 msgid "On"
 msgstr "Activado"
 
-#: ../js/ui/status/system.js:247
+#: ../js/ui/status/system.js:303
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/status/system.js:252
+#: ../js/ui/status/system.js:308
 msgid "Log Out"
 msgstr "Saír da sesión"
 
-#: ../js/ui/status/system.js:271
+#: ../js/ui/status/system.js:327
 msgid "Orientation Lock"
 msgstr "Bloqueo de orientación"
 
-#: ../js/ui/status/system.js:279 ../js/ui/status/system.js:377
+#: ../js/ui/status/system.js:335
+msgid "Suspend"
+msgstr "Suspender"
+
+#: ../js/ui/status/system.js:338
 msgid "Power Off"
 msgstr "Apagar"
 
-#: ../js/ui/status/system.js:323
-msgid "Other users are logged in."
-msgstr "Hai outros usuarios conectados."
-
-#: ../js/ui/status/system.js:328
-msgid "Shutting down might cause them to lose unsaved work."
-msgstr "Se apaga o computador pode perder o traballo que non gardou."
-
-#. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/status/system.js:356
-#, c-format
-msgid "%s (remote)"
-msgstr "%s (remoto)"
-
-#. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/status/system.js:359
-#, c-format
-msgid "%s (console)"
-msgstr "%s (consola)"
-
-#: ../js/ui/status/volume.js:124
+#: ../js/ui/status/volume.js:127
 msgid "Volume changed"
 msgstr "Volume cambiado"
 
-#: ../js/ui/unlockDialog.js:64
+#: ../js/ui/status/volume.js:162
+msgid "Volume"
+msgstr "Volume"
+
+#: ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Micrófono"
+
+#: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
 msgstr "Iniciar sesión como outro usuario"
 
-#: ../js/ui/unlockDialog.js:81
+#: ../js/ui/unlockDialog.js:84
 msgid "Unlock Window"
 msgstr "Desbloquear xanela"
 
@@ -1709,6 +1703,46 @@ msgstr "O contrasinal non pode estar baleiro"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O usuario rexeitou o diálogo de autenticación"
 
+#~ msgid ""
+#~ "Internally used to store the last IM presence explicitly set by the user. "
+#~ "The value here is from the TpConnectionPresenceType enumeration."
+#~ msgstr ""
+#~ "Usado internamente para gardar o último IM de presenza estabelecido "
+#~ "explícitamente polo usuario. O valor aquí é da enumeración "
+#~ "TpConnectionPresenceType."
+
+#~ msgid ""
+#~ "Internally used to store the last session presence status for the user. "
+#~ "The value here is from the GsmPresenceStatus enumeration."
+#~ msgstr ""
+#~ "Usado internamente para gardar o último estado de presenza da sesión do "
+#~ "usuario. O valor aquí é da GsmPresenceStatus."
+
+#~ msgid "Click Log Out to quit these applications and log out of the system."
+#~ msgstr ""
+#~ "Prema en «Saír da sesión» para pechar estes aplicativos e saír da sesión "
+#~ "do sistema."
+
+#~ msgid "Logging out of the system."
+#~ msgstr "Saíndo da sesión do sistema."
+
+#~ msgid "Click Power Off to quit these applications and power off the system."
+#~ msgstr ""
+#~ "Prema sobre «Apagar» para pechar estes aplicativos e apagar o sistema."
+
+#~ msgid "Powering off the system."
+#~ msgstr "Apagando o sistema."
+
+#~ msgid "Click Restart to quit these applications and restart the system."
+#~ msgstr ""
+#~ "Prema «Reiniciar» para pechar estes aplicativos e reiniciar o sistema."
+
+#~ msgid "Restarting the system."
+#~ msgstr "Reiniciando o sistema."
+
+#~ msgid "Shutting down might cause them to lose unsaved work."
+#~ msgstr "Se apaga o computador pode perder o traballo que non gardou."
+
 #~ msgid "Screenshots"
 #~ msgstr "Capturas de pantalla"
 
@@ -1776,9 +1810,6 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 #~ msgid "Power"
 #~ msgstr "Apagar"
 
-#~ msgid "Suspend"
-#~ msgstr "Suspender"
-
 #~ msgid "Restart"
 #~ msgstr "Reiniciar"
 
@@ -1787,9 +1818,6 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 
 #~ msgid "Volume, network, battery"
 #~ msgstr "Volume, rede, batería"
-
-#~ msgid "Volume"
-#~ msgstr "Volume"
 
 #~ msgid "Universal Access Settings"
 #~ msgstr "Preferencias do acceso universal"
@@ -1903,9 +1931,6 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 #~ msgid "Unknown"
 #~ msgstr "Descoñecido"
 
-#~ msgid "Microphone"
-#~ msgstr "Micrófono"
-
 #~ msgid "Available"
 #~ msgstr "Dispoñíbel"
 
@@ -1923,9 +1948,6 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 
 #~ msgid "Notifications"
 #~ msgstr "Notificacións"
-
-#~ msgid "Install Updates & Restart"
-#~ msgstr "Instalar actualizacións e reiniciar"
 
 #~ msgid "Your chat status will be set to busy"
 #~ msgstr "O seu estado de conversa estabelecerase a «ocupado»"
