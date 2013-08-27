@@ -605,10 +605,7 @@ meta_shaped_texture_set_clip_region (MetaShapedTexture *stex,
   priv = stex->priv;
 
   if (priv->clip_region)
-    {
-      cairo_region_destroy (priv->clip_region);
-      priv->clip_region = NULL;
-    }
+    cairo_region_destroy (priv->clip_region);
 
   if (clip_region)
     priv->clip_region = cairo_region_copy (clip_region);
