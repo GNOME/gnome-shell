@@ -2433,8 +2433,7 @@ StScrollBar StButton#vhandle:active {
     background-color: rgba(102, 102, 102, 0.15);
 }
 
-.login-dialog-message-warning,
-.login-dialog-message-info {
+.login-dialog-message {
     padding-top: 4px;
     padding-bottom: 16px;
     min-height: 2em;
@@ -2445,8 +2444,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .login-dialog-message-hint {
-    padding-bottom: 16px;
-    min-height: 2em;
+    padding-top: 0px;
 }
 
 .user-widget-label {

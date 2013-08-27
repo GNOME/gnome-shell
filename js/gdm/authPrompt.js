@@ -36,8 +36,6 @@ const BeginRequestType = {
     DONT_PROVIDE_USERNAME: 1
 };
 
-let _messageStyleMap;
-
 const AuthPrompt = new Lang.Class({
     Name: 'AuthPrompt',
 
@@ -109,7 +107,8 @@ const AuthPrompt = new Lang.Class({
 
         this._entry.grab_key_focus();
 
-        this._message = new St.Label({ opacity: 0 });
+        this._message = new St.Label({ opacity: 0,
+                                       styleClass: 'login-dialog-message' });
         this._message.clutter_text.line_wrap = true;
         this.actor.add(this._message, { x_fill: true, y_align: St.Align.START });
 
@@ -371,27 +370,22 @@ const AuthPrompt = new Lang.Class({
                          });
     },
 
-    _initMessageStyleMap: function() {
-        if (_messageStyleMap)
-            return;
-
-        _messageStyleMap = {};
-        _messageStyleMap[GdmUtil.MessageType.NONE] = '';
-        _messageStyleMap[GdmUtil.MessageType.ERROR] = 'login-dialog-message-warning';
-        _messageStyleMap[GdmUtil.MessageType.INFO] = 'login-dialog-message-info';
-        _messageStyleMap[GdmUtil.MessageType.HINT] = 'login-dialog-message-hint';
-
-    },
-
     setMessage: function(message, type) {
-        this._initMessageStyleMap();
+        if (type == GdmUtil.MessageType.ERROR)
+            this._message.add_style_class_name('login-dialog-message-warning');
+        else
+            this._message.remove_style_class_name('login-dialog-message-warning');
+
+        if (type == GdmUtil.MessageType.HINT)
+            this._message.add_style_class_name('login-dialog-message-hint');
+        else
+            this._message.remove_style_class_name('login-dialog-message-hint');
+
         if (message) {
             Tweener.removeTweens(this._message);
             this._message.text = message;
-            this._message.styleClass = _messageStyleMap[type];
             this._message.opacity = 255;
         } else {
-            this._message.styleClass = null;
             this._message.opacity = 0;
         }
     },
