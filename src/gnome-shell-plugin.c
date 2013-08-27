@@ -325,9 +325,8 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
                                   XEvent     *xev)
 {
   MetaScreen *screen = meta_plugin_get_screen (plugin);
-  MetaDisplay *display = meta_screen_get_display (screen);
-
   GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
+
 #ifdef GLX_INTEL_swap_event
   if (shell_plugin->have_swap_event &&
       xev->type == (shell_plugin->glx_event_base + GLX_BufferSwapComplete))
