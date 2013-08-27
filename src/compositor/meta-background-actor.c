@@ -44,7 +44,7 @@
 
 struct _MetaBackgroundActorPrivate
 {
-  cairo_region_t *visible_region;
+  cairo_region_t *clip_region;
 };
 
 G_DEFINE_TYPE (MetaBackgroundActor, meta_background_actor, CLUTTER_TYPE_ACTOR);
@@ -54,7 +54,7 @@ meta_background_actor_dispose (GObject *object)
 {
   MetaBackgroundActor *self = META_BACKGROUND_ACTOR (object);
 
-  meta_background_actor_set_visible_region (self, NULL);
+  meta_background_actor_set_clip_region (self, NULL);
 
   G_OBJECT_CLASS (meta_background_actor_parent_class)->dispose (object);
 }
@@ -167,17 +167,17 @@ meta_background_actor_new (void)
 }
 
 /**
- * meta_background_actor_set_visible_region:
+ * meta_background_actor_set_clip_region:
  * @self: a #MetaBackgroundActor
- * @visible_region: (allow-none): the area of the actor (in allocate-relative
+ * @clip_region: (allow-none): the area of the actor (in allocate-relative
  *   coordinates) that is visible.
  *
  * Sets the area of the background that is unobscured by overlapping windows.
  * This is used to optimize and only paint the visible portions.
  */
 void
-meta_background_actor_set_visible_region (MetaBackgroundActor *self,
-                                          cairo_region_t      *visible_region)
+meta_background_actor_set_clip_region (MetaBackgroundActor *self,
+                                       cairo_region_t      *clip_region)
 {
   MetaBackgroundActorPrivate *priv;
 
@@ -185,16 +185,16 @@ meta_background_actor_set_visible_region (MetaBackgroundActor *self,
 
   priv = self->priv;
 
-  g_clear_pointer (&priv->visible_region,
+  g_clear_pointer (&priv->clip_region,
                    (GDestroyNotify)
                    cairo_region_destroy);
 
-  if (visible_region)
-    priv->visible_region = cairo_region_copy (visible_region);
+  if (clip_region)
+    priv->clip_region = cairo_region_copy (clip_region);
 }
 
 /**
- * meta_background_actor_get_visible_region:
+ * meta_background_actor_get_clip_region:
  * @self: a #MetaBackgroundActor
  *
  * Return value (transfer full): a #cairo_region_t that represents the part of
@@ -202,16 +202,16 @@ meta_background_actor_set_visible_region (MetaBackgroundActor *self,
  * #MetaWindowActor objects.
  */
 cairo_region_t *
-meta_background_actor_get_visible_region (MetaBackgroundActor *self)
+meta_background_actor_get_clip_region (MetaBackgroundActor *self)
 {
   MetaBackgroundActorPrivate *priv = self->priv;
   ClutterActorBox content_box;
   cairo_rectangle_int_t content_area = { 0 };
-  cairo_region_t *visible_region;
+  cairo_region_t *clip_region;
 
   g_return_val_if_fail (META_IS_BACKGROUND_ACTOR (self), NULL);
 
-  if (!priv->visible_region)
+  if (!priv->clip_region)
       return NULL;
 
   clutter_actor_get_content_box (CLUTTER_ACTOR (self), &content_box);
@@ -221,8 +221,8 @@ meta_background_actor_get_visible_region (MetaBackgroundActor *self)
   content_area.width = content_box.x2 - content_box.x1;
   content_area.height = content_box.y2 - content_box.y1;
 
-  visible_region = cairo_region_create_rectangle (&content_area);
-  cairo_region_intersect (visible_region, priv->visible_region);
+  clip_region = cairo_region_create_rectangle (&content_area);
+  cairo_region_intersect (clip_region, priv->clip_region);
 
-  return visible_region;
+  return clip_region;
 }

@@ -254,7 +254,6 @@ meta_window_group_paint (ClutterActor *actor)
             meta_background_group_set_clip_region (META_BACKGROUND_GROUP (child), clip_region);
           else
             meta_background_actor_set_clip_region (META_BACKGROUND_ACTOR (child), clip_region);
-
           cairo_region_translate (clip_region, x, y);
         }
     }
@@ -278,7 +277,7 @@ meta_window_group_paint (ClutterActor *actor)
       else if (META_IS_BACKGROUND_ACTOR (child))
         {
           MetaBackgroundActor *background_actor = META_BACKGROUND_ACTOR (child);
-          meta_background_actor_set_visible_region (background_actor, NULL);
+          meta_background_actor_set_clip_region (background_actor, NULL);
         }
     }
 }

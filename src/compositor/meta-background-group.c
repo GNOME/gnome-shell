@@ -62,16 +62,16 @@ meta_background_group_init (MetaBackgroundGroup *self)
 }
 
 /**
- * meta_background_group_set_visible_region:
+ * meta_background_group_set_clip_region:
  * @self: a #MetaBackgroundGroup
- * @visible_region: (allow-none): the parts of the background to paint
+ * @region: (allow-none): the parts of the background to paint
  *
  * Sets the area of the backgrounds that is unobscured by overlapping windows.
  * This is used to optimize and only paint the visible portions.
  */
 void
-meta_background_group_set_visible_region (MetaBackgroundGroup *self,
-                                          cairo_region_t      *region)
+meta_background_group_set_clip_region (MetaBackgroundGroup *self,
+                                       cairo_region_t      *region)
 {
   GList *children, *l;
 
@@ -82,7 +82,7 @@ meta_background_group_set_visible_region (MetaBackgroundGroup *self,
 
       if (META_IS_BACKGROUND_ACTOR (actor))
         {
-          meta_background_actor_set_visible_region (META_BACKGROUND_ACTOR (actor), region);
+          meta_background_actor_set_clip_region (META_BACKGROUND_ACTOR (actor), region);
         }
       else if (META_IS_BACKGROUND_GROUP (actor))
         {
@@ -92,7 +92,7 @@ meta_background_group_set_visible_region (MetaBackgroundGroup *self,
             continue;
 
           cairo_region_translate (region, -x, -y);
-          meta_background_group_set_visible_region (META_BACKGROUND_GROUP (actor), region);
+          meta_background_group_set_clip_region (META_BACKGROUND_GROUP (actor), region);
           cairo_region_translate (region, x, y);
         }
     }
