@@ -89,17 +89,30 @@ painting_untransformed (MetaWindowGroup *window_group,
 static void
 meta_window_group_paint (ClutterActor *actor)
 {
-  cairo_region_t *visible_region;
-  ClutterActor *stage;
+  cairo_region_t *clip_region;
+  cairo_region_t *unobscured_region;
   ClutterActorIter iter;
   ClutterActor *child;
-  cairo_rectangle_int_t visible_rect;
+  cairo_rectangle_int_t visible_rect, clip_rect;
   int paint_x_origin, paint_y_origin;
   int actor_x_origin, actor_y_origin;
   int paint_x_offset, paint_y_offset;
 
   MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
   MetaCompScreen *info = meta_screen_get_compositor_data (window_group->screen);
+  ClutterActor *stage = clutter_actor_get_stage (actor);
+
+  /* Start off by treating all windows as completely unobscured, so damage anywhere
+   * in a window queues redraws, but confine it more below. */
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
+    {
+      if (META_IS_WINDOW_ACTOR (child))
+        {
+          MetaWindowActor *window_actor = META_WINDOW_ACTOR (child);
+          meta_window_actor_set_unobscured_region (window_actor, NULL);
+        }
+    }
 
   /* Normally we expect an actor to be drawn at it's position on the screen.
    * However, if we're inside the paint of a ClutterClone, that won't be the
@@ -124,17 +137,22 @@ meta_window_group_paint (ClutterActor *actor)
   paint_x_offset = paint_x_origin - actor_x_origin;
   paint_y_offset = paint_y_origin - actor_y_origin;
 
+  visible_rect.x = visible_rect.y = 0;
+  visible_rect.width = clutter_actor_get_width (CLUTTER_ACTOR (stage));
+  visible_rect.height = clutter_actor_get_height (CLUTTER_ACTOR (stage));
+
+  unobscured_region = cairo_region_create_rectangle (&visible_rect);
+
   /* Get the clipped redraw bounds from Clutter so that we can avoid
    * painting shadows on windows that don't need to be painted in this
    * frame. In the case of a multihead setup with mismatched monitor
    * sizes, we could intersect this with an accurate union of the
    * monitors to avoid painting shadows that are visible only in the
    * holes. */
-  stage = clutter_actor_get_stage (actor);
   clutter_stage_get_redraw_clip_bounds (CLUTTER_STAGE (stage),
-                                        &visible_rect);
+                                        &clip_rect);
 
-  visible_region = cairo_region_create_rectangle (&visible_rect);
+  clip_region = cairo_region_create_rectangle (&clip_rect);
 
   if (info->unredirected_window != NULL)
     {
@@ -142,7 +160,8 @@ meta_window_group_paint (ClutterActor *actor)
       MetaWindow *window = meta_window_actor_get_meta_window (info->unredirected_window);
 
       meta_window_get_outer_rect (window, (MetaRectangle *)&unredirected_rect);
-      cairo_region_subtract_rectangle (visible_region, &unredirected_rect);
+      cairo_region_subtract_rectangle (unobscured_region, &unredirected_rect);
+      cairo_region_subtract_rectangle (clip_region, &unredirected_rect);
     }
 
   /* We walk the list from top to bottom (opposite of painting order),
@@ -189,20 +208,28 @@ meta_window_group_paint (ClutterActor *actor)
           x += paint_x_offset;
           y += paint_y_offset;
 
-          /* Temporarily move to the coordinate system of the actor */
-          cairo_region_translate (visible_region, - x, - y);
 
-          meta_window_actor_set_visible_region (window_actor, visible_region);
+          /* Temporarily move to the coordinate system of the actor */
+          cairo_region_translate (unobscured_region, - x, - y);
+          cairo_region_translate (clip_region, - x, - y);
+
+          meta_window_actor_set_unobscured_region (window_actor, unobscured_region);
+          meta_window_actor_set_clip_region (window_actor, clip_region);
 
           if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (window_actor)) == 0xff)
             {
               cairo_region_t *obscured_region = meta_window_actor_get_obscured_region (window_actor);
               if (obscured_region)
-                cairo_region_subtract (visible_region, obscured_region);
+                {
+                  cairo_region_subtract (unobscured_region, obscured_region);
+                  cairo_region_subtract (clip_region, obscured_region);
+                }
             }
 
-          meta_window_actor_set_visible_region_beneath (window_actor, visible_region);
-          cairo_region_translate (visible_region, x, y);
+          meta_window_actor_set_clip_region_beneath (window_actor, clip_region);
+
+          cairo_region_translate (unobscured_region, x, y);
+          cairo_region_translate (clip_region, x, y);
         }
       else if (META_IS_BACKGROUND_ACTOR (child) ||
                META_IS_BACKGROUND_GROUP (child))
@@ -215,17 +242,19 @@ meta_window_group_paint (ClutterActor *actor)
           x += paint_x_offset;
           y += paint_y_offset;
 
-          cairo_region_translate (visible_region, - x, - y);
+          cairo_region_translate (clip_region, - x, - y);
 
           if (META_IS_BACKGROUND_GROUP (child))
-            meta_background_group_set_clip_region (META_BACKGROUND_GROUP (child), visible_region);
+            meta_background_group_set_clip_region (META_BACKGROUND_GROUP (child), clip_region);
           else
-            meta_background_actor_set_clip_region (META_BACKGROUND_ACTOR (child), visible_region);
-          cairo_region_translate (visible_region, x, y);
+            meta_background_actor_set_clip_region (META_BACKGROUND_ACTOR (child), clip_region);
+
+          cairo_region_translate (clip_region, x, y);
         }
     }
 
-  cairo_region_destroy (visible_region);
+  cairo_region_destroy (unobscured_region);
+  cairo_region_destroy (clip_region);
 
   CLUTTER_ACTOR_CLASS (meta_window_group_parent_class)->paint (actor);
 
@@ -238,7 +267,7 @@ meta_window_group_paint (ClutterActor *actor)
       if (META_IS_WINDOW_ACTOR (child))
         {
           MetaWindowActor *window_actor = META_WINDOW_ACTOR (child);
-          meta_window_actor_reset_visible_regions (window_actor);
+          meta_window_actor_reset_clip_regions (window_actor);
         }
       else if (META_IS_BACKGROUND_ACTOR (child))
         {

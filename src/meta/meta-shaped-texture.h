@@ -69,11 +69,12 @@ ClutterActor *meta_shaped_texture_new (void);
 void meta_shaped_texture_set_create_mipmaps (MetaShapedTexture *stex,
 					     gboolean           create_mipmaps);
 
-void meta_shaped_texture_update_area (MetaShapedTexture *stex,
-                                      int                x,
-                                      int                y,
-                                      int                width,
-                                      int                height);
+gboolean meta_shaped_texture_update_area (MetaShapedTexture *stex,
+                                          int                x,
+                                          int                y,
+                                          int                width,
+                                          int                height,
+                                          cairo_region_t    *unobscured_region);
 
 void meta_shaped_texture_set_pixmap (MetaShapedTexture *stex,
                                      Pixmap             pixmap);
