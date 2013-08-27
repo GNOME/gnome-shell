@@ -1261,6 +1261,10 @@ StScrollBar StButton#vhandle:active {
     color: #eeeeec;
 }
 
+.datemenu-date-label:focus {
+    background-color: #999999;
+}
+
 .calendar-day-base {
     font-size: 9pt;
     text-align: center;

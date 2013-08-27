@@ -50,6 +50,7 @@ const DateMenuButton = new Lang.Class({
         this.parent(menuAlignment);
 
         this._clockDisplay = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
+        this.actor.label_actor = this._clockDisplay;
         this.actor.add_actor(this._clockDisplay);
         this.actor.add_style_class_name ('clock-display');
 
@@ -62,9 +63,8 @@ const DateMenuButton = new Lang.Class({
         hbox.add(vbox);
 
         // Date
-        this._date = new St.Label();
-        this.actor.label_actor = this._clockDisplay;
-        this._date.style_class = 'datemenu-date-label';
+        this._date = new St.Label({ style_class: 'datemenu-date-label',
+                                    can_focus: true });
         vbox.add(this._date);
 
         this._eventList = new Calendar.EventsList();
