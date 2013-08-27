@@ -191,19 +191,19 @@ meta_shaped_texture_paint (ClutterActor *actor)
 
           priv->pipeline_unshaped = cogl_pipeline_copy (pipeline_unshaped_template);
         }
-        pipeline = priv->pipeline_unshaped;
+      pipeline = priv->pipeline_unshaped;
     }
   else
     {
       if (priv->pipeline == NULL)
 	{
-	   if (G_UNLIKELY (pipeline_template == NULL))
+          if (G_UNLIKELY (pipeline_template == NULL))
 	    {
               CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
 	      pipeline_template =  cogl_pipeline_new (ctx);
 	      cogl_pipeline_set_layer_combine (pipeline_template, 1,
-					   "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
-					   NULL);
+                                               "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
+                                               NULL);
 	    }
 	  priv->pipeline = cogl_pipeline_copy (pipeline_template);
 	}
