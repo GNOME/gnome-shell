@@ -2445,6 +2445,7 @@ StScrollBar StButton#vhandle:active {
 
 .login-dialog-message-hint {
     padding-top: 0px;
+    padding-bottom: 20px;
 }
 
 .user-widget-label {
