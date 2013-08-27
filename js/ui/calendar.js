@@ -444,6 +444,7 @@ const Calendar = new Lang.Class({
                        { row: 0, col: 0, col_span: offsetCols + 7 });
 
         this._backButton = new St.Button({ style_class: 'calendar-change-month-back',
+                                           accessible_name: _("Previous month"),
                                            can_focus: true });
         this._topBox.add(this._backButton);
         this._backButton.connect('clicked', Lang.bind(this, this._onPrevMonthButtonClicked));
@@ -452,6 +453,7 @@ const Calendar = new Lang.Class({
         this._topBox.add(this._monthLabel, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
 
         this._forwardButton = new St.Button({ style_class: 'calendar-change-month-forward',
+                                              accessible_name: _("Next month"),
                                               can_focus: true });
         this._topBox.add(this._forwardButton);
         this._forwardButton.connect('clicked', Lang.bind(this, this._onNextMonthButtonClicked));
