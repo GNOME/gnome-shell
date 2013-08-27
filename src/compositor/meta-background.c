@@ -412,13 +412,13 @@ meta_background_paint_content (ClutterContent   *content,
    */
   if (META_IS_BACKGROUND_ACTOR (actor))
     {
-      cairo_region_t *visible_region;
-      visible_region = meta_background_actor_get_visible_region (META_BACKGROUND_ACTOR (actor));
+      cairo_region_t *clip_region;
+      clip_region = meta_background_actor_get_clip_region (META_BACKGROUND_ACTOR (actor));
 
-      if (visible_region != NULL)
+      if (clip_region != NULL)
         {
-          cairo_region_intersect (paintable_region, visible_region);
-          cairo_region_destroy (visible_region);
+          cairo_region_intersect (paintable_region, clip_region);
+          cairo_region_destroy (clip_region);
         }
     }
 

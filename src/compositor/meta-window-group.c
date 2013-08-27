@@ -218,9 +218,9 @@ meta_window_group_paint (ClutterActor *actor)
           cairo_region_translate (visible_region, - x, - y);
 
           if (META_IS_BACKGROUND_GROUP (child))
-            meta_background_group_set_visible_region (META_BACKGROUND_GROUP (child), visible_region);
+            meta_background_group_set_clip_region (META_BACKGROUND_GROUP (child), visible_region);
           else
-            meta_background_actor_set_visible_region (META_BACKGROUND_ACTOR (child), visible_region);
+            meta_background_actor_set_clip_region (META_BACKGROUND_ACTOR (child), visible_region);
           cairo_region_translate (visible_region, x, y);
         }
     }
@@ -243,7 +243,7 @@ meta_window_group_paint (ClutterActor *actor)
       else if (META_IS_BACKGROUND_ACTOR (child))
         {
           MetaBackgroundActor *background_actor = META_BACKGROUND_ACTOR (child);
-          meta_background_actor_set_visible_region (background_actor, NULL);
+          meta_background_actor_set_clip_region (background_actor, NULL);
         }
     }
 }
