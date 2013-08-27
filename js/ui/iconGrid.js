@@ -261,7 +261,6 @@ const IconGrid = new Lang.Class({
         let children = this._getVisibleChildren();
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
-        this.updateSpacingForSize(availWidth);
         let spacing = this._getSpacing();
         let [nColumns, usedWidth] = this._computeLayout(availWidth);
 
@@ -390,6 +389,10 @@ const IconGrid = new Lang.Class({
         return this._fixedSpacing ? this._fixedSpacing : this._spacing;
     },
 
+    /**
+     * This function must to be called before iconGrid allocation,
+     * to know how much spacing can the grid has
+     */
     updateSpacingForSize: function(availWidth) {
         let spacing = this._spacing;
 
@@ -504,5 +507,15 @@ const PaginatedIconGrid = new Lang.Class({
         let firstPageItem = pageNumber * this._childrenPerPage
         let childBox = this._getVisibleChildren()[firstPageItem].get_allocation_box();
         return childBox.y1;
+    },
+
+    getItemPage: function(item) {
+        let children = this._getVisibleChildren();
+        let index = children.indexOf(item);
+        if (index == -1) {
+            throw new Error('Item not found.');
+            return 0;
+        }
+        return Math.floor(index / this._childrenPerPage);
     }
 });
