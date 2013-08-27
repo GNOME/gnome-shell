@@ -515,7 +515,6 @@ meta_screen_new (MetaDisplay *display,
   char buf[128];
   guint32 manager_timestamp;
   gulong current_workspace;
-  MetaWaylandCompositor *compositor;
   MetaMonitorManager *manager;
   
   replace_current_wm = meta_get_replace_current_wm ();
