@@ -423,7 +423,10 @@ const Dash = new Lang.Class({
 
         this._appSystem = Shell.AppSystem.get_default();
 
-        this._appSystem.connect('installed-changed', Lang.bind(this, this._queueRedisplay));
+        this._appSystem.connect('installed-changed', Lang.bind(this, function() {
+            AppFavorites.getAppFavorites().reload();
+            his._queueRedisplay();
+        }));
         AppFavorites.getAppFavorites().connect('changed', Lang.bind(this, this._queueRedisplay));
         this._appSystem.connect('app-state-changed', Lang.bind(this, this._queueRedisplay));
 

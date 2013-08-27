@@ -14,15 +14,15 @@ const AppFavorites = new Lang.Class({
     _init: function() {
         this._favorites = {};
         global.settings.connect('changed::' + this.FAVORITE_APPS_KEY, Lang.bind(this, this._onFavsChanged));
-        this._reload();
+        this.reload();
     },
 
     _onFavsChanged: function() {
-        this._reload();
+        this.reload();
         this.emit('changed');
     },
 
-    _reload: function() {
+    reload: function() {
         let ids = global.settings.get_strv(this.FAVORITE_APPS_KEY);
         let appSys = Shell.AppSystem.get_default();
         let apps = ids.map(function (id) {
