@@ -633,11 +633,12 @@ StScrollBar StButton#vhandle:active {
 
 .panel-status-indicators-box,
 .panel-status-menu-box {
-    spacing: 8px;
+    spacing: 2px;
 }
 
 .system-status-icon {
     icon-size: 1.09em;
+    padding: 0 5px;
 }
 
 .aggregate-menu {
