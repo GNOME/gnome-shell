@@ -10,16 +10,26 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
+<<<<<<< HEAD
+"POT-Creation-Date: 2013-08-22 22:23+0000\n"
+"PO-Revision-Date: 2013-08-27 18:18+0200\n"
+=======
 "POT-Creation-Date: 2013-08-19 13:35+0000\n"
 "PO-Revision-Date: 2013-08-20 17:35+0200\n"
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español <gnome-es-list@gnome.org>\n"
+"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+<<<<<<< HEAD
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.6\n"
+=======
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Gtranslator 2.91.5\n"
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -152,8 +162,8 @@ msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
 msgstr ""
-"Esta clave sobreescribe la ocultación automática del elemento de menú «Cerrar "
-"sesión» en situaciones de un único usuario o de una única sesión."
+"Esta clave sobreescribe la ocultación automática del elemento de menú "
+"«Cerrar sesión» en situaciones de un único usuario o de una única sesión."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid ""
@@ -297,24 +307,43 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Seleccione una extensión que configurar usando la caja combinada de arriba."
 
+<<<<<<< HEAD
+#: ../js/gdm/authPrompt.js:146 ../js/ui/components/networkAgent.js:132
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:384
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
+=======
 #: ../js/gdm/authPrompt.js:149 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:651
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #: ../js/ui/status/system.js:373
 msgid "Cancel"
 msgstr "Cancelar"
 
+<<<<<<< HEAD
+#: ../js/gdm/authPrompt.js:168 ../js/gdm/authPrompt.js:216
+msgid "Next"
+msgstr "Siguiente"
+
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
+=======
 #: ../js/gdm/authPrompt.js:171 ../js/gdm/authPrompt.js:219
 msgid "Next"
 msgstr "Siguiente"
 
 #: ../js/gdm/authPrompt.js:215 ../js/ui/shellMountOperation.js:403
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #: ../js/ui/unlockDialog.js:56
 msgid "Unlock"
 msgstr "Desbloquear"
 
+<<<<<<< HEAD
+#: ../js/gdm/authPrompt.js:214
+=======
 #: ../js/gdm/authPrompt.js:217
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
@@ -336,7 +365,11 @@ msgstr "¿No está en la lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
+<<<<<<< HEAD
+#: ../js/gdm/loginDialog.js:636
+=======
 #: ../js/gdm/loginDialog.js:641
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(ej., usuario o %s)"
@@ -344,6 +377,18 @@ msgstr "(ej., usuario o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
+<<<<<<< HEAD
+#: ../js/gdm/loginDialog.js:641 ../js/ui/components/networkAgent.js:255
+#: ../js/ui/components/networkAgent.js:273
+msgid "Username: "
+msgstr "Nombre de usuario:"
+
+#: ../js/gdm/loginDialog.js:904
+msgid "Login Window"
+msgstr "Ventana de inicio de sesión"
+
+#: ../js/gdm/util.js:306
+=======
 #: ../js/gdm/loginDialog.js:646 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
@@ -354,6 +399,7 @@ msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
 #: ../js/gdm/util.js:298
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "Authentication error"
 msgstr "Error de autenticación"
 
@@ -362,7 +408,11 @@ msgstr "Error de autenticación"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
+<<<<<<< HEAD
+#: ../js/gdm/util.js:436
+=======
 #: ../js/gdm/util.js:411
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "(or swipe finger)"
 msgstr "(o pase el dedo)"
 
@@ -597,79 +647,84 @@ msgstr "Contraseña:"
 msgid "Type again:"
 msgstr "Escriba de nuevo:"
 
+<<<<<<< HEAD
+#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
+#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:682
+=======
 #: ../js/ui/components/networkAgent.js:132 ../js/ui/status/network.js:112
 #: ../js/ui/status/network.js:268 ../js/ui/status/network.js:654
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "Connect"
 msgstr "Conectar"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:223
-#: ../js/ui/components/networkAgent.js:235
-#: ../js/ui/components/networkAgent.js:262
-#: ../js/ui/components/networkAgent.js:282
-#: ../js/ui/components/networkAgent.js:292
+#: ../js/ui/components/networkAgent.js:218
+#: ../js/ui/components/networkAgent.js:230
+#: ../js/ui/components/networkAgent.js:257
+#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:287
 msgid "Password: "
 msgstr "Contraseña: "
 
 #. static WEP
-#: ../js/ui/components/networkAgent.js:228
+#: ../js/ui/components/networkAgent.js:223
 msgid "Key: "
 msgstr "Clave:"
 
-#: ../js/ui/components/networkAgent.js:266
+#: ../js/ui/components/networkAgent.js:261
 msgid "Identity: "
 msgstr "Identidad:"
 
-#: ../js/ui/components/networkAgent.js:268
+#: ../js/ui/components/networkAgent.js:263
 msgid "Private key password: "
 msgstr "Contraseña de la clave privada:"
 
-#: ../js/ui/components/networkAgent.js:280
+#: ../js/ui/components/networkAgent.js:275
 msgid "Service: "
 msgstr "Servicio:"
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:304
 msgid "Authentication required by wireless network"
 msgstr "La red inalámbrica requiere autenticación"
 
-#: ../js/ui/components/networkAgent.js:310
+#: ../js/ui/components/networkAgent.js:305
 #, c-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network '%"
-"s'."
+"Passwords or encryption keys are required to access the wireless network "
+"'%s'."
 msgstr ""
 "Se necesitan contraseñas o claves de cifrado para acceder a la red "
 "inalámbrica «%s»."
 
-#: ../js/ui/components/networkAgent.js:314
+#: ../js/ui/components/networkAgent.js:309
 msgid "Wired 802.1X authentication"
 msgstr "Autenticación 802.1X cableada"
 
-#: ../js/ui/components/networkAgent.js:316
+#: ../js/ui/components/networkAgent.js:311
 msgid "Network name: "
 msgstr "Nombre de la red"
 
-#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:316
 msgid "DSL authentication"
 msgstr "Autenticación DSL"
 
-#: ../js/ui/components/networkAgent.js:328
+#: ../js/ui/components/networkAgent.js:323
 msgid "PIN code required"
 msgstr "Código PIN requerido"
 
-#: ../js/ui/components/networkAgent.js:329
+#: ../js/ui/components/networkAgent.js:324
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Se necesita un código PIN para el dispositivo de banda ancha móvil"
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:325
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:336
+#: ../js/ui/components/networkAgent.js:331
 msgid "Mobile broadband network password"
 msgstr "Contraseña de la red de banda ancha móvil"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:332
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Se requiere una contraseña para conectar a «%s»."
@@ -1141,6 +1196,17 @@ msgstr "Configuración de las notificaciones"
 msgid "Tray Menu"
 msgstr "Bandeja de menú"
 
+<<<<<<< HEAD
+#: ../js/ui/messageTray.js:1775
+msgid "No Messages"
+msgstr "No hay mensajes"
+
+#: ../js/ui/messageTray.js:1812
+msgid "Message Tray"
+msgstr "Bandeja de mensajes"
+
+#: ../js/ui/messageTray.js:2786
+=======
 #: ../js/ui/messageTray.js:1777
 msgid "No Messages"
 msgstr "No hay mensajes"
@@ -1150,6 +1216,7 @@ msgid "Message Tray"
 msgstr "Bandeja de mensajes"
 
 #: ../js/ui/messageTray.js:2788
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -1233,7 +1300,11 @@ msgstr[1] "%d notificaciones nuevas"
 msgid "Lock"
 msgstr "Bloquear"
 
+<<<<<<< HEAD
+#: ../js/ui/screenShield.js:712
+=======
 #: ../js/ui/screenShield.js:705
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME necesita bloquear la pantalla"
 
@@ -1244,11 +1315,19 @@ msgstr "GNOME necesita bloquear la pantalla"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
+<<<<<<< HEAD
+#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1316
+msgid "Unable to lock"
+msgstr "No se pudo bloquear"
+
+#: ../js/ui/screenShield.js:838 ../js/ui/screenShield.js:1317
+=======
 #: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1278
 msgid "Unable to lock"
 msgstr "No se pudo bloquear"
 
 #: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1279
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
@@ -1337,7 +1416,11 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
+<<<<<<< HEAD
+#: ../js/ui/status/network.js:1027 ../js/ui/status/rfkill.js:46
+=======
 #: ../js/ui/status/network.js:998 ../js/ui/status/rfkill.js:46
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "Turn Off"
 msgstr "Apagar"
 
@@ -1423,6 +1506,13 @@ msgstr "Introduzca el PIN mencionado en el dispositivo."
 msgid "OK"
 msgstr "Aceptar"
 
+<<<<<<< HEAD
+#: ../js/ui/status/brightness.js:42
+msgid "Brightness"
+msgstr "Brillo"
+
+=======
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #: ../js/ui/status/keyboard.js:404
 msgid "Show Keyboard Layout"
 msgstr "Mostrar la distribución del teclado"
@@ -1431,11 +1521,19 @@ msgstr "Mostrar la distribución del teclado"
 msgid "<unknown>"
 msgstr "<desconocido>"
 
+<<<<<<< HEAD
+#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1042
+msgid "Off"
+msgstr "Desconectado"
+
+#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:948
+=======
 #: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1013
 msgid "Off"
 msgstr "Desconectado"
 
 #: ../js/ui/status/network.js:269 ../js/ui/status/network.js:919
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Configuración de la red"
@@ -1450,12 +1548,20 @@ msgstr "no gestionada"
 msgid "disconnecting..."
 msgstr "deconectando…"
 
+<<<<<<< HEAD
+#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1093
+=======
 #: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1064
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "connecting..."
 msgstr "conectando…"
 
 #. Translators: this is for network connections that require some kind of key or password
+<<<<<<< HEAD
+#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1096
+=======
 #: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1067
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "authentication required"
 msgstr "se necesita autenticación"
 
@@ -1471,6 +1577,45 @@ msgstr "falta el «firmware»"
 msgid "unavailable"
 msgstr "no disponible"
 
+<<<<<<< HEAD
+#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1098
+msgid "connection failed"
+msgstr "falló la conexión"
+
+#: ../js/ui/status/network.js:647
+msgid "Wi-Fi Networks"
+msgstr "Redes Wi-Fi"
+
+#: ../js/ui/status/network.js:649
+msgid "Select a network"
+msgstr "Seleccionar una red"
+
+#: ../js/ui/status/network.js:673
+msgid "No Networks"
+msgstr "No hay redes"
+
+#: ../js/ui/status/network.js:942
+msgid "Select Network"
+msgstr "Seleccionar red"
+
+#: ../js/ui/status/network.js:1027
+msgid "Turn On"
+msgstr "Enceder"
+
+#: ../js/ui/status/network.js:1160
+msgid "VPN"
+msgstr "VPN"
+
+#: ../js/ui/status/network.js:1296
+msgid "Network Manager"
+msgstr "Gestor de la red"
+
+#: ../js/ui/status/network.js:1338
+msgid "Connection failed"
+msgstr "Falló la conexión"
+
+#: ../js/ui/status/network.js:1339
+=======
 #: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1069
 msgid "connection failed"
 msgstr "falló la conexión"
@@ -1508,6 +1653,7 @@ msgid "Connection failed"
 msgstr "Falló la conexión"
 
 #: ../js/ui/status/network.js:1310
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
 
@@ -1541,6 +1687,76 @@ msgstr "Quedan %d\\u2236%02d (%d%%)"
 #, c-format
 msgid "%d\\u2236%02d Until Full (%d%%)"
 msgstr "%d\\u2236%d para la carga completa (%d%%)"
+<<<<<<< HEAD
+
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
+#: ../js/ui/status/rfkill.js:43
+msgid "Airplane Mode"
+msgstr "Modo avión"
+
+#: ../js/ui/status/rfkill.js:45
+msgid "On"
+msgstr "Encender"
+
+#: ../js/ui/status/system.js:247
+msgid "Switch User"
+msgstr "Cambiar de usuario"
+
+#: ../js/ui/status/system.js:252
+msgid "Log Out"
+msgstr "Cerrar la sesión"
+
+#: ../js/ui/status/system.js:271
+msgid "Orientation Lock"
+msgstr "Bloqueo de orientación"
+
+#: ../js/ui/status/system.js:279 ../js/ui/status/system.js:377
+msgid "Power Off"
+msgstr "Apagar"
+
+#: ../js/ui/status/system.js:323
+msgid "Other users are logged in."
+msgstr "Hay otros usuarios con la sesión iniciada"
+
+#: ../js/ui/status/system.js:328
+msgid "Shutting down might cause them to lose unsaved work."
+msgstr "Apagar puede hacer que pierdan el trabajo que no hayan guardado."
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: ../js/ui/status/system.js:356
+#, c-format
+msgid "%s (remote)"
+msgstr "%s (remoto)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: ../js/ui/status/system.js:359
+#, c-format
+msgid "%s (console)"
+msgstr "%s (consola)"
+
+#: ../js/ui/status/volume.js:127
+msgid "Volume changed"
+msgstr "Volumen modificado"
+
+#: ../js/ui/status/volume.js:162
+msgid "Volume"
+msgstr "Volumen"
+
+#: ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Micrófono"
+
+#: ../js/ui/unlockDialog.js:64
+msgid "Log in as another user"
+msgstr "Iniciar sesión como otro usuario"
+
+#: ../js/ui/unlockDialog.js:81
+msgid "Unlock Window"
+msgstr "Desbloquear ventana"
+
+=======
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
@@ -1601,6 +1817,7 @@ msgstr "Iniciar sesión como otro usuario"
 msgid "Unlock Window"
 msgstr "Desbloquear ventana"
 
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #: ../js/ui/viewSelector.js:100
 msgid "Applications"
 msgstr "Aplicaciones"
@@ -1627,6 +1844,29 @@ msgstr "%s el oráculo dice"
 #, c-format
 msgid "'%s' is ready"
 msgstr "«%s» está preparado"
+
+#: ../js/ui/windowManager.js:56
+msgid "Do you want to keep these display settings?"
+msgstr "¿Quiere mantener esta configuración de la pantalla?"
+
+#. Translators: this and the following message should be limited in lenght,
+#. to avoid ellipsizing the labels.
+#.
+#: ../js/ui/windowManager.js:75
+#| msgid "Power Settings"
+msgid "Revert Settings"
+msgstr "Revertir configuración"
+
+#: ../js/ui/windowManager.js:79
+msgid "Keep Changes"
+msgstr "Mantener cambios"
+
+#: ../js/ui/windowManager.js:97
+#, c-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "La configuración se revertirá en %d segundo"
+msgstr[1] "La configuración se revertirá en %d segundos"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1733,9 +1973,15 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 #~ "Generalmente tendrá un punto de origen desconectado; la salida de ese "
 #~ "punto se escribirá en el archivo de salida. Sin embargo, la tubería "
 #~ "también puede tomar parte en su propia salida; esto se puede usar para "
+<<<<<<< HEAD
+#~ "enviar la salida a un servidor «icecast» a través de shout2send o "
+#~ "similar. Cuando no está establecido o lo está a un valor vacío, se usará "
+#~ "la tubería predeterminada. Actualmente es «'vp8enc min_quantizer=13 "
+=======
 #~ "enviar la salida a un servidor «icecast» a través de shout2send o similar. "
 #~ "Cuando no está establecido o lo está a un valor vacío, se usará la "
 #~ "tubería predeterminada. Actualmente es «'vp8enc min_quantizer=13 "
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #~ "max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! "
 #~ "webmmux» y graba en WEBM usando el códec VP8. Se usa %T como marcador de "
 #~ "posición para el número de hilos óptimos en el sistema."
@@ -1748,9 +1994,15 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 #~ "the current date, and use this extension. It should be changed when "
 #~ "recording to a different container format."
 #~ msgstr ""
+<<<<<<< HEAD
+#~ "El nombre de archivo para los «screencast» será un nombre de archivo "
+#~ "único basado en la fecha actual y usará esta extensión. Se debería "
+#~ "cambiar al grabar en otro formato contenedor diferente."
+=======
 #~ "El nombre de archivo para los «screencast» será un nombre de archivo único "
 #~ "basado en la fecha actual y usará esta extensión. Se debería cambiar al "
 #~ "grabar en otro formato contenedor diferente."
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 
 #~ msgid "Screencast from %d %t"
 #~ msgstr "Screencast desde %d %t"
@@ -1767,9 +2019,12 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 #~ msgid "Volume, network, battery"
 #~ msgstr "Volumen, red, batería"
 
+<<<<<<< HEAD
+=======
 #~ msgid "Volume"
 #~ msgstr "Volumen"
 
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #~ msgid "Visibility"
 #~ msgstr "Visibilidad"
 
@@ -1882,9 +2137,12 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 #~ msgid "Unknown"
 #~ msgstr "Desconocido"
 
+<<<<<<< HEAD
+=======
 #~ msgid "Microphone"
 #~ msgstr "Micrófono"
 
+>>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #~ msgid "Available"
 #~ msgstr "Disponible"
 
@@ -2400,8 +2658,8 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 #~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
 #~ "in time."
 #~ msgstr ""
-#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los segundos "
-#~ "en la hora."
+#~ "Si es cierta y el formato es «12-horas» o «24-horas», muestra los "
+#~ "segundos en la hora."
 
 #~ msgid ""
 #~ "This key specifies the format used by the panel clock when the format key "
@@ -2418,18 +2676,19 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 #~ msgid ""
 #~ "This key specifies the hour format used by the panel clock. Possible "
 #~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. 1970-"
-#~ "01-01. If set to \"custom\", the clock will display time according to the "
-#~ "format specified in the custom_format key. Note that if set to either "
-#~ "\"unix\" or \"custom\", the show_date and show_seconds keys are ignored."
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
 #~ msgstr ""
 #~ "Esta clave especifica el formato de la hora especificado por el reloj del "
-#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 horas), "
-#~ "«unix» y «custom» (personalizado).Si se establece a «unix» el reloj mostrará "
-#~ "la hora en segundos desde la época (1 de enero de 1970). Si se establece "
-#~ "a «custom» el reloj mostrará la hora según el formato especificado en la "
-#~ "clave «custom_format». Note que si se establece a «unix» o «custom» se "
-#~ "ignoran las claves «show_date» y «show_seconds»."
+#~ "panel. Los valores posibles son «12-hour» (12 horas), «24-hour» (24 "
+#~ "horas), «unix» y «custom» (personalizado).Si se establece a «unix» el "
+#~ "reloj mostrará la hora en segundos desde la época (1 de enero de 1970). "
+#~ "Si se establece a «custom» el reloj mostrará la hora según el formato "
+#~ "especificado en la clave «custom_format». Note que si se establece a "
+#~ "«unix» o «custom» se ignoran las claves «show_date» y «show_seconds»."
 
 #~ msgid "Clock Format"
 #~ msgstr "Formato del reloj"
