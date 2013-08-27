@@ -230,12 +230,6 @@ st_entry_dispose (GObject *object)
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
   GdkKeymap *keymap;
 
-  if (priv->entry)
-    {
-      clutter_actor_destroy (priv->entry);
-      priv->entry = NULL;
-    }
-
   keymap = gdk_keymap_get_for_display (gdk_display_get_default ());
   g_signal_handlers_disconnect_by_func (keymap, keymap_state_changed, entry);
 
