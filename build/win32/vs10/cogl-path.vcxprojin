@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup Label="ProjectConfigurations">
+		<ProjectConfiguration Include="Debug_SDL|Win32">
+			<Configuration>Debug_SDL</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Debug_SDL|x64">
+			<Configuration>Debug_SDL</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Debug|Win32">
+			<Configuration>Debug</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Debug|x64">
+			<Configuration>Debug</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release_SDL|Win32">
+			<Configuration>Release_SDL</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release_SDL|x64">
+			<Configuration>Release_SDL</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|Win32">
+			<Configuration>Release</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|x64">
+			<Configuration>Release</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+	</ItemGroup>
+	<PropertyGroup Label="Globals">
+		<ProjectGuid>{F3A80987-5411-43DB-A23B-06F2076E1207}</ProjectGuid>
+		<RootNamespace>coglpath</RootNamespace>
+		<Keyword>Win32Proj</Keyword>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'" Label="Configuration">
+		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<CharacterSet>MultiByte</CharacterSet>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<CharacterSet>MultiByte</CharacterSet>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'" Label="Configuration">
+		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<CharacterSet>MultiByte</CharacterSet>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<CharacterSet>MultiByte</CharacterSet>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'" Label="Configuration">
+		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<CharacterSet>MultiByte</CharacterSet>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<CharacterSet>MultiByte</CharacterSet>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'" Label="Configuration">
+		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<CharacterSet>MultiByte</CharacterSet>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<CharacterSet>MultiByte</CharacterSet>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+	<ImportGroup Label="ExtensionSettings">
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="cogl.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="cogl.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="cogl.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="cogl.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="cogl.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="cogl.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="cogl.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="cogl.props" />
+	</ImportGroup>
+	<PropertyGroup Label="UserMacros" />
+	<PropertyGroup>
+		<OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">$(SolutionDir)\Debug\$(Platform)\bin\</OutDir>
+		<OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">$(SolutionDir)\Debug\$(Platform)\bin\</OutDir>
+		<OutDir Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">$(SolutionDir)\Release\$(Platform)\bin\</OutDir>
+		<OutDir Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">$(SolutionDir)\Release\$(Platform)\bin\</OutDir>
+	</PropertyGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<PreBuildEvent>
+			<Command>
+$(DoDefines)
+$(PreBuildCmd)
+			</Command>
+		</PreBuildEvent>
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<AdditionalIncludeDirectories>..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>$(DebugLibBuildDefines);$(CoglPathBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<MinimalRebuild>true</MinimalRebuild>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<PrecompiledHeader>
+			</PrecompiledHeader>
+			<WarningLevel>Level3</WarningLevel>
+			<DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+		</ClCompile>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">
+		<PreBuildEvent>
+			<Command>
+$(DoDefinesSDL)
+$(PreBuildCmd)
+			</Command>
+		</PreBuildEvent>
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<AdditionalIncludeDirectories>..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>$(DebugLibBuildDefines);$(CoglPathBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<MinimalRebuild>true</MinimalRebuild>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<PrecompiledHeader>
+			</PrecompiledHeader>
+			<WarningLevel>Level3</WarningLevel>
+			<DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+		</ClCompile>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<PreBuildEvent>
+			<Command>
+$(DoDefines)
+$(PreBuildCmd)
+			</Command>
+		</PreBuildEvent>
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<AdditionalIncludeDirectories>..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>$(DebugLibBuildDefines);$(CoglPathBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<MinimalRebuild>true</MinimalRebuild>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<PrecompiledHeader>
+			</PrecompiledHeader>
+			<WarningLevel>Level3</WarningLevel>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+		</ClCompile>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">
+		<PreBuildEvent>
+			<Command>
+$(DoDefinesSDL)
+$(PreBuildCmd)
+			</Command>
+		</PreBuildEvent>
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<AdditionalIncludeDirectories>..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>$(DebugLibBuildDefines);$(CoglPathBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<MinimalRebuild>true</MinimalRebuild>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<PrecompiledHeader>
+			</PrecompiledHeader>
+			<WarningLevel>Level3</WarningLevel>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+		</ClCompile>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<PreBuildEvent>
+			<Command>
+$(DoDefines)
+$(PreBuildCmd)
+			</Command>
+		</PreBuildEvent>
+		<ClCompile>
+			<Optimization>MaxSpeed</Optimization>
+			<AdditionalIncludeDirectories>..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<IntrinsicFunctions>true</IntrinsicFunctions>
+			<PreprocessorDefinitions>$(ReleaseLibBuildDefines);$(CoglPathBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<FunctionLevelLinking>true</FunctionLevelLinking>
+			<PrecompiledHeader>
+			</PrecompiledHeader>
+			<WarningLevel>Level3</WarningLevel>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+		</ClCompile>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">
+		<PreBuildEvent>
+			<Command>
+$(DoDefinesSDL)
+$(PreBuildCmd)
+			</Command>
+		</PreBuildEvent>
+		<ClCompile>
+			<Optimization>MaxSpeed</Optimization>
+			<AdditionalIncludeDirectories>..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<IntrinsicFunctions>true</IntrinsicFunctions>
+			<PreprocessorDefinitions>$(ReleaseLibBuildDefines);$(CoglPathBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<FunctionLevelLinking>true</FunctionLevelLinking>
+			<PrecompiledHeader>
+			</PrecompiledHeader>
+			<WarningLevel>Level3</WarningLevel>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+		</ClCompile>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<PreBuildEvent>
+			<Command>
+$(DoDefines)
+$(PreBuildCmd)
+			</Command>
+		</PreBuildEvent>
+		<ClCompile>
+			<AdditionalIncludeDirectories>..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>$(ReleaseLibBuildDefines);$(CoglPathBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<PrecompiledHeader>
+			</PrecompiledHeader>
+			<WarningLevel>Level3</WarningLevel>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+		</ClCompile>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">
+		<PreBuildEvent>
+			<Command>
+$(DoDefinesSDL)
+$(PreBuildCmd)
+			</Command>
+		</PreBuildEvent>
+		<ClCompile>
+			<AdditionalIncludeDirectories>..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>$(ReleaseLibBuildDefines);$(CoglPathBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<PrecompiledHeader>
+			</PrecompiledHeader>
+			<WarningLevel>Level3</WarningLevel>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+		</ClCompile>
+	</ItemDefinitionGroup>
+	<ItemGroup>
+#include "cogl-path.vs10.sourcefiles"
+		<ClCompile Include="..\..\..\cogl-path\cogl-path-enum-types.c" />
+	</ItemGroup>
+	<ItemGroup>
+		<CustomBuild Include="..\..\..\cogl-path\cogl-path-enum-types.h.in">
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">Generating ..\..\..\cogl-path\cogl-path-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">$(GenCoglPathEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">..\..\..\cogl-path\cogl-path-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">Generating ..\..\..\cogl-path\cogl-path-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">$(GenCoglPathEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">..\..\..\cogl-path\cogl-path-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating ..\..\..\cogl-path\cogl-path-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenCoglPathEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\cogl-path\cogl-path-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating ..\..\..\cogl-path\cogl-path-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenCoglPathEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\cogl-path\cogl-path-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">Generating ..\..\..\cogl-path\cogl-path-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">$(GenCoglPathEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">..\..\..\cogl-path\cogl-path-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">Generating ..\..\..\cogl-path\cogl-path-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">$(GenCoglPathEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">..\..\..\cogl-path\cogl-path-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating ..\..\..\cogl-path\cogl-path-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenCoglPathEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\cogl-path\cogl-path-enum-types.h;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating ..\..\..\cogl-path\cogl-path-enum-types.h</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenCoglPathEnumsH)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\cogl-path\cogl-path-enum-types.h;%(Outputs)</Outputs>
+		</CustomBuild>
+		<CustomBuild Include="..\..\..\cogl-path\cogl-path-enum-types.c.in">
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">Generating ..\..\..\cogl-path\cogl-path-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">$(GenCoglPathEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">..\..\..\cogl-path\cogl-path-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">Generating ..\..\..\cogl-path\cogl-path-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">$(GenCoglPathEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">..\..\..\cogl-path\cogl-path-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating ..\..\..\cogl-path\cogl-path-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenCoglPathEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\cogl-path\cogl-path-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating ..\..\..\cogl-path\cogl-path-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenCoglPathEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\cogl-path\cogl-path-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">Generating ..\..\..\cogl-path\cogl-path-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">$(GenCoglPathEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">..\..\..\cogl-path\cogl-path-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">Generating ..\..\..\cogl-path\cogl-path-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">$(GenCoglPathEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">..\..\..\cogl-path\cogl-path-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating ..\..\..\cogl-path\cogl-path-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenCoglPathEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\cogl-path\cogl-path-enum-types.c;%(Outputs)</Outputs>
+			<Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating ..\..\..\cogl-path\cogl-path-enum-types.c</Message>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenCoglPathEnumsC)</Command>
+			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\cogl-path\cogl-path-enum-types.c;%(Outputs)</Outputs>
+		</CustomBuild>
+	</ItemGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+	<ImportGroup Label="ExtensionTargets">
+	</ImportGroup>
+</Project>

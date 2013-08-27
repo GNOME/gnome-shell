@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="big5"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="cogl-path"
+	ProjectGUID="{F3A80987-5411-43DB-A23B-06F2076E1207}"
+	RootNamespace="coglpath"
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="196613"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+		<Platform
+			Name="x64"
+		/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			InheritedPropertySheets=".\cogl.vsprops"
+			ConfigurationType="4"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="
+$(DoDefines)
+$(PreBuildCmd)
+				            "
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys"
+				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglPathBuildDefines)"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile="$(IntDir)\cogl.def"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug_SDL|Win32"
+			InheritedPropertySheets=".\cogl.vsprops"
+			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
+			ConfigurationType="4"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="
+$(DoDefinesSDL)
+$(PreBuildCmd)
+				            "
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys"
+				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglPathBuildDefines)"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile="$(IntDir)\cogl.def"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|x64"
+			InheritedPropertySheets=".\cogl.vsprops"
+			ConfigurationType="4"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="
+$(DoDefines)
+$(PreBuildCmd)
+				            "
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys"
+				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglPathBuildDefines)"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile="$(IntDir)\cogl.def"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="17"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug_SDL|x64"
+			InheritedPropertySheets=".\cogl.vsprops"
+			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
+			ConfigurationType="4"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="
+$(DoDefinesSDL)
+$(PreBuildCmd)
+				            "
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys"
+				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglPathBuildDefines)"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile="$(IntDir)\cogl.def"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="17"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			InheritedPropertySheets=".\cogl.vsprops"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="
+$(DoDefines)
+$(PreBuildCmd)
+				            "
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				AdditionalIncludeDirectories="..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys"
+				EnableIntrinsicFunctions="true"
+				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglPathBuildDefines)"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+				LinkIncremental="1"
+				ModuleDefinitionFile="$(IntDir)\cogl.def"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_SDL|Win32"
+			InheritedPropertySheets=".\cogl.vsprops"
+			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+			Name="VCPreBuildEventTool"
+			CommandLine="
+$(DoDefinesSDL)
+$(PreBuildCmd)
+			            "
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				AdditionalIncludeDirectories="..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys"
+				EnableIntrinsicFunctions="true"
+				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglPathBuildDefines)"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+				LinkIncremental="1"
+				ModuleDefinitionFile="$(IntDir)\cogl.def"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|x64"
+			InheritedPropertySheets=".\cogl.vsprops"
+			ConfigurationType="4"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="
+$(DoDefines)
+$(PreBuildCmd)
+				            "
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys"
+				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglPathBuildDefines)"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile="$(IntDir)\cogl.def"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="17"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_SDL|x64"
+			InheritedPropertySheets=".\cogl.vsprops"
+			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
+			ConfigurationType="4"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="
+$(DoDefinesSDL)
+$(PreBuildCmd)
+				            "
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\..\cogl-path\tesselator;..\..\..\cogl\winsys"
+				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglPathBuildDefines)"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile="$(IntDir)\cogl.def"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="17"
+			/>
+		</Configuration>
+	</Configurations>
+	<Files>
+	<Filter Name="Sources"
+		Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
+		UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+		>
+#include "cogl-path.sourcefiles"
+		<File RelativePath="..\..\..\cogl-path\cogl-path-enum-types.c" />
+	</Filter>
+	<Filter Name="Headers"
+		Filter="h;hpp;hxx;hm;inl;inc;xsd"
+		UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+		>
+	</Filter>
+	<Filter Name="Resource Files">
+		<File RelativePath="..\..\..\cogl-path\cogl-path-enum-types.h.in">
+			<FileConfiguration Name="Debug|Win32">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.h"
+					CommandLine="$(GenCoglPathEnumsH)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Debug_SDL|Win32">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.h"
+					CommandLine="$(GenCoglPathEnumsH)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Debug|x64">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.h"
+					CommandLine="$(GenCoglPathEnumsH)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Debug_SDL|x64">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.h"
+					CommandLine="$(GenCoglPathEnumsH)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Release|Win32">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.h"
+					CommandLine="$(GenCoglPathEnumsH)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Release_SDL|Win32">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.h"
+					CommandLine="$(GenCoglPathEnumsH)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Release|x64">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.h"
+					CommandLine="$(GenCoglPathEnumsH)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Release_SDL|x64">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.h"
+					CommandLine="$(GenCoglPathEnumsH)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.h"
+				/>
+			</FileConfiguration>
+		</File>
+		<File RelativePath="..\..\..\cogl-path\cogl-path-enum-types.c.in">
+			<FileConfiguration Name="Debug|Win32">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.c"
+					CommandLine="$(GenCoglPathEnumsC)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.c"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Debug_SDL|Win32">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.c"
+					CommandLine="$(GenCoglPathEnumsC)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.c"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Debug|x64">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.c"
+					CommandLine="$(GenCoglPathEnumsC)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.c"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Debug_SDL|x64">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.c"
+					CommandLine="$(GenCoglPathEnumsC)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.c"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Release|Win32">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.c"
+					CommandLine="$(GenCoglPathEnumsC)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.c"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Release_SDL|Win32">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.c"
+					CommandLine="$(GenCoglPathEnumsC)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.c"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Release|x64">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.c"
+					CommandLine="$(GenCoglPathEnumsC)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.c"
+				/>
+			</FileConfiguration>
+			<FileConfiguration Name="Release_SDL|x64">
+				<Tool Name="VCCustomBuildTool"
+					Description="Generating ..\..\..\cogl-path\cogl-path-enum-types.c"
+					CommandLine="$(GenCoglPathEnumsC)"
+					Outputs="..\..\..\cogl-path\cogl-path-enum-types.c"
+				/>
+			</FileConfiguration>
+   </File>
+  </Filter>
+ </Files>
+ <Globals>
+ </Globals>
+</VisualStudioProject>
