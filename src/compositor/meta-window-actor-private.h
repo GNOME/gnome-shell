@@ -58,7 +58,7 @@ void     meta_window_actor_queue_frame_drawn   (MetaWindowActor *self,
 cairo_region_t *meta_window_actor_get_obscured_region (MetaWindowActor *self);
 
 void meta_window_actor_set_clip_region         (MetaWindowActor *self,
-                                                   cairo_region_t  *clip_region);
+                                                cairo_region_t  *clip_region);
 void meta_window_actor_set_clip_region_beneath (MetaWindowActor *self,
                                                 cairo_region_t  *beneath_region);
 void meta_window_actor_reset_clip_regions      (MetaWindowActor *self);
