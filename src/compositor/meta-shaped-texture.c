@@ -221,11 +221,12 @@ meta_shaped_texture_paint (ClutterActor *actor)
 {
   MetaShapedTexture *stex = (MetaShapedTexture *) actor;
   MetaShapedTexturePrivate *priv = stex->priv;
-  CoglTexture *paint_tex;
   guint tex_width, tex_height;
-  ClutterActorBox alloc;
   CoglContext *ctx;
-  CoglPipeline *pipeline;
+  CoglFramebuffer *fb;
+  CoglPipeline *pipeline = NULL;
+  CoglTexture *paint_tex;
+  ClutterActorBox alloc;
 
   if (priv->clip_region && cairo_region_is_empty (priv->clip_region))
     return;
@@ -263,6 +264,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
     return;
 
   ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
+  fb = cogl_get_draw_framebuffer ();
 
   if (priv->mask_texture == NULL)
     {
@@ -279,11 +281,9 @@ meta_shaped_texture_paint (ClutterActor *actor)
   {
     CoglColor color;
     guchar opacity = clutter_actor_get_paint_opacity (actor);
-    cogl_color_set_from_4ub (&color, opacity, opacity, opacity, opacity);
+    cogl_color_init_from_4ub (&color, opacity, opacity, opacity, opacity);
     cogl_pipeline_set_color (pipeline, &color);
   }
-
-  cogl_set_source (pipeline);
 
   clutter_actor_get_allocation_box (actor, &alloc);
 
@@ -327,20 +327,23 @@ meta_shaped_texture_paint (ClutterActor *actor)
               coords[6] = coords[2];
               coords[7] = coords[3];
 
-              cogl_rectangle_with_multitexture_coords (x1, y1, x2, y2,
-                                                       &coords[0], 8);
+              cogl_framebuffer_draw_multitextured_rectangle (fb, pipeline,
+                                                             x1, y1, x2, y2,
+                                                             &coords[0], 8);
             }
 
           goto out;
 	}
     }
 
-  cogl_rectangle (0, 0,
-		  alloc.x2 - alloc.x1,
-		  alloc.y2 - alloc.y1);
+  cogl_framebuffer_draw_rectangle (fb, pipeline,
+                                   0, 0,
+                                   alloc.x2 - alloc.x1,
+                                   alloc.y2 - alloc.y1);
 
  out:
-  cogl_object_unref (pipeline);
+  if (pipeline != NULL)
+    cogl_object_unref (pipeline);
 }
 
 static void
@@ -356,13 +359,16 @@ meta_shaped_texture_pick (ClutterActor       *actor,
 
   /* If there is no region then use the regular pick */
   if (priv->input_shape_region == NULL)
-    CLUTTER_ACTOR_CLASS (meta_shaped_texture_parent_class)
-      ->pick (actor, color);
+    CLUTTER_ACTOR_CLASS (meta_shaped_texture_parent_class)->pick (actor, color);
   else
     {
       int n_rects;
       float *rectangles;
       int i;
+      CoglPipeline *pipeline;
+      CoglContext *ctx;
+      CoglFramebuffer *fb;
+      CoglColor cogl_color;
 
       /* Note: We don't bother trying to intersect the pick and clip regions
        * since needing to copy the region, do the intersection, and probably
@@ -391,12 +397,17 @@ meta_shaped_texture_pick (ClutterActor       *actor,
           rectangles[pos + 3] = rect.y + rect.height;
         }
 
-      cogl_set_source_color4ub (color->red,
-                                color->green,
-                                color->blue,
-                                color->alpha);
+      ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      fb = cogl_get_draw_framebuffer ();
 
-      cogl_rectangles (rectangles, n_rects);
+      cogl_color_init_from_4ub (&cogl_color, color->red, color->green, color->blue, color->alpha);
+
+      pipeline = cogl_pipeline_new (ctx);
+      cogl_pipeline_set_color (pipeline, &cogl_color);
+
+      cogl_framebuffer_draw_rectangles (fb, pipeline,
+                                        rectangles, n_rects);
+      cogl_object_unref (pipeline);
     }
 }
 
