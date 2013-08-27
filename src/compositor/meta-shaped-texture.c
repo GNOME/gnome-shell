@@ -91,8 +91,6 @@ struct _MetaShapedTexturePrivate
   CoglTexture *texture;
 
   CoglTexture *mask_texture;
-  CoglPipeline *pipeline;
-  CoglPipeline *pipeline_unshaped;
 
   cairo_region_t *clip_region;
   cairo_region_t *input_shape_region;
@@ -145,14 +143,33 @@ meta_shaped_texture_dispose (GObject *object)
     meta_texture_tower_free (priv->paint_tower);
   priv->paint_tower = NULL;
 
-  g_clear_pointer (&priv->pipeline, cogl_object_unref);
-  g_clear_pointer (&priv->pipeline_unshaped, cogl_object_unref);
   g_clear_pointer (&priv->texture, cogl_object_unref);
 
   meta_shaped_texture_set_mask_texture (self, NULL);
   meta_shaped_texture_set_clip_region (self, NULL);
 
   G_OBJECT_CLASS (meta_shaped_texture_parent_class)->dispose (object);
+}
+
+static CoglPipeline *
+get_unmasked_pipeline (CoglContext *ctx)
+{
+  return cogl_pipeline_new (ctx);
+}
+
+static CoglPipeline *
+get_masked_pipeline (CoglContext *ctx)
+{
+  static CoglPipeline *template = NULL;
+  if (G_UNLIKELY (template == NULL))
+    {
+      template = cogl_pipeline_new (ctx);
+      cogl_pipeline_set_layer_combine (template, 1,
+                                       "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
+                                       NULL);
+    }
+
+  return cogl_pipeline_copy (template);
 }
 
 static void
@@ -170,12 +187,6 @@ set_cogl_texture (MetaShapedTexture *stex,
     cogl_object_unref (priv->texture);
 
   priv->texture = cogl_tex;
-
-  if (priv->pipeline != NULL)
-    cogl_pipeline_set_layer_texture (priv->pipeline, 0, COGL_TEXTURE (cogl_tex));
-
-  if (priv->pipeline_unshaped != NULL)
-    cogl_pipeline_set_layer_texture (priv->pipeline_unshaped, 0, COGL_TEXTURE (cogl_tex));
 
   if (cogl_tex != NULL)
     {
@@ -213,10 +224,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
   CoglTexture *paint_tex;
   guint tex_width, tex_height;
   ClutterActorBox alloc;
-
-  static CoglPipeline *pipeline_template = NULL;
-  static CoglPipeline *pipeline_unshaped_template = NULL;
-
+  CoglContext *ctx;
   CoglPipeline *pipeline;
 
   if (priv->clip_region && cairo_region_is_empty (priv->clip_region))
@@ -254,38 +262,15 @@ meta_shaped_texture_paint (ClutterActor *actor)
   if (tex_width == 0 || tex_height == 0) /* no contents yet */
     return;
 
+  ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
+
   if (priv->mask_texture == NULL)
     {
-      /* Use a single-layer texture if we don't have a mask. */
-
-      if (priv->pipeline_unshaped == NULL)
-        {
-          if (G_UNLIKELY (pipeline_unshaped_template == NULL))
-            {
-              CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
-              pipeline_unshaped_template = cogl_pipeline_new (ctx);
-            }
-
-          priv->pipeline_unshaped = cogl_pipeline_copy (pipeline_unshaped_template);
-        }
-        pipeline = priv->pipeline_unshaped;
+      pipeline = get_unmasked_pipeline (ctx);
     }
   else
     {
-      if (priv->pipeline == NULL)
-	{
-	   if (G_UNLIKELY (pipeline_template == NULL))
-	    {
-              CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
-	      pipeline_template =  cogl_pipeline_new (ctx);
-	      cogl_pipeline_set_layer_combine (pipeline_template, 1,
-					   "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
-					   NULL);
-	    }
-	  priv->pipeline = cogl_pipeline_copy (pipeline_template);
-	}
-      pipeline = priv->pipeline;
-
+      pipeline = get_masked_pipeline (ctx);
       cogl_pipeline_set_layer_texture (pipeline, 1, priv->mask_texture);
     }
 
@@ -346,13 +331,16 @@ meta_shaped_texture_paint (ClutterActor *actor)
                                                        &coords[0], 8);
             }
 
-	  return;
+          goto out;
 	}
     }
 
   cogl_rectangle (0, 0,
 		  alloc.x2 - alloc.x1,
 		  alloc.y2 - alloc.y1);
+
+ out:
+  cogl_object_unref (pipeline);
 }
 
 static void
