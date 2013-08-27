@@ -1250,6 +1250,8 @@ const NMApplet = new Lang.Class({
         this._mainConnection = null;
         this._mainConnectionIconChangedId = 0;
 
+        this._notification = null;
+
         this._nmDevices = [];
         this._devices = { };
 
@@ -1313,32 +1315,29 @@ const NMApplet = new Lang.Class({
         this._syncDeviceNames();
     },
 
-    _notifyForDevice: function(device, iconName, title, text, urgency) {
-        if (device._notification)
-            device._notification.destroy();
+    _notify: function(iconName, title, text, urgency) {
+        if (this._notification)
+            this._notification.destroy();
 
-        /* must call after destroying previous notification,
-           or this._source will be cleared */
         this._ensureSource();
 
         let gicon = new Gio.ThemedIcon({ name: iconName });
-        device._notification = new MessageTray.Notification(this._source, title, text,
-                                                            { gicon: gicon });
-        device._notification.setUrgency(urgency);
-        device._notification.setTransient(true);
-        device._notification.connect('destroy', function() {
-            device._notification = null;
+        this._notification = new MessageTray.Notification(this._source, title, text, { gicon: gicon });
+        this._notification.setUrgency(urgency);
+        this._notification.setTransient(true);
+        this._notification.connect('destroy', function() {
+            this._notification = null;
         });
-        this._source.notify(device._notification);
+        this._source.notify(this._notification);
     },
 
     _onActivationFailed: function(device, reason) {
         // XXX: nm-applet has no special text depending on reason
         // but I'm not sure of this generic message
-        this._notifyForDevice(device, 'network-error-symbolic',
-                              _("Connection failed"),
-                              _("Activation of network connection failed"),
-                              MessageTray.Urgency.HIGH);
+        this._notify('network-error-symbolic',
+                     _("Connection failed"),
+                     _("Activation of network connection failed"),
+                     MessageTray.Urgency.HIGH);
     },
 
     _syncDeviceNames: function() {
@@ -1476,12 +1475,8 @@ const NMApplet = new Lang.Class({
     },
 
     _mainConnectionStateChanged: function() {
-        let a = this._mainConnection;
-        let dev = a._primaryDevice;
-        if (a.state == NetworkManager.ActiveConnectionState.ACTIVATED && dev && dev._notification) {
-            dev._notification.destroy();
-            dev._notification = null;
-        }
+        if (this._mainConnection.state == NetworkManager.ActiveConnectionState.ACTIVATED && this._notification)
+            this._notification.destroy();
     },
 
     _ignoreConnection: function(connection) {
