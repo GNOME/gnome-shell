@@ -24,6 +24,8 @@
 #include <meta/meta-plugin.h>
 #include <meta/window.h>
 #include <meta/util.h>
+#include <meta/meta-background-group.h>
+#include <meta/meta-background-actor.h>
 
 #include <libintl.h>
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
@@ -98,6 +100,8 @@ static void kill_window_effects   (MetaPlugin      *plugin,
                                    MetaWindowActor *actor);
 static void kill_switch_workspace (MetaPlugin      *plugin);
 
+static void confirm_display_change (MetaPlugin *plugin);
+
 static const MetaPluginInfo * plugin_info (MetaPlugin *plugin);
 
 META_PLUGIN_DECLARE(MetaDefaultPlugin, meta_default_plugin);
@@ -112,6 +116,8 @@ struct _MetaDefaultPluginPrivate
   ClutterTimeline       *tml_switch_workspace2;
   ClutterActor          *desktop1;
   ClutterActor          *desktop2;
+
+  ClutterActor          *background_group;
 
   MetaPluginInfo         info;
 };
@@ -203,6 +209,7 @@ meta_default_plugin_class_init (MetaDefaultPluginClass *klass)
   plugin_class->plugin_info      = plugin_info;
   plugin_class->kill_window_effects   = kill_window_effects;
   plugin_class->kill_switch_workspace = kill_switch_workspace;
+  plugin_class->confirm_display_change = confirm_display_change;
 
   g_type_class_add_private (gobject_class, sizeof (MetaDefaultPluginPrivate));
 }
@@ -300,8 +307,57 @@ show_stage (MetaPlugin *plugin)
 }
 
 static void
+on_monitors_changed (MetaScreen *screen,
+                     MetaPlugin *plugin)
+{
+  MetaDefaultPlugin *self = META_DEFAULT_PLUGIN (plugin);
+  int i, n;
+
+  clutter_actor_destroy_all_children (self->priv->background_group);
+
+  n = meta_screen_get_n_monitors (screen);
+  for (i = 0; i < n; i++)
+    {
+      MetaRectangle rect;
+      ClutterActor *background;
+      ClutterColor color;
+
+      meta_screen_get_monitor_geometry (screen, i, &rect);
+
+      background = meta_background_actor_new ();
+
+      clutter_actor_set_position (background, rect.x, rect.y);
+      clutter_actor_set_size (background, rect.width, rect.height);
+
+      /* Don't use rand() here, mesa calls srand() internally when
+         parsing the driconf XML, but it's nice if the colors are
+         reproducible.
+      */
+      clutter_color_init (&color,
+                          g_random_int () % 255,
+                          g_random_int () % 255,
+                          g_random_int () % 255,
+                          255);
+      clutter_actor_set_background_color (background, &color);
+
+      clutter_actor_add_child (self->priv->background_group, background);
+    }
+}
+
+static void
 start (MetaPlugin *plugin)
 {
+  MetaDefaultPlugin *self = META_DEFAULT_PLUGIN (plugin);
+  MetaScreen *screen = meta_plugin_get_screen (plugin);
+
+  self->priv->background_group = meta_background_group_new ();
+  clutter_actor_insert_child_below (meta_get_window_group_for_screen (screen),
+                                    self->priv->background_group, NULL);
+
+  g_signal_connect (screen, "monitors-changed",
+                    G_CALLBACK (on_monitors_changed), plugin);
+  on_monitors_changed (screen, plugin);
+
   meta_later_add (META_LATER_BEFORE_REDRAW,
                   (GSourceFunc) show_stage,
                   plugin,
@@ -781,4 +837,34 @@ plugin_info (MetaPlugin *plugin)
   MetaDefaultPluginPrivate *priv = META_DEFAULT_PLUGIN (plugin)->priv;
 
   return &priv->info;
+}
+
+static void
+on_dialog_closed (GPid     pid,
+                  gint     status,
+                  gpointer user_data)
+{
+  MetaPlugin *plugin = user_data;
+  gboolean ok;
+
+  ok = g_spawn_check_exit_status (status, NULL);
+  meta_plugin_complete_display_change (plugin, ok);
+}
+
+static void
+confirm_display_change (MetaPlugin *plugin)
+{
+  GPid pid;
+
+  pid = meta_show_dialog ("--question",
+                          "Does the display look OK?",
+                          "20",
+                          NULL,
+                          "_Keep This Configuration",
+                          "_Restore Previous Configuration",
+                          "preferences-desktop-display",
+                          0,
+                          NULL, NULL);
+
+  g_child_watch_add (pid, on_dialog_closed, plugin);
 }

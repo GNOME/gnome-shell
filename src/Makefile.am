@@ -37,6 +37,7 @@ INCLUDES += \
 
 mutter_built_sources = \
 	$(dbus_idle_built_sources)		\
+	$(dbus_xrandr_built_sources)		\
 	mutter-enum-types.h 			\
 	mutter-enum-types.c			\
 	wayland/xserver-protocol.c		\
@@ -105,6 +106,8 @@ libmutter_wayland_la_SOURCES =			\
 	ui/draw-workspace.h			\
 	core/edge-resistance.c			\
 	core/edge-resistance.h			\
+	core/edid-parse.c			\
+	core/edid.h				\
 	core/errors.c				\
 	meta/errors.h				\
 	core/frame.c				\
@@ -125,6 +128,11 @@ libmutter_wayland_la_SOURCES =			\
 	core/meta-cursor-tracker-private.h	\
 	core/meta-idle-monitor.c		\
 	core/meta-idle-monitor-private.h	\
+	core/meta-xrandr-shared.h		\
+	core/monitor.c				\
+	core/monitor-config.c			\
+	core/monitor-private.h			\
+	core/monitor-xrandr.c			\
 	core/mutter-Xatomtype.h			\
 	core/place.c				\
 	core/place.h				\
@@ -352,6 +360,15 @@ mutter-enum-types.c: stamp-mutter-enum-types.h mutter-enum-types.c.in
 	  $(libmutterinclude_base_headers) ) >> xgen-tetc && \
 	cp xgen-tetc mutter-enum-types.c && \
 	rm -f xgen-tetc
+
+dbus_xrandr_built_sources = meta-dbus-xrandr.c meta-dbus-xrandr.h
+
+$(dbus_xrandr_built_sources) : Makefile.am xrandr.xml
+	$(AM_V_GEN)gdbus-codegen							\
+		--interface-prefix org.gnome.Mutter					\
+		--c-namespace MetaDBus							\
+		--generate-c-code meta-dbus-xrandr					\
+		$(srcdir)/xrandr.xml
 
 dbus_idle_built_sources = meta-dbus-idle-monitor.c meta-dbus-idle-monitor.h
 

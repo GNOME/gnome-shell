@@ -179,7 +179,7 @@ struct _MetaWindow
    * been overridden (via a client message), the window will cover the union of
    * these monitors.  If not, this is the single monitor which the window's
    * origin is on. */
-  long fullscreen_monitors[4];
+  gint fullscreen_monitors[4];
   
   /* Whether we're trying to constrain the window to be fully onscreen */
   guint require_fully_onscreen : 1;

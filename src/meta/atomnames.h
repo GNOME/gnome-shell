@@ -72,6 +72,7 @@ item(_MUTTER_TIMESTAMP_PING)
 item(_MUTTER_FOCUS_SET)
 item(_MUTTER_SENTINEL)
 item(_MUTTER_VERSION)
+item(_MUTTER_PRESENTATION_OUTPUT)
 item(WM_CLIENT_MACHINE)
 item(MANAGER)
 item(TARGETS)
@@ -79,6 +80,7 @@ item(MULTIPLE)
 item(TIMESTAMP)
 item(VERSION)
 item(ATOM_PAIR)
+item(BACKLIGHT)
 
 /* Oddities: These are used, and we need atoms for them,
  * but when we need all _NET_WM hints (i.e. when we're making

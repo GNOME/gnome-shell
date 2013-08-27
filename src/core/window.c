@@ -2281,10 +2281,14 @@ set_net_wm_state (MetaWindow *window)
 
   if (window->fullscreen)
     {
-      data[0] = window->fullscreen_monitors[0];
-      data[1] = window->fullscreen_monitors[1];
-      data[2] = window->fullscreen_monitors[2];
-      data[3] = window->fullscreen_monitors[3];
+      data[0] = meta_screen_monitor_index_to_xinerama_index (window->screen,
+                                                             window->fullscreen_monitors[0]);
+      data[1] = meta_screen_monitor_index_to_xinerama_index (window->screen,
+                                                             window->fullscreen_monitors[1]);
+      data[2] = meta_screen_monitor_index_to_xinerama_index (window->screen,
+                                                             window->fullscreen_monitors[2]);
+      data[3] = meta_screen_monitor_index_to_xinerama_index (window->screen,
+                                                             window->fullscreen_monitors[3]);
 
       meta_verbose ("Setting _NET_WM_FULLSCREEN_MONITORS\n");
       meta_error_trap_push (window->display);
@@ -4958,7 +4962,8 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
     {
       MetaMonitorInfo *info = &window->screen->monitor_infos[i];
 
-      if (info->output == old->output)
+      if (info->output_id != 0 &&
+          info->output_id == old->output_id)
         {
           new = info;
           break;
@@ -7303,10 +7308,14 @@ meta_window_client_message (MetaWindow *window,
       meta_verbose ("_NET_WM_FULLSCREEN_MONITORS request for window '%s'\n",
                     window->desc);
 
-      top = event->xclient.data.l[0];
-      bottom = event->xclient.data.l[1];
-      left = event->xclient.data.l[2];
-      right = event->xclient.data.l[3];
+      top = meta_screen_xinerama_index_to_monitor_index (window->screen,
+                                                         event->xclient.data.l[0]);
+      bottom = meta_screen_xinerama_index_to_monitor_index (window->screen,
+                                                            event->xclient.data.l[1]);
+      left = meta_screen_xinerama_index_to_monitor_index (window->screen,
+                                                          event->xclient.data.l[2]);
+      right = meta_screen_xinerama_index_to_monitor_index (window->screen,
+                                                           event->xclient.data.l[3]);
       /* source_indication = event->xclient.data.l[4]; */
 
       meta_window_update_fullscreen_monitors (window, top, bottom, left, right);

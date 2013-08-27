@@ -102,7 +102,8 @@ typedef enum
   META_DEBUG_RESIZING        = 1 << 18,
   META_DEBUG_SHAPES          = 1 << 19,
   META_DEBUG_COMPOSITOR      = 1 << 20,
-  META_DEBUG_EDGE_RESISTANCE = 1 << 21
+  META_DEBUG_EDGE_RESISTANCE = 1 << 21,
+  META_DEBUG_DBUS            = 1 << 22
 } MetaDebugTopic;
 
 void meta_topic_real      (MetaDebugTopic topic,
