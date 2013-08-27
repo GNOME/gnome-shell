@@ -10,26 +10,15 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2013-08-22 22:23+0000\n"
-"PO-Revision-Date: 2013-08-27 18:18+0200\n"
-=======
-"POT-Creation-Date: 2013-08-19 13:35+0000\n"
-"PO-Revision-Date: 2013-08-20 17:35+0200\n"
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
-"Language: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-<<<<<<< HEAD
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"PO-Revision-Date: 2013-08-27 19:47+0200\n"
 "X-Generator: Gtranslator 2.91.6\n"
-=======
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Gtranslator 2.91.5\n"
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -307,43 +296,28 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Seleccione una extensión que configurar usando la caja combinada de arriba."
 
-<<<<<<< HEAD
 #: ../js/gdm/authPrompt.js:146 ../js/ui/components/networkAgent.js:132
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:384
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
-=======
 #: ../js/gdm/authPrompt.js:149 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:651
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
+#: ../js/ui/endSessionDialog.js:376 ../js/ui/status/network.js:651
 #: ../js/ui/status/system.js:373
 msgid "Cancel"
 msgstr "Cancelar"
 
-<<<<<<< HEAD
 #: ../js/gdm/authPrompt.js:168 ../js/gdm/authPrompt.js:216
-msgid "Next"
-msgstr "Siguiente"
-
 #: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
-=======
 #: ../js/gdm/authPrompt.js:171 ../js/gdm/authPrompt.js:219
 msgid "Next"
 msgstr "Siguiente"
 
 #: ../js/gdm/authPrompt.js:215 ../js/ui/shellMountOperation.js:403
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #: ../js/ui/unlockDialog.js:56
 msgid "Unlock"
 msgstr "Desbloquear"
 
-<<<<<<< HEAD
-#: ../js/gdm/authPrompt.js:214
-=======
-#: ../js/gdm/authPrompt.js:217
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
+#: ../js/gdm/authPrompt.js:214 ../js/gdm/authPrompt.js:217
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
@@ -365,11 +339,7 @@ msgstr "¿No está en la lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-<<<<<<< HEAD
-#: ../js/gdm/loginDialog.js:636
-=======
-#: ../js/gdm/loginDialog.js:641
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
+#: ../js/gdm/loginDialog.js:636 ../js/gdm/loginDialog.js:641
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(ej., usuario o %s)"
@@ -377,29 +347,18 @@ msgstr "(ej., usuario o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-<<<<<<< HEAD
 #: ../js/gdm/loginDialog.js:641 ../js/ui/components/networkAgent.js:255
-#: ../js/ui/components/networkAgent.js:273
-msgid "Username: "
-msgstr "Nombre de usuario:"
-
-#: ../js/gdm/loginDialog.js:904
-msgid "Login Window"
-msgstr "Ventana de inicio de sesión"
-
-#: ../js/gdm/util.js:306
-=======
+#: ../js/ui/components/networkAgent.js:273 ../js/gdm/util.js:306
 #: ../js/gdm/loginDialog.js:646 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Nombre de usuario:"
 
-#: ../js/gdm/loginDialog.js:909
+#: ../js/gdm/loginDialog.js:904 ../js/gdm/loginDialog.js:909
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
 #: ../js/gdm/util.js:298
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "Authentication error"
 msgstr "Error de autenticación"
 
@@ -408,11 +367,7 @@ msgstr "Error de autenticación"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-<<<<<<< HEAD
-#: ../js/gdm/util.js:436
-=======
-#: ../js/gdm/util.js:411
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
+#: ../js/gdm/util.js:436 ../js/gdm/util.js:411
 msgid "(or swipe finger)"
 msgstr "(o pase el dedo)"
 
@@ -647,13 +602,9 @@ msgstr "Contraseña:"
 msgid "Type again:"
 msgstr "Escriba de nuevo:"
 
-<<<<<<< HEAD
 #: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
 #: ../js/ui/status/network.js:268 ../js/ui/status/network.js:682
-=======
-#: ../js/ui/components/networkAgent.js:132 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:654
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
+#: ../js/ui/components/networkAgent.js:132 ../js/ui/status/network.js:654
 msgid "Connect"
 msgstr "Conectar"
 
@@ -1196,27 +1147,16 @@ msgstr "Configuración de las notificaciones"
 msgid "Tray Menu"
 msgstr "Bandeja de menú"
 
-<<<<<<< HEAD
-#: ../js/ui/messageTray.js:1775
-msgid "No Messages"
-msgstr "No hay mensajes"
-
-#: ../js/ui/messageTray.js:1812
-msgid "Message Tray"
-msgstr "Bandeja de mensajes"
-
-#: ../js/ui/messageTray.js:2786
-=======
+#: ../js/ui/messageTray.js:1775 ../js/ui/messageTray.js:2786
 #: ../js/ui/messageTray.js:1777
 msgid "No Messages"
 msgstr "No hay mensajes"
 
-#: ../js/ui/messageTray.js:1814
+#: ../js/ui/messageTray.js:1812 ../js/ui/messageTray.js:1814
 msgid "Message Tray"
 msgstr "Bandeja de mensajes"
 
 #: ../js/ui/messageTray.js:2788
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -1300,11 +1240,7 @@ msgstr[1] "%d notificaciones nuevas"
 msgid "Lock"
 msgstr "Bloquear"
 
-<<<<<<< HEAD
-#: ../js/ui/screenShield.js:712
-=======
-#: ../js/ui/screenShield.js:705
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
+#: ../js/ui/screenShield.js:712 ../js/ui/screenShield.js:705
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME necesita bloquear la pantalla"
 
@@ -1315,19 +1251,13 @@ msgstr "GNOME necesita bloquear la pantalla"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-<<<<<<< HEAD
 #: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1316
-msgid "Unable to lock"
-msgstr "No se pudo bloquear"
-
 #: ../js/ui/screenShield.js:838 ../js/ui/screenShield.js:1317
-=======
 #: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1278
 msgid "Unable to lock"
 msgstr "No se pudo bloquear"
 
 #: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1279
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
@@ -1416,11 +1346,8 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-<<<<<<< HEAD
 #: ../js/ui/status/network.js:1027 ../js/ui/status/rfkill.js:46
-=======
-#: ../js/ui/status/network.js:998 ../js/ui/status/rfkill.js:46
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
+#: ../js/ui/status/network.js:998
 msgid "Turn Off"
 msgstr "Apagar"
 
@@ -1506,13 +1433,10 @@ msgstr "Introduzca el PIN mencionado en el dispositivo."
 msgid "OK"
 msgstr "Aceptar"
 
-<<<<<<< HEAD
 #: ../js/ui/status/brightness.js:42
 msgid "Brightness"
 msgstr "Brillo"
 
-=======
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #: ../js/ui/status/keyboard.js:404
 msgid "Show Keyboard Layout"
 msgstr "Mostrar la distribución del teclado"
@@ -1521,19 +1445,13 @@ msgstr "Mostrar la distribución del teclado"
 msgid "<unknown>"
 msgstr "<desconocido>"
 
-<<<<<<< HEAD
 #: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1042
-msgid "Off"
-msgstr "Desconectado"
-
 #: ../js/ui/status/network.js:269 ../js/ui/status/network.js:948
-=======
-#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1013
+#: ../js/ui/status/network.js:1013
 msgid "Off"
 msgstr "Desconectado"
 
 #: ../js/ui/status/network.js:269 ../js/ui/status/network.js:919
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Configuración de la red"
@@ -1548,20 +1466,14 @@ msgstr "no gestionada"
 msgid "disconnecting..."
 msgstr "deconectando…"
 
-<<<<<<< HEAD
 #: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1093
-=======
-#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1064
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
+#: ../js/ui/status/network.js:1064
 msgid "connecting..."
 msgstr "conectando…"
 
 #. Translators: this is for network connections that require some kind of key or password
-<<<<<<< HEAD
 #: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1096
-=======
-#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1067
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
+#: ../js/ui/status/network.js:1067
 msgid "authentication required"
 msgstr "se necesita autenticación"
 
@@ -1577,83 +1489,44 @@ msgstr "falta el «firmware»"
 msgid "unavailable"
 msgstr "no disponible"
 
-<<<<<<< HEAD
 #: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1098
+#: ../js/ui/status/network.js:1339 ../js/ui/status/network.js:1069
 msgid "connection failed"
 msgstr "falló la conexión"
 
-#: ../js/ui/status/network.js:647
+#: ../js/ui/status/network.js:647 ../js/ui/status/network.js:619
 msgid "Wi-Fi Networks"
 msgstr "Redes Wi-Fi"
 
-#: ../js/ui/status/network.js:649
+#: ../js/ui/status/network.js:649 ../js/ui/status/network.js:621
 msgid "Select a network"
 msgstr "Seleccionar una red"
 
-#: ../js/ui/status/network.js:673
+#: ../js/ui/status/network.js:673 ../js/ui/status/network.js:645
 msgid "No Networks"
 msgstr "No hay redes"
 
-#: ../js/ui/status/network.js:942
+#: ../js/ui/status/network.js:942 ../js/ui/status/network.js:913
 msgid "Select Network"
 msgstr "Seleccionar red"
 
-#: ../js/ui/status/network.js:1027
+#: ../js/ui/status/network.js:1027 ../js/ui/status/network.js:998
 msgid "Turn On"
 msgstr "Enceder"
 
-#: ../js/ui/status/network.js:1160
+#: ../js/ui/status/network.js:1160 ../js/ui/status/network.js:1131
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1296
+#: ../js/ui/status/network.js:1296 ../js/ui/status/network.js:1267
 msgid "Network Manager"
 msgstr "Gestor de la red"
 
-#: ../js/ui/status/network.js:1338
-msgid "Connection failed"
-msgstr "Falló la conexión"
-
-#: ../js/ui/status/network.js:1339
-=======
-#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1069
-msgid "connection failed"
-msgstr "falló la conexión"
-
-#: ../js/ui/status/network.js:619
-msgid "Wi-Fi Networks"
-msgstr "Redes Wi-Fi"
-
-#: ../js/ui/status/network.js:621
-msgid "Select a network"
-msgstr "Seleccionar una red"
-
-#: ../js/ui/status/network.js:645
-msgid "No Networks"
-msgstr "No hay redes"
-
-#: ../js/ui/status/network.js:913
-msgid "Select Network"
-msgstr "Seleccionar red"
-
-#: ../js/ui/status/network.js:998
-msgid "Turn On"
-msgstr "Enceder"
-
-#: ../js/ui/status/network.js:1131
-msgid "VPN"
-msgstr "VPN"
-
-#: ../js/ui/status/network.js:1267
-msgid "Network Manager"
-msgstr "Gestor de la red"
-
-#: ../js/ui/status/network.js:1309
+#: ../js/ui/status/network.js:1338 ../js/ui/status/network.js:1309
 msgid "Connection failed"
 msgstr "Falló la conexión"
 
 #: ../js/ui/status/network.js:1310
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
 
@@ -1687,8 +1560,10 @@ msgstr "Quedan %d\\u2236%02d (%d%%)"
 #, c-format
 msgid "%d\\u2236%02d Until Full (%d%%)"
 msgstr "%d\\u2236%d para la carga completa (%d%%)"
-<<<<<<< HEAD
 
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
@@ -1725,18 +1600,20 @@ msgid "Shutting down might cause them to lose unsaved work."
 msgstr "Apagar puede hacer que pierdan el trabajo que no hayan guardado."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
+#. Translators: Remote here refers to a remote session, like a ssh login
 #: ../js/ui/status/system.js:356
 #, c-format
 msgid "%s (remote)"
 msgstr "%s (remoto)"
 
 #. Translators: Console here refers to a tty like a VT console
+#. Translators: Console here refers to a tty like a VT console
 #: ../js/ui/status/system.js:359
 #, c-format
 msgid "%s (console)"
 msgstr "%s (consola)"
 
-#: ../js/ui/status/volume.js:127
+#: ../js/ui/status/volume.js:127 ../js/ui/status/volume.js:124
 msgid "Volume changed"
 msgstr "Volumen modificado"
 
@@ -1756,68 +1633,6 @@ msgstr "Iniciar sesión como otro usuario"
 msgid "Unlock Window"
 msgstr "Desbloquear ventana"
 
-=======
-
-#. The menu only appears when airplane mode is on, so just
-#. statically build it as if it was on, rather than dynamically
-#. changing the menu contents.
-#: ../js/ui/status/rfkill.js:43
-msgid "Airplane Mode"
-msgstr "Modo avión"
-
-#: ../js/ui/status/rfkill.js:45
-msgid "On"
-msgstr "Encender"
-
-#: ../js/ui/status/system.js:247
-msgid "Switch User"
-msgstr "Cambiar de usuario"
-
-#: ../js/ui/status/system.js:252
-msgid "Log Out"
-msgstr "Cerrar la sesión"
-
-#: ../js/ui/status/system.js:271
-msgid "Orientation Lock"
-msgstr "Bloqueo de orientación"
-
-#: ../js/ui/status/system.js:279 ../js/ui/status/system.js:377
-msgid "Power Off"
-msgstr "Apagar"
-
-#: ../js/ui/status/system.js:323
-msgid "Other users are logged in."
-msgstr "Hay otros usuarios con la sesión iniciada"
-
-#: ../js/ui/status/system.js:328
-msgid "Shutting down might cause them to lose unsaved work."
-msgstr "Apagar puede hacer que pierdan el trabajo que no hayan guardado."
-
-#. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/status/system.js:356
-#, c-format
-msgid "%s (remote)"
-msgstr "%s (remoto)"
-
-#. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/status/system.js:359
-#, c-format
-msgid "%s (console)"
-msgstr "%s (consola)"
-
-#: ../js/ui/status/volume.js:124
-msgid "Volume changed"
-msgstr "Volumen modificado"
-
-#: ../js/ui/unlockDialog.js:64
-msgid "Log in as another user"
-msgstr "Iniciar sesión como otro usuario"
-
-#: ../js/ui/unlockDialog.js:81
-msgid "Unlock Window"
-msgstr "Desbloquear ventana"
-
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #: ../js/ui/viewSelector.js:100
 msgid "Applications"
 msgstr "Aplicaciones"
@@ -1973,36 +1788,9 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 #~ "Generalmente tendrá un punto de origen desconectado; la salida de ese "
 #~ "punto se escribirá en el archivo de salida. Sin embargo, la tubería "
 #~ "también puede tomar parte en su propia salida; esto se puede usar para "
-<<<<<<< HEAD
-#~ "enviar la salida a un servidor «icecast» a través de shout2send o "
-#~ "similar. Cuando no está establecido o lo está a un valor vacío, se usará "
-#~ "la tubería predeterminada. Actualmente es «'vp8enc min_quantizer=13 "
-=======
-#~ "enviar la salida a un servidor «icecast» a través de shout2send o similar. "
-#~ "Cuando no está establecido o lo está a un valor vacío, se usará la "
-#~ "tubería predeterminada. Actualmente es «'vp8enc min_quantizer=13 "
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
-#~ "max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! "
-#~ "webmmux» y graba en WEBM usando el códec VP8. Se usa %T como marcador de "
-#~ "posición para el número de hilos óptimos en el sistema."
 
 #~ msgid "File extension used for storing the screencast"
 #~ msgstr "Extensión de archivo que usar para almacenar los «screencast»"
-
-#~ msgid ""
-#~ "The filename for recorded screencasts will be a unique filename based on "
-#~ "the current date, and use this extension. It should be changed when "
-#~ "recording to a different container format."
-#~ msgstr ""
-<<<<<<< HEAD
-#~ "El nombre de archivo para los «screencast» será un nombre de archivo "
-#~ "único basado en la fecha actual y usará esta extensión. Se debería "
-#~ "cambiar al grabar en otro formato contenedor diferente."
-=======
-#~ "El nombre de archivo para los «screencast» será un nombre de archivo único "
-#~ "basado en la fecha actual y usará esta extensión. Se debería cambiar al "
-#~ "grabar en otro formato contenedor diferente."
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 
 #~ msgid "Screencast from %d %t"
 #~ msgstr "Screencast desde %d %t"
@@ -2019,12 +1807,6 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 #~ msgid "Volume, network, battery"
 #~ msgstr "Volumen, red, batería"
 
-<<<<<<< HEAD
-=======
-#~ msgid "Volume"
-#~ msgstr "Volumen"
-
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #~ msgid "Visibility"
 #~ msgstr "Visibilidad"
 
@@ -2137,12 +1919,6 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 #~ msgid "Unknown"
 #~ msgstr "Desconocido"
 
-<<<<<<< HEAD
-=======
-#~ msgid "Microphone"
-#~ msgstr "Micrófono"
-
->>>>>>> 268ac0bde8d83589382169c5be924caeff5ba70f
 #~ msgid "Available"
 #~ msgstr "Disponible"
 
