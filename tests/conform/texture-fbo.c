@@ -72,13 +72,12 @@ post_paint_clip_cb (void)
   cogl_clip_pop ();
 }
 
-static gboolean
+static void
 validate_part (TestState *state,
                int xpos, int ypos,
                int clip_flags)
 {
   int x, y;
-  gboolean pass = TRUE;
 
   /* Check whether the center of each division is the right color */
   for (y = 0; y < SOURCE_DIVISIONS_Y; y++)

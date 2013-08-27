@@ -148,7 +148,6 @@ screen_coords_to_device (int screen_x, int screen_y,
 static gboolean
 perform_gesture (gpointer data)
 {
-  State *state = data;
   int i;
 
   for (i = 0; i < TOUCH_POINTS; i++)

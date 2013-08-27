@@ -139,7 +139,7 @@ validate_state (gpointer data)
 
   /* avoid recursion */
   if (test_state_in_validation (state))
-    return;
+    return G_SOURCE_REMOVE;
 
   g_assert (state->actors != NULL);
   g_assert (state->colors != NULL);
