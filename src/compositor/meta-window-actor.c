@@ -77,6 +77,9 @@ struct _MetaWindowActorPrivate
   /* The region we should clip to when painting the shadow */
   cairo_region_t   *shadow_clip;
 
+  /* The region that is visible, used to optimize out redraws */
+  cairo_region_t   *unobscured_region;
+
   /* Extracted size-invariant shape used for shadows */
   MetaWindowShape  *shadow_shape;
 
@@ -445,6 +448,7 @@ meta_window_actor_dispose (GObject *object)
       meta_window_actor_detach_x11_pixmap (self);
     }
 
+  g_clear_pointer (&priv->unobscured_region, cairo_region_destroy);
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
   g_clear_pointer (&priv->input_region, cairo_region_destroy);
   g_clear_pointer (&priv->opaque_region, cairo_region_destroy);
@@ -948,7 +952,8 @@ meta_window_actor_damage_all (MetaWindowActor *self)
   meta_shaped_texture_update_area (META_SHAPED_TEXTURE (priv->actor),
                                    0, 0,
                                    cogl_texture_get_width (texture),
-                                   cogl_texture_get_height (texture));
+                                   cogl_texture_get_height (texture),
+                                   clutter_actor_has_mapped_clones (priv->actor) ? NULL : priv->unobscured_region);
 
   priv->needs_damage_all = FALSE;
   priv->repaint_scheduled = TRUE;
@@ -1734,40 +1739,67 @@ see_region (cairo_region_t *region,
 #endif
 
 /**
- * meta_window_actor_set_visible_region:
+ * meta_window_actor_set_unobscured_region:
  * @self: a #MetaWindowActor
- * @visible_region: the region of the screen that isn't completely
+ * @unobscured_region: the region of the screen that isn't completely
+ *  obscured.
+ *
+ * Provides a hint as to what areas of the window need to queue
+ * redraws when damaged. Regions not in @unobscured_region are completely obscured.
+ * Unlike meta_window_actor_set_clip_region(), the region here
+ * doesn't take into account any clipping that is in effect while drawing.
+ */
+void
+meta_window_actor_set_unobscured_region (MetaWindowActor *self,
+                                         cairo_region_t  *unobscured_region)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+
+  if (priv->unobscured_region)
+    cairo_region_destroy (priv->unobscured_region);
+
+  if (unobscured_region)
+    priv->unobscured_region = cairo_region_copy (unobscured_region);
+  else
+    priv->unobscured_region = NULL;
+}
+
+/**
+ * meta_window_actor_set_clip_region:
+ * @self: a #MetaWindowActor
+ * @clip_region: the region of the screen that isn't completely
  *  obscured.
  *
  * Provides a hint as to what areas of the window need to be
- * drawn. Regions not in @visible_region are completely obscured.
+ * drawn. Regions not in @clip_region are completely obscured or
+ * not drawn in this frame.
  * This will be set before painting then unset afterwards.
  */
 void
-meta_window_actor_set_visible_region (MetaWindowActor *self,
-                                      cairo_region_t  *visible_region)
+meta_window_actor_set_clip_region (MetaWindowActor *self,
+                                   cairo_region_t  *clip_region)
 {
   MetaWindowActorPrivate *priv = self->priv;
 
   meta_shaped_texture_set_clip_region (META_SHAPED_TEXTURE (priv->actor),
-                                       visible_region);
+                                       clip_region);
 }
 
 /**
- * meta_window_actor_set_visible_region_beneath:
+ * meta_window_actor_set_clip_region_beneath:
  * @self: a #MetaWindowActor
- * @visible_region: the region of the screen that isn't completely
+ * @clip_region: the region of the screen that isn't completely
  *  obscured beneath the main window texture.
  *
  * Provides a hint as to what areas need to be drawn *beneath*
- * the main window texture.  This is the relevant visible region
+ * the main window texture.  This is the relevant clip region
  * when drawing the shadow, properly accounting for areas of the
  * shadow hid by the window itself. This will be set before painting
  * then unset afterwards.
  */
 void
-meta_window_actor_set_visible_region_beneath (MetaWindowActor *self,
-                                              cairo_region_t  *beneath_region)
+meta_window_actor_set_clip_region_beneath (MetaWindowActor *self,
+                                           cairo_region_t  *beneath_region)
 {
   MetaWindowActorPrivate *priv = self->priv;
   gboolean appears_focused = meta_window_appears_focused (priv->window);
@@ -1786,14 +1818,14 @@ meta_window_actor_set_visible_region_beneath (MetaWindowActor *self,
 }
 
 /**
- * meta_window_actor_reset_visible_regions:
+ * meta_window_actor_reset_clip_regions:
  * @self: a #MetaWindowActor
  *
- * Unsets the regions set by meta_window_actor_set_visible_region() and
- * meta_window_actor_set_visible_region_beneath()
+ * Unsets the regions set by meta_window_actor_set_clip_region() and
+ * meta_window_actor_set_clip_region_beneath()
  */
 void
-meta_window_actor_reset_visible_regions (MetaWindowActor *self)
+meta_window_actor_reset_clip_regions (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
 
@@ -2019,7 +2051,8 @@ meta_window_actor_process_x11_damage (MetaWindowActor    *self,
                                    event->area.x,
                                    event->area.y,
                                    event->area.width,
-                                   event->area.height);
+                                   event->area.height,
+                                   clutter_actor_has_mapped_clones (priv->actor) ? NULL : priv->unobscured_region);
   priv->repaint_scheduled = TRUE;
 }
 
