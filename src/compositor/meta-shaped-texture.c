@@ -583,8 +583,8 @@ meta_shaped_texture_get_texture (MetaShapedTexture *stex)
 /**
  * meta_shaped_texture_set_clip_region:
  * @stex: a #MetaShapedTexture
- * @clip_region: (transfer full): the region of the texture that
- *   is visible and should be painted.
+ * @clip_region: the region of the texture that is visible and
+ *   should be painted.
  *
  * Provides a hint to the texture about what areas of the texture
  * are not completely obscured and thus need to be painted. This
