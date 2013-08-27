@@ -30,6 +30,8 @@ const Util = imports.misc.util;
 const MAX_APPLICATION_WORK_MILLIS = 75;
 const MENU_POPUP_TIMEOUT = 600;
 const MAX_COLUMNS = 6;
+const MIN_COLUMNS = 4;
+const MIN_ROWS = 4;
 
 const INACTIVE_GRID_OPACITY = 77;
 const INACTIVE_GRID_OPACITY_ANIMATION_TIME = 0.15;
@@ -63,6 +65,8 @@ const BaseAppView = new Lang.Class({
     _init: function(params, gridParams) {
         gridParams = Params.parse(gridParams, { xAlign: St.Align.MIDDLE,
                                                 columnLimit: MAX_COLUMNS,
+                                                minRows: MIN_ROWS,
+                                                minColumns: MIN_COLUMNS,
                                                 fillParent: false });
         params = Params.parse(params, { usePagination: false });
 

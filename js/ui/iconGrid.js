@@ -176,10 +176,14 @@ const IconGrid = new Lang.Class({
     _init: function(params) {
         params = Params.parse(params, { rowLimit: null,
                                         columnLimit: null,
+                                        minRows: 1,
+                                        minColumns: 1,
                                         fillParent: false,
                                         xAlign: St.Align.MIDDLE });
         this._rowLimit = params.rowLimit;
         this._colLimit = params.columnLimit;
+        this._minRows = params.minRows;
+        this._minColumns = params.minColumns;
         this._xAlign = params.xAlign;
         this._fillParent = params.fillParent;
 
@@ -393,17 +397,27 @@ const IconGrid = new Lang.Class({
      * This function must to be called before iconGrid allocation,
      * to know how much spacing can the grid has
      */
-    updateSpacingForSize: function(availWidth) {
-        let spacing = this._spacing;
+    updateSpacingForSize: function(availWidth, availHeight) {
+        let maxEmptyVArea = availHeight - this._minRows * this._vItemSize;
+        let maxEmptyHArea = availWidth - this._minColumns * this._hItemSize;
+        let maxHSpacing, maxVSpacing;
+        if (this._minRows <= 1)
+            maxVSpacing = maxEmptyVArea;
+        else
+            maxVSpacing = Math.floor(maxEmptyVArea / (this._minRows - 1));
 
-        if (this._colLimit) {
-            let itemWidth = this._hItemSize * this._colLimit;
-            let emptyArea = availWidth - itemWidth;
-            spacing = Math.max(spacing, emptyArea / (2 * this._colLimit));
-            spacing = Math.round(spacing);
-        }
-        this.setSpacing(spacing);
-    },
+        if (this._minColumns <= 1)
+            maxHSpacing = maxEmptyHArea;
+        else
+            maxHSpacing = Math.floor(maxEmptyHArea / (this._minColumns - 1));
+
+        let maxSpacing = Math.min(maxHSpacing, maxVSpacing);
+        // Limit spacing to the item size
+        maxSpacing = Math.min(maxSpacing, Math.min(this._vItemSize, this._hItemSize));
+        // The minimum spacing, regardless of whether it satisfies the row/column minima,
+        // is the spacing we get from CSS.
+        this.setSpacing(Math.max(this._spacing, maxSpacing));
+    }
 });
 
 const PaginatedIconGrid = new Lang.Class({
