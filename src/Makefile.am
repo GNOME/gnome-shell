@@ -33,7 +33,11 @@ bin_SCRIPTS += gnome-shell-extension-tool gnome-shell-extension-prefs \
 	       gnome-shell-perf-tool
 EXTRA_DIST += gnome-shell-extension-tool.in gnome-shell-extension-prefs.in \
 	      gnome-shell-perf-tool.in
-bin_PROGRAMS = gnome-shell gnome-shell-wayland
+bin_PROGRAMS = gnome-shell
+
+if HAVE_MUTTER_WAYLAND
+bin_PROGRAMS += gnome-shell-wayland
+endif HAVE_MUTTER_WAYLAND
 
 generated_script_substitutions = \
 	    -e "s|@bindir[@]|$(bindir)|g" \
@@ -75,8 +79,12 @@ gnome_shell_cflags =				\
 	-DJSDIR=\"$(pkgdatadir)/js\"
 
 privlibdir = $(pkglibdir)
-privlib_LTLIBRARIES = libgnome-shell-js.la libgnome-shell-menu.la libgnome-shell.la libgnome-shell-wayland.la
+privlib_LTLIBRARIES = libgnome-shell-js.la libgnome-shell-menu.la libgnome-shell.la
 noinst_LTLIBRARIES += libgnome-shell-base.la
+
+if HAVE_MUTTER_WAYLAND
+privlib_LTLIBRARIES += libgnome-shell-wayland.la
+endif HAVE_MUTTER_WAYLAND
 
 shell_built_sources = \
 	shell-enum-types.h \
@@ -166,7 +174,6 @@ libgnome_shell_sources =		\
 	$(NULL)
 
 libgnome_shell_la_SOURCES = $(libgnome_shell_sources)
-libgnome_shell_wayland_la_SOURCES = $(libgnome_shell_sources)
 
 libgnome_shell_la_gir_sources = \
 	$(filter-out %-private.h $(shell_private_sources), $(shell_public_headers_h) $(libgnome_shell_base_la_SOURCES) $(libgnome_shell_sources))
@@ -182,6 +189,9 @@ gnome_shell_CPPFLAGS = \
 gnome_shell_LDADD = libgnome-shell.la libgnome-shell-js.la $(MUTTER_LIBS) $(BLUETOOTH_LIBS)
 gnome_shell_DEPENDENCIES = libgnome-shell.la
 
+if HAVE_MUTTER_WAYLAND
+libgnome_shell_wayland_la_SOURCES = $(libgnome_shell_sources)
+
 gnome_shell_wayland_SOURCES = main.c
 gnome_shell_wayland_CPPFLAGS = \
 	-DHAVE_WAYLAND \
@@ -191,6 +201,7 @@ gnome_shell_wayland_CPPFLAGS = \
 
 gnome_shell_wayland_LDADD = libgnome-shell-wayland.la libgnome-shell-js.la $(MUTTER_WAYLAND_LIBS) $(BLUETOOTH_LIBS)
 gnome_shell_wayland_DEPENDENCIES = libgnome-shell-wayland.la
+endif HAVE_MUTTER_WAYLAND
 
 ########################################
 
@@ -292,9 +303,11 @@ libgnome_shell_la_LDFLAGS = $(libgnome_shell_ldflags)
 libgnome_shell_la_LIBADD = $(MUTTER_LIBS) libgnome-shell-base.la
 libgnome_shell_la_CPPFLAGS = $(MUTTER_CFLAGS) $(gnome_shell_cflags)
 
+if HAVE_MUTTER_WAYLAND
 libgnome_shell_wayland_la_LDFLAGS = $(libgnome_shell_ldflags)
 libgnome_shell_wayland_la_LIBADD = $(MUTTER_WAYLAND_LIBS) libgnome-shell-base.la
 libgnome_shell_wayland_la_CPPFLAGS = $(MUTTER_WAYLAND_CFLAGS) -DHAVE_WAYLAND $(gnome_shell_cflags)
+endif HAVE_MUTTER_WAYLAND
 
 ShellMenu-0.1.gir: libgnome-shell-menu.la
 ShellMenu_0_1_gir_INCLUDES = Gio-2.0

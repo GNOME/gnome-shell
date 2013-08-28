@@ -97,7 +97,16 @@ SHARED_PCS="gio-unix-2.0 >= $GIO_MIN_VERSION
 
 PKG_CHECK_MODULES(GNOME_SHELL, $SHARED_PCS)
 PKG_CHECK_MODULES(MUTTER, libmutter >= $MUTTER_MIN_VERSION)
-PKG_CHECK_MODULES(MUTTER_WAYLAND, libmutter-wayland >= $MUTTER_MIN_VERSION)
+
+AC_MSG_CHECKING([for wayland support])
+PKG_CHECK_EXISTS([libmutter-wayland >= $MUTTER_MIN_VERSION],
+                 [MUTTER_WAYLAND_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter-wayland`
+                  AC_SUBST(MUTTER_WAYLAND_TYPELIB_DIR)
+                  have_mutter_wayland=yes],
+                 [have_mutter_wayland=no])
+
+AC_MSG_RESULT($have_mutter_wayland)
+AM_CONDITIONAL(HAVE_MUTTER_WAYLAND, test $have_mutter_wayland != no)
 
 PKG_CHECK_MODULES(GNOME_SHELL_JS, gio-2.0 gjs-internals-1.0 >= $GJS_MIN_VERSION)
 PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 >= 0.6.8 x11)
@@ -137,9 +146,6 @@ AC_SUBST(MUTTER_GIR_DIR)
 
 MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter`
 AC_SUBST(MUTTER_TYPELIB_DIR)
-
-MUTTER_WAYLAND_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter-wayland`
-AC_SUBST(MUTTER_WAYLAND_TYPELIB_DIR)
 
 GJS_CONSOLE=`$PKG_CONFIG --variable=gjs_console gjs-1.0`
 AC_SUBST(GJS_CONSOLE)
