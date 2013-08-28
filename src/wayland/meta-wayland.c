@@ -537,7 +537,7 @@ meta_wayland_surface_resource_destroy_cb (struct wl_resource *resource)
 
 	  meta_window_unmanage (surface->window, timestamp);
 	}
-      else
+      else if (!surface->window)
 	meta_wayland_surface_free (surface);
     }
 }
