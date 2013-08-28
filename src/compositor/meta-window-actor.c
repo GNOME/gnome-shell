@@ -2347,11 +2347,7 @@ meta_window_actor_update_shape_region (MetaWindowActor       *self,
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
   priv->shape_region = region;
 
-  if (priv->shadow_shape != NULL)
-    {
-      meta_window_shape_unref (priv->shadow_shape);
-      priv->shadow_shape = NULL;
-    }
+  g_clear_pointer (&priv->shadow_shape, meta_window_shape_unref);
 
   meta_window_actor_invalidate_shadow (self);
 }
