@@ -97,15 +97,12 @@ SHARED_PCS="gio-unix-2.0 >= $GIO_MIN_VERSION
 
 PKG_CHECK_MODULES(GNOME_SHELL, $SHARED_PCS)
 PKG_CHECK_MODULES(MUTTER, libmutter >= $MUTTER_MIN_VERSION)
-
-AC_MSG_CHECKING([for wayland support])
-PKG_CHECK_EXISTS([libmutter-wayland >= $MUTTER_MIN_VERSION],
+PKG_CHECK_MODULES(MUTTER_WAYLAND, [libmutter-wayland >= $MUTTER_MIN_VERSION],
                  [MUTTER_WAYLAND_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter-wayland`
                   AC_SUBST(MUTTER_WAYLAND_TYPELIB_DIR)
                   have_mutter_wayland=yes],
                  [have_mutter_wayland=no])
 
-AC_MSG_RESULT($have_mutter_wayland)
 AM_CONDITIONAL(HAVE_MUTTER_WAYLAND, test $have_mutter_wayland != no)
 
 PKG_CHECK_MODULES(GNOME_SHELL_JS, gio-2.0 gjs-internals-1.0 >= $GJS_MIN_VERSION)
