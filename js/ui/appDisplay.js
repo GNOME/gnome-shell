@@ -54,8 +54,8 @@ function _loadCategory(dir, view) {
     }
 };
 
-const AlphabeticalView = new Lang.Class({
-    Name: 'AlphabeticalView',
+const BaseAppView = new Lang.Class({
+    Name: 'BaseAppView',
     Abstract: true,
 
     _init: function() {
@@ -139,7 +139,7 @@ const AlphabeticalView = new Lang.Class({
         }
     }
 });
-Signals.addSignalMethods(AlphabeticalView.prototype);
+Signals.addSignalMethods(BaseAppView.prototype);
 
 const AllViewLayout = new Lang.Class({
     Name: 'AllViewLayout',
@@ -167,7 +167,7 @@ const AllViewLayout = new Lang.Class({
 
 const AllView = new Lang.Class({
     Name: 'AllView',
-    Extends: AlphabeticalView,
+    Extends: BaseAppView,
 
     _init: function() {
         this.parent();
@@ -560,7 +560,7 @@ const AppSearchProvider = new Lang.Class({
 
 const FolderView = new Lang.Class({
     Name: 'FolderView',
-    Extends: AlphabeticalView,
+    Extends: BaseAppView,
 
     _init: function() {
         this.parent();
