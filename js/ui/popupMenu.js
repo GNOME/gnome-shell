@@ -35,6 +35,13 @@ function _ensureStyle(actor) {
         actor.ensure_style();
 }
 
+function isPopupMenuItemVisible(child) {
+    if (child._delegate instanceof PopupMenuSection)
+        if (child._delegate.isEmpty())
+            return false;
+    return child.visible;
+}
+
 const PopupBaseMenuItem = new Lang.Class({
     Name: 'PopupBaseMenuItem',
 
@@ -437,7 +444,7 @@ const PopupMenuBase = new Lang.Class({
         let hasVisibleChildren = this.box.get_children().some(function(child) {
             if (child._delegate instanceof PopupSeparatorMenuItem)
                 return false;
-            return child.visible;
+            return isPopupMenuItemVisible(child);
         });
 
         return !hasVisibleChildren;
@@ -518,7 +525,7 @@ const PopupMenuBase = new Lang.Class({
 
         let childBeforeIndex = index - 1;
 
-        while (childBeforeIndex >= 0 && !children[childBeforeIndex].visible)
+        while (childBeforeIndex >= 0 && !isPopupMenuItemVisible(children[childBeforeIndex]))
             childBeforeIndex--;
 
         if (childBeforeIndex < 0
@@ -529,7 +536,7 @@ const PopupMenuBase = new Lang.Class({
 
         let childAfterIndex = index + 1;
 
-        while (childAfterIndex < children.length && !children[childAfterIndex].visible)
+        while (childAfterIndex < children.length && !isPopupMenuItemVisible(children[childAfterIndex]))
             childAfterIndex++;
 
         if (childAfterIndex >= children.length
