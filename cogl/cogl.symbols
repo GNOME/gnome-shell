@@ -25,6 +25,12 @@ cogl2_path_stroke
 cogl_android_set_native_window
 #endif
 
+/* cogl-atlas-texture.h */
+cogl_atlas_texture_new_with_size
+cogl_atlas_texture_new_from_file
+cogl_atlas_texture_new_from_data
+cogl_atlas_texture_new_from_bitmap
+
 cogl_attribute_buffer_new_with_size
 
 cogl_attribute_new
@@ -187,6 +193,7 @@ cogl_disable_fog
 cogl_display_get_renderer
 cogl_display_new
 cogl_display_setup
+cogl_display_set_onscreen_template
 
 cogl_double_to_fixed
 
@@ -232,6 +239,7 @@ cogl_framebuffer_cancel_fence_callback
 cogl_framebuffer_clear4f
 cogl_framebuffer_clear
 cogl_framebuffer_discard_buffers
+cogl_framebuffer_draw_primitive
 cogl_framebuffer_draw_rectangle
 cogl_framebuffer_draw_rectangles
 cogl_framebuffer_draw_textured_rectangle
@@ -390,6 +398,7 @@ cogl_is_texture_3d
 
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
 cogl_kms_display_queue_modes_reset
+cogl_kms_display_set_layout
 cogl_kms_renderer_get_kms_fd
 #endif
 
@@ -520,6 +529,7 @@ cogl_object_ref
 cogl_object_set_user_data
 cogl_object_unref
 
+cogl_offscreen_new_to_texture
 cogl_offscreen_new_with_texture
 
 cogl_onscreen_add_dirty_callback
@@ -884,7 +894,11 @@ cogl_texture_unref
 #endif
 cogl_texture_2d_new_from_bitmap
 cogl_texture_2d_new_from_data
+cogl_texture_2d_new_from_file
 cogl_texture_2d_new_with_size
+cogl_texture_2d_sliced_new_from_bitmap
+cogl_texture_2d_sliced_new_from_data
+cogl_texture_2d_sliced_new_from_file
 cogl_texture_2d_sliced_new_with_size
 cogl_texture_3d_new_from_bitmap
 cogl_texture_3d_new_from_data
@@ -994,9 +1008,9 @@ _cogl_atlas_add_reorganize_callback
 _cogl_atlas_new
 _cogl_atlas_reserve_space
 _cogl_atlas_texture_add_reorganize_callback
-_cogl_atlas_texture_new_with_size
 _cogl_atlas_texture_remove_reorganize_callback
 _cogl_context_get_default
+_cogl_system_error_quark
 #endif
 
 cogl_fence_closure_get_user_data
