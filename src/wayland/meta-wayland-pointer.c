@@ -324,3 +324,21 @@ meta_wayland_pointer_end_modal (MetaWaylandPointer *pointer)
   meta_wayland_pointer_end_grab (pointer);
   g_slice_free (MetaWaylandPointerGrab, grab);
 }
+
+/* Called when the focused resource is destroyed */
+void
+meta_wayland_pointer_destroy_focus (MetaWaylandPointer *pointer)
+{
+  if (pointer->grab == &pointer->default_grab)
+    {
+      /* The surface was destroyed, but had the implicit pointer grab.
+         Bypass the grab interface. */
+      g_assert (pointer->button_count > 0);
+
+      /* Note: we focus the NULL interface, not the current one, because
+	 we have button down, and the clients would be confused if the
+	 pointer enters the surface.
+      */
+      meta_wayland_pointer_set_focus (pointer, NULL, 0, 0);
+    }
+}

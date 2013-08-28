@@ -497,9 +497,14 @@ meta_wayland_surface_free (MetaWaylandSurface *surface)
 
   meta_wayland_compositor_repick (compositor);
 
-  /* Check that repick didn't pick the freed surface */
-  g_assert (surface != compositor->seat->pointer.focus);
   g_assert (surface != compositor->seat->keyboard.focus);
+  if (surface == compositor->seat->pointer.focus)
+    {
+      meta_wayland_pointer_destroy_focus (&compositor->seat->pointer);
+
+      g_assert (surface != compositor->seat->pointer.focus);
+      g_assert (surface != compositor->seat->pointer.grab->focus);
+    }
 
  if (compositor->implicit_grab_surface == surface)
    compositor->implicit_grab_surface = compositor->seat->pointer.current;

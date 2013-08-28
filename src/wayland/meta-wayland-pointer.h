@@ -35,6 +35,10 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 MetaWaylandSurface *surface,
                                 wl_fixed_t sx,
                                 wl_fixed_t sy);
+
+void
+meta_wayland_pointer_destroy_focus (MetaWaylandPointer *pointer);
+
 void
 meta_wayland_pointer_start_grab (MetaWaylandPointer *pointer,
                                  MetaWaylandPointerGrab *grab);
