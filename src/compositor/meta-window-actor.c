@@ -2236,11 +2236,7 @@ check_needs_reshape (MetaWindowActor *self)
   if (!priv->needs_reshape)
     return;
 
-  if (priv->shadow_shape != NULL)
-    {
-      meta_window_shape_unref (priv->shadow_shape);
-      priv->shadow_shape = NULL;
-    }
+  g_clear_pointer (&priv->shadow_shape, meta_window_shape_unref);
 
   meta_frame_calc_borders (priv->window->frame, &borders);
 
