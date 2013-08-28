@@ -1069,7 +1069,9 @@ StScrollBar StButton#vhandle:active {
 .app-well-app:checked > .overview-icon,
 .app-well-app:active > .overview-icon,
 .show-apps:checked > .overview-icon,
-.show-apps:active > .overview-icon {
+.show-apps:active > .overview-icon,
+.search-provider-icon:active,
+.list-search-result:active {
     background-gradient-start: rgba(255, 255, 255, .05);
     background-gradient-end: rgba(255, 255, 255, .15);
     background-gradient-direction: vertical;
