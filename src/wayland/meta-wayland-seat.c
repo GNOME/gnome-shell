@@ -271,8 +271,7 @@ pointer_handle_sprite_destroy (struct wl_listener *listener, void *data)
 }
 
 MetaWaylandSeat *
-meta_wayland_seat_new (struct wl_display *display,
-		       gboolean           is_native)
+meta_wayland_seat_new (struct wl_display *display)
 {
   MetaWaylandSeat *seat = g_new0 (MetaWaylandSeat, 1);
 
@@ -286,7 +285,7 @@ meta_wayland_seat_new (struct wl_display *display,
 
   meta_wayland_pointer_init (&seat->pointer);
 
-  meta_wayland_keyboard_init (&seat->keyboard, display, is_native);
+  meta_wayland_keyboard_init (&seat->keyboard, display);
 
   seat->display = display;
 

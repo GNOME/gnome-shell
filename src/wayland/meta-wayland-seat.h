@@ -30,8 +30,7 @@
 #include "meta-wayland-private.h"
 
 MetaWaylandSeat *
-meta_wayland_seat_new (struct wl_display *display,
-		       gboolean           is_native);
+meta_wayland_seat_new (struct wl_display *display);
 
 void
 meta_wayland_seat_handle_event (MetaWaylandSeat *seat,

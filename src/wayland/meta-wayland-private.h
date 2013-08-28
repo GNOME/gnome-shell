@@ -234,14 +234,6 @@ typedef struct
   xkb_mod_index_t mod5_mod;
 } MetaWaylandXkbInfo;
 
-typedef struct
-{
-  uint32_t mods_depressed;
-  uint32_t mods_latched;
-  uint32_t mods_locked;
-  uint32_t group;
-} MetaWaylandXkbState;
-
 struct _MetaWaylandKeyboard
 {
   struct wl_list resource_list;
@@ -259,19 +251,25 @@ struct _MetaWaylandKeyboard
 
   struct wl_array keys;
 
-  MetaWaylandXkbState modifier_state;
+  struct
+  {
+    uint32_t mods_depressed;
+    uint32_t mods_latched;
+    uint32_t mods_locked;
+    uint32_t group;
+  } modifiers;
 
   struct wl_display *display;
 
   struct xkb_context *xkb_context;
-  struct xkb_state *xkb_state;
-  gboolean is_evdev;
 
   MetaWaylandXkbInfo xkb_info;
   struct xkb_rule_names xkb_names;
 
   MetaWaylandKeyboardGrab input_method_grab;
   struct wl_resource *input_method_resource;
+
+  ClutterModifierType last_modifier_state;
 };
 
 struct _MetaWaylandDataOffer

@@ -56,7 +56,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/mman.h>
-#include <clutter/evdev/clutter-evdev.h>
 
 #include "meta-wayland-keyboard.h"
 
@@ -259,11 +258,12 @@ default_grab_modifiers (MetaWaylandKeyboardGrab *grab, uint32_t serial,
                                       pointer->focus);
       if (pr)
         {
-          wl_keyboard_send_modifiers (pr, serial,
-				      mods_depressed,
-                                      mods_latched,
-                                      mods_locked,
-                                      group);
+          wl_keyboard_send_modifiers (pr,
+                                      serial,
+                                      keyboard->modifiers.mods_depressed,
+                                      keyboard->modifiers.mods_latched,
+                                      keyboard->modifiers.mods_locked,
+                                      keyboard->modifiers.group);
         }
     }
 }
@@ -276,11 +276,8 @@ static const MetaWaylandKeyboardGrabInterface
 
 gboolean
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
-                            struct wl_display   *display,
-			    gboolean             is_evdev)
+                            struct wl_display *display)
 {
-  ClutterDeviceManager *manager;
-
   memset (keyboard, 0, sizeof *keyboard);
 
   wl_list_init (&keyboard->resource_list);
@@ -296,22 +293,8 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
   keyboard->xkb_context = xkb_context_new (0 /* flags */);
 
   meta_wayland_keyboard_build_global_keymap (keyboard->xkb_context,
-					     &keyboard->xkb_names,
-					     &keyboard->xkb_info);
-
-  keyboard->is_evdev = is_evdev;
-  if (is_evdev)
-    {
-      manager = clutter_device_manager_get_default ();
-
-      clutter_evdev_set_keyboard_map (manager, keyboard->xkb_info.keymap);
-      keyboard->xkb_state = clutter_evdev_get_keyboard_state (manager);
-      xkb_state_ref (keyboard->xkb_state);
-    }
-  else
-    {
-      keyboard->xkb_state = xkb_state_new (keyboard->xkb_info.keymap);
-    }
+                                         &keyboard->xkb_names,
+                                         &keyboard->xkb_info);
 
   return TRUE;
 }
@@ -329,11 +312,16 @@ meta_wayland_xkb_info_destroy (MetaWaylandXkbInfo *xkb_info)
 }
 
 static void
-update_state_from_clutter (MetaWaylandKeyboard *keyboard,
-			   ClutterModifierType  modifier_state)
+set_modifiers (MetaWaylandKeyboard *keyboard,
+               guint32 serial,
+               ClutterModifierType modifier_state)
 {
+  MetaWaylandKeyboardGrab *grab = keyboard->grab;
   uint32_t depressed_mods = 0;
   uint32_t locked_mods = 0;
+
+  if (keyboard->last_modifier_state == modifier_state)
+    return;
 
   if ((modifier_state & CLUTTER_SHIFT_MASK) &&
       keyboard->xkb_info.shift_mod != XKB_MOD_INVALID)
@@ -367,56 +355,14 @@ update_state_from_clutter (MetaWaylandKeyboard *keyboard,
       keyboard->xkb_info.mod5_mod != XKB_MOD_INVALID)
     depressed_mods |= (1 << keyboard->xkb_info.mod5_mod);
 
-  xkb_state_update_mask (keyboard->xkb_state,
-			 depressed_mods,
-			 0,
-			 locked_mods,
-			 0, 0, 0);
-}
-
-static gboolean
-state_equal (MetaWaylandXkbState *one,
-	     MetaWaylandXkbState *two)
-{
-  return one->mods_depressed == two->mods_depressed &&
-    one->mods_latched == two->mods_latched &&
-    one->mods_locked == two->mods_locked &&
-    one->group == two->group;
-}
-
-static void
-set_modifiers (MetaWaylandKeyboard *keyboard,
-               guint32 serial,
-               ClutterModifierType modifier_state)
-{
-  MetaWaylandKeyboardGrab *grab = keyboard->grab;
-  MetaWaylandXkbState new_state;
-
-  /* In the evdev case, the state is shared with the clutter backend, so
-     we don't need to update it */
-  if (!keyboard->is_evdev)
-    update_state_from_clutter (keyboard, modifier_state);
-
-  new_state.mods_depressed = xkb_state_serialize_mods (keyboard->xkb_state,
-						       XKB_STATE_MODS_DEPRESSED);
-  new_state.mods_latched = xkb_state_serialize_mods (keyboard->xkb_state,
-						     XKB_STATE_MODS_LATCHED);
-  new_state.mods_locked = xkb_state_serialize_mods (keyboard->xkb_state,
-						    XKB_STATE_MODS_LOCKED);
-  new_state.group = xkb_state_serialize_layout (keyboard->xkb_state,
-						XKB_STATE_LAYOUT_EFFECTIVE);
-
-  if (state_equal (&keyboard->modifier_state, &new_state))
-    return;
-
-  keyboard->modifier_state = new_state;
+  keyboard->last_modifier_state = modifier_state;
 
   grab->interface->modifiers (grab,
                               serial,
-                              new_state.mods_depressed,
-			      new_state.mods_latched,
-			      new_state.mods_locked,
-                              new_state.group);
+                              depressed_mods,
+                              0, /* latched_modes */
+                              locked_mods,
+                              0 /* group */);
 }
 
 void
@@ -516,10 +462,10 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
       display = wl_client_get_display (client);
       serial = wl_display_next_serial (display);
       wl_keyboard_send_modifiers (resource, serial,
-                                  keyboard->modifier_state.mods_depressed,
-                                  keyboard->modifier_state.mods_latched,
-                                  keyboard->modifier_state.mods_locked,
-                                  keyboard->modifier_state.group);
+                                  keyboard->modifiers.mods_depressed,
+                                  keyboard->modifiers.mods_latched,
+                                  keyboard->modifiers.mods_locked,
+                                  keyboard->modifiers.group);
       wl_keyboard_send_enter (resource, serial, surface->resource,
                               &keyboard->keys);
       wl_resource_add_destroy_listener (resource, &keyboard->focus_listener);
@@ -558,7 +504,6 @@ meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
 
   meta_wayland_xkb_info_destroy (&keyboard->xkb_info);
   xkb_context_unref (keyboard->xkb_context);
-  xkb_state_unref (keyboard->xkb_state);
 
   /* XXX: What about keyboard->resource_list? */
   if (keyboard->focus_resource)

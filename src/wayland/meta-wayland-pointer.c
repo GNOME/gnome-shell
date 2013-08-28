@@ -194,10 +194,10 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
             {
               wl_keyboard_send_modifiers (kr,
                                           serial,
-                                          kbd->modifier_state.mods_depressed,
-                                          kbd->modifier_state.mods_latched,
-                                          kbd->modifier_state.mods_locked,
-                                          kbd->modifier_state.group);
+                                          kbd->modifiers.mods_depressed,
+                                          kbd->modifiers.mods_latched,
+                                          kbd->modifiers.mods_locked,
+                                          kbd->modifiers.group);
             }
         }
       wl_pointer_send_enter (resource, serial, surface->resource, sx, sy);

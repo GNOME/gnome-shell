@@ -52,8 +52,7 @@
 
 gboolean
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
-                            struct wl_display   *display,
-			    gboolean             is_evdev);
+                            struct wl_display *display);
 
 void
 meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
