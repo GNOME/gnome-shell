@@ -357,16 +357,25 @@ meta_window_actor_constructed (GObject *object)
   Window                  xwindow  = priv->xwindow;
   MetaWindow             *window   = priv->window;
   Display                *xdisplay = meta_display_get_xdisplay (display);
-  XRenderPictFormat      *format;
 
   if (!meta_is_wayland_compositor ())
     priv->damage = XDamageCreate (xdisplay, xwindow,
                                   XDamageReportBoundingBox);
 
-  format = XRenderFindVisualFormat (xdisplay, window->xvisual);
+  if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
+    {
+      XRenderPictFormat      *format;
 
-  if (format && format->type == PictTypeDirect && format->direct.alphaMask)
-    priv->argb32 = TRUE;
+      format = XRenderFindVisualFormat (xdisplay, window->xvisual);
+
+      if (format && format->type == PictTypeDirect && format->direct.alphaMask)
+        priv->argb32 = TRUE;
+    }
+  else
+    {
+      /* XXX: parse shm formats to determine argb32 */
+      priv->argb32 = TRUE;
+    }
 
   if (!priv->actor)
     {
