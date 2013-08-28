@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-26 17:42+0000\n"
-"PO-Revision-Date: 2013-08-26 22:53+0300\n"
+"POT-Creation-Date: 2013-08-28 17:17+0000\n"
+"PO-Revision-Date: 2013-08-28 23:31+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -277,45 +277,45 @@ msgstr "Plėtinys"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Išskleidžiamajame sąraše pasirinkite konfigūruotiną plėtinį."
 
-#: ../js/gdm/authPrompt.js:146 ../js/ui/components/networkAgent.js:132
+#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:347
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
 msgid "Cancel"
 msgstr "Atsisakyti"
 
-#: ../js/gdm/authPrompt.js:168 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:167 ../js/gdm/authPrompt.js:215
 msgid "Next"
 msgstr "Kitas"
 
-#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
-#: ../js/ui/unlockDialog.js:57
+#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Atrakinti"
 
-#: ../js/gdm/authPrompt.js:214
+#: ../js/gdm/authPrompt.js:213
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prisijungti"
 
-#: ../js/gdm/loginDialog.js:299
+#: ../js/gdm/loginDialog.js:294
 msgid "Choose Session"
 msgstr "Pasirinkite seansą"
 
-#: ../js/gdm/loginDialog.js:317
+#: ../js/gdm/loginDialog.js:312
 msgid "Session"
 msgstr "Seansas"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:468
+#: ../js/gdm/loginDialog.js:458
 msgid "Not listed?"
 msgstr "Nėra sąraše?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:639
+#: ../js/gdm/loginDialog.js:625
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(pvz., naudotojas arba %s)"
@@ -323,12 +323,12 @@ msgstr "(pvz., naudotojas arba %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:644 ../js/ui/components/networkAgent.js:255
+#: ../js/gdm/loginDialog.js:630 ../js/ui/components/networkAgent.js:255
 #: ../js/ui/components/networkAgent.js:273
 msgid "Username: "
 msgstr "Naudotojo vardas: "
 
-#: ../js/gdm/loginDialog.js:908
+#: ../js/gdm/loginDialog.js:894
 msgid "Login Window"
 msgstr "Prisijungimo langas"
 
@@ -514,36 +514,44 @@ msgctxt "list saturday"
 msgid "S"
 msgstr "Št"
 
+#: ../js/ui/calendar.js:447
+msgid "Previous month"
+msgstr "Ankstesnis mėnuo"
+
+#: ../js/ui/calendar.js:457
+msgid "Next month"
+msgstr "Kitas mėnuo"
+
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:750
+#: ../js/ui/calendar.js:753
 msgid "Nothing Scheduled"
 msgstr "Nieko nesuplanuota"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:768
+#: ../js/ui/calendar.js:771
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d d."
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:771
+#: ../js/ui/calendar.js:774
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %Y m. %B %d d."
 
-#: ../js/ui/calendar.js:782
+#: ../js/ui/calendar.js:785
 msgid "Today"
 msgstr "Šiandien"
 
-#: ../js/ui/calendar.js:786
+#: ../js/ui/calendar.js:789
 msgid "Tomorrow"
 msgstr "Rytoj"
 
-#: ../js/ui/calendar.js:797
+#: ../js/ui/calendar.js:800
 msgid "This week"
 msgstr "Šią savaitę"
 
-#: ../js/ui/calendar.js:805
+#: ../js/ui/calendar.js:808
 msgid "Next week"
 msgstr "Kitą savaitę"
 
@@ -1020,8 +1028,6 @@ msgstr "Perleisti ir įdiegti atnaujinimus"
 
 #: ../js/ui/endSessionDialog.js:111
 #, c-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -1155,7 +1161,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Nežinoma"
 
-#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:154
+#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:152
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1190,7 +1196,6 @@ msgid "Activities"
 msgstr "Apžvalga"
 
 #: ../js/ui/panel.js:805
-#| msgid "Settings"
 msgid "Settings Menu"
 msgstr "Nustatymų meniu"
 
@@ -1217,11 +1222,11 @@ msgstr "Užverti"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:90
+#: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%A, %B %d d."
 
-#: ../js/ui/screenShield.js:156
+#: ../js/ui/screenShield.js:154
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1229,11 +1234,11 @@ msgstr[0] "%d naujas pranešimas"
 msgstr[1] "%d nauji pranešimai"
 msgstr[2] "%d naujų pranešimų"
 
-#: ../js/ui/screenShield.js:479 ../js/ui/status/system.js:331
+#: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:331
 msgid "Lock"
 msgstr "Užrakinti"
 
-#: ../js/ui/screenShield.js:712
+#: ../js/ui/screenShield.js:703
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME aplinkai reikia užrakinti ekraną"
 
@@ -1244,11 +1249,11 @@ msgstr "GNOME aplinkai reikia užrakinti ekraną"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:839 ../js/ui/screenShield.js:1318
+#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
 msgid "Unable to lock"
 msgstr "Nepavyksta užrakinti"
 
-#: ../js/ui/screenShield.js:840 ../js/ui/screenShield.js:1319
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Lock was blocked by an application"
 msgstr "Programa užblokavo užrakinimą"
 
@@ -1488,7 +1493,6 @@ msgid "Select a network"
 msgstr "Pasirinkite tinklą"
 
 #: ../js/ui/status/network.js:673
-#| msgid "Wi-Fi Networks"
 msgid "No Networks"
 msgstr "Nėra tinklų"
 
@@ -1538,14 +1542,12 @@ msgstr "Įvertinama…"
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:77
 #, c-format
-#| msgid "%d\\u2236%d Remaining (%d%%)"
 msgid "%d\\u2236%02d Remaining (%d%%)"
 msgstr "Liko %d\\u2236%02d (%d%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:82
 #, c-format
-#| msgid "%d\\u2236%d Until Full (%d%%)"
 msgid "%d\\u2236%02d Until Full (%d%%)"
 msgstr "%d\\u2236%02d iki pilno (%d%%)"
 
@@ -1557,7 +1559,6 @@ msgid "Airplane Mode"
 msgstr "Skrydžio veiksena"
 
 #: ../js/ui/status/rfkill.js:45
-#| msgid "Open"
 msgid "On"
 msgstr "Įjungta"
 
@@ -1593,11 +1594,11 @@ msgstr "Garsumas"
 msgid "Microphone"
 msgstr "Mikrofonas"
 
-#: ../js/ui/unlockDialog.js:65
+#: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
 msgstr "Prisijungti kitu naudotoju"
 
-#: ../js/ui/unlockDialog.js:82
+#: ../js/ui/unlockDialog.js:84
 msgid "Unlock Window"
 msgstr "Atrakinimo langas"
 
@@ -1636,7 +1637,6 @@ msgstr "Ar nori įrašyti šiuos vaizduoklio nustatymus?"
 #. to avoid ellipsizing the labels.
 #.
 #: ../js/ui/windowManager.js:75
-#| msgid "Power Settings"
 msgid "Revert Settings"
 msgstr "Grąžinti nustatymus"
 
@@ -1712,4 +1712,3 @@ msgstr "Slaptažodis negali būti tuščias"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Naudotojas užvėrė tapatybės patvirtinimo dialogą"
-
