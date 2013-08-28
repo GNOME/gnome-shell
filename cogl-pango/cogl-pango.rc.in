@@ -1,8 +1,8 @@
 #include <winver.h>
 
 VS_VERSION_INFO VERSIONINFO
-  FILEVERSION 1,@COGL_MINOR_VERSION@,@COGL_MICRO_VERSION@,0
-  PRODUCTVERSION 1,@COGL_MINOR_VERSION@,@COGL_MICRO_VERSION@,0
+  FILEVERSION 1,@COGL_1_MINOR_VERSION@,@COGL_1_MICRO_VERSION@,0
+  PRODUCTVERSION 1,@COGL_1_MINOR_VERSION@,@COGL_1_MICRO_VERSION@,0
   FILEFLAGSMASK 0
   FILEFLAGS 0
   FILEOS VOS__WINDOWS32
@@ -15,12 +15,12 @@ VS_VERSION_INFO VERSIONINFO
       BEGIN
 	VALUE "CompanyName", "Intel Corporation"
 	VALUE "FileDescription", "cogl-pango"
-	VALUE "FileVersion", "@COGL_VERSION@.0"
-	VALUE "InternalName", "libcogl-pango-2.0-@COGL_LT_AGE@"
+	VALUE "FileVersion", "@COGL_1_VERSION@.0"
+	VALUE "InternalName", "libcogl-pango-1.0-@COGL_LT_AGE@"
 	VALUE "LegalCopyright", "Copyright 1995-2011 © Intel Corporation"
-	VALUE "OriginalFilename", "libcogl-pango-2.0-@COGL_LT_AGE@.dll"
+	VALUE "OriginalFilename", "libcogl-pango-1.0-@COGL_LT_AGE@.dll"
 	VALUE "ProductName", "cogl-pango"
-	VALUE "ProductVersion", "@COGL_VERSION@"
+	VALUE "ProductVersion", "@COGL_1_VERSION@"
       END
     END
     BLOCK "VarFileInfo"
