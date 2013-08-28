@@ -166,8 +166,6 @@ mkdir $(CopyDir)\lib&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*-$(ApiVersion).lib $(CopyDir)\lib&#x0D;&#x0A;
 
 mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
-mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango&#x0D;&#x0A;
-copy ..\..\..\cogl-pango\cogl-pango.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-object.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-atlas-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-attribute-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
@@ -194,8 +192,6 @@ copy ..\..\..\cogl\cogl-onscreen.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x
 copy ..\..\..\cogl\cogl-output.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-primitives.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-primitive-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
-copy ..\..\..\cogl\cogl-path.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
-copy ..\..\..\cogl\cogl-path-functions.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-pipeline-layer-state.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-pipeline-state.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-pixel-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
@@ -222,7 +218,6 @@ copy ..\..\..\cogl\cogl-clutter.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0
 copy ..\..\..\cogl\cogl.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-defines.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-enum-types.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
-
 copy ..\..\..\cogl\cogl-renderer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-swap-chain.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-onscreen-template.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
@@ -231,9 +226,17 @@ copy ..\..\..\cogl\cogl-context.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0
 copy ..\..\..\cogl\cogl-version.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl-win32-renderer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl1-context.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
-copy ..\..\..\cogl\cogl2-path.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
 copy ..\..\..\cogl\cogl2-experimental.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
-copy ..\..\..\cogl\cogl2-compatibility.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl&#x0D;&#x0A;
+
+mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango&#x0D;&#x0A;
+copy ..\..\..\cogl-pango\cogl-pango.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango&#x0D;&#x0A;
+
+mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path&#x0D;&#x0A;
+copy ..\..\..\cogl-path\cogl-path.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path&#x0D;&#x0A;
+copy ..\..\..\cogl-path\cogl-path-types.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path&#x0D;&#x0A;
+copy ..\..\..\cogl-path\cogl1-path-functions.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path&#x0D;&#x0A;
+copy ..\..\..\cogl-path\cogl2-path-functions.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path&#x0D;&#x0A;
+copy ..\..\..\cogl-path\cogl-path-enum-types.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path&#x0D;&#x0A;
 
 mkdir $(CopyDir)\share\cogl-$(ApiVersion)\tests&#x0D;&#x0A;
 copy ..\..\..\tests\data\valgrind.suppressions $(CopyDir)\share\cogl-$(ApiVersion)\tests&#x0D;&#x0A;

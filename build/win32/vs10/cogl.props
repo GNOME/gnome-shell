@@ -119,10 +119,6 @@ copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDi
 
 mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
-mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango
-
-copy ..\..\..\cogl-pango\cogl-pango.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango
-
 copy ..\..\..\cogl\cogl-object.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-atlas-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
@@ -172,10 +168,6 @@ copy ..\..\..\cogl\cogl-output.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 copy ..\..\..\cogl\cogl-primitives.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-primitive-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
-
-copy ..\..\..\cogl\cogl-path.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
-
-copy ..\..\..\cogl\cogl-path-functions.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-pipeline-layer-state.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
@@ -231,7 +223,6 @@ copy ..\..\..\cogl\cogl-defines.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-enum-types.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
-
 copy ..\..\..\cogl\cogl-renderer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-swap-chain.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
@@ -248,12 +239,25 @@ copy ..\..\..\cogl\cogl-win32-renderer.h $(CopyDir)\include\cogl-$(ApiVersion)\c
 
 copy ..\..\..\cogl\cogl1-context.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
-copy ..\..\..\cogl\cogl2-path.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
-
 copy ..\..\..\cogl\cogl2-experimental.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
-copy ..\..\..\cogl\cogl2-compatibility.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
+mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango
+
+copy ..\..\..\cogl-pango\cogl-pango.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango
+
+
+mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path
+
+copy ..\..\..\cogl-path\cogl-path.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path
+
+copy ..\..\..\cogl-path\cogl-path-types.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path
+
+copy ..\..\..\cogl-path\cogl1-path-functions.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path
+
+copy ..\..\..\cogl-path\cogl2-path-functions.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path
+
+copy ..\..\..\cogl-path\cogl-path-enum-types.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path
 </CoglDoInstall>
 <CoglDoInstallSDL>
 copy ..\..\..\cogl\cogl-sdl.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
