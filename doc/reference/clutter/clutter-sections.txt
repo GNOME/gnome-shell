@@ -1132,6 +1132,9 @@ clutter_event_get
 clutter_event_peek
 clutter_event_put
 clutter_events_pending
+ClutterEventFilterFunc
+clutter_event_add_filter
+clutter_event_remove_filter
 
 <SUBSECTION>
 CLUTTER_BUTTON_PRIMARY

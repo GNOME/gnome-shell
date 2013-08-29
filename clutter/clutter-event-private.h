@@ -11,6 +11,8 @@ void            _clutter_event_set_pointer_emulated     (ClutterEvent       *eve
 /* Reinjecting queued events for processing */
 void            _clutter_process_event                  (ClutterEvent       *event);
 
+gboolean        _clutter_event_process_filters          (ClutterEvent       *event);
+
 /* clears the event queue inside the main context */
 void            _clutter_clear_events_queue             (void);
 void            _clutter_clear_events_queue_for_stage   (ClutterStage       *stage);

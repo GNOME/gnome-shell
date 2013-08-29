@@ -405,12 +405,38 @@ union _ClutterEvent
   ClutterTouchEvent touch;
 };
 
+/**
+ * ClutterEventFilterFunc:
+ * @event: the event that is going to be emitted
+ * @user_data: the data pointer passed to clutter_event_add_filter()
+ *
+ * A function pointer type used by event filters that are added with
+ * clutter_event_add_filter().
+ *
+ * Return value: %CLUTTER_EVENT_STOP to indicate that the event
+ *   has been handled or %CLUTTER_EVENT_PROPAGATE otherwise.
+ *   Returning %CLUTTER_EVENT_STOP skips any further filter
+ *   functions and prevents the signal emission for the event.
+ *
+ * Since: 1.18
+ */
+typedef gboolean (* ClutterEventFilterFunc) (const ClutterEvent *event,
+                                             gpointer            user_data);
+
 GType clutter_event_get_type (void) G_GNUC_CONST;
 
 gboolean                clutter_events_pending                  (void);
 ClutterEvent *          clutter_event_get                       (void);
 ClutterEvent *          clutter_event_peek                      (void);
 void                    clutter_event_put                       (const ClutterEvent     *event);
+
+CLUTTER_AVAILABLE_IN_1_18
+guint                   clutter_event_add_filter                (ClutterStage          *stage,
+                                                                 ClutterEventFilterFunc func,
+                                                                 GDestroyNotify         notify,
+                                                                 gpointer               user_data);
+CLUTTER_AVAILABLE_IN_1_18
+void                    clutter_event_remove_filter             (guint                  id);
 
 ClutterEvent *          clutter_event_new                       (ClutterEventType        type);
 ClutterEvent *          clutter_event_copy                      (const ClutterEvent     *event);

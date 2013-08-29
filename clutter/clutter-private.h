@@ -137,6 +137,10 @@ struct _ClutterMainContext
   /* the main event queue */
   GQueue *events_queue;
 
+  /* the event filters added via clutter_event_add_filter. these are
+   * ordered from least recently added to most recently added */
+  GList *event_filters;
+
   ClutterPickMode  pick_mode;
 
   /* mapping between reused integer ids and actors */

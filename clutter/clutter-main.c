@@ -2279,6 +2279,9 @@ emit_pointer_event (ClutterEvent       *event,
 {
   ClutterMainContext *context = _clutter_context_get_default ();
 
+  if (_clutter_event_process_filters (event))
+    return;
+
   if (context->pointer_grab_actor == NULL &&
       (device == NULL || device->pointer_grab_actor == NULL))
     {
@@ -2306,6 +2309,9 @@ emit_touch_event (ClutterEvent       *event,
 {
   ClutterActor *grab_actor = NULL;
 
+  if (_clutter_event_process_filters (event))
+    return;
+
   if (device->sequence_grab_actors != NULL)
     {
       grab_actor = g_hash_table_lookup (device->sequence_grab_actors,
@@ -2329,6 +2335,9 @@ emit_keyboard_event (ClutterEvent       *event,
                      ClutterInputDevice *device)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
+
+  if (_clutter_event_process_filters (event))
+    return;
 
   if (context->keyboard_grab_actor == NULL &&
       (device == NULL || device->keyboard_grab_actor == NULL))
@@ -2493,6 +2502,10 @@ _clutter_process_event_details (ClutterActor        *stage,
       case CLUTTER_DESTROY_NOTIFY:
       case CLUTTER_DELETE:
         event->any.source = stage;
+
+        if (_clutter_event_process_filters (event))
+          break;
+
         /* the stage did not handle the event, so we just quit */
         clutter_stage_event (CLUTTER_STAGE (stage), event);
         break;
@@ -2504,6 +2517,9 @@ _clutter_process_event_details (ClutterActor        *stage,
           {
             /* Only stage gets motion events */
             event->any.source = stage;
+
+            if (_clutter_event_process_filters (event))
+              break;
 
             /* global grabs */
             if (context->pointer_grab_actor != NULL)
@@ -2632,6 +2648,9 @@ _clutter_process_event_details (ClutterActor        *stage,
             /* Only stage gets motion events */
             event->any.source = stage;
 
+            if (_clutter_event_process_filters (event))
+              break;
+
             /* global grabs */
             if (device->sequence_grab_actors != NULL)
               {
@@ -2735,7 +2754,8 @@ _clutter_process_event_details (ClutterActor        *stage,
       case CLUTTER_STAGE_STATE:
         /* fullscreen / focus - forward to stage */
         event->any.source = stage;
-        clutter_stage_event (CLUTTER_STAGE (stage), event);
+        if (!_clutter_event_process_filters (event))
+          clutter_stage_event (CLUTTER_STAGE (stage), event);
         break;
 
       case CLUTTER_CLIENT_MESSAGE:

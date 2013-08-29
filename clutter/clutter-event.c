@@ -64,6 +64,15 @@ typedef struct _ClutterEventPrivate {
   guint is_pointer_emulated : 1;
 } ClutterEventPrivate;
 
+typedef struct _ClutterEventFilter {
+  int id;
+
+  ClutterStage *stage;
+  ClutterEventFilterFunc func;
+  GDestroyNotify notify;
+  gpointer user_data;
+} ClutterEventFilter;
+
 static GHashTable *all_events = NULL;
 
 G_DEFINE_BOXED_TYPE (ClutterEvent, clutter_event,
@@ -1719,4 +1728,101 @@ clutter_event_is_pointer_emulated (const ClutterEvent *event)
     return FALSE;
 
   return ((ClutterEventPrivate *) event)->is_pointer_emulated;
+}
+
+gboolean
+_clutter_event_process_filters (ClutterEvent *event)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+  GList *l, *next;
+
+  /* Event filters are handled in order from least recently added to
+   * most recently added */
+
+  for (l = context->event_filters; l; l = next)
+    {
+      ClutterEventFilter *event_filter = l->data;
+
+      next = l->next;
+
+      if (event_filter->stage && event_filter->stage != event->any.stage)
+        continue;
+
+      if (event_filter->func (event, event_filter->user_data) == CLUTTER_EVENT_STOP)
+        return CLUTTER_EVENT_STOP;
+    }
+
+  return CLUTTER_EVENT_PROPAGATE;
+}
+
+/**
+ * clutter_event_add_filter:
+ * @stage: (allow-none): The #ClutterStage to capture events for
+ * @func: The callback function which will be passed all events.
+ * @notify: A #GDestroyNotify
+ * @user_data: A data pointer to pass to the function.
+ *
+ * Adds a function which will be called for all events that Clutter
+ * processes. The function will be called before any signals are
+ * emitted for the event and it will take precedence over any grabs.
+ *
+ * Return value: an identifier for the event filter, to be used
+ *   with clutter_event_remove_filter().
+ *
+ * Since: 1.18
+ */
+guint
+clutter_event_add_filter (ClutterStage          *stage,
+                          ClutterEventFilterFunc func,
+                          GDestroyNotify         notify,
+                          gpointer               user_data)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+  ClutterEventFilter *event_filter = g_slice_new (ClutterEventFilter);
+  static guint event_filter_id = 0;
+
+  event_filter->stage = stage;
+  event_filter->id = ++event_filter_id;
+  event_filter->func = func;
+  event_filter->notify = notify;
+  event_filter->user_data = user_data;
+
+  /* The event filters are kept in order from least recently added to
+   * most recently added so we must add it to the end */
+  context->event_filters = g_list_append (context->event_filters, event_filter);
+
+  return event_filter->id;
+}
+
+/**
+ * clutter_event_remove_filter:
+ * @id: The ID of the event filter, as returned from clutter_event_add_filter()
+ *
+ * Removes an event filter that was previously added with
+ * clutter_event_add_filter().
+ *
+ * Since: 1.18
+ */
+void
+clutter_event_remove_filter (guint id)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+  GList *l;
+
+  for (l = context->event_filters; l; l = l->next)
+    {
+      ClutterEventFilter *event_filter = l->data;
+
+      if (event_filter->id == id)
+        {
+          if (event_filter->notify)
+            event_filter->notify (event_filter->user_data);
+
+          context->event_filters = g_list_delete_link (context->event_filters, l);
+          g_slice_free (ClutterEventFilter, event_filter);
+          return;
+        }
+    }
+
+  g_warning ("No event filter found for id: %d\n", id);
 }
