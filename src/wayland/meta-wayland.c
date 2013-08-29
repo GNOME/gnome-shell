@@ -897,7 +897,7 @@ shell_surface_pong (struct wl_client *client,
 typedef struct _MetaWaylandGrab
 {
   MetaWaylandPointerGrab grab;
-  MetaWaylandShellSurface *shell_surface;
+  MetaWaylandSurfaceExtension *shell_surface;
   struct wl_listener shell_surface_destroy_listener;
   MetaWaylandPointer *pointer;
 } MetaWaylandGrab;
@@ -929,7 +929,7 @@ typedef enum _GrabCursor
 static void
 grab_pointer (MetaWaylandGrab *grab,
               const MetaWaylandPointerGrabInterface *interface,
-              MetaWaylandShellSurface *shell_surface,
+              MetaWaylandSurfaceExtension *shell_surface,
               MetaWaylandPointer *pointer,
               GrabCursor cursor)
 {
@@ -990,7 +990,7 @@ move_grab_motion (MetaWaylandPointerGrab *grab,
 {
   MetaWaylandMoveGrab *move = (MetaWaylandMoveGrab *)grab;
   MetaWaylandPointer *pointer = move->base.pointer;
-  MetaWaylandShellSurface *shell_surface = move->base.shell_surface;
+  MetaWaylandSurfaceExtension *shell_surface = move->base.shell_surface;
 
   if (!shell_surface)
     return;
@@ -1027,7 +1027,7 @@ static const MetaWaylandPointerGrabInterface move_grab_interface = {
 };
 
 static void
-start_surface_move (MetaWaylandShellSurface *shell_surface,
+start_surface_move (MetaWaylandSurfaceExtension *shell_surface,
                     MetaWaylandSeat *seat)
 {
   MetaWaylandMoveGrab *move;
@@ -1056,7 +1056,7 @@ shell_surface_move (struct wl_client *client,
                     guint32 serial)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWaylandShellSurface *shell_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
 
   if (seat->pointer.button_count == 0 ||
       seat->pointer.grab_serial != serial ||
@@ -1109,7 +1109,7 @@ shell_surface_set_toplevel (struct wl_client *client,
                             struct wl_resource *resource)
 {
   MetaWaylandCompositor *compositor = &_meta_wayland_compositor;
-  MetaWaylandShellSurface *shell_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = shell_surface->surface;
 
   /* NB: Surfaces from xwayland become managed based on X events. */
@@ -1130,7 +1130,7 @@ shell_surface_set_transient (struct wl_client *client,
                              guint32 flags)
 {
   MetaWaylandCompositor *compositor = &_meta_wayland_compositor;
-  MetaWaylandShellSurface *shell_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = shell_surface->surface;
 
   /* NB: Surfaces from xwayland become managed based on X events. */
@@ -1148,7 +1148,7 @@ shell_surface_set_fullscreen (struct wl_client *client,
                               struct wl_resource *output)
 {
   MetaWaylandCompositor *compositor = &_meta_wayland_compositor;
-  MetaWaylandShellSurface *shell_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = shell_surface->surface;
 
   /* NB: Surfaces from xwayland become managed based on X events. */
@@ -1211,29 +1211,51 @@ static const struct wl_shell_surface_interface meta_wayland_shell_surface_interf
 };
 
 static void
-shell_handle_surface_destroy (struct wl_listener *listener,
-                              void *data)
+extension_handle_surface_destroy (struct wl_listener *listener,
+				  void *data)
 {
-  MetaWaylandShellSurface *shell_surface =
-    wl_container_of (listener, shell_surface, surface_destroy_listener);
-  shell_surface->surface->has_shell_surface = FALSE;
-  shell_surface->surface = NULL;
-  wl_resource_destroy (shell_surface->resource);
+  MetaWaylandSurfaceExtension *extension =
+    wl_container_of (listener, extension, surface_destroy_listener);
+
+  extension->surface = NULL;
+  wl_resource_destroy (extension->resource);
 }
 
 static void
-destroy_shell_surface (struct wl_resource *resource)
+destroy_surface_extension (struct wl_resource *resource)
 {
-  MetaWaylandShellSurface *shell_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurfaceExtension *extension = wl_resource_get_user_data (resource);
 
-  /* In case cleaning up a dead client destroys shell_surface first */
-  if (shell_surface->surface)
+  /* In case cleaning up a dead client destroys extension first */
+  if (extension->surface)
     {
-      wl_list_remove (&shell_surface->surface_destroy_listener.link);
-      shell_surface->surface->has_shell_surface = FALSE;
+      wl_list_remove (&extension->surface_destroy_listener.link);
     }
 
-  g_free (shell_surface);
+  g_free (extension);
+}
+
+static void
+create_surface_extension (struct wl_client          *client,
+			  struct wl_resource        *master_resource,
+			  guint32                    id,
+			  MetaWaylandSurface        *surface,
+			  const struct wl_interface *interface,
+			  const void                *implementation)
+{
+  MetaWaylandSurfaceExtension *extension;
+
+  extension = g_new0 (MetaWaylandSurfaceExtension, 1);
+
+  extension->resource = wl_resource_create (client, interface,
+					    wl_resource_get_version (master_resource), id);
+  wl_resource_set_implementation (extension->resource, implementation,
+				  extension, destroy_surface_extension);
+
+  extension->surface = surface;
+  extension->surface_destroy_listener.notify = extension_handle_surface_destroy;
+  wl_resource_add_destroy_listener (surface->resource,
+                                    &extension->surface_destroy_listener);
 }
 
 static void
@@ -1243,7 +1265,6 @@ get_shell_surface (struct wl_client *client,
                    struct wl_resource *surface_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-  MetaWaylandShellSurface *shell_surface;
 
   if (surface->has_shell_surface)
     {
@@ -1253,19 +1274,9 @@ get_shell_surface (struct wl_client *client,
       return;
     }
 
-  shell_surface = g_new0 (MetaWaylandShellSurface, 1);
-
-  /* a shell surface inherits the version from the shell */
-  shell_surface->resource =
-    wl_resource_create (client, &wl_shell_surface_interface,
-			wl_resource_get_version (resource), id);
-  wl_resource_set_implementation (shell_surface->resource, &meta_wayland_shell_surface_interface,
-				  shell_surface, destroy_shell_surface);
-
-  shell_surface->surface = surface;
-  shell_surface->surface_destroy_listener.notify = shell_handle_surface_destroy;
-  wl_resource_add_destroy_listener (surface->resource,
-                                    &shell_surface->surface_destroy_listener);
+  create_surface_extension (client, resource, id, surface,
+			    &wl_shell_surface_interface,
+			    &meta_wayland_shell_surface_interface);
   surface->has_shell_surface = TRUE;
 }
 

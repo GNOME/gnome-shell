@@ -106,7 +106,7 @@ typedef struct
   MetaWaylandSurface *surface;
   struct wl_resource *resource;
   struct wl_listener surface_destroy_listener;
-} MetaWaylandShellSurface;
+} MetaWaylandSurfaceExtension;
 
 typedef struct
 {
