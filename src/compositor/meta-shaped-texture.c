@@ -257,8 +257,15 @@ meta_shaped_texture_paint (ClutterActor *actor)
       int n_rects;
       int i;
 
-      region = cairo_region_copy (priv->clip_region);
-      cairo_region_intersect (region, priv->opaque_region);
+      if (priv->clip_region != NULL)
+        {
+          region = cairo_region_copy (priv->clip_region);
+          cairo_region_intersect (region, priv->opaque_region);
+        }
+      else
+        {
+          region = cairo_region_reference (priv->opaque_region);
+        }
 
       if (cairo_region_is_empty (region))
         goto paint_blended;
