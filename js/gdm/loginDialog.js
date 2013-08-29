@@ -592,7 +592,8 @@ const LoginDialog = new Lang.Class({
     },
 
     _shouldShowSessionMenuButton: function() {
-        if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFYING)
+        if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFYING &&
+            this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFICATION_FAILED)
           return false;
 
         if (this._user && this._user.is_loaded && this._user.is_logged_in())
