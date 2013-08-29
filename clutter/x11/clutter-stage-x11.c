@@ -46,10 +46,6 @@
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
-#ifdef HAVE_XFIXES
-#include <X11/extensions/Xfixes.h>
-#endif
-
 #define STAGE_X11_IS_MAPPED(s)  ((((ClutterStageX11 *) (s))->wm_state & STAGE_X11_WITHDRAWN) == 0)
 
 static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
@@ -366,22 +362,10 @@ set_cursor_visible (ClutterStageX11 *stage_x11)
 
   if (stage_x11->is_cursor_visible)
     {
-#if HAVE_XFIXES
-      if (stage_x11->cursor_hidden_xfixes)
-        {
-          XFixesShowCursor (backend_x11->xdpy, stage_x11->xwin);
-          stage_x11->cursor_hidden_xfixes = FALSE;
-        }
-#else
       XUndefineCursor (backend_x11->xdpy, stage_x11->xwin);
-#endif /* HAVE_XFIXES */
     }
   else
     {
-#if HAVE_XFIXES
-      XFixesHideCursor (backend_x11->xdpy, stage_x11->xwin);
-      stage_x11->cursor_hidden_xfixes = TRUE;
-#else
       XColor col;
       Pixmap pix;
       Cursor curs;
@@ -394,7 +378,6 @@ set_cursor_visible (ClutterStageX11 *stage_x11)
                                   1, 1);
       XFreePixmap (backend_x11->xdpy, pix);
       XDefineCursor (backend_x11->xdpy, stage_x11->xwin, curs);
-#endif /* HAVE_XFIXES */
     }
 }
 
@@ -897,7 +880,6 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->is_foreign_xwin = FALSE;
   stage->fullscreening = FALSE;
   stage->is_cursor_visible = TRUE;
-  stage->cursor_hidden_xfixes = FALSE;
   stage->accept_focus = TRUE;
 
   stage->title = NULL;
@@ -1192,26 +1174,6 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
                                        CLUTTER_STAGE_STATE_ACTIVATED,
                                        0);
         }
-      break;
-
-    case EnterNotify:
-#if HAVE_XFIXES
-      if (!stage_x11->is_cursor_visible && !stage_x11->cursor_hidden_xfixes)
-        {
-          XFixesHideCursor (backend_x11->xdpy, stage_x11->xwin);
-          stage_x11->cursor_hidden_xfixes = TRUE;
-        }
-#endif
-      break;
-
-    case LeaveNotify:
-#if HAVE_XFIXES
-      if (stage_x11->cursor_hidden_xfixes)
-        {
-          XFixesShowCursor (backend_x11->xdpy, stage_x11->xwin);
-          stage_x11->cursor_hidden_xfixes = FALSE;
-        }
-#endif
       break;
 
     case Expose:

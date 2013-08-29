@@ -633,22 +633,6 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
               [AC_MSG_ERROR([Not found])]
         )
 
-        # XFIXES (required)
-        AC_MSG_CHECKING([for XFIXES extension >= $XFIXES_REQ_VERSION])
-        PKG_CHECK_EXISTS([xfixes >= $XFIXES_REQ_VERSION], [have_xfixes=yes], [have_xfixes=no])
-        AS_IF([test "x$have_xfixes" = "xyes"],
-              [
-                AC_DEFINE(HAVE_XFIXES, [1], [Define to 1 if we have the XFIXES X extension])
-
-                X11_LIBS="$X11_LIBS -lXfixes"
-                X11_PC_FILES="$X11_PC_FILES xfixes >= $XFIXES_REQ_VERSION"
-                X11_EXTS="$X11_EXTS xfixes"
-
-                AC_MSG_RESULT([found])
-              ],
-              [AC_MSG_ERROR([Not found])]
-        )
-
         # XDAMAGE (required)
         AC_MSG_CHECKING([for XDAMAGE extension])
         PKG_CHECK_EXISTS([xdamage], [have_xdamage=yes], [have_xdamage=no])
