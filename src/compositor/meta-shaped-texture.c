@@ -402,7 +402,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
        * fall back and draw the whole thing */
 #     define MAX_RECTS 16
 
-      n_rects = cairo_region_num_rectangles (priv->clip_region);
+      n_rects = cairo_region_num_rectangles (blended_region);
       if (n_rects <= MAX_RECTS)
 	{
           int i;
@@ -412,7 +412,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
 	    {
 	      cairo_rectangle_int_t rect;
 
-	      cairo_region_get_rectangle (priv->clip_region, i, &rect);
+	      cairo_region_get_rectangle (blended_region, i, &rect);
 
 	      if (!gdk_rectangle_intersect (&tex_rect, &rect, &rect))
 		continue;
