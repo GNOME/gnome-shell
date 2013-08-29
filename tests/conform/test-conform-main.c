@@ -115,6 +115,10 @@ main (int argc, char **argv)
   ADD_TEST (test_point_sprite_orientation,
             TEST_REQUIREMENT_POINT_SPRITE,
             TEST_KNOWN_FAILURE);
+  ADD_TEST (test_point_sprite_glsl,
+            TEST_REQUIREMENT_POINT_SPRITE |
+            TEST_REQUIREMENT_GLSL,
+            0);
 
   ADD_TEST (test_version, 0, 0);
 

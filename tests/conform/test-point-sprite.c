@@ -19,7 +19,8 @@ tex_data[3 * 2 * 2] =
   };
 
 static void
-do_test (CoglBool check_orientation)
+do_test (CoglBool check_orientation,
+         CoglBool use_glsl)
 {
   int fb_width = cogl_framebuffer_get_width (test_fb);
   int fb_height = cogl_framebuffer_get_height (test_fb);
@@ -27,7 +28,6 @@ do_test (CoglBool check_orientation)
   CoglError *error = NULL;
   CoglTexture2D *tex_2d;
   CoglPipeline *pipeline, *solid_pipeline;
-  CoglBool res;
   int tex_height;
 
   cogl_framebuffer_orthographic (test_fb,
@@ -61,20 +61,60 @@ do_test (CoglBool check_orientation)
   pipeline = cogl_pipeline_new (test_ctx);
   cogl_pipeline_set_layer_texture (pipeline, 0, COGL_TEXTURE (tex_2d));
 
-  res = cogl_pipeline_set_layer_point_sprite_coords_enabled (pipeline,
-                                                             /* layer_index */
-                                                             0,
-                                                             /* enable */
-                                                             TRUE,
-                                                             &error);
-  g_assert (res == TRUE);
-  g_assert (error == NULL);
-
   cogl_pipeline_set_layer_filters (pipeline,
                                    0, /* layer_index */
                                    COGL_PIPELINE_FILTER_NEAREST,
                                    COGL_PIPELINE_FILTER_NEAREST);
   cogl_pipeline_set_point_size (pipeline, POINT_SIZE);
+
+  /* If we're using GLSL then we don't need to enable point sprite
+   * coords and we can just directly reference cogl_point_coord in the
+   * snippet */
+  if (use_glsl)
+    {
+      CoglSnippet *snippet =
+        cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
+                          NULL, /* declarations */
+                          NULL /* post */);
+      static const char source[] =
+        "  cogl_texel = texture2D (cogl_sampler, cogl_point_coord);\n";
+
+      cogl_snippet_set_replace (snippet, source);
+
+      /* Keep a reference to the original pipeline because there is no
+       * way to remove a snippet in order to recreate the solid
+       * pipeline */
+      solid_pipeline = cogl_pipeline_copy (pipeline);
+
+      cogl_pipeline_add_layer_snippet (pipeline, 0, snippet);
+
+      cogl_object_unref (snippet);
+    }
+  else
+    {
+      CoglBool res =
+        cogl_pipeline_set_layer_point_sprite_coords_enabled (pipeline,
+                                                             /* layer_index */
+                                                             0,
+                                                             /* enable */
+                                                             TRUE,
+                                                             &error);
+      g_assert (res == TRUE);
+      g_assert (error == NULL);
+
+      solid_pipeline = cogl_pipeline_copy (pipeline);
+
+      res =
+        cogl_pipeline_set_layer_point_sprite_coords_enabled (solid_pipeline,
+                                                             /* layer_index */
+                                                             0,
+                                                             /* enable */
+                                                             FALSE,
+                                                             &error);
+
+      g_assert (res == TRUE);
+      g_assert (error == NULL);
+    }
 
   prim = cogl_primitive_new_p2t2 (test_ctx,
                                   COGL_VERTICES_MODE_POINTS,
@@ -85,13 +125,7 @@ do_test (CoglBool check_orientation)
 
   /* Render the primitive again without point sprites to make sure
      disabling it works */
-  solid_pipeline = cogl_pipeline_copy (pipeline);
-  cogl_pipeline_set_layer_point_sprite_coords_enabled (solid_pipeline,
-                                                       /* layer_index */
-                                                       0,
-                                                       /* enable */
-                                                       FALSE,
-                                                       &error);
+
   cogl_framebuffer_push_matrix (test_fb);
   cogl_framebuffer_translate (test_fb,
                               POINT_SIZE * 2, /* x */
@@ -142,11 +176,20 @@ do_test (CoglBool check_orientation)
 void
 test_point_sprite (void)
 {
-  do_test (FALSE /* don't check orientation */);
+  do_test (FALSE /* don't check orientation */,
+           FALSE /* don't use GLSL */);
 }
 
 void
 test_point_sprite_orientation (void)
 {
-  do_test (TRUE /* check orientation */);
+  do_test (TRUE /* check orientation */,
+           FALSE /* don't use GLSL */);
+}
+
+void
+test_point_sprite_glsl (void)
+{
+  do_test (FALSE /* don't check orientation */,
+           TRUE /* use GLSL */);
 }
