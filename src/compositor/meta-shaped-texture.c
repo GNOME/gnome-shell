@@ -691,18 +691,18 @@ wayland_surface_update_area (MetaShapedTexture *stex,
 }
 
 static void
-queue_damage_redraw_with_clip (MetaShapedTexture *stex,
-                               int x,
-                               int y,
-                               int width,
-                               int height)
+get_clip (MetaShapedTexture *stex,
+          int x,
+          int y,
+          int width,
+          int height,
+          cairo_rectangle_int_t *clip)
 {
   ClutterActor *self = CLUTTER_ACTOR (stex);
   MetaShapedTexturePrivate *priv;
   ClutterActorBox allocation;
   float scale_x;
   float scale_y;
-  cairo_rectangle_int_t clip;
 
   /* NB: clutter_actor_queue_redraw_with_clip expects a box in the actor's
    * coordinate space so we need to convert from surface coordinates to
@@ -731,11 +731,10 @@ queue_damage_redraw_with_clip (MetaShapedTexture *stex,
   scale_x = (allocation.x2 - allocation.x1) / priv->tex_width;
   scale_y = (allocation.y2 - allocation.y1) / priv->tex_height;
 
-  clip.x = x * scale_x;
-  clip.y = y * scale_y;
-  clip.width = width * scale_x;
-  clip.height = height * scale_y;
-  clutter_actor_queue_redraw_with_clip (self, &clip);
+  clip->x = x * scale_x;
+  clip->y = y * scale_y;
+  clip->width = width * scale_x;
+  clip->height = height * scale_y;
 }
 
 /**
@@ -765,6 +764,7 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
 				 cairo_region_t    *unobscured_region)
 {
   MetaShapedTexturePrivate *priv;
+  cairo_rectangle_int_t clip;
 
   priv = stex->priv;
 
@@ -783,6 +783,8 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
     }
 
   meta_texture_tower_update_area (priv->paint_tower, x, y, width, height);
+
+  get_clip (stex, x, y, width, height, &clip);
 
   if (unobscured_region)
     {
