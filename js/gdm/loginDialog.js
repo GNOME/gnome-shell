@@ -309,10 +309,6 @@ const SessionMenuButton = new Lang.Class({
                                     this._button.remove_style_pseudo_class('active');
                            }));
 
-        let subtitle = new PopupMenu.PopupMenuItem(_("Session"), { style_class: 'popup-subtitle-menu-item',
-                                                                   reactive: false });
-        this._menu.addMenuItem(subtitle);
-
         this._manager = new PopupMenu.PopupMenuManager({ actor: this._button });
         this._manager.addMenu(this._menu);
 
