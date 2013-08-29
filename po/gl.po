@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-27 02:53+0200\n"
-"PO-Revision-Date: 2013-08-27 02:55+0200\n"
+"POT-Creation-Date: 2013-08-30 00:54+0200\n"
+"PO-Revision-Date: 2013-08-30 00:54+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -279,23 +279,23 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Seleccione unha extensión que configurar usando a caixa combinada de arriba."
 
-#: ../js/gdm/authPrompt.js:146 ../js/ui/components/networkAgent.js:132
+#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:347
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/authPrompt.js:168 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:167 ../js/gdm/authPrompt.js:215
 msgid "Next"
 msgstr "Seguinte"
 
-#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Desbloquear"
 
-#: ../js/gdm/authPrompt.js:214
+#: ../js/gdm/authPrompt.js:213
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
@@ -317,7 +317,7 @@ msgstr "Non está na lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:625
+#: ../js/gdm/loginDialog.js:626
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(p.ex., usuario ou %s)"
@@ -325,12 +325,12 @@ msgstr "(p.ex., usuario ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:630 ../js/ui/components/networkAgent.js:255
+#: ../js/gdm/loginDialog.js:631 ../js/ui/components/networkAgent.js:255
 #: ../js/ui/components/networkAgent.js:273
 msgid "Username: "
 msgstr "Nome de usuario: "
 
-#: ../js/gdm/loginDialog.js:894
+#: ../js/gdm/loginDialog.js:895
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
 
@@ -392,7 +392,7 @@ msgstr "%s foi engadido aos seus favoritos."
 msgid "%s has been removed from your favorites."
 msgstr "%s retirouse dos seus marcadores."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:323
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Preferencias"
 
@@ -516,36 +516,44 @@ msgctxt "list saturday"
 msgid "S"
 msgstr "S"
 
+#: ../js/ui/calendar.js:447
+msgid "Previous month"
+msgstr "Anterior mes"
+
+#: ../js/ui/calendar.js:457
+msgid "Next month"
+msgstr "Seguinte mes"
+
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:750
+#: ../js/ui/calendar.js:753
 msgid "Nothing Scheduled"
 msgstr "Nada programado"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:768
+#: ../js/ui/calendar.js:771
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:771
+#: ../js/ui/calendar.js:774
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:782
+#: ../js/ui/calendar.js:785
 msgid "Today"
 msgstr "Hoxe"
 
-#: ../js/ui/calendar.js:786
+#: ../js/ui/calendar.js:789
 msgid "Tomorrow"
 msgstr "Mañá"
 
-#: ../js/ui/calendar.js:797
+#: ../js/ui/calendar.js:800
 msgid "This week"
 msgstr "Esta semana"
 
-#: ../js/ui/calendar.js:805
+#: ../js/ui/calendar.js:808
 msgid "Next week"
 msgstr "A vindeira semana"
 
@@ -1225,7 +1233,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nova"
 msgstr[1] "%d notificacións novas"
 
-#: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:331
+#: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:333
 msgid "Lock"
 msgstr "Bloquear"
 
@@ -1499,7 +1507,7 @@ msgstr "Activar"
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1296
+#: ../js/ui/status/network.js:1299
 msgid "Network Manager"
 msgstr "Xestor da rede"
 
@@ -1553,23 +1561,23 @@ msgstr "Modo avión"
 msgid "On"
 msgstr "Activado"
 
-#: ../js/ui/status/system.js:303
+#: ../js/ui/status/system.js:305
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/status/system.js:308
+#: ../js/ui/status/system.js:310
 msgid "Log Out"
 msgstr "Saír da sesión"
 
-#: ../js/ui/status/system.js:327
+#: ../js/ui/status/system.js:329
 msgid "Orientation Lock"
 msgstr "Bloqueo de orientación"
 
-#: ../js/ui/status/system.js:335
+#: ../js/ui/status/system.js:337
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/ui/status/system.js:338
+#: ../js/ui/status/system.js:340
 msgid "Power Off"
 msgstr "Apagar"
 
