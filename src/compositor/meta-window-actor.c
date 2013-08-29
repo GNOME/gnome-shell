@@ -2168,13 +2168,17 @@ meta_window_actor_process_wayland_damage (MetaWindowActor *self,
                                           int height)
 {
   MetaWindowActorPrivate *priv = self->priv;
+  gboolean redraw_queued;
 
   if (!priv->mapped)
     return;
 
-  meta_shaped_texture_update_area (META_SHAPED_TEXTURE (priv->actor),
-                                   x, y, width, height);
-  priv->repaint_scheduled = TRUE;
+  redraw_queued = meta_shaped_texture_update_area (META_SHAPED_TEXTURE (priv->actor),
+                                                   x, y, width, height,
+                                                   clutter_actor_has_mapped_clones (priv->actor) ?
+                                                   NULL : priv->unobscured_region);
+
+  priv->repaint_scheduled = priv->repaint_scheduled  || redraw_queued;
 }
 
 void
