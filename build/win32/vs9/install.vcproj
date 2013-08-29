@@ -27,19 +27,7 @@
 			>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="$(ClutterDoInstallDebugBin) $(ClutterDoInstall)"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug_GDK|Win32"
-			InheritedPropertySheets=".\clutter.vsprops"
-			OutputDirectory="$(GlibEtcInstallRoot)"
-			ConfigurationType="10"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="$(ClutterDoInstallDebugBin) $(ClutterDoInstall) $(ClutterDoInstallGDK)"
+				CommandLine="$(ClutterDoInstall)"
 			/>
 		</Configuration>
 		<Configuration
@@ -52,20 +40,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(ClutterDoInstallDebugBin) $(ClutterDoInstall)"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug_GDK|x64"
-			InheritedPropertySheets=".\clutter.vsprops"
-			OutputDirectory="$(GlibEtcInstallRoot)"
-			ConfigurationType="10"
-			CharacterSet="2"
-			DeleteExtensionsOnClean=""
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-				CommandLine="$(ClutterDoInstallDebugBin) $(ClutterDoInstall) $(ClutterDoInstallGDK)"
+				CommandLine="$(ClutterDoInstall)"
 			/>
 		</Configuration>
 		<Configuration
@@ -78,20 +53,7 @@
 			>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="$(ClutterDoInstallReleaseBin) $(ClutterDoInstall)"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release_GDK|Win32"
-			InheritedPropertySheets=".\clutter.vsprops"
-			OutputDirectory="$(GlibEtcInstallRoot)"
-			ConfigurationType="10"
-			CharacterSet="2"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="$(ClutterDoInstallReleaseBin) $(ClutterDoInstall) $(ClutterDoInstallGDK)"
+				CommandLine="$(ClutterDoInstall)"
 			/>
 		</Configuration>
 		<Configuration
@@ -105,21 +67,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(ClutterDoInstallReleaseBin) $(ClutterDoInstall)"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release_GDK|x64"
-			InheritedPropertySheets=".\clutter.vsprops"
-			OutputDirectory="$(GlibEtcInstallRoot)"
-			ConfigurationType="10"
-			CharacterSet="2"
-			WholeProgramOptimization="1"
-			DeleteExtensionsOnClean=""
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-				CommandLine="$(ClutterDoInstallReleaseBin) $(ClutterDoInstall) $(ClutterDoInstallGDK)"
+				CommandLine="$(ClutterDoInstall)"
 			/>
 		</Configuration>
 	</Configurations>
