@@ -126,7 +126,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
-      <Command>$(PreBuildWin)$(PreBuildCmd2)</Command>
+      <Command>$(DoConfigs)</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -140,14 +140,11 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
-    <PreLinkEvent>
-      <Command>$(GenerateClutterDef)</Command>
-    </PreLinkEvent>
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)\clutter.def</ModuleDefinitionFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -155,7 +152,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">
     <PreBuildEvent>
-      <Command>$(PreBuildGDK)$(PreBuildCmd2)</Command>
+      <Command>$(DoConfigs)</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -169,14 +166,11 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
-    <PreLinkEvent>
-      <Command>$(GenerateClutterGDKDef)</Command>
-    </PreLinkEvent>
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)\clutter.def</ModuleDefinitionFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -184,7 +178,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PreBuildEvent>
-      <Command>$(PreBuildWin)$(PreBuildCmd2)</Command>
+      <Command>$(DoConfigs)</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -198,14 +192,11 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
-    <PreLinkEvent>
-      <Command>$(GenerateClutterDef)</Command>
-    </PreLinkEvent>
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)\clutter.def</ModuleDefinitionFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
@@ -213,7 +204,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">
     <PreBuildEvent>
-      <Command>$(PreBuildGDK)$(PreBuildCmd2)</Command>
+      <Command>$(DoConfigs)</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -227,14 +218,11 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
-    <PreLinkEvent>
-      <Command>$(GenerateClutterGDKDef)</Command>
-    </PreLinkEvent>
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)\clutter.def</ModuleDefinitionFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
@@ -242,7 +230,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
-      <Command>$(PreBuildWin)$(PreBuildCmd2)</Command>
+      <Command>$(DoConfigs)</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
@@ -256,14 +244,11 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
-    <PreLinkEvent>
-      <Command>$(GenerateClutterDef)</Command>
-    </PreLinkEvent>
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)\clutter.def</ModuleDefinitionFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -273,7 +258,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">
     <PreBuildEvent>
-      <Command>$(PreBuildGDK)$(PreBuildCmd2)</Command>
+      <Command>$(DoConfigs)</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
@@ -287,14 +272,11 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
-    <PreLinkEvent>
-      <Command>$(GenerateClutterGDKDef)</Command>
-    </PreLinkEvent>
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)\clutter.def</ModuleDefinitionFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -304,7 +286,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
-      <Command>$(PreBuildWin)$(PreBuildCmd2)</Command>
+      <Command>$(DoConfigs)</Command>
     </PreBuildEvent>
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -315,14 +297,11 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
-    <PreLinkEvent>
-      <Command>$(GenerateClutterDef)</Command>
-    </PreLinkEvent>
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)\clutter.def</ModuleDefinitionFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -332,7 +311,7 @@
   </ItemDefinitionGroup>
     <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">
     <PreBuildEvent>
-      <Command>$(PreBuildGDK)$(PreBuildCmd2)</Command>
+      <Command>$(DoConfigs)</Command>
     </PreBuildEvent>
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -343,14 +322,11 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
-    <PreLinkEvent>
-      <Command>$(GenerateClutterGDKDef)</Command>
-    </PreLinkEvent>
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)\clutter.def</ModuleDefinitionFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -396,6 +372,86 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\clutter\clutter-marshal.list">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">Generating Marshalling Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">$(GenMarshalSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">..\..\..\clutter\clutter-marshal.h;..\..\..\clutter\clutter-marshal.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating Marshalling Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenMarshalSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\clutter\clutter-marshal.h;..\..\..\clutter\clutter-marshal.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">Generating Marshalling Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">$(GenMarshalSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">..\..\..\clutter\clutter-marshal.h;..\..\..\clutter\clutter-marshal.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating Marshalling Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenMarshalSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\clutter\clutter-marshal.h;..\..\..\clutter\clutter-marshal.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">Generating Marshalling Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">$(GenMarshalSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">..\..\..\clutter\clutter-marshal.h;..\..\..\clutter\clutter-marshal.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating Marshalling Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenMarshalSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\clutter\clutter-marshal.h;..\..\..\clutter\clutter-marshal.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">Generating Marshalling Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">$(GenMarshalSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">..\..\..\clutter\clutter-marshal.h;..\..\..\clutter\clutter-marshal.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating Marshalling Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenMarshalSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\clutter\clutter-marshal.h;..\..\..\clutter\clutter-marshal.c;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\clutter\clutter-enum-types.h.in">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">Generating Enumeration Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">$(GenEnumsSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating Enumeration Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenEnumsSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">Generating Enumeration Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">$(GenEnumsSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating Enumeration Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenEnumsSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">Generating Enumeration Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">$(GenEnumsSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating Enumeration Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenEnumsSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">Generating Enumeration Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">$(GenEnumsSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating Enumeration Sources...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenEnumsSrc)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\clutter\clutter.symbols">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">Generating clutter.def...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">$(GenerateClutterGDKDef)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">$(IntDir)clutter.def;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating clutter.def...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenerateClutterDef)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)clutter.def;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">Generating clutter.def...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">$(GenerateClutterGDKDef)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">$(IntDir)clutter.def;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating clutter.def...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenerateClutterDef)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)clutter.def;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">Generating clutter.def...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">$(GenerateClutterGDKDef)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">$(IntDir)clutter.def;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating clutter.def...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenerateClutterDef)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)clutter.def;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">Generating clutter.def...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">$(GenerateClutterGDKDef)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">$(IntDir)clutter.def;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating clutter.def...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenerateClutterDef)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)clutter.def;%(Outputs)</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\..\clutter\win32\resources.rc" />
