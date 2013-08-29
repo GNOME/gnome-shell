@@ -129,7 +129,7 @@ const BaseAppView = new Lang.Class({
             let id = this._getItemId(this._allItems[i]);
             if (!id)
                 continue;
-            this._grid.addItem(this._items[id].actor);
+            this._grid.addItem(this._items[id]);
         }
 
         this.emit('view-loaded');
@@ -583,7 +583,7 @@ const FrequentView = new Lang.Class({
             if (!mostUsed[i].get_app_info().should_show())
                 continue;
             let appIcon = new AppIcon(mostUsed[i]);
-            this._grid.addItem(appIcon.actor, -1);
+            this._grid.addItem(appIcon, -1);
         }
     },
 
@@ -862,10 +862,9 @@ const AppSearchProvider = new Lang.Class({
         app.open_new_window(workspace);
     },
 
-    createResultActor: function (resultMeta, terms) {
+    createResultObject: function (resultMeta, terms) {
         let app = resultMeta['id'];
-        let icon = new AppIcon(app);
-        return icon.actor;
+        return new AppIcon(app);
     }
 });
 

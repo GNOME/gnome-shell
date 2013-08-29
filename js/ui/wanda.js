@@ -150,8 +150,7 @@ const WandaSearchProvider = new Lang.Class({
         this._dialog = new FortuneDialog(capitalize(fish), FISH_COMMAND);
     },
 
-    createResultActor: function (resultMeta, terms) {
-        let icon = new WandaIconBin(resultMeta.id, resultMeta.name);
-        return icon.actor;
+    createResultObject: function (resultMeta, terms) {
+        return new WandaIconBin(resultMeta.id, resultMeta.name);
     }
 });

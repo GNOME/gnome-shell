@@ -126,23 +126,25 @@ const GridSearchResult = new Lang.Class({
 
         this.actor.style_class = 'grid-search-result';
 
-        let content = provider.createResultActor(metaInfo, terms);
+        let content = provider.createResultObject(metaInfo, terms);
         let dragSource = null;
 
         if (content == null) {
-            content = new St.Bin();
+            let actor = new St.Bin();
             let icon = new IconGrid.BaseIcon(this.metaInfo['name'],
                                              { createIcon: this.metaInfo['createIcon'] });
-            content.set_child(icon.actor);
-            content.label_actor = icon.label;
+            actor.set_child(icon.actor);
+            actor.label_actor = icon.label;
             dragSource = icon.icon;
+            content = { actor: actor, icon: icon };
         } else {
             if (content._delegate && content._delegate.getDragActorSource)
                 dragSource = content._delegate.getDragActorSource();
         }
 
-        this.actor.set_child(content);
-        this.actor.label_actor = content.label_actor;
+        this.actor.set_child(content.actor);
+        this.actor.label_actor = content.actor.label_actor;
+        this.icon = content.icon;
 
         let draggable = DND.makeDraggable(this.actor);
         draggable.connect('drag-begin',
@@ -327,7 +329,7 @@ const GridSearchResults = new Lang.Class({
         for (let i = 0; i < metas.length; i++) {
             let display = new GridSearchResult(this.provider, metas[i], this._terms);
             display.actor.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
-            this._grid.addItem(display.actor);
+            this._grid.addItem(display);
         }
     },
 

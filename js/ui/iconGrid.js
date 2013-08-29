@@ -205,7 +205,7 @@ const IconGrid = new Lang.Class({
 
         this.actor = new St.BoxLayout({ style_class: 'icon-grid',
                                         vertical: true });
-
+        this._items = [];
         // Pulled from CSS, but hardcode some defaults here
         this._spacing = 0;
         this._hItemSize = this._vItemSize = ICON_SIZE;
@@ -406,14 +406,21 @@ const IconGrid = new Lang.Class({
     },
 
     removeAll: function() {
+        this._items = [];
         this._grid.destroy_all_children();
     },
 
-    addItem: function(actor, index) {
+    addItem: function(item, index) {
+        if (!item.icon || !item.icon instanceof BaseIcon) {
+            log('Only items with a BaseIcon icon property can be added to IconGrid');
+            return;
+        }
+
+        this._items.push(item);
         if (index !== undefined)
-            this._grid.insert_child_at_index(actor, index);
+            this._grid.insert_child_at_index(item.actor, index);
         else
-            this._grid.add_actor(actor);
+            this._grid.add_actor(item.actor);
     },
 
     getItemAtIndex: function(index) {
