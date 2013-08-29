@@ -643,7 +643,7 @@ synthesize_motion_event (MetaWaylandCompositor *compositor,
   device_event.valuators.mask = NULL;
   device_event.valuators.values = NULL;
 
-  meta_display_handle_event (display, (XEvent *) &generic_event);
+  meta_display_handle_xevent (display, (XEvent *) &generic_event);
 }
 
 static void

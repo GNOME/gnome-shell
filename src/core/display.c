@@ -2226,7 +2226,7 @@ reload_xkb_rules (MetaScreen  *screen)
 }
 
 /**
- * meta_display_handle_event:
+ * meta_display_handle_xevent:
  * @display: The MetaDisplay that events are coming from
  * @event: The event that just happened
  *
@@ -2239,8 +2239,8 @@ reload_xkb_rules (MetaScreen  *screen)
  * dealing with all the kinds of events that might turn up.
  */
 gboolean
-meta_display_handle_event (MetaDisplay *display,
-                           XEvent   *event)
+meta_display_handle_xevent (MetaDisplay *display,
+                            XEvent      *event)
 {
   MetaWindow *window;
   MetaWindow *property_for_window;
@@ -3240,7 +3240,7 @@ event_callback (XEvent  *event,
       event->xcookie.evtype == XI_Motion)
     return FALSE;
 
-  return meta_display_handle_event (display, event);
+  return meta_display_handle_xevent (display, event);
 }
 
 /* Return the window this has to do with, if any, rather

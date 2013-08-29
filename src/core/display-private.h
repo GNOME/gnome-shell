@@ -482,8 +482,8 @@ gboolean meta_display_modifiers_accelerator_activate (MetaDisplay *display);
 /* In above-tab-keycode.c */
 guint meta_display_get_above_tab_keycode (MetaDisplay *display);
 
-gboolean meta_display_handle_event (MetaDisplay *display,
-                                    XEvent      *event);
+gboolean meta_display_handle_xevent (MetaDisplay *display,
+                                     XEvent      *event);
 
 #ifdef HAVE_XI23
 gboolean meta_display_process_barrier_event (MetaDisplay    *display,
