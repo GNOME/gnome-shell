@@ -250,9 +250,6 @@ const WorkspaceTracker = new Lang.Class({
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let removingCurrentWorkspace = (emptyWorkspaces[activeWorkspaceIndex] &&
                                         activeWorkspaceIndex < emptyWorkspaces.length - 1);
-        // Don't enter the overview when removing multiple empty workspaces at startup
-        let showOverview  = (removingCurrentWorkspace &&
-                             !emptyWorkspaces.every(function(x) { return x; }));
 
         if (removingCurrentWorkspace) {
             // "Merge" the empty workspace we are removing with the one at the end
@@ -268,9 +265,6 @@ const WorkspaceTracker = new Lang.Class({
         if (removingCurrentWorkspace) {
             global.screen.get_workspace_by_index(global.screen.n_workspaces - 1).activate(global.get_current_time());
             this._wm.unblockAnimations();
-
-            if (!Main.overview.visible && showOverview)
-                Main.overview.show();
         }
 
         this._checkWorkspacesId = 0;
