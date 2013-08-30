@@ -37,6 +37,7 @@
 #include <unistd.h>
 
 #include <wayland-server.h>
+#include "gtk-shell-server-protocol.h"
 
 #include "meta-wayland-private.h"
 #include "meta-xwayland-private.h"
@@ -55,6 +56,9 @@
 #include "meta-idle-monitor-private.h"
 #include "meta-weston-launch.h"
 #include "monitor-private.h"
+
+static void ensure_initial_state (MetaWaylandSurface *surface);
+static void free_initial_state   (MetaWaylandSurfaceInitialState *surface);
 
 static void
 surface_process_damage (MetaWaylandSurface *surface,
@@ -335,6 +339,9 @@ meta_wayland_surface_free (MetaWaylandSurface *surface)
 {
   MetaWaylandCompositor *compositor = surface->compositor;
   MetaWaylandFrameCallback *cb, *next;
+
+  if (surface->initial_state)
+    free_initial_state (surface->initial_state);
 
   compositor->surfaces = g_list_remove (compositor->surfaces, surface);
 
@@ -737,7 +744,15 @@ shell_surface_set_title (struct wl_client *client,
   MetaWaylandSurfaceExtension *extension = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = extension->surface;
 
-  g_warning ("TODO: support shell_surface_set_title request");
+  if (surface->window)
+    meta_window_set_title (surface->window, title);
+  else
+    {
+      ensure_initial_state (surface);
+
+      g_free (surface->initial_state->title);
+      surface->initial_state->title = g_strdup (title);
+    }
 }
 
 static void
@@ -748,7 +763,15 @@ shell_surface_set_class (struct wl_client *client,
   MetaWaylandSurfaceExtension *extension = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = extension->surface;
 
-  g_warning ("TODO: support shell_surface_set_class request");
+  if (surface->window)
+    meta_window_set_wm_class (surface->window, class_, class_);
+  else
+    {
+      ensure_initial_state (surface);
+
+      g_free (surface->initial_state->wm_class);
+      surface->initial_state->wm_class = g_strdup (class_);
+    }
 }
 
 static const struct wl_shell_surface_interface meta_wayland_shell_surface_interface =
@@ -852,6 +875,111 @@ bind_shell (struct wl_client *client,
   wl_resource_set_implementation (resource, &meta_wayland_shell_interface, data, NULL);
 }
 
+static void
+set_dbus_properties (struct wl_client   *client,
+		     struct wl_resource *resource,
+		     const char         *application_id,
+		     const char         *app_menu_path,
+		     const char         *menubar_path,
+		     const char         *window_object_path,
+		     const char         *application_object_path,
+		     const char         *unique_bus_name)
+{
+  MetaWaylandSurfaceExtension *extension = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = extension->surface;
+
+  if (surface == NULL)
+    {
+      wl_resource_post_error (resource,
+                              WL_DISPLAY_ERROR_INVALID_OBJECT,
+                              "object is not associated with a toplevel surface");
+      return;
+    }
+
+  if (surface->window)
+    {
+      meta_window_set_gtk_dbus_properties (surface->window,
+					   application_id,
+					   unique_bus_name,
+					   app_menu_path,
+					   menubar_path,
+					   application_object_path,
+					   window_object_path);
+    }
+  else
+    {
+      MetaWaylandSurfaceInitialState *initial;
+
+      ensure_initial_state (surface);
+      initial = surface->initial_state;
+
+      g_free (initial->gtk_application_id);
+      initial->gtk_application_id = g_strdup (application_id);
+
+      g_free (initial->gtk_unique_bus_name);
+      initial->gtk_unique_bus_name = g_strdup (unique_bus_name);
+
+      g_free (initial->gtk_app_menu_path);
+      initial->gtk_app_menu_path = g_strdup (app_menu_path);
+
+      g_free (initial->gtk_menubar_path);
+      initial->gtk_menubar_path = g_strdup (menubar_path);
+
+      g_free (initial->gtk_application_object_path);
+      initial->gtk_application_object_path = g_strdup (application_object_path);
+
+      g_free (initial->gtk_window_object_path);
+      initial->gtk_window_object_path = g_strdup (window_object_path);
+    }
+}
+
+static const struct gtk_surface_interface meta_wayland_gtk_surface_interface =
+{
+  set_dbus_properties
+};
+
+static void
+get_gtk_surface (struct wl_client *client,
+		 struct wl_resource *resource,
+		 guint32 id,
+		 struct wl_resource *surface_resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+
+  if (surface->has_gtk_surface)
+    {
+      wl_resource_post_error (surface_resource,
+                              WL_DISPLAY_ERROR_INVALID_OBJECT,
+                              "wl_shell::get_gtk_surface already requested");
+      return;
+    }
+
+  create_surface_extension (client, resource, id, surface,
+			    &gtk_surface_interface,
+			    &meta_wayland_gtk_surface_interface);
+  surface->has_gtk_surface = TRUE;
+}
+
+static const struct gtk_shell_interface meta_wayland_gtk_shell_interface =
+{
+  get_gtk_surface
+};
+
+static void
+bind_gtk_shell (struct wl_client *client,
+		void             *data,
+		guint32           version,
+		guint32           id)
+{
+  struct wl_resource *resource;
+
+  resource = wl_resource_create (client, &gtk_shell_interface, version, id);
+  wl_resource_set_implementation (resource, &meta_wayland_gtk_shell_interface, data, NULL);
+
+  /* FIXME: ask the plugin */
+  gtk_shell_send_capabilities (resource, GTK_SHELL_CAPABILITY_GLOBAL_APP_MENU);
+}
+
 void
 meta_wayland_init_shell (MetaWaylandCompositor *compositor)
 {
@@ -859,5 +987,61 @@ meta_wayland_init_shell (MetaWaylandCompositor *compositor)
 			&wl_shell_interface, 1,
 			compositor, bind_shell) == NULL)
     g_error ("Failed to register a global shell object");
+
+  if (wl_global_create (compositor->wayland_display,
+			&gtk_shell_interface, 1,
+			compositor, bind_gtk_shell) == NULL)
+    g_error ("Failed to register a global gtk-shell object");
 }
 
+void
+meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
+					MetaWindow         *window)
+{
+  MetaWaylandSurfaceInitialState *initial = surface->initial_state;
+
+  if (initial == NULL)
+    return;
+
+  if (initial->title)
+    meta_window_set_title (window, initial->title);
+
+  if (initial->wm_class)
+    meta_window_set_wm_class (window, initial->wm_class, initial->wm_class);
+
+  meta_window_set_gtk_dbus_properties (window,
+				       initial->gtk_application_id,
+				       initial->gtk_unique_bus_name,
+				       initial->gtk_app_menu_path,
+				       initial->gtk_menubar_path,
+				       initial->gtk_application_object_path,
+				       initial->gtk_window_object_path);
+
+  free_initial_state (initial);
+  surface->initial_state = NULL;
+}
+
+static void
+ensure_initial_state (MetaWaylandSurface *surface)
+{
+  if (surface->initial_state)
+    return;
+
+  surface->initial_state = g_slice_new0 (MetaWaylandSurfaceInitialState);
+}
+
+static void
+free_initial_state (MetaWaylandSurfaceInitialState *initial)
+{
+  g_free (initial->title);
+  g_free (initial->wm_class);
+
+  g_free (initial->gtk_application_id);
+  g_free (initial->gtk_unique_bus_name);
+  g_free (initial->gtk_app_menu_path);
+  g_free (initial->gtk_menubar_path);
+  g_free (initial->gtk_application_object_path);
+  g_free (initial->gtk_window_object_path);
+
+  g_slice_free (MetaWaylandSurfaceInitialState, initial);
+}

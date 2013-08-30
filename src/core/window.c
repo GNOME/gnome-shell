@@ -1064,7 +1064,10 @@ meta_window_new_shared (MetaDisplay         *display,
   window->xgroup_leader = None;
   meta_window_compute_group (window);
 
-  meta_window_load_initial_properties (window);
+  if (client_type == META_WINDOW_CLIENT_TYPE_X11)
+    meta_window_load_initial_properties (window);
+  else
+    meta_wayland_surface_set_initial_state (window->surface, window);
 
   if (!window->override_redirect &&
       client_type == META_WINDOW_CLIENT_TYPE_X11)
@@ -11466,4 +11469,79 @@ gboolean
 meta_window_can_close (MetaWindow *window)
 {
   return window->has_close_func;
+}
+
+void
+meta_window_set_title (MetaWindow *window,
+                       const char *title)
+{
+  char *str;
+
+  g_free (window->title);
+  window->title = g_strdup (title);
+
+  /* strndup is a hack since GNU libc has broken %.10s */
+  str = g_strndup (window->title, 10);
+  g_free (window->desc);
+  window->desc = g_strdup_printf ("0x%lx (%s)", window->xwindow, str);
+  g_free (str);
+
+  if (window->frame)
+    meta_ui_set_frame_title (window->screen->ui,
+                             window->frame->xwindow,
+                             window->title);
+
+  g_object_notify (G_OBJECT (window), "title");
+}
+
+void
+meta_window_set_wm_class (MetaWindow *window,
+                          const char *wm_class,
+                          const char *wm_instance)
+{
+  g_free (window->res_class);
+  g_free (window->res_name);
+
+  window->res_name = g_strdup (wm_instance);
+  window->res_class = g_strdup (wm_class);
+
+  g_object_notify (G_OBJECT (window), "wm-class");
+}
+
+void
+meta_window_set_gtk_dbus_properties (MetaWindow *window,
+                                     const char *application_id,
+                                     const char *unique_bus_name,
+                                     const char *appmenu_path,
+                                     const char *menubar_path,
+                                     const char *application_object_path,
+                                     const char *window_object_path)
+{
+  g_object_freeze_notify (G_OBJECT (window));
+
+  g_free (window->gtk_application_id);
+  window->gtk_application_id = g_strdup (application_id);
+  g_object_notify (G_OBJECT (window), "gtk-application-id");
+
+  g_free (window->gtk_unique_bus_name);
+  window->gtk_unique_bus_name = g_strdup (unique_bus_name);
+  g_object_notify (G_OBJECT (window), "gtk-unique-bus-name");
+
+  g_free (window->gtk_app_menu_object_path);
+  window->gtk_app_menu_object_path = g_strdup (appmenu_path);
+  g_object_notify (G_OBJECT (window), "gtk-app-menu-object-path");
+
+  g_free (window->gtk_menubar_object_path);
+  window->gtk_menubar_object_path = g_strdup (menubar_path);
+  g_object_notify (G_OBJECT (window), "gtk-menubar-object-path");
+
+  g_free (window->gtk_application_object_path);
+  window->gtk_application_object_path = g_strdup (application_object_path);
+  g_object_notify (G_OBJECT (window), "gtk-application-object-path");
+
+  g_free (window->gtk_window_object_path);
+  window->gtk_window_object_path = g_strdup (window_object_path);
+  g_object_notify (G_OBJECT (window), "gtk-window-object-path");
+
+  g_object_thaw_notify (G_OBJECT (window));
 }

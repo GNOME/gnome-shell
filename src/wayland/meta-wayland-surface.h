@@ -65,6 +65,19 @@ typedef struct
   struct wl_list frame_callback_list;
 } MetaWaylandDoubleBufferedState;
 
+typedef struct
+{
+  char *title;
+  char *wm_class;
+
+  char *gtk_application_id;
+  char *gtk_unique_bus_name;
+  char *gtk_app_menu_path;
+  char *gtk_menubar_path;
+  char *gtk_application_object_path;
+  char *gtk_window_object_path;
+} MetaWaylandSurfaceInitialState;
+
 struct _MetaWaylandSurface
 {
   struct wl_resource *resource;
@@ -75,9 +88,14 @@ struct _MetaWaylandSurface
   MetaWaylandBufferReference buffer_ref;
   MetaWindow *window;
   gboolean has_shell_surface;
+  gboolean has_gtk_surface;
 
   /* All the pending state, that wl_surface.commit will apply. */
   MetaWaylandDoubleBufferedState pending;
+
+  /* All the initial state, that wl_shell_surface.set_* will apply
+     (through meta_window_new_for_wayland) */
+  MetaWaylandSurfaceInitialState *initial_state;
 };
 
 typedef struct
@@ -94,5 +112,8 @@ MetaWaylandSurface *meta_wayland_surface_create (MetaWaylandCompositor *composit
 						 guint32                id,
 						 guint32                version);
 void                meta_wayland_surface_free   (MetaWaylandSurface    *surface);
+
+void                meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
+							    MetaWindow         *window);
 
 #endif

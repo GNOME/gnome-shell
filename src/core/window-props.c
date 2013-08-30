@@ -489,28 +489,19 @@ static void
 set_window_title (MetaWindow *window,
                   const char *title)
 {
-  char *str;
+  char *new_title = NULL;
  
   gboolean modified =
     set_title_text (window,
                     window->using_net_wm_visible_name,
                     title,
                     window->display->atom__NET_WM_VISIBLE_NAME,
-                    &window->title);
+                    &new_title);
   window->using_net_wm_visible_name = modified;
   
-  /* strndup is a hack since GNU libc has broken %.10s */
-  str = g_strndup (window->title, 10);
-  g_free (window->desc);
-  window->desc = g_strdup_printf ("0x%lx (%s)", window->xwindow, str);
-  g_free (str);
+  meta_window_set_title (window, new_title);
 
-  if (window->frame)
-    meta_ui_set_frame_title (window->screen->ui,
-                             window->frame->xwindow,
-                             window->title);
-
-  g_object_notify (G_OBJECT (window), "title");
+  g_free (new_title);
 }
 
 static void
@@ -875,23 +866,15 @@ reload_wm_class (MetaWindow    *window,
                  MetaPropValue *value,
                  gboolean       initial)
 {
-  if (window->res_class)
-    g_free (window->res_class);
-  if (window->res_name)
-    g_free (window->res_name);
-
-  window->res_class = NULL;
-  window->res_name = NULL;
-
   if (value->type != META_PROP_VALUE_INVALID)
-    { 
-      if (value->v.class_hint.res_name)
-        window->res_name = g_strdup (value->v.class_hint.res_name);
-
-      if (value->v.class_hint.res_class)
-        window->res_class = g_strdup (value->v.class_hint.res_class);
-
-      g_object_notify (G_OBJECT (window), "wm-class");
+    {
+      meta_window_set_wm_class (window,
+                                value->v.class_hint.res_class,
+                                value->v.class_hint.res_name);
+    }
+  else
+    {
+      meta_window_set_wm_class (window, NULL, NULL);
     }
 
   meta_verbose ("Window %s class: '%s' name: '%s'\n",

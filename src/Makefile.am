@@ -40,6 +40,9 @@ mutter_built_sources = \
 	$(dbus_xrandr_built_sources)		\
 	mutter-enum-types.h 			\
 	mutter-enum-types.c			\
+	wayland/gtk-shell-protocol.c		\
+	wayland/gtk-shell-server-protocol.h	\
+	wayland/gtk-shell-client-protocol.h	\
 	wayland/xserver-protocol.c		\
 	wayland/xserver-server-protocol.h	\
 	wayland/xserver-client-protocol.h

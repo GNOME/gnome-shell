@@ -703,4 +703,17 @@ void meta_window_set_shape_region         (MetaWindow     *window,
                                            cairo_region_t *region);
 void meta_window_update_shape_region_x11  (MetaWindow *window);
 
+void meta_window_set_title                (MetaWindow *window,
+                                           const char *title);
+void meta_window_set_wm_class             (MetaWindow *window,
+                                           const char *wm_class,
+                                           const char *wm_instance);
+void meta_window_set_gtk_dbus_properties  (MetaWindow *window,
+                                           const char *application_id,
+                                           const char *unique_bus_name,
+                                           const char *appmenu_path,
+                                           const char *menubar_path,
+                                           const char *application_object_path,
+                                           const char *window_object_path);
+
 #endif
