@@ -44,6 +44,7 @@
 #include "config.h"
 
 #include "meta-wayland-pointer.h"
+#include "meta-wayland-private.h"
 
 #include <string.h>
 

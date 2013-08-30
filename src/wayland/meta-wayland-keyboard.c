@@ -58,7 +58,7 @@
 #include <sys/mman.h>
 #include <clutter/evdev/clutter-evdev.h>
 
-#include "meta-wayland-keyboard.h"
+#include "meta-wayland-private.h"
 
 static MetaWaylandSeat *
 meta_wayland_keyboard_get_seat (MetaWaylandKeyboard *keyboard)

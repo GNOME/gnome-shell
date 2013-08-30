@@ -48,7 +48,78 @@
 #include <clutter/clutter.h>
 #include <wayland-server.h>
 
-#include "meta-wayland-seat.h"
+struct _MetaWaylandKeyboardGrabInterface
+{
+  void (*key) (MetaWaylandKeyboardGrab * grab, uint32_t time,
+               uint32_t key, uint32_t state);
+  void (*modifiers) (MetaWaylandKeyboardGrab * grab, uint32_t serial,
+                     uint32_t mods_depressed, uint32_t mods_latched,
+                     uint32_t mods_locked, uint32_t group);
+};
+
+struct _MetaWaylandKeyboardGrab
+{
+  const MetaWaylandKeyboardGrabInterface *interface;
+  MetaWaylandKeyboard *keyboard;
+  MetaWaylandSurface *focus;
+  uint32_t key;
+};
+
+typedef struct
+{
+  struct xkb_keymap *keymap;
+  int keymap_fd;
+  size_t keymap_size;
+  char *keymap_area;
+  xkb_mod_index_t shift_mod;
+  xkb_mod_index_t caps_mod;
+  xkb_mod_index_t ctrl_mod;
+  xkb_mod_index_t alt_mod;
+  xkb_mod_index_t mod2_mod;
+  xkb_mod_index_t mod3_mod;
+  xkb_mod_index_t super_mod;
+  xkb_mod_index_t mod5_mod;
+} MetaWaylandXkbInfo;
+
+typedef struct
+{
+  uint32_t mods_depressed;
+  uint32_t mods_latched;
+  uint32_t mods_locked;
+  uint32_t group;
+} MetaWaylandXkbState;
+
+struct _MetaWaylandKeyboard
+{
+  struct wl_list resource_list;
+  MetaWaylandSurface *focus;
+  struct wl_resource *focus_resource;
+  struct wl_listener focus_listener;
+  uint32_t focus_serial;
+  struct wl_signal focus_signal;
+
+  MetaWaylandKeyboardGrab *grab;
+  MetaWaylandKeyboardGrab default_grab;
+  uint32_t grab_key;
+  uint32_t grab_serial;
+  uint32_t grab_time;
+
+  struct wl_array keys;
+
+  MetaWaylandXkbState modifier_state;
+
+  struct wl_display *display;
+
+  struct xkb_context *xkb_context;
+  struct xkb_state *xkb_state;
+  gboolean is_evdev;
+
+  MetaWaylandXkbInfo xkb_info;
+  struct xkb_rule_names xkb_names;
+
+  MetaWaylandKeyboardGrab input_method_grab;
+  struct wl_resource *input_method_resource;
+};
 
 gboolean
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,

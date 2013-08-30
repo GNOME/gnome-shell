@@ -26,6 +26,7 @@
 #include <cogl/cogl-wayland-server.h>
 
 #include "meta-wayland-stage.h"
+#include "meta-wayland-private.h"
 #include "meta/meta-window-actor.h"
 #include "meta/meta-shaped-texture.h"
 #include "meta-cursor-tracker-private.h"

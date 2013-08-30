@@ -22,7 +22,51 @@
 
 #include <wayland-server.h>
 
-#include "meta-wayland-seat.h"
+#include <glib.h>
+
+#include "meta-wayland-types.h"
+
+struct _MetaWaylandPointerGrabInterface
+{
+  void (*focus) (MetaWaylandPointerGrab * grab,
+                 MetaWaylandSurface * surface, wl_fixed_t x, wl_fixed_t y);
+  void (*motion) (MetaWaylandPointerGrab * grab,
+                  uint32_t time, wl_fixed_t x, wl_fixed_t y);
+  void (*button) (MetaWaylandPointerGrab * grab,
+                  uint32_t time, uint32_t button, uint32_t state);
+};
+
+struct _MetaWaylandPointerGrab
+{
+  const MetaWaylandPointerGrabInterface *interface;
+  MetaWaylandPointer *pointer;
+  MetaWaylandSurface *focus;
+  wl_fixed_t x, y;
+};
+
+struct _MetaWaylandPointer
+{
+  struct wl_list resource_list;
+  MetaWaylandSurface *focus;
+  struct wl_resource *focus_resource;
+  struct wl_listener focus_listener;
+  guint32 focus_serial;
+  struct wl_signal focus_signal;
+
+  MetaWaylandPointerGrab *grab;
+  MetaWaylandPointerGrab default_grab;
+  wl_fixed_t grab_x, grab_y;
+  guint32 grab_button;
+  guint32 grab_serial;
+  guint32 grab_time;
+
+  wl_fixed_t x, y;
+  MetaWaylandSurface *current;
+  struct wl_listener current_listener;
+  wl_fixed_t current_x, current_y;
+
+  guint32 button_count;
+};
 
 void
 meta_wayland_pointer_init (MetaWaylandPointer *pointer);

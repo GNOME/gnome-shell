@@ -33,6 +33,7 @@
 #include "meta-wayland-data-device.h"
 #include "meta-wayland-seat.h"
 #include "meta-wayland-pointer.h"
+#include "meta-wayland-private.h"
 
 static void
 data_offer_accept (struct wl_client *client,

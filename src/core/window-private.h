@@ -44,15 +44,7 @@
 #include <X11/Xutil.h>
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include "meta-wayland-private.h"
-
-/* XXX: We should find a nicer approach to deal with the
- * circular dependency we have with the current headers
- * (meta-wayland-private.h which typedefs MetaWaylandSurface
- *  also includes window-private.h) */
-#ifndef HAVE_META_WAYLAND_SURFACE_TYPE
-typedef struct _MetaWaylandSurface MetaWaylandSurface;
-#endif
+#include "meta-wayland-types.h"
 
 typedef struct _MetaWindowQueue MetaWindowQueue;
 

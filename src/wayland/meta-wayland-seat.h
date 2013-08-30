@@ -27,7 +27,64 @@
 #include <clutter/clutter.h>
 #include <glib.h>
 
-#include "meta-wayland-private.h"
+#include <meta/meta-cursor-tracker.h>
+#include "meta-wayland-types.h"
+#include "meta-wayland-keyboard.h"
+#include "meta-wayland-pointer.h"
+
+struct _MetaWaylandDataOffer
+{
+  struct wl_resource *resource;
+  MetaWaylandDataSource *source;
+  struct wl_listener source_destroy_listener;
+};
+
+struct _MetaWaylandDataSource
+{
+  struct wl_resource *resource;
+  struct wl_array mime_types;
+
+  void (*accept) (MetaWaylandDataSource * source,
+                  uint32_t serial, const char *mime_type);
+  void (*send) (MetaWaylandDataSource * source,
+                const char *mime_type, int32_t fd);
+  void (*cancel) (MetaWaylandDataSource * source);
+};
+
+struct _MetaWaylandSeat
+{
+  struct wl_list base_resource_list;
+  struct wl_signal destroy_signal;
+
+  uint32_t selection_serial;
+  MetaWaylandDataSource *selection_data_source;
+  struct wl_listener selection_data_source_listener;
+  struct wl_signal selection_signal;
+
+  struct wl_list drag_resource_list;
+  struct wl_client *drag_client;
+  MetaWaylandDataSource *drag_data_source;
+  struct wl_listener drag_data_source_listener;
+  MetaWaylandSurface *drag_focus;
+  struct wl_resource *drag_focus_resource;
+  struct wl_listener drag_focus_listener;
+  MetaWaylandPointerGrab drag_grab;
+  MetaWaylandSurface *drag_surface;
+  struct wl_listener drag_icon_listener;
+  struct wl_signal drag_icon_signal;
+
+  MetaWaylandPointer pointer;
+  MetaWaylandKeyboard keyboard;
+
+  struct wl_display *display;
+
+  MetaCursorTracker *cursor_tracker;
+  MetaWaylandSurface *sprite;
+  int hotspot_x, hotspot_y;
+  struct wl_listener sprite_destroy_listener;
+
+  ClutterActor *current_stage;
+};
 
 MetaWaylandSeat *
 meta_wayland_seat_new (struct wl_display *display,
