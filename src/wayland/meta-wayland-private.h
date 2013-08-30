@@ -105,6 +105,10 @@ void                    meta_wayland_compositor_set_input_focus (MetaWaylandComp
 
 MetaLauncher           *meta_wayland_compositor_get_launcher    (MetaWaylandCompositor *compositor);
 
-void                    meta_wayland_surface_free               (MetaWaylandSurface    *surface);
+MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource *resource);
+
+void                    meta_wayland_buffer_reference           (MetaWaylandBufferReference *ref,
+								 MetaWaylandBuffer          *buffer);
+
 
 #endif /* META_WAYLAND_PRIVATE_H */

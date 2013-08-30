@@ -196,6 +196,7 @@ libmutter_wayland_la_SOURCES +=			\
 	wayland/meta-wayland-seat.h		\
 	wayland/meta-wayland-stage.h		\
 	wayland/meta-wayland-stage.c		\
+	wayland/meta-wayland-surface.c		\
 	wayland/meta-wayland-surface.h		\
 	wayland/meta-wayland-types.h		\
 	wayland/meta-weston-launch.c		\

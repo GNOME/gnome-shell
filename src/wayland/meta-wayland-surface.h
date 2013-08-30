@@ -87,4 +87,12 @@ typedef struct
   struct wl_listener surface_destroy_listener;
 } MetaWaylandSurfaceExtension;
 
+void                meta_wayland_init_shell     (MetaWaylandCompositor *compositor);
+
+MetaWaylandSurface *meta_wayland_surface_create (MetaWaylandCompositor *compositor,
+						 struct wl_client      *client,
+						 guint32                id,
+						 guint32                version);
+void                meta_wayland_surface_free   (MetaWaylandSurface    *surface);
+
 #endif
