@@ -160,7 +160,7 @@ msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
 msgstr ""
-"S'utilitza internament per desar l'últim estat de presencia de la sessió de "
+"S'utilitza internament per desar l'últim estat de presència de la sessió de "
 "l'usuari. El valor prové de l'enumeració «GsmPresenceStatus»."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
@@ -994,7 +994,7 @@ msgstr "S'ha revocat el certificat"
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
-"El certificat utilitza un algorisme criptògraf no segur o la seva fortalesa "
+"El certificat utilitza un algorisme criptogràfic no segur o la seva fortalesa "
 "criptogràfica és feble"
 
 #: ../js/ui/components/telepathyClient.js:1342
