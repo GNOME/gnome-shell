@@ -591,9 +591,13 @@ const FrequentView = new Lang.Class({
         this._usage = Shell.AppUsage.get_default();
     },
 
+    hasUsefulData: function() {
+        return this._usage.get_most_used("").length >= MIN_FREQUENT_APPS_COUNT;
+    },
+
     loadApps: function() {
         let mostUsed = this._usage.get_most_used ("");
-        let hasUsefulData = mostUsed.length >= MIN_FREQUENT_APPS_COUNT;
+        let hasUsefulData = this.hasUsefulData();
         this._noFrequentAppsLabel.visible = !hasUsefulData;
         if(!hasUsefulData)
             return;
@@ -724,7 +728,8 @@ const AppDisplay = new Lang.Class({
                     this._showView(viewIndex);
                 }));
         }
-        this._showView(Views.FREQUENT);
+        let frequentUseful = this._views[Views.FREQUENT].view.hasUsefulData();
+        this._showView(frequentUseful ? Views.FREQUENT : Views.ALL);
         this._updateFrequentVisibility();
 
         // We need a dummy actor to catch the keyboard focus if the
