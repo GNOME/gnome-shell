@@ -373,6 +373,29 @@ const IconGrid = new Lang.Class({
         this._grid.queue_relayout();
     },
 
+    nRows: function(forWidth) {
+        let children = this._getVisibleChildren();
+        let nColumns = (forWidth < 0) ? children.length : this._computeLayout(forWidth)[0];
+        let nRows = (nColumns > 0) ? Math.ceil(children.length / nColumns) : 0;
+        if (this._rowLimit)
+            nRows = Math.min(nRows, this._rowLimit);
+        return nRows;
+    },
+
+    rowsForHeight: function(forHeight) {
+        return Math.floor((forHeight -(this.topPadding + this.bottomPadding) + this._getSpacing()) / (this._vItemSize + this._getSpacing()));
+    },
+
+    usedHeightForNRows: function(nRows) {
+        return (this._vItemSize + this._getSpacing()) * nRows - this._getSpacing() + this.topPadding + this.bottomPadding;
+    },
+
+    usedWidth: function(forWidth) {
+        let usedWidth = this.columnsForWidth(forWidth) * (this._hItemSize + this._getSpacing());
+        usedWidth -= this._getSpacing();
+        return usedWidth + this.leftPadding + this.rightPadding;
+    },
+
     removeAll: function() {
         this._grid.destroy_all_children();
     },
@@ -519,15 +542,14 @@ const PaginatedIconGrid = new Lang.Class({
 
         let spacing = this._getSpacing();
         // We want to contain the grid inside the parent box with padding
-        availHeightPerPage -= this.topPadding + this.bottomPadding;
-        this._rowsPerPage = Math.floor((availHeightPerPage + spacing) / (this._vItemSize + spacing));
+        this._rowsPerPage = this.rowsForHeight(availHeightPerPage);
         this._nPages = Math.ceil(nRows / this._rowsPerPage);
-        this._spaceBetweenPages = availHeightPerPage - this._availableHeightPerPageForItems();
+        this._spaceBetweenPages = availHeightPerPage - (this.topPadding + this.bottomPadding) - this._availableHeightPerPageForItems();
         this._childrenPerPage = nColumns * this._rowsPerPage;
     },
 
     _availableHeightPerPageForItems: function() {
-        return this._rowsPerPage * this._vItemSize + (this._rowsPerPage - 1) * this._getSpacing();
+        return this.usedHeightForNRows(this._rowsPerPage) - (this.topPadding + this.bottomPadding);
     },
 
     nPages: function() {

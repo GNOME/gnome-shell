@@ -287,6 +287,8 @@ const AllView = new Lang.Class({
             }));
         this.actor.add_actor(this._pageIndicators.actor);
 
+        this._folderIcons = [];
+
         this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         let box = new St.BoxLayout({ vertical: true });
         this._verticalAdjustment = new St.Adjustment();
@@ -323,6 +325,10 @@ const AllView = new Lang.Class({
 
         this._availWidth = 0;
         this._availHeight = 0;
+    },
+
+    getCurrentPageY: function() {
+        return this._grid.getPageY(this._currentPage);
     },
 
     goToPage: function(pageNumber) {
@@ -428,6 +434,11 @@ const AllView = new Lang.Class({
         return (nameA > nameB) ? 1 : (nameA < nameB ? -1 : 0);
     },
 
+    removeAll: function() {
+        this._folderIcons = [];
+        this.parent();
+    },
+
     addApp: function(app) {
         let appIcon = this._addItem(app);
         if (appIcon)
@@ -437,6 +448,7 @@ const AllView = new Lang.Class({
 
     addFolder: function(dir) {
         let folderIcon = this._addItem(dir);
+        this._folderIcons.push(folderIcon);
         if (folderIcon)
             folderIcon.actor.connect('key-focus-in',
                                      Lang.bind(this, this._ensureIconVisible));
@@ -506,6 +518,9 @@ const AllView = new Lang.Class({
 
         this._availWidth = availWidth;
         this._availHeight = availHeight;
+        // Update folder views
+        for (let i = 0; i < this._folderIcons.length; i++)
+            this._folderIcons[i].adaptToSize(availWidth, availHeight);
     }
 });
 
@@ -820,7 +835,15 @@ const FolderView = new Lang.Class({
 
     _init: function() {
         this.parent(null, null);
-        this.actor = this._grid.actor;
+        // If it not expand, the parent doesn't take into account its preferred_width when allocating
+        // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
+        this._grid.actor.x_expand = true;
+
+        this.actor = new St.ScrollView({ overlay_scrollbars: true });
+        this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        let scrollableContainer = new St.BoxLayout({ vertical: true, reactive: true });
+        scrollableContainer.add_actor(this._grid.actor);
+        this.actor.add_actor(scrollableContainer);
     },
 
     _getItemId: function(item) {
@@ -856,6 +879,53 @@ const FolderView = new Lang.Class({
         }
 
         return icon;
+    },
+
+    adaptToSize: function(width, height) {
+        this._parentAvailableWidth = width;
+        this._parentAvailableHeight = height;
+
+        this._grid.updateSpacingForSize(width, height);
+
+        // Set extra padding to avoid popup or close button being cut off
+        this._grid.topPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
+        this._grid.bottomPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
+        this._grid.leftPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
+        this._grid.rightPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
+
+        this.actor.set_width(this.usedWidth());
+        this.actor.set_height(this.usedHeight());
+    },
+
+    _getPageAvailableSize: function() {
+        let pageBox = new Clutter.ActorBox();
+        pageBox.x1 = pageBox.y1 = 0;
+        pageBox.x2 = this._parentAvailableWidth;
+        pageBox.y2 = this._parentAvailableHeight;
+
+        let contentBox = this.actor.get_theme_node().get_content_box(pageBox);
+        // We only can show icons inside the collection view boxPointer
+        // so we have to substract the required padding etc of the boxpointer
+        return [(contentBox.x2 - contentBox.x1) - 2 * this._offsetForEachSide, (contentBox.y2 - contentBox.y1) - 2 * this._offsetForEachSide];
+    },
+
+    usedWidth: function() {
+        let [availWidthPerPage, availHeightPerPage] = this._getPageAvailableSize();
+        return this._grid.usedWidth(availWidthPerPage);
+    },
+
+    usedHeight: function() {
+        return this._grid.usedHeightForNRows(this.nRowsDisplayedAtOnce());
+    },
+
+    nRowsDisplayedAtOnce: function() {
+        let [availWidthPerPage, availHeightPerPage] = this._getPageAvailableSize();
+        let maxRows = this._grid.rowsForHeight(availHeightPerPage) - 1;
+        return Math.min(this._grid.nRows(availWidthPerPage), maxRows);
+    },
+
+    setPaddingOffsets: function(offset) {
+        this._offsetForEachSide = offset;
     }
 });
 
@@ -873,6 +943,8 @@ const FolderIcon = new Lang.Class({
                                      x_fill: true,
                                      y_fill: true });
         this.actor._delegate = this;
+        // whether we need to update arrow side, position etc.
+        this._popupInvalidated = false;
 
         let label = this._dir.get_name();
         this.icon = new IconGrid.BaseIcon(label,
@@ -881,7 +953,6 @@ const FolderIcon = new Lang.Class({
         this.actor.label_actor = this.icon.label;
 
         this.view = new FolderView();
-        this.view.actor.reactive = false;
         _loadCategory(dir, this.view);
         this.view.loadGrid();
 
@@ -898,38 +969,69 @@ const FolderIcon = new Lang.Class({
     },
 
     _createIcon: function(size) {
-        return this.view.createFolderIcon(size);
+        return this.view.createFolderIcon(size, this);
+    },
+
+    _popupHeight: function() {
+        let usedHeight = this.view.usedHeight() + this._popup.getOffset(St.Side.TOP) + this._popup.getOffset(St.Side.BOTTOM);
+        return usedHeight;
+    },
+
+    _calculateBoxPointerArrowSide: function() {
+        let spaceTop = this.actor.y - this._parentView.getCurrentPageY();
+        let spaceBottom = this._parentView.actor.height - (spaceTop + this.actor.height);
+
+        return spaceTop > spaceBottom ? St.Side.BOTTOM : St.Side.TOP;
+    },
+
+    _updatePopupSize: function() {
+        // StWidget delays style calculation until needed, make sure we use the correct values
+        this.view._grid.actor.ensure_style();
+
+        let offsetForEachSide = (this._popup.getOffset(St.Side.TOP) +
+                                 this._popup.getOffset(St.Side.BOTTOM) -
+                                 this._popup.getCloseButtonOverlap()) / 2;
+        // Add extra padding to prevent boxpointer decorations and close button being cut off
+        this.view.setPaddingOffsets(offsetForEachSide);
+        this.view.adaptToSize(this._parentAvailableWidth, this._parentAvailableHeight);
+    },
+
+    _updatePopupPosition: function() {
+        if (!this._popup)
+            return;
+
+        if (this._boxPointerArrowside == St.Side.BOTTOM)
+            this._popup.actor.y = this.actor.y - this._popupHeight();
+        else
+            this._popup.actor.y = this.actor.y + this.actor.height;
     },
 
     _ensurePopup: function() {
-        if (this._popup)
+        if (this._popup && !this._popupInvalidated)
             return;
-
-        let spaceTop = this.actor.y;
-        let spaceBottom = this._parentView.actor.height - (this.actor.y + this.actor.height);
-        let side = spaceTop > spaceBottom ? St.Side.BOTTOM : St.Side.TOP;
-
-        this._popup = new AppFolderPopup(this, side);
-        this._parentView.addFolderPopup(this._popup);
-
-        // Position the popup above or below the source icon
-        if (side == St.Side.BOTTOM) {
-            this._popup.actor.show();
-            let closeButtonOffset = -this._popup.closeButton.translation_y;
-            let y = this.actor.y - this._popup.actor.height;
-            let yWithButton = y - closeButtonOffset;
-            this._popup.parentOffset = yWithButton < 0 ? -yWithButton : 0;
-            this._popup.actor.y = Math.max(y, closeButtonOffset);
-            this._popup.actor.hide();
+        this._boxPointerArrowside = this._calculateBoxPointerArrowSide();
+        if (!this._popup) {
+            this._popup = new AppFolderPopup(this, this._boxPointerArrowside);
+            this._parentView.addFolderPopup(this._popup);
+            this._popup.connect('open-state-changed', Lang.bind(this,
+                function(popup, isOpen) {
+                    if (!isOpen)
+                        this.actor.checked = false;
+                }));
         } else {
-            this._popup.actor.y = this.actor.y + this.actor.height;
+            this._popup.updateArrowSide(this._boxPointerArrowside);
         }
+        this._updatePopupSize();
+        this._updatePopupPosition();
+        this._popupInvalidated = false;
+    },
 
-        this._popup.connect('open-state-changed', Lang.bind(this,
-            function(popup, isOpen) {
-                if (!isOpen)
-                    this.actor.checked = false;
-            }));
+    adaptToSize: function(width, height) {
+        this._parentAvailableWidth = width;
+        this._parentAvailableHeight = height;
+        if(this._popup)
+            this.view.adaptToSize(width, height);
+        this._popupInvalidated = true;
     },
 });
 
@@ -960,6 +1062,7 @@ const AppFolderPopup = new Lang.Class({
                                                      { style_class: 'app-folder-popup-bin',
                                                        x_fill: true,
                                                        y_fill: true,
+                                                       x_expand: true,
                                                        x_align: St.Align.START });
 
         this._boxPointer.actor.style_class = 'app-folder-popup';
@@ -1023,6 +1126,22 @@ const AppFolderPopup = new Lang.Class({
                               BoxPointer.PopupAnimation.SLIDE);
         this._isOpen = false;
         this.emit('open-state-changed', false);
+    },
+
+    getCloseButtonOverlap: function() {
+        return this.closeButton.get_theme_node().get_length('-shell-close-overlap-y');
+    },
+
+    getOffset: function (side) {
+        let offset = this._boxPointer.getPadding(side);
+        if (this._arrowSide == side)
+            offset += this._boxPointer.getArrowHeight();
+        return offset;
+    },
+
+    updateArrowSide: function (side) {
+        this._arrowSide = side;
+        this._boxPointer.updateArrowSide(side);
     }
 });
 Signals.addSignalMethods(AppFolderPopup.prototype);
