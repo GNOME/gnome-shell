@@ -73,7 +73,8 @@ const logoutDialogContent = {
     },
     confirmButtons: [{ signal: 'ConfirmedLogout',
                        label:  C_("button", "Log Out") }],
-    iconStyleClass: 'end-session-dialog-logout-icon'
+    iconStyleClass: 'end-session-dialog-logout-icon',
+    showOtherSessions: false,
 };
 
 const shutdownDialogContent = {
@@ -88,7 +89,8 @@ const shutdownDialogContent = {
                      { signal: 'ConfirmedShutdown',
                        label:  C_("button", "Power Off") }],
     iconName: 'system-shutdown-symbolic',
-    iconStyleClass: 'end-session-dialog-shutdown-icon'
+    iconStyleClass: 'end-session-dialog-shutdown-icon',
+    showOtherSessions: true,
 };
 
 const restartDialogContent = {
@@ -101,7 +103,8 @@ const restartDialogContent = {
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  C_("button", "Restart") }],
     iconName: 'view-refresh-symbolic',
-    iconStyleClass: 'end-session-dialog-shutdown-icon'
+    iconStyleClass: 'end-session-dialog-shutdown-icon',
+    showOtherSessions: true,
 };
 
 const restartInstallDialogContent = {
@@ -115,7 +118,8 @@ const restartInstallDialogContent = {
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  C_("button", "Restart & Install") }],
     iconName: 'view-refresh-symbolic',
-    iconStyleClass: 'end-session-dialog-shutdown-icon'
+    iconStyleClass: 'end-session-dialog-shutdown-icon',
+    showOtherSessions: true,
 };
 
 const DialogContent = {
@@ -553,7 +557,8 @@ const EndSessionDialog = new Lang.Class({
             this._applications.push(inhibitor);
         }
 
-        this._loadSessions();
+        if (DialogContent[type].showOtherSessions)
+            this._loadSessions();
 
         this._updateButtons();
 
