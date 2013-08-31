@@ -876,7 +876,6 @@ const UnalignedLayoutStrategy = new Lang.Class({
                     row.windows.push(window);
                     row.fullWidth += width;
                 } else {
-                    this._sortRow(row);
                     break;
                 }
             }
@@ -886,6 +885,8 @@ const UnalignedLayoutStrategy = new Lang.Class({
         let maxRow;
         for (let i = 0; i < numRows; i++) {
             let row = rows[i];
+            this._sortRow(row);
+
             if (!maxRow || row.fullWidth > maxRow.fullWidth)
                 maxRow = row;
             gridHeight += row.fullHeight;
