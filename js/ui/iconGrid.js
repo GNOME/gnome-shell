@@ -21,7 +21,12 @@ const BaseIcon = new Lang.Class({
         params = Params.parse(params, { createIcon: null,
                                         setSizeManually: false,
                                         showLabel: true });
-        this.actor = new St.Bin({ style_class: 'overview-icon',
+
+        let styleClass = 'overview-icon';
+        if (params.showLabel)
+            styleClass += ' overview-icon-with-label';
+
+        this.actor = new St.Bin({ style_class: styleClass,
                                   x_fill: true,
                                   y_fill: true });
         this.actor._delegate = this;

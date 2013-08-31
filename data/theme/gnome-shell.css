@@ -908,9 +908,9 @@ StScrollBar StButton#vhandle:active {
 /* Application Launchers, Grid and List results */
 
 .icon-grid {
-    spacing: 36px;
-    -shell-grid-horizontal-item-size: 118px;
-    -shell-grid-vertical-item-size: 118px;
+    spacing: 30px;
+    -shell-grid-horizontal-item-size: 136px;
+    -shell-grid-vertical-item-size: 136px;
 }
 
 .icon-grid .overview-icon {
@@ -986,13 +986,21 @@ StScrollBar StButton#vhandle:active {
     background-image: url("more-results.svg");
 }
 
+.app-well-app > .overview-icon.overview-icon-with-label,
+.grid-search-result .overview-icon.overview-icon-with-label {
+    /* since the label controls its own spacing, it is visually more
+    consistent to use different padding values for top and bottom */
+    padding: 10px 8px 5px 8px;
+    spacing: 4px;
+}
+
 .app-well-app > .overview-icon,
 .show-apps > .overview-icon,
 .search-provider-icon,
 .list-search-result,
 .grid-search-result .overview-icon {
     border-radius: 4px;
-    padding: 3px;
+    padding: 6px;
     border: 1px rgba(0,0,0,0);
     transition-duration: 100ms;
     text-align: center;
@@ -1004,7 +1012,7 @@ StScrollBar StButton#vhandle:active {
 
 .app-folder-popup {
     -arrow-border-radius: 8px;
-    -arrow-background-color: black;
+    -arrow-background-color: rgba(0,0,0,0.3);
     -arrow-base: 24px;
     -arrow-rise: 11px;
 }
@@ -1020,7 +1028,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .app-well-app.app-folder > .overview-icon {
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.3);
 }
 
 .app-well-app:hover > .overview-icon,
@@ -1035,7 +1043,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .app-display .app-well-app > .overview-icon {
-    border-radius: 10px;
+    border-radius: 4px;
 }
 
 .list-search-result:hover .list-search-result-description {
