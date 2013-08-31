@@ -89,6 +89,9 @@ struct _MetaWaylandSurface
     /* wl_surface.damage */
     cairo_region_t *damage;
 
+    cairo_region_t *input_region;
+    cairo_region_t *opaque_region;
+
     /* wl_surface.frame */
     struct wl_list frame_callback_list;
   } pending;

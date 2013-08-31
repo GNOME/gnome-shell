@@ -335,8 +335,8 @@ meta_wayland_surface_set_opaque_region (struct wl_client *client,
   if (!surface)
     return;
 
-  if (surface->window)
-    meta_window_set_opaque_region (surface->window, cairo_region_copy (region->region));
+  g_clear_pointer (&surface->pending.opaque_region, cairo_region_destroy);
+  surface->pending.opaque_region = cairo_region_copy (region->region);
 }
 
 static void
@@ -351,8 +351,8 @@ meta_wayland_surface_set_input_region (struct wl_client *client,
   if (!surface)
     return;
 
-  if (surface->window)
-    meta_window_set_input_region (surface->window, cairo_region_copy (region->region));
+  g_clear_pointer (&surface->pending.input_region, cairo_region_destroy);
+  surface->pending.input_region = cairo_region_copy (region->region);
 }
 
 static void
@@ -419,6 +419,15 @@ meta_wayland_surface_commit (struct wl_client *client,
   surface->pending.sx = 0;
   surface->pending.sy = 0;
   surface->pending.newly_attached = FALSE;
+
+  if (surface->window)
+    {
+      meta_window_set_opaque_region (surface->window, surface->pending.opaque_region);
+      g_clear_pointer (&surface->pending.opaque_region, cairo_region_destroy);
+
+      meta_window_set_input_region (surface->window, surface->pending.input_region);
+      g_clear_pointer (&surface->pending.input_region, cairo_region_destroy);
+    }
 
   surface_process_damage (surface, surface->pending.damage);
   empty_region (surface->pending.damage);
