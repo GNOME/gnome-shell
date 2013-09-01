@@ -57,6 +57,8 @@ typedef enum
 typedef enum {
   META_SIZE_CHANGE_MAXIMIZE,
   META_SIZE_CHANGE_UNMAXIMIZE,
+  META_SIZE_CHANGE_FULLSCREEN,
+  META_SIZE_CHANGE_UNFULLSCREEN,
 } MetaSizeChange;
 
 MetaCompositor *meta_compositor_new     (MetaDisplay    *display);

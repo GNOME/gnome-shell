@@ -3195,12 +3195,23 @@ meta_window_make_fullscreen (MetaWindow  *window)
 
   if (!window->fullscreen)
     {
-      meta_window_make_fullscreen_internal (window);
+      MetaRectangle old_frame_rect, old_buffer_rect;
 
+      meta_window_get_frame_rect (window, &old_frame_rect);
+      meta_window_get_buffer_rect (window, &old_buffer_rect);
+
+      meta_window_make_fullscreen_internal (window);
       meta_window_move_resize_internal (window,
-                                        META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION | META_MOVE_RESIZE_STATE_CHANGED,
+                                        (META_MOVE_RESIZE_MOVE_ACTION |
+                                         META_MOVE_RESIZE_RESIZE_ACTION |
+                                         META_MOVE_RESIZE_STATE_CHANGED |
+                                         META_MOVE_RESIZE_DONT_SYNC_COMPOSITOR),
                                         NorthWestGravity,
                                         window->unconstrained_rect);
+
+      meta_compositor_size_change_window (window->display->compositor,
+                                          window, META_SIZE_CHANGE_FULLSCREEN,
+                                          &old_frame_rect, &old_buffer_rect);
     }
 }
 
@@ -3211,7 +3222,7 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
 
   if (window->fullscreen)
     {
-      MetaRectangle target_rect;
+      MetaRectangle old_frame_rect, old_buffer_rect, target_rect;
 
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Unfullscreening %s\n", window->desc);
@@ -3220,6 +3231,8 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       target_rect = window->saved_rect;
 
       meta_window_frame_size_changed (window);
+      meta_window_get_frame_rect (window, &old_frame_rect);
+      meta_window_get_buffer_rect (window, &old_buffer_rect);
 
       /* Window's size hints may have changed while maximized, making
        * saved_rect invalid.  #329152
@@ -3234,9 +3247,16 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       set_net_wm_state (window);
 
       meta_window_move_resize_internal (window,
-                                        META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION | META_MOVE_RESIZE_STATE_CHANGED,
+                                        (META_MOVE_RESIZE_MOVE_ACTION |
+                                         META_MOVE_RESIZE_RESIZE_ACTION |
+                                         META_MOVE_RESIZE_STATE_CHANGED |
+                                         META_MOVE_RESIZE_DONT_SYNC_COMPOSITOR),
                                         NorthWestGravity,
                                         target_rect);
+
+      meta_compositor_size_change_window (window->display->compositor,
+                                          window, META_SIZE_CHANGE_UNFULLSCREEN,
+                                          &old_frame_rect, &old_buffer_rect);
 
       meta_window_update_layer (window);
 
