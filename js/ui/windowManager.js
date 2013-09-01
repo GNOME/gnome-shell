@@ -677,6 +677,7 @@ const WindowManager = new Lang.Class({
         this._minimizing = [];
         this._unminimizing = [];
         this._mapping = [];
+        this._resizing = [];
         this._destroying = [];
         this._movingWindow = null;
 
@@ -692,6 +693,7 @@ const WindowManager = new Lang.Class({
             this._minimizeWindowDone(shellwm, actor);
             this._mapWindowDone(shellwm, actor);
             this._destroyWindowDone(shellwm, actor);
+            this._sizeChangeWindowDone(shellwm, actor);
         }));
 
         this._shellwm.connect('switch-workspace', Lang.bind(this, this._switchWorkspace));
@@ -1218,7 +1220,103 @@ const WindowManager = new Lang.Class({
     },
 
     _sizeChangeWindow : function(shellwm, actor, whichChange, oldFrameRect, oldBufferRect) {
+        let types = [Meta.WindowType.NORMAL];
+        if (!this._shouldAnimateActor(actor, types)) {
+            shellwm.completed_size_change(actor);
+            return;
+        }
+
+        if (whichChange == Meta.SizeChange.FULLSCREEN)
+            this._fullscreenWindow(shellwm, actor, oldFrameRect, oldBufferRect);
+        else if (whichChange == Meta.SizeChange.UNFULLSCREEN)
+            this._unfullscreenWindow(shellwm, actor, oldFrameRect, oldBufferRect);
+        else
+            shellwm.completed_size_change(actor);
+    },
+
+    _fullscreenWindow: function(shellwm, actor, oldFrameRect, oldBufferRect) {
+        actor.translation_x = oldFrameRect.x;
+        actor.translation_y = oldFrameRect.y;
+        this._fullscreenAnimation(shellwm, actor, oldFrameRect);
+    },
+
+    _unfullscreenWindow: function(shellwm, actor, oldFrameRect, oldBufferRect) {
+        let targetRect = actor.meta_window.get_frame_rect();
+        actor.translation_x = -targetRect.x;
+        actor.translation_y = -targetRect.y;
+        this._fullscreenAnimation(shellwm, actor, oldFrameRect);
+    },
+
+    _fullscreenAnimation: function(shellwm, actor, oldFrameRect) {
+        this._resizing.push(actor);
+
+        // Position a clone of the window on top of the old position,
+        // while actor updates are frozen.
+        // Note that the MetaWindow has up to date sizing information for
+        // the new geometry already.
+        let targetRect = actor.meta_window.get_frame_rect();
+        let actorContent = Shell.util_get_content_for_window_actor(actor, oldFrameRect);
+        let actorClone = new St.Widget({ content: actorContent });
+        actorClone.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
+        actorClone.set_position(oldFrameRect.x, oldFrameRect.y);
+        actorClone.set_size(oldFrameRect.width, oldFrameRect.height);
+        Main.uiGroup.add_actor(actorClone);
+
+        actor.__fullscreenClone = actorClone;
+
+        let scaleX = targetRect.width / oldFrameRect.width;
+        let scaleY = targetRect.height / oldFrameRect.height;
+
+        // Now scale and fade out the clone
+        Tweener.addTween(actorClone,
+                         { x: targetRect.x,
+                           y: targetRect.y,
+                           scale_x: scaleX,
+                           scale_y: scaleY,
+                           opacity: 0,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
+
+        // Now set scale the actor to size it as the clone.
+        // Note that the caller of this function already set a translation
+        // on the actor.
+        actor.scale_x = 1 / scaleX;
+        actor.scale_y = 1 / scaleY;
+
+        // Scale it to its actual new size
+        Tweener.addTween(actor,
+                         { scale_x: 1.0,
+                           scale_y: 1.0,
+                           translation_x: 0,
+                           translation_y: 0,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: this._sizeChangeWindowDone,
+                           onCompleteScope: this,
+                           onCompleteParams: [shellwm, actor]
+                         });
+
+        // Now unfreeze actor updates, to get it to the new size.
+        // It's important that we don't wait until the animation is completed to
+        // do this, otherwise our scale will be applied to the old texture size.
         shellwm.completed_size_change(actor);
+    },
+
+    _sizeChangeWindowDone: function(shellwm, actor) {
+        if (this._removeEffect(this._resizing, actor)) {
+            Tweener.removeTweens(actor);
+            actor.scale_x = 1.0;
+            actor.scale_y = 1.0;
+            actor.translation_x = 0;
+            actor.translation_y = 0;
+
+            let actorClone = actor.__fullscreenClone;
+            if (actorClone) {
+                actorClone.destroy();
+                delete actor.__fullscreenClone;
+            }
+        }
     },
 
     _hasAttachedDialogs: function(window, ignoreWindow) {
