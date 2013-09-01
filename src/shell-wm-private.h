@@ -35,6 +35,12 @@ void _shell_wm_kill_window_effects   (ShellWM             *wm,
                                       MetaWindowActor     *actor);
 void _shell_wm_kill_switch_workspace (ShellWM             *wm);
 
+void _shell_wm_show_tile_preview     (ShellWM             *wm,
+                                      MetaWindow          *window,
+                                      MetaRectangle       *tile_rect,
+                                      int                  tile_monitor);
+void _shell_wm_hide_tile_preview     (ShellWM             *wm);
+
 gboolean _shell_wm_filter_keybinding (ShellWM             *wm,
                                       MetaKeyBinding      *binding);
 

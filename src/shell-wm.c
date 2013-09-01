@@ -26,6 +26,8 @@ enum
   SWITCH_WORKSPACE,
   KILL_SWITCH_WORKSPACE,
   KILL_WINDOW_EFFECTS,
+  SHOW_TILE_PREVIEW,
+  HIDE_TILE_PREVIEW,
   FILTER_KEYBINDING,
   CONFIRM_DISPLAY_CHANGE,
 
@@ -117,6 +119,22 @@ shell_wm_class_init (ShellWMClass *klass)
           NULL, NULL, NULL,
 		  G_TYPE_NONE, 1,
 		  META_TYPE_WINDOW_ACTOR);
+  shell_wm_signals[SHOW_TILE_PREVIEW] =
+    g_signal_new ("show-tile-preview",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 3,
+                  META_TYPE_WINDOW,
+                  META_TYPE_RECTANGLE,
+                  G_TYPE_INT);
+  shell_wm_signals[HIDE_TILE_PREVIEW] =
+    g_signal_new ("hide-tile-preview",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
   shell_wm_signals[FILTER_KEYBINDING] =
     g_signal_new ("filter-keybinding",
                   G_TYPE_FROM_CLASS (klass),
@@ -252,6 +270,22 @@ _shell_wm_kill_window_effects (ShellWM         *wm,
                                MetaWindowActor *actor)
 {
   g_signal_emit (wm, shell_wm_signals[KILL_WINDOW_EFFECTS], 0, actor);
+}
+
+void
+_shell_wm_show_tile_preview (ShellWM       *wm,
+                             MetaWindow    *window,
+                             MetaRectangle *tile_rect,
+                             int            tile_monitor)
+{
+  g_signal_emit (wm, shell_wm_signals[SHOW_TILE_PREVIEW], 0,
+                 window, tile_rect, tile_monitor);
+}
+
+void
+_shell_wm_hide_tile_preview (ShellWM *wm)
+{
+  g_signal_emit (wm, shell_wm_signals[HIDE_TILE_PREVIEW], 0);
 }
 
 

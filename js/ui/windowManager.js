@@ -358,6 +358,55 @@ const WorkspaceTracker = new Lang.Class({
     }
 });
 
+const TilePreview = new Lang.Class({
+    Name: 'TilePreview',
+
+    _init: function() {
+        this.actor = new St.Widget({ visible: false });
+        global.window_group.add_actor(this.actor);
+
+        this._showing = false;
+    },
+
+    show: function(window, tileRect, monitorIndex) {
+        let windowActor = window.get_compositor_private();
+        if (!windowActor)
+            return;
+
+        global.window_group.set_child_below_sibling(this.actor, windowActor);
+
+        this._updateStyle(monitorIndex, tileRect);
+
+        this.actor.set_size(tileRect.width, tileRect.height);
+        this.actor.set_position(tileRect.x, tileRect.y);
+
+        this._showing = true;
+        this.actor.show();
+    },
+
+    hide: function() {
+        if (!this._showing)
+            return;
+
+        this._showing = false;
+        this.actor.hide();
+    },
+
+    _updateStyle: function(monitorIndex, tileRect) {
+        let monitor = Main.layoutManager.monitors[monitorIndex];
+
+        let styles = ['tile-preview'];
+        if (monitorIndex == Main.layoutManager.primaryIndex)
+            styles.push('on-primary');
+        if (tileRect.x == monitor.x)
+            styles.push('tile-preview-left');
+        if (tileRect.x + tileRect.width == monitor.x + monitor.width)
+            styles.push('tile-preview-right');
+
+        this.actor.style_class = styles.join(' ');
+    }
+});
+
 const WindowManager = new Lang.Class({
     Name: 'WindowManager',
 
@@ -388,6 +437,8 @@ const WindowManager = new Lang.Class({
         }));
 
         this._shellwm.connect('switch-workspace', Lang.bind(this, this._switchWorkspace));
+        this._shellwm.connect('show-tile-preview', Lang.bind(this, this._showTilePreview));
+        this._shellwm.connect('hide-tile-preview', Lang.bind(this, this._hideTilePreview));
         this._shellwm.connect('minimize', Lang.bind(this, this._minimizeWindow));
         this._shellwm.connect('maximize', Lang.bind(this, this._maximizeWindow));
         this._shellwm.connect('unmaximize', Lang.bind(this, this._unmaximizeWindow));
@@ -397,6 +448,8 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('confirm-display-change', Lang.bind(this, this._confirmDisplayChange));
 
         this._workspaceSwitcherPopup = null;
+        this._tilePreview = null;
+
         this.setCustomKeybindingHandler('switch-to-workspace-left',
                                         Shell.KeyBindingMode.NORMAL |
                                         Shell.KeyBindingMode.OVERVIEW,
@@ -1044,6 +1097,18 @@ const WindowManager = new Lang.Class({
             this._movingWindow = null;
 
         shellwm.completed_switch_workspace();
+    },
+
+    _showTilePreview: function(shellwm, window, tileRect, monitorIndex) {
+        if (!this._tilePreview)
+            this._tilePreview = new TilePreview();
+        this._tilePreview.show(window, tileRect, monitorIndex);
+    },
+
+    _hideTilePreview: function(shellwm) {
+        if (!this._tilePreview)
+            return;
+        this._tilePreview.hide();
     },
 
     _startAppSwitcher : function(display, screen, window, binding) {

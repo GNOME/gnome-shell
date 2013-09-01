@@ -1877,6 +1877,27 @@ StScrollBar StButton#vhandle:active {
     border-radius: 8px;
 }
 
+/* Tile previews */
+.tile-preview {
+    background-color: rgba(74, 144, 217, 0.35);
+    border: 1px solid #4a90d9; /* Adwaita selected bg color */
+}
+
+.tile-preview-left.on-primary {
+    /* keep in sync with -panel-corner-radius */
+    border-radius: 6px 0 0 0;
+}
+
+.tile-preview-right.on-primary {
+    /* keep in sync with -panel-corner-radius */
+    border-radius: 0 6px 0 0;
+}
+
+.tile-preview-left.tile-preview-right.on-primary {
+    /* keep in sync with -panel-corner-radius */
+    border-radius: 6px 6px 0 0;
+}
+
 /* Modal Dialogs */
 
 /* Dialog Subject Text Style */
