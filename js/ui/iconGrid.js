@@ -1,14 +1,18 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 const St = imports.gi.St;
 
 const Lang = imports.lang;
 const Params = imports.misc.params;
+const Tweener = imports.ui.tweener;
 
 const ICON_SIZE = 48;
 
+const EXTRA_SPACE_ANIMATION_TIME = 0.25;
 
 const BaseIcon = new Lang.Class({
     Name: 'BaseIcon',
@@ -573,5 +577,102 @@ const PaginatedIconGrid = new Lang.Class({
             return 0;
         }
         return Math.floor(index / this._childrenPerPage);
+    },
+
+    /**
+    * openExtraSpace:
+    * @sourceItem: the item for which to create extra space
+    * @side: where @sourceItem should be located relative to the created space
+    * @nRows: the amount of space to create
+    *
+    * Pan view to create extra space for @nRows above or below @sourceItem.
+    */
+    openExtraSpace: function(sourceItem, side, nRows) {
+        let children = this._getVisibleChildren();
+        let index = children.indexOf(sourceItem.actor);
+        if (index == -1) {
+            throw new Error('Item not found.');
+            return;
+        }
+        let pageIndex = Math.floor(index / this._childrenPerPage);
+        let pageOffset = pageIndex * this._childrenPerPage;
+
+        let childrenPerRow = this._childrenPerPage / this._rowsPerPage;
+        let sourceRow = Math.floor((index - pageOffset) / childrenPerRow);
+
+        let nRowsAbove = (side == St.Side.TOP) ? sourceRow + 1
+                                               : sourceRow;
+        let nRowsBelow = this._rowsPerPage - nRowsAbove;
+
+        let nRowsUp, nRowsDown;
+        if (side == St.Side.TOP) {
+            nRowsDown = Math.min(nRowsBelow, nRows);
+            nRowsUp = nRows - nRowsDown;
+        } else {
+            nRowsUp = Math.min(nRowsAbove, nRows);
+            nRowsDown = nRows - nRowsUp;
+        }
+
+        let childrenDown = children.splice(pageOffset +
+                                           nRowsAbove * childrenPerRow,
+                                           nRowsBelow * childrenPerRow);
+        let childrenUp = children.splice(pageOffset,
+                                         nRowsAbove * childrenPerRow);
+
+        // Special case: On the last row with no rows below the icon,
+        // there's no need to move any rows either up or down
+        if (childrenDown.length == 0 && nRowsUp == 0) {
+            this._translatedChildren = [];
+            this.emit('space-opened');
+        } else {
+            this._translateChildren(childrenUp, Gtk.DirectionType.UP, nRowsUp);
+            this._translateChildren(childrenDown, Gtk.DirectionType.DOWN, nRowsDown);
+            this._translatedChildren = childrenUp.concat(childrenDown);
+        }
+    },
+
+    _translateChildren: function(children, direction, nRows) {
+        let translationY = nRows * (this._vItemSize + this._getSpacing());
+        if (translationY == 0)
+            return;
+
+        if (direction == Gtk.DirectionType.UP)
+            translationY *= -1;
+
+        for (let i = 0; i < children.length; i++) {
+            children[i].translation_y = 0;
+            let params = { translation_y: translationY,
+                           time: EXTRA_SPACE_ANIMATION_TIME,
+                           transition: 'easeInOutQuad'
+                         };
+            if (i == (children.length - 1))
+                params.onComplete = Lang.bind(this,
+                    function() {
+                        this.emit('space-opened');
+                    });
+            Tweener.addTween(children[i], params);
+        }
+    },
+
+    closeExtraSpace: function() {
+        if (!this._translatedChildren || !this._translatedChildren.length) {
+            this.emit('space-closed');
+            return;
+        }
+
+        for (let i = 0; i < this._translatedChildren.length; i++) {
+            if (!this._translatedChildren[i].translation_y)
+                continue;
+            Tweener.addTween(this._translatedChildren[i],
+                             { translation_y: 0,
+                               time: EXTRA_SPACE_ANIMATION_TIME,
+                               transition: 'easeInOutQuad',
+                               onComplete: Lang.bind(this,
+                                   function() {
+                                       this.emit('space-closed');
+                                   })
+                             });
+        }
     }
 });
+Signals.addSignalMethods(PaginatedIconGrid.prototype);
