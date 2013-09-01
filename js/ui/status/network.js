@@ -1286,7 +1286,7 @@ const NMApplet = new Lang.Class({
         this._client.connect('notify::manager-running', Lang.bind(this, this._syncNMState));
         this._client.connect('notify::networking-enabled', Lang.bind(this, this._syncNMState));
         this._client.connect('notify::state', Lang.bind(this, this._syncNMState));
-        this._client.connect('notify::physical-connection', Lang.bind(this, this._syncMainConnection));
+        this._client.connect('notify::primary-connection', Lang.bind(this, this._syncMainConnection));
         this._client.connect('notify::active-connections', Lang.bind(this, this._syncVPNConnections));
         this._client.connect('device-added', Lang.bind(this, this._deviceAdded));
         this._client.connect('device-removed', Lang.bind(this, this._deviceRemoved));
@@ -1430,7 +1430,7 @@ const NMApplet = new Lang.Class({
     _getMainConnection: function() {
         let connection;
 
-        connection = this._client.get_physical_connection();
+        connection = this._client.get_primary_connection();
         if (connection) {
             this._ensureActiveConnectionProps(connection);
             return connection;
