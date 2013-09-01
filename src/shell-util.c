@@ -13,6 +13,7 @@
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk/gdkx.h>
+#include <meta/meta-shaped-texture.h>
 
 #include <locale.h>
 #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
@@ -402,4 +403,58 @@ shell_util_text_insert_keyval (ClutterActor *actor,
   event.key.keyval = keyval;
 
   clutter_actor_event (actor, &event, FALSE);
+}
+
+static gboolean
+canvas_draw_cb (ClutterContent *content,
+                cairo_t        *cr,
+                gint            width,
+                gint            height,
+                gpointer        user_data)
+{
+  cairo_surface_t *surface = user_data;
+
+  cairo_set_source_surface (cr, surface, 0, 0);
+  cairo_paint (cr);
+
+  return FALSE;
+}
+
+/**
+ * shell_util_get_content_for_window_actor:
+ * @window_actor: a #MetaWindowActor
+ * @window_rect: a #MetaRectangle
+ *
+ * Returns: (transfer full): a new #ClutterContent
+ */
+ClutterContent *
+shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
+                                         MetaRectangle   *window_rect)
+{
+  ClutterActor *texture;
+  ClutterContent *content;
+  cairo_surface_t *surface;
+  cairo_rectangle_int_t clip;
+  gfloat actor_x, actor_y;
+
+  texture = meta_window_actor_get_texture (window_actor);
+  clutter_actor_get_position (CLUTTER_ACTOR (window_actor), &actor_x, &actor_y);
+
+  clip.x = window_rect->x - (gint) actor_x;
+  clip.y = window_rect->y - (gint) actor_y;
+  clip.width = window_rect->width;
+  clip.height = window_rect->height;
+
+  surface = meta_shaped_texture_get_image (META_SHAPED_TEXTURE (texture),
+                                           &clip);
+
+  content = clutter_canvas_new ();
+  clutter_canvas_set_size (CLUTTER_CANVAS (content),
+                           clip.width, clip.height);
+  g_signal_connect (content, "draw",
+                    G_CALLBACK (canvas_draw_cb), surface);
+  clutter_content_invalidate (content);
+  cairo_surface_destroy (surface);
+
+  return content;
 }

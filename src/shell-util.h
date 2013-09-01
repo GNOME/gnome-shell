@@ -8,6 +8,7 @@
 #include <libsoup/soup.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <meta/meta-cursor-tracker.h>
+#include <meta/meta-window-actor.h>
 
 G_BEGIN_DECLS
 
@@ -49,6 +50,9 @@ gboolean shell_util_need_background_refresh (void);
 
 void shell_util_text_insert_keyval (ClutterActor *actor,
                                     guint         keyval);
+
+ClutterContent * shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
+                                                          MetaRectangle   *window_rect);
 
 G_END_DECLS
 

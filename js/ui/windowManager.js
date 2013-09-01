@@ -692,6 +692,7 @@ const WindowManager = new Lang.Class({
             this._minimizeWindowDone(shellwm, actor);
             this._mapWindowDone(shellwm, actor);
             this._destroyWindowDone(shellwm, actor);
+            this._sizeChangeWindowDone(shellwm, actor);
         }));
 
         this._shellwm.connect('switch-workspace', Lang.bind(this, this._switchWorkspace));
@@ -1218,7 +1219,122 @@ const WindowManager = new Lang.Class({
     },
 
     _sizeChangeWindow : function(shellwm, actor, whichChange, oldFrameRect, oldBufferRect) {
+        let types = [Meta.WindowType.NORMAL];
+        if (!this._shouldAnimateActor(actor, types)) {
+            shellwm.completed_size_change(actor);
+            return;
+        }
+
+        if (whichChange == Meta.SizeChange.FULLSCREEN)
+            this._fullscreenWindow(shellwm, actor, oldFrameRect, oldBufferRect);
+        else if (whichChange == Meta.SizeChange.UNFULLSCREEN)
+            this._unfullscreenWindow(shellwm, actor, oldFrameRect, oldBufferRect);
+        else
+            shellwm.completed_size_change(actor);
+    },
+
+    _fullscreenWindow: function(shellwm, actor, oldFrameRect, oldBufferRect) {
+        let targetRect = actor.meta_window.get_frame_rect();
+        let actorContent = Shell.util_get_content_for_window_actor(actor, oldFrameRect);
+        let actorClone = new St.Widget({ content: actorContent });
+        actorClone.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
+        actorClone.set_position(oldFrameRect.x, oldFrameRect.y);
+        actorClone.set_size(oldFrameRect.width, oldFrameRect.height);
+        Main.uiGroup.add_actor(actorClone);
+
+        actor.__fullscreenClone = actorClone;
+
+        let scaleX = targetRect.width / oldFrameRect.width;
+        let scaleY = targetRect.height / oldFrameRect.height;
+
+        Tweener.addTween(actorClone,
+                         { x: targetRect.x,
+                           y: targetRect.y,
+                           scaleX: scaleX,
+                           scaleY: scaleY,
+                           opacity: 0,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: this._sizeChangeWindowDone,
+                           onCompleteScope: this,
+                           onCompleteParams: [shellwm, actor]
+                         });
+
+        actor.translation_x = actor.x;
+        actor.translation_y = actor.y;
+        actor.scaleX = 1 / scaleX;
+        actor.scaleY = 1 / scaleY;
+
+        Tweener.addTween(actor,
+                         { scaleX: 1.0,
+                           scaleY: 1.0,
+                           translation_x: 0,
+                           translation_y: 0,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
+
         shellwm.completed_size_change(actor);
+    },
+
+    _unfullscreenWindow: function(shellwm, actor, oldFrameRect, oldBufferRect) {
+        let targetRect = actor.meta_window.get_frame_rect();
+        let actorContent = Shell.util_get_content_for_window_actor(actor, oldFrameRect);
+        let actorClone = new St.Widget({ content: actorContent });
+        actorClone.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
+        actorClone.set_position(oldFrameRect.x, oldFrameRect.y);
+        actorClone.set_size(oldFrameRect.width, oldFrameRect.height);
+        Main.uiGroup.add_actor(actorClone);
+
+        actor.__unfullscreenClone = actorClone;
+
+        let scaleX = targetRect.width / oldFrameRect.width;
+        let scaleY = targetRect.height / oldFrameRect.height;
+
+        Tweener.addTween(actorClone,
+                         { x: targetRect.x,
+                           y: targetRect.y,
+                           scaleX: scaleX,
+                           scaleY: scaleY,
+                           opacity: 0,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: this._sizeChangeWindowDone,
+                           onCompleteScope: this,
+                           onCompleteParams: [shellwm, actor]
+                         });
+
+        actor.translation_x = -actor.x;
+        actor.translation_y = -actor.y;
+        actor.scaleX = 1 / scaleX;
+        actor.scaleY = 1 / scaleY;
+
+        Tweener.addTween(actor,
+                         { scaleX: 1.0,
+                           scaleY: 1.0,
+                           translation_x: 0,
+                           translation_y: 0,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
+
+        shellwm.completed_size_change(actor);
+    },
+
+    _sizeChangeWindowDone: function(shellwm, actor) {
+        Tweener.removeTweens(actor);
+
+        let actorClone = actor.__fullscreenClone;
+        if (actorClone) {
+            actorClone.destroy();
+            delete actor.__fullscreenClone;
+        }
+
+        actorClone = actor.__unfullscreenClone;
+        if (actorClone) {
+            actorClone.destroy();
+            delete actor.__unfullscreenClone;
+        }
     },
 
     _hasAttachedDialogs: function(window, ignoreWindow) {
