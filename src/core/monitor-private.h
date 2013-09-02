@@ -301,6 +301,8 @@ GType meta_monitor_manager_get_type (void);
 void                meta_monitor_manager_initialize (void);
 MetaMonitorManager *meta_monitor_manager_get  (void);
 
+void                meta_monitor_manager_rebuild_derived   (MetaMonitorManager *manager);
+
 MetaMonitorInfo    *meta_monitor_manager_get_monitor_infos (MetaMonitorManager *manager,
 							    unsigned int       *n_infos);
 
@@ -378,6 +380,9 @@ void               meta_monitor_config_restore_previous (MetaMonitorConfig  *con
 
 void               meta_crtc_info_free   (MetaCRTCInfo   *info);
 void               meta_output_info_free (MetaOutputInfo *info);
+
+void               meta_monitor_manager_free_output_array (MetaOutput *old_outputs,
+                                                           int         n_old_outputs);
 
 /* Returns true if transform causes width and height to be inverted
    This is true for the odd transforms in the enum */
