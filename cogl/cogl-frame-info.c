@@ -33,10 +33,12 @@
 #endif
 
 #include "cogl-frame-info-private.h"
+#include "cogl-gtype-private.h"
 
 static void _cogl_frame_info_free (CoglFrameInfo *info);
 
 COGL_OBJECT_DEFINE (FrameInfo, frame_info);
+COGL_GTYPE_DEFINE_CLASS (FrameInfo, frame_info);
 
 CoglFrameInfo *
 _cogl_frame_info_new (void)

@@ -61,6 +61,15 @@ COGL_BEGIN_DECLS
 typedef struct _CoglTexture2D CoglTexture2D;
 #define COGL_TEXTURE_2D(X) ((CoglTexture2D *)X)
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_texture_2d_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_texture_2d_get_gtype (void);
+#endif
+
 /**
  * cogl_is_texture_2d:
  * @object: A #CoglObject

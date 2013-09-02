@@ -44,11 +44,24 @@ typedef struct _CoglBitmap CoglBitmap;
 #include <cogl/cogl-context.h>
 #include <cogl/cogl-pixel-buffer.h>
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
+
 #ifdef COGL_HAS_ANDROID_SUPPORT
 #include <android/asset_manager.h>
 #endif
 
 COGL_BEGIN_DECLS
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_bitmap_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_bitmap_get_gtype (void);
+#endif
 
 /**
  * SECTION:cogl-bitmap

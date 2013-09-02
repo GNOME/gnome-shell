@@ -254,7 +254,7 @@ void
 _cogl_texture_register_texture_type (const CoglObjectClass *klass);
 
 #define COGL_TEXTURE_DEFINE(TypeName, type_name)                        \
-  COGL_OBJECT_DEFINE_WITH_CODE                                          \
+  COGL_OBJECT_DEFINE_WITH_CODE_GTYPE                                    \
   (TypeName, type_name,                                                 \
    _cogl_texture_register_texture_type (&_cogl_##type_name##_class))
 

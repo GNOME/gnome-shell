@@ -51,6 +51,7 @@
 #include "cogl-object.h"
 #include "cogl-pixel-buffer-private.h"
 #include "cogl-pixel-buffer.h"
+#include "cogl-gtype-private.h"
 
 /*
  * GL/GLES compatibility defines for the buffer API:
@@ -72,6 +73,7 @@ static void
 _cogl_pixel_buffer_free (CoglPixelBuffer *buffer);
 
 COGL_BUFFER_DEFINE (PixelBuffer, pixel_buffer)
+COGL_GTYPE_DEFINE_CLASS (PixelBuffer, pixel_buffer)
 
 static CoglPixelBuffer *
 _cogl_pixel_buffer_new (CoglContext *context,

@@ -47,6 +47,7 @@
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-error-private.h"
 #include "cogl-util-gl-private.h"
+#include "cogl-gtype-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -62,6 +63,8 @@
 static void _cogl_texture_3d_free (CoglTexture3D *tex_3d);
 
 COGL_TEXTURE_DEFINE (Texture3D, texture_3d);
+COGL_GTYPE_DEFINE_CLASS (Texture3D, texture_3d,
+                         COGL_GTYPE_IMPLEMENT_INTERFACE (texture));
 
 static const CoglTextureVtable cogl_texture_3d_vtable;
 

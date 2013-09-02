@@ -36,9 +36,14 @@
 #include <cogl-util.h>
 #include <cogl-euler.h>
 #include <cogl-matrix.h>
+#include "cogl-gtype-private.h"
 
 #include <math.h>
 #include <string.h>
+
+COGL_GTYPE_DEFINE_BOXED (Euler, euler,
+                         cogl_euler_copy,
+                         cogl_euler_free);
 
 void
 cogl_euler_init (CoglEuler *euler,

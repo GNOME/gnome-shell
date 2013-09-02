@@ -68,3 +68,40 @@ pkgconfig_DATA = $(pc_files)
 
 EXTRA_DIST += cogl-gst.pc.in
 DISTCLEANFILES += $(pc_files)
+
+-include $(INTROSPECTION_MAKEFILE)
+
+INTROSPECTION_GIRS =
+
+if HAVE_INTROSPECTION
+INTROSPECTION_COMPILER_ARGS=--includedir=$(top_builddir)/cogl
+
+CoglGst-2.0.gir: libcogl-gst.la Makefile
+
+CoglGst_2_0_gir_NAMESPACE = CoglGst
+CoglGst_2_0_gir_VERSION = 2.0
+CoglGst_2_0_gir_LIBS = $(top_builddir)/cogl/libcogl.la libcogl-gst.la
+CoglGst_2_0_gir_FILES = $(source_h) $(source_c)
+CoglGst_2_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_GST_DEP_CFLAGS)
+CoglGst_2_0_gir_INCLUDES = GObject-2.0 Gst-1.0 GstBase-1.0
+CoglGst_2_0_gir_EXPORT_PACKAGES = cogl-gst-2.0-experimental
+CoglGst_2_0_gir_SCANNERFLAGS = \
+	--warn-all \
+	--identifier-prefix=CoglGst \
+	--symbol-prefix=cogl_gst \
+	--c-include='cogl-gst/cogl-gst.h' \
+	--c-include="gst/gst.h" \
+	--include-uninstalled=$(top_builddir)/cogl/Cogl-2.0.gir \
+	--pkg gstreamer-1.0 \
+	--add-init-section="gst_init(NULL, NULL);"
+
+INTROSPECTION_GIRS += CoglGst-2.0.gir
+
+girdir = $(datadir)/gir-1.0
+gir_DATA = $(INTROSPECTION_GIRS)
+
+typelibdir = $(libdir)/girepository-1.0
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+CLEANFILES += $(gir_DATA) $(typelib_DATA)
+endif

@@ -53,10 +53,12 @@
 #include "cogl-texture-2d-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-error-private.h"
+#include "cogl-gtype-private.h"
 
 static void _cogl_gles2_context_free (CoglGLES2Context *gles2_context);
 
 COGL_OBJECT_DEFINE (GLES2Context, gles2_context);
+COGL_GTYPE_DEFINE_CLASS (GLES2Context, gles2_context);
 
 static CoglGLES2Context *current_gles2_context;
 

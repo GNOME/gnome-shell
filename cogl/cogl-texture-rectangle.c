@@ -46,6 +46,7 @@
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-error-private.h"
 #include "cogl-util-gl-private.h"
+#include "cogl-gtype-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -64,6 +65,8 @@
 static void _cogl_texture_rectangle_free (CoglTextureRectangle *tex_rect);
 
 COGL_TEXTURE_DEFINE (TextureRectangle, texture_rectangle);
+COGL_GTYPE_DEFINE_CLASS (TextureRectangle, texture_rectangle,
+                         COGL_GTYPE_IMPLEMENT_INTERFACE (texture));
 
 static const CoglTextureVtable cogl_texture_rectangle_vtable;
 

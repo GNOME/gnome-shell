@@ -59,6 +59,9 @@ typedef struct _CoglFramebuffer CoglFramebuffer;
 #include <cogl/cogl-euler.h>
 #include <cogl/cogl-texture.h>
 #endif
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
 
 COGL_BEGIN_DECLS
 
@@ -101,6 +104,15 @@ COGL_BEGIN_DECLS
  */
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_framebuffer_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_framebuffer_get_gtype (void);
+#endif
 
 /**
  * cogl_framebuffer_allocate:
@@ -1804,4 +1816,3 @@ cogl_is_framebuffer (void *object);
 COGL_END_DECLS
 
 #endif /* __COGL_FRAMEBUFFER_H */
-

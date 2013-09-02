@@ -33,12 +33,14 @@
 #endif
 
 #include "cogl-output-private.h"
+#include "cogl-gtype-private.h"
 
 #include <string.h>
 
 static void _cogl_output_free (CoglOutput *output);
 
 COGL_OBJECT_DEFINE (Output, output);
+COGL_GTYPE_DEFINE_CLASS (Output, output);
 
 CoglOutput *
 _cogl_output_new (const char *name)

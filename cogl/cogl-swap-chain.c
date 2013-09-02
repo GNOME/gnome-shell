@@ -37,10 +37,13 @@
 
 #include "cogl-swap-chain-private.h"
 #include "cogl-swap-chain.h"
+#include "cogl-gtype-private.h"
 
 static void _cogl_swap_chain_free (CoglSwapChain *swap_chain);
 
 COGL_OBJECT_DEFINE (SwapChain, swap_chain);
+COGL_GTYPE_DEFINE_CLASS (SwapChain, swap_chain);
+
 
 static void
 _cogl_swap_chain_free (CoglSwapChain *swap_chain)

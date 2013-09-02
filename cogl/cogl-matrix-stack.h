@@ -134,6 +134,15 @@
  */
 typedef struct _CoglMatrixStack CoglMatrixStack;
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_matrix_stack_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_matrix_stack_get_gtype (void);
+#endif
+
 /**
  * CoglMatrixEntry:
  *
@@ -169,6 +178,16 @@ typedef struct _CoglMatrixStack CoglMatrixStack;
  * cogl_object_ref() and cogl_object_unref().</note>
  */
 typedef struct _CoglMatrixEntry CoglMatrixEntry;
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_matrix_entry_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_matrix_entry_get_gtype (void);
+#endif
+
 
 /**
  * cogl_matrix_stack_new:

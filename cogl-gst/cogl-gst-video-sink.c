@@ -35,6 +35,8 @@
 #include <gst/riff/riff-ids.h>
 #include <string.h>
 
+#include "cogl-gtype-private.h"
+
 /* We just need the public Cogl api for cogl-gst but we first need to
  * undef COGL_COMPILATION to avoid getting an error that normally
  * checks cogl.h isn't used internally. */
@@ -170,6 +172,34 @@ struct _CoglGstVideoSinkPrivate
   CoglBool default_sample;
   GstVideoInfo info;
 };
+
+/* GTypes */
+
+static gpointer
+cogl_gst_rectangle_copy (gpointer src)
+{
+  if (G_LIKELY (src))
+    {
+      CoglGstRectangle *new = g_slice_new (CoglGstRectangle);
+      memcpy (new, src, sizeof (CoglGstRectangle));
+      return new;
+    }
+  else
+    return NULL;
+}
+
+static void
+cogl_gst_rectangle_free (gpointer ptr)
+{
+  g_slice_free (CoglGstRectangle, ptr);
+}
+
+COGL_GTYPE_DEFINE_BOXED (GstRectangle,
+                         gst_rectangle,
+                         cogl_gst_rectangle_copy,
+                         cogl_gst_rectangle_free);
+
+/**/
 
 static void
 cogl_gst_source_finalize (GSource *source)

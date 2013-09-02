@@ -39,10 +39,12 @@
 #include "cogl-indices.h"
 #include "cogl-indices-private.h"
 #include "cogl-context-private.h"
+#include "cogl-gtype-private.h"
 
 static void _cogl_index_buffer_free (CoglIndexBuffer *indices);
 
 COGL_BUFFER_DEFINE (IndexBuffer, index_buffer);
+COGL_GTYPE_DEFINE_CLASS (IndexBuffer, index_buffer);
 
 /* XXX: Unlike the wiki design this just takes a size. A single
  * indices buffer should be able to contain multiple ranges of indices

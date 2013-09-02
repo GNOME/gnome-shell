@@ -38,11 +38,13 @@
 #include "cogl-types.h"
 #include "cogl-snippet-private.h"
 #include "cogl-util.h"
+#include "cogl-gtype-private.h"
 
 static void
 _cogl_snippet_free (CoglSnippet *snippet);
 
 COGL_OBJECT_DEFINE (Snippet, snippet);
+COGL_GTYPE_DEFINE_CLASS (Snippet, snippet);
 
 CoglSnippet *
 cogl_snippet_new (CoglSnippetHook hook,

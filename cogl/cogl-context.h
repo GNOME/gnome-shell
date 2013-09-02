@@ -45,6 +45,10 @@ typedef struct _CoglContext CoglContext;
 #include <cogl/cogl-defines.h>
 #include <cogl/cogl-display.h>
 #include <cogl/cogl-primitive.h>
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
 #include <android/native_window.h>
 #endif
@@ -96,6 +100,15 @@ COGL_BEGIN_DECLS
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
 #define COGL_CONTEXT(OBJECT) ((CoglContext *)OBJECT)
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_context_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_context_get_gtype (void);
+#endif
 
 /**
  * cogl_context_new: (constructor)

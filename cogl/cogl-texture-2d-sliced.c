@@ -56,6 +56,7 @@
 #include "cogl-primitive-texture.h"
 #include "cogl-error-private.h"
 #include "cogl-texture-gl-private.h"
+#include "cogl-gtype-private.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -64,6 +65,8 @@
 static void _cogl_texture_2d_sliced_free (CoglTexture2DSliced *tex_2ds);
 
 COGL_TEXTURE_DEFINE (Texture2DSliced, texture_2d_sliced);
+COGL_GTYPE_DEFINE_CLASS (Texture2DSliced, texture_2d_sliced,
+                         COGL_GTYPE_IMPLEMENT_INTERFACE (texture));
 
 static const CoglTextureVtable cogl_texture_2d_sliced_vtable;
 

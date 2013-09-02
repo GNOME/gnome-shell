@@ -56,6 +56,10 @@ typedef struct _CoglTexture CoglTexture;
 #endif
 #include <cogl/cogl-bitmap.h>
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
+
 COGL_BEGIN_DECLS
 
 /**
@@ -69,6 +73,15 @@ COGL_BEGIN_DECLS
 
 #define COGL_TEXTURE_MAX_WASTE  127
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_texture_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_texture_get_gtype (void);
+#endif
+
 /**
  * COGL_TEXTURE_ERROR:
  *
@@ -78,7 +91,6 @@ COGL_BEGIN_DECLS
  * Stability: Unstable
  */
 #define COGL_TEXTURE_ERROR (cogl_texture_error_quark ())
-
 
 /**
  * CoglTextureError:

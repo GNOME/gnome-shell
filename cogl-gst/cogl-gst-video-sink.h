@@ -87,6 +87,10 @@
 
 G_BEGIN_DECLS
 
+#define COGL_GST_GTYPE_DECLARE_TYPE(name)       \
+  GType cogl_gst_ ## name ## _get_gtype (void)
+
+
 #define COGL_GST_TYPE_VIDEO_SINK cogl_gst_video_sink_get_type()
 
 #define COGL_GST_VIDEO_SINK(obj) \
@@ -499,6 +503,8 @@ typedef struct _CoglGstRectangle
   float width;
   float height;
 } CoglGstRectangle;
+
+COGL_GST_GTYPE_DECLARE_TYPE (rectangle);
 
 /**
  * cogl_gst_video_sink_fit_size:

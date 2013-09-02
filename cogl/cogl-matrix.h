@@ -46,6 +46,9 @@
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 #include <cogl/cogl-quaternion.h>
 #endif
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
 
 COGL_BEGIN_DECLS
 
@@ -122,6 +125,7 @@ struct _CoglMatrix
   unsigned long  COGL_PRIVATE (_padding3);
 };
 COGL_STRUCT_SIZE_ASSERT (CoglMatrix, 128 + sizeof (unsigned long) * 3);
+
 
 /**
  * cogl_matrix_init_identity:
@@ -787,9 +791,16 @@ cogl_matrix_transpose (CoglMatrix *matrix);
 void
 cogl_debug_matrix_print (const CoglMatrix *matrix);
 
-#ifdef _COGL_SUPPORTS_GTYPE_INTEGRATION
+#ifdef COGL_HAS_GTYPE_SUPPORT
 
-#define COGL_GTYPE_TYPE_MATRIX (cogl_gtype_matrix_get_type ())
+#define COGL_GTYPE_TYPE_MATRIX (cogl_matrix_get_gtype ())
+
+/**
+ * cogl_matrix_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_matrix_get_gtype (void);
 
 /**
  * cogl_gtype_matrix_get_type:
@@ -797,13 +808,14 @@ cogl_debug_matrix_print (const CoglMatrix *matrix);
  * Returns: the GType for the registered "CoglMatrix" boxed type. This
  * can be used for example to define GObject properties that accept a
  * #CoglMatrix value.
+ *
+ * Deprecated: 1.18: Use cogl_matrix_get_gtype() instead.
  */
 GType
 cogl_gtype_matrix_get_type (void);
 
-#endif /* _COGL_SUPPORTS_GTYPE_INTEGRATION */
+#endif /* COGL_HAS_GTYPE_SUPPORT*/
 
 COGL_END_DECLS
 
 #endif /* __COGL_MATRIX_H */
-

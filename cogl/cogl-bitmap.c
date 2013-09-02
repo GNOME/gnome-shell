@@ -41,12 +41,14 @@
 #include "cogl-context-private.h"
 #include "cogl-buffer-gl-private.h"
 #include "cogl-error-private.h"
+#include "cogl-gtype-private.h"
 
 #include <string.h>
 
 static void _cogl_bitmap_free (CoglBitmap *bmp);
 
 COGL_OBJECT_DEFINE (Bitmap, bitmap);
+COGL_GTYPE_DEFINE_CLASS (Bitmap, bitmap);
 
 static void
 _cogl_bitmap_free (CoglBitmap *bmp)

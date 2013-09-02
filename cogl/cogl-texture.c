@@ -63,6 +63,7 @@
 #include "cogl-sub-texture.h"
 #include "cogl-primitive-texture.h"
 #include "cogl-error-private.h"
+#include "cogl-gtype-private.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -72,6 +73,8 @@
 #ifndef GL_RED
 #define GL_RED 0x1903
 #endif
+
+COGL_GTYPE_DEFINE_INTERFACE (Texture, texture);
 
 uint32_t
 cogl_texture_error_quark (void)

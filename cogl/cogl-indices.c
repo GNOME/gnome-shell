@@ -42,12 +42,14 @@
 #include "cogl-indices.h"
 #include "cogl-indices-private.h"
 #include "cogl-index-buffer.h"
+#include "cogl-gtype-private.h"
 
 #include <stdarg.h>
 
 static void _cogl_indices_free (CoglIndices *indices);
 
 COGL_OBJECT_DEFINE (Indices, indices);
+COGL_GTYPE_DEFINE_CLASS (Indices, indices);
 
 static size_t
 sizeof_indices_type (CoglIndicesType type)

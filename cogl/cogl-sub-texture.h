@@ -52,6 +52,15 @@ COGL_BEGIN_DECLS
 #define COGL_SUB_TEXTURE(tex) ((CoglSubTexture *) tex)
 typedef struct _CoglSubTexture CoglSubTexture;
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_sub_texture_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_sub_texture_get_gtype (void);
+#endif
+
 /**
  * cogl_sub_texture_new:
  * @ctx: A #CoglContext pointer

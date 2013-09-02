@@ -85,12 +85,10 @@
 #include <math.h>
 #include <string.h>
 
-#ifdef _COGL_SUPPORTS_GTYPE_INTEGRATION
 #include <cogl-gtype-private.h>
-COGL_GTYPE_DEFINE_BOXED ("Matrix", matrix,
+COGL_GTYPE_DEFINE_BOXED (Matrix, matrix,
                          cogl_matrix_copy,
                          cogl_matrix_free);
-#endif
 
 /*
  * Symbolic names to some of the entries in the matrix
@@ -2305,3 +2303,11 @@ cogl_matrix_transpose (CoglMatrix *matrix)
 
   cogl_matrix_init_from_array (matrix, new_values);
 }
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+GType
+cogl_gtype_matrix_get_type (void)
+{
+  return cogl_matrix_get_gtype ();
+}
+#endif

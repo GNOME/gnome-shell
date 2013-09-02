@@ -38,6 +38,10 @@
 
 #include <cogl/cogl-types.h>
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
+
 COGL_BEGIN_DECLS
 
 /**
@@ -161,6 +165,15 @@ struct _CoglEuler
   float padding4;
 };
 COGL_STRUCT_SIZE_ASSERT (CoglEuler, 32);
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_euler_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_euler_get_gtype (void);
+#endif
 
 /**
  * cogl_euler_init:

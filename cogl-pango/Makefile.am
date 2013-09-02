@@ -116,7 +116,23 @@ CoglPango_1_0_gir_SCANNERFLAGS = \
 	--c-include='cogl-pango/cogl-pango.h' \
 	--include-uninstalled=$(top_builddir)/cogl/Cogl-1.0.gir
 
-INTROSPECTION_GIRS += CoglPango-1.0.gir
+CoglPango-2.0.gir: libcogl-pango.la Makefile
+
+CoglPango_2_0_gir_NAMESPACE = CoglPango
+CoglPango_2_0_gir_VERSION = 2.0
+CoglPango_2_0_gir_LIBS = $(top_builddir)/cogl/libcogl.la libcogl-pango.la
+CoglPango_2_0_gir_FILES = $(source_h) $(source_c)
+CoglPango_2_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
+CoglPango_2_0_gir_INCLUDES = Pango-1.0 PangoCairo-1.0
+CoglPango_2_0_gir_EXPORT_PACKAGES = cogl-pango-2.0-experimental
+CoglPango_2_0_gir_SCANNERFLAGS = \
+	--warn-all \
+	--identifier-prefix=CoglPango \
+	--symbol-prefix=cogl_pango \
+	--c-include='cogl-pango/cogl-pango.h' \
+	--include-uninstalled=$(top_builddir)/cogl/Cogl-2.0.gir
+
+INTROSPECTION_GIRS += CoglPango-1.0.gir CoglPango-2.0.gir
 
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)

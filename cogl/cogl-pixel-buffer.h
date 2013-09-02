@@ -46,9 +46,22 @@ typedef struct _CoglPixelBuffer CoglPixelBuffer;
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-context.h>
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
+
 COGL_BEGIN_DECLS
 
 #define COGL_PIXEL_BUFFER(buffer) ((CoglPixelBuffer *)(buffer))
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_pixel_buffer_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_pixel_buffer_get_gtype (void);
+#endif
 
 /**
  * cogl_pixel_buffer_new:

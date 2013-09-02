@@ -39,6 +39,9 @@
 #include "cogl-util.h"
 #include "cogl-types.h"
 #include "cogl-object-private.h"
+#include "cogl-gtype-private.h"
+
+COGL_GTYPE_DEFINE_BASE_CLASS (Object, object);
 
 void *
 cogl_object_ref (void *object)

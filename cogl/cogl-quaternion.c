@@ -49,11 +49,16 @@
 #include <cogl-matrix.h>
 #include <cogl-vector.h>
 #include <cogl-euler.h>
+#include "cogl-gtype-private.h"
 
 #include <string.h>
 #include <math.h>
 
 #define FLOAT_EPSILON 1e-03
+
+COGL_GTYPE_DEFINE_BOXED (Quaternion, quaternion,
+                         cogl_quaternion_copy,
+                         cogl_quaternion_free);
 
 static CoglQuaternion zero_quaternion =
 {

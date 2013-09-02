@@ -142,10 +142,23 @@ struct _CoglGLES2Vtable
 
 #include <cogl/gl-prototypes/cogl-gles2-functions.h>
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
+
 #undef COGL_EXT_BEGIN
 #undef COGL_EXT_FUNCTION
 #undef COGL_EXT_END
 };
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_gles2_context_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_gles2_context_get_gtype (void);
+#endif
 
 uint32_t
 _cogl_gles2_context_error_quark (void);

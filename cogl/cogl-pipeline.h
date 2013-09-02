@@ -44,6 +44,10 @@ typedef struct _CoglPipeline CoglPipeline;
 #include <cogl/cogl-context.h>
 #include <cogl/cogl-snippet.h>
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
+
 COGL_BEGIN_DECLS
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
@@ -63,6 +67,15 @@ COGL_BEGIN_DECLS
  */
 
 #define COGL_PIPELINE(OBJECT) ((CoglPipeline *)OBJECT)
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_pipeline_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_pipeline_get_gtype (void);
+#endif
 
 /**
  * cogl_pipeline_new:

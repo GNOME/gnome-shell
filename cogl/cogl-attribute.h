@@ -46,6 +46,10 @@ typedef struct _CoglAttribute CoglAttribute;
 #include <cogl/cogl-attribute-buffer.h>
 #include <cogl/cogl-indices.h>
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
+
 COGL_BEGIN_DECLS
 
 /**
@@ -55,6 +59,15 @@ COGL_BEGIN_DECLS
  *
  * FIXME
  */
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_attribute_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_attribute_get_gtype (void);
+#endif
 
 /**
  * cogl_attribute_new: (constructor)

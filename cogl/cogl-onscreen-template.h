@@ -39,11 +39,24 @@
 
 #include <cogl/cogl-swap-chain.h>
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
+
 COGL_BEGIN_DECLS
 
 typedef struct _CoglOnscreenTemplate	      CoglOnscreenTemplate;
 
 #define COGL_ONSCREEN_TEMPLATE(OBJECT) ((CoglOnscreenTemplate *)OBJECT)
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_onscreen_template_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_onscreen_template_get_gtype (void);
+#endif
 
 CoglOnscreenTemplate *
 cogl_onscreen_template_new (CoglSwapChain *swap_chain);

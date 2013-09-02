@@ -45,6 +45,7 @@
 #include "cogl-texture-rectangle-private.h"
 #include "cogl-texture-2d.h"
 #include "cogl-texture-gl-private.h"
+#include "cogl-gtype-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -52,6 +53,7 @@
 static void _cogl_sub_texture_free (CoglSubTexture *sub_tex);
 
 COGL_TEXTURE_DEFINE (SubTexture, sub_texture);
+COGL_GTYPE_DEFINE_CLASS (SubTexture, sub_texture);
 
 static const CoglTextureVtable cogl_sub_texture_vtable;
 

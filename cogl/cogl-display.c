@@ -44,10 +44,12 @@
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
 #include "cogl-wayland-server.h"
 #endif
+#include "cogl-gtype-private.h"
 
 static void _cogl_display_free (CoglDisplay *display);
 
 COGL_OBJECT_DEFINE (Display, display);
+COGL_GTYPE_DEFINE_CLASS (Display, display);
 
 static const CoglWinsysVtable *
 _cogl_display_get_winsys (CoglDisplay *display)

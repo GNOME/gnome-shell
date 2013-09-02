@@ -38,6 +38,10 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-texture.h>
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
+
 COGL_BEGIN_DECLS
 
 /**
@@ -51,6 +55,15 @@ COGL_BEGIN_DECLS
 typedef struct _CoglOffscreen CoglOffscreen;
 
 #define COGL_OFFSCREEN(X) ((CoglOffscreen *)X)
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_offscreen_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_offscreen_get_gtype (void);
+#endif
 
 /* Offscreen api */
 

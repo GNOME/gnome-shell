@@ -48,7 +48,20 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-macros.h>
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
+
 COGL_BEGIN_DECLS
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_color_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_color_get_gtype (void);
+#endif
 
 /**
  * cogl_color_new:

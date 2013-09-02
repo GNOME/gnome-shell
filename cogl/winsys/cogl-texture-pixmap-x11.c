@@ -57,6 +57,7 @@
 #include "cogl-error-private.h"
 #include "cogl-texture-gl-private.h"
 #include "cogl-private.h"
+#include "cogl-gtype-private.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -71,6 +72,7 @@
 static void _cogl_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap);
 
 COGL_TEXTURE_DEFINE (TexturePixmapX11, texture_pixmap_x11);
+COGL_GTYPE_DEFINE_CLASS (TexturePixmapX11, texture_pixmap_x11);
 
 static const CoglTextureVtable cogl_texture_pixmap_x11_vtable;
 

@@ -70,6 +70,15 @@
 typedef struct _CoglTexture2DSliced CoglTexture2DSliced;
 #define COGL_TEXTURE_2D_SLICED(X) ((CoglTexture2DSliced *)X)
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_texture_2d_sliced_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_texture_2d_sliced_get_gtype (void);
+#endif
+
 /**
  * cogl_texture_2d_sliced_new_with_size:
  * @ctx: A #CoglContext

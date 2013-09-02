@@ -50,6 +50,7 @@
 #ifdef COGL_HAS_EGL_SUPPORT
 #include "cogl-winsys-egl-private.h"
 #endif
+#include "cogl-gtype-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -61,6 +62,8 @@
 static void _cogl_texture_2d_free (CoglTexture2D *tex_2d);
 
 COGL_TEXTURE_DEFINE (Texture2D, texture_2d);
+COGL_GTYPE_DEFINE_CLASS (Texture2D, texture_2d,
+                         COGL_GTYPE_IMPLEMENT_INTERFACE (texture));
 
 static const CoglTextureVtable cogl_texture_2d_vtable;
 

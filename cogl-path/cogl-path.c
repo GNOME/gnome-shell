@@ -50,6 +50,7 @@
 
 #include "cogl-path/cogl-path.h"
 #include "cogl-path-private.h"
+#include "cogl-gtype-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -63,6 +64,7 @@ static CoglPrimitive *_cogl_path_get_fill_primitive (CoglPath *path);
 static void _cogl_path_build_stroke_attribute_buffer (CoglPath *path);
 
 COGL_OBJECT_DEFINE (Path, path);
+COGL_GTYPE_DEFINE_CLASS (Path, path);
 
 static void
 _cogl_path_data_clear_vbos (CoglPathData *data)

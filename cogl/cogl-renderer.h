@@ -38,6 +38,10 @@
 #include <cogl/cogl-error.h>
 #include <cogl/cogl-output.h>
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib-object.h>
+#endif
+
 COGL_BEGIN_DECLS
 
 /**
@@ -84,6 +88,15 @@ uint32_t
 cogl_renderer_error_quark (void);
 
 typedef struct _CoglRenderer CoglRenderer;
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
+/**
+ * cogl_renderer_get_gtype:
+ *
+ * Returns: a #GType that can be used with the GLib type system.
+ */
+GType cogl_renderer_get_gtype (void);
+#endif
 
 /**
  * cogl_is_renderer:

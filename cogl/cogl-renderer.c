@@ -49,6 +49,7 @@
 #include "cogl-winsys-stub-private.h"
 #include "cogl-config-private.h"
 #include "cogl-error-private.h"
+#include "cogl-gtype-private.h"
 
 #ifdef COGL_HAS_EGL_PLATFORM_XLIB_SUPPORT
 #include "cogl-winsys-egl-x11-private.h"
@@ -227,6 +228,7 @@ static CoglWinsysVtableGetter _cogl_winsys_vtable_getters[] =
 static void _cogl_renderer_free (CoglRenderer *renderer);
 
 COGL_OBJECT_DEFINE (Renderer, renderer);
+COGL_GTYPE_DEFINE_CLASS (Renderer, renderer);
 
 typedef struct _CoglNativeFilterClosure
 {
