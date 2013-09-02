@@ -109,14 +109,19 @@ cogl_texture_new_with_size (unsigned int width,
                                                                 internal_format));
     }
 
+  /* NB: This api existed before Cogl introduced lazy allocation of
+   * textures and so we maintain its original synchronous allocation
+   * semantics and return NULL if allocation fails... */
+  if (!cogl_texture_allocate (tex, &skip_error))
+    {
+      cogl_error_free (skip_error);
+      cogl_object_unref (tex);
+      return NULL;
+    }
+
   if (tex &&
       flags & COGL_TEXTURE_NO_AUTO_MIPMAP)
     {
-      /* To be able to iterate the slices of a #CoglTexture2DSliced we
-       * need to ensure the texture is allocated... */
-      if (!cogl_texture_allocate (tex, NULL))
-        return NULL;
-
       cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (tex),
                                            0, 0, 1, 1,
                                            COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE,

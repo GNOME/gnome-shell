@@ -112,14 +112,7 @@ uint32_t cogl_texture_error_quark (void);
  *
  * Creates a new #CoglTexture with the specified dimensions and pixel format.
  *
- * The storage for the texture is not necesarily created before this
- * function returns. The storage can be explicitly allocated using
- * cogl_texture_allocate() or preferably you can let Cogl
- * automatically allocate the storage lazily when uploading data when
- * Cogl may know more about how the texture will be used and can
- * optimize how it is allocated.
- *
- * Return value: A newly created #CoglTexture
+ * Return value: A newly created #CoglTexture or %NULL on failure
  *
  * Since: 0.8
  */
