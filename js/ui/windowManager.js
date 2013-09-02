@@ -362,9 +362,10 @@ const TilePreview = new Lang.Class({
     Name: 'TilePreview',
 
     _init: function() {
-        this.actor = new St.Widget({ visible: false });
+        this.actor = new St.Widget();
         global.window_group.add_actor(this.actor);
 
+        this._reset();
         this._showing = false;
     },
 
@@ -375,13 +376,41 @@ const TilePreview = new Lang.Class({
 
         global.window_group.set_child_below_sibling(this.actor, windowActor);
 
-        this._updateStyle(monitorIndex, tileRect);
+        if (this._rect && this._rect.equal(tileRect))
+            return;
 
-        this.actor.set_size(tileRect.width, tileRect.height);
-        this.actor.set_position(tileRect.x, tileRect.y);
+        let changeMonitor = (this._monitorIndex == -1 ||
+                             this._monitorIndex != monitorIndex);
+
+        this._monitorIndex = monitorIndex;
+        this._rect = tileRect;
+
+        let monitor = Main.layoutManager.monitors[monitorIndex];
+
+        this._updateStyle(monitor);
+
+        if (!this._showing || changeMonitor) {
+            let monitorRect = new Meta.Rectangle({ x: monitor.x,
+                                                   y: monitor.y,
+                                                   width: monitor.width,
+                                                   height: monitor.height });
+            let [, rect] = window.get_outer_rect().intersect(monitorRect);
+            this.actor.set_size(rect.width, rect.height);
+            this.actor.set_position(rect.x, rect.y);
+            this.actor.opacity = 0;
+        }
 
         this._showing = true;
         this.actor.show();
+        Tweener.addTween(this.actor,
+                         { x: tileRect.x,
+                           y: tileRect.y,
+                           width: tileRect.width,
+                           height: tileRect.height,
+                           opacity: 255,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
     },
 
     hide: function() {
@@ -389,18 +418,27 @@ const TilePreview = new Lang.Class({
             return;
 
         this._showing = false;
-        this.actor.hide();
+        Tweener.addTween(this.actor,
+                         { opacity: 0,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this, this._reset)
+                         });
     },
 
-    _updateStyle: function(monitorIndex, tileRect) {
-        let monitor = Main.layoutManager.monitors[monitorIndex];
+    _reset: function() {
+        this.actor.hide();
+        this._rect = null;
+        this._monitorIndex = -1;
+    },
 
+    _updateStyle: function(monitor) {
         let styles = ['tile-preview'];
-        if (monitorIndex == Main.layoutManager.primaryIndex)
+        if (this._monitorIndex == Main.layoutManager.primaryIndex)
             styles.push('on-primary');
-        if (tileRect.x == monitor.x)
+        if (this._rect.x == monitor.x)
             styles.push('tile-preview-left');
-        if (tileRect.x + tileRect.width == monitor.x + monitor.width)
+        if (this._rect.x + this._rect.width == monitor.x + monitor.width)
             styles.push('tile-preview-right');
 
         this.actor.style_class = styles.join(' ');
