@@ -1,3 +1,25 @@
+Clutter 1.15.92                                                      2013-09-02
+===============================================================================
+
+  • List of changes since Clutter 1.15.90
+
+    - Fix regression in BoxLayout for RTL text direction
+
+    - Update Visual Studio build files
+
+    - Translation updates
+    Polish, French, Slovak, Lithuanian, Catalan
+
+  • List of bugs fixed since Clutter 1.15.90
+
+    #706450 - box-layout: Fix RTL layout swapping with non-zero container
+              offsets
+
+Many thanks to:
+
+  Chun-wei Fan, Jasper St. Pierre, Alexandre Franke, Aurimas Černius, Gil
+  Forcada, Ján Kyselica, Piotr Drąg
+
 Clutter 1.15.90                                                      2013-08-19
 ===============================================================================
 
