@@ -1,3 +1,45 @@
+3.9.91
+======
+* Improve submenu styling [Jakub; #706037]
+* Fix changing slider values via keyboard [Alejandro; #706386]
+* Fix accessibility of sliders [Alejandro; #706391]
+* Tweak system actions style [Jakub; #706638]
+* Add support for auth without username / fix Not Listed? [Ray; #706607]
+* Dash: Don't show tooltips for apps with open popups [Giovanni; #705611]
+* Implement new end-session/power-off dialog design [Jasper, Matthias; #706612]
+* Implement building separate binaries for x11 and wayland [Giovanni; #705497]
+* authPrompt: Fix controls moving when showing messages [Ray; #706670]
+* Tweak padding between system status icons [Allan; #706796]
+* Add a generic accessible usable by JS code [Alejandro; #648623]
+* Improve keynav and accessibility of the calendar [Alejandro; #706903]
+* Update to new NetworkManager APIs [Jasper; #706098]
+* Hide system actions section in the lock screen [Jasper; #706852]
+* Don't show other logged in users at log out [Giovanni; #707124]
+* Remove "Session" subtitle heading in login dialog [Jasper; #707072]
+* dash: Reload favorites when installed apps change [Giovanni; #706878]
+* Don't open overview after closing last window on workspace [Florian; #662581]
+* Add FocusApp DBus method [Giovanni; #654086]
+* Add ShowApplications DBus method [Giovanni; #698743]
+* Implement new app picker design [Carlos, Florian; #706081]
+* Improve frequent apps being empty by default [Carlos, Florian; #694710]
+* Extend clickable area of page indicators [Giovanni; #707314]
+
+* Misc bug fixes [Ray, Giovanni, Jasper, Emmanuele; #706542, #706654, #706005,
+  #706681, #706841, #706843, #707064, #706262, #707197, #707269]
+
+Contributors:
+  Emmanuele Bassi, Giovanni Campagna, Matthias Clasen, Allan Day, Adel Gadllah,
+  Florian Müllner, Alejandro Piñeiro, Carlos Soriano, Jasper St. Pierre,
+  Jakub Steiner, Ray Strode, Seán de Búrca
+
+Translations:
+  Piotr Drąg [pl], Kjartan Maraas [nb], Victor Ibragimov [tg],
+  Enrico Nicoletto [pt_BR], Benjamin Steinwender [de],
+  Baurzhan Muftakhidinov [kk], Aurimas Černius [lt], Seán de Búrca [ga],
+  Fran Diéguez [gl], Daniel Mustieles [es], Dušan Kazik [sk],
+  Matej Urbančič [sl], Andika Triwidada [id], Jordi Mas [ca],
+  Ihar Hrachyshka [be]
+
 3.9.90
 ======
 * workspaceThumbnails: Exclude transient windows when shifting workspaces
