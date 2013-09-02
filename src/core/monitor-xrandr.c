@@ -651,11 +651,13 @@ output_set_presentation_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
   MetaDisplay *display = meta_get_display ();
   int value = presentation;
 
+  meta_error_trap_push (display);
   XRRChangeOutputProperty (manager_xrandr->xdisplay,
                            (XID)output->output_id,
                            display->atom__MUTTER_PRESENTATION_OUTPUT,
                            XA_CARDINAL, 32, PropModeReplace,
                            (unsigned char*) &value, 1);
+  meta_error_trap_pop (display);
 }
 
 static void
