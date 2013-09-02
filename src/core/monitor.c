@@ -764,13 +764,13 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
 
       g_variant_builder_add (&crtc_builder, "(uxiiiiiuaua{sv})",
                              i, /* ID */
-                             crtc->crtc_id,
+                             (gint64)crtc->crtc_id,
                              (int)crtc->rect.x,
                              (int)crtc->rect.y,
                              (int)crtc->rect.width,
                              (int)crtc->rect.height,
                              (int)(crtc->current_mode ? crtc->current_mode - manager->modes : -1),
-                             crtc->transform,
+                             (guint32)crtc->transform,
                              &transforms,
                              NULL /* properties */);
     }
@@ -838,7 +838,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
 
       g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
                              i, /* ID */
-                             output->output_id,
+                             (gint64)output->output_id,
                              (int)(output->crtc ? output->crtc - manager->crtcs : -1),
                              &crtcs,
                              output->name,
@@ -853,9 +853,9 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
 
       g_variant_builder_add (&mode_builder, "(uxuud)",
                              i, /* ID */
-                             mode->mode_id,
-                             mode->width,
-                             mode->height,
+                             (gint64)mode->mode_id,
+                             (guint32)mode->width,
+                             (guint32)mode->height,
                              (double)mode->refresh_rate);
     }
 
