@@ -1,3 +1,40 @@
+Cogl 1.15.10                                                       2013-09-02
+
+  • List of changes since Cogl 1.15.8
+
+  » Added API to set the onscreen template on a CoglDisplay outside of
+    the constructor.
+  » Added public API to configure the layout of displays when using
+    the KMS winsys.
+  » Added a cogl_point_coord builtin variable for snippets which can
+    be used to render point sprites in more dynamic ways.
+  » cogl_texture_new_with_size now returns NULL on failure. This
+    behaviour was accidentally changed in 1.14.0.
+  » Fixed a problem with setting the precision specifiers on GLES2
+    which was causing a lot of problems with the latest Mesa.
+  » Added a “webgl” driver to manage the differences in GLES2 when
+    compiling with emscripten.
+  » Fixed a bug with paths which was causing Clutter's texture-fbo
+    test to crash.
+  » Some issues with introspecting the cogl-pango API were fixed.
+  » Added an example using point sprites.
+  » Build fixes for building with MinGW32.
+  » Updates to the MSVC build files.
+  » Documentation fixes to the snippets API.
+
+  • Gnome Bugzilla bugs closed since 1.15.8:
+
+  #705837 - kms: add public API to override the default configuration
+            of outputs
+
+Many thanks to:
+
+  Chun-wei Fan
+  Robert Bragg
+  Jasper St. Pierre
+  Damien Lespiau
+  Giovanni Campagna
+
 Cogl 1.15.8                                                        2013-08-20
 
   • List of changes since Cogl 1.15.8
