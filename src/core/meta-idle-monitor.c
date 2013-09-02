@@ -224,7 +224,7 @@ meta_idle_monitor_handle_xevent_all (XEvent *xevent)
 {
   int i;
 
-  for (i = 0; i < device_id_max; i++)
+  for (i = 0; i <= device_id_max; i++)
     if (device_monitors[i])
       meta_idle_monitor_handle_xevent (device_monitors[i], (XSyncAlarmNotifyEvent*)xevent);
 }
