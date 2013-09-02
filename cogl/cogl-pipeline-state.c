@@ -38,6 +38,8 @@
 #include "cogl-snippet-private.h"
 #include "cogl-error-private.h"
 
+#include <test-fixtures/test-unit.h>
+
 #include "string.h"
 
 #ifndef GL_FUNC_ADD
@@ -2089,4 +2091,75 @@ _cogl_pipeline_hash_fragment_snippets_state (CoglPipeline *authority,
 {
   _cogl_pipeline_snippet_list_hash (&authority->big_state->fragment_snippets,
                                     &state->hash);
+}
+
+UNIT_TEST (check_blend_constant_ancestry,
+           0 /* no requirements */,
+           0 /* no known failures */)
+{
+  CoglPipeline *pipeline = cogl_pipeline_new (test_ctx);
+  CoglNode *node;
+  int pipeline_length = 0;
+  int i;
+
+  /* Repeatedly making a copy of a pipeline and changing the same
+   * state (in this case the blend constant) shouldn't cause a long
+   * chain of pipelines to be created because the redundant ancestry
+   * should be pruned. */
+
+  for (i = 0; i < 20; i++)
+    {
+      CoglColor color;
+      CoglPipeline *tmp_pipeline;
+
+      cogl_color_init_from_4f (&color, i / 20.0f, 0.0f, 0.0f, 1.0f);
+
+      tmp_pipeline = cogl_pipeline_copy (pipeline);
+      cogl_object_unref (pipeline);
+      pipeline = tmp_pipeline;
+
+      cogl_pipeline_set_blend_constant (pipeline, &color);
+    }
+
+  for (node = (CoglNode *) pipeline; node; node = node->parent)
+    pipeline_length++;
+
+  g_assert_cmpint (pipeline_length, <=, 2);
+
+  cogl_object_unref (pipeline);
+}
+
+UNIT_TEST (check_uniform_ancestry,
+           0 /* no requirements */,
+           TEST_KNOWN_FAILURE)
+{
+  CoglPipeline *pipeline = cogl_pipeline_new (test_ctx);
+  CoglNode *node;
+  int pipeline_length = 0;
+  int i;
+
+  /* Repeatedly making a copy of a pipeline and changing a uniform
+   * shouldn't cause a long chain of pipelines to be created */
+
+  for (i = 0; i < 20; i++)
+    {
+      CoglPipeline *tmp_pipeline;
+      int uniform_location;
+
+      tmp_pipeline = cogl_pipeline_copy (pipeline);
+      cogl_object_unref (pipeline);
+      pipeline = tmp_pipeline;
+
+      uniform_location =
+        cogl_pipeline_get_uniform_location (pipeline, "a_uniform");
+
+      cogl_pipeline_set_uniform_1i (pipeline, uniform_location, i);
+    }
+
+  for (node = (CoglNode *) pipeline; node; node = node->parent)
+    pipeline_length++;
+
+  g_assert_cmpint (pipeline_length, <=, 2);
+
+  cogl_object_unref (pipeline);
 }
