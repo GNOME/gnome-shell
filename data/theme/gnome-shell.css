@@ -942,19 +942,18 @@ StScrollBar StButton#vhandle:active {
 }
 
 .page-indicator {
+    padding: 15px 30px;
+}
+
+.page-indicator .page-indicator-icon {
     width: 18px;
     height: 18px;
     background-image: url(page-indicator-inactive.svg);
 }
 
-.page-indicator:hover,
-.page-indicator:checked{
+.page-indicator:hover .page-indicator-icon,
+.page-indicator:checked .page-indicator-icon {
     background-image: url(page-indicator-active.svg);
-}
-
-.page-indicators {
-    spacing: 30px;
-    padding: 0px 30px;
 }
 
 .no-frequent-applications-label {

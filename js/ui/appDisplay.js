@@ -211,6 +211,7 @@ const PageIndicators = new Lang.Class({
                                                              St.ButtonMask.THREE,
                                                 toggle_mode: true,
                                                 checked: pageIndex == this._currentPage });
+                indicator.child = new St.Widget({ style_class: 'page-indicator-icon' });
                 indicator.connect('clicked', Lang.bind(this,
                     function() {
                         this.emit('page-activated', pageIndex);
