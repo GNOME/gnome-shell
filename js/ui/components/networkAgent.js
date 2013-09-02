@@ -380,11 +380,7 @@ const VPNRequestHandler = new Lang.Class({
             this._childPid = pid;
             this._stdin = new Gio.UnixOutputStream({ fd: stdin, close_fd: true });
             this._stdout = new Gio.UnixInputStream({ fd: stdout, close_fd: true });
-            // We need this one too, even if don't actually care of what the process
-            // has to say on stderr, because otherwise the fd opened by g_spawn_async_with_pipes
-            // is kept open indefinitely
-            let stderrStream = new Gio.UnixInputStream({ fd: stderr, close_fd: true });
-            stderrStream.close(null);
+            GLib.close(stderr);
             this._dataStdout = new Gio.DataInputStream({ base_stream: this._stdout });
 
             if (this._newStylePlugin)
