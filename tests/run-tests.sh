@@ -31,7 +31,7 @@ echo "Key:"
 echo "ok = Test passed"
 echo "n/a = Driver is missing a feature required for the test"
 echo "FAIL = Unexpected failure"
-echo "fail = Test failed, but it was an expected failure"
+echo "FIXME = Test failed, but it was an expected failure"
 echo "PASS! = Unexpected pass"
 echo ""
 
@@ -42,7 +42,7 @@ get_status()
       # but it was an expected failure so don't fail the
       # overall test run as a result...
       300)
-      echo -n "fail";;
+      echo -n "FIXME";;
       # Special value we use to indicate that the test passed
       # but we weren't expecting it to pass‽
       400)
