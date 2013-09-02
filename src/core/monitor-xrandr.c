@@ -974,11 +974,57 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManager *manager,
 					   XEvent             *event)
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
+  MetaOutput *old_outputs;
+  MetaCRTC *old_crtcs;
+  MetaMonitorMode *old_modes;
+  int n_old_outputs;
 
   if ((event->type - manager_xrandr->rr_event_base) != RRScreenChangeNotify)
     return FALSE;
 
   XRRUpdateConfiguration (event);
+
+  /* Save the old structures, so they stay valid during the update */
+  old_outputs = manager->outputs;
+  n_old_outputs = manager->n_outputs;
+  old_modes = manager->modes;
+  old_crtcs = manager->crtcs;
+
+  manager->serial++;
+  meta_monitor_manager_xrandr_read_current (manager);
+
+  /* Check if the current intended configuration has the same outputs
+     as the new real one, or if the event is a result of an XRandR call.
+     If so, we can go straight to rebuild the logical config and tell
+     the outside world.
+     Otherwise, this event was caused by hotplug, so give a chance to
+     MetaMonitorConfig.
+
+     Note that we need to check both the timestamps and the list of
+     outputs, because the X server might emit spurious events with
+     new configTimestamps (bug 702804), and the driver may have
+     changed the EDID for some other reason (old broken qxl and vbox
+     drivers...).
+  */
+  if (manager_xrandr->resources->timestamp >= manager_xrandr->resources->configTimestamp ||
+      meta_monitor_config_match_current (manager->config, manager))
+    {
+      /* This will be a no-op if the change was from our side, as
+         we already called it in the DBus method handler */
+      meta_monitor_config_update_current (manager->config, manager);
+
+      meta_monitor_manager_rebuild_derived (manager);
+    }
+  else
+    {
+      if (!meta_monitor_config_apply_stored (manager->config, manager))
+        meta_monitor_config_make_default (manager->config, manager);
+    }
+
+  meta_monitor_manager_free_output_array (old_outputs, n_old_outputs);
+  g_free (old_modes);
+  g_free (old_crtcs);
+
   return TRUE;
 }
 

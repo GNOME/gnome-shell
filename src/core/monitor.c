@@ -59,9 +59,6 @@ static void meta_monitor_manager_display_config_init (MetaDBusDisplayConfigIface
 G_DEFINE_TYPE_WITH_CODE (MetaMonitorManager, meta_monitor_manager, META_DBUS_TYPE_DISPLAY_CONFIG_SKELETON,
                          G_IMPLEMENT_INTERFACE (META_DBUS_TYPE_DISPLAY_CONFIG, meta_monitor_manager_display_config_init));
 
-static void free_output_array (MetaOutput *old_outputs,
-                               int         n_old_outputs);
-static void invalidate_logical_config (MetaMonitorManager *manager);
 static void initialize_dbus_interface (MetaMonitorManager *manager);
 
 static void
@@ -349,7 +346,7 @@ apply_config_dummy (MetaMonitorManager *manager,
   manager->screen_width = screen_width;
   manager->screen_height = screen_height;
 
-  invalidate_logical_config (manager);
+  meta_monitor_manager_rebuild_derived (manager);
 }
 
 static GBytes *
@@ -527,7 +524,7 @@ meta_monitor_manager_constructed (GObject *object)
 
       read_current_config (manager);
 
-      free_output_array (old_outputs, n_old_outputs);
+      meta_monitor_manager_free_output_array (old_outputs, n_old_outputs);
       g_free (old_modes);
       g_free (old_crtcs);
     }
@@ -558,9 +555,9 @@ meta_monitor_manager_set_power_save_mode (MetaMonitorManager *manager,
   manager->power_save_mode = mode;
 }
 
-static void
-free_output_array (MetaOutput *old_outputs,
-                   int         n_old_outputs)
+void
+meta_monitor_manager_free_output_array (MetaOutput *old_outputs,
+                                        int         n_old_outputs)
 {
   int i;
 
@@ -583,7 +580,7 @@ meta_monitor_manager_finalize (GObject *object)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
 
-  free_output_array (manager->outputs, manager->n_outputs);
+  meta_monitor_manager_free_output_array (manager->outputs, manager->n_outputs);
   g_free (manager->monitor_infos);
   g_free (manager->modes);
   g_free (manager->crtcs);
@@ -1476,8 +1473,8 @@ meta_monitor_manager_get_screen_limits (MetaMonitorManager *manager,
   *height = manager->max_screen_height;
 }
 
-static void
-invalidate_logical_config (MetaMonitorManager *manager)
+void
+meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 {
   MetaMonitorInfo *old_monitor_infos;
 
@@ -1498,51 +1495,11 @@ meta_monitor_manager_handle_xevent (MetaMonitorManager *manager,
                                     XEvent             *event)
 {
   MetaMonitorManagerClass *klass;
-  MetaOutput *old_outputs;
-  MetaCRTC *old_crtcs;
-  MetaMonitorMode *old_modes;
-  int n_old_outputs;
-  gboolean changed;
 
   klass = META_MONITOR_MANAGER_GET_CLASS (manager);
   if (klass->handle_xevent)
-    changed = klass->handle_xevent (manager, event);
+    return klass->handle_xevent (manager, event);
   else
-    changed = FALSE;
-
-  if (!changed)
     return FALSE;
-
-  /* Save the old structures, so they stay valid during the update */
-  old_outputs = manager->outputs;
-  n_old_outputs = manager->n_outputs;
-  old_modes = manager->modes;
-  old_crtcs = manager->crtcs;
-
-  read_current_config (manager);
-
-  /* Check if the current intended configuration has the same outputs
-     as the new real one. If so, this was a result of an ApplyConfiguration
-     call (or a change from ourselves), and we can go straight to rebuild
-     the logical config and tell the outside world.
-
-     Otherwise, this event was caused by hotplug, so give a chance to
-     MetaMonitorConfig.
-  */
-  if (meta_monitor_config_match_current (manager->config, manager))
-    {
-      invalidate_logical_config (manager);
-    }
-  else
-    {
-      if (!meta_monitor_config_apply_stored (manager->config, manager))
-        meta_monitor_config_make_default (manager->config, manager);
-    }
-
-  free_output_array (old_outputs, n_old_outputs);
-  g_free (old_modes);
-  g_free (old_crtcs);
-
-  return TRUE;
 }
 

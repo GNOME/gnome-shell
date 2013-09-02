@@ -55,6 +55,8 @@ typedef struct {
   char *serial;
 } MetaOutputKey;
 
+/* Keep this structure packed, so that we
+   can use memcmp */
 typedef struct {
   gboolean enabled;
   MetaRectangle rect;
@@ -147,6 +149,13 @@ output_key_equal (const MetaOutputKey *one,
     strcmp (one->serial, two->serial) == 0;
 }
 
+static gboolean
+output_config_equal (const MetaOutputConfig *one,
+                     const MetaOutputConfig *two)
+{
+  return memcmp (one, two, sizeof (MetaOutputConfig)) == 0;
+}
+
 static unsigned int
 config_hash (gconstpointer data)
 {
@@ -176,6 +185,30 @@ config_equal (gconstpointer one,
   for (i = 0; i < c_one->n_outputs && ok; i++)
     ok = output_key_equal (&c_one->keys[i],
                            &c_two->keys[i]);
+
+  return ok;
+}
+
+static gboolean
+config_equal_full (gconstpointer one,
+                   gconstpointer two)
+{
+  const MetaConfiguration *c_one = one;
+  const MetaConfiguration *c_two = two;
+  unsigned int i;
+  gboolean ok;
+
+  if (c_one->n_outputs != c_two->n_outputs)
+    return FALSE;
+
+  ok = TRUE;
+  for (i = 0; i < c_one->n_outputs && ok; i++)
+    {
+      ok = output_key_equal (&c_one->keys[i],
+                             &c_two->keys[i]);
+      ok = ok && output_config_equal (&c_one->outputs[i],
+                                      &c_two->outputs[i]);
+    }
 
   return ok;
 }
@@ -1241,6 +1274,12 @@ meta_monitor_config_update_current (MetaMonitorConfig  *self,
     {
       init_key_from_output (&current->keys[i], &outputs[i]);
       init_config_from_output (&current->outputs[i], &outputs[i]);
+    }
+
+  if (self->current && config_equal_full (current, self->current))
+    {
+      config_free (current);
+      return;
     }
 
   if (self->current && !self->current_is_stored)
