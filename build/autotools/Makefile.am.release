@@ -10,7 +10,7 @@ RELEASE_URL      = $(RELEASE_URL_BASE)/$(COGL_1_MAJOR_VERSION).$(COGL_1_MINOR_VE
 RELEASE_ANNOUNCE_LIST = cogl@lists.freedesktop.org
 RELEASE_ANNOUNCE_CC   = gnome-announce-list@gnome.org clutter-announce@clutter-project.org
 
-tar_file    = $(distdir).tar.bz2
+tar_file    = $(distdir).tar.xz
 sha256_file = $(distdir).sha256sum
 
 $(sha256_file): $(tar_file)

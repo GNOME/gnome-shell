@@ -113,7 +113,7 @@ AC_SUBST([WAYLAND_SERVER_REQ_VERSION], [wayland_server_req_version])
 cflags_set=${CFLAGS+set}
 
 AM_INIT_AUTOMAKE([1.11 foreign -Wno-portability no-define no-dist-gzip
-                  dist-bzip2 tar-ustar])
+                  dist-xz tar-ustar])
 AM_SILENT_RULES([yes])
 
 AH_BOTTOM([#include "config-custom.h"])
