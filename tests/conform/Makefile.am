@@ -143,7 +143,6 @@ test_conformance_CFLAGS = -g3 -O0 $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS)
 test_conformance_LDADD = \
 	$(COGL_DEP_LIBS) \
 	$(top_builddir)/cogl/libcogl.la \
-	$(top_builddir)/test-fixtures/libtest-fixtures.la \
 	$(LIBM)
 if !USE_GLIB
 test_conformance_LDADD += $(top_builddir)/deps/glib/libglib.la

@@ -17,7 +17,7 @@ endif
 
 wrappers: stamp-test-unit
 	@true
-stamp-test-unit: Makefile test-unit
+stamp-test-unit: Makefile test-unit$(EXEEXT)
 	@mkdir -p wrappers
 	source $(top_builddir)/cogl/libcogl.la ; \
 	  $(NM) $(top_builddir)/cogl/.libs/"$$dlname"| \
@@ -73,7 +73,6 @@ test_unit_CFLAGS = -g3 -O0 $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS)
 test_unit_LDADD = \
 	$(COGL_DEP_LIBS) \
 	$(top_builddir)/cogl/libcogl.la \
-	$(top_builddir)/test-fixtures/libtest-fixtures.la \
 	$(LIBM)
 if !USE_GLIB
 test_unit_LDADD += $(top_builddir)/deps/glib/libglib.la
