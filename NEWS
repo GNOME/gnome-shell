@@ -1,3 +1,25 @@
+3.9.91
+======
+* Drop man pages for removed utilities [Kalev; #706579]
+* Add support for idle tracking [Giovanni; #706005]
+* Skip CRTC reconfigurations that have no effect [Giovanni; #706672]
+* Ignore skip-taskbar hints on parentless dialogs [Giovanni; #673399]
+* Don't save pixbuf data in user data [Tim; #706777]
+* Don't queue redraws for obscured regions [Adel; #703332]
+* Turn blending off when drawing entirely opaque regions [Jasper; #706930]
+* Check event timestamps before reconfiguring [Giovanni; #706735]
+* Misc bug fixes [Giovanni, Colin, Seán, Jasper, Cosimo; #706582, #706598,
+  #706787, #706729, #706825, #707081, #707090, #707250, #707267]
+
+Contributors:
+  Giovanni Campagna, Cosimo Cecchi, Adel Gadllah, Colin Guthrie, Kalev Lember,
+  Tim Lunn, Jasper St. Pierre, Rico Tzschichholz, Seán de Búrca
+
+Translations:
+  Piotr Drąg [pl], Alexandre Franke [fr], Kjartan Maraas [nb],
+  Milo Casagrande [it], Balázs Úr [hu], Seán de Búrca [ga], Fran Diéguez [gl],
+  Daniel Mustieles [es], Aurimas Černius [lt], Gil Forcada [ca]
+
 3.9.90
 ======
 * Add support for _GTK_FRAME_EXTENTS [Jasper; #705766]
