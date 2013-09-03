@@ -410,6 +410,9 @@ clutter_wayland_handle_pointer_leave (void *data,
   ClutterStageCogl          *stage_cogl;
   ClutterEvent              *event;
 
+  if (surface == NULL)
+    return;
+
   if (!CLUTTER_IS_STAGE_COGL (wl_surface_get_user_data (surface)))
     return;
 
