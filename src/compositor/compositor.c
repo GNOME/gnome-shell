@@ -1275,6 +1275,7 @@ sync_actor_stacking (MetaCompScreen *info)
    * we go ahead and do it */
 
   children = clutter_actor_get_children (info->window_group);
+  has_windows = FALSE;
   reordered = FALSE;
 
   /* We allow for actors in the window group other than the actors we
