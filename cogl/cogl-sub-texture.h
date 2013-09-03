@@ -72,8 +72,8 @@ typedef struct _CoglSubTexture CoglSubTexture;
  * #CoglMetaTexture interface to resolve a #CoglSubTexture into a
  * low-level texture before drawing.</note>
  *
- * Returns: A newly allocated #CoglSubTexture representing a
- *          sub-region of @parent_texture.
+ * Return value: (transfer full): A newly allocated #CoglSubTexture
+ *          representing a sub-region of @parent_texture.
  *
  * Since: 1.10
  * Stability: unstable
