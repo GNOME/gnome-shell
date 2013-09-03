@@ -101,8 +101,8 @@ typedef struct _CoglDisplay	      CoglDisplay;
  * abort with a message. For simple applications with no fallback
  * options then relying on the implicit setup can be fine.
  *
- * Return value: A newly allocated #CoglDisplay object in a mutable
- *               configuration mode.
+ * Return value: (transfer full): A newly allocated #CoglDisplay
+ *               object in a mutable configuration mode.
  * Since: 1.10
  * Stability: unstable
  */
@@ -115,6 +115,8 @@ cogl_display_new (CoglRenderer *renderer,
  * @display: a #CoglDisplay
  *
  * Queries the #CoglRenderer associated with the given @display.
+ *
+ * Return value: (transfer none): The associated #CoglRenderer
  *
  * Since: 1.10
  * Stability: unstable
