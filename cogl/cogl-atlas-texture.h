@@ -176,7 +176,7 @@ cogl_atlas_texture_new_from_data (CoglContext *ctx,
 
 /**
  * cogl_atlas_texture_new_from_bitmap:
- * @bitmap: A #CoglBitmap
+ * @bmp: A #CoglBitmap
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
  *    texture. If %COGL_PIXEL_FORMAT_ANY is given then a premultiplied
  *    format similar to the format of the source data will be used. The
