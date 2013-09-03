@@ -52,7 +52,7 @@ typedef struct _CoglOnscreen CoglOnscreen;
  * configured before later being allocated, either implicitly when
  * it is first used or explicitly via cogl_framebuffer_allocate().
  *
- * Return value: A newly instantiated #CoglOnscreen framebuffer
+ * Return value: (transfer full): A newly instantiated #CoglOnscreen framebuffer
  * Since: 1.8
  * Stability: unstable
  */
