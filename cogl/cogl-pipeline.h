@@ -64,7 +64,7 @@ COGL_BEGIN_DECLS
  * Allocates and initializes a default simple pipeline that will color
  * a primitive white.
  *
- * Return value: a pointer to a new #CoglPipeline
+ * Return value: (transfer full): a pointer to a new #CoglPipeline
  *
  * Since: 2.0
  * Stability: Unstable
@@ -85,7 +85,7 @@ cogl_pipeline_new (CoglContext *context);
  * keep track of a pipelines ancestry which we may use to help minimize GPU
  * state changes.
  *
- * Returns: a pointer to the newly allocated #CoglPipeline
+ * Return value: (transfer full): a pointer to the newly allocated #CoglPipeline
  *
  * Since: 2.0
  * Stability: Unstable

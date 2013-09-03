@@ -179,8 +179,8 @@ cogl_pipeline_set_layer_null_texture (CoglPipeline *pipeline,
  * @pipeline: A #CoglPipeline object
  * @layer_index: the index of the layer
  *
- * Return value: the texture that was set for the given layer of the
- *   pipeline or %NULL if no texture was set.
+ * Return value: (transfer none): the texture that was set for the
+ *   given layer of the pipeline or %NULL if no texture was set.
  * Stability: unstable
  * Since: 1.10
  */
