@@ -44,7 +44,7 @@ cogl_onscreen_template_new (CoglSwapChain *swap_chain);
 
 /**
  * cogl_onscreen_template_set_samples_per_pixel:
- * @onscreen: A #CoglOnscreenTemplate template framebuffer
+ * @onscreen_template: A #CoglOnscreenTemplate template framebuffer
  * @n: The minimum number of samples per pixel
  *
  * Requires that any future CoglOnscreen framebuffers derived from
