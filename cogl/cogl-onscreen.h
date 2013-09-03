@@ -549,10 +549,10 @@ typedef struct _CoglClosure CoglFrameClosure;
 /**
  * cogl_onscreen_add_frame_callback:
  * @onscreen: A #CoglOnscreen framebuffer
- * @callback: A callback function to call for frame events
- * @user_data: A private pointer to be passed to @callback
- * @destroy: An optional callback to destroy @user_data when the
- *           @callback is removed or @onscreen is freed.
+ * @callback: (scope notified): A callback function to call for frame events
+ * @user_data: (closure): A private pointer to be passed to @callback
+ * @destroy: (allow-none): An optional callback to destroy @user_data
+ *           when the @callback is removed or @onscreen is freed.
  *
  * Installs a @callback function that will be called for significant
  * events relating to the given @onscreen framebuffer.
@@ -615,8 +615,9 @@ typedef void (*CoglSwapBuffersNotify) (CoglFramebuffer *framebuffer,
 /**
  * cogl_onscreen_add_swap_buffers_callback:
  * @onscreen: A #CoglOnscreen framebuffer
- * @callback: A callback function to call when a swap has completed
- * @user_data: A private pointer to be passed to @callback
+ * @callback: (scope notified): A callback function to call when a swap
+ *            has completed
+ * @user_data: (closure): A private pointer to be passed to @callback
  *
  * Installs a @callback function that should be called whenever a swap buffers
  * request (made using cogl_onscreen_swap_buffers()) for the given
@@ -766,11 +767,11 @@ typedef struct _CoglClosure CoglOnscreenResizeClosure;
 /**
  * cogl_onscreen_add_resize_callback:
  * @onscreen: A #CoglOnscreen framebuffer
- * @callback: A #CoglOnscreenResizeCallback to call when the @onscreen
- *            changes size.
- * @user_data: Private data to be passed to @callback.
- * @destroy: An optional callback to destroy @user_data when the
- *           @callback is removed or @onscreen is freed.
+ * @callback: (scope notified): A #CoglOnscreenResizeCallback to call when
+ *            the @onscreen changes size.
+ * @user_data: (closure): Private data to be passed to @callback.
+ * @destroy: (allow-none): An optional callback to destroy @user_data
+ *           when the @callback is removed or @onscreen is freed.
  *
  * Registers a @callback with @onscreen that will be called whenever
  * the @onscreen framebuffer changes size.
@@ -873,9 +874,9 @@ typedef struct _CoglClosure CoglOnscreenDirtyClosure;
 /**
  * cogl_onscreen_add_dirty_callback:
  * @onscreen: A #CoglOnscreen framebuffer
- * @callback: A callback function to call for dirty events
- * @user_data: A private pointer to be passed to @callback
- * @destroy: An optional callback to destroy @user_data when the
+ * @callback: (scope notified): A callback function to call for dirty events
+ * @user_data: (closure): A private pointer to be passed to @callback
+ * @destroy: (allow-none): An optional callback to destroy @user_data when the
  *           @callback is removed or @onscreen is freed.
  *
  * Installs a @callback function that will be called whenever the
