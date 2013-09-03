@@ -406,7 +406,8 @@ typedef void (*CoglOutputCallback) (CoglOutput *output, void *user_data);
 /**
  * cogl_renderer_foreach_output:
  * @renderer: A connected #CoglRenderer
- * @callback: A #CoglOutputCallback to be called for each display output
+ * @callback: (scope call): A #CoglOutputCallback to be called for
+ *            each display output
  * @user_data: A user pointer to be passed to @callback
  *
  * Iterates all known display outputs for the given @renderer and
