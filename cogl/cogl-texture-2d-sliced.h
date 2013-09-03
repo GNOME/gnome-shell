@@ -100,7 +100,7 @@ typedef struct _CoglTexture2DSliced CoglTexture2DSliced;
  * is larger than is supported by the hardware but slicing is disabled
  * the texture size would be too large to handle.</note>
  *
- * Returns: A new #CoglTexture2DSliced object with no storage
+ * Returns: (transfer full): A new #CoglTexture2DSliced object with no storage
  *          allocated yet.
  *
  * Since: 1.10
@@ -153,8 +153,8 @@ cogl_texture_2d_sliced_new_with_size (CoglContext *ctx,
  * larger than is supported by the hardware but slicing is disabled
  * the texture size would be too large to handle.</note>
  *
- * Return value: A newly created #CoglTexture2DSliced or %NULL on
- *               failure and @error will be updated.
+ * Return value: (transfer full): A newly created #CoglTexture2DSliced
+ *               or %NULL on failure and @error will be updated.
  *
  * Since: 1.16
  */
@@ -212,8 +212,8 @@ cogl_texture_2d_sliced_new_from_file (CoglContext *ctx,
  * larger than is supported by the hardware but slicing is disabled
  * the texture size would be too large to handle.</note>
  *
- * Return value: A newly created #CoglTexture2DSliced or %NULL on
- *               failure and @error will be updated.
+ * Return value: (transfer full): A newly created #CoglTexture2DSliced
+ *               or %NULL on failure and @error will be updated.
  *
  * Since: 1.16
  */
@@ -268,8 +268,8 @@ cogl_texture_2d_sliced_new_from_data (CoglContext *ctx,
  * larger than is supported by the hardware but slicing is disabled
  * the texture size would be too large to handle.</note>
  *
- * Return value: A newly created #CoglTexture2DSliced or %NULL on
- *               failure and @error will be updated.
+ * Return value: (transfer full): A newly created #CoglTexture2DSliced
+ *               or %NULL on failure and @error will be updated.
  *
  * Since: 1.16
  */
