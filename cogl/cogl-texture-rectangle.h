@@ -102,9 +102,10 @@ cogl_is_texture_rectangle (void *object);
  * first check for the %COGL_FEATURE_ID_TEXTURE_RECTANGLE feature
  * using cogl_has_feature().</note>
  *
- * Returns: A pointer to a newly allocated #CoglTextureRectangle texture
- *          or if the size was too large or there wasn't enough memory
- *          %NULL is returned and @error set.
+ * Return value: (transfer full): A pointer to a newly allocated
+ *          #CoglTextureRectangle texture or if the size was too large
+ *          or there wasn't enough memory %NULL is returned and @error
+ *          set.
  *
  * Since: 1.10
  * Stability: unstable
@@ -143,9 +144,10 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
  * first check for the %COGL_FEATURE_ID_TEXTURE_RECTANGLE feature
  * using cogl_has_feature().</note>
  *
- * Returns: A pointer to a newly allocated #CoglTextureRectangle texture
- *          or if the size was too large or there wasn't enough memory
- *          %NULL is returned and @error set.
+ * Return value: (transfer full): A pointer to a newly allocated
+ *          #CoglTextureRectangle texture or if the size was too large
+ *          or there wasn't enough memory %NULL is returned and @error
+ *          set.
  * Since: 2.0
  * Stability: unstable
  */
@@ -184,12 +186,11 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bitmap,
  * first check for the %COGL_FEATURE_ID_TEXTURE_RECTANGLE feature
  * using cogl_has_feature().</note>
 
- * Returns: A newly allocated #CoglTextureRectangle, or if Cogl could
- *          not validate the @gl_handle in some way (perhaps because
- *          of an unsupported format) it will return %NULL and set
- *          @error.
+ * Return value: (transfer full): A newly allocated
+ *          #CoglTextureRectangle, or if Cogl could not validate the
+ *          @gl_handle in some way (perhaps because of an unsupported
+ *          format) it will return %NULL and set @error.
  *
-
  */
 CoglTextureRectangle *
 cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
