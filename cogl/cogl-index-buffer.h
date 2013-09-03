@@ -57,6 +57,8 @@ typedef struct _CoglIndexBuffer	      CoglIndexBuffer;
  * cogl_buffer_set_data() or by mapping it into the application's
  * address space using cogl_buffer_map().
  *
+ * Return value: (transfer full): A newly allocated #CoglIndexBuffer
+ *
  * Since: 1.4
  * Stability: Unstable
  */
