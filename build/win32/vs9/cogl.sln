@@ -1,7 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cogl-path", "cogl-path.vcproj", "{F3A80987-5411-43DB-A23B-06F2076E1207}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cogl", "cogl.vcproj", "{F3A80987-5411-43DB-A23B-06F2076E1206}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F3A80987-5411-43DB-A23B-06F2076E1207} = {F3A80987-5411-43DB-A23B-06F2076E1207}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cogl-pango", "cogl-pango.vcproj", "{FE5ABD0F-91E8-4AA5-9C1C-408427D5F768}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -48,6 +53,14 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3A80987-5411-43DB-A23B-06F2076E1207}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F3A80987-5411-43DB-A23B-06F2076E1207}.Debug|Win32.Build.0 = Debug|Win32
+		{F3A80987-5411-43DB-A23B-06F2076E1207}.Debug|x64.ActiveCfg = Debug|x64
+		{F3A80987-5411-43DB-A23B-06F2076E1207}.Debug|x64.Build.0 = Debug|x64
+		{F3A80987-5411-43DB-A23B-06F2076E1207}.Release|Win32.ActiveCfg = Release|Win32
+		{F3A80987-5411-43DB-A23B-06F2076E1207}.Release|Win32.Build.0 = Release|Win32
+		{F3A80987-5411-43DB-A23B-06F2076E1207}.Release|x64.ActiveCfg = Release|x64
+		{F3A80987-5411-43DB-A23B-06F2076E1207}.Release|x64.Build.0 = Release|x64
 		{F3A80987-5411-43DB-A23B-06F2076E1206}.Debug|Win32.ActiveCfg = Debug|Win32
 		{F3A80987-5411-43DB-A23B-06F2076E1206}.Debug|Win32.Build.0 = Debug|Win32
 		{F3A80987-5411-43DB-A23B-06F2076E1206}.Debug|x64.ActiveCfg = Debug|x64

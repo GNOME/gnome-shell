@@ -387,10 +387,10 @@
 	<ItemGroup>
 		<CustomBuild Include="..\..\..\cogl\cogl.symbols">
 			<Message Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">Generating $(IntDir)\cogl.def</Message>
-			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">$(GenerateCoglDef)</Command>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">$(GenerateCoglSDLDef)</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|Win32'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
 			<Message Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">Generating $(IntDir)\cogl.def</Message>
-			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">$(GenerateCoglDef)</Command>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">$(GenerateCoglSDLDef)</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_SDL|x64'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
 			<Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating $(IntDir)\cogl.def</Message>
 			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenerateCoglDef)</Command>
@@ -399,10 +399,10 @@
 			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenerateCoglDef)</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
 			<Message Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">Generating $(IntDir)\cogl.def</Message>
-			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">$(GenerateCoglDef)</Command>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">$(GenerateCoglSDLDef)</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release_SDL|Win32'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
 			<Message Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">Generating $(IntDir)\cogl.def</Message>
-			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">$(GenerateCoglDef)</Command>
+			<Command Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">$(GenerateCoglSDLDef)</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release_SDL|x64'">$(IntDir)\cogl.def;%(Outputs)</Outputs>
 			<Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating $(IntDir)\cogl.def</Message>
 			<Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenerateCoglDef)</Command>
@@ -466,6 +466,12 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ResourceCompile Include="..\..\..\cogl\cogl.rc" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="cogl-path.vcxproj">
+			<Project>{f3a80987-5411-43db-a23b-06f2076e1207}</Project>
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+		</ProjectReference>
 	</ItemGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 	<ImportGroup Label="ExtensionTargets">
