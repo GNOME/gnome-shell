@@ -127,9 +127,10 @@ typedef CoglBool (*CoglPipelineLayerCallback) (CoglPipeline *pipeline,
 /**
  * cogl_pipeline_foreach_layer:
  * @pipeline: A #CoglPipeline object
- * @callback: A #CoglPipelineLayerCallback to be called for each layer
- *            index
- * @user_data: Private data that will be passed to the callback
+ * @callback: (scope call): A #CoglPipelineLayerCallback to be
+ *            called for each layer index
+ * @user_data: (closure): Private data that will be passed to the
+ *             callback
  *
  * Iterates all the layer indices of the given @pipeline.
  *
