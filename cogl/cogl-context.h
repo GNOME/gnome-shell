@@ -328,8 +328,9 @@ typedef void (*CoglFeatureCallback) (CoglFeatureID feature, void *user_data);
 /**
  * cogl_foreach_feature:
  * @context: A #CoglContext pointer
- * @callback: A #CoglFeatureCallback called for each supported feature
- * @user_data: Private data to pass to the callback
+ * @callback: (scope call): A #CoglFeatureCallback called for each
+ *            supported feature
+ * @user_data: (closure): Private data to pass to the callback
  *
  * Iterates through all the context level features currently supported
  * for a given @context and for each feature @callback is called.
