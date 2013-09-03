@@ -57,6 +57,8 @@ COGL_BEGIN_DECLS
  * If @data isn't %NULL then @size bytes will be read from @data and
  * immediately copied into the new buffer.
  *
+ * Return value: (transfer full): a newly allocated #CoglPixelBuffer
+ *
  * Since: 1.10
  * Stability: unstable
  */
