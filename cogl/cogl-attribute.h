@@ -175,8 +175,8 @@ cogl_attribute_new_const_1f (CoglContext *context,
  * cogl_attribute_new_const_2f:
  * @context: A #CoglContext
  * @name: The name of the attribute (used to reference it from GLSL)
- * @constant0: The first component of a 2 component vector
- * @constant1: The second component of a 2 component vector
+ * @component0: The first component of a 2 component vector
+ * @component1: The second component of a 2 component vector
  *
  * Creates a new, 2 component, attribute whose value remains
  * constant across all the vertices of a primitive without needing to
@@ -203,9 +203,9 @@ cogl_attribute_new_const_2f (CoglContext *context,
  * cogl_attribute_new_const_3f:
  * @context: A #CoglContext
  * @name: The name of the attribute (used to reference it from GLSL)
- * @constant0: The first component of a 3 component vector
- * @constant1: The second component of a 3 component vector
- * @constant2: The third component of a 3 component vector
+ * @component0: The first component of a 3 component vector
+ * @component1: The second component of a 3 component vector
+ * @component2: The third component of a 3 component vector
  *
  * Creates a new, 3 component, attribute whose value remains
  * constant across all the vertices of a primitive without needing to
@@ -236,10 +236,10 @@ cogl_attribute_new_const_3f (CoglContext *context,
  * cogl_attribute_new_const_4f:
  * @context: A #CoglContext
  * @name: The name of the attribute (used to reference it from GLSL)
- * @constant0: The first component of a 4 component vector
- * @constant1: The second component of a 4 component vector
- * @constant2: The third component of a 4 component vector
- * @constant3: The fourth component of a 4 component vector
+ * @component0: The first component of a 4 component vector
+ * @component1: The second component of a 4 component vector
+ * @component2: The third component of a 4 component vector
+ * @component3: The fourth component of a 4 component vector
  *
  * Creates a new, 4 component, attribute whose value remains
  * constant across all the vertices of a primitive without needing to
