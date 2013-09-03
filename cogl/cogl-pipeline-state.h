@@ -689,7 +689,7 @@ cogl_pipeline_set_depth_state (CoglPipeline *pipeline,
                                CoglError **error);
 
 /**
- * cogl_pipeline_get_depth_state
+ * cogl_pipeline_get_depth_state:
  * @pipeline: A #CoglPipeline object
  * @state_out: (out): A destination #CoglDepthState struct
  *
