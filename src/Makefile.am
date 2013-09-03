@@ -229,7 +229,7 @@ shell_recorder_sources =        \
 # Custom element is an internal detail
 
 if BUILD_RECORDER
-libgnome_shell_la_SOURCES += $(shell_recorder_sources)
+libgnome_shell_sources += $(shell_recorder_sources)
 
 shell_recorder_private_sources =  \
 	shell-recorder-src.c	\
