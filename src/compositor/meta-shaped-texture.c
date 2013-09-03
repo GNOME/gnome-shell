@@ -237,7 +237,7 @@ set_cogl_texture (MetaShapedTexture *stex,
   if (priv->texture)
     cogl_object_unref (priv->texture);
 
-  priv->texture = cogl_tex;
+  priv->texture = cogl_object_ref (cogl_tex);
 
   if (cogl_tex != NULL)
     {
@@ -875,26 +875,7 @@ meta_shaped_texture_attach_wayland_buffer (MetaShapedTexture  *stex,
   g_return_if_fail (priv->wayland.surface->buffer_ref.buffer == buffer);
 
   if (buffer)
-    {
-      CoglContext *ctx =
-        clutter_backend_get_cogl_context (clutter_get_default_backend ());
-      CoglError *catch_error = NULL;
-      CoglTexture *texture =
-        COGL_TEXTURE (cogl_wayland_texture_2d_new_from_buffer (ctx,
-                                                               buffer->resource,
-                                                               &catch_error));
-      if (!texture)
-        {
-          cogl_error_free (catch_error);
-        }
-      else
-        {
-          buffer->width = cogl_texture_get_width (texture);
-          buffer->height = cogl_texture_get_height (texture);
-        }
-
-      set_cogl_texture (stex, texture);
-    }
+    set_cogl_texture (stex, buffer->texture);
   else
     set_cogl_texture (stex, NULL);
 

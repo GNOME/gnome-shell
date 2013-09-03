@@ -187,6 +187,7 @@ meta_wayland_buffer_reference (MetaWaylandBufferReference *ref,
 
       if (ref->buffer->busy_count == 0)
         {
+	  g_clear_pointer (&ref->buffer->texture, cogl_object_unref);
           g_assert (wl_resource_get_client (ref->buffer->resource));
           wl_resource_queue_event (ref->buffer->resource, WL_BUFFER_RELEASE);
         }
@@ -613,8 +614,8 @@ synthesize_motion_event (MetaWaylandCompositor *compositor,
       device_event.event_y = wl_fixed_to_double (pointer->y);
     }
 
-  if (surface && surface->xid != None)
-    device_event.event = surface->xid;
+  if (surface && surface->window != NULL)
+    device_event.event = surface->window->xwindow;
   else
     device_event.event = device_event.root;
 

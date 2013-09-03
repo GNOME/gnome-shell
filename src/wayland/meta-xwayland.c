@@ -45,10 +45,6 @@ xserver_set_window_id (struct wl_client *client,
   MetaDisplay *display = meta_get_display ();
   MetaWindow *window;
 
-  g_return_if_fail (surface->xid == None);
-
-  surface->xid = xid;
-
   window  = meta_display_lookup_x_window (display, xid);
   if (window)
     {

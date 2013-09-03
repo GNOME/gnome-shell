@@ -52,8 +52,8 @@ typedef struct
   gboolean newly_attached;
   MetaWaylandBuffer *buffer;
   struct wl_listener buffer_destroy_listener;
-  int32_t sx;
-  int32_t sy;
+  int32_t dx;
+  int32_t dy;
 
   /* wl_surface.damage */
   cairo_region_t *damage;
@@ -82,9 +82,6 @@ struct _MetaWaylandSurface
 {
   struct wl_resource *resource;
   MetaWaylandCompositor *compositor;
-  guint32 xid;
-  int x;
-  int y;
   MetaWaylandBufferReference buffer_ref;
   MetaWindow *window;
   gboolean has_shell_surface;
@@ -115,5 +112,10 @@ void                meta_wayland_surface_free   (MetaWaylandSurface    *surface)
 
 void                meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
 							    MetaWindow         *window);
+
+void                meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
+							   int                 width,
+							   int                 height,
+							   int                 edges);
 
 #endif
