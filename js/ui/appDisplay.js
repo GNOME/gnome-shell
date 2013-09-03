@@ -224,6 +224,7 @@ const PageIndicators = new Lang.Class({
                 children[i].destroy();
         }
         this._nPages = nPages;
+        this.actor.visible = (this._nPages > 1);
     },
 
     setCurrentPage: function(currentPage) {
