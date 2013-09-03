@@ -1876,14 +1876,17 @@ get_input_event (MetaDisplay *display,
         case XI_ButtonRelease:
           if (((XIDeviceEvent *) input_event)->deviceid == META_VIRTUAL_CORE_POINTER_ID)
             return input_event;
+          break;
         case XI_KeyPress:
         case XI_KeyRelease:
           if (((XIDeviceEvent *) input_event)->deviceid == META_VIRTUAL_CORE_KEYBOARD_ID)
             return input_event;
+          break;
         case XI_FocusIn:
         case XI_FocusOut:
           if (((XIEnterEvent *) input_event)->deviceid == META_VIRTUAL_CORE_KEYBOARD_ID)
             return input_event;
+          break;
         case XI_Enter:
         case XI_Leave:
           if (((XIEnterEvent *) input_event)->deviceid == META_VIRTUAL_CORE_POINTER_ID)
