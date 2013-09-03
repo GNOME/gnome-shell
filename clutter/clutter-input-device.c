@@ -46,6 +46,8 @@
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
+#include <math.h>
+
 enum
 {
   PROP_0,
@@ -1216,6 +1218,9 @@ _clutter_input_device_translate_axis (ClutterInputDevice *device,
 
   if (info->axis == CLUTTER_INPUT_AXIS_X ||
       info->axis == CLUTTER_INPUT_AXIS_Y)
+    return FALSE;
+
+  if (fabs (info->max_value - info->min_value) < 0.0000001)
     return FALSE;
 
   width = info->max_value - info->min_value;
