@@ -160,7 +160,7 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bitmap,
  * @gl_handle: A GL handle for a GL_TEXTURE_RECTANGLE texture object
  * @width: Width of the foreign GL texture
  * @height: Height of the foreign GL texture
- * @internal_format: The format of the texture
+ * @format: The format of the texture
  * @error: A #CoglError for exceptions
  *
  * Wraps an existing GL_TEXTURE_RECTANGLE texture object as a
