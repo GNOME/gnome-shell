@@ -138,9 +138,7 @@ meta_plugin_class_init (MetaPluginClass *klass)
 static void
 meta_plugin_init (MetaPlugin *self)
 {
-  MetaPluginPrivate *priv;
-
-  self->priv = priv = META_PLUGIN_GET_PRIVATE (self);
+  self->priv = META_PLUGIN_GET_PRIVATE (self);
 }
 
 gboolean
