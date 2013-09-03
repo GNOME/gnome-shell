@@ -167,6 +167,7 @@ cogl_texture_2d_sliced_new_from_file (CoglContext *ctx,
 
 /**
  * cogl_texture_2d_sliced_new_from_data:
+ * @ctx: A #CoglContext
  * @width: width of texture in pixels
  * @height: height of texture in pixels
  * @format: the #CoglPixelFormat the buffer is stored in in RAM
@@ -229,7 +230,7 @@ cogl_texture_2d_sliced_new_from_data (CoglContext *ctx,
 
 /**
  * cogl_texture_2d_sliced_new_from_bitmap:
- * @bitmap: A #CoglBitmap
+ * @bmp: A #CoglBitmap
  * @max_waste: The threshold of how wide a strip of wasted texels
  *             are allowed along the right and bottom textures before
  *             they must be sliced to reduce the amount of waste. A
