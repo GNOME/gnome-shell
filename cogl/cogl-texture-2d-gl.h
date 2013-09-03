@@ -53,10 +53,10 @@ COGL_BEGIN_DECLS
  * or if @width or @height don't have the correct texture
  * geometry.</note>
  *
- * Returns: A newly allocated #CoglTexture2D, or if Cogl could not
- *          validate the @gl_handle in some way (perhaps because of
- *          an unsupported format) it will return %NULL and set
- *          @error.
+ * Return value: (transfer full): A newly allocated #CoglTexture2D, or
+ *          if Cogl could not validate the @gl_handle in some way
+ *          (perhaps because of an unsupported format) it will return
+ *          %NULL and set @error.
  *
  * Since: 2.0
  */

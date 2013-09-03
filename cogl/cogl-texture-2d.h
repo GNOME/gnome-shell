@@ -92,7 +92,7 @@ cogl_is_texture_2d (void *object);
  * checking for the %COGL_FEATURE_ID_TEXTURE_NPOT feature via
  * cogl_has_feature().</note>
  *
- * Returns: A new #CoglTexture2D object with no storage yet allocated.
+ * Returns: (transfer full): A new #CoglTexture2D object with no storage yet allocated.
  *
  * Since: 2.0
  */
@@ -118,7 +118,7 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
  *
  * Creates a #CoglTexture2D from an image file.
  *
- * Return value: A newly created #CoglTexture2D or %NULL on failure
+ * Return value: (transfer full): A newly created #CoglTexture2D or %NULL on failure
  *               and @error will be updated.
  *
  * Since: 1.16
@@ -159,10 +159,10 @@ cogl_texture_2d_new_from_file (CoglContext *ctx,
  * checking for the %COGL_FEATURE_ID_TEXTURE_NPOT feature via
  * cogl_has_feature().</note>
  *
- * Returns: A newly allocated #CoglTexture2D, or if the size is not
- *          supported (because it is too large or a non-power-of-two
- *          size that the hardware doesn't support) it will return
- *          %NULL and set @error.
+ * Returns: (transfer full): A newly allocated #CoglTexture2D, or if
+ *          the size is not supported (because it is too large or a
+ *          non-power-of-two size that the hardware doesn't support)
+ *          it will return %NULL and set @error.
  *
  * Since: 2.0
  */
@@ -200,10 +200,10 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
  * checking for the %COGL_FEATURE_ID_TEXTURE_NPOT feature via
  * cogl_has_feature().</note>
  *
- * Returns: A newly allocated #CoglTexture2D, or if the size is not
- *          supported (because it is too large or a non-power-of-two
- *          size that the hardware doesn't support) it will return
- *          %NULL and set @error.
+ * Returns: (transfer full): A newly allocated #CoglTexture2D, or if
+ *          the size is not supported (because it is too large or a
+ *          non-power-of-two size that the hardware doesn't support)
+ *          it will return %NULL and set @error.
  *
  * Since: 2.0
  * Stability: unstable
