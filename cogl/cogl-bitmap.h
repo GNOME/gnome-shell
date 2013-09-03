@@ -62,8 +62,8 @@ COGL_BEGIN_DECLS
  * Loads an image file from disk. This function can be safely called from
  * within a thread.
  *
- * Return value: a #CoglBitmap to the new loaded image data, or
- *   %NULL if loading the image failed.
+ * Return value: (transfer full): a #CoglBitmap to the new loaded
+ *               image data, or %NULL if loading the image failed.
  *
  * Since: 1.0
  */
@@ -81,8 +81,8 @@ cogl_bitmap_new_from_file (const char *filename,
  *
  * Loads an Android asset into a newly allocated #CoglBitmap.
  *
- * Return value: A newly allocated #CoglBitmap holding the image data of the
- *               specified asset.
+ * Return value: (transfer full): A newly allocated #CoglBitmap
+ *               holding the image data of the specified asset.
  *
  * Since: 2.0
  */
@@ -109,7 +109,7 @@ cogl_android_bitmap_new_from_asset (CoglContext *context,
  * Wraps some image data that has been uploaded into a #CoglBuffer as
  * a #CoglBitmap. The data is not copied in this process.
  *
- * Return value: a #CoglBitmap encapsulating the given @buffer.
+ * Return value: (transfer full): a #CoglBitmap encapsulating the given @buffer.
  *
  * Since: 1.8
  * Stability: unstable
@@ -145,8 +145,8 @@ cogl_bitmap_new_from_buffer (CoglBuffer *buffer,
  * writing into it. The stride can be retrieved with
  * cogl_bitmap_get_rowstride().</note>
  *
- * Return value: a #CoglPixelBuffer representing the newly created array or
- *               %NULL on failure
+ * Return value: (transfer full): a #CoglPixelBuffer representing the
+ *               newly created array or %NULL on failure
  *
  * Since: 1.10
  * Stability: Unstable
@@ -173,7 +173,7 @@ cogl_bitmap_new_with_size (CoglContext *context,
  * cogl_framebuffer_read_pixels_into_bitmap() to read data directly
  * into an application buffer with the specified rowstride.
  *
- * Return value: A new #CoglBitmap.
+ * Return value: (transfer full): A new #CoglBitmap.
  * Since: 1.10
  * Stability: unstable
  */
@@ -235,8 +235,8 @@ cogl_bitmap_get_rowstride (CoglBitmap *bitmap);
  * cogl_bitmap_get_buffer:
  * @bitmap: A #CoglBitmap
  *
- * Return value: the #CoglPixelBuffer that this buffer uses for
- *   storage. Note that if the bitmap was created with
+ * Return value: (transfer none): the #CoglPixelBuffer that this
+ *   buffer uses for storage. Note that if the bitmap was created with
  *   cogl_bitmap_new_from_file() then it will not actually be using a
  *   pixel buffer and this function will return %NULL.
  * Stability: unstable
