@@ -857,8 +857,10 @@ typedef CoglBool (* CoglPrimitiveAttributeCallback) (CoglPrimitive *primitive,
 /**
  * cogl_primitive_foreach_attribute:
  * @primitive: A #CoglPrimitive object
- * @callback: A #CoglPrimitiveAttributeCallback to be called for each attribute
- * @user_data: Private data that will be passed to the callback
+ * @callback: (scope call): A #CoglPrimitiveAttributeCallback to be
+ *            called for each attribute
+ * @user_data: (closure): Private data that will be passed to the
+ *             callback
  *
  * Iterates all the attributes of the given #CoglPrimitive.
  *
