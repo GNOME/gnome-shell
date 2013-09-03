@@ -3212,9 +3212,6 @@ parse_style_set_element (GMarkupParseContext  *context,
           meta_frame_style_ref (frame_style);
           info->style_set->tiled_right_styles[frame_focus] = frame_style;
           break;
-          meta_frame_style_ref (frame_style);
-          info->style_set->tiled_right_styles[frame_focus] = frame_style;
-          break;
         case META_FRAME_STATE_SHADED:
           if (info->style_set->shaded_styles[frame_resize][frame_focus])
             {
