@@ -221,7 +221,8 @@ typedef enum { /*< prefix=COGL_BUFFER_MAP_HINT >*/
  * conflicting with the @access mask you pass. It is also an error to
  * release your last reference while the buffer is mapped.
  *
- * Return value: A pointer to the mapped memory or %NULL is the call fails
+ * Return value: (transfer none): A pointer to the mapped memory or
+ *        %NULL is the call fails
  *
  * Since: 1.2
  * Stability: unstable
@@ -257,7 +258,8 @@ cogl_buffer_map (CoglBuffer *buffer,
  * conflicting with the @access mask you pass. It is also an error to
  * release your last reference while the buffer is mapped.
  *
- * Return value: A pointer to the mapped memory or %NULL is the call fails
+ * Return value: (transfer none): A pointer to the mapped memory or
+ *        %NULL is the call fails
  *
  * Since: 2.0
  * Stability: unstable
