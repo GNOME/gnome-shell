@@ -48,10 +48,11 @@ po/*.pot
 50-metacity-key.xml
 libmutter-wayland.pc
 mutter-wayland
-mutter-theme-viewer
-mutter-wayland.desktop
+mutter-launch
 org.gnome.mutter.gschema.valid
 org.gnome.mutter.gschema.xml
+org.gnome.mutter.wayland.gschema.valid
+org.gnome.mutter.wayland.gschema.xml
 testasyncgetprop
 testboxes
 testgradient
@@ -77,6 +78,12 @@ src/stamp-mutter-marshal.h
 src/meta-dbus-xrandr.[ch]
 src/meta-dbus-idle-monitor.[ch]
 src/mutter-plugins.pc
+src/wayland/gtk-shell-protocol.c
+src/wayland/gtk-shell-client-protocol.h
+src/wayland/gtk-shell-server-protocol.h
+src/wayland/xserver-protocol.c
+src/wayland/xserver-client-protocol.h
+src/wayland/xserver-server-protocol.h
 doc/reference/*.args
 doc/reference/*.bak
 doc/reference/*.hierarchy
