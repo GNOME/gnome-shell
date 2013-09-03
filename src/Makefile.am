@@ -186,7 +186,7 @@ gnome_shell_CPPFLAGS = \
 
 # Here, and after, we repeat mutter and bluetooth libraries just for the rpath
 # The dependency is already pulled in by libtool
-gnome_shell_LDADD = libgnome-shell.la libgnome-shell-js.la $(MUTTER_LIBS) $(BLUETOOTH_LIBS)
+gnome_shell_LDADD = libgnome-shell.la libgnome-shell-js.la $(GNOME_SHELL_LIBS) $(MUTTER_LIBS) $(BLUETOOTH_LIBS)
 gnome_shell_DEPENDENCIES = libgnome-shell.la
 
 if HAVE_MUTTER_WAYLAND
@@ -199,7 +199,7 @@ gnome_shell_wayland_CPPFLAGS = \
 	$(MUTTER_WAYLAND_CFLAGS) \
 	$(gnome_shell_cflags)
 
-gnome_shell_wayland_LDADD = libgnome-shell-wayland.la libgnome-shell-js.la $(MUTTER_WAYLAND_LIBS) $(BLUETOOTH_LIBS)
+gnome_shell_wayland_LDADD = libgnome-shell-wayland.la libgnome-shell-js.la $(GNOME_SHELL_LIBS) $(MUTTER_WAYLAND_LIBS) $(BLUETOOTH_LIBS)
 gnome_shell_wayland_DEPENDENCIES = libgnome-shell-wayland.la
 endif HAVE_MUTTER_WAYLAND
 
@@ -253,7 +253,7 @@ gnome_shell_perf_helper_LDADD = $(SHELL_PERF_HELPER_LIBS)
 noinst_PROGRAMS += run-js-test
 
 run_js_test_CPPFLAGS = $(MUTTER_CFLAGS) $(gnome_shell_cflags)
-run_js_test_LDADD = libgnome-shell.la $(MUTTER_LIBS) $(BLUETOOTH_LIBS)
+run_js_test_LDADD = libgnome-shell.la $(GNOME_SHELL_JS_LIBS) $(MUTTER_LIBS) $(BLUETOOTH_LIBS)
 run_js_test_LDFLAGS = -export-dynamic
 
 run_js_test_SOURCES =			\
@@ -301,7 +301,7 @@ libgnome_shell_base_la_LIBADD = $(libgnome_shell_libadd)
 libgnome_shell_base_la_CPPFLAGS = $(gnome_shell_cflags)
 
 libgnome_shell_la_LDFLAGS = $(libgnome_shell_ldflags)
-libgnome_shell_la_LIBADD = $(MUTTER_LIBS) libgnome-shell-base.la
+libgnome_shell_la_LIBADD = $(GNOME_SHELL_LIBS) $(MUTTER_LIBS) libgnome-shell-base.la
 libgnome_shell_la_CPPFLAGS = $(MUTTER_CFLAGS) $(gnome_shell_cflags)
 
 if HAVE_MUTTER_WAYLAND
