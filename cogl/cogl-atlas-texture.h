@@ -86,8 +86,9 @@ typedef struct _CoglAtlasTexture CoglAtlasTexture;
  * with some limitations. See the documentation for #CoglMetaTexture
  * for more details.</note>
  *
- * Returns: A new #CoglAtlasTexture object with no storage allocated
- *          yet or %NULL on failure and @error will be updated.
+ * Return value: (transfer full): A new #CoglAtlasTexture object with
+ *          no storage allocated yet or %NULL on failure and @error
+ *          will be updated.
  * Since: 1.16
  * Stability: unstable
  */
@@ -116,8 +117,8 @@ cogl_atlas_texture_new_with_size (CoglContext *ctx,
  * with some limitations. See the documentation for #CoglMetaTexture
  * for more details.</note>
  *
- * Returns: A new #CoglAtlasTexture object or %NULL on failure and
- *          @error will be updated.
+ * Return value: (transfer full): A new #CoglAtlasTexture object or
+ *          %NULL on failure and @error will be updated.
  * Since: 1.16
  * Stability: unstable
  */
@@ -159,8 +160,8 @@ cogl_atlas_texture_new_from_file (CoglContext *ctx,
  * meta-texture with some limitations. See the documentation for
  * #CoglMetaTexture for more details.</note>
  *
- * Returns: A new #CoglAtlasTexture object or %NULL on failure and
- *          @error will be updated.
+ * Return value: (transfer full): A new #CoglAtlasTexture object or
+ *          %NULL on failure and @error will be updated.
  * Since: 1.16
  * Stability: unstable
  */
@@ -199,8 +200,8 @@ cogl_atlas_texture_new_from_data (CoglContext *ctx,
  * with some limitations. See the documentation for #CoglMetaTexture
  * for more details.</note>
  *
- * Returns: A new #CoglAtlasTexture object or %NULL on failure and
- *          @error will be updated.
+ * Return value: (transfer full): A new #CoglAtlasTexture object or
+ *          %NULL on failure and @error will be updated.
  * Since: 1.16
  * Stability: unstable
  */
