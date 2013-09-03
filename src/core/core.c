@@ -89,7 +89,7 @@ meta_core_get (Display *xdisplay,
   if (request != META_CORE_WINDOW_HAS_FRAME &&
       (window == NULL || window->frame == NULL)) {
     meta_bug ("No such frame window 0x%lx!\n", xwindow);
-    return;
+    goto out;
   }
 
   while (request != META_CORE_GET_END) {
@@ -99,7 +99,7 @@ meta_core_get (Display *xdisplay,
     switch (request) {
       case META_CORE_WINDOW_HAS_FRAME:
         *((gboolean*)answer) = window != NULL && window->frame != NULL;
-        if (!*((gboolean*)answer)) return; /* see above */
+        if (!*((gboolean*)answer)) goto out; /* see above */
         break; 
       case META_CORE_GET_CLIENT_WIDTH:
         *((gint*)answer) = window->rect.width;
@@ -160,6 +160,7 @@ meta_core_get (Display *xdisplay,
     request = va_arg (args, MetaCoreGetType);
   } 
 
+ out:
   va_end (args);
 }
 
