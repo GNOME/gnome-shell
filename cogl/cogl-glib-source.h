@@ -66,7 +66,7 @@ cogl_glib_source_new (CoglContext *context,
 
 /**
  * cogl_glib_renderer_source_new:
- * @context: A #CoglContext
+ * @renderer: A #CoglRenderer
  * @priority: The priority of the #GSource
  *
  * Creates a #GSource which handles Cogl's internal system event
