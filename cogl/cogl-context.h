@@ -92,8 +92,8 @@ COGL_BEGIN_DECLS
 #define COGL_CONTEXT(OBJECT) ((CoglContext *)OBJECT)
 
 /**
- * cogl_context_new:
- * @display: A #CoglDisplay pointer
+ * cogl_context_new: (constructor)
+ * @display: (allow-none): A #CoglDisplay pointer
  * @error: A CoglError return location.
  *
  * Creates a new #CoglContext which acts as an application sandbox
