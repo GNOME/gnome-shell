@@ -222,7 +222,7 @@ typedef struct {
  * cogl_primitive_set_n_vertices() were called. This property defines
  * the number of vertices to read when drawing.
  *
- * Returns: A newly allocated #CoglPrimitive object
+ * Return value: (transfer full): A newly allocated #CoglPrimitive object
  *
  * Since: 1.6
  * Stability: Unstable
@@ -244,7 +244,9 @@ cogl_primitive_new_with_attributes (CoglVerticesMode mode,
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
- * @data: An array of #CoglVertexP2 vertices
+
+ * @data: (array length=n_vertices): (type Cogl.VertexP2): An array
+ *        of #CoglVertexP2 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -279,8 +281,8 @@ cogl_primitive_new_with_attributes (CoglVerticesMode mode,
  * 1.1) then you will need to make sure your assets are resized to a
  * power-of-two size (though they don't have to be square)</note>
  *
- * Return value: A newly allocated #CoglPrimitive with a reference of
- * 1. This can be freed using cogl_object_unref().
+ * Return value: (transfer full): A newly allocated #CoglPrimitive
+ * with a reference of 1. This can be freed using cogl_object_unref().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -297,7 +299,8 @@ cogl_primitive_new_p2 (CoglContext *context,
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
- * @data: An array of #CoglVertexP3 vertices
+ * @data: (array length=n_vertices): (type Cogl.VertexP3): An array of
+ *        #CoglVertexP3 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -332,8 +335,8 @@ cogl_primitive_new_p2 (CoglContext *context,
  * 1.1) then you will need to make sure your assets are resized to a
  * power-of-two size (though they don't have to be square)</note>
  *
- * Return value: A newly allocated #CoglPrimitive with a reference of
- * 1. This can be freed using cogl_object_unref().
+ * Return value: (transfer full): A newly allocated #CoglPrimitive
+ * with a reference of 1. This can be freed using cogl_object_unref().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -350,7 +353,8 @@ cogl_primitive_new_p3 (CoglContext *context,
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
- * @data: An array of #CoglVertexP2C4 vertices
+ * @data: (array length=n_vertices): (type Cogl.VertexP2C4): An array
+ *        of #CoglVertexP2C4 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -387,8 +391,8 @@ cogl_primitive_new_p3 (CoglContext *context,
  * 1.1) then you will need to make sure your assets are resized to a
  * power-of-two size (though they don't have to be square)</note>
  *
- * Return value: A newly allocated #CoglPrimitive with a reference of
- * 1. This can be freed using cogl_object_unref().
+ * Return value: (transfer full): A newly allocated #CoglPrimitive
+ * with a reference of 1. This can be freed using cogl_object_unref().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -405,7 +409,8 @@ cogl_primitive_new_p2c4 (CoglContext *context,
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
- * @data: An array of #CoglVertexP3C4 vertices
+ * @data: (array length=n_vertices): (type Cogl.VertexP3C4): An array
+ *        of #CoglVertexP3C4 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -442,8 +447,8 @@ cogl_primitive_new_p2c4 (CoglContext *context,
  * 1.1) then you will need to make sure your assets are resized to a
  * power-of-two size (though they don't have to be square)</note>
  *
- * Return value: A newly allocated #CoglPrimitive with a reference of
- * 1. This can be freed using cogl_object_unref().
+ * Return value: (transfer full): A newly allocated #CoglPrimitive
+ * with a reference of 1. This can be freed using cogl_object_unref().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -460,7 +465,8 @@ cogl_primitive_new_p3c4 (CoglContext *context,
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
- * @data: An array of #CoglVertexP2T2 vertices
+ * @data: (array length=n_vertices): (type Cogl.VertexP2T2): An array
+ *        of #CoglVertexP2T2 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -497,8 +503,8 @@ cogl_primitive_new_p3c4 (CoglContext *context,
  * 1.1) then you will need to make sure your assets are resized to a
  * power-of-two size (though they don't have to be square)</note>
  *
- * Return value: A newly allocated #CoglPrimitive with a reference of
- * 1. This can be freed using cogl_object_unref().
+ * Return value: (transfer full): A newly allocated #CoglPrimitive
+ * with a reference of 1. This can be freed using cogl_object_unref().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -515,7 +521,8 @@ cogl_primitive_new_p2t2 (CoglContext *context,
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
- * @data: An array of #CoglVertexP3T2 vertices
+ * @data: (array length=n_vertices): (type Cogl.VertexP3T2): An array
+ *        of #CoglVertexP3T2 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -552,8 +559,8 @@ cogl_primitive_new_p2t2 (CoglContext *context,
  * 1.1) then you will need to make sure your assets are resized to a
  * power-of-two size (though they don't have to be square)</note>
  *
- * Return value: A newly allocated #CoglPrimitive with a reference of
- * 1. This can be freed using cogl_object_unref().
+ * Return value: (transfer full): A newly allocated #CoglPrimitive
+ * with a reference of 1. This can be freed using cogl_object_unref().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -570,7 +577,8 @@ cogl_primitive_new_p3t2 (CoglContext *context,
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
- * @data: An array of #CoglVertexP2T2C4 vertices
+ * @data: (array length=n_vertices): (type Cogl.VertexP2T2C4): An
+ *        array of #CoglVertexP2T2C4 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -607,8 +615,8 @@ cogl_primitive_new_p3t2 (CoglContext *context,
  * 1.1) then you will need to make sure your assets are resized to a
  * power-of-two size (though they don't have to be square)</note>
  *
- * Return value: A newly allocated #CoglPrimitive with a reference of
- * 1. This can be freed using cogl_object_unref().
+ * Return value: (transfer full): A newly allocated #CoglPrimitive
+ * with a reference of 1. This can be freed using cogl_object_unref().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -625,7 +633,8 @@ cogl_primitive_new_p2t2c4 (CoglContext *context,
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to read from @data and also
  *              the number of vertices to read when later drawing.
- * @data: An array of #CoglVertexP3T2C4 vertices
+ * @data: (array length=n_vertices): (type Cogl.VertexP3T2C4): An
+ *        array of #CoglVertexP3T2C4 vertices
  *
  * Provides a convenient way to describe a primitive, such as a single
  * triangle strip or a triangle fan, that will internally allocate the
@@ -662,8 +671,8 @@ cogl_primitive_new_p2t2c4 (CoglContext *context,
  * 1.1) then you will need to make sure your assets are resized to a
  * power-of-two size (though they don't have to be square)</note>
  *
- * Return value: A newly allocated #CoglPrimitive with a reference of
- * 1. This can be freed using cogl_object_unref().
+ * Return value: (transfer full): A newly allocated #CoglPrimitive
+ * with a reference of 1. This can be freed using cogl_object_unref().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -787,7 +796,7 @@ cogl_primitive_set_indices (CoglPrimitive *primitive,
  * cogl_primitive_get_indices:
  * @primitive: A #CoglPrimitive
  *
- * Return value: the indices that were set with
+ * Return value: (transfer none): the indices that were set with
  * cogl_primitive_set_indices() or %NULL if no indices were set.
  *
  * Since: 1.10
@@ -804,7 +813,7 @@ cogl_primitive_get_indices (CoglPrimitive *primitive);
  * is a shallow copy which means it will use the same attributes and
  * attribute buffers as the original primitive.
  *
- * Return value: the new primitive
+ * Return value: (transfer full): the new primitive
  * Since: 1.10
  * Stability: unstable
  */
