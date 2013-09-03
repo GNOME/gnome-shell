@@ -69,7 +69,7 @@ COGL_BEGIN_DECLS
  * Note: You can assume this function always succeeds and won't return
  * %NULL
  *
- * Return value: A newly allocated #CoglAttributeBuffer. Never %NULL.
+ * Return value: (transfer full): A newly allocated #CoglAttributeBuffer. Never %NULL.
  *
  * Stability: Unstable
  */
@@ -100,7 +100,7 @@ cogl_attribute_buffer_new_with_size (CoglContext *context,
  * explicitly catch errors with cogl_buffer_set_data() or
  * cogl_buffer_map().</note>
  *
- * Return value: A newly allocated #CoglAttributeBuffer (never %NULL)
+ * Return value: (transfer full): A newly allocated #CoglAttributeBuffer (never %NULL)
  *
  * Since: 1.4
  * Stability: Unstable
