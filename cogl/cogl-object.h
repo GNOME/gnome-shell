@@ -103,7 +103,11 @@ typedef struct {
  *
  * Since: 1.4
  */
+#ifdef COGL_HAS_GTYPE_SUPPORT
+typedef GDestroyNotify CoglUserDataDestroyCallback;
+#else
 typedef void (*CoglUserDataDestroyCallback) (void *user_data);
+#endif
 
 /**
  * CoglDebugObjectTypeInfo:
