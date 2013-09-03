@@ -167,20 +167,6 @@ const BaseAppView = new Lang.Class({
 Signals.addSignalMethods(BaseAppView.prototype);
 
 
-// Ignore child size requests to use the available size from the parent
-const PagesBin = new Lang.Class({
-    Name: 'PagesBin',
-    Extends: St.Bin,
-
-    vfunc_get_preferred_height: function (forWidth) {
-        return [0, 0];
-    },
-
-    vfunc_get_preferred_width: function(forHeight) {
-        return [0, 0];
-    }
-});
-
 const PageIndicators = new Lang.Class({
     Name:'PageIndicators',
 
@@ -273,16 +259,22 @@ const AllView = new Lang.Class({
 
     _init: function() {
         this.parent({ usePagination: true }, null);
-        this._pagesBin = new PagesBin({ style_class: 'all-apps',
-                                          x_expand: true,
-                                          y_expand: true,
-                                          x_fill: true,
-                                          y_fill: false,
-                                          reactive: true,
-                                          y_align: St.Align.START });
+        this._scrollView = new St.ScrollView({ style_class: 'all-apps',
+                                               x_expand: true,
+                                               y_expand: true,
+                                               x_fill: true,
+                                               y_fill: false,
+                                               reactive: true,
+                                               y_align: St.Align.START });
         this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                      x_expand:true, y_expand:true });
-        this.actor.add_actor(this._pagesBin);
+        this.actor.add_actor(this._scrollView);
+
+        this._scrollView.set_policy(Gtk.PolicyType.NEVER,
+                                    Gtk.PolicyType.AUTOMATIC);
+        // we are only using ScrollView for the fade effect, hide scrollbars
+        this._scrollView.vscroll.hide();
+        this._adjustment = this._scrollView.vscroll.adjustment;
 
         this._pageIndicators = new PageIndicators();
         this._pageIndicators.connect('page-activated', Lang.bind(this,
@@ -295,8 +287,6 @@ const AllView = new Lang.Class({
 
         this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         let box = new St.BoxLayout({ vertical: true });
-        this._verticalAdjustment = new St.Adjustment();
-        box.set_adjustments(new St.Adjustment() /* unused */, this._verticalAdjustment);
 
         this._currentPage = 0;
         this._stack.add_actor(this._grid.actor);
@@ -304,16 +294,16 @@ const AllView = new Lang.Class({
         this._stack.add_actor(this._eventBlocker);
 
         box.add_actor(this._stack);
-        this._pagesBin.add_actor(box);
+        this._scrollView.add_actor(box);
 
-        this._pagesBin.connect('scroll-event', Lang.bind(this, this._onScroll));
+        this._scrollView.connect('scroll-event', Lang.bind(this, this._onScroll));
 
         let panAction = new Clutter.PanAction({ interpolate: false });
         panAction.connect('pan', Lang.bind(this, this._onPan));
         panAction.connect('gesture-cancel', Lang.bind(this, this._onPanEnd));
         panAction.connect('gesture-end', Lang.bind(this, this._onPanEnd));
         this._panAction = panAction;
-        this._pagesBin.add_action(panAction);
+        this._scrollView.add_action(panAction);
         this._panning = false;
         this._clickAction = new Clutter.ClickAction();
         this._clickAction.connect('clicked', Lang.bind(this, function() {
@@ -338,6 +328,7 @@ const AllView = new Lang.Class({
             }));
         this._grid.connect('space-opened', Lang.bind(this,
             function() {
+                this._scrollView.get_effect('fade').enabled = false;
                 this.emit('space-ready');
             }));
         this._grid.connect('space-closed', Lang.bind(this,
@@ -366,7 +357,7 @@ const AllView = new Lang.Class({
         // use the same speed regardless of original position
         // if velocity is specified, it's in pixels per milliseconds
         let diffToPage = this._diffToPage(pageNumber);
-        let childBox = this._pagesBin.get_allocation_box();
+        let childBox = this._scrollView.get_allocation_box();
         let totalHeight = childBox.y2 - childBox.y1;
         let time;
         // Only take the velocity into account on page changes, otherwise
@@ -384,7 +375,7 @@ const AllView = new Lang.Class({
 
         if (pageNumber < this._grid.nPages() && pageNumber >= 0) {
             this._currentPage = pageNumber;
-            Tweener.addTween(this._verticalAdjustment,
+            Tweener.addTween(this._adjustment,
                              { value: this._grid.getPageY(this._currentPage),
                                time: time,
                                transition: 'easeOutQuad' });
@@ -393,7 +384,7 @@ const AllView = new Lang.Class({
     },
 
     _diffToPage: function (pageNumber) {
-        let currentScrollPosition = this._verticalAdjustment.value;
+        let currentScrollPosition = this._adjustment.value;
         return Math.abs(currentScrollPosition - this._grid.getPageY(pageNumber));
     },
 
@@ -405,6 +396,7 @@ const AllView = new Lang.Class({
 
     _closeSpaceForPopup: function() {
         this._updateIconOpacities(false);
+        this._scrollView.get_effect('fade').enabled = true;
         this._grid.closeExtraSpace();
     },
 
@@ -429,8 +421,8 @@ const AllView = new Lang.Class({
         this._panning = true;
         this._clickAction.release();
         let [dist, dx, dy] = action.get_motion_delta(0);
-        let adjustment = this._verticalAdjustment;
-        adjustment.value -= (dy / this._pagesBin.height) * adjustment.page_size;
+        let adjustment = this._adjustment;
+        adjustment.value -= (dy / this._scrollView.height) * adjustment.page_size;
         return false;
     },
 
@@ -438,7 +430,7 @@ const AllView = new Lang.Class({
          if (this._displayingPopup)
             return;
         let diffCurrentPage = this._diffToPage(this._currentPage);
-        if (diffCurrentPage > this._pagesBin.height * PAGE_SWITCH_TRESHOLD) {
+        if (diffCurrentPage > this._scrollView.height * PAGE_SWITCH_TRESHOLD) {
             if (action.get_velocity(0)[2] > 0 && this._currentPage > 0)
                 this.goToPage(this._currentPage - 1);
             else if (this._currentPage < this._grid.nPages() - 1)
@@ -513,8 +505,8 @@ const AllView = new Lang.Class({
     },
 
     _updateAdjustment: function(availHeight) {
-        this._verticalAdjustment.page_size = availHeight;
-        this._verticalAdjustment.upper = this._stack.height;
+        this._adjustment.page_size = availHeight;
+        this._adjustment.upper = this._stack.height;
     },
 
     _updateIconOpacities: function(folderOpen) {
@@ -539,7 +531,7 @@ const AllView = new Lang.Class({
         box.y1 = 0;
         box.y2 = height;
         box = this.actor.get_theme_node().get_content_box(box);
-        box = this._pagesBin.get_theme_node().get_content_box(box);
+        box = this._scrollView.get_theme_node().get_content_box(box);
         box = this._grid.actor.get_theme_node().get_content_box(box);
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
@@ -549,8 +541,13 @@ const AllView = new Lang.Class({
 
         this._grid.adaptToSize(availWidth, availHeight);
 
+        let fadeOffset = Math.min(this._grid.topPadding,
+                                  this._grid.bottomPadding);
+        this._scrollView.update_fade_effect(fadeOffset, 0);
+        this._scrollView.get_effect('fade').fade_edges = true;
+
         if (this._availWidth != availWidth || this._availHeight != availHeight || oldNPages != this._grid.nPages()) {
-            this._verticalAdjustment.value = 0;
+            this._adjustment.value = 0;
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
                 function() {
                     this._pageIndicators.setNPages(this._grid.nPages());
