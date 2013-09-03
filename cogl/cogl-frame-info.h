@@ -116,8 +116,8 @@ float cogl_frame_info_get_refresh_rate (CoglFrameInfo *info);
  *
  * Gets the #CoglOutput that the swapped frame was presented to.
  *
- * Return value: The #CoglOutput that the frame was presented to, or
- *               %NULL if this could not be determined.
+ * Return value: (transfer none): The #CoglOutput that the frame was
+ *        presented to, or %NULL if this could not be determined.
  * Since: 1.14
  * Stability: unstable
  */
