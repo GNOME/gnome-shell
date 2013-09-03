@@ -336,6 +336,7 @@ CLEANFILES =					\
 	mutter-wayland.desktop			\
 	mutter-wm.desktop			\
 	org.gnome.mutter.gschema.xml		\
+	org.gnome.mutter.wayland.gschema.xml	\
 	$(xml_DATA)				\
 	$(mutter_built_sources)			\
 	$(typelib_DATA)				\
@@ -352,10 +353,12 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(wmproperties_in_files)	\
 	$(xml_in_files)			\
 	org.gnome.mutter.gschema.xml.in \
+	org.gnome.mutter.wayland.gschema.xml.in \
 	mutter-schemas.convert \
 	libmutter-wayland.pc.in \
 	mutter-enum-types.h.in \
-	mutter-enum-types.c.in
+	mutter-enum-types.c.in \
+	xrandr.xml idle-monitor.xml
 
 BUILT_SOURCES = $(mutter_built_sources)
 MUTTER_STAMP_FILES = stamp-mutter-enum-types.h

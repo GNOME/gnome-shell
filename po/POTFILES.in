@@ -21,9 +21,9 @@ src/core/util.c
 src/core/window.c
 src/core/window-props.c
 src/core/xprops.c
-src/mutter.desktop.in
-src/mutter-wm.desktop.in
+src/mutter-wayland.desktop.in
 src/org.gnome.mutter.gschema.xml.in
+src/org.gnome.mutter.wayland.gschema.xml.in
 src/ui/frames.c
 src/ui/menu.c
 src/ui/metaaccellabel.c

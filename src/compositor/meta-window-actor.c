@@ -451,12 +451,7 @@ meta_window_actor_dispose (GObject *object)
   info     = meta_screen_get_compositor_data (screen);
 
   if (!meta_is_wayland_compositor ())
-    {
-      display  = meta_screen_get_display (screen);
-      xdisplay = meta_display_get_xdisplay (display);
-
-      meta_window_actor_detach_x11_pixmap (self);
-    }
+    meta_window_actor_detach_x11_pixmap (self);
 
   if (priv->send_frame_messages_timer != 0)
     {
@@ -477,6 +472,9 @@ meta_window_actor_dispose (GObject *object)
 
   if (!meta_is_wayland_compositor () && priv->damage != None)
     {
+      display  = meta_screen_get_display (screen);
+      xdisplay = meta_display_get_xdisplay (display);
+
       meta_error_trap_push (display);
       XDamageDestroy (xdisplay, priv->damage);
       meta_error_trap_pop (display);

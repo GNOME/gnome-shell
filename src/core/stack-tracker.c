@@ -1051,7 +1051,6 @@ stack_tracker_event_received (MetaStackTracker *tracker,
 
   tracker->xserver_serial = op->any.serial;
 
-#warning "TODO: remove unused tracker->xserver_stack"
   /* XXX: With the design we have ended up with it looks like we've
    * ended up making it unnecessary to maintain tracker->xserver_stack
    * since we only need an xserver_stack during the
