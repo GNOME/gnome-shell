@@ -293,6 +293,7 @@ libgnome_shell_libadd =		\
 	gvc/libgvc.la		\
 	$(NULL)
 
+libgnome_shell_menu_la_LDFLAGS = $(libgnome_shell_ldflags)
 libgnome_shell_menu_la_LIBADD = $(GNOME_SHELL_LIBS)
 libgnome_shell_menu_la_CPPFLAGS = $(GNOME_SHELL_CFLAGS)
 
