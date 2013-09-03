@@ -232,6 +232,27 @@ cogl_primitive_new (CoglVerticesMode mode,
                     int n_vertices,
                     ...);
 
+/**
+ * cogl_primitive_new_with_attributes:
+ * @mode: A #CoglVerticesMode defining how to draw the vertices
+ * @n_vertices: The number of vertices to process when drawing
+ * @attributes: An array of CoglAttribute
+ * @n_attributes: The number of attributes
+ *
+ * Combines a set of #CoglAttribute<!-- -->s with a specific draw @mode
+ * and defines a vertex count so a #CoglPrimitive object can be retained and
+ * drawn later with no addition information required.
+ *
+ * The value passed as @n_vertices will simply update the
+ * #CoglPrimitive <structfield>n_vertices</structfield> property as if
+ * cogl_primitive_set_n_vertices() were called. This property defines
+ * the number of vertices to read when drawing.
+ *
+ * Return value: (transfer full): A newly allocated #CoglPrimitive object
+ *
+ * Since: 1.6
+ * Stability: Unstable
+ */
 CoglPrimitive *
 cogl_primitive_new_with_attributes (CoglVerticesMode mode,
                                     int n_vertices,
