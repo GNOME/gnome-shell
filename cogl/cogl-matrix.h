@@ -563,8 +563,8 @@ cogl_matrix_equal (const void *v1, const void *v2);
  * Allocates a new #CoglMatrix on the heap and initializes it with
  * the same values as @matrix.
  *
- * Returns: A newly allocated #CoglMatrix which should be freed using
- * cogl_matrix_free()
+ * Return value: (transfer full): A newly allocated #CoglMatrix which
+ * should be freed using cogl_matrix_free()
  *
  * Since: 1.6
  */
