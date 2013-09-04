@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-27 18:20+0000\n"
-"PO-Revision-Date: 2013-08-27 22:08+0200\n"
+"POT-Creation-Date: 2013-09-04 09:34+0000\n"
+"PO-Revision-Date: 2013-08-29 20:44+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -290,9 +290,9 @@ msgid "Select an extension to configure using the combobox above."
 msgstr "Použitím ponuky vyberte rozšírenie na nastavenie"
 
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:347
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:686
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -315,21 +315,17 @@ msgstr "Prihlásiť sa"
 msgid "Choose Session"
 msgstr "Vybrať reláciu"
 
-#: ../js/gdm/loginDialog.js:312
-msgid "Session"
-msgstr "Relácia"
-
 # https://bugzilla.gnome.org/show_bug.cgi?id=659972
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:458
+#: ../js/gdm/loginDialog.js:454
 msgid "Not listed?"
 msgstr "Nie ste v zozname?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:625
+#: ../js/gdm/loginDialog.js:622
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(napr., používateľ alebo %s)"
@@ -337,12 +333,12 @@ msgstr "(napr., používateľ alebo %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:630 ../js/ui/components/networkAgent.js:255
+#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:255
 #: ../js/ui/components/networkAgent.js:273
 msgid "Username: "
 msgstr "Používateľské meno: "
 
-#: ../js/gdm/loginDialog.js:894
+#: ../js/gdm/loginDialog.js:891
 msgid "Login Window"
 msgstr "Prihlasovacie okno"
 
@@ -374,23 +370,27 @@ msgstr "Nepodarilo sa analyzovať príkaz:"
 msgid "Execution of '%s' failed:"
 msgstr "Spustenie „%s“ zlyhalo:"
 
-#: ../js/ui/appDisplay.js:386
+#: ../js/ui/appDisplay.js:580
+msgid "Frequently used applications will appear here"
+msgstr "Tu sa objavia často používané aplikácie"
+
+#: ../js/ui/appDisplay.js:696
 msgid "Frequent"
 msgstr "Často používané"
 
-#: ../js/ui/appDisplay.js:393
+#: ../js/ui/appDisplay.js:703
 msgid "All"
 msgstr "Všetky"
 
-#: ../js/ui/appDisplay.js:991
+#: ../js/ui/appDisplay.js:1490
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appDisplay.js:994 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1493 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Odstrániť z obľúbených"
 
-#: ../js/ui/appDisplay.js:995
+#: ../js/ui/appDisplay.js:1494
 msgid "Add to Favorites"
 msgstr "Pridať do obľúbených"
 
@@ -404,7 +404,7 @@ msgstr "Program %s bol pridaný medzi obľúbené."
 msgid "%s has been removed from your favorites."
 msgstr "Program %s bol odstránený z obľúbených."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:323
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Nastavenia"
 
@@ -528,36 +528,44 @@ msgctxt "list saturday"
 msgid "S"
 msgstr "So"
 
+#: ../js/ui/calendar.js:447
+msgid "Previous month"
+msgstr "Predchádzajúci mesiac"
+
+#: ../js/ui/calendar.js:457
+msgid "Next month"
+msgstr "Nasledujúci mesiac"
+
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:750
+#: ../js/ui/calendar.js:753
 msgid "Nothing Scheduled"
 msgstr "Žiadne naplánované udalosti"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:768
+#: ../js/ui/calendar.js:771
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:771
+#: ../js/ui/calendar.js:774
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %e. %B %Y"
 
-#: ../js/ui/calendar.js:782
+#: ../js/ui/calendar.js:785
 msgid "Today"
 msgstr "Dnes"
 
-#: ../js/ui/calendar.js:786
+#: ../js/ui/calendar.js:789
 msgid "Tomorrow"
 msgstr "Zajtra"
 
-#: ../js/ui/calendar.js:797
+#: ../js/ui/calendar.js:800
 msgid "This week"
 msgstr "Tento týždeň"
 
-#: ../js/ui/calendar.js:805
+#: ../js/ui/calendar.js:808
 msgid "Next week"
 msgstr "Ďalší týždeň"
 
@@ -592,7 +600,7 @@ msgid "Type again:"
 msgstr "Zadajte znovu:"
 
 #: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:682
+#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
 msgid "Connect"
 msgstr "Pripojiť"
 
@@ -939,7 +947,7 @@ msgstr "Zobrazí aplikácie"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/dash.js:439
+#: ../js/ui/dash.js:442
 msgid "Dash"
 msgstr "Dok"
 
@@ -994,12 +1002,12 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Odhlásiť sa"
 
-#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Power Off"
 msgstr "Vypnutie"
 
-#: ../js/ui/endSessionDialog.js:82
+#: ../js/ui/endSessionDialog.js:83
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -1007,22 +1015,22 @@ msgstr[0] "Systém sa automaticky vypne o %d sekúnd."
 msgstr[1] "Systém sa automaticky vypne o %d sekundu."
 msgstr[2] "Systém sa automaticky vypne o %d sekundy."
 
-#: ../js/ui/endSessionDialog.js:87 ../js/ui/endSessionDialog.js:102
+#: ../js/ui/endSessionDialog.js:88 ../js/ui/endSessionDialog.js:104
 msgctxt "button"
 msgid "Restart"
 msgstr "Reštartovať"
 
-#: ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:90
 msgctxt "button"
 msgid "Power Off"
 msgstr "Vypnúť"
 
-#: ../js/ui/endSessionDialog.js:95
+#: ../js/ui/endSessionDialog.js:97
 msgctxt "title"
 msgid "Restart"
 msgstr "Reštart"
 
-#: ../js/ui/endSessionDialog.js:97
+#: ../js/ui/endSessionDialog.js:99
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -1030,12 +1038,12 @@ msgstr[0] "Systém sa automaticky reštartuje o %d sekúnd."
 msgstr[1] "Systém sa automaticky reštartuje o %d sekundu."
 msgstr[2] "Systém sa automaticky reštartuje o %d sekundy."
 
-#: ../js/ui/endSessionDialog.js:109
+#: ../js/ui/endSessionDialog.js:112
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Reštart a inštalácia aktualizácií"
 
-#: ../js/ui/endSessionDialog.js:111
+#: ../js/ui/endSessionDialog.js:114
 #, c-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1047,27 +1055,27 @@ msgstr[1] ""
 msgstr[2] ""
 "Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekundy."
 
-#: ../js/ui/endSessionDialog.js:116
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "Reštartovať a inštalovať"
 
-#: ../js/ui/endSessionDialog.js:267
+#: ../js/ui/endSessionDialog.js:271
 msgid "Some applications are busy or have unsaved work."
 msgstr "Niektoré aplikácie sú zaneprázdnené, alebo obsahujú neuloženú prácu."
 
-#: ../js/ui/endSessionDialog.js:273
+#: ../js/ui/endSessionDialog.js:277
 msgid "Other users are logged in."
 msgstr "Sú prihlásení iní používatelia."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/endSessionDialog.js:475
+#: ../js/ui/endSessionDialog.js:479
 #, c-format
 msgid "%s (remote)"
 msgstr "%s (vzdialená relácia)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/endSessionDialog.js:478
+#: ../js/ui/endSessionDialog.js:482
 #, c-format
 msgid "%s (console)"
 msgstr "%s (konzola)"
@@ -1213,7 +1221,7 @@ msgstr "Aktivity"
 msgid "Settings Menu"
 msgstr "Ponuka nastavení"
 
-#: ../js/ui/panel.js:892
+#: ../js/ui/panel.js:901
 msgid "Top Bar"
 msgstr "Horná lišta"
 
@@ -1251,7 +1259,7 @@ msgstr[0] "%d nových oznámení"
 msgstr[1] "%d nové oznámenie"
 msgstr[2] "%d nové oznámenia"
 
-#: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:331
+#: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:333
 msgid "Lock"
 msgstr "Uzamknúť"
 
@@ -1274,11 +1282,11 @@ msgstr "Nepodarilo sa uzamknúť obrazovku"
 msgid "Lock was blocked by an application"
 msgstr "Uzamknutie bolo zablokované aplikáciou"
 
-#: ../js/ui/searchDisplay.js:445
+#: ../js/ui/searchDisplay.js:447
 msgid "Searching…"
 msgstr "Hľadá sa…"
 
-#: ../js/ui/searchDisplay.js:489
+#: ../js/ui/searchDisplay.js:491
 msgid "No results."
 msgstr "Žiadne výsledky."
 
@@ -1362,7 +1370,7 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1027 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/network.js:1034 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Vypnúť"
 
@@ -1464,84 +1472,84 @@ msgid "<unknown>"
 msgstr "<neznáme>"
 
 # DK: pripojenie, zariadenie
-#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1042
+#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
 msgid "Off"
 msgstr "Vypnuté"
 
-#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:948
+#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:955
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Nastavenia siete"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:357
+#: ../js/ui/status/network.js:364
 msgid "unmanaged"
 msgstr "nespravované"
 
-#: ../js/ui/status/network.js:359
+#: ../js/ui/status/network.js:366
 msgid "disconnecting..."
 msgstr "odpája sa…"
 
-#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1093
+#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1100
 msgid "connecting..."
 msgstr "pripája sa…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1096
+#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1103
 msgid "authentication required"
 msgstr "požaduje sa overenie totožnosti"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:376
+#: ../js/ui/status/network.js:383
 msgid "firmware missing"
 msgstr "chýba firmvér"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:380
+#: ../js/ui/status/network.js:387
 msgid "unavailable"
 msgstr "nedostupné"
 
-#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1098
+#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1105
 msgid "connection failed"
 msgstr "pripojenie zlyhalo"
 
-#: ../js/ui/status/network.js:647
+#: ../js/ui/status/network.js:654
 msgid "Wi-Fi Networks"
 msgstr "Siete Wi-Fi"
 
-#: ../js/ui/status/network.js:649
+#: ../js/ui/status/network.js:656
 msgid "Select a network"
 msgstr "Vyberte sieť"
 
-#: ../js/ui/status/network.js:673
+#: ../js/ui/status/network.js:680
 msgid "No Networks"
 msgstr "Žiadne siete"
 
 # item menu
-#: ../js/ui/status/network.js:942
+#: ../js/ui/status/network.js:949
 msgid "Select Network"
 msgstr "Vybrať sieť"
 
-#: ../js/ui/status/network.js:1027
+#: ../js/ui/status/network.js:1034
 msgid "Turn On"
 msgstr "Zapnúť"
 
-#: ../js/ui/status/network.js:1160
+#: ../js/ui/status/network.js:1167
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1296
+#: ../js/ui/status/network.js:1306
 msgid "Network Manager"
 msgstr "Správca siete"
 
-#: ../js/ui/status/network.js:1338
+#: ../js/ui/status/network.js:1345
 msgid "Connection failed"
 msgstr "Pripojenie zlyhalo"
 
-#: ../js/ui/status/network.js:1339
+#: ../js/ui/status/network.js:1346
 msgid "Activation of network connection failed"
 msgstr "Aktivácia pripojenia k sieti zlyhala"
 
@@ -1588,24 +1596,24 @@ msgstr "Režim v lietadle"
 msgid "On"
 msgstr "Zapnutý"
 
-#: ../js/ui/status/system.js:303
+#: ../js/ui/status/system.js:305
 msgid "Switch User"
 msgstr "Prepnúť používateľa"
 
-#: ../js/ui/status/system.js:308
+#: ../js/ui/status/system.js:310
 msgid "Log Out"
 msgstr "Odhlásiť sa"
 
 # action button
-#: ../js/ui/status/system.js:327
+#: ../js/ui/status/system.js:329
 msgid "Orientation Lock"
 msgstr "Uzamknutie orientácie"
 
-#: ../js/ui/status/system.js:335
+#: ../js/ui/status/system.js:337
 msgid "Suspend"
 msgstr "Uspať"
 
-#: ../js/ui/status/system.js:338
+#: ../js/ui/status/system.js:340
 msgid "Power Off"
 msgstr "Vypnúť"
 
@@ -1742,6 +1750,9 @@ msgstr "Heslo nemôže byť prázdne"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialógové okno overenia totožnosti bolo zatvorené používateľom"
+
+#~ msgid "Session"
+#~ msgstr "Relácia"
 
 #~ msgid ""
 #~ "Internally used to store the last IM presence explicitly set by the user. "
