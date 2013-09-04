@@ -112,7 +112,6 @@ struct _MetaWaylandKeyboard
   struct xkb_context *xkb_context;
   gboolean is_evdev;
   MetaWaylandXkbInfo xkb_info;
-  struct xkb_rule_names xkb_names;
 
   MetaWaylandKeyboardGrab input_method_grab;
   struct wl_resource *input_method_resource;
@@ -123,6 +122,18 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
                             struct wl_display   *display,
 			    gboolean             is_evdev);
 
+typedef enum {
+  META_WAYLAND_KEYBOARD_SKIP_XCLIENTS = 1,
+} MetaWaylandKeyboardSetKeymapFlags;
+
+void
+meta_wayland_keyboard_set_keymap_names (MetaWaylandKeyboard *keyboard,
+					const char          *rules,
+					const char          *model,
+					const char          *layout,
+					const char          *variant,
+					const char          *options,
+					int                  flags);
 gboolean
 meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
                                     const ClutterKeyEvent *event);

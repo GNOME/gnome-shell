@@ -102,6 +102,11 @@ gboolean meta_prop_get_utf8_list     (MetaDisplay   *display,
                                       Atom           xatom,
                                       char        ***str_p,
                                       int           *n_str_p);
+gboolean meta_prop_get_latin1_list   (MetaDisplay   *display,
+                                      Window         xwindow,
+                                      Atom           xatom,
+                                      char        ***str_p,
+                                      int           *n_str_p);
 void     meta_prop_set_utf8_string_hint
                                      (MetaDisplay *display,
                                       Window xwindow,

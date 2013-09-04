@@ -106,11 +106,49 @@ create_anonymous_file (off_t size,
   return -1;
 }
 
-static gboolean
-meta_wayland_xkb_info_new_keymap (MetaWaylandXkbInfo *xkb_info)
+static void
+inform_clients_of_new_keymap (MetaWaylandKeyboard *keyboard,
+			      int                  flags)
 {
+  MetaWaylandCompositor *compositor;
+  struct wl_client *xclient;
+  struct wl_resource *keyboard_resource;
+
+  compositor = meta_wayland_compositor_get_default ();
+  xclient = compositor->xwayland_client;
+
+  wl_resource_for_each (keyboard_resource, &keyboard->resource_list)
+    {
+      if ((flags & META_WAYLAND_KEYBOARD_SKIP_XCLIENTS) &&
+	  wl_resource_get_client (keyboard_resource) == xclient)
+	continue;
+
+      wl_keyboard_send_keymap (keyboard_resource,
+			       WL_KEYBOARD_KEYMAP_FORMAT_XKB_V1,
+			       keyboard->xkb_info.keymap_fd,
+			       keyboard->xkb_info.keymap_size);
+    }
+}
+
+static void
+meta_wayland_keyboard_take_keymap (MetaWaylandKeyboard *keyboard,
+				   struct xkb_keymap   *keymap,
+				   int                  flags)
+{
+  MetaWaylandXkbInfo  *xkb_info = &keyboard->xkb_info;
   GError *error = NULL;
   char *keymap_str;
+  size_t previous_size;
+
+  if (keymap == NULL)
+    {
+      g_warning ("Attempting to set null keymap (compilation probably failed)");
+      return;
+    }
+
+  if (xkb_info->keymap)
+    xkb_keymap_unref (xkb_info->keymap);
+  xkb_info->keymap = keymap;
 
   xkb_info->shift_mod =
     xkb_map_mod_get_index (xkb_info->keymap, XKB_MOD_NAME_SHIFT);
@@ -129,20 +167,27 @@ meta_wayland_xkb_info_new_keymap (MetaWaylandXkbInfo *xkb_info)
   keymap_str = xkb_map_get_as_string (xkb_info->keymap);
   if (keymap_str == NULL)
     {
-      g_warning ("failed to get string version of keymap\n");
-      return FALSE;
+      g_warning ("failed to get string version of keymap");
+      return;
     }
+  previous_size = xkb_info->keymap_size;
   xkb_info->keymap_size = strlen (keymap_str) + 1;
+
+  if (xkb_info->keymap_fd >= 0)
+    close (xkb_info->keymap_fd);
 
   xkb_info->keymap_fd = create_anonymous_file (xkb_info->keymap_size, &error);
   if (xkb_info->keymap_fd < 0)
     {
-      g_warning ("creating a keymap file for %lu bytes failed: %s\n",
+      g_warning ("creating a keymap file for %lu bytes failed: %s",
                  (unsigned long) xkb_info->keymap_size,
                  error->message);
       g_clear_error (&error);
       goto err_keymap_str;
     }
+
+  if (xkb_info->keymap_area)
+    munmap (xkb_info->keymap_area, previous_size);
 
   xkb_info->keymap_area = mmap (NULL, xkb_info->keymap_size,
                                 PROT_READ | PROT_WRITE,
@@ -156,41 +201,24 @@ meta_wayland_xkb_info_new_keymap (MetaWaylandXkbInfo *xkb_info)
   strcpy (xkb_info->keymap_area, keymap_str);
   free (keymap_str);
 
-  return TRUE;
+  if (keyboard->is_evdev)
+    {
+      ClutterDeviceManager *manager;
+
+      manager = clutter_device_manager_get_default ();
+      clutter_evdev_set_keyboard_map (manager, xkb_info->keymap);
+    }
+
+  inform_clients_of_new_keymap (keyboard, flags);
+
+  return;
 
 err_dev_zero:
   close (xkb_info->keymap_fd);
   xkb_info->keymap_fd = -1;
 err_keymap_str:
   free (keymap_str);
-  return FALSE;
-}
-
-static gboolean
-meta_wayland_keyboard_build_global_keymap (struct xkb_context *xkb_context,
-                                           struct xkb_rule_names *xkb_names,
-                                           MetaWaylandXkbInfo *xkb_info)
-{
-  xkb_info->keymap = xkb_map_new_from_names (xkb_context,
-                                             xkb_names,
-                                             0 /* flags */);
-  if (xkb_info->keymap == NULL)
-    {
-      g_warning ("failed to compile global XKB keymap\n"
-                 "  tried rules %s, model %s, layout %s, variant %s, "
-                 "options %s\n",
-                 xkb_names->rules,
-                 xkb_names->model,
-                 xkb_names->layout,
-                 xkb_names->variant,
-                 xkb_names->options);
-      return FALSE;
-    }
-
-  if (!meta_wayland_xkb_info_new_keymap (xkb_info))
-    return FALSE;
-
-  return TRUE;
+  return;
 }
 
 static void
@@ -306,9 +334,8 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
                             struct wl_display   *display,
 			    gboolean             is_evdev)
 {
-  ClutterDeviceManager *manager;
-
   memset (keyboard, 0, sizeof *keyboard);
+  keyboard->xkb_info.keymap_fd = -1;
 
   wl_list_init (&keyboard->resource_list);
   wl_array_init (&keyboard->keys);
@@ -320,18 +347,15 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
   keyboard->display = display;
 
   keyboard->xkb_context = xkb_context_new (0 /* flags */);
-
-  meta_wayland_keyboard_build_global_keymap (keyboard->xkb_context,
-					     &keyboard->xkb_names,
-					     &keyboard->xkb_info);
-
   keyboard->is_evdev = is_evdev;
-  if (is_evdev)
-    {
-      manager = clutter_device_manager_get_default ();
 
-      clutter_evdev_set_keyboard_map (manager, keyboard->xkb_info.keymap);
-    }
+  /* Compute a default until gnome-settings-daemon starts and sets
+     the appropriate values
+  */
+  meta_wayland_keyboard_set_keymap_names (keyboard,
+					  "evdev",
+					  "pc105",
+					  "us", "", "", 0);
 
   return TRUE;
 }
@@ -563,12 +587,6 @@ meta_wayland_keyboard_end_grab (MetaWaylandKeyboard *keyboard)
 void
 meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
 {
-  g_free ((char *) keyboard->xkb_names.rules);
-  g_free ((char *) keyboard->xkb_names.model);
-  g_free ((char *) keyboard->xkb_names.layout);
-  g_free ((char *) keyboard->xkb_names.variant);
-  g_free ((char *) keyboard->xkb_names.options);
-
   meta_wayland_xkb_info_destroy (&keyboard->xkb_info);
   xkb_context_unref (keyboard->xkb_context);
 
@@ -656,3 +674,28 @@ meta_wayland_keyboard_end_modal (MetaWaylandKeyboard *keyboard,
 
   meta_verbose ("Released modal keyboard grab, timestamp %d\n", timestamp);
 }
+
+void
+meta_wayland_keyboard_set_keymap_names (MetaWaylandKeyboard *keyboard,
+					const char          *rules,
+					const char          *model,
+					const char          *layout,
+					const char          *variant,
+					const char          *options,
+					int                  flags)
+{
+  struct xkb_rule_names xkb_names;
+
+  xkb_names.rules = rules;
+  xkb_names.model = model;
+  xkb_names.layout = layout;
+  xkb_names.variant = variant;
+  xkb_names.options = options;
+
+  meta_wayland_keyboard_take_keymap (keyboard,
+				     xkb_keymap_new_from_names (keyboard->xkb_context,
+								&xkb_names,
+								0 /* flags */),
+				     flags);
+}
+
