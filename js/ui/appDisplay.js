@@ -505,11 +505,6 @@ const AllView = new Lang.Class({
         this.goToPage(itemPage);
     },
 
-    _updateAdjustment: function(availHeight) {
-        this._adjustment.page_size = availHeight;
-        this._adjustment.upper = this._stack.height;
-    },
-
     _updateIconOpacities: function(folderOpen) {
         for (let id in this._items) {
             let params, opacity;
@@ -537,8 +532,6 @@ const AllView = new Lang.Class({
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
         let oldNPages = this._grid.nPages();
-
-        this._updateAdjustment(availHeight);
 
         this._grid.adaptToSize(availWidth, availHeight);
 
