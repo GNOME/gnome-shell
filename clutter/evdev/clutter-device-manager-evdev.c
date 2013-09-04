@@ -544,9 +544,21 @@ clutter_event_dispatch (GSource     *g_source,
 
   if (event)
     {
+      ClutterModifierType event_state;
+      ClutterInputDevice *input_device;
+      ClutterDeviceManagerEvdev *manager_evdev;
+
+      input_device = CLUTTER_INPUT_DEVICE (source->device);
+      manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (input_device->device_manager);
+
       /* forward the event into clutter for emission etc. */
       clutter_do_event (event);
       clutter_event_free (event);
+
+      /* update the device states *after* the event */
+      event_state = xkb_state_serialize_mods (manager_evdev->priv->xkb, XKB_STATE_MODS_EFFECTIVE);
+      _clutter_input_device_set_state (manager_evdev->priv->core_pointer, event_state);
+      _clutter_input_device_set_state (manager_evdev->priv->core_keyboard, event_state);
     }
 
 out:
