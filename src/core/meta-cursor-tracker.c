@@ -299,6 +299,10 @@ void
 meta_cursor_tracker_set_pointer_visible (MetaCursorTracker *tracker,
                                          gboolean           visible)
 {
+  if (visible == tracker->is_showing)
+    return;
+  tracker->is_showing = visible;
+
   if (visible)
     XFixesShowCursor (tracker->screen->display->xdisplay,
                       tracker->screen->xroot);
