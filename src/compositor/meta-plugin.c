@@ -183,6 +183,28 @@ _meta_plugin_effect_started (MetaPlugin *plugin)
   priv->running++;
 }
 
+gboolean
+_meta_plugin_xevent_filter (MetaPlugin *plugin,
+                            XEvent     *xev)
+{
+  MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
+
+  /* When mutter is running as a wayland compositor, things like input
+   * events just come directly from clutter so it won't have disabled
+   * clutter's event retrieval and won't need to forward it events (if
+   * it did it would lead to recursion). Also when running as a
+   * wayland compositor we shouldn't be assuming that we're running
+   * with the clutter x11 backend.
+   */
+
+  if (klass->xevent_filter && klass->xevent_filter (plugin, xev))
+    return TRUE;
+  else if (!meta_is_wayland_compositor ())
+    return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
+  else
+    return FALSE;
+}
+
 void
 meta_plugin_switch_workspace_completed (MetaPlugin *plugin)
 {

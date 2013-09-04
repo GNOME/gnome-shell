@@ -306,41 +306,13 @@ meta_plugin_manager_filter_keybinding (MetaPluginManager *plugin_mgr,
   return FALSE;
 }
 
-/*
- * The public method that the compositor hooks into for desktop switching.
- *
- * Returns TRUE if the plugin handled the event type (i.e.,
- * if the return value is FALSE, there will be no subsequent call to the
- * manager completed() callback, and the compositor must ensure that any
- * appropriate post-effect cleanup is carried out.
- */
 gboolean
 meta_plugin_manager_xevent_filter (MetaPluginManager *plugin_mgr,
                                    XEvent            *xev)
 {
   MetaPlugin *plugin = plugin_mgr->plugin;
-  MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
 
-  /* We need to make sure that clutter gets certain events, like
-   * ConfigureNotify on the stage window. If there is a plugin that
-   * provides an xevent_filter function, then it's the responsibility
-   * of that plugin to pass events to Clutter. Otherwise, we send the
-   * event directly to Clutter ourselves.
-   */
-  if (klass->xevent_filter)
-    return klass->xevent_filter (plugin, xev);
-
-  /* When mutter is running as a wayland compositor, things like input
-   * events just come directly from clutter so it won't have disabled
-   * clutter's event retrieval and won't need to forward it events (if
-   * it did it would lead to recursion). Also when running as a
-   * wayland compositor we shouldn't be assuming that we're running
-   * with the clutter x11 backend.
-   */
-  if (meta_is_wayland_compositor ())
-    return FALSE;
-
-  return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
+  return _meta_plugin_xevent_filter (plugin, xev);
 }
 
 void
