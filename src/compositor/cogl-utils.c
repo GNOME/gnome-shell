@@ -50,7 +50,7 @@ meta_create_color_texture_4ub (guint8           red,
   CoglColor color;
   guint8 pixel[4];
 
-  cogl_color_set_from_4ub (&color, red, green, blue, alpha);
+  cogl_color_init_from_4ub (&color, red, green, blue, alpha);
   cogl_color_premultiply (&color);
 
   pixel[0] = cogl_color_get_red_byte (&color);
@@ -73,10 +73,8 @@ meta_create_color_texture_4ub (guint8           red,
  * @src_texture: (allow-none): texture to use initially for the layer
  *
  * Creates a pipeline with a single layer. Using a common template
- * allows sharing a shader for different uses in Mutter. To share the same
- * shader with all other pipelines that are just texture plus opacity
- * would require Cogl fixes.
- * (See http://bugzilla.clutter-project.org/show_bug.cgi?id=2425)
+ * makes it easier for Cogl to share a shader for different uses in
+ * Mutter.
  *
  * Return value: (transfer full): a newly created #CoglPipeline
  */
@@ -86,22 +84,21 @@ meta_create_texture_pipeline (CoglTexture *src_texture)
   static CoglPipeline *texture_pipeline_template = NULL;
   CoglPipeline *pipeline;
 
-  /* We use a pipeline that has a dummy texture as a base for all
-     texture pipelines. The idea is that only the Cogl texture object
-     would be different in the children so it is likely that Cogl will
-     be able to share GL programs between all the textures. */
+  /* The only state used in the pipeline that would affect the shader
+     generation is the texture type on the layer. Therefore we create
+     a template pipeline which sets this state and all texture
+     pipelines are created as a copy of this. That way Cogl can find
+     the shader state for the pipeline more quickly by looking at the
+     pipeline ancestry instead of resorting to the shader cache. */
   if (G_UNLIKELY (texture_pipeline_template == NULL))
     {
-      CoglTexture *dummy_texture;
-      CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
-
-      dummy_texture = meta_create_color_texture_4ub (0xff, 0xff, 0xff, 0xff,
-                                                     COGL_TEXTURE_NONE);
-
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
       texture_pipeline_template = cogl_pipeline_new (ctx);
-      cogl_pipeline_set_layer_texture (texture_pipeline_template, 0, dummy_texture);
-      cogl_object_unref (dummy_texture);
+      cogl_pipeline_set_layer_null_texture (texture_pipeline_template,
+                                            0, /* layer */
+                                            COGL_TEXTURE_TYPE_2D);
     }
 
   pipeline = cogl_pipeline_copy (texture_pipeline_template);
