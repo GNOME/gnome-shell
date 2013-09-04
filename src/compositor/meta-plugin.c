@@ -183,6 +183,18 @@ _meta_plugin_effect_started (MetaPlugin *plugin)
   priv->running++;
 }
 
+gboolean
+_meta_plugin_xevent_filter (MetaPlugin *plugin,
+                            XEvent     *xev)
+{
+  MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
+
+  if (klass->xevent_filter && klass->xevent_filter (plugin, xev))
+    return TRUE;
+  else
+    return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
+}
+
 void
 meta_plugin_switch_workspace_completed (MetaPlugin *plugin)
 {

@@ -944,10 +944,7 @@ meta_compositor_process_event (MetaCompositor *compositor,
 {
   if (compositor->modal_plugin && is_grabbed_event (compositor->display, event))
     {
-      MetaPluginClass *klass = META_PLUGIN_GET_CLASS (compositor->modal_plugin);
-
-      if (klass->xevent_filter)
-        klass->xevent_filter (compositor->modal_plugin, event);
+      _meta_plugin_xevent_filter (compositor->modal_plugin, event);
 
       /* We always consume events even if the plugin says it didn't handle them;
        * exclusive is exclusive */
