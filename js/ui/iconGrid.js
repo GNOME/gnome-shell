@@ -697,7 +697,7 @@ const PaginatedIconGrid = new Lang.Class({
     },
 
     _translateChildren: function(children, direction, nRows) {
-        let translationY = nRows * (this._vItemSize + this._getSpacing());
+        let translationY = nRows * (this._getVItemSize() + this._getSpacing());
         if (translationY == 0)
             return;
 
