@@ -49,6 +49,8 @@ struct _StScrollViewFade
   StAdjustment *vadjustment;
   StAdjustment *hadjustment;
 
+  guint fade_edges : 1;
+
   float vfade_offset;
   float hfade_offset;
 };
@@ -66,7 +68,8 @@ enum {
   PROP_0,
 
   PROP_VFADE_OFFSET,
-  PROP_HFADE_OFFSET
+  PROP_HFADE_OFFSET,
+  PROP_FADE_EDGES
 };
 
 static CoglHandle
@@ -151,6 +154,7 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
   clutter_shader_effect_set_uniform (shader, "tex", G_TYPE_INT, 1, 0);
   clutter_shader_effect_set_uniform (shader, "height", G_TYPE_FLOAT, 1, clutter_actor_get_height (self->actor));
   clutter_shader_effect_set_uniform (shader, "width", G_TYPE_FLOAT, 1, clutter_actor_get_width (self->actor));
+  clutter_shader_effect_set_uniform (shader, "fade_edges", G_TYPE_INT, 1, self->fade_edges);
   clutter_shader_effect_set_uniform (shader, "fade_area_topleft", CLUTTER_TYPE_SHADER_FLOAT, 2, fade_area_topleft);
   clutter_shader_effect_set_uniform (shader, "fade_area_bottomright", CLUTTER_TYPE_SHADER_FLOAT, 2, fade_area_bottomright);
 
@@ -293,6 +297,24 @@ st_scroll_view_hfade_set_offset (StScrollViewFade *self,
 }
 
 static void
+st_scroll_view_fade_set_fade_edges (StScrollViewFade *self,
+                                    gboolean          fade_edges)
+{
+  if (self->fade_edges == fade_edges)
+    return;
+
+  g_object_freeze_notify (G_OBJECT (self));
+
+  self->fade_edges = fade_edges;
+
+  if (self->actor != NULL)
+    clutter_actor_queue_redraw (self->actor);
+
+  g_object_notify (G_OBJECT (self), "fade-edges");
+  g_object_thaw_notify (G_OBJECT (self));
+}
+
+static void
 st_scroll_view_fade_set_property (GObject *object,
                                   guint prop_id,
                                   const GValue *value,
@@ -307,6 +329,9 @@ st_scroll_view_fade_set_property (GObject *object,
       break;
     case PROP_HFADE_OFFSET:
       st_scroll_view_hfade_set_offset (self, g_value_get_float (value));
+      break;
+    case PROP_FADE_EDGES:
+      st_scroll_view_fade_set_fade_edges (self, g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -329,6 +354,9 @@ st_scroll_view_fade_get_property (GObject *object,
       break;
     case PROP_VFADE_OFFSET:
       g_value_set_float (value, self->vfade_offset);
+      break;
+    case PROP_FADE_EDGES:
+      g_value_set_boolean (value, self->fade_edges);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -371,6 +399,14 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
                                                        "The width of the area which is faded at the edge",
                                                        0.f, G_MAXFLOAT, DEFAULT_FADE_OFFSET,
                                                        G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_FADE_EDGES,
+                                   g_param_spec_boolean ("fade-edges",
+                                                         "Fade Edges",
+                                                         "Whether the faded area should extend to the edges",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
+
 
 }
 
