@@ -401,8 +401,8 @@ const AllView = new Lang.Class({
     },
 
     _onScroll: function(actor, event) {
-         if(this._displayingPopup)
-            return;
+        if (this._displayingPopup)
+            return true;
         let direction = event.get_scroll_direction();
         if (direction == Clutter.ScrollDirection.UP) {
             if (this._currentPage > 0)
@@ -413,6 +413,7 @@ const AllView = new Lang.Class({
                     this.goToPage(this._currentPage + 1);
             }
         }
+        return true;
     },
 
     _onPan: function(action) {
