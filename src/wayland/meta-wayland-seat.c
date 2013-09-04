@@ -446,7 +446,7 @@ count_buttons (const ClutterEvent *event)
   return count;
 }
 
-void
+gboolean
 meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
                                 const ClutterEvent *event)
 {
@@ -467,9 +467,8 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
 
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
-      meta_wayland_keyboard_handle_event (&seat->keyboard,
-                                          (const ClutterKeyEvent *) event);
-      break;
+      return meta_wayland_keyboard_handle_event (&seat->keyboard,
+                                                 (const ClutterKeyEvent *) event);
 
     case CLUTTER_SCROLL:
       handle_scroll_event (seat, (const ClutterScrollEvent *) event);
@@ -478,6 +477,8 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
     default:
       break;
     }
+
+  return FALSE;
 }
 
 static void

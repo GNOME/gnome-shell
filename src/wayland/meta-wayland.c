@@ -545,7 +545,7 @@ synthesize_motion_event (MetaWaylandCompositor *compositor,
   XIDeviceEvent device_event;
   unsigned char button_mask[(N_BUTTONS + 7) / 8] = { 0 };
   MetaDisplay *display = meta_get_display ();
-  ClutterModifierType state;
+  ClutterModifierType button_state;
   int i;
 
   generic_event.type = GenericEvent;
@@ -618,10 +618,18 @@ synthesize_motion_event (MetaWaylandCompositor *compositor,
   device_event.root_x = wl_fixed_to_double (pointer->x);
   device_event.root_y = wl_fixed_to_double (pointer->y);
 
-  state = clutter_event_get_state (event);
+  clutter_event_get_state_full (event,
+				&button_state,
+				(ClutterModifierType*)&device_event.mods.base,
+				(ClutterModifierType*)&device_event.mods.latched,
+				(ClutterModifierType*)&device_event.mods.locked,
+				(ClutterModifierType*)&device_event.mods.effective);
+  device_event.mods.effective &= ~button_state;
+  memset (&device_event.group, 0, sizeof (device_event.group));
+  device_event.group.effective = (device_event.mods.effective >> 13) & 0x3;
 
   for (i = 0; i < N_BUTTONS; i++)
-    if ((state & (CLUTTER_BUTTON1_MASK << i)))
+    if ((button_state & (CLUTTER_BUTTON1_MASK << i)))
       XISetMask (button_mask, i + 1);
   device_event.buttons.mask_len = N_BUTTONS + 1;
   device_event.buttons.mask = button_mask;
@@ -629,14 +637,6 @@ synthesize_motion_event (MetaWaylandCompositor *compositor,
   device_event.valuators.mask_len = 0;
   device_event.valuators.mask = NULL;
   device_event.valuators.values = NULL;
-
-  memset (&device_event.mods, 0, sizeof (device_event.mods));
-  device_event.mods.effective =
-    state & (CLUTTER_MODIFIER_MASK &
-             ~(((CLUTTER_BUTTON1_MASK << N_BUTTONS) - 1) ^
-               (CLUTTER_BUTTON1_MASK - 1)));
-
-  memset (&device_event.group, 0, sizeof (device_event.group));
 
   meta_display_handle_event (display, (XEvent *) &generic_event);
 }
@@ -678,7 +678,8 @@ event_cb (ClutterActor *stage,
 
   reset_idletimes (event);
 
-  meta_wayland_seat_handle_event (compositor->seat, event);
+  if (meta_wayland_seat_handle_event (compositor->seat, event))
+    return TRUE;
 
   /* HACK: for now, the surfaces from Wayland clients aren't
      integrated into Mutter's event handling and Mutter won't give them

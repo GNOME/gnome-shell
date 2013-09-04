@@ -202,7 +202,7 @@ lose_keyboard_focus (struct wl_listener *listener, void *data)
   keyboard->focus_resource = NULL;
 }
 
-static void
+static gboolean
 default_grab_key (MetaWaylandKeyboardGrab *grab,
                   uint32_t time, uint32_t key, uint32_t state)
 {
@@ -218,6 +218,8 @@ default_grab_key (MetaWaylandKeyboardGrab *grab,
       serial = wl_display_next_serial (display);
       wl_keyboard_send_key (resource, serial, time, key, state);
     }
+
+  return resource != NULL;
 }
 
 static struct wl_resource *
@@ -274,12 +276,14 @@ static const MetaWaylandKeyboardGrabInterface
   default_grab_modifiers,
 };
 
-static void
+static gboolean
 modal_key (MetaWaylandKeyboardGrab *grab,
 	   uint32_t                 time,
 	   uint32_t                 key,
 	   uint32_t                 state)
 {
+  /* FALSE means: let the event through to clutter */
+  return FALSE;
 }
 
 static void
@@ -328,12 +332,6 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
       manager = clutter_device_manager_get_default ();
 
       clutter_evdev_set_keyboard_map (manager, keyboard->xkb_info.keymap);
-      keyboard->xkb_state = clutter_evdev_get_keyboard_state (manager);
-      xkb_state_ref (keyboard->xkb_state);
-    }
-  else
-    {
-      keyboard->xkb_state = xkb_state_new (keyboard->xkb_info.keymap);
     }
 
   return TRUE;
@@ -351,52 +349,6 @@ meta_wayland_xkb_info_destroy (MetaWaylandXkbInfo *xkb_info)
     close (xkb_info->keymap_fd);
 }
 
-static void
-update_state_from_clutter (MetaWaylandKeyboard *keyboard,
-			   ClutterModifierType  modifier_state)
-{
-  uint32_t depressed_mods = 0;
-  uint32_t locked_mods = 0;
-
-  if ((modifier_state & CLUTTER_SHIFT_MASK) &&
-      keyboard->xkb_info.shift_mod != XKB_MOD_INVALID)
-    depressed_mods |= (1 << keyboard->xkb_info.shift_mod);
-
-  if ((modifier_state & CLUTTER_LOCK_MASK) &&
-      keyboard->xkb_info.caps_mod != XKB_MOD_INVALID)
-    locked_mods |= (1 << keyboard->xkb_info.caps_mod);
-
-  if ((modifier_state & CLUTTER_CONTROL_MASK) &&
-      keyboard->xkb_info.ctrl_mod != XKB_MOD_INVALID)
-    depressed_mods |= (1 << keyboard->xkb_info.ctrl_mod);
-
-  if ((modifier_state & CLUTTER_MOD1_MASK) &&
-      keyboard->xkb_info.alt_mod != XKB_MOD_INVALID)
-    depressed_mods |= (1 << keyboard->xkb_info.alt_mod);
-
-  if ((modifier_state & CLUTTER_MOD2_MASK) &&
-      keyboard->xkb_info.mod2_mod != XKB_MOD_INVALID)
-    depressed_mods |= (1 << keyboard->xkb_info.mod2_mod);
-
-  if ((modifier_state & CLUTTER_MOD3_MASK) &&
-      keyboard->xkb_info.mod3_mod != XKB_MOD_INVALID)
-    depressed_mods |= (1 << keyboard->xkb_info.mod3_mod);
-
-  if ((modifier_state & CLUTTER_SUPER_MASK) &&
-      keyboard->xkb_info.super_mod != XKB_MOD_INVALID)
-    depressed_mods |= (1 << keyboard->xkb_info.super_mod);
-
-  if ((modifier_state & CLUTTER_MOD5_MASK) &&
-      keyboard->xkb_info.mod5_mod != XKB_MOD_INVALID)
-    depressed_mods |= (1 << keyboard->xkb_info.mod5_mod);
-
-  xkb_state_update_mask (keyboard->xkb_state,
-			 depressed_mods,
-			 0,
-			 locked_mods,
-			 0, 0, 0);
-}
-
 static gboolean
 state_equal (MetaWaylandXkbState *one,
 	     MetaWaylandXkbState *two)
@@ -409,25 +361,20 @@ state_equal (MetaWaylandXkbState *one,
 
 static void
 set_modifiers (MetaWaylandKeyboard *keyboard,
-               guint32 serial,
-               ClutterModifierType modifier_state)
+               guint32              serial,
+               ClutterEvent        *event)
 {
   MetaWaylandKeyboardGrab *grab = keyboard->grab;
   MetaWaylandXkbState new_state;
+  guint effective_state;
 
-  /* In the evdev case, the state is shared with the clutter backend, so
-     we don't need to update it */
-  if (!keyboard->is_evdev)
-    update_state_from_clutter (keyboard, modifier_state);
-
-  new_state.mods_depressed = xkb_state_serialize_mods (keyboard->xkb_state,
-						       XKB_STATE_MODS_DEPRESSED);
-  new_state.mods_latched = xkb_state_serialize_mods (keyboard->xkb_state,
-						     XKB_STATE_MODS_LATCHED);
-  new_state.mods_locked = xkb_state_serialize_mods (keyboard->xkb_state,
-						    XKB_STATE_MODS_LOCKED);
-  new_state.group = xkb_state_serialize_layout (keyboard->xkb_state,
-						XKB_STATE_LAYOUT_EFFECTIVE);
+  clutter_event_get_state_full (event,
+				NULL,
+				&new_state.mods_depressed,
+				&new_state.mods_latched,
+				&new_state.mods_locked,
+				&effective_state);
+  new_state.group = (effective_state >> 13) & 0x3;
 
   if (state_equal (&keyboard->modifier_state, &new_state))
     return;
@@ -442,36 +389,24 @@ set_modifiers (MetaWaylandKeyboard *keyboard,
                               new_state.group);
 }
 
-void
-meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
-                                    const ClutterKeyEvent *event)
+static gboolean
+update_pressed_keys (MetaWaylandKeyboard   *keyboard,
+		     uint32_t               evdev_code,
+		     gboolean               is_press)
 {
-  gboolean state = event->type == CLUTTER_KEY_PRESS;
-  guint evdev_code;
-  uint32_t serial;
-
-  /* We can't do anything with the event if we can't get an evdev
-     keycode for it */
-  if (event->device == NULL ||
-      !clutter_input_device_keycode_to_evdev (event->device,
-                                              event->hardware_keycode,
-                                              &evdev_code))
-    return;
-
-  /* We want to ignore events that are sent because of auto-repeat. In
-     the Clutter event stream these appear as a single key press
-     event. We can detect that because the key will already have been
-     pressed */
-  if (state)
+  if (is_press)
     {
       uint32_t *end = (void *) ((char *) keyboard->keys.data +
                                 keyboard->keys.size);
       uint32_t *k;
 
-      /* Ignore the event if the key is already down */
+      /* We want to ignore events that are sent because of auto-repeat. In
+	 the Clutter event stream these appear as a single key press
+	 event. We can detect that because the key will already have been
+	 pressed */
       for (k = keyboard->keys.data; k < end; k++)
         if (*k == evdev_code)
-          return;
+          return TRUE;
 
       /* Otherwise add the key to the list of pressed keys */
       k = wl_array_add (&keyboard->keys, sizeof (*k));
@@ -494,19 +429,56 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
           }
 
       g_warning ("unexpected key release event for key 0x%x", evdev_code);
+      return FALSE;
 
     found:
       (void) 0;
     }
 
+  return FALSE;
+}
+
+gboolean
+meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
+                                    const ClutterKeyEvent *event)
+{
+  gboolean is_press = event->type == CLUTTER_KEY_PRESS;
+  guint xkb_keycode, evdev_code;
+  uint32_t serial;
+  gboolean autorepeat;
+  gboolean handled;
+
+  xkb_keycode = event->hardware_keycode;
+  if (event->device == NULL ||
+      !clutter_input_device_keycode_to_evdev (event->device,
+					      xkb_keycode, &evdev_code))
+    evdev_code = xkb_keycode - 8; /* What everyone is doing in practice... */
+
+  autorepeat = update_pressed_keys (keyboard, evdev_code, is_press);
+
+  meta_verbose ("Handling key %s%s event code %d\n",
+		is_press ? "press" : "release",
+		autorepeat ? " (autorepeat)" : "",
+		xkb_keycode);
+
+  if (autorepeat)
+    return FALSE;
+
   serial = wl_display_next_serial (keyboard->display);
 
-  set_modifiers (keyboard, serial, event->modifier_state);
+  set_modifiers (keyboard, serial, (ClutterEvent*)event);
 
-  keyboard->grab->interface->key (keyboard->grab,
-                                  event->time,
-                                  evdev_code,
-                                  state);
+  handled = keyboard->grab->interface->key (keyboard->grab,
+					    event->time,
+					    evdev_code,
+					    is_press);
+
+  if (handled)
+    meta_verbose ("Sent event to wayland client\n");
+  else
+    meta_verbose ("No wayland surface is focused, continuing normal operation\n");
+
+  return handled;
 }
 
 void
@@ -597,7 +569,6 @@ meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
 
   meta_wayland_xkb_info_destroy (&keyboard->xkb_info);
   xkb_context_unref (keyboard->xkb_context);
-  xkb_state_unref (keyboard->xkb_state);
 
   /* XXX: What about keyboard->resource_list? */
   if (keyboard->focus_resource)
@@ -615,8 +586,10 @@ meta_wayland_keyboard_begin_modal (MetaWaylandKeyboard *keyboard,
   uint32_t *k;
   uint32_t serial;
 
+  meta_verbose ("Asked to acquire modal keyboard grab, timestamp %d\n", timestamp);
+
   if (keyboard->grab != &keyboard->default_grab)
-    return FALSE; 
+    return FALSE;
 
   if (keyboard->focus)
     {
@@ -627,14 +600,18 @@ meta_wayland_keyboard_begin_modal (MetaWaylandKeyboard *keyboard,
 					    0, 0, 0, 0);
 
       for (k = keyboard->keys.data; k < end; k++)
-	keyboard->grab->interface->key (keyboard->grab,
-					timestamp,
-					*k, 0);
+	{
+	  keyboard->grab->interface->key (keyboard->grab,
+					  timestamp,
+					  *k, 0);
+	}
     }
 
   grab = g_slice_new0 (MetaWaylandKeyboardGrab);
   grab->interface = &modal_grab;
   meta_wayland_keyboard_start_grab (keyboard, grab);
+
+  meta_verbose ("Acquired modal keyboard grab, timestamp %d\n", timestamp);
 
   return TRUE;
 }
@@ -668,8 +645,12 @@ meta_wayland_keyboard_end_modal (MetaWaylandKeyboard *keyboard,
 					    keyboard->modifier_state.group);
 
       for (k = keyboard->keys.data; k < end; k++)
-	keyboard->grab->interface->key (keyboard->grab,
-					timestamp,
-					*k, 1);
+	{
+	  keyboard->grab->interface->key (keyboard->grab,
+					  timestamp,
+					  *k, 1);
+	}
     }
+
+  meta_verbose ("Released modal keyboard grab, timestamp %d\n", timestamp);
 }
