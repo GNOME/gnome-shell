@@ -123,8 +123,7 @@ clutter_wayland_handle_button (void *data,
   event->button.time = _clutter_wayland_get_time();
   event->button.x = device->x;
   event->button.y = device->y;
-  event->button.modifier_state =
-    xkb_state_serialize_mods (device->xkb, XKB_STATE_EFFECTIVE);
+  _clutter_xkb_translate_state (event, device->xkb, 0);
 
   /* evdev button codes */
   switch (button) {
@@ -177,8 +176,7 @@ clutter_wayland_handle_axis (void *data,
     }
   clutter_event_set_scroll_delta (event, delta_x, delta_y);
 
-  event->scroll.modifier_state =
-    xkb_state_serialize_mods(device->xkb, XKB_STATE_EFFECTIVE);
+  _clutter_xkb_translate_state (event, device->xkb, 0);
 
   _clutter_event_push (event, FALSE);
 }

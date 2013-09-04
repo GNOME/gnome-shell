@@ -278,8 +278,7 @@ notify_relative_motion (ClutterEventSource *source,
   event->motion.time = time_;
   event->motion.stage = stage;
   event->motion.device = manager_evdev->priv->core_pointer;
-  event->motion.modifier_state = xkb_state_serialize_mods (manager_evdev->priv->xkb, XKB_STATE_EFFECTIVE);
-  event->motion.modifier_state |= manager_evdev->priv->button_state;
+  _clutter_xkb_translate_state (event, manager_evdev->priv->xkb, manager_evdev->priv->button_state);
   event->motion.x = new_x;
   event->motion.y = new_y;
   clutter_event_set_source_device (event, input_device);
@@ -311,8 +310,7 @@ notify_scroll (ClutterEventSource *source,
   event->scroll.time = time_;
   event->scroll.stage = CLUTTER_STAGE (stage);
   event->scroll.device = manager_evdev->priv->core_pointer;
-  event->motion.modifier_state = xkb_state_serialize_mods (manager_evdev->priv->xkb, XKB_STATE_EFFECTIVE);
-  event->scroll.modifier_state |= manager_evdev->priv->button_state;
+  _clutter_xkb_translate_state (event, manager_evdev->priv->xkb, manager_evdev->priv->button_state);
   event->scroll.direction = value < 0 ? CLUTTER_SCROLL_DOWN : CLUTTER_SCROLL_UP;
   clutter_input_device_get_coords (manager_evdev->priv->core_pointer, NULL, &point);
   event->scroll.x = point.x;
@@ -390,8 +388,7 @@ notify_button (ClutterEventSource *source,
   event->button.time = time_;
   event->button.stage = CLUTTER_STAGE (stage);
   event->button.device = manager_evdev->priv->core_pointer;
-  event->motion.modifier_state = xkb_state_serialize_mods (manager_evdev->priv->xkb, XKB_STATE_EFFECTIVE);
-  event->button.modifier_state |= manager_evdev->priv->button_state;
+  _clutter_xkb_translate_state (event, manager_evdev->priv->xkb, manager_evdev->priv->button_state);
   event->button.button = button_nr;
   clutter_input_device_get_coords (manager_evdev->priv->core_pointer, NULL, &point);
   event->button.x = point.x;

@@ -19,6 +19,13 @@ void            _clutter_event_set_platform_data        (ClutterEvent       *eve
                                                          gpointer            data);
 gpointer        _clutter_event_get_platform_data        (const ClutterEvent *event);
 
+void            _clutter_event_set_state_full           (ClutterEvent        *event,
+							 ClutterModifierType  button_state,
+							 ClutterModifierType  base_state,
+							 ClutterModifierType  latched_state,
+							 ClutterModifierType  locked_state,
+							 ClutterModifierType  effective_state);
+
 void            _clutter_event_push                     (const ClutterEvent *event,
                                                          gboolean            do_copy);
 

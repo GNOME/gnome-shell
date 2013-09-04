@@ -43,5 +43,8 @@ struct xkb_state * _clutter_xkb_state_new           (const gchar *model,
                                                      const gchar *layout,
                                                      const gchar *variant,
                                                      const gchar *options);
+void               _clutter_xkb_translate_state     (ClutterEvent       *event,
+						     struct xkb_state   *xkb_state,
+						     uint32_t            button_state);
 
 #endif /* __CLUTTER_XKB_UTILS_H__ */

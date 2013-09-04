@@ -673,6 +673,7 @@ clutter_event_get_source
 clutter_event_get_source_device
 clutter_event_get_stage
 clutter_event_get_state
+clutter_event_get_state_full
 clutter_event_get_type
 clutter_event_get_time
 clutter_event_get

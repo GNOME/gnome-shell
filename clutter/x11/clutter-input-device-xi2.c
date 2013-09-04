@@ -27,6 +27,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
+#include "clutter-event-private.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
@@ -94,15 +95,24 @@ clutter_input_device_xi2_init (ClutterInputDeviceXI2 *self)
 {
 }
 
-guint
-_clutter_input_device_xi2_translate_state (XIModifierState *modifiers_state,
+void
+_clutter_input_device_xi2_translate_state (ClutterEvent    *event,
+					   XIModifierState *modifiers_state,
                                            XIButtonState   *buttons_state,
                                            XIGroupState    *group_state)
 {
-  guint retval = 0;
+  guint button = 0;
+  guint base = 0;
+  guint latched = 0;
+  guint locked = 0;
+  guint effective;
 
   if (modifiers_state)
-    retval = (guint) modifiers_state->effective;
+    {
+      base = (guint) modifiers_state->base;
+      latched = (guint) modifiers_state->latched;
+      locked = (guint) modifiers_state->locked;
+    }
 
   if (buttons_state)
     {
@@ -118,23 +128,23 @@ _clutter_input_device_xi2_translate_state (XIModifierState *modifiers_state,
           switch (i)
             {
             case 1:
-              retval |= CLUTTER_BUTTON1_MASK;
+              button |= CLUTTER_BUTTON1_MASK;
               break;
 
             case 2:
-              retval |= CLUTTER_BUTTON2_MASK;
+              button |= CLUTTER_BUTTON2_MASK;
               break;
 
             case 3:
-              retval |= CLUTTER_BUTTON3_MASK;
+              button |= CLUTTER_BUTTON3_MASK;
               break;
 
             case 4:
-              retval |= CLUTTER_BUTTON4_MASK;
+              button |= CLUTTER_BUTTON4_MASK;
               break;
 
             case 5:
-              retval |= CLUTTER_BUTTON5_MASK;
+              button |= CLUTTER_BUTTON5_MASK;
               break;
 
             default:
@@ -143,8 +153,9 @@ _clutter_input_device_xi2_translate_state (XIModifierState *modifiers_state,
         }
     }
 
+  effective = button | base | latched | locked;
   if (group_state)
-    retval |= (group_state->effective) << 13;
+    effective |= (group_state->effective) << 13;
 
-  return retval;
+  _clutter_event_set_state_full (event, button, base, latched, locked, effective);
 }

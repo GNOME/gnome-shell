@@ -24,6 +24,7 @@
  */
 
 #include "clutter-keysyms.h"
+#include "clutter-event-private.h"
 #include "clutter-xkb-utils.h"
 
 /*
@@ -76,9 +77,7 @@ _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
   event->key.device = core_device;
   event->key.stage = stage;
   event->key.time = _time;
-  event->key.modifier_state =
-    xkb_state_serialize_mods (xkb_state, XKB_STATE_EFFECTIVE);
-  event->key.modifier_state |= button_state;
+  _clutter_xkb_translate_state (event, xkb_state, button_state);
   event->key.hardware_keycode = key;
   event->key.keyval = sym;
   clutter_event_set_source_device (event, device);
@@ -141,4 +140,17 @@ _clutter_xkb_state_new (const gchar *model,
   xkb_map_unref(keymap);
 
   return state;
+}
+
+void
+_clutter_xkb_translate_state (ClutterEvent     *event,
+			      struct xkb_state *state,
+			      uint32_t          button_state)
+{
+  _clutter_event_set_state_full (event,
+				 button_state,
+				 xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
+				 xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
+				 xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
+				 xkb_state_serialize_mods (state, XKB_STATE_MODS_EFFECTIVE) | button_state);
 }

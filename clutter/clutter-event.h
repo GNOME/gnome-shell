@@ -420,6 +420,13 @@ guint32                 clutter_event_get_time                  (const ClutterEv
 void                    clutter_event_set_state                 (ClutterEvent           *event,
                                                                  ClutterModifierType     state);
 ClutterModifierType     clutter_event_get_state                 (const ClutterEvent     *event);
+CLUTTER_AVAILABLE_IN_1_16
+void                    clutter_event_get_state_full            (const ClutterEvent     *event,
+								 ClutterModifierType    *button_state,
+								 ClutterModifierType    *base_state,
+								 ClutterModifierType    *latched_state,
+								 ClutterModifierType    *locked_state,
+								 ClutterModifierType    *effective_state);
 void                    clutter_event_set_device                (ClutterEvent           *event,
                                                                  ClutterInputDevice     *device);
 ClutterInputDevice *    clutter_event_get_device                (const ClutterEvent     *event);
