@@ -160,19 +160,19 @@ st_scroll_view_get_property (GObject    *object,
 
 /**
  * st_scroll_view_update_fade_effect:
- * @self: a #StScrollView
+ * @scroll: a #StScrollView
  * @vfade_offset: The length of the veritcal fade effect, in pixels.
  * @hfade_offset: The length of the horizontal fade effect, in pixels.
  *
  * Sets the height of the fade area area in pixels. A value of 0
  * disables the effect.
  */
-static void
-st_scroll_view_update_fade_effect (StScrollView *self,
+void
+st_scroll_view_update_fade_effect (StScrollView *scroll,
                                    float vfade_offset,
                                    float hfade_offset)
 {
-  StScrollViewPrivate *priv = ST_SCROLL_VIEW (self)->priv;
+  StScrollViewPrivate *priv = ST_SCROLL_VIEW (scroll)->priv;
 
   /* A fade amount of more than 0 enables the effect. */
   if (vfade_offset > 0. || hfade_offset > 0.)
@@ -180,7 +180,7 @@ st_scroll_view_update_fade_effect (StScrollView *self,
       if (priv->fade_effect == NULL) {
         priv->fade_effect = g_object_new (ST_TYPE_SCROLL_VIEW_FADE, NULL);
 
-        clutter_actor_add_effect_with_name (CLUTTER_ACTOR (self), "fade",
+        clutter_actor_add_effect_with_name (CLUTTER_ACTOR (scroll), "fade",
                                             CLUTTER_EFFECT (priv->fade_effect));
       }
 
@@ -194,12 +194,12 @@ st_scroll_view_update_fade_effect (StScrollView *self,
    else
     {
       if (priv->fade_effect != NULL) {
-        clutter_actor_remove_effect (CLUTTER_ACTOR (self), CLUTTER_EFFECT (priv->fade_effect));
+        clutter_actor_remove_effect (CLUTTER_ACTOR (scroll), CLUTTER_EFFECT (priv->fade_effect));
         priv->fade_effect = NULL;
       }
     }
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (scroll));
 }
 
 static void

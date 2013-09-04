@@ -87,6 +87,9 @@ gboolean      st_scroll_view_get_overlay_scrollbars (StScrollView *scroll);
 void          st_scroll_view_set_policy          (StScrollView   *scroll,
                                                   GtkPolicyType   hscroll,
                                                   GtkPolicyType   vscroll);
+void          st_scroll_view_update_fade_effect  (StScrollView *scroll,
+                                                  float vfade_offset,
+                                                  float hfade_offset);
 
 G_END_DECLS
 
