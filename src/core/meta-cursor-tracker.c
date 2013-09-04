@@ -35,6 +35,8 @@
 #include <cogl/cogl.h>
 #include <clutter/clutter.h>
 
+#include <gdk/gdk.h>
+
 #include <X11/extensions/Xfixes.h>
 
 #include "meta-cursor-tracker-private.h"
@@ -272,4 +274,23 @@ meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
   XDefineCursor (display->xdisplay, tracker->screen->xroot, xcursor);
   XFlush (display->xdisplay);
   XFreeCursor (display->xdisplay, xcursor);
+}
+
+void
+meta_cursor_tracker_get_pointer (MetaCursorTracker   *tracker,
+                                 int                 *x,
+                                 int                 *y,
+                                 ClutterModifierType *mods)
+{
+  GdkDeviceManager *gmanager;
+  GdkDevice *gdevice;
+  GdkScreen *gscreen;
+
+  gmanager = gdk_display_get_device_manager (gdk_display_get_default ());
+  gdevice = gdk_device_manager_get_client_pointer (gmanager);
+
+  gdk_device_get_position (gdevice, &gscreen, x, y);
+  gdk_device_get_state (gdevice,
+                        gdk_screen_get_root_window (gscreen),
+                        NULL, (GdkModifierType*)mods);
 }
