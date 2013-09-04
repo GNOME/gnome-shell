@@ -24,7 +24,9 @@
 /**
  * SECTION:cursor-tracker
  * @title: MetaCursorTracker
- * @short_description: Mutter cursor tracking helper
+ * @short_description: Mutter cursor tracking helper. Originally only
+ *                     tracking the cursor image, now more of a "core
+ *                     pointer abstraction"
  */
 
 #include <config.h>
@@ -34,6 +36,8 @@
 
 #include <cogl/cogl.h>
 #include <clutter/clutter.h>
+
+#include <gdk/gdk.h>
 
 #include <X11/extensions/Xfixes.h>
 
@@ -455,4 +459,57 @@ meta_cursor_tracker_queue_redraw (MetaCursorTracker *tracker,
     return;
 
   clutter_actor_queue_redraw_with_clip (stage, &tracker->current_rect);
+}
+
+static void
+get_pointer_position_gdk (int         *x,
+                          int         *y,
+                          int         *mods)
+{
+  GdkDeviceManager *gmanager;
+  GdkDevice *gdevice;
+  GdkScreen *gscreen;
+
+  gmanager = gdk_display_get_device_manager (gdk_display_get_default ());
+  gdevice = gdk_device_manager_get_client_pointer (gmanager);
+
+  gdk_device_get_position (gdevice, &gscreen, x, y);
+  gdk_device_get_state (gdevice,
+                        gdk_screen_get_root_window (gscreen),
+                        NULL, (GdkModifierType*)mods);
+}
+
+static void
+get_pointer_position_clutter (int         *x,
+                              int         *y,
+                              int         *mods)
+{
+  ClutterDeviceManager *cmanager;
+  ClutterInputDevice *cdevice;
+  ClutterPoint point;
+
+  cmanager = clutter_device_manager_get_default ();
+  cdevice = clutter_device_manager_get_core_device (cmanager, CLUTTER_POINTER_DEVICE);
+
+  clutter_input_device_get_coords (cdevice, NULL, &point);
+  *x = point.x;
+  *y = point.y;
+  *mods = clutter_input_device_get_modifier_state (cdevice);
+}
+
+void
+meta_cursor_tracker_get_pointer (MetaCursorTracker   *tracker,
+                                 int                 *x,
+                                 int                 *y,
+                                 ClutterModifierType *mods)
+{
+  /* We can't use the clutter interface when not running as a wayland compositor,
+     because we need to query the server, rather than using the last cached value.
+     OTOH, on wayland we can't use GDK, because that only sees the events
+     we forward to xwayland.
+  */
+  if (meta_is_wayland_compositor ())
+    get_pointer_position_clutter (x, y, (int*)mods);
+  else
+    get_pointer_position_gdk (x, y, (int*)mods);
 }

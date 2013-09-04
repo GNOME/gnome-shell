@@ -28,6 +28,7 @@
 #include <meta/types.h>
 #include <meta/workspace.h>
 #include <cogl/cogl.h>
+#include <clutter/clutter.h>
 
 #define META_TYPE_CURSOR_TRACKER            (meta_cursor_tracker_get_type ())
 #define META_CURSOR_TRACKER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_CURSOR_TRACKER, MetaCursorTracker))
@@ -46,5 +47,10 @@ void           meta_cursor_tracker_get_hot    (MetaCursorTracker *tracker,
                                                int               *x,
                                                int               *y);
 CoglTexture   *meta_cursor_tracker_get_sprite (MetaCursorTracker *tracker);
+
+void           meta_cursor_tracker_get_pointer (MetaCursorTracker   *tracker,
+                                                int                 *x,
+                                                int                 *y,
+                                                ClutterModifierType *mods);
 
 #endif
