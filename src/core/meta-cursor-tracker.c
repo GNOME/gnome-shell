@@ -294,3 +294,15 @@ meta_cursor_tracker_get_pointer (MetaCursorTracker   *tracker,
                         gdk_screen_get_root_window (gscreen),
                         NULL, (GdkModifierType*)mods);
 }
+
+void
+meta_cursor_tracker_set_pointer_visible (MetaCursorTracker *tracker,
+                                         gboolean           visible)
+{
+  if (visible)
+    XFixesShowCursor (tracker->screen->display->xdisplay,
+                      tracker->screen->xroot);
+  else
+    XFixesHideCursor (tracker->screen->display->xdisplay,
+                      tracker->screen->xroot);
+}
