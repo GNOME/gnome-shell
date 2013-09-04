@@ -1664,7 +1664,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .chat-notification-scrollview{
-	max-height: 22em;
+    max-height: 22em;
 }
 
 .subscription-message {
