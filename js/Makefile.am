@@ -55,6 +55,7 @@ nobase_dist_js_DATA = 	\
 	ui/extensionSystem.js	\
 	ui/extensionDownloader.js \
 	ui/environment.js	\
+	ui/focusCaretTracker.js\
 	ui/ibusCandidatePopup.js\
 	ui/grabHelper.js	\
 	ui/iconGrid.js		\
