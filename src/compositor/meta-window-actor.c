@@ -767,6 +767,9 @@ meta_window_actor_get_paint_volume (ClutterActor       *actor,
       gdk_rectangle_union (&bounds, &shadow_bounds, &bounds);
     }
 
+  if (priv->unobscured_region)
+    cairo_region_intersect_rectangle (priv->unobscured_region, &bounds);
+
   origin.x = bounds.x;
   origin.y = bounds.y;
   origin.z = 0.0f;
