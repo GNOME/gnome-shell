@@ -41,27 +41,13 @@ typedef struct _StScrollViewFadeClass  StScrollViewFadeClass;
 
 struct _StScrollViewFade
 {
-  ClutterOffscreenEffect parent_instance;
+  ClutterShaderEffect parent_instance;
 
   /* a back pointer to our actor, so that we can query it */
   ClutterActor *actor;
 
-  CoglHandle shader;
-  CoglHandle program;
-
-  gint tex_uniform;
-  gint height_uniform;
-  gint width_uniform;
-  gint fade_area_uniform;
-  gint vfade_offset_uniform;
-  gint hfade_offset_uniform;
-  gint vvalue_uniform;
-  gint hvalue_uniform;
-
   StAdjustment *vadjustment;
   StAdjustment *hadjustment;
-
-  guint is_attached : 1;
 
   float vfade_offset;
   float hfade_offset;
@@ -69,12 +55,12 @@ struct _StScrollViewFade
 
 struct _StScrollViewFadeClass
 {
-  ClutterOffscreenEffectClass parent_class;
+  ClutterShaderEffectClass parent_class;
 };
 
 G_DEFINE_TYPE (StScrollViewFade,
                st_scroll_view_fade,
-               CLUTTER_TYPE_OFFSCREEN_EFFECT);
+               CLUTTER_TYPE_SHADER_EFFECT);
 
 enum {
   PROP_0,
@@ -82,58 +68,6 @@ enum {
   PROP_VFADE_OFFSET,
   PROP_HFADE_OFFSET
 };
-
-static gboolean
-st_scroll_view_fade_pre_paint (ClutterEffect *effect)
-{
-  StScrollViewFade *self = ST_SCROLL_VIEW_FADE (effect);
-  ClutterEffectClass *parent_class;
-
-  if (self->shader == COGL_INVALID_HANDLE)
-    return FALSE;
-
-  if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
-    return FALSE;
-
-  if (self->actor == NULL)
-    return FALSE;
-
-  if (self->program == COGL_INVALID_HANDLE)
-    self->program = cogl_create_program ();
-
-  if (!self->is_attached)
-    {
-      g_assert (self->shader != COGL_INVALID_HANDLE);
-      g_assert (self->program != COGL_INVALID_HANDLE);
-
-      cogl_program_attach_shader (self->program, self->shader);
-      cogl_program_link (self->program);
-
-      cogl_handle_unref (self->shader);
-
-      self->is_attached = TRUE;
-
-      self->tex_uniform =
-        cogl_program_get_uniform_location (self->program, "tex");
-      self->height_uniform =
-        cogl_program_get_uniform_location (self->program, "height");
-      self->width_uniform =
-        cogl_program_get_uniform_location (self->program, "width");
-      self->fade_area_uniform =
-        cogl_program_get_uniform_location (self->program, "fade_area");
-      self->vfade_offset_uniform =
-        cogl_program_get_uniform_location (self->program, "vfade_offset");
-      self->hfade_offset_uniform =
-        cogl_program_get_uniform_location (self->program, "hfade_offset");
-      self->vvalue_uniform =
-        cogl_program_get_uniform_location (self->program, "vvalue");
-      self->hvalue_uniform =
-        cogl_program_get_uniform_location (self->program, "hvalue");
-    }
-
-  parent_class = CLUTTER_EFFECT_CLASS (st_scroll_view_fade_parent_class);
-  return parent_class->pre_paint (effect);
-}
 
 static CoglHandle
 st_scroll_view_fade_create_texture (ClutterOffscreenEffect *effect,
@@ -146,10 +80,18 @@ st_scroll_view_fade_create_texture (ClutterOffscreenEffect *effect,
                                      COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 }
 
+static char *
+st_scroll_view_fade_get_static_shader_source (ClutterShaderEffect *effect)
+{
+   return g_strdup (st_scroll_view_fade_glsl);
+}
+
+
 static void
 st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
 {
   StScrollViewFade *self = ST_SCROLL_VIEW_FADE (effect);
+  ClutterShaderEffect *shader = CLUTTER_SHADER_EFFECT (effect);
   ClutterOffscreenEffectClass *parent;
   CoglHandle material;
 
@@ -160,20 +102,9 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
 
   ClutterActorBox allocation, content_box, paint_box;
 
-  /*
-   * Used to pass the fade area to the shader
-   *
-   * [0][0] = x1
-   * [0][1] = y1
-   * [1][0] = x2
-   * [1][1] = y2
-   *
-   */
-  float fade_area[2][2];
+  float fade_area_topleft[2];
+  float fade_area_bottomright[2];
   ClutterVertex verts[4];
-
-  if (self->program == COGL_INVALID_HANDLE)
-    goto out;
 
   clutter_actor_get_paint_box (self->actor, &paint_box);
   clutter_actor_get_abs_allocation_vertices (self->actor, verts);
@@ -186,10 +117,10 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
    * The FBO is based on the paint_volume's size which can be larger then the actual
    * allocation, so we have to account for that when passing the positions
    */
-  fade_area[0][0] = content_box.x1 + (verts[0].x - paint_box.x1);
-  fade_area[0][1] = content_box.y1 + (verts[0].y - paint_box.y1);
-  fade_area[1][0] = content_box.x2 + (verts[3].x - paint_box.x2);
-  fade_area[1][1] = content_box.y2 + (verts[3].y - paint_box.y2);
+  fade_area_topleft[0] = content_box.x1 + (verts[0].x - paint_box.x1);
+  fade_area_topleft[1] = content_box.y1 + (verts[0].y - paint_box.y1);
+  fade_area_bottomright[0] = content_box.x2 + (verts[3].x - paint_box.x2);
+  fade_area_bottomright[1] = content_box.y2 + (verts[3].y - paint_box.y2);
 
   g_object_get (ST_SCROLL_VIEW (self->actor),
                 "hscrollbar-visible", &h_scroll_visible,
@@ -199,47 +130,32 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
   if (v_scroll_visible)
     {
       if (clutter_actor_get_text_direction (self->actor) == CLUTTER_TEXT_DIRECTION_RTL)
-          fade_area[0][0] += clutter_actor_get_width (vscroll);
+          fade_area_topleft[0] += clutter_actor_get_width (vscroll);
 
-      fade_area[1][0] -= clutter_actor_get_width (vscroll);
+      fade_area_bottomright[0] -= clutter_actor_get_width (vscroll);
     }
 
   if (h_scroll_visible)
-      fade_area[1][1] -= clutter_actor_get_height (hscroll);
+      fade_area_bottomright[1] -= clutter_actor_get_height (hscroll);
 
-  if (self->vvalue_uniform > -1)
-    {
-      st_adjustment_get_values (self->vadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
-      value = (value - lower) / (upper - page_size - lower);
-      cogl_program_set_uniform_1f (self->program, self->vvalue_uniform, value);
-    }
+  st_adjustment_get_values (self->vadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
+  value = (value - lower) / (upper - page_size - lower);
+  clutter_shader_effect_set_uniform (shader, "vvalue", G_TYPE_FLOAT, 1, value);
 
-  if (self->hvalue_uniform > -1)
-    {
-      st_adjustment_get_values (self->hadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
-      value = (value - lower) / (upper - page_size - lower);
-      cogl_program_set_uniform_1f (self->program, self->hvalue_uniform, value);
-    }
+  st_adjustment_get_values (self->hadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
+  value = (value - lower) / (upper - page_size - lower);
+  clutter_shader_effect_set_uniform (shader, "hvalue", G_TYPE_FLOAT, 1, value);
 
-  if (self->vfade_offset_uniform > -1)
-    cogl_program_set_uniform_1f (self->program, self->vfade_offset_uniform, self->vfade_offset);
-  if (self->hfade_offset_uniform > -1)
-    cogl_program_set_uniform_1f (self->program, self->hfade_offset_uniform, self->hfade_offset);
-  if (self->tex_uniform > -1)
-    cogl_program_set_uniform_1i (self->program, self->tex_uniform, 0);
-  if (self->height_uniform > -1)
-    cogl_program_set_uniform_1f (self->program, self->height_uniform, clutter_actor_get_height (self->actor));
-  if (self->width_uniform > -1)
-    cogl_program_set_uniform_1f (self->program, self->width_uniform, clutter_actor_get_width (self->actor));
-  if (self->fade_area_uniform > -1)
-    cogl_program_set_uniform_matrix (self->program, self->fade_area_uniform, 2, 1, FALSE, (const float *)fade_area);
+  clutter_shader_effect_set_uniform (shader, "vfade_offset", G_TYPE_FLOAT, 1, self->vfade_offset);
+  clutter_shader_effect_set_uniform (shader, "hfade_offset", G_TYPE_FLOAT, 1, self->hfade_offset);
+  clutter_shader_effect_set_uniform (shader, "tex", G_TYPE_INT, 1, 0);
+  clutter_shader_effect_set_uniform (shader, "height", G_TYPE_FLOAT, 1, clutter_actor_get_height (self->actor));
+  clutter_shader_effect_set_uniform (shader, "width", G_TYPE_FLOAT, 1, clutter_actor_get_width (self->actor));
+  clutter_shader_effect_set_uniform (shader, "fade_area_topleft", CLUTTER_TYPE_SHADER_FLOAT, 2, fade_area_topleft);
+  clutter_shader_effect_set_uniform (shader, "fade_area_bottomright", CLUTTER_TYPE_SHADER_FLOAT, 2, fade_area_bottomright);
 
-  material = clutter_offscreen_effect_get_target (effect);
-  cogl_material_set_user_program (material, self->program);
-
-out:
   parent = CLUTTER_OFFSCREEN_EFFECT_CLASS (st_scroll_view_fade_parent_class);
-  parent->paint_target (effect);
+  parent->paint_target(effect);
 }
 
 static void
@@ -270,12 +186,6 @@ st_scroll_view_fade_set_actor (ClutterActorMeta *meta,
   ClutterActorMetaClass *parent;
 
   g_return_if_fail (actor == NULL || ST_IS_SCROLL_VIEW (actor));
-
-  if (self->shader == COGL_INVALID_HANDLE)
-    {
-      clutter_actor_meta_set_enabled (meta, FALSE);
-      return;
-    }
 
   if (self->vadjustment)
     {
@@ -324,14 +234,6 @@ static void
 st_scroll_view_fade_dispose (GObject *gobject)
 {
   StScrollViewFade *self = ST_SCROLL_VIEW_FADE (gobject);
-
-  if (self->program != COGL_INVALID_HANDLE)
-    {
-      cogl_handle_unref (self->program);
-
-      self->program = COGL_INVALID_HANDLE;
-      self->shader = COGL_INVALID_HANDLE;
-    }
 
   if (self->vadjustment)
     {
@@ -437,8 +339,8 @@ st_scroll_view_fade_get_property (GObject *object,
 static void
 st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
 {
-  ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterShaderEffectClass *shader_class;
   ClutterOffscreenEffectClass *offscreen_class;
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
 
@@ -448,7 +350,8 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
 
   meta_class->set_actor = st_scroll_view_fade_set_actor;
 
-  effect_class->pre_paint = st_scroll_view_fade_pre_paint;
+  shader_class = CLUTTER_SHADER_EFFECT_CLASS (klass);
+  shader_class->get_static_shader_source = st_scroll_view_fade_get_static_shader_source;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
   offscreen_class->create_texture = st_scroll_view_fade_create_texture;
@@ -474,44 +377,8 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
 static void
 st_scroll_view_fade_init (StScrollViewFade *self)
 {
-  static CoglHandle shader = COGL_INVALID_HANDLE;
-
-  if (shader == COGL_INVALID_HANDLE)
-    {
-      if (clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
-        {
-          shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
-          cogl_shader_source (shader, (const char *) st_scroll_view_fade_glsl);
-          cogl_shader_compile (shader);
-          if (!cogl_shader_is_compiled (shader))
-            {
-              gchar *log_buf = cogl_shader_get_info_log (shader);
-
-              g_warning (G_STRLOC ": Unable to compile the fade shader: %s",
-                         log_buf);
-              g_free (log_buf);
-
-              cogl_handle_unref (shader);
-              shader = COGL_INVALID_HANDLE;
-          }
-        }
-    }
-
-  self->shader = shader;
-  self->is_attached = FALSE;
-  self->tex_uniform = -1;
-  self->height_uniform = -1;
-  self->width_uniform = -1;
-  self->fade_area_uniform = -1;
-  self->vfade_offset_uniform = -1;
-  self->hfade_offset_uniform = -1;
-  self->vvalue_uniform = -1;
-  self->hvalue_uniform = -1;
   self->vfade_offset = DEFAULT_FADE_OFFSET;
   self->hfade_offset = DEFAULT_FADE_OFFSET;
-
-  if (shader != COGL_INVALID_HANDLE)
-    cogl_handle_ref (self->shader);
 }
 
 ClutterEffect *
