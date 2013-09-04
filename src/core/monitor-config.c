@@ -911,6 +911,8 @@ make_laptop_lid_config (MetaConfiguration  *reference)
   MetaConfiguration *new;
   unsigned int i;
   gboolean has_primary;
+  int x_after, y_after;
+  int x_offset, y_offset;
 
   g_assert (reference->n_outputs > 1);
 
@@ -919,6 +921,8 @@ make_laptop_lid_config (MetaConfiguration  *reference)
   new->keys = g_new0 (MetaOutputKey, reference->n_outputs);
   new->outputs = g_new0 (MetaOutputConfig, reference->n_outputs);
 
+  x_after = G_MAXINT; y_after = G_MAXINT;
+  x_offset = 0; y_offset = 0;
   for (i = 0; i < new->n_outputs; i++)
     {
       MetaOutputKey *current_key = &reference->keys[i];
@@ -931,13 +935,22 @@ make_laptop_lid_config (MetaConfiguration  *reference)
 
       if (g_str_has_prefix (current_key->connector, "LVDS") ||
           g_str_has_prefix (current_key->connector, "eDP"))
-        new->outputs[i].enabled = FALSE;
+        {
+          new->outputs[i].enabled = FALSE;
+          x_after = current_output->rect.x;
+          y_after = current_output->rect.y;
+          x_offset = current_output->rect.width;
+          y_offset = current_output->rect.height;
+        }
       else
-        /* This can potentially leave a "hole" in the screen,
-           but this is actually a good thing, as it means windows
-           don't move around.
-        */
-        new->outputs[i] = *current_output;
+        {
+          new->outputs[i] = *current_output;
+
+          if (new->outputs[i].rect.x > x_after)
+            new->outputs[i].rect.x -= x_offset;
+          if (new->outputs[i].rect.y > y_after)
+            new->outputs[i].rect.y -= y_offset;
+        }
     }
 
   has_primary = FALSE;
