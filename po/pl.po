@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-31 22:32+0200\n"
-"PO-Revision-Date: 2013-08-31 22:33+0200\n"
+"POT-Creation-Date: 2013-09-04 02:07+0200\n"
+"PO-Revision-Date: 2013-09-04 02:08+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -365,23 +365,27 @@ msgstr "Nie można przetworzyć polecenia:"
 msgid "Execution of '%s' failed:"
 msgstr "Wykonanie polecenia \"%s\" się nie powiodło:"
 
-#: ../js/ui/appDisplay.js:386
+#: ../js/ui/appDisplay.js:580
+msgid "Frequently used applications will appear here"
+msgstr "W tym miejscu pojawią się często używane programy"
+
+#: ../js/ui/appDisplay.js:696
 msgid "Frequent"
 msgstr "Często używane"
 
-#: ../js/ui/appDisplay.js:393
+#: ../js/ui/appDisplay.js:703
 msgid "All"
 msgstr "Wszystkie"
 
-#: ../js/ui/appDisplay.js:991
+#: ../js/ui/appDisplay.js:1490
 msgid "New Window"
 msgstr "Nowe okno"
 
-#: ../js/ui/appDisplay.js:994 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1493 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Usuń z ulubionych"
 
-#: ../js/ui/appDisplay.js:995
+#: ../js/ui/appDisplay.js:1494
 msgid "Add to Favorites"
 msgstr "Dodaj do ulubionych"
 
@@ -1264,11 +1268,11 @@ msgstr "Nie można zablokować"
 msgid "Lock was blocked by an application"
 msgstr "Blokowanie zostało zablokowane przez program"
 
-#: ../js/ui/searchDisplay.js:445
+#: ../js/ui/searchDisplay.js:447
 msgid "Searching…"
 msgstr "Wyszukiwanie…"
 
-#: ../js/ui/searchDisplay.js:489
+#: ../js/ui/searchDisplay.js:491
 msgid "No results."
 msgstr "Brak wyników."
 
