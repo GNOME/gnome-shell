@@ -426,7 +426,7 @@ meta_cursor_tracker_paint (MetaCursorTracker *tracker)
 {
   g_assert (meta_is_wayland_compositor ());
 
-  if (tracker->sprite == NULL)
+  if (tracker->sprite == NULL || tracker->is_showing == FALSE)
     return;
 
   /* FIXME: try to use a DRM cursor when possible */
@@ -512,4 +512,30 @@ meta_cursor_tracker_get_pointer (MetaCursorTracker   *tracker,
     get_pointer_position_clutter (x, y, (int*)mods);
   else
     get_pointer_position_gdk (x, y, (int*)mods);
+}
+
+void
+meta_cursor_tracker_set_pointer_visible (MetaCursorTracker *tracker,
+                                         gboolean           visible)
+{
+  if (visible == tracker->is_showing)
+    return;
+  tracker->is_showing = visible;
+
+  if (meta_is_wayland_compositor ())
+    {
+      MetaWaylandCompositor *compositor;
+
+      compositor = meta_wayland_compositor_get_default ();
+      meta_cursor_tracker_queue_redraw (tracker, compositor->stage);
+    }
+  else
+    {
+      if (visible)
+        XFixesShowCursor (tracker->screen->display->xdisplay,
+                          tracker->screen->xroot);
+      else
+        XFixesHideCursor (tracker->screen->display->xdisplay,
+                          tracker->screen->xroot);
+    }
 }

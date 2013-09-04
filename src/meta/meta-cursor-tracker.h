@@ -52,5 +52,7 @@ void           meta_cursor_tracker_get_pointer (MetaCursorTracker   *tracker,
                                                 int                 *x,
                                                 int                 *y,
                                                 ClutterModifierType *mods);
+void           meta_cursor_tracker_set_pointer_visible (MetaCursorTracker *tracker,
+                                                        gboolean           visible);
 
 #endif
