@@ -136,6 +136,9 @@ struct _MetaCRTC
 
   /* Used when changing configuration */
   gboolean is_dirty;
+
+  /* Updated by MetaCursorTracker */
+  gboolean has_hw_cursor;
 };
 
 struct _MetaMonitorMode

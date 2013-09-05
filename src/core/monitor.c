@@ -1361,12 +1361,21 @@ meta_monitor_manager_get_resources (MetaMonitorManager  *manager,
                                     MetaOutput         **outputs,
                                     unsigned int        *n_outputs)
 {
-  *modes = manager->modes;
-  *n_modes = manager->n_modes;
-  *crtcs = manager->crtcs;
-  *n_crtcs = manager->n_crtcs;
-  *outputs = manager->outputs;
-  *n_outputs = manager->n_outputs;
+  if (modes)
+    {
+      *modes = manager->modes;
+      *n_modes = manager->n_modes;
+    }
+  if (crtcs)
+    {
+      *crtcs = manager->crtcs;
+      *n_crtcs = manager->n_crtcs;
+    }
+  if (outputs)
+    {
+      *outputs = manager->outputs;
+      *n_outputs = manager->n_outputs;
+    }
 }
 
 int

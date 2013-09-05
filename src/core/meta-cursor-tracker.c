@@ -30,12 +30,15 @@
  */
 
 #include <config.h>
+#include <string.h>
 #include <meta/main.h>
 #include <meta/util.h>
 #include <meta/errors.h>
 
 #include <cogl/cogl.h>
+#include <cogl/cogl-wayland-server.h>
 #include <clutter/clutter.h>
+#include <gbm.h>
 
 #include <gdk/gdk.h>
 
@@ -43,13 +46,19 @@
 
 #include "meta-cursor-tracker-private.h"
 #include "screen-private.h"
-
-#ifdef HAVE_WAYLAND
 #include "meta-wayland-private.h"
-#endif
+#include "monitor-private.h"
 
 #define META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_X 7
 #define META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_Y 4
+
+typedef struct {
+  CoglTexture2D *texture;
+  struct gbm_bo *bo;
+  int hot_x, hot_y;
+
+  int ref_count;
+} MetaCursorReference;
 
 struct _MetaCursorTracker {
   GObject parent_instance;
@@ -57,21 +66,21 @@ struct _MetaCursorTracker {
   MetaScreen *screen;
 
   gboolean is_showing;
+  gboolean has_cursor;
+  gboolean has_hw_cursor;
 
-  CoglTexture2D *sprite;
-  int hot_x, hot_y;
-
-  CoglTexture2D *root_cursor;
-  int root_hot_x, root_hot_y;
-
-  CoglTexture2D *default_cursor;
+  MetaCursorReference *sprite;
+  MetaCursorReference *root_cursor;
+  MetaCursorReference *default_cursor;
 
   int current_x, current_y;
-  cairo_rectangle_int_t current_rect;
-  cairo_rectangle_int_t previous_rect;
+  MetaRectangle current_rect;
+  MetaRectangle previous_rect;
   gboolean previous_is_valid;
 
   CoglPipeline *pipeline;
+  int drm_fd;
+  struct gbm_device *gbm;
 };
 
 struct _MetaCursorTrackerClass {
@@ -86,6 +95,326 @@ enum {
 };
 
 static guint signals[LAST_SIGNAL];
+
+static void meta_cursor_tracker_set_sprite (MetaCursorTracker   *tracker,
+                                            MetaCursorReference *sprite);
+
+static void meta_cursor_tracker_set_crtc_has_hw_cursor (MetaCursorTracker *tracker,
+                                                        MetaCRTC          *crtc,
+                                                        gboolean           has_hw_cursor);
+
+static MetaCursorReference *
+meta_cursor_reference_ref (MetaCursorReference *self)
+{
+  g_assert (self->ref_count > 0);
+  self->ref_count++;
+
+  return self;
+}
+
+static void
+meta_cursor_reference_unref (MetaCursorReference *self)
+{
+  self->ref_count--;
+
+  if (self->ref_count == 0)
+    {
+      cogl_object_unref (self->texture);
+      if (self->bo)
+        gbm_bo_destroy (self->bo);
+
+      g_slice_free (MetaCursorReference, self);
+    }
+}
+
+static MetaCursorReference *
+meta_cursor_reference_from_file (MetaCursorTracker  *tracker,
+                                 const char         *filename,
+                                 GError            **error)
+{
+  GdkPixbuf *pixbuf;
+  int width, height, rowstride;
+  int bits_per_sample;
+  int n_channels;
+  gboolean has_alpha;
+  CoglPixelFormat cogl_format;
+  uint32_t gbm_format;
+  ClutterBackend *clutter_backend;
+  CoglContext *cogl_context;
+  MetaCursorReference *self;
+
+  pixbuf = gdk_pixbuf_new_from_file (filename, error);
+  if (!pixbuf)
+    return NULL;
+
+  has_alpha       = gdk_pixbuf_get_has_alpha (pixbuf);
+  width           = gdk_pixbuf_get_width (pixbuf);
+  height          = gdk_pixbuf_get_height (pixbuf);
+  rowstride       = gdk_pixbuf_get_rowstride (pixbuf);
+  bits_per_sample = gdk_pixbuf_get_bits_per_sample (pixbuf);
+  n_channels      = gdk_pixbuf_get_n_channels (pixbuf);
+
+  g_assert (bits_per_sample == 8);
+  if (has_alpha)
+    {
+      g_assert (n_channels == 4);
+      cogl_format = COGL_PIXEL_FORMAT_RGBA_8888;
+      gbm_format = GBM_FORMAT_ARGB8888;
+    }
+  else
+    {
+      g_assert (n_channels == 3);
+      cogl_format = COGL_PIXEL_FORMAT_RGB_888;
+      gbm_format = GBM_FORMAT_XRGB8888;
+    }
+
+  self = g_slice_new0 (MetaCursorReference);
+  self->ref_count = 1;
+
+  clutter_backend = clutter_get_default_backend ();
+  cogl_context = clutter_backend_get_cogl_context (clutter_backend);
+  self->texture = cogl_texture_2d_new_from_data (cogl_context,
+                                                 width, height,
+                                                 cogl_format,
+                                                 COGL_PIXEL_FORMAT_ANY,
+                                                 rowstride,
+                                                 gdk_pixbuf_get_pixels (pixbuf),
+                                                 NULL);
+
+  if (tracker->gbm)
+    {
+      if (width > 64 || height > 64)
+        {
+          meta_warning ("Invalid default cursor size (must be at most 64x64)\n");
+          goto out;
+        }
+
+      if (gbm_device_is_format_supported (tracker->gbm, gbm_format,
+                                          GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE))
+        {
+          uint8_t *data;
+          uint8_t buf[4 * 64 * 64];
+          int i, j;
+
+          self->bo = gbm_bo_create (tracker->gbm, 64, 64,
+                                    gbm_format, GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE);
+
+          data = gdk_pixbuf_get_pixels (pixbuf);
+          memset (buf, 0, sizeof(buf));
+          for (i = 0; i < height; i++)
+            {
+              for (j = 0; j < width; j++)
+                {
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+                  /* The byte order is B G R (A) */
+                  buf[i * 4 * 64 + j * 4 + 0] = data[i * rowstride + j * n_channels + 2];
+                  buf[i * 4 * 64 + j * 4 + 1] = data[i * rowstride + j * n_channels + 1];
+                  buf[i * 4 * 64 + j * 4 + 2] = data[i * rowstride + j * n_channels + 0];
+                  if (has_alpha)
+                    buf[i * 4 * 64 + j * 4 + 3] = data[i * rowstride + j * n_channels + 3];
+                  else
+                    buf[i * 4 * 64 + j * 4 + 3] = 0;
+#else
+                  /* The byte order is (A) R G B */
+                  buf[i * 4 * 64 + j * 4 + 3] = data[i * rowstride + j * n_channels + 2];
+                  buf[i * 4 * 64 + j * 4 + 2] = data[i * rowstride + j * n_channels + 1];
+                  buf[i * 4 * 64 + j * 4 + 1] = data[i * rowstride + j * n_channels + 0];
+                  if (has_alpha)
+                    buf[i * 4 * 64 + j * 4 + 0] = data[i * rowstride + j * n_channels + 3];
+                  else
+                    buf[i * 4 * 64 + j * 4 + 0] = 0;
+#endif
+                }
+            }
+
+          gbm_bo_write (self->bo, buf, 64 * 64 * 4);
+        }
+      else
+        meta_warning ("HW cursor for format %d not supported\n", gbm_format);
+    }
+
+ out:
+  g_object_unref (pixbuf);
+
+  return self;
+}
+
+static MetaCursorReference *
+meta_cursor_reference_take_texture (CoglTexture2D *texture)
+{
+  MetaCursorReference *self;
+
+  self = g_slice_new0 (MetaCursorReference);
+  self->ref_count = 1;
+
+  self->texture = texture;
+
+  return self;
+}
+
+static MetaCursorReference *
+meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
+                                   struct wl_resource *buffer,
+                                   int                 hot_x,
+                                   int                 hot_y)
+{
+  ClutterBackend *backend;
+  CoglContext *cogl_context;
+  MetaCursorReference *self;
+  CoglPixelFormat cogl_format, cogl_internal_format;
+  struct wl_shm_buffer *shm_buffer;
+  uint32_t gbm_format;
+
+  self = g_slice_new0 (MetaCursorReference);
+  self->ref_count = 1;
+ 
+  backend = clutter_get_default_backend ();
+  cogl_context = clutter_backend_get_cogl_context (backend);
+
+  shm_buffer = wl_shm_buffer_get (buffer);
+  if (shm_buffer)
+    {
+      int rowstride = wl_shm_buffer_get_stride (shm_buffer);
+      int width = wl_shm_buffer_get_width (shm_buffer);
+      int height = wl_shm_buffer_get_height (shm_buffer);
+
+      switch (wl_shm_buffer_get_format (shm_buffer))
+        {
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+          case WL_SHM_FORMAT_ARGB8888:
+            cogl_format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
+            cogl_internal_format = COGL_PIXEL_FORMAT_ANY;
+            gbm_format = GBM_FORMAT_ARGB8888;
+            break;
+          case WL_SHM_FORMAT_XRGB32:
+            cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
+            cogl_internal_format = COGL_PIXEL_FORMAT_RGB_888;
+            gbm_format = GBM_FORMAT_XRGB8888;
+            break;
+#else
+          case WL_SHM_FORMAT_ARGB8888:
+            cogl_format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
+            cogl_internal_format = COGL_PIXEL_FORMAT_ANY;
+            gbm_format = GBM_FORMAT_ARGB8888;
+            break;
+          case WL_SHM_FORMAT_XRGB8888:
+            cogl_format = COGL_PIXEL_FORMAT_BGRA_8888;
+            cogl_internal_format = COGL_PIXEL_FORMAT_BGR_888;
+            gbm_format = GBM_FORMAT_XRGB8888;
+            break;
+#endif
+          default:
+            g_warn_if_reached ();
+            cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
+            cogl_internal_format = COGL_PIXEL_FORMAT_ANY;
+            gbm_format = GBM_FORMAT_ARGB8888;
+        }
+
+      self->texture = cogl_texture_2d_new_from_data (cogl_context,
+                                                     width, height,
+                                                     cogl_format,
+                                                     cogl_internal_format,
+                                                     rowstride,
+                                                     wl_shm_buffer_get_data (shm_buffer),
+                                                     NULL);
+
+      if (width > 64 || height > 64)
+        {
+          meta_warning ("Invalid cursor size (must be at most 64x64), falling back to software (GL) cursors\n");
+          return self;
+        }
+
+      if (tracker->gbm)
+        {
+          if (gbm_device_is_format_supported (tracker->gbm, gbm_format,
+                                              GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE))
+            {
+              uint8_t *data;
+              uint8_t buf[4 * 64 * 64];
+              int i;
+
+              self->bo = gbm_bo_create (tracker->gbm, 64, 64,
+                                        gbm_format, GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE);
+
+              data = wl_shm_buffer_get_data (shm_buffer);
+              memset (buf, 0, sizeof(buf));
+              for (i = 0; i < height; i++)
+                memcpy (buf + i * 4 * 64, data + i * rowstride, 4 * width);
+
+              gbm_bo_write (self->bo, buf, 64 * 64 * 4);
+            }
+          else
+            meta_warning ("HW cursor for format %d not supported\n", gbm_format);
+        }
+    }
+  else
+    {
+      int width, height;
+
+      self->texture = cogl_wayland_texture_2d_new_from_buffer (cogl_context, buffer, NULL);
+      width = cogl_texture_get_width (COGL_TEXTURE (self->texture));
+      height = cogl_texture_get_height (COGL_TEXTURE (self->texture));
+
+      /* HW cursors must be 64x64, but 64x64 is huge, and no cursor theme actually uses
+         that, so themed cursors must be padded with transparent pixels to fill the
+         overlay. This is trivial if we have CPU access to the data, but it's not
+         possible if the buffer is in GPU memory (and possibly tiled too), so if we
+         don't get the right size, we fallback to GL.
+      */
+      if (width != 64 || height != 64)
+        {
+          meta_warning ("Invalid cursor size (must be 64x64), falling back to software (GL) cursors\n");
+          return self;
+        }
+
+      if (tracker->gbm)
+        {
+          cogl_format = cogl_texture_get_format (COGL_TEXTURE (self->texture));
+          switch (cogl_format)
+            {
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+            case COGL_PIXEL_FORMAT_ARGB_8888_PRE:
+            case COGL_PIXEL_FORMAT_ARGB_8888:
+              gbm_format = GBM_FORMAT_BGRA8888;
+              break;
+            case COGL_PIXEL_FORMAT_BGRA_8888_PRE:
+            case COGL_PIXEL_FORMAT_BGRA_8888:
+              break;
+            case COGL_PIXEL_FORMAT_RGB_888:
+              break;
+#else
+            case COGL_PIXEL_FORMAT_ARGB_8888_PRE:
+            case COGL_PIXEL_FORMAT_ARGB_8888:
+              gbm_format = GBM_FORMAT_ARGB8888;
+              break;
+            case COGL_PIXEL_FORMAT_BGRA_8888_PRE:
+            case COGL_PIXEL_FORMAT_BGRA_8888:
+              gbm_format = GBM_FORMAT_BGRA8888;
+              break;
+            case COGL_PIXEL_FORMAT_RGB_888:
+              gbm_format = GBM_FORMAT_RGB888;
+              break;
+#endif
+            default:
+              meta_warning ("Unknown cogl format %d\n", cogl_format);
+              return self;
+            }
+
+          if (gbm_device_is_format_supported (tracker->gbm, gbm_format,
+                                              GBM_BO_USE_CURSOR_64X64))
+            {
+              self->bo = gbm_bo_import (tracker->gbm, GBM_BO_IMPORT_WL_BUFFER,
+                                        buffer, GBM_BO_USE_CURSOR_64X64);
+              if (!self->bo)
+                meta_warning ("Importing HW cursor from wl_buffer failed\n");
+            }
+          else
+            meta_warning ("HW cursor for format %d not supported\n", gbm_format);
+        }
+     }
+
+  return self;
+}
 
 static void
 meta_cursor_tracker_init (MetaCursorTracker *self)
@@ -104,13 +433,15 @@ meta_cursor_tracker_finalize (GObject *object)
   MetaCursorTracker *self = META_CURSOR_TRACKER (object);
 
   if (self->sprite)
-    cogl_object_unref (self->sprite);
+    meta_cursor_reference_unref (self->sprite);
   if (self->root_cursor)
-    cogl_object_unref (self->root_cursor);
+    meta_cursor_reference_unref (self->root_cursor);
   if (self->default_cursor)
-    cogl_object_unref (self->default_cursor);
+    meta_cursor_reference_unref (self->default_cursor);
   if (self->pipeline)
     cogl_object_unref (self->pipeline);
+  if (self->gbm)
+    gbm_device_destroy (self->gbm);
 
   G_OBJECT_CLASS (meta_cursor_tracker_parent_class)->finalize (object);
 }
@@ -130,13 +461,41 @@ meta_cursor_tracker_class_init (MetaCursorTrackerClass *klass)
                                           G_TYPE_NONE, 0);
 }
 
-#ifdef HAVE_WAYLAND
+static void
+on_monitors_changed (MetaMonitorManager *monitors,
+                     MetaCursorTracker  *tracker)
+{
+  MetaCRTC *crtcs;
+  unsigned int i, n_crtcs;
+
+  if (!tracker->has_hw_cursor)
+    return;
+
+  /* Go through the new list of monitors, find out where the cursor is */
+  meta_monitor_manager_get_resources (monitors, NULL, NULL, &crtcs, &n_crtcs, NULL, NULL);
+
+  for (i = 0; i < n_crtcs; i++)
+    {
+      MetaRectangle *rect = &crtcs[i].rect;
+      gboolean has;
+
+      has = meta_rectangle_overlap (&tracker->current_rect, rect);
+
+      /* Need to do it unconditionally here, our tracking is
+         wrong because we reloaded the CRTCs */
+      meta_cursor_tracker_set_crtc_has_hw_cursor (tracker, &crtcs[i], has);
+    }
+}
+
 static MetaCursorTracker *
 make_wayland_cursor_tracker (MetaScreen *screen)
 {
   MetaWaylandCompositor *compositor;
   CoglContext *ctx;
-  MetaCursorTracker *self = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
+  MetaMonitorManager *monitors;
+  MetaCursorTracker *self;
+
+  self = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
   self->screen = screen;
 
   ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
@@ -145,9 +504,16 @@ make_wayland_cursor_tracker (MetaScreen *screen)
   compositor = meta_wayland_compositor_get_default ();
   compositor->seat->cursor_tracker = self;
 
+  self->drm_fd = compositor->drm_fd;
+  if (self->drm_fd >= 0)
+    self->gbm = gbm_create_device (compositor->drm_fd);
+
+  monitors = meta_monitor_manager_get ();
+  g_signal_connect_object (monitors, "monitors-changed",
+                           G_CALLBACK (on_monitors_changed), self, 0);
+
   return self;
 }
-#endif
 
 static MetaCursorTracker *
 make_x11_cursor_tracker (MetaScreen *screen)
@@ -205,7 +571,7 @@ meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
   if (notify_event->subtype != XFixesDisplayCursorNotify)
     return FALSE;
 
-  g_clear_pointer (&tracker->sprite, cogl_object_unref);
+  g_clear_pointer (&tracker->sprite, meta_cursor_reference_unref);
   g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
 
   return TRUE;
@@ -268,9 +634,9 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
 
   if (sprite != NULL)
     {
-      tracker->sprite = sprite;
-      tracker->hot_x = cursor_image->xhot;
-      tracker->hot_y = cursor_image->yhot;
+      tracker->sprite = meta_cursor_reference_take_texture (sprite);
+      tracker->sprite->hot_x = cursor_image->xhot;
+      tracker->sprite->hot_y = cursor_image->yhot;
     }
   XFree (cursor_image);
 }
@@ -288,7 +654,10 @@ meta_cursor_tracker_get_sprite (MetaCursorTracker *tracker)
   if (!meta_is_wayland_compositor ())
     ensure_xfixes_cursor (tracker);
 
-  return COGL_TEXTURE (tracker->sprite);
+  if (tracker->sprite)
+    return COGL_TEXTURE (tracker->sprite->texture);
+  else
+    return NULL;
 }
 
 /**
@@ -308,17 +677,27 @@ meta_cursor_tracker_get_hot (MetaCursorTracker *tracker,
   if (!meta_is_wayland_compositor ())
     ensure_xfixes_cursor (tracker);
 
-  if (x)
-    *x = tracker->hot_x;
-  if (y)
-    *y = tracker->hot_y;
+  if (tracker->sprite)
+    {
+      if (x)
+        *x = tracker->sprite->hot_x;
+      if (y)
+        *y = tracker->sprite->hot_y;
+    }
+  else
+    {
+      if (x)
+        *x = 0;
+      if (y)
+        *y = 0;
+    }
 }
 
 static void
 ensure_wayland_cursor (MetaCursorTracker *tracker)
 {
-  CoglBitmap *bitmap;
   char *filename;
+  GError *error;
 
   if (tracker->default_cursor)
     return;
@@ -327,12 +706,19 @@ ensure_wayland_cursor (MetaCursorTracker *tracker)
                                "cursors/left_ptr.png",
                                NULL);
 
-  bitmap = cogl_bitmap_new_from_file (filename, NULL);
-  tracker->default_cursor = cogl_texture_2d_new_from_bitmap (bitmap,
-                                                             COGL_PIXEL_FORMAT_ANY,
-                                                             NULL);
+  error = NULL;
+  tracker->default_cursor = meta_cursor_reference_from_file (tracker, filename, &error);
+  if (!tracker->default_cursor)
+    {
+      if (error)
+        g_error ("Failed to load default cursor: %s", error->message);
+      else
+        g_error ("Failed to load default cursor");
+    }
 
-  cogl_object_unref (bitmap);
+  tracker->default_cursor->hot_x = META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_X;
+  tracker->default_cursor->hot_y = META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_Y;
+
   g_free (filename);
 }
 
@@ -356,41 +742,110 @@ meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
       /* FIXME! We need to load all the other cursors too */
       ensure_wayland_cursor (tracker);
 
-      g_clear_pointer (&tracker->root_cursor, cogl_object_unref);
-      tracker->root_cursor = cogl_object_ref (tracker->default_cursor);
-      tracker->root_hot_x = META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_X;
-      tracker->root_hot_y = META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_Y;
+      g_clear_pointer (&tracker->root_cursor, meta_cursor_reference_unref);
+      tracker->root_cursor = meta_cursor_reference_ref (tracker->default_cursor);
     }
 }
 
 void
 meta_cursor_tracker_revert_root (MetaCursorTracker *tracker)
 {
-  meta_cursor_tracker_set_sprite (tracker,
-                                  tracker->root_cursor,
-                                  tracker->root_hot_x,
-                                  tracker->root_hot_y);
+  meta_cursor_tracker_set_sprite (tracker, tracker->root_cursor);
+}
+
+static void
+update_hw_cursor (MetaCursorTracker *tracker)
+{
+  MetaMonitorManager *monitors;
+  MetaCRTC *crtcs;
+  unsigned int i, n_crtcs;
+  gboolean enabled;
+
+  enabled = tracker->has_cursor && tracker->sprite->bo != NULL;
+  tracker->has_hw_cursor = enabled;
+
+  monitors = meta_monitor_manager_get ();
+  meta_monitor_manager_get_resources (monitors, NULL, NULL, &crtcs, &n_crtcs, NULL, NULL);
+
+  for (i = 0; i < n_crtcs; i++)
+    {
+      MetaRectangle *rect = &crtcs[i].rect;
+      gboolean has;
+
+      has = enabled && meta_rectangle_overlap (&tracker->current_rect, rect);
+
+      if (has || crtcs[i].has_hw_cursor)
+        meta_cursor_tracker_set_crtc_has_hw_cursor (tracker, &crtcs[i], has);
+    }
+}
+
+static void
+move_hw_cursor (MetaCursorTracker *tracker)
+{
+  MetaMonitorManager *monitors;
+  MetaCRTC *crtcs;
+  unsigned int i, n_crtcs;
+
+  monitors = meta_monitor_manager_get ();
+  meta_monitor_manager_get_resources (monitors, NULL, NULL, &crtcs, &n_crtcs, NULL, NULL);
+
+  g_assert (tracker->has_hw_cursor);
+
+  for (i = 0; i < n_crtcs; i++)
+    {
+      MetaRectangle *rect = &crtcs[i].rect;
+      gboolean has;
+
+      has = meta_rectangle_overlap (&tracker->current_rect, rect);
+
+      if (has != crtcs[i].has_hw_cursor)
+        meta_cursor_tracker_set_crtc_has_hw_cursor (tracker, &crtcs[i], has);
+      if (has)
+        drmModeMoveCursor (tracker->drm_fd, crtcs[i].crtc_id,
+                           tracker->current_rect.x - rect->x,
+                           tracker->current_rect.y - rect->y);
+    }
 }
 
 void
-meta_cursor_tracker_set_sprite (MetaCursorTracker *tracker,
-                                CoglTexture2D     *sprite,
-                                int                hot_x,
-                                int                hot_y)
+meta_cursor_tracker_set_buffer (MetaCursorTracker  *tracker,
+                                struct wl_resource *buffer,
+                                int                 hot_x,
+                                int                 hot_y)
+{
+  MetaCursorReference *new_cursor;
+
+  if (buffer)
+    {
+      new_cursor = meta_cursor_reference_from_buffer (tracker, buffer, hot_x, hot_y);
+      meta_cursor_tracker_set_sprite (tracker, new_cursor);
+      meta_cursor_reference_unref (new_cursor);
+    }
+  else
+    meta_cursor_tracker_set_sprite (tracker, NULL);
+}
+
+static void
+meta_cursor_tracker_set_sprite (MetaCursorTracker   *tracker,
+                                MetaCursorReference *sprite)
 {
   g_assert (meta_is_wayland_compositor ());
 
-  g_clear_pointer (&tracker->sprite, cogl_object_unref);
+  if (sprite == tracker->sprite)
+    return;
+
+  g_clear_pointer (&tracker->sprite, meta_cursor_reference_unref);
 
   if (sprite)
     {
-      tracker->sprite = cogl_object_ref (sprite);
-      tracker->hot_x = hot_x;
-      tracker->hot_y = hot_y;
-      cogl_pipeline_set_layer_texture (tracker->pipeline, 0, COGL_TEXTURE (tracker->sprite));
+      tracker->sprite = meta_cursor_reference_ref (sprite);
+      cogl_pipeline_set_layer_texture (tracker->pipeline, 0, COGL_TEXTURE (tracker->sprite->texture));
     }
   else
     cogl_pipeline_set_layer_texture (tracker->pipeline, 0, NULL);
+
+  tracker->has_cursor = tracker->sprite != NULL && tracker->is_showing;
+  update_hw_cursor (tracker);
 
   g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
 
@@ -406,19 +861,24 @@ meta_cursor_tracker_update_position (MetaCursorTracker *tracker,
 
   tracker->current_x = new_x;
   tracker->current_y = new_y;
-  tracker->current_rect.x = tracker->current_x - tracker->hot_x;
-  tracker->current_rect.y = tracker->current_y - tracker->hot_y;
 
   if (tracker->sprite)
     {
-      tracker->current_rect.width = cogl_texture_get_width (COGL_TEXTURE (tracker->sprite));
-      tracker->current_rect.height = cogl_texture_get_height (COGL_TEXTURE (tracker->sprite));
+      tracker->current_rect.x = tracker->current_x - tracker->sprite->hot_x;
+      tracker->current_rect.y = tracker->current_y - tracker->sprite->hot_y;
+      tracker->current_rect.width = cogl_texture_get_width (COGL_TEXTURE (tracker->sprite->texture));
+      tracker->current_rect.height = cogl_texture_get_height (COGL_TEXTURE (tracker->sprite->texture));
     }
   else
     {
+      tracker->current_rect.x = 0;
+      tracker->current_rect.y = 0;
       tracker->current_rect.width = 0;
       tracker->current_rect.height = 0;
     }
+
+  if (tracker->has_hw_cursor)
+    move_hw_cursor (tracker);
 }
 
 void
@@ -426,10 +886,9 @@ meta_cursor_tracker_paint (MetaCursorTracker *tracker)
 {
   g_assert (meta_is_wayland_compositor ());
 
-  if (tracker->sprite == NULL || tracker->is_showing == FALSE)
+  if (tracker->has_hw_cursor || !tracker->has_cursor)
     return;
 
-  /* FIXME: try to use a DRM cursor when possible */
   cogl_framebuffer_draw_rectangle (cogl_get_draw_framebuffer (),
                                    tracker->pipeline,
                                    tracker->current_rect.x,
@@ -447,18 +906,58 @@ void
 meta_cursor_tracker_queue_redraw (MetaCursorTracker *tracker,
                                   ClutterActor      *stage)
 {
+  cairo_rectangle_int_t clip;
+
   g_assert (meta_is_wayland_compositor ());
 
   if (tracker->previous_is_valid)
     {
-      clutter_actor_queue_redraw_with_clip (stage, &tracker->previous_rect);
+      cairo_rectangle_int_t clip = {
+        .x = tracker->previous_rect.x,
+        .y = tracker->previous_rect.y,
+        .width = tracker->previous_rect.width,
+        .height = tracker->previous_rect.height
+      };
+      clutter_actor_queue_redraw_with_clip (stage, &clip);
       tracker->previous_is_valid = FALSE;
     }
 
-  if (tracker->sprite == NULL)
+  if (tracker->has_hw_cursor || !tracker->has_cursor)
     return;
 
-  clutter_actor_queue_redraw_with_clip (stage, &tracker->current_rect);
+  clip.x = tracker->current_rect.x;
+  clip.y = tracker->current_rect.y;
+  clip.width = tracker->current_rect.width;
+  clip.height = tracker->current_rect.height;
+  clutter_actor_queue_redraw_with_clip (stage, &clip);
+}
+
+static void
+meta_cursor_tracker_set_crtc_has_hw_cursor (MetaCursorTracker *tracker,
+                                            MetaCRTC          *crtc,
+                                            gboolean           has)
+{
+  if (has)
+    {
+      union gbm_bo_handle handle;
+      int width, height;
+      int hot_x, hot_y;
+
+      handle = gbm_bo_get_handle (tracker->sprite->bo);
+      width = gbm_bo_get_width (tracker->sprite->bo);
+      height = gbm_bo_get_height (tracker->sprite->bo);
+      hot_x = tracker->sprite->hot_x;
+      hot_y = tracker->sprite->hot_y;
+
+      drmModeSetCursor2 (tracker->drm_fd, crtc->crtc_id, handle.u32,
+                         width, height, hot_x, hot_y);
+      crtc->has_hw_cursor = TRUE;
+    }
+  else
+    {
+      drmModeSetCursor2 (tracker->drm_fd, crtc->crtc_id, 0, 0, 0, 0, 0);
+      crtc->has_hw_cursor = FALSE;
+    }
 }
 
 static void
@@ -527,6 +1026,9 @@ meta_cursor_tracker_set_pointer_visible (MetaCursorTracker *tracker,
       MetaWaylandCompositor *compositor;
 
       compositor = meta_wayland_compositor_get_default ();
+
+      tracker->has_cursor = tracker->sprite != NULL && visible;
+      update_hw_cursor (tracker);
       meta_cursor_tracker_queue_redraw (tracker, compositor->stage);
     }
   else

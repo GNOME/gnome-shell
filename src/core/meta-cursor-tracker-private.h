@@ -25,6 +25,7 @@
 #define META_CURSOR_TRACKER_PRIVATE_H
 
 #include <meta/meta-cursor-tracker.h>
+#include <wayland-server.h>
 #include <clutter/clutter.h>
 
 gboolean meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
@@ -33,10 +34,10 @@ gboolean meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
 void     meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
                                               MetaCursor         cursor);
 void     meta_cursor_tracker_revert_root     (MetaCursorTracker *tracker);
-void     meta_cursor_tracker_set_sprite      (MetaCursorTracker *tracker,
-                                              CoglTexture2D     *texture,
-                                              int                hot_x,
-                                              int                hot_y);
+void     meta_cursor_tracker_set_buffer      (MetaCursorTracker  *tracker,
+                                              struct wl_resource *buffer,
+                                              int                 hot_x,
+                                              int                 hot_y);
 
 void     meta_cursor_tracker_update_position (MetaCursorTracker *tracker,
 					      int                new_x,
