@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
 "&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-01 15:50+0000\n"
-"PO-Revision-Date: 2013-03-11 11:40+0200\n"
+"POT-Creation-Date: 2013-08-18 20:03+0000\n"
+"PO-Revision-Date: 2013-09-05 11:58+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -212,7 +212,7 @@ msgstr "Прикажите поделу на десно"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:507
+#: ../src/compositor/compositor.c:589
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -220,11 +220,11 @@ msgid ""
 msgstr ""
 "Неки други композитни управник је већ покренут на приказу %i еркана „%s“."
 
-#: ../src/compositor/meta-background.c:1111
+#: ../src/compositor/meta-background.c:1076
 msgid "background texture could not be created from file"
 msgstr "склоп позадине не може бити створен из датотеке"
 
-#: ../src/core/bell.c:320
+#: ../src/core/bell.c:322
 msgid "Bell event"
 msgstr "Звонца"
 
@@ -258,17 +258,17 @@ msgstr "_Сачекај"
 msgid "_Force Quit"
 msgstr "_Приморај излаз"
 
-#: ../src/core/display.c:401
+#: ../src/core/display.c:421
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Недостаје потребан композитни додатак %s"
 
-#: ../src/core/display.c:493
+#: ../src/core/display.c:513
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Нисам успео да отворим екран „%s“ Икс система прозора\n"
 
-#: ../src/core/keybindings.c:929
+#: ../src/core/keybindings.c:1136
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -277,48 +277,61 @@ msgstr ""
 "Неки други програм већ користи тастер %s са измењивачима %x за неку "
 "функцију\n"
 
-#: ../src/core/keybindings.c:1129
+#: ../src/core/keybindings.c:1333
 #, c-format
-#| msgid "\"%s\" is not a valid value for focus attribute"
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "„%s“ није исправна пречица\n"
 
-#: ../src/core/main.c:196
+#: ../src/core/main.c:197
 msgid "Disable connection to session manager"
 msgstr "Искључује везу са управником сесије"
 
-#: ../src/core/main.c:202
+#: ../src/core/main.c:203
 msgid "Replace the running window manager"
 msgstr "Мења текућег управника прозорима"
 
-#: ../src/core/main.c:208
+#: ../src/core/main.c:209
 msgid "Specify session management ID"
 msgstr "Наводи ИБ управника сесије"
 
-#: ../src/core/main.c:213
+#: ../src/core/main.c:214
 msgid "X Display to use"
 msgstr "Икс екран који ће бити коришћен"
 
-#: ../src/core/main.c:219
+#: ../src/core/main.c:220
 msgid "Initialize session from savefile"
 msgstr "Покреће сесију из датотеке чувања"
 
-#: ../src/core/main.c:225
+#: ../src/core/main.c:226
 msgid "Make X calls synchronous"
 msgstr "Чини Икс позиве усклађеним"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:534
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Нисам успео да прочитам директоријум тема: %s\n"
 
-#: ../src/core/main.c:510
+#: ../src/core/main.c:550
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Не могу да пронађем тему! Проверите да „%s“ постоји и да садржи уобичајене "
 "теме.\n"
+
+#: ../src/core/monitor.c:711
+msgid "Built-in display"
+msgstr "Уграђени приказ"
+
+#. TRANSLATORS: this is a monitor name (in case we don't know
+#. the vendor), it's Unknown followed by a size in inches,
+#. like 'Unknown 15"'
+#.
+#: ../src/core/monitor.c:739
+#, c-format
+#| msgid "Unknown element %s"
+msgid "Unknown %s"
+msgstr "Непознат %s"
 
 #: ../src/core/mutter.c:40
 #, c-format
@@ -343,7 +356,7 @@ msgstr "Исписује издање"
 msgid "Mutter plugin to use"
 msgstr "Прикључци Матера за коришћење"
 
-#: ../src/core/prefs.c:1087
+#: ../src/core/prefs.c:1202
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -351,12 +364,12 @@ msgstr ""
 "Решења за оштећене програме су искључена. Неке апликације се могу понашати "
 "чудно.\n"
 
-#: ../src/core/prefs.c:1162
+#: ../src/core/prefs.c:1277
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Не могу да обрадим опис „%s“ из кључа „%s“ у Гномовим подешавањима\n"
 
-#: ../src/core/prefs.c:1228
+#: ../src/core/prefs.c:1343
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -365,24 +378,24 @@ msgstr ""
 "„%s“ је пронађен у бази подешавања што није исправна вредност која мења "
 "понашање тастера миша\n"
 
-#: ../src/core/prefs.c:1780
+#: ../src/core/prefs.c:1909
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "„%s“ из базе са подешавањима није исправна комбинација тастера „%s“\n"
 
-#: ../src/core/prefs.c:1879
+#: ../src/core/prefs.c:1999
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. радни простор"
 
-#: ../src/core/screen.c:673
+#: ../src/core/screen.c:534
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Приказ „%d“ на екрану „%s“ није исправан\n"
 
-#: ../src/core/screen.c:689
+#: ../src/core/screen.c:550
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -391,18 +404,18 @@ msgstr ""
 "Приказ „%d“ на екрану „%s“ већ има управника прозора; покушајте да користите "
 "опцију „--replace“ да замените тренутног управника прозора.\n"
 
-#: ../src/core/screen.c:716
+#: ../src/core/screen.c:577
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Не могу да добијем избор управника прозора на приказу %d еркана „%s“\n"
 
-#: ../src/core/screen.c:794
+#: ../src/core/screen.c:655
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Приказ %d на екрану „%s“ већ има управника прозора\n"
 
-#: ../src/core/screen.c:979
+#: ../src/core/screen.c:846
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не могу да отпустим приказ %d на екрану „%s“\n"
@@ -462,44 +475,43 @@ msgstr ""
 "Ови прозори не подржавају могућност „сачувај тренутна подешавања“ па ћете "
 "морати ручно да их поново покренете када се следећи пут пријавите."
 
-#: ../src/core/util.c:80
+#: ../src/core/util.c:84
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Нисам успео да отворим дневник грешака: %s\n"
 
-#: ../src/core/util.c:90
+#: ../src/core/util.c:94
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Нисам успео да „fdopen()“ датотеку дневника „%s“: %s\n"
 
-#: ../src/core/util.c:96
+#: ../src/core/util.c:100
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Отворена је датотека дневника „%s“\n"
 
-#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
-#, c-format
+#: ../src/core/util.c:119
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Матер је преведен без подршке за опширан режим\n"
 
-#: ../src/core/util.c:259
+#: ../src/core/util.c:264
 msgid "Window manager: "
 msgstr "Управник прозора: "
 
-#: ../src/core/util.c:407
+#: ../src/core/util.c:414
 msgid "Bug in window manager: "
 msgstr "Грешка у управнику прозора: "
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:445
 msgid "Window manager warning: "
 msgstr "Упозорење управника прозора: "
 
-#: ../src/core/util.c:466
+#: ../src/core/util.c:473
 msgid "Window manager error: "
 msgstr "Грешка управника прозора: "
 
 #. first time through
-#: ../src/core/window.c:7539
+#: ../src/core/window.c:7533
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -515,7 +527,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8263
+#: ../src/core/window.c:8257
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -525,22 +537,22 @@ msgstr ""
 "али је поставио најмању величину %d x %d и највећу величину %d x %d што нема "
 "много смисла.\n"
 
-#: ../src/core/window-props.c:318
+#: ../src/core/window-props.c:347
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Програм је поставио нетачан _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:434
+#: ../src/core/window-props.c:463
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (на %s)"
 
-#: ../src/core/window-props.c:1517
+#: ../src/core/window-props.c:1546
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Неисправан прозор 0x%lx наведен као WM_TRANSIENT_FOR за %s.\n"
 
-#: ../src/core/window-props.c:1528
+#: ../src/core/window-props.c:1557
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR прозор 0x%lx за %s ће направити петљу.\n"
@@ -705,109 +717,104 @@ msgstr "Бира прозор из језичка искакања"
 msgid "Cancel tab popup"
 msgstr "Отказивање језичка искакања"
 
-#: ../src/tools/mutter-message.c:123
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Употреба: %s\n"
-
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:69
+#: ../src/ui/menu.c:67
 msgid "Mi_nimize"
 msgstr "У_мањи"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:71
+#: ../src/ui/menu.c:69
 msgid "Ma_ximize"
 msgstr "У_већај"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:73
+#: ../src/ui/menu.c:71
 msgid "Unma_ximize"
 msgstr "Поништи у_већање"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:75
+#: ../src/ui/menu.c:73
 msgid "Roll _Up"
 msgstr "_Замотај"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:77
+#: ../src/ui/menu.c:75
 msgid "_Unroll"
 msgstr "_Одмотај"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:79
+#: ../src/ui/menu.c:77
 msgid "_Move"
 msgstr "_Премести"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:81
+#: ../src/ui/menu.c:79
 msgid "_Resize"
 msgstr "П_ромени величину"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:83
+#: ../src/ui/menu.c:81
 msgid "Move Titlebar On_screen"
 msgstr "Премести траку _наслова на екран"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:86 ../src/ui/menu.c:88
+#: ../src/ui/menu.c:84 ../src/ui/menu.c:86
 msgid "Always on _Top"
 msgstr "Увек _изнад осталих"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:90
+#: ../src/ui/menu.c:88
 msgid "_Always on Visible Workspace"
 msgstr "_Увек на видљивом радном простору"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:92
+#: ../src/ui/menu.c:90
 msgid "_Only on This Workspace"
 msgstr "Само на _овом радном простору"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:94
+#: ../src/ui/menu.c:92
 msgid "Move to Workspace _Left"
 msgstr "Премести на радни простор ле_во"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:96
+#: ../src/ui/menu.c:94
 msgid "Move to Workspace R_ight"
 msgstr "Премести на радни простор де_сно"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:98
+#: ../src/ui/menu.c:96
 msgid "Move to Workspace _Up"
 msgstr "Премести на радни простор го_ре"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:100
+#: ../src/ui/menu.c:98
 msgid "Move to Workspace _Down"
 msgstr "Премести на радни простор до_ле"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:104
+#: ../src/ui/menu.c:102
 msgid "_Close"
 msgstr "_Затвори"
 
-#: ../src/ui/menu.c:204
+#: ../src/ui/menu.c:202
 #, c-format
 msgid "Workspace %d%n"
 msgstr "Радни простор %d%n"
 
-#: ../src/ui/menu.c:214
+#: ../src/ui/menu.c:212
 #, c-format
 msgid "Workspace 1_0"
 msgstr "1_0. радни простор"
 
-#: ../src/ui/menu.c:216
+#: ../src/ui/menu.c:214
 #, c-format
 msgid "Workspace %s%d"
 msgstr "%s%d. радни простор"
 
-#: ../src/ui/menu.c:397
+#: ../src/ui/menu.c:384
 msgid "Move to Another _Workspace"
 msgstr "Премести на други _радни простор"
 
@@ -909,48 +916,48 @@ msgstr "Мод5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:235
+#: ../src/ui/theme.c:236
 msgid "top"
 msgstr "горњу"
 
-#: ../src/ui/theme.c:237
+#: ../src/ui/theme.c:238
 msgid "bottom"
 msgstr "доњу"
 
-#: ../src/ui/theme.c:239
+#: ../src/ui/theme.c:240
 msgid "left"
 msgstr "леву"
 
-#: ../src/ui/theme.c:241
+#: ../src/ui/theme.c:242
 msgid "right"
 msgstr "десну"
 
-#: ../src/ui/theme.c:269
+#: ../src/ui/theme.c:270
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "геометрија оквира не подешава „%s“ димензију"
 
-#: ../src/ui/theme.c:288
+#: ../src/ui/theme.c:289
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "геометрија оквира не подешава „%s“ димензију за ивицу „%s“"
 
-#: ../src/ui/theme.c:325
+#: ../src/ui/theme.c:326
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Однос размере дугмета %g није разуман"
 
-#: ../src/ui/theme.c:337
+#: ../src/ui/theme.c:338
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Геометрија оквира не подешава величину дугмића"
 
-#: ../src/ui/theme.c:1050
+#: ../src/ui/theme.c:1051
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Преливи морају имати најмање две боје"
 
-#: ../src/ui/theme.c:1202
+#: ../src/ui/theme.c:1203
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
@@ -959,7 +966,7 @@ msgstr ""
 "Спецификација произвољне ГТК боје мора имати назив боје и пребацивање у "
 "загради, на пример gtk:custom(foo,bar); не могу да обрадим „%s“"
 
-#: ../src/ui/theme.c:1218
+#: ../src/ui/theme.c:1219
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
@@ -968,7 +975,7 @@ msgstr ""
 "Неисправан знак „%c“ параметра назив_боје у gtk:custom, иасправни су само A-"
 "Za-z0-9-_"
 
-#: ../src/ui/theme.c:1232
+#: ../src/ui/theme.c:1233
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -977,7 +984,7 @@ msgstr ""
 "Гтк:произвољни формат је „gtk:custom(назив_боје,пребацивање)“, „%s“ се не "
 "уклапа у формат"
 
-#: ../src/ui/theme.c:1277
+#: ../src/ui/theme.c:1278
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -986,7 +993,7 @@ msgstr ""
 "Спецификација ГТК боје мора имати наведено стање у загради, на пример „gtk:fg"
 "[NORMAL]“ где је „NORMAL“ стање; не могу да обрадим „%s“"
 
-#: ../src/ui/theme.c:1291
+#: ../src/ui/theme.c:1292
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -995,17 +1002,17 @@ msgstr ""
 "Спецификација ГТК боје мора имати наведено стање у загради, на пример „gtk:fg"
 "[NORMAL]“ где је „NORMAL“ стање; не могу да обрадим „%s“"
 
-#: ../src/ui/theme.c:1302
+#: ../src/ui/theme.c:1303
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Нисам разумео стање „%s“ у спецификацији боје"
 
-#: ../src/ui/theme.c:1315
+#: ../src/ui/theme.c:1316
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Нисам разумео део боје „%s“ у спецификацији боје"
 
-#: ../src/ui/theme.c:1344
+#: ../src/ui/theme.c:1345
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1014,55 +1021,55 @@ msgstr ""
 "Формат смеше је „blend/bg_color/fg_color/alpha“, „%s“ се не уклапа у тражени "
 "формат записа"
 
-#: ../src/ui/theme.c:1355
+#: ../src/ui/theme.c:1356
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Не могу да обрадим алфа вредност „%s“ у смешаној боји"
 
-#: ../src/ui/theme.c:1365
+#: ../src/ui/theme.c:1366
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Алфа вредност „%s“ у смешаној боји није између 0.0 и 1.0"
 
-#: ../src/ui/theme.c:1412
+#: ../src/ui/theme.c:1413
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "Формат сенке је „shade/base_color/factor“, „%s“ се не уклапа у формат"
 
-#: ../src/ui/theme.c:1423
+#: ../src/ui/theme.c:1424
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Не могу да обрадим фактор сенке „%s“ у осенченој боји"
 
-#: ../src/ui/theme.c:1433
+#: ../src/ui/theme.c:1434
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Фактор сенке „%s“ у осенченој боји је негативан"
 
-#: ../src/ui/theme.c:1462
+#: ../src/ui/theme.c:1463
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Не могу да обрадим боју „%s“"
 
-#: ../src/ui/theme.c:1779
+#: ../src/ui/theme.c:1780
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Израз координата садржи знак „%s“ који није дозвољен"
 
-#: ../src/ui/theme.c:1806
+#: ../src/ui/theme.c:1807
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "Израз координата садржи децимални број „%s“ који не може бити обрађен"
 
-#: ../src/ui/theme.c:1820
+#: ../src/ui/theme.c:1821
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Израз координата садржи цели број „%s“ који не може бити обрађен"
 
-#: ../src/ui/theme.c:1941
+#: ../src/ui/theme.c:1942
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1070,17 +1077,17 @@ msgid ""
 msgstr ""
 "Израз са координатама садржи непознати оператор на почетку овог текста: „%s“"
 
-#: ../src/ui/theme.c:1998
+#: ../src/ui/theme.c:1999
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Израз са координатама је био празан или неразумљив"
 
-#: ../src/ui/theme.c:2111 ../src/ui/theme.c:2121 ../src/ui/theme.c:2155
+#: ../src/ui/theme.c:2112 ../src/ui/theme.c:2122 ../src/ui/theme.c:2156
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Израз са координатама резултира у дељењу нулом"
 
-#: ../src/ui/theme.c:2163
+#: ../src/ui/theme.c:2164
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -1088,23 +1095,23 @@ msgstr ""
 "Израз са координатам покушава да користи оператор остатка при дељењу за "
 "децимални број"
 
-#: ../src/ui/theme.c:2219
+#: ../src/ui/theme.c:2220
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Израз са координатама има оператор „%s“ где је очекиван операнд"
 
-#: ../src/ui/theme.c:2228
+#: ../src/ui/theme.c:2229
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Израз са координатама имаше операнд где је очекиван оператор"
 
-#: ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2237
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Израз са координарама је завршио са оператором уместо са операндом"
 
-#: ../src/ui/theme.c:2246
+#: ../src/ui/theme.c:2247
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1113,37 +1120,37 @@ msgstr ""
 "Израз са координатама има оператор „%c“, а затим оператор „%c“ без операнда "
 "између"
 
-#: ../src/ui/theme.c:2397 ../src/ui/theme.c:2442
+#: ../src/ui/theme.c:2398 ../src/ui/theme.c:2443
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Израз са координатама има непознату променљиву или константи „%s“"
 
-#: ../src/ui/theme.c:2496
+#: ../src/ui/theme.c:2497
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Израз са координатама је био превелики за смештај и обраду."
 
-#: ../src/ui/theme.c:2525
+#: ../src/ui/theme.c:2526
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Израз са координатама има затворене заграде без отворених заграда"
 
-#: ../src/ui/theme.c:2589
+#: ../src/ui/theme.c:2590
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Израз са координатама има отворену заграду без затворене заграде"
 
-#: ../src/ui/theme.c:2600
+#: ../src/ui/theme.c:2601
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Израз са координатама изгледа да нема ни један оператор или операнд"
 
-#: ../src/ui/theme.c:2813 ../src/ui/theme.c:2833 ../src/ui/theme.c:2853
+#: ../src/ui/theme.c:2814 ../src/ui/theme.c:2834 ../src/ui/theme.c:2854
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Тема садржи израз који резултира грешком: %s\n"
 
-#: ../src/ui/theme.c:4499
+#: ../src/ui/theme.c:4500
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1152,25 +1159,25 @@ msgstr ""
 "<button function=„%s“ state=„%s“ draw_ops=\"whatever\"/> мора бити наведен "
 "за овај стил оквира"
 
-#: ../src/ui/theme.c:5010 ../src/ui/theme.c:5035
+#: ../src/ui/theme.c:5011 ../src/ui/theme.c:5036
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Недостаје <frame state=„%s“ resize=„%s“ focus=„%s“ style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5083
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Нисам успео да учитам тему „%s“: %s\n"
 
-#: ../src/ui/theme.c:5219 ../src/ui/theme.c:5226 ../src/ui/theme.c:5233
-#: ../src/ui/theme.c:5240 ../src/ui/theme.c:5247
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Није дефинисан елемент <%s> за тему „%s“"
 
-#: ../src/ui/theme.c:5255
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1179,14 +1186,14 @@ msgstr ""
 "Није подешен стил оквира за прозор типа „%s“ у теми „%s“. Додајте <window "
 "type=„%s“ style_set=\"whatever\"/> елемент"
 
-#: ../src/ui/theme.c:5662 ../src/ui/theme.c:5724 ../src/ui/theme.c:5787
+#: ../src/ui/theme.c:5661 ../src/ui/theme.c:5723 ../src/ui/theme.c:5786
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Кориснички дефинисане константе морају почети великим словом; „%s“ не почиње"
 
-#: ../src/ui/theme.c:5670 ../src/ui/theme.c:5732 ../src/ui/theme.c:5795
+#: ../src/ui/theme.c:5669 ../src/ui/theme.c:5731 ../src/ui/theme.c:5794
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Константа „%s“ је већ дефинисана"
@@ -1569,209 +1576,7 @@ msgstr "Није дозвољен текст унутар елемента <%s>"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> је наведен два пута у овој теми"
 
-#: ../src/ui/theme-parser.c:4334
+#: ../src/ui/theme-parser.c:4336
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Нисам успео да пронађем исправну датотеку за тему „%s“\n"
-
-#: ../src/ui/theme-viewer.c:99
-msgid "_Windows"
-msgstr "_Прозори"
-
-#: ../src/ui/theme-viewer.c:100
-msgid "_Dialog"
-msgstr "_Прозорче"
-
-#: ../src/ui/theme-viewer.c:101
-msgid "_Modal dialog"
-msgstr "_Важно прозорче"
-
-#: ../src/ui/theme-viewer.c:102
-msgid "_Utility"
-msgstr "_Алатка"
-
-#: ../src/ui/theme-viewer.c:103
-msgid "_Splashscreen"
-msgstr "_Уводни екран"
-
-#: ../src/ui/theme-viewer.c:104
-msgid "_Top dock"
-msgstr "_Горње припајање"
-
-#: ../src/ui/theme-viewer.c:105
-msgid "_Bottom dock"
-msgstr "_Доње припајање"
-
-#: ../src/ui/theme-viewer.c:106
-msgid "_Left dock"
-msgstr "_Лево припајање"
-
-#: ../src/ui/theme-viewer.c:107
-msgid "_Right dock"
-msgstr "Д_есно припајање"
-
-#: ../src/ui/theme-viewer.c:108
-msgid "_All docks"
-msgstr "_Сва припајања"
-
-#: ../src/ui/theme-viewer.c:109
-msgid "Des_ktop"
-msgstr "_Радна површ"
-
-#: ../src/ui/theme-viewer.c:115
-msgid "Open another one of these windows"
-msgstr "Отвори неки други од ових прозора"
-
-#: ../src/ui/theme-viewer.c:117
-msgid "This is a demo button with an 'open' icon"
-msgstr "Ово је пробно дугме са „отвори“ иконом"
-
-#: ../src/ui/theme-viewer.c:119
-msgid "This is a demo button with a 'quit' icon"
-msgstr "Ово је пробно дугме са „изађи“ иконицом"
-
-#: ../src/ui/theme-viewer.c:248
-msgid "This is a sample message in a sample dialog"
-msgstr "Ово је пример поруке у пробном прозорчету"
-
-#: ../src/ui/theme-viewer.c:328
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr "Лажна ставка изборника %d\n"
-
-#: ../src/ui/theme-viewer.c:363
-msgid "Border-only window"
-msgstr "Прозор само са ивицом"
-
-#: ../src/ui/theme-viewer.c:365
-msgid "Bar"
-msgstr "Трака"
-
-#: ../src/ui/theme-viewer.c:382
-msgid "Normal Application Window"
-msgstr "Обичан прозор програма"
-
-#: ../src/ui/theme-viewer.c:386
-msgid "Dialog Box"
-msgstr "Прозорче"
-
-#: ../src/ui/theme-viewer.c:390
-msgid "Modal Dialog Box"
-msgstr "Важно прозорче"
-
-#: ../src/ui/theme-viewer.c:394
-msgid "Utility Palette"
-msgstr "Палета алата"
-
-#: ../src/ui/theme-viewer.c:398
-msgid "Torn-off Menu"
-msgstr "Откинути изборник"
-
-#: ../src/ui/theme-viewer.c:402
-msgid "Border"
-msgstr "Ивица"
-
-#: ../src/ui/theme-viewer.c:406
-msgid "Attached Modal Dialog"
-msgstr "Приложено важно прозорче"
-
-#: ../src/ui/theme-viewer.c:737
-#, c-format
-msgid "Button layout test %d"
-msgstr "Проба распореда дугмића %d"
-
-# bug: plural-forms
-#: ../src/ui/theme-viewer.c:766
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr "%g милисекунди за исцртавање оквира једног прозора"
-
-#: ../src/ui/theme-viewer.c:811
-#, c-format
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Употреба: metacity-theme-viewer [НАЗИВ_ТЕМЕ]\n"
-
-#: ../src/ui/theme-viewer.c:818
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "Грешка приликом учитавања теме: %s\n"
-
-# bug: plural-forms
-#: ../src/ui/theme-viewer.c:824
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Учитана је тема „%s“ за %g секунде\n"
-
-#: ../src/ui/theme-viewer.c:869
-msgid "Normal Title Font"
-msgstr "Обичан словни лик наслова"
-
-#: ../src/ui/theme-viewer.c:875
-msgid "Small Title Font"
-msgstr "Мали словни лик наслова"
-
-#: ../src/ui/theme-viewer.c:881
-msgid "Large Title Font"
-msgstr "Велики словни лик наслова"
-
-#: ../src/ui/theme-viewer.c:886
-msgid "Button Layouts"
-msgstr "Распоред дугмића"
-
-#: ../src/ui/theme-viewer.c:891
-msgid "Benchmark"
-msgstr "Провера брзине"
-
-#: ../src/ui/theme-viewer.c:947
-msgid "Window Title Goes Here"
-msgstr "Овде иде наслов прозора"
-
-# bug: plural-forms
-#: ../src/ui/theme-viewer.c:1053
-#, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"Нацртао је %d оквира за %g клијентских секунди (%g милисекунди по оквиру) и "
-"%g секунди времена на зидном часовнику укључујући и ресурсе Икс сервера (%g "
-"милисекунди по оквиру)\n"
-
-#: ../src/ui/theme-viewer.c:1273
-msgid "position expression test returned TRUE but set error"
-msgstr "провера израза положаја је вратила тачно, али је поставила грешку"
-
-#: ../src/ui/theme-viewer.c:1275
-msgid "position expression test returned FALSE but didn't set error"
-msgstr "провера израза положаја је вратила нетачно, али није поставила грешку"
-
-#: ../src/ui/theme-viewer.c:1279
-msgid "Error was expected but none given"
-msgstr "Очекивана је грешка, али није дата"
-
-#: ../src/ui/theme-viewer.c:1281
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr "Очекивана је грешка „%d“, али је дата „%d“"
-
-#: ../src/ui/theme-viewer.c:1287
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr "Грешка није очекивана, али је враћена једна: %s"
-
-#: ../src/ui/theme-viewer.c:1291
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr "x вредност је била „%d“, а очекивана је „%d“"
-
-#: ../src/ui/theme-viewer.c:1294
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr "y вредност је била „%d“, а очекивана је „%d“"
-
-# bug: plural-forms
-#: ../src/ui/theme-viewer.c:1359
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d израза координата је обрађено за %g секунде (просек %g секунде)\n"
