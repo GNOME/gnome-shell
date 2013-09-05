@@ -533,6 +533,9 @@ const PaginatedIconGrid = new Lang.Class({
     _init: function(params) {
         this.parent(params);
         this._nPages = 0;
+        this._rowsPerPage = 0;
+        this._spaceBetweenPages = 0;
+        this._childrenPerPage = 0;
     },
 
     _getPreferredHeight: function (grid, forWidth, alloc) {
