@@ -654,6 +654,9 @@ reset_idletimes (const ClutterEvent *event)
   int device_id;
 
   device = clutter_event_get_device (event);
+  if (device == NULL)
+    return;
+
   device_id = clutter_input_device_get_device_id (device);
 
   core_monitor = meta_idle_monitor_get_core ();
@@ -672,10 +675,10 @@ reset_idletimes (const ClutterEvent *event)
 }
 
 static gboolean
-event_cb (ClutterActor *stage,
-          const ClutterEvent *event,
-          MetaWaylandCompositor *compositor)
+event_filter_cb (const ClutterEvent *event,
+                 gpointer            user_data)
 {
+  MetaWaylandCompositor *compositor = user_data;
   MetaWaylandSeat *seat = compositor->seat;
   MetaWaylandPointer *pointer = &seat->pointer;
   MetaWaylandSurface *surface;
@@ -714,7 +717,8 @@ event_cb (ClutterActor *stage,
       if (pointer->current == NULL)
 	meta_cursor_tracker_revert_root (seat->cursor_tracker);
 
-      meta_cursor_tracker_queue_redraw (seat->cursor_tracker, stage);
+      meta_cursor_tracker_queue_redraw (seat->cursor_tracker,
+                                        CLUTTER_ACTOR (event->any.stage));
     }
 
   display = meta_get_display ();
@@ -745,58 +749,6 @@ event_cb (ClutterActor *stage,
     default:
       return FALSE;
     }
-}
-
-static gboolean
-event_emission_hook_cb (GSignalInvocationHint *ihint,
-                        guint n_param_values,
-                        const GValue *param_values,
-                        gpointer data)
-{
-  MetaWaylandCompositor *compositor = data;
-  ClutterActor *actor;
-  ClutterEvent *event;
-
-  g_return_val_if_fail (n_param_values == 2, FALSE);
-
-  actor = g_value_get_object (param_values + 0);
-  event = g_value_get_boxed (param_values + 1);
-
-  if (actor == NULL)
-    return TRUE /* stay connected */;
-
-  /* If this event belongs to the corresponding grab for this event
-   * type then the captured-event signal won't be emitted so we have
-   * to manually forward it on */
-
-  switch (event->type)
-    {
-      /* Pointer events */
-    case CLUTTER_MOTION:
-    case CLUTTER_ENTER:
-    case CLUTTER_LEAVE:
-    case CLUTTER_BUTTON_PRESS:
-    case CLUTTER_BUTTON_RELEASE:
-    case CLUTTER_SCROLL:
-      if (actor == clutter_get_pointer_grab ())
-        event_cb (clutter_actor_get_stage (actor),
-                  event,
-                  compositor);
-      break;
-
-      /* Keyboard events */
-    case CLUTTER_KEY_PRESS:
-    case CLUTTER_KEY_RELEASE:
-      if (actor == clutter_get_keyboard_grab ())
-        event_cb (clutter_actor_get_stage (actor),
-                  event,
-                  compositor);
-
-    default:
-      break;
-    }
-
-  return TRUE /* stay connected */;
 }
 
 static void
@@ -839,7 +791,6 @@ void
 meta_wayland_init (void)
 {
   MetaWaylandCompositor *compositor = &_meta_wayland_compositor;
-  guint event_signal;
   MetaMonitorManager *monitors;
   ClutterBackend *backend;
   CoglContext *cogl_context;
@@ -928,20 +879,7 @@ meta_wayland_init (void)
   compositor->seat = meta_wayland_seat_new (compositor->wayland_display,
 					    compositor->drm_fd >= 0);
 
-  g_signal_connect (compositor->stage,
-                    "captured-event",
-                    G_CALLBACK (event_cb),
-                    compositor);
-  /* If something sets a grab on an actor then the captured event
-   * signal won't get emitted but we still want to see these events so
-   * we can update the cursor position. To make sure we see all events
-   * we also install an emission hook on the event signal */
-  event_signal = g_signal_lookup ("event", CLUTTER_TYPE_STAGE);
-  g_signal_add_emission_hook (event_signal,
-                              0 /* detail */,
-                              event_emission_hook_cb,
-                              compositor, /* hook_data */
-                              NULL /* data_destroy */);
+  clutter_event_add_filter (event_filter_cb, compositor);
 
   meta_wayland_init_shell (compositor);
 
@@ -978,6 +916,8 @@ meta_wayland_finalize (void)
   MetaWaylandCompositor *compositor;
 
   compositor = meta_wayland_compositor_get_default ();
+
+  clutter_event_remove_filter (event_filter_cb, compositor);
 
   meta_xwayland_stop (compositor);
   g_clear_object (&compositor->launcher);
