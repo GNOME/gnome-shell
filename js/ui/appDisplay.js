@@ -233,13 +233,11 @@ const PageIndicators = new Lang.Class({
         let timePerChild = INDICATORS_ANIMATION_TIME / this._nPages;
         let delay = INDICATORS_ANIMATION_DELAY_PERCENTAGE / 100 * timePerChild;
 
-        let [stageX, ] = children[0].get_transformed_position();
         let offset;
-        let monitor = Main.layoutManager.primaryMonitor;
-        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-            offset = monitor.x - stageX - children[0].width;
+        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
+            offset = -children[0].width;
         else
-            offset = monitor.x + monitor.width - stageX;
+            offset = children[0].width;
 
         for (let i = 0; i < this._nPages; i++) {
             children[i].translation_x = offset;
