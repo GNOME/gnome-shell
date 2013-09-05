@@ -918,7 +918,6 @@ StScrollBar StButton#vhandle:active {
 }
 
 .app-display {
-    padding: 8px;
     spacing: 20px;
 }
 
