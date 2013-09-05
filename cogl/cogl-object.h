@@ -182,8 +182,8 @@ cogl_object_get_user_data (CoglObject *object,
 
 /**
  * cogl_debug_object_foreach_type:
- * @func: A callback function for each type
- * @user_data: A pointer to pass to @func
+ * @func: (scope call): A callback function for each type
+ * @user_data: (closure): A pointer to pass to @func
  *
  * Invokes @func once for each type of object that Cogl uses and
  * passes a count of the number of objects for that type. This is
