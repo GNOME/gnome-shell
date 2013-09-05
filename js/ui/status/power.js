@@ -74,12 +74,12 @@ const Indicator = new Lang.Class({
 
         if (state == UPower.DeviceState.DISCHARGING) {
             // Translators: this is <hours>:<minutes> Remaining (<percentage>)
-            return _("%d\u2236%02d Remaining (%d%%)".format(hours, minutes, percentage));
+            return _("%d\u2236%02d Remaining (%d%%)").format(hours, minutes, percentage);
         }
 
         if (state == UPower.DeviceState.CHARGING) {
             // Translators: this is <hours>:<minutes> Until Full (<percentage>)
-            return _("%d\u2236%02d Until Full (%d%%)".format(hours, minutes, percentage));
+            return _("%d\u2236%02d Until Full (%d%%)").format(hours, minutes, percentage);
         }
 
         // state is one of PENDING_CHARGING, PENDING_DISCHARGING
