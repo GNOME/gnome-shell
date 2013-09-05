@@ -81,7 +81,8 @@ cogl_attribute_buffer_new_with_size (CoglContext *context,
  * cogl_attribute_buffer_new:
  * @context: A #CoglContext
  * @bytes: The number of bytes to allocate for vertex attribute data.
- * @data: An optional pointer to vertex data to upload immediately.
+ * @data: (array length=bytes): An optional pointer to vertex data to
+ *        upload immediately.
  *
  * Describes a new #CoglAttributeBuffer of @size bytes to contain
  * arrays of vertex attribute data and also uploads @size bytes read
