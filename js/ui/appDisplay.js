@@ -962,6 +962,10 @@ const FolderView = new Lang.Class({
 
         this.actor.set_width(this.usedWidth());
         this.actor.set_height(this.usedHeight());
+
+        let fadeOffset = Math.min(this._grid.topPadding,
+                                  this._grid.bottomPadding);
+        this.actor.update_fade_effect(fadeOffset, 0);
     },
 
     _getPageAvailableSize: function() {
