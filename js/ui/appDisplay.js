@@ -39,12 +39,9 @@ const FOLDER_SUBICON_FRACTION = .4;
 
 const MIN_FREQUENT_APPS_COUNT = 3;
 
-const INDICATORS_ANIMATION_TIME = 0.5;
-// 100% means indicators wait for be animated until the previous one
-// is animated completely. 0% means all animators are animated
-// at once without delay
-const INDICATORS_ANIMATION_DELAY_PERCENTAGE = 50;
-
+const INDICATORS_BASE_TIME = 0.25;
+const INDICATORS_ANIMATION_DELAY = 0.125;
+const INDICATORS_ANIMATION_MAX_TIME = 0.75;
 // Fraction of page height the finger or mouse must reach
 // to change page
 const PAGE_SWITCH_TRESHOLD = 0.2;
@@ -230,22 +227,23 @@ const PageIndicators = new Lang.Class({
         if (children.length == 0)
             return;
 
-        let timePerChild = INDICATORS_ANIMATION_TIME / this._nPages;
-        let delay = INDICATORS_ANIMATION_DELAY_PERCENTAGE / 100 * timePerChild;
-
         let offset;
         if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
             offset = -children[0].width;
         else
             offset = children[0].width;
 
+        let delay = INDICATORS_ANIMATION_DELAY;
+        let totalAnimationTime = INDICATORS_BASE_TIME + INDICATORS_ANIMATION_DELAY * this._nPages;
+        if (totalAnimationTime > INDICATORS_ANIMATION_MAX_TIME)
+            delay -= (totalAnimationTime - INDICATORS_ANIMATION_MAX_TIME) / this._nPages;
+
         for (let i = 0; i < this._nPages; i++) {
             children[i].translation_x = offset;
             Tweener.addTween(children[i],
                              { translation_x: 0,
-                               time: timePerChild,
-                               delay: delay * i,
-                               transition: 'easeOutQuad'
+                               time: INDICATORS_BASE_TIME + delay * i,
+                               transition: 'easeInOutQuad'
                              });
         }
     }

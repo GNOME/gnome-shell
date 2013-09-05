@@ -941,7 +941,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .page-indicator {
-    padding: 15px 30px;
+    padding: 15px 20px;
 }
 
 .page-indicator .page-indicator-icon {
