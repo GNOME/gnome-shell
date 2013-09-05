@@ -2732,6 +2732,7 @@ const MessageTray = new Lang.Class({
 
     _onSummaryBoxPointerUngrabbed: function() {
         this._summaryBoxPointerState = State.HIDING;
+        this._setClickedSummaryItem(null);
 
         if (this._summaryBoxPointerContentUpdatedId) {
             this._summaryBoxPointerItem.disconnect(this._summaryBoxPointerContentUpdatedId);
