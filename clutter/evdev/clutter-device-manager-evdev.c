@@ -84,6 +84,9 @@ struct _ClutterDeviceManagerEvdevPrivate
 
   GArray *keys;
   struct xkb_state *xkb;              /* XKB state object */
+  xkb_led_index_t caps_lock_led;
+  xkb_led_index_t num_lock_led;
+  xkb_led_index_t scroll_lock_led;
   uint32_t button_state;
 };
 
@@ -190,6 +193,30 @@ remove_key (GArray  *keys,
 }
 
 static void
+sync_leds (ClutterDeviceManagerEvdev *manager_evdev)
+{
+  ClutterDeviceManagerEvdevPrivate *priv = manager_evdev->priv;
+  GSList *iter;
+  int caps_lock, num_lock, scroll_lock;
+
+  caps_lock = xkb_state_led_index_is_active (priv->xkb, priv->caps_lock_led);
+  num_lock = xkb_state_led_index_is_active (priv->xkb, priv->num_lock_led);
+  scroll_lock = xkb_state_led_index_is_active (priv->xkb, priv->scroll_lock_led);
+
+  for (iter = priv->event_sources; iter; iter = iter->next)
+    {
+      ClutterEventSource *source = iter->data;
+
+      if (libevdev_has_event_type (source->dev, EV_LED))
+	libevdev_kernel_set_led_values (source->dev,
+					LED_CAPSL, caps_lock == 1 ? LIBEVDEV_LED_ON : LIBEVDEV_LED_OFF,
+					LED_NUML, num_lock == 1 ? LIBEVDEV_LED_ON : LIBEVDEV_LED_OFF,
+					LED_SCROLLL, scroll_lock == 1 ? LIBEVDEV_LED_ON : LIBEVDEV_LED_OFF,
+					-1);
+    }
+}
+
+static void
 notify_key_device (ClutterInputDevice *input_device,
 		   guint32             time_,
 		   guint32             key,
@@ -199,6 +226,7 @@ notify_key_device (ClutterInputDevice *input_device,
   ClutterDeviceManagerEvdev *manager_evdev;
   ClutterStage *stage;
   ClutterEvent *event = NULL;
+  enum xkb_state_component changed_state;
 
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
@@ -208,34 +236,34 @@ notify_key_device (ClutterInputDevice *input_device,
 
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (input_device->device_manager);
 
-  /* if we have keyboard state, use it to generate the event */
-  if (manager_evdev->priv->xkb)
+  event = _clutter_key_event_new_from_evdev (input_device,
+					     manager_evdev->priv->core_keyboard,
+					     stage,
+					     manager_evdev->priv->xkb,
+					     manager_evdev->priv->button_state,
+					     time_, key, state);
+
+  /* We must be careful and not pass multiple releases to xkb, otherwise it gets
+     confused and locks the modifiers */
+  if (state != AUTOREPEAT_VALUE)
     {
-      event =
-	_clutter_key_event_new_from_evdev (input_device,
-					   manager_evdev->priv->core_keyboard,
-					   stage,
-					   manager_evdev->priv->xkb,
-					   manager_evdev->priv->button_state,
-					   time_, key, state);
+      changed_state = xkb_state_update_key (manager_evdev->priv->xkb, event->key.hardware_keycode, state ? XKB_KEY_DOWN : XKB_KEY_UP);
 
-      /* We must be careful and not pass multiple releases to xkb, otherwise it gets
-	 confused and locks the modifiers */
-      if (state != AUTOREPEAT_VALUE)
+      if (update_keys)
 	{
-	  xkb_state_update_key (manager_evdev->priv->xkb, event->key.hardware_keycode, state ? XKB_KEY_DOWN : XKB_KEY_UP);
-
-	  if (update_keys)
-	    {
-	      if (state)
-		add_key (manager_evdev->priv->keys, event->key.hardware_keycode);
-	      else
-		remove_key (manager_evdev->priv->keys, event->key.hardware_keycode);
-	    }
+	  if (state)
+	    add_key (manager_evdev->priv->keys, event->key.hardware_keycode);
+	  else
+	    remove_key (manager_evdev->priv->keys, event->key.hardware_keycode);
 	}
-
-      queue_event (event);
     }
+  else
+    changed_state = 0;
+
+  queue_event (event);
+
+  if (update_keys && (changed_state & XKB_STATE_LEDS))
+    sync_leds (manager_evdev);
 }
 
 static void
@@ -649,7 +677,7 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
   if (open_callback)
     {
       error = NULL;
-      fd = open_callback (node_path, O_RDONLY | O_NONBLOCK, open_callback_data, &error);
+      fd = open_callback (node_path, O_RDWR | O_NONBLOCK, open_callback_data, &error);
 
       if (fd < 0)
 	{
@@ -660,7 +688,7 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
     }
   else
     {
-      fd = open (node_path, O_RDONLY | O_NONBLOCK);
+      fd = open (node_path, O_RDWR | O_NONBLOCK);
       if (fd < 0)
 	{
 	  g_warning ("Could not open device %s: %s", node_path, strerror (errno));
@@ -1016,6 +1044,9 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
   ClutterDeviceManagerEvdev *manager_evdev;
   ClutterDeviceManagerEvdevPrivate *priv;
   ClutterInputDevice *device;
+  struct xkb_context *ctx;
+  struct xkb_keymap *keymap;
+  struct xkb_rule_names names;
 
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (gobject);
   priv = manager_evdev->priv;
@@ -1045,10 +1076,28 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
   priv->core_keyboard = device;
 
   priv->keys = g_array_new (FALSE, FALSE, sizeof (guint32));
-  priv->xkb = _clutter_xkb_state_new (NULL,
-				      option_xkb_layout,
-				      option_xkb_variant,
-				      option_xkb_options);
+
+  ctx = xkb_context_new(0);
+  g_assert (ctx);
+
+  names.rules = "evdev";
+  names.model = "pc105";
+  names.layout = option_xkb_layout;
+  names.variant = option_xkb_variant;
+  names.options = option_xkb_options;
+
+  keymap = xkb_keymap_new_from_names (ctx, &names, 0);
+  xkb_context_unref(ctx);
+  if (keymap)
+    {
+      priv->xkb = xkb_state_new (keymap);
+
+      priv->caps_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_CAPS);
+      priv->num_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_NUM);
+      priv->scroll_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_SCROLL);
+
+      xkb_keymap_unref (keymap);
+    }
 
   priv->udev_client = g_udev_client_new (subsystems);
 
@@ -1450,8 +1499,14 @@ clutter_evdev_set_keyboard_map (ClutterDeviceManager *evdev,
   xkb_state_unref (priv->xkb);
   priv->xkb = xkb_state_new (keymap);
 
+  priv->caps_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_CAPS);
+  priv->num_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_NUM);
+  priv->scroll_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_SCROLL);
+
   for (i = 0; i < priv->keys->len; i++)
     xkb_state_update_key (priv->xkb, g_array_index (priv->keys, guint32, i), XKB_KEY_DOWN);
+
+  sync_leds (manager_evdev);
 }
 
 /**

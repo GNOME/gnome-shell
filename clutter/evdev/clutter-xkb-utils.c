@@ -99,49 +99,6 @@ _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
   return event;
 }
 
-/*
- * _clutter_xkb_state_new:
- *
- * Create a new xkbcommon keymap and state object.
- *
- * FIXME: We need a way to override the layout here, a fixed or runtime
- * detected layout is provided by the backend calling _clutter_xkb_state_new();
- */
-struct xkb_state *
-_clutter_xkb_state_new (const gchar *model,
-                        const gchar *layout,
-                        const gchar *variant,
-                        const gchar *options)
-{
-  struct xkb_context *ctx;
-  struct xkb_keymap *keymap;
-  struct xkb_state *state;
-  struct xkb_rule_names names;
-
-  ctx = xkb_context_new(0);
-  if (!ctx)
-    return NULL;
-
-  names.rules = "evdev";
-  if (model)
-    names.model = model;
-  else
-    names.model = "pc105";
-  names.layout = layout;
-  names.variant = variant;
-  names.options = options;
-
-  keymap = xkb_map_new_from_names(ctx, &names, 0);
-  xkb_context_unref(ctx);
-  if (!keymap)
-    return NULL;
-
-  state = xkb_state_new(keymap);
-  xkb_map_unref(keymap);
-
-  return state;
-}
-
 void
 _clutter_xkb_translate_state (ClutterEvent     *event,
 			      struct xkb_state *state,
