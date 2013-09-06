@@ -175,7 +175,8 @@ const PageIndicators = new Lang.Class({
                                         vertical: true,
                                         x_expand: true, y_expand: true,
                                         x_align: Clutter.ActorAlign.END,
-                                        y_align: Clutter.ActorAlign.CENTER });
+                                        y_align: Clutter.ActorAlign.CENTER,
+                                        reactive: true });
         this._nPages = 0;
         this._currentPage = undefined;
 
@@ -281,6 +282,7 @@ const AllView = new Lang.Class({
             function(indicators, pageIndex) {
                 this.goToPage(pageIndex);
             }));
+        this._pageIndicators.actor.connect('scroll-event', Lang.bind(this, this._onScroll));
         this.actor.add_actor(this._pageIndicators.actor);
 
         this._folderIcons = [];
