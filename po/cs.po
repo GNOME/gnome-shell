@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-30 19:38+0000\n"
+"POT-Creation-Date: 2013-09-06 09:50+0000\n"
 "PO-Revision-Date: 2013-08-31 11:54+0100\n"
 "Last-Translator: Adam Matoušek <adamatousek@gmail.com>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
@@ -278,7 +278,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:686
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -354,23 +354,27 @@ msgstr "Nelze analyzovat příkaz:"
 msgid "Execution of '%s' failed:"
 msgstr "Vykonání „%s“ selhalo:"
 
-#: ../js/ui/appDisplay.js:386
+#: ../js/ui/appDisplay.js:573
+msgid "Frequently used applications will appear here"
+msgstr "Zde se objeví často používané aplikace"
+
+#: ../js/ui/appDisplay.js:689
 msgid "Frequent"
 msgstr "Časté"
 
-#: ../js/ui/appDisplay.js:393
+#: ../js/ui/appDisplay.js:696
 msgid "All"
 msgstr "Všechny"
 
-#: ../js/ui/appDisplay.js:991
+#: ../js/ui/appDisplay.js:1487
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appDisplay.js:994 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1490 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: ../js/ui/appDisplay.js:995
+#: ../js/ui/appDisplay.js:1491
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
@@ -579,7 +583,7 @@ msgid "Type again:"
 msgstr "Napište znovu:"
 
 #: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:682
+#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
 msgid "Connect"
 msgstr "Připojit"
 
@@ -924,7 +928,7 @@ msgstr "Zobrazit aplikace"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/dash.js:439
+#: ../js/ui/dash.js:442
 msgid "Dash"
 msgstr "Oblíbené"
 
@@ -1150,7 +1154,7 @@ msgstr "Žádné zprávy"
 msgid "Message Tray"
 msgstr "Lišta zpráv"
 
-#: ../js/ui/messageTray.js:2786
+#: ../js/ui/messageTray.js:2787
 msgid "System Information"
 msgstr "Informace o systému"
 
@@ -1197,7 +1201,7 @@ msgstr "Činnosti"
 msgid "Settings Menu"
 msgstr "Nabídka Nastavení"
 
-#: ../js/ui/panel.js:892
+#: ../js/ui/panel.js:901
 msgid "Top Bar"
 msgstr "Horní lišta"
 
@@ -1255,11 +1259,11 @@ msgstr "Nelze uzamknout obrazovku"
 msgid "Lock was blocked by an application"
 msgstr "Zamknutí bylo zablokováno některou z aplikací"
 
-#: ../js/ui/searchDisplay.js:445
+#: ../js/ui/searchDisplay.js:447
 msgid "Searching…"
 msgstr "Hledá se…"
 
-#: ../js/ui/searchDisplay.js:489
+#: ../js/ui/searchDisplay.js:491
 msgid "No results."
 msgstr "Žádné výsledky."
 
@@ -1340,7 +1344,7 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1027 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/network.js:1034 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Vypnout"
 
@@ -1438,83 +1442,83 @@ msgstr "Zobrazit rozložení klávesnice"
 msgid "<unknown>"
 msgstr "<neznámé>"
 
-#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1042
+#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
 msgid "Off"
 msgstr "Vypnuto"
 
-#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:948
+#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:955
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Nastavení sítě"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:357
+#: ../js/ui/status/network.js:364
 msgid "unmanaged"
 msgstr "nespravováno"
 
-#: ../js/ui/status/network.js:359
+#: ../js/ui/status/network.js:366
 msgid "disconnecting..."
 msgstr "odpojování…"
 
-#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1093
+#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1100
 msgid "connecting..."
 msgstr "připojování…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1096
+#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1103
 msgid "authentication required"
 msgstr "je vyžadováno ověření"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:376
+#: ../js/ui/status/network.js:383
 msgid "firmware missing"
 msgstr "nedostupný firmware"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:380
+#: ../js/ui/status/network.js:387
 msgid "unavailable"
 msgstr "nedostupné"
 
-#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1098
+#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1105
 msgid "connection failed"
 msgstr "připojení selhalo"
 
-#: ../js/ui/status/network.js:647
+#: ../js/ui/status/network.js:654
 msgid "Wi-Fi Networks"
 msgstr "Sítě WiFi"
 
-#: ../js/ui/status/network.js:649
+#: ../js/ui/status/network.js:656
 msgid "Select a network"
 msgstr "Vyberte síť"
 
-#: ../js/ui/status/network.js:673
+#: ../js/ui/status/network.js:680
 msgid "No Networks"
 msgstr "Žádné sítě"
 
-#: ../js/ui/status/network.js:942
+#: ../js/ui/status/network.js:949
 msgid "Select Network"
 msgstr "Vybrat síť"
 
-#: ../js/ui/status/network.js:1027
+#: ../js/ui/status/network.js:1034
 msgid "Turn On"
 msgstr "Zapnout"
 
-#: ../js/ui/status/network.js:1160
+#: ../js/ui/status/network.js:1167
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1299
+#: ../js/ui/status/network.js:1306
 msgid "Network Manager"
 msgstr "Network Manager"
 
-#: ../js/ui/status/network.js:1338
+#: ../js/ui/status/network.js:1345
 msgid "Connection failed"
 msgstr "Připojení selhalo"
 
-#: ../js/ui/status/network.js:1339
+#: ../js/ui/status/network.js:1346
 msgid "Activation of network connection failed"
 msgstr "Aktivace síťového připojení selhala"
 
