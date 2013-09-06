@@ -1072,9 +1072,9 @@ const FolderIcon = new Lang.Class({
         // StWidget delays style calculation until needed, make sure we use the correct values
         this.view._grid.actor.ensure_style();
 
-        let offsetForEachSide = (this._popup.getOffset(St.Side.TOP) +
-                                 this._popup.getOffset(St.Side.BOTTOM) -
-                                 this._popup.getCloseButtonOverlap()) / 2;
+        let offsetForEachSide = Math.ceil((this._popup.getOffset(St.Side.TOP) +
+                                           this._popup.getOffset(St.Side.BOTTOM) -
+                                           this._popup.getCloseButtonOverlap()) / 2);
         // Add extra padding to prevent boxpointer decorations and close button being cut off
         this.view.setPaddingOffsets(offsetForEachSide);
         this.view.adaptToSize(this._parentAvailableWidth, this._parentAvailableHeight);
