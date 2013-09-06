@@ -188,12 +188,12 @@ remove_key (GArray  *keys,
 }
 
 static void
-notify_key (ClutterEventSource *source,
-            guint32             time_,
-            guint32             key,
-            guint32             state)
+notify_key_device (ClutterInputDevice *input_device,
+		   guint32             time_,
+		   guint32             key,
+		   guint32             state,
+		   gboolean            update_keys)
 {
-  ClutterInputDevice *input_device = (ClutterInputDevice *) source->device;
   ClutterDeviceManagerEvdev *manager_evdev;
   ClutterStage *stage;
   ClutterEvent *event = NULL;
@@ -223,16 +223,29 @@ notify_key (ClutterEventSource *source,
 	{
 	  xkb_state_update_key (manager_evdev->priv->xkb, event->key.hardware_keycode, state ? XKB_KEY_DOWN : XKB_KEY_UP);
 
-	  if (state)
-	    add_key (manager_evdev->priv->keys, event->key.hardware_keycode);
-	  else
-	    remove_key (manager_evdev->priv->keys, event->key.hardware_keycode);
+	  if (update_keys)
+	    {
+	      if (state)
+		add_key (manager_evdev->priv->keys, event->key.hardware_keycode);
+	      else
+		remove_key (manager_evdev->priv->keys, event->key.hardware_keycode);
+	    }
 	}
 
       queue_event (event);
     }
 }
 
+static void
+notify_key (ClutterEventSource *source,
+            guint32             time_,
+            guint32             key,
+            guint32             state)
+{
+  ClutterInputDevice *input_device = (ClutterInputDevice *) source->device;
+
+  notify_key_device (input_device, time_, key, state, TRUE);
+}
 
 static void
 notify_relative_motion (ClutterEventSource *source,
@@ -1197,6 +1210,8 @@ clutter_evdev_release_devices (void)
   ClutterDeviceManagerEvdev *evdev_manager;
   ClutterDeviceManagerEvdevPrivate *priv;
   GSList *l, *next;
+  uint32_t time_;
+  unsigned i;
 
   if (!manager)
     {
@@ -1217,6 +1232,13 @@ clutter_evdev_release_devices (void)
                  "clutter_evdev_reclaim_devices() first");
       return;
     }
+
+  /* Fake release events for all currently pressed keys */
+  time_ = g_get_monotonic_time () / 1000;
+  for (i = 0; i < priv->keys->len; i++)
+    notify_key_device (priv->core_keyboard, time_,
+		       g_array_index (priv->keys, uint32_t, i) - 8, 0, FALSE);
+  g_array_set_size (priv->keys, 0);
 
   for (l = priv->devices; l; l = next)
     {
@@ -1251,6 +1273,13 @@ clutter_evdev_reclaim_devices (void)
   ClutterDeviceManager *manager = clutter_device_manager_get_default ();
   ClutterDeviceManagerEvdev *evdev_manager;
   ClutterDeviceManagerEvdevPrivate *priv;
+#define LONG_BITS (sizeof(long) * 8)
+#define NLONGS(x) (((x) + LONG_BITS - 1) / LONG_BITS)
+  unsigned long key_bits[NLONGS(KEY_CNT)];
+  unsigned long source_key_bits[NLONGS(KEY_CNT)];
+  GSList *iter;
+  int i, j, rc;
+  guint32 time_;
 
   if (!manager)
     {
@@ -1273,6 +1302,37 @@ clutter_evdev_reclaim_devices (void)
 
   priv->released = FALSE;
   clutter_device_manager_evdev_probe_devices (evdev_manager);
+
+  memset (key_bits, 0, sizeof (key_bits));
+  for (iter = priv->event_sources; iter; iter++)
+    {
+      ClutterEventSource *source = iter->data;
+      ClutterInputDevice *slave = CLUTTER_INPUT_DEVICE (source->device);
+
+      if (clutter_input_device_get_device_type (slave) == CLUTTER_KEYBOARD_DEVICE)
+	{
+	  rc = ioctl (source->event_poll_fd.fd, EVIOCGBIT(EV_KEY, sizeof (source_key_bits)), source_key_bits);
+	  if (rc < 0)
+	    continue;
+
+	  for (i = 0; i < NLONGS(KEY_CNT); i++)
+	    key_bits[i] |= source_key_bits[i];
+	}
+    }
+
+  /* Fake press events for all currently pressed keys */
+  time_ = g_get_monotonic_time () / 1000;
+  for (i = 0; i < NLONGS(KEY_CNT); i++)
+    {
+      for (j = 0; j < 8; j++)
+	{
+	  if (key_bits[i] & (1 << j))
+	    notify_key_device (priv->core_keyboard, time_, i * 8 + j, 1, TRUE);
+	}
+    }
+
+#undef LONG_BITS
+#undef NLONGS
 }
 
 /**
