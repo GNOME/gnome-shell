@@ -37,14 +37,10 @@ const FocusCaretTracker = new Lang.Class({
     },
 
     _onChanged: function(event) {
-        let update = null;
-
         if (event.type.indexOf(STATECHANGED) == 0)
-            update = 'focus-changed';
+            this.emit('focus-changed', event);
         else if (event.type == CARETMOVED)
-            update = 'caret-moved';
-        if(update != null)
-            this.emit(update, event);
+            this.emit('caret-moved', event);
     },
 
     registerFocusListener: function() {
