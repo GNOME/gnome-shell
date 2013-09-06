@@ -841,9 +841,7 @@ shell_app_get_last_user_time (ShellApp *app)
  *
  * Compare one #ShellApp instance to another, in the following way:
  *   - Running applications sort before not-running applications.
- *   - If one of them has visible windows and the other does not, the one
- *     with visible windows is first.
- *   - Finally, the application which the user interacted with most recently
+ *   - The application which the user interacted with most recently
  *     compares earlier.
  */
 int
@@ -858,14 +856,6 @@ shell_app_compare (ShellApp *app,
         return -1;
       return 1;
     }
-
-  vis_app = shell_app_has_visible_windows (app);
-  vis_other = shell_app_has_visible_windows (other);
-
-  if (vis_app && !vis_other)
-    return -1;
-  else if (!vis_app && vis_other)
-    return 1;
 
   if (app->state == SHELL_APP_STATE_RUNNING)
     {
