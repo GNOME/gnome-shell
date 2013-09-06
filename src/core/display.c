@@ -64,9 +64,7 @@
 #ifdef HAVE_XKB
 #include <X11/XKBlib.h>
 #endif
-#ifdef HAVE_XCURSOR
 #include <X11/Xcursor/Xcursor.h>
-#endif
 #include <X11/extensions/Xrender.h>
 #include <X11/extensions/Xcomposite.h>
 #include <X11/extensions/Xdamage.h>
@@ -828,14 +826,10 @@ meta_display_open (void)
       meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
   }
 
-#ifdef HAVE_XCURSOR
   {
     XcursorSetTheme (the_display->xdisplay, meta_prefs_get_cursor_theme ());
     XcursorSetDefaultSize (the_display->xdisplay, meta_prefs_get_cursor_size ());
   }
-#else /* HAVE_XCURSOR */
-  meta_verbose ("Not compiled with Xcursor support\n");
-#endif /* !HAVE_XCURSOR */
 
   /* Create the leader window here. Set its properties and
    * use the timestamp from one of the PropertyNotify events
@@ -4726,7 +4720,6 @@ void
 meta_display_set_cursor_theme (const char *theme, 
 			       int         size)
 {
-#ifdef HAVE_XCURSOR     
   GSList *tmp;
 
   MetaDisplay *display = meta_get_display ();
@@ -4743,8 +4736,6 @@ meta_display_set_cursor_theme (const char *theme,
 
       tmp = tmp->next;
     }
-
-#endif
 }
 
 /*

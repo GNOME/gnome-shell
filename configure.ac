@@ -209,19 +209,7 @@ if test x$found_introspection != xno; then
   AC_SUBST(META_GIR)
 fi
 
-AC_MSG_CHECKING([Xcursor])
-if $PKG_CONFIG xcursor; then
-     have_xcursor=yes
-  else
-     have_xcursor=no
-  fi
-  AC_MSG_RESULT($have_xcursor)
-
-if test x$have_xcursor = xyes; then
-  echo "Building with Xcursor"
-  MUTTER_PC_MODULES="$MUTTER_PC_MODULES xcursor"
-  AC_DEFINE(HAVE_XCURSOR, , [Building with Xcursor support])
-fi
+MUTTER_PC_MODULES="$MUTTER_PC_MODULES xcursor"
 
 # We always build with wayland enabled
 AC_DEFINE(HAVE_WAYLAND, , [Building with Wayland support])
@@ -473,7 +461,6 @@ src/Makefile
 src/libmutter-wayland.pc
 src/compositor/plugins/Makefile
 protocol/Makefile
-data/Makefile
 po/Makefile.in
 ])
 

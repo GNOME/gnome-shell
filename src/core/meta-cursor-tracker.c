@@ -43,6 +43,7 @@
 #include <gdk/gdk.h>
 
 #include <X11/extensions/Xfixes.h>
+#include <X11/Xcursor/Xcursor.h>
 
 #include "meta-cursor-tracker-private.h"
 #include "screen-private.h"
@@ -71,7 +72,7 @@ struct _MetaCursorTracker {
 
   MetaCursorReference *sprite;
   MetaCursorReference *root_cursor;
-  MetaCursorReference *default_cursor;
+  MetaCursorReference *default_cursors[META_CURSOR_LAST];
 
   int current_x, current_y;
   MetaRectangle current_rect;
@@ -127,49 +128,107 @@ meta_cursor_reference_unref (MetaCursorReference *self)
     }
 }
 
-static MetaCursorReference *
-meta_cursor_reference_from_file (MetaCursorTracker  *tracker,
-                                 const char         *filename,
-                                 GError            **error)
+static const char *
+get_cursor_filename (MetaCursor cursor)
 {
-  GdkPixbuf *pixbuf;
+  switch (cursor)
+    {
+    case META_CURSOR_DEFAULT:
+      return "left_ptr";
+      break;
+    case META_CURSOR_NORTH_RESIZE:
+      return "top_side";
+      break;
+    case META_CURSOR_SOUTH_RESIZE:
+      return "bottom_side";
+      break;
+    case META_CURSOR_WEST_RESIZE:
+      return "left_side";
+      break;
+    case META_CURSOR_EAST_RESIZE:
+      return "right_side";
+      break;
+    case META_CURSOR_SE_RESIZE:
+      return "bottom_right_corner";
+      break;
+    case META_CURSOR_SW_RESIZE:
+      return "bottom_left_corner";
+      break;
+    case META_CURSOR_NE_RESIZE:
+      return "top_right_corner";
+      break;
+    case META_CURSOR_NW_RESIZE:
+      return "top_left_corner";
+      break;
+    case META_CURSOR_MOVE_OR_RESIZE_WINDOW:
+      return "fleur";
+      break;
+    case META_CURSOR_BUSY:
+      return "busy";
+      break;
+    case META_CURSOR_DND_IN_DRAG:
+      return "dnd-in-drag";
+      break;
+    case META_CURSOR_DND_MOVE:
+      return "dnd-copy";
+      break;
+    case META_CURSOR_DND_UNSUPPORTED_TARGET:
+      return "dnd-none";
+      break;
+    case META_CURSOR_POINTING_HAND:
+      return "hand";
+      break;
+    case META_CURSOR_CROSSHAIR:
+      return "crosshair";
+      break;
+    case META_CURSOR_IBEAM:
+      return "xterm";
+      break;
+
+    default:
+      g_assert_not_reached ();
+      return NULL;
+    }
+}
+
+static MetaCursorReference *
+meta_cursor_reference_from_theme (MetaCursorTracker  *tracker,
+                                  MetaCursor          cursor)
+{
+  const char *theme;
+  const char *filename;
+  int size;
+  XcursorImage *image;
   int width, height, rowstride;
-  int bits_per_sample;
-  int n_channels;
-  gboolean has_alpha;
   CoglPixelFormat cogl_format;
   uint32_t gbm_format;
   ClutterBackend *clutter_backend;
   CoglContext *cogl_context;
   MetaCursorReference *self;
 
-  pixbuf = gdk_pixbuf_new_from_file (filename, error);
-  if (!pixbuf)
+  filename = get_cursor_filename (cursor);
+  theme = XcursorGetTheme (tracker->screen->display->xdisplay);
+  size = XcursorGetDefaultSize (tracker->screen->display->xdisplay);
+
+  image = XcursorLibraryLoadImage (filename, theme, size);
+  if (!image)
     return NULL;
 
-  has_alpha       = gdk_pixbuf_get_has_alpha (pixbuf);
-  width           = gdk_pixbuf_get_width (pixbuf);
-  height          = gdk_pixbuf_get_height (pixbuf);
-  rowstride       = gdk_pixbuf_get_rowstride (pixbuf);
-  bits_per_sample = gdk_pixbuf_get_bits_per_sample (pixbuf);
-  n_channels      = gdk_pixbuf_get_n_channels (pixbuf);
+  width           = image->width;
+  height          = image->height;
+  rowstride       = width * 4;
 
-  g_assert (bits_per_sample == 8);
-  if (has_alpha)
-    {
-      g_assert (n_channels == 4);
-      cogl_format = COGL_PIXEL_FORMAT_RGBA_8888;
-      gbm_format = GBM_FORMAT_ARGB8888;
-    }
-  else
-    {
-      g_assert (n_channels == 3);
-      cogl_format = COGL_PIXEL_FORMAT_RGB_888;
-      gbm_format = GBM_FORMAT_XRGB8888;
-    }
+  gbm_format = GBM_FORMAT_ARGB8888;
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+  cogl_format = COGL_PIXEL_FORMAT_BGRA_8888;
+#else
+  cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
+#endif
 
   self = g_slice_new0 (MetaCursorReference);
   self->ref_count = 1;
+  self->hot_x = image->xhot;
+  self->hot_y = image->yhot;
 
   clutter_backend = clutter_get_default_backend ();
   cogl_context = clutter_backend_get_cogl_context (clutter_backend);
@@ -178,54 +237,29 @@ meta_cursor_reference_from_file (MetaCursorTracker  *tracker,
                                                  cogl_format,
                                                  COGL_PIXEL_FORMAT_ANY,
                                                  rowstride,
-                                                 gdk_pixbuf_get_pixels (pixbuf),
+                                                 (uint8_t*)image->pixels,
                                                  NULL);
 
   if (tracker->gbm)
     {
       if (width > 64 || height > 64)
         {
-          meta_warning ("Invalid default cursor size (must be at most 64x64)\n");
+          meta_warning ("Invalid theme cursor size (must be at most 64x64)\n");
           goto out;
         }
 
       if (gbm_device_is_format_supported (tracker->gbm, gbm_format,
                                           GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE))
         {
-          uint8_t *data;
-          uint8_t buf[4 * 64 * 64];
-          int i, j;
+          uint32_t buf[64 * 64];
+          int i;
 
           self->bo = gbm_bo_create (tracker->gbm, 64, 64,
                                     gbm_format, GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE);
 
-          data = gdk_pixbuf_get_pixels (pixbuf);
           memset (buf, 0, sizeof(buf));
           for (i = 0; i < height; i++)
-            {
-              for (j = 0; j < width; j++)
-                {
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-                  /* The byte order is B G R (A) */
-                  buf[i * 4 * 64 + j * 4 + 0] = data[i * rowstride + j * n_channels + 2];
-                  buf[i * 4 * 64 + j * 4 + 1] = data[i * rowstride + j * n_channels + 1];
-                  buf[i * 4 * 64 + j * 4 + 2] = data[i * rowstride + j * n_channels + 0];
-                  if (has_alpha)
-                    buf[i * 4 * 64 + j * 4 + 3] = data[i * rowstride + j * n_channels + 3];
-                  else
-                    buf[i * 4 * 64 + j * 4 + 3] = 0;
-#else
-                  /* The byte order is (A) R G B */
-                  buf[i * 4 * 64 + j * 4 + 3] = data[i * rowstride + j * n_channels + 2];
-                  buf[i * 4 * 64 + j * 4 + 2] = data[i * rowstride + j * n_channels + 1];
-                  buf[i * 4 * 64 + j * 4 + 1] = data[i * rowstride + j * n_channels + 0];
-                  if (has_alpha)
-                    buf[i * 4 * 64 + j * 4 + 0] = data[i * rowstride + j * n_channels + 3];
-                  else
-                    buf[i * 4 * 64 + j * 4 + 0] = 0;
-#endif
-                }
-            }
+            memcpy (buf + i * 64, image->pixels + i * width, width * 4);
 
           gbm_bo_write (self->bo, buf, 64 * 64 * 4);
         }
@@ -234,7 +268,7 @@ meta_cursor_reference_from_file (MetaCursorTracker  *tracker,
     }
 
  out:
-  g_object_unref (pixbuf);
+  XcursorImageDestroy (image);
 
   return self;
 }
@@ -431,13 +465,17 @@ static void
 meta_cursor_tracker_finalize (GObject *object)
 {
   MetaCursorTracker *self = META_CURSOR_TRACKER (object);
+  int i;
 
   if (self->sprite)
     meta_cursor_reference_unref (self->sprite);
   if (self->root_cursor)
     meta_cursor_reference_unref (self->root_cursor);
-  if (self->default_cursor)
-    meta_cursor_reference_unref (self->default_cursor);
+
+  for (i = 0; i < META_CURSOR_LAST; i++)
+    if (self->default_cursors[i])
+      meta_cursor_reference_unref (self->default_cursors[i]);
+
   if (self->pipeline)
     cogl_object_unref (self->pipeline);
   if (self->gbm)
@@ -693,33 +731,18 @@ meta_cursor_tracker_get_hot (MetaCursorTracker *tracker,
     }
 }
 
-static void
-ensure_wayland_cursor (MetaCursorTracker *tracker)
+static MetaCursorReference *
+ensure_wayland_cursor (MetaCursorTracker *tracker,
+                       MetaCursor         cursor)
 {
-  char *filename;
-  GError *error;
+  if (tracker->default_cursors[cursor])
+    return tracker->default_cursors[cursor];
 
-  if (tracker->default_cursor)
-    return;
+  tracker->default_cursors[cursor] = meta_cursor_reference_from_theme (tracker, cursor);
+  if (!tracker->default_cursors[cursor])
+    meta_warning ("Failed to load cursor from theme\n");
 
-  filename = g_build_filename (MUTTER_PKGDATADIR,
-                               "cursors/left_ptr.png",
-                               NULL);
-
-  error = NULL;
-  tracker->default_cursor = meta_cursor_reference_from_file (tracker, filename, &error);
-  if (!tracker->default_cursor)
-    {
-      if (error)
-        g_error ("Failed to load default cursor: %s", error->message);
-      else
-        g_error ("Failed to load default cursor");
-    }
-
-  tracker->default_cursor->hot_x = META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_X;
-  tracker->default_cursor->hot_y = META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_Y;
-
-  g_free (filename);
+  return tracker->default_cursors[cursor];
 }
 
 void
@@ -739,11 +762,12 @@ meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
   /* Now update the real root cursor */
   if (meta_is_wayland_compositor ())
     {
-      /* FIXME! We need to load all the other cursors too */
-      ensure_wayland_cursor (tracker);
+      MetaCursorReference *ref;
+
+      ref = ensure_wayland_cursor (tracker, cursor);
 
       g_clear_pointer (&tracker->root_cursor, meta_cursor_reference_unref);
-      tracker->root_cursor = meta_cursor_reference_ref (tracker->default_cursor);
+      tracker->root_cursor = meta_cursor_reference_ref (ref);
     }
 }
 
