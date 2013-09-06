@@ -956,9 +956,9 @@ const FolderView = new Lang.Class({
 
         // Set extra padding to avoid popup or close button being cut off
         this._grid.topPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
-        this._grid.bottomPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
-        this._grid.leftPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
-        this._grid.rightPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
+        this._grid.bottomPadding = Math.max(this._grid.bottomPadding - this._offsetForEachSide, 0);
+        this._grid.leftPadding = Math.max(this._grid.leftPadding - this._offsetForEachSide, 0);
+        this._grid.rightPadding = Math.max(this._grid.rightPadding - this._offsetForEachSide, 0);
 
         this.actor.set_width(this.usedWidth());
         this.actor.set_height(this.usedHeight());
