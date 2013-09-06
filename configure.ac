@@ -480,7 +480,7 @@ AS_IF([test "x$enable_evdev" = "xyes"],
         AS_IF([test "x$have_evdev" = "xyes"],
               [
                 CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS evdev"
-                BACKEND_PC_FILES="$BACKEND_PC_FILES gudev-1.0 xkbcommon"
+                BACKEND_PC_FILES="$BACKEND_PC_FILES gudev-1.0 libevdev xkbcommon"
                 experimental_input_backend="yes"
                 AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
                 SUPPORT_EVDEV=1

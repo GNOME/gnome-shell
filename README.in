@@ -38,6 +38,11 @@ When building the CEx100 backend, Clutter also depends on:
 
   • libgdl
 
+When building the evdev input backend, Clutter also depends on:
+
+  • xkbcommon
+  • libevdev
+
 If you are building the API reference you will also need:
 
   • GTK-Doc ≥ @GTK_DOC_REQ_VERSION@

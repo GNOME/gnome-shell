@@ -35,6 +35,7 @@
 
 #include <glib.h>
 #include <gudev/gudev.h>
+#include <libevdev/libevdev.h>
 
 #include "clutter-backend.h"
 #include "clutter-debug.h"
@@ -124,6 +125,7 @@ struct _ClutterEventSource
 
   ClutterInputDeviceEvdev *device;    /* back pointer to the slave evdev device */
   GPollFD event_poll_fd;              /* file descriptor of the /dev node */
+  struct libevdev *dev;
 };
 
 static gboolean
@@ -411,6 +413,143 @@ notify_button (ClutterEventSource *source,
   queue_event (event);
 }
 
+static void
+dispatch_one_event (ClutterEventSource *source,
+		    struct input_event *e,
+		    int                *dx,
+		    int                *dy)
+{
+  guint32 _time;
+
+  _time = e->time.tv_sec * 1000 + e->time.tv_usec / 1000;
+
+  switch (e->type)
+    {
+    case EV_KEY:
+      /* don't repeat mouse buttons */
+      if (e->code >= BTN_MOUSE && e->code < KEY_OK)
+	if (e->value == AUTOREPEAT_VALUE)
+	  return;
+
+      switch (e->code)
+	{
+	case BTN_TOUCH:
+	case BTN_TOOL_PEN:
+	case BTN_TOOL_RUBBER:
+	case BTN_TOOL_BRUSH:
+	case BTN_TOOL_PENCIL:
+	case BTN_TOOL_AIRBRUSH:
+	case BTN_TOOL_FINGER:
+	case BTN_TOOL_MOUSE:
+	case BTN_TOOL_LENS:
+	  break;
+
+	case BTN_LEFT:
+	case BTN_RIGHT:
+	case BTN_MIDDLE:
+	case BTN_SIDE:
+	case BTN_EXTRA:
+	case BTN_FORWARD:
+	case BTN_BACK:
+	case BTN_TASK:
+	  notify_button(source, _time, e->code, e->value);
+	  break;
+
+	default:
+	  notify_key (source, _time, e->code, e->value);
+	  break;
+	}
+      break;
+
+    case EV_SYN:
+      /* Nothing to do here */
+      break;
+
+    case EV_MSC:
+      /* Nothing to do here */
+      break;
+
+    case EV_REL:
+      /* compress the EV_REL events in dx/dy */
+      switch (e->code)
+	{
+	case REL_X:
+	  *dx += e->value;
+	  break;
+	case REL_Y:
+	  *dy += e->value;
+	  break;
+
+	  /* Note: we assume that REL_WHEEL is for *vertical* scroll wheels.
+	     To implement horizontal scroll, we'll need a different enum
+	     value.
+	  */
+	case REL_WHEEL:
+	  notify_scroll (source, _time, e->value);
+	  break;
+	}
+      break;
+
+    case EV_ABS:
+    default:
+      g_warning ("Unhandled event of type %d", e->type);
+      break;
+    }
+}
+
+static void
+sync_source (ClutterEventSource *source)
+{
+  struct input_event ev;
+  int err;
+  int dx = 0, dy = 0;
+  const gchar *device_path;
+
+  /* We read a SYN_DROPPED, ignore it and sync the device */
+  err = libevdev_next_event (source->dev, LIBEVDEV_READ_SYNC, &ev);
+  while (err == 1)
+    {
+      dispatch_one_event (source, &ev, &dx, &dy);
+      err = libevdev_next_event (source->dev, LIBEVDEV_READ_SYNC, &ev);
+    }
+
+  if (err != -EAGAIN && CLUTTER_HAS_DEBUG (EVENT))
+    {
+      device_path = _clutter_input_device_evdev_get_device_path (source->device);
+
+      CLUTTER_NOTE (EVENT, "Could not sync device (%s).", device_path);
+    }
+
+  if (dx != 0 || dy != 0)
+    {
+      guint32 _time = ev.time.tv_sec * 1000 + ev.time.tv_usec / 1000;
+      notify_relative_motion (source, _time, dx, dy);
+    }
+}
+
+static void
+fail_source (ClutterEventSource *source,
+	     int                 error)
+{
+  ClutterDeviceManager *manager;
+  ClutterInputDevice *device;
+  const gchar *device_path;
+
+  device = CLUTTER_INPUT_DEVICE (source->device);
+
+  if (CLUTTER_HAS_DEBUG (EVENT))
+    {
+      device_path = _clutter_input_device_evdev_get_device_path (source->device);
+
+      CLUTTER_NOTE (EVENT, "Could not read device (%s): %s. Removing.",
+		    device_path, strerror (error));
+    }
+
+  /* remove the faulty device */
+  manager = clutter_device_manager_get_default ();
+  _clutter_device_manager_remove_device (manager, device);
+}
+
 static gboolean
 clutter_event_dispatch (GSource     *g_source,
                         GSourceFunc  callback,
@@ -418,11 +557,10 @@ clutter_event_dispatch (GSource     *g_source,
 {
   ClutterEventSource *source = (ClutterEventSource *) g_source;
   ClutterInputDevice *input_device = (ClutterInputDevice *) source->device;
-  struct input_event ev[8];
+  struct input_event ev;
   ClutterEvent *event;
-  gint len, i, dx = 0, dy = 0;
-  uint32_t _time;
   ClutterStage *stage;
+  int err, dx = 0, dy = 0;
 
   _clutter_threads_acquire_lock ();
 
@@ -430,124 +568,35 @@ clutter_event_dispatch (GSource     *g_source,
 
   /* Don't queue more events if we haven't finished handling the previous batch
    */
-  if (!clutter_events_pending ())
+  if (clutter_events_pending ())
+    goto queue_event;
+
+  err = libevdev_next_event (source->dev, LIBEVDEV_READ_NORMAL, &ev);
+  while (err != -EAGAIN)
     {
-       len = read (source->event_poll_fd.fd, &ev, sizeof (ev));
-       if (len < 0 || len % sizeof (ev[0]) != 0)
-       {
-         if (errno != EAGAIN)
-           {
-             ClutterDeviceManager *manager;
-             ClutterInputDevice *device;
-             const gchar *device_path;
+      if (err == 1)
+	sync_source (source);
+      else if (err == 0)
+	dispatch_one_event (source, &ev, &dx, &dy);
+      else
+	{
+	  fail_source (source, -err);
+	  goto out;
+	}
 
-             device = CLUTTER_INPUT_DEVICE (source->device);
-
-             if (CLUTTER_HAS_DEBUG (EVENT))
-               {
-                 device_path =
-                   _clutter_input_device_evdev_get_device_path (source->device);
-
-                 CLUTTER_NOTE (EVENT, "Could not read device (%s), removing.",
-                               device_path);
-               }
-
-             /* remove the faulty device */
-             manager = clutter_device_manager_get_default ();
-             _clutter_device_manager_remove_device (manager, device);
-
-           }
-         goto out;
-       }
-
-       /* Drop events if we don't have any stage to forward them to */
-       if (!stage)
-         goto out;
-
-       for (i = 0; i < len / sizeof (ev[0]); i++)
-         {
-           struct input_event *e = &ev[i];
-
-           _time = e->time.tv_sec * 1000 + e->time.tv_usec / 1000;
-
-           switch (e->type)
-             {
-             case EV_KEY:
-
-               /* don't repeat mouse buttons */
-               if (e->code >= BTN_MOUSE && e->code < KEY_OK)
-                 if (e->value == AUTOREPEAT_VALUE)
-                   continue;
-
-               switch (e->code)
-                 {
-                 case BTN_TOUCH:
-                 case BTN_TOOL_PEN:
-                 case BTN_TOOL_RUBBER:
-                 case BTN_TOOL_BRUSH:
-                 case BTN_TOOL_PENCIL:
-                 case BTN_TOOL_AIRBRUSH:
-                 case BTN_TOOL_FINGER:
-                 case BTN_TOOL_MOUSE:
-                 case BTN_TOOL_LENS:
-                   break;
-
-                 case BTN_LEFT:
-                 case BTN_RIGHT:
-                 case BTN_MIDDLE:
-                 case BTN_SIDE:
-                 case BTN_EXTRA:
-                 case BTN_FORWARD:
-                 case BTN_BACK:
-                 case BTN_TASK:
-                   notify_button(source, _time, e->code, e->value);
-                   break;
-
-                 default:
-                   notify_key (source, _time, e->code, e->value);
-                 break;
-                 }
-               break;
-
-             case EV_SYN:
-               /* Nothing to do here? */
-               break;
-
-             case EV_MSC:
-               /* Nothing to do here? */
-               break;
-
-             case EV_REL:
-               /* compress the EV_REL events in dx/dy */
-               switch (e->code)
-                 {
-                 case REL_X:
-                   dx += e->value;
-                   break;
-                 case REL_Y:
-                   dy += e->value;
-                   break;
-
-		 /* Note: we assume that REL_WHEEL is for *vertical* scroll wheels.
-		    To implement horizontal scroll, we'll need a different enum
-		    value.
-		 */
-		 case REL_WHEEL:
-		   notify_scroll (source, _time, e->value);
-		   break;
-                 }
-               break;
-
-             case EV_ABS:
-             default:
-               g_warning ("Unhandled event of type %d", e->type);
-               break;
-             }
-         }
-
-       if (dx != 0 || dy != 0)
-         notify_relative_motion (source, _time, dx, dy);
+      err = libevdev_next_event (source->dev, LIBEVDEV_READ_NORMAL, &ev);
     }
+
+  if (dx != 0 || dy != 0)
+    {
+      guint32 _time = ev.time.tv_sec * 1000 + ev.time.tv_usec / 1000;
+      notify_relative_motion (source, _time, dx, dy);
+    }
+
+ queue_event:
+  /* Drop events if we don't have any stage to forward them to */
+  if (stage == NULL)
+    goto out;
 
   /* Pop an event off the queue if any */
   event = clutter_event_get ();
@@ -619,14 +668,15 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
 	}
     }
 
+  /* Tell evdev to use the monotonic clock for its timestamps */
+  clkid = CLOCK_MONOTONIC;
+  ioctl (fd, EVIOCSCLOCKID, &clkid);
+
   /* setup the source */
   event_source->device = input_device;
   event_source->event_poll_fd.fd = fd;
   event_source->event_poll_fd.events = G_IO_IN;
-
-  /* Tell evdev to use the monotonic clock for its timestamps */
-  clkid = CLOCK_MONOTONIC;
-  ioctl (fd, EVIOCSCLOCKID, &clkid);
+  libevdev_new_from_fd (fd, &event_source->dev);
 
   /* and finally configure and attach the GSource */
   g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
@@ -650,6 +700,7 @@ clutter_event_source_free (ClutterEventSource *source)
   /* ignore the return value of close, it's not like we can do something
    * about it */
   close (source->event_poll_fd.fd);
+  libevdev_free (source->dev);
 
   g_source_destroy (g_source);
   g_source_unref (g_source);
