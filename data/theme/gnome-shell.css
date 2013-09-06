@@ -1022,7 +1022,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .app-folder-popup-bin {
-    padding: 15px;
+    padding: 5px;
 }
 
 .app-well-app.running > .overview-icon {
