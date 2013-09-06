@@ -456,7 +456,7 @@ st_widget_allocate (ClutterActor          *actor,
  * @widget: The #StWidget
  *
  * Paint the background of the widget. This is meant to be called by
- * subclasses of StWiget that need to paint the background without
+ * subclasses of StWidget that need to paint the background without
  * painting children.
  */
 void
