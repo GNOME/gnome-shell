@@ -119,6 +119,7 @@ shell_embedded_window_constructor (GType                  gtype,
    * idle resize anyways.
    */
   g_object_set (object,
+                "app-paintable", TRUE,
                 "resize-mode", GTK_RESIZE_IMMEDIATE,
                 "type", GTK_WINDOW_POPUP,
                 NULL);
