@@ -956,6 +956,14 @@ const FolderView = new Lang.Class({
 
         this._grid.adaptToSize(width, height);
 
+        // To avoid the fade effect being applied to the unscrolled grid,
+        // the offset would need to be applied after adjusting the padding;
+        // however the final padding is expected to be too small for the
+        // effect to look good, so use the unadjusted padding
+        let fadeOffset = Math.min(this._grid.topPadding,
+                                  this._grid.bottomPadding);
+        this.actor.update_fade_effect(fadeOffset, 0);
+
         // Set extra padding to avoid popup or close button being cut off
         this._grid.topPadding = Math.max(this._grid.topPadding - this._offsetForEachSide, 0);
         this._grid.bottomPadding = Math.max(this._grid.bottomPadding - this._offsetForEachSide, 0);
@@ -964,10 +972,6 @@ const FolderView = new Lang.Class({
 
         this.actor.set_width(this.usedWidth());
         this.actor.set_height(this.usedHeight());
-
-        let fadeOffset = Math.min(this._grid.topPadding,
-                                  this._grid.bottomPadding);
-        this.actor.update_fade_effect(fadeOffset, 0);
     },
 
     _getPageAvailableSize: function() {
