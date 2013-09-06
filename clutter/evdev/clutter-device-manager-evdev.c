@@ -330,9 +330,10 @@ notify_relative_motion (ClutterEventSource *source,
 }
 
 static void
-notify_scroll (ClutterEventSource *source,
-	       guint32             time_,
-	       gint32              value)
+notify_scroll (ClutterEventSource  *source,
+	       guint32              time_,
+	       gint32               value,
+	       ClutterOrientation   orientation)
 {
   ClutterInputDevice *input_device = (ClutterInputDevice *) source->device;
   ClutterDeviceManagerEvdev *manager_evdev;
@@ -354,7 +355,10 @@ notify_scroll (ClutterEventSource *source,
   event->scroll.stage = CLUTTER_STAGE (stage);
   event->scroll.device = manager_evdev->priv->core_pointer;
   _clutter_xkb_translate_state (event, manager_evdev->priv->xkb, manager_evdev->priv->button_state);
-  event->scroll.direction = value < 0 ? CLUTTER_SCROLL_DOWN : CLUTTER_SCROLL_UP;
+  if (orientation == CLUTTER_ORIENTATION_VERTICAL)
+    event->scroll.direction = value < 0 ? CLUTTER_SCROLL_DOWN : CLUTTER_SCROLL_UP;
+  else
+    event->scroll.direction = value < 0 ? CLUTTER_SCROLL_LEFT : CLUTTER_SCROLL_RIGHT;
   clutter_input_device_get_coords (manager_evdev->priv->core_pointer, NULL, &point);
   event->scroll.x = point.x;
   event->scroll.y = point.y;
@@ -454,47 +458,21 @@ dispatch_one_event (ClutterEventSource *source,
   switch (e->type)
     {
     case EV_KEY:
-      /* don't repeat mouse buttons */
-      if (e->code >= BTN_MOUSE && e->code < KEY_OK)
-	if (e->value == AUTOREPEAT_VALUE)
-	  return;
-
-      switch (e->code)
+      if (e->code < BTN_MISC || (e->code >= KEY_OK && e->code < BTN_TRIGGER_HAPPY))
+	notify_key (source, _time, e->code, e->value);
+      else if (e->code >= BTN_MOUSE && e->code < BTN_JOYSTICK)
 	{
-	case BTN_TOUCH:
-	case BTN_TOOL_PEN:
-	case BTN_TOOL_RUBBER:
-	case BTN_TOOL_BRUSH:
-	case BTN_TOOL_PENCIL:
-	case BTN_TOOL_AIRBRUSH:
-	case BTN_TOOL_FINGER:
-	case BTN_TOOL_MOUSE:
-	case BTN_TOOL_LENS:
-	  break;
-
-	case BTN_LEFT:
-	case BTN_RIGHT:
-	case BTN_MIDDLE:
-	case BTN_SIDE:
-	case BTN_EXTRA:
-	case BTN_FORWARD:
-	case BTN_BACK:
-	case BTN_TASK:
-	  notify_button(source, _time, e->code, e->value);
-	  break;
-
-	default:
-	  notify_key (source, _time, e->code, e->value);
-	  break;
+	  /* don't repeat mouse buttons */
+	  if (e->value != AUTOREPEAT_VALUE)
+	    notify_button (source, _time, e->code, e->value);
 	}
+      else
+	/* We don't know about this code, ignore */;
       break;
 
     case EV_SYN:
-      /* Nothing to do here */
-      break;
-
     case EV_MSC:
-      /* Nothing to do here */
+      /* Nothing to do here (actually, EV_SYN is handled by libevdev, we shouldn't see it) */
       break;
 
     case EV_REL:
@@ -508,12 +486,11 @@ dispatch_one_event (ClutterEventSource *source,
 	  *dy += e->value;
 	  break;
 
-	  /* Note: we assume that REL_WHEEL is for *vertical* scroll wheels.
-	     To implement horizontal scroll, we'll need a different enum
-	     value.
-	  */
 	case REL_WHEEL:
-	  notify_scroll (source, _time, e->value);
+	  notify_scroll (source, _time, e->value, CLUTTER_ORIENTATION_VERTICAL);
+	  break;
+	case REL_HWHEEL:
+	  notify_scroll (source, _time, e->value, CLUTTER_ORIENTATION_HORIZONTAL);
 	  break;
 	}
       break;
