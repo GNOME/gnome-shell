@@ -209,6 +209,21 @@ cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
                                     CoglPixelFormat internal_format,
                                     CoglError **error);
 
+/**
+ * cogl_is_atlas_texture:
+ * @object: a #CoglObject
+ *
+ * Checks whether the given object references a #CoglAtlasTexture
+ *
+ * Return value: %TRUE if the passed object represents an atlas
+ *   texture and %FALSE otherwise
+ *
+ * Since: 1.16
+ * Stability: Unstable
+ */
+CoglBool
+cogl_is_atlas_texture (void *object);
+
 COGL_END_DECLS
 
 #endif /* _COGL_ATLAS_TEXTURE_H_ */

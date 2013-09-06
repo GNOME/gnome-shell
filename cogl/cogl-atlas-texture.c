@@ -50,7 +50,7 @@
 
 static void _cogl_atlas_texture_free (CoglAtlasTexture *sub_tex);
 
-COGL_TEXTURE_INTERNAL_DEFINE (AtlasTexture, atlas_texture);
+COGL_TEXTURE_DEFINE (AtlasTexture, atlas_texture);
 
 static const CoglTextureVtable cogl_atlas_texture_vtable;
 
