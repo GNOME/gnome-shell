@@ -1111,20 +1111,6 @@ const ZoomRegion = new Lang.Class({
     },
 
     /**
-     * getBrightness:
-     * Retrive the current brightness of the Zoom Region.
-     * @return  Object containing the brightness change for the red, green,
-     *          and blue channels.
-     */
-    getBrightness: function() {
-        let brightness = {};
-        brightness.r = this._brightness.r;
-        brightness.g = this._brightness.g;
-        brightness.b = this._brightness.b;
-        return brightness;
-    },
-
-    /**
      * setContrast:
      * Alter the contrast of the magnified view.
      * @contrast    Object containing the contrast for the red, green,
@@ -1627,15 +1613,6 @@ const Crosshairs = new Lang.Class({
     },
 
     /**
-     * getOpacity:
-     * Retriev how opaque the crosshairs are.
-     * @return: A value between 0 (transparent) and 255 (opaque).
-     */
-    getOpacity: function() {
-        return this._horizLeftHair.get_opacity();
-    },
-
-    /**
      * setLength:
      * Set the length of the vertical and horizontal lines in the crosshairs.
      * @length: The length of the crosshairs.
@@ -1677,15 +1654,6 @@ const Crosshairs = new Lang.Class({
             this.reCenter();
         }
      },
-
-    /**
-     * getClip:
-     * Get the dimensions of the clip rectangle.
-     * @return:   An array of the form [width, height].
-     */
-    getClip: function() {
-        return this._clipSize;
-    },
 
     /**
      * show:
@@ -1782,21 +1750,8 @@ const MagShaderEffects = new Lang.Class({
         this._inverse.set_enabled(invertFlag);
     },
 
-    /**
-     * getInvertLightness:
-     * Report whether the inversion effect is enabled.
-     * @return:     Boolean.
-     */
-    getInvertLightness: function() {
-        return this._inverse.get_enabled();
-    },
-
     setColorSaturation: function(factor) {
         this._colorDesaturation.set_factor(1.0 - factor);
-    },
-
-    getColorSaturation: function() {
-        return 1.0 - this._colorDesaturation.get_factor();
     },
 
     /**
@@ -1824,24 +1779,6 @@ const MagShaderEffects = new Lang.Class({
     },
 
     /**
-     * getBrightness:
-     * Retrieve current brightness of the magnified view.
-     * @return: Object containing the brightness for the red, green,
-     *          and blue channels.  Values of 0.0 represent "standard" 
-     *          brightness (no change), whereas values less or greater than
-     *          0.0 indicate decreased or incresaed brightness, respectively.
-     */
-    getBrightness: function() {
-        let result = {};
-        let [bRed, bGreen, bBlue] = this._brightnessContrast.get_brightness();
-        result.r = bRed;
-        result.g = bGreen;
-        result.b = bBlue;
-
-        return result;
-    },
-
-    /**
      * Set the contrast of the magnified view.
      * @contrast:   Object containing the contrast for the red, green,
      *              and blue channels.  Values of 0.0 represent "standard"
@@ -1865,21 +1802,4 @@ const MagShaderEffects = new Lang.Class({
              bRed != NO_CHANGE || bGreen != NO_CHANGE || bBlue != NO_CHANGE
         );
     },
-
-    /**
-     * Retrieve current contrast of the magnified view.
-     * @return: Object containing the contrast for the red, green,
-     *          and blue channels.  Values of 0.0 represent "standard"
-     *          contrast (no change), whereas values less or greater than
-     *          0.0 indicate decreased or incresaed contrast, respectively.
-     */
-    getContrast: function() {
-        let resutl = {};
-        let [cRed, cGreen, cBlue] = this._brightnessContrast.get_contrast();
-        result.r = cRed;
-        result.g = cGreen;
-        result.b = cBlue;
-
-        return result;
-    }
 });
