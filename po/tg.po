@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tajik Gnome\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-28 17:17+0000\n"
-"PO-Revision-Date: 2013-08-29 11:19+0500\n"
+"session&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-09-03 17:04+0000\n"
+"PO-Revision-Date: 2013-09-08 15:37+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: \n"
 "Language: Tajik\n"
@@ -19,2009 +19,525 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=1;\n"
 "X-Generator: Poedit 1.5.7\n"
 
-#: ../data/50-gnome-shell-system.xml.in.h:1
-msgid "System"
-msgstr "Система"
-
-#: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message tray"
-msgstr "Намоиш додани қуттии паёмҳо"
-
-#: ../data/50-gnome-shell-system.xml.in.h:3
-msgid "Focus the active notification"
-msgstr "Гузоштани фокус ба огоҳии фаъол"
-
-#: ../data/50-gnome-shell-system.xml.in.h:4
-msgid "Show the overview"
-msgstr "Намоиш додани хулоса"
-
-#: ../data/50-gnome-shell-system.xml.in.h:5
-msgid "Show all applications"
-msgstr "Намоиш додани ҳамаи барномаҳо"
-
-#: ../data/50-gnome-shell-system.xml.in.h:6
-msgid "Open the application menu"
-msgstr "Кушодани менюи барномаҳо"
-
-#: ../data/gnome-shell.desktop.in.in.h:1
-msgid "GNOME Shell"
-msgstr "Восити GNOME"
-
-#: ../data/gnome-shell.desktop.in.in.h:2
-msgid "Window management and application launching"
-msgstr "Идоракунии равзанаҳо ва оғозидани барномаҳо"
-
-#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-#: ../js/extensionPrefs/main.js:153
-msgid "GNOME Shell Extension Preferences"
-msgstr "Хусусиятҳои пасвандҳои восити GNOME"
-
-#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
-msgid "Configure GNOME Shell Extensions"
-msgstr "Танзимоти пасвандҳои восити GNOME"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:1
-msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Фаъол кардани абзорҳои дохилие, ки барои таҳиягарон ва озмунгарон дастрас "
-"мебошанд аз Alt-F2"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:2
-msgid ""
-"Allows access to internal debugging and monitoring tools using the Alt-F2 "
-"dialog."
-msgstr ""
-"Ҳамеша пайдо кардани дастрасӣ ба абзорҳои дохилии ислоҳи хатоҳо ва идоракунӣ "
-"тавассути равзанаи гуфтугӯи Alt-F2."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:3
-msgid "Uuids of extensions to enable"
-msgstr "Рамзҳои uuid-и пасвандҳои фаъолшаванда"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:4
-msgid ""
-"GNOME Shell extensions have a uuid property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
-"DisableExtension DBus methods on org.gnome.Shell."
-msgstr ""
-"Пасвандҳои GNOME Shell хусусияти uuid доранд; ин калид пасвандҳоеро, ки бояд "
-"бор карда шаванд, номбар мекунад. Ҳар як пасванде, ки бояд бор карда шавад, "
-"бояд дар ин рӯйхат бошад. Шумо инчунин метавонед ин рӯйхатро тавассути "
-"усулҳои DBus-и EnableExtension ва DisableExtension дар org.gnome.Shell "
-"таҳрир кунед."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:5
-msgid "List of desktop file IDs for favorite applications"
-msgstr "Рӯйхати рамзҳои ID-и файлҳои мизи корӣ барои барномаҳои дӯстдошта"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Барномаҳое, ки ба ин идентификаторҳо мувофиқ мебошанд, дар ноҳияи "
-"баргузидаҳо намоиш дода мешаванд."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
-msgid "List of categories that should be displayed as folders"
-msgstr "Рӯйхати категорияҳо, ки бояд ҳамчун ҷузвдонҳо намоиш дода шаванд"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
-msgid ""
-"Each category name in this list will be represented as folder in the "
-"application view, rather than being displayed inline in the main view."
-msgstr ""
-"Ҳар як номи категория, ки дар ин рӯйхат мавҷуд аст, дар намуди барномаҳо "
-"ҳамчун ҷузвдон ифода мешавад, ба ҷойи намоишдиҳии шомил дар намуди асосӣ."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
-msgid "History for command (Alt-F2) dialog"
-msgstr "Таърихи равзанаи гуфтугӯи фармон (Alt-F2)"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
-msgid "History for the looking glass dialog"
-msgstr "Таърих барои равзанаи гуфтугӯи оина"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-msgid "Always show the 'Log out' menuitem in the user menu."
-msgstr "Ҳамеша намоиш додани объекти менюи \"Баромадан\" дар менюи корбар."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
-msgid ""
-"This key overrides the automatic hiding of the 'Log out' menuitem in single-"
-"user, single-session situations."
-msgstr ""
-"Ин калид пинҳонкунии худкори объекти менюи \"Баромадан\"-ро дар вазъиятҳои "
-"корбари ягона ва ҷаласаи ягона бекор мекунад."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
-msgid ""
-"Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-"Дар ёд доштан ё дар ёд надоштани парол барои васл кардани системаҳои файлии "
-"рамздор ё дурдаст"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
-msgid ""
-"The shell will request a password when an encrypted device or a remote "
-"filesystem is mounted. If the password can be saved for future use a "
-"'Remember Password' checkbox will be present. This key sets the default "
-"state of the checkbox."
-msgstr ""
-"Вақте ки дастгоҳ ё системаи файлии рамздор васл карда мешавад, восит паролро "
-"мепурсад. Агар парол барои истифодаи оянда захира шавад, байрақчаи \"Дар ёд "
-"доштани парол\" мавҷуд мешавад. Ин калид ҳолати пешфарзи байрақчаро таъин "
-"мекунад."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
-msgid "Show the week date in the calendar"
-msgstr "Намоиш додани ҳафта  дар тақвим"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
-msgid "If true, display the ISO week date in the calendar."
-msgstr "Агар дуруст бошад, санаи ҳафтаи ISO дар тақвим намоиш дода мешавад."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
-msgid "Keybinding to open the application menu"
-msgstr "Тугма барои кушодани менюи барнома"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
-msgid "Keybinding to open the application menu."
-msgstr "Тугма барои кушодани менюи барнома."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
-msgid "Keybinding to open the \"Show Applications\" view"
-msgstr "Тугма барои кушодани намуди \"Намоиш додани барномаҳо\""
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
-msgid ""
-"Keybinding to open the \"Show Applications\" view of the Activities Overview."
-msgstr ""
-"Тугма барои кушодани намуди \"Намоиш додани барномаҳо\"-и Хулосаи фаъолият."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
-msgid "Keybinding to open the overview"
-msgstr "Тугмабандӣ барои кушодани хулоса"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-msgid "Keybinding to open the Activities Overview."
-msgstr "Тугмабандӣ барои кушодани хулосаи фаъолият."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
-msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Тугма барои иваз кардани намоёнии қуттии паёмҳо"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
-msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Тугма барои иваз кардани намоёнии қуттии паёмҳо."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to focus the active notification"
-msgstr "Тугма барои гузоштани фокус ба огоҳии фаъол"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to focus the active notification."
-msgstr "Тугма барои гузоштани фокус ба огоҳии фаъол."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
-msgid "Which keyboard to use"
-msgstr "Клавиатураро интихоб кунед"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
-msgid "The type of keyboard to use."
-msgstr "Намуди клавиатура барои истифода."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
-msgid "The application icon mode."
-msgstr "Ҳолати нишонаи барнома."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
-msgid ""
-"Configures how the windows are shown in the switcher. Valid possibilities "
-"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-"only' (shows only the application icon) or 'both'."
-msgstr ""
-"Тарзи намоиш додани равзанаҳоро дар интихобкунанда конфигуратсия мекунад. "
-"Имкониятҳои боэътибор \"танҳо пешнамоишҳои кучак\" (пешнамоиши кучаки "
-"равзанаро намоиш медиҳад), \"танҳо нишонаи барнома\" (танҳо нишонаи "
-"барномаро намоиш медиҳад) ё \"ҳар ду\"."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
-msgid "Attach modal dialog to the parent window"
-msgstr "Замима кардани равзанаи гуфтугӯи модалӣ ба равзанаи асосӣ"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
-msgid ""
-"This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Ин калид ҳангоми иҷроиши GNOME Shell калиди дар org.gnome.mutter "
-"ҷойгирбударо бекор мекунад."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
-msgid "Arrangement of buttons on the titlebar"
-msgstr "Мураттабсозии тугмаҳо дар сарлавҳаи равзана"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
-msgid ""
-"This key overrides the key in org.gnome.desktop.wm.preferences when running "
-"GNOME Shell."
-msgstr ""
-"Ин калид ҳангоми иҷроиши GNOME Shell калиди дар org.gnome.desktop.wm."
-"preferences ҷойгирбударо бекор мекунад."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
-msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
-"Фаъол кардани лавҳабандии канорӣ ҳангоми гузоштани равзанаҳо ба канорҳои "
-"экран"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
-msgid "Workspaces are managed dynamically"
-msgstr "Фазоҳои корӣ ба таври серамалӣ идора мешаванд"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
-msgid "Workspaces only on primary monitor"
-msgstr "Танҳо фазоҳои корӣ дар монитори асосӣ"
-
-#: ../js/extensionPrefs/main.js:125
-#, c-format
-msgid "There was an error loading the preferences dialog for %s:"
-msgstr ""
-"Ҳангоми боркунии равзанаи гуфтугӯи хусусиятҳо барои %s хатогие ба вуҷуд "
-"омадааст:"
-
-#: ../js/extensionPrefs/main.js:165
-msgid "Extension"
-msgstr "Пасванд"
-
-#: ../js/extensionPrefs/main.js:189
-msgid "Select an extension to configure using the combobox above."
-msgstr ""
-"Пасвандеро интихоб кунед, то ин ки бо ҷаъбаи мураккаби боло онро "
-"конфигуратсия кунед."
-
-#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:347
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
-msgid "Cancel"
-msgstr "Бекор кардан"
-
-#: ../js/gdm/authPrompt.js:167 ../js/gdm/authPrompt.js:215
-msgid "Next"
-msgstr "Навбатӣ"
-
-#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
-#: ../js/ui/unlockDialog.js:59
-msgid "Unlock"
-msgstr "Кушодан"
-
-#: ../js/gdm/authPrompt.js:213
-msgctxt "button"
-msgid "Sign In"
-msgstr "Ворид шудан"
-
-#: ../js/gdm/loginDialog.js:294
-msgid "Choose Session"
-msgstr "Интихоби ҷаласа"
-
-#: ../js/gdm/loginDialog.js:312
-msgid "Session"
-msgstr "Ҷаласа"
-
-#. translators: this message is shown below the user list on the
-#. login screen. It can be activated to reveal an entry for
-#. manually entering the username.
-#: ../js/gdm/loginDialog.js:458
-msgid "Not listed?"
-msgstr "Вуҷуд надора?"
-
-#. Translators: this message is shown below the username entry field
-#. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:625
-#, c-format
-msgid "(e.g., user or %s)"
-msgstr "(масалан, корбар ё %s)"
-
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:630 ../js/ui/components/networkAgent.js:255
-#: ../js/ui/components/networkAgent.js:273
-msgid "Username: "
-msgstr "Номи корбар:"
-
-#: ../js/gdm/loginDialog.js:894
-msgid "Login Window"
-msgstr "Равзанаи воридшавӣ"
-
-#: ../js/gdm/util.js:306
-msgid "Authentication error"
-msgstr "Хатои санҷиши ҳаққоният"
-
-#. We don't show fingerprint messages directly since it's
-#. not the main auth service. Instead we use the messages
-#. as a cue to display our own message.
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:436
-msgid "(or swipe finger)"
-msgstr "(ё бо ангут ламс кунед)"
-
-#: ../js/misc/util.js:97
-msgid "Command not found"
-msgstr "Фармон ёфт нашудааст"
-
-#. Replace "Error invoking GLib.shell_parse_argv: " with
-#. something nicer
-#: ../js/misc/util.js:130
-msgid "Could not parse command:"
-msgstr "Фармон иҷро нашудааст:"
-
-#: ../js/misc/util.js:138
-#, c-format
-msgid "Execution of '%s' failed:"
-msgstr "Иҷрокунии '%s' қатъ шудааст:"
-
-#: ../js/ui/appDisplay.js:386
-msgid "Frequent"
-msgstr "Роиҷ"
-
-#: ../js/ui/appDisplay.js:393
-msgid "All"
-msgstr "Ҳама"
-
-#: ../js/ui/appDisplay.js:991
-msgid "New Window"
-msgstr "Равзанаи нав"
-
-#: ../js/ui/appDisplay.js:994 ../js/ui/dash.js:284
-msgid "Remove from Favorites"
-msgstr "Тоза кардан аз Баргузидаҳо"
-
-#: ../js/ui/appDisplay.js:995
-msgid "Add to Favorites"
-msgstr "Илова кардан ба Баргузидаҳо"
-
-#: ../js/ui/appFavorites.js:87
-#, c-format
-msgid "%s has been added to your favorites."
-msgstr "%s ба баргузидаҳои шумо илова шудааст."
-
-#: ../js/ui/appFavorites.js:121
-#, c-format
-msgid "%s has been removed from your favorites."
-msgstr "%s аз баргузидаҳои шумо тоза шудааст."
-
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:323
-msgid "Settings"
-msgstr "Танзимот"
-
-#: ../js/ui/backgroundMenu.js:21
-msgid "Change Background…"
-msgstr "Тағйир додани пазсамина..."
-
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#.
-#: ../js/ui/calendar.js:62
-msgctxt "event list time"
-msgid "All Day"
-msgstr "Тамоми рӯз"
-
-#. Translators: Shown in calendar event list, if 24h format,
-#. \u2236 is a ratio character, similar to :
-#: ../js/ui/calendar.js:68
-msgctxt "event list time"
-msgid "%H\\u2236%M"
-msgstr "%H\\u2236%M"
-
-#. Translators: Shown in calendar event list, if 12h format,
-#. \u2236 is a ratio character, similar to : and \u2009 is
-#. a thin space
-#: ../js/ui/calendar.js:77
-msgctxt "event list time"
-msgid "%l\\u2236%M\\u2009%p"
-msgstr "%l\\u2236%M\\u2009%p"
-
-#. Translators: Calendar grid abbreviation for Sunday.
-#. *
-#. * NOTE: These grid abbreviations are always shown together
-#. * and in order, e.g. "S M T W T F S".
-#.
-#: ../js/ui/calendar.js:108
-msgctxt "grid sunday"
-msgid "S"
-msgstr "Ш"
-
-#. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:110
-msgctxt "grid monday"
-msgid "M"
-msgstr "Д"
-
-#. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:112
-msgctxt "grid tuesday"
-msgid "T"
-msgstr "С"
-
-#. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:114
-msgctxt "grid wednesday"
-msgid "W"
-msgstr "Ч"
-
-#. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:116
-msgctxt "grid thursday"
-msgid "T"
-msgstr "С"
-
-#. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:118
-msgctxt "grid friday"
-msgid "F"
-msgstr "Ҷ"
-
-#. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:120
-msgctxt "grid saturday"
-msgid "S"
-msgstr "Ш"
-
-#. Translators: Event list abbreviation for Sunday.
-#. *
-#. * NOTE: These list abbreviations are normally not shown together
-#. * so they need to be unique (e.g. Tuesday and Thursday cannot
-#. * both be 'T').
-#.
-#: ../js/ui/calendar.js:133
-msgctxt "list sunday"
-msgid "Su"
-msgstr "Яш"
-
-#. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:135
-msgctxt "list monday"
-msgid "M"
-msgstr "Д"
-
-#. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:137
-msgctxt "list tuesday"
-msgid "T"
-msgstr "С"
-
-#. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:139
-msgctxt "list wednesday"
-msgid "W"
-msgstr "Ч"
-
-#. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:141
-msgctxt "list thursday"
-msgid "Th"
-msgstr "Пш"
-
-#. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:143
-msgctxt "list friday"
-msgid "F"
-msgstr "Ҷ"
-
-#. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:145
-msgctxt "list saturday"
-msgid "S"
-msgstr "Ш"
-
-#: ../js/ui/calendar.js:447
-msgid "Previous month"
-msgstr "Моҳи қаблӣ"
-
-#: ../js/ui/calendar.js:457
-msgid "Next month"
-msgstr "Моҳи навбатӣ"
-
-#. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:753
-msgid "Nothing Scheduled"
-msgstr "Ягон чиз ба нақша нагирифтааст"
-
-#. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:771
-msgctxt "calendar heading"
-msgid "%A, %B %d"
-msgstr "%A, %B %d"
-
-#. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:774
-msgctxt "calendar heading"
-msgid "%A, %B %d, %Y"
-msgstr "%A, %B %d, %Y"
-
-#: ../js/ui/calendar.js:785
-msgid "Today"
-msgstr "Имрӯз"
-
-#: ../js/ui/calendar.js:789
-msgid "Tomorrow"
-msgstr "Фардо"
-
-#: ../js/ui/calendar.js:800
-msgid "This week"
-msgstr "Ҳафтаи ҷорӣ"
-
-#: ../js/ui/calendar.js:808
-msgid "Next week"
-msgstr "Ҳафтаи навбатӣ"
-
-#: ../js/ui/components/automountManager.js:90
-msgid "External drive connected"
-msgstr "Диски берунӣ васл шудааст"
-
-#: ../js/ui/components/automountManager.js:101
-msgid "External drive disconnected"
-msgstr "Диски берунӣ ҷудо шудааст"
-
-#: ../js/ui/components/autorunManager.js:294
-msgid "Removable Devices"
-msgstr "Дастгоҳҳои ҷудошаванда"
-
-#: ../js/ui/components/autorunManager.js:594
-#, c-format
-msgid "Open with %s"
-msgstr "Кушодан бо %s"
-
-#: ../js/ui/components/autorunManager.js:620
-msgid "Eject"
-msgstr "Баровардан"
-
-#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
-msgid "Password:"
-msgstr "Парол:"
-
-#: ../js/ui/components/keyring.js:107
-msgid "Type again:"
-msgstr "Аз нав ворид кунед:"
-
-#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:682
-msgid "Connect"
-msgstr "Пайваст шудан"
-
-#. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:218
-#: ../js/ui/components/networkAgent.js:230
-#: ../js/ui/components/networkAgent.js:257
-#: ../js/ui/components/networkAgent.js:277
-#: ../js/ui/components/networkAgent.js:287
-msgid "Password: "
-msgstr "Парол:"
-
-#. static WEP
-#: ../js/ui/components/networkAgent.js:223
-msgid "Key: "
-msgstr "Калид:"
-
-#: ../js/ui/components/networkAgent.js:261
-msgid "Identity: "
-msgstr "Шахсият:"
-
-#: ../js/ui/components/networkAgent.js:263
-msgid "Private key password: "
-msgstr "Пароли калиди шахсӣ:"
-
-#: ../js/ui/components/networkAgent.js:275
-msgid "Service: "
-msgstr "Хидмат:"
-
-#: ../js/ui/components/networkAgent.js:304
-msgid "Authentication required by wireless network"
-msgstr "Шабакаи бесим санҷиши ҳаққониятро талаб мекунад"
-
-#: ../js/ui/components/networkAgent.js:305
-#, c-format
-msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"'%s'."
-msgstr ""
-"Барои пайдо кардани дастрасӣ ба шабакаи бесими \"%s\" паролҳо ё калидҳои "
-"рамзгузорӣ лозиманд."
-
-#: ../js/ui/components/networkAgent.js:309
-msgid "Wired 802.1X authentication"
-msgstr "Санҷиши ҳаққонияти 802.1X-и симдор"
-
-#: ../js/ui/components/networkAgent.js:311
-msgid "Network name: "
-msgstr "Номи шабака:"
-
-#: ../js/ui/components/networkAgent.js:316
-msgid "DSL authentication"
-msgstr "Санҷиши ҳаққонияти DSL"
-
-#: ../js/ui/components/networkAgent.js:323
-msgid "PIN code required"
-msgstr "Рамзи PIN ҳатмист"
-
-#: ../js/ui/components/networkAgent.js:324
-msgid "PIN code is needed for the mobile broadband device"
-msgstr "Барои дастгоҳи паҳннавори мобилӣ рамзи PIN лозим аст"
-
-#: ../js/ui/components/networkAgent.js:325
-msgid "PIN: "
-msgstr "PIN:"
-
-#: ../js/ui/components/networkAgent.js:331
-msgid "Mobile broadband network password"
-msgstr "Пароли шабакаи паҳннавори мобилӣ"
-
-#: ../js/ui/components/networkAgent.js:332
-#, c-format
-msgid "A password is required to connect to '%s'."
-msgstr "Барои пайваст шудан ба '%s' парол лозим аст."
-
-#: ../js/ui/components/polkitAgent.js:54
-msgid "Authentication Required"
-msgstr "Санҷиши ҳаққоният лозим аст"
-
-#: ../js/ui/components/polkitAgent.js:92
-msgid "Administrator"
-msgstr "Маъмур"
-
-#: ../js/ui/components/polkitAgent.js:170
-msgid "Authenticate"
-msgstr "Санҷиши ҳаққоният"
-
-#. Translators: "that didn't work" refers to the fact that the
-#. * requested authentication was not gained; this can happen
-#. * because of an authentication error (like invalid password),
-#. * for instance.
-#: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
-msgid "Sorry, that didn't work. Please try again."
-msgstr "Мутаассифона, ин амал иҷро нашуд. Лутфан, амалро такрор кунед."
-
-#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
-#. system-users for now as Empathy does.
-#: ../js/ui/components/telepathyClient.js:238
-msgid "Invitation"
-msgstr "Даъватнома"
-
-#. We got the TpContact
-#: ../js/ui/components/telepathyClient.js:298
-msgid "Call"
-msgstr "Занг задан"
-
-#. We got the TpContact
-#: ../js/ui/components/telepathyClient.js:314
-msgid "File Transfer"
-msgstr "Интиқолдиҳии файл"
-
-#: ../js/ui/components/telepathyClient.js:418
-msgid "Chat"
-msgstr "Чат"
-
-#: ../js/ui/components/telepathyClient.js:480
-msgid "Unmute"
-msgstr "Садоро фаъол кардан"
-
-#: ../js/ui/components/telepathyClient.js:480
-msgid "Mute"
-msgstr "Бесадо кардан"
-
-#. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"
-#: ../js/ui/components/telepathyClient.js:942
-#, no-c-format
-msgid "<b>Yesterday</b>, <b>%H:%M</b>"
-msgstr "<b>Дирӯз</b>, <b>%С:%Д</b>"
-
-#. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30
-#: ../js/ui/components/telepathyClient.js:948
-#, no-c-format
-msgid "<b>%A</b>, <b>%H:%M</b>"
-msgstr "<b>%A</b>, <b>%H:%M</b>"
-
-#. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"
-#: ../js/ui/components/telepathyClient.js:953
-#, no-c-format
-msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-msgstr "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-
-#. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"
-#: ../js/ui/components/telepathyClient.js:957
-#, no-c-format
-msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-
-#. Translators: this is the other person changing their old IM name to their new
-#. IM name.
-#: ../js/ui/components/telepathyClient.js:986
-#, c-format
-msgid "%s is now known as %s"
-msgstr "%s аллакой бо номи %s номида мешавад"
-
-#. translators: argument is a room name like
-#. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1089
-#, c-format
-msgid "Invitation to %s"
-msgstr "Даъватнома барои to %s"
-
-#. translators: first argument is the name of a contact and the second
-#. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example.
-#: ../js/ui/components/telepathyClient.js:1097
-#, c-format
-msgid "%s is inviting you to join %s"
-msgstr "%s шуморо барои ҳамроҳ шудан ба %s даъват мекунад"
-
-#: ../js/ui/components/telepathyClient.js:1099
-#: ../js/ui/components/telepathyClient.js:1140
-#: ../js/ui/components/telepathyClient.js:1180
-#: ../js/ui/components/telepathyClient.js:1243
-msgid "Decline"
-msgstr "Рад кардан"
-
-#: ../js/ui/components/telepathyClient.js:1100
-#: ../js/ui/components/telepathyClient.js:1181
-#: ../js/ui/components/telepathyClient.js:1244
-msgid "Accept"
-msgstr "Қабул кардан"
-
-#. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1130
-#, c-format
-msgid "Video call from %s"
-msgstr "Занги видеоӣ аз %s"
-
-#. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1133
-#, c-format
-msgid "Call from %s"
-msgstr "Занг аз %s"
-
-#. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1142
-msgid "Answer"
-msgstr "Ҷавоб"
-
-#. To translators: The first parameter is
-#. * the contact's alias and the second one is the
-#. * file name. The string will be something
-#. * like: "Alice is sending you test.ogg"
-#.
-#: ../js/ui/components/telepathyClient.js:1174
-#, c-format
-msgid "%s is sending you %s"
-msgstr "%s ба шумо %s-ро мефиристад"
-
-#. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1209
-#, c-format
-msgid "%s would like permission to see when you are online"
-msgstr "%s аз шумо иҷозат мепурсад, ки тавонад шуморо дар онлайн бинад"
-
-#: ../js/ui/components/telepathyClient.js:1301
-msgid "Network error"
-msgstr "Хатои шабака"
-
-#: ../js/ui/components/telepathyClient.js:1303
-msgid "Authentication failed"
-msgstr "Санҷиши ҳаққоният қатъ шудааст."
-
-#: ../js/ui/components/telepathyClient.js:1305
-msgid "Encryption error"
-msgstr "Хатои рамзгузорӣ"
-
-#: ../js/ui/components/telepathyClient.js:1307
-msgid "Certificate not provided"
-msgstr "Гувоҳинома таъмин нашудааст"
-
-#: ../js/ui/components/telepathyClient.js:1309
-msgid "Certificate untrusted"
-msgstr "Гувоҳиномаи беэътибор"
-
-#: ../js/ui/components/telepathyClient.js:1311
-msgid "Certificate expired"
-msgstr "Гувоҳинома аз мӯҳлаташ гузашт"
-
-#: ../js/ui/components/telepathyClient.js:1313
-msgid "Certificate not activated"
-msgstr "Гувоҳинома фаъол нашудааст"
-
-#: ../js/ui/components/telepathyClient.js:1315
-msgid "Certificate hostname mismatch"
-msgstr "Номувофиқати гувоҳиномаи номи мизоҷон"
-
-#: ../js/ui/components/telepathyClient.js:1317
-msgid "Certificate fingerprint mismatch"
-msgstr "Номувофиқати гувоҳиномаи нақши ангуштон"
-
-#: ../js/ui/components/telepathyClient.js:1319
-msgid "Certificate self-signed"
-msgstr "Гувоҳиномаи худимзошуда"
-
-#: ../js/ui/components/telepathyClient.js:1321
-msgid "Status is set to offline"
-msgstr "Вазъият ба \"офлайн\" гузаштааст"
-
-#: ../js/ui/components/telepathyClient.js:1323
-msgid "Encryption is not available"
-msgstr "Рамзгузорӣ дастрас нест"
-
-#: ../js/ui/components/telepathyClient.js:1325
-msgid "Certificate is invalid"
-msgstr "Гувоҳинома нодуруст аст"
-
-#: ../js/ui/components/telepathyClient.js:1327
-msgid "Connection has been refused"
-msgstr "Пайваст рад карда шудааст"
-
-#: ../js/ui/components/telepathyClient.js:1329
-msgid "Connection can't be established"
-msgstr "Пайвастшавӣ имконнопазир аст"
-
-#: ../js/ui/components/telepathyClient.js:1331
-msgid "Connection has been lost"
-msgstr "Пайваст гум шудааст"
-
-#: ../js/ui/components/telepathyClient.js:1333
-msgid "This account is already connected to the server"
-msgstr "Ин ҳисоб аллакай ба сервер пайваст шудааст"
-
-#: ../js/ui/components/telepathyClient.js:1335
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
-msgstr "Пайваст тавассути сарчашмаи якхела бо пайвасти нав ҷойиваз карда шуд"
-
-#: ../js/ui/components/telepathyClient.js:1337
-msgid "The account already exists on the server"
-msgstr "Ҳисоб дар сервер аллакай мавҷуд аст"
-
-#: ../js/ui/components/telepathyClient.js:1339
-msgid "Server is currently too busy to handle the connection"
-msgstr "Барои коркарди ин пайваст сервер дар айни ҳол хеле машғул мебошад"
-
-#: ../js/ui/components/telepathyClient.js:1341
-msgid "Certificate has been revoked"
-msgstr "Гувоҳинома лағв карда шуд"
-
-#: ../js/ui/components/telepathyClient.js:1343
-msgid ""
-"Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr ""
-"Гувоҳинома алгоритми хатарноки рамзро истифода мебарад, ё ки рамзгузории "
-"суст дорад"
-
-#: ../js/ui/components/telepathyClient.js:1345
-msgid ""
-"The length of the server certificate, or the depth of the server certificate "
-"chain, exceed the limits imposed by the cryptography library"
-msgstr ""
-"Дарозии гувоҳиномаи сервер, ё ки чуқурии занҷири гувоҳиномаи сервер, аз "
-"маҳдудиятҳое, ки бо китобхонаи рамзгузорӣ таъин шудаанд, дарозтар мебошад"
-
-#: ../js/ui/components/telepathyClient.js:1347
-msgid "Internal error"
-msgstr "Хатогии дохилӣ"
-
-#. translators: argument is the account name, like
-#. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1357
-#, c-format
-msgid "Unable to connect to %s"
-msgstr "Пайвастшавӣ ба %s имконнопазир аст"
-
-#: ../js/ui/components/telepathyClient.js:1362
-msgid "View account"
-msgstr "Намоиш додани ҳисоб"
-
-#: ../js/ui/components/telepathyClient.js:1401
-msgid "Unknown reason"
-msgstr "Сабаби номаълум"
-
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
-msgid "Windows"
-msgstr "Равзанаҳо"
-
-#: ../js/ui/dash.js:248 ../js/ui/dash.js:286
-msgid "Show Applications"
-msgstr "Намоиш додани барномаҳо"
-
-#. Translators: this is the name of the dock/favorites area on
-#. the left of the overview
-#: ../js/ui/dash.js:439
-msgid "Dash"
-msgstr "Рах"
-
-#: ../js/ui/dateMenu.js:86
-msgid "Open Calendar"
-msgstr "Кушодани тақвим"
-
-#: ../js/ui/dateMenu.js:90
-msgid "Open Clocks"
-msgstr "Кушодани соат"
-
-#: ../js/ui/dateMenu.js:97
-msgid "Date & Time Settings"
-msgstr "Танзимоти сана ва вақт"
-
-#. Translators: This is the date format to use when the calendar popup is
-#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#.
-#: ../js/ui/dateMenu.js:202
-msgid "%A %B %e, %Y"
-msgstr "%A %B %e, %Y"
-
-#: ../js/ui/endSessionDialog.js:62
-#, c-format
-msgctxt "title"
-msgid "Log Out %s"
-msgstr "Баромадан аз %s"
-
-#: ../js/ui/endSessionDialog.js:63
-msgctxt "title"
-msgid "Log Out"
-msgstr "Баромад"
-
-#: ../js/ui/endSessionDialog.js:65
-#, c-format
-msgid "%s will be logged out automatically in %d second."
-msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s аз система баъд аз %d сония ба таври худкор мебарояд."
-msgstr[1] "%s аз система баъд аз %d сония ба таври худкор мебарояд."
-
-#: ../js/ui/endSessionDialog.js:70
-#, c-format
-msgid "You will be logged out automatically in %d second."
-msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "Шумо аз система баъд аз %d сония ба таври худкор мебароед."
-msgstr[1] "Шумо аз система баъд аз %d сония ба таври худкор мебароед."
-
-#: ../js/ui/endSessionDialog.js:75
-msgctxt "button"
-msgid "Log Out"
-msgstr "Баромад"
-
-#: ../js/ui/endSessionDialog.js:80
-msgctxt "title"
-msgid "Power Off"
-msgstr "Хомӯш кардан"
-
-#: ../js/ui/endSessionDialog.js:82
-#, c-format
-msgid "The system will power off automatically in %d second."
-msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Система ба таври худкор баъд аз %d сония корро анҷом медиҳад."
-msgstr[1] "Система ба таври худкор баъд аз %d сония корро анҷом медиҳад."
-
-#: ../js/ui/endSessionDialog.js:87 ../js/ui/endSessionDialog.js:102
-msgctxt "button"
-msgid "Restart"
-msgstr "Бозоғозидан"
-
-#: ../js/ui/endSessionDialog.js:89
-msgctxt "button"
-msgid "Power Off"
-msgstr "Хомӯш кардан"
-
-#: ../js/ui/endSessionDialog.js:95
-msgctxt "title"
-msgid "Restart"
-msgstr "Бозоғозидан"
-
-#: ../js/ui/endSessionDialog.js:97
-#, c-format
-msgid "The system will restart automatically in %d second."
-msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Система ба таври худкор баъд аз %d сония бозоғозӣ мешавад."
-msgstr[1] "Система ба таври худкор баъд аз %d сония бозоғозӣ мешавад."
-
-#: ../js/ui/endSessionDialog.js:109
-msgctxt "title"
-msgid "Restart & Install Updates"
-msgstr "Бозоғозӣ кардан ва насб кардани навсозиҳо"
-
-#: ../js/ui/endSessionDialog.js:111
-#, c-format
-msgid "The system will automatically restart and install updates in %d second."
-msgid_plural ""
-"The system will automatically restart and install updates in %d seconds."
-msgstr[0] ""
-"Система баъд аз %d сония ба таври худкор бозоғозӣ мешавад ва навсозиҳоро "
-"насб мекунад."
-msgstr[1] ""
-"Система баъд аз %d сония ба таври худкор бозоғозӣ мешавад ва навсозиҳоро "
-"насб мекунад."
-
-#: ../js/ui/endSessionDialog.js:116
-msgctxt "button"
-msgid "Restart & Install"
-msgstr "Бозоғозӣ ва насб кардан"
-
-#: ../js/ui/endSessionDialog.js:267
-msgid "Some applications are busy or have unsaved work."
-msgstr "Баъзе барномаҳо банданд ё дорои корҳои захиранашуда мебошанд."
-
-#: ../js/ui/endSessionDialog.js:273
-msgid "Other users are logged in."
-msgstr "Корбарони дигар ворид шудаанд."
-
-#. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/endSessionDialog.js:475
-#, c-format
-msgid "%s (remote)"
-msgstr "%s (дурдаст)"
-
-#. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/endSessionDialog.js:478
-#, c-format
-msgid "%s (console)"
-msgstr "%s (консол)"
-
-#: ../js/ui/extensionDownloader.js:199
-msgid "Install"
-msgstr "Насб кардан"
-
-#: ../js/ui/extensionDownloader.js:204
-#, c-format
-msgid "Download and install '%s' from extensions.gnome.org?"
-msgstr "\"%s\"-ро аз extensions.gnome.org боргирӣ ва насб мекунед?"
-
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:334
-msgid "Keyboard"
-msgstr "Клавиатура"
-
-#: ../js/ui/lookingGlass.js:689
-msgid "No extensions installed"
-msgstr "Ягон пасванд насб нашудааст"
-
-#. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:743
-#, c-format
-msgid "%s has not emitted any errors."
-msgstr "%s ягон хато надорад."
-
-#: ../js/ui/lookingGlass.js:749
-msgid "Hide Errors"
-msgstr "Пинҳон кардани хатоҳо"
-
-#: ../js/ui/lookingGlass.js:753 ../js/ui/lookingGlass.js:813
-msgid "Show Errors"
-msgstr "Намоиш додани хатоҳо"
-
-#: ../js/ui/lookingGlass.js:762
+#: ../capplet/gsm-app-dialog.c:120
+msgid "Select Command"
+msgstr "Интихоб кардани фармон"
+
+#: ../capplet/gsm-app-dialog.c:193
+msgid "Add Startup Program"
+msgstr "Илова кардани барномаи худоғозӣ"
+
+#: ../capplet/gsm-app-dialog.c:197
+msgid "Edit Startup Program"
+msgstr "Таҳрир кардани барномаҳои худоғозӣ"
+
+#: ../capplet/gsm-app-dialog.c:484
+msgid "The startup command cannot be empty"
+msgstr "Фармони худоғозӣ бояд холӣ набошад"
+
+#: ../capplet/gsm-app-dialog.c:490
+msgid "The startup command is not valid"
+msgstr "Фармони худоғозӣ беэътибор аст"
+
+#: ../capplet/gsm-properties-dialog.c:519
 msgid "Enabled"
 msgstr "Фаъол"
 
-#. translators:
-#. * The device has been disabled
-#: ../js/ui/lookingGlass.js:765 ../src/gvc/gvc-mixer-control.c:1830
-msgid "Disabled"
-msgstr "Ғайрифаъол"
+#: ../capplet/gsm-properties-dialog.c:531
+msgid "Icon"
+msgstr "Нишона"
 
-#: ../js/ui/lookingGlass.js:767
-msgid "Error"
-msgstr "Хатогӣ"
+#: ../capplet/gsm-properties-dialog.c:543
+msgid "Program"
+msgstr "Барнома"
 
-#: ../js/ui/lookingGlass.js:769
-msgid "Out of date"
-msgstr "Аз мӯҳлат гузашта"
+#: ../capplet/gsm-properties-dialog.c:747
+msgid "Startup Applications Preferences"
+msgstr "Хусусиятҳои барномаҳои худоғозӣ"
 
-#: ../js/ui/lookingGlass.js:771
-msgid "Downloading"
-msgstr "Боргирӣ рафта истодааст"
+#: ../capplet/gsp-app.c:276
+msgid "No name"
+msgstr "Бе ном"
 
-#: ../js/ui/lookingGlass.js:795
-msgid "View Source"
-msgstr "Намоиш додани манбаъ"
+#: ../capplet/gsp-app.c:282
+msgid "No description"
+msgstr "Бе тавсиф"
 
-#: ../js/ui/lookingGlass.js:804
-msgid "Web Page"
-msgstr "Саҳифаи веб"
+#: ../capplet/main.c:35 ../gnome-session/main.c:309
+msgid "Version of this application"
+msgstr "Версияи ин барнома"
 
-#: ../js/ui/messageTray.js:1222
-msgid "Open"
-msgstr "Кушодани файл"
+#: ../capplet/main.c:61
+msgid "Could not display help document"
+msgstr "Ҳуҷҷати кӯмак намоиш дода намешавад"
 
-#: ../js/ui/messageTray.js:1229
-msgid "Remove"
-msgstr "Тоза кардан"
+#: ../data/gnome-custom-session.desktop.in.h:1
+msgid "Custom"
+msgstr "Фармоиш додан"
 
-#: ../js/ui/messageTray.js:1513
-msgid "Clear Messages"
-msgstr "Пок кардани паёмҳо"
+#: ../data/gnome-custom-session.desktop.in.h:2
+msgid "This entry lets you select a saved session"
+msgstr ""
+"Ин вуруд ба шумо имкон медиҳад, ки тавонед ҷаласаи захирашударо интихоб кунед"
 
-#: ../js/ui/messageTray.js:1540
-msgid "Notification Settings"
-msgstr "Танзимоти огоҳиҳо"
+#: ../data/gnome.desktop.in.h:1 ../data/gnome.session.desktop.in.in.h:1
+msgid "GNOME"
+msgstr "GNOME"
 
-#: ../js/ui/messageTray.js:1559
-msgid "Tray Menu"
-msgstr "Менюи қуттӣ"
+#: ../data/gnome.desktop.in.h:2
+msgid "This session logs you into GNOME"
+msgstr "Ин ҷаласа шуморо ба GNOME ворид мекунад"
 
-#: ../js/ui/messageTray.js:1775
-msgid "No Messages"
-msgstr "Ягон паём нест"
+#: ../data/gnome-dummy.session.desktop.in.in.h:1
+msgid "GNOME dummy"
+msgstr "Сохти GNOME"
 
-#: ../js/ui/messageTray.js:1812
-msgid "Message Tray"
-msgstr "Қуттии паёмҳо"
+#: ../data/gnome-session-properties.desktop.in.in.h:1
+msgid "Startup Applications"
+msgstr "Барномаҳои худоғозӣ"
 
-#: ../js/ui/messageTray.js:2786
-msgid "System Information"
-msgstr "Маълумоти система"
+#: ../data/gnome-session-properties.desktop.in.in.h:2
+msgid "Choose what applications to start when you log in"
+msgstr "Интихоб кунед, ки кадом барномаҳо ҳангоми воридшавӣ кушода мешаванд"
 
-#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:396
-msgctxt "program"
-msgid "Unknown"
-msgstr "Номаълум"
+#: ../data/gnome-wayland.session.desktop.in.in.h:1
+msgid "GNOME on Wayland"
+msgstr "GNOME дар Wayland"
 
-#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:152
+#: ../data/session-selector.ui.h:1
+msgid "Custom Session"
+msgstr "Ҷаласаи фармоишӣ"
+
+#: ../data/session-selector.ui.h:2 ../tools/gnome-session-selector.c:103
+msgid "Please select a custom session to run"
+msgstr "Лутфан, ҷаласаи фармоиширо барои иҷро интихоб намоед"
+
+#: ../data/session-selector.ui.h:3
+msgid "_New Session"
+msgstr "_Ҷаласаи нав"
+
+#: ../data/session-selector.ui.h:4
+msgid "_Remove Session"
+msgstr "_Тоза кардани ҷаласа"
+
+#: ../data/session-selector.ui.h:5
+msgid "Rena_me Session"
+msgstr "_Иваз кардани номи ҷаласа"
+
+#: ../data/session-selector.ui.h:6
+msgid "_Continue"
+msgstr "_Идома додан"
+
+#: ../data/session-properties.ui.h:1
+msgid "Additional startup _programs:"
+msgstr "Барномаҳои худоғозии _иловагӣ:"
+
+#: ../data/session-properties.ui.h:2
+msgid "Startup Programs"
+msgstr "Барномаҳои худоғозӣ"
+
+#: ../data/session-properties.ui.h:3
+msgid "_Automatically remember running applications when logging out"
+msgstr ""
+"_Ҳангоми баромад аз система барномаҳои кушодаро ба таври худкор ба хотир "
+"гиред"
+
+#: ../data/session-properties.ui.h:4
+msgid "_Remember Currently Running Applications"
+msgstr "_Ба хотир гирифтани барномаҳои кушода"
+
+#: ../data/session-properties.ui.h:5
+msgid "Options"
+msgstr "Имконот"
+
+#: ../data/session-properties.ui.h:6
+msgid "Browse…"
+msgstr "Тамошо кардан…"
+
+#: ../data/session-properties.ui.h:7
+msgid "Comm_ent:"
+msgstr "_Шарҳ:"
+
+#: ../data/session-properties.ui.h:8
+msgid "Co_mmand:"
+msgstr "_Фармон:"
+
+#: ../data/session-properties.ui.h:9
+msgid "_Name:"
+msgstr "_Ном:"
+
+#: ../egg/eggdesktopfile.c:165
 #, c-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d паёми нав"
-msgstr[1] "%d паёми нав"
+msgid "File is not a valid .desktop file"
+msgstr "Ин файл ба файли .desktop мувофиқат намекунад"
 
-#: ../js/ui/overview.js:82
-msgid "Undo"
-msgstr "Ботил сохтан"
-
-#: ../js/ui/overview.js:127
-msgid "Overview"
-msgstr "Хулоса"
-
-#. Translators: this is the text displayed
-#. in the search entry when no search is
-#. active; it should not exceed ~30
-#. characters.
-#: ../js/ui/overview.js:258
-msgid "Type to search…"
-msgstr "Ҷустуҷӯ кардан..."
-
-#: ../js/ui/panel.js:516
-msgid "Quit"
-msgstr "Баромад"
-
-#. Translators: If there is no suitable word for "Activities"
-#. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:568
-msgid "Activities"
-msgstr "Фаъолиятҳо"
-
-#: ../js/ui/panel.js:805
-msgid "Settings Menu"
-msgstr "Менюи танзимот"
-
-#: ../js/ui/panel.js:892
-msgid "Top Bar"
-msgstr "Панели боло"
-
-#. Translators: this MUST be either "toggle-switch-us"
-#. (for toggle switches containing the English words
-#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
-#. switches containing "◯" and "|"). Other values will
-#. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:226
-msgid "toggle-switch-us"
-msgstr "toggle-switch-us"
-
-#: ../js/ui/runDialog.js:74
-msgid "Enter a Command"
-msgstr "Фармонеро ворид кунед"
-
-#: ../js/ui/runDialog.js:110
-msgid "Close"
-msgstr "Пӯшидан"
-
-#. Translators: This is a time format for a date in
-#. long format
-#: ../js/ui/screenShield.js:88
-msgid "%A, %B %d"
-msgstr "%A, %B %d"
-
-#: ../js/ui/screenShield.js:154
+#. translators: 'Version' is from a desktop file, and
+#. * should not be translated. '%s' would probably be a
+#. * version number.
+#: ../egg/eggdesktopfile.c:191
 #, c-format
-msgid "%d new notification"
-msgid_plural "%d new notifications"
-msgstr[0] "%d огоҳии нав"
-msgstr[1] "%d огоҳии нав"
+msgid "Unrecognized desktop file Version '%s'"
+msgstr "Версияи файли мизи кории номуайян: '%s'"
 
-#: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:331
-msgid "Lock"
-msgstr "Қулф кардан"
+#: ../egg/eggdesktopfile.c:974
+#, c-format
+msgid "Starting %s"
+msgstr "Оғозёбии %s"
 
-#: ../js/ui/screenShield.js:703
-msgid "GNOME needs to lock the screen"
-msgstr "GNOME бояд экранро қулф кунад"
+#: ../egg/eggdesktopfile.c:1116
+#, c-format
+msgid "Application does not accept documents on command line"
+msgstr "Барнома ҳуҷҷатҳоро дар хати фармон қабул намекунад"
 
-#. We could not become modal, so we can't activate the
-#. screenshield. The user is probably very upset at this
-#. point, but any application using global grabs is broken
-#. Just tell him to stop using this app
+#: ../egg/eggdesktopfile.c:1184
+#, c-format
+msgid "Unrecognized launch option: %d"
+msgstr "Имконоти оғози номаълум: %d"
+
+#. translators: The 'Type=Link' string is found in a
+#. * desktop file, and should not be translated.
+#: ../egg/eggdesktopfile.c:1391
+#, c-format
+msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
+msgstr "URI ҳуҷҷат ба вуруди мизи кории 'Type=Link' гузошта нашудааст"
+
+#: ../egg/eggdesktopfile.c:1412
+#, c-format
+msgid "Not a launchable item"
+msgstr "Объекти иҷронашаванда"
+
+#: ../egg/eggsmclient.c:226
+msgid "Disable connection to session manager"
+msgstr "Ғайри фаъол кардани пайваст ба мудири ҷаласа"
+
+#: ../egg/eggsmclient.c:229
+msgid "Specify file containing saved configuration"
+msgstr "Муайян кардани файл бо танзимоти захирашуда"
+
+#: ../egg/eggsmclient.c:229
+msgid "FILE"
+msgstr "ФАЙЛ"
+
+#: ../egg/eggsmclient.c:232
+msgid "Specify session management ID"
+msgstr "Муайян кардани рамзи идоракунии ҷаласа"
+
+#: ../egg/eggsmclient.c:232
+msgid "ID"
+msgstr "Рамзи ID"
+
+#: ../egg/eggsmclient.c:253
+msgid "Session management options:"
+msgstr "Имконоти идоракунии ҷаласа:"
+
+#: ../egg/eggsmclient.c:254
+msgid "Show session management options"
+msgstr "Намоиш додани имконоти идоракунии ҷаласа"
+
+#: ../gnome-session/gsm-fail-whale-dialog.c:295
+msgid "Oh no!  Something has gone wrong."
+msgstr "Ваҳ! Чизе вайрон шудааст."
+
+#: ../gnome-session/gsm-fail-whale-dialog.c:302
+msgid ""
+"A problem has occurred and the system can't recover. Please contact a system "
+"administrator"
+msgstr ""
+"Хатогӣ ба вуҷуд омад ва система барқарор карда натавонист. Лутфан, бо "
+"маъмури система дар тамос шавед"
+
+#: ../gnome-session/gsm-fail-whale-dialog.c:304
+msgid ""
+"A problem has occurred and the system can't recover. All extensions have "
+"been disabled as a precaution."
+msgstr ""
+"Хатогӣ ба вуҷуд омад ва система барқарор карда натавонист. Ба сабабҳои "
+"бехатарӣ ҳамаи пасвандҳо ғайрифаъол карда шудаанд."
+
+#: ../gnome-session/gsm-fail-whale-dialog.c:306
+msgid ""
+"A problem has occurred and the system can't recover.\n"
+"Please log out and try again."
+msgstr ""
+"Хатогӣ ба вуҷуд омад ва система барқарор карда натавонист.\n"
+"Лутфан, бароед ва аз нав ворид шавед."
+
+#: ../gnome-session/gsm-fail-whale-dialog.c:321
+msgid "_Log Out"
+msgstr "_Баромадан"
+
+#: ../gnome-session/gsm-fail-whale-dialog.c:343 ../gnome-session/main.c:307
+msgid "Enable debugging code"
+msgstr "Фаъол кардани ислоҳи хатоҳои барномарезӣ"
+
+#: ../gnome-session/gsm-fail-whale-dialog.c:344
+msgid "Allow logout"
+msgstr "Иҷозат додани баромад"
+
+#: ../gnome-session/gsm-fail-whale-dialog.c:345
+msgid "Show extension warning"
+msgstr "Намоиш додани огоҳи пасванд"
+
+#: ../gnome-session/gsm-manager.c:1271 ../gnome-session/gsm-manager.c:2043
+msgid "Not responding"
+msgstr "Ҷавоб намедиҳад"
+
+#: ../gnome-session/gsm-util.c:411
+msgid "_Log out"
+msgstr "_Баромадан"
+
+#. It'd be really surprising to reach this code: if we're here,
+#. * then the XSMP client already has set several XSMP
+#. * properties. But it could still be that SmProgram is not set.
 #.
-#. XXX: another option is to kick the user into the gdm login
-#. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
-msgid "Unable to lock"
-msgstr "Қулф карда намешавад"
+#: ../gnome-session/gsm-xsmp-client.c:559
+msgid "Remembered Application"
+msgstr "Барномаҳои ба хотир гирифташуда"
 
-#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
-msgid "Lock was blocked by an application"
-msgstr "Қулф аз тарави барнома баста шудааст"
+#: ../gnome-session/gsm-xsmp-client.c:1209
+msgid "This program is blocking logout."
+msgstr "Ин барнома баромади шуморо манъ мекунад."
 
-#: ../js/ui/searchDisplay.js:445
-msgid "Searching…"
-msgstr "Ҷустуҷӯ рафта истодааст..."
+#: ../gnome-session/gsm-xsmp-server.c:341
+msgid ""
+"Refusing new client connection because the session is currently being shut "
+"down\n"
+msgstr ""
+"Пайвасти муштарии нав рад шуда истодааст, зеро ки ҷаласа дар ҳоли анҷоми кор "
+"мебошад\n"
 
-#: ../js/ui/searchDisplay.js:489
-msgid "No results."
-msgstr "Ягон натиҷа нест."
-
-#: ../js/ui/shellEntry.js:27
-msgid "Copy"
-msgstr "Нусха бардоштан"
-
-#: ../js/ui/shellEntry.js:32
-msgid "Paste"
-msgstr "Гузоштан"
-
-#: ../js/ui/shellEntry.js:99
-msgid "Show Text"
-msgstr "Намоиш додани матн"
-
-#: ../js/ui/shellEntry.js:101
-msgid "Hide Text"
-msgstr "Пинҳон кардани матн"
-
-#: ../js/ui/shellMountOperation.js:370
-msgid "Password"
-msgstr "Парол"
-
-#: ../js/ui/shellMountOperation.js:391
-msgid "Remember Password"
-msgstr "Ба ёд гирифтани парол"
-
-#: ../js/ui/status/accessibility.js:41
-msgid "Accessibility"
-msgstr "Қобилияти дастрасӣ"
-
-#: ../js/ui/status/accessibility.js:58
-msgid "Zoom"
-msgstr "Танзими андоза"
-
-#: ../js/ui/status/accessibility.js:65
-msgid "Screen Reader"
-msgstr "Хонандаи экранӣ"
-
-#: ../js/ui/status/accessibility.js:69
-msgid "Screen Keyboard"
-msgstr "Клавиатураи экранӣ"
-
-#: ../js/ui/status/accessibility.js:73
-msgid "Visual Alerts"
-msgstr "Огоҳиҳои намоён"
-
-#: ../js/ui/status/accessibility.js:76
-msgid "Sticky Keys"
-msgstr "Тугмаҳои часпак"
-
-#: ../js/ui/status/accessibility.js:79
-msgid "Slow Keys"
-msgstr "Тугмаҳои суст"
-
-#: ../js/ui/status/accessibility.js:82
-msgid "Bounce Keys"
-msgstr "Тугмаҳои ҷастухез"
-
-#: ../js/ui/status/accessibility.js:85
-msgid "Mouse Keys"
-msgstr "Тугмаҳои муш"
-
-#: ../js/ui/status/accessibility.js:144
-msgid "High Contrast"
-msgstr "Контрасти баланд"
-
-#: ../js/ui/status/accessibility.js:193
-msgid "Large Text"
-msgstr "Матни бузург"
-
-#. The Bluetooth menu only appears when Bluetooth is in use,
-#. so just statically build it with a "Turn Off" menu item.
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:62
-#: ../js/ui/status/bluetooth.js:99 ../js/ui/status/bluetooth.js:127
-#: ../js/ui/status/bluetooth.js:163 ../js/ui/status/bluetooth.js:194
-msgid "Bluetooth"
-msgstr "Bluetooth"
-
-#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1027 ../js/ui/status/rfkill.js:46
-msgid "Turn Off"
-msgstr "Хомӯш кардан"
-
-#: ../js/ui/status/bluetooth.js:33
-msgid "Bluetooth Settings"
-msgstr "Танзимоти Bluetooth"
-
-#: ../js/ui/status/bluetooth.js:57
+#: ../gnome-session/gsm-xsmp-server.c:610
 #, c-format
-msgid "%d Connected Device"
-msgid_plural "%d Connected Devices"
-msgstr[0] "%d дастгоҳи пайвастшуда"
-msgstr[1] "%d дастгоҳи пайвастшуда"
+msgid "Could not create ICE listening socket: %s"
+msgstr "Эҷоди бастагоҳи мунтазири ICE имконнопазир аст: %s"
 
-#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
-#, c-format
-msgid "Authorization request from %s"
-msgstr "Дархости санҷиши ҳаққоният аз %s"
+#: ../gnome-session/main.c:305
+msgid "Override standard autostart directories"
+msgstr "Аз нав таъинкунии феҳристҳои худоғозии стандартӣ"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/bluetooth.js:171
-#: ../js/ui/status/bluetooth.js:202
-#, c-format
-msgid "Device %s wants to pair with this computer"
-msgstr "Дастгоҳи %s мехоҳад, ки бо ин компютер ҷуфт кунад"
+#: ../gnome-session/main.c:305
+msgid "AUTOSTART_DIR"
+msgstr "AUTOSTART_DIR"
 
-#: ../js/ui/status/bluetooth.js:108
-msgid "Allow"
-msgstr "Иҷозат додан"
+#: ../gnome-session/main.c:306
+msgid "Session to use"
+msgstr "Ҷаласа барои истифодабарӣ"
 
-#: ../js/ui/status/bluetooth.js:109
-msgid "Deny"
-msgstr "Манъ кардан"
+#: ../gnome-session/main.c:306
+msgid "SESSION_NAME"
+msgstr "SESSION_NAME"
 
-#: ../js/ui/status/bluetooth.js:134
-#, c-format
-msgid "Device %s wants access to the service '%s'"
-msgstr "Дастгоҳи %s дастрасиро ба хидмати \"%s\" дархост мекунад"
+#: ../gnome-session/main.c:308
+msgid "Do not load user-specified applications"
+msgstr "Бор накардани барномаҳои таъиншуда бо корбар"
 
-#: ../js/ui/status/bluetooth.js:136
-msgid "Always grant access"
-msgstr "Ҳамеша иҷозат додан"
+#. Translators: the 'fail whale' is the black dialog we show when something goes seriously wrong
+#: ../gnome-session/main.c:311
+msgid "Show the fail whale dialog for testing"
+msgstr "намоиш додани равзарани гуфтугӯи хатоҳо барои санҷиш"
 
-#: ../js/ui/status/bluetooth.js:137
-msgid "Grant this time only"
-msgstr "Танҳо дар ин маротиба иҷозат додан"
+#: ../gnome-session/main.c:344
+msgid " - the GNOME session manager"
+msgstr " - мудири ҷаласаи GNOME"
 
-#: ../js/ui/status/bluetooth.js:138
-msgid "Reject"
-msgstr "Рад кардан"
-
-#. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:165
-#, c-format
-msgid "Pairing confirmation for %s"
-msgstr "Тасдиқи ҷуфтсозӣ барои %s"
-
-#: ../js/ui/status/bluetooth.js:172
+#: ../tools/gnome-session-inhibit.c:110
 #, c-format
 msgid ""
-"Please confirm whether the Passkey '%06d' matches the one on the device."
+"%s [OPTION...] COMMAND\n"
+"\n"
+"Execute COMMAND while inhibiting some session functionality.\n"
+"\n"
+"  -h, --help        Show this help\n"
+"  --version         Show program version\n"
+"  --app-id ID       The application id to use\n"
+"                    when inhibiting (optional)\n"
+"  --reason REASON   The reason for inhibiting (optional)\n"
+"  --inhibit ARG     Things to inhibit, colon-separated list of:\n"
+"                    logout, switch-user, suspend, idle, automount\n"
+"  --inhibit-only    Do not launch COMMAND and wait forever instead\n"
+"\n"
+"If no --inhibit option is specified, idle is assumed.\n"
 msgstr ""
-"Лутфан, тасдиқ кунед, ки калиди хусусии '%06d' ба калиди дар дастгоҳ "
-"мавҷудбуда мувофиқат мекунад."
+"%s [OPTION...] ФАРМОН\n"
+"\n"
+"Ҳангоми сусткунии баъзе функсияҳои ҷаласа, ФАРМОНРО иҷро кунед.\n"
+"\n"
+"  -h, --help        Барои намоиш додани кӯмак\n"
+"  --version         Барои намоиш додани версияи барнома\n"
+"  --app-id ID       Рамзи барнома барои истофода\n"
+"                    ҳангоми сусткунии ҷаласа (интихобӣ)\n"
+"  --reason REASON   Сабаби сусткунии ҷаласа (интихобӣ)\n"
+"  --inhibit ARG     Объектҳое, ки суст мешаванд, рӯйхат (бо ду нуқта "
+"тақсимшуда):\n"
+"                    баромад (logout), қатъу васл кардани корбар (switch-"
+"user), таваққуф (suspend), бефаъолият (idle), васлкунии худкор (automount)\n"
+"  --inhibit-only    ФАРМОНРО иҷро накунед ва доимо интизор шавед\n"
+"\n"
+"Агар имконоти --inhibit муайян нашавад, ҳолати бефаъолият истифода мешавад.\n"
 
-#. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:175
-msgid "Matches"
-msgstr "Мутобиқаткунанда"
-
-#: ../js/ui/status/bluetooth.js:176
-msgid "Does not match"
-msgstr "Мувофиқат намекунад"
-
-#: ../js/ui/status/bluetooth.js:195
+#: ../tools/gnome-session-inhibit.c:148
 #, c-format
-msgid "Pairing request for %s"
-msgstr "Дархости ҷуфтсозӣ барои %s"
+msgid "Failed to execute %s\n"
+msgstr "%s иҷро нашуд\n"
 
-#: ../js/ui/status/bluetooth.js:203
-msgid "Please enter the PIN mentioned on the device."
-msgstr "Лутфан, рамзи PIN-ро, ки дар дастгоҳ гуфта шудааст, ворид кунед."
-
-#: ../js/ui/status/bluetooth.js:220
-msgid "OK"
-msgstr "OK"
-
-#: ../js/ui/status/brightness.js:42
-msgid "Brightness"
-msgstr "Дурахшонӣ"
-
-#: ../js/ui/status/keyboard.js:404
-msgid "Show Keyboard Layout"
-msgstr "Намоиш додани тарҳбандии клавиатура"
-
-#: ../js/ui/status/network.js:72
-msgid "<unknown>"
-msgstr "<номаълум>"
-
-#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1042
-msgid "Off"
-msgstr "Хомӯш"
-
-#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:948
-#: ../js/ui/status/rfkill.js:49
-msgid "Network Settings"
-msgstr "Танзимоти шабака"
-
-#. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:357
-msgid "unmanaged"
-msgstr "идоранашуда"
-
-#: ../js/ui/status/network.js:359
-msgid "disconnecting..."
-msgstr "қатъ кардани пайваст..."
-
-#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1093
-msgid "connecting..."
-msgstr "пайвастшавӣ..."
-
-#. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1096
-msgid "authentication required"
-msgstr "санҷиши ҳаққоният лозим аст"
-
-#. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing
-#: ../js/ui/status/network.js:376
-msgid "firmware missing"
-msgstr "нармафзори дарунсохт вуҷуд надорад"
-
-#. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:380
-msgid "unavailable"
-msgstr "дастнорас"
-
-#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1098
-msgid "connection failed"
-msgstr "пайваст қатъ шудааст"
-
-#: ../js/ui/status/network.js:647
-msgid "Wi-Fi Networks"
-msgstr "Шабакаҳои Wi-Fi"
-
-#: ../js/ui/status/network.js:649
-msgid "Select a network"
-msgstr "Интихоб кардани шабака"
-
-#: ../js/ui/status/network.js:673
-msgid "No Networks"
-msgstr "Ягон шабака нест"
-
-#: ../js/ui/status/network.js:942
-msgid "Select Network"
-msgstr "Интихоби шабака"
-
-#: ../js/ui/status/network.js:1027
-msgid "Turn On"
-msgstr "Фаъол кардан"
-
-#: ../js/ui/status/network.js:1160
-msgid "VPN"
-msgstr "VPN"
-
-#: ../js/ui/status/network.js:1296
-msgid "Network Manager"
-msgstr "Мудири шабака"
-
-#: ../js/ui/status/network.js:1338
-msgid "Connection failed"
-msgstr "Пайваст қатъ шудааст"
-
-#: ../js/ui/status/network.js:1339
-msgid "Activation of network connection failed"
-msgstr "Фаъолсозии пайвасти шабака қатъ шудааст."
-
-#: ../js/ui/status/power.js:46
-msgid "Battery"
-msgstr "Батарея"
-
-#: ../js/ui/status/power.js:47
-msgid "Power Settings"
-msgstr "Танзимоти барқ"
-
-#: ../js/ui/status/power.js:63
-msgid "Fully Charged"
-msgstr "Пуррагӣ заряд гирифтааст"
-
-#. 0 is reported when UPower does not have enough data
-#. to estimate battery life
-#. state is one of PENDING_CHARGING, PENDING_DISCHARGING
-#: ../js/ui/status/power.js:69 ../js/ui/status/power.js:86
-msgid "Estimating…"
-msgstr "Ҳисоб шуда истодааст..."
-
-#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: ../js/ui/status/power.js:77
+#: ../tools/gnome-session-inhibit.c:208 ../tools/gnome-session-inhibit.c:218
+#: ../tools/gnome-session-inhibit.c:228
 #, c-format
-msgid "%d\\u2236%02d Remaining (%d%%)"
-msgstr "%d\\u2236%02d Боқӣ мондааст (%d%%)"
+msgid "%s requires an argument\n"
+msgstr "%s аргументро талаб мекунад\n"
 
-#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: ../js/ui/status/power.js:82
+#: ../tools/gnome-session-selector.c:62
 #, c-format
-msgid "%d\\u2236%02d Until Full (%d%%)"
-msgstr "%d\\u2236%02d То пур шудан (%d%%)"
+msgid "Session %d"
+msgstr "Ҷаласаи %d"
 
-#. The menu only appears when airplane mode is on, so just
-#. statically build it as if it was on, rather than dynamically
-#. changing the menu contents.
-#: ../js/ui/status/rfkill.js:43
-msgid "Airplane Mode"
-msgstr "Ҳолати ҳавопаймо"
+#: ../tools/gnome-session-selector.c:108
+msgid ""
+"Session names are not allowed to start with ‘.’ or contain ‘/’ characters"
+msgstr ""
+"Номи ҷаласа бояд аломати ‘/’ -ро дар бар нагирад ё бо аломати ‘.’ сар нашавад"
 
-#: ../js/ui/status/rfkill.js:45
-msgid "On"
-msgstr "Фаъол"
+#: ../tools/gnome-session-selector.c:112
+msgid "Session names are not allowed to start with ‘.’"
+msgstr "Номи ҷаласа бояд бо аломати ‘.’ сар нашавад"
 
-#: ../js/ui/status/system.js:303
-msgid "Switch User"
-msgstr "Таъвизи корбар"
+#: ../tools/gnome-session-selector.c:116
+msgid "Session names are not allowed to contain ‘/’ characters"
+msgstr "Номи ҷаласа бояд аломати ‘/’ -ро дар бар нагирад"
 
-#: ../js/ui/status/system.js:308
-msgid "Log Out"
-msgstr "Баромад"
+#: ../tools/gnome-session-selector.c:124
+#, c-format
+msgid "A session named ‘%s’ already exists"
+msgstr "Номи ҷаласаи ‘%s’ аллакай мавҷуд аст"
 
-#: ../js/ui/status/system.js:327
-msgid "Orientation Lock"
-msgstr "Қулфи самт"
+#: ../tools/gnome-session-quit.c:53
+msgid "Log out"
+msgstr "Баромадан"
 
-#: ../js/ui/status/system.js:335
-msgid "Suspend"
-msgstr "Таваққуф"
-
-#: ../js/ui/status/system.js:338
-msgid "Power Off"
+#: ../tools/gnome-session-quit.c:54
+msgid "Power off"
 msgstr "Хомӯш кардан"
 
-#: ../js/ui/status/volume.js:127
-msgid "Volume changed"
-msgstr "Ҳаҷм тағйир ёфт"
+#: ../tools/gnome-session-quit.c:55
+msgid "Reboot"
+msgstr "Бозоғозидан"
 
-#: ../js/ui/status/volume.js:162
-msgid "Volume"
-msgstr "Баландии садо"
+#: ../tools/gnome-session-quit.c:56
+msgid "Ignoring any existing inhibitors"
+msgstr "Рад кардани ҳамаи сусткунандагони мавҷудбуда"
 
-#: ../js/ui/status/volume.js:213
-msgid "Microphone"
-msgstr "Микрофон"
+#: ../tools/gnome-session-quit.c:57
+msgid "Don't prompt for user confirmation"
+msgstr "Дархост накардани тасдиқи корбар"
 
-#: ../js/ui/unlockDialog.js:67
-msgid "Log in as another user"
-msgstr "Ворид шудан бо корбари дигар"
+#: ../tools/gnome-session-quit.c:91 ../tools/gnome-session-quit.c:101
+msgid "Could not connect to the session manager"
+msgstr "Пайваст бо мудири ҷаласа имконнопазир аст"
 
-#: ../js/ui/unlockDialog.js:84
-msgid "Unlock Window"
-msgstr "Кушодани равзана"
+#: ../tools/gnome-session-quit.c:203
+msgid "Program called with conflicting options"
+msgstr "Барнома бо ихтилофи имконот дархост шудааст"
 
-#: ../js/ui/viewSelector.js:100
-msgid "Applications"
-msgstr "Барномаҳо"
+#~ msgid "Some programs are still running:"
+#~ msgstr "Баъзе барномаҳо то ҳол иҷро шуда истодаанд:"
 
-#: ../js/ui/viewSelector.js:104
-msgid "Search"
-msgstr "Ҷустуҷӯ"
-
-#: ../js/ui/wanda.js:77
-#, c-format
-msgid ""
-"Sorry, no wisdom for you today:\n"
-"%s"
-msgstr ""
-"Мутаассифода, барои шумо имрӯз ягон хирадмандӣ нест:\n"
-"%s"
-
-#: ../js/ui/wanda.js:81
-#, c-format
-msgid "%s the Oracle says"
-msgstr "Паёми паёмовар: %s"
-
-#: ../js/ui/windowAttentionHandler.js:19
-#, c-format
-msgid "'%s' is ready"
-msgstr "'%s' омода аст"
-
-#: ../js/ui/windowManager.js:56
-msgid "Do you want to keep these display settings?"
-msgstr "Шумо мехоҳед, ки ин танзимоти дисплейро нигоҳ доред?"
-
-#. Translators: this and the following message should be limited in lenght,
-#. to avoid ellipsizing the labels.
-#.
-#: ../js/ui/windowManager.js:75
-msgid "Revert Settings"
-msgstr "Барқарор кардани тағйирот"
-
-#: ../js/ui/windowManager.js:79
-msgid "Keep Changes"
-msgstr "Нигоҳ доштани тағйирот"
-
-#: ../js/ui/windowManager.js:97
-#, c-format
-msgid "Settings changes will revert in %d second"
-msgid_plural "Settings changes will revert in %d seconds"
-msgstr[0] "Тағйироти танзимот баъд аз %d сония барқарор мешаванд"
-msgstr[1] "Тағйироти танзимот баъд аз %d сония барқарор мешаванд"
-
-#: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
-msgid "Evolution Calendar"
-msgstr "Ӣақвими Evolution"
-
-#. translators:
-#. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1837
-#, c-format
-msgid "%u Output"
-msgid_plural "%u Outputs"
-msgstr[0] "%u барориш"
-msgstr[1] "%u барориш"
-
-#. translators:
-#. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1847
-#, c-format
-msgid "%u Input"
-msgid_plural "%u Inputs"
-msgstr[0] "%u вуруд"
-msgstr[1] "%u вуруд"
-
-#: ../src/gvc/gvc-mixer-control.c:2373
-msgid "System Sounds"
-msgstr "Системаи садо"
-
-#: ../src/main.c:353
-msgid "Print version"
-msgstr "Версияи чоп"
-
-#: ../src/main.c:359
-msgid "Mode used by GDM for login screen"
-msgstr "Усуле, ки бо GDM барои экрани воридшавӣ истифода мешавад"
-
-#: ../src/main.c:365
-msgid "Use a specific mode, e.g. \"gdm\" for login screen"
-msgstr ""
-"Истифода бурдани ҳолати мушаххас, масалан \"gdm\" барои экрани воридшавӣ"
-
-#: ../src/main.c:371
-msgid "List possible modes"
-msgstr "Рӯйхати ҳолатҳои имконпазир"
-
-#: ../src/shell-app.c:644
-#, c-format
-msgid "Failed to launch '%s'"
-msgstr "Оғози '%s' қатъ шудааст"
-
-#: ../src/shell-keyring-prompt.c:714
-msgid "Passwords do not match."
-msgstr "Паролҳо мувофиқат намекунанд."
-
-#: ../src/shell-keyring-prompt.c:722
-msgid "Password cannot be blank"
-msgstr "Парол бояд холӣ набошад"
-
-#: ../src/shell-polkit-authentication-agent.c:343
-msgid "Authentication dialog was dismissed by the user"
-msgstr "Равзанаи гуфтугӯи санҷиши ҳакконият бо корбар бекор карда шуд"
-
-#~ msgid ""
-#~ "Internally used to store the last IM presence explicitly set by the user. "
-#~ "The value here is from the TpConnectionPresenceType enumeration."
-#~ msgstr ""
-#~ "Ба таври дохилӣ барои нигоҳ доштани мавҷудияти охирини IM, ки бо корбар "
-#~ "ба таври бевосита таъин шудааст, истифода мешавад. Дар ин ҷо қимат аз "
-#~ "шумориши TpConnectionPresenceType ба вуҷуд меояд."
-
-#~ msgid ""
-#~ "Internally used to store the last session presence status for the user. "
-#~ "The value here is from the GsmPresenceStatus enumeration."
-#~ msgstr ""
-#~ "Ба таври дохилӣ барои нигоҳ доштани вазъияти мавҷудияти ҷаласаи охирин "
-#~ "барои корбар истифода мешавад. Дар ин ҷо қимат аз шумориши "
-#~ "GsmPresenceStatus ба вуҷуд меояд."
-
-#~ msgid "Click Log Out to quit these applications and log out of the system."
-#~ msgstr ""
-#~ "Барои баромадан аз ин барномаҳо ва баромадан аз система, \"Баромадан\"-ро "
-#~ "зер кунед."
-
-#~ msgid "Logging out of the system."
-#~ msgstr "Баромад аз система."
-
-#~ msgid "Click Power Off to quit these applications and power off the system."
-#~ msgstr ""
-#~ "Барои баромадан аз ин барномаҳо ва анҷом додани кори система, \"Анҷоми кор"
-#~ "\"-ро зер кунед."
-
-#~ msgid "Powering off the system."
-#~ msgstr "Хомӯш кардани система."
-
-#~ msgid "Click Restart to quit these applications and restart the system."
-#~ msgstr ""
-#~ "Барои баромадан аз ин барномаҳо ва бозоғозидани система, \"Бозоғозидан\"-"
-#~ "ро зер кунед."
-
-#~ msgid "Restarting the system."
-#~ msgstr "Бозоғозии система."
-
-#~ msgid "Shutting down might cause them to lose unsaved work."
-#~ msgstr "Анҷоми кор метавонад сабаби гум шудани кори захиранашуда гардад."
-
-#~ msgid "Screenshots"
-#~ msgstr "Суратҳои экран"
-
-#~ msgid "Record a screencast"
-#~ msgstr "Сабти рӯйдодҳои экран"
-
-#~ msgid "Keybinding to toggle the screen recorder"
-#~ msgstr "Тугма барои иваз кардани сабткунандаи экран"
-
-#~ msgid "Keybinding to start/stop the builtin screen recorder."
-#~ msgstr "Тугма барои оғоз/қатъ кардани сабткунандаи экрани дарунсохт."
-
-#~ msgid "Framerate used for recording screencasts."
-#~ msgstr ""
-#~ "Миқдори кадрҳо дар сония, ки барои сабти рӯйдодҳои экран истифода мешавад."
-
-#~ msgid ""
-#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
-#~ "screencast recorder in frames-per-second."
-#~ msgstr ""
-#~ "Миқдори кадрҳо дар як сония барои сабти рӯйдодҳои экран, ки бо "
-#~ "сабткунандаи рӯйдодҳои экрани GNOME Shell сабт шудааст, дар кадрҳо дар як "
-#~ "сония."
-
-#~ msgid "The gstreamer pipeline used to encode the screencast"
-#~ msgstr ""
-#~ "Лӯламаҷрои gstreamer, ки барои рамзӣ кардани рӯйдодҳои экран истифода "
-#~ "мешавад"
-
-#~ msgid ""
-#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#~ "pad where the recorded video is recorded. It will normally have a "
-#~ "unconnected source pad; output from that pad will be written into the "
-#~ "output file. However the pipeline can also take care of its own output - "
-#~ "this might be used to send the output to an icecast server via shout2send "
-#~ "or similar. When unset or set to an empty value, the default pipeline "
-#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
-#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
-#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
-#~ "optimal thread count on the system."
-#~ msgstr ""
-#~ "Лӯламаҷрои GStreamer-ро, ки барои рамзӣ кардани сабтҳо истифода мешаванд, "
-#~ "таъин мекунад. Он наҳвро, ки барои gst-launch истифода мешавад, риоя "
-#~ "мекунад. Лӯламаҷро бояд қабати қабулкунандаи пайвастнашуда дошта бошад, "
-#~ "ки дар он видеои сабтшаванда сабт мешавад. Одатан он дорои қабати "
-#~ "пайвастнашудаи аслӣ мешавад; натиҷаи он қабат ба файли натиҷаҳо навишта "
-#~ "мешавад. Аммо лӯламаҷро метавонад инчунин натиҷаи худро истифода барад - "
-#~ "ин метавонад барои фиристодани натиҷа ба сервери icecast тавассути "
-#~ "shout2send ё монанд истифода шавад. Агар ин таъин шуда набошад, ё ки ба "
-#~ "қимати холӣ таъин шуда бошад, лӯламаҷрои пешфарз истифода мешавад. Дар "
-#~ "айни ҳол ин чунин мебошад: \"vp8enc min_quantizer=13 max_quantizer=13 cpu-"
-#~ "used=5 deadline=1000000 threads=%T ! queue ! webmmux\", ва тавассути "
-#~ "кодеки VP8 ба формати WEBM сабт мекунад. %T ҳамчун пуркунандаи фазо барои "
-#~ "ҳисоби тақрибӣ дар миқдори беҳтарини риштаҳо дар система истифода мешавад."
-
-#~ msgid "File extension used for storing the screencast"
-#~ msgstr ""
-#~ "Пасванди файл, ки барои нигоҳ доштани рӯйдодҳои экран истифода мешавад"
-
-#~ msgid ""
-#~ "The filename for recorded screencasts will be a unique filename based on "
-#~ "the current date, and use this extension. It should be changed when "
-#~ "recording to a different container format."
-#~ msgstr ""
-#~ "Номи файл барои рӯйдодҳои экрани сабтшуда номи ягонаи файл мебошад, ки бо "
-#~ "санаи ҷорӣ асос меёбад ва ин пасвандро истифода мебарад. Вақте ки ба "
-#~ "формати дигари дарбаргиранда сабт рафта истода бошад, он бояд тағйир дода "
-#~ "шавад."
-
-#~ msgid "Screencast from %d %t"
-#~ msgstr "Рӯйдодҳои экран аз %d %t"
-
-#~ msgid "Power"
-#~ msgstr "Барқ"
-
-#~ msgid "Restart"
-#~ msgstr "Бозоғозидан"
-
-#~ msgid "Volume, network, battery"
-#~ msgstr "Ҳаҷм, шабака, батарея"
-
-#~ msgid "Wi-Fi"
-#~ msgstr "Wi-Fi"
-
-#~ msgid "hardware disabled"
-#~ msgstr "сахтафзор ғайрифаъол шудааст"
-
-#~ msgid "disabled"
-#~ msgstr "ғайрифаъол"
-
-#~ msgid "More…"
-#~ msgstr "Бештар..."
-
-#~ msgid "Connected (private)"
-#~ msgstr "Пайваст шудааст (шахсӣ)"
-
-#~ msgid "Wired"
-#~ msgstr "Симдор"
-
-#~ msgid "Mobile broadband"
-#~ msgstr "Паҳннавори мобилӣ"
-
-#~ msgid "Networking is disabled"
-#~ msgstr "Шабака ғайрифаъол аст"
-
-#~ msgid "Visibility"
-#~ msgstr "Қобилияти намоиш"
-
-#~ msgid "Send Files to Device…"
-#~ msgstr "Фиристодани файлҳо ба дастгоҳ..."
-
-#~ msgid "Set Up a New Device…"
-#~ msgstr "Насб кардани дастгоҳи нав…"
-
-#~ msgid "Connection"
-#~ msgstr "Пайвастшавӣ"
-
-#~ msgid "Send Files…"
-#~ msgstr "Фиристодани файлҳо…"
-
-#~ msgid "Universal Access Settings"
-#~ msgstr "Танзимоти дастрасии универсалӣ"
-
-#~ msgid "Keyboard Settings"
-#~ msgstr "Танзимоти клавиатура"
-
-#~ msgid "Mouse Settings"
-#~ msgstr "Танзимоти муш"
-
-#~ msgid "Sound Settings"
-#~ msgstr "Танзимоти садо"
-
-#~ msgid "Region & Language Settings"
-#~ msgstr "Танзимоти забон ва минтақа"
-
-#~ msgid "%d hour remaining"
-#~ msgid_plural "%d hours remaining"
-#~ msgstr[0] "%d соати боқимонда"
-
-#~ msgid "%d %s %d %s remaining"
-#~ msgstr "%d %s %d %s боқӣ мондааст"
-
-#~ msgid "hour"
-#~ msgid_plural "hours"
-#~ msgstr[0] "соат"
-
-#~ msgid "minute"
-#~ msgid_plural "minutes"
-#~ msgstr[0] "дақиқа"
-
-#~ msgid "%d minute remaining"
-#~ msgid_plural "%d minutes remaining"
-#~ msgstr[0] "%d дақиқаи боқимонда"
-
-#~ msgctxt "percent of battery remaining"
-#~ msgid "%d%%"
-#~ msgstr "%d%%"
-
-#~ msgid "AC Adapter"
-#~ msgstr "Адаптери AC"
-
-#~ msgid "Laptop Battery"
-#~ msgstr "Батареяи лэптоп"
-
-#~ msgid "UPS"
-#~ msgstr "UPS"
-
-#~ msgid "Monitor"
-#~ msgstr "Монитор"
-
-#~ msgid "Mouse"
-#~ msgstr "Муш"
-
-#~ msgid "PDA"
-#~ msgstr "PDA"
-
-#~ msgid "Cell Phone"
-#~ msgstr "Телефони мобилӣ"
-
-#~ msgid "Media Player"
-#~ msgstr "Плеери мултимедиа"
-
-#~ msgid "Tablet"
-#~ msgstr "Планшет"
-
-#~ msgid "Computer"
-#~ msgstr "Компютер"
-
-#~ msgctxt "device"
 #~ msgid "Unknown"
 #~ msgstr "Номаълум"
 
-#~ msgid "Available"
-#~ msgstr "Дастрас"
-
-#~ msgid "Busy"
-#~ msgstr "Машғул"
-
-#~ msgid "Invisible"
-#~ msgstr "Ноаён"
-
-#~ msgid "Away"
-#~ msgstr "Ғоиб"
-
-#~ msgid "Idle"
-#~ msgstr "Ғайрифаъол"
-
-#~ msgid "Notifications"
-#~ msgstr "Огоҳиҳо"
-
-#~ msgid "Your chat status will be set to busy"
-#~ msgstr "Вазъияти чати шумо ба \"машғул\" тағйир дода мешавад"
+#~ msgid "A program is still running:"
+#~ msgstr "Барнома то ҳол иҷро шуда истодааст:"
 
 #~ msgid ""
-#~ "Notifications are now disabled, including chat messages. Your online "
-#~ "status has been adjusted to let others know that you might not see their "
-#~ "messages."
+#~ "Waiting for the program to finish. Interrupting the program may cause you "
+#~ "to lose work."
 #~ msgstr ""
-#~ "Акнун огоҳиҳо ғайрифаъол мебошанд, аз он ҷумла паёмҳои чат. Вазъияти "
-#~ "онлайни шумо ба тавре танзим карда шуд, ки дигарон фаҳманд, ки эҳтимолан "
-#~ "шумо паёмҳои онҳоро намебинед."
-
-#~ msgid "cable unplugged"
-#~ msgstr "сим ҷудо шудааст"
-
-#~ msgid "Whether to collect stats about applications usage"
-#~ msgstr "Ҷамъ кардан ё ҷамъ накардани омор дар бораи истифодабарии барномаҳо"
+#~ "Дар ҳоли мунтазири пӯшидани барнома. Пӯшидани барнома метавонад сабаби "
+#~ "гум кардани кори шумо шавад."
 
 #~ msgid ""
-#~ "The shell normally monitors active applications in order to present the "
-#~ "most used ones (e.g. in launchers). While this data will be kept private, "
-#~ "you may want to disable this for privacy reasons. Please note that doing "
-#~ "so won't remove already saved data."
+#~ "Waiting for programs to finish. Interrupting these programs may cause you "
+#~ "to lose work."
 #~ msgstr ""
-#~ "Одатан ин восит барномаҳои фаъолро нигоҳдорӣ мекунад, то ин ки барномаҳои "
-#~ "аз ҳама зиёд истифодашаванда (масалан оғозкунандагон) ҳамеша мавҷуд "
-#~ "бошанд. Гарчанде ки ин иттилоот махфӣ нигоҳ дошта мешавад, шумо метавонед "
-#~ "интихоб кунед, ки инро барои сабабҳои махфият ғайрифаъол кунед. Лутфан, "
-#~ "ба қайд гиред, ки чунин амал иттилооти аллакай захирашударо тоза "
-#~ "намекунад."
+#~ "Дар ҳоли мунтазири пӯшидани барномаҳо. Пӯшидани барномаҳо метавонад "
+#~ "сабаби гум кардани кори шумо шавад."
 
-#~ msgid "Auto Ethernet"
-#~ msgstr "Ethernet-и худкор"
+#~ msgid "Switch User Anyway"
+#~ msgstr "Ба ҳар ҳол корбарро қатъу васл кунед"
 
-#~ msgid "Auto broadband"
-#~ msgstr "Паҳннавори худкор"
+#~ msgid "Log Out Anyway"
+#~ msgstr "Ба ҳар ҳол бароед"
 
-#~ msgid "Auto dial-up"
-#~ msgstr "Шуморагирии худкор"
+#~ msgid "Suspend Anyway"
+#~ msgstr "Ба ҳар ҳол таваққуф кунед"
 
-#~ msgid "Auto %s"
-#~ msgstr "Худкор %s"
+#~ msgid "Hibernate Anyway"
+#~ msgstr "Ба ҳар ҳол гибернатсия кунед"
 
-#~ msgid "Auto bluetooth"
-#~ msgstr "Bluetooth-и худкор"
+#~ msgid "Shut Down Anyway"
+#~ msgstr "Корро ба ҳар ҳол анҷом диҳед"
 
-#~ msgid "Auto wireless"
-#~ msgstr "Бесими худкор"
+#~ msgid "Restart Anyway"
+#~ msgstr "Ба ҳар ҳол бозоғозӣ кунед"
 
-#~ msgctxt "title"
-#~ msgid "Sign In"
-#~ msgstr "Ворид шудан"
+#~ msgid "Lock Screen"
+#~ msgstr "Экрани қулф"
 
-#~ msgid "More..."
-#~ msgstr "Бештар..."
+#~ msgid "Cancel"
+#~ msgstr "Бекор кардан"
 
-#~ msgid "United Kingdom"
-#~ msgstr "Британияи Кабир"
+#~ msgid "You will be automatically logged out in %d second."
+#~ msgid_plural "You will be automatically logged out in %d seconds."
+#~ msgstr[0] "Шумо аз система баъд аз %d сония ба таври худкор мебароед."
+#~ msgstr[1] "Шумо аз система баъд аз %d сония ба таври худкор мебароед."
 
-#~ msgid "Default"
-#~ msgstr "Пешфарз"
+#~ msgid "This system will be automatically shut down in %d second."
+#~ msgid_plural "This system will be automatically shut down in %d seconds."
+#~ msgstr[0] "Кори ин система баъд аз %d сония ба таври худкор анҷом меёбад."
+#~ msgstr[1] "Кори ин система баъд аз %d сония ба таври худкор анҷом меёбад."
+
+#~ msgid "This system will be automatically restarted in %d second."
+#~ msgid_plural "This system will be automatically restarted in %d seconds."
+#~ msgstr[0] "Ин система баъд аз %d сония ба таври худкор бозоғозӣ мешавад."
+#~ msgstr[1] "Ин система баъд аз %d сония ба таври худкор бозоғозӣ мешавад."
+
+#~ msgid "You are currently logged in as \"%s\"."
+#~ msgstr "Шумо ҳамчун \"%s\" ворид шудаед."
+
+#~ msgid "Log out of this system now?"
+#~ msgstr "Аз ин система ҳозир мебароед?"
+
+#~ msgid "_Switch User"
+#~ msgstr "_Таъвизи корбар"
+
+#~ msgid "Shut down this system now?"
+#~ msgstr "Кори ин системаро ҳозир ба анҷом медиҳед?"
+
+#~ msgid "S_uspend"
+#~ msgstr "_Таваққуф кардан"
+
+#~ msgid "_Hibernate"
+#~ msgstr "_Гибернатсия кардан"
+
+#~ msgid "_Restart"
+#~ msgstr "_Бозоғозидан"
+
+#~ msgid "_Shut Down"
+#~ msgstr "_Анҷом додани кор"
+
+#~ msgid "Restart this system now?"
+#~ msgstr "Ин системаро ба ҳар ҳол бозоғозӣ мекунед?"
+
+#~ msgid "%d hour"
+#~ msgid_plural "%d hours"
+#~ msgstr[0] "%d соат"
+
+#~ msgid "%d minute"
+#~ msgid_plural "%d minutes"
+#~ msgstr[0] "%d дақиқа"
+
+#~ msgid "%d second"
+#~ msgid_plural "%d seconds"
+#~ msgstr[0] "%d сония"
+
+#~ msgid "0 seconds"
+#~ msgstr "0 сония"
