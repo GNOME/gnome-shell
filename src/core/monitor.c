@@ -541,9 +541,6 @@ meta_monitor_manager_set_power_save_mode (MetaMonitorManager *manager,
 {
   MetaMonitorManagerClass *klass;
 
-  if (mode == manager->power_save_mode)
-    return;
-
   if (manager->power_save_mode == META_POWER_SAVE_UNKNOWN ||
       mode == META_POWER_SAVE_UNKNOWN)
     return;
