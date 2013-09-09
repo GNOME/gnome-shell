@@ -50,7 +50,6 @@
 
 #include <pwd.h>
 #include <grp.h>
-#include <security/pam_appl.h>
 
 #include <xf86drm.h>
 
@@ -68,8 +67,6 @@ enum vt_state {
 };
 
 struct weston_launch {
-	struct pam_conv pc;
-	pam_handle_t *ph;
 	int tty;
 	int ttynr;
 	int sock[2];
@@ -79,7 +76,6 @@ struct weston_launch {
 
 	pid_t child;
 	int verbose;
-	char *new_user;
 
 	struct termios terminal_attributes;
 	int kb_mode;
@@ -465,14 +461,6 @@ quit(struct weston_launch *wl, int status)
 		close(wl->drm_fd);
 
 	tty_reset(wl);
-
-	if (wl->new_user) {
-		err = pam_close_session(wl->ph, 0);
-		if (err)
-			fprintf(stderr, "pam_close_session failed: %d: %s\n",
-				err, pam_strerror(wl->ph, err));
-		pam_end(wl->ph, err);
-	}
 
 	exit(status);
 }
