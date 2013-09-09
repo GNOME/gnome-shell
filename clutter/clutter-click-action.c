@@ -535,6 +535,34 @@ clutter_click_action_get_property (GObject    *gobject,
 }
 
 static void
+clutter_click_action_dispose (GObject *gobject)
+{
+  ClutterClickActionPrivate *priv = CLUTTER_CLICK_ACTION (gobject)->priv;
+
+  if (priv->event_id)
+    {
+      g_signal_handler_disconnect (clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (gobject)),
+                                   priv->event_id);
+      priv->event_id = 0;
+    }
+
+  if (priv->capture_id)
+    {
+      g_signal_handler_disconnect (priv->stage, priv->capture_id);
+      priv->capture_id = 0;
+    }
+
+  if (priv->long_press_id)
+    {
+      g_source_remove (priv->long_press_id);
+      priv->long_press_id = 0;
+    }
+
+  G_OBJECT_CLASS (clutter_click_action_parent_class)->dispose (gobject);
+}
+
+
+static void
 clutter_click_action_class_init (ClutterClickActionClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -542,6 +570,7 @@ clutter_click_action_class_init (ClutterClickActionClass *klass)
 
   meta_class->set_actor = clutter_click_action_set_actor;
 
+  gobject_class->dispose = clutter_click_action_dispose;
   gobject_class->set_property = clutter_click_action_set_property;
   gobject_class->get_property = clutter_click_action_get_property;
 
