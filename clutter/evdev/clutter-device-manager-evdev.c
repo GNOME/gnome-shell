@@ -25,6 +25,7 @@
 #include "config.h"
 #endif
 
+#include <math.h>
 #include <linux/input.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -60,6 +61,12 @@
 #define INVALID_SLAVE_ID 255
 
 #define AUTOREPEAT_VALUE 2
+
+/* Taken from weston/src/evdev-touchpad.c
+   In the future, we may want to make this configurable, or
+   delegate everything to loadable input drivers.
+*/
+#define DEFAULT_HYSTERESIS_MARGIN_DENOMINATOR 700.0
 
 struct _ClutterDeviceManagerEvdevPrivate
 {
@@ -130,7 +137,14 @@ struct _ClutterEventSource
   GPollFD event_poll_fd;              /* file descriptor of the /dev node */
   struct libevdev *dev;
 
+  /* For mice (and emulated for touchpads) */
   int dx, dy;
+
+  /* For touchpads */
+  gboolean touching;
+  int margin;
+  int last_x, last_y;
+  int cur_x, cur_y;
 };
 
 static gboolean
@@ -448,6 +462,47 @@ notify_button (ClutterEventSource *source,
 }
 
 static void
+process_absolute_motion (ClutterEventSource *source)
+{
+  /* Compute deltas and update absolute positions */
+  if (source->touching)
+    {
+      source->dx = source->cur_x - source->last_x;
+      source->dy = source->cur_y - source->last_y;
+      source->last_x = source->cur_x;
+      source->last_y = source->cur_y;
+    }
+}
+
+static void
+process_relative_motion (ClutterEventSource *source,
+			 guint32             _time)
+{
+  /* Flush accumulated motion deltas */
+  if (source->dx != 0 || source->dy != 0)
+    {
+      notify_relative_motion (source, _time, source->dx, source->dy);
+      source->dx = 0;
+      source->dy = 0;
+    }
+}
+
+static inline int
+hysteresis (int in, int center, int margin)
+{
+  int diff = in - center;
+
+  if (ABS (diff) <= margin)
+    return center;
+
+  if (diff > margin)
+    return center + diff - margin;
+  else if (diff < -margin)
+    return center + diff + margin;
+  return center + diff;
+}
+
+static void
 dispatch_one_event (ClutterEventSource *source,
 		    struct input_event *e)
 {
@@ -466,6 +521,15 @@ dispatch_one_event (ClutterEventSource *source,
 	  if (e->value != AUTOREPEAT_VALUE)
 	    notify_button (source, _time, e->code, e->value);
 	}
+      else if (e->code == BTN_TOOL_FINGER && e->value != AUTOREPEAT_VALUE)
+	{
+	  source->touching = e->value;
+	  if (e->value)
+	    {
+	      source->last_x = source->cur_x;
+	      source->last_y = source->cur_y;
+	    }
+	}
       else
 	{
 	  /* We don't know about this code, ignore */
@@ -475,13 +539,8 @@ dispatch_one_event (ClutterEventSource *source,
     case EV_SYN:
       if (e->code == SYN_REPORT)
 	{
-	  /* Flush accumulated motion deltas */
-	  if (source->dx != 0 || source->dy != 0)
-	    {
-	      notify_relative_motion (source, _time, source->dx, source->dy);
-	      source->dx = 0;
-	      source->dy = 0;
-	    }
+	  process_absolute_motion (source);
+	  process_relative_motion (source, _time);
 	}
       break;
 
@@ -510,6 +569,17 @@ dispatch_one_event (ClutterEventSource *source,
       break;
 
     case EV_ABS:
+      switch (e->code)
+	{
+	case ABS_X:
+	  source->cur_x = hysteresis (e->value, source->cur_x, source->margin);
+	  break;
+	case ABS_Y:
+	  source->cur_y = hysteresis (e->value, source->cur_y, source->margin);
+	  break;
+	}
+      break;
+
     default:
       g_warning ("Unhandled event of type %d", e->type);
       break;
@@ -646,6 +716,7 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
   const gchar *node_path;
   gint fd, clkid;
   GError *error;
+  ClutterInputDeviceType device_type;
 
   /* grab the udev input device node and open it */
   node_path = _clutter_input_device_evdev_get_device_path (input_device);
@@ -683,6 +754,22 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
   event_source->event_poll_fd.fd = fd;
   event_source->event_poll_fd.events = G_IO_IN;
   libevdev_new_from_fd (fd, &event_source->dev);
+
+  device_type = clutter_input_device_get_device_type (CLUTTER_INPUT_DEVICE (input_device));
+  if (device_type == CLUTTER_TOUCHPAD_DEVICE)
+    {
+      const struct input_absinfo *info_x, *info_y;
+      double width, height, diagonal;
+
+      info_x = libevdev_get_abs_info (event_source->dev, ABS_X);
+      info_y = libevdev_get_abs_info (event_source->dev, ABS_Y);
+
+      width = ABS (info_x->maximum - info_x->minimum);
+      height = ABS (info_y->maximum - info_y->minimum);
+      diagonal = sqrt (width * width + height * height);
+
+      event_source->margin = diagonal / DEFAULT_HYSTERESIS_MARGIN_DENOMINATOR;
+    }
 
   /* and finally configure and attach the GSource */
   g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
