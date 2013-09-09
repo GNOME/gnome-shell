@@ -129,6 +129,8 @@ struct _ClutterEventSource
   ClutterInputDeviceEvdev *device;    /* back pointer to the slave evdev device */
   GPollFD event_poll_fd;              /* file descriptor of the /dev node */
   struct libevdev *dev;
+
+  int dx, dy;
 };
 
 static gboolean
@@ -447,9 +449,7 @@ notify_button (ClutterEventSource *source,
 
 static void
 dispatch_one_event (ClutterEventSource *source,
-		    struct input_event *e,
-		    int                *dx,
-		    int                *dy)
+		    struct input_event *e)
 {
   guint32 _time;
 
@@ -467,12 +467,26 @@ dispatch_one_event (ClutterEventSource *source,
 	    notify_button (source, _time, e->code, e->value);
 	}
       else
-	/* We don't know about this code, ignore */;
+	{
+	  /* We don't know about this code, ignore */
+	}
       break;
 
     case EV_SYN:
+      if (e->code == SYN_REPORT)
+	{
+	  /* Flush accumulated motion deltas */
+	  if (source->dx != 0 || source->dy != 0)
+	    {
+	      notify_relative_motion (source, _time, source->dx, source->dy);
+	      source->dx = 0;
+	      source->dy = 0;
+	    }
+	}
+      break;
+
     case EV_MSC:
-      /* Nothing to do here (actually, EV_SYN is handled by libevdev, we shouldn't see it) */
+      /* Nothing to do here */
       break;
 
     case EV_REL:
@@ -480,10 +494,10 @@ dispatch_one_event (ClutterEventSource *source,
       switch (e->code)
 	{
 	case REL_X:
-	  *dx += e->value;
+	  source->dx += e->value;
 	  break;
 	case REL_Y:
-	  *dy += e->value;
+	  source->dy += e->value;
 	  break;
 
 	case REL_WHEEL:
@@ -507,14 +521,13 @@ sync_source (ClutterEventSource *source)
 {
   struct input_event ev;
   int err;
-  int dx = 0, dy = 0;
   const gchar *device_path;
 
   /* We read a SYN_DROPPED, ignore it and sync the device */
   err = libevdev_next_event (source->dev, LIBEVDEV_READ_SYNC, &ev);
   while (err == 1)
     {
-      dispatch_one_event (source, &ev, &dx, &dy);
+      dispatch_one_event (source, &ev);
       err = libevdev_next_event (source->dev, LIBEVDEV_READ_SYNC, &ev);
     }
 
@@ -523,12 +536,6 @@ sync_source (ClutterEventSource *source)
       device_path = _clutter_input_device_evdev_get_device_path (source->device);
 
       CLUTTER_NOTE (EVENT, "Could not sync device (%s).", device_path);
-    }
-
-  if (dx != 0 || dy != 0)
-    {
-      guint32 _time = ev.time.tv_sec * 1000 + ev.time.tv_usec / 1000;
-      notify_relative_motion (source, _time, dx, dy);
     }
 }
 
@@ -565,7 +572,7 @@ clutter_event_dispatch (GSource     *g_source,
   struct input_event ev;
   ClutterEvent *event;
   ClutterStage *stage;
-  int err, dx = 0, dy = 0;
+  int err;
 
   _clutter_threads_acquire_lock ();
 
@@ -582,7 +589,7 @@ clutter_event_dispatch (GSource     *g_source,
       if (err == 1)
 	sync_source (source);
       else if (err == 0)
-	dispatch_one_event (source, &ev, &dx, &dy);
+	dispatch_one_event (source, &ev);
       else
 	{
 	  fail_source (source, -err);
@@ -590,12 +597,6 @@ clutter_event_dispatch (GSource     *g_source,
 	}
 
       err = libevdev_next_event (source->dev, LIBEVDEV_READ_NORMAL, &ev);
-    }
-
-  if (dx != 0 || dy != 0)
-    {
-      guint32 _time = ev.time.tv_sec * 1000 + ev.time.tv_usec / 1000;
-      notify_relative_motion (source, _time, dx, dy);
     }
 
  queue_event:
