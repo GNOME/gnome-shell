@@ -351,13 +351,13 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
           manager->power_save_mode = META_POWER_SAVE_OFF;
           break;
         default:
-          manager->power_save_mode = META_POWER_SAVE_UNKNOWN;
+          manager->power_save_mode = META_POWER_SAVE_UNSUPPORTED;
           break;
         }
     }
   else
     {
-      manager->power_save_mode = META_POWER_SAVE_UNKNOWN;
+      manager->power_save_mode = META_POWER_SAVE_UNSUPPORTED;
     }
 
   XRRGetScreenSizeRange (manager_xrandr->xdisplay, DefaultRootWindow (manager_xrandr->xdisplay),
