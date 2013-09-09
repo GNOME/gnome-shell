@@ -1291,7 +1291,7 @@ _clutter_backend_remove_event_translator (ClutterBackend         *backend,
  * uses the stub Cogl winsys and the Clutter backend doesn't
  * explicitly create a CoglContext.</note>
  *
- * Return value: The #CoglContext associated with @backend.
+ * Return value: (transfer none): The #CoglContext associated with @backend.
  *
  * Since: 1.8
  * Stability: unstable
