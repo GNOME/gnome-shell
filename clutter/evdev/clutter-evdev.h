@@ -78,7 +78,6 @@ void  clutter_evdev_set_pointer_constrain_callback (ClutterDeviceManager        
 						    gpointer                         user_data,
 						    GDestroyNotify                   user_data_notify);
 
-struct xkb_state * clutter_evdev_get_keyboard_state (ClutterDeviceManager *evdev);
 void               clutter_evdev_set_keyboard_map   (ClutterDeviceManager *evdev,
 						     struct xkb_keymap    *keymap);
 

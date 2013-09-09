@@ -1436,24 +1436,6 @@ clutter_evdev_set_open_callback (ClutterOpenDeviceCallback callback,
 }
 
 /**
- * clutter_evdev_get_keyboard_state: (skip)
- * @evdev: the #ClutterDeviceManager created by the evdev backend
- *
- * Returns the xkb state tracking object for keyboard devices.
- * The object must be treated as read only, and should be used only
- * for reading out the detailed group and modifier state.
- *
- * Return value: the #xkb_state struct
- */
-struct xkb_state *
-clutter_evdev_get_keyboard_state (ClutterDeviceManager *evdev)
-{
-  g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev), NULL);
-
-  return (CLUTTER_DEVICE_MANAGER_EVDEV (evdev))->priv->xkb;
-}
-
-/**
  * clutter_evdev_set_keyboard_map: (skip)
  * @evdev: the #ClutterDeviceManager created by the evdev backend
  * @keymap: the new keymap
