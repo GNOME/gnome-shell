@@ -1076,7 +1076,7 @@ StScrollBar StButton#vhandle:active {
     background-gradient-end: rgba(255, 255, 255, .15);
     background-gradient-direction: vertical;
     border-radius: 4px;
-    box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 1);
+    box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.7);
     transition-duration: 100ms;
 }
 
