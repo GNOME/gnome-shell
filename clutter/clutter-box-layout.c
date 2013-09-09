@@ -977,7 +977,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
   gint extra;
   gint n_extra_widgets = 0; /* Number of widgets that receive 1 extra px */
   gint x = 0, y = 0, i;
-  gint child_size;
+  gfloat child_size;
 
   count_expand_children (layout, container, &nvis_children, &nexpand_children);
 
