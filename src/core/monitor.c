@@ -433,8 +433,8 @@ meta_monitor_manager_set_power_save_mode (MetaMonitorManager *manager,
 {
   MetaMonitorManagerClass *klass;
 
-  if (manager->power_save_mode == META_POWER_SAVE_UNKNOWN ||
-      mode == META_POWER_SAVE_UNKNOWN)
+  if (manager->power_save_mode == META_POWER_SAVE_UNSUPPORTED ||
+      mode == META_POWER_SAVE_UNSUPPORTED)
     return;
 
   klass = META_MONITOR_MANAGER_GET_CLASS (manager);
