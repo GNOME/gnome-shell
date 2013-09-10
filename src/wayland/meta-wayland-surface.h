@@ -69,13 +69,15 @@ typedef struct
 typedef enum {
   META_WAYLAND_SURFACE_TOPLEVEL = 0,
   META_WAYLAND_SURFACE_MAXIMIZED,
-  META_WAYLAND_SURFACE_FULLSCREEN
+  META_WAYLAND_SURFACE_FULLSCREEN,
+  META_WAYLAND_SURFACE_POPUP,
 } MetaWaylandSurfaceType;
 
 typedef struct
 {
   MetaWaylandSurfaceType initial_type;
   struct wl_resource *transient_for;
+  int x, y;
 
   char *title;
   char *wm_class;

@@ -758,13 +758,38 @@ shell_surface_set_fullscreen (struct wl_client *client,
 static void
 shell_surface_set_popup (struct wl_client *client,
                          struct wl_resource *resource,
-                         struct wl_resource *seat,
+                         struct wl_resource *seat_resource,
                          guint32 serial,
                          struct wl_resource *parent,
                          gint32 x,
                          gint32 y,
                          guint32 flags)
 {
+  MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = shell_surface->surface;
+  MetaWaylandCompositor *compositor = surface->compositor;
+  MetaWaylandSeat *seat = compositor->seat;
+
+  if (serial < seat->pointer.click_serial)
+    {
+      /* stale request */
+      return;
+    }
+
+  if (surface->window)
+    {
+      meta_warning ("Client set_popup() on an already visible window, this is not supported\n");
+    }
+  else
+    {
+      ensure_initial_state (surface);
+
+      surface->initial_state->initial_type = META_WAYLAND_SURFACE_POPUP;
+      surface->initial_state->transient_for = parent;
+      surface->initial_state->x = x;
+      surface->initial_state->y = y;
+    }
+
 }
 
 static void
@@ -1060,9 +1085,13 @@ meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
 					MetaWindow         *window)
 {
   MetaWaylandSurfaceInitialState *initial = surface->initial_state;
+  MetaWaylandCompositor *compositor = surface->compositor;
+  MetaWaylandSeat *seat = compositor->seat;
 
   if (initial == NULL)
     return;
+
+  window->type = META_WINDOW_NORMAL;
 
   /* Note that we poke at the bits directly here, because we're
      in the middle of meta_window_new_shared() */
@@ -1076,6 +1105,15 @@ meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
     case META_WAYLAND_SURFACE_MAXIMIZED:
       window->maximized_horizontally = window->maximized_vertically = TRUE;
       break;
+    case META_WAYLAND_SURFACE_POPUP:
+      window->override_redirect = TRUE;
+      window->type = META_WINDOW_DROPDOWN_MENU;
+      window->mapped = TRUE;
+      window->showing_for_first_time = FALSE;
+      window->placed = TRUE;
+      if (!meta_wayland_pointer_start_popup_grab (&seat->pointer, surface))
+	wl_shell_surface_send_popup_done (surface->shell_surface->resource);
+      break;
     default:
       g_assert_not_reached ();
     }
@@ -1083,8 +1121,18 @@ meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
   if (initial->transient_for)
     {
       MetaWaylandSurface *parent = wl_resource_get_user_data (initial->transient_for);
-      if (parent)
-	window->transient_for = g_object_ref (parent->window);
+      if (parent && parent->window)
+	{
+	  window->transient_for = g_object_ref (parent->window);
+
+	  if (initial->initial_type == META_WAYLAND_SURFACE_POPUP)
+	    {
+	      window->rect.x = parent->window->rect.x + initial->x;
+	      window->rect.y = parent->window->rect.y + initial->y;
+	    }
+	}
+
+      window->type = META_WINDOW_DIALOG;
     }
 
   if (initial->title)
@@ -1100,6 +1148,8 @@ meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
 				       initial->gtk_menubar_path,
 				       initial->gtk_application_object_path,
 				       initial->gtk_window_object_path);
+
+  meta_window_type_changed (window);
 
   free_initial_state (initial);
   surface->initial_state = NULL;

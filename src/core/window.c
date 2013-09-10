@@ -1049,16 +1049,6 @@ meta_window_new_shared (MetaDisplay         *display,
 
   if (client_type == META_WINDOW_CLIENT_TYPE_X11)
     {
-      if (window->override_redirect)
-        {
-          window->decorated = FALSE;
-          window->always_sticky = TRUE;
-          window->has_close_func = FALSE;
-          window->has_shade_func = FALSE;
-          window->has_move_func = FALSE;
-          window->has_resize_func = FALSE;
-        }
-
       meta_display_register_x_window (display, &window->xwindow, window);
       meta_window_update_shape_region_x11 (window);
       meta_window_update_input_region_x11 (window);
@@ -1077,6 +1067,16 @@ meta_window_new_shared (MetaDisplay         *display,
   else
     meta_wayland_surface_set_initial_state (window->surface, window);
 
+  if (window->override_redirect)
+    {
+      window->decorated = FALSE;
+      window->always_sticky = TRUE;
+      window->has_close_func = FALSE;
+      window->has_shade_func = FALSE;
+      window->has_move_func = FALSE;
+      window->has_resize_func = FALSE;
+    }
+
   if (!window->override_redirect &&
       client_type == META_WINDOW_CLIENT_TYPE_X11)
     {
@@ -1085,7 +1085,8 @@ meta_window_new_shared (MetaDisplay         *display,
       meta_window_update_role (window);
     }
 
-  meta_window_update_net_wm_type (window);
+  if (client_type == META_WINDOW_CLIENT_TYPE_X11)
+    meta_window_update_net_wm_type (window);
 
   if (!window->override_redirect)
     meta_window_update_icon_now (window);
@@ -8549,36 +8550,40 @@ recalc_window_type (MetaWindow *window)
                 window->type, window->desc, old_type);
 
   if (old_type != window->type)
-    {
-      gboolean old_decorated = window->decorated;
-      GObject  *object = G_OBJECT (window);
+    meta_window_type_changed (window);
+}
 
-      window->attached = meta_window_should_attach_to_parent (window);
-      recalc_window_features (window);
+void
+meta_window_type_changed (MetaWindow *window)
+{
+  gboolean old_decorated = window->decorated;
+  GObject  *object = G_OBJECT (window);
 
-      if (!window->override_redirect)
-	set_net_wm_state (window);
+  window->attached = meta_window_should_attach_to_parent (window);
+  recalc_window_features (window);
 
-      /* Update frame */
-      if (window->decorated)
-        meta_window_ensure_frame (window);
-      else
-        meta_window_destroy_frame (window);
+  if (!window->override_redirect)
+    set_net_wm_state (window);
 
-      /* update stacking constraints */
-      meta_window_update_layer (window);
+  /* Update frame */
+  if (window->decorated)
+    meta_window_ensure_frame (window);
+  else
+    meta_window_destroy_frame (window);
 
-      meta_window_grab_keys (window);
+  /* update stacking constraints */
+  meta_window_update_layer (window);
 
-      g_object_freeze_notify (object);
+  meta_window_grab_keys (window);
 
-      if (old_decorated != window->decorated)
-        g_object_notify (object, "decorated");
+  g_object_freeze_notify (object);
 
-      g_object_notify (object, "window-type");
+  if (old_decorated != window->decorated)
+    g_object_notify (object, "decorated");
 
-      g_object_thaw_notify (object);
-    }
+  g_object_notify (object, "window-type");
+
+  g_object_thaw_notify (object);
 }
 
 static void
@@ -8676,7 +8681,10 @@ recalc_window_features (MetaWindow *window)
   old_always_sticky = window->always_sticky;
 
   /* Use MWM hints initially */
-  window->decorated = window->mwm_decorated;
+  if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
+    window->decorated = window->mwm_decorated;
+  else
+    window->decorated = FALSE;
   window->border_only = window->mwm_border_only;
   window->has_close_func = window->mwm_has_close_func;
   window->has_minimize_func = window->mwm_has_minimize_func;

@@ -678,7 +678,9 @@ void meta_window_update_layer (MetaWindow *window);
 
 void meta_window_recalc_features    (MetaWindow *window);
 
+/* recalc_window_type is x11 only, wayland does its thing and then calls type_changed */
 void meta_window_recalc_window_type (MetaWindow *window);
+void meta_window_type_changed       (MetaWindow *window);
 
 void meta_window_stack_just_below (MetaWindow *window,
                                    MetaWindow *below_this_one);

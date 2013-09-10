@@ -42,6 +42,8 @@ struct _MetaWaylandPointerGrab
   MetaWaylandPointer *pointer;
   MetaWaylandSurface *focus;
   wl_fixed_t x, y;
+
+  struct wl_listener focus_destroy_listener;
 };
 
 struct _MetaWaylandPointer
@@ -51,6 +53,7 @@ struct _MetaWaylandPointer
   struct wl_resource *focus_resource;
   struct wl_listener focus_listener;
   guint32 focus_serial;
+  guint32 click_serial;
   struct wl_signal focus_signal;
 
   MetaWaylandPointerGrab *grab;
@@ -95,6 +98,10 @@ gboolean
 meta_wayland_pointer_begin_modal (MetaWaylandPointer *pointer);
 void
 meta_wayland_pointer_end_modal   (MetaWaylandPointer *pointer);
+
+gboolean
+meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
+				       MetaWaylandSurface *popup);
 
 void
 meta_wayland_pointer_set_current (MetaWaylandPointer *pointer,

@@ -51,6 +51,8 @@
 
 #include <string.h>
 
+static void meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer);
+
 static MetaWaylandSeat *
 meta_wayland_pointer_get_seat (MetaWaylandPointer *pointer)
 {
@@ -109,6 +111,7 @@ default_grab_button (MetaWaylandPointerGrab *grab,
       struct wl_client *client = wl_resource_get_client (resource);
       struct wl_display *display = wl_client_get_display (client);
       serial = wl_display_next_serial (display);
+      pointer->click_serial = serial;
       wl_pointer_send_button (resource, serial, time, button, state_w);
     }
 
@@ -458,4 +461,106 @@ meta_wayland_pointer_destroy_focus (MetaWaylandPointer *pointer)
       */
       meta_wayland_pointer_set_focus (pointer, NULL, 0, 0);
     }
+}
+
+static void
+popup_grab_focus (MetaWaylandPointerGrab *grab,
+		  MetaWaylandSurface     *surface,
+		  wl_fixed_t              x,
+		  wl_fixed_t              y)
+{
+  /* Popup grabs are in owner-events mode (ie, events for the same client
+     are reported as normal) */
+  if (wl_resource_get_client (surface->resource) ==
+      wl_resource_get_client (grab->focus->resource))
+    default_grab_focus (grab, surface, x, y);
+  else
+    meta_wayland_pointer_set_focus (grab->pointer, NULL, 0, 0);
+}
+
+static void
+popup_grab_motion (MetaWaylandPointerGrab *grab,
+		   uint32_t                time,
+		   wl_fixed_t              x,
+		   wl_fixed_t              y)
+{
+  default_grab_motion (grab, time, x, y);
+}
+
+static void
+popup_grab_button (MetaWaylandPointerGrab *grab,
+		   uint32_t                time,
+		   uint32_t                button,
+		   uint32_t                state)
+{
+  MetaWaylandPointer *pointer = grab->pointer;
+
+  if (pointer->focus_resource)
+    {
+      /* This is ensured by popup_grab_focus */
+      g_assert (wl_resource_get_client (pointer->focus_resource) ==
+		wl_resource_get_client (grab->focus->resource));
+
+      default_grab_button (grab, time, button, state);
+    }
+  else if (state == WL_POINTER_BUTTON_STATE_RELEASED &&
+	   pointer->button_count == 0)
+    meta_wayland_pointer_end_popup_grab (grab->pointer);
+}
+
+static MetaWaylandPointerGrabInterface popup_grab = {
+  popup_grab_focus,
+  popup_grab_motion,
+  popup_grab_button
+};
+
+static void
+meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer)
+{
+  MetaWaylandPointerGrab *grab;
+
+  grab = pointer->grab;
+
+  g_assert (grab->interface == &popup_grab);
+
+  if (grab->focus)
+    {
+      wl_shell_surface_send_popup_done (grab->focus->shell_surface->resource);
+      wl_list_remove (&grab->focus_destroy_listener.link);
+    }
+
+  meta_wayland_pointer_end_grab (pointer);
+  g_slice_free (MetaWaylandPointerGrab, grab);
+}
+
+static void
+on_popup_surface_destroy (struct wl_listener *listener,
+			  void               *data)
+{
+  MetaWaylandPointerGrab *grab =
+    wl_container_of (listener, grab, focus_destroy_listener);
+
+  grab->focus = NULL;
+  meta_wayland_pointer_end_popup_grab (grab->pointer);
+}
+
+gboolean
+meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
+				       MetaWaylandSurface *surface)
+{
+  MetaWaylandPointerGrab *grab;
+
+  if (pointer->grab != &pointer->default_grab)
+    return FALSE;
+
+  grab = g_slice_new0 (MetaWaylandPointerGrab);
+  grab->interface = &popup_grab;
+  grab->pointer = pointer;
+  grab->focus = surface;
+
+  grab->focus_destroy_listener.notify = on_popup_surface_destroy;
+  wl_resource_add_destroy_listener (surface->resource, &grab->focus_destroy_listener);
+
+  meta_wayland_pointer_start_grab (pointer, grab);
+  return TRUE;
 }
