@@ -249,6 +249,7 @@ const AppMenuButton = new Lang.Class({
         this._visible = true;
         this.actor.reactive = true;
         this.actor.show();
+        Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor,
                          { opacity: 255,
                            time: Overview.ANIMATION_TIME,
@@ -261,6 +262,7 @@ const AppMenuButton = new Lang.Class({
 
         this._visible = false;
         this.actor.reactive = false;
+        Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor,
                          { opacity: 0,
                            time: Overview.ANIMATION_TIME,
