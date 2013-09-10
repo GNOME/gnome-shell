@@ -465,6 +465,7 @@ st_widget_paint_background (StWidget *widget)
   StThemeNode *theme_node;
   ClutterActorBox allocation;
   guint8 opacity;
+  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
 
   theme_node = st_widget_get_theme_node (widget);
 
@@ -474,11 +475,13 @@ st_widget_paint_background (StWidget *widget)
 
   if (widget->priv->transition_animation)
     st_theme_node_transition_paint (widget->priv->transition_animation,
+                                    fb,
                                     &allocation,
                                     opacity);
   else
     st_theme_node_paint (theme_node,
                          current_paint_state (widget),
+                         fb,
                          &allocation,
                          opacity);
 }

@@ -28,8 +28,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define CLUTTER_ENABLE_EXPERIMENTAL_API
-#define COGL_ENABLE_EXPERIMENTAL_API
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gjs/gjs.h>

@@ -68,6 +68,9 @@ include Makefile-calendar-server.am
 include Makefile-hotplug-sniffer.am
 
 gnome_shell_cflags =				\
+	-DCLUTTER_ENABLE_EXPERIMENTAL_API	\
+	-DCOGL_ENABLE_EXPERIMENTAL_API 		\
+	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API 	\
 	$(GNOME_SHELL_CFLAGS)			\
 	-I$(srcdir)/tray			\
 	-DVERSION=\"$(VERSION)\"		\

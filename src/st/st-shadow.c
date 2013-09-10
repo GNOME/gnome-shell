@@ -190,7 +190,7 @@ st_shadow_get_box (StShadow              *shadow,
 
 struct _StShadowHelper {
   StShadow     *shadow;
-  CoglMaterial *material;
+  CoglPipeline *pipeline;
 
   gfloat        width;
   gfloat        height;
@@ -224,14 +224,14 @@ st_shadow_helper_update (StShadowHelper *helper,
 
   clutter_actor_get_size (source, &width, &height);
 
-  if (helper->material == NULL ||
+  if (helper->pipeline == NULL ||
       helper->width != width ||
       helper->height != height)
     {
-      if (helper->material)
-        cogl_object_unref (helper->material);
+      if (helper->pipeline)
+        cogl_object_unref (helper->pipeline);
 
-      helper->material = _st_create_shadow_material_from_actor (helper->shadow, source);
+      helper->pipeline = _st_create_shadow_pipeline_from_actor (helper->shadow, source);
       helper->width = width;
       helper->height = height;
     }
@@ -250,8 +250,8 @@ st_shadow_helper_copy (StShadowHelper *helper)
 
   copy = g_slice_new (StShadowHelper);
   *copy = *helper;
-  if (copy->material)
-    cogl_object_ref (copy->material);
+  if (copy->pipeline)
+    cogl_object_ref (copy->pipeline);
   st_shadow_ref (copy->shadow);
 
   return copy;
@@ -266,8 +266,8 @@ st_shadow_helper_copy (StShadowHelper *helper)
 void
 st_shadow_helper_free (StShadowHelper *helper)
 {
-  if (helper->material)
-    cogl_object_unref (helper->material);
+  if (helper->pipeline)
+    cogl_object_unref (helper->pipeline);
   st_shadow_unref (helper->shadow);
 
   g_slice_free (StShadowHelper, helper);
@@ -293,7 +293,8 @@ st_shadow_helper_paint (StShadowHelper  *helper,
   clutter_actor_box_get_size (actor_box, &width, &height);
 
   _st_paint_shadow_with_opacity (helper->shadow,
-                                 helper->material,
+                                 helper->pipeline,
+                                 cogl_get_draw_framebuffer (),
                                  &allocation,
                                  paint_opacity);
 }

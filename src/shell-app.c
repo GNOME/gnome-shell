@@ -217,7 +217,7 @@ typedef struct {
   ClutterTextDirection direction;
 } CreateFadedIconData;
 
-static CoglHandle
+static CoglTexture *
 shell_app_create_faded_icon_cpu (StTextureCache *cache,
                                  const char     *key,
                                  void           *datap,
@@ -227,7 +227,7 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
   ShellApp *app;
   GdkPixbuf *pixbuf;
   int size;
-  CoglHandle texture;
+  CoglTexture *texture;
   gint width, height, rowstride;
   guint8 n_channels;
   gboolean have_alpha;
@@ -263,13 +263,13 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
     }
 
   if (info == NULL)
-    return COGL_INVALID_HANDLE;
+    return NULL;
 
   pixbuf = gtk_icon_info_load_icon (info, NULL);
   g_object_unref (info);
 
   if (pixbuf == NULL)
-    return COGL_INVALID_HANDLE;
+    return NULL;
 
   width = gdk_pixbuf_get_width (pixbuf);
   height = gdk_pixbuf_get_height (pixbuf);
@@ -338,7 +338,7 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
 ClutterActor *
 shell_app_get_faded_icon (ShellApp *app, int size, ClutterTextDirection direction)
 {
-  CoglHandle texture;
+  CoglTexture *texture;
   ClutterActor *result;
   char *cache_key;
   CreateFadedIconData data;
@@ -367,7 +367,7 @@ shell_app_get_faded_icon (ShellApp *app, int size, ClutterTextDirection directio
                                    NULL);
   g_free (cache_key);
 
-  if (texture != COGL_INVALID_HANDLE)
+  if (texture != NULL)
     {
       result = clutter_texture_new ();
       clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (result), texture);

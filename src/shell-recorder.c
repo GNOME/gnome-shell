@@ -441,15 +441,19 @@ recorder_record_frame (ShellRecorder *recorder)
   recorder->last_frame_time = now;
 
   size = recorder->area.width * recorder->area.height * 4;
-
-  data = g_malloc (recorder->area.width * 4 * recorder->area.height);
-  cogl_read_pixels (recorder->area.x,
-                    recorder->area.y,
-                    recorder->area.width,
-                    recorder->area.height,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    CLUTTER_CAIRO_FORMAT_ARGB32,
-                    data);
+  data = g_malloc (size);
+  if (!cogl_framebuffer_read_pixels (cogl_get_draw_framebuffer (),
+                                     recorder->area.x,
+                                     recorder->area.y,
+                                     recorder->area.width,
+                                     recorder->area.height,
+                                     CLUTTER_CAIRO_FORMAT_ARGB32,
+                                     data))
+    {
+      g_warning ("Could not retrieve pixel data");
+      g_free (data);
+      return;
+    }
 
   buffer = gst_buffer_new();
   gst_buffer_insert_memory (buffer, -1,

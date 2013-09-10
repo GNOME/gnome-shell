@@ -97,6 +97,7 @@ shell_slicer_paint_child (ShellSlicer *self)
   float width, height, child_width, child_height;
   StAlign x_align, y_align;
   double x_align_factor, y_align_factor;
+  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
 
   child = st_bin_get_child (ST_BIN (self));
 
@@ -115,18 +116,17 @@ shell_slicer_paint_child (ShellSlicer *self)
   child_width = child_box.x2 - child_box.x1;
   child_height = child_box.y2 - child_box.y1;
 
-  cogl_push_matrix ();
-
-  cogl_clip_push_rectangle (0, 0, width, height);
-  cogl_translate ((int)(0.5 + x_align_factor * (width - child_width)),
-                  (int)(0.5 + y_align_factor * (height - child_height)),
-                  0);
+  cogl_framebuffer_push_matrix (fb);
+  cogl_framebuffer_push_rectangle_clip (fb, 0, 0, width, height);
+  cogl_framebuffer_translate (fb,
+                              (int)(0.5 + x_align_factor * (width - child_width)),
+                              (int)(0.5 + y_align_factor * (height - child_height)),
+                              0);
 
   clutter_actor_paint (child);
 
-  cogl_clip_pop ();
-
-  cogl_pop_matrix ();
+  cogl_framebuffer_pop_clip (fb);
+  cogl_framebuffer_pop_matrix (fb);
 }
 
 static void

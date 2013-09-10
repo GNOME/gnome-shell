@@ -105,10 +105,10 @@ struct _StThemeNodePaintState {
   float box_shadow_width;
   float box_shadow_height;
 
-  CoglHandle box_shadow_material;
-  CoglHandle prerendered_texture;
-  CoglHandle prerendered_material;
-  CoglHandle corner_material[4];
+  CoglPipeline *box_shadow_pipeline;
+  CoglTexture *prerendered_texture;
+  CoglPipeline *prerendered_pipeline;
+  CoglPipeline *corner_pipeline[4];
 };
 
 GType st_theme_node_get_type (void) G_GNUC_CONST;
@@ -268,6 +268,7 @@ gboolean st_theme_node_paint_equal    (StThemeNode *node,
 
 void st_theme_node_paint (StThemeNode            *node,
                           StThemeNodePaintState  *state,
+                          CoglFramebuffer        *fb,
                           const ClutterActorBox  *box,
                           guint8                  paint_opacity);
 

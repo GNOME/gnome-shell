@@ -1,4 +1,7 @@
 st_cflags =					\
+	-DCLUTTER_ENABLE_EXPERIMENTAL_API	\
+	-DCOGL_ENABLE_EXPERIMENTAL_API 		\
+	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API 	\
 	-I$(top_srcdir)/src			\
 	-DPREFIX=\""$(prefix)"\"		\
 	-DLIBDIR=\""$(libdir)"\"		\

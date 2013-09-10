@@ -35,8 +35,6 @@
 #define SHELL_IS_INVERT_EFFECT_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_INVERT_LIGHTNESS_EFFECT))
 #define SHELL_INVERT_LIGHTNESS_EFFECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_INVERT_LIGHTNESS_EFFEC, ShellInvertLightnessEffectClass))
 
-#define CLUTTER_ENABLE_EXPERIMENTAL_API
-
 #include "shell-invert-lightness-effect.h"
 
 #include <cogl/cogl.h>
@@ -124,6 +122,7 @@ shell_invert_lightness_effect_paint_target (ClutterOffscreenEffect *effect)
   ShellInvertLightnessEffect *self = SHELL_INVERT_LIGHTNESS_EFFECT (effect);
   ClutterActor *actor;
   guint8 paint_opacity;
+  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
 
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
   paint_opacity = clutter_actor_get_paint_opacity (actor);
@@ -133,11 +132,8 @@ shell_invert_lightness_effect_paint_target (ClutterOffscreenEffect *effect)
                               paint_opacity,
                               paint_opacity,
                               paint_opacity);
-  cogl_push_source (self->pipeline);
-
-  cogl_rectangle (0, 0, self->tex_width, self->tex_height);
-
-  cogl_pop_source ();
+  cogl_framebuffer_draw_rectangle (fb, self->pipeline,
+                                   0, 0, self->tex_width, self->tex_height);
 }
 
 static void

@@ -21,7 +21,6 @@
 #ifndef __SHELL_INVERT_LIGHTNESS_EFFECT_H__
 #define __SHELL_INVERT_LIGHTNESS_EFFECT_H__
 
-#define COGL_ENABLE_EXPERIMENTAL_API
 #include <clutter/clutter.h>
 
 G_BEGIN_DECLS
