@@ -362,6 +362,7 @@ cogl_indices_new_for_buffer
 cogl_indices_set_offset
 cogl_indices_type_get_type
 
+cogl_is_atlas_texture
 cogl_is_attribute
 cogl_is_attribute_buffer
 cogl_is_bitmap
