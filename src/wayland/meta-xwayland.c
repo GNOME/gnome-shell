@@ -87,8 +87,8 @@ bind_xserver (struct wl_client *client,
   if (client != compositor->xwayland_client)
     return;
 
-  compositor->xserver_resource =
-    wl_resource_create (client, &xserver_interface, MIN (1, version), id);
+  compositor->xserver_resource = wl_resource_create (client, &xserver_interface,
+						     MIN (META_XSERVER_VERSION, version), id);
   wl_resource_set_implementation (compositor->xserver_resource,
 				  &xserver_implementation, compositor, NULL);
 
@@ -323,7 +323,8 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
   GError *error;
 
   wl_global_create (compositor->wayland_display,
-		    &xserver_interface, 1,
+		    &xserver_interface,
+		    META_XSERVER_VERSION,
 		    compositor, bind_xserver);
 
   do

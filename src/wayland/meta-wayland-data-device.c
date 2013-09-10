@@ -111,7 +111,8 @@ meta_wayland_data_source_send_offer (MetaWaylandDataSource *source,
 
   offer->resource = wl_resource_create (wl_resource_get_client (target),
 					&wl_data_offer_interface,
-					MIN (1, wl_resource_get_version (target)), 0);
+					MIN (META_WL_DATA_OFFER_VERSION,
+					     wl_resource_get_version (target)), 0);
   wl_resource_set_implementation (offer->resource, &data_offer_interface,
 				  offer, destroy_data_offer);
   wl_resource_add_destroy_listener (source->resource,
@@ -466,7 +467,8 @@ create_data_source (struct wl_client *client,
     }
 
   source->resource = wl_resource_create (client, &wl_data_source_interface,
-					 MIN (1, wl_resource_get_version (resource)), id);
+					 MIN (META_WL_DATA_SOURCE_VERSION,
+					      wl_resource_get_version (resource)), id);
   wl_resource_set_implementation (source->resource, &data_source_interface,
 				  source, destroy_data_source);
 
@@ -492,7 +494,8 @@ get_data_device (struct wl_client *client,
   struct wl_resource *resource;
 
   resource = wl_resource_create (client, &wl_data_device_interface,
-				 MIN (1, wl_resource_get_version (manager_resource)), id);
+				 MIN (META_WL_DATA_DEVICE_VERSION,
+				      wl_resource_get_version (manager_resource)), id);
   wl_resource_set_implementation (resource, &data_device_interface, seat, unbind_data_device);
   wl_list_insert (&seat->drag_resource_list, wl_resource_get_link (resource));
 }
@@ -508,7 +511,8 @@ bind_manager (struct wl_client *client,
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &wl_data_device_manager_interface, MIN (version, 1), id);
+  resource = wl_resource_create (client, &wl_data_device_manager_interface,
+				 MIN (version, META_WL_DATA_DEVICE_MANAGER_VERSION), id);
   wl_resource_set_implementation (resource, &manager_interface, NULL, NULL);
 }
 
@@ -539,7 +543,8 @@ int
 meta_wayland_data_device_manager_init (struct wl_display *display)
 {
   if (wl_global_create (display,
-			&wl_data_device_manager_interface, 1,
+			&wl_data_device_manager_interface,
+			META_WL_DATA_DEVICE_MANAGER_VERSION,
 			NULL, bind_manager) == NULL)
     return -1;
 

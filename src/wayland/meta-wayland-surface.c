@@ -817,6 +817,7 @@ static void
 create_surface_extension (struct wl_client          *client,
 			  struct wl_resource        *master_resource,
 			  guint32                    id,
+			  int                        max_version,
 			  MetaWaylandSurface        *surface,
 			  const struct wl_interface *interface,
 			  const void                *implementation)
@@ -826,7 +827,7 @@ create_surface_extension (struct wl_client          *client,
   extension = g_new0 (MetaWaylandSurfaceExtension, 1);
 
   extension->resource = wl_resource_create (client, interface,
-					    wl_resource_get_version (master_resource), id);
+					    MIN (max_version, wl_resource_get_version (master_resource)), id);
   wl_resource_set_implementation (extension->resource, implementation,
 				  extension, destroy_surface_extension);
 
@@ -852,7 +853,7 @@ get_shell_surface (struct wl_client *client,
       return;
     }
 
-  create_surface_extension (client, resource, id, surface,
+  create_surface_extension (client, resource, id, META_WL_SHELL_SURFACE_VERSION, surface,
 			    &wl_shell_surface_interface,
 			    &meta_wayland_shell_surface_interface);
   surface->has_shell_surface = TRUE;
@@ -871,7 +872,8 @@ bind_shell (struct wl_client *client,
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &wl_shell_interface, MIN (1, version), id);
+  resource = wl_resource_create (client, &wl_shell_interface,
+				 MIN (META_WL_SHELL_VERSION, version), id);
   wl_resource_set_implementation (resource, &meta_wayland_shell_interface, data, NULL);
 }
 
@@ -954,7 +956,7 @@ get_gtk_surface (struct wl_client *client,
       return;
     }
 
-  create_surface_extension (client, resource, id, surface,
+  create_surface_extension (client, resource, id, META_GTK_SURFACE_VERSION, surface,
 			    &gtk_surface_interface,
 			    &meta_wayland_gtk_surface_interface);
   surface->has_gtk_surface = TRUE;
@@ -973,7 +975,8 @@ bind_gtk_shell (struct wl_client *client,
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &gtk_shell_interface, MIN (1, version), id);
+  resource = wl_resource_create (client, &gtk_shell_interface,
+				 MIN (META_GTK_SHELL_VERSION, version), id);
   wl_resource_set_implementation (resource, &meta_wayland_gtk_shell_interface, data, NULL);
 
   /* FIXME: ask the plugin */
@@ -984,12 +987,14 @@ void
 meta_wayland_init_shell (MetaWaylandCompositor *compositor)
 {
   if (wl_global_create (compositor->wayland_display,
-			&wl_shell_interface, 1,
+			&wl_shell_interface,
+			META_WL_SHELL_VERSION,
 			compositor, bind_shell) == NULL)
     g_error ("Failed to register a global shell object");
 
   if (wl_global_create (compositor->wayland_display,
-			&gtk_shell_interface, 1,
+			&gtk_shell_interface,
+			META_GTK_SHELL_VERSION,
 			compositor, bind_gtk_shell) == NULL)
     g_error ("Failed to register a global gtk-shell object");
 }

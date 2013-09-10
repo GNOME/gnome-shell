@@ -32,6 +32,7 @@
 #include <meta/meta-cursor-tracker.h>
 
 #include "meta-wayland-types.h"
+#include "meta-wayland-versions.h"
 #include "meta-wayland-surface.h"
 #include "meta-wayland-seat.h"
 
