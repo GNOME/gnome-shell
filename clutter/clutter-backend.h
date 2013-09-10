@@ -59,6 +59,9 @@ GType clutter_backend_get_type    (void) G_GNUC_CONST;
 
 ClutterBackend *clutter_get_default_backend (void);
 
+CLUTTER_AVAILABLE_IN_1_16
+void           clutter_set_windowing_backend (const char *backend_type);
+
 gdouble                     clutter_backend_get_resolution            (ClutterBackend             *backend);
 
 void                        clutter_backend_set_font_options          (ClutterBackend             *backend,

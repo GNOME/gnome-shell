@@ -1193,6 +1193,7 @@ clutter_settings_get_type
 clutter_set_default_frame_rate
 clutter_set_font_flags
 clutter_set_motion_events_enabled
+clutter_set_windowing_backend
 clutter_shader_compile
 clutter_shader_effect_get_program
 clutter_shader_effect_get_shader

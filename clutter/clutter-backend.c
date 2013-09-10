@@ -83,6 +83,9 @@
 /* XXX - should probably warn, here */
 #include "tslib/clutter-event-tslib.h"
 #endif
+#ifdef CLUTTER_WINDOWING_EGL
+#include "egl/clutter-backend-eglnative.h"
+#endif
 #ifdef CLUTTER_INPUT_WAYLAND
 #include "wayland/clutter-device-manager-wayland.h"
 #endif
@@ -126,6 +129,7 @@ static guint backend_signals[LAST_SIGNAL] = { 0, };
 static struct wl_display *_wayland_compositor_display;
 #endif
 
+static const char *allowed_backend;
 
 static void
 clutter_backend_dispose (GObject *gobject)
@@ -463,6 +467,58 @@ clutter_backend_real_create_stage (ClutterBackend  *backend,
                        NULL);
 }
 
+ClutterBackend *
+_clutter_create_backend (void)
+{
+  const char *backend = allowed_backend;
+  ClutterBackend *retval = NULL;
+
+  if (backend == NULL)
+    {
+      const char *backend_env = g_getenv ("CLUTTER_BACKEND");
+
+      if (backend_env != NULL)
+	backend = g_intern_string (backend_env);
+    }
+
+#ifdef CLUTTER_WINDOWING_OSX
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_OSX))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_OSX, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_WIN32
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_WIN32))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_WIN32, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_X11
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_X11))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_X11, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_WAYLAND
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_WAYLAND))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_WAYLAND, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_EGL
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_EGL))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_EGL_NATIVE, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_GDK
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_GDK))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_GDK, NULL);
+  else
+#endif
+  if (backend == NULL)
+    g_error ("No default Clutter backend found.");
+  else
+    g_error ("Unsupported Clutter backend: '%s'", backend);
+
+  return retval;
+}
+
 static void
 clutter_backend_real_init_events (ClutterBackend *backend)
 {
@@ -506,8 +562,8 @@ clutter_backend_real_init_events (ClutterBackend *backend)
 #endif
 #ifdef CLUTTER_INPUT_EVDEV
   /* Evdev can be used regardless of the windowing system */
-  if (input_backend != NULL &&
-      strcmp (input_backend, CLUTTER_INPUT_EVDEV) == 0)
+  if ((input_backend != NULL && strcmp (input_backend, CLUTTER_INPUT_EVDEV) == 0) ||
+      clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
     {
       _clutter_events_evdev_init (backend);
     }
@@ -1326,3 +1382,21 @@ clutter_wayland_set_compositor_display (void *display)
   _wayland_compositor_display = display;
 }
 #endif
+
+/**
+ * clutter_set_windowing_backend:
+ * @first_backend: the name of a clutter window backend
+ *
+ * Restricts clutter to only use the specified backend.
+ * This must be called before the first API call to clutter, including
+ * clutter_get_option_context()
+ *
+ * Since: 1.16
+ */
+void
+clutter_set_windowing_backend (const char *backend_type)
+{
+  g_return_if_fail (backend_type != NULL);
+
+  allowed_backend = g_intern_string (backend_type);
+}
