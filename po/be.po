@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-31 16:55+0000\n"
+"POT-Creation-Date: 2013-09-02 19:28+0000\n"
 "PO-Revision-Date: 2012-10-16 12:05+0300\n"
 "Last-Translator: Kasia Bondarava <kasia.bondarava@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
@@ -352,23 +352,27 @@ msgstr "Не ўдалося разабраць загад:"
 msgid "Execution of '%s' failed:"
 msgstr "Не ўдалося выканаць \"%s\":"
 
-#: ../js/ui/appDisplay.js:386
+#: ../js/ui/appDisplay.js:578
+msgid "Frequently used applications will appear here"
+msgstr "Тут размешчаныя часта ўжываныя праграмы"
+
+#: ../js/ui/appDisplay.js:694
 msgid "Frequent"
 msgstr "Часта"
 
-#: ../js/ui/appDisplay.js:393
+#: ../js/ui/appDisplay.js:701
 msgid "All"
 msgstr "Усе"
 
-#: ../js/ui/appDisplay.js:991
+#: ../js/ui/appDisplay.js:1488
 msgid "New Window"
 msgstr "Новае акно"
 
-#: ../js/ui/appDisplay.js:994 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1491 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Выдаліць са спіса ўпадабанага"
 
-#: ../js/ui/appDisplay.js:995
+#: ../js/ui/appDisplay.js:1492
 msgid "Add to Favorites"
 msgstr "Дадаць у спіс упадабанага"
 
@@ -1023,9 +1027,12 @@ msgstr "Перазапуск і ўсталяванне абнаўленняў"
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] "Сістэма аўтаматычна перазапусціцца і ўсталюе абнаўленні праз %d секунду."
-msgstr[1] "Сістэма аўтаматычна перазапусціцца і ўсталюе абнаўленні праз %d секунды."
-msgstr[2] "Сістэма аўтаматычна перазапусціцца і ўсталюе абнаўленні праз %d секунд."
+msgstr[0] ""
+"Сістэма аўтаматычна перазапусціцца і ўсталюе абнаўленні праз %d секунду."
+msgstr[1] ""
+"Сістэма аўтаматычна перазапусціцца і ўсталюе абнаўленні праз %d секунды."
+msgstr[2] ""
+"Сістэма аўтаматычна перазапусціцца і ўсталюе абнаўленні праз %d секунд."
 
 #: ../js/ui/endSessionDialog.js:119
 msgctxt "button"
@@ -1246,11 +1253,11 @@ msgstr "Не ўдалося заблакіраваць"
 msgid "Lock was blocked by an application"
 msgstr "Блакіраванне стрымана праграмай"
 
-#: ../js/ui/searchDisplay.js:445
+#: ../js/ui/searchDisplay.js:447
 msgid "Searching…"
 msgstr "Пошук..."
 
-#: ../js/ui/searchDisplay.js:489
+#: ../js/ui/searchDisplay.js:491
 msgid "No results."
 msgstr "Нічога не знойдзена."
 
@@ -1701,4 +1708,3 @@ msgstr "Пароль не можа быць пустым"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Карыстальнік праігнараваў дыялогавае акенца ідэнтыфікацыі"
-
