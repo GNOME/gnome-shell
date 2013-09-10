@@ -2288,6 +2288,7 @@ clutter_text_paint (ClutterActor *self)
     {
       PangoRectangle logical_rect = { 0, };
       gint actor_width, text_width;
+      gboolean rtl;
 
       pango_layout_get_extents (layout, NULL, &logical_rect);
 
@@ -2300,17 +2301,19 @@ clutter_text_paint (ClutterActor *self)
                   - 2 * TEXT_PADDING;
       text_width  = logical_rect.width / PANGO_SCALE;
 
+      rtl = clutter_actor_get_text_direction (self) == CLUTTER_TEXT_DIRECTION_RTL;
+
       if (actor_width < text_width)
         {
           gint cursor_x = clutter_rect_get_x (&priv->cursor_rect);
 
           if (priv->position == -1)
             {
-              text_x = actor_width - text_width;
+              text_x = rtl ? TEXT_PADDING : actor_width - text_width;
             }
           else if (priv->position == 0)
             {
-              text_x = TEXT_PADDING;
+              text_x = rtl ? actor_width - text_width : TEXT_PADDING;
             }
           else
             {
@@ -2326,7 +2329,7 @@ clutter_text_paint (ClutterActor *self)
         }
       else
         {
-          text_x = TEXT_PADDING;
+          text_x = rtl ? actor_width - text_width : TEXT_PADDING;
         }
     }
   else if (!priv->editable && !(priv->wrap && priv->ellipsize))
