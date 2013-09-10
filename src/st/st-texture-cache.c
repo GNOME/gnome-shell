@@ -272,7 +272,7 @@ texture_load_data_free (gpointer p)
 
   if (data->icon_info)
     {
-      gtk_icon_info_free (data->icon_info);
+      g_object_unref (data->icon_info);
       if (data->colors)
         st_icon_colors_unref (data->colors);
     }
@@ -956,7 +956,7 @@ load_gicon_with_colors (StTextureCache    *cache,
   if (ensure_request (cache, key, policy, &request, texture))
     {
       /* If there's an outstanding request, we've just added ourselves to it */
-      gtk_icon_info_free (info);
+      g_object_unref (info);
       g_free (key);
     }
   else

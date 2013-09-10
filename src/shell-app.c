@@ -266,7 +266,7 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
     return COGL_INVALID_HANDLE;
 
   pixbuf = gtk_icon_info_load_icon (info, NULL);
-  gtk_icon_info_free (info);
+  g_object_unref (info);
 
   if (pixbuf == NULL)
     return COGL_INVALID_HANDLE;
