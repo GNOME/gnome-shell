@@ -829,8 +829,6 @@ int
 shell_app_compare (ShellApp *app,
                    ShellApp *other)
 {
-  gboolean vis_app, vis_other;
-
   if (app->state != other->state)
     {
       if (app->state == SHELL_APP_STATE_RUNNING)

@@ -324,7 +324,6 @@ static gboolean
 gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
                                   XEvent     *xev)
 {
-  MetaScreen *screen = meta_plugin_get_screen (plugin);
   GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
 
 #ifdef GLX_INTEL_swap_event

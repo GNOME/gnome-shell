@@ -287,7 +287,6 @@ key_is_modifier (guint16 keyval)
 static GdkEventKey *
 key_event_to_gdk (ClutterKeyEvent *event_clutter)
 {
-  GdkDisplay *display = gdk_display_get_default ();
   GdkEventKey *event_gdk;
   event_gdk = (GdkEventKey *)gdk_event_new ((event_clutter->type == CLUTTER_KEY_PRESS) ?
                                             GDK_KEY_PRESS : GDK_KEY_RELEASE);

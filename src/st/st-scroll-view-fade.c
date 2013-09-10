@@ -96,7 +96,6 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
   StScrollViewFade *self = ST_SCROLL_VIEW_FADE (effect);
   ClutterShaderEffect *shader = CLUTTER_SHADER_EFFECT (effect);
   ClutterOffscreenEffectClass *parent;
-  CoglHandle material;
 
   gdouble value, lower, upper, page_size;
   ClutterActor *vscroll = st_scroll_view_get_vscroll_bar (ST_SCROLL_VIEW (self->actor));

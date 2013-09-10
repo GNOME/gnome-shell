@@ -189,7 +189,6 @@ st_box_layout_get_property (GObject    *object,
                             GValue     *value,
                             GParamSpec *pspec)
 {
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (object)->priv;
   ClutterLayoutManager *layout;
   StAdjustment *adjustment;
   ClutterOrientation orientation;
@@ -531,7 +530,6 @@ st_box_layout_get_paint_volume (ClutterActor       *actor,
 static void
 st_box_layout_style_changed (StWidget *self)
 {
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (self)->priv;
   StThemeNode *theme_node = st_widget_get_theme_node (self);
   ClutterBoxLayout *layout;
   double spacing;
