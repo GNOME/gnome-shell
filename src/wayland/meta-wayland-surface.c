@@ -871,7 +871,7 @@ bind_shell (struct wl_client *client,
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &wl_shell_interface, version, id);
+  resource = wl_resource_create (client, &wl_shell_interface, MIN (1, version), id);
   wl_resource_set_implementation (resource, &meta_wayland_shell_interface, data, NULL);
 }
 
@@ -973,7 +973,7 @@ bind_gtk_shell (struct wl_client *client,
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &gtk_shell_interface, version, id);
+  resource = wl_resource_create (client, &gtk_shell_interface, MIN (1, version), id);
   wl_resource_set_implementation (resource, &meta_wayland_gtk_shell_interface, data, NULL);
 
   /* FIXME: ask the plugin */

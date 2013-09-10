@@ -234,7 +234,7 @@ meta_wayland_compositor_create_surface (struct wl_client *wayland_client,
   surface = meta_wayland_surface_create (compositor,
 					 wayland_client,
 					 id,
-					 wl_resource_get_version (wayland_compositor_resource));
+					 MIN (3, wl_resource_get_version (wayland_compositor_resource)));
   
   compositor->surfaces = g_list_prepend (compositor->surfaces, surface);
 }
@@ -297,7 +297,8 @@ meta_wayland_compositor_create_region (struct wl_client *wayland_client,
   MetaWaylandRegion *region = g_slice_new0 (MetaWaylandRegion);
 
   region->resource = wl_resource_create (wayland_client,
-					 &wl_region_interface, 1,
+					 &wl_region_interface,
+					 MIN (1, wl_resource_get_version (compositor_resource)),
 					 id);
   wl_resource_set_implementation (region->resource,
 				  &meta_wayland_region_interface, region,
@@ -335,7 +336,7 @@ bind_output (struct wl_client *client,
   struct wl_resource *resource;
   guint mode_flags;
 
-  resource = wl_resource_create (client, &wl_output_interface, version, id);
+  resource = wl_resource_create (client, &wl_output_interface, MIN (2, version), id);
   wayland_output->resources = g_list_prepend (wayland_output->resources, resource);
 
   wl_resource_set_user_data (resource, wayland_output);
@@ -518,7 +519,7 @@ compositor_bind (struct wl_client *client,
   MetaWaylandCompositor *compositor = data;
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &wl_compositor_interface, version, id);
+  resource = wl_resource_create (client, &wl_compositor_interface, MIN (3, version), id);
   wl_resource_set_implementation (resource, &meta_wayland_compositor_interface, compositor, NULL);
 }
 

@@ -88,7 +88,7 @@ bind_xserver (struct wl_client *client,
     return;
 
   compositor->xserver_resource =
-    wl_resource_create (client, &xserver_interface, version, id);
+    wl_resource_create (client, &xserver_interface, MIN (1, version), id);
   wl_resource_set_implementation (compositor->xserver_resource,
 				  &xserver_implementation, compositor, NULL);
 
