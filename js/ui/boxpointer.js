@@ -3,8 +3,9 @@
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
-const St = imports.gi.St;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
+const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
@@ -59,6 +60,10 @@ const BoxPointer = new Lang.Class({
         this._sourceAlignment = 0.5;
         this._capturedEventId = 0;
         this._muteInput();
+    },
+
+    get arrowSide() {
+        return this._arrowSide;
     },
 
     _muteInput: function() {
@@ -612,6 +617,8 @@ const BoxPointer = new Lang.Class({
                 this._container.queue_relayout();
                 return false;
             }));
+
+            this.emit('arrow-side-changed');
         }
     },
 
@@ -644,6 +651,8 @@ const BoxPointer = new Lang.Class({
     updateArrowSide: function(side) {
         this._arrowSide = side;
         this._border.queue_repaint();
+
+        this.emit('arrow-side-changed');
     },
 
     getPadding: function(side) {
@@ -654,3 +663,4 @@ const BoxPointer = new Lang.Class({
         return this.actor.get_theme_node().get_length('-arrow-rise');
     }
 });
+Signals.addSignalMethods(BoxPointer.prototype);
