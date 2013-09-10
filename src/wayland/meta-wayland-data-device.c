@@ -109,12 +109,11 @@ meta_wayland_data_source_send_offer (MetaWaylandDataSource *source,
   offer->source = source;
   offer->source_destroy_listener.notify = destroy_offer_data_source;
 
-  offer->resource = wl_client_add_object (wl_resource_get_client (target),
-                                          &wl_data_offer_interface,
-                                          &data_offer_interface,
-                                          0,
-                                          offer);
-  wl_resource_set_destructor (offer->resource, destroy_data_offer);
+  offer->resource = wl_resource_create (wl_resource_get_client (target),
+					&wl_data_offer_interface,
+					MIN (1, wl_resource_get_version (target)), 0);
+  wl_resource_set_implementation (offer->resource, &data_offer_interface,
+				  offer, destroy_data_offer);
   wl_resource_add_destroy_listener (source->resource,
                                     &offer->source_destroy_listener);
 
@@ -466,12 +465,10 @@ create_data_source (struct wl_client *client,
       return;
     }
 
-  source->resource = wl_client_add_object (client,
-                                           &wl_data_source_interface,
-                                           &data_source_interface,
-                                           id,
-                                           source);
-  wl_resource_set_destructor (source->resource, destroy_data_source);
+  source->resource = wl_resource_create (client, &wl_data_source_interface,
+					 MIN (1, wl_resource_get_version (resource)), id);
+  wl_resource_set_implementation (source->resource, &data_source_interface,
+				  source, destroy_data_source);
 
   source->accept = client_source_accept;
   source->send = client_source_send;
@@ -494,11 +491,10 @@ get_data_device (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   struct wl_resource *resource;
 
-  resource = wl_client_add_object (client, &wl_data_device_interface,
-                                   &data_device_interface, id, seat);
-
+  resource = wl_resource_create (client, &wl_data_device_interface,
+				 MIN (1, wl_resource_get_version (manager_resource)), id);
+  wl_resource_set_implementation (resource, &data_device_interface, seat, unbind_data_device);
   wl_list_insert (&seat->drag_resource_list, wl_resource_get_link (resource));
-  wl_resource_set_destructor (resource, unbind_data_device);
 }
 
 static const struct wl_data_device_manager_interface manager_interface = {
@@ -510,8 +506,10 @@ static void
 bind_manager (struct wl_client *client,
               void *data, guint32 version, guint32 id)
 {
-  wl_client_add_object (client, &wl_data_device_manager_interface,
-                        &manager_interface, id, NULL);
+  struct wl_resource *resource;
+
+  resource = wl_resource_create (client, &wl_data_device_manager_interface, MIN (version, 1), id);
+  wl_resource_set_implementation (resource, &manager_interface, NULL, NULL);
 }
 
 void
@@ -540,9 +538,9 @@ meta_wayland_data_device_set_keyboard_focus (MetaWaylandSeat *seat)
 int
 meta_wayland_data_device_manager_init (struct wl_display *display)
 {
-  if (wl_display_add_global (display,
-                             &wl_data_device_manager_interface,
-                             NULL, bind_manager) == NULL)
+  if (wl_global_create (display,
+			&wl_data_device_manager_interface, 1,
+			NULL, bind_manager) == NULL)
     return -1;
 
   return 0;

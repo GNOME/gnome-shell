@@ -175,10 +175,10 @@ seat_get_pointer (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
   struct wl_resource *cr;
 
-  cr = wl_client_add_object (client, &wl_pointer_interface,
-                             &pointer_interface, id, seat);
+  cr = wl_resource_create (client, &wl_pointer_interface,
+			   MIN (wl_resource_get_version (resource), 2), id);
+  wl_resource_set_implementation (cr, &pointer_interface, seat, unbind_resource);
   wl_list_insert (&seat->pointer.resource_list, wl_resource_get_link (cr));
-  wl_resource_set_destructor (cr, unbind_resource);
 
   if (seat->pointer.focus &&
       wl_resource_get_client (seat->pointer.focus->resource) == client)
@@ -205,9 +205,10 @@ seat_get_keyboard (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
   struct wl_resource *cr;
 
-  cr = wl_client_add_object (client, &wl_keyboard_interface, NULL, id, seat);
+  cr = wl_resource_create (client, &wl_keyboard_interface,
+			   MIN (wl_resource_get_version (resource), 2), id);
+  wl_resource_set_implementation (cr, NULL, seat, unbind_resource);
   wl_list_insert (&seat->keyboard.resource_list, wl_resource_get_link (cr));
-  wl_resource_set_destructor (cr, unbind_resource);
 
   wl_keyboard_send_keymap (cr,
                            WL_KEYBOARD_KEYMAP_FORMAT_XKB_V1,
@@ -248,17 +249,16 @@ bind_seat (struct wl_client *client,
   MetaWaylandSeat *seat = data;
   struct wl_resource *resource;
 
-  resource = wl_client_add_object (client,
-                                   &wl_seat_interface,
-                                   &seat_interface,
-                                   id,
-                                   data);
+  resource = wl_resource_create (client, &wl_seat_interface, MIN (version, 2), id);
+  wl_resource_set_implementation (resource, &seat_interface, seat, unbind_resource);
   wl_list_insert (&seat->base_resource_list, wl_resource_get_link (resource));
-  wl_resource_set_destructor (resource, unbind_resource);
 
   wl_seat_send_capabilities (resource,
                              WL_SEAT_CAPABILITY_POINTER |
                              WL_SEAT_CAPABILITY_KEYBOARD);
+
+  if (version >= 2)
+    wl_seat_send_name (resource, "seat0");
 }
 
 static void
@@ -297,7 +297,7 @@ meta_wayland_seat_new (struct wl_display *display,
   seat->hotspot_x = 16;
   seat->hotspot_y = 16;
 
-  wl_display_add_global (display, &wl_seat_interface, seat, bind_seat);
+  wl_global_create (display, &wl_seat_interface, 2, seat, bind_seat);
 
   return seat;
 }
