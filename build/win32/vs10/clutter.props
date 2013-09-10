@@ -11,7 +11,7 @@
     <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API;COGL_HAS_WIN32_SUPPORT;CLUTTER_ENABLE_EXPERIMENTAL_API</LibBuildDefines>
     <DebugLibBuildDefines>$(LibBuildDefines);_DEBUG;CLUTTER_ENABLE_DEBUG</DebugLibBuildDefines>
     <ReleaseLibBuildDefines>$(LibBuildDefines);G_DISABLE_ASSERT;G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS</ReleaseLibBuildDefines>
-    <ClutterBuildDefines>$(BaseBuildDef);G_LOG_DOMAIN="Clutter";CLUTTER_LOCALEDIR="../share/locale";CLUTTER_SYSCONFDIR="../etc"</ClutterBuildDefines>
+    <ClutterBuildDefines>$(BaseBuildDef);G_LOG_DOMAIN="Clutter";CLUTTER_LOCALEDIR="../share/locale";CLUTTER_SYSCONFDIR="../etc";COGL_DISABLE_DEPRECATION_WARNINGS</ClutterBuildDefines>
     <ClutterDisableDeprecationWarnings>CLUTTER_DISABLE_DEPRECATION_WARNINGS;GLIB_DISABLE_DEPRECATION_WARNINGS</ClutterDisableDeprecationWarnings>
     <CallyTestDefs>$(BaseWinBuildDef);PREFIXDIR="/some/dummy/dir";$(ClutterDisableDeprecationWarnings)</CallyTestDefs>
     <TestProgDef>$(BaseBuildDef);TESTS_DATADIR="../share/clutter-$(ApiVersion)/data"</TestProgDef>
