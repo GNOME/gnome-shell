@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-04 08:38+0000\n"
-"PO-Revision-Date: 2013-03-05 19:19+0530\n"
+"POT-Creation-Date: 2013-09-02 19:28+0000\n"
+"PO-Revision-Date: 2013-09-10 20:47+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as_IN\n"
@@ -19,14 +19,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.5\n"
-
-#: ../data/50-gnome-shell-screenshot.xml.in.h:1
-msgid "Screenshots"
-msgstr "স্ক্ৰিনশ্বটসমূহ"
-
-#: ../data/50-gnome-shell-screenshot.xml.in.h:2
-msgid "Record a screencast"
-msgstr "এটা স্ক্ৰিনশ্বট ৰেকৰ্ড কৰক"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -41,10 +33,14 @@ msgid "Focus the active notification"
 msgstr "সক্ৰিয় অধিসূচনাত ফকাচ কৰক"
 
 #: ../data/50-gnome-shell-system.xml.in.h:4
+msgid "Show the overview"
+msgstr "অভাৰভিউ দেখুৱাওক"
+
+#: ../data/50-gnome-shell-system.xml.in.h:5
 msgid "Show all applications"
 msgstr "সকলো এপ্লিকেচন দেখুৱাওক"
 
-#: ../data/50-gnome-shell-system.xml.in.h:5
+#: ../data/50-gnome-shell-system.xml.in.h:6
 msgid "Open the application menu"
 msgstr "এপ্লিকেচন মেনু খোলক"
 
@@ -100,76 +96,42 @@ msgstr ""
 "DBus পদ্ধতিসমূহৰ সৈতে সলনি কৰিব পাৰিব।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
-msgid "Whether to collect stats about applications usage"
-msgstr "এপ্লিকেচন ব্যৱহাৰ বিষয়ে পৰিসংখ্যা সংগ্ৰহ কৰা হব নে"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"শ্বেলে সাধাৰণত সক্ৰিয় এপ্লিকেচনসমূহ মনিটৰ কৰে যাতে সকলোতকৈ অধিক ব্যৱহৃতসমূহ "
-"(উদাহৰনস্বৰুপে লঞ্চাৰসমূহত) ক দেখুৱাব পাৰে। যত এই তথ্য গোপন ৰখা হব, আপুনি "
-"ইয়াক "
-"গোপনীয়তা কাৰণসমূহৰ কাৰণে অসামৰ্থবান কৰিব পাৰে। অনুগ্ৰহ কৰি মন কৰিব যে এনেকুৱা "
-"কৰাত ইতিমধ্যে সংৰক্ষীত তথ্য আতৰি নাযায়।"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
 msgstr "পছন্দৰ এপ্লিকেচনসমূহৰ কাৰণে ডেস্কটপ ফাইল IDসমূহৰ তালিকা"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 "এই পৰিচয়কসমূহৰ লগত আনুষংগিক এপ্লিকেচনসমূহ পছন্দৰ স্থানত প্ৰদৰ্শীত কৰা হব।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of categories that should be displayed as folders"
 msgstr "ফোল্ডাৰ হিচাপে প্ৰদৰ্শন কৰিব লগিয়া বিভাগসমূহ তালিকাৰ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid ""
 "Each category name in this list will be represented as folder in the "
 "application view, rather than being displayed inline in the main view."
 msgstr ""
 "এই তালিকাৰ প্ৰতিটো বিভাগ নামক এপ্লিকেচন দৰ্শনত ফোল্ডাৰ হিচাপে প্ৰতিনিদ্ধিত্ব "
-"কৰা হব, "
-"মূখ্য দৰ্শনত ইনলাইন হিচাপে প্ৰদৰ্শন কৰাৰ পৰিৱৰ্তে।"
+"কৰা "
+"হব, মূখ্য দৰ্শনত ইনলাইন হিচাপে প্ৰদৰ্শন কৰাৰ পৰিৱৰ্তে।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
 msgstr "কমান্ড (Alt-F2) ডাইলগৰ কাৰণে ইতিহাস"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "History for the looking glass dialog"
 msgstr "চোৱা কাঁচ ডাইলগৰ কাৰণে ইতিহাস"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
-msgid ""
-"Internally used to store the last IM presence explicitly set by the user. "
-"The value here is from the TpConnectionPresenceType enumeration."
-msgstr ""
-"ব্যৱহাৰকাৰী দ্বাৰা স্পষ্টভাৱে সংহতি কৰা সৰ্বশেষ IM উপস্থিতি সংৰক্ষণ কৰাৰ বাবে "
-"অভ্যন্তৰীয় বাবে ব্যৱহৃত। ইয়াত থকা মান TpConnectionPresenceType ইনুমাৰেষণৰ পৰা।"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
-msgid ""
-"Internally used to store the last session presence status for the user. The "
-"value here is from the GsmPresenceStatus enumeration."
-msgstr ""
-"ব্যৱহাৰকাৰীৰ বাবে সৰ্বশেষ অধিবেশন উপস্থিতি অৱস্থা সংৰক্ষণ কৰাৰ বাবে "
-"অভ্যন্তৰীয়ভাৱে "
-"ব্যৱহৃত। ইয়াত থকা মান GsmPresenceStatus ইনুমাৰেষণৰ পৰা উপলব্ধ।"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "Always show the 'Log out' menuitem in the user menu."
 msgstr "ব্যৱহাৰকাৰী মেনুত 'Log out' মেনুআইটেম সদায় দেখুৱাব।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
@@ -177,14 +139,14 @@ msgstr ""
 "এই কি'য়ে এটা-ব্যৱহাৰকাৰী, এটা-অধিবেশন অৱস্থাবোৰত 'Log out' মেনুআইটেম "
 "স্বচালিতভাৱে লুকুৱা অভাৰৰাইড কৰে।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "ইনক্ৰিপ্টেড অথবা দূৰৱৰ্তী ফাইলচিস্টেমসমূহ মাউন্ট কৰাৰ বাবে পাছৱাৰ্ড মনত ৰখা "
 "হব নে"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -198,128 +160,71 @@ msgstr ""
 "তেন্তে এটা 'পাছৱাৰ্ড মনত ৰাখক' চেকবাকচ উপস্থিত থাকিব। এই কি'য়ে চেকবাকচৰ "
 "অবিকল্পিত অৱস্থা সংহতি কৰে।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "কেলেন্ডাৰত সপ্তাহৰ তাৰিখ দেখুৱাওক"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "If true, display the ISO week date in the calendar."
 msgstr "যদি সত্য, ISO সপ্তাহ তাৰিখক কেলেণ্ডাৰত দেখুৱাওক।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Keybinding to open the application menu"
 msgstr "এপ্লিকেচন মেনু খোলিবলে Keybinding"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "Keybinding to open the application menu."
 msgstr "এপ্লিকেচন মেনু খোলিবলে Keybinding।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "\"এপ্লিকেচনসমূহ দেখুৱাওক\" দৰ্শন খোলিবলে কি'বাইণ্ডিং"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "কাৰ্য্যসমূহ অভাৰভিউৰ \"এপ্লিকেচনসমূহ দেখুৱাওক\" দৰ্শন খোলিবলে কি'বাইণ্ডিং।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#| msgid "Keybinding to open the \"Show Applications\" view"
+msgid "Keybinding to open the overview"
+msgstr "অভাৰভিউ খোলিবলে কি'বাইণ্ডিং"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#| msgid "Keybinding to open the \"Show Applications\" view"
+msgid "Keybinding to open the Activities Overview."
+msgstr "কাৰ্য্যসমূহ অভাৰভিউ খোলিবলে কি'বাইণ্ডিং"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "বাৰ্তা ট্ৰেৰ দৃশ্যমানতা টগ'ল কৰিবলে Keybinding"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "বাৰ্তা ট্ৰেৰ দৃশ্যমানতা টগ'ল কৰিবলে Keybinding।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to focus the active notification"
 msgstr "সক্ৰিয় অধিসূচনা ফকাচ কৰিবলে কি'বাইণ্ডিং"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to focus the active notification."
 msgstr "সক্ৰিয় অধিসূচনা ফকাচ কৰিবলে কি'বাইণ্ডিং।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
-msgid "Keybinding to toggle the screen recorder"
-msgstr "পৰ্দা ৰেকৰ্ডাৰ অদল বদল কৰিবলে Keybinding"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
-msgid "Keybinding to start/stop the builtin screen recorder."
-msgstr "বিল্টইন পৰ্দা ৰেকৰ্ডাৰ আৰম্ভ/বন্ধ কৰিবলে Keybinding।"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Which keyboard to use"
 msgstr "কোনটো কিবৰ্ড ব্যৱহাৰ কৰা হব"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "The type of keyboard to use."
 msgstr "ব্যৱহাৰ কৰিব লগিয়া কিবৰ্ডৰ ধৰণ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
-msgid "Framerate used for recording screencasts."
-msgstr "screencasts ৰেকৰ্ড কৰাৰ কাৰণে ব্যৱহৃত Framerate"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
-"GNOME শ্বেলৰ screencast ৰেকৰ্ডাৰে ফ্ৰেইম-প্ৰতি ছেকেণ্ডত ৰেকৰ্ড কৰা পৰিণাম "
-"screencast ৰ framerate।"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr "screencast এনক'ড কৰিবলে ব্যৱহাৰ কৰা gstreamer পাইপলাইন"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
-#, no-c-format
-msgid ""
-"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
-"used for gst-launch. The pipeline should have an unconnected sink pad where "
-"the recorded video is recorded. It will normally have a unconnected source "
-"pad; output from that pad will be written into the output file. However the "
-"pipeline can also take care of its own output - this might be used to send "
-"the output to an icecast server via shout2send or similar. When unset or set "
-"to an empty value, the default pipeline will be used. This is currently "
-"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
-"threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
-"used as a placeholder for a guess at the optimal thread count on the system."
-msgstr ""
-"ৰেকৰ্ডিংসমূহ এনক'ড কৰোতে ব্যৱহৃত GStreamer পাইপলাইন সংহতি কৰে। ই gst-launch ৰ "
-"কাৰণে ব্যৱহৃত বাক্যবিন্যাস অনুকৰন কৰে। পাইপলাইনৰ এটা অসংযোগিত চিঙ্ক পেড থাকিব "
-"লাগে "
-"যত ৰেকৰ্ড কৰা ভিডিঅ' ৰেকৰ্ড কৰা হয়। ইয়াৰ সাধাৰণত এটা অসংযোগিত উৎস পেড থাকিব; "
-"সেই পেডৰ পৰা আউটপুট এটা আউটপুট ফাইললে লিখা হব। যি কি নহওক পাইপলাইনে নিজৰ "
-"আউটপুটৰ যত্ন লব পাৰে - ইয়াৰ হওতো আউটপুটক shout2send অথবা সমসাময়িকৰে এটা "
-"icecast "
-"চাৰ্ভাৰত পঠাবলে ব্যৱহাৰ হব পাৰে। যেতিয়া এটা ৰিক্ত মানলে অসংহিত বা সংহিত, "
-"অবিকল্পিত পাইপলাইন ব্যৱহাৰ কৰা হব। এইটো বৰ্তমানত 'vp8enc min_quantizer=13 "
-"max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' "
-"আৰু VP8 কডেক ব্যৱহাৰ কৰি WEBM ত ৰেকৰ্ড কৰে। %T ক চিস্টেমত অনুকূলিত থ্ৰেড "
-"কাওন্টত এটা "
-"অনুমানৰ প্লেইচহল্ডাৰ হিচাপে ব্যৱহাৰ কৰা হয়।"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
-msgid "File extension used for storing the screencast"
-msgstr "screencast সংৰক্ষণ কৰাৰ কাৰণে লথিপত্ৰ সম্প্ৰসাৰন"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
-msgid ""
-"The filename for recorded screencasts will be a unique filename based on the "
-"current date, and use this extension. It should be changed when recording to "
-"a different container format."
-msgstr ""
-"ৰেকৰ্ড কৰা screencasts ৰ কাৰণে ফাইল নাম বৰ্তমান তাৰিখৰ উপৰত ভিত্তি কৰি এটা "
-"অবিকল্প ফাইল নাম হব, আৰু এই সম্প্ৰসাৰন ব্যৱহাৰ কৰিব। ইয়াক এটা ভিন্ন "
-"অন্তৰ্ভুক্তক "
-"বিন্যাসত ৰেকৰ্ড কৰোতে পৰিবৰ্তন কৰিব লাগিব।"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "The application icon mode."
 msgstr "এপ্লিকেচন আইকন অৱস্থা।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -330,20 +235,20 @@ msgstr ""
 "only' (উইন্ডোৰ এটা থাম্বনেইল দেখুৱায়), 'app-icon-only' (কেৱল এপ্লিকেচন আইকন "
 "দেখুৱায়) অথবা 'both'।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Attach modal dialog to the parent window"
 msgstr "মডাল ডাইলগ উপধায়ক উইন্ডোৰ সৈতে সংলগ্ন কৰক"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "GNOME শ্বেল চলাওতে এই কি'য়ে org.gnome.mutter ত থকা কি' অভাৰৰাইড কৰে।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Arrangement of buttons on the titlebar"
 msgstr "শীৰ্ষকবাৰত বুটামসমূহ সজোঁৱা"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
@@ -351,15 +256,15 @@ msgstr ""
 "GNOME শ্বেল চলাওতে এই কি'য়ে org.gnome.desktop.wm.preferences ত থকা কি' "
 "অভাৰৰাইড কৰে।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:46
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "উইন্ডোসমূহক পৰ্দাৰ প্ৰান্তসমূহত এৰোতে প্ৰান্ত টাইলিং সামৰ্থবান কৰক"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:47
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "Workspaces are managed dynamically"
 msgstr "কাৰ্য্যস্থানসমূহক চলমানভাৱে ব্যৱস্থাপনা কৰা হয়"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:48
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Workspaces only on primary monitor"
 msgstr "কাৰ্য্যস্থানসমূহ কেৱল প্ৰাথমিক মনিটৰত"
 
@@ -376,113 +281,107 @@ msgstr "প্ৰসাৰন"
 msgid "Select an extension to configure using the combobox above."
 msgstr "উপৰত দিয়া কম্বোবাকচ ব্যৱহাৰ কৰি সংৰূপণ কৰিবলে এটা সম্প্ৰসাৰন বাছক।"
 
-#: ../js/gdm/loginDialog.js:405
-#| msgid "Session..."
-msgid "Session…"
-msgstr "অধিবেশন…"
-
-#. translators: this message is shown below the user list on the
-#. login screen. It can be activated to reveal an entry for
-#. manually entering the username.
-#: ../js/gdm/loginDialog.js:629
-msgid "Not listed?"
-msgstr "তালিকাভুক্ত নহয়?"
-
-#: ../js/gdm/loginDialog.js:783 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:375
+#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:126
-#: ../js/ui/userMenu.js:934
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:686
 msgid "Cancel"
 msgstr "বাতিল কৰক"
 
-#: ../js/gdm/loginDialog.js:799
+#: ../js/gdm/authPrompt.js:167 ../js/gdm/authPrompt.js:215
+msgid "Next"
+msgstr "পৰৱৰ্তী"
+
+#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:59
+msgid "Unlock"
+msgstr "আনলক কৰক"
+
+#: ../js/gdm/authPrompt.js:213
 msgctxt "button"
 msgid "Sign In"
 msgstr "ছাইন ইন কৰক"
 
-#: ../js/gdm/loginDialog.js:799
-msgid "Next"
-msgstr "পৰৱৰ্তী"
+#: ../js/gdm/loginDialog.js:294
+#| msgid "Switch Session"
+msgid "Choose Session"
+msgstr "অধিবেশন বাছক"
 
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:904 ../js/ui/components/networkAgent.js:260
-#: ../js/ui/components/networkAgent.js:278
-msgid "Username: "
-msgstr "ব্যৱহাৰকাৰীৰ নাম: "
+#. translators: this message is shown below the user list on the
+#. login screen. It can be activated to reveal an entry for
+#. manually entering the username.
+#: ../js/gdm/loginDialog.js:454
+msgid "Not listed?"
+msgstr "তালিকাভুক্ত নহয়?"
 
-#: ../js/gdm/loginDialog.js:1157
-msgid "Login Window"
-msgstr "লগিন উইন্ডো"
-
-#. Translators: accessible name of the power menu in the login screen
-#: ../js/gdm/powerMenu.js:36
-msgid "Power"
-msgstr "শক্তি"
-
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:695 ../js/ui/userMenu.js:699
-#: ../js/ui/userMenu.js:815
-msgid "Suspend"
-msgstr "বাতিল কৰক"
-
-#: ../js/gdm/powerMenu.js:98
-msgid "Restart"
-msgstr "পুনৰাম্ভ কৰক"
-
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:697
-#: ../js/ui/userMenu.js:699 ../js/ui/userMenu.js:814 ../js/ui/userMenu.js:938
-msgid "Power Off"
-msgstr "বন্ধ কৰক"
-
-#: ../js/gdm/util.js:182
-msgid "Authentication error"
-msgstr "প্ৰমাণীকৰণ ত্ৰুটি"
-
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:299
-msgid "(or swipe finger)"
-msgstr "(অথবা আঙুলি স্বাইপ কৰক)"
-
-#: ../js/gdm/util.js:324
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: ../js/gdm/loginDialog.js:622
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(উদাহৰণ, ব্যৱহাৰকাৰী অথবা %s)"
 
-#: ../js/misc/util.js:94
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:255
+#: ../js/ui/components/networkAgent.js:273
+msgid "Username: "
+msgstr "ব্যৱহাৰকাৰীৰ নাম: "
+
+#: ../js/gdm/loginDialog.js:891
+msgid "Login Window"
+msgstr "লগিন উইন্ডো"
+
+#: ../js/gdm/util.js:306
+msgid "Authentication error"
+msgstr "প্ৰমাণীকৰণ ত্ৰুটি"
+
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/util.js:436
+msgid "(or swipe finger)"
+msgstr "(অথবা আঙুলি স্বাইপ কৰক)"
+
+#: ../js/misc/util.js:97
 msgid "Command not found"
 msgstr "কমান্ড পোৱা নগল"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:127
+#: ../js/misc/util.js:130
 msgid "Could not parse command:"
 msgstr "কমান্ড বিশ্লেষন কৰিব নোৱাৰি:"
 
-#: ../js/misc/util.js:135
+#: ../js/misc/util.js:138
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "'%s' ৰ প্ৰেৰণ ব্যৰ্থ হল:"
 
-#: ../js/ui/appDisplay.js:348
+#: ../js/ui/appDisplay.js:578
+msgid "Frequently used applications will appear here"
+msgstr "সঘনে ব্যৱহাৰ কৰা এপ্লিকেচনসমূহ ইয়াত উপস্থিত হব"
+
+#: ../js/ui/appDisplay.js:694
 msgid "Frequent"
 msgstr "সঘন"
 
-#: ../js/ui/appDisplay.js:355
+#: ../js/ui/appDisplay.js:701
 msgid "All"
 msgstr "সকলো"
 
-#: ../js/ui/appDisplay.js:913
+#: ../js/ui/appDisplay.js:1488
 msgid "New Window"
 msgstr "নতুন উইন্ডো"
 
-#: ../js/ui/appDisplay.js:916 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1491 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "পছন্দৰ পৰা আতৰাওক"
 
-#: ../js/ui/appDisplay.js:917
+#: ../js/ui/appDisplay.js:1492
 msgid "Add to Favorites"
 msgstr "পছন্দলে যোগ কৰক"
 
@@ -496,7 +395,7 @@ msgstr "%s ক আপোনাৰ পছন্দলে যোগ কৰা হ�
 msgid "%s has been removed from your favorites."
 msgstr "%s ক আপোনাৰ পছন্দৰ পৰা আতৰোৱা হৈছে।"
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:788
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "সংহতিসমূহ"
 
@@ -519,7 +418,7 @@ msgctxt "event list time"
 msgid "%H\\u2236%M"
 msgstr "%H\\u2236%M"
 
-#. Transators: Shown in calendar event list, if 12h format,
+#. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space
 #: ../js/ui/calendar.js:77
@@ -620,36 +519,44 @@ msgctxt "list saturday"
 msgid "S"
 msgstr "S"
 
+#: ../js/ui/calendar.js:447
+msgid "Previous month"
+msgstr "যোৱা মাহ"
+
+#: ../js/ui/calendar.js:457
+msgid "Next month"
+msgstr "অহা মাহ"
+
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:692
+#: ../js/ui/calendar.js:753
 msgid "Nothing Scheduled"
 msgstr "একো অনুসূচীত কৰা হোৱা নাই"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:708
+#: ../js/ui/calendar.js:771
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:711
+#: ../js/ui/calendar.js:774
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:721
+#: ../js/ui/calendar.js:785
 msgid "Today"
 msgstr "আজি"
 
-#: ../js/ui/calendar.js:725
+#: ../js/ui/calendar.js:789
 msgid "Tomorrow"
 msgstr "কালি"
 
-#: ../js/ui/calendar.js:736
+#: ../js/ui/calendar.js:800
 msgid "This week"
 msgstr "এই সপ্তাহ"
 
-#: ../js/ui/calendar.js:744
+#: ../js/ui/calendar.js:808
 msgid "Next week"
 msgstr "অহা সপ্তাহ"
 
@@ -665,58 +572,59 @@ msgstr "বহিৰ্তম ড্ৰাইভ বিচ্ছিন্ন ক
 msgid "Removable Devices"
 msgstr "আতৰাব পৰা ডিভাইচসমূহ"
 
-#: ../js/ui/components/autorunManager.js:593
+#: ../js/ui/components/autorunManager.js:594
 #, c-format
 msgid "Open with %s"
 msgstr "%s ৰ সৈতে খোলক"
 
-#: ../js/ui/components/autorunManager.js:619
+#: ../js/ui/components/autorunManager.js:620
 msgid "Eject"
 msgstr "উলিৱাওক"
 
-#: ../js/ui/components/keyring.js:82 ../js/ui/components/polkitAgent.js:268
+#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "পাছৱাৰ্ড:"
 
-#: ../js/ui/components/keyring.js:101
+#: ../js/ui/components/keyring.js:107
 msgid "Type again:"
 msgstr "আকৌ টাইপ কৰক:"
 
-#: ../js/ui/components/networkAgent.js:132
+#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
+#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
 msgid "Connect"
 msgstr "সংযোগ কৰক"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:223
-#: ../js/ui/components/networkAgent.js:235
-#: ../js/ui/components/networkAgent.js:262
-#: ../js/ui/components/networkAgent.js:282
-#: ../js/ui/components/networkAgent.js:292
+#: ../js/ui/components/networkAgent.js:218
+#: ../js/ui/components/networkAgent.js:230
+#: ../js/ui/components/networkAgent.js:257
+#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:287
 msgid "Password: "
 msgstr "পাছৱাৰ্ড: "
 
 #. static WEP
-#: ../js/ui/components/networkAgent.js:228
+#: ../js/ui/components/networkAgent.js:223
 msgid "Key: "
 msgstr "কি': "
 
-#: ../js/ui/components/networkAgent.js:266
+#: ../js/ui/components/networkAgent.js:261
 msgid "Identity: "
 msgstr "পৰিচয়: "
 
-#: ../js/ui/components/networkAgent.js:268
+#: ../js/ui/components/networkAgent.js:263
 msgid "Private key password: "
 msgstr "ব্যক্তিগত কি' পাছৱাৰ্ড: "
 
-#: ../js/ui/components/networkAgent.js:280
+#: ../js/ui/components/networkAgent.js:275
 msgid "Service: "
 msgstr "সেৱা: "
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:304
 msgid "Authentication required by wireless network"
 msgstr "বেতাঁৰ নেটৱাৰ্কৰ দ্বাৰা প্ৰমাণীকৰণৰ প্ৰয়োজন"
 
-#: ../js/ui/components/networkAgent.js:310
+#: ../js/ui/components/networkAgent.js:305
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -725,48 +633,48 @@ msgstr ""
 "বেতাঁৰ নেটৱাৰ্ক '%s' অভিগম কৰিবলে পাছৱাৰ্ডসমূহ অথবা ইনক্ৰিপষণ কি'সমূহৰ "
 "প্ৰয়োজন।"
 
-#: ../js/ui/components/networkAgent.js:314
+#: ../js/ui/components/networkAgent.js:309
 msgid "Wired 802.1X authentication"
 msgstr "তাঁৰযুক্ত 802.1X প্ৰমাণীকৰণ"
 
-#: ../js/ui/components/networkAgent.js:316
+#: ../js/ui/components/networkAgent.js:311
 msgid "Network name: "
 msgstr "নেটৱাৰ্কৰ নাম: "
 
-#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:316
 msgid "DSL authentication"
 msgstr "DSL প্ৰমাণীকৰণ"
 
-#: ../js/ui/components/networkAgent.js:328
+#: ../js/ui/components/networkAgent.js:323
 msgid "PIN code required"
 msgstr "PIN ক'ডৰ প্ৰয়োজন"
 
-#: ../js/ui/components/networkAgent.js:329
+#: ../js/ui/components/networkAgent.js:324
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "মবাইল ব্ৰডবেণ্ড সেৱাৰ বাবে PIN ক'ডৰ প্ৰয়োজন"
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:325
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:336
+#: ../js/ui/components/networkAgent.js:331
 msgid "Mobile broadband network password"
 msgstr "মবাইল ব্ৰডবেণ্ড নেটৱাৰ্ক পাছৱাৰ্ড"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:332
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "'%s' লে সংযোগ কৰিবলে এটা পাছৱাৰ্ডৰ প্ৰয়োজন।"
 
-#: ../js/ui/components/polkitAgent.js:55
+#: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
 msgstr "প্ৰমাণীকৰণৰ প্ৰয়োজন"
 
-#: ../js/ui/components/polkitAgent.js:93
+#: ../js/ui/components/polkitAgent.js:92
 msgid "Administrator"
 msgstr "প্ৰশাসক"
 
-#: ../js/ui/components/polkitAgent.js:165
+#: ../js/ui/components/polkitAgent.js:170
 msgid "Authenticate"
 msgstr "প্ৰমাণীত কৰক"
 
@@ -774,15 +682,9 @@ msgstr "প্ৰমাণীত কৰক"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:256 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "ক্ষমা কৰিব, সেয়া কাম নকৰিলে। অনুগ্ৰহ কৰি পুনৰ চেষ্টা কৰক।"
-
-#. Translators: this is a filename used for screencast recording
-#: ../js/ui/components/recorder.js:48
-#, no-c-format
-msgid "Screencast from %d %t"
-msgstr "%d %t ৰ পৰা স্ক্ৰিনকাস্ট দেখুৱাওক"
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
@@ -838,14 +740,14 @@ msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:985
+#: ../js/ui/components/telepathyClient.js:986
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s এতিয়া %s হিচাপে জনাজাত"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1088
+#: ../js/ui/components/telepathyClient.js:1089
 #, c-format
 msgid "Invitation to %s"
 msgstr "%s লে নিমন্ত্ৰণ"
@@ -853,38 +755,38 @@ msgstr "%s লে নিমন্ত্ৰণ"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1096
+#: ../js/ui/components/telepathyClient.js:1097
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s এ আপোনাক %s ত অংশগ্ৰহণ কৰিবলে আমন্ত্ৰণ জনাইছে"
 
-#: ../js/ui/components/telepathyClient.js:1098
-#: ../js/ui/components/telepathyClient.js:1137
-#: ../js/ui/components/telepathyClient.js:1177
-#: ../js/ui/components/telepathyClient.js:1240
+#: ../js/ui/components/telepathyClient.js:1099
+#: ../js/ui/components/telepathyClient.js:1140
+#: ../js/ui/components/telepathyClient.js:1180
+#: ../js/ui/components/telepathyClient.js:1243
 msgid "Decline"
 msgstr "নাকচ কৰক"
 
-#: ../js/ui/components/telepathyClient.js:1099
-#: ../js/ui/components/telepathyClient.js:1178
-#: ../js/ui/components/telepathyClient.js:1241
+#: ../js/ui/components/telepathyClient.js:1100
+#: ../js/ui/components/telepathyClient.js:1181
+#: ../js/ui/components/telepathyClient.js:1244
 msgid "Accept"
 msgstr "গ্ৰহন কৰক"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1129
+#: ../js/ui/components/telepathyClient.js:1130
 #, c-format
 msgid "Video call from %s"
 msgstr "%s ৰ পৰা ভিডিঅ' কল"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1132
+#: ../js/ui/components/telepathyClient.js:1133
 #, c-format
 msgid "Call from %s"
 msgstr "%s ৰ পৰা কল"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1139
+#: ../js/ui/components/telepathyClient.js:1142
 msgid "Answer"
 msgstr "উত্তৰ দিয়ক"
 
@@ -893,110 +795,110 @@ msgstr "উত্তৰ দিয়ক"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1171
+#: ../js/ui/components/telepathyClient.js:1174
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s এ আপোনাক %s পঠাই আছে"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1206
+#: ../js/ui/components/telepathyClient.js:1209
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "আপুনি কেতিয়া অনলাইন আছে চাবলে %s এ অনুমতি বিচাৰিব"
 
-#: ../js/ui/components/telepathyClient.js:1298
+#: ../js/ui/components/telepathyClient.js:1301
 msgid "Network error"
 msgstr "নেটৱাৰ্ক ত্ৰুটি"
 
-#: ../js/ui/components/telepathyClient.js:1300
+#: ../js/ui/components/telepathyClient.js:1303
 msgid "Authentication failed"
 msgstr "প্ৰমাণীকৰণ ব্যৰ্থ"
 
-#: ../js/ui/components/telepathyClient.js:1302
+#: ../js/ui/components/telepathyClient.js:1305
 msgid "Encryption error"
 msgstr "ইনক্ৰিপষণ ত্ৰুটি"
 
-#: ../js/ui/components/telepathyClient.js:1304
+#: ../js/ui/components/telepathyClient.js:1307
 msgid "Certificate not provided"
 msgstr "প্ৰমাণপত্ৰ প্ৰদান কৰা হোৱা নাই"
 
-#: ../js/ui/components/telepathyClient.js:1306
+#: ../js/ui/components/telepathyClient.js:1309
 msgid "Certificate untrusted"
 msgstr "প্ৰমাণপত্ৰক ভৰষা কৰিব নোৱাৰি"
 
-#: ../js/ui/components/telepathyClient.js:1308
+#: ../js/ui/components/telepathyClient.js:1311
 msgid "Certificate expired"
 msgstr "প্ৰমাণপত্ৰৰ অৱসান ঘটিছে"
 
-#: ../js/ui/components/telepathyClient.js:1310
+#: ../js/ui/components/telepathyClient.js:1313
 msgid "Certificate not activated"
 msgstr "প্ৰমাণপত্ৰ সক্ৰিয় কৰা হোৱা নাই"
 
-#: ../js/ui/components/telepathyClient.js:1312
+#: ../js/ui/components/telepathyClient.js:1315
 msgid "Certificate hostname mismatch"
 msgstr "প্ৰমাণপত্ৰ হস্টনাম অমিল"
 
-#: ../js/ui/components/telepathyClient.js:1314
+#: ../js/ui/components/telepathyClient.js:1317
 msgid "Certificate fingerprint mismatch"
 msgstr "প্ৰমাণপত্ৰ ফিংগাৰপ্ৰিন্ট অমিল"
 
-#: ../js/ui/components/telepathyClient.js:1316
+#: ../js/ui/components/telepathyClient.js:1319
 msgid "Certificate self-signed"
 msgstr "প্ৰমাণপত্ৰ স্ব-স্বাক্ষৰীত"
 
-#: ../js/ui/components/telepathyClient.js:1318
+#: ../js/ui/components/telepathyClient.js:1321
 msgid "Status is set to offline"
 msgstr "অৱস্থা অফলাইনলে সংহতি কৰা হৈছে"
 
-#: ../js/ui/components/telepathyClient.js:1320
+#: ../js/ui/components/telepathyClient.js:1323
 msgid "Encryption is not available"
 msgstr "ইনক্ৰিপষণ উপলব্ধ নহয়"
 
-#: ../js/ui/components/telepathyClient.js:1322
+#: ../js/ui/components/telepathyClient.js:1325
 msgid "Certificate is invalid"
 msgstr "প্ৰমাণপত্ৰ অবৈধ"
 
-#: ../js/ui/components/telepathyClient.js:1324
+#: ../js/ui/components/telepathyClient.js:1327
 msgid "Connection has been refused"
 msgstr "সংযোগ নাকচ কৰা হৈছে"
 
-#: ../js/ui/components/telepathyClient.js:1326
+#: ../js/ui/components/telepathyClient.js:1329
 msgid "Connection can't be established"
 msgstr "সংযোগ স্থাপন কৰিব নোৱাৰি"
 
-#: ../js/ui/components/telepathyClient.js:1328
+#: ../js/ui/components/telepathyClient.js:1331
 msgid "Connection has been lost"
 msgstr "সংযোগ হেৰাইছে"
 
-#: ../js/ui/components/telepathyClient.js:1330
+#: ../js/ui/components/telepathyClient.js:1333
 msgid "This account is already connected to the server"
 msgstr "এই একাওন্ট ইতিমধ্যে চাৰ্ভাৰৰ সৈতে সংযোগিত"
 
-#: ../js/ui/components/telepathyClient.js:1332
+#: ../js/ui/components/telepathyClient.js:1335
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "সংযোগক একে সম্পদ ব্যৱহাৰ কৰি এটা নতুন সংযোগৰে প্ৰতিস্থাপন কৰা হৈছে"
 
-#: ../js/ui/components/telepathyClient.js:1334
+#: ../js/ui/components/telepathyClient.js:1337
 msgid "The account already exists on the server"
 msgstr "একাওন্ট ইতিমধ্যে চাৰ্ভাৰত উপস্থিত"
 
-#: ../js/ui/components/telepathyClient.js:1336
+#: ../js/ui/components/telepathyClient.js:1339
 msgid "Server is currently too busy to handle the connection"
 msgstr "চাৰ্ভাৰ সংযোগ ব্যৱস্থাপনা কৰিবলে বৰ্তমানে অতি ব্যস্ত"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1341
 msgid "Certificate has been revoked"
 msgstr "প্ৰমাণপত্ৰ প্ৰত্যাহাৰ কৰা হৈছে"
 
-#: ../js/ui/components/telepathyClient.js:1340
+#: ../js/ui/components/telepathyClient.js:1343
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "প্ৰমাণপত্ৰয় এটা অসুৰক্ষিত চিফাৰ এলগৰিথম ব্যৱহাৰ কৰে অথবা ক্ৰিপ্টোগ্ৰাফিয়ভাৱে "
 "দুৰ্বল"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1345
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1005,22 +907,22 @@ msgstr ""
 "ক্ৰিপ্টোগ্ৰাফী "
 "লাইব্ৰেৰীয়ে প্ৰণয়ন কৰা সীমাসমূহত অতিক্ৰম কৰে"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1347
 msgid "Internal error"
 msgstr "অভ্যন্তৰীক ত্ৰুটি"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1357
 #, c-format
 msgid "Unable to connect to %s"
 msgstr "%s ৰ সৈতে সংযোগ কৰিবলে অক্ষম"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "View account"
 msgstr "একাওন্ট দৰ্শন কৰক"
 
-#: ../js/ui/components/telepathyClient.js:1398
+#: ../js/ui/components/telepathyClient.js:1401
 msgid "Unknown reason"
 msgstr "অজ্ঞাত কাৰণ"
 
@@ -1034,119 +936,137 @@ msgstr "এপ্লিকেচনসমূহ দেখুৱাওক"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/dash.js:435
+#: ../js/ui/dash.js:442
 msgid "Dash"
 msgstr "ডেশ"
 
-#: ../js/ui/dateMenu.js:91
+#: ../js/ui/dateMenu.js:86
 msgid "Open Calendar"
 msgstr "কেলেন্ডাৰ খোলক"
 
-#: ../js/ui/dateMenu.js:96
+#: ../js/ui/dateMenu.js:90
 msgid "Open Clocks"
 msgstr "ঘড়ীবোৰ খোলক"
 
-#: ../js/ui/dateMenu.js:105
-#| msgid "Date and Time Settings"
+#: ../js/ui/dateMenu.js:97
 msgid "Date & Time Settings"
 msgstr "তাৰিখ আৰু সময সংহতিসমূহ"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:205
+#: ../js/ui/dateMenu.js:202
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
 
-#: ../js/ui/endSessionDialog.js:63
+#: ../js/ui/endSessionDialog.js:62
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s লগ আউট কৰক"
 
-#: ../js/ui/endSessionDialog.js:64
+#: ../js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Log Out"
 msgstr "লগ আউট কৰক"
 
 #: ../js/ui/endSessionDialog.js:65
-msgid "Click Log Out to quit these applications and log out of the system."
-msgstr ""
-"এই এপ্লিকেচনসমূহ প্ৰস্থান কৰি চিস্টেমৰ পৰা লগ আউট হবলে লগ আউট ক্লিক কৰক।"
-
-#: ../js/ui/endSessionDialog.js:67
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s স্বচালিতভাৱে %d ছেকেণ্ডৰ পিছত লগ আউট হৈ যাব।"
 msgstr[1] "%s স্বচালিতভাৱে %d ছেকেণ্ডৰ পিছত লগ আউট হৈ যাব।"
 
-#: ../js/ui/endSessionDialog.js:72
+#: ../js/ui/endSessionDialog.js:70
 #, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "আপুনি স্বচালিতভাৱে %d ছেকেণ্ড পিছত লগ আউট হৈ যাব।"
 msgstr[1] "আপুনি স্বচালিতভাৱে %d ছেকেণ্ড পিছত লগ আউট হৈ যাব।"
 
-#: ../js/ui/endSessionDialog.js:76
-msgid "Logging out of the system."
-msgstr "চিস্টেমৰ পৰা লগ আউট কৰা হৈছে।"
-
-#: ../js/ui/endSessionDialog.js:78
+#: ../js/ui/endSessionDialog.js:75
 msgctxt "button"
 msgid "Log Out"
 msgstr "লগ আউট কৰক"
 
-#: ../js/ui/endSessionDialog.js:83
+#: ../js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Power Off"
 msgstr "বন্ধ কৰক"
 
-#: ../js/ui/endSessionDialog.js:84
-msgid "Click Power Off to quit these applications and power off the system."
-msgstr "এই এপ্লিকেচনসমূহক প্ৰস্থান কৰি চিস্টেম বন্ধ কৰিবলে বন্ধ কৰক ক্লিক কৰক।"
-
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:83
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "চিস্টেম %d ছেকেণ্ড পিছত স্বচালিতভাৱে বন্ধ কৰক হব। "
 msgstr[1] "চিস্টেম %d ছেকেণ্ডৰ পিছত স্বচালিতভাৱে বন্ধ হব। "
 
-#: ../js/ui/endSessionDialog.js:90
-msgid "Powering off the system."
-msgstr "চিস্টেম বন্ধ কৰা হৈছে।"
-
-#: ../js/ui/endSessionDialog.js:92 ../js/ui/endSessionDialog.js:109
+#: ../js/ui/endSessionDialog.js:88 ../js/ui/endSessionDialog.js:104
 msgctxt "button"
 msgid "Restart"
 msgstr "পুনৰাম্ভ কৰক"
 
-#: ../js/ui/endSessionDialog.js:94
+#: ../js/ui/endSessionDialog.js:90
 msgctxt "button"
 msgid "Power Off"
 msgstr "বন্ধ কৰক"
 
-#: ../js/ui/endSessionDialog.js:100
+#: ../js/ui/endSessionDialog.js:97
 msgctxt "title"
 msgid "Restart"
 msgstr "পুনৰাম্ভ কৰক"
 
-#: ../js/ui/endSessionDialog.js:101
-msgid "Click Restart to quit these applications and restart the system."
-msgstr ""
-"এই এপ্লিকেচনসমূহক প্ৰস্থান কৰি চিস্টেম পুনৰাম্ভ কৰিবলে পুনৰাম্ভ ক্লিক কৰক।"
-
-#: ../js/ui/endSessionDialog.js:103
+#: ../js/ui/endSessionDialog.js:99
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "চিস্টেম %d ছেকেণ্ডত স্বচালিতভাৱে পুনৰাম্ভ হব।"
 msgstr[1] "চিস্টেম %d ছেকেণ্ডত স্বচালিতভাৱে পুনৰাম্ভ হব।"
 
-#: ../js/ui/endSessionDialog.js:107
-msgid "Restarting the system."
-msgstr "চিস্টেম পুনৰাম্ভ কৰা হৈছে।"
+#: ../js/ui/endSessionDialog.js:112
+#| msgid "Install Updates & Restart"
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "পুনাৰম্ভ কৰক আৰু আপডেইটসমূহ ইনস্টল কৰক"
+
+#: ../js/ui/endSessionDialog.js:114
+#, c-format
+#| msgid "The system will restart automatically in %d second."
+#| msgid_plural "The system will restart automatically in %d seconds."
+msgid "The system will automatically restart and install updates in %d second."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] ""
+"চিস্টেম %d ছেকেণ্ডত স্বচালিতভাৱে পুনৰাম্ভ হব আৰু আপডেইটসমূহ ইনস্টল কৰিব।"
+msgstr[1] ""
+"চিস্টেম %d ছেকেণ্ডত স্বচালিতভাৱে পুনৰাম্ভ হব আৰু আপডেইটসমূহ ইনস্টল কৰিব।"
+
+#: ../js/ui/endSessionDialog.js:119
+msgctxt "button"
+msgid "Restart & Install"
+msgstr "পুনৰাম্ভ কৰক আৰু ইনস্টল কৰক"
+
+#: ../js/ui/endSessionDialog.js:271
+msgid "Some applications are busy or have unsaved work."
+msgstr ""
+"কিছুমান এপ্লিকেচন ব্যস্ত হব পাৰে অথবা সিহতৰ কিছুমান অসংৰক্ষিত কাৰ্য্য থাকিব "
+"পাৰে।"
+
+#: ../js/ui/endSessionDialog.js:277
+msgid "Other users are logged in."
+msgstr "অন্য ব্যৱহাৰকাৰীসকল লগ্ড ইন আছে।"
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: ../js/ui/endSessionDialog.js:479
+#, c-format
+msgid "%s (remote)"
+msgstr "%s (দূৰৱৰ্তী)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: ../js/ui/endSessionDialog.js:482
+#, c-format
+msgid "%s (console)"
+msgstr "%s (কনচৌল)"
 
 #: ../js/ui/extensionDownloader.js:199
 msgid "Install"
@@ -1157,95 +1077,96 @@ msgstr "ইনস্টল কৰক"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "extensions.gnome.org ৰ পৰা  '%s' ক ডাউনল'ড আৰু ইনস্টল কৰিব নে?"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:314
-#: ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:334
 msgid "Keyboard"
 msgstr "কিবৰ্ড"
 
-#: ../js/ui/lookingGlass.js:693
+#: ../js/ui/lookingGlass.js:689
 msgid "No extensions installed"
 msgstr "কোনো সম্প্ৰসাৰন ইনস্টল কৰা হোৱা নাই"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:747
+#: ../js/ui/lookingGlass.js:743
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s এ কোনো ত্ৰুটি প্ৰেৰণ কৰা নাই।"
 
-#: ../js/ui/lookingGlass.js:753
+#: ../js/ui/lookingGlass.js:749
 msgid "Hide Errors"
 msgstr "ত্ৰুটিসমূহ লুকুৱাওক"
 
-#: ../js/ui/lookingGlass.js:757 ../js/ui/lookingGlass.js:817
+#: ../js/ui/lookingGlass.js:753 ../js/ui/lookingGlass.js:813
 msgid "Show Errors"
 msgstr "ত্ৰুটিসমূহ দেখুৱাওক"
 
-#: ../js/ui/lookingGlass.js:766
+#: ../js/ui/lookingGlass.js:762
 msgid "Enabled"
 msgstr "সামৰ্থবান কৰা আছে"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:769 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:765 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "অসামৰ্থবান কৰা আছে"
 
-#: ../js/ui/lookingGlass.js:771
+#: ../js/ui/lookingGlass.js:767
 msgid "Error"
 msgstr "ত্ৰুটি"
 
-#: ../js/ui/lookingGlass.js:773
+#: ../js/ui/lookingGlass.js:769
 msgid "Out of date"
 msgstr "পুৰনি"
 
-#: ../js/ui/lookingGlass.js:775
+#: ../js/ui/lookingGlass.js:771
 msgid "Downloading"
 msgstr "ডাউনল'ড কৰা হৈছে"
 
-#: ../js/ui/lookingGlass.js:799
+#: ../js/ui/lookingGlass.js:795
 msgid "View Source"
 msgstr "উৎস দৰ্শন কৰক"
 
-#: ../js/ui/lookingGlass.js:808
+#: ../js/ui/lookingGlass.js:804
 msgid "Web Page"
 msgstr "ৱেব পৃষ্ঠা"
 
-#: ../js/ui/messageTray.js:1182
+#: ../js/ui/messageTray.js:1222
 msgid "Open"
 msgstr "খোলক"
 
-#: ../js/ui/messageTray.js:1189
+#: ../js/ui/messageTray.js:1229
 msgid "Remove"
 msgstr "আতৰাওক"
 
-#: ../js/ui/messageTray.js:1501
-#| msgid "No Messages"
+#: ../js/ui/messageTray.js:1513
 msgid "Clear Messages"
 msgstr "বাৰ্তাসমূহ পৰিষ্কাৰ কৰক"
 
-#: ../js/ui/messageTray.js:1528
-#| msgid "Notifications"
+#: ../js/ui/messageTray.js:1540
 msgid "Notification Settings"
 msgstr "অধিসূচনা সংহতিসমূহ"
 
-#: ../js/ui/messageTray.js:1707
+#: ../js/ui/messageTray.js:1559
+msgid "Tray Menu"
+msgstr "ট্ৰে মেনু"
+
+#: ../js/ui/messageTray.js:1775
 msgid "No Messages"
 msgstr "কোনো বাৰ্তা নাই"
 
-#: ../js/ui/messageTray.js:1787
+#: ../js/ui/messageTray.js:1812
 msgid "Message Tray"
 msgstr "বাৰ্তা ট্ৰে"
 
-#: ../js/ui/messageTray.js:2864
+#: ../js/ui/messageTray.js:2786
 msgid "System Information"
 msgstr "চিস্টেম তথ্য"
 
-#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:374
+#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:396
 msgctxt "program"
 msgid "Unknown"
 msgstr "অজ্ঞাত"
 
-#: ../js/ui/overviewControls.js:460 ../js/ui/screenShield.js:153
+#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:152
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1256,7 +1177,7 @@ msgstr[1] "%d নতুন বাৰ্তাসমূহ"
 msgid "Undo"
 msgstr "কাৰ্য্য বাতিল কৰক"
 
-#: ../js/ui/overview.js:129
+#: ../js/ui/overview.js:127
 msgid "Overview"
 msgstr "অভাৰভিউ"
 
@@ -1264,22 +1185,26 @@ msgstr "অভাৰভিউ"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:284
-#| msgid "Type to search..."
+#: ../js/ui/overview.js:258
 msgid "Type to search…"
 msgstr "সন্ধান কৰিবলে টাইপ কৰক…"
 
-#: ../js/ui/panel.js:613
+#: ../js/ui/panel.js:516
 msgid "Quit"
 msgstr "প্ৰস্থান কৰক"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:642
+#: ../js/ui/panel.js:568
 msgid "Activities"
 msgstr "কাৰ্য্যসমূহ"
 
-#: ../js/ui/panel.js:983
+#: ../js/ui/panel.js:805
+#| msgid "Settings"
+msgid "Settings Menu"
+msgstr "সংহতিসমূহ মেনু"
+
+#: ../js/ui/panel.js:892
 msgid "Top Bar"
 msgstr "উপৰৰ বাৰ"
 
@@ -1288,36 +1213,36 @@ msgstr "উপৰৰ বাৰ"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:727
+#: ../js/ui/popupMenu.js:226
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:205
+#: ../js/ui/runDialog.js:74
 msgid "Enter a Command"
 msgstr "এটা কমান্ড সুমুৱাওক"
 
-#: ../js/ui/runDialog.js:241
+#: ../js/ui/runDialog.js:110
 msgid "Close"
 msgstr "বন্ধ কৰক"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:90
+#: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:155
+#: ../js/ui/screenShield.js:154
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d নতুন অধিসূচনা"
 msgstr[1] "%d নতুন অধিসূচনাসমূহ"
 
-#: ../js/ui/screenShield.js:442 ../js/ui/userMenu.js:806
+#: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:333
 msgid "Lock"
 msgstr "লক কৰক"
 
-#: ../js/ui/screenShield.js:639
+#: ../js/ui/screenShield.js:703
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME এ পৰ্দা লক কৰিব লাগিব"
 
@@ -1328,37 +1253,35 @@ msgstr "GNOME এ পৰ্দা লক কৰিব লাগিব"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:758 ../js/ui/screenShield.js:1169
-#| msgid "Unable to connect to %s"
+#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
 msgid "Unable to lock"
 msgstr "লক কৰিবলে অক্ষম"
 
-#: ../js/ui/screenShield.js:759 ../js/ui/screenShield.js:1170
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Lock was blocked by an application"
 msgstr "লক কাৰ্য্য এটা এপ্লিকেচন দ্বাৰা প্ৰতিৰোধ কৰা হৈছিল"
 
-#: ../js/ui/searchDisplay.js:431
-#| msgid "Searching..."
+#: ../js/ui/searchDisplay.js:447
 msgid "Searching…"
 msgstr "সন্ধান কৰা হৈছে…"
 
-#: ../js/ui/searchDisplay.js:475
+#: ../js/ui/searchDisplay.js:491
 msgid "No results."
 msgstr "কোনো ফলাফল নাই।"
 
-#: ../js/ui/shellEntry.js:29
+#: ../js/ui/shellEntry.js:27
 msgid "Copy"
 msgstr "কপি কৰক"
 
-#: ../js/ui/shellEntry.js:34
+#: ../js/ui/shellEntry.js:32
 msgid "Paste"
 msgstr "পেইস্ট কৰক"
 
-#: ../js/ui/shellEntry.js:105
+#: ../js/ui/shellEntry.js:99
 msgid "Show Text"
 msgstr "লিখনী দেখুৱাওক"
 
-#: ../js/ui/shellEntry.js:107
+#: ../js/ui/shellEntry.js:101
 msgid "Hide Text"
 msgstr "লিখনী লুকুৱাওক"
 
@@ -1370,499 +1293,325 @@ msgstr "পাছৱাৰ্ড"
 msgid "Remember Password"
 msgstr "পাছৱাৰ্ড মনত ৰাখক"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:140
-msgid "Unlock"
-msgstr "আনলক কৰক"
-
-#: ../js/ui/status/accessibility.js:36
+#: ../js/ui/status/accessibility.js:41
 msgid "Accessibility"
 msgstr "অভিগম্যতা"
 
-#: ../js/ui/status/accessibility.js:41
+#: ../js/ui/status/accessibility.js:58
 msgid "Zoom"
 msgstr "জুম কৰক"
 
-#: ../js/ui/status/accessibility.js:48
+#: ../js/ui/status/accessibility.js:65
 msgid "Screen Reader"
 msgstr "পৰ্দা ৰিডাৰ"
 
-#: ../js/ui/status/accessibility.js:52
+#: ../js/ui/status/accessibility.js:69
 msgid "Screen Keyboard"
 msgstr "পৰ্দা কিবৰ্ড"
 
-#: ../js/ui/status/accessibility.js:56
+#: ../js/ui/status/accessibility.js:73
 msgid "Visual Alerts"
 msgstr "চক্ষ সতৰ্কবাৰ্তাসমূহ"
 
-#: ../js/ui/status/accessibility.js:59
+#: ../js/ui/status/accessibility.js:76
 msgid "Sticky Keys"
 msgstr "স্টিকি কি'সমূহ"
 
-#: ../js/ui/status/accessibility.js:62
+#: ../js/ui/status/accessibility.js:79
 msgid "Slow Keys"
 msgstr "মন্থৰ কি'সমূহ"
 
-#: ../js/ui/status/accessibility.js:65
+#: ../js/ui/status/accessibility.js:82
 msgid "Bounce Keys"
 msgstr "বাউঞ্চ কি'সমূহ"
 
-#: ../js/ui/status/accessibility.js:68
+#: ../js/ui/status/accessibility.js:85
 msgid "Mouse Keys"
 msgstr "মাউছ কি'সমূহ"
 
-#: ../js/ui/status/accessibility.js:72
-msgid "Universal Access Settings"
-msgstr "সাৰ্বভৈমক অভিগম সংহতিসমূহ"
-
-#: ../js/ui/status/accessibility.js:129
+#: ../js/ui/status/accessibility.js:144
 msgid "High Contrast"
 msgstr "উচ্চ কন্ট্ৰাস্ট"
 
-#: ../js/ui/status/accessibility.js:178
+#: ../js/ui/status/accessibility.js:193
 msgid "Large Text"
 msgstr "ডাঙৰ লিখনী"
 
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
-#: ../js/ui/status/bluetooth.js:289 ../js/ui/status/bluetooth.js:321
-#: ../js/ui/status/bluetooth.js:357 ../js/ui/status/bluetooth.js:388
-#: ../js/ui/status/network.js:826
+#. The Bluetooth menu only appears when Bluetooth is in use,
+#. so just statically build it with a "Turn Off" menu item.
+#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:62
+#: ../js/ui/status/bluetooth.js:99 ../js/ui/status/bluetooth.js:127
+#: ../js/ui/status/bluetooth.js:163 ../js/ui/status/bluetooth.js:194
 msgid "Bluetooth"
 msgstr "ব্লুটুথ"
 
-#: ../js/ui/status/bluetooth.js:45
-msgid "Visibility"
-msgstr "দৃশ্যমানতা"
+#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
+#: ../js/ui/status/network.js:1034 ../js/ui/status/rfkill.js:46
+msgid "Turn Off"
+msgstr "বন্ধ কৰক"
 
-#: ../js/ui/status/bluetooth.js:59
-#| msgid "Send Files to Device..."
-msgid "Send Files to Device…"
-msgstr "ফাইলসমূহক ডিভাইচলে পঠাওক…"
-
-#: ../js/ui/status/bluetooth.js:60
-#| msgid "Set up a New Device..."
-msgid "Set Up a New Device…"
-msgstr "এটা নতুন ডিভাইচ সংহতি কৰক…"
-
-#: ../js/ui/status/bluetooth.js:84
+#: ../js/ui/status/bluetooth.js:33
 msgid "Bluetooth Settings"
 msgstr "ব্লুটুথ সংহতিসমূহ"
 
-#. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:104 ../js/ui/status/network.js:178
-msgid "hardware disabled"
-msgstr "হাৰ্ডৱেৰ অসামৰ্থবান কৰা আছে"
+#: ../js/ui/status/bluetooth.js:57
+#, c-format
+#| msgid "Connected (private)"
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "%d সংযুক্ত ডিভাইচ"
+msgstr[1] "%d সংযুক্ত ডিভাইচসমূহ"
 
-#: ../js/ui/status/bluetooth.js:197
-msgid "Connection"
-msgstr "সংযোগ"
-
-#: ../js/ui/status/bluetooth.js:208 ../js/ui/status/network.js:460
-msgid "disconnecting..."
-msgstr "বিচ্ছিনিত কৰা হৈছে..."
-
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:466
-#: ../js/ui/status/network.js:1546
-msgid "connecting..."
-msgstr "সংযোগ কৰা হৈছে..."
-
-#: ../js/ui/status/bluetooth.js:239
-#| msgid "Send Files..."
-msgid "Send Files…"
-msgstr "ফাইলসমূহ পঠাওক…"
-
-#: ../js/ui/status/bluetooth.js:246
-msgid "Keyboard Settings"
-msgstr "কিবৰ্ড সংহতিসমূহ"
-
-#: ../js/ui/status/bluetooth.js:249
-msgid "Mouse Settings"
-msgstr "মাউছ আৰু টাচপেড সংহতিসমূহ"
-
-#: ../js/ui/status/bluetooth.js:254 ../js/ui/status/volume.js:316
-msgid "Sound Settings"
-msgstr "শব্দ সংহতিসমূহ"
-
-#: ../js/ui/status/bluetooth.js:322
+#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
 #, c-format
 msgid "Authorization request from %s"
 msgstr "%s ৰ পৰা প্ৰমাণীকৰণ অনুৰোধ"
 
-#: ../js/ui/status/bluetooth.js:328
-#, c-format
-msgid "Device %s wants access to the service '%s'"
-msgstr "ডিভাইচ %s এ সেৱা '%s' লে অভিগম বিচাৰে"
-
-#: ../js/ui/status/bluetooth.js:330
-msgid "Always grant access"
-msgstr "সদায় অভিগম প্ৰদান কৰক"
-
-#: ../js/ui/status/bluetooth.js:331
-msgid "Grant this time only"
-msgstr "কেৱল এইবাৰৰ কাৰণে প্ৰদান কৰক"
-
-#: ../js/ui/status/bluetooth.js:332
-msgid "Reject"
-msgstr "নাকচ কৰক"
-
-#. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:359
-#, c-format
-msgid "Pairing confirmation for %s"
-msgstr "%s ৰ কাৰণে যোৰ প্ৰতিশ্ৰুতি"
-
-#: ../js/ui/status/bluetooth.js:365 ../js/ui/status/bluetooth.js:396
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/bluetooth.js:171
+#: ../js/ui/status/bluetooth.js:202
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "ডিভাইচ %s এ এই কমপিউটাৰৰ লগত সংযোগ কৰিব বিচাৰে"
 
-#: ../js/ui/status/bluetooth.js:366
+#: ../js/ui/status/bluetooth.js:108
+msgid "Allow"
+msgstr "অনুমতি দিয়ক"
+
+#: ../js/ui/status/bluetooth.js:109
+msgid "Deny"
+msgstr "নাকচ কৰক"
+
+#: ../js/ui/status/bluetooth.js:134
 #, c-format
-msgid "Please confirm whether the PIN '%06d' matches the one on the device."
-msgstr "অনুগ্ৰহ কৰি সুনিশ্চিত কৰক যে PIN '%06d' ডিভাইচত থকাটোৰ সৈতে মিল খায়।"
+msgid "Device %s wants access to the service '%s'"
+msgstr "ডিভাইচ %s এ সেৱা '%s' লে অভিগম বিচাৰে"
+
+#: ../js/ui/status/bluetooth.js:136
+msgid "Always grant access"
+msgstr "সদায় অভিগম প্ৰদান কৰক"
+
+#: ../js/ui/status/bluetooth.js:137
+msgid "Grant this time only"
+msgstr "কেৱল এইবাৰৰ কাৰণে প্ৰদান কৰক"
+
+#: ../js/ui/status/bluetooth.js:138
+msgid "Reject"
+msgstr "নাকচ কৰক"
+
+#. Translators: argument is the device short name
+#: ../js/ui/status/bluetooth.js:165
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "%s ৰ কাৰণে যোৰ প্ৰতিশ্ৰুতি"
+
+#: ../js/ui/status/bluetooth.js:172
+#, c-format
+#| msgid "Please confirm whether the PIN '%06d' matches the one on the device."
+msgid ""
+"Please confirm whether the Passkey '%06d' matches the one on the device."
+msgstr "অনুগ্ৰহ কৰি সুনিশ্চিত কৰক যে পাছকি '%06d' ডিভাইচত থকাটোৰ সৈতে মিল খায়।"
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:369
+#: ../js/ui/status/bluetooth.js:175
 msgid "Matches"
 msgstr "মিলসমূহ"
 
-#: ../js/ui/status/bluetooth.js:370
+#: ../js/ui/status/bluetooth.js:176
 msgid "Does not match"
 msgstr "মিল নাখায়"
 
-#: ../js/ui/status/bluetooth.js:389
+#: ../js/ui/status/bluetooth.js:195
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s ৰ কাৰণে যোৰ অনুৰোধ"
 
-#: ../js/ui/status/bluetooth.js:397
+#: ../js/ui/status/bluetooth.js:203
 msgid "Please enter the PIN mentioned on the device."
 msgstr "অনুগ্ৰহ কৰি ডিভাইচত উল্লেখ কৰা PIN সুমুৱাওক।"
 
-#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:220
 msgid "OK"
 msgstr "ঠিক আছে"
 
-#: ../js/ui/status/keyboard.js:368
+#: ../js/ui/status/brightness.js:42
+msgid "Brightness"
+msgstr "উজ্জ্বলতা"
+
+#: ../js/ui/status/keyboard.js:404
 msgid "Show Keyboard Layout"
 msgstr "কিবৰ্ড বিন্যাস দেখুৱাওক"
 
-#: ../js/ui/status/keyboard.js:373
-#| msgid "Region and Language Settings"
-msgid "Region & Language Settings"
-msgstr "অঞ্চল আৰু ভাষা সংহতিসমূহ"
-
-#: ../js/ui/status/lockScreenMenu.js:43
-msgid "Volume, network, battery"
-msgstr "ভলিউম, নেটৱাৰ্ক, বেটাৰি"
-
-#: ../js/ui/status/network.js:104
+#: ../js/ui/status/network.js:72
 msgid "<unknown>"
 msgstr "<unknown>"
 
-#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:200
-msgid "disabled"
-msgstr "অসামৰ্থবান"
+#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
+#| msgid "Offline"
+msgid "Off"
+msgstr "অফ"
+
+#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:955
+#: ../js/ui/status/rfkill.js:49
+msgid "Network Settings"
+msgstr "নেটৱাৰ্ক সংহতিসমূহ"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:458
+#: ../js/ui/status/network.js:364
 msgid "unmanaged"
 msgstr "অব্যৱস্থাপিত"
 
+#: ../js/ui/status/network.js:366
+msgid "disconnecting..."
+msgstr "বিচ্ছিনিত কৰা হৈছে..."
+
+#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1100
+msgid "connecting..."
+msgstr "সংযোগ কৰা হৈছে..."
+
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1549
+#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1103
 msgid "authentication required"
 msgstr "প্ৰমাণীকৰণৰ প্ৰয়োজন"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:383
 msgid "firmware missing"
 msgstr "ফাৰ্মৱেৰ সন্ধানহীন"
 
-#. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:486
-msgid "cable unplugged"
-msgstr "কেবুল আনপ্লাগ্গড"
-
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/network.js:387
 msgid "unavailable"
 msgstr "উপলব্ধ নাই"
 
-#: ../js/ui/status/network.js:493 ../js/ui/status/network.js:1551
+#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1105
 msgid "connection failed"
 msgstr "সংযোগ ব্যৰ্থ"
 
-#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1435
-#: ../js/ui/status/network.js:1627
-msgid "More…"
-msgstr "অধিক…"
+#: ../js/ui/status/network.js:654
+#| msgid "Network"
+msgid "Wi-Fi Networks"
+msgstr "Wi-Fi নেটৱাৰ্কসমূহ"
 
-#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
-#. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1365
-msgid "Connected (private)"
-msgstr "সংযোগিত (ব্যক্তিগত)"
+#: ../js/ui/status/network.js:656
+#| msgid "Enable networking"
+msgid "Select a network"
+msgstr "এটা নেটৱাৰ্ক বাছক"
 
-#: ../js/ui/status/network.js:667
-msgid "Wired"
-msgstr "তাৰঁযুক্ত"
+#: ../js/ui/status/network.js:680
+#| msgid "Network"
+msgid "No Networks"
+msgstr "কোনো নেটৱাৰ্ক নাই"
 
-#: ../js/ui/status/network.js:668
-msgid "Auto Ethernet"
-msgstr "স্বচালিত ইথাৰনেট"
+#: ../js/ui/status/network.js:949
+#| msgid "Network"
+msgid "Select Network"
+msgstr "নেটৱাৰ্ক বাছক"
 
-#: ../js/ui/status/network.js:695
-msgid "Mobile broadband"
-msgstr "মবাইল ব্ৰডবেণ্ড"
+#: ../js/ui/status/network.js:1034
+msgid "Turn On"
+msgstr "অন কৰক"
 
-#: ../js/ui/status/network.js:728
-msgid "Auto broadband"
-msgstr "স্বচালিত ব্ৰডবেণ্ড"
+#: ../js/ui/status/network.js:1167
+msgid "VPN"
+msgstr "VPN"
 
-#: ../js/ui/status/network.js:731
-msgid "Auto dial-up"
-msgstr "স্বচালিত ডায়েল-আপ"
-
-#. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:861 ../js/ui/status/network.js:1382
-#, c-format
-msgid "Auto %s"
-msgstr "স্বচালিত %s"
-
-#: ../js/ui/status/network.js:863
-msgid "Auto bluetooth"
-msgstr "স্বচালিত ব্লুটুথ"
-
-#: ../js/ui/status/network.js:1384
-msgid "Auto wireless"
-msgstr "স্বচালিত বেতাঁৰ"
-
-#: ../js/ui/status/network.js:1729
-msgid "Enable networking"
-msgstr "নেটৱাৰ্কিং সামৰ্থবান কৰক"
-
-#: ../js/ui/status/network.js:1771
-msgid "Wi-Fi"
-msgstr "Wi-Fi"
-
-#: ../js/ui/status/network.js:1790
-msgid "Network Settings"
-msgstr "নেটৱাৰ্ক সংহতিসমূহ"
-
-#: ../js/ui/status/network.js:1807
+#: ../js/ui/status/network.js:1306
 msgid "Network Manager"
 msgstr "নেটৱাৰ্ক ব্যৱস্থাপক"
 
-#: ../js/ui/status/network.js:1897
+#: ../js/ui/status/network.js:1345
 msgid "Connection failed"
 msgstr "সংযোগ ব্যৰ্থ"
 
-#: ../js/ui/status/network.js:1898
+#: ../js/ui/status/network.js:1346
 msgid "Activation of network connection failed"
 msgstr "নেটৱাৰ্ক সংযোগ সক্ৰিয়কৰণ ব্যৰ্থ হল"
 
-#: ../js/ui/status/network.js:2276
-msgid "Networking is disabled"
-msgstr "নেটৱাৰ্কিং অসামৰ্থবান কৰা আছে"
-
-#: ../js/ui/status/power.js:55
+#: ../js/ui/status/power.js:46
 msgid "Battery"
 msgstr "বেটাৰি"
 
-#: ../js/ui/status/power.js:81
+#: ../js/ui/status/power.js:47
 msgid "Power Settings"
 msgstr "শক্তি সংহতিসমূহ"
 
+#: ../js/ui/status/power.js:63
+msgid "Fully Charged"
+msgstr "সম্পূৰ্ণ চাৰ্জ হৈছে"
+
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:99
-#| msgid "Estimating..."
+#. state is one of PENDING_CHARGING, PENDING_DISCHARGING
+#: ../js/ui/status/power.js:69 ../js/ui/status/power.js:86
 msgid "Estimating…"
 msgstr "অনুমান কৰা হৈছে…"
 
-#: ../js/ui/status/power.js:106
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: ../js/ui/status/power.js:77
 #, c-format
-msgid "%d hour remaining"
-msgid_plural "%d hours remaining"
-msgstr[0] "%d ঘন্টা অৱশিষ্ট"
-msgstr[1] "%d ঘন্টা অৱশিষ্ট"
+msgid "%d\\u2236%02d Remaining (%d%%)"
+msgstr "%d\\u2236%02d অৱশিষ্ট (%d%%)"
 
-#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:109
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: ../js/ui/status/power.js:82
 #, c-format
-msgid "%d %s %d %s remaining"
-msgstr "%d %s %d %s অৱশিষ্ট"
+msgid "%d\\u2236%02d Until Full (%d%%)"
+msgstr "%d\\u2236%02d সম্পূৰ্ণ হোৱালৈ (%d%%)"
 
-#: ../js/ui/status/power.js:111
-msgid "hour"
-msgid_plural "hours"
-msgstr[0] "ঘন্টা"
-msgstr[1] "ঘন্টা"
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
+#: ../js/ui/status/rfkill.js:43
+msgid "Airplane Mode"
+msgstr "বিমান অৱস্থা"
 
-#: ../js/ui/status/power.js:111
-msgid "minute"
-msgid_plural "minutes"
-msgstr[0] "মিনিট"
-msgstr[1] "মিনিট"
+#: ../js/ui/status/rfkill.js:45
+#| msgid "Open"
+msgid "On"
+msgstr "অন"
 
-#: ../js/ui/status/power.js:114
-#, c-format
-msgid "%d minute remaining"
-msgid_plural "%d minutes remaining"
-msgstr[0] "%d মিনিট অৱশিষ্ট"
-msgstr[1] "%d মিনিট অৱশিষ্ট"
-
-#: ../js/ui/status/power.js:117 ../js/ui/status/power.js:191
-#, c-format
-msgctxt "percent of battery remaining"
-msgid "%d%%"
-msgstr "%d%%"
-
-#: ../js/ui/status/power.js:201
-#| msgid "AC adapter"
-msgid "AC Adapter"
-msgstr "AC এডাপ্টাৰ"
-
-#: ../js/ui/status/power.js:203
-#| msgid "Laptop battery"
-msgid "Laptop Battery"
-msgstr "লেপটপ বেটাৰি"
-
-#: ../js/ui/status/power.js:205
-msgid "UPS"
-msgstr "UPS"
-
-#: ../js/ui/status/power.js:207
-msgid "Monitor"
-msgstr "মনিটৰ"
-
-#: ../js/ui/status/power.js:209
-msgid "Mouse"
-msgstr "মাউছ"
-
-#: ../js/ui/status/power.js:213
-msgid "PDA"
-msgstr "PDA"
-
-#: ../js/ui/status/power.js:215
-#| msgid "Cell phone"
-msgid "Cell Phone"
-msgstr "চেল ফোন"
-
-#: ../js/ui/status/power.js:217
-#| msgid "Media player"
-msgid "Media Player"
-msgstr "মিডিয়া প্লেয়াৰ"
-
-#: ../js/ui/status/power.js:219
-msgid "Tablet"
-msgstr "টেবলেট"
-
-#: ../js/ui/status/power.js:221
-msgid "Computer"
-msgstr "কমপিউটাৰ"
-
-#: ../js/ui/status/power.js:223
-msgctxt "device"
-msgid "Unknown"
-msgstr "অজ্ঞাত"
-
-#: ../js/ui/status/volume.js:124
-msgid "Volume changed"
-msgstr "ভলিউম পৰিবৰ্তন কৰা হৈছে"
-
-#. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:249 ../js/ui/status/volume.js:297
-msgid "Volume"
-msgstr "ভলিউম"
-
-#: ../js/ui/status/volume.js:258
-msgid "Microphone"
-msgstr "মাইক্ৰোফোন"
-
-#: ../js/ui/unlockDialog.js:151
-msgid "Log in as another user"
-msgstr "অন্য ব্যৱহাৰকাৰী হিচাপে লগিন কৰক"
-
-#: ../js/ui/unlockDialog.js:177
-msgid "Unlock Window"
-msgstr "উইন্ডো আনলক কৰক"
-
-#: ../js/ui/userMenu.js:193
-msgid "Available"
-msgstr "উপলব্ধ"
-
-#: ../js/ui/userMenu.js:196
-msgid "Busy"
-msgstr "ব্যস্থ"
-
-#: ../js/ui/userMenu.js:199
-msgid "Invisible"
-msgstr "অদৃশ্য"
-
-#: ../js/ui/userMenu.js:202
-msgid "Away"
-msgstr "আতৰত"
-
-#: ../js/ui/userMenu.js:205
-msgid "Idle"
-msgstr "অলস"
-
-#: ../js/ui/userMenu.js:208
-msgid "Offline"
-msgstr "অফলাইন"
-
-#: ../js/ui/userMenu.js:780
-msgid "Notifications"
-msgstr "অধিসূচনাসমূহ"
-
-#: ../js/ui/userMenu.js:796
+#: ../js/ui/status/system.js:305
 msgid "Switch User"
 msgstr "ব্যৱহাৰকাৰী পৰিবৰ্তন কৰক"
 
-#: ../js/ui/userMenu.js:801
+#: ../js/ui/status/system.js:310
 msgid "Log Out"
 msgstr "লগ আউট কৰক"
 
-#: ../js/ui/userMenu.js:821
-msgid "Install Updates & Restart"
-msgstr "আপডেইটসমূহ ইনস্টল কৰক আৰু পুনাৰম্ভ কৰক"
+#: ../js/ui/status/system.js:329
+msgid "Orientation Lock"
+msgstr "দিশনিৰ্ণয় লক"
 
-#: ../js/ui/userMenu.js:839
-msgid "Your chat status will be set to busy"
-msgstr "আপোনাৰ চেট অৱস্থা ব্যস্থলে সংহতি কৰা হব"
+#: ../js/ui/status/system.js:337
+msgid "Suspend"
+msgstr "বাতিল কৰক"
 
-#: ../js/ui/userMenu.js:840
-msgid ""
-"Notifications are now disabled, including chat messages. Your online status "
-"has been adjusted to let others know that you might not see their messages."
-msgstr ""
-"অধিসূচনাসমূহ এতিয়া অসামৰ্থবান কৰা হৈছে, চেট বাৰ্তাসমূহ অন্তৰ্ভুক্ত কৰাকৈ। "
-"আপোনাৰ "
-"অনলাইন অৱস্থা ঠিক কৰা হৈছে যাতে আনে জানিব পাৰে যে আপুনি সিহতৰ বাৰ্তা চাব "
-"নোৱাৰিবও পাৰে।"
+#: ../js/ui/status/system.js:340
+msgid "Power Off"
+msgstr "বন্ধ কৰক"
 
-#: ../js/ui/userMenu.js:886
-msgid "Other users are logged in."
-msgstr "অন্য ব্যৱহাৰকাৰীসকল লগ্ড ইন আছে।"
+#: ../js/ui/status/volume.js:127
+msgid "Volume changed"
+msgstr "ভলিউম পৰিবৰ্তন কৰা হৈছে"
 
-#: ../js/ui/userMenu.js:891
-msgid "Shutting down might cause them to lose unsaved work."
-msgstr "বন্ধ কৰিলে তেওঁলোকৰ অসংৰক্ষিত কাৰ্য্য হেৰাব পাৰে।"
+#: ../js/ui/status/volume.js:162
+msgid "Volume"
+msgstr "ভলিউম"
 
-#: ../js/ui/userMenu.js:918
-#, c-format
-msgid "%s (remote)"
-msgstr "%s (দূৰৱৰ্তী)"
+#: ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "মাইক্ৰোফোন"
 
-#: ../js/ui/userMenu.js:920
-#, c-format
-msgid "%s (console)"
-msgstr "%s (কনচৌল)"
+#: ../js/ui/unlockDialog.js:67
+msgid "Log in as another user"
+msgstr "অন্য ব্যৱহাৰকাৰী হিচাপে লগিন কৰক"
+
+#: ../js/ui/unlockDialog.js:84
+msgid "Unlock Window"
+msgstr "উইন্ডো আনলক কৰক"
 
 #: ../js/ui/viewSelector.js:100
 msgid "Applications"
@@ -1872,7 +1621,7 @@ msgstr "এপ্লিকেচনসমূহ"
 msgid "Search"
 msgstr "সন্ধান কৰক"
 
-#: ../js/ui/wanda.js:92
+#: ../js/ui/wanda.js:77
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1881,7 +1630,7 @@ msgstr ""
 "ক্ষমা কৰিব, আপোনাৰ বাবে আজি কোনো জ্ঞান নাই:\n"
 "%s"
 
-#: ../js/ui/wanda.js:96
+#: ../js/ui/wanda.js:81
 #, c-format
 msgid "%s the Oracle says"
 msgstr "%s Oracle এ ক'য়"
@@ -1890,6 +1639,29 @@ msgstr "%s Oracle এ ক'য়"
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' প্ৰস্তুত"
+
+#: ../js/ui/windowManager.js:56
+msgid "Do you want to keep these display settings?"
+msgstr "আপুনি এই প্ৰদৰ্শন সংহতিসমূহ ৰাখিব বিচাৰে নে?"
+
+#. Translators: this and the following message should be limited in lenght,
+#. to avoid ellipsizing the labels.
+#.
+#: ../js/ui/windowManager.js:75
+#| msgid "Power Settings"
+msgid "Revert Settings"
+msgstr "সংহতিসমূহক পূৰ্ব অৱস্থালৈ নিয়ক"
+
+#: ../js/ui/windowManager.js:79
+msgid "Keep Changes"
+msgstr "পৰিৱৰ্তনসমূহ ৰাখক"
+
+#: ../js/ui/windowManager.js:97
+#, c-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "সংহতিসমূহৰ পৰিবৰ্তন %d ছেকেণ্ডত পূৰ্ব অৱস্থালৈ যাব"
+msgstr[1] "সংহতিসমূহৰ পৰিবৰ্তন %d ছেকেণ্ডত পূৰ্ব অৱস্থালৈ যাব"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1913,42 +1685,339 @@ msgid_plural "%u Inputs"
 msgstr[0] "%u ইনপুট"
 msgstr[1] "%u ইনপুটসমূহ"
 
-#: ../src/gvc/gvc-mixer-control.c:2371
+#: ../src/gvc/gvc-mixer-control.c:2373
 msgid "System Sounds"
 msgstr "চিস্টেম শব্দসমূহ"
 
-#: ../src/main.c:347
+#: ../src/main.c:353
 msgid "Print version"
 msgstr "প্ৰিন্ট সংস্কৰণ"
 
-#: ../src/main.c:353
+#: ../src/main.c:359
 msgid "Mode used by GDM for login screen"
 msgstr "লগিন স্ক্ৰিনৰ বাবে GDM দ্বাৰা ব্যৱহাৰ কৰা অৱস্থা"
 
-#: ../src/main.c:359
+#: ../src/main.c:365
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "লগিন পৰ্দাৰ বাবে এটা বিশেষ অৱস্থা, উদাহৰণস্বৰূপ \"gdm\" ব্যৱহাৰ কৰক"
 
-#: ../src/main.c:365
+#: ../src/main.c:371
 msgid "List possible modes"
 msgstr "সম্ভাব্য অৱস্থাসমূহ তালিকাভুক্ত কৰক"
 
-#: ../src/shell-app.c:622
+#: ../src/shell-app.c:644
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "'%s' লঞ্চ কৰিবলে ব্যৰ্থ"
 
-#: ../src/shell-keyring-prompt.c:708
+#: ../src/shell-keyring-prompt.c:714
 msgid "Passwords do not match."
 msgstr "পাছৱাৰ্ডসমূহ মিল নাখায়।"
 
-#: ../src/shell-keyring-prompt.c:716
+#: ../src/shell-keyring-prompt.c:722
 msgid "Password cannot be blank"
 msgstr "পাছৱাৰ্ড ৰিক্ত হব নোৱাৰিব"
 
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "প্ৰমাণীকৰণ ডাইলগ ব্যৱহাৰকাৰী দ্বাৰা নাকচ কৰা হৈছিল"
+
+#~ msgid "Screenshots"
+#~ msgstr "স্ক্ৰিনশ্বটসমূহ"
+
+#~ msgid "Record a screencast"
+#~ msgstr "এটা স্ক্ৰিনশ্বট ৰেকৰ্ড কৰক"
+
+#~ msgid "Whether to collect stats about applications usage"
+#~ msgstr "এপ্লিকেচন ব্যৱহাৰ বিষয়ে পৰিসংখ্যা সংগ্ৰহ কৰা হব নে"
+
+#~ msgid ""
+#~ "The shell normally monitors active applications in order to present the "
+#~ "most used ones (e.g. in launchers). While this data will be kept private, "
+#~ "you may want to disable this for privacy reasons. Please note that doing "
+#~ "so won't remove already saved data."
+#~ msgstr ""
+#~ "শ্বেলে সাধাৰণত সক্ৰিয় এপ্লিকেচনসমূহ মনিটৰ কৰে যাতে সকলোতকৈ অধিক ব্যৱহৃতসমূহ "
+#~ "(উদাহৰনস্বৰুপে লঞ্চাৰসমূহত) ক দেখুৱাব পাৰে। যত এই তথ্য গোপন ৰখা হব, আপুনি ইয়াক "
+#~ "গোপনীয়তা কাৰণসমূহৰ কাৰণে অসামৰ্থবান কৰিব পাৰে। অনুগ্ৰহ কৰি মন কৰিব যে এনেকুৱা "
+#~ "কৰাত ইতিমধ্যে সংৰক্ষীত তথ্য আতৰি নাযায়।"
+
+#~ msgid ""
+#~ "Internally used to store the last IM presence explicitly set by the user. "
+#~ "The value here is from the TpConnectionPresenceType enumeration."
+#~ msgstr ""
+#~ "ব্যৱহাৰকাৰী দ্বাৰা স্পষ্টভাৱে সংহতি কৰা সৰ্বশেষ IM উপস্থিতি সংৰক্ষণ কৰাৰ বাবে "
+#~ "অভ্যন্তৰীয় বাবে ব্যৱহৃত। ইয়াত থকা মান TpConnectionPresenceType ইনুমাৰেষণৰ পৰা।"
+
+#~ msgid ""
+#~ "Internally used to store the last session presence status for the user. "
+#~ "The value here is from the GsmPresenceStatus enumeration."
+#~ msgstr ""
+#~ "ব্যৱহাৰকাৰীৰ বাবে সৰ্বশেষ অধিবেশন উপস্থিতি অৱস্থা সংৰক্ষণ কৰাৰ বাবে "
+#~ "অভ্যন্তৰীয়ভাৱে ব্যৱহৃত। ইয়াত থকা মান GsmPresenceStatus ইনুমাৰেষণৰ পৰা উপলব্ধ।"
+
+#~ msgid "Keybinding to toggle the screen recorder"
+#~ msgstr "পৰ্দা ৰেকৰ্ডাৰ অদল বদল কৰিবলে Keybinding"
+
+#~ msgid "Keybinding to start/stop the builtin screen recorder."
+#~ msgstr "বিল্টইন পৰ্দা ৰেকৰ্ডাৰ আৰম্ভ/বন্ধ কৰিবলে Keybinding।"
+
+#~ msgid "Framerate used for recording screencasts."
+#~ msgstr "screencasts ৰেকৰ্ড কৰাৰ কাৰণে ব্যৱহৃত Framerate"
+
+#~ msgid ""
+#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
+#~ "screencast recorder in frames-per-second."
+#~ msgstr ""
+#~ "GNOME শ্বেলৰ screencast ৰেকৰ্ডাৰে ফ্ৰেইম-প্ৰতি ছেকেণ্ডত ৰেকৰ্ড কৰা পৰিণাম "
+#~ "screencast ৰ framerate।"
+
+#~ msgid "The gstreamer pipeline used to encode the screencast"
+#~ msgstr "screencast এনক'ড কৰিবলে ব্যৱহাৰ কৰা gstreamer পাইপলাইন"
+
+#~ msgid ""
+#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
+#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
+#~ "pad where the recorded video is recorded. It will normally have a "
+#~ "unconnected source pad; output from that pad will be written into the "
+#~ "output file. However the pipeline can also take care of its own output - "
+#~ "this might be used to send the output to an icecast server via shout2send "
+#~ "or similar. When unset or set to an empty value, the default pipeline "
+#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
+#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
+#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
+#~ "optimal thread count on the system."
+#~ msgstr ""
+#~ "ৰেকৰ্ডিংসমূহ এনক'ড কৰোতে ব্যৱহৃত GStreamer পাইপলাইন সংহতি কৰে। ই gst-launch ৰ "
+#~ "কাৰণে ব্যৱহৃত বাক্যবিন্যাস অনুকৰন কৰে। পাইপলাইনৰ এটা অসংযোগিত চিঙ্ক পেড থাকিব "
+#~ "লাগে যত ৰেকৰ্ড কৰা ভিডিঅ' ৰেকৰ্ড কৰা হয়। ইয়াৰ সাধাৰণত এটা অসংযোগিত উৎস পেড "
+#~ "থাকিব; সেই পেডৰ পৰা আউটপুট এটা আউটপুট ফাইললে লিখা হব। যি কি নহওক পাইপলাইনে "
+#~ "নিজৰ আউটপুটৰ যত্ন লব পাৰে - ইয়াৰ হওতো আউটপুটক shout2send অথবা সমসাময়িকৰে এটা "
+#~ "icecast চাৰ্ভাৰত পঠাবলে ব্যৱহাৰ হব পাৰে। যেতিয়া এটা ৰিক্ত মানলে অসংহিত বা "
+#~ "সংহিত, অবিকল্পিত পাইপলাইন ব্যৱহাৰ কৰা হব। এইটো বৰ্তমানত 'vp8enc "
+#~ "min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads="
+#~ "%T ! queue ! webmmux' আৰু VP8 কডেক ব্যৱহাৰ কৰি WEBM ত ৰেকৰ্ড কৰে। %T ক "
+#~ "চিস্টেমত অনুকূলিত থ্ৰেড কাওন্টত এটা অনুমানৰ প্লেইচহল্ডাৰ হিচাপে ব্যৱহাৰ কৰা হয়।"
+
+#~ msgid "File extension used for storing the screencast"
+#~ msgstr "screencast সংৰক্ষণ কৰাৰ কাৰণে লথিপত্ৰ সম্প্ৰসাৰন"
+
+#~ msgid ""
+#~ "The filename for recorded screencasts will be a unique filename based on "
+#~ "the current date, and use this extension. It should be changed when "
+#~ "recording to a different container format."
+#~ msgstr ""
+#~ "ৰেকৰ্ড কৰা screencasts ৰ কাৰণে ফাইল নাম বৰ্তমান তাৰিখৰ উপৰত ভিত্তি কৰি এটা "
+#~ "অবিকল্প ফাইল নাম হব, আৰু এই সম্প্ৰসাৰন ব্যৱহাৰ কৰিব। ইয়াক এটা ভিন্ন অন্তৰ্ভুক্তক "
+#~ "বিন্যাসত ৰেকৰ্ড কৰোতে পৰিবৰ্তন কৰিব লাগিব।"
+
+#~| msgid "Session..."
+#~ msgid "Session…"
+#~ msgstr "অধিবেশন…"
+
+#~ msgid "Power"
+#~ msgstr "শক্তি"
+
+#~ msgid "Restart"
+#~ msgstr "পুনৰাম্ভ কৰক"
+
+#~ msgid "Screencast from %d %t"
+#~ msgstr "%d %t ৰ পৰা স্ক্ৰিনকাস্ট দেখুৱাওক"
+
+#~ msgid "Click Log Out to quit these applications and log out of the system."
+#~ msgstr "এই এপ্লিকেচনসমূহ প্ৰস্থান কৰি চিস্টেমৰ পৰা লগ আউট হবলে লগ আউট ক্লিক কৰক।"
+
+#~ msgid "Logging out of the system."
+#~ msgstr "চিস্টেমৰ পৰা লগ আউট কৰা হৈছে।"
+
+#~ msgid "Click Power Off to quit these applications and power off the system."
+#~ msgstr "এই এপ্লিকেচনসমূহক প্ৰস্থান কৰি চিস্টেম বন্ধ কৰিবলে বন্ধ কৰক ক্লিক কৰক।"
+
+#~ msgid "Powering off the system."
+#~ msgstr "চিস্টেম বন্ধ কৰা হৈছে।"
+
+#~ msgid "Click Restart to quit these applications and restart the system."
+#~ msgstr "এই এপ্লিকেচনসমূহক প্ৰস্থান কৰি চিস্টেম পুনৰাম্ভ কৰিবলে পুনৰাম্ভ ক্লিক কৰক।"
+
+#~ msgid "Restarting the system."
+#~ msgstr "চিস্টেম পুনৰাম্ভ কৰা হৈছে।"
+
+#~ msgid "Universal Access Settings"
+#~ msgstr "সাৰ্বভৈমক অভিগম সংহতিসমূহ"
+
+#~ msgid "Visibility"
+#~ msgstr "দৃশ্যমানতা"
+
+#~| msgid "Send Files to Device..."
+#~ msgid "Send Files to Device…"
+#~ msgstr "ফাইলসমূহক ডিভাইচলে পঠাওক…"
+
+#~| msgid "Set up a New Device..."
+#~ msgid "Set Up a New Device…"
+#~ msgstr "এটা নতুন ডিভাইচ সংহতি কৰক…"
+
+#~ msgid "hardware disabled"
+#~ msgstr "হাৰ্ডৱেৰ অসামৰ্থবান কৰা আছে"
+
+#~ msgid "Connection"
+#~ msgstr "সংযোগ"
+
+#~| msgid "Send Files..."
+#~ msgid "Send Files…"
+#~ msgstr "ফাইলসমূহ পঠাওক…"
+
+#~ msgid "Keyboard Settings"
+#~ msgstr "কিবৰ্ড সংহতিসমূহ"
+
+#~ msgid "Mouse Settings"
+#~ msgstr "মাউছ আৰু টাচপেড সংহতিসমূহ"
+
+#~ msgid "Sound Settings"
+#~ msgstr "শব্দ সংহতিসমূহ"
+
+#~| msgid "Region and Language Settings"
+#~ msgid "Region & Language Settings"
+#~ msgstr "অঞ্চল আৰু ভাষা সংহতিসমূহ"
+
+#~ msgid "Volume, network, battery"
+#~ msgstr "ভলিউম, নেটৱাৰ্ক, বেটাৰি"
+
+#~ msgid "disabled"
+#~ msgstr "অসামৰ্থবান"
+
+#~ msgid "cable unplugged"
+#~ msgstr "কেবুল আনপ্লাগ্গড"
+
+#~ msgid "More…"
+#~ msgstr "অধিক…"
+
+#~ msgid "Wired"
+#~ msgstr "তাৰঁযুক্ত"
+
+#~ msgid "Auto Ethernet"
+#~ msgstr "স্বচালিত ইথাৰনেট"
+
+#~ msgid "Mobile broadband"
+#~ msgstr "মবাইল ব্ৰডবেণ্ড"
+
+#~ msgid "Auto broadband"
+#~ msgstr "স্বচালিত ব্ৰডবেণ্ড"
+
+#~ msgid "Auto dial-up"
+#~ msgstr "স্বচালিত ডায়েল-আপ"
+
+#~ msgid "Auto %s"
+#~ msgstr "স্বচালিত %s"
+
+#~ msgid "Auto bluetooth"
+#~ msgstr "স্বচালিত ব্লুটুথ"
+
+#~ msgid "Auto wireless"
+#~ msgstr "স্বচালিত বেতাঁৰ"
+
+#~ msgid "Wi-Fi"
+#~ msgstr "Wi-Fi"
+
+#~ msgid "Networking is disabled"
+#~ msgstr "নেটৱাৰ্কিং অসামৰ্থবান কৰা আছে"
+
+#~ msgid "%d hour remaining"
+#~ msgid_plural "%d hours remaining"
+#~ msgstr[0] "%d ঘন্টা অৱশিষ্ট"
+#~ msgstr[1] "%d ঘন্টা অৱশিষ্ট"
+
+#~ msgid "%d %s %d %s remaining"
+#~ msgstr "%d %s %d %s অৱশিষ্ট"
+
+#~ msgid "hour"
+#~ msgid_plural "hours"
+#~ msgstr[0] "ঘন্টা"
+#~ msgstr[1] "ঘন্টা"
+
+#~ msgid "minute"
+#~ msgid_plural "minutes"
+#~ msgstr[0] "মিনিট"
+#~ msgstr[1] "মিনিট"
+
+#~ msgid "%d minute remaining"
+#~ msgid_plural "%d minutes remaining"
+#~ msgstr[0] "%d মিনিট অৱশিষ্ট"
+#~ msgstr[1] "%d মিনিট অৱশিষ্ট"
+
+#~ msgctxt "percent of battery remaining"
+#~ msgid "%d%%"
+#~ msgstr "%d%%"
+
+#~| msgid "AC adapter"
+#~ msgid "AC Adapter"
+#~ msgstr "AC এডাপ্টাৰ"
+
+#~| msgid "Laptop battery"
+#~ msgid "Laptop Battery"
+#~ msgstr "লেপটপ বেটাৰি"
+
+#~ msgid "UPS"
+#~ msgstr "UPS"
+
+#~ msgid "Monitor"
+#~ msgstr "মনিটৰ"
+
+#~ msgid "Mouse"
+#~ msgstr "মাউছ"
+
+#~ msgid "PDA"
+#~ msgstr "PDA"
+
+#~| msgid "Cell phone"
+#~ msgid "Cell Phone"
+#~ msgstr "চেল ফোন"
+
+#~| msgid "Media player"
+#~ msgid "Media Player"
+#~ msgstr "মিডিয়া প্লেয়াৰ"
+
+#~ msgid "Tablet"
+#~ msgstr "টেবলেট"
+
+#~ msgid "Computer"
+#~ msgstr "কমপিউটাৰ"
+
+#~ msgctxt "device"
+#~ msgid "Unknown"
+#~ msgstr "অজ্ঞাত"
+
+#~ msgid "Available"
+#~ msgstr "উপলব্ধ"
+
+#~ msgid "Busy"
+#~ msgstr "ব্যস্থ"
+
+#~ msgid "Invisible"
+#~ msgstr "অদৃশ্য"
+
+#~ msgid "Away"
+#~ msgstr "আতৰত"
+
+#~ msgid "Idle"
+#~ msgstr "অলস"
+
+#~ msgid "Notifications"
+#~ msgstr "অধিসূচনাসমূহ"
+
+#~ msgid "Your chat status will be set to busy"
+#~ msgstr "আপোনাৰ চেট অৱস্থা ব্যস্থলে সংহতি কৰা হব"
+
+#~ msgid ""
+#~ "Notifications are now disabled, including chat messages. Your online "
+#~ "status has been adjusted to let others know that you might not see their "
+#~ "messages."
+#~ msgstr ""
+#~ "অধিসূচনাসমূহ এতিয়া অসামৰ্থবান কৰা হৈছে, চেট বাৰ্তাসমূহ অন্তৰ্ভুক্ত কৰাকৈ। আপোনাৰ "
+#~ "অনলাইন অৱস্থা ঠিক কৰা হৈছে যাতে আনে জানিব পাৰে যে আপুনি সিহতৰ বাৰ্তা চাব "
+#~ "নোৱাৰিবও পাৰে।"
+
+#~ msgid "Shutting down might cause them to lose unsaved work."
+#~ msgstr "বন্ধ কৰিলে তেওঁলোকৰ অসংৰক্ষিত কাৰ্য্য হেৰাব পাৰে।"
 
 #~ msgctxt "title"
 #~ msgid "Sign In"
@@ -2024,9 +2093,6 @@ msgstr "প্ৰমাণীকৰণ ডাইলগ ব্যৱহাৰক�
 
 #~ msgid "Unavailable"
 #~ msgstr "উপলব্ধ নাই"
-
-#~ msgid "Switch Session"
-#~ msgstr "অধিবেশন পৰিবৰ্তন কৰক"
 
 #~ msgid "System Settings"
 #~ msgstr "চিস্টেম সংহতিসমূহ"
@@ -2108,9 +2174,6 @@ msgstr "প্ৰমাণীকৰণ ডাইলগ ব্যৱহাৰক�
 
 #~ msgid "Wrong password, please try again"
 #~ msgstr "ভুল পাছৱাৰ্ড। অনুগ্ৰহ কৰি পুনৰ চেষ্টা কৰক।"
-
-#~ msgid "Network"
-#~ msgstr "নেটৱাৰ্ক"
 
 #~ msgid "Hidden"
 #~ msgstr "লুকাই থকা"
