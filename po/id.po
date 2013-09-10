@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-28 17:17+0000\n"
-"PO-Revision-Date: 2013-08-30 14:39+0700\n"
+"POT-Creation-Date: 2013-09-02 19:28+0000\n"
+"PO-Revision-Date: 2013-09-10 13:06+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -279,9 +279,9 @@ msgid "Select an extension to configure using the combobox above."
 msgstr "Pilih ekstensi yang ingin dikonfigurasi pada kotak di atas."
 
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:347
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:679
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:686
 msgid "Cancel"
 msgstr "Batal"
 
@@ -303,20 +303,16 @@ msgstr "Masuk"
 msgid "Choose Session"
 msgstr "Pilih Sesi"
 
-#: ../js/gdm/loginDialog.js:312
-msgid "Session"
-msgstr "Sesi"
-
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:458
+#: ../js/gdm/loginDialog.js:454
 msgid "Not listed?"
 msgstr "Tak masuk daftar?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:625
+#: ../js/gdm/loginDialog.js:622
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(cth., pengguna dari %s)"
@@ -324,12 +320,12 @@ msgstr "(cth., pengguna dari %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:630 ../js/ui/components/networkAgent.js:255
+#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:255
 #: ../js/ui/components/networkAgent.js:273
 msgid "Username: "
 msgstr "Nama pengguna: "
 
-#: ../js/gdm/loginDialog.js:894
+#: ../js/gdm/loginDialog.js:891
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
@@ -361,23 +357,27 @@ msgstr "Tidak dapat mengurai perintah:"
 msgid "Execution of '%s' failed:"
 msgstr "Eksekusi '%s' gagal:"
 
-#: ../js/ui/appDisplay.js:386
+#: ../js/ui/appDisplay.js:578
+msgid "Frequently used applications will appear here"
+msgstr "Aplikasi yang sering dipakai akan muncul di sini"
+
+#: ../js/ui/appDisplay.js:694
 msgid "Frequent"
 msgstr "Sering"
 
-#: ../js/ui/appDisplay.js:393
+#: ../js/ui/appDisplay.js:701
 msgid "All"
 msgstr "Semua"
 
-#: ../js/ui/appDisplay.js:991
+#: ../js/ui/appDisplay.js:1488
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: ../js/ui/appDisplay.js:994 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1491 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: ../js/ui/appDisplay.js:995
+#: ../js/ui/appDisplay.js:1492
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
@@ -391,7 +391,7 @@ msgstr "%s telah ditambahkan ke favorit Anda."
 msgid "%s has been removed from your favorites."
 msgstr "%s telah dihapus dari favorit Anda."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:323
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Pengaturan"
 
@@ -586,7 +586,7 @@ msgid "Type again:"
 msgstr "Ketik lagi:"
 
 #: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:268 ../js/ui/status/network.js:682
+#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
 msgid "Connect"
 msgstr "Sambung"
 
@@ -932,7 +932,7 @@ msgstr "Tampilkan Aplikasi"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/dash.js:439
+#: ../js/ui/dash.js:442
 msgid "Dash"
 msgstr "Dash"
 
@@ -983,44 +983,44 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Keluar"
 
-#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Power Off"
 msgstr "Matikan"
 
-#: ../js/ui/endSessionDialog.js:82
+#: ../js/ui/endSessionDialog.js:83
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Sistem ini akan otomatis dimatikan dalam %d detik."
 
-#: ../js/ui/endSessionDialog.js:87 ../js/ui/endSessionDialog.js:102
+#: ../js/ui/endSessionDialog.js:88 ../js/ui/endSessionDialog.js:104
 msgctxt "button"
 msgid "Restart"
 msgstr "Nyalakan Ulang"
 
-#: ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:90
 msgctxt "button"
 msgid "Power Off"
 msgstr "Matikan"
 
-#: ../js/ui/endSessionDialog.js:95
+#: ../js/ui/endSessionDialog.js:97
 msgctxt "title"
 msgid "Restart"
 msgstr "Nyalakan Ulang"
 
-#: ../js/ui/endSessionDialog.js:97
+#: ../js/ui/endSessionDialog.js:99
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Sistem ini akan otomatis dimulai ulang dalam %d detik."
 
-#: ../js/ui/endSessionDialog.js:109
+#: ../js/ui/endSessionDialog.js:112
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Start Ulang & Pasang Pemutakhiran"
 
-#: ../js/ui/endSessionDialog.js:111
+#: ../js/ui/endSessionDialog.js:114
 #, c-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1029,27 +1029,27 @@ msgstr[0] ""
 "Sistem ini akan otomatis dimulai ulang dan memasang pemutakhiran dalam %d "
 "detik."
 
-#: ../js/ui/endSessionDialog.js:116
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "Start Ulang & Pasang"
 
-#: ../js/ui/endSessionDialog.js:267
+#: ../js/ui/endSessionDialog.js:271
 msgid "Some applications are busy or have unsaved work."
 msgstr "Beberapa aplikasi sedang sibuk atau belum disimpan perubahannya."
 
-#: ../js/ui/endSessionDialog.js:273
+#: ../js/ui/endSessionDialog.js:277
 msgid "Other users are logged in."
 msgstr "Pengguna lain sedang log masuk."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/endSessionDialog.js:475
+#: ../js/ui/endSessionDialog.js:479
 #, c-format
 msgid "%s (remote)"
 msgstr "%s (jarak jauh)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/endSessionDialog.js:478
+#: ../js/ui/endSessionDialog.js:482
 #, c-format
 msgid "%s (console)"
 msgstr "%s (konsol)"
@@ -1222,7 +1222,7 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d pemberitahuan baru"
 
-#: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:331
+#: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:333
 msgid "Lock"
 msgstr "Kunci"
 
@@ -1245,11 +1245,11 @@ msgstr "Tak bisa mengunci"
 msgid "Lock was blocked by an application"
 msgstr "Kunci diblokir oleh suatu aplikasi"
 
-#: ../js/ui/searchDisplay.js:445
+#: ../js/ui/searchDisplay.js:447
 msgid "Searching…"
 msgstr "Mencari…"
 
-#: ../js/ui/searchDisplay.js:489
+#: ../js/ui/searchDisplay.js:491
 msgid "No results."
 msgstr "Tidak ada yang cocok."
 
@@ -1330,7 +1330,7 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1027 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/network.js:1034 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Matikan"
 
@@ -1427,83 +1427,83 @@ msgstr "Tampilkan Tata Letak Papan Tik"
 msgid "<unknown>"
 msgstr "<tak dikenal>"
 
-#: ../js/ui/status/network.js:196 ../js/ui/status/network.js:1042
+#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
 msgid "Off"
 msgstr "Mati"
 
-#: ../js/ui/status/network.js:269 ../js/ui/status/network.js:948
+#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:955
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Pengaturan Jaringan"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:357
+#: ../js/ui/status/network.js:364
 msgid "unmanaged"
 msgstr "tak dikelola"
 
-#: ../js/ui/status/network.js:359
+#: ../js/ui/status/network.js:366
 msgid "disconnecting..."
 msgstr "memutus..."
 
-#: ../js/ui/status/network.js:365 ../js/ui/status/network.js:1093
+#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1100
 msgid "connecting..."
 msgstr "menghubungi..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:368 ../js/ui/status/network.js:1096
+#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1103
 msgid "authentication required"
 msgstr "diperlukan otentikasi"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:376
+#: ../js/ui/status/network.js:383
 msgid "firmware missing"
 msgstr "firmware hilang"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:380
+#: ../js/ui/status/network.js:387
 msgid "unavailable"
 msgstr "tidak tersedia"
 
-#: ../js/ui/status/network.js:382 ../js/ui/status/network.js:1098
+#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1105
 msgid "connection failed"
 msgstr "koneksi gagal"
 
-#: ../js/ui/status/network.js:647
+#: ../js/ui/status/network.js:654
 msgid "Wi-Fi Networks"
 msgstr "Jaringan Wi-Fi"
 
-#: ../js/ui/status/network.js:649
+#: ../js/ui/status/network.js:656
 msgid "Select a network"
 msgstr "Pilih jaringan"
 
-#: ../js/ui/status/network.js:673
+#: ../js/ui/status/network.js:680
 msgid "No Networks"
 msgstr "Tiada Jaringan"
 
-#: ../js/ui/status/network.js:942
+#: ../js/ui/status/network.js:949
 msgid "Select Network"
 msgstr "Pilih Jaringan"
 
-#: ../js/ui/status/network.js:1027
+#: ../js/ui/status/network.js:1034
 msgid "Turn On"
 msgstr "Nyalakan"
 
-#: ../js/ui/status/network.js:1160
+#: ../js/ui/status/network.js:1167
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1296
+#: ../js/ui/status/network.js:1306
 msgid "Network Manager"
 msgstr "Manajer Jaringan"
 
-#: ../js/ui/status/network.js:1338
+#: ../js/ui/status/network.js:1345
 msgid "Connection failed"
 msgstr "Koneksi gagal"
 
-#: ../js/ui/status/network.js:1339
+#: ../js/ui/status/network.js:1346
 msgid "Activation of network connection failed"
 msgstr "Aktivasi koneksi jaringan gagal"
 
@@ -1549,23 +1549,23 @@ msgstr "Mode Pesawat Terbang"
 msgid "On"
 msgstr "Nyala"
 
-#: ../js/ui/status/system.js:303
+#: ../js/ui/status/system.js:305
 msgid "Switch User"
 msgstr "Ganti Pengguna"
 
-#: ../js/ui/status/system.js:308
+#: ../js/ui/status/system.js:310
 msgid "Log Out"
 msgstr "Keluar"
 
-#: ../js/ui/status/system.js:327
+#: ../js/ui/status/system.js:329
 msgid "Orientation Lock"
 msgstr "Kunci Orientasi"
 
-#: ../js/ui/status/system.js:335
+#: ../js/ui/status/system.js:337
 msgid "Suspend"
 msgstr "Suspensi"
 
-#: ../js/ui/status/system.js:338
+#: ../js/ui/status/system.js:340
 msgid "Power Off"
 msgstr "Matikan"
 
