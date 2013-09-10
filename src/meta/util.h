@@ -25,6 +25,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <glib/gi18n.h>
 
 #include <meta/common.h>
 
@@ -119,10 +120,6 @@ const char* meta_frame_type_to_string (MetaFrameType type);
 const char* meta_gravity_to_string (int gravity);
 
 char* meta_external_binding_name_for_action (guint keybinding_action);
-
-#include <libintl.h>
-#define _(x) dgettext (GETTEXT_PACKAGE, x)
-#define N_(x) x
 
 char* meta_g_utf8_strndup (const gchar *src, gsize n);
 
