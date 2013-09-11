@@ -571,6 +571,8 @@ setup_tty(struct weston_launch *wl)
 		free(tty);
 #ifdef HAVE_SD_SESSION_GET_VT
 	} else if (ok == -ENOENT) {
+		unsigned vt;
+
 		/* Negative errnos are cool, right?
 		   So cool that we can't distinguish "session not found"
 		   from "key does not exist in the session file"!
@@ -578,11 +580,11 @@ setup_tty(struct weston_launch *wl)
 		   from sd_pid_get_session()...
 		*/
 
-		ok = sd_session_get_vt(session, &tty);
+		ok = sd_session_get_vt(session, &vt);
 		if (ok < 0)
 			error(1, -ok, "could not determine current TTY");
 
-		snprintf(path, PATH_MAX, "/dev/tty%s", tty);
+		snprintf(path, PATH_MAX, "/dev/tty%u", vt);
 		wl->tty = open(path, O_RDWR | O_NOCTTY | O_CLOEXEC);
 		free(tty);
 #endif
