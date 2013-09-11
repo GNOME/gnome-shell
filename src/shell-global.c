@@ -847,9 +847,36 @@ _shell_global_set_plugin (ShellGlobal *global,
                                                meta_screen_get_screen_number (global->meta_screen));
 
   global->stage = CLUTTER_STAGE (meta_get_stage_for_screen (global->meta_screen));
-  global->stage_xwindow = clutter_x11_get_stage_window (global->stage);
-  global->ibus_window = gdk_x11_window_foreign_new_for_display (global->gdk_display,
-                                                                global->stage_xwindow);
+
+#ifdef HAVE_WAYLAND
+  if (meta_is_wayland_compositor ())
+    {
+      /* When Mutter is acting as its own display server then the
+         stage does not have a window, so create a different window
+         which we use to communicate with IBus, and leave stage_xwindow
+         as None.
+      */
+
+      GdkWindowAttr attributes;
+
+      attributes.wclass = GDK_INPUT_OUTPUT;
+      attributes.width = 100;
+      attributes.height = 100;
+      attributes.window_type = GDK_WINDOW_TOPLEVEL;
+
+      global->ibus_window = gdk_window_new (NULL,
+                                            &attributes,
+                                            0 /* attributes_mask */);
+      global->stage_xwindow = None;
+    }
+  else
+#endif
+    {
+      global->stage_xwindow = clutter_x11_get_stage_window (global->stage);
+      global->ibus_window = gdk_x11_window_foreign_new_for_display (global->gdk_display,
+                                                                    global->stage_xwindow);
+    }
+
   st_im_text_set_event_window (global->ibus_window);
 
   g_signal_connect (global->stage, "notify::width",
@@ -954,7 +981,8 @@ void
 shell_global_freeze_keyboard (ShellGlobal *global,
                               guint32      timestamp)
 {
-  meta_display_freeze_keyboard (global->meta_display, global->stage_xwindow, timestamp);
+  if (global->stage_xwindow != None)
+    meta_display_freeze_keyboard (global->meta_display, global->stage_xwindow, timestamp);
 }
 
 /* Code to close all file descriptors before we exec; copied from gspawn.c in GLib.
