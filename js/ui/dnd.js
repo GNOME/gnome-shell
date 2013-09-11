@@ -86,11 +86,6 @@ const _Draggable = new Lang.Class({
         this.actor.connect('destroy', Lang.bind(this, function() {
             this._actorDestroyed = true;
 
-            // If the drag actor is destroyed and we were going to fix
-            // up its hover state, fix up the parent hover state instead
-            if (this.actor == this._firstLeaveActor)
-                this._firstLeaveActor = this._dragOrigParent;
-
             if (this._dragInProgress && this._dragCancellable)
                 this._cancelDrag(global.get_current_time());
             this.disconnectAll();
@@ -105,12 +100,6 @@ const _Draggable = new Lang.Class({
         this._dragInProgress = false; // The drag has been started, and has not been dropped or cancelled yet.
         this._animationInProgress = false; // The drag is over and the item is in the process of animating to its original position (snapping back or reverting).
         this._dragCancellable = true;
-
-        // During the drag, we eat enter/leave events so that actors don't prelight.
-        // But we remember the actors that we first left/last entered so we can
-        // fix up the hover state after the drag ends.
-        this._firstLeaveActor = null;
-        this._lastEnterActor = null;
 
         this._eventsGrabbed = false;
     },
@@ -197,11 +186,6 @@ const _Draggable = new Lang.Class({
                 this._cancelDrag(event.get_time());
                 return true;
             }
-        } else if (event.type() == Clutter.EventType.LEAVE) {
-            if (this._firstLeaveActor == null)
-                this._firstLeaveActor = event.get_source();
-        } else if (event.type() == Clutter.EventType.ENTER) {
-            this._lastEnterActor = event.get_source();
         }
 
         return false;
@@ -585,33 +569,12 @@ const _Draggable = new Lang.Class({
             this._dragComplete();
     },
 
-    // Actor is an actor we have entered or left during the drag; call
-    // st_widget_sync_hover on all StWidget ancestors
-    _syncHover: function(actor) {
-        while (actor) {
-            let parent = actor.get_parent();
-            if (actor instanceof St.Widget)
-                actor.sync_hover();
-
-            actor = parent;
-        }
-    },
-
     _dragComplete: function() {
         if (!this._actorDestroyed)
             Shell.util_set_hidden_from_pick(this._dragActor, false);
 
         this._ungrabEvents();
-
-        if (this._firstLeaveActor) {
-            this._syncHover(this._firstLeaveActor);
-            this._firstLeaveActor = null;
-        }
-
-        if (this._lastEnterActor) {
-            this._syncHover(this._lastEnterActor);
-            this._lastEnterActor = null;
-        }
+        global.sync_pointer();
 
         if (this._updateHoverId) {
             GLib.source_remove(this._updateHoverId);
