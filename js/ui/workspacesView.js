@@ -23,19 +23,6 @@ const MAX_WORKSPACES = 16;
 
 const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
 
-function rectEqual(one, two) {
-    if (one == two)
-        return true;
-
-    if (!one || !two)
-        return false;
-
-    return (one.x == two.x &&
-            one.y == two.y &&
-            one.width == two.width &&
-            one.height == two.height);
-}
-
 const WorkspacesView = new Lang.Class({
     Name: 'WorkspacesView',
 
@@ -140,9 +127,6 @@ const WorkspacesView = new Lang.Class({
     },
 
     setFullGeometry: function(geom) {
-        if (rectEqual(this._fullGeometry, geom))
-            return;
-
         this._fullGeometry = geom;
 
         for (let i = 0; i < this._workspaces.length; i++)
@@ -150,9 +134,6 @@ const WorkspacesView = new Lang.Class({
     },
 
     setActualGeometry: function(geom) {
-        if (rectEqual(this._actualGeometry, geom))
-            return;
-
         this._actualGeometry = geom;
 
         for (let i = 0; i < this._workspaces.length; i++)

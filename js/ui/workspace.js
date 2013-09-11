@@ -892,6 +892,19 @@ function padArea(area, padding) {
     };
 }
 
+function rectEqual(one, two) {
+    if (one == two)
+        return true;
+
+    if (!one || !two)
+        return false;
+
+    return (one.x == two.x &&
+            one.y == two.y &&
+            one.width == two.width &&
+            one.height == two.height);
+}
+
 /**
  * @metaWorkspace: a #Meta.Workspace, or null
  */
@@ -967,11 +980,17 @@ const Workspace = new Lang.Class({
     },
 
     setFullGeometry: function(geom) {
+        if (rectEqual(this._fullGeometry, geom))
+            return;
+
         this._fullGeometry = geom;
         this._recalculateWindowPositions(WindowPositionFlags.NONE);
     },
 
     setActualGeometry: function(geom) {
+        if (rectEqual(this._actualGeometry, geom))
+            return;
+
         this._actualGeometry = geom;
 
         if (this._actualGeometryLater)
