@@ -191,6 +191,7 @@ static gchar    *opt_client_id;
 static gboolean  opt_replace_wm;
 static gboolean  opt_disable_sm;
 static gboolean  opt_sync;
+static gboolean  opt_wayland;
 
 static GOptionEntry meta_options[] = {
   {
@@ -226,6 +227,12 @@ static GOptionEntry meta_options[] = {
     "sync", 0, 0, G_OPTION_ARG_NONE,
     &opt_sync,
     N_("Make X calls synchronous"),
+    NULL
+  },
+  {
+    "wayland", 0, 0, G_OPTION_ARG_NONE,
+    &opt_wayland,
+    N_("Run as a wayland compositor"),
     NULL
   },
   {NULL}
@@ -392,6 +399,8 @@ meta_init (void)
     meta_set_verbose (TRUE);
   if (g_getenv ("MUTTER_DEBUG"))
     meta_set_debugging (TRUE);
+
+  meta_set_is_wayland_compositor (opt_wayland);
 
   if (g_get_home_dir ())
     if (chdir (g_get_home_dir ()) < 0)

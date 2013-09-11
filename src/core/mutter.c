@@ -46,15 +46,8 @@ print_version (const gchar    *option_name,
 }
 
 static gchar *plugin = "default";
-static gboolean opt_nested = FALSE;
 
 GOptionEntry mutter_options[] = {
-  {
-    "nested", 0, 0, G_OPTION_ARG_NONE,
-    &opt_nested,
-    N_("Run nested as an application for testing"),
-    NULL,
-  },
   {
     "version", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK,
     print_version,
@@ -83,8 +76,6 @@ main (int argc, char **argv)
       g_printerr ("mutter: %s\n", error->message);
       exit (1);
     }
-
-  meta_set_is_wayland_compositor (opt_nested);
 
   if (plugin)
     meta_plugin_manager_load (plugin);
