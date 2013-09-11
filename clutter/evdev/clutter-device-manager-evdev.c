@@ -1469,7 +1469,7 @@ clutter_evdev_reclaim_devices (void)
   clutter_device_manager_evdev_probe_devices (evdev_manager);
 
   memset (key_bits, 0, sizeof (key_bits));
-  for (iter = priv->event_sources; iter; iter++)
+  for (iter = priv->event_sources; iter; iter = iter->next)
     {
       ClutterEventSource *source = iter->data;
       ClutterInputDevice *slave = CLUTTER_INPUT_DEVICE (source->device);
