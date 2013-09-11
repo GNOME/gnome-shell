@@ -236,13 +236,7 @@ const WorkspacesView = new Lang.Class({
     },
 
     updateWorkspaces: function(oldNumWorkspaces, newNumWorkspaces) {
-        let active = global.screen.get_active_workspace_index();
-
-        Tweener.addTween(this.scrollAdjustment,
-                         { upper: newNumWorkspaces,
-                           time: WORKSPACE_SWITCH_TIME,
-                           transition: 'easeOutQuad'
-                         });
+        this.scrollAdjustment.upper = newNumWorkspaces;
 
         if (newNumWorkspaces > oldNumWorkspaces) {
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
