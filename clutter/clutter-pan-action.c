@@ -5,7 +5,7 @@
  *
  * Copyright (C) 2010  Intel Corporation.
  * Copyright (C) 2011  Robert Bosch Car Multimedia GmbH.
- * Copyright (C) 2012  Collabora Ltd.
+ * Copyright (C) 2012, 2014  Collabora Ltd.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -80,6 +80,14 @@ typedef enum
   PAN_STATE_INTERPOLATING
 } PanState;
 
+typedef enum
+{
+  SCROLL_PINNED_UNKNOWN,
+  SCROLL_PINNED_NONE,
+  SCROLL_PINNED_HORIZONTAL,
+  SCROLL_PINNED_VERTICAL
+} PinState;
+
 struct _ClutterPanActionPrivate
 {
   ClutterPanAxis pan_axis;
@@ -102,6 +110,8 @@ struct _ClutterPanActionPrivate
   gfloat release_y;
 
   guint should_interpolate : 1;
+
+  PinState pin_state;
 };
 
 enum
@@ -135,7 +145,34 @@ emit_pan (ClutterPanAction *self,
           ClutterActor     *actor,
           gboolean          is_interpolated)
 {
+  ClutterPanActionPrivate *priv = self->priv;
   gboolean retval;
+
+  if (priv->pin_state == SCROLL_PINNED_UNKNOWN)
+    {
+      priv->pin_state = SCROLL_PINNED_NONE;
+      if (priv->pan_axis == CLUTTER_PAN_AXIS_AUTO)
+        {
+          gfloat delta_x;
+          gfloat delta_y;
+          gfloat scroll_threshold = G_PI_4/2;
+          gfloat drag_angle;
+
+          clutter_gesture_action_get_motion_delta (CLUTTER_GESTURE_ACTION (self), 0, &delta_x, &delta_y);
+
+          if (delta_x != 0.0f)
+            drag_angle = atanf (delta_y / delta_x);
+          else
+            drag_angle = G_PI_2;
+
+          if ((drag_angle > -scroll_threshold) && (drag_angle < scroll_threshold))
+            priv->pin_state = SCROLL_PINNED_HORIZONTAL;
+          else if ((drag_angle > (G_PI_2 - scroll_threshold)) ||
+                    (drag_angle < -(G_PI_2 - scroll_threshold)))
+            priv->pin_state = SCROLL_PINNED_VERTICAL;
+        }
+    }
+
   g_signal_emit (self, pan_signals[PAN], 0, actor, is_interpolated, &retval);
 }
 
@@ -207,6 +244,7 @@ gesture_begin (ClutterGestureAction  *gesture,
   ClutterPanAction *self = CLUTTER_PAN_ACTION (gesture);
   ClutterPanActionPrivate *priv = self->priv;
 
+  priv->pin_state = SCROLL_PINNED_UNKNOWN;
   priv->state = PAN_STATE_PANNING;
   priv->interpolated_x = priv->interpolated_y = 0.0f;
   priv->dx = priv->dy = 0.0f;
@@ -297,25 +335,10 @@ clutter_pan_action_real_pan (ClutterPanAction *self,
                              ClutterActor     *actor,
                              gboolean          is_interpolated)
 {
-  ClutterPanActionPrivate *priv = self->priv;
   gfloat dx, dy;
   ClutterMatrix transform;
 
-  clutter_pan_action_get_motion_delta (self, 0, &dx, &dy);
-
-  switch (priv->pan_axis)
-    {
-    case CLUTTER_PAN_AXIS_NONE:
-      break;
-
-    case CLUTTER_PAN_X_AXIS:
-      dy = 0.0f;
-      break;
-
-    case CLUTTER_PAN_Y_AXIS:
-      dx = 0.0f;
-      break;
-    }
+  clutter_pan_action_get_constrained_motion_delta (self, 0, &dx, &dy);
 
   clutter_actor_get_child_transform (actor, &transform);
   cogl_matrix_translate (&transform, dx, dy, 0.0f);
@@ -605,7 +628,7 @@ clutter_pan_action_set_pan_axis (ClutterPanAction *self,
 
   g_return_if_fail (CLUTTER_IS_PAN_ACTION (self));
   g_return_if_fail (axis >= CLUTTER_PAN_AXIS_NONE &&
-                    axis <= CLUTTER_PAN_Y_AXIS);
+                    axis <= CLUTTER_PAN_AXIS_AUTO);
 
   priv = self->priv;
 
@@ -829,6 +852,67 @@ clutter_pan_action_get_interpolated_delta (ClutterPanAction *self,
     *delta_y = priv->dy;
 
   return sqrt ((priv->dx * priv->dx) + (priv->dy * priv->dy));
+}
+
+/**
+ * clutter_pan_action_get_constrained_motion_delta:
+ * @self: A #ClutterPanAction
+ * @point: the touch point index, with 0 being the first touch
+  *   point received by the action
+ * @delta_x: (out) (optional): return location for the X delta
+ * @delta_y: (out) (optional): return location for the Y delta
+ *
+ * Retrieves the delta, in stage space, dependent on the current state
+ * of the #ClutterPanAction, and respecting the constraint specified by the
+ * #ClutterPanAction:pan-axis property.
+ *
+ * Return value: the distance since last motion event
+ *
+ * Since: 1.24
+ */
+gfloat
+clutter_pan_action_get_constrained_motion_delta (ClutterPanAction *self,
+                                                 guint             point,
+                                                 gfloat           *out_delta_x,
+                                                 gfloat           *out_delta_y)
+{
+  ClutterPanActionPrivate *priv;
+  gfloat delta_x = 0.f, delta_y = 0.f, distance;
+
+  g_return_val_if_fail (CLUTTER_IS_PAN_ACTION (self), 0.0f);
+
+  priv = self->priv;
+
+  distance = clutter_pan_action_get_motion_delta (self, point, &delta_x, &delta_y);
+
+  switch (priv->pan_axis)
+    {
+    case CLUTTER_PAN_AXIS_NONE:
+      break;
+
+    case CLUTTER_PAN_AXIS_AUTO:
+      if (priv->pin_state == SCROLL_PINNED_VERTICAL)
+        delta_x = 0.0f;
+      else if (priv->pin_state == SCROLL_PINNED_HORIZONTAL)
+        delta_y = 0.0f;
+      break;
+
+    case CLUTTER_PAN_X_AXIS:
+      delta_y = 0.0f;
+      break;
+
+    case CLUTTER_PAN_Y_AXIS:
+      delta_x = 0.0f;
+      break;
+    }
+
+  if (out_delta_x)
+    *out_delta_x = delta_x;
+
+  if (out_delta_y)
+    *out_delta_y = delta_y;
+
+  return distance;
 }
 
 /**

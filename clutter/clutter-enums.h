@@ -1018,6 +1018,8 @@ typedef enum { /*< prefix=CLUTTER_SWIPE_DIRECTION >*/
  * @CLUTTER_PAN_AXIS_NONE: No constraint
  * @CLUTTER_PAN_X_AXIS: Set a constraint on the X axis
  * @CLUTTER_PAN_Y_AXIS: Set a constraint on the Y axis
+ * @CLUTTER_PAN_AXIS_AUTO: Constrain panning automatically based on initial
+ *   movement (available since 1.24)
  *
  * The axis of the constraint that should be applied on the
  * panning action
@@ -1028,7 +1030,9 @@ typedef enum { /*< prefix=CLUTTER_PAN >*/
   CLUTTER_PAN_AXIS_NONE = 0,
 
   CLUTTER_PAN_X_AXIS,
-  CLUTTER_PAN_Y_AXIS
+  CLUTTER_PAN_Y_AXIS,
+
+  CLUTTER_PAN_AXIS_AUTO
 } ClutterPanAxis;
 
 

@@ -83,7 +83,7 @@ create_scroll_actor (ClutterActor *stage)
   pan_action = clutter_pan_action_new ();
   clutter_pan_action_set_interpolate (CLUTTER_PAN_ACTION (pan_action), TRUE);
   g_signal_connect (pan_action, "pan", G_CALLBACK (on_pan), NULL);
-  clutter_actor_add_action (scroll, pan_action);
+  clutter_actor_add_action_with_name (scroll, "pan", pan_action);
 
   clutter_actor_set_reactive (scroll, TRUE);
 
@@ -113,10 +113,45 @@ on_key_press (ClutterActor *stage,
   return CLUTTER_EVENT_STOP;
 }
 
+static gboolean
+label_clicked_cb (ClutterText *label, ClutterEvent *event, ClutterActor *scroll)
+{
+  ClutterPanAction *action = CLUTTER_PAN_ACTION (clutter_actor_get_action (scroll, "pan"));
+  const gchar *label_text = clutter_text_get_text (label);
+
+  if (g_str_equal (label_text, "X AXIS"))
+    clutter_pan_action_set_pan_axis (action, CLUTTER_PAN_X_AXIS);
+  else if (g_str_equal (label_text, "Y AXIS"))
+    clutter_pan_action_set_pan_axis (action, CLUTTER_PAN_Y_AXIS);
+  else if (g_str_equal (label_text, "AUTO"))
+    clutter_pan_action_set_pan_axis (action, CLUTTER_PAN_AXIS_AUTO);
+  else
+    clutter_pan_action_set_pan_axis (action, CLUTTER_PAN_AXIS_NONE);
+
+  return TRUE;
+}
+
+static void
+add_label (const gchar *text, ClutterActor *box, ClutterActor *scroll)
+{
+  ClutterActor *label;
+
+  label = clutter_text_new_with_text (NULL, text);
+  clutter_actor_set_reactive (label, TRUE);
+  clutter_actor_set_x_align (label, CLUTTER_ACTOR_ALIGN_START);
+  clutter_actor_set_x_expand (label, TRUE);
+
+  clutter_actor_add_child (box, label);
+
+  g_signal_connect (label, "button-release-event",
+                    G_CALLBACK (label_clicked_cb), scroll);
+}
+
 int
 main (int argc, char *argv[])
 {
-  ClutterActor *stage, *scroll, *info;
+  ClutterActor *stage, *scroll, *box, *info;
+  ClutterLayoutManager *layout;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return EXIT_FAILURE;
@@ -129,9 +164,24 @@ main (int argc, char *argv[])
   scroll = create_scroll_actor (stage);
   clutter_actor_add_child (stage, scroll);
 
+  box = clutter_actor_new ();
+  clutter_actor_add_child (stage, box);
+  clutter_actor_set_position (box, 12, 12);
+
+  layout = clutter_box_layout_new ();
+  clutter_box_layout_set_orientation (CLUTTER_BOX_LAYOUT (layout), CLUTTER_ORIENTATION_VERTICAL);
+  clutter_actor_set_layout_manager (box, layout);
+
   info = clutter_text_new_with_text (NULL, "Press <space> to reset the image position.");
-  clutter_actor_add_child (stage, info);
-  clutter_actor_set_position (info, 12, 12);
+  clutter_actor_add_child (box, info);
+
+  info = clutter_text_new_with_text (NULL, "Click labels below to change AXIS pinning.");
+  clutter_actor_add_child (box, info);
+
+  add_label ("NONE", box, scroll);
+  add_label ("X AXIS", box, scroll);
+  add_label ("Y AXIS", box, scroll);
+  add_label ("AUTO", box, scroll);
 
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   g_signal_connect (stage, "key-press-event", G_CALLBACK (on_key_press), scroll);
