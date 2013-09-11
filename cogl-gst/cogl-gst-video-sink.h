@@ -185,7 +185,7 @@ cogl_gst_video_sink_get_type (void) G_GNUC_CONST;
  * Creates a new #CoglGstVideoSink which will create resources for use
  * with the given context.
  *
- * Return value: a new #CoglGstVideoSink
+ * Return value: (transfer full): a new #CoglGstVideoSink
  * Since: 1.16
  */
 CoglGstVideoSink *
@@ -228,7 +228,8 @@ cogl_gst_video_sink_is_ready (CoglGstVideoSink *sink);
  * Note: it is considered an error to call this function before the
  * #CoglGstVideoSink::pipeline-ready signal is emitted.
  *
- * Return value: the pipeline for rendering the current frame
+ * Return value: (transfer none): the pipeline for rendering the
+ *   current frame
  * Since: 1.16
  */
 CoglPipeline *
@@ -423,8 +424,8 @@ typedef struct _CoglGstRectangle
 /**
  * cogl_gst_video_sink_fit_size:
  * @sink: A #CoglGstVideoSink
- * @available: The space available for video output
- * @output: The return location for the calculated output position
+ * @available: (in): The space available for video output
+ * @output: (inout): The return location for the calculated output position
  *
  * Calculates a suitable @output rectangle that can fit inside the
  * @available space while maintaining the aspect ratio of the current
