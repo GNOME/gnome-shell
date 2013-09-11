@@ -62,7 +62,6 @@ const WorkspacesView = new Lang.Class({
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
         this._animatingScroll = false; // programatically updating the adjustment
-        this._zoomOut = false; // zoom to a larger area
         this._inDrag = false; // dragging a window
 
         this._settings = new Gio.Settings({ schema: OVERRIDE_SCHEMA });
@@ -166,14 +165,6 @@ const WorkspacesView = new Lang.Class({
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setActualGeometry(geom);
-    },
-
-    _lookupWorkspaceForMetaWindow: function (metaWindow) {
-        for (let i = 0; i < this._workspaces.length; i++) {
-            if (this._workspaces[i].containsMetaWindow(metaWindow))
-                return this._workspaces[i];
-        }
-        return null;
     },
 
     getActiveWorkspace: function() {
@@ -433,10 +424,6 @@ const WorkspacesView = new Lang.Class({
             this._workspaces[i].actor.y += dy;
         }
     },
-
-    _getWorkspaceIndexToRemove: function() {
-        return global.screen.get_active_workspace_index();
-    }
 });
 Signals.addSignalMethods(WorkspacesView.prototype);
 
