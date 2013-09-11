@@ -3942,7 +3942,8 @@ meta_display_create_x_cursor (MetaDisplay *display,
                               MetaCursor cursor)
 {
   Cursor xcursor;
-  guint glyph;
+  guint glyph = XC_num_glyphs;
+  const char *name = NULL;
 
   switch (cursor)
     {
@@ -3979,14 +3980,38 @@ meta_display_create_x_cursor (MetaDisplay *display,
     case META_CURSOR_BUSY:
       glyph = XC_watch;
       break;
-      
+    case META_CURSOR_DND_IN_DRAG:
+      name = "dnd-in-drag";
+      break;
+    case META_CURSOR_DND_MOVE:
+      name = "dnd-move";
+      break;
+    case META_CURSOR_DND_COPY:
+      name = "dnd-copy";
+      break;
+    case META_CURSOR_DND_UNSUPPORTED_TARGET:
+      name = "dnd-none";
+      break;
+    case META_CURSOR_POINTING_HAND:
+      glyph = XC_hand2;
+      break;
+    case META_CURSOR_CROSSHAIR:
+      glyph = XC_crosshair;
+      break;
+    case META_CURSOR_IBEAM:
+      glyph = XC_xterm;
+      break;
+
     default:
       g_assert_not_reached ();
       glyph = 0; /* silence compiler */
       break;
     }
-  
-  xcursor = XCreateFontCursor (display->xdisplay, glyph);
+
+  if (name != NULL)
+    xcursor = XcursorLibraryLoadCursor (display->xdisplay, name);
+  else
+    xcursor = XCreateFontCursor (display->xdisplay, glyph);
 
   return xcursor;
 }
