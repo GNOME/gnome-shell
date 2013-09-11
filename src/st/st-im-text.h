@@ -68,6 +68,8 @@ void            st_im_text_set_input_hints   (StIMText       *imtext,
                                               GtkInputHints   hints);
 GtkInputHints   st_im_text_get_input_hints   (StIMText       *imtext);
 
+void            st_im_text_set_event_window  (GdkWindow      *window);
+
 G_END_DECLS
 
 #endif /* __ST_IM_TEXT_H__ */

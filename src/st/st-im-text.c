@@ -41,7 +41,6 @@
 #endif
 
 #include <clutter/clutter.h>
-#include <clutter/x11/clutter-x11.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
@@ -203,25 +202,14 @@ st_im_text_get_paint_volume (ClutterActor       *self,
   return clutter_paint_volume_set_from_allocation (volume, self);
 }
 
-/* Returns a new reference to window */
-static GdkWindow *
-window_for_actor (ClutterActor *actor)
+static GdkWindow *event_window;
+
+void
+st_im_text_set_event_window (GdkWindow *window)
 {
-  GdkDisplay *display = gdk_display_get_default ();
-  ClutterActor *stage;
-  Window xwindow;
-  GdkWindow *window;
+  g_assert (event_window == NULL);
 
-  stage = clutter_actor_get_stage (actor);
-  xwindow = clutter_x11_get_stage_window ((ClutterStage *)stage);
-
-  window = gdk_x11_window_lookup_for_display (display, xwindow);
-  if (window)
-    g_object_ref (window);
-  else
-    window = gdk_x11_window_foreign_new_for_display (display, xwindow);
-
-  return window;
+  event_window = window;
 }
 
 static void
@@ -229,7 +217,8 @@ st_im_text_realize (ClutterActor *actor)
 {
   StIMTextPrivate *priv = ST_IM_TEXT (actor)->priv;
 
-  priv->window = window_for_actor (actor);
+  g_assert (event_window != NULL);
+  priv->window = g_object_ref (event_window);
   gtk_im_context_set_client_window (priv->im_context, priv->window);
 }
 
@@ -291,7 +280,8 @@ key_event_to_gdk (ClutterKeyEvent *event_clutter)
   event_gdk = (GdkEventKey *)gdk_event_new ((event_clutter->type == CLUTTER_KEY_PRESS) ?
                                             GDK_KEY_PRESS : GDK_KEY_RELEASE);
 
-  event_gdk->window = window_for_actor ((ClutterActor *)event_clutter->stage);
+  g_assert (event_window != NULL);
+  event_gdk->window = g_object_ref (event_window);
   event_gdk->send_event = FALSE;
   event_gdk->time = event_clutter->time;
   /* This depends on ClutterModifierType and GdkModifierType being

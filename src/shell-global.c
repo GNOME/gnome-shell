@@ -52,7 +52,7 @@ struct _ShellGlobal {
 
   ClutterStage *stage;
   Window stage_xwindow;
-  GdkWindow *stage_gdk_window;
+  GdkWindow *ibus_window;
 
   MetaDisplay *meta_display;
   GdkDisplay *gdk_display;
@@ -793,13 +793,9 @@ gnome_shell_gdk_event_handler (GdkEvent *event_gdk,
 {
   if (event_gdk->type == GDK_KEY_PRESS || event_gdk->type == GDK_KEY_RELEASE)
     {
-      ClutterActor *stage;
-      Window stage_xwindow;
+      ShellGlobal *global = data;
 
-      stage = CLUTTER_ACTOR (data);
-      stage_xwindow = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-
-      if (GDK_WINDOW_XID (event_gdk->key.window) == stage_xwindow)
+      if (event_gdk->key.window == global->ibus_window)
         {
           ClutterDeviceManager *device_manager = clutter_device_manager_get_default ();
           ClutterInputDevice *keyboard = clutter_device_manager_get_core_device (device_manager,
@@ -809,7 +805,7 @@ gnome_shell_gdk_event_handler (GdkEvent *event_gdk,
                                                            CLUTTER_KEY_PRESS : CLUTTER_KEY_RELEASE);
           event_clutter->key.time = event_gdk->key.time;
           event_clutter->key.flags = CLUTTER_EVENT_NONE;
-          event_clutter->key.stage = CLUTTER_STAGE (stage);
+          event_clutter->key.stage = CLUTTER_STAGE (global->stage);
           event_clutter->key.source = NULL;
 
           /* This depends on ClutterModifierType and GdkModifierType being
@@ -852,8 +848,9 @@ _shell_global_set_plugin (ShellGlobal *global,
 
   global->stage = CLUTTER_STAGE (meta_get_stage_for_screen (global->meta_screen));
   global->stage_xwindow = clutter_x11_get_stage_window (global->stage);
-  global->stage_gdk_window = gdk_x11_window_foreign_new_for_display (global->gdk_display,
-                                                                     global->stage_xwindow);
+  global->ibus_window = gdk_x11_window_foreign_new_for_display (global->gdk_display,
+                                                                global->stage_xwindow);
+  st_im_text_set_event_window (global->ibus_window);
 
   g_signal_connect (global->stage, "notify::width",
                     G_CALLBACK (global_stage_notify_width), global);
@@ -882,7 +879,7 @@ _shell_global_set_plugin (ShellGlobal *global,
   g_signal_connect (global->meta_display, "notify::focus-window",
                     G_CALLBACK (focus_window_changed), global);
 
-  gdk_event_handler_set (gnome_shell_gdk_event_handler, global->stage, NULL);
+  gdk_event_handler_set (gnome_shell_gdk_event_handler, global, NULL);
 
   global->focus_manager = st_focus_manager_get_for_stage (global->stage);
 }
