@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Main = imports.ui.main;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const DND = imports.ui.dnd;
@@ -20,7 +21,8 @@ const XdndHandler = new Lang.Class({
         Main.uiGroup.add_actor(this._dummy);
         this._dummy.hide();
 
-        global.init_xdnd();
+        if (!Meta.is_wayland_compositor())
+            global.init_xdnd();
 
         global.connect('xdnd-enter', Lang.bind(this, this._onEnter));
         global.connect('xdnd-position-changed', Lang.bind(this, this._onPositionChanged));

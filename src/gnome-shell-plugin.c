@@ -35,6 +35,7 @@
 #include <gjs/gjs.h>
 #include <meta/display.h>
 #include <meta/meta-plugin.h>
+#include <meta/util.h>
 
 #include "shell-global-private.h"
 #include "shell-perf-log.h"
@@ -343,8 +344,13 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
     }
 #endif
 
+#ifdef HAVE_WAYLAND
+  if (meta_is_wayland_compositor ())
+    return FALSE;
+#endif
+
   /*
-   * Pass the event to shell-global
+   * Pass the event to shell-global for XDND
    */
   if (_shell_global_check_xdnd_event (shell_plugin->global, xev))
     return TRUE;
