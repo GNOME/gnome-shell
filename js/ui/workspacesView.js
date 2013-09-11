@@ -26,7 +26,7 @@ const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
 const WorkspacesView = new Lang.Class({
     Name: 'WorkspacesView',
 
-    _init: function(workspaces) {
+    _init: function(monitorIndex) {
         this.actor = new St.Widget({ style_class: 'workspaces-view',
                                      reactive: true });
 
@@ -38,26 +38,32 @@ const WorkspacesView = new Lang.Class({
         this._fullGeometry = null;
         this._actualGeometry = null;
 
+        this._monitorIndex = monitorIndex;
+
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
         this._animatingScroll = false; // programatically updating the adjustment
         this._inDrag = false; // dragging a window
 
         this._settings = new Gio.Settings({ schema: OVERRIDE_SCHEMA });
-        this._updateExtraWorkspacesId =
-            this._settings.connect('changed::workspaces-only-on-primary',
-                                   Lang.bind(this, this._updateExtraWorkspaces));
 
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        this._workspaces = workspaces;
+        this.scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
+                                                    lower: 0,
+                                                    page_increment: 1,
+                                                    page_size: 1,
+                                                    step_increment: 0,
+                                                    upper: 0 });
+        this.scrollAdjustment.connect('notify::value',
+                                      Lang.bind(this, this._onScroll));
 
-        // Add workspace actors
-        for (let w = 0; w < global.screen.n_workspaces; w++)
-            this.actor.add_actor(this._workspaces[w].actor);
-        this._workspaces[activeWorkspaceIndex].actor.raise_top();
+        this._workspaces = [];
+        this._updateWorkspaces();
+        this._updateWorkspacesId = global.screen.connect('notify::n-workspaces', Lang.bind(this, this._updateWorkspaces));
 
         this._extraWorkspaces = [];
         this._updateExtraWorkspaces();
+        this._updateExtraWorkspacesId = this._settings.connect('changed::workspaces-only-on-primary', Lang.bind(this, this._updateExtraWorkspaces));
 
         this._overviewShownId =
             Main.overview.connect('shown',
@@ -65,15 +71,6 @@ const WorkspacesView = new Lang.Class({
                 this.actor.set_clip(this._fullGeometry.x, this._fullGeometry.y,
                                     this._fullGeometry.width, this._fullGeometry.height);
         }));
-
-        this.scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
-                                                    lower: 0,
-                                                    page_increment: 1,
-                                                    page_size: 1,
-                                                    step_increment: 0,
-                                                    upper: this._workspaces.length });
-        this.scrollAdjustment.connect('notify::value',
-                                      Lang.bind(this, this._onScroll));
 
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
@@ -110,18 +107,21 @@ const WorkspacesView = new Lang.Class({
         this._extraWorkspaces = [];
     },
 
+    _syncGeometry: function() {
+        for (let i = 0; i < this._workspaces.length; i++)
+            this._workspaces[i].setFullGeometry(this._fullGeometry);
+        for (let i = 0; i < this._workspaces.length; i++)
+            this._workspaces[i].setActualGeometry(this._actualGeometry);
+    },
+
     setFullGeometry: function(geom) {
         this._fullGeometry = geom;
-
-        for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setFullGeometry(geom);
+        this._syncGeometry();
     },
 
     setActualGeometry: function(geom) {
         this._actualGeometry = geom;
-
-        for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setActualGeometry(geom);
+        this._syncGeometry();
     },
 
     getActiveWorkspace: function() {
@@ -235,19 +235,31 @@ const WorkspacesView = new Lang.Class({
         });
     },
 
-    updateWorkspaces: function(oldNumWorkspaces, newNumWorkspaces) {
+    _updateWorkspaces: function() {
+        let oldNumWorkspaces = this._workspaces.length;
+        let newNumWorkspaces = global.screen.n_workspaces;
+
         this.scrollAdjustment.upper = newNumWorkspaces;
 
         if (newNumWorkspaces > oldNumWorkspaces) {
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
-                this._workspaces[w].setFullGeometry(this._fullGeometry);
-                if (this._actualGeometry)
-                    this._workspaces[w].setActualGeometry(this._actualGeometry);
-                this.actor.add_actor(this._workspaces[w].actor);
+                let metaWorkspace = global.screen.get_workspace_by_index(w);
+                let workspace = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
+                this._workspaces.push(workspace);
+                this.actor.add_actor(workspace.actor);
             }
 
-            this._updateWorkspaceActors(false);
+            if (this._fullGeometry)
+                this._updateWorkspaceActors(false);
+        } else if (newNumWorkspaces < oldNumWorkspaces) {
+            let nRemoved = (newNumWorkspaces - oldNumWorkspaces);
+            let removed = this._workspaces.splice(oldNumWorkspaces, nRemoved);
+            removed.forEach(function(workspace) {
+                workspace.destroy();
+            });
         }
+
+        this._syncGeometry();
     },
 
     _activeWorkspaceChanged: function(wm, from, to, direction) {
@@ -262,6 +274,7 @@ const WorkspacesView = new Lang.Class({
         this.scrollAdjustment.run_dispose();
         Main.overview.disconnect(this._overviewShownId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+        global.screen.disconnect(this._updateWorkspacesId);
         this._settings.disconnect(this._updateExtraWorkspacesId);
 
         if (this._inDrag)
@@ -397,7 +410,6 @@ const WorkspacesDisplay = new Lang.Class({
         this._primaryIndex = Main.layoutManager.primaryIndex;
 
         this._workspacesViews = [];
-        this._workspaces = [];
         this._primaryScrollAdjustment = null;
 
         this._settings = new Gio.Settings({ schema: OVERRIDE_SCHEMA });
@@ -405,9 +417,6 @@ const WorkspacesDisplay = new Lang.Class({
                                Lang.bind(this,
                                          this._workspacesOnlyOnPrimaryChanged));
         this._workspacesOnlyOnPrimaryChanged();
-
-        global.screen.connect('notify::n-workspaces',
-                              Lang.bind(this, this._workspacesChanged));
 
         this._switchWorkspaceNotifyId = 0;
 
@@ -470,21 +479,12 @@ const WorkspacesDisplay = new Lang.Class({
             this._workspacesViews[i].destroy();
 
         this._workspacesViews = [];
-        this._workspaces = [];
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
             if (this._workspacesOnlyOnPrimary && i != this._primaryIndex)
                 continue;  // we are only interested in the primary monitor
 
-            let monitorWorkspaces = [];
-            for (let w = 0; w < global.screen.n_workspaces; w++) {
-                let metaWorkspace = global.screen.get_workspace_by_index(w);
-                monitorWorkspaces.push(new Workspace.Workspace(metaWorkspace, i));
-            }
-
-            this._workspaces.push(monitorWorkspaces);
-
-            let view = new WorkspacesView(monitorWorkspaces);
+            let view = new WorkspacesView(i);
             view.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
             if (this._workspacesOnlyOnPrimary || i == this._primaryIndex) {
                 this._scrollAdjustment = view.scrollAdjustment;
@@ -605,60 +605,6 @@ const WorkspacesDisplay = new Lang.Class({
     _onRestacked: function(overview, stackIndices) {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].syncStacking(stackIndices);
-    },
-
-    _workspacesChanged: function() {
-        if (!this._workspacesViews.length)
-            return;
-
-        let oldNumWorkspaces = this._workspaces[0].length;
-        let newNumWorkspaces = global.screen.n_workspaces;
-        let active = global.screen.get_active_workspace_index();
-
-        let lostWorkspaces = [];
-        if (newNumWorkspaces > oldNumWorkspaces) {
-            let monitors = Main.layoutManager.monitors;
-            let m = 0;
-            for (let i = 0; i < monitors.length; i++) {
-                if (this._workspacesOnlyOnPrimary &&
-                    i != this._primaryIndex)
-                    continue;
-
-                // Assume workspaces are only added at the end
-                for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
-                    let metaWorkspace = global.screen.get_workspace_by_index(w);
-                    this._workspaces[m][w] =
-                        new Workspace.Workspace(metaWorkspace, i);
-                }
-                m++;
-            }
-        } else {
-            // Assume workspaces are only removed sequentially
-            // (e.g. 2,3,4 - not 2,4,7)
-            let removedIndex;
-            let removedNum = oldNumWorkspaces - newNumWorkspaces;
-            for (let w = 0; w < oldNumWorkspaces; w++) {
-                let metaWorkspace = global.screen.get_workspace_by_index(w);
-                if (this._workspaces[0][w].metaWorkspace != metaWorkspace) {
-                    removedIndex = w;
-                    break;
-                }
-            }
-
-            for (let i = 0; i < this._workspaces.length; i++) {
-                lostWorkspaces = this._workspaces[i].splice(removedIndex,
-                                                            removedNum);
-
-                for (let l = 0; l < lostWorkspaces.length; l++) {
-                    lostWorkspaces[l].disconnectAll();
-                    lostWorkspaces[l].destroy();
-                }
-            }
-        }
-
-        for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].updateWorkspaces(oldNumWorkspaces,
-                                                      newNumWorkspaces);
     },
 
     _onScrollEvent: function(actor, event) {
