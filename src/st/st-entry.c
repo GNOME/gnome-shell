@@ -65,10 +65,6 @@
 #include "st-clipboard.h"
 #include "st-private.h"
 
-#include <clutter/x11/clutter-x11.h>
-#include <X11/Xlib.h>
-#include <X11/cursorfont.h>
-
 #include "st-widget-accessible.h"
 
 #define HAS_FOCUS(actor) (clutter_actor_get_stage (actor) && clutter_stage_get_key_focus ((ClutterStage *) clutter_actor_get_stage (actor)) == actor)
@@ -681,33 +677,28 @@ st_entry_key_focus_in (ClutterActor *actor)
   clutter_actor_grab_key_focus (priv->entry);
 }
 
+static StEntryCursorFunc cursor_func;
+static gpointer          cursor_func_data;
+
+/**
+ * st_entry_set_cursor_func: (skip)
+ *
+ * This function is for private use by libgnome-shell.
+ * Do not ever use.
+ */
+void
+st_entry_set_cursor_func (StEntryCursorFunc func,
+                          gpointer          data)
+{
+  cursor_func = func;
+  cursor_func_data = data;
+}
+
 static void
 st_entry_set_cursor (StEntry  *entry,
                      gboolean  use_ibeam)
 {
-  Display *dpy;
-  ClutterActor *stage, *actor = CLUTTER_ACTOR (entry);
-  Window wid;
-  static Cursor ibeam = None;
-
-  dpy = clutter_x11_get_default_display ();
-  stage = clutter_actor_get_stage (actor);
-
-  if (stage == NULL)
-    {
-      g_warn_if_fail (!entry->priv->has_ibeam);
-      return;
-    }
-
-  wid = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-
-  if (ibeam == None)
-    ibeam = XCreateFontCursor (dpy, XC_xterm);
-
-  if (use_ibeam)
-    XDefineCursor (dpy, wid, ibeam);
-  else
-    XUndefineCursor (dpy, wid);
+  cursor_func (entry, use_ibeam, cursor_func_data);
 
   entry->priv->has_ibeam = use_ibeam;
 }
