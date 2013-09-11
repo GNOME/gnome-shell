@@ -230,11 +230,8 @@ meta_wayland_seat_new (struct wl_display *display,
 {
   MetaWaylandSeat *seat = g_new0 (MetaWaylandSeat, 1);
 
-  wl_signal_init (&seat->destroy_signal);
-
   seat->selection_data_source = NULL;
   wl_list_init (&seat->base_resource_list);
-  wl_signal_init (&seat->selection_signal);
   wl_list_init (&seat->data_device_resource_list);
 
   meta_wayland_pointer_init (&seat->pointer, is_native);
@@ -491,8 +488,6 @@ meta_wayland_seat_free (MetaWaylandSeat *seat)
 
   meta_wayland_pointer_release (&seat->pointer);
   meta_wayland_keyboard_release (&seat->keyboard);
-
-  wl_signal_emit (&seat->destroy_signal, seat);
 
   g_slice_free (MetaWaylandSeat, seat);
 }

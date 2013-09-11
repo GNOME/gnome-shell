@@ -270,7 +270,6 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
   pointer->default_grab.interface = &default_pointer_grab_interface;
   pointer->default_grab.pointer = pointer;
   pointer->grab = &pointer->default_grab;
-  wl_signal_init (&pointer->focus_signal);
 
   manager = clutter_device_manager_get_default ();
   device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);

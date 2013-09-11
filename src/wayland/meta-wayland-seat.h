@@ -54,12 +54,10 @@ struct _MetaWaylandDataSource
 struct _MetaWaylandSeat
 {
   struct wl_list base_resource_list;
-  struct wl_signal destroy_signal;
 
   uint32_t selection_serial;
   MetaWaylandDataSource *selection_data_source;
   struct wl_listener selection_data_source_listener;
-  struct wl_signal selection_signal;
 
   struct wl_list data_device_resource_list;
   MetaWaylandPointer pointer;

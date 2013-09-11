@@ -51,7 +51,6 @@ struct _MetaWaylandPointer
   struct wl_listener focus_listener;
   guint32 focus_serial;
   guint32 click_serial;
-  struct wl_signal focus_signal;
 
   MetaWaylandPointerGrab *grab;
   MetaWaylandPointerGrab default_grab;

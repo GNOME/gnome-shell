@@ -316,7 +316,6 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
   keyboard->default_grab.interface = &default_keyboard_grab_interface;
   keyboard->default_grab.keyboard = keyboard;
   keyboard->grab = &keyboard->default_grab;
-  wl_signal_init (&keyboard->focus_signal);
 
   keyboard->display = display;
 
@@ -539,7 +538,6 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
 
   keyboard->focus_resource = resource;
   keyboard->focus = surface;
-  wl_signal_emit (&keyboard->focus_signal, keyboard);
 }
 
 void
