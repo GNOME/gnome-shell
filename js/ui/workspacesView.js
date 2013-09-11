@@ -294,36 +294,18 @@ const WorkspacesView = new Lang.Class({
         }
     },
 
-    _dragBegin: function() {
+    _dragBegin: function(overview, clone) {
         if (this._scrolling)
             return;
 
         this._inDrag = true;
-        this._firstDragMotion = true;
-
-        this._dragMonitor = {
-            dragMotion: Lang.bind(this, this._onDragMotion)
-        };
-        DND.addDragMonitor(this._dragMonitor);
-    },
-
-    _onDragMotion: function(dragEvent) {
-        if (Main.overview.animationInProgress)
-             return DND.DragMotionResult.CONTINUE;
-
-        if (this._firstDragMotion) {
-            this._firstDragMotion = false;
-            for (let i = 0; i < this._workspaces.length; i++)
-                this._workspaces[i].setReservedSlot(dragEvent.dragActor._delegate);
-            for (let i = 0; i < this._extraWorkspaces.length; i++)
-                this._extraWorkspaces[i].setReservedSlot(dragEvent.dragActor._delegate);
-        }
-
-        return DND.DragMotionResult.CONTINUE;
+        for (let i = 0; i < this._workspaces.length; i++)
+            this._workspaces[i].setReservedSlot(clone);
+        for (let i = 0; i < this._extraWorkspaces.length; i++)
+            this._extraWorkspaces[i].setReservedSlot(clone);
     },
 
     _dragEnd: function() {
-        DND.removeDragMonitor(this._dragMonitor);
         this._inDrag = false;
 
         for (let i = 0; i < this._workspaces.length; i++)
