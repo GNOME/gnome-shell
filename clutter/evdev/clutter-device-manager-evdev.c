@@ -820,13 +820,15 @@ find_source_by_device (ClutterDeviceManagerEvdev *manager,
 static gboolean
 is_evdev (const gchar *sysfs_path)
 {
-  GRegex *regex;
+  static GRegex *regex = NULL;
   gboolean match;
 
-  regex = g_regex_new ("/input[0-9]+/event[0-9]+$", 0, 0, NULL);
+  /* cache the regexp */
+  if (G_UNLIKELY (regex == NULL))
+    regex = g_regex_new ("/input[0-9]+/event[0-9]+$", 0, 0, NULL);
+
   match = g_regex_match (regex, sysfs_path, 0, NULL);
 
-  g_regex_unref (regex);
   return match;
 }
 
