@@ -841,14 +841,14 @@ save_state (void)
   if (mkdir (mutter_dir, 0700) < 0 &&
       errno != EEXIST)
     {
-      meta_warning (_("Could not create directory '%s': %s\n"),
+      meta_warning ("Could not create directory '%s': %s\n",
                     mutter_dir, g_strerror (errno));
     }
 
   if (mkdir (session_dir, 0700) < 0 &&
       errno != EEXIST)
     {
-      meta_warning (_("Could not create directory '%s': %s\n"),
+      meta_warning ("Could not create directory '%s': %s\n",
                     session_dir, g_strerror (errno));
     }
 
@@ -858,7 +858,7 @@ save_state (void)
 
   if (outfile == NULL)
     {
-      meta_warning (_("Could not open session file '%s' for writing: %s\n"),
+      meta_warning ("Could not open session file '%s' for writing: %s\n",
                     full_save_file (), g_strerror (errno));
       goto out;
     }
@@ -999,12 +999,12 @@ save_state (void)
       /* FIXME need a dialog for this */
       if (ferror (outfile))
         {
-          meta_warning (_("Error writing session file '%s': %s\n"),
+          meta_warning ("Error writing session file '%s': %s\n",
                         full_save_file (), g_strerror (errno));
         }
       if (fclose (outfile))
         {
-          meta_warning (_("Error closing session file '%s': %s\n"),
+          meta_warning ("Error closing session file '%s': %s\n",
                         full_save_file (), g_strerror (errno));
         }
     }
@@ -1134,7 +1134,7 @@ load_state (const char *previous_save_file)
 
  error:
   
-  meta_warning (_("Failed to parse saved session file: %s\n"),
+  meta_warning ("Failed to parse saved session file: %s\n",
                 error->message);
   g_error_free (error);
 
@@ -1183,7 +1183,7 @@ start_element_handler  (GMarkupParseContext *context,
               g_set_error (error,
                            G_MARKUP_ERROR,
                        G_MARKUP_ERROR_PARSE,
-                           _("<mutter_session> attribute seen but we already have the session ID"));
+                           "<mutter_session> attribute seen but we already have the session ID");
               return;
             }
           
@@ -1196,7 +1196,7 @@ start_element_handler  (GMarkupParseContext *context,
               g_set_error (error,
                            G_MARKUP_ERROR,
                            G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
-                           _("Unknown attribute %s on <%s> element"),
+                           "Unknown attribute %s on <%s> element",
                            name, "mutter_session");
               return;
             }
@@ -1213,7 +1213,7 @@ start_element_handler  (GMarkupParseContext *context,
           g_set_error (error,
                        G_MARKUP_ERROR,
                        G_MARKUP_ERROR_PARSE,
-                       _("nested <window> tag"));
+                       "nested <window> tag");
           return;
         }
       
@@ -1271,7 +1271,7 @@ start_element_handler  (GMarkupParseContext *context,
               g_set_error (error,
                            G_MARKUP_ERROR,
                            G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
-                           _("Unknown attribute %s on <%s> element"),
+                           "Unknown attribute %s on <%s> element",
                            name, "window");
               session_info_free (pd->info);
               pd->info = NULL;
@@ -1303,7 +1303,7 @@ start_element_handler  (GMarkupParseContext *context,
               g_set_error (error,
                            G_MARKUP_ERROR,
                            G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
-                           _("Unknown attribute %s on <%s> element"),
+                           "Unknown attribute %s on <%s> element",
                            name, "window");
               session_info_free (pd->info);
               pd->info = NULL;
@@ -1375,7 +1375,7 @@ start_element_handler  (GMarkupParseContext *context,
               g_set_error (error,
                            G_MARKUP_ERROR,
                            G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
-                           _("Unknown attribute %s on <%s> element"),
+                           "Unknown attribute %s on <%s> element",
                            name, "maximized");
               return;
             }
@@ -1435,7 +1435,7 @@ start_element_handler  (GMarkupParseContext *context,
               g_set_error (error,
                            G_MARKUP_ERROR,
                            G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
-                           _("Unknown attribute %s on <%s> element"),
+                           "Unknown attribute %s on <%s> element",
                            name, "geometry");
               return;
             }
@@ -1455,7 +1455,7 @@ start_element_handler  (GMarkupParseContext *context,
       g_set_error (error,
                    G_MARKUP_ERROR,
                    G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-                   _("Unknown element %s"),
+                   "Unknown element %s",
                    element_name);
       return;
     }

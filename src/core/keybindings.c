@@ -1138,7 +1138,7 @@ meta_change_keygrab (MetaDisplay *display,
           if (grab && result != Success)
             {
               if (result == BadAccess)
-                meta_warning (_("Some other program is already using the key %s with modifiers %x as a binding\n"), keysym_name (keysym), modmask | ignored_mask);
+                meta_warning ("Some other program is already using the key %s with modifiers %x as a binding\n", keysym_name (keysym), modmask | ignored_mask);
               else
                 meta_topic (META_DEBUG_KEYBINDINGS,
                             "Failed to grab key %s with modifiers %x\n",
@@ -1335,7 +1335,7 @@ meta_display_grab_accelerator (MetaDisplay *display,
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Failed to parse accelerator\n");
-      meta_warning (_("\"%s\" is not a valid accelerator\n"), accelerator);
+      meta_warning ("\"%s\" is not a valid accelerator\n", accelerator);
 
       return META_KEYBINDING_ACTION_NONE;
     }

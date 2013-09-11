@@ -82,7 +82,7 @@ ensure_logfile (void)
       
       if (err != NULL)
         {
-          meta_warning (_("Failed to open debug log: %s\n"),
+          meta_warning ("Failed to open debug log: %s\n",
                         err->message);
           g_error_free (err);
           return;
@@ -92,13 +92,13 @@ ensure_logfile (void)
       
       if (logfile == NULL)
         {
-          meta_warning (_("Failed to fdopen() log file %s: %s\n"),
+          meta_warning ("Failed to fdopen() log file %s: %s\n",
                         filename, strerror (errno));
           close (fd);
         }
       else
         {
-          g_printerr (_("Opened log file %s\n"), filename);
+          g_printerr ("Opened log file %s\n", filename);
         }
       
       g_free (filename);
@@ -274,7 +274,7 @@ meta_debug_spew_real (const char *format, ...)
   out = logfile ? logfile : stderr;
   
   if (no_prefix == 0)
-    utf8_fputs (_("Window manager: "), out);
+    utf8_fputs ("Window manager: ", out);
   utf8_fputs (str, out);
 
   fflush (out);
@@ -424,7 +424,7 @@ meta_bug (const char *format, ...)
 #endif
 
   if (no_prefix == 0)
-    utf8_fputs (_("Bug in window manager: "), out);
+    utf8_fputs ("Bug in window manager: ", out);
   utf8_fputs (str, out);
 
   fflush (out);
@@ -455,7 +455,7 @@ meta_warning (const char *format, ...)
 #endif
 
   if (no_prefix == 0)
-    utf8_fputs (_("Window manager warning: "), out);
+    utf8_fputs ("Window manager warning: ", out);
   utf8_fputs (str, out);
 
   fflush (out);
@@ -483,7 +483,7 @@ meta_fatal (const char *format, ...)
 #endif
 
   if (no_prefix == 0)
-    utf8_fputs (_("Window manager error: "), out);
+    utf8_fputs ("Window manager error: ", out);
   utf8_fputs (str, out);
 
   fflush (out);

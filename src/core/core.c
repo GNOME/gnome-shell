@@ -155,7 +155,7 @@ meta_core_get (Display *xdisplay,
         break;
 
       default:
-        meta_warning(_("Unknown window information request: %d"), request);
+        meta_warning("Unknown window information request: %d\n", request);
     }
 
     request = va_arg (args, MetaCoreGetType);

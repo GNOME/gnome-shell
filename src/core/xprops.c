@@ -152,7 +152,7 @@ validate_or_free_results (GetPropertyResults *results,
   if (res_name == NULL)
     res_name = "unknown";
   
-  meta_warning (_("Window 0x%lx has property %s\nthat was expected to have type %s format %d\nand actually has type %s format %d n_items %d.\nThis is most likely an application bug, not a window manager bug.\nThe window has title=\"%s\" class=\"%s\" name=\"%s\"\n"),
+  meta_warning ("Window 0x%lx has property %s\nthat was expected to have type %s format %d\nand actually has type %s format %d n_items %d.\nThis is most likely an application bug, not a window manager bug.\nThe window has title=\"%s\" class=\"%s\" name=\"%s\"\n",
                 results->xwindow,
                 prop_name ? prop_name : "(bad atom)",
                 expected_name ? expected_name : "(bad atom)",
@@ -408,7 +408,7 @@ utf8_string_from_results (GetPropertyResults *results,
       char *name;
 
       name = XGetAtomName (results->display->xdisplay, results->xatom);
-      meta_warning (_("Property %s on window 0x%lx contained invalid UTF-8\n"),
+      meta_warning ("Property %s on window 0x%lx contained invalid UTF-8\n",
                     name, results->xwindow);
       meta_XFree (name);
       XFree (results->prop);
@@ -491,7 +491,7 @@ utf8_list_from_results (GetPropertyResults *results,
           meta_error_trap_push (results->display);
           name = XGetAtomName (results->display->xdisplay, results->xatom);
           meta_error_trap_pop (results->display);
-          meta_warning (_("Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"),
+          meta_warning ("Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n",
                         name, results->xwindow, i);
           meta_XFree (name);
           meta_XFree (results->prop);

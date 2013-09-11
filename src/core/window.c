@@ -7650,7 +7650,7 @@ update_sm_hints (MetaWindow *window)
                                            &str))
             {
               if (window->sm_client_id == NULL) /* first time through */
-                meta_warning (_("Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"),
+                meta_warning ("Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n",
                               window->desc);
 
               window->sm_client_id = g_strdup (str);
@@ -8565,7 +8565,7 @@ recalc_window_features (MetaWindow *window)
        * about these apps but make them work.
        */
 
-      meta_warning (_("Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"),
+      meta_warning ("Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n",
                     window->desc,
                     window->size_hints.min_width,
                     window->size_hints.min_height,
