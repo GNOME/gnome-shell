@@ -91,10 +91,6 @@ const WorkspacesView = new Lang.Class({
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
 
-        this._itemDragBeginId = Main.overview.connect('item-drag-begin',
-                                                      Lang.bind(this, this._dragBegin));
-        this._itemDragEndId = Main.overview.connect('item-drag-end',
-                                                     Lang.bind(this, this._dragEnd));
         this._windowDragBeginId = Main.overview.connect('window-drag-begin',
                                                         Lang.bind(this, this._dragBegin));
         this._windowDragEndId = Main.overview.connect('window-drag-end',
@@ -288,14 +284,6 @@ const WorkspacesView = new Lang.Class({
         if (this._inDrag)
             this._dragEnd();
 
-        if (this._itemDragBeginId > 0) {
-            Main.overview.disconnect(this._itemDragBeginId);
-            this._itemDragBeginId = 0;
-        }
-        if (this._itemDragEndId > 0) {
-            Main.overview.disconnect(this._itemDragEndId);
-            this._itemDragEndId = 0;
-        }
         if (this._windowDragBeginId > 0) {
             Main.overview.disconnect(this._windowDragBeginId);
             this._windowDragBeginId = 0;
