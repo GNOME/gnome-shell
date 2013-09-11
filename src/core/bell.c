@@ -51,6 +51,7 @@
 #include "bell.h"
 #include "screen-private.h"
 #include "window-private.h"
+#include "util-private.h"
 #include <meta/prefs.h>
 #include <meta/compositor.h>
 #ifdef HAVE_LIBCANBERRA

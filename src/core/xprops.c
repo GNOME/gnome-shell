@@ -81,7 +81,7 @@ from The Open Group.
 #include <config.h>
 #include "xprops.h"
 #include <meta/errors.h>
-#include <meta/util.h>
+#include "util-private.h"
 #include "async-getprop.h"
 #include "ui.h"
 #include "mutter-Xatomtype.h"

@@ -30,7 +30,7 @@
 #include "window-private.h"
 #include "boxes-private.h"
 #include "edge-resistance.h"
-#include <meta/util.h>
+#include "util-private.h"
 #include "frame.h"
 #include <meta/errors.h>
 #include "workspace-private.h"

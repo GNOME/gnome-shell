@@ -31,7 +31,7 @@
 #include <config.h>
 #include "screen-private.h"
 #include <meta/main.h>
-#include <meta/util.h>
+#include "util-private.h"
 #include <meta/errors.h>
 #include "window-private.h"
 #include "frame.h"

@@ -21,7 +21,7 @@
 
 #include <config.h>
 #include "theme-private.h"
-#include <meta/util.h>
+#include "util-private.h"
 #include <string.h>
 #include <stdlib.h>
 

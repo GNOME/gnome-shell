@@ -23,6 +23,7 @@
 
 #include <config.h>
 
+#include "util-private.h"
 #include "session.h"
 #include <X11/Xatom.h>
 

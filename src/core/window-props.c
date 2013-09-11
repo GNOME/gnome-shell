@@ -46,6 +46,7 @@
 #include <X11/Xatom.h>
 #include <unistd.h>
 #include <string.h>
+#include "util-private.h"
 
 #ifndef HOST_NAME_MAX
 /* Solaris headers apparently don't define this so do so manually; #326745 */

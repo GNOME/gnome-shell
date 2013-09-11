@@ -41,7 +41,7 @@
 #include "place.h"
 #include "screen-private.h"
 #include <meta/prefs.h>
-#include <meta/util.h>
+#include "util-private.h"
 
 #include <X11/keysym.h>
 #include <string.h>

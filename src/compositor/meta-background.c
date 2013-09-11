@@ -35,6 +35,7 @@
 #include "mutter-enum-types.h"
 #include <meta/errors.h>
 #include <meta/meta-background.h>
+#include "util-private.h"
 #include "meta-background-actor-private.h"
 
 #define FRAGMENT_SHADER_DECLARATIONS                                           \

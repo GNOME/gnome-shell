@@ -21,7 +21,7 @@
 
 #include <config.h>
 #include "resizepopup.h"
-#include <meta/util.h>
+#include "util-private.h"
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
