@@ -244,7 +244,7 @@ const NMConnectionSection = new Lang.Class({
             this.emit('activation-failed', reason);
         }));
 
-        let pos = Util.insertSorted(this._connections, connection, this._connectionSortFunction);
+        let pos = Util.insertSorted(this._connections, connection, Lang.bind(this, this._connectionSortFunction));
         this._labelSection.addMenuItem(item.labelItem, pos);
         this._switchSection.addMenuItem(item.switchItem, pos);
         this._connectionItems.set(connection.get_uuid(), item);

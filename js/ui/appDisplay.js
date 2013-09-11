@@ -125,7 +125,7 @@ const BaseAppView = new Lang.Class({
     },
 
     loadGrid: function() {
-        this._allItems.sort(this._compareItems);
+        this._allItems.sort(Lang.bind(this, this._compareItems));
 
         for (let i = 0; i < this._allItems.length; i++) {
             let id = this._getItemId(this._allItems[i]);
