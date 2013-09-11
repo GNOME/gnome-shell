@@ -540,12 +540,6 @@ const WorkspacesDisplay = new Lang.Class({
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].destroy();
         this._workspacesViews = [];
-
-        for (let i = 0; i < this._workspaces.length; i++)
-            for (let w = 0; w < this._workspaces[i].length; w++) {
-                this._workspaces[i][w].disconnectAll();
-                this._workspaces[i][w].destroy();
-            }
     },
 
     _workspacesOnlyOnPrimaryChanged: function() {
@@ -560,10 +554,6 @@ const WorkspacesDisplay = new Lang.Class({
     _updateWorkspacesViews: function() {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].destroy();
-
-        for (let i = 0; i < this._workspaces.length; i++)
-            for (let w = 0; w < this._workspaces[i].length; w++)
-                this._workspaces[i][w].destroy();
 
         this._workspacesViews = [];
         this._workspaces = [];
