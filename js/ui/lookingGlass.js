@@ -920,7 +920,7 @@ const LookingGlass = new Lang.Class({
             let text = o.get_text();
             // Ensure we don't get newlines in the command; the history file is
             // newline-separated.
-            text.replace('\n', ' ');
+            text = text.replace('\n', ' ');
             // Strip leading and trailing whitespace
             text = text.replace(/^\s+/g, '').replace(/\s+$/g, '');
             if (text == '')
