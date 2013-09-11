@@ -106,6 +106,19 @@ static gpointer                  open_callback_data;
 
 static const gchar *subsystems[] = { "input", NULL };
 
+static const char *device_type_str[] = {
+  "pointer",            /* CLUTTER_POINTER_DEVICE */
+  "keyboard",           /* CLUTTER_KEYBOARD_DEVICE */
+  "extension",          /* CLUTTER_EXTENSION_DEVICE */
+  "joystick",           /* CLUTTER_JOYSTICK_DEVICE */
+  "tablet",             /* CLUTTER_TABLET_DEVICE */
+  "touchpad",           /* CLUTTER_TOUCHPAD_DEVICE */
+  "touchscreen",        /* CLUTTER_TOUCHSCREEN_DEVICE */
+  "pen",                /* CLUTTER_PEN_DEVICE */
+  "eraser",             /* CLUTTER_ERASER_DEVICE */
+  "cursor",             /* CLUTTER_CURSOR_DEVICE */
+};
+
 /*
  * ClutterEventSource management
  *
@@ -117,8 +130,6 @@ static const gchar *subsystems[] = { "input", NULL };
  * GSource for the device manager, each device becoming a child source. Revisit
  * this once we depend on glib >= 2.28.
  */
-
-
 static const char *option_xkb_layout = "us";
 static const char *option_xkb_variant = "";
 static const char *option_xkb_options = "";
@@ -872,6 +883,8 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
     type = CLUTTER_TOUCHPAD_DEVICE;
   else if (g_udev_device_has_property (udev_device, "ID_INPUT_TOUCHSCREEN"))
     type = CLUTTER_TOUCHSCREEN_DEVICE;
+  else
+    type = CLUTTER_EXTENSION_DEVICE;
 
   ok = sscanf (device_file, "/dev/input/event%d", &id);
   if (ok == 1)
@@ -904,8 +917,11 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
       _clutter_input_device_add_slave (manager_evdev->priv->core_pointer, device);
     }
 
-  CLUTTER_NOTE (EVENT, "Added device %s, type %d, sysfs %s",
-                device_file, type, sysfs_path);
+  CLUTTER_NOTE (EVENT, "Added slave device '%s' (file: %s), type %s (sysfs: '%s')",
+                device_name,
+                device_file,
+                device_type_str[type],
+                sysfs_path);
 }
 
 static ClutterInputDeviceEvdev *
@@ -969,6 +985,8 @@ on_uevent (GUdevClient *client,
     evdev_add_device (manager, device);
   else if (g_strcmp0 (action, "remove") == 0)
     evdev_remove_device (manager, device);
+  else
+    CLUTTER_NOTE (EVENT, "Ignored udev action '%s'", action);
 }
 
 /*
@@ -1021,7 +1039,7 @@ clutter_device_manager_evdev_remove_device (ClutterDeviceManager *manager,
       source = find_source_by_device (manager_evdev, device);
       if (G_UNLIKELY (source == NULL))
 	{
-	  g_warning ("Trying to remove a device without a source installed ?!");
+	  g_critical ("Trying to remove a device without a source installed.");
 	  return;
 	}
 
