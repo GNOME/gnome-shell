@@ -20,7 +20,7 @@ const ObjectManagerIface = <interface name="org.freedesktop.DBus.ObjectManager">
     <arg name="objectPath" type="o"/>
     <arg name="interfaces" type="as" />
   </signal>
-</interface>
+</interface>;
 
 const ObjectManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(ObjectManagerIface);
 

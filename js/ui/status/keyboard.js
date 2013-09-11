@@ -41,8 +41,7 @@ const MAX_INPUT_SOURCE_ACTIVATION_TIME = 4000; // ms
 const BUS_NAME = 'org.gnome.SettingsDaemon.Keyboard';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Keyboard';
 
-const KeyboardManagerInterface =
-<interface name="org.gnome.SettingsDaemon.Keyboard">
+const KeyboardManagerInterface = <interface name="org.gnome.SettingsDaemon.Keyboard">
 <method name="SetInputSource">
     <arg type="u" direction="in" />
 </method>

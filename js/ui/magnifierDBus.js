@@ -4,14 +4,12 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Main = imports.ui.main;
 
-const MAG_SERVICE_NAME = 'org.gnome.Magnifier';
 const MAG_SERVICE_PATH = '/org/gnome/Magnifier';
-const ZOOM_SERVICE_NAME = 'org.gnome.Magnifier.ZoomRegion';
 const ZOOM_SERVICE_PATH = '/org/gnome/Magnifier/ZoomRegion';
 
 // Subset of gnome-mag's Magnifier dbus interface -- to be expanded.  See:
 // http://git.gnome.org/browse/gnome-mag/tree/xml/...Magnifier.xml
-const MagnifierIface = <interface name={MAG_SERVICE_NAME}>
+const MagnifierIface = <interface name="org.gnome.Magnifier">
 <method name="setActive">
     <arg type="b" direction="in" />
 </method>
@@ -66,7 +64,7 @@ const MagnifierIface = <interface name={MAG_SERVICE_NAME}>
 
 // Subset of gnome-mag's ZoomRegion dbus interface -- to be expanded.  See:
 // http://git.gnome.org/browse/gnome-mag/tree/xml/...ZoomRegion.xml
-const ZoomRegionIface = <interface name={ZOOM_SERVICE_NAME}>
+const ZoomRegionIface = <interface name="org.gnome.Magnifier.ZoomRegion">
 <method name="setMagFactor">
     <arg type="d" direction="in" />
     <arg type="d" direction="in" />
