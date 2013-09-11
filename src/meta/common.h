@@ -260,6 +260,13 @@ typedef enum
  * @META_CURSOR_NW_RESIZE: Resize north-western corner cursor
  * @META_CURSOR_MOVE_OR_RESIZE_WINDOW: Move or resize cursor
  * @META_CURSOR_BUSY: Busy cursor
+ * @META_CURSOR_DND_IN_DRAG: DND in drag cursor
+ * @META_CURSOR_DND_MOVE: DND move cursor
+ * @META_CURSOR_DND_COPY: DND copy cursor
+ * @META_CURSOR_DND_UNSUPPORTED_TARGET: DND unsupported target
+ * @META_CURSOR_POINTING_HAND: pointing hand
+ * @META_CURSOR_CROSSHAIR: crosshair (action forbidden)
+ * @META_CURSOR_IBEAM: I-beam (text input)
  */
 typedef enum
 {
@@ -273,8 +280,15 @@ typedef enum
   META_CURSOR_NE_RESIZE,
   META_CURSOR_NW_RESIZE,
   META_CURSOR_MOVE_OR_RESIZE_WINDOW,
-  META_CURSOR_BUSY
-
+  META_CURSOR_BUSY,
+  META_CURSOR_DND_IN_DRAG,
+  META_CURSOR_DND_MOVE,
+  META_CURSOR_DND_COPY,
+  META_CURSOR_DND_UNSUPPORTED_TARGET,
+  META_CURSOR_POINTING_HAND,
+  META_CURSOR_CROSSHAIR,
+  META_CURSOR_IBEAM,
+  META_CURSOR_LAST
 } MetaCursor;
 
 /**

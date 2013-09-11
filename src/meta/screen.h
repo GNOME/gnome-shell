@@ -114,4 +114,8 @@ void meta_screen_override_workspace_layout (MetaScreen      *screen,
                                             gboolean         vertical_layout,
                                             int              n_rows,
                                             int              n_columns);
+
+void          meta_screen_set_cursor          (MetaScreen                 *screen,
+                                               MetaCursor                  cursor);
+
 #endif

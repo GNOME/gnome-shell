@@ -151,8 +151,6 @@ void          meta_screen_foreach_window      (MetaScreen                 *scree
                                                MetaScreenWindowFunc        func,
                                                gpointer                    data);
 
-void          meta_screen_set_cursor          (MetaScreen                 *screen,
-                                               MetaCursor                  cursor);
 void          meta_screen_update_cursor       (MetaScreen                 *screen);
 
 void          meta_screen_tab_popup_create       (MetaScreen              *screen,
