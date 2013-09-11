@@ -45,6 +45,7 @@
 
 #include <clutter/clutter.h>
 #include <clutter/evdev/clutter-evdev.h>
+#include <linux/input.h>
 
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-private.h"
@@ -73,51 +74,79 @@ lose_pointer_focus (struct wl_listener *listener, void *data)
 
 static void
 default_grab_focus (MetaWaylandPointerGrab *grab,
-                    MetaWaylandSurface *surface,
-                    wl_fixed_t x,
-                    wl_fixed_t y)
+                    MetaWaylandSurface     *surface,
+		    const ClutterEvent     *event)
 {
   MetaWaylandPointer *pointer = grab->pointer;
 
   if (pointer->button_count > 0)
     return;
 
-  meta_wayland_pointer_set_focus (pointer, surface, x, y);
+  meta_wayland_pointer_set_focus (pointer, surface);
 }
 
 static void
 default_grab_motion (MetaWaylandPointerGrab *grab,
-                     uint32_t time, wl_fixed_t x, wl_fixed_t y)
+		     const ClutterEvent     *event)
 {
   struct wl_resource *resource;
 
   resource = grab->pointer->focus_resource;
   if (resource)
-    wl_pointer_send_motion (resource, time, x, y);
+    {
+      wl_fixed_t sx, sy;
+
+      meta_wayland_pointer_get_relative_coordinates (grab->pointer,
+						     grab->pointer->focus,
+						     &sx, &sy);
+      wl_pointer_send_motion (resource, clutter_event_get_time (event), sx, sy);
+    }
 }
 
 static void
 default_grab_button (MetaWaylandPointerGrab *grab,
-                     uint32_t time, uint32_t button, uint32_t state_w)
+		     const ClutterEvent     *event)
 {
   MetaWaylandPointer *pointer = grab->pointer;
   struct wl_resource *resource;
-  uint32_t serial;
-  enum wl_pointer_button_state state = state_w;
+  ClutterEventType event_type;
+
+  event_type = clutter_event_type (event);
 
   resource = pointer->focus_resource;
   if (resource)
     {
       struct wl_client *client = wl_resource_get_client (resource);
       struct wl_display *display = wl_client_get_display (client);
+      uint32_t button;
+      uint32_t serial;
+
+      button = clutter_event_get_button (event);
+      switch (button)
+	{
+	  /* The evdev input right and middle button numbers are swapped
+	     relative to how Clutter numbers them */
+	case 2:
+	  button = BTN_MIDDLE;
+	  break;
+
+	case 3:
+	  button = BTN_RIGHT;
+	  break;
+
+	default:
+	  button = button + BTN_LEFT - 1;
+	  break;
+	}
+
       serial = wl_display_next_serial (display);
-      pointer->click_serial = serial;
-      wl_pointer_send_button (resource, serial, time, button, state_w);
+      wl_pointer_send_button (resource, serial,
+			      clutter_event_get_time (event), button,
+			      event_type == CLUTTER_BUTTON_PRESS ? 1 : 0);
     }
 
-  if (pointer->button_count == 0 && state == WL_POINTER_BUTTON_STATE_RELEASED)
-    meta_wayland_pointer_set_focus (pointer, pointer->current,
-                                pointer->current_x, pointer->current_y);
+  if (pointer->button_count == 0 && event_type == CLUTTER_BUTTON_RELEASE)
+    meta_wayland_pointer_set_focus (pointer, pointer->current);
 }
 
 static const MetaWaylandPointerGrabInterface default_pointer_grab_interface = {
@@ -282,8 +311,7 @@ find_resource_for_surface (struct wl_list *list, MetaWaylandSurface *surface)
 
 void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
-                                MetaWaylandSurface *surface,
-                                wl_fixed_t sx, wl_fixed_t sy)
+                                MetaWaylandSurface *surface)
 {
   MetaWaylandSeat *seat = meta_wayland_pointer_get_seat (pointer);
   MetaWaylandKeyboard *kbd = &seat->keyboard;
@@ -306,7 +334,10 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
     {
       struct wl_client *client = wl_resource_get_client (resource);
       struct wl_display *display = wl_client_get_display (client);
+      wl_fixed_t sx, sy;
+
       serial = wl_display_next_serial (display);
+
       if (kbd)
         {
           kr = find_resource_for_surface (&kbd->resource_list, surface);
@@ -320,6 +351,8 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                           kbd->modifier_state.group);
             }
         }
+
+      meta_wayland_pointer_get_relative_coordinates (pointer, surface, &sx, &sy);
       wl_pointer_send_enter (resource, serial, surface->resource, sx, sy);
       wl_resource_add_destroy_listener (resource, &pointer->focus_listener);
       pointer->focus_serial = serial;
@@ -327,8 +360,6 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
 
   pointer->focus_resource = resource;
   pointer->focus = surface;
-  pointer->default_grab.focus = surface;
-  wl_signal_emit (&pointer->focus_signal, pointer);
 }
 
 void
@@ -342,8 +373,7 @@ meta_wayland_pointer_start_grab (MetaWaylandPointer *pointer,
   grab->pointer = pointer;
 
   if (pointer->current)
-    interface->focus (pointer->grab, pointer->current,
-                      pointer->current_x, pointer->current_y);
+    interface->focus (pointer->grab, pointer->current, NULL);
 }
 
 void
@@ -353,8 +383,7 @@ meta_wayland_pointer_end_grab (MetaWaylandPointer *pointer)
 
   pointer->grab = &pointer->default_grab;
   interface = pointer->grab->interface;
-  interface->focus (pointer->grab, pointer->current,
-                    pointer->current_x, pointer->current_y);
+  interface->focus (pointer->grab, pointer->current, NULL);
 }
 
 static void
@@ -386,24 +415,19 @@ meta_wayland_pointer_set_current (MetaWaylandPointer *pointer,
 static void
 modal_focus (MetaWaylandPointerGrab *grab,
 	     MetaWaylandSurface     *surface,
-	     wl_fixed_t              x,
-	     wl_fixed_t              y)
+	     const ClutterEvent     *event)
 {
 }
 
 static void
 modal_motion (MetaWaylandPointerGrab *grab,
-	      uint32_t                time,
-	      wl_fixed_t              x,
-	      wl_fixed_t              y)
+	      const ClutterEvent     *event)
 {
 }
 
 static void
 modal_button (MetaWaylandPointerGrab *grab,
-	      uint32_t                time,
-	      uint32_t                button,
-	      uint32_t                state)
+	      const ClutterEvent     *event)
 {
 }
 
@@ -421,9 +445,7 @@ meta_wayland_pointer_begin_modal (MetaWaylandPointer *pointer)
   if (pointer->grab != &pointer->default_grab)
     return FALSE;
 
-  meta_wayland_pointer_set_focus (pointer, NULL,
-				  wl_fixed_from_int (0),
-				  wl_fixed_from_int (0));
+  meta_wayland_pointer_set_focus (pointer, NULL);
 
   grab = g_slice_new0 (MetaWaylandPointerGrab);
   grab->interface = &modal_grab;
@@ -459,56 +481,61 @@ meta_wayland_pointer_destroy_focus (MetaWaylandPointer *pointer)
 	 we have button down, and the clients would be confused if the
 	 pointer enters the surface.
       */
-      meta_wayland_pointer_set_focus (pointer, NULL, 0, 0);
+      meta_wayland_pointer_set_focus (pointer, NULL);
     }
 }
+
+typedef struct {
+  MetaWaylandPointerGrab  generic;
+
+  MetaWaylandSurface     *popup;
+  struct wl_listener      popup_destroy_listener;
+} MetaWaylandPopupGrab;
 
 static void
 popup_grab_focus (MetaWaylandPointerGrab *grab,
 		  MetaWaylandSurface     *surface,
-		  wl_fixed_t              x,
-		  wl_fixed_t              y)
+		  const ClutterEvent     *event)
 {
+  MetaWaylandPopupGrab *popup_grab = (MetaWaylandPopupGrab*)grab;
+
   /* Popup grabs are in owner-events mode (ie, events for the same client
      are reported as normal) */
   if (wl_resource_get_client (surface->resource) ==
-      wl_resource_get_client (grab->focus->resource))
-    default_grab_focus (grab, surface, x, y);
+      wl_resource_get_client (popup_grab->popup->resource))
+    default_grab_focus (grab, surface, event);
   else
-    meta_wayland_pointer_set_focus (grab->pointer, NULL, 0, 0);
+    meta_wayland_pointer_set_focus (grab->pointer, NULL);
 }
 
 static void
 popup_grab_motion (MetaWaylandPointerGrab *grab,
-		   uint32_t                time,
-		   wl_fixed_t              x,
-		   wl_fixed_t              y)
+		   const ClutterEvent     *event)
 {
-  default_grab_motion (grab, time, x, y);
+  default_grab_motion (grab, event);
 }
 
 static void
 popup_grab_button (MetaWaylandPointerGrab *grab,
-		   uint32_t                time,
-		   uint32_t                button,
-		   uint32_t                state)
+		   const ClutterEvent     *event)
 {
+  MetaWaylandPopupGrab *popup_grab = (MetaWaylandPopupGrab*)grab;
   MetaWaylandPointer *pointer = grab->pointer;
 
   if (pointer->focus_resource)
     {
       /* This is ensured by popup_grab_focus */
       g_assert (wl_resource_get_client (pointer->focus_resource) ==
-		wl_resource_get_client (grab->focus->resource));
+		wl_resource_get_client (popup_grab->popup->resource));
 
-      default_grab_button (grab, time, button, state);
+      default_grab_button (grab, event);
     }
-  else if (state == WL_POINTER_BUTTON_STATE_RELEASED &&
+  else if (clutter_event_type (event) == CLUTTER_BUTTON_RELEASE &&
 	   pointer->button_count == 0)
     meta_wayland_pointer_end_popup_grab (grab->pointer);
 }
 
-static MetaWaylandPointerGrabInterface popup_grab = {
+static MetaWaylandPointerGrabInterface popup_grab_interface = {
   popup_grab_focus,
   popup_grab_motion,
   popup_grab_button
@@ -517,50 +544,75 @@ static MetaWaylandPointerGrabInterface popup_grab = {
 static void
 meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer)
 {
-  MetaWaylandPointerGrab *grab;
+  MetaWaylandPopupGrab *popup_grab;
 
-  grab = pointer->grab;
+  popup_grab = (MetaWaylandPopupGrab*)pointer->grab;
 
-  g_assert (grab->interface == &popup_grab);
+  g_assert (popup_grab->generic.interface == &popup_grab_interface);
 
-  if (grab->focus)
+  if (popup_grab->popup)
     {
-      wl_shell_surface_send_popup_done (grab->focus->shell_surface->resource);
-      wl_list_remove (&grab->focus_destroy_listener.link);
+      wl_shell_surface_send_popup_done (popup_grab->popup->shell_surface->resource);
+      wl_list_remove (&popup_grab->popup_destroy_listener.link);
     }
 
   meta_wayland_pointer_end_grab (pointer);
-  g_slice_free (MetaWaylandPointerGrab, grab);
+  g_slice_free (MetaWaylandPopupGrab, popup_grab);
 }
 
 static void
 on_popup_surface_destroy (struct wl_listener *listener,
 			  void               *data)
 {
-  MetaWaylandPointerGrab *grab =
-    wl_container_of (listener, grab, focus_destroy_listener);
+  MetaWaylandPopupGrab *grab =
+    wl_container_of (listener, grab, popup_destroy_listener);
 
-  grab->focus = NULL;
-  meta_wayland_pointer_end_popup_grab (grab->pointer);
+  grab->popup = NULL;
+  meta_wayland_pointer_end_popup_grab (grab->generic.pointer);
 }
 
 gboolean
 meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
 				       MetaWaylandSurface *surface)
 {
-  MetaWaylandPointerGrab *grab;
+  MetaWaylandPopupGrab *grab;
 
-  if (pointer->grab != &pointer->default_grab)
+  if (pointer->grab != &pointer->default_grab &&
+      pointer->grab->interface != &popup_grab_interface)
     return FALSE;
 
-  grab = g_slice_new0 (MetaWaylandPointerGrab);
-  grab->interface = &popup_grab;
-  grab->pointer = pointer;
-  grab->focus = surface;
+  grab = g_slice_new0 (MetaWaylandPopupGrab);
+  grab->generic.interface = &popup_grab_interface;
+  grab->generic.pointer = pointer;
+  grab->popup = surface;
 
-  grab->focus_destroy_listener.notify = on_popup_surface_destroy;
-  wl_resource_add_destroy_listener (surface->resource, &grab->focus_destroy_listener);
+  grab->popup_destroy_listener.notify = on_popup_surface_destroy;
+  wl_resource_add_destroy_listener (surface->resource, &grab->popup_destroy_listener);
 
-  meta_wayland_pointer_start_grab (pointer, grab);
+  meta_wayland_pointer_start_grab (pointer, (MetaWaylandPointerGrab*)grab);
   return TRUE;
+}
+
+void
+meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
+					       MetaWaylandSurface *surface,
+					       wl_fixed_t         *sx,
+					       wl_fixed_t         *sy)
+{
+  float xf = 0.0f, yf = 0.0f;
+
+  if (surface->window)
+    {
+      ClutterActor *actor =
+        CLUTTER_ACTOR (meta_window_get_compositor_private (surface->window));
+
+      if (actor)
+        clutter_actor_transform_stage_point (actor,
+                                             wl_fixed_to_double (pointer->x),
+                                             wl_fixed_to_double (pointer->y),
+                                             &xf, &yf);
+    }
+
+  *sx = wl_fixed_from_double (xf);
+  *sy = wl_fixed_from_double (yf);
 }

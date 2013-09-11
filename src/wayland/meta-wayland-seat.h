@@ -61,18 +61,7 @@ struct _MetaWaylandSeat
   struct wl_listener selection_data_source_listener;
   struct wl_signal selection_signal;
 
-  struct wl_list drag_resource_list;
-  struct wl_client *drag_client;
-  MetaWaylandDataSource *drag_data_source;
-  struct wl_listener drag_data_source_listener;
-  MetaWaylandSurface *drag_focus;
-  struct wl_resource *drag_focus_resource;
-  struct wl_listener drag_focus_listener;
-  MetaWaylandPointerGrab drag_grab;
-  MetaWaylandSurface *drag_surface;
-  struct wl_listener drag_icon_listener;
-  struct wl_signal drag_icon_signal;
-
+  struct wl_list data_device_resource_list;
   MetaWaylandPointer pointer;
   MetaWaylandKeyboard keyboard;
 
@@ -95,9 +84,8 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
                                 const ClutterEvent *event);
 
 void
-meta_wayland_seat_repick (MetaWaylandSeat *seat,
-                          uint32_t time,
-                          ClutterActor *actor);
+meta_wayland_seat_repick (MetaWaylandSeat    *seat,
+			  const ClutterEvent *for_event);
 
 void
 meta_wayland_seat_update_sprite (MetaWaylandSeat *seat);

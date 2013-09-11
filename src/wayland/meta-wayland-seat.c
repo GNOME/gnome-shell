@@ -48,31 +48,6 @@ unbind_resource (struct wl_resource *resource)
 }
 
 static void
-transform_stage_point_fixed (MetaWaylandSurface *surface,
-                             wl_fixed_t x,
-                             wl_fixed_t y,
-                             wl_fixed_t *sx,
-                             wl_fixed_t *sy)
-{
-  float xf = 0.0f, yf = 0.0f;
-
-  if (surface->window)
-    {
-      ClutterActor *actor =
-        CLUTTER_ACTOR (meta_window_get_compositor_private (surface->window));
-
-      if (actor)
-        clutter_actor_transform_stage_point (actor,
-                                             wl_fixed_to_double (x),
-                                             wl_fixed_to_double (y),
-                                             &xf, &yf);
-    }
-
-  *sx = wl_fixed_from_double (xf);
-  *sy = wl_fixed_from_double (yf);
-}
-
-static void
 pointer_unmap_sprite (MetaWaylandSeat *seat)
 {
   if (seat->cursor_tracker)
@@ -173,19 +148,7 @@ seat_get_pointer (struct wl_client *client,
 
   if (seat->pointer.focus &&
       wl_resource_get_client (seat->pointer.focus->resource) == client)
-    {
-      MetaWaylandSurface *surface;
-      wl_fixed_t sx, sy;
-
-      surface = (MetaWaylandSurface *) seat->pointer.focus;
-      transform_stage_point_fixed (surface,
-                                   seat->pointer.x,
-                                   seat->pointer.y,
-                                   &sx, &sy);
-      meta_wayland_pointer_set_focus (&seat->pointer,
-                                  seat->pointer.focus,
-                                  sx, sy);
-    }
+    meta_wayland_pointer_set_focus (&seat->pointer, seat->pointer.focus);
 }
 
 static void
@@ -209,8 +172,7 @@ seat_get_keyboard (struct wl_client *client,
   if (seat->keyboard.focus &&
       wl_resource_get_client (seat->keyboard.focus->resource) == client)
     {
-      meta_wayland_keyboard_set_focus (&seat->keyboard,
-                                   seat->keyboard.focus);
+      meta_wayland_keyboard_set_focus (&seat->keyboard, seat->keyboard.focus);
       meta_wayland_data_device_set_keyboard_focus (seat);
     }
 }
@@ -273,8 +235,7 @@ meta_wayland_seat_new (struct wl_display *display,
   seat->selection_data_source = NULL;
   wl_list_init (&seat->base_resource_list);
   wl_signal_init (&seat->selection_signal);
-  wl_list_init (&seat->drag_resource_list);
-  wl_signal_init (&seat->drag_icon_signal);
+  wl_list_init (&seat->data_device_resource_list);
 
   meta_wayland_pointer_init (&seat->pointer, is_native);
 
@@ -295,7 +256,7 @@ meta_wayland_seat_new (struct wl_display *display,
 }
 
 static void
-notify_motion (MetaWaylandSeat *seat,
+notify_motion (MetaWaylandSeat    *seat,
                const ClutterEvent *event)
 {
   MetaWaylandPointer *pointer = &seat->pointer;
@@ -305,61 +266,40 @@ notify_motion (MetaWaylandSeat *seat,
   pointer->x = wl_fixed_from_double (x);
   pointer->y = wl_fixed_from_double (y);
 
-  meta_wayland_seat_repick (seat,
-                        clutter_event_get_time (event),
-                        clutter_event_get_source (event));
+  meta_wayland_seat_repick (seat, event);
 
-  pointer->grab->interface->motion (pointer->grab,
-                                    clutter_event_get_time (event),
-                                    pointer->grab->x,
-                                    pointer->grab->y);
+  pointer->grab->interface->motion (pointer->grab, event);
 }
 
 static void
-handle_motion_event (MetaWaylandSeat *seat,
-                     const ClutterMotionEvent *event)
+handle_motion_event (MetaWaylandSeat    *seat,
+                     const ClutterEvent *event)
 {
-  notify_motion (seat, (const ClutterEvent *) event);
+  notify_motion (seat, event);
 }
 
 static void
-handle_button_event (MetaWaylandSeat *seat,
-                     const ClutterButtonEvent *event)
+handle_button_event (MetaWaylandSeat    *seat,
+                     const ClutterEvent *event)
 {
   MetaWaylandPointer *pointer = &seat->pointer;
   gboolean state = event->type == CLUTTER_BUTTON_PRESS;
   uint32_t button;
+  MetaWaylandSurface *surface;
 
-  notify_motion (seat, (const ClutterEvent *) event);
+  notify_motion (seat, event);
 
-  switch (event->button)
-    {
-      /* The evdev input right and middle button numbers are swapped
-         relative to how Clutter numbers them */
-    case 2:
-      button = BTN_MIDDLE;
-      break;
-
-    case 3:
-      button = BTN_RIGHT;
-      break;
-
-    default:
-      button = event->button + BTN_LEFT - 1;
-      break;
-    }
-
-  /* FIXME: synth a XI2 event and handle in display.c */
   if (state && pointer->button_count == 1)
     {
-      MetaWaylandSurface *surface = pointer->current;
-
+      button = clutter_event_get_button (event);
       pointer->grab_button = button;
-      pointer->grab_time = event->time;
+      pointer->grab_time = clutter_event_get_time (event);
       pointer->grab_x = pointer->x;
       pointer->grab_y = pointer->y;
 
-      if (button == BTN_LEFT &&
+      /* FIXME: synth a XI2 event and handle in display.c */
+      surface = pointer->current;
+      if (button == CLUTTER_BUTTON_PRIMARY &&
 	  surface &&
 	  surface->window &&
 	  surface->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
@@ -368,22 +308,22 @@ handle_button_event (MetaWaylandSeat *seat,
 	}
     }
 
-  pointer->grab->interface->button (pointer->grab, event->time, button, state);
+  pointer->grab->interface->button (pointer->grab, event);
 
   if (pointer->button_count == 1)
     pointer->grab_serial = wl_display_get_serial (seat->display);
 }
 
 static void
-handle_scroll_event (MetaWaylandSeat *seat,
-                     const ClutterScrollEvent *event)
+handle_scroll_event (MetaWaylandSeat    *seat,
+                     const ClutterEvent *event)
 {
   enum wl_pointer_axis axis;
   wl_fixed_t value;
 
-  notify_motion (seat, (const ClutterEvent *) event);
+  notify_motion (seat, event);
 
-  switch (event->direction)
+  switch (clutter_event_get_scroll_direction (event))
     {
     case CLUTTER_SCROLL_UP:
       axis = WL_POINTER_AXIS_VERTICAL_SCROLL;
@@ -411,7 +351,7 @@ handle_scroll_event (MetaWaylandSeat *seat,
 
   if (seat->pointer.focus_resource)
     wl_pointer_send_axis (seat->pointer.focus_resource,
-                          event->time,
+                          clutter_event_get_time (event),
                           axis,
                           value);
 }
@@ -447,14 +387,12 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
   switch (event->type)
     {
     case CLUTTER_MOTION:
-      handle_motion_event (seat,
-                           (const ClutterMotionEvent *) event);
+      handle_motion_event (seat, event);
       break;
 
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
-      handle_button_event (seat,
-                           (const ClutterButtonEvent *) event);
+      handle_button_event (seat, event);
       break;
 
     case CLUTTER_KEY_PRESS:
@@ -463,7 +401,7 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
                                                  (const ClutterKeyEvent *) event);
 
     case CLUTTER_SCROLL:
-      handle_scroll_event (seat, (const ClutterScrollEvent *) event);
+      handle_scroll_event (seat, event);
       break;
 
     default:
@@ -493,14 +431,18 @@ update_pointer_position_for_actor (MetaWaylandPointer *pointer,
    case Clutter will have already performed a pick so we can avoid
    redundantly doing another one */
 void
-meta_wayland_seat_repick (MetaWaylandSeat *seat,
-                          uint32_t time,
-                          ClutterActor *actor)
+meta_wayland_seat_repick (MetaWaylandSeat    *seat,
+			  const ClutterEvent *for_event)
 {
+  ClutterActor       *actor   = NULL;
   MetaWaylandPointer *pointer = &seat->pointer;
   MetaWaylandSurface *surface = NULL;
 
-  if (actor == NULL && seat->current_stage)
+  if (for_event)
+    {
+      actor = clutter_event_get_source (for_event);
+    }
+  else if (seat->current_stage)
     {
       ClutterStage *stage = CLUTTER_STAGE (seat->current_stage);
       actor = clutter_stage_get_actor_at_pos (stage,
@@ -538,16 +480,8 @@ meta_wayland_seat_repick (MetaWaylandSeat *seat,
       const MetaWaylandPointerGrabInterface *interface =
         pointer->grab->interface;
       interface->focus (pointer->grab,
-                        surface,
-                        pointer->current_x, pointer->current_y);
+                        surface, for_event);
     }
-
-  if (pointer->grab->focus)
-    transform_stage_point_fixed (pointer->grab->focus,
-                                 pointer->x,
-                                 pointer->y,
-                                 &pointer->grab->x,
-                                 &pointer->grab->y);
 }
 
 void

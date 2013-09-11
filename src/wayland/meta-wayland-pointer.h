@@ -28,22 +28,19 @@
 
 struct _MetaWaylandPointerGrabInterface
 {
-  void (*focus) (MetaWaylandPointerGrab * grab,
-                 MetaWaylandSurface * surface, wl_fixed_t x, wl_fixed_t y);
-  void (*motion) (MetaWaylandPointerGrab * grab,
-                  uint32_t time, wl_fixed_t x, wl_fixed_t y);
-  void (*button) (MetaWaylandPointerGrab * grab,
-                  uint32_t time, uint32_t button, uint32_t state);
+  void (*focus) (MetaWaylandPointerGrab *grab,
+                 MetaWaylandSurface     *surface,
+		 const ClutterEvent     *event);
+  void (*motion) (MetaWaylandPointerGrab *grab,
+		  const ClutterEvent     *event);
+  void (*button) (MetaWaylandPointerGrab *grab,
+		  const ClutterEvent     *event);
 };
 
 struct _MetaWaylandPointerGrab
 {
   const MetaWaylandPointerGrabInterface *interface;
   MetaWaylandPointer *pointer;
-  MetaWaylandSurface *focus;
-  wl_fixed_t x, y;
-
-  struct wl_listener focus_destroy_listener;
 };
 
 struct _MetaWaylandPointer
@@ -59,6 +56,7 @@ struct _MetaWaylandPointer
   MetaWaylandPointerGrab *grab;
   MetaWaylandPointerGrab default_grab;
   wl_fixed_t grab_x, grab_y;
+  wl_fixed_t focus_x, focus_y;
   guint32 grab_button;
   guint32 grab_serial;
   guint32 grab_time;
@@ -80,10 +78,7 @@ meta_wayland_pointer_release (MetaWaylandPointer *pointer);
 
 void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
-                                MetaWaylandSurface *surface,
-                                wl_fixed_t sx,
-                                wl_fixed_t sy);
-
+                                MetaWaylandSurface *surface);
 void
 meta_wayland_pointer_destroy_focus (MetaWaylandPointer *pointer);
 
@@ -106,5 +101,11 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
 void
 meta_wayland_pointer_set_current (MetaWaylandPointer *pointer,
                                   MetaWaylandSurface *surface);
+
+void
+meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
+					       MetaWaylandSurface *surface,
+					       wl_fixed_t         *x,
+					       wl_fixed_t         *y);
 
 #endif /* __META_WAYLAND_POINTER_H__ */
