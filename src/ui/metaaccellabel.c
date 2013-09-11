@@ -35,7 +35,7 @@
 #include "metaaccellabel.h"
 #include <gtk/gtk.h>
 #include <string.h>
-#include <meta/util.h>
+#include "util-private.h"
 
 static void     meta_accel_label_destroy      (GtkWidget           *object);
 static void     meta_accel_label_finalize     (GObject             *object);

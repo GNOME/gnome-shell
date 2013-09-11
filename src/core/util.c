@@ -31,7 +31,7 @@
 
 #include <config.h>
 #include <meta/common.h>
-#include <meta/util.h>
+#include "util-private.h"
 #include <meta/main.h>
 
 #include <clutter/clutter.h> /* For clutter_threads_add_repaint_func() */

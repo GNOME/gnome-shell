@@ -21,15 +21,14 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
+
 #include <meta/meta-plugin.h>
 #include <meta/window.h>
-#include <meta/util.h>
 #include <meta/meta-background-group.h>
 #include <meta/meta-background-actor.h>
-
-#include <libintl.h>
-#define _(x) dgettext (GETTEXT_PACKAGE, x)
-#define N_(x) x
+#include <meta/util.h>
+#include <glib/gi18n-lib.h>
 
 #include <clutter/clutter.h>
 #include <gmodule.h>

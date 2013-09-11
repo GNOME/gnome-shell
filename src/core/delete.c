@@ -25,7 +25,7 @@
 #define _XOPEN_SOURCE /* for kill() */
 
 #include <config.h>
-#include <meta/util.h>
+#include "util-private.h"
 #include "window-private.h"
 #include <meta/errors.h>
 #include <meta/workspace.h>

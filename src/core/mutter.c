@@ -25,6 +25,7 @@
 
 #include <meta/main.h>
 #include <meta/util.h>
+#include <glib/gi18n-lib.h>
 #include "meta-plugin-manager.h"
 
 #include <glib.h>

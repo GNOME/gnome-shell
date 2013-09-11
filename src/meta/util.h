@@ -27,19 +27,13 @@
 
 #include <glib.h>
 #include <glib-object.h>
-#include <glib/gi18n.h>
 
 #include <meta/common.h>
 
 gboolean meta_is_verbose  (void);
-void     meta_set_verbose (gboolean setting);
 gboolean meta_is_debugging (void);
-void     meta_set_debugging (gboolean setting);
 gboolean meta_is_syncing (void);
-void     meta_set_syncing (gboolean setting);
-void     meta_set_replace_current_wm (gboolean setting);
 gboolean meta_is_wayland_compositor (void);
-void     meta_set_is_wayland_compositor (gboolean setting);
 
 void meta_debug_spew_real (const char *format,
                            ...) G_GNUC_PRINTF (1, 2);

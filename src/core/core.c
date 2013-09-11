@@ -29,6 +29,7 @@
 #include "workspace-private.h"
 #include <meta/prefs.h>
 #include <meta/errors.h>
+#include "util-private.h"
 
 /* Looks up the MetaWindow representing the frame of the given X window.
  * Used as a helper function by a bunch of the functions below.

@@ -153,6 +153,7 @@ libmutter_wayland_la_SOURCES =			\
 	core/stack-tracker.h			\
 	core/util.c				\
 	meta/util.h				\
+	core/util-private.h			\
 	core/window-props.c			\
 	core/window-props.h			\
 	core/window.c				\

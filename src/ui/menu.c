@@ -28,7 +28,7 @@
 #include <string.h>
 #include "menu.h"
 #include <meta/main.h>
-#include <meta/util.h>
+#include "util-private.h"
 #include "core.h"
 #include "metaaccellabel.h"
 #include "ui.h"

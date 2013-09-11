@@ -48,7 +48,7 @@
 
 #include <config.h>
 #include <meta/main.h>
-#include <meta/util.h>
+#include "util-private.h"
 #include "display-private.h"
 #include <meta/errors.h>
 #include "ui.h"
