@@ -59,18 +59,6 @@ const WorkspacesView = new Lang.Class({
         this._extraWorkspaces = [];
         this._updateExtraWorkspaces();
 
-        // Position/scale the desktop windows and their children after the
-        // workspaces have been created. This cannot be done first because
-        // window movement depends on the Workspaces object being accessible
-        // as an Overview member.
-        this._overviewShowingId =
-            Main.overview.connect('showing',
-                                 Lang.bind(this, function() {
-                for (let w = 0; w < this._workspaces.length; w++)
-                    this._workspaces[w].zoomToOverview();
-                for (let w = 0; w < this._extraWorkspaces.length; w++)
-                    this._extraWorkspaces[w].zoomToOverview();
-        }));
         this._overviewShownId =
             Main.overview.connect('shown',
                                  Lang.bind(this, function() {
@@ -141,12 +129,14 @@ const WorkspacesView = new Lang.Class({
         return this._workspaces[active];
     },
 
-    hide: function() {
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        let activeWorkspace = this._workspaces[activeWorkspaceIndex];
+    zoomToOverview: function() {
+        for (let w = 0; w < this._workspaces.length; w++)
+            this._workspaces[w].zoomToOverview();
+        for (let w = 0; w < this._extraWorkspaces.length; w++)
+            this._extraWorkspaces[w].zoomToOverview();
+    },
 
-        activeWorkspace.actor.raise_top();
-
+    zoomFromOverview: function() {
         this.actor.remove_clip();
 
         for (let w = 0; w < this._workspaces.length; w++)
@@ -276,7 +266,6 @@ const WorkspacesView = new Lang.Class({
     _onDestroy: function() {
         this._destroyExtraWorkspaces();
         this.scrollAdjustment.run_dispose();
-        Main.overview.disconnect(this._overviewShowingId);
         Main.overview.disconnect(this._overviewShownId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
         this._settings.disconnect(this._updateExtraWorkspacesId);
@@ -443,6 +432,8 @@ const WorkspacesDisplay = new Lang.Class({
 
     show: function() {
         this._updateWorkspacesViews();
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].zoomToOverview();
 
         this._restackedNotifyId =
             Main.overview.connect('windows-restacked',
@@ -452,9 +443,8 @@ const WorkspacesDisplay = new Lang.Class({
     },
 
     zoomFromOverview: function() {
-        for (let i = 0; i < this._workspacesViews.length; i++) {
-            this._workspacesViews[i].hide();
-        }
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].zoomFromOverview();
     },
 
     hide: function() {
