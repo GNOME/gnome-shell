@@ -48,17 +48,9 @@ const WorkspacesView = new Lang.Class({
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        this.actor.connect('style-changed', Lang.bind(this,
-            function() {
-                let node = this.actor.get_theme_node();
-                this._spacing = node.get_length('spacing');
-                this._updateWorkspaceActors(false);
-            }));
-
         this._fullGeometry = null;
         this._actualGeometry = null;
 
-        this._spacing = 0;
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
         this._animatingScroll = false; // programatically updating the adjustment
@@ -216,7 +208,7 @@ const WorkspacesView = new Lang.Class({
 
             Tweener.removeTweens(workspace.actor);
 
-            let y = (w - active) * (this._fullGeometry.height + this._spacing);
+            let y = (w - active) * this._fullGeometry.height;
 
             if (showAnimation) {
                 let params = { y: y,
