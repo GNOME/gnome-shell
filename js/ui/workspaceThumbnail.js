@@ -438,16 +438,16 @@ const WorkspaceThumbnail = new Lang.Class({
                           this.activate(time);
                       }));
         clone.connect('drag-begin',
-                      Lang.bind(this, function(clone) {
-                          Main.overview.beginWindowDrag();
+                      Lang.bind(this, function() {
+                          Main.overview.beginWindowDrag(clone);
                       }));
         clone.connect('drag-cancelled',
-                      Lang.bind(this, function(clone) {
-                          Main.overview.cancelledWindowDrag();
+                      Lang.bind(this, function() {
+                          Main.overview.cancelledWindowDrag(clone);
                       }));
         clone.connect('drag-end',
-                      Lang.bind(this, function(clone) {
-                          Main.overview.endWindowDrag();
+                      Lang.bind(this, function() {
+                          Main.overview.endWindowDrag(clone);
                       }));
         this._contents.add_actor(clone.actor);
 

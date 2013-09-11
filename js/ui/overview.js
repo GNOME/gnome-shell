@@ -443,17 +443,17 @@ const Overview = new Lang.Class({
         this._inDrag = false;
     },
 
-    beginWindowDrag: function(source) {
-        this.emit('window-drag-begin');
+    beginWindowDrag: function(clone) {
+        this.emit('window-drag-begin', clone);
         this._inDrag = true;
     },
 
-    cancelledWindowDrag: function(source) {
-        this.emit('window-drag-cancelled');
+    cancelledWindowDrag: function(clone) {
+        this.emit('window-drag-cancelled', clone);
     },
 
-    endWindowDrag: function(source) {
-        this.emit('window-drag-end');
+    endWindowDrag: function(clone) {
+        this.emit('window-drag-end', clone);
         this._inDrag = false;
     },
 
