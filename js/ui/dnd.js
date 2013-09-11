@@ -5,6 +5,7 @@ const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const St = imports.gi.St;
 const Lang = imports.lang;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Tweener = imports.ui.tweener;
@@ -27,9 +28,9 @@ const DragMotionResult = {
 };
 
 const DRAG_CURSOR_MAP = {
-    0: Shell.Cursor.DND_UNSUPPORTED_TARGET,
-    1: Shell.Cursor.DND_COPY,
-    2: Shell.Cursor.DND_MOVE
+    0: Meta.Cursor.DND_UNSUPPORTED_TARGET,
+    1: Meta.Cursor.DND_COPY,
+    2: Meta.Cursor.DND_MOVE
 };
 
 const DragDropResult = {
@@ -244,7 +245,7 @@ const _Draggable = new Lang.Class({
         if (this._onEventId)
             this._ungrabActor();
         this._grabEvents();
-        global.set_cursor(Shell.Cursor.DND_IN_DRAG);
+        global.screen.set_cursor(Meta.Cursor.DND_IN_DRAG);
 
         this._dragX = this._dragStartX = stageX;
         this._dragY = this._dragStartY = stageY;
@@ -374,7 +375,7 @@ const _Draggable = new Lang.Class({
             if (motionFunc) {
                 let result = motionFunc(dragEvent);
                 if (result != DragMotionResult.CONTINUE) {
-                    global.set_cursor(DRAG_CURSOR_MAP[result]);
+                    global.screen.set_cursor(DRAG_CURSOR_MAP[result]);
                     return false;
                 }
             }
@@ -392,13 +393,13 @@ const _Draggable = new Lang.Class({
                                                              targY,
                                                              0);
                 if (result != DragMotionResult.CONTINUE) {
-                    global.set_cursor(DRAG_CURSOR_MAP[result]);
+                    global.screen.set_cursor(DRAG_CURSOR_MAP[result]);
                     return false;
                 }
             }
             target = target.get_parent();
         }
-        global.set_cursor(Shell.Cursor.DND_IN_DRAG);
+        global.screen.set_cursor(Meta.Cursor.DND_IN_DRAG);
         return false;
     },
 
@@ -470,7 +471,7 @@ const _Draggable = new Lang.Class({
                     }
 
                     this._dragInProgress = false;
-                    global.unset_cursor();
+                    global.screen.set_cursor(Meta.Cursor.DEFAULT);
                     this.emit('drag-end', event.get_time(), true);
                     this._dragComplete();
                     return true;
@@ -522,7 +523,7 @@ const _Draggable = new Lang.Class({
         let [snapBackX, snapBackY, snapBackScale] = this._getRestoreLocation();
 
         if (this._actorDestroyed) {
-            global.unset_cursor();
+            global.screen.set_cursor(Meta.Cursor.DEFAULT);
             if (!this._buttonDown)
                 this._dragComplete();
             this.emit('drag-end', eventTime, false);
@@ -576,7 +577,7 @@ const _Draggable = new Lang.Class({
         } else {
             dragActor.destroy();
         }
-        global.unset_cursor();
+        global.screen.set_cursor(Meta.Cursor.DEFAULT);
         this.emit('drag-end', eventTime, false);
 
         this._animationInProgress = false;

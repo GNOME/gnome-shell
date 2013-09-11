@@ -27,6 +27,7 @@
 #include <meta/display.h>
 #include <meta/util.h>
 #include <meta/meta-shaped-texture.h>
+#include <meta/meta-cursor-tracker.h>
 
 /* Memory report bits */
 #ifdef HAVE_MALLINFO
@@ -597,91 +598,6 @@ sync_input_region (ShellGlobal *global)
     meta_set_stage_input_region (screen, None);
   else
     meta_set_stage_input_region (screen, global->input_region);
-}
-
-/**
- * shell_global_set_cursor:
- * @global: A #ShellGlobal
- * @type: the type of the cursor
- *
- * Set the cursor on the stage window.
- */
-void
-shell_global_set_cursor (ShellGlobal *global,
-                         ShellCursor type)
-{
-  const char *name;
-  GdkCursor *cursor;
-
-  switch (type)
-    {
-    case SHELL_CURSOR_DND_IN_DRAG:
-      name = "dnd-none";
-      break;
-    case SHELL_CURSOR_DND_MOVE:
-      name = "dnd-move";
-      break;
-    case SHELL_CURSOR_DND_COPY:
-      name = "dnd-copy";
-      break;
-    case SHELL_CURSOR_DND_UNSUPPORTED_TARGET:
-      name = "dnd-none";
-      break;
-    case SHELL_CURSOR_POINTING_HAND:
-      name = "hand";
-      break;
-    case SHELL_CURSOR_CROSSHAIR:
-      name = "crosshair";
-      break;
-    default:
-      g_return_if_reached ();
-    }
-
-  cursor = gdk_cursor_new_from_name (global->gdk_display, name);
-  if (!cursor)
-    {
-      GdkCursorType cursor_type;
-      switch (type)
-        {
-        case SHELL_CURSOR_DND_IN_DRAG:
-          cursor_type = GDK_FLEUR;
-          break;
-        case SHELL_CURSOR_DND_MOVE:
-          cursor_type = GDK_TARGET;
-          break;
-        case SHELL_CURSOR_DND_COPY:
-          cursor_type = GDK_PLUS;
-          break;
-        case SHELL_CURSOR_POINTING_HAND:
-          cursor_type = GDK_HAND2;
-          break;
-        case SHELL_CURSOR_CROSSHAIR:
-          cursor_type = GDK_CROSSHAIR;
-          break;
-        case SHELL_CURSOR_DND_UNSUPPORTED_TARGET:
-          cursor_type = GDK_X_CURSOR;
-          break;
-        default:
-          g_return_if_reached ();
-        }
-      cursor = gdk_cursor_new (cursor_type);
-    }
-
-  gdk_window_set_cursor (global->stage_gdk_window, cursor);
-
-  g_object_unref (cursor);
-}
-
-/**
- * shell_global_unset_cursor:
- * @global: A #ShellGlobal
- *
- * Unset the cursor on the stage window.
- */
-void
-shell_global_unset_cursor (ShellGlobal  *global)
-{
-  gdk_window_set_cursor (global->stage_gdk_window, NULL);
 }
 
 /**

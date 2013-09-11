@@ -6,6 +6,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
@@ -167,7 +168,7 @@ const SelectArea = new Lang.Class({
         if (!Main.pushModal(this._group) || this._group.visible)
             return;
 
-        global.set_cursor(Shell.Cursor.CROSSHAIR);
+        global.screen.set_cursor(Meta.Cursor.CROSSHAIR);
         this._group.visible = true;
     },
 
@@ -238,7 +239,7 @@ const SelectArea = new Lang.Class({
                                function() {
                                    Main.popModal(this._group);
                                    this._group.destroy();
-                                   global.unset_cursor();
+                                   global.screen.set_cursor(Meta.Cursor.DEFAULT);
 
                                    this.emit('finished', geometry);
                                })

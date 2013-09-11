@@ -215,10 +215,10 @@ const URLHighlighter = new Lang.Class({
 
             let urlId = this._findUrlAtPos(event);
             if (urlId != -1 && !this._cursorChanged) {
-                global.set_cursor(Shell.Cursor.POINTING_HAND);
+                global.screen.set_cursor(Meta.Cursor.POINTING_HAND);
                 this._cursorChanged = true;
             } else if (urlId == -1) {
-                global.unset_cursor();
+                global.screen.set_cursor(Meta.Cursor.DEFAULT);
                 this._cursorChanged = false;
             }
             return false;
@@ -229,7 +229,7 @@ const URLHighlighter = new Lang.Class({
 
             if (this._cursorChanged) {
                 this._cursorChanged = false;
-                global.unset_cursor();
+                global.screen.set_cursor(Meta.Cursor.DEFAULT);
             }
         }));
     },
