@@ -1434,6 +1434,10 @@ const Workspace = new Lang.Class({
 
         if (this._positionWindowsId > 0)
             Meta.later_remove(this._positionWindowsId);
+
+        if (this._actualGeometryLater > 0)
+            Meta.later_remove(this._actualGeometryLater);
+
         this._windows = [];
     },
 
