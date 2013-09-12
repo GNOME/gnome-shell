@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-04 02:07+0200\n"
-"PO-Revision-Date: 2013-09-04 02:08+0200\n"
+"POT-Creation-Date: 2013-09-12 19:37+0200\n"
+"PO-Revision-Date: 2013-09-12 19:38+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -54,6 +54,7 @@ msgid "GNOME Shell"
 msgstr "Powłoka środowiska GNOME"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
+#: ../data/gnome-shell-wayland.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Zarządzanie oknami i uruchamianiem programów"
 
@@ -65,6 +66,10 @@ msgstr "Preferencje rozszerzenia powłoki GNOME"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
 msgstr "Konfiguracja rozszerzeń powłoki GNOME"
+
+#: ../data/gnome-shell-wayland.desktop.in.in.h:1
+msgid "GNOME Shell (wayland compositor)"
+msgstr "Powłoka środowiska GNOME (Wayland)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -350,42 +355,42 @@ msgstr "Błąd uwierzytelniania"
 msgid "(or swipe finger)"
 msgstr "(lub przeciągnięcie palca)"
 
-#: ../js/misc/util.js:97
+#: ../js/misc/util.js:98
 msgid "Command not found"
 msgstr "Nie odnaleziono polecenia"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:131
 msgid "Could not parse command:"
 msgstr "Nie można przetworzyć polecenia:"
 
-#: ../js/misc/util.js:138
+#: ../js/misc/util.js:139
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Wykonanie polecenia \"%s\" się nie powiodło:"
 
-#: ../js/ui/appDisplay.js:580
+#: ../js/ui/appDisplay.js:573
 msgid "Frequently used applications will appear here"
 msgstr "W tym miejscu pojawią się często używane programy"
 
-#: ../js/ui/appDisplay.js:696
+#: ../js/ui/appDisplay.js:689
 msgid "Frequent"
 msgstr "Często używane"
 
-#: ../js/ui/appDisplay.js:703
+#: ../js/ui/appDisplay.js:696
 msgid "All"
 msgstr "Wszystkie"
 
-#: ../js/ui/appDisplay.js:1490
+#: ../js/ui/appDisplay.js:1491
 msgid "New Window"
 msgstr "Nowe okno"
 
-#: ../js/ui/appDisplay.js:1493 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1494 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Usuń z ulubionych"
 
-#: ../js/ui/appDisplay.js:1494
+#: ../js/ui/appDisplay.js:1495
 msgid "Add to Favorites"
 msgstr "Dodaj do ulubionych"
 
@@ -930,7 +935,7 @@ msgstr "Wyświetl konto"
 msgid "Unknown reason"
 msgstr "Nieznana przyczyna"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:100
 msgid "Windows"
 msgstr "Okna"
 
@@ -1083,7 +1088,7 @@ msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr ""
 "Pobrać i zainstalować rozszerzenie \"%s\" z witryny extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:334
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
 msgid "Keyboard"
 msgstr "Klawiatura"
 
@@ -1163,7 +1168,7 @@ msgstr "Brak wiadomości"
 msgid "Message Tray"
 msgstr "Obszar powiadamiania"
 
-#: ../js/ui/messageTray.js:2786
+#: ../js/ui/messageTray.js:2787
 msgid "System Information"
 msgstr "Informacje systemowe"
 
@@ -1196,21 +1201,21 @@ msgstr "Podgląd"
 msgid "Type to search…"
 msgstr "Wyszukiwanie…"
 
-#: ../js/ui/panel.js:516
+#: ../js/ui/panel.js:518
 msgid "Quit"
 msgstr "Zakończ"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "Podgląd"
 
-#: ../js/ui/panel.js:805
+#: ../js/ui/panel.js:807
 msgid "Settings Menu"
 msgstr "Menu ustawień"
 
-#: ../js/ui/panel.js:892
+#: ../js/ui/panel.js:903
 msgid "Top Bar"
 msgstr "Górny pasek"
 
@@ -1219,7 +1224,7 @@ msgstr "Górny pasek"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:226
+#: ../js/ui/popupMenu.js:233
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1249,7 +1254,7 @@ msgstr[2] "%d nowych powiadomień"
 msgid "Lock"
 msgstr "Zablokuj ekran"
 
-#: ../js/ui/screenShield.js:703
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "Środowisko GNOME musi zablokować ekran"
 
@@ -1260,11 +1265,11 @@ msgstr "Środowisko GNOME musi zablokować ekran"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Unable to lock"
 msgstr "Nie można zablokować"
 
-#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
+#: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1298
 msgid "Lock was blocked by an application"
 msgstr "Blokowanie zostało zablokowane przez program"
 
@@ -1443,7 +1448,7 @@ msgstr "OK"
 msgid "Brightness"
 msgstr "Jasność"
 
-#: ../js/ui/status/keyboard.js:404
+#: ../js/ui/status/keyboard.js:403
 msgid "Show Keyboard Layout"
 msgstr "Wyświetl układ klawiatury"
 
@@ -1613,11 +1618,11 @@ msgstr "Zaloguj jako inny użytkownik"
 msgid "Unlock Window"
 msgstr "Okno odblokowania"
 
-#: ../js/ui/viewSelector.js:100
+#: ../js/ui/viewSelector.js:104
 msgid "Applications"
 msgstr "Programy"
 
-#: ../js/ui/viewSelector.js:104
+#: ../js/ui/viewSelector.js:108
 msgid "Search"
 msgstr "Wyszukiwanie"
 
