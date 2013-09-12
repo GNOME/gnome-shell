@@ -1087,15 +1087,15 @@ const ScreenShield = new Lang.Class({
 
         this._checkArrowAnimation();
 
-        let motionId = global.stage.connect('captured-event', function(stage, event) {
+        let motionId = global.stage.connect('captured-event', Lang.bind(this, function(stage, event) {
             if (event.type() == Clutter.EventType.MOTION) {
-                global.stage.show_cursor();
+                this._cursorTracker.set_pointer_visible(true);
                 global.stage.disconnect(motionId);
             }
 
             return false;
-        });
-        this._cursorTracker.set_pointer_tracker(false);
+        }));
+        this._cursorTracker.set_pointer_visible(false);
 
         this._lockScreenState = MessageTray.State.SHOWN;
         this._lockScreenGroup.fixed_position_set = false;
