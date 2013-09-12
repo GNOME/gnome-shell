@@ -3981,7 +3981,7 @@ meta_display_create_x_cursor (MetaDisplay *display,
       glyph = XC_watch;
       break;
     case META_CURSOR_DND_IN_DRAG:
-      name = "dnd-in-drag";
+      name = "dnd-none";
       break;
     case META_CURSOR_DND_MOVE:
       name = "dnd-move";
