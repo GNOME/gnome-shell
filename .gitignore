@@ -19,6 +19,8 @@ configure
 data/50-gnome-shell-*.xml
 data/gnome-shell.desktop
 data/gnome-shell.desktop.in
+data/gnome-shell-wayland.desktop
+data/gnome-shell-wayland.desktop.in
 data/gnome-shell-extension-prefs.desktop
 data/gnome-shell-extension-prefs.desktop.in
 data/gschemas.compiled
