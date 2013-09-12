@@ -335,6 +335,19 @@ const AllView = new Lang.Class({
             function() {
                 this._displayingPopup = false;
             }));
+
+        this.actor.connect('notify::mapped', Lang.bind(this,
+            function() {
+                if (this.actor.mapped) {
+                    this._keyPressEventId =
+                        global.stage.connect('key-press-event',
+                                             Lang.bind(this, this._onKeyPressEvent));
+                } else {
+                    if (this._keyPressEventId)
+                        global.stage.disconnect(this._keyPressEventId);
+                    this._keyPressEventId = 0;
+                }
+            }));
     },
 
     getCurrentPageY: function() {
@@ -439,6 +452,21 @@ const AllView = new Lang.Class({
             this.goToPage(this._currentPage);
         }
         this._panning = false;
+    },
+
+    _onKeyPressEvent: function(actor, event) {
+        if (this._displayingPopup)
+            return true;
+
+        if (event.get_key_symbol() == Clutter.Page_Up) {
+            this.goToPage(this._currentPage - 1);
+            return true;
+        } else if (event.get_key_symbol() == Clutter.Page_Down) {
+            this.goToPage(this._currentPage + 1);
+            return true;
+        }
+
+        return false;
     },
 
     _getItemId: function(item) {
