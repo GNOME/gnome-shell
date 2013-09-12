@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: mutter MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-12 18:53+0000\n"
-"PO-Revision-Date: 2013-03-12 20:55+0300\n"
+"POT-Creation-Date: 2013-09-10 15:25+0000\n"
+"PO-Revision-Date: 2013-09-11 23:20+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -23,6 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Poedit 1.5.4\n"
 
 msgid "Navigation"
 msgstr "Navigeerimine"
@@ -249,6 +250,17 @@ msgid ""
 msgstr ""
 "Teemat ei leitud! Veendu, et %s on olemas ja sisaldab harilikke teemasid.\n"
 
+msgid "Built-in display"
+msgstr "Sisseehitatud kuva"
+
+#. TRANSLATORS: this is a monitor name (in case we don't know
+#. the vendor), it's Unknown followed by a size in inches,
+#. like 'Unknown 15"'
+#.
+#, c-format
+msgid "Unknown %s"
+msgstr "Tundmatu %s"
+
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -381,7 +393,6 @@ msgstr "Tõrge logifaili %s avamisel funktsiooniga fdopen(): %s\n"
 msgid "Opened log file %s\n"
 msgstr "Avati logifail %s\n"
 
-#, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter kompileeriti ilma jutuka režiimi toeta\n"
 
@@ -571,10 +582,6 @@ msgstr "Akna valimine tabulaatori hüpikaknalt"
 
 msgid "Cancel tab popup"
 msgstr "Tabulaatori hüpikakna katkestamine"
-
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Kasutamine: %s\n"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 msgid "Mi_nimize"
@@ -1281,159 +1288,151 @@ msgstr "Selle teema jaoks on <%s> määratud kaks korda"
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Tõrge %s teema jaoks korrektse faili leidmisel\n"
 
-msgid "_Windows"
-msgstr "_Aknad"
+#~ msgid "Usage: %s\n"
+#~ msgstr "Kasutamine: %s\n"
 
-msgid "_Dialog"
-msgstr "_Dialoog"
+#~ msgid "_Windows"
+#~ msgstr "_Aknad"
 
-msgid "_Modal dialog"
-msgstr "_Modaaldialoog"
+#~ msgid "_Dialog"
+#~ msgstr "_Dialoog"
 
-msgid "_Utility"
-msgstr "_Utiliit"
+#~ msgid "_Modal dialog"
+#~ msgstr "_Modaaldialoog"
 
-msgid "_Splashscreen"
-msgstr "_Käivitusekraan"
+#~ msgid "_Utility"
+#~ msgstr "_Utiliit"
 
-msgid "_Top dock"
-msgstr "Ü_lemine dokk"
+#~ msgid "_Splashscreen"
+#~ msgstr "_Käivitusekraan"
 
-msgid "_Bottom dock"
-msgstr "_Alumine dokk"
+#~ msgid "_Top dock"
+#~ msgstr "Ü_lemine dokk"
 
-msgid "_Left dock"
-msgstr "_Vasak dokk"
+#~ msgid "_Bottom dock"
+#~ msgstr "_Alumine dokk"
 
-msgid "_Right dock"
-msgstr "_Parem dokk"
+#~ msgid "_Left dock"
+#~ msgstr "_Vasak dokk"
 
-msgid "_All docks"
-msgstr "_Kõik dokid"
+#~ msgid "_Right dock"
+#~ msgstr "_Parem dokk"
 
-msgid "Des_ktop"
-msgstr "_Töölaud"
+#~ msgid "_All docks"
+#~ msgstr "_Kõik dokid"
 
-msgid "Open another one of these windows"
-msgstr "Ava neist akendest järgmine"
+#~ msgid "Des_ktop"
+#~ msgstr "_Töölaud"
 
-msgid "This is a demo button with an 'open' icon"
-msgstr "See on näidisnupp koos 'ava' ikooniga"
+#~ msgid "Open another one of these windows"
+#~ msgstr "Ava neist akendest järgmine"
 
-msgid "This is a demo button with a 'quit' icon"
-msgstr "See on näidisnupp koos 'lõpeta' ikooniga"
+#~ msgid "This is a demo button with an 'open' icon"
+#~ msgstr "See on näidisnupp koos 'ava' ikooniga"
 
-msgid "This is a sample message in a sample dialog"
-msgstr "See on näidisteade näidisdialoogis"
+#~ msgid "This is a demo button with a 'quit' icon"
+#~ msgstr "See on näidisnupp koos 'lõpeta' ikooniga"
 
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr "Võltsitud menüüpunkt %d\n"
+#~ msgid "This is a sample message in a sample dialog"
+#~ msgstr "See on näidisteade näidisdialoogis"
 
-msgid "Border-only window"
-msgstr "Ainult raamiga aken"
+#~ msgid "Fake menu item %d\n"
+#~ msgstr "Võltsitud menüüpunkt %d\n"
 
-msgid "Bar"
-msgstr "Riba"
+#~ msgid "Border-only window"
+#~ msgstr "Ainult raamiga aken"
 
-msgid "Normal Application Window"
-msgstr "Tavaline rakenduseaken"
+#~ msgid "Bar"
+#~ msgstr "Riba"
 
-msgid "Dialog Box"
-msgstr "Dialoogikast"
+#~ msgid "Normal Application Window"
+#~ msgstr "Tavaline rakenduseaken"
 
-msgid "Modal Dialog Box"
-msgstr "Modaalne dialoogikast"
+#~ msgid "Dialog Box"
+#~ msgstr "Dialoogikast"
 
-msgid "Utility Palette"
-msgstr "Rakendite palett"
+#~ msgid "Modal Dialog Box"
+#~ msgstr "Modaalne dialoogikast"
 
-msgid "Torn-off Menu"
-msgstr "Ärarebitav menüü"
+#~ msgid "Utility Palette"
+#~ msgstr "Rakendite palett"
 
-msgid "Border"
-msgstr "Raam"
+#~ msgid "Torn-off Menu"
+#~ msgstr "Ärarebitav menüü"
 
-msgid "Attached Modal Dialog"
-msgstr "Kinnistatud modaaldialoog"
+#~ msgid "Border"
+#~ msgstr "Raam"
 
-#, c-format
-msgid "Button layout test %d"
-msgstr "Nuppude paigutuse test %d"
+#~ msgid "Attached Modal Dialog"
+#~ msgstr "Kinnistatud modaaldialoog"
 
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr "%g millisekundit kulub ühe akna raami joonistamiseks"
+#~ msgid "Button layout test %d"
+#~ msgstr "Nuppude paigutuse test %d"
 
-#, c-format
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Kasutamine: metacity-theme-viewer [TEEMANIMI]\n"
+#~ msgid "%g milliseconds to draw one window frame"
+#~ msgstr "%g millisekundit kulub ühe akna raami joonistamiseks"
 
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "Viga teema laadimisel: %s\n"
+#~ msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+#~ msgstr "Kasutamine: metacity-theme-viewer [TEEMANIMI]\n"
 
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Teema \"%s\" laaditi %g sekundiga\n"
+#~ msgid "Error loading theme: %s\n"
+#~ msgstr "Viga teema laadimisel: %s\n"
 
-msgid "Normal Title Font"
-msgstr "Tiitli tavasuurusega kirjatüüp"
+#~ msgid "Loaded theme \"%s\" in %g seconds\n"
+#~ msgstr "Teema \"%s\" laaditi %g sekundiga\n"
 
-msgid "Small Title Font"
-msgstr "Tiitli väike kirjatüüp"
+#~ msgid "Normal Title Font"
+#~ msgstr "Tiitli tavasuurusega kirjatüüp"
 
-msgid "Large Title Font"
-msgstr "Tiitli suur kirjatüüp"
+#~ msgid "Small Title Font"
+#~ msgstr "Tiitli väike kirjatüüp"
 
-msgid "Button Layouts"
-msgstr "Nuppude paigutus"
+#~ msgid "Large Title Font"
+#~ msgstr "Tiitli suur kirjatüüp"
 
-msgid "Benchmark"
-msgstr "Jõudlus"
+#~ msgid "Button Layouts"
+#~ msgstr "Nuppude paigutus"
 
-msgid "Window Title Goes Here"
-msgstr "Siia tuleb akna pealkiri"
+#~ msgid "Benchmark"
+#~ msgstr "Jõudlus"
 
-#, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"Joonistati %d kaadrit %g kliendi-kella sekundiga (%g millisekundit kaadrile) "
-"ja %g sekundiga seinakella järgi, millesse on kaasatud X-serveri "
-"ressursikasutus (%g millisekundit kaadrile)\n"
+#~ msgid "Window Title Goes Here"
+#~ msgstr "Siia tuleb akna pealkiri"
 
-msgid "position expression test returned TRUE but set error"
-msgstr "asukoha avaldise kontroll tagastas TÕENE, aga määras vea"
+#~ msgid ""
+#~ "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and "
+#~ "%g seconds wall clock time including X server resources (%g milliseconds "
+#~ "per frame)\n"
+#~ msgstr ""
+#~ "Joonistati %d kaadrit %g kliendi-kella sekundiga (%g millisekundit "
+#~ "kaadrile) ja %g sekundiga seinakella järgi, millesse on kaasatud X-"
+#~ "serveri ressursikasutus (%g millisekundit kaadrile)\n"
 
-msgid "position expression test returned FALSE but didn't set error"
-msgstr "asukoha avaldise kontroll tagastas VÄÄR, aga ei määranud viga"
+#~ msgid "position expression test returned TRUE but set error"
+#~ msgstr "asukoha avaldise kontroll tagastas TÕENE, aga määras vea"
 
-msgid "Error was expected but none given"
-msgstr "Oodati viga, aga ühtegi ei edastatud"
+#~ msgid "position expression test returned FALSE but didn't set error"
+#~ msgstr "asukoha avaldise kontroll tagastas VÄÄR, aga ei määranud viga"
 
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr "Oodati viga %d, aga edastati viga %d"
+#~ msgid "Error was expected but none given"
+#~ msgstr "Oodati viga, aga ühtegi ei edastatud"
 
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr "Viga ei oodatud, aga üks edastati: %s"
+#~ msgid "Error %d was expected but %d given"
+#~ msgstr "Oodati viga %d, aga edastati viga %d"
 
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr "x väärtus oli %d, oodati väärtust %d"
+#~ msgid "Error not expected but one was returned: %s"
+#~ msgstr "Viga ei oodatud, aga üks edastati: %s"
 
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr "y väärtus oli %d, oodati väärtust %d"
+#~ msgid "x value was %d, %d was expected"
+#~ msgstr "x väärtus oli %d, oodati väärtust %d"
 
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
-"%d koordinaatide avaldis töödeldi %g sekundiga (keskmine %g sekundit)\n"
+#~ msgid "y value was %d, %d was expected"
+#~ msgstr "y väärtus oli %d, oodati väärtust %d"
+
+#~ msgid ""
+#~ "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+#~ msgstr ""
+#~ "%d koordinaatide avaldis töödeldi %g sekundiga (keskmine %g sekundit)\n"
 
 #~ msgid "Minimize window"
 #~ msgstr "Akna minimeerimine"
