@@ -1072,15 +1072,15 @@ const LookingGlass = new Lang.Class({
         let myWidth = primary.width * 0.7;
         let availableHeight = primary.height - Main.layoutManager.keyboardBox.height;
         let myHeight = Math.min(primary.height * 0.7, availableHeight * 0.9);
-        this.actor.x = (primary.width - myWidth) / 2;
-        this._hiddenY = Main.layoutManager.panelBox.height - myHeight - 4; // -4 to hide the top corners
+        this.actor.x = primary.x + (primary.width - myWidth) / 2;
+        this._hiddenY = primary.y + Main.layoutManager.panelBox.height - myHeight - 4; // -4 to hide the top corners
         this._targetY = this._hiddenY + myHeight;
         this.actor.y = this._hiddenY;
         this.actor.width = myWidth;
         this.actor.height = myHeight;
         this._objInspector.actor.set_size(Math.floor(myWidth * 0.8), Math.floor(myHeight * 0.8));
-        this._objInspector.actor.set_position(primary.x + this.actor.x + Math.floor(myWidth * 0.1),
-                                              primary.y + this._targetY + Math.floor(myHeight * 0.1));
+        this._objInspector.actor.set_position(this.actor.x + Math.floor(myWidth * 0.1),
+                                              this._targetY + Math.floor(myHeight * 0.1));
     },
 
     insertObject: function(obj) {
