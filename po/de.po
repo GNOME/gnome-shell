@@ -20,16 +20,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-07 19:18+0000\n"
-"PO-Revision-Date: 2013-09-08 00:01+0200\n"
-"Last-Translator: Tobias Endrigkeit <tobiasendrigkeit@outlook.com>\n"
+"POT-Creation-Date: 2013-09-12 17:36+0000\n"
+"PO-Revision-Date: 2013-09-13 19:29+0100\n"
+"Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Poedit 1.5.7\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -60,6 +60,7 @@ msgid "GNOME Shell"
 msgstr "GNOME-Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
+#: ../data/gnome-shell-wayland.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Fenster verwalten und Anwendungen starten"
 
@@ -71,6 +72,10 @@ msgstr "Einstellungen für Erweiterungen der GNOME-Shell"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
 msgstr "Erweiterungen der GNOME-Shell einrichten"
+
+#: ../data/gnome-shell-wayland.desktop.in.in.h:1
+msgid "GNOME Shell (wayland compositor)"
+msgstr "GNOME-Shell (Wayland Composition)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -354,17 +359,17 @@ msgstr "Legitimationsfehler"
 msgid "(or swipe finger)"
 msgstr "(oder benutzen Sie den Fingerabdruckleser)"
 
-#: ../js/misc/util.js:97
+#: ../js/misc/util.js:98
 msgid "Command not found"
 msgstr "Befehl nicht gefunden"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:131
 msgid "Could not parse command:"
 msgstr "Befehl konnte nicht verarbeitet werden:"
 
-#: ../js/misc/util.js:138
+#: ../js/misc/util.js:139
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Ausführung von »%s« ist gescheitert:"
@@ -940,7 +945,7 @@ msgstr "Konto anzeigen"
 msgid "Unknown reason"
 msgstr "Unbekannter Grund"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:100
 msgid "Windows"
 msgstr "Fenster"
 
@@ -1088,7 +1093,7 @@ msgstr "Installieren"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "»%s« von extensions.gnome.org herunterladen und installieren?"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:334
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -1200,21 +1205,21 @@ msgstr "Übersicht"
 msgid "Type to search…"
 msgstr "Suchbegriff eingeben …"
 
-#: ../js/ui/panel.js:516
+#: ../js/ui/panel.js:518
 msgid "Quit"
 msgstr "Beenden"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "Aktivitäten"
 
-#: ../js/ui/panel.js:805
+#: ../js/ui/panel.js:807
 msgid "Settings Menu"
 msgstr "Einstellungsmenü"
 
-#: ../js/ui/panel.js:901
+#: ../js/ui/panel.js:903
 msgid "Top Bar"
 msgstr "Oberes Panel"
 
@@ -1223,7 +1228,7 @@ msgstr "Oberes Panel"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:226
+#: ../js/ui/popupMenu.js:233
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1255,7 +1260,7 @@ msgstr[1] "%d neue Benachrichtigungen"
 msgid "Lock"
 msgstr "Sperren"
 
-#: ../js/ui/screenShield.js:703
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME muss den Bildschirm sperren"
 
@@ -1266,11 +1271,11 @@ msgstr "GNOME muss den Bildschirm sperren"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Unable to lock"
 msgstr "Sperrung fehlgeschlagen"
 
-#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
+#: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1298
 msgid "Lock was blocked by an application"
 msgstr "Sperrung wurde von einer Anwendung blockiert"
 
@@ -1449,7 +1454,7 @@ msgstr "OK"
 msgid "Brightness"
 msgstr "Helligkeit"
 
-#: ../js/ui/status/keyboard.js:404
+#: ../js/ui/status/keyboard.js:403
 msgid "Show Keyboard Layout"
 msgstr "Tastaturbelegung zeigen"
 
@@ -1619,11 +1624,11 @@ msgstr "Als anderer Benutzer anmelden"
 msgid "Unlock Window"
 msgstr "Fenster entsperren"
 
-#: ../js/ui/viewSelector.js:100
+#: ../js/ui/viewSelector.js:104
 msgid "Applications"
 msgstr "Anwendungen"
 
-#: ../js/ui/viewSelector.js:104
+#: ../js/ui/viewSelector.js:108
 msgid "Search"
 msgstr "Suchen"
 
