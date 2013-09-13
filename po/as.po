@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-02 19:28+0000\n"
-"PO-Revision-Date: 2013-09-10 20:47+0530\n"
+"POT-Creation-Date: 2013-09-12 17:36+0000\n"
+"PO-Revision-Date: 2013-09-13 15:09+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as_IN\n"
@@ -49,6 +49,7 @@ msgid "GNOME Shell"
 msgstr "GNOME শ্বেল"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
+#: ../data/gnome-shell-wayland.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "উইন্ডো ব্যৱস্থাপনা আৰু এপ্লিকেচনৰ লঞ্চ"
 
@@ -60,6 +61,10 @@ msgstr "GNOME শ্বেল সম্প্ৰসাৰন পছন্দস�
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
 msgstr "GNOME শ্বেল সম্প্ৰসাৰনসমূহ সংৰূপণ কৰক"
+
+#: ../data/gnome-shell-wayland.desktop.in.in.h:1
+msgid "GNOME Shell (wayland compositor)"
+msgstr "GNOME শ্বেল (wayland compositor)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -187,12 +192,10 @@ msgstr ""
 "কাৰ্য্যসমূহ অভাৰভিউৰ \"এপ্লিকেচনসমূহ দেখুৱাওক\" দৰ্শন খোলিবলে কি'বাইণ্ডিং।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the overview"
 msgstr "অভাৰভিউ খোলিবলে কি'বাইণ্ডিং"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the Activities Overview."
 msgstr "কাৰ্য্যসমূহ অভাৰভিউ খোলিবলে কি'বাইণ্ডিং"
 
@@ -303,7 +306,6 @@ msgid "Sign In"
 msgstr "ছাইন ইন কৰক"
 
 #: ../js/gdm/loginDialog.js:294
-#| msgid "Switch Session"
 msgid "Choose Session"
 msgstr "অধিবেশন বাছক"
 
@@ -346,42 +348,42 @@ msgstr "প্ৰমাণীকৰণ ত্ৰুটি"
 msgid "(or swipe finger)"
 msgstr "(অথবা আঙুলি স্বাইপ কৰক)"
 
-#: ../js/misc/util.js:97
+#: ../js/misc/util.js:98
 msgid "Command not found"
 msgstr "কমান্ড পোৱা নগল"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:131
 msgid "Could not parse command:"
 msgstr "কমান্ড বিশ্লেষন কৰিব নোৱাৰি:"
 
-#: ../js/misc/util.js:138
+#: ../js/misc/util.js:139
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "'%s' ৰ প্ৰেৰণ ব্যৰ্থ হল:"
 
-#: ../js/ui/appDisplay.js:578
+#: ../js/ui/appDisplay.js:573
 msgid "Frequently used applications will appear here"
 msgstr "সঘনে ব্যৱহাৰ কৰা এপ্লিকেচনসমূহ ইয়াত উপস্থিত হব"
 
-#: ../js/ui/appDisplay.js:694
+#: ../js/ui/appDisplay.js:689
 msgid "Frequent"
 msgstr "সঘন"
 
-#: ../js/ui/appDisplay.js:701
+#: ../js/ui/appDisplay.js:696
 msgid "All"
 msgstr "সকলো"
 
-#: ../js/ui/appDisplay.js:1488
+#: ../js/ui/appDisplay.js:1491
 msgid "New Window"
 msgstr "নতুন উইন্ডো"
 
-#: ../js/ui/appDisplay.js:1491 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1494 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "পছন্দৰ পৰা আতৰাওক"
 
-#: ../js/ui/appDisplay.js:1492
+#: ../js/ui/appDisplay.js:1495
 msgid "Add to Favorites"
 msgstr "পছন্দলে যোগ কৰক"
 
@@ -926,7 +928,7 @@ msgstr "একাওন্ট দৰ্শন কৰক"
 msgid "Unknown reason"
 msgstr "অজ্ঞাত কাৰণ"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:100
 msgid "Windows"
 msgstr "উইন্ডোসমূহ"
 
@@ -1024,15 +1026,12 @@ msgstr[0] "চিস্টেম %d ছেকেণ্ডত স্বচাল�
 msgstr[1] "চিস্টেম %d ছেকেণ্ডত স্বচালিতভাৱে পুনৰাম্ভ হব।"
 
 #: ../js/ui/endSessionDialog.js:112
-#| msgid "Install Updates & Restart"
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "পুনাৰম্ভ কৰক আৰু আপডেইটসমূহ ইনস্টল কৰক"
 
 #: ../js/ui/endSessionDialog.js:114
 #, c-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -1077,7 +1076,7 @@ msgstr "ইনস্টল কৰক"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "extensions.gnome.org ৰ পৰা  '%s' ক ডাউনল'ড আৰু ইনস্টল কৰিব নে?"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:334
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
 msgid "Keyboard"
 msgstr "কিবৰ্ড"
 
@@ -1157,7 +1156,7 @@ msgstr "কোনো বাৰ্তা নাই"
 msgid "Message Tray"
 msgstr "বাৰ্তা ট্ৰে"
 
-#: ../js/ui/messageTray.js:2786
+#: ../js/ui/messageTray.js:2787
 msgid "System Information"
 msgstr "চিস্টেম তথ্য"
 
@@ -1189,22 +1188,21 @@ msgstr "অভাৰভিউ"
 msgid "Type to search…"
 msgstr "সন্ধান কৰিবলে টাইপ কৰক…"
 
-#: ../js/ui/panel.js:516
+#: ../js/ui/panel.js:518
 msgid "Quit"
 msgstr "প্ৰস্থান কৰক"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "কাৰ্য্যসমূহ"
 
-#: ../js/ui/panel.js:805
-#| msgid "Settings"
+#: ../js/ui/panel.js:807
 msgid "Settings Menu"
 msgstr "সংহতিসমূহ মেনু"
 
-#: ../js/ui/panel.js:892
+#: ../js/ui/panel.js:903
 msgid "Top Bar"
 msgstr "উপৰৰ বাৰ"
 
@@ -1213,7 +1211,7 @@ msgstr "উপৰৰ বাৰ"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:226
+#: ../js/ui/popupMenu.js:233
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -1242,7 +1240,7 @@ msgstr[1] "%d নতুন অধিসূচনাসমূহ"
 msgid "Lock"
 msgstr "লক কৰক"
 
-#: ../js/ui/screenShield.js:703
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME এ পৰ্দা লক কৰিব লাগিব"
 
@@ -1253,11 +1251,11 @@ msgstr "GNOME এ পৰ্দা লক কৰিব লাগিব"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Unable to lock"
 msgstr "লক কৰিবলে অক্ষম"
 
-#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
+#: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1298
 msgid "Lock was blocked by an application"
 msgstr "লক কাৰ্য্য এটা এপ্লিকেচন দ্বাৰা প্ৰতিৰোধ কৰা হৈছিল"
 
@@ -1356,7 +1354,6 @@ msgstr "ব্লুটুথ সংহতিসমূহ"
 
 #: ../js/ui/status/bluetooth.js:57
 #, c-format
-#| msgid "Connected (private)"
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d সংযুক্ত ডিভাইচ"
@@ -1406,7 +1403,6 @@ msgstr "%s ৰ কাৰণে যোৰ প্ৰতিশ্ৰুতি"
 
 #: ../js/ui/status/bluetooth.js:172
 #, c-format
-#| msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr "অনুগ্ৰহ কৰি সুনিশ্চিত কৰক যে পাছকি '%06d' ডিভাইচত থকাটোৰ সৈতে মিল খায়।"
@@ -1437,7 +1433,7 @@ msgstr "ঠিক আছে"
 msgid "Brightness"
 msgstr "উজ্জ্বলতা"
 
-#: ../js/ui/status/keyboard.js:404
+#: ../js/ui/status/keyboard.js:403
 msgid "Show Keyboard Layout"
 msgstr "কিবৰ্ড বিন্যাস দেখুৱাওক"
 
@@ -1446,7 +1442,6 @@ msgid "<unknown>"
 msgstr "<unknown>"
 
 #: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
-#| msgid "Offline"
 msgid "Off"
 msgstr "অফ"
 
@@ -1491,22 +1486,18 @@ msgid "connection failed"
 msgstr "সংযোগ ব্যৰ্থ"
 
 #: ../js/ui/status/network.js:654
-#| msgid "Network"
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi নেটৱাৰ্কসমূহ"
 
 #: ../js/ui/status/network.js:656
-#| msgid "Enable networking"
 msgid "Select a network"
 msgstr "এটা নেটৱাৰ্ক বাছক"
 
 #: ../js/ui/status/network.js:680
-#| msgid "Network"
 msgid "No Networks"
 msgstr "কোনো নেটৱাৰ্ক নাই"
 
 #: ../js/ui/status/network.js:949
-#| msgid "Network"
 msgid "Select Network"
 msgstr "নেটৱাৰ্ক বাছক"
 
@@ -1569,7 +1560,6 @@ msgid "Airplane Mode"
 msgstr "বিমান অৱস্থা"
 
 #: ../js/ui/status/rfkill.js:45
-#| msgid "Open"
 msgid "On"
 msgstr "অন"
 
@@ -1613,11 +1603,11 @@ msgstr "অন্য ব্যৱহাৰকাৰী হিচাপে লগ
 msgid "Unlock Window"
 msgstr "উইন্ডো আনলক কৰক"
 
-#: ../js/ui/viewSelector.js:100
+#: ../js/ui/viewSelector.js:104
 msgid "Applications"
 msgstr "এপ্লিকেচনসমূহ"
 
-#: ../js/ui/viewSelector.js:104
+#: ../js/ui/viewSelector.js:108
 msgid "Search"
 msgstr "সন্ধান কৰক"
 
@@ -1648,7 +1638,6 @@ msgstr "আপুনি এই প্ৰদৰ্শন সংহতিসমূ
 #. to avoid ellipsizing the labels.
 #.
 #: ../js/ui/windowManager.js:75
-#| msgid "Power Settings"
 msgid "Revert Settings"
 msgstr "সংহতিসমূহক পূৰ্ব অৱস্থালৈ নিয়ক"
 
