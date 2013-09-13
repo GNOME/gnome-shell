@@ -2,7 +2,11 @@ wandadir = $(pkgdatadir)
 dist_wanda_DATA = wanda.png
 
 desktopdir=$(datadir)/applications
-desktop_DATA = gnome-shell.desktop gnome-shell-wayland.desktop gnome-shell-extension-prefs.desktop
+desktop_DATA = gnome-shell.desktop gnome-shell-extension-prefs.desktop
+if HAVE_MUTTER_WAYLAND
+desktop_DATA += gnome-shell-wayland.desktop
+endif HAVE_MUTTER_WAYLAND
+
 
 # We substitute in bindir so it works as an autostart
 # file when built in a non-system prefix
@@ -83,6 +87,7 @@ convert_DATA = gnome-shell-overrides.convert
 
 EXTRA_DIST =						\
 	gnome-shell.desktop.in.in			\
+	gnome-shell-wayland.desktop.in.in		\
 	gnome-shell-extension-prefs.desktop.in.in	\
 	$(introspection_DATA)				\
 	$(menu_DATA)					\
@@ -92,6 +97,7 @@ EXTRA_DIST =						\
 
 CLEANFILES =						\
 	gnome-shell.desktop.in				\
+	gnome-shell-wayland.desktop.in			\
 	gnome-shell-extension-prefs.in			\
 	$(desktop_DATA)					\
 	$(keys_DATA)					\
