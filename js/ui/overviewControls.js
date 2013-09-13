@@ -504,6 +504,17 @@ const MessagesIndicator = new Lang.Class({
     }
 });
 
+const ControlsLayout = new Lang.Class({
+    Name: 'ControlsLayout',
+    Extends: Clutter.BinLayout,
+    Signals: { 'allocation-changed': { flags: GObject.SignalFlags.RUN_LAST } },
+
+    vfunc_allocate: function(container, box, flags) {
+        this.parent(container, box, flags);
+        this.emit('allocation-changed');
+    }
+});
+
 const ControlsManager = new Lang.Class({
     Name: 'ControlsManager',
 
@@ -524,7 +535,8 @@ const ControlsManager = new Lang.Class({
         this._indicator = new MessagesIndicator(this.viewSelector);
         this.indicatorActor = this._indicator.actor;
 
-        this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+        let layout = new ControlsLayout();
+        this.actor = new St.Widget({ layout_manager: layout,
                                      reactive: true,
                                      x_expand: true, y_expand: true,
                                      clip_to_allocation: true });
@@ -539,7 +551,7 @@ const ControlsManager = new Lang.Class({
                                                    expand: true });
         this._group.add_actor(this._thumbnailsSlider.actor);
 
-        this._group.connect('notify::allocation', Lang.bind(this, this._updateWorkspacesGeometry));
+        layout.connect('allocation-changed', Lang.bind(this, this._updateWorkspacesGeometry));
 
         Main.overview.connect('showing', Lang.bind(this, this._updateSpacerVisibility));
         Main.overview.connect('item-drag-begin', Lang.bind(this,
