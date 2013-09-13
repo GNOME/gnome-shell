@@ -12,16 +12,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-06 09:50+0000\n"
-"PO-Revision-Date: 2013-08-31 11:54+0100\n"
-"Last-Translator: Adam Matoušek <adamatousek@gmail.com>\n"
+"POT-Creation-Date: 2013-09-12 17:36+0000\n"
+"PO-Revision-Date: 2013-09-13 08:49+0200\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Gtranslator 2.91.6\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -53,6 +53,7 @@ msgid "GNOME Shell"
 msgstr "Prostředí GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
+#: ../data/gnome-shell-wayland.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Správa oken a spouštění aplikací"
 
@@ -64,6 +65,10 @@ msgstr "Předvolby rozšíření GNOME Shell"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
 msgstr "Nastavit rozšíření GNOME Shell"
+
+#: ../data/gnome-shell-wayland.desktop.in.in.h:1
+msgid "GNOME Shell (wayland compositor)"
+msgstr "GNOME Shell (kompozitor Waylandu)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -339,17 +344,17 @@ msgstr "Chyba ověření"
 msgid "(or swipe finger)"
 msgstr "(nebo otiskněte prst)"
 
-#: ../js/misc/util.js:97
+#: ../js/misc/util.js:98
 msgid "Command not found"
 msgstr "Příkaz nenalezen"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:131
 msgid "Could not parse command:"
 msgstr "Nelze analyzovat příkaz:"
 
-#: ../js/misc/util.js:138
+#: ../js/misc/util.js:139
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Vykonání „%s“ selhalo:"
@@ -366,15 +371,15 @@ msgstr "Časté"
 msgid "All"
 msgstr "Všechny"
 
-#: ../js/ui/appDisplay.js:1487
+#: ../js/ui/appDisplay.js:1491
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appDisplay.js:1490 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1494 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: ../js/ui/appDisplay.js:1491
+#: ../js/ui/appDisplay.js:1495
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
@@ -918,7 +923,7 @@ msgstr "Zobrazit účet"
 msgid "Unknown reason"
 msgstr "Neznámý důvod"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:100
 msgid "Windows"
 msgstr "Okna"
 
@@ -1074,7 +1079,7 @@ msgstr "Instalovat"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Stáhnout a nainstalovat „%s“ z extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:334
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
 msgid "Keyboard"
 msgstr "Klávesnice"
 
@@ -1187,21 +1192,21 @@ msgstr "Přehled"
 msgid "Type to search…"
 msgstr "Vyhledávejte psaním…"
 
-#: ../js/ui/panel.js:516
+#: ../js/ui/panel.js:518
 msgid "Quit"
 msgstr "Ukončit"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "Činnosti"
 
-#: ../js/ui/panel.js:805
+#: ../js/ui/panel.js:807
 msgid "Settings Menu"
 msgstr "Nabídka Nastavení"
 
-#: ../js/ui/panel.js:901
+#: ../js/ui/panel.js:903
 msgid "Top Bar"
 msgstr "Horní lišta"
 
@@ -1210,7 +1215,7 @@ msgstr "Horní lišta"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:226
+#: ../js/ui/popupMenu.js:233
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1240,7 +1245,7 @@ msgstr[2] "%d nových upozornění"
 msgid "Lock"
 msgstr "Uzamknout"
 
-#: ../js/ui/screenShield.js:703
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME potřebuje uzamknout obrazovku"
 
@@ -1251,11 +1256,11 @@ msgstr "GNOME potřebuje uzamknout obrazovku"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Unable to lock"
 msgstr "Nelze uzamknout obrazovku"
 
-#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
+#: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1298
 msgid "Lock was blocked by an application"
 msgstr "Zamknutí bylo zablokováno některou z aplikací"
 
@@ -1434,7 +1439,7 @@ msgstr "Budiž"
 msgid "Brightness"
 msgstr "Jas"
 
-#: ../js/ui/status/keyboard.js:404
+#: ../js/ui/status/keyboard.js:403
 msgid "Show Keyboard Layout"
 msgstr "Zobrazit rozložení klávesnice"
 
@@ -1604,11 +1609,11 @@ msgstr "Přihlásit se jako jiný uživatel"
 msgid "Unlock Window"
 msgstr "Odemykací okno"
 
-#: ../js/ui/viewSelector.js:100
+#: ../js/ui/viewSelector.js:104
 msgid "Applications"
 msgstr "Aplikace"
 
-#: ../js/ui/viewSelector.js:104
+#: ../js/ui/viewSelector.js:108
 msgid "Search"
 msgstr "Hledat"
 
