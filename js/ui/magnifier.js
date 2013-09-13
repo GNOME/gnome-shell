@@ -57,6 +57,20 @@ const Magnifier = new Lang.Class({
         // Magnifier is a manager of ZoomRegions.
         this._zoomRegions = [];
 
+        // Export to dbus.
+        magDBusService = new MagnifierDBus.ShellMagnifier();
+
+        let showAtLaunch = this._settingsInit();
+        this.setActive(showAtLaunch);
+    },
+
+    _initialize: function() {
+        if (this._initialized)
+            return;
+        this._initialized = true;
+
+        this._settingsInitLate();
+
         // Create small clutter tree for the magnified mouse.
         let cursorTracker = Meta.CursorTracker.get_for_screen(global.screen);
         this._mouseSprite = new Clutter.Texture();
@@ -72,15 +86,11 @@ const Magnifier = new Lang.Class({
 
         let aZoomRegion = new ZoomRegion(this, this._cursorRoot);
         this._zoomRegions.push(aZoomRegion);
-        let showAtLaunch = this._settingsInit(aZoomRegion);
+        this._settingsInitRegion(aZoomRegion);
         aZoomRegion.scrollContentsTo(this.xMouse, this.yMouse);
 
         cursorTracker.connect('cursor-changed', Lang.bind(this, this._updateMouseSprite));
         this._cursorTracker = cursorTracker;
-
-        // Export to dbus.
-        magDBusService = new MagnifierDBus.ShellMagnifier();
-        this.setActive(showAtLaunch);
     },
 
     /**
@@ -105,6 +115,12 @@ const Magnifier = new Lang.Class({
      * @activate:   Boolean to activate or de-activate the magnifier.
      */
     setActive: function(activate) {
+        if (activate == this.isActive())
+            return;
+
+        if (activate)
+            this._initialize();
+
         this._zoomRegions.forEach (function(zoomRegion, index, array) {
             zoomRegion.setActive(activate);
         });
@@ -432,63 +448,67 @@ const Magnifier = new Lang.Class({
         this._mouseSprite.set_anchor_point(xHot, yHot);
     },
 
-    _settingsInit: function(zoomRegion) {
+    _settingsInitRegion: function(zoomRegion) {
+        // Mag factor is accurate to two decimal places.
+        let aPref = parseFloat(this._settings.get_double(MAG_FACTOR_KEY).toFixed(2));
+        if (aPref != 0.0)
+            zoomRegion.setMagFactor(aPref, aPref);
+
+        aPref = this._settings.get_enum(SCREEN_POSITION_KEY);
+        if (aPref)
+            zoomRegion.setScreenPosition(aPref);
+
+        zoomRegion.setLensMode(this._settings.get_boolean(LENS_MODE_KEY));
+        zoomRegion.setClampScrollingAtEdges(!this._settings.get_boolean(CLAMP_MODE_KEY));
+
+        aPref = this._settings.get_enum(MOUSE_TRACKING_KEY);
+        if (aPref)
+            zoomRegion.setMouseTrackingMode(aPref);
+
+        aPref = this._settings.get_enum(FOCUS_TRACKING_KEY);
+        if (aPref)
+            zoomRegion.setFocusTrackingMode(aPref);
+
+        aPref = this._settings.get_enum(CARET_TRACKING_KEY);
+        if (aPref)
+            zoomRegion.setCaretTrackingMode(aPref);
+
+        aPref = this._settings.get_boolean(INVERT_LIGHTNESS_KEY);
+        if (aPref)
+            zoomRegion.setInvertLightness(aPref);
+
+        aPref = this._settings.get_double(COLOR_SATURATION_KEY);
+        if (aPref)
+            zoomRegion.setColorSaturation(aPref);
+
+        let bc = {};
+        bc.r = this._settings.get_double(BRIGHT_RED_KEY);
+        bc.g = this._settings.get_double(BRIGHT_GREEN_KEY);
+        bc.b = this._settings.get_double(BRIGHT_BLUE_KEY);
+        zoomRegion.setBrightness(bc);
+
+        bc.r = this._settings.get_double(CONTRAST_RED_KEY);
+        bc.g = this._settings.get_double(CONTRAST_GREEN_KEY);
+        bc.b = this._settings.get_double(CONTRAST_BLUE_KEY);
+        zoomRegion.setContrast(bc);
+    },
+
+    _settingsInit: function() {
         this._appSettings = new Gio.Settings({ schema: APPLICATIONS_SCHEMA });
         this._settings = new Gio.Settings({ schema: MAGNIFIER_SCHEMA });
 
-        if (zoomRegion) {
-            // Mag factor is accurate to two decimal places.
-            let aPref = parseFloat(this._settings.get_double(MAG_FACTOR_KEY).toFixed(2));
-            if (aPref != 0.0)
-                zoomRegion.setMagFactor(aPref, aPref);
+        this._appSettings.connect('changed::' + SHOW_KEY, Lang.bind(this, function() {
+            let active = this._appSettings.get_boolean(SHOW_KEY);
+            this.setActive(active);
+        }));
 
-            aPref = this._settings.get_enum(SCREEN_POSITION_KEY);
-            if (aPref)
-                zoomRegion.setScreenPosition(aPref);
+        return this._appSettings.get_boolean(SHOW_KEY);
+    },
 
-            zoomRegion.setLensMode(this._settings.get_boolean(LENS_MODE_KEY));
-            zoomRegion.setClampScrollingAtEdges(!this._settings.get_boolean(CLAMP_MODE_KEY));
-
-            aPref = this._settings.get_enum(MOUSE_TRACKING_KEY);
-            if (aPref)
-                zoomRegion.setMouseTrackingMode(aPref);
-
-            aPref = this._settings.get_enum(FOCUS_TRACKING_KEY);
-            if (aPref)
-                zoomRegion.setFocusTrackingMode(aPref);
-
-            aPref = this._settings.get_enum(CARET_TRACKING_KEY);
-            if (aPref)
-                zoomRegion.setCaretTrackingMode(aPref);
-
-            aPref = this._settings.get_boolean(INVERT_LIGHTNESS_KEY);
-            if (aPref)
-                zoomRegion.setInvertLightness(aPref);
-
-            aPref = this._settings.get_double(COLOR_SATURATION_KEY);
-            if (aPref)
-                zoomRegion.setColorSaturation(aPref);
-
-            let bc = {};
-            bc.r = this._settings.get_double(BRIGHT_RED_KEY);
-            bc.g = this._settings.get_double(BRIGHT_GREEN_KEY);
-            bc.b = this._settings.get_double(BRIGHT_BLUE_KEY);
-            zoomRegion.setBrightness(bc);
-
-            bc.r = this._settings.get_double(CONTRAST_RED_KEY);
-            bc.g = this._settings.get_double(CONTRAST_GREEN_KEY);
-            bc.b = this._settings.get_double(CONTRAST_BLUE_KEY);
-            zoomRegion.setContrast(bc);
-        }
-
+    _settingsInitLate: function() {
         let showCrosshairs = this._settings.get_boolean(SHOW_CROSS_HAIRS_KEY);
         this.addCrosshairs();
         this.setCrosshairsVisible(showCrosshairs);
-
-        this._appSettings.connect('changed::' + SHOW_KEY,
-                                  Lang.bind(this, function() {
-            this.setActive(this._appSettings.get_boolean(SHOW_KEY));
-        }));
 
         this._settings.connect('changed::' + SCREEN_POSITION_KEY,
                                Lang.bind(this, this._updateScreenPosition));
@@ -553,8 +573,6 @@ const Magnifier = new Lang.Class({
                                Lang.bind(this, function() {
             this.setCrosshairsClip(this._settings.get_boolean(CROSS_HAIRS_CLIP_KEY));
         }));
-
-        return this._appSettings.get_boolean(SHOW_KEY);
    },
 
     _updateScreenPosition: function() {
@@ -732,14 +750,17 @@ const ZoomRegion = new Lang.Class({
      * @activate:   Boolean to show/hide the ZoomRegion.
      */
     setActive: function(activate) {
-        if (activate && !this.isActive()) {
+        if (activate == this.isActive())
+            return;
+
+        if (activate) {
             this._createActors();
             if (this._isMouseOverRegion())
                 this._magnifier.hideSystemCursor();
             this._updateMagViewGeometry();
             this._updateCloneGeometry();
             this._updateMousePosition();
-        } else if (!activate && this.isActive()) {
+        } else {
             this._destroyActors();
         }
     },
