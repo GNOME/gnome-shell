@@ -342,6 +342,8 @@ const AllView = new Lang.Class({
     },
 
     goToPage: function(pageNumber) {
+        if(pageNumber < 0 || pageNumber > this._grid.nPages() - 1)
+            return;
         if (this._currentPage == pageNumber && this._displayingPopup && this._currentPopup)
             return;
         if (this._displayingPopup && this._currentPopup)
@@ -403,16 +405,13 @@ const AllView = new Lang.Class({
     _onScroll: function(actor, event) {
         if (this._displayingPopup)
             return true;
+
         let direction = event.get_scroll_direction();
-        if (direction == Clutter.ScrollDirection.UP) {
-            if (this._currentPage > 0)
-                this.goToPage(this._currentPage - 1);
-        } else {
-            if (direction == Clutter.ScrollDirection.DOWN) {
-                if (this._currentPage < (this._grid.nPages() - 1))
-                    this.goToPage(this._currentPage + 1);
-            }
-        }
+        if (direction == Clutter.ScrollDirection.UP)
+            this.goToPage(this._currentPage - 1);
+        else if (direction == Clutter.ScrollDirection.DOWN)
+            this.goToPage(this._currentPage + 1);
+
         return true;
     },
 
@@ -432,9 +431,9 @@ const AllView = new Lang.Class({
             return;
         let diffCurrentPage = this._diffToPage(this._currentPage);
         if (diffCurrentPage > this._scrollView.height * PAGE_SWITCH_TRESHOLD) {
-            if (action.get_velocity(0)[2] > 0 && this._currentPage > 0)
+            if (action.get_velocity(0)[2] > 0)
                 this.goToPage(this._currentPage - 1);
-            else if (this._currentPage < this._grid.nPages() - 1)
+            else
                 this.goToPage(this._currentPage + 1);
         } else {
             this.goToPage(this._currentPage);
