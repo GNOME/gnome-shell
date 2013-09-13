@@ -142,18 +142,17 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
 
   st_adjustment_get_values (self->vadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
   value = (value - lower) / (upper - page_size - lower);
-  clutter_shader_effect_set_uniform (shader, "vvalue", G_TYPE_FLOAT, 1, value);
+  clutter_shader_effect_set_uniform (shader, "fade_edges_v", G_TYPE_INT, 1, self->fade_edges ? value >= 0.0 : value > 0.0);
 
   st_adjustment_get_values (self->hadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
   value = (value - lower) / (upper - page_size - lower);
-  clutter_shader_effect_set_uniform (shader, "hvalue", G_TYPE_FLOAT, 1, value);
+  clutter_shader_effect_set_uniform (shader, "fade_edges_h", G_TYPE_INT, 1, self->fade_edges ? value >= 0.0 : value > 0.0);
 
   clutter_shader_effect_set_uniform (shader, "vfade_offset", G_TYPE_FLOAT, 1, self->vfade_offset);
   clutter_shader_effect_set_uniform (shader, "hfade_offset", G_TYPE_FLOAT, 1, self->hfade_offset);
   clutter_shader_effect_set_uniform (shader, "tex", G_TYPE_INT, 1, 0);
   clutter_shader_effect_set_uniform (shader, "height", G_TYPE_FLOAT, 1, clutter_actor_get_height (self->actor));
   clutter_shader_effect_set_uniform (shader, "width", G_TYPE_FLOAT, 1, clutter_actor_get_width (self->actor));
-  clutter_shader_effect_set_uniform (shader, "fade_edges", G_TYPE_INT, 1, self->fade_edges);
   clutter_shader_effect_set_uniform (shader, "fade_area_topleft", CLUTTER_TYPE_SHADER_FLOAT, 2, fade_area_topleft);
   clutter_shader_effect_set_uniform (shader, "fade_area_bottomright", CLUTTER_TYPE_SHADER_FLOAT, 2, fade_area_bottomright);
 
