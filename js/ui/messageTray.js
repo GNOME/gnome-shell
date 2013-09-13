@@ -27,6 +27,7 @@ const PopupMenu = imports.ui.popupMenu;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
+const ViewSelector = imports.ui.viewSelector;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
@@ -1811,6 +1812,13 @@ const MessageTray = new Lang.Class({
                                            y_expand: true });
         this.actor.add_actor(this._summary);
 
+        this._focusTrap = new ViewSelector.FocusTrap({ can_focus: true });
+        this._focusTrap.connect('key-focus-in', Lang.bind(this,
+            function() {
+                this._messageTrayMenuButton.actor.grab_key_focus();
+            }));
+        this._summary.add_actor(this._focusTrap);
+
         this._summaryMotionId = 0;
 
         this._summaryBoxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM,
@@ -1935,6 +1943,9 @@ const MessageTray = new Lang.Class({
         this._messageTrayMenuButton = new MessageTrayMenuButton(this);
         this.actor.add_actor(this._messageTrayMenuButton.actor);
 
+        this._messageTrayMenuButton.actor.connect('key-press-event',
+                                                  Lang.bind(this, this._onTrayButtonKeyPress));
+
         let gesture = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM);
         gesture.connect('activated', Lang.bind(this, this.toggle));
         global.stage.add_action(gesture);
@@ -2028,6 +2039,16 @@ const MessageTray = new Lang.Class({
 
         this.openTray();
         return GLib.SOURCE_REMOVE;
+    },
+
+    _onTrayButtonKeyPress: function(actor, event) {
+        if (event.get_key_symbol() == Clutter.ISO_Left_Tab) {
+            this._focusTrap.can_focus = false;
+            this._summary.navigate_focus(null, Gtk.DirectionType.TAB_BACKWARD, false);
+            this._focusTrap.can_focus = true;
+            return Clutter.EVENT_STOP;
+        }
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onNotificationKeyRelease: function(actor, event) {
