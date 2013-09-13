@@ -1648,8 +1648,8 @@ StScrollBar StButton#vhandle:active {
     color: #888888;
 }
 
-.chat-group-sent, .chat-group-meta {
-    padding: 8px 0;
+.chat-empty-line {
+    font-size: 4px;
 }
 
 .chat-received {
@@ -1674,6 +1674,7 @@ StScrollBar StButton#vhandle:active {
 .chat-meta-message {
     padding-left: 4px;
     font-size: 9pt;
+    font-weight: bold;
     color: #bbbbbb;
 }
 

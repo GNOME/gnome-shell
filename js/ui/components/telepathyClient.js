@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
@@ -905,14 +906,14 @@ const ChatNotification = new Lang.Class({
 
         let group = props.group;
         if (group != this._lastGroup) {
-            let style = 'chat-group-' + group;
             this._lastGroup = group;
-            this._lastGroupActor = new St.BoxLayout({ style_class: style,
-                                                      vertical: true });
-            this.addActor(this._lastGroupActor);
+            let emptyLine = new St.Label({ style_class: 'chat-empty-line' });
+            this.addActor(emptyLine);
         }
 
-        this._lastGroupActor.add(body, props.childProps);
+        this._lastMessageBox = new St.BoxLayout({ vertical: false });
+        this._lastMessageBox.add(body, props.childProps);
+        this.addActor(this._lastMessageBox);
 
         this.updated();
 
@@ -943,28 +944,28 @@ const ChatNotification = new Lang.Class({
 
         // Show only the hour if date is on today
         if(daysAgo < 1){
-            format = "<b>%H:%M</b>";
+            format = _("%H:%M");
         }
         // Show the word "Yesterday" and time if date is on yesterday
         else if(daysAgo <2){
             /* Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"*/
             // xgettext:no-c-format
-            format = _("<b>Yesterday</b>, <b>%H:%M</b>");
+            format = _("Yesterday, %H:%M");
         }
         // Show a week day and time if date is in the last week
         else if (daysAgo < 7) {
             /* Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30*/
             // xgettext:no-c-format
-            format = _("<b>%A</b>, <b>%H:%M</b>");
+            format = _("%A, %H:%M");
 
         } else if (date.getYear() == now.getYear()) {
             /* Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
             // xgettext:no-c-format
-            format = _("<b>%B</b> <b>%d</b>, <b>%H:%M</b>");
+            format = _("%B %d, %H:%M");
         } else {
             /* Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
             // xgettext:no-c-format
-            format = _("<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> ");
+            format = _("%B %d %Y, %H:%M");
         }
 
         return date.toLocaleFormat(format);
@@ -976,13 +977,14 @@ const ChatNotification = new Lang.Class({
         let lastMessageTime = this._history[0].time;
         let lastMessageDate = new Date(lastMessageTime * 1000);
 
-        let timeLabel = this._append({ body: this._formatTimestamp(lastMessageDate),
-                                       group: 'meta',
-                                       styles: ['chat-meta-message'],
-                                       childProps: { expand: true, x_fill: false,
-                                                     x_align: St.Align.END },
-                                       noTimestamp: true,
-                                       timestamp: lastMessageTime });
+        let timeLabel = new St.Label({ text: this._formatTimestamp(lastMessageDate),
+                                       style_class: 'chat-meta-message',
+                                       x_expand: true,
+                                       y_expand: true,
+                                       x_align: Clutter.ActorAlign.END,
+                                       y_align: Clutter.ActorAlign.END });
+
+        this._lastMessageBox.add_actor(timeLabel);
 
         this._filterMessages();
 
