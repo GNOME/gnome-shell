@@ -969,6 +969,7 @@ const PopupSubMenuMenuItem = new Lang.Class({
             this._triangleBin.set_scale(-1.0, 1.0);
 
         this.actor.add_child(this._triangleBin);
+        this.actor.add_accessible_state (Atk.StateType.EXPANDABLE);
 
         this.menu = new PopupSubMenu(this.actor, this._triangle);
         this.menu.connect('open-state-changed', Lang.bind(this, this._subMenuOpenStateChanged));
@@ -990,9 +991,11 @@ const PopupSubMenuMenuItem = new Lang.Class({
         if (open) {
             this.actor.add_style_pseudo_class('open');
             this._getTopMenu()._setOpenedSubMenu(this.menu);
+            this.actor.add_accessible_state (Atk.StateType.EXPANDED);
         } else {
             this.actor.remove_style_pseudo_class('open');
             this._getTopMenu()._setOpenedSubMenu(null);
+            this.actor.remove_accessible_state (Atk.StateType.EXPANDED);
         }
     },
 
