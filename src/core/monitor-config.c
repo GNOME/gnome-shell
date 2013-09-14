@@ -749,6 +749,9 @@ meta_monitor_config_load (MetaMonitorConfig  *self)
 
       free_output_key (&parser.key);
     }
+
+  g_markup_parse_context_free (context);
+  g_free (contents);
 }
 
 MetaMonitorConfig *
