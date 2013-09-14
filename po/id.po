@@ -11,15 +11,15 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-28 10:28+0000\n"
-"PO-Revision-Date: 2013-03-30 11:24+0700\n"
+"POT-Creation-Date: 2013-08-18 20:03+0000\n"
+"PO-Revision-Date: 2013-09-14 15:44+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.7\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/50-mutter-navigation.xml.in.h:1
@@ -212,7 +212,7 @@ msgstr "Tampilan dipisah ke kanan"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:568
+#: ../src/compositor/compositor.c:589
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -220,7 +220,7 @@ msgid ""
 msgstr ""
 "Manajer komposit lain telah berjalan pada layar %i pada tampilan \"%s\"."
 
-#: ../src/compositor/meta-background.c:1065
+#: ../src/compositor/meta-background.c:1076
 msgid "background texture could not be created from file"
 msgstr "tekstur latar tak bisa dibuat dari berkas"
 
@@ -257,24 +257,24 @@ msgstr "_Tunggu"
 msgid "_Force Quit"
 msgstr "_Matikan Paksa"
 
-#: ../src/core/display.c:401
+#: ../src/core/display.c:421
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Kehilangan ekstensi %s yang diperlukan untuk pengkomposisian"
 
-#: ../src/core/display.c:493
+#: ../src/core/display.c:513
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Gagal membuka tampilan X Window System '%s'\n"
 
-#: ../src/core/keybindings.c:935
+#: ../src/core/keybindings.c:1136
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "Ada program lain yang menggunakan tombol %s dengan kombinasi %x\n"
 
-#: ../src/core/keybindings.c:1135
+#: ../src/core/keybindings.c:1333
 #, c-format
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "\"%s\" bukan akselerator yang valid\n"
@@ -314,6 +314,19 @@ msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Tak menemukan tema! Pastikan %s ada dan berisi tema yang biasa.\n"
 
+#: ../src/core/monitor.c:711
+msgid "Built-in display"
+msgstr "Tampilan bawaan"
+
+#. TRANSLATORS: this is a monitor name (in case we don't know
+#. the vendor), it's Unknown followed by a size in inches,
+#. like 'Unknown 15"'
+#.
+#: ../src/core/monitor.c:739
+#, c-format
+msgid "Unknown %s"
+msgstr "%s tidak dikenal"
+
 #: ../src/core/mutter.c:40
 #, c-format
 msgid ""
@@ -338,7 +351,7 @@ msgstr "Cetak versi"
 msgid "Mutter plugin to use"
 msgstr "Pengaya Mutter yang dipakai"
 
-#: ../src/core/prefs.c:1095
+#: ../src/core/prefs.c:1202
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -346,12 +359,12 @@ msgstr ""
 "Pencegahan kesalahan bagi aplikasi yang rusak sedang dinonaktifkan. Mungkin "
 "nanti ada beberapa aplikasi yang akan bertingkah aneh.\n"
 
-#: ../src/core/prefs.c:1170
+#: ../src/core/prefs.c:1277
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Tak dapat mengurai deskripsi fonta \"%s\" dari kunci GSettings %s\n"
 
-#: ../src/core/prefs.c:1236
+#: ../src/core/prefs.c:1343
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -360,7 +373,7 @@ msgstr ""
 "\"%s\" yang ada pada database konfigurasi bukanlah nilai yang benar untuk "
 "tombol mouse.\n"
 
-#: ../src/core/prefs.c:1788
+#: ../src/core/prefs.c:1909
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -369,17 +382,17 @@ msgstr ""
 "\"%s\" yang ada pada database konfigurasi bernilai tidak benar untuk "
 "kombinasi tombol \"%s\"\n"
 
-#: ../src/core/prefs.c:1887
+#: ../src/core/prefs.c:1999
 #, c-format
 msgid "Workspace %d"
 msgstr "Area kerja %d"
 
-#: ../src/core/screen.c:691
+#: ../src/core/screen.c:534
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Layar %d pada tampilan '%s' tidak benar\n"
 
-#: ../src/core/screen.c:707
+#: ../src/core/screen.c:550
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -388,7 +401,7 @@ msgstr ""
 "Layar %d pada tampilan \"%s\" sudah memiliki pengatur jendela. Cobalah "
 "gunakan pilihan --replace untuk mengganti pengatur jendela yang aktif.\n"
 
-#: ../src/core/screen.c:734
+#: ../src/core/screen.c:577
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -396,12 +409,12 @@ msgstr ""
 "Tidak dapat mendapatkan pilihan pengatur jendela pada layar %d tampilan \"%s"
 "\"\n"
 
-#: ../src/core/screen.c:812
+#: ../src/core/screen.c:655
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Layar %d pada tampilan \"%s\" sudah ada pengatur jendelanya\n"
 
-#: ../src/core/screen.c:998
+#: ../src/core/screen.c:846
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Layar %d pada tampilan \"%s\" tidak dapat dilepas\n"
@@ -476,8 +489,7 @@ msgstr "Gagal melakukan fdopen pada berkas log %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Berkas log yang dibuka %s\n"
 
-#: ../src/core/util.c:119 ../src/tools/mutter-message.c:149
-#, c-format
+#: ../src/core/util.c:119
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Muter dikompilasi tanpa dukungan mode riuh\n"
 
@@ -485,20 +497,20 @@ msgstr "Muter dikompilasi tanpa dukungan mode riuh\n"
 msgid "Window manager: "
 msgstr "Pengatur jendela: "
 
-#: ../src/core/util.c:412
+#: ../src/core/util.c:414
 msgid "Bug in window manager: "
 msgstr "Bug pada pengatur jendela: "
 
-#: ../src/core/util.c:443
+#: ../src/core/util.c:445
 msgid "Window manager warning: "
 msgstr "Peringatan pengatur jendela: "
 
-#: ../src/core/util.c:471
+#: ../src/core/util.c:473
 msgid "Window manager error: "
 msgstr "Eror pengatur jendela: "
 
 #. first time through
-#: ../src/core/window.c:7596
+#: ../src/core/window.c:7533
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -514,7 +526,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8320
+#: ../src/core/window.c:8257
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -524,22 +536,22 @@ msgstr ""
 "ukurannya, sedangkan ukuran minimalnya adalah %d x %d dan maksimal %d x %d "
 "yang tidak masuk di akal.\n"
 
-#: ../src/core/window-props.c:318
+#: ../src/core/window-props.c:347
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Aplikasi telah membuat _NET_WM_PID %lu bohongan\n"
 
-#: ../src/core/window-props.c:434
+#: ../src/core/window-props.c:463
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (pada %s)"
 
-#: ../src/core/window-props.c:1517
+#: ../src/core/window-props.c:1546
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "WM_TRANSIENT_FOR salah jendela 0x%lx ditentukan untuk %s.\n"
 
-#: ../src/core/window-props.c:1528
+#: ../src/core/window-props.c:1557
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "Jendela WM_TRANSIENT_FOR 0x%lx untuk %s akan membuat loop.\n"
@@ -703,109 +715,104 @@ msgstr "Pilih jendela dari popup tab"
 msgid "Cancel tab popup"
 msgstr "Batalkan popup tab"
 
-#: ../src/tools/mutter-message.c:123
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Cara pakai: %s\n"
-
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:69
+#: ../src/ui/menu.c:67
 msgid "Mi_nimize"
 msgstr "Kecilka_n"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:71
+#: ../src/ui/menu.c:69
 msgid "Ma_ximize"
 msgstr "Pe_rbesar"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:73
+#: ../src/ui/menu.c:71
 msgid "Unma_ximize"
 msgstr "Kem_balikan"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:75
+#: ../src/ui/menu.c:73
 msgid "Roll _Up"
 msgstr "G_ulung"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:77
+#: ../src/ui/menu.c:75
 msgid "_Unroll"
 msgstr "B_uka"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:79
+#: ../src/ui/menu.c:77
 msgid "_Move"
 msgstr "_Pindahkan"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:81
+#: ../src/ui/menu.c:79
 msgid "_Resize"
 msgstr "Ganti·Uku_ran"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:83
+#: ../src/ui/menu.c:81
 msgid "Move Titlebar On_screen"
 msgstr "Pindahkan Judul Pada _layar"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:86 ../src/ui/menu.c:88
+#: ../src/ui/menu.c:84 ../src/ui/menu.c:86
 msgid "Always on _Top"
 msgstr "Selalu di A_tas"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:90
+#: ../src/ui/menu.c:88
 msgid "_Always on Visible Workspace"
 msgstr "T_ampak pada Area Kerja Aktif"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:92
+#: ../src/ui/menu.c:90
 msgid "_Only on This Workspace"
 msgstr "_Tampak pada Area Kerja Ini Saja"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:94
+#: ../src/ui/menu.c:92
 msgid "Move to Workspace _Left"
 msgstr "Pindahkan ke Area Kerja _Kiri"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:96
+#: ../src/ui/menu.c:94
 msgid "Move to Workspace R_ight"
 msgstr "Pindahkan ke A_rea Kerja Kanan"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:98
+#: ../src/ui/menu.c:96
 msgid "Move to Workspace _Up"
 msgstr "Pindahkan ke Area Kerja Ata_s"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:100
+#: ../src/ui/menu.c:98
 msgid "Move to Workspace _Down"
 msgstr "Pindahkan ke Area Kerja _Bawah"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:104
+#: ../src/ui/menu.c:102
 msgid "_Close"
 msgstr "_Tutup"
 
-#: ../src/ui/menu.c:204
+#: ../src/ui/menu.c:202
 #, c-format
 msgid "Workspace %d%n"
 msgstr "Area Kerja %d%n"
 
-#: ../src/ui/menu.c:214
+#: ../src/ui/menu.c:212
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Area Kerja 1_0"
 
-#: ../src/ui/menu.c:216
+#: ../src/ui/menu.c:214
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Area Kerja %s%d"
 
-#: ../src/ui/menu.c:397
+#: ../src/ui/menu.c:384
 msgid "Move to Another _Workspace"
 msgstr "Pindahkan ke Area Kerja _Lain"
 
@@ -1163,18 +1170,18 @@ msgid ""
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> tidak ada"
 
-#: ../src/ui/theme.c:5084
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Gagal membuka tema \"%s\": %s\n"
 
-#: ../src/ui/theme.c:5220 ../src/ui/theme.c:5227 ../src/ui/theme.c:5234
-#: ../src/ui/theme.c:5241 ../src/ui/theme.c:5248
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Tidak ada <%s> yang ditentukan untuk tema \"%s\""
 
-#: ../src/ui/theme.c:5256
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1183,14 +1190,14 @@ msgstr ""
 "Tidak ada gaya frame untuk tipe window \"%s\" pada tema \"%s\". Tambah dulu "
 "elemen <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5663 ../src/ui/theme.c:5725 ../src/ui/theme.c:5788
+#: ../src/ui/theme.c:5661 ../src/ui/theme.c:5723 ../src/ui/theme.c:5786
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Konstanta buatan pengguna harus dimulai dengan huruf besar: \"%s\" tidak"
 
-#: ../src/ui/theme.c:5671 ../src/ui/theme.c:5733 ../src/ui/theme.c:5796
+#: ../src/ui/theme.c:5669 ../src/ui/theme.c:5731 ../src/ui/theme.c:5794
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta \"%s\" telah didefinisikan sebelumnya"
@@ -1578,201 +1585,3 @@ msgstr "<%s> disebutkan dua kali pada tema ini"
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Gagal menemukan berkas yang sah untuk tema %s\n"
-
-#: ../src/ui/theme-viewer.c:99
-msgid "_Windows"
-msgstr "_Jendela"
-
-#: ../src/ui/theme-viewer.c:100
-msgid "_Dialog"
-msgstr "_Dialog"
-
-#: ../src/ui/theme-viewer.c:101
-msgid "_Modal dialog"
-msgstr "Dialog _modal"
-
-#: ../src/ui/theme-viewer.c:102
-msgid "_Utility"
-msgstr "_Utilitas"
-
-#: ../src/ui/theme-viewer.c:103
-msgid "_Splashscreen"
-msgstr "Layar _pembuka"
-
-#: ../src/ui/theme-viewer.c:104
-msgid "_Top dock"
-msgstr "Dok a_tas"
-
-#: ../src/ui/theme-viewer.c:105
-msgid "_Bottom dock"
-msgstr "Dok _bawah"
-
-#: ../src/ui/theme-viewer.c:106
-msgid "_Left dock"
-msgstr "Dok k_iri"
-
-#: ../src/ui/theme-viewer.c:107
-msgid "_Right dock"
-msgstr "Dok kana_n"
-
-#: ../src/ui/theme-viewer.c:108
-msgid "_All docks"
-msgstr "Semu_a dok"
-
-#: ../src/ui/theme-viewer.c:109
-msgid "Des_ktop"
-msgstr "Des_ktop"
-
-#: ../src/ui/theme-viewer.c:115
-msgid "Open another one of these windows"
-msgstr "Buka lagi jendela semacam ini"
-
-#: ../src/ui/theme-viewer.c:117
-msgid "This is a demo button with an 'open' icon"
-msgstr "Ini contoh tombol dengan ikon 'open'"
-
-#: ../src/ui/theme-viewer.c:119
-msgid "This is a demo button with a 'quit' icon"
-msgstr "Ini contoh tombol dengan ikon 'quit'"
-
-#: ../src/ui/theme-viewer.c:248
-msgid "This is a sample message in a sample dialog"
-msgstr "Ini contoh pesan pada suatu dialog"
-
-#: ../src/ui/theme-viewer.c:328
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr "Item menu %d\n"
-
-#: ../src/ui/theme-viewer.c:363
-msgid "Border-only window"
-msgstr "Jendela dengan garis pembatas"
-
-#: ../src/ui/theme-viewer.c:365
-msgid "Bar"
-msgstr "Kotak"
-
-#: ../src/ui/theme-viewer.c:382
-msgid "Normal Application Window"
-msgstr "Jendela Aplikasi Normal"
-
-#: ../src/ui/theme-viewer.c:386
-msgid "Dialog Box"
-msgstr "Kotak Dialog"
-
-#: ../src/ui/theme-viewer.c:390
-msgid "Modal Dialog Box"
-msgstr "Kotak Dialog Modal"
-
-#: ../src/ui/theme-viewer.c:394
-msgid "Utility Palette"
-msgstr "Kotak Perkakas"
-
-#: ../src/ui/theme-viewer.c:398
-msgid "Torn-off Menu"
-msgstr "Menu Dapat Dilepas"
-
-#: ../src/ui/theme-viewer.c:402
-msgid "Border"
-msgstr "Batas"
-
-#: ../src/ui/theme-viewer.c:406
-msgid "Attached Modal Dialog"
-msgstr "Dialog Modal yang Dilampirkan"
-
-#: ../src/ui/theme-viewer.c:737
-#, c-format
-msgid "Button layout test %d"
-msgstr "Tes komposisi tombol %d"
-
-#: ../src/ui/theme-viewer.c:766
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr "lama waktu menggambar satu bingkai jendela %g milidetik"
-
-#: ../src/ui/theme-viewer.c:811
-#, c-format
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Cara pakai: metacity-theme-viewer [NAMA TEMA]\n"
-
-#: ../src/ui/theme-viewer.c:818
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "Ada error saat membaca tema: %s\n"
-
-#: ../src/ui/theme-viewer.c:824
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Tema \"%s\" dibuka dalam %g detik\n"
-
-#: ../src/ui/theme-viewer.c:869
-msgid "Normal Title Font"
-msgstr "Judul dengan huruf normal"
-
-#: ../src/ui/theme-viewer.c:875
-msgid "Small Title Font"
-msgstr "Judul dengan huruf ukuran kecil"
-
-#: ../src/ui/theme-viewer.c:881
-msgid "Large Title Font"
-msgstr "Judul Raksasa"
-
-#: ../src/ui/theme-viewer.c:886
-msgid "Button Layouts"
-msgstr "Komposisi Tombol"
-
-#: ../src/ui/theme-viewer.c:891
-msgid "Benchmark"
-msgstr "Pengukuran"
-
-#: ../src/ui/theme-viewer.c:947
-msgid "Window Title Goes Here"
-msgstr "Ini tempat judul jendela"
-
-#: ../src/ui/theme-viewer.c:1053
-#, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"%d frame dibuat dalam %g detik dalam waktu klien (%g milidetik per frame) "
-"dan %g detik dalam waktu sebenarnya (%g milidetik per frame)\n"
-
-#: ../src/ui/theme-viewer.c:1273
-msgid "position expression test returned TRUE but set error"
-msgstr "tes ekspresi posisi berakhir TRUE tapi justru ada error"
-
-#: ../src/ui/theme-viewer.c:1275
-msgid "position expression test returned FALSE but didn't set error"
-msgstr "tes ekspresi posisi berakhir FALSE tapi tidak ada error"
-
-#: ../src/ui/theme-viewer.c:1279
-msgid "Error was expected but none given"
-msgstr "Seharusnya ada error, tapi ini kok tidak ada"
-
-#: ../src/ui/theme-viewer.c:1281
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr "Seharunya ada error %d, tapi yang terjadi %d"
-
-#: ../src/ui/theme-viewer.c:1287
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr "Seharusnya tidak ada error, tapi ini tiba-tiba ada error: %s"
-
-#: ../src/ui/theme-viewer.c:1291
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr "nilai x sebelumnya %d, padahal seharusnya %d"
-
-#: ../src/ui/theme-viewer.c:1294
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr "nilai y sebelumnya %d, padahal seharusnya %d"
-
-#: ../src/ui/theme-viewer.c:1359
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "ekspresi koordinat %d diambil dalam %g detik (rata-rata %g detik)\n"
-
