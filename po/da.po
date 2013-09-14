@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-13 22:03+0200\n"
-"PO-Revision-Date: 2013-09-11 23:03+0100\n"
-"Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
+"POT-Creation-Date: 2013-09-14 15:55+0200\n"
+"PO-Revision-Date: 2013-09-14 10:23+0100\n"
+"Last-Translator: Kris Thomsen <mail@kristhomsen.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,7 @@ msgstr "Konfigurér udvidelsesmoduler til GNOME Shell"
 
 #: ../data/gnome-shell-wayland.desktop.in.in.h:1
 msgid "GNOME Shell (wayland compositor)"
-msgstr ""
+msgstr "GNOME Shell (wayland-sammensætter)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
