@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-12 19:37+0200\n"
-"PO-Revision-Date: 2013-09-12 19:38+0200\n"
+"POT-Creation-Date: 2013-09-15 01:20+0000\n"
+"PO-Revision-Date: 2013-09-15 01:21+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -370,27 +370,27 @@ msgstr "Nie można przetworzyć polecenia:"
 msgid "Execution of '%s' failed:"
 msgstr "Wykonanie polecenia \"%s\" się nie powiodło:"
 
-#: ../js/ui/appDisplay.js:573
+#: ../js/ui/appDisplay.js:598
 msgid "Frequently used applications will appear here"
 msgstr "W tym miejscu pojawią się często używane programy"
 
-#: ../js/ui/appDisplay.js:689
+#: ../js/ui/appDisplay.js:714
 msgid "Frequent"
 msgstr "Często używane"
 
-#: ../js/ui/appDisplay.js:696
+#: ../js/ui/appDisplay.js:721
 msgid "All"
 msgstr "Wszystkie"
 
-#: ../js/ui/appDisplay.js:1491
+#: ../js/ui/appDisplay.js:1516
 msgid "New Window"
 msgstr "Nowe okno"
 
-#: ../js/ui/appDisplay.js:1494 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1519 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Usuń z ulubionych"
 
-#: ../js/ui/appDisplay.js:1495
+#: ../js/ui/appDisplay.js:1520
 msgid "Add to Favorites"
 msgstr "Dodaj do ulubionych"
 
@@ -404,7 +404,8 @@ msgstr "Program %s został dodany do ulubionych."
 msgid "%s has been removed from your favorites."
 msgstr "Program %s został usunięty z ulubionych."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:807
+#: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Ustawienia"
 
@@ -1211,10 +1212,6 @@ msgstr "Zakończ"
 msgid "Activities"
 msgstr "Podgląd"
 
-#: ../js/ui/panel.js:807
-msgid "Settings Menu"
-msgstr "Menu ustawień"
-
 #: ../js/ui/panel.js:903
 msgid "Top Bar"
 msgstr "Górny pasek"
@@ -1514,7 +1511,7 @@ msgstr "Brak sieci"
 
 #: ../js/ui/status/network.js:949
 msgid "Select Network"
-msgstr "Wybór sieci"
+msgstr "Wybierz sieć"
 
 #: ../js/ui/status/network.js:1034
 msgid "Turn On"
@@ -1546,7 +1543,7 @@ msgstr "Ustawienia zasilania"
 
 #: ../js/ui/status/power.js:63
 msgid "Fully Charged"
-msgstr "W pełni naładowany"
+msgstr "Naładowany"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
@@ -1565,7 +1562,7 @@ msgstr "Pozostało: %d\\u2236%02d (%d%%)"
 #: ../js/ui/status/power.js:82
 #, c-format
 msgid "%d\\u2236%02d Until Full (%d%%)"
-msgstr "Do pełnego naładowania: %d\\u2236%02d (%d%%)"
+msgstr "Do naładowania: %d\\u2236%02d (%d%%)"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
