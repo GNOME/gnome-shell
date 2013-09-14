@@ -145,6 +145,7 @@ meta_shaped_texture_dispose (GObject *object)
   priv->paint_tower = NULL;
 
   g_clear_pointer (&priv->texture, cogl_object_unref);
+  g_clear_pointer (&priv->opaque_region, cairo_region_destroy);
 
   meta_shaped_texture_set_mask_texture (self, NULL);
   meta_shaped_texture_set_clip_region (self, NULL);
