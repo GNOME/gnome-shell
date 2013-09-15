@@ -719,7 +719,7 @@ main(int argc, char *argv[])
 			wl.verbose = 1;
 			break;
 		case 'h':
-			help("weston-launch");
+			help("mutter-launch");
 			exit(EXIT_FAILURE);
 		}
 	}
