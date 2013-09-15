@@ -562,8 +562,12 @@ clutter_backend_real_init_events (ClutterBackend *backend)
 #endif
 #ifdef CLUTTER_INPUT_EVDEV
   /* Evdev can be used regardless of the windowing system */
-  if ((input_backend != NULL && strcmp (input_backend, CLUTTER_INPUT_EVDEV) == 0) ||
-      clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
+  if ((input_backend != NULL && strcmp (input_backend, CLUTTER_INPUT_EVDEV) == 0)
+#ifdef CLUTTER_WINDOWING_EGL
+      /* but we do want to always use it for EGL native */
+      || clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL)
+#endif
+      )
     {
       _clutter_events_evdev_init (backend);
     }
