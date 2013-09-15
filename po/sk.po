@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-04 09:34+0000\n"
+"POT-Creation-Date: 2013-09-15 08:19+0000\n"
 "PO-Revision-Date: 2013-08-29 20:44+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
@@ -56,6 +56,7 @@ msgid "GNOME Shell"
 msgstr "Shell prostredia GNOME"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
+#: ../data/gnome-shell-wayland.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Správa okien a spúšťanie aplikácií"
 
@@ -67,6 +68,10 @@ msgstr "Nastavenia rozšírení pre Shell prostredia GNOME"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
 msgstr "Nastavenie rozšírení pre Shell prostredia GNOME"
+
+#: ../data/gnome-shell-wayland.desktop.in.in.h:1
+msgid "GNOME Shell (wayland compositor)"
+msgstr "Shell prostredia GNOME (kompozitor pre wayland)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -355,42 +360,42 @@ msgstr "Chyba pri overovaní totožnosti"
 msgid "(or swipe finger)"
 msgstr "(alebo prejdite prstom)"
 
-#: ../js/misc/util.js:97
+#: ../js/misc/util.js:98
 msgid "Command not found"
 msgstr "Príkaz nebol nájdený"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:131
 msgid "Could not parse command:"
 msgstr "Nepodarilo sa analyzovať príkaz:"
 
-#: ../js/misc/util.js:138
+#: ../js/misc/util.js:139
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Spustenie „%s“ zlyhalo:"
 
-#: ../js/ui/appDisplay.js:580
+#: ../js/ui/appDisplay.js:598
 msgid "Frequently used applications will appear here"
 msgstr "Tu sa objavia často používané aplikácie"
 
-#: ../js/ui/appDisplay.js:696
+#: ../js/ui/appDisplay.js:714
 msgid "Frequent"
 msgstr "Často používané"
 
-#: ../js/ui/appDisplay.js:703
+#: ../js/ui/appDisplay.js:721
 msgid "All"
 msgstr "Všetky"
 
-#: ../js/ui/appDisplay.js:1490
+#: ../js/ui/appDisplay.js:1516
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appDisplay.js:1493 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1519 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Odstrániť z obľúbených"
 
-#: ../js/ui/appDisplay.js:1494
+#: ../js/ui/appDisplay.js:1520
 msgid "Add to Favorites"
 msgstr "Pridať do obľúbených"
 
@@ -404,7 +409,8 @@ msgstr "Program %s bol pridaný medzi obľúbené."
 msgid "%s has been removed from your favorites."
 msgstr "Program %s bol odstránený z obľúbených."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:807
+#: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Nastavenia"
 
@@ -936,7 +942,7 @@ msgstr "Zobraziť účet"
 msgid "Unknown reason"
 msgstr "Neznámy dôvod"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:100
 msgid "Windows"
 msgstr "Okná"
 
@@ -1089,7 +1095,7 @@ msgstr "Inštalovať"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Stiahnuť a nainštalovať „%s“ z extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:334
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
 msgid "Keyboard"
 msgstr "Klávesnica"
 
@@ -1173,7 +1179,7 @@ msgstr "Žiadne správy"
 msgid "Message Tray"
 msgstr "Lišta správ"
 
-#: ../js/ui/messageTray.js:2786
+#: ../js/ui/messageTray.js:2787
 msgid "System Information"
 msgstr "Informácie o systéme"
 
@@ -1207,21 +1213,17 @@ msgstr "Prehľad"
 msgid "Type to search…"
 msgstr "Zadajte text na vyhľadanie…"
 
-#: ../js/ui/panel.js:516
+#: ../js/ui/panel.js:518
 msgid "Quit"
 msgstr "Ukončiť"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "Aktivity"
 
-#: ../js/ui/panel.js:805
-msgid "Settings Menu"
-msgstr "Ponuka nastavení"
-
-#: ../js/ui/panel.js:901
+#: ../js/ui/panel.js:903
 msgid "Top Bar"
 msgstr "Horná lišta"
 
@@ -1230,7 +1232,7 @@ msgstr "Horná lišta"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:226
+#: ../js/ui/popupMenu.js:233
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1263,7 +1265,7 @@ msgstr[2] "%d nové oznámenia"
 msgid "Lock"
 msgstr "Uzamknúť"
 
-#: ../js/ui/screenShield.js:703
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "Prostredie GNOME vyžaduje uzamknutie obrazovky"
 
@@ -1274,11 +1276,11 @@ msgstr "Prostredie GNOME vyžaduje uzamknutie obrazovky"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Unable to lock"
 msgstr "Nepodarilo sa uzamknúť obrazovku"
 
-#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
+#: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1298
 msgid "Lock was blocked by an application"
 msgstr "Uzamknutie bolo zablokované aplikáciou"
 
@@ -1462,7 +1464,7 @@ msgstr "Ok"
 msgid "Brightness"
 msgstr "Jas"
 
-#: ../js/ui/status/keyboard.js:404
+#: ../js/ui/status/keyboard.js:403
 msgid "Show Keyboard Layout"
 msgstr "Zobraziť rozloženie klávesnice"
 
@@ -1637,11 +1639,11 @@ msgstr "Prihlásiť ako iný používateľ"
 msgid "Unlock Window"
 msgstr "Odomykacie okno"
 
-#: ../js/ui/viewSelector.js:100
+#: ../js/ui/viewSelector.js:104
 msgid "Applications"
 msgstr "Aplikácie"
 
-#: ../js/ui/viewSelector.js:104
+#: ../js/ui/viewSelector.js:108
 msgid "Search"
 msgstr "Hľadať"
 
@@ -1751,6 +1753,9 @@ msgstr "Heslo nemôže byť prázdne"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialógové okno overenia totožnosti bolo zatvorené používateľom"
 
+#~ msgid "Settings Menu"
+#~ msgstr "Ponuka nastavení"
+
 #~ msgid "Session"
 #~ msgstr "Relácia"
 
@@ -1824,4 +1829,3 @@ msgstr "Dialógové okno overenia totožnosti bolo zatvorené používateľom"
 #~ msgstr ""
 #~ "Zreťazenie systému gstreamer, určená na kódovanie záznamu diania na "
 #~ "obrazovke"
-
