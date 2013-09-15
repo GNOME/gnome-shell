@@ -214,7 +214,7 @@ handle_setdrmfd(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 		reply.ret = -errno;
 
 	if (wl->verbose)
-		fprintf(stderr, "weston-launch: set drm FD, ret: %d, fd: %d\n",
+		fprintf(stderr, "mutter-launch: set drm FD, ret: %d, fd: %d\n",
 			reply.ret, data->fd);
 
 out:
@@ -255,7 +255,7 @@ handle_confirm_vt_switch(struct weston_launch *wl, struct msghdr *msg, ssize_t l
 	ioctl(wl->tty, VT_RELDISP, 1);
 
 	if (wl->verbose)
-		fprintf(stderr, "weston-launcher: confirmed VT switch\n");
+		fprintf(stderr, "mutter-launcher: confirmed VT switch\n");
 
 	reply.ret = 0;
 
@@ -290,7 +290,7 @@ handle_activate_vt(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 		reply.ret = -errno;
 
 	if (wl->verbose)
-		fprintf(stderr, "weston-launch: activate VT, ret: %d\n", reply.ret);
+		fprintf(stderr, "mutter-launch: activate VT, ret: %d\n", reply.ret);
 
 out:
 	do {
@@ -368,7 +368,7 @@ err0:
 	iov.iov_len = sizeof reply;
 
 	if (wl->verbose)
-		fprintf(stderr, "weston-launch: opened %s: ret: %d, fd: %d\n",
+		fprintf(stderr, "mutter-launch: opened %s: ret: %d, fd: %d\n",
 			message->path, reply.ret, fd);
 	do {
 		len = sendmsg(wl->sock[0], &nmsg, 0);
