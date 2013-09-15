@@ -12,10 +12,10 @@ msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-04-02 13:59+0000\n"
-"PO-Revision-Date: 2013-04-02 21:55+0200\n"
+"POT-Creation-Date: 2013-09-12 17:36+0000\n"
+"PO-Revision-Date: 2013-09-15 15:38+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
-"Language-Team: Basque <itzulpena@euskalgnu.org>\n"
+"Language-Team: Basque <librezale@librezale.org>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,14 +23,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.4\n"
 "X-Project-Style: gnome\n"
-
-#: ../data/50-gnome-shell-screenshot.xml.in.h:1
-msgid "Screenshots"
-msgstr "Pantaila-argazkiak"
-
-#: ../data/50-gnome-shell-screenshot.xml.in.h:2
-msgid "Record a screencast"
-msgstr "Grabatu pantaila-bideoa"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -45,10 +37,14 @@ msgid "Focus the active notification"
 msgstr "Enfokatu jakinarazpen aktiboa"
 
 #: ../data/50-gnome-shell-system.xml.in.h:4
+msgid "Show the overview"
+msgstr "Erakutsi ikuspegi orokorra"
+
+#: ../data/50-gnome-shell-system.xml.in.h:5
 msgid "Show all applications"
 msgstr "Erakutsi aplikazio guztiak"
 
-#: ../data/50-gnome-shell-system.xml.in.h:5
+#: ../data/50-gnome-shell-system.xml.in.h:6
 msgid "Open the application menu"
 msgstr "Ireki aplikazioen menua"
 
@@ -57,6 +53,7 @@ msgid "GNOME Shell"
 msgstr "GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
+#: ../data/gnome-shell-wayland.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Leiho-kudeaketa eta aplikazioak abiaraztea"
 
@@ -68,6 +65,10 @@ msgstr "GNOME Shell-eko gehigarrien hobespenak"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
 msgstr "Konfiguratu GNOME Shell-eko gehigarriak"
+
+#: ../data/gnome-shell-wayland.desktop.in.in.h:1
+msgid "GNOME Shell (wayland compositor)"
+msgstr "GNOME Shell (wayland konposatzailea)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -99,38 +100,21 @@ msgstr ""
 "hedapena) metodoekin 'org.gnome.Shell'-en."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
-msgid "Whether to collect stats about applications usage"
-msgstr "Aplikazioen erabilpenei buruzko estatistikak bilduko diren ala ez"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"Shell-ak normalean aplikazio aktiboak monitorizatzen ditu gehien "
-"erabilitakoak aurkezteko (adib. abiarazleetan). Datu hauek pribatu "
-"mantenduko diren arren, agian hau desgaitu nahi duzu pribatutasun-"
-"arrazoiengatik. Kontuan izan hori eginez gero dagoeneko gordeta dauden "
-"datuak ez direla kenduko."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Gogoko aplikazioen mahaigaineko fitxategien IDen zerrenda"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 "Identifikadore horiei dagozkien aplikazioak bistaratuko dira gogokoen arean."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of categories that should be displayed as folders"
 msgstr "Kategorien zerrenda (karpeten bezala bistaratzeko)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid ""
 "Each category name in this list will be represented as folder in the "
 "application view, rather than being displayed inline in the main view."
@@ -138,37 +122,19 @@ msgstr ""
 "Zerrenda honetako kategori-izen bakoitza karpeta gisa adieraziko da "
 "aplikazioaren ikuspegian, ikuspegi nagusiaren barnean bistaratu ordez."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
 msgstr "Komandoen (Alt-F2) elkarrizketa-koadroaren historia"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "History for the looking glass dialog"
 msgstr "Ikuskatzailearen elkarrizketa-koadroaren historia"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
-msgid ""
-"Internally used to store the last IM presence explicitly set by the user. "
-"The value here is from the TpConnectionPresenceType enumeration."
-msgstr ""
-"Barnean erabilita erabiltzaileak ezarritako azken BMren presentzia "
-"esplizituki gordetzeko. Hemengo balioa TpConnectionPresenceType "
-"zerrendapenetik dator."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
-msgid ""
-"Internally used to store the last session presence status for the user. The "
-"value here is from the GsmPresenceStatus enumeration."
-msgstr ""
-"Barnean erabilita erabiltzailearen azken saioaren presentziaren egoera "
-"esplizituki gordetzeko. Hemengo balioa GsmPresenceStatus zerrendapenetik "
-"dator."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "Always show the 'Log out' menuitem in the user menu."
 msgstr "Erakutsi beti erabiltzaile-menuko 'Amaitu saioa' menu-elementua."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
@@ -176,14 +142,14 @@ msgstr ""
 "Gako honek 'Amaitu saioa' menu-elementua automatikoki ezkutatzea gainidazten "
 "du erabiltzaile bakarreko eta saio bakarreko egoeran."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Zifratutako edo urruneko fitxategi-sistemak muntatzeko pasahitza gogoratuko "
 "den ala ez"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -195,126 +161,72 @@ msgstr ""
 "'Gogoratu pasahitza' kontrol-laukia agertuko da. Gako honek kontrol-"
 "laukiaren egoera lehenetsia ezartzen du."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "Erakutsi aste-data egutegian"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Ezarrita badago, ISO aste-data bistaratzen du egutegian."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Keybinding to open the application menu"
 msgstr "Aplikazioen menua irekitzeko laster-tekla"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "Keybinding to open the application menu."
 msgstr "Aplikazioen menua irekitzeko laster-tekla."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "'Erakutsi aplikazioak' bista irekitzeko laster-tekla"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "Jarduerak ikuspegi orokorraren 'Erakutsi aplikazioak' ikuspegia irekitzeko "
 "laster-tekla."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#| msgid "Keybinding to open the \"Show Applications\" view"
+msgid "Keybinding to open the overview"
+msgstr "Ikuspegi orokorra bista irekitzeko laster-tekla"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#| msgid "Keybinding to open the \"Show Applications\" view"
+msgid "Keybinding to open the Activities Overview."
+msgstr "Jardueren ikuspegi orokorra irekitzeko laster-tekla"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "Mezu-erretiluaren ikusgaitasuna txandakatzeko laster-tekla"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "Mezu-erretiluaren ikusgaitasuna txandakatzeko laster-tekla."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to focus the active notification"
 msgstr "Jakinarazpen aktiboa enfokatzeko laster-tekla"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to focus the active notification."
 msgstr "Jakinarazpen aktiboa enfokatzeko laster-tekla."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
-msgid "Keybinding to toggle the screen recorder"
-msgstr "Pantaila-grabatzailea txandakatzeko laster-tekla"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
-msgid "Keybinding to start/stop the builtin screen recorder."
-msgstr "Pantaila-grabatzaile integratua abiarazi eta gelditzeko laster-tekla."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Which keyboard to use"
 msgstr "Erabili beharreko teklatua"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "The type of keyboard to use."
 msgstr "Erabili beharreko teklatu mota."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
-msgid "Framerate used for recording screencasts."
-msgstr "Pantailatik bideoak grabatzean erabilitako fotograma-emaria."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
-"GNOME Shell-en pantailako bideoen grabatzaileak pantailatik grabatutako "
-"bideoen fotograma-emaria (fotograma segundoko)."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr "Pantailako bideoak kodetzeko erabilitako gstreamer hodia"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
-#, no-c-format
-msgid ""
-"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
-"used for gst-launch. The pipeline should have an unconnected sink pad where "
-"the recorded video is recorded. It will normally have a unconnected source "
-"pad; output from that pad will be written into the output file. However the "
-"pipeline can also take care of its own output - this might be used to send "
-"the output to an icecast server via shout2send or similar. When unset or set "
-"to an empty value, the default pipeline will be used. This is currently "
-"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
-"threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
-"used as a placeholder for a guess at the optimal thread count on the system."
-msgstr ""
-"Grabazioak kodetzeko erabiltzen den GStreamer hodia ezartzen du. gst-launch "
-"tresnak erabilitako sintaxia jarraitzen du. Hodiak deskonektatutako "
-"sarrerako konektorea izan beharko luke bideoa grabatzen den tokian. "
-"Normalean konektatu gabeko iturburu-konektorea du; konektore horren irteera "
-"irteera-fitxategian idatziko da. da. Hala ere, bere irteeraren kargu egin "
-"daiteke hodia, adibidez irteera icecast zerbitzari batera bidaltzeko "
-"shout2send edo antzekoen bitartez. Ezarri gabe dagoenean edo balio hutsa "
-"duenean, hodi lehenetsia erabiliko da. Une honetan hau da: 'vp8enc "
-"min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! "
-"queue ! webmmux' eta WEBM formatuan grabatzen du VP8 kodeka erabiliz. %T "
-"leku-marka gisa erabiltzen da sistemako hari kopuru optimoa asmatzeko."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
-msgid "File extension used for storing the screencast"
-msgstr "Pantailako bideoa gordetzeko erabilitako luzapena"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
-msgid ""
-"The filename for recorded screencasts will be a unique filename based on the "
-"current date, and use this extension. It should be changed when recording to "
-"a different container format."
-msgstr ""
-"Pantailatik grabatutako bideoen fitxategi-izena bakarra izango da uneko "
-"datan oinarrituta eta luzapen hau erabiliko du. Aldatu egin beharko "
-"litzateke beste edukiontziko formatu batean grabatzean."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "The application icon mode."
 msgstr "Aplikazio-ikonoaren modua."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -324,21 +236,21 @@ msgstr ""
 "'thumbnail-only' (leihoaren miniatura erakustea), 'app-icon-only' (aplikazio-"
 "ikonoa erakustea soilik) edo 'both' (biak)."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Attach modal dialog to the parent window"
 msgstr "Erantsi elkarrizketa-leiho modala leiho gurasoari"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Gako honek org.gnome.mutter gakoa gainidazten du GNOME Shell exekutatzean."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Botoien antolamendua titulu-barran"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
@@ -346,15 +258,15 @@ msgstr ""
 "Gako honek org.gnome.desktop.wm.preferences gakoa gainidazten du GNOME Shell "
 "exekutatzean."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:46
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Gaitu lauzatzea leihoak pantailaren ertzetan jaregitean"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:47
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "Workspaces are managed dynamically"
 msgstr "Laneko areak dinamikoki kudeatzen dira"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:48
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Workspaces only on primary monitor"
 msgstr "Laneko areak monitore nagusian soilik"
 
@@ -372,112 +284,106 @@ msgstr "Hedapena"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Hautatu gehigarria gaineko konbinazio-koadroa erabiliz konfiguratzeko."
 
-#: ../js/gdm/loginDialog.js:405
-msgid "Session…"
-msgstr "Saioa…"
-
-#. translators: this message is shown below the user list on the
-#. login screen. It can be activated to reveal an entry for
-#. manually entering the username.
-#: ../js/gdm/loginDialog.js:630
-msgid "Not listed?"
-msgstr "Ez zaude zerrendan?"
-
-#: ../js/gdm/loginDialog.js:786 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:375
+#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:99
-#: ../js/ui/userMenu.js:938
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:686
 msgid "Cancel"
 msgstr "Utzi"
 
-#: ../js/gdm/loginDialog.js:802
+#: ../js/gdm/authPrompt.js:167 ../js/gdm/authPrompt.js:215
+msgid "Next"
+msgstr "Hurrengoa"
+
+#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:59
+msgid "Unlock"
+msgstr "Desblokeatu"
+
+#: ../js/gdm/authPrompt.js:213
 msgctxt "button"
 msgid "Sign In"
 msgstr "Hasi saioa"
 
-#: ../js/gdm/loginDialog.js:802
-msgid "Next"
-msgstr "Hurrengoa"
+#: ../js/gdm/loginDialog.js:294
+msgid "Choose Session"
+msgstr "Aukeratu saioa"
 
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:917 ../js/ui/components/networkAgent.js:260
-#: ../js/ui/components/networkAgent.js:278
-msgid "Username: "
-msgstr "Erabiltzaile-izena: "
+#. translators: this message is shown below the user list on the
+#. login screen. It can be activated to reveal an entry for
+#. manually entering the username.
+#: ../js/gdm/loginDialog.js:454
+msgid "Not listed?"
+msgstr "Ez zaude zerrendan?"
 
-#: ../js/gdm/loginDialog.js:1173
-msgid "Login Window"
-msgstr "Saio-hasierako leihoa"
-
-#. Translators: accessible name of the power menu in the login screen
-#: ../js/gdm/powerMenu.js:36
-msgid "Power"
-msgstr "Energia"
-
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:696 ../js/ui/userMenu.js:700
-#: ../js/ui/userMenu.js:816
-msgid "Suspend"
-msgstr "Eseki"
-
-#: ../js/gdm/powerMenu.js:98
-msgid "Restart"
-msgstr "Berrabiarazi"
-
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:698
-#: ../js/ui/userMenu.js:700 ../js/ui/userMenu.js:815 ../js/ui/userMenu.js:942
-msgid "Power Off"
-msgstr "Itzali"
-
-#: ../js/gdm/util.js:249
-msgid "Authentication error"
-msgstr "Autentifikazio-errorea"
-
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:366
-msgid "(or swipe finger)"
-msgstr "(edo lerratu hatza)"
-
-#: ../js/gdm/util.js:391
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: ../js/gdm/loginDialog.js:622
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(adib., erabiltzailea edo %s)"
 
-#: ../js/misc/util.js:97
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:255
+#: ../js/ui/components/networkAgent.js:273
+msgid "Username: "
+msgstr "Erabiltzaile-izena: "
+
+#: ../js/gdm/loginDialog.js:891
+msgid "Login Window"
+msgstr "Saio-hasierako leihoa"
+
+#: ../js/gdm/util.js:306
+msgid "Authentication error"
+msgstr "Autentifikazio-errorea"
+
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/util.js:436
+msgid "(or swipe finger)"
+msgstr "(edo lerratu hatza)"
+
+#: ../js/misc/util.js:98
 msgid "Command not found"
 msgstr "Ez da komandoa aurkitu"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:131
 msgid "Could not parse command:"
 msgstr "Ezin izan da komandoa analizatu:"
 
-#: ../js/misc/util.js:138
+#: ../js/misc/util.js:139
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Huts egin du '%s' exekutatzean:"
 
-#: ../js/ui/appDisplay.js:349
+#: ../js/ui/appDisplay.js:573
+msgid "Frequently used applications will appear here"
+msgstr "Maiztasunez erabilitako aplikazioak hemen agertuko dira"
+
+#: ../js/ui/appDisplay.js:689
 msgid "Frequent"
 msgstr "Askotan"
 
-#: ../js/ui/appDisplay.js:356
+#: ../js/ui/appDisplay.js:696
 msgid "All"
 msgstr "Denak"
 
-#: ../js/ui/appDisplay.js:914
+#: ../js/ui/appDisplay.js:1491
 msgid "New Window"
 msgstr "Leiho berria"
 
-#: ../js/ui/appDisplay.js:917 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1494 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Kendu gogokoetatik"
 
-#: ../js/ui/appDisplay.js:918
+#: ../js/ui/appDisplay.js:1495
 msgid "Add to Favorites"
 msgstr "Gehitu gogokoei"
 
@@ -491,7 +397,7 @@ msgstr "%s gogokoei gehitu zaie."
 msgid "%s has been removed from your favorites."
 msgstr "%s gogokoetatik kendu da."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:789
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Ezarpenak"
 
@@ -615,36 +521,44 @@ msgctxt "list saturday"
 msgid "S"
 msgstr "Lr"
 
+#: ../js/ui/calendar.js:447
+msgid "Previous month"
+msgstr "Aurreko hila"
+
+#: ../js/ui/calendar.js:457
+msgid "Next month"
+msgstr "Hurrengo hila"
+
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:753
 msgid "Nothing Scheduled"
 msgstr "Ezer ez antolatuta"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:736
+#: ../js/ui/calendar.js:771
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:739
+#: ../js/ui/calendar.js:774
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %Y(e)ko %Bren %da"
 
-#: ../js/ui/calendar.js:749
+#: ../js/ui/calendar.js:785
 msgid "Today"
 msgstr "Gaur"
 
-#: ../js/ui/calendar.js:753
+#: ../js/ui/calendar.js:789
 msgid "Tomorrow"
 msgstr "Bihar"
 
-#: ../js/ui/calendar.js:764
+#: ../js/ui/calendar.js:800
 msgid "This week"
 msgstr "Aste honetan"
 
-#: ../js/ui/calendar.js:772
+#: ../js/ui/calendar.js:808
 msgid "Next week"
 msgstr "Hurrengo astea"
 
@@ -669,49 +583,50 @@ msgstr "Ireki honekin: %s"
 msgid "Eject"
 msgstr "Egotzi"
 
-#: ../js/ui/components/keyring.js:82 ../js/ui/components/polkitAgent.js:268
+#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Pasahitza:"
 
-#: ../js/ui/components/keyring.js:101
+#: ../js/ui/components/keyring.js:107
 msgid "Type again:"
 msgstr "Idatzi berriro:"
 
-#: ../js/ui/components/networkAgent.js:132
+#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
+#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
 msgid "Connect"
 msgstr "Konektatu"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:223
-#: ../js/ui/components/networkAgent.js:235
-#: ../js/ui/components/networkAgent.js:262
-#: ../js/ui/components/networkAgent.js:282
-#: ../js/ui/components/networkAgent.js:292
+#: ../js/ui/components/networkAgent.js:218
+#: ../js/ui/components/networkAgent.js:230
+#: ../js/ui/components/networkAgent.js:257
+#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:287
 msgid "Password: "
 msgstr "Pasahitza: "
 
 #. static WEP
-#: ../js/ui/components/networkAgent.js:228
+#: ../js/ui/components/networkAgent.js:223
 msgid "Key: "
 msgstr "Gakoa: "
 
-#: ../js/ui/components/networkAgent.js:266
+#: ../js/ui/components/networkAgent.js:261
 msgid "Identity: "
 msgstr "Identitatea: "
 
-#: ../js/ui/components/networkAgent.js:268
+#: ../js/ui/components/networkAgent.js:263
 msgid "Private key password: "
 msgstr "Gako pribatuaren pasahitza: "
 
-#: ../js/ui/components/networkAgent.js:280
+#: ../js/ui/components/networkAgent.js:275
 msgid "Service: "
 msgstr "Zerbitzua: "
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:304
 msgid "Authentication required by wireless network"
 msgstr "Haririk gabeko sareak autentifikazioa eskatzen du"
 
-#: ../js/ui/components/networkAgent.js:310
+#: ../js/ui/components/networkAgent.js:305
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -720,48 +635,48 @@ msgstr ""
 "Pasahitzak edo zifratze-gakoak behar dira haririk gabeko '%s' sarera "
 "sarbidetzeko."
 
-#: ../js/ui/components/networkAgent.js:314
+#: ../js/ui/components/networkAgent.js:309
 msgid "Wired 802.1X authentication"
 msgstr "Haridun 802.1X autentifikazioa"
 
-#: ../js/ui/components/networkAgent.js:316
+#: ../js/ui/components/networkAgent.js:311
 msgid "Network name: "
 msgstr "Sarearen izena: "
 
-#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:316
 msgid "DSL authentication"
 msgstr "DSL autentifikazioa"
 
-#: ../js/ui/components/networkAgent.js:328
+#: ../js/ui/components/networkAgent.js:323
 msgid "PIN code required"
 msgstr "PIN kodea behar da"
 
-#: ../js/ui/components/networkAgent.js:329
+#: ../js/ui/components/networkAgent.js:324
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN kodea behar da bandazabal mugikorreko gailuarentzako"
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:325
 msgid "PIN: "
 msgstr "PINa: "
 
-#: ../js/ui/components/networkAgent.js:336
+#: ../js/ui/components/networkAgent.js:331
 msgid "Mobile broadband network password"
 msgstr "Bandazabal mugikorreko sarearen pasahitza"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:332
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Pasahitza behar da '%s'(e)ra konektatzeko."
 
-#: ../js/ui/components/polkitAgent.js:55
+#: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
 msgstr "Autentifikazioa behar da"
 
-#: ../js/ui/components/polkitAgent.js:93
+#: ../js/ui/components/polkitAgent.js:92
 msgid "Administrator"
 msgstr "Administratzailea"
 
-#: ../js/ui/components/polkitAgent.js:165
+#: ../js/ui/components/polkitAgent.js:170
 msgid "Authenticate"
 msgstr "Autentifikatu"
 
@@ -769,15 +684,9 @@ msgstr "Autentifikatu"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:256 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Huts egin du. Saiatu berriro."
-
-#. Translators: this is a filename used for screencast recording
-#: ../js/ui/components/recorder.js:48
-#, no-c-format
-msgid "Screencast from %d %t"
-msgstr "Pantailaren bideoa %d %t"
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
@@ -833,14 +742,14 @@ msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:985
+#: ../js/ui/components/telepathyClient.js:986
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s orain %s izenarekin ezagutzen da"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1088
+#: ../js/ui/components/telepathyClient.js:1089
 #, c-format
 msgid "Invitation to %s"
 msgstr "%s gelarako gonbidapena"
@@ -848,38 +757,38 @@ msgstr "%s gelarako gonbidapena"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1096
+#: ../js/ui/components/telepathyClient.js:1097
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s(e)k gonbidatzen zaitu '%s'(e)ra elkartzeko"
 
-#: ../js/ui/components/telepathyClient.js:1098
-#: ../js/ui/components/telepathyClient.js:1137
-#: ../js/ui/components/telepathyClient.js:1177
-#: ../js/ui/components/telepathyClient.js:1240
+#: ../js/ui/components/telepathyClient.js:1099
+#: ../js/ui/components/telepathyClient.js:1140
+#: ../js/ui/components/telepathyClient.js:1180
+#: ../js/ui/components/telepathyClient.js:1243
 msgid "Decline"
 msgstr "Ukatu"
 
-#: ../js/ui/components/telepathyClient.js:1099
-#: ../js/ui/components/telepathyClient.js:1178
-#: ../js/ui/components/telepathyClient.js:1241
+#: ../js/ui/components/telepathyClient.js:1100
+#: ../js/ui/components/telepathyClient.js:1181
+#: ../js/ui/components/telepathyClient.js:1244
 msgid "Accept"
 msgstr "Onartu"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1129
+#: ../js/ui/components/telepathyClient.js:1130
 #, c-format
 msgid "Video call from %s"
 msgstr "%s(r)en bideo-deia"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1132
+#: ../js/ui/components/telepathyClient.js:1133
 #, c-format
 msgid "Call from %s"
 msgstr "%s(r)en deia"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1139
+#: ../js/ui/components/telepathyClient.js:1142
 msgid "Answer"
 msgstr "Erantzun"
 
@@ -888,111 +797,111 @@ msgstr "Erantzun"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1171
+#: ../js/ui/components/telepathyClient.js:1174
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s fitxategia ari zaizu bidaltzen: %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1206
+#: ../js/ui/components/telepathyClient.js:1209
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s(e)k baimena nahiko luke linean noiz zauden jakiteko"
 
-#: ../js/ui/components/telepathyClient.js:1298
+#: ../js/ui/components/telepathyClient.js:1301
 msgid "Network error"
 msgstr "Sareko errorea"
 
-#: ../js/ui/components/telepathyClient.js:1300
+#: ../js/ui/components/telepathyClient.js:1303
 msgid "Authentication failed"
 msgstr "Autentifikazioak huts egin du"
 
-#: ../js/ui/components/telepathyClient.js:1302
+#: ../js/ui/components/telepathyClient.js:1305
 msgid "Encryption error"
 msgstr "Zifratze-errorea"
 
-#: ../js/ui/components/telepathyClient.js:1304
+#: ../js/ui/components/telepathyClient.js:1307
 msgid "Certificate not provided"
 msgstr "Ez da ziurtagiririk eman"
 
-#: ../js/ui/components/telepathyClient.js:1306
+#: ../js/ui/components/telepathyClient.js:1309
 msgid "Certificate untrusted"
 msgstr "Ziurtagiria ez da fidagarria"
 
-#: ../js/ui/components/telepathyClient.js:1308
+#: ../js/ui/components/telepathyClient.js:1311
 msgid "Certificate expired"
 msgstr "Ziurtagiria iraungituta"
 
-#: ../js/ui/components/telepathyClient.js:1310
+#: ../js/ui/components/telepathyClient.js:1313
 msgid "Certificate not activated"
 msgstr "Ziurtagiria aktibatu gabe"
 
-#: ../js/ui/components/telepathyClient.js:1312
+#: ../js/ui/components/telepathyClient.js:1315
 msgid "Certificate hostname mismatch"
 msgstr "Ziurtagiriaren ostalari-izena ez dator bat"
 
-#: ../js/ui/components/telepathyClient.js:1314
+#: ../js/ui/components/telepathyClient.js:1317
 msgid "Certificate fingerprint mismatch"
 msgstr "Ziurtagiriaren hatz-marka ez dator bat"
 
-#: ../js/ui/components/telepathyClient.js:1316
+#: ../js/ui/components/telepathyClient.js:1319
 msgid "Certificate self-signed"
 msgstr "Ziurtagiria bere buruarekin sinatuta"
 
-#: ../js/ui/components/telepathyClient.js:1318
+#: ../js/ui/components/telepathyClient.js:1321
 msgid "Status is set to offline"
 msgstr "Egoera lineaz kanpo da"
 
-#: ../js/ui/components/telepathyClient.js:1320
+#: ../js/ui/components/telepathyClient.js:1323
 msgid "Encryption is not available"
 msgstr "Zifratzea ez dago eskuragarri"
 
-#: ../js/ui/components/telepathyClient.js:1322
+#: ../js/ui/components/telepathyClient.js:1325
 msgid "Certificate is invalid"
 msgstr "Ziurtagiria baliogabea da"
 
-#: ../js/ui/components/telepathyClient.js:1324
+#: ../js/ui/components/telepathyClient.js:1327
 msgid "Connection has been refused"
 msgstr "Konexioa ukatu egin da"
 
-#: ../js/ui/components/telepathyClient.js:1326
+#: ../js/ui/components/telepathyClient.js:1329
 msgid "Connection can't be established"
 msgstr "Konexioa ezin da burutu"
 
-#: ../js/ui/components/telepathyClient.js:1328
+#: ../js/ui/components/telepathyClient.js:1331
 msgid "Connection has been lost"
 msgstr "Konexioa galdu egin da"
 
-#: ../js/ui/components/telepathyClient.js:1330
+#: ../js/ui/components/telepathyClient.js:1333
 msgid "This account is already connected to the server"
 msgstr "Kontu hau jadanik zerbitzariarekin konektatuta dago"
 
-#: ../js/ui/components/telepathyClient.js:1332
+#: ../js/ui/components/telepathyClient.js:1335
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Konexioa ordezkatu egin da baliabide bera darabilen konexio berri batengatik"
 
-#: ../js/ui/components/telepathyClient.js:1334
+#: ../js/ui/components/telepathyClient.js:1337
 msgid "The account already exists on the server"
 msgstr "Kontua badago lehendik zerbitzarian"
 
-#: ../js/ui/components/telepathyClient.js:1336
+#: ../js/ui/components/telepathyClient.js:1339
 msgid "Server is currently too busy to handle the connection"
 msgstr "Zerbitzaria oso lanpetuta dago konexioa maneiatzeko"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1341
 msgid "Certificate has been revoked"
 msgstr "Ziurtagiria errebokatu egin da"
 
-#: ../js/ui/components/telepathyClient.js:1340
+#: ../js/ui/components/telepathyClient.js:1343
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Ziurtagiriak zifratze-algoritmo ez-segurua darabil edo kriptografikoki ahula "
 "da"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1345
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1000,26 +909,26 @@ msgstr ""
 "Zerbitzariaren ziurtagiriaren luzerak edo ziurtagiri-katearen sakonerak "
 "liburutegi kriptografikoak ezarritako mugak gainditzen ditu"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1347
 msgid "Internal error"
 msgstr "Barneko errorea"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1357
 #, c-format
 msgid "Unable to connect to %s"
 msgstr "Ezin da %s(e)ra konektatu"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "View account"
 msgstr "Ikusi kontua"
 
-#: ../js/ui/components/telepathyClient.js:1398
+#: ../js/ui/components/telepathyClient.js:1401
 msgid "Unknown reason"
 msgstr "Arrazoi ezezaguna"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:100
 msgid "Windows"
 msgstr "Leihoak"
 
@@ -1029,121 +938,137 @@ msgstr "Erakutsi aplikazioak"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/dash.js:435
+#: ../js/ui/dash.js:442
 msgid "Dash"
 msgstr "Atrakagarria"
 
-#: ../js/ui/dateMenu.js:91
+#: ../js/ui/dateMenu.js:86
 msgid "Open Calendar"
 msgstr "Ireki egutegia"
 
-#: ../js/ui/dateMenu.js:96
+#: ../js/ui/dateMenu.js:90
 msgid "Open Clocks"
 msgstr "Ireki erlojuak"
 
-#: ../js/ui/dateMenu.js:105
+#: ../js/ui/dateMenu.js:97
 msgid "Date & Time Settings"
 msgstr "Data eta orduaren ezarpenak"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:215
+#: ../js/ui/dateMenu.js:202
 msgid "%A %B %e, %Y"
 msgstr "%A, %Y(e)ko %Bren %e(a)"
 
-#: ../js/ui/endSessionDialog.js:63
+#: ../js/ui/endSessionDialog.js:62
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Amaitu %s(r)en saioa"
 
-#: ../js/ui/endSessionDialog.js:64
+#: ../js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Log Out"
 msgstr "Amaitu saioa"
 
 #: ../js/ui/endSessionDialog.js:65
-msgid "Click Log Out to quit these applications and log out of the system."
-msgstr ""
-"Egin klik 'Amaitu saioa' botoian aplikazio hauetatik irten eta sistemako "
-"saioa amaitzeko."
-
-#: ../js/ui/endSessionDialog.js:67
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s erabiltzailearen saioa automatikoki %d segundotan amaituko da."
 msgstr[1] "%s erabiltzailearen saioa automatikoki %d segundotan amaituko da."
 
-#: ../js/ui/endSessionDialog.js:72
+#: ../js/ui/endSessionDialog.js:70
 #, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Zure saioa automatikoki %d segundotan amaituko da."
 msgstr[1] "Zure saioa automatikoki %d segundotan amaituko da."
 
-#: ../js/ui/endSessionDialog.js:76
-msgid "Logging out of the system."
-msgstr "Sistemako saioa amaitzen."
-
-#: ../js/ui/endSessionDialog.js:78
+#: ../js/ui/endSessionDialog.js:75
 msgctxt "button"
 msgid "Log Out"
 msgstr "Amaitu saioa"
 
-#: ../js/ui/endSessionDialog.js:83
+#: ../js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Power Off"
 msgstr "Itzali"
 
-#: ../js/ui/endSessionDialog.js:84
-msgid "Click Power Off to quit these applications and power off the system."
-msgstr ""
-"Egin klik 'Itzali' botoian aplikazio hauetatik irten eta sistema itzaltzeko."
-
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:83
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Sistema automatikoki %d segundotan itzaliko da."
 msgstr[1] "Sistema automatikoki %d segundotan itzaliko da."
 
-#: ../js/ui/endSessionDialog.js:90
-msgid "Powering off the system."
-msgstr "Sistema itzaltzen."
-
-#: ../js/ui/endSessionDialog.js:92 ../js/ui/endSessionDialog.js:109
+#: ../js/ui/endSessionDialog.js:88 ../js/ui/endSessionDialog.js:104
 msgctxt "button"
 msgid "Restart"
 msgstr "Berrabiarazi"
 
-#: ../js/ui/endSessionDialog.js:94
+#: ../js/ui/endSessionDialog.js:90
 msgctxt "button"
 msgid "Power Off"
 msgstr "Itzali"
 
-#: ../js/ui/endSessionDialog.js:100
+#: ../js/ui/endSessionDialog.js:97
 msgctxt "title"
 msgid "Restart"
 msgstr "Berrabiarazi"
 
-#: ../js/ui/endSessionDialog.js:101
-msgid "Click Restart to quit these applications and restart the system."
-msgstr ""
-"Egin klik 'Berrabiarazi' botoian aplikazio hauetatik irten eta sistema "
-"berrabiarazteko."
-
-#: ../js/ui/endSessionDialog.js:103
+#: ../js/ui/endSessionDialog.js:99
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Sistema automatikoki %d segundotan berrabiaraziko da."
 msgstr[1] "Sistema automatikoki %d segundotan berrabiaraziko da."
 
-#: ../js/ui/endSessionDialog.js:107
-msgid "Restarting the system."
-msgstr "Sistema berrabiarazten."
+#: ../js/ui/endSessionDialog.js:112
+#| msgid "Install Updates & Restart"
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "Berrabiarazi eta instalatu eguneraketak"
+
+#: ../js/ui/endSessionDialog.js:114
+#, c-format
+#| msgid "The system will restart automatically in %d second."
+#| msgid_plural "The system will restart automatically in %d seconds."
+msgid "The system will automatically restart and install updates in %d second."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] ""
+"Sistema automatikoki berrabiaraziko da  eta eguneraketak instalatuko ditu "
+"segundo %dean."
+msgstr[1] ""
+"Sistema automatikoki berrabiaraziko da  eta eguneraketak instalatuko ditu %d "
+"segundotan."
+
+#: ../js/ui/endSessionDialog.js:119
+msgctxt "button"
+msgid "Restart & Install"
+msgstr "Berrabiarazi eta instalatu"
+
+#: ../js/ui/endSessionDialog.js:271
+msgid "Some applications are busy or have unsaved work."
+msgstr "Aplikazio batzuk lanpetuta daude edo gorde gabeko lanak dituzte."
+
+#: ../js/ui/endSessionDialog.js:277
+msgid "Other users are logged in."
+msgstr "Beste erabiltzaileek saioa hasi dute."
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: ../js/ui/endSessionDialog.js:479
+#, c-format
+msgid "%s (remote)"
+msgstr "%s (urrunekoa)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: ../js/ui/endSessionDialog.js:482
+#, c-format
+msgid "%s (console)"
+msgstr "%s (kontsola)"
 
 #: ../js/ui/extensionDownloader.js:199
 msgid "Install"
@@ -1154,104 +1079,107 @@ msgstr "Instalatu"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Deskargatu eta instalatu '%s' extensions.gnome.org gunetik?"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:314
-#: ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
 msgid "Keyboard"
 msgstr "Teklatua"
 
-#: ../js/ui/lookingGlass.js:693
+#: ../js/ui/lookingGlass.js:689
 msgid "No extensions installed"
 msgstr "Hedapenik ez dago instalatuta"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:747
+#: ../js/ui/lookingGlass.js:743
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s(e)k ez du inolako errorerik igorri."
 
-#: ../js/ui/lookingGlass.js:753
+#: ../js/ui/lookingGlass.js:749
 msgid "Hide Errors"
 msgstr "Ezkutatu erroreak"
 
-#: ../js/ui/lookingGlass.js:757 ../js/ui/lookingGlass.js:817
+#: ../js/ui/lookingGlass.js:753 ../js/ui/lookingGlass.js:813
 msgid "Show Errors"
 msgstr "Erakutsi erroreak"
 
-#: ../js/ui/lookingGlass.js:766
+#: ../js/ui/lookingGlass.js:762
 msgid "Enabled"
 msgstr "Gaituta"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:769 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:765 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Desgaituta"
 
-#: ../js/ui/lookingGlass.js:771
+#: ../js/ui/lookingGlass.js:767
 msgid "Error"
 msgstr "Errorea"
 
-#: ../js/ui/lookingGlass.js:773
+#: ../js/ui/lookingGlass.js:769
 msgid "Out of date"
 msgstr "Zaharkituta"
 
-#: ../js/ui/lookingGlass.js:775
+#: ../js/ui/lookingGlass.js:771
 msgid "Downloading"
 msgstr "Deskargatzen"
 
-#: ../js/ui/lookingGlass.js:799
+#: ../js/ui/lookingGlass.js:795
 msgid "View Source"
 msgstr "Ikusi iturburua"
 
-#: ../js/ui/lookingGlass.js:808
+#: ../js/ui/lookingGlass.js:804
 msgid "Web Page"
 msgstr "Web orria"
 
-#: ../js/ui/messageTray.js:1182
+#: ../js/ui/messageTray.js:1222
 msgid "Open"
 msgstr "Ireki"
 
-#: ../js/ui/messageTray.js:1189
+#: ../js/ui/messageTray.js:1229
 msgid "Remove"
 msgstr "Kendu"
 
-#: ../js/ui/messageTray.js:1501
+#: ../js/ui/messageTray.js:1513
 msgid "Clear Messages"
 msgstr "Garbitu mezuak"
 
-#: ../js/ui/messageTray.js:1528
+#: ../js/ui/messageTray.js:1540
 msgid "Notification Settings"
 msgstr "Jakinarazpenen ezarpenak"
 
-#: ../js/ui/messageTray.js:1709
+#: ../js/ui/messageTray.js:1559
+msgid "Tray Menu"
+msgstr "Erretiluaren menua"
+
+#: ../js/ui/messageTray.js:1775
 msgid "No Messages"
 msgstr "Mezurik ez"
 
-#: ../js/ui/messageTray.js:1782
+#: ../js/ui/messageTray.js:1812
 msgid "Message Tray"
 msgstr "Mezuen erretilua"
 
-#: ../js/ui/messageTray.js:2810
+#: ../js/ui/messageTray.js:2787
 msgid "System Information"
 msgstr "Sistemaren informazioa"
 
-#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:374
+#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:396
 msgctxt "program"
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: ../js/ui/overviewControls.js:463 ../js/ui/screenShield.js:149
+#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:152
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "Mezu berri %d"
 msgstr[1] "%d mezu berri"
 
-#: ../js/ui/overview.js:84
+#: ../js/ui/overview.js:82
 msgid "Undo"
 msgstr "Desegin"
 
-#: ../js/ui/overview.js:129
+#: ../js/ui/overview.js:127
 msgid "Overview"
 msgstr "Ikuspegi orokorra"
 
@@ -1259,21 +1187,26 @@ msgstr "Ikuspegi orokorra"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:271
+#: ../js/ui/overview.js:258
 msgid "Type to search…"
 msgstr "Idatzi bilatzeko…"
 
-#: ../js/ui/panel.js:612
+#: ../js/ui/panel.js:518
 msgid "Quit"
 msgstr "Irten"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:636
+#: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "Jarduerak"
 
-#: ../js/ui/panel.js:933
+#: ../js/ui/panel.js:807
+#| msgid "Settings"
+msgid "Settings Menu"
+msgstr "Ezarpenen menua"
+
+#: ../js/ui/panel.js:903
 msgid "Top Bar"
 msgstr "Goiko barra"
 
@@ -1282,36 +1215,36 @@ msgstr "Goiko barra"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:727
+#: ../js/ui/popupMenu.js:233
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:73
+#: ../js/ui/runDialog.js:74
 msgid "Enter a Command"
 msgstr "Idatzi komandoa"
 
-#: ../js/ui/runDialog.js:109
+#: ../js/ui/runDialog.js:110
 msgid "Close"
 msgstr "Itxi"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:86
+#: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:151
+#: ../js/ui/screenShield.js:154
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "Jakinarazpen berri %d"
 msgstr[1] "%d jakinarazpen berri"
 
-#: ../js/ui/screenShield.js:438 ../js/ui/userMenu.js:807
+#: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:333
 msgid "Lock"
 msgstr "Blokeatu"
 
-#: ../js/ui/screenShield.js:640
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "GNOMEk pantaila blokeatzea behar du"
 
@@ -1322,35 +1255,35 @@ msgstr "GNOMEk pantaila blokeatzea behar du"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:761 ../js/ui/screenShield.js:1197
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Unable to lock"
 msgstr "Ezin da blokeatu"
 
-#: ../js/ui/screenShield.js:762 ../js/ui/screenShield.js:1198
+#: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1298
 msgid "Lock was blocked by an application"
 msgstr "Beste aplikazio batek blokeatu du"
 
-#: ../js/ui/searchDisplay.js:453
+#: ../js/ui/searchDisplay.js:447
 msgid "Searching…"
 msgstr "Bilatzen…"
 
-#: ../js/ui/searchDisplay.js:497
+#: ../js/ui/searchDisplay.js:491
 msgid "No results."
 msgstr "Emaitzarik ez."
 
-#: ../js/ui/shellEntry.js:29
+#: ../js/ui/shellEntry.js:27
 msgid "Copy"
 msgstr "Kopiatu"
 
-#: ../js/ui/shellEntry.js:34
+#: ../js/ui/shellEntry.js:32
 msgid "Paste"
 msgstr "Itsatsi"
 
-#: ../js/ui/shellEntry.js:106
+#: ../js/ui/shellEntry.js:99
 msgid "Show Text"
 msgstr "Erakutsi testua"
 
-#: ../js/ui/shellEntry.js:108
+#: ../js/ui/shellEntry.js:101
 msgid "Hide Text"
 msgstr "Ezkutatu testua"
 
@@ -1362,497 +1295,331 @@ msgstr "Pasahitza"
 msgid "Remember Password"
 msgstr "Gogoratu pasahitza"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:113
-msgid "Unlock"
-msgstr "Desblokeatu"
-
-#: ../js/ui/status/accessibility.js:36
+#: ../js/ui/status/accessibility.js:41
 msgid "Accessibility"
 msgstr "Erabilerraztasuna"
 
-#: ../js/ui/status/accessibility.js:41
+#: ../js/ui/status/accessibility.js:58
 msgid "Zoom"
 msgstr "Zooma"
 
-#: ../js/ui/status/accessibility.js:48
+#: ../js/ui/status/accessibility.js:65
 msgid "Screen Reader"
 msgstr "Pantaila-irakurlea"
 
-#: ../js/ui/status/accessibility.js:52
+#: ../js/ui/status/accessibility.js:69
 msgid "Screen Keyboard"
 msgstr "Pantailako teklatua"
 
-#: ../js/ui/status/accessibility.js:56
+#: ../js/ui/status/accessibility.js:73
 msgid "Visual Alerts"
 msgstr "Ikusizko abisuak"
 
-#: ../js/ui/status/accessibility.js:59
+#: ../js/ui/status/accessibility.js:76
 msgid "Sticky Keys"
 msgstr "Tekla itsaskorrak"
 
-#: ../js/ui/status/accessibility.js:62
+#: ../js/ui/status/accessibility.js:79
 msgid "Slow Keys"
 msgstr "Tekla geldoak"
 
-#: ../js/ui/status/accessibility.js:65
+#: ../js/ui/status/accessibility.js:82
 msgid "Bounce Keys"
 msgstr "Errebote-teklak"
 
-#: ../js/ui/status/accessibility.js:68
+#: ../js/ui/status/accessibility.js:85
 msgid "Mouse Keys"
 msgstr "Sagu-teklak"
 
-#: ../js/ui/status/accessibility.js:72
-msgid "Universal Access Settings"
-msgstr "Sarbide unibertsalaren ezarpenak"
-
-#: ../js/ui/status/accessibility.js:129
+#: ../js/ui/status/accessibility.js:144
 msgid "High Contrast"
 msgstr "Kontraste handia"
 
-#: ../js/ui/status/accessibility.js:178
+#: ../js/ui/status/accessibility.js:193
 msgid "Large Text"
 msgstr "Testu handia"
 
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
-#: ../js/ui/status/bluetooth.js:289 ../js/ui/status/bluetooth.js:321
-#: ../js/ui/status/bluetooth.js:357 ../js/ui/status/bluetooth.js:388
-#: ../js/ui/status/network.js:826
+#. The Bluetooth menu only appears when Bluetooth is in use,
+#. so just statically build it with a "Turn Off" menu item.
+#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:62
+#: ../js/ui/status/bluetooth.js:99 ../js/ui/status/bluetooth.js:127
+#: ../js/ui/status/bluetooth.js:163 ../js/ui/status/bluetooth.js:194
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:45
-msgid "Visibility"
-msgstr "Ikusgaitasuna"
+#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
+#: ../js/ui/status/network.js:1034 ../js/ui/status/rfkill.js:46
+msgid "Turn Off"
+msgstr "Itzali"
 
-#: ../js/ui/status/bluetooth.js:59
-msgid "Send Files to Device…"
-msgstr "Bidali fitxategiak gailura…"
-
-#: ../js/ui/status/bluetooth.js:60
-msgid "Set Up a New Device…"
-msgstr "Konfiguratu gailu berria…"
-
-#: ../js/ui/status/bluetooth.js:84
+#: ../js/ui/status/bluetooth.js:33
 msgid "Bluetooth Settings"
 msgstr "Bluetooth ezarpenak"
 
-#. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:104 ../js/ui/status/network.js:178
-msgid "hardware disabled"
-msgstr "hardwarea desgaituta"
+#: ../js/ui/status/bluetooth.js:57
+#, c-format
+#| msgid "Connected (private)"
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "Gailu %d konektatuta"
+msgstr[1] "%d gailu konektatuta"
 
-#: ../js/ui/status/bluetooth.js:197
-msgid "Connection"
-msgstr "Konexioa"
-
-#: ../js/ui/status/bluetooth.js:208 ../js/ui/status/network.js:460
-msgid "disconnecting..."
-msgstr "deskonektatzen..."
-
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:466
-#: ../js/ui/status/network.js:1546
-msgid "connecting..."
-msgstr "konektatzen..."
-
-#: ../js/ui/status/bluetooth.js:239
-msgid "Send Files…"
-msgstr "Bidali fitxategiak…"
-
-#: ../js/ui/status/bluetooth.js:246
-msgid "Keyboard Settings"
-msgstr "Teklatuaren ezarpenak"
-
-#: ../js/ui/status/bluetooth.js:249
-msgid "Mouse Settings"
-msgstr "Saguaren ezarpenak"
-
-#: ../js/ui/status/bluetooth.js:254 ../js/ui/status/volume.js:316
-msgid "Sound Settings"
-msgstr "Soinuaren ezarpenak"
-
-#: ../js/ui/status/bluetooth.js:322
+#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Baimena eskatu da %s(e)tik"
 
-#: ../js/ui/status/bluetooth.js:328
-#, c-format
-msgid "Device %s wants access to the service '%s'"
-msgstr "%s gailuak '%s' zerbitzurako sarbidea nahi du"
-
-#: ../js/ui/status/bluetooth.js:330
-msgid "Always grant access"
-msgstr "Baimendu beti sarbidetza"
-
-#: ../js/ui/status/bluetooth.js:331
-msgid "Grant this time only"
-msgstr "Baimendu une honetan bakarrik"
-
-#: ../js/ui/status/bluetooth.js:332
-msgid "Reject"
-msgstr "Ukatu"
-
-#. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:359
-#, c-format
-msgid "Pairing confirmation for %s"
-msgstr "Parekatze-berrespena %s gailuarentzat"
-
-#: ../js/ui/status/bluetooth.js:365 ../js/ui/status/bluetooth.js:396
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/bluetooth.js:171
+#: ../js/ui/status/bluetooth.js:202
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "%s gailuak ordenagailu honekin parekatu nahi du"
 
-#: ../js/ui/status/bluetooth.js:366
+#: ../js/ui/status/bluetooth.js:108
+msgid "Allow"
+msgstr "Onartu"
+
+#: ../js/ui/status/bluetooth.js:109
+msgid "Deny"
+msgstr "Ukatu"
+
+#: ../js/ui/status/bluetooth.js:134
 #, c-format
-msgid "Please confirm whether the PIN '%06d' matches the one on the device."
-msgstr "Berretsi '%06d' PINa gailukoarekin bat datorrela."
+msgid "Device %s wants access to the service '%s'"
+msgstr "%s gailuak '%s' zerbitzurako sarbidea nahi du"
+
+#: ../js/ui/status/bluetooth.js:136
+msgid "Always grant access"
+msgstr "Baimendu beti sarbidetza"
+
+#: ../js/ui/status/bluetooth.js:137
+msgid "Grant this time only"
+msgstr "Baimendu une honetan bakarrik"
+
+#: ../js/ui/status/bluetooth.js:138
+msgid "Reject"
+msgstr "Ukatu"
+
+#. Translators: argument is the device short name
+#: ../js/ui/status/bluetooth.js:165
+#, c-format
+msgid "Pairing confirmation for %s"
+msgstr "Parekatze-berrespena %s gailuarentzat"
+
+#: ../js/ui/status/bluetooth.js:172
+#, c-format
+#| msgid "Please confirm whether the PIN '%06d' matches the one on the device."
+msgid ""
+"Please confirm whether the Passkey '%06d' matches the one on the device."
+msgstr "Berretsi '%06d' pasa-gakoa gailukoarekin bat datorren edo ez."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:369
+#: ../js/ui/status/bluetooth.js:175
 msgid "Matches"
 msgstr "Bat datozenak"
 
-#: ../js/ui/status/bluetooth.js:370
+#: ../js/ui/status/bluetooth.js:176
 msgid "Does not match"
 msgstr "Ez dator bat"
 
-#: ../js/ui/status/bluetooth.js:389
+#: ../js/ui/status/bluetooth.js:195
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s gailuaren parekatze-eskaera"
 
-#: ../js/ui/status/bluetooth.js:397
+#: ../js/ui/status/bluetooth.js:203
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Sartu gailuan aipatutako PINa."
 
-#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:220
 msgid "OK"
 msgstr "Ados"
 
-#: ../js/ui/status/keyboard.js:368
+#: ../js/ui/status/brightness.js:42
+msgid "Brightness"
+msgstr "Distira"
+
+#: ../js/ui/status/keyboard.js:403
 msgid "Show Keyboard Layout"
 msgstr "Erakutsi teklatuaren diseinua"
 
-#: ../js/ui/status/keyboard.js:373
-msgid "Region & Language Settings"
-msgstr "Eskualdearen eta hizkuntzaren ezarpenak"
-
-#: ../js/ui/status/lockScreenMenu.js:43
-msgid "Volume, network, battery"
-msgstr "Bolumena, sarea, bateria"
-
-#: ../js/ui/status/network.js:104
+#: ../js/ui/status/network.js:72
 msgid "<unknown>"
 msgstr "<ezezaguna>"
 
-#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:200
-msgid "disabled"
-msgstr "desgaituta"
+#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
+#| msgid "Offline"
+msgid "Off"
+msgstr "Desaktibatuta"
+
+#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:955
+#: ../js/ui/status/rfkill.js:49
+msgid "Network Settings"
+msgstr "Sarearen ezarpenak"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:458
+#: ../js/ui/status/network.js:364
 msgid "unmanaged"
 msgstr "kudeatu gabea"
 
+#: ../js/ui/status/network.js:366
+msgid "disconnecting..."
+msgstr "deskonektatzen..."
+
+#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1100
+msgid "connecting..."
+msgstr "konektatzen..."
+
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1549
+#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1103
 msgid "authentication required"
 msgstr "autentifikazioa behar da"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:383
 msgid "firmware missing"
 msgstr "firmwarea falta da"
 
-#. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:486
-msgid "cable unplugged"
-msgstr "kablea deskonektatuta"
-
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:491
+#: ../js/ui/status/network.js:387
 msgid "unavailable"
 msgstr "ez dago erabilgarri"
 
-#: ../js/ui/status/network.js:493 ../js/ui/status/network.js:1551
+#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1105
 msgid "connection failed"
 msgstr "konexioak huts egin du"
 
-#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1435
-#: ../js/ui/status/network.js:1627
-msgid "More…"
-msgstr "Gehiago…"
+#: ../js/ui/status/network.js:654
+#| msgid "Network"
+msgid "Wi-Fi Networks"
+msgstr "Wi-Fi sareak"
 
-#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
-#. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1365
-msgid "Connected (private)"
-msgstr "Konektatuta (pribatua)"
+#: ../js/ui/status/network.js:656
+#| msgid "Enable networking"
+msgid "Select a network"
+msgstr "Hautatu sare bat"
 
-#: ../js/ui/status/network.js:667
-msgid "Wired"
-msgstr "Hariduna"
+#: ../js/ui/status/network.js:680
+#| msgid "Network"
+msgid "No Networks"
+msgstr "Sarerik ez"
 
-#: ../js/ui/status/network.js:668
-msgid "Auto Ethernet"
-msgstr "Ethernet automatikoa"
+#: ../js/ui/status/network.js:949
+#| msgid "Network"
+msgid "Select Network"
+msgstr "Hautatu sarea"
 
-#: ../js/ui/status/network.js:695
-msgid "Mobile broadband"
-msgstr "Mugikorraren banda zabalera"
+#: ../js/ui/status/network.js:1034
+msgid "Turn On"
+msgstr "Piztu"
 
-#: ../js/ui/status/network.js:728
-msgid "Auto broadband"
-msgstr "Banda zabalera automatikoa"
+#: ../js/ui/status/network.js:1167
+msgid "VPN"
+msgstr "VPN"
 
-#: ../js/ui/status/network.js:731
-msgid "Auto dial-up"
-msgstr "Modem automatikoa"
-
-#. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:861 ../js/ui/status/network.js:1382
-#, c-format
-msgid "Auto %s"
-msgstr "%s automatikoa"
-
-#: ../js/ui/status/network.js:863
-msgid "Auto bluetooth"
-msgstr "Bluetooth automatikoa"
-
-#: ../js/ui/status/network.js:1384
-msgid "Auto wireless"
-msgstr "Haririk gabekoa automatikoa"
-
-#: ../js/ui/status/network.js:1729
-msgid "Enable networking"
-msgstr "Gaitu sarea"
-
-#: ../js/ui/status/network.js:1771
-msgid "Wi-Fi"
-msgstr "Wifia"
-
-#: ../js/ui/status/network.js:1790
-msgid "Network Settings"
-msgstr "Sarearen ezarpenak"
-
-#: ../js/ui/status/network.js:1807
+#: ../js/ui/status/network.js:1306
 msgid "Network Manager"
 msgstr "Sarearen kudeatzailea"
 
-#: ../js/ui/status/network.js:1897
+#: ../js/ui/status/network.js:1345
 msgid "Connection failed"
 msgstr "Konexioak huts egin du"
 
-#: ../js/ui/status/network.js:1898
+#: ../js/ui/status/network.js:1346
 msgid "Activation of network connection failed"
 msgstr "Sareko konexioa aktibatzeak huts egin du"
 
-#: ../js/ui/status/network.js:2276
-msgid "Networking is disabled"
-msgstr "Sarea desgaituta dago"
-
-#: ../js/ui/status/power.js:55
+#: ../js/ui/status/power.js:46
 msgid "Battery"
 msgstr "Bateria"
 
-#: ../js/ui/status/power.js:81
+#: ../js/ui/status/power.js:47
 msgid "Power Settings"
 msgstr "Energiaren ezarpenak"
 
+#: ../js/ui/status/power.js:63
+msgid "Fully Charged"
+msgstr "Erabat kargatuta"
+
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:99
+#. state is one of PENDING_CHARGING, PENDING_DISCHARGING
+#: ../js/ui/status/power.js:69 ../js/ui/status/power.js:86
 msgid "Estimating…"
 msgstr "Kalkulatzen…"
 
-#: ../js/ui/status/power.js:106
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: ../js/ui/status/power.js:77
 #, c-format
-msgid "%d hour remaining"
-msgid_plural "%d hours remaining"
-msgstr[0] "ordu %d geratzen da"
-msgstr[1] "%d ordu geratzen dira"
+msgid "%d\\u2236%02d Remaining (%d%%)"
+msgstr "%d\\u2236%02d falta da (%% %d)"
 
-#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:109
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: ../js/ui/status/power.js:82
 #, c-format
-msgid "%d %s %d %s remaining"
-msgstr "%d %s %d %s geratzen da"
+msgid "%d\\u2236%02d Until Full (%d%%)"
+msgstr "%d\\u2236%02d bete arte (%% %d)"
 
-#: ../js/ui/status/power.js:111
-msgid "hour"
-msgid_plural "hours"
-msgstr[0] "ordu"
-msgstr[1] "ordu"
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
+#: ../js/ui/status/rfkill.js:43
+msgid "Airplane Mode"
+msgstr "Hegazkin modua"
 
-#: ../js/ui/status/power.js:111
-msgid "minute"
-msgid_plural "minutes"
-msgstr[0] "minutu"
-msgstr[1] "minutu"
+#: ../js/ui/status/rfkill.js:45
+#| msgid "Open"
+msgid "On"
+msgstr "Aktibatuta"
 
-#: ../js/ui/status/power.js:114
-#, c-format
-msgid "%d minute remaining"
-msgid_plural "%d minutes remaining"
-msgstr[0] "minutu %d geratzen da"
-msgstr[1] "%d minutu geratzen dira"
-
-#: ../js/ui/status/power.js:117 ../js/ui/status/power.js:191
-#, c-format
-msgctxt "percent of battery remaining"
-msgid "%d%%"
-msgstr "%%%d"
-
-#: ../js/ui/status/power.js:201
-msgid "AC Adapter"
-msgstr "AC moldagailua"
-
-#: ../js/ui/status/power.js:203
-msgid "Laptop Battery"
-msgstr "Eramangarriaren bateria"
-
-#: ../js/ui/status/power.js:205
-msgid "UPS"
-msgstr "UPS"
-
-#: ../js/ui/status/power.js:207
-msgid "Monitor"
-msgstr "Monitorea"
-
-#: ../js/ui/status/power.js:209
-msgid "Mouse"
-msgstr "Sagua"
-
-#: ../js/ui/status/power.js:213
-msgid "PDA"
-msgstr "PDA"
-
-#: ../js/ui/status/power.js:215
-msgid "Cell Phone"
-msgstr "Telefono mugikorra"
-
-#: ../js/ui/status/power.js:217
-msgid "Media Player"
-msgstr "Multimediaren erreproduzitzailea"
-
-#: ../js/ui/status/power.js:219
-msgid "Tablet"
-msgstr "Taula"
-
-#: ../js/ui/status/power.js:221
-msgid "Computer"
-msgstr "Ordenagailua"
-
-#: ../js/ui/status/power.js:223
-msgctxt "device"
-msgid "Unknown"
-msgstr "Ezezaguna"
-
-#: ../js/ui/status/volume.js:124
-msgid "Volume changed"
-msgstr "Bolumena aldatuta"
-
-#. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:249 ../js/ui/status/volume.js:297
-msgid "Volume"
-msgstr "Bolumena"
-
-#: ../js/ui/status/volume.js:258
-msgid "Microphone"
-msgstr "Mikrofonoa"
-
-#: ../js/ui/unlockDialog.js:124
-msgid "Log in as another user"
-msgstr "Hasi saioa beste erabiltzaile baten gisan"
-
-#: ../js/ui/unlockDialog.js:145
-msgid "Unlock Window"
-msgstr "Desblokeatu leihoa"
-
-#: ../js/ui/userMenu.js:193
-msgid "Available"
-msgstr "Erabilgarri"
-
-#: ../js/ui/userMenu.js:196
-msgid "Busy"
-msgstr "Lanpetuta"
-
-#: ../js/ui/userMenu.js:199
-msgid "Invisible"
-msgstr "Ikusezina"
-
-#: ../js/ui/userMenu.js:202
-msgid "Away"
-msgstr "Kanpoan"
-
-#: ../js/ui/userMenu.js:205
-msgid "Idle"
-msgstr "Inaktiboa"
-
-#: ../js/ui/userMenu.js:208
-msgid "Offline"
-msgstr "Lineaz kanpo"
-
-#: ../js/ui/userMenu.js:781
-msgid "Notifications"
-msgstr "Jakinarazpenak"
-
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/status/system.js:305
 msgid "Switch User"
 msgstr "Aldatu erabiltzailea"
 
-#: ../js/ui/userMenu.js:802
+#: ../js/ui/status/system.js:310
 msgid "Log Out"
 msgstr "Amaitu saioa"
 
-#: ../js/ui/userMenu.js:822
-msgid "Install Updates & Restart"
-msgstr "Instalatu eguneraketak eta berrabiarazi"
+#: ../js/ui/status/system.js:329
+msgid "Orientation Lock"
+msgstr "Orientazioaren blokeoa"
 
-#: ../js/ui/userMenu.js:840
-msgid "Your chat status will be set to busy"
-msgstr "Zure berriketaren egoera lanpetuta gisa ezar daiteke"
+#: ../js/ui/status/system.js:337
+msgid "Suspend"
+msgstr "Eseki"
 
-#: ../js/ui/userMenu.js:841
-msgid ""
-"Notifications are now disabled, including chat messages. Your online status "
-"has been adjusted to let others know that you might not see their messages."
-msgstr ""
-"Jakinarazpenak desgaituta daude orain, berriketen mezuak barne. Zure lineako "
-"egoera doitu egin da besteek beraien mezurik ezin ditzakezula ikusi jakin "
-"dezaten."
+#: ../js/ui/status/system.js:340
+msgid "Power Off"
+msgstr "Itzali"
 
-#: ../js/ui/userMenu.js:888
-msgid "Other users are logged in."
-msgstr "Beste erabiltzaileek saioa hasi dute."
+#: ../js/ui/status/volume.js:127
+msgid "Volume changed"
+msgstr "Bolumena aldatuta"
 
-#: ../js/ui/userMenu.js:893
-msgid "Shutting down might cause them to lose unsaved work."
-msgstr "Itzaltzeak haien gorde gabeko lanak galtzea eragin dezake."
+#: ../js/ui/status/volume.js:162
+msgid "Volume"
+msgstr "Bolumena"
 
-#. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/userMenu.js:921
-#, c-format
-msgid "%s (remote)"
-msgstr "%s (urrunekoa)"
+#: ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Mikrofonoa"
 
-#. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/userMenu.js:924
-#, c-format
-msgid "%s (console)"
-msgstr "%s (kontsola)"
+#: ../js/ui/unlockDialog.js:67
+msgid "Log in as another user"
+msgstr "Hasi saioa beste erabiltzaile baten gisan"
 
-#: ../js/ui/viewSelector.js:100
+#: ../js/ui/unlockDialog.js:84
+msgid "Unlock Window"
+msgstr "Desblokeatu leihoa"
+
+#: ../js/ui/viewSelector.js:104
 msgid "Applications"
 msgstr "Aplikazioak"
 
-#: ../js/ui/viewSelector.js:104
+#: ../js/ui/viewSelector.js:108
 msgid "Search"
 msgstr "Bilatu"
 
@@ -1874,6 +1641,29 @@ msgstr "Orakuluak dio: %s"
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' prest dago"
+
+#: ../js/ui/windowManager.js:56
+msgid "Do you want to keep these display settings?"
+msgstr "Pantailaren ezarpen hauek mantentzea nahi duzu?"
+
+#. Translators: this and the following message should be limited in lenght,
+#. to avoid ellipsizing the labels.
+#.
+#: ../js/ui/windowManager.js:75
+#| msgid "Power Settings"
+msgid "Revert Settings"
+msgstr "Alderantzikatu ezarpenak"
+
+#: ../js/ui/windowManager.js:79
+msgid "Keep Changes"
+msgstr "Mantendu aldaketak"
+
+#: ../js/ui/windowManager.js:97
+#, c-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "Ezarpenen aldaketak segundo %dean alderantzikatuko dira"
+msgstr[1] "Ezarpenen aldaketak %d segundotan alderantzikatuko dira"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1897,42 +1687,342 @@ msgid_plural "%u Inputs"
 msgstr[0] "Sarrera %u"
 msgstr[1] "%u sarrera"
 
-#: ../src/gvc/gvc-mixer-control.c:2371
+#: ../src/gvc/gvc-mixer-control.c:2373
 msgid "System Sounds"
 msgstr "Sistemako soinuak"
 
-#: ../src/main.c:347
+#: ../src/main.c:353
 msgid "Print version"
 msgstr "Bistaratu bertsioa"
 
-#: ../src/main.c:353
+#: ../src/main.c:359
 msgid "Mode used by GDM for login screen"
 msgstr "GDMk erabiltzen duen modua saio-hasierako pantailarako"
 
-#: ../src/main.c:359
+#: ../src/main.c:365
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Erabili modu jakin bat, adib. 'gdm', saioa hasteko pantailarako"
 
-#: ../src/main.c:365
+#: ../src/main.c:371
 msgid "List possible modes"
 msgstr "Zerrendatu modu posibleak"
 
-#: ../src/shell-app.c:622
+#: ../src/shell-app.c:644
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Huts egin du '%s' abiaraztean"
 
-#: ../src/shell-keyring-prompt.c:708
+#: ../src/shell-keyring-prompt.c:714
 msgid "Passwords do not match."
 msgstr "Pasahitzak ez datoz bat"
 
-#: ../src/shell-keyring-prompt.c:716
+#: ../src/shell-keyring-prompt.c:722
 msgid "Password cannot be blank"
 msgstr "Pasahitza ezin da hutsa izan"
 
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Erabiltzaileak autentifikatzeko elkarrizketa-koadroa itxi du"
+
+#~ msgid "Screenshots"
+#~ msgstr "Pantaila-argazkiak"
+
+#~ msgid "Record a screencast"
+#~ msgstr "Grabatu pantaila-bideoa"
+
+#~ msgid "Whether to collect stats about applications usage"
+#~ msgstr "Aplikazioen erabilpenei buruzko estatistikak bilduko diren ala ez"
+
+#~ msgid ""
+#~ "The shell normally monitors active applications in order to present the "
+#~ "most used ones (e.g. in launchers). While this data will be kept private, "
+#~ "you may want to disable this for privacy reasons. Please note that doing "
+#~ "so won't remove already saved data."
+#~ msgstr ""
+#~ "Shell-ak normalean aplikazio aktiboak monitorizatzen ditu gehien "
+#~ "erabilitakoak aurkezteko (adib. abiarazleetan). Datu hauek pribatu "
+#~ "mantenduko diren arren, agian hau desgaitu nahi duzu pribatutasun-"
+#~ "arrazoiengatik. Kontuan izan hori eginez gero dagoeneko gordeta dauden "
+#~ "datuak ez direla kenduko."
+
+#~ msgid ""
+#~ "Internally used to store the last IM presence explicitly set by the user. "
+#~ "The value here is from the TpConnectionPresenceType enumeration."
+#~ msgstr ""
+#~ "Barnean erabilita erabiltzaileak ezarritako azken BMren presentzia "
+#~ "esplizituki gordetzeko. Hemengo balioa TpConnectionPresenceType "
+#~ "zerrendapenetik dator."
+
+#~ msgid ""
+#~ "Internally used to store the last session presence status for the user. "
+#~ "The value here is from the GsmPresenceStatus enumeration."
+#~ msgstr ""
+#~ "Barnean erabilita erabiltzailearen azken saioaren presentziaren egoera "
+#~ "esplizituki gordetzeko. Hemengo balioa GsmPresenceStatus zerrendapenetik "
+#~ "dator."
+
+#~ msgid "Keybinding to toggle the screen recorder"
+#~ msgstr "Pantaila-grabatzailea txandakatzeko laster-tekla"
+
+#~ msgid "Keybinding to start/stop the builtin screen recorder."
+#~ msgstr ""
+#~ "Pantaila-grabatzaile integratua abiarazi eta gelditzeko laster-tekla."
+
+#~ msgid "Framerate used for recording screencasts."
+#~ msgstr "Pantailatik bideoak grabatzean erabilitako fotograma-emaria."
+
+#~ msgid ""
+#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
+#~ "screencast recorder in frames-per-second."
+#~ msgstr ""
+#~ "GNOME Shell-en pantailako bideoen grabatzaileak pantailatik grabatutako "
+#~ "bideoen fotograma-emaria (fotograma segundoko)."
+
+#~ msgid "The gstreamer pipeline used to encode the screencast"
+#~ msgstr "Pantailako bideoak kodetzeko erabilitako gstreamer hodia"
+
+#~ msgid ""
+#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
+#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
+#~ "pad where the recorded video is recorded. It will normally have a "
+#~ "unconnected source pad; output from that pad will be written into the "
+#~ "output file. However the pipeline can also take care of its own output - "
+#~ "this might be used to send the output to an icecast server via shout2send "
+#~ "or similar. When unset or set to an empty value, the default pipeline "
+#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
+#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
+#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
+#~ "optimal thread count on the system."
+#~ msgstr ""
+#~ "Grabazioak kodetzeko erabiltzen den GStreamer hodia ezartzen du. gst-"
+#~ "launch tresnak erabilitako sintaxia jarraitzen du. Hodiak "
+#~ "deskonektatutako sarrerako konektorea izan beharko luke bideoa grabatzen "
+#~ "den tokian. Normalean konektatu gabeko iturburu-konektorea du; konektore "
+#~ "horren irteera irteera-fitxategian idatziko da. da. Hala ere, bere "
+#~ "irteeraren kargu egin daiteke hodia, adibidez irteera icecast zerbitzari "
+#~ "batera bidaltzeko shout2send edo antzekoen bitartez. Ezarri gabe "
+#~ "dagoenean edo balio hutsa duenean, hodi lehenetsia erabiliko da. Une "
+#~ "honetan hau da: 'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 "
+#~ "deadline=1000000 threads=%T ! queue ! webmmux' eta WEBM formatuan "
+#~ "grabatzen du VP8 kodeka erabiliz. %T leku-marka gisa erabiltzen da "
+#~ "sistemako hari kopuru optimoa asmatzeko."
+
+#~ msgid "File extension used for storing the screencast"
+#~ msgstr "Pantailako bideoa gordetzeko erabilitako luzapena"
+
+#~ msgid ""
+#~ "The filename for recorded screencasts will be a unique filename based on "
+#~ "the current date, and use this extension. It should be changed when "
+#~ "recording to a different container format."
+#~ msgstr ""
+#~ "Pantailatik grabatutako bideoen fitxategi-izena bakarra izango da uneko "
+#~ "datan oinarrituta eta luzapen hau erabiliko du. Aldatu egin beharko "
+#~ "litzateke beste edukiontziko formatu batean grabatzean."
+
+#~ msgid "Session…"
+#~ msgstr "Saioa…"
+
+#~ msgid "Power"
+#~ msgstr "Energia"
+
+#~ msgid "Restart"
+#~ msgstr "Berrabiarazi"
+
+#~ msgid "Screencast from %d %t"
+#~ msgstr "Pantailaren bideoa %d %t"
+
+#~ msgid "Click Log Out to quit these applications and log out of the system."
+#~ msgstr ""
+#~ "Egin klik 'Amaitu saioa' botoian aplikazio hauetatik irten eta sistemako "
+#~ "saioa amaitzeko."
+
+#~ msgid "Logging out of the system."
+#~ msgstr "Sistemako saioa amaitzen."
+
+#~ msgid "Click Power Off to quit these applications and power off the system."
+#~ msgstr ""
+#~ "Egin klik 'Itzali' botoian aplikazio hauetatik irten eta sistema "
+#~ "itzaltzeko."
+
+#~ msgid "Powering off the system."
+#~ msgstr "Sistema itzaltzen."
+
+#~ msgid "Click Restart to quit these applications and restart the system."
+#~ msgstr ""
+#~ "Egin klik 'Berrabiarazi' botoian aplikazio hauetatik irten eta sistema "
+#~ "berrabiarazteko."
+
+#~ msgid "Restarting the system."
+#~ msgstr "Sistema berrabiarazten."
+
+#~ msgid "Universal Access Settings"
+#~ msgstr "Sarbide unibertsalaren ezarpenak"
+
+#~ msgid "Visibility"
+#~ msgstr "Ikusgaitasuna"
+
+#~ msgid "Send Files to Device…"
+#~ msgstr "Bidali fitxategiak gailura…"
+
+#~ msgid "Set Up a New Device…"
+#~ msgstr "Konfiguratu gailu berria…"
+
+#~ msgid "hardware disabled"
+#~ msgstr "hardwarea desgaituta"
+
+#~ msgid "Connection"
+#~ msgstr "Konexioa"
+
+#~ msgid "Send Files…"
+#~ msgstr "Bidali fitxategiak…"
+
+#~ msgid "Keyboard Settings"
+#~ msgstr "Teklatuaren ezarpenak"
+
+#~ msgid "Mouse Settings"
+#~ msgstr "Saguaren ezarpenak"
+
+#~ msgid "Sound Settings"
+#~ msgstr "Soinuaren ezarpenak"
+
+#~ msgid "Region & Language Settings"
+#~ msgstr "Eskualdearen eta hizkuntzaren ezarpenak"
+
+#~ msgid "Volume, network, battery"
+#~ msgstr "Bolumena, sarea, bateria"
+
+#~ msgid "disabled"
+#~ msgstr "desgaituta"
+
+#~ msgid "cable unplugged"
+#~ msgstr "kablea deskonektatuta"
+
+#~ msgid "More…"
+#~ msgstr "Gehiago…"
+
+#~ msgid "Wired"
+#~ msgstr "Hariduna"
+
+#~ msgid "Auto Ethernet"
+#~ msgstr "Ethernet automatikoa"
+
+#~ msgid "Mobile broadband"
+#~ msgstr "Mugikorraren banda zabalera"
+
+#~ msgid "Auto broadband"
+#~ msgstr "Banda zabalera automatikoa"
+
+#~ msgid "Auto dial-up"
+#~ msgstr "Modem automatikoa"
+
+#~ msgid "Auto %s"
+#~ msgstr "%s automatikoa"
+
+#~ msgid "Auto bluetooth"
+#~ msgstr "Bluetooth automatikoa"
+
+#~ msgid "Auto wireless"
+#~ msgstr "Haririk gabekoa automatikoa"
+
+#~ msgid "Wi-Fi"
+#~ msgstr "Wifia"
+
+#~ msgid "Networking is disabled"
+#~ msgstr "Sarea desgaituta dago"
+
+#~ msgid "%d hour remaining"
+#~ msgid_plural "%d hours remaining"
+#~ msgstr[0] "ordu %d geratzen da"
+#~ msgstr[1] "%d ordu geratzen dira"
+
+#~ msgid "%d %s %d %s remaining"
+#~ msgstr "%d %s %d %s geratzen da"
+
+#~ msgid "hour"
+#~ msgid_plural "hours"
+#~ msgstr[0] "ordu"
+#~ msgstr[1] "ordu"
+
+#~ msgid "minute"
+#~ msgid_plural "minutes"
+#~ msgstr[0] "minutu"
+#~ msgstr[1] "minutu"
+
+#~ msgid "%d minute remaining"
+#~ msgid_plural "%d minutes remaining"
+#~ msgstr[0] "minutu %d geratzen da"
+#~ msgstr[1] "%d minutu geratzen dira"
+
+#~ msgctxt "percent of battery remaining"
+#~ msgid "%d%%"
+#~ msgstr "%%%d"
+
+#~ msgid "AC Adapter"
+#~ msgstr "AC moldagailua"
+
+#~ msgid "Laptop Battery"
+#~ msgstr "Eramangarriaren bateria"
+
+#~ msgid "UPS"
+#~ msgstr "UPS"
+
+#~ msgid "Monitor"
+#~ msgstr "Monitorea"
+
+#~ msgid "Mouse"
+#~ msgstr "Sagua"
+
+#~ msgid "PDA"
+#~ msgstr "PDA"
+
+#~ msgid "Cell Phone"
+#~ msgstr "Telefono mugikorra"
+
+#~ msgid "Media Player"
+#~ msgstr "Multimediaren erreproduzitzailea"
+
+#~ msgid "Tablet"
+#~ msgstr "Taula"
+
+#~ msgid "Computer"
+#~ msgstr "Ordenagailua"
+
+#~ msgctxt "device"
+#~ msgid "Unknown"
+#~ msgstr "Ezezaguna"
+
+#~ msgid "Available"
+#~ msgstr "Erabilgarri"
+
+#~ msgid "Busy"
+#~ msgstr "Lanpetuta"
+
+#~ msgid "Invisible"
+#~ msgstr "Ikusezina"
+
+#~ msgid "Away"
+#~ msgstr "Kanpoan"
+
+#~ msgid "Idle"
+#~ msgstr "Inaktiboa"
+
+#~ msgid "Notifications"
+#~ msgstr "Jakinarazpenak"
+
+#~ msgid "Your chat status will be set to busy"
+#~ msgstr "Zure berriketaren egoera lanpetuta gisa ezar daiteke"
+
+#~ msgid ""
+#~ "Notifications are now disabled, including chat messages. Your online "
+#~ "status has been adjusted to let others know that you might not see their "
+#~ "messages."
+#~ msgstr ""
+#~ "Jakinarazpenak desgaituta daude orain, berriketen mezuak barne. Zure "
+#~ "lineako egoera doitu egin da besteek beraien mezurik ezin ditzakezula "
+#~ "ikusi jakin dezaten."
+
+#~ msgid "Shutting down might cause them to lose unsaved work."
+#~ msgstr "Itzaltzeak haien gorde gabeko lanak galtzea eragin dezake."
 
 #~ msgctxt "title"
 #~ msgid "Sign In"
@@ -2039,9 +2129,6 @@ msgstr "Erabiltzaileak autentifikatzeko elkarrizketa-koadroa itxi du"
 
 #~ msgid "The requested device cannot be browsed, error is '%s'"
 #~ msgstr "Eskatutako gailua ezin da arakatu, errorea '%s' da"
-
-#~ msgid "Network"
-#~ msgstr "Sarea"
 
 #~ msgid "Wireless"
 #~ msgstr "Haririk gabekoa"
