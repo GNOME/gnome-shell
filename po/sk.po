@@ -1,375 +1,987 @@
-# Slovak translation for gnome-shell-extensions.
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<head>
+<title>gnome-shell - Next generation GNOME desktop shell</title>
+<meta name='generator' content='cgit v0.9.2'/>
+<meta name='robots' content='index, nofollow'/>
+<link rel='stylesheet' type='text/css' href='/browse/cgit-gnome.css'/>
+<link rel='shortcut icon' href='http://www-old.gnome.org/img/logo/foot-16.png'/>
+<link rel='alternate' title='Atom feed' href='https://git.gnome.org/browse/gnome-shell/atom/po/sk.po?h=master' type='application/atom+xml'/>
+</head>
+<body>
+<div id="global_domain_bar">
+<div class="maxwidth">
+	<div class="tab">
+	<a class="root" href="https://www.gnome.org/">GNOME.org</a>
+	</div>
+</div>
+</div>
+
+<div id="page">
+    <div id="logo_bar" class="container_12">
+      <div id="logo" class="grid_3">
+        <a title="Go to home page" href="https://git.gnome.org/"><img src="https://www-old.gnome.org/css/gnome-git.png" alt="GNOME: Git Repository" /></a>
+      </div>
+
+      <div id="top_bar" class="grid_9">
+        <div class="left">
+          <div class="menu-globalnav-container">
+            <ul id="menu-globalnav" class="menu">
+              <li id="menu-item-1039" class=
+              "menu-item menu-item-type-post_type menu-item-object-page menu-item-1039">
+              <a href="https://git.gnome.org/">Home</a></li>
+
+              <li id="menu-item-1037" class=
+              "menu-item menu-item-type-post_type menu-item-object-page menu-item-1037">
+              <a href="https://wiki.gnome.org/Git">Git Help</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+</div>
+<div id='cgit'><table id='header'>
+<tr>
+<td class='main'><a href='/browse/'>index</a> : <a title='gnome-shell' href='/browse/gnome-shell/'>gnome-shell</a></td><td class='form'><form method='get' action=''>
+<input type='hidden' name='id' value='5b97250bb14ee310b46e0ed8198b0314dd54e3dc'/><select name='h' onchange='this.form.submit();'>
+<option value='3.7.2.1-branch'>3.7.2.1-branch</option>
+<option value='3.7.3.1-branch'>3.7.3.1-branch</option>
+<option value='datetime'>datetime</option>
+<option value='gnome-3-0'>gnome-3-0</option>
+<option value='gnome-3-2'>gnome-3-2</option>
+<option value='gnome-3-4'>gnome-3-4</option>
+<option value='gnome-3-6'>gnome-3-6</option>
+<option value='gnome-3-8'>gnome-3-8</option>
+<option value='goa-client'>goa-client</option>
+<option value='master' selected='selected'>master</option>
+<option value='message-tray'>message-tray</option>
+<option value='nbtk-introduction'>nbtk-introduction</option>
+<option value='osk'>osk</option>
+<option value='overlay-design02'>overlay-design02</option>
+<option value='overview-relayout'>overview-relayout</option>
+<option value='screen-shield-next'>screen-shield-next</option>
+<option value='shell-toolkit'>shell-toolkit</option>
+<option value='wip/classic'>wip/classic</option>
+<option value='wip/cogl-deprecations'>wip/cogl-deprecations</option>
+<option value='wip/gcampax/background'>wip/gcampax/background</option>
+<option value='wip/gcampax/modal-dialogs'>wip/gcampax/modal-dialogs</option>
+<option value='wip/gdbus'>wip/gdbus</option>
+<option value='wip/gdbus-2'>wip/gdbus-2</option>
+<option value='wip/grab-helper-top-panel'>wip/grab-helper-top-panel</option>
+<option value='wip/gresource'>wip/gresource</option>
+<option value='wip/gtkmenutrackeritem'>wip/gtkmenutrackeritem</option>
+<option value='wip/input-sources'>wip/input-sources</option>
+<option value='wip/is-switch-fixes'>wip/is-switch-fixes</option>
+<option value='wip/login-unlock-merge'>wip/login-unlock-merge</option>
+<option value='wip/media-keys'>wip/media-keys</option>
+<option value='wip/menus'>wip/menus</option>
+<option value='wip/menus-rebase2'>wip/menus-rebase2</option>
+<option value='wip/re-search'>wip/re-search</option>
+<option value='wip/re-search-v2'>wip/re-search-v2</option>
+<option value='wip/reorg'>wip/reorg</option>
+<option value='wip/screen-shield'>wip/screen-shield</option>
+<option value='wip/screen-shield-rebase1'>wip/screen-shield-rebase1</option>
+<option value='wip/session-menu'>wip/session-menu</option>
+<option value='wip/smartcard'>wip/smartcard</option>
+<option value='wip/wayland-2'>wip/wayland-2</option>
+<option value='wip/window-scales'>wip/window-scales</option>
+<option value='wip/workspace'>wip/workspace</option>
+<option value='workspace-thumbnails'>workspace-thumbnails</option>
+<option value='zeitgeist'>zeitgeist</option>
+</select> <input type='submit' name='' value='switch'/></form></td></tr>
+<tr><td class='sub'>Next generation GNOME desktop shell</td><td class='sub right'></td></tr></table>
+<table class='tabs'><tr><td>
+<a href='/browse/gnome-shell/'>summary</a><a href='/browse/gnome-shell/refs/?id=5b97250bb14ee310b46e0ed8198b0314dd54e3dc'>refs</a><a href='/browse/gnome-shell/log/po/sk.po'>log</a><a class='active' href='/browse/gnome-shell/tree/po/sk.po?id=5b97250bb14ee310b46e0ed8198b0314dd54e3dc'>tree</a><a href='/browse/gnome-shell/commit/po/sk.po?id=5b97250bb14ee310b46e0ed8198b0314dd54e3dc'>commit</a><a href='/browse/gnome-shell/diff/po/sk.po?id=5b97250bb14ee310b46e0ed8198b0314dd54e3dc'>diff</a></td><td class='form'><form class='right' method='get' action='/browse/gnome-shell/log/po/sk.po'>
+<input type='hidden' name='id' value='5b97250bb14ee310b46e0ed8198b0314dd54e3dc'/><select name='qt'>
+<option value='grep'>log msg</option>
+<option value='author'>author</option>
+<option value='committer'>committer</option>
+<option value='range'>range</option>
+</select>
+<input class='txt' type='text' size='10' name='q' value=''/>
+<input type='submit' value='search'/>
+</form>
+</td></tr></table>
+<div class='path'>path: <a href='/browse/gnome-shell/tree/?id=5b97250bb14ee310b46e0ed8198b0314dd54e3dc'>root</a>/<a href='/browse/gnome-shell/tree/po?id=5b97250bb14ee310b46e0ed8198b0314dd54e3dc'>po</a>/<a href='/browse/gnome-shell/tree/po/sk.po?id=5b97250bb14ee310b46e0ed8198b0314dd54e3dc'>sk.po</a></div><div class='content'>blob: 4a5c4faf90d6ff684afb8052161feeb942e78a46 (<a href='/browse/gnome-shell/plain/po/sk.po?id=5b97250bb14ee310b46e0ed8198b0314dd54e3dc'>plain</a>)
+<table summary='blob content' class='blob'>
+<tr><td class='linenumbers'><pre><a class='no' id='n1' name='n1' href='#n1'>1</a>
+<a class='no' id='n2' name='n2' href='#n2'>2</a>
+<a class='no' id='n3' name='n3' href='#n3'>3</a>
+<a class='no' id='n4' name='n4' href='#n4'>4</a>
+<a class='no' id='n5' name='n5' href='#n5'>5</a>
+<a class='no' id='n6' name='n6' href='#n6'>6</a>
+<a class='no' id='n7' name='n7' href='#n7'>7</a>
+<a class='no' id='n8' name='n8' href='#n8'>8</a>
+<a class='no' id='n9' name='n9' href='#n9'>9</a>
+<a class='no' id='n10' name='n10' href='#n10'>10</a>
+<a class='no' id='n11' name='n11' href='#n11'>11</a>
+<a class='no' id='n12' name='n12' href='#n12'>12</a>
+<a class='no' id='n13' name='n13' href='#n13'>13</a>
+<a class='no' id='n14' name='n14' href='#n14'>14</a>
+<a class='no' id='n15' name='n15' href='#n15'>15</a>
+<a class='no' id='n16' name='n16' href='#n16'>16</a>
+<a class='no' id='n17' name='n17' href='#n17'>17</a>
+<a class='no' id='n18' name='n18' href='#n18'>18</a>
+<a class='no' id='n19' name='n19' href='#n19'>19</a>
+<a class='no' id='n20' name='n20' href='#n20'>20</a>
+<a class='no' id='n21' name='n21' href='#n21'>21</a>
+<a class='no' id='n22' name='n22' href='#n22'>22</a>
+<a class='no' id='n23' name='n23' href='#n23'>23</a>
+<a class='no' id='n24' name='n24' href='#n24'>24</a>
+<a class='no' id='n25' name='n25' href='#n25'>25</a>
+<a class='no' id='n26' name='n26' href='#n26'>26</a>
+<a class='no' id='n27' name='n27' href='#n27'>27</a>
+<a class='no' id='n28' name='n28' href='#n28'>28</a>
+<a class='no' id='n29' name='n29' href='#n29'>29</a>
+<a class='no' id='n30' name='n30' href='#n30'>30</a>
+<a class='no' id='n31' name='n31' href='#n31'>31</a>
+<a class='no' id='n32' name='n32' href='#n32'>32</a>
+<a class='no' id='n33' name='n33' href='#n33'>33</a>
+<a class='no' id='n34' name='n34' href='#n34'>34</a>
+<a class='no' id='n35' name='n35' href='#n35'>35</a>
+<a class='no' id='n36' name='n36' href='#n36'>36</a>
+<a class='no' id='n37' name='n37' href='#n37'>37</a>
+<a class='no' id='n38' name='n38' href='#n38'>38</a>
+<a class='no' id='n39' name='n39' href='#n39'>39</a>
+<a class='no' id='n40' name='n40' href='#n40'>40</a>
+<a class='no' id='n41' name='n41' href='#n41'>41</a>
+<a class='no' id='n42' name='n42' href='#n42'>42</a>
+<a class='no' id='n43' name='n43' href='#n43'>43</a>
+<a class='no' id='n44' name='n44' href='#n44'>44</a>
+<a class='no' id='n45' name='n45' href='#n45'>45</a>
+<a class='no' id='n46' name='n46' href='#n46'>46</a>
+<a class='no' id='n47' name='n47' href='#n47'>47</a>
+<a class='no' id='n48' name='n48' href='#n48'>48</a>
+<a class='no' id='n49' name='n49' href='#n49'>49</a>
+<a class='no' id='n50' name='n50' href='#n50'>50</a>
+<a class='no' id='n51' name='n51' href='#n51'>51</a>
+<a class='no' id='n52' name='n52' href='#n52'>52</a>
+<a class='no' id='n53' name='n53' href='#n53'>53</a>
+<a class='no' id='n54' name='n54' href='#n54'>54</a>
+<a class='no' id='n55' name='n55' href='#n55'>55</a>
+<a class='no' id='n56' name='n56' href='#n56'>56</a>
+<a class='no' id='n57' name='n57' href='#n57'>57</a>
+<a class='no' id='n58' name='n58' href='#n58'>58</a>
+<a class='no' id='n59' name='n59' href='#n59'>59</a>
+<a class='no' id='n60' name='n60' href='#n60'>60</a>
+<a class='no' id='n61' name='n61' href='#n61'>61</a>
+<a class='no' id='n62' name='n62' href='#n62'>62</a>
+<a class='no' id='n63' name='n63' href='#n63'>63</a>
+<a class='no' id='n64' name='n64' href='#n64'>64</a>
+<a class='no' id='n65' name='n65' href='#n65'>65</a>
+<a class='no' id='n66' name='n66' href='#n66'>66</a>
+<a class='no' id='n67' name='n67' href='#n67'>67</a>
+<a class='no' id='n68' name='n68' href='#n68'>68</a>
+<a class='no' id='n69' name='n69' href='#n69'>69</a>
+<a class='no' id='n70' name='n70' href='#n70'>70</a>
+<a class='no' id='n71' name='n71' href='#n71'>71</a>
+<a class='no' id='n72' name='n72' href='#n72'>72</a>
+<a class='no' id='n73' name='n73' href='#n73'>73</a>
+<a class='no' id='n74' name='n74' href='#n74'>74</a>
+<a class='no' id='n75' name='n75' href='#n75'>75</a>
+<a class='no' id='n76' name='n76' href='#n76'>76</a>
+<a class='no' id='n77' name='n77' href='#n77'>77</a>
+<a class='no' id='n78' name='n78' href='#n78'>78</a>
+<a class='no' id='n79' name='n79' href='#n79'>79</a>
+<a class='no' id='n80' name='n80' href='#n80'>80</a>
+<a class='no' id='n81' name='n81' href='#n81'>81</a>
+<a class='no' id='n82' name='n82' href='#n82'>82</a>
+<a class='no' id='n83' name='n83' href='#n83'>83</a>
+<a class='no' id='n84' name='n84' href='#n84'>84</a>
+<a class='no' id='n85' name='n85' href='#n85'>85</a>
+<a class='no' id='n86' name='n86' href='#n86'>86</a>
+<a class='no' id='n87' name='n87' href='#n87'>87</a>
+<a class='no' id='n88' name='n88' href='#n88'>88</a>
+<a class='no' id='n89' name='n89' href='#n89'>89</a>
+<a class='no' id='n90' name='n90' href='#n90'>90</a>
+<a class='no' id='n91' name='n91' href='#n91'>91</a>
+<a class='no' id='n92' name='n92' href='#n92'>92</a>
+<a class='no' id='n93' name='n93' href='#n93'>93</a>
+<a class='no' id='n94' name='n94' href='#n94'>94</a>
+<a class='no' id='n95' name='n95' href='#n95'>95</a>
+<a class='no' id='n96' name='n96' href='#n96'>96</a>
+<a class='no' id='n97' name='n97' href='#n97'>97</a>
+<a class='no' id='n98' name='n98' href='#n98'>98</a>
+<a class='no' id='n99' name='n99' href='#n99'>99</a>
+<a class='no' id='n100' name='n100' href='#n100'>100</a>
+<a class='no' id='n101' name='n101' href='#n101'>101</a>
+<a class='no' id='n102' name='n102' href='#n102'>102</a>
+<a class='no' id='n103' name='n103' href='#n103'>103</a>
+<a class='no' id='n104' name='n104' href='#n104'>104</a>
+<a class='no' id='n105' name='n105' href='#n105'>105</a>
+<a class='no' id='n106' name='n106' href='#n106'>106</a>
+<a class='no' id='n107' name='n107' href='#n107'>107</a>
+<a class='no' id='n108' name='n108' href='#n108'>108</a>
+<a class='no' id='n109' name='n109' href='#n109'>109</a>
+<a class='no' id='n110' name='n110' href='#n110'>110</a>
+<a class='no' id='n111' name='n111' href='#n111'>111</a>
+<a class='no' id='n112' name='n112' href='#n112'>112</a>
+<a class='no' id='n113' name='n113' href='#n113'>113</a>
+<a class='no' id='n114' name='n114' href='#n114'>114</a>
+<a class='no' id='n115' name='n115' href='#n115'>115</a>
+<a class='no' id='n116' name='n116' href='#n116'>116</a>
+<a class='no' id='n117' name='n117' href='#n117'>117</a>
+<a class='no' id='n118' name='n118' href='#n118'>118</a>
+<a class='no' id='n119' name='n119' href='#n119'>119</a>
+<a class='no' id='n120' name='n120' href='#n120'>120</a>
+<a class='no' id='n121' name='n121' href='#n121'>121</a>
+<a class='no' id='n122' name='n122' href='#n122'>122</a>
+<a class='no' id='n123' name='n123' href='#n123'>123</a>
+<a class='no' id='n124' name='n124' href='#n124'>124</a>
+<a class='no' id='n125' name='n125' href='#n125'>125</a>
+<a class='no' id='n126' name='n126' href='#n126'>126</a>
+<a class='no' id='n127' name='n127' href='#n127'>127</a>
+<a class='no' id='n128' name='n128' href='#n128'>128</a>
+<a class='no' id='n129' name='n129' href='#n129'>129</a>
+<a class='no' id='n130' name='n130' href='#n130'>130</a>
+<a class='no' id='n131' name='n131' href='#n131'>131</a>
+<a class='no' id='n132' name='n132' href='#n132'>132</a>
+<a class='no' id='n133' name='n133' href='#n133'>133</a>
+<a class='no' id='n134' name='n134' href='#n134'>134</a>
+<a class='no' id='n135' name='n135' href='#n135'>135</a>
+<a class='no' id='n136' name='n136' href='#n136'>136</a>
+<a class='no' id='n137' name='n137' href='#n137'>137</a>
+<a class='no' id='n138' name='n138' href='#n138'>138</a>
+<a class='no' id='n139' name='n139' href='#n139'>139</a>
+<a class='no' id='n140' name='n140' href='#n140'>140</a>
+<a class='no' id='n141' name='n141' href='#n141'>141</a>
+<a class='no' id='n142' name='n142' href='#n142'>142</a>
+<a class='no' id='n143' name='n143' href='#n143'>143</a>
+<a class='no' id='n144' name='n144' href='#n144'>144</a>
+<a class='no' id='n145' name='n145' href='#n145'>145</a>
+<a class='no' id='n146' name='n146' href='#n146'>146</a>
+<a class='no' id='n147' name='n147' href='#n147'>147</a>
+<a class='no' id='n148' name='n148' href='#n148'>148</a>
+<a class='no' id='n149' name='n149' href='#n149'>149</a>
+<a class='no' id='n150' name='n150' href='#n150'>150</a>
+<a class='no' id='n151' name='n151' href='#n151'>151</a>
+<a class='no' id='n152' name='n152' href='#n152'>152</a>
+<a class='no' id='n153' name='n153' href='#n153'>153</a>
+<a class='no' id='n154' name='n154' href='#n154'>154</a>
+<a class='no' id='n155' name='n155' href='#n155'>155</a>
+<a class='no' id='n156' name='n156' href='#n156'>156</a>
+<a class='no' id='n157' name='n157' href='#n157'>157</a>
+<a class='no' id='n158' name='n158' href='#n158'>158</a>
+<a class='no' id='n159' name='n159' href='#n159'>159</a>
+<a class='no' id='n160' name='n160' href='#n160'>160</a>
+<a class='no' id='n161' name='n161' href='#n161'>161</a>
+<a class='no' id='n162' name='n162' href='#n162'>162</a>
+<a class='no' id='n163' name='n163' href='#n163'>163</a>
+<a class='no' id='n164' name='n164' href='#n164'>164</a>
+<a class='no' id='n165' name='n165' href='#n165'>165</a>
+<a class='no' id='n166' name='n166' href='#n166'>166</a>
+<a class='no' id='n167' name='n167' href='#n167'>167</a>
+<a class='no' id='n168' name='n168' href='#n168'>168</a>
+<a class='no' id='n169' name='n169' href='#n169'>169</a>
+<a class='no' id='n170' name='n170' href='#n170'>170</a>
+<a class='no' id='n171' name='n171' href='#n171'>171</a>
+<a class='no' id='n172' name='n172' href='#n172'>172</a>
+<a class='no' id='n173' name='n173' href='#n173'>173</a>
+<a class='no' id='n174' name='n174' href='#n174'>174</a>
+<a class='no' id='n175' name='n175' href='#n175'>175</a>
+<a class='no' id='n176' name='n176' href='#n176'>176</a>
+<a class='no' id='n177' name='n177' href='#n177'>177</a>
+<a class='no' id='n178' name='n178' href='#n178'>178</a>
+<a class='no' id='n179' name='n179' href='#n179'>179</a>
+<a class='no' id='n180' name='n180' href='#n180'>180</a>
+<a class='no' id='n181' name='n181' href='#n181'>181</a>
+<a class='no' id='n182' name='n182' href='#n182'>182</a>
+<a class='no' id='n183' name='n183' href='#n183'>183</a>
+<a class='no' id='n184' name='n184' href='#n184'>184</a>
+<a class='no' id='n185' name='n185' href='#n185'>185</a>
+<a class='no' id='n186' name='n186' href='#n186'>186</a>
+<a class='no' id='n187' name='n187' href='#n187'>187</a>
+<a class='no' id='n188' name='n188' href='#n188'>188</a>
+<a class='no' id='n189' name='n189' href='#n189'>189</a>
+<a class='no' id='n190' name='n190' href='#n190'>190</a>
+<a class='no' id='n191' name='n191' href='#n191'>191</a>
+<a class='no' id='n192' name='n192' href='#n192'>192</a>
+<a class='no' id='n193' name='n193' href='#n193'>193</a>
+<a class='no' id='n194' name='n194' href='#n194'>194</a>
+<a class='no' id='n195' name='n195' href='#n195'>195</a>
+<a class='no' id='n196' name='n196' href='#n196'>196</a>
+<a class='no' id='n197' name='n197' href='#n197'>197</a>
+<a class='no' id='n198' name='n198' href='#n198'>198</a>
+<a class='no' id='n199' name='n199' href='#n199'>199</a>
+<a class='no' id='n200' name='n200' href='#n200'>200</a>
+<a class='no' id='n201' name='n201' href='#n201'>201</a>
+<a class='no' id='n202' name='n202' href='#n202'>202</a>
+<a class='no' id='n203' name='n203' href='#n203'>203</a>
+<a class='no' id='n204' name='n204' href='#n204'>204</a>
+<a class='no' id='n205' name='n205' href='#n205'>205</a>
+<a class='no' id='n206' name='n206' href='#n206'>206</a>
+<a class='no' id='n207' name='n207' href='#n207'>207</a>
+<a class='no' id='n208' name='n208' href='#n208'>208</a>
+<a class='no' id='n209' name='n209' href='#n209'>209</a>
+<a class='no' id='n210' name='n210' href='#n210'>210</a>
+<a class='no' id='n211' name='n211' href='#n211'>211</a>
+<a class='no' id='n212' name='n212' href='#n212'>212</a>
+<a class='no' id='n213' name='n213' href='#n213'>213</a>
+<a class='no' id='n214' name='n214' href='#n214'>214</a>
+<a class='no' id='n215' name='n215' href='#n215'>215</a>
+<a class='no' id='n216' name='n216' href='#n216'>216</a>
+<a class='no' id='n217' name='n217' href='#n217'>217</a>
+<a class='no' id='n218' name='n218' href='#n218'>218</a>
+<a class='no' id='n219' name='n219' href='#n219'>219</a>
+<a class='no' id='n220' name='n220' href='#n220'>220</a>
+<a class='no' id='n221' name='n221' href='#n221'>221</a>
+<a class='no' id='n222' name='n222' href='#n222'>222</a>
+<a class='no' id='n223' name='n223' href='#n223'>223</a>
+<a class='no' id='n224' name='n224' href='#n224'>224</a>
+<a class='no' id='n225' name='n225' href='#n225'>225</a>
+<a class='no' id='n226' name='n226' href='#n226'>226</a>
+<a class='no' id='n227' name='n227' href='#n227'>227</a>
+<a class='no' id='n228' name='n228' href='#n228'>228</a>
+<a class='no' id='n229' name='n229' href='#n229'>229</a>
+<a class='no' id='n230' name='n230' href='#n230'>230</a>
+<a class='no' id='n231' name='n231' href='#n231'>231</a>
+<a class='no' id='n232' name='n232' href='#n232'>232</a>
+<a class='no' id='n233' name='n233' href='#n233'>233</a>
+<a class='no' id='n234' name='n234' href='#n234'>234</a>
+<a class='no' id='n235' name='n235' href='#n235'>235</a>
+<a class='no' id='n236' name='n236' href='#n236'>236</a>
+<a class='no' id='n237' name='n237' href='#n237'>237</a>
+<a class='no' id='n238' name='n238' href='#n238'>238</a>
+<a class='no' id='n239' name='n239' href='#n239'>239</a>
+<a class='no' id='n240' name='n240' href='#n240'>240</a>
+<a class='no' id='n241' name='n241' href='#n241'>241</a>
+<a class='no' id='n242' name='n242' href='#n242'>242</a>
+<a class='no' id='n243' name='n243' href='#n243'>243</a>
+<a class='no' id='n244' name='n244' href='#n244'>244</a>
+<a class='no' id='n245' name='n245' href='#n245'>245</a>
+<a class='no' id='n246' name='n246' href='#n246'>246</a>
+<a class='no' id='n247' name='n247' href='#n247'>247</a>
+<a class='no' id='n248' name='n248' href='#n248'>248</a>
+<a class='no' id='n249' name='n249' href='#n249'>249</a>
+<a class='no' id='n250' name='n250' href='#n250'>250</a>
+<a class='no' id='n251' name='n251' href='#n251'>251</a>
+<a class='no' id='n252' name='n252' href='#n252'>252</a>
+<a class='no' id='n253' name='n253' href='#n253'>253</a>
+<a class='no' id='n254' name='n254' href='#n254'>254</a>
+<a class='no' id='n255' name='n255' href='#n255'>255</a>
+<a class='no' id='n256' name='n256' href='#n256'>256</a>
+<a class='no' id='n257' name='n257' href='#n257'>257</a>
+<a class='no' id='n258' name='n258' href='#n258'>258</a>
+<a class='no' id='n259' name='n259' href='#n259'>259</a>
+<a class='no' id='n260' name='n260' href='#n260'>260</a>
+<a class='no' id='n261' name='n261' href='#n261'>261</a>
+<a class='no' id='n262' name='n262' href='#n262'>262</a>
+<a class='no' id='n263' name='n263' href='#n263'>263</a>
+<a class='no' id='n264' name='n264' href='#n264'>264</a>
+<a class='no' id='n265' name='n265' href='#n265'>265</a>
+<a class='no' id='n266' name='n266' href='#n266'>266</a>
+<a class='no' id='n267' name='n267' href='#n267'>267</a>
+<a class='no' id='n268' name='n268' href='#n268'>268</a>
+<a class='no' id='n269' name='n269' href='#n269'>269</a>
+<a class='no' id='n270' name='n270' href='#n270'>270</a>
+<a class='no' id='n271' name='n271' href='#n271'>271</a>
+<a class='no' id='n272' name='n272' href='#n272'>272</a>
+<a class='no' id='n273' name='n273' href='#n273'>273</a>
+<a class='no' id='n274' name='n274' href='#n274'>274</a>
+<a class='no' id='n275' name='n275' href='#n275'>275</a>
+<a class='no' id='n276' name='n276' href='#n276'>276</a>
+<a class='no' id='n277' name='n277' href='#n277'>277</a>
+<a class='no' id='n278' name='n278' href='#n278'>278</a>
+<a class='no' id='n279' name='n279' href='#n279'>279</a>
+<a class='no' id='n280' name='n280' href='#n280'>280</a>
+<a class='no' id='n281' name='n281' href='#n281'>281</a>
+<a class='no' id='n282' name='n282' href='#n282'>282</a>
+<a class='no' id='n283' name='n283' href='#n283'>283</a>
+<a class='no' id='n284' name='n284' href='#n284'>284</a>
+<a class='no' id='n285' name='n285' href='#n285'>285</a>
+<a class='no' id='n286' name='n286' href='#n286'>286</a>
+<a class='no' id='n287' name='n287' href='#n287'>287</a>
+<a class='no' id='n288' name='n288' href='#n288'>288</a>
+<a class='no' id='n289' name='n289' href='#n289'>289</a>
+<a class='no' id='n290' name='n290' href='#n290'>290</a>
+<a class='no' id='n291' name='n291' href='#n291'>291</a>
+<a class='no' id='n292' name='n292' href='#n292'>292</a>
+<a class='no' id='n293' name='n293' href='#n293'>293</a>
+<a class='no' id='n294' name='n294' href='#n294'>294</a>
+<a class='no' id='n295' name='n295' href='#n295'>295</a>
+<a class='no' id='n296' name='n296' href='#n296'>296</a>
+<a class='no' id='n297' name='n297' href='#n297'>297</a>
+<a class='no' id='n298' name='n298' href='#n298'>298</a>
+<a class='no' id='n299' name='n299' href='#n299'>299</a>
+<a class='no' id='n300' name='n300' href='#n300'>300</a>
+<a class='no' id='n301' name='n301' href='#n301'>301</a>
+<a class='no' id='n302' name='n302' href='#n302'>302</a>
+<a class='no' id='n303' name='n303' href='#n303'>303</a>
+<a class='no' id='n304' name='n304' href='#n304'>304</a>
+<a class='no' id='n305' name='n305' href='#n305'>305</a>
+<a class='no' id='n306' name='n306' href='#n306'>306</a>
+<a class='no' id='n307' name='n307' href='#n307'>307</a>
+<a class='no' id='n308' name='n308' href='#n308'>308</a>
+<a class='no' id='n309' name='n309' href='#n309'>309</a>
+<a class='no' id='n310' name='n310' href='#n310'>310</a>
+<a class='no' id='n311' name='n311' href='#n311'>311</a>
+<a class='no' id='n312' name='n312' href='#n312'>312</a>
+<a class='no' id='n313' name='n313' href='#n313'>313</a>
+<a class='no' id='n314' name='n314' href='#n314'>314</a>
+<a class='no' id='n315' name='n315' href='#n315'>315</a>
+<a class='no' id='n316' name='n316' href='#n316'>316</a>
+<a class='no' id='n317' name='n317' href='#n317'>317</a>
+<a class='no' id='n318' name='n318' href='#n318'>318</a>
+<a class='no' id='n319' name='n319' href='#n319'>319</a>
+<a class='no' id='n320' name='n320' href='#n320'>320</a>
+<a class='no' id='n321' name='n321' href='#n321'>321</a>
+<a class='no' id='n322' name='n322' href='#n322'>322</a>
+<a class='no' id='n323' name='n323' href='#n323'>323</a>
+<a class='no' id='n324' name='n324' href='#n324'>324</a>
+<a class='no' id='n325' name='n325' href='#n325'>325</a>
+<a class='no' id='n326' name='n326' href='#n326'>326</a>
+<a class='no' id='n327' name='n327' href='#n327'>327</a>
+<a class='no' id='n328' name='n328' href='#n328'>328</a>
+<a class='no' id='n329' name='n329' href='#n329'>329</a>
+<a class='no' id='n330' name='n330' href='#n330'>330</a>
+<a class='no' id='n331' name='n331' href='#n331'>331</a>
+<a class='no' id='n332' name='n332' href='#n332'>332</a>
+<a class='no' id='n333' name='n333' href='#n333'>333</a>
+<a class='no' id='n334' name='n334' href='#n334'>334</a>
+<a class='no' id='n335' name='n335' href='#n335'>335</a>
+<a class='no' id='n336' name='n336' href='#n336'>336</a>
+<a class='no' id='n337' name='n337' href='#n337'>337</a>
+<a class='no' id='n338' name='n338' href='#n338'>338</a>
+<a class='no' id='n339' name='n339' href='#n339'>339</a>
+<a class='no' id='n340' name='n340' href='#n340'>340</a>
+<a class='no' id='n341' name='n341' href='#n341'>341</a>
+<a class='no' id='n342' name='n342' href='#n342'>342</a>
+<a class='no' id='n343' name='n343' href='#n343'>343</a>
+<a class='no' id='n344' name='n344' href='#n344'>344</a>
+<a class='no' id='n345' name='n345' href='#n345'>345</a>
+<a class='no' id='n346' name='n346' href='#n346'>346</a>
+<a class='no' id='n347' name='n347' href='#n347'>347</a>
+<a class='no' id='n348' name='n348' href='#n348'>348</a>
+<a class='no' id='n349' name='n349' href='#n349'>349</a>
+<a class='no' id='n350' name='n350' href='#n350'>350</a>
+<a class='no' id='n351' name='n351' href='#n351'>351</a>
+<a class='no' id='n352' name='n352' href='#n352'>352</a>
+<a class='no' id='n353' name='n353' href='#n353'>353</a>
+<a class='no' id='n354' name='n354' href='#n354'>354</a>
+<a class='no' id='n355' name='n355' href='#n355'>355</a>
+<a class='no' id='n356' name='n356' href='#n356'>356</a>
+<a class='no' id='n357' name='n357' href='#n357'>357</a>
+<a class='no' id='n358' name='n358' href='#n358'>358</a>
+<a class='no' id='n359' name='n359' href='#n359'>359</a>
+<a class='no' id='n360' name='n360' href='#n360'>360</a>
+<a class='no' id='n361' name='n361' href='#n361'>361</a>
+<a class='no' id='n362' name='n362' href='#n362'>362</a>
+<a class='no' id='n363' name='n363' href='#n363'>363</a>
+<a class='no' id='n364' name='n364' href='#n364'>364</a>
+<a class='no' id='n365' name='n365' href='#n365'>365</a>
+<a class='no' id='n366' name='n366' href='#n366'>366</a>
+<a class='no' id='n367' name='n367' href='#n367'>367</a>
+<a class='no' id='n368' name='n368' href='#n368'>368</a>
+<a class='no' id='n369' name='n369' href='#n369'>369</a>
+<a class='no' id='n370' name='n370' href='#n370'>370</a>
+<a class='no' id='n371' name='n371' href='#n371'>371</a>
+<a class='no' id='n372' name='n372' href='#n372'>372</a>
+<a class='no' id='n373' name='n373' href='#n373'>373</a>
+<a class='no' id='n374' name='n374' href='#n374'>374</a>
+<a class='no' id='n375' name='n375' href='#n375'>375</a>
+</pre></td>
+<td class='lines'><pre><code># Slovak translation for gnome-shell-extensions.
 # Copyright (C) 2012 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell-extensions package.
-# Pavol Klačanský <pavol@klacansky.com>, 2012.
-# Dušan Kazik <prescott66@gmail.com>, 2012.
+# Pavol Klačanský &lt;pavol&#64;klacansky.com&gt;, 2012.
+# Dušan Kazik &lt;prescott66&#64;gmail.com&gt;, 2012.
 #
-msgid ""
-msgstr ""
-"Project-Id-Version: gnome-shell-extensions\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=extensions\n"
-"POT-Creation-Date: 2013-09-15 00:43+0000\n"
-"PO-Revision-Date: 2013-08-21 12:30+0100\n"
-"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
-"Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
-"Language: sk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Generator: Poedit 1.5.4\n"
+msgid &quot;&quot;
+msgstr &quot;&quot;
+&quot;Project-Id-Version: gnome-shell-extensions\n&quot;
+&quot;Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-&quot;
+&quot;shell&amp;keywords=I18N+L10N&amp;component=extensions\n&quot;
+&quot;POT-Creation-Date: 2013-09-15 00:43+0000\n&quot;
+&quot;PO-Revision-Date: 2013-08-21 12:30+0100\n&quot;
+&quot;Last-Translator: Dušan Kazik &lt;prescott66&#64;gmail.com&gt;\n&quot;
+&quot;Language-Team: Slovak &lt;gnome-sk-list&#64;gnome.org&gt;\n&quot;
+&quot;Language: sk\n&quot;
+&quot;MIME-Version: 1.0\n&quot;
+&quot;Content-Type: text/plain; charset=UTF-8\n&quot;
+&quot;Content-Transfer-Encoding: 8bit\n&quot;
+&quot;Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n&gt;=2 &amp;&amp; n&lt;=4) ? 2 : 0;\n&quot;
+&quot;X-Generator: Poedit 1.5.4\n&quot;
 
 #: ../data/gnome-classic.desktop.in.h:1
 #: ../data/gnome-classic.session.desktop.in.in.h:1
-msgid "GNOME Classic"
-msgstr "Klasické prostredie GNOME"
+msgid &quot;GNOME Classic&quot;
+msgstr &quot;Klasické prostredie GNOME&quot;
 
 #: ../data/gnome-classic.desktop.in.h:2
-msgid "This session logs you into GNOME Classic"
-msgstr "Táto relácia vás prihlási do klasického prostredia GNOME"
+msgid &quot;This session logs you into GNOME Classic&quot;
+msgstr &quot;Táto relácia vás prihlási do klasického prostredia GNOME&quot;
 
 #: ../data/gnome-shell-classic.desktop.in.in.h:1
-msgid "GNOME Shell Classic"
-msgstr "Klasický shell prostredia GNOME"
+msgid &quot;GNOME Shell Classic&quot;
+msgstr &quot;Klasický shell prostredia GNOME&quot;
 
 # RadioButton label
 #: ../data/gnome-shell-classic.desktop.in.in.h:2
-msgid "Window management and application launching"
-msgstr "Správca okien a spúšťanie aplikácií"
+msgid &quot;Window management and application launching&quot;
+msgstr &quot;Správca okien a spúšťanie aplikácií&quot;
 
 # summary
 #: ../data/org.gnome.shell.extensions.classic-overrides.gschema.xml.in.h:1
-msgid "Attach modal dialog to the parent window"
-msgstr "Pripojiť modálne dialógové okno k rodičovskému oknu"
+msgid &quot;Attach modal dialog to the parent window&quot;
+msgstr &quot;Pripojiť modálne dialógové okno k rodičovskému oknu&quot;
 
 # description
 #: ../data/org.gnome.shell.extensions.classic-overrides.gschema.xml.in.h:2
-msgid ""
-"This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Tento kľúč preváži kľúč v org.gnome.mutter, keď je spustené prostredie GNOME "
-"Shell."
+msgid &quot;&quot;
+&quot;This key overrides the key in org.gnome.mutter when running GNOME Shell.&quot;
+msgstr &quot;&quot;
+&quot;Tento kľúč preváži kľúč v org.gnome.mutter, keď je spustené prostredie GNOME &quot;
+&quot;Shell.&quot;
 
 # summary
 #: ../data/org.gnome.shell.extensions.classic-overrides.gschema.xml.in.h:3
-msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
-"Povoliť usporiadanie okien do dlaždíc pri ich pustení na okrajoch obrazovky"
+msgid &quot;Enable edge tiling when dropping windows on screen edges&quot;
+msgstr &quot;&quot;
+&quot;Povoliť usporiadanie okien do dlaždíc pri ich pustení na okrajoch obrazovky&quot;
 
 # Label
 #: ../data/org.gnome.shell.extensions.classic-overrides.gschema.xml.in.h:4
-msgid "Workspaces only on primary monitor"
-msgstr "Pracovné priestory iba na primárnom monitore"
+msgid &quot;Workspaces only on primary monitor&quot;
+msgstr &quot;Pracovné priestory iba na primárnom monitore&quot;
 
 # RadioButton label
 #: ../extensions/alternate-tab/prefs.js:20
-msgid "Thumbnail only"
-msgstr "Len miniatúra"
+msgid &quot;Thumbnail only&quot;
+msgstr &quot;Len miniatúra&quot;
 
 # RadioButton label
 #: ../extensions/alternate-tab/prefs.js:21
-msgid "Application icon only"
-msgstr "Len ikona aplikácie"
+msgid &quot;Application icon only&quot;
+msgstr &quot;Len ikona aplikácie&quot;
 
 # RadioButton label
 #: ../extensions/alternate-tab/prefs.js:22
-msgid "Thumbnail and application icon"
-msgstr "Miniatúra a ikona aplikácie"
+msgid &quot;Thumbnail and application icon&quot;
+msgstr &quot;Miniatúra a ikona aplikácie&quot;
 
 #  Label
 #: ../extensions/alternate-tab/prefs.js:37
-msgid "Present windows as"
-msgstr "Uvádzať okná ako"
+msgid &quot;Present windows as&quot;
+msgstr &quot;Uvádzať okná ako&quot;
 
 # CheckButton
 #: ../extensions/alternate-tab/prefs.js:62
-msgid "Show only windows in the current workspace"
-msgstr "Zobraziť len okná z aktuálneho pracovného priestoru"
+msgid &quot;Show only windows in the current workspace&quot;
+msgstr &quot;Zobraziť len okná z aktuálneho pracovného priestoru&quot;
 
 #: ../extensions/apps-menu/extension.js:39
-msgid "Activities Overview"
-msgstr "Prehľad aktivít"
+msgid &quot;Activities Overview&quot;
+msgstr &quot;Prehľad aktivít&quot;
 
 #: ../extensions/apps-menu/extension.js:113
-msgid "Favorites"
-msgstr "Obľúbené"
+msgid &quot;Favorites&quot;
+msgstr &quot;Obľúbené&quot;
 
 # TreeViewColumn
 #: ../extensions/apps-menu/extension.js:278
-msgid "Applications"
-msgstr "Aplikácie"
+msgid &quot;Applications&quot;
+msgstr &quot;Aplikácie&quot;
 
 # summary
 #: ../extensions/auto-move-windows/org.gnome.shell.extensions.auto-move-windows.gschema.xml.in.h:1
-msgid "Application and workspace list"
-msgstr "Zoznam aplikácií a pracovných plôch"
+msgid &quot;Application and workspace list&quot;
+msgstr &quot;Zoznam aplikácií a pracovných plôch&quot;
 
 # description
 #: ../extensions/auto-move-windows/org.gnome.shell.extensions.auto-move-windows.gschema.xml.in.h:2
-msgid ""
-"A list of strings, each containing an application id (desktop file name), "
-"followed by a colon and the workspace number"
-msgstr ""
-"Zoznam reťazcov, z ktorých každý obsahuje identifikátor aplikácie (názov "
-"súboru .desktop), nasledovaný čiarkou a číslom pracovného priestoru"
+msgid &quot;&quot;
+&quot;A list of strings, each containing an application id (desktop file name), &quot;
+&quot;followed by a colon and the workspace number&quot;
+msgstr &quot;&quot;
+&quot;Zoznam reťazcov, z ktorých každý obsahuje identifikátor aplikácie (názov &quot;
+&quot;súboru .desktop), nasledovaný čiarkou a číslom pracovného priestoru&quot;
 
 # TreeViewColumn
 #: ../extensions/auto-move-windows/prefs.js:55
-msgid "Application"
-msgstr "Aplikácia"
+msgid &quot;Application&quot;
+msgstr &quot;Aplikácia&quot;
 
 # TreeViewColumn; Label
 #: ../extensions/auto-move-windows/prefs.js:64
 #: ../extensions/auto-move-windows/prefs.js:106
-msgid "Workspace"
-msgstr "Pracovný priestor"
+msgid &quot;Workspace&quot;
+msgstr &quot;Pracovný priestor&quot;
 
 # ToolButton label
 #: ../extensions/auto-move-windows/prefs.js:80
-msgid "Add rule"
-msgstr "Pridať pravidlo"
+msgid &quot;Add rule&quot;
+msgstr &quot;Pridať pravidlo&quot;
 
 # Dialog title
 #: ../extensions/auto-move-windows/prefs.js:94
-msgid "Create new matching rule"
-msgstr "Vytvorenie nového odpovedajúceho pravidla"
+msgid &quot;Create new matching rule&quot;
+msgstr &quot;Vytvorenie nového odpovedajúceho pravidla&quot;
 
 # button label
 #: ../extensions/auto-move-windows/prefs.js:98
-msgid "Add"
-msgstr "Pridať"
+msgid &quot;Add&quot;
+msgstr &quot;Pridať&quot;
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=687590
 #: ../extensions/drive-menu/extension.js:73
 #, c-format
-msgid "Ejecting drive '%s' failed:"
-msgstr "Zlyhalo vysúvanie jednotky „%s“:"
+msgid &quot;Ejecting drive '%s' failed:&quot;
+msgstr &quot;Zlyhalo vysúvanie jednotky „%s“:&quot;
 
 #  Menu
 #: ../extensions/drive-menu/extension.js:90
-msgid "Removable devices"
-msgstr "Vymeniteľné zariadenia"
+msgid &quot;Removable devices&quot;
+msgstr &quot;Vymeniteľné zariadenia&quot;
 
 # Menu Action
 #: ../extensions/drive-menu/extension.js:117
-msgid "Open File"
-msgstr "Otvoriť súbor"
+msgid &quot;Open File&quot;
+msgstr &quot;Otvoriť súbor&quot;
 
 # PŠ: a toto by som teda neprekladal, tento text musia poznať všetci ;-)
 # PK: ja by som to prelozil ;)
 # DK: ja by som ho prelozil tiez
 #: ../extensions/example/extension.js:17
-msgid "Hello, world!"
-msgstr "Ahoj, Svet!"
+msgid &quot;Hello, world!&quot;
+msgstr &quot;Ahoj, Svet!&quot;
 
 # gsetting summary
 #: ../extensions/example/org.gnome.shell.extensions.example.gschema.xml.in.h:1
-msgid "Alternative greeting text."
-msgstr "Alternatívny text privítania."
+msgid &quot;Alternative greeting text.&quot;
+msgstr &quot;Alternatívny text privítania.&quot;
 
 # gsetting desription
 #: ../extensions/example/org.gnome.shell.extensions.example.gschema.xml.in.h:2
-msgid ""
-"If not empty, it contains the text that will be shown when clicking on the "
-"panel."
-msgstr "Obsahuje text, ktorý bude zobrazený po kliknutí na panel."
+msgid &quot;&quot;
+&quot;If not empty, it contains the text that will be shown when clicking on the &quot;
+&quot;panel.&quot;
+msgstr &quot;Obsahuje text, ktorý bude zobrazený po kliknutí na panel.&quot;
 
 # PM: podľa mňa chýba preklad druhej časti prvej vety
 #. TRANSLATORS: Example is the name of the extension, should not be
 #. translated
 #: ../extensions/example/prefs.js:30
-msgid ""
-"Example aims to show how to build well behaved extensions for the Shell and "
-"as such it has little functionality on its own.\n"
-"Nevertheless it's possible to customize the greeting message."
-msgstr ""
-"Rozšírenie Example vám má ukázať, ako sa dajú zostaviť dobre vyzerajúce a "
-"jednoduché rozšírenia pre Shell a demonštrovať tak funkčnosť.\n"
-"Napriek tomu je možné prispôsobiť správu privítania."
+msgid &quot;&quot;
+&quot;Example aims to show how to build well behaved extensions for the Shell and &quot;
+&quot;as such it has little functionality on its own.\n&quot;
+&quot;Nevertheless it's possible to customize the greeting message.&quot;
+msgstr &quot;&quot;
+&quot;Rozšírenie Example vám má ukázať, ako sa dajú zostaviť dobre vyzerajúce a &quot;
+&quot;jednoduché rozšírenia pre Shell a demonštrovať tak funkčnosť.\n&quot;
+&quot;Napriek tomu je možné prispôsobiť správu privítania.&quot;
 
 #: ../extensions/example/prefs.js:36
-msgid "Message:"
-msgstr "Správa:"
+msgid &quot;Message:&quot;
+msgstr &quot;Správa:&quot;
 
 # summary
 #: ../extensions/native-window-placement/org.gnome.shell.extensions.native-window-placement.gschema.xml.in.h:1
-msgid "Use more screen for windows"
-msgstr "Použiť viac obrazovky pre okná"
+msgid &quot;Use more screen for windows&quot;
+msgstr &quot;Použiť viac obrazovky pre okná&quot;
 
 # description
 #: ../extensions/native-window-placement/org.gnome.shell.extensions.native-window-placement.gschema.xml.in.h:2
-msgid ""
-"Try to use more screen for placing window thumbnails by adapting to screen "
-"aspect ratio, and consolidating them further to reduce the bounding box. "
-"This setting applies only with the natural placement strategy."
-msgstr ""
-"Pokúsi sa využiť viac obrazovky tým, že umiestnenie miniatúr okien sa "
-"prispôsobí pomeru strán, a tiež sa zváži zmenšenie okrajov. Toto nastavenie "
-"sa aplikuje len pri bežnom spôsobe umiestnenia."
+msgid &quot;&quot;
+&quot;Try to use more screen for placing window thumbnails by adapting to screen &quot;
+&quot;aspect ratio, and consolidating them further to reduce the bounding box. &quot;
+&quot;This setting applies only with the natural placement strategy.&quot;
+msgstr &quot;&quot;
+&quot;Pokúsi sa využiť viac obrazovky tým, že umiestnenie miniatúr okien sa &quot;
+&quot;prispôsobí pomeru strán, a tiež sa zváži zmenšenie okrajov. Toto nastavenie &quot;
+&quot;sa aplikuje len pri bežnom spôsobe umiestnenia.&quot;
 
 # summary
 #: ../extensions/native-window-placement/org.gnome.shell.extensions.native-window-placement.gschema.xml.in.h:3
-msgid "Place window captions on top"
-msgstr "Umiestniť titulok okna navrch"
+msgid &quot;Place window captions on top&quot;
+msgstr &quot;Umiestniť titulok okna navrch&quot;
 
 # description
 #: ../extensions/native-window-placement/org.gnome.shell.extensions.native-window-placement.gschema.xml.in.h:4
-msgid ""
-"If true, place window captions on top the respective thumbnail, overriding "
-"shell default of placing it at the bottom. Changing this setting requires "
-"restarting the shell to have any effect."
-msgstr ""
-"Pri nastavení na true, bude titulok okna umiestnený navrchu zodpovedajúcej "
-"miniatúry. Prepíše sa tým predvolené nastavenie shellu, ktorý ho umiestňuje "
-"nadol. Aby sa prejavila zmena, je potrebné reštartovať shell."
+msgid &quot;&quot;
+&quot;If true, place window captions on top the respective thumbnail, overriding &quot;
+&quot;shell default of placing it at the bottom. Changing this setting requires &quot;
+&quot;restarting the shell to have any effect.&quot;
+msgstr &quot;&quot;
+&quot;Pri nastavení na true, bude titulok okna umiestnený navrchu zodpovedajúcej &quot;
+&quot;miniatúry. Prepíše sa tým predvolené nastavenie shellu, ktorý ho umiestňuje &quot;
+&quot;nadol. Aby sa prejavila zmena, je potrebné reštartovať shell.&quot;
 
 #  menu item
 #: ../extensions/places-menu/extension.js:78
 #: ../extensions/places-menu/extension.js:81
-msgid "Places"
-msgstr "Miesta"
+msgid &quot;Places&quot;
+msgstr &quot;Miesta&quot;
 
 #: ../extensions/places-menu/placeDisplay.js:56
 #, c-format
-msgid "Failed to launch \"%s\""
-msgstr "Zlyhalo spustenie „%s“"
+msgid &quot;Failed to launch \&quot;%s\&quot;&quot;
+msgstr &quot;Zlyhalo spustenie „%s“&quot;
 
 #: ../extensions/places-menu/placeDisplay.js:98
 #: ../extensions/places-menu/placeDisplay.js:121
-msgid "Computer"
-msgstr "Počítač"
+msgid &quot;Computer&quot;
+msgstr &quot;Počítač&quot;
 
 # Places
 #: ../extensions/places-menu/placeDisplay.js:199
-msgid "Home"
-msgstr "Domov"
+msgid &quot;Home&quot;
+msgstr &quot;Domov&quot;
 
 #: ../extensions/places-menu/placeDisplay.js:286
-msgid "Browse Network"
-msgstr "Prehliadať sieť"
+msgid &quot;Browse Network&quot;
+msgstr &quot;Prehliadať sieť&quot;
 
 # Label
 #: ../extensions/systemMonitor/extension.js:214
-msgid "CPU"
-msgstr "Procesor"
+msgid &quot;CPU&quot;
+msgstr &quot;Procesor&quot;
 
 # Label
 #: ../extensions/systemMonitor/extension.js:267
-msgid "Memory"
-msgstr "Pamäť"
+msgid &quot;Memory&quot;
+msgstr &quot;Pamäť&quot;
 
 # summary
 #: ../extensions/user-theme/org.gnome.shell.extensions.user-theme.gschema.xml.in.h:1
-msgid "Theme name"
-msgstr "Názov témy"
+msgid &quot;Theme name&quot;
+msgstr &quot;Názov témy&quot;
 
 # description
 #: ../extensions/user-theme/org.gnome.shell.extensions.user-theme.gschema.xml.in.h:2
-msgid "The name of the theme, to be loaded from ~/.themes/name/gnome-shell"
-msgstr "Názov témy, ktorá sa načíta z ~/.themes/nazov/gnome-shell"
+msgid &quot;The name of the theme, to be loaded from ~/.themes/name/gnome-shell&quot;
+msgstr &quot;Názov témy, ktorá sa načíta z ~/.themes/nazov/gnome-shell&quot;
 
 # PopupMenuItem
 #: ../extensions/window-list/extension.js:92
-msgid "Close"
-msgstr "Zavrieť"
+msgid &quot;Close&quot;
+msgstr &quot;Zavrieť&quot;
 
 # label
 #: ../extensions/window-list/extension.js:102
-msgid "Unminimize"
-msgstr "Odminimalizovať"
+msgid &quot;Unminimize&quot;
+msgstr &quot;Odminimalizovať&quot;
 
 # label
 #: ../extensions/window-list/extension.js:103
-msgid "Minimize"
-msgstr "Minimalizovať"
+msgid &quot;Minimize&quot;
+msgstr &quot;Minimalizovať&quot;
 
 # label
 #: ../extensions/window-list/extension.js:109
-msgid "Unmaximize"
-msgstr "Odmaximalizovať"
+msgid &quot;Unmaximize&quot;
+msgstr &quot;Odmaximalizovať&quot;
 
 # label
 #: ../extensions/window-list/extension.js:110
-msgid "Maximize"
-msgstr "Maximalizovať"
+msgid &quot;Maximize&quot;
+msgstr &quot;Maximalizovať&quot;
 
 # PopupMenuItem
 #: ../extensions/window-list/extension.js:270
-msgid "Minimize all"
-msgstr "Minimalizovať všetko"
+msgid &quot;Minimize all&quot;
+msgstr &quot;Minimalizovať všetko&quot;
 
 # PopupMenuItem
 #: ../extensions/window-list/extension.js:278
-msgid "Unminimize all"
-msgstr "Odminimalizovať všetko"
+msgid &quot;Unminimize all&quot;
+msgstr &quot;Odminimalizovať všetko&quot;
 
 # PopupMenuItem
 #: ../extensions/window-list/extension.js:286
-msgid "Maximize all"
-msgstr "Maximalizovať všetko"
+msgid &quot;Maximize all&quot;
+msgstr &quot;Maximalizovať všetko&quot;
 
 # PopupMenuItem
 #: ../extensions/window-list/extension.js:295
-msgid "Unmaximize all"
-msgstr "Odmaximalizovať všetko"
+msgid &quot;Unmaximize all&quot;
+msgstr &quot;Odmaximalizovať všetko&quot;
 
 # PopupMenuItem
 #: ../extensions/window-list/extension.js:304
-msgid "Close all"
-msgstr "Zavrieť všetko"
+msgid &quot;Close all&quot;
+msgstr &quot;Zavrieť všetko&quot;
 
 # Label
 #: ../extensions/window-list/extension.js:591
 #: ../extensions/workspace-indicator/extension.js:30
-msgid "Workspace Indicator"
-msgstr "Indikátor pracovného priestoru"
+msgid &quot;Workspace Indicator&quot;
+msgstr &quot;Indikátor pracovného priestoru&quot;
 
 #: ../extensions/window-list/extension.js:743
-#| msgid "Window Grouping"
-msgid "Window List"
-msgstr "Zoznam okien"
+#| msgid &quot;Window Grouping&quot;
+msgid &quot;Window List&quot;
+msgstr &quot;Zoznam okien&quot;
 
 #: ../extensions/window-list/org.gnome.shell.extensions.window-list.gschema.xml.in.h:1
-msgid "When to group windows"
-msgstr "Kedy zoskupiť okná"
+msgid &quot;When to group windows&quot;
+msgstr &quot;Kedy zoskupiť okná&quot;
 
 #: ../extensions/window-list/org.gnome.shell.extensions.window-list.gschema.xml.in.h:2
-msgid ""
-"Decides when to group windows from the same application on the window list. "
-"Possible values are \"never\", \"auto\" and \"always\"."
-msgstr ""
-"Rozhoduje kedy sa majú v zozname okien zoskupiť okná tej istej aplikácie."
-"Možné hodnoty sú „never“ (nikdy), „auto“ (automaticky) a „always“ (vždy)."
+msgid &quot;&quot;
+&quot;Decides when to group windows from the same application on the window list. &quot;
+&quot;Possible values are \&quot;never\&quot;, \&quot;auto\&quot; and \&quot;always\&quot;.&quot;
+msgstr &quot;&quot;
+&quot;Rozhoduje kedy sa majú v zozname okien zoskupiť okná tej istej aplikácie.&quot;
+&quot;Možné hodnoty sú „never“ (nikdy), „auto“ (automaticky) a „always“ (vždy).&quot;
 
 #: ../extensions/window-list/prefs.js:30
-msgid "Window Grouping"
-msgstr "Zoskupenie okien"
+msgid &quot;Window Grouping&quot;
+msgstr &quot;Zoskupenie okien&quot;
 
 #: ../extensions/window-list/prefs.js:49
-msgid "Never group windows"
-msgstr "Nikdy nezoskupovať okná"
+msgid &quot;Never group windows&quot;
+msgstr &quot;Nikdy nezoskupovať okná&quot;
 
 #: ../extensions/window-list/prefs.js:50
-msgid "Group windows when space is limited"
-msgstr "Zoskupovať okna ak je obmedzený priestor"
+msgid &quot;Group windows when space is limited&quot;
+msgstr &quot;Zoskupovať okna ak je obmedzený priestor&quot;
 
 #: ../extensions/window-list/prefs.js:51
-msgid "Always group windows"
-msgstr "Vždy zoskupovať okná"
+msgid &quot;Always group windows&quot;
+msgstr &quot;Vždy zoskupovať okná&quot;
 
 # Label
 #: ../extensions/workspace-indicator/prefs.js:141
-msgid "Workspace names:"
-msgstr "Názvy pracovných priestorov:"
+msgid &quot;Workspace names:&quot;
+msgstr &quot;Názvy pracovných priestorov:&quot;
 
 # TreeViewColumn
 #: ../extensions/workspace-indicator/prefs.js:152
-msgid "Name"
-msgstr "Názov"
+msgid &quot;Name&quot;
+msgstr &quot;Názov&quot;
 
 # store label
 #: ../extensions/workspace-indicator/prefs.js:186
 #, c-format
-msgid "Workspace %d"
-msgstr "Pracovný priestor č. %d"
+msgid &quot;Workspace %d&quot;
+msgstr &quot;Pracovný priestor č. %d&quot;
+</code></pre></td></tr></table>
+</div> <!-- class=content -->
+</div>
+  <div id="footer_community"></div>
+
+  <div id="footer_grass"></div>
+
+  <div id="footer">
+    <div class="container_13" id="container_12">
+      <div class="links grid_9">
+        <div class="menu-footer-container">
+          <ul id="menu-footer" class="menu">
+            <li id="menu-item-1048" class=
+            "menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-1048">
+            <a href="/">The GNOME Project</a>
+
+              <ul class="sub-menu">
+                <li id="menu-item-1049" class=
+                "menu-item menu-item-type-post_type menu-item-object-page menu-item-1049">
+                <a href="https://www.gnome.org/about/">About Us</a></li>
+
+                <li id="menu-item-1050" class=
+                "menu-item menu-item-type-post_type menu-item-object-page menu-item-1050">
+                <a href="https://www.gnome.org/get-involved/">Get Involved</a></li>
+
+                <li id="menu-item-1051" class=
+                "menu-item menu-item-type-post_type menu-item-object-page menu-item-1051">
+                <a href="https://www.gnome.org/teams/">Teams</a></li>
+
+                <li id="menu-item-1053" class=
+                "menu-item menu-item-type-post_type menu-item-object-page menu-item-1053">
+                <a href="https://www.gnome.org/support-gnome/">Support GNOME</a></li>
+
+                <li id="menu-item-1054" class=
+                "menu-item menu-item-type-post_type menu-item-object-page menu-item-1054">
+                <a href="https://www.gnome.org/contact/">Contact Us</a></li>
+
+                <li id="menu-item-2246" class=
+                "menu-item menu-item-type-post_type menu-item-object-page menu-item-2246">
+                <a href="https://www.gnome.org/foundation/">The GNOME Foundation</a></li>
+              </ul>
+            </li>
+
+            <li id="menu-item-1047" class=
+            "menu-item menu-item-type-custom menu-item-object-custom menu-item-1047">
+              <a href="#">Resources</a>
+
+              <ul class="sub-menu">
+                <li id="menu-item-1055" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1055">
+                <a href="https://developer.gnome.org">Developer Center</a></li>
+
+                <li id="menu-item-1056" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1056">
+                <a href="https://help.gnome.org">Documentation</a></li>
+
+                <li id="menu-item-1057" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1057">
+                <a href="https://wiki.gnome.org">Wiki</a></li>
+
+                <li id="menu-item-1058" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1058">
+                <a href="https://mail.gnome.org/mailman/listinfo">Mailing Lists</a></li>
+
+                <li id="menu-item-1059" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1059">
+                <a href="https://wiki.gnome.org/GnomeIrcChannels">IRC Channels</a></li>
+
+                <li id="menu-item-1060" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1060">
+                <a href="https://bugzilla.gnome.org/">Bug Tracker</a></li>
+
+                <li id="menu-item-1061" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1061">
+                <a href="https://git.gnome.org/browse/">Development Code</a></li>
+
+                <li id="menu-item-1062" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1062">
+                <a href="https://wiki.gnome.org/Jhbuild">Build Tool</a></li>
+              </ul>
+            </li>
+
+            <li id="menu-item-1046" class=
+            "menu-item menu-item-type-custom menu-item-object-custom menu-item-1046">
+              <a href="/news">News</a>
+
+              <ul class="sub-menu">
+                <li id="menu-item-1063" class=
+                "menu-item menu-item-type-post_type menu-item-object-page menu-item-1063">
+                <a href="https://www.gnome.org/press/">Press Releases</a></li>
+
+                <li id="menu-item-1064" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1064">
+                <a href="https://www.gnome.org/start/stable">Latest Release</a></li>
+
+                <li id="menu-item-1065" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1065">
+                <a href="https://planet.gnome.org">Planet GNOME</a></li>
+
+                <li id="menu-item-1067" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1067">
+                <a href="https://news.gnome.org">Development News</a></li>
+
+                <li id="menu-item-1068" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1068">
+                <a href="https://identi.ca/gnome">Identi.ca</a></li>
+
+                <li id="menu-item-1069" class=
+                "menu-item menu-item-type-custom menu-item-object-custom menu-item-1069">
+                <a href="https://twitter.com/gnome">Twitter</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="footnotes" class="grid_9">
+<p>Copyright &copy; 2004-2013, <a href="https://www.gnome.org/">The GNOME Project</a>.</p>
+<br />
+  <small><p>Hosted by <a href="http://www.redhat.com/">Red Hat</a>. 
+   Powered by <a href="http://hjemli.net/git/cgit/">cgit</a>.</p>
+  <p>To follow the commits, subscribe to <a href="http://mail.gnome.org/mailman/listinfo/commits-list">commits-list</a>. (can be limited to specific modules)</p></small>
+</div>
+    </div>
+  </div>
+</div> <!-- id=cgit -->
+</body>
+</html>
