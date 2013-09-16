@@ -6003,7 +6003,7 @@ meta_display_get_xinput_opcode (MetaDisplay *display)
 gboolean
 meta_display_supports_extended_barriers (MetaDisplay *display)
 {
-  return META_DISPLAY_HAS_XINPUT_23 (display);
+  return META_DISPLAY_HAS_XINPUT_23 (display) && !meta_is_wayland_compositor ();
 }
 
 /**
