@@ -691,7 +691,7 @@ wayland_surface_update_area (MetaShapedTexture *stex,
     }
 }
 
-static void
+static gboolean
 get_clip (MetaShapedTexture *stex,
           int x,
           int y,
@@ -717,15 +717,12 @@ get_clip (MetaShapedTexture *stex,
    * it here.
    */
   if (!clutter_actor_has_allocation (self))
-    {
-      clutter_actor_queue_redraw (self);
-      return;
-    }
+    return FALSE;
 
   priv = stex->priv;
 
   if (priv->tex_width == 0 || priv->tex_height == 0)
-    return;
+    return FALSE;
 
   clutter_actor_get_allocation_box (self, &allocation);
 
@@ -736,6 +733,8 @@ get_clip (MetaShapedTexture *stex,
   clip->y = y * scale_y;
   clip->width = width * scale_x;
   clip->height = height * scale_y;
+
+  return TRUE;
 }
 
 /**
@@ -766,6 +765,7 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
 {
   MetaShapedTexturePrivate *priv;
   cairo_rectangle_int_t clip;
+  gboolean has_clip;
 
   priv = stex->priv;
 
@@ -785,7 +785,7 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
 
   meta_texture_tower_update_area (priv->paint_tower, x, y, width, height);
 
-  get_clip (stex, x, y, width, height, &clip);
+  has_clip = get_clip (stex, x, y, width, height, &clip);
 
   if (unobscured_region)
     {
@@ -795,7 +795,8 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
         return FALSE;
 
       intersection = cairo_region_copy (unobscured_region);
-      cairo_region_intersect_rectangle (intersection, &clip);
+      if (has_clip)
+	cairo_region_intersect_rectangle (intersection, &clip);
 
       if (!cairo_region_is_empty (intersection))
         {
@@ -812,7 +813,10 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
       return FALSE;
     }
 
-  clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stex), &clip);
+  if (has_clip)
+    clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stex), &clip);
+  else
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
 
   return TRUE;
 }
