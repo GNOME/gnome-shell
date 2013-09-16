@@ -77,7 +77,8 @@ typedef struct
   guint64                   timeout_msec;
 
   /* x11 */
-  XSyncAlarm	            xalarm;
+  XSyncAlarm                xalarm;
+  int                       idle_source_id;
 
   /* wayland */
   GSource                  *timeout_source;
@@ -115,6 +116,12 @@ fire_watch (MetaIdleMonitorWatch *watch)
 
   monitor = watch->monitor;
   g_object_ref (monitor);
+
+  if (watch->idle_source_id)
+    {
+      g_source_remove (watch->idle_source_id);
+      watch->idle_source_id = 0;
+    }
 
   id = watch->id;
   is_user_active_watch = (watch->timeout_msec == 0);
@@ -286,6 +293,12 @@ idle_monitor_watch_free (MetaIdleMonitorWatch *watch)
     return;
 
   monitor = watch->monitor;
+
+  if (watch->idle_source_id)
+    {
+      g_source_remove (watch->idle_source_id);
+      watch->idle_source_id = 0;
+    }
 
   if (watch->notify != NULL)
     watch->notify (watch->user_data);
@@ -480,6 +493,17 @@ static GSourceFuncs wayland_source_funcs = {
   NULL, /* finalize */
 };
 
+static gboolean
+fire_watch_idle (gpointer data)
+{
+  MetaIdleMonitorWatch *watch = data;
+
+  watch->idle_source_id = 0;
+  fire_watch (watch);
+
+  return FALSE;
+}
+
 static MetaIdleMonitorWatch *
 make_watch (MetaIdleMonitor           *monitor,
             guint64                    timeout_msec,
@@ -518,6 +542,9 @@ make_watch (MetaIdleMonitor           *monitor,
           watch->xalarm = _xsync_alarm_set (monitor, XSyncPositiveTransition, timeout_msec, TRUE);
 
           g_hash_table_add (monitor->alarms, (gpointer) watch->xalarm);
+
+          if (meta_idle_monitor_get_idletime (monitor) > (gint64)timeout_msec)
+            watch->idle_source_id = g_idle_add (fire_watch_idle, watch);
         }
       else
         {
