@@ -13,16 +13,16 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-01 15:50+0000\n"
-"PO-Revision-Date: 2013-03-03 16:27+0100\n"
-"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
+"POT-Creation-Date: 2013-08-18 20:03+0000\n"
+"PO-Revision-Date: 2013-09-16 18:53+0100\n"
+"Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.5\n"
+"X-Generator: Poedit 1.5.7\n"
 
 #: ../src/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -215,19 +215,20 @@ msgstr "Ansicht rechts teilen"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:507
+#: ../src/compositor/compositor.c:589
 #, c-format
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s\"."
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
 msgstr ""
 "Ein weiterer Compositing-Verwalter läuft bereits auf Bildschirm %i der "
 "Anzeige »%s«."
 
-#: ../src/compositor/meta-background.c:1111
+#: ../src/compositor/meta-background.c:1076
 msgid "background texture could not be created from file"
 msgstr "Hintergrundtextur konnte aus Datei nicht erzeugt werden"
 
-#: ../src/core/bell.c:320
+#: ../src/core/bell.c:322
 msgid "Bell event"
 msgstr "Klangereignis"
 
@@ -261,17 +262,17 @@ msgstr "_Warten"
 msgid "_Force Quit"
 msgstr "_Beenden erzwingen"
 
-#: ../src/core/display.c:401
+#: ../src/core/display.c:421
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Die für Compositing benötigte %s-Erweiterung wurde nicht gefunden"
 
-#: ../src/core/display.c:493
+#: ../src/core/display.c:513
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-Window-Systemanzeige »%s« konnte nicht geöffnet werden\n"
 
-#: ../src/core/keybindings.c:929
+#: ../src/core/keybindings.c:1136
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -280,47 +281,61 @@ msgstr ""
 "Ein anderes Programm verwendet die Taste %s bereits mit den Umschaltern %x "
 "als Tastenkombination\n"
 
-#: ../src/core/keybindings.c:1129
+#: ../src/core/keybindings.c:1333
 #, c-format
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "»%s« ist keine zulässige Zugriffstaste\n"
 
-#: ../src/core/main.c:196
+#: ../src/core/main.c:197
 msgid "Disable connection to session manager"
 msgstr "Verbindung zur Sitzungsverwaltung deaktivieren"
 
-#: ../src/core/main.c:202
+#: ../src/core/main.c:203
 msgid "Replace the running window manager"
 msgstr "Den aktuellen Fensterverwalter ersetzen"
 
-#: ../src/core/main.c:208
+#: ../src/core/main.c:209
 msgid "Specify session management ID"
 msgstr "Kennung der Sitzungsverwaltung angeben"
 
-#: ../src/core/main.c:213
+#: ../src/core/main.c:214
 msgid "X Display to use"
 msgstr "Zu verwendende X-Anzeige"
 
-#: ../src/core/main.c:219
+#: ../src/core/main.c:220
 msgid "Initialize session from savefile"
 msgstr "Sitzung anhand gespeicherter Datei starten"
 
-#: ../src/core/main.c:225
+#: ../src/core/main.c:226
 msgid "Make X calls synchronous"
 msgstr "X-Aufrufe abgleichen"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:534
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Der Themenordner konnte nicht eingelesen werden: %s\n"
 
-#: ../src/core/main.c:510
+#: ../src/core/main.c:550
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Es konnte kein Thema gefunden werden! Stellen Sie sicher, dass %s existiert "
 "und zumindest die mitgelieferten Themen enthält.\n"
+
+#: ../src/core/monitor.c:711
+msgid "Built-in display"
+msgstr "Eingebaute Anzeige"
+
+#. TRANSLATORS: this is a monitor name (in case we don't know
+#. the vendor), it's Unknown followed by a size in inches,
+#. like 'Unknown 15"'
+#.
+#: ../src/core/monitor.c:739
+#, c-format
+#| msgid "Unknown element %s"
+msgid "Unknown %s"
+msgstr "Unbekannt %s"
 
 # CHECK
 # c-format
@@ -348,7 +363,7 @@ msgstr "Version ausgeben"
 msgid "Mutter plugin to use"
 msgstr "Zu benutzendes Mutter-Plugin"
 
-#: ../src/core/prefs.c:1087
+#: ../src/core/prefs.c:1202
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -356,14 +371,14 @@ msgstr ""
 "Provisorien (Workarounds) für defekte Anwendungen abgeschaltet. "
 "Möglicherweise funktionieren manche Anwendungen nicht richtig.\n"
 
-#: ../src/core/prefs.c:1162
+#: ../src/core/prefs.c:1277
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Schriftbeschreibung »%s« aus GConf-Schlüssel %s konnte nicht verarbeitet "
 "werden\n"
 
-#: ../src/core/prefs.c:1228
+#: ../src/core/prefs.c:1343
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -372,7 +387,7 @@ msgstr ""
 "In der Konfigurationsdatenbank gefundenes »%s« ist kein zulässiger Wert für "
 "den Maustastenumschalter\n"
 
-#: ../src/core/prefs.c:1780
+#: ../src/core/prefs.c:1909
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -381,39 +396,40 @@ msgstr ""
 "In der Konfigurationsdatenbank gefundenes »%s« ist kein zulässiger Wert für "
 "die Tastenkombination »%s«\n"
 
-#: ../src/core/prefs.c:1879
+#: ../src/core/prefs.c:1999
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeitsfläche %d"
 
-#: ../src/core/screen.c:673
+#: ../src/core/screen.c:534
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Bildschirm %d auf Anzeige »%s« ist ungültig\n"
 
-#: ../src/core/screen.c:689
+#: ../src/core/screen.c:550
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
 "Bildschirm %d auf Anzeige »%s« hat bereits einen Fensterverwalter; Geben Sie "
-"die Option »--replace« an, um zu versuchen, den aktuellen Fensterverwalter zu "
-"ersetzen.\n"
+"die Option »--replace« an, um zu versuchen, den aktuellen Fensterverwalter "
+"zu ersetzen.\n"
 
-#: ../src/core/screen.c:716
+#: ../src/core/screen.c:577
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Markierung des Fensterverwalters auf Bildschirm %d auf Anzeige »%s« konnte "
 "nicht empfangen werden\n"
 
-#: ../src/core/screen.c:794
+#: ../src/core/screen.c:655
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Bildschirm %d auf Anzeige »%s« hat bereits einen Fensterverwalter\n"
 
-#: ../src/core/screen.c:979
+#: ../src/core/screen.c:846
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Bildschirm %d auf Anzeige »%s« konnte nicht freigegeben werden\n"
@@ -475,44 +491,43 @@ msgstr ""
 "Diese Fenster unterstützen das Speichern der aktuellen Einstellungen nicht "
 "und müssen bei der nächsten Anmeldung manuell neu gestartet werden."
 
-#: ../src/core/util.c:80
+#: ../src/core/util.c:84
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Diagnoseprotokoll konnte nicht geöffnet werden: %s\n"
 
-#: ../src/core/util.c:90
+#: ../src/core/util.c:94
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Protokolldatei %s konnte nicht mit fdopen() geöffnet werden: %s\n"
 
-#: ../src/core/util.c:96
+#: ../src/core/util.c:100
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Protokolldatei %s geöffnet\n"
 
-#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
-#, c-format
+#: ../src/core/util.c:119
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter wurde ohne Unterstützung für den redseligen Modus kompiliert\n"
 
-#: ../src/core/util.c:259
+#: ../src/core/util.c:264
 msgid "Window manager: "
 msgstr "Fensterverwalter:"
 
-#: ../src/core/util.c:407
+#: ../src/core/util.c:414
 msgid "Bug in window manager: "
 msgstr "Fehler in Fensterverwalter:"
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:445
 msgid "Window manager warning: "
 msgstr "Fensterverwalter-Warnung:"
 
-#: ../src/core/util.c:466
+#: ../src/core/util.c:473
 msgid "Window manager error: "
 msgstr "Fensterverwalter-Fehler:"
 
 #. first time through
-#: ../src/core/window.c:7539
+#: ../src/core/window.c:7533
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -534,36 +549,37 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8263
+#: ../src/core/window.c:8257
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
 "%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"Fenster %s zeigt durch einen MWM-Hinweis an, dass die Größe nicht veränderbar "
-"ist, setzt jedoch die minimale Größe auf %d x %d und die maximale Größe auf "
-"%d x %d; dies ergibt keinen Sinn.\n"
+"Fenster %s zeigt durch einen MWM-Hinweis an, dass die Größe nicht "
+"veränderbar ist, setzt jedoch die minimale Größe auf %d x %d und die "
+"maximale Größe auf %d x %d; dies ergibt keinen Sinn.\n"
 
-#: ../src/core/window-props.c:318
+#: ../src/core/window-props.c:347
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Anwendung hat eine unsinnige _NET_WM_PID %lu angegeben\n"
 
-#: ../src/core/window-props.c:434
+#: ../src/core/window-props.c:463
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (auf %s)"
 
-#: ../src/core/window-props.c:1517
+#: ../src/core/window-props.c:1546
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ungültiges WM_TRANSIENT_FOR-Fenster 0x%lx festgelegt für %s.\n"
 
-#: ../src/core/window-props.c:1528
+#: ../src/core/window-props.c:1557
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr ""
-"WM_TRANSIENT_FOR-Fenster 0x%lx für %s würde eine Endlosschleife verursachen.\n"
+"WM_TRANSIENT_FOR-Fenster 0x%lx für %s würde eine Endlosschleife "
+"verursachen.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -611,9 +627,9 @@ msgid ""
 msgstr ""
 "Dieser Schlüssel wird die »Überlagerung« auslösen, d.h. eine kombinierte "
 "Fensterübersicht und ein System zum Starten von Anwendungen. Als "
-"Voreinstellung ist die Windows-Taste der Tastatur von PC-Hardware vorgesehen. "
-"Man geht davon aus, dass diese Tastenverknüpfung entweder die Vorgabe ist "
-"oder als leere Zeichenkette gesetzt ist."
+"Voreinstellung ist die Windows-Taste der Tastatur von PC-Hardware "
+"vorgesehen. Man geht davon aus, dass diese Tastenverknüpfung entweder die "
+"Vorgabe ist oder als leere Zeichenkette gesetzt ist."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
@@ -622,12 +638,12 @@ msgstr "Modale Dialoge anhängen"
 #: ../src/org.gnome.mutter.gschema.xml.in.h:4
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
-"attached to the titlebar of the parent window and are moved together with the "
-"parent window."
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
 msgstr ""
-"Wenn auf »wahr« gesetzt, erscheinen anstelle unabhängiger Titelleisten an die "
-"Titelleisten des Elternfensters angehängte modale Dialoge, welche zusammen "
-"mit dem Elternfenster bewegt werden."
+"Wenn auf »wahr« gesetzt, erscheinen anstelle unabhängiger Titelleisten an "
+"die Titelleisten des Elternfensters angehängte modale Dialoge, welche "
+"zusammen mit dem Elternfenster bewegt werden."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -637,8 +653,8 @@ msgstr ""
 #: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
-"vertically and resizes them horizontally to cover half of the available area. "
-"Dropping windows on the top screen edge maximizes them completely."
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
 "Falls aktiviert, wird bei Berührung eines Fensters mit den senkrechten "
 "Bildschirmrändern dieses vertikal maximiert und horizontal angepasst, um die "
@@ -689,9 +705,9 @@ msgstr "Fokus-Änderungen verzögern, bis der Zeiger aufhört sich zu bewegen"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-"focus will not be changed immediately when entering a window, but only after "
-"the pointer stops moving."
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
 msgstr ""
 "Falls dieser Schlüssel gesetzt ist und der Fokusmodus entweder »sloppy« oder "
 "»mouse« ist, wird der Fokus nicht sofort beim Erreichen eines Fensters "
@@ -704,11 +720,11 @@ msgstr "Breite der ziehbaren Ränder"
 # Lange Beschreibung von »Draggable border width«
 #: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
-"The amount of total draggable borders. If the theme's visible borders are not "
-"enough, invisible borders will be added to meet this value."
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
 msgstr ""
-"Die Gesamtbreite ziehbarer Ränder. Falls die im Thema sichtbaren Ränder nicht "
-"ausreichen, werden unsichtbare Ränder hinzugefügt, um diesen Wert zu "
+"Die Gesamtbreite ziehbarer Ränder. Falls die im Thema sichtbaren Ränder "
+"nicht ausreichen, werden unsichtbare Ränder hinzugefügt, um diesen Wert zu "
 "erreichen."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:17
@@ -731,109 +747,104 @@ msgstr "Fenster aus Tab-Anzeige auswählen"
 msgid "Cancel tab popup"
 msgstr "Tab-Anzeige abbrechen"
 
-#: ../src/tools/mutter-message.c:123
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Aufruf: %s\n"
-
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:69
+#: ../src/ui/menu.c:67
 msgid "Mi_nimize"
 msgstr "_Minimieren"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:71
+#: ../src/ui/menu.c:69
 msgid "Ma_ximize"
 msgstr "Ma_ximieren"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:73
+#: ../src/ui/menu.c:71
 msgid "Unma_ximize"
 msgstr "_Wiederherstellen"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:75
+#: ../src/ui/menu.c:73
 msgid "Roll _Up"
 msgstr "Ein_rollen"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:77
+#: ../src/ui/menu.c:75
 msgid "_Unroll"
 msgstr "Aus_rollen"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:79
+#: ../src/ui/menu.c:77
 msgid "_Move"
 msgstr "_Verschieben"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:81
+#: ../src/ui/menu.c:79
 msgid "_Resize"
 msgstr "_Größe ändern"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:83
+#: ../src/ui/menu.c:81
 msgid "Move Titlebar On_screen"
 msgstr "_Titelleiste auf Bildschirm verschieben"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:86 ../src/ui/menu.c:88
+#: ../src/ui/menu.c:84 ../src/ui/menu.c:86
 msgid "Always on _Top"
 msgstr "Im V_ordergrund"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:90
+#: ../src/ui/menu.c:88
 msgid "_Always on Visible Workspace"
 msgstr "Immer auf der _sichtbaren Arbeitsfläche"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:92
+#: ../src/ui/menu.c:90
 msgid "_Only on This Workspace"
 msgstr "Nur auf _dieser Arbeitsfläche"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:94
+#: ../src/ui/menu.c:92
 msgid "Move to Workspace _Left"
 msgstr "Auf Arbeitsfläche _links verschieben"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:96
+#: ../src/ui/menu.c:94
 msgid "Move to Workspace R_ight"
 msgstr "Auf Arbeitsfläche _rechts verschieben"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:98
+#: ../src/ui/menu.c:96
 msgid "Move to Workspace _Up"
 msgstr "Auf Arbeitsfläche darü_ber verschieben"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:100
+#: ../src/ui/menu.c:98
 msgid "Move to Workspace _Down"
 msgstr "Auf Arbeitsfläche dar_unter verschieben"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:104
+#: ../src/ui/menu.c:102
 msgid "_Close"
 msgstr "S_chließen"
 
-#: ../src/ui/menu.c:204
+#: ../src/ui/menu.c:202
 #, c-format
 msgid "Workspace %d%n"
 msgstr "Arbeitsfläche %d%n"
 
-#: ../src/ui/menu.c:214
+#: ../src/ui/menu.c:212
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Arbeitsfläche 1_0"
 
-#: ../src/ui/menu.c:216
+#: ../src/ui/menu.c:214
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbeitsfläche %s%d"
 
-#: ../src/ui/menu.c:397
+#: ../src/ui/menu.c:384
 msgid "Move to Another _Workspace"
 msgstr "Auf a_ndere Arbeitsfläche verschieben"
 
@@ -935,50 +946,50 @@ msgstr "Umschalter5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:235
+#: ../src/ui/theme.c:236
 msgid "top"
 msgstr "oben"
 
-#: ../src/ui/theme.c:237
+#: ../src/ui/theme.c:238
 msgid "bottom"
 msgstr "unten"
 
-#: ../src/ui/theme.c:239
+#: ../src/ui/theme.c:240
 msgid "left"
 msgstr "links"
 
-#: ../src/ui/theme.c:241
+#: ../src/ui/theme.c:242
 msgid "right"
 msgstr "rechts"
 
-#: ../src/ui/theme.c:269
+#: ../src/ui/theme.c:270
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "Die Rahmengeometrie gibt die »%s«-Abmessungen nicht an"
 
-#: ../src/ui/theme.c:288
+#: ../src/ui/theme.c:289
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr ""
 "Die Rahmengeometrie gibt die »%s«-Abmessungen für den Rand »%s« nicht an"
 
-#: ../src/ui/theme.c:325
+#: ../src/ui/theme.c:326
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Das Seitenverhältnis %g für einen Knopf ergibt keinen Sinn"
 
-#: ../src/ui/theme.c:337
+#: ../src/ui/theme.c:338
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Die Rahmengeometrie gibt die Abmessungen der Knöpfe nicht an"
 
-#: ../src/ui/theme.c:1050
+#: ../src/ui/theme.c:1051
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Farbverläufe sollten mindestens zwei Farben enthalten"
 
 # (where "foo" refers to the name defined in GTK+'s CSS, and "bar" refers to an alternative color spec which is used when the color referenced by "foo" is not found)
-#: ../src/ui/theme.c:1202
+#: ../src/ui/theme.c:1203
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
@@ -988,25 +999,25 @@ msgstr ""
 "in Klammern gesetzt werden, z.B. gtk:custom(foo,bar); »%s« konnte nicht "
 "verarbeitet werden"
 
-#: ../src/ui/theme.c:1218
+#: ../src/ui/theme.c:1219
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
 msgstr ""
-"Ungültiges Zeichen »%c« im Parameter »color_name parameter« von »gtk:custom«, "
-"nur A-Za-z0-9-_ sind zulässig"
+"Ungültiges Zeichen »%c« im Parameter »color_name parameter« von »gtk:"
+"custom«, nur A-Za-z0-9-_ sind zulässig"
 
-#: ../src/ui/theme.c:1232
+#: ../src/ui/theme.c:1233
 #, c-format
 msgid ""
-"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not fit "
-"the format"
+"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
+"fit the format"
 msgstr ""
 "Das Gtk:custom-Format ist »gtk:custom(Farbname,Ersetzungsanweisung)«; »%s« "
 "passt nicht auf dieses Format"
 
-#: ../src/ui/theme.c:1277
+#: ../src/ui/theme.c:1278
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1015,27 +1026,27 @@ msgstr ""
 "Bei GTK-Farbangaben muss der Zustand in eckigen Klammern stehen, z.B. gtk:fg"
 "[NORMAL], wobei NORMAL der Zustand ist; »%s« konnte nicht verarbeitet werden."
 
-#: ../src/ui/theme.c:1291
+#: ../src/ui/theme.c:1292
 #, c-format
 msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:fg"
-"[NORMAL] where NORMAL is the state; could not parse \"%s\""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 "GTK-Farbangaben müssen nach dem Zustand eine schließende eckige Klammer "
 "enthalten, z.B. gtk:fg[NORMAL], wobei NORMAL der Zustand ist; »%s« konnte "
 "nicht verarbeitet werden"
 
-#: ../src/ui/theme.c:1302
+#: ../src/ui/theme.c:1303
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Zustand »%s« in der Farbangabe konnte nicht verarbeitet werden"
 
-#: ../src/ui/theme.c:1315
+#: ../src/ui/theme.c:1316
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Farbkomponente »%s« in der Farbangabe konnte nicht verarbeitet werden"
 
-#: ../src/ui/theme.c:1344
+#: ../src/ui/theme.c:1345
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1044,17 +1055,18 @@ msgstr ""
 "Das Blendformat ist »blend/bg_color/fg_color/alpha«; »%s« passt nicht auf "
 "dieses Format"
 
-#: ../src/ui/theme.c:1355
+#: ../src/ui/theme.c:1356
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Der Alphawert »%s« in einer Mischfarbe konnte nicht verarbeitet werden"
 
-#: ../src/ui/theme.c:1365
+#: ../src/ui/theme.c:1366
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Der Alphawert »%s« in einer Mischfarbe liegt nicht zwischen 0.0 und 1.0"
+msgstr ""
+"Der Alphawert »%s« in einer Mischfarbe liegt nicht zwischen 0.0 und 1.0"
 
-#: ../src/ui/theme.c:1412
+#: ../src/ui/theme.c:1413
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -1062,28 +1074,28 @@ msgstr ""
 "Das Mischformat ist »Mischen/Basisfarbe/Faktor«; »%s« passt nicht auf dieses "
 "Format"
 
-#: ../src/ui/theme.c:1423
+#: ../src/ui/theme.c:1424
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr ""
 "Der Mischfaktor »%s« in einer Mischfarbe konnte nicht verarbeitet werden"
 
-#: ../src/ui/theme.c:1433
+#: ../src/ui/theme.c:1434
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Der Mischfaktor »%s« in einer Mischfarbe ist negativ"
 
-#: ../src/ui/theme.c:1462
+#: ../src/ui/theme.c:1463
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Die Farbe »%s« konnte nicht verarbeitet werden"
 
-#: ../src/ui/theme.c:1779
+#: ../src/ui/theme.c:1780
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Der Koordinatenausdruck enthält das unerlaubte Zeichen »%s«"
 
-#: ../src/ui/theme.c:1806
+#: ../src/ui/theme.c:1807
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -1092,14 +1104,14 @@ msgstr ""
 "Der Koordinatenausdruck enthält die Gleitkommazahl »%s«, die nicht "
 "verarbeitet werden konnte"
 
-#: ../src/ui/theme.c:1820
+#: ../src/ui/theme.c:1821
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "Der Koordinatenausdruck enthält die Ganzzahl »%s«, die nicht verarbeitet "
 "werden konnte"
 
-#: ../src/ui/theme.c:1941
+#: ../src/ui/theme.c:1942
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1108,25 +1120,25 @@ msgstr ""
 "Der Koordinatenausdruck enthält einen unbekannten Operator am Anfang dieses "
 "Texts: »%s«"
 
-#: ../src/ui/theme.c:1998
+#: ../src/ui/theme.c:1999
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Der Koordinatenausdruck war leer oder unverständlich"
 
-#: ../src/ui/theme.c:2111 ../src/ui/theme.c:2121 ../src/ui/theme.c:2155
+#: ../src/ui/theme.c:2112 ../src/ui/theme.c:2122 ../src/ui/theme.c:2156
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Der Koordinatenausdruck führt zu einer Division durch Null"
 
-#: ../src/ui/theme.c:2163
+#: ../src/ui/theme.c:2164
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
-"Der Koordinatenausdruck versucht, den Modulo-Operator auf eine Gleitkommazahl "
-"anzuwenden"
+"Der Koordinatenausdruck versucht, den Modulo-Operator auf eine "
+"Gleitkommazahl anzuwenden"
 
-#: ../src/ui/theme.c:2219
+#: ../src/ui/theme.c:2220
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
@@ -1134,18 +1146,19 @@ msgstr ""
 "Der Koordinatenausdruck enthält den Operator »%s«, wo ein Operand stehen "
 "müsste"
 
-#: ../src/ui/theme.c:2228
+#: ../src/ui/theme.c:2229
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
-"Der Koordinatenausdruck enthält einen Operanden, wo ein Operator stehen müsste"
+"Der Koordinatenausdruck enthält einen Operanden, wo ein Operator stehen "
+"müsste"
 
-#: ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2237
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Der Koordinatenausdruck endet mit einem Operator statt einem Operanden"
 
-#: ../src/ui/theme.c:2246
+#: ../src/ui/theme.c:2247
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1154,43 +1167,43 @@ msgstr ""
 "Der Koordinatenausdruck enthält die beiden Operatoren »%c« und »%c«, jedoch "
 "keinen Operanden dazwischen"
 
-#: ../src/ui/theme.c:2397 ../src/ui/theme.c:2442
+#: ../src/ui/theme.c:2398 ../src/ui/theme.c:2443
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
 "Der Koordinatenausdruck enthält die unbekannte Variable oder Konstante »%s«"
 
-#: ../src/ui/theme.c:2496
+#: ../src/ui/theme.c:2497
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Der Koordinatenausdruck brachte seinen Puffer zum Überlaufen."
 
-#: ../src/ui/theme.c:2525
+#: ../src/ui/theme.c:2526
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "Der Koordinatenausdruck enthält eine schließende Klammer, jedoch keine "
 "Öffnende"
 
-#: ../src/ui/theme.c:2589
+#: ../src/ui/theme.c:2590
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "Der Koordinatenausdruck enthält eine öffnende Klammer, jedoch keine "
 "Schließende"
 
-#: ../src/ui/theme.c:2600
+#: ../src/ui/theme.c:2601
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "Der Koordinatenausdruck scheint weder Operatoren noch Operanden zu enthalten"
 
-#: ../src/ui/theme.c:2813 ../src/ui/theme.c:2833 ../src/ui/theme.c:2853
+#: ../src/ui/theme.c:2814 ../src/ui/theme.c:2834 ../src/ui/theme.c:2854
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Das Thema enthält einen Ausdruck, der zu folgendem Fehler führte: %s\n"
 
-#: ../src/ui/theme.c:4499
+#: ../src/ui/theme.c:4500
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1199,41 +1212,42 @@ msgstr ""
 "Für diesen Rahmenstil muss <button function=\"%s\" state=\"%s\" draw_ops="
 "\"irgendwas\"/> angegeben werden"
 
-#: ../src/ui/theme.c:5010 ../src/ui/theme.c:5035
+#: ../src/ui/theme.c:5011 ../src/ui/theme.c:5036
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"irgendwas\"/> fehlt"
 
-#: ../src/ui/theme.c:5083
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Thema »%s« konnte nicht geladen werden: %s\n"
 
-#: ../src/ui/theme.c:5219 ../src/ui/theme.c:5226 ../src/ui/theme.c:5233
-#: ../src/ui/theme.c:5240 ../src/ui/theme.c:5247
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Kein <%s> für Thema »%s« festgelegt"
 
-#: ../src/ui/theme.c:5255
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window type="
-"\"%s\" style_set=\"whatever\"/> element"
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
 "Kein Rahmenstil für Fenstertyp »%s« in Thema »%s« angegeben; fügen Sie ein "
 "Element <window type=\"%s\" style_set=\"irgendwas\"/> hinzu"
 
-#: ../src/ui/theme.c:5662 ../src/ui/theme.c:5724 ../src/ui/theme.c:5787
+#: ../src/ui/theme.c:5661 ../src/ui/theme.c:5723 ../src/ui/theme.c:5786
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Benutzerdefinierte Konstanten müssen mit einem Großbuchstaben beginnen; »%s« "
 "jedoch nicht"
 
-#: ../src/ui/theme.c:5670 ../src/ui/theme.c:5732 ../src/ui/theme.c:5795
+#: ../src/ui/theme.c:5669 ../src/ui/theme.c:5731 ../src/ui/theme.c:5794
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstante »%s« wurde bereits definiert"
@@ -1270,7 +1284,8 @@ msgstr "»%s« konnte nicht als Ganzzahl verarbeitet werden"
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr ""
-"Schließende Zeichen »%s« in Zeichenkette »%s« konnten nicht verarbeitet werden"
+"Schließende Zeichen »%s« in Zeichenkette »%s« konnten nicht verarbeitet "
+"werden"
 
 #: ../src/ui/theme-parser.c:613
 #, c-format
@@ -1310,8 +1325,8 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Ungültiger Titelmaßstab »%s« (muss xx-small, x-small, small, medium, large, x-"
-"large oder xx-large sein)\n"
+"Ungültiger Titelmaßstab »%s« (muss xx-small, x-small, small, medium, large, "
+"x-large oder xx-large sein)\n"
 
 #: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
 #: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
@@ -1459,7 +1474,8 @@ msgstr "Unbekannte Knopf-Funktion »%s«"
 #: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr "Knopf-Funktion »%s« existiert in dieser Version nicht (%d, benötigt %d)"
+msgstr ""
+"Knopf-Funktion »%s« existiert in dieser Version nicht (%d, benötigt %d)"
 
 #: ../src/ui/theme-parser.c:2994
 #, c-format
@@ -1497,15 +1513,16 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
-"Für die Zustände maximiert/eingerollt sollte es im Element <%s> kein Attribut "
-"»resize« geben"
+"Für die Zustände maximiert/eingerollt sollte es im Element <%s> kein "
+"Attribut »resize« geben"
 
 #: ../src/ui/theme-parser.c:3161
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
-"Für maximierte Zustände sollte es im Element <%s> kein Attribut »resize« geben"
+"Für maximierte Zustände sollte es im Element <%s> kein Attribut »resize« "
+"geben"
 
 #: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
 #, c-format
@@ -1532,8 +1549,8 @@ msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Es kann keine zwei draw_ops für ein <button>-Element geben (das Thema gab ein "
-"draw_ops-Attribut und ein <draw_ops>-Element oder zwei Elemente an)"
+"Es kann keine zwei draw_ops für ein <button>-Element geben (das Thema gab "
+"ein draw_ops-Attribut und ein <draw_ops>-Element oder zwei Elemente an)"
 
 #: ../src/ui/theme-parser.c:3370
 msgid ""
@@ -1618,211 +1635,158 @@ msgstr "In Element <%s> ist kein Text erlaubt"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> wurde für dieses Thema zweimal angegeben"
 
-#: ../src/ui/theme-parser.c:4334
+#: ../src/ui/theme-parser.c:4336
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Es konnte keine gültige Datei für das Thema »%s« gefunden werden\n"
 
-#: ../src/ui/theme-viewer.c:99
-msgid "_Windows"
-msgstr "_Fenster"
+#~ msgid "Usage: %s\n"
+#~ msgstr "Aufruf: %s\n"
 
-#: ../src/ui/theme-viewer.c:100
-msgid "_Dialog"
-msgstr "_Dialogfenster"
+#~ msgid "_Windows"
+#~ msgstr "_Fenster"
 
-#: ../src/ui/theme-viewer.c:101
-msgid "_Modal dialog"
-msgstr "_Modales Dialogfenster"
+#~ msgid "_Dialog"
+#~ msgstr "_Dialogfenster"
 
-#: ../src/ui/theme-viewer.c:102
-msgid "_Utility"
-msgstr "_Werkzeug"
+#~ msgid "_Modal dialog"
+#~ msgstr "_Modales Dialogfenster"
 
-#: ../src/ui/theme-viewer.c:103
-msgid "_Splashscreen"
-msgstr "_Begrüßungsbildschirm"
+#~ msgid "_Utility"
+#~ msgstr "_Werkzeug"
 
-#: ../src/ui/theme-viewer.c:104
-msgid "_Top dock"
-msgstr "_Oberes Dock"
+#~ msgid "_Splashscreen"
+#~ msgstr "_Begrüßungsbildschirm"
 
-#: ../src/ui/theme-viewer.c:105
-msgid "_Bottom dock"
-msgstr "_Unteres Dock"
+#~ msgid "_Top dock"
+#~ msgstr "_Oberes Dock"
 
-#: ../src/ui/theme-viewer.c:106
-msgid "_Left dock"
-msgstr "_Linkes Dock"
+#~ msgid "_Bottom dock"
+#~ msgstr "_Unteres Dock"
 
-#: ../src/ui/theme-viewer.c:107
-msgid "_Right dock"
-msgstr "_Rechtes Dock"
+#~ msgid "_Left dock"
+#~ msgstr "_Linkes Dock"
 
-#: ../src/ui/theme-viewer.c:108
-msgid "_All docks"
-msgstr "_Alle Docks"
+#~ msgid "_Right dock"
+#~ msgstr "_Rechtes Dock"
 
-#: ../src/ui/theme-viewer.c:109
-msgid "Des_ktop"
-msgstr "Arbeitsfl_äche"
+#~ msgid "_All docks"
+#~ msgstr "_Alle Docks"
 
-#: ../src/ui/theme-viewer.c:115
-msgid "Open another one of these windows"
-msgstr "Noch eines dieser Fenster öffnen"
+#~ msgid "Des_ktop"
+#~ msgstr "Arbeitsfl_äche"
 
-#: ../src/ui/theme-viewer.c:117
-msgid "This is a demo button with an 'open' icon"
-msgstr "Dies ist ein Demo-Knopf mit einem »Öffnen«-Symbol"
+#~ msgid "Open another one of these windows"
+#~ msgstr "Noch eines dieser Fenster öffnen"
 
-#: ../src/ui/theme-viewer.c:119
-msgid "This is a demo button with a 'quit' icon"
-msgstr "Dies ist ein Demo-Knopf mit einem »Beenden«-Symbol"
+#~ msgid "This is a demo button with an 'open' icon"
+#~ msgstr "Dies ist ein Demo-Knopf mit einem »Öffnen«-Symbol"
 
-#: ../src/ui/theme-viewer.c:248
-msgid "This is a sample message in a sample dialog"
-msgstr "Dies ist eine Beispielnachricht in einem Beispieldialog"
+#~ msgid "This is a demo button with a 'quit' icon"
+#~ msgstr "Dies ist ein Demo-Knopf mit einem »Beenden«-Symbol"
 
-#: ../src/ui/theme-viewer.c:328
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr "Pseudo-Menüeintrag %d\n"
+#~ msgid "This is a sample message in a sample dialog"
+#~ msgstr "Dies ist eine Beispielnachricht in einem Beispieldialog"
 
-#: ../src/ui/theme-viewer.c:363
-msgid "Border-only window"
-msgstr "Fenster ausschließlich mit Rand"
+#~ msgid "Fake menu item %d\n"
+#~ msgstr "Pseudo-Menüeintrag %d\n"
 
-#: ../src/ui/theme-viewer.c:365
-msgid "Bar"
-msgstr "Leiste"
+#~ msgid "Border-only window"
+#~ msgstr "Fenster ausschließlich mit Rand"
 
-#: ../src/ui/theme-viewer.c:382
-msgid "Normal Application Window"
-msgstr "Normales Anwendungsfenster"
+#~ msgid "Bar"
+#~ msgstr "Leiste"
 
-#: ../src/ui/theme-viewer.c:386
-msgid "Dialog Box"
-msgstr "Dialogfenster"
+#~ msgid "Normal Application Window"
+#~ msgstr "Normales Anwendungsfenster"
 
-#: ../src/ui/theme-viewer.c:390
-msgid "Modal Dialog Box"
-msgstr "Modales Dialogfenster"
+#~ msgid "Dialog Box"
+#~ msgstr "Dialogfenster"
 
-#: ../src/ui/theme-viewer.c:394
-msgid "Utility Palette"
-msgstr "Werkzeugpalette"
+#~ msgid "Modal Dialog Box"
+#~ msgstr "Modales Dialogfenster"
 
-#: ../src/ui/theme-viewer.c:398
-msgid "Torn-off Menu"
-msgstr "Abgerissenes Menü"
+#~ msgid "Utility Palette"
+#~ msgstr "Werkzeugpalette"
 
-#: ../src/ui/theme-viewer.c:402
-msgid "Border"
-msgstr "Rand"
+#~ msgid "Torn-off Menu"
+#~ msgstr "Abgerissenes Menü"
 
-#: ../src/ui/theme-viewer.c:406
-msgid "Attached Modal Dialog"
-msgstr "Angehängter modaler Dialog"
+#~ msgid "Border"
+#~ msgstr "Rand"
 
-#: ../src/ui/theme-viewer.c:737
-#, c-format
-msgid "Button layout test %d"
-msgstr "Test der Knopfanordnung %d"
+#~ msgid "Attached Modal Dialog"
+#~ msgstr "Angehängter modaler Dialog"
 
-#: ../src/ui/theme-viewer.c:766
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr "%g Millisekunden zum Zeichnen eines Fensterrahmens"
+#~ msgid "Button layout test %d"
+#~ msgstr "Test der Knopfanordnung %d"
 
-#: ../src/ui/theme-viewer.c:811
-#, c-format
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Aufruf: metacity-theme-viewer [THEMENNAME]\n"
+#~ msgid "%g milliseconds to draw one window frame"
+#~ msgstr "%g Millisekunden zum Zeichnen eines Fensterrahmens"
 
-#: ../src/ui/theme-viewer.c:818
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "Fehler beim Laden des Themas: %s\n"
+#~ msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+#~ msgstr "Aufruf: metacity-theme-viewer [THEMENNAME]\n"
 
-#: ../src/ui/theme-viewer.c:824
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Thema »%s« in %g Sekunden geladen\n"
+#~ msgid "Error loading theme: %s\n"
+#~ msgstr "Fehler beim Laden des Themas: %s\n"
 
-#: ../src/ui/theme-viewer.c:869
-msgid "Normal Title Font"
-msgstr "Normale Titelschrift"
+#~ msgid "Loaded theme \"%s\" in %g seconds\n"
+#~ msgstr "Thema »%s« in %g Sekunden geladen\n"
 
-#: ../src/ui/theme-viewer.c:875
-msgid "Small Title Font"
-msgstr "Kleine Titelschrift"
+#~ msgid "Normal Title Font"
+#~ msgstr "Normale Titelschrift"
 
-#: ../src/ui/theme-viewer.c:881
-msgid "Large Title Font"
-msgstr "Große Titelschrift"
+#~ msgid "Small Title Font"
+#~ msgstr "Kleine Titelschrift"
 
-#: ../src/ui/theme-viewer.c:886
-msgid "Button Layouts"
-msgstr "Anordnungen der Knöpfe"
+#~ msgid "Large Title Font"
+#~ msgstr "Große Titelschrift"
 
-#: ../src/ui/theme-viewer.c:891
-msgid "Benchmark"
-msgstr "Leistungserfassung"
+#~ msgid "Button Layouts"
+#~ msgstr "Anordnungen der Knöpfe"
 
-#: ../src/ui/theme-viewer.c:947
-msgid "Window Title Goes Here"
-msgstr "Hierher kommt der Fenstertitel"
+#~ msgid "Benchmark"
+#~ msgstr "Leistungserfassung"
+
+#~ msgid "Window Title Goes Here"
+#~ msgstr "Hierher kommt der Fenstertitel"
 
 # CHECK - wall clock
-#: ../src/ui/theme-viewer.c:1053
-#, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"%d Rahmen in %g Sekunden auf Client-Seite gezeichnet (%g Millisekunden pro "
-"Rahmen) bzw. in %g Sekunden Gesamtzeit inkl. X-Server-Ressourcen (%g "
-"Millisekunden pro Rahmen).\n"
+#~ msgid ""
+#~ "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and "
+#~ "%g seconds wall clock time including X server resources (%g milliseconds "
+#~ "per frame)\n"
+#~ msgstr ""
+#~ "%d Rahmen in %g Sekunden auf Client-Seite gezeichnet (%g Millisekunden "
+#~ "pro Rahmen) bzw. in %g Sekunden Gesamtzeit inkl. X-Server-Ressourcen (%g "
+#~ "Millisekunden pro Rahmen).\n"
 
-#: ../src/ui/theme-viewer.c:1273
-msgid "position expression test returned TRUE but set error"
-msgstr "Positionsausdruckstest lieferte WAHR, jedoch auch einen Fehler"
+#~ msgid "position expression test returned TRUE but set error"
+#~ msgstr "Positionsausdruckstest lieferte WAHR, jedoch auch einen Fehler"
 
-#: ../src/ui/theme-viewer.c:1275
-msgid "position expression test returned FALSE but didn't set error"
-msgstr "Positionsausdruckstest lieferte FALSCH, jedoch keinen Fehler"
+#~ msgid "position expression test returned FALSE but didn't set error"
+#~ msgstr "Positionsausdruckstest lieferte FALSCH, jedoch keinen Fehler"
 
-#: ../src/ui/theme-viewer.c:1279
-msgid "Error was expected but none given"
-msgstr "Fehler erwartet, jedoch nicht übergeben"
+#~ msgid "Error was expected but none given"
+#~ msgstr "Fehler erwartet, jedoch nicht übergeben"
 
-#: ../src/ui/theme-viewer.c:1281
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr "Fehler %d erwartet, jedoch %d übergeben"
+#~ msgid "Error %d was expected but %d given"
+#~ msgstr "Fehler %d erwartet, jedoch %d übergeben"
 
-#: ../src/ui/theme-viewer.c:1287
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr "Kein Fehler erwartet, jedoch einer übergeben: %s"
+#~ msgid "Error not expected but one was returned: %s"
+#~ msgstr "Kein Fehler erwartet, jedoch einer übergeben: %s"
 
-#: ../src/ui/theme-viewer.c:1291
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr "X-Wert war %d, %d erwartet"
+#~ msgid "x value was %d, %d was expected"
+#~ msgstr "X-Wert war %d, %d erwartet"
 
-#: ../src/ui/theme-viewer.c:1294
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr "Y-Wert war %d, %d erwartet"
+#~ msgid "y value was %d, %d was expected"
+#~ msgstr "Y-Wert war %d, %d erwartet"
 
-#: ../src/ui/theme-viewer.c:1359
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
-"%d Koordinatenausdrücke in %g Sekunden verarbeitet (im Durchschnitt %g pro "
-"Sekunde)\n"
+#~ msgid ""
+#~ "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+#~ msgstr ""
+#~ "%d Koordinatenausdrücke in %g Sekunden verarbeitet (im Durchschnitt %g "
+#~ "pro Sekunde)\n"
 
 #, fuzzy
 #~ msgid "Minimize window"
@@ -1881,7 +1845,8 @@ msgstr ""
 #~ msgstr ""
 #~ "Zwischen den Fenstern einer Anwendung mittels einer Fensterliste wechseln"
 
-#~ msgid "Move backward between windows of an application, using a popup window"
+#~ msgid ""
+#~ "Move backward between windows of an application, using a popup window"
 #~ msgstr ""
 #~ "Zwischen den Fenstern einer Anwendung mittels einer Fensterliste in "
 #~ "umgekehrter Reihenfolge wechseln"
@@ -2026,7 +1991,8 @@ msgstr ""
 
 #~ msgid "%d stored in GConf key %s is out of range %d to %d\n"
 #~ msgstr ""
-#~ "%d, gespeichert in GConf-Schlüssel %s, liegt außerhalb des Bereichs %d-%d\n"
+#~ "%d, gespeichert in GConf-Schlüssel %s, liegt außerhalb des Bereichs %d-"
+#~ "%d\n"
 
 #~ msgid "GConf key \"%s\" is set to an invalid type\n"
 #~ msgstr "Typ des GConf-Schlüssels »%s« ungültig\n"
