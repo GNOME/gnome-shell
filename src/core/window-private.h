@@ -127,6 +127,7 @@ struct _MetaWindow
   Window xtransient_for;
   Window xgroup_leader;
   Window xclient_leader;
+  MetaWindow *transient_for;
 
   /* Initial workspace property */
   int initial_workspace;  
@@ -726,5 +727,8 @@ void meta_window_set_gtk_dbus_properties  (MetaWindow *window,
                                            const char *menubar_path,
                                            const char *application_object_path,
                                            const char *window_object_path);
+
+void meta_window_set_transient_for        (MetaWindow *window,
+                                           MetaWindow *parent);
 
 #endif

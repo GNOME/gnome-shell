@@ -712,13 +712,22 @@ shell_surface_set_transient (struct wl_client *client,
 {
   MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = shell_surface->surface;
+  MetaWaylandSurface *parent_surface = wl_resource_get_user_data (parent);
   MetaWaylandCompositor *compositor = surface->compositor;
 
   /* NB: Surfaces from xwayland become managed based on X events. */
   if (client == compositor->xwayland_client)
     return;
 
-  ensure_surface_window (surface);
+  if (surface->window)
+    meta_window_set_transient_for (surface->window, parent_surface->window);
+  else
+    {
+      ensure_initial_state (surface);
+
+      surface->initial_state->initial_type = META_WAYLAND_SURFACE_TOPLEVEL;
+      surface->initial_state->transient_for = parent;
+    }
 }
 
 static void
@@ -1070,6 +1079,14 @@ meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
     default:
       g_assert_not_reached ();
     }
+
+  if (initial->transient_for)
+    {
+      MetaWaylandSurface *parent = wl_resource_get_user_data (initial->transient_for);
+      if (parent)
+	window->transient_for = g_object_ref (parent->window);
+    }
+
   if (initial->title)
     meta_window_set_title (window, initial->title);
 

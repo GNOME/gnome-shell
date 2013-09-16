@@ -75,6 +75,7 @@ typedef enum {
 typedef struct
 {
   MetaWaylandSurfaceType initial_type;
+  struct wl_resource *transient_for;
 
   char *title;
   char *wm_class;

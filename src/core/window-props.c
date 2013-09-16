@@ -1518,7 +1518,7 @@ reload_transient_for (MetaWindow    *window,
                       gboolean       initial)
 {
   MetaWindow *parent = NULL;
-  Window transient_for, old_transient_for;
+  Window transient_for;
 
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -1553,10 +1553,6 @@ reload_transient_for (MetaWindow    *window,
   if (transient_for == window->xtransient_for)
     return;
 
-  if (meta_window_appears_focused (window) && window->xtransient_for != None)
-    meta_window_propagate_focus_appearance (window, FALSE);
-
-  old_transient_for = window->xtransient_for;
   window->xtransient_for = transient_for;
 
   window->transient_parent_is_root_window =
@@ -1568,46 +1564,14 @@ reload_transient_for (MetaWindow    *window,
   else
     meta_verbose ("Window %s is not transient\n", window->desc);
 
-  /* may now be a dialog */
-  meta_window_recalc_window_type (window);
-
-  if (!window->constructing)
+  if (window->transient_parent_is_root_window || window->xtransient_for == None)
+    meta_window_set_transient_for (window, NULL);
+  else
     {
-      /* If the window attaches, detaches, or changes attached
-       * parents, we need to destroy the MetaWindow and let a new one
-       * be created (which happens as a side effect of
-       * meta_window_unmanage()). The condition below is correct
-       * because we know window->xtransient_for has changed.
-       */
-      if (window->attached || meta_window_should_attach_to_parent (window))
-        {
-          guint32 timestamp;
-
-          window->xtransient_for = old_transient_for;
-          timestamp = meta_display_get_current_time_roundtrip (window->display);
-          meta_window_unmanage (window, timestamp);
-          return;
-        }
+      parent = meta_display_lookup_x_window (window->display,
+                                             window->xtransient_for);
+      meta_window_set_transient_for (window, parent);
     }
-
-  /* update stacking constraints */
-  if (!window->override_redirect)
-    meta_stack_update_transient (window->screen->stack, window);
-
-  /* possibly change its group. We treat being a window's transient as
-   * equivalent to making it your group leader, to work around shortcomings
-   * in programs such as xmms-- see #328211.
-   */
-  if (window->xtransient_for != None &&
-      window->xgroup_leader != None &&
-      window->xtransient_for != window->xgroup_leader)
-    meta_window_group_leader_changed (window);
-
-  if (!window->constructing && !window->override_redirect)
-    meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
-
-  if (meta_window_appears_focused (window) && window->xtransient_for != None)
-    meta_window_propagate_focus_appearance (window, TRUE);
 }
 
 static void

@@ -242,6 +242,9 @@ meta_window_finalize (GObject *object)
   if (window->opaque_region)
     cairo_region_destroy (window->opaque_region);
 
+  if (window->transient_for)
+    g_object_unref (window->transient_for);
+
   meta_icon_cache_free (&window->icon_cache);
 
   g_free (window->sm_client_id);
@@ -1119,11 +1122,6 @@ meta_window_new_shared (MetaDisplay         *display,
    * can use this time as a fallback.
    */
   if (!window->override_redirect && !window->net_wm_user_time_set) {
-    MetaWindow *parent = NULL;
-    if (window->xtransient_for)
-      parent = meta_display_lookup_x_window (window->display,
-                                             window->xtransient_for);
-
     /* First, maybe the app was launched with startup notification using an
      * obsolete version of the spec; use that timestamp if it exists.
      */
@@ -1132,8 +1130,8 @@ meta_window_new_shared (MetaDisplay         *display,
        * being recorded as a fallback for potential transients
        */
       window->net_wm_user_time = window->initial_timestamp;
-    else if (parent != NULL)
-      meta_window_set_user_time(window, parent->net_wm_user_time);
+    else if (window->transient_for != NULL)
+      meta_window_set_user_time (window, window->transient_for->net_wm_user_time);
     else
       /* NOTE: Do NOT toggle net_wm_user_time_set to true; this is just
        * being recorded as a fallback for potential transients
@@ -1223,21 +1221,16 @@ meta_window_new_shared (MetaDisplay         *display,
   if (!window->override_redirect)
     {
       if (window->workspace == NULL &&
-          window->xtransient_for != None)
+          window->transient_for != NULL)
         {
           /* Try putting dialog on parent's workspace */
-          MetaWindow *parent;
-
-          parent = meta_display_lookup_x_window (window->display,
-                                                 window->xtransient_for);
-
-          if (parent && parent->workspace)
+          if (window->transient_for->workspace)
             {
               meta_topic (META_DEBUG_PLACEMENT,
                           "Putting window %s on same workspace as parent %s\n",
-                          window->desc, parent->desc);
+                          window->desc, window->transient_for->desc);
 
-              if (parent->on_all_workspaces_requested)
+              if (window->transient_for->on_all_workspaces_requested)
                 {
                   window->on_all_workspaces_requested = TRUE;
                   window->on_all_workspaces = TRUE;
@@ -1245,7 +1238,7 @@ meta_window_new_shared (MetaDisplay         *display,
 
               /* this will implicitly add to the appropriate MRU lists
                */
-              meta_workspace_add_window (parent->workspace, window);
+              meta_workspace_add_window (window->transient_for->workspace, window);
             }
         }
 
@@ -4463,14 +4456,14 @@ window_activate (MetaWindow     *window,
   /* For non-transient windows, we just set up a pulsing indicator,
      rather than move windows or workspaces.
      See http://bugzilla.gnome.org/show_bug.cgi?id=482354 */
-  if (window->xtransient_for == None &&
+  if (window->transient_for == NULL &&
       !meta_window_located_on_workspace (window, workspace))
     {
       meta_window_set_demands_attention (window);
       /* We've marked it as demanding, don't need to do anything else. */
       return;
     }
-  else if (window->xtransient_for != None)
+  else if (window->transient_for != NULL)
     {
       /* Move transients to current workspace - preference dialogs should appear over
          the source window.  */
@@ -6136,7 +6129,7 @@ get_modal_transient (MetaWindow *window)
     {
       MetaWindow *transient = tmp->data;
 
-      if (transient->xtransient_for == modal_transient->xwindow &&
+      if (transient->transient_for == modal_transient &&
           transient->wm_state_modal)
         {
           modal_transient = transient;
@@ -8506,7 +8499,7 @@ recalc_window_type (MetaWindow *window)
             XFree (atom_name);
         }
     }
-  else if (window->xtransient_for != None)
+  else if (window->transient_for != NULL)
     {
       window->type = META_WINDOW_DIALOG;
     }
@@ -8849,8 +8842,7 @@ recalc_window_features (MetaWindow *window)
     case META_WINDOW_MODAL_DIALOG:
       /* only skip taskbar if we have a real transient parent
          (and ignore the application hints) */
-      if (window->xtransient_for != None &&
-          window->xtransient_for != window->screen->xroot)
+      if (window->transient_for != NULL)
         window->skip_taskbar = TRUE;
       else
         window->skip_taskbar = FALSE;
@@ -10454,11 +10446,10 @@ meta_window_foreach_ancestor (MetaWindow            *window,
   w = window;
   do
     {
-      if (w->xtransient_for == None ||
-          w->transient_parent_is_root_window)
+      if (w->transient_for == NULL)
         break;
 
-      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
+      w = w->transient_for;
     }
   while (w && (* func) (w, user_data));
 }
@@ -11281,7 +11272,9 @@ meta_window_get_transient_for (MetaWindow *window)
 {
   g_return_val_if_fail (META_IS_WINDOW (window), NULL);
 
-  if (window->xtransient_for)
+  if (window->transient_for)
+    return window->transient_for;
+  else if (window->xtransient_for)
     return meta_display_lookup_x_window (window->display,
                                          window->xtransient_for);
   else
@@ -11685,4 +11678,56 @@ meta_window_set_gtk_dbus_properties (MetaWindow *window,
   g_object_notify (G_OBJECT (window), "gtk-window-object-path");
 
   g_object_thaw_notify (G_OBJECT (window));
+}
+
+void
+meta_window_set_transient_for (MetaWindow *window,
+                               MetaWindow *parent)
+{
+  if (meta_window_appears_focused (window) && window->transient_for != None)
+    meta_window_propagate_focus_appearance (window, FALSE);
+
+  /* may now be a dialog */
+  meta_window_recalc_window_type (window);
+
+  if (!window->constructing)
+    {
+      /* If the window attaches, detaches, or changes attached
+       * parents, we need to destroy the MetaWindow and let a new one
+       * be created (which happens as a side effect of
+       * meta_window_unmanage()). The condition below is correct
+       * because we know window->transient_for has changed.
+       */
+      if (window->attached || meta_window_should_attach_to_parent (window))
+        {
+          guint32 timestamp;
+
+          timestamp = meta_display_get_current_time_roundtrip (window->display);
+          meta_window_unmanage (window, timestamp);
+          return;
+        }
+    }
+
+  /* update stacking constraints */
+  if (!window->override_redirect)
+    meta_stack_update_transient (window->screen->stack, window);
+
+  /* We know this won't create a reference cycle because we check for loops */
+  g_clear_object (&window->transient_for);
+  window->transient_for = parent ? g_object_ref (parent) : NULL;
+
+  /* possibly change its group. We treat being a window's transient as
+   * equivalent to making it your group leader, to work around shortcomings
+   * in programs such as xmms-- see #328211.
+   */
+  if (window->xtransient_for != None &&
+      window->xgroup_leader != None &&
+      window->xtransient_for != window->xgroup_leader)
+    meta_window_group_leader_changed (window);
+
+  if (!window->constructing && !window->override_redirect)
+    meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
+
+  if (meta_window_appears_focused (window) && window->transient_for != None)
+    meta_window_propagate_focus_appearance (window, TRUE);
 }
