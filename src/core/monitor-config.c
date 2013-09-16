@@ -946,9 +946,12 @@ make_laptop_lid_config (MetaConfiguration  *reference)
           y_offset = current_output->rect.height;
         }
       else
+        new->outputs[i] = *current_output;
+    }
+  for (i = 0; i < new->n_outputs; i++)
+    {
+      if (new->outputs[i].enabled)
         {
-          new->outputs[i] = *current_output;
-
           if (new->outputs[i].rect.x > x_after)
             new->outputs[i].rect.x -= x_offset;
           if (new->outputs[i].rect.y > y_after)
