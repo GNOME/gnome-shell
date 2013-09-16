@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-12 11:42+0000\n"
-"PO-Revision-Date: 2013-09-12 13:57+0200\n"
+"POT-Creation-Date: 2013-09-14 18:10+0000\n"
+"PO-Revision-Date: 2013-09-16 13:13+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
@@ -50,6 +50,7 @@ msgid "GNOME Shell"
 msgstr "GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
+#: ../data/gnome-shell-wayland.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Ablakkezelés és alkalmazásindítás"
 
@@ -61,6 +62,10 @@ msgstr "GNOME Shell kiterjesztések beállításai"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
 msgstr "GNOME Shell kiterjesztések beállítása"
+
+#: ../data/gnome-shell-wayland.desktop.in.in.h:1
+msgid "GNOME Shell (wayland compositor)"
+msgstr "GNOME Shell (wayland kompozitáló)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -339,42 +344,42 @@ msgstr "Hitelesítési hiba"
 msgid "(or swipe finger)"
 msgstr "(vagy húzza le az ujját)"
 
-#: ../js/misc/util.js:97
+#: ../js/misc/util.js:98
 msgid "Command not found"
 msgstr "A parancs nem található"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:131
 msgid "Could not parse command:"
 msgstr "A parancs nem dolgozható fel:"
 
-#: ../js/misc/util.js:138
+#: ../js/misc/util.js:139
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "„%s” végrehajtása meghiúsult:"
 
-#: ../js/ui/appDisplay.js:573
+#: ../js/ui/appDisplay.js:598
 msgid "Frequently used applications will appear here"
 msgstr "Itt jelennek meg a gyakran használt alkalmazások"
 
-#: ../js/ui/appDisplay.js:689
+#: ../js/ui/appDisplay.js:714
 msgid "Frequent"
 msgstr "Gyakori"
 
-#: ../js/ui/appDisplay.js:696
+#: ../js/ui/appDisplay.js:721
 msgid "All"
 msgstr "Összes"
 
-#: ../js/ui/appDisplay.js:1491
+#: ../js/ui/appDisplay.js:1516
 msgid "New Window"
 msgstr "Új ablak"
 
-#: ../js/ui/appDisplay.js:1494 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1519 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Eltávolítás a Kedvencek közül"
 
-#: ../js/ui/appDisplay.js:1495
+#: ../js/ui/appDisplay.js:1520
 msgid "Add to Favorites"
 msgstr "Hozzáadás a Kedvencekhez"
 
@@ -388,7 +393,8 @@ msgstr "%s felvéve a Kedvencek közé."
 msgid "%s has been removed from your favorites."
 msgstr "%s eltávolítva a Kedvencek közül"
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:807
+#: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Beállítások"
 
@@ -1191,10 +1197,6 @@ msgstr "Kilépés"
 msgid "Activities"
 msgstr "Tevékenységek"
 
-#: ../js/ui/panel.js:807
-msgid "Settings Menu"
-msgstr "Beállítások menü"
-
 #: ../js/ui/panel.js:903
 msgid "Top Bar"
 msgstr "Felső sáv"
@@ -1537,14 +1539,12 @@ msgstr "Becslés…"
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:77
 #, c-format
-#| msgid "%d∶%02d Remaining (%d%%)"
 msgid "%d\\u2236%02d Remaining (%d%%)"
 msgstr "%d.%02d van hátra (%d%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:82
 #, c-format
-#| msgid "%d∶%02d Until Full (%d%%)"
 msgid "%d\\u2236%02d Until Full (%d%%)"
 msgstr "%d.%02d a feltöltésig (%d%%)"
 
@@ -1707,6 +1707,9 @@ msgstr "A jelszó nem lehet üres"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "A hitelesítési ablakot a felhasználó bezárta"
+
+#~ msgid "Settings Menu"
+#~ msgstr "Beállítások menü"
 
 #~ msgctxt "event list time"
 #~ msgid "%H∶%M"
