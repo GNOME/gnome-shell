@@ -1,3 +1,42 @@
+3.9.92
+======
+* Don't show page indicators if there's only one page [Florian; #707363]
+* Make :active style of app and non-app results consistent [Jakub; #704714]
+* Fade app pages when scrolled [Florian; #707409]
+* Don't block scrolling on page indicators [Carlos; #707609]
+* Tweak visual appearance of folder views [Florian; #707662]
+* Don't put minimized apps at the end of the app switcher [Florian; #707663]
+* Merge the wayland branch [Giovanni, Neil; #707467]
+* Make search entry behave better in RTL locales [Matthias, Florian; #705779]
+* Allow to change app pages with pageUp/pageDown keys [Carlos; #707979]
+* Set approriate a11y states on expandable menu items [Alejandro; #708038]
+* Improve page indicator animation [Carlos; #707565]
+* Misc bug fixes and cleanups [Florian, Olivier, Jasper, Giovanni, Magdalen,
+  Adel, Carlos, Rico, Joanmarie; #707308, #707430, #707508, #707557, #707600,
+  #707614, #707666, #707814, #707806, #707801, #707889, #707892, #707935,
+  #707842, #707940, #707996, #708007, #708009, #708020, #707580, #708080]
+
+Contributors:
+  Magdalen Berns, Olivier Blin, Giovanni Campagna, Matthias Clasen,
+  Joanmarie Diggs, Adel Gadllah, Florian Müllner, Alejandro Piñeiro,
+  Neil Roberts, Carlos Soriano, Jasper St. Pierre, Jakub Steiner,
+  Rico Tzschichholz
+
+Translations:
+  Rafael Ferreira [pt_BR], Fran Diéguez [gl], Daniel Mustieles [es],
+  Aurimas Černius [lt], Luca Ferretti [it], Piotr Drąg [pl],
+  Chao-Hsiung Liao [zh_HK, zh_TW], Timo Jyrinki [fi], Daniel Korostil [uk],
+  Dušan Kazik [sk], Adam Matoušek [cs], Marek Černocký [cs],
+  Jiro Matsuzawa [ja], Yuri Myasoedov [ru], Tobias Endrigkeit [de],
+  Kjartan Maraas [nb], Victor Ibragimov [tg], Мирослав Николић [sr, sr@latin],
+  A S Alam [pa], Khaled Hosny [ar], Andika Triwidada [id],
+  Nilamdyuti Goswami [as], Ihar Hrachyshka [be], Rūdolfs Mazurs [lv],
+  Mattias Põldaru [et], Gabor Kelemen [hu], Bruce Cowan [en_GB],
+  Matej Urbančič [sl], Enrico Nicoletto [pt_BR], Benjamin Steinwender [de],
+  Changwoo Ryu [ko], Kris Thomsen [da], Alexandre Franke [fr],
+  Evgeny Bobkin [ru], Baurzhan Muftakhidinov [kk], Peter Mráz [sk],
+  Inaki Larranaga Murgoitio [eu], Yosef Or Boczko [he]
+
 3.9.91
 ======
 * Improve submenu styling [Jakub; #706037]
