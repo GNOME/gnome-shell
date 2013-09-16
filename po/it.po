@@ -8,12 +8,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell 3.9.x\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-06 17:26+0000\n"
-"PO-Revision-Date: 2013-09-06 22:14+0200\n"
+"Project-Id-Version: gnome-shell 3.7.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-16 14:29+0200\n"
+"PO-Revision-Date: 2013-09-15 18:48+0200\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
-"Language-Team: Italian <tp@lists.linux.it>\n"
+"Language-Team: Italiano <tp@lists.linux.it>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,6 +51,7 @@ msgid "GNOME Shell"
 msgstr "GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
+#: ../data/gnome-shell-wayland.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Gestisce finestre e avvia applicazioni"
 
@@ -62,6 +63,10 @@ msgstr "Preferenze estensioni di GNOME Shell"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
 msgstr "Configura le estensioni di GNOME Shell"
+
+#: ../data/gnome-shell-wayland.desktop.in.in.h:1
+msgid "GNOME Shell (wayland compositor)"
+msgstr "GNOME Shell (compositor wayland)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -348,42 +353,42 @@ msgstr "Errore di autenticazione"
 msgid "(or swipe finger)"
 msgstr "(o passare il dito)"
 
-#: ../js/misc/util.js:97
+#: ../js/misc/util.js:98
 msgid "Command not found"
 msgstr "Comando non trovato"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:131
 msgid "Could not parse command:"
 msgstr "Impossibile analizzare il comando:"
 
-#: ../js/misc/util.js:138
+#: ../js/misc/util.js:139
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Esecuzione di «%s» non riuscita:"
 
-#: ../js/ui/appDisplay.js:573
+#: ../js/ui/appDisplay.js:598
 msgid "Frequently used applications will appear here"
 msgstr "Qui saranno mostrate le applicazioni usate frequentemente"
 
-#: ../js/ui/appDisplay.js:689
+#: ../js/ui/appDisplay.js:714
 msgid "Frequent"
 msgstr "Frequenti"
 
-#: ../js/ui/appDisplay.js:696
+#: ../js/ui/appDisplay.js:721
 msgid "All"
 msgstr "Tutte"
 
-#: ../js/ui/appDisplay.js:1487
+#: ../js/ui/appDisplay.js:1516
 msgid "New Window"
 msgstr "Nuova finestra"
 
-#: ../js/ui/appDisplay.js:1490 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1519 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Rimuovi dai preferiti"
 
-#: ../js/ui/appDisplay.js:1491
+#: ../js/ui/appDisplay.js:1520
 msgid "Add to Favorites"
 msgstr "Aggiungi ai preferiti"
 
@@ -399,7 +404,8 @@ msgstr "%s è stato aggiunto ai preferiti."
 msgid "%s has been removed from your favorites."
 msgstr "%s è stato rimosso dai preferiti."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:807
+#: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Impostazioni"
 
@@ -428,7 +434,7 @@ msgstr "%H.%M"
 #: ../js/ui/calendar.js:77
 msgctxt "event list time"
 msgid "%l\\u2236%M\\u2009%p"
-msgstr "%l.%M\\u2009%p"
+msgstr "%l.%M\\u2009%p "
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -936,7 +942,7 @@ msgstr "Visualizza account"
 msgid "Unknown reason"
 msgstr "Motivo sconosciuto"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:100
 msgid "Windows"
 msgstr "Finestre"
 
@@ -1058,7 +1064,7 @@ msgstr "Riavvia e installa"
 
 #: ../js/ui/endSessionDialog.js:271
 msgid "Some applications are busy or have unsaved work."
-msgstr ""
+msgstr "Alcune applicazioni risultano occupate o con lavoro non salvato."
 
 #: ../js/ui/endSessionDialog.js:277
 msgid "Other users are logged in."
@@ -1085,7 +1091,7 @@ msgstr "Installa"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Scaricare e installare «%s» da extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:334
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
 msgid "Keyboard"
 msgstr "Tastiera"
 
@@ -1199,21 +1205,17 @@ msgstr "Panoramica"
 msgid "Type to search…"
 msgstr "Digita per cercare…"
 
-#: ../js/ui/panel.js:516
+#: ../js/ui/panel.js:518
 msgid "Quit"
 msgstr "Esci"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "Attività"
 
-#: ../js/ui/panel.js:805
-msgid "Settings Menu"
-msgstr "Menu impostazioni"
-
-#: ../js/ui/panel.js:901
+#: ../js/ui/panel.js:903
 msgid "Top Bar"
 msgstr "Barra superiore"
 
@@ -1222,7 +1224,7 @@ msgstr "Barra superiore"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:226
+#: ../js/ui/popupMenu.js:233
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -1251,7 +1253,7 @@ msgstr[1] "%d nuove notifiche"
 msgid "Lock"
 msgstr "Blocca"
 
-#: ../js/ui/screenShield.js:703
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME deve bloccare lo schermo"
 
@@ -1262,11 +1264,11 @@ msgstr "GNOME deve bloccare lo schermo"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Unable to lock"
 msgstr "Impossibile bloccare"
 
-#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
+#: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1298
 msgid "Lock was blocked by an application"
 msgstr "Il blocco è stato impedito da un'applicazione."
 
@@ -1446,7 +1448,7 @@ msgstr "OK"
 msgid "Brightness"
 msgstr "Luminosità"
 
-#: ../js/ui/status/keyboard.js:404
+#: ../js/ui/status/keyboard.js:403
 msgid "Show Keyboard Layout"
 msgstr "Mostra disposizione tastiera"
 
@@ -1558,8 +1560,9 @@ msgstr "In stima…"
 #: ../js/ui/status/power.js:77
 #, c-format
 msgid "%d\\u2236%02d Remaining (%d%%)"
-msgstr "%d\\u2236%02d rimanente (%d%%)"
+msgstr "%d.%02d rimanente (%d%%)"
 
+# in stile MacOS sarebbe "al pieno" :P
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:82
 #, c-format
@@ -1617,11 +1620,11 @@ msgstr "Accedi come altro utente"
 msgid "Unlock Window"
 msgstr "Sblocca finestra"
 
-#: ../js/ui/viewSelector.js:100
+#: ../js/ui/viewSelector.js:104
 msgid "Applications"
 msgstr "Applicazioni"
 
-#: ../js/ui/viewSelector.js:104
+#: ../js/ui/viewSelector.js:108
 msgid "Search"
 msgstr "Cerca"
 
@@ -1727,274 +1730,3 @@ msgstr "La password non può essere vuota"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Il dialogo di autenticazione è stato annullato dall'utente"
-
-#~ msgid "Screenshots"
-#~ msgstr "Schermate"
-
-#~ msgid "Record a screencast"
-#~ msgstr "Registra uno screencast"
-
-#~ msgid ""
-#~ "Internally used to store the last IM presence explicitly set by the user. "
-#~ "The value here is from the TpConnectionPresenceType enumeration."
-#~ msgstr ""
-#~ "Usato internamente per memorizzare l'ultimo stato di presenza IM "
-#~ "impostato esplicitamente dall'utente. Il valore corrisponde alla "
-#~ "enumerazione TpConnectionPresenceType."
-
-#~ msgid ""
-#~ "Internally used to store the last session presence status for the user. "
-#~ "The value here is from the GsmPresenceStatus enumeration."
-#~ msgstr ""
-#~ "Usato internamente per memorizzare lo stato di presenza dell'ultima "
-#~ "sessione per l'utente. Il valore corrisponde alla enumerazione "
-#~ "GsmPresenceStatus."
-
-#~ msgid "Keybinding to toggle the screen recorder"
-#~ msgstr "Associazione tasti per commutare registrazione schermo"
-
-#~ msgid "Keybinding to start/stop the builtin screen recorder."
-#~ msgstr ""
-#~ "Associazione di tasti per avviare/fermare il registratore di schermo "
-#~ "incorporato."
-
-#~ msgid "Framerate used for recording screencasts."
-#~ msgstr "Framerate per la registrazione di screencast."
-
-#~ msgid ""
-#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
-#~ "screencast recorder in frames-per-second."
-#~ msgstr ""
-#~ "Il framerate in fotogrammi al secondo dello screencast registrato "
-#~ "attraverso il registratore della GNOME Shell."
-
-#~ msgid "The gstreamer pipeline used to encode the screencast"
-#~ msgstr "La pipeline di gstreamer utilizzata per codificare lo screencast"
-
-#~ msgid ""
-#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#~ "pad where the recorded video is recorded. It will normally have a "
-#~ "unconnected source pad; output from that pad will be written into the "
-#~ "output file. However the pipeline can also take care of its own output - "
-#~ "this might be used to send the output to an icecast server via shout2send "
-#~ "or similar. When unset or set to an empty value, the default pipeline "
-#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
-#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
-#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
-#~ "optimal thread count on the system."
-#~ msgstr ""
-#~ "Imposta la pipeline di GStreamer utilizzata per codificare le "
-#~ "registrazioni, seguendo la sintassi di gst-launch. La pipeline dovrebbe "
-#~ "presentare un pad sink scollegato dove il video viene effettivamente "
-#~ "registrato. Dispone normalmente di un pad sorgente scollegato: l'output "
-#~ "da quel pad viene scritto nel file di uscita. La pipeline può comunque "
-#~ "gestire autonomamente il proprio output: questo può essere utile per "
-#~ "inviare l'output verso un server icecast attraverso shout2send o simili. "
-#~ "Quando non impostata o senza alcun valore, viene usata la pipeline "
-#~ "predefinita il cui valore è \"min_quantizer=13 max_quantizer=13 cpu-"
-#~ "used=5 deadline=1000000 threads=%T ! queue ! webmmux\" e che registra nel "
-#~ "formato WEBM usando il codec VP8. %T è usato come un segnaposto per una "
-#~ "stima del valore di thread ottimale per il sistema in uso."
-
-#~ msgid "File extension used for storing the screencast"
-#~ msgstr "Estensione del file utilizzato per salvare lo screencast"
-
-#~ msgid ""
-#~ "The filename for recorded screencasts will be a unique filename based on "
-#~ "the current date, and use this extension. It should be changed when "
-#~ "recording to a different container format."
-#~ msgstr ""
-#~ "Il nome del file degli screencast registrati è un nome unico basato sulla "
-#~ "data corrente e utilizza questa estensione. Dovrebbe essere modificato "
-#~ "quando si registra utilizzando un diverso formato contenitore."
-
-#~ msgid "Session"
-#~ msgstr "Sessione"
-
-#~ msgid "Power"
-#~ msgstr "Risparmio energetico"
-
-#~ msgid "Restart"
-#~ msgstr "Riavvia"
-
-#~ msgid "Screencast from %d %t"
-#~ msgstr "Screencast da %d %t"
-
-# oddio... abbandonare il sistema sembra la nave che affonda... (LF)
-#~ msgid "Click Log Out to quit these applications and log out of the system."
-#~ msgstr ""
-#~ "Fare clic su «Termina sessione» per chiudere queste applicazioni e "
-#~ "abbandonare il sistema."
-
-#~ msgid "Logging out of the system."
-#~ msgstr "Chiusura della sessione."
-
-#~ msgid "Click Power Off to quit these applications and power off the system."
-#~ msgstr ""
-#~ "Fare clic su «Spegni» per chiudere queste applicazioni e spegnere il "
-#~ "sistema."
-
-#~ msgid "Powering off the system."
-#~ msgstr "Spegnimento del sistema."
-
-#~ msgid "Click Restart to quit these applications and restart the system."
-#~ msgstr ""
-#~ "Fare clic su «Riavvia» per chiudere queste applicazioni e riavviare il "
-#~ "sistema."
-
-#~ msgid "Restarting the system."
-#~ msgstr "Riavvio del sistema."
-
-#~ msgid "Universal Access Settings"
-#~ msgstr "Impostazioni accesso universale"
-
-# su Android è Rilevabile :P
-#~ msgid "Visibility"
-#~ msgstr "Visibile"
-
-#~ msgid "Send Files to Device…"
-#~ msgstr "Invia file al dispositivo…"
-
-#~ msgid "Set Up a New Device…"
-#~ msgstr "Imposta un nuovo dispositivo…"
-
-#~ msgid "hardware disabled"
-#~ msgstr "hardware disabilitato"
-
-# indica lo stato del device BT, per esempio gli auricolari
-# credo sia meglio l'aggettivo che il sostantivo
-#~ msgid "Connection"
-#~ msgstr "Collegato"
-
-#~ msgid "Send Files…"
-#~ msgstr "Invia file…"
-
-#~ msgid "Keyboard Settings"
-#~ msgstr "Impostazioni tastiera"
-
-#~ msgid "Mouse Settings"
-#~ msgstr "Impostazioni mouse"
-
-#~ msgid "Sound Settings"
-#~ msgstr "Impostazioni audio"
-
-#~ msgid "Region & Language Settings"
-#~ msgstr "Impostazioni regione e lingua"
-
-#~ msgid "Volume, network, battery"
-#~ msgstr "Volume, rete, batteria"
-
-#~ msgid "Wi-Fi"
-#~ msgstr "Wi-Fi"
-
-#~ msgid "disabled"
-#~ msgstr "disabilitata"
-
-#~ msgid "More…"
-#~ msgstr "Altro…"
-
-#~ msgid "Wired"
-#~ msgstr "Via cavo"
-
-#~ msgid "Mobile broadband"
-#~ msgstr "Banda larga mobile"
-
-#~ msgid "Networking is disabled"
-#~ msgstr "Rete disabilitata"
-
-#~ msgid "%d hour remaining"
-#~ msgid_plural "%d hours remaining"
-#~ msgstr[0] "%d ora rimanente"
-#~ msgstr[1] "%d ore rimanenti"
-
-#~ msgid "%d %s %d %s remaining"
-#~ msgstr "%d %s e %d %s rimanenti"
-
-#~ msgid "hour"
-#~ msgid_plural "hours"
-#~ msgstr[0] "ora"
-#~ msgstr[1] "ore"
-
-#~ msgid "minute"
-#~ msgid_plural "minutes"
-#~ msgstr[0] "minuto"
-#~ msgstr[1] "minuti"
-
-#~ msgid "%d minute remaining"
-#~ msgid_plural "%d minutes remaining"
-#~ msgstr[0] "%d minuto rimanente"
-#~ msgstr[1] "%d minuti rimanenti"
-
-#~ msgctxt "percent of battery remaining"
-#~ msgid "%d%%"
-#~ msgstr "%d%%"
-
-#~ msgid "AC Adapter"
-#~ msgstr "Alimentatore di corrente"
-
-#~ msgid "Laptop Battery"
-#~ msgstr "Batteria del portatile"
-
-#~ msgid "UPS"
-#~ msgstr "UPS"
-
-#~ msgid "Monitor"
-#~ msgstr "Monitor"
-
-#~ msgid "Mouse"
-#~ msgstr "Mouse"
-
-#~ msgid "PDA"
-#~ msgstr "PDS"
-
-# c'era una discussione su tp...
-#~ msgid "Cell Phone"
-#~ msgstr "Cellulare"
-
-#~ msgid "Media Player"
-#~ msgstr "Lettore multimediale"
-
-#~ msgid "Tablet"
-#~ msgstr "Tablet"
-
-#~ msgid "Computer"
-#~ msgstr "Computer"
-
-#~ msgctxt "device"
-#~ msgid "Unknown"
-#~ msgstr "Sconosciuto"
-
-#~ msgid "Available"
-#~ msgstr "Disponibile"
-
-#~ msgid "Busy"
-#~ msgstr "Non disponibile"
-
-#~ msgid "Invisible"
-#~ msgstr "Invisibile"
-
-#~ msgid "Away"
-#~ msgstr "Assente"
-
-#~ msgid "Idle"
-#~ msgstr "Inattivo"
-
-#~ msgid "Notifications"
-#~ msgstr "Notifiche"
-
-# accorciato, altrimenti non si legge...
-#~ msgid "Your chat status will be set to busy"
-#~ msgstr "Stato per chat impostato a non disponibile"
-
-#~ msgid ""
-#~ "Notifications are now disabled, including chat messages. Your online "
-#~ "status has been adjusted to let others know that you might not see their "
-#~ "messages."
-#~ msgstr ""
-#~ "Le notifiche sono ora disabilitate, inclusi i messaggi di chat. Lo stato "
-#~ "online è stato modificato in modo che gli altri sappiano che i loro "
-#~ "messaggi potrebbero non essere notati."
-
-#~ msgid "Shutting down might cause them to lose unsaved work."
-#~ msgstr "L'arresto potrebbe causare la perdita del loro lavoro non salvato."
