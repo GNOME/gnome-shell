@@ -36,6 +36,7 @@ struct _MetaWaylandBuffer
   struct wl_signal destroy_signal;
   struct wl_listener destroy_listener;
 
+  CoglTexture *texture;
   int32_t width, height;
   uint32_t busy_count;
 };
@@ -65,8 +66,16 @@ typedef struct
   struct wl_list frame_callback_list;
 } MetaWaylandDoubleBufferedState;
 
+typedef enum {
+  META_WAYLAND_SURFACE_TOPLEVEL = 0,
+  META_WAYLAND_SURFACE_MAXIMIZED,
+  META_WAYLAND_SURFACE_FULLSCREEN
+} MetaWaylandSurfaceType;
+
 typedef struct
 {
+  MetaWaylandSurfaceType initial_type;
+
   char *title;
   char *wm_class;
 
@@ -78,14 +87,21 @@ typedef struct
   char *gtk_window_object_path;
 } MetaWaylandSurfaceInitialState;
 
+typedef struct
+{
+  MetaWaylandSurface *surface;
+  struct wl_resource *resource;
+  struct wl_listener surface_destroy_listener;
+} MetaWaylandSurfaceExtension;
+
 struct _MetaWaylandSurface
 {
   struct wl_resource *resource;
   MetaWaylandCompositor *compositor;
   MetaWaylandBufferReference buffer_ref;
   MetaWindow *window;
-  gboolean has_shell_surface;
-  gboolean has_gtk_surface;
+  MetaWaylandSurfaceExtension *shell_surface;
+  MetaWaylandSurfaceExtension *gtk_surface;
 
   /* All the pending state, that wl_surface.commit will apply. */
   MetaWaylandDoubleBufferedState pending;
@@ -94,13 +110,6 @@ struct _MetaWaylandSurface
      (through meta_window_new_for_wayland) */
   MetaWaylandSurfaceInitialState *initial_state;
 };
-
-typedef struct
-{
-  MetaWaylandSurface *surface;
-  struct wl_resource *resource;
-  struct wl_listener surface_destroy_listener;
-} MetaWaylandSurfaceExtension;
 
 void                meta_wayland_init_shell     (MetaWaylandCompositor *compositor);
 

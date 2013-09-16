@@ -676,34 +676,6 @@ shell_surface_resize (struct wl_client *client,
 }
 
 static void
-ensure_surface_window (MetaWaylandSurface *surface)
-{
-  MetaDisplay *display = meta_get_display ();
-
-  if (!surface->window)
-    {
-      int width, height;
-
-      if (surface->buffer_ref.buffer)
-        {
-          MetaWaylandBuffer *buffer = surface->buffer_ref.buffer;
-          width = buffer->width;
-          height = buffer->width;
-        }
-      else
-        {
-          width = 0;
-          height = 0;
-        }
-
-      surface->window =
-        meta_window_new_for_wayland (display, width, height, surface);
-
-      meta_window_calc_showing (surface->window);
-    }
-}
-
-static void
 shell_surface_set_toplevel (struct wl_client *client,
                             struct wl_resource *resource)
 {
@@ -715,9 +687,19 @@ shell_surface_set_toplevel (struct wl_client *client,
   if (client == compositor->xwayland_client)
     return;
 
-  ensure_surface_window (surface);
+  if (surface->window)
+    {
+      if (surface->window->fullscreen)
+	meta_window_unmake_fullscreen (surface->window);
+      if (meta_window_get_maximized (surface->window) != 0)
+	meta_window_unmaximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
+    }
+  else
+    {
+      ensure_initial_state (surface);
 
-  meta_window_unmake_fullscreen (surface->window);
+      surface->initial_state->initial_type = META_WAYLAND_SURFACE_TOPLEVEL;
+    }
 }
 
 static void
@@ -754,9 +736,14 @@ shell_surface_set_fullscreen (struct wl_client *client,
   if (client == compositor->xwayland_client)
     return;
 
-  ensure_surface_window (surface);
+  if (surface->window)
+    meta_window_make_fullscreen (surface->window);
+  else
+    {
+      ensure_initial_state (surface);
 
-  meta_window_make_fullscreen (surface->window);
+      surface->initial_state->initial_type = META_WAYLAND_SURFACE_FULLSCREEN;
+    }
 }
 
 static void
@@ -776,7 +763,22 @@ shell_surface_set_maximized (struct wl_client *client,
                              struct wl_resource *resource,
                              struct wl_resource *output)
 {
-  g_warning ("TODO: support shell_surface_set_maximized request");
+  MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = shell_surface->surface;
+  MetaWaylandCompositor *compositor = surface->compositor;
+
+  /* NB: Surfaces from xwayland become managed based on X events. */
+  if (client == compositor->xwayland_client)
+    return;
+
+  if (surface->window)
+    meta_window_maximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
+  else
+    {
+      ensure_initial_state (surface);
+
+      surface->initial_state->initial_type = META_WAYLAND_SURFACE_MAXIMIZED;
+    }
 }
 
 static void
@@ -856,7 +858,7 @@ destroy_surface_extension (struct wl_resource *resource)
   g_free (extension);
 }
 
-static void
+static MetaWaylandSurfaceExtension *
 create_surface_extension (struct wl_client          *client,
 			  struct wl_resource        *master_resource,
 			  guint32                    id,
@@ -878,6 +880,8 @@ create_surface_extension (struct wl_client          *client,
   extension->surface_destroy_listener.notify = extension_handle_surface_destroy;
   wl_resource_add_destroy_listener (surface->resource,
                                     &extension->surface_destroy_listener);
+
+  return extension;
 }
 
 static void
@@ -888,7 +892,7 @@ get_shell_surface (struct wl_client *client,
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
 
-  if (surface->has_shell_surface)
+  if (surface->shell_surface)
     {
       wl_resource_post_error (surface_resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,
@@ -896,10 +900,10 @@ get_shell_surface (struct wl_client *client,
       return;
     }
 
-  create_surface_extension (client, resource, id, META_WL_SHELL_SURFACE_VERSION, surface,
-			    &wl_shell_surface_interface,
-			    &meta_wayland_shell_surface_interface);
-  surface->has_shell_surface = TRUE;
+  surface->shell_surface = create_surface_extension (client, resource, id,
+                                                     META_WL_SHELL_SURFACE_VERSION, surface,
+                                                     &wl_shell_surface_interface,
+                                                     &meta_wayland_shell_surface_interface);
 }
 
 static const struct wl_shell_interface meta_wayland_shell_interface =
@@ -991,7 +995,7 @@ get_gtk_surface (struct wl_client *client,
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
 
-  if (surface->has_gtk_surface)
+  if (surface->gtk_surface)
     {
       wl_resource_post_error (surface_resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,
@@ -999,10 +1003,10 @@ get_gtk_surface (struct wl_client *client,
       return;
     }
 
-  create_surface_extension (client, resource, id, META_GTK_SURFACE_VERSION, surface,
-			    &gtk_surface_interface,
-			    &meta_wayland_gtk_surface_interface);
-  surface->has_gtk_surface = TRUE;
+  surface->gtk_surface = create_surface_extension (client, resource, id,
+                                                   META_GTK_SURFACE_VERSION, surface,
+                                                   &gtk_surface_interface,
+                                                   &meta_wayland_gtk_surface_interface);
 }
 
 static const struct gtk_shell_interface meta_wayland_gtk_shell_interface =
@@ -1051,6 +1055,21 @@ meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
   if (initial == NULL)
     return;
 
+  /* Note that we poke at the bits directly here, because we're
+     in the middle of meta_window_new_shared() */
+  switch (initial->initial_type)
+    {
+    case META_WAYLAND_SURFACE_TOPLEVEL:
+      break;
+    case META_WAYLAND_SURFACE_FULLSCREEN:
+      window->fullscreen = TRUE;
+      break;
+    case META_WAYLAND_SURFACE_MAXIMIZED:
+      window->maximized_horizontally = window->maximized_vertically = TRUE;
+      break;
+    default:
+      g_assert_not_reached ();
+    }
   if (initial->title)
     meta_window_set_title (window, initial->title);
 
