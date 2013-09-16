@@ -164,7 +164,7 @@ get_cursor_filename (MetaCursor cursor)
       return "fleur";
       break;
     case META_CURSOR_BUSY:
-      return "busy";
+      return "watch";
       break;
     case META_CURSOR_DND_IN_DRAG:
       return "dnd-in-drag";
