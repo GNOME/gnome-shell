@@ -607,6 +607,7 @@ meta_display_open (void)
   
   the_display->xids = g_hash_table_new (meta_unsigned_long_hash,
                                         meta_unsigned_long_equal);
+  the_display->wayland_windows = g_hash_table_new (NULL, NULL);
 
   i = 0;
   while (i < N_IGNORED_CROSSING_SERIALS)
@@ -1036,6 +1037,19 @@ meta_display_list_windows (MetaDisplay          *display,
   winlist = NULL;
 
   g_hash_table_iter_init (&iter, display->xids);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      MetaWindow *window = value;
+
+      if (!META_IS_WINDOW (window))
+        continue;
+
+      if (!window->override_redirect ||
+          (flags & META_LIST_INCLUDE_OVERRIDE_REDIRECT) != 0)
+        winlist = g_slist_prepend (winlist, window);
+    }
+
+  g_hash_table_iter_init (&iter, display->wayland_windows);
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       MetaWindow *window = value;
@@ -3862,6 +3876,20 @@ meta_display_unregister_x_window (MetaDisplay *display,
 
   /* Remove any pending pings */
   remove_pending_pings_for_window (display, xwindow);
+}
+
+void
+meta_display_register_wayland_window (MetaDisplay *display,
+                                      MetaWindow  *window)
+{
+  g_hash_table_add (display->wayland_windows, window);
+}
+
+void
+meta_display_unregister_wayland_window (MetaDisplay *display,
+                                        MetaWindow  *window)
+{
+  g_hash_table_remove (display->wayland_windows, window);
 }
 
 #ifdef HAVE_XSYNC

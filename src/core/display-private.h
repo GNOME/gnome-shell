@@ -154,6 +154,7 @@ struct _MetaDisplay
   GSList *screens;
   MetaScreen *active_screen;
   GHashTable *xids;
+  GHashTable *wayland_windows;
   int error_traps;
   int (* error_trap_handler) (Display     *display,
                               XErrorEvent *error);  
@@ -379,6 +380,11 @@ void        meta_display_register_x_window   (MetaDisplay *display,
                                               MetaWindow  *window);
 void        meta_display_unregister_x_window (MetaDisplay *display,
                                               Window       xwindow);
+
+void        meta_display_register_wayland_window   (MetaDisplay *display,
+                                                    MetaWindow  *window);
+void        meta_display_unregister_wayland_window (MetaDisplay *display,
+                                                    MetaWindow  *window);
 
 #ifdef HAVE_XSYNC
 MetaWindow* meta_display_lookup_sync_alarm     (MetaDisplay *display,

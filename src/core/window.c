@@ -1060,6 +1060,8 @@ meta_window_new_shared (MetaDisplay         *display,
       meta_window_update_shape_region_x11 (window);
       meta_window_update_input_region_x11 (window);
     }
+  else
+    meta_display_register_wayland_window (display, window);
 
   /* assign the window to its group, or create a new group if needed
    */
@@ -2050,6 +2052,8 @@ meta_window_unmanage (MetaWindow  *window,
 
       meta_error_trap_pop (window->display);
     }
+  else
+    meta_display_unregister_wayland_window (window->display, window);
 
   if (window->surface)
     meta_wayland_surface_free (window->surface);
