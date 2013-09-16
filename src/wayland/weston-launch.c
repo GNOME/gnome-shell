@@ -566,7 +566,18 @@ setup_tty(struct weston_launch *wl)
 
 	ok = sd_session_get_tty(session, &tty);
 	if (ok == 0) {
-		snprintf(path, PATH_MAX, "/dev/%s", tty);
+		/* Old systemd only has the tty name in the TTY
+		   field, new one has the full char device path.
+
+		   Check what we have and fix it properly.
+		*/
+		if (strncmp(tty, "/dev", strlen("/dev")) == 0) {
+			strncpy(path, tty, PATH_MAX);
+			path[PATH_MAX-1] = 0;
+		} else {
+			snprintf(path, PATH_MAX, "/dev/%s", tty);
+		}
+
 		wl->tty = open(path, O_RDWR | O_NOCTTY | O_CLOEXEC);
 		free(tty);
 #ifdef HAVE_SD_SESSION_GET_VT
