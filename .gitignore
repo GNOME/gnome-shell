@@ -55,6 +55,7 @@ org.gnome.mutter.gschema.xml
 testasyncgetprop
 testboxes
 testgradient
+m4/*
 mutter-grayscale
 mutter-mag
 mutter-message
