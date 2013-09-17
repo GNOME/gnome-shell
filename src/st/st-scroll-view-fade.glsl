@@ -22,8 +22,10 @@ uniform float height;
 uniform float width;
 uniform float vfade_offset;
 uniform float hfade_offset;
-uniform bool  fade_edges_h;
-uniform bool  fade_edges_v;
+uniform bool  fade_edges_top;
+uniform bool  fade_edges_right;
+uniform bool  fade_edges_bottom;
+uniform bool  fade_edges_left;
 
 uniform vec2 fade_area_topleft;
 uniform vec2 fade_area_bottomright;
@@ -44,10 +46,10 @@ void main ()
         float ratio = 1.0;
         float fade_bottom_start = fade_area_bottomright[1] - vfade_offset;
         float fade_right_start = fade_area_bottomright[0] - hfade_offset;
-        bool fade_top = y < vfade_offset && fade_edges_v;
-        bool fade_bottom = y > fade_bottom_start && fade_edges_v;
-        bool fade_left = x < hfade_offset && fade_edges_h;
-        bool fade_right = x > fade_right_start && fade_edges_h;
+        bool fade_top = y < vfade_offset && fade_edges_top;
+        bool fade_bottom = y > fade_bottom_start && fade_edges_bottom;
+        bool fade_left = x < hfade_offset && fade_edges_left;
+        bool fade_right = x > fade_right_start && fade_edges_right;
 
         float vfade_scale = height / vfade_offset;
         if (fade_top) {

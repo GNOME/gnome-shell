@@ -142,11 +142,13 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
 
   st_adjustment_get_values (self->vadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
   value = (value - lower) / (upper - page_size - lower);
-  clutter_shader_effect_set_uniform (shader, "fade_edges_v", G_TYPE_INT, 1, self->fade_edges ? value >= 0.0 : value > 0.0);
+  clutter_shader_effect_set_uniform (shader, "fade_edges_top", G_TYPE_INT, 1, self->fade_edges ? value >= 0.0 : value > 0.0);
+  clutter_shader_effect_set_uniform (shader, "fade_edges_bottom", G_TYPE_INT, 1, self->fade_edges ? value <= 1.0 : value < 1.0);
 
   st_adjustment_get_values (self->hadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
   value = (value - lower) / (upper - page_size - lower);
-  clutter_shader_effect_set_uniform (shader, "fade_edges_h", G_TYPE_INT, 1, self->fade_edges ? value >= 0.0 : value > 0.0);
+  clutter_shader_effect_set_uniform (shader, "fade_edges_left", G_TYPE_INT, 1, self->fade_edges ? value >= 0.0 : value > 0.0);
+  clutter_shader_effect_set_uniform (shader, "fade_edges_right", G_TYPE_INT, 1, self->fade_edges ? value <= 1.0 : value < 1.0);
 
   clutter_shader_effect_set_uniform (shader, "vfade_offset", G_TYPE_FLOAT, 1, self->vfade_offset);
   clutter_shader_effect_set_uniform (shader, "hfade_offset", G_TYPE_FLOAT, 1, self->hfade_offset);
