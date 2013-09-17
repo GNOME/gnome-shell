@@ -449,8 +449,6 @@ tty_reset(struct weston_launch *wl)
 static void
 quit(struct weston_launch *wl, int status)
 {
-	int err;
-
 	if (wl->child > 0)
 		kill(wl->child, SIGKILL);
 
