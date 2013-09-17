@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
 "&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-01 15:50+0000\n"
-"PO-Revision-Date: 2013-03-11 11:40+0200\n"
+"POT-Creation-Date: 2013-08-18 20:03+0000\n"
+"PO-Revision-Date: 2013-09-06 09:19+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -319,6 +319,20 @@ msgid ""
 msgstr ""
 "Ne mogu da pronađem temu! Proverite da „%s“ postoji i da sadrži uobičajene "
 "teme.\n"
+
+#: ../src/core/monitor.c:711
+msgid "Built-in display"
+msgstr "Ugrađeni displej"
+
+#. TRANSLATORS: this is a monitor name (in case we don't know
+#. the vendor), it's Unknown followed by a size in inches,
+#. like 'Unknown 15"'
+#.
+#: ../src/core/monitor.c:739
+#, c-format
+#| msgid "Unknown element %s"
+msgid "Unknown %s"
+msgstr "Nepoznat %s"
 
 #: ../src/core/mutter.c:40
 #, c-format

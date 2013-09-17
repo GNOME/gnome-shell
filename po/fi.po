@@ -5,26 +5,26 @@
 # Ilkka Tuohela <hile@iki.fi> 2005-2008.
 #
 # Gnome 2012-03 Finnish translation sprint participants:
-# Jiri Grönroos
 # Pauli Virtanen <pauli.virtanen@hut.fi>, 2003-2005.
 # Tommi Vainikainen <thv@iki.fi>, 2011.
-# Jiri Grönroos <jiri.gronroos@iki.fi>, 2012, 2013.
+# Jiri Grönroos <jiri.gronroos+l10n@iki.fi>, 2012, 2013.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-01 15:50+0000\n"
-"PO-Revision-Date: 2013-03-21 21:33+0200\n"
+"POT-Creation-Date: 2013-08-18 20:03+0000\n"
+"PO-Revision-Date: 2013-09-06 22:23+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
-"Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
+"Language-Team: suomi <gnome-fi-laatu@lists.sourceforge.net>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-POT-Import-Date: 2012-02-19 15:25:23+0000\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: ../src/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -137,9 +137,8 @@ msgid "Show the run command prompt"
 msgstr "Näytä komennonsuorituskehote"
 
 #: ../src/50-mutter-system.xml.in.h:3
-#, fuzzy
 msgid "Show the activities overview"
-msgstr "Näytä toimintojen yhteenveto"
+msgstr "Näytä toimintojen yleisnäkymä"
 
 #: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
@@ -222,7 +221,7 @@ msgstr ""
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:507
+#: ../src/compositor/compositor.c:589
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -230,11 +229,11 @@ msgid ""
 msgstr ""
 "Näytön ”%2$s” ruudullä %1$d on jo käynnissä toinen ikkunoidenladontaohjelman."
 
-#: ../src/compositor/meta-background.c:1111
+#: ../src/compositor/meta-background.c:1076
 msgid "background texture could not be created from file"
 msgstr ""
 
-#: ../src/core/bell.c:320
+#: ../src/core/bell.c:322
 msgid "Bell event"
 msgstr "Äänimerkki"
 
@@ -245,7 +244,6 @@ msgstr "Tuntematon ikkunatietojen pyyntö: %d"
 
 #: ../src/core/delete.c:111
 #, c-format
-#| msgid "%s is not responding."
 msgid "“%s” is not responding."
 msgstr "\"%s\" ei vastaa."
 
@@ -268,17 +266,17 @@ msgstr "_Odota"
 msgid "_Force Quit"
 msgstr "Sulje _väkisin"
 
-#: ../src/core/display.c:401
+#: ../src/core/display.c:421
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Kerrostukseen vaadittava laajennos %s puuttuu"
 
-#: ../src/core/display.c:493
+#: ../src/core/display.c:513
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-ikkunointijärjestelmän näytön ”%s” avaaminen epäonnistui\n"
 
-#: ../src/core/keybindings.c:929
+#: ../src/core/keybindings.c:1136
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -286,48 +284,61 @@ msgid ""
 msgstr ""
 "Jokin muu ohjelma käyttää jo näppäintä %s muunnoksin %x pikanäppäimenään\n"
 
-#: ../src/core/keybindings.c:1129
+#: ../src/core/keybindings.c:1333
 #, c-format
-#| msgid "\"%s\" is not a valid value for focus attribute"
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "”%s” ei ole kelvollinen valintanäppäin\n"
 
-#: ../src/core/main.c:196
+#: ../src/core/main.c:197
 msgid "Disable connection to session manager"
 msgstr "Estä yhteys sessionhallintaan"
 
-#: ../src/core/main.c:202
+#: ../src/core/main.c:203
 msgid "Replace the running window manager"
 msgstr "Vaihda käytössä oleva ikkunanhallinta"
 
-#: ../src/core/main.c:208
+#: ../src/core/main.c:209
 msgid "Specify session management ID"
 msgstr "Anna sessionhallinnan ID"
 
-#: ../src/core/main.c:213
+#: ../src/core/main.c:214
 msgid "X Display to use"
 msgstr "Käytettävä X-näyttö"
 
-#: ../src/core/main.c:219
+#: ../src/core/main.c:220
 msgid "Initialize session from savefile"
 msgstr "Alusta sessio tiedostosta"
 
-#: ../src/core/main.c:225
+#: ../src/core/main.c:226
 msgid "Make X calls synchronous"
 msgstr "Käytä synkronisia X-kutsuja"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:534
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Teemakansion lukeminen epäonnistui: %s\n"
 
-#: ../src/core/main.c:510
+#: ../src/core/main.c:550
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Teemaa ei löydy! Varmista, että %s on olemassa, ja sisältää tavalliset "
 "teemat.\n"
+
+#: ../src/core/monitor.c:711
+msgid "Built-in display"
+msgstr "Sisäänrakennettu näyttö"
+
+#. TRANSLATORS: this is a monitor name (in case we don't know
+#. the vendor), it's Unknown followed by a size in inches,
+#. like 'Unknown 15"'
+#.
+#: ../src/core/monitor.c:739
+#, c-format
+#| msgid "Unknown element %s"
+msgid "Unknown %s"
+msgstr "Tuntematon %s"
 
 #: ../src/core/mutter.c:40
 #, c-format
@@ -352,7 +363,7 @@ msgstr "Näytä versio"
 msgid "Mutter plugin to use"
 msgstr "Käytettävä Mutter-liitännäinen"
 
-#: ../src/core/prefs.c:1087
+#: ../src/core/prefs.c:1202
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -360,12 +371,12 @@ msgstr ""
 "Rikkinäisten sovellusten kiertotiet eivät ole käytössä. Jotkin sovellukset "
 "eivät välttämättä käyttäydy kunnolla.\n"
 
-#: ../src/core/prefs.c:1162
+#: ../src/core/prefs.c:1277
 #, fuzzy, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "GConf-avaimesta %2$s saatu kirjasinkuvaus ”%1$s” ei jäsenny\n"
 
-#: ../src/core/prefs.c:1228
+#: ../src/core/prefs.c:1343
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -373,7 +384,7 @@ msgid ""
 msgstr ""
 "Asetustietokannassa oleva ”%s” ei ole kelvollinen hiiren muunnosnäppäin\n"
 
-#: ../src/core/prefs.c:1780
+#: ../src/core/prefs.c:1909
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -382,17 +393,17 @@ msgstr ""
 "”%s”, joka on asetustietokannassa, ei ole kelvollinen näppäinsidonnan ”%s” "
 "arvo\n"
 
-#: ../src/core/prefs.c:1879
+#: ../src/core/prefs.c:1999
 #, c-format
 msgid "Workspace %d"
 msgstr "Työtila %d"
 
-#: ../src/core/screen.c:673
+#: ../src/core/screen.c:534
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Näytön ”%2$s” ruutu %1$d ei ole kelvollinen\n"
 
-#: ../src/core/screen.c:689
+#: ../src/core/screen.c:550
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -401,7 +412,7 @@ msgstr ""
 "Näytön ”%2$s” ruudulla %1$d on jo ikkunointiohjelma: kokeile valitsinta --"
 "replace, jos haluat korvata nykyisen ikkunointiohjelman.\n"
 
-#: ../src/core/screen.c:716
+#: ../src/core/screen.c:577
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -409,12 +420,12 @@ msgstr ""
 "Näytön \"%2$s\" ruudun %1$d ikkunointiohjelman valinnan hankkiminen "
 "epäonnistui\n"
 
-#: ../src/core/screen.c:794
+#: ../src/core/screen.c:655
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Näytön ”%2$s” ruudulla %1$d on jo ikkunointiohjelma\n"
 
-#: ../src/core/screen.c:979
+#: ../src/core/screen.c:846
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Näytön ”%2$s” ruudun %1$d vapauttaminen ei onnistunut\n"
@@ -475,44 +486,43 @@ msgstr ""
 "Nämä ikkunat eivät ymmärrä ”tallenna nykyinen tila”-komentoa, ja ne täytyy "
 "käynnistää käsin uudelleen kun kirjaudut seuraavan kerran sisään."
 
-#: ../src/core/util.c:80
+#: ../src/core/util.c:84
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Vianetsintälokin avaaminen epäonnistui: %s\n"
 
-#: ../src/core/util.c:90
+#: ../src/core/util.c:94
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Lokitiedoston ”%s” fdopen() epäonnistui: %s\n"
 
-#: ../src/core/util.c:96
+#: ../src/core/util.c:100
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Lokitiedosto %s avattu\n"
 
-#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
-#, c-format
+#: ../src/core/util.c:119
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter on käännetty ilman tukea monisanaisille ilmoituksille\n"
 
-#: ../src/core/util.c:259
+#: ../src/core/util.c:264
 msgid "Window manager: "
 msgstr "Ikkunointiohjelma:"
 
-#: ../src/core/util.c:407
+#: ../src/core/util.c:414
 msgid "Bug in window manager: "
 msgstr "Vika ikkunointiohjelmassa."
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:445
 msgid "Window manager warning: "
 msgstr "Ikkunointiohjelman varoitus:"
 
-#: ../src/core/util.c:466
+#: ../src/core/util.c:473
 msgid "Window manager error: "
 msgstr "Ikkunointiohjelmavirhe:"
 
 #. first time through
-#: ../src/core/window.c:7539
+#: ../src/core/window.c:7533
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -528,7 +538,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8263
+#: ../src/core/window.c:8257
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -538,22 +548,22 @@ msgstr ""
 "mutta asetti myös minimikoon %d × %d ja maksimikoon %d × %d, mikä ei ole "
 "järkevää.\n"
 
-#: ../src/core/window-props.c:318
+#: ../src/core/window-props.c:347
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Sovellus asetti ylimääräisen _NET_WM_PIDin %lu\n"
 
-#: ../src/core/window-props.c:434
+#: ../src/core/window-props.c:463
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s @ %s"
 
-#: ../src/core/window-props.c:1517
+#: ../src/core/window-props.c:1546
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Virheellinen WM_TRANSIENT_FOR ikkuna 0x%lx kohteelle %s.\n"
 
-#: ../src/core/window-props.c:1528
+#: ../src/core/window-props.c:1557
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR ikkuna 0x%lx kohteelle %s loisi silmukan.\n"
@@ -633,7 +643,7 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
-msgstr ""
+msgstr "Työtilat hallitaan dynaamisesti"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
@@ -667,6 +677,7 @@ msgstr ""
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Delay focus changes until the pointer stops moving"
 msgstr ""
+"Viivästytä kohdistuksen vaihtumista, kunnes osoitin lopettaa liikkumisen"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
@@ -706,109 +717,104 @@ msgstr "Poista ikkuna päältä"
 msgid "Cancel tab popup"
 msgstr ""
 
-#: ../src/tools/mutter-message.c:123
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Käyttö: %s\n"
-
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:69
+#: ../src/ui/menu.c:67
 msgid "Mi_nimize"
 msgstr "_Pienennä"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:71
+#: ../src/ui/menu.c:69
 msgid "Ma_ximize"
 msgstr "S_uurenna"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:73
+#: ../src/ui/menu.c:71
 msgid "Unma_ximize"
 msgstr "_Palauta koko"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:75
+#: ../src/ui/menu.c:73
 msgid "Roll _Up"
 msgstr "_Rullaa ylös"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:77
+#: ../src/ui/menu.c:75
 msgid "_Unroll"
 msgstr "_Rullaa alas"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:79
+#: ../src/ui/menu.c:77
 msgid "_Move"
 msgstr "S_iirrä"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:81
+#: ../src/ui/menu.c:79
 msgid "_Resize"
 msgstr "_Muuta kokoa"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:83
+#: ../src/ui/menu.c:81
 msgid "Move Titlebar On_screen"
 msgstr "Siirrä otsikkopalkkia _näytöllä"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:86 ../src/ui/menu.c:88
+#: ../src/ui/menu.c:84 ../src/ui/menu.c:86
 msgid "Always on _Top"
 msgstr "Aina _päällimmäisenä"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:90
+#: ../src/ui/menu.c:88
 msgid "_Always on Visible Workspace"
 msgstr "Näytä _aina tässä työtilassa"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:92
+#: ../src/ui/menu.c:90
 msgid "_Only on This Workspace"
 msgstr "Näytä vain _tässä työtilassa"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:94
+#: ../src/ui/menu.c:92
 msgid "Move to Workspace _Left"
 msgstr "Siirrä _vasempaan työtilaan"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:96
+#: ../src/ui/menu.c:94
 msgid "Move to Workspace R_ight"
 msgstr "Siirrä _oikeaan työtilaan"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:98
+#: ../src/ui/menu.c:96
 msgid "Move to Workspace _Up"
 msgstr "Siirry _yllä olevaan työtilaan"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:100
+#: ../src/ui/menu.c:98
 msgid "Move to Workspace _Down"
 msgstr "Siirrä _alla olevaan työtilaan"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:104
+#: ../src/ui/menu.c:102
 msgid "_Close"
 msgstr "_Sulje"
 
-#: ../src/ui/menu.c:204
+#: ../src/ui/menu.c:202
 #, c-format
 msgid "Workspace %d%n"
 msgstr "Työtila %d%n"
 
-#: ../src/ui/menu.c:214
+#: ../src/ui/menu.c:212
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Työtila 1_0"
 
-#: ../src/ui/menu.c:216
+#: ../src/ui/menu.c:214
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Työtila %s%d"
 
-#: ../src/ui/menu.c:397
+#: ../src/ui/menu.c:384
 msgid "Move to Another _Workspace"
 msgstr "Siirrä toiseen t_yötilaan"
 
@@ -910,48 +916,48 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: ../src/ui/theme.c:235
+#: ../src/ui/theme.c:236
 msgid "top"
 msgstr "ylä"
 
-#: ../src/ui/theme.c:237
+#: ../src/ui/theme.c:238
 msgid "bottom"
 msgstr "ala"
 
-#: ../src/ui/theme.c:239
+#: ../src/ui/theme.c:240
 msgid "left"
 msgstr "vasen"
 
-#: ../src/ui/theme.c:241
+#: ../src/ui/theme.c:242
 msgid "right"
 msgstr "oikea"
 
-#: ../src/ui/theme.c:269
+#: ../src/ui/theme.c:270
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "kehyksen mitat eivät määrittele ”%s”-kokoa"
 
-#: ../src/ui/theme.c:288
+#: ../src/ui/theme.c:289
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "kehyksen mitat eivät määrittele ”%2$s”-reunan ”%1$s”-kokoa"
 
-#: ../src/ui/theme.c:325
+#: ../src/ui/theme.c:326
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Painikkeen sivusuhde %g ei ole järkevä"
 
-#: ../src/ui/theme.c:337
+#: ../src/ui/theme.c:338
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Kehyksen mitat eivät määrittele painikkeiden kokoa"
 
-#: ../src/ui/theme.c:1050
+#: ../src/ui/theme.c:1051
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Väriliu'uissa täytyy olla vähintään kaksi väriä"
 
-#: ../src/ui/theme.c:1202
+#: ../src/ui/theme.c:1203
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
@@ -960,7 +966,7 @@ msgstr ""
 "GTK-värimääritteessä täytyy olla värin nimi ja vara-arvo suluissa, esim. gtk:"
 "custom(foo,bar). ”%s” ei jäsenny"
 
-#: ../src/ui/theme.c:1218
+#: ../src/ui/theme.c:1219
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
@@ -969,7 +975,7 @@ msgstr ""
 "Virheellinen merkki ”%c” gtk:custom-osan värinimi-parametrissa: ainoastaan A-"
 "Za-z0-9_ ovat sallittuja"
 
-#: ../src/ui/theme.c:1232
+#: ../src/ui/theme.c:1233
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -978,7 +984,7 @@ msgstr ""
 "Gtk:custom-muoto on ”gtk:custom(värinimi,vara-arvo)”. ”%s” ei ole tämän "
 "muotoinen"
 
-#: ../src/ui/theme.c:1277
+#: ../src/ui/theme.c:1278
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -987,7 +993,7 @@ msgstr ""
 "GTK-värimääritteessä täytyy olla tila hakasuluissa, esim. gtk:fg[NORMAL], "
 "jossa NORMAL on tila. ”%s” ei jäsenny"
 
-#: ../src/ui/theme.c:1291
+#: ../src/ui/theme.c:1292
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -996,17 +1002,17 @@ msgstr ""
 "GTK-värimääritteessä täytyy olla loppuhakasulku tilan jälkeen. Esimerkiksi "
 "gtk:fg[NORMAL], jossa NORMAL on tila. ”%s” ei jäsenny"
 
-#: ../src/ui/theme.c:1302
+#: ../src/ui/theme.c:1303
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Tila ”%s” ei ole värimääritteessä järkevä"
 
-#: ../src/ui/theme.c:1315
+#: ../src/ui/theme.c:1316
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Värikomponentti ”%s” ei ole värimääritteessä järkevä"
 
-#: ../src/ui/theme.c:1344
+#: ../src/ui/theme.c:1345
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1014,56 +1020,56 @@ msgid ""
 msgstr ""
 "Sekoitusmuoto on ”blend/taustaväri/edustaväri/alfa”. ”%s” ei ole tätä muotoa."
 
-#: ../src/ui/theme.c:1355
+#: ../src/ui/theme.c:1356
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Alfa-arvo ”%s” sekoitusvärissä ei jäsenny"
 
-#: ../src/ui/theme.c:1365
+#: ../src/ui/theme.c:1366
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Alfa-arvo ”%s” sekoitusvärissä ei ole välillä 0.0 - 1.0"
 
-#: ../src/ui/theme.c:1412
+#: ../src/ui/theme.c:1413
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Varjostusmuoto on ”shade/perusväri/kerroin”. ”%s” ei ole tämän muotoinen."
 
-#: ../src/ui/theme.c:1423
+#: ../src/ui/theme.c:1424
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Varjostuskerroin ”%s” varjostetussa värissä ei jäsenny"
 
-#: ../src/ui/theme.c:1433
+#: ../src/ui/theme.c:1434
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Varjostuskerroin ”%s” varjostetussa värissä on negatiivinen"
 
-#: ../src/ui/theme.c:1462
+#: ../src/ui/theme.c:1463
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Värin ”%s” jäsentäminen ei onnistunut"
 
-#: ../src/ui/theme.c:1779
+#: ../src/ui/theme.c:1780
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Koordinaattilauseke sisältää merkin ”%s”, joka ei ole sallittu"
 
-#: ../src/ui/theme.c:1806
+#: ../src/ui/theme.c:1807
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "Koordinaattilauseke sisältää liukuluvun ”%s”, joka ei jäsentynyt"
 
-#: ../src/ui/theme.c:1820
+#: ../src/ui/theme.c:1821
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Koordinaattilauseke sisältää kokonaisluvun ”%s”, joka ei jäsentynyt"
 
-#: ../src/ui/theme.c:1941
+#: ../src/ui/theme.c:1942
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1072,23 +1078,23 @@ msgstr ""
 "Koordinaattilauseke sisälsi tuntemattoman operaattorin seuraavan tekstin "
 "alussa: ”%s”"
 
-#: ../src/ui/theme.c:1998
+#: ../src/ui/theme.c:1999
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Koordinaattilauseke oli tyhjä tai ei järkevä"
 
-#: ../src/ui/theme.c:2111 ../src/ui/theme.c:2121 ../src/ui/theme.c:2155
+#: ../src/ui/theme.c:2112 ../src/ui/theme.c:2122 ../src/ui/theme.c:2156
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Koordinaattilauseke johtaa nollalla jakamiseen"
 
-#: ../src/ui/theme.c:2163
+#: ../src/ui/theme.c:2164
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Koordinaattilauseke yrittää soveltaa mod-operaattoria liukulukuun"
 
-#: ../src/ui/theme.c:2219
+#: ../src/ui/theme.c:2220
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
@@ -1096,18 +1102,18 @@ msgstr ""
 "Koordinaattilausekkeessa on operaattori ”%s”, jonka paikalla pitäisi olla "
 "operandi"
 
-#: ../src/ui/theme.c:2228
+#: ../src/ui/theme.c:2229
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 "Koordinaattilauseke sisälsi operandin kohdassa, johon kuuluisi operaattori"
 
-#: ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2237
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Koordinaattilauseke päättyi operaattoriin, ei operandiin"
 
-#: ../src/ui/theme.c:2246
+#: ../src/ui/theme.c:2247
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1116,39 +1122,39 @@ msgstr ""
 "Koordinaattilausekkeessa on operaattori ”%c” operaattorin ”%c” perässä ilman "
 "operandia välissä"
 
-#: ../src/ui/theme.c:2397 ../src/ui/theme.c:2442
+#: ../src/ui/theme.c:2398 ../src/ui/theme.c:2443
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Koordinaattilausekkeessa oli tuntematon muuttuja tai vakio ”%s”"
 
-#: ../src/ui/theme.c:2496
+#: ../src/ui/theme.c:2497
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Koordinaattilausekkeen tulkitsijan puskuri ylitettiin."
 
-#: ../src/ui/theme.c:2525
+#: ../src/ui/theme.c:2526
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "Koordinaattilausekkeessa oli lopetussulje ilman vastaavaa aloitussuljetta"
 
-#: ../src/ui/theme.c:2589
+#: ../src/ui/theme.c:2590
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Koordinaattilauseke oli aloitussulje ilman vastaavaa lopetussuljetta"
 
-#: ../src/ui/theme.c:2600
+#: ../src/ui/theme.c:2601
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "Koordinaattilausekkeessa ei vaikuta olevan operaattoreita eikä operandeja"
 
-#: ../src/ui/theme.c:2813 ../src/ui/theme.c:2833 ../src/ui/theme.c:2853
+#: ../src/ui/theme.c:2814 ../src/ui/theme.c:2834 ../src/ui/theme.c:2854
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Teema sisälsi lausekkeen, josta seurasi virhe: %s\n"
 
-#: ../src/ui/theme.c:4499
+#: ../src/ui/theme.c:4500
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1157,7 +1163,7 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"mikä lienee\"/> täytyy olla "
 "määritelty tätä kehystyyliä varten"
 
-#: ../src/ui/theme.c:5010 ../src/ui/theme.c:5035
+#: ../src/ui/theme.c:5011 ../src/ui/theme.c:5036
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -1165,18 +1171,18 @@ msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"mikä lienee\"/> "
 "puuttuu"
 
-#: ../src/ui/theme.c:5083
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Teeman ”%s” lataaminen epäonnistui: %s\n"
 
-#: ../src/ui/theme.c:5219 ../src/ui/theme.c:5226 ../src/ui/theme.c:5233
-#: ../src/ui/theme.c:5240 ../src/ui/theme.c:5247
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "<%s> ei ole asetettu teemaa ”%s” varten"
 
-#: ../src/ui/theme.c:5255
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1185,7 +1191,7 @@ msgstr ""
 "Ikkunatyypille \"%s\" ei ole asetettu kehystyyliä teemassa \"%s\". Lisää "
 "<window type=\"%s\" style_set=\"mikä lienee\"/>-elementti."
 
-#: ../src/ui/theme.c:5662 ../src/ui/theme.c:5724 ../src/ui/theme.c:5787
+#: ../src/ui/theme.c:5661 ../src/ui/theme.c:5723 ../src/ui/theme.c:5786
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1193,7 +1199,7 @@ msgstr ""
 "Käyttäjän määrittelemien vakioiden täytyy alkaa isolla kirjaimella; ”%s” ei "
 "ala"
 
-#: ../src/ui/theme.c:5670 ../src/ui/theme.c:5732 ../src/ui/theme.c:5795
+#: ../src/ui/theme.c:5669 ../src/ui/theme.c:5731 ../src/ui/theme.c:5794
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Vakio ”%s” on jo määritelty"
@@ -1574,209 +1580,157 @@ msgstr "Elementin <%s> sisällä ei voi olla tekstiä"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> määritelty kahdesti tälle teemalle"
 
-#: ../src/ui/theme-parser.c:4334
+#: ../src/ui/theme-parser.c:4336
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Teemalle %s ei löytynyt kelvollista tiedostoa\n"
 
-#: ../src/ui/theme-viewer.c:99
-msgid "_Windows"
-msgstr "_Ikkunat"
+#~ msgid "Usage: %s\n"
+#~ msgstr "Käyttö: %s\n"
 
-#: ../src/ui/theme-viewer.c:100
-msgid "_Dialog"
-msgstr "Valinta_ikkuna"
+#~ msgid "_Windows"
+#~ msgstr "_Ikkunat"
 
-#: ../src/ui/theme-viewer.c:101
-msgid "_Modal dialog"
-msgstr "_Modaalinen valintaikkuna"
+#~ msgid "_Dialog"
+#~ msgstr "Valinta_ikkuna"
 
-#: ../src/ui/theme-viewer.c:102
-msgid "_Utility"
-msgstr "_Työkalu"
+#~ msgid "_Modal dialog"
+#~ msgstr "_Modaalinen valintaikkuna"
 
-#: ../src/ui/theme-viewer.c:103
-msgid "_Splashscreen"
-msgstr "_Käynnistysikkuna"
+#~ msgid "_Utility"
+#~ msgstr "_Työkalu"
 
-#: ../src/ui/theme-viewer.c:104
-msgid "_Top dock"
-msgstr "_Ylätelakka"
+#~ msgid "_Splashscreen"
+#~ msgstr "_Käynnistysikkuna"
 
-#: ../src/ui/theme-viewer.c:105
-msgid "_Bottom dock"
-msgstr "_Alatelakka"
+#~ msgid "_Top dock"
+#~ msgstr "_Ylätelakka"
 
-#: ../src/ui/theme-viewer.c:106
-msgid "_Left dock"
-msgstr "_Vasen telakka"
+#~ msgid "_Bottom dock"
+#~ msgstr "_Alatelakka"
 
-#: ../src/ui/theme-viewer.c:107
-msgid "_Right dock"
-msgstr "_Oikea telakka"
+#~ msgid "_Left dock"
+#~ msgstr "_Vasen telakka"
 
-#: ../src/ui/theme-viewer.c:108
-msgid "_All docks"
-msgstr "_Kaikki telakat"
+#~ msgid "_Right dock"
+#~ msgstr "_Oikea telakka"
 
-#: ../src/ui/theme-viewer.c:109
-msgid "Des_ktop"
-msgstr "_Työpöytä"
+#~ msgid "_All docks"
+#~ msgstr "_Kaikki telakat"
 
-#: ../src/ui/theme-viewer.c:115
-msgid "Open another one of these windows"
-msgstr "Avaa uusi tällainen ikkuna"
+#~ msgid "Des_ktop"
+#~ msgstr "_Työpöytä"
 
-#: ../src/ui/theme-viewer.c:117
-msgid "This is a demo button with an 'open' icon"
-msgstr "Tämä on testipainike, jossa on ”avaa”-kuvake"
+#~ msgid "Open another one of these windows"
+#~ msgstr "Avaa uusi tällainen ikkuna"
 
-#: ../src/ui/theme-viewer.c:119
-msgid "This is a demo button with a 'quit' icon"
-msgstr "Tämä on testipainike, jossa on ”lopeta”-kuvake"
+#~ msgid "This is a demo button with an 'open' icon"
+#~ msgstr "Tämä on testipainike, jossa on ”avaa”-kuvake"
 
-#: ../src/ui/theme-viewer.c:248
-msgid "This is a sample message in a sample dialog"
-msgstr "Tämä on esimerkkiviesti esimerkkivalintaikkunassa"
+#~ msgid "This is a demo button with a 'quit' icon"
+#~ msgstr "Tämä on testipainike, jossa on ”lopeta”-kuvake"
 
-#: ../src/ui/theme-viewer.c:328
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr "Valikon kohta %d\n"
+#~ msgid "This is a sample message in a sample dialog"
+#~ msgstr "Tämä on esimerkkiviesti esimerkkivalintaikkunassa"
 
-#: ../src/ui/theme-viewer.c:363
-msgid "Border-only window"
-msgstr "Ikkuna, jossa on vain reunat"
+#~ msgid "Fake menu item %d\n"
+#~ msgstr "Valikon kohta %d\n"
 
-#: ../src/ui/theme-viewer.c:365
-msgid "Bar"
-msgstr "Palkki"
+#~ msgid "Border-only window"
+#~ msgstr "Ikkuna, jossa on vain reunat"
 
-#: ../src/ui/theme-viewer.c:382
-msgid "Normal Application Window"
-msgstr "Tavallisen sovelluksen ikkuna"
+#~ msgid "Bar"
+#~ msgstr "Palkki"
 
-#: ../src/ui/theme-viewer.c:386
-msgid "Dialog Box"
-msgstr "Valintaikkuna"
+#~ msgid "Normal Application Window"
+#~ msgstr "Tavallisen sovelluksen ikkuna"
 
-#: ../src/ui/theme-viewer.c:390
-msgid "Modal Dialog Box"
-msgstr "Modaalinen valintaikkuna"
+#~ msgid "Dialog Box"
+#~ msgstr "Valintaikkuna"
 
-#: ../src/ui/theme-viewer.c:394
-msgid "Utility Palette"
-msgstr "Palettityökalu"
+#~ msgid "Modal Dialog Box"
+#~ msgstr "Modaalinen valintaikkuna"
 
-#: ../src/ui/theme-viewer.c:398
-msgid "Torn-off Menu"
-msgstr "Irrotettu valikko"
+#~ msgid "Utility Palette"
+#~ msgstr "Palettityökalu"
 
-#: ../src/ui/theme-viewer.c:402
-msgid "Border"
-msgstr "Reuna"
+#~ msgid "Torn-off Menu"
+#~ msgstr "Irrotettu valikko"
 
-#: ../src/ui/theme-viewer.c:406
-msgid "Attached Modal Dialog"
-msgstr "Liitetty modaalinen valintaikkuna"
+#~ msgid "Border"
+#~ msgstr "Reuna"
 
-#: ../src/ui/theme-viewer.c:737
-#, c-format
-msgid "Button layout test %d"
-msgstr "Painikkeiden asettelutesti %d"
+#~ msgid "Attached Modal Dialog"
+#~ msgstr "Liitetty modaalinen valintaikkuna"
 
-#: ../src/ui/theme-viewer.c:766
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr "%g millisekuntia yhden ikkunan kehyksen piirtämiseen"
+#~ msgid "Button layout test %d"
+#~ msgstr "Painikkeiden asettelutesti %d"
 
-#: ../src/ui/theme-viewer.c:811
-#, c-format
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Käyttö: metacity-theme-viewer [TEEMANIMI]\n"
+#~ msgid "%g milliseconds to draw one window frame"
+#~ msgstr "%g millisekuntia yhden ikkunan kehyksen piirtämiseen"
 
-#: ../src/ui/theme-viewer.c:818
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "Virhe teeman lataamisessa: %s\n"
+#~ msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+#~ msgstr "Käyttö: metacity-theme-viewer [TEEMANIMI]\n"
 
-#: ../src/ui/theme-viewer.c:824
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Teema ”%s” latautui %g sekunnissa\n"
+#~ msgid "Error loading theme: %s\n"
+#~ msgstr "Virhe teeman lataamisessa: %s\n"
 
-#: ../src/ui/theme-viewer.c:869
-msgid "Normal Title Font"
-msgstr "Tavallinen otsikon kirjasin"
+#~ msgid "Loaded theme \"%s\" in %g seconds\n"
+#~ msgstr "Teema ”%s” latautui %g sekunnissa\n"
 
-#: ../src/ui/theme-viewer.c:875
-msgid "Small Title Font"
-msgstr "Pieni otsikon kirjasin"
+#~ msgid "Normal Title Font"
+#~ msgstr "Tavallinen otsikon kirjasin"
 
-#: ../src/ui/theme-viewer.c:881
-msgid "Large Title Font"
-msgstr "Suuri otsikon kirjasin"
+#~ msgid "Small Title Font"
+#~ msgstr "Pieni otsikon kirjasin"
 
-#: ../src/ui/theme-viewer.c:886
-msgid "Button Layouts"
-msgstr "Painikkeiden asettelu"
+#~ msgid "Large Title Font"
+#~ msgstr "Suuri otsikon kirjasin"
 
-#: ../src/ui/theme-viewer.c:891
-msgid "Benchmark"
-msgstr "Koesta"
+#~ msgid "Button Layouts"
+#~ msgstr "Painikkeiden asettelu"
 
-#: ../src/ui/theme-viewer.c:947
-msgid "Window Title Goes Here"
-msgstr "Ikkunan otsikko tähän"
+#~ msgid "Benchmark"
+#~ msgstr "Koesta"
 
-#: ../src/ui/theme-viewer.c:1053
-#, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"%d kehystä piirtyi %g asiakaspuolen sekunnissa (%g millisekuntia per kehys) "
-"ja %g todellisessa sekunnissa, ottaen mukaan X-palvelimen resurssit (%g "
-"millisekuntia per kehys)\n"
+#~ msgid "Window Title Goes Here"
+#~ msgstr "Ikkunan otsikko tähän"
 
-#: ../src/ui/theme-viewer.c:1273
-msgid "position expression test returned TRUE but set error"
-msgstr "sijaintilausekkeen testi palautti TOSI, mutta asetti virheen"
+#~ msgid ""
+#~ "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and "
+#~ "%g seconds wall clock time including X server resources (%g milliseconds "
+#~ "per frame)\n"
+#~ msgstr ""
+#~ "%d kehystä piirtyi %g asiakaspuolen sekunnissa (%g millisekuntia per "
+#~ "kehys) ja %g todellisessa sekunnissa, ottaen mukaan X-palvelimen "
+#~ "resurssit (%g millisekuntia per kehys)\n"
 
-#: ../src/ui/theme-viewer.c:1275
-msgid "position expression test returned FALSE but didn't set error"
-msgstr "sijaintilausekkeen testi palautti EPÄTOSI, mutta ei asettanut virhettä"
+#~ msgid "position expression test returned TRUE but set error"
+#~ msgstr "sijaintilausekkeen testi palautti TOSI, mutta asetti virheen"
 
-#: ../src/ui/theme-viewer.c:1279
-msgid "Error was expected but none given"
-msgstr "Virhe odotettu, mutta mitään ei ilmennyt"
+#~ msgid "position expression test returned FALSE but didn't set error"
+#~ msgstr ""
+#~ "sijaintilausekkeen testi palautti EPÄTOSI, mutta ei asettanut virhettä"
 
-#: ../src/ui/theme-viewer.c:1281
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr "Virhe %d odotettu, mutta %d ilmeni"
+#~ msgid "Error was expected but none given"
+#~ msgstr "Virhe odotettu, mutta mitään ei ilmennyt"
 
-#: ../src/ui/theme-viewer.c:1287
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr "Virhettä ei odotettu, mutta eräs ilmeni: %s"
+#~ msgid "Error %d was expected but %d given"
+#~ msgstr "Virhe %d odotettu, mutta %d ilmeni"
 
-#: ../src/ui/theme-viewer.c:1291
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr "x-arvo oli %d, %d oli odotettu"
+#~ msgid "Error not expected but one was returned: %s"
+#~ msgstr "Virhettä ei odotettu, mutta eräs ilmeni: %s"
 
-#: ../src/ui/theme-viewer.c:1294
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr "y-arvo oli %d, %d oli odotettu"
+#~ msgid "x value was %d, %d was expected"
+#~ msgstr "x-arvo oli %d, %d oli odotettu"
 
-#: ../src/ui/theme-viewer.c:1359
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
-"%d-sijaintilauseketta jäsentyi %g sekunnissa (%g sekuntia keksimäärin)\n"
+#~ msgid "y value was %d, %d was expected"
+#~ msgstr "y-arvo oli %d, %d oli odotettu"
+
+#~ msgid ""
+#~ "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+#~ msgstr ""
+#~ "%d-sijaintilauseketta jäsentyi %g sekunnissa (%g sekuntia keksimäärin)\n"
 
 #, fuzzy
 #~ msgid "Minimize window"
