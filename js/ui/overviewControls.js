@@ -109,6 +109,7 @@ const SlidingControl = new Lang.Class({
                                      clip_to_allocation: true });
 
         Main.overview.connect('showing', Lang.bind(this, this._onOverviewShowing));
+        Main.overview.connect('hiding', Lang.bind(this, this._onOverviewHiding));
 
         Main.overview.connect('item-drag-begin', Lang.bind(this, this._onDragBegin));
         Main.overview.connect('item-drag-end', Lang.bind(this, this._onDragEnd));
@@ -172,6 +173,10 @@ const SlidingControl = new Lang.Class({
         this.layout.slideX = this.getSlide();
         this.actor.translation_x = this._getTranslation();
         this.slideIn();
+    },
+
+    _onOverviewHiding: function() {
+        this.slideOut();
     },
 
     _onWindowDragBegin: function() {
@@ -244,7 +249,6 @@ const ThumbnailsSlider = new Lang.Class({
         this.actor.add_actor(this._thumbnailsBox.actor);
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this.updateSlide));
-        Main.overview.connect('hiding', Lang.bind(this, this.slideOut));
         this.actor.connect('notify::hover', Lang.bind(this, this.updateSlide));
         this._thumbnailsBox.actor.bind_property('visible', this.actor, 'visible', GObject.BindingFlags.SYNC_CREATE);
     },
@@ -322,7 +326,6 @@ const DashSlider = new Lang.Class({
         this.actor.add_actor(this._dash.actor);
 
         this._dash.connect('icon-size-changed', Lang.bind(this, this.updateSlide));
-        Main.overview.connect('hiding', Lang.bind(this, this.slideOut));
     },
 
     getSlide: function() {
