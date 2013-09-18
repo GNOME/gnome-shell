@@ -63,7 +63,7 @@ const SlideLayout = new Lang.Class({
         // flags only determine what to do if the allocated box is bigger
         // than the actor's box.
         let realDirection = getRtlSlideDirection(this._direction, child);
-        let alignX = (realDirection == SlideDirection.LEFT) ? (availWidth - natWidth) : (natWidth - availWidth);
+        let alignX = (realDirection == SlideDirection.LEFT) ? (availWidth - natWidth) : 0;
 
         let actorBox = new Clutter.ActorBox();
         actorBox.x1 = alignX;
