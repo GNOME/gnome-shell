@@ -315,6 +315,7 @@ const Background = new Lang.Class({
 
         this._brightness = 1.0;
         this._vignetteSharpness = 0.2;
+        this._saturation = 1.0;
         this._cancellable = new Gio.Cancellable();
         this.isLoaded = false;
 
@@ -411,6 +412,7 @@ const Background = new Lang.Class({
     },
 
     _addImage: function(content, index, filename) {
+        content.saturation = this._saturation;
         content.brightness = this._brightness;
         content.vignette_sharpness = this._vignetteSharpness;
 
@@ -426,6 +428,7 @@ const Background = new Lang.Class({
     },
 
     _updateImage: function(content, index, filename) {
+        content.saturation = this._saturation;
         content.brightness = this._brightness;
         content.vignette_sharpness = this._vignetteSharpness;
 
@@ -583,6 +586,24 @@ const Background = new Lang.Class({
         this._loadFile(filename);
     },
 
+    get saturation() {
+        return this._saturation;
+    },
+
+    set saturation(saturation) {
+        this._saturation = saturation;
+
+        if (this._pattern && this._pattern.content)
+            this._pattern.content.saturation = saturation;
+
+        let keys = Object.keys(this._images);
+        for (let i = 0; i < keys.length; i++) {
+            let image = this._images[keys[i]];
+            if (image && image.content)
+                image.content.saturation = saturation;
+        }
+    },
+
     get brightness() {
         return this._brightness;
     },
@@ -726,6 +747,7 @@ const BackgroundManager = new Lang.Class({
         let newBackground = this._createBackground(monitorIndex);
         newBackground.vignetteSharpness = background.vignetteSharpness;
         newBackground.brightness = background.brightness;
+        newBackground.saturation = background.saturation;
         newBackground.visible = background.visible;
 
         newBackground.loadedSignalId = newBackground.connect('loaded',
