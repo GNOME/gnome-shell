@@ -36,6 +36,7 @@ const SlideLayout = new Lang.Class({
 
     _init: function(params) {
         this._slideX = 1;
+        this._translationX = 0;
         this._direction = SlideDirection.LEFT;
 
         this.parent(params);
@@ -66,7 +67,7 @@ const SlideLayout = new Lang.Class({
         let alignX = (realDirection == SlideDirection.LEFT) ? (availWidth - natWidth) : 0;
 
         let actorBox = new Clutter.ActorBox();
-        actorBox.x1 = box.x1 + alignX;
+        actorBox.x1 = box.x1 + alignX + this._translationX;
         actorBox.x2 = actorBox.x1 + availWidth;
         actorBox.y1 = box.y1;
         actorBox.y2 = actorBox.y1 + availHeight;
@@ -90,7 +91,16 @@ const SlideLayout = new Lang.Class({
 
     get slideDirection() {
         return this._direction;
-    }
+    },
+
+    set translationX(value) {
+        this._translationX = value;
+        this.layout_changed();
+    },
+
+    get translationX() {
+        return this._translationX;
+    },
 });
 
 const SlidingControl = new Lang.Class({
@@ -158,20 +168,19 @@ const SlidingControl = new Lang.Class({
             translationEnd = translation;
         }
 
-        if (this.actor.translation_x == translationEnd)
+        if (this.layout.translationX == translationEnd)
             return;
 
-        this.actor.translation_x = translationStart;
-        Tweener.addTween(this.actor, { translation_x: translationEnd,
-                                       time: SIDE_CONTROLS_ANIMATION_TIME,
-                                       transition: 'easeOutQuad'
-                                     });
+        this.layout.translationX = translationStart;
+        Tweener.addTween(this.layout, { translationX: translationEnd,
+                                        time: SIDE_CONTROLS_ANIMATION_TIME,
+                                        transition: 'easeOutQuad' });
     },
 
     _onOverviewShowing: function() {
         this._visible = true;
         this.layout.slideX = this._getSlide();
-        this.actor.translation_x = this._getTranslation();
+        this.layout.translationX = this._getTranslation();
         this.slideIn();
     },
 
@@ -189,7 +198,7 @@ const SlidingControl = new Lang.Class({
 
     _onDragBegin: function() {
         this._inDrag = true;
-        this.actor.translation_x = 0;
+        this.layout.translationX = 0;
         this._updateSlide();
     },
 
