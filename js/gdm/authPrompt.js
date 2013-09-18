@@ -244,6 +244,7 @@ const AuthPrompt = new Lang.Class({
     },
 
     _onVerificationFailed: function() {
+        this._queryingService = null;
         this.clear();
 
         this.updateSensitivity(true);
