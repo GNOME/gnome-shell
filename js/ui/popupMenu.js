@@ -948,14 +948,18 @@ const PopupSubMenuMenuItem = new Lang.Class({
             this.actor.add_child(this.icon);
         }
 
-        this.label = new St.Label({ text: text });
+        this.label = new St.Label({ text: text,
+                                    y_expand: true,
+                                    y_align: Clutter.ActorAlign.CENTER });
         this.actor.add_child(this.label);
         this.actor.label_actor = this.label;
 
         let expander = new St.Bin({ style_class: 'popup-menu-item-expander' });
         this.actor.add(expander, { expand: true });
 
-        this.status = new St.Label({ style_class: 'popup-status-menu-item' });
+        this.status = new St.Label({ style_class: 'popup-status-menu-item',
+                                     y_expand: true,
+                                     y_align: Clutter.ActorAlign.CENTER });
         this.actor.add_child(this.status);
 
         this._triangle = new St.Label({ text: '\u25B8',
