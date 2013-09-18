@@ -168,11 +168,10 @@ const SlidingControl = new Lang.Class({
     },
 
     _onOverviewShowing: function() {
-        // reset any translation and make sure the actor is visible when
-        // entering the overview
         this.visible = true;
         this.layout.slideX = this.getSlide();
-        this.actor.translation_x = 0;
+        this.actor.translation_x = this._getTranslation();
+        this.slideIn();
     },
 
     _onWindowDragBegin: function() {
@@ -273,13 +272,6 @@ const ThumbnailsSlider = new Lang.Class({
         return alwaysZoomOut;
     },
 
-    _onOverviewShowing: function() {
-        this.visible = true;
-        this.layout.slideX = this.getSlide();
-        this.actor.translation_x = this._getTranslation();
-        this.slideIn();
-    },
-
     getNonExpandedWidth: function() {
         let child = this.actor.get_first_child();
         return child.get_theme_node().get_length('visible-width');
@@ -338,13 +330,6 @@ const DashSlider = new Lang.Class({
             return 1;
         else
             return 0;
-    },
-
-    _onOverviewShowing: function() {
-        this.visible = true;
-        this.layout.slideX = this.getSlide();
-        this.actor.translation_x = this._getTranslation();
-        this.slideIn();
     },
 
     _onWindowDragBegin: function() {
