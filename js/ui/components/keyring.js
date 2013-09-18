@@ -223,27 +223,50 @@ const KeyringDialog = new Lang.Class({
     },
 });
 
+const KeyringDummyDialog = new Lang.Class({
+    Name: 'KeyringDummyDialog',
+
+    _init: function() {
+        this.prompt = new Shell.KeyringPrompt();
+        this.prompt.connect('show-password',
+                            Lang.bind(this, this._cancelPrompt));
+        this.prompt.connect('show-confirm', Lang.bind(this,
+                            this._cancelPrompt));
+    },
+
+    _cancelPrompt: function() {
+        this.prompt.cancel();
+    }
+});
+
 const KeyringPrompter = new Lang.Class({
     Name: 'KeyringPrompter',
 
     _init: function() {
         this._prompter = new Gcr.SystemPrompter();
-        this._prompter.connect('new-prompt', function(prompter) {
-            let dialog = new KeyringDialog();
-            return dialog.prompt;
-        });
+        this._prompter.connect('new-prompt', Lang.bind(this,
+            function() {
+                let dialog = this._enabled ? new KeyringDialog()
+                                           : new KeyringDummyDialog();
+                return dialog.prompt;
+            }));
         this._dbusId = null;
+        this._registered = false;
+        this._enabled = false;
     },
 
     enable: function() {
-        this._prompter.register(Gio.DBus.session);
-        this._dbusId = Gio.DBus.session.own_name('org.gnome.keyring.SystemPrompter',
-                                                 Gio.BusNameOwnerFlags.ALLOW_REPLACEMENT, null, null);
+        if (!this._registered) {
+            this._prompter.register(Gio.DBus.session);
+            this._dbusId = Gio.DBus.session.own_name('org.gnome.keyring.SystemPrompter',
+                                                     Gio.BusNameOwnerFlags.ALLOW_REPLACEMENT, null, null);
+            this._registered = true;
+        }
+        this._enabled = true;
     },
 
     disable: function() {
-        this._prompter.unregister(false);
-        Gio.DBus.session.unown_name(this._dbusId);
+        this._enabled = false;
     }
 });
 
