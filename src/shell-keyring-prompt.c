@@ -771,6 +771,6 @@ shell_keyring_prompt_cancel (ShellKeyringPrompt *self)
   self->async_result = NULL;
   self->mode = PROMPTING_NONE;
 
-  g_simple_async_result_complete (res);
+  g_simple_async_result_complete_in_idle (res);
   g_object_unref (res);
 }
