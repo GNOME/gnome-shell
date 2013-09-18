@@ -89,6 +89,7 @@ const KeyringDialog = new Lang.Class({
         if (this.prompt.password_visible) {
             let label = new St.Label({ style_class: 'prompt-dialog-password-label' });
             label.set_text(_("Password:"));
+            label.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
             layout.pack(label, 0, row);
             layout.child_set(label, { x_expand: false, y_fill: false,
                                       x_align: Clutter.TableAlignment.START });
