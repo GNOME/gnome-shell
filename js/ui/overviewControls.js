@@ -323,6 +323,7 @@ const DashSlider = new Lang.Class({
         // available allocation
         this._dash.actor.x_expand = true;
 
+        this.actor.x_expand = true;
         this.actor.x_align = Clutter.ActorAlign.START;
         this.actor.y_expand = true;
 
