@@ -107,6 +107,7 @@ clutter_wayland_handle_button (void *data,
   ClutterStageCogl          *stage_cogl;
   ClutterEvent              *event;
   ClutterEventType           type;
+  ClutterModifierType        modifier_mask = 0;
 
   if (!device->pointer_focus)
     return;
@@ -130,14 +131,27 @@ clutter_wayland_handle_button (void *data,
   switch (button) {
   case 272:
     event->button.button = 1;
+    modifier_mask = CLUTTER_BUTTON1_MASK;
     break;
   case 273:
     event->button.button = 3;
+    modifier_mask = CLUTTER_BUTTON2_MASK;
     break;
   case 274:
     event->button.button = 2;
+    modifier_mask = CLUTTER_BUTTON3_MASK;
     break;
   }
+
+  if (modifier_mask)
+    {
+      if (state)
+        device->button_modifier_state |= modifier_mask;
+      else
+        device->button_modifier_state &= ~modifier_mask;
+    }
+
+  event->button.modifier_state = device->button_modifier_state;
 
   _clutter_event_push (event, FALSE);
 }
