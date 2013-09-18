@@ -83,6 +83,7 @@ const NetworkSecretDialog = new Lang.Class({
             let secret = this._content.secrets[i];
             let label = new St.Label({ style_class: 'prompt-dialog-password-label',
                                        text: secret.label });
+            label.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
             let reactive = secret.key != null;
 
