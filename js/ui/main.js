@@ -90,8 +90,12 @@ function _sessionUpdated() {
                                   Shell.KeyBindingMode.OVERVIEW,
                                   sessionMode.hasRunDialog ? openRunDialog : null);
 
-    if (!sessionMode.hasRunDialog && lookingGlass)
-        lookingGlass.close();
+    if (!sessionMode.hasRunDialog) {
+        if (runDialog)
+            runDialog.close();
+        if (lookingGlass)
+            lookingGlass.close();
+    }
 }
 
 function start() {
