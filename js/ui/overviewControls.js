@@ -99,8 +99,8 @@ const SlidingControl = new Lang.Class({
     _init: function(params) {
         params = Params.parse(params, { slideDirection: SlideDirection.LEFT });
 
-        this.visible = true;
-        this.inDrag = false;
+        this._visible = true;
+        this._inDrag = false;
 
         this.layout = new SlideLayout();
         this.layout.slideDirection = params.slideDirection;
@@ -152,7 +152,7 @@ const SlidingControl = new Lang.Class({
         let translationEnd = 0;
         let translation = this._getTranslation();
 
-        if (this.visible) {
+        if (this._visible) {
             translationStart = translation;
         } else {
             translationEnd = translation;
@@ -169,7 +169,7 @@ const SlidingControl = new Lang.Class({
     },
 
     _onOverviewShowing: function() {
-        this.visible = true;
+        this._visible = true;
         this.layout.slideX = this.getSlide();
         this.actor.translation_x = this._getTranslation();
         this.slideIn();
@@ -188,13 +188,13 @@ const SlidingControl = new Lang.Class({
     },
 
     _onDragBegin: function() {
-        this.inDrag = true;
+        this._inDrag = true;
         this.actor.translation_x = 0;
         this.updateSlide();
     },
 
     _onDragEnd: function() {
-        this.inDrag = false;
+        this._inDrag = false;
         this.updateSlide();
     },
 
@@ -213,13 +213,13 @@ const SlidingControl = new Lang.Class({
     },
 
     slideIn: function() {
-        this.visible = true;
+        this._visible = true;
         this._updateTranslation();
         // we will update slideX and the translation from pageEmpty
     },
 
     slideOut: function() {
-        this.visible = false;
+        this._visible = false;
         this._updateTranslation();
         // we will update slideX from pageEmpty
     },
@@ -256,7 +256,7 @@ const ThumbnailsSlider = new Lang.Class({
     _getAlwaysZoomOut: function() {
         // Always show the pager when hover, during a drag, or if workspaces are
         // actually used, e.g. there are windows on more than one
-        let alwaysZoomOut = this.actor.hover || this.inDrag || !Meta.prefs_get_dynamic_workspaces() || global.screen.n_workspaces > 2;
+        let alwaysZoomOut = this.actor.hover || this._inDrag || !Meta.prefs_get_dynamic_workspaces() || global.screen.n_workspaces > 2;
 
         if (!alwaysZoomOut) {
             let monitors = Main.layoutManager.monitors;
@@ -282,7 +282,7 @@ const ThumbnailsSlider = new Lang.Class({
     },
 
     getSlide: function() {
-        if (!this.visible)
+        if (!this._visible)
             return 0;
 
         let alwaysZoomOut = this._getAlwaysZoomOut();
@@ -329,7 +329,7 @@ const DashSlider = new Lang.Class({
     },
 
     getSlide: function() {
-        if (this.visible || this.inDrag)
+        if (this._visible || this._inDrag)
             return 1;
         else
             return 0;
