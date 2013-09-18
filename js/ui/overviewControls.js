@@ -67,7 +67,7 @@ const SlideLayout = new Lang.Class({
 
         let actorBox = new Clutter.ActorBox();
         actorBox.x1 = box.x1 + alignX;
-        actorBox.x2 = actorBox.x1 + child.x_expand ? availWidth : natWidth;
+        actorBox.x2 = actorBox.x1 + availWidth;
         actorBox.y1 = box.y1;
         actorBox.y2 = actorBox.y1 + availHeight;
 
@@ -313,11 +313,6 @@ const DashSlider = new Lang.Class({
         this.parent({ slideDirection: SlideDirection.LEFT });
 
         this._dash = dash;
-
-        // SlideLayout reads the actor's expand flags to decide
-        // whether to allocate the natural size to its child, or the whole
-        // available allocation
-        this._dash.actor.x_expand = true;
 
         this.actor.x_expand = true;
         this.actor.x_align = Clutter.ActorAlign.START;
