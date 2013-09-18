@@ -120,12 +120,12 @@ const SlidingControl = new Lang.Class({
         Main.overview.connect('window-drag-end', Lang.bind(this, this._onWindowDragEnd));
     },
 
-    getSlide: function() {
+    _getSlide: function() {
         throw new Error('getSlide() must be overridden');
     },
 
-    updateSlide: function() {
-        Tweener.addTween(this.layout, { slideX: this.getSlide(),
+    _updateSlide: function() {
+        Tweener.addTween(this.layout, { slideX: this._getSlide(),
                                         time: SIDE_CONTROLS_ANIMATION_TIME,
                                         transition: 'easeOutQuad' });
     },
@@ -170,7 +170,7 @@ const SlidingControl = new Lang.Class({
 
     _onOverviewShowing: function() {
         this._visible = true;
-        this.layout.slideX = this.getSlide();
+        this.layout.slideX = this._getSlide();
         this.actor.translation_x = this._getTranslation();
         this.slideIn();
     },
@@ -190,12 +190,12 @@ const SlidingControl = new Lang.Class({
     _onDragBegin: function() {
         this._inDrag = true;
         this.actor.translation_x = 0;
-        this.updateSlide();
+        this._updateSlide();
     },
 
     _onDragEnd: function() {
         this._inDrag = false;
-        this.updateSlide();
+        this._updateSlide();
     },
 
     fadeIn: function() {
@@ -229,7 +229,7 @@ const SlidingControl = new Lang.Class({
         // selector; this means we can now safely set the full slide for
         // the next page, since slideIn or slideOut might have been called,
         // changing the visiblity
-        this.layout.slideX = this.getSlide();
+        this.layout.slideX = this._getSlide();
         this._updateTranslation();
     }
 });
@@ -248,8 +248,8 @@ const ThumbnailsSlider = new Lang.Class({
         this.actor.track_hover = true;
         this.actor.add_actor(this._thumbnailsBox.actor);
 
-        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this.updateSlide));
-        this.actor.connect('notify::hover', Lang.bind(this, this.updateSlide));
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._updateSlide));
+        this.actor.connect('notify::hover', Lang.bind(this, this._updateSlide));
         this._thumbnailsBox.actor.bind_property('visible', this.actor, 'visible', GObject.BindingFlags.SYNC_CREATE);
     },
 
@@ -281,7 +281,7 @@ const ThumbnailsSlider = new Lang.Class({
         return child.get_theme_node().get_length('visible-width');
     },
 
-    getSlide: function() {
+    _getSlide: function() {
         if (!this._visible)
             return 0;
 
@@ -325,10 +325,10 @@ const DashSlider = new Lang.Class({
 
         this.actor.add_actor(this._dash.actor);
 
-        this._dash.connect('icon-size-changed', Lang.bind(this, this.updateSlide));
+        this._dash.connect('icon-size-changed', Lang.bind(this, this._updateSlide));
     },
 
-    getSlide: function() {
+    _getSlide: function() {
         if (this._visible || this._inDrag)
             return 1;
         else
