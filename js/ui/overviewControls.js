@@ -63,10 +63,11 @@ const SlideLayout = new Lang.Class({
         let translationX = (realDirection == SlideDirection.LEFT) ?
             (availWidth - natWidth) : (natWidth - availWidth);
 
-        let actorBox = new Clutter.ActorBox({ x1: translationX,
-                                              y1: 0,
-                                              x2: child.x_expand ? availWidth : natWidth,
-                                              y2: child.y_expand ? availHeight : natHeight });
+        let actorBox = new Clutter.ActorBox();
+        actorBox.x1 = translationX;
+        actorBox.x2 = actorBox.x1 + child.x_expand ? availWidth : natWidth;
+        actorBox.y1 = 0;
+        actorBox.y2 = actorBox.y1 + child.y_expand ? availHeight : natHeight;
 
         child.allocate(actorBox, flags);
     },
