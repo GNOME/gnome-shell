@@ -59,12 +59,14 @@ const SlideLayout = new Lang.Class({
         let availWidth = Math.round(box.x2 - box.x1);
         let availHeight = Math.round(box.y2 - box.y1);
 
+        // Align the actor inside the clipped box, as the actor's alignment
+        // flags only determine what to do if the allocated box is bigger
+        // than the actor's box.
         let realDirection = getRtlSlideDirection(this._direction, child);
-        let translationX = (realDirection == SlideDirection.LEFT) ?
-            (availWidth - natWidth) : (natWidth - availWidth);
+        let alignX = (realDirection == SlideDirection.LEFT) ? (availWidth - natWidth) : (natWidth - availWidth);
 
         let actorBox = new Clutter.ActorBox();
-        actorBox.x1 = translationX;
+        actorBox.x1 = alignX;
         actorBox.x2 = actorBox.x1 + child.x_expand ? availWidth : natWidth;
         actorBox.y1 = 0;
         actorBox.y2 = actorBox.y1 + child.y_expand ? availHeight : natHeight;
