@@ -1287,6 +1287,7 @@ const NMApplet = new Lang.Class({
         this._client.connect('notify::networking-enabled', Lang.bind(this, this._syncNMState));
         this._client.connect('notify::state', Lang.bind(this, this._syncNMState));
         this._client.connect('notify::primary-connection', Lang.bind(this, this._syncMainConnection));
+        this._client.connect('notify::activating-connection', Lang.bind(this, this._syncMainConnection));
         this._client.connect('notify::active-connections', Lang.bind(this, this._syncVPNConnections));
         this._client.connect('device-added', Lang.bind(this, this._deviceAdded));
         this._client.connect('device-removed', Lang.bind(this, this._deviceRemoved));
