@@ -33,6 +33,7 @@ const FocusCaretTracker = new Lang.Class({
 
     _init: function() {
         Atspi.init();
+        Atspi.set_timeout(250, 250);
         this._atspiListener = Atspi.EventListener.new(Lang.bind(this, this._onChanged));
     },
 
