@@ -1,3 +1,49 @@
+Clutter 1.15.94                                                      2013-09-19
+===============================================================================
+
+  • List of changes since Clutter 1.15.92
+
+    - Improve the evdev input backend
+    The evdev input backend is used when writing applications and compositors
+    that directly drive the frame buffer on Linux. By ensuring that the evdev
+    input backend works correctly it is possible to manage input sources like
+    pointers, keyboards, and touch devices using the raw evdev device nodes.
+    Clutter now depends on libevdev in order to poll the evdev interfaces.
+
+    - Allow scaling windowing surfaces
+    The main part of the work to support high resolution displays is to make
+    sure that windowing surfaces can be created with a scaling factor, while
+    trasparently handling the new size from an application's perspective. The
+    scaling factor is currently set manually, but it in the near future it will
+    be automatically set by the environment.
+
+    - Translation updates
+    Serbian, Aragonese, Russian, Latvian, Belarusian, Assamese, Indonesian,
+    German, Hebrew.
+
+  • List of bugs fixed since Clutter 1.15.92
+
+    #706652 - evdev: add callback to constrain the pointer position
+    #706543 - evdev: use monotonic times for the events
+    #706494 - an assortment of wayland and evdev related changes
+    #707377 - wayland: Check for NULL surface on pointer leave events
+    #707808 - box-layout: Fix floating point truncation when calculating a
+              child's size
+    #707774 - ClutterClickAction can trigger a crash if disposes at
+              inappropriate time
+    #707869 - Add API to restrict the windowing backend to load
+    #708079 - Clutter clutter-1.16 branch fails to commit after commit
+              da3e6988
+    #708383 - ClutterEvent: preserve extended state across
+              clutter_event_copy()
+
+Many thanks to:
+
+  Giovanni Campagna, Emmanuele Bassi, Lionel Landwerlin, Andika Triwidada,
+  Chun-wei Fan, Florian Müllner, Ihar Hrachyshka, Jasper St. Pierre, Jorge
+  Pérez Pérez, Nilamdyuti Goswami, Rob Bradford, Rūdolfs Mazurs, Yuri
+  Myasoedov, Мирослав Николић.
+
 Clutter 1.15.92                                                      2013-09-02
 ===============================================================================
 
