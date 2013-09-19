@@ -978,6 +978,7 @@ clutter_backend_get_cogl_context
 
 <SUBSECTION>
 clutter_check_windowing_backend
+clutter_set_windowing_backend
 
 <SUBSECTION Standard>
 CLUTTER_BACKEND
@@ -1108,6 +1109,7 @@ clutter_event_set_coords
 clutter_event_get_coords
 clutter_event_set_state
 clutter_event_get_state
+clutter_event_get_state_full
 clutter_event_set_time
 clutter_event_get_time
 clutter_event_set_source
@@ -1194,6 +1196,7 @@ clutter_input_device_set_enabled
 clutter_input_device_get_enabled
 clutter_input_device_get_associated_device
 clutter_input_device_get_slave_devices
+clutter_input_device_get_modifier_state
 clutter_input_device_keycode_to_evdev
 
 <SUBSECTION>

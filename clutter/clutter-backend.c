@@ -1389,7 +1389,7 @@ clutter_wayland_set_compositor_display (void *display)
 
 /**
  * clutter_set_windowing_backend:
- * @first_backend: the name of a clutter window backend
+ * @backend_type: the name of a clutter window backend
  *
  * Restricts clutter to only use the specified backend.
  * This must be called before the first API call to clutter, including
