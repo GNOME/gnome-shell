@@ -1805,8 +1805,9 @@ const MessageTray = new Lang.Class({
     },
 
     _sessionUpdated: function() {
-        if ((Main.sessionMode.isLocked || Main.sessionMode.isGreeter) && this._inCtrlAltTab) {
-            Main.ctrlAltTabManager.removeGroup(this._summary);
+        if (Main.sessionMode.isLocked || Main.sessionMode.isGreeter) {
+            if (this._inCtrlAltTab)
+                Main.ctrlAltTabManager.removeGroup(this._summary);
             this._inCtrlAltTab = false;
         } else if (!this._inCtrlAltTab) {
             Main.ctrlAltTabManager.addGroup(this._summary, _("Message Tray"), 'user-available-symbolic',
