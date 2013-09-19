@@ -1899,7 +1899,7 @@ clutter_stage_dispose (GObject *object)
       priv->impl = NULL;
     }
 
-  clutter_actor_remove_all_children (CLUTTER_ACTOR (object));
+  clutter_actor_destroy_all_children (CLUTTER_ACTOR (object));
 
   g_list_free_full (priv->pending_queue_redraws,
                     (GDestroyNotify) free_queue_redraw_entry);
