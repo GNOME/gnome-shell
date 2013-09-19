@@ -1207,6 +1207,10 @@ clutter_event_copy (const ClutterEvent *event)
       new_real_event->delta_x = real_event->delta_x;
       new_real_event->delta_y = real_event->delta_y;
       new_real_event->is_pointer_emulated = real_event->is_pointer_emulated;
+      new_real_event->base_state = real_event->base_state;
+      new_real_event->button_state = real_event->button_state;
+      new_real_event->latched_state = real_event->latched_state;
+      new_real_event->locked_state = real_event->locked_state;
     }
 
   device = clutter_event_get_device (event);
