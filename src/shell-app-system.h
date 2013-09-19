@@ -49,10 +49,4 @@ ShellApp       *shell_app_system_lookup_desktop_wmclass       (ShellAppSystem *s
 
 GSList         *shell_app_system_get_running               (ShellAppSystem  *self);
 
-GSList         *shell_app_system_initial_search            (ShellAppSystem  *system,
-                                                            GSList          *terms);
-GSList         *shell_app_system_subsearch                 (ShellAppSystem  *system,
-                                                            GSList          *previous_results,
-                                                            GSList          *terms);
-
 #endif /* __SHELL_APP_SYSTEM_H__ */

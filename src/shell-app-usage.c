@@ -527,19 +527,19 @@ shell_app_usage_get_most_used (ShellAppUsage   *self,
  * shell_app_usage_compare:
  * @self: the usage instance to request
  * @context: Activity identifier
- * @app_a: First app
- * @app_b: Second app
+ * @id_a: ID of first app
+ * @id_b: ID of second app
  *
- * Compare @app_a and @app_b based on frequency of use.
+ * Compare @id_a and @id_b based on frequency of use.
  *
- * Returns: -1 if @app_a ranks higher than @app_b, 1 if @app_b ranks higher
- *          than @app_a, and 0 if both rank equally.
+ * Returns: -1 if @id_a ranks higher than @id_b, 1 if @id_b ranks higher
+ *          than @id_a, and 0 if both rank equally.
  */
 int
 shell_app_usage_compare (ShellAppUsage *self,
                          const char    *context,
-                         ShellApp      *app_a,
-                         ShellApp      *app_b)
+                         const char    *id_a,
+                         const char    *id_b)
 {
   GHashTable *usages;
   UsageData *usage_a, *usage_b;
@@ -548,8 +548,8 @@ shell_app_usage_compare (ShellAppUsage *self,
   if (usages == NULL)
     return 0;
 
-  usage_a = g_hash_table_lookup (usages, shell_app_get_id (app_a));
-  usage_b = g_hash_table_lookup (usages, shell_app_get_id (app_b));
+  usage_a = g_hash_table_lookup (usages, id_a);
+  usage_b = g_hash_table_lookup (usages, id_b);
 
   if (usage_a == NULL && usage_b == NULL)
     return 0;

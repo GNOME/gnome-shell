@@ -875,12 +875,19 @@ const AppSearchProvider = new Lang.Class({
         callback(metas);
     },
 
+    _compareResults: function(a, b) {
+        let usage = Shell.AppUsage.get_default();
+        return usage.compare('', a, b);
+    },
+
     getInitialResultSet: function(terms) {
-        this.searchSystem.setResults(this, this._appSys.initial_search(terms));
+        let query = terms.join(' ');
+        let results = Gio.DesktopAppInfo.search(query, Lang.bind(this, this._compareResults), MAX_COLUMNS);
+        this.searchSystem.setResults(this, results);
     },
 
     getSubsearchResultSet: function(previousResults, terms) {
-        this.searchSystem.setResults(this, this._appSys.subsearch(previousResults, terms));
+        this.getInitialResultSet(terms);
     },
 
     activateResult: function(result) {
