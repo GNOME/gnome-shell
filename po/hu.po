@@ -662,7 +662,7 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
-msgstr "Munkaterületek csak az elsődlegese"
+msgstr "Munkaterületek csak az elsődlegesen"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid ""
