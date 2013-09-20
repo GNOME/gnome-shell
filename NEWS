@@ -1,3 +1,15 @@
+Clutter 1.15.96                                                      2013-09-20
+===============================================================================
+
+  • List of changes since Clutter 1.15.94
+
+    - Fix a crasher bug happening on X11
+    Some events coming from the system would result in a segmentation fault.
+
+  • List of bugs fixed since Clutter 1.15.94
+
+    #708439 - clutter-xi2: don't access the stage if we don't have one
+
 Clutter 1.15.94                                                      2013-09-19
 ===============================================================================
 
