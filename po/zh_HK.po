@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-02 19:28+0000\n"
-"PO-Revision-Date: 2013-09-04 15:06+0800\n"
+"POT-Creation-Date: 2013-09-14 18:10+0000\n"
+"PO-Revision-Date: 2013-09-20 13:43+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.5.5\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -48,6 +48,7 @@ msgid "GNOME Shell"
 msgstr "GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
+#: ../data/gnome-shell-wayland.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "視窗管理與應用程式的執行"
 
@@ -59,6 +60,10 @@ msgstr "GNOME Shell 擴充功能偏好設定"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
 msgstr "設定 GNOME Shell 擴充功能"
+
+#: ../data/gnome-shell-wayland.desktop.in.in.h:1
+msgid "GNOME Shell (wayland compositor)"
+msgstr "GNOME Shell (wayland 組合器)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -159,12 +164,10 @@ msgid ""
 msgstr "開啟活動概覽「顯示應用程式」檢視的組合鍵"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the overview"
 msgstr "開啟概覽的組合鍵"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the Activities Overview."
 msgstr "開啟「活動概覽」的組合鍵。"
 
@@ -269,7 +272,6 @@ msgid "Sign In"
 msgstr "登入"
 
 #: ../js/gdm/loginDialog.js:294
-#| msgid "Switch Session"
 msgid "Choose Session"
 msgstr "選擇作業階段"
 
@@ -312,42 +314,42 @@ msgstr "驗證錯誤"
 msgid "(or swipe finger)"
 msgstr "(或是滑過手指)"
 
-#: ../js/misc/util.js:97
+#: ../js/misc/util.js:98
 msgid "Command not found"
 msgstr "找不到指令"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:131
 msgid "Could not parse command:"
 msgstr "無法分析指令："
 
-#: ../js/misc/util.js:138
+#: ../js/misc/util.js:139
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "執行「%s」失敗："
 
-#: ../js/ui/appDisplay.js:578
+#: ../js/ui/appDisplay.js:598
 msgid "Frequently used applications will appear here"
 msgstr "經常使用的應用程式會出現在這裏"
 
-#: ../js/ui/appDisplay.js:694
+#: ../js/ui/appDisplay.js:714
 msgid "Frequent"
 msgstr "常用"
 
-#: ../js/ui/appDisplay.js:701
+#: ../js/ui/appDisplay.js:721
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:1488
+#: ../js/ui/appDisplay.js:1516
 msgid "New Window"
 msgstr "新視窗"
 
-#: ../js/ui/appDisplay.js:1491 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1519 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "自喜好中移除"
 
-#: ../js/ui/appDisplay.js:1492
+#: ../js/ui/appDisplay.js:1520
 msgid "Add to Favorites"
 msgstr "加入喜好"
 
@@ -361,7 +363,8 @@ msgstr "%s 已加入你的喜好中。"
 msgid "%s has been removed from your favorites."
 msgstr "%s 已經從你的喜好中移除。"
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:807
+#: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "設定值"
 
@@ -885,7 +888,7 @@ msgstr "檢視帳號"
 msgid "Unknown reason"
 msgstr "不明原因"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:100
 msgid "Windows"
 msgstr "視窗"
 
@@ -979,15 +982,12 @@ msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "系統會在 %d 秒後自動重新啟動。"
 
 #: ../js/ui/endSessionDialog.js:112
-#| msgid "Install Updates & Restart"
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "重新啟動並安裝更新"
 
 #: ../js/ui/endSessionDialog.js:114
 #, c-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -1027,7 +1027,7 @@ msgstr "安裝"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "是否從 extensions.gnome.org 下載並安裝「%s」？"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:334
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
 msgid "Keyboard"
 msgstr "鍵盤"
 
@@ -1107,7 +1107,7 @@ msgstr "沒有訊息"
 msgid "Message Tray"
 msgstr "訊息匣"
 
-#: ../js/ui/messageTray.js:2786
+#: ../js/ui/messageTray.js:2787
 msgid "System Information"
 msgstr "系統資訊"
 
@@ -1138,22 +1138,17 @@ msgstr "概覽"
 msgid "Type to search…"
 msgstr "輸入以搜尋…"
 
-#: ../js/ui/panel.js:516
+#: ../js/ui/panel.js:518
 msgid "Quit"
 msgstr "結束"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "概覽 "
 
-#: ../js/ui/panel.js:805
-#| msgid "Settings"
-msgid "Settings Menu"
-msgstr "設定值選單"
-
-#: ../js/ui/panel.js:892
+#: ../js/ui/panel.js:903
 msgid "Top Bar"
 msgstr "頂端列"
 
@@ -1162,7 +1157,7 @@ msgstr "頂端列"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:226
+#: ../js/ui/popupMenu.js:233
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
@@ -1190,7 +1185,7 @@ msgstr[0] "%d 個新通知"
 msgid "Lock"
 msgstr "鎖定"
 
-#: ../js/ui/screenShield.js:703
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME 需要鎖定螢幕"
 
@@ -1201,11 +1196,11 @@ msgstr "GNOME 需要鎖定螢幕"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Unable to lock"
 msgstr "無法鎖定"
 
-#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
+#: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1298
 msgid "Lock was blocked by an application"
 msgstr "鎖定被應用程式阻擋"
 
@@ -1304,7 +1299,6 @@ msgstr "藍牙設定值"
 
 #: ../js/ui/status/bluetooth.js:57
 #, c-format
-#| msgid "Connected (private)"
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d 已連線的裝置"
@@ -1353,7 +1347,6 @@ msgstr "%s 的配對確認"
 
 #: ../js/ui/status/bluetooth.js:172
 #, c-format
-#| msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr "請確認通行碼「%06d」是否和裝置上的相符。"
@@ -1384,7 +1377,7 @@ msgstr "確定"
 msgid "Brightness"
 msgstr "亮度"
 
-#: ../js/ui/status/keyboard.js:404
+#: ../js/ui/status/keyboard.js:403
 msgid "Show Keyboard Layout"
 msgstr "顯示鍵盤配置"
 
@@ -1393,7 +1386,6 @@ msgid "<unknown>"
 msgstr "<不明>"
 
 #: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
-#| msgid "Offline"
 msgid "Off"
 msgstr "關閉"
 
@@ -1438,22 +1430,18 @@ msgid "connection failed"
 msgstr "連線失敗"
 
 #: ../js/ui/status/network.js:654
-#| msgid "Network"
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi 網絡"
 
 #: ../js/ui/status/network.js:656
-#| msgid "Enable networking"
 msgid "Select a network"
 msgstr "選擇一個網絡"
 
 #: ../js/ui/status/network.js:680
-#| msgid "Network"
 msgid "No Networks"
 msgstr "沒有網絡"
 
 #: ../js/ui/status/network.js:949
-#| msgid "Network"
 msgid "Select Network"
 msgstr "選擇網絡"
 
@@ -1516,7 +1504,6 @@ msgid "Airplane Mode"
 msgstr "飛安模式"
 
 #: ../js/ui/status/rfkill.js:45
-#| msgid "Open"
 msgid "On"
 msgstr "開啟"
 
@@ -1560,11 +1547,11 @@ msgstr "以另一個使用者身分登入"
 msgid "Unlock Window"
 msgstr "解鎖視窗"
 
-#: ../js/ui/viewSelector.js:100
+#: ../js/ui/viewSelector.js:104
 msgid "Applications"
 msgstr "應用程式"
 
-#: ../js/ui/viewSelector.js:104
+#: ../js/ui/viewSelector.js:108
 msgid "Search"
 msgstr "搜尋"
 
@@ -1595,7 +1582,6 @@ msgstr "你想要保留這些顯示器設定值嗎？"
 #. to avoid ellipsizing the labels.
 #.
 #: ../js/ui/windowManager.js:75
-#| msgid "Power Settings"
 msgid "Revert Settings"
 msgstr "還原設定值"
 
@@ -1665,459 +1651,3 @@ msgstr "密碼不能為空白"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "驗證對話盒被使用者取消了"
-
-#~ msgid "Screenshots"
-#~ msgstr "螢幕擷圖"
-
-#~ msgid "Record a screencast"
-#~ msgstr "錄製螢幕廣播"
-
-#~ msgid ""
-#~ "Internally used to store the last IM presence explicitly set by the user. "
-#~ "The value here is from the TpConnectionPresenceType enumeration."
-#~ msgstr ""
-#~ "內部由使用者明確設定用來儲存最新 IM 上線狀況。這裡的數值是來自 "
-#~ "TpConnectionPresenceType 列舉。"
-
-#~ msgid ""
-#~ "Internally used to store the last session presence status for the user. "
-#~ "The value here is from the GsmPresenceStatus enumeration."
-#~ msgstr ""
-#~ "內部用來儲存使用者最新作業階段上線狀況。這裡的數值是來自 "
-#~ "GsmPresenceStatus 列舉。"
-
-#~ msgid "Keybinding to toggle the screen recorder"
-#~ msgstr "切換螢幕錄影機的組合鍵"
-
-#~ msgid "Keybinding to start/stop the builtin screen recorder."
-#~ msgstr "啟動/停止內建螢幕錄影機的組合鍵。"
-
-#~ msgid "Framerate used for recording screencasts."
-#~ msgstr "錄製畫面廣播的框架率。"
-
-#~ msgid ""
-#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
-#~ "screencast recorder in frames-per-second."
-#~ msgstr ""
-#~ "由 GNOME Shell 的畫面廣播錄製程式所錄製成果的框架率，以 frames-per-second "
-#~ "計。"
-
-#~ msgid "The gstreamer pipeline used to encode the screencast"
-#~ msgstr "用來編碼畫面廣播的 gstreamer 管線"
-
-#~ msgid ""
-#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#~ "pad where the recorded video is recorded. It will normally have a "
-#~ "unconnected source pad; output from that pad will be written into the "
-#~ "output file. However the pipeline can also take care of its own output - "
-#~ "this might be used to send the output to an icecast server via shout2send "
-#~ "or similar. When unset or set to an empty value, the default pipeline "
-#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
-#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
-#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
-#~ "optimal thread count on the system."
-#~ msgstr ""
-#~ "設定用來錄製的 GStreamer 管線。它依據 gst-launch 使用的語法。管線應該要有"
-#~ "未連接的出口(sink pad)，提供錄製視訊之用。它通常會有未連接的入口(source "
-#~ "pad)；從出口輸出的資訊就寫入輸出檔案。然而管線本身也會處理它本身的輸出 - "
-#~ "習慣上是透過 shout2send 之類將輸出傳送到 icecast 伺服器。當取消設定或設定"
-#~ "為空值時，就會使用預設的管線。這個值目前為 'vp8enc min_quantizer=13 "
-#~ "max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! "
-#~ "webmmux' 即使用 VP8 codec 錄製 WEBM。%T 是在系統的最佳化執行緒計數猜測時使"
-#~ "用的佔位符。"
-
-#~ msgid "File extension used for storing the screencast"
-#~ msgstr "用來儲存畫面廣播的延伸檔名"
-
-#~ msgid ""
-#~ "The filename for recorded screencasts will be a unique filename based on "
-#~ "the current date, and use this extension. It should be changed when "
-#~ "recording to a different container format."
-#~ msgstr ""
-#~ "錄製好的畫面廣播檔案名稱會以目前的時刻作為獨特的檔名，並使用這個延伸檔名。"
-#~ "當錄製為不同的容器格式時應該做適當變更。"
-
-#~ msgid "Session…"
-#~ msgstr "作業階段…"
-
-#~ msgid "Power"
-#~ msgstr "電源"
-
-#~ msgid "Restart"
-#~ msgstr "重新啟動"
-
-#~ msgid "Screencast from %d %t"
-#~ msgstr "Screencast from %d %t"
-
-#~ msgid "Click Log Out to quit these applications and log out of the system."
-#~ msgstr "點選登出以結束這些應用程式並登出系統。"
-
-#~ msgid "Logging out of the system."
-#~ msgstr "登出系統。"
-
-#~ msgid "Click Power Off to quit these applications and power off the system."
-#~ msgstr "點選關閉電源以結束這些應用程式並關閉系統電源。"
-
-#~ msgid "Powering off the system."
-#~ msgstr "關閉系統的電源。"
-
-#~ msgid "Click Restart to quit these applications and restart the system."
-#~ msgstr "點選重新啟動以結束這些應用程式並將系統重新啟動。"
-
-#~ msgid "Restarting the system."
-#~ msgstr "重新啟動系統。"
-
-#~ msgid "Universal Access Settings"
-#~ msgstr "無障礙功能設定值"
-
-#~ msgid "Visibility"
-#~ msgstr "顯示狀態"
-
-#~ msgid "Send Files to Device…"
-#~ msgstr "傳送檔案到裝置…"
-
-#~ msgid "Set Up a New Device…"
-#~ msgstr "設定新的裝置…"
-
-#~ msgid "hardware disabled"
-#~ msgstr "硬體已停用"
-
-#~ msgid "Connection"
-#~ msgstr "連線"
-
-#~ msgid "Send Files…"
-#~ msgstr "傳送檔案…"
-
-#~ msgid "Keyboard Settings"
-#~ msgstr "鍵盤設定值"
-
-#~ msgid "Mouse Settings"
-#~ msgstr "滑鼠設定值"
-
-#~ msgid "Sound Settings"
-#~ msgstr "音效設定值"
-
-#~ msgid "Region & Language Settings"
-#~ msgstr "地區和語言設定值"
-
-#~ msgid "Volume, network, battery"
-#~ msgstr "儲存區、網路、電池"
-
-#~ msgid "Wi-Fi"
-#~ msgstr "Wi-Fi"
-
-#~ msgid "disabled"
-#~ msgstr "已停用"
-
-#~ msgid "cable unplugged"
-#~ msgstr "纜線已拔除"
-
-#~ msgid "More…"
-#~ msgstr "更多…"
-
-#~ msgid "Wired"
-#~ msgstr "有線"
-
-#~ msgid "Mobile broadband"
-#~ msgstr "行動寬頻"
-
-#~ msgid "Networking is disabled"
-#~ msgstr "網路已停用"
-
-#~ msgid "%d hour remaining"
-#~ msgid_plural "%d hours remaining"
-#~ msgstr[0] "可使用 %d 小時"
-
-#~ msgid "%d %s %d %s remaining"
-#~ msgstr "剩下 %d %s %d %s"
-
-#~ msgid "hour"
-#~ msgid_plural "hours"
-#~ msgstr[0] "小時"
-
-#~ msgid "minute"
-#~ msgid_plural "minutes"
-#~ msgstr[0] "分鐘"
-
-#~ msgid "%d minute remaining"
-#~ msgid_plural "%d minutes remaining"
-#~ msgstr[0] "剩下 %d 分鐘"
-
-#~ msgctxt "percent of battery remaining"
-#~ msgid "%d%%"
-#~ msgstr "%d%%"
-
-#~ msgid "AC Adapter"
-#~ msgstr "AC 電源"
-
-#~ msgid "Laptop Battery"
-#~ msgstr "筆記型電腦電池"
-
-#~ msgid "UPS"
-#~ msgstr "不斷電系統"
-
-#~ msgid "Monitor"
-#~ msgstr "監視器"
-
-#~ msgid "Mouse"
-#~ msgstr "滑鼠"
-
-#~ msgid "PDA"
-#~ msgstr "PDA"
-
-#~ msgid "Cell Phone"
-#~ msgstr "行動電話"
-
-#~ msgid "Media Player"
-#~ msgstr "媒體播放器"
-
-#~ msgid "Tablet"
-#~ msgstr "手寫板"
-
-#~ msgid "Computer"
-#~ msgstr "電腦"
-
-#~ msgctxt "device"
-#~ msgid "Unknown"
-#~ msgstr "不明"
-
-#~ msgid "Available"
-#~ msgstr "有空"
-
-#~ msgid "Busy"
-#~ msgstr "忙碌"
-
-#~ msgid "Invisible"
-#~ msgstr "隱藏"
-
-#~ msgid "Away"
-#~ msgstr "離開"
-
-#~ msgid "Idle"
-#~ msgstr "閒置"
-
-#~ msgid "Notifications"
-#~ msgstr "通知"
-
-#~ msgid "Your chat status will be set to busy"
-#~ msgstr "您的聊天狀態會設為忙碌"
-
-#~ msgid ""
-#~ "Notifications are now disabled, including chat messages. Your online "
-#~ "status has been adjusted to let others know that you might not see their "
-#~ "messages."
-#~ msgstr ""
-#~ "通知現在已被停用，包含聊天訊息。您的上線狀態也調整為讓其他人知道您沒時間看"
-#~ "他們的訊息。"
-
-#~ msgid "Shutting down might cause them to lose unsaved work."
-#~ msgstr "關機可能使它們失去未儲存的工作。"
-
-#~ msgid "Whether to collect stats about applications usage"
-#~ msgstr "是否收集關於應用程式使用率的狀態"
-
-#~ msgid ""
-#~ "The shell normally monitors active applications in order to present the "
-#~ "most used ones (e.g. in launchers). While this data will be kept private, "
-#~ "you may want to disable this for privacy reasons. Please note that doing "
-#~ "so won't remove already saved data."
-#~ msgstr ""
-#~ "這個 shell 通常會監控使用中的應用程式以便能顯示出最常使用的（例如，在程式"
-#~ "執行器中）。雖然這個資料會保持隱密，但是您可能會基於隱私的理由想要停用這個"
-#~ "功能。請注意這麼做並不會移除已儲存的資料。"
-
-#~ msgid "Auto Ethernet"
-#~ msgstr "自動使用乙太網路"
-
-#~ msgid "Auto broadband"
-#~ msgstr "自動使用行動寬頻"
-
-#~ msgid "Auto dial-up"
-#~ msgstr "自動使用撥接"
-
-#~ msgid "Auto %s"
-#~ msgstr "自動使用 %s"
-
-#~ msgid "Auto bluetooth"
-#~ msgstr "自動使用藍牙"
-
-#~ msgid "Auto wireless"
-#~ msgstr "自動使用無線網路"
-
-#~ msgctxt "title"
-#~ msgid "Sign In"
-#~ msgstr "登入"
-
-#~ msgid "tray"
-#~ msgstr "系統匣"
-
-#~ msgid "Clear"
-#~ msgstr "清除"
-
-#~ msgid "More..."
-#~ msgstr "更多…"
-
-#~ msgctxt "event list time"
-#~ msgid "%H:%M"
-#~ msgstr "%H:%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l:%M %p"
-#~ msgstr "%p %l:%M"
-
-#~ msgid "United Kingdom"
-#~ msgstr "英國"
-
-#~ msgid "Default"
-#~ msgstr "預設值"
-
-#~ msgid "APPLICATIONS"
-#~ msgstr "程式集"
-
-#~ msgid "SETTINGS"
-#~ msgstr "設定值"
-
-#~ msgid "Subscription request"
-#~ msgstr "訂閱要求"
-
-#~ msgid "Connection error"
-#~ msgstr "連線錯誤"
-
-#~ msgid "Sent at <b>%X</b> on <b>%A</b>"
-#~ msgstr "傳送於 <b>%X</b> <b>%A</b>"
-
-#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-#~ msgstr "傳送於 %Y年<b>%m月%d日</b><b>%A</b>"
-
-#~ msgid "Connection to %s failed"
-#~ msgstr "連線到 %s 失敗"
-
-#~ msgid "Reconnect"
-#~ msgstr "重新連接"
-
-#~ msgid "Browse Files..."
-#~ msgstr "瀏覽檔案…"
-
-#~ msgid "Error browsing device"
-#~ msgstr "瀏覽裝置時發生錯誤"
-
-#~ msgid "The requested device cannot be browsed, error is '%s'"
-#~ msgstr "要求的裝置是不能瀏覽的，錯誤為「%s」"
-
-#~ msgid "Wireless"
-#~ msgstr "無線"
-
-#~ msgid "VPN Connections"
-#~ msgstr "VPN 連線"
-
-#~ msgid "Unavailable"
-#~ msgstr "沒空"
-
-#~ msgid "System Settings"
-#~ msgstr "系統設定值"
-
-#~ msgid "Your favorite Easter Egg"
-#~ msgstr "您喜好的復活節彩蛋"
-
-#~ msgid "Configuration problem: Could not connect to GDM"
-#~ msgstr "組態問題：無法連線到 GDM"
-
-#~ msgid "Could not connect to GDM. Screen locking was automatically disabled."
-#~ msgstr "無法連線到 GDM。螢幕鎖定已經自動停用。"
-
-#~ msgid "disabled OpenSearch providers"
-#~ msgstr "已停用 OpenSearch 提供者"
-
-#~ msgid "Failed to unmount '%s'"
-#~ msgstr "無法卸載「%s」"
-
-#~ msgid "Retry"
-#~ msgstr "重試"
-
-#~ msgid "PLACES & DEVICES"
-#~ msgstr "位置 & 裝置"
-
-#~ msgid "Home"
-#~ msgstr "家目錄"
-
-#~ msgid "%1$s: %2$s"
-#~ msgstr "%1$s：%2$s"
-
-#~ msgid "Connect to..."
-#~ msgstr "連接到…"
-
-#~ msgid "Passphrase"
-#~ msgstr "密語"
-
-#~ msgid "If true, display date in the clock, in addition to time."
-#~ msgstr "如設定為「true」，除了在時鐘內顯示日期外還顯示時刻。"
-
-#~ msgid "If true, display seconds in time."
-#~ msgstr "如設定為「true」，在時刻中顯示秒數。"
-
-#~ msgid "Show date in clock"
-#~ msgstr "在時鐘內顯示日期"
-
-#~ msgid "Show time with seconds"
-#~ msgstr "在時刻中顯示秒數"
-
-#~ msgid "CONTACTS"
-#~ msgstr "連絡人"
-
-#~ msgid "%a %b %e, %R:%S"
-#~ msgstr "%m月%e日(%a), %R:%S"
-
-#~ msgid "%a %b %e, %R"
-#~ msgstr "%m月%e日(%a), %R"
-
-#~ msgid "%a %R:%S"
-#~ msgstr "(%a) %R:%S"
-
-#~ msgid "%a %R"
-#~ msgstr "(%a) %R"
-
-#~ msgid "%a %b %e, %l:%M:%S %p"
-#~ msgstr "%m月%e日(%a), %p %l:%M:%S"
-
-#~ msgid "%a %b %e, %l:%M %p"
-#~ msgstr "%m月%e日(%a), %p %l:%M"
-
-#~ msgid "%a %l:%M:%S %p"
-#~ msgstr "(%a) %p %l:%M:%S"
-
-#~ msgid "%a %l:%M %p"
-#~ msgstr "(%a) %p %l:%M"
-
-#~ msgid "Wrong password, please try again"
-#~ msgstr "密碼錯誤，請再試一次"
-
-#~ msgid "%s is online."
-#~ msgstr "%s 現在上線。"
-
-#~ msgid "%s is offline."
-#~ msgstr "%s 現在離線。"
-
-#~ msgid "%s is away."
-#~ msgstr "%s 已離開。"
-
-#~ msgid "%s is busy."
-#~ msgstr "%s 正忙碌。"
-
-#~ msgid "Hidden"
-#~ msgstr "隱藏"
-
-#~ msgid "Power Off..."
-#~ msgstr "關閉電源…"
-
-#~ msgid "Online Accounts"
-#~ msgstr "線上帳號"
-
-#~ msgid "Lock Screen"
-#~ msgstr "鎖定畫面"
-
-#~ msgid "Log Out..."
-#~ msgstr "登出…"
-
-#~ msgid "RECENT ITEMS"
-#~ msgstr "最近使用項目"
