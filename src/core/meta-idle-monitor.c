@@ -293,6 +293,7 @@ idle_monitor_watch_free (MetaIdleMonitorWatch *watch)
     return;
 
   monitor = watch->monitor;
+  g_object_ref (monitor);
 
   if (watch->idle_source_id)
     {
@@ -313,6 +314,7 @@ idle_monitor_watch_free (MetaIdleMonitorWatch *watch)
   if (watch->timeout_source != NULL)
     g_source_destroy (watch->timeout_source);
 
+  g_object_unref (monitor);
   g_slice_free (MetaIdleMonitorWatch, watch);
 }
 
