@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-20 17:29+0200\n"
-"PO-Revision-Date: 2013-09-20 17:30+0200\n"
+"PO-Revision-Date: 2013-09-20 17:44+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -699,22 +699,22 @@ msgstr "Wycisz"
 #. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:942
 msgid "<b>Yesterday</b>, <b>%H:%M</b>"
-msgstr "<b>Wczoraj</b> o <b>%H\\u2236%M</b>"
+msgstr "<b>Wczoraj</b> o <b>%H∶%M</b>"
 
 #. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30*/
 #: ../js/ui/components/telepathyClient.js:948
 msgid "<b>%A</b>, <b>%H:%M</b>"
-msgstr "<b>%A</b> o <b>%H\\u2236%M</b>"
+msgstr "<b>%A</b> o <b>%H∶%M</b>"
 
 #. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:953
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-msgstr "<b>%d</b> <b>%B</b>, <b>%H\\u2236%M</b>"
+msgstr "<b>%d</b> <b>%B</b>, <b>%H∶%M</b>"
 
 #. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:957
 msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-msgstr "<b>%d</b> <b>%B</b> <b>%Y</b>, <b>%H\\u2236%M</b> "
+msgstr "<b>%d</b> <b>%B</b> <b>%Y</b>, <b>%H∶%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
