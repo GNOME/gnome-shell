@@ -774,7 +774,10 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
   event->any.stage = stage;
 
-  window_scale = stage_x11->scale_factor;
+  if (stage_x11 != NULL)
+    window_scale = stage_x11->scale_factor;
+  else
+    window_scale = 1;
 
   switch (xi_event->evtype)
     {
