@@ -287,6 +287,7 @@ idle_monitor_watch_free (MetaIdleMonitorWatch *watch)
     return;
 
   monitor = watch->monitor;
+  g_object_ref (monitor);
 
   if (watch->idle_source_id)
     {
@@ -304,6 +305,7 @@ idle_monitor_watch_free (MetaIdleMonitorWatch *watch)
       g_hash_table_remove (monitor->alarms, (gpointer) watch->xalarm);
     }
 
+  g_object_unref (monitor);
   g_slice_free (MetaIdleMonitorWatch, watch);
 }
 
