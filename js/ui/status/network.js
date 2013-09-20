@@ -547,18 +547,24 @@ const NMWirelessDialogItem = new Lang.Class({
 
         this._signalIcon = new St.Icon({ style_class: 'nm-dialog-icon' });
         this._icons.add_actor(this._signalIcon);
+
+        this._sync();
+    },
+
+    _sync: function() {
+        this._signalIcon.icon_name = this._getSignalIcon();
     },
 
     updateBestAP: function(ap) {
         this._ap = ap;
-        this._signalIcon.icon_name = this._getIcon();
+        this._sync();
     },
 
     setActive: function(isActive) {
         this._selectedIcon.opacity = isActive ? 255 : 0;
     },
 
-    _getIcon: function() {
+    _getSignalIcon: function() {
         if (this._ap.mode == NM80211Mode.ADHOC)
             return 'network-workgroup-symbolic';
         else
