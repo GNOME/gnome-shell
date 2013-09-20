@@ -77,7 +77,7 @@ MUTTER_PC_MODULES="
    cairo >= 1.10.0
    gsettings-desktop-schemas >= 3.7.3
    xcomposite >= 0.2 xfixes xrender xdamage xi >= 1.6.0
-   $CLUTTER_PACKAGE >= 1.14.3
+   $CLUTTER_PACKAGE >= 1.15.94
    cogl-1.0 >= 1.13.3
    upower-glib > 0.9.11
    gnome-desktop-3.0
@@ -220,7 +220,7 @@ AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
 AC_SUBST([WAYLAND_SCANNER])
 AC_SUBST(XWAYLAND_PATH)
 
-MUTTER_PC_MODULES="$MUTTER_PC_MODULES wayland-server libdrm"
+MUTTER_PC_MODULES="$MUTTER_PC_MODULES clutter-wayland-1.0 clutter-wayland-compositor-1.0 clutter-egl-1.0 wayland-server libdrm"
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
 
 PKG_CHECK_EXISTS([xi >= 1.6.99.1],
