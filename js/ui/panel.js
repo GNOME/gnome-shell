@@ -611,6 +611,7 @@ const ActivitiesButton = new Lang.Class({
 
     _onButtonRelease: function() {
         Main.overview.toggle();
+        this.menu.close();
     },
 
     _onKeyRelease: function(actor, event) {
