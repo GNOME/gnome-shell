@@ -1043,7 +1043,7 @@ msgstr[1] "De computer zal opnieuw opstarten en updates installeren over %d seco
 #: ../js/ui/endSessionDialog.js:119
 msgctxt "button"
 msgid "Restart & Install"
-msgstr "Herstarten & Installeren"
+msgstr "Herstarten & installeren"
 
 #: ../js/ui/endSessionDialog.js:271
 msgid "Some applications are busy or have unsaved work."
@@ -1570,7 +1570,7 @@ msgstr "Oriëntatievergrendeling"
 
 #: ../js/ui/status/system.js:337
 msgid "Suspend"
-msgstr "Slaapstand"
+msgstr "Pauzestand"
 
 #: ../js/ui/status/system.js:340
 msgid "Power Off"
