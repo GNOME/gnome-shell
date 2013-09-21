@@ -3,28 +3,28 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Tiffany Antopolski <tiffany.antopolski@gmail.com>, 2011, 2012.
 # Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2011, 2012.
-# Ryan Lortie <desrt@desrt.ca>, 2013.
+# Ryan LORTIE <desrt@desrt.ca>, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-15 16:04-0400\n"
+"POT-Creation-Date: 2013-09-17 14:12+0000\n"
 "PO-Revision-Date: 2013-09-15 16:03-0400\n"
-"Last-Translator: Ryan Lortie <desrt@desrt.ca>\n"
+"Last-Translator: Ryan LORTIE <desrt@desrt.ca>\n"
 "Language-Team: Esperanto <gnome-l10n-eo@lists.launchpad.net>\n"
+"Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: eo\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
-msgstr "sistemo"
+msgstr "Sistemo"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
 msgid "Show the message tray"
@@ -91,7 +91,7 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
-"GNOME-ŝelaj etendoj havas 'uuid' atributon; ĉi ŝlosilo listigas etendojn kiu "
+"GNOME-ŝelaj etendoj havas 'uuid'-atributon; ĉi ŝlosilo listigas etendojn kiu "
 "devus ŝargitiĝi. Iu ajn etendo kiu volas ŝargiti devas esti en ĉi listo. Vi "
 "povas ankaŭ manipuli ĉi liston per la 'EnableExtension' kaj "
 "'DisableExtension' D-Bus metodoj sur 'org.gnome.Shell'."
@@ -131,14 +131,14 @@ msgstr "Historio de la dialogo de 'looking glass'"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "Always show the 'Log out' menuitem in the user menu."
-msgstr "Ĉiam montri la 'elsaluto' menuero en la uzula menuo."
+msgstr "Ĉiam montri la 'Elsaluti'-menuero en la uzanto-menuo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
 msgstr ""
-"Ĉi ŝlosilo atutas la aŭtomata kaŝo de la 'Elsaluti' menuero por sola-uzanto, "
+"Ĉi ŝlosilo atutas la aŭtomata kaŝo de la 'Elsaluti'-menuero por sola-uzanto, "
 "sola-seanco situacioj."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
@@ -176,7 +176,7 @@ msgstr "Klavkombino por malfermi la aplikaĵo-menuon."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the \"Show Applications\" view"
-msgstr "Klavkombino por malfermi la \"Montri aplikaĵoj\" vidon"
+msgstr "Klavkombino por malfermi la \"Montri aplikaĵoj\"-vidon"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid ""
@@ -255,7 +255,8 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Aktivigi kahelan aranĝon kiam demetante fenestrojn sur ekranaj borderoj"
+msgstr ""
+"Aktivigi kahelan aranĝon kiam demetante fenestrojn sur ekranaj borderoj"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "Workspaces are managed dynamically"
@@ -331,7 +332,7 @@ msgstr "Ensalutfenestro"
 
 #: ../js/gdm/util.js:306
 msgid "Authentication error"
-msgstr "Aŭtentigo eraro"
+msgstr "Aŭtentigo-eraro"
 
 #. We don't show fingerprint messages directly since it's
 #. not the main auth service. Instead we use the messages
@@ -357,27 +358,27 @@ msgstr "Ne eblis analizi komandon:"
 msgid "Execution of '%s' failed:"
 msgstr "Plenumo de \"%s\" malsukcesis:"
 
-#: ../js/ui/appDisplay.js:598
+#: ../js/ui/appDisplay.js:596
 msgid "Frequently used applications will appear here"
 msgstr "Ofte uzitaj aplikaĵoj aperos ĉi tie"
 
-#: ../js/ui/appDisplay.js:714
+#: ../js/ui/appDisplay.js:712
 msgid "Frequent"
-msgstr "Ofta"
+msgstr "Ofte"
 
-#: ../js/ui/appDisplay.js:721
+#: ../js/ui/appDisplay.js:719
 msgid "All"
 msgstr "Ĉiuj"
 
-#: ../js/ui/appDisplay.js:1516
+#: ../js/ui/appDisplay.js:1514
 msgid "New Window"
 msgstr "Nova fenestro"
 
-#: ../js/ui/appDisplay.js:1519 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1517 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Forigi de la preferataj aplikaĵoj"
 
-#: ../js/ui/appDisplay.js:1520
+#: ../js/ui/appDisplay.js:1518
 msgid "Add to Favorites"
 msgstr "Aldoni al la preferataj aplikaĵoj"
 
@@ -518,7 +519,7 @@ msgstr "sa"
 
 #: ../js/ui/calendar.js:447
 msgid "Previous month"
-msgstr "Lasta monato"
+msgstr "Antaŭa monato"
 
 #: ../js/ui/calendar.js:457
 msgid "Next month"
@@ -607,15 +608,15 @@ msgstr "Ŝlosilo: "
 
 #: ../js/ui/components/networkAgent.js:261
 msgid "Identity: "
-msgstr "Idento:"
+msgstr "Idento: "
 
 #: ../js/ui/components/networkAgent.js:263
 msgid "Private key password: "
-msgstr "Pasvorto por privata ŝlosilo:"
+msgstr "Pasvorto por privata ŝlosilo: "
 
 #: ../js/ui/components/networkAgent.js:275
 msgid "Service: "
-msgstr "Servo:"
+msgstr "Servo: "
 
 #: ../js/ui/components/networkAgent.js:304
 msgid "Authentication required by wireless network"
@@ -942,7 +943,7 @@ msgstr "Malfermi kalendaron"
 
 #: ../js/ui/dateMenu.js:90
 msgid "Open Clocks"
-msgstr "Malfermi "
+msgstr "Malfermi horaron"
 
 #: ../js/ui/dateMenu.js:97
 msgid "Date & Time Settings"
@@ -1022,7 +1023,7 @@ msgstr[1] "La sistemo aŭtomate restartos post %d sekundoj."
 #: ../js/ui/endSessionDialog.js:112
 msgctxt "title"
 msgid "Restart & Install Updates"
-msgstr "Restarti & instali ĝisdatigon"
+msgstr "Restarti & instali ĝisdatigojn"
 
 #: ../js/ui/endSessionDialog.js:114
 #, c-format
@@ -1155,7 +1156,7 @@ msgstr "Sisteminformoj"
 #: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:396
 msgctxt "program"
 msgid "Unknown"
-msgstr "Nekonata"
+msgstr "Nekonate"
 
 #: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:152
 #, c-format
@@ -1241,7 +1242,7 @@ msgstr "GNOME bezonas ŝlosi la ekranon"
 #. screen, where we're not affected by grabs
 #: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Unable to lock"
-msgstr "Neebla ŝlosi"
+msgstr "Ne eblas ŝlosi"
 
 #: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1298
 msgid "Lock was blocked by an application"
@@ -1249,7 +1250,7 @@ msgstr "Ŝloso estis blokita de aplikaĵo"
 
 #: ../js/ui/searchDisplay.js:447
 msgid "Searching…"
-msgstr "Serĉanta…"
+msgstr "Serĉante…"
 
 #: ../js/ui/searchDisplay.js:491
 msgid "No results."
@@ -1432,7 +1433,7 @@ msgstr "<nekonata>"
 
 #: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
 msgid "Off"
-msgstr "Malaktiva"
+msgstr "Malaktive"
 
 #: ../js/ui/status/network.js:276 ../js/ui/status/network.js:955
 #: ../js/ui/status/rfkill.js:49
@@ -1447,11 +1448,11 @@ msgstr "neadministrata"
 
 #: ../js/ui/status/network.js:366
 msgid "disconnecting..."
-msgstr "Malkonektanta..."
+msgstr "malkonektante..."
 
 #: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1100
 msgid "connecting..."
-msgstr "konektanta..."
+msgstr "konektante..."
 
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1103
@@ -1527,7 +1528,7 @@ msgstr "Plene ŝargita"
 #. state is one of PENDING_CHARGING, PENDING_DISCHARGING
 #: ../js/ui/status/power.js:69 ../js/ui/status/power.js:86
 msgid "Estimating…"
-msgstr "Taksanta…"
+msgstr "Taksante…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:77
@@ -1550,7 +1551,7 @@ msgstr "Aviadila reĝimo"
 
 #: ../js/ui/status/rfkill.js:45
 msgid "On"
-msgstr "Aktiva"
+msgstr "Aktive"
 
 #: ../js/ui/status/system.js:305
 msgid "Switch User"
@@ -1590,7 +1591,7 @@ msgstr "Ensaluti kiel alia uzanto"
 
 #: ../js/ui/unlockDialog.js:84
 msgid "Unlock Window"
-msgstr "Malŝlosa fenestro"
+msgstr "Malŝlosi fenestron"
 
 #: ../js/ui/viewSelector.js:104
 msgid "Applications"
