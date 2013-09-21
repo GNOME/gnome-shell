@@ -31,6 +31,7 @@ const Indicator = new Lang.Class({
             this._applet.killswitch_state = GnomeBluetooth.KillswitchState.SOFT_BLOCKED;
         }));
         this._item.menu.addSettingsAction(_("Bluetooth Settings"), 'gnome-bluetooth-panel.desktop');
+        this.menu.addMenuItem(this._item);
 
         this._applet = new GnomeBluetoothApplet.Applet();
         this._applet.connect('devices-changed', Lang.bind(this, this._sync));
