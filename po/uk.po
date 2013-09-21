@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-04 18:06+0300\n"
-"PO-Revision-Date: 2013-09-04 18:44+0300\n"
+"POT-Creation-Date: 2013-09-21 11:40+0300\n"
+"PO-Revision-Date: 2013-09-21 11:41+0300\n"
 "Last-Translator: Daniel Korostil <ted.korostiled@gmail.com>\n"
 "Language-Team: linux.org.ua\n"
 "Language: uk\n"
@@ -51,6 +51,7 @@ msgid "GNOME Shell"
 msgstr "GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
+#: ../data/gnome-shell-wayland.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Керування вікнами та запуск програм"
 
@@ -61,6 +62,10 @@ msgstr "Параметри розширень GNOME Shell"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
 msgstr "Налаштувати розширення GNOME Shell"
+
+#: ../data/gnome-shell-wayland.desktop.in.in.h:1
+msgid "GNOME Shell (wayland compositor)"
+msgstr "Оболонка GNOME (поверх wayland)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -262,7 +267,7 @@ msgstr "Робочий простір лише на основному моні�
 msgid "Select an extension to configure using the combobox above."
 msgstr "Вибрати розширення для налаштування через список вище."
 
-#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
+#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:686
@@ -296,8 +301,8 @@ msgstr "Немає в переліку?"
 msgid "(e.g., user or %s)"
 msgstr "(наприклад, користувач або %s)"
 
-#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:255
-#: ../js/ui/components/networkAgent.js:273
+#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:259
+#: ../js/ui/components/networkAgent.js:277
 msgid "Username: "
 msgstr "Користувач:"
 
@@ -313,40 +318,40 @@ msgstr "Помилка розпізнавання"
 msgid "(or swipe finger)"
 msgstr "(або проведіть пальцем)"
 
-#: ../js/misc/util.js:97
+#: ../js/misc/util.js:98
 msgid "Command not found"
 msgstr "Команди не знайдено"
 
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:131
 msgid "Could not parse command:"
 msgstr "Неможливо розібрати команду:"
 
-#: ../js/misc/util.js:138
+#: ../js/misc/util.js:139
 #, javascript-format
 msgid "Execution of '%s' failed:"
 msgstr "Не вдалось виконати «%s»:"
 
-#: ../js/ui/appDisplay.js:580
+#: ../js/ui/appDisplay.js:596
 msgid "Frequently used applications will appear here"
 msgstr "Часто використовувані програми будуть з'являтись тут"
 
-#: ../js/ui/appDisplay.js:696
+#: ../js/ui/appDisplay.js:712
 msgid "Frequent"
 msgstr "Частовживане"
 
-#: ../js/ui/appDisplay.js:703
+#: ../js/ui/appDisplay.js:719
 msgid "All"
 msgstr "Усе"
 
-#: ../js/ui/appDisplay.js:1490
+#: ../js/ui/appDisplay.js:1514
 msgid "New Window"
 msgstr "Нове вікно"
 
-#: ../js/ui/appDisplay.js:1493 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1517 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Вилучити з улюбленого"
 
-#: ../js/ui/appDisplay.js:1494
+#: ../js/ui/appDisplay.js:1518
 msgid "Add to Favorites"
 msgstr "Додати до улюбленого"
 
@@ -360,7 +365,8 @@ msgstr "%s додано до улюбленого."
 msgid "%s has been removed from your favorites."
 msgstr "%s вилучено з улюбленого."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:807
+#: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Параметри"
 
@@ -550,83 +556,83 @@ msgstr "Відкрити через %s"
 msgid "Eject"
 msgstr "Витягнути"
 
-#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Пароль:"
 
-#: ../js/ui/components/keyring.js:107
+#: ../js/ui/components/keyring.js:110
 msgid "Type again:"
 msgstr "Введіть знову:"
 
-#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
 #: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
 msgid "Connect"
 msgstr "З'єднатись"
 
-#: ../js/ui/components/networkAgent.js:218
-#: ../js/ui/components/networkAgent.js:230
-#: ../js/ui/components/networkAgent.js:257
-#: ../js/ui/components/networkAgent.js:277
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/ui/components/networkAgent.js:222
+#: ../js/ui/components/networkAgent.js:234
+#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:281
+#: ../js/ui/components/networkAgent.js:291
 msgid "Password: "
 msgstr "Пароль:"
 
-#: ../js/ui/components/networkAgent.js:223
+#: ../js/ui/components/networkAgent.js:227
 msgid "Key: "
 msgstr "Ключ:"
 
-#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:265
 msgid "Identity: "
 msgstr "Тотожність"
 
-#: ../js/ui/components/networkAgent.js:263
+#: ../js/ui/components/networkAgent.js:267
 msgid "Private key password: "
 msgstr "Пароль закритого ключа:"
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:279
 msgid "Service: "
 msgstr "Служба:"
 
-#: ../js/ui/components/networkAgent.js:304
+#: ../js/ui/components/networkAgent.js:308
 msgid "Authentication required by wireless network"
 msgstr "Потрібна аутентифікація для радіомережі"
 
-#: ../js/ui/components/networkAgent.js:305
+#: ../js/ui/components/networkAgent.js:309
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "'%s'."
 msgstr "Потрібно паролі або зашифровані ключі для доступу до радіомережі «%s»."
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:313
 msgid "Wired 802.1X authentication"
 msgstr "Дротова аутентифікація 802.1X"
 
-#: ../js/ui/components/networkAgent.js:311
+#: ../js/ui/components/networkAgent.js:315
 msgid "Network name: "
 msgstr "Назва мережні: "
 
-#: ../js/ui/components/networkAgent.js:316
+#: ../js/ui/components/networkAgent.js:320
 msgid "DSL authentication"
 msgstr "Аутентифікація DSL"
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:327
 msgid "PIN code required"
 msgstr "Потрібен код PIN"
 
-#: ../js/ui/components/networkAgent.js:324
+#: ../js/ui/components/networkAgent.js:328
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Потрібен код PIN для мобільних широкосмугових пристроїв"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:329
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:331
+#: ../js/ui/components/networkAgent.js:335
 msgid "Mobile broadband network password"
 msgstr "пароль до мобільної широкосмугової радіомережі"
 
-#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:336
 #, javascript-format
 msgid "A password is required to connect to '%s'."
 msgstr "Пароль потрібен для з'єднання з «%s»."
@@ -882,7 +888,7 @@ msgstr "Переглянути обліковий запис"
 msgid "Unknown reason"
 msgstr "Невідома причина"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:100
 msgid "Windows"
 msgstr "Вікна"
 
@@ -992,11 +998,9 @@ msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] ""
-"Система автоматично перезапуститься та встановить оновлення через %d "
-"секунду."
+"Система автоматично перезапуститься та встановить оновлення через %d секунду."
 msgstr[1] ""
-"Система автоматично перезапуститься та встановить оновлення через %d "
-"секунди."
+"Система автоматично перезапуститься та встановить оновлення через %d секунди."
 msgstr[2] ""
 "Система автоматично перезапуститься та встановить оновлення через %d секунд."
 
@@ -1114,7 +1118,7 @@ msgstr "Немає повідомлень"
 msgid "Message Tray"
 msgstr "Лоток повідомлень"
 
-#: ../js/ui/messageTray.js:2786
+#: ../js/ui/messageTray.js:2787
 msgid "System Information"
 msgstr "Інформація про систему"
 
@@ -1147,25 +1151,21 @@ msgstr "Огляд"
 msgid "Type to search…"
 msgstr "Введіть для пошуку…"
 
-#: ../js/ui/panel.js:516
+#: ../js/ui/panel.js:518
 msgid "Quit"
 msgstr "Вийти"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "Діяльність"
 
-#: ../js/ui/panel.js:805
-msgid "Settings Menu"
-msgstr "Меню параметрів"
-
-#: ../js/ui/panel.js:901
+#: ../js/ui/panel.js:903
 msgid "Top Bar"
 msgstr "Верхня панель"
 
-#: ../js/ui/popupMenu.js:226
+#: ../js/ui/popupMenu.js:233
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1195,15 +1195,15 @@ msgstr[2] "%d нових сповіщень"
 msgid "Lock"
 msgstr "Заблокувати"
 
-#: ../js/ui/screenShield.js:703
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME потребує заблокувати екран"
 
-#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Unable to lock"
 msgstr "Неможливо заблокувати"
 
-#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
+#: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1298
 msgid "Lock was blocked by an application"
 msgstr "Блокування заборонено програмою"
 
@@ -1452,15 +1452,15 @@ msgstr "Увімкнути"
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1306
+#: ../js/ui/status/network.js:1307
 msgid "Network Manager"
 msgstr "Керування мережею"
 
-#: ../js/ui/status/network.js:1345
+#: ../js/ui/status/network.js:1346
 msgid "Connection failed"
 msgstr "Не вдалось з'єднатись"
 
-#: ../js/ui/status/network.js:1346
+#: ../js/ui/status/network.js:1347
 msgid "Activation of network connection failed"
 msgstr "Не вдалось увімкнути мережеве з'єднання"
 
@@ -1538,11 +1538,11 @@ msgstr "Увійти як інший користувач"
 msgid "Unlock Window"
 msgstr "Розблокувати вікно"
 
-#: ../js/ui/viewSelector.js:100
+#: ../js/ui/viewSelector.js:104
 msgid "Applications"
 msgstr "Програми"
 
-#: ../js/ui/viewSelector.js:104
+#: ../js/ui/viewSelector.js:108
 msgid "Search"
 msgstr "Пошук"
 
@@ -1648,6 +1648,9 @@ msgstr "Пароль не може бути порожнім"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Вікно авторизації відхилено користувачем"
+
+#~ msgid "Settings Menu"
+#~ msgstr "Меню параметрів"
 
 #~ msgid "Screenshots"
 #~ msgstr "Знімки"
