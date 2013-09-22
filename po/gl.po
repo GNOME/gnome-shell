@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-13 10:27+0200\n"
-"PO-Revision-Date: 2013-09-13 10:27+0200\n"
+"PO-Revision-Date: 2013-09-22 19:43+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -1534,7 +1534,7 @@ msgstr "Preferencias de enerxía"
 
 #: ../js/ui/status/power.js:63
 msgid "Fully Charged"
-msgstr "Cargado completamente"
+msgstr "Carga completa"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
