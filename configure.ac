@@ -10,7 +10,7 @@
 # - increase clutter_interface_version to the next odd number
 m4_define([clutter_major_version], [1])
 m4_define([clutter_minor_version], [16])
-m4_define([clutter_micro_version], [0])
+m4_define([clutter_micro_version], [1])
 
 # • for stable releases: increase the interface age by 1 for each release;
 #   if the API changes, set to 0. interface_age and binary_age are used to
@@ -31,7 +31,7 @@ m4_define([clutter_micro_version], [0])
 #   ...
 #
 # • for development releases: keep clutter_interface_age to 0
-m4_define([clutter_interface_age], [0])
+m4_define([clutter_interface_age], [1])
 
 m4_define([clutter_binary_age], [m4_eval(100 * clutter_minor_version + clutter_micro_version)])
 
