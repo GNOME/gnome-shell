@@ -4,20 +4,22 @@
 # Copyright (C) 2005 THE PACKAGE'S COPYRIGHT HOLDER
 # Gil 'Dolfin' Osher <dolfin@rpg.org.il>, 2002,2003.
 # Yuval Tanny, 2005.
+# Yosef Or Boczko <yoseforb@gmail.com>, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-21 13:06+0300\n"
-"PO-Revision-Date: 2013-08-21 13:08+0200\n"
-"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
-"Language-Team: Hebrew <he@li.org>\n"
+"POT-Creation-Date: 2013-09-23 13:00+0300\n"
+"PO-Revision-Date: 2013-09-23 17:00+0300\n"
+"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"Language-Team: עברית <>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Gtranslator 2.91.6\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -33,27 +35,27 @@ msgstr "העברת החלון למרחב עבודה 2"
 
 #: ../src/50-mutter-navigation.xml.in.h:4
 msgid "Move window to workspace 3"
-msgstr "העברה למרחב עבודה 3"
+msgstr "העברה החלון למרחב עבודה 3"
 
 #: ../src/50-mutter-navigation.xml.in.h:5
 msgid "Move window to workspace 4"
-msgstr "העברה למרחב עבודה 4"
+msgstr "העברה החלון למרחב עבודה 4"
 
 #: ../src/50-mutter-navigation.xml.in.h:6
 msgid "Move window one workspace to the left"
-msgstr "העברת החלון לשולחן העבודה שמשמאל"
+msgstr "העברת החלון למרחב העבודה שמשמאל"
 
 #: ../src/50-mutter-navigation.xml.in.h:7
 msgid "Move window one workspace to the right"
-msgstr "העברת החלון לשולחן העבודה שמימין"
+msgstr "העברת החלון למרחב העבודה שמימין"
 
 #: ../src/50-mutter-navigation.xml.in.h:8
 msgid "Move window one workspace up"
-msgstr "העברת החלון לשולחן העבודה שמלמעלה"
+msgstr "העברת החלון למרחב העבודה שמלמעלה"
 
 #: ../src/50-mutter-navigation.xml.in.h:9
 msgid "Move window one workspace down"
-msgstr "העברת החלון לשולחן העבודה שמלמטה"
+msgstr "העברת החלון למרחב העבודה שמלמטה"
 
 #: ../src/50-mutter-navigation.xml.in.h:10
 msgid "Switch applications"
@@ -216,7 +218,7 @@ msgid ""
 "\"."
 msgstr "מנהל תצוגת חלונות אחר כבר פועל במסך %i בתצוגה „%s“."
 
-#: ../src/compositor/meta-background.c:1076
+#: ../src/compositor/meta-background.c:1075
 msgid "background texture could not be created from file"
 msgstr "לא ניתן ליצור מרקם רקע מקובץ"
 
@@ -253,12 +255,12 @@ msgstr "ה_מתנה"
 msgid "_Force Quit"
 msgstr "_אילוץ סגירה"
 
-#: ../src/core/display.c:421
+#: ../src/core/display.c:422
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Missing %s extension required for compositing"
 
-#: ../src/core/display.c:513
+#: ../src/core/display.c:514
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Failed to open X Window System display '%s'\n"
@@ -311,7 +313,7 @@ msgid ""
 msgstr ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 
-#: ../src/core/monitor.c:702
+#: ../src/core/monitor.c:696
 msgid "Built-in display"
 msgstr "תצוגה מובנית"
 
@@ -319,7 +321,7 @@ msgstr "תצוגה מובנית"
 #. the vendor), it's Unknown followed by a size in inches,
 #. like 'Unknown 15"'
 #.
-#: ../src/core/monitor.c:730
+#: ../src/core/monitor.c:724
 #, c-format
 msgid "Unknown %s"
 msgstr "%s לא ידוע"
@@ -380,14 +382,14 @@ msgstr ""
 #: ../src/core/prefs.c:1999
 #, c-format
 msgid "Workspace %d"
-msgstr "סביבת עבודה %d"
+msgstr "מרחב עבודה %d"
 
-#: ../src/core/screen.c:535
+#: ../src/core/screen.c:537
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Screen %d on display '%s' is invalid\n"
 
-#: ../src/core/screen.c:551
+#: ../src/core/screen.c:553
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -396,19 +398,19 @@ msgstr ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 
-#: ../src/core/screen.c:578
+#: ../src/core/screen.c:580
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 
-#: ../src/core/screen.c:656
+#: ../src/core/screen.c:658
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Screen %d on display \"%s\" already has a window manager\n"
 
-#: ../src/core/screen.c:848
+#: ../src/core/screen.c:850
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Could not release screen %d on display \"%s\"\n"
@@ -504,7 +506,7 @@ msgid "Window manager error: "
 msgstr "Window manager error: "
 
 #. first time through
-#: ../src/core/window.c:7533
+#: ../src/core/window.c:7515
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -520,7 +522,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8257
+#: ../src/core/window.c:8345
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -807,7 +809,7 @@ msgstr "מרחב עבודה %s%d"
 
 #: ../src/ui/menu.c:384
 msgid "Move to Another _Workspace"
-msgstr "הזז חלון למרחב עבודה אחר"
+msgstr "הזז_ת החלון למרחב עבודה אחר"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -1207,57 +1209,57 @@ msgstr "No \"%s\" attribute on element <%s>"
 msgid "Line %d character %d: %s"
 msgstr "Line %d character %d: %s"
 
-#: ../src/ui/theme-parser.c:479
+#: ../src/ui/theme-parser.c:483
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Attribute \"%s\" repeated twice on the same <%s> element"
 
-#: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
+#: ../src/ui/theme-parser.c:507 ../src/ui/theme-parser.c:556
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Attribute \"%s\" is invalid on <%s> element in this context"
 
-#: ../src/ui/theme-parser.c:594
+#: ../src/ui/theme-parser.c:598
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "לא ניתן להעביר את „%s“ כמספר שלם"
 
-#: ../src/ui/theme-parser.c:603 ../src/ui/theme-parser.c:658
+#: ../src/ui/theme-parser.c:607 ../src/ui/theme-parser.c:662
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "לא ניתן להבין את התווים „%s“ במחרוזת „%s“"
 
-#: ../src/ui/theme-parser.c:613
+#: ../src/ui/theme-parser.c:617
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "Integer %ld must be positive"
 
-#: ../src/ui/theme-parser.c:621
+#: ../src/ui/theme-parser.c:625
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Integer %ld is too large, current max is %d"
 
-#: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
+#: ../src/ui/theme-parser.c:653 ../src/ui/theme-parser.c:769
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Could not parse \"%s\" as a floating point number"
 
-#: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
+#: ../src/ui/theme-parser.c:684 ../src/ui/theme-parser.c:712
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Boolean values must be \"true\" or \"false\" not \"%s\""
 
-#: ../src/ui/theme-parser.c:735
+#: ../src/ui/theme-parser.c:739
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "Angle must be between 0.0 and 360.0, was %g\n"
 
-#: ../src/ui/theme-parser.c:798
+#: ../src/ui/theme-parser.c:802
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 
-#: ../src/ui/theme-parser.c:863
+#: ../src/ui/theme-parser.c:867
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
@@ -1266,58 +1268,58 @@ msgstr ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 
-#: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
-#: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
+#: ../src/ui/theme-parser.c:1023 ../src/ui/theme-parser.c:1086
+#: ../src/ui/theme-parser.c:1120 ../src/ui/theme-parser.c:1223
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s> name \"%s\" used a second time"
 
-#: ../src/ui/theme-parser.c:1031 ../src/ui/theme-parser.c:1128
-#: ../src/ui/theme-parser.c:1231
+#: ../src/ui/theme-parser.c:1035 ../src/ui/theme-parser.c:1132
+#: ../src/ui/theme-parser.c:1235
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s> parent \"%s\" has not been defined"
 
-#: ../src/ui/theme-parser.c:1141
+#: ../src/ui/theme-parser.c:1145
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "<%s> geometry \"%s\" has not been defined"
 
-#: ../src/ui/theme-parser.c:1154
+#: ../src/ui/theme-parser.c:1158
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "<%s> must specify either a geometry or a parent that has a geometry"
 
-#: ../src/ui/theme-parser.c:1196
+#: ../src/ui/theme-parser.c:1200
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "You must specify a background for an alpha value to be meaningful"
 
-#: ../src/ui/theme-parser.c:1264
+#: ../src/ui/theme-parser.c:1268
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Unknown type \"%s\" on <%s> element"
 
-#: ../src/ui/theme-parser.c:1275
+#: ../src/ui/theme-parser.c:1279
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "Unknown style_set \"%s\" on <%s> element"
 
-#: ../src/ui/theme-parser.c:1283
+#: ../src/ui/theme-parser.c:1287
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Window type \"%s\" has already been assigned a style set"
 
-#: ../src/ui/theme-parser.c:1313 ../src/ui/theme-parser.c:1377
-#: ../src/ui/theme-parser.c:1603 ../src/ui/theme-parser.c:2838
-#: ../src/ui/theme-parser.c:2884 ../src/ui/theme-parser.c:3034
-#: ../src/ui/theme-parser.c:3273 ../src/ui/theme-parser.c:3311
-#: ../src/ui/theme-parser.c:3349 ../src/ui/theme-parser.c:3387
+#: ../src/ui/theme-parser.c:1317 ../src/ui/theme-parser.c:1381
+#: ../src/ui/theme-parser.c:1607 ../src/ui/theme-parser.c:2842
+#: ../src/ui/theme-parser.c:2888 ../src/ui/theme-parser.c:3038
+#: ../src/ui/theme-parser.c:3274 ../src/ui/theme-parser.c:3312
+#: ../src/ui/theme-parser.c:3350 ../src/ui/theme-parser.c:3388
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Element <%s> is not allowed below <%s>"
 
-#: ../src/ui/theme-parser.c:1427 ../src/ui/theme-parser.c:1441
-#: ../src/ui/theme-parser.c:1486
+#: ../src/ui/theme-parser.c:1431 ../src/ui/theme-parser.c:1445
+#: ../src/ui/theme-parser.c:1490
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
@@ -1325,123 +1327,123 @@ msgstr ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
 
-#: ../src/ui/theme-parser.c:1450
+#: ../src/ui/theme-parser.c:1454
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "Distance \"%s\" is unknown"
 
-#: ../src/ui/theme-parser.c:1495
+#: ../src/ui/theme-parser.c:1499
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Aspect ratio \"%s\" is unknown"
 
-#: ../src/ui/theme-parser.c:1557
+#: ../src/ui/theme-parser.c:1561
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Border \"%s\" is unknown"
 
-#: ../src/ui/theme-parser.c:1868
+#: ../src/ui/theme-parser.c:1872
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "No \"start_angle\" or \"from\" attribute on element <%s>"
 
-#: ../src/ui/theme-parser.c:1875
+#: ../src/ui/theme-parser.c:1879
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "No \"extent_angle\" or \"to\" attribute on element <%s>"
 
-#: ../src/ui/theme-parser.c:2115
+#: ../src/ui/theme-parser.c:2119
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Did not understand value \"%s\" for type of gradient"
 
-#: ../src/ui/theme-parser.c:2193 ../src/ui/theme-parser.c:2568
+#: ../src/ui/theme-parser.c:2197 ../src/ui/theme-parser.c:2572
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Did not understand fill type \"%s\" for <%s> element"
 
-#: ../src/ui/theme-parser.c:2360 ../src/ui/theme-parser.c:2443
-#: ../src/ui/theme-parser.c:2506
+#: ../src/ui/theme-parser.c:2364 ../src/ui/theme-parser.c:2447
+#: ../src/ui/theme-parser.c:2510
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Did not understand state \"%s\" for <%s> element"
 
-#: ../src/ui/theme-parser.c:2370 ../src/ui/theme-parser.c:2453
+#: ../src/ui/theme-parser.c:2374 ../src/ui/theme-parser.c:2457
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Did not understand shadow \"%s\" for <%s> element"
 
-#: ../src/ui/theme-parser.c:2380
+#: ../src/ui/theme-parser.c:2384
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Did not understand arrow \"%s\" for <%s> element"
 
-#: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
+#: ../src/ui/theme-parser.c:2698 ../src/ui/theme-parser.c:2794
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "No <draw_ops> called \"%s\" has been defined"
 
-#: ../src/ui/theme-parser.c:2706 ../src/ui/theme-parser.c:2802
+#: ../src/ui/theme-parser.c:2710 ../src/ui/theme-parser.c:2806
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Including draw_ops \"%s\" here would create a circular reference"
 
-#: ../src/ui/theme-parser.c:2917
+#: ../src/ui/theme-parser.c:2921
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Unknown position \"%s\" for frame piece"
 
-#: ../src/ui/theme-parser.c:2925
+#: ../src/ui/theme-parser.c:2929
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Frame style already has a piece at position %s"
 
-#: ../src/ui/theme-parser.c:2942 ../src/ui/theme-parser.c:3019
+#: ../src/ui/theme-parser.c:2946 ../src/ui/theme-parser.c:3023
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "No <draw_ops> with the name \"%s\" has been defined"
 
-#: ../src/ui/theme-parser.c:2972
+#: ../src/ui/theme-parser.c:2976
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Unknown function \"%s\" for button"
 
-#: ../src/ui/theme-parser.c:2982
+#: ../src/ui/theme-parser.c:2986
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "Button function \"%s\" does not exist in this version (%d, need %d)"
 
-#: ../src/ui/theme-parser.c:2994
+#: ../src/ui/theme-parser.c:2998
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Unknown state \"%s\" for button"
 
-#: ../src/ui/theme-parser.c:3002
+#: ../src/ui/theme-parser.c:3006
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "Frame style already has a button for function %s state %s"
 
-#: ../src/ui/theme-parser.c:3073
+#: ../src/ui/theme-parser.c:3077
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" is not a valid value for focus attribute"
 
-#: ../src/ui/theme-parser.c:3082
+#: ../src/ui/theme-parser.c:3086
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" is not a valid value for state attribute"
 
-#: ../src/ui/theme-parser.c:3092
+#: ../src/ui/theme-parser.c:3096
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "A style called \"%s\" has not been defined"
 
-#: ../src/ui/theme-parser.c:3113 ../src/ui/theme-parser.c:3136
+#: ../src/ui/theme-parser.c:3117 ../src/ui/theme-parser.c:3140
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" is not a valid value for resize attribute"
 
-#: ../src/ui/theme-parser.c:3147
+#: ../src/ui/theme-parser.c:3151
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -1450,26 +1452,26 @@ msgstr ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 
-#: ../src/ui/theme-parser.c:3161
+#: ../src/ui/theme-parser.c:3165
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 
-#: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
+#: ../src/ui/theme-parser.c:3179 ../src/ui/theme-parser.c:3223
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "Style has already been specified for state %s resize %s focus %s"
 
-#: ../src/ui/theme-parser.c:3186 ../src/ui/theme-parser.c:3197
-#: ../src/ui/theme-parser.c:3208 ../src/ui/theme-parser.c:3233
-#: ../src/ui/theme-parser.c:3244 ../src/ui/theme-parser.c:3255
+#: ../src/ui/theme-parser.c:3190 ../src/ui/theme-parser.c:3201
+#: ../src/ui/theme-parser.c:3212 ../src/ui/theme-parser.c:3234
+#: ../src/ui/theme-parser.c:3245 ../src/ui/theme-parser.c:3256
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Style has already been specified for state %s focus %s"
 
-#: ../src/ui/theme-parser.c:3294
+#: ../src/ui/theme-parser.c:3295
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1477,7 +1479,7 @@ msgstr ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 
-#: ../src/ui/theme-parser.c:3332
+#: ../src/ui/theme-parser.c:3333
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1485,7 +1487,7 @@ msgstr ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 
-#: ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3371
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -1493,12 +1495,12 @@ msgstr ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 
-#: ../src/ui/theme-parser.c:3434
+#: ../src/ui/theme-parser.c:3435
 #, c-format
 msgid "Bad version specification '%s'"
 msgstr "ציון הגרסה שגוי '%s'"
 
-#: ../src/ui/theme-parser.c:3507
+#: ../src/ui/theme-parser.c:3508
 msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
@@ -1506,68 +1508,68 @@ msgstr ""
 "לא ניתן להשתמש בתכונה \"version\" בקבצים metacity-theme-1.xml או metacity-"
 "theme-2.xml"
 
-#: ../src/ui/theme-parser.c:3530
+#: ../src/ui/theme-parser.c:3531
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
 msgstr ""
 "ערכת הנושא דורשת את הגרסה %s אך הגרסה העדכנית ביותר של ערכת הנושא היא %d.%d"
 
-#: ../src/ui/theme-parser.c:3562
+#: ../src/ui/theme-parser.c:3563
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Outermost element in theme must be <metacity_theme> not <%s>"
 
-#: ../src/ui/theme-parser.c:3582
+#: ../src/ui/theme-parser.c:3583
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 
-#: ../src/ui/theme-parser.c:3587
+#: ../src/ui/theme-parser.c:3588
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Element <%s> is not allowed inside a <constant> element"
 
-#: ../src/ui/theme-parser.c:3599
+#: ../src/ui/theme-parser.c:3600
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 
-#: ../src/ui/theme-parser.c:3621
+#: ../src/ui/theme-parser.c:3622
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Element <%s> is not allowed inside a draw operation element"
 
-#: ../src/ui/theme-parser.c:3631 ../src/ui/theme-parser.c:3661
-#: ../src/ui/theme-parser.c:3666 ../src/ui/theme-parser.c:3671
+#: ../src/ui/theme-parser.c:3632 ../src/ui/theme-parser.c:3662
+#: ../src/ui/theme-parser.c:3667 ../src/ui/theme-parser.c:3672
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Element <%s> is not allowed inside a <%s> element"
 
-#: ../src/ui/theme-parser.c:3899
+#: ../src/ui/theme-parser.c:3900
 msgid "No draw_ops provided for frame piece"
 msgstr "No draw_ops provided for frame piece"
 
-#: ../src/ui/theme-parser.c:3914
+#: ../src/ui/theme-parser.c:3915
 msgid "No draw_ops provided for button"
 msgstr "No draw_ops provided for button"
 
-#: ../src/ui/theme-parser.c:3968
+#: ../src/ui/theme-parser.c:3969
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "מלל לא מורשה בתג <%s>"
 
-#: ../src/ui/theme-parser.c:4026 ../src/ui/theme-parser.c:4038
-#: ../src/ui/theme-parser.c:4050 ../src/ui/theme-parser.c:4062
-#: ../src/ui/theme-parser.c:4074
+#: ../src/ui/theme-parser.c:4027 ../src/ui/theme-parser.c:4039
+#: ../src/ui/theme-parser.c:4051 ../src/ui/theme-parser.c:4063
+#: ../src/ui/theme-parser.c:4075
 #, c-format
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> צוין פעמיים עבור ערכת נושא זו"
 
-#: ../src/ui/theme-parser.c:4336
+#: ../src/ui/theme-parser.c:4337
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Failed to find a valid file for theme %s\n"
