@@ -1,3 +1,24 @@
+Cogl 1.16.0                                                        2013-09-23
+
+  • List of changes since Cogl 1.15.10
+
+  » MSVC build updates
+  » Correctly mark CoglAtlasTexture api as public
+  » Lots of gtk-doc/introspection annotation fixes
+
+  • Gnome Bugzilla bugs closed since 1.15.10:
+
+  #704750 - egl: don't bind the wayland display if the extension is
+            not available
+
+Many thanks to:
+
+  Lionel Landwerlin
+  Robert Bragg
+  Chun-wei Fan
+  Giovanni Campagna
+  Neil Roberts
+
 Cogl 1.15.10                                                       2013-09-02
 
   • List of changes since Cogl 1.15.8
@@ -37,7 +58,7 @@ Many thanks to:
 
 Cogl 1.15.8                                                        2013-08-20
 
-  • List of changes since Cogl 1.15.8
+  • List of changes since Cogl 1.15.6
 
   Brown bag release to fix a problem with including cogl-path.h from
   cogl.h that meant only code defining
