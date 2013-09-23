@@ -1,3 +1,10 @@
+3.10.0
+======
+
+Translations:
+  Ask H. Larsen [da], Gabor Kelemen [hu], Duarte Loreto [pt],
+  Yosef Or Boczko [he]
+
 3.9.92
 ======
 * Don't create a dummy texture for the texture pipeline template [Neil; #707458]
