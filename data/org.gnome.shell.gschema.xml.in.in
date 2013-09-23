@@ -216,10 +216,10 @@
 
     <key name="focus-change-on-pointer-rest" type="b">
       <default>true</default>
-      <summary>Delay focus changes in mouse mode until the pointer stops moving</summary>
-      <description>
+      <_summary>Delay focus changes in mouse mode until the pointer stops moving</_summary>
+      <_description>
         This key overrides the key in org.gnome.mutter when running GNOME Shell.
-      </description>
+      </_description>
     </key>
   </schema>
 </schemalist>
