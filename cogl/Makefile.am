@@ -18,6 +18,7 @@ lib_LTLIBRARIES =
 AM_CPPFLAGS = \
 	-I$(top_srcdir)				\
 	-I$(top_builddir)			\
+	-I$(srcdir)/deprecated			\
 	-I$(srcdir)/winsys 			\
 	-I$(srcdir)/driver/gl 			\
 	-I$(srcdir)/driver/gl/gl 		\
@@ -67,21 +68,25 @@ pkgconfig_DATA = $(pc_files)
 EXTRA_DIST += cogl-1.0.pc.in cogl-$(COGL_API_VERSION)-experimental.pc.in
 DISTCLEANFILES += $(pc_files)
 
+cogl_deprecated_h = \
+	$(srcdir)/deprecated/cogl-fixed.h 		\
+	$(srcdir)/deprecated/cogl-material-compat.h 	\
+	$(srcdir)/deprecated/cogl-vertex-buffer.h 	\
+	$(srcdir)/deprecated/cogl-shader.h 		\
+	$(srcdir)/deprecated/cogl-clutter.h       	\
+	$(NULL)
+
 # public 1.x api headers
 cogl_1_public_h = \
+	$(cogl_deprecated_h)			\
 	$(srcdir)/cogl1-context.h 		\
 	$(srcdir)/cogl-bitmap.h 		\
 	$(srcdir)/cogl-color.h 			\
-	$(srcdir)/cogl-fixed.h 			\
-	$(srcdir)/cogl-material-compat.h 	\
 	$(srcdir)/cogl-matrix.h 		\
 	$(srcdir)/cogl-offscreen.h 		\
 	$(srcdir)/cogl-primitives.h 		\
-	$(srcdir)/cogl-shader.h 		\
 	$(srcdir)/cogl-texture.h 		\
 	$(srcdir)/cogl-types.h 			\
-	$(srcdir)/cogl-vertex-buffer.h 		\
-	$(srcdir)/cogl-clutter.h       		\
 	$(srcdir)/cogl.h			\
 	$(NULL)
 
@@ -261,15 +266,12 @@ cogl_sources_c = \
 	$(srcdir)/cogl2-compatibility.c			\
 	$(srcdir)/cogl-feature-private.h                \
 	$(srcdir)/cogl-feature-private.c                \
-	$(srcdir)/cogl-fixed.c		    		\
 	$(srcdir)/cogl-color-private.h    		\
 	$(srcdir)/cogl-color.c				\
 	$(srcdir)/cogl-buffer-private.h 		\
 	$(srcdir)/cogl-buffer.c				\
 	$(srcdir)/cogl-pixel-buffer-private.h		\
 	$(srcdir)/cogl-pixel-buffer.c			\
-	$(srcdir)/cogl-vertex-buffer-private.h 		\
-	$(srcdir)/cogl-vertex-buffer.c			\
 	$(srcdir)/cogl-index-buffer-private.h		\
 	$(srcdir)/cogl-index-buffer.c			\
 	$(srcdir)/cogl-attribute-buffer-private.h	\
@@ -310,9 +312,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-pipeline-cache.c			\
 	$(srcdir)/cogl-pipeline-hash-table.h		\
 	$(srcdir)/cogl-pipeline-hash-table.c		\
-	$(srcdir)/cogl-material-compat.c		\
-	$(srcdir)/cogl-program.c			\
-	$(srcdir)/cogl-program-private.h		\
 	$(srcdir)/cogl-sampler-cache.c			\
 	$(srcdir)/cogl-sampler-cache-private.h		\
 	$(srcdir)/cogl-blend-string.c			\
@@ -326,7 +325,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-texture-driver.h			\
 	$(srcdir)/cogl-sub-texture.c                    \
 	$(srcdir)/cogl-texture.c			\
-	$(srcdir)/cogl-auto-texture.c			\
 	$(srcdir)/cogl-texture-2d.c                     \
 	$(srcdir)/cogl-texture-2d-sliced.c		\
 	$(srcdir)/cogl-texture-3d.c                     \
@@ -359,12 +357,9 @@ cogl_sources_c = \
 	$(srcdir)/cogl-flags.h				\
 	$(srcdir)/cogl-bitmask.h                        \
 	$(srcdir)/cogl-bitmask.c                        \
-	$(srcdir)/cogl-shader-private.h			\
-	$(srcdir)/cogl-shader.c                        	\
 	$(srcdir)/cogl-gtype-private.h                  \
 	$(srcdir)/cogl-point-in-poly-private.h       	\
 	$(srcdir)/cogl-point-in-poly.c       		\
-	$(srcdir)/cogl-clutter.c       			\
 	$(srcdir)/cogl-list.c				\
 	$(srcdir)/cogl-list.h				\
 	$(srcdir)/winsys/cogl-winsys-stub-private.h	\
@@ -398,6 +393,16 @@ cogl_sources_c = \
 	$(srcdir)/cogl-closure-list.c			\
 	$(srcdir)/cogl-fence.c				\
 	$(srcdir)/cogl-fence-private.h			\
+	$(srcdir)/deprecated/cogl-fixed.c		    	\
+	$(srcdir)/deprecated/cogl-vertex-buffer-private.h	\
+	$(srcdir)/deprecated/cogl-vertex-buffer.c		\
+	$(srcdir)/deprecated/cogl-material-compat.c		\
+	$(srcdir)/deprecated/cogl-program.c			\
+	$(srcdir)/deprecated/cogl-program-private.h		\
+	$(srcdir)/deprecated/cogl-auto-texture.c		\
+	$(srcdir)/deprecated/cogl-shader-private.h		\
+	$(srcdir)/deprecated/cogl-shader.c			\
+	$(srcdir)/deprecated/cogl-clutter.c       		\
 	$(NULL)
 
 if USE_GLIB
@@ -408,8 +413,9 @@ cogl_sources_c += \
 endif
 
 if SUPPORT_XLIB
+cogl_deprecated_h += \
+	$(srcdir)/deprecated/cogl-clutter-xlib.h
 cogl_1_public_h += \
-	$(srcdir)/cogl-clutter-xlib.h \
 	$(srcdir)/cogl-xlib-renderer.h
 
 cogl_experimental_h += \
@@ -547,6 +553,9 @@ cogl_headers = \
 	$(srcdir)/cogl-deprecated.h \
 	$(srcdir)/cogl-pango.h \
 	$(NULL)
+
+cogldeprecatedincludedir = $(includedir)/cogl/cogl/deprecated
+cogldeprecatedinclude_HEADERS = $(cogl_deprecated_h)
 
 coglincludedir = $(includedir)/cogl/cogl
 coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)

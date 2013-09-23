@@ -34,6 +34,7 @@
 typedef struct _CoglTexture CoglTexture;
 
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-macros.h>
 #include <cogl/cogl-defines.h>
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
 #include <cogl/cogl-pixel-buffer.h>

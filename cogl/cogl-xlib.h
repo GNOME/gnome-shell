@@ -30,7 +30,7 @@
 #define __COGL_H_INSIDE__
 
 #include <cogl/cogl-types.h>
-#include <cogl/cogl-clutter-xlib.h>
+#include <cogl/deprecated/cogl-clutter-xlib.h>
 #include <cogl/cogl-xlib-renderer.h>
 #include <cogl/cogl-macros.h>
 

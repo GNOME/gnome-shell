@@ -36,7 +36,7 @@
  */
 typedef struct _CoglPrimitive CoglPrimitive;
 
-#include <cogl/cogl-vertex-buffer.h> /* for CoglVerticesMode */
+#include <cogl/cogl-types.h> /* for CoglVerticesMode */
 #include <cogl/cogl-attribute.h>
 #include <cogl/cogl-framebuffer.h>
 

@@ -65,11 +65,11 @@
  */
 #ifndef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl-clip-state.h>
-#include <cogl/cogl-vertex-buffer.h>
 #include <cogl/cogl-enum-types.h>
-#include <cogl/cogl-fixed.h>
-#include <cogl/cogl-material-compat.h>
-#include <cogl/cogl-shader.h>
+#include <cogl/deprecated/cogl-vertex-buffer.h>
+#include <cogl/deprecated/cogl-fixed.h>
+#include <cogl/deprecated/cogl-material-compat.h>
+#include <cogl/deprecated/cogl-shader.h>
 #endif
 
 /*
@@ -122,7 +122,7 @@
 #endif
 /* XXX: This will definitly go away once all the Clutter winsys
  * code has been migrated down into Cogl! */
-#include <cogl/cogl-clutter.h>
+#include <cogl/deprecated/cogl-clutter.h>
 #endif
 #ifdef COGL_HAS_SDL_SUPPORT
 #include <cogl/cogl-sdl.h>
