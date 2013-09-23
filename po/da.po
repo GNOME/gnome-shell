@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: clutter-1.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2013-03-17 14:58+0100\n"
-"PO-Revision-Date: 2013-03-16 17:45+0100\n"
+"POT-Creation-Date: 2013-09-23 19:36+0200\n"
+"PO-Revision-Date: 2013-09-23 19:27+0200\n"
 "Last-Translator: Kenneth Nielsen <k.nielsen81@gmail.com>\n"
 "Language-Team: Danish <da@li.org>\n"
 "Language: da\n"
@@ -26,669 +26,563 @@ msgstr ""
 "X-Launchpad-Export-Date: 2011-09-09 09:57+0000\n"
 "X-Generator: Launchpad (build 13900)\n"
 
-#: ../clutter/clutter-actor.c:6175
+#: ../clutter/clutter-actor.c:5583
 msgid "X coordinate"
 msgstr "X-koordinat"
 
-#: ../clutter/clutter-actor.c:6176
+#: ../clutter/clutter-actor.c:5584
 msgid "X coordinate of the actor"
 msgstr "Aktørens X-koordinat"
 
-#: ../clutter/clutter-actor.c:6194
+#: ../clutter/clutter-actor.c:5602
 msgid "Y coordinate"
 msgstr "Y-koordinat"
 
-#: ../clutter/clutter-actor.c:6195
+#: ../clutter/clutter-actor.c:5603
 msgid "Y coordinate of the actor"
 msgstr "Aktørens Y-koordinat"
 
-#: ../clutter/clutter-actor.c:6217
+#: ../clutter/clutter-actor.c:5625
 msgid "Position"
 msgstr "Position"
 
-#: ../clutter/clutter-actor.c:6218
+#: ../clutter/clutter-actor.c:5626
 msgid "The position of the origin of the actor"
 msgstr "Positionen for aktørens ankerpunkt"
 
-#: ../clutter/clutter-actor.c:6235 ../clutter/clutter-canvas.c:215
+#: ../clutter/clutter-actor.c:5643 ../clutter/clutter-canvas.c:215
 #: ../clutter/clutter-grid-layout.c:1238
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:481
 msgid "Width"
 msgstr "Bredde"
 
-#: ../clutter/clutter-actor.c:6236
+#: ../clutter/clutter-actor.c:5644
 msgid "Width of the actor"
 msgstr "Aktørens bredde"
 
-#: ../clutter/clutter-actor.c:6254 ../clutter/clutter-canvas.c:231
+#: ../clutter/clutter-actor.c:5662 ../clutter/clutter-canvas.c:231
 #: ../clutter/clutter-grid-layout.c:1245
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:497
 msgid "Height"
 msgstr "Højde"
 
-#: ../clutter/clutter-actor.c:6255
+#: ../clutter/clutter-actor.c:5663
 msgid "Height of the actor"
 msgstr "Aktørens højde"
 
-#: ../clutter/clutter-actor.c:6276
+#: ../clutter/clutter-actor.c:5684
 msgid "Size"
 msgstr "Størrelse"
 
-#: ../clutter/clutter-actor.c:6277
+#: ../clutter/clutter-actor.c:5685
 msgid "The size of the actor"
 msgstr "Aktørens størrelse"
 
-#: ../clutter/clutter-actor.c:6295
+#: ../clutter/clutter-actor.c:5703
 msgid "Fixed X"
 msgstr "Låst X"
 
-#: ../clutter/clutter-actor.c:6296
+#: ../clutter/clutter-actor.c:5704
 msgid "Forced X position of the actor"
 msgstr "Tvungen X-postion for aktøren"
 
-#: ../clutter/clutter-actor.c:6313
+#: ../clutter/clutter-actor.c:5721
 msgid "Fixed Y"
 msgstr "Låst Y"
 
-#: ../clutter/clutter-actor.c:6314
+#: ../clutter/clutter-actor.c:5722
 msgid "Forced Y position of the actor"
 msgstr "Låst Y-position for aktøren"
 
-#: ../clutter/clutter-actor.c:6329
+#: ../clutter/clutter-actor.c:5737
 msgid "Fixed position set"
 msgstr "Position fastlåst"
 
-#: ../clutter/clutter-actor.c:6330
+#: ../clutter/clutter-actor.c:5738
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Hvorvidt låst aktørposition bruges"
 
-#: ../clutter/clutter-actor.c:6348
+#: ../clutter/clutter-actor.c:5756
 msgid "Min Width"
 msgstr "Min. bredde"
 
-#: ../clutter/clutter-actor.c:6349
+#: ../clutter/clutter-actor.c:5757
 msgid "Forced minimum width request for the actor"
 msgstr "Forespørgsel om tvungen minimumsbredde  for aktøren"
 
-#: ../clutter/clutter-actor.c:6367
+#: ../clutter/clutter-actor.c:5775
 msgid "Min Height"
 msgstr "Min. højde"
 
-#: ../clutter/clutter-actor.c:6368
+#: ../clutter/clutter-actor.c:5776
 msgid "Forced minimum height request for the actor"
 msgstr "Forespørgsel om tvungen minimumshøjde for aktøren"
 
-#: ../clutter/clutter-actor.c:6386
+#: ../clutter/clutter-actor.c:5794
 msgid "Natural Width"
 msgstr "Naturlig bredde"
 
-#: ../clutter/clutter-actor.c:6387
+#: ../clutter/clutter-actor.c:5795
 msgid "Forced natural width request for the actor"
 msgstr "Forespørgsel om tvungen naturlig bredde for aktøren"
 
-#: ../clutter/clutter-actor.c:6405
+#: ../clutter/clutter-actor.c:5813
 msgid "Natural Height"
 msgstr "Naturlig højde"
 
-#: ../clutter/clutter-actor.c:6406
+#: ../clutter/clutter-actor.c:5814
 msgid "Forced natural height request for the actor"
 msgstr "Forespørgsel om tvungen naturlig højde for aktøren"
 
-#: ../clutter/clutter-actor.c:6421
+#: ../clutter/clutter-actor.c:5829
 msgid "Minimum width set"
 msgstr "Minimumsbredde sat"
 
-#: ../clutter/clutter-actor.c:6422
+#: ../clutter/clutter-actor.c:5830
 msgid "Whether to use the min-width property"
 msgstr "Om værdien for minimumsbredde bruges"
 
-#: ../clutter/clutter-actor.c:6436
+#: ../clutter/clutter-actor.c:5844
 msgid "Minimum height set"
 msgstr "Minimumshøjde sat"
 
-#: ../clutter/clutter-actor.c:6437
+#: ../clutter/clutter-actor.c:5845
 msgid "Whether to use the min-height property"
 msgstr "Om værdien for minimumshøjde bruges"
 
-#: ../clutter/clutter-actor.c:6451
+#: ../clutter/clutter-actor.c:5859
 msgid "Natural width set"
 msgstr "Naturlig bredde sat"
 
-#: ../clutter/clutter-actor.c:6452
+#: ../clutter/clutter-actor.c:5860
 msgid "Whether to use the natural-width property"
 msgstr "Om værdien for naturlig bredde bruges"
 
-#: ../clutter/clutter-actor.c:6466
+#: ../clutter/clutter-actor.c:5874
 msgid "Natural height set"
 msgstr "Naturlig højde sat"
 
-#: ../clutter/clutter-actor.c:6467
+#: ../clutter/clutter-actor.c:5875
 msgid "Whether to use the natural-height property"
 msgstr "Om værdien for naturlig højde bruges"
 
-#: ../clutter/clutter-actor.c:6483
+#: ../clutter/clutter-actor.c:5891
 msgid "Allocation"
 msgstr "Allokering"
 
-#: ../clutter/clutter-actor.c:6484
+#: ../clutter/clutter-actor.c:5892
 msgid "The actor's allocation"
 msgstr "Aktørens allokering"
 
-#: ../clutter/clutter-actor.c:6541
+#: ../clutter/clutter-actor.c:5949
 msgid "Request Mode"
 msgstr "Forespørgselstilstand"
 
-#: ../clutter/clutter-actor.c:6542
+#: ../clutter/clutter-actor.c:5950
 msgid "The actor's request mode"
 msgstr "Aktørens forespørgselstilstand"
 
-#: ../clutter/clutter-actor.c:6566
-msgid "Depth"
-msgstr "Dybde"
-
-#: ../clutter/clutter-actor.c:6567
-msgid "Position on the Z axis"
-msgstr "Position på Z-aksen"
-
-#: ../clutter/clutter-actor.c:6594
+#: ../clutter/clutter-actor.c:5974
 msgid "Z Position"
 msgstr "Z-position"
 
-#: ../clutter/clutter-actor.c:6595
+#: ../clutter/clutter-actor.c:5975
 msgid "The actor's position on the Z axis"
 msgstr "Aktørens position på Z-aksen"
 
-#: ../clutter/clutter-actor.c:6612
+#: ../clutter/clutter-actor.c:5992
 msgid "Opacity"
 msgstr "Ugennemsigtighed"
 
-#: ../clutter/clutter-actor.c:6613
+#: ../clutter/clutter-actor.c:5993
 msgid "Opacity of an actor"
 msgstr "En aktørs ugennemsigtighed"
 
 # ?
-#: ../clutter/clutter-actor.c:6633
+#: ../clutter/clutter-actor.c:6013
 msgid "Offscreen redirect"
 msgstr "Omstilling uden for skærmen"
 
-#: ../clutter/clutter-actor.c:6634
+#: ../clutter/clutter-actor.c:6014
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr "Flag der styrer hvornår aktøren fladgøres til et enkelt billede"
 
-#: ../clutter/clutter-actor.c:6648
+#: ../clutter/clutter-actor.c:6028
 msgid "Visible"
 msgstr "Synlig"
 
-#: ../clutter/clutter-actor.c:6649
+#: ../clutter/clutter-actor.c:6029
 msgid "Whether the actor is visible or not"
 msgstr "Aktør synlig eller ej"
 
-#: ../clutter/clutter-actor.c:6663
+#: ../clutter/clutter-actor.c:6043
 msgid "Mapped"
 msgstr "Afbildet"
 
-#: ../clutter/clutter-actor.c:6664
+#: ../clutter/clutter-actor.c:6044
 msgid "Whether the actor will be painted"
 msgstr "Hvorvidt aktøren farvelægges"
 
-#: ../clutter/clutter-actor.c:6677
+#: ../clutter/clutter-actor.c:6057
 msgid "Realized"
 msgstr "Realiseret"
 
-#: ../clutter/clutter-actor.c:6678
+#: ../clutter/clutter-actor.c:6058
 msgid "Whether the actor has been realized"
 msgstr "Hvorvidt aktøren er blevet realiseret"
 
-#: ../clutter/clutter-actor.c:6693
+#: ../clutter/clutter-actor.c:6073
 msgid "Reactive"
 msgstr "Reaktiv"
 
-#: ../clutter/clutter-actor.c:6694
+#: ../clutter/clutter-actor.c:6074
 msgid "Whether the actor is reactive to events"
 msgstr "Hvorvidt aktøren er reaktiv"
 
-#: ../clutter/clutter-actor.c:6705
+#: ../clutter/clutter-actor.c:6085
 msgid "Has Clip"
 msgstr "Har klip"
 
-#: ../clutter/clutter-actor.c:6706
+#: ../clutter/clutter-actor.c:6086
 msgid "Whether the actor has a clip set"
 msgstr "Om aktøren har klip angivet"
 
-#: ../clutter/clutter-actor.c:6719
-msgid "Clip"
-msgstr "Klip"
-
-#: ../clutter/clutter-actor.c:6720
-msgid "The clip region for the actor"
-msgstr "Udklipsregionen for aktøren"
-
-#: ../clutter/clutter-actor.c:6739
+#: ../clutter/clutter-actor.c:6105
 msgid "Clip Rectangle"
 msgstr "Beskær rektangel"
 
-#: ../clutter/clutter-actor.c:6740
+#: ../clutter/clutter-actor.c:6106
 msgid "The visible region of the actor"
 msgstr "Den synlige region for aktøren"
 
-#: ../clutter/clutter-actor.c:6754 ../clutter/clutter-actor-meta.c:207
+#: ../clutter/clutter-actor.c:6120 ../clutter/clutter-actor-meta.c:207
 #: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:258
 msgid "Name"
 msgstr "Navn"
 
-#: ../clutter/clutter-actor.c:6755
+#: ../clutter/clutter-actor.c:6121
 msgid "Name of the actor"
 msgstr "Aktørens navn"
 
-#: ../clutter/clutter-actor.c:6776
+#: ../clutter/clutter-actor.c:6142
 msgid "Pivot Point"
 msgstr "Omdrejningspunkt"
 
-#: ../clutter/clutter-actor.c:6777
+#: ../clutter/clutter-actor.c:6143
 msgid "The point around which the scaling and rotation occur"
 msgstr "Punktet omkring hvilket der foretages skalering og rotation"
 
-#: ../clutter/clutter-actor.c:6795
+#: ../clutter/clutter-actor.c:6161
 msgid "Pivot Point Z"
 msgstr "Z-værdi for omdrejningspunkt"
 
-#: ../clutter/clutter-actor.c:6796
+#: ../clutter/clutter-actor.c:6162
 msgid "Z component of the pivot point"
 msgstr "Z-koordinat for omdrejningspunkt"
 
-#: ../clutter/clutter-actor.c:6814
+#: ../clutter/clutter-actor.c:6180
 msgid "Scale X"
 msgstr "X-skalering"
 
-#: ../clutter/clutter-actor.c:6815
+#: ../clutter/clutter-actor.c:6181
 msgid "Scale factor on the X axis"
 msgstr "X-aksens skaleringsfaktor"
 
-#: ../clutter/clutter-actor.c:6833
+#: ../clutter/clutter-actor.c:6199
 msgid "Scale Y"
 msgstr "Y-skalering"
 
-#: ../clutter/clutter-actor.c:6834
+#: ../clutter/clutter-actor.c:6200
 msgid "Scale factor on the Y axis"
 msgstr "Y-aksens skaleringsfaktor"
 
-#: ../clutter/clutter-actor.c:6852
+#: ../clutter/clutter-actor.c:6218
 msgid "Scale Z"
 msgstr "Skalér Z"
 
-#: ../clutter/clutter-actor.c:6853
+#: ../clutter/clutter-actor.c:6219
 msgid "Scale factor on the Z axis"
 msgstr "Skaleringsfaktoren på Z-aksen"
 
-#: ../clutter/clutter-actor.c:6871
-msgid "Scale Center X"
-msgstr "Skaleringscenter X"
-
-#: ../clutter/clutter-actor.c:6872
-msgid "Horizontal scale center"
-msgstr "Horisontalt skaleringscenter"
-
-#: ../clutter/clutter-actor.c:6890
-msgid "Scale Center Y"
-msgstr "Skaleringscenter Y"
-
-#: ../clutter/clutter-actor.c:6891
-msgid "Vertical scale center"
-msgstr "Vertikalt skaleringscenter"
-
-#: ../clutter/clutter-actor.c:6909
-msgid "Scale Gravity"
-msgstr "Skalér tyngdekraft"
-
-#: ../clutter/clutter-actor.c:6910
-msgid "The center of scaling"
-msgstr "Skaleringens centrum"
-
-#: ../clutter/clutter-actor.c:6928
+#: ../clutter/clutter-actor.c:6237
 msgid "Rotation Angle X"
 msgstr "Rotationsvinkel X"
 
-#: ../clutter/clutter-actor.c:6929
+#: ../clutter/clutter-actor.c:6238
 msgid "The rotation angle on the X axis"
 msgstr "X-aksens rotationsvinkel"
 
-#: ../clutter/clutter-actor.c:6947
+#: ../clutter/clutter-actor.c:6256
 msgid "Rotation Angle Y"
 msgstr "Rotationsvinkel Y"
 
-#: ../clutter/clutter-actor.c:6948
+#: ../clutter/clutter-actor.c:6257
 msgid "The rotation angle on the Y axis"
 msgstr "Y-aksens rotationsvinkel"
 
-#: ../clutter/clutter-actor.c:6966
+#: ../clutter/clutter-actor.c:6275
 msgid "Rotation Angle Z"
 msgstr "Rotationsvinkel Z"
 
-#: ../clutter/clutter-actor.c:6967
+#: ../clutter/clutter-actor.c:6276
 msgid "The rotation angle on the Z axis"
 msgstr "Z-aksens rotationsvinkel"
 
-#: ../clutter/clutter-actor.c:6985
-msgid "Rotation Center X"
-msgstr "Rotationscentrum X"
-
-#: ../clutter/clutter-actor.c:6986
-msgid "The rotation center on the X axis"
-msgstr "X-aksens rotationscentrum"
-
-#: ../clutter/clutter-actor.c:7003
-msgid "Rotation Center Y"
-msgstr "Rotationscentrum Y"
-
-#: ../clutter/clutter-actor.c:7004
-msgid "The rotation center on the Y axis"
-msgstr "Y-aksens rotationscentrum"
-
-#: ../clutter/clutter-actor.c:7021
-msgid "Rotation Center Z"
-msgstr "Rotationscentrum Z"
-
-#: ../clutter/clutter-actor.c:7022
-msgid "The rotation center on the Z axis"
-msgstr "Z-aksens rotationscentrum"
-
-#: ../clutter/clutter-actor.c:7039
-msgid "Rotation Center Z Gravity"
-msgstr "Rotationscentrum Z-tyngde"
-
-#: ../clutter/clutter-actor.c:7040
-msgid "Center point for rotation around the Z axis"
-msgstr "Centrumpunkt for rotation omkring Z-aksen"
-
-#: ../clutter/clutter-actor.c:7068
-msgid "Anchor X"
-msgstr "Forankring X"
-
-#: ../clutter/clutter-actor.c:7069
-msgid "X coordinate of the anchor point"
-msgstr "X-koordinat for forankring"
-
-#: ../clutter/clutter-actor.c:7097
-msgid "Anchor Y"
-msgstr "Forankring Y"
-
-#: ../clutter/clutter-actor.c:7098
-msgid "Y coordinate of the anchor point"
-msgstr "Y-koordinat for forankring"
-
-#: ../clutter/clutter-actor.c:7125
-msgid "Anchor Gravity"
-msgstr "Forankrings tyngde"
-
-#: ../clutter/clutter-actor.c:7126
-msgid "The anchor point as a ClutterGravity"
-msgstr "Forankring som ClutterGravity"
-
-#: ../clutter/clutter-actor.c:7145
+#: ../clutter/clutter-actor.c:6295
 msgid "Translation X"
 msgstr "Forskydning X"
 
-#: ../clutter/clutter-actor.c:7146
+#: ../clutter/clutter-actor.c:6296
 msgid "Translation along the X axis"
 msgstr "Forskydning langs X-aksen"
 
-#: ../clutter/clutter-actor.c:7165
+#: ../clutter/clutter-actor.c:6315
 msgid "Translation Y"
 msgstr "Forskydning Y"
 
-#: ../clutter/clutter-actor.c:7166
+#: ../clutter/clutter-actor.c:6316
 msgid "Translation along the Y axis"
 msgstr "Forskydning langs Y-aksen"
 
-#: ../clutter/clutter-actor.c:7185
+#: ../clutter/clutter-actor.c:6335
 msgid "Translation Z"
 msgstr "Forskydning Z"
 
-#: ../clutter/clutter-actor.c:7186
+#: ../clutter/clutter-actor.c:6336
 msgid "Translation along the Z axis"
 msgstr "Forskydning langs Z-aksen"
 
-#: ../clutter/clutter-actor.c:7216
+#: ../clutter/clutter-actor.c:6364
 msgid "Transform"
 msgstr "Transformér"
 
-#: ../clutter/clutter-actor.c:7217
+#: ../clutter/clutter-actor.c:6365
 msgid "Transformation matrix"
 msgstr "Transformationsmatrix"
 
-#: ../clutter/clutter-actor.c:7232
+#: ../clutter/clutter-actor.c:6378
 msgid "Transform Set"
 msgstr "Transformation angivet"
 
-#: ../clutter/clutter-actor.c:7233
+#: ../clutter/clutter-actor.c:6379
 msgid "Whether the transform property is set"
 msgstr "Om transformeringsegenskaben (transform) er angivet"
 
-#: ../clutter/clutter-actor.c:7254
+#: ../clutter/clutter-actor.c:6398
 msgid "Child Transform"
 msgstr "Undertransformation"
 
-#: ../clutter/clutter-actor.c:7255
+#: ../clutter/clutter-actor.c:6399
 msgid "Children transformation matrix"
 msgstr "Transformationsmatrix for undertransformationer"
 
-#: ../clutter/clutter-actor.c:7270
+#: ../clutter/clutter-actor.c:6414
 msgid "Child Transform Set"
 msgstr "Undertransformation angivet"
 
-#: ../clutter/clutter-actor.c:7271
+#: ../clutter/clutter-actor.c:6415
 msgid "Whether the child-transform property is set"
 msgstr "Om undertransformationsegenskaben (child-transform) er angivet"
 
-#: ../clutter/clutter-actor.c:7288
-msgid "Show on set parent"
-msgstr "Vis på angivet ophavselement"
-
-#: ../clutter/clutter-actor.c:7289
-msgid "Whether the actor is shown when parented"
-msgstr "Om aktøren vises når den har et ophavselement"
-
-#: ../clutter/clutter-actor.c:7306
+#: ../clutter/clutter-actor.c:6433
 msgid "Clip to Allocation"
 msgstr "Klip til allokation"
 
-#: ../clutter/clutter-actor.c:7307
+#: ../clutter/clutter-actor.c:6434
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "Sætter udklipsregionen til at overvåge aktørens allokering"
 
-#: ../clutter/clutter-actor.c:7320
+#: ../clutter/clutter-actor.c:6447
 msgid "Text Direction"
 msgstr "Tekstretning"
 
-#: ../clutter/clutter-actor.c:7321
+#: ../clutter/clutter-actor.c:6448
 msgid "Direction of the text"
 msgstr "Tekstens retning"
 
 # ?
-#: ../clutter/clutter-actor.c:7336
+#: ../clutter/clutter-actor.c:6463
 msgid "Has Pointer"
 msgstr "Har pointer"
 
 # ?
-#: ../clutter/clutter-actor.c:7337
+#: ../clutter/clutter-actor.c:6464
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Om aktøren indeholder pointeren til en inputenhed"
 
-#: ../clutter/clutter-actor.c:7350
+#: ../clutter/clutter-actor.c:6477
 msgid "Actions"
 msgstr "Handlinger"
 
-#: ../clutter/clutter-actor.c:7351
+#: ../clutter/clutter-actor.c:6478
 msgid "Adds an action to the actor"
 msgstr "Tilføjer en handling til aktøren"
 
-#: ../clutter/clutter-actor.c:7364
+#: ../clutter/clutter-actor.c:6491
 msgid "Constraints"
 msgstr "Begrænsninger"
 
-#: ../clutter/clutter-actor.c:7365
+#: ../clutter/clutter-actor.c:6492
 msgid "Adds a constraint to the actor"
 msgstr "Tilføjer en begrænsning til aktøren"
 
-#: ../clutter/clutter-actor.c:7378
+#: ../clutter/clutter-actor.c:6505
 msgid "Effect"
 msgstr "Effekt"
 
-#: ../clutter/clutter-actor.c:7379
+#: ../clutter/clutter-actor.c:6506
 msgid "Add an effect to be applied on the actor"
 msgstr "Tilføj en effekt som skal anvendes på aktøren"
 
-#: ../clutter/clutter-actor.c:7393
+#: ../clutter/clutter-actor.c:6520
 msgid "Layout Manager"
 msgstr "Layout-manager"
 
-#: ../clutter/clutter-actor.c:7394
+#: ../clutter/clutter-actor.c:6521
 msgid "The object controlling the layout of an actor's children"
 msgstr "Objektet som kontrollerer layoutet af en aktørs underelementer"
 
-#: ../clutter/clutter-actor.c:7408
+#: ../clutter/clutter-actor.c:6535
 msgid "X Expand"
 msgstr "Udvid i X"
 
-#: ../clutter/clutter-actor.c:7409
+#: ../clutter/clutter-actor.c:6536
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr "Om der skal tildeles ekstra vandret plads til aktøren"
 
-#: ../clutter/clutter-actor.c:7424
+#: ../clutter/clutter-actor.c:6551
 msgid "Y Expand"
 msgstr "Udvid Y"
 
-#: ../clutter/clutter-actor.c:7425
+#: ../clutter/clutter-actor.c:6552
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr "Om der skal tildeles ekstra lodret plads til aktøren"
 
-#: ../clutter/clutter-actor.c:7441
+#: ../clutter/clutter-actor.c:6568
 msgid "X Alignment"
 msgstr "X-justering"
 
-#: ../clutter/clutter-actor.c:7442
+#: ../clutter/clutter-actor.c:6569
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "Justeringen af aktøren på X-aksen inden for dens allokering"
 
-#: ../clutter/clutter-actor.c:7457
+#: ../clutter/clutter-actor.c:6584
 msgid "Y Alignment"
 msgstr "Y-justering"
 
-#: ../clutter/clutter-actor.c:7458
+#: ../clutter/clutter-actor.c:6585
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "Justeringen af aktøren på Y-aksen inden for dens allokering"
 
-#: ../clutter/clutter-actor.c:7477
+#: ../clutter/clutter-actor.c:6604
 msgid "Margin Top"
 msgstr "Topmargin"
 
-#: ../clutter/clutter-actor.c:7478
+#: ../clutter/clutter-actor.c:6605
 msgid "Extra space at the top"
 msgstr "Ekstra plads i toppen"
 
-#: ../clutter/clutter-actor.c:7499
+#: ../clutter/clutter-actor.c:6626
 msgid "Margin Bottom"
 msgstr "Bundmargin"
 
-#: ../clutter/clutter-actor.c:7500
+#: ../clutter/clutter-actor.c:6627
 msgid "Extra space at the bottom"
 msgstr "Ekstra plads ved bunden"
 
-#: ../clutter/clutter-actor.c:7521
+#: ../clutter/clutter-actor.c:6648
 msgid "Margin Left"
 msgstr "Venstremargin"
 
-#: ../clutter/clutter-actor.c:7522
+#: ../clutter/clutter-actor.c:6649
 msgid "Extra space at the left"
 msgstr "Ekstra plads til venstre"
 
-#: ../clutter/clutter-actor.c:7543
+#: ../clutter/clutter-actor.c:6670
 msgid "Margin Right"
 msgstr "Højremargin"
 
-#: ../clutter/clutter-actor.c:7544
+#: ../clutter/clutter-actor.c:6671
 msgid "Extra space at the right"
 msgstr "Ekstra plads til højre"
 
 # Fra koden:
 # Whether the #ClutterActor:background-color property has been set.
-#: ../clutter/clutter-actor.c:7560
+#: ../clutter/clutter-actor.c:6687
 msgid "Background Color Set"
 msgstr "Baggrundsfarve indstillet"
 
-#: ../clutter/clutter-actor.c:7561 ../clutter/deprecated/clutter-box.c:275
+#: ../clutter/clutter-actor.c:6688
 msgid "Whether the background color is set"
 msgstr "Om baggrundsfarven er angivet"
 
-#: ../clutter/clutter-actor.c:7577
+#: ../clutter/clutter-actor.c:6704
 msgid "Background color"
 msgstr "Baggrundsfarve"
 
-#: ../clutter/clutter-actor.c:7578
+#: ../clutter/clutter-actor.c:6705
 msgid "The actor's background color"
 msgstr "Aktørens baggrundsfarve"
 
-#: ../clutter/clutter-actor.c:7593
+#: ../clutter/clutter-actor.c:6720
 msgid "First Child"
 msgstr "Første underelement"
 
-#: ../clutter/clutter-actor.c:7594
+#: ../clutter/clutter-actor.c:6721
 msgid "The actor's first child"
 msgstr "Aktørens første underelement"
 
-#: ../clutter/clutter-actor.c:7607
+#: ../clutter/clutter-actor.c:6734
 msgid "Last Child"
 msgstr "Sidste underelement"
 
-#: ../clutter/clutter-actor.c:7608
+#: ../clutter/clutter-actor.c:6735
 msgid "The actor's last child"
 msgstr "Aktørens sidste underelement"
 
-#: ../clutter/clutter-actor.c:7622
+#: ../clutter/clutter-actor.c:6749
 msgid "Content"
 msgstr "Indhold"
 
-#: ../clutter/clutter-actor.c:7623
+#: ../clutter/clutter-actor.c:6750
 msgid "Delegate object for painting the actor's content"
 msgstr "Delegeringsobjekt til optegning af aktørens indhold"
 
-#: ../clutter/clutter-actor.c:7648
+#: ../clutter/clutter-actor.c:6775
 msgid "Content Gravity"
 msgstr "Indholdstyngdekraft"
 
-#: ../clutter/clutter-actor.c:7649
+#: ../clutter/clutter-actor.c:6776
 msgid "Alignment of the actor's content"
 msgstr "Justering af aktørens indhold"
 
-#: ../clutter/clutter-actor.c:7669
+#: ../clutter/clutter-actor.c:6796
 msgid "Content Box"
 msgstr "Indholdsboks"
 
-#: ../clutter/clutter-actor.c:7670
+#: ../clutter/clutter-actor.c:6797
 msgid "The bounding box of the actor's content"
 msgstr "Afgrænsningsboksen for aktørens indhold"
 
-#: ../clutter/clutter-actor.c:7678
+#: ../clutter/clutter-actor.c:6805
 msgid "Minification Filter"
 msgstr "Minimeringsfilter"
 
-#: ../clutter/clutter-actor.c:7679
+#: ../clutter/clutter-actor.c:6806
 msgid "The filter used when reducing the size of the content"
 msgstr "Det filter der bruges til at reducere indholdets størrelse"
 
-#: ../clutter/clutter-actor.c:7686
+#: ../clutter/clutter-actor.c:6813
 msgid "Magnification Filter"
 msgstr "Forstørrelsesfilter"
 
-#: ../clutter/clutter-actor.c:7687
+#: ../clutter/clutter-actor.c:6814
 msgid "The filter used when increasing the size of the content"
 msgstr "Det filter der bruges til at forøge indholdets størrelse"
 
-#: ../clutter/clutter-actor.c:7701
+#: ../clutter/clutter-actor.c:6828
 msgid "Content Repeat"
 msgstr "Indhold gentages"
 
-#: ../clutter/clutter-actor.c:7702
+#: ../clutter/clutter-actor.c:6829
 msgid "The repeat policy for the actor's content"
 msgstr "Gentagelsespolitikken for aktørens indhold"
 
@@ -705,7 +599,6 @@ msgid "The name of the meta"
 msgstr "Metas navn"
 
 #: ../clutter/clutter-actor-meta.c:221 ../clutter/clutter-input-device.c:337
-#: ../clutter/deprecated/clutter-shader.c:313
 msgid "Enabled"
 msgstr "Slået til"
 
@@ -740,11 +633,11 @@ msgstr "Faktor"
 msgid "The alignment factor, between 0.0 and 1.0"
 msgstr "Justeringsfaktoren, mellem 0,0 og 1,0"
 
-#: ../clutter/clutter-backend.c:379
+#: ../clutter/clutter-backend.c:373
 msgid "Unable to initialize the Clutter backend"
 msgstr "Ude af stand til at initialisere det underliggende Clutter-program"
 
-#: ../clutter/clutter-backend.c:453
+#: ../clutter/clutter-backend.c:447
 #, c-format
 msgid "The backend of type '%s' does not support creating multiple stages"
 msgstr ""
@@ -776,143 +669,42 @@ msgstr "Forskydningen i pixel der skal tilføjes bindingen"
 msgid "The unique name of the binding pool"
 msgstr "Det unikke navn for bindingspuljen"
 
-#: ../clutter/clutter-bin-layout.c:240 ../clutter/clutter-bin-layout.c:655
-#: ../clutter/clutter-box-layout.c:390 ../clutter/clutter-table-layout.c:610
-msgid "Horizontal Alignment"
-msgstr "Horisontal justering"
-
-#: ../clutter/clutter-bin-layout.c:241
-msgid "Horizontal alignment for the actor inside the layout manager"
-msgstr "Horisontal justering for aktøren inden i layout-manager"
-
-#: ../clutter/clutter-bin-layout.c:249 ../clutter/clutter-bin-layout.c:675
-#: ../clutter/clutter-box-layout.c:399 ../clutter/clutter-table-layout.c:625
-msgid "Vertical Alignment"
-msgstr "Vertikal justering"
-
-#: ../clutter/clutter-bin-layout.c:250
-msgid "Vertical alignment for the actor inside the layout manager"
-msgstr "Vertikal justering for aktøren inden i layout-manager"
-
-#: ../clutter/clutter-bin-layout.c:656
-msgid "Default horizontal alignment for the actors inside the layout manager"
-msgstr ""
-"Standardværdi for vandret justering af aktører inden i layouthåndteringen"
-
-#: ../clutter/clutter-bin-layout.c:676
-msgid "Default vertical alignment for the actors inside the layout manager"
-msgstr ""
-"Standardværdi for lodret justering af aktører inden i layouthåndteringen"
-
-#: ../clutter/clutter-box-layout.c:365
-msgid "Expand"
-msgstr "Udvid"
-
-#: ../clutter/clutter-box-layout.c:366
-msgid "Allocate extra space for the child"
-msgstr "Tildel ekstra plads til underelementet"
-
-#: ../clutter/clutter-box-layout.c:372 ../clutter/clutter-table-layout.c:589
-msgid "Horizontal Fill"
-msgstr "Horisontal udfyldning"
-
-#: ../clutter/clutter-box-layout.c:373 ../clutter/clutter-table-layout.c:590
-msgid ""
-"Whether the child should receive priority when the container is allocating "
-"spare space on the horizontal axis"
-msgstr ""
-"Om underelementet skal tildeles prioritet når beholderen allokerer fri plads "
-"på den vandrette akse"
-
-#: ../clutter/clutter-box-layout.c:381 ../clutter/clutter-table-layout.c:596
-msgid "Vertical Fill"
-msgstr "Vertikal udfyldning"
-
-#: ../clutter/clutter-box-layout.c:382 ../clutter/clutter-table-layout.c:597
-msgid ""
-"Whether the child should receive priority when the container is allocating "
-"spare space on the vertical axis"
-msgstr ""
-"Om underelementet skal tildeles prioritet når beholderen tildeler fri plads "
-"på den lodrette akse"
-
-#: ../clutter/clutter-box-layout.c:391 ../clutter/clutter-table-layout.c:611
-msgid "Horizontal alignment of the actor within the cell"
-msgstr "Horisontal justering af aktøren inden i cellen"
-
-#: ../clutter/clutter-box-layout.c:400 ../clutter/clutter-table-layout.c:626
-msgid "Vertical alignment of the actor within the cell"
-msgstr "Vertikal justering af aktøren inden i cellen"
-
-#: ../clutter/clutter-box-layout.c:1365
-msgid "Vertical"
-msgstr "Vertikal"
-
-#: ../clutter/clutter-box-layout.c:1366
-msgid "Whether the layout should be vertical, rather than horizontal"
-msgstr "Hvorvidt layoutet skal forblive vertikalt frem for horisontalt"
-
-#: ../clutter/clutter-box-layout.c:1383 ../clutter/clutter-flow-layout.c:890
+#: ../clutter/clutter-box-layout.c:968 ../clutter/clutter-flow-layout.c:944
 #: ../clutter/clutter-grid-layout.c:1550
 msgid "Orientation"
 msgstr "Orientering"
 
-#: ../clutter/clutter-box-layout.c:1384 ../clutter/clutter-flow-layout.c:891
+#: ../clutter/clutter-box-layout.c:969 ../clutter/clutter-flow-layout.c:945
 #: ../clutter/clutter-grid-layout.c:1551
 msgid "The orientation of the layout"
 msgstr "Orienteringen af layoutet"
 
-#: ../clutter/clutter-box-layout.c:1400 ../clutter/clutter-flow-layout.c:906
+#: ../clutter/clutter-box-layout.c:985 ../clutter/clutter-flow-layout.c:960
 msgid "Homogeneous"
 msgstr "Homogent"
 
-#: ../clutter/clutter-box-layout.c:1401
+#: ../clutter/clutter-box-layout.c:986
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
 "Om layoutet skal være homogent, dvs. om alle underelementer får samme "
 "størrelse"
 
-#: ../clutter/clutter-box-layout.c:1416
+#: ../clutter/clutter-box-layout.c:1001
 msgid "Pack Start"
 msgstr "Pak ved start"
 
-#: ../clutter/clutter-box-layout.c:1417
+#: ../clutter/clutter-box-layout.c:1002
 msgid "Whether to pack items at the start of the box"
 msgstr "Om elementer pakkes fra boksens start"
 
-#: ../clutter/clutter-box-layout.c:1430
+#: ../clutter/clutter-box-layout.c:1015
 msgid "Spacing"
 msgstr "Afstand"
 
-#: ../clutter/clutter-box-layout.c:1431
+#: ../clutter/clutter-box-layout.c:1016
 msgid "Spacing between children"
 msgstr "Mellemrum mellem underelementer"
-
-#: ../clutter/clutter-box-layout.c:1448 ../clutter/clutter-table-layout.c:1675
-msgid "Use Animations"
-msgstr "Brug animationer"
-
-#: ../clutter/clutter-box-layout.c:1449 ../clutter/clutter-table-layout.c:1676
-msgid "Whether layout changes should be animated"
-msgstr "Hvorvidt layout-ændringer skal animeres"
-
-# http://docs.clutter-project.org/docs/clutter-cookbook/1.0/animations.html
-#: ../clutter/clutter-box-layout.c:1473 ../clutter/clutter-table-layout.c:1700
-msgid "Easing Mode"
-msgstr "Blødgørelsestilstand"
-
-#: ../clutter/clutter-box-layout.c:1474 ../clutter/clutter-table-layout.c:1701
-msgid "The easing mode of the animations"
-msgstr "Blødgørelsestilstanden (easing mode) for animationerne"
-
-#: ../clutter/clutter-box-layout.c:1494 ../clutter/clutter-table-layout.c:1721
-msgid "Easing Duration"
-msgstr "Varighed for blødgørelse"
-
-#: ../clutter/clutter-box-layout.c:1495 ../clutter/clutter-table-layout.c:1722
-msgid "The duration of the animations"
-msgstr "Animationernes varighed"
 
 #: ../clutter/clutter-brightness-contrast-effect.c:321
 msgid "Brightness"
@@ -966,7 +758,7 @@ msgstr "Holdt nede"
 msgid "Whether the clickable has a grab"
 msgstr "Om det klikbare objekt har et greb"
 
-#: ../clutter/clutter-click-action.c:591 ../clutter/clutter-settings.c:607
+#: ../clutter/clutter-click-action.c:591 ../clutter/clutter-settings.c:583
 msgid "Long Press Duration"
 msgstr "Lang trykvarighed"
 
@@ -1033,105 +825,117 @@ msgstr "Motor"
 msgid "The ClutterBackend of the device manager"
 msgstr "ClutterBackend for enhedshåndteringen"
 
-#: ../clutter/clutter-drag-action.c:742
+#: ../clutter/clutter-drag-action.c:750
 msgid "Horizontal Drag Threshold"
 msgstr "Tærskel for vandret træk"
 
-#: ../clutter/clutter-drag-action.c:743
+#: ../clutter/clutter-drag-action.c:751
 msgid "The horizontal amount of pixels required to start dragging"
 msgstr "Antallet af pixler der starter trækkeoperation vandret"
 
-#: ../clutter/clutter-drag-action.c:770
+#: ../clutter/clutter-drag-action.c:778
 msgid "Vertical Drag Threshold"
 msgstr "Tærskel for vandret træk"
 
-#: ../clutter/clutter-drag-action.c:771
+#: ../clutter/clutter-drag-action.c:779
 msgid "The vertical amount of pixels required to start dragging"
 msgstr "Antallet af pixler der starter trækkeoperation lodret"
 
-#: ../clutter/clutter-drag-action.c:792
+#: ../clutter/clutter-drag-action.c:800
 msgid "Drag Handle"
 msgstr "Trækkehåndtag"
 
-#: ../clutter/clutter-drag-action.c:793
+#: ../clutter/clutter-drag-action.c:801
 msgid "The actor that is being dragged"
 msgstr "Aktøren der trækkes"
 
-#: ../clutter/clutter-drag-action.c:806
+#: ../clutter/clutter-drag-action.c:814
 msgid "Drag Axis"
 msgstr "Trækkeakse"
 
-#: ../clutter/clutter-drag-action.c:807
+#: ../clutter/clutter-drag-action.c:815
 msgid "Constraints the dragging to an axis"
 msgstr "Begrænser træk til en akse"
 
-#: ../clutter/clutter-drag-action.c:823
+#: ../clutter/clutter-drag-action.c:831
 msgid "Drag Area"
 msgstr "Trækkeområde"
 
-#: ../clutter/clutter-drag-action.c:824
+#: ../clutter/clutter-drag-action.c:832
 msgid "Constrains the dragging to a rectangle"
 msgstr "Begrænser træk til et rektangel"
 
-#: ../clutter/clutter-drag-action.c:837
+#: ../clutter/clutter-drag-action.c:845
 msgid "Drag Area Set"
 msgstr "Trækkeområde angivet"
 
-#: ../clutter/clutter-drag-action.c:838
+#: ../clutter/clutter-drag-action.c:846
 msgid "Whether the drag area is set"
 msgstr "Om trækkeområdet er angivet"
 
-#: ../clutter/clutter-flow-layout.c:907
+#: ../clutter/clutter-flow-layout.c:961
 msgid "Whether each item should receive the same allocation"
 msgstr "Om hvert element skal tildeles samme plads"
 
-#: ../clutter/clutter-flow-layout.c:922 ../clutter/clutter-table-layout.c:1637
+#: ../clutter/clutter-flow-layout.c:976 ../clutter/clutter-table-layout.c:1281
 msgid "Column Spacing"
 msgstr "Kolonnemellemrum"
 
-#: ../clutter/clutter-flow-layout.c:923
+#: ../clutter/clutter-flow-layout.c:977
 msgid "The spacing between columns"
 msgstr "Mellemrum mellem kolonner"
 
-#: ../clutter/clutter-flow-layout.c:939 ../clutter/clutter-table-layout.c:1651
+#: ../clutter/clutter-flow-layout.c:993 ../clutter/clutter-table-layout.c:1295
 msgid "Row Spacing"
 msgstr "Rækkemellemrum"
 
-#: ../clutter/clutter-flow-layout.c:940
+#: ../clutter/clutter-flow-layout.c:994
 msgid "The spacing between rows"
 msgstr "Mellemrum mellem rækker"
 
-#: ../clutter/clutter-flow-layout.c:954
+#: ../clutter/clutter-flow-layout.c:1008
 msgid "Minimum Column Width"
 msgstr "Mindste kolonnnebredde"
 
-#: ../clutter/clutter-flow-layout.c:955
+#: ../clutter/clutter-flow-layout.c:1009
 msgid "Minimum width for each column"
 msgstr "Mindste bredde af hver kolonne"
 
-#: ../clutter/clutter-flow-layout.c:970
+#: ../clutter/clutter-flow-layout.c:1024
 msgid "Maximum Column Width"
 msgstr "Største kolonnebredde"
 
-#: ../clutter/clutter-flow-layout.c:971
+#: ../clutter/clutter-flow-layout.c:1025
 msgid "Maximum width for each column"
 msgstr "Største bredde af hver kolonne"
 
-#: ../clutter/clutter-flow-layout.c:985
+#: ../clutter/clutter-flow-layout.c:1039
 msgid "Minimum Row Height"
 msgstr "Minimum for rækkehøjde"
 
-#: ../clutter/clutter-flow-layout.c:986
+#: ../clutter/clutter-flow-layout.c:1040
 msgid "Minimum height for each row"
 msgstr "Minimumshøjde for hver række"
 
-#: ../clutter/clutter-flow-layout.c:1001
+#: ../clutter/clutter-flow-layout.c:1055
 msgid "Maximum Row Height"
 msgstr "Maksimum for rækkehøjde"
 
-#: ../clutter/clutter-flow-layout.c:1002
+#: ../clutter/clutter-flow-layout.c:1056
 msgid "Maximum height for each row"
 msgstr "Maksimum højde for hver række"
+
+#: ../clutter/clutter-flow-layout.c:1071 ../clutter/clutter-flow-layout.c:1072
+msgid "Snap to grid"
+msgstr "Klæb til gitter"
+
+#: ../clutter/clutter-gesture-action.c:644
+msgid "Number touch points"
+msgstr "Antal berøringspunkter"
+
+#: ../clutter/clutter-gesture-action.c:645
+msgid "Number of touch points"
+msgstr "Antal af berøringspunkter"
 
 #: ../clutter/clutter-grid-layout.c:1222
 msgid "Left attachment"
@@ -1254,27 +1058,27 @@ msgstr "Antallet af akser på enheden"
 msgid "The backend instance"
 msgstr "Motorinstansen"
 
-#: ../clutter/clutter-interval.c:506
+#: ../clutter/clutter-interval.c:489
 msgid "Value Type"
 msgstr "Værditype"
 
-#: ../clutter/clutter-interval.c:507
+#: ../clutter/clutter-interval.c:490
 msgid "The type of the values in the interval"
 msgstr "Typer af værdier i intervallet"
 
-#: ../clutter/clutter-interval.c:522
+#: ../clutter/clutter-interval.c:505
 msgid "Initial Value"
 msgstr "Begyndelsesværdi"
 
-#: ../clutter/clutter-interval.c:523
+#: ../clutter/clutter-interval.c:506
 msgid "Initial value of the interval"
 msgstr "Begyndelsesværdi på intervallet"
 
-#: ../clutter/clutter-interval.c:537
+#: ../clutter/clutter-interval.c:520
 msgid "Final Value"
 msgstr "Slutværdi"
 
-#: ../clutter/clutter-interval.c:538
+#: ../clutter/clutter-interval.c:521
 msgid "Final value of the interval"
 msgstr "Slutværdi på intervallet"
 
@@ -1293,96 +1097,95 @@ msgstr "Håndteringen som oprettede disse data"
 #. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
 #. * it isn't default:LTR or default:RTL it will not work.
 #.
-#: ../clutter/clutter-main.c:795
+#: ../clutter/clutter-main.c:697
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1669
+#: ../clutter/clutter-main.c:1464
 msgid "Show frames per second"
 msgstr "Vis antal billeder pr. sekund"
 
-#: ../clutter/clutter-main.c:1671
+#: ../clutter/clutter-main.c:1466
 msgid "Default frame rate"
 msgstr "Standardbilledfrekvens"
 
-#: ../clutter/clutter-main.c:1673
+#: ../clutter/clutter-main.c:1468
 msgid "Make all warnings fatal"
 msgstr "Gør alle advarsler fatale"
 
-#: ../clutter/clutter-main.c:1676
+#: ../clutter/clutter-main.c:1471
 msgid "Direction for the text"
 msgstr "Retning for teksten"
 
-#: ../clutter/clutter-main.c:1679
+#: ../clutter/clutter-main.c:1474
 msgid "Disable mipmapping on text"
 msgstr "Slå mipmapping fra i tekst"
 
-#: ../clutter/clutter-main.c:1682
+#: ../clutter/clutter-main.c:1477
 msgid "Use 'fuzzy' picking"
 msgstr "Brug \"blød\" udvælgelse"
 
-#: ../clutter/clutter-main.c:1685
+#: ../clutter/clutter-main.c:1480
 msgid "Clutter debugging flags to set"
 msgstr "Clutter-fejlsøgningsflag der skal sættes"
 
-#: ../clutter/clutter-main.c:1687
+#: ../clutter/clutter-main.c:1482
 msgid "Clutter debugging flags to unset"
 msgstr "Clutter-fejlsøgningsflag der skal fjernes"
 
-#: ../clutter/clutter-main.c:1691
+#: ../clutter/clutter-main.c:1486
 msgid "Clutter profiling flags to set"
 msgstr "Clutter-profileringsflag der skal sættes"
 
-#: ../clutter/clutter-main.c:1693
+#: ../clutter/clutter-main.c:1488
 msgid "Clutter profiling flags to unset"
 msgstr "Clutter-profileringsflag der skal fjernes"
 
-#: ../clutter/clutter-main.c:1696
+#: ../clutter/clutter-main.c:1491
 msgid "Enable accessibility"
 msgstr "Aktivér tilgængelighed"
 
-#: ../clutter/clutter-main.c:1888
+#: ../clutter/clutter-main.c:1683
 msgid "Clutter Options"
 msgstr "Clutter-valgmuligheder"
 
-#: ../clutter/clutter-main.c:1889
+#: ../clutter/clutter-main.c:1684
 msgid "Show Clutter Options"
 msgstr "Vis Clutter-valgmuligheder"
 
-#: ../clutter/clutter-pan-action.c:448
+#: ../clutter/clutter-pan-action.c:444
 msgid "Pan Axis"
 msgstr "Panoreringsakse"
 
-#: ../clutter/clutter-pan-action.c:449
+#: ../clutter/clutter-pan-action.c:445
 msgid "Constraints the panning to an axis"
 msgstr "Begrænser panorering til en akse"
 
-#: ../clutter/clutter-pan-action.c:463
+#: ../clutter/clutter-pan-action.c:457
 msgid "Interpolate"
 msgstr "Interpolér"
 
-#: ../clutter/clutter-pan-action.c:464
+#: ../clutter/clutter-pan-action.c:458
 msgid "Whether interpolated events emission is enabled."
 msgstr "Om interpoleret udsendelse af begivenheder er aktiveret."
 
-#: ../clutter/clutter-pan-action.c:480
+#: ../clutter/clutter-pan-action.c:472
 msgid "Deceleration"
 msgstr "Deceleration"
 
-#: ../clutter/clutter-pan-action.c:481
+#: ../clutter/clutter-pan-action.c:473
 msgid "Rate at which the interpolated panning will decelerate in"
 msgstr "Hastighed hvormed den interpolerede panorering vil decelerere"
 
-#: ../clutter/clutter-pan-action.c:498
+#: ../clutter/clutter-pan-action.c:488
 msgid "Initial acceleration factor"
 msgstr "Begyndelsesaccelerationsfaktor"
 
-#: ../clutter/clutter-pan-action.c:499
+#: ../clutter/clutter-pan-action.c:489
 msgid "Factor applied to the momentum when starting the interpolated phase"
 msgstr "Faktor, som anvendes på impulsen når der startes en interpoleret fase"
 
 #: ../clutter/clutter-path-constraint.c:212
-#: ../clutter/deprecated/clutter-behaviour-path.c:225
 msgid "Path"
 msgstr "Sti"
 
@@ -1402,28 +1205,27 @@ msgstr "Egenskabsnavn"
 msgid "The name of the property to animate"
 msgstr "Navnet på den egenskab som skal animeres"
 
-#: ../clutter/clutter-script.c:466
+#: ../clutter/clutter-script.c:350
 msgid "Filename Set"
 msgstr "Filnavn angivet"
 
-#: ../clutter/clutter-script.c:467
+#: ../clutter/clutter-script.c:351
 msgid "Whether the :filename property is set"
 msgstr "Om egenskaben :filename er angivet"
 
-#: ../clutter/clutter-script.c:481
-#: ../clutter/deprecated/clutter-texture.c:1082
+#: ../clutter/clutter-script.c:365
 msgid "Filename"
 msgstr "Filnavn"
 
-#: ../clutter/clutter-script.c:482
+#: ../clutter/clutter-script.c:366
 msgid "The path of the currently parsed file"
 msgstr "Stien af den nu fortolkede fil"
 
-#: ../clutter/clutter-script.c:499
+#: ../clutter/clutter-script.c:383
 msgid "Translation Domain"
 msgstr "Oversættelsesdomæne"
 
-#: ../clutter/clutter-script.c:500
+#: ../clutter/clutter-script.c:384
 msgid "The translation domain used to localize string"
 msgstr "Oversættelsesdomænet som bruges til at lokalisere strengen"
 
@@ -1435,47 +1237,47 @@ msgstr "Rulletilstand"
 msgid "The scrolling direction"
 msgstr "Rulleretningen"
 
-#: ../clutter/clutter-settings.c:448
+#: ../clutter/clutter-settings.c:424
 msgid "Double Click Time"
 msgstr "Dobbeltkliktid"
 
-#: ../clutter/clutter-settings.c:449
+#: ../clutter/clutter-settings.c:425
 msgid "The time between clicks necessary to detect a multiple click"
 msgstr ""
 "Tidsrummet mellem klik, som er nødvendigt for registrering af flerdobbelte "
 "klik"
 
-#: ../clutter/clutter-settings.c:464
+#: ../clutter/clutter-settings.c:440
 msgid "Double Click Distance"
 msgstr "Dobbeltklikafstand"
 
-#: ../clutter/clutter-settings.c:465
+#: ../clutter/clutter-settings.c:441
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr ""
 "Afstanden mellem klik som er nødvendig for registrering af flerdobbelte klik"
 
-#: ../clutter/clutter-settings.c:480
+#: ../clutter/clutter-settings.c:456
 msgid "Drag Threshold"
 msgstr "Trækketærskel"
 
-#: ../clutter/clutter-settings.c:481
+#: ../clutter/clutter-settings.c:457
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "Afstanden som markøren skal flyttes før der startes en trækkeoperation"
 
-#: ../clutter/clutter-settings.c:496 ../clutter/clutter-text.c:3367
+#: ../clutter/clutter-settings.c:472 ../clutter/clutter-text.c:3356
 msgid "Font Name"
 msgstr "Skrifttypenavn"
 
-#: ../clutter/clutter-settings.c:497
+#: ../clutter/clutter-settings.c:473
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
 msgstr "Beskrivelsen af standardskrifttypen til fortolkning af Pango"
 
-#: ../clutter/clutter-settings.c:512
+#: ../clutter/clutter-settings.c:488
 msgid "Font Antialias"
 msgstr "Skrifttypeudjævning"
 
-#: ../clutter/clutter-settings.c:513
+#: ../clutter/clutter-settings.c:489
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
@@ -1483,62 +1285,62 @@ msgstr ""
 "Om der skal bruges udjævning/antialiasing (1 for at slå til, 0 for at slå "
 "fra, og -1 for at bruge standardværdien)"
 
-#: ../clutter/clutter-settings.c:529
+#: ../clutter/clutter-settings.c:505
 msgid "Font DPI"
 msgstr "Skrifttype-DPI"
 
-#: ../clutter/clutter-settings.c:530
+#: ../clutter/clutter-settings.c:506
 msgid ""
 "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr ""
 "Opløsning for skrifttypen angivet i 1024 * punkter/tomme eller -1 for at "
 "bruge standardværdien"
 
-#: ../clutter/clutter-settings.c:546
+#: ../clutter/clutter-settings.c:522
 msgid "Font Hinting"
 msgstr "Skrifttype-hinting"
 
-#: ../clutter/clutter-settings.c:547
+#: ../clutter/clutter-settings.c:523
 msgid ""
 "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr ""
 "Om der skal bruges \"hinting\" (1 for at slå til, 0 for at slå fra og -1 for "
 "at bruge standardværdien)"
 
-#: ../clutter/clutter-settings.c:568
+#: ../clutter/clutter-settings.c:544
 msgid "Font Hint Style"
 msgstr "Stil for skrifttype-hint"
 
-#: ../clutter/clutter-settings.c:569
+#: ../clutter/clutter-settings.c:545
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
 msgstr "Stilen til hinting (hintnone, hintslight, hintmedium, hintfull)"
 
 # ?
-#: ../clutter/clutter-settings.c:590
+#: ../clutter/clutter-settings.c:566
 msgid "Font Subpixel Order"
 msgstr "Underpixelrækkefølge for skrifttype"
 
-#: ../clutter/clutter-settings.c:591
+#: ../clutter/clutter-settings.c:567
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
 msgstr "Typen af underpixeludjævning (none, rbg, bgr, vrgb, vbgr)"
 
-#: ../clutter/clutter-settings.c:608
+#: ../clutter/clutter-settings.c:584
 msgid "The minimum duration for a long press gesture to be recognized"
 msgstr "Mindste varighed før en langvarig trykkegestus genkendes"
 
-#: ../clutter/clutter-settings.c:615
+#: ../clutter/clutter-settings.c:591
 msgid "Fontconfig configuration timestamp"
 msgstr "Konfigurationstidsstempel til fontconfig"
 
-#: ../clutter/clutter-settings.c:616
+#: ../clutter/clutter-settings.c:592
 msgid "Timestamp of the current fontconfig configuration"
 msgstr "Tidsstempel for nuværende fontconfig-konfiguration"
 
-#: ../clutter/clutter-settings.c:633
+#: ../clutter/clutter-settings.c:609
 msgid "Password Hint Time"
 msgstr "Tid for adgangskodefif"
 
-#: ../clutter/clutter-settings.c:634
+#: ../clutter/clutter-settings.c:610
 msgid "How long to show the last input character in hidden entries"
 msgstr "Hvor lang tid det sidst indtastede tegn i skjulte indtastninger vises"
 
@@ -1574,172 +1376,123 @@ msgstr "Kanten af kilden der skal fastgøres"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Forskydningen i pixler der anvendes på begrænsningen"
 
-#: ../clutter/clutter-stage.c:1929
+#: ../clutter/clutter-stage.c:1818
 msgid "Fullscreen Set"
 msgstr "Fuldskærm angivet"
 
 # "stage" skal forstås som "scene", jf. "actor"
-#: ../clutter/clutter-stage.c:1930
+#: ../clutter/clutter-stage.c:1819
 msgid "Whether the main stage is fullscreen"
 msgstr "Om hovedscenen er i fuldskærmstilstand"
 
-#: ../clutter/clutter-stage.c:1944
-msgid "Offscreen"
-msgstr "Uden for skærmen"
-
-#: ../clutter/clutter-stage.c:1945
-msgid "Whether the main stage should be rendered offscreen"
-msgstr "Om hovedscenen skal optegnes uden for skærmen"
-
-#: ../clutter/clutter-stage.c:1957 ../clutter/clutter-text.c:3481
+#: ../clutter/clutter-stage.c:1831 ../clutter/clutter-text.c:3456
 msgid "Cursor Visible"
 msgstr "Markør synlig"
 
-#: ../clutter/clutter-stage.c:1958
+#: ../clutter/clutter-stage.c:1832
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Om musemarkøren er synlig på hovedscenen"
 
-#: ../clutter/clutter-stage.c:1972
+#: ../clutter/clutter-stage.c:1846
 msgid "User Resizable"
 msgstr "Bruger kan ændre størrelse"
 
-#: ../clutter/clutter-stage.c:1973
+#: ../clutter/clutter-stage.c:1847
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Om brugeren kan indstille scenens størrelse"
 
-#: ../clutter/clutter-stage.c:1988 ../clutter/deprecated/clutter-box.c:260
-#: ../clutter/deprecated/clutter-rectangle.c:273
-msgid "Color"
-msgstr "Farve"
-
-#: ../clutter/clutter-stage.c:1989
-msgid "The color of the stage"
-msgstr "Farven på scenen"
-
-#: ../clutter/clutter-stage.c:2004
+#: ../clutter/clutter-stage.c:1862
 msgid "Perspective"
 msgstr "Perspektiv"
 
-#: ../clutter/clutter-stage.c:2005
+#: ../clutter/clutter-stage.c:1863
 msgid "Perspective projection parameters"
 msgstr "Parametre for perspektivprojektion"
 
-#: ../clutter/clutter-stage.c:2020
+#: ../clutter/clutter-stage.c:1878
 msgid "Title"
 msgstr "Titel"
 
-#: ../clutter/clutter-stage.c:2021
+#: ../clutter/clutter-stage.c:1879
 msgid "Stage Title"
 msgstr "Scenetitel"
 
-#: ../clutter/clutter-stage.c:2038
-msgid "Use Fog"
-msgstr "Brug tåge"
-
-#: ../clutter/clutter-stage.c:2039
-msgid "Whether to enable depth cueing"
-msgstr "Om der skal bruges dybdeperspektiv"
-
-#: ../clutter/clutter-stage.c:2055
-msgid "Fog"
-msgstr "Tåge"
-
-#: ../clutter/clutter-stage.c:2056
-msgid "Settings for the depth cueing"
-msgstr "Indstillinger for dybdeperspektiv"
-
-#: ../clutter/clutter-stage.c:2072
+#: ../clutter/clutter-stage.c:1895
 msgid "Use Alpha"
 msgstr "Brug alfa"
 
-#: ../clutter/clutter-stage.c:2073
+#: ../clutter/clutter-stage.c:1896
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Om alfakomponenten af scenefarven skal respekteres"
 
 # ?
-#: ../clutter/clutter-stage.c:2089
+#: ../clutter/clutter-stage.c:1912
 msgid "Key Focus"
 msgstr "Primær fokus"
 
 # ?
-#: ../clutter/clutter-stage.c:2090
+#: ../clutter/clutter-stage.c:1913
 msgid "The currently key focused actor"
 msgstr "Nuværende aktør med primær fokus"
 
 # ?
-#: ../clutter/clutter-stage.c:2106
+#: ../clutter/clutter-stage.c:1929
 msgid "No Clear Hint"
 msgstr "Intet klart hint"
 
-#: ../clutter/clutter-stage.c:2107
+#: ../clutter/clutter-stage.c:1930
 msgid "Whether the stage should clear its contents"
 msgstr "Om scenen skal rydde dens indhold"
 
-#: ../clutter/clutter-stage.c:2120
+#: ../clutter/clutter-stage.c:1943
 msgid "Accept Focus"
 msgstr "Acceptér fokus"
 
-#: ../clutter/clutter-stage.c:2121
+#: ../clutter/clutter-stage.c:1944
 msgid "Whether the stage should accept focus on show"
 msgstr "Om scenen skal acceptere fokus ved visning"
 
-#: ../clutter/clutter-table-layout.c:543
+#: ../clutter/clutter-table-layout.c:331
 msgid "Column Number"
 msgstr "Kolonnenummer"
 
-#: ../clutter/clutter-table-layout.c:544
+#: ../clutter/clutter-table-layout.c:332
 msgid "The column the widget resides in"
 msgstr "Kolonnen som kontrollen bor i"
 
-#: ../clutter/clutter-table-layout.c:551
+#: ../clutter/clutter-table-layout.c:339
 msgid "Row Number"
 msgstr "Rækkenummer"
 
-#: ../clutter/clutter-table-layout.c:552
+#: ../clutter/clutter-table-layout.c:340
 msgid "The row the widget resides in"
 msgstr "Rækken som kontrollen bor i"
 
-#: ../clutter/clutter-table-layout.c:559
+#: ../clutter/clutter-table-layout.c:347
 msgid "Column Span"
 msgstr "Kolonnespænd"
 
-#: ../clutter/clutter-table-layout.c:560
+#: ../clutter/clutter-table-layout.c:348
 msgid "The number of columns the widget should span"
 msgstr "Antallet af kolonner som kontrollen skal omfatte"
 
-#: ../clutter/clutter-table-layout.c:567
+#: ../clutter/clutter-table-layout.c:355
 msgid "Row Span"
 msgstr "Rækkespænd"
 
-#: ../clutter/clutter-table-layout.c:568
+#: ../clutter/clutter-table-layout.c:356
 msgid "The number of rows the widget should span"
 msgstr "Antallet af rækker som kontrollen skal omfatte"
 
-#: ../clutter/clutter-table-layout.c:575
-msgid "Horizontal Expand"
-msgstr "Udvid vandret"
-
-#: ../clutter/clutter-table-layout.c:576
-msgid "Allocate extra space for the child in horizontal axis"
-msgstr "Tildel ekstra plads til underelementet langs vandret akse"
-
-#: ../clutter/clutter-table-layout.c:582
-msgid "Vertical Expand"
-msgstr "Udvid lodret"
-
-#: ../clutter/clutter-table-layout.c:583
-msgid "Allocate extra space for the child in vertical axis"
-msgstr "Tildel ekstra plads til underelementet langs lodret akse"
-
-#: ../clutter/clutter-table-layout.c:1638
+#: ../clutter/clutter-table-layout.c:1282
 msgid "Spacing between columns"
 msgstr "Mellemrum mellem kolonner"
 
-#: ../clutter/clutter-table-layout.c:1652
+#: ../clutter/clutter-table-layout.c:1296
 msgid "Spacing between rows"
 msgstr "Mellemrum mellem rækker"
 
-#: ../clutter/clutter-text-buffer.c:351 ../clutter/clutter-text.c:3402
+#: ../clutter/clutter-text-buffer.c:351 ../clutter/clutter-text.c:3387
 msgid "Text"
 msgstr "Tekst"
 
@@ -1763,273 +1516,257 @@ msgstr "Maksimal længde"
 msgid "Maximum number of characters for this entry. Zero if no maximum"
 msgstr "Maksimalt antal af tegn i denne indtastning. Nul hvis intet maksimum"
 
-#: ../clutter/clutter-text.c:3349
+#: ../clutter/clutter-text.c:3340
 msgid "Buffer"
 msgstr "Buffer"
 
-#: ../clutter/clutter-text.c:3350
+#: ../clutter/clutter-text.c:3341
 msgid "The buffer for the text"
 msgstr "Bufferen for teksten"
 
-#: ../clutter/clutter-text.c:3368
+#: ../clutter/clutter-text.c:3357
 msgid "The font to be used by the text"
 msgstr "Skrifttypen der bruges af teksten"
 
-#: ../clutter/clutter-text.c:3385
+#: ../clutter/clutter-text.c:3372
 msgid "Font Description"
 msgstr "Beskrivelse af skrifttype"
 
-#: ../clutter/clutter-text.c:3386
+#: ../clutter/clutter-text.c:3373
 msgid "The font description to be used"
 msgstr "Skrifttypebeskrivelsen der skal bruges"
 
-#: ../clutter/clutter-text.c:3403
+#: ../clutter/clutter-text.c:3388
 msgid "The text to render"
 msgstr "Tekst der skal vises"
 
-#: ../clutter/clutter-text.c:3417
+#: ../clutter/clutter-text.c:3400
 msgid "Font Color"
 msgstr "Skriftfarve"
 
 # hvad mener de mon med at en skrifttype kan have en farve.  En forfærdelig sætning!
-#: ../clutter/clutter-text.c:3418
+#: ../clutter/clutter-text.c:3401
 msgid "Color of the font used by the text"
 msgstr "Farven af skriften der bruges til teksten"
 
-#: ../clutter/clutter-text.c:3433
+#: ../clutter/clutter-text.c:3414
 msgid "Editable"
 msgstr "Kan redigeres"
 
-#: ../clutter/clutter-text.c:3434
+#: ../clutter/clutter-text.c:3415
 msgid "Whether the text is editable"
 msgstr "Om teksten kan redigeres"
 
-#: ../clutter/clutter-text.c:3449
+#: ../clutter/clutter-text.c:3428
 msgid "Selectable"
 msgstr "Kan vælges"
 
-#: ../clutter/clutter-text.c:3450
+#: ../clutter/clutter-text.c:3429
 msgid "Whether the text is selectable"
 msgstr "Om teksten kan vælges"
 
-#: ../clutter/clutter-text.c:3464
+#: ../clutter/clutter-text.c:3441
 msgid "Activatable"
 msgstr "Kan aktiveres"
 
-#: ../clutter/clutter-text.c:3465
+#: ../clutter/clutter-text.c:3442
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "Om tryk på retur bevirker udsendelse af aktiveringssignalet"
 
-#: ../clutter/clutter-text.c:3482
+#: ../clutter/clutter-text.c:3457
 msgid "Whether the input cursor is visible"
 msgstr "Om inputmarkøren er synlig"
 
-#: ../clutter/clutter-text.c:3496 ../clutter/clutter-text.c:3497
+#: ../clutter/clutter-text.c:3469 ../clutter/clutter-text.c:3470
 msgid "Cursor Color"
 msgstr "Markørfarve"
 
-#: ../clutter/clutter-text.c:3512
+#: ../clutter/clutter-text.c:3483
 msgid "Cursor Color Set"
 msgstr "Markørfave angivet"
 
-#: ../clutter/clutter-text.c:3513
+#: ../clutter/clutter-text.c:3484
 msgid "Whether the cursor color has been set"
 msgstr "Om markørfarven er blevet angivet"
 
-#: ../clutter/clutter-text.c:3528
+#: ../clutter/clutter-text.c:3497
 msgid "Cursor Size"
 msgstr "Markørstørrelse"
 
-#: ../clutter/clutter-text.c:3529
+#: ../clutter/clutter-text.c:3498
 msgid "The width of the cursor, in pixels"
 msgstr "Bredden af markøren i pixler"
 
-#: ../clutter/clutter-text.c:3545 ../clutter/clutter-text.c:3563
+#: ../clutter/clutter-text.c:3510
 msgid "Cursor Position"
 msgstr "Markørposition"
 
-#: ../clutter/clutter-text.c:3546 ../clutter/clutter-text.c:3564
+#: ../clutter/clutter-text.c:3511
 msgid "The cursor position"
 msgstr "Markørens position"
 
-#: ../clutter/clutter-text.c:3579
+#: ../clutter/clutter-text.c:3524
 msgid "Selection-bound"
 msgstr "Markeringsgrænse"
 
-#: ../clutter/clutter-text.c:3580
+#: ../clutter/clutter-text.c:3525
 msgid "The cursor position of the other end of the selection"
 msgstr "Markørpositionen i den anden ende af markering"
 
-#: ../clutter/clutter-text.c:3595 ../clutter/clutter-text.c:3596
+#: ../clutter/clutter-text.c:3538 ../clutter/clutter-text.c:3539
 msgid "Selection Color"
 msgstr "Markeringsfarve"
 
-#: ../clutter/clutter-text.c:3611
+#: ../clutter/clutter-text.c:3552
 msgid "Selection Color Set"
 msgstr "Markeringsfarve angivet"
 
-#: ../clutter/clutter-text.c:3612
+#: ../clutter/clutter-text.c:3553
 msgid "Whether the selection color has been set"
 msgstr "Om markeringsfarven er blevet angivet"
 
-#: ../clutter/clutter-text.c:3627
+#: ../clutter/clutter-text.c:3566
 msgid "Attributes"
 msgstr "Egenskaber"
 
-#: ../clutter/clutter-text.c:3628
+#: ../clutter/clutter-text.c:3567
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "En liste af stilegenskaber som anvendes på aktørens indhold"
 
-#: ../clutter/clutter-text.c:3650
+#: ../clutter/clutter-text.c:3587
 msgid "Use markup"
 msgstr "Brug opmærkning"
 
-#: ../clutter/clutter-text.c:3651
+#: ../clutter/clutter-text.c:3588
 msgid "Whether or not the text includes Pango markup"
 msgstr "Om teksten inkluderer Pango-opmærkning"
 
-#: ../clutter/clutter-text.c:3667
+#: ../clutter/clutter-text.c:3602
 msgid "Line wrap"
 msgstr "Linjeombrydning"
 
-#: ../clutter/clutter-text.c:3668
+#: ../clutter/clutter-text.c:3603
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "Hvis angivet, vil tekstlinjer ombrydes når de bliver for lange"
 
-#: ../clutter/clutter-text.c:3683
+#: ../clutter/clutter-text.c:3616
 msgid "Line wrap mode"
 msgstr "Linjeombrydningstilstand"
 
-#: ../clutter/clutter-text.c:3684
+#: ../clutter/clutter-text.c:3617
 msgid "Control how line-wrapping is done"
 msgstr "Styrer hvordan linjer ombrydes"
 
 # se nedenfor
-#: ../clutter/clutter-text.c:3699
+#: ../clutter/clutter-text.c:3630
 msgid "Ellipsize"
 msgstr "Ellipsegrænse"
 
 # ellipsegørelse ~ forkortelse af tekst med tre prikker
-#: ../clutter/clutter-text.c:3700
+#: ../clutter/clutter-text.c:3631
 msgid "The preferred place to ellipsize the string"
 msgstr "Det foretrukne sted at ellipsegøre strengen"
 
-#: ../clutter/clutter-text.c:3716
+#: ../clutter/clutter-text.c:3645
 msgid "Line Alignment"
 msgstr "Linjejustering"
 
-#: ../clutter/clutter-text.c:3717
+#: ../clutter/clutter-text.c:3646
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "Den foretrukne justering af strengen til flerlinjetekst"
 
 # "Retrieves whether the label should justify the text on both margins."
 # http://www.gnu.org/software/guile-gnome/docs/clutter/html/ClutterLabel.html
-#: ../clutter/clutter-text.c:3733
+#: ../clutter/clutter-text.c:3660
 msgid "Justify"
 msgstr "Lige margener"
 
-#: ../clutter/clutter-text.c:3734
+#: ../clutter/clutter-text.c:3661
 msgid "Whether the text should be justified"
 msgstr "Om teksten skal strækkes til begge margener"
 
-#: ../clutter/clutter-text.c:3749
+#: ../clutter/clutter-text.c:3674
 msgid "Password Character"
 msgstr "Adgangskodetegn"
 
-#: ../clutter/clutter-text.c:3750
+#: ../clutter/clutter-text.c:3675
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr ""
 "Hvis forskelligt fra nul, bruges dette tegn til at vise aktørens tekstindhold"
 
-#: ../clutter/clutter-text.c:3764
+#: ../clutter/clutter-text.c:3687
 msgid "Max Length"
 msgstr "Maksimal længde"
 
-#: ../clutter/clutter-text.c:3765
+#: ../clutter/clutter-text.c:3688
 msgid "Maximum length of the text inside the actor"
 msgstr "Maksimal længde af teksten i aktøren"
 
-#: ../clutter/clutter-text.c:3788
+#: ../clutter/clutter-text.c:3709
 msgid "Single Line Mode"
 msgstr "Enlinjetilstand"
 
-#: ../clutter/clutter-text.c:3789
+#: ../clutter/clutter-text.c:3710
 msgid "Whether the text should be a single line"
 msgstr "Om teksten skal vises i en enkelt linje"
 
-#: ../clutter/clutter-text.c:3803 ../clutter/clutter-text.c:3804
+#: ../clutter/clutter-text.c:3722 ../clutter/clutter-text.c:3723
 msgid "Selected Text Color"
 msgstr "Farve på markeret tekst"
 
-#: ../clutter/clutter-text.c:3819
+#: ../clutter/clutter-text.c:3736
 msgid "Selected Text Color Set"
 msgstr "Farve på markeret tekst angivet"
 
-#: ../clutter/clutter-text.c:3820
+#: ../clutter/clutter-text.c:3737
 msgid "Whether the selected text color has been set"
 msgstr "Om farven på markeret tekst er blevet angivet"
 
-#: ../clutter/clutter-timeline.c:594
-#: ../clutter/deprecated/clutter-animation.c:560
-msgid "Loop"
-msgstr "Gentagelse"
-
-# afviger fra originalstreng med vilje
-#: ../clutter/clutter-timeline.c:595
-msgid "Should the timeline automatically restart"
-msgstr "Om tidslinjen automatisk genstartes"
-
-#: ../clutter/clutter-timeline.c:609
+#: ../clutter/clutter-timeline.c:562
 msgid "Delay"
 msgstr "Ventetid"
 
-#: ../clutter/clutter-timeline.c:610
+#: ../clutter/clutter-timeline.c:563
 msgid "Delay before start"
 msgstr "Ventetid før start"
 
-#: ../clutter/clutter-timeline.c:625
-#: ../clutter/deprecated/clutter-animation.c:544
-#: ../clutter/deprecated/clutter-animator.c:1804
-#: ../clutter/deprecated/clutter-media.c:224
-#: ../clutter/deprecated/clutter-state.c:1523
+#: ../clutter/clutter-timeline.c:578
 msgid "Duration"
 msgstr "Varighed"
 
-#: ../clutter/clutter-timeline.c:626
+#: ../clutter/clutter-timeline.c:579
 msgid "Duration of the timeline in milliseconds"
 msgstr "Varighed af tidslinje i millisekunder"
 
-#: ../clutter/clutter-timeline.c:641
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:528
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:337
+#: ../clutter/clutter-timeline.c:594
 msgid "Direction"
 msgstr "Retning"
 
-#: ../clutter/clutter-timeline.c:642
+#: ../clutter/clutter-timeline.c:595
 msgid "Direction of the timeline"
 msgstr "Retning på tidslinjen"
 
-#: ../clutter/clutter-timeline.c:657
+#: ../clutter/clutter-timeline.c:610
 msgid "Auto Reverse"
 msgstr "Autoomvending"
 
-#: ../clutter/clutter-timeline.c:658
+#: ../clutter/clutter-timeline.c:611
 msgid "Whether the direction should be reversed when reaching the end"
 msgstr "Om retningen skal vendes når slutningen nås"
 
-#: ../clutter/clutter-timeline.c:676
+#: ../clutter/clutter-timeline.c:629
 msgid "Repeat Count"
 msgstr "Gentagelsesantal"
 
-#: ../clutter/clutter-timeline.c:677
+#: ../clutter/clutter-timeline.c:630
 msgid "How many times the timeline should repeat"
 msgstr "Hvor mange gange tidslinjen skal gentages"
 
-#: ../clutter/clutter-timeline.c:691
+#: ../clutter/clutter-timeline.c:644
 msgid "Progress Mode"
 msgstr "Fremskridtstilstand"
 
-#: ../clutter/clutter-timeline.c:692
+#: ../clutter/clutter-timeline.c:645
 msgid "How the timeline should compute the progress"
 msgstr "Hvordan tidslinjen skal udregne fremskridtet"
 
@@ -2057,590 +1794,13 @@ msgstr "Fjern ved færdiggørelse"
 msgid "Detach the transition when completed"
 msgstr "Frigør overgangen ved færdiggørelse"
 
-#: ../clutter/clutter-zoom-action.c:354
+#: ../clutter/clutter-zoom-action.c:356
 msgid "Zoom Axis"
 msgstr "Zoom-akse"
 
-#: ../clutter/clutter-zoom-action.c:355
+#: ../clutter/clutter-zoom-action.c:357
 msgid "Constraints the zoom to an axis"
 msgstr "Begrænser zoom til en akse"
-
-#: ../clutter/deprecated/clutter-alpha.c:355
-#: ../clutter/deprecated/clutter-animation.c:575
-#: ../clutter/deprecated/clutter-animator.c:1821
-msgid "Timeline"
-msgstr "Tidslinje"
-
-#: ../clutter/deprecated/clutter-alpha.c:356
-msgid "Timeline used by the alpha"
-msgstr "Tidslinje brugt af alfa"
-
-#: ../clutter/deprecated/clutter-alpha.c:372
-msgid "Alpha value"
-msgstr "Alfaværdi"
-
-#: ../clutter/deprecated/clutter-alpha.c:373
-msgid "Alpha value as computed by the alpha"
-msgstr "Alfaværdi som udregnet af alfa"
-
-#: ../clutter/deprecated/clutter-alpha.c:394
-#: ../clutter/deprecated/clutter-animation.c:528
-msgid "Mode"
-msgstr "Tilstand"
-
-#: ../clutter/deprecated/clutter-alpha.c:395
-msgid "Progress mode"
-msgstr "Fremskridtstilstand"
-
-#: ../clutter/deprecated/clutter-animation.c:511
-msgid "Object"
-msgstr "Objekt"
-
-#: ../clutter/deprecated/clutter-animation.c:512
-msgid "Object to which the animation applies"
-msgstr "Objekt for hvilket animationen gælder"
-
-#: ../clutter/deprecated/clutter-animation.c:529
-msgid "The mode of the animation"
-msgstr "Animationens tilstand"
-
-#: ../clutter/deprecated/clutter-animation.c:545
-msgid "Duration of the animation, in milliseconds"
-msgstr "Animationens varighed i millisekunder"
-
-#: ../clutter/deprecated/clutter-animation.c:561
-msgid "Whether the animation should loop"
-msgstr "Hvorvidt animationen skal gentages"
-
-#: ../clutter/deprecated/clutter-animation.c:576
-msgid "The timeline used by the animation"
-msgstr "Den tidslinje animationen benytter"
-
-#: ../clutter/deprecated/clutter-animation.c:592
-#: ../clutter/deprecated/clutter-behaviour.c:241
-msgid "Alpha"
-msgstr "Alfa"
-
-#: ../clutter/deprecated/clutter-animation.c:593
-msgid "The alpha used by the animation"
-msgstr "Alfa brugt af animation"
-
-#: ../clutter/deprecated/clutter-animator.c:1805
-msgid "The duration of the animation"
-msgstr "Animationens varighed"
-
-#: ../clutter/deprecated/clutter-animator.c:1822
-msgid "The timeline of the animation"
-msgstr "Animationens tidslinje"
-
-#: ../clutter/deprecated/clutter-behaviour.c:242
-msgid "Alpha Object to drive the behaviour"
-msgstr "Alfa-objekt som styrer opførslen"
-
-#: ../clutter/deprecated/clutter-behaviour-depth.c:182
-msgid "Start Depth"
-msgstr "Startdybde"
-
-#: ../clutter/deprecated/clutter-behaviour-depth.c:183
-msgid "Initial depth to apply"
-msgstr "Indledende anvendt dybde"
-
-#: ../clutter/deprecated/clutter-behaviour-depth.c:198
-msgid "End Depth"
-msgstr "Afsluttende dybde"
-
-#: ../clutter/deprecated/clutter-behaviour-depth.c:199
-msgid "Final depth to apply"
-msgstr "Afsluttende anvendt dybde"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:401
-msgid "Start Angle"
-msgstr "Startvinkel"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:402
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:284
-msgid "Initial angle"
-msgstr "Indledende vinkel"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:417
-msgid "End Angle"
-msgstr "Afsluttende vinkel"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:418
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:302
-msgid "Final angle"
-msgstr "Slutvinkel"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:433
-msgid "Angle x tilt"
-msgstr "x-drejningsvinkel"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:434
-msgid "Tilt of the ellipse around x axis"
-msgstr "Drejningsvinkel for ellipsen omkring x-aksen"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:449
-msgid "Angle y tilt"
-msgstr "y-drejningsvinkel"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:450
-msgid "Tilt of the ellipse around y axis"
-msgstr "Drejningsvinkel for ellipsen omkring y-aksen"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:465
-msgid "Angle z tilt"
-msgstr "z-drejningsvinkel"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:466
-msgid "Tilt of the ellipse around z axis"
-msgstr "Drejningsvinkel for ellipsen omkring z-aksen"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:482
-msgid "Width of the ellipse"
-msgstr "Ellipsens bredde"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:498
-msgid "Height of ellipse"
-msgstr "Ellipsens højde"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:513
-msgid "Center"
-msgstr "Centrum"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:514
-msgid "Center of ellipse"
-msgstr "Ellipsens centrum"
-
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:529
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:338
-msgid "Direction of rotation"
-msgstr "Rotationsretning"
-
-#: ../clutter/deprecated/clutter-behaviour-opacity.c:184
-msgid "Opacity Start"
-msgstr "Startpunkt for uigennemsigtighed"
-
-#: ../clutter/deprecated/clutter-behaviour-opacity.c:185
-msgid "Initial opacity level"
-msgstr "Indledende uigennemsigtighedsniveau"
-
-#: ../clutter/deprecated/clutter-behaviour-opacity.c:202
-msgid "Opacity End"
-msgstr "Slutpunkt for uigennemsigtighed"
-
-#: ../clutter/deprecated/clutter-behaviour-opacity.c:203
-msgid "Final opacity level"
-msgstr "Afsluttende uigennemsigtighedsniveau"
-
-#: ../clutter/deprecated/clutter-behaviour-path.c:226
-msgid "The ClutterPath object representing the path to animate along"
-msgstr ""
-"ClutterPath-objektet der repræsenterer stien, langs hvilken der animeres"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:283
-msgid "Angle Begin"
-msgstr "Vinkels begyndelse"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:301
-msgid "Angle End"
-msgstr "Vinkels slutning"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:319
-msgid "Axis"
-msgstr "Akse"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:320
-msgid "Axis of rotation"
-msgstr "Akses rotation"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:355
-msgid "Center X"
-msgstr "Centrum X"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:356
-msgid "X coordinate of the center of rotation"
-msgstr "Rotationscentrums X-koordinat"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:373
-msgid "Center Y"
-msgstr "Centrum Y"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:374
-msgid "Y coordinate of the center of rotation"
-msgstr "Rotationscentrums Y-koordinat"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:391
-msgid "Center Z"
-msgstr "Center Z"
-
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:392
-msgid "Z coordinate of the center of rotation"
-msgstr "Rotationscentrums Z-koordinat"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:226
-msgid "X Start Scale"
-msgstr "X-startskala"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:227
-msgid "Initial scale on the X axis"
-msgstr "Indledende skala på X-aksen"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:245
-msgid "X End Scale"
-msgstr "X-slutskala"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:246
-msgid "Final scale on the X axis"
-msgstr "Afsluttende skala på X-aksen"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:264
-msgid "Y Start Scale"
-msgstr "Y-startskala"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:265
-msgid "Initial scale on the Y axis"
-msgstr "Indledende skala på Y-aksen"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:283
-msgid "Y End Scale"
-msgstr "Y-slutskala"
-
-#: ../clutter/deprecated/clutter-behaviour-scale.c:284
-msgid "Final scale on the Y axis"
-msgstr "Afsluttende skala på Y-aksen"
-
-#: ../clutter/deprecated/clutter-box.c:261
-msgid "The background color of the box"
-msgstr "Baggrundsfarve på boksen"
-
-#: ../clutter/deprecated/clutter-box.c:274
-msgid "Color Set"
-msgstr "Farve angivet"
-
-#: ../clutter/deprecated/clutter-cairo-texture.c:597
-msgid "Surface Width"
-msgstr "Overfladebredde"
-
-#: ../clutter/deprecated/clutter-cairo-texture.c:598
-msgid "The width of the Cairo surface"
-msgstr "Cairo-overfladens bredde"
-
-#: ../clutter/deprecated/clutter-cairo-texture.c:615
-msgid "Surface Height"
-msgstr "Overfladehøjde"
-
-#: ../clutter/deprecated/clutter-cairo-texture.c:616
-msgid "The height of the Cairo surface"
-msgstr "Cairo-overfladens højde"
-
-#: ../clutter/deprecated/clutter-cairo-texture.c:636
-msgid "Auto Resize"
-msgstr "Automatisk størrelse"
-
-#: ../clutter/deprecated/clutter-cairo-texture.c:637
-msgid "Whether the surface should match the allocation"
-msgstr "Om overfladen skal tilpasses pladstildelingen"
-
-#: ../clutter/deprecated/clutter-media.c:83
-msgid "URI"
-msgstr "URI"
-
-#: ../clutter/deprecated/clutter-media.c:84
-msgid "URI of a media file"
-msgstr "En mediefils URI"
-
-#: ../clutter/deprecated/clutter-media.c:100
-msgid "Playing"
-msgstr "Spiller"
-
-#: ../clutter/deprecated/clutter-media.c:101
-msgid "Whether the actor is playing"
-msgstr "Om aktøren afspiller"
-
-#: ../clutter/deprecated/clutter-media.c:118
-msgid "Progress"
-msgstr "Status"
-
-#: ../clutter/deprecated/clutter-media.c:119
-msgid "Current progress of the playback"
-msgstr "Afspilningens nuværende position"
-
-#: ../clutter/deprecated/clutter-media.c:135
-msgid "Subtitle URI"
-msgstr "Undertekst-URI"
-
-#: ../clutter/deprecated/clutter-media.c:136
-msgid "URI of a subtitle file"
-msgstr "URI for en undertekstfil"
-
-#: ../clutter/deprecated/clutter-media.c:154
-msgid "Subtitle Font Name"
-msgstr "Navn på skrifttype til undertekster"
-
-#: ../clutter/deprecated/clutter-media.c:155
-msgid "The font used to display subtitles"
-msgstr "Skrifttypen der bruges til at vise undertekster"
-
-#: ../clutter/deprecated/clutter-media.c:172
-msgid "Audio Volume"
-msgstr "Lydstyrke"
-
-#: ../clutter/deprecated/clutter-media.c:173
-msgid "The volume of the audio"
-msgstr "Lydstyrken"
-
-#: ../clutter/deprecated/clutter-media.c:189
-msgid "Can Seek"
-msgstr "Kan søge"
-
-#: ../clutter/deprecated/clutter-media.c:190
-msgid "Whether the current stream is seekable"
-msgstr "Om der kan søges i den nuværende strøm"
-
-#: ../clutter/deprecated/clutter-media.c:207
-msgid "Buffer Fill"
-msgstr "Buffer-udfyldning"
-
-#: ../clutter/deprecated/clutter-media.c:208
-msgid "The fill level of the buffer"
-msgstr "Udfyldningsniveauet for bufferen"
-
-#: ../clutter/deprecated/clutter-media.c:225
-msgid "The duration of the stream, in seconds"
-msgstr "Varigheden af strømmen i sekunder"
-
-#: ../clutter/deprecated/clutter-rectangle.c:274
-msgid "The color of the rectangle"
-msgstr "Rektanglets farve"
-
-#: ../clutter/deprecated/clutter-rectangle.c:287
-msgid "Border Color"
-msgstr "Kantfarve"
-
-#: ../clutter/deprecated/clutter-rectangle.c:288
-msgid "The color of the border of the rectangle"
-msgstr "Farven på rektanglets kant"
-
-#: ../clutter/deprecated/clutter-rectangle.c:303
-msgid "Border Width"
-msgstr "Kantbredde"
-
-#: ../clutter/deprecated/clutter-rectangle.c:304
-msgid "The width of the border of the rectangle"
-msgstr "Bredden af rektanglets kant"
-
-#: ../clutter/deprecated/clutter-rectangle.c:318
-msgid "Has Border"
-msgstr "Har kant"
-
-#: ../clutter/deprecated/clutter-rectangle.c:319
-msgid "Whether the rectangle should have a border"
-msgstr "Om rektanglet skal have en kant"
-
-# ?
-#: ../clutter/deprecated/clutter-shader.c:261
-msgid "Vertex Source"
-msgstr "Vertex-kilde"
-
-# ?
-#: ../clutter/deprecated/clutter-shader.c:262
-msgid "Source of vertex shader"
-msgstr "Kilde for vertex-skyggelægger"
-
-#: ../clutter/deprecated/clutter-shader.c:278
-msgid "Fragment Source"
-msgstr "Fragmentkilde"
-
-# ?
-#: ../clutter/deprecated/clutter-shader.c:279
-msgid "Source of fragment shader"
-msgstr "Kilde for fragment-skyggelægger"
-
-#: ../clutter/deprecated/clutter-shader.c:296
-msgid "Compiled"
-msgstr "Kompileret"
-
-# ?
-#: ../clutter/deprecated/clutter-shader.c:297
-msgid "Whether the shader is compiled and linked"
-msgstr "Om skyggelæggeren er kompileret og lænket"
-
-# ?
-#: ../clutter/deprecated/clutter-shader.c:314
-msgid "Whether the shader is enabled"
-msgstr "Om skyggelæggeren er aktiveret"
-
-#: ../clutter/deprecated/clutter-shader.c:525
-#, c-format
-msgid "%s compilation failed: %s"
-msgstr "%s-kompilering fejlet: %s"
-
-#: ../clutter/deprecated/clutter-shader.c:526
-msgid "Vertex shader"
-msgstr "Vertex-skyggelægger"
-
-#: ../clutter/deprecated/clutter-shader.c:527
-msgid "Fragment shader"
-msgstr "Fragment-skyggelægger"
-
-#: ../clutter/deprecated/clutter-state.c:1505
-msgid "State"
-msgstr "Tilstand"
-
-#: ../clutter/deprecated/clutter-state.c:1506
-msgid "Currently set state, (transition to this state might not be complete)"
-msgstr ""
-"Nuværende tilstand (overgangen til denne tilstand er måske ikke fuldendt)"
-
-#: ../clutter/deprecated/clutter-state.c:1524
-msgid "Default transition duration"
-msgstr "Standardvarighed af overgang"
-
-#: ../clutter/deprecated/clutter-texture.c:994
-msgid "Sync size of actor"
-msgstr "Synkronisér aktørstørrelse"
-
-#: ../clutter/deprecated/clutter-texture.c:995
-msgid "Auto sync size of actor to underlying pixbuf dimensions"
-msgstr ""
-"Synkronisér størrelsen af aktøren automatisk med størrelsen af den "
-"underliggende pixbuf"
-
-#: ../clutter/deprecated/clutter-texture.c:1002
-msgid "Disable Slicing"
-msgstr "Deaktivér skæring"
-
-#: ../clutter/deprecated/clutter-texture.c:1003
-msgid ""
-"Forces the underlying texture to be singular and not made of smaller space "
-"saving individual textures"
-msgstr ""
-"Tvinger den underliggende tekstur til at være uopdelt, frem for at være "
-"sammensat af flere mindre teksturer for at spare plads"
-
-#: ../clutter/deprecated/clutter-texture.c:1012
-msgid "Tile Waste"
-msgstr "Spild ved fliselægning"
-
-#: ../clutter/deprecated/clutter-texture.c:1013
-msgid "Maximum waste area of a sliced texture"
-msgstr "Maksimalt spildområde af en skåret tekstur"
-
-#: ../clutter/deprecated/clutter-texture.c:1021
-msgid "Horizontal repeat"
-msgstr "Gentag vandret"
-
-#: ../clutter/deprecated/clutter-texture.c:1022
-msgid "Repeat the contents rather than scaling them horizontally"
-msgstr "Gentag indholdet frem for at skalere det vandret"
-
-#: ../clutter/deprecated/clutter-texture.c:1029
-msgid "Vertical repeat"
-msgstr "Gentag lodret"
-
-#: ../clutter/deprecated/clutter-texture.c:1030
-msgid "Repeat the contents rather than scaling them vertically"
-msgstr "Gentag indholdet frem for at skalere det lodret"
-
-#: ../clutter/deprecated/clutter-texture.c:1037
-msgid "Filter Quality"
-msgstr "Filterkvalitet"
-
-#: ../clutter/deprecated/clutter-texture.c:1038
-msgid "Rendering quality used when drawing the texture"
-msgstr "Kvalitet til tegning af teksturen"
-
-#: ../clutter/deprecated/clutter-texture.c:1046
-msgid "Pixel Format"
-msgstr "Pixelformat"
-
-#: ../clutter/deprecated/clutter-texture.c:1047
-msgid "The Cogl pixel format to use"
-msgstr "Cogl-pixelformatet der skal bruges"
-
-#: ../clutter/deprecated/clutter-texture.c:1055
-#: ../clutter/wayland/clutter-wayland-surface.c:449
-msgid "Cogl Texture"
-msgstr "Cogl-tekstur"
-
-#: ../clutter/deprecated/clutter-texture.c:1056
-#: ../clutter/wayland/clutter-wayland-surface.c:450
-msgid "The underlying Cogl texture handle used to draw this actor"
-msgstr ""
-"Det underliggende Cogl-teksturhåndtag der bruges til at tegne denne aktør"
-
-#: ../clutter/deprecated/clutter-texture.c:1063
-msgid "Cogl Material"
-msgstr "Cogl-materiale"
-
-#: ../clutter/deprecated/clutter-texture.c:1064
-msgid "The underlying Cogl material handle used to draw this actor"
-msgstr ""
-"Det underliggende Cogl-materialehåndtag der bruges til at tegne denne aktør"
-
-#: ../clutter/deprecated/clutter-texture.c:1083
-msgid "The path of the file containing the image data"
-msgstr "Stien til filen der indeholder billeddataene"
-
-#: ../clutter/deprecated/clutter-texture.c:1090
-msgid "Keep Aspect Ratio"
-msgstr "Bevar højde-/breddeforhold"
-
-#: ../clutter/deprecated/clutter-texture.c:1091
-msgid ""
-"Keep the aspect ratio of the texture when requesting the preferred width or "
-"height"
-msgstr ""
-"Behold forholdet mellem højde og bredde af teksturen ved forespørgsel om "
-"foretrukken bredde eller højde"
-
-#: ../clutter/deprecated/clutter-texture.c:1119
-msgid "Load asynchronously"
-msgstr "Indlæs asynkront"
-
-#: ../clutter/deprecated/clutter-texture.c:1120
-msgid ""
-"Load files inside a thread to avoid blocking when loading images from disk"
-msgstr "Indlæs filer inden i en tråd for at undgå blokering"
-
-#: ../clutter/deprecated/clutter-texture.c:1138
-msgid "Load data asynchronously"
-msgstr "Indlæs data asynkront"
-
-#: ../clutter/deprecated/clutter-texture.c:1139
-msgid ""
-"Decode image data files inside a thread to reduce blocking when loading "
-"images from disk"
-msgstr ""
-"Afkod billeddatafiler inden i en tråd for at reducere blokering ved "
-"indlæsning fra disken"
-
-# ? tror picking er noget med at den bestemmer formen af en aktør
-#: ../clutter/deprecated/clutter-texture.c:1165
-msgid "Pick With Alpha"
-msgstr "Udvælg ved hjælp af alfa"
-
-#: ../clutter/deprecated/clutter-texture.c:1166
-msgid "Shape actor with alpha channel when picking"
-msgstr "Giv form til aktør ved hjælp af alfakanal når der udvælges"
-
-#: ../clutter/deprecated/clutter-texture.c:1599
-#: ../clutter/deprecated/clutter-texture.c:1994
-#: ../clutter/deprecated/clutter-texture.c:2090
-#: ../clutter/deprecated/clutter-texture.c:2388
-#, c-format
-msgid "Failed to load the image data"
-msgstr "Kunne ikke indlæse billeddata"
-
-#: ../clutter/deprecated/clutter-texture.c:1758
-#, c-format
-msgid "YUV textures are not supported"
-msgstr "YUV-teksturer understøttes ikke"
-
-#: ../clutter/deprecated/clutter-texture.c:1767
-#, c-format
-msgid "YUV2 textues are not supported"
-msgstr "YUV2-teksturer understøttes ikke"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:159
 msgid "sysfs Path"
@@ -2687,19 +1847,28 @@ msgstr "Overfladehøjde"
 msgid "The height of the underlying wayland surface"
 msgstr "Højden af den underliggende wayland-overflade"
 
-#: ../clutter/x11/clutter-backend-x11.c:507
+#: ../clutter/wayland/clutter-wayland-surface.c:449
+msgid "Cogl Texture"
+msgstr "Cogl-tekstur"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:450
+msgid "The underlying Cogl texture handle used to draw this actor"
+msgstr ""
+"Det underliggende Cogl-teksturhåndtag der bruges til at tegne denne aktør"
+
+#: ../clutter/x11/clutter-backend-x11.c:508
 msgid "X display to use"
 msgstr "X-visning der skal bruges"
 
-#: ../clutter/x11/clutter-backend-x11.c:513
+#: ../clutter/x11/clutter-backend-x11.c:514
 msgid "X screen to use"
 msgstr "X-skærm der skal bruges"
 
-#: ../clutter/x11/clutter-backend-x11.c:518
+#: ../clutter/x11/clutter-backend-x11.c:519
 msgid "Make X calls synchronous"
 msgstr "Gør X-kald synkrone"
 
-#: ../clutter/x11/clutter-backend-x11.c:525
+#: ../clutter/x11/clutter-backend-x11.c:526
 msgid "Disable XInput support"
 msgstr "Deaktivér understøttelse af XInput"
 
@@ -2804,6 +1973,627 @@ msgstr "Vindue tilsidesætter omdirigering"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:641
 msgid "If this is an override-redirect window"
 msgstr "Om dette er et vindue som tilsidesætter omdirigering"
+
+#~ msgid "Depth"
+#~ msgstr "Dybde"
+
+#~ msgid "Position on the Z axis"
+#~ msgstr "Position på Z-aksen"
+
+#~ msgid "Clip"
+#~ msgstr "Klip"
+
+#~ msgid "The clip region for the actor"
+#~ msgstr "Udklipsregionen for aktøren"
+
+#~ msgid "Scale Center X"
+#~ msgstr "Skaleringscenter X"
+
+#~ msgid "Horizontal scale center"
+#~ msgstr "Horisontalt skaleringscenter"
+
+#~ msgid "Scale Center Y"
+#~ msgstr "Skaleringscenter Y"
+
+#~ msgid "Vertical scale center"
+#~ msgstr "Vertikalt skaleringscenter"
+
+#~ msgid "Scale Gravity"
+#~ msgstr "Skalér tyngdekraft"
+
+#~ msgid "The center of scaling"
+#~ msgstr "Skaleringens centrum"
+
+#~ msgid "Rotation Center X"
+#~ msgstr "Rotationscentrum X"
+
+#~ msgid "The rotation center on the X axis"
+#~ msgstr "X-aksens rotationscentrum"
+
+#~ msgid "Rotation Center Y"
+#~ msgstr "Rotationscentrum Y"
+
+#~ msgid "The rotation center on the Y axis"
+#~ msgstr "Y-aksens rotationscentrum"
+
+#~ msgid "Rotation Center Z"
+#~ msgstr "Rotationscentrum Z"
+
+#~ msgid "The rotation center on the Z axis"
+#~ msgstr "Z-aksens rotationscentrum"
+
+#~ msgid "Rotation Center Z Gravity"
+#~ msgstr "Rotationscentrum Z-tyngde"
+
+#~ msgid "Center point for rotation around the Z axis"
+#~ msgstr "Centrumpunkt for rotation omkring Z-aksen"
+
+#~ msgid "Anchor X"
+#~ msgstr "Forankring X"
+
+#~ msgid "X coordinate of the anchor point"
+#~ msgstr "X-koordinat for forankring"
+
+#~ msgid "Anchor Y"
+#~ msgstr "Forankring Y"
+
+#~ msgid "Y coordinate of the anchor point"
+#~ msgstr "Y-koordinat for forankring"
+
+#~ msgid "Anchor Gravity"
+#~ msgstr "Forankrings tyngde"
+
+#~ msgid "The anchor point as a ClutterGravity"
+#~ msgstr "Forankring som ClutterGravity"
+
+#~ msgid "Show on set parent"
+#~ msgstr "Vis på angivet ophavselement"
+
+#~ msgid "Whether the actor is shown when parented"
+#~ msgstr "Om aktøren vises når den har et ophavselement"
+
+#~ msgid "Horizontal Alignment"
+#~ msgstr "Horisontal justering"
+
+#~ msgid "Horizontal alignment for the actor inside the layout manager"
+#~ msgstr "Horisontal justering for aktøren inden i layout-manager"
+
+#~ msgid "Vertical Alignment"
+#~ msgstr "Vertikal justering"
+
+#~ msgid "Vertical alignment for the actor inside the layout manager"
+#~ msgstr "Vertikal justering for aktøren inden i layout-manager"
+
+#~ msgid ""
+#~ "Default horizontal alignment for the actors inside the layout manager"
+#~ msgstr ""
+#~ "Standardværdi for vandret justering af aktører inden i layouthåndteringen"
+
+#~ msgid "Default vertical alignment for the actors inside the layout manager"
+#~ msgstr ""
+#~ "Standardværdi for lodret justering af aktører inden i layouthåndteringen"
+
+#~ msgid "Expand"
+#~ msgstr "Udvid"
+
+#~ msgid "Allocate extra space for the child"
+#~ msgstr "Tildel ekstra plads til underelementet"
+
+#~ msgid "Horizontal Fill"
+#~ msgstr "Horisontal udfyldning"
+
+#~ msgid ""
+#~ "Whether the child should receive priority when the container is "
+#~ "allocating spare space on the horizontal axis"
+#~ msgstr ""
+#~ "Om underelementet skal tildeles prioritet når beholderen allokerer fri "
+#~ "plads på den vandrette akse"
+
+#~ msgid "Vertical Fill"
+#~ msgstr "Vertikal udfyldning"
+
+#~ msgid ""
+#~ "Whether the child should receive priority when the container is "
+#~ "allocating spare space on the vertical axis"
+#~ msgstr ""
+#~ "Om underelementet skal tildeles prioritet når beholderen tildeler fri "
+#~ "plads på den lodrette akse"
+
+#~ msgid "Horizontal alignment of the actor within the cell"
+#~ msgstr "Horisontal justering af aktøren inden i cellen"
+
+#~ msgid "Vertical alignment of the actor within the cell"
+#~ msgstr "Vertikal justering af aktøren inden i cellen"
+
+#~ msgid "Vertical"
+#~ msgstr "Vertikal"
+
+#~ msgid "Whether the layout should be vertical, rather than horizontal"
+#~ msgstr "Hvorvidt layoutet skal forblive vertikalt frem for horisontalt"
+
+#~ msgid "Use Animations"
+#~ msgstr "Brug animationer"
+
+#~ msgid "Whether layout changes should be animated"
+#~ msgstr "Hvorvidt layout-ændringer skal animeres"
+
+# http://docs.clutter-project.org/docs/clutter-cookbook/1.0/animations.html
+#~ msgid "Easing Mode"
+#~ msgstr "Blødgørelsestilstand"
+
+#~ msgid "The easing mode of the animations"
+#~ msgstr "Blødgørelsestilstanden (easing mode) for animationerne"
+
+#~ msgid "Easing Duration"
+#~ msgstr "Varighed for blødgørelse"
+
+#~ msgid "The duration of the animations"
+#~ msgstr "Animationernes varighed"
+
+#~ msgid "Offscreen"
+#~ msgstr "Uden for skærmen"
+
+#~ msgid "Whether the main stage should be rendered offscreen"
+#~ msgstr "Om hovedscenen skal optegnes uden for skærmen"
+
+#~ msgid "Color"
+#~ msgstr "Farve"
+
+#~ msgid "The color of the stage"
+#~ msgstr "Farven på scenen"
+
+#~ msgid "Use Fog"
+#~ msgstr "Brug tåge"
+
+#~ msgid "Whether to enable depth cueing"
+#~ msgstr "Om der skal bruges dybdeperspektiv"
+
+#~ msgid "Fog"
+#~ msgstr "Tåge"
+
+#~ msgid "Settings for the depth cueing"
+#~ msgstr "Indstillinger for dybdeperspektiv"
+
+#~ msgid "Horizontal Expand"
+#~ msgstr "Udvid vandret"
+
+#~ msgid "Allocate extra space for the child in horizontal axis"
+#~ msgstr "Tildel ekstra plads til underelementet langs vandret akse"
+
+#~ msgid "Vertical Expand"
+#~ msgstr "Udvid lodret"
+
+#~ msgid "Allocate extra space for the child in vertical axis"
+#~ msgstr "Tildel ekstra plads til underelementet langs lodret akse"
+
+#~ msgid "Loop"
+#~ msgstr "Gentagelse"
+
+# afviger fra originalstreng med vilje
+#~ msgid "Should the timeline automatically restart"
+#~ msgstr "Om tidslinjen automatisk genstartes"
+
+#~ msgid "Timeline"
+#~ msgstr "Tidslinje"
+
+#~ msgid "Timeline used by the alpha"
+#~ msgstr "Tidslinje brugt af alfa"
+
+#~ msgid "Alpha value"
+#~ msgstr "Alfaværdi"
+
+#~ msgid "Alpha value as computed by the alpha"
+#~ msgstr "Alfaværdi som udregnet af alfa"
+
+#~ msgid "Mode"
+#~ msgstr "Tilstand"
+
+#~ msgid "Progress mode"
+#~ msgstr "Fremskridtstilstand"
+
+#~ msgid "Object"
+#~ msgstr "Objekt"
+
+#~ msgid "Object to which the animation applies"
+#~ msgstr "Objekt for hvilket animationen gælder"
+
+#~ msgid "The mode of the animation"
+#~ msgstr "Animationens tilstand"
+
+#~ msgid "Duration of the animation, in milliseconds"
+#~ msgstr "Animationens varighed i millisekunder"
+
+#~ msgid "Whether the animation should loop"
+#~ msgstr "Hvorvidt animationen skal gentages"
+
+#~ msgid "The timeline used by the animation"
+#~ msgstr "Den tidslinje animationen benytter"
+
+#~ msgid "Alpha"
+#~ msgstr "Alfa"
+
+#~ msgid "The alpha used by the animation"
+#~ msgstr "Alfa brugt af animation"
+
+#~ msgid "The duration of the animation"
+#~ msgstr "Animationens varighed"
+
+#~ msgid "The timeline of the animation"
+#~ msgstr "Animationens tidslinje"
+
+#~ msgid "Alpha Object to drive the behaviour"
+#~ msgstr "Alfa-objekt som styrer opførslen"
+
+#~ msgid "Start Depth"
+#~ msgstr "Startdybde"
+
+#~ msgid "Initial depth to apply"
+#~ msgstr "Indledende anvendt dybde"
+
+#~ msgid "End Depth"
+#~ msgstr "Afsluttende dybde"
+
+#~ msgid "Final depth to apply"
+#~ msgstr "Afsluttende anvendt dybde"
+
+#~ msgid "Start Angle"
+#~ msgstr "Startvinkel"
+
+#~ msgid "Initial angle"
+#~ msgstr "Indledende vinkel"
+
+#~ msgid "End Angle"
+#~ msgstr "Afsluttende vinkel"
+
+#~ msgid "Final angle"
+#~ msgstr "Slutvinkel"
+
+#~ msgid "Angle x tilt"
+#~ msgstr "x-drejningsvinkel"
+
+#~ msgid "Tilt of the ellipse around x axis"
+#~ msgstr "Drejningsvinkel for ellipsen omkring x-aksen"
+
+#~ msgid "Angle y tilt"
+#~ msgstr "y-drejningsvinkel"
+
+#~ msgid "Tilt of the ellipse around y axis"
+#~ msgstr "Drejningsvinkel for ellipsen omkring y-aksen"
+
+#~ msgid "Angle z tilt"
+#~ msgstr "z-drejningsvinkel"
+
+#~ msgid "Tilt of the ellipse around z axis"
+#~ msgstr "Drejningsvinkel for ellipsen omkring z-aksen"
+
+#~ msgid "Width of the ellipse"
+#~ msgstr "Ellipsens bredde"
+
+#~ msgid "Height of ellipse"
+#~ msgstr "Ellipsens højde"
+
+#~ msgid "Center"
+#~ msgstr "Centrum"
+
+#~ msgid "Center of ellipse"
+#~ msgstr "Ellipsens centrum"
+
+#~ msgid "Direction of rotation"
+#~ msgstr "Rotationsretning"
+
+#~ msgid "Opacity Start"
+#~ msgstr "Startpunkt for uigennemsigtighed"
+
+#~ msgid "Initial opacity level"
+#~ msgstr "Indledende uigennemsigtighedsniveau"
+
+#~ msgid "Opacity End"
+#~ msgstr "Slutpunkt for uigennemsigtighed"
+
+#~ msgid "Final opacity level"
+#~ msgstr "Afsluttende uigennemsigtighedsniveau"
+
+#~ msgid "The ClutterPath object representing the path to animate along"
+#~ msgstr ""
+#~ "ClutterPath-objektet der repræsenterer stien, langs hvilken der animeres"
+
+#~ msgid "Angle Begin"
+#~ msgstr "Vinkels begyndelse"
+
+#~ msgid "Angle End"
+#~ msgstr "Vinkels slutning"
+
+#~ msgid "Axis"
+#~ msgstr "Akse"
+
+#~ msgid "Axis of rotation"
+#~ msgstr "Akses rotation"
+
+#~ msgid "Center X"
+#~ msgstr "Centrum X"
+
+#~ msgid "X coordinate of the center of rotation"
+#~ msgstr "Rotationscentrums X-koordinat"
+
+#~ msgid "Center Y"
+#~ msgstr "Centrum Y"
+
+#~ msgid "Y coordinate of the center of rotation"
+#~ msgstr "Rotationscentrums Y-koordinat"
+
+#~ msgid "Center Z"
+#~ msgstr "Center Z"
+
+#~ msgid "Z coordinate of the center of rotation"
+#~ msgstr "Rotationscentrums Z-koordinat"
+
+#~ msgid "X Start Scale"
+#~ msgstr "X-startskala"
+
+#~ msgid "Initial scale on the X axis"
+#~ msgstr "Indledende skala på X-aksen"
+
+#~ msgid "X End Scale"
+#~ msgstr "X-slutskala"
+
+#~ msgid "Final scale on the X axis"
+#~ msgstr "Afsluttende skala på X-aksen"
+
+#~ msgid "Y Start Scale"
+#~ msgstr "Y-startskala"
+
+#~ msgid "Initial scale on the Y axis"
+#~ msgstr "Indledende skala på Y-aksen"
+
+#~ msgid "Y End Scale"
+#~ msgstr "Y-slutskala"
+
+#~ msgid "Final scale on the Y axis"
+#~ msgstr "Afsluttende skala på Y-aksen"
+
+#~ msgid "The background color of the box"
+#~ msgstr "Baggrundsfarve på boksen"
+
+#~ msgid "Color Set"
+#~ msgstr "Farve angivet"
+
+#~ msgid "Surface Width"
+#~ msgstr "Overfladebredde"
+
+#~ msgid "The width of the Cairo surface"
+#~ msgstr "Cairo-overfladens bredde"
+
+#~ msgid "Surface Height"
+#~ msgstr "Overfladehøjde"
+
+#~ msgid "The height of the Cairo surface"
+#~ msgstr "Cairo-overfladens højde"
+
+#~ msgid "Auto Resize"
+#~ msgstr "Automatisk størrelse"
+
+#~ msgid "Whether the surface should match the allocation"
+#~ msgstr "Om overfladen skal tilpasses pladstildelingen"
+
+#~ msgid "URI"
+#~ msgstr "URI"
+
+#~ msgid "URI of a media file"
+#~ msgstr "En mediefils URI"
+
+#~ msgid "Playing"
+#~ msgstr "Spiller"
+
+#~ msgid "Whether the actor is playing"
+#~ msgstr "Om aktøren afspiller"
+
+#~ msgid "Progress"
+#~ msgstr "Status"
+
+#~ msgid "Current progress of the playback"
+#~ msgstr "Afspilningens nuværende position"
+
+#~ msgid "Subtitle URI"
+#~ msgstr "Undertekst-URI"
+
+#~ msgid "URI of a subtitle file"
+#~ msgstr "URI for en undertekstfil"
+
+#~ msgid "Subtitle Font Name"
+#~ msgstr "Navn på skrifttype til undertekster"
+
+#~ msgid "The font used to display subtitles"
+#~ msgstr "Skrifttypen der bruges til at vise undertekster"
+
+#~ msgid "Audio Volume"
+#~ msgstr "Lydstyrke"
+
+#~ msgid "The volume of the audio"
+#~ msgstr "Lydstyrken"
+
+#~ msgid "Can Seek"
+#~ msgstr "Kan søge"
+
+#~ msgid "Whether the current stream is seekable"
+#~ msgstr "Om der kan søges i den nuværende strøm"
+
+#~ msgid "Buffer Fill"
+#~ msgstr "Buffer-udfyldning"
+
+#~ msgid "The fill level of the buffer"
+#~ msgstr "Udfyldningsniveauet for bufferen"
+
+#~ msgid "The duration of the stream, in seconds"
+#~ msgstr "Varigheden af strømmen i sekunder"
+
+#~ msgid "The color of the rectangle"
+#~ msgstr "Rektanglets farve"
+
+#~ msgid "Border Color"
+#~ msgstr "Kantfarve"
+
+#~ msgid "The color of the border of the rectangle"
+#~ msgstr "Farven på rektanglets kant"
+
+#~ msgid "Border Width"
+#~ msgstr "Kantbredde"
+
+#~ msgid "The width of the border of the rectangle"
+#~ msgstr "Bredden af rektanglets kant"
+
+#~ msgid "Has Border"
+#~ msgstr "Har kant"
+
+#~ msgid "Whether the rectangle should have a border"
+#~ msgstr "Om rektanglet skal have en kant"
+
+# ?
+#~ msgid "Vertex Source"
+#~ msgstr "Vertex-kilde"
+
+# ?
+#~ msgid "Source of vertex shader"
+#~ msgstr "Kilde for vertex-skyggelægger"
+
+#~ msgid "Fragment Source"
+#~ msgstr "Fragmentkilde"
+
+# ?
+#~ msgid "Source of fragment shader"
+#~ msgstr "Kilde for fragment-skyggelægger"
+
+#~ msgid "Compiled"
+#~ msgstr "Kompileret"
+
+# ?
+#~ msgid "Whether the shader is compiled and linked"
+#~ msgstr "Om skyggelæggeren er kompileret og lænket"
+
+# ?
+#~ msgid "Whether the shader is enabled"
+#~ msgstr "Om skyggelæggeren er aktiveret"
+
+#~ msgid "%s compilation failed: %s"
+#~ msgstr "%s-kompilering fejlet: %s"
+
+#~ msgid "Vertex shader"
+#~ msgstr "Vertex-skyggelægger"
+
+#~ msgid "Fragment shader"
+#~ msgstr "Fragment-skyggelægger"
+
+#~ msgid "State"
+#~ msgstr "Tilstand"
+
+#~ msgid ""
+#~ "Currently set state, (transition to this state might not be complete)"
+#~ msgstr ""
+#~ "Nuværende tilstand (overgangen til denne tilstand er måske ikke fuldendt)"
+
+#~ msgid "Default transition duration"
+#~ msgstr "Standardvarighed af overgang"
+
+#~ msgid "Sync size of actor"
+#~ msgstr "Synkronisér aktørstørrelse"
+
+#~ msgid "Auto sync size of actor to underlying pixbuf dimensions"
+#~ msgstr ""
+#~ "Synkronisér størrelsen af aktøren automatisk med størrelsen af den "
+#~ "underliggende pixbuf"
+
+#~ msgid "Disable Slicing"
+#~ msgstr "Deaktivér skæring"
+
+#~ msgid ""
+#~ "Forces the underlying texture to be singular and not made of smaller "
+#~ "space saving individual textures"
+#~ msgstr ""
+#~ "Tvinger den underliggende tekstur til at være uopdelt, frem for at være "
+#~ "sammensat af flere mindre teksturer for at spare plads"
+
+#~ msgid "Tile Waste"
+#~ msgstr "Spild ved fliselægning"
+
+#~ msgid "Maximum waste area of a sliced texture"
+#~ msgstr "Maksimalt spildområde af en skåret tekstur"
+
+#~ msgid "Horizontal repeat"
+#~ msgstr "Gentag vandret"
+
+#~ msgid "Repeat the contents rather than scaling them horizontally"
+#~ msgstr "Gentag indholdet frem for at skalere det vandret"
+
+#~ msgid "Vertical repeat"
+#~ msgstr "Gentag lodret"
+
+#~ msgid "Repeat the contents rather than scaling them vertically"
+#~ msgstr "Gentag indholdet frem for at skalere det lodret"
+
+#~ msgid "Filter Quality"
+#~ msgstr "Filterkvalitet"
+
+#~ msgid "Rendering quality used when drawing the texture"
+#~ msgstr "Kvalitet til tegning af teksturen"
+
+#~ msgid "Pixel Format"
+#~ msgstr "Pixelformat"
+
+#~ msgid "The Cogl pixel format to use"
+#~ msgstr "Cogl-pixelformatet der skal bruges"
+
+#~ msgid "Cogl Material"
+#~ msgstr "Cogl-materiale"
+
+#~ msgid "The underlying Cogl material handle used to draw this actor"
+#~ msgstr ""
+#~ "Det underliggende Cogl-materialehåndtag der bruges til at tegne denne "
+#~ "aktør"
+
+#~ msgid "The path of the file containing the image data"
+#~ msgstr "Stien til filen der indeholder billeddataene"
+
+#~ msgid "Keep Aspect Ratio"
+#~ msgstr "Bevar højde-/breddeforhold"
+
+#~ msgid ""
+#~ "Keep the aspect ratio of the texture when requesting the preferred width "
+#~ "or height"
+#~ msgstr ""
+#~ "Behold forholdet mellem højde og bredde af teksturen ved forespørgsel om "
+#~ "foretrukken bredde eller højde"
+
+#~ msgid "Load asynchronously"
+#~ msgstr "Indlæs asynkront"
+
+#~ msgid ""
+#~ "Load files inside a thread to avoid blocking when loading images from disk"
+#~ msgstr "Indlæs filer inden i en tråd for at undgå blokering"
+
+#~ msgid "Load data asynchronously"
+#~ msgstr "Indlæs data asynkront"
+
+#~ msgid ""
+#~ "Decode image data files inside a thread to reduce blocking when loading "
+#~ "images from disk"
+#~ msgstr ""
+#~ "Afkod billeddatafiler inden i en tråd for at reducere blokering ved "
+#~ "indlæsning fra disken"
+
+# ? tror picking er noget med at den bestemmer formen af en aktør
+#~ msgid "Pick With Alpha"
+#~ msgstr "Udvælg ved hjælp af alfa"
+
+#~ msgid "Shape actor with alpha channel when picking"
+#~ msgstr "Giv form til aktør ved hjælp af alfakanal når der udvælges"
+
+#~ msgid "Failed to load the image data"
+#~ msgstr "Kunne ikke indlæse billeddata"
+
+#~ msgid "YUV textures are not supported"
+#~ msgstr "YUV-teksturer understøttes ikke"
+
+#~ msgid "YUV2 textues are not supported"
+#~ msgstr "YUV2-teksturer understøttes ikke"
 
 #~ msgid "The layout manager used by the box"
 #~ msgstr "Layouthåndteringen der bruges af boksen"
