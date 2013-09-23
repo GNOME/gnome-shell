@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-23 20:34+0200\n"
-"PO-Revision-Date: 2013-09-23 20:35+0200\n"
+"PO-Revision-Date: 2013-09-23 20:37+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -277,7 +277,7 @@ msgstr "Obszary robocze tylko na pierwszym monitorze"
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
-"Opóźnienie zmiany aktywności w trybie myszy do momentu, w których kursor się "
+"Opóźnienie zmiany aktywności w trybie myszy do momentu, w którym kursor się "
 "zatrzymuje"
 
 #: ../js/extensionPrefs/main.js:189
