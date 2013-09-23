@@ -1,3 +1,15 @@
+3.10.0.1
+=========
+* Fix login screen [Ray; #708691]
+
+Contributors:
+  Ray Strode, Giovanni Campagna, Jasper St. Pierree
+
+Translations:
+  Kjartan Maraas [nb], Marek Černocký [cs], A S Alam [pa], Daniel Mustieles [es],
+  Ihar Hrachyshka [be], Chao-Hsiung Liao [zh_HK], Nilamdyuti Goswami [as],
+  Yuri Myasoedov [ru], Baurzhan Muftakhidinov [kk]
+
 3.10.0
 ======
 * Fix fade effect in ScrollViews [Carlos; #708256]
