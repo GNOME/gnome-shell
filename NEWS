@@ -1,3 +1,21 @@
+Clutter 1.16.0                                                       2013-09-23
+===============================================================================
+
+  • List of changes since Clutter 1.15.96
+
+    - Fix a division by zero in the X11 backend
+
+    - Translation updates
+    Portuguese, Danish
+
+  • List of bugs fixed since Clutter 1.15.96
+
+    #707033 - Hidden division by zero in examples/basic-actor.c
+
+Many thanks to:
+
+  Duarte Loreto, Kenneth Nielsen.
+
 Clutter 1.15.96                                                      2013-09-20
 ===============================================================================
 
