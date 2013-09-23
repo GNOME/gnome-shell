@@ -24,7 +24,7 @@ m4_define([cogl_version],
 
 dnl Since the core Cogl library has to also maintain support for the
 dnl Cogl 1.x API for Clutter then we track the 1.x version separately.
-m4_define([cogl_1_minor_version], [16])
+m4_define([cogl_1_minor_version], [17])
 m4_define([cogl_1_micro_version], [1])
 m4_define([cogl_1_version], [1.cogl_1_minor_version.cogl_1_micro_version])
 
