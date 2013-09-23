@@ -1,3 +1,30 @@
+3.10.0
+======
+* Fix fade effect in ScrollViews [Carlos; #708256]
+* network: Resync when activating connection changes [Jasper; #708322]
+* Close run dialog when the screen locks [Florian; #708218]
+* Fix entry growing out of password dialogs [Florian; #708324, #703833]
+* Vertically center labels in submenu items [Jasper; #708330]
+* https://bugzilla.gnome.org/show_bug.cgi?id=708387 [Mike; #708387]
+* Fix bluetooth icon not being added to status menu [Jasper; #708541]
+* Fix GNOME 2 keyring dialogs appearing on lock screen [Florian; #708187]
+* Fix passwords being cleared twice when authentication fails [Florian; #708186]
+* Fix message tray appearing in a11y popup on login screen [Florian; #708380]
+* Increase width of aggregate menu popup [Adel; #708472]
+
+Contributors:
+  Adel Gadllah, Mike Gorse, Ryan Lortie, Florian Müllner, Frédéric Péters,
+  Carlos Soriano, Jasper St. Pierre, Rico Tzschichholz
+
+Translations:
+  Daniel Șerbănescu [ro], Ryan Lortie [eo], Ihar Hrachyshka [be],
+  A S Alam [pa], Jiro Matsuzawa [ja], Chao-Hsiung Liao [zh_HK, zh_TW],
+  Piotr Drąg [pl], Kristjan SCHMIDT [eo], Daniel Korostil [uk],
+  Rūdolfs Mazurs [lv], Reinout van Schouwen [nl], Yosef Or Boczko [he],
+  Fran Diéguez [gl], António Lima [pt], Andika Triwidada [id],
+  Alexandre Franke [fr], Rafael Ferreira [pt_BR], Milo Casagrande [it],
+  Kenneth Nielsen [da], Matej Urbančič [sl]
+
 3.9.92
 ======
 * Don't show page indicators if there's only one page [Florian; #707363]
