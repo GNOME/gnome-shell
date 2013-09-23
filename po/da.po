@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-14 15:55+0200\n"
-"PO-Revision-Date: 2013-09-14 10:23+0100\n"
+"POT-Creation-Date: 2013-09-23 19:41+0200\n"
+"PO-Revision-Date: 2013-09-23 19:43+0200\n"
 "Last-Translator: Kris Thomsen <mail@kristhomsen.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -274,6 +274,10 @@ msgstr "Arbejdsområder er håndteret dynamisk"
 msgid "Workspaces only on primary monitor"
 msgstr "Arbejdsområder kun på den primære skærm"
 
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr "Forsink fokusændringer i musetilstand indtil pegeren holder op med at bevæge sig"
+
 #: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
@@ -288,10 +292,10 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Vælg en udvidelse at konfigurere ved hjælp af kombinationsboksen ovenfor."
 
-#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
+#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:686
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:686
 msgid "Cancel"
 msgstr "Annullér"
 
@@ -330,8 +334,8 @@ msgstr "(f.eks. bruger eller %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:255
-#: ../js/ui/components/networkAgent.js:273
+#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:259
+#: ../js/ui/components/networkAgent.js:277
 msgid "Username: "
 msgstr "Brugernavn: "
 
@@ -367,27 +371,27 @@ msgstr "Kunne ikke fortolke kommando:"
 msgid "Execution of '%s' failed:"
 msgstr "Kørsel af \"%s\" mislykkedes:"
 
-#: ../js/ui/appDisplay.js:598
+#: ../js/ui/appDisplay.js:596
 msgid "Frequently used applications will appear here"
 msgstr "Ofte brugte programmer vil blive vist her"
 
-#: ../js/ui/appDisplay.js:714
+#: ../js/ui/appDisplay.js:712
 msgid "Frequent"
 msgstr "Ofte"
 
-#: ../js/ui/appDisplay.js:721
+#: ../js/ui/appDisplay.js:719
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:1516
+#: ../js/ui/appDisplay.js:1514
 msgid "New Window"
 msgstr "Nyt vindue"
 
-#: ../js/ui/appDisplay.js:1519 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1517 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:1520
+#: ../js/ui/appDisplay.js:1518
 msgid "Add to Favorites"
 msgstr "Føj til favoritter"
 
@@ -401,7 +405,8 @@ msgstr "%s er blevet føjet til dine favoritter."
 msgid "%s has been removed from your favorites."
 msgstr "%s er blevet fjernet fra dine favoritter."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:807
+#: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Indstillinger"
 
@@ -587,50 +592,50 @@ msgstr "Åbn med %s"
 msgid "Eject"
 msgstr "Skub ud"
 
-#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Adgangskode:"
 
-#: ../js/ui/components/keyring.js:107
+#: ../js/ui/components/keyring.js:110
 msgid "Type again:"
 msgstr "Indtast igen:"
 
-#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
 #: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
 msgid "Connect"
 msgstr "Forbind"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:218
-#: ../js/ui/components/networkAgent.js:230
-#: ../js/ui/components/networkAgent.js:257
-#: ../js/ui/components/networkAgent.js:277
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/ui/components/networkAgent.js:222
+#: ../js/ui/components/networkAgent.js:234
+#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:281
+#: ../js/ui/components/networkAgent.js:291
 msgid "Password: "
 msgstr "Adgangskode: "
 
 #. static WEP
-#: ../js/ui/components/networkAgent.js:223
+#: ../js/ui/components/networkAgent.js:227
 msgid "Key: "
 msgstr "Nøgle: "
 
-#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:265
 msgid "Identity: "
 msgstr "Identitet: "
 
-#: ../js/ui/components/networkAgent.js:263
+#: ../js/ui/components/networkAgent.js:267
 msgid "Private key password: "
 msgstr "Privatnøgle-adgangskode: "
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:279
 msgid "Service: "
 msgstr "Tjeneste: "
 
-#: ../js/ui/components/networkAgent.js:304
+#: ../js/ui/components/networkAgent.js:308
 msgid "Authentication required by wireless network"
 msgstr "Godkendelse påkrævet af trådløst netværk"
 
-#: ../js/ui/components/networkAgent.js:305
+#: ../js/ui/components/networkAgent.js:309
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -639,35 +644,35 @@ msgstr ""
 "Adgangskoder eller krypteringsnøgler er påkrævet for at få adgang til det "
 "trådløse netværk \"%s\"."
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:313
 msgid "Wired 802.1X authentication"
 msgstr "Trådet 802.1X-godkendelse"
 
-#: ../js/ui/components/networkAgent.js:311
+#: ../js/ui/components/networkAgent.js:315
 msgid "Network name: "
 msgstr "Netværksnavn: "
 
-#: ../js/ui/components/networkAgent.js:316
+#: ../js/ui/components/networkAgent.js:320
 msgid "DSL authentication"
 msgstr "DSL-godkendelse"
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:327
 msgid "PIN code required"
 msgstr "PIN-kode påkrævet"
 
-#: ../js/ui/components/networkAgent.js:324
+#: ../js/ui/components/networkAgent.js:328
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN-kode er nødvendig for den mobile bredbåndsenhed"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:329
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:331
+#: ../js/ui/components/networkAgent.js:335
 msgid "Mobile broadband network password"
 msgstr "Adgangskode til mobilt bredbåndsnetværk"
 
-#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:336
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "En adgangskode er påkrævet for at forbinde til \"%s\"."
@@ -1155,11 +1160,11 @@ msgstr "Menu for statusfelt"
 msgid "No Messages"
 msgstr "Ingen beskeder"
 
-#: ../js/ui/messageTray.js:1812
+#: ../js/ui/messageTray.js:1813
 msgid "Message Tray"
 msgstr "Besked-statusfelt"
 
-#: ../js/ui/messageTray.js:2787
+#: ../js/ui/messageTray.js:2788
 msgid "System Information"
 msgstr "Systeminformation"
 
@@ -1200,10 +1205,6 @@ msgstr "Afslut"
 #: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "Aktiviteter"
-
-#: ../js/ui/panel.js:807
-msgid "Settings Menu"
-msgstr "Menu for indstillinger"
 
 #: ../js/ui/panel.js:903
 msgid "Top Bar"
@@ -1340,9 +1341,9 @@ msgstr "Stor tekst"
 
 #. The Bluetooth menu only appears when Bluetooth is in use,
 #. so just statically build it with a "Turn Off" menu item.
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:62
-#: ../js/ui/status/bluetooth.js:99 ../js/ui/status/bluetooth.js:127
-#: ../js/ui/status/bluetooth.js:163 ../js/ui/status/bluetooth.js:194
+#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:63
+#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
+#: ../js/ui/status/bluetooth.js:164 ../js/ui/status/bluetooth.js:195
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1355,56 +1356,56 @@ msgstr "Sluk"
 msgid "Bluetooth Settings"
 msgstr "Indstillinger for Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:57
+#: ../js/ui/status/bluetooth.js:58
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d forbundet enhed"
 msgstr[1] "%d forbundne enheder"
 
-#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
+#: ../js/ui/status/bluetooth.js:101 ../js/ui/status/bluetooth.js:129
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Godkendelsesforespørgsel fra %s"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/bluetooth.js:171
-#: ../js/ui/status/bluetooth.js:202
+#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/bluetooth.js:172
+#: ../js/ui/status/bluetooth.js:203
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Enheden %s ønsker at blive parret med denne computer"
 
-#: ../js/ui/status/bluetooth.js:108
+#: ../js/ui/status/bluetooth.js:109
 msgid "Allow"
 msgstr "Tillad"
 
-#: ../js/ui/status/bluetooth.js:109
+#: ../js/ui/status/bluetooth.js:110
 msgid "Deny"
 msgstr "Nægt"
 
-#: ../js/ui/status/bluetooth.js:134
+#: ../js/ui/status/bluetooth.js:135
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Enheden %s ønsker adgang til tjenesten \"%s\""
 
-#: ../js/ui/status/bluetooth.js:136
+#: ../js/ui/status/bluetooth.js:137
 msgid "Always grant access"
 msgstr "Giv altid adgang"
 
-#: ../js/ui/status/bluetooth.js:137
+#: ../js/ui/status/bluetooth.js:138
 msgid "Grant this time only"
 msgstr "Giv kun lov denne gang"
 
-#: ../js/ui/status/bluetooth.js:138
+#: ../js/ui/status/bluetooth.js:139
 msgid "Reject"
 msgstr "Afvis"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:165
+#: ../js/ui/status/bluetooth.js:166
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Bekræftelse af parring for %s"
 
-#: ../js/ui/status/bluetooth.js:172
+#: ../js/ui/status/bluetooth.js:173
 #, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
@@ -1413,24 +1414,24 @@ msgstr ""
 "enheden."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:175
+#: ../js/ui/status/bluetooth.js:176
 msgid "Matches"
 msgstr "Stemmer"
 
-#: ../js/ui/status/bluetooth.js:176
+#: ../js/ui/status/bluetooth.js:177
 msgid "Does not match"
 msgstr "Stemmer ikke"
 
-#: ../js/ui/status/bluetooth.js:195
+#: ../js/ui/status/bluetooth.js:196
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Forespørgsel om parring for %s"
 
-#: ../js/ui/status/bluetooth.js:203
+#: ../js/ui/status/bluetooth.js:204
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Indtast PIN-koden nævnt på enheden."
 
-#: ../js/ui/status/bluetooth.js:220
+#: ../js/ui/status/bluetooth.js:221
 msgid "OK"
 msgstr "O.k."
 
@@ -1514,15 +1515,15 @@ msgstr "Tænd"
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1306
+#: ../js/ui/status/network.js:1307
 msgid "Network Manager"
 msgstr "Netværkshåndtering"
 
-#: ../js/ui/status/network.js:1345
+#: ../js/ui/status/network.js:1346
 msgid "Connection failed"
 msgstr "Forbindelse mislykkedes"
 
-#: ../js/ui/status/network.js:1346
+#: ../js/ui/status/network.js:1347
 msgid "Activation of network connection failed"
 msgstr "Aktivering af netværksforbindelse mislykkedes"
 
@@ -1715,6 +1716,9 @@ msgstr "Adgangskode må ikke være tom"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Godkendelsesdialogen blev afvist af brugeren"
+
+#~ msgid "Settings Menu"
+#~ msgstr "Menu for indstillinger"
 
 #~ msgid "Screenshots"
 #~ msgstr "Skærmbilleder"
