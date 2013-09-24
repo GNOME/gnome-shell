@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-14 18:10+0000\n"
+"POT-Creation-Date: 2013-09-23 13:35+0000\n"
 "PO-Revision-Date: 2012-10-16 12:05+0300\n"
 "Last-Translator: Kasia Bondarava <kasia.bondarava@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
@@ -263,6 +263,10 @@ msgstr "Дынамічнае кіраванне прасторамі працы"
 msgid "Workspaces only on primary monitor"
 msgstr "Прасторы працы толькі для асноўнага манітора"
 
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr "Затрымліваць змяненне фокусу ў рэжыме мышы да спынення руху яе паказальніка"
+
 #: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
@@ -278,10 +282,10 @@ msgstr ""
 "Абярыце пашырэнне, каб настроіць графу з выплыўным спісам, якая знаходзіцца "
 "вышэй."
 
-#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
+#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:686
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:686
 msgid "Cancel"
 msgstr "Скасаваць"
 
@@ -320,8 +324,8 @@ msgstr "(напр., карыстальнік ці %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:255
-#: ../js/ui/components/networkAgent.js:273
+#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:259
+#: ../js/ui/components/networkAgent.js:277
 msgid "Username: "
 msgstr "Імя карыстальніка: "
 
@@ -357,27 +361,27 @@ msgstr "Не ўдалося разабраць загад:"
 msgid "Execution of '%s' failed:"
 msgstr "Не ўдалося выканаць \"%s\":"
 
-#: ../js/ui/appDisplay.js:598
+#: ../js/ui/appDisplay.js:596
 msgid "Frequently used applications will appear here"
 msgstr "Тут размешчаныя часта ўжываныя праграмы"
 
-#: ../js/ui/appDisplay.js:714
+#: ../js/ui/appDisplay.js:712
 msgid "Frequent"
 msgstr "Часта"
 
-#: ../js/ui/appDisplay.js:721
+#: ../js/ui/appDisplay.js:719
 msgid "All"
 msgstr "Усе"
 
-#: ../js/ui/appDisplay.js:1516
+#: ../js/ui/appDisplay.js:1514
 msgid "New Window"
 msgstr "Новае акно"
 
-#: ../js/ui/appDisplay.js:1519 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1517 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Выдаліць са спіса ўпадабанага"
 
-#: ../js/ui/appDisplay.js:1520
+#: ../js/ui/appDisplay.js:1518
 msgid "Add to Favorites"
 msgstr "Дадаць у спіс упадабанага"
 
@@ -578,50 +582,50 @@ msgstr "Адкрыць у %s"
 msgid "Eject"
 msgstr "Выняць"
 
-#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Пароль:"
 
-#: ../js/ui/components/keyring.js:107
+#: ../js/ui/components/keyring.js:110
 msgid "Type again:"
 msgstr "Паўтарыце пароль:"
 
-#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
 #: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
 msgid "Connect"
 msgstr "Злучыць"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:218
-#: ../js/ui/components/networkAgent.js:230
-#: ../js/ui/components/networkAgent.js:257
-#: ../js/ui/components/networkAgent.js:277
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/ui/components/networkAgent.js:222
+#: ../js/ui/components/networkAgent.js:234
+#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:281
+#: ../js/ui/components/networkAgent.js:291
 msgid "Password: "
 msgstr "Пароль: "
 
 #. static WEP
-#: ../js/ui/components/networkAgent.js:223
+#: ../js/ui/components/networkAgent.js:227
 msgid "Key: "
 msgstr "Ключ: "
 
-#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:265
 msgid "Identity: "
 msgstr "Ідэнтычнасць: "
 
-#: ../js/ui/components/networkAgent.js:263
+#: ../js/ui/components/networkAgent.js:267
 msgid "Private key password: "
 msgstr "Пароль да прыватнага ключа: "
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:279
 msgid "Service: "
 msgstr "Паслуга: "
 
-#: ../js/ui/components/networkAgent.js:304
+#: ../js/ui/components/networkAgent.js:308
 msgid "Authentication required by wireless network"
 msgstr "Для бесправадной сеткі патрэбная ідэнтыфікацыя"
 
-#: ../js/ui/components/networkAgent.js:305
+#: ../js/ui/components/networkAgent.js:309
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -630,37 +634,37 @@ msgstr ""
 "Для доступу да бесправадной сеткі \"%s\" патрэбны пароль або ключы "
 "шыфравання."
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:313
 msgid "Wired 802.1X authentication"
 msgstr "Правадная ідэнтыфікацыя 802.1X"
 
-#: ../js/ui/components/networkAgent.js:311
+#: ../js/ui/components/networkAgent.js:315
 msgid "Network name: "
 msgstr "Назва сеткі: "
 
-#: ../js/ui/components/networkAgent.js:316
+#: ../js/ui/components/networkAgent.js:320
 msgid "DSL authentication"
 msgstr "DSL-ідэнтыфікацыя"
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:327
 msgid "PIN code required"
 msgstr "Патрэбны PIN-код"
 
-#: ../js/ui/components/networkAgent.js:324
+#: ../js/ui/components/networkAgent.js:328
 msgid "PIN code is needed for the mobile broadband device"
 msgstr ""
 "Для прыстасавання для доступу да шырокапалоснай мабільнай сеткі патрэбны PIN-"
 "код"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:329
 msgid "PIN: "
 msgstr "PIN-код: "
 
-#: ../js/ui/components/networkAgent.js:331
+#: ../js/ui/components/networkAgent.js:335
 msgid "Mobile broadband network password"
 msgstr "Пароль да шырокапалоснай мабільнай сеткі"
 
-#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:336
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Каб злучыцца з \"%s\", патрэбны пароль."
@@ -1150,11 +1154,11 @@ msgstr "Меню трэя"
 msgid "No Messages"
 msgstr "Апавяшчэнні адсутнічаюць"
 
-#: ../js/ui/messageTray.js:1812
+#: ../js/ui/messageTray.js:1813
 msgid "Message Tray"
 msgstr "Абшар апавяшчэнняў"
 
-#: ../js/ui/messageTray.js:2787
+#: ../js/ui/messageTray.js:2788
 msgid "System Information"
 msgstr "Сістэмная інфармацыя"
 
@@ -1333,9 +1337,9 @@ msgstr "Буйны тэкст"
 
 #. The Bluetooth menu only appears when Bluetooth is in use,
 #. so just statically build it with a "Turn Off" menu item.
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:62
-#: ../js/ui/status/bluetooth.js:99 ../js/ui/status/bluetooth.js:127
-#: ../js/ui/status/bluetooth.js:163 ../js/ui/status/bluetooth.js:194
+#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:63
+#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
+#: ../js/ui/status/bluetooth.js:164 ../js/ui/status/bluetooth.js:195
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1348,7 +1352,7 @@ msgstr "Выключыць"
 msgid "Bluetooth Settings"
 msgstr "Настройкі Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:57
+#: ../js/ui/status/bluetooth.js:58
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
@@ -1356,73 +1360,73 @@ msgstr[0] "%d злучанае прыстасаванне"
 msgstr[1] "%d злучаныя прыстасаванні"
 msgstr[2] "%d злучаных прыстасаванняў"
 
-#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
+#: ../js/ui/status/bluetooth.js:101 ../js/ui/status/bluetooth.js:129
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Запыт на ўпаўнаважанне ад %s"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/bluetooth.js:171
-#: ../js/ui/status/bluetooth.js:202
+#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/bluetooth.js:172
+#: ../js/ui/status/bluetooth.js:203
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Прыстасаванне %s хоча спарыцца з гэтым камп'ютарам"
 
-#: ../js/ui/status/bluetooth.js:108
+#: ../js/ui/status/bluetooth.js:109
 msgid "Allow"
 msgstr "Дазволіць"
 
-#: ../js/ui/status/bluetooth.js:109
+#: ../js/ui/status/bluetooth.js:110
 msgid "Deny"
 msgstr "Адмовіць"
 
-#: ../js/ui/status/bluetooth.js:134
+#: ../js/ui/status/bluetooth.js:135
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Прыстасаванне %s хоча даступіцца да паслугі \"%s\""
 
-#: ../js/ui/status/bluetooth.js:136
+#: ../js/ui/status/bluetooth.js:137
 msgid "Always grant access"
 msgstr "Заўсёды даваць дазвол"
 
-#: ../js/ui/status/bluetooth.js:137
+#: ../js/ui/status/bluetooth.js:138
 msgid "Grant this time only"
 msgstr "Даць дазвол аднойчы"
 
-#: ../js/ui/status/bluetooth.js:138
+#: ../js/ui/status/bluetooth.js:139
 msgid "Reject"
 msgstr "Адмовіць"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:165
+#: ../js/ui/status/bluetooth.js:166
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Пацвярджэнне спарвання з %s"
 
-#: ../js/ui/status/bluetooth.js:172
+#: ../js/ui/status/bluetooth.js:173
 #, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr "Праверце, ці супадае пароль \"%06d\" з нумарам на прыстасаванні."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:175
+#: ../js/ui/status/bluetooth.js:176
 msgid "Matches"
 msgstr "Супадае"
 
-#: ../js/ui/status/bluetooth.js:176
+#: ../js/ui/status/bluetooth.js:177
 msgid "Does not match"
 msgstr "Не супадае"
 
-#: ../js/ui/status/bluetooth.js:195
+#: ../js/ui/status/bluetooth.js:196
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Запыт на спарванне з %s"
 
-#: ../js/ui/status/bluetooth.js:203
+#: ../js/ui/status/bluetooth.js:204
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Увядзіце PIN, які паказвае прыстасаванне."
 
-#: ../js/ui/status/bluetooth.js:220
+#: ../js/ui/status/bluetooth.js:221
 msgid "OK"
 msgstr "Добра"
 
@@ -1506,15 +1510,15 @@ msgstr "Уключыць"
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1306
+#: ../js/ui/status/network.js:1307
 msgid "Network Manager"
 msgstr "Сеткавы кіраўнік"
 
-#: ../js/ui/status/network.js:1345
+#: ../js/ui/status/network.js:1346
 msgid "Connection failed"
 msgstr "Не ўдалося злучыцца"
 
-#: ../js/ui/status/network.js:1346
+#: ../js/ui/status/network.js:1347
 msgid "Activation of network connection failed"
 msgstr "Не ўдалося ўключыць сеткавае злучэнне"
 
@@ -1710,4 +1714,3 @@ msgstr "Пароль не можа быць пустым"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Карыстальнік праігнараваў дыялогавае акенца ідэнтыфікацыі"
-
