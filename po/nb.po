@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.9.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-08 11:22+0200\n"
-"PO-Revision-Date: 2013-09-08 11:23+0200\n"
+"POT-Creation-Date: 2013-09-24 19:37+0200\n"
+"PO-Revision-Date: 2013-09-24 19:38+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -47,6 +47,7 @@ msgid "GNOME Shell"
 msgstr "GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
+#: ../data/gnome-shell-wayland.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Vindushåndtering og oppstart av programmer"
 
@@ -58,6 +59,10 @@ msgstr "Brukervalg for GNOME Shell utvidelser"
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
 msgstr "Konfigurer utvidelser for GNOME Shell"
+
+#: ../data/gnome-shell-wayland.desktop.in.in.h:1
+msgid "GNOME Shell (wayland compositor)"
+msgstr "GNOME Shell (wayland kompositør)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -243,6 +248,10 @@ msgstr "Arbeidsområder håndteres dynamisk"
 msgid "Workspaces only on primary monitor"
 msgstr "Arbeidsområder vises kun på hovedskjerm"
 
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr ""
+
 #: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
@@ -256,10 +265,10 @@ msgstr "Utvidelse"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Velg en utvidelse som skal konfigureres med komboboksen over."
 
-#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
+#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:686
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:686
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -298,8 +307,8 @@ msgstr "(f.eks. bruker eller %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:255
-#: ../js/ui/components/networkAgent.js:273
+#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:259
+#: ../js/ui/components/networkAgent.js:277
 msgid "Username: "
 msgstr "Brukernavn: "
 
@@ -320,42 +329,42 @@ msgstr "Autentiseringsfeil"
 msgid "(or swipe finger)"
 msgstr "(eller dra finger)"
 
-#: ../js/misc/util.js:97
+#: ../js/misc/util.js:98
 msgid "Command not found"
 msgstr "Kommando ikke funnet"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:130
+#: ../js/misc/util.js:131
 msgid "Could not parse command:"
 msgstr "Klarte ikke å lese kommando:"
 
-#: ../js/misc/util.js:138
+#: ../js/misc/util.js:139
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
 
-#: ../js/ui/appDisplay.js:573
+#: ../js/ui/appDisplay.js:596
 msgid "Frequently used applications will appear here"
 msgstr "Ofte brukte programmer vil vises her"
 
-#: ../js/ui/appDisplay.js:689
+#: ../js/ui/appDisplay.js:712
 msgid "Frequent"
 msgstr "Ofte"
 
-#: ../js/ui/appDisplay.js:696
+#: ../js/ui/appDisplay.js:719
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:1491
+#: ../js/ui/appDisplay.js:1514
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:1494 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1517 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:1495
+#: ../js/ui/appDisplay.js:1518
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -369,7 +378,8 @@ msgstr "%s ble lagt til i dine favoritter."
 msgid "%s has been removed from your favorites."
 msgstr "%s ble fjernet fra dine favoritter."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:808
+#: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Innstillinger"
 
@@ -555,50 +565,50 @@ msgstr "Åpne med %s"
 msgid "Eject"
 msgstr "Løs ut"
 
-#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Passord:"
 
-#: ../js/ui/components/keyring.js:107
+#: ../js/ui/components/keyring.js:110
 msgid "Type again:"
 msgstr "Skriv på nytt:"
 
-#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
 #: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
 msgid "Connect"
 msgstr "Koble til"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:218
-#: ../js/ui/components/networkAgent.js:230
-#: ../js/ui/components/networkAgent.js:257
-#: ../js/ui/components/networkAgent.js:277
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/ui/components/networkAgent.js:222
+#: ../js/ui/components/networkAgent.js:234
+#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:281
+#: ../js/ui/components/networkAgent.js:291
 msgid "Password: "
 msgstr "Passord: "
 
 #. static WEP
-#: ../js/ui/components/networkAgent.js:223
+#: ../js/ui/components/networkAgent.js:227
 msgid "Key: "
 msgstr "Nøkkel: "
 
-#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:265
 msgid "Identity: "
 msgstr "Identitet: "
 
-#: ../js/ui/components/networkAgent.js:263
+#: ../js/ui/components/networkAgent.js:267
 msgid "Private key password: "
 msgstr "Passord for privat nøkkel: "
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:279
 msgid "Service: "
 msgstr "Tjeneste: "
 
-#: ../js/ui/components/networkAgent.js:304
+#: ../js/ui/components/networkAgent.js:308
 msgid "Authentication required by wireless network"
 msgstr "Autentisering kreves av trådløst nettverk"
 
-#: ../js/ui/components/networkAgent.js:305
+#: ../js/ui/components/networkAgent.js:309
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -607,35 +617,35 @@ msgstr ""
 "Passord eller krypteringsnøkler kreves for å koble til trådløst nettverk "
 "«%s»."
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:313
 msgid "Wired 802.1X authentication"
 msgstr "802.1X autentisering for trådbundet nettverk"
 
-#: ../js/ui/components/networkAgent.js:311
+#: ../js/ui/components/networkAgent.js:315
 msgid "Network name: "
 msgstr "Navn på nettverk: "
 
-#: ../js/ui/components/networkAgent.js:316
+#: ../js/ui/components/networkAgent.js:320
 msgid "DSL authentication"
 msgstr "DSL-autentisering"
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:327
 msgid "PIN code required"
 msgstr "PIN-kode kreves"
 
-#: ../js/ui/components/networkAgent.js:324
+#: ../js/ui/components/networkAgent.js:328
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN-kode kreves for mobil bredbåndsenhet"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:329
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:331
+#: ../js/ui/components/networkAgent.js:335
 msgid "Mobile broadband network password"
 msgstr "Nettverkspassord for mobilt bredbånd"
 
-#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:336
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Et passord kreves for å koble til «%s»."
@@ -899,7 +909,7 @@ msgstr "Vis konto"
 msgid "Unknown reason"
 msgstr "Ukjent årsak"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:100
 msgid "Windows"
 msgstr "Vinduer"
 
@@ -1047,7 +1057,7 @@ msgstr "Installer"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Last ned og installer «%s» fra extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:334
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -1123,11 +1133,11 @@ msgstr "Meny for varslingsområde"
 msgid "No Messages"
 msgstr "Ingen meldinger"
 
-#: ../js/ui/messageTray.js:1812
+#: ../js/ui/messageTray.js:1813
 msgid "Message Tray"
 msgstr "Meldingstrau"
 
-#: ../js/ui/messageTray.js:2787
+#: ../js/ui/messageTray.js:2788
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -1159,21 +1169,17 @@ msgstr "Oversikt"
 msgid "Type to search…"
 msgstr "Skriv for å søke …"
 
-#: ../js/ui/panel.js:516
+#: ../js/ui/panel.js:518
 msgid "Quit"
 msgstr "Avslutt"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:805
-msgid "Settings Menu"
-msgstr "Meny for innstillinger"
-
-#: ../js/ui/panel.js:901
+#: ../js/ui/panel.js:904
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -1182,7 +1188,7 @@ msgstr "Topp-panel"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:226
+#: ../js/ui/popupMenu.js:233
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1211,7 +1217,7 @@ msgstr[1] "%d nye varslinger"
 msgid "Lock"
 msgstr "Lås"
 
-#: ../js/ui/screenShield.js:703
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME må låse skjermen"
 
@@ -1222,11 +1228,11 @@ msgstr "GNOME må låse skjermen"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:830 ../js/ui/screenShield.js:1296
+#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Unable to lock"
 msgstr "Kan ikke låse"
 
-#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
+#: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1298
 msgid "Lock was blocked by an application"
 msgstr "Låsing ble stoppet av et program"
 
@@ -1308,9 +1314,9 @@ msgstr "Stor tekst"
 
 #. The Bluetooth menu only appears when Bluetooth is in use,
 #. so just statically build it with a "Turn Off" menu item.
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:62
-#: ../js/ui/status/bluetooth.js:99 ../js/ui/status/bluetooth.js:127
-#: ../js/ui/status/bluetooth.js:163 ../js/ui/status/bluetooth.js:194
+#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:63
+#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
+#: ../js/ui/status/bluetooth.js:164 ../js/ui/status/bluetooth.js:195
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1323,80 +1329,80 @@ msgstr "Slå av"
 msgid "Bluetooth Settings"
 msgstr "Innstillinger for Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:57
+#: ../js/ui/status/bluetooth.js:58
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d tilkoblet enhet"
 msgstr[1] "%d tilkoblede enheter"
 
-#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
+#: ../js/ui/status/bluetooth.js:101 ../js/ui/status/bluetooth.js:129
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Forespørsel om autorisering fra %s"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/bluetooth.js:171
-#: ../js/ui/status/bluetooth.js:202
+#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/bluetooth.js:172
+#: ../js/ui/status/bluetooth.js:203
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Enhet %s vil koble seg sammen med denne datamaskinen"
 
-#: ../js/ui/status/bluetooth.js:108
+#: ../js/ui/status/bluetooth.js:109
 msgid "Allow"
 msgstr "Tillat"
 
-#: ../js/ui/status/bluetooth.js:109
+#: ../js/ui/status/bluetooth.js:110
 msgid "Deny"
 msgstr "Nekt"
 
-#: ../js/ui/status/bluetooth.js:134
+#: ../js/ui/status/bluetooth.js:135
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Enhet %s vil ha tilgang til tjenesten «%s»"
 
-#: ../js/ui/status/bluetooth.js:136
+#: ../js/ui/status/bluetooth.js:137
 msgid "Always grant access"
 msgstr "Alltid gi tilgang"
 
-#: ../js/ui/status/bluetooth.js:137
+#: ../js/ui/status/bluetooth.js:138
 msgid "Grant this time only"
 msgstr "Gi tilgang kun denne ene gangen"
 
-#: ../js/ui/status/bluetooth.js:138
+#: ../js/ui/status/bluetooth.js:139
 msgid "Reject"
 msgstr "Avvis"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:165
+#: ../js/ui/status/bluetooth.js:166
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Bekreftelse for tilkobling for %s"
 
-#: ../js/ui/status/bluetooth.js:172
+#: ../js/ui/status/bluetooth.js:173
 #, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr "Vennligst bekreft om passord «%06d» er lik den som brukes på enheten."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:175
+#: ../js/ui/status/bluetooth.js:176
 msgid "Matches"
 msgstr "Stemmer overens"
 
-#: ../js/ui/status/bluetooth.js:176
+#: ../js/ui/status/bluetooth.js:177
 msgid "Does not match"
 msgstr "Stemmer ikke overens"
 
-#: ../js/ui/status/bluetooth.js:195
+#: ../js/ui/status/bluetooth.js:196
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Forespørsel om tilkobling for %s"
 
-#: ../js/ui/status/bluetooth.js:203
+#: ../js/ui/status/bluetooth.js:204
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Vennligst oppgi PIN som oppgitt på enheten."
 
-#: ../js/ui/status/bluetooth.js:220
+#: ../js/ui/status/bluetooth.js:221
 msgid "OK"
 msgstr "OK"
 
@@ -1404,7 +1410,7 @@ msgstr "OK"
 msgid "Brightness"
 msgstr "Lysstyrke"
 
-#: ../js/ui/status/keyboard.js:404
+#: ../js/ui/status/keyboard.js:403
 msgid "Show Keyboard Layout"
 msgstr "Vis tastaturutforming"
 
@@ -1480,15 +1486,15 @@ msgstr "Slå på"
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1306
+#: ../js/ui/status/network.js:1307
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
-#: ../js/ui/status/network.js:1345
+#: ../js/ui/status/network.js:1346
 msgid "Connection failed"
 msgstr "Tilkobling feilet"
 
-#: ../js/ui/status/network.js:1346
+#: ../js/ui/status/network.js:1347
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling feilet"
 
@@ -1574,11 +1580,11 @@ msgstr "Logg inn som en annen bruker"
 msgid "Unlock Window"
 msgstr "Lås opp vindu"
 
-#: ../js/ui/viewSelector.js:100
+#: ../js/ui/viewSelector.js:104
 msgid "Applications"
 msgstr "Programmer"
 
-#: ../js/ui/viewSelector.js:104
+#: ../js/ui/viewSelector.js:108
 msgid "Search"
 msgstr "Søk"
 
@@ -1681,3 +1687,6 @@ msgstr "Passordet kan ikke være tomt"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Autentiseringsdialogen ble lukket av brukeren"
+
+#~ msgid "Settings Menu"
+#~ msgstr "Meny for innstillinger"
