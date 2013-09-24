@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-12 17:36+0000\n"
-"PO-Revision-Date: 2013-09-13 15:09+0530\n"
+"POT-Creation-Date: 2013-09-23 13:35+0000\n"
+"PO-Revision-Date: 2013-09-24 14:24+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as_IN\n"
@@ -271,6 +271,11 @@ msgstr "কাৰ্য্যস্থানসমূহক চলমানভ�
 msgid "Workspaces only on primary monitor"
 msgstr "কাৰ্য্যস্থানসমূহ কেৱল প্ৰাথমিক মনিটৰত"
 
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr ""
+"বিলম্বৰ ফকাচ মাউছ অৱস্থাত পৰিবৰ্তন হয় যেতিয়ালৈকে পইন্টাৰে গমন কৰা বন্ধ নকৰে"
+
 #: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
@@ -284,10 +289,10 @@ msgstr "প্ৰসাৰন"
 msgid "Select an extension to configure using the combobox above."
 msgstr "উপৰত দিয়া কম্বোবাকচ ব্যৱহাৰ কৰি সংৰূপণ কৰিবলে এটা সম্প্ৰসাৰন বাছক।"
 
-#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
+#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:686
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:686
 msgid "Cancel"
 msgstr "বাতিল কৰক"
 
@@ -326,8 +331,8 @@ msgstr "(উদাহৰণ, ব্যৱহাৰকাৰী অথবা %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:255
-#: ../js/ui/components/networkAgent.js:273
+#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:259
+#: ../js/ui/components/networkAgent.js:277
 msgid "Username: "
 msgstr "ব্যৱহাৰকাৰীৰ নাম: "
 
@@ -363,27 +368,27 @@ msgstr "কমান্ড বিশ্লেষন কৰিব নোৱাৰ
 msgid "Execution of '%s' failed:"
 msgstr "'%s' ৰ প্ৰেৰণ ব্যৰ্থ হল:"
 
-#: ../js/ui/appDisplay.js:573
+#: ../js/ui/appDisplay.js:596
 msgid "Frequently used applications will appear here"
 msgstr "সঘনে ব্যৱহাৰ কৰা এপ্লিকেচনসমূহ ইয়াত উপস্থিত হব"
 
-#: ../js/ui/appDisplay.js:689
+#: ../js/ui/appDisplay.js:712
 msgid "Frequent"
 msgstr "সঘন"
 
-#: ../js/ui/appDisplay.js:696
+#: ../js/ui/appDisplay.js:719
 msgid "All"
 msgstr "সকলো"
 
-#: ../js/ui/appDisplay.js:1491
+#: ../js/ui/appDisplay.js:1514
 msgid "New Window"
 msgstr "নতুন উইন্ডো"
 
-#: ../js/ui/appDisplay.js:1494 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1517 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "পছন্দৰ পৰা আতৰাওক"
 
-#: ../js/ui/appDisplay.js:1495
+#: ../js/ui/appDisplay.js:1518
 msgid "Add to Favorites"
 msgstr "পছন্দলে যোগ কৰক"
 
@@ -397,7 +402,8 @@ msgstr "%s ক আপোনাৰ পছন্দলে যোগ কৰা হ�
 msgid "%s has been removed from your favorites."
 msgstr "%s ক আপোনাৰ পছন্দৰ পৰা আতৰোৱা হৈছে।"
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:807
+#: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "সংহতিসমূহ"
 
@@ -583,50 +589,50 @@ msgstr "%s ৰ সৈতে খোলক"
 msgid "Eject"
 msgstr "উলিৱাওক"
 
-#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "পাছৱাৰ্ড:"
 
-#: ../js/ui/components/keyring.js:107
+#: ../js/ui/components/keyring.js:110
 msgid "Type again:"
 msgstr "আকৌ টাইপ কৰক:"
 
-#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
 #: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
 msgid "Connect"
 msgstr "সংযোগ কৰক"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:218
-#: ../js/ui/components/networkAgent.js:230
-#: ../js/ui/components/networkAgent.js:257
-#: ../js/ui/components/networkAgent.js:277
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/ui/components/networkAgent.js:222
+#: ../js/ui/components/networkAgent.js:234
+#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:281
+#: ../js/ui/components/networkAgent.js:291
 msgid "Password: "
 msgstr "পাছৱাৰ্ড: "
 
 #. static WEP
-#: ../js/ui/components/networkAgent.js:223
+#: ../js/ui/components/networkAgent.js:227
 msgid "Key: "
 msgstr "কি': "
 
-#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:265
 msgid "Identity: "
 msgstr "পৰিচয়: "
 
-#: ../js/ui/components/networkAgent.js:263
+#: ../js/ui/components/networkAgent.js:267
 msgid "Private key password: "
 msgstr "ব্যক্তিগত কি' পাছৱাৰ্ড: "
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:279
 msgid "Service: "
 msgstr "সেৱা: "
 
-#: ../js/ui/components/networkAgent.js:304
+#: ../js/ui/components/networkAgent.js:308
 msgid "Authentication required by wireless network"
 msgstr "বেতাঁৰ নেটৱাৰ্কৰ দ্বাৰা প্ৰমাণীকৰণৰ প্ৰয়োজন"
 
-#: ../js/ui/components/networkAgent.js:305
+#: ../js/ui/components/networkAgent.js:309
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -635,35 +641,35 @@ msgstr ""
 "বেতাঁৰ নেটৱাৰ্ক '%s' অভিগম কৰিবলে পাছৱাৰ্ডসমূহ অথবা ইনক্ৰিপষণ কি'সমূহৰ "
 "প্ৰয়োজন।"
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:313
 msgid "Wired 802.1X authentication"
 msgstr "তাঁৰযুক্ত 802.1X প্ৰমাণীকৰণ"
 
-#: ../js/ui/components/networkAgent.js:311
+#: ../js/ui/components/networkAgent.js:315
 msgid "Network name: "
 msgstr "নেটৱাৰ্কৰ নাম: "
 
-#: ../js/ui/components/networkAgent.js:316
+#: ../js/ui/components/networkAgent.js:320
 msgid "DSL authentication"
 msgstr "DSL প্ৰমাণীকৰণ"
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:327
 msgid "PIN code required"
 msgstr "PIN ক'ডৰ প্ৰয়োজন"
 
-#: ../js/ui/components/networkAgent.js:324
+#: ../js/ui/components/networkAgent.js:328
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "মবাইল ব্ৰডবেণ্ড সেৱাৰ বাবে PIN ক'ডৰ প্ৰয়োজন"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:329
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:331
+#: ../js/ui/components/networkAgent.js:335
 msgid "Mobile broadband network password"
 msgstr "মবাইল ব্ৰডবেণ্ড নেটৱাৰ্ক পাছৱাৰ্ড"
 
-#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:336
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "'%s' লে সংযোগ কৰিবলে এটা পাছৱাৰ্ডৰ প্ৰয়োজন।"
@@ -1152,11 +1158,11 @@ msgstr "ট্ৰে মেনু"
 msgid "No Messages"
 msgstr "কোনো বাৰ্তা নাই"
 
-#: ../js/ui/messageTray.js:1812
+#: ../js/ui/messageTray.js:1813
 msgid "Message Tray"
 msgstr "বাৰ্তা ট্ৰে"
 
-#: ../js/ui/messageTray.js:2787
+#: ../js/ui/messageTray.js:2788
 msgid "System Information"
 msgstr "চিস্টেম তথ্য"
 
@@ -1197,10 +1203,6 @@ msgstr "প্ৰস্থান কৰক"
 #: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "কাৰ্য্যসমূহ"
-
-#: ../js/ui/panel.js:807
-msgid "Settings Menu"
-msgstr "সংহতিসমূহ মেনু"
 
 #: ../js/ui/panel.js:903
 msgid "Top Bar"
@@ -1337,9 +1339,9 @@ msgstr "ডাঙৰ লিখনী"
 
 #. The Bluetooth menu only appears when Bluetooth is in use,
 #. so just statically build it with a "Turn Off" menu item.
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:62
-#: ../js/ui/status/bluetooth.js:99 ../js/ui/status/bluetooth.js:127
-#: ../js/ui/status/bluetooth.js:163 ../js/ui/status/bluetooth.js:194
+#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:63
+#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
+#: ../js/ui/status/bluetooth.js:164 ../js/ui/status/bluetooth.js:195
 msgid "Bluetooth"
 msgstr "ব্লুটুথ"
 
@@ -1352,80 +1354,80 @@ msgstr "বন্ধ কৰক"
 msgid "Bluetooth Settings"
 msgstr "ব্লুটুথ সংহতিসমূহ"
 
-#: ../js/ui/status/bluetooth.js:57
+#: ../js/ui/status/bluetooth.js:58
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d সংযুক্ত ডিভাইচ"
 msgstr[1] "%d সংযুক্ত ডিভাইচসমূহ"
 
-#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
+#: ../js/ui/status/bluetooth.js:101 ../js/ui/status/bluetooth.js:129
 #, c-format
 msgid "Authorization request from %s"
 msgstr "%s ৰ পৰা প্ৰমাণীকৰণ অনুৰোধ"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/bluetooth.js:171
-#: ../js/ui/status/bluetooth.js:202
+#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/bluetooth.js:172
+#: ../js/ui/status/bluetooth.js:203
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "ডিভাইচ %s এ এই কমপিউটাৰৰ লগত সংযোগ কৰিব বিচাৰে"
 
-#: ../js/ui/status/bluetooth.js:108
+#: ../js/ui/status/bluetooth.js:109
 msgid "Allow"
 msgstr "অনুমতি দিয়ক"
 
-#: ../js/ui/status/bluetooth.js:109
+#: ../js/ui/status/bluetooth.js:110
 msgid "Deny"
 msgstr "নাকচ কৰক"
 
-#: ../js/ui/status/bluetooth.js:134
+#: ../js/ui/status/bluetooth.js:135
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "ডিভাইচ %s এ সেৱা '%s' লে অভিগম বিচাৰে"
 
-#: ../js/ui/status/bluetooth.js:136
+#: ../js/ui/status/bluetooth.js:137
 msgid "Always grant access"
 msgstr "সদায় অভিগম প্ৰদান কৰক"
 
-#: ../js/ui/status/bluetooth.js:137
+#: ../js/ui/status/bluetooth.js:138
 msgid "Grant this time only"
 msgstr "কেৱল এইবাৰৰ কাৰণে প্ৰদান কৰক"
 
-#: ../js/ui/status/bluetooth.js:138
+#: ../js/ui/status/bluetooth.js:139
 msgid "Reject"
 msgstr "নাকচ কৰক"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:165
+#: ../js/ui/status/bluetooth.js:166
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "%s ৰ কাৰণে যোৰ প্ৰতিশ্ৰুতি"
 
-#: ../js/ui/status/bluetooth.js:172
+#: ../js/ui/status/bluetooth.js:173
 #, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr "অনুগ্ৰহ কৰি সুনিশ্চিত কৰক যে পাছকি '%06d' ডিভাইচত থকাটোৰ সৈতে মিল খায়।"
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:175
+#: ../js/ui/status/bluetooth.js:176
 msgid "Matches"
 msgstr "মিলসমূহ"
 
-#: ../js/ui/status/bluetooth.js:176
+#: ../js/ui/status/bluetooth.js:177
 msgid "Does not match"
 msgstr "মিল নাখায়"
 
-#: ../js/ui/status/bluetooth.js:195
+#: ../js/ui/status/bluetooth.js:196
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s ৰ কাৰণে যোৰ অনুৰোধ"
 
-#: ../js/ui/status/bluetooth.js:203
+#: ../js/ui/status/bluetooth.js:204
 msgid "Please enter the PIN mentioned on the device."
 msgstr "অনুগ্ৰহ কৰি ডিভাইচত উল্লেখ কৰা PIN সুমুৱাওক।"
 
-#: ../js/ui/status/bluetooth.js:220
+#: ../js/ui/status/bluetooth.js:221
 msgid "OK"
 msgstr "ঠিক আছে"
 
@@ -1509,15 +1511,15 @@ msgstr "অন কৰক"
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1306
+#: ../js/ui/status/network.js:1307
 msgid "Network Manager"
 msgstr "নেটৱাৰ্ক ব্যৱস্থাপক"
 
-#: ../js/ui/status/network.js:1345
+#: ../js/ui/status/network.js:1346
 msgid "Connection failed"
 msgstr "সংযোগ ব্যৰ্থ"
 
-#: ../js/ui/status/network.js:1346
+#: ../js/ui/status/network.js:1347
 msgid "Activation of network connection failed"
 msgstr "নেটৱাৰ্ক সংযোগ সক্ৰিয়কৰণ ব্যৰ্থ হল"
 
@@ -1710,6 +1712,9 @@ msgstr "পাছৱাৰ্ড ৰিক্ত হব নোৱাৰিব"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "প্ৰমাণীকৰণ ডাইলগ ব্যৱহাৰকাৰী দ্বাৰা নাকচ কৰা হৈছিল"
+
+#~ msgid "Settings Menu"
+#~ msgstr "সংহতিসমূহ মেনু"
 
 #~ msgid "Screenshots"
 #~ msgstr "স্ক্ৰিনশ্বটসমূহ"
