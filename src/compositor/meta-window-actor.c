@@ -1430,6 +1430,16 @@ meta_window_actor_sync_actor_geometry (MetaWindowActor *self,
   MetaWindowActorPrivate *priv = self->priv;
   MetaRectangle window_rect;
 
+  meta_window_get_input_rect (priv->window, &window_rect);
+
+  if (priv->last_width != window_rect.width ||
+      priv->last_height != window_rect.height)
+    {
+      priv->size_changed = TRUE;
+      priv->last_width = window_rect.width;
+      priv->last_height = window_rect.height;
+    }
+
   /* Normally we want freezing a window to also freeze its position; this allows
    * windows to atomically move and resize together, either under app control,
    * or because the user is resizing from the left/top. But on initial placement
@@ -1440,17 +1450,10 @@ meta_window_actor_sync_actor_geometry (MetaWindowActor *self,
   if (is_frozen (self) && !did_placement)
     return;
 
-  meta_window_get_input_rect (priv->window, &window_rect);
-
-  if (priv->last_width != window_rect.width ||
-      priv->last_height != window_rect.height)
+  if (priv->size_changed)
     {
-      priv->size_changed = TRUE;
       meta_window_actor_queue_create_pixmap (self);
       meta_window_actor_update_shape (self);
-
-      priv->last_width = window_rect.width;
-      priv->last_height = window_rect.height;
     }
 
   if (meta_window_actor_effect_in_progress (self))
