@@ -6,14 +6,13 @@
 # Julen Ruiz Aizpuru <julenx@gmail.com>, 2011.
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2011, 2012, 2013.
 # Asier Sarasua Garmendia <asiersar@yahoo.com>, 2013.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-12 17:36+0000\n"
-"PO-Revision-Date: 2013-09-15 15:38+0200\n"
+"POT-Creation-Date: 2013-09-23 13:35+0000\n"
+"PO-Revision-Date: 2013-09-25 11:16+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
 "Language-Team: Basque <librezale@librezale.org>\n"
 "Language: eu\n"
@@ -189,12 +188,10 @@ msgstr ""
 "laster-tekla."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the overview"
 msgstr "Ikuspegi orokorra bista irekitzeko laster-tekla"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the Activities Overview."
 msgstr "Jardueren ikuspegi orokorra irekitzeko laster-tekla"
 
@@ -270,6 +267,12 @@ msgstr "Laneko areak dinamikoki kudeatzen dira"
 msgid "Workspaces only on primary monitor"
 msgstr "Laneko areak monitore nagusian soilik"
 
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr ""
+"Fokuaren aldaketaren atzerapena saguaren moduan erakusleak mugitzeari utzi "
+"arte"
+
 #: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
@@ -284,10 +287,10 @@ msgstr "Hedapena"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Hautatu gehigarria gaineko konbinazio-koadroa erabiliz konfiguratzeko."
 
-#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
+#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:686
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:686
 msgid "Cancel"
 msgstr "Utzi"
 
@@ -326,8 +329,8 @@ msgstr "(adib., erabiltzailea edo %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:255
-#: ../js/ui/components/networkAgent.js:273
+#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:259
+#: ../js/ui/components/networkAgent.js:277
 msgid "Username: "
 msgstr "Erabiltzaile-izena: "
 
@@ -363,27 +366,27 @@ msgstr "Ezin izan da komandoa analizatu:"
 msgid "Execution of '%s' failed:"
 msgstr "Huts egin du '%s' exekutatzean:"
 
-#: ../js/ui/appDisplay.js:573
+#: ../js/ui/appDisplay.js:596
 msgid "Frequently used applications will appear here"
 msgstr "Maiztasunez erabilitako aplikazioak hemen agertuko dira"
 
-#: ../js/ui/appDisplay.js:689
+#: ../js/ui/appDisplay.js:712
 msgid "Frequent"
 msgstr "Askotan"
 
-#: ../js/ui/appDisplay.js:696
+#: ../js/ui/appDisplay.js:719
 msgid "All"
 msgstr "Denak"
 
-#: ../js/ui/appDisplay.js:1491
+#: ../js/ui/appDisplay.js:1514
 msgid "New Window"
 msgstr "Leiho berria"
 
-#: ../js/ui/appDisplay.js:1494 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1517 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Kendu gogokoetatik"
 
-#: ../js/ui/appDisplay.js:1495
+#: ../js/ui/appDisplay.js:1518
 msgid "Add to Favorites"
 msgstr "Gehitu gogokoei"
 
@@ -397,7 +400,8 @@ msgstr "%s gogokoei gehitu zaie."
 msgid "%s has been removed from your favorites."
 msgstr "%s gogokoetatik kendu da."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/status/system.js:325
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:807
+#: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Ezarpenak"
 
@@ -583,50 +587,50 @@ msgstr "Ireki honekin: %s"
 msgid "Eject"
 msgstr "Egotzi"
 
-#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Pasahitza:"
 
-#: ../js/ui/components/keyring.js:107
+#: ../js/ui/components/keyring.js:110
 msgid "Type again:"
 msgstr "Idatzi berriro:"
 
-#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
 #: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
 msgid "Connect"
 msgstr "Konektatu"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:218
-#: ../js/ui/components/networkAgent.js:230
-#: ../js/ui/components/networkAgent.js:257
-#: ../js/ui/components/networkAgent.js:277
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/ui/components/networkAgent.js:222
+#: ../js/ui/components/networkAgent.js:234
+#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:281
+#: ../js/ui/components/networkAgent.js:291
 msgid "Password: "
 msgstr "Pasahitza: "
 
 #. static WEP
-#: ../js/ui/components/networkAgent.js:223
+#: ../js/ui/components/networkAgent.js:227
 msgid "Key: "
 msgstr "Gakoa: "
 
-#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:265
 msgid "Identity: "
 msgstr "Identitatea: "
 
-#: ../js/ui/components/networkAgent.js:263
+#: ../js/ui/components/networkAgent.js:267
 msgid "Private key password: "
 msgstr "Gako pribatuaren pasahitza: "
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:279
 msgid "Service: "
 msgstr "Zerbitzua: "
 
-#: ../js/ui/components/networkAgent.js:304
+#: ../js/ui/components/networkAgent.js:308
 msgid "Authentication required by wireless network"
 msgstr "Haririk gabeko sareak autentifikazioa eskatzen du"
 
-#: ../js/ui/components/networkAgent.js:305
+#: ../js/ui/components/networkAgent.js:309
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -635,35 +639,35 @@ msgstr ""
 "Pasahitzak edo zifratze-gakoak behar dira haririk gabeko '%s' sarera "
 "sarbidetzeko."
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:313
 msgid "Wired 802.1X authentication"
 msgstr "Haridun 802.1X autentifikazioa"
 
-#: ../js/ui/components/networkAgent.js:311
+#: ../js/ui/components/networkAgent.js:315
 msgid "Network name: "
 msgstr "Sarearen izena: "
 
-#: ../js/ui/components/networkAgent.js:316
+#: ../js/ui/components/networkAgent.js:320
 msgid "DSL authentication"
 msgstr "DSL autentifikazioa"
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:327
 msgid "PIN code required"
 msgstr "PIN kodea behar da"
 
-#: ../js/ui/components/networkAgent.js:324
+#: ../js/ui/components/networkAgent.js:328
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN kodea behar da bandazabal mugikorreko gailuarentzako"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:329
 msgid "PIN: "
 msgstr "PINa: "
 
-#: ../js/ui/components/networkAgent.js:331
+#: ../js/ui/components/networkAgent.js:335
 msgid "Mobile broadband network password"
 msgstr "Bandazabal mugikorreko sarearen pasahitza"
 
-#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:336
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Pasahitza behar da '%s'(e)ra konektatzeko."
@@ -1026,15 +1030,12 @@ msgstr[0] "Sistema automatikoki %d segundotan berrabiaraziko da."
 msgstr[1] "Sistema automatikoki %d segundotan berrabiaraziko da."
 
 #: ../js/ui/endSessionDialog.js:112
-#| msgid "Install Updates & Restart"
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Berrabiarazi eta instalatu eguneraketak"
 
 #: ../js/ui/endSessionDialog.js:114
 #, c-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -1155,11 +1156,11 @@ msgstr "Erretiluaren menua"
 msgid "No Messages"
 msgstr "Mezurik ez"
 
-#: ../js/ui/messageTray.js:1812
+#: ../js/ui/messageTray.js:1813
 msgid "Message Tray"
 msgstr "Mezuen erretilua"
 
-#: ../js/ui/messageTray.js:2787
+#: ../js/ui/messageTray.js:2788
 msgid "System Information"
 msgstr "Sistemaren informazioa"
 
@@ -1200,11 +1201,6 @@ msgstr "Irten"
 #: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "Jarduerak"
-
-#: ../js/ui/panel.js:807
-#| msgid "Settings"
-msgid "Settings Menu"
-msgstr "Ezarpenen menua"
 
 #: ../js/ui/panel.js:903
 msgid "Top Bar"
@@ -1341,9 +1337,9 @@ msgstr "Testu handia"
 
 #. The Bluetooth menu only appears when Bluetooth is in use,
 #. so just statically build it with a "Turn Off" menu item.
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:62
-#: ../js/ui/status/bluetooth.js:99 ../js/ui/status/bluetooth.js:127
-#: ../js/ui/status/bluetooth.js:163 ../js/ui/status/bluetooth.js:194
+#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:63
+#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
+#: ../js/ui/status/bluetooth.js:164 ../js/ui/status/bluetooth.js:195
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1356,82 +1352,80 @@ msgstr "Itzali"
 msgid "Bluetooth Settings"
 msgstr "Bluetooth ezarpenak"
 
-#: ../js/ui/status/bluetooth.js:57
+#: ../js/ui/status/bluetooth.js:58
 #, c-format
-#| msgid "Connected (private)"
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "Gailu %d konektatuta"
 msgstr[1] "%d gailu konektatuta"
 
-#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
+#: ../js/ui/status/bluetooth.js:101 ../js/ui/status/bluetooth.js:129
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Baimena eskatu da %s(e)tik"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/bluetooth.js:171
-#: ../js/ui/status/bluetooth.js:202
+#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/bluetooth.js:172
+#: ../js/ui/status/bluetooth.js:203
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "%s gailuak ordenagailu honekin parekatu nahi du"
 
-#: ../js/ui/status/bluetooth.js:108
+#: ../js/ui/status/bluetooth.js:109
 msgid "Allow"
 msgstr "Onartu"
 
-#: ../js/ui/status/bluetooth.js:109
+#: ../js/ui/status/bluetooth.js:110
 msgid "Deny"
 msgstr "Ukatu"
 
-#: ../js/ui/status/bluetooth.js:134
+#: ../js/ui/status/bluetooth.js:135
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "%s gailuak '%s' zerbitzurako sarbidea nahi du"
 
-#: ../js/ui/status/bluetooth.js:136
+#: ../js/ui/status/bluetooth.js:137
 msgid "Always grant access"
 msgstr "Baimendu beti sarbidetza"
 
-#: ../js/ui/status/bluetooth.js:137
+#: ../js/ui/status/bluetooth.js:138
 msgid "Grant this time only"
 msgstr "Baimendu une honetan bakarrik"
 
-#: ../js/ui/status/bluetooth.js:138
+#: ../js/ui/status/bluetooth.js:139
 msgid "Reject"
 msgstr "Ukatu"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:165
+#: ../js/ui/status/bluetooth.js:166
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Parekatze-berrespena %s gailuarentzat"
 
-#: ../js/ui/status/bluetooth.js:172
+#: ../js/ui/status/bluetooth.js:173
 #, c-format
-#| msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr "Berretsi '%06d' pasa-gakoa gailukoarekin bat datorren edo ez."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:175
+#: ../js/ui/status/bluetooth.js:176
 msgid "Matches"
 msgstr "Bat datozenak"
 
-#: ../js/ui/status/bluetooth.js:176
+#: ../js/ui/status/bluetooth.js:177
 msgid "Does not match"
 msgstr "Ez dator bat"
 
-#: ../js/ui/status/bluetooth.js:195
+#: ../js/ui/status/bluetooth.js:196
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s gailuaren parekatze-eskaera"
 
-#: ../js/ui/status/bluetooth.js:203
+#: ../js/ui/status/bluetooth.js:204
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Sartu gailuan aipatutako PINa."
 
-#: ../js/ui/status/bluetooth.js:220
+#: ../js/ui/status/bluetooth.js:221
 msgid "OK"
 msgstr "Ados"
 
@@ -1448,7 +1442,6 @@ msgid "<unknown>"
 msgstr "<ezezaguna>"
 
 #: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
-#| msgid "Offline"
 msgid "Off"
 msgstr "Desaktibatuta"
 
@@ -1493,22 +1486,18 @@ msgid "connection failed"
 msgstr "konexioak huts egin du"
 
 #: ../js/ui/status/network.js:654
-#| msgid "Network"
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi sareak"
 
 #: ../js/ui/status/network.js:656
-#| msgid "Enable networking"
 msgid "Select a network"
 msgstr "Hautatu sare bat"
 
 #: ../js/ui/status/network.js:680
-#| msgid "Network"
 msgid "No Networks"
 msgstr "Sarerik ez"
 
 #: ../js/ui/status/network.js:949
-#| msgid "Network"
 msgid "Select Network"
 msgstr "Hautatu sarea"
 
@@ -1520,15 +1509,15 @@ msgstr "Piztu"
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1306
+#: ../js/ui/status/network.js:1307
 msgid "Network Manager"
 msgstr "Sarearen kudeatzailea"
 
-#: ../js/ui/status/network.js:1345
+#: ../js/ui/status/network.js:1346
 msgid "Connection failed"
 msgstr "Konexioak huts egin du"
 
-#: ../js/ui/status/network.js:1346
+#: ../js/ui/status/network.js:1347
 msgid "Activation of network connection failed"
 msgstr "Sareko konexioa aktibatzeak huts egin du"
 
@@ -1571,7 +1560,6 @@ msgid "Airplane Mode"
 msgstr "Hegazkin modua"
 
 #: ../js/ui/status/rfkill.js:45
-#| msgid "Open"
 msgid "On"
 msgstr "Aktibatuta"
 
@@ -1650,7 +1638,6 @@ msgstr "Pantailaren ezarpen hauek mantentzea nahi duzu?"
 #. to avoid ellipsizing the labels.
 #.
 #: ../js/ui/windowManager.js:75
-#| msgid "Power Settings"
 msgid "Revert Settings"
 msgstr "Alderantzikatu ezarpenak"
 
@@ -1723,6 +1710,10 @@ msgstr "Pasahitza ezin da hutsa izan"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Erabiltzaileak autentifikatzeko elkarrizketa-koadroa itxi du"
+
+#~| msgid "Settings"
+#~ msgid "Settings Menu"
+#~ msgstr "Ezarpenen menua"
 
 #~ msgid "Screenshots"
 #~ msgstr "Pantaila-argazkiak"
