@@ -372,7 +372,11 @@ const Indicator = new Lang.Class({
         Main.overview.hide();
         if (Main.screenShield)
             Main.screenShield.lock(false);
-        Gdm.goto_login_session_sync(null);
+
+        Clutter.threads_add_repaint_func_full(Clutter.RepaintFlags.POST_PAINT, function() {
+            Gdm.goto_login_session_sync(null);
+            return false;
+        });
     },
 
     _onQuitSessionActivate: function() {
