@@ -1473,6 +1473,22 @@ meta_window_actor_sync_actor_geometry (MetaWindowActor *self,
   MetaWindowActorPrivate *priv = self->priv;
   MetaRectangle window_rect;
 
+  meta_window_get_input_rect (priv->window, &window_rect);
+
+  /* When running as a display server we catch size changes when new
+     buffers are attached */
+  if (!meta_is_wayland_compositor ())
+    {
+      if (priv->last_width != window_rect.width ||
+          priv->last_height != window_rect.height)
+        {
+          priv->x11_size_changed = TRUE;
+
+          priv->last_width = window_rect.width;
+          priv->last_height = window_rect.height;
+        }
+    }
+
   /* Normally we want freezing a window to also freeze its position; this allows
    * windows to atomically move and resize together, either under app control,
    * or because the user is resizing from the left/top. But on initial placement
@@ -1483,22 +1499,12 @@ meta_window_actor_sync_actor_geometry (MetaWindowActor *self,
   if (is_frozen (self) && !did_placement)
     return;
 
-  meta_window_get_input_rect (priv->window, &window_rect);
-
-  /* When running as a display server then we instead catch size changes when
-   * new buffers are attached */
   if (!meta_is_wayland_compositor ())
     {
-      if (priv->last_width != window_rect.width ||
-          priv->last_height != window_rect.height)
+      if (priv->x11_size_changed)
         {
-          priv->x11_size_changed = TRUE;
           meta_window_actor_queue_create_x11_pixmap (self);
-
           meta_window_actor_update_shape (self);
-
-          priv->last_width = window_rect.width;
-          priv->last_height = window_rect.height;
         }
     }
 
