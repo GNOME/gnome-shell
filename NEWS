@@ -1,3 +1,11 @@
+3.10.0.1
+========
+* Fix bug when a window changed size twice in a single frame - this
+  can happen with GTK+ client-side decorations [Giovanni, Owen; #708367]
+
+Contributors:
+  Giovanni Campagna, Owen Taylor
+
 3.10.0
 ======
 * Update dependencies [Giovanni; #708210]
