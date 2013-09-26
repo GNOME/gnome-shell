@@ -214,8 +214,8 @@ const SearchResultsBase = new Lang.Class({
         this.actor.hide();
     },
 
-    _keyFocusIn: function(icon) {
-        this.emit('key-focus-in', icon);
+    _keyFocusIn: function(actor) {
+        this.emit('key-focus-in', actor);
     },
 
     _setMoreIconVisible: function(visible) {
@@ -259,6 +259,7 @@ const ListSearchResults = new Lang.Class({
 
         this._container = new St.BoxLayout({ style_class: 'search-section-content' });
         this.providerIcon = new ProviderIcon(provider);
+        this.providerIcon.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
         this.providerIcon.connect('clicked', Lang.bind(this,
             function() {
                 provider.launchSearch(this._terms);
@@ -404,8 +405,8 @@ const SearchResults = new Lang.Class({
         return false;
     },
 
-    _keyFocusIn: function(provider, icon) {
-        Util.ensureActorVisibleInScrollView(this._scrollView, icon);
+    _keyFocusIn: function(provider, actor) {
+        Util.ensureActorVisibleInScrollView(this._scrollView, actor);
     },
 
     createProviderDisplay: function(provider) {
