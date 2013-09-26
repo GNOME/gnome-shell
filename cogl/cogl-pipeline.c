@@ -1306,8 +1306,9 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
    * To simplify things for the vertex, fragment and program backends
    * we are careful about how we report STATE_LAYERS changes.
    *
-   * All STATE_LAYERS change notification with the exception of
+   * All STATE_LAYERS change notifications with the exception of
    * ->n_layers will also result in layer_pre_change_notifications.
+   *
    * For backends that perform code generation for fragment processing
    * they typically need to understand the details of how layers get
    * changed to determine if they need to repeat codegen.  It doesn't
@@ -1320,25 +1321,37 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
    * Here we ensure that change notifications against a pipeline or
    * against a layer are mutually exclusive as far as fragment, vertex
    * and program backends are concerned.
+   *
+   * NB: A pipeline can potentially have private state from multiple
+   * backends associated with it because descendants may cache state
+   * with an ancestor to maximize the chance that it can later be
+   * re-used by other descendants and a descendent can require a
+   * different backend to an ancestor.
    */
-  if (!from_layer_change &&
-      pipeline->progend != COGL_PIPELINE_PROGEND_UNDEFINED)
+  if (!from_layer_change)
     {
-      const CoglPipelineProgend *progend =
-        _cogl_pipeline_progends[pipeline->progend];
-      const CoglPipelineVertend *vertend =
-        _cogl_pipeline_vertends[progend->vertend];
-      const CoglPipelineFragend *fragend =
-        _cogl_pipeline_fragends[progend->fragend];
+      int i;
 
-      if (vertend->pipeline_pre_change_notify)
-        vertend->pipeline_pre_change_notify (pipeline, change, new_color);
+      for (i = 0; i < COGL_PIPELINE_N_PROGENDS; i++)
+        {
+          const CoglPipelineProgend *progend = _cogl_pipeline_progends[i];
+          const CoglPipelineVertend *vertend =
+            _cogl_pipeline_vertends[progend->vertend];
+          const CoglPipelineFragend *fragend =
+            _cogl_pipeline_fragends[progend->fragend];
 
-      if (fragend->pipeline_pre_change_notify)
-        fragend->pipeline_pre_change_notify (pipeline, change, new_color);
+          if (vertend->pipeline_pre_change_notify)
+            vertend->pipeline_pre_change_notify (pipeline, change, new_color);
 
-      if (progend->pipeline_pre_change_notify)
-        progend->pipeline_pre_change_notify (pipeline, change, new_color);
+          /* TODO: make the vertend and fragend implementation details
+           * of the progend */
+
+          if (fragend->pipeline_pre_change_notify)
+            fragend->pipeline_pre_change_notify (pipeline, change, new_color);
+
+          if (progend->pipeline_pre_change_notify)
+            progend->pipeline_pre_change_notify (pipeline, change, new_color);
+        }
     }
 
   /* There may be an arbitrary tree of descendants of this pipeline;
