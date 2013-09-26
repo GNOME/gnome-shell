@@ -320,7 +320,7 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
             cogl_internal_format = COGL_PIXEL_FORMAT_ANY;
             gbm_format = GBM_FORMAT_ARGB8888;
             break;
-          case WL_SHM_FORMAT_XRGB32:
+          case WL_SHM_FORMAT_XRGB8888:
             cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
             cogl_internal_format = COGL_PIXEL_FORMAT_RGB_888;
             gbm_format = GBM_FORMAT_XRGB8888;
