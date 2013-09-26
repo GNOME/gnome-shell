@@ -45,8 +45,10 @@ dist_theme_DATA =				\
 	theme/message-tray-background.png	\
 	theme/more-results.svg			\
 	theme/noise-texture.png			\
-	theme/page-indicator-active.svg	\
+	theme/page-indicator-active.svg		\
 	theme/page-indicator-inactive.svg	\
+	theme/page-indicator-checked.svg	\
+	theme/page-indicator-hover.svg		\
 	theme/panel-button-border.svg		\
 	theme/panel-button-highlight-narrow.svg	\
 	theme/panel-button-highlight-wide.svg	\
