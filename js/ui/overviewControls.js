@@ -208,12 +208,23 @@ const SlidingControl = new Lang.Class({
     slideIn: function() {
         this.visible = true;
         this._updateTranslation();
+        // we will update slideX and the translation from pageEmpty
     },
 
     slideOut: function() {
         this.visible = false;
         this._updateTranslation();
+        // we will update slideX from pageEmpty
     },
+
+    pageEmpty: function() {
+        // When pageEmpty is received, there's no visible view in the
+        // selector; this means we can now safely set the full slide for
+        // the next page, since slideIn or slideOut might have been called,
+        // changing the visiblity
+        this.layout.slideX = this.getSlide();
+        this._updateTranslation();
+    }
 });
 
 const ThumbnailsSlider = new Lang.Class({
@@ -589,14 +600,18 @@ const ControlsManager = new Lang.Class({
             return;
 
         let activePage = this.viewSelector.getActivePage();
-
         let dashVisible = (activePage == ViewSelector.ViewPage.WINDOWS ||
                            activePage == ViewSelector.ViewPage.APPS);
-        if (!dashVisible)
+        let thumbnailsVisible = (activePage == ViewSelector.ViewPage.WINDOWS);
+
+        if (dashVisible)
+            this._dashSlider.slideIn();
+        else
             this._dashSlider.slideOut();
 
-        let thumbnailsVisible = (activePage == ViewSelector.ViewPage.WINDOWS);
-        if (!thumbnailsVisible)
+        if (thumbnailsVisible)
+            this._thumbnailsSlider.slideIn();
+        else
             this._thumbnailsSlider.slideOut();
     },
 
@@ -609,16 +624,8 @@ const ControlsManager = new Lang.Class({
     },
 
     _onPageEmpty: function() {
-        let activePage = this.viewSelector.getActivePage();
-
-        let dashVisible = (activePage == ViewSelector.ViewPage.WINDOWS ||
-                           activePage == ViewSelector.ViewPage.APPS);
-        if (dashVisible)
-            this._dashSlider.slideIn();
-
-        let thumbnailsVisible = (activePage == ViewSelector.ViewPage.WINDOWS);
-        if (thumbnailsVisible)
-            this._thumbnailsSlider.slideIn();
+        this._dashSlider.pageEmpty();
+        this._thumbnailsSlider.pageEmpty();
 
         this._updateSpacerVisibility();
     }
