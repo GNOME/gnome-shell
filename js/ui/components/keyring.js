@@ -13,8 +13,6 @@ const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const CheckBox = imports.ui.checkBox;
 
-let prompter = null;
-
 const KeyringDialog = new Lang.Class({
     Name: 'KeyringDialog',
     Extends: ModalDialog.ModalDialog,
