@@ -246,11 +246,13 @@ const KeyringPrompter = new Lang.Class({
             function() {
                 let dialog = this._enabled ? new KeyringDialog()
                                            : new KeyringDummyDialog();
-                return dialog.prompt;
+                this._currentPrompt = dialog.prompt;
+                return this._currentPrompt;
             }));
         this._dbusId = null;
         this._registered = false;
         this._enabled = false;
+        this._currentPrompt = null;
     },
 
     enable: function() {
@@ -265,6 +267,10 @@ const KeyringPrompter = new Lang.Class({
 
     disable: function() {
         this._enabled = false;
+
+        if (this._prompter.prompting)
+            this._currentPrompt.cancel();
+        this._currentPrompt = null;
     }
 });
 
