@@ -5379,7 +5379,7 @@ clutter_actor_get_property (GObject    *object,
       break;
 
     case PROP_OFFSCREEN_REDIRECT:
-      g_value_set_enum (value, priv->offscreen_redirect);
+      g_value_set_flags (value, priv->offscreen_redirect);
       break;
 
     case PROP_NAME:
