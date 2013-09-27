@@ -954,12 +954,12 @@ StScrollBar StButton#vhandle:active {
     background-image: url(page-indicator-hover.svg);
 }
 
-.page-indicator:active .page-indicator-icon,
-.page-indicator:checked:active .page-indicator-icon {
+.page-indicator:active .page-indicator-icon {
     background-image: url(page-indicator-active.svg);
 }
 
-.page-indicator:checked .page-indicator-icon {
+.page-indicator:checked .page-indicator-icon,
+.page-indicator:checked:active .page-indicator-icon {
     background-image: url(page-indicator-checked.svg);
 }
 
