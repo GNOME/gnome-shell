@@ -313,6 +313,9 @@ const Overview = new Lang.Class({
     },
 
     _onDragEnd: function(time) {
+        if (this.animationInProgress)
+            return;
+
         this._inXdndDrag = false;
 
         // In case the drag was canceled while in the overview
