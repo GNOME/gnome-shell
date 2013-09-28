@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.9.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-24 19:37+0200\n"
+"POT-Creation-Date: 2013-09-28 14:52+0200\n"
 "PO-Revision-Date: 2013-09-24 19:38+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
@@ -268,7 +268,7 @@ msgstr "Velg en utvidelse som skal konfigureres med komboboksen over."
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:686
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:692
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -574,7 +574,7 @@ msgid "Type again:"
 msgstr "Skriv på nytt:"
 
 #: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
+#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:695
 msgid "Connect"
 msgstr "Koble til"
 
@@ -1236,11 +1236,11 @@ msgstr "Kan ikke låse"
 msgid "Lock was blocked by an application"
 msgstr "Låsing ble stoppet av et program"
 
-#: ../js/ui/searchDisplay.js:447
+#: ../js/ui/searchDisplay.js:448
 msgid "Searching…"
 msgstr "Søker …"
 
-#: ../js/ui/searchDisplay.js:491
+#: ../js/ui/searchDisplay.js:492
 msgid "No results."
 msgstr "Ingen resultater."
 
@@ -1321,7 +1321,7 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1034 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/network.js:1040 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Slå av"
 
@@ -1418,11 +1418,11 @@ msgstr "Vis tastaturutforming"
 msgid "<unknown>"
 msgstr "<ukjent>"
 
-#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
+#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1055
 msgid "Off"
 msgstr "Av"
 
-#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:955
+#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:961
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
@@ -1437,12 +1437,12 @@ msgstr "ikke håndtert"
 msgid "disconnecting..."
 msgstr "kobler fra …"
 
-#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1100
+#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1106
 msgid "connecting..."
 msgstr "kobler til …"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1103
+#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1109
 msgid "authentication required"
 msgstr "autentisering kreves"
 
@@ -1458,43 +1458,43 @@ msgstr "fastvare mangler"
 msgid "unavailable"
 msgstr "ikke tilgjengelig"
 
-#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1105
+#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1111
 msgid "connection failed"
 msgstr "tilkobling feilet"
 
-#: ../js/ui/status/network.js:654
+#: ../js/ui/status/network.js:660
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi nettverk"
 
-#: ../js/ui/status/network.js:656
+#: ../js/ui/status/network.js:662
 msgid "Select a network"
 msgstr "Velg et nettverk"
 
-#: ../js/ui/status/network.js:680
+#: ../js/ui/status/network.js:686
 msgid "No Networks"
 msgstr "Ingen nettverk"
 
-#: ../js/ui/status/network.js:949
+#: ../js/ui/status/network.js:955
 msgid "Select Network"
 msgstr "Velg nettverk"
 
-#: ../js/ui/status/network.js:1034
+#: ../js/ui/status/network.js:1040
 msgid "Turn On"
 msgstr "Slå på"
 
-#: ../js/ui/status/network.js:1167
+#: ../js/ui/status/network.js:1173
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1307
+#: ../js/ui/status/network.js:1313
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
-#: ../js/ui/status/network.js:1346
+#: ../js/ui/status/network.js:1352
 msgid "Connection failed"
 msgstr "Tilkobling feilet"
 
-#: ../js/ui/status/network.js:1347
+#: ../js/ui/status/network.js:1353
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling feilet"
 
