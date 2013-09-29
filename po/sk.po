@@ -1,17 +1,17 @@
 # Slovak translation for gnome-shell.
-# Copyright (C) 2011-2012 Free Software Foundation, Inc.
+# Copyright (C) 2011-2013 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 # Peter Mráz <etkinator@gmail.com>, 2011.
 # Michal Štrba <faiface2202@gmail.com>, 2011.
-# Dušan Kazik <prescott66@gmail.com>, 2012.
+# Dušan Kazik <prescott66@gmail.com>, 2012, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-27 14:10+0000\n"
-"PO-Revision-Date: 2013-09-25 18:45+0100\n"
+"POT-Creation-Date: 2013-09-29 10:26+0000\n"
+"PO-Revision-Date: 2013-09-29 17:38+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -413,16 +413,21 @@ msgstr "Celý deň"
 #: ../js/ui/calendar.js:68
 msgctxt "event list time"
 msgid "%H∶%M"
-msgstr ""
+msgstr "%H∶%M"
 
+# MČ: asi by som %p v slovenských prekladoch nedával, lebo bude nahradené prázdnym reťazcom a teda bude z toho guláš. Ak by si chcel jednoznačne zachovať dvanásťhodinový formát, tak miesto %p by som dal „dop./odp.“ aby ten čo si zvolil 12 hodinový formát vedel, že to má v tom kalendári nejednoznačné, alebo tam treba dať natvrdo 24 hodinový formát a je. Jediná výnimka je keď sa vypisuje aktuánly čas vo vlastnom časovom pásme (čo asi nie je tento prípad), lebo tam človek asi dokáže odhadnúť, či ide o dopoludnie, alebo popoludnie.
+# PK: tak v ubuntu ked si dam 12 hod format, tak tam mam AM/PM, cize by som to takto nechal
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space */
 #: ../js/ui/calendar.js:77
 msgctxt "event list time"
 msgid "%l∶%M %p"
-msgstr ""
+msgstr "%l∶%M %p"
 
+# MČ: nemali by tu byť tiež jednopísmenové? Občas som videl v kolendároch aj také použiť a ďalej sú dvojpísmenové.
+# PK: v grid to skratene bude, inac v liste to moze byt 2 pismenove, kedze aj v
+# originale dali Su
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
@@ -431,43 +436,43 @@ msgstr ""
 #: ../js/ui/calendar.js:108
 msgctxt "grid sunday"
 msgid "S"
-msgstr "Ne"
+msgstr "N"
 
 #. Translators: Calendar grid abbreviation for Monday */
 #: ../js/ui/calendar.js:110
 msgctxt "grid monday"
 msgid "M"
-msgstr "Po"
+msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
 #: ../js/ui/calendar.js:112
 msgctxt "grid tuesday"
 msgid "T"
-msgstr "Ut"
+msgstr "U"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
 #: ../js/ui/calendar.js:114
 msgctxt "grid wednesday"
 msgid "W"
-msgstr "St"
+msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Thursday */
 #: ../js/ui/calendar.js:116
 msgctxt "grid thursday"
 msgid "T"
-msgstr "Št"
+msgstr "Š"
 
 #. Translators: Calendar grid abbreviation for Friday */
 #: ../js/ui/calendar.js:118
 msgctxt "grid friday"
 msgid "F"
-msgstr "Pi"
+msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday */
 #: ../js/ui/calendar.js:120
 msgctxt "grid saturday"
 msgid "S"
-msgstr "So"
+msgstr "S"
 
 #. Translators: Event list abbreviation for Sunday.
 #. *
@@ -516,9 +521,10 @@ msgctxt "list saturday"
 msgid "S"
 msgstr "So"
 
+# DK: neprekladat, resp. string moze byt: "calendar:MY" alebo "calendar:YM", kde "Y" reprezentuje rok a "M" mesiac.Urcuje sa tym tvar napr. "September 2013" alebo "2013 September"
 #: ../js/ui/calendar.js:389
 msgid "calendar:MY"
-msgstr ""
+msgstr "calendar:MY"
 
 #: ../js/ui/calendar.js:447
 msgid "Previous month"
@@ -1528,16 +1534,14 @@ msgid "Estimating…"
 msgstr "Odhaduje sa…"
 
 #: ../js/ui/status/power.js:77
-#, fuzzy, javascript-format
-#| msgid "%d\\u2236%02d Remaining (%d%%)"
+#, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
-msgstr "%d\\u2236%02d Zostáva (%d%%)"
+msgstr "%d∶%02d Zostáva (%d%%)"
 
 #: ../js/ui/status/power.js:82
-#, fuzzy, javascript-format
-#| msgid "%d\\u2236%02d Until Full (%d%%)"
+#, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
-msgstr "%d\\u2236%02d Do plného nabitia (%d%%)"
+msgstr "%d∶%02d Do plného nabitia (%d%%)"
 
 #: ../js/ui/status/rfkill.js:43
 msgid "Airplane Mode"
@@ -1702,97 +1706,3 @@ msgstr "Heslo nemôže byť prázdne"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialógové okno overenia totožnosti bolo zatvorené používateľom"
-
-#~ msgid "There was an error loading the preferences dialog for %s:"
-#~ msgstr "Vyskytla sa chyba pri načítavaní dialógového okna nastavení pre %s:"
-
-#~ msgid "Extension"
-#~ msgstr "Rozšírenie"
-
-#~ msgctxt "event list time"
-#~ msgid "%H\\u2236%M"
-#~ msgstr "%H\\u2236%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l\\u2236%M\\u2009%p"
-#~ msgstr "%l\\u2236%M\\u2009%p"
-
-#~ msgid "Show Keyboard Layout"
-#~ msgstr "Zobraziť rozloženie klávesnice"
-
-#~ msgid "Settings Menu"
-#~ msgstr "Ponuka nastavení"
-
-#~ msgid "Session"
-#~ msgstr "Relácia"
-
-#~ msgid ""
-#~ "Internally used to store the last IM presence explicitly set by the user. "
-#~ "The value here is from the TpConnectionPresenceType enumeration."
-#~ msgstr ""
-#~ "Vnútorne použité na uloženie posledného stavu prítomnosti internetového "
-#~ "komunikátora výlučne nastavenej používateľom. Táto hodnota je z "
-#~ "vymenovaných hodnôt typu TpConnectionPresenceType."
-
-#~ msgid ""
-#~ "Internally used to store the last session presence status for the user. "
-#~ "The value here is from the GsmPresenceStatus enumeration."
-#~ msgstr ""
-#~ "Vnútorne použité na uloženie posledného stavu prítomnosti relácie "
-#~ "používateľa. Táto hodnota je z vymenovaných hodnôt typu "
-#~ "GsmPresenceStatusType."
-
-#~ msgid "Click Log Out to quit these applications and log out of the system."
-#~ msgstr ""
-#~ "Po kliknutí na „Odhlásiť sa“ sa ukončia tieto aplikácie a budete "
-#~ "odhlásení zo systému."
-
-#~ msgid "Logging out of the system."
-#~ msgstr "Prebieha odhlásenie zo systému."
-
-#~ msgid "Click Power Off to quit these applications and power off the system."
-#~ msgstr ""
-#~ "Po kliknutí na „Vypnúť“ sa ukončia tieto aplikácie a systém sa vypne."
-
-#~ msgid "Powering off the system."
-#~ msgstr "Vypína sa systém."
-
-#~ msgid "Click Restart to quit these applications and restart the system."
-#~ msgstr ""
-#~ "Po kliknutí na „Reštartovať“ sa ukončia tieto aplikácie a systém sa "
-#~ "reštartuje."
-
-#~ msgid "Restarting the system."
-#~ msgstr "Reštartuje sa systém."
-
-#~ msgid "Shutting down might cause them to lose unsaved work."
-#~ msgstr "Vypnutie môže spôsobiť stratu neuloženej práce."
-
-#~ msgid "Screenshots"
-#~ msgstr "Snímky obrazovky"
-
-#~ msgid "Record a screencast"
-#~ msgstr "Zaznamenať dianie na obrazovke"
-
-#~ msgid "Keybinding to toggle the screen recorder"
-#~ msgstr "Klávesová skratka na prepnutie záznamníka obrazovky"
-
-#~ msgid "Keybinding to start/stop the builtin screen recorder."
-#~ msgstr ""
-#~ "Klávesová skratka na spustenie/zastavenia vstavaného záznamníka obrazovky."
-
-#~ msgid "Framerate used for recording screencasts."
-#~ msgstr ""
-#~ "Frekvencia snímkov použitá pri nahrávaní záznamu diania na obrazovke."
-
-#~ msgid ""
-#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
-#~ "screencast recorder in frames-per-second."
-#~ msgstr ""
-#~ "Frekvencia snímok (počet za sekundu) výsledného záznamu diania na "
-#~ "obrazovke, ktorý bol nahraný záznamovým programom Shellu prostredia GNOME."
-
-#~ msgid "The gstreamer pipeline used to encode the screencast"
-#~ msgstr ""
-#~ "Zreťazenie systému gstreamer, určená na kódovanie záznamu diania na "
-#~ "obrazovke"
