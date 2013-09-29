@@ -148,7 +148,7 @@ const Overview = new Lang.Class({
         // Dash elements, or mouseover handlers in the workspaces.
         this._coverPane = new Clutter.Actor({ opacity: 0,
                                               reactive: true });
-        this._stack.add_actor(this._coverPane);
+        Main.layoutManager.overviewGroup.add_child(this._coverPane);
         this._coverPane.connect('event', Lang.bind(this, function (actor, event) { return true; }));
 
         this._stack.add_actor(this._overview);
