@@ -191,6 +191,7 @@ const WorkspaceTracker = new Lang.Class({
         tracker.connect('startup-sequence-changed', Lang.bind(this, this._queueCheckWorkspaces));
 
         global.screen.connect('notify::n-workspaces', Lang.bind(this, this._nWorkspacesChanged));
+        global.window_manager.connect('switch-workspace', Lang.bind(this, this._queueCheckWorkspaces));
 
         global.screen.connect('window-entered-monitor', Lang.bind(this, this._windowEnteredMonitor));
         global.screen.connect('window-left-monitor', Lang.bind(this, this._windowLeftMonitor));
@@ -249,23 +250,12 @@ const WorkspaceTracker = new Lang.Class({
         }
 
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-        let removingCurrentWorkspace = (emptyWorkspaces[activeWorkspaceIndex] &&
-                                        activeWorkspaceIndex < emptyWorkspaces.length - 1);
-
-        if (removingCurrentWorkspace) {
-            // "Merge" the empty workspace we are removing with the one at the end
-            this._wm.blockAnimations();
-        }
+        emptyWorkspaces[activeWorkspaceIndex] = false;
 
         // Delete other empty workspaces; do it from the end to avoid index changes
         for (i = emptyWorkspaces.length - 2; i >= 0; i--) {
             if (emptyWorkspaces[i])
                 global.screen.remove_workspace(this._workspaces[i], global.get_current_time());
-        }
-
-        if (removingCurrentWorkspace) {
-            global.screen.get_workspace_by_index(global.screen.n_workspaces - 1).activate(global.get_current_time());
-            this._wm.unblockAnimations();
         }
 
         this._checkWorkspacesId = 0;
