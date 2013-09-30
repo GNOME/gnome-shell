@@ -254,17 +254,14 @@ const WorkspaceTracker = new Lang.Class({
         if (removingCurrentWorkspace) {
             // "Merge" the empty workspace we are removing with the one at the end
             this._wm.blockAnimations();
+            global.screen.get_workspace_by_index(global.screen.n_workspaces - 1).activate(global.get_current_time());
+            this._wm.unblockAnimations();
         }
 
         // Delete other empty workspaces; do it from the end to avoid index changes
         for (i = emptyWorkspaces.length - 2; i >= 0; i--) {
             if (emptyWorkspaces[i])
                 global.screen.remove_workspace(this._workspaces[i], global.get_current_time());
-        }
-
-        if (removingCurrentWorkspace) {
-            global.screen.get_workspace_by_index(global.screen.n_workspaces - 1).activate(global.get_current_time());
-            this._wm.unblockAnimations();
         }
 
         this._checkWorkspacesId = 0;
