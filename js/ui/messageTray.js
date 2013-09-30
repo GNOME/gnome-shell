@@ -1507,8 +1507,32 @@ const MessageTrayMenu = new Lang.Class({
 
         this._tray = tray;
 
+        this._presence = new GnomeSession.Presence(Lang.bind(this, function(proxy, error) {
+            if (error) {
+                logError(error, 'Error while reading gnome-session presence');
+                return;
+            }
+
+            this._onStatusChanged(proxy.status);
+        }));
+        this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
+            this._onStatusChanged(status);
+        }));
+
+        this._accountManager = Tp.AccountManager.dup();
+        this._accountManager.connect('most-available-presence-changed',
+                                     Lang.bind(this, this._onIMPresenceChanged));
+        this._accountManager.prepare_async(null, Lang.bind(this, this._onIMPresenceChanged));
+
         this.actor.hide();
         Main.layoutManager.addChrome(this.actor);
+
+        this._busyItem = new PopupMenu.PopupSwitchMenuItem(_("Notifications"));
+        this._busyItem.connect('toggled', Lang.bind(this, this._updatePresence));
+        this.addMenuItem(this._busyItem);
+
+        let separator = new PopupMenu.PopupSeparatorMenuItem();
+        this.addMenuItem(separator);
 
         this._clearItem = this.addAction(_("Clear Messages"), function() {
             let toDestroy = [];
@@ -1541,9 +1565,43 @@ const MessageTrayMenu = new Lang.Class({
         settingsItem.connect('activate', function() { tray.close(); });
     },
 
+    _onStatusChanged: function(status) {
+        this._sessionStatus = status;
+        this._busyItem.setToggleState(status != GnomeSession.PresenceStatus.BUSY);
+    },
+
+    _onIMPresenceChanged: function(am, type) {
+        if (type == Tp.ConnectionPresenceType.AVAILABLE &&
+            this._sessionStatus == GnomeSession.PresenceStatus.BUSY)
+            this._presence.SetStatusRemote(GnomeSession.PresenceStatus.AVAILABLE);
+    },
+
     _updateClearSensitivity: function() {
         this._clearItem.setSensitive(this._tray.clearableCount > 0);
     },
+
+    _updatePresence: function(item, state) {
+        let status = state ? GnomeSession.PresenceStatus.AVAILABLE
+                           : GnomeSession.PresenceStatus.BUSY;
+        this._presence.SetStatusRemote(status);
+
+        let [type, s ,msg] = this._accountManager.get_most_available_presence();
+        let newType = 0;
+        let newStatus;
+        if (status == GnomeSession.PresenceStatus.BUSY &&
+            type == Tp.ConnectionPresenceType.AVAILABLE) {
+            newType = Tp.ConnectionPresenceType.BUSY;
+            newStatus = 'busy';
+        } else if (status == GnomeSession.PresenceStatus.AVAILABLE &&
+                 type == Tp.ConnectionPresenceType.BUSY) {
+            newType = Tp.ConnectionPresenceType.AVAILABLE;
+            newStatus = 'available';
+        }
+
+        if (newType > 0)
+            this._accountManager.set_all_requested_presences(newType,
+                                                             newStatus, msg);
+    }
 });
 
 const MessageTrayMenuButton = new Lang.Class({
