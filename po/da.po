@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-23 19:41+0200\n"
-"PO-Revision-Date: 2013-09-23 19:43+0200\n"
+"POT-Creation-Date: 2013-10-01 19:10+0200\n"
+"PO-Revision-Date: 2013-10-01 19:06+0200\n"
 "Last-Translator: Kris Thomsen <mail@kristhomsen.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -276,7 +276,9 @@ msgstr "Arbejdsområder kun på den primære skærm"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr "Forsink fokusændringer i musetilstand indtil pegeren holder op med at bevæge sig"
+msgstr ""
+"Forsink fokusændringer i musetilstand indtil pegeren holder op med at bevæge "
+"sig"
 
 #: ../js/extensionPrefs/main.js:125
 #, c-format
@@ -295,7 +297,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:686
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:692
 msgid "Cancel"
 msgstr "Annullér"
 
@@ -405,7 +407,7 @@ msgstr "%s er blevet føjet til dine favoritter."
 msgid "%s has been removed from your favorites."
 msgstr "%s er blevet fjernet fra dine favoritter."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:807
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:808
 #: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Indstillinger"
@@ -601,7 +603,7 @@ msgid "Type again:"
 msgstr "Indtast igen:"
 
 #: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
+#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:695
 msgid "Connect"
 msgstr "Forbind"
 
@@ -1206,7 +1208,7 @@ msgstr "Afslut"
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:903
+#: ../js/ui/panel.js:904
 msgid "Top Bar"
 msgstr "Toppanel"
 
@@ -1263,11 +1265,11 @@ msgstr "Kunne ikke låse"
 msgid "Lock was blocked by an application"
 msgstr "Lås blev blokeret af et program"
 
-#: ../js/ui/searchDisplay.js:447
+#: ../js/ui/searchDisplay.js:448
 msgid "Searching…"
 msgstr "Søger…"
 
-#: ../js/ui/searchDisplay.js:491
+#: ../js/ui/searchDisplay.js:492
 msgid "No results."
 msgstr "Ingen resultater."
 
@@ -1348,7 +1350,7 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1034 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/network.js:1040 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Sluk"
 
@@ -1447,11 +1449,11 @@ msgstr "Vis tastaturlayout"
 msgid "<unknown>"
 msgstr "<ukendt>"
 
-#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
+#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1055
 msgid "Off"
 msgstr "Slukket"
 
-#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:955
+#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:961
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Indstillinger for netværk"
@@ -1466,12 +1468,12 @@ msgstr "ikke håndteret"
 msgid "disconnecting..."
 msgstr "frakobler..."
 
-#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1100
+#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1106
 msgid "connecting..."
 msgstr "forbinder..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1103
+#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1109
 msgid "authentication required"
 msgstr "godkendelse påkrævet"
 
@@ -1487,43 +1489,43 @@ msgstr "firmware mangler"
 msgid "unavailable"
 msgstr "utilgængelig"
 
-#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1105
+#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1111
 msgid "connection failed"
 msgstr "forbindelse mislykkedes"
 
-#: ../js/ui/status/network.js:654
+#: ../js/ui/status/network.js:660
 msgid "Wi-Fi Networks"
 msgstr "Trådløse netværk"
 
-#: ../js/ui/status/network.js:656
+#: ../js/ui/status/network.js:662
 msgid "Select a network"
 msgstr "Vælg et netværk"
 
-#: ../js/ui/status/network.js:680
+#: ../js/ui/status/network.js:686
 msgid "No Networks"
 msgstr "Ingen netværk"
 
-#: ../js/ui/status/network.js:949
+#: ../js/ui/status/network.js:955
 msgid "Select Network"
 msgstr "Vælg netværk"
 
-#: ../js/ui/status/network.js:1034
+#: ../js/ui/status/network.js:1040
 msgid "Turn On"
 msgstr "Tænd"
 
-#: ../js/ui/status/network.js:1167
+#: ../js/ui/status/network.js:1174
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1307
+#: ../js/ui/status/network.js:1314
 msgid "Network Manager"
 msgstr "Netværkshåndtering"
 
-#: ../js/ui/status/network.js:1346
+#: ../js/ui/status/network.js:1353
 msgid "Connection failed"
 msgstr "Forbindelse mislykkedes"
 
-#: ../js/ui/status/network.js:1347
+#: ../js/ui/status/network.js:1354
 msgid "Activation of network connection failed"
 msgstr "Aktivering af netværksforbindelse mislykkedes"
 
@@ -1548,15 +1550,15 @@ msgstr "Udregner…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:77
-#, c-format
+#, fuzzy, c-format
 msgid "%d\\u2236%02d Remaining (%d%%)"
-msgstr "%d\\u2236%02d tilbage (%d%%)"
+msgstr "%d∶%02d tilbage (%d%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:82
-#, c-format
+#, fuzzy, c-format
 msgid "%d\\u2236%02d Until Full (%d%%)"
-msgstr "%d\\u2236%02d indtil fuld (%d%%)"
+msgstr "%d∶%02d indtil fuld (%d%%)"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
@@ -1716,6 +1718,28 @@ msgstr "Adgangskode må ikke være tom"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Godkendelsesdialogen blev afvist af brugeren"
+
+#~ msgctxt "event list time"
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+# Dette her er kode for at skrive måned før år jvf. kommentar for samme streng i gtk+:
+#
+# Translate to calendar:YM if you want years to be displayed
+# before months; otherwise translate to calendar:MY.
+# Do *not* translate it to anything else, if it
+# it isn't calendar:YM or calendar:MY it will not work.
+#
+# Note that the ordering described here is logical order, which is
+# further influenced by BIDI ordering. Thus, if you have a default
+# text direction of RTL and specify "calendar:YM", then the year
+# will appear to the right of the month.
+#~ msgid "calendar:MY"
+#~ msgstr "calendar:MY"
 
 #~ msgid "Settings Menu"
 #~ msgstr "Menu for indstillinger"
