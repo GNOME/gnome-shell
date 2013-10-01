@@ -287,38 +287,40 @@ const BoxPointer = new Lang.Class({
         let skipBottomLeft = false;
         let skipBottomRight = false;
 
-        switch (this._arrowSide) {
-        case St.Side.TOP:
-            if (this._arrowOrigin == x1)
-                skipTopLeft = true;
-            else if (this._arrowOrigin == x2)
-                skipTopRight = true;
-            break;
+        if (rise) {
+            switch (this._arrowSide) {
+            case St.Side.TOP:
+                if (this._arrowOrigin == x1)
+                    skipTopLeft = true;
+                else if (this._arrowOrigin == x2)
+                    skipTopRight = true;
+                break;
 
-        case St.Side.RIGHT:
-            if (this._arrowOrigin == y1)
-                skipTopRight = true;
-            else if (this._arrowOrigin == y2)
-                skipBottomRight = true;
-            break;
+            case St.Side.RIGHT:
+                if (this._arrowOrigin == y1)
+                    skipTopRight = true;
+                else if (this._arrowOrigin == y2)
+                    skipBottomRight = true;
+                break;
 
-        case St.Side.BOTTOM:
-            if (this._arrowOrigin == x1)
-                skipBottomLeft = true;
-            else if (this._arrowOrigin == x2)
-                skipBottomRight = true;
-            break;
+            case St.Side.BOTTOM:
+                if (this._arrowOrigin == x1)
+                    skipBottomLeft = true;
+                else if (this._arrowOrigin == x2)
+                    skipBottomRight = true;
+                break;
 
-        case St.Side.LEFT:
-            if (this._arrowOrigin == y1)
-                skipTopLeft = true;
-            else if (this._arrowOrigin == y2)
-                skipBottomLeft = true;
-            break;
+            case St.Side.LEFT:
+                if (this._arrowOrigin == y1)
+                    skipTopLeft = true;
+                else if (this._arrowOrigin == y2)
+                    skipBottomLeft = true;
+                break;
+            }
         }
 
         cr.moveTo(x1 + borderRadius, y1);
-        if (this._arrowSide == St.Side.TOP) {
+        if (this._arrowSide == St.Side.TOP && rise) {
             if (skipTopLeft) {
                 cr.moveTo(x1, y2 - borderRadius);
                 cr.lineTo(x1, y1 - rise);
@@ -340,7 +342,7 @@ const BoxPointer = new Lang.Class({
                    3*Math.PI/2, Math.PI*2);
         }
 
-        if (this._arrowSide == St.Side.RIGHT) {
+        if (this._arrowSide == St.Side.RIGHT && rise) {
             if (skipTopRight) {
                 cr.lineTo(x2 + rise, y1);
                 cr.lineTo(x2 + rise, y1 + halfBase);
@@ -361,7 +363,7 @@ const BoxPointer = new Lang.Class({
                    0, Math.PI/2);
         }
 
-        if (this._arrowSide == St.Side.BOTTOM) {
+        if (this._arrowSide == St.Side.BOTTOM && rise) {
             if (skipBottomLeft) {
                 cr.lineTo(x1 + halfBase, y2);
                 cr.lineTo(x1, y2 + rise);
@@ -382,7 +384,7 @@ const BoxPointer = new Lang.Class({
                    Math.PI/2, Math.PI);
         }
 
-        if (this._arrowSide == St.Side.LEFT) {
+        if (this._arrowSide == St.Side.LEFT && rise) {
             if (skipTopLeft) {
                 cr.lineTo(x1, y1 + halfBase);
                 cr.lineTo(x1 - rise, y1);
