@@ -1123,6 +1123,7 @@ const NMVPNConnectionItem = new Lang.Class({
             this.emit('activation-failed', reason);
         }
 
+        this.emit('icon-changed');
         this.parent();
     },
 
