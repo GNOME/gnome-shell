@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-11 19:26+0000\n"
-"PO-Revision-Date: 2013-09-11 22:32+0300\n"
+"POT-Creation-Date: 2013-09-30 11:41+0000\n"
+"PO-Revision-Date: 2013-10-01 16:40+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -53,6 +53,9 @@ msgstr "GNOME Shelli laienduste eelistused"
 
 msgid "Configure GNOME Shell Extensions"
 msgstr "GNOME Shelli laienduste seadistamine"
+
+msgid "GNOME Shell (wayland compositor)"
+msgstr "GNOME Shell (waylandi komposiitor)"
 
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
@@ -212,12 +215,8 @@ msgstr "Tööalasid hallatakse dünaamiliselt"
 msgid "Workspaces only on primary monitor"
 msgstr "Tööalad peamisel monitoril"
 
-#, c-format
-msgid "There was an error loading the preferences dialog for %s:"
-msgstr "%s jaoks eelistuste dialoogi laadimisel esines viga:"
-
-msgid "Extension"
-msgstr "Laiendus"
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr "Hiire all asuv aken saab fookuse alles hiire peatumisel"
 
 msgid "Select an extension to configure using the combobox above."
 msgstr "Vali seadistatav laiendus kasutades ülemist valikukasti."
@@ -238,21 +237,12 @@ msgstr "Logi sisse"
 msgid "Choose Session"
 msgstr "Seansi valimine"
 
-#. translators: this message is shown below the user list on the
-#. login screen. It can be activated to reveal an entry for
-#. manually entering the username.
 msgid "Not listed?"
 msgstr "Pole loendis?"
 
-#. Translators: this message is shown below the username entry field
-#. to clue the user in on how to login to the local network realm
-#, c-format
 msgid "(e.g., user or %s)"
 msgstr "(nt 'user' või %s)"
 
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
 msgid "Username: "
 msgstr "Kasutajanimi: "
 
@@ -262,23 +252,15 @@ msgstr "Sisselogimisaken"
 msgid "Authentication error"
 msgstr "Viga autentimisel"
 
-#. We don't show fingerprint messages directly since it's
-#. not the main auth service. Instead we use the messages
-#. as a cue to display our own message.
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
 msgid "(or swipe finger)"
 msgstr "(või libista näpp üle lugeja)"
 
 msgid "Command not found"
 msgstr "Käsku ei leitud"
 
-#. Replace "Error invoking GLib.shell_parse_argv: " with
-#. something nicer
 msgid "Could not parse command:"
 msgstr "Käsku pole võimalik analüüsida:"
 
-#, c-format
 msgid "Execution of '%s' failed:"
 msgstr "'%s' käivitamine nurjus:"
 
@@ -286,7 +268,7 @@ msgid "Frequently used applications will appear here"
 msgstr "Siia ilmuvad tihti kasutatud rakendused"
 
 msgid "Frequent"
-msgstr "Sage"
+msgstr "Tihti"
 
 msgid "All"
 msgstr "Kõik"
@@ -300,11 +282,9 @@ msgstr "Eemalda lemmikutest"
 msgid "Add to Favorites"
 msgstr "Lisa lemmikutesse"
 
-#, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s lisati lemmikutesse."
 
-#, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s eemaldati lemmikutest."
 
@@ -316,59 +296,59 @@ msgstr "Muuda tausta…"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
+#. */
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Kogu päev"
 
 #. Translators: Shown in calendar event list, if 24h format,
-#. \u2236 is a ratio character, similar to :
+#. \u2236 is a ratio character, similar to : */
 msgctxt "event list time"
-msgid "%H\\u2236%M"
-msgstr "%H\\u2236%M"
+msgid "%H∶%M"
+msgstr "%H∶%M"
 
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
-#. a thin space
+#. a thin space */
 msgctxt "event list time"
-msgid "%l\\u2236%M\\u2009%p"
-msgstr "%l\\u2236%M\\u2009%p"
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
+#. */
 msgctxt "grid sunday"
 msgid "S"
 msgstr "P"
 
-#. Translators: Calendar grid abbreviation for Monday
+#. Translators: Calendar grid abbreviation for Monday */
 msgctxt "grid monday"
 msgid "M"
 msgstr "E"
 
-#. Translators: Calendar grid abbreviation for Tuesday
+#. Translators: Calendar grid abbreviation for Tuesday */
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
-#. Translators: Calendar grid abbreviation for Wednesday
+#. Translators: Calendar grid abbreviation for Wednesday */
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "K"
 
-#. Translators: Calendar grid abbreviation for Thursday
+#. Translators: Calendar grid abbreviation for Thursday */
 msgctxt "grid thursday"
 msgid "T"
 msgstr "N"
 
-#. Translators: Calendar grid abbreviation for Friday
+#. Translators: Calendar grid abbreviation for Friday */
 msgctxt "grid friday"
 msgid "F"
 msgstr "R"
 
-#. Translators: Calendar grid abbreviation for Saturday
+#. Translators: Calendar grid abbreviation for Saturday */
 msgctxt "grid saturday"
 msgid "S"
 msgstr "L"
@@ -378,40 +358,43 @@ msgstr "L"
 #. * NOTE: These list abbreviations are normally not shown together
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
-#.
+#. */
 msgctxt "list sunday"
 msgid "Su"
 msgstr "P"
 
-#. Translators: Event list abbreviation for Monday
+#. Translators: Event list abbreviation for Monday */
 msgctxt "list monday"
 msgid "M"
 msgstr "E"
 
-#. Translators: Event list abbreviation for Tuesday
+#. Translators: Event list abbreviation for Tuesday */
 msgctxt "list tuesday"
 msgid "T"
 msgstr "T"
 
-#. Translators: Event list abbreviation for Wednesday
+#. Translators: Event list abbreviation for Wednesday */
 msgctxt "list wednesday"
 msgid "W"
 msgstr "K"
 
-#. Translators: Event list abbreviation for Thursday
+#. Translators: Event list abbreviation for Thursday */
 msgctxt "list thursday"
 msgid "Th"
 msgstr "N"
 
-#. Translators: Event list abbreviation for Friday
+#. Translators: Event list abbreviation for Friday */
 msgctxt "list friday"
 msgid "F"
 msgstr "R"
 
-#. Translators: Event list abbreviation for Saturday
+#. Translators: Event list abbreviation for Saturday */
 msgctxt "list saturday"
 msgid "S"
 msgstr "L"
+
+msgid "calendar:MY"
+msgstr "Minu"
 
 msgid "Previous month"
 msgstr "Eelmine kuu"
@@ -419,16 +402,16 @@ msgstr "Eelmine kuu"
 msgid "Next month"
 msgstr "Järgmine kuu"
 
-#. Translators: Text to show if there are no events
+#. Translators: Text to show if there are no events */
 msgid "Nothing Scheduled"
 msgstr "Ühtegi sündmust pole plaanitud"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current year */
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on different year */
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d. %B %Y"
@@ -454,7 +437,6 @@ msgstr "Väline ketas eemaldati"
 msgid "Removable Devices"
 msgstr "Eemaldatavad seadmed"
 
-#, c-format
 msgid "Open with %s"
 msgstr "Ava programmiga %s"
 
@@ -470,11 +452,9 @@ msgstr "Sisesta uuesti:"
 msgid "Connect"
 msgstr "Ühendu"
 
-#. Cisco LEAP
 msgid "Password: "
 msgstr "Parool: "
 
-#. static WEP
 msgid "Key: "
 msgstr "Võti: "
 
@@ -490,7 +470,6 @@ msgstr "Teenus: "
 msgid "Authentication required by wireless network"
 msgstr "Juhtmeta võrgu jaoks on vajalik autentimine"
 
-#, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "'%s'."
@@ -518,7 +497,6 @@ msgstr "PIN: "
 msgid "Mobile broadband network password"
 msgstr "Mobiiliühenduse võrgu parool"
 
-#, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "'%s' ühenduse loomiseks on vaja parooli."
 
@@ -534,20 +512,16 @@ msgstr "Autendi"
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
-#. * for instance.
+#. * for instance. */
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Kahjuks see ei sobinud. Palun proovi uuesti."
 
-#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
-#. system-users for now as Empathy does.
 msgid "Invitation"
 msgstr "Kutse"
 
-#. We got the TpContact
 msgid "Call"
 msgstr "Helista"
 
-#. We got the TpContact
 msgid "File Transfer"
 msgstr "Failiülekanne"
 
@@ -560,42 +534,35 @@ msgstr "Heli peale"
 msgid "Mute"
 msgstr "Heli maha"
 
-#. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"
-#, no-c-format
+#. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"*/
 msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgstr "<b>Eile</b> <b>%H:%M</b>"
 
-#. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30
-#, no-c-format
+#. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30*/
 msgid "<b>%A</b>, <b>%H:%M</b>"
 msgstr "<b>%A</b>, <b>%H:%M</b>"
 
-#. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"
-#, no-c-format
+#. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
 msgstr "<b>%d. %B</b>, <b>%H:%M</b>"
 
-#. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"
-#, no-c-format
+#. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
 msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 msgstr "<b>%d. %B %Y</b>, <b>%H:%M</b>"
 
 #. Translators: this is the other person changing their old IM name to their new
-#. IM name.
-#, c-format
+#. IM name. */
 msgid "%s is now known as %s"
 msgstr "%s nimi on nüüd %s"
 
 #. translators: argument is a room name like
-#. * room@jabber.org for example.
-#, c-format
+#. * room@jabber.org for example. */
 msgid "Invitation to %s"
 msgstr "Kutse: %s"
 
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example.
-#, c-format
+#. * for example. */
 msgid "%s is inviting you to join %s"
 msgstr "%s kutsub sind liituma: %s"
 
@@ -605,17 +572,15 @@ msgstr "Keeldu"
 msgid "Accept"
 msgstr "Nõustu"
 
-#. translators: argument is a contact name like Alice for example.
-#, c-format
+#. translators: argument is a contact name like Alice for example. */
 msgid "Video call from %s"
 msgstr "%s tahab alustada videokõnet"
 
-#. translators: argument is a contact name like Alice for example.
-#, c-format
+#. translators: argument is a contact name like Alice for example. */
 msgid "Call from %s"
 msgstr "%s helistab"
 
-#. translators: this is a button label (verb), not a noun
+#. translators: this is a button label (verb), not a noun */
 msgid "Answer"
 msgstr "Vasta"
 
@@ -623,13 +588,11 @@ msgstr "Vasta"
 #. * the contact's alias and the second one is the
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
-#.
-#, c-format
+#. */
 msgid "%s is sending you %s"
 msgstr "%s saadab sulle %s"
 
-#. To translators: The parameter is the contact's alias
-#, c-format
+#. To translators: The parameter is the contact's alias */
 msgid "%s would like permission to see when you are online"
 msgstr "%s palub sinu luba, et näha, kui sa oled võrgus"
 
@@ -713,8 +676,7 @@ msgid "Internal error"
 msgstr "Sisemine viga"
 
 #. translators: argument is the account name, like
-#. * name@jabber.org for example.
-#, c-format
+#. * name@jabber.org for example. */
 msgid "Unable to connect to %s"
 msgstr "Pole võimalik ühenduda võrguga %s"
 
@@ -730,8 +692,6 @@ msgstr "Aknad"
 msgid "Show Applications"
 msgstr "Rakenduste kuvamine"
 
-#. Translators: this is the name of the dock/favorites area on
-#. the left of the overview
 msgid "Dash"
 msgstr "Dokk"
 
@@ -746,11 +706,10 @@ msgstr "Kuupäeva ja kella sätted"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#.
+#. */
 msgid "%A %B %e, %Y"
 msgstr "%A, %d. %B %Y"
 
-#, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s väljalogimine"
@@ -759,13 +718,11 @@ msgctxt "title"
 msgid "Log Out"
 msgstr "Väljalogimine"
 
-#, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s logitakse %d sekundi pärast automaatselt välja."
 msgstr[1] "%s logitakse %d sekundi pärast automaatselt välja."
 
-#, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Sind logitakse %d sekundi pärast automaatselt välja."
@@ -779,7 +736,6 @@ msgctxt "title"
 msgid "Power Off"
 msgstr "Väljalülitamine"
 
-#, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "%d sekundi pärast lülitub süsteem automaatselt välja."
@@ -797,7 +753,6 @@ msgctxt "title"
 msgid "Restart"
 msgstr "Taaskäivitamine"
 
-#, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Süsteem taaskäivitub automaatselt %d sekundi pärast."
@@ -807,7 +762,6 @@ msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Taaskäivitamine ja uuenduste paigaldamine"
 
-#, c-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -824,20 +778,17 @@ msgstr "Mõned rakendused on tegevuses või on neis salvestamata asju."
 msgid "Other users are logged in."
 msgstr "Teised kasutajad on sisse logitud."
 
-#. Translators: Remote here refers to a remote session, like a ssh login
-#, c-format
+#. Translators: Remote here refers to a remote session, like a ssh login */
 msgid "%s (remote)"
 msgstr "%s (kaugühendus)"
 
-#. Translators: Console here refers to a tty like a VT console
-#, c-format
+#. Translators: Console here refers to a tty like a VT console */
 msgid "%s (console)"
 msgstr "%s (konsool)"
 
 msgid "Install"
 msgstr "Paigalda"
 
-#, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Kas laadida alla ja paigaldada '%s' aadressilt extensions.gnome.org?"
 
@@ -847,8 +798,7 @@ msgstr "Klaviatuur"
 msgid "No extensions installed"
 msgstr "Ühtegi laiendust pole paigaldatud"
 
-#. Translators: argument is an extension UUID.
-#, c-format
+#. Translators: argument is an extension UUID. */
 msgid "%s has not emitted any errors."
 msgstr "%s ei ole väljastanud ühtegi veateadet."
 
@@ -909,7 +859,6 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Tundmatu"
 
-#, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d uus sõnum"
@@ -924,7 +873,7 @@ msgstr "Ülevaade"
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
-#. characters.
+#. characters. */
 msgid "Type to search…"
 msgstr "Otsing…"
 
@@ -932,21 +881,13 @@ msgid "Quit"
 msgstr "Sulge"
 
 #. Translators: If there is no suitable word for "Activities"
-#. in your language, you can use the word for "Overview".
+#. in your language, you can use the word for "Overview". */
 msgid "Activities"
 msgstr "Tegevused"
-
-msgid "Settings Menu"
-msgstr "Sätete menüü"
 
 msgid "Top Bar"
 msgstr "Ülemine riba"
 
-#. Translators: this MUST be either "toggle-switch-us"
-#. (for toggle switches containing the English words
-#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
-#. switches containing "◯" and "|"). Other values will
-#. simply result in invisible toggle switches.
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -957,11 +898,10 @@ msgid "Close"
 msgstr "Sulge"
 
 #. Translators: This is a time format for a date in
-#. long format
+#. long format */
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d uus märguanne"
@@ -973,13 +913,6 @@ msgstr "Lukusta"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME peab ekraani lukustama"
 
-#. We could not become modal, so we can't activate the
-#. screenshield. The user is probably very upset at this
-#. point, but any application using global grabs is broken
-#. Just tell him to stop using this app
-#.
-#. XXX: another option is to kick the user into the gdm login
-#. screen, where we're not affected by grabs
 msgid "Unable to lock"
 msgstr "Pole võimalik lukustada"
 
@@ -1043,8 +976,6 @@ msgstr "Kõrgkontrastne"
 msgid "Large Text"
 msgstr "Suur tekst"
 
-#. The Bluetooth menu only appears when Bluetooth is in use,
-#. so just statically build it with a "Turn Off" menu item.
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1054,17 +985,14 @@ msgstr "Lülita välja"
 msgid "Bluetooth Settings"
 msgstr "Bluetoothi sätted"
 
-#, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d ühendatud seade"
 msgstr[1] "%d ühendatud seadet"
 
-#, c-format
 msgid "Authorization request from %s"
 msgstr "Autoriseerimise päring seadmelt %s"
 
-#, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Seade '%s' tahab selle arvutiga paarduda"
 
@@ -1074,7 +1002,6 @@ msgstr "Luba"
 msgid "Deny"
 msgstr "Keela"
 
-#, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Seade %s soovib ligipääsu teenusele '%s'"
 
@@ -1087,24 +1014,21 @@ msgstr "Luba ainult seekord"
 msgid "Reject"
 msgstr "Lükka tagasi"
 
-#. Translators: argument is the device short name
-#, c-format
+#. Translators: argument is the device short name */
 msgid "Pairing confirmation for %s"
 msgstr "Paardumise kinnitus seadmele %s"
 
-#, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr "Palun kontrolli, kas parool '%06d' kattub seadme parooliga."
 
-#. Translators: this is the verb, not the noun
+#. Translators: this is the verb, not the noun */
 msgid "Matches"
 msgstr "Kattub"
 
 msgid "Does not match"
 msgstr "Ei kattu"
 
-#, c-format
 msgid "Pairing request for %s"
 msgstr "Seadmega %s paardumise päring"
 
@@ -1117,9 +1041,6 @@ msgstr "Olgu"
 msgid "Brightness"
 msgstr "Heledus"
 
-msgid "Show Keyboard Layout"
-msgstr "Klaviatuuripaigutuse kuvamine"
-
 msgid "<unknown>"
 msgstr "<tundmatu>"
 
@@ -1130,7 +1051,7 @@ msgid "Network Settings"
 msgstr "Võrgusätted"
 
 #. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu)
+#. under NetworkManager's control (and thus cannot be used in the menu) */
 msgid "unmanaged"
 msgstr "pole hallatud"
 
@@ -1140,17 +1061,17 @@ msgstr "ühenduse katkestamine..."
 msgid "connecting..."
 msgstr "ühendumine..."
 
-#. Translators: this is for network connections that require some kind of key or password
+#. Translators: this is for network connections that require some kind of key or password */
 msgid "authentication required"
 msgstr "vajalik on autentimine"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing
+#. module, which is missing */
 msgid "firmware missing"
 msgstr "püsivara puudub"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage
+#. is disabled by rfkill, or it has no coverage */
 msgid "unavailable"
 msgstr "pole saadaval"
 
@@ -1193,25 +1114,15 @@ msgstr "Toitesätted..."
 msgid "Fully Charged"
 msgstr "Täiesti täis"
 
-#. 0 is reported when UPower does not have enough data
-#. to estimate battery life
-#. state is one of PENDING_CHARGING, PENDING_DISCHARGING
 msgid "Estimating…"
 msgstr "Andmete kogumine…"
 
-#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#, c-format
-msgid "%d\\u2236%02d Remaining (%d%%)"
-msgstr "%d\\u2236%02d jäänud (%d%%)"
+msgid "%d∶%02d Remaining (%d%%)"
+msgstr "%d∶%02d jäänud (%d%%)"
 
-#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#, c-format
-msgid "%d\\u2236%02d Until Full (%d%%)"
-msgstr "%d\\u2236%02d täitumiseni (%d%%)"
+msgid "%d∶%02d Until Full (%d%%)"
+msgstr "%d∶%02d täitumiseni (%d%%)"
 
-#. The menu only appears when airplane mode is on, so just
-#. statically build it as if it was on, rather than dynamically
-#. changing the menu contents.
 msgid "Airplane Mode"
 msgstr "Lennukirežiim"
 
@@ -1254,7 +1165,6 @@ msgstr "Rakendused"
 msgid "Search"
 msgstr "Otsing"
 
-#, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
 "%s"
@@ -1262,11 +1172,9 @@ msgstr ""
 "Vabandust, tänaseks tarkuseteri pole:\n"
 "%s"
 
-#, c-format
 msgid "%s the Oracle says"
 msgstr "Oraakel %s ütleb"
 
-#, c-format
 msgid "'%s' is ready"
 msgstr "'%s' on valmis"
 
@@ -1275,14 +1183,13 @@ msgstr "Kas tahad säilitada need kuvasätted?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
-#.
+#. */
 msgid "Revert Settings"
 msgstr "Taasta sätted"
 
 msgid "Keep Changes"
 msgstr "Säilita muudatused"
 
-#, c-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Sätete muudatused ennistatakse %d sekundi pärast"
@@ -1334,6 +1241,26 @@ msgstr "Parool ei saa olla tühi"
 
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Kasutaja katkestas autentimisdialoogi"
+
+#~ msgid "There was an error loading the preferences dialog for %s:"
+#~ msgstr "%s jaoks eelistuste dialoogi laadimisel esines viga:"
+
+#~ msgid "Extension"
+#~ msgstr "Laiendus"
+
+#~ msgctxt "event list time"
+#~ msgid "%H\\u2236%M"
+#~ msgstr "%H\\u2236%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l\\u2236%M\\u2009%p"
+#~ msgstr "%l\\u2236%M\\u2009%p"
+
+#~ msgid "Show Keyboard Layout"
+#~ msgstr "Klaviatuuripaigutuse kuvamine"
+
+#~ msgid "Settings Menu"
+#~ msgstr "Sätete menüü"
 
 #~ msgid "Screenshots"
 #~ msgstr "Ekraanipildid"
