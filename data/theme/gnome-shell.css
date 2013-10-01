@@ -2624,4 +2624,5 @@ StScrollBar StButton#vhandle:active {
 
 .background-menu {
     -boxpointer-gap: 4px;
+    -arrow-rise: 0px;
 }
