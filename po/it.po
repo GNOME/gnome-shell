@@ -1,6 +1,6 @@
 # Italian translations for gnome-shell package.
 # Copyright (C) 2009, 2010, the gnome-shell copyright holder
-# Copyright (C) 2011, 2012, the Free Software Foundation
+# Copyright (C) 2011, 2012, 2013 the Free Software Foundation
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Luca Ferretti <lferrett@gnome.org>, 2010, 2011, 2012, 2013.
@@ -9,9 +9,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-23 16:21+0200\n"
-"PO-Revision-Date: 2013-09-23 16:21+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-10-01 14:26+0000\n"
+"PO-Revision-Date: 2013-10-01 19:20+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -58,7 +59,6 @@ msgid "Window management and application launching"
 msgstr "Gestisce finestre e avvia applicazioni"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-#: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extension Preferences"
 msgstr "Preferenze estensioni di GNOME Shell"
 
@@ -281,16 +281,6 @@ msgstr ""
 "Ritarda il cambio del focus nella modalità mouse finché il puntantore non si "
 "ferma"
 
-#: ../js/extensionPrefs/main.js:125
-#, c-format
-msgid "There was an error loading the preferences dialog for %s:"
-msgstr ""
-"Si è verificato un errore nel caricare il dialogo delle preferenze per %s:"
-
-#: ../js/extensionPrefs/main.js:165
-msgid "Extension"
-msgstr "Estensione"
-
 #: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
 msgstr ""
@@ -300,7 +290,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:686
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:692
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -322,23 +312,14 @@ msgstr "Accedi"
 msgid "Choose Session"
 msgstr "Scegli sessione"
 
-#. translators: this message is shown below the user list on the
-#. login screen. It can be activated to reveal an entry for
-#. manually entering the username.
 #: ../js/gdm/loginDialog.js:454
 msgid "Not listed?"
 msgstr "Non elencato?"
 
-#. Translators: this message is shown below the username entry field
-#. to clue the user in on how to login to the local network realm
 #: ../js/gdm/loginDialog.js:622
-#, c-format
 msgid "(e.g., user or %s)"
 msgstr "(p.e. utente o %s)"
 
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
 #: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:259
 #: ../js/ui/components/networkAgent.js:277
 msgid "Username: "
@@ -352,11 +333,6 @@ msgstr "Finestra di accesso"
 msgid "Authentication error"
 msgstr "Errore di autenticazione"
 
-#. We don't show fingerprint messages directly since it's
-#. not the main auth service. Instead we use the messages
-#. as a cue to display our own message.
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
 #: ../js/gdm/util.js:436
 msgid "(or swipe finger)"
 msgstr "(o passare il dito)"
@@ -365,14 +341,11 @@ msgstr "(o passare il dito)"
 msgid "Command not found"
 msgstr "Comando non trovato"
 
-#. Replace "Error invoking GLib.shell_parse_argv: " with
-#. something nicer
 #: ../js/misc/util.js:131
 msgid "Could not parse command:"
 msgstr "Impossibile analizzare il comando:"
 
 #: ../js/misc/util.js:139
-#, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Esecuzione di «%s» non riuscita:"
 
@@ -403,16 +376,14 @@ msgstr "Aggiungi ai preferiti"
 # (ndt) e usare:
 # L'elemento %s è stato rimosso... ?
 #: ../js/ui/appFavorites.js:87
-#, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s è stato aggiunto ai preferiti."
 
 #: ../js/ui/appFavorites.js:121
-#, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s è stato rimosso dai preferiti."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:807
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:808
 #: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Impostazioni"
@@ -423,68 +394,68 @@ msgstr "Cambia sfondo…"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
+#. */
 #: ../js/ui/calendar.js:62
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Giornata"
 
 #. Translators: Shown in calendar event list, if 24h format,
-#. \u2236 is a ratio character, similar to :
+#. \u2236 is a ratio character, similar to : */
 #: ../js/ui/calendar.js:68
 msgctxt "event list time"
-msgid "%H\\u2236%M"
-msgstr "%H.%M"
+msgid "%H∶%M"
+msgstr "%k.%M"
 
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
-#. a thin space
+#. a thin space */
 #: ../js/ui/calendar.js:77
 msgctxt "event list time"
-msgid "%l\\u2236%M\\u2009%p"
-msgstr "%l.%M\\u2009%p "
+msgid "%l∶%M %p"
+msgstr "%l.%M %P"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
+#. */
 #: ../js/ui/calendar.js:108
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
-#. Translators: Calendar grid abbreviation for Monday
+#. Translators: Calendar grid abbreviation for Monday */
 #: ../js/ui/calendar.js:110
 msgctxt "grid monday"
 msgid "M"
 msgstr "L"
 
-#. Translators: Calendar grid abbreviation for Tuesday
+#. Translators: Calendar grid abbreviation for Tuesday */
 #: ../js/ui/calendar.js:112
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "M"
 
-#. Translators: Calendar grid abbreviation for Wednesday
+#. Translators: Calendar grid abbreviation for Wednesday */
 #: ../js/ui/calendar.js:114
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "M"
 
-#. Translators: Calendar grid abbreviation for Thursday
+#. Translators: Calendar grid abbreviation for Thursday */
 #: ../js/ui/calendar.js:116
 msgctxt "grid thursday"
 msgid "T"
 msgstr "G"
 
-#. Translators: Calendar grid abbreviation for Friday
+#. Translators: Calendar grid abbreviation for Friday */
 #: ../js/ui/calendar.js:118
 msgctxt "grid friday"
 msgid "F"
 msgstr "V"
 
-#. Translators: Calendar grid abbreviation for Saturday
+#. Translators: Calendar grid abbreviation for Saturday */
 #: ../js/ui/calendar.js:120
 msgctxt "grid saturday"
 msgid "S"
@@ -495,47 +466,51 @@ msgstr "S"
 #. * NOTE: These list abbreviations are normally not shown together
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
-#.
+#. */
 #: ../js/ui/calendar.js:133
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Do"
 
-#. Translators: Event list abbreviation for Monday
+#. Translators: Event list abbreviation for Monday */
 #: ../js/ui/calendar.js:135
 msgctxt "list monday"
 msgid "M"
 msgstr "Lu"
 
-#. Translators: Event list abbreviation for Tuesday
+#. Translators: Event list abbreviation for Tuesday */
 #: ../js/ui/calendar.js:137
 msgctxt "list tuesday"
 msgid "T"
 msgstr "Ma"
 
-#. Translators: Event list abbreviation for Wednesday
+#. Translators: Event list abbreviation for Wednesday */
 #: ../js/ui/calendar.js:139
 msgctxt "list wednesday"
 msgid "W"
 msgstr "Me"
 
-#. Translators: Event list abbreviation for Thursday
+#. Translators: Event list abbreviation for Thursday */
 #: ../js/ui/calendar.js:141
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Gi"
 
-#. Translators: Event list abbreviation for Friday
+#. Translators: Event list abbreviation for Friday */
 #: ../js/ui/calendar.js:143
 msgctxt "list friday"
 msgid "F"
 msgstr "Ve"
 
-#. Translators: Event list abbreviation for Saturday
+#. Translators: Event list abbreviation for Saturday */
 #: ../js/ui/calendar.js:145
 msgctxt "list saturday"
 msgid "S"
 msgstr "Sa"
+
+#: ../js/ui/calendar.js:389
+msgid "calendar:MY"
+msgstr "calendar:MY"
 
 #: ../js/ui/calendar.js:447
 msgid "Previous month"
@@ -545,18 +520,18 @@ msgstr "Mese precedente"
 msgid "Next month"
 msgstr "Mese successivo"
 
-#. Translators: Text to show if there are no events
+#. Translators: Text to show if there are no events */
 #: ../js/ui/calendar.js:753
 msgid "Nothing Scheduled"
 msgstr "Nessun evento"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current year */
 #: ../js/ui/calendar.js:771
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e %B"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on different year */
 #: ../js/ui/calendar.js:774
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
@@ -591,7 +566,6 @@ msgid "Removable Devices"
 msgstr "Dispositivi rimovibili"
 
 #: ../js/ui/components/autorunManager.js:594
-#, c-format
 msgid "Open with %s"
 msgstr "Apri con %s"
 
@@ -608,11 +582,10 @@ msgid "Type again:"
 msgstr "Inserire di nuovo:"
 
 #: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
+#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:695
 msgid "Connect"
 msgstr "Connetti"
 
-#. Cisco LEAP
 #: ../js/ui/components/networkAgent.js:222
 #: ../js/ui/components/networkAgent.js:234
 #: ../js/ui/components/networkAgent.js:261
@@ -621,7 +594,6 @@ msgstr "Connetti"
 msgid "Password: "
 msgstr "Password: "
 
-#. static WEP
 #: ../js/ui/components/networkAgent.js:227
 msgid "Key: "
 msgstr "Chiave: "
@@ -643,7 +615,6 @@ msgid "Authentication required by wireless network"
 msgstr "Richiesta autenticazione dalla rete wireless"
 
 #: ../js/ui/components/networkAgent.js:309
-#, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "'%s'."
@@ -680,7 +651,6 @@ msgid "Mobile broadband network password"
 msgstr "Password rete mobile"
 
 #: ../js/ui/components/networkAgent.js:336
-#, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "È richiesta una password per connettersi a «%s»."
 
@@ -699,24 +669,20 @@ msgstr "Autentica"
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
-#. * for instance.
+#. * for instance. */
 #: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Errore nell'autenticazione. Provare di nuovo."
 
-#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
-#. system-users for now as Empathy does.
 #: ../js/ui/components/telepathyClient.js:238
 msgid "Invitation"
 msgstr "Invito"
 
 # A memora del test che ho fatto è "chiamata"... da verificare meglio
-#. We got the TpContact
 #: ../js/ui/components/telepathyClient.js:298
 msgid "Call"
 msgstr "Chiamata"
 
-#. We got the TpContact
 #: ../js/ui/components/telepathyClient.js:314
 msgid "File Transfer"
 msgstr "Trasferimento file"
@@ -734,49 +700,42 @@ msgstr "Attiva notifiche"
 msgid "Mute"
 msgstr "Disattiva notifiche"
 
-#. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"
+#. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:942
-#, no-c-format
 msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgstr "<b>Ieri</b>, <b>%-H.%M</b>"
 
-#. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30
+#. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30*/
 #: ../js/ui/components/telepathyClient.js:948
-#, no-c-format
 msgid "<b>%A</b>, <b>%H:%M</b>"
 msgstr "<b>%A</b>, <b>%-H.%M</b>"
 
-#. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"
+#. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:953
-#, no-c-format
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
 msgstr "<b>%d</b> <b>%B</b>, <b>%-H.%M</b>"
 
-#. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"
+#. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:957
-#, no-c-format
 msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 msgstr "<b>%d</b> <b>%B</b> <b>%Y</b>, <b>%-H.%M</b>"
 
 #. Translators: this is the other person changing their old IM name to their new
-#. IM name.
+#. IM name. */
 #: ../js/ui/components/telepathyClient.js:986
-#, c-format
 msgid "%s is now known as %s"
 msgstr "%s ha cambiato nome in %s"
 
 #. translators: argument is a room name like
-#. * room@jabber.org for example.
+#. * room@jabber.org for example. */
 #: ../js/ui/components/telepathyClient.js:1089
-#, c-format
 msgid "Invitation to %s"
 msgstr "Invio su %s"
 
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example.
+#. * for example. */
 #: ../js/ui/components/telepathyClient.js:1097
-#, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s ti sta invitando su %s"
 
@@ -793,19 +752,17 @@ msgstr "Declina"
 msgid "Accept"
 msgstr "Accetta"
 
-#. translators: argument is a contact name like Alice for example.
+#. translators: argument is a contact name like Alice for example. */
 #: ../js/ui/components/telepathyClient.js:1130
-#, c-format
 msgid "Video call from %s"
 msgstr "Videochiamata da %s"
 
-#. translators: argument is a contact name like Alice for example.
+#. translators: argument is a contact name like Alice for example. */
 #: ../js/ui/components/telepathyClient.js:1133
-#, c-format
 msgid "Call from %s"
 msgstr "Chiamata da %s"
 
-#. translators: this is a button label (verb), not a noun
+#. translators: this is a button label (verb), not a noun */
 #: ../js/ui/components/telepathyClient.js:1142
 msgid "Answer"
 msgstr "Rispondi"
@@ -814,15 +771,13 @@ msgstr "Rispondi"
 #. * the contact's alias and the second one is the
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
-#.
+#. */
 #: ../js/ui/components/telepathyClient.js:1174
-#, c-format
 msgid "%s is sending you %s"
 msgstr "%s ti sta inviando %s"
 
-#. To translators: The parameter is the contact's alias
+#. To translators: The parameter is the contact's alias */
 #: ../js/ui/components/telepathyClient.js:1209
-#, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s chiede il permesso di vedere quando sei online"
 
@@ -936,9 +891,8 @@ msgid "Internal error"
 msgstr "Errore interno"
 
 #. translators: argument is the account name, like
-#. * name@jabber.org for example.
+#. * name@jabber.org for example. */
 #: ../js/ui/components/telepathyClient.js:1357
-#, c-format
 msgid "Unable to connect to %s"
 msgstr "Impossibile connettersi a %s"
 
@@ -959,8 +913,6 @@ msgid "Show Applications"
 msgstr "Mostra applicazioni"
 
 # cruscotto?!?!?!?!?!?!?
-#. Translators: this is the name of the dock/favorites area on
-#. the left of the overview
 #: ../js/ui/dash.js:442
 msgid "Dash"
 msgstr "Dash"
@@ -979,13 +931,12 @@ msgstr "Impostazioni data e ora"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#.
+#. */
 #: ../js/ui/dateMenu.js:202
 msgid "%A %B %e, %Y"
 msgstr "%a %e %B %Y"
 
 #: ../js/ui/endSessionDialog.js:62
-#, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Termina sessione di %s"
@@ -996,14 +947,12 @@ msgid "Log Out"
 msgstr "Termina sessione"
 
 #: ../js/ui/endSessionDialog.js:65
-#, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "La sessione di %s verrà terminata automaticamente tra %d secondo."
 msgstr[1] "La sessione di %s verrà terminata automaticamente tra %d secondi."
 
 #: ../js/ui/endSessionDialog.js:70
-#, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "La sessione verrà terminata automaticamente tra %d secondo."
@@ -1020,7 +969,6 @@ msgid "Power Off"
 msgstr "Spegni"
 
 #: ../js/ui/endSessionDialog.js:83
-#, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Il sistema verrà spento automaticamente tra %d secondo."
@@ -1042,7 +990,6 @@ msgid "Restart"
 msgstr "Riavvia"
 
 #: ../js/ui/endSessionDialog.js:99
-#, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Il sistema verrà riavviato automaticamente tra %d secondo."
@@ -1054,7 +1001,6 @@ msgid "Restart & Install Updates"
 msgstr "Riavvia e installa aggiornamenti"
 
 #: ../js/ui/endSessionDialog.js:114
-#, c-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -1078,15 +1024,13 @@ msgstr "Alcune applicazioni risultano occupate o con lavoro non salvato."
 msgid "Other users are logged in."
 msgstr "Sono connessi altri utenti."
 
-#. Translators: Remote here refers to a remote session, like a ssh login
+#. Translators: Remote here refers to a remote session, like a ssh login */
 #: ../js/ui/endSessionDialog.js:479
-#, c-format
 msgid "%s (remote)"
 msgstr "%s (remoto)"
 
-#. Translators: Console here refers to a tty like a VT console
+#. Translators: Console here refers to a tty like a VT console */
 #: ../js/ui/endSessionDialog.js:482
-#, c-format
 msgid "%s (console)"
 msgstr "%s (console)"
 
@@ -1095,11 +1039,10 @@ msgid "Install"
 msgstr "Installa"
 
 #: ../js/ui/extensionDownloader.js:204
-#, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Scaricare e installare «%s» da extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
+#: ../js/ui/keyboard.js:619
 msgid "Keyboard"
 msgstr "Tastiera"
 
@@ -1107,9 +1050,8 @@ msgstr "Tastiera"
 msgid "No extensions installed"
 msgstr "Nessuna estensione installata"
 
-#. Translators: argument is an extension UUID.
+#. Translators: argument is an extension UUID. */
 #: ../js/ui/lookingGlass.js:743
-#, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s non ha emesso alcun errore."
 
@@ -1191,7 +1133,6 @@ msgid "Unknown"
 msgstr "Sconosciuto"
 
 #: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:152
-#, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d nuovo messaggio"
@@ -1208,7 +1149,7 @@ msgstr "Panoramica"
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
-#. characters.
+#. characters. */
 #: ../js/ui/overview.js:258
 msgid "Type to search…"
 msgstr "Digita per cercare…"
@@ -1218,20 +1159,15 @@ msgid "Quit"
 msgstr "Esci"
 
 #. Translators: If there is no suitable word for "Activities"
-#. in your language, you can use the word for "Overview".
+#. in your language, you can use the word for "Overview". */
 #: ../js/ui/panel.js:570
 msgid "Activities"
 msgstr "Attività"
 
-#: ../js/ui/panel.js:903
+#: ../js/ui/panel.js:904
 msgid "Top Bar"
 msgstr "Barra superiore"
 
-#. Translators: this MUST be either "toggle-switch-us"
-#. (for toggle switches containing the English words
-#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
-#. switches containing "◯" and "|"). Other values will
-#. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:233
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
@@ -1245,13 +1181,12 @@ msgid "Close"
 msgstr "Chiudi"
 
 #. Translators: This is a time format for a date in
-#. long format
+#. long format */
 #: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
 #: ../js/ui/screenShield.js:154
-#, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d nuova notifica"
@@ -1265,13 +1200,6 @@ msgstr "Blocca"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME deve bloccare lo schermo"
 
-#. We could not become modal, so we can't activate the
-#. screenshield. The user is probably very upset at this
-#. point, but any application using global grabs is broken
-#. Just tell him to stop using this app
-#.
-#. XXX: another option is to kick the user into the gdm login
-#. screen, where we're not affected by grabs
 #: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
 msgid "Unable to lock"
 msgstr "Impossibile bloccare"
@@ -1280,11 +1208,11 @@ msgstr "Impossibile bloccare"
 msgid "Lock was blocked by an application"
 msgstr "Il blocco è stato impedito da un'applicazione."
 
-#: ../js/ui/searchDisplay.js:447
+#: ../js/ui/searchDisplay.js:448
 msgid "Searching…"
 msgstr "Ricerca…"
 
-#: ../js/ui/searchDisplay.js:491
+#: ../js/ui/searchDisplay.js:492
 msgid "No results."
 msgstr "Nessun risultato."
 
@@ -1357,8 +1285,6 @@ msgstr "Contrasto elevato"
 msgid "Large Text"
 msgstr "Caratteri grandi"
 
-#. The Bluetooth menu only appears when Bluetooth is in use,
-#. so just statically build it with a "Turn Off" menu item.
 #: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:63
 #: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
 #: ../js/ui/status/bluetooth.js:164 ../js/ui/status/bluetooth.js:195
@@ -1366,7 +1292,7 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1034 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/network.js:1040 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Spegni"
 
@@ -1375,20 +1301,17 @@ msgid "Bluetooth Settings"
 msgstr "Impostazioni Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:58
-#, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d dispositivo connesso"
 msgstr[1] "%d dispositivi connessi"
 
 #: ../js/ui/status/bluetooth.js:101 ../js/ui/status/bluetooth.js:129
-#, c-format
 msgid "Authorization request from %s"
 msgstr "Richesta autorizzazione da %s"
 
 #: ../js/ui/status/bluetooth.js:107 ../js/ui/status/bluetooth.js:172
 #: ../js/ui/status/bluetooth.js:203
-#, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Il dispositivo %s vuole associarsi con questo computer"
 
@@ -1401,7 +1324,6 @@ msgid "Deny"
 msgstr "Nega"
 
 #: ../js/ui/status/bluetooth.js:135
-#, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Il dispositivo %s vuole accedere al servizio «%s»"
 
@@ -1417,20 +1339,18 @@ msgstr "Accorda solo stavolta"
 msgid "Reject"
 msgstr "Rifiuta"
 
-#. Translators: argument is the device short name
+#. Translators: argument is the device short name */
 #: ../js/ui/status/bluetooth.js:166
-#, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Conferma associazione per %s"
 
 #: ../js/ui/status/bluetooth.js:173
-#, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr ""
 "Confermare la corrispondenza del PIN «%06d» con quello sul dispositivo."
 
-#. Translators: this is the verb, not the noun
+#. Translators: this is the verb, not the noun */
 #: ../js/ui/status/bluetooth.js:176
 msgid "Matches"
 msgstr "Corrisponde"
@@ -1440,7 +1360,6 @@ msgid "Does not match"
 msgstr "Non corrisponde"
 
 #: ../js/ui/status/bluetooth.js:196
-#, c-format
 msgid "Pairing request for %s"
 msgstr "Richiesta di associazione per %s"
 
@@ -1456,26 +1375,22 @@ msgstr "OK"
 msgid "Brightness"
 msgstr "Luminosità"
 
-#: ../js/ui/status/keyboard.js:403
-msgid "Show Keyboard Layout"
-msgstr "Mostra disposizione tastiera"
-
 #: ../js/ui/status/network.js:72
 msgid "<unknown>"
 msgstr "<sconosciuto>"
 
-#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
+#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1055
 msgid "Off"
 msgstr "Off"
 
-#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:955
+#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:961
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Impostazioni rete"
 
 # FIXME o femminile? boh
 #. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu)
+#. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:364
 msgid "unmanaged"
 msgstr "non gestito"
@@ -1484,64 +1399,64 @@ msgstr "non gestito"
 msgid "disconnecting..."
 msgstr "disconnessione..."
 
-#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1100
+#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1106
 msgid "connecting..."
 msgstr "connessione..."
 
-#. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1103
+#. Translators: this is for network connections that require some kind of key or password */
+#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1109
 msgid "authentication required"
 msgstr "richiesta autenticazione"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing
+#. module, which is missing */
 #: ../js/ui/status/network.js:383
 msgid "firmware missing"
 msgstr "firmware mancante"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage
+#. is disabled by rfkill, or it has no coverage */
 #: ../js/ui/status/network.js:387
 msgid "unavailable"
 msgstr "non disponibile"
 
-#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1105
+#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1111
 msgid "connection failed"
 msgstr "connessione non riuscita"
 
-#: ../js/ui/status/network.js:654
+#: ../js/ui/status/network.js:660
 msgid "Wi-Fi Networks"
 msgstr "Reti Wi-Fi"
 
-#: ../js/ui/status/network.js:656
+#: ../js/ui/status/network.js:662
 msgid "Select a network"
 msgstr "Seleziona una rete"
 
-#: ../js/ui/status/network.js:680
+#: ../js/ui/status/network.js:686
 msgid "No Networks"
 msgstr "Nessuna rete"
 
-#: ../js/ui/status/network.js:949
+#: ../js/ui/status/network.js:955
 msgid "Select Network"
 msgstr "Seleziona rete"
 
-#: ../js/ui/status/network.js:1034
+#: ../js/ui/status/network.js:1040
 msgid "Turn On"
 msgstr "Accendi"
 
-#: ../js/ui/status/network.js:1167
+#: ../js/ui/status/network.js:1174
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1307
+#: ../js/ui/status/network.js:1314
 msgid "Network Manager"
 msgstr "Gestore reti"
 
-#: ../js/ui/status/network.js:1346
+#: ../js/ui/status/network.js:1353
 msgid "Connection failed"
 msgstr "Connessione non riuscita"
 
-#: ../js/ui/status/network.js:1347
+#: ../js/ui/status/network.js:1354
 msgid "Activation of network connection failed"
 msgstr "Attivazione della connessione di rete non riuscita"
 
@@ -1557,29 +1472,21 @@ msgstr "Impostazioni alimentazione"
 msgid "Fully Charged"
 msgstr "Carica"
 
-#. 0 is reported when UPower does not have enough data
-#. to estimate battery life
-#. state is one of PENDING_CHARGING, PENDING_DISCHARGING
 #: ../js/ui/status/power.js:69 ../js/ui/status/power.js:86
 msgid "Estimating…"
 msgstr "In stima…"
 
-#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:77
-#, c-format
-msgid "%d\\u2236%02d Remaining (%d%%)"
+#| msgid "%d\\u2236%02d Remaining (%d%%)"
+msgid "%d∶%02d Remaining (%d%%)"
 msgstr "%d.%02d rimanente (%d%%)"
 
 # in stile MacOS sarebbe "al pieno" :P
-#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:82
-#, c-format
-msgid "%d\\u2236%02d Until Full (%d%%)"
+#| msgid "%d\\u2236%02d Until Full (%d%%)"
+msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d.%02d alla carica (%d%%)"
 
-#. The menu only appears when airplane mode is on, so just
-#. statically build it as if it was on, rather than dynamically
-#. changing the menu contents.
 #: ../js/ui/status/rfkill.js:43
 msgid "Airplane Mode"
 msgstr "Modalità aeroplano"
@@ -1637,7 +1544,6 @@ msgid "Search"
 msgstr "Cerca"
 
 #: ../js/ui/wanda.js:77
-#, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
 "%s"
@@ -1648,13 +1554,11 @@ msgstr ""
 # %s dovrebbe diventare "Wanda", il nome del pesce: a giudicare dal codice
 #  non mi pare che per ora sia modificabile dall'utente però
 #: ../js/ui/wanda.js:81
-#, c-format
 msgid "%s the Oracle says"
 msgstr "%s l'oracolo dice"
 
 # (ndt) dovrebbe essere il nome dell'applicazione
 #: ../js/ui/windowAttentionHandler.js:19
-#, c-format
 msgid "'%s' is ready"
 msgstr "«%s» è pronto"
 
@@ -1664,7 +1568,7 @@ msgstr "Mantenere queste impostazioni per il monitor?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
-#.
+#. */
 #: ../js/ui/windowManager.js:75
 msgid "Revert Settings"
 msgstr "Ripristina impostazioni"
@@ -1674,7 +1578,6 @@ msgid "Keep Changes"
 msgstr "Mantieni modifiche"
 
 #: ../js/ui/windowManager.js:97
-#, c-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Le modifiche alle impostazioni saranno ripristinate tra %d secondo"
