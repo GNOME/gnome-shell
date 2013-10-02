@@ -347,7 +347,7 @@ const LayoutManager = new Lang.Class({
                               BackgroundMenu.addBackgroundMenu(bgManager.background.actor);
                           }));
 
-        this._bgManagers.push(bgManager);
+        this._bgManagers[monitorIndex] = bgManager;
 
         return bgManager.background;
     },
