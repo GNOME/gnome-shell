@@ -170,8 +170,7 @@ const NMConnectionSection = new Lang.Class({
     },
 
     destroy: function() {
-        this.statusItem.destroy();
-        this.section.destroy();
+        this.item.destroy();
     },
 
     _sync: function() {
