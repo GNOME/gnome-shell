@@ -318,9 +318,9 @@ const Background = new Lang.Class({
         this._cancellable = new Gio.Cancellable();
         this.isLoaded = false;
 
-        this._settings.connect('changed', Lang.bind(this, function() {
-                                   this.emit('changed');
-                               }));
+        this._settingsChangedSignalId = this._settings.connect('changed', Lang.bind(this, function() {
+                                            this.emit('changed');
+                                        }));
 
         this._load();
     },
@@ -361,6 +361,10 @@ const Background = new Lang.Class({
 
         this.actor.disconnect(this._destroySignalId);
         this._destroySignalId = 0;
+
+        if (this._settingsChangedSignalId != 0)
+            this._settings.disconnect(this._settingsChangedSignalId);
+        this._settingsChangedSignalId = 0;
     },
 
     _setLoaded: function() {
