@@ -1072,10 +1072,17 @@ const NMDeviceWireless = new Lang.Class({
 
     _getStatus: function() {
         let ap = this._device.active_access_point;
-        if (!ap)
-            return _("Off"); // XXX -- interpret actual status
 
-        return ssidToLabel(ap.get_ssid());
+        if (ap)
+            return ssidToLabel(ap.get_ssid());
+        else if (!this._client.wireless_hardware_enabled)
+            return _("Hardware Disabled");
+        else if (!this._client.wireless_enabled)
+            return _("Off");
+        else if (this._device.state == NetworkManager.DeviceState.DISCONNECTED)
+            return _("Not Connected");
+        else
+            return '';
     },
 
     _getMenuIcon: function() {
