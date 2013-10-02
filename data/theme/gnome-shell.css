@@ -2276,7 +2276,7 @@ StScrollBar StButton#vhandle:active {
 
 .framed-user-icon {
     border: 2px solid #8b8b8b;
-    border-radius: 5px;
+    border-radius: 3px;
     background-size: contain;
 }
 
@@ -2320,7 +2320,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .login-dialog-user-list-item {
-    border-radius: 10px;
+    border-radius: 5px;
     padding: .2em;
 }
 
@@ -2333,19 +2333,20 @@ StScrollBar StButton#vhandle:active {
 }
 
 .login-dialog-user-list-item .login-dialog-user-list-item-name {
-    font-size: 20pt;
-    padding-left: 9px;
+    font-size: 20px;
+    padding-left: 18px;
+    font-weight: bold;
 }
 
 .login-dialog-user-list:expanded .login-dialog-user-list-item {
-    color: #666666;
+    color: #bfbfbf;
 }
 
 .login-dialog-user-list-item,
 .login-dialog-user-list-item:hover .login-dialog-user-list-item-name,
 .login-dialog-user-list:expanded .login-dialog-user-list-item:focus .login-dialog-user-list-item-name,
 .login-dialog-user-list:expanded .login-dialog-user-list-item:logged-in {
-    color: white;
+    color: #bfbfbf;
     text-shadow: black 0px 2px 2px;
 }
 
@@ -2377,7 +2378,7 @@ StScrollBar StButton#vhandle:active {
 
 .login-dialog-user-list-item-icon {
     border: 2px solid #8b8b8b;
-    border-radius: 8px;
+    border-radius: 3px;
     width: 64px;
     height: 64px;
 }
@@ -2494,10 +2495,11 @@ StScrollBar StButton#vhandle:active {
 }
 
 .user-widget-label {
-    font-size: 16pt;
+    font-size: 20px;
     font-weight: bold;
     text-align: left;
-    padding-left: 15px;
+    padding-left: 18px;
+    color:white;
     text-shadow: black 0px 4px 3px 0px;
 }
 
