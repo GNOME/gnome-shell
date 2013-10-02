@@ -341,7 +341,7 @@ on_apps_tree_changed_cb (GMenuTree *tree,
       else
         g_free (prefix);
 
-      info = gmenu_tree_entry_get_app_info (entry);
+      info = g_desktop_app_info_new (gmenu_tree_entry_get_desktop_file_id (entry));
 
       app = g_hash_table_lookup (self->priv->id_to_app, id);
       if (app != NULL)
@@ -362,6 +362,8 @@ on_apps_tree_changed_cb (GMenuTree *tree,
         {
           app = _shell_app_new (info);
         }
+
+      g_object_unref (info);
 
       g_hash_table_replace (self->priv->id_to_app, (char*)id, app);
       if (!gmenu_tree_entry_get_is_nodisplay_recurse (entry))
