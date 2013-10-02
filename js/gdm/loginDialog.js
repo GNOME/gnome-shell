@@ -619,7 +619,7 @@ const LoginDialog = new Lang.Class({
 
         // Translators: this message is shown below the username entry field
         // to clue the user in on how to login to the local network realm
-        this._authPrompt.setMessage(_("(e.g., user or %s)").format(hint), AuthPrompt.MessageType.HINT);
+        this._authPrompt.setMessage(_("(e.g., user or %s)").format(hint), GdmUtil.MessageType.HINT);
     },
 
     _askForUsernameAndBeginVerification: function() {
