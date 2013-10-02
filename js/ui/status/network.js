@@ -83,6 +83,17 @@ function ensureActiveConnectionProps(active, settings) {
     }
 }
 
+function createSettingsAction(label, device) {
+    let item = new PopupMenu.PopupMenuItem(label);
+
+    item.connect('activate', function() {
+        Util.spawnApp(['gnome-control-center', 'network', 'show-device',
+                       device.get_path()]);
+    });
+
+    return item;
+}
+
 const NMConnectionItem = new Lang.Class({
     Name: 'NMConnectionItem',
 
@@ -283,7 +294,6 @@ const NMConnectionDevice = new Lang.Class({
         this._settings = settings;
 
         this._autoConnectItem = this.item.menu.addAction(_("Connect"), Lang.bind(this, this._autoConnect));
-        this.item.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
 
         this._stateChangedId = this._device.connect('state-changed', Lang.bind(this, this._deviceStateChanged));
         this._activeConnectionChangedId = this._device.connect('notify::active-connection', Lang.bind(this, this._activeConnectionChanged));
@@ -413,6 +423,9 @@ const NMDeviceModem = new Lang.Class({
 
     _init: function(client, device, settings) {
         this.parent(client, device, settings);
+
+        this.item.menu.addMenuItem(createSettingsAction(_("Mobile Broadband Settings"), device));
+
         this._mobileDevice = null;
 
         let capabilities = device.current_capabilities;
@@ -493,6 +506,12 @@ const NMDeviceBluetooth = new Lang.Class({
     Name: 'NMDeviceBluetooth',
     Extends: NMConnectionDevice,
     category: NMConnectionCategory.WWAN,
+
+    _init: function(client, device, settings) {
+        this.parent(client, device, settings);
+
+        this.item.menu.addMenuItem(createSettingsAction(_("Mobile Broadband Settings"), device));
+    },
 
     _autoConnect: function() {
         // FIXME: DUN devices are configured like modems, so
@@ -975,7 +994,7 @@ const NMDeviceWireless = new Lang.Class({
         this._toggleItem.connect('activate', Lang.bind(this, this._toggleWifi));
         this.item.menu.addMenuItem(this._toggleItem);
 
-        this.item.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
+        this.item.menu.addMenuItem(createSettingsAction(_("Wi-Fi Settings"), device));
 
         this._wirelessEnabledChangedId = this._client.connect('notify::wireless-enabled', Lang.bind(this, this._sync));
         this._wirelessHwEnabledChangedId = this._client.connect('notify::wireless-hardware-enabled', Lang.bind(this, this._sync));

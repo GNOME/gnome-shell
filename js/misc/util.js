@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const St = imports.gi.St;
@@ -76,6 +77,22 @@ function spawnCommandLine(command_line) {
         trySpawn(argv);
     } catch (err) {
         _handleSpawnError(command_line, err);
+    }
+}
+
+// spawnApp:
+// @argv: an argv array
+//
+// Runs @argv as if it was an application, handling startup notification
+function spawnApp(argv) {
+    try {
+        let app = Gio.AppInfo.create_from_commandline(argv.join(' '), null,
+                                                      Gio.AppInfoCreateFlags.SUPPORTS_STARTUP_NOTIFICATION);
+
+        let context = global.create_app_launch_context();
+        app.launch([], context);
+    } catch(err) {
+        _handleSpawnError(argv[0], err);
     }
 }
 
