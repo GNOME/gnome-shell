@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.9.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-29 11:27+0200\n"
+"POT-Creation-Date: 2013-10-03 20:38+0200\n"
 "PO-Revision-Date: 2013-09-24 19:38+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
@@ -268,7 +268,7 @@ msgstr "Velg en utvidelse som skal konfigureres med komboboksen over."
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:692
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:703
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -573,8 +573,8 @@ msgstr "Passord:"
 msgid "Type again:"
 msgstr "Skriv på nytt:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:695
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:122
+#: ../js/ui/status/network.js:285 ../js/ui/status/network.js:706
 msgid "Connect"
 msgstr "Koble til"
 
@@ -1320,8 +1320,8 @@ msgstr "Stor tekst"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1040 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:122
+#: ../js/ui/status/network.js:1051 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Slå av"
 
@@ -1418,83 +1418,83 @@ msgstr "Vis tastaturutforming"
 msgid "<unknown>"
 msgstr "<ukjent>"
 
-#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1055
+#: ../js/ui/status/network.js:212 ../js/ui/status/network.js:1066
 msgid "Off"
 msgstr "Av"
 
-#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:961
+#: ../js/ui/status/network.js:286 ../js/ui/status/network.js:972
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:364
+#: ../js/ui/status/network.js:375
 msgid "unmanaged"
 msgstr "ikke håndtert"
 
-#: ../js/ui/status/network.js:366
+#: ../js/ui/status/network.js:377
 msgid "disconnecting..."
 msgstr "kobler fra …"
 
-#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1106
+#: ../js/ui/status/network.js:383 ../js/ui/status/network.js:1118
 msgid "connecting..."
 msgstr "kobler til …"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1109
+#: ../js/ui/status/network.js:386 ../js/ui/status/network.js:1121
 msgid "authentication required"
 msgstr "autentisering kreves"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:383
+#: ../js/ui/status/network.js:394
 msgid "firmware missing"
 msgstr "fastvare mangler"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:387
+#: ../js/ui/status/network.js:398
 msgid "unavailable"
 msgstr "ikke tilgjengelig"
 
-#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1111
+#: ../js/ui/status/network.js:400 ../js/ui/status/network.js:1123
 msgid "connection failed"
 msgstr "tilkobling feilet"
 
-#: ../js/ui/status/network.js:660
+#: ../js/ui/status/network.js:671
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi nettverk"
 
-#: ../js/ui/status/network.js:662
+#: ../js/ui/status/network.js:673
 msgid "Select a network"
 msgstr "Velg et nettverk"
 
-#: ../js/ui/status/network.js:686
+#: ../js/ui/status/network.js:697
 msgid "No Networks"
 msgstr "Ingen nettverk"
 
-#: ../js/ui/status/network.js:955
+#: ../js/ui/status/network.js:966
 msgid "Select Network"
 msgstr "Velg nettverk"
 
-#: ../js/ui/status/network.js:1040
+#: ../js/ui/status/network.js:1051
 msgid "Turn On"
 msgstr "Slå på"
 
-#: ../js/ui/status/network.js:1173
+#: ../js/ui/status/network.js:1186
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1313
+#: ../js/ui/status/network.js:1326
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
-#: ../js/ui/status/network.js:1352
+#: ../js/ui/status/network.js:1365
 msgid "Connection failed"
 msgstr "Tilkobling feilet"
 
-#: ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:1366
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling feilet"
 
