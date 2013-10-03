@@ -63,6 +63,7 @@
 #include <X11/extensions/Xcomposite.h>
 
 #include "meta-wayland-private.h"
+#include "meta/compositor-mutter.h"
 
 /* Windows that unmaximize to a size bigger than that fraction of the workarea
  * will be scaled down to that size (while maintaining aspect ratio).
@@ -9899,96 +9900,20 @@ update_resize (MetaWindow *window,
     g_get_current_time (&window->display->grab_last_moveresize_time);
 }
 
-typedef struct
-{
-  Window  window;
-  int     count;
-  guint32 last_time;
-} EventScannerData;
-
-static Bool
-find_last_time_predicate (Display  *display,
-                          XEvent   *ev,
-                          XPointer  arg)
-{
-  EventScannerData *esd = (void*) arg;
-  XIEvent *xev;
-
-  if (ev->type != GenericEvent)
-    return False;
-
-  /* We are peeking into events not yet handled by GDK,
-   * Allocate cookie events here so we can handle XI2.
-   *
-   * GDK will handle later these events, and eventually
-   * free the cookie data itself.
-   */
-  XGetEventData (display, &ev->xcookie);
-  xev = (XIEvent *) ev->xcookie.data;
-
-  if (xev->evtype != XI_Motion)
-    return False;
-
-  if (esd->window != ((XIDeviceEvent *) xev)->event)
-    return False;
-
-  esd->count += 1;
-  esd->last_time = xev->time;
-
-  return False;
-}
-
 static gboolean
-check_use_this_motion_notify (MetaWindow *window,
-                              XIDeviceEvent *xev)
+check_use_this_motion_notify (MetaWindow         *window,
+                              const ClutterEvent *event)
 {
-  EventScannerData esd;
-  XEvent useless;
-
-  /* This code is copied from Owen's GDK code. */
-
-  if (window->display->grab_motion_notify_time != 0)
-    {
-      /* == is really the right test, but I'm all for paranoia */
-      if (window->display->grab_motion_notify_time <=
-          xev->time)
-        {
-          meta_topic (META_DEBUG_RESIZING,
-                      "Arrived at event with time %u (waiting for %u), using it\n",
-                      (unsigned int)xev->time,
-                      window->display->grab_motion_notify_time);
-          window->display->grab_motion_notify_time = 0;
-          return TRUE;
-        }
-      else
-        return FALSE; /* haven't reached the saved timestamp yet */
-    }
-
-  esd.window = xev->event;
-  esd.count = 0;
-  esd.last_time = 0;
-
-  /* "useless" isn't filled in because the predicate never returns True */
-  XCheckIfEvent (window->display->xdisplay,
-                 &useless,
-                 find_last_time_predicate,
-                 (XPointer) &esd);
-
-  if (esd.count > 0)
-    meta_topic (META_DEBUG_RESIZING,
-                "Will skip %d motion events and use the event with time %u\n",
-                esd.count, (unsigned int) esd.last_time);
-
-  if (esd.last_time == 0)
-    return TRUE;
-  else
-    {
-      /* Save this timestamp, and ignore all motion notify
-       * until we get to the one with this stamp.
-       */
-      window->display->grab_motion_notify_time = esd.last_time;
-      return FALSE;
-    }
+  /* XXX: Previously this code would walk through the X event queue
+     and filter out motion events that are followed by a later motion
+     event. There currently isn't any API to do the equivalent
+     procedure with the Clutter event queue so this function does
+     nothing. Clutter does its own motion event squashing so it may be
+     the case that this function isn't necessary. If it turns out that
+     we do need additional motion event squashing we could add some
+     extra API to the Clutter event queue and implement this function
+     properly. */
+  return TRUE;
 }
 
 static void
@@ -10062,17 +9987,23 @@ meta_window_update_sync_request_counter (MetaWindow *window,
 #endif /* HAVE_XSYNC */
 
 void
-meta_window_handle_mouse_grab_op_event (MetaWindow *window,
-                                        XIDeviceEvent *xev)
+meta_window_handle_mouse_grab_op_event (MetaWindow         *window,
+                                        const ClutterEvent *event)
 {
-  switch (xev->evtype)
+  gboolean is_window_root = (event->any.stage != NULL &&
+                             window &&
+                             window->screen &&
+                             CLUTTER_ACTOR (event->any.stage) ==
+                             meta_get_stage_for_screen (window->screen));
+
+  switch (event->type)
     {
-    case XI_ButtonRelease:
-      if (xev->detail == 1)
+    case CLUTTER_BUTTON_RELEASE:
+      if (event->button.button == 1)
         {
           meta_display_check_threshold_reached (window->display,
-                                                xev->root_x,
-                                                xev->root_y);
+                                                event->button.x,
+                                                event->button.y);
           /* If the user was snap moving then ignore the button
            * release because they may have let go of shift before
            * releasing the mouse button and they almost certainly do
@@ -10085,19 +10016,19 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                 {
                   if (window->tile_mode != META_TILE_NONE)
                     meta_window_tile (window);
-                  else if (xev->root == window->screen->xroot)
+                  else if (is_window_root)
                     update_move (window,
-                                 xev->mods.effective & ShiftMask,
-                                 xev->root_x,
-                                 xev->root_y);
+                                 event->button.modifier_state & CLUTTER_SHIFT_MASK,
+                                 event->button.x,
+                                 event->button.y);
                 }
               else if (meta_grab_op_is_resizing (window->display->grab_op))
                 {
-                  if (xev->root == window->screen->xroot)
+                  if (is_window_root)
                     update_resize (window,
-                                   xev->mods.effective & ShiftMask,
-                                   xev->root_x,
-                                   xev->root_y,
+                                   event->button.modifier_state & CLUTTER_SHIFT_MASK,
+                                   event->button.x,
+                                   event->button.y,
                                    TRUE);
 
                   /* If a tiled window has been dragged free with a
@@ -10109,37 +10040,36 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                    */
                   update_tile_mode (window);
                 }
+
+              meta_display_end_grab_op (window->display, event->any.time);
             }
-          meta_display_end_grab_op (window->display, xev->time);
         }
       break;
 
-    case XI_Motion:
+    case CLUTTER_MOTION:
       meta_display_check_threshold_reached (window->display,
-                                            xev->root_x,
-                                            xev->root_y);
+                                            event->motion.x,
+                                            event->motion.y);
       if (meta_grab_op_is_moving (window->display->grab_op))
         {
-          if (xev->root == window->screen->xroot)
+          if (is_window_root)
             {
-              if (check_use_this_motion_notify (window,
-                                                xev))
+              if (check_use_this_motion_notify (window, event))
                 update_move (window,
-                             xev->mods.effective & ShiftMask,
-                             xev->root_x,
-                             xev->root_y);
+                             event->button.modifier_state & CLUTTER_SHIFT_MASK,
+                             event->motion.x,
+                             event->motion.y);
             }
         }
       else if (meta_grab_op_is_resizing (window->display->grab_op))
         {
-          if (xev->root == window->screen->xroot)
+          if (is_window_root)
             {
-              if (check_use_this_motion_notify (window,
-                                                xev))
+              if (check_use_this_motion_notify (window, event))
                 update_resize (window,
-                               xev->mods.effective & ShiftMask,
-                               xev->root_x,
-                               xev->root_y,
+                               event->button.modifier_state & CLUTTER_SHIFT_MASK,
+                               event->motion.x,
+                               event->motion.y,
                                FALSE);
             }
         }

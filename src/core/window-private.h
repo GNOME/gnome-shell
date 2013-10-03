@@ -44,6 +44,7 @@
 #include <X11/Xutil.h>
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <clutter/clutter.h>
 #include "meta-wayland-types.h"
 
 typedef struct _MetaWindowQueue MetaWindowQueue;
@@ -642,8 +643,8 @@ void meta_window_update_sync_request_counter (MetaWindow *window,
                                               gint64      new_counter_value);
 #endif /* HAVE_XSYNC */
 
-void meta_window_handle_mouse_grab_op_event (MetaWindow *window,
-                                             XIDeviceEvent *xev);
+void meta_window_handle_mouse_grab_op_event (MetaWindow         *window,
+                                             const ClutterEvent *event);
 
 GList* meta_window_get_workspaces (MetaWindow *window);
 

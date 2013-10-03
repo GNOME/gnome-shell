@@ -39,6 +39,7 @@
 #include "keybindings-private.h"
 #include <meta/prefs.h>
 #include <meta/barrier.h>
+#include <clutter/clutter.h>
 
 #ifdef HAVE_STARTUP_NOTIFICATION
 #include <libsn/sn.h>
@@ -189,7 +190,7 @@ struct _MetaDisplay
   MetaWindow* autoraise_window;
 
   /* Alt+click button grabs */
-  unsigned int window_grab_modifiers;
+  ClutterModifierType window_grab_modifiers;
   
   /* current window operation */
   MetaGrabOp  grab_op;
@@ -484,6 +485,9 @@ guint meta_display_get_above_tab_keycode (MetaDisplay *display);
 
 gboolean meta_display_handle_xevent (MetaDisplay *display,
                                      XEvent      *event);
+
+gboolean meta_display_handle_event (MetaDisplay        *display,
+                                    const ClutterEvent *event);
 
 #ifdef HAVE_XI23
 gboolean meta_display_process_barrier_event (MetaDisplay *display,
