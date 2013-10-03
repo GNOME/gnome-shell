@@ -2261,16 +2261,20 @@ meta_display_handle_xevent (MetaDisplay *display,
   sn_display_process_event (display->sn_display, event);
 #endif
 
+  bypass_compositor = FALSE;
+  filter_out_event = FALSE;
+
   /* Intercept XRandR events early and don't attempt any
      processing for them. We still let them through to Gdk though,
      so it can update its own internal state.
   */
   monitor = meta_monitor_manager_get ();
   if (meta_monitor_manager_handle_xevent (monitor, event))
-    return FALSE;
-  
-  bypass_compositor = FALSE;
-  filter_out_event = FALSE;
+    {
+      bypass_compositor = TRUE;
+      goto out;
+    }
+
   display->current_time = event_get_time (display, event);
   display->monitor_cache_invalidated = TRUE;
 
@@ -2291,7 +2295,10 @@ meta_display_handle_xevent (MetaDisplay *display,
   if (screen)
     {
       if (meta_screen_handle_xevent (screen, event))
-        return TRUE;
+        {
+          bypass_compositor = filter_out_event = TRUE;
+          goto out;
+        }
     }
 
   modified = event_get_modified_window (display, event);
@@ -2368,6 +2375,8 @@ meta_display_handle_xevent (MetaDisplay *display,
         }
       else
         meta_idle_monitor_handle_xevent_all (event);
+
+      goto out;
     }
 #endif /* HAVE_XSYNC */
 
@@ -2393,6 +2402,8 @@ meta_display_handle_xevent (MetaDisplay *display,
                       window ? window->desc : "(none)",
                       frame_was_receiver);
         }
+
+      goto out;
     }
 #endif /* HAVE_SHAPE */
 
@@ -3207,6 +3218,7 @@ meta_display_handle_xevent (MetaDisplay *display,
         }
     }
 
+ out:
   if (display->compositor && !bypass_compositor)
     {
       if (meta_compositor_process_event (display->compositor,
