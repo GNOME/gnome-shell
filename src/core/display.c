@@ -2597,6 +2597,527 @@ reload_xkb_rules (MetaScreen  *screen)
   g_strfreev (names);
 }
 
+static gboolean
+handle_other_xevent (MetaDisplay *display,
+                     XEvent      *event)
+{
+  Window modified;
+  MetaWindow *window;
+  MetaWindow *property_for_window;
+  gboolean frame_was_receiver;
+  gboolean bypass_gtk = FALSE;
+
+  modified = event_get_modified_window (display, event);
+  window = modified != None ? meta_display_lookup_x_window (display, modified) : NULL;
+  frame_was_receiver = (window && window->frame && modified == window->frame->xwindow);
+
+  /* We only want to respond to _NET_WM_USER_TIME property notify
+   * events on _NET_WM_USER_TIME_WINDOW windows; in particular,
+   * responding to UnmapNotify events is kind of bad.
+   */
+  property_for_window = NULL;
+  if (window && modified == window->user_time_window)
+    {
+      property_for_window = window;
+      window = NULL;
+    }
+
+#ifdef HAVE_XSYNC
+  if (META_DISPLAY_HAS_XSYNC (display) &&
+      event->type == (display->xsync_event_base + XSyncAlarmNotify))
+    {
+      MetaWindow *alarm_window = meta_display_lookup_sync_alarm (display,
+                                                                 ((XSyncAlarmNotifyEvent*)event)->alarm);
+
+      if (alarm_window != NULL)
+        {
+          XSyncValue value = ((XSyncAlarmNotifyEvent*)event)->counter_value;
+          gint64 new_counter_value;
+          new_counter_value = XSyncValueLow32 (value) + ((gint64)XSyncValueHigh32 (value) << 32);
+          meta_window_update_sync_request_counter (alarm_window, new_counter_value);
+          bypass_gtk = TRUE; /* GTK doesn't want to see this really */
+        }
+      else
+        meta_idle_monitor_handle_xevent_all (event);
+
+      goto out;
+    }
+#endif /* HAVE_XSYNC */
+
+#ifdef HAVE_SHAPE
+  if (META_DISPLAY_HAS_SHAPE (display) && 
+      event->type == (display->shape_event_base + ShapeNotify))
+    {
+      bypass_gtk = TRUE; /* GTK doesn't want to see this really */
+      
+      if (window && !frame_was_receiver)
+        {
+          XShapeEvent *sev = (XShapeEvent*) event;
+
+          if (sev->kind == ShapeBounding)
+            meta_window_update_shape_region_x11 (window);
+          else if (sev->kind == ShapeInput)
+            meta_window_update_input_region_x11 (window);
+        }
+      else
+        {
+          meta_topic (META_DEBUG_SHAPES,
+                      "ShapeNotify not on a client window (window %s frame_was_receiver = %d)\n",
+                      window ? window->desc : "(none)",
+                      frame_was_receiver);
+        }
+
+      goto out;
+    }
+#endif /* HAVE_SHAPE */
+
+  switch (event->type)
+    {
+    case KeymapNotify:
+      break;
+    case Expose:
+      break;
+    case GraphicsExpose:
+      break;
+    case NoExpose:
+      break;
+    case VisibilityNotify:
+      break;
+    case CreateNotify:
+      {
+        MetaScreen *screen;
+
+        screen = meta_display_screen_for_root (display,
+                                               event->xcreatewindow.parent);
+        if (screen)
+          meta_stack_tracker_create_event (screen->stack_tracker,
+                                           &event->xcreatewindow);
+      }
+      break;
+
+    case DestroyNotify:
+      {
+        MetaScreen *screen;
+
+        screen = meta_display_screen_for_root (display,
+                                               event->xdestroywindow.event);
+        if (screen)
+          meta_stack_tracker_destroy_event (screen->stack_tracker,
+                                            &event->xdestroywindow);
+      }
+      if (window)
+        {
+          /* FIXME: It sucks that DestroyNotify events don't come with
+           * a timestamp; could we do something better here?  Maybe X
+           * will change one day?
+           */
+          guint32 timestamp;
+          timestamp = meta_display_get_current_time_roundtrip (display);
+
+          if (display->grab_op != META_GRAB_OP_NONE &&
+              display->grab_window == window)
+            meta_display_end_grab_op (display, timestamp);
+
+          if (frame_was_receiver)
+            {
+              meta_warning ("Unexpected destruction of frame 0x%lx, not sure if this should silently fail or be considered a bug\n",
+                            window->frame->xwindow);
+              meta_error_trap_push (display);
+              meta_window_destroy_frame (window->frame->window);
+              meta_error_trap_pop (display);
+            }
+          else
+            {
+              /* Unmanage destroyed window */
+              meta_window_unmanage (window, timestamp);
+              window = NULL;
+            }
+        }
+      break;
+    case UnmapNotify:
+      if (window)
+        {
+          /* FIXME: It sucks that UnmapNotify events don't come with
+           * a timestamp; could we do something better here?  Maybe X
+           * will change one day?
+           */
+          guint32 timestamp;
+          timestamp = meta_display_get_current_time_roundtrip (display);
+
+          if (display->grab_op != META_GRAB_OP_NONE &&
+              display->grab_window == window &&
+              ((window->frame == NULL) || !window->frame->mapped))
+            meta_display_end_grab_op (display, timestamp);
+
+          if (!frame_was_receiver)
+            {
+              if (window->unmaps_pending == 0)
+                {
+                  meta_topic (META_DEBUG_WINDOW_STATE,
+                              "Window %s withdrawn\n",
+                              window->desc);
+
+                  /* Unmanage withdrawn window */
+                  window->withdrawn = TRUE;
+                  meta_window_unmanage (window, timestamp);
+                  window = NULL;
+                }
+              else
+                {
+                  window->unmaps_pending -= 1;
+                  meta_topic (META_DEBUG_WINDOW_STATE,
+                              "Received pending unmap, %d now pending\n",
+                              window->unmaps_pending);
+                }
+            }
+        }
+      break;
+    case MapNotify:
+      /* NB: override redirect windows wont cause a map request so we
+       * watch out for map notifies against any root windows too if a
+       * compositor is enabled: */
+      if (display->compositor && window == NULL
+          && meta_display_screen_for_root (display, event->xmap.event))
+        {
+          window = meta_window_new (display, event->xmap.window,
+                                    FALSE);
+        }
+      break;
+    case MapRequest:
+      if (window == NULL)
+        {
+          window = meta_window_new (display, event->xmaprequest.window,
+                                    FALSE);
+        }
+      /* if frame was receiver it's some malicious send event or something */
+      else if (!frame_was_receiver && window)
+        {
+          meta_verbose ("MapRequest on %s mapped = %d minimized = %d\n",
+                        window->desc, window->mapped, window->minimized);
+          if (window->minimized)
+            {
+              meta_window_unminimize (window);
+              if (window->workspace != window->screen->active_workspace)
+                {
+                  meta_verbose ("Changing workspace due to MapRequest mapped = %d minimized = %d\n",
+                                window->mapped, window->minimized);
+                  meta_window_change_workspace (window,
+                                                window->screen->active_workspace);
+                }
+            }
+        }
+      break;
+    case ReparentNotify:
+      {
+        MetaScreen *screen;
+
+        screen = meta_display_screen_for_root (display,
+                                               event->xconfigure.event);
+        if (screen)
+          meta_stack_tracker_reparent_event (screen->stack_tracker,
+                                             &event->xreparent);
+      }
+      break;
+    case ConfigureNotify:
+      if (event->xconfigure.event != event->xconfigure.window)
+        {
+          MetaScreen *screen;
+
+          screen = meta_display_screen_for_root (display,
+                                                 event->xconfigure.event);
+          if (screen)
+            meta_stack_tracker_configure_event (screen->stack_tracker,
+                                                &event->xconfigure);
+        }
+
+      if (window && window->override_redirect)
+        meta_window_configure_notify (window, &event->xconfigure);
+
+      break;
+    case ConfigureRequest:
+      /* This comment and code is found in both twm and fvwm */
+      /*
+       * According to the July 27, 1988 ICCCM draft, we should ignore size and
+       * position fields in the WM_NORMAL_HINTS property when we map a window.
+       * Instead, we'll read the current geometry.  Therefore, we should respond
+       * to configuration requests for windows which have never been mapped.
+       */
+      if (window == NULL)
+        {
+          unsigned int xwcm;
+          XWindowChanges xwc;
+
+          xwcm = event->xconfigurerequest.value_mask &
+            (CWX | CWY | CWWidth | CWHeight | CWBorderWidth);
+
+          xwc.x = event->xconfigurerequest.x;
+          xwc.y = event->xconfigurerequest.y;
+          xwc.width = event->xconfigurerequest.width;
+          xwc.height = event->xconfigurerequest.height;
+          xwc.border_width = event->xconfigurerequest.border_width;
+
+          meta_verbose ("Configuring withdrawn window to %d,%d %dx%d border %d (some values may not be in mask)\n",
+                        xwc.x, xwc.y, xwc.width, xwc.height, xwc.border_width);
+          meta_error_trap_push (display);
+          XConfigureWindow (display->xdisplay, event->xconfigurerequest.window,
+                            xwcm, &xwc);
+          meta_error_trap_pop (display);
+        }
+      else
+        {
+          if (!frame_was_receiver)
+            meta_window_configure_request (window, event);
+        }
+      break;
+    case GravityNotify:
+      break;
+    case ResizeRequest:
+      break;
+    case CirculateNotify:
+      break;
+    case CirculateRequest:
+      break;
+    case PropertyNotify:
+      {
+        MetaGroup *group;
+        MetaScreen *screen;
+
+        if (window && !frame_was_receiver)
+          meta_window_property_notify (window, event);
+        else if (property_for_window && !frame_was_receiver)
+          meta_window_property_notify (property_for_window, event);
+
+        group = meta_display_lookup_group (display,
+                                           event->xproperty.window);
+        if (group != NULL)
+          meta_group_property_notify (group, event);
+
+        screen = NULL;
+        if (window == NULL &&
+            group == NULL) /* window/group != NULL means it wasn't a root window */
+          screen = meta_display_screen_for_root (display,
+                                                 event->xproperty.window);
+
+        if (screen != NULL)
+          {
+            if (event->xproperty.atom ==
+                display->atom__NET_DESKTOP_LAYOUT)
+              meta_screen_update_workspace_layout (screen);
+            else if (event->xproperty.atom ==
+                     display->atom__NET_DESKTOP_NAMES)
+              meta_screen_update_workspace_names (screen);
+            else if (meta_is_wayland_compositor () &&
+                     event->xproperty.atom ==
+                     display->atom__XKB_RULES_NAMES)
+              reload_xkb_rules (screen);
+#if 0
+            else if (event->xproperty.atom ==
+                     display->atom__NET_RESTACK_WINDOW)
+              handle_net_restack_window (display, event);
+#endif
+
+            /* we just use this property as a sentinel to avoid
+             * certain race conditions.  See the comment for the
+             * sentinel_counter variable declaration in display.h
+             */
+            if (event->xproperty.atom ==
+                display->atom__MUTTER_SENTINEL)
+              {
+                meta_display_decrement_focus_sentinel (display);
+              }
+          }
+      }
+      break;
+    case SelectionClear:
+      /* do this here instead of at end of function
+       * so we can return
+       */
+
+      /* FIXME: Clearing display->current_time here makes no sense to
+       * me; who put this here and why?
+       */
+      display->current_time = CurrentTime;
+
+      process_selection_clear (display, event);
+      /* Note that processing that may have resulted in
+       * closing the display... so return right away.
+       */
+      return FALSE;
+    case SelectionRequest:
+      process_selection_request (display, event);
+      break;
+    case SelectionNotify:
+      break;
+    case ColormapNotify:
+      if (window && !frame_was_receiver)
+        window->colormap = event->xcolormap.colormap;
+      break;
+    case ClientMessage:
+      if (window)
+        {
+          if (!frame_was_receiver)
+            meta_window_client_message (window, event);
+        }
+      else
+        {
+          MetaScreen *screen;
+
+          screen = meta_display_screen_for_root (display,
+                                                 event->xclient.window);
+
+          if (screen)
+            {
+              if (event->xclient.message_type ==
+                  display->atom__NET_CURRENT_DESKTOP)
+                {
+                  int space;
+                  MetaWorkspace *workspace;
+                  guint32 time;
+
+                  space = event->xclient.data.l[0];
+                  time = event->xclient.data.l[1];
+
+                  meta_verbose ("Request to change current workspace to %d with "
+                                "specified timestamp of %u\n",
+                                space, time);
+
+                  workspace =
+                    meta_screen_get_workspace_by_index (screen,
+                                                        space);
+
+                  /* Handle clients using the older version of the spec... */
+                  if (time == 0 && workspace)
+                    {
+                      meta_warning ("Received a NET_CURRENT_DESKTOP message "
+                                    "from a broken (outdated) client who sent "
+                                    "a 0 timestamp\n");
+                      time = meta_display_get_current_time_roundtrip (display);
+                    }
+
+                  if (workspace)
+                    meta_workspace_activate (workspace, time);
+                  else
+                    meta_verbose ("Don't know about workspace %d\n", space);
+                }
+              else if (event->xclient.message_type ==
+                       display->atom__NET_NUMBER_OF_DESKTOPS)
+                {
+                  int num_spaces;
+
+                  num_spaces = event->xclient.data.l[0];
+
+                  meta_verbose ("Request to set number of workspaces to %d\n",
+                                num_spaces);
+
+                  meta_prefs_set_num_workspaces (num_spaces);
+                }
+              else if (event->xclient.message_type ==
+                       display->atom__NET_SHOWING_DESKTOP)
+                {
+                  gboolean showing_desktop;
+                  guint32  timestamp;
+
+                  showing_desktop = event->xclient.data.l[0] != 0;
+                  /* FIXME: Braindead protocol doesn't have a timestamp */
+                  timestamp = meta_display_get_current_time_roundtrip (display);
+                  meta_verbose ("Request to %s desktop\n",
+                                showing_desktop ? "show" : "hide");
+
+                  if (showing_desktop)
+                    meta_screen_show_desktop (screen, timestamp);
+                  else
+                    {
+                      meta_screen_unshow_desktop (screen);
+                      meta_workspace_focus_default_window (screen->active_workspace, NULL, timestamp);
+                    }
+                }
+              else if (event->xclient.message_type ==
+                       display->atom_WM_PROTOCOLS)
+                {
+                  meta_verbose ("Received WM_PROTOCOLS message\n");
+
+                  if ((Atom)event->xclient.data.l[0] == display->atom__NET_WM_PING)
+                    {
+                      process_pong_message (display, event);
+
+                      /* We don't want ping reply events going into
+                       * the GTK+ event loop because gtk+ will treat
+                       * them as ping requests and send more replies.
+                       */
+                      bypass_gtk = TRUE;
+                    }
+                }
+            }
+
+          if (event->xclient.message_type ==
+              display->atom__NET_REQUEST_FRAME_EXTENTS)
+            {
+              meta_verbose ("Received _NET_REQUEST_FRAME_EXTENTS message\n");
+              process_request_frame_extents (display, event);
+            }
+        }
+      break;
+    case MappingNotify:
+      {
+        gboolean ignore_current;
+
+        ignore_current = FALSE;
+
+        /* Check whether the next event is an identical MappingNotify
+         * event.  If it is, ignore the current event, we'll update
+         * when we get the next one.
+         */
+        if (XPending (display->xdisplay))
+          {
+            XEvent next_event;
+
+            XPeekEvent (display->xdisplay, &next_event);
+
+            if (next_event.type == MappingNotify &&
+                next_event.xmapping.request == event->xmapping.request)
+              ignore_current = TRUE;
+          }
+
+        if (!ignore_current)
+          {
+            /* Let XLib know that there is a new keyboard mapping.
+             */
+            XRefreshKeyboardMapping (&event->xmapping);
+            meta_display_process_mapping_event (display, event);
+          }
+      }
+      break;
+    default:
+#ifdef HAVE_XKB
+      if (event->type == display->xkb_base_event_type)
+        {
+          XkbAnyEvent *xkb_ev = (XkbAnyEvent *) event;
+
+          switch (xkb_ev->xkb_type)
+            {
+            case XkbBellNotify:
+              if (XSERVER_TIME_IS_BEFORE(display->last_bell_time,
+                                         xkb_ev->time - 100))
+                {
+                  display->last_bell_time = xkb_ev->time;
+                  meta_bell_notify (display, xkb_ev);
+                }
+              break;
+            case XkbNewKeyboardNotify:
+            case XkbMapNotify:
+              if (xkb_ev->device == META_VIRTUAL_CORE_KEYBOARD_ID)
+                meta_display_process_mapping_event (display, event);
+              break;
+            }
+        }
+#endif
+      break;
+    }
+
+ out:
+  return bypass_gtk;
+}
+
 /**
  * meta_display_handle_xevent:
  * @display: The MetaDisplay that events are coming from
@@ -2614,10 +3135,7 @@ gboolean
 meta_display_handle_xevent (MetaDisplay *display,
                             XEvent      *event)
 {
-  MetaWindow *window;
-  MetaWindow *property_for_window;
   Window modified;
-  gboolean frame_was_receiver;
   gboolean bypass_compositor = FALSE, bypass_gtk = FALSE;
   XIEvent *input_event;
   MetaMonitorManager *monitor;
@@ -2672,7 +3190,7 @@ meta_display_handle_xevent (MetaDisplay *display,
   modified = event_get_modified_window (display, event);
 
   input_event = get_input_event (display, event);
-  
+
   if (event->type == UnmapNotify)
     {
       if (meta_ui_window_should_not_cause_focus (display->xdisplay,
@@ -2695,85 +3213,6 @@ meta_display_handle_xevent (MetaDisplay *display,
                   event->xany.serial);
     }
 
-  if (modified != None)
-    window = meta_display_lookup_x_window (display, modified);
-  else
-    window = NULL;
-
-  /* We only want to respond to _NET_WM_USER_TIME property notify
-   * events on _NET_WM_USER_TIME_WINDOW windows; in particular,
-   * responding to UnmapNotify events is kind of bad.
-   */
-  property_for_window = NULL;
-  if (window && modified == window->user_time_window)
-    {
-      property_for_window = window;
-      window = NULL;
-    }
-
-  frame_was_receiver = FALSE;
-  if (window &&
-      window->frame &&
-      modified == window->frame->xwindow)
-    {
-      /* Note that if the frame and the client both have an
-       * XGrabButton (as is normal with our setup), the event
-       * goes to the frame.
-       */
-      frame_was_receiver = TRUE;
-      meta_topic (META_DEBUG_EVENTS, "Frame was receiver of event for %s\n",
-                  window->desc);
-    }
-
-#ifdef HAVE_XSYNC
-  if (META_DISPLAY_HAS_XSYNC (display) &&
-      event->type == (display->xsync_event_base + XSyncAlarmNotify))
-    {
-      MetaWindow *alarm_window = meta_display_lookup_sync_alarm (display,
-                                                                 ((XSyncAlarmNotifyEvent*)event)->alarm);
-
-      if (alarm_window != NULL)
-        {
-          XSyncValue value = ((XSyncAlarmNotifyEvent*)event)->counter_value;
-          gint64 new_counter_value;
-          new_counter_value = XSyncValueLow32 (value) + ((gint64)XSyncValueHigh32 (value) << 32);
-          meta_window_update_sync_request_counter (alarm_window, new_counter_value);
-          bypass_gtk = TRUE; /* GTK doesn't want to see this really */
-        }
-      else
-        meta_idle_monitor_handle_xevent_all (event);
-
-      goto out;
-    }
-#endif /* HAVE_XSYNC */
-
-#ifdef HAVE_SHAPE
-  if (META_DISPLAY_HAS_SHAPE (display) && 
-      event->type == (display->shape_event_base + ShapeNotify))
-    {
-      bypass_gtk = TRUE; /* GTK doesn't want to see this really */
-      
-      if (window && !frame_was_receiver)
-        {
-          XShapeEvent *sev = (XShapeEvent*) event;
-
-          if (sev->kind == ShapeBounding)
-            meta_window_update_shape_region_x11 (window);
-          else if (sev->kind == ShapeInput)
-            meta_window_update_input_region_x11 (window);
-        }
-      else
-        {
-          meta_topic (META_DEBUG_SHAPES,
-                      "ShapeNotify not on a client window (window %s frame_was_receiver = %d)\n",
-                      window ? window->desc : "(none)",
-                      frame_was_receiver);
-        }
-
-      goto out;
-    }
-#endif /* HAVE_SHAPE */
-
 #ifdef HAVE_XI23
   if (meta_display_process_barrier_event (display, input_event))
     {
@@ -2791,458 +3230,19 @@ meta_display_handle_xevent (MetaDisplay *display,
       bypass_gtk = bypass_compositor = TRUE;
       goto out;
     }
-  else
+
+  if (handle_other_xevent (display, event))
     {
-      switch (event->type)
-        {
-        case KeymapNotify:
-          break;
-        case Expose:
-          break;
-        case GraphicsExpose:
-          break;
-        case NoExpose:
-          break;
-        case VisibilityNotify:
-          break;
-        case CreateNotify:
-          {
-            MetaScreen *screen;
-
-            screen = meta_display_screen_for_root (display,
-                                                   event->xcreatewindow.parent);
-            if (screen)
-              meta_stack_tracker_create_event (screen->stack_tracker,
-                                               &event->xcreatewindow);
-          }
-          break;
-      
-        case DestroyNotify:
-          {
-            MetaScreen *screen;
-
-            screen = meta_display_screen_for_root (display,
-                                                   event->xdestroywindow.event);
-            if (screen)
-              meta_stack_tracker_destroy_event (screen->stack_tracker,
-                                                &event->xdestroywindow);
-          }
-          if (window)
-            {
-              /* FIXME: It sucks that DestroyNotify events don't come with
-               * a timestamp; could we do something better here?  Maybe X
-               * will change one day?
-               */
-              guint32 timestamp;
-              timestamp = meta_display_get_current_time_roundtrip (display);
-
-              if (display->grab_op != META_GRAB_OP_NONE &&
-                  display->grab_window == window)
-                meta_display_end_grab_op (display, timestamp);
-          
-              if (frame_was_receiver)
-                {
-                  meta_warning ("Unexpected destruction of frame 0x%lx, not sure if this should silently fail or be considered a bug\n",
-                                window->frame->xwindow);
-                  meta_error_trap_push (display);
-                  meta_window_destroy_frame (window->frame->window);
-                  meta_error_trap_pop (display);
-                }
-              else
-                {
-                  /* Unmanage destroyed window */
-                  meta_window_unmanage (window, timestamp);
-                  window = NULL;
-                }
-            }
-          break;
-        case UnmapNotify:
-          if (window)
-            {
-              /* FIXME: It sucks that UnmapNotify events don't come with
-               * a timestamp; could we do something better here?  Maybe X
-               * will change one day?
-               */
-              guint32 timestamp;
-              timestamp = meta_display_get_current_time_roundtrip (display);
-
-              if (display->grab_op != META_GRAB_OP_NONE &&
-                  display->grab_window == window &&
-                  ((window->frame == NULL) || !window->frame->mapped))
-                meta_display_end_grab_op (display, timestamp);
-      
-              if (!frame_was_receiver)
-                {
-                  if (window->unmaps_pending == 0)
-                    {
-                      meta_topic (META_DEBUG_WINDOW_STATE,
-                                  "Window %s withdrawn\n",
-                                  window->desc);
-
-                      /* Unmanage withdrawn window */		  
-                      window->withdrawn = TRUE;
-                      meta_window_unmanage (window, timestamp);
-                      window = NULL;
-                    }
-                  else
-                    {
-                      window->unmaps_pending -= 1;
-                      meta_topic (META_DEBUG_WINDOW_STATE,
-                                  "Received pending unmap, %d now pending\n",
-                                  window->unmaps_pending);
-                    }
-                }
-            }
-          break;
-        case MapNotify:
-          /* NB: override redirect windows wont cause a map request so we
-           * watch out for map notifies against any root windows too if a
-           * compositor is enabled: */
-          if (display->compositor && window == NULL
-              && meta_display_screen_for_root (display, event->xmap.event))
-            {
-              window = meta_window_new (display, event->xmap.window,
-                                        FALSE);
-            }
-          break;
-        case MapRequest:
-          if (window == NULL)
-            {
-              window = meta_window_new (display, event->xmaprequest.window,
-                                        FALSE);
-            }
-          /* if frame was receiver it's some malicious send event or something */
-          else if (!frame_was_receiver && window)        
-            {
-              meta_verbose ("MapRequest on %s mapped = %d minimized = %d\n",
-                            window->desc, window->mapped, window->minimized);
-              if (window->minimized)
-                {
-                  meta_window_unminimize (window);
-                  if (window->workspace != window->screen->active_workspace)
-                    {
-                      meta_verbose ("Changing workspace due to MapRequest mapped = %d minimized = %d\n",
-                                    window->mapped, window->minimized);
-                      meta_window_change_workspace (window,
-                                                    window->screen->active_workspace);
-                    }
-                }
-            }
-          break;
-        case ReparentNotify:
-          {
-            MetaScreen *screen;
-
-            screen = meta_display_screen_for_root (display,
-                                                   event->xconfigure.event);
-            if (screen)
-              meta_stack_tracker_reparent_event (screen->stack_tracker,
-                                                 &event->xreparent);
-          }
-          break;
-        case ConfigureNotify:
-          if (event->xconfigure.event != event->xconfigure.window)
-            {
-              MetaScreen *screen;
-
-              screen = meta_display_screen_for_root (display,
-                                                     event->xconfigure.event);
-              if (screen)
-                meta_stack_tracker_configure_event (screen->stack_tracker,
-                                                    &event->xconfigure);
-            }
-
-          if (window && window->override_redirect)
-            meta_window_configure_notify (window, &event->xconfigure);
-
-          break;
-        case ConfigureRequest:
-          /* This comment and code is found in both twm and fvwm */
-          /*
-           * According to the July 27, 1988 ICCCM draft, we should ignore size and
-           * position fields in the WM_NORMAL_HINTS property when we map a window.
-           * Instead, we'll read the current geometry.  Therefore, we should respond
-           * to configuration requests for windows which have never been mapped.
-           */
-          if (window == NULL)
-            {
-              unsigned int xwcm;
-              XWindowChanges xwc;
-          
-              xwcm = event->xconfigurerequest.value_mask &
-                (CWX | CWY | CWWidth | CWHeight | CWBorderWidth);
-
-              xwc.x = event->xconfigurerequest.x;
-              xwc.y = event->xconfigurerequest.y;
-              xwc.width = event->xconfigurerequest.width;
-              xwc.height = event->xconfigurerequest.height;
-              xwc.border_width = event->xconfigurerequest.border_width;
-
-              meta_verbose ("Configuring withdrawn window to %d,%d %dx%d border %d (some values may not be in mask)\n",
-                            xwc.x, xwc.y, xwc.width, xwc.height, xwc.border_width);
-              meta_error_trap_push (display);
-              XConfigureWindow (display->xdisplay, event->xconfigurerequest.window,
-                                xwcm, &xwc);
-              meta_error_trap_pop (display);
-            }
-          else
-            {
-              if (!frame_was_receiver)
-                meta_window_configure_request (window, event);
-            }
-          break;
-        case GravityNotify:
-          break;
-        case ResizeRequest:
-          break;
-        case CirculateNotify:
-          break;
-        case CirculateRequest:
-          break;
-        case PropertyNotify:
-          {
-            MetaGroup *group;
-            MetaScreen *screen;
-        
-            if (window && !frame_was_receiver)
-              meta_window_property_notify (window, event);
-            else if (property_for_window && !frame_was_receiver)
-              meta_window_property_notify (property_for_window, event);
-
-            group = meta_display_lookup_group (display,
-                                               event->xproperty.window);
-            if (group != NULL)
-              meta_group_property_notify (group, event);
-        
-            screen = NULL;
-            if (window == NULL &&
-                group == NULL) /* window/group != NULL means it wasn't a root window */
-              screen = meta_display_screen_for_root (display,
-                                                     event->xproperty.window);
-            
-            if (screen != NULL)
-              {
-                if (event->xproperty.atom ==
-                    display->atom__NET_DESKTOP_LAYOUT)
-                  meta_screen_update_workspace_layout (screen);
-                else if (event->xproperty.atom ==
-                         display->atom__NET_DESKTOP_NAMES)
-                  meta_screen_update_workspace_names (screen);
-                else if (meta_is_wayland_compositor () &&
-                         event->xproperty.atom ==
-                         display->atom__XKB_RULES_NAMES)
-                  reload_xkb_rules (screen);
-#if 0
-                else if (event->xproperty.atom ==
-                         display->atom__NET_RESTACK_WINDOW)
-                  handle_net_restack_window (display, event);
-#endif
-
-                /* we just use this property as a sentinel to avoid
-                 * certain race conditions.  See the comment for the
-                 * sentinel_counter variable declaration in display.h
-                 */
-                if (event->xproperty.atom ==
-                    display->atom__MUTTER_SENTINEL)
-                  {
-                    meta_display_decrement_focus_sentinel (display);
-                  }
-              }
-          }
-          break;
-        case SelectionClear:
-          /* do this here instead of at end of function
-           * so we can return
-           */
-
-          /* FIXME: Clearing display->current_time here makes no sense to
-           * me; who put this here and why?
-           */
-          display->current_time = CurrentTime;
-
-          process_selection_clear (display, event);
-          /* Note that processing that may have resulted in
-           * closing the display... so return right away.
-           */
-          return FALSE;
-        case SelectionRequest:
-          process_selection_request (display, event);
-          break;
-        case SelectionNotify:
-          break;
-        case ColormapNotify:
-          if (window && !frame_was_receiver)
-            window->colormap = event->xcolormap.colormap;
-          break;
-        case ClientMessage:
-          if (window)
-            {
-              if (!frame_was_receiver)
-                meta_window_client_message (window, event);
-            }
-          else
-            {
-              MetaScreen *screen;
-
-              screen = meta_display_screen_for_root (display,
-                                                     event->xclient.window);
-          
-              if (screen)
-                {
-                  if (event->xclient.message_type ==
-                      display->atom__NET_CURRENT_DESKTOP)
-                    {
-                      int space;
-                      MetaWorkspace *workspace;
-                      guint32 time;
-              
-                      space = event->xclient.data.l[0];
-                      time = event->xclient.data.l[1];
-              
-                      meta_verbose ("Request to change current workspace to %d with "
-                                    "specified timestamp of %u\n",
-                                    space, time);
-
-                      workspace =
-                        meta_screen_get_workspace_by_index (screen,
-                                                            space);
-
-                      /* Handle clients using the older version of the spec... */
-                      if (time == 0 && workspace)
-                        {
-                          meta_warning ("Received a NET_CURRENT_DESKTOP message "
-                                        "from a broken (outdated) client who sent "
-                                        "a 0 timestamp\n");
-                          time = meta_display_get_current_time_roundtrip (display);
-                        }
-
-                      if (workspace)
-                        meta_workspace_activate (workspace, time);
-                      else
-                        meta_verbose ("Don't know about workspace %d\n", space);
-                    }
-                  else if (event->xclient.message_type ==
-                           display->atom__NET_NUMBER_OF_DESKTOPS)
-                    {
-                      int num_spaces;
-              
-                      num_spaces = event->xclient.data.l[0];
-              
-                      meta_verbose ("Request to set number of workspaces to %d\n",
-                                    num_spaces);
-
-                      meta_prefs_set_num_workspaces (num_spaces);
-                    }
-                  else if (event->xclient.message_type ==
-                           display->atom__NET_SHOWING_DESKTOP)
-                    {
-                      gboolean showing_desktop;
-                      guint32  timestamp;
-                  
-                      showing_desktop = event->xclient.data.l[0] != 0;
-                      /* FIXME: Braindead protocol doesn't have a timestamp */
-                      timestamp = meta_display_get_current_time_roundtrip (display);
-                      meta_verbose ("Request to %s desktop\n",
-                                    showing_desktop ? "show" : "hide");
-                  
-                      if (showing_desktop)
-                        meta_screen_show_desktop (screen, timestamp);
-                      else
-                        {
-                          meta_screen_unshow_desktop (screen);
-                          meta_workspace_focus_default_window (screen->active_workspace, NULL, timestamp);
-                        }
-                    }
-                  else if (event->xclient.message_type ==
-                           display->atom_WM_PROTOCOLS) 
-                    {
-                      meta_verbose ("Received WM_PROTOCOLS message\n");
-                  
-                      if ((Atom)event->xclient.data.l[0] == display->atom__NET_WM_PING)
-                        {
-                          process_pong_message (display, event);
-
-                          /* We don't want ping reply events going into
-                           * the GTK+ event loop because gtk+ will treat
-                           * them as ping requests and send more replies.
-                           */
-                          bypass_gtk = TRUE;
-                        }
-                    }
-                }
-
-              if (event->xclient.message_type ==
-                  display->atom__NET_REQUEST_FRAME_EXTENTS)
-                {
-                  meta_verbose ("Received _NET_REQUEST_FRAME_EXTENTS message\n");
-                  process_request_frame_extents (display, event);
-                }
-            }
-          break;
-        case MappingNotify:
-          {
-            gboolean ignore_current;
-
-            ignore_current = FALSE;
-        
-            /* Check whether the next event is an identical MappingNotify
-             * event.  If it is, ignore the current event, we'll update
-             * when we get the next one.
-             */
-            if (XPending (display->xdisplay))
-              {
-                XEvent next_event;
-            
-                XPeekEvent (display->xdisplay, &next_event);
-            
-                if (next_event.type == MappingNotify &&
-                    next_event.xmapping.request == event->xmapping.request)
-                  ignore_current = TRUE;
-              }
-
-            if (!ignore_current)
-              {
-                /* Let XLib know that there is a new keyboard mapping.
-                 */
-                XRefreshKeyboardMapping (&event->xmapping);
-                meta_display_process_mapping_event (display, event);
-              }
-          }
-          break;
-        default:
-#ifdef HAVE_XKB
-          if (event->type == display->xkb_base_event_type)
-            {
-              XkbAnyEvent *xkb_ev = (XkbAnyEvent *) event;
-
-              switch (xkb_ev->xkb_type)
-                {
-                case XkbBellNotify:
-                  if (XSERVER_TIME_IS_BEFORE(display->last_bell_time,
-                                             xkb_ev->time - 100))
-                    {
-                      display->last_bell_time = xkb_ev->time;
-                      meta_bell_notify (display, xkb_ev);
-                    }
-                  break;
-                case XkbNewKeyboardNotify:
-                case XkbMapNotify:
-                  if (xkb_ev->device == META_VIRTUAL_CORE_KEYBOARD_ID)
-                    meta_display_process_mapping_event (display, event);
-                  break;
-                }
-	    }
-#endif
-          break;
-        }
+      bypass_gtk = TRUE;
+      goto out;
     }
 
  out:
   if (display->compositor && !bypass_compositor)
     {
-      if (meta_compositor_process_event (display->compositor,
-                                         event,
-                                         window))
+      MetaWindow *window = modified != None ? meta_display_lookup_x_window (display, modified) : NULL;
+
+      if (meta_compositor_process_event (display->compositor, event, window))
         bypass_gtk = TRUE;
     }
   
