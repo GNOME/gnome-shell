@@ -426,16 +426,7 @@ const NMDeviceModem = new Lang.Class({
             this._mobileDevice = new ModemManager.ModemGsm(device.udi);
 
         if (this._mobileDevice) {
-            this._operatorNameId = this._mobileDevice.connect('notify::operator-name', Lang.bind(this, function() {
-                if (this._operatorItem) {
-                    let name = this._mobileDevice.operator_name;
-                    if (name) {
-                        this._operatorItem.label.text = name;
-                        this._operatorItem.actor.show();
-                    } else
-                        this._operatorItem.actor.hide();
-                }
-            }));
+            this._operatorNameId = this._mobileDevice.connect('notify::operator-name', Lang.bind(this, this._sync));
             this._signalQualityId = this._mobileDevice.connect('notify::signal-quality', Lang.bind(this, function() {
                 this.emit('icon-changed');
             }));
@@ -467,6 +458,9 @@ const NMDeviceModem = new Lang.Class({
             /* Translators: this is for a network device that cannot be activated
                because it's disabled by rfkill (airplane mode) */
             return _("Disabled");
+        else if (this._device.state == NetworkManager.DeviceState.ACTIVATED &&
+                 this._mobileDevice && this._mobileDevice.operator_name)
+            return this._mobileDevice.operator_name;
         else
             return this.parent();
     },
