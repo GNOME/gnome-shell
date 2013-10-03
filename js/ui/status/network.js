@@ -460,6 +460,17 @@ const NMDeviceModem = new Lang.Class({
         this.parent();
     },
 
+    _getStatus: function() {
+        if (!this._client.wwan_hardware_enabled)
+            return _("Hardware Disabled");
+        else if (!this._client.wwan_enabled)
+            /* Translators: this is for a network device that cannot be activated
+               because it's disabled by rfkill (airplane mode) */
+            return _("Disabled");
+        else
+            return this.parent();
+    },
+
     _getMenuIcon: function() {
         if (this._device.active_connection)
             return this.getIndicatorIcon();
