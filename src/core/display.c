@@ -2234,7 +2234,8 @@ meta_display_handle_event (MetaDisplay        *display,
 
   display->current_time = event->any.time;
 
-  if (window && !window->override_redirect && event->type == CLUTTER_BUTTON_PRESS)
+  if (window && !window->override_redirect &&
+      (event->type == CLUTTER_KEY_PRESS || event->type == CLUTTER_BUTTON_PRESS))
     {
       if (CurrentTime == display->current_time)
         {
@@ -2454,6 +2455,17 @@ meta_display_handle_event (MetaDisplay        *display,
         meta_window_handle_mouse_grab_op_event (window, event);
       break;
 
+    case CLUTTER_KEY_PRESS:
+    case CLUTTER_KEY_RELEASE:
+      /* For key events, it's important to enforce single-handling, or
+       * we can get into a confused state. So if a keybinding is
+       * handled (because it's one of our hot-keys, or because we are
+       * in a keyboard-grabbed mode like moving a window, we don't
+       * want to pass the key event to the compositor or GTK+ at all.
+       */
+      if (meta_display_process_key_event (display, window, (ClutterKeyEvent *) event))
+        return TRUE;
+
     default:
       break;
     }
@@ -2476,39 +2488,8 @@ handle_input_xevent (MetaDisplay *display,
   modified = xievent_get_modified_window (display, input_event);
   window = modified != None ? meta_display_lookup_x_window (display, modified) : NULL;
 
-  if (window && !window->override_redirect && input_event->type == XI_KeyPress)
-    {
-      if (CurrentTime == display->current_time)
-        {
-          /* We can't use missing (i.e. invalid) timestamps to set user time,
-           * nor do we want to use them to sanity check other timestamps.
-           * See bug 313490 for more details.
-           */
-          meta_warning ("Event has no timestamp! You may be using a broken "
-                        "program such as xse.  Please ask the authors of that "
-                        "program to fix it.\n");
-        }
-      else
-        {
-          meta_window_set_user_time (window, display->current_time);
-          sanity_check_timestamps (display, display->current_time);
-        }
-    }
-
   switch (input_event->evtype)
     {
-    case XI_KeyPress:
-    case XI_KeyRelease:
-
-      /* For key events, it's important to enforce single-handling, or
-       * we can get into a confused state. So if a keybinding is
-       * handled (because it's one of our hot-keys, or because we are
-       * in a keyboard-grabbed mode like moving a window, we don't
-       * want to pass the key event to the compositor or GTK+ at all.
-       */
-      if (meta_display_process_key_event (display, window, (XIDeviceEvent *) input_event))
-        return TRUE;
-      break;
     case XI_Enter:
       if (display->grab_op == META_GRAB_OP_COMPOSITOR)
         break;
@@ -6050,13 +6031,14 @@ meta_display_overlay_key_activate (MetaDisplay *display)
 }
 
 void
-meta_display_accelerator_activate (MetaDisplay *display,
-                                   guint        action,
-                                   guint        deviceid,
-                                   guint        timestamp)
+meta_display_accelerator_activate (MetaDisplay     *display,
+                                   guint            action,
+                                   ClutterKeyEvent *event)
 {
   g_signal_emit (display, display_signals[ACCELERATOR_ACTIVATED],
-                 0, action, deviceid, timestamp);
+                 0, action,
+                 clutter_input_device_get_device_id (event->device),
+                 event->time);
 }
 
 gboolean

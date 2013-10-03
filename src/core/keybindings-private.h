@@ -66,9 +66,9 @@ gboolean meta_window_grab_all_keys          (MetaWindow  *window,
                                              guint32      timestamp);
 void     meta_window_ungrab_all_keys        (MetaWindow  *window,
                                              guint32      timestamp);
-gboolean meta_display_process_key_event     (MetaDisplay   *display,
-                                             MetaWindow    *window,
-                                             XIDeviceEvent *event);
+gboolean meta_display_process_key_event     (MetaDisplay     *display,
+                                             MetaWindow      *window,
+                                             ClutterKeyEvent *event);
 void     meta_display_process_mapping_event (MetaDisplay *display,
                                              XEvent      *event);
 
@@ -81,7 +81,3 @@ gboolean meta_prefs_remove_keybinding       (const char    *name);
 
 
 #endif
-
-
-
-

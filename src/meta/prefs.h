@@ -391,17 +391,17 @@ struct _MetaKeyCombo
  * @display: a #MetaDisplay
  * @screen: a #MetaScreen
  * @window: a #MetaWindow
- * @event: (type gpointer): a #XIDeviceEvent
+ * @event: a #ClutterKeyEvent
  * @binding: a #MetaKeyBinding
  * @user_data: data passed to the function
  *
  */
-typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
-                                     MetaScreen     *screen,
-                                     MetaWindow     *window,
-                                     XIDeviceEvent  *event,
-                                     MetaKeyBinding *binding,
-                                     gpointer        user_data);
+typedef void (* MetaKeyHandlerFunc) (MetaDisplay     *display,
+                                     MetaScreen      *screen,
+                                     MetaWindow      *window,
+                                     ClutterKeyEvent *event,
+                                     MetaKeyBinding  *binding,
+                                     gpointer         user_data);
 
 typedef struct _MetaKeyHandler MetaKeyHandler;
 

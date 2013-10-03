@@ -474,10 +474,9 @@ void meta_display_queue_autoraise_callback  (MetaDisplay *display,
 void meta_display_remove_autoraise_callback (MetaDisplay *display);
 
 void meta_display_overlay_key_activate (MetaDisplay *display);
-void meta_display_accelerator_activate (MetaDisplay *display,
-                                        guint        action,
-                                        guint        deviceid,
-                                        guint        timestamp);
+void meta_display_accelerator_activate (MetaDisplay     *display,
+                                        guint            action,
+                                        ClutterKeyEvent *event);
 gboolean meta_display_modifiers_accelerator_activate (MetaDisplay *display);
 
 /* In above-tab-keycode.c */
