@@ -55,7 +55,7 @@ const Indicator = new Lang.Class({
         this._item.actor.visible = on;
 
         if (on)
-            this._item.status.text = ngettext("%d Connected Device", "%d Connected Devices").format(nDevices);
+            this._item.status.text = ngettext("%d Connected Device", "%d Connected Devices", nDevices).format(nDevices);
     },
 
     _ensureSource: function() {
