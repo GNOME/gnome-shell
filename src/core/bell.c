@@ -74,26 +74,8 @@ static void
 bell_flash_fullscreen (MetaDisplay *display, 
                        XkbAnyEvent *xkb_ev)
 {
-  XkbBellNotifyEvent *xkb_bell_ev = (XkbBellNotifyEvent *) xkb_ev;
-  MetaScreen *screen;
-
   g_assert (xkb_ev->xkb_type == XkbBellNotify);
-  if (xkb_bell_ev->window != None)
-    {
-      screen = meta_display_screen_for_xwindow (display, xkb_bell_ev->window);
-      if (screen)
-        meta_compositor_flash_screen (display->compositor, screen);
-    }
-  else 
-    {
-      GSList *screen_list = display->screens;
-      while (screen_list) 
-	{
-	  screen = (MetaScreen *) screen_list->data;
-          meta_compositor_flash_screen (display->compositor, screen);
-	  screen_list = screen_list->next;
-	}
-    }
+  meta_compositor_flash_screen (display->compositor, display->screen);
 }
 
 /**

@@ -148,8 +148,7 @@ struct _MetaDisplay
   
   /*< private-ish >*/
   guint error_trap_synced_at_last_pop : 1;
-  GSList *screens;
-  MetaScreen *active_screen;
+  MetaScreen *screen;
   GHashTable *xids;
   GHashTable *wayland_windows;
   int error_traps;
@@ -351,10 +350,6 @@ struct _MetaDisplayClass
 gboolean      meta_display_open                (void);
 void          meta_display_close               (MetaDisplay *display,
                                                 guint32      timestamp);
-MetaScreen*   meta_display_screen_for_x_screen (MetaDisplay *display,
-                                                Screen      *screen);
-MetaScreen*   meta_display_screen_for_xwindow  (MetaDisplay *display,
-                                                Window       xindow);
 void          meta_display_grab                (MetaDisplay *display);
 void          meta_display_ungrab              (MetaDisplay *display);
 

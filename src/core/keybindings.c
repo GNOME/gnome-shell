@@ -685,15 +685,7 @@ ungrab_key_bindings (MetaDisplay *display)
 
   meta_error_trap_push (display); /* for efficiency push outer trap */
 
-  tmp = display->screens;
-  while (tmp != NULL)
-    {
-      MetaScreen *screen = tmp->data;
-
-      meta_screen_ungrab_keys (screen);
-
-      tmp = tmp->next;
-    }
+  meta_screen_ungrab_keys (display->screen);
 
   windows = meta_display_list_windows (display, META_LIST_DEFAULT);
   tmp = windows;
@@ -718,15 +710,7 @@ grab_key_bindings (MetaDisplay *display)
 
   meta_error_trap_push (display); /* for efficiency push outer trap */
 
-  tmp = display->screens;
-  while (tmp != NULL)
-    {
-      MetaScreen *screen = tmp->data;
-
-      meta_screen_grab_keys (screen);
-
-      tmp = tmp->next;
-    }
+  meta_screen_grab_keys (display->screen);
 
   windows = meta_display_list_windows (display, META_LIST_DEFAULT);
   tmp = windows;
@@ -1298,7 +1282,6 @@ meta_display_grab_accelerator (MetaDisplay *display,
   guint keycode = 0;
   guint mask = 0;
   MetaVirtualModifier modifiers = 0;
-  GSList *l;
 
   if (!meta_ui_parse_accelerator (accelerator, &keysym, &keycode, &modifiers))
     {
@@ -1318,11 +1301,7 @@ meta_display_grab_accelerator (MetaDisplay *display,
   if (display_get_keybinding (display, keycode, mask))
     return META_KEYBINDING_ACTION_NONE;
 
-  for (l = display->screens; l; l = l->next)
-    {
-      MetaScreen *screen = l->data;
-      meta_change_keygrab (display, screen->xroot, TRUE, keysym, keycode, mask);
-    }
+  meta_change_keygrab (display, display->screen->xroot, TRUE, keysym, keycode, mask);
 
   grab = g_new0 (MetaKeyGrab, 1);
   grab->action = next_dynamic_keybinding_action ();
@@ -1372,16 +1351,11 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
   if (binding)
     {
       guint32 index_key;
-      GSList *l;
 
-      for (l = display->screens; l; l = l->next)
-        {
-          MetaScreen *screen = l->data;
-          meta_change_keygrab (display, screen->xroot, FALSE,
-                               binding->keysym,
-                               binding->keycode,
-                               binding->mask);
-        }
+      meta_change_keygrab (display, display->screen->xroot, FALSE,
+                           binding->keysym,
+                           binding->keycode,
+                           binding->mask);
 
       index_key = key_binding_key (binding->keycode, binding->mask);
       g_hash_table_remove (display->key_bindings_index, GINT_TO_POINTER (index_key));
@@ -1871,8 +1845,7 @@ meta_display_process_key_event (MetaDisplay     *display,
 
   /* window may be NULL */
 
-  /* XXX */
-  screen = display->active_screen;
+  screen = display->screen;
 
   all_keys_grabbed = window ? window->all_keys_grabbed : screen->all_keys_grabbed;
   if (!all_keys_grabbed)
@@ -2824,7 +2797,6 @@ do_choose_window (MetaDisplay     *display,
 
   initial_selection = meta_display_get_tab_next (display,
                                                  type,
-                                                 screen,
                                                  screen->active_workspace,
                                                  NULL,
                                                  backward);

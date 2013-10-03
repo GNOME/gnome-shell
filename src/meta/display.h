@@ -73,12 +73,9 @@ int meta_display_get_xinput_opcode (MetaDisplay *display);
 gboolean meta_display_supports_extended_barriers (MetaDisplay *display);
 Display *meta_display_get_xdisplay (MetaDisplay *display);
 MetaCompositor *meta_display_get_compositor (MetaDisplay *display);
-GSList *meta_display_get_screens (MetaDisplay *display);
 
 gboolean meta_display_has_shape (MetaDisplay *display);
 
-MetaScreen *meta_display_screen_for_root (MetaDisplay *display,
-                                          Window       xroot);
 MetaWindow *meta_display_get_focus_window (MetaDisplay *display);
 
 gboolean  meta_display_xwindow_is_a_no_focus_window (MetaDisplay *display,
@@ -99,19 +96,16 @@ unsigned int meta_display_get_ignored_modifier_mask (MetaDisplay  *display);
 
 GList* meta_display_get_tab_list (MetaDisplay   *display,
                                   MetaTabList    type,
-                                  MetaScreen    *screen,
                                   MetaWorkspace *workspace);
 
 MetaWindow* meta_display_get_tab_next (MetaDisplay   *display,
                                        MetaTabList    type,
-				       MetaScreen    *screen,
                                        MetaWorkspace *workspace,
                                        MetaWindow    *window,
                                        gboolean       backward);
 
 MetaWindow* meta_display_get_tab_current (MetaDisplay   *display,
                                           MetaTabList    type,
-                                          MetaScreen    *screen,
                                           MetaWorkspace *workspace);
 
 gboolean meta_display_begin_grab_op (MetaDisplay *display,

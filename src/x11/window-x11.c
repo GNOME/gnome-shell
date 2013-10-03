@@ -2227,9 +2227,8 @@ meta_window_x11_new (MetaDisplay       *display,
                      gboolean           must_be_viewable,
                      MetaCompEffect     effect)
 {
+  MetaScreen *screen = display->screen;
   XWindowAttributes attrs;
-  MetaScreen *screen = NULL;
-  GSList *tmp;
   gulong existing_wm_state;
   MetaWindow *window = NULL;
   gulong event_mask;
@@ -2259,18 +2258,11 @@ meta_window_x11_new (MetaDisplay       *display,
       goto error;
     }
 
-  for (tmp = display->screens; tmp != NULL; tmp = tmp->next)
+  if (attrs.root != screen->xroot)
     {
-      MetaScreen *scr = tmp->data;
-
-      if (scr->xroot == attrs.root)
-        {
-          screen = tmp->data;
-          break;
-        }
+      meta_verbose ("Not on our screen\n");
+      goto error;
     }
-
-  g_assert (screen);
 
   if (is_our_xwindow (display, screen, xwindow, &attrs))
     {

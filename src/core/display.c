@@ -362,8 +362,6 @@ sn_error_trap_pop (SnDisplay *sn_display,
 static void
 enable_compositor (MetaDisplay *display)
 {
-  GSList *list;
-
   if (!META_DISPLAY_HAS_COMPOSITE (display) ||
       !META_DISPLAY_HAS_DAMAGE (display) ||
       !META_DISPLAY_HAS_RENDER (display))
@@ -379,14 +377,8 @@ enable_compositor (MetaDisplay *display)
 
   if (!display->compositor)
     return;
-  
-  for (list = display->screens; list != NULL; list = list->next)
-    {
-      MetaScreen *screen = list->data;
-      
-      meta_compositor_manage_screen (screen->display->compositor,
-				     screen);
-    }
+
+  meta_compositor_manage_screen (display->compositor, display->screen);
 }
 
 static void
@@ -440,7 +432,6 @@ gboolean
 meta_display_open (void)
 {
   Display *xdisplay;
-  GSList *screens;
   MetaScreen *screen;
   int i;
   guint32 timestamp;
@@ -536,8 +527,7 @@ meta_display_open (void)
   the_display->window_with_menu = NULL;
   the_display->window_menu = NULL;
   
-  the_display->screens = NULL;
-  the_display->active_screen = NULL;
+  the_display->screen = NULL;
   
 #ifdef HAVE_STARTUP_NOTIFICATION
   the_display->sn_display = sn_display_new (the_display->xdisplay,
@@ -841,15 +831,12 @@ meta_display_open (void)
   the_display->last_focus_time = timestamp;
   the_display->last_user_time = timestamp;
   the_display->compositor = NULL;
-  
+
   /* Mutter used to manage all X screens of the display in a single process, but
    * now it always manages exactly one screen as specified by the DISPLAY
-   * environment variable. The screens GSList is left for simplicity.
+   * environment variable.
    */
-  screens = NULL;
-
   i = meta_ui_get_screen_number ();
-
   screen = meta_screen_new (the_display, i, timestamp);
 
   if (!screen)
@@ -861,9 +848,7 @@ meta_display_open (void)
       return FALSE;
     }
 
-  screens = g_slist_prepend (screens, screen);
-
-  the_display->screens = screens;
+  the_display->screen = screen;
 
   enable_compositor (the_display);
 
@@ -895,7 +880,7 @@ meta_display_open (void)
     if (focus == None || focus == PointerRoot)
       /* Just focus the no_focus_window on the first screen */
       meta_display_focus_the_no_focus_window (the_display,
-                                              the_display->screens->data,
+                                              the_display->screen,
                                               timestamp);
     else
       {
@@ -906,7 +891,7 @@ meta_display_open (void)
         else
           /* Just focus the no_focus_window on the first screen */
           meta_display_focus_the_no_focus_window (the_display,
-                                                  the_display->screens->data,
+                                                  the_display->screen,
                                                   timestamp);
       }
 
@@ -948,8 +933,8 @@ meta_display_list_windows (MetaDisplay          *display,
                            MetaListWindowsFlags  flags)
 {
   GSList *winlist;
-  GSList *tmp;
   GSList *prev;
+  GSList *tmp;
   GHashTableIter iter;
   gpointer key, value;
 
@@ -1024,8 +1009,6 @@ void
 meta_display_close (MetaDisplay *display,
                     guint32      timestamp)
 {
-  GSList *tmp;
-
   g_assert (display != NULL);
 
   if (display->closing != 0)
@@ -1053,17 +1036,7 @@ meta_display_close (MetaDisplay *display,
   /* Stop caring about events */
   meta_display_free_events (display);
   
-  /* Free all screens */
-  tmp = display->screens;
-  while (tmp != NULL)
-    {
-      MetaScreen *screen = tmp->data;
-      meta_screen_free (screen, timestamp);
-      tmp = tmp->next;
-    }
-
-  g_slist_free (display->screens);
-  display->screens = NULL;
+  meta_screen_free (display->screen, timestamp);
 
 #ifdef HAVE_STARTUP_NOTIFICATION
   if (display->sn_display)
@@ -1097,77 +1070,6 @@ meta_display_close (MetaDisplay *display,
   the_display = NULL;
 
   meta_quit (META_EXIT_SUCCESS);
-}
-
-/**
- * meta_display_screen_for_root:
- * @display: a #MetaDisplay
- * @xroot: a X window
- *
- * Return the #MetaScreen corresponding to a specified X root window ID.
- *
- * Return Value: (transfer none): the screen for the specified root window ID, or %NULL
- */
-MetaScreen*
-meta_display_screen_for_root (MetaDisplay *display,
-                              Window       xroot)
-{
-  GSList *tmp;
-
-  tmp = display->screens;
-  while (tmp != NULL)
-    {
-      MetaScreen *screen = tmp->data;
-
-      if (xroot == screen->xroot)
-        return screen;
-
-      tmp = tmp->next;
-    }
-
-  return NULL;
-}
-
-MetaScreen*
-meta_display_screen_for_xwindow (MetaDisplay *display,
-                                 Window       xwindow)
-{
-  XWindowAttributes attr;
-  int result;
-  
-  meta_error_trap_push (display);
-  attr.screen = NULL;
-  result = XGetWindowAttributes (display->xdisplay, xwindow, &attr);
-  meta_error_trap_pop (display);
-
-  /* Note, XGetWindowAttributes is on all kinds of crack
-   * and returns 1 on success 0 on failure, rather than Success
-   * on success.
-   */
-  if (result == 0 || attr.screen == NULL)
-    return NULL;
-  
-  return meta_display_screen_for_x_screen (display, attr.screen);
-}
-
-MetaScreen*
-meta_display_screen_for_x_screen (MetaDisplay *display,
-                                  Screen      *xscreen)
-{
-  GSList *tmp;
-
-  tmp = display->screens;
-  while (tmp != NULL)
-    {
-      MetaScreen *screen = tmp->data;
-
-      if (xscreen == screen->xscreen)
-        return screen;
-
-      tmp = tmp->next;
-    }
-
-  return NULL;
 }
 
 /* Grab/ungrab routines taken from fvwm.
@@ -1775,7 +1677,6 @@ request_xserver_input_focus_change (MetaDisplay *display,
   meta_error_trap_pop (display);
 
   display->last_focus_time = timestamp;
-  display->active_screen = screen;
 
   if (meta_window == NULL || meta_window != display->autoraise_window)
     meta_display_remove_autoraise_callback (display);
@@ -1877,18 +1778,7 @@ gboolean
 meta_display_xwindow_is_a_no_focus_window (MetaDisplay *display,
                                            Window xwindow)
 {
-  gboolean is_a_no_focus_window = FALSE;
-  GSList *temp = display->screens;
-  while (temp != NULL) {
-    MetaScreen *screen = temp->data;
-    if (screen->no_focus_window == xwindow) {
-      is_a_no_focus_window = TRUE;
-      break;
-    }
-    temp = temp->next;
-  }
-
-  return is_a_no_focus_window;
+  return xwindow == display->screen->no_focus_window;
 }
 
 static MetaCursor
@@ -2517,30 +2407,19 @@ meta_display_increment_event_serial (MetaDisplay *display)
 void
 meta_display_update_active_window_hint (MetaDisplay *display)
 {
-  GSList *tmp;
-  
   gulong data[1];
 
   if (display->focus_window)
     data[0] = display->focus_window->xwindow;
   else
     data[0] = None;
-  
-  tmp = display->screens;
-  while (tmp != NULL)
-    {
-      MetaScreen *screen = tmp->data;
-      
-      meta_error_trap_push (display);
-      XChangeProperty (display->xdisplay, screen->xroot,
-                       display->atom__NET_ACTIVE_WINDOW,
-                       XA_WINDOW,
-                       32, PropModeReplace, (guchar*) data, 1);
 
-      meta_error_trap_pop (display);
-
-      tmp = tmp->next;
-    }
+  meta_error_trap_push (display);
+  XChangeProperty (display->xdisplay, display->screen->xroot,
+                   display->atom__NET_ACTIVE_WINDOW,
+                   XA_WINDOW,
+                   32, PropModeReplace, (guchar*) data, 1);
+  meta_error_trap_pop (display);
 }
 
 void
@@ -2578,22 +2457,12 @@ void
 meta_display_set_cursor_theme (const char *theme, 
 			       int         size)
 {
-  GSList *tmp;
-
   MetaDisplay *display = meta_get_display ();
 
   XcursorSetTheme (display->xdisplay, theme);
   XcursorSetDefaultSize (display->xdisplay, size);
 
-  tmp = display->screens;
-  while (tmp != NULL)
-    {
-      MetaScreen *screen = tmp->data;
-	  	  
-      meta_screen_update_cursor (screen);
-
-      tmp = tmp->next;
-    }
+  meta_screen_update_cursor (display->screen);
 }
 
 /*
@@ -2808,7 +2677,6 @@ get_focused_group (MetaDisplay *display)
 static MetaWindow*
 find_tab_forward (MetaDisplay   *display,
                   MetaTabList    type,
-                  MetaScreen    *screen, 
                   MetaWorkspace *workspace,
                   GList         *start,
                   gboolean       skip_first)
@@ -2826,8 +2694,7 @@ find_tab_forward (MetaDisplay   *display,
     {
       MetaWindow *window = tmp->data;
 
-      if (window->screen == screen &&
-	  IN_TAB_CHAIN (window, type))
+      if (IN_TAB_CHAIN (window, type))
         return window;
 
       tmp = tmp->next;
@@ -2850,7 +2717,6 @@ find_tab_forward (MetaDisplay   *display,
 static MetaWindow*
 find_tab_backward (MetaDisplay   *display,
                    MetaTabList    type,
-                   MetaScreen    *screen, 
                    MetaWorkspace *workspace,
                    GList         *start,
                    gboolean       skip_last)
@@ -2867,8 +2733,7 @@ find_tab_backward (MetaDisplay   *display,
     {
       MetaWindow *window = tmp->data;
 
-      if (window->screen == screen &&
-	  IN_TAB_CHAIN (window, type))
+      if (IN_TAB_CHAIN (window, type))
         return window;
 
       tmp = tmp->prev;
@@ -2909,21 +2774,19 @@ mru_cmp (gconstpointer a,
  * meta_display_get_tab_list:
  * @display: a #MetaDisplay
  * @type: type of tab list
- * @screen: a #MetaScreen
  * @workspace: (allow-none): origin workspace
  *
  * Determine the list of windows that should be displayed for Alt-TAB
  * functionality.  The windows are returned in most recently used order.
  * If @workspace is not %NULL, the list only conains windows that are on
  * @workspace or have the demands-attention hint set; otherwise it contains
- * all windows on @screen.
+ * all windows.
  *
  * Returns: (transfer container) (element-type Meta.Window): List of windows
  */
 GList*
 meta_display_get_tab_list (MetaDisplay   *display,
                            MetaTabList    type,
-                           MetaScreen    *screen,
                            MetaWorkspace *workspace)
 {
   GList *tab_list = NULL;
@@ -2948,8 +2811,7 @@ meta_display_get_tab_list (MetaDisplay   *display,
     {
       MetaWindow *window = tmp->data;
 
-      if (window->screen == screen &&
-          IN_TAB_CHAIN (window, type))
+      if (IN_TAB_CHAIN (window, type))
         tab_list = g_list_prepend (tab_list, window);
     }
 
@@ -2979,7 +2841,6 @@ meta_display_get_tab_list (MetaDisplay   *display,
  * meta_display_get_tab_next:
  * @display: a #MetaDisplay
  * @type: type of tab list
- * @screen: a #MetaScreen
  * @workspace: origin workspace
  * @window: (allow-none): starting window 
  * @backward: If %TRUE, look for the previous window.  
@@ -2993,7 +2854,6 @@ meta_display_get_tab_list (MetaDisplay   *display,
 MetaWindow*
 meta_display_get_tab_next (MetaDisplay   *display,
                            MetaTabList    type,
-                           MetaScreen    *screen,
                            MetaWorkspace *workspace,
                            MetaWindow    *window,
                            gboolean       backward)
@@ -3001,10 +2861,7 @@ meta_display_get_tab_next (MetaDisplay   *display,
   gboolean skip;
   GList *tab_list;
   MetaWindow *ret;
-  tab_list = meta_display_get_tab_list(display,
-                                       type,
-                                       screen,
-                                       workspace);
+  tab_list = meta_display_get_tab_list (display, type, workspace);
 
   if (tab_list == NULL)
     return NULL;
@@ -3014,26 +2871,18 @@ meta_display_get_tab_next (MetaDisplay   *display,
       g_assert (window->display == display);
       
       if (backward)
-        ret = find_tab_backward (display, type, screen, workspace,
-                                 g_list_find (tab_list,
-                                              window),
-                                 TRUE);
+        ret = find_tab_backward (display, type, workspace, g_list_find (tab_list, window), TRUE);
       else
-        ret = find_tab_forward (display, type, screen, workspace,
-                                g_list_find (tab_list,
-                                             window),
-                                TRUE);
+        ret = find_tab_forward (display, type, workspace, g_list_find (tab_list, window), TRUE);
     }
   else
     {
       skip = display->focus_window != NULL && 
              tab_list->data == display->focus_window;
       if (backward)
-        ret = find_tab_backward (display, type, screen, workspace,
-                                 tab_list, skip);
+        ret = find_tab_backward (display, type, workspace, tab_list, skip);
       else
-        ret = find_tab_forward (display, type, screen, workspace,
-                                tab_list, skip);
+        ret = find_tab_forward (display, type, workspace, tab_list, skip);
     }
 
   g_list_free (tab_list);
@@ -3044,7 +2893,6 @@ meta_display_get_tab_next (MetaDisplay   *display,
  * meta_display_get_tab_current:
  * @display: a #MetaDisplay
  * @type: type of tab list
- * @screen: a #MetaScreen
  * @workspace: origin workspace
  *
  * Determine the active window that should be displayed for Alt-TAB.
@@ -3055,7 +2903,6 @@ meta_display_get_tab_next (MetaDisplay   *display,
 MetaWindow*
 meta_display_get_tab_current (MetaDisplay   *display,
                               MetaTabList    type,
-                              MetaScreen    *screen,
                               MetaWorkspace *workspace)
 {
   MetaWindow *window;
@@ -3063,7 +2910,6 @@ meta_display_get_tab_current (MetaDisplay   *display,
   window = display->focus_window;
   
   if (window != NULL &&
-      window->screen == screen &&
       IN_TAB_CHAIN (window, type) &&
       (workspace == NULL ||
        meta_window_located_on_workspace (window, workspace)))
@@ -3129,14 +2975,9 @@ meta_display_unmanage_screen (MetaDisplay *display,
 {
   meta_verbose ("Unmanaging screen %d on display %s\n",
                 screen->number, display->name);
-  
-  g_return_if_fail (g_slist_find (display->screens, screen) != NULL);
-  
-  meta_screen_free (screen, timestamp);
-  display->screens = g_slist_remove (display->screens, screen);
 
-  if (display->screens == NULL)
-    meta_display_close (display, timestamp);
+  meta_screen_free (screen, timestamp);
+  meta_display_close (display, timestamp);
 }
 
 void
@@ -3178,15 +3019,7 @@ meta_display_stack_cmp (const void *a,
   MetaWindow *aw = (void*) a;
   MetaWindow *bw = (void*) b;
 
-  if (aw->screen == bw->screen)
-    return meta_stack_windows_cmp (aw->screen->stack, aw, bw);
-  /* Then assume screens are stacked by number */
-  else if (aw->screen->number < bw->screen->number)
-    return -1;
-  else if (aw->screen->number > bw->screen->number)
-    return 1;
-  else
-    return 0; /* not reached in theory, if windows on same display */
+  return meta_stack_windows_cmp (aw->screen->stack, aw, bw);
 }
 
 /**
@@ -3322,7 +3155,7 @@ meta_display_increment_focus_sentinel (MetaDisplay *display)
   data[0] = meta_display_get_current_time (display);
   
   XChangeProperty (display->xdisplay,
-                   ((MetaScreen*) display->screens->data)->xroot,
+                   display->screen->xroot,
                    display->atom__MUTTER_SENTINEL,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
@@ -3524,18 +3357,6 @@ MetaCompositor *
 meta_display_get_compositor (MetaDisplay *display)
 {
   return display->compositor;
-}
-
-/**
- * meta_display_get_screens:
- * @display: a #MetaDisplay
- *
- * Returns: (transfer none) (element-type Meta.Screen): Screens for this display
- */
-GSList *
-meta_display_get_screens (MetaDisplay *display)
-{
-  return display->screens;
 }
 
 gboolean

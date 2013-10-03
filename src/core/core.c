@@ -274,7 +274,7 @@ meta_core_lower_beneath_grab_window (Display *xdisplay,
   MetaStackWindow stack_sibling;
 
   display = meta_display_for_x_display (xdisplay);
-  screen = meta_display_screen_for_xwindow (display, xwindow);
+  screen = display->screen;
   grab_window = display->grab_window;
 
   if (grab_window == NULL)
@@ -603,13 +603,10 @@ meta_core_get_workspace_name_with_index (Display *xdisplay,
                                          int      index)
 {
   MetaDisplay *display;
-  MetaScreen *screen;
   MetaWorkspace *workspace;
 
   display = meta_display_for_x_display (xdisplay);
-  screen = meta_display_screen_for_root (display, xroot);
-  g_assert (screen != NULL);
-  workspace = meta_screen_get_workspace_by_index (screen, index);
+  workspace = meta_screen_get_workspace_by_index (display->screen, index);
   return workspace ? meta_workspace_get_name (workspace) : NULL;
 }
 
@@ -630,7 +627,7 @@ meta_core_begin_grab_op (Display    *xdisplay,
   MetaScreen *screen;
   
   display = meta_display_for_x_display (xdisplay);
-  screen = meta_display_screen_for_xwindow (display, frame_xwindow);
+  screen = display->screen;
 
   g_assert (screen != NULL);
   

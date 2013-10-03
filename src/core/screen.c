@@ -900,28 +900,6 @@ meta_screen_manage_all_windows (MetaScreen *screen)
   meta_stack_thaw (screen->stack);
 }
 
-/**
- * meta_screen_for_x_screen:
- * @xscreen: an X screen structure.
- *
- * Gets the #MetaScreen corresponding to an X screen structure.
- *
- * Return value: (transfer none): the #MetaScreen for the X screen
- *   %NULL if Metacity is not managing the screen.
- */
-MetaScreen*
-meta_screen_for_x_screen (Screen *xscreen)
-{
-  MetaDisplay *display;
-  
-  display = meta_display_for_x_display (DisplayOfScreen (xscreen));
-
-  if (display == NULL)
-    return NULL;
-  
-  return meta_display_screen_for_x_screen (display, xscreen);
-}
-
 static void
 prefs_changed_callback (MetaPreference pref,
                         gpointer       data)

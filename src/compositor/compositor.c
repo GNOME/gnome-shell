@@ -935,10 +935,7 @@ meta_compositor_process_event (MetaCompositor *compositor,
                                MetaWindow     *window)
 {
   MetaDisplay *display = compositor->display;
-  MetaScreen *screen = display->screens->data;
-  MetaCompScreen *info;
-
-  info = meta_screen_get_compositor_data (screen);
+  MetaCompScreen *info = meta_screen_get_compositor_data (display->screen);
 
   if (is_modal (display) && is_grabbed_event (compositor->display, event))
     {
@@ -1367,18 +1364,8 @@ static gboolean
 meta_repaint_func (gpointer data)
 {
   MetaCompositor *compositor = data;
-  GSList *screens = meta_display_get_screens (compositor->display);
-  GSList *l;
-
-  for (l = screens; l; l = l->next)
-    {
-      MetaScreen *screen = l->data;
-      MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-      if (!info)
-        continue;
-
-      pre_paint_windows (info);
-    }
+  MetaCompScreen *info = meta_screen_get_compositor_data (compositor->display->screen);
+  pre_paint_windows (info);
 
   return TRUE;
 }
@@ -1387,20 +1374,11 @@ static void
 on_shadow_factory_changed (MetaShadowFactory *factory,
                            MetaCompositor    *compositor)
 {
-  GSList *screens = meta_display_get_screens (compositor->display);
+  MetaCompScreen *info = meta_screen_get_compositor_data (compositor->display->screen);
   GList *l;
-  GSList *sl;
 
-  for (sl = screens; sl; sl = sl->next)
-    {
-      MetaScreen *screen = sl->data;
-      MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-      if (!info)
-        continue;
-
-      for (l = info->windows; l; l = l->next)
-        meta_window_actor_invalidate_shadow (l->data);
-    }
+  for (l = info->windows; l; l = l->next)
+    meta_window_actor_invalidate_shadow (l->data);
 }
 
 /**
