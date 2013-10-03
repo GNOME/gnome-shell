@@ -343,19 +343,6 @@ const WindowOverlay = new Lang.Class({
             this._animateVisible();
     },
 
-    fadeIn: function() {
-        if (!this._hidden)
-            return;
-
-        this.show();
-        this.title.opacity = 0;
-        this._parentActor.raise_top();
-        Tweener.addTween(this.title,
-                         { opacity: 255,
-                           time: CLOSE_BUTTON_FADE_TIME,
-                           transition: 'easeOutQuad' });
-    },
-
     chromeHeights: function () {
         return [Math.max(this.borderSize, this.closeButton.height - this.closeButton._overlap),
                 this.title.height + this.title._spacing];
@@ -372,7 +359,6 @@ const WindowOverlay = new Lang.Class({
         let border = this.border;
 
         Tweener.removeTweens(button);
-        Tweener.removeTweens(title);
         Tweener.removeTweens(border);
 
         let [cloneX, cloneY, cloneWidth, cloneHeight] = this._windowClone.slot;
@@ -1142,7 +1128,7 @@ const Workspace = new Lang.Class({
                 clone.actor.set_scale(scale, scale);
                 clone.actor.set_opacity(255);
                 clone.overlay.relayout(false);
-                this._showWindowOverlay(clone, overlay, isOnCurrentWorkspace);
+                this._showWindowOverlay(clone, overlay);
             }
         }
     },
@@ -1172,23 +1158,19 @@ const Workspace = new Lang.Class({
                            time: Overview.ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: Lang.bind(this, function() {
-                               this._showWindowOverlay(clone, overlay, true);
+                               this._showWindowOverlay(clone, overlay);
                            })
                          });
 
         clone.overlay.relayout(true);
     },
 
-    _showWindowOverlay: function(clone, overlay, fade) {
+    _showWindowOverlay: function(clone, overlay) {
         if (clone.inDrag)
             return;
 
-        if (overlay) {
-            if (fade)
-                overlay.fadeIn();
-            else
+        if (overlay && overlay._hidden)
                 overlay.show();
-        }
     },
 
     _delayedWindowRepositioning: function() {
