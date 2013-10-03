@@ -486,8 +486,8 @@ gboolean meta_display_handle_xevent (MetaDisplay *display,
                                      XEvent      *event);
 
 #ifdef HAVE_XI23
-gboolean meta_display_process_barrier_event (MetaDisplay    *display,
-                                             XIBarrierEvent *event);
+gboolean meta_display_process_barrier_event (MetaDisplay *display,
+                                             XIEvent     *event);
 #endif /* HAVE_XI23 */
 
 void meta_display_set_input_focus_xwindow (MetaDisplay   *display,

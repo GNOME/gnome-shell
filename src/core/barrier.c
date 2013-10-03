@@ -366,11 +366,25 @@ meta_barrier_fire_event (MetaBarrier    *barrier,
 }
 
 gboolean
-meta_display_process_barrier_event (MetaDisplay    *display,
-                                    XIBarrierEvent *xev)
+meta_display_process_barrier_event (MetaDisplay *display,
+                                    XIEvent     *event)
 {
   MetaBarrier *barrier;
+  XIBarrierEvent *xev;
 
+  if (event == NULL)
+    return FALSE;
+
+  switch (event->evtype)
+    {
+    case XI_BarrierHit:
+    case XI_BarrierLeave:
+      break;
+    default:
+      return FALSE;
+    }
+
+  xev = (XIBarrierEvent *) event;
   barrier = g_hash_table_lookup (display->xids, &xev->barrier);
   if (barrier != NULL)
     {

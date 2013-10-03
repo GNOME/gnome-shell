@@ -2407,6 +2407,14 @@ meta_display_handle_xevent (MetaDisplay *display,
     }
 #endif /* HAVE_SHAPE */
 
+#ifdef HAVE_XI23
+  if (meta_display_process_barrier_event (display, input_event))
+    {
+      filter_out_event = bypass_compositor = TRUE;
+      goto out;
+    }
+#endif /* HAVE_XI23 */
+
   if (input_event != NULL)
     {
       XIDeviceEvent *device_event = (XIDeviceEvent *) input_event;
@@ -2763,13 +2771,6 @@ meta_display_handle_xevent (MetaDisplay *display,
 
             }
           break;
-#ifdef HAVE_XI23
-        case XI_BarrierHit:
-        case XI_BarrierLeave:
-          if (meta_display_process_barrier_event (display, (XIBarrierEvent *) input_event))
-            filter_out_event = bypass_compositor = TRUE;
-          break;
-#endif /* HAVE_XI23 */
         }
     }
   else
