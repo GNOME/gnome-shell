@@ -1835,7 +1835,6 @@ invoke_handler_by_name (MetaDisplay    *display,
     invoke_handler (display, screen, handler, window, event, NULL);
 }
 
-/* now called from only one place, may be worth merging */
 static gboolean
 process_event (MetaKeyBinding       *bindings,
                int                   n_bindings,
@@ -1843,7 +1842,6 @@ process_event (MetaKeyBinding       *bindings,
                MetaScreen           *screen,
                MetaWindow           *window,
                XIDeviceEvent        *event,
-               KeySym                keysym,
                gboolean              on_window)
 {
   int i;
@@ -1927,7 +1925,7 @@ process_overlay_key (MetaDisplay *display,
            */
           if (process_event (display->key_bindings,
                              display->n_key_bindings,
-                             display, screen, NULL, event, keysym,
+                             display, screen, NULL, event,
                              FALSE))
             {
               /* As normally, after we've handled a global key
@@ -2191,7 +2189,7 @@ meta_display_process_key_event (MetaDisplay   *display,
   /* Do the normal keybindings */
   return process_event (display->key_bindings,
                         display->n_key_bindings,
-                        display, screen, window, event, keysym,
+                        display, screen, window, event,
                         !all_keys_grabbed && window);
 }
 
