@@ -367,8 +367,9 @@ const NMConnectionDevice = new Lang.Class({
 
         switch(this._device.state) {
         case NetworkManager.DeviceState.DISCONNECTED:
+            return _("Off");
         case NetworkManager.DeviceState.ACTIVATED:
-            return '';
+            return this.parent();
         case NetworkManager.DeviceState.UNMANAGED:
             /* Translators: this is for network devices that are physically present but are not
                under NetworkManager's control (and thus cannot be used in the menu) */
