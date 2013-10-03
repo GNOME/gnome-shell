@@ -4129,28 +4129,6 @@ meta_keybindings_set_custom_handler (const gchar        *name,
   return TRUE;
 }
 
-/**
- * meta_keybindings_switch_window: (skip)
- * @display: a #MetaDisplay
- * @screen: a #MetaScreen
- * @event_window: a #MetaWindow
- * @event: a #XIDeviceEvent
- * @binding: a #MetaKeyBinding
- *
- */
-void
-meta_keybindings_switch_window (MetaDisplay    *display,
-                                MetaScreen     *screen,
-                                MetaWindow     *event_window,
-                                XIDeviceEvent  *event,
-                                MetaKeyBinding *binding)
-{
-  gint backwards = (binding->handler->flags & META_KEY_BINDING_IS_REVERSED) != 0;
-
-  do_choose_window (display, screen, event_window, event, binding,
-                    backwards, FALSE);
-}
-
 static void
 init_builtin_key_bindings (MetaDisplay *display)
 {

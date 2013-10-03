@@ -207,7 +207,6 @@ meta_key_binding_get_modifiers
 meta_key_binding_get_mask
 meta_key_binding_is_builtin
 meta_keybindings_set_custom_handler
-meta_keybindings_switch_window
 meta_screen_ungrab_all_keys
 meta_screen_grab_all_keys
 </SECTION>
