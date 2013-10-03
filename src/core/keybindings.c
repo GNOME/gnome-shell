@@ -1861,7 +1861,6 @@ process_event (MetaKeyBinding       *bindings,
       MetaKeyHandler *handler = bindings[i].handler;
 
       if ((!on_window && handler->flags & META_KEY_BINDING_PER_WINDOW) ||
-          event->evtype != XI_KeyPress ||
           bindings[i].keycode != event->detail ||
           ((event->mods.effective & 0xff & ~(display->ignored_modifier_mask)) !=
            bindings[i].mask) ||
