@@ -2246,8 +2246,7 @@ meta_display_handle_xevent (MetaDisplay *display,
   MetaWindow *property_for_window;
   Window modified;
   gboolean frame_was_receiver;
-  gboolean bypass_compositor;
-  gboolean filter_out_event;
+  gboolean bypass_compositor = FALSE, bypass_gtk = FALSE;
   XIEvent *input_event;
   MetaMonitorManager *monitor;
   MetaScreen *screen;
@@ -2260,9 +2259,6 @@ meta_display_handle_xevent (MetaDisplay *display,
 #ifdef HAVE_STARTUP_NOTIFICATION
   sn_display_process_event (display->sn_display, event);
 #endif
-
-  bypass_compositor = FALSE;
-  filter_out_event = FALSE;
 
   /* Intercept XRandR events early and don't attempt any
      processing for them. We still let them through to Gdk though,
@@ -2296,7 +2292,7 @@ meta_display_handle_xevent (MetaDisplay *display,
     {
       if (meta_screen_handle_xevent (screen, event))
         {
-          bypass_compositor = filter_out_event = TRUE;
+          bypass_gtk = bypass_compositor = TRUE;
           goto out;
         }
     }
@@ -2371,7 +2367,7 @@ meta_display_handle_xevent (MetaDisplay *display,
           gint64 new_counter_value;
           new_counter_value = XSyncValueLow32 (value) + ((gint64)XSyncValueHigh32 (value) << 32);
           meta_window_update_sync_request_counter (alarm_window, new_counter_value);
-          filter_out_event = TRUE; /* GTK doesn't want to see this really */
+          bypass_gtk = TRUE; /* GTK doesn't want to see this really */
         }
       else
         meta_idle_monitor_handle_xevent_all (event);
@@ -2384,7 +2380,7 @@ meta_display_handle_xevent (MetaDisplay *display,
   if (META_DISPLAY_HAS_SHAPE (display) && 
       event->type == (display->shape_event_base + ShapeNotify))
     {
-      filter_out_event = TRUE; /* GTK doesn't want to see this really */
+      bypass_gtk = TRUE; /* GTK doesn't want to see this really */
       
       if (window && !frame_was_receiver)
         {
@@ -2410,7 +2406,7 @@ meta_display_handle_xevent (MetaDisplay *display,
 #ifdef HAVE_XI23
   if (meta_display_process_barrier_event (display, input_event))
     {
-      filter_out_event = bypass_compositor = TRUE;
+      bypass_gtk = bypass_compositor = TRUE;
       goto out;
     }
 #endif /* HAVE_XI23 */
@@ -2452,7 +2448,7 @@ meta_display_handle_xevent (MetaDisplay *display,
            * want to pass the key event to the compositor or GTK+ at all.
            */
           if (meta_display_process_key_event (display, window, (XIDeviceEvent *) input_event))
-            filter_out_event = bypass_compositor = TRUE;
+            bypass_gtk = bypass_compositor = TRUE;
           break;
         case XI_ButtonPress:
           if (display->grab_op == META_GRAB_OP_COMPOSITOR)
@@ -3148,7 +3144,7 @@ meta_display_handle_xevent (MetaDisplay *display,
                            * the GTK+ event loop because gtk+ will treat
                            * them as ping requests and send more replies.
                            */
-                          filter_out_event = TRUE;
+                          bypass_gtk = TRUE;
                         }
                     }
                 }
@@ -3225,11 +3221,11 @@ meta_display_handle_xevent (MetaDisplay *display,
       if (meta_compositor_process_event (display->compositor,
                                          event,
                                          window))
-        filter_out_event = TRUE;
+        bypass_gtk = TRUE;
     }
   
   display->current_time = CurrentTime;
-  return filter_out_event;
+  return bypass_gtk;
 }
 
 static gboolean
