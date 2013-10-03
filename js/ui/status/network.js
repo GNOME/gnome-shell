@@ -73,6 +73,16 @@ function ssidToLabel(ssid) {
     return label;
 }
 
+function ensureActiveConnectionProps(active, settings) {
+    if (!active._connection) {
+        active._connection = settings.get_connection_by_path(active.connection);
+
+        // This list is guaranteed to have only one device in it.
+        let device = active.get_devices()[0]._delegate;
+        active._primaryDevice = device;
+    }
+}
+
 const NMConnectionItem = new Lang.Class({
     Name: 'NMConnectionItem',
 
@@ -267,9 +277,10 @@ const NMConnectionDevice = new Lang.Class({
     Extends: NMConnectionSection,
     Abstract: true,
 
-    _init: function(client, device) {
+    _init: function(client, device, settings) {
         this.parent(client);
         this._device = device;
+        this._settings = settings;
 
         this._autoConnectItem = this.item.menu.addAction(_("Connect"), Lang.bind(this, this._autoConnect));
         this.item.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
@@ -300,6 +311,7 @@ const NMConnectionDevice = new Lang.Class({
         this._activeConnection = this._device.active_connection;
 
         if (this._activeConnection) {
+            ensureActiveConnectionProps(this._activeConnection, this._settings);
             let item = this._connectionItems.get(this._activeConnection._connection.get_uuid());
             item.setActiveConnection(this._activeConnection);
         }
@@ -398,8 +410,8 @@ const NMDeviceModem = new Lang.Class({
     Extends: NMConnectionDevice,
     category: NMConnectionCategory.WWAN,
 
-    _init: function(client, device) {
-        this.parent(client, device);
+    _init: function(client, device, settings) {
+        this.parent(client, device, settings);
         this._mobileDevice = null;
 
         let capabilities = device.current_capabilities;
@@ -1425,28 +1437,18 @@ const NMApplet = new Lang.Class({
         devices.splice(pos, 1);
     },
 
-    _ensureActiveConnectionProps: function(a) {
-        if (!a._connection) {
-            a._connection = this._settings.get_connection_by_path(a.connection);
-
-            // This list is guaranteed to have only one device in it.
-            let device = a.get_devices()[0]._delegate;
-            a._primaryDevice = device;
-        }
-    },
-
     _getMainConnection: function() {
         let connection;
 
         connection = this._client.get_primary_connection();
         if (connection) {
-            this._ensureActiveConnectionProps(connection);
+            ensureActiveConnectionProps(connection, this._settings);
             return connection;
         }
 
         connection = this._client.get_activating_connection();
         if (connection) {
-            this._ensureActiveConnectionProps(connection);
+            ensureActiveConnectionProps(connection, this._settings);
             return connection;
         }
 
