@@ -62,7 +62,6 @@ struct _MetaWaylandPointer
 
   wl_fixed_t x, y; /* TODO: remove, use ClutterInputDevice instead */
   MetaWaylandSurface *current;
-  wl_fixed_t current_x, current_y;
 
   guint32 button_count;
 };

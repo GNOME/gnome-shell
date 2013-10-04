@@ -444,9 +444,6 @@ meta_wayland_surface_free (MetaWaylandSurface *surface)
       g_assert (surface != compositor->seat->pointer.focus);
     }
 
- if (compositor->implicit_grab_surface == surface)
-   compositor->implicit_grab_surface = compositor->seat->pointer.current;
-
   if (surface->resource)
     wl_resource_set_user_data (surface->resource, NULL);
   g_slice_free (MetaWaylandSurface, surface);

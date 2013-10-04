@@ -83,14 +83,6 @@ struct _MetaWaylandCompositor
   int drm_fd;
 
   MetaWaylandSeat *seat;
-
-  /* This surface is only used to keep drag of the implicit grab when
-     synthesizing XEvents for Mutter */
-  MetaWaylandSurface *implicit_grab_surface;
-  /* Button that was pressed to initiate an implicit grab. The
-     implicit grab will only be released when this button is
-     released */
-  guint32 implicit_grab_button;
 };
 
 void                    meta_wayland_init                       (void);

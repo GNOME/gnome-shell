@@ -409,20 +409,6 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
   return FALSE;
 }
 
-static void
-update_pointer_position_for_actor (MetaWaylandPointer *pointer,
-                                   ClutterActor *actor)
-{
-  float ax, ay;
-
-  clutter_actor_transform_stage_point (actor,
-                                       wl_fixed_to_double (pointer->x),
-                                       wl_fixed_to_double (pointer->y),
-                                       &ax, &ay);
-  pointer->current_x = wl_fixed_from_double (ax);
-  pointer->current_y = wl_fixed_from_double (ay);
-}
-
 /* The actor argument can be NULL in which case a Clutter pick will be
    performed to determine the right actor. An actor should only be
    passed if the repick is being performed due to an event in which
@@ -459,15 +445,11 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
       MetaWindow *window =
         meta_window_actor_get_meta_window (META_WINDOW_ACTOR (actor));
 
-      update_pointer_position_for_actor (pointer, actor);
-
       surface = window->surface;
     }
   else if (META_IS_SHAPED_TEXTURE (actor))
     {
       MetaShapedTexture *shaped_texture = META_SHAPED_TEXTURE (actor);
-
-      update_pointer_position_for_actor (pointer, actor);
 
       surface = meta_shaped_texture_get_wayland_surface (shaped_texture);
     }

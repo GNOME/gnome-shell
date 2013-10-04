@@ -533,119 +533,6 @@ stage_destroy_cb (void)
   meta_quit (META_EXIT_SUCCESS);
 }
 
-#define N_BUTTONS 5
-
-static void
-synthesize_motion_event (MetaWaylandCompositor *compositor,
-                         const ClutterEvent *event)
-{
-  /* We want to synthesize X events for mouse motion events so that we
-     don't have to rely on the X server's window position being
-     synched with the surface position. See the comment in
-     event_callback() in display.c */
-  MetaWaylandSeat *seat = compositor->seat;
-  MetaWaylandPointer *pointer = &seat->pointer;
-  MetaWaylandSurface *surface;
-  XGenericEventCookie generic_event;
-  XIDeviceEvent device_event;
-  unsigned char button_mask[(N_BUTTONS + 7) / 8] = { 0 };
-  MetaDisplay *display = meta_get_display ();
-  ClutterModifierType button_state;
-  int i;
-
-  generic_event.type = GenericEvent;
-  generic_event.serial = 0;
-  generic_event.send_event = False;
-  generic_event.display = display->xdisplay;
-  generic_event.extension = display->xinput_opcode;
-  generic_event.evtype = XI_Motion;
-  /* Mutter assumes the data for the event is already retrieved by GDK
-   * so we don't need the cookie */
-  generic_event.cookie = 0;
-  generic_event.data = &device_event;
-
-  memcpy (&device_event, &generic_event, sizeof (XGenericEvent));
-
-  device_event.time = clutter_event_get_time (event);
-  device_event.deviceid = clutter_event_get_device_id (event);
-  device_event.sourceid = 0; /* not used, not sure what this should be */
-  device_event.detail = 0;
-  device_event.root = DefaultRootWindow (display->xdisplay);
-  device_event.flags = 0 /* not used for motion events */;
-
-  if (compositor->implicit_grab_surface)
-    surface = compositor->implicit_grab_surface;
-  else
-    surface = pointer->current;
-
-  if (surface == pointer->current)
-    {
-      device_event.event_x = wl_fixed_to_int (pointer->current_x);
-      device_event.event_y = wl_fixed_to_int (pointer->current_y);
-    }
-  else if (surface && surface->window)
-    {
-      ClutterActor *window_actor =
-        CLUTTER_ACTOR (meta_window_get_compositor_private (surface->window));
-
-      if (window_actor)
-        {
-          float ax, ay;
-
-          clutter_actor_transform_stage_point (window_actor,
-                                               wl_fixed_to_double (pointer->x),
-                                               wl_fixed_to_double (pointer->y),
-                                               &ax, &ay);
-
-          device_event.event_x = ax;
-          device_event.event_y = ay;
-        }
-      else
-        {
-          device_event.event_x = wl_fixed_to_double (pointer->x);
-          device_event.event_y = wl_fixed_to_double (pointer->y);
-        }
-    }
-  else
-    {
-      device_event.event_x = wl_fixed_to_double (pointer->x);
-      device_event.event_y = wl_fixed_to_double (pointer->y);
-    }
-
-  if (surface && surface->window != NULL)
-    device_event.event = surface->window->xwindow;
-  else
-    device_event.event = device_event.root;
-
-  /* Mutter doesn't really know about the sub-windows. This assumes it
-     doesn't care either */
-  device_event.child = device_event.event;
-  device_event.root_x = wl_fixed_to_double (pointer->x);
-  device_event.root_y = wl_fixed_to_double (pointer->y);
-
-  clutter_event_get_state_full (event,
-				&button_state,
-				(ClutterModifierType*)&device_event.mods.base,
-				(ClutterModifierType*)&device_event.mods.latched,
-				(ClutterModifierType*)&device_event.mods.locked,
-				(ClutterModifierType*)&device_event.mods.effective);
-  device_event.mods.effective &= ~button_state;
-  memset (&device_event.group, 0, sizeof (device_event.group));
-  device_event.group.effective = (device_event.mods.effective >> 13) & 0x3;
-
-  for (i = 0; i < N_BUTTONS; i++)
-    if ((button_state & (CLUTTER_BUTTON1_MASK << i)))
-      XISetMask (button_mask, i + 1);
-  device_event.buttons.mask_len = N_BUTTONS + 1;
-  device_event.buttons.mask = button_mask;
-
-  device_event.valuators.mask_len = 0;
-  device_event.valuators.mask = NULL;
-  device_event.valuators.values = NULL;
-
-  meta_display_handle_xevent (display, (XEvent *) &generic_event);
-}
-
 static void
 reset_idletimes (const ClutterEvent *event)
 {
@@ -682,7 +569,6 @@ event_filter_cb (const ClutterEvent *event,
   MetaWaylandSeat *seat = compositor->seat;
   MetaWaylandPointer *pointer = &seat->pointer;
   MetaWaylandSurface *surface;
-  MetaDisplay *display;
 
   reset_idletimes (event);
 
@@ -721,34 +607,7 @@ event_filter_cb (const ClutterEvent *event,
                                         CLUTTER_ACTOR (event->any.stage));
     }
 
-  display = meta_get_display ();
-  if (!display)
-    return FALSE;
-
-  switch (event->type)
-    {
-    case CLUTTER_BUTTON_PRESS:
-      if (compositor->implicit_grab_surface == NULL)
-        {
-          compositor->implicit_grab_button = event->button.button;
-          compositor->implicit_grab_surface = pointer->current;
-        }
-      return FALSE;
-
-    case CLUTTER_BUTTON_RELEASE:
-      if (event->type == CLUTTER_BUTTON_RELEASE &&
-          compositor->implicit_grab_surface &&
-          event->button.button == compositor->implicit_grab_button)
-        compositor->implicit_grab_surface = NULL;
-      return FALSE;
-
-    case CLUTTER_MOTION:
-      synthesize_motion_event (compositor, event);
-      return FALSE;
-
-    default:
-      return FALSE;
-    }
+  return FALSE;
 }
 
 static void

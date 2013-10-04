@@ -3301,21 +3301,6 @@ xevent_callback (XEvent  *event,
 {
   MetaDisplay *display = data;
 
-  /* Under Wayland we want to filter out mouse motion events so we can
-     synthesize them from the Clutter events instead. This is
-     necessary because the position in the mouse events is passed to
-     the X server relative to the position of the surface. The X
-     server then translates these back to screen coordinates based on
-     the window position. If we rely on this translatation when
-     dragging a window around then the window will jump around
-     erratically because of the lag between updating the window
-     position from the surface position. Instead we bypass the
-     translation altogether by directly using the Clutter events */
-  if (meta_is_wayland_compositor () &&
-      event->type == GenericEvent &&
-      event->xcookie.evtype == XI_Motion)
-    return FALSE;
-
   return meta_display_handle_xevent (display, event);
 }
 
