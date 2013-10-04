@@ -568,31 +568,11 @@ event_filter_cb (const ClutterEvent *event,
   MetaWaylandCompositor *compositor = user_data;
   MetaWaylandSeat *seat = compositor->seat;
   MetaWaylandPointer *pointer = &seat->pointer;
-  MetaWaylandSurface *surface;
 
   reset_idletimes (event);
 
   if (meta_wayland_seat_handle_event (compositor->seat, event))
     return TRUE;
-
-  /* HACK: for now, the surfaces from Wayland clients aren't
-     integrated into Mutter's event handling and Mutter won't give them
-     focus on mouse clicks. As a hack to work around this we can just
-     give them input focus on mouse clicks so we can at least test the
-     keyboard support */
-  if (event->type == CLUTTER_BUTTON_PRESS)
-    {
-      surface = pointer->current;
-
-      if (surface && surface->window &&
-	  surface->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
-        {
-	  MetaDisplay *display = meta_get_display ();
-	  guint32 timestamp = meta_display_get_current_time_roundtrip (display);
-
-	  meta_window_focus (surface->window, timestamp);
-        }
-    }
 
   if (seat->cursor_tracker)
     {
