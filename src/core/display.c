@@ -2461,7 +2461,7 @@ meta_display_handle_event (MetaDisplay        *display,
        * we can get into a confused state. So if a keybinding is
        * handled (because it's one of our hot-keys, or because we are
        * in a keyboard-grabbed mode like moving a window, we don't
-       * want to pass the key event to the compositor or GTK+ at all.
+       * want to pass the key event to the compositor or Wayland at all.
        */
       if (meta_display_process_key_event (display, window, (ClutterKeyEvent *) event))
         return TRUE;
@@ -2470,7 +2470,18 @@ meta_display_handle_event (MetaDisplay        *display,
       break;
     }
 
-  return FALSE;
+#ifdef HAVE_WAYLAND
+  if (meta_is_wayland_compositor () && (display->grab_op == META_GRAB_OP_NONE))
+    {
+      MetaWaylandCompositor *compositor;
+      compositor = meta_wayland_compositor_get_default ();
+
+      if (meta_wayland_compositor_handle_event (compositor, event))
+        return TRUE;
+    }
+#endif /* HAVE_WAYLAND */
+
+  return (display->grab_op != META_GRAB_OP_COMPOSITOR);
 }
 
 static gboolean

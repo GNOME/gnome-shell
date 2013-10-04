@@ -96,6 +96,8 @@ void                    meta_wayland_compositor_repick          (MetaWaylandComp
 
 void                    meta_wayland_compositor_set_input_focus (MetaWaylandCompositor *compositor,
                                                                  MetaWindow            *window);
+gboolean                meta_wayland_compositor_handle_event    (MetaWaylandCompositor *compositor,
+                                                                 const ClutterEvent    *event);
 
 MetaLauncher           *meta_wayland_compositor_get_launcher    (MetaWaylandCompositor *compositor);
 gboolean                meta_wayland_compositor_is_native       (MetaWaylandCompositor *compositor);

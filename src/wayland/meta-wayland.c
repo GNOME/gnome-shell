@@ -561,13 +561,10 @@ reset_idletimes (const ClutterEvent *event)
     }
 }
 
-static gboolean
-event_filter_cb (const ClutterEvent *event,
-                 gpointer            user_data)
+gboolean
+meta_wayland_compositor_handle_event (MetaWaylandCompositor *compositor,
+                                      const ClutterEvent    *event)
 {
-  MetaWaylandCompositor *compositor = user_data;
-  MetaWaylandSeat *seat = compositor->seat;
-
   reset_idletimes (event);
 
   return meta_wayland_seat_handle_event (compositor->seat, event);
@@ -701,8 +698,6 @@ meta_wayland_init (void)
   compositor->seat = meta_wayland_seat_new (compositor->wayland_display,
 					    compositor->drm_fd >= 0);
 
-  clutter_event_add_filter (event_filter_cb, compositor);
-
   meta_wayland_init_shell (compositor);
 
   clutter_actor_show (compositor->stage);
@@ -738,8 +733,6 @@ meta_wayland_finalize (void)
   MetaWaylandCompositor *compositor;
 
   compositor = meta_wayland_compositor_get_default ();
-
-  clutter_event_remove_filter (event_filter_cb, compositor);
 
   meta_xwayland_stop (compositor);
   g_clear_object (&compositor->launcher);
