@@ -567,27 +567,10 @@ event_filter_cb (const ClutterEvent *event,
 {
   MetaWaylandCompositor *compositor = user_data;
   MetaWaylandSeat *seat = compositor->seat;
-  MetaWaylandPointer *pointer = &seat->pointer;
 
   reset_idletimes (event);
 
-  if (meta_wayland_seat_handle_event (compositor->seat, event))
-    return TRUE;
-
-  if (seat->cursor_tracker)
-    {
-      meta_cursor_tracker_update_position (seat->cursor_tracker,
-					   wl_fixed_to_int (pointer->x),
-					   wl_fixed_to_int (pointer->y));
-
-      if (pointer->current == NULL)
-	meta_cursor_tracker_revert_root (seat->cursor_tracker);
-
-      meta_cursor_tracker_queue_redraw (seat->cursor_tracker,
-                                        CLUTTER_ACTOR (event->any.stage));
-    }
-
-  return FALSE;
+  return meta_wayland_seat_handle_event (compositor->seat, event);
 }
 
 static void

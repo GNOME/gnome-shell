@@ -369,6 +369,19 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
 {
   seat->pointer.button_count = count_buttons (event);
 
+  if (seat->cursor_tracker)
+    {
+      meta_cursor_tracker_update_position (seat->cursor_tracker,
+					   wl_fixed_to_int (seat->pointer.x),
+					   wl_fixed_to_int (seat->pointer.y));
+
+      if (seat->pointer.current == NULL)
+	meta_cursor_tracker_revert_root (seat->cursor_tracker);
+
+      meta_cursor_tracker_queue_redraw (seat->cursor_tracker,
+                                        CLUTTER_ACTOR (event->any.stage));
+    }
+
   switch (event->type)
     {
     case CLUTTER_MOTION:
