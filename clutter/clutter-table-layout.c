@@ -883,8 +883,8 @@ calculate_col_widths (ClutterTableLayout *self,
             n_expand++;
         }
 
-      pref_width += priv->col_spacing * (priv->n_cols - 1);
-      min_width += priv->col_spacing * (priv->n_cols - 1);
+      pref_width += priv->col_spacing * MAX (priv->visible_cols - 1, 0);
+      min_width += priv->col_spacing * MAX (priv->visible_cols - 1, 0);
 
       if (for_width <= min_width)
         {
@@ -1173,8 +1173,8 @@ calculate_row_heights (ClutterTableLayout *self,
             n_expand++;
         }
 
-      pref_height += priv->row_spacing * (priv->n_rows - 1);
-      min_height += priv->row_spacing * (priv->n_rows - 1);
+      pref_height += priv->row_spacing * MAX (priv->visible_rows - 1, 0);
+      min_height += priv->row_spacing * MAX (priv->visible_rows - 1, 0);
 
       if (for_height <= min_height)
         {
