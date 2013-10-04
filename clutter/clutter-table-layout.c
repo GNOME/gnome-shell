@@ -1291,7 +1291,7 @@ clutter_table_layout_get_preferred_width (ClutterLayoutManager *layout,
   calculate_table_dimensions (self, container, -1, for_height);
   columns = (DimensionData *) (void *) priv->columns->data;
 
-  total_min_width = (priv->visible_cols - 1) * (float) priv->col_spacing;
+  total_min_width = MAX ((priv->visible_cols - 1) * (float) priv->col_spacing, 0);
   total_pref_width = total_min_width;
 
   for (i = 0; i < priv->n_cols; i++)
@@ -1331,7 +1331,7 @@ clutter_table_layout_get_preferred_height (ClutterLayoutManager *layout,
   calculate_table_dimensions (self, container, for_width, -1);
   rows = (DimensionData *) (void *) priv->rows->data;
 
-  total_min_height = (priv->visible_rows - 1) * (float) priv->row_spacing;
+  total_min_height = MAX ((priv->visible_rows - 1) * (float) priv->row_spacing, 0);
   total_pref_height = total_min_height;
 
   for (i = 0; i < self->priv->n_rows; i++)
