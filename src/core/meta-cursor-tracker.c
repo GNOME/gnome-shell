@@ -352,6 +352,8 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
 
   self = g_slice_new0 (MetaCursorReference);
   self->ref_count = 1;
+  self->hot_x = hot_x;
+  self->hot_y = hot_y;
  
   backend = clutter_get_default_backend ();
   cogl_context = clutter_backend_get_cogl_context (backend);
