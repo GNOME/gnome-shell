@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-02 17:58+0000\n"
+"POT-Creation-Date: 2013-10-05 04:50+0000\n"
 "PO-Revision-Date: 2013-10-05 06:45+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -273,7 +273,7 @@ msgstr "Изаберите проширење за подешавање кори
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:692
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:703
 msgid "Cancel"
 msgstr "Откажи"
 
@@ -514,13 +514,13 @@ msgstr "Ништа планирано"
 #: ../js/ui/calendar.js:771
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr "%A, %B %d"
+msgstr "%A, %d. %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
 #: ../js/ui/calendar.js:774
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%A, %B %d, %Y"
+msgstr "%A, %d. %B %Y."
 
 #: ../js/ui/calendar.js:785
 msgid "Today"
@@ -567,8 +567,8 @@ msgstr "Лозинка:"
 msgid "Type again:"
 msgstr "Упишите поново:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:695
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:122
+#: ../js/ui/status/network.js:285 ../js/ui/status/network.js:706
 msgid "Connect"
 msgstr "Повежи се"
 
@@ -698,12 +698,12 @@ msgstr "<b>%A</b>, у <b>%H:%M</b>"
 #. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:953
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-msgstr "<b>%d</b>. <b>%B</b>, у <b>%H:%M</b>"
+msgstr "<b>%d</b>. <b>%B</b> у <b>%H:%M</b>"
 
 #. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:957
 msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-msgstr "<b>%d</b>. <b>%B</b> <b>%Y</b>, у <b>%H:%M</b>"
+msgstr "<b>%d</b>. <b>%B</b> <b>%Y</b>. у <b>%H:%M</b>"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
@@ -935,25 +935,21 @@ msgstr "Одјави ме"
 
 #: ../js/ui/endSessionDialog.js:65
 #, javascript-format
-#| msgid "%s will be logged out automatically in %d second."
-#| msgid_plural "%s will be logged out automatically in %d seconds."
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s ће бити одјављен за %d секунду."
 msgstr[1] "%s ће бити одјављен за %d секунде."
 msgstr[2] "%s ће бити одјављен за %d секунди."
-msgstr[3] "%s ће бити одјављен за једну секунду."
+msgstr[3] "%s ће бити одјављен за %d секунду."
 
 #: ../js/ui/endSessionDialog.js:70
 #, javascript-format
-#| msgid "You will be logged out automatically in %d second."
-#| msgid_plural "You will be logged out automatically in %d seconds."
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Бићете одјављени за %d секунду."
 msgstr[1] "Бићете одјављени за %d секунде."
 msgstr[2] "Бићете одјављени за %d секунди."
-msgstr[3] "Бићете одјављени за једну секунду."
+msgstr[3] "Бићете одјављени за %d секунду."
 
 #: ../js/ui/endSessionDialog.js:75
 msgctxt "button"
@@ -967,14 +963,12 @@ msgstr "Искључи"
 
 #: ../js/ui/endSessionDialog.js:83
 #, javascript-format
-#| msgid "The system will power off automatically in %d second."
-#| msgid_plural "The system will power off automatically in %d seconds."
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Рачунар ће се искључити за %d секунду."
 msgstr[1] "Рачунар ће се искључити за %d секунде."
 msgstr[2] "Рачунар ће се искључити за %d секунди."
-msgstr[3] "Рачунар ће се искључити за једну секунду."
+msgstr[3] "Рачунар ће се искључити за %d секунду."
 
 #: ../js/ui/endSessionDialog.js:88 ../js/ui/endSessionDialog.js:104
 msgctxt "button"
@@ -993,14 +987,12 @@ msgstr "Поново покрени"
 
 #: ../js/ui/endSessionDialog.js:99
 #, javascript-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Систем ће се поново покренути за %d секунду."
 msgstr[1] "Систем ће се поново покренути за %d секунде."
 msgstr[2] "Систем ће се поново покренути за %d секунди."
-msgstr[3] "Систем ће се поново покренути за једну секунду."
+msgstr[3] "Систем ће се поново покренути за %d секунду."
 
 #: ../js/ui/endSessionDialog.js:112
 msgctxt "title"
@@ -1009,10 +1001,6 @@ msgstr "Поново покрени и инсталирај ажурирања"
 
 #: ../js/ui/endSessionDialog.js:114
 #, javascript-format
-#| msgid ""
-#| "The system will automatically restart and install updates in %d second."
-#| msgid_plural ""
-#| "The system will automatically restart and install updates in %d seconds."
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -1023,7 +1011,7 @@ msgstr[1] ""
 msgstr[2] ""
 "Систем ће се сам поново покренути и инсталирати ажурирања за %d секунди."
 msgstr[3] ""
-"Систем ће се сам поново покренути и инсталирати ажурирања за једну секунду."
+"Систем ће се сам поново покренути и инсталирати ажурирања за %d секунду."
 
 #: ../js/ui/endSessionDialog.js:119
 msgctxt "button"
@@ -1150,14 +1138,12 @@ msgstr "Непознат"
 
 #: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:152
 #, javascript-format
-#| msgid "%d new message"
-#| msgid_plural "%d new messages"
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d нова порука"
 msgstr[1] "%d нове поруке"
 msgstr[2] "%d нових порука"
-msgstr[3] "Једна нова порука"
+msgstr[3] "%d нова порука"
 
 #: ../js/ui/overview.js:82
 msgid "Undo"
@@ -1209,14 +1195,12 @@ msgstr "%A, %d. %B"
 
 #: ../js/ui/screenShield.js:154
 #, javascript-format
-#| msgid "%d new notification"
-#| msgid_plural "%d new notifications"
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d ново обавештење"
 msgstr[1] "%d нова обавештења"
 msgstr[2] "%d нових обавештења"
-msgstr[3] "Једно ново обавештење"
+msgstr[3] "%d ново обавештење"
 
 #: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:333
 msgid "Lock"
@@ -1316,8 +1300,8 @@ msgstr "Велики текст"
 msgid "Bluetooth"
 msgstr "Блутут"
 
-#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1040 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:122
+#: ../js/ui/status/network.js:1051 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Искључи"
 
@@ -1327,14 +1311,12 @@ msgstr "Подешавања Блутута"
 
 #: ../js/ui/status/bluetooth.js:58
 #, javascript-format
-#| msgid "%d Connected Device"
-#| msgid_plural "%d Connected Devices"
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d прикључени уређај"
 msgstr[1] "%d прикључена уређаја"
 msgstr[2] "%d прикључених уређаја"
-msgstr[3] "Један прикључени уређај"
+msgstr[3] "%d прикључени уређај"
 
 #: ../js/ui/status/bluetooth.js:101 ../js/ui/status/bluetooth.js:129
 #, javascript-format
@@ -1415,83 +1397,83 @@ msgstr "Осветљеност"
 msgid "<unknown>"
 msgstr "<непознато>"
 
-#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1055
+#: ../js/ui/status/network.js:212 ../js/ui/status/network.js:1066
 msgid "Off"
 msgstr "Искљ."
 
-#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:961
+#: ../js/ui/status/network.js:286 ../js/ui/status/network.js:972
 #: ../js/ui/status/rfkill.js:49
 msgid "Network Settings"
 msgstr "Подешавања мреже"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:364
+#: ../js/ui/status/network.js:375
 msgid "unmanaged"
 msgstr "није управљано"
 
-#: ../js/ui/status/network.js:366
+#: ../js/ui/status/network.js:377
 msgid "disconnecting..."
 msgstr "прекидам везу..."
 
-#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1106
+#: ../js/ui/status/network.js:383 ../js/ui/status/network.js:1118
 msgid "connecting..."
 msgstr "повезујем се..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1109
+#: ../js/ui/status/network.js:386 ../js/ui/status/network.js:1121
 msgid "authentication required"
 msgstr "потребна је пријава"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:383
+#: ../js/ui/status/network.js:394
 msgid "firmware missing"
 msgstr "недостаје фирмвер"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:387
+#: ../js/ui/status/network.js:398
 msgid "unavailable"
 msgstr "недоступно"
 
-#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1111
+#: ../js/ui/status/network.js:400 ../js/ui/status/network.js:1123
 msgid "connection failed"
 msgstr "повезивање није успело"
 
-#: ../js/ui/status/network.js:660
+#: ../js/ui/status/network.js:671
 msgid "Wi-Fi Networks"
 msgstr "Бежичне мреже"
 
-#: ../js/ui/status/network.js:662
+#: ../js/ui/status/network.js:673
 msgid "Select a network"
 msgstr "Изаберите мрежу"
 
-#: ../js/ui/status/network.js:686
+#: ../js/ui/status/network.js:697
 msgid "No Networks"
 msgstr "Нема мрежа"
 
-#: ../js/ui/status/network.js:955
+#: ../js/ui/status/network.js:966
 msgid "Select Network"
 msgstr "Изабери мрежу"
 
-#: ../js/ui/status/network.js:1040
+#: ../js/ui/status/network.js:1051
 msgid "Turn On"
 msgstr "Укључи"
 
-#: ../js/ui/status/network.js:1174
+#: ../js/ui/status/network.js:1186
 msgid "VPN"
 msgstr "ВПН"
 
-#: ../js/ui/status/network.js:1314
+#: ../js/ui/status/network.js:1326
 msgid "Network Manager"
 msgstr "Управник мреже"
 
-#: ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:1365
 msgid "Connection failed"
 msgstr "Повезивање није успело"
 
-#: ../js/ui/status/network.js:1354
+#: ../js/ui/status/network.js:1366
 msgid "Activation of network connection failed"
 msgstr "Активирање мрежне везе није успело"
 
@@ -1513,13 +1495,11 @@ msgstr "Приближно…"
 
 #: ../js/ui/status/power.js:77
 #, javascript-format
-#| msgid "%d\\u2236%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "Преостаје %d:%02d (%d%%)"
 
 #: ../js/ui/status/power.js:82
 #, javascript-format
-#| msgid "%d\\u2236%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d:%02d до краја пуњења (%d%%)"
 
@@ -1615,14 +1595,12 @@ msgstr "Задржи измене"
 
 #: ../js/ui/windowManager.js:97
 #, javascript-format
-#| msgid "Settings changes will revert in %d second"
-#| msgid_plural "Settings changes will revert in %d seconds"
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Измене подешавања ће бити враћене за %d секунду"
 msgstr[1] "Измене подешавања ће бити враћене за %d секунде"
 msgstr[2] "Измене подешавања ће бити враћене за %d секунди"
-msgstr[3] "Измене подешавања ће бити враћене за једну секунду"
+msgstr[3] "Измене подешавања ће бити враћене за %d секунду"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1637,7 +1615,7 @@ msgid_plural "%u Outputs"
 msgstr[0] "%u излаз"
 msgstr[1] "%u излаза"
 msgstr[2] "%u излаза"
-msgstr[3] "Један излаз"
+msgstr[3] "%u излаз"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -1648,7 +1626,7 @@ msgid_plural "%u Inputs"
 msgstr[0] "%u улаз"
 msgstr[1] "%u улаза"
 msgstr[2] "%u улаза"
-msgstr[3] "Један улаз"
+msgstr[3] "%u улаз"
 
 #: ../src/gvc/gvc-mixer-control.c:2373
 msgid "System Sounds"
