@@ -44,6 +44,7 @@
 #include "clutter-backend-wayland.h"
 #include "clutter-backend-wayland-priv.h"
 #include "clutter-stage-private.h"
+#include "clutter-stage-wayland.h"
 #include "clutter-wayland.h"
 
 #include "cogl/clutter-stage-cogl.h"
@@ -351,15 +352,17 @@ clutter_wayland_handle_pointer_enter (void *data,
                                       wl_fixed_t x, wl_fixed_t y)
 {
   ClutterInputDeviceWayland *device = data;
+  ClutterStageWayland       *stage_wayland;
   ClutterStageCogl          *stage_cogl;
   ClutterEvent              *event;
   ClutterBackend            *backend;
   ClutterBackendWayland     *backend_wayland;
 
-  if (!CLUTTER_IS_STAGE_COGL (wl_surface_get_user_data (surface)))
-    return;
+  stage_wayland = wl_surface_get_user_data (surface);
 
-  stage_cogl = wl_surface_get_user_data (surface);
+  if (!CLUTTER_IS_STAGE_COGL (stage_wayland))
+    return;
+  stage_cogl = CLUTTER_STAGE_COGL (stage_wayland);
 
   device->pointer_focus = stage_cogl;
   _clutter_input_device_set_stage (CLUTTER_INPUT_DEVICE (device),
@@ -378,26 +381,35 @@ clutter_wayland_handle_pointer_enter (void *data,
 
   _clutter_event_push (event, FALSE);
 
-  /* Set the cursor to the cursor loaded at backend initialisation */
-  backend = clutter_get_default_backend ();
-  backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
+  if (stage_wayland->cursor_visible)
+    {
+      /* Set the cursor to the cursor loaded at backend initialisation */
+      backend = clutter_get_default_backend ();
+      backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
 
-  wl_pointer_set_cursor (pointer,
-                         serial,
-                         backend_wayland->cursor_surface,
-                         backend_wayland->cursor_x,
-                         backend_wayland->cursor_y);
-  wl_surface_attach (backend_wayland->cursor_surface,
-                     backend_wayland->cursor_buffer,
-                     0,
-                     0);
-  wl_surface_damage (backend_wayland->cursor_surface,
-                     0,
-                     0,
-                     32, /* XXX: FFS */
-                     32);
+      _clutter_backend_wayland_ensure_cursor (backend_wayland);
 
-  wl_surface_commit (backend_wayland->cursor_surface);
+      wl_pointer_set_cursor (pointer,
+                             serial,
+                             backend_wayland->cursor_surface,
+                             backend_wayland->cursor_x,
+                             backend_wayland->cursor_y);
+      wl_surface_attach (backend_wayland->cursor_surface,
+                         backend_wayland->cursor_buffer,
+                         0,
+                         0);
+      wl_surface_damage (backend_wayland->cursor_surface,
+                         0,
+                         0,
+                         32, /* XXX: FFS */
+                         32);
+
+      wl_surface_commit (backend_wayland->cursor_surface);
+    }
+  else
+    {
+      wl_pointer_set_cursor (pointer, serial, NULL, 0, 0);
+    }
 }
 
 static void

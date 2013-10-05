@@ -154,6 +154,15 @@ clutter_stage_wayland_show (ClutterStageWindow *stage_window,
 }
 
 static void
+clutter_stage_wayland_set_cursor_visible (ClutterStageWindow *stage_window,
+                                          gboolean            cursor_visible)
+{
+  ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
+
+  stage_wayland->cursor_visible = cursor_visible;
+}
+
+static void
 clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
                                       gboolean            fullscreen)
 {
@@ -223,6 +232,7 @@ clutter_stage_wayland_resize (ClutterStageWindow *stage_window,
 static void
 clutter_stage_wayland_init (ClutterStageWayland *stage_wayland)
 {
+  stage_wayland->cursor_visible = TRUE;
 }
 
 static void
@@ -233,6 +243,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->realize = clutter_stage_wayland_realize;
   iface->show = clutter_stage_wayland_show;
   iface->set_fullscreen = clutter_stage_wayland_set_fullscreen;
+  iface->set_cursor_visible = clutter_stage_wayland_set_cursor_visible;
   iface->resize = clutter_stage_wayland_resize;
 }
 

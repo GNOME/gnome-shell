@@ -55,6 +55,7 @@ struct _ClutterStageWayland
   gboolean fullscreen;
   gboolean foreign_wl_surface;
   gboolean shown;
+  gboolean cursor_visible;
 };
 
 struct _ClutterStageWaylandClass

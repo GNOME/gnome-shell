@@ -62,6 +62,8 @@ struct _ClutterBackendWayland
   GTimer *event_timer;
 };
 
+void _clutter_backend_wayland_ensure_cursor (ClutterBackendWayland *backend_wayland);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_BACKEND_WAYLAND_PRIV_H__ */

@@ -63,8 +63,6 @@ G_DEFINE_TYPE (ClutterBackendWayland, clutter_backend_wayland, CLUTTER_TYPE_BACK
 static struct wl_display *_foreign_display = NULL;
 static gboolean _no_event_dispatch = FALSE;
 
-static void clutter_backend_wayland_load_cursor (ClutterBackendWayland *backend_wayland);
-
 static void
 clutter_backend_wayland_dispose (GObject *gobject)
 {
@@ -224,9 +222,6 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
            backend_wayland->wayland_shell))
     wl_display_roundtrip (backend_wayland->wayland_display);
 
-  /* We need the shm object before we can create the cursor */
-  clutter_backend_wayland_load_cursor (backend_wayland);
-
   return TRUE;
 }
 
@@ -296,8 +291,8 @@ clutter_backend_wayland_class_init (ClutterBackendWaylandClass *klass)
   backend_class->get_display = clutter_backend_wayland_get_display;
 }
 
-static void
-clutter_backend_wayland_load_cursor (ClutterBackendWayland *backend_wayland)
+void
+_clutter_backend_wayland_ensure_cursor (ClutterBackendWayland *backend_wayland)
 {
   struct wl_cursor *cursor;
 
