@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-09-28 19:49+0000\n"
-"PO-Revision-Date: 2013-09-29 20:32+0300\n"
+"PO-Revision-Date: 2013-10-05 16:50+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -497,7 +497,7 @@ msgstr "Št"
 
 #: ../js/ui/calendar.js:389
 msgid "calendar:MY"
-msgstr "calendar:MY"
+msgstr "calendar:YM"
 
 #: ../js/ui/calendar.js:447
 msgid "Previous month"
@@ -1621,4 +1621,3 @@ msgstr "Slaptažodis negali būti tuščias"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Naudotojas užvėrė tapatybės patvirtinimo dialogą"
-
