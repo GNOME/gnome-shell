@@ -185,7 +185,9 @@ const BoxPointer = new Lang.Class({
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
-        let [minSize, naturalSize] = this.bin.get_preferred_height(forWidth);
+        let themeNode = this.actor.get_theme_node();
+        let borderWidth = themeNode.get_length('-arrow-border-width');
+        let [minSize, naturalSize] = this.bin.get_preferred_height(forWidth - 2 * borderWidth);
         alloc.min_size = minSize;
         alloc.natural_size = naturalSize;
         this._adjustAllocationForArrow(false, alloc);
