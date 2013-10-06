@@ -38,7 +38,7 @@ shell_js_add_extension_importer (const char  *target_object_script,
    * we should only ever have one context, so this
    * should be alright. */
   contexts = gjs_context_get_all ();
-  context = gjs_context_get_native_context (contexts->data);
+  context = (JSContext*) gjs_context_get_native_context ((GjsContext*)contexts->data);
   g_list_free_full (contexts, g_object_unref);
 
   JS_BeginRequest (context);

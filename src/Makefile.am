@@ -207,7 +207,7 @@ endif HAVE_MUTTER_WAYLAND
 
 libgnome_shell_js_la_SOURCES =		\
 	shell-js.h			\
-	shell-js.c			\
+	shell-js.cpp		\
 	$(NULL)
 
 libgnome_shell_js_la_LIBADD =		\
