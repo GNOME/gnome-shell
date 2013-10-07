@@ -42,6 +42,7 @@
 
 #include <gdk/gdk.h>
 
+#include <X11/cursorfont.h>
 #include <X11/extensions/Xfixes.h>
 #include <X11/Xcursor/Xcursor.h>
 
@@ -128,76 +129,130 @@ meta_cursor_reference_unref (MetaCursorReference *self)
     }
 }
 
-static const char *
-get_cursor_filename (MetaCursor cursor)
+static void
+translate_meta_cursor (MetaCursor   cursor,
+                       guint       *glyph_out,
+                       const char **name_out)
 {
+  guint glyph = XC_num_glyphs;
+  const char *name = NULL;
+
   switch (cursor)
     {
     case META_CURSOR_DEFAULT:
-      return "left_ptr";
+      glyph = XC_left_ptr;
       break;
     case META_CURSOR_NORTH_RESIZE:
-      return "top_side";
+      glyph = XC_top_side;
       break;
     case META_CURSOR_SOUTH_RESIZE:
-      return "bottom_side";
+      glyph = XC_bottom_side;
       break;
     case META_CURSOR_WEST_RESIZE:
-      return "left_side";
+      glyph = XC_left_side;
       break;
     case META_CURSOR_EAST_RESIZE:
-      return "right_side";
+      glyph = XC_right_side;
       break;
     case META_CURSOR_SE_RESIZE:
-      return "bottom_right_corner";
+      glyph = XC_bottom_right_corner;
       break;
     case META_CURSOR_SW_RESIZE:
-      return "bottom_left_corner";
+      glyph = XC_bottom_left_corner;
       break;
     case META_CURSOR_NE_RESIZE:
-      return "top_right_corner";
+      glyph = XC_top_right_corner;
       break;
     case META_CURSOR_NW_RESIZE:
-      return "top_left_corner";
+      glyph = XC_top_left_corner;
       break;
     case META_CURSOR_MOVE_OR_RESIZE_WINDOW:
-      return "fleur";
+      glyph = XC_fleur;
       break;
     case META_CURSOR_BUSY:
-      return "watch";
+      glyph = XC_watch;
       break;
     case META_CURSOR_DND_IN_DRAG:
-      return "dnd-none";
+      name = "dnd-none";
       break;
     case META_CURSOR_DND_MOVE:
-      return "dnd-copy";
+      name = "dnd-move";
+      break;
+    case META_CURSOR_DND_COPY:
+      name = "dnd-copy";
       break;
     case META_CURSOR_DND_UNSUPPORTED_TARGET:
-      return "dnd-none";
+      name = "dnd-none";
       break;
     case META_CURSOR_POINTING_HAND:
-      return "hand";
+      glyph = XC_hand2;
       break;
     case META_CURSOR_CROSSHAIR:
-      return "crosshair";
+      glyph = XC_crosshair;
       break;
     case META_CURSOR_IBEAM:
-      return "xterm";
+      glyph = XC_xterm;
       break;
 
     default:
       g_assert_not_reached ();
-      return NULL;
+      glyph = 0; /* silence compiler */
+      break;
     }
+
+  *glyph_out = glyph;
+  *name_out = name;
+}
+
+static Cursor
+load_cursor_on_server (MetaDisplay *display,
+                       MetaCursor   cursor)
+{
+  Cursor xcursor;
+  guint glyph;
+  const char *name;
+
+  translate_meta_cursor (cursor, &glyph, &name);
+
+  if (name != NULL)
+    xcursor = XcursorLibraryLoadCursor (display->xdisplay, name);
+  else
+    xcursor = XCreateFontCursor (display->xdisplay, glyph);
+
+  return xcursor;
+}
+
+Cursor
+meta_display_create_x_cursor (MetaDisplay *display,
+                              MetaCursor cursor)
+{
+  return load_cursor_on_server (display, cursor);
+}
+
+static XcursorImage *
+load_cursor_on_client (MetaDisplay *display,
+                       MetaCursor   cursor)
+{
+  XcursorImage *image;
+  guint glyph;
+  const char *name;
+  const char *theme = XcursorGetTheme (display->xdisplay);
+  int size = XcursorGetDefaultSize (display->xdisplay);
+
+  translate_meta_cursor (cursor, &glyph, &name);
+
+  if (name != NULL)
+    image = XcursorLibraryLoadImage (name, theme, size);
+  else
+    image = XcursorShapeLoadImage (glyph, theme, size);
+
+  return image;
 }
 
 static MetaCursorReference *
 meta_cursor_reference_from_theme (MetaCursorTracker  *tracker,
                                   MetaCursor          cursor)
 {
-  const char *theme;
-  const char *filename;
-  int size;
   XcursorImage *image;
   int width, height, rowstride;
   CoglPixelFormat cogl_format;
@@ -206,11 +261,7 @@ meta_cursor_reference_from_theme (MetaCursorTracker  *tracker,
   CoglContext *cogl_context;
   MetaCursorReference *self;
 
-  filename = get_cursor_filename (cursor);
-  theme = XcursorGetTheme (tracker->screen->display->xdisplay);
-  size = XcursorGetDefaultSize (tracker->screen->display->xdisplay);
-
-  image = XcursorLibraryLoadImage (filename, theme, size);
+  image = load_cursor_on_client (tracker->screen->display, cursor);
   if (!image)
     return NULL;
 
