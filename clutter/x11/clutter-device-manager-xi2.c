@@ -602,7 +602,6 @@ static gdouble *
 translate_axes (ClutterInputDevice *device,
                 gdouble             x,
                 gdouble             y,
-                ClutterStageX11    *stage_x11,
                 XIValuatorState    *valuators)
 {
   guint n_axes = clutter_input_device_get_n_axes (device);
@@ -627,11 +626,11 @@ translate_axes (ClutterInputDevice *device,
       switch (axis)
         {
         case CLUTTER_INPUT_AXIS_X:
-          retval[i] = x / stage_x11->scale_factor;
+          retval[i] = x;
           break;
 
         case CLUTTER_INPUT_AXIS_Y:
-          retval[i] = y / stage_x11->scale_factor;
+          retval[i] = y;
           break;
 
         default:
@@ -946,7 +945,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->scroll.axes = translate_axes (event->scroll.device,
                                                  event->scroll.x,
                                                  event->scroll.y,
-                                                 stage_x11,
                                                  &xev->valuators);
 
             CLUTTER_NOTE (EVENT,
@@ -995,7 +993,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->button.axes = translate_axes (event->button.device,
                                                  event->button.x,
                                                  event->button.y,
-                                                 stage_x11,
                                                  &xev->valuators);
 
             CLUTTER_NOTE (EVENT,
@@ -1106,7 +1103,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         event->motion.axes = translate_axes (event->motion.device,
                                              event->motion.x,
                                              event->motion.y,
-                                             stage_x11,
                                              &xev->valuators);
 
         if (source_device != NULL && device->stage != NULL)
@@ -1161,7 +1157,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         event->touch.axes = translate_axes (event->touch.device,
                                             event->motion.x,
                                             event->motion.y,
-                                            stage_x11,
                                             &xev->valuators);
 
         if (xi_event->evtype == XI_TouchBegin)
@@ -1213,7 +1208,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         event->touch.axes = translate_axes (event->touch.device,
                                             event->motion.x,
                                             event->motion.y,
-                                            stage_x11,
                                             &xev->valuators);
 
 	_clutter_input_device_xi2_translate_state (event,
