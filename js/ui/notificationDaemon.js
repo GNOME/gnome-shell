@@ -779,8 +779,8 @@ const Source = new Lang.Class({
     },
 
     open: function(notification) {
-        this.destroyNonResidentNotifications();
         this.openApp();
+        this.destroyNonResidentNotifications();
     },
 
     _lastNotificationRemoved: function() {
