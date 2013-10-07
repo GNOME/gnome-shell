@@ -642,6 +642,17 @@ translate_axes (ClutterInputDevice *device,
   return retval;
 }
 
+static void
+translate_coords (ClutterStageX11 *stage_x11,
+                  gdouble          event_x,
+                  gdouble          event_y,
+                  gfloat          *x_out,
+                  gfloat          *y_out)
+{
+  *x_out = CLAMP (event_x, 0, stage_x11->xwin_width)  / stage_x11->scale_factor;
+  *y_out = CLAMP (event_y, 0, stage_x11->xwin_height) / stage_x11->scale_factor;
+}
+
 static gdouble
 scroll_valuators_changed (ClutterInputDevice *device,
                           XIValuatorState    *valuators,
@@ -744,7 +755,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
   XGenericEventCookie *cookie;
   XIEvent *xi_event;
   XEvent *xevent;
-  int window_scale;
 
   backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
 
@@ -772,11 +782,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
     }
 
   event->any.stage = stage;
-
-  if (stage_x11 != NULL)
-    window_scale = stage_x11->scale_factor;
-  else
-    window_scale = 1;
 
   switch (xi_event->evtype)
     {
@@ -932,8 +937,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->scroll.stage = stage;
 
             event->scroll.time = xev->time;
-            event->scroll.x = xev->event_x / window_scale;
-            event->scroll.y = xev->event_y / window_scale;
+            translate_coords (stage_x11, xev->event_x, xev->event_y, &event->scroll.x, &event->scroll.y);
 	    _clutter_input_device_xi2_translate_state (event,
 						       &xev->mods,
 						       &xev->buttons,
@@ -979,8 +983,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->button.stage = stage;
 
             event->button.time = xev->time;
-            event->button.x = xev->event_x / window_scale;
-            event->button.y = xev->event_y / window_scale;
+            translate_coords (stage_x11, xev->event_x, xev->event_y, &event->button.x, &event->button.y);
             event->button.button = xev->detail;
 	    _clutter_input_device_xi2_translate_state (event,
 						       &xev->mods,
@@ -1061,8 +1064,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
             event->scroll.stage = stage;
             event->scroll.time = xev->time;
-            event->scroll.x = xev->event_x / window_scale;
-            event->scroll.y = xev->event_y / window_scale;
+            translate_coords (stage_x11, xev->event_x, xev->event_y, &event->scroll.x, &event->scroll.y);
 	    _clutter_input_device_xi2_translate_state (event,
 						       &xev->mods,
 						       &xev->buttons,
@@ -1090,8 +1092,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         event->motion.stage = stage;
 
         event->motion.time = xev->time;
-        event->motion.x = xev->event_x / window_scale;
-        event->motion.y = xev->event_y / window_scale;
+        translate_coords (stage_x11, xev->event_x, xev->event_y, &event->motion.x, &event->motion.y);
 	_clutter_input_device_xi2_translate_state (event,
 						   &xev->mods,
 						   &xev->buttons,
@@ -1141,8 +1142,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
         event->touch.stage = stage;
         event->touch.time = xev->time;
-        event->touch.x = xev->event_x / window_scale;
-        event->touch.y = xev->event_y / window_scale;
+        translate_coords (stage_x11, xev->event_x, xev->event_y, &event->touch.x, &event->touch.y);
 	_clutter_input_device_xi2_translate_state (event,
 						   &xev->mods,
 						   &xev->buttons,
@@ -1196,8 +1196,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         event->touch.stage = stage;
         event->touch.time = xev->time;
         event->touch.sequence = GUINT_TO_POINTER (xev->detail);
-        event->touch.x = xev->event_x / window_scale;
-        event->touch.y = xev->event_y / window_scale;
+        translate_coords (stage_x11, xev->event_x, xev->event_y, &event->touch.x, &event->touch.y);
 
         clutter_event_set_source_device (event, source_device);
 
@@ -1253,8 +1252,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->crossing.related = NULL;
 
             event->crossing.time = xev->time;
-            event->crossing.x = xev->event_x / window_scale;
-            event->crossing.y = xev->event_y / window_scale;
+            translate_coords (stage_x11, xev->event_x, xev->event_y, &event->crossing.x, &event->crossing.y);
 
             _clutter_input_device_set_stage (device, stage);
           }
@@ -1277,8 +1275,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->crossing.related = NULL;
 
             event->crossing.time = xev->time;
-            event->crossing.x = xev->event_x / window_scale;
-            event->crossing.y = xev->event_y / window_scale;
+            translate_coords (stage_x11, xev->event_x, xev->event_y, &event->crossing.x, &event->crossing.y);
 
             _clutter_input_device_set_stage (device, NULL);
           }
