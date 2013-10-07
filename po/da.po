@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-03 12:21+0100\n"
-"PO-Revision-Date: 2012-01-02 16:04+0000\n"
+"POT-Creation-Date: 2013-10-07 22:24+0200\n"
+"PO-Revision-Date: 2013-10-06 14:01+0200\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -34,6 +34,11 @@ msgid "Window management and application launching"
 msgstr "Vindueshåndtering og åbning af programmer"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Aktivér interne værktøjer, som er nyttige for udviklere og testere fra Alt-F2"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
@@ -41,20 +46,11 @@ msgstr ""
 "Tillad adgang til interne fejlsøgnings- og overvågningsværktøjer med brug af "
 "dialogen Alt-F2."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Aktivér interne værktøjer, som er nyttige for udviklere og testere fra Alt-F2"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
-msgid "File extension used for storing the screencast"
-msgstr "Filendelse til at gemme skærmoptagelser"
+msgid "Uuids of extensions to enable"
+msgstr "Uuid'er for udvidelser der aktiveres"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
-msgid "Framerate used for recording screencasts."
-msgstr "Billedfrekvens brugt til skærmoptagelser."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should be loaded. disabled-extensions overrides this setting for extensions "
@@ -64,31 +60,95 @@ msgstr ""
 "udvidelser som ikke skal indlæses. disabled-extensions overskriver denne "
 "indstilling for udvidelser, som vises i begge lister."
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Whether to collect stats about applications usage"
+msgstr "Om der skal indsamles statistik om programmers brug"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-msgid "History for command (Alt-F2) dialog"
-msgstr "Historik for kommandodialogen (Alt-F2)"
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"Shell'ens overvåger normalt aktive programmer for at kunne vise de mest "
+"brugte (f.eks. i genveje). Selvom disse data er holdt private, vil du "
+"muligvis ønske at deaktivere dem af private grunde. Bemærk at selvom du gør "
+"dette, vil det ikke fjerne de allerede gemte data."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-msgid "History for the looking glass dialog"
-msgstr "Historik for looking glass-dialogen"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "If true, display date in the clock, in addition to time."
-msgstr "Hvis sand vises datoen i uret, som tillæg til tiden."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display seconds in time."
-msgstr "Hvis sand vises sekunder i klokkeslæt."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid "If true, display the ISO week date in the calendar."
-msgstr "Hvis sand vises ISO-ugenummeret i kalenderen."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Liste over skrivebordsfil-id'er til favoritprogrammer"
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Programmerne som passer til disse identifikatorer vil blive vist i "
+"favoritområdet."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "disabled OpenSearch providers"
+msgstr "deaktiverede OpenSearch-udbydere"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "History for command (Alt-F2) dialog"
+msgstr "Historik for kommandodialogen (Alt-F2)"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "History for the looking glass dialog"
+msgstr "Historik for looking glass-dialogen"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "Show the week date in the calendar"
+msgstr "Vis ugenummer i kalenderen"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Hvis sand vises ISO-ugenummeret i kalenderen."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Which keyboard to use"
+msgstr "Hvilket tastatur bruges"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "The type of keyboard to use."
+msgstr "Tastaturtypen som bruges."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show time with seconds"
+msgstr "Vis tid med sekunder"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "If true, display seconds in time."
+msgstr "Hvis sand vises sekunder i klokkeslæt."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid "Show date in clock"
+msgstr "Vis dato i uret"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Hvis sand vises datoen i uret, som tillæg til tiden."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "Framerate used for recording screencasts."
+msgstr "Billedfrekvens brugt til skærmoptagelser."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"Billedfrekvensen på den endelige skærmoptagelse, optaget af GNOME-Shells "
+"skærmoptager i billeder-per-sekund."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "Datakanalen for Gstreamer bruges til indkodning af skærmoptagelsen"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -113,27 +173,11 @@ msgstr ""
 "%T ! queue ! webmmux\" og optager i WEBM-formatet med VP8-codec'et. %T "
 "bruges som pladsholder for et gæt om det optimale trådantal på systemet."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
-msgid "Show date in clock"
-msgstr "Vis dato i uret"
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
+msgid "File extension used for storing the screencast"
+msgstr "Filendelse til at gemme skærmoptagelser"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
-msgid "Show the week date in the calendar"
-msgstr "Vis ugenummer i kalenderen"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show time with seconds"
-msgstr "Vis tid med sekunder"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Programmerne som passer til disse identifikatorer vil blive vist i "
-"favoritområdet."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -142,50 +186,6 @@ msgstr ""
 "Filnavnet på skærmoptagelser vil være et unikt filnavn baseret på dags dato "
 "og bruge denne endelse. Det skal ændres når der optages i et andet "
 "containerformat."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
-"Billedfrekvensen på den endelige skærmoptagelse, optaget af GNOME-Shells "
-"skærmoptager i billeder-per-sekund."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr "Datakanalen for Gstreamer bruges til indkodning af skærmoptagelsen"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"Shell'ens overvåger normalt aktive programmer for at kunne vise de mest "
-"brugte (f.eks. i genveje). Selvom disse data er holdt private, vil du "
-"muligvis ønske at deaktivere dem af private grunde. Bemærk at selvom du gør "
-"dette, vil det ikke fjerne de allerede gemte data."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid "The type of keyboard to use."
-msgstr "Tastaturtypen som bruges."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid "Uuids of extensions to enable"
-msgstr "Uuid'er for udvidelser der aktiveres"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
-msgid "Whether to collect stats about applications usage"
-msgstr "Om der skal indsamles statistik om programmers brug"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
-msgid "Which keyboard to use"
-msgstr "Hvilket tastatur bruges"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
-msgid "disabled OpenSearch providers"
-msgstr "deaktiverede OpenSearch-udbydere"
 
 #: ../js/gdm/loginDialog.js:633
 msgid "Session..."
@@ -445,7 +445,7 @@ msgstr "Denne uge"
 msgid "Next week"
 msgstr "Næste uge"
 
-#: ../js/ui/contactDisplay.js:65 ../js/ui/notificationDaemon.js:459
+#: ../js/ui/contactDisplay.js:65 ../js/ui/notificationDaemon.js:479
 #: ../js/ui/status/power.js:223 ../src/shell-app.c:353
 msgid "Unknown"
 msgstr "Ukendt"
@@ -534,12 +534,11 @@ msgid "RECENT ITEMS"
 msgstr "SENESTE ELEMENTER"
 
 #: ../js/ui/endSessionDialog.js:60
-#, fuzzy, c-format
+#, c-format
 msgid "Log Out %s"
 msgstr "Log %s ud"
 
 #: ../js/ui/endSessionDialog.js:61 ../js/ui/endSessionDialog.js:75
-#, fuzzy
 msgid "Log Out"
 msgstr "Log ud"
 
@@ -650,7 +649,7 @@ msgstr "Webside"
 msgid "Open"
 msgstr "Åbn"
 
-#: ../js/ui/messageTray.js:2408
+#: ../js/ui/messageTray.js:2428
 msgid "System Information"
 msgstr "Systeminformation"
 
@@ -755,9 +754,9 @@ msgstr "Favoritområde"
 
 #. TODO - _quit() doesn't really work on apps in state STARTING yet
 #: ../js/ui/panel.js:539
-#, fuzzy, c-format
+#, c-format
 msgid "Quit %s"
-msgstr "Afslut"
+msgstr "Afslut %s"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
@@ -1069,13 +1068,13 @@ msgstr "utilgængelig"
 msgid "connection failed"
 msgstr "forbindelse mislykkedes"
 
-#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1523
+#: ../js/ui/status/network.js:575 ../js/ui/status/network.js:1532
 msgid "More..."
 msgstr "Mere..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1458
+#: ../js/ui/status/network.js:611 ../js/ui/status/network.js:1467
 msgid "Connected (private)"
 msgstr "Forbundet (privat)"
 
@@ -1092,7 +1091,7 @@ msgid "Auto dial-up"
 msgstr "Auto opringning"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1470
+#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1479
 #, c-format
 msgid "Auto %s"
 msgstr "Auto %s"
@@ -1101,47 +1100,47 @@ msgstr "Auto %s"
 msgid "Auto bluetooth"
 msgstr "Auto bluetooth"
 
-#: ../js/ui/status/network.js:1472
+#: ../js/ui/status/network.js:1481
 msgid "Auto wireless"
 msgstr "Auto trådløs"
 
-#: ../js/ui/status/network.js:1566
+#: ../js/ui/status/network.js:1575
 msgid "Enable networking"
 msgstr "Aktivér netværk"
 
-#: ../js/ui/status/network.js:1578
+#: ../js/ui/status/network.js:1587
 msgid "Wired"
 msgstr "Trådet"
 
-#: ../js/ui/status/network.js:1589
+#: ../js/ui/status/network.js:1598
 msgid "Wireless"
 msgstr "Trådløs"
 
-#: ../js/ui/status/network.js:1599
+#: ../js/ui/status/network.js:1608
 msgid "Mobile broadband"
 msgstr "Mobilt bredbånd"
 
-#: ../js/ui/status/network.js:1609
+#: ../js/ui/status/network.js:1618
 msgid "VPN Connections"
 msgstr "VPN-forbindelser"
 
-#: ../js/ui/status/network.js:1620
+#: ../js/ui/status/network.js:1629
 msgid "Network Settings"
 msgstr "Indstillinger for netværk"
 
-#: ../js/ui/status/network.js:1757
+#: ../js/ui/status/network.js:1766
 msgid "Connection failed"
 msgstr "Forbindelse mislykkedes"
 
-#: ../js/ui/status/network.js:1758
+#: ../js/ui/status/network.js:1767
 msgid "Activation of network connection failed"
 msgstr "Aktivering af netværksforbindelse mislykkedes"
 
-#: ../js/ui/status/network.js:2008
+#: ../js/ui/status/network.js:2017
 msgid "Networking is disabled"
 msgstr "Netværk er deaktiveret"
 
-#: ../js/ui/status/network.js:2133
+#: ../js/ui/status/network.js:2142
 msgid "Network Manager"
 msgstr "Netværkshåndtering"
 
@@ -1629,6 +1628,9 @@ msgstr "Filsystem"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "calendar:MY"
+#~ msgstr "calendar:MY"
 
 #~| msgid ""
 #~| "GNOME Shell extensions have a uuid property; this key lists extensions "
