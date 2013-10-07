@@ -1724,14 +1724,12 @@ get_default_focus_window (MetaStack     *stack,
    * or top window in same group as not_this_one.
    */
 
-  MetaWindow *topmost_dock;
   MetaWindow *transient_parent;
   MetaWindow *topmost_in_group;
   MetaWindow *topmost_overall;
   MetaGroup *not_this_one_group;
   GList *link;
   
-  topmost_dock = NULL;
   transient_parent = NULL;
   topmost_in_group = NULL;
   topmost_overall = NULL;
@@ -1757,10 +1755,6 @@ get_default_focus_window (MetaStack     *stack,
           (workspace == NULL ||
            meta_window_located_on_workspace (window, workspace)))
         {
-          if (topmost_dock == NULL &&
-              window->type == META_WINDOW_DOCK)
-            topmost_dock = window;
-
           if (not_this_one != NULL)
             {
               if (transient_parent == NULL &&
@@ -1778,10 +1772,6 @@ get_default_focus_window (MetaStack     *stack,
                 topmost_in_group = window;
             }
 
-          /* Note that DESKTOP windows can be topmost_overall so
-           * we prefer focusing desktop or other windows over
-           * focusing dock, even though docks are stacked higher.
-           */
           if (topmost_overall == NULL &&
               window->type != META_WINDOW_DOCK &&
               (!must_be_at_point ||
@@ -1803,7 +1793,7 @@ get_default_focus_window (MetaStack     *stack,
   else if (topmost_overall)
     return topmost_overall;
   else
-    return topmost_dock;
+    return NULL;
 }
 
 MetaWindow*
