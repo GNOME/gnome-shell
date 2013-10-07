@@ -339,9 +339,7 @@ const InputSourceIndicator = new Lang.Class({
 
         this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
         this._hbox.add_child(this._container);
-        this._hbox.add_child(new St.Label({ text: '\u25BE',
-                                            y_expand: true,
-                                            y_align: Clutter.ActorAlign.CENTER }));
+        this._hbox.add_child(PopupMenu.unicodeArrow(St.Side.BOTTOM));
 
         this.actor.add_child(this._hbox);
         this.actor.add_style_class_name('panel-status-button');

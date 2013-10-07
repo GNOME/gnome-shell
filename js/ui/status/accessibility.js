@@ -43,9 +43,7 @@ const ATIndicator = new Lang.Class({
         this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
         this._hbox.add_child(new St.Icon({ style_class: 'system-status-icon',
                                            icon_name: 'preferences-desktop-accessibility-symbolic' }));
-        this._hbox.add_child(new St.Label({ text: '\u25BE',
-                                            y_expand: true,
-                                            y_align: Clutter.ActorAlign.CENTER }));
+        this._hbox.add_child(PopupMenu.unicodeArrow(St.Side.BOTTOM));
 
         this.actor.add_child(this._hbox);
 

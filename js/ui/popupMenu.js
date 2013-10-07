@@ -42,6 +42,32 @@ function isPopupMenuItemVisible(child) {
     return child.visible;
 }
 
+/**
+ * @side Side to which the arrow points.
+ */
+function unicodeArrow(side) {
+    let arrowChar;
+    switch (side) {
+        case St.Side.TOP:
+            arrowChar = '\u25B4';
+            break;
+        case St.Side.RIGHT:
+            arrowChar = '\u25B8';
+            break;
+        case St.Side.BOTTOM:
+            arrowChar = '\u25BE';
+            break;
+        case St.Side.LEFT:
+            arrowChar = '\u25C2';
+            break;
+    }
+
+    return new St.Label({ text: arrowChar,
+                          style_class: 'unicode-arrow',
+                          y_expand: true,
+                          y_align: Clutter.ActorAlign.CENTER });
+}
+
 const PopupBaseMenuItem = new Lang.Class({
     Name: 'PopupBaseMenuItem',
 
@@ -962,8 +988,7 @@ const PopupSubMenuMenuItem = new Lang.Class({
                                      y_align: Clutter.ActorAlign.CENTER });
         this.actor.add_child(this.status);
 
-        this._triangle = new St.Label({ text: '\u25B8',
-                                        style_class: 'popup-submenu-menu-item-triangle' });
+        this._triangle = unicodeArrow(St.Side.RIGHT);
         this._triangle.pivot_point = new Clutter.Point({ x: 0.5, y: 0.6 });
 
         this._triangleBin = new St.Widget({ y_expand: true,
