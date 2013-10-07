@@ -51,7 +51,6 @@
 #include <meta/compositor.h>
 #include <meta/compositor-mutter.h>
 #include <X11/Xatom.h>
-#include <X11/cursorfont.h>
 #include "mutter-enum-types.h"
 #include "meta-idle-monitor-private.h"
 
@@ -3857,85 +3856,6 @@ meta_display_xwindow_is_a_no_focus_window (MetaDisplay *display,
   }
 
   return is_a_no_focus_window;
-}
-
-Cursor
-meta_display_create_x_cursor (MetaDisplay *display,
-                              MetaCursor cursor)
-{
-  Cursor xcursor;
-  guint glyph = XC_num_glyphs;
-  const char *name = NULL;
-
-  switch (cursor)
-    {
-    case META_CURSOR_DEFAULT:
-      glyph = XC_left_ptr;
-      break;
-    case META_CURSOR_NORTH_RESIZE:
-      glyph = XC_top_side;
-      break;
-    case META_CURSOR_SOUTH_RESIZE:
-      glyph = XC_bottom_side;
-      break;
-    case META_CURSOR_WEST_RESIZE:
-      glyph = XC_left_side;
-      break;
-    case META_CURSOR_EAST_RESIZE:
-      glyph = XC_right_side;
-      break;
-    case META_CURSOR_SE_RESIZE:
-      glyph = XC_bottom_right_corner;
-      break;
-    case META_CURSOR_SW_RESIZE:
-      glyph = XC_bottom_left_corner;
-      break;
-    case META_CURSOR_NE_RESIZE:
-      glyph = XC_top_right_corner;
-      break;
-    case META_CURSOR_NW_RESIZE:
-      glyph = XC_top_left_corner;
-      break;
-    case META_CURSOR_MOVE_OR_RESIZE_WINDOW:
-      glyph = XC_fleur;
-      break;
-    case META_CURSOR_BUSY:
-      glyph = XC_watch;
-      break;
-    case META_CURSOR_DND_IN_DRAG:
-      name = "dnd-none";
-      break;
-    case META_CURSOR_DND_MOVE:
-      name = "dnd-move";
-      break;
-    case META_CURSOR_DND_COPY:
-      name = "dnd-copy";
-      break;
-    case META_CURSOR_DND_UNSUPPORTED_TARGET:
-      name = "dnd-none";
-      break;
-    case META_CURSOR_POINTING_HAND:
-      glyph = XC_hand2;
-      break;
-    case META_CURSOR_CROSSHAIR:
-      glyph = XC_crosshair;
-      break;
-    case META_CURSOR_IBEAM:
-      glyph = XC_xterm;
-      break;
-
-    default:
-      g_assert_not_reached ();
-      glyph = 0; /* silence compiler */
-      break;
-    }
-
-  if (name != NULL)
-    xcursor = XcursorLibraryLoadCursor (display->xdisplay, name);
-  else
-    xcursor = XCreateFontCursor (display->xdisplay, glyph);
-
-  return xcursor;
 }
 
 static Cursor
