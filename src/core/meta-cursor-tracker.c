@@ -167,7 +167,7 @@ get_cursor_filename (MetaCursor cursor)
       return "watch";
       break;
     case META_CURSOR_DND_IN_DRAG:
-      return "dnd-in-drag";
+      return "dnd-none";
       break;
     case META_CURSOR_DND_MOVE:
       return "dnd-copy";
