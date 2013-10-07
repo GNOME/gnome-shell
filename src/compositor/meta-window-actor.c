@@ -973,7 +973,7 @@ queue_send_frame_messages_timeout (MetaWindowActor *self)
     }
 
   interval = (int)(1000000 / refresh_rate) * 6;
-  offset = MAX (0, current_time - priv->frame_drawn_time + interval) / 1000;
+  offset = MAX (0, priv->frame_drawn_time + interval - current_time) / 1000;
 
  /* The clutter master clock source has already been added with META_PRIORITY_REDRAW,
   * so the timer will run *after* the clutter frame handling, if a frame is ready
