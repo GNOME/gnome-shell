@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 15:47+0100\n"
-"PO-Revision-Date: 2012-03-22 13:02+0100\n"
+"POT-Creation-Date: 2013-10-07 22:45+0200\n"
+"PO-Revision-Date: 2013-10-06 15:29+0200\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -137,34 +137,42 @@ msgid "If true, display the ISO week date in the calendar."
 msgstr "Hvis sand vises ISO-ugenummeret i kalenderen."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Keybinding to open the application menu"
+msgstr "Tastebinding til at åbne programmenuen"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "Keybinding to open the application menu."
+msgstr "Tastebinding til at åbne programmenuen."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
 msgid "Which keyboard to use"
 msgstr "Hvilket tastatur bruges"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
 msgid "The type of keyboard to use."
 msgstr "Tastaturtypen som bruges."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
 msgid "Show time with seconds"
 msgstr "Vis tid med sekunder"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.h:21
 msgid "If true, display seconds in time."
 msgstr "Hvis sand vises sekunder i klokkeslæt."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 msgid "Show date in clock"
 msgstr "Vis dato i uret"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
 msgid "If true, display date in the clock, in addition to time."
 msgstr "Hvis sand vises datoen i uret, som tillæg til tiden."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid "Framerate used for recording screencasts."
 msgstr "Billedfrekvens brugt til skærmoptagelser."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.h:25
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -172,11 +180,11 @@ msgstr ""
 "Billedfrekvensen på den endelige skærmoptagelse, optaget af GNOME-Shells "
 "skærmoptager i billeder-per-sekund."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.h:26
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Datakanalen for Gstreamer bruges til indkodning af skærmoptagelsen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.h:28
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -201,11 +209,11 @@ msgstr ""
 "webmmux\" og optager i WEBM-formatet med VP8-codec'et. %T bruges som "
 "pladsholder for et gæt om det optimale trådantal på systemet."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.h:29
 msgid "File extension used for storing the screencast"
 msgstr "Filendelse til at gemme skærmoptagelser"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.h:30
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -229,40 +237,40 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Vælg en udvidelse at konfigurere ved hjælp af kombinationsboksen ovenfor."
 
-#: ../js/gdm/loginDialog.js:624
+#: ../js/gdm/loginDialog.js:627
 msgid "Session..."
 msgstr "Session..."
 
-#: ../js/gdm/loginDialog.js:786
+#: ../js/gdm/loginDialog.js:789
 msgctxt "title"
 msgid "Sign In"
 msgstr "Log ind"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:831
+#: ../js/gdm/loginDialog.js:834
 msgid "(or swipe finger)"
 msgstr "(eller indlæs fingeraftryk)"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:852
+#: ../js/gdm/loginDialog.js:855
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
-#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:401
-#: ../js/ui/extensionSystem.js:399 ../js/ui/networkAgent.js:153
+#: ../js/gdm/loginDialog.js:1023 ../js/ui/endSessionDialog.js:401
+#: ../js/ui/extensionSystem.js:400 ../js/ui/networkAgent.js:153
 #: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
 msgid "Cancel"
 msgstr "Annullér"
 
-#: ../js/gdm/loginDialog.js:1025
+#: ../js/gdm/loginDialog.js:1028
 msgctxt "button"
 msgid "Sign In"
 msgstr "Log ind"
 
-#: ../js/gdm/loginDialog.js:1377
+#: ../js/gdm/loginDialog.js:1380
 msgid "Login Window"
 msgstr "Indlogningsvindue"
 
@@ -660,11 +668,11 @@ msgstr[1] "Systemet vil genstarte automatisk om %d sekunder."
 msgid "Restarting the system."
 msgstr "Genstarter systemet."
 
-#: ../js/ui/extensionSystem.js:403
+#: ../js/ui/extensionSystem.js:404
 msgid "Install"
 msgstr "Installér"
 
-#: ../js/ui/extensionSystem.js:407
+#: ../js/ui/extensionSystem.js:408
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Hent og installér \"%s\" fra extensions.gnome.org?"
@@ -673,7 +681,8 @@ msgstr "Hent og installér \"%s\" fra extensions.gnome.org?"
 msgid "tray"
 msgstr "statusfelt"
 
-#: ../js/ui/keyboard.js:544 ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:544 ../js/ui/status/keyboard.js:44
+#: ../js/ui/status/power.js:203
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -685,51 +694,51 @@ msgstr "Adgangskode:"
 msgid "Type again:"
 msgstr "Indtast igen:"
 
-#: ../js/ui/lookingGlass.js:725
+#: ../js/ui/lookingGlass.js:732
 msgid "No extensions installed"
 msgstr "Ingen udvidelser er installeret"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:779
+#: ../js/ui/lookingGlass.js:786
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s er ikke kommet med nogen fejl."
 
-#: ../js/ui/lookingGlass.js:785
+#: ../js/ui/lookingGlass.js:792
 msgid "Hide Errors"
 msgstr "Skjul fejl"
 
-#: ../js/ui/lookingGlass.js:789 ../js/ui/lookingGlass.js:840
+#: ../js/ui/lookingGlass.js:796 ../js/ui/lookingGlass.js:847
 msgid "Show Errors"
 msgstr "Vis fejl"
 
-#: ../js/ui/lookingGlass.js:798
+#: ../js/ui/lookingGlass.js:805
 msgid "Enabled"
 msgstr "Aktiveret"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:801 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:808 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Deaktiveret"
 
-#: ../js/ui/lookingGlass.js:803
+#: ../js/ui/lookingGlass.js:810
 msgid "Error"
 msgstr "Fejl"
 
-#: ../js/ui/lookingGlass.js:805
+#: ../js/ui/lookingGlass.js:812
 msgid "Out of date"
 msgstr "Udløbet"
 
-#: ../js/ui/lookingGlass.js:807
+#: ../js/ui/lookingGlass.js:814
 msgid "Downloading"
 msgstr "Henter"
 
-#: ../js/ui/lookingGlass.js:828
+#: ../js/ui/lookingGlass.js:835
 msgid "View Source"
 msgstr "Vis kilde"
 
-#: ../js/ui/lookingGlass.js:834
+#: ../js/ui/lookingGlass.js:841
 msgid "Web Page"
 msgstr "Webside"
 
@@ -858,17 +867,17 @@ msgstr "Programmer"
 msgid "Dash"
 msgstr "Favoritområde"
 
-#: ../js/ui/panel.js:591
+#: ../js/ui/panel.js:592
 msgid "Quit"
 msgstr "Afslut"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:623
+#: ../js/ui/panel.js:624
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:998
+#: ../js/ui/panel.js:999
 msgid "Top Bar"
 msgstr "Toppanel"
 
@@ -926,7 +935,7 @@ msgstr "Indtast en kommando:"
 msgid "Searching..."
 msgstr "Søger..."
 
-#: ../js/ui/searchDisplay.js:414
+#: ../js/ui/searchDisplay.js:415
 msgid "No matching results."
 msgstr "Ingen resultater fundet."
 
@@ -946,7 +955,7 @@ msgstr "Vis tekst"
 msgid "Hide Text"
 msgstr "Skjul tekst"
 
-#: ../js/ui/shellMountOperation.js:271
+#: ../js/ui/shellMountOperation.js:280
 msgid "Wrong password, please try again"
 msgstr "Forkert adgangskode, forsøg venligst igen"
 
@@ -1084,7 +1093,7 @@ msgstr "Giv altid adgang"
 msgid "Grant this time only"
 msgstr "Giv kun lov denne gang"
 
-#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1091
+#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1106
 msgid "Reject"
 msgstr "Afvis"
 
@@ -1356,44 +1365,44 @@ msgstr "Mikrofon"
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:220
+#: ../js/ui/telepathyClient.js:226
 msgid "Invitation"
 msgstr "Invitation"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:271
+#: ../js/ui/telepathyClient.js:284
 msgid "Call"
 msgstr "Opkald"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:287
+#: ../js/ui/telepathyClient.js:300
 msgid "File Transfer"
 msgstr "Filoverførsel"
 
-#: ../js/ui/telepathyClient.js:369
+#: ../js/ui/telepathyClient.js:382
 msgid "Subscription request"
 msgstr "Godkendelsesforespørgsel"
 
-#: ../js/ui/telepathyClient.js:405
+#: ../js/ui/telepathyClient.js:418
 msgid "Connection error"
 msgstr "Forbindelsesfejl"
 
-#: ../js/ui/telepathyClient.js:663
+#: ../js/ui/telepathyClient.js:676
 #, c-format
 msgid "%s is online."
 msgstr "%s er online."
 
-#: ../js/ui/telepathyClient.js:667
+#: ../js/ui/telepathyClient.js:680
 #, c-format
 msgid "%s is offline."
 msgstr "%s er offline."
 
-#: ../js/ui/telepathyClient.js:671
+#: ../js/ui/telepathyClient.js:684
 #, c-format
 msgid "%s is away."
 msgstr "%s er ikke til stede."
 
-#: ../js/ui/telepathyClient.js:674
+#: ../js/ui/telepathyClient.js:687
 #, c-format
 msgid "%s is busy."
 msgstr "%s er optaget."
@@ -1401,35 +1410,35 @@ msgstr "%s er optaget."
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:887
+#: ../js/ui/telepathyClient.js:902
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Sendt <b>%A</b> kl. <b>%H:%M</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:893
+#: ../js/ui/telepathyClient.js:908
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Sendt <b>%A</b> den <b>%e. %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:898
+#: ../js/ui/telepathyClient.js:913
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Sendt <b>%A</b> den <b>%e. %B</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:940
+#: ../js/ui/telepathyClient.js:955
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s kalder sig nu %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1042
+#: ../js/ui/telepathyClient.js:1057
 #, c-format
 msgid "Invitation to %s"
 msgstr "Invitation til %s"
@@ -1437,35 +1446,35 @@ msgstr "Invitation til %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1050
+#: ../js/ui/telepathyClient.js:1065
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s inviterer dig til at deltage i %s"
 
-#: ../js/ui/telepathyClient.js:1052 ../js/ui/telepathyClient.js:1131
-#: ../js/ui/telepathyClient.js:1229
+#: ../js/ui/telepathyClient.js:1067 ../js/ui/telepathyClient.js:1146
+#: ../js/ui/telepathyClient.js:1244
 msgid "Decline"
 msgstr "Afvis"
 
-#: ../js/ui/telepathyClient.js:1053 ../js/ui/telepathyClient.js:1132
-#: ../js/ui/telepathyClient.js:1230
+#: ../js/ui/telepathyClient.js:1068 ../js/ui/telepathyClient.js:1147
+#: ../js/ui/telepathyClient.js:1245
 msgid "Accept"
 msgstr "Acceptér"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1083
+#: ../js/ui/telepathyClient.js:1098
 #, c-format
 msgid "Video call from %s"
 msgstr "Videoopkald fra %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1086
+#: ../js/ui/telepathyClient.js:1101
 #, c-format
 msgid "Call from %s"
 msgstr "Opkald fra %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1093
+#: ../js/ui/telepathyClient.js:1108
 msgid "Answer"
 msgstr "Svar"
 
@@ -1474,111 +1483,111 @@ msgstr "Svar"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1125
+#: ../js/ui/telepathyClient.js:1140
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s sender dig %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1194
+#: ../js/ui/telepathyClient.js:1209
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s vil gerne have tilladelse til at se, når du er online"
 
-#: ../js/ui/telepathyClient.js:1287
+#: ../js/ui/telepathyClient.js:1302
 msgid "Network error"
 msgstr "Netværksfejl"
 
-#: ../js/ui/telepathyClient.js:1289
+#: ../js/ui/telepathyClient.js:1304
 msgid "Authentication failed"
 msgstr "Godkendelse mislykkedes"
 
-#: ../js/ui/telepathyClient.js:1291
+#: ../js/ui/telepathyClient.js:1306
 msgid "Encryption error"
 msgstr "Krypteringsfejl"
 
-#: ../js/ui/telepathyClient.js:1293
+#: ../js/ui/telepathyClient.js:1308
 msgid "Certificate not provided"
 msgstr "Certifikat ikke angivet"
 
-#: ../js/ui/telepathyClient.js:1295
+#: ../js/ui/telepathyClient.js:1310
 msgid "Certificate untrusted"
 msgstr "Utroværdigt certifikat"
 
-#: ../js/ui/telepathyClient.js:1297
+#: ../js/ui/telepathyClient.js:1312
 msgid "Certificate expired"
 msgstr "Certifikat udløbet"
 
-#: ../js/ui/telepathyClient.js:1299
+#: ../js/ui/telepathyClient.js:1314
 msgid "Certificate not activated"
 msgstr "Certifikat ikke aktiveret"
 
-#: ../js/ui/telepathyClient.js:1301
+#: ../js/ui/telepathyClient.js:1316
 msgid "Certificate hostname mismatch"
 msgstr "Certifikat-værtsnavn stemmer ikke"
 
-#: ../js/ui/telepathyClient.js:1303
+#: ../js/ui/telepathyClient.js:1318
 msgid "Certificate fingerprint mismatch"
 msgstr "Certifikat-fingeraftryk stemmer ikke"
 
-#: ../js/ui/telepathyClient.js:1305
+#: ../js/ui/telepathyClient.js:1320
 msgid "Certificate self-signed"
 msgstr "Certifikat selv-underskrevet"
 
-#: ../js/ui/telepathyClient.js:1307
+#: ../js/ui/telepathyClient.js:1322
 msgid "Status is set to offline"
 msgstr "Status er angivet til offline"
 
-#: ../js/ui/telepathyClient.js:1309
+#: ../js/ui/telepathyClient.js:1324
 msgid "Encryption is not available"
 msgstr "Kryptering er ikke tilgængelig"
 
-#: ../js/ui/telepathyClient.js:1311
+#: ../js/ui/telepathyClient.js:1326
 msgid "Certificate is invalid"
 msgstr "Ugyldigt certifikat"
 
-#: ../js/ui/telepathyClient.js:1313
+#: ../js/ui/telepathyClient.js:1328
 msgid "Connection has been refused"
 msgstr "Forbindelse er blevet afvist"
 
-#: ../js/ui/telepathyClient.js:1315
+#: ../js/ui/telepathyClient.js:1330
 msgid "Connection can't be established"
 msgstr "Forbindelse kan ikke oprettes"
 
-#: ../js/ui/telepathyClient.js:1317
+#: ../js/ui/telepathyClient.js:1332
 msgid "Connection has been lost"
 msgstr "Forbindelse er mistet"
 
-#: ../js/ui/telepathyClient.js:1319
+#: ../js/ui/telepathyClient.js:1334
 msgid "This account is already connected to the server"
 msgstr "Denne konto er allerede forbundet til serveren"
 
-#: ../js/ui/telepathyClient.js:1321
+#: ../js/ui/telepathyClient.js:1336
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Forbindelsen er blevet erstattet af en ny forbindelse, som bruger samme "
 "ressource"
 
-#: ../js/ui/telepathyClient.js:1323
+#: ../js/ui/telepathyClient.js:1338
 msgid "The account already exists on the server"
 msgstr "Kontoen findes allerede på serveren"
 
-#: ../js/ui/telepathyClient.js:1325
+#: ../js/ui/telepathyClient.js:1340
 msgid "Server is currently too busy to handle the connection"
 msgstr "Serveren er i øjeblikket for travl til at behandle forbindelsen"
 
-#: ../js/ui/telepathyClient.js:1327
+#: ../js/ui/telepathyClient.js:1342
 msgid "Certificate has been revoked"
 msgstr "Certifikat er blevet påberåbt"
 
-#: ../js/ui/telepathyClient.js:1329
+#: ../js/ui/telepathyClient.js:1344
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Certifikat bruger en usikker cipher-algoritme eller er kryptografisk svag"
 
-#: ../js/ui/telepathyClient.js:1331
+#: ../js/ui/telepathyClient.js:1346
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1586,26 +1595,26 @@ msgstr ""
 "Længden på servercertifikatet, eller dybden af servercertifikat-kæden, "
 "overskrider grænsen, som er fastsat af det kryptografiske-programbibliotek"
 
-#: ../js/ui/telepathyClient.js:1333
+#: ../js/ui/telepathyClient.js:1348
 msgid "Internal error"
 msgstr "Intern fejl"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1343
+#: ../js/ui/telepathyClient.js:1358
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Forbindelse til %s mislykkedes"
 
-#: ../js/ui/telepathyClient.js:1352
+#: ../js/ui/telepathyClient.js:1367
 msgid "Reconnect"
 msgstr "Forbind igen"
 
-#: ../js/ui/telepathyClient.js:1353
+#: ../js/ui/telepathyClient.js:1368
 msgid "Edit account"
 msgstr "Redigér konto"
 
-#: ../js/ui/telepathyClient.js:1399
+#: ../js/ui/telepathyClient.js:1414
 msgid "Unknown reason"
 msgstr "Ukendt årsag"
 
@@ -1699,7 +1708,7 @@ msgstr "\"%s\" er klar"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1100
+#: ../src/gvc/gvc-mixer-control.c:1089
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1708,22 +1717,22 @@ msgstr[1] "%u outputs"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1110
+#: ../src/gvc/gvc-mixer-control.c:1099
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u input"
 msgstr[1] "%u inputs"
 
-#: ../src/gvc/gvc-mixer-control.c:1408
+#: ../src/gvc/gvc-mixer-control.c:1397
 msgid "System Sounds"
 msgstr "Systemlyde"
 
-#: ../src/main.c:255
+#: ../src/main.c:256
 msgid "Print version"
 msgstr "Udskriv version"
 
-#: ../src/main.c:261
+#: ../src/main.c:262
 msgid "Mode used by GDM for login screen"
 msgstr "Tilstand brugt af GDM til indlogningskærm"
 
@@ -1773,6 +1782,9 @@ msgstr "Filsystem"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "calendar:MY"
+#~ msgstr "calendar:MY"
 
 #~ msgid "RECENT ITEMS"
 #~ msgstr "SENESTE ELEMENTER"
