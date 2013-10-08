@@ -12,6 +12,7 @@ const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
 const RfkillManagerInterface = '<node> \
 <interface name="org.gnome.SettingsDaemon.Rfkill"> \
 <property name="AirplaneMode" type="b" access="readwrite" /> \
+<property name="HardwareAirplaneMode" type="b" access="read" /> \
 </interface> \
 </node>';
 
@@ -45,7 +46,7 @@ const Indicator = new Lang.Class({
         this._item = new PopupMenu.PopupSubMenuMenuItem(_("Airplane Mode"), true);
         this._item.icon.icon_name = 'airplane-mode-symbolic';
         this._item.status.text = _("On");
-        this._item.menu.addAction(_("Turn Off"), Lang.bind(this, function() {
+        this._offItem = this._item.menu.addAction(_("Turn Off"), Lang.bind(this, function() {
             this._proxy.AirplaneMode = false;
         }));
         this._item.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
@@ -54,7 +55,15 @@ const Indicator = new Lang.Class({
 
     _sync: function() {
         let airplaneMode = this._proxy.AirplaneMode;
+        let hwAirplaneMode = this._proxy.HardwareAirplaneMode;
+
         this._indicator.visible = airplaneMode;
         this._item.actor.visible = airplaneMode;
+        this._offItem.setSensitive(!hwAirplaneMode);
+
+        if (hwAirplaneMode)
+            this._offItem.label.text = _("Use hardware switch to turn off");
+        else
+            this._offItem.label.text = _("Turn Off");
     },
 });
