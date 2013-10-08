@@ -1079,6 +1079,8 @@ clutter_event_set_device (ClutterEvent       *event,
  * @event: a #ClutterEvent
  *
  * Retrieves the #ClutterInputDevice for the event.
+ * If you want the physical device the event originated from, use
+ * clutter_event_get_source_device().
  *
  * The #ClutterInputDevice structure is completely opaque and should
  * be cast to the platform-specific implementation.

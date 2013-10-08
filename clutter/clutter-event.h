@@ -146,7 +146,8 @@ struct _ClutterAnyEvent
  * @keyval: raw key value
  * @hardware_keycode: raw hardware key value
  * @unicode_value: Unicode representation
- * @device: reserved for future use
+ * @device: the device that originated the event. If you want the physical
+ * device the event originated from, use clutter_event_get_source_device()
  *
  * Key event
  *
@@ -181,7 +182,8 @@ struct _ClutterKeyEvent
  * @click_count: number of button presses within the default time
  *   and radius
  * @axes: reserved for future use
- * @device: reserved for future use
+ * @device: the device that originated the event. If you want the physical
+ * device the event originated from, use clutter_event_get_source_device()
  *
  * Button event.
  *
@@ -218,7 +220,8 @@ struct _ClutterButtonEvent
  * @x: event X coordinate
  * @y: event Y coordinate
  * @related: actor related to the crossing
- * @device: reserved for future use
+ * @device: the device that originated the event. If you want the physical
+ * device the event originated from, use clutter_event_get_source_device()
  *
  * Event for the movement of the pointer across different actors
  *
@@ -249,7 +252,8 @@ struct _ClutterCrossingEvent
  * @y: event Y coordinate
  * @modifier_state: button modifiers
  * @axes: reserved for future use
- * @device: reserved for future use
+ * @device: the device that originated the event. If you want the physical
+ * device the event originated from, use clutter_event_get_source_device()
  *
  * Event for the pointer motion
  *
@@ -282,7 +286,8 @@ struct _ClutterMotionEvent
  * @direction: direction of the scrolling
  * @modifier_state: button modifiers
  * @axes: reserved for future use
- * @device: reserved for future use
+ * @device: the device that originated the event. If you want the physical
+ * device the event originated from, use clutter_event_get_source_device()
  *
  * Scroll wheel (or similar device) event
  *
@@ -344,7 +349,8 @@ struct _ClutterStageStateEvent
  *   of modifier keys (e.g. Control, Shift, and Alt) and the pointer
  *   buttons. See #ClutterModifierType
  * @axes: reserved 
- * @device: the device that originated the event
+ * @device: the device that originated the event. If you want the physical
+ * device the event originated from, use clutter_event_get_source_device()
  *
  * Used for touch events.
  *
