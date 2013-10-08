@@ -1058,6 +1058,7 @@ const NMDeviceWireless = new Lang.Class({
 
     _sync: function() {
         this._toggleItem.label.text = this._client.wireless_enabled ? _("Turn Off") : _("Turn On");
+        this._toggleItem.actor.visible = this._client.wireless_hardware_enabled;
 
         this.item.status.text = this._getStatus();
         this.item.icon.icon_name = this._getMenuIcon();
