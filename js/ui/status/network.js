@@ -971,7 +971,8 @@ const NMDeviceWireless = new Lang.Class({
 
         this.item.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
 
-        this._wirelessEnabledChangedId = this._device.connect('notify::wireless-enabled', Lang.bind(this, this._sync));
+        this._wirelessEnabledChangedId = this._client.connect('notify::wireless-enabled', Lang.bind(this, this._sync));
+        this._wirelessHwEnabledChangedId = this._client.connect('notify::wireless-hardware-enabled', Lang.bind(this, this._sync));
         this._activeApChangedId = this._device.connect('notify::active-access-point', Lang.bind(this, this._activeApChanged));
         this._stateChangedId = this._device.connect('state-changed', Lang.bind(this, this._deviceStateChanged));
 
@@ -990,6 +991,14 @@ const NMDeviceWireless = new Lang.Class({
         if (this._strengthChangedId > 0) {
             this._activeAccessPoint.disconnect(this._strengthChangedId);
             this._strengthChangedId = 0;
+        }
+        if (this._wirelessEnabledChangedId) {
+            this._client.disconnect(this._wirelessEnabledChangedId);
+            this._wirelessEnabledChangedId = 0;
+        }
+        if (this._wirelessHwEnabledChangedId) {
+            this._client.disconnect(this._wirelessHwEnabledChangedId);
+            this._wirelessHwEnabledChangedId = 0;
         }
 
         this.item.destroy();
