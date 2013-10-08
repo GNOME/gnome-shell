@@ -1587,6 +1587,7 @@ const NMApplet = new Lang.Class({
     _updateIcon: function() {
         if (!this._client.networking_enabled || !this._mainConnection) {
             this._primaryIndicator.icon_name = 'network-offline-symbolic';
+            this._primaryIndicator.visible = true;
         } else {
             let dev = this._mainConnection._primaryDevice;
             this._primaryIndicator.visible = (dev != null);
