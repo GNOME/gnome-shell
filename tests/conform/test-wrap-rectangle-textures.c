@@ -40,7 +40,7 @@ create_base_pipeline (void)
 
   cogl_pipeline_set_layer_texture (pipeline,
                                    0, /* layer */
-                                   COGL_TEXTURE (tex));
+                                   tex);
 
   cogl_object_unref (tex);
 

@@ -6,7 +6,6 @@
 
 #include "test-utils.h"
 #include "config.h"
-#include <cogl/cogl-util.h>
 
 /* I'm writing this on the train after having dinner at a churrascuria. */
 #define MAGIC_CHUNK_O_DATA ((void *) 0xdeadbeef)

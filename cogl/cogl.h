@@ -25,6 +25,10 @@
 #ifndef __COGL_H__
 #define __COGL_H__
 
+#ifdef COGL_COMPILATION
+#error "<cogl/cogl.h> shouldn't be included internally"
+#endif
+
 #define __COGL_H_INSIDE__
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
@@ -71,6 +75,11 @@
 #include <cogl/deprecated/cogl-material-compat.h>
 #include <cogl/deprecated/cogl-shader.h>
 #endif
+
+/* It would be good to move these casts up into 1.x only api if we can
+ * update Clutter, Mutter and GnomeShell to avoid redundant casts when
+ * they enable the experimental api... */
+#include <cogl/deprecated/cogl-type-casts.h>
 
 /*
  * 2.0 api that's compatible with the 1.x api...

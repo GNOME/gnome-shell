@@ -29,7 +29,8 @@
 #define __COGL_PANGO_PIPELINE_CACHE_H__
 
 #include <glib.h>
-#include <cogl/cogl.h>
+
+#include "cogl/cogl-context-private.h"
 
 COGL_BEGIN_DECLS
 

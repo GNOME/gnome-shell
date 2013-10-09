@@ -27,18 +27,18 @@ test_color_hsl (void)
   memset(&color, 0, sizeof (CoglColor));
   cogl_color_init_from_hsl(&color, hue, saturation, luminance);
 
-  g_assert_cmpint (color.red, ==, 108);
-  g_assert_cmpint (color.green, ==, 198);
-  g_assert_cmpint (color.blue, ==, 78);
-  g_assert_cmpint (color.alpha, ==, 255);
+  g_assert_cmpint (cogl_color_get_red_byte (&color), ==, 108);
+  g_assert_cmpint (cogl_color_get_green_byte (&color), ==, 198);
+  g_assert_cmpint (cogl_color_get_blue_byte (&color), ==, 78);
+  g_assert_cmpint (cogl_color_get_alpha_byte (&color), ==, 255);
 
   memset(&color, 0, sizeof (CoglColor));
   cogl_color_init_from_hsl(&color, hue, 0, luminance);
 
-  cogl_assert_float(color.red / 255.0f, luminance);
-  cogl_assert_float(color.green / 255.0f, luminance);
-  cogl_assert_float(color.blue / 255.0f, luminance);
-  cogl_assert_float(color.alpha / 255.0f, 1.0f);
+  cogl_assert_float (cogl_color_get_red_float (&color), luminance);
+  cogl_assert_float (cogl_color_get_green_float (&color), luminance);
+  cogl_assert_float (cogl_color_get_blue_float (&color), luminance);
+  cogl_assert_float (cogl_color_get_alpha_float (&color), 1.0f);
 
   if (cogl_test_verbose ())
     g_print ("OK\n");

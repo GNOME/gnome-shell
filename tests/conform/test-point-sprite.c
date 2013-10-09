@@ -59,7 +59,7 @@ do_test (CoglBool check_orientation,
   g_assert (error == NULL);
 
   pipeline = cogl_pipeline_new (test_ctx);
-  cogl_pipeline_set_layer_texture (pipeline, 0, COGL_TEXTURE (tex_2d));
+  cogl_pipeline_set_layer_texture (pipeline, 0, tex_2d);
 
   cogl_pipeline_set_layer_filters (pipeline,
                                    0, /* layer_index */

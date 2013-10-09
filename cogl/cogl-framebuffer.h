@@ -35,7 +35,15 @@
 /* We forward declare the CoglFramebuffer type here to avoid some circular
  * dependency issues with the following headers.
  */
+#ifdef __COGL_H_INSIDE__
+/* For the public C api we typedef interface types as void to avoid needing
+ * lots of casting in code and instead we will rely on runtime type checking
+ * for these objects. */
+typedef void CoglFramebuffer;
+#else
 typedef struct _CoglFramebuffer CoglFramebuffer;
+#define COGL_FRAMEBUFFER(X) ((CoglFramebuffer *)(X))
+#endif
 
 #include <cogl/cogl-pipeline.h>
 #include <cogl/cogl-indices.h>
@@ -87,8 +95,6 @@ COGL_BEGIN_DECLS
  */
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
-
-#define COGL_FRAMEBUFFER(X) ((CoglFramebuffer *)(X))
 
 /**
  * cogl_framebuffer_allocate:

@@ -57,7 +57,7 @@ make_texture (uint32_t color,
 
   g_free (tex_data);
 
-  return COGL_TEXTURE (tex_2d);
+  return tex_2d;
 }
 
 static void
@@ -97,7 +97,7 @@ check_texture (CoglPipeline *pipeline,
   cogl_pop_framebuffer ();
 
   /* New API */
-  cogl_pipeline_set_layer_texture (pipeline, 0, COGL_TEXTURE (tex));
+  cogl_pipeline_set_layer_texture (pipeline, 0, tex);
   cogl_framebuffer_draw_rectangle (test_fb, pipeline,
 				   x * QUAD_WIDTH,
 				   y * QUAD_WIDTH,

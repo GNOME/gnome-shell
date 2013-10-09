@@ -48,7 +48,7 @@ test_paint (TestState *state)
                                           state->fb_width,
                                           state->fb_height,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE);
-  tex = COGL_TEXTURE (tex_2d);
+  tex = tex_2d;
 
   offscreen = cogl_offscreen_new_with_texture (tex);
 
@@ -66,7 +66,7 @@ test_paint (TestState *state)
   cogl_translate (0.5, 0.5, 0);
   cogl_scale (-0.5, 0.5, 1);
 
-  cogl_push_framebuffer (COGL_FRAMEBUFFER (offscreen));
+  cogl_push_framebuffer (offscreen);
 
   /* Cogl should release the last reference when we call cogl_pop_framebuffer()
    */
@@ -129,11 +129,11 @@ test_flush (TestState *state)
       tex_2d = cogl_texture_2d_new_with_size (test_ctx,
                                               16, 16, /* width/height */
                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE);
-      tex = COGL_TEXTURE (tex_2d);
+      tex = tex_2d;
 
       offscreen = cogl_offscreen_new_with_texture (tex);
 
-      cogl_push_framebuffer (COGL_FRAMEBUFFER (offscreen));
+      cogl_push_framebuffer (offscreen);
 
       cogl_color_init_from_4ub (&clear_color, 0, 0, 0, 255);
       cogl_clear (&clear_color, COGL_BUFFER_BIT_COLOR);
@@ -143,7 +143,7 @@ test_flush (TestState *state)
 
       if (i == 0)
         /* First time check using read pixels on the offscreen */
-        test_utils_check_region (COGL_FRAMEBUFFER (offscreen),
+        test_utils_check_region (offscreen,
                                  1, 1, 15, 15, 0xff0000ff);
       else if (i == 1)
         {

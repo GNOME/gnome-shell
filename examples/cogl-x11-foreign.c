@@ -157,7 +157,7 @@ main (int argc, char **argv)
 
   XMapWindow (xdpy, xwin);
 
-  fb = COGL_FRAMEBUFFER (onscreen);
+  fb = onscreen;
 
   cogl_onscreen_set_resizable (onscreen, TRUE);
   cogl_onscreen_add_resize_callback (onscreen, resize_handler, onscreen, NULL);

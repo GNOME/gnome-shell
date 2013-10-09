@@ -26,7 +26,7 @@ test_texture_no_allocate (void)
 
   /* Try to create an atlas texture that is too big so it will
    * internally be freed without allocating */
-  texture = COGL_TEXTURE (
+  texture =
     cogl_atlas_texture_new_from_data (test_ctx,
                                       BIG_TEX_WIDTH,
                                       BIG_TEX_HEIGHT,
@@ -37,7 +37,7 @@ test_texture_no_allocate (void)
                                       /* rowstride */
                                       BIG_TEX_WIDTH * 4,
                                       tex_data,
-                                      &error));
+                                      &error);
 
   g_free (tex_data);
 
@@ -50,12 +50,12 @@ test_texture_no_allocate (void)
     cogl_object_unref (texture);
 
   /* Try to create a sliced texture without allocating it */
-  texture = COGL_TEXTURE (
+  texture =
     cogl_texture_2d_sliced_new_with_size (test_ctx,
                                           BIG_TEX_WIDTH,
                                           BIG_TEX_HEIGHT,
                                           COGL_TEXTURE_MAX_WASTE,
-                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE));
+                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE);
   cogl_object_unref (texture);
 
   /* 2D texture */

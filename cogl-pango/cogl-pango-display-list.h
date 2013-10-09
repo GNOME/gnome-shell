@@ -25,7 +25,6 @@
 #define __COGL_PANGO_DISPLAY_LIST_H__
 
 #include <glib.h>
-#include <cogl/cogl.h>
 #include "cogl-pango-pipeline-cache.h"
 
 COGL_BEGIN_DECLS

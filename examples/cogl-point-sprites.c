@@ -89,7 +89,7 @@ generate_round_texture (CoglContext *context)
 
   g_free (data);
 
-  return COGL_TEXTURE (tex);
+  return tex;
 }
 
 static void
@@ -183,7 +183,7 @@ paint (Data *data)
       g_timer_reset (data->last_spark_time);
     }
 
-  cogl_buffer_set_data (COGL_BUFFER (data->attribute_buffer),
+  cogl_buffer_set_data (data->attribute_buffer,
                         0, /* offset */
                         data->sparks,
                         sizeof (data->sparks));
@@ -194,7 +194,7 @@ paint (Data *data)
                        data->fb,
                        data->pipeline);
 
-  cogl_onscreen_swap_buffers (COGL_ONSCREEN (data->fb));
+  cogl_onscreen_swap_buffers (data->fb);
 }
 
 static void
@@ -206,7 +206,7 @@ create_primitive (Data *data)
   data->attribute_buffer =
     cogl_attribute_buffer_new_with_size (data->context,
                                          sizeof (data->sparks));
-  cogl_buffer_set_update_hint (COGL_BUFFER (data->attribute_buffer),
+  cogl_buffer_set_update_hint (data->attribute_buffer,
                                COGL_BUFFER_UPDATE_HINT_DYNAMIC);
 
   attributes[0] = cogl_attribute_new (data->attribute_buffer,
@@ -288,7 +288,7 @@ main (int argc, char *argv[])
 
   onscreen = cogl_onscreen_new (data.context, 800, 600);
   cogl_onscreen_show (onscreen);
-  data.fb = COGL_FRAMEBUFFER (onscreen);
+  data.fb = onscreen;
 
   cogl_source = cogl_glib_source_new (data.context, G_PRIORITY_DEFAULT);
 

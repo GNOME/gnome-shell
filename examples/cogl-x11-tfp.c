@@ -189,12 +189,12 @@ main (int argc, char **argv)
       return 1;
     }
 
-  fb = COGL_FRAMEBUFFER (onscreen);
-  cogl_push_framebuffer (fb);
+  fb = onscreen;
 
   for (;;)
     {
       unsigned long pixel;
+      CoglPipeline *pipeline;
 
       while (XPending (xdpy))
         {
@@ -221,8 +221,10 @@ main (int argc, char **argv)
       XFlush (xdpy);
 
       cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
-      cogl_set_source_texture (COGL_TEXTURE (tfp));
-      cogl_rectangle (-0.8, 0.8, 0.8, -0.8);
+      pipeline = cogl_pipeline_new (ctx);
+      cogl_pipeline_set_layer_texture (pipeline, 0, tfp);
+      cogl_framebuffer_draw_rectangle (fb, pipeline, -0.8, 0.8, 0.8, -0.8);
+      cogl_object_unref (pipeline);
       cogl_onscreen_swap_buffers (onscreen);
     }
 

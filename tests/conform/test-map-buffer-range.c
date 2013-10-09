@@ -44,7 +44,7 @@ test_map_buffer_range (void)
 
   pipeline = cogl_pipeline_new (test_ctx);
 
-  cogl_pipeline_set_layer_texture (pipeline, 0, COGL_TEXTURE (tex));
+  cogl_pipeline_set_layer_texture (pipeline, 0, tex);
   cogl_pipeline_set_layer_filters (pipeline,
                                    0, /* layer */
                                    COGL_PIPELINE_FILTER_NEAREST,
@@ -62,7 +62,7 @@ test_map_buffer_range (void)
 
   /* Replace the texture coordinates of the third vertex with the
    * coordinates for a green texel */
-  data = cogl_buffer_map_range (COGL_BUFFER (buffer),
+  data = cogl_buffer_map_range (buffer,
                                 sizeof (vertex_data[0]) * 2,
                                 sizeof (vertex_data[0]),
                                 COGL_BUFFER_ACCESS_WRITE,
@@ -75,7 +75,7 @@ test_map_buffer_range (void)
   data->s = 1.0f;
   data->t = 0.0f;
 
-  cogl_buffer_unmap (COGL_BUFFER (buffer));
+  cogl_buffer_unmap (buffer);
 
   pos_attribute =
     cogl_attribute_new (buffer,

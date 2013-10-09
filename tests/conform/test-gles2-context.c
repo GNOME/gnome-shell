@@ -23,11 +23,11 @@ test_push_pop_single_context (void)
   const CoglGLES2Vtable *gles2;
   CoglError *error = NULL;
 
-  offscreen_texture = COGL_TEXTURE (
+  offscreen_texture =
     cogl_texture_2d_new_with_size (test_ctx,
                                    cogl_framebuffer_get_width (test_fb),
                                    cogl_framebuffer_get_height (test_fb),
-                                   COGL_PIXEL_FORMAT_ANY));
+                                   COGL_PIXEL_FORMAT_ANY);
   offscreen = cogl_offscreen_new_with_texture (offscreen_texture);
 
   pipeline = cogl_pipeline_new (test_ctx);
@@ -67,8 +67,8 @@ test_push_pop_single_context (void)
 
   if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
-                                COGL_FRAMEBUFFER (offscreen),
-                                COGL_FRAMEBUFFER (offscreen),
+                                offscreen,
+                                offscreen,
                                 &error))
     {
       g_error ("Failed to push gles2 context: %s\n", error->message);
@@ -94,8 +94,8 @@ test_push_pop_single_context (void)
    */
   if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
-                                COGL_FRAMEBUFFER (offscreen),
-                                COGL_FRAMEBUFFER (offscreen),
+                                offscreen,
+                                offscreen,
                                 &error))
     {
       g_error ("Failed to push gles2 context: %s\n", error->message);
@@ -147,11 +147,11 @@ create_gles2_context (CoglTexture **offscreen_texture,
 {
   CoglError *error = NULL;
 
-  *offscreen_texture = COGL_TEXTURE (
+  *offscreen_texture =
     cogl_texture_2d_new_with_size (test_ctx,
                                    cogl_framebuffer_get_width (test_fb),
                                    cogl_framebuffer_get_height (test_fb),
-                                   COGL_PIXEL_FORMAT_ANY));
+                                   COGL_PIXEL_FORMAT_ANY);
   *offscreen = cogl_offscreen_new_with_texture (*offscreen_texture);
 
   *pipeline = cogl_pipeline_new (test_ctx);
@@ -195,8 +195,8 @@ test_push_pop_multi_context (void)
 
   if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx0,
-                                COGL_FRAMEBUFFER (offscreen0),
-                                COGL_FRAMEBUFFER (offscreen0),
+                                offscreen0,
+                                offscreen0,
                                 &error))
     {
       g_error ("Failed to push gles2 context 0: %s\n", error->message);
@@ -207,8 +207,8 @@ test_push_pop_multi_context (void)
 
   if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx1,
-                                COGL_FRAMEBUFFER (offscreen1),
-                                COGL_FRAMEBUFFER (offscreen1),
+                                offscreen1,
+                                offscreen1,
                                 &error))
     {
       g_error ("Failed to push gles2 context 1: %s\n", error->message);
@@ -290,8 +290,8 @@ test_gles2_read_pixels (void)
 
   if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
-                                COGL_FRAMEBUFFER (offscreen),
-                                COGL_FRAMEBUFFER (offscreen),
+                                offscreen,
+                                offscreen,
                                 &error))
     {
       g_error ("Failed to push gles2 context: %s\n", error->message);
@@ -328,7 +328,7 @@ test_gles2_read_pixels (void)
   /* Bind different read and write buffers */
   if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
-                                COGL_FRAMEBUFFER (offscreen),
+                                offscreen,
                                 test_fb,
                                 &error))
     {
@@ -349,7 +349,7 @@ test_gles2_read_pixels (void)
   if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
                                 test_fb,
-                                COGL_FRAMEBUFFER (offscreen),
+                                offscreen,
                                 &error))
     {
       g_error ("Failed to push gles2 context: %s\n", error->message);
@@ -682,8 +682,8 @@ test_gles2_context_fbo (void)
 
       if (!cogl_push_gles2_context (test_ctx,
                                     gles2_ctx,
-                                    COGL_FRAMEBUFFER (offscreen),
-                                    COGL_FRAMEBUFFER (offscreen),
+                                    offscreen,
+                                    offscreen,
                                     &error))
         g_error ("Failed to push gles2 context: %s\n", error->message);
 
@@ -817,8 +817,8 @@ test_gles2_context_copy_tex_image (void)
 
   if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
-                                COGL_FRAMEBUFFER (offscreen),
-                                COGL_FRAMEBUFFER (offscreen),
+                                offscreen,
+                                offscreen,
                                 &error))
     g_error ("Failed to push gles2 context: %s\n", error->message);
 

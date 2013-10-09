@@ -31,16 +31,19 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <gst/gst.h>
 #include <gst/gstvalue.h>
 #include <gst/video/video.h>
 #include <gst/riff/riff-ids.h>
-#include <cogl/cogl.h>
 #include <string.h>
+
+/* We just need the public Cogl api for cogl-gst but we first need to
+ * undef COGL_COMPILATION to avoid getting an error that normally
+ * checks cogl.h isn't used internally. */
+#undef COGL_COMPILATION
+#include <cogl/cogl.h>
 
 #include "cogl-gst-video-sink.h"
 
@@ -198,7 +201,7 @@ cogl_gst_video_sink_attach_frame (CoglGstVideoSink *sink,
   for (i = 0; i < G_N_ELEMENTS (priv->frame); i++)
     if (priv->frame[i] != NULL)
       cogl_pipeline_set_layer_texture (pln, i + priv->custom_start,
-                                       COGL_TEXTURE (priv->frame[i]));
+                                       priv->frame[i]);
 }
 
 static CoglBool
@@ -486,9 +489,9 @@ video_texture_new_from_data (CoglContext *ctx,
        is_pot (cogl_bitmap_get_height (bitmap))) ||
       cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_BASIC))
     {
-      tex = COGL_TEXTURE (cogl_texture_2d_new_from_bitmap (bitmap,
-                                                           internal_format,
-                                                           &internal_error));
+      tex = cogl_texture_2d_new_from_bitmap (bitmap,
+                                             internal_format,
+                                             &internal_error);
       if (!tex)
         {
           cogl_error_free (internal_error);
@@ -506,7 +509,7 @@ video_texture_new_from_data (CoglContext *ctx,
                                                 -1, /* no maximum waste */
                                                 internal_format,
                                                 error);
-      tex = COGL_TEXTURE (tex_2ds);
+      tex = tex_2ds;
     }
 
   cogl_object_unref (bitmap);

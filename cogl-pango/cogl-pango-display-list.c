@@ -26,7 +26,6 @@
 #endif
 
 #include <glib.h>
-#include <cogl/cogl.h>
 #include <string.h>
 
 #include "cogl-pango-display-list.h"

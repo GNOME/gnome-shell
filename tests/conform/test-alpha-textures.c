@@ -39,10 +39,10 @@ create_pipeline (CoglTexture **tex_out,
 
   cogl_pipeline_set_layer_texture (pipeline,
                                    0, /* layer */
-                                   COGL_TEXTURE (tex));
+                                   tex);
 
   *pipeline_out = pipeline;
-  *tex_out = COGL_TEXTURE (tex);
+  *tex_out = tex;
 }
 
 void

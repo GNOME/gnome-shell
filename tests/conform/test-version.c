@@ -6,7 +6,15 @@
 
 #include "test-utils.h"
 #include "config.h"
+
+/* So we can use _COGL_STATIC_ASSERT we include the internal
+ * cogl-util.h header. Since internal headers explicitly guard against
+ * applications including them directly instead of including
+ * <cogl/cogl.h> we define __COGL_H_INSIDE__ here to subvert those
+ * guards in this case... */
+#define __COGL_H_INSIDE__
 #include <cogl/cogl-util.h>
+#undef __COGL_H_INSIDE__
 
 _COGL_STATIC_ASSERT (COGL_VERSION_ENCODE (COGL_VERSION_MAJOR,
                                           COGL_VERSION_MINOR,

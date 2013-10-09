@@ -30,7 +30,11 @@
 #define __COGL2_PATH_FUNCTIONS_H__
 
 #include <cogl/cogl-types.h>
+#ifdef COGL_COMPILATION
+#include "cogl-context.h"
+#else
 #include <cogl/cogl.h>
+#endif
 
 COGL_BEGIN_DECLS
 

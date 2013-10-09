@@ -35,6 +35,16 @@
 #define __COGL_GST_VIDEO_SINK_H__
 #include <glib-object.h>
 #include <gst/base/gstbasesink.h>
+
+/* We just need the public Cogl api for cogl-gst but we first need to
+ * undef COGL_COMPILATION to avoid getting an error that normally
+ * checks cogl.h isn't used internally. */
+#ifdef COGL_COMPILATION
+#undef COGL_COMPILATION
+#endif
+
+#include <cogl/cogl.h>
+
 #include <cogl/cogl.h>
 
 /**

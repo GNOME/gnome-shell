@@ -160,7 +160,7 @@ main (int argc, char **argv)
   }
 
   onscreen = cogl_onscreen_new (ctx, 640, 480);
-  fb = COGL_FRAMEBUFFER (onscreen);
+  fb = onscreen;
   data.fb = fb;
   data.framebuffer_width = cogl_framebuffer_get_width (fb);
   data.framebuffer_height = cogl_framebuffer_get_height (fb);
@@ -220,11 +220,11 @@ main (int argc, char **argv)
 
   /* Load a jpeg crate texture from a file */
   printf ("crate.jpg (CC by-nc-nd http://bit.ly/9kP45T) ShadowRunner27 http://bit.ly/m1YXLh\n");
-  data.texture = COGL_TEXTURE (
+  data.texture =
     cogl_texture_2d_new_from_file (ctx,
                                    COGL_EXAMPLES_DATA "crate.jpg",
                                    COGL_PIXEL_FORMAT_ANY,
-                                   &error));
+                                   &error);
   if (!data.texture)
     g_error ("Failed to load texture: %s", error->message);
 

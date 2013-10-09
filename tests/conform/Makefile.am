@@ -137,8 +137,7 @@ endif
 AM_CPPFLAGS += \
 	-DCOGL_ENABLE_EXPERIMENTAL_API \
 	-DCOGL_DISABLE_DEPRECATED \
-	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\" \
-	-DCOGL_COMPILATION
+	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\"
 
 test_conformance_CFLAGS = -g3 -O0 $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS)
 test_conformance_LDADD = \

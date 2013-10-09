@@ -86,8 +86,15 @@ COGL_BEGIN_DECLS
  * meta-textures.</note>
  */
 
+#ifdef __COGL_H_INSIDE__
+/* For the public C api we typedef interface types as void to avoid needing
+ * lots of casting in code and instead we will rely on runtime type checking
+ * for these objects. */
+typedef void CoglMetaTexture;
+#else
 typedef struct _CoglMetaTexture CoglMetaTexture;
 #define COGL_META_TEXTURE(X) ((CoglMetaTexture *)X)
+#endif
 
 /**
  * CoglMetaTextureCallback:

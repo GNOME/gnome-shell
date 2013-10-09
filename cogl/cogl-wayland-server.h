@@ -26,7 +26,16 @@
 
 #include <wayland-server.h>
 
+/* NB: this is a top-level header that can be included directly but we
+ * want to be careful not to define __COGL_H_INSIDE__ when this is
+ * included internally while building Cogl itself since
+ * __COGL_H_INSIDE__ is used in headers to guard public vs private api
+ * definitions
+ */
+#ifndef COGL_COMPILATION
 #define __COGL_H_INSIDE__
+#endif
+
 #include <cogl/cogl-context.h>
 #include <cogl/cogl-texture-2d.h>
 

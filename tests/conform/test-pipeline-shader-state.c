@@ -24,8 +24,8 @@ test_pipeline_shader_state (void)
 
   tex = cogl_texture_2d_new_with_size (test_ctx,
                                        128, 128, COGL_PIXEL_FORMAT_ANY);
-  offscreen = cogl_offscreen_new_with_texture (COGL_TEXTURE (tex));
-  fb = COGL_FRAMEBUFFER (offscreen);
+  offscreen = cogl_offscreen_new_with_texture (tex);
+  fb = offscreen;
   cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
   cogl_object_unref (offscreen);
 
@@ -35,7 +35,7 @@ test_pipeline_shader_state (void)
   /* Setup a template pipeline... */
 
   base_pipeline = cogl_pipeline_new (test_ctx);
-  cogl_pipeline_set_layer_texture (base_pipeline, 1, COGL_TEXTURE (tex));
+  cogl_pipeline_set_layer_texture (base_pipeline, 1, tex);
   cogl_pipeline_set_color4f (base_pipeline, 1, 0, 0, 1);
 
 
@@ -69,7 +69,7 @@ test_pipeline_shader_state (void)
    * cached vertex shader gets invalidated.
    */
 
-  cogl_pipeline_set_layer_texture (base_pipeline, 0, COGL_TEXTURE (tex));
+  cogl_pipeline_set_layer_texture (base_pipeline, 0, tex);
 
 
   /* Now we derive another pipeline from base_pipeline to verify that

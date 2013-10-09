@@ -257,7 +257,7 @@ main (int argc,
   cogl_onscreen_add_resize_callback (onscreen, _resize_callback, &data, NULL);
   cogl_onscreen_show (onscreen);
 
-  data.fb = COGL_FRAMEBUFFER (onscreen);
+  data.fb = onscreen;
   cogl_framebuffer_orthographic (data.fb, 0, 0, 640, 480, -1, 100);
 
   data.border_pipeline = cogl_pipeline_new (ctx);

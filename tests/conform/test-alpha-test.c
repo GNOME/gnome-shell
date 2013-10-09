@@ -24,7 +24,7 @@ create_texture (CoglContext *context)
 void
 test_alpha_test (void)
 {
-  CoglTexture *tex = COGL_TEXTURE (create_texture (test_ctx));
+  CoglTexture *tex = create_texture (test_ctx);
   CoglPipeline *pipeline = cogl_pipeline_new (test_ctx);
   int fb_width = cogl_framebuffer_get_width (test_fb);
   int fb_height = cogl_framebuffer_get_height (test_fb);

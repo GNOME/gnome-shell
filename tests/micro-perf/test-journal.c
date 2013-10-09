@@ -153,7 +153,7 @@ main (int argc, char **argv)
   cogl_onscreen_set_swap_throttled (onscreen, FALSE);
   cogl_onscreen_show (onscreen);
 
-  data.fb = COGL_FRAMEBUFFER (onscreen);
+  data.fb = onscreen;
   cogl_framebuffer_orthographic (data.fb,
                                  0, 0,
                                  FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT,

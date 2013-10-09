@@ -35,8 +35,6 @@ COGL_BEGIN_DECLS
 
 typedef struct _CoglPath CoglPath;
 
-#define COGL_PATH(obj) ((CoglPath *)(obj))
-
 /**
  * CoglPathFillRule:
  * @COGL_PATH_FILL_RULE_NON_ZERO: Each time the line crosses an edge of

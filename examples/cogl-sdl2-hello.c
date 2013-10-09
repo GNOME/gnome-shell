@@ -59,9 +59,9 @@ handle_event (Data *data, SDL_Event *event)
     case SDL_MOUSEMOTION:
       {
         int width =
-          cogl_framebuffer_get_width (COGL_FRAMEBUFFER (data->fb));
+          cogl_framebuffer_get_width (data->fb);
         int height =
-          cogl_framebuffer_get_height (COGL_FRAMEBUFFER (data->fb));
+          cogl_framebuffer_get_height (data->fb);
 
         data->center_x = event->motion.x * 2.0f / width - 1.0f;
         data->center_y = event->motion.y * 2.0f / height - 1.0f;
@@ -110,7 +110,7 @@ main (int argc, char **argv)
     }
 
   onscreen = cogl_onscreen_new (ctx, 800, 600);
-  data.fb = COGL_FRAMEBUFFER (onscreen);
+  data.fb = onscreen;
 
   cogl_onscreen_add_frame_callback (onscreen,
                                     frame_cb,

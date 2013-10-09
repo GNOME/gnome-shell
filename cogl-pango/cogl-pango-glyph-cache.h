@@ -25,8 +25,9 @@
 #define __COGL_PANGO_GLYPH_CACHE_H__
 
 #include <glib.h>
-#include <cogl/cogl.h>
 #include <pango/pango-font.h>
+
+#include "cogl/cogl-texture.h"
 
 COGL_BEGIN_DECLS
 

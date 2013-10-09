@@ -57,8 +57,15 @@ COGL_BEGIN_DECLS
  * primitive textures.</note>
  */
 
+#ifdef __COGL_H_INSIDE__
+/* For the public C api we typedef interface types as void to avoid needing
+ * lots of casting in code and instead we will rely on runtime type checking
+ * for these objects. */
+typedef void CoglPrimitiveTexture;
+#else
 typedef struct _CoglPrimitiveTexture CoglPrimitiveTexture;
 #define COGL_PRIMITIVE_TEXTURE(X) ((CoglPrimitiveTexture *)X)
+#endif
 
 /**
  * cogl_is_primitive_texture:

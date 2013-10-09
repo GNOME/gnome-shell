@@ -37,7 +37,7 @@ create_texture (void)
                              GINT_TO_POINTER (1),
                              free_texture_cb);
 
-  return COGL_TEXTURE (tex_2d);
+  return tex_2d;
 }
 
 void

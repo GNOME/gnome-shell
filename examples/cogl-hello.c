@@ -27,7 +27,7 @@ paint_cb (void *user_data)
     cogl_primitive_draw (data->triangle,
                          data->fb,
                          data->pipeline);
-    cogl_onscreen_swap_buffers (COGL_ONSCREEN (data->fb));
+    cogl_onscreen_swap_buffers (data->fb);
 
     return G_SOURCE_REMOVE;
 }
@@ -94,7 +94,7 @@ main (int argc, char **argv)
 
     onscreen = cogl_onscreen_new (data.ctx, 640, 480);
     cogl_onscreen_show (onscreen);
-    data.fb = COGL_FRAMEBUFFER (onscreen);
+    data.fb = onscreen;
 
     cogl_onscreen_set_resizable (onscreen, TRUE);
 
@@ -107,11 +107,11 @@ main (int argc, char **argv)
 
     g_source_attach (cogl_source, NULL);
 
-    cogl_onscreen_add_frame_callback (COGL_ONSCREEN (data.fb),
+    cogl_onscreen_add_frame_callback (data.fb,
                                       frame_event_cb,
                                       &data,
                                       NULL); /* destroy notify */
-    cogl_onscreen_add_dirty_callback (COGL_ONSCREEN (data.fb),
+    cogl_onscreen_add_dirty_callback (data.fb,
                                       dirty_cb,
                                       &data,
                                       NULL); /* destroy notify */

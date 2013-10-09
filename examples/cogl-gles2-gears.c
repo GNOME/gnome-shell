@@ -779,7 +779,7 @@ main (int argc, char **argv)
 
     onscreen = cogl_onscreen_new (data.ctx, 300, 300);
     cogl_onscreen_show (onscreen);
-    data.fb = COGL_FRAMEBUFFER (onscreen);
+    data.fb = onscreen;
 
     data.gles2_ctx = cogl_gles2_context_new (data.ctx, &error);
     if (!data.gles2_ctx)

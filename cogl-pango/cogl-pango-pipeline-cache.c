@@ -30,7 +30,6 @@
 #endif
 
 #include <glib.h>
-#include <cogl/cogl.h>
 #include "cogl-pango-pipeline-cache.h"
 
 #include "cogl/cogl-context-private.h"

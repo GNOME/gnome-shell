@@ -1,6 +1,13 @@
 #ifndef _TEST_UTILS_H_
 #define _TEST_UTILS_H_
 
+/* NB: This header is for private and public api testing and so
+ * we need consider that if we are testing the public api we should
+ * just include <cogl/cogl.h> but since that will only provide
+ * opaque typedefs we need to include the specific internal headers
+ * for testing private apis...
+ */
+#ifdef COGL_COMPILATION
 #include <cogl/cogl-context.h>
 #include <cogl/cogl-onscreen.h>
 #include <cogl/cogl-offscreen.h>
@@ -9,6 +16,10 @@
 #include <cogl/cogl-texture-2d-sliced.h>
 #include <cogl/cogl-meta-texture.h>
 #include <cogl/cogl-atlas-texture.h>
+#else
+#include <cogl/cogl.h>
+#endif
+
 #include <glib.h>
 
 /* We don't really care about functions that are defined without a

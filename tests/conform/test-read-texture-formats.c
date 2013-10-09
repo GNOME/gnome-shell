@@ -17,7 +17,7 @@ test_read_byte (CoglTexture2D *tex_2d,
 {
   uint8_t received_byte;
 
-  cogl_texture_get_data (COGL_TEXTURE (tex_2d),
+  cogl_texture_get_data (tex_2d,
                          format,
                          1, /* rowstride */
                          &received_byte);
@@ -38,7 +38,7 @@ test_read_short (CoglTexture2D *tex_2d,
   char *expected_value_str;
   int bits_sum = 0;
 
-  cogl_texture_get_data (COGL_TEXTURE (tex_2d),
+  cogl_texture_get_data (tex_2d,
                          format,
                          2, /* rowstride */
                          (uint8_t *) &received_value);
@@ -71,7 +71,7 @@ test_read_888 (CoglTexture2D *tex_2d,
 {
   uint8_t pixel[4];
 
-  cogl_texture_get_data (COGL_TEXTURE (tex_2d),
+  cogl_texture_get_data (tex_2d,
                          format,
                          4, /* rowstride */
                          pixel);
@@ -88,7 +88,7 @@ test_read_8888 (CoglTexture2D *tex_2d,
   char *received_value_str;
   char *expected_value_str;
 
-  cogl_texture_get_data (COGL_TEXTURE (tex_2d),
+  cogl_texture_get_data (tex_2d,
                          format,
                          4, /* rowstride */
                          (uint8_t *) &received_pixel);
@@ -115,7 +115,7 @@ test_read_int (CoglTexture2D *tex_2d,
   char *expected_value_str;
   int bits_sum = 0;
 
-  cogl_texture_get_data (COGL_TEXTURE (tex_2d),
+  cogl_texture_get_data (tex_2d,
                          format,
                          4, /* rowstride */
                          (uint8_t *) &received_value);

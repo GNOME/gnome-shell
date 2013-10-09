@@ -59,9 +59,15 @@ COGL_BEGIN_DECLS
  * without blocking other Cogl operations.
  */
 
-#define COGL_BUFFER(buffer)     ((CoglBuffer *)(buffer))
-
+#ifdef __COGL_H_INSIDE__
+/* For the public C api we typedef interface types as void to avoid needing
+ * lots of casting in code and instead we will rely on runtime type checking
+ * for these objects. */
+typedef void CoglBuffer;
+#else
 typedef struct _CoglBuffer CoglBuffer;
+#define COGL_BUFFER(buffer) ((CoglBuffer *)(buffer))
+#endif
 
 #define COGL_BUFFER_ERROR (_cogl_buffer_error_domain ())
 

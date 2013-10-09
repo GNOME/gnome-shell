@@ -108,6 +108,7 @@
 #include "cogl-primitive-private.h"
 #include "cogl-journal-private.h"
 #include "cogl1-context.h"
+#include "cogl-vertex-buffer.h"
 
 #define PAD_FOR_ALIGNMENT(VAR, TYPE_SIZE) \
   (VAR = TYPE_SIZE + ((VAR - 1) & ~(TYPE_SIZE - 1)))

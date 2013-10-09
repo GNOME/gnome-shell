@@ -105,14 +105,14 @@ paint (TestState *state)
 
   /* Create a sub texture of the bottom right quarter of the texture */
   sub_texture = cogl_sub_texture_new (test_ctx,
-                                      COGL_TEXTURE (state->tex),
+                                      state->tex,
                                       DIVISION_WIDTH,
                                       DIVISION_HEIGHT,
                                       DIVISION_WIDTH,
                                       DIVISION_HEIGHT);
 
   /* Paint it */
-  cogl_pipeline_set_layer_texture (pipeline, 0, COGL_TEXTURE (sub_texture));
+  cogl_pipeline_set_layer_texture (pipeline, 0, sub_texture);
   cogl_object_unref (sub_texture);
   cogl_framebuffer_draw_rectangle (test_fb, pipeline,
                                    0.0f, 0.0f, DIVISION_WIDTH, DIVISION_HEIGHT);
@@ -122,11 +122,11 @@ paint (TestState *state)
      documented to be undefined so it doesn't technically have to work
      but it will with the current implementation */
   sub_texture = cogl_sub_texture_new (test_ctx,
-                                      COGL_TEXTURE (state->tex),
+                                      state->tex,
                                       0, 0,
                                       SOURCE_SIZE,
                                       DIVISION_HEIGHT);
-  cogl_pipeline_set_layer_texture (pipeline, 0, COGL_TEXTURE (sub_texture));
+  cogl_pipeline_set_layer_texture (pipeline, 0, sub_texture);
   cogl_object_unref (sub_texture);
   cogl_framebuffer_draw_textured_rectangle (test_fb, pipeline,
                                             0.0f,
@@ -139,14 +139,14 @@ paint (TestState *state)
   /* Create a sub texture of a sub texture */
   full_texture = create_test_texture (state);
   sub_texture = cogl_sub_texture_new (test_ctx,
-                                      COGL_TEXTURE (full_texture),
+                                      full_texture,
                                       20, 10, 30, 20);
   cogl_object_unref (full_texture);
   sub_sub_texture = cogl_sub_texture_new (test_ctx,
-                                          COGL_TEXTURE (sub_texture),
+                                          sub_texture,
                                           20, 10, 10, 10);
   cogl_object_unref (sub_texture);
-  cogl_pipeline_set_layer_texture (pipeline, 0, COGL_TEXTURE (sub_sub_texture));
+  cogl_pipeline_set_layer_texture (pipeline, 0, sub_sub_texture);
   cogl_object_unref (sub_sub_texture);
   cogl_framebuffer_draw_rectangle (test_fb, pipeline,
                                    0.0f, SOURCE_SIZE * 2.0f,
@@ -231,15 +231,15 @@ validate_result (TestState *state)
 
   /* Try reading back the texture data */
   sub_texture = cogl_sub_texture_new (test_ctx,
-                                      COGL_TEXTURE (state->tex),
+                                      state->tex,
                                       SOURCE_SIZE / 4,
                                       SOURCE_SIZE / 4,
                                       SOURCE_SIZE / 2,
                                       SOURCE_SIZE / 2);
-  tex_width = cogl_texture_get_width (COGL_TEXTURE (sub_texture));
-  tex_height = cogl_texture_get_height (COGL_TEXTURE (sub_texture));
+  tex_width = cogl_texture_get_width (sub_texture);
+  tex_height = cogl_texture_get_height (sub_texture);
   p = texture_data = g_malloc (tex_width * tex_height * 4);
-  cogl_texture_get_data (COGL_TEXTURE (sub_texture),
+  cogl_texture_get_data (sub_texture,
                          COGL_PIXEL_FORMAT_RGBA_8888,
                          tex_width * 4,
                          texture_data);
@@ -262,11 +262,11 @@ validate_result (TestState *state)
   test_tex = create_test_texture (state);
   /* Create a sub texture the views the center half of the texture */
   sub_texture = cogl_sub_texture_new (test_ctx,
-                                      COGL_TEXTURE (test_tex),
+                                      test_tex,
                                       64, 64, 128, 128);
   /* Update the center half of the sub texture */
   texture_data = create_update_data ();
-  cogl_texture_set_region (COGL_TEXTURE (sub_texture),
+  cogl_texture_set_region (sub_texture,
                            0, 0, 32, 32, 64, 64, 256, 256,
                            COGL_PIXEL_FORMAT_RGBA_8888_PRE, 256 * 4,
                            texture_data);
@@ -274,7 +274,7 @@ validate_result (TestState *state)
   cogl_object_unref (sub_texture);
   /* Get the texture data */
   p = texture_data = g_malloc (256 * 256 * 4);
-  cogl_texture_get_data (COGL_TEXTURE (test_tex),
+  cogl_texture_get_data (test_tex,
                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                          256 * 4, texture_data);
 

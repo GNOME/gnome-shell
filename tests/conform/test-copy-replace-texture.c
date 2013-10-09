@@ -51,7 +51,7 @@ create_texture (void)
 
   texture_num++;
 
-  return COGL_TEXTURE (tex_2d);
+  return tex_2d;
 }
 
 void

@@ -74,6 +74,7 @@ cogl_deprecated_h = \
 	$(srcdir)/deprecated/cogl-vertex-buffer.h 	\
 	$(srcdir)/deprecated/cogl-shader.h 		\
 	$(srcdir)/deprecated/cogl-clutter.h       	\
+	$(srcdir)/deprecated/cogl-type-casts.h       	\
 	$(NULL)
 
 # public 1.x api headers
