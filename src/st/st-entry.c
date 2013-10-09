@@ -795,6 +795,8 @@ st_entry_class_init (StEntryClass *klass)
   /* signals */
   /**
    * StEntry::primary-icon-clicked:
+   * @self: the #StEntry
+   *
    *
    * Emitted when the primary icon is clicked
    */
@@ -807,6 +809,7 @@ st_entry_class_init (StEntryClass *klass)
                   G_TYPE_NONE, 0);
   /**
    * StEntry::secondary-icon-clicked:
+   * @self: the #StEntry
    *
    * Emitted when the secondary icon is clicked
    */

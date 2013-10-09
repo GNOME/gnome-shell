@@ -259,6 +259,7 @@ st_adjustment_class_init (StAdjustmentClass *klass)
                                                         G_PARAM_CONSTRUCT));
   /**
    * StAdjustment::changed:
+   * @self: the #StAdjustment
    *
    * Emitted when any of the adjustment values have changed
    */
