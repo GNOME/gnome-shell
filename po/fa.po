@@ -7,18 +7,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-02 07:57+0000\n"
-"PO-Revision-Date: 2013-10-05 18:05+0330\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-10-09 16:40+0000\n"
+"PO-Revision-Date: 2013-10-10 00:25+0330\n"
 "Last-Translator: Arash Mousavi <mousavi.arash@gmail.com>\n"
-"Language-Team: Persian\n"
+"Language-Team: Persian <>\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -67,26 +68,42 @@ msgstr "گنوم‌شل (چینشگر wayland)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr "فعال کردن ابزارهای داخلی مفید برای توسعه دهندگان و آزمایش کنندگان از طریق Alt-F2"
+msgstr ""
+"فعال کردن ابزارهای داخلی مفید برای توسعه دهندگان و آزمایش کنندگان از طریق "
+"Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:2
-msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
-msgstr "اجازه دسترسی به ابزارهای اشکال‌زدا و پایشگر داخلی با استفاده از محاوره‌ی Alt-F2."
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"اجازه دسترسی به ابزارهای اشکال‌زدا و پایشگر داخلی با استفاده از محاوره‌ی Alt-"
+"F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "Uuids of extensions to enable"
 msgstr "شناسه‌های Uuid افزونه‌ها جهت فعال‌سازی"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
-msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should be loaded. Any extension that wants to be loaded needs to be in this list. You can also manipulate this list with the EnableExtension and DisableExtension DBus methods on org.gnome.Shell."
-msgstr "افزونه‌های پوسته‌ی گنوم مشخصه‌ی uuid دارند؛ این کلید افزونه‌هایی که باید بار شوند را فهرست می‌کند. هر افزونه‌ای که لازم است بار شود باید در این فهرست باشد. شما همچنین می‌توانید این فهرست را از طریق EnableExtension و DisableExtension (روش‌های DBus) در org.gnome.Shell نیز بسازید."
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension DBus methods on org.gnome.Shell."
+msgstr ""
+"افزونه‌های پوسته‌ی گنوم مشخصه‌ی uuid دارند؛ این کلید افزونه‌هایی که باید بار "
+"شوند را فهرست می‌کند. هر افزونه‌ای که لازم است بار شود باید در این فهرست باشد. "
+"شما همچنین می‌توانید این فهرست را از طریق EnableExtension و DisableExtension "
+"(روش‌های DBus) در org.gnome.Shell نیز بسازید."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "List of desktop file IDs for favorite applications"
 msgstr "فهرست شناسه‌های پرونده‌ی رومیزی برای برنامه‌های مورد پسند"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:6
-msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
 msgstr "برنامه‌های مشابه این شناسه‌ها در قسمت مورد پسندها نمایش داده می‌شود."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
@@ -94,8 +111,12 @@ msgid "List of categories that should be displayed as folders"
 msgstr "فهرست دسته‌هایی که باید به شکل پوشه نمایش داده شوند"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:8
-msgid "Each category name in this list will be represented as folder in the application view, rather than being displayed inline in the main view."
-msgstr "هر نام دسته در این فهرست، بجای اینکه پشت سر هم در نمای اصلی نمایش داده شود، به‌عنوان پوشه در نمای برنامه‌ها نشان داده می‌شود."
+msgid ""
+"Each category name in this list will be represented as folder in the "
+"application view, rather than being displayed inline in the main view."
+msgstr ""
+"هر نام دسته در این فهرست، بجای اینکه پشت سر هم در نمای اصلی نمایش داده شود، "
+"به‌عنوان پوشه در نمای برنامه‌ها نشان داده می‌شود."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
@@ -110,16 +131,31 @@ msgid "Always show the 'Log out' menuitem in the user menu."
 msgstr "همیشه «خروج از سیستم» را در منو کاربر نمایش بده."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:12
-msgid "This key overrides the automatic hiding of the 'Log out' menuitem in single-user, single-session situations."
-msgstr "این کلید مخفی‌سازی خودکار «خروج از سیستم» در منو را در حالت‌های یک-کاربر، یک-نشست بازنویسی می‌کند."
+msgid ""
+"This key overrides the automatic hiding of the 'Log out' menuitem in single-"
+"user, single-session situations."
+msgstr ""
+"این کلید مخفی‌سازی خودکار «خروج از سیستم» در منو را در حالت‌های یک-کاربر، یک-"
+"نشست بازنویسی می‌کند."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
-msgid "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr "اینکه آیا گذرواژه برای سوارکردن سیستم‌های پرونده‌ی رمزنگاری شده و یا دوردست به‌خاطر سپرده شود یا خیر"
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"اینکه آیا گذرواژه برای سوارکردن سیستم‌های پرونده‌ی رمزنگاری شده و یا دوردست "
+"به‌خاطر سپرده شود یا خیر"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
-msgid "The shell will request a password when an encrypted device or a remote filesystem is mounted. If the password can be saved for future use a 'Remember Password' checkbox will be present. This key sets the default state of the checkbox."
-msgstr "پوسته هنگامی که یک دستگاه رمزنگاری شده و یا سیستم‌پرونده دوردست سوار می‌شود، درخواست گذرواژه می‌کند. اگر گذرواژه را بتوان برای استفاده آینده ذخیره کرد، گزینه «به‌خاطر سپردن گذرواژه» موجود خواهد بود. این کلید حالت پیش‌فرض این گزینه را تنظیم می‌کند."
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"'Remember Password' checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"پوسته هنگامی که یک دستگاه رمزنگاری شده و یا سیستم‌پرونده دوردست سوار می‌شود، "
+"درخواست گذرواژه می‌کند. اگر گذرواژه را بتوان برای استفاده آینده ذخیره کرد، "
+"گزینه «به‌خاطر سپردن گذرواژه» موجود خواهد بود. این کلید حالت پیش‌فرض این گزینه "
+"را تنظیم می‌کند."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Show the week date in the calendar"
@@ -142,16 +178,15 @@ msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "کلید مقید برای باز کردن نمای «نمایش برنامه‌ها»"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
-msgid "Keybinding to open the \"Show Applications\" view of the Activities Overview."
+msgid ""
+"Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr "کلید مقید برای باز کردن نمای «نمایش برنامه‌ها» در نمای‌کلی فعالیت‌ها."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the overview"
 msgstr "کلید مقید برای باز کردن نمای کلی"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the Activities Overview."
 msgstr "کلید مقید برای باز کردن نمای «نمایش برنامه‌ها»."
 
@@ -184,24 +219,36 @@ msgid "The application icon mode."
 msgstr "حالت شمایلی برنامه."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
-msgid "Configures how the windows are shown in the switcher. Valid possibilities are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only' (shows only the application icon) or 'both'."
-msgstr "نحوه نمایش پنجره‌ها را در تعویض‌کننده پیکربندی می‌کند. مقدار ممکن عبارتند از «thumbnail-only» (نمایش تصویر بندانگشتی از پنجره)، «app-icon-only» (نمایش تنها شمایل برنامه) یا «both»."
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+"only' (shows only the application icon) or 'both'."
+msgstr ""
+"نحوه نمایش پنجره‌ها را در تعویض‌کننده پیکربندی می‌کند. مقدار ممکن عبارتند از "
+"«thumbnail-only» (نمایش تصویر بندانگشتی از پنجره)، «app-icon-only» (نمایش "
+"تنها شمایل برنامه) یا «both»."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Attach modal dialog to the parent window"
 msgstr "چسباندن محاوره‌ی مقید به پنجره والد"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:32
-msgid "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr "این کلید، کلید org.gnome.mutter را در زمان اجرای گنوم‌شل بازنویسی می‌کند."
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr ""
+"این کلید، کلید org.gnome.mutter را در زمان اجرای گنوم‌شل بازنویسی می‌کند."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Arrangement of buttons on the titlebar"
 msgstr "چیدمان دکمه‌ها در نوار عنوان"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:34
-msgid "This key overrides the key in org.gnome.desktop.wm.preferences when running GNOME Shell."
-msgstr "این کلید، کلید org.gnome.desktop.wm.preferences را در زمان اجرای گنوم‌شل بازنویسی می‌کند."
+msgid ""
+"This key overrides the key in org.gnome.desktop.wm.preferences when running "
+"GNOME Shell."
+msgstr ""
+"این کلید، کلید org.gnome.desktop.wm.preferences را در زمان اجرای گنوم‌شل "
+"بازنویسی می‌کند."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -217,7 +264,9 @@ msgstr "فضاهای کاری تنها در صفحه‌نمایش اصلی"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr "به تاخیر انداختن تغییر تمرکز در حالت موشی تا زمانی که نشانگر از حرکت باز ایستد"
+msgstr ""
+"به تاخیر انداختن تغییر تمرکز در حالت موشی تا زمانی که نشانگر از حرکت باز "
+"ایستد"
 
 #: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
@@ -226,7 +275,7 @@ msgstr "با استفاده از جعبه‌ی بالا یک افزونه برا
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:692
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:728
 msgid "Cancel"
 msgstr "لغو"
 
@@ -245,7 +294,6 @@ msgid "Sign In"
 msgstr "ورود"
 
 #: ../js/gdm/loginDialog.js:294
-#| msgid "Switch Session"
 msgid "Choose Session"
 msgstr "انتخاب نشست"
 
@@ -275,15 +323,15 @@ msgstr "خطا تایید هویت"
 msgid "(or swipe finger)"
 msgstr "(یا انگشتتان را بکشید)"
 
-#: ../js/misc/util.js:98
+#: ../js/misc/util.js:115
 msgid "Command not found"
 msgstr "فرمان پیدا نشد"
 
-#: ../js/misc/util.js:131
+#: ../js/misc/util.js:148
 msgid "Could not parse command:"
 msgstr "عدم توانایی در تجزیه فرمان:"
 
-#: ../js/misc/util.js:139
+#: ../js/misc/util.js:156
 #, javascript-format
 msgid "Execution of '%s' failed:"
 msgstr "اجرای «%s» شکست خورد:"
@@ -513,16 +561,16 @@ msgstr "باز کردن با %s"
 msgid "Eject"
 msgstr "بیرون دادن"
 
-#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:89 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "گذرواژه"
 
-#: ../js/ui/components/keyring.js:110
+#: ../js/ui/components/keyring.js:108
 msgid "Type again:"
 msgstr "تلاش مجدد:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:695
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:296 ../js/ui/status/network.js:731
 msgid "Connect"
 msgstr "اتصال"
 
@@ -556,7 +604,9 @@ msgstr "تایید هویت برای شبکه بی‌سیم لازم است"
 
 #: ../js/ui/components/networkAgent.js:309
 #, javascript-format
-msgid "Passwords or encryption keys are required to access the wireless network '%s'."
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"'%s'."
 msgstr "گذرواژه یا کلیدهای رمزنگاری برای دسترسی به شبکه «%s» لازم است."
 
 #: ../js/ui/components/networkAgent.js:313
@@ -793,8 +843,10 @@ msgid "This account is already connected to the server"
 msgstr "این حساب قبلا به کارگزار متصل شده است"
 
 #: ../js/ui/components/telepathyClient.js:1335
-msgid "Connection has been replaced by a new connection using the same resource"
-msgstr "اتصال توسط یک اتصال جدید که از منبع مشابه استفاده می‌کند، جایگزین شده است"
+msgid ""
+"Connection has been replaced by a new connection using the same resource"
+msgstr ""
+"اتصال توسط یک اتصال جدید که از منبع مشابه استفاده می‌کند، جایگزین شده است"
 
 #: ../js/ui/components/telepathyClient.js:1337
 msgid "The account already exists on the server"
@@ -809,12 +861,19 @@ msgid "Certificate has been revoked"
 msgstr "گواهینامه لغو شده است"
 
 #: ../js/ui/components/telepathyClient.js:1343
-msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr "گواهینامه از الگوریتم رمزی نامطمئنی استفاده می‌کند یا از نظر cryptography ضعیف است"
+msgid ""
+"Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr ""
+"گواهینامه از الگوریتم رمزی نامطمئنی استفاده می‌کند یا از نظر cryptography "
+"ضعیف است"
 
 #: ../js/ui/components/telepathyClient.js:1345
-msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
-msgstr "اندازه گواهینامه کارگزار، یا عمق حلقه‌ی گواهینامه کارگزار، از محدودیت اعمال شده توسط کتابخانه cryptography تجاوز کرد"
+msgid ""
+"The length of the server certificate, or the depth of the server certificate "
+"chain, exceed the limits imposed by the cryptography library"
+msgstr ""
+"اندازه گواهینامه کارگزار، یا عمق حلقه‌ی گواهینامه کارگزار، از محدودیت اعمال "
+"شده توسط کتابخانه cryptography تجاوز کرد"
 
 #: ../js/ui/components/telepathyClient.js:1347
 msgid "Internal error"
@@ -931,19 +990,21 @@ msgstr[0] "سیستم پس از %Id ثانیه به طور خودکار مجدد
 msgstr[1] "سیستم پس از %Id ثانیه به طور خودکار مجددا راه‌اندازی می‌شود."
 
 #: ../js/ui/endSessionDialog.js:112
-#| msgid "Install Updates & Restart"
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "راه‌اندازی مجدد و نصب بروزرسانی‌ها"
 
 #: ../js/ui/endSessionDialog.js:114
 #, javascript-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will automatically restart and install updates in %d second."
-msgid_plural "The system will automatically restart and install updates in %d seconds."
-msgstr[0] "سیستم پس از %Id ثانیه به طور خودکار مجددا راه‌اندازی می‌شود و بروزرسانی‌های را نصب می‌کند."
-msgstr[1] "سیستم پس از %Id ثانیه به طور خودکار مجددا راه‌اندازی می‌شود و بروزرسانی‌های را نصب می‌کند."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] ""
+"سیستم پس از %Id ثانیه به طور خودکار مجددا راه‌اندازی می‌شود و بروزرسانی‌های را "
+"نصب می‌کند."
+msgstr[1] ""
+"سیستم پس از %Id ثانیه به طور خودکار مجددا راه‌اندازی می‌شود و بروزرسانی‌های را "
+"نصب می‌کند."
 
 #: ../js/ui/endSessionDialog.js:119
 msgctxt "button"
@@ -1005,9 +1066,12 @@ msgstr "نمایش خطاها"
 msgid "Enabled"
 msgstr "به کار انداختن"
 
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:765 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:765 ../js/ui/status/network.js:473
+#: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "از کار انداختن"
 
@@ -1228,8 +1292,8 @@ msgstr "متن درشت"
 msgid "Bluetooth"
 msgstr "بلوتوث"
 
-#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1040 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:1085 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "خاموش کردن"
 
@@ -1239,7 +1303,6 @@ msgstr "تنظیمات بلوتوث"
 
 #: ../js/ui/status/bluetooth.js:58
 #, javascript-format
-#| msgid "Connected (private)"
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%Id دستگاه متصل شد"
@@ -1289,9 +1352,11 @@ msgstr "تایید جهت جفت‌شدن با %s"
 
 #: ../js/ui/status/bluetooth.js:173
 #, javascript-format
-#| msgid "Please confirm whether the PIN '%06d' matches the one on the device."
-msgid "Please confirm whether the Passkey '%06d' matches the one on the device."
-msgstr "لطفا تایید کنید که آیا کلید عبور مربوط به «%I06d» با همتای آن در دستگاه مطابقت دارد یا خیر."
+msgid ""
+"Please confirm whether the Passkey '%06d' matches the one on the device."
+msgstr ""
+"لطفا تایید کنید که آیا کلید عبور مربوط به «%I06d» با همتای آن در دستگاه "
+"مطابقت دارد یا خیر."
 
 #. Translators: this is the verb, not the noun */
 #: ../js/ui/status/bluetooth.js:176
@@ -1323,88 +1388,99 @@ msgstr "روشنایی"
 msgid "<unknown>"
 msgstr "<ناشناخته>"
 
-#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1055
-#| msgid "Offline"
+#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:380
+#: ../js/ui/status/network.js:1106
 msgid "Off"
 msgstr "خاموش"
 
-#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:961
-#: ../js/ui/status/rfkill.js:49
-msgid "Network Settings"
-msgstr "تنظیمات شبکه"
-
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:364
+#: ../js/ui/status/network.js:386
 msgid "unmanaged"
 msgstr "مدیریت نشده"
 
-#: ../js/ui/status/network.js:366
+#: ../js/ui/status/network.js:388
 msgid "disconnecting..."
 msgstr "درحال قطع ارتباط..."
 
-#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1106
+#: ../js/ui/status/network.js:394 ../js/ui/status/network.js:1160
 msgid "connecting..."
 msgstr "درحال اتصال..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1109
+#: ../js/ui/status/network.js:397 ../js/ui/status/network.js:1163
 msgid "authentication required"
 msgstr "تایید هویت لازم است"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:383
+#: ../js/ui/status/network.js:405
 msgid "firmware missing"
 msgstr "میان‌افزار موجود نیست"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:387
+#: ../js/ui/status/network.js:409
 msgid "unavailable"
 msgstr "خارج از دسترس"
 
-#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1111
+#: ../js/ui/status/network.js:411 ../js/ui/status/network.js:1165
 msgid "connection failed"
 msgstr "اتصال شکست خورد"
 
-#: ../js/ui/status/network.js:660
-#| msgid "Network"
+#: ../js/ui/status/network.js:427 ../js/ui/status/network.js:513
+#| msgid "Mobile broadband"
+msgid "Mobile Broadband Settings"
+msgstr "تنظیمات پهن‌باند همراه"
+
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1104
+#| msgid "hardware disabled"
+msgid "Hardware Disabled"
+msgstr "سخت‌افزار غیرفعال شد"
+
+#: ../js/ui/status/network.js:696
 msgid "Wi-Fi Networks"
 msgstr "شبکه‌های وای-فای"
 
-#: ../js/ui/status/network.js:662
-#| msgid "Enable networking"
+#: ../js/ui/status/network.js:698
 msgid "Select a network"
 msgstr "یک شبکه انتخاب کنید"
 
-#: ../js/ui/status/network.js:686
-#| msgid "Network"
+#: ../js/ui/status/network.js:722
 msgid "No Networks"
 msgstr "هیچ شبکه‌ای نیست"
 
-#: ../js/ui/status/network.js:955
-#| msgid "Network"
+#: ../js/ui/status/network.js:991
 msgid "Select Network"
 msgstr "انتخاب شبکه"
 
-#: ../js/ui/status/network.js:1040
+#: ../js/ui/status/network.js:997
+#| msgid "Settings"
+msgid "Wi-Fi Settings"
+msgstr "تنظیمات بی‌سیم"
+
+#: ../js/ui/status/network.js:1085
 msgid "Turn On"
 msgstr "روشن کردن"
 
-#: ../js/ui/status/network.js:1174
+#: ../js/ui/status/network.js:1108
+#| msgid "Connect"
+msgid "Not Connected"
+msgstr "متصل نیست"
+
+#: ../js/ui/status/network.js:1228
 msgid "VPN"
 msgstr "وی‌پی‌ان"
 
-#: ../js/ui/status/network.js:1314
+#: ../js/ui/status/network.js:1368
 msgid "Network Manager"
 msgstr "مدیریت شبکه"
 
-#: ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:1407
 msgid "Connection failed"
 msgstr "اتصال شکست خورد"
 
-#: ../js/ui/status/network.js:1354
+#: ../js/ui/status/network.js:1408
 msgid "Activation of network connection failed"
 msgstr "فعال‌سازی اتصال شبکه شکست خورد"
 
@@ -1439,9 +1515,12 @@ msgid "Airplane Mode"
 msgstr "حالت هواپیمایی"
 
 #: ../js/ui/status/rfkill.js:45
-#| msgid "Open"
 msgid "On"
 msgstr "روشن"
+
+#: ../js/ui/status/rfkill.js:49
+msgid "Network Settings"
+msgstr "تنظیمات شبکه"
 
 #: ../js/ui/status/system.js:305
 msgid "Switch User"
@@ -1518,7 +1597,6 @@ msgstr "آیا می‌خواهید تنظیمات تصویر را نگاه دا�
 #. to avoid ellipsizing the labels.
 #. */
 #: ../js/ui/windowManager.js:75
-#| msgid "Power Settings"
 msgid "Revert Settings"
 msgstr "بازنشانی تنظیمات"
 
@@ -1689,8 +1767,8 @@ msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 
 #~ msgid "Extension"
 #~ msgstr "افزونه"
-#~| msgid "Session..."
 
+#~| msgid "Session..."
 #~ msgid "Session…"
 #~ msgstr "نشست..."
 
@@ -1699,12 +1777,12 @@ msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 
 #~ msgid "Restart"
 #~ msgstr "راه‌اندازی مجدد"
-#~ msgctxt "event list time"
 
+#~ msgctxt "event list time"
 #~ msgid "%H\\u2236%M"
 #~ msgstr "%OH\\u2236%OM"
-#~ msgctxt "event list time"
 
+#~ msgctxt "event list time"
 #~ msgid "%l\\u2236%M\\u2009%p"
 #~ msgstr "%Ol\\u2236%OM\\u2009%p"
 
@@ -1739,22 +1817,19 @@ msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 
 #~ msgid "Visibility"
 #~ msgstr "قابلیت دیدن"
-#~| msgid "Send Files to Device..."
 
+#~| msgid "Send Files to Device..."
 #~ msgid "Send Files to Device…"
 #~ msgstr "ارسال پرونده‌ها به دستگاه..."
-#~| msgid "Set up a New Device..."
 
+#~| msgid "Set up a New Device..."
 #~ msgid "Set Up a New Device…"
 #~ msgstr "برپاسازی یک دستگاه جدید..."
 
-#~ msgid "hardware disabled"
-#~ msgstr "غیرفعال سخت‌افزاری"
-
 #~ msgid "Connection"
 #~ msgstr "اتصال"
-#~| msgid "Send Files..."
 
+#~| msgid "Send Files..."
 #~ msgid "Send Files…"
 #~ msgstr "ارسال پرونده‌ها..."
 
@@ -1769,8 +1844,8 @@ msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 
 #~ msgid "Show Keyboard Layout"
 #~ msgstr "نمایش چیدمان صفحه‌کلید"
-#~| msgid "Region and Language Settings"
 
+#~| msgid "Region and Language Settings"
 #~ msgid "Region & Language Settings"
 #~ msgstr "تنظیمات ناحیه و زبان"
 
@@ -1791,9 +1866,6 @@ msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 
 #~ msgid "Auto Ethernet"
 #~ msgstr "اترنت خودکار"
-
-#~ msgid "Mobile broadband"
-#~ msgstr "پهن‌باند همراه"
 
 #~ msgid "Auto broadband"
 #~ msgstr "پهن‌باند خودکار"
@@ -1817,7 +1889,6 @@ msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 #~ msgstr "غیرفعال‌سازی شبکه"
 
 #~ msgid "%d hour remaining"
-
 #~ msgid_plural "%d hours remaining"
 #~ msgstr[0] "%Id ساعت مانده"
 #~ msgstr[1] "%Id ساعت مانده"
@@ -1826,32 +1897,29 @@ msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 #~ msgstr "%Id %s %Id %s باقی‌مانده"
 
 #~ msgid "hour"
-
 #~ msgid_plural "hours"
 #~ msgstr[0] "ساعت"
 #~ msgstr[1] "ساعت"
 
 #~ msgid "minute"
-
 #~ msgid_plural "minutes"
 #~ msgstr[0] "%Id دقیقه‌"
 #~ msgstr[1] "%Id دقیقه‌"
 
 #~ msgid "%d minute remaining"
-
 #~ msgid_plural "%d minutes remaining"
 #~ msgstr[0] "%Id دقیقه‌ی مانده"
 #~ msgstr[1] "%Id دقیقه‌ی مانده"
-#~ msgctxt "percent of battery remaining"
 
+#~ msgctxt "percent of battery remaining"
 #~ msgid "%d%%"
 #~ msgstr "٪%Id"
-#~| msgid "AC adapter"
 
+#~| msgid "AC adapter"
 #~ msgid "AC Adapter"
 #~ msgstr "آداپتور برق مستقیم"
-#~| msgid "Laptop battery"
 
+#~| msgid "Laptop battery"
 #~ msgid "Laptop Battery"
 #~ msgstr "باتری لپ‌تاپ"
 
@@ -1866,12 +1934,12 @@ msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 
 #~ msgid "PDA"
 #~ msgstr "دستیار دیجیتال شخصی"
-#~| msgid "Cell phone"
 
+#~| msgid "Cell phone"
 #~ msgid "Cell Phone"
 #~ msgstr "تلفن سلولی"
-#~| msgid "Media player"
 
+#~| msgid "Media player"
 #~ msgid "Media Player"
 #~ msgstr "پخش‌کننده‌ی رسانه"
 
@@ -1880,8 +1948,8 @@ msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 
 #~ msgid "Computer"
 #~ msgstr "رایانه"
-#~ msgctxt "device"
 
+#~ msgctxt "device"
 #~ msgid "Unknown"
 #~ msgstr "ناشناس"
 
@@ -1918,8 +1986,8 @@ msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 #~ msgid "Shutting down might cause them to lose unsaved work."
 #~ msgstr ""
 #~ "خاموش‌کردن ممکن است باعث شود که کارهای ذخیره نشده خود را از دست بدهند."
-#~ msgctxt "title"
 
+#~ msgctxt "title"
 #~ msgid "Sign In"
 #~ msgstr "ورود"
 
@@ -1928,12 +1996,12 @@ msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 
 #~ msgid "SETTINGS"
 #~ msgstr "تنظیمات"
-#~ msgctxt "event list time"
 
+#~ msgctxt "event list time"
 #~ msgid "%H:%M"
 #~ msgstr "%OH:%OM"
-#~ msgctxt "event list time"
 
+#~ msgctxt "event list time"
 #~ msgid "%l:%M %p"
 #~ msgstr "%OI:%OM"
 
