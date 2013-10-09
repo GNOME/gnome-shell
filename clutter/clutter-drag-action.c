@@ -364,14 +364,14 @@ on_captured_event (ClutterActor      *stage,
   if (!priv->in_drag)
     return CLUTTER_EVENT_PROPAGATE;
 
-  if (clutter_event_get_device (event) != priv->device)
+  if (clutter_event_get_device (event) != priv->device ||
+      clutter_event_get_event_sequence (event) != priv->sequence)
     return CLUTTER_EVENT_PROPAGATE;
 
   switch (clutter_event_type (event))
     {
     case CLUTTER_TOUCH_UPDATE:
-      if (clutter_event_get_event_sequence (event) == priv->sequence)
-        emit_drag_motion (action, actor, event);
+      emit_drag_motion (action, actor, event);
       break;
 
     case CLUTTER_MOTION:
@@ -391,8 +391,7 @@ on_captured_event (ClutterActor      *stage,
 
     case CLUTTER_TOUCH_END:
     case CLUTTER_TOUCH_CANCEL:
-      if (clutter_event_get_event_sequence (event) == priv->sequence)
-        emit_drag_end (action, actor, event);
+      emit_drag_end (action, actor, event);
       break;
 
     case CLUTTER_BUTTON_RELEASE:
@@ -427,6 +426,8 @@ on_drag_begin (ClutterActor      *actor,
   switch (clutter_event_type (event))
     {
     case CLUTTER_BUTTON_PRESS:
+      if (priv->sequence != NULL)
+        return CLUTTER_EVENT_PROPAGATE;
       if (clutter_event_get_button (event) != CLUTTER_BUTTON_PRIMARY)
         return CLUTTER_EVENT_PROPAGATE;
       break;
