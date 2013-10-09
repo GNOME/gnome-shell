@@ -419,13 +419,13 @@ typedef struct
    */
   GSList *bindings;
 
-  /** for keybindings that can have shift or not like Alt+Tab */
+  /* for keybindings that can have shift or not like Alt+Tab */
   gboolean      add_shift:1;
 
-  /** for keybindings that apply only to a window */
+  /* for keybindings that apply only to a window */
   gboolean      per_window:1;
 
-  /** for keybindings not added with meta_display_add_keybinding() */
+  /* for keybindings not added with meta_display_add_keybinding() */
   gboolean      builtin:1;
 } MetaKeyPref;
 
