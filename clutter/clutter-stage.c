@@ -921,19 +921,31 @@ _clutter_stage_process_queued_events (ClutterStage *stage)
         check_device = TRUE;
 
       /* Skip consecutive motion events coming from the same device */
-      if (priv->throttle_motion_events &&
-          next_event != NULL &&
-	  event->type == CLUTTER_MOTION &&
-	  (next_event->type == CLUTTER_MOTION ||
-	   next_event->type == CLUTTER_LEAVE) &&
-          (!check_device || (device == next_device)))
-	{
-          CLUTTER_NOTE (EVENT,
-                        "Omitting motion event at %d, %d",
-                        (int) event->motion.x,
-                        (int) event->motion.y);
-          goto next_event;
-	}
+      if (priv->throttle_motion_events && next_event != NULL)
+        {
+          if (event->type == CLUTTER_MOTION &&
+              (next_event->type == CLUTTER_MOTION ||
+               next_event->type == CLUTTER_LEAVE) &&
+              (!check_device || (device == next_device)))
+            {
+              CLUTTER_NOTE (EVENT,
+                            "Omitting motion event at %d, %d",
+                            (int) event->motion.x,
+                            (int) event->motion.y);
+              goto next_event;
+            }
+          else if (event->type == CLUTTER_TOUCH_UPDATE &&
+                   (next_event->type == CLUTTER_TOUCH_UPDATE ||
+                    next_event->type == CLUTTER_LEAVE) &&
+                   (!check_device || (device == next_device)))
+            {
+              CLUTTER_NOTE (EVENT,
+                            "Omitting touch update event at %d, %d",
+                            (int) event->touch.x,
+                            (int) event->touch.y);
+              goto next_event;
+            }
+        }
 
       _clutter_process_event (event);
 
