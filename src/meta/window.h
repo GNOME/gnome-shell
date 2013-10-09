@@ -150,8 +150,7 @@ void meta_window_unset_demands_attention (MetaWindow *window);
 const char* meta_window_get_startup_id (MetaWindow *window);
 void meta_window_change_workspace_by_index (MetaWindow *window,
                                             gint        space_index,
-                                            gboolean    append,
-                                            guint32     timestamp);
+                                            gboolean    append);
 void meta_window_change_workspace          (MetaWindow  *window,
                                             MetaWorkspace *workspace);
 GObject *meta_window_get_compositor_private (MetaWindow *window);
