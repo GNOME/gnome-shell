@@ -1621,9 +1621,7 @@ const Workspace = new Lang.Class({
                 metaWindow.move_to_monitor(this.monitorIndex);
 
             let index = this.metaWorkspace ? this.metaWorkspace.index() : global.screen.get_active_workspace_index();
-            metaWindow.change_workspace_by_index(index,
-                                                 false, // don't create workspace
-                                                 time);
+            metaWindow.change_workspace_by_index(index, false);
             return true;
         } else if (source.shellWorkspaceLaunch) {
             source.shellWorkspaceLaunch({ workspace: this.metaWorkspace ? this.metaWorkspace.index() : -1,

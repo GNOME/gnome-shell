@@ -507,9 +507,7 @@ const WorkspaceThumbnail = new Lang.Class({
             if (metaWindow.get_monitor() != this.monitorIndex)
                 metaWindow.move_to_monitor(this.monitorIndex);
 
-            metaWindow.change_workspace_by_index(this.metaWorkspace.index(),
-                                                 false, // don't create workspace
-                                                 time);
+            metaWindow.change_workspace_by_index(this.metaWorkspace.index(), false);
             return true;
         } else if (source.shellWorkspaceLaunch) {
             source.shellWorkspaceLaunch({ workspace: this.metaWorkspace ? this.metaWorkspace.index() : -1,
@@ -739,14 +737,12 @@ const ThumbnailsBox = new Lang.Class({
 
             // ... move them down one.
             windows.forEach(function(win) {
-                win.meta_window.change_workspace_by_index(win.get_workspace() + 1,
-                                                          true, time);
+                win.meta_window.change_workspace_by_index(win.get_workspace() + 1, true);
             });
 
             if (isWindow)
                 // ... and bam, a workspace, good as new.
-                source.metaWindow.change_workspace_by_index(newWorkspaceIndex,
-                                                            true, time);
+                source.metaWindow.change_workspace_by_index(newWorkspaceIndex, true);
             else if (source.shellWorkspaceLaunch) {
                 source.shellWorkspaceLaunch({ workspace: newWorkspaceIndex,
                                               timestamp: time });
