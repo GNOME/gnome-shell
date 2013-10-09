@@ -6563,8 +6563,7 @@ meta_window_property_notify (MetaWindow *window,
 void
 meta_window_change_workspace_by_index (MetaWindow *window,
                                        gint        space_index,
-                                       gboolean    append,
-                                       guint32     timestamp)
+                                       gboolean    append)
 {
   MetaWorkspace *workspace;
   MetaScreen    *screen;
@@ -6583,11 +6582,7 @@ meta_window_change_workspace_by_index (MetaWindow *window,
     meta_screen_get_workspace_by_index (screen, space_index);
 
   if (!workspace && append)
-    {
-      if (timestamp == CurrentTime)
-        timestamp = meta_display_get_current_time_roundtrip (window->display);
-      workspace = meta_screen_append_new_workspace (screen, FALSE, timestamp);
-    }
+    workspace = meta_screen_append_new_workspace (screen, FALSE, CurrentTime);
 
   if (workspace)
     {
