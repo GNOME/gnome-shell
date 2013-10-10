@@ -19,9 +19,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-27 16:40+0000\n"
-"PO-Revision-Date: 2013-09-27 14:40-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"POT-Creation-Date: 2013-10-09 16:40+0000\n"
+"PO-Revision-Date: 2013-10-08 18:10-0300\n"
+"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -294,7 +294,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:692
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:728
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -342,15 +342,15 @@ msgstr "Erro de autenticação"
 msgid "(or swipe finger)"
 msgstr "(ou deslize o dedo)"
 
-#: ../js/misc/util.js:98
+#: ../js/misc/util.js:115
 msgid "Command not found"
 msgstr "Comando não encontrado"
 
-#: ../js/misc/util.js:131
+#: ../js/misc/util.js:148
 msgid "Could not parse command:"
 msgstr "Não foi possível analisar comando:"
 
-#: ../js/misc/util.js:139
+#: ../js/misc/util.js:156
 #, javascript-format
 msgid "Execution of '%s' failed:"
 msgstr "A execução de \"%s\" falhou:"
@@ -581,16 +581,16 @@ msgstr "Abrir com %s"
 msgid "Eject"
 msgstr "Ejetar"
 
-#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:89 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Senha:"
 
-#: ../js/ui/components/keyring.js:110
+#: ../js/ui/components/keyring.js:108
 msgid "Type again:"
 msgstr "Digite novamente:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:695
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:296 ../js/ui/status/network.js:731
 msgid "Connect"
 msgstr "Conectar"
 
@@ -1088,9 +1088,12 @@ msgstr "Exibir erros"
 msgid "Enabled"
 msgstr "Habilitado"
 
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:765 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:765 ../js/ui/status/network.js:473
+#: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Desabilitado"
 
@@ -1128,7 +1131,7 @@ msgstr "Sem mensagens"
 
 #: ../js/ui/messageTray.js:1540
 msgid "Notification Settings"
-msgstr "Configurações de Notificação"
+msgstr "Configurações de notificação"
 
 #: ../js/ui/messageTray.js:1559
 msgid "Tray Menu"
@@ -1311,8 +1314,8 @@ msgstr "Texto grande"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1040 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:1085 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Desligar"
 
@@ -1407,83 +1410,95 @@ msgstr "Brilho"
 msgid "<unknown>"
 msgstr "<desconhecido>"
 
-#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1055
+#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:380
+#: ../js/ui/status/network.js:1106
 msgid "Off"
 msgstr "Desligar"
 
-#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:961
-#: ../js/ui/status/rfkill.js:49
-msgid "Network Settings"
-msgstr "Configurações de rede"
-
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:364
+#: ../js/ui/status/network.js:386
 msgid "unmanaged"
 msgstr "não gerenciado"
 
-#: ../js/ui/status/network.js:366
+#: ../js/ui/status/network.js:388
 msgid "disconnecting..."
 msgstr "desconectando..."
 
-#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1106
+#: ../js/ui/status/network.js:394 ../js/ui/status/network.js:1160
 msgid "connecting..."
 msgstr "conectando..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1109
+#: ../js/ui/status/network.js:397 ../js/ui/status/network.js:1163
 msgid "authentication required"
 msgstr "autenticação necessária"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:383
+#: ../js/ui/status/network.js:405
 msgid "firmware missing"
 msgstr "firmware faltando"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:387
+#: ../js/ui/status/network.js:409
 msgid "unavailable"
 msgstr "indisponível"
 
-#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1111
+#: ../js/ui/status/network.js:411 ../js/ui/status/network.js:1165
 msgid "connection failed"
 msgstr "conexão falhou"
 
-#: ../js/ui/status/network.js:660
+#: ../js/ui/status/network.js:427 ../js/ui/status/network.js:513
+msgid "Mobile Broadband Settings"
+msgstr "Configurações de banda larga móvel"
+
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1104
+msgid "Hardware Disabled"
+msgstr "Hardware desabilitado"
+
+#: ../js/ui/status/network.js:696
 msgid "Wi-Fi Networks"
 msgstr "Redes Wi-Fi"
 
-#: ../js/ui/status/network.js:662
+#: ../js/ui/status/network.js:698
 msgid "Select a network"
 msgstr "Selecione uma rede"
 
-#: ../js/ui/status/network.js:686
+#: ../js/ui/status/network.js:722
 msgid "No Networks"
 msgstr "Nenhuma rede"
 
-#: ../js/ui/status/network.js:955
+#: ../js/ui/status/network.js:991
 msgid "Select Network"
 msgstr "Selecione a rede"
 
-#: ../js/ui/status/network.js:1040
+#: ../js/ui/status/network.js:997
+msgid "Wi-Fi Settings"
+msgstr "Configurações de Wi-Fi"
+
+#: ../js/ui/status/network.js:1085
 msgid "Turn On"
 msgstr "Ligar"
 
-#: ../js/ui/status/network.js:1173
+#: ../js/ui/status/network.js:1108
+msgid "Not Connected"
+msgstr "Não conectado"
+
+#: ../js/ui/status/network.js:1228
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1313
+#: ../js/ui/status/network.js:1368
 msgid "Network Manager"
 msgstr "Gerenciador de rede"
 
-#: ../js/ui/status/network.js:1352
+#: ../js/ui/status/network.js:1407
 msgid "Connection failed"
 msgstr "Falha de conexão"
 
-#: ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:1408
 msgid "Activation of network connection failed"
 msgstr "Falha ao ativar a conexão da rede"
 
@@ -1520,6 +1535,10 @@ msgstr "Modo avião"
 #: ../js/ui/status/rfkill.js:45
 msgid "On"
 msgstr "On"
+
+#: ../js/ui/status/rfkill.js:49
+msgid "Network Settings"
+msgstr "Configurações de rede"
 
 #: ../js/ui/status/system.js:305
 msgid "Switch User"
@@ -1816,9 +1835,6 @@ msgstr "O diálogo de autenticação foi descartado pelo usuário"
 #~ msgid "Set Up a New Device…"
 #~ msgstr "Configurar um novo dispositivo…"
 
-#~ msgid "hardware disabled"
-#~ msgstr "hardware desabilitado"
-
 #~ msgid "Connection"
 #~ msgstr "Conexão"
 
@@ -1836,9 +1852,6 @@ msgstr "O diálogo de autenticação foi descartado pelo usuário"
 
 #~ msgid "Wired"
 #~ msgstr "Cabeada"
-
-#~ msgid "Mobile broadband"
-#~ msgstr "Banda larga móvel"
 
 #~ msgid "Networking is disabled"
 #~ msgstr "Rede está desabilitada"
