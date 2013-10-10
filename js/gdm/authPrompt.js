@@ -59,6 +59,7 @@ const AuthPrompt = new Lang.Class({
         this._userVerifier.connect('verification-complete', Lang.bind(this, this._onVerificationComplete));
         this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
         this._userVerifier.connect('smartcard-status-changed', Lang.bind(this, this._onSmartcardStatusChanged));
+        this._userVerifier.connect('ovirt-user-authenticated', Lang.bind(this, this._onOVirtUserAuthenticated));
         this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         this.connect('next', Lang.bind(this, function() {
@@ -217,6 +218,11 @@ const AuthPrompt = new Lang.Class({
 
         this.updateSensitivity(true);
         this.emit('prompted');
+    },
+
+    _onOVirtUserAuthenticated: function() {
+        if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
+            this.reset();
     },
 
     _onSmartcardStatusChanged: function() {
@@ -444,10 +450,11 @@ const AuthPrompt = new Lang.Class({
             // The user is constant at the unlock screen, so it will immediately
             // respond to the request with the username
             beginRequestType = BeginRequestType.PROVIDE_USERNAME;
-        } else if (this.smartcardDetected &&
-                   this._userVerifier.serviceIsForeground(GdmUtil.SMARTCARD_SERVICE_NAME)) {
+        } else if (this._userVerifier.serviceIsForeground(GdmUtil.OVIRT_SERVICE_NAME) ||
+                   (this.smartcardDetected &&
+                    this._userVerifier.serviceIsForeground(GdmUtil.SMARTCARD_SERVICE_NAME))) {
             // We don't need to know the username if the user preempted the login screen
-            // with a smartcard.
+            // with a smartcard or with preauthenticated oVirt credentials
             beginRequestType = BeginRequestType.DONT_PROVIDE_USERNAME;
         } else {
             // In all other cases, we should get the username up front.

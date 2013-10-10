@@ -10,6 +10,7 @@ const St = imports.gi.St;
 
 const Batch = imports.gdm.batch;
 const Fprint = imports.gdm.fingerprint;
+const OVirt = imports.gdm.oVirt;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
@@ -19,6 +20,7 @@ const Tweener = imports.ui.tweener;
 const PASSWORD_SERVICE_NAME = 'gdm-password';
 const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
+const OVIRT_SERVICE_NAME = 'gdm-ovirtcred';
 const FADE_ANIMATION_TIME = 0.16;
 const CLONE_FADE_ANIMATION_TIME = 0.25;
 
@@ -151,6 +153,14 @@ const ShellUserVerifier = new Lang.Class({
         this.reauthenticating = false;
 
         this._failCounter = 0;
+
+        this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
+
+        if (this._oVirtCredentialsManager.hasToken())
+            this._oVirtUserAuthenticated(this._oVirtCredentialsManager.getToken());
+
+        this._oVirtCredentialsManager.connect('user-authenticated',
+                                              Lang.bind(this, this._oVirtUserAuthenticated));
     },
 
     begin: function(userName, hold) {
@@ -275,6 +285,11 @@ const ShellUserVerifier = new Lang.Class({
                     this._haveFingerprintReader = true;
                     this._updateDefaultService();
             }));
+    },
+
+    _oVirtUserAuthenticated: function(token) {
+        this._preemptingService = OVIRT_SERVICE_NAME;
+        this.emit('ovirt-user-authenticated');
     },
 
     _checkForSmartcard: function() {
@@ -455,6 +470,12 @@ const ShellUserVerifier = new Lang.Class({
         if (!this.serviceIsForeground(serviceName))
             return;
 
+        if (serviceName == OVIRT_SERVICE_NAME) {
+            // The only question asked by this service is "Token?"
+            this.answerQuery(serviceName, this._oVirtCredentialsManager.getToken());
+            return;
+        }
+
         this.emit('ask-question', serviceName, secretQuestion, '\u25cf');
     },
 
@@ -515,6 +536,16 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _onConversationStopped: function(client, serviceName) {
+        // If the login failed with the preauthenticated oVirt credentials
+        // then discard the credentials and revert to default authentication
+        // mechanism.
+        if (this.serviceIsForeground(OVIRT_SERVICE_NAME)) {
+            this._oVirtCredentialsManager.resetToken();
+            this._preemptingService = null;
+            this._verificationFailed(false);
+            return;
+        }
+
         // if the password service fails, then cancel everything.
         // But if, e.g., fingerprint fails, still give
         // password authentication a chance to succeed

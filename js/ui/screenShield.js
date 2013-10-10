@@ -19,6 +19,7 @@ const Background = imports.ui.background;
 const GnomeSession = imports.misc.gnomeSession;
 const Hash = imports.misc.hash;
 const Layout = imports.ui.layout;
+const OVirt = imports.gdm.oVirt;
 const LoginManager = imports.misc.loginManager;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
@@ -544,6 +545,13 @@ const ScreenShield = new Lang.Class({
                                            if (this._isLocked && token.UsedToLogin)
                                                this._liftShield(true, 0);
                                        }));
+
+        this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
+        this._oVirtCredentialsManager.connect('user-authenticated',
+                                              Lang.bind(this, function() {
+                                                  if (this._isLocked)
+                                                      this._liftShield(true, 0);
+                                              }));
 
         this._inhibitor = null;
         this._aboutToSuspend = false;
