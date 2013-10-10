@@ -652,7 +652,7 @@ clutter_scaling_filter_to_cogl_pipeline_filter (ClutterScalingFilter filter)
 /**
  * clutter_texture_node_new:
  * @texture: a #CoglTexture
- * @color: a #ClutterColor
+ * @color: (allow-none): a #ClutterColor used for blending, or %NULL
  * @min_filter: the minification filter for the texture
  * @mag_filter: the magnification filter for the texture
  *
@@ -660,6 +660,10 @@ clutter_scaling_filter_to_cogl_pipeline_filter (ClutterScalingFilter filter)
  *
  * This function will take a reference on @texture, so it is safe to
  * call cogl_object_unref() on @texture when it returns.
+ *
+ * The @color must not be pre-multiplied with its #ClutterColor.alpha
+ * channel value; if @color is %NULL, a fully opaque white color will
+ * be used for blending.
  *
  * Return value: (transfer full): the newly created #ClutterPaintNode.
  *   Use clutter_paint_node_unref() when done
@@ -686,12 +690,18 @@ clutter_texture_node_new (CoglTexture          *texture,
   mag_f = clutter_scaling_filter_to_cogl_pipeline_filter (mag_filter);
   cogl_pipeline_set_layer_filters (tnode->pipeline, 0, min_f, mag_f);
 
-  cogl_color_init_from_4ub (&cogl_color,
-                            color->red,
-                            color->green,
-                            color->blue,
-                            color->alpha);
-  cogl_color_premultiply (&cogl_color);
+  if (color != NULL)
+    {
+      cogl_color_init_from_4ub (&cogl_color,
+                                color->red,
+                                color->green,
+                                color->blue,
+                                color->alpha);
+      cogl_color_premultiply (&cogl_color);
+    }
+  else
+    cogl_color_init_from_4ub (&cogl_color, 255, 255, 255, 255);
+
   cogl_pipeline_set_color (tnode->pipeline, &cogl_color);
 
   return (ClutterPaintNode *) tnode;
