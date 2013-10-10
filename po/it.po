@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-01 14:26+0000\n"
-"PO-Revision-Date: 2013-10-01 19:20+0200\n"
+"POT-Creation-Date: 2013-10-09 16:40+0000\n"
+"PO-Revision-Date: 2013-10-10 08:36+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -290,7 +290,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:692
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:728
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -337,15 +337,15 @@ msgstr "Errore di autenticazione"
 msgid "(or swipe finger)"
 msgstr "(o passare il dito)"
 
-#: ../js/misc/util.js:98
+#: ../js/misc/util.js:115
 msgid "Command not found"
 msgstr "Comando non trovato"
 
-#: ../js/misc/util.js:131
+#: ../js/misc/util.js:148
 msgid "Could not parse command:"
 msgstr "Impossibile analizzare il comando:"
 
-#: ../js/misc/util.js:139
+#: ../js/misc/util.js:156
 msgid "Execution of '%s' failed:"
 msgstr "Esecuzione di «%s» non riuscita:"
 
@@ -573,16 +573,16 @@ msgstr "Apri con %s"
 msgid "Eject"
 msgstr "Espelli"
 
-#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:89 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Password:"
 
-#: ../js/ui/components/keyring.js:110
+#: ../js/ui/components/keyring.js:108
 msgid "Type again:"
 msgstr "Inserire di nuovo:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:695
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:296 ../js/ui/status/network.js:731
 msgid "Connect"
 msgstr "Connetti"
 
@@ -1069,9 +1069,12 @@ msgid "Enabled"
 msgstr "Abilitato"
 
 # (ndt) o disabilitata?
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:765 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:765 ../js/ui/status/network.js:473
+#: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Disabilitato"
 
@@ -1291,8 +1294,8 @@ msgstr "Caratteri grandi"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1040 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:1085 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Spegni"
 
@@ -1379,84 +1382,101 @@ msgstr "Luminosità"
 msgid "<unknown>"
 msgstr "<sconosciuto>"
 
-#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1055
+#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:380
+#: ../js/ui/status/network.js:1106
 msgid "Off"
 msgstr "Off"
-
-#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:961
-#: ../js/ui/status/rfkill.js:49
-msgid "Network Settings"
-msgstr "Impostazioni rete"
 
 # FIXME o femminile? boh
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:364
+#: ../js/ui/status/network.js:386
 msgid "unmanaged"
 msgstr "non gestito"
 
-#: ../js/ui/status/network.js:366
+#: ../js/ui/status/network.js:388
 msgid "disconnecting..."
 msgstr "disconnessione..."
 
-#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1106
+#: ../js/ui/status/network.js:394 ../js/ui/status/network.js:1160
 msgid "connecting..."
 msgstr "connessione..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1109
+#: ../js/ui/status/network.js:397 ../js/ui/status/network.js:1163
 msgid "authentication required"
 msgstr "richiesta autenticazione"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:383
+#: ../js/ui/status/network.js:405
 msgid "firmware missing"
 msgstr "firmware mancante"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:387
+#: ../js/ui/status/network.js:409
 msgid "unavailable"
 msgstr "non disponibile"
 
-#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1111
+#: ../js/ui/status/network.js:411 ../js/ui/status/network.js:1165
 msgid "connection failed"
 msgstr "connessione non riuscita"
 
-#: ../js/ui/status/network.js:660
+#: ../js/ui/status/network.js:427 ../js/ui/status/network.js:513
+#| msgid "Mobile broadband network password"
+msgid "Mobile Broadband Settings"
+msgstr "Impostazioni banda larga mobile"
+
+# (ndt) o disabilitata?
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1104
+#| msgid "Disabled"
+msgid "Hardware Disabled"
+msgstr "Hardware disabilitato"
+
+#: ../js/ui/status/network.js:696
 msgid "Wi-Fi Networks"
 msgstr "Reti Wi-Fi"
 
-#: ../js/ui/status/network.js:662
+#: ../js/ui/status/network.js:698
 msgid "Select a network"
 msgstr "Seleziona una rete"
 
-#: ../js/ui/status/network.js:686
+#: ../js/ui/status/network.js:722
 msgid "No Networks"
 msgstr "Nessuna rete"
 
-#: ../js/ui/status/network.js:955
+#: ../js/ui/status/network.js:991
 msgid "Select Network"
 msgstr "Seleziona rete"
 
-#: ../js/ui/status/network.js:1040
+#: ../js/ui/status/network.js:997
+#| msgid "Settings"
+msgid "Wi-Fi Settings"
+msgstr "Impostazioni Wi-Fi"
+
+#: ../js/ui/status/network.js:1085
 msgid "Turn On"
 msgstr "Accendi"
 
-#: ../js/ui/status/network.js:1174
+#: ../js/ui/status/network.js:1108
+#| msgid "Connect"
+msgid "Not Connected"
+msgstr "Non collegato"
+
+#: ../js/ui/status/network.js:1228
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1314
+#: ../js/ui/status/network.js:1368
 msgid "Network Manager"
 msgstr "Gestore reti"
 
-#: ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:1407
 msgid "Connection failed"
 msgstr "Connessione non riuscita"
 
-#: ../js/ui/status/network.js:1354
+#: ../js/ui/status/network.js:1408
 msgid "Activation of network connection failed"
 msgstr "Attivazione della connessione di rete non riuscita"
 
@@ -1477,13 +1497,11 @@ msgid "Estimating…"
 msgstr "In stima…"
 
 #: ../js/ui/status/power.js:77
-#| msgid "%d\\u2236%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "%d.%02d rimanente (%d%%)"
 
 # in stile MacOS sarebbe "al pieno" :P
 #: ../js/ui/status/power.js:82
-#| msgid "%d\\u2236%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d.%02d alla carica (%d%%)"
 
@@ -1494,6 +1512,10 @@ msgstr "Modalità aeroplano"
 #: ../js/ui/status/rfkill.js:45
 msgid "On"
 msgstr "On"
+
+#: ../js/ui/status/rfkill.js:49
+msgid "Network Settings"
+msgstr "Impostazioni rete"
 
 #: ../js/ui/status/system.js:305
 msgid "Switch User"
