@@ -170,17 +170,6 @@ const AutorunManager = new Lang.Class({
         this._transDispatcher = new AutorunTransientDispatcher(this);
     },
 
-    _ensureResidentSource: function() {
-        if (this._residentSource)
-            return;
-
-        this._residentSource = new AutorunResidentSource(this);
-        let destroyId = this._residentSource.connect('destroy', Lang.bind(this, function() {
-            this._residentSource.disconnect(destroyId);
-            this._residentSource = null;
-        }));
-    },
-
     enable: function() {
         this._scanMounts();
 
@@ -189,17 +178,12 @@ const AutorunManager = new Lang.Class({
     },
 
     disable: function() {
-        if (this._residentSource)
-            this._residentSource.destroy();
         this._volumeMonitor.disconnect(this._mountAddedId);
         this._volumeMonitor.disconnect(this._mountRemovedId);
     },
 
     _processMount: function(mount, hotplug) {
         let discoverer = new ContentTypeDiscoverer(Lang.bind(this, function(mount, apps, contentTypes) {
-            this._ensureResidentSource();
-            this._residentSource.addMount(mount, apps);
-
             if (hotplug)
                 this._transDispatcher.addMount(mount, apps, contentTypes);
         }));
@@ -224,8 +208,6 @@ const AutorunManager = new Lang.Class({
 
     _onMountRemoved: function(monitor, mount) {
         this._transDispatcher.removeMount(mount);
-        if (this._residentSource)
-            this._residentSource.removeMount(mount);
     },
 
     ejectMount: function(mount) {
@@ -285,153 +267,6 @@ const AutorunManager = new Lang.Class({
                 log('Unable to stop the drive ' + drive.get_name() 
                     + ': ' + e.toString());
         }
-    },
-});
-
-const AutorunResidentSource = new Lang.Class({
-    Name: 'AutorunResidentSource',
-    Extends: MessageTray.Source,
-
-    _init: function(manager) {
-        this.parent(_("Removable Devices"), 'media-removable');
-        this.resident = true;
-
-        this._mounts = [];
-
-        this._manager = manager;
-        this._notification = new AutorunResidentNotification(this._manager, this);
-    },
-
-    _createPolicy: function() {
-        return new MessageTray.NotificationPolicy({ showInLockScreen: false });
-    },
-
-    buildRightClickMenu: function() {
-        return null;
-    },
-
-    addMount: function(mount, apps) {
-        if (!shouldAutorunMount(mount, false))
-            return;
-
-        let filtered = this._mounts.filter(function (element) {
-            return (element.mount == mount);
-        });
-
-        if (filtered.length != 0)
-            return;
-
-        let element = { mount: mount, apps: apps };
-        this._mounts.push(element);
-        this._redisplay();
-    },
-
-    removeMount: function(mount) {
-        this._mounts =
-            this._mounts.filter(function (element) {
-                return (element.mount != mount);
-            });
-
-        this._redisplay();
-    },
-
-    _redisplay: function() {
-        if (this._mounts.length == 0) {
-            this._notification.destroy();
-            this.destroy();
-
-            return;
-        }
-
-        this._notification.updateForMounts(this._mounts);
-
-        // add ourselves as a source, and push the notification
-        if (!Main.messageTray.contains(this)) {
-            Main.messageTray.add(this);
-            this.pushNotification(this._notification);
-        }
-    }
-});
-
-const AutorunResidentNotification = new Lang.Class({
-    Name: 'AutorunResidentNotification',
-    Extends: MessageTray.Notification,
-
-    _init: function(manager, source) {
-        this.parent(source, source.title, null, { customContent: true });
-
-        // set the notification as resident
-        this.setResident(true);
-
-        this._layout = new St.BoxLayout ({ style_class: 'hotplug-resident-box',
-                                           vertical: true });
-        this._manager = manager;
-
-        this.addActor(this._layout,
-                      { x_expand: true,
-                        x_fill: true });
-    },
-
-    updateForMounts: function(mounts) {
-        // remove all the layout content
-        this._layout.destroy_all_children();
-
-        for (let idx = 0; idx < mounts.length; idx++) {
-            let element = mounts[idx];
-
-            let actor = this._itemForMount(element.mount, element.apps);
-            this._layout.add(actor, { x_fill: true,
-                                      expand: true });
-        }
-    },
-
-    _itemForMount: function(mount, apps) {
-        let item = new St.BoxLayout();
-
-        // prepare the mount button content
-        let mountLayout = new St.BoxLayout();
-
-        let mountIcon = new St.Icon({ gicon: mount.get_icon(),
-                                      style_class: 'hotplug-resident-mount-icon' });
-        mountLayout.add_actor(mountIcon);
-
-        let labelBin = new St.Bin({ y_align: St.Align.MIDDLE });
-        let mountLabel =
-            new St.Label({ text: mount.get_name(),
-                           style_class: 'hotplug-resident-mount-label',
-                           track_hover: true,
-                           reactive: true });
-        labelBin.add_actor(mountLabel);
-        mountLayout.add_actor(labelBin);
-
-        let mountButton = new St.Button({ child: mountLayout,
-                                          x_align: St.Align.START,
-                                          x_fill: true,
-                                          style_class: 'hotplug-resident-mount',
-                                          button_mask: St.ButtonMask.ONE });
-        item.add(mountButton, { x_align: St.Align.START,
-                                expand: true });
-
-        let ejectIcon = 
-            new St.Icon({ icon_name: 'media-eject-symbolic',
-                          style_class: 'hotplug-resident-eject-icon' });
-
-        let ejectButton =
-            new St.Button({ style_class: 'hotplug-resident-eject-button',
-                            button_mask: St.ButtonMask.ONE,
-                            child: ejectIcon });
-        item.add(ejectButton, { x_align: St.Align.END });
-
-        // now connect signals
-        mountButton.connect('clicked', Lang.bind(this, function(actor, event) {
-            startAppForMount(apps[0], mount);
-        }));
-
-        ejectButton.connect('clicked', Lang.bind(this, function() {
-            this._manager.ejectMount(mount);
-        }));
-
-        return item;
     },
 });
 

@@ -417,7 +417,6 @@ StScrollBar StButton#vhandle:active {
 .notification-button,
 .notification-icon-button,
 .hotplug-notification-item,
-.hotplug-resident-eject-button,
 .modal-dialog-button,
 .app-view-control {
     border: 1px solid #8b8b8b;
@@ -434,7 +433,6 @@ StScrollBar StButton#vhandle:active {
 .notification-button:hover,
 .notification-icon-button:hover,
 .hotplug-notification-item:hover,
-.hotplug-resident-eject-button:hover,
 .modal-dialog-button:hover {
     background-gradient-start: rgba(255, 255, 255, 0.3);
     background-gradient-end: rgba(255, 255, 255, 0.1);
@@ -458,7 +456,6 @@ StScrollBar StButton#vhandle:active {
 .notification-button:active,
 .notification-icon-button:active,
 .hotplug-notification-item:active,
-.hotplug-resident-eject-button:active,
 .modal-dialog-button:active,
 .modal-dialog-button:pressed,
 .app-view-control:checked {
@@ -1667,45 +1664,6 @@ StScrollBar StButton#vhandle:active {
 .hotplug-notification-item-icon {
     icon-size: 24px;
     padding: 2px 5px;
-}
-
-.hotplug-resident-box {
-    spacing: 8px;
-}
-
-.hotplug-resident-mount {
-    spacing: 8px;
-    border-radius: 4px;
-
-    color: #ccc;
-}
-
-.hotplug-resident-mount:hover {
-    background-gradient-direction: horizontal;
-    background-gradient-start: rgba(255, 255, 255, 0.1);
-    background-gradient-end: rgba(255, 255, 255, 0);
-
-    color: #fff;
-}
-
-.hotplug-resident-mount-label {
-    color: inherit;
-    padding-left: 6px;
-}
-
-.hotplug-resident-mount-icon {
-    icon-size: 24px;
-    padding-left: 6px;
-}
-
-.hotplug-resident-eject-icon {
-    icon-size: 16px;
-}
-
-.hotplug-resident-eject-button {
-    padding: 7px;
-    border-radius: 5px;
-    color: #ccc;
 }
 
 .chat-log-message {
