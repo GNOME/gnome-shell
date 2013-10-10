@@ -30,6 +30,7 @@
 #include <config.h>
 
 #include <meta/meta-shaped-texture.h>
+#include "clutter-utils.h"
 #include "meta-texture-tower.h"
 
 #include <clutter/clutter.h>
@@ -209,6 +210,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
   CoglTexture *paint_tex;
   ClutterActorBox alloc;
   cairo_region_t *blended_region = NULL;
+  CoglPipelineFilter filter;
 
   if (priv->clip_region && cairo_region_is_empty (priv->clip_region))
     return;
@@ -245,6 +247,22 @@ meta_shaped_texture_paint (ClutterActor *actor)
   if (tex_width == 0 || tex_height == 0) /* no contents yet */
     return;
 
+  /* Use nearest-pixel interpolation if the texture is unscaled. This
+   * improves performance, especially with software rendering.
+   */
+
+  filter = COGL_PIPELINE_FILTER_LINEAR;
+
+  if (!clutter_actor_is_in_clone_paint (actor))
+    {
+      int x_origin, y_origin;
+
+      if (meta_actor_is_untransformed (actor,
+                                       &x_origin,
+                                       &y_origin))
+        filter = COGL_PIPELINE_FILTER_NEAREST;
+    }
+
   ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
   fb = cogl_get_draw_framebuffer ();
 
@@ -273,6 +291,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
 
       opaque_pipeline = get_unblended_pipeline (ctx);
       cogl_pipeline_set_layer_texture (opaque_pipeline, 0, paint_tex);
+      cogl_pipeline_set_layer_filters (opaque_pipeline, 0, filter, filter);
 
       n_rects = cairo_region_num_rectangles (region);
       for (i = 0; i < n_rects; i++)
@@ -314,9 +333,11 @@ meta_shaped_texture_paint (ClutterActor *actor)
     {
       pipeline = get_masked_pipeline (ctx);
       cogl_pipeline_set_layer_texture (pipeline, 1, priv->mask_texture);
+      cogl_pipeline_set_layer_filters (pipeline, 1, filter, filter);
     }
 
   cogl_pipeline_set_layer_texture (pipeline, 0, paint_tex);
+  cogl_pipeline_set_layer_filters (pipeline, 0, filter, filter);
 
   {
     CoglColor color;
