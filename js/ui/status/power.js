@@ -86,38 +86,30 @@ const Indicator = new Lang.Class({
         return _("Estimating…");
     },
 
-    _syncStatusLabel: function() {
-        this._proxy.GetPrimaryDeviceRemote(Lang.bind(this, function(result, error) {
-            if (error) {
-                this._item.actor.hide();
-                return;
-            }
+    _sync: function() {
+        function isBattery(result) {
+            if (!result)
+                return false;
 
             let [device] = result;
-            let [device_id, device_type] = device;
-            if (device_type == UPower.DeviceKind.BATTERY) {
+            let [, deviceType] = device;
+            return (deviceType == UPower.DeviceKind.BATTERY);
+        }
+
+        this._proxy.GetPrimaryDeviceRemote(Lang.bind(this, function(result, error) {
+            if (isBattery(result)) {
+                let [device] = result;
+                let [,, icon] = device;
+                let gicon = Gio.icon_new_for_string(icon);
+                this._indicator.gicon = gicon;
+                this._item.icon.gicon = gicon;
                 this._item.status.text = this._statusForDevice(device);
                 this._item.actor.show();
             } else {
+                // If there's no battery, then we use the power icon.
+                this._indicator.icon_name = 'system-shutdown-symbolic';
                 this._item.actor.hide();
             }
         }));
     },
-
-    _syncIcon: function() {
-        let icon = this._proxy.Icon;
-        if (icon) {
-            let gicon = Gio.icon_new_for_string(icon);
-            this._indicator.gicon = gicon;
-            this._item.icon.gicon = gicon;
-        } else {
-            // If there's no battery, then we use the power icon.
-            this._indicator.icon_name = 'system-shutdown-symbolic';
-        }
-    },
-
-    _sync: function() {
-        this._syncIcon();
-        this._syncStatusLabel();
-    }
 });
