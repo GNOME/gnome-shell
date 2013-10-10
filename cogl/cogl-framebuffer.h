@@ -758,6 +758,39 @@ cogl_framebuffer_set_dither_enabled (CoglFramebuffer *framebuffer,
                                      CoglBool dither_enabled);
 
 /**
+ * cogl_framebuffer_get_depth_write_enabled:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ *
+ * Queries whether depth buffer writing is enabled for @framebuffer. This
+ * can be controlled via cogl_framebuffer_set_depth_write_enabled().
+ *
+ * Return value: %TRUE if depth writing is enabled or %FALSE if not.
+ * Since: 1.18
+ * Stability: unstable
+ */
+CoglBool
+cogl_framebuffer_get_depth_write_enabled (CoglFramebuffer *framebuffer);
+
+/**
+ * cogl_framebuffer_set_depth_write_enabled:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ * @depth_write_enabled: %TRUE to enable depth writing or %FALSE to disable
+ *
+ * Enables or disables depth buffer writing when rendering to @framebuffer.
+ * If depth writing is enabled for both the framebuffer and the rendering
+ * pipeline, and the framebuffer has an associated depth buffer, depth
+ * information will be written to this buffer during rendering.
+ *
+ * Depth buffer writing is enabled by default.
+ *
+ * Since: 1.18
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_set_depth_write_enabled (CoglFramebuffer *framebuffer,
+                                          CoglBool depth_write_enabled);
+
+/**
  * cogl_framebuffer_get_color_mask:
  * @framebuffer: a pointer to a #CoglFramebuffer
  *

@@ -78,7 +78,8 @@ typedef enum _CoglFramebufferStateIndex
   COGL_FRAMEBUFFER_STATE_INDEX_PROJECTION         = 5,
   COGL_FRAMEBUFFER_STATE_INDEX_COLOR_MASK         = 6,
   COGL_FRAMEBUFFER_STATE_INDEX_FRONT_FACE_WINDING = 7,
-  COGL_FRAMEBUFFER_STATE_INDEX_MAX                = 8
+  COGL_FRAMEBUFFER_STATE_INDEX_DEPTH_WRITE        = 8,
+  COGL_FRAMEBUFFER_STATE_INDEX_MAX                = 9
 } CoglFramebufferStateIndex;
 
 typedef enum _CoglFramebufferState
@@ -90,7 +91,8 @@ typedef enum _CoglFramebufferState
   COGL_FRAMEBUFFER_STATE_MODELVIEW          = 1<<4,
   COGL_FRAMEBUFFER_STATE_PROJECTION         = 1<<5,
   COGL_FRAMEBUFFER_STATE_COLOR_MASK         = 1<<6,
-  COGL_FRAMEBUFFER_STATE_FRONT_FACE_WINDING = 1<<7
+  COGL_FRAMEBUFFER_STATE_FRONT_FACE_WINDING = 1<<7,
+  COGL_FRAMEBUFFER_STATE_DEPTH_WRITE        = 1<<8
 } CoglFramebufferState;
 
 #define COGL_FRAMEBUFFER_STATE_ALL ((1<<COGL_FRAMEBUFFER_STATE_INDEX_MAX) - 1)
@@ -143,6 +145,7 @@ struct _CoglFramebuffer
   CoglClipState       clip_state;
 
   CoglBool            dither_enabled;
+  CoglBool            depth_writing_enabled;
   CoglColorMask       color_mask;
 
   /* We journal the textured rectangles we want to submit to OpenGL so

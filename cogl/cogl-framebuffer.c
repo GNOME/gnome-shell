@@ -114,6 +114,7 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
   framebuffer->viewport_age = 0;
   framebuffer->viewport_age_for_scissor_workaround = -1;
   framebuffer->dither_enabled = TRUE;
+  framebuffer->depth_writing_enabled = TRUE;
 
   framebuffer->modelview_stack = cogl_matrix_stack_new (ctx);
   framebuffer->projection_stack = cogl_matrix_stack_new (ctx);
@@ -1103,6 +1104,14 @@ _cogl_framebuffer_compare_front_face_winding_state (CoglFramebuffer *a,
     return 0;
 }
 
+static unsigned long
+_cogl_framebuffer_compare_depth_write_state (CoglFramebuffer *a,
+                                             CoglFramebuffer *b)
+{
+  return a->depth_writing_enabled != b->depth_writing_enabled ?
+    COGL_FRAMEBUFFER_STATE_DEPTH_WRITE : 0;
+}
+
 unsigned long
 _cogl_framebuffer_compare (CoglFramebuffer *a,
                            CoglFramebuffer *b,
@@ -1150,6 +1159,10 @@ _cogl_framebuffer_compare (CoglFramebuffer *a,
         case COGL_FRAMEBUFFER_STATE_INDEX_FRONT_FACE_WINDING:
           differences |=
             _cogl_framebuffer_compare_front_face_winding_state (a, b);
+          break;
+        case COGL_FRAMEBUFFER_STATE_INDEX_DEPTH_WRITE:
+          differences |=
+            _cogl_framebuffer_compare_depth_write_state (a, b);
           break;
         default:
           g_warn_if_reached ();
@@ -1259,6 +1272,29 @@ cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
   if (framebuffer->context->current_draw_buffer == framebuffer)
     framebuffer->context->current_draw_buffer_changes |=
       COGL_FRAMEBUFFER_STATE_COLOR_MASK;
+}
+
+CoglBool
+cogl_framebuffer_get_depth_write_enabled (CoglFramebuffer *framebuffer)
+{
+  return framebuffer->depth_writing_enabled;
+}
+
+void
+cogl_framebuffer_set_depth_write_enabled (CoglFramebuffer *framebuffer,
+                                          CoglBool depth_write_enabled)
+{
+  if (framebuffer->depth_writing_enabled == depth_write_enabled)
+    return;
+
+  /* XXX: Currently depth write changes don't go through the journal */
+  _cogl_framebuffer_flush_journal (framebuffer);
+
+  framebuffer->depth_writing_enabled = depth_write_enabled;
+
+  if (framebuffer->context->current_draw_buffer == framebuffer)
+    framebuffer->context->current_draw_buffer_changes |=
+      COGL_FRAMEBUFFER_STATE_DEPTH_WRITE;
 }
 
 CoglBool
