@@ -777,11 +777,8 @@ const Source = new Lang.Class({
         if (this.app == null)
             return;
 
-        let windows = this.app.get_windows();
-        if (windows.length > 0) {
-            let mostRecentWindow = windows[0];
-            Main.activateWindow(mostRecentWindow);
-        }
+        this.app.activate();
+        Main.overview.hide();
     },
 
     destroy: function() {
