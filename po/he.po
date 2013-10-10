@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-11 00:43+0300\n"
-"PO-Revision-Date: 2013-10-11 01:06+0300\n"
+"POT-Creation-Date: 2013-10-11 01:13+0300\n"
+"PO-Revision-Date: 2013-10-11 01:14+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -1129,6 +1129,7 @@ msgstr "לא ידוע"
 
 # javascript-format
 #: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:152
+#, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d הודעה חדשה"
@@ -1184,6 +1185,7 @@ msgstr "%A, ה־%d ב%B"
 
 # javascript-format
 #: ../js/ui/screenShield.js:154
+#, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d התרעה חדשה"
@@ -1298,9 +1300,10 @@ msgstr "הגדרות Bluetooth"
 
 # javascript-format
 #: ../js/ui/status/bluetooth.js:58
+#, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
-msgstr[0] "התקן אחד מחובר"
+msgstr[0] "%d התקן מחובר"
 msgstr[1] "%d התקנים מחוברים"
 
 #: ../js/ui/status/bluetooth.js:101 ../js/ui/status/bluetooth.js:129
@@ -1595,9 +1598,10 @@ msgstr "שמירת שינויים"
 
 # javascript-format
 #: ../js/ui/windowManager.js:97
+#, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
-msgstr[0] "שינויי הגדרות ישוחזרו בעוד שנייה"
+msgstr[0] "שינויי הגדרות ישוחזרו בעוד %d שנייה"
 msgstr[1] "שינויי הגדרות ישוחזרו בעוד %d שניות"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
