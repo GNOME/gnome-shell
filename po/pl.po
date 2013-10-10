@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-09 19:01+0200\n"
-"PO-Revision-Date: 2013-10-09 19:02+0200\n"
+"POT-Creation-Date: 2013-10-10 23:41+0200\n"
+"PO-Revision-Date: 2013-10-10 23:42+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -1124,27 +1124,31 @@ msgstr "Otwórz"
 msgid "Remove"
 msgstr "Usuń"
 
-#: ../js/ui/messageTray.js:1513
+#: ../js/ui/messageTray.js:1530
+msgid "Notifications"
+msgstr "Powiadomienia"
+
+#: ../js/ui/messageTray.js:1537
 msgid "Clear Messages"
 msgstr "Wyczyść wiadomości"
 
-#: ../js/ui/messageTray.js:1540
+#: ../js/ui/messageTray.js:1564
 msgid "Notification Settings"
 msgstr "Ustawienia powiadomień"
 
-#: ../js/ui/messageTray.js:1559
+#: ../js/ui/messageTray.js:1617
 msgid "Tray Menu"
 msgstr "Menu obszaru powiadamiania"
 
-#: ../js/ui/messageTray.js:1775
+#: ../js/ui/messageTray.js:1833
 msgid "No Messages"
 msgstr "Brak wiadomości"
 
-#: ../js/ui/messageTray.js:1813
+#: ../js/ui/messageTray.js:1871
 msgid "Message Tray"
 msgstr "Obszar powiadamiania"
 
-#: ../js/ui/messageTray.js:2788
+#: ../js/ui/messageTray.js:2846
 msgid "System Information"
 msgstr "Informacje systemowe"
 
