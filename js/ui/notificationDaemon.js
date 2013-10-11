@@ -396,12 +396,13 @@ const NotificationDaemon = new Lang.Class({
         if (!hints['image-path'] && hints['image_path'])
             hints['image-path'] = hints['image_path']; // version 1.1 of the spec
 
-        if (!hints['image-data'])
+        if (!hints['image-data']) {
             if (hints['image_data'])
                 hints['image-data'] = hints['image_data']; // version 1.1 of the spec
             else if (hints['icon_data'] && !hints['image-path'])
                 // early versions of the spec; 'icon_data' should only be used if 'image-path' is not available
                 hints['image-data'] = hints['icon_data'];
+        }
 
         let ndata = { appName: appName,
                       icon: icon,
