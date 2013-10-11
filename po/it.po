@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-09 16:40+0000\n"
-"PO-Revision-Date: 2013-10-10 08:36+0200\n"
+"POT-Creation-Date: 2013-10-10 21:27+0000\n"
+"PO-Revision-Date: 2013-10-11 09:41+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -1106,27 +1106,32 @@ msgstr "Apri"
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: ../js/ui/messageTray.js:1513
+#: ../js/ui/messageTray.js:1530
+#| msgid "Notification Settings"
+msgid "Notifications"
+msgstr "Notifiche"
+
+#: ../js/ui/messageTray.js:1537
 msgid "Clear Messages"
 msgstr "Pulisci messaggi"
 
-#: ../js/ui/messageTray.js:1540
+#: ../js/ui/messageTray.js:1564
 msgid "Notification Settings"
 msgstr "Impostazioni notifiche"
 
-#: ../js/ui/messageTray.js:1559
+#: ../js/ui/messageTray.js:1617
 msgid "Tray Menu"
 msgstr "Menu tray"
 
-#: ../js/ui/messageTray.js:1775
+#: ../js/ui/messageTray.js:1833
 msgid "No Messages"
 msgstr "Nessun messaggio"
 
-#: ../js/ui/messageTray.js:1813
+#: ../js/ui/messageTray.js:1871
 msgid "Message Tray"
 msgstr "Cassetto messaggi"
 
-#: ../js/ui/messageTray.js:2788
+#: ../js/ui/messageTray.js:2846
 msgid "System Information"
 msgstr "Informazione di sistema"
 
@@ -1424,13 +1429,11 @@ msgid "connection failed"
 msgstr "connessione non riuscita"
 
 #: ../js/ui/status/network.js:427 ../js/ui/status/network.js:513
-#| msgid "Mobile broadband network password"
 msgid "Mobile Broadband Settings"
 msgstr "Impostazioni banda larga mobile"
 
 # (ndt) o disabilitata?
 #: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1104
-#| msgid "Disabled"
 msgid "Hardware Disabled"
 msgstr "Hardware disabilitato"
 
@@ -1451,7 +1454,6 @@ msgid "Select Network"
 msgstr "Seleziona rete"
 
 #: ../js/ui/status/network.js:997
-#| msgid "Settings"
 msgid "Wi-Fi Settings"
 msgstr "Impostazioni Wi-Fi"
 
@@ -1460,7 +1462,6 @@ msgid "Turn On"
 msgstr "Accendi"
 
 #: ../js/ui/status/network.js:1108
-#| msgid "Connect"
 msgid "Not Connected"
 msgstr "Non collegato"
 
