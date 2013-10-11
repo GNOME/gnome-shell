@@ -240,10 +240,6 @@ const NotificationsBox = new Lang.Class({
     },
 
     _sourceAdded: function(tray, source, initial) {
-        // Ignore transient sources
-        if (source.isTransient)
-            return;
-
         let obj = {
             visible: source.policy.showInLockScreen,
             detailed: source.policy.detailsInLockScreen,

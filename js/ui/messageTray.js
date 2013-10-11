@@ -1263,7 +1263,6 @@ const Source = new Lang.Class({
         this.title = title;
         this.iconName = iconName;
 
-        this.isTransient = false;
         this.isChat = false;
         this.isMuted = false;
         this.keepTrayOnSummaryClick = false;
@@ -1321,10 +1320,6 @@ const Source = new Lang.Class({
         }));
         rightClickMenu.add(item.actor);
         return rightClickMenu;
-    },
-
-    setTransient: function(isTransient) {
-        this.isTransient = isTransient;
     },
 
     setTitle: function(newTitle) {
@@ -2914,8 +2909,6 @@ const MessageTray = new Lang.Class({
             this._summaryBoxPointerItem.doneShowingNotificationStack();
             this._summaryBoxPointerItem = null;
 
-            if (source.isTransient && !this._reNotifyAfterHideNotification)
-                source.destroy(NotificationDestroyedReason.EXPIRED);
             if (this._reNotifyAfterHideNotification) {
                 this._onNotify(this._reNotifyAfterHideNotification.source, this._reNotifyAfterHideNotification);
                 this._reNotifyAfterHideNotification = null;
@@ -2934,7 +2927,6 @@ const SystemNotificationSource = new Lang.Class({
 
     _init: function() {
         this.parent(_("System Information"), 'dialog-information-symbolic');
-        this.setTransient(true);
     },
 
     open: function() {

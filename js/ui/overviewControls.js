@@ -460,9 +460,6 @@ const MessagesIndicator = new Lang.Class({
         if (source.trayIcon)
             return;
 
-        if (source.isTransient)
-            return;
-
         source.connect('count-updated', Lang.bind(this, this._updateCount));
         this._sources.push(source);
         this._updateCount();

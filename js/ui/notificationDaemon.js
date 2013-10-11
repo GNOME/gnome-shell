@@ -181,12 +181,10 @@ const FdoNotificationDaemon = new Lang.Class({
     },
 
     // Returns the source associated with ndata.notification if it is set.
-    // Otherwise, returns the source associated with the title and pid if
-    // such source is stored in this._sources and the notification is not
-    // transient. If the existing or requested source is associated with
-    // a tray icon and passed in pid matches a pid of an existing source,
-    // the title match is ignored to enable representing a tray icon and
-    // notifications from the same application with a single source.
+    // If the existing or requested source is associated with a tray icon
+    // and passed in pid matches a pid of an existing source, the title
+    // match is ignored to enable representing a tray icon and notifications
+    // from the same application with a single source.
     //
     // If no existing source is found, a new source is created as long as
     // pid is provided.
@@ -204,32 +202,20 @@ const FdoNotificationDaemon = new Lang.Class({
         if (ndata && ndata.notification)
             return ndata.notification.source;
 
-        let isForTransientNotification = (ndata && ndata.hints['transient'] == true);
-
-        // We don't want to override a persistent notification
-        // with a transient one from the same sender, so we
-        // always create a new source object for new transient notifications
-        // and never add it to this._sources .
-        if (!isForTransientNotification) {
-            let source = this._lookupSource(title, pid, trayIcon);
-            if (source) {
-                source.setTitle(title);
-                return source;
-            }
+        let source = this._lookupSource(title, pid, trayIcon);
+        if (source) {
+            source.setTitle(title);
+            return source;
         }
 
         let source = new FdoNotificationDaemonSource(title, pid, sender, trayIcon, ndata ? ndata.hints['desktop-entry'] : null);
-        source.setTransient(isForTransientNotification);
 
-        if (!isForTransientNotification) {
-            this._sources.push(source);
-            source.connect('destroy', Lang.bind(this,
-                function() {
-                    let index = this._sources.indexOf(source);
-                    if (index >= 0)
-                        this._sources.splice(index, 1);
-                }));
-        }
+        this._sources.push(source);
+        source.connect('destroy', Lang.bind(this, function() {
+            let index = this._sources.indexOf(source);
+            if (index >= 0)
+                this._sources.splice(index, 1);
+        }));
 
         Main.messageTray.add(source);
         return source;
@@ -336,20 +322,10 @@ const FdoNotificationDaemon = new Lang.Class({
             let [pid] = result;
             source = this._getSource(appName, pid, ndata, sender, null);
 
-            // We only store sender-pid entries for persistent sources.
-            // Removing the entries once the source is destroyed
-            // would result in the entries associated with transient
-            // sources removed once the notification is shown anyway.
-            // However, keeping these pairs would mean that we would
-            // possibly remove an entry associated with a persistent
-            // source when a transient source for the same sender is
-            // distroyed.
-            if (!source.isTransient) {
-                this._senderToPid[sender] = pid;
-                source.connect('destroy', Lang.bind(this, function() {
-                    delete this._senderToPid[sender];
-                }));
-            }
+            this._senderToPid[sender] = pid;
+            source.connect('destroy', Lang.bind(this, function() {
+                delete this._senderToPid[sender];
+            }));
             this._notifyForSource(source, ndata);
         }));
 
