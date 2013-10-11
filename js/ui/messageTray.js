@@ -1211,6 +1211,10 @@ const Source = new Lang.Class({
         return this.count > 1;
     },
 
+    get isClearable() {
+        return !this.trayIcon && !this.isChat && !this.resident;
+    },
+
     countUpdated: function() {
         this.emit('count-updated');
     },
@@ -1540,22 +1544,14 @@ const MessageTrayMenu = new Lang.Class({
         this.addMenuItem(separator);
 
         this._clearItem = this.addAction(_("Clear Messages"), function() {
-            let toDestroy = [];
-            let sources = tray.getSources();
-            for (let i = 0; i < sources.length; i++) {
-                // We exclude trayIcons, chat and resident sources
-                if (sources[i].trayIcon ||
-                    sources[i].isChat ||
-                    sources[i].resident)
-                    continue;
-                toDestroy.push(sources[i]);
-            }
+            let toDestroy = tray.getSources().filter(function(source) {
+                return source.isClearable;
+            })
 
-            for (let i = 0; i < toDestroy.length; i++) {
-                toDestroy[i].destroy();
-            }
+            toDestroy.forEach(function(source) {
+                source.destroy();
+            });
 
-            toDestroy = null;
             tray.close();
         });
 
@@ -1989,7 +1985,7 @@ const MessageTray = new Lang.Class({
             this._summary.insert_child_at_index(summaryItem.actor, this._chatSummaryItemsCount);
         }
 
-        if (!source.trayIcon && !source.isChat && !source.resident)
+        if (source.isClearable)
             this.clearableCount++;
 
         this._sources.set(source, obj);
@@ -2033,7 +2029,7 @@ const MessageTray = new Lang.Class({
         if (source.isChat)
             this._chatSummaryItemsCount--;
 
-        if (!source.trayIcon && !source.isChat && !source.resident)
+        if (source.isClearable)
             this.clearableCount--;
 
         source.disconnect(obj.notifyId);
