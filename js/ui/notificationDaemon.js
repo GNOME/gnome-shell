@@ -752,22 +752,6 @@ const Source = new Lang.Class({
         return null;
     },
 
-    _setApp: function(appId) {
-        if (this.app)
-            return;
-
-        this.app = this._getApp(appId);
-        if (!this.app)
-            return;
-
-        // Only override the icon if we were previously using
-        // notification-based icons (ie, not a trayicon) or if it was unset before
-        if (!this.trayIcon) {
-            this.useNotificationIcon = false;
-            this.iconUpdated();
-        }
-    },
-
     setTitle: function(title) {
         // Do nothing if .app is set, we don't want to override the
         // app name with whatever is provided through libnotify (usually
