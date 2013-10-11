@@ -1,50 +1,230 @@
 # Dutch translation for mutter
-#
 # This file is distributed under the same license as the mutter package.
-#
 # Tino Meinen <a.t.meinen@chello.nl>, 2003–2004, 2006, 2008.
-# Reinout van Schouwen <reinouts@gnome.org>, 2003–2007.
+# Reinout van Schouwen <reinouts@gnome.org>, 2003–2007, 2013.
 # Michiel Sikkes <michiels@gnome.org>, 2005.
 # Wouter Bolsterlee <wbolster@gnome.org>, 2006–2012.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-16 23:20+0100\n"
-"PO-Revision-Date: 2011-03-29 23:29+0200\n"
-"Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
+"&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-08-18 20:03+0000\n"
+"PO-Revision-Date: 2013-10-12 00:32+0200\n"
+"Last-Translator: Reinout van Schouwen <reinouts@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+"X-Project-Style: gnome\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "Navigatie"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "Venster verplaatsen naar werkblad 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "Venster verplaatsen naar werkblad 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "Venster verplaatsen naar werkblad 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "Venster verplaatsen naar werkblad 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace to the left"
+msgstr "Venster één werkblad naar links verplaatsen"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the right"
+msgstr "Venster één werkblad naar rechts verplaatsen"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "Venster één werkblad naar boven verplaatsen"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "Venster één werkblad naar beneden verplaatsen"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "Tussen toepassingen schakelen"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows"
+msgstr "Tussen vensters schakelen"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch windows of an application"
+msgstr "Wisselen van venster binnen een toepassing"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch system controls"
+msgstr "Systeemschermen wisselen"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows directly"
+msgstr "Direct tussen vensters schakelen"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch windows of an app directly"
+msgstr "Direct wisselen van venster binnen een toepassing"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Switch system controls directly"
+msgstr "Direct tussen systeemschermen wisselen"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Hide all normal windows"
+msgstr "Alle normale vensters verbergen"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 1"
+msgstr "Schakelen naar werkblad 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 2"
+msgstr "Schakelen naar werkblad 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 3"
+msgstr "Schakelen naar werkblad 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Switch to workspace 4"
+msgstr "Schakelen naar werkblad 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace left"
+msgstr "Verplaatsen naar werkblad links"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace right"
+msgstr "Verplaatsen naar werkblad rechts"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace above"
+msgstr "Verplaatsen naar werkblad hierboven"
+
+#: ../src/50-mutter-navigation.xml.in.h:25
+msgid "Move to workspace below"
+msgstr "Verplaatsen naar werkblad hieronder"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "Systeem"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "Het opdrachtregelvenster tonen"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "Het activiteitenoverzicht tonen"
+
+#: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
 msgstr "Vensters"
 
 #: ../src/50-mutter-windows.xml.in.h:2
-msgid "View split on left"
-msgstr ""
+msgid "Activate the window menu"
+msgstr "Venstermenu activeren"
 
 #: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "Volledig-schermmodus omschakelen"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "Maximalisatie in- of uitschakelen"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "Venster maximaliseren"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "Venster herstellen"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "Oprollen in- of uitschakelen"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "Venster sluiten"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Hide window"
+msgstr "Venster verbergen"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "Venster verplaatsen"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "Vensterafmetingen veranderen"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "Schakelen tussen venster op alle werkbladen zichtbaar of op één"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Vensters naar voren halen indien bedekt of anders naar achter brengen"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "Venster voor andere vensters halen"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "Venster achter andere vensters brengen"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "Venster verticaal maximaliseren"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "Venster horizontaal maximaliseren"
+
+#: ../src/50-mutter-windows.xml.in.h:18
+msgid "View split on left"
+msgstr "Weergave gesplitst op links"
+
+#: ../src/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
-msgstr ""
+msgstr "Weergave gesplitst op rechts"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:492
+#: ../src/compositor/compositor.c:589
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr ""
-"Er is al een andere ‘compositing manager’ actief op scherm %i van display "
-"‘%s’."
+"Er is al een andere ‘compositing manager’ actief op scherm %i van display ‘%"
+"s’."
 
-#: ../src/core/bell.c:307
+#: ../src/compositor/meta-background.c:1076
+msgid "background texture could not be created from file"
+msgstr "aanmaken achtergrondstructuur uit bestand mislukt"
+
+#: ../src/core/bell.c:322
 msgid "Bell event"
 msgstr "Bel-evenement"
 
@@ -55,14 +235,15 @@ msgstr "Onbekende aanvraag voor vensterinformatie: %d"
 
 #: ../src/core/delete.c:111
 #, c-format
-msgid "<tt>%s</tt> is not responding."
-msgstr "<tt>%s</tt> reageert niet."
+#| msgid "<tt>%s</tt> is not responding."
+msgid "“%s” is not responding."
+msgstr "‘%s’ reageert niet."
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "De toepassing reageert niet."
 
-#: ../src/core/delete.c:119
+#: ../src/core/delete.c:118
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -70,26 +251,26 @@ msgstr ""
 "U kunt ervoor kiezen even te wachten totdat het doorgaat of de toepassing "
 "dwingen om helemaal af te sluiten."
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "_Wachten"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "Ge_forceerd afsluiten"
 
-#: ../src/core/display.c:387
+#: ../src/core/display.c:421
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Benodigde extensie ‘%s’ voor ‘compositing’ ontbreekt"
 
-#: ../src/core/display.c:453
+#: ../src/core/display.c:513
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Openen van X Window System display ‘%s’ mislukt\n"
 
 # Gebruik controletoets als vertaling van modifier (Ctrl/Shift/Alt/Esc)
-#: ../src/core/keybindings.c:852
+#: ../src/core/keybindings.c:1136
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -98,42 +279,62 @@ msgstr ""
 "Een ander programma gebruikt reeds de %s-toets met controletoets %x als "
 "sneltoets\n"
 
-#: ../src/core/main.c:206
+#: ../src/core/keybindings.c:1333
+#, c-format
+#| msgid "\"%s\" is not a valid value for focus attribute"
+msgid "\"%s\" is not a valid accelerator\n"
+msgstr "‘%s’ is geen geldige sneltoets\n"
+
+#: ../src/core/main.c:197
 msgid "Disable connection to session manager"
 msgstr "Schakel de verbinding met het sessiebeheer uit"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:203
 msgid "Replace the running window manager"
 msgstr "De huidige toepassing voor vensterbeheer vervangen"
 
-#: ../src/core/main.c:218
+#: ../src/core/main.c:209
 msgid "Specify session management ID"
 msgstr "Specificeer de ID van het sessiebeheer"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:214
 msgid "X Display to use"
 msgstr "De te gebruiken X-weergave"
 
-#: ../src/core/main.c:229
+#: ../src/core/main.c:220
 msgid "Initialize session from savefile"
 msgstr "Initialiseer de sessie middels een opslagbestand"
 
-#: ../src/core/main.c:235
+#: ../src/core/main.c:226
 msgid "Make X calls synchronous"
 msgstr "X-aanroepen synchroon maken"
 
-#: ../src/core/main.c:504
+#: ../src/core/main.c:534
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Kon themamap niet scannen: %s\n"
 
-#: ../src/core/main.c:520
+#: ../src/core/main.c:550
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Kon geen thema vinden! Zorg ervoor dat %s bestaat en de gebruikelijke "
 "thema's bevat.\n"
+
+#: ../src/core/monitor.c:711
+msgid "Built-in display"
+msgstr "Ingebouwd beeldscherm"
+
+#. TRANSLATORS: this is a monitor name (in case we don't know
+#. the vendor), it's Unknown followed by a size in inches,
+#. like 'Unknown 15"'
+#.
+#: ../src/core/monitor.c:739
+#, c-format
+#| msgid "Unknown element %s"
+msgid "Unknown %s"
+msgstr "Onbekend %s"
 
 #: ../src/core/mutter.c:40
 #, c-format
@@ -155,10 +356,10 @@ msgid "Print version"
 msgstr "Versie-informatie tonen"
 
 #: ../src/core/mutter.c:60
-msgid "Comma-separated list of compositor plugins"
-msgstr "Komma-gescheiden lijst van compositor-plugins"
+msgid "Mutter plugin to use"
+msgstr "Te gebruiken Mutter-plug-in"
 
-#: ../src/core/prefs.c:1077
+#: ../src/core/prefs.c:1202
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -166,12 +367,12 @@ msgstr ""
 "Werkoplossing voor gebroken toepassingen uitgezet. Bepaalde toepassingen "
 "zullen niet naar behoren functioneren.\n"
 
-#: ../src/core/prefs.c:1152
+#: ../src/core/prefs.c:1277
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Kon lettertypebeschrijving ‘%s’ niet lezen uit GSettings-sleutel %s\n"
 
-#: ../src/core/prefs.c:1218
+#: ../src/core/prefs.c:1343
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -180,7 +381,7 @@ msgstr ""
 "‘%s’, gevonden in de configuratiedatabase, is geen geldige waarde voor de "
 "muisknop-optietoets\n"
 
-#: ../src/core/prefs.c:1739
+#: ../src/core/prefs.c:1909
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -188,17 +389,17 @@ msgid ""
 msgstr ""
 "‘%s’ in de configuratiedatabase is geen geldige waarde voor sneltoets ‘%s’\n"
 
-#: ../src/core/prefs.c:1836
+#: ../src/core/prefs.c:1999
 #, c-format
 msgid "Workspace %d"
 msgstr "Werkblad %d"
 
-#: ../src/core/screen.c:730
+#: ../src/core/screen.c:534
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Scherm %d op display '%s' is ongeldig\n"
 
-#: ../src/core/screen.c:746
+#: ../src/core/screen.c:550
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -207,19 +408,19 @@ msgstr ""
 "Scherm %d op display ‘%s’ heeft al een ‘window manager’; probeer de optie: --"
 "replace te gebruiken om de huidige ‘window manager’ te vervangen.\n"
 
-#: ../src/core/screen.c:773
+#: ../src/core/screen.c:577
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Kon ‘window manager’-selectie niet verkrijgen op scherm %d display ‘%s’\n"
 
-#: ../src/core/screen.c:828
+#: ../src/core/screen.c:655
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Scherm %d op display ‘%s’ heeft al een ‘window manager’\n"
 
-#: ../src/core/screen.c:1013
+#: ../src/core/screen.c:846
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kon scherm %d op display ‘%s’ niet vrijmaken\n"
@@ -279,44 +480,43 @@ msgstr ""
 "Deze vensters ondersteunen het opslaan van de huidige instellingen niet en "
 "zullen bij een volgende sessie opnieuw moeten worden opgestart."
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:84
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Debug-logboek openen mislukt: %s\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:94
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Logboek %s openen via fdopen() mislukt: %s\n"
 
-#: ../src/core/util.c:127
+#: ../src/core/util.c:100
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Logboek %s geopend\n"
 
-#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
-#, c-format
+#: ../src/core/util.c:119
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter is gecompileerd zonder ondersteuning voor verbose-mode\n"
 
-#: ../src/core/util.c:290
+#: ../src/core/util.c:264
 msgid "Window manager: "
 msgstr "Vensterbeheer:"
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:414
 msgid "Bug in window manager: "
 msgstr "Fout in vensterbeheer:"
 
-#: ../src/core/util.c:471
+#: ../src/core/util.c:445
 msgid "Window manager warning: "
 msgstr "Waarschuwing van vensterbeheer:"
 
-#: ../src/core/util.c:499
+#: ../src/core/util.c:473
 msgid "Window manager error: "
 msgstr "Fout van vensterbeheer:"
 
 #. first time through
-#: ../src/core/window.c:7274
+#: ../src/core/window.c:7533
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -332,7 +532,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7937
+#: ../src/core/window.c:8257
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -342,22 +542,22 @@ msgstr ""
 "stelt wel minimale grootte %d×%d en maximale grootte %d×%d in; dit is niet "
 "logisch.\n"
 
-#: ../src/core/window-props.c:309
+#: ../src/core/window-props.c:347
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Toepassing heeft een overbodige _NET_WM_PID %lu ingesteld\n"
 
-#: ../src/core/window-props.c:426
+#: ../src/core/window-props.c:463
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (op %s)"
 
-#: ../src/core/window-props.c:1481
+#: ../src/core/window-props.c:1546
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ongeldig WM_TRANSIENT_FOR venster 0x%lx opgegeven voor %s.\n"
 
-#: ../src/core/window-props.c:1492
+#: ../src/core/window-props.c:1557
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR venster 0x%lx voor %s zou een ‘loop’ creëren.\n"
@@ -426,44 +626,36 @@ msgstr ""
 "mee met het achterliggende venster."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid "Live Hidden Windows"
-msgstr "Verborgen vensters ‘live’ houden"
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "Randtegels inschakelen bij het slepen van vensters naar schermranden"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid ""
-"Determines whether hidden windows (i.e., minimized windows and windows on "
-"other workspaces than the current one) should be kept alive."
-msgstr ""
-"Geeft aan of verborgen vensters (bijvoorbeeld geminimaliseerd of op een "
-"ander werkblad) in ‘live’ gehouden moeten worden."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:7
-msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
 "area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
+"Indien ingeschakeld dan zal het laten vallen van vensters op verticale "
+"schermranden ze verticaal maximaliseren en horizontaal op halve "
+"schermgrootte brengen. Het laten vallen van vensters op de bovenrand van het "
+"scherm maximaliseert ze helemaal. "
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
-msgstr ""
+msgstr "Werkbladen worden dynamisch beheerd"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there's a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
 msgstr "Werkbladen alleen voor primaire venster"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
@@ -471,14 +663,25 @@ msgstr ""
 "Geeft aan of wisselen van werkblad voor vensters op alle schermen of alleen "
 "voor vensters op het hoofdscherm moet gebeuren."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "No tab popup"
+msgstr "Geen tab-pop-up"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr ""
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
 msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
-"Determines whether the use of popup and highlight frame should be disabled "
-"for window cycling."
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
 msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:15
@@ -492,117 +695,123 @@ msgid ""
 msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:17
-#, fuzzy
-msgid "Select window from tab popup"
-msgstr "Venster van boven weghalen"
+msgid "Auto maximize nearly monitor sized windows"
+msgstr "Vensters van bijna-monitorformaat auto-maximaliseren"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:18
-msgid "Cancel tab popup"
+msgid ""
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
 msgstr ""
+"Indien ingeschakeld, worden vensters die initieel ongeveer even groot zijn "
+"als de monitor automatisch gemaximaliseerd."
 
-#: ../src/tools/mutter-message.c:123
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Gebruik: %s\n"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:19
+msgid "Select window from tab popup"
+msgstr "Venster selecteren uit tab-pop-up"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:20
+msgid "Cancel tab popup"
+msgstr "Tab-pop-up annuleren"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:69
+#: ../src/ui/menu.c:67
 msgid "Mi_nimize"
 msgstr "_Minimaliseren"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:71
+#: ../src/ui/menu.c:69
 msgid "Ma_ximize"
 msgstr "Ma_ximaliseren"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:73
+#: ../src/ui/menu.c:71
 msgid "Unma_ximize"
 msgstr "_Herstellen"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:75
+#: ../src/ui/menu.c:73
 msgid "Roll _Up"
 msgstr "_Oprollen"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:77
+#: ../src/ui/menu.c:75
 msgid "_Unroll"
 msgstr "_Uitrollen"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:79
+#: ../src/ui/menu.c:77
 msgid "_Move"
 msgstr "_Verplaatsen"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:81
+#: ../src/ui/menu.c:79
 msgid "_Resize"
 msgstr "Afmetingen _wijzigen"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:83
+#: ../src/ui/menu.c:81
 msgid "Move Titlebar On_screen"
 msgstr "_Titelbalk op scherm plaatsen"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:86 ../src/ui/menu.c:88
+#: ../src/ui/menu.c:84 ../src/ui/menu.c:86
 msgid "Always on _Top"
 msgstr "Altijd _bovenop"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:90
+#: ../src/ui/menu.c:88
 msgid "_Always on Visible Workspace"
 msgstr "Op _alle werkbladen zichtbaar"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:92
+#: ../src/ui/menu.c:90
 msgid "_Only on This Workspace"
 msgstr "Alleen op _dit werkblad"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:94
+#: ../src/ui/menu.c:92
 msgid "Move to Workspace _Left"
 msgstr "Verplaatsen naar werkblad lin_ks"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:96
+#: ../src/ui/menu.c:94
 msgid "Move to Workspace R_ight"
 msgstr "Verplaatsen naar werkblad _rechts"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:98
+#: ../src/ui/menu.c:96
 msgid "Move to Workspace _Up"
 msgstr "Verplaatsen naar werkblad hierbov_en"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:100
+#: ../src/ui/menu.c:98
 msgid "Move to Workspace _Down"
 msgstr "Verplaatsen naar werkblad hier_onder"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:104
+#: ../src/ui/menu.c:102
 msgid "_Close"
 msgstr "Sl_uiten"
 
-#: ../src/ui/menu.c:204
+#: ../src/ui/menu.c:202
 #, c-format
 msgid "Workspace %d%n"
 msgstr "Werkblad %d%n"
 
-#: ../src/ui/menu.c:214
+#: ../src/ui/menu.c:212
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Werkblad 1_0"
 
-#: ../src/ui/menu.c:216
+#: ../src/ui/menu.c:214
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Werkblad %s%d"
 
-#: ../src/ui/menu.c:397
+#: ../src/ui/menu.c:384
 msgid "Move to Another _Workspace"
 msgstr "Naar ander werkblad ver_plaatsen"
 
@@ -699,71 +908,71 @@ msgstr "Mod5"
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
-#: ../src/ui/resizepopup.c:113
+#: ../src/ui/resizepopup.c:136
 #, c-format
 msgid "%d x %d"
 msgstr "%d×%d"
 
-#: ../src/ui/theme.c:253
+#: ../src/ui/theme.c:236
 msgid "top"
 msgstr "boven"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:238
 msgid "bottom"
 msgstr "onder"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:240
 msgid "left"
 msgstr "links"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:242
 msgid "right"
 msgstr "rechts"
 
 # betere vertaling voor frame geometry?
-#: ../src/ui/theme.c:286
+#: ../src/ui/theme.c:270
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "kader-afmetingen geeft geen ‘%s’ dimensie"
 
-#: ../src/ui/theme.c:305
+#: ../src/ui/theme.c:289
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "kader-afmetingen geeft geen dimensie ‘%s’ voor rand ‘%s’"
 
-#: ../src/ui/theme.c:342
+#: ../src/ui/theme.c:326
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Knopverhouding %g is onredelijk"
 
-#: ../src/ui/theme.c:354
+#: ../src/ui/theme.c:338
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Kader-afmetingen geeft geen afmeting van knoppen"
 
 # Gradiënt hier beter?
-#: ../src/ui/theme.c:1067
+#: ../src/ui/theme.c:1051
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Kleurverloop moet tenminste twee kleuren hebben"
 
-#: ../src/ui/theme.c:1219
+#: ../src/ui/theme.c:1203
 #, fuzzy, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
-"GTK-kleurspecificatie moet een sluithaakje hebben na de status, dus: gtk: fg"
-"[NORMAL] waarbij NORMAL de stutus is; kon ‘%s’ niet verwerken"
+"GTK-kleurspecificatie moet een sluithaakje hebben na de status, dus: gtk: "
+"fg[NORMAL] waarbij NORMAL de stutus is; kon ‘%s’ niet verwerken"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1219
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
 msgstr ""
 
-#: ../src/ui/theme.c:1249
+#: ../src/ui/theme.c:1233
 #, fuzzy, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -772,7 +981,7 @@ msgstr ""
 "Schaduwformaat is ‘schaduw/basiskleur/factor’, ‘%s’ voldoet niet aan dit "
 "formaat"
 
-#: ../src/ui/theme.c:1294
+#: ../src/ui/theme.c:1278
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -781,7 +990,7 @@ msgstr ""
 "GTK-kleurspecificatie moet de toestand in rechte haken hebben, bijv. gtk:fg"
 "[NORMAL] waarbij NORMAL de toestand is; kon ‘%s’ niet verwerken"
 
-#: ../src/ui/theme.c:1308
+#: ../src/ui/theme.c:1292
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -790,17 +999,17 @@ msgstr ""
 "GTK-kleurspecificatie moet een sluithaakje hebben na de status, dus: gtk: fg"
 "[NORMAL] waarbij NORMAL de stutus is; kon ‘%s’ niet verwerken"
 
-#: ../src/ui/theme.c:1319
+#: ../src/ui/theme.c:1303
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Niet begrepen: status ‘%s’ in kleurspecificatie"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1316
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Niet begrepen: kleurcomponent ‘%s’ in kleurspecificatie"
 
-#: ../src/ui/theme.c:1361
+#: ../src/ui/theme.c:1345
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -809,17 +1018,17 @@ msgstr ""
 "Mengformaat is ‘meng/vg_kleur/ag_kleur/alpha’, ‘%s’ voldoet niet aan dit "
 "formaat"
 
-#: ../src/ui/theme.c:1372
+#: ../src/ui/theme.c:1356
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Kon alpha-waarde ‘%s’ niet verwerken in gemengde kleur"
 
-#: ../src/ui/theme.c:1382
+#: ../src/ui/theme.c:1366
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Alpha-waarde ‘%s’ in gemengde kleur zit niet tussen 0.0 en 1.0"
 
-#: ../src/ui/theme.c:1429
+#: ../src/ui/theme.c:1413
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -827,27 +1036,27 @@ msgstr ""
 "Schaduwformaat is ‘schaduw/basiskleur/factor’, ‘%s’ voldoet niet aan dit "
 "formaat"
 
-#: ../src/ui/theme.c:1440
+#: ../src/ui/theme.c:1424
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Kon schaduwfactor ‘%s’ in schaduwkleur niet verwerken"
 
-#: ../src/ui/theme.c:1450
+#: ../src/ui/theme.c:1434
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Schaduwfactor ‘%s’ in schaduwkleur is negatief"
 
-#: ../src/ui/theme.c:1479
+#: ../src/ui/theme.c:1463
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Kon kleur ‘%s’ niet verwerken"
 
-#: ../src/ui/theme.c:1790
+#: ../src/ui/theme.c:1780
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Coördinaatuitdrukking bevat letterteken '%s' wat niet is toegestaan"
 
-#: ../src/ui/theme.c:1817
+#: ../src/ui/theme.c:1807
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -856,14 +1065,14 @@ msgstr ""
 "Coördinaatuitdrukking bevat floating-point getal '%s' wat niet kon worden "
 "verwerkt"
 
-#: ../src/ui/theme.c:1831
+#: ../src/ui/theme.c:1821
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "Coördinaatuitdrukking bevat geheel getal '%s' wat niet kon worden verwerkt"
 
 # hoe vertalen we operator en operand?
-#: ../src/ui/theme.c:1953
+#: ../src/ui/theme.c:1942
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -872,17 +1081,17 @@ msgstr ""
 "Coördinaatuitdrukking bevat een onbekende functie aan het begin van deze "
 "tekst: ‘%s’"
 
-#: ../src/ui/theme.c:2010
+#: ../src/ui/theme.c:1999
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Coördinaatuitdrukking was leeg of was niet begrepen"
 
-#: ../src/ui/theme.c:2121 ../src/ui/theme.c:2131 ../src/ui/theme.c:2165
+#: ../src/ui/theme.c:2112 ../src/ui/theme.c:2122 ../src/ui/theme.c:2156
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Coördinaatuitdrukking resulteert in een deling door nul"
 
-#: ../src/ui/theme.c:2173
+#: ../src/ui/theme.c:2164
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -890,26 +1099,26 @@ msgstr ""
 "Coördinaatuitdrukking probeert een mod-functie te gebruiken op een floating-"
 "point getal"
 
-#: ../src/ui/theme.c:2229
+#: ../src/ui/theme.c:2220
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "Coördinaatuitdrukking bevat een functie ‘%s’ waar een argument werd verwacht"
 
-#: ../src/ui/theme.c:2238
+#: ../src/ui/theme.c:2229
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 "Coördinaatuitdrukking bevat een argument waar een functie werd verwacht"
 
-#: ../src/ui/theme.c:2246
+#: ../src/ui/theme.c:2237
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 "Coördinaatuitdrukking eindigde met een functie in plaats van een argument"
 
-#: ../src/ui/theme.c:2256
+#: ../src/ui/theme.c:2247
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -918,7 +1127,7 @@ msgstr ""
 "Coördinaatuitdrukking bevat functie ‘%c’ volgend op functie ‘%c’ zonder "
 "argument in het midden"
 
-#: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
+#: ../src/ui/theme.c:2398 ../src/ui/theme.c:2443
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Coördinaatuitdrukking bevat een onbekende variabele of constante ‘%s’"
@@ -926,32 +1135,32 @@ msgstr "Coördinaatuitdrukking bevat een onbekende variabele of constante ‘%s�
 # Dit is zo'n dergelijk moeilijke vertaling als in het Nederlands, dat het
 # Engelse origineel een beter restultaat oplevert.
 #  -- Michiel Sikkes, zo 9 apr 2006
-#: ../src/ui/theme.c:2506
+#: ../src/ui/theme.c:2497
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Coordinate experssion parser overflowed its buffer."
 
-#: ../src/ui/theme.c:2535
+#: ../src/ui/theme.c:2526
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Coördinaatuitdrukking bevat een sluithaakje zonder openingshaakje"
 
-#: ../src/ui/theme.c:2599
+#: ../src/ui/theme.c:2590
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Coördinaatuitdrukking bevat een openingshaakje zonder sluithaakje"
 
-#: ../src/ui/theme.c:2610
+#: ../src/ui/theme.c:2601
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Coördinaatuitdrukking bevat schijnbaar geen functies of argumenten"
 
-#: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
+#: ../src/ui/theme.c:2814 ../src/ui/theme.c:2834 ../src/ui/theme.c:2854
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Expressie in thema resulteerde in een foutmelding: %s\n"
 
-#: ../src/ui/theme.c:4533
+#: ../src/ui/theme.c:4500
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -960,25 +1169,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"iets\"/> moet voor deze "
 "kader-stijl gespecificeerd worden"
 
-#: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
+#: ../src/ui/theme.c:5011 ../src/ui/theme.c:5036
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Ontbrekende <frame state=\"%s\" resize=\"%s\" docus=\"%s\" style=\"iets\"/>"
 
-#: ../src/ui/theme.c:5139
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Laden thema ‘%s’ mislukt: %s\n"
 
-#: ../src/ui/theme.c:5275 ../src/ui/theme.c:5282 ../src/ui/theme.c:5289
-#: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Geen <%s> ingesteld voor thema ‘%s’ "
 
-#: ../src/ui/theme.c:5311
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -987,7 +1196,7 @@ msgstr ""
 "Geen kader-stijl ingesteld voor venstertype ‘%s’ in thema ‘%s’, voeg een "
 "<window type=\"%s\" style_set=\"iets\"/> element toe"
 
-#: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
+#: ../src/ui/theme.c:5661 ../src/ui/theme.c:5723 ../src/ui/theme.c:5786
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -995,7 +1204,7 @@ msgstr ""
 "Door de gebruiker gedefinieerde constanten moeten met een hoofdletter "
 "beginnen; ‘%s’ doet dat niet"
 
-#: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
+#: ../src/ui/theme.c:5669 ../src/ui/theme.c:5731 ../src/ui/theme.c:5794
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constante ‘%s’ is reeds gedefinieerd"
@@ -1384,425 +1593,174 @@ msgstr "Geen tekst toegestaan binnen element <%s>"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> twee keer gegeven voor dit thema"
 
-#: ../src/ui/theme-parser.c:4348
+#: ../src/ui/theme-parser.c:4336
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Geen geldig bestand gevonden voor thema %s\n"
 
-#: ../src/ui/theme-viewer.c:99
-msgid "_Windows"
-msgstr "_Vensters"
+#~ msgid "Comma-separated list of compositor plugins"
+#~ msgstr "Komma-gescheiden lijst van compositor-plugins"
 
-#: ../src/ui/theme-viewer.c:100
-msgid "_Dialog"
-msgstr "_Dialoogvenster"
+#~ msgid "Live Hidden Windows"
+#~ msgstr "Verborgen vensters ‘live’ houden"
 
-#: ../src/ui/theme-viewer.c:101
-msgid "_Modal dialog"
-msgstr "_Blokkerend dialoogvenster"
+#~ msgid ""
+#~ "Determines whether hidden windows (i.e., minimized windows and windows on "
+#~ "other workspaces than the current one) should be kept alive."
+#~ msgstr ""
+#~ "Geeft aan of verborgen vensters (bijvoorbeeld geminimaliseerd of op een "
+#~ "ander werkblad) in ‘live’ gehouden moeten worden."
 
-#: ../src/ui/theme-viewer.c:102
-msgid "_Utility"
-msgstr "_Hulpvensters"
+#~ msgid "Usage: %s\n"
+#~ msgstr "Gebruik: %s\n"
 
-#: ../src/ui/theme-viewer.c:103
-msgid "_Splashscreen"
-msgstr "_Introvenster"
+#~ msgid "_Windows"
+#~ msgstr "_Vensters"
 
-#: ../src/ui/theme-viewer.c:104
-msgid "_Top dock"
-msgstr "_Bovenpaneel"
+#~ msgid "_Dialog"
+#~ msgstr "_Dialoogvenster"
 
-#: ../src/ui/theme-viewer.c:105
-msgid "_Bottom dock"
-msgstr "_Onderpaneel"
+#~ msgid "_Modal dialog"
+#~ msgstr "_Blokkerend dialoogvenster"
 
-#: ../src/ui/theme-viewer.c:106
-msgid "_Left dock"
-msgstr "Paneel _links"
+#~ msgid "_Utility"
+#~ msgstr "_Hulpvensters"
 
-#: ../src/ui/theme-viewer.c:107
-msgid "_Right dock"
-msgstr "Paneel _rechts"
+#~ msgid "_Splashscreen"
+#~ msgstr "_Introvenster"
 
-#: ../src/ui/theme-viewer.c:108
-msgid "_All docks"
-msgstr "_Alle panelen"
+#~ msgid "_Top dock"
+#~ msgstr "_Bovenpaneel"
 
-#: ../src/ui/theme-viewer.c:109
-msgid "Des_ktop"
-msgstr "_Bureaublad"
+#~ msgid "_Bottom dock"
+#~ msgstr "_Onderpaneel"
 
-#: ../src/ui/theme-viewer.c:115
-msgid "Open another one of these windows"
-msgstr "Nog zo'n venster openen"
+#~ msgid "_Left dock"
+#~ msgstr "Paneel _links"
 
-#: ../src/ui/theme-viewer.c:117
-msgid "This is a demo button with an 'open' icon"
-msgstr "Dit is een demoknop met een 'openen'-pictogram"
+#~ msgid "_Right dock"
+#~ msgstr "Paneel _rechts"
 
-#: ../src/ui/theme-viewer.c:119
-msgid "This is a demo button with a 'quit' icon"
-msgstr "Dit is een demoknop met een 'afsluiten'-pictogram"
+#~ msgid "_All docks"
+#~ msgstr "_Alle panelen"
 
-#: ../src/ui/theme-viewer.c:248
-msgid "This is a sample message in a sample dialog"
-msgstr "Dit is een voorbeeldbericht in een voorbeelddialoogvenster"
+#~ msgid "Des_ktop"
+#~ msgstr "_Bureaublad"
 
-#: ../src/ui/theme-viewer.c:328
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr "Nepmenu-item %d\n"
+#~ msgid "Open another one of these windows"
+#~ msgstr "Nog zo'n venster openen"
 
-#: ../src/ui/theme-viewer.c:363
-msgid "Border-only window"
-msgstr "Venster met alleen randen"
+#~ msgid "This is a demo button with an 'open' icon"
+#~ msgstr "Dit is een demoknop met een 'openen'-pictogram"
 
-#: ../src/ui/theme-viewer.c:365
-msgid "Bar"
-msgstr "Balk"
+#~ msgid "This is a demo button with a 'quit' icon"
+#~ msgstr "Dit is een demoknop met een 'afsluiten'-pictogram"
 
-#: ../src/ui/theme-viewer.c:382
-msgid "Normal Application Window"
-msgstr "Normaal programmavenster"
+#~ msgid "This is a sample message in a sample dialog"
+#~ msgstr "Dit is een voorbeeldbericht in een voorbeelddialoogvenster"
 
-#: ../src/ui/theme-viewer.c:386
-msgid "Dialog Box"
-msgstr "Dialoogvenster"
+#~ msgid "Fake menu item %d\n"
+#~ msgstr "Nepmenu-item %d\n"
 
-#: ../src/ui/theme-viewer.c:390
-msgid "Modal Dialog Box"
-msgstr "Blokkerend dialoogvenster"
+#~ msgid "Border-only window"
+#~ msgstr "Venster met alleen randen"
 
-#: ../src/ui/theme-viewer.c:394
-msgid "Utility Palette"
-msgstr "Gereedschapskist"
+#~ msgid "Bar"
+#~ msgstr "Balk"
 
-#: ../src/ui/theme-viewer.c:398
-msgid "Torn-off Menu"
-msgstr "Losgescheurd menu"
+#~ msgid "Normal Application Window"
+#~ msgstr "Normaal programmavenster"
 
-#: ../src/ui/theme-viewer.c:402
-msgid "Border"
-msgstr "Rand"
+#~ msgid "Dialog Box"
+#~ msgstr "Dialoogvenster"
 
-#: ../src/ui/theme-viewer.c:406
-msgid "Attached Modal Dialog"
-msgstr "Aangekoppeld blokkerend dialoogvenster"
+#~ msgid "Modal Dialog Box"
+#~ msgstr "Blokkerend dialoogvenster"
 
-#: ../src/ui/theme-viewer.c:739
-#, c-format
-msgid "Button layout test %d"
-msgstr "Knoppenopmaaktest %d"
+#~ msgid "Utility Palette"
+#~ msgstr "Gereedschapskist"
 
-#: ../src/ui/theme-viewer.c:768
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr "%g milliseconden om een vensterraamwerk te tekenen"
+#~ msgid "Torn-off Menu"
+#~ msgstr "Losgescheurd menu"
 
-#: ../src/ui/theme-viewer.c:813
-#, c-format
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Gebruik: metacity-theme-viewer [THEMANAAM]\n"
+#~ msgid "Border"
+#~ msgstr "Rand"
 
-#: ../src/ui/theme-viewer.c:820
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "Fout bij laden van thema: %s\n"
+#~ msgid "Attached Modal Dialog"
+#~ msgstr "Aangekoppeld blokkerend dialoogvenster"
 
-#: ../src/ui/theme-viewer.c:826
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Thema ‘%s’ in %g seconden geladen\n"
+#~ msgid "Button layout test %d"
+#~ msgstr "Knoppenopmaaktest %d"
 
-#: ../src/ui/theme-viewer.c:870
-msgid "Normal Title Font"
-msgstr "Lettertype voor normale titel"
+#~ msgid "%g milliseconds to draw one window frame"
+#~ msgstr "%g milliseconden om een vensterraamwerk te tekenen"
 
-#: ../src/ui/theme-viewer.c:876
-msgid "Small Title Font"
-msgstr "Lettertype voor kleine titel"
+#~ msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+#~ msgstr "Gebruik: metacity-theme-viewer [THEMANAAM]\n"
 
-#: ../src/ui/theme-viewer.c:882
-msgid "Large Title Font"
-msgstr "Lettertype voor grote titel"
+#~ msgid "Error loading theme: %s\n"
+#~ msgstr "Fout bij laden van thema: %s\n"
 
-#: ../src/ui/theme-viewer.c:887
-msgid "Button Layouts"
-msgstr "Knoppenopmaak"
+#~ msgid "Loaded theme \"%s\" in %g seconds\n"
+#~ msgstr "Thema ‘%s’ in %g seconden geladen\n"
 
-#: ../src/ui/theme-viewer.c:892
-msgid "Benchmark"
-msgstr "Benchmark"
+#~ msgid "Normal Title Font"
+#~ msgstr "Lettertype voor normale titel"
 
-#: ../src/ui/theme-viewer.c:944
-msgid "Window Title Goes Here"
-msgstr "Hier komt de titel"
+#~ msgid "Small Title Font"
+#~ msgstr "Lettertype voor kleine titel"
 
-#: ../src/ui/theme-viewer.c:1047
-#, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"%d frames getekend in %g seconden voor client (%g milliseconden per frame) "
-"en %g seconden op wandklok inclusief X serverbronnen (%g milliseconden per "
-"frame)\n"
+#~ msgid "Large Title Font"
+#~ msgstr "Lettertype voor grote titel"
 
-#: ../src/ui/theme-viewer.c:1266
-msgid "position expression test returned TRUE but set error"
-msgstr "positie-expressietest gaf WAAR terug, maar gaf wel een fout"
+#~ msgid "Button Layouts"
+#~ msgstr "Knoppenopmaak"
 
-#: ../src/ui/theme-viewer.c:1268
-msgid "position expression test returned FALSE but didn't set error"
-msgstr "positie-expressietest gaf ONWAAR terug, maar gaf geen fout"
+#~ msgid "Benchmark"
+#~ msgstr "Benchmark"
 
-#: ../src/ui/theme-viewer.c:1272
-msgid "Error was expected but none given"
-msgstr "Fout verwacht maar niet ontvangen"
+#~ msgid "Window Title Goes Here"
+#~ msgstr "Hier komt de titel"
 
-#: ../src/ui/theme-viewer.c:1274
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr "Fout %d verwacht maar %d gekregen"
+#~ msgid ""
+#~ "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and "
+#~ "%g seconds wall clock time including X server resources (%g milliseconds "
+#~ "per frame)\n"
+#~ msgstr ""
+#~ "%d frames getekend in %g seconden voor client (%g milliseconden per "
+#~ "frame) en %g seconden op wandklok inclusief X serverbronnen (%g "
+#~ "milliseconden per frame)\n"
 
-#: ../src/ui/theme-viewer.c:1280
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr "Geen fout verwacht maar kreeg wel een fout: %s"
+#~ msgid "position expression test returned TRUE but set error"
+#~ msgstr "positie-expressietest gaf WAAR terug, maar gaf wel een fout"
 
-#: ../src/ui/theme-viewer.c:1284
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr "x-waarde is %d, %d verwacht"
+#~ msgid "position expression test returned FALSE but didn't set error"
+#~ msgstr "positie-expressietest gaf ONWAAR terug, maar gaf geen fout"
 
-#: ../src/ui/theme-viewer.c:1287
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr "y-waarde is %d, %d verwacht"
+#~ msgid "Error was expected but none given"
+#~ msgstr "Fout verwacht maar niet ontvangen"
 
-#: ../src/ui/theme-viewer.c:1352
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
-"%d coördinatenexpressies verwerkt in %g seconden (gemiddelde van %g "
-"seconden)\n"
+#~ msgid "Error %d was expected but %d given"
+#~ msgstr "Fout %d verwacht maar %d gekregen"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
+#~ msgid "Error not expected but one was returned: %s"
+#~ msgstr "Geen fout verwacht maar kreeg wel een fout: %s"
+
+#~ msgid "x value was %d, %d was expected"
+#~ msgstr "x-waarde is %d, %d verwacht"
+
+#~ msgid "y value was %d, %d was expected"
+#~ msgstr "y-waarde is %d, %d verwacht"
+
+#~ msgid ""
+#~ "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+#~ msgstr ""
+#~ "%d coördinatenexpressies verwerkt in %g seconden (gemiddelde van %g "
+#~ "seconden)\n"
+
 #, fuzzy
-msgid "Switch to workspace 1"
-msgstr "Schakelen naar werkblad 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:19
-#, fuzzy
-msgid "Switch to workspace 2"
-msgstr "Schakelen naar werkblad 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:20
-#, fuzzy
-msgid "Switch to workspace 3"
-msgstr "Schakelen naar werkblad 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:21
-#, fuzzy
-msgid "Switch to workspace 4"
-msgstr "Schakelen naar werkblad 4"
-
-#: ../src/50-mutter-windows.xml.in.h:1
-#, fuzzy
-msgid "Activate the window menu"
-msgstr "Venstermenu activeren"
-
-#: ../src/50-mutter-windows.xml.in.h:13
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "Volledig scherm-modus omschakelen"
-
-#: ../src/50-mutter-windows.xml.in.h:14
-#, fuzzy
-msgid "Toggle maximization state"
-msgstr "Maximalisatie in- of uitschakelen"
-
-#: ../src/50-mutter-windows.xml.in.h:4
-#, fuzzy
-msgid "Maximize window"
-msgstr "Venster maximaliseren"
-
-#: ../src/50-mutter-windows.xml.in.h:12
-#, fuzzy
-msgid "Restore window"
-msgstr "Venster herstellen"
-
-#: ../src/50-mutter-windows.xml.in.h:15
-#, fuzzy
-msgid "Toggle shaded state"
-msgstr "Oprollen in- of uitschakelen"
-
-#: ../src/50-mutter-windows.xml.in.h:7
-#, fuzzy
-msgid "Minimize window"
-msgstr "Venster minimaliseren"
-
-#: ../src/50-mutter-windows.xml.in.h:2
-#, fuzzy
-msgid "Close window"
-msgstr "Venster sluiten"
-
-#: ../src/50-mutter-windows.xml.in.h:8
-#, fuzzy
-msgid "Move window"
-msgstr "Venster verplaatsen"
-
-#: ../src/50-mutter-windows.xml.in.h:11
-#, fuzzy
-msgid "Resize window"
-msgstr "Vensterafmetingen veranderen"
-
-#: ../src/50-mutter-navigation.xml.in.h:10
-#, fuzzy
-msgid "Move window to workspace 1"
-msgstr "Venster verplaatsen naar werkblad 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:11
-#, fuzzy
-msgid "Move window to workspace 2"
-msgstr "Venster verplaatsen naar werkblad 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:12
-#, fuzzy
-msgid "Move window to workspace 3"
-msgstr "Venster verplaatsen naar werkblad 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:13
-#, fuzzy
-msgid "Move window to workspace 4"
-msgstr "Venster verplaatsen naar werkblad 4"
-
-#: ../src/50-mutter-navigation.xml.in.h:7
-#, fuzzy
-msgid "Move window one workspace to the left"
-msgstr "Venster één werkblad naar links verplaatsen"
-
-#: ../src/50-mutter-navigation.xml.in.h:8
-#, fuzzy
-msgid "Move window one workspace to the right"
-msgstr "Venster één werkblad naar rechts verplaatsen"
-
-#: ../src/50-mutter-navigation.xml.in.h:9
-#, fuzzy
-msgid "Move window one workspace up"
-msgstr "Venster één werkblad naar boven verplaatsen"
-
-#: ../src/50-mutter-navigation.xml.in.h:6
-#, fuzzy
-msgid "Move window one workspace down"
-msgstr "Venster één werkblad naar beneden verplaatsen"
-
-#: ../src/50-mutter-windows.xml.in.h:9
-#, fuzzy
-msgid "Raise window above other windows"
-msgstr "Venster voor andere vensters brengen"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#, fuzzy
-msgid "Lower window below other windows"
-msgstr "Venster achter andere vensters brengen"
-
-#: ../src/50-mutter-windows.xml.in.h:6
-#, fuzzy
-msgid "Maximize window vertically"
-msgstr "Een venster verticaal maximaliseren"
-
-#: ../src/50-mutter-windows.xml.in.h:5
-#, fuzzy
-msgid "Maximize window horizontally"
-msgstr "Een venster horizontaal maximaliseren"
-
-#: ../src/50-mutter-navigation.xml.in.h:1
-#, fuzzy
-msgid "Hide all normal windows"
-msgstr "Alle normale vensters verbergen"
-
-#: ../src/50-mutter-navigation.xml.in.h:2
-#, fuzzy
-msgid "Move to workspace above"
-msgstr "Verplaatsen naar werkblad hierboven"
-
-#: ../src/50-mutter-navigation.xml.in.h:3
-#, fuzzy
-msgid "Move to workspace below"
-msgstr "Verplaatsen naar werkblad hieronder"
-
-#: ../src/50-mutter-navigation.xml.in.h:4
-#, fuzzy
-msgid "Move to workspace left"
-msgstr "Verplaatsen naar werkblad links"
-
-#: ../src/50-mutter-navigation.xml.in.h:5
-#, fuzzy
-msgid "Move to workspace right"
-msgstr "Verplaatsen naar werkblad rechts"
-
-#: ../src/50-mutter-navigation.xml.in.h:14
-#, fuzzy
-msgid "Navigation"
-msgstr "Navigatie"
-
-#: ../src/50-mutter-navigation.xml.in.h:15
-#, fuzzy
-msgid "Switch applications"
-msgstr "Tussen toepassingen schakelen"
-
-#: ../src/50-mutter-navigation.xml.in.h:16
-#, fuzzy
-msgid "Switch system controls"
-msgstr "Systeemschermen wisselen"
-
-#: ../src/50-mutter-navigation.xml.in.h:17
-#, fuzzy
-msgid "Switch system controls directly"
-msgstr "Direct tussen systeemschermen schakelen"
-
-#: ../src/50-mutter-navigation.xml.in.h:22
-#, fuzzy
-msgid "Switch windows directly"
-msgstr "Direct tussen vensters schakelen"
-
-#: ../src/50-mutter-navigation.xml.in.h:23
-#, fuzzy
-msgid "Switch windows of an app directly"
-msgstr "Direct wisselen van venster binnen een toepassing"
-
-#: ../src/50-mutter-navigation.xml.in.h:24
-#, fuzzy
-msgid "Switch windows of an application"
-msgstr "Wisselen van venster binnen een toepassing"
-
-#: ../src/50-mutter-system.xml.in.h:1
-#, fuzzy
-msgid "Show the activities overview"
-msgstr "Het activiteitenoverzicht tonen"
-
-#: ../src/50-mutter-system.xml.in.h:2
-#, fuzzy
-msgid "Show the run command prompt"
-msgstr "Het opdrachtregelvenster tonen"
-
-#: ../src/50-mutter-system.xml.in.h:3
-#, fuzzy
-msgid "System"
-msgstr "Systeem"
-
-#: ../src/50-mutter-windows.xml.in.h:10
-#, fuzzy
-msgid "Raise window if covered, otherwise lower it"
-msgstr "Deels bedekte vensters naar voren halen of anders naar achter halen"
-
-#: ../src/50-mutter-windows.xml.in.h:16
-#, fuzzy
-msgid "Toggle window on all workspaces or one"
-msgstr "‘Venster is op alle werkbladen zichtbaar’ in- of uitschakelen"
+#~ msgid "Minimize window"
+#~ msgstr "Venster minimaliseren"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Schakelen naar werkblad 5"
