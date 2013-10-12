@@ -760,9 +760,8 @@ shell_app_system_initial_search (ShellAppSystem  *self,
  * @terms: (element-type utf8): List of terms, logical AND
  *
  * Search through a previous result set; for more information, see
- * js/ui/search.js.  Note the value of @prefs must be
- * the same as passed to shell_app_system_initial_search().  Note that returned
- * strings are only valid until a return to the main loop.
+ * js/ui/search.js. Note that returned strings are only valid until
+ * a return to the main loop.
  *
  * Returns: (transfer container) (element-type ShellApp): List of application identifiers
  */
