@@ -14,11 +14,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-14 18:10+0000\n"
-"PO-Revision-Date: 2013-09-21 22:46+0100\n"
-"Last-Translator: Reinout van Schouwen <reinouts@gnome.org>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-10-12 19:57+0200\n"
+"PO-Revision-Date: 2013-10-12 19:59+0200\n"
+"Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -269,6 +268,10 @@ msgstr "Werkbladen dynamisch beheren"
 msgid "Workspaces only on primary monitor"
 msgstr "Alleen werkbladen op hoofdmonitor"
 
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr "Focus pas wijzigen nadat de muisaanwijzer is gestopt met bewegen"
+
 #: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
@@ -282,10 +285,10 @@ msgstr "Uitbreiding"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Selecteer de te configureren uitbreiding uit de keuzelijst hierboven."
 
-#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:132
+#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:686
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:728
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -324,8 +327,8 @@ msgstr "(bijv. gebruiker of %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:255
-#: ../js/ui/components/networkAgent.js:273
+#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:259
+#: ../js/ui/components/networkAgent.js:277
 msgid "Username: "
 msgstr "Gebruikersnaam: "
 
@@ -346,42 +349,42 @@ msgstr "Authenticatie mislukt"
 msgid "(or swipe finger)"
 msgstr "(of vinger aanbieden)"
 
-#: ../js/misc/util.js:98
+#: ../js/misc/util.js:115
 msgid "Command not found"
 msgstr "Opdracht niet gevonden"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:131
+#: ../js/misc/util.js:148
 msgid "Could not parse command:"
 msgstr "Kon opdracht niet parsen:"
 
-#: ../js/misc/util.js:139
+#: ../js/misc/util.js:156
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Uitvoeren van ‘%s’ mislukt:"
 
-#: ../js/ui/appDisplay.js:598
+#: ../js/ui/appDisplay.js:596
 msgid "Frequently used applications will appear here"
 msgstr "Vaak gebruikte toepassingen verschijnen hier"
 
-#: ../js/ui/appDisplay.js:714
+#: ../js/ui/appDisplay.js:712
 msgid "Frequent"
 msgstr "Vaak gebruikt"
 
-#: ../js/ui/appDisplay.js:721
+#: ../js/ui/appDisplay.js:719
 msgid "All"
 msgstr "Alles"
 
-#: ../js/ui/appDisplay.js:1516
+#: ../js/ui/appDisplay.js:1514
 msgid "New Window"
 msgstr "Nieuw venster"
 
-#: ../js/ui/appDisplay.js:1519 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1517 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Uit favorieten verwijderen"
 
-#: ../js/ui/appDisplay.js:1520
+#: ../js/ui/appDisplay.js:1518
 msgid "Add to Favorites"
 msgstr "Aan favorieten toevoegen"
 
@@ -395,7 +398,7 @@ msgstr "%s is toegevoegd aan uw favorieten."
 msgid "%s has been removed from your favorites."
 msgstr "%s is verwijderd uit uw favorieten."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:807
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:806
 #: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Voorkeuren"
@@ -583,50 +586,50 @@ msgstr "Openen met %s"
 msgid "Eject"
 msgstr "Uitwerpen"
 
-#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:89 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Wachtwoord:"
 
-#: ../js/ui/components/keyring.js:107
+#: ../js/ui/components/keyring.js:108
 msgid "Type again:"
 msgstr "Nogmaals:"
 
-#: ../js/ui/components/networkAgent.js:127 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:689
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:296 ../js/ui/status/network.js:731
 msgid "Connect"
 msgstr "Verbinden"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:218
-#: ../js/ui/components/networkAgent.js:230
-#: ../js/ui/components/networkAgent.js:257
-#: ../js/ui/components/networkAgent.js:277
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/ui/components/networkAgent.js:222
+#: ../js/ui/components/networkAgent.js:234
+#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:281
+#: ../js/ui/components/networkAgent.js:291
 msgid "Password: "
 msgstr "Wachtwoord:"
 
 #. static WEP
-#: ../js/ui/components/networkAgent.js:223
+#: ../js/ui/components/networkAgent.js:227
 msgid "Key: "
 msgstr "Sleutel: "
 
-#: ../js/ui/components/networkAgent.js:261
+#: ../js/ui/components/networkAgent.js:265
 msgid "Identity: "
 msgstr "Identiteit: "
 
-#: ../js/ui/components/networkAgent.js:263
+#: ../js/ui/components/networkAgent.js:267
 msgid "Private key password: "
 msgstr "Wachtwoord van privésleutel: "
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:279
 msgid "Service: "
 msgstr "Service: "
 
-#: ../js/ui/components/networkAgent.js:304
+#: ../js/ui/components/networkAgent.js:308
 msgid "Authentication required by wireless network"
 msgstr "Authenticatie nodig voor draadloos netwerk"
 
-#: ../js/ui/components/networkAgent.js:305
+#: ../js/ui/components/networkAgent.js:309
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -635,35 +638,35 @@ msgstr ""
 "Er is een wachtwoord of een sleutel voor encryptie nodig voor toegang tot "
 "het draadloze netwerk ‘%s’."
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:313
 msgid "Wired 802.1X authentication"
 msgstr "802.1X-authenticatie (bedraad)"
 
-#: ../js/ui/components/networkAgent.js:311
+#: ../js/ui/components/networkAgent.js:315
 msgid "Network name: "
 msgstr "Netwerknaam: "
 
-#: ../js/ui/components/networkAgent.js:316
+#: ../js/ui/components/networkAgent.js:320
 msgid "DSL authentication"
 msgstr "DSL-authenticatie"
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:327
 msgid "PIN code required"
 msgstr "PIN-code vereist"
 
-#: ../js/ui/components/networkAgent.js:324
+#: ../js/ui/components/networkAgent.js:328
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN-code vereist voor het apparaat voor mobiel breedband"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:329
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:331
+#: ../js/ui/components/networkAgent.js:335
 msgid "Mobile broadband network password"
 msgstr "Netwerkwachtwoord voor mobiel breedband"
 
-#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:336
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Er is een wachtwoord nodig om met ‘%s’ te verbinden."
@@ -1034,11 +1037,14 @@ msgid "Restart & Install Updates"
 msgstr "Opnieuw opstarten en updates installeren"
 
 #: ../js/ui/endSessionDialog.js:114
+#, c-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] "De computer zal opnieuw opstarten en updates installeren over %d seconde."
-msgstr[1] "De computer zal opnieuw opstarten en updates installeren over %d seconden."
+msgstr[0] ""
+"De computer zal opnieuw opstarten en updates installeren over %d seconde."
+msgstr[1] ""
+"De computer zal opnieuw opstarten en updates installeren over %d seconden."
 
 #: ../js/ui/endSessionDialog.js:119
 msgctxt "button"
@@ -1100,9 +1106,12 @@ msgstr "Fouten tonen"
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode)
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:765 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:765 ../js/ui/status/network.js:473
+#: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Uitgeschakeld"
 
@@ -1134,31 +1143,35 @@ msgstr "Openen"
 msgid "Remove"
 msgstr "Verwijderen"
 
-#: ../js/ui/messageTray.js:1513
+#: ../js/ui/messageTray.js:1530
+msgid "Notifications"
+msgstr "Notificaties"
+
+#: ../js/ui/messageTray.js:1537
 msgid "Clear Messages"
 msgstr "Berichten wissen"
 
-#: ../js/ui/messageTray.js:1540
+#: ../js/ui/messageTray.js:1564
 msgid "Notification Settings"
 msgstr "Notificatie-instellingen"
 
-#: ../js/ui/messageTray.js:1559
+#: ../js/ui/messageTray.js:1617
 msgid "Tray Menu"
 msgstr "Overzichtmenu"
 
-#: ../js/ui/messageTray.js:1775
+#: ../js/ui/messageTray.js:1833
 msgid "No Messages"
 msgstr "Geen berichten"
 
-#: ../js/ui/messageTray.js:1812
+#: ../js/ui/messageTray.js:1871
 msgid "Message Tray"
 msgstr "Berichtenoverzicht"
 
-#: ../js/ui/messageTray.js:2787
+#: ../js/ui/messageTray.js:2846
 msgid "System Information"
 msgstr "Systeeminformatie"
 
-#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:396
+#: ../js/ui/notificationDaemon.js:630 ../src/shell-app.c:396
 msgctxt "program"
 msgid "Unknown"
 msgstr "Onbekend"
@@ -1186,17 +1199,17 @@ msgstr "Overzicht"
 msgid "Type to search…"
 msgstr "Typ om te zoeken…"
 
-#: ../js/ui/panel.js:518
+#: ../js/ui/panel.js:516
 msgid "Quit"
 msgstr "Afsluiten"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:570
+#: ../js/ui/panel.js:568
 msgid "Activities"
 msgstr "Activiteiten"
 
-#: ../js/ui/panel.js:903
+#: ../js/ui/panel.js:900
 msgid "Top Bar"
 msgstr "Bovenbalk"
 
@@ -1205,7 +1218,7 @@ msgstr "Bovenbalk"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:233
+#: ../js/ui/popupMenu.js:259
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1253,11 +1266,11 @@ msgstr "Kon niet vergrendelen"
 msgid "Lock was blocked by an application"
 msgstr "Vergrendelen is door een toepassing voorkomen"
 
-#: ../js/ui/searchDisplay.js:447
+#: ../js/ui/searchDisplay.js:448
 msgid "Searching…"
 msgstr "Zoeken…"
 
-#: ../js/ui/searchDisplay.js:491
+#: ../js/ui/searchDisplay.js:492
 msgid "No results."
 msgstr "Geen resultaten"
 
@@ -1289,56 +1302,56 @@ msgstr "Wachtwoord onthouden"
 msgid "Accessibility"
 msgstr "Toegankelijkheid"
 
-#: ../js/ui/status/accessibility.js:58
+#: ../js/ui/status/accessibility.js:56
 msgid "Zoom"
 msgstr "Zoomen"
 
-#: ../js/ui/status/accessibility.js:65
+#: ../js/ui/status/accessibility.js:63
 msgid "Screen Reader"
 msgstr "Schermlezer"
 
-#: ../js/ui/status/accessibility.js:69
+#: ../js/ui/status/accessibility.js:67
 msgid "Screen Keyboard"
 msgstr "Schermtoetsenbord"
 
-#: ../js/ui/status/accessibility.js:73
+#: ../js/ui/status/accessibility.js:71
 msgid "Visual Alerts"
 msgstr "Visuele alerteringen"
 
-#: ../js/ui/status/accessibility.js:76
+#: ../js/ui/status/accessibility.js:74
 msgid "Sticky Keys"
 msgstr "Plaktoetsen"
 
-#: ../js/ui/status/accessibility.js:79
+#: ../js/ui/status/accessibility.js:77
 msgid "Slow Keys"
 msgstr "Trage Toetsen"
 
-#: ../js/ui/status/accessibility.js:82
+#: ../js/ui/status/accessibility.js:80
 msgid "Bounce Keys"
 msgstr "Springende toetsen"
 
-#: ../js/ui/status/accessibility.js:85
+#: ../js/ui/status/accessibility.js:83
 msgid "Mouse Keys"
 msgstr "Muistoetsen"
 
-#: ../js/ui/status/accessibility.js:144
+#: ../js/ui/status/accessibility.js:142
 msgid "High Contrast"
 msgstr "Hoog contrast"
 
-#: ../js/ui/status/accessibility.js:193
+#: ../js/ui/status/accessibility.js:191
 msgid "Large Text"
 msgstr "Grote tekst"
 
 #. The Bluetooth menu only appears when Bluetooth is in use,
 #. so just statically build it with a "Turn Off" menu item.
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:62
-#: ../js/ui/status/bluetooth.js:99 ../js/ui/status/bluetooth.js:127
-#: ../js/ui/status/bluetooth.js:163 ../js/ui/status/bluetooth.js:194
+#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:63
+#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
+#: ../js/ui/status/bluetooth.js:164 ../js/ui/status/bluetooth.js:195
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1034 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:1085 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Uitschakelen"
 
@@ -1346,79 +1359,81 @@ msgstr "Uitschakelen"
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-instellingen"
 
-#: ../js/ui/status/bluetooth.js:57
+#: ../js/ui/status/bluetooth.js:58
+#, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d Verbonden apparaat"
 msgstr[1] "%d Verbonden apparaten"
 
-#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
+#: ../js/ui/status/bluetooth.js:101 ../js/ui/status/bluetooth.js:129
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Autorisatie-aanvraag van %s"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/bluetooth.js:171
-#: ../js/ui/status/bluetooth.js:202
+#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/bluetooth.js:172
+#: ../js/ui/status/bluetooth.js:203
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Het apparaat ‘%s’ wil aankoppelen met deze computer"
 
-#: ../js/ui/status/bluetooth.js:108
+#: ../js/ui/status/bluetooth.js:109
 msgid "Allow"
 msgstr "Toestaan"
 
-#: ../js/ui/status/bluetooth.js:109
+#: ../js/ui/status/bluetooth.js:110
 msgid "Deny"
 msgstr "Weigeren"
 
-#: ../js/ui/status/bluetooth.js:134
+#: ../js/ui/status/bluetooth.js:135
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Het apparaat ‘%s’ wil toegang tot de dienst ‘%s’"
 
-#: ../js/ui/status/bluetooth.js:136
+#: ../js/ui/status/bluetooth.js:137
 msgid "Always grant access"
 msgstr "Altijd toestaan"
 
-#: ../js/ui/status/bluetooth.js:137
+#: ../js/ui/status/bluetooth.js:138
 msgid "Grant this time only"
 msgstr "Eenmalig toestaan"
 
-#: ../js/ui/status/bluetooth.js:138
+#: ../js/ui/status/bluetooth.js:139
 msgid "Reject"
 msgstr "Afwijzen"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:165
+#: ../js/ui/status/bluetooth.js:166
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Koppelbevestiging voor %s"
 
-#: ../js/ui/status/bluetooth.js:172
+#: ../js/ui/status/bluetooth.js:173
+#, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
-msgstr 
+msgstr ""
 "Bevestig dat de toegangscode ‘%06d’ hetzelfde is als die van het apparaat."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:175
+#: ../js/ui/status/bluetooth.js:176
 msgid "Matches"
 msgstr "Komt overeen"
 
-#: ../js/ui/status/bluetooth.js:176
+#: ../js/ui/status/bluetooth.js:177
 msgid "Does not match"
 msgstr "Komt niet overeen"
 
-#: ../js/ui/status/bluetooth.js:195
+#: ../js/ui/status/bluetooth.js:196
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Verzoek tot koppelen met %s"
 
-#: ../js/ui/status/bluetooth.js:203
+#: ../js/ui/status/bluetooth.js:204
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Geef de op het apparaat aangegeven PIN-code."
 
-#: ../js/ui/status/bluetooth.js:220
+#: ../js/ui/status/bluetooth.js:221
 msgid "OK"
 msgstr "OK"
 
@@ -1426,7 +1441,7 @@ msgstr "OK"
 msgid "Brightness"
 msgstr "Helderheid"
 
-#: ../js/ui/status/keyboard.js:403
+#: ../js/ui/status/keyboard.js:401
 msgid "Show Keyboard Layout"
 msgstr "Toetsenbordindeling tonen"
 
@@ -1434,83 +1449,95 @@ msgstr "Toetsenbordindeling tonen"
 msgid "<unknown>"
 msgstr "<onbekend>"
 
-#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1049
+#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:380
+#: ../js/ui/status/network.js:1106
 msgid "Off"
 msgstr "Uit"
 
-#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:955
-#: ../js/ui/status/rfkill.js:49
-msgid "Network Settings"
-msgstr "Netwerkinstellingen"
-
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:364
+#: ../js/ui/status/network.js:386
 msgid "unmanaged"
 msgstr "niet gemanaged"
 
-#: ../js/ui/status/network.js:366
+#: ../js/ui/status/network.js:388
 msgid "disconnecting..."
 msgstr "verbinding verbreken…"
 
-#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1100
+#: ../js/ui/status/network.js:394 ../js/ui/status/network.js:1160
 msgid "connecting..."
 msgstr "verbinden…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1103
+#: ../js/ui/status/network.js:397 ../js/ui/status/network.js:1163
 msgid "authentication required"
 msgstr "authenticatie nodig"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:383
+#: ../js/ui/status/network.js:405
 msgid "firmware missing"
 msgstr "firmware ontbreekt"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:387
+#: ../js/ui/status/network.js:409
 msgid "unavailable"
 msgstr "niet beschikbaar"
 
-#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1105
+#: ../js/ui/status/network.js:411 ../js/ui/status/network.js:1165
 msgid "connection failed"
 msgstr "verbinding mislukt"
 
-#: ../js/ui/status/network.js:654
+#: ../js/ui/status/network.js:427 ../js/ui/status/network.js:513
+msgid "Mobile Broadband Settings"
+msgstr "Instellingen voor mobiel breedband"
+
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1104
+msgid "Hardware Disabled"
+msgstr "Uitgeschakeld in hardware"
+
+#: ../js/ui/status/network.js:696
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi-netwerken"
 
-#: ../js/ui/status/network.js:656
+#: ../js/ui/status/network.js:698
 msgid "Select a network"
 msgstr "Selecteer een netwerk"
 
-#: ../js/ui/status/network.js:680
+#: ../js/ui/status/network.js:722
 msgid "No Networks"
 msgstr "Geen netwerken"
 
-#: ../js/ui/status/network.js:949
+#: ../js/ui/status/network.js:991
 msgid "Select Network"
 msgstr "Selecteer netwerk"
 
-#: ../js/ui/status/network.js:1034
+#: ../js/ui/status/network.js:997
+msgid "Wi-Fi Settings"
+msgstr "Instellingen voor Wi-Fi"
+
+#: ../js/ui/status/network.js:1085
 msgid "Turn On"
 msgstr "Inschakelen"
 
-#: ../js/ui/status/network.js:1167
+#: ../js/ui/status/network.js:1108
+msgid "Not Connected"
+msgstr "Niet verbonden"
+
+#: ../js/ui/status/network.js:1228
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1306
+#: ../js/ui/status/network.js:1368
 msgid "Network Manager"
 msgstr "Netwerk-manager"
 
-#: ../js/ui/status/network.js:1345
+#: ../js/ui/status/network.js:1407
 msgid "Connection failed"
 msgstr "Verbinding mislukt"
 
-#: ../js/ui/status/network.js:1346
+#: ../js/ui/status/network.js:1408
 msgid "Activation of network connection failed"
 msgstr "Activeren van netwerkverbinding mislukt"
 
@@ -1555,6 +1582,10 @@ msgstr "Vliegtuigstand"
 #: ../js/ui/status/rfkill.js:45
 msgid "On"
 msgstr "Aan"
+
+#: ../js/ui/status/rfkill.js:49
+msgid "Network Settings"
+msgstr "Netwerkinstellingen"
 
 #: ../js/ui/status/system.js:305
 msgid "Switch User"
@@ -1667,7 +1698,7 @@ msgid_plural "%u Inputs"
 msgstr[0] "%u invoerkanaal"
 msgstr[1] "%u invoerkanalen"
 
-#: ../src/gvc/gvc-mixer-control.c:2373
+#: ../src/gvc/gvc-mixer-control.c:2371
 msgid "System Sounds"
 msgstr "Systeemgeluiden"
 
@@ -1846,9 +1877,6 @@ msgstr "Authenticatievenster is door de gebruiker afgesloten"
 #~ msgid "Set Up a New Device…"
 #~ msgstr "Nieuw apparaat instellen…"
 
-#~ msgid "hardware disabled"
-#~ msgstr "uitgeschakeld in hardware"
-
 #~ msgid "Connection"
 #~ msgstr "Verbinding"
 
@@ -1885,9 +1913,6 @@ msgstr "Authenticatievenster is door de gebruiker afgesloten"
 
 #~ msgid "Auto Ethernet"
 #~ msgstr "Automatisch ethernetverbinding"
-
-#~ msgid "Mobile broadband"
-#~ msgstr "Mobiel breedband"
 
 #~ msgid "Auto broadband"
 #~ msgstr "Automatische breedbandverbinding"
@@ -1985,9 +2010,6 @@ msgstr "Authenticatievenster is door de gebruiker afgesloten"
 
 #~ msgid "Idle"
 #~ msgstr "Inactief"
-
-#~ msgid "Notifications"
-#~ msgstr "Notificaties"
 
 #~ msgid "Your chat status will be set to busy"
 #~ msgstr "De chatstatus zal op ‘bezig’ gezet worden"
