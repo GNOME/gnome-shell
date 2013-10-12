@@ -438,7 +438,12 @@ const Notification = new Lang.Class({
         this._bannerLabel = this._bannerUrlHighlighter.actor;
         this._bannerBox.add_actor(this._bannerLabel);
 
-        this.update(title, banner, params);
+        // If called with only one argument we assume the caller
+        // will call .update() later on. This is the case of
+        // NotificationDaemon, which wants to use the same code
+        // for new and updated notifications
+        if (arguments.length != 1)
+            this.update(title, banner, params);
     },
 
     // update:
