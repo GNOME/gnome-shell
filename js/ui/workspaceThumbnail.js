@@ -536,20 +536,6 @@ const ThumbnailsBox = new Lang.Class({
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
         this.actor._delegate = this;
 
-        // When we animate the scale, we don't animate the requested size of the thumbnails, rather
-        // we ask for our final size and then animate within that size. This slightly simplifies the
-        // interaction with the main workspace windows (instead of constantly reallocating them
-        // to a new size, they get a new size once, then use the standard window animation code
-        // allocate the windows to their new positions), however it causes problems for drawing
-        // the background and border wrapped around the thumbnail as we animate - we can't just pack
-        // the container into a box and set style properties on the box since that box would wrap
-        // around the final size not the animating size. So instead we fake the background with
-        // an actor underneath the content and adjust the allocation of our children to leave space
-        // for the border and padding of the background actor.
-        this._background = new St.Bin({ style_class: 'workspace-thumbnails-background' });
-
-        this.actor.add_actor(this._background);
-
         let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator' });
 
         // We don't want the indicator to affect drag-and-drop
@@ -1042,9 +1028,6 @@ const ThumbnailsBox = new Lang.Class({
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
-        // See comment about this._background in _init()
-        let themeNode = this._background.get_theme_node();
-
         // Note that for getPreferredWidth/Height we cheat a bit and skip propagating
         // the size request to our children because we know how big they are and know
         // that the actors aren't depending on the virtual functions being called.
@@ -1052,24 +1035,21 @@ const ThumbnailsBox = new Lang.Class({
         if (this._thumbnails.length == 0)
             return;
 
-        let spacing = this.actor.get_theme_node().get_length('spacing');
+        let themeNode = this.actor.get_theme_node();
+
+        let spacing = themeNode.get_length('spacing');
         let nWorkspaces = global.screen.n_workspaces;
         let totalSpacing = (nWorkspaces - 1) * spacing;
 
-        [alloc.min_size, alloc.natural_size] =
-            themeNode.adjust_preferred_height(totalSpacing,
-                                              totalSpacing + nWorkspaces * this._porthole.height * MAX_THUMBNAIL_SCALE);
+        alloc.min_size = totalSpacing;
+        alloc.natural_size = totalSpacing + nWorkspaces * this._porthole.height * MAX_THUMBNAIL_SCALE;
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
-        // See comment about this._background in _init()
-        let themeNode = this._background.get_theme_node();
-
         if (this._thumbnails.length == 0)
             return;
 
-        // We don't animate our preferred width, which is always reported according
-        // to the actual number of current workspaces, we just animate within that
+        let themeNode = this.actor.get_theme_node();
 
         let spacing = this.actor.get_theme_node().get_length('spacing');
         let nWorkspaces = global.screen.n_workspaces;
@@ -1081,28 +1061,26 @@ const ThumbnailsBox = new Lang.Class({
         scale = Math.min(scale, MAX_THUMBNAIL_SCALE);
 
         let width = Math.round(this._porthole.width * scale);
-        [alloc.min_size, alloc.natural_size] =
-            themeNode.adjust_preferred_width(width, width);
+        alloc.min_size = width;
+        alloc.natural_size = width;
     },
 
     _allocate: function(actor, box, flags) {
         let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
 
-        // See comment about this._background in _init()
-        let themeNode = this._background.get_theme_node();
-        let contentBox = themeNode.get_content_box(box);
-
         if (this._thumbnails.length == 0) // not visible
             return;
 
+        let themeNode = this.actor.get_theme_node();
+
         let portholeWidth = this._porthole.width;
         let portholeHeight = this._porthole.height;
-        let spacing = this.actor.get_theme_node().get_length('spacing');
+        let spacing = themeNode.get_length('spacing');
 
         // Compute the scale we'll need once everything is updated
         let nWorkspaces = global.screen.n_workspaces;
         let totalSpacing = (nWorkspaces - 1) * spacing;
-        let avail = (contentBox.y2 - contentBox.y1) - totalSpacing;
+        let avail = (box.y2 - box.y1) - totalSpacing;
 
         let newScale = (avail / nWorkspaces) / portholeHeight;
         newScale = Math.min(newScale, MAX_THUMBNAIL_SCALE);
@@ -1131,21 +1109,6 @@ const ThumbnailsBox = new Lang.Class({
         else
             slideOffset = thumbnailWidth + themeNode.get_padding(St.Side.RIGHT);
 
-        let childBox = new Clutter.ActorBox();
-
-        // The background is horizontally restricted to correspond to the current thumbnail size
-        // but otherwise covers the entire allocation
-        if (rtl) {
-            childBox.x1 = box.x1;
-            childBox.x2 = box.x2 - ((contentBox.x2 - contentBox.x1) - thumbnailWidth);
-        } else {
-            childBox.x1 = box.x1 + ((contentBox.x2 - contentBox.x1) - thumbnailWidth);
-            childBox.x2 = box.x2;
-        }
-        childBox.y1 = box.y1;
-        childBox.y2 = box.y2;
-        this._background.allocate(childBox, flags);
-
         let indicatorY1 = this._indicatorY;
         let indicatorY2;
         // when not animating, the workspace position overrides this._indicatorY
@@ -1157,13 +1120,15 @@ const ThumbnailsBox = new Lang.Class({
         let indicatorLeftFullBorder = indicatorThemeNode.get_padding(St.Side.LEFT) + indicatorThemeNode.get_border_width(St.Side.LEFT);
         let indicatorRightFullBorder = indicatorThemeNode.get_padding(St.Side.RIGHT) + indicatorThemeNode.get_border_width(St.Side.RIGHT);
 
-        let y = contentBox.y1;
+        let y = box.y1;
 
         if (this._dropPlaceholderPos == -1) {
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
                 this._dropPlaceholder.hide();
             }));
         }
+
+        let childBox = new Clutter.ActorBox();
 
         for (let i = 0; i < this._thumbnails.length; i++) {
             let thumbnail = this._thumbnails[i];
@@ -1173,10 +1138,10 @@ const ThumbnailsBox = new Lang.Class({
 
             let x1, x2;
             if (rtl) {
-                x1 = contentBox.x1 + slideOffset * thumbnail.slidePosition;
+                x1 = box.x1 + slideOffset * thumbnail.slidePosition;
                 x2 = x1 + thumbnailWidth;
             } else {
-                x1 = contentBox.x2 - thumbnailWidth + slideOffset * thumbnail.slidePosition;
+                x1 = box.x2 - thumbnailWidth + slideOffset * thumbnail.slidePosition;
                 x2 = x1 + thumbnailWidth;
             }
 
@@ -1223,11 +1188,11 @@ const ThumbnailsBox = new Lang.Class({
         }
 
         if (rtl) {
-            childBox.x1 = contentBox.x1;
-            childBox.x2 = contentBox.x1 + thumbnailWidth;
+            childBox.x1 = box.x1;
+            childBox.x2 = box.x1 + thumbnailWidth;
         } else {
-            childBox.x1 = contentBox.x2 - thumbnailWidth;
-            childBox.x2 = contentBox.x2;
+            childBox.x1 = box.x2 - thumbnailWidth;
+            childBox.x2 = box.x2;
         }
         childBox.x1 -= indicatorLeftFullBorder;
         childBox.x2 += indicatorRightFullBorder;

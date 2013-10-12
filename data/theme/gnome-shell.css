@@ -693,7 +693,9 @@ StScrollBar StButton#vhandle:active {
     padding-bottom: 32px;
 }
 
-.workspace-thumbnails-background {
+.workspace-thumbnails {
+    spacing: 11px;
+    visible-width: 32px; /* Amount visible before hovering */
     border: 1px solid rgba(128, 128, 128, 0.4);
     border-right: 0px;
     border-radius: 9px 0px 0px 9px;
@@ -701,16 +703,11 @@ StScrollBar StButton#vhandle:active {
     padding: 11px 7px 11px 11px;
 }
 
-.workspace-thumbnails-background:rtl {
+.workspace-thumbnails:rtl {
     border-right: 1px;
     border-left: 0px;
     border-radius: 0px 9px 9px 0px;
     padding: 11px 11px 11px 7px;
-}
-
-.workspace-thumbnails {
-    spacing: 11px;
-    visible-width: 32px; /* Amount visible before hovering */
 }
 
 .workspace-thumbnail-indicator {
