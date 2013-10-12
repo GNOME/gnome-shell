@@ -55,9 +55,9 @@ const SlideLayout = new Lang.Class({
     vfunc_allocate: function(container, box, flags) {
         let child = container.get_first_child();
 
-        let [, , natWidth, natHeight] = child.get_preferred_size();
         let availWidth = Math.round(box.x2 - box.x1);
         let availHeight = Math.round(box.y2 - box.y1);
+        let [, natWidth] = child.get_preferred_width(availHeight);
 
         // Align the actor inside the clipped box, as the actor's alignment
         // flags only determine what to do if the allocated box is bigger
@@ -69,7 +69,7 @@ const SlideLayout = new Lang.Class({
         actorBox.x1 = alignX;
         actorBox.x2 = actorBox.x1 + child.x_expand ? availWidth : natWidth;
         actorBox.y1 = 0;
-        actorBox.y2 = actorBox.y1 + child.y_expand ? availHeight : natHeight;
+        actorBox.y2 = actorBox.y1 + availHeight;
 
         child.allocate(actorBox, flags);
     },
@@ -239,11 +239,6 @@ const ThumbnailsSlider = new Lang.Class({
 
         this._thumbnailsBox = thumbnailsBox;
 
-        // SlideLayout reads the actor's expand flags to decide
-        // whether to allocate the natural size to its child, or the whole
-        // available allocation
-        this._thumbnailsBox.actor.y_expand = true;
-
         this.actor.request_mode = Clutter.RequestMode.WIDTH_FOR_HEIGHT;
         this.actor.reactive = true;
         this.actor.track_hover = true;
@@ -327,7 +322,6 @@ const DashSlider = new Lang.Class({
         // whether to allocate the natural size to its child, or the whole
         // available allocation
         this._dash.actor.x_expand = true;
-        this._dash.actor.y_expand = true;
 
         this.actor.x_align = Clutter.ActorAlign.START;
         this.actor.y_expand = true;
