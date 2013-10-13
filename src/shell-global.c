@@ -1779,6 +1779,8 @@ shell_global_set_runtime_state (ShellGlobal  *global,
                                NULL, FALSE, G_FILE_CREATE_REPLACE_DESTINATION,
                                NULL, NULL, NULL);
     }
+
+  g_object_unref (path);
 }
 
 /**
@@ -1821,6 +1823,9 @@ shell_global_get_runtime_state (ShellGlobal  *global,
       g_bytes_unref (bytes);
       g_mapped_file_unref (mfile);
     }
+
+  g_object_unref (path);
+  g_free (pathstr);
 
   return res;
 }
