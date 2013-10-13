@@ -10,6 +10,7 @@
 
 #include <X11/extensions/Xdamage.h>
 #include <meta/compositor-mutter.h>
+#include "meta-surface-actor.h"
 
 MetaWindowActor *meta_window_actor_new (MetaWindow *window);
 
@@ -79,5 +80,7 @@ void meta_window_actor_set_unobscured_region      (MetaWindowActor *self,
 
 void meta_window_actor_effect_completed (MetaWindowActor *actor,
                                          gulong           event);
+
+MetaSurfaceActor *meta_window_actor_get_surface (MetaWindowActor *self);
 
 #endif /* META_WINDOW_ACTOR_PRIVATE_H */
