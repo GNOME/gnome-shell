@@ -1526,7 +1526,7 @@ const NMApplet = new Lang.Class({
             return (a instanceof NMClient.VPNConnection);
         });
         vpnConnections.forEach(Lang.bind(this, function(a) {
-            this._ensureActiveConnectionProps(a);
+            ensureActiveConnectionProps(a, this._settings);
         }));
         this._vpnSection.setActiveConnections(vpnConnections);
 
