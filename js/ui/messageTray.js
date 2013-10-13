@@ -310,6 +310,126 @@ const NotificationPolicy = new Lang.Class({
 });
 Signals.addSignalMethods(NotificationPolicy.prototype);
 
+const NotificationGenericPolicy = new Lang.Class({
+    Name: 'NotificationGenericPolicy',
+    Extends: NotificationPolicy,
+
+    _init: function() {
+        // Don't chain to parent, it would try setting
+        // our properties to the defaults
+
+        this.id = 'generic';
+
+        this._masterSettings = new Gio.Settings({ schema: 'org.gnome.desktop.notifications' });
+        this._masterSettings.connect('changed', Lang.bind(this, this._changed));
+    },
+
+    store: function() { },
+
+    destroy: function() {
+        this._masterSettings.run_dispose();
+    },
+
+    _changed: function(settings, key) {
+        this.emit('policy-changed', key);
+    },
+
+    get enable() {
+        return true;
+    },
+
+    get enableSound() {
+        return true;
+    },
+
+    get showBanners() {
+        return this._masterSettings.get_boolean('show-banners');
+    },
+
+    get forceExpanded() {
+        return false;
+    },
+
+    get showInLockScreen() {
+        return this._masterSettings.get_boolean('show-in-lock-screen');
+    },
+
+    get detailsInLockScreen() {
+        return false;
+    }
+});
+
+const NotificationApplicationPolicy = new Lang.Class({
+    Name: 'NotificationApplicationPolicy',
+    Extends: NotificationPolicy,
+
+    _init: function(id) {
+        // Don't chain to parent, it would try setting
+        // our properties to the defaults
+
+        this.id = id;
+        this._canonicalId = this._canonicalizeId(id);
+
+        this._masterSettings = new Gio.Settings({ schema: 'org.gnome.desktop.notifications' });
+        this._settings = new Gio.Settings({ schema: 'org.gnome.desktop.notifications.application',
+                                            path: '/org/gnome/desktop/notifications/application/' + this._canonicalId + '/' });
+
+        this._masterSettings.connect('changed', Lang.bind(this, this._changed));
+        this._settings.connect('changed', Lang.bind(this, this._changed));
+    },
+
+    store: function() {
+        this._settings.set_string('application-id', this.id + '.desktop');
+
+        let apps = this._masterSettings.get_strv('application-children');
+        if (apps.indexOf(this._canonicalId) < 0) {
+            apps.push(this._canonicalId);
+            this._masterSettings.set_strv('application-children', apps);
+        }
+    },
+
+    destroy: function() {
+        this._masterSettings.run_dispose();
+        this._settings.run_dispose();
+    },
+
+    _changed: function(settings, key) {
+        this.emit('policy-changed', key);
+    },
+
+    _canonicalizeId: function(id) {
+        // Keys are restricted to lowercase alphanumeric characters and dash,
+        // and two dashes cannot be in succession
+        return id.toLowerCase().replace(/[^a-z0-9\-]/g, '-').replace(/--+/g, '-');
+    },
+
+    get enable() {
+        return this._settings.get_boolean('enable');
+    },
+
+    get enableSound() {
+        return this._settings.get_boolean('enable-sound-alerts');
+    },
+
+    get showBanners() {
+        return this._masterSettings.get_boolean('show-banners') &&
+            this._settings.get_boolean('show-banners');
+    },
+
+    get forceExpanded() {
+        return this._settings.get_boolean('force-expanded');
+    },
+
+    get showInLockScreen() {
+        return this._masterSettings.get_boolean('show-in-lock-screen') &&
+            this._settings.get_boolean('show-in-lock-screen');
+    },
+
+    get detailsInLockScreen() {
+        return this._settings.get_boolean('details-in-lock-screen');
+    }
+});
+
 // Notification:
 // @source: the notification's Source
 // @title: the title

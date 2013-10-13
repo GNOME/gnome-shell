@@ -9,7 +9,6 @@ const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
-const NotificationDaemon = imports.ui.notificationDaemon;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
@@ -61,7 +60,7 @@ const Indicator = new Lang.Class({
     _ensureSource: function() {
         if (!this._source) {
             this._source = new MessageTray.Source(_("Bluetooth"), 'bluetooth-active');
-            this._source.policy = new NotificationDaemon.NotificationApplicationPolicy('gnome-bluetooth-panel');
+            this._source.policy = new MessageTray.NotificationApplicationPolicy('gnome-bluetooth-panel');
             Main.messageTray.add(this._source);
         }
     },

@@ -16,7 +16,6 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const MessageTray = imports.ui.messageTray;
-const NotificationDaemon = imports.ui.notificationDaemon;
 const ModalDialog = imports.ui.modalDialog;
 const ModemManager = imports.misc.modemManager;
 const Util = imports.misc.util;
@@ -1367,7 +1366,7 @@ const NMApplet = new Lang.Class({
         if (!this._source) {
             this._source = new MessageTray.Source(_("Network Manager"),
                                                   'network-transmit-receive');
-            this._source.policy = new NotificationDaemon.NotificationApplicationPolicy('gnome-network-panel');
+            this._source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
 
             this._source.connect('destroy', Lang.bind(this, function() {
                 this._source = null;
