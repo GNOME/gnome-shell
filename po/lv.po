@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-07 07:38+0000\n"
-"PO-Revision-Date: 2013-10-07 21:53+0300\n"
+"POT-Creation-Date: 2013-10-10 21:27+0000\n"
+"PO-Revision-Date: 2013-10-13 13:32+0300\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -272,7 +272,7 @@ msgstr "Izvēlieties konfigurējamo paplašinājumu no saraksta."
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:703
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:728
 msgid "Cancel"
 msgstr "Atcelt"
 
@@ -320,15 +320,15 @@ msgstr "Autentifikācijas kļūda"
 msgid "(or swipe finger)"
 msgstr "(vai velciet pirkstu)"
 
-#: ../js/misc/util.js:98
+#: ../js/misc/util.js:115
 msgid "Command not found"
 msgstr "Komanda nav atrasta"
 
-#: ../js/misc/util.js:131
+#: ../js/misc/util.js:148
 msgid "Could not parse command:"
 msgstr "Neizdevās apstrādāt komandu:"
 
-#: ../js/misc/util.js:139
+#: ../js/misc/util.js:156
 #, javascript-format
 msgid "Execution of '%s' failed:"
 msgstr "“%s” izpilde neizdevās:"
@@ -558,16 +558,16 @@ msgstr "Atvērt ar %s"
 msgid "Eject"
 msgstr "Izgrūst"
 
-#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:89 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Parole:"
 
-#: ../js/ui/components/keyring.js:110
+#: ../js/ui/components/keyring.js:108
 msgid "Type again:"
 msgstr "Ierakstiet vēlreiz:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:122
-#: ../js/ui/status/network.js:285 ../js/ui/status/network.js:706
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:296 ../js/ui/status/network.js:731
 msgid "Connect"
 msgstr "Savienot"
 
@@ -1073,9 +1073,12 @@ msgstr "Rādīt kļūdas"
 msgid "Enabled"
 msgstr "Aktivēta"
 
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:765 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:765 ../js/ui/status/network.js:473
+#: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Deaktivēta"
 
@@ -1107,27 +1110,31 @@ msgstr "Atvērt"
 msgid "Remove"
 msgstr "Izņemt"
 
-#: ../js/ui/messageTray.js:1513
+#: ../js/ui/messageTray.js:1530
+msgid "Notifications"
+msgstr "Paziņojumi"
+
+#: ../js/ui/messageTray.js:1537
 msgid "Clear Messages"
 msgstr "Attīrīt ziņojumus"
 
-#: ../js/ui/messageTray.js:1540
+#: ../js/ui/messageTray.js:1564
 msgid "Notification Settings"
 msgstr "Paziņojumu iestatījumi"
 
-#: ../js/ui/messageTray.js:1559
+#: ../js/ui/messageTray.js:1617
 msgid "Tray Menu"
 msgstr "Paplātes izvēlne"
 
-#: ../js/ui/messageTray.js:1775
+#: ../js/ui/messageTray.js:1833
 msgid "No Messages"
 msgstr "Nav ziņojumu"
 
-#: ../js/ui/messageTray.js:1813
+#: ../js/ui/messageTray.js:1871
 msgid "Message Tray"
 msgstr "Ziņojumu paplāte"
 
-#: ../js/ui/messageTray.js:2788
+#: ../js/ui/messageTray.js:2846
 msgid "System Information"
 msgstr "Sistēmas informācija"
 
@@ -1298,8 +1305,8 @@ msgstr "Liels teksts"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:122
-#: ../js/ui/status/network.js:1051 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:1085 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Izslēgt"
 
@@ -1393,83 +1400,99 @@ msgstr "Gaišums"
 msgid "<unknown>"
 msgstr "<nezināms>"
 
-#: ../js/ui/status/network.js:212 ../js/ui/status/network.js:1066
+#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:380
+#: ../js/ui/status/network.js:1106
 msgid "Off"
 msgstr "Izslēgts"
 
-#: ../js/ui/status/network.js:286 ../js/ui/status/network.js:972
-#: ../js/ui/status/rfkill.js:49
-msgid "Network Settings"
-msgstr "Tīkla iestatījumi"
-
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:375
+#: ../js/ui/status/network.js:386
 msgid "unmanaged"
 msgstr "nepārvaldīts"
 
-#: ../js/ui/status/network.js:377
+#: ../js/ui/status/network.js:388
 msgid "disconnecting..."
 msgstr "atvienojas..."
 
-#: ../js/ui/status/network.js:383 ../js/ui/status/network.js:1118
+#: ../js/ui/status/network.js:394 ../js/ui/status/network.js:1160
 msgid "connecting..."
 msgstr "savienojas..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:386 ../js/ui/status/network.js:1121
+#: ../js/ui/status/network.js:397 ../js/ui/status/network.js:1163
 msgid "authentication required"
 msgstr "nepieciešama autentifikācija"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:394
+#: ../js/ui/status/network.js:405
 msgid "firmware missing"
 msgstr "trūkst aparātprogrammatūras"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:398
+#: ../js/ui/status/network.js:409
 msgid "unavailable"
 msgstr "nav pieejams"
 
-#: ../js/ui/status/network.js:400 ../js/ui/status/network.js:1123
+#: ../js/ui/status/network.js:411 ../js/ui/status/network.js:1165
 msgid "connection failed"
 msgstr "savienojums neizdevās"
 
-#: ../js/ui/status/network.js:671
+#: ../js/ui/status/network.js:427 ../js/ui/status/network.js:513
+#| msgid "Mobile broadband"
+msgid "Mobile Broadband Settings"
+msgstr "Mobilās platjoslas iestatījumi"
+
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1104
+#| msgid "hardware disabled"
+msgid "Hardware Disabled"
+msgstr "Izslēgts aparatūrā"
+
+#: ../js/ui/status/network.js:696
 msgid "Wi-Fi Networks"
 msgstr "Bezvadu tīkli"
 
-#: ../js/ui/status/network.js:673
+#: ../js/ui/status/network.js:698
 msgid "Select a network"
 msgstr "Izvēlieties tīklu"
 
-#: ../js/ui/status/network.js:697
+#: ../js/ui/status/network.js:722
 msgid "No Networks"
 msgstr "Nav tīklu"
 
-#: ../js/ui/status/network.js:966
+#: ../js/ui/status/network.js:991
 msgid "Select Network"
 msgstr "Izvēlieties tīklu"
 
-#: ../js/ui/status/network.js:1051
+#: ../js/ui/status/network.js:997
+#| msgid "Settings"
+msgid "Wi-Fi Settings"
+msgstr "Wi-Fi iestatījumi"
+
+#: ../js/ui/status/network.js:1085
 msgid "Turn On"
 msgstr "Ieslēgt"
 
-#: ../js/ui/status/network.js:1186
+#: ../js/ui/status/network.js:1108
+#| msgid "Connect"
+msgid "Not Connected"
+msgstr "Nav savienots"
+
+#: ../js/ui/status/network.js:1228
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1326
+#: ../js/ui/status/network.js:1368
 msgid "Network Manager"
 msgstr "Tīkla pārvaldnieks"
 
-#: ../js/ui/status/network.js:1365
+#: ../js/ui/status/network.js:1407
 msgid "Connection failed"
 msgstr "Neizdevās savienoties"
 
-#: ../js/ui/status/network.js:1366
+#: ../js/ui/status/network.js:1408
 msgid "Activation of network connection failed"
 msgstr "Neizdevās tīkla savienojuma aktivēšana"
 
@@ -1491,13 +1514,11 @@ msgstr "Novērtē…"
 
 #: ../js/ui/status/power.js:77
 #, javascript-format
-#| msgid "%d\\u2236%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "Atlicis %d.%02d (%d%%)"
 
 #: ../js/ui/status/power.js:82
 #, javascript-format
-#| msgid "%d\\u2236%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "Līdz pilnai %d.%02d (%d%%)"
 
@@ -1508,6 +1529,10 @@ msgstr "Lidmašīnas režīms"
 #: ../js/ui/status/rfkill.js:45
 msgid "On"
 msgstr "Ieslēgt"
+
+#: ../js/ui/status/rfkill.js:49
+msgid "Network Settings"
+msgstr "Tīkla iestatījumi"
 
 #: ../js/ui/status/system.js:305
 msgid "Switch User"
@@ -1820,9 +1845,6 @@ msgstr "Lietotājs noraidīja autentifikācijas dialoglodziņu"
 #~ msgid "Set Up a New Device…"
 #~ msgstr "Iestatīt jaunu ierīci…"
 
-#~ msgid "hardware disabled"
-#~ msgstr "izslēgts aparatūrā"
-
 #~ msgid "Connection"
 #~ msgstr "Savienojums"
 
@@ -1860,9 +1882,6 @@ msgstr "Lietotājs noraidīja autentifikācijas dialoglodziņu"
 
 #~ msgid "Auto Ethernet"
 #~ msgstr "Automātisks Ethernet"
-
-#~ msgid "Mobile broadband"
-#~ msgstr "Mobilā platjosla"
 
 #~ msgid "Auto broadband"
 #~ msgstr "Automātiska platjosla"
@@ -1968,9 +1987,6 @@ msgstr "Lietotājs noraidīja autentifikācijas dialoglodziņu"
 
 #~ msgid "Idle"
 #~ msgstr "Dīkstāvē"
-
-#~ msgid "Notifications"
-#~ msgstr "Paziņojumi"
 
 #~ msgid "Your chat status will be set to busy"
 #~ msgstr "Tērzēšanas status tiks iestatīts uz “aizņemts”"
