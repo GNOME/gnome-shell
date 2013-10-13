@@ -28,7 +28,7 @@ function Bus() {
     return new BusProxy(Gio.DBus.session, 'org.freedesktop.DBus', '/org/freedesktop/DBus');
 }
 
-const NotificationDaemonIface = <interface name="org.freedesktop.Notifications">
+const FdoNotificationsIface = <interface name="org.freedesktop.Notifications">
 <method name="Notify">
     <arg type="s" direction="in"/>
     <arg type="u" direction="in"/>
@@ -101,11 +101,11 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'ibus-ui-gtk': 'keyboard'
 };
 
-const NotificationDaemon = new Lang.Class({
-    Name: 'NotificationDaemon',
+const FdoNotificationDaemon = new Lang.Class({
+    Name: 'FdoNotificationDaemon',
 
     _init: function() {
-        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(NotificationDaemonIface, this);
+        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(FdoNotificationsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/freedesktop/Notifications');
 
         this._sources = [];
@@ -213,7 +213,7 @@ const NotificationDaemon = new Lang.Class({
             }
         }
 
-        let source = new Source(title, pid, sender, trayIcon, ndata ? ndata.hints['desktop-entry'] : null);
+        let source = new FdoNotificationDaemonSource(title, pid, sender, trayIcon, ndata ? ndata.hints['desktop-entry'] : null);
         source.setTransient(isForTransientNotification);
 
         if (!isForTransientNotification) {
@@ -541,8 +541,8 @@ const NotificationDaemon = new Lang.Class({
     }
 });
 
-const Source = new Lang.Class({
-    Name: 'NotificationDaemonSource',
+const FdoNotificationDaemonSource = new Lang.Class({
+    Name: 'FdoNotificationDaemonSource',
     Extends: MessageTray.Source,
 
     _init: function(title, pid, sender, trayIcon, appId) {
@@ -708,4 +708,12 @@ const Source = new Lang.Class({
             return null;
         }
     }
+});
+
+const NotificationDaemon = new Lang.Class({
+    Name: 'NotificationDaemon',
+
+    _init: function() {
+        this._fdoNotificationDaemon = new FdoNotificationDaemon();
+    },
 });
