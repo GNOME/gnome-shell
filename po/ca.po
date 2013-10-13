@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-03 14:07+0000\n"
-"PO-Revision-Date: 2013-09-24 23:18+0200\n"
+"POT-Creation-Date: 2013-10-13 17:05+0000\n"
+"PO-Revision-Date: 2013-10-13 22:41+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -285,7 +285,7 @@ msgstr "Seleccioneu una extensió amb el quadre combinat per configurar-la."
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:703
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:728
 msgid "Cancel"
 msgstr "Cancel·la"
 
@@ -333,15 +333,15 @@ msgstr "Error d'autenticació"
 msgid "(or swipe finger)"
 msgstr "(o passeu el dit)"
 
-#: ../js/misc/util.js:98
+#: ../js/misc/util.js:115
 msgid "Command not found"
 msgstr "No s'ha trobat l'ordre"
 
-#: ../js/misc/util.js:131
+#: ../js/misc/util.js:148
 msgid "Could not parse command:"
 msgstr "No s'ha pogut analitzar l'ordre:"
 
-#: ../js/misc/util.js:139
+#: ../js/misc/util.js:156
 #, javascript-format
 msgid "Execution of '%s' failed:"
 msgstr "No s'ha pogut executar «%s»:"
@@ -380,7 +380,7 @@ msgstr "S'ha afegit %s als preferits."
 msgid "%s has been removed from your favorites."
 msgstr "S'ha suprimit %s dels preferits."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:808
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:806
 #: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Paràmetres"
@@ -571,16 +571,16 @@ msgstr "Obre amb %s"
 msgid "Eject"
 msgstr "Expulsa"
 
-#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:89 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Contrasenya:"
 
-#: ../js/ui/components/keyring.js:110
+#: ../js/ui/components/keyring.js:108
 msgid "Type again:"
 msgstr "Torneu a escriure-la:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:122
-#: ../js/ui/status/network.js:285 ../js/ui/status/network.js:706
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:296 ../js/ui/status/network.js:731
 msgid "Connect"
 msgstr "Connecta"
 
@@ -1027,8 +1027,8 @@ msgstr "Reinicia i instal·la"
 #: ../js/ui/endSessionDialog.js:271
 msgid "Some applications are busy or have unsaved work."
 msgstr ""
-"Hi ha algunes aplicacions que estan ocupades o que tenen documents "
-"sense desar."
+"Hi ha algunes aplicacions que estan ocupades o que tenen documents sense "
+"desar."
 
 #: ../js/ui/endSessionDialog.js:277
 msgid "Other users are logged in."
@@ -1081,9 +1081,12 @@ msgstr "Mostra els errors"
 msgid "Enabled"
 msgstr "Habilitat"
 
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:765 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:765 ../js/ui/status/network.js:473
+#: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Inhabilitat"
 
@@ -1107,44 +1110,48 @@ msgstr "Mostra el codi font"
 msgid "Web Page"
 msgstr "Pàgina web"
 
-#: ../js/ui/messageTray.js:1222
+#: ../js/ui/messageTray.js:1227
 msgid "Open"
 msgstr "Obre"
 
-#: ../js/ui/messageTray.js:1229
+#: ../js/ui/messageTray.js:1234
 msgid "Remove"
 msgstr "Suprimeix"
 
-#: ../js/ui/messageTray.js:1513
+#: ../js/ui/messageTray.js:1535
+msgid "Notifications"
+msgstr "Notificacions"
+
+#: ../js/ui/messageTray.js:1542
 msgid "Clear Messages"
 msgstr "Neteja els missatges"
 
-#: ../js/ui/messageTray.js:1540
+#: ../js/ui/messageTray.js:1569
 msgid "Notification Settings"
 msgstr "Configuració de les notificacions"
 
-#: ../js/ui/messageTray.js:1559
+#: ../js/ui/messageTray.js:1622
 msgid "Tray Menu"
 msgstr "Menú de la safata"
 
-#: ../js/ui/messageTray.js:1775
+#: ../js/ui/messageTray.js:1838
 msgid "No Messages"
 msgstr "No hi ha cap missatge"
 
-#: ../js/ui/messageTray.js:1813
+#: ../js/ui/messageTray.js:1876
 msgid "Message Tray"
 msgstr "Safata de missatges"
 
-#: ../js/ui/messageTray.js:2788
+#: ../js/ui/messageTray.js:2851
 msgid "System Information"
 msgstr "Informació de l'ordinador"
 
-#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:396
+#: ../js/ui/notificationDaemon.js:630 ../src/shell-app.c:396
 msgctxt "program"
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:152
+#: ../js/ui/overviewControls.js:488 ../js/ui/screenShield.js:152
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1167,21 +1174,21 @@ msgstr "Vista general"
 msgid "Type to search…"
 msgstr "Teclegeu per cercar…"
 
-#: ../js/ui/panel.js:518
+#: ../js/ui/panel.js:516
 msgid "Quit"
 msgstr "Surt"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:570
+#: ../js/ui/panel.js:568
 msgid "Activities"
 msgstr "Activitats"
 
-#: ../js/ui/panel.js:904
+#: ../js/ui/panel.js:900
 msgid "Top Bar"
 msgstr "Barra superior"
 
-#: ../js/ui/popupMenu.js:233
+#: ../js/ui/popupMenu.js:259
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1258,43 +1265,43 @@ msgstr "Recorda la contrasenya"
 msgid "Accessibility"
 msgstr "Accessibilitat"
 
-#: ../js/ui/status/accessibility.js:58
+#: ../js/ui/status/accessibility.js:56
 msgid "Zoom"
 msgstr "Amplia"
 
-#: ../js/ui/status/accessibility.js:65
+#: ../js/ui/status/accessibility.js:63
 msgid "Screen Reader"
 msgstr "Lector de pantalla"
 
-#: ../js/ui/status/accessibility.js:69
+#: ../js/ui/status/accessibility.js:67
 msgid "Screen Keyboard"
 msgstr "Teclat en pantalla"
 
-#: ../js/ui/status/accessibility.js:73
+#: ../js/ui/status/accessibility.js:71
 msgid "Visual Alerts"
 msgstr "Avisos visuals"
 
-#: ../js/ui/status/accessibility.js:76
+#: ../js/ui/status/accessibility.js:74
 msgid "Sticky Keys"
 msgstr "Tecles enganxoses"
 
-#: ../js/ui/status/accessibility.js:79
+#: ../js/ui/status/accessibility.js:77
 msgid "Slow Keys"
 msgstr "Tecles lentes"
 
-#: ../js/ui/status/accessibility.js:82
+#: ../js/ui/status/accessibility.js:80
 msgid "Bounce Keys"
 msgstr "Tecles de salt"
 
-#: ../js/ui/status/accessibility.js:85
+#: ../js/ui/status/accessibility.js:83
 msgid "Mouse Keys"
 msgstr "Tecles del ratolí"
 
-#: ../js/ui/status/accessibility.js:144
+#: ../js/ui/status/accessibility.js:142
 msgid "High Contrast"
 msgstr "Alt contrast"
 
-#: ../js/ui/status/accessibility.js:193
+#: ../js/ui/status/accessibility.js:191
 msgid "Large Text"
 msgstr "Text gran"
 
@@ -1304,8 +1311,8 @@ msgstr "Text gran"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:122
-#: ../js/ui/status/network.js:1051 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:1085 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Desactiva"
 
@@ -1400,83 +1407,95 @@ msgstr "Brillantor"
 msgid "<unknown>"
 msgstr "<desconegut>"
 
-#: ../js/ui/status/network.js:212 ../js/ui/status/network.js:1066
+#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:380
+#: ../js/ui/status/network.js:1106
 msgid "Off"
 msgstr "Desactivat"
 
-#: ../js/ui/status/network.js:286 ../js/ui/status/network.js:972
-#: ../js/ui/status/rfkill.js:49
-msgid "Network Settings"
-msgstr "Paràmetres de xarxa"
-
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:375
+#: ../js/ui/status/network.js:386
 msgid "unmanaged"
 msgstr "no gestionat"
 
-#: ../js/ui/status/network.js:377
+#: ../js/ui/status/network.js:388
 msgid "disconnecting..."
 msgstr "s'està desconnectant..."
 
-#: ../js/ui/status/network.js:383 ../js/ui/status/network.js:1118
+#: ../js/ui/status/network.js:394 ../js/ui/status/network.js:1160
 msgid "connecting..."
 msgstr "s'està connectant..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:386 ../js/ui/status/network.js:1121
+#: ../js/ui/status/network.js:397 ../js/ui/status/network.js:1163
 msgid "authentication required"
 msgstr "cal autenticació"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:394
+#: ../js/ui/status/network.js:405
 msgid "firmware missing"
 msgstr "manca el microprogramari"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:398
+#: ../js/ui/status/network.js:409
 msgid "unavailable"
 msgstr "no disponible"
 
-#: ../js/ui/status/network.js:400 ../js/ui/status/network.js:1123
+#: ../js/ui/status/network.js:411 ../js/ui/status/network.js:1165
 msgid "connection failed"
 msgstr "ha fallat la connexió"
 
-#: ../js/ui/status/network.js:671
+#: ../js/ui/status/network.js:427 ../js/ui/status/network.js:513
+msgid "Mobile Broadband Settings"
+msgstr "Configuració de la xarxa de banda ampla mòbil"
+
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1104
+msgid "Hardware Disabled"
+msgstr "Maquinari inhabilitat"
+
+#: ../js/ui/status/network.js:696
 msgid "Wi-Fi Networks"
 msgstr "Xarxes sense fil"
 
-#: ../js/ui/status/network.js:673
+#: ../js/ui/status/network.js:698
 msgid "Select a network"
 msgstr "Trieu una xarxa"
 
-#: ../js/ui/status/network.js:697
+#: ../js/ui/status/network.js:722
 msgid "No Networks"
 msgstr "Cap xarxa"
 
-#: ../js/ui/status/network.js:966
+#: ../js/ui/status/network.js:991
 msgid "Select Network"
 msgstr "Trieu una xarxa"
 
-#: ../js/ui/status/network.js:1051
+#: ../js/ui/status/network.js:997
+msgid "Wi-Fi Settings"
+msgstr "Paràmetres del sense fil"
+
+#: ../js/ui/status/network.js:1085
 msgid "Turn On"
 msgstr "Activa"
 
-#: ../js/ui/status/network.js:1186
+#: ../js/ui/status/network.js:1108
+msgid "Not Connected"
+msgstr "No connectat"
+
+#: ../js/ui/status/network.js:1228
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1326
+#: ../js/ui/status/network.js:1368
 msgid "Network Manager"
 msgstr "Gestor de connexions de xarxa"
 
-#: ../js/ui/status/network.js:1365
+#: ../js/ui/status/network.js:1407
 msgid "Connection failed"
 msgstr "Ha fallat la connexió"
 
-#: ../js/ui/status/network.js:1366
+#: ../js/ui/status/network.js:1408
 msgid "Activation of network connection failed"
 msgstr "Ha fallat l'activació de la connexió de xarxa"
 
@@ -1513,6 +1532,10 @@ msgstr "Mode d'avió"
 #: ../js/ui/status/rfkill.js:45
 msgid "On"
 msgstr "Activat"
+
+#: ../js/ui/status/rfkill.js:49
+msgid "Network Settings"
+msgstr "Paràmetres de xarxa"
 
 #: ../js/ui/status/system.js:305
 msgid "Switch User"
