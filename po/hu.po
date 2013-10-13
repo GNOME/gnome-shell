@@ -3,20 +3,22 @@
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2009, 2010, 2011.
+# Balázs Úr <urbalazs at gmail dot com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-01 13:34+0200\n"
-"PO-Revision-Date: 2011-04-01 13:36+0200\n"
-"Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-10-07 16:43+0000\n"
+"PO-Revision-Date: 2013-10-13 13:38+0200\n"
+"Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.2\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -27,6 +29,12 @@ msgid "Window management and application launching"
 msgstr "Ablakkezelés és alkalmazásindítás"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Fejlesztők és tesztelők számára hasznos belső eszközök engedélyezése az Alt-"
+"F2 ablakból"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
@@ -34,21 +42,11 @@ msgstr ""
 "Belső hibakereső és megfigyelő eszközök elérésének engedélyezése az Alt-F2 "
 "ablak használatával."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:2
-msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Fejlesztők és tesztelők számára hasznos belső eszközök engedélyezése az Alt-"
-"F2 ablakból"
-
 #: ../data/org.gnome.shell.gschema.xml.in.h:3
-msgid "File extension used for storing the screencast"
-msgstr "A képernyővideó tárolásához használt fájlkiterjesztés"
+msgid "Uuids of extensions to disable"
+msgstr "Letiltandó kiterjesztések uuid-jei"
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:4
-msgid "Framerate used for recording screencasts."
-msgstr "A képernyővideók felvételéhez használt képkockasebesség."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should not be loaded."
@@ -56,31 +54,87 @@ msgstr ""
 "A GNOME Shell kiterjesztések rendelkeznek egy uuid tulajdonsággal; ez a "
 "kulcs felsorolja a be nem töltendő kiterjesztéseket."
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Whether to collect stats about applications usage"
+msgstr "Statisztikák gyűjtése alkalmazások használatáról"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:6
-msgid "History for command (Alt-F2) dialog"
-msgstr "A parancsablak (Alt-F2) előzményei"
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"A Shell általában figyeli az aktív alkalmazásokat a legtöbbet használtak "
+"megjelenítése érdekében (például az indítóikonokban). Noha ezek az adatok "
+"titkosak maradnak, magánszférájának védelme érdekében letilthatja ezek "
+"gyűjtését. Ne feledje, hogy ez nem fogja a már mentett adatokat törölni."
 
 #: ../data/org.gnome.shell.gschema.xml.in.h:7
-msgid "History for the looking glass dialog"
-msgstr "A távcső ablak előzményei"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
-msgid "If true, display date in the clock, in addition to time."
-msgstr "Az idő mellett a dátum is jelenjen meg."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "If true, display seconds in time."
-msgstr "A másodpercek is jelenjenek meg."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
-msgid "If true, display the ISO week date in the calendar."
-msgstr "Ha igazra van állítva, a naptárban megjelenik az ISO hétszám."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
 msgid "List of desktop file IDs for favorite applications"
 msgstr "A kedvenc alkalmazások asztalifájl-azonosítóinak listája"
 
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Az itt felsorolt azonosítóknak megfelelő alkalmazások jelennek meg a "
+"kedvencek területen."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "disabled OpenSearch providers"
+msgstr "kikapcsolt OpenSearch szolgáltatók"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "History for command (Alt-F2) dialog"
+msgstr "A parancsablak (Alt-F2) előzményei"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "History for the looking glass dialog"
+msgstr "A távcső ablak előzményei"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "Show the week date in the calendar"
+msgstr "Hetek számának megjelenítése a naptárban"
+
 #: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Ha igazra van állítva, a naptárban megjelenik az ISO hétszám."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Show time with seconds"
+msgstr "Másodpercek megjelenítése"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "If true, display seconds in time."
+msgstr "A másodpercek is jelenjenek meg."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show date in clock"
+msgstr "Dátum megjelenítése az órában"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "If true, display date in the clock, in addition to time."
+msgstr "Az idő mellett a dátum is jelenjen meg."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid "Framerate used for recording screencasts."
+msgstr "A képernyővideók felvételéhez használt képkockasebesség."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"A GNOME Shell képernyőfelvevője által felvett eredményül kapott "
+"képernyővideó képkockasebessége képkocka/másodpercben."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "A képernyővideó kódolására használt GStreamer adatcsatorna"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -107,27 +161,11 @@ msgstr ""
 "VP8 kodek használatával. A %T egy helykitöltő, a rendszeren optimális "
 "szálmennyiség megtippelésére."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
-msgid "Show date in clock"
-msgstr "Dátum megjelenítése az órában"
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid "File extension used for storing the screencast"
+msgstr "A képernyővideó tárolásához használt fájlkiterjesztés"
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
-msgid "Show the week date in the calendar"
-msgstr "Hetek számának megjelenítése a naptárban"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show time with seconds"
-msgstr "Másodpercek megjelenítése"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Az itt felsorolt azonosítóknak megfelelő alkalmazások jelennek meg a "
-"kedvencek területen."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -137,107 +175,69 @@ msgstr ""
 "névvel, és ezzel a kiterjesztéssel fog rendelkezni. Más tárolóformátumba "
 "való rögzítéskor módosítani kell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid ""
-"The framerate of the resulting screencast recordered by GNOME Shell's "
-"screencast recorder in frames-per-second."
-msgstr ""
-"A GNOME Shell képernyőfelvevője által felvett eredményül kapott "
-"képernyővideó képkockasebessége képkocka/másodpercben."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
-msgid "The gstreamer pipeline used to encode the screencast"
-msgstr "A képernyővideó kódolására használt GStreamer adatcsatorna"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"A Shell általában figyeli az aktív alkalmazásokat a legtöbbet használtak "
-"megjelenítése érdekében (például az indítóikonokban). Noha ezek az adatok "
-"titkosak maradnak, magánszférájának védelme érdekében letilthatja ezek "
-"gyűjtését. Ne feledje, hogy ez nem fogja a már mentett adatokat törölni."
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
-msgid "Uuids of extensions to disable"
-msgstr "Letiltandó kiterjesztések uuid-jei"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:23
-msgid "Whether to collect stats about applications usage"
-msgstr "Statisztikák gyűjtése alkalmazások használatáról"
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
-msgid "disabled OpenSearch providers"
-msgstr "kikapcsolt OpenSearch szolgáltatók"
-
 #: ../js/misc/util.js:71
 msgid "Command not found"
 msgstr "A parancs nem található"
 
-#. Replace "Error invoking GLib.shell_parse_argv: " with
-#. something nicer
 #: ../js/misc/util.js:98
 msgid "Could not parse command:"
 msgstr "A parancs nem dolgozható fel:"
 
 #: ../js/misc/util.js:106
-#, c-format
+#, javascript-format
 msgid "Execution of '%s' failed:"
 msgstr "„%s” végrehajtása meghiúsult:"
 
-#. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:230
+#. Translators: Filter to display all applications */
+#: ../js/ui/appDisplay.js:260
 msgid "All"
 msgstr "Összes"
 
-#: ../js/ui/appDisplay.js:328
+#: ../js/ui/appDisplay.js:359
 msgid "APPLICATIONS"
 msgstr "ALKALMAZÁSOK"
 
-#: ../js/ui/appDisplay.js:354
+#: ../js/ui/appDisplay.js:385
 msgid "SETTINGS"
 msgstr "BEÁLLÍTÁSOK"
 
-#: ../js/ui/appDisplay.js:625
+#: ../js/ui/appDisplay.js:656
 msgid "New Window"
 msgstr "Új ablak"
 
-#: ../js/ui/appDisplay.js:628
+#: ../js/ui/appDisplay.js:659
 msgid "Remove from Favorites"
 msgstr "Eltávolítás a Kedvencek közül"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:660
 msgid "Add to Favorites"
 msgstr "Hozzáadás a Kedvencekhez"
 
 #: ../js/ui/appFavorites.js:91
-#, c-format
+#, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s felvéve a Kedvencek közé."
 
 #: ../js/ui/appFavorites.js:122
-#, c-format
+#, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s eltávolítva a Kedvencek közül"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
+#. */
 #: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Egész nap"
 
-#. Translators: Shown in calendar event list, if 24h format
+#. Translators: Shown in calendar event list, if 24h format */
 #: ../js/ui/calendar.js:71
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%k.%M"
 
-#. Transators: Shown in calendar event list, if 12h format
+#. Transators: Shown in calendar event list, if 12h format */
 #: ../js/ui/calendar.js:78
 msgctxt "event list time"
 msgid "%l:%M %p"
@@ -247,43 +247,43 @@ msgstr "%p %l.%M"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
+#. */
 #: ../js/ui/calendar.js:118
 msgctxt "grid sunday"
 msgid "S"
 msgstr "V"
 
-#. Translators: Calendar grid abbreviation for Monday
+#. Translators: Calendar grid abbreviation for Monday */
 #: ../js/ui/calendar.js:120
 msgctxt "grid monday"
 msgid "M"
 msgstr "H"
 
-#. Translators: Calendar grid abbreviation for Tuesday
+#. Translators: Calendar grid abbreviation for Tuesday */
 #: ../js/ui/calendar.js:122
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "K"
 
-#. Translators: Calendar grid abbreviation for Wednesday
+#. Translators: Calendar grid abbreviation for Wednesday */
 #: ../js/ui/calendar.js:124
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Sz"
 
-#. Translators: Calendar grid abbreviation for Thursday
+#. Translators: Calendar grid abbreviation for Thursday */
 #: ../js/ui/calendar.js:126
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Cs"
 
-#. Translators: Calendar grid abbreviation for Friday
+#. Translators: Calendar grid abbreviation for Friday */
 #: ../js/ui/calendar.js:128
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
-#. Translators: Calendar grid abbreviation for Saturday
+#. Translators: Calendar grid abbreviation for Saturday */
 #: ../js/ui/calendar.js:130
 msgctxt "grid saturday"
 msgid "S"
@@ -294,61 +294,69 @@ msgstr "Sz"
 #. * NOTE: These list abbreviations are normally not shown together
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
-#.
+#. */
 #: ../js/ui/calendar.js:143
 msgctxt "list sunday"
 msgid "Su"
 msgstr "V"
 
-#. Translators: Event list abbreviation for Monday
+#. Translators: Event list abbreviation for Monday */
 #: ../js/ui/calendar.js:145
 msgctxt "list monday"
 msgid "M"
 msgstr "H"
 
-#. Translators: Event list abbreviation for Tuesday
+#. Translators: Event list abbreviation for Tuesday */
 #: ../js/ui/calendar.js:147
 msgctxt "list tuesday"
 msgid "T"
 msgstr "K"
 
-#. Translators: Event list abbreviation for Wednesday
+#. Translators: Event list abbreviation for Wednesday */
 #: ../js/ui/calendar.js:149
 msgctxt "list wednesday"
 msgid "W"
 msgstr "Sze"
 
-#. Translators: Event list abbreviation for Thursday
+#. Translators: Event list abbreviation for Thursday */
 #: ../js/ui/calendar.js:151
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Cs"
 
-#. Translators: Event list abbreviation for Friday
+#. Translators: Event list abbreviation for Friday */
 #: ../js/ui/calendar.js:153
 msgctxt "list friday"
 msgid "F"
 msgstr "P"
 
-#. Translators: Event list abbreviation for Saturday
+#. Translators: Event list abbreviation for Saturday */
 #: ../js/ui/calendar.js:155
 msgctxt "list saturday"
 msgid "S"
 msgstr "Szo"
 
-#. Translators: Text to show if there are no events
+#: ../js/ui/calendar.js:375 ../js/ui/calendar.js:644
+msgid "calendar:week_start:0"
+msgstr "calendar:week_start:1"
+
+#: ../js/ui/calendar.js:387
+msgid "calendar:MY"
+msgstr "calendar:YM"
+
+#. Translators: Text to show if there are no events */
 #: ../js/ui/calendar.js:704
 msgid "Nothing Scheduled"
 msgstr "Semmi sincs ütemezve"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:490
+#. Translators: Shown on calendar heading when selected day occurs on current year */
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:496
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:493
+#. Translators: Shown on calendar heading when selected day occurs on different year */
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:499
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %Y %B %d"
@@ -369,7 +377,7 @@ msgstr "Ezen a héten"
 msgid "Next week"
 msgstr "Jövő héten"
 
-#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1007
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1037
 msgid "Remove"
 msgstr "Eltávolítás"
 
@@ -382,7 +390,7 @@ msgid "Open Calendar"
 msgstr "Naptár megnyitása"
 
 #. Translators: This is the time format with date used
-#. in 24-hour mode.
+#. in 24-hour mode. */
 #: ../js/ui/dateMenu.js:164
 msgid "%a %b %e, %R:%S"
 msgstr "%a %b %e, %k.%M.%S"
@@ -392,7 +400,7 @@ msgid "%a %b %e, %R"
 msgstr "%a %b %e, %k.%M"
 
 #. Translators: This is the time format without date used
-#. in 24-hour mode.
+#. in 24-hour mode. */
 #: ../js/ui/dateMenu.js:169
 msgid "%a %R:%S"
 msgstr "%a %k.%M.%S"
@@ -402,7 +410,7 @@ msgid "%a %R"
 msgstr "%a %k.%M"
 
 #. Translators: This is a time format with date used
-#. for AM/PM.
+#. for AM/PM. */
 #: ../js/ui/dateMenu.js:177
 msgid "%a %b %e, %l:%M:%S %p"
 msgstr "%a %b %e, %p %l.%M.%S"
@@ -412,7 +420,7 @@ msgid "%a %b %e, %l:%M %p"
 msgstr "%a %b %e, %p %l.%M"
 
 #. Translators: This is a time format without date used
-#. for AM/PM.
+#. for AM/PM. */
 #: ../js/ui/dateMenu.js:182
 msgid "%a %l:%M:%S %p"
 msgstr "%a, %p %l.%M.%S"
@@ -423,7 +431,7 @@ msgstr "%a, %p %l.%M"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#.
+#. */
 #: ../js/ui/dateMenu.js:194
 msgid "%A %B %e, %Y"
 msgstr "%Y. %b %e %A"
@@ -433,7 +441,7 @@ msgid "RECENT ITEMS"
 msgstr "LEGUTÓBBI ELEMEK"
 
 #: ../js/ui/endSessionDialog.js:63
-#, c-format
+#, javascript-format
 msgid "Log Out %s"
 msgstr "%s kijelentkeztetése"
 
@@ -448,12 +456,12 @@ msgstr ""
 "kijelentkezéshez a rendszerből."
 
 #: ../js/ui/endSessionDialog.js:66
-#, c-format
+#, javascript-format
 msgid "%s will be logged out automatically in %d seconds."
 msgstr "%s automatikusan ki fog jelentkezni %d másodperc múlva."
 
 #: ../js/ui/endSessionDialog.js:67
-#, c-format
+#, javascript-format
 msgid "You will be logged out automatically in %d seconds."
 msgstr "Automatikusan ki fog jelentkezni %d másodperc múlva."
 
@@ -467,10 +475,12 @@ msgstr "Kikapcsolás"
 
 #: ../js/ui/endSessionDialog.js:76
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr "Nyomja meg a Kikapcsolás gombot az alkalmazások bezárásához és a rendszer kikapcsolásához."
+msgstr ""
+"Nyomja meg a Kikapcsolás gombot az alkalmazások bezárásához és a rendszer "
+"kikapcsolásához."
 
 #: ../js/ui/endSessionDialog.js:77
-#, c-format
+#, javascript-format
 msgid "The system will power off automatically in %d seconds."
 msgstr "A rendszer automatikusan kikapcsol %d másodperc múlva."
 
@@ -490,7 +500,7 @@ msgstr ""
 "újraindításához."
 
 #: ../js/ui/endSessionDialog.js:90
-#, c-format
+#, javascript-format
 msgid "The system will restart automatically in %d seconds."
 msgstr "A rendszer automatikusan újraindul %d másodperc múlva."
 
@@ -498,7 +508,7 @@ msgstr "A rendszer automatikusan újraindul %d másodperc múlva."
 msgid "Restarting the system."
 msgstr "A rendszer újraindítása."
 
-#: ../js/ui/endSessionDialog.js:415 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/endSessionDialog.js:413 ../js/ui/polkitAuthenticationAgent.js:172
 #: ../js/ui/status/bluetooth.js:466
 msgid "Cancel"
 msgstr "Mégse"
@@ -533,11 +543,11 @@ msgstr "Forrás megtekintése"
 msgid "Web Page"
 msgstr "Weblap"
 
-#: ../js/ui/messageTray.js:1000
+#: ../js/ui/messageTray.js:1030
 msgid "Open"
 msgstr "Megnyitás"
 
-#: ../js/ui/messageTray.js:2164
+#: ../js/ui/messageTray.js:2194
 msgid "System Information"
 msgstr "Rendszerinformációk"
 
@@ -554,30 +564,27 @@ msgid "Applications"
 msgstr "Alkalmazások"
 
 # FIXME - valami jobbat
-#. Translators: this is the name of the dock/favorites area on
-#. the left of the overview
 #: ../js/ui/overview.js:205
 msgid "Dash"
 msgstr "Dash"
 
-#. TODO - _quit() doesn't really work on apps in state STARTING yet
-#: ../js/ui/panel.js:524
-#, c-format
+#: ../js/ui/panel.js:533
+#, javascript-format
 msgid "Quit %s"
 msgstr "%s bezárása"
 
-#. Button on the left side of the panel.
-#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:902
+#. Button on the left side of the panel. */
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview". */
+#: ../js/ui/panel.js:911
 msgid "Activities"
 msgstr "Tevékenységek"
 
-#: ../js/ui/panel.js:1003
+#: ../js/ui/panel.js:1012
 msgid "Top Bar"
 msgstr "Felső sáv"
 
 #: ../js/ui/placeDisplay.js:122
-#, c-format
+#, javascript-format
 msgid "Failed to unmount '%s'"
 msgstr "„%s” leválasztása meghiúsult"
 
@@ -608,7 +615,7 @@ msgstr "Hitelesítés"
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
-#. * for instance.
+#. * for instance. */
 #: ../js/ui/polkitAuthenticationAgent.js:264
 msgid "Sorry, that didn't work. Please try again."
 msgstr "A hitelesítés sikertelen. Próbálja újra."
@@ -617,11 +624,6 @@ msgstr "A hitelesítés sikertelen. Próbálja újra."
 msgid "Password:"
 msgstr "Jelszó:"
 
-#. Translators: this MUST be either "toggle-switch-us"
-#. (for toggle switches containing the English words
-#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
-#. switches containing "◯" and "|"). Other values will
-#. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:679
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
@@ -630,11 +632,11 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Adjon meg egy parancsot:"
 
-#: ../js/ui/searchDisplay.js:310
+#: ../js/ui/searchDisplay.js:311
 msgid "Searching..."
 msgstr "Keresés…"
 
-#: ../js/ui/searchDisplay.js:324
+#: ../js/ui/searchDisplay.js:325
 msgid "No matching results."
 msgstr "Nincs találat."
 
@@ -679,12 +681,6 @@ msgstr "Kijelentkezés…"
 msgid "Zoom"
 msgstr "Nagyítás"
 
-#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
-#. 'screen-reader-enabled');
-#. this.menu.addMenuItem(screenReader);
-#. let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
-#. 'screen-keyboard-enabled');
-#. this.menu.addMenuItem(screenKeyboard);
 #: ../js/ui/status/accessibility.js:77
 msgid "Visual Alerts"
 msgstr "Vizuális figyelmeztetések"
@@ -756,7 +752,7 @@ msgid "Error browsing device"
 msgstr "Hiba az eszköz tallózásakor"
 
 #: ../js/ui/status/bluetooth.js:239
-#, c-format
+#, javascript-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "A kért eszköz nem tallózható. A hiba: „%s”"
 
@@ -773,12 +769,12 @@ msgid "Sound Settings"
 msgstr "Hangbeállítások"
 
 #: ../js/ui/status/bluetooth.js:368
-#, c-format
+#, javascript-format
 msgid "Authorization request from %s"
 msgstr "Felhatalmazási kérés a következőtől: %s"
 
 #: ../js/ui/status/bluetooth.js:374
-#, c-format
+#, javascript-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "A(z) %s eszköz szeretné használni a(z) „%s” szolgáltatást"
 
@@ -795,17 +791,17 @@ msgid "Reject"
 msgstr "Visszautasítás"
 
 #: ../js/ui/status/bluetooth.js:408
-#, c-format
+#, javascript-format
 msgid "Pairing confirmation for %s"
 msgstr "Párosítás megerősítése ehhez: %s"
 
 #: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
-#, c-format
+#, javascript-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Az eszköz (%s) párosítást kér a számítógéppel"
 
 #: ../js/ui/status/bluetooth.js:415
-#, c-format
+#, javascript-format
 msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgstr "Erősítse meg, hogy a(z) „%s” PIN megegyezik az eszközön lévővel."
 
@@ -818,7 +814,7 @@ msgid "Does not match"
 msgstr "Nem egyezik"
 
 #: ../js/ui/status/bluetooth.js:441
-#, c-format
+#, javascript-format
 msgid "Pairing request for %s"
 msgstr "Párosítási kérés ehhez: %s"
 
@@ -838,139 +834,139 @@ msgstr "Billentyűzetkiosztás megjelenítése…"
 msgid "Localization Settings"
 msgstr "Lokalizációs beállítások"
 
-#: ../js/ui/status/network.js:104 ../js/ui/status/network.js:1454
+#: ../js/ui/status/network.js:122 ../js/ui/status/network.js:1428
 msgid "<unknown>"
 msgstr "<ismeretlen>"
 
-#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:311
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch */
+#: ../js/ui/status/network.js:339
 msgid "disabled"
 msgstr "tiltva"
 
-#: ../js/ui/status/network.js:494
+#: ../js/ui/status/network.js:538
 msgid "connecting..."
 msgstr "kapcsolódás…"
 
-#. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:497
+#. Translators: this is for network connections that require some kind of key or password */
+#: ../js/ui/status/network.js:541
 msgid "authentication required"
 msgstr "hitelesítés szükséges"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing
-#: ../js/ui/status/network.js:507
+#. module, which is missing */
+#: ../js/ui/status/network.js:551
 msgid "firmware missing"
 msgstr "hiányzó firmware"
 
-#. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:514
+#. Translators: this is for wired network devices that are physically disconnected */
+#: ../js/ui/status/network.js:558
 msgid "cable unplugged"
 msgstr "vezeték kihúzva"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:519
+#. is disabled by rfkill, or it has no coverage */
+#: ../js/ui/status/network.js:563
 msgid "unavailable"
 msgstr "nem érhető el"
 
-#: ../js/ui/status/network.js:521
+#: ../js/ui/status/network.js:565
 msgid "connection failed"
 msgstr "a kapcsolódás meghiúsult"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
-#. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1402
+#. and we cannot access its settings (including the name) */
+#: ../js/ui/status/network.js:646 ../js/ui/status/network.js:1376
 msgid "Connected (private)"
 msgstr "Kapcsolódva (privát)"
 
-#: ../js/ui/status/network.js:683
+#: ../js/ui/status/network.js:731
 msgid "Auto Ethernet"
 msgstr "Auto Ethernet"
 
-#: ../js/ui/status/network.js:758
+#: ../js/ui/status/network.js:799
 msgid "Auto broadband"
 msgstr "Auto széles sáv"
 
-#: ../js/ui/status/network.js:761
+#: ../js/ui/status/network.js:802
 msgid "Auto dial-up"
 msgstr "Auto betárcsázós"
 
-#. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:904 ../js/ui/status/network.js:1414
-#, c-format
+#. TRANSLATORS: this the automatic wireless connection name (including the network name) */
+#: ../js/ui/status/network.js:926 ../js/ui/status/network.js:1388
+#, javascript-format
 msgid "Auto %s"
 msgstr "Auto %s"
 
-#: ../js/ui/status/network.js:906
+#: ../js/ui/status/network.js:928
 msgid "Auto bluetooth"
 msgstr "Auto Bluetooth"
 
-#: ../js/ui/status/network.js:1416
+#: ../js/ui/status/network.js:1390
 msgid "Auto wireless"
 msgstr "Auto vezeték nélküli"
 
-#: ../js/ui/status/network.js:1474
+#: ../js/ui/status/network.js:1459
 msgid "More..."
 msgstr "Több…"
 
-#: ../js/ui/status/network.js:1497
+#: ../js/ui/status/network.js:1482
 msgid "Enable networking"
 msgstr "Hálózat engedélyezése"
 
-#: ../js/ui/status/network.js:1509
+#: ../js/ui/status/network.js:1494
 msgid "Wired"
 msgstr "Vezetékes"
 
-#: ../js/ui/status/network.js:1520
+#: ../js/ui/status/network.js:1505
 msgid "Wireless"
 msgstr "Vezeték nélküli"
 
-#: ../js/ui/status/network.js:1530
+#: ../js/ui/status/network.js:1515
 msgid "Mobile broadband"
 msgstr "Mobil széles sáv"
 
-#: ../js/ui/status/network.js:1540
+#: ../js/ui/status/network.js:1525
 msgid "VPN Connections"
 msgstr "VPN kapcsolatok"
 
-#: ../js/ui/status/network.js:1549
+#: ../js/ui/status/network.js:1537
 msgid "Network Settings"
 msgstr "Hálózati beállítások"
 
-#: ../js/ui/status/network.js:1844
-#, c-format
+#: ../js/ui/status/network.js:1831
+#, javascript-format
 msgid "You're now connected to mobile broadband connection '%s'"
 msgstr "Csatlakozott a(z) „%s” mobil széles sávú kapcsolathoz"
 
-#: ../js/ui/status/network.js:1848
-#, c-format
+#: ../js/ui/status/network.js:1835
+#, javascript-format
 msgid "You're now connected to wireless network '%s'"
 msgstr "Csatlakozott a(z) „%s” vezeték nélküli hálózathoz"
 
-#: ../js/ui/status/network.js:1852
-#, c-format
+#: ../js/ui/status/network.js:1839
+#, javascript-format
 msgid "You're now connected to wired network '%s'"
 msgstr "Csatlakozott a(z) „%s” vezetékes hálózathoz"
 
-#: ../js/ui/status/network.js:1856
-#, c-format
+#: ../js/ui/status/network.js:1843
+#, javascript-format
 msgid "You're now connected to VPN network '%s'"
 msgstr "Csatlakozott a(z) „%s” VPN hálózathoz"
 
-#: ../js/ui/status/network.js:1861
-#, c-format
+#: ../js/ui/status/network.js:1848
+#, javascript-format
 msgid "You're now connected to '%s'"
 msgstr "Csatlakozott ehhez: „%s”"
 
-#: ../js/ui/status/network.js:1869
+#: ../js/ui/status/network.js:1856
 msgid "Connection established"
 msgstr "Kapcsolat létrejött"
 
-#: ../js/ui/status/network.js:1991
+#: ../js/ui/status/network.js:1982
 msgid "Networking is disabled"
 msgstr "Hálózat letiltva"
 
-#: ../js/ui/status/network.js:2116
+#: ../js/ui/status/network.js:2107
 msgid "Network Manager"
 msgstr "Hálózatkezelő"
 
@@ -978,22 +974,20 @@ msgstr "Hálózatkezelő"
 msgid "Power Settings"
 msgstr "Energiabeállítások"
 
-#. 0 is reported when UPower does not have enough data
-#. to estimate battery life
 #: ../js/ui/status/power.js:111
 msgid "Estimating..."
 msgstr "Becslés…"
 
 #: ../js/ui/status/power.js:118
-#, c-format
+#, javascript-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
 msgstr[0] "%d óra van hátra"
 msgstr[1] "%d óra van hátra"
 
-#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining" */
 #: ../js/ui/status/power.js:121
-#, c-format
+#, javascript-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s van hátra"
 
@@ -1010,7 +1004,7 @@ msgstr[0] "perc"
 msgstr[1] "perc"
 
 #: ../js/ui/status/power.js:126
-#, c-format
+#, javascript-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d perc van hátra"
@@ -1073,37 +1067,36 @@ msgid "Microphone"
 msgstr "Mikrofon"
 
 #: ../js/ui/telepathyClient.js:335
-#, c-format
+#, javascript-format
 msgid "%s is online."
 msgstr "%s elérhető."
 
 #: ../js/ui/telepathyClient.js:340
-#, c-format
+#, javascript-format
 msgid "%s is offline."
 msgstr "%s kilépett."
 
 #: ../js/ui/telepathyClient.js:343
-#, c-format
+#, javascript-format
 msgid "%s is away."
 msgstr "%s távol van."
 
 #: ../js/ui/telepathyClient.js:346
-#, c-format
+#, javascript-format
 msgid "%s is busy."
 msgstr "%s elfoglalt."
 
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
-#. locale, without seconds.
-#: ../js/ui/telepathyClient.js:482
-#, no-c-format
+#. locale, without seconds. */
+#: ../js/ui/telepathyClient.js:488
 msgid "Sent at %X on %A"
 msgstr "Elküldve: %A, %X"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
-#. characters.
+#. characters. */
 #: ../js/ui/viewSelector.js:122
 msgid "Type to search..."
 msgstr "Gépeljen a kereséshez…"
@@ -1113,12 +1106,12 @@ msgid "Search"
 msgstr "Oldalsáv"
 
 #: ../js/ui/windowAttentionHandler.js:42
-#, c-format
+#, javascript-format
 msgid "%s has finished starting"
 msgstr "%s indítása befejeződött"
 
 #: ../js/ui/windowAttentionHandler.js:44
-#, c-format
+#, javascript-format
 msgid "'%s' is ready"
 msgstr "„%s” kész"
 
@@ -1144,11 +1137,11 @@ msgstr[1] "%u bemenet"
 msgid "System Sounds"
 msgstr "Rendszerhangok"
 
-#: ../src/main.c:446
+#: ../src/main.c:445
 msgid "Print version"
 msgstr "Verzió kiírása"
 
-#: ../src/shell-app.c:454
+#: ../src/shell-app.c:464
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "„%s” indítása meghiúsult"
