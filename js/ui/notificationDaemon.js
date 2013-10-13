@@ -710,10 +710,208 @@ const FdoNotificationDaemonSource = new Lang.Class({
     }
 });
 
+
+const GtkNotificationDaemonNotification = new Lang.Class({
+    Name: 'GtkNotificationDaemonNotification',
+    Extends: MessageTray.Notification,
+
+    _init: function(source, notification) {
+        this.parent(source);
+
+        let { "title": title,
+              "body": body,
+              "icon": gicon,
+              "urgent": urgent,
+              "buttons": buttons,
+              "default-action": defaultAction,
+              "default-action-target": defaultActionTarget } = notification;
+
+        this.setUrgency(urgent ? MessageTray.Urgency.CRITICAL : MessageTray.Urgency.NORMAL);
+
+        if (buttons) {
+            buttons.deep_unpack().forEach(Lang.bind(this, function(button) {
+                this.addAction(button.label, Lang.bind(this, this._onButtonClicked, button));
+            }));
+        }
+
+        this._defaultAction = defaultAction ? defaultAction.unpack() : null;
+        this._defaultActionTarget = defaultActionTarget ? defaultActionTarget.unpack() : null;
+
+        this.update(title.unpack(), body ? body.unpack() : null, { gicon: gicon });
+    },
+
+    _activateAction: function(namespacedActionId, target) {
+        if (namespacedActionId) {
+            if (namespacedActionId.startsWith('app.')) {
+                let actionId = namespacedActionId.slice('app.'.length);
+                this.source.activateAction(actionId, target);
+            }
+        } else {
+            this.source.open();
+        }
+    },
+
+    _onButtonClicked: function(button) {
+        let { "action": action, "action-target": actionTarget } = button;
+        this._activateAction(action, actionTarget);
+    },
+
+    _onClicked: function() {
+        this._activateAction(this._defaultAction, this._defaultActionTarget);
+        this.parent();
+    },
+});
+
+const FdoApplicationIface = <interface name="org.freedesktop.Application">
+<method name="ActivateAction">
+    <arg type="s" direction="in" />
+    <arg type="av" direction="in" />
+    <arg type="a{sv}" direction="in" />
+</method>
+<method name="Activate">
+    <arg type="a{sv}" direction="in" />
+</method>
+</interface>;
+const FdoApplicationProxy = Gio.DBusProxy.makeProxyWrapper(FdoApplicationIface);
+
+function objectPathFromAppId(appId) {
+    return '/' + appId.replace(/\./g, '/');
+}
+
+function getPlatformData() {
+    let startupId = GLib.Variant.new('s', '_TIME' + global.get_current_time());
+    return { "desktop-startup-id": startupId };
+}
+
+function InvalidAppError() {}
+
+const GtkNotificationDaemonAppSource = new Lang.Class({
+    Name: 'GtkNotificationDaemonAppSource',
+    Extends: MessageTray.Source,
+
+    _init: function(appId) {
+        this._appId = appId;
+        this._objectPath = objectPathFromAppId(appId);
+
+        this._app = Shell.AppSystem.get_default().lookup_app(appId + '.desktop');
+        if (!this._app)
+            throw new InvalidAppError();
+
+        this._notifications = {};
+
+        this.parent(this._app.get_name());
+    },
+
+    createIcon: function(size) {
+        return this._app.create_icon_texture(size);
+    },
+
+    _createPolicy: function() {
+        return new MessageTray.NotificationApplicationPolicy(this._appId);
+    },
+
+    _createApp: function() {
+        return new FdoApplicationProxy(Gio.DBus.session, this._appId, this._objectPath);
+    },
+
+    activateAction: function(actionId, target) {
+        let app = this._createApp();
+        app.ActivateActionRemote(actionId, target ? [target] : [], getPlatformData());
+    },
+
+    open: function() {
+        let app = this._createApp();
+        app.ActivateRemote(getPlatformData());
+    },
+
+    addNotification: function(notificationId, notificationParams) {
+        if (this._notifications[notificationId])
+            this._notifications[notificationId].destroy();
+
+        let notification = new GtkNotificationDaemonNotification(this, notificationParams);
+        notification.connect('destroy', Lang.bind(this, function() {
+            delete this._notifications[notificationId];
+        }));
+        this._notifications[notificationId] = notification;
+
+        this.notify(notification);
+    },
+
+    removeNotification: function(notificationId) {
+        if (this._notifications[notificationId])
+            this._notifications[notificationId].destroy(MessageTray.NotificationDestroyedReason.SOURCE_CLOSED);
+    },
+});
+
+const GtkNotificationsIface = <interface name="org.gtk.Notifications">
+<method name="AddNotification">
+    <arg type="s" direction="in" />
+    <arg type="s" direction="in" />
+    <arg type="a{sv}" direction="in" />
+</method>
+<method name="RemoveNotification">
+    <arg type="s" direction="in" />
+    <arg type="s" direction="in" />
+</method>
+</interface>;
+
+const GtkNotificationDaemon = new Lang.Class({
+    Name: 'GtkNotificationDaemon',
+
+    _init: function() {
+        this._sources = {};
+
+        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GtkNotificationsIface, this);
+        this._dbusImpl.export(Gio.DBus.session, '/org/gtk/Notifications');
+
+        Gio.DBus.session.own_name('org.gtk.Notifications', Gio.BusNameOwnerFlags.REPLACE, null, null);
+    },
+
+    _ensureAppSource: function(appId) {
+        if (this._sources[appId])
+            return this._sources[appId];
+
+        let source = new GtkNotificationDaemonAppSource(appId);
+
+        source.connect('destroy', Lang.bind(this, function() {
+            delete this._sources[appId];
+        }));
+        Main.messageTray.add(source);
+        this._sources[appId] = source;
+        return source;
+    },
+
+    AddNotificationAsync: function(params, invocation) {
+        let [appId, notificationId, notification] = params;
+
+        let source;
+        try {
+            source = this._ensureAppSource(appId);
+        } catch(e if e instanceof InvalidAppError) {
+            invocation.return_dbus_error('org.gtk.Notifications.InvalidApp', 'The app by ID "%s" could not be found'.format(appId));
+            return;
+        }
+
+        source.addNotification(notificationId, notification);
+
+        invocation.return_value(null);
+    },
+
+    RemoveNotificationAsync: function(params, invocation) {
+        let [appId, notificationId] = params;
+        let source = this._sources[appId];
+        if (source)
+            source.removeNotification(notificationId);
+
+        invocation.return_value(null);
+    },
+});
+
 const NotificationDaemon = new Lang.Class({
     Name: 'NotificationDaemon',
 
     _init: function() {
         this._fdoNotificationDaemon = new FdoNotificationDaemon();
+        this._gtkNotificationDaemon = new GtkNotificationDaemon();
     },
 });
