@@ -53,6 +53,8 @@ struct _MetaWindowActorPrivate
 
   MetaSurfaceActor *surface;
 
+  guint             surface_allocation_changed_id;
+
   /* MetaShadowFactory only caches shadows that are actually in use;
    * to avoid unnecessary recomputation we do two things: 1) we store
    * both a focused and unfocused shadow for the window. If the window
@@ -299,6 +301,8 @@ meta_window_actor_init (MetaWindowActor *self)
   priv = self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
 						   META_TYPE_WINDOW_ACTOR,
 						   MetaWindowActorPrivate);
+
+  priv->surface_allocation_changed_id = 0;
   priv->opacity = 0xff;
   priv->shadow_class = NULL;
 }
@@ -361,6 +365,17 @@ window_appears_focused_notify (MetaWindow *mw,
 }
 
 static void
+surface_allocation_changed_notify (ClutterActor           *actor,
+                                   const ClutterActorBox  *allocation,
+                                   ClutterAllocationFlags  flags,
+                                   MetaWindowActor        *self)
+{
+  meta_window_actor_sync_actor_geometry (self, FALSE);
+
+  g_signal_emit (self, signals[SIZE_CHANGED], 0);
+}
+
+static void
 meta_window_actor_constructed (GObject *object)
 {
   MetaWindowActor        *self     = META_WINDOW_ACTOR (object);
@@ -396,6 +411,12 @@ meta_window_actor_constructed (GObject *object)
 
       clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
       clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
+
+      priv->surface_allocation_changed_id =
+        g_signal_connect (CLUTTER_ACTOR (priv->surface),
+                          "allocation-changed",
+                          G_CALLBACK (surface_allocation_changed_notify),
+                          self);
 
       /*
        * Since we are holding a pointer to this actor independently of the
@@ -481,6 +502,11 @@ meta_window_actor_dispose (GObject *object)
   info->windows = g_list_remove (info->windows, (gconstpointer) self);
 
   g_clear_object (&priv->window);
+
+  if (priv->surface != NULL && priv->surface_allocation_changed_id != 0)
+    g_signal_handler_disconnect (priv->surface,
+                                 priv->surface_allocation_changed_id);
+  priv->surface_allocation_changed_id = 0;
 
   /*
    * Release the extra reference we took on the actor.
