@@ -37,6 +37,13 @@
         application view, rather than being displayed inline in the main view.
       </_description>
     </key>
+    <key name="app-picker-view" type="u">
+      <default>0</default>
+      <summary>App Picker View</summary>
+      <description>
+        Index of the currently selected view in the application picker.
+      </description>
+    </key>
     <key name="command-history" type="as">
       <default>[]</default>
       <_summary>History for command (Alt-F2) dialog</_summary>

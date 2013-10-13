@@ -744,10 +744,15 @@ const AppDisplay = new Lang.Class({
             this._views[i].control.connect('clicked', Lang.bind(this,
                 function(actor) {
                     this._showView(viewIndex);
+                    global.settings.set_uint('app-picker-view', viewIndex);
                 }));
         }
+        let initialView = Math.min(global.settings.get_uint('app-picker-view'),
+                                   this._views.length - 1);
         let frequentUseful = this._views[Views.FREQUENT].view.hasUsefulData();
-        this._showView(frequentUseful ? Views.FREQUENT : Views.ALL);
+        if (initialView == Views.FREQUENT && !frequentUseful)
+            initialView = Views.ALL;
+        this._showView(initialView);
         this._updateFrequentVisibility();
 
         // We need a dummy actor to catch the keyboard focus if the
