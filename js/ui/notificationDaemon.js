@@ -717,6 +717,7 @@ const GtkNotificationDaemonNotification = new Lang.Class({
 
     _init: function(source, notification) {
         this.parent(source);
+        this._serialized = GLib.Variant.new('a{sv}', notification);
 
         let { "title": title,
               "body": body,
@@ -759,6 +760,10 @@ const GtkNotificationDaemonNotification = new Lang.Class({
     _onClicked: function() {
         this._activateAction(this._defaultAction, this._defaultActionTarget);
         this.parent();
+    },
+
+    serialize: function() {
+        return this._serialized;
     },
 });
 
@@ -824,7 +829,7 @@ const GtkNotificationDaemonAppSource = new Lang.Class({
         app.ActivateRemote(getPlatformData());
     },
 
-    addNotification: function(notificationId, notificationParams) {
+    addNotification: function(notificationId, notificationParams, showBanner) {
         if (this._notifications[notificationId])
             this._notifications[notificationId].destroy();
 
@@ -834,12 +839,24 @@ const GtkNotificationDaemonAppSource = new Lang.Class({
         }));
         this._notifications[notificationId] = notification;
 
-        this.notify(notification);
+        if (showBanner)
+            this.notify(notification);
+        else
+            this.pushNotification(notification);
     },
 
     removeNotification: function(notificationId) {
         if (this._notifications[notificationId])
             this._notifications[notificationId].destroy(MessageTray.NotificationDestroyedReason.SOURCE_CLOSED);
+    },
+
+    serialize: function() {
+        let notifications = [];
+        for (let notificationId in this._notifications) {
+            let notification = this._notifications[notificationId];
+            notifications.push([notificationId, notification.serialize()]);
+        }
+        return GLib.Variant.new('(sa(sv))', this._appId, notifications);
     },
 });
 
@@ -861,6 +878,8 @@ const GtkNotificationDaemon = new Lang.Class({
     _init: function() {
         this._sources = {};
 
+        this._loadNotifications();
+
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GtkNotificationsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gtk/Notifications');
 
@@ -874,11 +893,54 @@ const GtkNotificationDaemon = new Lang.Class({
         let source = new GtkNotificationDaemonAppSource(appId);
 
         source.connect('destroy', Lang.bind(this, function() {
+            // When a source is destroyed, it should first
+            // destroy all of its notifications, so we should
+            // not need to call _saveNotifications here.
             delete this._sources[appId];
         }));
+        source.connect('count-updated', Lang.bind(this, this._saveNotifications));
         Main.messageTray.add(source);
         this._sources[appId] = source;
         return source;
+    },
+
+    _loadNotifications: function() {
+        this._isLoading = true;
+
+        let value = global.get_persistent_state('a(sa(sa{sv}))', 'notifications');
+        if (value) {
+            let sources = value.deep_unpack();
+            sources.forEach(Lang.bind(this, function([appId, notifications]) {
+                if (notifications.length == 0)
+                    return;
+
+                let source;
+                try {
+                    source = this._ensureAppSource(appId);
+                } catch(e if e instanceof InvalidAppError) {
+                    return;
+                }
+
+                notifications.forEach(function([notificationId, notification]) {
+                    source.addNotification(notificationId, notification.deep_unpack(), false);
+                });
+            }));
+        }
+
+        this._isLoading = false;
+    },
+
+    _saveNotifications: function() {
+        if (this._isLoading)
+            return;
+
+        let sources = [];
+        for (let appId in this._sources) {
+            let source = this._sources[appId];
+            sources.push(source.serialize());
+        }
+
+        global.set_persistent_state('notifications', GLib.Variant.new_array('a@(sa{sa{sv}})', sources));
     },
 
     AddNotificationAsync: function(params, invocation) {
@@ -892,7 +954,7 @@ const GtkNotificationDaemon = new Lang.Class({
             return;
         }
 
-        source.addNotification(notificationId, notification);
+        source.addNotification(notificationId, notification, true);
 
         invocation.return_value(null);
     },
