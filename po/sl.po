@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-28 14:39+0000\n"
-"PO-Revision-Date: 2013-09-28 21:46+0100\n"
+"POT-Creation-Date: 2013-10-13 20:43+0000\n"
+"PO-Revision-Date: 2013-10-13 23:39+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -279,7 +279,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:692
+#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:728
 msgid "Cancel"
 msgstr "Prekliči"
 
@@ -326,15 +326,15 @@ msgstr "Napaka overitve"
 msgid "(or swipe finger)"
 msgstr "(ali pa povlecite prst)"
 
-#: ../js/misc/util.js:98
+#: ../js/misc/util.js:115
 msgid "Command not found"
 msgstr "Ukaz ni mogoče najti"
 
-#: ../js/misc/util.js:131
+#: ../js/misc/util.js:148
 msgid "Could not parse command:"
 msgstr "Ukaza ni mogoče razčleniti:"
 
-#: ../js/misc/util.js:139
+#: ../js/misc/util.js:156
 msgid "Execution of '%s' failed:"
 msgstr "Izvedba '%s' je spodletela:"
 
@@ -370,7 +370,7 @@ msgstr "Program \"%s\" je dodan med priljubljeno."
 msgid "%s has been removed from your favorites."
 msgstr "Program \"%s\" je odstranjen iz priljubljenih."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:808
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:806
 #: ../js/ui/status/system.js:325
 msgid "Settings"
 msgstr "Nastavitve"
@@ -560,16 +560,16 @@ msgstr "Odpri s programom %s"
 msgid "Eject"
 msgstr "Izvrzi"
 
-#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:89 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Geslo:"
 
-#: ../js/ui/components/keyring.js:110
+#: ../js/ui/components/keyring.js:108
 msgid "Type again:"
 msgstr "Vpišite znova:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:275 ../js/ui/status/network.js:695
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:296 ../js/ui/status/network.js:731
 msgid "Connect"
 msgstr "Poveži"
 
@@ -1057,9 +1057,12 @@ msgstr "Pokaži napake"
 msgid "Enabled"
 msgstr "Omogočeno"
 
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:765 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:765 ../js/ui/status/network.js:473
+#: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Onemogočeno"
 
@@ -1083,44 +1086,48 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/messageTray.js:1222
+#: ../js/ui/messageTray.js:1227
 msgid "Open"
 msgstr "Odpri"
 
-#: ../js/ui/messageTray.js:1229
+#: ../js/ui/messageTray.js:1234
 msgid "Remove"
 msgstr "Odstrani"
 
-#: ../js/ui/messageTray.js:1513
+#: ../js/ui/messageTray.js:1535
+msgid "Notifications"
+msgstr "Obvestila"
+
+#: ../js/ui/messageTray.js:1542
 msgid "Clear Messages"
 msgstr "Počisti sporočila"
 
-#: ../js/ui/messageTray.js:1540
+#: ../js/ui/messageTray.js:1569
 msgid "Notification Settings"
 msgstr "Nastavitve obvestil"
 
-#: ../js/ui/messageTray.js:1559
+#: ../js/ui/messageTray.js:1622
 msgid "Tray Menu"
 msgstr "Meni sistemske vrstice"
 
-#: ../js/ui/messageTray.js:1775
+#: ../js/ui/messageTray.js:1838
 msgid "No Messages"
 msgstr "Ni sporočil"
 
-#: ../js/ui/messageTray.js:1813
+#: ../js/ui/messageTray.js:1876
 msgid "Message Tray"
 msgstr "Sporočilna vrstica"
 
-#: ../js/ui/messageTray.js:2788
+#: ../js/ui/messageTray.js:2851
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
-#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:396
+#: ../js/ui/notificationDaemon.js:630 ../src/shell-app.c:396
 msgctxt "program"
 msgid "Unknown"
 msgstr "Neznano"
 
-#: ../js/ui/overviewControls.js:491 ../js/ui/screenShield.js:152
+#: ../js/ui/overviewControls.js:488 ../js/ui/screenShield.js:152
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d novih sporočil"
@@ -1144,21 +1151,21 @@ msgstr "Pregled"
 msgid "Type to search…"
 msgstr "Vnos niza za iskanje ..."
 
-#: ../js/ui/panel.js:518
+#: ../js/ui/panel.js:516
 msgid "Quit"
 msgstr "Končaj"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:570
+#: ../js/ui/panel.js:568
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:904
+#: ../js/ui/panel.js:900
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
-#: ../js/ui/popupMenu.js:233
+#: ../js/ui/popupMenu.js:259
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1236,43 +1243,43 @@ msgstr "Zapomni si geslo"
 msgid "Accessibility"
 msgstr "Dostopnost"
 
-#: ../js/ui/status/accessibility.js:58
+#: ../js/ui/status/accessibility.js:56
 msgid "Zoom"
 msgstr "Približanje"
 
-#: ../js/ui/status/accessibility.js:65
+#: ../js/ui/status/accessibility.js:63
 msgid "Screen Reader"
 msgstr "Zaslonski bralnik"
 
-#: ../js/ui/status/accessibility.js:69
+#: ../js/ui/status/accessibility.js:67
 msgid "Screen Keyboard"
 msgstr "Zaslonska tipkovnica"
 
-#: ../js/ui/status/accessibility.js:73
+#: ../js/ui/status/accessibility.js:71
 msgid "Visual Alerts"
 msgstr "Vidna opozorila"
 
-#: ../js/ui/status/accessibility.js:76
+#: ../js/ui/status/accessibility.js:74
 msgid "Sticky Keys"
 msgstr "Lepljive tipke"
 
-#: ../js/ui/status/accessibility.js:79
+#: ../js/ui/status/accessibility.js:77
 msgid "Slow Keys"
 msgstr "Počasne tipke"
 
-#: ../js/ui/status/accessibility.js:82
+#: ../js/ui/status/accessibility.js:80
 msgid "Bounce Keys"
 msgstr "Odskočne tipke"
 
-#: ../js/ui/status/accessibility.js:85
+#: ../js/ui/status/accessibility.js:83
 msgid "Mouse Keys"
 msgstr "Miškine tipke"
 
-#: ../js/ui/status/accessibility.js:144
+#: ../js/ui/status/accessibility.js:142
 msgid "High Contrast"
 msgstr "Visok kontrast"
 
-#: ../js/ui/status/accessibility.js:193
+#: ../js/ui/status/accessibility.js:191
 msgid "Large Text"
 msgstr "Veliko besedilo"
 
@@ -1282,8 +1289,8 @@ msgstr "Veliko besedilo"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:112
-#: ../js/ui/status/network.js:1040 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:133
+#: ../js/ui/status/network.js:1085 ../js/ui/status/rfkill.js:46
 msgid "Turn Off"
 msgstr "Onemogoči"
 
@@ -1371,83 +1378,95 @@ msgstr "Svetlost"
 msgid "<unknown>"
 msgstr "<neznano>"
 
-#: ../js/ui/status/network.js:203 ../js/ui/status/network.js:1055
+#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:380
+#: ../js/ui/status/network.js:1106
 msgid "Off"
 msgstr "Nepovezano"
 
-#: ../js/ui/status/network.js:276 ../js/ui/status/network.js:961
-#: ../js/ui/status/rfkill.js:49
-msgid "Network Settings"
-msgstr "Omrežne nastavitve"
-
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:364
+#: ../js/ui/status/network.js:386
 msgid "unmanaged"
 msgstr "neupravljano"
 
-#: ../js/ui/status/network.js:366
+#: ../js/ui/status/network.js:388
 msgid "disconnecting..."
 msgstr "prekinjanje povezave ..."
 
-#: ../js/ui/status/network.js:372 ../js/ui/status/network.js:1106
+#: ../js/ui/status/network.js:394 ../js/ui/status/network.js:1160
 msgid "connecting..."
 msgstr "povezovanje ..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:375 ../js/ui/status/network.js:1109
+#: ../js/ui/status/network.js:397 ../js/ui/status/network.js:1163
 msgid "authentication required"
 msgstr "zahtevana je overitev"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:383
+#: ../js/ui/status/network.js:405
 msgid "firmware missing"
 msgstr "manjka strojna programska oprema"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:387
+#: ../js/ui/status/network.js:409
 msgid "unavailable"
 msgstr "ni na voljo"
 
-#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1111
+#: ../js/ui/status/network.js:411 ../js/ui/status/network.js:1165
 msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
-#: ../js/ui/status/network.js:660
+#: ../js/ui/status/network.js:427 ../js/ui/status/network.js:513
+msgid "Mobile Broadband Settings"
+msgstr "Nastavitve mobilega širokopasovnega dostopa"
+
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1104
+msgid "Hardware Disabled"
+msgstr "Strojna oprema je onemogočena"
+
+#: ../js/ui/status/network.js:696
 msgid "Wi-Fi Networks"
 msgstr "Omrežja Wi-Fi"
 
-#: ../js/ui/status/network.js:662
+#: ../js/ui/status/network.js:698
 msgid "Select a network"
 msgstr "Izbor omrežja"
 
-#: ../js/ui/status/network.js:686
+#: ../js/ui/status/network.js:722
 msgid "No Networks"
 msgstr "Ni omrežij"
 
-#: ../js/ui/status/network.js:955
+#: ../js/ui/status/network.js:991
 msgid "Select Network"
 msgstr "Izbor omrežja"
 
-#: ../js/ui/status/network.js:1040
+#: ../js/ui/status/network.js:997
+msgid "Wi-Fi Settings"
+msgstr "Nastavitve Wi-Fi"
+
+#: ../js/ui/status/network.js:1085
 msgid "Turn On"
 msgstr "Omogoči"
 
-#: ../js/ui/status/network.js:1173
+#: ../js/ui/status/network.js:1108
+msgid "Not Connected"
+msgstr "Ni vzpostavljene povezave"
+
+#: ../js/ui/status/network.js:1228
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1313
+#: ../js/ui/status/network.js:1368
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
-#: ../js/ui/status/network.js:1352
+#: ../js/ui/status/network.js:1407
 msgid "Connection failed"
 msgstr "Povezava je spodletela"
 
-#: ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:1408
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
@@ -1482,6 +1501,10 @@ msgstr "Način letala"
 #: ../js/ui/status/rfkill.js:45
 msgid "On"
 msgstr "Povezano"
+
+#: ../js/ui/status/rfkill.js:49
+msgid "Network Settings"
+msgstr "Omrežne nastavitve"
 
 #: ../js/ui/status/system.js:305
 msgid "Switch User"
@@ -1779,9 +1802,6 @@ msgstr "Uporabnik je zavrnil pogovorno okno overitve"
 #~ msgid "Set Up a New Device…"
 #~ msgstr "Nastavitev nove naprave ..."
 
-#~ msgid "hardware disabled"
-#~ msgstr "strojno onemogočen"
-
 #~ msgid "Connection"
 #~ msgstr "Povezava"
 
@@ -1817,9 +1837,6 @@ msgstr "Uporabnik je zavrnil pogovorno okno overitve"
 
 #~ msgid "Wired"
 #~ msgstr "Žično"
-
-#~ msgid "Mobile broadband"
-#~ msgstr "Mobilni širokopasovni dostop"
 
 #~ msgid "Networking is disabled"
 #~ msgstr "Omrežje je onemogočeno"
@@ -1907,9 +1924,6 @@ msgstr "Uporabnik je zavrnil pogovorno okno overitve"
 
 #~ msgid "Idle"
 #~ msgstr "Nedejavno"
-
-#~ msgid "Notifications"
-#~ msgstr "Obvestila"
 
 #~ msgid "Your chat status will be set to busy"
 #~ msgstr "Stanje vašega klepeta bo nastavljeno na zasedeno"
