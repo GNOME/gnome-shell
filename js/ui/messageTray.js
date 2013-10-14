@@ -503,7 +503,6 @@ const Notification = new Lang.Class({
         this.focused = false;
         this.acknowledged = false;
         this._destroyed = false;
-        this._useActionIcons = false;
         this._customContent = false;
         this.bannerBodyText = null;
         this.bannerBodyMarkup = false;
@@ -866,17 +865,9 @@ const Notification = new Lang.Class({
     // If the button is clicked, the notification will emit the
     // %action-invoked signal with @id as a parameter
     addAction: function(id, label) {
-        let button = new St.Button({ can_focus: true });
-
-        let iconName = strHasSuffix(id, '-symbolic') ? id : id + '-symbolic';
-        if (this._useActionIcons && Gtk.IconTheme.get_default().has_icon(iconName)) {
-            button.add_style_class_name('notification-icon-button');
-            button.child = new St.Icon({ icon_name: iconName });
-        } else {
-            button.add_style_class_name('notification-button');
-            button.label = label;
-        }
-
+        let button = new St.Button({ style_class: 'notification-button',
+                                     label: label,
+                                     can_focus: true });
         return this.addButton(id, button);
     },
 
@@ -894,10 +885,6 @@ const Notification = new Lang.Class({
 
     setForFeedback: function(forFeedback) {
         this.forFeedback = forFeedback;
-    },
-
-    setUseActionIcons: function(useIcons) {
-        this._useActionIcons = useIcons;
     },
 
     _styleChanged: function() {

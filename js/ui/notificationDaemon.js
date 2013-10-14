@@ -351,6 +351,19 @@ const NotificationDaemon = new Lang.Class({
         return invocation.return_value(GLib.Variant.new('(u)', [id]));
     },
 
+    _makeButton: function(id, label, useActionIcons) {
+        let button = new St.Button({ can_focus: true });
+        let iconName = strHasSuffix(id, '-symbolic') ? id : id + '-symbolic';
+        if (useActionIcons && Gtk.IconTheme.get_default().has_icon(iconName)) {
+            button.add_style_class_name('notification-icon-button');
+            button.child = new St.Icon({ icon_name: iconName });
+        } else {
+            button.add_style_class_name('notification-button');
+            button.label = label;
+        }
+        return button;
+    },
+
     _notifyForSource: function(source, ndata) {
         let [id, icon, summary, body, actions, hints, notification] =
             [ndata.id, ndata.icon, ndata.summary, ndata.body,
@@ -414,15 +427,18 @@ const NotificationDaemon = new Lang.Class({
         notification.setImage(image);
 
         if (actions.length) {
-            notification.setUseActionIcons(hints['action-icons'] == true);
+            let useActionIcons = (hints['action-icons'] == true);
+
             for (let i = 0; i < actions.length - 1; i += 2) {
-                if (actions[i] == 'default')
+                let [actionId, label] = [actions[i], actions[i+1]];
+                if (actionId == 'default') {
                     notification.connect('clicked', Lang.bind(this,
                         function() {
                             this._emitActionInvoked(ndata.id, "default");
                         }));
-                else
-                    notification.addAction(actions[i], actions[i + 1]);
+                } else {
+                    notification.addButton(actionId, this._makeButton(id, label, useActionIcons));
+                }
             }
         }
         switch (hints.urgency) {
