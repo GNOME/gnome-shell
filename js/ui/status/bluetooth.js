@@ -217,14 +217,13 @@ const PinNotification = new Lang.Class({
         }));
         this.addActor(this._entry);
 
-        this.addButton('ok', _("OK"));
+        let okButton = this.addButton('ok', _("OK"));
         this.addButton('cancel', _("Cancel"));
 
-        this.setButtonSensitive('ok', this._canActivateOkButton());
-        this._entry.clutter_text.connect('text-changed', Lang.bind(this,
-            function() {
-                this.setButtonSensitive('ok', this._canActivateOkButton());
-            }));
+        okButton.reactive = this._canActivateOkButton();
+        this._entry.clutter_text.connect('text-changed', Lang.bind(this, function() {
+            okButton.reactive = this._canActivateOkButton();
+        }));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             if (action == 'ok') {

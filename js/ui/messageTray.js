@@ -859,7 +859,6 @@ const Notification = new Lang.Class({
         }
 
         let button = new St.Button({ can_focus: true });
-        button._actionId = id;
 
         let iconName = strHasSuffix(id, '-symbolic') ? id : id + '-symbolic';
         if (this._useActionIcons && Gtk.IconTheme.get_default().has_icon(iconName)) {
@@ -874,27 +873,7 @@ const Notification = new Lang.Class({
         button.connect('clicked', Lang.bind(this, this._onActionInvoked, id));
 
         this.updated();
-    },
-
-    // setButtonSensitive:
-    // @id: the action ID
-    // @sensitive: whether the button should be sensitive
-    //
-    // If the notification contains a button with action ID @id,
-    // its sensitivity will be set to @sensitive. Insensitive
-    // buttons cannot be clicked.
-    setButtonSensitive: function(id, sensitive) {
-        if (!this._buttonBox)
-            return;
-
-        let button = this._buttonBox.get_children().filter(function(b) {
-            return b._actionId == id;
-        })[0];
-
-        if (!button || button.reactive == sensitive)
-            return;
-
-        button.reactive = sensitive;
+        return button;
     },
 
     setUrgency: function(urgency) {
