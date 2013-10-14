@@ -1792,7 +1792,7 @@ shell_global_set_runtime_state (ShellGlobal  *global,
  * The shell maintains "runtime" state which does not persist across
  * logout or reboot.
  *
- * Returns: The value of a serialized property, or %NULL if none stored
+ * Returns: (transfer floating): The value of a serialized property, or %NULL if none stored
  */
 GVariant *
 shell_global_get_runtime_state (ShellGlobal  *global,
