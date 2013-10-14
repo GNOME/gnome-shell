@@ -1770,7 +1770,7 @@ shell_global_set_runtime_state (ShellGlobal  *global,
 
   path = get_runtime_state_path (global, property_name);
 
-  if (variant == NULL)
+  if (variant == NULL || g_variant_get_data (variant) == NULL)
     (void) g_file_delete (path, NULL, NULL);
   else
     {
