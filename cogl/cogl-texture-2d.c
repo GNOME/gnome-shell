@@ -315,7 +315,7 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
           case WL_SHM_FORMAT_ARGB8888:
             format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
             break;
-          case WL_SHM_FORMAT_XRGB32:
+          case WL_SHM_FORMAT_XRGB8888:
             format = COGL_PIXEL_FORMAT_ARGB_8888;
             internal_format = COGL_PIXEL_FORMAT_RGB_888;
             break;
