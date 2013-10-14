@@ -1385,9 +1385,7 @@ const Source = new Lang.Class({
         if (this.notifications.indexOf(notification) >= 0)
             return;
 
-        notification.connect('clicked', Lang.bind(this, this.open));
         notification.connect('destroy', Lang.bind(this, this._onNotificationDestroy));
-
         this.notifications.push(notification);
         this.emit('notification-added', notification);
 

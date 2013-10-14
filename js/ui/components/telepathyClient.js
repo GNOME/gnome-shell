@@ -446,6 +446,7 @@ const ChatSource = new Lang.Class({
         this._closedId = this._channel.connect('invalidated', Lang.bind(this, this._channelClosed));
 
         this._notification = new ChatNotification(this);
+        this._notification.connect('clicked', Lang.bind(this, this.open));
         this._notification.setUrgency(MessageTray.Urgency.HIGH);
         this._notifyTimeoutId = 0;
 
@@ -544,20 +545,19 @@ const ChatSource = new Lang.Class({
         this._notification.update(this._notification.title, null, { customContent: true });
     },
 
-    open: function(notification) {
-          if (this._client.is_handling_channel(this._channel)) {
-              // We are handling the channel, try to pass it to Empathy
-              this._client.delegate_channels_async([this._channel],
-                  global.get_current_time(),
-                  'org.freedesktop.Telepathy.Client.Empathy.Chat', null);
-          }
-          else {
-              // We are not the handler, just ask to present the channel
-              let dbus = Tp.DBusDaemon.dup();
-              let cd = Tp.ChannelDispatcher.new(dbus);
+    open: function() {
+        if (this._client.is_handling_channel(this._channel)) {
+            // We are handling the channel, try to pass it to Empathy
+            this._client.delegate_channels_async([this._channel],
+                                                 global.get_current_time(),
+                                                 'org.freedesktop.Telepathy.Client.Empathy.Chat', null);
+        } else {
+            // We are not the handler, just ask to present the channel
+            let dbus = Tp.DBusDaemon.dup();
+            let cd = Tp.ChannelDispatcher.new(dbus);
 
-              cd.present_channel_async(this._channel, global.get_current_time(), null);
-          }
+            cd.present_channel_async(this._channel, global.get_current_time(), null);
+        }
     },
 
     _getLogMessages: function() {

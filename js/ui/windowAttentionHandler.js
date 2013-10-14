@@ -39,6 +39,9 @@ const WindowAttentionHandler = new Lang.Class({
         let [title, banner] = this._getTitleAndBanner(app, window);
 
         let notification = new MessageTray.Notification(source, title, banner);
+        notification.connect('clicked', function() {
+            source.open();
+        });
         notification.setForFeedback(true);
 
         source.notify(notification);
@@ -79,7 +82,7 @@ const Source = new Lang.Class({
         return this._app.create_icon_texture(size);
     },
 
-    open : function(notification) {
+    open: function() {
         Main.activateWindow(this._window);
         this.destroy();
     }

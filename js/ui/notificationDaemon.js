@@ -422,15 +422,15 @@ const NotificationDaemon = new Lang.Class({
                                              soundName: hints['sound-name'] });
         notification.setImage(image);
 
+        let hasDefaultAction = false;
+
         if (actions.length) {
             let useActionIcons = (hints['action-icons'] == true);
 
             for (let i = 0; i < actions.length - 1; i += 2) {
                 let [actionId, label] = [actions[i], actions[i+1]];
                 if (actionId == 'default') {
-                    notification.connect('clicked', Lang.bind(this, function() {
-                        this._emitActionInvoked(ndata.id, "default");
-                    }));
+                    hasDefaultAction = true;
                 } else {
                     notification.addButton(this._makeButton(id, label, useActionIcons), Lang.bind(this, function() {
                         this._emitActionInvoked(ndata.id, actionId);
@@ -438,6 +438,17 @@ const NotificationDaemon = new Lang.Class({
                 }
             }
         }
+
+        if (hasDefaultAction) {
+            notification.connect('clicked', Lang.bind(this, function() {
+                this._emitActionInvoked(ndata.id, 'default');
+            }));
+        } else {
+            notification.connect('clicked', Lang.bind(this, function() {
+                source.open();
+            }));
+        }
+
         switch (hints.urgency) {
             case Urgency.LOW:
                 notification.setUrgency(MessageTray.Urgency.LOW);
