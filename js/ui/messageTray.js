@@ -835,7 +835,7 @@ const Notification = new Lang.Class({
         }
     },
 
-    addButton: function(id, button) {
+    addButton: function(button, callback) {
         if (!this._buttonBox) {
             let box = new St.BoxLayout({ style_class: 'notification-actions' });
             this.setActionArea(box, { x_expand: false,
@@ -848,27 +848,36 @@ const Notification = new Lang.Class({
         }
 
         this._buttonBox.add(button);
-        button.connect('clicked', Lang.bind(this, this._onActionInvoked, id));
+        button.connect('clicked', Lang.bind(this, function() {
+            callback();
+
+            if (!this.resident) {
+                // We don't hide a resident notification when the user invokes one of its actions,
+                // because it is common for such notifications to update themselves with new
+                // information based on the action. We'd like to display the updated information
+                // in place, rather than pop-up a new notification.
+                this.emit('done-displaying');
+                this.destroy();
+            }
+        }));
 
         this.updated();
         return button;
     },
 
     // addAction:
-    // @id: the action ID
     // @label: the label for the action's button
+    // @callback: the callback for the action
     //
     // Adds a button with the given @label to the notification. All
     // action buttons will appear in a single row at the bottom of
     // the notification.
-    //
-    // If the button is clicked, the notification will emit the
-    // %action-invoked signal with @id as a parameter
-    addAction: function(id, label) {
+    addAction: function(label, callback) {
         let button = new St.Button({ style_class: 'notification-button',
                                      label: label,
                                      can_focus: true });
-        return this.addButton(id, button);
+
+        return this.addButton(button, callback);
     },
 
     setUrgency: function(urgency) {
@@ -1109,18 +1118,6 @@ const Notification = new Lang.Class({
 
         // Restore height requisition
         this.actor.add_style_class_name('notification-unexpanded');
-    },
-
-    _onActionInvoked: function(actor, mouseButtonClicked, id) {
-        this.emit('action-invoked', id);
-        if (!this.resident) {
-            // We don't hide a resident notification when the user invokes one of its actions,
-            // because it is common for such notifications to update themselves with new
-            // information based on the action. We'd like to display the updated information
-            // in place, rather than pop-up a new notification.
-            this.emit('done-displaying');
-            this.destroy();
-        }
     },
 
     _onClicked: function() {

@@ -78,10 +78,8 @@ const ShellInfo = new Lang.Class({
         }
 
         this._undoCallback = undoCallback;
-        if (undoCallback) {
-            notification.addAction('system-undo', _("Undo"));
-            notification.connect('action-invoked', Lang.bind(this, this._onUndoClicked));
-        }
+        if (undoCallback)
+            notification.addAction(_("Undo"), Lang.bind(this, this._onUndoClicked));
 
         this._source.notify(notification);
     }

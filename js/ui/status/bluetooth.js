@@ -207,44 +207,46 @@ const PinNotification = new Lang.Class({
             let key = event.get_key_symbol();
             if (key == Clutter.KEY_Return) {
                 if (this._canActivateOkButton())
-                    this.emit('action-invoked', 'ok');
+                    this._ok();
                 return true;
             } else if (key == Clutter.KEY_Escape) {
-                this.emit('action-invoked', 'cancel');
+                this._cancel();
                 return true;
             }
             return false;
         }));
         this.addActor(this._entry);
 
-        let okButton = this.addAction('ok', _("OK"));
-        this.addAction('cancel', _("Cancel"));
+        let okButton = this.addAction(_("OK"), Lang.bind(this, this._ok));
+        this.addAction(_("Cancel"), Lang.bind(this, this._cancel));
 
         okButton.reactive = this._canActivateOkButton();
         this._entry.clutter_text.connect('text-changed', Lang.bind(this, function() {
             okButton.reactive = this._canActivateOkButton();
         }));
+    },
 
-        this.connect('action-invoked', Lang.bind(this, function(self, action) {
-            if (action == 'ok') {
-                if (this._numeric) {
-                    let num = parseInt(this._entry.text);
-                    if (isNaN(num)) {
-                        // user reply was empty, or was invalid
-                        // cancel the operation
-                        num = -1;
-                    }
-                    this._applet.agent_reply_passkey(this._devicePath, num);
-                } else
-                    this._applet.agent_reply_pincode(this._devicePath, this._entry.text);
-            } else {
-                if (this._numeric)
-                    this._applet.agent_reply_passkey(this._devicePath, -1);
-                else
-                    this._applet.agent_reply_pincode(this._devicePath, null);
+    _ok: function() {
+        if (this._numeric) {
+            let num = parseInt(this._entry.text);
+            if (isNaN(num)) {
+                // user reply was empty, or was invalid
+                // cancel the operation
+                num = -1;
             }
-            this.destroy();
-        }));
+            this._applet.agent_reply_passkey(this._devicePath, num);
+        } else {
+            this._applet.agent_reply_pincode(this._devicePath, this._entry.text);
+        }
+        this.destroy();
+    },
+
+    _cancel: function() {
+        if (this._numeric)
+            this._applet.agent_reply_passkey(this._devicePath, -1);
+        else
+            this._applet.agent_reply_pincode(this._devicePath, null);
+        this.destroy();
     },
 
     _canActivateOkButton: function() {

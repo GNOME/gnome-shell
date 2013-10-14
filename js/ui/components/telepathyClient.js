@@ -1095,22 +1095,16 @@ const RoomInviteNotification = new Lang.Class({
          * for example. */
         this.addBody(_("%s is inviting you to join %s").format(inviter.get_alias(), channel.get_identifier()));
 
-        this.addAction('decline', _("Decline"));
-        this.addAction('accept', _("Accept"));
-
-        this.connect('action-invoked', Lang.bind(this, function(self, action) {
-            switch (action) {
-            case 'decline':
-                dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE,
-                                                '', function(src, result) {
-                    src.leave_channels_finish(result)});
-                break;
-            case 'accept':
-                dispatchOp.handle_with_time_async('', global.get_current_time(),
-                                                  function(src, result) {
-                    src.handle_with_time_finish(result)});
-                break;
-            }
+        this.addAction(_("Decline"), Lang.bind(this, function() {
+            dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE, '', function(src, result) {
+                src.leave_channels_finish(result);
+            });
+            this.destroy();
+        }));
+        this.addAction(_("Accept"), Lang.bind(this, function() {
+            dispatchOp.handle_with_time_async('', global.get_current_time(), function(src, result) {
+                src.handle_with_time_finish(result);
+            });
             this.destroy();
         }));
     }
@@ -1136,23 +1130,17 @@ const AudioVideoNotification = new Lang.Class({
 
         this.setUrgency(MessageTray.Urgency.CRITICAL);
 
-        this.addAction('reject', _("Decline"));
+        this.addAction(_("Decline"), Lang.bind(this, function() {
+            dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE, '', function(src, result) {
+                src.leave_channels_finish(result);
+            });
+            this.destroy();
+        }));
         /* translators: this is a button label (verb), not a noun */
-        this.addAction('answer', _("Answer"));
-
-        this.connect('action-invoked', Lang.bind(this, function(self, action) {
-            switch (action) {
-            case 'reject':
-                dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE,
-                                                '', function(src, result) {
-                    src.leave_channels_finish(result)});
-                break;
-            case 'answer':
-                dispatchOp.handle_with_time_async('', global.get_current_time(),
-                                                  function(src, result) {
-                    src.handle_with_time_finish(result)});
-                break;
-            }
+        this.addAction(_("Answer"), Lang.bind(this, function() {
+            dispatchOp.handle_with_time_async('', global.get_current_time(), function(src, result) {
+                src.handle_with_time_finish(result);
+            });
             this.destroy();
         }));
     }
@@ -1176,22 +1164,16 @@ const FileTransferNotification = new Lang.Class({
                     { customContent: true });
         this.setResident(true);
 
-        this.addAction('decline', _("Decline"));
-        this.addAction('accept', _("Accept"));
-
-        this.connect('action-invoked', Lang.bind(this, function(self, action) {
-            switch (action) {
-            case 'decline':
-                dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE,
-                                                '', function(src, result) {
-                    src.leave_channels_finish(result)});
-                break;
-            case 'accept':
-                dispatchOp.handle_with_time_async('', global.get_current_time(),
-                                                  function(src, result) {
-                    src.handle_with_time_finish(result)});
-                break;
-            }
+        this.addAction(_("Decline"), Lang.bind(this, function() {
+            dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE, '', function(src, result) {
+                src.leave_channels_finish(result);
+            });
+            this.destroy();
+        }));
+        this.addAction(_("Accept"), Lang.bind(this, function() {
+            dispatchOp.handle_with_time_async('', global.get_current_time(), function(src, result) {
+                src.handle_with_time_finish(result);
+            });
             this.destroy();
         }));
     }
@@ -1239,27 +1221,20 @@ const SubscriptionRequestNotification = new Lang.Class({
 
         this.addActor(layout);
 
-        this.addAction('decline', _("Decline"));
-        this.addAction('accept', _("Accept"));
+        this.addAction(_("Decline"), Lang.bind(this, function() {
+            contact.remove_async(function(src, result) {
+                src.remove_finish(result);
+            });
+        }));
+        this.addAction(_("Accept"), Lang.bind(this, function() {
+            // Authorize the contact and request to see his status as well
+            contact.authorize_publication_async(function(src, result) {
+                src.authorize_publication_finish(result);
+            });
 
-        this.connect('action-invoked', Lang.bind(this, function(self, action) {
-            switch (action) {
-            case 'decline':
-                contact.remove_async(function(src, result) {
-                    src.remove_finish(result)});
-                break;
-            case 'accept':
-                // Authorize the contact and request to see his status as well
-                contact.authorize_publication_async(function(src, result) {
-                    src.authorize_publication_finish(result)});
-
-                contact.request_subscription_async('', function(src, result) {
-                    src.request_subscription_finish(result)});
-                break;
-            }
-
-            // rely on _subscriptionStatesChangedCb to destroy the
-            // notification
+            contact.request_subscription_async('', function(src, result) {
+                src.request_subscription_finish(result);
+            });
         }));
 
         this._changedId = contact.connect('subscription-states-changed',
@@ -1358,18 +1333,11 @@ const AccountNotification = new Lang.Class({
 
         this._account = account;
 
-        this.addAction('view', _("View account"));
-
-        this.connect('action-invoked', Lang.bind(this, function(self, action) {
-            switch (action) {
-            case 'view':
-                let cmd = 'empathy-accounts --select-account=' +
-                          account.get_path_suffix();
-                let app_info = Gio.app_info_create_from_commandline(cmd, null, 0);
-                app_info.launch([], global.create_app_launch_context());
-                break;
-            }
-            this.destroy();
+        this.addAction(_("View account"), Lang.bind(this, function() {
+            let cmd = 'empathy-accounts --select-account=' +
+                account.get_path_suffix();
+            let app_info = Gio.app_info_create_from_commandline(cmd, null, 0);
+            app_info.launch([], global.create_app_launch_context());
         }));
 
         this._enabledId = account.connect('notify::enabled',

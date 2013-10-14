@@ -389,10 +389,6 @@ const NotificationDaemon = new Lang.Class({
                     }
                     this._emitNotificationClosed(ndata.id, notificationClosedReason);
                 }));
-            notification.connect('action-invoked', Lang.bind(this,
-                function(n, actionId) {
-                    this._emitActionInvoked(ndata.id, actionId);
-                }));
         }
 
         // Mark music notifications so they can be shown in the screen shield
@@ -432,12 +428,13 @@ const NotificationDaemon = new Lang.Class({
             for (let i = 0; i < actions.length - 1; i += 2) {
                 let [actionId, label] = [actions[i], actions[i+1]];
                 if (actionId == 'default') {
-                    notification.connect('clicked', Lang.bind(this,
-                        function() {
-                            this._emitActionInvoked(ndata.id, "default");
-                        }));
+                    notification.connect('clicked', Lang.bind(this, function() {
+                        this._emitActionInvoked(ndata.id, "default");
+                    }));
                 } else {
-                    notification.addButton(actionId, this._makeButton(id, label, useActionIcons));
+                    notification.addButton(this._makeButton(id, label, useActionIcons), Lang.bind(this, function() {
+                        this._emitActionInvoked(ndata.id, actionId);
+                    }));
                 }
             }
         }
@@ -659,7 +656,7 @@ const Source = new Lang.Class({
         this.parent(title);
     },
 
-    open: function(notification) {
+    open: function() {
         this.openApp();
         this.destroyNonResidentNotifications();
     },
