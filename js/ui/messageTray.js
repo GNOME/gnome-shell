@@ -1407,10 +1407,8 @@ const Source = new Lang.Class({
     },
 
     pushNotification: function(notification) {
-        if (this.notifications.indexOf(notification) < 0) {
-            this.notifications.push(notification);
-            this.emit('notification-added', notification);
-        }
+        if (this.notifications.indexOf(notification) >= 0)
+            return;
 
         notification.connect('clicked', Lang.bind(this, this.open));
         notification.connect('destroy', Lang.bind(this,
@@ -1425,6 +1423,9 @@ const Source = new Lang.Class({
 
                 this.countUpdated();
             }));
+
+        this.notifications.push(notification);
+        this.emit('notification-added', notification);
 
         this.countUpdated();
     },
