@@ -15,8 +15,6 @@ const MessageTray = imports.ui.messageTray;
 const Params = imports.misc.params;
 const Util = imports.misc.util;
 
-let nextNotificationId = 1;
-
 // Should really be defined in Gio.js
 const BusIface = <interface name="org.freedesktop.DBus">
 <method name="GetConnectionUnixProcessID">
@@ -114,6 +112,8 @@ const NotificationDaemon = new Lang.Class({
         this._senderToPid = {};
         this._notifications = {};
         this._busProxy = new Bus();
+
+        this._nextNotificationId = 1;
 
         this._trayManager = new Shell.TrayManager();
         this._trayIconAddedId = this._trayManager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
@@ -252,7 +252,7 @@ const NotificationDaemon = new Lang.Class({
               hints['category'] == 'presence.offline')) {
             // Ignore replacesId since we already sent back a
             // NotificationClosed for that id.
-            id = nextNotificationId++;
+            id = this._nextNotificationId++;
             Mainloop.idle_add(Lang.bind(this,
                                         function () {
                                             this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
@@ -296,7 +296,7 @@ const NotificationDaemon = new Lang.Class({
             ndata.notification = this._notifications[replacesId].notification;
         } else {
             replacesId = 0;
-            ndata.id = id = nextNotificationId++;
+            ndata.id = id = this._nextNotificationId++;
         }
         this._notifications[id] = ndata;
 
