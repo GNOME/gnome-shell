@@ -73,9 +73,7 @@ gboolean shell_app_is_on_workspace (ShellApp *app, MetaWorkspace *workspace);
 
 gboolean shell_app_launch (ShellApp     *app,
                            guint         timestamp,
-                           GList        *uris,
                            int           workspace,
-                           char        **startup_id,
                            GError      **error);
 
 int shell_app_compare_by_name (ShellApp *app, ShellApp *other);

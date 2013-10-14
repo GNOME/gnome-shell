@@ -633,12 +633,7 @@ shell_app_activate_full (ShellApp      *app,
       case SHELL_APP_STATE_STOPPED:
         {
           GError *error = NULL;
-          if (!shell_app_launch (app,
-                                 timestamp,
-                                 NULL,
-                                 workspace,
-                                 NULL,
-                                 &error))
+          if (!shell_app_launch (app, timestamp, workspace, &error))
             {
               char *msg;
               msg = g_strdup_printf (_("Failed to launch '%s'"), shell_app_get_name (app));
@@ -680,12 +675,7 @@ shell_app_open_new_window (ShellApp      *app,
    * as say Pidgin.  Ideally, we have the application express to us
    * that it supports an explicit new-window action.
    */
-  shell_app_launch (app,
-                    0,
-                    NULL,
-                    workspace,
-                    NULL,
-                    NULL);
+  shell_app_launch (app, 0, workspace, NULL);
 }
 
 /**
@@ -1175,17 +1165,13 @@ _gather_pid_callback (GDesktopAppInfo   *gapp,
 /**
  * shell_app_launch:
  * @timestamp: Event timestamp, or 0 for current event timestamp
- * @uris: (element-type utf8): List of uris to pass to application
  * @workspace: Start on this workspace, or -1 for default
- * @startup_id: (out): Returned startup notification ID, or %NULL if none
  * @error: A #GError
  */
 gboolean
 shell_app_launch (ShellApp     *app,
                   guint         timestamp,
-                  GList        *uris,
                   int           workspace,
-                  char        **startup_id,
                   GError      **error)
 {
   GDesktopAppInfo *gapp;
@@ -1195,17 +1181,9 @@ shell_app_launch (ShellApp     *app,
   MetaScreen *screen;
   GdkDisplay *gdisplay;
 
-  if (startup_id)
-    *startup_id = NULL;
-
   if (app->entry == NULL)
     {
       MetaWindow *window = window_backed_app_get_window (app);
-      /* We can't pass URIs into a window; shouldn't hit this
-       * code path.  If we do, fix the caller to disallow it.
-       */
-      g_return_val_if_fail (uris == NULL, TRUE);
-
       meta_window_activate (window, timestamp);
       return TRUE;
     }
@@ -1225,7 +1203,7 @@ shell_app_launch (ShellApp     *app,
   gdk_app_launch_context_set_desktop (context, workspace);
 
   gapp = gmenu_tree_entry_get_app_info (app->entry);
-  ret = g_desktop_app_info_launch_uris_as_manager (gapp, uris,
+  ret = g_desktop_app_info_launch_uris_as_manager (gapp, NULL,
                                                    G_APP_LAUNCH_CONTEXT (context),
                                                    G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
                                                    NULL, NULL,
