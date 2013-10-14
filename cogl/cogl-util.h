@@ -261,30 +261,12 @@ _cogl_util_pixel_format_from_masks (unsigned long r_mask,
  *
  * Note: Only Gcc >= 4.6 supports the c11 _Static_assert which lets us
  * print a nice message if the compile time assertion fails.
- *
- * Note: this assertion macro can only be used in C code where it is
- * valid to use a typedef. This macro should not be used in headers
- * because we can't guarantee a unique name for the typedef due to
- * the name being based on the line number of the file it's used in.
- *
- * Although we can remove this limitation if the compiler supports
- * _Static_assert we currently choose to maintain the limitation in
- * any case to help ensure we don't accidentally create code that
- * doesn't compile on some toolchains because we forgot about this
- * limitation.
  */
 #ifdef HAVE_STATIC_ASSERT
 #define _COGL_STATIC_ASSERT(EXPRESSION, MESSAGE) \
-  _Static_assert (EXPRESSION, MESSAGE); \
-  _COGL_TYPEDEF_ASSERT(EXPRESSION)
+  _Static_assert (EXPRESSION, MESSAGE);
 #else
-#define _COGL_STATIC_ASSERT(EXPRESSION, MESSAGE) \
-  _COGL_TYPEDEF_ASSERT(EXPRESSION)
-
-/* So that we can safely use _Static_assert() if we want to add
- * assertions to internal headers we define it to a NOP here
- * if it's not supported by the compiler. */
-#define _Static_assert(EXPRESSION, MESSAGE)
+#define _COGL_STATIC_ASSERT(EXPRESSION, MESSAGE)
 #endif
 
 #ifdef HAVE_MEMMEM
