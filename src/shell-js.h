@@ -11,6 +11,6 @@ gboolean shell_js_add_extension_importer (const char   *target_object_script,
                                           const char   *directory,
                                           GError      **error);
 
-G_BEGIN_DECLS
+G_END_DECLS
 
 #endif /* __SHELL_JS_H__ */
