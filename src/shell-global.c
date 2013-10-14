@@ -1819,7 +1819,7 @@ shell_global_get_runtime_state (ShellGlobal  *global,
   else
     {
       GBytes *bytes = g_mapped_file_get_bytes (mfile);
-      res = g_variant_new_from_bytes ((GVariantType*)property_type, bytes, TRUE);
+      res = g_variant_new_from_bytes (G_VARIANT_TYPE (property_type), bytes, TRUE);
       g_bytes_unref (bytes);
       g_mapped_file_unref (mfile);
     }
