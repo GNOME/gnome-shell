@@ -1,3 +1,18 @@
+3.10.1
+======
+* Don't apply fullscreen workarounds to CSD windows [Giovanni; #708718]
+* Fix hangs during DND operations [Adel; #709340]
+* Use nearest-pixel interpolation when possible [Hans; #708389]
+* Fix tile previews getting stuck on right click during drags [Lionel; #704759]
+* Misc bug fixes [Giovanni, Jasper; #708420]
+
+Contributors:
+  Giovanni Campagna, Adel Gadllah, Lionel Landwerlin, Hans Petter Jansson,
+  Jasper St. Pierre
+
+Translations:
+  Khaled Hosny [ar], Reinout van Schouwen [nl], Carles Ferrando [ca@valencia]
+
 3.10.0.1
 ========
 * Fix bug when a window changed size twice in a single frame - this
