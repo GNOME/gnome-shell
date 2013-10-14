@@ -1406,23 +1406,24 @@ const Source = new Lang.Class({
         return this._mainIcon.actor;
     },
 
+    _onNotificationDestroy: function(notification) {
+        let index = this.notifications.indexOf(notification);
+        if (index < 0)
+            return;
+
+        this.notifications.splice(index, 1);
+        if (this.notifications.length == 0)
+            this._lastNotificationRemoved();
+
+        this.countUpdated();
+    },
+
     pushNotification: function(notification) {
         if (this.notifications.indexOf(notification) >= 0)
             return;
 
         notification.connect('clicked', Lang.bind(this, this.open));
-        notification.connect('destroy', Lang.bind(this,
-            function () {
-                let index = this.notifications.indexOf(notification);
-                if (index < 0)
-                    return;
-
-                this.notifications.splice(index, 1);
-                if (this.notifications.length == 0)
-                    this._lastNotificationRemoved();
-
-                this.countUpdated();
-            }));
+        notification.connect('destroy', Lang.bind(this, this._onNotificationDestroy));
 
         this.notifications.push(notification);
         this.emit('notification-added', notification);
