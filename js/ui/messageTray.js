@@ -848,7 +848,6 @@ const Notification = new Lang.Class({
     // %action-invoked signal with @id as a parameter
     addButton: function(id, label) {
         if (!this._buttonBox) {
-
             let box = new St.BoxLayout({ style_class: 'notification-actions' });
             this.setActionArea(box, { x_expand: false,
                                       y_expand: false,
@@ -856,6 +855,7 @@ const Notification = new Lang.Class({
                                       y_fill: false,
                                       x_align: St.Align.END });
             this._buttonBox = box;
+            global.focus_manager.add_group(this._buttonBox);
         }
 
         let button = new St.Button({ can_focus: true });
@@ -870,11 +870,7 @@ const Notification = new Lang.Class({
             button.label = label;
         }
 
-        if (this._buttonBox.get_n_children() > 0)
-            global.focus_manager.remove_group(this._buttonBox);
-
         this._buttonBox.add(button);
-        global.focus_manager.add_group(this._buttonBox);
         button.connect('clicked', Lang.bind(this, this._onActionInvoked, id));
 
         this.updated();
