@@ -1095,8 +1095,8 @@ const RoomInviteNotification = new Lang.Class({
          * for example. */
         this.addBody(_("%s is inviting you to join %s").format(inviter.get_alias(), channel.get_identifier()));
 
-        this.addButton('decline', _("Decline"));
-        this.addButton('accept', _("Accept"));
+        this.addAction('decline', _("Decline"));
+        this.addAction('accept', _("Accept"));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             switch (action) {
@@ -1136,9 +1136,9 @@ const AudioVideoNotification = new Lang.Class({
 
         this.setUrgency(MessageTray.Urgency.CRITICAL);
 
-        this.addButton('reject', _("Decline"));
+        this.addAction('reject', _("Decline"));
         /* translators: this is a button label (verb), not a noun */
-        this.addButton('answer', _("Answer"));
+        this.addAction('answer', _("Answer"));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             switch (action) {
@@ -1176,8 +1176,8 @@ const FileTransferNotification = new Lang.Class({
                     { customContent: true });
         this.setResident(true);
 
-        this.addButton('decline', _("Decline"));
-        this.addButton('accept', _("Accept"));
+        this.addAction('decline', _("Decline"));
+        this.addAction('accept', _("Accept"));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             switch (action) {
@@ -1239,8 +1239,8 @@ const SubscriptionRequestNotification = new Lang.Class({
 
         this.addActor(layout);
 
-        this.addButton('decline', _("Decline"));
-        this.addButton('accept', _("Accept"));
+        this.addAction('decline', _("Decline"));
+        this.addAction('accept', _("Accept"));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             switch (action) {
@@ -1358,7 +1358,7 @@ const AccountNotification = new Lang.Class({
 
         this._account = account;
 
-        this.addButton('view', _("View account"));
+        this.addAction('view', _("View account"));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             switch (action) {

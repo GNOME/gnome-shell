@@ -836,17 +836,7 @@ const Notification = new Lang.Class({
         }
     },
 
-    // addButton:
-    // @id: the action ID
-    // @label: the label for the action's button
-    //
-    // Adds a button with the given @label to the notification. All
-    // action buttons will appear in a single row at the bottom of
-    // the notification.
-    //
-    // If the button is clicked, the notification will emit the
-    // %action-invoked signal with @id as a parameter
-    addButton: function(id, label) {
+    addButton: function(id, button) {
         if (!this._buttonBox) {
             let box = new St.BoxLayout({ style_class: 'notification-actions' });
             this.setActionArea(box, { x_expand: false,
@@ -858,6 +848,24 @@ const Notification = new Lang.Class({
             global.focus_manager.add_group(this._buttonBox);
         }
 
+        this._buttonBox.add(button);
+        button.connect('clicked', Lang.bind(this, this._onActionInvoked, id));
+
+        this.updated();
+        return button;
+    },
+
+    // addAction:
+    // @id: the action ID
+    // @label: the label for the action's button
+    //
+    // Adds a button with the given @label to the notification. All
+    // action buttons will appear in a single row at the bottom of
+    // the notification.
+    //
+    // If the button is clicked, the notification will emit the
+    // %action-invoked signal with @id as a parameter
+    addAction: function(id, label) {
         let button = new St.Button({ can_focus: true });
 
         let iconName = strHasSuffix(id, '-symbolic') ? id : id + '-symbolic';
@@ -869,11 +877,7 @@ const Notification = new Lang.Class({
             button.label = label;
         }
 
-        this._buttonBox.add(button);
-        button.connect('clicked', Lang.bind(this, this._onActionInvoked, id));
-
-        this.updated();
-        return button;
+        return this.addButton(id, button);
     },
 
     setUrgency: function(urgency) {

@@ -105,8 +105,8 @@ const AuthNotification = new Lang.Class({
         this._devicePath = device_path;
         this.addBody(_("Device %s wants to pair with this computer").format(long_name));
 
-        this.addButton('allow', _("Allow"));
-        this.addButton('deny', _("Deny"));
+        this.addAction('allow', _("Allow"));
+        this.addAction('deny', _("Deny"));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             if (action == 'allow')
@@ -133,9 +133,9 @@ const AuthServiceNotification = new Lang.Class({
         this._devicePath = device_path;
         this.addBody(_("Device %s wants access to the service '%s'").format(long_name, uuid));
 
-        this.addButton('always-grant', _("Always grant access"));
-        this.addButton('grant', _("Grant this time only"));
-        this.addButton('reject', _("Reject"));
+        this.addAction('always-grant', _("Always grant access"));
+        this.addAction('grant', _("Grant this time only"));
+        this.addAction('reject', _("Reject"));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             switch (action) {
@@ -172,8 +172,8 @@ const ConfirmNotification = new Lang.Class({
         this.addBody(_("Please confirm whether the Passkey '%06d' matches the one on the device.").format(pin));
 
         /* Translators: this is the verb, not the noun */
-        this.addButton('matches', _("Matches"));
-        this.addButton('does-not-match', _("Does not match"));
+        this.addAction('matches', _("Matches"));
+        this.addAction('does-not-match', _("Does not match"));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             if (action == 'matches')
@@ -217,8 +217,8 @@ const PinNotification = new Lang.Class({
         }));
         this.addActor(this._entry);
 
-        let okButton = this.addButton('ok', _("OK"));
-        this.addButton('cancel', _("Cancel"));
+        let okButton = this.addAction('ok', _("OK"));
+        this.addAction('cancel', _("Cancel"));
 
         okButton.reactive = this._canActivateOkButton();
         this._entry.clutter_text.connect('text-changed', Lang.bind(this, function() {

@@ -422,7 +422,7 @@ const NotificationDaemon = new Lang.Class({
                             this._emitActionInvoked(ndata.id, "default");
                         }));
                 else
-                    notification.addButton(actions[i], actions[i + 1]);
+                    notification.addAction(actions[i], actions[i + 1]);
             }
         }
         switch (hints.urgency) {
