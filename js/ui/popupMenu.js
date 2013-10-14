@@ -64,6 +64,7 @@ function unicodeArrow(side) {
 
     return new St.Label({ text: arrowChar,
                           style_class: 'unicode-arrow',
+                          accessible_role: Atk.Role.ARROW,
                           y_expand: true,
                           y_align: Clutter.ActorAlign.CENTER });
 }
