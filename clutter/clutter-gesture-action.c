@@ -396,11 +396,15 @@ stage_captured_event_cb (ClutterActor       *stage,
               return CLUTTER_EVENT_PROPAGATE;
             }
 
-          if (!begin_gesture(action, actor))
+          if (!begin_gesture (action, actor))
             {
-              gesture_update_motion_point (point, event);
+              if ((point = gesture_find_point (action, event, &position)) != NULL)
+                gesture_update_motion_point (point, event);
               return CLUTTER_EVENT_PROPAGATE;
             }
+
+          if ((point = gesture_find_point (action, event, &position)) == NULL)
+            return CLUTTER_EVENT_PROPAGATE;
         }
 
       gesture_update_motion_point (point, event);
