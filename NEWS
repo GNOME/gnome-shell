@@ -1,3 +1,13 @@
+3.10.1
+======
+* Don't apply fullscreen workarounds to CSD windows [Giovanni; #708718]
+* Fix hangs during DND operations [Adel; #709340]
+* Misc bug fixes [Dan, Giovanni, Jasper; #708813, #708420]
+
+Contributors:
+  Giovanni Campagna, Adel Gadllah, Dan Horák, Hans Petter Jansson,
+  Jasper St. Pierre
+
 3.10.0.1
 ========
 * Fix bug when a window changed size twice in a single frame - this
