@@ -9,15 +9,15 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-10-13 11:43+0000\n"
-"PO-Revision-Date: 2013-10-15 19:46+0200\n"
+"PO-Revision-Date: 2013-03-08 20:26+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
@@ -484,7 +484,7 @@ msgstr "Ceo dan"
 #: ../js/ui/calendar.js:68
 msgctxt "event list time"
 msgid "%H∶%M"
-msgstr "%H∶%M"
+msgstr ""
 
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
@@ -492,7 +492,7 @@ msgstr "%H∶%M"
 #: ../js/ui/calendar.js:77
 msgctxt "event list time"
 msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+msgstr ""
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -589,7 +589,7 @@ msgstr "Sub"
 
 #: ../js/ui/calendar.js:389
 msgid "calendar:MY"
-msgstr "calendar:MY"
+msgstr ""
 
 #. Translators: Text to show if there are no events */
 #: ../js/ui/calendar.js:720
@@ -1029,7 +1029,7 @@ msgstr ""
 "Kliknite na „Odjavi“ da napustite ove programe i da se odjavite sa sistema."
 
 #: ../js/ui/endSessionDialog.js:67
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "%s will be logged out automatically in %d second."
 #| msgid_plural "%s will be logged out automatically in %d seconds."
 msgid "%s will be logged out automatically in %d second."
@@ -1037,10 +1037,10 @@ msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s će biti odjavljen za %d sekundu."
 msgstr[1] "%s će biti odjavljen za %d sekunde."
 msgstr[2] "%s će biti odjavljen za %d sekundi."
-msgstr[3] "%s će biti odjavljen za jednu sekundu."
+msgstr[3] "%s će biti odjavljen za %d sekundu."
 
 #: ../js/ui/endSessionDialog.js:72
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "You will be logged out automatically in %d second."
 #| msgid_plural "You will be logged out automatically in %d seconds."
 msgid "You will be logged out automatically in %d second."
@@ -1048,7 +1048,7 @@ msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Bićete odjavljeni za %d sekundu."
 msgstr[1] "Bićete odjavljeni za %d sekunde."
 msgstr[2] "Bićete odjavljeni za %d sekundi."
-msgstr[3] "Bićete odjavljeni za jednu sekundu."
+msgstr[3] "Bićete odjavljeni za %d sekundu."
 
 #: ../js/ui/endSessionDialog.js:76
 msgid "Logging out of the system."
@@ -1070,7 +1070,7 @@ msgstr ""
 "Kliknite na „Isključi“ da napustite ove programe i da isključite računar."
 
 #: ../js/ui/endSessionDialog.js:86
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "The system will power off automatically in %d second."
 #| msgid_plural "The system will power off automatically in %d seconds."
 msgid "The system will power off automatically in %d second."
@@ -1078,7 +1078,7 @@ msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Računar će se isključiti za %d sekundu."
 msgstr[1] "Računar će se isključiti za %d sekunde."
 msgstr[2] "Računar će se isključiti za %d sekundi."
-msgstr[3] "Računar će se isključiti za jednu sekundu."
+msgstr[3] "Računar će se isključiti za %d sekundu."
 
 #: ../js/ui/endSessionDialog.js:90
 msgid "Powering off the system."
@@ -1106,7 +1106,7 @@ msgstr ""
 "sistem."
 
 #: ../js/ui/endSessionDialog.js:103
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "The system will restart automatically in %d second."
 #| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will restart automatically in %d second."
@@ -1114,7 +1114,7 @@ msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Sistem će se ponovo pokrenuti za %d sekundu."
 msgstr[1] "Sistem će se ponovo pokrenuti za %d sekunde."
 msgstr[2] "Sistem će se ponovo pokrenuti za %d sekundi."
-msgstr[3] "Sistem će se ponovo pokrenuti za jednu sekundu."
+msgstr[3] "Sistem će se ponovo pokrenuti za %d sekundu."
 
 #: ../js/ui/endSessionDialog.js:107
 msgid "Restarting the system."
@@ -1215,7 +1215,7 @@ msgid "Unknown"
 msgstr "Nepoznat"
 
 #: ../js/ui/overviewControls.js:463 ../js/ui/screenShield.js:149
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "%d new message"
 #| msgid_plural "%d new messages"
 msgid "%d new message"
@@ -1223,7 +1223,7 @@ msgid_plural "%d new messages"
 msgstr[0] "%d nova poruka"
 msgstr[1] "%d nove poruke"
 msgstr[2] "%d novih poruka"
-msgstr[3] "Jedna nova poruka"
+msgstr[3] "%d nova poruka"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1274,7 +1274,7 @@ msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
 #: ../js/ui/screenShield.js:151
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "%d new notification"
 #| msgid_plural "%d new notifications"
 msgid "%d new notification"
@@ -1282,7 +1282,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d novo obaveštenje"
 msgstr[1] "%d nova obaveštenja"
 msgstr[2] "%d novih obaveštenja"
-msgstr[3] "Jedno novo obaveštenje"
+msgstr[3] "%d novo obaveštenje"
 
 #: ../js/ui/screenShield.js:438 ../js/ui/userMenu.js:807
 msgid "Lock"
@@ -1592,9 +1592,10 @@ msgid "Auto wireless"
 msgstr "Samostalna bežična veza"
 
 #: ../js/ui/status/network.js:1667
+#, fuzzy
 #| msgid "Network error"
 msgid "Network"
-msgstr "Mreža"
+msgstr "Greška mreže"
 
 #: ../js/ui/status/network.js:1729
 msgid "Enable networking"
@@ -1637,7 +1638,7 @@ msgid "Estimating…"
 msgstr "Približno…"
 
 #: ../js/ui/status/power.js:106
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "%d hour remaining"
 #| msgid_plural "%d hours remaining"
 msgid "%d hour remaining"
@@ -1645,7 +1646,7 @@ msgid_plural "%d hours remaining"
 msgstr[0] "Preostaje %d sat"
 msgstr[1] "Preostaju %d sata"
 msgstr[2] "Preostaje %d sati"
-msgstr[3] "Preostaje jedan sat"
+msgstr[3] "Preostaje %d sat"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining" */
 #: ../js/ui/status/power.js:109
@@ -1670,7 +1671,7 @@ msgstr[2] "minuta"
 msgstr[3] "minut"
 
 #: ../js/ui/status/power.js:114
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "%d minute remaining"
 #| msgid_plural "%d minutes remaining"
 msgid "%d minute remaining"
@@ -1678,7 +1679,7 @@ msgid_plural "%d minutes remaining"
 msgstr[0] "Preostaje %d minut"
 msgstr[1] "Preostaju %d minuta"
 msgstr[2] "Preostaje %d minuta"
-msgstr[3] "Preostaje jedan minut"
+msgstr[3] "Preostaje %d minut"
 
 #: ../js/ui/status/power.js:117 ../js/ui/status/power.js:191
 #, javascript-format
@@ -1865,7 +1866,7 @@ msgid_plural "%u Outputs"
 msgstr[0] "%u izlaz"
 msgstr[1] "%u izlaza"
 msgstr[2] "%u izlaza"
-msgstr[3] "Jedan izlaz"
+msgstr[3] "%u izlaz"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -1876,7 +1877,7 @@ msgid_plural "%u Inputs"
 msgstr[0] "%u ulaz"
 msgstr[1] "%u ulaza"
 msgstr[2] "%u ulaza"
-msgstr[3] "Jedan ulaz"
+msgstr[3] "%u ulaz"
 
 #: ../src/gvc/gvc-mixer-control.c:2373
 msgid "System Sounds"
@@ -1914,3 +1915,23 @@ msgstr "Lozinka ne može biti prazna"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Korisnik je odbacio prozorče za potvrđivanje identiteta"
+
+#~ msgid "There was an error loading the preferences dialog for %s:"
+#~ msgstr "Došlo je do greške pri učitavanju prozorčeta postavki za %s:"
+
+#~ msgid "Extension"
+#~ msgstr "Proširenje"
+
+#~ msgctxt "event list time"
+#~ msgid "%H\\u2236%M"
+#~ msgstr "%H\\u2236%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l\\u2236%M\\u2009%p"
+#~ msgstr "%l\\u2236%M\\u2009%p"
+
+#~ msgid "Show Keyboard Layout"
+#~ msgstr "Prikaži raspored tastature"
+
+#~ msgid "Region & Language Settings"
+#~ msgstr "Podešavanja regiona i jezika"

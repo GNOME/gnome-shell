@@ -9,15 +9,15 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-10-13 11:43+0000\n"
-"PO-Revision-Date: 2013-10-15 19:46+0200\n"
+"PO-Revision-Date: 2013-03-08 20:26+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
@@ -484,7 +484,7 @@ msgstr "Цео дан"
 #: ../js/ui/calendar.js:68
 msgctxt "event list time"
 msgid "%H∶%M"
-msgstr "%H∶%M"
+msgstr ""
 
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
@@ -492,7 +492,7 @@ msgstr "%H∶%M"
 #: ../js/ui/calendar.js:77
 msgctxt "event list time"
 msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+msgstr ""
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -589,7 +589,7 @@ msgstr "Суб"
 
 #: ../js/ui/calendar.js:389
 msgid "calendar:MY"
-msgstr "calendar:MY"
+msgstr ""
 
 #. Translators: Text to show if there are no events */
 #: ../js/ui/calendar.js:720
@@ -1029,7 +1029,7 @@ msgstr ""
 "Кликните на „Одјави“ да напустите ове програме и да се одјавите са система."
 
 #: ../js/ui/endSessionDialog.js:67
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "%s will be logged out automatically in %d second."
 #| msgid_plural "%s will be logged out automatically in %d seconds."
 msgid "%s will be logged out automatically in %d second."
@@ -1037,10 +1037,10 @@ msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s ће бити одјављен за %d секунду."
 msgstr[1] "%s ће бити одјављен за %d секунде."
 msgstr[2] "%s ће бити одјављен за %d секунди."
-msgstr[3] "%s ће бити одјављен за једну секунду."
+msgstr[3] "%s ће бити одјављен за %d секунду."
 
 #: ../js/ui/endSessionDialog.js:72
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "You will be logged out automatically in %d second."
 #| msgid_plural "You will be logged out automatically in %d seconds."
 msgid "You will be logged out automatically in %d second."
@@ -1048,7 +1048,7 @@ msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Бићете одјављени за %d секунду."
 msgstr[1] "Бићете одјављени за %d секунде."
 msgstr[2] "Бићете одјављени за %d секунди."
-msgstr[3] "Бићете одјављени за једну секунду."
+msgstr[3] "Бићете одјављени за %d секунду."
 
 #: ../js/ui/endSessionDialog.js:76
 msgid "Logging out of the system."
@@ -1070,7 +1070,7 @@ msgstr ""
 "Кликните на „Искључи“ да напустите ове програме и да искључите рачунар."
 
 #: ../js/ui/endSessionDialog.js:86
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "The system will power off automatically in %d second."
 #| msgid_plural "The system will power off automatically in %d seconds."
 msgid "The system will power off automatically in %d second."
@@ -1078,7 +1078,7 @@ msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Рачунар ће се искључити за %d секунду."
 msgstr[1] "Рачунар ће се искључити за %d секунде."
 msgstr[2] "Рачунар ће се искључити за %d секунди."
-msgstr[3] "Рачунар ће се искључити за једну секунду."
+msgstr[3] "Рачунар ће се искључити за %d секунду."
 
 #: ../js/ui/endSessionDialog.js:90
 msgid "Powering off the system."
@@ -1106,7 +1106,7 @@ msgstr ""
 "систем."
 
 #: ../js/ui/endSessionDialog.js:103
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "The system will restart automatically in %d second."
 #| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will restart automatically in %d second."
@@ -1114,7 +1114,7 @@ msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Систем ће се поново покренути за %d секунду."
 msgstr[1] "Систем ће се поново покренути за %d секунде."
 msgstr[2] "Систем ће се поново покренути за %d секунди."
-msgstr[3] "Систем ће се поново покренути за једну секунду."
+msgstr[3] "Систем ће се поново покренути за %d секунду."
 
 #: ../js/ui/endSessionDialog.js:107
 msgid "Restarting the system."
@@ -1215,7 +1215,7 @@ msgid "Unknown"
 msgstr "Непознат"
 
 #: ../js/ui/overviewControls.js:463 ../js/ui/screenShield.js:149
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "%d new message"
 #| msgid_plural "%d new messages"
 msgid "%d new message"
@@ -1223,7 +1223,7 @@ msgid_plural "%d new messages"
 msgstr[0] "%d нова порука"
 msgstr[1] "%d нове поруке"
 msgstr[2] "%d нових порука"
-msgstr[3] "Једна нова порука"
+msgstr[3] "%d нова порука"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1274,7 +1274,7 @@ msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
 #: ../js/ui/screenShield.js:151
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "%d new notification"
 #| msgid_plural "%d new notifications"
 msgid "%d new notification"
@@ -1282,7 +1282,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d ново обавештење"
 msgstr[1] "%d нова обавештења"
 msgstr[2] "%d нових обавештења"
-msgstr[3] "Једно ново обавештење"
+msgstr[3] "%d ново обавештење"
 
 #: ../js/ui/screenShield.js:438 ../js/ui/userMenu.js:807
 msgid "Lock"
@@ -1592,9 +1592,10 @@ msgid "Auto wireless"
 msgstr "Самостална бежична веза"
 
 #: ../js/ui/status/network.js:1667
+#, fuzzy
 #| msgid "Network error"
 msgid "Network"
-msgstr "Мрежа"
+msgstr "Грешка мреже"
 
 #: ../js/ui/status/network.js:1729
 msgid "Enable networking"
@@ -1637,7 +1638,7 @@ msgid "Estimating…"
 msgstr "Приближно…"
 
 #: ../js/ui/status/power.js:106
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "%d hour remaining"
 #| msgid_plural "%d hours remaining"
 msgid "%d hour remaining"
@@ -1645,7 +1646,7 @@ msgid_plural "%d hours remaining"
 msgstr[0] "Преостаје %d сат"
 msgstr[1] "Преостају %d сата"
 msgstr[2] "Преостаје %d сати"
-msgstr[3] "Преостаје један сат"
+msgstr[3] "Преостаје %d сат"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining" */
 #: ../js/ui/status/power.js:109
@@ -1670,7 +1671,7 @@ msgstr[2] "минута"
 msgstr[3] "минут"
 
 #: ../js/ui/status/power.js:114
-#, javascript-format
+#, fuzzy, javascript-format
 #| msgid "%d minute remaining"
 #| msgid_plural "%d minutes remaining"
 msgid "%d minute remaining"
@@ -1678,7 +1679,7 @@ msgid_plural "%d minutes remaining"
 msgstr[0] "Преостаје %d минут"
 msgstr[1] "Преостају %d минута"
 msgstr[2] "Преостаје %d минута"
-msgstr[3] "Преостаје један минут"
+msgstr[3] "Преостаје %d минут"
 
 #: ../js/ui/status/power.js:117 ../js/ui/status/power.js:191
 #, javascript-format
@@ -1865,7 +1866,7 @@ msgid_plural "%u Outputs"
 msgstr[0] "%u излаз"
 msgstr[1] "%u излаза"
 msgstr[2] "%u излаза"
-msgstr[3] "Један излаз"
+msgstr[3] "%u излаз"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -1876,7 +1877,7 @@ msgid_plural "%u Inputs"
 msgstr[0] "%u улаз"
 msgstr[1] "%u улаза"
 msgstr[2] "%u улаза"
-msgstr[3] "Један улаз"
+msgstr[3] "%u улаз"
 
 #: ../src/gvc/gvc-mixer-control.c:2373
 msgid "System Sounds"
@@ -1914,3 +1915,23 @@ msgstr "Лозинка не може бити празна"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Корисник је одбацио прозорче за потврђивање идентитета"
+
+#~ msgid "There was an error loading the preferences dialog for %s:"
+#~ msgstr "Дошло је до грешке при учитавању прозорчета поставки за %s:"
+
+#~ msgid "Extension"
+#~ msgstr "Проширење"
+
+#~ msgctxt "event list time"
+#~ msgid "%H\\u2236%M"
+#~ msgstr "%H\\u2236%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l\\u2236%M\\u2009%p"
+#~ msgstr "%l\\u2236%M\\u2009%p"
+
+#~ msgid "Show Keyboard Layout"
+#~ msgstr "Прикажи распоред тастатуре"
+
+#~ msgid "Region & Language Settings"
+#~ msgstr "Подешавања региона и језика"
