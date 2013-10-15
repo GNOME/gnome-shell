@@ -1,3 +1,49 @@
+3.10.1
+======
+* Make sure lock screen is drawn once before switching user [Giovanni; #708051]
+* Fix signal strength indicators in network selector [Jasper; #708442]
+* Scroll search results when focusing provider icons [Jasper; #708868]
+* Add separate hover/active states to page indicators [Carlos; #708852]
+* Tweak appearance of user name and avatar [Yash; #702309]
+* Hide "Turn On" in network menu when disabled by hardware [Giovanni; #709635]
+* Cancel open keyring prompts when the screen is locked [Florian; #708910]
+* Differentiate "Not Connected" and "Off" in network menu [Giovanni; #709043]
+* Make network settings items point to the right device [Giovanni; #709246]
+* Remove animation of window preview titles [Sebastien; #709392]
+* Add 'Notifications' switch to tray menu [Florian; #707073]
+* Make dropdown arrows consistent [Carlos; #709564]
+* power: Use icon from primary device for status [Jasper; #709925]
+* Fix XDND drags to overview [Adel; #708887]
+* Fix workspace switcher disappearing with too many workspaces [Jasper; #694881]
+* Handle search results with 'special:' prefix specially [Giovanni; #707055]
+* gdm: Support pre-authenticated logins from oVirt [Vinzenz; #702162]
+* Use ARROW role for labels representing arrows [Alejandro; #710120]
+* Make selected view in app picker persistent [Florian; #710042]
+* Make network selector navigable by keyboard [Alejandro; #710144]
+* Misc bug fixes [Florian, Adel, Jasper, Aleksander, Giovanni, Dan, Michael,
+  Tim; #709034, #709263, #698486, #709286, #709248, #709543, #696564, #703265,
+  #709638, #709866, #709998, #710019, #710104, #710115]
+
+Contributors:
+  Giovanni Campagna, Michael Catanzaro, Vinzenz Feenstra, Adel Gadllah,
+  Yash Girdhar, Sebastien Lafargue, Tim Lunn, Aleksander Morgado,
+  Florian Müllner, Alejandro Piñeiro, Carlos Soriano, Jasper St. Pierre,
+  Dieter Verfaillie, Dan Winship
+
+Translations:
+  Inaki Larranaga Murgoitio [eu], Christian Kirbach [de], Muhammet Kara [tr],
+  Aurimas Černius [lt], Ryan Lortie [eo], Rūdolfs Mazurs [lv],
+  Dušan Kazik [sk], Fran Diéguez [gl], Enrico Nicoletto [pt_BR],
+  Kjartan Maraas [nb], Victor Ibragimov [tg], Matej Urbančič [sl],
+  A S Alam [pa], Nilamdyuti Goswami [as], Daniel Mustieles [es],
+  Cheng-Chia Tseng [zh_HK, zh_TW], Mattias Põldaru [et], Kenneth Nielsen [da],
+  Milo Casagrande [it], Marek Černocký [cs], Ihar Hrachyshka [be],
+  Мирослав Николић [sr, sr@latin], Arash Mousavi [fa], Yuri Myasoedov [ru],
+  Gil Forcada [ca], Carles Ferrando [ca@valencia], Andika Triwidada [id],
+  Timo Jyrinki [fi], Piotr Drąg [pl], Rafael Ferreira [pt_BR],
+  Gabor Kelemen [hu], Yosef Or Boczko [he], Daniel Korostil [uk],
+  Wouter Bolsterlee [nl], António Lima [pt]
+
 3.10.0.1
 =========
 * Fix login screen [Ray; #708691]
