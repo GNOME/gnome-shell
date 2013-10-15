@@ -1248,6 +1248,9 @@ void
 cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
                                  CoglColorMask color_mask)
 {
+  if (framebuffer->color_mask == color_mask)
+    return;
+
   /* XXX: Currently color mask changes don't go through the journal */
   _cogl_framebuffer_flush_journal (framebuffer);
 
