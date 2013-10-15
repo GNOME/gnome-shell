@@ -294,12 +294,12 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
 CoglTexture2D *
 cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
-                                         struct wl_resource *buffer_resource,
+                                         struct wl_resource *buffer,
                                          CoglError **error)
 {
   struct wl_shm_buffer *shm_buffer;
 
-  shm_buffer = wl_shm_buffer_get (buffer_resource);
+  shm_buffer = wl_shm_buffer_get (buffer);
 
   if (shm_buffer)
     {
@@ -343,7 +343,6 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
     }
   else
     {
-      struct wl_buffer *buffer = (struct wl_buffer *) buffer_resource;
       int format, width, height;
 
       if (_cogl_egl_query_wayland_buffer (ctx,

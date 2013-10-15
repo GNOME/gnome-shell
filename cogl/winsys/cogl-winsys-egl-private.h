@@ -162,7 +162,7 @@ _cogl_egl_destroy_image (CoglContext *ctx,
 #ifdef EGL_WL_bind_wayland_display
 CoglBool
 _cogl_egl_query_wayland_buffer (CoglContext *ctx,
-                                struct wl_buffer *buffer,
+                                struct wl_resource *buffer,
                                 int attribute,
                                 int *value);
 #endif

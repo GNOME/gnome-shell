@@ -88,7 +88,7 @@ COGL_WINSYS_FEATURE_FUNCTION (EGLBoolean, eglUnbindWaylandDisplay,
                                struct wl_display *wayland_display))
 COGL_WINSYS_FEATURE_FUNCTION (EGLBoolean, eglQueryWaylandBuffer,
                               (EGLDisplay dpy,
-                               struct wl_buffer *buffer,
+                               struct wl_resource *buffer,
                                EGLint attribute, EGLint *value))
 COGL_WINSYS_FEATURE_END ()
 
