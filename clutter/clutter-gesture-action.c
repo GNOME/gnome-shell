@@ -772,7 +772,7 @@ clutter_gesture_action_init (ClutterGestureAction *self)
   g_array_set_clear_func (self->priv->points, (GDestroyNotify) gesture_point_unset);
 
   self->priv->requested_nb_points = 1;
-  self->priv->edge = CLUTTER_GESTURE_TRIGGER_EDGE_AFTER;
+  self->priv->edge = CLUTTER_GESTURE_TRIGGER_EDGE_NONE;
 }
 
 /**
