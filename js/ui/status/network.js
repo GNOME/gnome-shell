@@ -972,9 +972,6 @@ const NMWirelessDialog = new Lang.Class({
             Util.ensureActorVisibleInScrollView(this._scrollView, network.item.actor);
             this._selectNetwork(network);
         }));
-        network.item.actor.connect('clicked', Lang.bind(this, function() {
-            this._connect();
-        }));
     },
 });
 
