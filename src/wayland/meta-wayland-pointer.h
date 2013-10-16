@@ -62,7 +62,6 @@ struct _MetaWaylandPointer
 
   wl_fixed_t x, y; /* TODO: remove, use ClutterInputDevice instead */
   MetaWaylandSurface *current;
-  struct wl_listener current_listener;
   wl_fixed_t current_x, current_y;
 
   guint32 button_count;
@@ -96,10 +95,6 @@ meta_wayland_pointer_end_modal   (MetaWaylandPointer *pointer);
 gboolean
 meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
 				       MetaWaylandSurface *popup);
-
-void
-meta_wayland_pointer_set_current (MetaWaylandPointer *pointer,
-                                  MetaWaylandSurface *surface);
 
 void
 meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,

@@ -386,32 +386,6 @@ meta_wayland_pointer_end_grab (MetaWaylandPointer *pointer)
 }
 
 static void
-current_surface_destroy (struct wl_listener *listener, void *data)
-{
-  MetaWaylandPointer *pointer =
-    wl_container_of (listener, pointer, current_listener);
-
-  pointer->current = NULL;
-}
-
-void
-meta_wayland_pointer_set_current (MetaWaylandPointer *pointer,
-                                  MetaWaylandSurface *surface)
-{
-  if (pointer->current)
-    wl_list_remove (&pointer->current_listener.link);
-
-  pointer->current = surface;
-
-  if (!surface)
-    return;
-
-  wl_resource_add_destroy_listener (surface->resource,
-                                    &pointer->current_listener);
-  pointer->current_listener.notify = current_surface_destroy;
-}
-
-static void
 modal_focus (MetaWaylandPointerGrab *grab,
 	     MetaWaylandSurface     *surface,
 	     const ClutterEvent     *event)
