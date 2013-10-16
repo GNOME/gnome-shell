@@ -21,6 +21,7 @@ environment.</description>
   -->
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/gnome-shell-list" />
   <download-page rdf:resource="http://download.gnome.org/sources/mutter/" />
+  <download-page rdf:resource="http://download.gnome.org/sources/mutter-wayland/" />
   <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=mutter" />
 
   <category rdf:resource="http://api.gnome.org/doap-extensions#desktop" />
