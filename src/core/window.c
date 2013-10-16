@@ -11667,3 +11667,185 @@ meta_window_set_transient_for (MetaWindow *window,
   if (meta_window_appears_focused (window) && window->transient_for != None)
     meta_window_propagate_focus_appearance (window, TRUE);
 }
+
+static void
+reset_ignored_crossing_serials (MetaDisplay *display)
+{
+  int i;
+
+  i = 0;
+  while (i < N_IGNORED_CROSSING_SERIALS)
+    {
+      display->ignored_crossing_serials[i] = 0;
+      ++i;
+    }
+
+  display->ungrab_should_not_cause_focus_window = None;
+}
+
+typedef struct
+{
+  MetaWindow *window;
+  int pointer_x;
+  int pointer_y;
+} MetaFocusData;
+
+static void
+mouse_mode_focus (MetaWindow  *window,
+                  guint32      timestamp)
+{
+  MetaDisplay *display = window->display;
+
+  if (window->type != META_WINDOW_DESKTOP)
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing %s at time %u.\n", window->desc, timestamp);
+
+      meta_window_focus (window, timestamp);
+
+      if (meta_prefs_get_auto_raise ())
+        meta_display_queue_autoraise_callback (display, window);
+      else
+        meta_topic (META_DEBUG_FOCUS, "Auto raise is disabled\n");
+    }
+  else
+    {
+      /* In mouse focus mode, we defocus when the mouse *enters*
+       * the DESKTOP window, instead of defocusing on LeaveNotify.
+       * This is because having the mouse enter override-redirect
+       * child windows unfortunately causes LeaveNotify events that
+       * we can't distinguish from the mouse actually leaving the
+       * toplevel window as we expect.  But, since we filter out
+       * EnterNotify events on override-redirect windows, this
+       * alternative mechanism works great.
+       */
+      if (meta_prefs_get_focus_mode() == G_DESKTOP_FOCUS_MODE_MOUSE &&
+          display->focus_window != NULL)
+        {
+          meta_topic (META_DEBUG_FOCUS,
+                      "Unsetting focus from %s due to mouse entering "
+                      "the DESKTOP window\n",
+                      display->focus_window->desc);
+          meta_display_focus_the_no_focus_window (display,
+                                                  window->screen,
+                                                  timestamp);
+        }
+    }
+}
+
+static gboolean
+window_focus_on_pointer_rest_callback (gpointer data)
+{
+  MetaFocusData *focus_data = data;
+  MetaWindow *window = focus_data->window;
+  MetaDisplay *display = window->display;
+  MetaScreen *screen = window->screen;
+  Window root, child;
+  double root_x, root_y, x, y;
+  guint32 timestamp;
+  XIButtonState buttons;
+  XIModifierState mods;
+  XIGroupState group;
+
+  if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_CLICK)
+    goto out;
+
+  meta_error_trap_push (display);
+  XIQueryPointer (display->xdisplay,
+                  META_VIRTUAL_CORE_POINTER_ID,
+                  screen->xroot,
+                  &root, &child,
+                  &root_x, &root_y, &x, &y,
+                  &buttons, &mods, &group);
+  meta_error_trap_pop (display);
+  free (buttons.mask);
+
+  if (root_x != focus_data->pointer_x ||
+      root_y != focus_data->pointer_y)
+    {
+      focus_data->pointer_x = root_x;
+      focus_data->pointer_y = root_y;
+      return TRUE;
+    }
+
+  /* Explicitly check for the overlay window, as get_focus_window_at_point()
+   * may return windows that extend underneath the chrome (like
+   * override-redirect or DESKTOP windows)
+   */
+  if (child == meta_get_overlay_window (screen))
+    goto out;
+
+  window =
+    meta_stack_get_default_focus_window_at_point (screen->stack,
+                                                  screen->active_workspace,
+                                                  None, root_x, root_y);
+
+  if (window == NULL)
+    goto out;
+
+  timestamp = meta_display_get_current_time_roundtrip (display);
+  mouse_mode_focus (window, timestamp);
+
+ out:
+  display->focus_timeout_id = 0;
+  return FALSE;
+}
+
+/* The interval, in milliseconds, we use in focus-follows-mouse
+ * mode to check whether the pointer has stopped moving after a
+ * crossing event.
+ */
+#define FOCUS_TIMEOUT_DELAY 25
+
+static void
+queue_focus_callback (MetaDisplay *display,
+                      MetaWindow  *window,
+                      int          pointer_x,
+                      int          pointer_y)
+{
+  MetaFocusData *focus_data;
+
+  focus_data = g_new (MetaFocusData, 1);
+  focus_data->window = window;
+  focus_data->pointer_x = pointer_x;
+  focus_data->pointer_y = pointer_y;
+
+  if (display->focus_timeout_id != 0)
+    g_source_remove (display->focus_timeout_id);
+
+  display->focus_timeout_id =
+    g_timeout_add_full (G_PRIORITY_DEFAULT,
+                        FOCUS_TIMEOUT_DELAY,
+                        window_focus_on_pointer_rest_callback,
+                        focus_data,
+                        g_free);
+}
+
+void
+meta_window_handle_enter (MetaWindow  *window,
+                          guint32      timestamp,
+                          guint        root_x,
+                          guint        root_y)
+{
+  MetaDisplay *display = window->display;
+
+  switch (meta_prefs_get_focus_mode ())
+    {
+    case G_DESKTOP_FOCUS_MODE_SLOPPY:
+    case G_DESKTOP_FOCUS_MODE_MOUSE:
+      display->mouse_mode = TRUE;
+      if (window->type != META_WINDOW_DOCK)
+        {
+          if (meta_prefs_get_focus_change_on_pointer_rest())
+            queue_focus_callback (display, window, root_x, root_y);
+          else
+            mouse_mode_focus (window, timestamp);
+
+          /* stop ignoring stuff */
+          reset_ignored_crossing_serials (display);
+        }
+      break;
+    case G_DESKTOP_FOCUS_MODE_CLICK:
+      break;
+    }
+}

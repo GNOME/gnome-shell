@@ -353,6 +353,11 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
         }
 
       meta_wayland_pointer_get_relative_coordinates (pointer, surface, &sx, &sy);
+      meta_window_handle_enter (surface->window,
+                                /* XXX -- can we reliably get a timestamp for setting focus? */
+                                clutter_get_current_event_time (),
+                                wl_fixed_to_int (pointer->x),
+                                wl_fixed_to_int (pointer->y));
       wl_pointer_send_enter (resource, serial, surface->resource, sx, sy);
       wl_resource_add_destroy_listener (resource, &pointer->focus_listener);
       pointer->focus_serial = serial;

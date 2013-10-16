@@ -734,4 +734,9 @@ void meta_window_set_gtk_dbus_properties  (MetaWindow *window,
 void meta_window_set_transient_for        (MetaWindow *window,
                                            MetaWindow *parent);
 
+void meta_window_handle_enter (MetaWindow  *window,
+                               guint32      timestamp,
+                               guint        root_x,
+                               guint        root_y);
+
 #endif
