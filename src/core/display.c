@@ -1638,7 +1638,8 @@ window_raise_with_delay_callback (void *data)
 static void
 meta_display_mouse_mode_focus (MetaDisplay *display,
                                MetaWindow  *window,
-                               guint32      timestamp) {
+                               guint32      timestamp)
+{
   if (window->type != META_WINDOW_DESKTOP)
     {
       meta_topic (META_DEBUG_FOCUS,
@@ -1677,7 +1678,8 @@ meta_display_mouse_mode_focus (MetaDisplay *display,
 }
 
 static gboolean
-window_focus_on_pointer_rest_callback (gpointer data) {
+window_focus_on_pointer_rest_callback (gpointer data)
+{
   MetaFocusData *focus_data;
   MetaDisplay *display;
   MetaScreen *screen;
@@ -1722,9 +1724,9 @@ window_focus_on_pointer_rest_callback (gpointer data) {
     goto out;
 
   window =
-      meta_stack_get_default_focus_window_at_point (screen->stack,
-                                                    screen->active_workspace,
-                                                    None, root_x, root_y);
+    meta_stack_get_default_focus_window_at_point (screen->stack,
+                                                  screen->active_workspace,
+                                                  None, root_x, root_y);
 
   if (window == NULL)
     goto out;
@@ -1732,7 +1734,7 @@ window_focus_on_pointer_rest_callback (gpointer data) {
   timestamp = meta_display_get_current_time_roundtrip (display);
   meta_display_mouse_mode_focus (display, window, timestamp);
 
-out:
+ out:
   display->focus_timeout_id = 0;
   return FALSE;
 }
