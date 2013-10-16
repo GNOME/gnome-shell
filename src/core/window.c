@@ -9706,7 +9706,8 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
   switch (xev->evtype)
     {
     case XI_ButtonRelease:
-      if (xev->detail == 1)
+      if (xev->detail == 1 ||
+          xev->detail == meta_prefs_get_mouse_button_resize ())
         {
           meta_display_check_threshold_reached (window->display,
                                                 xev->root_x,
