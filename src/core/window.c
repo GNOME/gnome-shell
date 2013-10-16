@@ -10001,7 +10001,8 @@ meta_window_handle_mouse_grab_op_event (MetaWindow         *window,
   switch (event->type)
     {
     case CLUTTER_BUTTON_RELEASE:
-      if (event->button.button == 1)
+      if (event->button.button == 1 ||
+          event->button.button == meta_prefs_get_mouse_button_resize ())
         {
           meta_display_check_threshold_reached (window->display,
                                                 event->button.x,
