@@ -117,12 +117,6 @@ typedef struct
   guint        ping_timeout_id;
 } MetaPingData;
 
-typedef struct 
-{
-  MetaDisplay *display;
-  Window xwindow;
-} MetaAutoRaiseData;
-
 typedef struct
 {
   MetaDisplay *display;
@@ -1620,23 +1614,10 @@ reset_ignored_crossing_serials (MetaDisplay *display)
 static gboolean 
 window_raise_with_delay_callback (void *data)
 {
-  MetaWindow *window;
-  MetaAutoRaiseData *auto_raise;
+  MetaWindow *window = data;
 
-  auto_raise = data;
-
-  meta_topic (META_DEBUG_FOCUS, 
-	      "In autoraise callback for window 0x%lx\n", 
-	      auto_raise->xwindow);
-
-  auto_raise->display->autoraise_timeout_id = 0;
-  auto_raise->display->autoraise_window = NULL;
-
-  window  = meta_display_lookup_x_window (auto_raise->display, 
-					  auto_raise->xwindow);
-  
-  if (window == NULL) 
-    return FALSE;
+  window->display->autoraise_timeout_id = 0;
+  window->display->autoraise_window = NULL;
 
   /* If we aren't already on top, check whether the pointer is inside
    * the window and raise the window if so.
@@ -1778,16 +1759,10 @@ void
 meta_display_queue_autoraise_callback (MetaDisplay *display,
                                        MetaWindow  *window)
 {
-  MetaAutoRaiseData *auto_raise_data;
-
   meta_topic (META_DEBUG_FOCUS, 
               "Queuing an autoraise timeout for %s with delay %d\n", 
               window->desc, 
               meta_prefs_get_auto_raise_delay ());
-  
-  auto_raise_data = g_new (MetaAutoRaiseData, 1);
-  auto_raise_data->display = window->display;
-  auto_raise_data->xwindow = window->xwindow;
   
   if (display->autoraise_timeout_id != 0)
     g_source_remove (display->autoraise_timeout_id);
@@ -1796,8 +1771,7 @@ meta_display_queue_autoraise_callback (MetaDisplay *display,
     g_timeout_add_full (G_PRIORITY_DEFAULT,
                         meta_prefs_get_auto_raise_delay (),
                         window_raise_with_delay_callback,
-                        auto_raise_data,
-                        g_free);
+                        window, NULL);
   display->autoraise_window = window;
 }
 
