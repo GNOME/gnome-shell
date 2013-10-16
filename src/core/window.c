@@ -1870,6 +1870,8 @@ meta_window_unmanage (MetaWindow  *window,
   meta_window_ungrab_keys (window);
   meta_display_ungrab_window_buttons (window->display, window->xwindow);
   meta_display_ungrab_focus_window_button (window->display, window);
+  if (window->display->autoraise_window == window)
+    meta_display_remove_autoraise_callback (window->display);
 
   meta_display_unregister_x_window (window->display, window->xwindow);
 
