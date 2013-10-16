@@ -476,26 +476,6 @@ meta_core_change_workspace (Display *xdisplay,
                                                                     new_workspace));
 }
 
-int
-meta_core_get_num_workspaces (Screen  *xscreen)
-{
-  MetaScreen *screen;
-
-  screen = meta_screen_for_x_screen (xscreen);
-
-  return meta_screen_get_n_workspaces (screen);
-}
-
-int
-meta_core_get_active_workspace (Screen *xscreen)
-{
-  MetaScreen *screen;
-
-  screen = meta_screen_for_x_screen (xscreen);
-
-  return meta_workspace_index (screen->active_workspace);
-}
-
 void
 meta_core_show_window_menu (Display *xdisplay,
                             Window   frame_xwindow,
