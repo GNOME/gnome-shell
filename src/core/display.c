@@ -5744,25 +5744,6 @@ meta_display_request_take_focus (MetaDisplay *display,
   meta_topic (META_DEBUG_FOCUS, "WM_TAKE_FOCUS(%s, %u)\n",
               window->desc, timestamp);
 
-  if (window != display->focus_window)
-    {
-      /* The "Globally Active Input" window case, where the window
-       * doesn't want us to call XSetInputFocus on it, but does
-       * want us to send a WM_TAKE_FOCUS.
-       *
-       * We can't just set display->focus_window to @window, since we
-       * we don't know when (or even if) the window will actually take
-       * focus, so we could end up being wrong for arbitrarily long.
-       * But we also can't leave it set to the current window, or else
-       * bug #597352 would come back. So we focus the no_focus_window
-       * now (and set display->focus_window to that), send the
-       * WM_TAKE_FOCUS, and then just forget about @window
-       * until/unless we get a FocusIn.
-       */
-      meta_display_focus_the_no_focus_window (display,
-                                              window->screen,
-                                              timestamp);
-    }
   meta_window_send_icccm_message (window,
                                   display->atom_WM_TAKE_FOCUS,
                                   timestamp);
