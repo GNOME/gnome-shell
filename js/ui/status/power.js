@@ -63,7 +63,7 @@ const Indicator = new Lang.Class({
             return _("Fully Charged");
         else if (this._proxy.State == UPower.DeviceState.CHARGING)
             seconds = this._proxy.TimeToFull;
-        else if (this_proxy.State == UPower.DeviceState.DISCHARGING)
+        else if (this._proxy.State == UPower.DeviceState.DISCHARGING)
             seconds = this._proxy.TimeToEmpty;
         // state is one of PENDING_CHARGING, PENDING_DISCHARGING
         else
