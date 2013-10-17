@@ -477,6 +477,9 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
 		   CWEventMask|CWOverrideRedirect,
 		   &attributes);
 
+  /* https://bugzilla.gnome.org/show_bug.cgi?id=710346 */
+  XStoreName (xdisplay, guard_window, "mutter guard window");
+
   {
     unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
     XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
