@@ -729,6 +729,9 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              g_variant_new_take_string (make_display_name (manager, output)));
       g_variant_builder_add (&properties, "{sv}", "backlight",
                              g_variant_new_int32 (output->backlight));
+      g_variant_builder_add (&properties, "{sv}", "min-backlight-step",
+                             g_variant_new_int32 ((output->backlight_max - output->backlight_min) ?
+                                                  100 / (output->backlight_max - output->backlight_min) : -1));
       g_variant_builder_add (&properties, "{sv}", "primary",
                              g_variant_new_boolean (output->is_primary));
       g_variant_builder_add (&properties, "{sv}", "presentation",
