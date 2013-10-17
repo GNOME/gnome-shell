@@ -559,8 +559,6 @@ const NMWirelessDialogItem = new Lang.Class({
             this.actor.grab_key_focus();
         }));
 
-        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
-
         this._content = new St.BoxLayout({ style_class: 'nm-dialog-item-box' });
         this.actor.set_child(this._content);
 
@@ -606,16 +604,6 @@ const NMWirelessDialogItem = new Lang.Class({
             return 'network-workgroup-symbolic';
         else
             return 'network-wireless-signal-' + signalToIcon(this._ap.strength) + '-symbolic';
-    },
-
-    _onKeyPressEvent: function(actor, event) {
-        let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return
-            || symbol == Clutter.KEY_KP_Enter) {
-            this.emit('connect');
-            return true;
-        }
-        return false;
     }
 });
 Signals.addSignalMethods(NMWirelessDialogItem.prototype);
@@ -983,9 +971,6 @@ const NMWirelessDialog = new Lang.Class({
         network.item.connect('selected', Lang.bind(this, function() {
             Util.ensureActorVisibleInScrollView(this._scrollView, network.item.actor);
             this._selectNetwork(network);
-        }));
-        network.item.connect('connect', Lang.bind(this, function() {
-            this._connect();
         }));
     },
 });
