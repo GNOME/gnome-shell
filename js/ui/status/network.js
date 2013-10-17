@@ -549,31 +549,30 @@ const NMWirelessDialogItem = new Lang.Class({
         this._network = network;
         this._ap = network.accessPoints[0];
 
-        this.actor = new St.Button({ style_class: 'nm-dialog-item',
-                                     can_focus: true,
-                                     x_fill: true });
+        this.actor = new St.BoxLayout({ style_class: 'nm-dialog-item',
+                                        can_focus: true,
+                                        reactive: true });
         this.actor.connect('key-focus-in', Lang.bind(this, function() {
             this.emit('selected');
         }));
-        this.actor.connect('clicked', Lang.bind(this, function() {
+        let action = new Clutter.ClickAction();
+        action.connect('clicked', Lang.bind(this, function() {
             this.actor.grab_key_focus();
         }));
-
-        this._content = new St.BoxLayout({ style_class: 'nm-dialog-item-box' });
-        this.actor.set_child(this._content);
+        this.actor.add_action(action);
 
         let title = ssidToLabel(this._ap.get_ssid());
         this._label = new St.Label({ text: title });
 
         this.actor.label_actor = this._label;
-        this._content.add(this._label, { x_align: St.Align.START });
+        this.actor.add(this._label, { x_align: St.Align.START });
 
         this._selectedIcon = new St.Icon({ style_class: 'nm-dialog-icon',
                                            icon_name: 'object-select-symbolic' });
-        this._content.add(this._selectedIcon);
+        this.actor.add(this._selectedIcon);
 
         this._icons = new St.BoxLayout({ style_class: 'nm-dialog-icons' });
-        this._content.add(this._icons, { expand: true, x_fill: false, x_align: St.Align.END });
+        this.actor.add(this._icons, { expand: true, x_fill: false, x_align: St.Align.END });
 
         this._secureIcon = new St.Icon({ style_class: 'nm-dialog-icon' });
         if (this._ap._secType != NMAccessPointSecurity.NONE)
@@ -956,13 +955,13 @@ const NMWirelessDialog = new Lang.Class({
 
     _selectNetwork: function(network) {
         if (this._selectedNetwork)
-            this._selectedNetwork.item.actor.checked = false;
+            this._selectedNetwork.item.actor.remove_style_pseudo_class('selected');
 
         this._selectedNetwork = network;
         this._updateSensitivity();
 
         if (this._selectedNetwork)
-            this._selectedNetwork.item.actor.checked = true;
+            this._selectedNetwork.item.actor.add_style_pseudo_class('selected');
     },
 
     _createNetworkItem: function(network) {

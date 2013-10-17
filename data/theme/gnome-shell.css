@@ -306,14 +306,11 @@ StScrollBar StButton#vhandle:active {
     font-size: 12pt;
     border-bottom: 1px solid #666;
     padding: 12px;
-}
-
-.nm-dialog-item:checked {
-    background-color: #333;
-}
-
-.nm-dialog-item-box {
     spacing: 20px;
+}
+
+.nm-dialog-item:selected {
+    background-color: #333;
 }
 
 .nm-dialog-icons {
