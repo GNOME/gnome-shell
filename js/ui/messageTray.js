@@ -2212,7 +2212,10 @@ const MessageTray = new Lang.Class({
     },
 
     toggleAndNavigate: function() {
-        if (this.toggle())
+        if (!this.toggle())
+            return;
+
+        if (this._traySummoned)
             this._summary.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
     },
 
