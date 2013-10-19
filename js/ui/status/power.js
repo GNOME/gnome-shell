@@ -79,14 +79,14 @@ const Indicator = new Lang.Class({
         let minutes = time % 60;
         let hours = Math.floor(time / 60);
 
-        if (state == UPower.DeviceState.DISCHARGING) {
+        if (this._proxy.State == UPower.DeviceState.DISCHARGING) {
             // Translators: this is <hours>:<minutes> Remaining (<percentage>)
-            return _("%d\u2236%02d Remaining (%d%%)").format(hours, minutes, percentage);
+            return _("%d\u2236%02d Remaining (%d%%)").format(hours, minutes, this._proxy.Percentage);
         }
 
-        if (state == UPower.DeviceState.CHARGING) {
+        if (this._proxy.State == UPower.DeviceState.CHARGING) {
             // Translators: this is <hours>:<minutes> Until Full (<percentage>)
-            return _("%d\u2236%02d Until Full (%d%%)").format(hours, minutes, percentage);
+            return _("%d\u2236%02d Until Full (%d%%)").format(hours, minutes, this._proxy.Percentage);
         }
 
         return null;
