@@ -395,7 +395,6 @@ $(dbus_xrandr_built_sources) : Makefile.am xrandr.xml
 		--generate-c-code meta-dbus-xrandr					\
 		$(srcdir)/xrandr.xml
 
-dbus_idle_built_sources = meta-dbus-idle-monitor.c meta-dbus-idle-monitor.h
 
 $(dbus_idle_built_sources) : Makefile.am idle-monitor.xml
 	$(AM_V_GEN)gdbus-codegen							\
