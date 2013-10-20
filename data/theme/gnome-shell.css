@@ -2409,6 +2409,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .login-dialog-session-list-button:hover,
+.login-dialog-session-list-button:focus,
 .login-dialog-session-list-button:active {
     color: white;
 }
