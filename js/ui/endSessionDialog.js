@@ -273,13 +273,15 @@ const EndSessionDialog = new Lang.Class({
 
         this._applicationHeader = new St.Label({ style_class: 'end-session-dialog-list-header',
                                                  text: _("Some applications are busy or have unsaved work.") });
-        this._applicationList = new St.BoxLayout({ vertical: true });
+        this._applicationList = new St.BoxLayout({ style_class: 'end-session-dialog-app-list',
+                                                   vertical: true });
         this._inhibitorSection.add_actor(this._applicationHeader);
         this._inhibitorSection.add_actor(this._applicationList);
 
         this._sessionHeader = new St.Label({ style_class: 'end-session-dialog-list-header',
                                              text: _("Other users are logged in.") });
-        this._sessionList = new St.BoxLayout({ vertical: true });
+        this._sessionList = new St.BoxLayout({ style_class: 'end-session-dialog-session-list',
+                                               vertical: true });
         this._inhibitorSection.add_actor(this._sessionHeader);
         this._inhibitorSection.add_actor(this._sessionList);
 

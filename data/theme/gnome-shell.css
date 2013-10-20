@@ -1967,6 +1967,11 @@ StScrollBar StButton#vhandle:active {
     padding-left: 50px;
 }
 
+.end-session-dialog-session-list,
+.end-session-dialog-app-list {
+    spacing: 1em;
+}
+
 .end-session-dialog-list-header {
     font-weight: bold;
 }
