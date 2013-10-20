@@ -338,17 +338,8 @@ st_widget_dispose (GObject *gobject)
   StWidget *actor = ST_WIDGET (gobject);
   StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
 
-  if (priv->theme)
-    {
-      g_object_unref (priv->theme);
-      priv->theme = NULL;
-    }
-
-  if (priv->theme_node)
-    {
-      g_object_unref (priv->theme_node);
-      priv->theme_node = NULL;
-    }
+  g_clear_pointer (&priv->theme, g_object_unref);
+  g_clear_pointer (&priv->theme_node, g_object_unref);
 
   st_widget_remove_transition (actor);
 
@@ -358,11 +349,7 @@ st_widget_dispose (GObject *gobject)
   if (priv->accessible)
     priv->accessible = NULL;
 
-  if (priv->label_actor)
-    {
-      g_object_unref (priv->label_actor);
-      priv->label_actor = NULL;
-    }
+  g_clear_pointer (&priv->label_actor, g_object_unref);
 
   if (priv->texture_file_changed_id != 0)
     {
