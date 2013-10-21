@@ -76,7 +76,7 @@ MUTTER_PC_MODULES="
    xcomposite >= 0.2 xfixes xrender xdamage xi >= 1.6.0
    $CLUTTER_PACKAGE >= 1.15.90
    cogl-1.0 >= 1.15.6
-   upower-glib > 0.9.11
+   upower-glib >= 0.99.0
    gnome-desktop-3.0
 "
 
