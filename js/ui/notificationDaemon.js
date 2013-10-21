@@ -856,7 +856,7 @@ const GtkNotificationDaemonAppSource = new Lang.Class({
             let notification = this._notifications[notificationId];
             notifications.push([notificationId, notification.serialize()]);
         }
-        return GLib.Variant.new('(sa(sv))', this._appId, notifications);
+        return [this._appId, notifications];
     },
 });
 
@@ -907,7 +907,7 @@ const GtkNotificationDaemon = new Lang.Class({
     _loadNotifications: function() {
         this._isLoading = true;
 
-        let value = global.get_persistent_state('a(sa(sa{sv}))', 'notifications');
+        let value = global.get_persistent_state('a(sa(sv))', 'notifications');
         if (value) {
             let sources = value.deep_unpack();
             sources.forEach(Lang.bind(this, function([appId, notifications]) {
@@ -940,7 +940,7 @@ const GtkNotificationDaemon = new Lang.Class({
             sources.push(source.serialize());
         }
 
-        global.set_persistent_state('notifications', GLib.Variant.new_array('a@(sa{sa{sv}})', sources));
+        global.set_persistent_state('notifications', new GLib.Variant('a(sa(sv))', sources));
     },
 
     AddNotificationAsync: function(params, invocation) {
