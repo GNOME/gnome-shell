@@ -280,10 +280,6 @@ const URLHighlighter = new Lang.Class({
     }
 });
 
-function strHasSuffix(string, suffix) {
-    return string.substr(-suffix.length) == suffix;
-}
-
 // NotificationPolicy:
 // An object that holds all bits of configurable policy related to a notification
 // source, such as whether to play sound or honour the critical bit.
