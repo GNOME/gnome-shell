@@ -436,7 +436,7 @@ const FdoNotificationDaemon = new Lang.Class({
                 if (actionId == 'default') {
                     hasDefaultAction = true;
                 } else {
-                    notification.addButton(this._makeButton(id, label, useActionIcons), Lang.bind(this, function() {
+                    notification.addButton(this._makeButton(actionId, label, useActionIcons), Lang.bind(this, function() {
                         this._emitActionInvoked(ndata.id, actionId);
                     }));
                 }
