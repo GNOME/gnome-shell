@@ -7,10 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
-"&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-18 20:03+0000\n"
-"PO-Revision-Date: 2013-10-12 00:32+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-10-25 00:25+0200\n"
+"PO-Revision-Date: 2013-10-25 00:23+0200\n"
 "Last-Translator: Reinout van Schouwen <reinouts@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -18,7 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
 
 #: ../src/50-mutter-navigation.xml.in.h:1
@@ -211,16 +209,16 @@ msgstr "Weergave gesplitst op rechts"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:589
+#: ../src/compositor/compositor.c:596
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr ""
-"Er is al een andere ‘compositing manager’ actief op scherm %i van display ‘%"
-"s’."
+"Er is al een andere ‘compositing manager’ actief op scherm %i van display "
+"‘%s’."
 
-#: ../src/compositor/meta-background.c:1076
+#: ../src/compositor/meta-background.c:1075
 msgid "background texture could not be created from file"
 msgstr "aanmaken achtergrondstructuur uit bestand mislukt"
 
@@ -235,7 +233,6 @@ msgstr "Onbekende aanvraag voor vensterinformatie: %d"
 
 #: ../src/core/delete.c:111
 #, c-format
-#| msgid "<tt>%s</tt> is not responding."
 msgid "“%s” is not responding."
 msgstr "‘%s’ reageert niet."
 
@@ -281,7 +278,6 @@ msgstr ""
 
 #: ../src/core/keybindings.c:1333
 #, c-format
-#| msgid "\"%s\" is not a valid value for focus attribute"
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "‘%s’ is geen geldige sneltoets\n"
 
@@ -322,7 +318,7 @@ msgstr ""
 "Kon geen thema vinden! Zorg ervoor dat %s bestaat en de gebruikelijke "
 "thema's bevat.\n"
 
-#: ../src/core/monitor.c:711
+#: ../src/core/monitor.c:696
 msgid "Built-in display"
 msgstr "Ingebouwd beeldscherm"
 
@@ -330,9 +326,8 @@ msgstr "Ingebouwd beeldscherm"
 #. the vendor), it's Unknown followed by a size in inches,
 #. like 'Unknown 15"'
 #.
-#: ../src/core/monitor.c:739
+#: ../src/core/monitor.c:724
 #, c-format
-#| msgid "Unknown element %s"
 msgid "Unknown %s"
 msgstr "Onbekend %s"
 
@@ -394,12 +389,12 @@ msgstr ""
 msgid "Workspace %d"
 msgstr "Werkblad %d"
 
-#: ../src/core/screen.c:534
+#: ../src/core/screen.c:540
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Scherm %d op display '%s' is ongeldig\n"
 
-#: ../src/core/screen.c:550
+#: ../src/core/screen.c:556
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -408,19 +403,19 @@ msgstr ""
 "Scherm %d op display ‘%s’ heeft al een ‘window manager’; probeer de optie: --"
 "replace te gebruiken om de huidige ‘window manager’ te vervangen.\n"
 
-#: ../src/core/screen.c:577
+#: ../src/core/screen.c:583
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Kon ‘window manager’-selectie niet verkrijgen op scherm %d display ‘%s’\n"
 
-#: ../src/core/screen.c:655
+#: ../src/core/screen.c:661
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Scherm %d op display ‘%s’ heeft al een ‘window manager’\n"
 
-#: ../src/core/screen.c:846
+#: ../src/core/screen.c:853
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kon scherm %d op display ‘%s’ niet vrijmaken\n"
@@ -516,7 +511,7 @@ msgid "Window manager error: "
 msgstr "Fout van vensterbeheer:"
 
 #. first time through
-#: ../src/core/window.c:7533
+#: ../src/core/window.c:7510
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -532,7 +527,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8257
+#: ../src/core/window.c:8340
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -650,6 +645,9 @@ msgid ""
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
+"Bepaalt of werkbladen dynamisch worden beheerd of dat er een statisch aantal "
+"werkbladen is (gegeven door de sleutel num-workspaces in org.gnome.desktop."
+"wm.preferences)."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
@@ -672,10 +670,12 @@ msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
 msgstr ""
+"Bepaalt of het gebruik van pop-up en markering van het kader uitgeschakeld "
+"wordt voor het vensterbladeren."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Delay focus changes until the pointer stops moving"
-msgstr ""
+msgstr "Aandacht vertragen totdat de muispijl stopt met bewegen"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
@@ -683,16 +683,22 @@ msgid ""
 "the focus will not be changed immediately when entering a window, but only "
 "after the pointer stops moving."
 msgstr ""
+"Indien op ‘true’ ingesteld en de aandachtsmodus is ofwel ‘sloppy’ of "
+"‘mouse’, dan zal de aandacht niet direct veranderd worden bij het binnengaan "
+"van een venster, maar slechts wanneer de muispijl stopt met bewegen."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
-msgstr ""
+msgstr "Sleepbare randbreedte"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
+"Het totaal aantal sleepbare randen. Als de zichtbare randen in het thema "
+"onvoldoende zijn, worden onzichtbare randen toegevoegd om deze waarde te "
+"bereiken."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Auto maximize nearly monitor sized windows"
@@ -957,13 +963,13 @@ msgid "Gradients should have at least two colors"
 msgstr "Kleurverloop moet tenminste twee kleuren hebben"
 
 #: ../src/ui/theme.c:1203
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
-"GTK-kleurspecificatie moet een sluithaakje hebben na de status, dus: gtk: "
-"fg[NORMAL] waarbij NORMAL de stutus is; kon ‘%s’ niet verwerken"
+"Aangepaste GTK-kleurspecificatie moet een kleurnaam en terugvaloptie hebben "
+"tussen haakjes, dus: gtk:custom(foo,bar); kon ‘%s’ niet verwerken"
 
 #: ../src/ui/theme.c:1219
 #, c-format
@@ -971,15 +977,17 @@ msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
 msgstr ""
+"Ongeldig teken ‘%c’ in color_name-parameter van gtk:custom, alleen A-Za-z0-9-"
+"_ zijn geldig"
 
 #: ../src/ui/theme.c:1233
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
 "fit the format"
 msgstr ""
-"Schaduwformaat is ‘schaduw/basiskleur/factor’, ‘%s’ voldoet niet aan dit "
-"formaat"
+"Gtk:custom-formaat is ‘gtk:custom(color_name,fallback)’, ‘%s’ voldoet niet "
+"aan dit formaat"
 
 #: ../src/ui/theme.c:1278
 #, c-format
@@ -987,8 +995,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK-kleurspecificatie moet de toestand in rechte haken hebben, bijv. gtk:fg"
-"[NORMAL] waarbij NORMAL de toestand is; kon ‘%s’ niet verwerken"
+"GTK-kleurspecificatie moet de toestand in rechte haken hebben, bijv. gtk:"
+"fg[NORMAL] waarbij NORMAL de toestand is; kon ‘%s’ niet verwerken"
 
 #: ../src/ui/theme.c:1292
 #, c-format
@@ -996,8 +1004,8 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK-kleurspecificatie moet een sluithaakje hebben na de status, dus: gtk: fg"
-"[NORMAL] waarbij NORMAL de stutus is; kon ‘%s’ niet verwerken"
+"GTK-kleurspecificatie moet een sluithaakje hebben na de status, dus: gtk: "
+"fg[NORMAL] waarbij NORMAL de stutus is; kon ‘%s’ niet verwerken"
 
 #: ../src/ui/theme.c:1303
 #, c-format
@@ -1222,59 +1230,59 @@ msgstr "Geen ‘%s’-attribuut op element <%s>"
 msgid "Line %d character %d: %s"
 msgstr "Regel %d teken %d: %s"
 
-#: ../src/ui/theme-parser.c:479
+#: ../src/ui/theme-parser.c:483
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Attribuut ‘%s’ twee keer herhaald op hetzelfde <%s>-element"
 
-#: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
+#: ../src/ui/theme-parser.c:507 ../src/ui/theme-parser.c:556
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Attribuut ‘%s’ is ongeldig op een <%s>-element in deze context"
 
-#: ../src/ui/theme-parser.c:594
+#: ../src/ui/theme-parser.c:598
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Kon ‘%s’ niet verwerken als geheel getal"
 
-#: ../src/ui/theme-parser.c:603 ../src/ui/theme-parser.c:658
+#: ../src/ui/theme-parser.c:607 ../src/ui/theme-parser.c:662
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Niet begrepen: de laatste tekens ‘%s’ in ‘%s’"
 
-#: ../src/ui/theme-parser.c:613
+#: ../src/ui/theme-parser.c:617
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "Geheel getal %ld moet positief zijn"
 
-#: ../src/ui/theme-parser.c:621
+#: ../src/ui/theme-parser.c:625
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Geheel getal %ld is te groot, huidige maximum is %d"
 
-#: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
+#: ../src/ui/theme-parser.c:653 ../src/ui/theme-parser.c:769
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Kon ‘%s’ niet als 'floating-point'-getal verwerken"
 
-#: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
+#: ../src/ui/theme-parser.c:684 ../src/ui/theme-parser.c:712
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Boolese waarde moet ‘true’ of ‘false’ zijn, niet ‘%s’"
 
-#: ../src/ui/theme-parser.c:735
+#: ../src/ui/theme-parser.c:739
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "Hoek moet liggen tussen 0.0 en 360.0, maar was %g\n"
 
-#: ../src/ui/theme-parser.c:798
+#: ../src/ui/theme-parser.c:802
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
 "Alpha moet liggen tussen 0.0 (onzichtbaar) en 1.0 (volledig ondoorzichtig), "
 "maar was %g\n"
 
-#: ../src/ui/theme-parser.c:863
+#: ../src/ui/theme-parser.c:867
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
@@ -1283,60 +1291,60 @@ msgstr ""
 "Ongeldige titel-schaal ‘%s’ (u kunt kiezen uit: xx-small, x-small, small, "
 "medium, large, x-large, xx-large)\n"
 
-#: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
-#: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
+#: ../src/ui/theme-parser.c:1023 ../src/ui/theme-parser.c:1086
+#: ../src/ui/theme-parser.c:1120 ../src/ui/theme-parser.c:1223
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s>-naam ‘%s’ een tweede keer gebruikt"
 
-#: ../src/ui/theme-parser.c:1031 ../src/ui/theme-parser.c:1128
-#: ../src/ui/theme-parser.c:1231
+#: ../src/ui/theme-parser.c:1035 ../src/ui/theme-parser.c:1132
+#: ../src/ui/theme-parser.c:1235
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s>-ouder ‘%s’ is niet gedefinieerd"
 
-#: ../src/ui/theme-parser.c:1141
+#: ../src/ui/theme-parser.c:1145
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "<%s>-afmetingen ‘%s’ is niet gedefinieerd"
 
-#: ../src/ui/theme-parser.c:1154
+#: ../src/ui/theme-parser.c:1158
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "<%s> moet ofwel afmetingen specificeren, of een ouder met afmetingen"
 
-#: ../src/ui/theme-parser.c:1196
+#: ../src/ui/theme-parser.c:1200
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr ""
 "U dient een achtergrond te specificeren voordat een alpha-waarde betekenis "
 "heeft"
 
-#: ../src/ui/theme-parser.c:1264
+#: ../src/ui/theme-parser.c:1268
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Onbekend type ‘%s’ op <%s>-element"
 
-#: ../src/ui/theme-parser.c:1275
+#: ../src/ui/theme-parser.c:1279
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "Onbekende style_set ‘%s’ op <%s>-element"
 
-#: ../src/ui/theme-parser.c:1283
+#: ../src/ui/theme-parser.c:1287
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Venstertype ‘%s’ heeft reeds een stijlset toegewezen gekregen"
 
-#: ../src/ui/theme-parser.c:1313 ../src/ui/theme-parser.c:1377
-#: ../src/ui/theme-parser.c:1603 ../src/ui/theme-parser.c:2838
-#: ../src/ui/theme-parser.c:2884 ../src/ui/theme-parser.c:3034
-#: ../src/ui/theme-parser.c:3273 ../src/ui/theme-parser.c:3311
-#: ../src/ui/theme-parser.c:3349 ../src/ui/theme-parser.c:3387
+#: ../src/ui/theme-parser.c:1317 ../src/ui/theme-parser.c:1381
+#: ../src/ui/theme-parser.c:1607 ../src/ui/theme-parser.c:2842
+#: ../src/ui/theme-parser.c:2888 ../src/ui/theme-parser.c:3038
+#: ../src/ui/theme-parser.c:3274 ../src/ui/theme-parser.c:3312
+#: ../src/ui/theme-parser.c:3350 ../src/ui/theme-parser.c:3388
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Element <%s> is niet toegestaan onder <%s>"
 
-#: ../src/ui/theme-parser.c:1427 ../src/ui/theme-parser.c:1441
-#: ../src/ui/theme-parser.c:1486
+#: ../src/ui/theme-parser.c:1431 ../src/ui/theme-parser.c:1445
+#: ../src/ui/theme-parser.c:1490
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
@@ -1344,123 +1352,123 @@ msgstr ""
 "Kan niet tegelijk ‘button_width’/‘button_height’ en ‘aspect_ratio’ voor "
 "knoppen opgeven."
 
-#: ../src/ui/theme-parser.c:1450
+#: ../src/ui/theme-parser.c:1454
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "Afstand ‘%s’ is onbekend"
 
-#: ../src/ui/theme-parser.c:1495
+#: ../src/ui/theme-parser.c:1499
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Verhouding ‘%s’ is onbekend"
 
-#: ../src/ui/theme-parser.c:1557
+#: ../src/ui/theme-parser.c:1561
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Rand ‘%s’ is onbekend"
 
-#: ../src/ui/theme-parser.c:1868
+#: ../src/ui/theme-parser.c:1872
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Geen ‘start_angle’- of ‘from’-attribuut op element <%s>"
 
-#: ../src/ui/theme-parser.c:1875
+#: ../src/ui/theme-parser.c:1879
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Geen ‘extent_angle’- of ‘to’-attribuut op element <%s>"
 
-#: ../src/ui/theme-parser.c:2115
+#: ../src/ui/theme-parser.c:2119
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Niet begrepen: de waarde ‘%s’ voor type kleurverloop"
 
-#: ../src/ui/theme-parser.c:2193 ../src/ui/theme-parser.c:2568
+#: ../src/ui/theme-parser.c:2197 ../src/ui/theme-parser.c:2572
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Niet begrepen: vul-type ‘%s’ voor <%s>-element"
 
-#: ../src/ui/theme-parser.c:2360 ../src/ui/theme-parser.c:2443
-#: ../src/ui/theme-parser.c:2506
+#: ../src/ui/theme-parser.c:2364 ../src/ui/theme-parser.c:2447
+#: ../src/ui/theme-parser.c:2510
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Niet begrepen: status ‘%s’ voor <%s>-element"
 
-#: ../src/ui/theme-parser.c:2370 ../src/ui/theme-parser.c:2453
+#: ../src/ui/theme-parser.c:2374 ../src/ui/theme-parser.c:2457
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Niet begrepen: schaduw ‘%s’ voor <%s>-element"
 
-#: ../src/ui/theme-parser.c:2380
+#: ../src/ui/theme-parser.c:2384
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Niet begrepen: pijl ‘%s’ voor <%s>-element"
 
-#: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
+#: ../src/ui/theme-parser.c:2698 ../src/ui/theme-parser.c:2794
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Er zijn geen <draw_ops> genaamd ‘%s’ gedefinieerd"
 
-#: ../src/ui/theme-parser.c:2706 ../src/ui/theme-parser.c:2802
+#: ../src/ui/theme-parser.c:2710 ../src/ui/theme-parser.c:2806
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Hier ‘draw_ops’ ‘%s’ meenemen zou een circulaire verwijzing creëren"
 
-#: ../src/ui/theme-parser.c:2917
+#: ../src/ui/theme-parser.c:2921
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Onbekende positie ‘%s’ voor kader-onderdeel"
 
-#: ../src/ui/theme-parser.c:2925
+#: ../src/ui/theme-parser.c:2929
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Kader-stijl heeft al een onderdeel op positie %s"
 
-#: ../src/ui/theme-parser.c:2942 ../src/ui/theme-parser.c:3019
+#: ../src/ui/theme-parser.c:2946 ../src/ui/theme-parser.c:3023
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Er zijn geen <draw_ops> met naam ‘%s’ gedefinieerd"
 
-#: ../src/ui/theme-parser.c:2972
+#: ../src/ui/theme-parser.c:2976
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Onbekende functie ‘%s’ voor knop"
 
-#: ../src/ui/theme-parser.c:2982
+#: ../src/ui/theme-parser.c:2986
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "Knopfunctie ‘%s’ bestaat niet in deze versie (%d, %d benodigd)"
 
-#: ../src/ui/theme-parser.c:2994
+#: ../src/ui/theme-parser.c:2998
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Onbekende status ‘%s’ voor knop"
 
-#: ../src/ui/theme-parser.c:3002
+#: ../src/ui/theme-parser.c:3006
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "Kader-stijl heeft reeds een knop voor functie %s status %s"
 
-#: ../src/ui/theme-parser.c:3073
+#: ../src/ui/theme-parser.c:3077
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "‘%s’ is geen geldige waarde voor ‘focus’-attribuut"
 
-#: ../src/ui/theme-parser.c:3082
+#: ../src/ui/theme-parser.c:3086
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "‘%s’ is geen geldige waarde voor ‘state’-attribuut"
 
-#: ../src/ui/theme-parser.c:3092
+#: ../src/ui/theme-parser.c:3096
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "Een stijl genaamd ‘%s’ is niet gedefinieerd"
 
-#: ../src/ui/theme-parser.c:3113 ../src/ui/theme-parser.c:3136
+#: ../src/ui/theme-parser.c:3117 ../src/ui/theme-parser.c:3140
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "‘%s’ is geen geldige waarde voor ‘resize’-attribuut"
 
-#: ../src/ui/theme-parser.c:3147
+#: ../src/ui/theme-parser.c:3151
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -1469,7 +1477,7 @@ msgstr ""
 "Behoort geen ‘resize’-attribuut te hebben op <%s>-element voor "
 "gemaximaliseerde/opgerolde toestanden"
 
-#: ../src/ui/theme-parser.c:3161
+#: ../src/ui/theme-parser.c:3165
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
@@ -1477,20 +1485,20 @@ msgstr ""
 "Behoort geen ‘resize’-attribuut te hebben op <%s>-element voor "
 "gemaximaliseerde toestand"
 
-#: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
+#: ../src/ui/theme-parser.c:3179 ../src/ui/theme-parser.c:3223
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
 "Stijl is reeds gespecificeerd voor status %s grootte aanpassen %s aandacht %s"
 
-#: ../src/ui/theme-parser.c:3186 ../src/ui/theme-parser.c:3197
-#: ../src/ui/theme-parser.c:3208 ../src/ui/theme-parser.c:3233
-#: ../src/ui/theme-parser.c:3244 ../src/ui/theme-parser.c:3255
+#: ../src/ui/theme-parser.c:3190 ../src/ui/theme-parser.c:3201
+#: ../src/ui/theme-parser.c:3212 ../src/ui/theme-parser.c:3234
+#: ../src/ui/theme-parser.c:3245 ../src/ui/theme-parser.c:3256
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Stijl is reeds gespecificeerd voor status %s aandacht %s"
 
-#: ../src/ui/theme-parser.c:3294
+#: ../src/ui/theme-parser.c:3295
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1499,7 +1507,7 @@ msgstr ""
 "specificeerde een ‘draw_ops’-attribuut en tevens een <draw_ops>-element, of "
 "specificeerde twee elementen)"
 
-#: ../src/ui/theme-parser.c:3332
+#: ../src/ui/theme-parser.c:3333
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -1508,7 +1516,7 @@ msgstr ""
 "specificeerde een ‘draw_ops’-attribuut en tevens een <draw_ops>-element, of "
 "specificeerde twee elementen)"
 
-#: ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3371
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -1517,12 +1525,12 @@ msgstr ""
 "specificeerde een ‘draw_ops’-attribuut en tevens een <draw_ops>-element, of "
 "specificeerde twee elementen)"
 
-#: ../src/ui/theme-parser.c:3434
+#: ../src/ui/theme-parser.c:3435
 #, c-format
 msgid "Bad version specification '%s'"
 msgstr "Foutieve opgave van versie: ‘%s’"
 
-#: ../src/ui/theme-parser.c:3507
+#: ../src/ui/theme-parser.c:3508
 msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
@@ -1530,18 +1538,18 @@ msgstr ""
 "Het ‘version’-attribuut kan niet gebruikt worden in metacity-theme-1.xml of "
 "metacity-theme-2.xml."
 
-#: ../src/ui/theme-parser.c:3530
+#: ../src/ui/theme-parser.c:3531
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
 msgstr ""
 "Het thema vereist versie %s, maar de recentste ondersteunde versie is %d.%d"
 
-#: ../src/ui/theme-parser.c:3562
+#: ../src/ui/theme-parser.c:3563
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Buitenste element in thema moet zijn: <metacity_theme>, niet <%s>"
 
-#: ../src/ui/theme-parser.c:3582
+#: ../src/ui/theme-parser.c:3583
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
@@ -1549,12 +1557,12 @@ msgstr ""
 "Element <%s> is niet toegestaan binnen een naam/auteur/datum/beschrijving "
 "element"
 
-#: ../src/ui/theme-parser.c:3587
+#: ../src/ui/theme-parser.c:3588
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Element <%s> is niet toegestaan binnen een <constant>-element"
 
-#: ../src/ui/theme-parser.c:3599
+#: ../src/ui/theme-parser.c:3600
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
@@ -1562,38 +1570,38 @@ msgstr ""
 "Element <%s> is niet toegestaan binnen de elementen distance/border/"
 "aspect_ratio"
 
-#: ../src/ui/theme-parser.c:3621
+#: ../src/ui/theme-parser.c:3622
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Element <%s> is niet toegestaan binnen een ‘draw operation’-element"
 
-#: ../src/ui/theme-parser.c:3631 ../src/ui/theme-parser.c:3661
-#: ../src/ui/theme-parser.c:3666 ../src/ui/theme-parser.c:3671
+#: ../src/ui/theme-parser.c:3632 ../src/ui/theme-parser.c:3662
+#: ../src/ui/theme-parser.c:3667 ../src/ui/theme-parser.c:3672
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Element <%s> is niet toegestaan binnen een <%s>-element"
 
-#: ../src/ui/theme-parser.c:3899
+#: ../src/ui/theme-parser.c:3900
 msgid "No draw_ops provided for frame piece"
 msgstr "Geen ‘draw_ops’ gegeven voor kader-onderdeel"
 
-#: ../src/ui/theme-parser.c:3914
+#: ../src/ui/theme-parser.c:3915
 msgid "No draw_ops provided for button"
 msgstr "Geen ‘draw_ops’ gegeven voor knop"
 
-#: ../src/ui/theme-parser.c:3968
+#: ../src/ui/theme-parser.c:3969
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Geen tekst toegestaan binnen element <%s>"
 
-#: ../src/ui/theme-parser.c:4026 ../src/ui/theme-parser.c:4038
-#: ../src/ui/theme-parser.c:4050 ../src/ui/theme-parser.c:4062
-#: ../src/ui/theme-parser.c:4074
+#: ../src/ui/theme-parser.c:4027 ../src/ui/theme-parser.c:4039
+#: ../src/ui/theme-parser.c:4051 ../src/ui/theme-parser.c:4063
+#: ../src/ui/theme-parser.c:4075
 #, c-format
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> twee keer gegeven voor dit thema"
 
-#: ../src/ui/theme-parser.c:4336
+#: ../src/ui/theme-parser.c:4337
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Geen geldig bestand gevonden voor thema %s\n"
