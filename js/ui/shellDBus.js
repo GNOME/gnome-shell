@@ -15,59 +15,63 @@ const Main = imports.ui.main;
 const Screenshot = imports.ui.screenshot;
 const ViewSelector = imports.ui.viewSelector;
 
-const GnomeShellIface = <interface name="org.gnome.Shell">
-<method name="Eval">
-    <arg type="s" direction="in" name="script" />
-    <arg type="b" direction="out" name="success" />
-    <arg type="s" direction="out" name="result" />
-</method>
-<method name="FocusSearch"/>
-<method name="ShowOSD">
-    <arg type="a{sv}" direction="in" name="params"/>
-</method>
-<method name="FocusApp">
-    <arg type="s" direction="in" name="id"/>
-</method>
-<method name="ShowApplications" />
-<method name="GrabAccelerator">
-    <arg type="s" direction="in" name="accelerator"/>
-    <arg type="u" direction="in" name="flags"/>
-    <arg type="u" direction="out" name="action"/>
-</method>
-<method name="GrabAccelerators">
-    <arg type="a(su)" direction="in" name="accelerators"/>
-    <arg type="au" direction="out" name="actions"/>
-</method>
-<method name="UngrabAccelerator">
-    <arg type="u" direction="in" name="action"/>
-    <arg type="b" direction="out" name="success"/>
-</method>
-<signal name="AcceleratorActivated">
-    <arg name="action" type="u" />
-    <arg name="deviceid" type="u" />
-    <arg name="timestamp" type="u" />
-</signal>
-<property name="Mode" type="s" access="read" />
-<property name="OverviewActive" type="b" access="readwrite" />
-<property name="ShellVersion" type="s" access="read" />
-</interface>;
+const GnomeShellIface = '<node> \
+<interface name="org.gnome.Shell"> \
+<method name="Eval"> \
+    <arg type="s" direction="in" name="script" /> \
+    <arg type="b" direction="out" name="success" /> \
+    <arg type="s" direction="out" name="result" /> \
+</method> \
+<method name="FocusSearch"/> \
+<method name="ShowOSD"> \
+    <arg type="a{sv}" direction="in" name="params"/> \
+</method> \
+<method name="FocusApp"> \
+    <arg type="s" direction="in" name="id"/> \
+</method> \
+<method name="ShowApplications" /> \
+<method name="GrabAccelerator"> \
+    <arg type="s" direction="in" name="accelerator"/> \
+    <arg type="u" direction="in" name="flags"/> \
+    <arg type="u" direction="out" name="action"/> \
+</method> \
+<method name="GrabAccelerators"> \
+    <arg type="a(su)" direction="in" name="accelerators"/> \
+    <arg type="au" direction="out" name="actions"/> \
+</method> \
+<method name="UngrabAccelerator"> \
+    <arg type="u" direction="in" name="action"/> \
+    <arg type="b" direction="out" name="success"/> \
+</method> \
+<signal name="AcceleratorActivated"> \
+    <arg name="action" type="u" /> \
+    <arg name="deviceid" type="u" /> \
+    <arg name="timestamp" type="u" /> \
+</signal> \
+<property name="Mode" type="s" access="read" /> \
+<property name="OverviewActive" type="b" access="readwrite" /> \
+<property name="ShellVersion" type="s" access="read" /> \
+</interface> \
+</node>';
 
-const ScreenSaverIface = <interface name="org.gnome.ScreenSaver">
-<method name="Lock">
-</method>
-<method name="GetActive">
-    <arg name="active" direction="out" type="b" />
-</method>
-<method name="SetActive">
-    <arg name="value" direction="in" type="b" />
-</method>
-<method name="GetActiveTime">
-    <arg name="value" direction="out" type="u" />
-</method>
-<signal name="ActiveChanged">
-    <arg name="new_value" type="b" />
-</signal>
-</interface>;
+const ScreenSaverIface = '<node> \
+<interface name="org.gnome.ScreenSaver"> \
+<method name="Lock"> \
+</method> \
+<method name="GetActive"> \
+    <arg name="active" direction="out" type="b" /> \
+</method> \
+<method name="SetActive"> \
+    <arg name="value" direction="in" type="b" /> \
+</method> \
+<method name="GetActiveTime"> \
+    <arg name="value" direction="out" type="u" /> \
+</method> \
+<signal name="ActiveChanged"> \
+    <arg name="new_value" type="b" /> \
+</signal> \
+</interface> \
+</node>';
 
 const GnomeShell = new Lang.Class({
     Name: 'GnomeShellDBus',
@@ -246,41 +250,43 @@ const GnomeShell = new Lang.Class({
     ShellVersion: Config.PACKAGE_VERSION
 });
 
-const GnomeShellExtensionsIface = <interface name="org.gnome.Shell.Extensions">
-<method name="ListExtensions">
-    <arg type="a{sa{sv}}" direction="out" name="extensions" />
-</method>
-<method name="GetExtensionInfo">
-    <arg type="s" direction="in" name="extension" />
-    <arg type="a{sv}" direction="out" name="info" />
-</method>
-<method name="GetExtensionErrors">
-    <arg type="s" direction="in" name="extension" />
-    <arg type="as" direction="out" name="errors" />
-</method>
-<signal name="ExtensionStatusChanged">
-    <arg type="s" name="uuid"/>
-    <arg type="i" name="state"/>
-    <arg type="s" name="error"/>
-</signal>
-<method name="InstallRemoteExtension">
-    <arg type="s" direction="in" name="uuid"/>
-    <arg type="s" direction="out" name="result"/>
-</method>
-<method name="UninstallExtension">
-    <arg type="s" direction="in" name="uuid"/>
-    <arg type="b" direction="out" name="success"/>
-</method>
-<method name="LaunchExtensionPrefs">
-    <arg type="s" direction="in" name="uuid"/>
-</method>
-<method name="ReloadExtension">
-    <arg type="s" direction="in" name="uuid"/>
-</method>
-<method name="CheckForUpdates">
-</method>
-<property name="ShellVersion" type="s" access="read" />
-</interface>;
+const GnomeShellExtensionsIface = '<node> \
+<interface name="org.gnome.Shell.Extensions"> \
+<method name="ListExtensions"> \
+    <arg type="a{sa{sv}}" direction="out" name="extensions" /> \
+</method> \
+<method name="GetExtensionInfo"> \
+    <arg type="s" direction="in" name="extension" /> \
+    <arg type="a{sv}" direction="out" name="info" /> \
+</method> \
+<method name="GetExtensionErrors"> \
+    <arg type="s" direction="in" name="extension" /> \
+    <arg type="as" direction="out" name="errors" /> \
+</method> \
+<signal name="ExtensionStatusChanged"> \
+    <arg type="s" name="uuid"/> \
+    <arg type="i" name="state"/> \
+    <arg type="s" name="error"/> \
+</signal> \
+<method name="InstallRemoteExtension"> \
+    <arg type="s" direction="in" name="uuid"/> \
+    <arg type="s" direction="out" name="result"/> \
+</method> \
+<method name="UninstallExtension"> \
+    <arg type="s" direction="in" name="uuid"/> \
+    <arg type="b" direction="out" name="success"/> \
+</method> \
+<method name="LaunchExtensionPrefs"> \
+    <arg type="s" direction="in" name="uuid"/> \
+</method> \
+<method name="ReloadExtension"> \
+    <arg type="s" direction="in" name="uuid"/> \
+</method> \
+<method name="CheckForUpdates"> \
+</method> \
+<property name="ShellVersion" type="s" access="read" /> \
+</interface> \
+</node>';
 
 const GnomeShellExtensions = new Lang.Class({
     Name: 'GnomeShellExtensionsDBus',

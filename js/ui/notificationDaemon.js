@@ -16,51 +16,55 @@ const Params = imports.misc.params;
 const Util = imports.misc.util;
 
 // Should really be defined in Gio.js
-const BusIface = <interface name="org.freedesktop.DBus">
-<method name="GetConnectionUnixProcessID">
-    <arg type="s" direction="in" />
-    <arg type="u" direction="out" />
-</method>
-</interface>;
+const BusIface = '<node> \
+<interface name="org.freedesktop.DBus"> \
+<method name="GetConnectionUnixProcessID"> \
+    <arg type="s" direction="in" /> \
+    <arg type="u" direction="out" /> \
+</method> \
+</interface> \
+</node>';
 
 var BusProxy = Gio.DBusProxy.makeProxyWrapper(BusIface);
 function Bus() {
     return new BusProxy(Gio.DBus.session, 'org.freedesktop.DBus', '/org/freedesktop/DBus');
 }
 
-const FdoNotificationsIface = <interface name="org.freedesktop.Notifications">
-<method name="Notify">
-    <arg type="s" direction="in"/>
-    <arg type="u" direction="in"/>
-    <arg type="s" direction="in"/>
-    <arg type="s" direction="in"/>
-    <arg type="s" direction="in"/>
-    <arg type="as" direction="in"/>
-    <arg type="a{sv}" direction="in"/>
-    <arg type="i" direction="in"/>
-    <arg type="u" direction="out"/>
-</method>
-<method name="CloseNotification">
-    <arg type="u" direction="in"/>
-</method>
-<method name="GetCapabilities">
-    <arg type="as" direction="out"/>
-</method>
-<method name="GetServerInformation">
-    <arg type="s" direction="out"/>
-    <arg type="s" direction="out"/>
-    <arg type="s" direction="out"/>
-    <arg type="s" direction="out"/>
-</method>
-<signal name="NotificationClosed">
-    <arg type="u"/>
-    <arg type="u"/>
-</signal>
-<signal name="ActionInvoked">
-    <arg type="u"/>
-    <arg type="s"/>
-</signal>
-</interface>;
+const FdoNotificationsIface = '<node> \
+<interface name="org.freedesktop.Notifications"> \
+<method name="Notify"> \
+    <arg type="s" direction="in"/> \
+    <arg type="u" direction="in"/> \
+    <arg type="s" direction="in"/> \
+    <arg type="s" direction="in"/> \
+    <arg type="s" direction="in"/> \
+    <arg type="as" direction="in"/> \
+    <arg type="a{sv}" direction="in"/> \
+    <arg type="i" direction="in"/> \
+    <arg type="u" direction="out"/> \
+</method> \
+<method name="CloseNotification"> \
+    <arg type="u" direction="in"/> \
+</method> \
+<method name="GetCapabilities"> \
+    <arg type="as" direction="out"/> \
+</method> \
+<method name="GetServerInformation"> \
+    <arg type="s" direction="out"/> \
+    <arg type="s" direction="out"/> \
+    <arg type="s" direction="out"/> \
+    <arg type="s" direction="out"/> \
+</method> \
+<signal name="NotificationClosed"> \
+    <arg type="u"/> \
+    <arg type="u"/> \
+</signal> \
+<signal name="ActionInvoked"> \
+    <arg type="u"/> \
+    <arg type="s"/> \
+</signal> \
+</interface> \
+</node>';
 
 const NotificationClosedReason = {
     EXPIRED: 1,
@@ -767,16 +771,18 @@ const GtkNotificationDaemonNotification = new Lang.Class({
     },
 });
 
-const FdoApplicationIface = <interface name="org.freedesktop.Application">
-<method name="ActivateAction">
-    <arg type="s" direction="in" />
-    <arg type="av" direction="in" />
-    <arg type="a{sv}" direction="in" />
-</method>
-<method name="Activate">
-    <arg type="a{sv}" direction="in" />
-</method>
-</interface>;
+const FdoApplicationIface = '<node> \
+<interface name="org.freedesktop.Application"> \
+<method name="ActivateAction"> \
+    <arg type="s" direction="in" /> \
+    <arg type="av" direction="in" /> \
+    <arg type="a{sv}" direction="in" /> \
+</method> \
+<method name="Activate"> \
+    <arg type="a{sv}" direction="in" /> \
+</method> \
+</interface> \
+</node>';
 const FdoApplicationProxy = Gio.DBusProxy.makeProxyWrapper(FdoApplicationIface);
 
 function objectPathFromAppId(appId) {
@@ -860,17 +866,19 @@ const GtkNotificationDaemonAppSource = new Lang.Class({
     },
 });
 
-const GtkNotificationsIface = <interface name="org.gtk.Notifications">
-<method name="AddNotification">
-    <arg type="s" direction="in" />
-    <arg type="s" direction="in" />
-    <arg type="a{sv}" direction="in" />
-</method>
-<method name="RemoveNotification">
-    <arg type="s" direction="in" />
-    <arg type="s" direction="in" />
-</method>
-</interface>;
+const GtkNotificationsIface = '<node> \
+<interface name="org.gtk.Notifications"> \
+<method name="AddNotification"> \
+    <arg type="s" direction="in" /> \
+    <arg type="s" direction="in" /> \
+    <arg type="a{sv}" direction="in" /> \
+</method> \
+<method name="RemoveNotification"> \
+    <arg type="s" direction="in" /> \
+    <arg type="s" direction="in" /> \
+</method> \
+</interface> \
+</node>';
 
 const GtkNotificationDaemon = new Lang.Class({
     Name: 'GtkNotificationDaemon',

@@ -9,85 +9,89 @@ const ZOOM_SERVICE_PATH = '/org/gnome/Magnifier/ZoomRegion';
 
 // Subset of gnome-mag's Magnifier dbus interface -- to be expanded.  See:
 // http://git.gnome.org/browse/gnome-mag/tree/xml/...Magnifier.xml
-const MagnifierIface = <interface name="org.gnome.Magnifier">
-<method name="setActive">
-    <arg type="b" direction="in" />
-</method>
-<method name="isActive">
-    <arg type="b" direction="out" />
-</method>
-<method name="showCursor" />
-<method name="hideCursor" />
-<method name="createZoomRegion">
-    <arg type="d" direction="in" />
-    <arg type="d" direction="in" />
-    <arg type="ai" direction="in" />
-    <arg type="ai" direction="in" />
-    <arg type="o" direction="out" />
-</method>
-<method name="addZoomRegion">
-    <arg type="o" direction="in" />
-    <arg type="b" direction="out" />
-</method>
-<method name="getZoomRegions">
-    <arg type="ao" direction="out" />
-</method>
-<method name="clearAllZoomRegions" />
-<method name="fullScreenCapable">
-    <arg type="b" direction="out" />
-</method>
-<method name="setCrosswireSize">
-    <arg type="i" direction="in" />
-</method>
-<method name="getCrosswireSize">
-    <arg type="i" direction="out" />
-</method>
-<method name="setCrosswireLength">
-    <arg type="i" direction="in" />
-</method>
-<method name="getCrosswireLength">
-    <arg type="i" direction="out" />
-</method>
-<method name="setCrosswireClip">
-    <arg type="b" direction="in" />
-</method>
-<method name="getCrosswireClip">
-    <arg type="b" direction="out" />
-</method>
-<method name="setCrosswireColor">
-    <arg type="u" direction="in" />
-</method>
-<method name="getCrosswireColor">
-    <arg type="u" direction="out" />
-</method>
-</interface>;
+const MagnifierIface = '<node> \
+<interface name="org.gnome.Magnifier"> \
+<method name="setActive"> \
+    <arg type="b" direction="in" /> \
+</method> \
+<method name="isActive"> \
+    <arg type="b" direction="out" /> \
+</method> \
+<method name="showCursor" /> \
+<method name="hideCursor" /> \
+<method name="createZoomRegion"> \
+    <arg type="d" direction="in" /> \
+    <arg type="d" direction="in" /> \
+    <arg type="ai" direction="in" /> \
+    <arg type="ai" direction="in" /> \
+    <arg type="o" direction="out" /> \
+</method> \
+<method name="addZoomRegion"> \
+    <arg type="o" direction="in" /> \
+    <arg type="b" direction="out" /> \
+</method> \
+<method name="getZoomRegions"> \
+    <arg type="ao" direction="out" /> \
+</method> \
+<method name="clearAllZoomRegions" /> \
+<method name="fullScreenCapable"> \
+    <arg type="b" direction="out" /> \
+</method> \
+<method name="setCrosswireSize"> \
+    <arg type="i" direction="in" /> \
+</method> \
+<method name="getCrosswireSize"> \
+    <arg type="i" direction="out" /> \
+</method> \
+<method name="setCrosswireLength"> \
+    <arg type="i" direction="in" /> \
+</method> \
+<method name="getCrosswireLength"> \
+    <arg type="i" direction="out" /> \
+</method> \
+<method name="setCrosswireClip"> \
+    <arg type="b" direction="in" /> \
+</method> \
+<method name="getCrosswireClip"> \
+    <arg type="b" direction="out" /> \
+</method> \
+<method name="setCrosswireColor"> \
+    <arg type="u" direction="in" /> \
+</method> \
+<method name="getCrosswireColor"> \
+    <arg type="u" direction="out" /> \
+</method> \
+</interface> \
+</node>';
 
 // Subset of gnome-mag's ZoomRegion dbus interface -- to be expanded.  See:
 // http://git.gnome.org/browse/gnome-mag/tree/xml/...ZoomRegion.xml
-const ZoomRegionIface = <interface name="org.gnome.Magnifier.ZoomRegion">
-<method name="setMagFactor">
-    <arg type="d" direction="in" />
-    <arg type="d" direction="in" />
-</method>
-<method name="getMagFactor">
-    <arg type="d" direction="out" />
-    <arg type="d" direction="out" />
-</method>
-<method name="setRoi">
-    <arg type="ai" direction="in" />
-</method>
-<method name="getRoi">
-    <arg type="ai" direction="out" />
-</method>
-<method name="shiftContentsTo">
-    <arg type="i" direction="in" />
-    <arg type="i" direction="in" />
-    <arg type="b" direction="out" />
-</method>
-<method name="moveResize">
-    <arg type="ai" direction="in" />
-</method>
-</interface>;
+const ZoomRegionIface = '<node> \
+<interface name="org.gnome.Magnifier.ZoomRegion"> \
+<method name="setMagFactor"> \
+    <arg type="d" direction="in" /> \
+    <arg type="d" direction="in" /> \
+</method> \
+<method name="getMagFactor"> \
+    <arg type="d" direction="out" /> \
+    <arg type="d" direction="out" /> \
+</method> \
+<method name="setRoi"> \
+    <arg type="ai" direction="in" /> \
+</method> \
+<method name="getRoi"> \
+    <arg type="ai" direction="out" /> \
+</method> \
+<method name="shiftContentsTo"> \
+    <arg type="i" direction="in" /> \
+    <arg type="i" direction="in" /> \
+    <arg type="b" direction="out" /> \
+</method> \
+<method name="moveResize"> \
+    <arg type="ai" direction="in" /> \
+</method> \
+</interface> \
+</node>';
 
 // For making unique ZoomRegion DBus proxy object paths of the form:
 // '/org/gnome/Magnifier/ZoomRegion/zoomer0',

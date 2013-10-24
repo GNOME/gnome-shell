@@ -7,58 +7,66 @@ const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
-const SystemdLoginManagerIface = <interface name='org.freedesktop.login1.Manager'>
-<method name='Suspend'>
-    <arg type='b' direction='in'/>
-</method>
-<method name='CanSuspend'>
-    <arg type='s' direction='out'/>
-</method>
-<method name='Inhibit'>
-    <arg type='s' direction='in'/>
-    <arg type='s' direction='in'/>
-    <arg type='s' direction='in'/>
-    <arg type='s' direction='in'/>
-    <arg type='h' direction='out'/>
-</method>
-<method name='GetSession'>
-    <arg type='s' direction='in'/>
-    <arg type='o' direction='out'/>
-</method>
-<method name='ListSessions'>
-    <arg name='sessions' type='a(susso)' direction='out'/>
-</method>
-<signal name='PrepareForSleep'>
-    <arg type='b' direction='out'/>
-</signal>
-</interface>;
+const SystemdLoginManagerIface = '<node> \
+<interface name="org.freedesktop.login1.Manager"> \
+<method name="Suspend"> \
+    <arg type="b" direction="in"/> \
+</method> \
+<method name="CanSuspend"> \
+    <arg type="s" direction="out"/> \
+</method> \
+<method name="Inhibit"> \
+    <arg type="s" direction="in"/> \
+    <arg type="s" direction="in"/> \
+    <arg type="s" direction="in"/> \
+    <arg type="s" direction="in"/> \
+    <arg type="h" direction="out"/> \
+</method> \
+<method name="GetSession"> \
+    <arg type="s" direction="in"/> \
+    <arg type="o" direction="out"/> \
+</method> \
+<method name="ListSessions"> \
+    <arg name="sessions" type="a(susso)" direction="out"/> \
+</method> \
+<signal name="PrepareForSleep"> \
+    <arg type="b" direction="out"/> \
+</signal> \
+</interface> \
+</node>';
 
-const SystemdLoginSessionIface = <interface name='org.freedesktop.login1.Session'>
-<signal name='Lock' />
-<signal name='Unlock' />
-</interface>;
+const SystemdLoginSessionIface = '<node> \
+<interface name="org.freedesktop.login1.Session"> \
+<signal name="Lock" /> \
+<signal name="Unlock" /> \
+</interface> \
+</node>';
 
 const SystemdLoginManager = Gio.DBusProxy.makeProxyWrapper(SystemdLoginManagerIface);
 const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIface);
 
-const ConsoleKitManagerIface = <interface name='org.freedesktop.ConsoleKit.Manager'>
-<method name='CanRestart'>
-    <arg type='b' direction='out'/>
-</method>
-<method name='CanStop'>
-    <arg type='b' direction='out'/>
-</method>
-<method name='Restart' />
-<method name='Stop' />
-<method name='GetCurrentSession'>
-    <arg type='o' direction='out' />
-</method>
-</interface>;
+const ConsoleKitManagerIface = '<node> \
+<interface name="org.freedesktop.ConsoleKit.Manager"> \
+<method name="CanRestart"> \
+    <arg type="b" direction="out"/> \
+</method> \
+<method name="CanStop"> \
+    <arg type="b" direction="out"/> \
+</method> \
+<method name="Restart" /> \
+<method name="Stop" /> \
+<method name="GetCurrentSession"> \
+    <arg type="o" direction="out" /> \
+</method> \
+</interface> \
+</node>';
 
-const ConsoleKitSessionIface = <interface name='org.freedesktop.ConsoleKit.Session'>
-<signal name='Lock' />
-<signal name='Unlock' />
-</interface>;
+const ConsoleKitSessionIface = '<node> \
+<interface name="org.freedesktop.ConsoleKit.Session"> \
+<signal name="Lock" /> \
+<signal name="Unlock" /> \
+</interface> \
+</node>';
 
 const ConsoleKitSession = Gio.DBusProxy.makeProxyWrapper(ConsoleKitSessionIface);
 const ConsoleKitManager = Gio.DBusProxy.makeProxyWrapper(ConsoleKitManagerIface);

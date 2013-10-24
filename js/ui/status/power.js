@@ -11,15 +11,17 @@ const PopupMenu = imports.ui.popupMenu;
 const BUS_NAME = 'org.freedesktop.UPower';
 const OBJECT_PATH = '/org/freedesktop/UPower/devices/DisplayDevice';
 
-const DisplayDeviceInterface = <interface name="org.freedesktop.UPower.Device">
-  <property name="Type" type="u" access="read"/>
-  <property name="State" type="u" access="read"/>
-  <property name="Percentage" type="d" access="read"/>
-  <property name="TimeToEmpty" type="x" access="read"/>
-  <property name="TimeToFull" type="x" access="read"/>
-  <property name="IsPresent" type="b" access="read"/>
-  <property name="IconName" type="s" access="read"/>
-</interface>;
+const DisplayDeviceInterface = '<node> \
+<interface name="org.freedesktop.UPower.Device"> \
+  <property name="Type" type="u" access="read"/> \
+  <property name="State" type="u" access="read"/> \
+  <property name="Percentage" type="d" access="read"/> \
+  <property name="TimeToEmpty" type="x" access="read"/> \
+  <property name="TimeToFull" type="x" access="read"/> \
+  <property name="IsPresent" type="b" access="read"/> \
+  <property name="IconName" type="s" access="read"/> \
+</interface> \
+</node>';
 
 const PowerManagerProxy = Gio.DBusProxy.makeProxyWrapper(DisplayDeviceInterface);
 

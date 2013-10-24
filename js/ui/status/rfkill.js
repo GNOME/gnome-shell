@@ -9,9 +9,11 @@ const PopupMenu = imports.ui.popupMenu;
 const BUS_NAME = 'org.gnome.SettingsDaemon.Rfkill';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
 
-const RfkillManagerInterface = <interface name="org.gnome.SettingsDaemon.Rfkill">
-<property name="AirplaneMode" type="b" access="readwrite" />
-</interface>;
+const RfkillManagerInterface = '<node> \
+<interface name="org.gnome.SettingsDaemon.Rfkill"> \
+<property name="AirplaneMode" type="b" access="readwrite" /> \
+</interface> \
+</node>';
 
 const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface);
 

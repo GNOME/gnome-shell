@@ -9,27 +9,29 @@ const Signals = imports.signals;
 const Hash = imports.misc.hash;
 const Main = imports.ui.main;
 
-const ScreencastIface = <interface name="org.gnome.Shell.Screencast">
-<method name="Screencast">
-    <arg type="s" direction="in" name="file_template"/>
-    <arg type="a{sv}" direction="in" name="options"/>
-    <arg type="b" direction="out" name="success"/>
-    <arg type="s" direction="out" name="filename_used"/>
-</method>
-<method name="ScreencastArea">
-    <arg type="i" direction="in" name="x"/>
-    <arg type="i" direction="in" name="y"/>
-    <arg type="i" direction="in" name="width"/>
-    <arg type="i" direction="in" name="height"/>
-    <arg type="s" direction="in" name="file_template"/>
-    <arg type="a{sv}" direction="in" name="options"/>
-    <arg type="b" direction="out" name="success"/>
-    <arg type="s" direction="out" name="filename_used"/>
-</method>
-<method name="StopScreencast">
-    <arg type="b" direction="out" name="success"/>
-</method>
-</interface>;
+const ScreencastIface = '<node> \
+<interface name="org.gnome.Shell.Screencast"> \
+<method name="Screencast"> \
+    <arg type="s" direction="in" name="file_template"/> \
+    <arg type="a{sv}" direction="in" name="options"/> \
+    <arg type="b" direction="out" name="success"/> \
+    <arg type="s" direction="out" name="filename_used"/> \
+</method> \
+<method name="ScreencastArea"> \
+    <arg type="i" direction="in" name="x"/> \
+    <arg type="i" direction="in" name="y"/> \
+    <arg type="i" direction="in" name="width"/> \
+    <arg type="i" direction="in" name="height"/> \
+    <arg type="s" direction="in" name="file_template"/> \
+    <arg type="a{sv}" direction="in" name="options"/> \
+    <arg type="b" direction="out" name="success"/> \
+    <arg type="s" direction="out" name="filename_used"/> \
+</method> \
+<method name="StopScreencast"> \
+    <arg type="b" direction="out" name="success"/> \
+</method> \
+</interface> \
+</node>';
 
 const ScreencastService = new Lang.Class({
     Name: 'ScreencastService',

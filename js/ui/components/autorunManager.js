@@ -75,12 +75,14 @@ function startAppForMount(app, mount) {
 
 /******************************************/
 
-const HotplugSnifferIface = <interface name="org.gnome.Shell.HotplugSniffer">
-<method name="SniffURI">
-    <arg type="s" direction="in" />
-    <arg type="as" direction="out" />
-</method>
-</interface>;
+const HotplugSnifferIface = '<node> \
+<interface name="org.gnome.Shell.HotplugSniffer"> \
+<method name="SniffURI"> \
+    <arg type="s" direction="in" /> \
+    <arg type="as" direction="out" /> \
+</method> \
+</interface> \
+</node>';
 
 const HotplugSnifferProxy = Gio.DBusProxy.makeProxyWrapper(HotplugSnifferIface);
 function HotplugSniffer() {

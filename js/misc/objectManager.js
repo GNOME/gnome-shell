@@ -8,19 +8,21 @@ const Signals = imports.signals;
 
 // Specified in the D-Bus specification here:
 // http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager
-const ObjectManagerIface = <interface name="org.freedesktop.DBus.ObjectManager">
-  <method name="GetManagedObjects">
-    <arg name="objects" type="a{oa{sa{sv}}}" direction="out"/>
-  </method>
-  <signal name="InterfacesAdded">
-    <arg name="objectPath" type="o"/>
-    <arg name="interfaces" type="a{sa{sv}}" />
-  </signal>
-  <signal name="InterfacesRemoved">
-    <arg name="objectPath" type="o"/>
-    <arg name="interfaces" type="as" />
-  </signal>
-</interface>;
+const ObjectManagerIface = '<node> \
+<interface name="org.freedesktop.DBus.ObjectManager"> \
+  <method name="GetManagedObjects"> \
+    <arg name="objects" type="a{oa{sa{sv}}}" direction="out"/> \
+  </method> \
+  <signal name="InterfacesAdded"> \
+    <arg name="objectPath" type="o"/> \
+    <arg name="interfaces" type="a{sa{sv}}" /> \
+  </signal> \
+  <signal name="InterfacesRemoved"> \
+    <arg name="objectPath" type="o"/> \
+    <arg name="interfaces" type="as" /> \
+  </signal> \
+</interface> \
+</node>';
 
 const ObjectManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(ObjectManagerIface);
 

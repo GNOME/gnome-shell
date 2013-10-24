@@ -5,11 +5,13 @@ const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
-const FprintManagerIface = <interface name='net.reactivated.Fprint.Manager'>
-<method name='GetDefaultDevice'>
-    <arg type='o' direction='out' />
-</method>
-</interface>;
+const FprintManagerIface = '<node> \
+<interface name="net.reactivated.Fprint.Manager"> \
+<method name="GetDefaultDevice"> \
+    <arg type="o" direction="out" /> \
+</method> \
+</interface> \
+</node>';
 
 const FprintManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(FprintManagerIface);
 

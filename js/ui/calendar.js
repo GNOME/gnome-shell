@@ -190,16 +190,18 @@ const EmptyEventSource = new Lang.Class({
 });
 Signals.addSignalMethods(EmptyEventSource.prototype);
 
-const CalendarServerIface = <interface name="org.gnome.Shell.CalendarServer">
-<method name="GetEvents">
-    <arg type="x" direction="in" />
-    <arg type="x" direction="in" />
-    <arg type="b" direction="in" />
-    <arg type="a(sssbxxa{sv})" direction="out" />
-</method>
-<property name="HasCalendars" type="b" access="read" />
-<signal name="Changed" />
-</interface>;
+const CalendarServerIface = '<node> \
+<interface name="org.gnome.Shell.CalendarServer"> \
+<method name="GetEvents"> \
+    <arg type="x" direction="in" /> \
+    <arg type="x" direction="in" /> \
+    <arg type="b" direction="in" /> \
+    <arg type="a(sssbxxa{sv})" direction="out" /> \
+</method> \
+<property name="HasCalendars" type="b" access="read" /> \
+<signal name="Changed" /> \
+</interface> \
+</node>';
 
 const CalendarServerInfo  = Gio.DBusInterfaceInfo.new_for_xml(CalendarServerIface);
 

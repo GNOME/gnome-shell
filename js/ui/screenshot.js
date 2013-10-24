@@ -15,45 +15,47 @@ const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-const ScreenshotIface = <interface name="org.gnome.Shell.Screenshot">
-<method name="ScreenshotArea">
-    <arg type="i" direction="in" name="x"/>
-    <arg type="i" direction="in" name="y"/>
-    <arg type="i" direction="in" name="width"/>
-    <arg type="i" direction="in" name="height"/>
-    <arg type="b" direction="in" name="flash"/>
-    <arg type="s" direction="in" name="filename"/>
-    <arg type="b" direction="out" name="success"/>
-    <arg type="s" direction="out" name="filename_used"/>
-</method>
-<method name="ScreenshotWindow">
-    <arg type="b" direction="in" name="include_frame"/>
-    <arg type="b" direction="in" name="include_cursor"/>
-    <arg type="b" direction="in" name="flash"/>
-    <arg type="s" direction="in" name="filename"/>
-    <arg type="b" direction="out" name="success"/>
-    <arg type="s" direction="out" name="filename_used"/>
-</method>
-<method name="Screenshot">
-    <arg type="b" direction="in" name="include_cursor"/>
-    <arg type="b" direction="in" name="flash"/>
-    <arg type="s" direction="in" name="filename"/>
-    <arg type="b" direction="out" name="success"/>
-    <arg type="s" direction="out" name="filename_used"/>
-</method>
-<method name="SelectArea">
-    <arg type="i" direction="out" name="x"/>
-    <arg type="i" direction="out" name="y"/>
-    <arg type="i" direction="out" name="width"/>
-    <arg type="i" direction="out" name="height"/>
-</method>
-<method name="FlashArea">
-    <arg type="i" direction="in" name="x"/>
-    <arg type="i" direction="in" name="y"/>
-    <arg type="i" direction="in" name="width"/>
-    <arg type="i" direction="in" name="height"/>
-</method>
-</interface>;
+const ScreenshotIface = '<node> \
+<interface name="org.gnome.Shell.Screenshot"> \
+<method name="ScreenshotArea"> \
+    <arg type="i" direction="in" name="x"/> \
+    <arg type="i" direction="in" name="y"/> \
+    <arg type="i" direction="in" name="width"/> \
+    <arg type="i" direction="in" name="height"/> \
+    <arg type="b" direction="in" name="flash"/> \
+    <arg type="s" direction="in" name="filename"/> \
+    <arg type="b" direction="out" name="success"/> \
+    <arg type="s" direction="out" name="filename_used"/> \
+</method> \
+<method name="ScreenshotWindow"> \
+    <arg type="b" direction="in" name="include_frame"/> \
+    <arg type="b" direction="in" name="include_cursor"/> \
+    <arg type="b" direction="in" name="flash"/> \
+    <arg type="s" direction="in" name="filename"/> \
+    <arg type="b" direction="out" name="success"/> \
+    <arg type="s" direction="out" name="filename_used"/> \
+</method> \
+<method name="Screenshot"> \
+    <arg type="b" direction="in" name="include_cursor"/> \
+    <arg type="b" direction="in" name="flash"/> \
+    <arg type="s" direction="in" name="filename"/> \
+    <arg type="b" direction="out" name="success"/> \
+    <arg type="s" direction="out" name="filename_used"/> \
+</method> \
+<method name="SelectArea"> \
+    <arg type="i" direction="out" name="x"/> \
+    <arg type="i" direction="out" name="y"/> \
+    <arg type="i" direction="out" name="width"/> \
+    <arg type="i" direction="out" name="height"/> \
+</method> \
+<method name="FlashArea"> \
+    <arg type="i" direction="in" name="x"/> \
+    <arg type="i" direction="in" name="y"/> \
+    <arg type="i" direction="in" name="width"/> \
+    <arg type="i" direction="in" name="height"/> \
+</method> \
+</interface> \
+</node>';
 
 const ScreenshotService = new Lang.Class({
     Name: 'ScreenshotService',

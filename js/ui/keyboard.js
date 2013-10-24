@@ -23,27 +23,29 @@ const KEYBOARD_TYPE = 'keyboard-type';
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
 
-const CaribouKeyboardIface = <interface name='org.gnome.Caribou.Keyboard'>
-<method name='Show'>
-    <arg type='u' direction='in' />
-</method>
-<method name='Hide'>
-    <arg type='u' direction='in' />
-</method>
-<method name='SetCursorLocation'>
-    <arg type='i' direction='in' />
-    <arg type='i' direction='in' />
-    <arg type='i' direction='in' />
-    <arg type='i' direction='in' />
-</method>
-<method name='SetEntryLocation'>
-    <arg type='i' direction='in' />
-    <arg type='i' direction='in' />
-    <arg type='i' direction='in' />
-    <arg type='i' direction='in' />
-</method>
-<property name='Name' access='read' type='s' />
-</interface>;
+const CaribouKeyboardIface = '<node> \
+<interface name="org.gnome.Caribou.Keyboard"> \
+<method name="Show"> \
+    <arg type="u" direction="in" /> \
+</method> \
+<method name="Hide"> \
+    <arg type="u" direction="in" /> \
+</method> \
+<method name="SetCursorLocation"> \
+    <arg type="i" direction="in" /> \
+    <arg type="i" direction="in" /> \
+    <arg type="i" direction="in" /> \
+    <arg type="i" direction="in" /> \
+</method> \
+<method name="SetEntryLocation"> \
+    <arg type="i" direction="in" /> \
+    <arg type="i" direction="in" /> \
+    <arg type="i" direction="in" /> \
+    <arg type="i" direction="in" /> \
+</method> \
+<property name="Name" access="read" type="s" /> \
+</interface> \
+</node>';
 
 const Key = new Lang.Class({
     Name: 'Key',

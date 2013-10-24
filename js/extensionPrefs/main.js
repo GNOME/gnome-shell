@@ -13,13 +13,15 @@ const _ = Gettext.gettext;
 const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
 
-const GnomeShellIface = <interface name="org.gnome.Shell.Extensions">
-<signal name="ExtensionStatusChanged">
-    <arg type="s" name="uuid"/>
-    <arg type="i" name="state"/>
-    <arg type="s" name="error"/>
-</signal>
-</interface>;
+const GnomeShellIface = '<node> \
+<interface name="org.gnome.Shell.Extensions"> \
+<signal name="ExtensionStatusChanged"> \
+    <arg type="s" name="uuid"/> \
+    <arg type="i" name="state"/> \
+    <arg type="s" name="error"/> \
+</signal> \
+</interface> \
+</node>';
 
 const GnomeShellProxy = Gio.DBusProxy.makeProxyWrapper(GnomeShellIface);
 

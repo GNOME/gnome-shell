@@ -43,20 +43,22 @@ const _DIALOG_ICON_SIZE = 32;
 
 const GSM_SESSION_MANAGER_LOGOUT_FORCE = 2;
 
-const EndSessionDialogIface = <interface name="org.gnome.SessionManager.EndSessionDialog">
-<method name="Open">
-    <arg type="u" direction="in" />
-    <arg type="u" direction="in" />
-    <arg type="u" direction="in" />
-    <arg type="ao" direction="in" />
-</method>
-<method name="Close" />
-<signal name="ConfirmedLogout" />
-<signal name="ConfirmedReboot" />
-<signal name="ConfirmedShutdown" />
-<signal name="Canceled" />
-<signal name="Closed" />
-</interface>;
+const EndSessionDialogIface = '<node> \
+<interface name="org.gnome.SessionManager.EndSessionDialog"> \
+<method name="Open"> \
+    <arg type="u" direction="in" /> \
+    <arg type="u" direction="in" /> \
+    <arg type="u" direction="in" /> \
+    <arg type="ao" direction="in" /> \
+</method> \
+<method name="Close" /> \
+<signal name="ConfirmedLogout" /> \
+<signal name="ConfirmedReboot" /> \
+<signal name="ConfirmedShutdown" /> \
+<signal name="Canceled" /> \
+<signal name="Closed" /> \
+</interface> \
+</node>';
 
 const logoutDialogContent = {
     subjectWithUser: C_("title", "Log Out %s"),
@@ -131,13 +133,15 @@ const DialogContent = {
 
 const MAX_USERS_IN_SESSION_DIALOG = 5;
 
-const LogindSessionIface = <interface name='org.freedesktop.login1.Session'>
-    <property name="Id" type="s" access="read"/>
-    <property name="Remote" type="b" access="read"/>
-    <property name="Class" type="s" access="read"/>
-    <property name="Type" type="s" access="read"/>
-    <property name="State" type="s" access="read"/>
-</interface>;
+const LogindSessionIface = '<node> \
+<interface name="org.freedesktop.login1.Session"> \
+    <property name="Id" type="s" access="read"/> \
+    <property name="Remote" type="b" access="read"/> \
+    <property name="Class" type="s" access="read"/> \
+    <property name="Type" type="s" access="read"/> \
+    <property name="State" type="s" access="read"/> \
+</interface> \
+</node>';
 
 const LogindSession = Gio.DBusProxy.makeProxyWrapper(LogindSessionIface);
 
