@@ -2387,6 +2387,10 @@ StScrollBar StButton#vhandle:active {
     padding-top: 1em;
 }
 
+.login-dialog-user-selection-box {
+    padding: 100px 0;
+}
+
 .login-dialog-user-selection-box .login-dialog-not-listed-label {
     padding-left: 2px;
 }
