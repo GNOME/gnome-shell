@@ -106,6 +106,8 @@ const AppSwitcherPopup = new Lang.Class({
 
         this._switcherList = new AppSwitcher(apps, this);
         this._items = this._switcherList.icons;
+        if (this._items.length == 0)
+            return false;
 
         return true;
     },
@@ -374,6 +376,9 @@ const WindowSwitcherPopup = new Lang.Class({
         let mode = this._settings.get_enum('app-icon-mode');
         this._switcherList = new WindowList(windows, mode);
         this._items = this._switcherList.icons;
+
+        if (this._items.length == 0)
+            return false;
 
         return true;
     },
