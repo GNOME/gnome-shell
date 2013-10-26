@@ -759,7 +759,7 @@ const GtkNotificationDaemonNotification = new Lang.Class({
     },
 
     _onButtonClicked: function(button) {
-        let { "action": action, "action-target": actionTarget } = button;
+        let { 'action': action, 'target': actionTarget } = button;
         this._activateAction(action.unpack(), actionTarget);
     },
 
