@@ -736,7 +736,8 @@ const GtkNotificationDaemonNotification = new Lang.Class({
 
         if (buttons) {
             buttons.deep_unpack().forEach(Lang.bind(this, function(button) {
-                this.addAction(button.label, Lang.bind(this, this._onButtonClicked, button));
+                this.addAction(button.label.unpack(),
+                               Lang.bind(this, this._onButtonClicked, button));
             }));
         }
 
