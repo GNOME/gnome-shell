@@ -732,7 +732,8 @@ const GtkNotificationDaemonNotification = new Lang.Class({
               "default-action": defaultAction,
               "default-action-target": defaultActionTarget } = notification;
 
-        this.setUrgency(urgent ? MessageTray.Urgency.CRITICAL : MessageTray.Urgency.NORMAL);
+        this.setUrgency(urgent.unpack() ? MessageTray.Urgency.CRITICAL
+                                        : MessageTray.Urgency.NORMAL);
 
         if (buttons) {
             buttons.deep_unpack().forEach(Lang.bind(this, function(button) {
