@@ -745,7 +745,8 @@ const GtkNotificationDaemonNotification = new Lang.Class({
         this._defaultAction = defaultAction ? defaultAction.unpack() : null;
         this._defaultActionTarget = defaultActionTarget;
 
-        this.update(title.unpack(), body ? body.unpack() : null, { gicon: gicon });
+        this.update(title.unpack(), body ? body.unpack() : null,
+                    { gicon: gicon ? Gio.icon_deserialize(gicon) : null });
     },
 
     _activateAction: function(namespacedActionId, target) {
