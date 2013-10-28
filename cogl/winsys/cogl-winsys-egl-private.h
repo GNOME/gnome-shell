@@ -30,6 +30,27 @@
 #include "cogl-context-private.h"
 #include "cogl-framebuffer-private.h"
 
+/* XXX: depending on what version of Mesa you have then
+ * eglQueryWaylandBuffer may take a wl_buffer or wl_resource argument
+ * and the EGL header will only forward declare the corresponding
+ * type.
+ *
+ * The use of wl_buffer has been deprecated and so internally we
+ * assume that eglQueryWaylandBuffer takes a wl_resource but for
+ * compatibility we forward declare wl_resource in case we are
+ * building with EGL headers that still use wl_buffer.
+ *
+ * Placing the forward declaration here means it comes before we
+ * #include cogl-winsys-egl-feature-functions.h bellow which
+ * declares lots of function pointers for accessing EGL extensions
+ * and cogl-winsys-egl.c will include this header before it also
+ * includes cogl-winsys-egl-feature-functions.h that may depend
+ * on this type.
+ */
+#ifdef EGL_WL_bind_wayland_display
+struct wl_resource;
+#endif
+
 typedef struct _CoglWinsysEGLVtable
 {
   CoglBool
