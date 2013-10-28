@@ -905,10 +905,8 @@ const GtkNotificationDaemon = new Lang.Class({
         let source = new GtkNotificationDaemonAppSource(appId);
 
         source.connect('destroy', Lang.bind(this, function() {
-            // When a source is destroyed, it should first
-            // destroy all of its notifications, so we should
-            // not need to call _saveNotifications here.
             delete this._sources[appId];
+            this._saveNotifications();
         }));
         source.connect('count-updated', Lang.bind(this, this._saveNotifications));
         Main.messageTray.add(source);
