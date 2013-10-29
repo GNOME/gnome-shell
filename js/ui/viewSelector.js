@@ -16,7 +16,6 @@ const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
 const RemoteSearch = imports.ui.remoteSearch;
 const Search = imports.ui.search;
-const SearchDisplay = imports.ui.searchDisplay;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const WorkspacesView = imports.ui.workspacesView;
@@ -102,7 +101,7 @@ const ViewSelector = new Lang.Class({
         this._appsPage = this._addPage(this.appDisplay.actor,
                                        _("Applications"), 'view-grid-symbolic');
 
-        this._searchResults = new SearchDisplay.SearchResults(this._searchSystem);
+        this._searchResults = new Search.SearchResults(this._searchSystem);
         this._searchPage = this._addPage(this._searchResults.actor,
                                          _("Search"), 'edit-find-symbolic',
                                          { a11yFocus: this._entry });

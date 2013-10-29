@@ -90,7 +90,6 @@ nobase_dist_js_DATA = 	\
         ui/screenShield.js	\
 	ui/scripting.js		\
 	ui/search.js		\
-	ui/searchDisplay.js	\
 	ui/shellDBus.js		\
 	ui/status/accessibility.js	\
 	ui/status/brightness.js	\

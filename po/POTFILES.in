@@ -38,7 +38,7 @@ js/ui/panel.js
 js/ui/popupMenu.js
 js/ui/runDialog.js
 js/ui/screenShield.js
-js/ui/searchDisplay.js
+js/ui/search.js
 js/ui/shellEntry.js
 js/ui/shellMountOperation.js
 js/ui/status/accessibility.js
