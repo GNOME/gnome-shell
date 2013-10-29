@@ -19,7 +19,6 @@ const Search = imports.ui.search;
 const SearchDisplay = imports.ui.searchDisplay;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
-const Wanda = imports.ui.wanda;
 const WorkspacesView = imports.ui.workspacesView;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
@@ -114,8 +113,6 @@ const ViewSelector = new Lang.Class({
         this._searchSettings.connect('changed::sort-order', Lang.bind(this, this._reloadRemoteProviders));
 
         // Default search providers
-        // Wanda comes obviously first
-        this.addSearchProvider(new Wanda.WandaSearchProvider());
         this.addSearchProvider(new AppDisplay.AppSearchProvider());
 
         // Load remote search providers provided by applications

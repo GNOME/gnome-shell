@@ -1,6 +1,3 @@
-wandadir = $(pkgdatadir)
-dist_wanda_DATA = wanda.png
-
 desktopdir=$(datadir)/applications
 desktop_DATA = gnome-shell.desktop gnome-shell-extension-prefs.desktop
 if HAVE_MUTTER_WAYLAND

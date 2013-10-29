@@ -52,7 +52,6 @@ js/ui/status/system.js
 js/ui/status/volume.js
 js/ui/unlockDialog.js
 js/ui/viewSelector.js
-js/ui/wanda.js
 js/ui/windowAttentionHandler.js
 js/ui/windowManager.js
 src/calendar-server/evolution-calendar.desktop.in.in
