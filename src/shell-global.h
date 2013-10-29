@@ -69,10 +69,6 @@ typedef struct {
   guint  last_gc_seconds_ago;
 } ShellMemoryInfo;
 
-void     shell_global_get_memory_info      (ShellGlobal     *global,
-                                            ShellMemoryInfo *meminfo);
-
-
 /* Run-at-leisure API */
 void shell_global_begin_work     (ShellGlobal          *global);
 void shell_global_end_work       (ShellGlobal          *global);

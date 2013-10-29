@@ -29,8 +29,6 @@
 #include "shell-perf-log.h"
 #include "st.h"
 
-#include <jsapi.h>
-
 extern GType gnome_shell_plugin_get_type (void);
 
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
