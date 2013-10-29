@@ -629,55 +629,6 @@ const Inspector = new Lang.Class({
 
 Signals.addSignalMethods(Inspector.prototype);
 
-const Memory = new Lang.Class({
-    Name: 'Memory',
-
-    _init: function() {
-        this.actor = new St.BoxLayout({ vertical: true });
-        this._glibc_uordblks = new St.Label();
-        this.actor.add(this._glibc_uordblks);
-
-        this._js_bytes = new St.Label();
-        this.actor.add(this._js_bytes);
-
-        this._gjs_boxed = new St.Label();
-        this.actor.add(this._gjs_boxed);
-
-        this._gjs_gobject = new St.Label();
-        this.actor.add(this._gjs_gobject);
-
-        this._gjs_function = new St.Label();
-        this.actor.add(this._gjs_function);
-
-        this._gjs_closure = new St.Label();
-        this.actor.add(this._gjs_closure);
-
-        this._last_gc_seconds_ago = new St.Label();
-        this.actor.add(this._last_gc_seconds_ago);
-
-        this._gcbutton = new St.Button({ label: 'Full GC',
-                                         style_class: 'lg-obj-inspector-button' });
-        this._gcbutton.connect('clicked', Lang.bind(this, function () { System.gc(); this._renderText(); }));
-        this.actor.add(this._gcbutton, { x_align: St.Align.START,
-                                         x_fill: false });
-
-        this.actor.connect('notify::mapped', Lang.bind(this, this._renderText));
-    },
-
-    _renderText: function() {
-        if (!this.actor.mapped)
-            return;
-        let memInfo = global.get_memory_info();
-        this._glibc_uordblks.text = 'glibc_uordblks: ' + memInfo.glibc_uordblks;
-        this._js_bytes.text = 'js bytes: ' + memInfo.js_bytes;
-        this._gjs_boxed.text = 'gjs_boxed: ' + memInfo.gjs_boxed;
-        this._gjs_gobject.text = 'gjs_gobject: ' + memInfo.gjs_gobject;
-        this._gjs_function.text = 'gjs_function: ' + memInfo.gjs_function;
-        this._gjs_closure.text = 'gjs_closure: ' + memInfo.gjs_closure;
-        this._last_gc_seconds_ago.text = 'last_gc_seconds_ago: ' + memInfo.last_gc_seconds_ago;
-    }
-});
-
 const Extensions = new Lang.Class({
     Name: 'Extensions',
 
@@ -880,6 +831,19 @@ const LookingGlass = new Lang.Class({
             return true;
         }));
 
+        let gcIcon = new St.Icon({ icon_name: 'gnome-fs-trash-full',
+                                   icon_size: 24 });
+        toolbar.add_actor(gcIcon);
+        gcIcon.reactive = true;
+        gcIcon.connect('button-press-event', Lang.bind(this, function () {
+           gcIcon.icon_name = 'gnome-fs-trash-empty';
+           System.gc();
+           this._timeoutId = Mainloop.timeout_add(500, Lang.bind(this, function () {
+                gcIcon.icon_name = 'gnome-fs-trash-full';
+                Mainloop.source_remove(this._timeoutId);
+           }));
+        }));
+
         let notebook = new Notebook();
         this._notebook = notebook;
         this.actor.add(notebook.actor, { expand: true });
@@ -906,9 +870,6 @@ const LookingGlass = new Lang.Class({
 
         this._windowList = new WindowList(this);
         notebook.appendPage('Windows', this._windowList.actor);
-
-        this._memory = new Memory();
-        notebook.appendPage('Memory', this._memory.actor);
 
         this._extensions = new Extensions(this);
         notebook.appendPage('Extensions', this._extensions.actor);
