@@ -14,7 +14,6 @@ const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
 const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
-const RemoteSearch = imports.ui.remoteSearch;
 const Search = imports.ui.search;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
@@ -64,8 +63,6 @@ const ViewSelector = new Lang.Class({
         this._searchActive = false;
         this._searchTimeoutId = 0;
 
-        this._searchSystem = new Search.SearchSystem();
-
         this._entry = searchEntry;
         ShellEntry.addContextMenu(this._entry);
 
@@ -101,21 +98,10 @@ const ViewSelector = new Lang.Class({
         this._appsPage = this._addPage(this.appDisplay.actor,
                                        _("Applications"), 'view-grid-symbolic');
 
-        this._searchResults = new Search.SearchResults(this._searchSystem);
+        this._searchResults = new Search.SearchResults();
         this._searchPage = this._addPage(this._searchResults.actor,
                                          _("Search"), 'edit-find-symbolic',
                                          { a11yFocus: this._entry });
-
-        this._searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
-        this._searchSettings.connect('changed::disabled', Lang.bind(this, this._reloadRemoteProviders));
-        this._searchSettings.connect('changed::disable-external', Lang.bind(this, this._reloadRemoteProviders));
-        this._searchSettings.connect('changed::sort-order', Lang.bind(this, this._reloadRemoteProviders));
-
-        // Default search providers
-        this.addSearchProvider(new AppDisplay.AppSearchProvider());
-
-        // Load remote search providers provided by applications
-        RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, this.addSearchProvider));
 
         // Since the entry isn't inside the results container we install this
         // dummy widget as the last results container child so that we can
@@ -482,43 +468,8 @@ const ViewSelector = new Lang.Class({
 
         let terms = getTermsForSearchString(this._entry.get_text());
 
-        this._searchSystem.updateSearchResults(terms);
+        this._searchResults.setTerms(terms);
         this._showPage(this._searchPage);
-    },
-
-    _shouldUseSearchProvider: function(provider) {
-        // the disable-external GSetting only affects remote providers
-        if (!provider.isRemoteProvider)
-            return true;
-
-        if (this._searchSettings.get_boolean('disable-external'))
-            return false;
-
-        let appId = provider.appInfo.get_id();
-        let disable = this._searchSettings.get_strv('disabled');
-        return disable.indexOf(appId) == -1;
-    },
-
-    _reloadRemoteProviders: function() {
-        // removeSearchProvider() modifies the provider list we iterate on,
-        // so make a copy first
-        let remoteProviders = this._searchSystem.getRemoteProviders().slice(0);
-
-        remoteProviders.forEach(Lang.bind(this, this.removeSearchProvider));
-        RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, this.addSearchProvider));
-    },
-
-    addSearchProvider: function(provider) {
-        if (!this._shouldUseSearchProvider(provider))
-            return;
-
-        this._searchSystem.registerProvider(provider);
-        this._searchResults.createProviderDisplay(provider);
-    },
-
-    removeSearchProvider: function(provider) {
-        this._searchSystem.unregisterProvider(provider);
-        this._searchResults.destroyProviderDisplay(provider);
     },
 
     getActivePage: function() {

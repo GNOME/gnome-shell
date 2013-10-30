@@ -2,16 +2,19 @@
 
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
+const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 const St = imports.gi.St;
 const Atk = imports.gi.Atk;
 
+const AppDisplay = imports.ui.appDisplay;
 const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
+const RemoteSearch = imports.ui.remoteSearch;
 const Separator = imports.ui.separator;
 const Search = imports.ui.search;
 const Util = imports.misc.util;
@@ -26,36 +29,65 @@ const SearchSystem = new Lang.Class({
 
     _init: function() {
         this._providers = [];
-        this._remoteProviders = [];
-        this.reset();
+
+        this._registerProvider(new AppDisplay.AppSearchProvider());
+
+        this._searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
+        this._searchSettings.connect('changed::disabled', Lang.bind(this, this._reloadRemoteProviders));
+        this._searchSettings.connect('changed::disable-external', Lang.bind(this, this._reloadRemoteProviders));
+        this._searchSettings.connect('changed::sort-order', Lang.bind(this, this._reloadRemoteProviders));
+
+        this._reloadRemoteProviders();
     },
 
-    registerProvider: function (provider) {
+    _shouldUseSearchProvider: function(provider) {
+        // the disable-external GSetting only affects remote providers
+        if (!provider.isRemoteProvider)
+            return true;
+
+        if (this._searchSettings.get_boolean('disable-external'))
+            return false;
+
+        let appId = provider.appInfo.get_id();
+        let disable = this._searchSettings.get_strv('disabled');
+        return disable.indexOf(appId) == -1;
+    },
+
+    addProvider: function(provider) {
+        this._providers.push(provider);
+        this.emit('providers-changed');
+    },
+
+    _reloadRemoteProviders: function() {
+        let remoteProviders = this._providers.filter(function(provider) {
+            return provider.isRemoteProvider;
+        });
+        remoteProviders.forEach(Lang.bind(this, function(provider) {
+            this._unregisterProvider(provider);
+        }));
+
+        RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, function(provider) {
+            if (!this._shouldUseSearchProvider(provider))
+                return;
+
+            this._registerProvider(provider);
+        }));
+        this.emit('providers-changed');
+    },
+
+    _registerProvider: function (provider) {
         provider.searchSystem = this;
         this._providers.push(provider);
-
-        if (provider.isRemoteProvider)
-            this._remoteProviders.push(provider);
     },
 
-    unregisterProvider: function (provider) {
+    _unregisterProvider: function (provider) {
         let index = this._providers.indexOf(provider);
-        if (index == -1)
-            return;
-        provider.searchSystem = null;
         this._providers.splice(index, 1);
-
-        let remoteIndex = this._remoteProviders.indexOf(provider);
-        if (remoteIndex != -1)
-            this._remoteProviders.splice(remoteIndex, 1);
+        provider.searchSystem = null;
     },
 
     getProviders: function() {
         return this._providers;
-    },
-
-    getRemoteProviders: function() {
-        return this._remoteProviders;
     },
 
     getTerms: function() {
@@ -76,7 +108,7 @@ const SearchSystem = new Lang.Class({
         this.emit('search-updated', this._previousResults[i]);
     },
 
-    updateSearchResults: function(terms) {
+    setTerms: function(terms) {
         if (!terms)
             return;
 
@@ -443,10 +475,7 @@ Signals.addSignalMethods(GridSearchResults.prototype);
 const SearchResults = new Lang.Class({
     Name: 'SearchResults',
 
-    _init: function(searchSystem) {
-        this._searchSystem = searchSystem;
-        this._searchSystem.connect('search-updated', Lang.bind(this, this._updateResults));
-
+    _init: function() {
         this.actor = new St.BoxLayout({ name: 'searchResults',
                                         vertical: true });
 
@@ -481,12 +510,14 @@ const SearchResults = new Lang.Class({
                                        y_align: St.Align.MIDDLE });
         this._content.add(this._statusBin, { expand: true });
         this._statusBin.add_actor(this._statusText);
-        this._searchSystem.getProviders().forEach(Lang.bind(this, function(provider) {
-            this.createProviderDisplay(this._providers[i]);
-        }));
 
         this._highlightDefault = false;
         this._defaultResult = null;
+
+        this._searchSystem = new SearchSystem();
+        this._searchSystem.connect('search-updated', Lang.bind(this, this._updateResults));
+        this._searchSystem.connect('providers-changed', Lang.bind(this, this._updateProviderDisplays));
+        this._updateProviderDisplays();
     },
 
     _onPan: function(action) {
@@ -500,7 +531,10 @@ const SearchResults = new Lang.Class({
         Util.ensureActorVisibleInScrollView(this._scrollView, actor);
     },
 
-    createProviderDisplay: function(provider) {
+    _ensureProviderDisplay: function(provider) {
+        if (provider.display)
+            return;
+
         let providerDisplay;
         if (provider.appInfo)
             providerDisplay = new ListSearchResults(provider);
@@ -512,9 +546,8 @@ const SearchResults = new Lang.Class({
         provider.display = providerDisplay;
     },
 
-    destroyProviderDisplay: function(provider) {
-        provider.display.destroy();
-        provider.display = null;
+    _updateProviderDisplays: function() {
+        this._searchSystem.getProviders().forEach(Lang.bind(this, this._ensureProviderDisplay));
     },
 
     _clearDisplay: function() {
@@ -534,6 +567,10 @@ const SearchResults = new Lang.Class({
         this.reset();
         this._statusText.set_text(_("Searching…"));
         this._statusBin.show();
+    },
+
+    setTerms: function(terms) {
+        this._searchSystem.setTerms(terms);
     },
 
     _maybeSetInitialSelection: function() {
