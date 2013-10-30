@@ -168,7 +168,9 @@ libmutter_la_SOURCES =				\
 	ui/theme.c				\
 	meta/theme.h				\
 	ui/theme-private.h			\
-	ui/ui.c					\
+	ui/ui.c
+
+nodist_libmutter_la_SOURCES =			\
 	$(mutter_built_sources)
 
 libmutter_la_LDFLAGS = -no-undefined
