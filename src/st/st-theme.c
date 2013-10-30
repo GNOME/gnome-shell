@@ -45,10 +45,7 @@
 #include "st-theme-node.h"
 #include "st-theme-private.h"
 
-static GObject *st_theme_constructor (GType                  type,
-                                      guint                  n_construct_properties,
-                                      GObjectConstructParam *construct_properties);
-
+static void st_theme_constructed  (GObject      *object);
 static void st_theme_finalize     (GObject      *object);
 static void st_theme_set_property (GObject      *object,
                                    guint         prop_id,
@@ -114,7 +111,7 @@ st_theme_class_init (StThemeClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor = st_theme_constructor;
+  object_class->constructed = st_theme_constructed;
   object_class->finalize = st_theme_finalize;
   object_class->set_property = st_theme_set_property;
   object_class->get_property = st_theme_get_property;
@@ -302,21 +299,15 @@ st_theme_get_custom_stylesheets (StTheme *theme)
   return result;
 }
 
-static GObject *
-st_theme_constructor (GType                  type,
-                      guint                  n_construct_properties,
-                      GObjectConstructParam *construct_properties)
+static void
+st_theme_constructed (GObject *object)
 {
-  GObject *object;
-  StTheme *theme;
+  StTheme *theme = ST_THEME (object);
   CRStyleSheet *application_stylesheet;
   CRStyleSheet *theme_stylesheet;
   CRStyleSheet *default_stylesheet;
 
-  object = (*G_OBJECT_CLASS (st_theme_parent_class)->constructor) (type,
-                                                                      n_construct_properties,
-                                                                      construct_properties);
-  theme = ST_THEME (object);
+  G_OBJECT_CLASS (st_theme_parent_class)->constructed (object);
 
   application_stylesheet = parse_stylesheet_nofail (theme->application_stylesheet);
   theme_stylesheet = parse_stylesheet_nofail (theme->theme_stylesheet);
@@ -332,8 +323,6 @@ st_theme_constructor (GType                  type,
   insert_stylesheet (theme, theme->application_stylesheet, application_stylesheet);
   insert_stylesheet (theme, theme->theme_stylesheet, theme_stylesheet);
   insert_stylesheet (theme, theme->default_stylesheet, default_stylesheet);
-
-  return object;
 }
 
 static void
