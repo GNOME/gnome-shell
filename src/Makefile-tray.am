@@ -4,8 +4,6 @@ tray_cflags =					\
 	$(TRAY_CFLAGS)				\
 	$(NULL)
 
-BUILT_SOURCES += $(tray_built_sources)
-
 # please, keep this sorted alphabetically
 tray_source =			\
 	tray/na-tray-child.c	\
@@ -19,7 +17,6 @@ noinst_LTLIBRARIES += libtray.la
 libtray_la_LIBADD = $(TRAY_LIBS)
 libtray_la_SOURCES =		\
 	$(tray_source)		\
-	$(tray_built_sources)	\
 	$(NULL)
 libtray_la_CPPFLAGS = $(tray_cflags)
 libtray_la_LDFLAGS = $(LDADD)

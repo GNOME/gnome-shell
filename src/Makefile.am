@@ -151,7 +151,6 @@ libgnome_shell_base_la_SOURCES = 	\
 	$(NULL)
 
 libgnome_shell_sources =		\
-	$(shell_built_sources)		\
 	$(shell_public_headers_h)	\
 	shell-app-private.h		\
 	shell-app-system-private.h	\
@@ -170,11 +169,16 @@ libgnome_shell_sources =		\
 	shell-util.c			\
 	shell-window-tracker.c		\
 	shell-wm.c			\
+	$(NULL)
+
+libgnome_shell_built_sources =		\
+	$(shell_built_sources)		\
 	$(top_builddir)/js/js-resources.c		\
 	$(top_builddir)/js/js-resources.h		\
 	$(NULL)
 
 libgnome_shell_la_SOURCES = $(libgnome_shell_sources)
+nodist_libgnome_shell_la_SOURCES = $(libgnome_shell_built_sources)
 
 libgnome_shell_la_gir_sources = \
 	$(filter-out %-private.h $(shell_private_sources), $(shell_public_headers_h) $(libgnome_shell_base_la_SOURCES) $(libgnome_shell_sources))
@@ -192,6 +196,7 @@ gnome_shell_DEPENDENCIES = libgnome-shell.la
 
 if HAVE_MUTTER_WAYLAND
 libgnome_shell_wayland_la_SOURCES = $(libgnome_shell_sources)
+nodist_libgnome_shell_wayland_la_SOURCES = $(libgnome_shell_built_sources)
 
 gnome_shell_wayland_SOURCES = main.c
 gnome_shell_wayland_CPPFLAGS = \
