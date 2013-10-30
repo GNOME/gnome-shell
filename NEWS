@@ -1,3 +1,19 @@
+3.11.1
+======
+* Don't require at least one output device to be connected [Giovanni; #709009]
+* Name the guard window [Andrew; #710346]
+* Use new UPower API [Bastien]
+* Expose min-backlight-stea [Asad; #710380]
+* Don't focus the no-focus-window for globally active windows [Jasper; #710296]
+* Misc. fixes and cleanups [Jasper, Rico, Olav, Magdalen; #709776]
+
+Contributors:
+  Magdalen Berns, Giovanni Campagna, Asad Mehmood, Bastien Nocera,
+  Jasper St. Pierre, Rico Tzschichholz, Olav Vitters, Andrew Walton
+
+Translations:
+  Reinout van Schouwen [nl]
+
 3.10.1
 ======
 * Don't apply fullscreen workarounds to CSD windows [Giovanni; #708718]
