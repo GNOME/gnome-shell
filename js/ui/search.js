@@ -498,7 +498,7 @@ const GridSearchResults = new Lang.Class({
     },
 
     _addItem: function(display) {
-        this._grid.addItem(display.actor);
+        this._grid.addItem(display);
     },
 
     getFirstResult: function() {
