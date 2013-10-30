@@ -305,6 +305,7 @@ Meta-$(api_version).gir: libmutter-wayland.la
 	mutter-enum-types.h			\
 	$(libmutterinclude_base_headers)	\
 	$(filter %.c,$(libmutter_wayland_la_SOURCES))
+	$(filter %.c,$(libmutter_wayland_la_SOURCES) $(nodist_libmutter_wayland_la_SOURCES))
 @META_GIR@_SCANNERFLAGS = --warn-all --warn-error
 
 endif
