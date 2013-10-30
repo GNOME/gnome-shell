@@ -3,7 +3,7 @@
 * Don't require at least one output device to be connected [Giovanni; #709009]
 * Name the guard window [Andrew; #710346]
 * Use new UPower API [Bastien]
-* Expose min-backlight-stea [Asad; #710380]
+* Expose min-backlight-step [Asad; #710380]
 * Don't focus the no-focus-window for globally active windows [Jasper; #710296]
 * Misc. fixes and cleanups [Jasper, Rico, Olav, Magdalen; #709776]
 
