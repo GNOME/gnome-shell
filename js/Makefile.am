@@ -14,9 +14,9 @@ misc/config.js: misc/config.js.in Makefile
 
 js_resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/js-resources.gresource.xml)
 js-resources.h: js-resources.gresource.xml $(js_resource_files) misc/config.js
-	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate --c-name shell_js_resources $<
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --sourcedir=$(builddir) --generate --c-name shell_js_resources $<
 js-resources.c: js-resources.gresource.xml $(js_resource_files) misc/config.js
-	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate --c-name shell_js_resources $<
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --sourcedir=$(builddir) --generate --c-name shell_js_resources $<
 
 js_built_sources = js-resources.c js-resources.h
 
