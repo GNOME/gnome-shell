@@ -1,3 +1,15 @@
+3.11.1
+======
+* Fix tile previews getting stuck on right click during drags [Lionel; #704759]
+* Use new UPower API [Bastien]
+* Set hot spot when cursor set from wl_buffer [Jonas; #709593]
+* Expose min-backlight-step [Asad; #710380]
+* Misc. bug fixes and cleanups [Jasper, Olav, Magdalen; #709776]
+
+Contributors:
+  Magdalen Berns, Lionel Landwerlin, Asad Mehmood, Bastien Nocera,
+  Jasper St. Pierre, Olav Vitters, Jonas Ådahl
+
 3.10.1
 ======
 * Don't apply fullscreen workarounds to CSD windows [Giovanni; #708718]

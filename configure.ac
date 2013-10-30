@@ -2,7 +2,7 @@ AC_PREREQ(2.50)
 AC_CONFIG_MACRO_DIR([m4])
 
 m4_define([mutter_major_version], [3])
-m4_define([mutter_minor_version], [10])
+m4_define([mutter_minor_version], [11])
 m4_define([mutter_micro_version], [1])
 
 m4_define([mutter_version],
