@@ -423,10 +423,8 @@ const IconGrid = new Lang.Class({
     },
 
     addItem: function(item, index) {
-        if (!item.icon || !item.icon instanceof BaseIcon) {
-            log('Only items with a BaseIcon icon property can be added to IconGrid');
-            return;
-        }
+        if (!item.icon instanceof BaseIcon)
+            throw new Error('Only items with a BaseIcon icon property can be added to IconGrid');
 
         this._items.push(item);
         if (index !== undefined)
