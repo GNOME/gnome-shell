@@ -170,8 +170,8 @@ libgnome_shell_sources =		\
 	shell-util.c			\
 	shell-window-tracker.c		\
 	shell-wm.c			\
-	../js/js-resources.c		\
-	../js/js-resources.h		\
+	$(top_builddir)/js/js-resources.c		\
+	$(top_builddir)/js/js-resources.h		\
 	$(NULL)
 
 libgnome_shell_la_SOURCES = $(libgnome_shell_sources)
