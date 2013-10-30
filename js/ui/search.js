@@ -178,10 +178,10 @@ const SearchResult = new Lang.Class({
                                      y_fill: true });
 
         this.actor._delegate = this;
-        this.actor.connect('clicked', Lang.bind(this, this._activate));
+        this.actor.connect('clicked', Lang.bind(this, this.activate));
     },
 
-    _activate: function() {
+    activate: function() {
         this.emit('activate', this.metaInfo.id);
     },
 
