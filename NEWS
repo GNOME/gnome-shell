@@ -1,3 +1,22 @@
+3.11.1
+======
+* power: Use UPower directly instead of gnome-settings-daemon [Bastien; #710273]
+* Implement support for new GTK+ notification API [Jasper, Giovanni, Florian;
+  #710137, #710596]
+* gdm: Don't allow user-list to fill up the entire screen [Florian; #710555]
+* Don't autostart remote search providers at login [Giovanni; #708830]
+* Fix spacing in end-session dialog [Sebastien; #710543]
+* Prepare for js24 [Tim; #711052]
+* Misc bug fixes and cleanups [Jasper, Florian, Adel, Tim, Sebastien; #710347,
+  #710144, #710541, #691409, #710745, #688331, #704912]
+
+Contributors:
+  Giovanni Campagna, Adel Gadllah, Sebastien Lafargue, Tim Lunn,
+  Florian Müllner, Bastien Nocera, Jasper St. Pierre, Rico Tzschichholz
+
+Translations:
+  Stas Solovey [ru], Yosef Or Boczko [he], Rafael Ferreira [pt_BR]
+
 3.10.1
 ======
 * Make sure lock screen is drawn once before switching user [Giovanni; #708051]
