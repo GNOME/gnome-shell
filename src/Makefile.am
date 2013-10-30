@@ -181,7 +181,7 @@ libgnome_shell_la_SOURCES = $(libgnome_shell_sources)
 nodist_libgnome_shell_la_SOURCES = $(libgnome_shell_built_sources)
 
 libgnome_shell_la_gir_sources = \
-	$(filter-out %-private.h $(shell_private_sources), $(shell_public_headers_h) $(libgnome_shell_base_la_SOURCES) $(libgnome_shell_sources))
+	$(filter-out %-private.h $(shell_private_sources), $(shell_public_headers_h) $(libgnome_shell_base_la_SOURCES) $(libgnome_shell_sources) $(libgnome_shell_built_sources))
 
 gnome_shell_SOURCES = main.c
 gnome_shell_CPPFLAGS = \
