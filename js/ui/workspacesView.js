@@ -141,6 +141,7 @@ const WorkspacesView = new Lang.Class({
     zoomToOverview: function() {
         for (let w = 0; w < this._workspaces.length; w++)
             this._workspaces[w].zoomToOverview();
+        this._updateWorkspaceActors(false);
     },
 
     zoomFromOverview: function() {
