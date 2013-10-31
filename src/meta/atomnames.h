@@ -81,6 +81,7 @@ item(TIMESTAMP)
 item(VERSION)
 item(ATOM_PAIR)
 item(BACKLIGHT)
+item(hotplug_mode_update)
 
 /* Oddities: These are used, and we need atoms for them,
  * but when we need all _NET_WM hints (i.e. when we're making
