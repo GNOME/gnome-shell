@@ -119,6 +119,9 @@ struct _MetaOutput
 
   gpointer driver_private;
   GDestroyNotify driver_notify;
+
+  /* get a new preferred mode on hotplug events, to handle dynamic guest resizing */
+  gboolean hotplug_mode_update;
 };
 
 struct _MetaCRTC
@@ -407,6 +410,7 @@ void               meta_monitor_manager_free_output_array (MetaOutput *old_outpu
                                                            int         n_old_outputs);
 void               meta_monitor_manager_free_mode_array (MetaMonitorMode *old_modes,
                                                          int              n_old_modes);
+gboolean           meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager);
 
 /* Returns true if transform causes width and height to be inverted
    This is true for the odd transforms in the enum */

@@ -311,6 +311,29 @@ read_output_edid (MetaMonitorManagerXrandr *manager_xrandr,
   return NULL;
 }
 
+static gboolean
+output_get_hotplug_mode_update (MetaMonitorManagerXrandr *manager_xrandr,
+                                XID                       output_id)
+{
+  MetaDisplay *display = meta_get_display ();
+  XRRPropertyInfo *info;
+  gboolean result = FALSE;
+
+  meta_error_trap_push (display);
+  info = XRRQueryOutputProperty (manager_xrandr->xdisplay, output_id,
+                                 display->atom_hotplug_mode_update);
+  meta_error_trap_pop (display);
+
+  if (info)
+    {
+      result = TRUE;
+      XFree (info);
+    }
+
+  return result;
+}
+
+
 static void
 meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 {
@@ -484,6 +507,8 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	  meta_output->width_mm = output->mm_width;
 	  meta_output->height_mm = output->mm_height;
 	  meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
+          meta_output->hotplug_mode_update =
+              output_get_hotplug_mode_update (manager_xrandr, meta_output->output_id);
 
 	  meta_output->n_modes = output->nmode;
 	  meta_output->modes = g_new0 (MetaMonitorMode *, meta_output->n_modes);
@@ -969,6 +994,16 @@ meta_monitor_manager_xrandr_set_crtc_gamma (MetaMonitorManager *manager,
   XRRFreeGamma (gamma);
 }
 
+static void
+meta_monitor_manager_xrandr_rebuild_derived (MetaMonitorManager *manager)
+{
+  /* This will be a no-op if the change was from our side, as
+     we already called it in the DBus method handler */
+  meta_monitor_config_update_current (manager->config, manager);
+
+  meta_monitor_manager_rebuild_derived (manager);
+}
+
 static gboolean
 meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManager *manager,
 					   XEvent             *event)
@@ -978,6 +1013,7 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManager *manager,
   MetaCRTC *old_crtcs;
   MetaMonitorMode *old_modes;
   unsigned int n_old_outputs, n_old_modes;
+  gboolean new_config;
 
   if ((event->type - manager_xrandr->rr_event_base) != RRScreenChangeNotify)
     return FALSE;
@@ -994,31 +1030,36 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManager *manager,
   manager->serial++;
   meta_monitor_manager_xrandr_read_current (manager);
 
-  /* Check if the current intended configuration has the same outputs
-     as the new real one, or if the event is a result of an XRandR call.
-     If so, we can go straight to rebuild the logical config and tell
-     the outside world.
-     Otherwise, this event was caused by hotplug, so give a chance to
-     MetaMonitorConfig.
+  new_config = manager_xrandr->resources->timestamp >=
+    manager_xrandr->resources->configTimestamp;
+  if (meta_monitor_manager_has_hotplug_mode_update (manager))
 
-     Note that we need to check both the timestamps and the list of
-     outputs, because the X server might emit spurious events with
-     new configTimestamps (bug 702804), and the driver may have
-     changed the EDID for some other reason (old broken qxl and vbox
-     drivers...).
-  */
-  if (manager_xrandr->resources->timestamp >= manager_xrandr->resources->configTimestamp ||
-      meta_monitor_config_match_current (manager->config, manager))
     {
-      /* This will be a no-op if the change was from our side, as
-         we already called it in the DBus method handler */
-      meta_monitor_config_update_current (manager->config, manager);
-
-      meta_monitor_manager_rebuild_derived (manager);
+      /* Check if the current intended configuration is a result of an
+         XRandR call.  Otherwise, hotplug_mode_update tells us to get
+         a new preferred mode on hotplug events to handle dynamic
+         guest resizing. */
+      if (new_config)
+        meta_monitor_manager_xrandr_rebuild_derived (manager);
+      else
+        meta_monitor_config_make_default (manager->config, manager);
     }
   else
     {
-      if (!meta_monitor_config_apply_stored (manager->config, manager))
+      /* Check if the current intended configuration has the same outputs
+         as the new real one, or if the event is a result of an XRandR call.
+         If so, we can go straight to rebuild the logical config and tell
+         the outside world.
+         Otherwise, this event was caused by hotplug, so give a chance to
+         MetaMonitorConfig.
+
+         Note that we need to check both the timestamps and the list of
+         outputs, because the X server might emit spurious events with new
+         configTimestamps (bug 702804), and the driver may have changed
+         the EDID for some other reason (old qxl and vbox drivers). */
+      if (new_config || meta_monitor_config_match_current (manager->config, manager))
+        meta_monitor_manager_xrandr_rebuild_derived (manager);
+      else if (!meta_monitor_config_apply_stored (manager->config, manager))
         meta_monitor_config_make_default (manager->config, manager);
     }
 
