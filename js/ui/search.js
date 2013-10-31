@@ -346,7 +346,8 @@ const SearchResultsBase = new Lang.Class({
     },
 
     _activateResult: function(result, id) {
-        return this.provider.activateResult(id, this._terms);
+        this.provider.activateResult(id, this._terms);
+        Main.overview.toggle();
     },
 
     _setMoreIconVisible: function(visible) {
