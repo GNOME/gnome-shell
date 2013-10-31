@@ -33,6 +33,11 @@
 #include <malloc.h>
 #endif
 
+#ifdef __OpenBSD__
+#include <sys/param.h>
+#include <sys/sysctl.h>
+#endif
+
 #include "shell-enum-types.h"
 #include "shell-global-private.h"
 #include "shell-perf-log.h"
@@ -1109,20 +1114,30 @@ shell_global_reexec_self (ShellGlobal *global)
   char *buf_p;
   char *buf_end;
   GError *error = NULL;
-  
-  /* Linux specific (I think, anyways). */
+
+#if defined __linux__
   if (!g_file_get_contents ("/proc/self/cmdline", &buf, &len, &error))
     {
       g_warning ("failed to get /proc/self/cmdline: %s", error->message);
       return;
     }
-      
+#elif defined __OpenBSD__
+  int pid = getpid();
+  int mib[] = { CTL_KERN, KERN_PROC_ARGS, pid, KERN_PROC_ARGV };
+  if (sysctl(mib, G_N_ELEMENTS (mib), &buf, &len, NULL, 0) == -1) {
+    g_warning ("failed to get command line args: %d", errno);
+    return;
+  }
+#else
+  return;
+#endif
+  
   buf_end = buf+len;
   arr = g_ptr_array_new ();
   /* The cmdline file is NUL-separated */
   for (buf_p = buf; buf_p < buf_end; buf_p = buf_p + strlen (buf_p) + 1)
     g_ptr_array_add (arr, buf_p);
-  
+
   g_ptr_array_add (arr, NULL);
 
   /* Close all file descriptors other than stdin/stdout/stderr, otherwise
