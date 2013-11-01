@@ -18,10 +18,12 @@ const PopupMenu = imports.ui.popupMenu;
 
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
+const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const PRIVACY_SCHEMA = 'org.gnome.desktop.privacy'
 const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
 const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
 const DISABLE_LOG_OUT_KEY = 'disable-log-out';
+const DISABLE_RESTART_KEY = 'disable-restart-buttons';
 const ALWAYS_SHOW_LOG_OUT_KEY = 'always-show-log-out';
 
 const AltSwitcher = new Lang.Class({
@@ -91,6 +93,7 @@ const Indicator = new Lang.Class({
         this.parent();
 
         this._screenSaverSettings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
+        this._loginScreenSettings = new Gio.Settings({ schema: LOGIN_SCREEN_SCHEMA });
         this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
         this._privacySettings = new Gio.Settings({ schema: PRIVACY_SCHEMA });
         this._orientationSettings = new Gio.Settings({ schema: 'org.gnome.settings-daemon.peripherals.touchscreen' });
@@ -261,7 +264,10 @@ const Indicator = new Lang.Class({
     },
 
     _updatePowerOff: function() {
-        this._powerOffAction.visible = this._haveShutdown && !Main.sessionMode.isLocked;
+        let disabled = Main.sessionMode.isLocked ||
+                       (Main.sessionMode.isGreeter &&
+                        this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
+        this._powerOffAction.visible = this._haveShutdown && !disabled;
         this._updateActionsVisibility();
     },
 
@@ -273,7 +279,10 @@ const Indicator = new Lang.Class({
     },
 
     _updateSuspend: function() {
-        this._suspendAction.visible = this._haveSuspend && !Main.sessionMode.isLocked;
+        let disabled = Main.sessionMode.isLocked ||
+                       (Main.sessionMode.isGreeter &&
+                        this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
+        this._suspendAction.visible = this._haveShutdown && !disabled;
         this._updateActionsVisibility();
     },
 
