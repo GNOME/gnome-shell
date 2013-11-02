@@ -228,7 +228,7 @@ const PinNotification = new Lang.Class({
 
     _ok: function() {
         if (this._numeric) {
-            let num = parseInt(this._entry.text);
+            let num = parseInt(this._entry.text, 10);
             if (isNaN(num)) {
                 // user reply was empty, or was invalid
                 // cancel the operation
