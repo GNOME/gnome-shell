@@ -1602,6 +1602,26 @@ const AppIconMenu = new Lang.Class({
                     favs.addFavorite(this._source.app.get_id());
                 }));
             }
+
+            if (Shell.AppSystem.get_default().lookup_app('org.gnome.Software.desktop')) {
+                this._appendSeparator();
+                let item = this._appendMenuItem(_("Show Details"));
+                item.connect('activate', Lang.bind(this, function() {
+                    let id = this._source.app.get_id();
+                    let args = GLib.Variant.new('(ss)', [id, '']);
+                    Gio.DBus.get(Gio.BusType.SESSION, null,
+                        function(o, res) {
+                            let bus = Gio.DBus.get_finish(res);
+                            bus.call('org.gnome.Software',
+                                     '/org/gnome/Software',
+                                     'org.gtk.Actions', 'Activate',
+                                     GLib.Variant.new('(sava{sv})',
+                                                      ['details', [args], null]),
+                                     null, 0, -1, null, null);
+                            Main.overview.hide();
+                        });
+                }));
+            }
         }
     },
 
