@@ -890,12 +890,12 @@ const AppSearchProvider = new Lang.Class({
         return results.slice(0, maxNumber);
     },
 
-    getInitialResultSet: function(terms) {
-        this.searchSystem.setResults(this, this._appSys.initial_search(terms));
+    getInitialResultSet: function(terms, callback, cancellable) {
+        callback(this._appSys.initial_search(terms));
     },
 
-    getSubsearchResultSet: function(previousResults, terms) {
-        this.searchSystem.setResults(this, this._appSys.subsearch(previousResults, terms));
+    getSubsearchResultSet: function(terms, callback, cancellable) {
+        callbacl(this._appSys.subsearch(previousResults, terms));
     },
 
     activateResult: function(result) {

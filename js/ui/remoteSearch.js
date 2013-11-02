@@ -203,8 +203,6 @@ const RemoteSearchProvider = new Lang.Class({
         this.appInfo = appInfo;
         this.id = appInfo.get_id();
         this.isRemoteProvider = true;
-
-        this._cancellable = new Gio.Cancellable();
     },
 
     createIcon: function(size, meta) {
@@ -234,29 +232,27 @@ const RemoteSearchProvider = new Lang.Class({
         return regularResults.slice(0, maxNumber).concat(specialResults.slice(0, maxNumber));
     },
 
-    _getResultsFinished: function(results, error) {
+    _getResultsFinished: function(results, error, callback) {
         if (error) {
             if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 log('Received error from DBus search provider %s: %s'.format(this.id, String(error)));
-        } else {
-            this.searchSystem.setResults(this, results[0]);
+            callback([]);
+            return;
         }
+
+        callback(results[0]);
     },
 
-    getInitialResultSet: function(terms) {
-        this._cancellable.cancel();
-        this._cancellable.reset();
+    getInitialResultSet: function(terms, callback, cancellable) {
         this.proxy.GetInitialResultSetRemote(terms,
-                                             Lang.bind(this, this._getResultsFinished),
-                                             this._cancellable);
+                                             Lang.bind(this, this._getResultsFinished, callback),
+                                             cancellable);
     },
 
-    getSubsearchResultSet: function(previousResults, newTerms) {
-        this._cancellable.cancel();
-        this._cancellable.reset();
+    getSubsearchResultSet: function(previousResults, newTerms, cancellable) {
         this.proxy.GetSubsearchResultSetRemote(previousResults, newTerms,
-                                               Lang.bind(this, this._getResultsFinished),
-                                               this._cancellable);
+                                               Lang.bind(this, this._getResultsFinished, callback),
+                                               cancellable);
     },
 
     _getResultMetasFinished: function(results, error, callback) {
@@ -284,12 +280,10 @@ const RemoteSearchProvider = new Lang.Class({
         callback(resultMetas);
     },
 
-    getResultMetas: function(ids, callback) {
-        this._cancellable.cancel();
-        this._cancellable.reset();
+    getResultMetas: function(ids, callback, cancellable) {
         this.proxy.GetResultMetasRemote(ids,
                                         Lang.bind(this, this._getResultMetasFinished, callback),
-                                        this._cancellable);
+                                        cancellable);
     },
 
     activateResult: function(id) {

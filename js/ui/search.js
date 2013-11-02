@@ -37,6 +37,8 @@ const SearchSystem = new Lang.Class({
         this._searchSettings.connect('changed::sort-order', Lang.bind(this, this._reloadRemoteProviders));
 
         this._reloadRemoteProviders();
+
+        this._cancellable = new Gio.Cancellable();
     },
 
     addProvider: function(provider) {
@@ -60,14 +62,12 @@ const SearchSystem = new Lang.Class({
     },
 
     _registerProvider: function (provider) {
-        provider.searchSystem = this;
         this._providers.push(provider);
     },
 
     _unregisterProvider: function (provider) {
         let index = this._providers.indexOf(provider);
         this._providers.splice(index, 1);
-        provider.searchSystem = null;
     },
 
     getProviders: function() {
@@ -75,54 +75,50 @@ const SearchSystem = new Lang.Class({
     },
 
     getTerms: function() {
-        return this._previousTerms;
+        return this._terms;
     },
 
     reset: function() {
-        this._previousTerms = [];
-        this._previousResults = [];
+        this._terms = [];
+        this._results = {};
     },
 
-    setResults: function(provider, results) {
-        let i = this._providers.indexOf(provider);
-        if (i == -1)
-            return;
-
-        this._previousResults[i] = [provider, results];
-        this.emit('search-updated', this._previousResults[i]);
+    _gotResults: function(results, provider) {
+        this._results[provider.id] = results;
+        this.emit('search-updated', provider, results);
     },
 
     setTerms: function(terms) {
+        this._cancellable.cancel();
+        this._cancellable.reset();
+
+        let previousResults = this._results;
+        let previousTerms = this._terms;
+        this.reset();
+
         if (!terms)
             return;
 
         let searchString = terms.join(' ');
-        let previousSearchString = this._previousTerms.join(' ');
+        let previousSearchString = previousTerms.join(' ');
         if (searchString == previousSearchString)
             return;
 
         let isSubSearch = false;
-        if (this._previousTerms.length > 0)
+        if (previousTerms.length > 0)
             isSubSearch = searchString.indexOf(previousSearchString) == 0;
 
-        let previousResultsArr = this._previousResults;
-
-        let results = [];
-        this._previousTerms = terms;
-        this._previousResults = results;
+        this._terms = terms;
 
         if (isSubSearch) {
-            for (let i = 0; i < this._providers.length; i++) {
-                let [provider, previousResults] = previousResultsArr[i];
-                results.push([provider, []]);
-                provider.getSubsearchResultSet(previousResults, terms);
-            }
+            this._providers.forEach(Lang.bind(this, function(provider) {
+                let previousResults = previousResults[provider.id];
+                provider.getSubsearchResultSet(previousResults, terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
+            }));
         } else {
-            for (let i = 0; i < this._providers.length; i++) {
-                let provider = this._providers[i];
-                results.push([provider, []]);
-                provider.getInitialResultSet(terms);
-            }
+            this._providers.forEach(Lang.bind(this, function(provider) {
+                provider.getInitialResultSet(terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
+            }));
         }
     }
 });
@@ -309,6 +305,8 @@ const SearchResultsBase = new Lang.Class({
         this.actor.add(separator.actor);
 
         this._resultDisplays = {};
+
+        this._cancellable = new Gio.Cancellable();
     },
 
     destroy: function() {
@@ -345,6 +343,9 @@ const SearchResultsBase = new Lang.Class({
         if (metasNeeded.length === 0) {
             callback();
         } else {
+            this._cancellable.cancel();
+            this._cancellable.reset();
+
             this.provider.getResultMetas(metasNeeded, Lang.bind(this, function(metas) {
                 metasNeeded.forEach(Lang.bind(this, function(resultId, i) {
                     let meta = metas[i];
@@ -354,7 +355,7 @@ const SearchResultsBase = new Lang.Class({
                     this._resultDisplays[resultId] = display;
                 }));
                 callback();
-            }));
+            }), this._cancellable);
         }
     },
 
@@ -638,12 +639,11 @@ const SearchResults = new Lang.Class({
         }
     },
 
-    _updateResults: function(searchSystem, results) {
+    _updateResults: function(searchSystem, provider, results) {
         let terms = searchSystem.getTerms();
-        let [provider, providerResults] = results;
         let display = provider.display;
 
-        display.updateSearch(providerResults, terms, Lang.bind(this, function() {
+        display.updateSearch(results, terms, Lang.bind(this, function() {
             this._maybeSetInitialSelection();
             this._updateStatusText();
         }));
