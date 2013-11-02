@@ -62,7 +62,7 @@ const SearchProvider2Iface = '<node> \
 var SearchProviderProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProviderIface);
 var SearchProvider2ProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProvider2Iface);
 
-function loadRemoteSearchProviders(addProviderCallback) {
+function loadRemoteSearchProviders(callback) {
     let objectPaths = {};
     let loadedProviders = [];
 
@@ -116,6 +116,12 @@ function loadRemoteSearchProviders(addProviderCallback) {
         }
     }
 
+    let searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
+    if (searchSettings.get_boolean('disable-external')) {
+        callback([]);
+        return;
+    }
+
     let dataDirs = GLib.get_system_data_dirs();
     dataDirs.forEach(function(dataDir) {
         let path = GLib.build_filenamev([dataDir, 'gnome-shell', 'search-providers']);
@@ -134,11 +140,16 @@ function loadRemoteSearchProviders(addProviderCallback) {
         }
     });
 
-    let searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
     let sortOrder = searchSettings.get_strv('sort-order');
 
     // Special case gnome-control-center to be always active and always first
     sortOrder.unshift('gnome-control-center.desktop');
+
+    loadedProviders = loadedProviders.filter(function(provider) {
+        let appId = provider.appInfo.get_id();
+        let disabled = searchSettings.get_strv('disabled');
+        return disabled.indexOf(appId) == -1;
+    });
 
     loadedProviders.sort(function(providerA, providerB) {
         let idxA, idxB;
@@ -170,7 +181,7 @@ function loadRemoteSearchProviders(addProviderCallback) {
         return (idxA - idxB);
     });
 
-    loadedProviders.forEach(addProviderCallback);
+    callback(loadedProviders);
 }
 
 const RemoteSearchProvider = new Lang.Class({

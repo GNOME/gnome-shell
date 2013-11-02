@@ -39,19 +39,6 @@ const SearchSystem = new Lang.Class({
         this._reloadRemoteProviders();
     },
 
-    _shouldUseSearchProvider: function(provider) {
-        // the disable-external GSetting only affects remote providers
-        if (!provider.isRemoteProvider)
-            return true;
-
-        if (this._searchSettings.get_boolean('disable-external'))
-            return false;
-
-        let appId = provider.appInfo.get_id();
-        let disable = this._searchSettings.get_strv('disabled');
-        return disable.indexOf(appId) == -1;
-    },
-
     addProvider: function(provider) {
         this._providers.push(provider);
         this.emit('providers-changed');
@@ -65,12 +52,10 @@ const SearchSystem = new Lang.Class({
             this._unregisterProvider(provider);
         }));
 
-        RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, function(provider) {
-            if (!this._shouldUseSearchProvider(provider))
-                return;
-
-            this._registerProvider(provider);
+        RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, function(providers) {
+            providers.forEach(Lang.bind(this, this._registerProvider));
         }));
+
         this.emit('providers-changed');
     },
 
