@@ -894,8 +894,8 @@ const AppSearchProvider = new Lang.Class({
         callback(this._appSys.initial_search(terms));
     },
 
-    getSubsearchResultSet: function(terms, callback, cancellable) {
-        callbacl(this._appSys.subsearch(previousResults, terms));
+    getSubsearchResultSet: function(previousResults, terms, callback, cancellable) {
+        callback(this._appSys.subsearch(previousResults, terms));
     },
 
     activateResult: function(result) {

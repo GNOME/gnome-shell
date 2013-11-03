@@ -112,8 +112,8 @@ const SearchSystem = new Lang.Class({
 
         if (isSubSearch) {
             this._providers.forEach(Lang.bind(this, function(provider) {
-                let previousResults = previousResults[provider.id];
-                provider.getSubsearchResultSet(previousResults, terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
+                let previousProviderResults = previousResults[provider.id];
+                provider.getSubsearchResultSet(previousProviderResults, terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
             }));
         } else {
             this._providers.forEach(Lang.bind(this, function(provider) {

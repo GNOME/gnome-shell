@@ -249,7 +249,7 @@ const RemoteSearchProvider = new Lang.Class({
                                              cancellable);
     },
 
-    getSubsearchResultSet: function(previousResults, newTerms, cancellable) {
+    getSubsearchResultSet: function(previousResults, newTerms, callback, cancellable) {
         this.proxy.GetSubsearchResultSetRemote(previousResults, newTerms,
                                                Lang.bind(this, this._getResultsFinished, callback),
                                                cancellable);
