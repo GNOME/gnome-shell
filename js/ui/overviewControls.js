@@ -68,7 +68,7 @@ const SlideLayout = new Lang.Class({
 
         let actorBox = new Clutter.ActorBox();
         actorBox.x1 = box.x1 + alignX + this._translationX;
-        actorBox.x2 = actorBox.x1 + child.x_expand ? availWidth : natWidth;
+        actorBox.x2 = actorBox.x1 + (child.x_expand ? availWidth : natWidth);
         actorBox.y1 = box.y1;
         actorBox.y2 = actorBox.y1 + availHeight;
 
