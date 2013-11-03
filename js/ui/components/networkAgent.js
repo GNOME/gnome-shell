@@ -138,6 +138,8 @@ const NetworkSecretDialog = new Lang.Class({
                            key:    Clutter.KEY_Escape,
                          },
                          this._okButton]);
+
+        this._updateOkButton();
     },
 
     _updateOkButton: function() {
