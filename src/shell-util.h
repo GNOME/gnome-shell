@@ -19,10 +19,6 @@ void     shell_util_get_transformed_allocation (ClutterActor     *actor,
 
 int      shell_util_get_week_start             (void);
 
-char    *shell_util_normalize_and_casefold     (const char       *str);
-
-char    *shell_util_normalize_casefold_and_unaccent (const char  *str);
-
 char    *shell_util_format_date                (const char       *format,
                                                 gint64            time_ms);
 
