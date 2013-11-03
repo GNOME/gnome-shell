@@ -141,7 +141,7 @@ shell_app_system_lookup_app (ShellAppSystem   *self,
     return NULL;
 
   app = _shell_app_new (info);
-  g_hash_table_insert (priv->id_to_app, (char *) id, app);
+  g_hash_table_insert (priv->id_to_app, shell_app_get_id (id), app);
   return app;
 }
 
