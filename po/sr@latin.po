@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-10-13 11:35+0000\n"
-"PO-Revision-Date: 2013-11-03 09:02+0200\n"
+"PO-Revision-Date: 2013-11-03 09:07+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <(nothing)>\n"
 "Language: sr\n"
@@ -1032,7 +1032,7 @@ msgid_plural "%d new messages"
 msgstr[0] "%d nova poruka"
 msgstr[1] "%d nove poruke"
 msgstr[2] "%d novih poruka"
-msgstr[3] "Jedna nova poruka"
+msgstr[3] "%d nova poruka"
 
 #: ../js/ui/screenShield.js:148
 #, javascript-format
@@ -1043,7 +1043,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d novo obaveštenje"
 msgstr[1] "%d nova obaveštenja"
 msgstr[2] "%d novih obaveštenja"
-msgstr[3] "Jedno novo obaveštenje"
+msgstr[3] "%d novo obaveštenje"
 
 #: ../js/ui/searchDisplay.js:275
 msgid "Searching..."
@@ -1408,7 +1408,7 @@ msgid_plural "%d hours remaining"
 msgstr[0] "Preostaje %d sat"
 msgstr[1] "Preostaju %d sata"
 msgstr[2] "Preostaje %d sati"
-msgstr[3] "Preostaje jedan sat"
+msgstr[3] "Preostaje %d sat"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining" */
 #: ../js/ui/status/power.js:104
@@ -1441,7 +1441,7 @@ msgid_plural "%d minutes remaining"
 msgstr[0] "Preostaje %d minut"
 msgstr[1] "Preostaju %d minuta"
 msgstr[2] "Preostaje %d minuta"
-msgstr[3] "Preostaje jedan minut"
+msgstr[3] "Preostaje %d minut"
 
 #: ../js/ui/status/power.js:112 ../js/ui/status/power.js:186
 #, javascript-format
