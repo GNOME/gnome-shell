@@ -1861,83 +1861,45 @@ filter_by_position (GList            *children,
 }
 
 
-typedef struct {
-  GtkDirectionType direction;
-  ClutterActorBox box;
-} StWidgetChildSortData;
+static void
+get_midpoint (ClutterActorBox *box,
+              int             *x,
+              int             *y)
+{
+  *x = (box->x1 + box->x2) / 2;
+  *y = (box->y1 + box->y2) / 2;
+}
+
+static double
+get_distance (ClutterActor    *actor,
+              ClutterActorBox *bbox)
+{
+  int ax, ay, bx, by, dx, dy;
+  ClutterActorBox abox;
+  ClutterVertex abs_vertices[4];
+
+  clutter_actor_get_abs_allocation_vertices (actor, abs_vertices);
+  clutter_actor_box_from_vertices (&abox, abs_vertices);
+
+  get_midpoint (&abox, &ax, &ay);
+  get_midpoint (bbox, &bx, &by);
+  dx = ax - bx;
+  dy = ay - by;
+
+  /* Not the exact distance, but good enough to sort by. */
+  return dx*dx + dy*dy;
+}
 
 static int
-sort_by_position (gconstpointer  a,
+sort_by_distance (gconstpointer  a,
                   gconstpointer  b,
                   gpointer       user_data)
 {
   ClutterActor *actor_a = (ClutterActor *)a;
   ClutterActor *actor_b = (ClutterActor *)b;
-  StWidgetChildSortData *sort_data = user_data;
-  GtkDirectionType direction = sort_data->direction;
-  ClutterActorBox abox, bbox;
-  ClutterVertex abs_vertices[4];
-  int ax, ay, bx, by;
-  int cmp, fmid;
+  ClutterActorBox *box = user_data;
 
-  /* Determine the relationship, relative to motion in @direction, of
-   * the center points of the two actors. Eg, for %GTK_DIR_UP, we
-   * return a negative number if @actor_a's center is below @actor_b's
-   * center, and postive if vice versa, which will result in an
-   * overall list sorted bottom-to-top.
-   */
-
-  clutter_actor_get_abs_allocation_vertices (actor_a, abs_vertices);
-  clutter_actor_box_from_vertices (&abox, abs_vertices);
-  ax = (int)(abox.x1 + abox.x2) / 2;
-  ay = (int)(abox.y1 + abox.y2) / 2;
-  clutter_actor_get_abs_allocation_vertices (actor_b, abs_vertices);
-  clutter_actor_box_from_vertices (&bbox, abs_vertices);
-  bx = (int)(bbox.x1 + bbox.x2) / 2;
-  by = (int)(bbox.y1 + bbox.y2) / 2;
-
-  switch (direction)
-    {
-    case GTK_DIR_UP:
-      cmp = by - ay;
-      break;
-    case GTK_DIR_DOWN:
-      cmp = ay - by;
-      break;
-    case GTK_DIR_LEFT:
-      cmp = bx - ax;
-      break;
-    case GTK_DIR_RIGHT:
-      cmp = ax - bx;
-      break;
-    default:
-      g_return_val_if_reached (0);
-    }
-
-  if (cmp)
-    return cmp;
-
-  /* If two actors have the same center on the axis being sorted,
-   * prefer the one that is closer to the center of the current focus
-   * actor on the other axis. Eg, for %GTK_DIR_UP, prefer whichever
-   * of @actor_a and @actor_b has a horizontal center closest to the
-   * current focus actor's horizontal center.
-   *
-   * (This matches GTK's behavior.)
-   */
-  switch (direction)
-    {
-    case GTK_DIR_UP:
-    case GTK_DIR_DOWN:
-      fmid = (int)(sort_data->box.x1 + sort_data->box.x2) / 2;
-      return abs (ax - fmid) - abs (bx - fmid);
-    case GTK_DIR_LEFT:
-    case GTK_DIR_RIGHT:
-      fmid = (int)(sort_data->box.y1 + sort_data->box.y2) / 2;
-      return abs (ay - fmid) - abs (by - fmid);
-    default:
-      g_return_val_if_reached (0);
-    }
+  return get_distance (actor_a, box) - get_distance (actor_b, box);
 }
 
 static gboolean
@@ -2016,7 +1978,7 @@ st_widget_real_navigate_focus (StWidget         *widget,
     }
   else /* direction is an arrow key, not tab */
     {
-      StWidgetChildSortData sort_data;
+      ClutterActorBox sort_box;
       ClutterVertex abs_vertices[4];
 
       /* Compute the allocation box of the previous focused actor. If there
@@ -2032,36 +1994,35 @@ st_widget_real_navigate_focus (StWidget         *widget,
       if (from)
         {
           clutter_actor_get_abs_allocation_vertices (from, abs_vertices);
-          clutter_actor_box_from_vertices (&sort_data.box, abs_vertices);
+          clutter_actor_box_from_vertices (&sort_box, abs_vertices);
         }
       else
         {
           clutter_actor_get_abs_allocation_vertices (widget_actor, abs_vertices);
-          clutter_actor_box_from_vertices (&sort_data.box, abs_vertices);
+          clutter_actor_box_from_vertices (&sort_box, abs_vertices);
           switch (direction)
             {
             case GTK_DIR_UP:
-              sort_data.box.y1 = sort_data.box.y2;
+              sort_box.y1 = sort_box.y2;
               break;
             case GTK_DIR_DOWN:
-              sort_data.box.y2 = sort_data.box.y1;
+              sort_box.y2 = sort_box.y1;
               break;
             case GTK_DIR_LEFT:
-              sort_data.box.x1 = sort_data.box.x2;
+              sort_box.x1 = sort_box.x2;
               break;
             case GTK_DIR_RIGHT:
-              sort_data.box.x2 = sort_data.box.x1;
+              sort_box.x2 = sort_box.x1;
               break;
             default:
               g_warn_if_reached ();
             }
         }
-      sort_data.direction = direction;
 
       if (from)
-        children = filter_by_position (children, &sort_data.box, direction);
+        children = filter_by_position (children, &sort_box, direction);
       if (children)
-        children = g_list_sort_with_data (children, sort_by_position, &sort_data);
+        children = g_list_sort_with_data (children, sort_by_distance, &sort_box);
     }
 
   /* Now try each child in turn */
