@@ -685,8 +685,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   clutter_actor_add_child (info->stage, info->window_group);
   clutter_actor_add_child (info->stage, info->top_window_group);
 
-  info->plugin_mgr = meta_plugin_manager_new (screen);
-
   /*
    * Delay the creation of the overlay window as long as we can, to avoid
    * blanking out the screen. This means that during the plugin loading, the
@@ -713,6 +711,8 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
       XFixesDestroyRegion (xdisplay, info->pending_input_region);
       info->pending_input_region = None;
     }
+
+  info->plugin_mgr = meta_plugin_manager_new (screen);
 
   /* Map overlay window before redirecting windows offscreen so we catch their
    * contents until we show the stage.
