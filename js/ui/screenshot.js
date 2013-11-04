@@ -77,7 +77,9 @@ const ScreenshotService = new Lang.Class({
 
     ScreenshotAreaAsync : function (params, invocation) {
         let [x, y, width, height, flash, filename, callback] = params;
-        if (height <= 0 || width <= 0) {
+        if (x < 0 || y < 0 ||
+            width <= 0 || height <= 0 ||
+            x + width > global.screen_width || y + height > global.screen_height) {
             invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
                         "Invalid params");
             return;
