@@ -198,8 +198,8 @@ const NotificationsBox = new Lang.Class({
 
             let body = '';
             if (n.bannerBodyText) {
-                body = n.bannerBodyMarkup ? n.bannerBodyText :
-                GLib.markup_escape_text(n.bannerBodyMarkup, -1);
+                body = n.bannerBodyMarkup ? n.bannerBodyText
+                                          : GLib.markup_escape_text(n.bannerBodyText, -1);
             }
 
             let label = new St.Label({ style_class: 'screen-shield-notification-count-text' });
