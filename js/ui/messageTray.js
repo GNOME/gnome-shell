@@ -2755,12 +2755,12 @@ const MessageTray = new Lang.Class({
         } else if (this._notification.y != expandedY) {
             // Tween also opacity here, to override a possible tween that's
             // currently hiding the notification.
-            this._tween(this._notificationWidget, '_notificationState', State.SHOWN,
-                        { y: expandedY,
-                          opacity: 255,
-                          time: ANIMATION_TIME,
-                          transition: 'easeOutQuad'
-                        });
+            Tweener.addTween(this._notificationWidget,
+                             { y: expandedY,
+                               opacity: 255,
+                               time: ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
         }
     },
 
