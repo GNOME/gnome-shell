@@ -103,8 +103,10 @@ const ScreencastService = new Lang.Class({
 
     ScreencastAsync: function(params, invocation) {
         let returnValue = [false, ''];
-        if (!Main.sessionMode.allowScreencast)
+        if (!Main.sessionMode.allowScreencast) {
             invocation.return_value(GLib.Variant.new('(bs)', returnValue));
+            return;
+        }
 
         let sender = invocation.get_sender();
         let recorder = this._ensureRecorderForSender(sender);
@@ -122,8 +124,10 @@ const ScreencastService = new Lang.Class({
 
     ScreencastAreaAsync: function(params, invocation) {
         let returnValue = [false, ''];
-        if (!Main.sessionMode.allowScreencast)
+        if (!Main.sessionMode.allowScreencast) {
             invocation.return_value(GLib.Variant.new('(bs)', returnValue));
+            return;
+        }
 
         let sender = invocation.get_sender();
         let recorder = this._ensureRecorderForSender(sender);
