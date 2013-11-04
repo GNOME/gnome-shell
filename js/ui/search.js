@@ -110,16 +110,13 @@ const SearchSystem = new Lang.Class({
 
         this._terms = terms;
 
-        if (isSubSearch) {
-            this._providers.forEach(Lang.bind(this, function(provider) {
-                let previousProviderResults = previousResults[provider.id];
+        this._providers.forEach(Lang.bind(this, function(provider) {
+            let previousProviderResults = previousResults[provider.id];
+            if (isSubSearch && previousProviderResults)
                 provider.getSubsearchResultSet(previousProviderResults, terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
-            }));
-        } else {
-            this._providers.forEach(Lang.bind(this, function(provider) {
+            else
                 provider.getInitialResultSet(terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
-            }));
-        }
+        }));
     }
 });
 Signals.addSignalMethods(SearchSystem.prototype);
