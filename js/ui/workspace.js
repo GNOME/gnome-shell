@@ -10,19 +10,14 @@ const St = imports.gi.St;
 const Signals = imports.signals;
 
 const DND = imports.ui.dnd;
-const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
-const Panel = imports.ui.panel;
 const Tweener = imports.ui.tweener;
-
-const FOCUS_ANIMATION_TIME = 0.15;
 
 const WINDOW_DND_SIZE = 256;
 
 const WINDOW_CLONE_MAXIMUM_SCALE = 0.7;
 
-const LIGHTBOX_FADE_TIME = 0.1;
 const CLOSE_BUTTON_FADE_TIME = 0.1;
 
 const DRAGGING_WINDOW_OPACITY = 100;
