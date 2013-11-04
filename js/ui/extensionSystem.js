@@ -253,7 +253,7 @@ function onEnabledExtensionsChanged() {
     newEnabledExtensions.filter(function(uuid) {
         return enabledExtensions.indexOf(uuid) == -1;
     }).forEach(function(uuid) {
-            enableExtension(uuid);
+        enableExtension(uuid);
     });
 
     // Find and disable all the newly disabled extensions: UUIDs found in the
@@ -261,7 +261,7 @@ function onEnabledExtensionsChanged() {
     enabledExtensions.filter(function(item) {
         return newEnabledExtensions.indexOf(item) == -1;
     }).forEach(function(uuid) {
-            disableExtension(uuid);
+        disableExtension(uuid);
     });
 
     enabledExtensions = newEnabledExtensions;
@@ -272,7 +272,7 @@ function _loadExtensions() {
     enabledExtensions = getEnabledExtensions();
 
     let finder = new ExtensionUtils.ExtensionFinder();
-    finder.connect('extension-found', function(signals, extension) {
+    finder.connect('extension-found', function(finder, extension) {
         loadExtension(extension);
     });
     finder.scanExtensions();

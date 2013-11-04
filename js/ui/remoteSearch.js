@@ -7,6 +7,7 @@ const Lang = imports.lang;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
+const FileUtils = imports.misc.fileUtils;
 const Search = imports.ui.search;
 
 const KEY_FILE_GROUP = 'Shell Search Provider';
@@ -122,23 +123,7 @@ function loadRemoteSearchProviders(callback) {
         return;
     }
 
-    let dataDirs = GLib.get_system_data_dirs();
-    dataDirs.forEach(function(dataDir) {
-        let path = GLib.build_filenamev([dataDir, 'gnome-shell', 'search-providers']);
-        let dir = Gio.File.new_for_path(path);
-        let fileEnum;
-        try {
-            fileEnum = dir.enumerate_children('standard::name,standard::type',
-                                              Gio.FileQueryInfoFlags.NONE, null);
-        } catch (e) {
-            fileEnum = null;
-        }
-        if (fileEnum != null) {
-            let info;
-            while ((info = fileEnum.next_file(null)))
-                loadRemoteSearchProvider(fileEnum.get_child(info));
-        }
-    });
+    FileUtils.collectFromDatadirs('search-providers', false, loadRemoteSearchProvider);
 
     let sortOrder = searchSettings.get_strv('sort-order');
 

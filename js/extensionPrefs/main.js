@@ -206,11 +206,11 @@ const Application = new Lang.Class({
     _scanExtensions: function() {
         let finder = new ExtensionUtils.ExtensionFinder();
         finder.connect('extension-found', Lang.bind(this, this._extensionFound));
-        finder.connect('extensions-loaded', Lang.bind(this, this._extensionsLoaded));
         finder.scanExtensions();
+        this._extensionsLoaded();
     },
 
-    _extensionFound: function(signals, extension) {
+    _extensionFound: function(finder, extension) {
         let iter = this._model.append();
         this._model.set(iter, [0, 1], [extension.uuid, extension.metadata.name]);
         this._extensionIters[extension.uuid] = iter;

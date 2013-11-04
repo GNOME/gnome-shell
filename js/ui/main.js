@@ -112,11 +112,6 @@ function start() {
     Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
     sessionMode = new SessionMode.SessionMode();
-    sessionMode.connect('sessions-loaded', _sessionsLoaded);
-    sessionMode.init();
-}
-
-function _sessionsLoaded() {
     sessionMode.connect('updated', _sessionUpdated);
     _initializePrefs();
     _initializeUI();
