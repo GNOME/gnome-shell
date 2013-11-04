@@ -135,6 +135,16 @@ const ScreencastService = new Lang.Class({
         if (!recorder.is_recording()) {
             let [x, y, width, height, fileTemplate, options] = params;
 
+            if (x < 0 || y < 0 ||
+                width <= 0 || height <= 0 ||
+                x + width > global.screen_width ||
+                y + height > global.screen_height) {
+                invocation.return_error_literal(Gio.IOErrorEnum,
+                                                Gio.IOErrorEnum.CANCELLED,
+                                                "Invalid params");
+                return;
+            }
+
             recorder.set_file_template(fileTemplate);
             recorder.set_area(x, y, width, height);
             this._applyOptionalParameters(recorder, options);
