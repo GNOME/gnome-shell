@@ -30,6 +30,7 @@ const WorkspacesViewBase = new Lang.Class({
         this.actor = new St.Widget({ style_class: 'workspaces-view',
                                      reactive: true });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        global.focus_manager.add_group(this.actor);
 
         // The actor itself isn't a drop target, so we don't want to pick on its area
         this.actor.set_size(0, 0);
@@ -371,11 +372,21 @@ const ExtraWorkspaceView = new Lang.Class({
     },
 });
 
+const DelegateFocusNavigator = new Lang.Class({
+    Name: 'DelegateFocusNavigator',
+    Extends: St.Widget,
+
+    vfunc_navigate_focus: function(from, direction) {
+        return this._delegate.navigateFocus(from, direction);
+    },
+});
+
 const WorkspacesDisplay = new Lang.Class({
     Name: 'WorkspacesDisplay',
 
     _init: function() {
-        this.actor = new St.Widget({ clip_to_allocation: true });
+        this.actor = new DelegateFocusNavigator({ clip_to_allocation: true });
+        this.actor._delegate = this;
         this.actor.connect('notify::allocation', Lang.bind(this, this._updateWorkspacesActualGeometry));
         this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
 
@@ -435,6 +446,10 @@ const WorkspacesDisplay = new Lang.Class({
         let adjustment = this._scrollAdjustment;
         adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
         return false;
+    },
+
+    navigateFocus: function(from, direction) {
+        return this._getPrimaryView().actor.navigate_focus(from, direction, false);
     },
 
     show: function() {

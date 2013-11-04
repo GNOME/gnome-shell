@@ -63,11 +63,12 @@ const WindowClone = new Lang.Class({
         // the invisible border; this is inconvenient; rather than trying
         // to compensate all over the place we insert a ClutterActor into
         // the hierarchy that is sized to only the visible portion.
-        this.actor = new Clutter.Actor({ reactive: true,
-                                         x: this.origX,
-                                         y: this.origY,
-                                         width: outerRect.width,
-                                         height: outerRect.height });
+        this.actor = new St.Widget({ reactive: true,
+                                     can_focus: true,
+                                     x: this.origX,
+                                     y: this.origY,
+                                     width: outerRect.width,
+                                     height: outerRect.height });
 
         this.actor.add_child(this._windowClone);
 
@@ -85,10 +86,9 @@ const WindowClone = new Lang.Class({
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', Lang.bind(this, this._onClicked));
         clickAction.connect('long-press', Lang.bind(this, this._onLongPress));
-
         this.actor.add_action(clickAction);
-
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
 
         this._draggable = DND.makeDraggable(this.actor,
                                             { restoreOnSuccess: true,
@@ -197,9 +197,24 @@ const WindowClone = new Lang.Class({
         this.disconnectAll();
     },
 
-    _onClicked: function(action, actor) {
+    _activate: function() {
         this._selected = true;
         this.emit('selected', global.get_current_time());
+    },
+
+    _onKeyPress: function(actor, event) {
+        let symbol = event.get_key_symbol();
+        let isEnter = (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_KP_Enter);
+        if (isEnter) {
+            this._activate();
+            return true;
+        }
+
+        return false;
+    },
+
+    _onClicked: function(action, actor) {
+        this._activate();
     },
 
     _onLongPress: function(action, actor, state) {
@@ -300,6 +315,10 @@ const WindowOverlay = new Lang.Class({
         windowClone.actor.connect('enter-event',
                                   Lang.bind(this, this._onEnter));
         windowClone.actor.connect('leave-event',
+                                  Lang.bind(this, this._onLeave));
+        windowClone.actor.connect('key-focus-in',
+                                  Lang.bind(this, this._onEnter));
+        windowClone.actor.connect('key-focus-out',
                                   Lang.bind(this, this._onLeave));
 
         this._windowAddedId = 0;
