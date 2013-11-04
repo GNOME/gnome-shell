@@ -98,8 +98,8 @@ struct _StScrollViewPrivate
 
   StScrollViewFade *fade_effect;
 
-  gboolean      row_size_set : 1;
-  gboolean      column_size_set : 1;
+  guint         row_size_set : 1;
+  guint         column_size_set : 1;
   guint         mouse_scroll : 1;
   guint         overlay_scrollbars : 1;
   guint         hscrollbar_visible : 1;

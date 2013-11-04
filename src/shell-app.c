@@ -37,7 +37,7 @@ typedef struct {
   GSList *windows;
 
   /* Whether or not we need to resort the windows; this is done on demand */
-  gboolean window_sort_stale : 1;
+  guint window_sort_stale : 1;
 
   /* DBus property notification subscription */
   guint properties_changed_id : 1;
