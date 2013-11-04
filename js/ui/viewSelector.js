@@ -186,6 +186,7 @@ const ViewSelector = new Lang.Class({
         params = Params.parse(params, { a11yFocus: null });
 
         let page = new St.Bin({ child: actor,
+                                visible: false,
                                 x_align: St.Align.START,
                                 y_align: St.Align.START,
                                 x_fill: true,
@@ -210,7 +211,7 @@ const ViewSelector = new Lang.Class({
             oldPage.hide();
 
         this.emit('page-empty');
-
+        this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
         this._activePage.show();
         Tweener.addTween(this._activePage,
             { opacity: 255,
@@ -281,14 +282,6 @@ const ViewSelector = new Lang.Class({
             return true;
         } else if (this._shouldTriggerSearch(symbol)) {
             this.startSearch(event);
-        } else if (!this._searchActive) {
-            if (symbol == Clutter.Tab || symbol == Clutter.Down) {
-                this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-                return true;
-            } else if (symbol == Clutter.ISO_Left_Tab) {
-                this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_BACKWARD, false);
-                return true;
-            }
         }
         return false;
     },
