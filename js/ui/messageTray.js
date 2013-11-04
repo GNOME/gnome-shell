@@ -2373,7 +2373,6 @@ const MessageTray = new Lang.Class({
                     this._showNotification();
             }
         } else if (this._notificationState == State.SHOWN) {
-            let pinned = this._pointerInNotification && !this._notificationRemoved;
             let expired = (this._userActiveWhileNotificationShown &&
                            this._notificationTimeoutId == 0 &&
                            !(this._notification.urgency == Urgency.CRITICAL) &&
@@ -2384,9 +2383,9 @@ const MessageTray = new Lang.Class({
             if (mustClose) {
                 let animate = hasNotifications && !this._notificationRemoved;
                 this._hideNotification(animate);
-            } else if (pinned && !this._notification.expanded) {
+            } else if (this._pointerInNotification && !this._notification.expanded) {
                 this._expandNotification(false);
-            } else if (pinned) {
+            } else if (this._pointerInNotification) {
                 this._ensureNotificationFocused();
             }
         }
