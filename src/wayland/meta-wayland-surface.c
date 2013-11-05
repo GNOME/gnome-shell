@@ -199,14 +199,17 @@ meta_wayland_surface_set_opaque_region (struct wl_client *client,
                                         struct wl_resource *region_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-  MetaWaylandRegion *region = wl_resource_get_user_data (region_resource);
 
   /* X11 unmanaged window */
   if (!surface)
     return;
 
   g_clear_pointer (&surface->pending.opaque_region, cairo_region_destroy);
-  surface->pending.opaque_region = cairo_region_copy (region->region);
+  if (region_resource)
+    {
+      MetaWaylandRegion *region = wl_resource_get_user_data (region_resource);
+      surface->pending.opaque_region = cairo_region_copy (region->region);
+    }
 }
 
 static void
@@ -215,14 +218,17 @@ meta_wayland_surface_set_input_region (struct wl_client *client,
                                        struct wl_resource *region_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-  MetaWaylandRegion *region = wl_resource_get_user_data (region_resource);
 
   /* X11 unmanaged window */
   if (!surface)
     return;
 
   g_clear_pointer (&surface->pending.input_region, cairo_region_destroy);
-  surface->pending.input_region = cairo_region_copy (region->region);
+  if (region_resource)
+    {
+      MetaWaylandRegion *region = wl_resource_get_user_data (region_resource);
+      surface->pending.input_region = cairo_region_copy (region->region);
+    }
 }
 
 static void
