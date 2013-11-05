@@ -860,59 +860,6 @@ meta_window_actor_is_destroyed (MetaWindowActor *self)
   return self->priv->disposed;
 }
 
-gboolean
-meta_window_actor_is_override_redirect (MetaWindowActor *self)
-{
-  return meta_window_is_override_redirect (self->priv->window);
-}
-
-/**
- * meta_window_actor_get_workspace:
- * @self: #MetaWindowActor
- *
- * Returns the index of workspace on which this window is located; if the
- * window is sticky, or is not currently located on any workspace, returns -1.
- * This function is deprecated  and should not be used in newly written code;
- * meta_window_get_workspace() instead.
- *
- * Return value: (transfer none): index of workspace on which this window is
- * located.
- */
-gint
-meta_window_actor_get_workspace (MetaWindowActor *self)
-{
-  MetaWindowActorPrivate *priv;
-  MetaWorkspace          *workspace;
-
-  if (!self)
-    return -1;
-
-  priv = self->priv;
-
-  if (!priv->window || meta_window_is_on_all_workspaces (priv->window))
-    return -1;
-
-  workspace = meta_window_get_workspace (priv->window);
-
-  if (!workspace)
-    return -1;
-
-  return meta_workspace_index (workspace);
-}
-
-gboolean
-meta_window_actor_showing_on_its_workspace (MetaWindowActor *self)
-{
-  if (!self)
-    return FALSE;
-
-  /* If override redirect: */
-  if (!self->priv->window)
-    return TRUE;
-
-  return meta_window_showing_on_its_workspace (self->priv->window);
-}
-
 static void
 meta_window_actor_freeze (MetaWindowActor *self)
 {
