@@ -62,7 +62,7 @@ const XdndHandler = new Lang.Class({
             let cursorWindow = windows[windows.length - 1];
 
             // FIXME: more reliable way?
-            if (!cursorWindow.is_override_redirect())
+            if (!cursorWindow.get_meta_window().is_override_redirect())
                 return;
 
             let constraint_position = new Clutter.BindConstraint({ coordinate : Clutter.BindCoordinate.POSITION,

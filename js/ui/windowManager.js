@@ -232,12 +232,13 @@ const WorkspaceTracker = new Lang.Class({
 
         let windows = global.get_window_actors();
         for (i = 0; i < windows.length; i++) {
-            let win = windows[i];
+            let actor = windows[i];
+            let win = actor.get_meta_window();
 
-            if (win.get_meta_window().is_on_all_workspaces())
+            if (win.is_on_all_workspaces())
                 continue;
 
-            let workspaceIndex = win.get_workspace();
+            let workspaceIndex = win.get_workspace().index();
             emptyWorkspaces[workspaceIndex] = false;
         }
 
@@ -975,25 +976,29 @@ const WindowManager = new Lang.Class({
         wgroup.add_actor(switchData.movingWindowBin);
 
         for (let i = 0; i < windows.length; i++) {
-            let window = windows[i];
+            let actor = windows[i];
+            let window = actor.get_meta_window();
 
-            if (!window.meta_window.showing_on_its_workspace())
+            if (!window.showing_on_its_workspace())
                 continue;
 
-            if (this._movingWindow && window.meta_window == this._movingWindow) {
-                switchData.movingWindow = { window: window,
-                                            parent: window.get_parent() };
+            if (window.is_on_all_workspaces())
+                continue;
+
+            let record = { window: actor,
+                           parent: actor.get_parent() };
+
+            if (this._movingWindow && window == this._movingWindow) {
+                switchData.movingWindow = record;
                 switchData.windows.push(switchData.movingWindow);
-                window.reparent(switchData.movingWindowBin);
-            } else if (window.get_workspace() == from) {
-                switchData.windows.push({ window: window,
-                                          parent: window.get_parent() });
-                window.reparent(switchData.outGroup);
-            } else if (window.get_workspace() == to) {
-                switchData.windows.push({ window: window,
-                                          parent: window.get_parent() });
-                window.reparent(switchData.inGroup);
-                window.show();
+                actor.reparent(switchData.movingWindowBin);
+            } else if (window.get_workspace().index() == from) {
+                switchData.windows.push(record);
+                actor.reparent(switchData.outGroup);
+            } else if (window.get_workspace().index() == to) {
+                switchData.windows.push(record);
+                actor.reparent(switchData.inGroup);
+                actor.show();
             }
         }
 
