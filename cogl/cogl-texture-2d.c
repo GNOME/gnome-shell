@@ -292,6 +292,66 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
 #endif /* defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base) */
 
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
+static void
+shm_buffer_get_cogl_pixel_format (struct wl_shm_buffer *shm_buffer,
+                                  CoglPixelFormat *format_out,
+                                  CoglPixelFormat *internal_format_out)
+{
+  CoglPixelFormat format;
+  CoglPixelFormat internal_format = COGL_PIXEL_FORMAT_ANY;
+
+  switch (wl_shm_buffer_get_format (shm_buffer))
+    {
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+    case WL_SHM_FORMAT_ARGB8888:
+      format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
+      break;
+    case WL_SHM_FORMAT_XRGB8888:
+      format = COGL_PIXEL_FORMAT_ARGB_8888;
+      internal_format = COGL_PIXEL_FORMAT_RGB_888;
+      break;
+#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
+    case WL_SHM_FORMAT_ARGB8888:
+      format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
+      break;
+    case WL_SHM_FORMAT_XRGB8888:
+      format = COGL_PIXEL_FORMAT_BGRA_8888;
+      internal_format = COGL_PIXEL_FORMAT_BGR_888;
+      break;
+#endif
+    default:
+      g_warn_if_reached ();
+      format = COGL_PIXEL_FORMAT_ARGB_8888;
+    }
+
+  if (format_out)
+    *format_out = format;
+  if (internal_format_out)
+    *internal_format_out = internal_format;
+}
+
+void
+cogl_wayland_texture_2d_update_area (CoglTexture2D *texture,
+                                     struct wl_shm_buffer *shm_buffer,
+                                     int            x,
+                                     int            y,
+                                     int            width,
+                                     int            height)
+{
+  CoglPixelFormat format;
+
+  shm_buffer_get_cogl_pixel_format (shm_buffer, &format, NULL);
+
+  cogl_texture_set_region (COGL_TEXTURE (texture),
+                           x, y,
+                           x, y,
+                           width, height,
+                           width, height,
+                           format,
+                           wl_shm_buffer_get_stride (shm_buffer),
+                           wl_shm_buffer_get_data (shm_buffer));
+}
+
 CoglTexture2D *
 cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
                                          struct wl_resource *buffer,
@@ -304,34 +364,11 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
   if (shm_buffer)
     {
       int stride = wl_shm_buffer_get_stride (shm_buffer);
-      CoglPixelFormat format;
-      CoglPixelFormat internal_format = COGL_PIXEL_FORMAT_ANY;
       int width = wl_shm_buffer_get_width (shm_buffer);
       int height = wl_shm_buffer_get_height (shm_buffer);
+      CoglPixelFormat format, internal_format;
 
-      switch (wl_shm_buffer_get_format (shm_buffer))
-        {
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-          case WL_SHM_FORMAT_ARGB8888:
-            format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
-            break;
-          case WL_SHM_FORMAT_XRGB8888:
-            format = COGL_PIXEL_FORMAT_ARGB_8888;
-            internal_format = COGL_PIXEL_FORMAT_RGB_888;
-            break;
-#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
-          case WL_SHM_FORMAT_ARGB8888:
-            format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
-            break;
-          case WL_SHM_FORMAT_XRGB8888:
-            format = COGL_PIXEL_FORMAT_BGRA_8888;
-            internal_format = COGL_PIXEL_FORMAT_BGR_888;
-            break;
-#endif
-          default:
-            g_warn_if_reached ();
-            format = COGL_PIXEL_FORMAT_ARGB_8888;
-        }
+      shm_buffer_get_cogl_pixel_format (shm_buffer, &format, &internal_format);
 
       return cogl_texture_2d_new_from_data (ctx,
                                             width, height,
