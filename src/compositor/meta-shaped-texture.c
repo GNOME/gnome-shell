@@ -266,6 +266,9 @@ set_cogl_texture (MetaShapedTexture *stex,
    * know how much of the buffer has changed with respect to the
    * previous buffer. We only queue a redraw in response to surface
    * damage. */
+
+  if (priv->create_mipmaps)
+    meta_texture_tower_set_base_texture (priv->paint_tower, cogl_tex);
 }
 
 static void
@@ -872,10 +875,6 @@ meta_shaped_texture_set_pixmap (MetaShapedTexture *stex,
     }
   else
     set_cogl_texture (stex, NULL);
-
-  if (priv->create_mipmaps)
-    meta_texture_tower_set_base_texture (priv->paint_tower,
-                                         COGL_TEXTURE (priv->texture));
 }
 
 void
@@ -899,10 +898,6 @@ meta_shaped_texture_attach_wayland_buffer (MetaShapedTexture  *stex,
     set_cogl_texture (stex, buffer->texture);
   else
     set_cogl_texture (stex, NULL);
-
-  if (priv->create_mipmaps)
-    meta_texture_tower_set_base_texture (priv->paint_tower,
-                                         COGL_TEXTURE (priv->texture));
 }
 
 /**
