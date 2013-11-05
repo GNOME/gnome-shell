@@ -48,11 +48,6 @@ xserver_set_window_id (struct wl_client *client,
   window  = meta_display_lookup_x_window (display, xid);
   if (window)
     {
-      MetaWindowActor *window_actor =
-        META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-
-      meta_window_actor_set_wayland_surface (window_actor, surface);
-
       surface->window = window;
       window->surface = surface;
 

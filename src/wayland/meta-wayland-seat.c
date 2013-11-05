@@ -439,12 +439,6 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
 
       surface = window->surface;
     }
-  else if (META_IS_SHAPED_TEXTURE (actor))
-    {
-      MetaShapedTexture *shaped_texture = META_SHAPED_TEXTURE (actor);
-
-      surface = meta_shaped_texture_get_wayland_surface (shaped_texture);
-    }
 
   pointer->current = surface;
   if (surface != pointer->focus)

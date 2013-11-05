@@ -35,8 +35,6 @@ void meta_window_actor_process_wayland_damage (MetaWindowActor *self,
                                                int              y,
                                                int              width,
                                                int              height);
-void meta_window_actor_set_wayland_surface    (MetaWindowActor    *self,
-                                               MetaWaylandSurface *surface);
 void meta_window_actor_attach_wayland_buffer  (MetaWindowActor   *self,
                                                MetaWaylandBuffer *buffer);
 

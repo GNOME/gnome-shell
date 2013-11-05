@@ -16,6 +16,7 @@
 
 #include <clutter/x11/clutter-x11.h>
 #include <cogl/cogl-texture-pixmap-x11.h>
+#include <cogl/cogl-wayland-server.h>
 #include <gdk/gdk.h> /* for gdk_rectangle_union() */
 #include <string.h>
 
@@ -51,6 +52,8 @@ struct _MetaWindowActorPrivate
   MetaScreen       *screen;
 
   ClutterActor     *actor;
+
+  MetaWaylandBuffer *buffer;
 
   /* MetaShadowFactory only caches shadows that are actually in use;
    * to avoid unnecessary recomputation we do two things: 1) we store
@@ -391,10 +394,7 @@ meta_window_actor_constructed (GObject *object)
 
   if (!priv->actor)
     {
-      if (meta_is_wayland_compositor ())
-        priv->actor = meta_shaped_texture_new_with_wayland_surface (window->surface);
-      else
-        priv->actor = meta_shaped_texture_new_with_xwindow (xwindow);
+      priv->actor = meta_shaped_texture_new ();
 
       clutter_actor_add_child (CLUTTER_ACTOR (self), priv->actor);
       clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
@@ -1015,6 +1015,35 @@ queue_send_frame_messages_timeout (MetaWindowActor *self)
 }
 
 static void
+wayland_surface_update_area (MetaWindowActor *self,
+                             int x, int y, int width, int height)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  struct wl_resource *resource = priv->buffer->resource;
+  struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (resource);
+
+  if (shm_buffer)
+    cogl_wayland_texture_2d_update_area (COGL_TEXTURE_2D (priv->buffer->texture),
+                                         shm_buffer, x, y, width, height);
+}
+
+static void
+update_area (MetaWindowActor *self,
+             int x, int y, int width, int height)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  CoglTexture *texture;
+
+  texture = meta_shaped_texture_get_texture (META_SHAPED_TEXTURE (priv->actor));
+
+  if (meta_is_wayland_compositor ())
+    wayland_surface_update_area (self, x, y, width, height);
+  else
+    cogl_texture_pixmap_x11_update_area (COGL_TEXTURE_PIXMAP_X11 (texture),
+                                         x, y, width, height);
+}
+
+static void
 meta_window_actor_damage_all (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
@@ -1029,6 +1058,7 @@ meta_window_actor_damage_all (MetaWindowActor *self)
   if (!priv->mapped || priv->needs_pixmap)
     return;
 
+  update_area (self, 0, 0, cogl_texture_get_width (texture), cogl_texture_get_height (texture));
   redraw_queued = meta_shaped_texture_update_area (META_SHAPED_TEXTURE (priv->actor),
                                                    0, 0,
                                                    cogl_texture_get_width (texture),
@@ -1350,8 +1380,7 @@ meta_window_actor_detach_x11_pixmap (MetaWindowActor *self)
    * you are supposed to be able to free a GLXPixmap after freeing the underlying
    * pixmap, but it certainly doesn't work with current DRI/Mesa
    */
-  meta_shaped_texture_set_pixmap (META_SHAPED_TEXTURE (priv->actor),
-                                  None);
+  meta_shaped_texture_set_texture (META_SHAPED_TEXTURE (priv->actor), NULL);
   cogl_flush();
 
   XFreePixmap (xdisplay, priv->back_pixmap);
@@ -1428,9 +1457,6 @@ meta_window_actor_destroy (MetaWindowActor *self)
   MetaWindowType window_type;
 
   priv = self->priv;
-
-  if (meta_is_wayland_compositor ())
-    meta_shaped_texture_set_wayland_surface (META_SHAPED_TEXTURE (priv->actor), NULL);
 
   window = priv->window;
   window_type = meta_window_get_window_type (window);
@@ -1975,6 +2001,7 @@ check_needs_x11_pixmap (MetaWindowActor *self)
 
   if (priv->back_pixmap == None)
     {
+      CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
       CoglTexture *texture;
 
       meta_error_trap_push (display);
@@ -2003,18 +2030,11 @@ check_needs_x11_pixmap (MetaWindowActor *self)
         meta_shaped_texture_set_create_mipmaps (META_SHAPED_TEXTURE (priv->actor),
                                                 FALSE);
 
-      meta_shaped_texture_set_pixmap (META_SHAPED_TEXTURE (priv->actor),
-                                      priv->back_pixmap);
-
-      texture = meta_shaped_texture_get_texture (META_SHAPED_TEXTURE (priv->actor));
-
-      /*
-       * This only works *after* actually setting the pixmap, so we have to
-       * do it here.
-       * See: http://bugzilla.clutter-project.org/show_bug.cgi?id=2236
-       */
+      texture = COGL_TEXTURE (cogl_texture_pixmap_x11_new (ctx, priv->back_pixmap, FALSE, NULL));
       if (G_UNLIKELY (!cogl_texture_pixmap_x11_is_using_tfp_extension (COGL_TEXTURE_PIXMAP_X11 (texture))))
         g_warning ("NOTE: Not using GLX TFP!\n");
+
+      meta_shaped_texture_set_texture (META_SHAPED_TEXTURE (priv->actor), texture);
 
       /* ::size-changed is supposed to refer to meta_window_get_outer_rect().
        * Emitting it here works pretty much OK because a new value of the
@@ -2153,6 +2173,7 @@ meta_window_actor_process_x11_damage (MetaWindowActor    *self,
   if (!priv->mapped || priv->needs_pixmap)
     return;
 
+  update_area (self, event->area.x, event->area.y, event->area.width, event->area.height);
   redraw_queued = meta_shaped_texture_update_area (META_SHAPED_TEXTURE (priv->actor),
                                                    event->area.x,
                                                    event->area.y,
@@ -2178,11 +2199,11 @@ meta_window_actor_process_wayland_damage (MetaWindowActor *self,
   if (!priv->mapped)
     return;
 
+  update_area (self, x, y, width, height);
   redraw_queued = meta_shaped_texture_update_area (META_SHAPED_TEXTURE (priv->actor),
                                                    x, y, width, height,
                                                    clutter_actor_has_mapped_clones (priv->actor) ?
                                                    NULL : priv->unobscured_region);
-
   priv->repaint_scheduled = priv->repaint_scheduled  || redraw_queued;
 }
 
@@ -2510,30 +2531,16 @@ maybe_emit_size_changed (MetaWindowActor *self,
 }
 
 void
-meta_window_actor_set_wayland_surface (MetaWindowActor *self,
-                                       MetaWaylandSurface *surface)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-
-  meta_shaped_texture_set_wayland_surface (META_SHAPED_TEXTURE (priv->actor),
-                                           surface);
-  if (surface && surface->buffer_ref.buffer)
-    maybe_emit_size_changed (self, surface->buffer_ref.buffer);
-}
-
-void
 meta_window_actor_attach_wayland_buffer (MetaWindowActor *self,
                                          MetaWaylandBuffer *buffer)
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaShapedTexture *stex = META_SHAPED_TEXTURE (priv->actor);
-  CoglTexture *prev_tex = meta_shaped_texture_get_texture (stex);
 
-  meta_shaped_texture_attach_wayland_buffer (stex, buffer);
+  priv->buffer = buffer;
 
-  if (!prev_tex)
-    meta_window_actor_sync_actor_geometry (self, FALSE);
-
+  meta_shaped_texture_set_texture (stex, buffer->texture);
+  meta_window_actor_sync_actor_geometry (self, FALSE);
   maybe_emit_size_changed (self, buffer);
 }
 
