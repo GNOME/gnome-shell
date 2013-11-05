@@ -31,9 +31,10 @@
 #include "clutter-utils.h"
 #include "meta-texture-tower.h"
 
+#include "meta-shaped-texture-private.h"
+
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
-#include <cogl/cogl-texture-pixmap-x11.h>
 #include <gdk/gdk.h> /* for gdk_rectangle_intersect() */
 #include "meta-cullable.h"
 
@@ -67,8 +68,8 @@ G_DEFINE_TYPE_WITH_CODE (MetaShapedTexture, meta_shaped_texture, CLUTTER_TYPE_AC
 struct _MetaShapedTexturePrivate
 {
   MetaTextureTower *paint_tower;
-  Pixmap pixmap;
-  CoglTexturePixmapX11 *texture;
+
+  CoglTexture *texture;
   CoglTexture *mask_texture;
 
   cairo_region_t *clip_region;
@@ -105,6 +106,7 @@ meta_shaped_texture_init (MetaShapedTexture *self)
   priv = self->priv = META_SHAPED_TEXTURE_GET_PRIVATE (self);
 
   priv->paint_tower = meta_texture_tower_new ();
+
   priv->texture = NULL;
   priv->mask_texture = NULL;
   priv->create_mipmaps = TRUE;
@@ -206,9 +208,7 @@ paint_clipped_rectangle (CoglFramebuffer       *fb,
   cogl_framebuffer_draw_multitextured_rectangle (fb, pipeline,
                                                  x1, y1, x2, y2,
                                                  &coords[0], 8);
-
 }
-
 
 static void
 meta_shaped_texture_paint (ClutterActor *actor)
@@ -581,9 +581,6 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
   if (priv->texture == NULL)
     return FALSE;
 
-  cogl_texture_pixmap_x11_update_area (priv->texture,
-                                       x, y, width, height);
-
   meta_texture_tower_update_area (priv->paint_tower, x, y, width, height);
 
   if (unobscured_region)
@@ -616,8 +613,8 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
 }
 
 static void
-set_cogl_texture (MetaShapedTexture    *stex,
-                  CoglTexturePixmapX11 *cogl_tex)
+set_cogl_texture (MetaShapedTexture *stex,
+                  CoglTexture       *cogl_tex)
 {
   MetaShapedTexturePrivate *priv;
   guint width, height;
@@ -657,37 +654,17 @@ set_cogl_texture (MetaShapedTexture    *stex,
 }
 
 /**
- * meta_shaped_texture_set_pixmap:
+ * meta_shaped_texture_set_texture:
  * @stex: The #MetaShapedTexture
- * @pixmap: The pixmap you want the stex to assume
+ * @pixmap: The #CoglTexture to display
  */
 void
-meta_shaped_texture_set_pixmap (MetaShapedTexture *stex,
-                                Pixmap             pixmap)
+meta_shaped_texture_set_texture (MetaShapedTexture *stex,
+                                 CoglTexture       *texture)
 {
-  MetaShapedTexturePrivate *priv;
-
   g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
 
-  priv = stex->priv;
-
-  if (priv->pixmap == pixmap)
-    return;
-
-  priv->pixmap = pixmap;
-
-  if (pixmap != None)
-    {
-      CoglContext *ctx =
-        clutter_backend_get_cogl_context (clutter_get_default_backend ());
-      set_cogl_texture (stex, cogl_texture_pixmap_x11_new (ctx, pixmap, FALSE, NULL));
-    }
-  else
-    set_cogl_texture (stex, NULL);
-
-  if (priv->create_mipmaps)
-    meta_texture_tower_set_base_texture (priv->paint_tower,
-                                         COGL_TEXTURE (priv->texture));
+  set_cogl_texture (stex, texture);
 }
 
 /**
