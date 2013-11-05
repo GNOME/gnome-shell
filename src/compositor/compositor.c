@@ -685,13 +685,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   clutter_actor_add_child (info->stage, info->window_group);
   clutter_actor_add_child (info->stage, info->top_window_group);
 
-  /*
-   * Delay the creation of the overlay window as long as we can, to avoid
-   * blanking out the screen. This means that during the plugin loading, the
-   * overlay window is not accessible; if the plugin needs to access it
-   * directly, it should hook into the "show" signal on stage, and do
-   * its stuff there.
-   */
   info->output = get_output_window (screen);
   XReparentWindow (xdisplay, xwin, info->output, 0, 0);
 
