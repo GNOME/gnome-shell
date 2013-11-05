@@ -770,8 +770,8 @@ get_clip (MetaShapedTexture *stex,
  * has a mapped clone)
  *
  * Repairs the damaged area indicated by @x, @y, @width and @height
- * and queues a redraw for the intersection @visibible_region and
- * the damage area. If @visibible_region is %NULL a redraw will always
+ * and queues a redraw for the intersection @unobscured_region and
+ * the damage area. If @unobscured_region is %NULL a redraw will always
  * get queued.
  *
  * Return value: Whether a redraw have been queued or not
