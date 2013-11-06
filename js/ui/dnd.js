@@ -346,6 +346,7 @@ const _Draggable = new Lang.Class({
     },
 
     _updateDragHover : function () {
+        this._updateHoverId = 0;
         let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
                                                                   this._dragX, this._dragY);
         let dragEvent = {
