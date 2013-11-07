@@ -518,6 +518,8 @@ clutter_interval_set_custom_property (ClutterScriptable *scriptable,
     clutter_interval_set_initial_value (self, value);
   else if (strcmp (name, "final") == 0)
     clutter_interval_set_final_value (self, value);
+  else
+    g_object_set_property (G_OBJECT (scriptable), name, value);
 }
 
 static void
