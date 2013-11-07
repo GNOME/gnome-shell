@@ -13,7 +13,7 @@ const BackgroundMenu = new Lang.Class({
     Name: 'BackgroundMenu',
     Extends: PopupMenu.PopupMenu,
 
-    _init: function(source) {
+    _init: function(source, layoutManager) {
         this.parent(source, 0, St.Side.TOP);
 
         this.addSettingsAction(_("Settings"), 'gnome-control-center.desktop');
@@ -22,17 +22,17 @@ const BackgroundMenu = new Lang.Class({
 
         this.actor.add_style_class_name('background-menu');
 
-        Main.uiGroup.add_actor(this.actor);
+        layoutManager.uiGroup.add_actor(this.actor);
         this.actor.hide();
     }
 });
 
-function addBackgroundMenu(actor) {
+function addBackgroundMenu(actor, layoutManager) {
     let cursor = new St.Bin({ opacity: 0 });
-    Main.uiGroup.add_actor(cursor);
+    layoutManager.uiGroup.add_actor(cursor);
 
     actor.reactive = true;
-    actor._backgroundMenu = new BackgroundMenu(cursor);
+    actor._backgroundMenu = new BackgroundMenu(cursor, layoutManager);
     actor._backgroundManager = new PopupMenu.PopupMenuManager({ actor: actor });
     actor._backgroundManager.addMenu(actor._backgroundMenu);
 
