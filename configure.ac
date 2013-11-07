@@ -58,6 +58,21 @@ fi
 
 AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
 
+AC_ARG_ENABLE([systemd],
+              AS_HELP_STRING([--enable-systemd], [Use systemd]),
+              [enable_systemd=$enableval],
+              [enable_systemd=auto])
+AS_IF([test x$enable_systemd != xno], [
+  AC_MSG_CHECKING([for libsystemd-journal])
+  PKG_CHECK_EXISTS([libsystemd-journal],
+                   [have_systemd=yes
+                    AC_DEFINE([HAVE_SYSTEMD], [1], [Define if we have systemd])],
+                   [have_systemd=no])
+  AC_MSG_RESULT($have_systemd)
+])
+
+AC_MSG_RESULT($enable_systemd)
+
 CLUTTER_MIN_VERSION=1.13.4
 GOBJECT_INTROSPECTION_MIN_VERSION=0.10.1
 GJS_MIN_VERSION=1.38.1
@@ -93,6 +108,9 @@ SHARED_PCS="gio-unix-2.0 >= $GIO_MIN_VERSION
             libnm-glib libnm-util >= $NETWORKMANAGER_MIN_VERSION
             libnm-gtk >= $NETWORKMANAGER_MIN_VERSION
             libsecret-unstable gcr-base-3 >= $GCR_MIN_VERSION"
+if test x$have_systemd = xyes; then
+  SHARED_PCS="${SHARED_PCS} libsystemd-journal"
+fi
 
 PKG_CHECK_MODULES(GNOME_SHELL, $SHARED_PCS)
 PKG_CHECK_MODULES(MUTTER, libmutter >= $MUTTER_MIN_VERSION)
