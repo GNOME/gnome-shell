@@ -415,6 +415,7 @@ const EndSessionDialog = new Lang.Class({
                 let dialogContent = DialogContent[this._type];
                 let button = dialogContent.confirmButtons[dialogContent.confirmButtons.length - 1];
                 this._confirm(button.signal);
+                this._timerId = 0;
 
                 return false;
             }));

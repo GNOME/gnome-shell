@@ -434,6 +434,7 @@ const VPNRequestHandler = new Lang.Class({
     },
 
     _vpnChildFinished: function(pid, status, requestObj) {
+        this._childWatch = 0;
         if (this._newStylePlugin) {
             // For new style plugin, all work is done in the async reading functions
             // Just reap the process here

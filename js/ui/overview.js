@@ -363,11 +363,13 @@ const Overview = new Lang.Class({
             this._lastHoveredWindow = dragEvent.targetActor._delegate.metaWindow;
             this._windowSwitchTimeoutId = Mainloop.timeout_add(DND_WINDOW_SWITCH_TIMEOUT,
                                             Lang.bind(this, function() {
+                                                this._windowSwitchTimeoutId = 0;
                                                 this._needsFakePointerEvent = true;
                                                 Main.activateWindow(dragEvent.targetActor._delegate.metaWindow,
                                                                     this._windowSwitchTimestamp);
                                                 this.hide();
                                                 this._lastHoveredWindow = null;
+                                                return false;
                                             }));
         }
 

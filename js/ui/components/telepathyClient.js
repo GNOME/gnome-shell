@@ -960,6 +960,8 @@ const ChatNotification = new Lang.Class({
     },
 
     appendTimestamp: function() {
+        this._timestampTimeoutId = 0;
+
         let lastMessageTime = this._history[0].time;
         let lastMessageDate = new Date(lastMessageTime * 1000);
 
