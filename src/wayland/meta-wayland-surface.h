@@ -80,7 +80,7 @@ typedef struct
   int x, y;
 
   char *title;
-  char *wm_class;
+  char *app_id;
 
   char *gtk_application_id;
   char *gtk_unique_bus_name;
@@ -103,7 +103,7 @@ struct _MetaWaylandSurface
   MetaWaylandCompositor *compositor;
   MetaWaylandBufferReference buffer_ref;
   MetaWindow *window;
-  MetaWaylandSurfaceExtension *shell_surface;
+  MetaWaylandSurfaceExtension *xdg_surface;
   MetaWaylandSurfaceExtension *gtk_surface;
 
   /* All the pending state, that wl_surface.commit will apply. */

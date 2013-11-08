@@ -49,6 +49,7 @@
 
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-private.h"
+#include "xdg-shell-server-protocol.h"
 
 #include <string.h>
 
@@ -532,9 +533,14 @@ meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer)
 
   wl_list_for_each_safe (popup, tmp, &popup_grab->all_popups, link)
     {
-      MetaWaylandSurfaceExtension *shell_surface = popup->surface->shell_surface;
+      MetaWaylandSurfaceExtension *shell_surface = popup->surface->xdg_surface;
+      struct wl_client *client = wl_resource_get_client (shell_surface->resource);
+      struct wl_display *display = wl_client_get_display (client);
+      uint32_t serial;
 
-      wl_shell_surface_send_popup_done (shell_surface->resource);
+      serial = wl_display_next_serial (display);
+
+      xdg_popup_send_popup_done (shell_surface->resource, serial);
       wl_list_remove (&popup->surface_destroy_listener.link);
       wl_list_remove (&popup->link);
       g_slice_free (MetaWaylandPopup, popup);

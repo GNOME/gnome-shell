@@ -43,6 +43,9 @@ mutter_built_sources = \
 	wayland/gtk-shell-protocol.c		\
 	wayland/gtk-shell-server-protocol.h	\
 	wayland/gtk-shell-client-protocol.h	\
+	wayland/xdg-shell-protocol.c		\
+	wayland/xdg-shell-server-protocol.h	\
+	wayland/xdg-shell-client-protocol.h	\
 	wayland/xserver-protocol.c		\
 	wayland/xserver-server-protocol.h	\
 	wayland/xserver-client-protocol.h

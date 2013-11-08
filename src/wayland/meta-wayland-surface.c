@@ -39,6 +39,7 @@
 
 #include <wayland-server.h>
 #include "gtk-shell-server-protocol.h"
+#include "xdg-shell-server-protocol.h"
 
 #include "meta-wayland-private.h"
 #include "meta-xwayland-private.h"
@@ -492,9 +493,69 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
 }
 
 static void
-shell_surface_pong (struct wl_client *client,
-                    struct wl_resource *resource,
-                    guint32 serial)
+xdg_surface_destroy (struct wl_client *client,
+                     struct wl_resource *resource)
+{
+  g_warning ("TODO: support xdg_surface.destroy");
+}
+
+static void
+xdg_surface_set_transient_for (struct wl_client *client,
+                               struct wl_resource *resource,
+                               struct wl_resource *parent)
+{
+  MetaWaylandSurfaceExtension *surface_ext = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = surface_ext->surface;
+
+  MetaWaylandSurfaceExtension *parent_ext = wl_resource_get_user_data (parent);
+  MetaWaylandSurface *parent_surf = parent_ext->surface;
+
+  if (surface->window && parent_surf->window)
+    meta_window_set_transient_for (surface->window, parent_surf->window);
+}
+
+static void
+xdg_surface_set_title (struct wl_client *client,
+                       struct wl_resource *resource,
+                       const char *title)
+{
+  MetaWaylandSurfaceExtension *extension = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = extension->surface;
+
+  if (surface->window)
+    meta_window_set_title (surface->window, title);
+  else
+    {
+      ensure_initial_state (surface);
+
+      g_free (surface->initial_state->title);
+      surface->initial_state->title = g_strdup (title);
+    }
+}
+
+static void
+xdg_surface_set_app_id (struct wl_client *client,
+                        struct wl_resource *resource,
+                        const char *app_id)
+{
+  MetaWaylandSurfaceExtension *extension = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = extension->surface;
+
+  if (surface->window)
+    meta_window_set_wm_class (surface->window, app_id, app_id);
+  else
+    {
+      ensure_initial_state (surface);
+
+      g_free (surface->initial_state->app_id);
+      surface->initial_state->app_id = g_strdup (app_id);
+    }
+}
+
+static void
+xdg_surface_pong (struct wl_client *client,
+                  struct wl_resource *resource,
+                  guint32 serial)
 {
 }
 
@@ -568,23 +629,23 @@ static const MetaWaylandPointerGrabInterface move_grab_interface = {
 };
 
 static void
-shell_surface_move (struct wl_client *client,
-                    struct wl_resource *resource,
-                    struct wl_resource *seat_resource,
-                    guint32 serial)
+xdg_surface_move (struct wl_client *client,
+                  struct wl_resource *resource,
+                  struct wl_resource *seat_resource,
+                  guint32 serial)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWindow *window;
   MetaWaylandMoveGrab *move_grab;
   MetaRectangle rect;
 
   if (seat->pointer.button_count == 0 ||
       seat->pointer.grab_serial != serial ||
-      seat->pointer.focus != shell_surface->surface)
+      seat->pointer.focus != xdg_surface->surface)
     return;
 
-  window = shell_surface->surface->window;
+  window = xdg_surface->surface->window;
   if (!window)
     return;
 
@@ -595,15 +656,15 @@ shell_surface_move (struct wl_client *client,
 
   move_grab = g_slice_new (MetaWaylandMoveGrab);
 
-  meta_window_get_input_rect (shell_surface->surface->window,
+  meta_window_get_input_rect (xdg_surface->surface->window,
                               &rect);
 
   move_grab->generic.interface = &move_grab_interface;
   move_grab->generic.pointer = &seat->pointer;
 
-  move_grab->surface = shell_surface->surface;
+  move_grab->surface = xdg_surface->surface;
   move_grab->surface_destroy_listener.notify = move_grab_lose_surface;
-  wl_resource_add_destroy_listener (shell_surface->surface->resource,
+  wl_resource_add_destroy_listener (xdg_surface->surface->resource,
 				    &move_grab->surface_destroy_listener);
 
   move_grab->dx = wl_fixed_from_int (rect.x) - seat->pointer.grab_x;
@@ -622,209 +683,97 @@ shell_surface_move (struct wl_client *client,
    * XXX: For now we just focus the surface directly associated with
    * the grab.
    */
-  meta_wayland_pointer_set_focus (&seat->pointer, shell_surface->surface);
+  meta_wayland_pointer_set_focus (&seat->pointer, xdg_surface->surface);
 }
 
 static void
-shell_surface_resize (struct wl_client *client,
+xdg_surface_resize (struct wl_client *client,
                       struct wl_resource *resource,
                       struct wl_resource *seat,
                       guint32 serial,
                       guint32 edges)
 {
-  g_warning ("TODO: support shell_surface_resize request");
+  g_warning ("TODO: support xdg_surface.resize");
 }
 
 static void
-shell_surface_set_toplevel (struct wl_client *client,
+xdg_surface_set_output (struct wl_client *client,
+                        struct wl_resource *resource,
+                        struct wl_resource *output)
+{
+  g_warning ("TODO: support xdg_surface.set_output");
+}
+
+static void
+xdg_surface_set_fullscreen (struct wl_client *client,
                             struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = shell_surface->surface;
-  MetaWaylandCompositor *compositor = surface->compositor;
-
-  /* NB: Surfaces from xwayland become managed based on X events. */
-  if (client == compositor->xwayland_client)
-    return;
-
-  if (surface->window)
-    {
-      if (surface->window->fullscreen)
-	meta_window_unmake_fullscreen (surface->window);
-      if (meta_window_get_maximized (surface->window) != 0)
-	meta_window_unmaximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
-    }
-  else
-    {
-      ensure_initial_state (surface);
-
-      surface->initial_state->initial_type = META_WAYLAND_SURFACE_TOPLEVEL;
-    }
-}
-
-static void
-shell_surface_set_transient (struct wl_client *client,
-                             struct wl_resource *resource,
-                             struct wl_resource *parent,
-                             int x,
-                             int y,
-                             guint32 flags)
-{
-  MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = shell_surface->surface;
-  MetaWaylandSurface *parent_surface = wl_resource_get_user_data (parent);
-  MetaWaylandCompositor *compositor = surface->compositor;
-
-  /* NB: Surfaces from xwayland become managed based on X events. */
-  if (client == compositor->xwayland_client)
-    return;
-
-  if (surface->window)
-    meta_window_set_transient_for (surface->window, parent_surface->window);
-  else
-    {
-      ensure_initial_state (surface);
-
-      surface->initial_state->initial_type = META_WAYLAND_SURFACE_TOPLEVEL;
-      surface->initial_state->transient_for = parent;
-    }
-}
-
-static void
-shell_surface_set_fullscreen (struct wl_client *client,
-                              struct wl_resource *resource,
-                              guint32 method,
-                              guint32 framerate,
-                              struct wl_resource *output)
-{
-  MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = shell_surface->surface;
-  MetaWaylandCompositor *compositor = surface->compositor;
-
-  /* NB: Surfaces from xwayland become managed based on X events. */
-  if (client == compositor->xwayland_client)
-    return;
+  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = xdg_surface->surface;
 
   if (surface->window)
     meta_window_make_fullscreen (surface->window);
-  else
-    {
-      ensure_initial_state (surface);
-
-      surface->initial_state->initial_type = META_WAYLAND_SURFACE_FULLSCREEN;
-    }
 }
 
 static void
-shell_surface_set_popup (struct wl_client *client,
-                         struct wl_resource *resource,
-                         struct wl_resource *seat_resource,
-                         guint32 serial,
-                         struct wl_resource *parent,
-                         gint32 x,
-                         gint32 y,
-                         guint32 flags)
+xdg_surface_unset_fullscreen (struct wl_client *client,
+                              struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = shell_surface->surface;
-  MetaWaylandCompositor *compositor = surface->compositor;
-  MetaWaylandSeat *seat = compositor->seat;
-
-  if (serial < seat->pointer.click_serial)
-    {
-      /* stale request */
-      return;
-    }
+  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = xdg_surface->surface;
 
   if (surface->window)
-    {
-      meta_warning ("Client set_popup() on an already visible window, this is not supported\n");
-    }
-  else
-    {
-      ensure_initial_state (surface);
-
-      surface->initial_state->initial_type = META_WAYLAND_SURFACE_POPUP;
-      surface->initial_state->transient_for = parent;
-      surface->initial_state->x = x;
-      surface->initial_state->y = y;
-    }
-
+    meta_window_unmake_fullscreen (surface->window);
 }
 
 static void
-shell_surface_set_maximized (struct wl_client *client,
-                             struct wl_resource *resource,
-                             struct wl_resource *output)
+xdg_surface_set_maximized (struct wl_client *client,
+                           struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = shell_surface->surface;
-  MetaWaylandCompositor *compositor = surface->compositor;
-
-  /* NB: Surfaces from xwayland become managed based on X events. */
-  if (client == compositor->xwayland_client)
-    return;
+  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = xdg_surface->surface;
 
   if (surface->window)
     meta_window_maximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
-  else
-    {
-      ensure_initial_state (surface);
-
-      surface->initial_state->initial_type = META_WAYLAND_SURFACE_MAXIMIZED;
-    }
 }
 
 static void
-shell_surface_set_title (struct wl_client *client,
-                         struct wl_resource *resource,
-                         const char *title)
+xdg_surface_unset_maximized (struct wl_client *client,
+                             struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *extension = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = extension->surface;
+  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = xdg_surface->surface;
 
   if (surface->window)
-    meta_window_set_title (surface->window, title);
-  else
-    {
-      ensure_initial_state (surface);
-
-      g_free (surface->initial_state->title);
-      surface->initial_state->title = g_strdup (title);
-    }
+    meta_window_unmaximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
 }
 
 static void
-shell_surface_set_class (struct wl_client *client,
-                         struct wl_resource *resource,
-                         const char *class_)
+xdg_surface_set_minimized (struct wl_client *client,
+                           struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *extension = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = extension->surface;
+  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = xdg_surface->surface;
 
   if (surface->window)
-    meta_window_set_wm_class (surface->window, class_, class_);
-  else
-    {
-      ensure_initial_state (surface);
-
-      g_free (surface->initial_state->wm_class);
-      surface->initial_state->wm_class = g_strdup (class_);
-    }
+    meta_window_minimize (surface->window);
 }
 
-static const struct wl_shell_surface_interface meta_wayland_shell_surface_interface =
+static const struct xdg_surface_interface meta_wayland_xdg_surface_interface =
 {
-  shell_surface_pong,
-  shell_surface_move,
-  shell_surface_resize,
-  shell_surface_set_toplevel,
-  shell_surface_set_transient,
-  shell_surface_set_fullscreen,
-  shell_surface_set_popup,
-  shell_surface_set_maximized,
-  shell_surface_set_title,
-  shell_surface_set_class
+  xdg_surface_destroy,
+  xdg_surface_set_transient_for,
+  xdg_surface_set_title,
+  xdg_surface_set_app_id,
+  xdg_surface_pong,
+  xdg_surface_move,
+  xdg_surface_resize,
+  xdg_surface_set_output,
+  xdg_surface_set_fullscreen,
+  xdg_surface_unset_fullscreen,
+  xdg_surface_set_maximized,
+  xdg_surface_unset_maximized,
+  xdg_surface_set_minimized,
 };
 
 static void
@@ -845,9 +794,7 @@ destroy_surface_extension (struct wl_resource *resource)
 
   /* In case cleaning up a dead client destroys extension first */
   if (extension->surface)
-    {
-      wl_list_remove (&extension->surface_destroy_listener.link);
-    }
+    wl_list_remove (&extension->surface_destroy_listener.link);
 
   g_free (extension);
 }
@@ -879,43 +826,69 @@ create_surface_extension (struct wl_client          *client,
 }
 
 static void
-get_shell_surface (struct wl_client *client,
-                   struct wl_resource *resource,
-                   guint32 id,
-                   struct wl_resource *surface_resource)
+use_unstable_version (struct wl_client *client,
+                      struct wl_resource *resource,
+                      int32_t version)
+{
+  if (version != META_XDG_SHELL_VERSION)
+    g_warning ("Bad xdg_shell version: %d", version);
+}
+
+static void
+get_xdg_surface (struct wl_client *client,
+                 struct wl_resource *resource,
+                 guint32 id,
+                 struct wl_resource *surface_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
 
-  if (surface->shell_surface)
+  if (surface->xdg_surface)
     {
       wl_resource_post_error (surface_resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,
-                              "wl_shell::get_shell_surface already requested");
+                              "xdg_shell::get_xdg_surface already requested");
       return;
     }
 
-  surface->shell_surface = create_surface_extension (client, resource, id,
-                                                     META_WL_SHELL_SURFACE_VERSION, surface,
-                                                     &wl_shell_surface_interface,
-                                                     &meta_wayland_shell_surface_interface);
+  surface->xdg_surface = create_surface_extension (client, resource, id,
+                                                   META_XDG_SURFACE_VERSION, surface,
+                                                   &xdg_surface_interface,
+                                                   &meta_wayland_xdg_surface_interface);
 }
 
-static const struct wl_shell_interface meta_wayland_shell_interface =
+static void
+get_xdg_popup (struct wl_client *client,
+               struct wl_resource *resource,
+               uint32_t id,
+               struct wl_resource *surface,
+               struct wl_resource *parent,
+               struct wl_resource *seat,
+               uint32_t serial,
+               int32_t x,
+               int32_t y,
+               uint32_t flags)
 {
-  get_shell_surface
+  g_warning ("TODO: support xdg_shell.get_xdg_popup");
+}
+
+static const struct xdg_shell_interface meta_wayland_xdg_shell_interface =
+{
+  use_unstable_version,
+  get_xdg_surface,
+  get_xdg_popup,
 };
 
 static void
-bind_shell (struct wl_client *client,
-            void *data,
-            guint32 version,
-            guint32 id)
+bind_xdg_shell (struct wl_client *client,
+                void *data,
+                guint32 version,
+                guint32 id)
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &wl_shell_interface,
-				 MIN (META_WL_SHELL_VERSION, version), id);
-  wl_resource_set_implementation (resource, &meta_wayland_shell_interface, data, NULL);
+  resource = wl_resource_create (client, &xdg_shell_interface,
+				 MIN (META_XDG_SHELL_VERSION, version), id);
+  wl_resource_set_implementation (resource, &meta_wayland_xdg_shell_interface, data, NULL);
 }
 
 static void
@@ -993,7 +966,7 @@ get_gtk_surface (struct wl_client *client,
     {
       wl_resource_post_error (surface_resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,
-                              "wl_shell::get_gtk_surface already requested");
+                              "gtk_shell::get_gtk_surface already requested");
       return;
     }
 
@@ -1028,10 +1001,10 @@ void
 meta_wayland_init_shell (MetaWaylandCompositor *compositor)
 {
   if (wl_global_create (compositor->wayland_display,
-			&wl_shell_interface,
-			META_WL_SHELL_VERSION,
-			compositor, bind_shell) == NULL)
-    g_error ("Failed to register a global shell object");
+			&xdg_shell_interface,
+			META_XDG_SHELL_VERSION,
+			compositor, bind_xdg_shell) == NULL)
+    g_error ("Failed to register a global xdg-shell object");
 
   if (wl_global_create (compositor->wayland_display,
 			&gtk_shell_interface,
@@ -1072,7 +1045,7 @@ meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
       window->showing_for_first_time = FALSE;
       window->placed = TRUE;
       if (!meta_wayland_pointer_start_popup_grab (&seat->pointer, surface))
-	wl_shell_surface_send_popup_done (surface->shell_surface->resource);
+	xdg_popup_send_popup_done (surface->xdg_surface->resource);
       break;
     default:
       g_assert_not_reached ();
@@ -1098,8 +1071,8 @@ meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
   if (initial->title)
     meta_window_set_title (window, initial->title);
 
-  if (initial->wm_class)
-    meta_window_set_wm_class (window, initial->wm_class, initial->wm_class);
+  if (initial->app_id)
+    meta_window_set_wm_class (window, initial->app_id, initial->app_id);
 
   meta_window_set_gtk_dbus_properties (window,
 				       initial->gtk_application_id,
@@ -1128,7 +1101,7 @@ static void
 free_initial_state (MetaWaylandSurfaceInitialState *initial)
 {
   g_free (initial->title);
-  g_free (initial->wm_class);
+  g_free (initial->app_id);
 
   g_free (initial->gtk_application_id);
   g_free (initial->gtk_unique_bus_name);
@@ -1146,7 +1119,9 @@ meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
 				       int                 new_height,
 				       int                 edges)
 {
-  if (surface->shell_surface)
-    wl_shell_surface_send_configure (surface->shell_surface->resource,
-				     edges, new_width, new_height);
+  if (surface->xdg_surface)
+    xdg_surface_send_configure (surface->xdg_surface->resource,
+                                edges, new_width, new_height,
+                                0, 0 /* XXX: support this */);
 }
+
