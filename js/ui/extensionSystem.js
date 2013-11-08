@@ -316,6 +316,8 @@ function _loadExtensions() {
     let finder = new ExtensionUtils.ExtensionFinder();
     finder.connect('extension-found', (finder, extension) => {
         loadExtension(extension);
+        if (Main.sessionMode.enabledExtensions.indexOf(extension.uuid) != -1)
+            extension.type = ExtensionUtils.ExtensionType.SESSION_MODE;
     });
     finder.scanExtensions();
 }
