@@ -322,6 +322,10 @@ const GnomeShellExtensionsIface = '<node> \
 </method> \
 <method name="CheckForUpdates"> \
 </method> \
+<method name="LoadUserExtension"> \
+    <arg type="s" direction="in" name="uuid"/> \
+    <arg type="b" direction="out" name="success"/> \
+</method> \
 <property name="ShellVersion" type="s" access="read" /> \
 </interface> \
 </node>';
@@ -422,6 +426,22 @@ var GnomeShellExtensions = new Lang.Class({
 
     CheckForUpdates() {
         ExtensionDownloader.checkForUpdates();
+    },
+
+    LoadUserExtension(uuid) {
+        let extension = ExtensionUtils.extensions[uuid];
+        if (extension)
+            return true;
+
+        let dir = Gio.File.new_for_path(GLib.build_filenamev([global.userdatadir, 'extensions', uuid]));
+        try {
+            extension = ExtensionUtils.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
+            ExtensionSystem.loadExtension(extension);
+        } catch (e) {
+            log('Could not load user extension from %s'.format(dir.get_path()));
+            return false;
+        }
+        return true;
     },
 
     ShellVersion: Config.PACKAGE_VERSION,
