@@ -859,9 +859,9 @@ meta_screen_free (MetaScreen *screen,
                   screen->wm_sn_selection_window);
   
   if (screen->work_area_later != 0)
-    g_source_remove (screen->work_area_later);
+    meta_later_remove (screen->work_area_later);
   if (screen->check_fullscreen_later != 0)
-    g_source_remove (screen->check_fullscreen_later);
+    meta_later_remove (screen->check_fullscreen_later);
 
   if (screen->monitor_infos)
     g_free (screen->monitor_infos);
