@@ -937,7 +937,8 @@ clutter_stage_real_fullscreen (ClutterStage *stage)
 
 void
 _clutter_stage_queue_event (ClutterStage *stage,
-			    ClutterEvent *event)
+                            ClutterEvent *event,
+                            gboolean      copy_event)
 {
   ClutterStagePrivate *priv;
   gboolean first_event;
@@ -949,7 +950,10 @@ _clutter_stage_queue_event (ClutterStage *stage,
 
   first_event = priv->event_queue->length == 0;
 
-  g_queue_push_tail (priv->event_queue, clutter_event_copy (event));
+  if (copy_event)
+    event = clutter_event_copy (event);
+
+  g_queue_push_tail (priv->event_queue, event);
 
   if (first_event)
     {

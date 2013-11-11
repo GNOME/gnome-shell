@@ -309,8 +309,7 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       while (spin > 0 && (event = clutter_event_get ()))
 	{
 	  /* forward the event into clutter for emission etc. */
-	  clutter_do_event (event);
-	  clutter_event_free (event);
+          _clutter_stage_queue_event (event->any.stage, event, FALSE);
 	  --spin;
 	}
 

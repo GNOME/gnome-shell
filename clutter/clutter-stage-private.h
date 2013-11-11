@@ -62,7 +62,8 @@ gboolean            _clutter_stage_needs_update          (ClutterStage          
 gboolean            _clutter_stage_do_update             (ClutterStage          *stage);
 
 void     _clutter_stage_queue_event                       (ClutterStage *stage,
-					                   ClutterEvent *event);
+                                                           ClutterEvent *event,
+                                                           gboolean      copy_event);
 gboolean _clutter_stage_has_queued_events                 (ClutterStage *stage);
 void     _clutter_stage_process_queued_events             (ClutterStage *stage);
 void     _clutter_stage_update_input_devices              (ClutterStage *stage);

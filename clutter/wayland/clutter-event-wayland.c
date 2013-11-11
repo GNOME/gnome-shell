@@ -35,6 +35,7 @@
 #include "clutter-event.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
+#include "clutter-stage-private.h"
 
 #include "clutter-event-wayland.h"
 
@@ -94,8 +95,7 @@ clutter_event_source_wayland_dispatch (GSource *base,
   if (event)
     {
       /* forward the event into clutter for emission etc. */
-      clutter_do_event (event);
-      clutter_event_free (event);
+      _clutter_stage_queue_event (event->any.stage, event, FALSE);
     }
 
   _clutter_threads_release_lock ();

@@ -51,6 +51,7 @@
 #include "clutter-xkb-utils.h"
 #include "clutter-backend-private.h"
 #include "clutter-evdev.h"
+#include "clutter-stage-private.h"
 
 #include "clutter-device-manager-evdev.h"
 
@@ -573,8 +574,7 @@ clutter_event_dispatch (GSource     *g_source,
         goto out;
 
       /* forward the event into clutter for emission etc. */
-      clutter_do_event (event);
-      clutter_event_free (event);
+      _clutter_stage_queue_event (event->any.stage, event, FALSE);
 
       /* update the device states *after* the event */
       event_state = xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_EFFECTIVE);

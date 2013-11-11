@@ -2410,7 +2410,7 @@ clutter_do_event (ClutterEvent *event)
    * because we've "looked ahead" and know all motion events that
    * will occur before drawing the frame.
    */
-  _clutter_stage_queue_event (event->any.stage, event);
+  _clutter_stage_queue_event (event->any.stage, event, TRUE);
 }
 
 static void
