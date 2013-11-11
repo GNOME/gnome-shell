@@ -59,9 +59,6 @@
 #include "meta-weston-launch.h"
 #include "monitor-private.h"
 
-static void ensure_initial_state (MetaWaylandSurface *surface);
-static void free_initial_state   (MetaWaylandSurfaceInitialState *surface);
-
 static void
 surface_process_damage (MetaWaylandSurface *surface,
                         cairo_region_t *region)
@@ -239,6 +236,30 @@ empty_region (cairo_region_t *region)
   cairo_region_intersect_rectangle (region, &rectangle);
 }
 
+static gboolean
+surface_wants_window (MetaWaylandSurface *surface)
+{
+  return (surface->xdg_surface != NULL);
+}
+
+static void
+surface_ensure_window (MetaWaylandSurface *surface)
+{
+  MetaDisplay *display = meta_get_display ();
+  int width, height;
+
+  if (surface->window)
+    return;
+
+  if (!surface_wants_window (surface))
+    return;
+
+  width = surface->buffer_ref.buffer->width;
+  height = surface->buffer_ref.buffer->height;
+
+  surface->window = meta_window_new_for_wayland (display, width, height, surface);
+}
+
 static void
 meta_wayland_surface_commit (struct wl_client *client,
                              struct wl_resource *resource)
@@ -290,18 +311,7 @@ meta_wayland_surface_commit (struct wl_client *client,
       return;
     }
 
-  if (surface->initial_state)
-    {
-      MetaDisplay *display = meta_get_display ();
-      int width;
-      int height;
-
-      width = surface->buffer_ref.buffer->width;
-      height = surface->buffer_ref.buffer->height;
-
-      /* This will free and clear initial_state */
-      surface->window = meta_window_new_for_wayland (display, width, height, surface);
-    }
+  surface_ensure_window (surface);
 
   if (surface == compositor->seat->sprite)
     meta_wayland_seat_update_sprite (compositor->seat);
@@ -336,6 +346,27 @@ meta_wayland_surface_commit (struct wl_client *client,
       meta_window_set_opaque_region (surface->window, surface->pending.opaque_region);
       meta_window_set_input_region (surface->window, surface->pending.input_region);
       surface_process_damage (surface, surface->pending.damage);
+
+      meta_window_set_title (surface->window, surface->pending.title);
+      g_clear_pointer (&surface->pending.title, g_free);
+
+      meta_window_set_wm_class (surface->window, surface->pending.app_id, surface->pending.app_id);
+      g_clear_pointer (&surface->pending.app_id, g_free);
+
+      meta_window_set_gtk_dbus_properties (surface->window,
+                                           surface->pending.gtk_application_id,
+                                           surface->pending.gtk_unique_bus_name,
+                                           surface->pending.gtk_app_menu_path,
+                                           surface->pending.gtk_menubar_path,
+                                           surface->pending.gtk_application_object_path,
+                                           surface->pending.gtk_window_object_path);
+
+      g_clear_pointer (&surface->pending.gtk_application_id, g_free);
+      g_clear_pointer (&surface->pending.gtk_unique_bus_name, g_free);
+      g_clear_pointer (&surface->pending.gtk_app_menu_path, g_free);
+      g_clear_pointer (&surface->pending.gtk_menubar_path, g_free);
+      g_clear_pointer (&surface->pending.gtk_application_object_path, g_free);
+      g_clear_pointer (&surface->pending.gtk_window_object_path, g_free);
     }
 
   if (surface->pending.buffer)
@@ -389,9 +420,6 @@ meta_wayland_surface_free (MetaWaylandSurface *surface)
 {
   MetaWaylandCompositor *compositor = surface->compositor;
   MetaWaylandFrameCallback *cb, *next;
-
-  if (surface->initial_state)
-    free_initial_state (surface->initial_state);
 
   compositor->surfaces = g_list_remove (compositor->surfaces, surface);
 
@@ -522,15 +550,8 @@ xdg_surface_set_title (struct wl_client *client,
   MetaWaylandSurfaceExtension *extension = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = extension->surface;
 
-  if (surface->window)
-    meta_window_set_title (surface->window, title);
-  else
-    {
-      ensure_initial_state (surface);
-
-      g_free (surface->initial_state->title);
-      surface->initial_state->title = g_strdup (title);
-    }
+  g_clear_pointer (&surface->pending.title, g_free);
+  surface->pending.title = g_strdup (title);
 }
 
 static void
@@ -541,15 +562,8 @@ xdg_surface_set_app_id (struct wl_client *client,
   MetaWaylandSurfaceExtension *extension = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = extension->surface;
 
-  if (surface->window)
-    meta_window_set_wm_class (surface->window, app_id, app_id);
-  else
-    {
-      ensure_initial_state (surface);
-
-      g_free (surface->initial_state->app_id);
-      surface->initial_state->app_id = g_strdup (app_id);
-    }
+  g_clear_pointer (&surface->pending.app_id, g_free);
+  surface->pending.app_id = g_strdup (app_id);
 }
 
 static void
@@ -912,41 +926,18 @@ set_dbus_properties (struct wl_client   *client,
       return;
     }
 
-  if (surface->window)
-    {
-      meta_window_set_gtk_dbus_properties (surface->window,
-					   application_id,
-					   unique_bus_name,
-					   app_menu_path,
-					   menubar_path,
-					   application_object_path,
-					   window_object_path);
-    }
-  else
-    {
-      MetaWaylandSurfaceInitialState *initial;
-
-      ensure_initial_state (surface);
-      initial = surface->initial_state;
-
-      g_free (initial->gtk_application_id);
-      initial->gtk_application_id = g_strdup (application_id);
-
-      g_free (initial->gtk_unique_bus_name);
-      initial->gtk_unique_bus_name = g_strdup (unique_bus_name);
-
-      g_free (initial->gtk_app_menu_path);
-      initial->gtk_app_menu_path = g_strdup (app_menu_path);
-
-      g_free (initial->gtk_menubar_path);
-      initial->gtk_menubar_path = g_strdup (menubar_path);
-
-      g_free (initial->gtk_application_object_path);
-      initial->gtk_application_object_path = g_strdup (application_object_path);
-
-      g_free (initial->gtk_window_object_path);
-      initial->gtk_window_object_path = g_strdup (window_object_path);
-    }
+  g_clear_pointer (&surface->pending.gtk_application_id, g_free);
+  surface->pending.gtk_application_id = g_strdup (application_id);
+  g_clear_pointer (&surface->pending.gtk_unique_bus_name, g_free);
+  surface->pending.gtk_unique_bus_name = g_strdup (unique_bus_name);
+  g_clear_pointer (&surface->pending.gtk_app_menu_path, g_free);
+  surface->pending.gtk_app_menu_path = g_strdup (app_menu_path);
+  g_clear_pointer (&surface->pending.gtk_menubar_path, g_free);
+  surface->pending.gtk_menubar_path = g_strdup (menubar_path);
+  g_clear_pointer (&surface->pending.gtk_application_object_path, g_free);
+  surface->pending.gtk_application_object_path = g_strdup (application_object_path);
+  g_clear_pointer (&surface->pending.gtk_window_object_path, g_free);
+  surface->pending.gtk_window_object_path = g_strdup (window_object_path);
 }
 
 static const struct gtk_surface_interface meta_wayland_gtk_surface_interface =
@@ -1011,106 +1002,6 @@ meta_wayland_init_shell (MetaWaylandCompositor *compositor)
 			META_GTK_SHELL_VERSION,
 			compositor, bind_gtk_shell) == NULL)
     g_error ("Failed to register a global gtk-shell object");
-}
-
-void
-meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
-					MetaWindow         *window)
-{
-  MetaWaylandSurfaceInitialState *initial = surface->initial_state;
-  MetaWaylandCompositor *compositor = surface->compositor;
-  MetaWaylandSeat *seat = compositor->seat;
-
-  if (initial == NULL)
-    return;
-
-  window->type = META_WINDOW_NORMAL;
-
-  /* Note that we poke at the bits directly here, because we're
-     in the middle of meta_window_new_shared() */
-  switch (initial->initial_type)
-    {
-    case META_WAYLAND_SURFACE_TOPLEVEL:
-      break;
-    case META_WAYLAND_SURFACE_FULLSCREEN:
-      window->fullscreen = TRUE;
-      break;
-    case META_WAYLAND_SURFACE_MAXIMIZED:
-      window->maximized_horizontally = window->maximized_vertically = TRUE;
-      break;
-    case META_WAYLAND_SURFACE_POPUP:
-      window->override_redirect = TRUE;
-      window->type = META_WINDOW_DROPDOWN_MENU;
-      window->mapped = TRUE;
-      window->showing_for_first_time = FALSE;
-      window->placed = TRUE;
-      if (!meta_wayland_pointer_start_popup_grab (&seat->pointer, surface))
-	xdg_popup_send_popup_done (surface->xdg_surface->resource);
-      break;
-    default:
-      g_assert_not_reached ();
-    }
-
-  if (initial->transient_for)
-    {
-      MetaWaylandSurface *parent = wl_resource_get_user_data (initial->transient_for);
-      if (parent && parent->window)
-	{
-	  window->transient_for = g_object_ref (parent->window);
-
-	  if (initial->initial_type == META_WAYLAND_SURFACE_POPUP)
-	    {
-	      window->rect.x = parent->window->rect.x + initial->x;
-	      window->rect.y = parent->window->rect.y + initial->y;
-	    }
-	}
-
-      window->type = META_WINDOW_DIALOG;
-    }
-
-  if (initial->title)
-    meta_window_set_title (window, initial->title);
-
-  if (initial->app_id)
-    meta_window_set_wm_class (window, initial->app_id, initial->app_id);
-
-  meta_window_set_gtk_dbus_properties (window,
-				       initial->gtk_application_id,
-				       initial->gtk_unique_bus_name,
-				       initial->gtk_app_menu_path,
-				       initial->gtk_menubar_path,
-				       initial->gtk_application_object_path,
-				       initial->gtk_window_object_path);
-
-  meta_window_type_changed (window);
-
-  free_initial_state (initial);
-  surface->initial_state = NULL;
-}
-
-static void
-ensure_initial_state (MetaWaylandSurface *surface)
-{
-  if (surface->initial_state)
-    return;
-
-  surface->initial_state = g_slice_new0 (MetaWaylandSurfaceInitialState);
-}
-
-static void
-free_initial_state (MetaWaylandSurfaceInitialState *initial)
-{
-  g_free (initial->title);
-  g_free (initial->app_id);
-
-  g_free (initial->gtk_application_id);
-  g_free (initial->gtk_unique_bus_name);
-  g_free (initial->gtk_app_menu_path);
-  g_free (initial->gtk_menubar_path);
-  g_free (initial->gtk_application_object_path);
-  g_free (initial->gtk_window_object_path);
-
-  g_slice_free (MetaWaylandSurfaceInitialState, initial);
 }
 
 void

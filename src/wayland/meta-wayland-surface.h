@@ -64,31 +64,19 @@ typedef struct
 
   /* wl_surface.frame */
   struct wl_list frame_callback_list;
-} MetaWaylandDoubleBufferedState;
 
-typedef enum {
-  META_WAYLAND_SURFACE_TOPLEVEL = 0,
-  META_WAYLAND_SURFACE_MAXIMIZED,
-  META_WAYLAND_SURFACE_FULLSCREEN,
-  META_WAYLAND_SURFACE_POPUP,
-} MetaWaylandSurfaceType;
-
-typedef struct
-{
-  MetaWaylandSurfaceType initial_type;
-  struct wl_resource *transient_for;
-  int x, y;
-
+  /* xdg_surface */
   char *title;
   char *app_id;
 
+  /* gtk_surface */
   char *gtk_application_id;
   char *gtk_unique_bus_name;
   char *gtk_app_menu_path;
   char *gtk_menubar_path;
   char *gtk_application_object_path;
   char *gtk_window_object_path;
-} MetaWaylandSurfaceInitialState;
+} MetaWaylandDoubleBufferedState;
 
 typedef struct
 {
@@ -108,10 +96,6 @@ struct _MetaWaylandSurface
 
   /* All the pending state, that wl_surface.commit will apply. */
   MetaWaylandDoubleBufferedState pending;
-
-  /* All the initial state, that wl_shell_surface.set_* will apply
-     (through meta_window_new_for_wayland) */
-  MetaWaylandSurfaceInitialState *initial_state;
 };
 
 void                meta_wayland_init_shell     (MetaWaylandCompositor *compositor);
@@ -121,9 +105,6 @@ MetaWaylandSurface *meta_wayland_surface_create (MetaWaylandCompositor *composit
 						 guint32                id,
 						 guint32                version);
 void                meta_wayland_surface_free   (MetaWaylandSurface    *surface);
-
-void                meta_wayland_surface_set_initial_state (MetaWaylandSurface *surface,
-							    MetaWindow         *window);
 
 void                meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
 							   int                 width,

@@ -1064,8 +1064,6 @@ meta_window_new_shared (MetaDisplay         *display,
 
   if (client_type == META_WINDOW_CLIENT_TYPE_X11)
     meta_window_load_initial_properties (window);
-  else
-    meta_wayland_surface_set_initial_state (window->surface, window);
 
   if (window->override_redirect)
     {
