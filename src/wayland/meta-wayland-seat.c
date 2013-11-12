@@ -280,13 +280,14 @@ handle_button_event (MetaWaylandSeat    *seat,
                      const ClutterEvent *event)
 {
   MetaWaylandPointer *pointer = &seat->pointer;
-  gboolean state = event->type == CLUTTER_BUTTON_PRESS;
+  gboolean implicit_grab;
   uint32_t button;
   MetaWaylandSurface *surface;
 
   notify_motion (seat, event);
 
-  if (state && pointer->button_count == 1)
+  implicit_grab = (event->type == CLUTTER_BUTTON_PRESS) && (pointer->button_count == 1);
+  if (implicit_grab)
     {
       button = clutter_event_get_button (event);
       pointer->grab_button = button;
@@ -307,7 +308,7 @@ handle_button_event (MetaWaylandSeat    *seat,
 
   pointer->grab->interface->button (pointer->grab, event);
 
-  if (pointer->button_count == 1)
+  if (implicit_grab)
     pointer->grab_serial = wl_display_get_serial (seat->display);
 }
 
