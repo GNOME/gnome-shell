@@ -95,6 +95,26 @@ clutter_input_device_xi2_init (ClutterInputDeviceXI2 *self)
 {
 }
 
+static ClutterModifierType
+get_modifier_for_button (int i)
+{
+  switch (i)
+    {
+    case 1:
+      return CLUTTER_BUTTON1_MASK;
+    case 2:
+      return CLUTTER_BUTTON2_MASK;
+    case 3:
+      return CLUTTER_BUTTON3_MASK;
+    case 4:
+      return CLUTTER_BUTTON4_MASK;
+    case 5:
+      return CLUTTER_BUTTON5_MASK;
+    default:
+      return 0;
+    }
+}
+
 void
 _clutter_input_device_xi2_translate_state (ClutterEvent    *event,
 					   XIModifierState *modifiers_state,
@@ -125,32 +145,25 @@ _clutter_input_device_xi2_translate_state (ClutterEvent    *event,
           if (!XIMaskIsSet (buttons_state->mask, i))
             continue;
 
-          switch (i)
-            {
-            case 1:
-              button |= CLUTTER_BUTTON1_MASK;
-              break;
-
-            case 2:
-              button |= CLUTTER_BUTTON2_MASK;
-              break;
-
-            case 3:
-              button |= CLUTTER_BUTTON3_MASK;
-              break;
-
-            case 4:
-              button |= CLUTTER_BUTTON4_MASK;
-              break;
-
-            case 5:
-              button |= CLUTTER_BUTTON5_MASK;
-              break;
-
-            default:
-              break;
-            }
+          button |= get_modifier_for_button (i);
         }
+    }
+
+  /* The XIButtonState sent in the event specifies the
+   * state of the buttons before the event. In order to
+   * get the current state of the buttons, we need to
+   * filter out the current button.
+   */
+  switch (event->type)
+    {
+    case CLUTTER_BUTTON_PRESS:
+      button |=  (get_modifier_for_button (event->button.button));
+      break;
+    case CLUTTER_BUTTON_RELEASE:
+      button &= ~(get_modifier_for_button (event->button.button));
+      break;
+    default:
+      break;
     }
 
   effective = button | base | latched | locked;
