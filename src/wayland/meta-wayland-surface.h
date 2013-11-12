@@ -111,4 +111,7 @@ void                meta_wayland_surface_configure_notify (MetaWaylandSurface *s
 							   int                 height,
 							   int                 edges);
 
+void                meta_wayland_surface_focused_set (MetaWaylandSurface *surface);
+void                meta_wayland_surface_focused_unset (MetaWaylandSurface *surface);
+
 #endif

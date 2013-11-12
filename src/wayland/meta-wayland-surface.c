@@ -1016,3 +1016,16 @@ meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
                                 0, 0 /* XXX: support this */);
 }
 
+void
+meta_wayland_surface_focused_set (MetaWaylandSurface *surface)
+{
+  if (surface->xdg_surface)
+    xdg_surface_send_focused_set (surface->xdg_surface->resource);
+}
+
+void
+meta_wayland_surface_focused_unset (MetaWaylandSurface *surface)
+{
+  if (surface->xdg_surface)
+    xdg_surface_send_focused_unset (surface->xdg_surface->resource);
+}
