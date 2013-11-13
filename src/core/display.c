@@ -2296,7 +2296,8 @@ meta_display_handle_event (MetaDisplay        *display,
     }
 #endif /* HAVE_WAYLAND */
 
-  return (display->grab_op != META_GRAB_OP_COMPOSITOR);
+  return (display->grab_op != META_GRAB_OP_NONE &&
+          display->grab_op != META_GRAB_OP_COMPOSITOR);
 }
 
 static gboolean
