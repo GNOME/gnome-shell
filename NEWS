@@ -1,3 +1,11 @@
+3.11.2
+======
+* Fix resize operations using mouse-button-modifier [Lionel; #710251]
+* Misc. fixes and cleanups [Jasper, Rico, Florian; #711731]
+
+Contributors:
+  Lionel Landwerlin, Florian Müllner, Jasper St. Pierre, Rico Tzschichholz
+
 3.11.1
 ======
 * Don't require at least one output device to be connected [Giovanni; #709009]
