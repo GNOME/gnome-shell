@@ -1,3 +1,23 @@
+3.11.2
+======
+* Cache search result display actors [Jasper; #704912]
+* Use username in userWidget if real name doesn't fit [Jasper; #706851]
+* Support shell_global_reexec_self() on OpenBSD [Antoine; #709571]
+* Support disabling browser plugin [Colin; #711218]
+* Restore support for 'disable-restart-buttons' [Florian; #711244]
+* Validate parameters of exposed DBus methods [Florian; #699752]
+* Connect applications to systemd journal if available [Colin; #711626]
+* Misc bug fixes and cleanups [Florian, Jasper; #711205, #698486, #711416,
+  #644306, #711555, #709806, #711631, #711732]
+
+Contributors:
+  Cosimo Cecchi, Antoine Jacoutot, Florian Müllner, Jasper St. Pierre,
+  Rico Tzschichholz, Colin Walters
+
+Translations:
+  Yuri Myasoedov [ru], Kjartan Maraas [nb], Efstathios Iosifidis [el],
+  Benjamin Steinwender [de], eternalhui [zh_CN], Shantha kumar [ta]
+
 3.11.1
 ======
 * power: Use UPower directly instead of gnome-settings-daemon [Bastien; #710273]
