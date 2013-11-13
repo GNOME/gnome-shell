@@ -119,7 +119,7 @@ const GnomeShell = new Lang.Class({
                 returnValue = '';
             success = true;
         } catch (e) {
-            returnValue = JSON.stringify(e);
+            returnValue = '' + e;
             success = false;
         }
         return [success, returnValue];
