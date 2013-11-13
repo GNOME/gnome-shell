@@ -257,11 +257,6 @@ notify_motion (MetaWaylandSeat    *seat,
                const ClutterEvent *event)
 {
   MetaWaylandPointer *pointer = &seat->pointer;
-  float x, y;
-
-  clutter_event_get_coords (event, &x, &y);
-  pointer->x = wl_fixed_from_double (x);
-  pointer->y = wl_fixed_from_double (y);
 
   meta_wayland_seat_repick (seat, event);
 
@@ -363,10 +358,16 @@ count_buttons (const ClutterEvent *event)
   return count;
 }
 
-gboolean
-meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
-                                const ClutterEvent *event)
+void
+meta_wayland_seat_update_pointer (MetaWaylandSeat    *seat,
+                                  const ClutterEvent *event)
 {
+  float x, y;
+
+  clutter_event_get_coords (event, &x, &y);
+  seat->pointer.x = wl_fixed_from_double (x);
+  seat->pointer.y = wl_fixed_from_double (y);
+
   seat->pointer.button_count = count_buttons (event);
 
   if (seat->cursor_tracker)
@@ -381,7 +382,12 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
       meta_cursor_tracker_queue_redraw (seat->cursor_tracker,
                                         CLUTTER_ACTOR (event->any.stage));
     }
+}
 
+gboolean
+meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
+                                const ClutterEvent *event)
+{
   switch (event->type)
     {
     case CLUTTER_MOTION:

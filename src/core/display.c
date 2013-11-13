@@ -2044,6 +2044,15 @@ meta_display_handle_event (MetaDisplay        *display,
 {
   MetaWindow *window;
   gboolean frame_was_receiver;
+#ifdef HAVE_WAYLAND
+  MetaWaylandCompositor *compositor;
+
+  if (meta_is_wayland_compositor ())
+    {
+      compositor = meta_wayland_compositor_get_default ();
+      meta_wayland_compositor_update (compositor, event);
+    }
+#endif  /* HAVE_WAYLAND */
 
   window = get_window_for_actor (event->any.source, &frame_was_receiver);
 
@@ -2288,9 +2297,6 @@ meta_display_handle_event (MetaDisplay        *display,
 #ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor () && (display->grab_op == META_GRAB_OP_NONE))
     {
-      MetaWaylandCompositor *compositor;
-      compositor = meta_wayland_compositor_get_default ();
-
       if (meta_wayland_compositor_handle_event (compositor, event))
         return TRUE;
     }

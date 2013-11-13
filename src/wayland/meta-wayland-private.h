@@ -107,5 +107,7 @@ MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resou
 void                    meta_wayland_buffer_reference           (MetaWaylandBufferReference *ref,
 								 MetaWaylandBuffer          *buffer);
 
+void                    meta_wayland_compositor_update          (MetaWaylandCompositor *compositor,
+                                                                 const ClutterEvent    *event);
 
 #endif /* META_WAYLAND_PRIVATE_H */

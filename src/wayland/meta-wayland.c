@@ -533,8 +533,9 @@ stage_destroy_cb (void)
   meta_quit (META_EXIT_SUCCESS);
 }
 
-static void
-reset_idletimes (const ClutterEvent *event)
+void
+meta_wayland_compositor_update (MetaWaylandCompositor *compositor,
+                                const ClutterEvent    *event)
 {
   ClutterInputDevice *device, *source_device;
   MetaIdleMonitor *core_monitor, *device_monitor;
@@ -559,14 +560,23 @@ reset_idletimes (const ClutterEvent *event)
       device_monitor = meta_idle_monitor_get_for_device (device_id);
       meta_idle_monitor_reset_idletime (device_monitor);
     }
+
+  switch (event->type)
+    {
+    case CLUTTER_MOTION:
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_BUTTON_RELEASE:
+    case CLUTTER_SCROLL:
+      meta_wayland_seat_update_pointer (compositor->seat, event);
+    default:
+      break;
+    }
 }
 
 gboolean
 meta_wayland_compositor_handle_event (MetaWaylandCompositor *compositor,
                                       const ClutterEvent    *event)
 {
-  reset_idletimes (event);
-
   return meta_wayland_seat_handle_event (compositor->seat, event);
 }
 
