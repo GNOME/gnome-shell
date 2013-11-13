@@ -31,3 +31,7 @@ EXTRA_DIST = \
 	js-resources.gresource.xml \
 	misc/config.js.in \
 	$(NULL)
+
+CLEANFILES = \
+	$(js_built_sources) \
+	$(NULL)
