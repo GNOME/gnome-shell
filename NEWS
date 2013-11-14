@@ -1,3 +1,18 @@
+3.10.2
+======
+* gdm: Don't allow user-list to fill up the entire screen [Florian; #710555]
+* Restore support for 'disable-restart-buttons' [Florian; #711244]
+* alidate parameters of exposed DBus methods [Florian; #699752]
+* Misc. bug fixes [Florian; #709806]
+
+Contributors:
+  Florian Müllner
+
+Translations:
+  Ihar Hrachyshka [be], Stas Solovey [ru], Kjartan Maraas [nb],
+  Dimitris Spingos [el], Rafael Ferreira [pt_BR], Yuri Myasoedov [ru],
+  Sphinx Jiang [zh_CN], Shantha kumar [ta]
+
 3.10.1
 ======
 * Make sure lock screen is drawn once before switching user [Giovanni; #708051]
