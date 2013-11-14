@@ -112,9 +112,6 @@ const Overview = new Lang.Class({
         // rendering options without duplicating the texture data.
         let monitor = Main.layoutManager.primaryMonitor;
 
-        this._desktopFade = new St.Bin();
-        Main.layoutManager.overviewGroup.add_child(this._desktopFade);
-
         let layout = new Clutter.BinLayout();
         this._stack = new Clutter.Actor({ layout_manager: layout });
         this._stack.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
@@ -132,6 +129,9 @@ const Overview = new Lang.Class({
         this._backgroundGroup = new Meta.BackgroundGroup();
         Main.layoutManager.overviewGroup.add_child(this._backgroundGroup);
         this._bgManagers = [];
+
+        this._desktopFade = new St.Bin();
+        Main.layoutManager.overviewGroup.add_child(this._desktopFade);
 
         this._activationTime = 0;
 
