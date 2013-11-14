@@ -592,8 +592,11 @@ meta_display_open (void)
   meta_ui_add_event_func (the_display->xdisplay,
                           xevent_callback,
                           the_display);
-  clutter_event_add_filter (event_callback, the_display);
-  
+  the_display->clutter_event_filter = clutter_event_add_filter (NULL,
+                                                                event_callback,
+                                                                NULL,
+                                                                the_display);
+
   the_display->xids = g_hash_table_new (meta_unsigned_long_hash,
                                         meta_unsigned_long_equal);
   the_display->wayland_windows = g_hash_table_new (NULL, NULL);
@@ -1124,7 +1127,8 @@ meta_display_close (MetaDisplay *display,
   meta_ui_remove_event_func (display->xdisplay,
                              xevent_callback,
                              display);
-  clutter_event_remove_filter (event_callback, display);
+  clutter_event_remove_filter (display->clutter_event_filter);
+  display->clutter_event_filter = 0;
   
   /* Free all screens */
   tmp = display->screens;
