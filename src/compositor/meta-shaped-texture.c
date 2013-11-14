@@ -678,40 +678,9 @@ wayland_surface_update_area (MetaShapedTexture *stex,
       struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (resource);
 
       if (shm_buffer)
-        {
-          CoglPixelFormat format;
-
-          switch (wl_shm_buffer_get_format (shm_buffer))
-            {
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-            case WL_SHM_FORMAT_ARGB8888:
-              format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
-              break;
-            case WL_SHM_FORMAT_XRGB8888:
-              format = COGL_PIXEL_FORMAT_ARGB_8888;
-              break;
-#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
-            case WL_SHM_FORMAT_ARGB8888:
-              format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
-              break;
-            case WL_SHM_FORMAT_XRGB8888:
-              format = COGL_PIXEL_FORMAT_BGRA_8888;
-              break;
-#endif
-            default:
-              g_warn_if_reached ();
-              format = COGL_PIXEL_FORMAT_ARGB_8888;
-            }
-
-          cogl_texture_set_region (priv->texture,
-                                   x, y,
-                                   x, y,
-                                   width, height,
-                                   width, height,
-                                   format,
-                                   wl_shm_buffer_get_stride (shm_buffer),
-                                   wl_shm_buffer_get_data (shm_buffer));
-        }
+        cogl_wayland_texture_2d_update_area (COGL_TEXTURE_2D (priv->texture),
+                                             shm_buffer,
+                                             x, y, width, height);
     }
 }
 
