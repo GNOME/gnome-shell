@@ -962,8 +962,8 @@ meta_window_actor_freeze (MetaWindowActor *self)
     self->priv->freeze_count++;
 }
 
-static
-gboolean send_frame_messages_timeout (gpointer data)
+static gboolean
+send_frame_messages_timeout (gpointer data)
 {
   MetaWindowActor *self = (MetaWindowActor *) data;
   MetaWindowActorPrivate *priv = self->priv;
