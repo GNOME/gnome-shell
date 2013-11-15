@@ -1566,6 +1566,10 @@ meta_window_grab_all_keys (MetaWindow  *window,
   Window grabwindow;
   gboolean retval;
 
+  /* We don't need to grab Wayland clients */
+  if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+    return TRUE;
+
   if (window->all_keys_grabbed)
     return FALSE;
 

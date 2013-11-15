@@ -570,75 +570,6 @@ xdg_surface_pong (struct wl_client *client,
 {
 }
 
-typedef struct
-{
-  MetaWaylandPointerGrab  generic;
-  MetaWaylandSurface     *surface;
-  struct wl_listener      surface_destroy_listener;
-  wl_fixed_t              dx, dy;
-} MetaWaylandMoveGrab;
-
-static void
-end_move_grab (MetaWaylandMoveGrab *move_grab)
-{
-  if (move_grab->surface)
-    {
-      move_grab->surface = NULL;
-      wl_list_remove (&move_grab->surface_destroy_listener.link);
-    }
-
-  meta_wayland_pointer_end_grab (move_grab->generic.pointer);
-  g_slice_free (MetaWaylandMoveGrab, move_grab);
-}
-
-static void
-move_grab_lose_surface (struct wl_listener *listener, void *data)
-{
-  MetaWaylandMoveGrab *move_grab =
-    wl_container_of (listener, move_grab, surface_destroy_listener);
-
-  move_grab->surface = NULL;
-  end_move_grab (move_grab);
-}
-
-static void
-move_grab_focus (MetaWaylandPointerGrab *grab,
-                 MetaWaylandSurface     *surface,
-		 const ClutterEvent     *event)
-{
-}
-
-static void
-move_grab_motion (MetaWaylandPointerGrab *grab,
-		  const ClutterEvent     *event)
-{
-  MetaWaylandMoveGrab *move_grab = (MetaWaylandMoveGrab *)grab;
-  MetaWaylandPointer *pointer = grab->pointer;
-
-  meta_window_move (move_grab->surface->window,
-                    TRUE,
-                    wl_fixed_to_int (pointer->x + move_grab->dx),
-                    wl_fixed_to_int (pointer->y + move_grab->dy));
-}
-
-static void
-move_grab_button (MetaWaylandPointerGrab *grab,
-		  const ClutterEvent     *event)
-{
-  MetaWaylandMoveGrab *move_grab = (MetaWaylandMoveGrab *)grab;
-  MetaWaylandPointer *pointer = grab->pointer;
-
-  if (pointer->button_count == 0 &&
-      clutter_event_type (event) == CLUTTER_BUTTON_RELEASE)
-    end_move_grab (move_grab);
-}
-
-static const MetaWaylandPointerGrabInterface move_grab_interface = {
-    move_grab_focus,
-    move_grab_motion,
-    move_grab_button,
-};
-
 static void
 xdg_surface_move (struct wl_client *client,
                   struct wl_resource *resource,
@@ -648,8 +579,6 @@ xdg_surface_move (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWindow *window;
-  MetaWaylandMoveGrab *move_grab;
-  MetaRectangle rect;
 
   if (seat->pointer.button_count == 0 ||
       seat->pointer.grab_serial != serial ||
@@ -660,41 +589,17 @@ xdg_surface_move (struct wl_client *client,
   if (!window)
     return;
 
-  /* small hack, this should be handled by window->shaken_loose when we
-     move everything to display.c */
-  if (window->fullscreen)
-    meta_window_unmake_fullscreen (window);
-
-  move_grab = g_slice_new (MetaWaylandMoveGrab);
-
-  meta_window_get_input_rect (xdg_surface->surface->window,
-                              &rect);
-
-  move_grab->generic.interface = &move_grab_interface;
-  move_grab->generic.pointer = &seat->pointer;
-
-  move_grab->surface = xdg_surface->surface;
-  move_grab->surface_destroy_listener.notify = move_grab_lose_surface;
-  wl_resource_add_destroy_listener (xdg_surface->surface->resource,
-				    &move_grab->surface_destroy_listener);
-
-  move_grab->dx = wl_fixed_from_int (rect.x) - seat->pointer.grab_x;
-  move_grab->dy = wl_fixed_from_int (rect.y) - seat->pointer.grab_y;
-
-  meta_wayland_pointer_start_grab (&seat->pointer, (MetaWaylandPointerGrab*)move_grab);
-
-  /* TODO: send_grab_cursor (cursor); */
-
-  /* XXX: In Weston there is a desktop shell protocol which has
-   * a set_grab_surface request that's used to specify the surface
-   * that's focused here.
-   *
-   * TODO: understand why.
-   *
-   * XXX: For now we just focus the surface directly associated with
-   * the grab.
-   */
-  meta_wayland_pointer_set_focus (&seat->pointer, xdg_surface->surface);
+  meta_display_begin_grab_op (window->display,
+                              window->screen,
+                              window,
+                              META_GRAB_OP_MOVING,
+                              TRUE, /* pointer_already_grabbed */
+                              FALSE, /* frame_action */
+                              1, /* button. XXX? */
+                              0, /* modmask */
+                              meta_display_get_current_time_roundtrip (window->display),
+                              wl_fixed_to_int (seat->pointer.grab_x),
+                              wl_fixed_to_int (seat->pointer.grab_y));
 }
 
 static void
