@@ -1,3 +1,7 @@
+3.10.2.1
+========
+* Lower mutter requirement to not end up without wayland support
+
 3.10.2
 ======
 * gdm: Don't allow user-list to fill up the entire screen [Florian; #710555]
