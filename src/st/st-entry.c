@@ -36,10 +36,6 @@
  *  <listitem>
  *   <para>indeterminate: the widget is showing the hint text</para>
  *  </listitem>
- *  <listitem>
- *   <para>hover: the widget is showing the hint text and is underneath the
- *                pointer</para>
- *  </listitem>
  * </itemizedlist>
  */
 
