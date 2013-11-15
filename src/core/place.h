@@ -28,7 +28,6 @@
 #include "frame.h"
 
 void meta_window_place (MetaWindow *window,
-                        MetaFrameBorders *borders,
                         int         x,
                         int         y,
                         int        *new_x,

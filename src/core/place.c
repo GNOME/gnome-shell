@@ -74,7 +74,6 @@ northwestcmp (gconstpointer a, gconstpointer b)
 
 static void
 find_next_cascade (MetaWindow *window,
-                   MetaFrameBorders *borders,
                    /* visible windows on relevant workspaces */
                    GList      *windows,
                    int         x,
@@ -105,10 +104,13 @@ find_next_cascade (MetaWindow *window,
    * manually cascade.
    */
 #define CASCADE_FUZZ 15
-  if (borders)
+  if (window->frame)
     {
-      x_threshold = MAX (borders->visible.left, CASCADE_FUZZ);
-      y_threshold = MAX (borders->visible.top, CASCADE_FUZZ);
+      MetaFrameBorders borders;
+
+      meta_frame_calc_borders (window->frame, &borders);
+      x_threshold = MAX (borders.visible.left, CASCADE_FUZZ);
+      y_threshold = MAX (borders.visible.top, CASCADE_FUZZ);
     }
   else
     {
@@ -209,7 +211,6 @@ find_next_cascade (MetaWindow *window,
 
 static void
 find_most_freespace (MetaWindow *window,
-                     MetaFrameBorders *borders,
                      /* visible windows on relevant workspaces */
                      MetaWindow *focus_window,
                      int         x,
@@ -321,7 +322,6 @@ window_overlaps_focus_window (MetaWindow *window)
 
 static void
 avoid_being_obscured_as_second_modal_dialog (MetaWindow *window,
-                                             MetaFrameBorders *borders,
                                              int        *x,
                                              int        *y)
 {
@@ -350,7 +350,7 @@ avoid_being_obscured_as_second_modal_dialog (MetaWindow *window,
       meta_window_same_application (window, focus_window) &&
       window_overlaps_focus_window (window))
     {
-      find_most_freespace (window, borders, focus_window, *x, *y, x, y);
+      find_most_freespace (window, focus_window, *x, *y, x, y);
       meta_topic (META_DEBUG_PLACEMENT,
                   "Dialog window %s was denied focus but may be modal "
                   "to the focus window; had to move it to avoid the "
@@ -478,7 +478,6 @@ center_tile_rect_in_area (MetaRectangle *rect,
  */
 static gboolean
 find_first_fit (MetaWindow *window,
-                MetaFrameBorders *borders,
                 /* visible windows on relevant workspaces */
                 GList      *windows,
 		int         monitor,
@@ -602,7 +601,6 @@ find_first_fit (MetaWindow *window,
 
 void
 meta_window_place (MetaWindow        *window,
-                   MetaFrameBorders  *borders,
                    int                x,
                    int                y,
                    int               *new_x,
@@ -610,13 +608,6 @@ meta_window_place (MetaWindow        *window,
 {
   GList *windows;
   const MetaMonitorInfo *xi;
-
-  /* frame member variables should NEVER be used in here, only
-   * MetaFrameBorders. But remember borders == NULL
-   * for undecorated windows. Also, this function should
-   * NEVER have side effects other than computing the
-   * placement coordinates.
-   */
 
   meta_topic (META_DEBUG_PLACEMENT, "Placing window %s\n", window->desc);
 
@@ -706,7 +697,7 @@ meta_window_place (MetaWindow        *window,
         {
           meta_topic (META_DEBUG_PLACEMENT,
                       "Not placing window with PPosition or USPosition set\n");
-          avoid_being_obscured_as_second_modal_dialog (window, borders, &x, &y);
+          avoid_being_obscured_as_second_modal_dialog (window, &x, &y);
           goto done_no_constraints;
         }
     }
@@ -745,7 +736,7 @@ meta_window_place (MetaWindow        *window,
           meta_topic (META_DEBUG_PLACEMENT, "Centered window %s over transient parent\n",
                       window->desc);
           
-          avoid_being_obscured_as_second_modal_dialog (window, borders, &x, &y);
+          avoid_being_obscured_as_second_modal_dialog (window, &x, &y);
 
           goto done;
         }
@@ -816,7 +807,7 @@ meta_window_place (MetaWindow        *window,
   x = xi->rect.x;
   y = xi->rect.y;
 
-  if (find_first_fit (window, borders, windows,
+  if (find_first_fit (window, windows,
                       xi->number,
                       x, y, &x, &y))
     goto done_check_denied_focus;
@@ -850,7 +841,7 @@ meta_window_place (MetaWindow        *window,
    * fully overlapping window (e.g. starting multiple terminals)
    * */
   if (x == xi->rect.x && y == xi->rect.y)  
-    find_next_cascade (window, borders, windows, x, y, &x, &y);
+    find_next_cascade (window, windows, x, y, &x, &y);
 
  done_check_denied_focus:
   /* If the window is being denied focus and isn't a transient of the
@@ -881,7 +872,7 @@ meta_window_place (MetaWindow        *window,
           x = xi->rect.x;
           y = xi->rect.y;
 
-          found_fit = find_first_fit (window, borders, focus_window_list,
+          found_fit = find_first_fit (window, focus_window_list,
                                       xi->number,
                                       x, y, &x, &y);
           g_list_free (focus_window_list);
@@ -891,7 +882,7 @@ meta_window_place (MetaWindow        *window,
        * as possible.
        */
       if (!found_fit)
-        find_most_freespace (window, borders, focus_window, x, y, &x, &y);
+        find_most_freespace (window, focus_window, x, y, &x, &y);
     }
   
  done:
