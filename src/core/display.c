@@ -1607,6 +1607,7 @@ window_raise_with_delay_callback (void *data)
     {
       int x, y, root_x, root_y;
       Window root, child;
+      MetaRectangle frame_rect;
       unsigned int mask;
       gboolean same_screen;
       gboolean point_in_window;
@@ -1618,9 +1619,8 @@ window_raise_with_delay_callback (void *data)
 				   &root_x, &root_y, &x, &y, &mask);
       meta_error_trap_pop (window->display);
 
-      point_in_window = 
-        (window->frame && POINT_IN_RECT (root_x, root_y, window->frame->rect)) ||
-        (window->frame == NULL && POINT_IN_RECT (root_x, root_y, window->rect));
+      meta_window_get_outer_rect (window, &frame_rect);
+      point_in_window = POINT_IN_RECT (root_x, root_y, frame_rect);
       if (same_screen && point_in_window)
 	meta_window_raise (window);
       else
@@ -2173,15 +2173,16 @@ meta_display_handle_event (MetaDisplay        *display,
                 {
                   gboolean north, south;
                   gboolean west, east;
+                  MetaRectangle frame_rect;
                   int root_x, root_y;
                   MetaGrabOp op;
 
-                  meta_window_get_position (window, &root_x, &root_y);
+                  meta_window_get_outer_rect (window, &frame_rect);
 
-                  west = event->button.x < (root_x + 1 * window->rect.width / 3);
-                  east = event->button.x > (root_x + 2 * window->rect.width / 3);
-                  north = event->button.y < (root_y + 1 * window->rect.height / 3);
-                  south = event->button.y > (root_y + 2 * window->rect.height / 3);
+                  west = event->button.x < (frame_rect.x + 1 * frame_rect.width / 3);
+                  east = event->button.x > (frame_rect.x + 2 * frame_rect.width / 3);
+                  north = event->button.y < (frame_rect.y + 1 * frame_rect.height / 3);
+                  south = event->button.y > (frame_rect.y + 2 * frame_rect.height / 3);
 
                   if (north && west)
                     op = META_GRAB_OP_RESIZING_NW;
