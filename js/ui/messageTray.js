@@ -2432,11 +2432,10 @@ const MessageTray = new Lang.Class({
                                      this._desktopCloneState == State.SHOWN);
         let desktopCloneShouldBeVisible = (trayShouldBeVisible);
 
-        if (!desktopCloneIsVisible && desktopCloneShouldBeVisible) {
+        if (!desktopCloneIsVisible && desktopCloneShouldBeVisible)
             this._showDesktopClone();
-        } else if (desktopCloneIsVisible && !desktopCloneShouldBeVisible) {
+        else if (desktopCloneIsVisible && !desktopCloneShouldBeVisible)
             this._hideDesktopClone();
-        }
     },
 
     _tween: function(actor, statevar, value, params) {
