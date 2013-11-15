@@ -533,6 +533,7 @@ void        meta_window_update_fullscreen_monitors (MetaWindow    *window,
                                                     unsigned long  left,
                                                     unsigned long  right);
 
+
 /* args to move are window pos, not frame pos */
 void        meta_window_move               (MetaWindow  *window,
                                             gboolean     user_op,
@@ -682,6 +683,8 @@ void meta_window_recalc_features    (MetaWindow *window);
 /* recalc_window_type is x11 only, wayland does its thing and then calls type_changed */
 void meta_window_recalc_window_type (MetaWindow *window);
 void meta_window_type_changed       (MetaWindow *window);
+
+void meta_window_frame_size_changed (MetaWindow *window);
 
 void meta_window_stack_just_below (MetaWindow *window,
                                    MetaWindow *below_this_one);

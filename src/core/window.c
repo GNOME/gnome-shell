@@ -4213,6 +4213,7 @@ meta_window_set_above (MetaWindow *window,
   window->wm_state_above = new_value;
   meta_window_update_layer (window);
   set_net_wm_state (window);
+  meta_window_frame_size_changed (window);
   g_object_notify (G_OBJECT (window), "above");
 }
 
@@ -4352,6 +4353,7 @@ meta_window_shade (MetaWindow  *window,
       window->shaded = TRUE;
 
       meta_window_queue(window, META_QUEUE_MOVE_RESIZE | META_QUEUE_CALC_SHOWING);
+      meta_window_frame_size_changed (window);
 
       /* After queuing the calc showing, since _focus flushes it,
        * and we need to focus the frame
@@ -4377,6 +4379,7 @@ meta_window_unshade (MetaWindow  *window,
     {
       window->shaded = FALSE;
       meta_window_queue(window, META_QUEUE_MOVE_RESIZE | META_QUEUE_CALC_SHOWING);
+      meta_window_frame_size_changed (window);
 
       /* focus the window */
       meta_topic (META_DEBUG_FOCUS,
@@ -6378,6 +6381,7 @@ window_stick_impl (MetaWindow  *window)
    * toggled back off.
    */
   window->on_all_workspaces_requested = TRUE;
+  meta_window_frame_size_changed (window);
   meta_window_update_on_all_workspaces (window);
 
   meta_window_queue(window, META_QUEUE_CALC_SHOWING);
@@ -6392,6 +6396,7 @@ window_unstick_impl (MetaWindow  *window)
   /* Revert to window->workspaces */
 
   window->on_all_workspaces_requested = FALSE;
+  meta_window_frame_size_changed (window);
   meta_window_update_on_all_workspaces (window);
 
   /* We change ourselves to the active workspace, since otherwise you'd get
@@ -7467,6 +7472,7 @@ static void
 meta_window_appears_focused_changed (MetaWindow *window)
 {
   set_net_wm_state (window);
+  meta_window_frame_size_changed (window);
 
   g_object_notify (G_OBJECT (window), "appears-focused");
 
@@ -8643,6 +8649,13 @@ meta_window_type_changed (MetaWindow *window)
   g_object_thaw_notify (object);
 }
 
+void
+meta_window_frame_size_changed (MetaWindow *window)
+{
+  if (window->frame)
+    meta_frame_clear_cached_borders (window->frame);
+}
+
 static void
 set_allowed_actions_hint (MetaWindow *window)
 {
@@ -8942,6 +8955,8 @@ recalc_window_features (MetaWindow *window)
 
   if (window->has_resize_func != old_has_resize_func)
     g_object_notify (G_OBJECT (window), "resizeable");
+
+  meta_window_frame_size_changed (window);
 
   /* FIXME perhaps should ensure if we don't have a shade func,
    * we aren't shaded, etc.
