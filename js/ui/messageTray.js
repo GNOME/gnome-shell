@@ -2356,6 +2356,13 @@ const MessageTray = new Lang.Class({
     // _updateState() figures out what (if anything) needs to be done
     // at the present time.
     _updateState: function() {
+        // If our state changes caused _updateState to be called,
+        // just exit now to prevent reentrancy issues.
+        if (this._updatingState)
+            return;
+
+        this._updatingState = true;
+
         // Filter out acknowledged notifications.
         this._notificationQueue = this._notificationQueue.filter(function(n) {
             return !n.acknowledged;
@@ -2436,6 +2443,8 @@ const MessageTray = new Lang.Class({
             this._showDesktopClone();
         else if (desktopCloneIsVisible && !desktopCloneShouldBeVisible)
             this._hideDesktopClone();
+
+        this._updatingState = false;
     },
 
     _tween: function(actor, statevar, value, params) {
