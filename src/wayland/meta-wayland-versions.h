@@ -54,6 +54,7 @@
 #define META_WL_REGION_VERSION              1 /* from wl_compositor */
 #define META_GTK_SURFACE_VERSION            1 /* from gtk_shell */
 #define META_XDG_SURFACE_VERSION            1 /* from xdg_shell */
+#define META_XDG_POPUP_VERSION              1 /* from xdg_shell */
 
 /* The first version to implement a specific event */
 #define META_WL_SEAT_HAS_NAME               2

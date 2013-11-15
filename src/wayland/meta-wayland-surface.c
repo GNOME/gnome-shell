@@ -329,6 +329,7 @@ meta_wayland_surface_commit (struct wl_client *client,
       wl_list_remove (&surface->pending.buffer_destroy_listener.link);
       surface->pending.buffer = NULL;
     }
+
   surface->pending.dx = 0;
   surface->pending.dy = 0;
   surface->pending.newly_attached = FALSE;
@@ -760,18 +761,63 @@ get_xdg_surface (struct wl_client *client,
 }
 
 static void
+xdg_popup_destroy (struct wl_client *client,
+                   struct wl_resource *resource)
+{
+  destroy_surface_extension (resource);
+}
+
+static void
+xdg_popup_pong (struct wl_client *client,
+                struct wl_resource *resource,
+                uint32_t serial)
+{
+}
+
+static const struct xdg_popup_interface meta_wayland_xdg_popup_interface = {
+  xdg_popup_destroy,
+  xdg_popup_pong,
+};
+
+static void
 get_xdg_popup (struct wl_client *client,
                struct wl_resource *resource,
                uint32_t id,
-               struct wl_resource *surface,
-               struct wl_resource *parent,
-               struct wl_resource *seat,
+               struct wl_resource *surface_resource,
+               struct wl_resource *parent_resource,
+               struct wl_resource *seat_resource,
                uint32_t serial,
                int32_t x,
                int32_t y,
                uint32_t flags)
 {
-  g_warning ("TODO: support xdg_shell.get_xdg_popup");
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
+  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
+  MetaRectangle parent_rect;
+
+  if (parent_surf == NULL || parent_surf->window == NULL)
+    return;
+
+  meta_window_get_frame_rect (parent_surf->window, &parent_rect);
+
+  if (!create_surface_extension (&surface->xdg_popup, client, surface_resource, resource, id,
+                                 META_XDG_POPUP_VERSION,
+                                 &xdg_popup_interface,
+                                 &meta_wayland_xdg_popup_interface))
+    wl_resource_post_error (surface_resource,
+                            WL_DISPLAY_ERROR_INVALID_OBJECT,
+                            "xdg_shell::get_xdg_surface already requested");
+
+  surface->window = meta_window_new_for_wayland (meta_get_display (), surface);
+  surface->window->type = META_WINDOW_DROPDOWN_MENU;
+  surface->window->override_redirect = TRUE;
+  surface->window->showing_for_first_time = FALSE;
+  surface->window->rect.x = parent_rect.x + x;
+  surface->window->rect.y = parent_rect.y + y;
+  surface->window->placed = TRUE;
+
+  meta_wayland_pointer_start_popup_grab (&seat->pointer, surface);
 }
 
 static const struct xdg_shell_interface meta_wayland_xdg_shell_interface = {

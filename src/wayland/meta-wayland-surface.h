@@ -79,6 +79,7 @@ struct _MetaWaylandSurface
   MetaWaylandBufferReference buffer_ref;
   MetaWindow *window;
   MetaWaylandSurfaceExtension xdg_surface;
+  MetaWaylandSurfaceExtension xdg_popup;
   MetaWaylandSurfaceExtension gtk_surface;
 
   /* All the pending state, that wl_surface.commit will apply. */
