@@ -5118,7 +5118,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
   if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
     {
       meta_window_constrain (window,
-                             window->frame ? &borders : NULL,
                              flags,
                              gravity,
                              &old_rect,
@@ -6056,6 +6055,10 @@ meta_window_client_rect_to_frame_rect (MetaWindow    *window,
 
   *client_rect = *frame_rect;
 
+  /* The support for G_MAXINT here to mean infinity is a convenience for
+   * constraints.c:get_size_limits() and not something that we provide
+   * in other locations or document.
+   */
   if (window->frame)
     {
       MetaFrameBorders borders;
@@ -6063,8 +6066,10 @@ meta_window_client_rect_to_frame_rect (MetaWindow    *window,
 
       client_rect->x -= borders.visible.left;
       client_rect->y -= borders.visible.top;
-      client_rect->width  += borders.visible.left + borders.visible.right;
-      client_rect->height += borders.visible.top  + borders.visible.bottom;
+      if (client_rect->width != G_MAXINT)
+        client_rect->width += borders.visible.left + borders.visible.right;
+      if (client_rect->height != G_MAXINT)
+        client_rect->height += borders.visible.top  + borders.visible.bottom;
     }
   else
     {
@@ -6073,8 +6078,10 @@ meta_window_client_rect_to_frame_rect (MetaWindow    *window,
           const GtkBorder *extents = &window->custom_frame_extents;
           client_rect->x += extents->left;
           client_rect->y += extents->top;
-          client_rect->width -= extents->left + extents->right;
-          client_rect->height -= extents->top + extents->bottom;
+          if (client_rect->width != G_MAXINT)
+            client_rect->width -= extents->left + extents->right;
+          if (client_rect->height != G_MAXINT)
+            client_rect->height -= extents->top + extents->bottom;
         }
     }
 }
