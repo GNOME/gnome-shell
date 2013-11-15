@@ -721,8 +721,7 @@ xdg_surface_set_minimized (struct wl_client *client,
     meta_window_minimize (surface->window);
 }
 
-static const struct xdg_surface_interface meta_wayland_xdg_surface_interface =
-{
+static const struct xdg_surface_interface meta_wayland_xdg_surface_interface = {
   xdg_surface_destroy,
   xdg_surface_set_transient_for,
   xdg_surface_set_title,
@@ -833,8 +832,7 @@ get_xdg_popup (struct wl_client *client,
   g_warning ("TODO: support xdg_shell.get_xdg_popup");
 }
 
-static const struct xdg_shell_interface meta_wayland_xdg_shell_interface =
-{
+static const struct xdg_shell_interface meta_wayland_xdg_shell_interface = {
   use_unstable_version,
   get_xdg_surface,
   get_xdg_popup,
@@ -888,8 +886,7 @@ set_dbus_properties (struct wl_client   *client,
   surface->pending.gtk_window_object_path = g_strdup (window_object_path);
 }
 
-static const struct gtk_surface_interface meta_wayland_gtk_surface_interface =
-{
+static const struct gtk_surface_interface meta_wayland_gtk_surface_interface = {
   set_dbus_properties
 };
 
@@ -915,8 +912,7 @@ get_gtk_surface (struct wl_client *client,
                                                    &meta_wayland_gtk_surface_interface);
 }
 
-static const struct gtk_shell_interface meta_wayland_gtk_shell_interface =
-{
+static const struct gtk_shell_interface meta_wayland_gtk_shell_interface = {
   get_gtk_surface
 };
 
