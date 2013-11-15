@@ -700,13 +700,23 @@ st_entry_set_cursor (StEntry  *entry,
 }
 
 static gboolean
-st_entry_crossing_event (ClutterActor         *actor,
-                         ClutterCrossingEvent *event)
+st_entry_enter_event (ClutterActor         *actor,
+                      ClutterCrossingEvent *event)
 {
   if (event->source == ST_ENTRY (actor)->priv->entry && event->related != NULL)
-    st_entry_set_cursor (ST_ENTRY (actor), (event->type == CLUTTER_ENTER));
+    st_entry_set_cursor (ST_ENTRY (actor), TRUE);
 
-  return FALSE;
+  return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->enter_event (actor, event);
+}
+
+static gboolean
+st_entry_leave_event (ClutterActor         *actor,
+                      ClutterCrossingEvent *event)
+{
+  if (event->source == ST_ENTRY (actor)->priv->entry && event->related != NULL)
+    st_entry_set_cursor (ST_ENTRY (actor), FALSE);
+
+  return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->leave_event (actor, event);
 }
 
 static void
@@ -741,8 +751,8 @@ st_entry_class_init (StEntryClass *klass)
   actor_class->key_press_event = st_entry_key_press_event;
   actor_class->key_focus_in = st_entry_key_focus_in;
 
-  actor_class->enter_event = st_entry_crossing_event;
-  actor_class->leave_event = st_entry_crossing_event;
+  actor_class->enter_event = st_entry_enter_event;
+  actor_class->leave_event = st_entry_leave_event;
 
   widget_class->style_changed = st_entry_style_changed;
   widget_class->navigate_focus = st_entry_navigate_focus;
