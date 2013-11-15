@@ -570,6 +570,32 @@ xdg_surface_pong (struct wl_client *client,
 {
 }
 
+static gboolean
+begin_grab_op_on_surface (MetaWaylandSurface *surface,
+                          MetaWaylandSeat    *seat,
+                          MetaGrabOp          grab_op)
+{
+  MetaWindow *window = surface->window;
+
+  if (!window)
+    return FALSE;
+
+  if (grab_op == META_GRAB_OP_NONE)
+    return FALSE;
+
+  return meta_display_begin_grab_op (window->display,
+                                     window->screen,
+                                     window,
+                                     grab_op,
+                                     TRUE, /* pointer_already_grabbed */
+                                     FALSE, /* frame_action */
+                                     1, /* button. XXX? */
+                                     0, /* modmask */
+                                     meta_display_get_current_time_roundtrip (window->display),
+                                     wl_fixed_to_int (seat->pointer.grab_x),
+                                     wl_fixed_to_int (seat->pointer.grab_y));
+}
+
 static void
 xdg_surface_move (struct wl_client *client,
                   struct wl_resource *resource,
@@ -578,38 +604,58 @@ xdg_surface_move (struct wl_client *client,
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWindow *window;
 
   if (seat->pointer.button_count == 0 ||
       seat->pointer.grab_serial != serial ||
       seat->pointer.focus != xdg_surface->surface)
     return;
 
-  window = xdg_surface->surface->window;
-  if (!window)
-    return;
+  begin_grab_op_on_surface (xdg_surface->surface, seat, META_GRAB_OP_MOVING);
+}
 
-  meta_display_begin_grab_op (window->display,
-                              window->screen,
-                              window,
-                              META_GRAB_OP_MOVING,
-                              TRUE, /* pointer_already_grabbed */
-                              FALSE, /* frame_action */
-                              1, /* button. XXX? */
-                              0, /* modmask */
-                              meta_display_get_current_time_roundtrip (window->display),
-                              wl_fixed_to_int (seat->pointer.grab_x),
-                              wl_fixed_to_int (seat->pointer.grab_y));
+static MetaGrabOp
+grab_op_for_edge (int edge)
+{
+  switch (edge)
+    {
+    case XDG_SURFACE_RESIZE_EDGE_TOP_LEFT:
+      return META_GRAB_OP_RESIZING_NW;
+    case XDG_SURFACE_RESIZE_EDGE_TOP:
+      return META_GRAB_OP_RESIZING_N;
+    case XDG_SURFACE_RESIZE_EDGE_TOP_RIGHT:
+      return META_GRAB_OP_RESIZING_NE;
+    case XDG_SURFACE_RESIZE_EDGE_RIGHT:
+      return META_GRAB_OP_RESIZING_E;
+    case XDG_SURFACE_RESIZE_EDGE_BOTTOM_RIGHT:
+      return META_GRAB_OP_RESIZING_SE;
+    case XDG_SURFACE_RESIZE_EDGE_BOTTOM:
+      return META_GRAB_OP_RESIZING_S;
+    case XDG_SURFACE_RESIZE_EDGE_BOTTOM_LEFT:
+      return META_GRAB_OP_RESIZING_SW;
+    case XDG_SURFACE_RESIZE_EDGE_LEFT:
+      return META_GRAB_OP_RESIZING_W;
+    default:
+      g_warning ("invalid edge: %d", edge);
+      return META_GRAB_OP_NONE;
+    }
 }
 
 static void
 xdg_surface_resize (struct wl_client *client,
-                      struct wl_resource *resource,
-                      struct wl_resource *seat,
-                      guint32 serial,
-                      guint32 edges)
+                    struct wl_resource *resource,
+                    struct wl_resource *seat_resource,
+                    guint32 serial,
+                    guint32 edges)
 {
-  g_warning ("TODO: support xdg_surface.resize");
+  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
+  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
+
+  if (seat->pointer.button_count == 0 ||
+      seat->pointer.grab_serial != serial ||
+      seat->pointer.focus != xdg_surface->surface)
+    return;
+
+  begin_grab_op_on_surface (xdg_surface->surface, seat, grab_op_for_edge (edges));
 }
 
 static void
