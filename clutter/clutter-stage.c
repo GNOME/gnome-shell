@@ -1551,8 +1551,8 @@ _clutter_stage_do_pick (ClutterStage   *stage,
    * picks for the same static scene won't require additional renders */
   if (priv->picks_per_frame < 2)
     {
-       gint dirty_x;
-       gint dirty_y;
+      gint dirty_x;
+      gint dirty_y;
 
       _clutter_stage_window_get_dirty_pixel (priv->impl, &dirty_x, &dirty_y);
 
@@ -1631,22 +1631,22 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   cogl_framebuffer_set_dither_enabled (fb, dither_enabled_save);
 
   if (is_clipped)
-  {
-     if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-      cogl_clip_pop ();
+    {
+      if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+        cogl_clip_pop ();
 
-     _clutter_stage_dirty_viewport (stage);
+      _clutter_stage_dirty_viewport (stage);
 
-    _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
-  }
+      _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
+    }
   else
-  {
-    /* Notify the backend that we have trashed the contents of
-     * the back buffer... */
-    _clutter_stage_window_dirty_back_buffer (priv->impl);
+    {
+      /* Notify the backend that we have trashed the contents of
+       * the back buffer... */
+      _clutter_stage_window_dirty_back_buffer (priv->impl);
 
-    _clutter_stage_set_pick_buffer_valid (stage, TRUE, mode);
-  }
+      _clutter_stage_set_pick_buffer_valid (stage, TRUE, mode);
+    }
 
 check_pixel:
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
