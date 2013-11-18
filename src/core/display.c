@@ -1690,27 +1690,17 @@ handle_net_restack_window (MetaDisplay* display,
 #endif
 
 static MetaWindow *
-get_window_for_actor (ClutterActor *actor,
-                      gboolean     *frame_was_receiver)
+get_window_for_event (MetaDisplay        *display,
+                      const ClutterEvent *event)
 {
-  /* Look for any ancestor that is a MetaWindowActor to determine
-     which window the actor's event belongs to */
+  ClutterActor *source;
 
-  *frame_was_receiver = TRUE;
+  if (display->grab_window)
+    return display->grab_window;
 
-  while (actor)
-    {
-      if (META_IS_WINDOW_ACTOR (actor))
-        return meta_window_actor_get_meta_window (META_WINDOW_ACTOR (actor));
-
-      /* If the frame is the receiver then the source will directly be
-         the MetaWindowActor, otherwise it will be a child of a
-         MetaWindowActor so if we make it here then the event isn't
-         referring to the frame. */
-      *frame_was_receiver = FALSE;
-
-      actor = clutter_actor_get_parent (actor);
-    }
+  source = clutter_event_get_source (event);
+  if (META_IS_WINDOW_ACTOR (source))
+    return meta_window_actor_get_meta_window (META_WINDOW_ACTOR (source));
 
   return NULL;
 }
@@ -2047,7 +2037,9 @@ meta_display_handle_event (MetaDisplay        *display,
                            const ClutterEvent *event)
 {
   MetaWindow *window;
-  gboolean frame_was_receiver;
+
+  /* XXX -- we need to fill this in properly at some point... */
+  gboolean frame_was_receiver = FALSE;
 #ifdef HAVE_WAYLAND
   MetaWaylandCompositor *compositor;
 
@@ -2058,7 +2050,7 @@ meta_display_handle_event (MetaDisplay        *display,
     }
 #endif  /* HAVE_WAYLAND */
 
-  window = get_window_for_actor (event->any.source, &frame_was_receiver);
+  window = get_window_for_event (display, event);
 
   display->current_time = event->any.time;
 

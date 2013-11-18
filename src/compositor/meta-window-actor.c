@@ -397,9 +397,7 @@ meta_window_actor_constructed (GObject *object)
         priv->actor = meta_shaped_texture_new_with_xwindow (xwindow);
 
       clutter_actor_add_child (CLUTTER_ACTOR (self), priv->actor);
-
-      if (meta_is_wayland_compositor ())
-        clutter_actor_set_reactive (priv->actor, TRUE);
+      clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
       /*
        * Since we are holding a pointer to this actor independently of the
