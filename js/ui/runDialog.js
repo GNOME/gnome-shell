@@ -73,7 +73,9 @@ const RunDialog = new Lang.Class({
         let label = new St.Label({ style_class: 'run-dialog-label',
                                    text: _("Enter a Command") });
 
-        this.contentLayout.add(label, { y_align: St.Align.START });
+        this.contentLayout.add(label, { x_fill: false,
+                                        x_align: St.Align.START,
+                                        y_align: St.Align.START });
 
         let entry = new St.Entry({ style_class: 'run-dialog-entry',
                                    can_focus: true });
@@ -101,6 +103,8 @@ const RunDialog = new Lang.Class({
         this._errorMessage.clutter_text.line_wrap = true;
 
         this._errorBox.add(this._errorMessage, { expand: true,
+                                                 x_align: St.Align.START,
+                                                 x_fill: false,
                                                  y_align: St.Align.MIDDLE,
                                                  y_fill: false });
 
