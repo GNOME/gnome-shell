@@ -125,15 +125,11 @@ struct _ClutterStagePrivate
 
   ClutterStageHint stage_hints;
 
-  gint picks_per_frame;
-
   GArray *paint_volume_stack;
 
   ClutterPlane current_clip_planes[4];
 
   GList *pending_queue_redraws;
-
-  ClutterPickMode pick_buffer_mode;
 
   CoglFramebuffer *active_framebuffer;
 
@@ -165,7 +161,6 @@ struct _ClutterStagePrivate
   guint min_size_changed       : 1;
   guint dirty_viewport         : 1;
   guint dirty_projection       : 1;
-  guint have_valid_pick_buffer : 1;
   guint accept_focus           : 1;
   guint motion_events_enabled  : 1;
   guint has_custom_perspective : 1;
@@ -1146,28 +1141,6 @@ _clutter_stage_maybe_relayout (ClutterActor *actor)
     }
 }
 
-static gboolean
-_clutter_stage_get_pick_buffer_valid (ClutterStage *stage, ClutterPickMode mode)
-{
-  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
-
-  if (stage->priv->pick_buffer_mode != mode)
-    return FALSE;
-
-  return stage->priv->have_valid_pick_buffer;
-}
-
-static void
-_clutter_stage_set_pick_buffer_valid (ClutterStage   *stage,
-                                      gboolean        valid,
-                                      ClutterPickMode mode)
-{
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-
-  stage->priv->have_valid_pick_buffer = !!valid;
-  stage->priv->pick_buffer_mode = mode;
-}
-
 static void
 clutter_stage_do_redraw (ClutterStage *stage)
 {
@@ -1194,9 +1167,6 @@ clutter_stage_do_redraw (ClutterStage *stage)
   CLUTTER_NOTE (PAINT, "Redraw started for stage '%s'[%p]",
                 _clutter_actor_get_debug_name (actor),
                 stage);
-
-  _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
-  priv->picks_per_frame = 0;
 
   _clutter_backend_ensure_context (backend, stage);
 
@@ -1464,7 +1434,8 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   gboolean dither_enabled_save;
   CoglFramebuffer *fb;
   ClutterActor *actor;
-  gboolean is_clipped;
+  gint dirty_x;
+  gint dirty_y;
   gint read_x;
   gint read_y;
   int window_scale;
@@ -1519,64 +1490,25 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   clutter_stage_ensure_current (stage);
   window_scale = _clutter_stage_window_get_scale_factor (priv->impl);
 
-  /* It's possible that we currently have a static scene and have renderered a
-   * full, unclipped pick buffer. If so we can simply continue to read from
-   * this cached buffer until the scene next changes. */
-  if (_clutter_stage_get_pick_buffer_valid (stage, mode))
-    {
-      CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
-      cogl_read_pixels (x * window_scale,
-                        y * window_scale,
-                        1, 1,
-                        COGL_READ_PIXELS_COLOR_BUFFER,
-                        COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                        pixel);
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_read);
-
-      CLUTTER_NOTE (PICK, "Reusing pick buffer from previous render to fetch "
-                    "actor at %i,%i", x, y);
-
-      goto check_pixel;
-    }
-
-  priv->picks_per_frame++;
-
   _clutter_backend_ensure_context (context->backend, stage);
 
   /* needed for when a context switch happens */
   _clutter_stage_maybe_setup_viewport (stage);
 
-  /* If we are seeing multiple picks per frame that means the scene is static
-   * so we promote to doing a non-scissored pick render so that all subsequent
-   * picks for the same static scene won't require additional renders */
-  if (priv->picks_per_frame < 2)
-    {
-      gint dirty_x;
-      gint dirty_y;
+  _clutter_stage_window_get_dirty_pixel (priv->impl, &dirty_x, &dirty_y);
 
-      _clutter_stage_window_get_dirty_pixel (priv->impl, &dirty_x, &dirty_y);
+  if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+    cogl_clip_push_window_rectangle (dirty_x * window_scale, dirty_y * window_scale, 1, 1);
 
-      if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-        cogl_clip_push_window_rectangle (dirty_x * window_scale, dirty_y * window_scale, 1, 1);
+  cogl_set_viewport (priv->viewport[0] * window_scale - x * window_scale + dirty_x * window_scale,
+                     priv->viewport[1] * window_scale - y * window_scale + dirty_y * window_scale,
+                     priv->viewport[2] * window_scale,
+                     priv->viewport[3] * window_scale);
 
-      cogl_set_viewport (priv->viewport[0] * window_scale - x * window_scale + dirty_x * window_scale,
-                         priv->viewport[1] * window_scale - y * window_scale + dirty_y * window_scale,
-                         priv->viewport[2] * window_scale,
-                         priv->viewport[3] * window_scale);
+  read_x = dirty_x * window_scale;
+  read_y = dirty_y * window_scale;
 
-      read_x = dirty_x * window_scale;
-      read_y = dirty_y * window_scale;
-      is_clipped = TRUE;
-    }
-  else
-    {
-      read_x = x * window_scale;
-      read_y = y * window_scale;
-      is_clipped = FALSE;
-    }
-
-  CLUTTER_NOTE (PICK, "Performing %s pick at %i,%i",
-                is_clipped ? "clipped" : "full", x, y);
+  CLUTTER_NOTE (PICK, "Performing pick at %i,%i", x, y);
 
   cogl_color_init_from_4ub (&stage_pick_id, 255, 255, 255, 255);
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_clear);
@@ -1630,25 +1562,11 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   /* Restore whether GL_DITHER was enabled */
   cogl_framebuffer_set_dither_enabled (fb, dither_enabled_save);
 
-  if (is_clipped)
-    {
-      if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-        cogl_clip_pop ();
+  if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+    cogl_clip_pop ();
 
-      _clutter_stage_dirty_viewport (stage);
+  _clutter_stage_dirty_viewport (stage);
 
-      _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
-    }
-  else
-    {
-      /* Notify the backend that we have trashed the contents of
-       * the back buffer... */
-      _clutter_stage_window_dirty_back_buffer (priv->impl);
-
-      _clutter_stage_set_pick_buffer_valid (stage, TRUE, mode);
-    }
-
-check_pixel:
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
     {
       actor = CLUTTER_ACTOR (stage);
@@ -2388,9 +2306,6 @@ clutter_stage_init (ClutterStage *self)
                                0, 0,
                                geom.width,
                                geom.height);
-
-  _clutter_stage_set_pick_buffer_valid (self, FALSE, CLUTTER_PICK_ALL);
-  priv->picks_per_frame = 0;
 
   priv->paint_volume_stack =
     g_array_new (FALSE, FALSE, sizeof (ClutterPaintVolume));
@@ -4138,16 +4053,6 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
       priv->redraw_count += 1;
     }
 #endif /* CLUTTER_ENABLE_DEBUG */
-
-  /* We have an optimization in _clutter_stage_do_pick to detect when
-   * the scene is static so we can cache a full, un-clipped pick
-   * buffer to avoid continuous pick renders.
-   *
-   * Currently the assumption is that actors queue a redraw when some
-   * state changes that affects painting *or* picking so we can use
-   * this point to invalidate any currently cached pick buffer.
-   */
-  _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
 
   if (entry)
     {
