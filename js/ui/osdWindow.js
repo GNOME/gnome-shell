@@ -77,7 +77,8 @@ const OsdWindow = new Lang.Class({
                                      y_expand: true,
                                      x_align: Clutter.ActorAlign.CENTER,
                                      y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        this._currentMonitor = undefined;
+        this.setMonitor (-1);
         this._box = new St.BoxLayout({ style_class: 'osd-window',
                                        vertical: true });
         this.actor.add_actor(this._box);
@@ -182,7 +183,13 @@ const OsdWindow = new Lang.Class({
 
     _monitorsChanged: function() {
         /* assume 110x110 on a 640x480 display and scale from there */
-        let monitor = Main.layoutManager.primaryMonitor;
+        let monitor;
+
+        if (this._currentMonitor >= 0)
+            monitor = Main.layoutManager.monitors[this._currentMonitor];
+        else
+            monitor = Main.layoutManager.primaryMonitor;
+
         let scalew = monitor.width / 640.0;
         let scaleh = monitor.height / 480.0;
         let scale = Math.min(scalew, scaleh);
@@ -206,5 +213,23 @@ const OsdWindow = new Lang.Class({
         let minHeight = this._popupSize - horizontalPadding - topBorder - bottomBorder;
 
         this._box.style = 'min-height: %dpx;'.format(Math.max(minWidth, minHeight));
+    },
+
+    setMonitor: function(index) {
+        let constraint;
+
+        if (index < 0)
+            index = -1;
+        if (this._currentMonitor == index)
+            return;
+
+        if (index < 0)
+            constraint = new Layout.MonitorConstraint({ primary: true });
+        else
+            constraint = new Layout.MonitorConstraint({ index: index });
+
+        this.actor.clear_constraints();
+        this.actor.add_constraint(constraint);
+        this._currentMonitor = index;
     }
 });

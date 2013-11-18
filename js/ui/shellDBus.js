@@ -133,11 +133,16 @@ const GnomeShell = new Lang.Class({
         for (let param in params)
             params[param] = params[param].deep_unpack();
 
+        let monitorIndex = -1;
+        if (params['monitor'])
+            monitorIndex = params['monitor'];
+
         let icon = null;
         if (params['icon'])
             icon = Gio.Icon.new_for_string(params['icon']);
 
         Main.osdWindow.setIcon(icon);
+        Main.osdWindow.setMonitor (monitorIndex);
         Main.osdWindow.setLabel(params['label']);
         Main.osdWindow.setLevel(params['level']);
 
