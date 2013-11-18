@@ -91,6 +91,8 @@ const UserWidgetLabel = new Lang.Class({
             this._user.disconnect(this._userChangedId);
             this._userChangedId = 0;
         }
+
+        this.parent();
     },
 
     vfunc_allocate: function(box, flags) {
