@@ -45,30 +45,27 @@ void
 meta_background_group_set_clip_region (MetaBackgroundGroup *self,
                                        cairo_region_t      *region)
 {
-  GList *children, *l;
-
-  children = clutter_actor_get_children (CLUTTER_ACTOR (self));
-  for (l = children; l; l = l->next)
+  ClutterActor *child;
+  for (child = clutter_actor_get_first_child (self);
+       child != NULL;
+       child = clutter_actor_get_next_sibling (child))
     {
-      ClutterActor *actor = l->data;
-
-      if (META_IS_BACKGROUND_ACTOR (actor))
+      if (META_IS_BACKGROUND_ACTOR (child))
         {
-          meta_background_actor_set_clip_region (META_BACKGROUND_ACTOR (actor), region);
+          meta_background_actor_set_clip_region (META_BACKGROUND_ACTOR (child), region);
         }
-      else if (META_IS_BACKGROUND_GROUP (actor))
+      else if (META_IS_BACKGROUND_GROUP (child))
         {
           int x, y;
 
-          if (!meta_actor_is_untransformed (actor, &x, &y))
+          if (!meta_actor_is_untransformed (child, &x, &y))
             continue;
 
           cairo_region_translate (region, -x, -y);
-          meta_background_group_set_clip_region (META_BACKGROUND_GROUP (actor), region);
+          meta_background_group_set_clip_region (META_BACKGROUND_GROUP (child), region);
           cairo_region_translate (region, x, y);
         }
     }
-  g_list_free (children);
 }
 
 ClutterActor *
