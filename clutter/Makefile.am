@@ -115,7 +115,6 @@ source_h =					\
 	$(srcdir)/clutter-snap-constraint.h	\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-stage-manager.h	\
-	$(srcdir)/clutter-table-layout.h	\
 	$(srcdir)/clutter-tap-action.h		\
 	$(srcdir)/clutter-texture.h 		\
 	$(srcdir)/clutter-text.h		\
@@ -199,7 +198,6 @@ source_c = \
 	$(srcdir)/clutter-stage.c		\
 	$(srcdir)/clutter-stage-manager.c	\
 	$(srcdir)/clutter-stage-window.c	\
-	$(srcdir)/clutter-table-layout.c	\
 	$(srcdir)/clutter-tap-action.c		\
 	$(srcdir)/clutter-text.c		\
 	$(srcdir)/clutter-text-buffer.c		\
@@ -282,6 +280,7 @@ deprecated_h = \
 	$(srcdir)/deprecated/clutter-stage-manager.h		\
 	$(srcdir)/deprecated/clutter-stage.h			\
 	$(srcdir)/deprecated/clutter-state.h			\
+	$(srcdir)/deprecated/clutter-table-layout.h		\
 	$(srcdir)/deprecated/clutter-texture.h			\
 	$(srcdir)/deprecated/clutter-timeline.h 		\
 	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
@@ -313,6 +312,7 @@ deprecated_c = \
 	$(srcdir)/deprecated/clutter-score.c 			\
 	$(srcdir)/deprecated/clutter-shader.c 			\
 	$(srcdir)/deprecated/clutter-state.c			\
+	$(srcdir)/deprecated/clutter-table-layout.c		\
 	$(srcdir)/deprecated/clutter-texture.c 			\
 	$(srcdir)/deprecated/clutter-timeout-pool.c		\
 	$(NULL)

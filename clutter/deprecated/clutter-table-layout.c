@@ -74,6 +74,12 @@
  * </figure>
  *
  * #ClutterTableLayout is available since Clutter 1.4
+ *
+ * Since Clutter 1.18 it's recommended to use #ClutterGridLayout instead
+ * of #ClutterTableLayout; the former supports right-to-left text direction,
+ * as well as using the alignment and expansion flags on #ClutterActor.
+ *
+ * Deprecated: 1.18
  */
 
 #ifdef HAVE_CONFIG_H
@@ -1624,6 +1630,8 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
    * The spacing between columns of the #ClutterTableLayout, in pixels
    *
    * Since: 1.4
+   *
+   * Deprecated: 1.18
    */
   pspec = g_param_spec_uint ("column-spacing",
                              P_("Column Spacing"),
@@ -1638,6 +1646,8 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
    * The spacing between rows of the #ClutterTableLayout, in pixels
    *
    * Since: 1.4
+   *
+   * Deprecated: 1.18
    */
   pspec = g_param_spec_uint ("row-spacing",
                              P_("Row Spacing"),
@@ -1744,6 +1754,8 @@ clutter_table_layout_init (ClutterTableLayout *layout)
  * Return value: the newly created #ClutterTableLayout
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.18: Use #ClutterGridLayout instead
  */
 ClutterLayoutManager *
 clutter_table_layout_new (void)
@@ -1759,6 +1771,8 @@ clutter_table_layout_new (void)
  * Sets the spacing between columns of @layout
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.18: Use #ClutterGridLayout instead
  */
 void
 clutter_table_layout_set_column_spacing (ClutterTableLayout *layout,
@@ -1792,6 +1806,8 @@ clutter_table_layout_set_column_spacing (ClutterTableLayout *layout,
  * Return value: the spacing between columns of the #ClutterTableLayout
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.18: Use #ClutterGridLayout instead
  */
 guint
 clutter_table_layout_get_column_spacing (ClutterTableLayout *layout)
@@ -1809,6 +1825,8 @@ clutter_table_layout_get_column_spacing (ClutterTableLayout *layout)
  * Sets the spacing between rows of @layout
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.18: Use #ClutterGridLayout instead
  */
 void
 clutter_table_layout_set_row_spacing (ClutterTableLayout *layout,
@@ -1842,6 +1860,8 @@ clutter_table_layout_set_row_spacing (ClutterTableLayout *layout,
  * Return value: the spacing between rows of the #ClutterTableLayout
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.18: Use #ClutterGridLayout instead
  */
 guint
 clutter_table_layout_get_row_spacing (ClutterTableLayout *layout)
@@ -1862,6 +1882,8 @@ clutter_table_layout_get_row_spacing (ClutterTableLayout *layout)
  * at the given row and column.
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.18: Use #ClutterGridLayout instead
  */
 void
 clutter_table_layout_pack (ClutterTableLayout  *layout,
@@ -1916,6 +1938,8 @@ clutter_table_layout_pack (ClutterTableLayout  *layout,
  * inside @layout
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.18: Use #ClutterGridLayout instead
  */
 void
 clutter_table_layout_set_span (ClutterTableLayout *layout,
@@ -1970,6 +1994,8 @@ clutter_table_layout_set_span (ClutterTableLayout *layout,
  * clutter_table_layout_pack() or clutter_table_layout_set_span()
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.18: Use #ClutterGridLayout instead
  */
 void
 clutter_table_layout_get_span (ClutterTableLayout *layout,
@@ -2551,6 +2577,8 @@ clutter_table_layout_get_easing_duration (ClutterTableLayout *layout)
  * Returns: the number of rows
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.18: Use #ClutterGridLayout instead
  */
 gint
 clutter_table_layout_get_row_count (ClutterTableLayout *layout)
@@ -2570,6 +2598,8 @@ clutter_table_layout_get_row_count (ClutterTableLayout *layout)
  * Returns: the number of columns
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.18: Use #ClutterGridLayout instead
  */
 gint
 clutter_table_layout_get_column_count (ClutterTableLayout *layout)

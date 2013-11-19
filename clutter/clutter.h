@@ -98,7 +98,6 @@
 #include "clutter-snap-constraint.h"
 #include "clutter-stage.h"
 #include "clutter-stage-manager.h"
-#include "clutter-table-layout.h"
 #include "clutter-tap-action.h"
 #include "clutter-texture.h"
 #include "clutter-text.h"

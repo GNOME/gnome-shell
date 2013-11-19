@@ -54,6 +54,8 @@ typedef struct _ClutterTableLayoutClass           ClutterTableLayoutClass;
  * and should be accessed using the provided API
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.18: Use #ClutterGridLayout instead
  */
 struct _ClutterTableLayout
 {
@@ -70,6 +72,8 @@ struct _ClutterTableLayout
  * data and should be accessed using the provided API
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.18: Use #ClutterGridLayout instead
  */
 struct _ClutterTableLayoutClass
 {
@@ -77,26 +81,35 @@ struct _ClutterTableLayoutClass
   ClutterLayoutManagerClass parent_class;
 };
 
+CLUTTER_DEPRECATED_IN_1_18_FOR (clutter_grid_layout_get_type)
 GType clutter_table_layout_get_type (void) G_GNUC_CONST;
 
+CLUTTER_DEPRECATED_IN_1_18_FOR (clutter_grid_layout_new)
 ClutterLayoutManager *clutter_table_layout_new                 (void);
 
+CLUTTER_DEPRECATED_IN_1_18_FOR (clutter_grid_layout_attach)
 void                  clutter_table_layout_pack                (ClutterTableLayout    *layout,
                                                                 ClutterActor          *actor,
                                                                 gint                   column,
                                                                 gint                   row);
 
+CLUTTER_DEPRECATED_IN_1_18_FOR (clutter_grid_layout_set_column_spacing)
 void                  clutter_table_layout_set_column_spacing  (ClutterTableLayout    *layout,
                                                                 guint                  spacing);
+CLUTTER_DEPRECATED_IN_1_18_FOR (clutter_grid_layout_set_row_spacing)
 void                  clutter_table_layout_set_row_spacing     (ClutterTableLayout    *layout,
                                                                 guint                  spacing);
+CLUTTER_DEPRECATED_IN_1_18_FOR (clutter_grid_layout_get_column_spacing)
 guint                 clutter_table_layout_get_column_spacing  (ClutterTableLayout    *layout);
+CLUTTER_DEPRECATED_IN_1_18_FOR (clutter_grid_layout_get_row_spacing)
 guint                 clutter_table_layout_get_row_spacing     (ClutterTableLayout    *layout);
 
+CLUTTER_DEPRECATED_IN_1_18
 void                  clutter_table_layout_set_span            (ClutterTableLayout    *layout,
                                                                 ClutterActor          *actor,
                                                                 gint                   column_span,
                                                                 gint                   row_span);
+CLUTTER_DEPRECATED_IN_1_18
 void                  clutter_table_layout_get_span            (ClutterTableLayout    *layout,
                                                                 ClutterActor          *actor,
                                                                 gint                  *column_span,
@@ -133,7 +146,9 @@ void                  clutter_table_layout_get_expand          (ClutterTableLayo
                                                                 gboolean              *x_expand,
                                                                 gboolean              *y_expand);
 
+CLUTTER_DEPRECATED_IN_1_18
 gint                  clutter_table_layout_get_row_count       (ClutterTableLayout    *layout);
+CLUTTER_DEPRECATED_IN_1_18
 gint                  clutter_table_layout_get_column_count    (ClutterTableLayout    *layout);
 
 CLUTTER_DEPRECATED_IN_1_12
