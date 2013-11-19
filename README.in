@@ -21,7 +21,6 @@ When building the X11 backend, Clutter depends on the following extensions:
   • XComposite ≥ @XCOMPOSITE_REQ_VERSION@
   • XDamage
   • XExt
-  • XFixes ≥ @XFIXES_REQ_VERSION@
   • XInput (1.x or 2.x)
   • XKB
 

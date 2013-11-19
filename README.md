@@ -24,7 +24,6 @@ On X11, Clutter depends on the following extensions:
 * XComposite
 * XDamage
 * XExt
-* XFixes
 * XInput (1.x or 2.x)
 * XKB
 
