@@ -261,6 +261,28 @@ surface_ensure_window (MetaWaylandSurface *surface)
 }
 
 static void
+ensure_buffer_texture (MetaWaylandBuffer *buffer)
+{
+  CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
+  CoglError *catch_error = NULL;
+  CoglTexture *texture;
+
+  texture = COGL_TEXTURE (cogl_wayland_texture_2d_new_from_buffer (ctx,
+                                                                   buffer->resource,
+                                                                   &catch_error));
+  if (!texture)
+    {
+      cogl_error_free (catch_error);
+      meta_warning ("Could not import pending buffer, ignoring commit\n");
+      return;
+    }
+
+  buffer->texture = texture;
+  buffer->width = cogl_texture_get_width (texture);
+  buffer->height = cogl_texture_get_height (texture);
+}
+
+static void
 meta_wayland_surface_commit (struct wl_client *client,
                              struct wl_resource *resource)
 {
@@ -278,37 +300,15 @@ meta_wayland_surface_commit (struct wl_client *client,
       surface->buffer_ref.buffer != surface->pending.buffer)
     {
       MetaWaylandBuffer *buffer = surface->pending.buffer;
-      CoglContext *ctx =
-        clutter_backend_get_cogl_context (clutter_get_default_backend ());
-      CoglError *catch_error = NULL;
-      CoglTexture *texture =
-        COGL_TEXTURE (cogl_wayland_texture_2d_new_from_buffer (ctx,
-                                                               buffer->resource,
-                                                               &catch_error));
-      if (!texture)
-        {
-          cogl_error_free (catch_error);
-	  meta_warning ("Could not import pending buffer, ignoring commit\n");
-	  return;
-        }
-      else
-        {
-	  buffer->texture = texture;
-          buffer->width = cogl_texture_get_width (texture);
-          buffer->height = cogl_texture_get_height (texture);
-        }
 
-      /* Note: we set this before informing any window-actor since the
-       * window actor will expect to find the new buffer within the
-       * surface. */
-      meta_wayland_buffer_reference (&surface->buffer_ref,
-                                     surface->pending.buffer);
-    }
-
-  if (!surface->buffer_ref.buffer)
-    {
-      meta_warning ("Commit without a buffer? Ignoring\n");
-      return;
+      if (buffer)
+        {
+          /* Note: we set this before informing any window-actor since the
+           * window actor will expect to find the new buffer within the
+           * surface. */
+          ensure_buffer_texture (buffer);
+          meta_wayland_buffer_reference (&surface->buffer_ref, buffer);
+        }
     }
 
   surface_ensure_window (surface);
