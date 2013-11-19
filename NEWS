@@ -1,3 +1,19 @@
+3.11.2
+======
+* Support setting a NULL opaque region [Andreas; #711518]
+* Sync keymap from X to wayland [Giovanni; #707446]
+* Implement support for subsurfaces [Jonas; #705502]
+* Don't focus the no-focus-window for globally active windows [Jasper; #710296]
+* Support "hotplug_mode_update" property [Marc-André; #711216]
+* Fix resize operations using mouse-button-modifier [Lionel; #710251]
+* Fix position of attached modals for CSD windows [Giovanni, Owen; #707194]
+* Misc. bug fixes [Rui, Jasper, Neil, Florian; #712247, #711731]
+
+Contributors:
+  Giovanni Campagna, Andreas Heider, Lionel Landwerlin, Marc-André Lureau,
+  Rui Matos, Florian Müllner, Neil Roberts, Sindhu S, Jasper St. Pierre,
+  Rico Tzschichholz, Owen W. Taylor, Jonas Ådahl
+
 3.11.1
 ======
 * Fix tile previews getting stuck on right click during drags [Lionel; #704759]
