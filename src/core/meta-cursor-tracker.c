@@ -822,14 +822,14 @@ static MetaCursorReference *
 ensure_wayland_cursor (MetaCursorTracker *tracker,
                        MetaCursor         cursor)
 {
-  if (tracker->default_cursors[cursor])
-    return tracker->default_cursors[cursor];
-
-  tracker->default_cursors[cursor] = meta_cursor_reference_from_theme (tracker, cursor);
   if (!tracker->default_cursors[cursor])
-    meta_warning ("Failed to load cursor from theme\n");
+    {
+      tracker->default_cursors[cursor] = meta_cursor_reference_from_theme (tracker, cursor);
+      if (!tracker->default_cursors[cursor])
+        meta_warning ("Failed to load cursor from theme\n");
+    }
 
-  return tracker->default_cursors[cursor];
+  return meta_cursor_reference_ref (tracker->default_cursors[cursor]);
 }
 
 void
@@ -880,12 +880,8 @@ meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
   /* Now update the real root cursor */
   if (meta_is_wayland_compositor ())
     {
-      MetaCursorReference *ref;
-
-      ref = ensure_wayland_cursor (tracker, cursor);
-
       g_clear_pointer (&tracker->root_cursor, meta_cursor_reference_unref);
-      tracker->root_cursor = meta_cursor_reference_ref (ref);
+      tracker->root_cursor = ensure_wayland_cursor (tracker, cursor);
     }
 }
 
