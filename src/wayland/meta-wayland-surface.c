@@ -400,7 +400,8 @@ meta_wayland_surface_set_buffer_scale (struct wl_client *client,
                                        struct wl_resource *resource,
                                        int scale)
 {
-  g_warning ("TODO: support set_buffer_scale request");
+  if (scale != 1)
+    g_warning ("TODO: support set_buffer_scale request");
 }
 
 const struct wl_surface_interface meta_wayland_surface_interface = {
