@@ -414,11 +414,18 @@ cleared:
 
       /* NB: A clear may be scissored so we need to track the extents
        * that the clear is applicable too... */
-      _cogl_clip_stack_get_bounds (clip_stack,
-                                   &framebuffer->clear_clip_x0,
-                                   &framebuffer->clear_clip_y0,
-                                   &framebuffer->clear_clip_x1,
-                                   &framebuffer->clear_clip_y1);
+      if (clip_stack)
+        {
+          _cogl_clip_stack_get_bounds (clip_stack,
+                                       &framebuffer->clear_clip_x0,
+                                       &framebuffer->clear_clip_y0,
+                                       &framebuffer->clear_clip_x1,
+                                       &framebuffer->clear_clip_y1);
+        }
+      else
+        {
+          /* FIXME: set degenerate clip */
+        }
     }
 }
 
