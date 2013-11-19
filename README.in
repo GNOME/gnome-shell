@@ -40,7 +40,7 @@ When building the CEx100 backend, Clutter also depends on:
 When building the evdev input backend, Clutter also depends on:
 
   • xkbcommon
-  • libevdev
+  • libevdev ≥ @LIBEVDEV_REQ_VERSION@
 
 If you are building the API reference you will also need:
 

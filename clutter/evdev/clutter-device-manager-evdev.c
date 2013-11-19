@@ -605,11 +605,11 @@ sync_source (ClutterEventSource *source)
   const gchar *device_path;
 
   /* We read a SYN_DROPPED, ignore it and sync the device */
-  err = libevdev_next_event (source->dev, LIBEVDEV_READ_SYNC, &ev);
+  err = libevdev_next_event (source->dev, LIBEVDEV_READ_FLAG_SYNC, &ev);
   while (err == 1)
     {
       dispatch_one_event (source, &ev);
-      err = libevdev_next_event (source->dev, LIBEVDEV_READ_SYNC, &ev);
+      err = libevdev_next_event (source->dev, LIBEVDEV_READ_FLAG_SYNC, &ev);
     }
 
   if (err != -EAGAIN && CLUTTER_HAS_DEBUG (EVENT))
@@ -664,7 +664,7 @@ clutter_event_dispatch (GSource     *g_source,
   if (clutter_events_pending ())
     goto queue_event;
 
-  err = libevdev_next_event (source->dev, LIBEVDEV_READ_NORMAL, &ev);
+  err = libevdev_next_event (source->dev, LIBEVDEV_READ_FLAG_NORMAL, &ev);
   while (err != -EAGAIN)
     {
       if (err == 1)
@@ -677,7 +677,7 @@ clutter_event_dispatch (GSource     *g_source,
 	  goto out;
 	}
 
-      err = libevdev_next_event (source->dev, LIBEVDEV_READ_NORMAL, &ev);
+      err = libevdev_next_event (source->dev, LIBEVDEV_READ_FLAG_NORMAL, &ev);
     }
 
  queue_event:
@@ -725,7 +725,7 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
   GSource *source = g_source_new (&event_funcs, sizeof (ClutterEventSource));
   ClutterEventSource *event_source = (ClutterEventSource *) source;
   const gchar *node_path;
-  gint fd, clkid;
+  gint fd;
   GError *error;
   ClutterInputDeviceType device_type;
 
@@ -756,15 +756,13 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
 	}
     }
 
-  /* Tell evdev to use the monotonic clock for its timestamps */
-  clkid = CLOCK_MONOTONIC;
-  ioctl (fd, EVIOCSCLOCKID, &clkid);
-
   /* setup the source */
   event_source->device = input_device;
   event_source->event_poll_fd.fd = fd;
   event_source->event_poll_fd.events = G_IO_IN;
+
   libevdev_new_from_fd (fd, &event_source->dev);
+  libevdev_set_clock_id (event_source->dev, CLOCK_MONOTONIC);
 
   device_type = clutter_input_device_get_device_type (CLUTTER_INPUT_DEVICE (input_device));
   if (device_type == CLUTTER_TOUCHPAD_DEVICE)
