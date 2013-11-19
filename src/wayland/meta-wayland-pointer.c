@@ -538,7 +538,7 @@ meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer)
 
   wl_list_for_each_safe (popup, tmp, &popup_grab->all_popups, link)
     {
-      MetaWaylandSurfaceExtension *shell_surface = popup->surface->xdg_surface;
+      MetaWaylandSurfaceExtension *shell_surface = &popup->surface->xdg_surface;
       struct wl_client *client = wl_resource_get_client (shell_surface->resource);
       struct wl_display *display = wl_client_get_display (client);
       uint32_t serial;

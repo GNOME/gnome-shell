@@ -80,7 +80,6 @@ typedef struct
 
 typedef struct
 {
-  MetaWaylandSurface *surface;
   struct wl_resource *resource;
   struct wl_listener surface_destroy_listener;
 } MetaWaylandSurfaceExtension;
@@ -91,8 +90,8 @@ struct _MetaWaylandSurface
   MetaWaylandCompositor *compositor;
   MetaWaylandBufferReference buffer_ref;
   MetaWindow *window;
-  MetaWaylandSurfaceExtension *xdg_surface;
-  MetaWaylandSurfaceExtension *gtk_surface;
+  MetaWaylandSurfaceExtension xdg_surface;
+  MetaWaylandSurfaceExtension gtk_surface;
 
   /* All the pending state, that wl_surface.commit will apply. */
   MetaWaylandDoubleBufferedState pending;
