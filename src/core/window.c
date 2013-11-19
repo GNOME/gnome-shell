@@ -827,7 +827,6 @@ meta_window_new_shared (MetaDisplay         *display,
                         MetaWindowClientType client_type,
                         MetaWaylandSurface  *surface,
                         Window               xwindow,
-                        gboolean             must_be_viewable,
                         gulong               existing_wm_state,
                         MetaCompEffect       effect,
                         XWindowAttributes   *attrs)
@@ -838,8 +837,7 @@ meta_window_new_shared (MetaDisplay         *display,
 
   g_assert (attrs != NULL);
 
-  meta_verbose ("must_be_viewable = %d attrs->map_state = %d (%s)\n",
-                must_be_viewable,
+  meta_verbose ("attrs->map_state = %d (%s)\n",
                 attrs->map_state,
                 (attrs->map_state == IsUnmapped) ?
                 "IsUnmapped" :
@@ -1421,7 +1419,6 @@ meta_window_new_for_wayland (MetaDisplay        *display,
                                    META_WINDOW_CLIENT_TYPE_WAYLAND,
                                    surface,
                                    None,
-                                   TRUE,
                                    WithdrawnState,
                                    META_COMP_EFFECT_NONE,
                                    &attrs);
@@ -1601,7 +1598,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
                                    META_WINDOW_CLIENT_TYPE_X11,
                                    NULL,
                                    xwindow,
-                                   must_be_viewable,
                                    existing_wm_state,
                                    effect,
                                    attrs);
