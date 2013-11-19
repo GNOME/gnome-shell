@@ -650,11 +650,6 @@ redirect_windows (MetaCompositor *compositor,
   guint        n_retries;
   guint        max_retries;
 
-  /* If we're running with wayland, connected to a headless xwayland
-   * server then all the windows are implicitly redirected offscreen
-   * already and it would generate an error to try and explicitly
-   * redirect them via XCompositeRedirectSubwindows() */
-
   if (meta_get_replace_current_wm ())
     max_retries = 5;
   else
