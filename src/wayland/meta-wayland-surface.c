@@ -566,7 +566,7 @@ static void
 xdg_surface_destroy (struct wl_client *client,
                      struct wl_resource *resource)
 {
-  g_warning ("TODO: support xdg_surface.destroy");
+  destroy_surface_extension (resource);
 }
 
 static void
