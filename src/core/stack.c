@@ -1327,15 +1327,6 @@ stack_sync_to_xserver (MetaStack *stack)
       /* build XRestackWindows() array from top to bottom */
       if (w->client_type == META_WINDOW_CLIENT_TYPE_X11)
         g_array_append_val (x11_root_children_stacked, top_level_window);
-      else
-        {
-          MetaStackWindow *new;
-
-          /* So we can determine later if a cached stack window is
-           * stale because the corresponding window has been freed we
-           * associate a weak pointer with the new window. */
-          new = &g_array_index (all_root_children_stacked, MetaStackWindow, all_root_children_stacked->len - 1);
-        }
     }
 
   meta_topic (META_DEBUG_STACK, "\n");
