@@ -648,6 +648,7 @@ clutter_effect_get_type
 clutter_effect_paint_flags_get_type
 clutter_effect_queue_repaint
 clutter_events_pending
+clutter_event_add_filter
 clutter_event_copy
 clutter_event_flags_get_type
 clutter_event_free
@@ -683,6 +684,7 @@ clutter_event_is_pointer_emulated
 clutter_event_new
 clutter_event_peek
 clutter_event_put
+clutter_event_remove_filter
 clutter_event_set_button
 clutter_event_set_coords
 clutter_event_set_device
