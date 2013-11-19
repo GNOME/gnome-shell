@@ -2031,7 +2031,7 @@ check_needs_x11_pixmap (MetaWindowActor *self)
 
       meta_surface_actor_set_texture (META_SURFACE_ACTOR (priv->surface), texture);
 
-      /* ::size-changed is supposed to refer to meta_window_get_outer_rect().
+      /* ::size-changed is supposed to refer to meta_window_get_frame_rect().
        * Emitting it here works pretty much OK because a new value of the
        * *input* rect (which is the outer rect with the addition of invisible
        * borders) forces a new pixmap and we get here. In the rare case where
@@ -2128,7 +2128,7 @@ meta_window_actor_process_x11_damage (MetaWindowActor    *self,
   if (meta_window_is_fullscreen (priv->window) && g_list_last (info->windows)->data == self && !priv->unredirected)
     {
       MetaRectangle window_rect;
-      meta_window_get_outer_rect (priv->window, &window_rect);
+      meta_window_get_frame_rect (priv->window, &window_rect);
 
       if (window_rect.x == event->area.x &&
           window_rect.y == event->area.y &&

@@ -1528,7 +1528,7 @@ meta_screen_tab_popup_create (MetaScreen      *screen,
       if (show_type == META_TAB_SHOW_INSTANTLY ||
           !entries[i].hidden                   ||
           !meta_window_get_icon_geometry (window, &r))
-        meta_window_get_outer_rect (window, &r);
+        meta_window_get_frame_rect (window, &r);
 
       entries[i].rect = r;
 
@@ -1914,7 +1914,7 @@ meta_screen_get_monitor_for_window (MetaScreen *screen,
 {
   MetaRectangle window_rect;
   
-  meta_window_get_outer_rect (window, &window_rect);
+  meta_window_get_frame_rect (window, &window_rect);
 
   return meta_screen_get_monitor_for_rect (screen, &window_rect);
 }

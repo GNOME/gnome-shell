@@ -1693,7 +1693,7 @@ window_contains_point (MetaWindow *window,
 {
   MetaRectangle rect;
 
-  meta_window_get_outer_rect (window, &rect);
+  meta_window_get_frame_rect (window, &rect);
 
   return POINT_IN_RECT (root_x, root_y, rect);
 }

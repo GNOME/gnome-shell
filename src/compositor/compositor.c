@@ -864,7 +864,7 @@ meta_shape_cow_for_window (MetaScreen *screen,
       int width, height;
       MetaRectangle rect;
 
-      meta_window_get_outer_rect (metaWindow, &rect);
+      meta_window_get_frame_rect (metaWindow, &rect);
 
       window_bounds.x = rect.x;
       window_bounds.y = rect.y;

@@ -2931,8 +2931,8 @@ static gboolean
 windows_overlap (const MetaWindow *w1, const MetaWindow *w2)
 {
   MetaRectangle w1rect, w2rect;
-  meta_window_get_outer_rect (w1, &w1rect);
-  meta_window_get_outer_rect (w2, &w2rect);
+  meta_window_get_frame_rect (w1, &w1rect);
+  meta_window_get_frame_rect (w2, &w2rect);
   return meta_rectangle_overlap (&w1rect, &w2rect);
 }
 
@@ -3733,11 +3733,11 @@ meta_window_maximize (MetaWindow        *window,
           MetaRectangle old_rect;
 	  MetaRectangle new_rect;
 
-	  meta_window_get_outer_rect (window, &old_rect);
+	  meta_window_get_frame_rect (window, &old_rect);
 
           meta_window_move_resize_now (window);
 
-	  meta_window_get_outer_rect (window, &new_rect);
+	  meta_window_get_frame_rect (window, &new_rect);
           meta_compositor_maximize_window (window->display->compositor,
                                            window,
                                            &old_rect,
@@ -3796,7 +3796,7 @@ meta_window_get_all_monitors (MetaWindow *window, gsize *length)
   int i;
 
   monitors = g_array_new (FALSE, FALSE, sizeof (int));
-  meta_window_get_outer_rect (window, &window_rect);
+  meta_window_get_frame_rect (window, &window_rect);
 
   for (i = 0; i < window->screen->n_monitor_infos; i++)
     {
@@ -3829,7 +3829,7 @@ meta_window_is_screen_sized (MetaWindow *window)
   int screen_width, screen_height;
 
   meta_screen_get_size (window->screen, &screen_width, &screen_height);
-  meta_window_get_outer_rect (window, &window_rect);
+  meta_window_get_frame_rect (window, &window_rect);
 
   if (window_rect.x == 0 && window_rect.y == 0 &&
       window_rect.width == screen_width && window_rect.height == screen_height)
@@ -3858,7 +3858,7 @@ meta_window_is_monitor_sized (MetaWindow *window)
     {
       MetaRectangle window_rect, monitor_rect;
 
-      meta_window_get_outer_rect (window, &window_rect);
+      meta_window_get_frame_rect (window, &window_rect);
       meta_screen_get_monitor_geometry (window->screen, window->monitor->number, &monitor_rect);
 
       if (meta_rectangle_equal (&window_rect, &monitor_rect))
@@ -3926,11 +3926,11 @@ meta_window_tile (MetaWindow *window)
       MetaRectangle old_rect;
       MetaRectangle new_rect;
 
-      meta_window_get_outer_rect (window, &old_rect);
+      meta_window_get_frame_rect (window, &old_rect);
 
       meta_window_move_resize_now (window);
 
-      meta_window_get_outer_rect (window, &new_rect);
+      meta_window_get_frame_rect (window, &new_rect);
       meta_compositor_maximize_window (window->display->compositor,
                                        window,
                                        &old_rect,
@@ -4098,7 +4098,7 @@ meta_window_unmaximize_internal (MetaWindow        *window,
         {
           MetaRectangle old_rect, new_rect;
 
-	  meta_window_get_outer_rect (window, &old_rect);
+	  meta_window_get_frame_rect (window, &old_rect);
 
           meta_window_move_resize_internal (window,
                                             META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION,
@@ -4108,7 +4108,7 @@ meta_window_unmaximize_internal (MetaWindow        *window,
                                             target_rect.width,
                                             target_rect.height);
 
-	  meta_window_get_outer_rect (window, &new_rect);
+	  meta_window_get_frame_rect (window, &new_rect);
           meta_compositor_unmaximize_window (window->display->compositor,
 					     window,
                                              &old_rect,
@@ -6129,16 +6129,17 @@ meta_window_frame_rect_to_client_rect (MetaWindow    *window,
 }
 
 /**
- * meta_window_get_outer_rect:
+ * meta_window_get_frame_rect:
  * @window: a #MetaWindow
  * @rect: (out): pointer to an allocated #MetaRectangle
  *
- * Gets the rectangle that bounds @window that is responsive to mouse events.
- * This includes only what is visible; it doesn't include any extra reactive
- * area we add to the edges of windows.
+ * Gets the rectangle that bounds @window that is what the user thinks of
+ * as the edge of the window. This doesn't include any extra reactive
+ * area that we or the client adds to the window, or any area that the
+ * client adds to draw a client-side shadow.
  */
 void
-meta_window_get_outer_rect (const MetaWindow *window,
+meta_window_get_frame_rect (const MetaWindow *window,
                             MetaRectangle    *rect)
 {
   if (window->frame)
@@ -6165,6 +6166,25 @@ meta_window_get_outer_rect (const MetaWindow *window,
           rect->height -= extents->top + extents->bottom;
         }
     }
+}
+
+/**
+ * meta_window_get_outer_rect:
+ * @window: a #MetaWindow
+ * @rect: (out): pointer to an allocated #MetaRectangle
+ *
+ * Gets the rectangle that bounds @window that is what the user thinks of
+ * as the edge of the window. This doesn't include any extra reactive
+ * area that we or the client adds to the window, or any area that the
+ * client adds to draw a client-side shadow.
+ *
+ * Deprecated: 3.10: Use meta_window_get_frame_rect() instead.
+ */
+void
+meta_window_get_outer_rect (const MetaWindow *window,
+                            MetaRectangle    *rect)
+{
+  meta_window_get_frame_rect (window, rect);
 }
 
 const char*
@@ -9241,7 +9261,7 @@ meta_window_show_menu (MetaWindow *window,
 void
 meta_window_shove_titlebar_onscreen (MetaWindow *window)
 {
-  MetaRectangle  outer_rect;
+  MetaRectangle  frame_rect;
   GList         *onscreen_region;
   int            horiz_amount, vert_amount;
   int            newx, newy;
@@ -9253,15 +9273,15 @@ meta_window_shove_titlebar_onscreen (MetaWindow *window)
     return;
 
   /* Get the basic info we need */
-  meta_window_get_outer_rect (window, &outer_rect);
+  meta_window_get_frame_rect (window, &frame_rect);
   onscreen_region = window->screen->active_workspace->screen_region;
 
   /* Extend the region (just in case the window is too big to fit on the
    * screen), then shove the window on screen, then return the region to
    * normal.
    */
-  horiz_amount = outer_rect.width;
-  vert_amount  = outer_rect.height;
+  horiz_amount = frame_rect.width;
+  vert_amount  = frame_rect.height;
   meta_rectangle_expand_region (onscreen_region,
                                 horiz_amount,
                                 horiz_amount,
@@ -9269,15 +9289,15 @@ meta_window_shove_titlebar_onscreen (MetaWindow *window)
                                 vert_amount);
   meta_rectangle_shove_into_region(onscreen_region,
                                    FIXED_DIRECTION_X,
-                                   &outer_rect);
+                                   &frame_rect);
   meta_rectangle_expand_region (onscreen_region,
                                 -horiz_amount,
                                 -horiz_amount,
                                 0,
                                 -vert_amount);
 
-  newx = outer_rect.x + window->frame->child_x;
-  newy = outer_rect.y + window->frame->child_y;
+  newx = frame_rect.x + window->frame->child_x;
+  newy = frame_rect.y + window->frame->child_y;
   meta_window_move_resize (window,
                            FALSE,
                            newx,
@@ -9302,7 +9322,7 @@ meta_window_titlebar_is_onscreen (MetaWindow *window)
     return FALSE;
 
   /* Get the rectangle corresponding to the titlebar */
-  meta_window_get_outer_rect (window, &titlebar_rect);
+  meta_window_get_frame_rect (window, &titlebar_rect);
   titlebar_rect.height = window->frame->child_y;
 
   /* Run through the spanning rectangles for the screen and see if one of
@@ -10532,7 +10552,7 @@ warp_grab_pointer (MetaWindow          *window,
   /* We may not have done begin_grab_op yet, i.e. may not be in a grab
    */
 
-  meta_window_get_outer_rect (window, &rect);
+  meta_window_get_frame_rect (window, &rect);
 
   switch (grab_op)
     {
@@ -10871,7 +10891,7 @@ meta_window_set_demands_attention (MetaWindow *window)
     }
   else
     {
-      meta_window_get_outer_rect (window, &candidate_rect);
+      meta_window_get_frame_rect (window, &candidate_rect);
 
       /* The stack is sorted with the top windows first. */
 
@@ -10882,7 +10902,7 @@ meta_window_set_demands_attention (MetaWindow *window)
 
           if (meta_window_located_on_workspace (other_window, window->workspace))
             {
-              meta_window_get_outer_rect (other_window, &other_rect);
+              meta_window_get_frame_rect (other_window, &other_rect);
 
               if (meta_rectangle_overlap (&candidate_rect, &other_rect))
                 {
@@ -11588,8 +11608,8 @@ meta_window_compute_tile_match (MetaWindow *window)
           bottommost = match;
         }
 
-      meta_window_get_outer_rect (bottommost, &bottommost_rect);
-      meta_window_get_outer_rect (topmost, &topmost_rect);
+      meta_window_get_frame_rect (bottommost, &bottommost_rect);
+      meta_window_get_frame_rect (topmost, &topmost_rect);
       /*
        * If there's a window stacked in between which is partially visible
        * behind the topmost tile we don't consider the tiles to match.
@@ -11603,7 +11623,7 @@ meta_window_compute_tile_match (MetaWindow *window)
               meta_window_get_workspace (above) != meta_window_get_workspace (window))
             continue;
 
-          meta_window_get_outer_rect (above, &above_rect);
+          meta_window_get_frame_rect (above, &above_rect);
 
           if (meta_rectangle_overlap (&above_rect, &bottommost_rect) &&
               meta_rectangle_overlap (&above_rect, &topmost_rect))

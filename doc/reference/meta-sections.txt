@@ -541,6 +541,7 @@ meta_window_is_override_redirect
 meta_window_is_skip_taskbar
 meta_window_get_rect
 meta_window_get_input_rect
+meta_window_get_frame_rect
 meta_window_get_outer_rect
 meta_window_client_rect_to_frame_rect
 meta_window_frame_rect_to_client_rect

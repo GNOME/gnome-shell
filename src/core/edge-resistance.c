@@ -985,7 +985,7 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
         {
           MetaRectangle *new_rect;
           new_rect = g_new (MetaRectangle, 1);
-          meta_window_get_outer_rect (cur_window, new_rect);
+          meta_window_get_frame_rect (cur_window, new_rect);
           obscuring_windows = g_slist_prepend (obscuring_windows, new_rect);
           window_stacking = 
             g_slist_prepend (window_stacking, GINT_TO_POINTER (stack_position));
@@ -1010,7 +1010,7 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
     {
       MetaRectangle  cur_rect;
       MetaWindow    *cur_window = cur_window_iter->data;
-      meta_window_get_outer_rect (cur_window, &cur_rect);
+      meta_window_get_frame_rect (cur_window, &cur_rect);
 
       /* Check if we want to use this window's edges for edge
        * resistance (note that dock edges are considered screen edges
@@ -1151,7 +1151,7 @@ meta_window_edge_resistance_for_move (MetaWindow  *window,
   MetaRectangle old_outer, proposed_outer, new_outer;
   gboolean is_resize;
 
-  meta_window_get_outer_rect (window, &old_outer);
+  meta_window_get_frame_rect (window, &old_outer);
 
   proposed_outer = old_outer;
   proposed_outer.x += (*new_x - old_x);
@@ -1237,7 +1237,7 @@ meta_window_edge_resistance_for_resize (MetaWindow  *window,
   int proposed_outer_width, proposed_outer_height;
   gboolean is_resize;
 
-  meta_window_get_outer_rect (window, &old_outer);
+  meta_window_get_frame_rect (window, &old_outer);
   proposed_outer_width  = old_outer.width  + (*new_width  - old_width);
   proposed_outer_height = old_outer.height + (*new_height - old_height);
   meta_rectangle_resize_with_gravity (&old_outer, 
