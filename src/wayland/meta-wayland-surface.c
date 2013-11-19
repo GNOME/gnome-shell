@@ -246,7 +246,6 @@ static void
 surface_ensure_window (MetaWaylandSurface *surface)
 {
   MetaDisplay *display = meta_get_display ();
-  int width, height;
 
   if (surface->window)
     return;
@@ -254,10 +253,7 @@ surface_ensure_window (MetaWaylandSurface *surface)
   if (!surface_wants_window (surface))
     return;
 
-  width = surface->buffer_ref.buffer->width;
-  height = surface->buffer_ref.buffer->height;
-
-  surface->window = meta_window_new_for_wayland (display, width, height, surface);
+  surface->window = meta_window_new_for_wayland (display, surface);
 }
 
 static void

@@ -508,8 +508,6 @@ MetaWindow* meta_window_new_with_attrs     (MetaDisplay       *display,
                                             MetaCompEffect     effect,
                                             XWindowAttributes *attrs);
 MetaWindow *meta_window_new_for_wayland    (MetaDisplay        *display,
-                                            int                 width,
-                                            int                 height,
                                             MetaWaylandSurface *surface);
 void        meta_window_unmanage           (MetaWindow  *window,
                                             guint32      timestamp);

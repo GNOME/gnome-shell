@@ -1369,8 +1369,6 @@ display_notify_window (MetaDisplay *display, MetaWindow *window)
 
 MetaWindow *
 meta_window_new_for_wayland (MetaDisplay        *display,
-                             int                 width,
-                             int                 height,
                              MetaWaylandSurface *surface)
 {
   XWindowAttributes attrs;
@@ -1379,8 +1377,8 @@ meta_window_new_for_wayland (MetaDisplay        *display,
 
   attrs.x = 0;
   attrs.y = 0;
-  attrs.width = width;
-  attrs.height = height;
+  attrs.width = 1;
+  attrs.height = 1;
   attrs.border_width = 0;
   attrs.depth = 24;
   attrs.visual = NULL;
