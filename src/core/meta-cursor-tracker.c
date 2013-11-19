@@ -70,18 +70,21 @@ struct _MetaCursorTracker {
   gboolean is_showing;
   gboolean has_hw_cursor;
 
-  /* The cursor tracker stores the cursor for the window with
-   * pointer focus, and the cursor for the root window, which
-   * contains either the default arrow cursor or the 'busy'
-   * hourglass if we're launching an app.
+  /* The cursor tracker stores the cursor for the current grab
+   * operation, the cursor for the window with pointer focus, and
+   * the cursor for the root window, which contains either the
+   * default arrow cursor or the 'busy' hourglass if we're launching
+   * an app.
    *
-   * We choose the first one available -- if there's a window
-   * cursor, we choose that, otherwise we choose the root
-   * cursor.
+   * We choose the first one available -- if there's a grab cursor,
+   * we choose that cursor, if there's window cursor, we choose that,
+   * otherwise we choose the root cursor.
    *
    * The displayed_cursor contains the chosen cursor.
    */
   MetaCursorReference *displayed_cursor;
+
+  MetaCursorReference *grab_cursor;
 
   /* Wayland clients can set a NULL buffer as their cursor 
    * explicitly, which means that we shouldn't display anything.
@@ -830,6 +833,15 @@ ensure_wayland_cursor (MetaCursorTracker *tracker,
 }
 
 void
+meta_cursor_tracker_set_grab_cursor (MetaCursorTracker *tracker,
+                                     MetaCursor         cursor)
+{
+  g_clear_pointer (&tracker->grab_cursor, meta_cursor_reference_unref);
+  if (cursor != META_CURSOR_DEFAULT)
+    tracker->grab_cursor = ensure_wayland_cursor (tracker, cursor);
+}
+
+void
 meta_cursor_tracker_set_window_cursor (MetaCursorTracker  *tracker,
                                        struct wl_resource *buffer,
                                        int                 hot_x,
@@ -936,6 +948,9 @@ get_displayed_cursor (MetaCursorTracker *tracker)
 {
   if (!tracker->is_showing)
     return NULL;
+
+  if (tracker->grab_cursor)
+    return tracker->grab_cursor;
 
   if (tracker->has_window_cursor)
     return tracker->window_cursor;

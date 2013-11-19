@@ -53,6 +53,7 @@
 #include <X11/Xatom.h>
 #include "mutter-enum-types.h"
 #include "meta-idle-monitor-private.h"
+#include "meta-cursor-tracker-private.h"
 
 #ifdef HAVE_RANDR
 #include <X11/extensions/Xrandr.h>
@@ -3879,59 +3880,53 @@ meta_display_xwindow_is_a_no_focus_window (MetaDisplay *display,
   return is_a_no_focus_window;
 }
 
-static Cursor
-xcursor_for_op (MetaDisplay *display,
-                MetaGrabOp   op)
+static MetaCursor
+meta_cursor_for_grab_op (MetaGrabOp op)
 {
-  MetaCursor cursor = META_CURSOR_DEFAULT;
-  
   switch (op)
     {
     case META_GRAB_OP_RESIZING_SE:
     case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-      cursor = META_CURSOR_SE_RESIZE;
+      return META_CURSOR_SE_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_S:
     case META_GRAB_OP_KEYBOARD_RESIZING_S:
-      cursor = META_CURSOR_SOUTH_RESIZE;
+      return META_CURSOR_SOUTH_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_SW:
     case META_GRAB_OP_KEYBOARD_RESIZING_SW:
-      cursor = META_CURSOR_SW_RESIZE;
+      return META_CURSOR_SW_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_N:
     case META_GRAB_OP_KEYBOARD_RESIZING_N:
-      cursor = META_CURSOR_NORTH_RESIZE;
+      return META_CURSOR_NORTH_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_NE:
     case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-      cursor = META_CURSOR_NE_RESIZE;
+      return META_CURSOR_NE_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_NW:
     case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-      cursor = META_CURSOR_NW_RESIZE;
+      return META_CURSOR_NW_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_W:
     case META_GRAB_OP_KEYBOARD_RESIZING_W:
-      cursor = META_CURSOR_WEST_RESIZE;
+      return META_CURSOR_WEST_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_E:
     case META_GRAB_OP_KEYBOARD_RESIZING_E:
-      cursor = META_CURSOR_EAST_RESIZE;
+      return META_CURSOR_EAST_RESIZE;
       break;
     case META_GRAB_OP_MOVING:
     case META_GRAB_OP_KEYBOARD_MOVING:
     case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
-      cursor = META_CURSOR_MOVE_OR_RESIZE_WINDOW;
+      return META_CURSOR_MOVE_OR_RESIZE_WINDOW;
       break;
-      
     default:
       break;
     }
 
-  if (cursor == META_CURSOR_DEFAULT)
-    return None;
-  return meta_display_create_x_cursor (display, cursor);
+  return META_CURSOR_DEFAULT;
 }
 
 void
@@ -3941,7 +3936,6 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
                                  Window       grab_xwindow,
                                  guint32      timestamp)
 {
-  Cursor cursor = xcursor_for_op (display, op);
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
   XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
 
@@ -3958,7 +3952,7 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
                     META_VIRTUAL_CORE_POINTER_ID,
                     grab_xwindow,
                     timestamp,
-                    cursor,
+                    None,
                     XIGrabModeAsync, XIGrabModeAsync,
                     False, /* owner_events */
                     &mask) == Success)
@@ -3974,10 +3968,10 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
                   "XIGrabDevice() failed time %u\n",
                   timestamp);
     }
+
   meta_error_trap_pop (display);
-  
-  if (cursor != None)
-    XFreeCursor (display->xdisplay, cursor);
+
+  meta_cursor_tracker_set_grab_cursor (screen->cursor_tracker, meta_cursor_for_grab_op (op));
 }
 
 gboolean
@@ -4239,7 +4233,8 @@ meta_display_end_grab_op (MetaDisplay *display,
         meta_screen_ungrab_all_keys (display->grab_screen, timestamp);
     }
 
-  
+  meta_cursor_tracker_set_grab_cursor (display->grab_screen->cursor_tracker, META_CURSOR_DEFAULT);
+
   display->grab_timestamp = 0;
   display->grab_window = NULL;
   display->grab_screen = NULL;
