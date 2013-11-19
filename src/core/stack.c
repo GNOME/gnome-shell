@@ -92,16 +92,6 @@ meta_stack_new (MetaScreen *screen)
 static void
 free_last_all_root_children_stacked_cache (MetaStack *stack)
 {
-  unsigned int i;
-
-  for (i = 0; i < stack->last_all_root_children_stacked->len; i++)
-    {
-      MetaStackWindow *window = &g_array_index (stack->last_all_root_children_stacked, MetaStackWindow, i);
-      if (window->any.type == META_WINDOW_CLIENT_TYPE_WAYLAND)
-        g_object_remove_weak_pointer (G_OBJECT (window->wayland.meta_window),
-                                      (gpointer *)&window->wayland.meta_window);
-    }
-
   g_array_free (stack->last_all_root_children_stacked, TRUE);
   stack->last_all_root_children_stacked = NULL;
 }
@@ -1345,8 +1335,6 @@ stack_sync_to_xserver (MetaStack *stack)
            * stale because the corresponding window has been freed we
            * associate a weak pointer with the new window. */
           new = &g_array_index (all_root_children_stacked, MetaStackWindow, all_root_children_stacked->len - 1);
-          g_object_add_weak_pointer (G_OBJECT (new->wayland.meta_window),
-                                     (gpointer *)&new->wayland.meta_window);
         }
     }
 
