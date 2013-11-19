@@ -2174,7 +2174,6 @@ meta_display_handle_event (MetaDisplay        *display,
                   gboolean north, south;
                   gboolean west, east;
                   MetaRectangle frame_rect;
-                  int root_x, root_y;
                   MetaGrabOp op;
 
                   meta_window_get_frame_rect (window, &frame_rect);
