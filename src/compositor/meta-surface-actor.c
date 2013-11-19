@@ -20,9 +20,7 @@
 
 struct _MetaSurfaceActorPrivate
 {
-  MetaShapedTexture *texture;
-  MetaWaylandBuffer *buffer;
-  Pixmap pixmap;
+  MetaSurfaceContentWayland *main_content;
 };
 
 G_DEFINE_TYPE (MetaSurfaceActor, meta_surface_actor, CLUTTER_TYPE_ACTOR);
