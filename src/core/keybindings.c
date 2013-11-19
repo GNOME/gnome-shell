@@ -3095,12 +3095,12 @@ handle_maximize_horizontally (MetaDisplay     *display,
 }
 
 static void
-handle_always_on_top          (MetaDisplay    *display,
-                              MetaScreen     *screen,
-                              MetaWindow     *window,
-                              XIDeviceEvent  *event,
-                              MetaKeyBinding *binding,
-                              gpointer        dummy)
+handle_always_on_top (MetaDisplay     *display,
+                      MetaScreen      *screen,
+                      MetaWindow      *window,
+                      ClutterKeyEvent *event,
+                      MetaKeyBinding  *binding,
+                      gpointer         dummy)
 {
   if (window->wm_state_above == FALSE)
     meta_window_make_above (window);
