@@ -3168,17 +3168,17 @@ handle_move_to_corner_backend (MetaDisplay    *display,
                                gpointer        dummy)
 {
   MetaRectangle work_area;
-  MetaRectangle outer;
+  MetaRectangle frame_rect;
   int orig_x, orig_y;
   int new_x, new_y;
 
   meta_window_get_work_area_all_monitors (window, &work_area);
-  meta_window_get_outer_rect (window, &outer);
+  meta_window_get_frame_rect (window, &frame_rect);
   meta_window_get_position (window, &orig_x, &orig_y);
 
   if (xchange) {
     new_x = work_area.x + (to_right ?
-                           work_area.width - outer.width :
+                           work_area.width - frame_rect.width :
                            0);
   } else {
     new_x = orig_x;
@@ -3186,7 +3186,7 @@ handle_move_to_corner_backend (MetaDisplay    *display,
 
   if (ychange) {
     new_y = work_area.y + (to_bottom ?
-                           work_area.height - outer.height :
+                           work_area.height - frame_rect.height :
                            0);
   } else {
     new_y = orig_y;
@@ -3295,12 +3295,12 @@ handle_move_to_center  (MetaDisplay    *display,
                         gpointer        dummy)
 {
   MetaRectangle work_area;
-  MetaRectangle outer;
+  MetaRectangle frame_rect;
   int orig_x, orig_y;
   int frame_width, frame_height;
 
   meta_window_get_work_area_all_monitors (window, &work_area);
-  meta_window_get_outer_rect (window, &outer);
+  meta_window_get_frame_rect (window, &frame_rect);
   meta_window_get_position (window, &orig_x, &orig_y);
 
   frame_width = (window->frame ? window->frame->child_x : 0);
@@ -3308,8 +3308,8 @@ handle_move_to_center  (MetaDisplay    *display,
 
   meta_window_move_resize (window,
                            TRUE,
-                           work_area.x + (work_area.width +frame_width -outer.width )/2,
-                           work_area.y + (work_area.height+frame_height-outer.height)/2,
+                           work_area.x + (work_area.width +frame_width -frame_rect.width )/2,
+                           work_area.y + (work_area.height+frame_height-frame_rect.height)/2,
                            window->rect.width,
                            window->rect.height);
 }
@@ -4002,8 +4002,8 @@ handle_raise_or_lower (MetaDisplay    *display,
 
       if (above->mapped)
         {
-          meta_window_get_outer_rect (window, &win_rect);
-          meta_window_get_outer_rect (above, &above_rect);
+          meta_window_get_frame_rect (window, &win_rect);
+          meta_window_get_frame_rect (above, &above_rect);
 
           /* Check if obscured */
           if (meta_rectangle_intersect (&win_rect, &above_rect, &tmp))

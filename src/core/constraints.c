@@ -497,7 +497,7 @@ place_window_if_needed(MetaWindow     *window,
       MetaWorkspace *cur_workspace;
       const MetaMonitorInfo *monitor_info;
 
-      meta_window_get_outer_rect (window, &placed_rect);
+      meta_window_get_frame_rect (window, &placed_rect);
       meta_window_place (window, info->orig.x, info->orig.y,
                          &placed_rect.x, &placed_rect.y);
       did_placement = TRUE;
@@ -707,8 +707,8 @@ get_size_limits (MetaWindow    *window,
 
   if (include_frame)
     {
-      meta_window_client_rect_to_outer_rect (window, min_size, min_size);
-      meta_window_client_rect_to_outer_rect (window, max_size, max_size);
+      meta_window_client_rect_to_frame_rect (window, min_size, min_size);
+      meta_window_client_rect_to_frame_rect (window, max_size, max_size);
     }
 }
 
@@ -735,7 +735,7 @@ constrain_modal_dialog (MetaWindow         *window,
   child_rect = info->current;
   extend_by_frame (window, &child_rect);
 
-  meta_window_get_outer_rect (parent, &parent_rect);
+  meta_window_get_frame_rect (parent, &parent_rect);
 
   child_rect.x = parent_rect.x + (parent_rect.width / 2  - child_rect.width / 2);
   child_rect.y = parent_rect.y + (parent_rect.height / 2 - child_rect.height / 2);

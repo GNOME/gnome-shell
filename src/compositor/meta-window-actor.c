@@ -1939,7 +1939,7 @@ check_needs_pixmap (MetaWindowActor *self)
       if (G_UNLIKELY (!cogl_texture_pixmap_x11_is_using_tfp_extension (COGL_TEXTURE_PIXMAP_X11 (texture))))
         g_warning ("NOTE: Not using GLX TFP!\n");
 
-      /* ::size-changed is supposed to refer to meta_window_get_outer_rect().
+      /* ::size-changed is supposed to refer to meta_window_get_frame_rect().
        * Emitting it here works pretty much OK because a new value of the
        * *input* rect (which is the outer rect with the addition of invisible
        * borders) forces a new pixmap and we get here. In the rare case where
@@ -2035,7 +2035,7 @@ meta_window_actor_process_damage (MetaWindowActor    *self,
   if (meta_window_is_fullscreen (priv->window) && g_list_last (info->windows)->data == self && !priv->unredirected)
     {
       MetaRectangle window_rect;
-      meta_window_get_outer_rect (priv->window, &window_rect);
+      meta_window_get_frame_rect (priv->window, &window_rect);
 
       if (window_rect.x == event->area.x &&
           window_rect.y == event->area.y &&
