@@ -64,18 +64,6 @@ typedef struct
 
   /* wl_surface.frame */
   struct wl_list frame_callback_list;
-
-  /* xdg_surface */
-  char *title;
-  char *app_id;
-
-  /* gtk_surface */
-  char *gtk_application_id;
-  char *gtk_unique_bus_name;
-  char *gtk_app_menu_path;
-  char *gtk_menubar_path;
-  char *gtk_application_object_path;
-  char *gtk_window_object_path;
 } MetaWaylandDoubleBufferedState;
 
 typedef struct

@@ -322,27 +322,6 @@ meta_wayland_surface_commit (struct wl_client *client,
       meta_window_set_opaque_region (surface->window, surface->pending.opaque_region);
       meta_window_set_input_region (surface->window, surface->pending.input_region);
       surface_process_damage (surface, surface->pending.damage);
-
-      meta_window_set_title (surface->window, surface->pending.title);
-      g_clear_pointer (&surface->pending.title, g_free);
-
-      meta_window_set_wm_class (surface->window, surface->pending.app_id, surface->pending.app_id);
-      g_clear_pointer (&surface->pending.app_id, g_free);
-
-      meta_window_set_gtk_dbus_properties (surface->window,
-                                           surface->pending.gtk_application_id,
-                                           surface->pending.gtk_unique_bus_name,
-                                           surface->pending.gtk_app_menu_path,
-                                           surface->pending.gtk_menubar_path,
-                                           surface->pending.gtk_application_object_path,
-                                           surface->pending.gtk_window_object_path);
-
-      g_clear_pointer (&surface->pending.gtk_application_id, g_free);
-      g_clear_pointer (&surface->pending.gtk_unique_bus_name, g_free);
-      g_clear_pointer (&surface->pending.gtk_app_menu_path, g_free);
-      g_clear_pointer (&surface->pending.gtk_menubar_path, g_free);
-      g_clear_pointer (&surface->pending.gtk_application_object_path, g_free);
-      g_clear_pointer (&surface->pending.gtk_window_object_path, g_free);
     }
 
   if (surface->pending.buffer)
@@ -570,8 +549,7 @@ xdg_surface_set_title (struct wl_client *client,
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
 
-  g_clear_pointer (&surface->pending.title, g_free);
-  surface->pending.title = g_strdup (title);
+  meta_window_set_title (surface->window, title);
 }
 
 static void
@@ -582,8 +560,7 @@ xdg_surface_set_app_id (struct wl_client *client,
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
 
-  g_clear_pointer (&surface->pending.app_id, g_free);
-  surface->pending.app_id = g_strdup (app_id);
+  meta_window_set_wm_class (surface->window, app_id, app_id);
 }
 
 static void
@@ -829,18 +806,13 @@ set_dbus_properties (struct wl_client   *client,
   MetaWaylandSurfaceExtension *gtk_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (gtk_surface, surface, gtk_surface);
 
-  g_clear_pointer (&surface->pending.gtk_application_id, g_free);
-  surface->pending.gtk_application_id = g_strdup (application_id);
-  g_clear_pointer (&surface->pending.gtk_unique_bus_name, g_free);
-  surface->pending.gtk_unique_bus_name = g_strdup (unique_bus_name);
-  g_clear_pointer (&surface->pending.gtk_app_menu_path, g_free);
-  surface->pending.gtk_app_menu_path = g_strdup (app_menu_path);
-  g_clear_pointer (&surface->pending.gtk_menubar_path, g_free);
-  surface->pending.gtk_menubar_path = g_strdup (menubar_path);
-  g_clear_pointer (&surface->pending.gtk_application_object_path, g_free);
-  surface->pending.gtk_application_object_path = g_strdup (application_object_path);
-  g_clear_pointer (&surface->pending.gtk_window_object_path, g_free);
-  surface->pending.gtk_window_object_path = g_strdup (window_object_path);
+  meta_window_set_gtk_dbus_properties (surface->window,
+                                       application_id,
+                                       unique_bus_name,
+                                       app_menu_path,
+                                       menubar_path,
+                                       application_object_path,
+                                       window_object_path);
 }
 
 static const struct gtk_surface_interface meta_wayland_gtk_surface_interface = {
