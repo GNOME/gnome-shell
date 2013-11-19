@@ -827,6 +827,7 @@ meta_window_new_shared (MetaDisplay         *display,
                         MetaWindowClientType client_type,
                         MetaWaylandSurface  *surface,
                         Window               xwindow,
+                        gboolean             surface_mapped,
                         gulong               existing_wm_state,
                         MetaCompEffect       effect,
                         XWindowAttributes   *attrs)
@@ -856,6 +857,7 @@ meta_window_new_shared (MetaDisplay         *display,
   window->client_type = client_type;
   window->surface = surface;
   window->xwindow = xwindow;
+  window->surface_mapped = surface_mapped;
 
   /* this is in window->screen->display, but that's too annoying to
    * type
@@ -1417,6 +1419,7 @@ meta_window_new_for_wayland (MetaDisplay        *display,
                                    META_WINDOW_CLIENT_TYPE_WAYLAND,
                                    surface,
                                    None,
+                                   FALSE,
                                    WithdrawnState,
                                    META_COMP_EFFECT_NONE,
                                    &attrs);
@@ -1596,6 +1599,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
                                    META_WINDOW_CLIENT_TYPE_X11,
                                    NULL,
                                    xwindow,
+                                   TRUE,
                                    existing_wm_state,
                                    effect,
                                    attrs);
@@ -2346,6 +2350,9 @@ gboolean
 meta_window_should_be_showing (MetaWindow  *window)
 {
   gboolean on_workspace;
+
+  if (!window->surface_mapped)
+    return FALSE;
 
   meta_verbose ("Should be showing for window %s\n", window->desc);
 
@@ -11941,4 +11948,15 @@ meta_window_handle_enter (MetaWindow  *window,
     case G_DESKTOP_FOCUS_MODE_CLICK:
       break;
     }
+}
+
+void
+meta_window_set_surface_mapped (MetaWindow *window,
+                                gboolean    surface_mapped)
+{
+  if (window->surface_mapped == (guint) surface_mapped)
+    return;
+
+  window->surface_mapped = surface_mapped;
+  meta_window_queue (window, META_QUEUE_CALC_SHOWING);
 }

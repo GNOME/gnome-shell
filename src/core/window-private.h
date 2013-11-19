@@ -102,7 +102,7 @@ struct _MetaWindow
   
   MetaWindowType type;
   Atom type_atom;
-  
+
   /* NOTE these five are not in UTF-8, we just treat them as random
    * binary data
    */
@@ -350,6 +350,10 @@ struct _MetaWindow
 
   /* whether or not the window is from a program running on another machine */
   guint is_remote : 1;
+
+  /* Used for Wayland -- surfaces can behave as if they were unmapped if
+   * they have a NULL buffer attached... */
+  guint surface_mapped;
 
   /* if non-NULL, the bounds of the window frame */
   cairo_region_t *frame_bounds;
@@ -739,5 +743,8 @@ void meta_window_handle_enter (MetaWindow  *window,
                                guint32      timestamp,
                                guint        root_x,
                                guint        root_y);
+
+void meta_window_set_surface_mapped (MetaWindow *window,
+                                     gboolean    surface_mapped);
 
 #endif

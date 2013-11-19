@@ -236,26 +236,6 @@ empty_region (cairo_region_t *region)
   cairo_region_intersect_rectangle (region, &rectangle);
 }
 
-static gboolean
-surface_wants_window (MetaWaylandSurface *surface)
-{
-  return (surface->xdg_surface.resource != NULL);
-}
-
-static void
-surface_ensure_window (MetaWaylandSurface *surface)
-{
-  MetaDisplay *display = meta_get_display ();
-
-  if (surface->window)
-    return;
-
-  if (!surface_wants_window (surface))
-    return;
-
-  surface->window = meta_window_new_for_wayland (display, surface);
-}
-
 static void
 ensure_buffer_texture (MetaWaylandBuffer *buffer)
 {
@@ -307,13 +287,13 @@ meta_wayland_surface_commit (struct wl_client *client,
         }
     }
 
-  surface_ensure_window (surface);
-
   if (surface == compositor->seat->sprite)
     meta_wayland_seat_update_sprite (compositor->seat);
   else if (surface->window)
     {
       MetaWindow *window = surface->window;
+
+      meta_window_set_surface_mapped (window, surface->pending.buffer != NULL);
 
       if (surface->pending.buffer)
 	{
@@ -579,8 +559,7 @@ xdg_surface_set_transient_for (struct wl_client *client,
   MetaWaylandSurfaceExtension *parent_xdg_surface = wl_resource_get_user_data (parent);
   MetaWaylandSurface *parent_surface = wl_container_of (parent_xdg_surface, surface, xdg_surface);
 
-  if (surface->window && parent_surface->window)
-    meta_window_set_transient_for (surface->window, parent_surface->window);
+  meta_window_set_transient_for (surface->window, parent_surface->window);
 }
 
 static void
@@ -620,9 +599,6 @@ begin_grab_op_on_surface (MetaWaylandSurface *surface,
                           MetaGrabOp          grab_op)
 {
   MetaWindow *window = surface->window;
-
-  if (!window)
-    return FALSE;
 
   if (grab_op == META_GRAB_OP_NONE)
     return FALSE;
@@ -719,8 +695,7 @@ xdg_surface_set_fullscreen (struct wl_client *client,
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
 
-  if (surface->window)
-    meta_window_make_fullscreen (surface->window);
+  meta_window_make_fullscreen (surface->window);
 }
 
 static void
@@ -730,8 +705,7 @@ xdg_surface_unset_fullscreen (struct wl_client *client,
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
 
-  if (surface->window)
-    meta_window_unmake_fullscreen (surface->window);
+  meta_window_unmake_fullscreen (surface->window);
 }
 
 static void
@@ -741,8 +715,7 @@ xdg_surface_set_maximized (struct wl_client *client,
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
 
-  if (surface->window)
-    meta_window_maximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
+  meta_window_maximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
 }
 
 static void
@@ -752,8 +725,7 @@ xdg_surface_unset_maximized (struct wl_client *client,
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
 
-  if (surface->window)
-    meta_window_unmaximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
+  meta_window_unmaximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
 }
 
 static void
@@ -763,8 +735,7 @@ xdg_surface_set_minimized (struct wl_client *client,
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
 
-  if (surface->window)
-    meta_window_minimize (surface->window);
+  meta_window_minimize (surface->window);
 }
 
 static const struct xdg_surface_interface meta_wayland_xdg_surface_interface = {
@@ -807,6 +778,8 @@ get_xdg_surface (struct wl_client *client,
     wl_resource_post_error (surface_resource,
                             WL_DISPLAY_ERROR_INVALID_OBJECT,
                             "xdg_shell::get_xdg_surface already requested");
+
+  surface->window = meta_window_new_for_wayland (meta_get_display (), surface);
 }
 
 static void
