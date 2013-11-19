@@ -2042,7 +2042,7 @@ meta_display_handle_event (MetaDisplay        *display,
   /* XXX -- we need to fill this in properly at some point... */
   gboolean frame_was_receiver = FALSE;
 #ifdef HAVE_WAYLAND
-  MetaWaylandCompositor *compositor;
+  MetaWaylandCompositor *compositor = NULL;
 
   if (meta_is_wayland_compositor ())
     {
@@ -2293,7 +2293,7 @@ meta_display_handle_event (MetaDisplay        *display,
     }
 
 #ifdef HAVE_WAYLAND
-  if (meta_is_wayland_compositor () && (display->grab_op == META_GRAB_OP_NONE))
+  if (compositor && (display->grab_op == META_GRAB_OP_NONE))
     {
       if (meta_wayland_compositor_handle_event (compositor, event))
         return TRUE;
