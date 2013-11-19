@@ -68,11 +68,31 @@ struct _MetaCursorTracker {
   MetaScreen *screen;
 
   gboolean is_showing;
-  gboolean has_cursor;
   gboolean has_hw_cursor;
 
-  MetaCursorReference *sprite;
+  /* The cursor tracker stores the cursor for the window with
+   * pointer focus, and the cursor for the root window, which
+   * contains either the default arrow cursor or the 'busy'
+   * hourglass if we're launching an app.
+   *
+   * We choose the first one available -- if there's a window
+   * cursor, we choose that, otherwise we choose the root
+   * cursor.
+   *
+   * The displayed_cursor contains the chosen cursor.
+   */
+  MetaCursorReference *displayed_cursor;
+
+  /* Wayland clients can set a NULL buffer as their cursor 
+   * explicitly, which means that we shouldn't display anything.
+   * So, we can't simply store a NULL in window_cursor to
+   * determine an unset window cursor; we need an extra boolean.
+   */
+  gboolean has_window_cursor;
+  MetaCursorReference *window_cursor;
+
   MetaCursorReference *root_cursor;
+
   MetaCursorReference *default_cursors[META_CURSOR_LAST];
 
   int current_x, current_y;
@@ -97,9 +117,6 @@ enum {
 };
 
 static guint signals[LAST_SIGNAL];
-
-static void meta_cursor_tracker_set_sprite (MetaCursorTracker   *tracker,
-                                            MetaCursorReference *sprite);
 
 static void meta_cursor_tracker_set_crtc_has_hw_cursor (MetaCursorTracker *tracker,
                                                         MetaCRTC          *crtc,
@@ -354,7 +371,7 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
   self->ref_count = 1;
   self->hot_x = hot_x;
   self->hot_y = hot_y;
- 
+
   backend = clutter_get_default_backend ();
   cogl_context = clutter_backend_get_cogl_context (backend);
 
@@ -520,8 +537,8 @@ meta_cursor_tracker_finalize (GObject *object)
   MetaCursorTracker *self = META_CURSOR_TRACKER (object);
   int i;
 
-  if (self->sprite)
-    meta_cursor_reference_unref (self->sprite);
+  if (self->displayed_cursor)
+    meta_cursor_reference_unref (self->displayed_cursor);
   if (self->root_cursor)
     meta_cursor_reference_unref (self->root_cursor);
 
@@ -646,6 +663,17 @@ meta_cursor_tracker_get_for_screen (MetaScreen *screen)
   return self;
 }
 
+static void
+set_window_cursor (MetaCursorTracker   *tracker,
+                   gboolean             has_cursor,
+                   MetaCursorReference *cursor)
+{
+  g_clear_pointer (&tracker->window_cursor, meta_cursor_reference_unref);
+  if (cursor)
+    tracker->window_cursor = meta_cursor_reference_ref (cursor);
+  tracker->has_window_cursor = has_cursor;
+}
+
 gboolean
 meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
                                    XEvent            *xevent)
@@ -662,7 +690,7 @@ meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
   if (notify_event->subtype != XFixesDisplayCursorNotify)
     return FALSE;
 
-  g_clear_pointer (&tracker->sprite, meta_cursor_reference_unref);
+  set_window_cursor (tracker, FALSE, NULL);
   g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
 
   return TRUE;
@@ -677,7 +705,7 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
   gboolean free_cursor_data;
   CoglContext *ctx;
 
-  if (tracker->sprite)
+  if (tracker->has_window_cursor)
     return;
 
   cursor_image = XFixesGetCursorImage (tracker->screen->display->xdisplay);
@@ -725,9 +753,11 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
 
   if (sprite != NULL)
     {
-      tracker->sprite = meta_cursor_reference_take_texture (sprite);
-      tracker->sprite->hot_x = cursor_image->xhot;
-      tracker->sprite->hot_y = cursor_image->yhot;
+      MetaCursorReference *cursor = meta_cursor_reference_take_texture (sprite);
+      cursor->hot_x = cursor_image->xhot;
+      cursor->hot_y = cursor_image->yhot;
+
+      set_window_cursor (tracker, TRUE, cursor);
     }
   XFree (cursor_image);
 }
@@ -745,8 +775,8 @@ meta_cursor_tracker_get_sprite (MetaCursorTracker *tracker)
   if (!meta_is_wayland_compositor ())
     ensure_xfixes_cursor (tracker);
 
-  if (tracker->sprite)
-    return COGL_TEXTURE (tracker->sprite->texture);
+  if (tracker->displayed_cursor)
+    return COGL_TEXTURE (tracker->displayed_cursor->texture);
   else
     return NULL;
 }
@@ -768,12 +798,13 @@ meta_cursor_tracker_get_hot (MetaCursorTracker *tracker,
   if (!meta_is_wayland_compositor ())
     ensure_xfixes_cursor (tracker);
 
-  if (tracker->sprite)
+  if (tracker->displayed_cursor)
     {
+      MetaCursorReference *displayed_cursor = tracker->displayed_cursor;
       if (x)
-        *x = tracker->sprite->hot_x;
+        *x = displayed_cursor->hot_x;
       if (y)
-        *y = tracker->sprite->hot_y;
+        *y = displayed_cursor->hot_y;
     }
   else
     {
@@ -796,6 +827,28 @@ ensure_wayland_cursor (MetaCursorTracker *tracker,
     meta_warning ("Failed to load cursor from theme\n");
 
   return tracker->default_cursors[cursor];
+}
+
+void
+meta_cursor_tracker_set_window_cursor (MetaCursorTracker  *tracker,
+                                       struct wl_resource *buffer,
+                                       int                 hot_x,
+                                       int                 hot_y)
+{
+  MetaCursorReference *cursor;
+
+  if (buffer)
+    cursor = meta_cursor_reference_from_buffer (tracker, buffer, hot_x, hot_y);
+  else
+    cursor = NULL;
+
+  set_window_cursor (tracker, TRUE, cursor);
+}
+
+void
+meta_cursor_tracker_unset_window_cursor (MetaCursorTracker *tracker)
+{
+  set_window_cursor (tracker, FALSE, NULL);
 }
 
 void
@@ -824,12 +877,6 @@ meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
     }
 }
 
-void
-meta_cursor_tracker_revert_root (MetaCursorTracker *tracker)
-{
-  meta_cursor_tracker_set_sprite (tracker, tracker->root_cursor);
-}
-
 static void
 update_hw_cursor (MetaCursorTracker *tracker)
 {
@@ -838,7 +885,7 @@ update_hw_cursor (MetaCursorTracker *tracker)
   unsigned int i, n_crtcs;
   gboolean enabled;
 
-  enabled = tracker->has_cursor && tracker->sprite->bo != NULL;
+  enabled = tracker->displayed_cursor && tracker->displayed_cursor->bo != NULL;
   tracker->has_hw_cursor = enabled;
 
   monitors = meta_monitor_manager_get ();
@@ -884,105 +931,45 @@ move_hw_cursor (MetaCursorTracker *tracker)
     }
 }
 
-void
-meta_cursor_tracker_set_buffer (MetaCursorTracker  *tracker,
-                                struct wl_resource *buffer,
-                                int                 hot_x,
-                                int                 hot_y)
+static MetaCursorReference *
+get_displayed_cursor (MetaCursorTracker *tracker)
 {
-  MetaCursorReference *new_cursor;
+  if (!tracker->is_showing)
+    return NULL;
 
-  if (buffer)
-    {
-      new_cursor = meta_cursor_reference_from_buffer (tracker, buffer, hot_x, hot_y);
-      meta_cursor_tracker_set_sprite (tracker, new_cursor);
-      meta_cursor_reference_unref (new_cursor);
-    }
-  else
-    meta_cursor_tracker_set_sprite (tracker, NULL);
+  if (tracker->has_window_cursor)
+    return tracker->window_cursor;
+
+  return tracker->root_cursor;
 }
 
 static void
-meta_cursor_tracker_set_sprite (MetaCursorTracker   *tracker,
-                                MetaCursorReference *sprite)
+sync_displayed_cursor (MetaCursorTracker *tracker)
 {
-  g_assert (meta_is_wayland_compositor ());
+  MetaCursorReference *displayed_cursor = get_displayed_cursor (tracker);
 
-  if (sprite == tracker->sprite)
+  if (tracker->displayed_cursor == displayed_cursor)
     return;
 
-  g_clear_pointer (&tracker->sprite, meta_cursor_reference_unref);
+  g_clear_pointer (&tracker->displayed_cursor, meta_cursor_reference_unref);
+  if (displayed_cursor)
+    tracker->displayed_cursor = meta_cursor_reference_ref (displayed_cursor);
 
-  if (sprite)
-    {
-      tracker->sprite = meta_cursor_reference_ref (sprite);
-      cogl_pipeline_set_layer_texture (tracker->pipeline, 0, COGL_TEXTURE (tracker->sprite->texture));
-    }
+  if (displayed_cursor)
+    cogl_pipeline_set_layer_texture (tracker->pipeline, 0, COGL_TEXTURE (displayed_cursor->texture));
   else
     cogl_pipeline_set_layer_texture (tracker->pipeline, 0, NULL);
 
-  tracker->has_cursor = tracker->sprite != NULL && tracker->is_showing;
   update_hw_cursor (tracker);
 
   g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
-
-  meta_cursor_tracker_update_position (tracker, tracker->current_x, tracker->current_y);
 }
 
-void
-meta_cursor_tracker_update_position (MetaCursorTracker *tracker,
-                                     int                new_x,
-                                     int                new_y)
+static void
+meta_cursor_tracker_queue_redraw (MetaCursorTracker *tracker)
 {
-  g_assert (meta_is_wayland_compositor ());
-
-  tracker->current_x = new_x;
-  tracker->current_y = new_y;
-
-  if (tracker->sprite)
-    {
-      tracker->current_rect.x = tracker->current_x - tracker->sprite->hot_x;
-      tracker->current_rect.y = tracker->current_y - tracker->sprite->hot_y;
-      tracker->current_rect.width = cogl_texture_get_width (COGL_TEXTURE (tracker->sprite->texture));
-      tracker->current_rect.height = cogl_texture_get_height (COGL_TEXTURE (tracker->sprite->texture));
-    }
-  else
-    {
-      tracker->current_rect.x = 0;
-      tracker->current_rect.y = 0;
-      tracker->current_rect.width = 0;
-      tracker->current_rect.height = 0;
-    }
-
-  if (tracker->has_hw_cursor)
-    move_hw_cursor (tracker);
-}
-
-void
-meta_cursor_tracker_paint (MetaCursorTracker *tracker)
-{
-  g_assert (meta_is_wayland_compositor ());
-
-  if (tracker->has_hw_cursor || !tracker->has_cursor)
-    return;
-
-  cogl_framebuffer_draw_rectangle (cogl_get_draw_framebuffer (),
-                                   tracker->pipeline,
-                                   tracker->current_rect.x,
-                                   tracker->current_rect.y,
-                                   tracker->current_rect.x +
-                                   tracker->current_rect.width,
-                                   tracker->current_rect.y +
-                                   tracker->current_rect.height);
-
-  tracker->previous_rect = tracker->current_rect;
-  tracker->previous_is_valid = TRUE;
-}
-
-void
-meta_cursor_tracker_queue_redraw (MetaCursorTracker *tracker,
-                                  ClutterActor      *stage)
-{
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+  ClutterActor *stage = compositor->stage;
   cairo_rectangle_int_t clip;
 
   g_assert (meta_is_wayland_compositor ());
@@ -999,7 +986,7 @@ meta_cursor_tracker_queue_redraw (MetaCursorTracker *tracker,
       tracker->previous_is_valid = FALSE;
     }
 
-  if (tracker->has_hw_cursor || !tracker->has_cursor)
+  if (tracker->has_hw_cursor || !tracker->displayed_cursor)
     return;
 
   clip.x = tracker->current_rect.x;
@@ -1010,21 +997,85 @@ meta_cursor_tracker_queue_redraw (MetaCursorTracker *tracker,
 }
 
 static void
+sync_cursor (MetaCursorTracker *tracker)
+{
+  MetaCursorReference *displayed_cursor;
+
+  sync_displayed_cursor (tracker);
+  displayed_cursor = tracker->displayed_cursor;
+
+  if (displayed_cursor)
+    {
+      tracker->current_rect.x = tracker->current_x - displayed_cursor->hot_x;
+      tracker->current_rect.y = tracker->current_y - displayed_cursor->hot_y;
+      tracker->current_rect.width = cogl_texture_get_width (COGL_TEXTURE (displayed_cursor->texture));
+      tracker->current_rect.height = cogl_texture_get_height (COGL_TEXTURE (displayed_cursor->texture));
+    }
+  else
+    {
+      tracker->current_rect.x = 0;
+      tracker->current_rect.y = 0;
+      tracker->current_rect.width = 0;
+      tracker->current_rect.height = 0;
+    }
+
+  if (tracker->has_hw_cursor)
+    move_hw_cursor (tracker);
+  else
+    meta_cursor_tracker_queue_redraw (tracker);
+}
+
+void
+meta_cursor_tracker_update_position (MetaCursorTracker *tracker,
+                                     int                new_x,
+                                     int                new_y)
+{
+  g_assert (meta_is_wayland_compositor ());
+
+  tracker->current_x = new_x;
+  tracker->current_y = new_y;
+
+  sync_cursor (tracker);
+}
+
+void
+meta_cursor_tracker_paint (MetaCursorTracker *tracker)
+{
+  g_assert (meta_is_wayland_compositor ());
+
+  if (tracker->has_hw_cursor || !tracker->displayed_cursor)
+    return;
+
+  cogl_framebuffer_draw_rectangle (cogl_get_draw_framebuffer (),
+                                   tracker->pipeline,
+                                   tracker->current_rect.x,
+                                   tracker->current_rect.y,
+                                   tracker->current_rect.x +
+                                   tracker->current_rect.width,
+                                   tracker->current_rect.y +
+                                   tracker->current_rect.height);
+
+  tracker->previous_rect = tracker->current_rect;
+  tracker->previous_is_valid = TRUE;
+}
+
+static void
 meta_cursor_tracker_set_crtc_has_hw_cursor (MetaCursorTracker *tracker,
                                             MetaCRTC          *crtc,
                                             gboolean           has)
 {
   if (has)
     {
+      MetaCursorReference *displayed_cursor = tracker->displayed_cursor;
       union gbm_bo_handle handle;
       int width, height;
       int hot_x, hot_y;
 
-      handle = gbm_bo_get_handle (tracker->sprite->bo);
-      width = gbm_bo_get_width (tracker->sprite->bo);
-      height = gbm_bo_get_height (tracker->sprite->bo);
-      hot_x = tracker->sprite->hot_x;
-      hot_y = tracker->sprite->hot_y;
+      handle = gbm_bo_get_handle (displayed_cursor->bo);
+      width = gbm_bo_get_width (displayed_cursor->bo);
+      height = gbm_bo_get_height (displayed_cursor->bo);
+      hot_x = displayed_cursor->hot_x;
+      hot_y = displayed_cursor->hot_y;
 
       drmModeSetCursor2 (tracker->drm_fd, crtc->crtc_id, handle.u32,
                          width, height, hot_x, hot_y);
@@ -1100,13 +1151,7 @@ meta_cursor_tracker_set_pointer_visible (MetaCursorTracker *tracker,
 
   if (meta_is_wayland_compositor ())
     {
-      MetaWaylandCompositor *compositor;
-
-      compositor = meta_wayland_compositor_get_default ();
-
-      tracker->has_cursor = tracker->sprite != NULL && visible;
-      update_hw_cursor (tracker);
-      meta_cursor_tracker_queue_redraw (tracker, compositor->stage);
+      sync_cursor (tracker);
     }
   else
     {

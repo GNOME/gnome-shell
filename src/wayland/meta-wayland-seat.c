@@ -51,14 +51,7 @@ static void
 pointer_unmap_sprite (MetaWaylandSeat *seat)
 {
   if (seat->cursor_tracker)
-    {
-      meta_cursor_tracker_set_buffer (seat->cursor_tracker,
-				      NULL, 0, 0);
-
-      if (seat->current_stage)
-	meta_cursor_tracker_queue_redraw (seat->cursor_tracker,
-					  CLUTTER_ACTOR (seat->current_stage));
-    }
+    meta_cursor_tracker_set_window_cursor (seat->cursor_tracker, NULL, 0, 0);
 
   if (seat->sprite)
     {
@@ -76,14 +69,10 @@ meta_wayland_seat_update_sprite (MetaWaylandSeat *seat)
     return;
 
   buffer = seat->sprite->buffer_ref.buffer->resource;
-  meta_cursor_tracker_set_buffer (seat->cursor_tracker,
-				  buffer,
-				  seat->hotspot_x,
-				  seat->hotspot_y);
-
-  if (seat->current_stage)
-    meta_cursor_tracker_queue_redraw (seat->cursor_tracker,
-				      CLUTTER_ACTOR (seat->current_stage));
+  meta_cursor_tracker_set_window_cursor (seat->cursor_tracker,
+                                         buffer,
+                                         seat->hotspot_x,
+                                         seat->hotspot_y);
 }
 
 static void
@@ -377,10 +366,7 @@ meta_wayland_seat_update_pointer (MetaWaylandSeat    *seat,
 					   wl_fixed_to_int (seat->pointer.y));
 
       if (seat->pointer.current == NULL)
-	meta_cursor_tracker_revert_root (seat->cursor_tracker);
-
-      meta_cursor_tracker_queue_redraw (seat->cursor_tracker,
-                                        CLUTTER_ACTOR (event->any.stage));
+	meta_cursor_tracker_unset_window_cursor (seat->cursor_tracker);
     }
 }
 
