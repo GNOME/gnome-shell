@@ -124,6 +124,7 @@ static guint signals[LAST_SIGNAL];
 static void meta_cursor_tracker_set_crtc_has_hw_cursor (MetaCursorTracker *tracker,
                                                         MetaCRTC          *crtc,
                                                         gboolean           has_hw_cursor);
+static void sync_cursor (MetaCursorTracker *tracker);
 
 static MetaCursorReference *
 meta_cursor_reference_ref (MetaCursorReference *self)
@@ -675,6 +676,7 @@ set_window_cursor (MetaCursorTracker   *tracker,
   if (cursor)
     tracker->window_cursor = meta_cursor_reference_ref (cursor);
   tracker->has_window_cursor = has_cursor;
+  sync_cursor (tracker);
 }
 
 gboolean
@@ -839,6 +841,7 @@ meta_cursor_tracker_set_grab_cursor (MetaCursorTracker *tracker,
   g_clear_pointer (&tracker->grab_cursor, meta_cursor_reference_unref);
   if (cursor != META_CURSOR_DEFAULT)
     tracker->grab_cursor = ensure_wayland_cursor (tracker, cursor);
+  sync_cursor (tracker);
 }
 
 void
@@ -882,6 +885,7 @@ meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
     {
       g_clear_pointer (&tracker->root_cursor, meta_cursor_reference_unref);
       tracker->root_cursor = ensure_wayland_cursor (tracker, cursor);
+      sync_cursor (tracker);
     }
 }
 
