@@ -2033,7 +2033,7 @@ handle_window_focus_event (MetaDisplay  *display,
     }
 }
 
-gboolean
+static gboolean
 meta_display_handle_event (MetaDisplay        *display,
                            const ClutterEvent *event)
 {
@@ -2980,7 +2980,7 @@ handle_other_xevent (MetaDisplay *display,
  * busy around here. Most of this function is a ginormous switch statement
  * dealing with all the kinds of events that might turn up.
  */
-gboolean
+static gboolean
 meta_display_handle_xevent (MetaDisplay *display,
                             XEvent      *event)
 {
