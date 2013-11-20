@@ -1602,6 +1602,7 @@ meta_window_actor_hide (MetaWindowActor *self,
   g_return_if_fail (priv->visible);
 
   priv->visible = FALSE;
+  clutter_actor_set_reactive (CLUTTER_ACTOR (self), FALSE);
 
   /* If a plugin is animating a workspace transition, we have to
    * hold off on hiding the window, and do it after the workspace
