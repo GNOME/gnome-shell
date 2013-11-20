@@ -501,14 +501,14 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
   struct wl_resource *resource;
   uint32_t serial;
 
-  if (keyboard->focus_resource && keyboard->focus != surface)
-    {
-      struct wl_display *display;
-      struct wl_client *client;
+  if (keyboard->focus == surface)
+    return;
 
-      resource = keyboard->focus_resource;
-      client = wl_resource_get_client (resource);
-      display = wl_client_get_display (client);
+  resource = keyboard->focus_resource;
+  if (keyboard->focus_resource && keyboard->focus->resource)
+    {
+      struct wl_client *client = wl_resource_get_client (resource);
+      struct wl_display *display = wl_client_get_display (client);
       serial = wl_display_next_serial (display);
       wl_keyboard_send_leave (resource, serial, keyboard->focus->resource);
 
@@ -516,13 +516,11 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
     }
 
   resource = find_resource_for_surface (&keyboard->resource_list, surface);
-  if (resource &&
-      (keyboard->focus != surface || keyboard->focus_resource != resource))
+  if (resource)
     {
       struct wl_client *client = wl_resource_get_client (resource);
-      struct wl_display *display;
+      struct wl_display *display = wl_client_get_display (client);
 
-      display = wl_client_get_display (client);
       serial = wl_display_next_serial (display);
 
       /* If we're in a modal grab, the client is focused but doesn't see
