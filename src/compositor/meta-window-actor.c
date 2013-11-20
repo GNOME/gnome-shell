@@ -410,7 +410,6 @@ meta_window_actor_constructed (GObject *object)
       priv->surface = meta_surface_actor_new ();
 
       clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
-      clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
       priv->surface_allocation_changed_id =
         g_signal_connect (CLUTTER_ACTOR (priv->surface),
