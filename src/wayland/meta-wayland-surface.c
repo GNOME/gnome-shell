@@ -470,10 +470,6 @@ static void
 destroy_surface_extension (struct wl_resource *resource)
 {
   MetaWaylandSurfaceExtension *extension = wl_resource_get_user_data (resource);
-
-  if (extension->resource == NULL)
-    return;
-
   wl_list_remove (&extension->surface_destroy_listener.link);
   extension->surface_destroy_listener.notify = NULL;
   extension->resource = NULL;
