@@ -1862,7 +1862,7 @@ process_event (MetaKeyBinding       *bindings,
       MetaKeyHandler *handler = bindings[i].handler;
 
       if ((!on_window && handler->flags & META_KEY_BINDING_PER_WINDOW) ||
-          bindings[i].keycode != event->keyval ||
+          (event->keyval != bindings[i].keysym) ||
           (event->modifier_state != bindings[i].mask) ||
           meta_compositor_filter_keybinding (display->compositor, screen, &bindings[i]))
         continue;
