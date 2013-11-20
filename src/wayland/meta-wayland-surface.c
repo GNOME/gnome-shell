@@ -927,7 +927,8 @@ meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
   if (surface->xdg_surface.resource)
     xdg_surface_send_configure (surface->xdg_surface.resource,
                                 edges, new_width, new_height,
-                                0, 0 /* XXX: support this */);
+                                meta_window_get_maximized (surface->window),
+                                meta_window_is_fullscreen (surface->window));
 }
 
 void
