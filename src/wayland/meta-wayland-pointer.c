@@ -303,8 +303,11 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
   struct wl_resource *resource, *kr;
   uint32_t serial;
 
+  if (pointer->focus == surface)
+    return;
+
   resource = pointer->focus_resource;
-  if (resource && pointer->focus != surface)
+  if (resource && pointer->focus->resource)
     {
       struct wl_client *client = wl_resource_get_client (resource);
       struct wl_display *display = wl_client_get_display (client);
@@ -313,8 +316,7 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
     }
 
   resource = find_resource_for_surface (&pointer->resource_list, surface);
-  if (resource &&
-      (pointer->focus != surface || pointer->focus_resource != resource))
+  if (resource)
     {
       struct wl_client *client = wl_resource_get_client (resource);
       struct wl_display *display = wl_client_get_display (client);
