@@ -76,8 +76,6 @@ meta_wayland_pointer_release (MetaWaylandPointer *pointer);
 void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 MetaWaylandSurface *surface);
-void
-meta_wayland_pointer_destroy_focus (MetaWaylandPointer *pointer);
 
 void
 meta_wayland_pointer_start_grab (MetaWaylandPointer *pointer,

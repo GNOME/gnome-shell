@@ -393,14 +393,6 @@ meta_wayland_surface_free (MetaWaylandSurface *surface)
 
   meta_wayland_compositor_repick (compositor);
 
-  g_assert (surface != compositor->seat->keyboard.focus);
-  if (surface == compositor->seat->pointer.focus)
-    {
-      meta_wayland_pointer_destroy_focus (&compositor->seat->pointer);
-
-      g_assert (surface != compositor->seat->pointer.focus);
-    }
-
   if (surface->resource)
     wl_resource_set_user_data (surface->resource, NULL);
   g_slice_free (MetaWaylandSurface, surface);
