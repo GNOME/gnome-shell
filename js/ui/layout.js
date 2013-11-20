@@ -607,7 +607,7 @@ const LayoutManager = new Lang.Class({
 
             this.uiGroup.set_pivot_point(x / global.screen_width,
                                          y / global.screen_height);
-            this.uiGroup.scale_x = this.uiGroup.scale_y = 0.5;
+            this.uiGroup.scale_x = this.uiGroup.scale_y = 0.75;
             this.uiGroup.opacity = 0;
             global.window_group.set_clip(monitor.x, monitor.y, monitor.width, monitor.height);
         }
