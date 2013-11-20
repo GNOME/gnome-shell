@@ -157,17 +157,14 @@ const ViewSelector = new Lang.Class({
     },
 
     show: function() {
-        this._activePage = this._workspacesPage;
-
         this.reset();
-        this._appsPage.hide();
-        this._searchPage.hide();
+
         this._workspacesDisplay.show();
+        this._activePage = null;
+        this._showPage(this._workspacesPage);
 
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeOutDesktop();
-
-        this._showPage(this._workspacesPage, true);
     },
 
     zoomFromOverview: function() {
@@ -203,6 +200,7 @@ const ViewSelector = new Lang.Class({
                                                       this._a11yFocusPage(page);
                                                   })
                                             });;
+        page.hide();
         this.actor.add_actor(page);
         return page;
     },
