@@ -738,9 +738,6 @@ main(int argc, char *argv[])
 
 	if (optind >= argc)
 		error(1, 0, "Expected program argument");
-	if (strcmp (argv[optind], "mutter-wayland") &&
-	    strcmp (argv[optind], "gnome-shell-wayland"))
-	  error(1, 0, "mutter-launch can only be used to launch mutter or gnome-shell");
 
 	wl.pw = getpwuid(getuid());
 	if (wl.pw == NULL)
