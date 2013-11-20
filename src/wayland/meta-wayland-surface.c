@@ -518,7 +518,7 @@ static void
 xdg_surface_destroy (struct wl_client *client,
                      struct wl_resource *resource)
 {
-  destroy_surface_extension (resource);
+  wl_resource_destroy (resource);
 }
 
 static void
@@ -756,7 +756,7 @@ static void
 xdg_popup_destroy (struct wl_client *client,
                    struct wl_resource *resource)
 {
-  destroy_surface_extension (resource);
+  wl_resource_destroy (resource);
 }
 
 static void
