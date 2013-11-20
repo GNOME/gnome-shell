@@ -616,6 +616,15 @@ set_gnome_env (const char *name,
     }
 }
 
+static void
+meta_wayland_log_func (const char *fmt,
+                       va_list     arg)
+{
+  char *str = g_strdup_vprintf (fmt, arg);
+  g_warning ("WL: %s", str);
+  g_free (str);
+}
+
 void
 meta_wayland_init (void)
 {
@@ -633,6 +642,7 @@ meta_wayland_init (void)
     g_error ("failed to create wayland display");
 
   wl_display_init_shm (compositor->wayland_display);
+  wl_log_set_handler_server(meta_wayland_log_func);
 
   wl_list_init (&compositor->frame_callbacks);
 
