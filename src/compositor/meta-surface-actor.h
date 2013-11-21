@@ -43,9 +43,6 @@ cairo_surface_t *meta_surface_actor_get_image (MetaSurfaceActor      *self,
 
 MetaShapedTexture *meta_surface_actor_get_texture (MetaSurfaceActor *self);
 
-void meta_surface_actor_set_clip_region (MetaSurfaceActor *self,
-                                         cairo_region_t   *clip_region);
-
 gboolean meta_surface_actor_damage_all (MetaSurfaceActor *self,
                                         cairo_region_t   *unobscured_region);
 

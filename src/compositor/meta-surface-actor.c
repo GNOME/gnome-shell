@@ -15,6 +15,7 @@
 #include <cogl/cogl-texture-pixmap-x11.h>
 #include <meta/meta-shaped-texture.h>
 #include "meta-surface-actor.h"
+#include "meta-cullable.h"
 
 #include "meta-shaped-texture-private.h"
 
@@ -24,12 +25,36 @@ struct _MetaSurfaceActorPrivate
   MetaWaylandBuffer *buffer;
 };
 
-G_DEFINE_TYPE (MetaSurfaceActor, meta_surface_actor, CLUTTER_TYPE_ACTOR);
+static void cullable_iface_init (MetaCullableInterface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (MetaSurfaceActor, meta_surface_actor, CLUTTER_TYPE_ACTOR,
+                         G_IMPLEMENT_INTERFACE (META_TYPE_CULLABLE, cullable_iface_init));
 
 static void
 meta_surface_actor_class_init (MetaSurfaceActorClass *klass)
 {
   g_type_class_add_private (klass, sizeof (MetaSurfaceActorPrivate));
+}
+
+static void
+meta_surface_actor_cull_out (MetaCullable   *cullable,
+                                cairo_region_t *unobscured_region,
+                                cairo_region_t *clip_region)
+{
+  meta_cullable_cull_out_children (cullable, unobscured_region, clip_region);
+}
+
+static void
+meta_surface_actor_reset_culling (MetaCullable *cullable)
+{
+  meta_cullable_reset_culling_children (cullable);
+}
+
+static void
+cullable_iface_init (MetaCullableInterface *iface)
+{
+  iface->cull_out = meta_surface_actor_cull_out;
+  iface->reset_culling = meta_surface_actor_reset_culling;
 }
 
 static void
@@ -69,13 +94,6 @@ MetaShapedTexture *
 meta_surface_actor_get_texture (MetaSurfaceActor *self)
 {
   return self->priv->texture;
-}
-
-void
-meta_surface_actor_set_clip_region (MetaSurfaceActor *self,
-                                    cairo_region_t   *clip_region)
-{
-  meta_shaped_texture_set_clip_region (self->priv->texture, clip_region);
 }
 
 static void
