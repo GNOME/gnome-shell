@@ -842,6 +842,8 @@ on_bus_acquired (GDBusConnection *connection,
   for (iter = devices; iter; iter = iter->next)
     on_device_added (device_manager, iter->data, manager);
 
+  g_slist_free (devices);
+
   g_signal_connect_object (device_manager, "device-added",
                            G_CALLBACK (on_device_added), manager, 0);
   g_signal_connect_object (device_manager, "device-removed",
