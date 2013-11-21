@@ -35,6 +35,7 @@
 #include "region-utils.h"
 #include "meta-wayland-private.h"
 #include "monitor-private.h"
+#include "meta-cullable.h"
 
 enum {
   POSITION_CHANGED,
@@ -202,7 +203,10 @@ static void do_send_frame_timings (MetaWindowActor  *self,
                                    gint             refresh_interval,
                                    gint64           presentation_time);
 
-G_DEFINE_TYPE (MetaWindowActor, meta_window_actor, CLUTTER_TYPE_ACTOR);
+static void cullable_iface_init (MetaCullableInterface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (MetaWindowActor, meta_window_actor, CLUTTER_TYPE_ACTOR,
+                         G_IMPLEMENT_INTERFACE (META_TYPE_CULLABLE, cullable_iface_init));
 
 static void
 frame_data_free (FrameData *frame)
@@ -1951,11 +1955,13 @@ meta_window_actor_set_clip_region_beneath (MetaWindowActor *self,
     }
 }
 
-void
-meta_window_actor_cull_out (MetaWindowActor *self,
-                            cairo_region_t  *unobscured_region,
-                            cairo_region_t  *clip_region)
+static void
+meta_window_actor_cull_out (MetaCullable   *cullable,
+                            cairo_region_t *unobscured_region,
+                            cairo_region_t *clip_region)
 {
+  MetaWindowActor *self = META_WINDOW_ACTOR (cullable);
+
   if (!meta_is_wayland_compositor ())
     {
       MetaCompScreen *info = meta_screen_get_compositor_data (self->priv->screen);
@@ -1981,20 +1987,21 @@ meta_window_actor_cull_out (MetaWindowActor *self,
   meta_window_actor_set_clip_region_beneath (self, clip_region);
 }
 
-/**
- * meta_window_actor_reset_culling:
- * @self: a #MetaWindowActor
- *
- * Unsets the regions set by meta_window_actor_set_clip_region() and
- * meta_window_actor_set_clip_region_beneath()
- */
-void
-meta_window_actor_reset_culling (MetaWindowActor *self)
+static void
+meta_window_actor_reset_culling (MetaCullable *cullable)
 {
+  MetaWindowActor *self = META_WINDOW_ACTOR (cullable);
   MetaWindowActorPrivate *priv = self->priv;
 
   meta_surface_actor_set_clip_region (priv->surface, NULL);
   g_clear_pointer (&priv->shadow_clip, cairo_region_destroy);
+}
+
+static void
+cullable_iface_init (MetaCullableInterface *iface)
+{
+  iface->cull_out = meta_window_actor_cull_out;
+  iface->reset_culling = meta_window_actor_reset_culling;
 }
 
 /* When running as a wayland compositor we don't make requests for

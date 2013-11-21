@@ -67,11 +67,6 @@ void     meta_window_actor_set_updates_frozen  (MetaWindowActor *self,
 void     meta_window_actor_queue_frame_drawn   (MetaWindowActor *self,
                                                 gboolean         no_delay_frame);
 
-void meta_window_actor_cull_out (MetaWindowActor *self,
-                                 cairo_region_t  *unobscured_region,
-                                 cairo_region_t  *clip_region);
-void meta_window_actor_reset_culling (MetaWindowActor *self);
-
 void meta_window_actor_set_unobscured_region      (MetaWindowActor *self,
                                                    cairo_region_t  *unobscured_region);
 

@@ -70,7 +70,8 @@ libmutter_wayland_la_SOURCES =			\
 	compositor/meta-background-actor.c	\
 	compositor/meta-background-actor-private.h	\
 	compositor/meta-background-group.c	\
-	compositor/meta-background-group-private.h	\
+	compositor/meta-cullable.c		\
+	compositor/meta-cullable.h		\
 	compositor/meta-module.c		\
 	compositor/meta-module.h		\
 	compositor/meta-plugin.c		\

@@ -11,9 +11,8 @@
 #include "compositor-private.h"
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
-#include "meta-background-actor-private.h"
-#include "meta-background-group-private.h"
 #include "window-private.h"
+#include "meta-cullable.h"
 
 struct _MetaWindowGroupClass
 {
@@ -27,7 +26,10 @@ struct _MetaWindowGroup
   MetaScreen *screen;
 };
 
-G_DEFINE_TYPE (MetaWindowGroup, meta_window_group, CLUTTER_TYPE_ACTOR);
+static void cullable_iface_init (MetaCullableInterface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (MetaWindowGroup, meta_window_group, CLUTTER_TYPE_ACTOR,
+                         G_IMPLEMENT_INTERFACE (META_TYPE_CULLABLE, cullable_iface_init));
 
 /* Help macros to scale from OpenGL <-1,1> coordinates system to
  * window coordinates ranging [0,window-size]. Borrowed from clutter-utils.c
@@ -88,101 +90,24 @@ painting_untransformed (MetaWindowGroup *window_group,
 }
 
 static void
-meta_window_group_cull_out (MetaWindowGroup *group,
-                            cairo_region_t  *unobscured_region,
-                            cairo_region_t  *clip_region)
+meta_window_group_cull_out (MetaCullable   *cullable,
+                            cairo_region_t *unobscured_region,
+                            cairo_region_t *clip_region)
 {
-  ClutterActor *actor = CLUTTER_ACTOR (group);
-  ClutterActor *child;
-
-  /* We walk the list from top to bottom (opposite of painting order),
-   * and subtract the opaque area of each window out of the visible
-   * region that we pass to the windows below.
-   */
-  clutter_actor_iter_init (&iter, actor);
-  while (clutter_actor_iter_prev (&iter, &child))
-    {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
-        continue;
-
-      /* If an actor has effects applied, then that can change the area
-       * it paints and the opacity, so we no longer can figure out what
-       * portion of the actor is obscured and what portion of the screen
-       * it obscures, so we skip the actor.
-       *
-       * This has a secondary beneficial effect: if a ClutterOffscreenEffect
-       * is applied to an actor, then our clipped redraws interfere with the
-       * caching of the FBO - even if we only need to draw a small portion
-       * of the window right now, ClutterOffscreenEffect may use other portions
-       * of the FBO later. So, skipping actors with effects applied also
-       * prevents these bugs.
-       *
-       * Theoretically, we should check clutter_actor_get_offscreen_redirect()
-       * as well for the same reason, but omitted for simplicity in the
-       * hopes that no-one will do that.
-       */
-      if (clutter_actor_has_effects (child))
-        continue;
-
-      if (META_IS_WINDOW_ACTOR (child))
-        {
-          int x, y;
-
-          if (!meta_actor_is_untransformed (child, &x, &y))
-            continue;
-
-          /* Temporarily move to the coordinate system of the actor */
-          cairo_region_translate (unobscured_region, - x, - y);
-          cairo_region_translate (clip_region, - x, - y);
-
-          meta_window_actor_cull_out (META_WINDOW_ACTOR (child), unobscured_region, clip_region);
-
-          cairo_region_translate (unobscured_region, x, y);
-          cairo_region_translate (clip_region, x, y);
-        }
-      else if (META_IS_BACKGROUND_ACTOR (child) ||
-               META_IS_BACKGROUND_GROUP (child))
-        {
-          int x, y;
-
-          if (!meta_actor_is_untransformed (child, &x, &y))
-            continue;
-
-          cairo_region_translate (clip_region, - x, - y);
-
-          if (META_IS_BACKGROUND_GROUP (child))
-            meta_background_group_set_clip_region (META_BACKGROUND_GROUP (child), clip_region);
-          else
-            meta_background_actor_set_clip_region (META_BACKGROUND_ACTOR (child), clip_region);
-          cairo_region_translate (clip_region, x, y);
-        }
-    }
+  meta_cullable_cull_out_children (cullable, unobscured_region, clip_region);
 }
 
 static void
-meta_window_group_reset_culling (MetaWindowGroup *group)
+meta_window_group_reset_culling (MetaCullable *cullable)
 {
-  ClutterActor *actor = CLUTTER_ACTOR (group);
-  ClutterActor *child;
-  ClutterActorIter iter;
+  meta_cullable_reset_culling_children (cullable);
+}
 
-  /* Now that we are done painting, unset the visible regions (they will
-   * mess up painting clones of our actors)
-   */
-  clutter_actor_iter_init (&iter, actor);
-  while (clutter_actor_iter_next (&iter, &child))
-    {
-      if (META_IS_WINDOW_ACTOR (child))
-        {
-          MetaWindowActor *window_actor = META_WINDOW_ACTOR (child);
-          meta_window_actor_reset_culling (window_actor);
-        }
-      else if (META_IS_BACKGROUND_ACTOR (child))
-        {
-          MetaBackgroundActor *background_actor = META_BACKGROUND_ACTOR (child);
-          meta_background_actor_set_clip_region (background_actor, NULL);
-        }
-    }
+static void
+cullable_iface_init (MetaCullableInterface *iface)
+{
+  iface->cull_out = meta_window_group_cull_out;
+  iface->reset_culling = meta_window_group_reset_culling;
 }
 
 static void
@@ -267,14 +192,14 @@ meta_window_group_paint (ClutterActor *actor)
         }
     }
 
-  meta_window_group_cull_out (window_group, unobscured_region, clip_region);
+  meta_cullable_cull_out (META_CULLABLE (window_group), unobscured_region, clip_region);
 
   cairo_region_destroy (unobscured_region);
   cairo_region_destroy (clip_region);
 
   CLUTTER_ACTOR_CLASS (meta_window_group_parent_class)->paint (actor);
 
-  meta_window_group_reset_culling (window_group);
+  meta_cullable_reset_culling (META_CULLABLE (window_group));
 }
 
 static gboolean

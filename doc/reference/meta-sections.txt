@@ -389,6 +389,23 @@ meta_window_actor_get_type
 </SECTION>
 
 <SECTION>
+<FILE>meta-cullable</FILE>
+<TITLE>MetaCullable</TITLE>
+MetaCullable
+MetaCullableInterface
+meta_cullable_cull_out
+meta_cullable_reset_culling
+meta_cullable_cull_out_children
+meta_cullable_reset_culling_children
+<SUBSECTION Standard>
+META_TYPE_CULLABLE
+META_CULLABLE
+META_IS_CULLABLE
+META_CULLABLE_GET_IFACE
+meta_cullable_get_type
+</SECTION>
+
+<SECTION>
 <FILE>prefs</FILE>
 MetaPreference
 MetaPrefsChangedFunc
