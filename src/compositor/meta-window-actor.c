@@ -2409,7 +2409,7 @@ meta_window_actor_update_input_region (MetaWindowActor       *self,
       cairo_region_union (region, priv->window->input_region);
       cairo_region_translate (region, client_area->x, client_area->y);
     }
-  else if (priv->window->shape_region != NULL)
+  else if (priv->window->input_region != NULL)
     {
       region = cairo_region_reference (priv->window->input_region);
     }
