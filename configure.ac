@@ -31,7 +31,7 @@ m4_define([clutter_micro_version], [1])
 #   ...
 #
 # • for development releases: keep clutter_interface_age to 0
-m4_define([clutter_interface_age], [1])
+m4_define([clutter_interface_age], [0])
 
 m4_define([clutter_binary_age], [m4_eval(100 * clutter_minor_version + clutter_micro_version)])
 
