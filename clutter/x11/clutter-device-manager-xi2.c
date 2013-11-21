@@ -319,7 +319,7 @@ add_device (ClutterDeviceManagerXI2 *manager_xi2,
    */
   g_hash_table_replace (manager_xi2->devices_by_id,
                         GINT_TO_POINTER (info->deviceid),
-                        g_object_ref (device));
+                        device);
 
   if (info->use == XIMasterPointer ||
       info->use == XIMasterKeyboard)
