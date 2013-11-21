@@ -95,6 +95,7 @@ clutter_input_device_dispose (GObject *gobject)
 
   g_clear_pointer (&device->axes, g_array_unref);
   g_clear_pointer (&device->keys, g_array_unref);
+  g_clear_pointer (&device->scroll_info, g_array_unref);
   g_clear_pointer (&device->touch_sequences_info, g_hash_table_unref);
 
   if (device->inv_touch_sequence_actors)
