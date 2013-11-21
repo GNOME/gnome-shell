@@ -2357,11 +2357,7 @@ meta_window_actor_update_input_region (MetaWindowActor       *self,
                                        cairo_rectangle_int_t *client_area)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  MetaShapedTexture *stex = meta_surface_actor_get_texture (priv->surface);
   cairo_region_t *region = NULL;
-
-  if (!stex)
-    return;
 
   if (priv->window->frame != NULL && priv->window->input_region != NULL)
     {
@@ -2387,7 +2383,7 @@ meta_window_actor_update_input_region (MetaWindowActor       *self,
       region = cairo_region_create_rectangle (client_area);
     }
 
-  meta_shaped_texture_set_input_shape_region (stex, region);
+  meta_surface_actor_set_input_region (priv->surface, region);
   cairo_region_destroy (region);
 }
 
@@ -2395,12 +2391,7 @@ static void
 meta_window_actor_update_opaque_region (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  MetaShapedTexture *stex;
   cairo_region_t *opaque_region;
-
-  stex = meta_surface_actor_get_texture (priv->surface);
-  if (!stex)
-    return;
 
   if (priv->argb32 && priv->window->opaque_region != NULL)
     {
@@ -2427,7 +2418,7 @@ meta_window_actor_update_opaque_region (MetaWindowActor *self)
   else
     opaque_region = cairo_region_reference (priv->shape_region);
 
-  meta_shaped_texture_set_opaque_region (stex, opaque_region);
+  meta_surface_actor_set_opaque_region (priv->surface, opaque_region);
   cairo_region_destroy (opaque_region);
 }
 

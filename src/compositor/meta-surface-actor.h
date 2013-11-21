@@ -57,6 +57,10 @@ void meta_surface_actor_set_texture (MetaSurfaceActor *self,
                                      CoglTexture      *texture);
 void meta_surface_actor_attach_wayland_buffer (MetaSurfaceActor  *self,
                                                MetaWaylandBuffer *buffer);
+void meta_surface_actor_set_input_region (MetaSurfaceActor *self,
+                                          cairo_region_t   *region);
+void meta_surface_actor_set_opaque_region (MetaSurfaceActor *self,
+                                           cairo_region_t   *region);
 
 G_END_DECLS
 

@@ -164,3 +164,17 @@ meta_surface_actor_set_texture (MetaSurfaceActor *self,
 {
   meta_shaped_texture_set_texture (self->priv->texture, texture);
 }
+
+void
+meta_surface_actor_set_input_region (MetaSurfaceActor *self,
+                                     cairo_region_t   *region)
+{
+  meta_shaped_texture_set_input_shape_region (self->priv->texture, region);
+}
+
+void
+meta_surface_actor_set_opaque_region (MetaSurfaceActor *self,
+                                      cairo_region_t   *region)
+{
+  meta_shaped_texture_set_opaque_region (self->priv->texture, region);
+}
