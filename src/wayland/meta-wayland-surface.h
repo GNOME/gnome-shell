@@ -102,4 +102,7 @@ void                meta_wayland_surface_configure_notify (MetaWaylandSurface *s
 void                meta_wayland_surface_focused_set (MetaWaylandSurface *surface);
 void                meta_wayland_surface_focused_unset (MetaWaylandSurface *surface);
 
+void                meta_wayland_surface_ping (MetaWaylandSurface *surface,
+                                               guint32             serial);
+
 #endif

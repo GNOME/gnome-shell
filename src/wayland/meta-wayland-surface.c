@@ -566,6 +566,10 @@ xdg_surface_pong (struct wl_client *client,
                   struct wl_resource *resource,
                   guint32 serial)
 {
+  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+
+  meta_window_pong (surface->window, serial);
 }
 
 static gboolean
@@ -769,6 +773,10 @@ xdg_popup_pong (struct wl_client *client,
                 struct wl_resource *resource,
                 uint32_t serial)
 {
+  MetaWaylandSurfaceExtension *xdg_popup = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = wl_container_of (xdg_popup, surface, xdg_popup);
+
+  meta_window_pong (surface->window, serial);
 }
 
 static const struct xdg_popup_interface meta_wayland_xdg_popup_interface = {
@@ -939,4 +947,14 @@ meta_wayland_surface_focused_unset (MetaWaylandSurface *surface)
 {
   if (surface->xdg_surface.resource)
     xdg_surface_send_focused_unset (surface->xdg_surface.resource);
+}
+
+void
+meta_wayland_surface_ping (MetaWaylandSurface *surface,
+                           guint32             timestamp)
+{
+  if (surface->xdg_surface.resource)
+    xdg_surface_send_ping (surface->xdg_surface.resource, timestamp);
+  else if (surface->xdg_popup.resource)
+    xdg_popup_send_ping (surface->xdg_popup.resource, timestamp);
 }
