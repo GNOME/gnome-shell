@@ -67,13 +67,10 @@ void     meta_window_actor_set_updates_frozen  (MetaWindowActor *self,
 void     meta_window_actor_queue_frame_drawn   (MetaWindowActor *self,
                                                 gboolean         no_delay_frame);
 
-cairo_region_t *meta_window_actor_get_obscured_region (MetaWindowActor *self);
-
-void meta_window_actor_set_clip_region         (MetaWindowActor *self,
-                                                cairo_region_t  *clip_region);
-void meta_window_actor_set_clip_region_beneath (MetaWindowActor *self,
-                                                cairo_region_t  *beneath_region);
-void meta_window_actor_reset_clip_regions      (MetaWindowActor *self);
+void meta_window_actor_cull_out (MetaWindowActor *self,
+                                 cairo_region_t  *unobscured_region,
+                                 cairo_region_t  *clip_region);
+void meta_window_actor_reset_culling (MetaWindowActor *self);
 
 void meta_window_actor_set_unobscured_region      (MetaWindowActor *self,
                                                    cairo_region_t  *unobscured_region);

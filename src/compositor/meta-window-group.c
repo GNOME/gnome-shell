@@ -102,14 +102,7 @@ meta_window_group_cull_out (MetaWindowGroup *group,
   clutter_actor_iter_init (&iter, actor);
   while (clutter_actor_iter_prev (&iter, &child))
     {
-      MetaCompScreen *info = meta_screen_get_compositor_data (group->screen);
-
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
-        continue;
-
-      if (!meta_is_wayland_compositor () &&
-          info->unredirected_window != NULL &&
-          child == CLUTTER_ACTOR (info->unredirected_window))
         continue;
 
       /* If an actor has effects applied, then that can change the area
@@ -133,30 +126,16 @@ meta_window_group_cull_out (MetaWindowGroup *group,
 
       if (META_IS_WINDOW_ACTOR (child))
         {
-          MetaWindowActor *window_actor = META_WINDOW_ACTOR (child);
           int x, y;
 
-          if (!meta_actor_is_untransformed (CLUTTER_ACTOR (window_actor), &x, &y))
+          if (!meta_actor_is_untransformed (child, &x, &y))
             continue;
 
           /* Temporarily move to the coordinate system of the actor */
           cairo_region_translate (unobscured_region, - x, - y);
           cairo_region_translate (clip_region, - x, - y);
 
-          meta_window_actor_set_unobscured_region (window_actor, unobscured_region);
-          meta_window_actor_set_clip_region (window_actor, clip_region);
-
-          if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (window_actor)) == 0xff)
-            {
-              cairo_region_t *obscured_region = meta_window_actor_get_obscured_region (window_actor);
-              if (obscured_region)
-                {
-                  cairo_region_subtract (unobscured_region, obscured_region);
-                  cairo_region_subtract (clip_region, obscured_region);
-                }
-            }
-
-          meta_window_actor_set_clip_region_beneath (window_actor, clip_region);
+          meta_window_actor_cull_out (META_WINDOW_ACTOR (child), unobscured_region, clip_region);
 
           cairo_region_translate (unobscured_region, x, y);
           cairo_region_translate (clip_region, x, y);
@@ -196,7 +175,7 @@ meta_window_group_reset_culling (MetaWindowGroup *group)
       if (META_IS_WINDOW_ACTOR (child))
         {
           MetaWindowActor *window_actor = META_WINDOW_ACTOR (child);
-          meta_window_actor_reset_clip_regions (window_actor);
+          meta_window_actor_reset_culling (window_actor);
         }
       else if (META_IS_BACKGROUND_ACTOR (child))
         {
