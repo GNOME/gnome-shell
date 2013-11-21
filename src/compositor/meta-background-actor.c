@@ -41,20 +41,35 @@
 #include <meta/errors.h>
 #include <meta/meta-background.h>
 #include "meta-background-actor-private.h"
+#include "meta-cullable.h"
 
 struct _MetaBackgroundActorPrivate
 {
   cairo_region_t *clip_region;
 };
 
-G_DEFINE_TYPE (MetaBackgroundActor, meta_background_actor, CLUTTER_TYPE_ACTOR);
+static void cullable_iface_init (MetaCullableInterface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (MetaBackgroundActor, meta_background_actor, CLUTTER_TYPE_ACTOR,
+                         G_IMPLEMENT_INTERFACE (META_TYPE_CULLABLE, cullable_iface_init));
+
+static void
+set_clip_region (MetaBackgroundActor *self,
+                 cairo_region_t      *clip_region)
+{
+  MetaBackgroundActorPrivate *priv = self->priv;
+
+  g_clear_pointer (&priv->clip_region, (GDestroyNotify) cairo_region_destroy);
+  if (clip_region)
+    priv->clip_region = cairo_region_copy (clip_region);
+}
 
 static void
 meta_background_actor_dispose (GObject *object)
 {
   MetaBackgroundActor *self = META_BACKGROUND_ACTOR (object);
 
-  meta_background_actor_set_clip_region (self, NULL);
+  set_clip_region (self, NULL);
 
   G_OBJECT_CLASS (meta_background_actor_parent_class)->dispose (object);
 }
@@ -166,31 +181,27 @@ meta_background_actor_new (void)
   return CLUTTER_ACTOR (self);
 }
 
-/**
- * meta_background_actor_set_clip_region:
- * @self: a #MetaBackgroundActor
- * @clip_region: (allow-none): the area of the actor (in allocate-relative
- *   coordinates) that is visible.
- *
- * Sets the area of the background that is unobscured by overlapping windows.
- * This is used to optimize and only paint the visible portions.
- */
-void
-meta_background_actor_set_clip_region (MetaBackgroundActor *self,
-                                       cairo_region_t      *clip_region)
+static void
+meta_background_actor_cull_out (MetaCullable   *cullable,
+                                cairo_region_t *unobscured_region,
+                                cairo_region_t *clip_region)
 {
-  MetaBackgroundActorPrivate *priv;
+  MetaBackgroundActor *self = META_BACKGROUND_ACTOR (cullable);
+  set_clip_region (self, clip_region);
+}
 
-  g_return_if_fail (META_IS_BACKGROUND_ACTOR (self));
+static void
+meta_background_actor_reset_culling (MetaCullable *cullable)
+{
+  MetaBackgroundActor *self = META_BACKGROUND_ACTOR (cullable);
+  set_clip_region (self, NULL);
+}
 
-  priv = self->priv;
-
-  g_clear_pointer (&priv->clip_region,
-                   (GDestroyNotify)
-                   cairo_region_destroy);
-
-  if (clip_region)
-    priv->clip_region = cairo_region_copy (clip_region);
+static void
+cullable_iface_init (MetaCullableInterface *iface)
+{
+  iface->cull_out = meta_background_actor_cull_out;
+  iface->reset_culling = meta_background_actor_reset_culling;
 }
 
 /**

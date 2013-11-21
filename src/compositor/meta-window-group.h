@@ -11,29 +11,9 @@
  * MetaWindowGroup:
  *
  * This class is a subclass of ClutterActor with special handling for
- * MetaWindowActor/MetaBackgroundActor/MetaBackgroundGroup when painting
- * children.
- *
- * When we are painting a stack of 5-10 maximized windows, the
- * standard bottom-to-top method of drawing every actor results in a
- * tremendous amount of overdraw and can easily max out the available
- * memory bandwidth on a low-end graphics chipset. It's even worse if
- * window textures are being accessed over the AGP bus.
- *
- * The basic technique applied here is to do a pre-pass before painting
- * where we walk window from top to bottom and compute the visible area
- * at each step by subtracting out the windows above it. The visible
- * area is passed to MetaWindowActor which uses it to clip the portion of
- * the window which drawn and avoid redrawing the shadow if it is completely
- * obscured.
- *
- * A caveat is that this is ineffective if applications are using ARGB
- * visuals, since we have no way of knowing whether a window obscures
- * the windows behind it or not. Alternate approaches using the depth
- * or stencil buffer rather than client side regions might be able to
- * handle alpha windows, but the combination of glAlphaFunc and stenciling
- * tends not to be efficient except on newer cards. (And on newer cards
- * we have lots of memory and bandwidth.)
+ * #MetaCullable when painting children. It uses code similar to
+ * meta_cullable_cull_out_children(), but also has additional special
+ * cases for the undirected window, and similar.
  */
 
 #define META_TYPE_WINDOW_GROUP            (meta_window_group_get_type ())
