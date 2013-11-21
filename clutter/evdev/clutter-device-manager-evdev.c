@@ -943,11 +943,8 @@ find_device_by_udev_device (ClutterDeviceManagerEvdev *manager_evdev,
     {
       ClutterInputDeviceEvdev *device = l->data;
 
-      if (strcmp (sysfs_path,
-                  _clutter_input_device_evdev_get_sysfs_path (device)) == 0)
-        {
-          return device;
-        }
+      if (g_strcmp0 (sysfs_path, _clutter_input_device_evdev_get_sysfs_path (device)) == 0)
+        return device;
     }
 
   return NULL;
