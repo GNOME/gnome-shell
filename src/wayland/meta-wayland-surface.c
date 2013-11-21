@@ -524,14 +524,19 @@ xdg_surface_destroy (struct wl_client *client,
 static void
 xdg_surface_set_transient_for (struct wl_client *client,
                                struct wl_resource *resource,
-                               struct wl_resource *parent)
+                               struct wl_resource *parent_resource)
 {
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
-  MetaWaylandSurfaceExtension *parent_xdg_surface = wl_resource_get_user_data (parent);
-  MetaWaylandSurface *parent_surface = wl_container_of (parent_xdg_surface, surface, xdg_surface);
+  MetaWindow *transient_for = NULL;
 
-  meta_window_set_transient_for (surface->window, parent_surface->window);
+  if (parent_resource)
+    {
+      MetaWaylandSurface *parent_surface = wl_resource_get_user_data (parent_resource);
+      transient_for = parent_surface->window;
+    }
+
+  meta_window_set_transient_for (surface->window, transient_for);
 }
 
 static void
