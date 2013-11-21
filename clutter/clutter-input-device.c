@@ -93,23 +93,9 @@ clutter_input_device_dispose (GObject *gobject)
       device->associated = NULL;
     }
 
-  if (device->axes != NULL)
-    {
-      g_array_free (device->axes, TRUE);
-      device->axes = NULL;
-    }
-
-  if (device->keys != NULL)
-    {
-      g_array_free (device->keys, TRUE);
-      device->keys = NULL;
-    }
-
-  if (device->touch_sequences_info)
-    {
-      g_hash_table_unref (device->touch_sequences_info);
-      device->touch_sequences_info = NULL;
-    }
+  g_clear_pointer (&device->axes, g_array_unref);
+  g_clear_pointer (&device->keys, g_array_unref);
+  g_clear_pointer (&device->touch_sequences_info, g_hash_table_unref);
 
   if (device->inv_touch_sequence_actors)
     {
