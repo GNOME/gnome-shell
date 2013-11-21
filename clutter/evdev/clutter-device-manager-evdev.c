@@ -1046,6 +1046,8 @@ clutter_device_manager_evdev_remove_device (ClutterDeviceManager *manager,
       clutter_event_source_free (source);
       priv->event_sources = g_slist_remove (priv->event_sources, source);
     }
+
+  g_object_unref (device);
 }
 
 static const GSList *
