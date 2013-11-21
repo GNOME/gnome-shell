@@ -235,6 +235,7 @@ _cogl_framebuffer_clear_without_flush4f (CoglFramebuffer *framebuffer,
 void
 _cogl_framebuffer_mark_mid_scene (CoglFramebuffer *framebuffer)
 {
+  framebuffer->clear_clip_dirty = TRUE;
   framebuffer->mid_scene = TRUE;
 }
 
