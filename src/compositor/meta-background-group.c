@@ -46,7 +46,7 @@ meta_background_group_set_clip_region (MetaBackgroundGroup *self,
                                        cairo_region_t      *region)
 {
   ClutterActor *child;
-  for (child = clutter_actor_get_first_child (self);
+  for (child = clutter_actor_get_first_child (CLUTTER_ACTOR (self));
        child != NULL;
        child = clutter_actor_get_next_sibling (child))
     {
