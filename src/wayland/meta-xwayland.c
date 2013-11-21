@@ -102,7 +102,7 @@ bind_xserver (struct wl_client *client,
    * and unblock meta_wayland_init() to continue initializing mutter.
    * */
   g_main_loop_quit (compositor->init_loop);
-  compositor->init_loop = NULL;
+  g_clear_pointer (&compositor->init_loop, g_main_loop_unref);
 }
 
 static char *
@@ -306,6 +306,7 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
   char **env;
   char *fd_string;
   char *display_name;
+  char *log_path;
   char *args[11];
   GError *error;
 
@@ -368,6 +369,7 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
 
   display_name = g_strdup_printf (":%d",
                                   compositor->xwayland_display_index);
+  log_path = g_build_filename (g_get_user_cache_dir (), "xwayland.log", NULL);
 
   args[0] = XWAYLAND_PATH;
   args[1] = display_name;
@@ -376,7 +378,7 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
   args[4] = "-retro";
   args[5] = "-noreset";
   args[6] = "-logfile";
-  args[7] = g_build_filename (g_get_user_cache_dir (), "xwayland.log", NULL);
+  args[7] = log_path;
   args[8] = "-nolisten";
   args[9] = "all";
   args[10] = NULL;
@@ -410,6 +412,7 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
 
   g_strfreev (env);
   g_free (display_name);
+  g_free (log_path);
 
   /* We need to run a mainloop until we know xwayland has a binding
    * for our xserver interface at which point we can assume it's
