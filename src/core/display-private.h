@@ -57,11 +57,6 @@ typedef struct _MetaWindowPropHooks MetaWindowPropHooks;
 
 typedef struct MetaEdgeResistanceData MetaEdgeResistanceData;
 
-typedef void (* MetaWindowPingFunc) (MetaDisplay *display,
-				     Window       xwindow,
-				     guint32      timestamp,
-				     gpointer     user_data);
-
 typedef enum {
   META_LIST_DEFAULT                   = 0,      /* normal windows */
   META_LIST_INCLUDE_OVERRIDE_REDIRECT = 1 << 0, /* normal and O-R */
@@ -182,7 +177,7 @@ struct _MetaDisplay
   guint32 window_sequence_counter;
 
   /* Pings which we're waiting for a reply from */
-  GSList     *pending_pings;
+  GHashTable *pending_pings;
 
   /* Pending focus change */
   guint       focus_timeout_id;
@@ -447,15 +442,6 @@ void meta_display_retheme_all (void);
 
 void meta_display_set_cursor_theme (const char *theme, 
 				    int         size);
-
-void meta_display_ping_window      (MetaDisplay        *display,
-                                    MetaWindow         *window,
-                                    guint32             timestamp,
-                                    MetaWindowPingFunc  ping_reply_func,
-                                    MetaWindowPingFunc  ping_timeout_func,
-                                    void               *user_data);
-gboolean meta_display_window_has_pending_pings (MetaDisplay        *display,
-						MetaWindow         *window);
 
 int meta_resize_gravity_from_grab_op (MetaGrabOp op);
 

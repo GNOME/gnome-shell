@@ -73,6 +73,26 @@
 
 static int destroying_windows_disallowed = 0;
 
+/**
+ * MetaPingData:
+ *
+ * Describes a ping on a window. When we send a ping to a window, we build
+ * one of these structs, and it eventually gets passed to the timeout function
+ * or to the function which handles the response from the window. If the window
+ * does or doesn't respond to the ping, we use this information to deal with
+ * these facts; we have a handler function for each.
+ */
+typedef struct
+{
+  MetaWindow  *window;
+  guint32      timestamp;
+  MetaWindowPingFunc ping_reply_func;
+  MetaWindowPingFunc ping_timeout_func;
+  void        *user_data;
+  guint        ping_timeout_id;
+} MetaPingData;
+
+static void ping_data_free (MetaPingData *ping_data);
 
 static void     update_sm_hints           (MetaWindow     *window);
 static void     update_net_frame_extents  (MetaWindow     *window);
@@ -2050,6 +2070,8 @@ meta_window_unmanage (MetaWindow  *window,
 
   if (window->surface)
     meta_wayland_surface_free (window->surface);
+
+  g_slist_free_full (window->pending_pings, (GDestroyNotify) ping_data_free);
 
   meta_prefs_remove_listener (prefs_changed_callback, window);
 
@@ -11959,4 +11981,195 @@ meta_window_set_surface_mapped (MetaWindow *window,
 
   window->surface_mapped = surface_mapped;
   meta_window_queue (window, META_QUEUE_CALC_SHOWING);
+}
+
+/*
+ * SECTION:pings
+ *
+ * Sometimes we want to see whether a window is responding,
+ * so we send it a "ping" message and see whether it sends us back a "pong"
+ * message within a reasonable time. Here we have a system which lets us
+ * nominate one function to be called if we get the pong in time and another
+ * function if we don't. The system is rather more complicated than it needs
+ * to be, since we only ever use it to destroy windows which are asked to
+ * close themselves and don't do so within a reasonable amount of time, and
+ * therefore we always use the same callbacks. It's possible that we might
+ * use it for other things in future, or on the other hand we might decide
+ * that we're never going to do so and simplify it a bit.
+ */
+
+/**
+ * ping_data_free:
+ *
+ * Destructor for #MetaPingData structs. Will destroy the
+ * event source for the struct as well.
+ */
+static void
+ping_data_free (MetaPingData *ping_data)
+{
+  MetaWindow *window = ping_data->window;
+  MetaDisplay *display = window->display;
+
+  /* Remove the timeout */
+  if (ping_data->ping_timeout_id != 0)
+    g_source_remove (ping_data->ping_timeout_id);
+
+  g_hash_table_remove (display->pending_pings, &ping_data->timestamp);
+
+  g_free (ping_data);
+}
+
+/**
+ * meta_window_pong:
+ * @window: the window we got the pong on
+ * @timestamp: the timestamp that the client sent back
+ *
+ * Process the pong (the response message) from the ping we sent
+ * to the window. This involves removing the timeout, calling the
+ * reply handler function, and freeing memory.
+ */
+void
+meta_window_pong (MetaWindow *window,
+                  guint32     timestamp)
+{
+  GSList *tmp;
+
+  meta_topic (META_DEBUG_PING, "Received a pong with timestamp %u\n",
+              timestamp);
+
+  for (tmp = window->pending_pings; tmp; tmp = tmp->next)
+    {
+      MetaPingData *ping_data = tmp->data;
+
+      if (timestamp == ping_data->timestamp)
+        {
+          meta_topic (META_DEBUG_PING,
+                      "Matching ping found for pong %u\n",
+                      ping_data->timestamp);
+
+          /* Remove the ping data from the list */
+          window->pending_pings = g_slist_remove (window->pending_pings, ping_data);
+
+          /* Remove the timeout */
+          if (ping_data->ping_timeout_id != 0)
+            {
+              g_source_remove (ping_data->ping_timeout_id);
+              ping_data->ping_timeout_id = 0;
+            }
+
+          /* Call callback */
+          (* ping_data->ping_reply_func) (window,
+                                          ping_data->timestamp,
+                                          ping_data->user_data);
+
+          /* Remove the ping data from the list */
+          window->pending_pings = g_slist_remove (window->pending_pings, ping_data);
+
+          ping_data_free (ping_data);
+
+          break;
+        }
+    }
+}
+
+/*
+ * How long, in milliseconds, we should wait after pinging a window
+ * before deciding it's not going to get back to us.
+ */
+#define PING_TIMEOUT_DELAY 5000
+
+/**
+ * ping_timeout:
+ * @data: All the information about this ping. It is a #MetaPingData
+ *        cast to a #gpointer in order to be passable to a timeout function.
+ *        This function will also free this parameter.
+ *
+ * Does whatever it is we decided to do when a window didn't respond
+ * to a ping. We also remove the ping from the display's list of
+ * pending pings. This function is called by the event loop when the timeout
+ * times out which we created at the start of the ping.
+ *
+ * Returns: Always returns %FALSE, because this function is called as a
+ *          timeout and we don't want to run the timer again.
+ */
+static gboolean
+ping_timeout (gpointer data)
+{
+  MetaPingData *ping_data;
+
+  ping_data = data;
+
+  ping_data->ping_timeout_id = 0;
+
+  meta_topic (META_DEBUG_PING,
+              "Ping %u on window %s timed out\n",
+              ping_data->timestamp, ping_data->window->desc);
+
+  (* ping_data->ping_timeout_func) (ping_data->window, ping_data->timestamp, ping_data->user_data);
+
+  ping_data_free (ping_data);
+
+  return FALSE;
+}
+
+/**
+ * meta_window_ping:
+ * @window: The #MetaWindow to send the ping to
+ * @timestamp: The timestamp of the ping. Used for uniqueness.
+ *             Cannot be CurrentTime; use a real timestamp!
+ * @ping_reply_func: The callback to call if we get a response.
+ * @ping_timeout_func: The callback to call if we don't get a response.
+ * @user_data: Arbitrary data that will be passed to the callback
+ *             function. (In practice it's often a pointer to
+ *             the window.)
+ *
+ * Sends a ping request to a window. The window must respond to
+ * the request within a certain amount of time. If it does, we
+ * will call one callback; if the time passes and we haven't had
+ * a response, we call a different callback. The window must have
+ * the hint showing that it can respond to a ping; if it doesn't,
+ * we call the "got a response" callback immediately and return.
+ * This function returns straight away after setting things up;
+ * the callbacks will be called from the event loop.
+ */
+void
+meta_window_ping (MetaWindow        *window,
+                  guint32            timestamp,
+                  MetaWindowPingFunc ping_reply_func,
+                  MetaWindowPingFunc ping_timeout_func,
+                  gpointer           user_data)
+{
+  MetaPingData *ping_data;
+  MetaDisplay *display = window->display;
+
+  if (timestamp == CurrentTime)
+    {
+      meta_warning ("Tried to ping a window with CurrentTime! Not allowed.\n");
+      return;
+    }
+
+  if (!window->net_wm_ping)
+    {
+      if (ping_reply_func)
+        (* ping_reply_func) (window, timestamp, user_data);
+
+      return;
+    }
+
+  ping_data = g_new (MetaPingData, 1);
+  ping_data->window = window;
+  ping_data->timestamp = timestamp;
+  ping_data->ping_reply_func = ping_reply_func;
+  ping_data->ping_timeout_func = ping_timeout_func;
+  ping_data->user_data = user_data;
+  ping_data->ping_timeout_id = g_timeout_add (PING_TIMEOUT_DELAY, ping_timeout, ping_data);
+
+  g_hash_table_insert (display->pending_pings, &ping_data->timestamp, window);
+
+  meta_topic (META_DEBUG_PING,
+              "Sending ping with timestamp %u to window %s\n",
+              timestamp, window->desc);
+  meta_window_send_icccm_message (window,
+                                  display->atom__NET_WM_PING,
+                                  timestamp);
 }

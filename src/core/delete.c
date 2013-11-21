@@ -43,14 +43,11 @@ static void meta_window_present_delete_dialog (MetaWindow *window,
                                                guint32     timestamp);
 
 static void
-delete_ping_reply_func (MetaDisplay *display,
-                        Window       xwindow,
+delete_ping_reply_func (MetaWindow  *window,
                         guint32      timestamp,
                         void        *user_data)
 {
-  meta_topic (META_DEBUG_PING,
-              "Got reply to delete ping for %s\n",
-              ((MetaWindow*)user_data)->desc);
+  meta_topic (META_DEBUG_PING, "Got reply to delete ping for %s\n", window->desc);
 
   /* we do nothing */
 }
@@ -68,12 +65,10 @@ dialog_exited (GPid pid, int status, gpointer user_data)
 }
 
 static void
-delete_ping_timeout_func (MetaDisplay *display,
-                          Window       xwindow,
+delete_ping_timeout_func (MetaWindow  *window,
                           guint32      timestamp,
                           void        *user_data)
 {
-  MetaWindow *window = user_data;
   char *window_title;
   gchar *window_content, *tmp;
   GPid dialog_pid;
@@ -137,12 +132,11 @@ void
 meta_window_check_alive (MetaWindow *window,
                          guint32     timestamp)
 {
-  meta_display_ping_window (window->display,
-                            window,
-                            timestamp,
-                            delete_ping_reply_func,
-                            delete_ping_timeout_func,
-                            window);
+  meta_window_ping (window,
+                    timestamp,
+                    delete_ping_reply_func,
+                    delete_ping_timeout_func,
+                    NULL);
 }
 
 void
