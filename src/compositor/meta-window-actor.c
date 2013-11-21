@@ -1717,7 +1717,7 @@ meta_window_actor_unmapped (MetaWindowActor *self)
  * Return value: (transfer none): the area obscured by the window,
  *  %NULL is the same as an empty region.
  */
-cairo_region_t *
+static cairo_region_t *
 meta_window_actor_get_obscured_region (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
@@ -1806,7 +1806,7 @@ meta_window_actor_set_unobscured_region (MetaWindowActor *self,
  * not drawn in this frame.
  * This will be set before painting then unset afterwards.
  */
-void
+static void
 meta_window_actor_set_clip_region (MetaWindowActor *self,
                                    cairo_region_t  *clip_region)
 {
@@ -1828,7 +1828,7 @@ meta_window_actor_set_clip_region (MetaWindowActor *self,
  * shadow hid by the window itself. This will be set before painting
  * then unset afterwards.
  */
-void
+static void
 meta_window_actor_set_clip_region_beneath (MetaWindowActor *self,
                                            cairo_region_t  *beneath_region)
 {
@@ -1848,15 +1848,42 @@ meta_window_actor_set_clip_region_beneath (MetaWindowActor *self,
     }
 }
 
+void
+meta_window_actor_cull_out (MetaWindowActor *self,
+                            cairo_region_t  *unobscured_region,
+                            cairo_region_t  *clip_region)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (self->priv->screen);
+
+  /* Don't do any culling for the unredirected window */
+  if (self == info->unredirected_window)
+    return;
+
+  meta_window_actor_set_unobscured_region (self, unobscured_region);
+  meta_window_actor_set_clip_region (self, clip_region);
+
+  if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (self)) == 0xff)
+    {
+      cairo_region_t *obscured_region = meta_window_actor_get_obscured_region (self);
+      if (obscured_region)
+        {
+          cairo_region_subtract (unobscured_region, obscured_region);
+          cairo_region_subtract (clip_region, obscured_region);
+        }
+    }
+
+  meta_window_actor_set_clip_region_beneath (self, clip_region);
+}
+
 /**
- * meta_window_actor_reset_clip_regions:
+ * meta_window_actor_reset_culling:
  * @self: a #MetaWindowActor
  *
  * Unsets the regions set by meta_window_actor_set_clip_region() and
  * meta_window_actor_set_clip_region_beneath()
  */
 void
-meta_window_actor_reset_clip_regions (MetaWindowActor *self)
+meta_window_actor_reset_culling (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
 
