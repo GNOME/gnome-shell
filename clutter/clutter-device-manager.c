@@ -368,9 +368,14 @@ _clutter_device_manager_remove_device (ClutterDeviceManager *device_manager,
   manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
   g_assert (manager_class->remove_device != NULL);
 
-  manager_class->remove_device (device_manager, device);
+  /* The subclass remove_device() method will likely unref it but we
+     have to keep it alive during the signal emission. */
+  g_object_ref (device);
 
+  manager_class->remove_device (device_manager, device);
   g_signal_emit (device_manager, manager_signals[DEVICE_REMOVED], 0, device);
+
+  g_object_unref (device);
 }
 
 /*
