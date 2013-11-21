@@ -803,7 +803,6 @@ get_xdg_popup (struct wl_client *client,
 
   surface->window = meta_window_new_for_wayland (meta_get_display (), surface);
   surface->window->type = META_WINDOW_DROPDOWN_MENU;
-  surface->window->override_redirect = TRUE;
   surface->window->showing_for_first_time = FALSE;
   surface->window->rect.x = parent_rect.x + x;
   surface->window->rect.y = parent_rect.y + y;
