@@ -44,7 +44,7 @@
 #include "meta-wayland-private.h"
 #include "meta-xwayland-private.h"
 #include "meta-wayland-stage.h"
-#include "meta-window-actor-private.h"
+#include "meta-surface-actor.h"
 #include "meta-wayland-seat.h"
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-pointer.h"
@@ -67,8 +67,6 @@ surface_process_damage (MetaWaylandSurface *surface,
 
   if (surface->buffer_ref.buffer)
     {
-      MetaWindowActor *window_actor =
-        META_WINDOW_ACTOR (meta_window_get_compositor_private (surface->window));
       MetaRectangle rect;
       cairo_rectangle_int_t cairo_rect;
 
@@ -80,7 +78,7 @@ surface_process_damage (MetaWaylandSurface *surface,
 
       cairo_region_intersect_rectangle (region, &cairo_rect);
 
-      if (window_actor)
+      if (surface->surface_actor)
         {
           int i, n_rectangles = cairo_region_num_rectangles (region);
 
@@ -90,11 +88,12 @@ surface_process_damage (MetaWaylandSurface *surface,
 
               cairo_region_get_rectangle (region, i, &rectangle);
 
-              meta_window_actor_process_wayland_damage (window_actor,
-                                                        rectangle.x,
-                                                        rectangle.y,
-                                                        rectangle.width,
-                                                        rectangle.height);
+              meta_surface_actor_damage_area (surface->surface_actor,
+                                              rectangle.x,
+                                              rectangle.y,
+                                              rectangle.width,
+                                              rectangle.height,
+                                              NULL);
             }
         }
     }
@@ -278,6 +277,7 @@ cursor_surface_commit (MetaWaylandSurface *surface)
 static void
 toplevel_surface_commit (MetaWaylandSurface *surface)
 {
+  MetaSurfaceActor *surface_actor = surface->surface_actor;
   MetaWindow *window = surface->window;
   MetaWaylandBuffer *buffer = surface->pending.buffer;
 
@@ -291,9 +291,7 @@ toplevel_surface_commit (MetaWaylandSurface *surface)
 
       if (buffer != NULL)
         {
-          MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-
-          meta_window_actor_attach_wayland_buffer (window_actor, buffer);
+          meta_surface_actor_attach_wayland_buffer (surface_actor, buffer);
 
           /* We resize X based surfaces according to X events */
           if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
@@ -316,9 +314,9 @@ toplevel_surface_commit (MetaWaylandSurface *surface)
   surface_process_damage (surface, surface->pending.damage);
 
   if (surface->pending.opaque_region)
-    meta_window_set_opaque_region (window, surface->pending.opaque_region);
+    meta_surface_actor_set_opaque_region (surface_actor, surface->pending.opaque_region);
   if (surface->pending.input_region)
-    meta_window_set_input_region (window, surface->pending.input_region);
+    meta_surface_actor_set_input_region (surface_actor, surface->pending.input_region);
 }
 
 static void

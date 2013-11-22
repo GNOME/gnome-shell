@@ -29,6 +29,7 @@
 
 #include <meta/meta-cursor-tracker.h>
 #include "meta-wayland-types.h"
+#include "meta-surface-actor.h"
 
 struct _MetaWaylandBuffer
 {
@@ -77,6 +78,7 @@ struct _MetaWaylandSurface
   struct wl_resource *resource;
   MetaWaylandCompositor *compositor;
   MetaWaylandBufferReference buffer_ref;
+  MetaSurfaceActor *surface_actor;
   MetaWindow *window;
   MetaWaylandSurfaceExtension xdg_surface;
   MetaWaylandSurfaceExtension xdg_popup;

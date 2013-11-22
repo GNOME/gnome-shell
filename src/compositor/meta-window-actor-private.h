@@ -31,14 +31,6 @@ void meta_window_actor_unmaximize (MetaWindowActor *self,
 void meta_window_actor_process_x11_damage (MetaWindowActor    *self,
                                            XDamageNotifyEvent *event);
 
-void meta_window_actor_process_wayland_damage (MetaWindowActor *self,
-                                               int              x,
-                                               int              y,
-                                               int              width,
-                                               int              height);
-void meta_window_actor_attach_wayland_buffer  (MetaWindowActor   *self,
-                                               MetaWaylandBuffer *buffer);
-
 void meta_window_actor_pre_paint      (MetaWindowActor    *self);
 void meta_window_actor_post_paint     (MetaWindowActor    *self);
 void meta_window_actor_frame_complete (MetaWindowActor    *self,

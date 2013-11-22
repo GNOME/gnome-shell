@@ -6,7 +6,7 @@
 #include <config.h>
 
 #include <meta/meta-shaped-texture.h>
-#include "meta-wayland-private.h"
+#include "meta-wayland-types.h"
 
 G_BEGIN_DECLS
 

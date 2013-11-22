@@ -409,6 +409,9 @@ meta_window_actor_constructed (GObject *object)
     {
       priv->surface = meta_surface_actor_new ();
 
+      if (window->surface)
+        window->surface->surface_actor = priv->surface;
+
       clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
 
       priv->surface_allocation_changed_id =
@@ -2150,30 +2153,6 @@ meta_window_actor_process_x11_damage (MetaWindowActor    *self,
 }
 
 void
-meta_window_actor_process_wayland_damage (MetaWindowActor *self,
-                                          int x,
-                                          int y,
-                                          int width,
-                                          int height)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-  cairo_region_t *unobscured_region;
-  gboolean redraw_queued;
-
-  if (!priv->mapped)
-    return;
-
-  unobscured_region =
-    clutter_actor_has_mapped_clones (CLUTTER_ACTOR (priv->surface))
-    ? NULL : priv->unobscured_region;
-  redraw_queued = meta_surface_actor_damage_area (priv->surface,
-                                                  x, y, width, height,
-                                                  unobscured_region);
-
-  priv->repaint_scheduled = priv->repaint_scheduled  || redraw_queued;
-}
-
-void
 meta_window_actor_sync_visibility (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
@@ -2446,8 +2425,12 @@ check_needs_reshape (MetaWindowActor *self)
     client_area.height = priv->window->rect.height;
 
   meta_window_actor_update_shape_region (self, &client_area);
-  meta_window_actor_update_input_region (self, &client_area);
-  meta_window_actor_update_opaque_region (self);
+
+  if (priv->window->client_type == META_WINDOW_CLIENT_TYPE_X11)
+    {
+      meta_window_actor_update_input_region (self, &client_area);
+      meta_window_actor_update_opaque_region (self);
+    }
 
   priv->needs_reshape = FALSE;
 }
@@ -2463,14 +2446,6 @@ meta_window_actor_update_shape (MetaWindowActor *self)
     return;
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (priv->surface));
-}
-
-void
-meta_window_actor_attach_wayland_buffer (MetaWindowActor *self,
-                                         MetaWaylandBuffer *buffer)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-  meta_surface_actor_attach_wayland_buffer (priv->surface, buffer);
 }
 
 static void

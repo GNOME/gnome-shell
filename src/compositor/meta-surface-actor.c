@@ -15,6 +15,7 @@
 #include <cogl/cogl-texture-pixmap-x11.h>
 #include <meta/meta-shaped-texture.h>
 #include "meta-surface-actor.h"
+#include "meta-wayland-private.h"
 #include "meta-cullable.h"
 
 #include "meta-shaped-texture-private.h"
