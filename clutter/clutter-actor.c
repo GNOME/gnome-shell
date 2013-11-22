@@ -998,8 +998,6 @@ static void clutter_actor_update_map_state       (ClutterActor  *self,
                                                   MapStateChange change);
 static void clutter_actor_unrealize_not_hiding   (ClutterActor *self);
 
-static void _clutter_actor_queue_only_relayout (ClutterActor *self);
-
 static void _clutter_actor_get_relative_transformation_matrix (ClutterActor *self,
                                                                ClutterActor *ancestor,
                                                                CoglMatrix *matrix);
@@ -7888,7 +7886,7 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
                                     NULL /* effect */);
 }
 
-static void
+void
 _clutter_actor_queue_only_relayout (ClutterActor *self)
 {
   ClutterActorPrivate *priv = self->priv;
