@@ -1037,8 +1037,6 @@ static void           clutter_anchor_coord_set_gravity (AnchorCoord       *coord
 
 static gboolean clutter_anchor_coord_is_zero (const AnchorCoord *coord);
 
-static void _clutter_actor_queue_only_relayout (ClutterActor *self);
-
 static void _clutter_actor_get_relative_transformation_matrix (ClutterActor *self,
                                                                ClutterActor *ancestor,
                                                                CoglMatrix *matrix);
@@ -8862,7 +8860,7 @@ _clutter_actor_queue_redraw_with_clip (ClutterActor       *self,
                                     NULL /* effect */);
 }
 
-static void
+void
 _clutter_actor_queue_only_relayout (ClutterActor *self)
 {
   ClutterActorPrivate *priv = self->priv;

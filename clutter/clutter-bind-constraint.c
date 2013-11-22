@@ -151,7 +151,7 @@ source_queue_relayout (ClutterActor          *source,
                        ClutterBindConstraint *bind)
 {
   if (bind->actor != NULL)
-    clutter_actor_queue_relayout (bind->actor);
+    _clutter_actor_queue_only_relayout (bind->actor);
 }
 
 static void

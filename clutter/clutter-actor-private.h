@@ -318,6 +318,7 @@ void                            _clutter_actor_detach_clone                     
                                                                                          ClutterActor *clone);
 void                            _clutter_actor_queue_redraw_on_clones                   (ClutterActor *actor);
 void                            _clutter_actor_queue_relayout_on_clones                 (ClutterActor *actor);
+void                            _clutter_actor_queue_only_relayout                      (ClutterActor *actor);
 
 G_END_DECLS
 

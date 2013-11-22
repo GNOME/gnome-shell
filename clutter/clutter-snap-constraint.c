@@ -94,7 +94,7 @@ source_queue_relayout (ClutterActor          *source,
                        ClutterSnapConstraint *constraint)
 {
   if (constraint->actor != NULL)
-    clutter_actor_queue_relayout (constraint->actor);
+    _clutter_actor_queue_only_relayout (constraint->actor);
 }
 
 static void
