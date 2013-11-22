@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-11-20 17:03+0000\n"
-"PO-Revision-Date: 2013-11-22 22:40+0200\n"
+"PO-Revision-Date: 2013-11-22 22:43+0200\n"
 "Last-Translator: Reinout van Schouwen <reinouts@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -844,7 +844,7 @@ msgstr "Certificaat is ongeldig"
 
 #: ../js/ui/components/telepathyClient.js:1303
 msgid "Connection has been refused"
-msgstr "De berbinding is geweigerd"
+msgstr "De verbinding is geweigerd"
 
 #: ../js/ui/components/telepathyClient.js:1305
 msgid "Connection can't be established"
