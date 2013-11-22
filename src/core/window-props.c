@@ -316,6 +316,9 @@ reload_gtk_frame_extents (MetaWindow    *window,
     {
       window->has_custom_frame_extents = FALSE;
     }
+
+  if (!initial)
+    meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
 }
 
 static void
