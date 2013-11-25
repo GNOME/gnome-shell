@@ -63,39 +63,18 @@ static void
 surface_process_damage (MetaWaylandSurface *surface,
                         cairo_region_t *region)
 {
-  g_assert (surface->window);
+  int i, n_rectangles = cairo_region_num_rectangles (region);
 
-  if (surface->buffer_ref.buffer)
+  for (i = 0; i < n_rectangles; i++)
     {
-      MetaRectangle rect;
-      cairo_rectangle_int_t cairo_rect;
-
-      meta_window_get_input_rect (surface->window, &rect);
-      cairo_rect.x = 0;
-      cairo_rect.y = 0;
-      cairo_rect.width = rect.width;
-      cairo_rect.height = rect.height;
-
-      cairo_region_intersect_rectangle (region, &cairo_rect);
-
-      if (surface->surface_actor)
-        {
-          int i, n_rectangles = cairo_region_num_rectangles (region);
-
-          for (i = 0; i < n_rectangles; i++)
-            {
-              cairo_rectangle_int_t rectangle;
-
-              cairo_region_get_rectangle (region, i, &rectangle);
-
-              meta_surface_actor_damage_area (surface->surface_actor,
-                                              rectangle.x,
-                                              rectangle.y,
-                                              rectangle.width,
-                                              rectangle.height,
-                                              NULL);
-            }
-        }
+      cairo_rectangle_int_t rect;
+      cairo_region_get_rectangle (region, i, &rect);
+      meta_surface_actor_damage_area (surface->surface_actor,
+                                      rect.x,
+                                      rect.y,
+                                      rect.width,
+                                      rect.height,
+                                      NULL);
     }
 }
 
