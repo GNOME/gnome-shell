@@ -820,9 +820,9 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
        * contents until we show the stage.
        */
       XMapWindow (xdisplay, info->output);
-
-      redirect_windows (compositor, screen);
     }
+
+  redirect_windows (compositor, screen);
 
   info->plugin_mgr = meta_plugin_manager_new (screen);
 }
