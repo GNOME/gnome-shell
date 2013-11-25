@@ -2001,7 +2001,7 @@ process_iso_next_group (MetaDisplay *display,
   gboolean activate;
   int i;
 
-  if (event->type != CLUTTER_KEY_RELEASE)
+  if (event->type == CLUTTER_KEY_RELEASE)
     return FALSE;
 
   activate = FALSE;
