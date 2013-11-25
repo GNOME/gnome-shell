@@ -69,7 +69,7 @@ meta_cullable_cull_out_children (MetaCullable   *cullable,
   clutter_actor_iter_init (&iter, actor);
   while (clutter_actor_iter_prev (&iter, &child))
     {
-      int x, y;
+      float x, y;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
@@ -96,8 +96,10 @@ meta_cullable_cull_out_children (MetaCullable   *cullable,
       if (!META_IS_CULLABLE (child))
         continue;
 
-      if (!meta_actor_is_untransformed (child, &x, &y))
+      if (!meta_actor_is_untransformed (child, NULL, NULL))
         continue;
+
+      clutter_actor_get_position (child, &x, &y);
 
       /* Temporarily move to the coordinate system of the actor */
       cairo_region_translate (unobscured_region, - x, - y);
