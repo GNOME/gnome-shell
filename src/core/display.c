@@ -1942,6 +1942,19 @@ handle_window_focus_event (MetaDisplay  *display,
 }
 
 static gboolean
+window_has_xwindow (MetaWindow *window,
+                    Window      xwindow)
+{
+  if (window->xwindow == xwindow)
+    return TRUE;
+
+  if (window->frame && window->frame->xwindow == xwindow)
+    return TRUE;
+
+  return FALSE;
+}
+
+static gboolean
 meta_display_handle_event (MetaDisplay        *display,
                            const ClutterEvent *event)
 {
@@ -2929,7 +2942,7 @@ meta_display_handle_xevent (MetaDisplay *display,
 
   if (event->xany.serial > display->focus_serial &&
       display->focus_window &&
-      display->focus_window->xwindow != display->server_focus_window)
+      !window_has_xwindow (display->focus_window, display->server_focus_window))
     {
       meta_topic (META_DEBUG_FOCUS, "Earlier attempt to focus %s failed\n",
                   display->focus_window->desc);
