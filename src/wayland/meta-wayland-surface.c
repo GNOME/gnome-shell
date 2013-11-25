@@ -262,6 +262,66 @@ ensure_buffer_texture (MetaWaylandBuffer *buffer)
 }
 
 static void
+cursor_surface_commit (MetaWaylandSurface *surface)
+{
+  MetaWaylandBuffer *buffer = surface->pending.buffer;
+
+  if (surface->pending.newly_attached && buffer != surface->buffer_ref.buffer)
+    {
+      ensure_buffer_texture (buffer);
+      meta_wayland_buffer_reference (&surface->buffer_ref, buffer);
+    }
+
+  meta_wayland_seat_update_sprite (surface->compositor->seat);
+}
+
+static void
+toplevel_surface_commit (MetaWaylandSurface *surface)
+{
+  MetaWindow *window = surface->window;
+  MetaWaylandBuffer *buffer = surface->pending.buffer;
+
+  /* wl_surface.attach */
+  if (surface->pending.newly_attached && buffer != surface->buffer_ref.buffer)
+    {
+      ensure_buffer_texture (buffer);
+      meta_wayland_buffer_reference (&surface->buffer_ref, buffer);
+
+      meta_window_set_surface_mapped (window, buffer != NULL);
+
+      if (buffer != NULL)
+        {
+          MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
+
+          meta_window_actor_attach_wayland_buffer (window_actor, buffer);
+
+          /* We resize X based surfaces according to X events */
+          if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+            {
+              int new_width;
+              int new_height;
+
+              new_width = surface->buffer_ref.buffer->width;
+              new_height = surface->buffer_ref.buffer->height;
+              if (new_width != window->rect.width ||
+                  new_height != window->rect.height ||
+                  surface->pending.dx != 0 ||
+                  surface->pending.dy != 0)
+                meta_window_move_resize_wayland (window, new_width, new_height,
+                                                 surface->pending.dx, surface->pending.dy);
+            }
+        }
+    }
+
+  surface_process_damage (surface, surface->pending.damage);
+
+  if (surface->pending.opaque_region)
+    meta_window_set_opaque_region (window, surface->pending.opaque_region);
+  if (surface->pending.input_region)
+    meta_window_set_input_region (window, surface->pending.input_region);
+}
+
+static void
 meta_wayland_surface_commit (struct wl_client *client,
                              struct wl_resource *resource)
 {
@@ -274,58 +334,10 @@ meta_wayland_surface_commit (struct wl_client *client,
 
   compositor = surface->compositor;
 
-  /* wl_surface.attach */
-  if (surface->pending.newly_attached &&
-      surface->buffer_ref.buffer != surface->pending.buffer)
-    {
-      MetaWaylandBuffer *buffer = surface->pending.buffer;
-
-      /* Note: we set this before informing any window-actor since the
-       * window actor will expect to find the new buffer within the
-       * surface. */
-      ensure_buffer_texture (buffer);
-      meta_wayland_buffer_reference (&surface->buffer_ref, buffer);
-    }
-
   if (surface == compositor->seat->sprite)
-    meta_wayland_seat_update_sprite (compositor->seat);
+    cursor_surface_commit (surface);
   else if (surface->window)
-    {
-      MetaWindow *window = surface->window;
-
-      meta_window_set_surface_mapped (window, surface->pending.buffer != NULL);
-
-      if (surface->pending.buffer)
-	{
-	  MetaWaylandBuffer *buffer = surface->pending.buffer;
-	  MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-
-	  meta_window_actor_attach_wayland_buffer (window_actor, buffer);
-	}
-
-      /* We resize X based surfaces according to X events */
-      if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
-	{
-	  int new_width;
-	  int new_height;
-
-	  new_width = surface->buffer_ref.buffer->width;
-	  new_height = surface->buffer_ref.buffer->height;
-	  if (new_width != window->rect.width ||
-	      new_height != window->rect.height ||
-	      surface->pending.dx != 0 ||
-	      surface->pending.dy != 0)
-	    meta_window_move_resize_wayland (surface->window, new_width, new_height,
-					     surface->pending.dx, surface->pending.dy);
-	}
-
-      if (surface->pending.opaque_region)
-        meta_window_set_opaque_region (surface->window, surface->pending.opaque_region);
-      if (surface->pending.input_region)
-        meta_window_set_input_region (surface->window, surface->pending.input_region);
-
-      surface_process_damage (surface, surface->pending.damage);
-    }
+    toplevel_surface_commit (surface);
 
   if (surface->pending.buffer)
     {
