@@ -95,8 +95,10 @@ meta_actor_vertices_are_untransformed (ClutterVertex *verts,
       v3x != v1x || v3y != v2y)
     return FALSE;
 
-  *x_origin = x;
-  *y_origin = y;
+  if (x_origin)
+    *x_origin = x;
+  if (y_origin)
+    *y_origin = y;
 
   return TRUE;
 }
