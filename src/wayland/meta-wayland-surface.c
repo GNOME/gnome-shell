@@ -450,6 +450,7 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
     surface_handle_pending_buffer_destroy;
   wl_list_init (&surface->pending.frame_callback_list);
 
+  surface->surface_actor = meta_surface_actor_new ();
   return surface;
 }
 
