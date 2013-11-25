@@ -375,6 +375,7 @@ surface_allocation_changed_notify (ClutterActor           *actor,
                                    MetaWindowActor        *self)
 {
   meta_window_actor_sync_actor_geometry (self, FALSE);
+  meta_window_actor_update_shape (self);
 
   g_signal_emit (self, signals[SIZE_CHANGED], 0);
 }
