@@ -156,7 +156,11 @@ meta_surface_actor_attach_wayland_buffer (MetaSurfaceActor *self,
 {
   MetaSurfaceActorPrivate *priv = self->priv;
   priv->buffer = buffer;
-  meta_shaped_texture_set_texture (self->priv->texture, buffer->texture);
+
+  if (buffer)
+    meta_shaped_texture_set_texture (self->priv->texture, buffer->texture);
+  else
+    meta_shaped_texture_set_texture (self->priv->texture, NULL);
 }
 
 void

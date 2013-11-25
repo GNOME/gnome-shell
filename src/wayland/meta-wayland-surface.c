@@ -286,32 +286,27 @@ toplevel_surface_commit (MetaWaylandSurface *surface)
     {
       ensure_buffer_texture (buffer);
       meta_wayland_buffer_reference (&surface->buffer_ref, buffer);
+      meta_surface_actor_attach_wayland_buffer (surface_actor, buffer);
+      surface_process_damage (surface, surface->pending.damage);
 
       meta_window_set_surface_mapped (window, buffer != NULL);
 
-      if (buffer != NULL)
+      /* We resize X based surfaces according to X events */
+      if (buffer != NULL && window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
         {
-          meta_surface_actor_attach_wayland_buffer (surface_actor, buffer);
+          int new_width;
+          int new_height;
 
-          /* We resize X based surfaces according to X events */
-          if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
-            {
-              int new_width;
-              int new_height;
-
-              new_width = surface->buffer_ref.buffer->width;
-              new_height = surface->buffer_ref.buffer->height;
-              if (new_width != window->rect.width ||
-                  new_height != window->rect.height ||
-                  surface->pending.dx != 0 ||
-                  surface->pending.dy != 0)
-                meta_window_move_resize_wayland (window, new_width, new_height,
-                                                 surface->pending.dx, surface->pending.dy);
-            }
+          new_width = surface->buffer_ref.buffer->width;
+          new_height = surface->buffer_ref.buffer->height;
+          if (new_width != window->rect.width ||
+              new_height != window->rect.height ||
+              surface->pending.dx != 0 ||
+              surface->pending.dy != 0)
+            meta_window_move_resize_wayland (window, new_width, new_height,
+                                             surface->pending.dx, surface->pending.dy);
         }
     }
-
-  surface_process_damage (surface, surface->pending.damage);
 
   if (surface->pending.opaque_region)
     meta_surface_actor_set_opaque_region (surface_actor, surface->pending.opaque_region);
