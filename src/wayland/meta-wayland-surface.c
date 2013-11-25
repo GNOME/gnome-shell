@@ -767,9 +767,12 @@ get_xdg_surface (struct wl_client *client,
                                  META_XDG_SURFACE_VERSION,
                                  &xdg_surface_interface,
                                  &meta_wayland_xdg_surface_interface))
-    wl_resource_post_error (surface_resource,
-                            WL_DISPLAY_ERROR_INVALID_OBJECT,
-                            "xdg_shell::get_xdg_surface already requested");
+    {
+      wl_resource_post_error (surface_resource,
+                              WL_DISPLAY_ERROR_INVALID_OBJECT,
+                              "xdg_shell::get_xdg_surface already requested");
+      return;
+    }
 
   surface->window = meta_window_new_for_wayland (meta_get_display (), surface);
 }
@@ -823,9 +826,12 @@ get_xdg_popup (struct wl_client *client,
                                  META_XDG_POPUP_VERSION,
                                  &xdg_popup_interface,
                                  &meta_wayland_xdg_popup_interface))
-    wl_resource_post_error (surface_resource,
-                            WL_DISPLAY_ERROR_INVALID_OBJECT,
-                            "xdg_shell::get_xdg_surface already requested");
+    {
+      wl_resource_post_error (surface_resource,
+                              WL_DISPLAY_ERROR_INVALID_OBJECT,
+                              "xdg_shell::get_xdg_surface already requested");
+      return;
+    }
 
   surface->window = meta_window_new_for_wayland (meta_get_display (), surface);
   surface->window->type = META_WINDOW_DROPDOWN_MENU;
@@ -894,9 +900,12 @@ get_gtk_surface (struct wl_client *client,
                                  META_GTK_SURFACE_VERSION,
                                  &gtk_surface_interface,
                                  &meta_wayland_gtk_surface_interface))
-    wl_resource_post_error (surface_resource,
-                            WL_DISPLAY_ERROR_INVALID_OBJECT,
-                            "gtk_shell::get_gtk_surface already requested");
+    {
+      wl_resource_post_error (surface_resource,
+                              WL_DISPLAY_ERROR_INVALID_OBJECT,
+                              "gtk_shell::get_gtk_surface already requested");
+      return;
+    }
 }
 
 static const struct gtk_shell_interface meta_wayland_gtk_shell_interface = {
