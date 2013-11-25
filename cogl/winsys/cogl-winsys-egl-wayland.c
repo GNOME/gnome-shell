@@ -427,7 +427,9 @@ _cogl_winsys_egl_context_init (CoglContext *context,
    * delays setting the surface type until the next buffer is attached
    * so attaching a buffer before setting the type would not cause
    * anything to be displayed */
-  context->private_feature_flags |= COGL_PRIVATE_FEATURE_DIRTY_EVENTS;
+  COGL_FLAGS_SET (context->private_features,
+                  COGL_PRIVATE_FEATURE_DIRTY_EVENTS,
+                  TRUE);
 
   return TRUE;
 }

@@ -579,7 +579,7 @@ _cogl_texture_3d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
       if (cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
         _cogl_texture_gl_generate_mipmaps (tex);
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
-      else if (ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_FIXED)
+      else if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_GL_FIXED))
         {
           _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
                                            tex_3d->gl_texture,

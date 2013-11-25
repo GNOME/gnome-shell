@@ -54,6 +54,7 @@
 #include "cogl-fence-private.h"
 #include "cogl-poll-private.h"
 #include "cogl-path/cogl-path-types.h"
+#include "cogl-private.h"
 
 typedef struct
 {
@@ -92,7 +93,8 @@ struct _CoglContext
   /* Features cache */
   unsigned long features[COGL_FLAGS_N_LONGS_FOR_SIZE (_COGL_N_FEATURE_IDS)];
   CoglFeatureFlags feature_flags; /* legacy/deprecated feature flags */
-  CoglPrivateFeatureFlags private_feature_flags;
+  unsigned long private_features
+    [COGL_FLAGS_N_LONGS_FOR_SIZE (COGL_N_PRIVATE_FEATURES)];
 
   CoglBool needs_viewport_scissor_workaround;
   CoglFramebuffer *viewport_scissor_workaround_framebuffer;

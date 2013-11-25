@@ -398,7 +398,9 @@ _cogl_winsys_context_init (CoglContext *context, CoglError **error)
 
   /* We'll manually handle queueing dirty events in response to
    * SDL_WINDOWEVENT_EXPOSED events */
-  context->private_feature_flags |= COGL_PRIVATE_FEATURE_DIRTY_EVENTS;
+  COGL_FLAGS_SET (context->private_features,
+                  COGL_PRIVATE_FEATURE_DIRTY_EVENTS,
+                  TRUE);
 
   _cogl_renderer_add_native_filter (renderer,
                                     (CoglNativeFilterFunc) sdl_event_filter_cb,

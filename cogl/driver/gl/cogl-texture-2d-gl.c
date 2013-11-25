@@ -384,8 +384,8 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
      (only level 0 we are interested in) */
 
 #ifdef HAVE_COGL_GL
-  if ((ctx->private_feature_flags &
-       COGL_PRIVATE_FEATURE_QUERY_TEXTURE_PARAMETERS))
+  if (_cogl_has_private_feature
+      (ctx, COGL_PRIVATE_FEATURE_QUERY_TEXTURE_PARAMETERS))
     {
       GE( ctx, glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
                                          GL_TEXTURE_COMPRESSED,

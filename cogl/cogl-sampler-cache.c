@@ -208,8 +208,8 @@ _cogl_sampler_cache_get_entry_gl (CoglSamplerCache *cache,
 
       entry = g_slice_dup (CoglSamplerCacheEntry, key);
 
-      if ((context->private_feature_flags &
-           COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS))
+      if (_cogl_has_private_feature (context,
+                                     COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS))
         {
           GE( context, glGenSamplers (1, &entry->sampler_object) );
 
@@ -329,8 +329,8 @@ hash_table_free_gl_cb (void *key,
   CoglContext *context = user_data;
   CoglSamplerCacheEntry *entry = value;
 
-  if ((context->private_feature_flags &
-       COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS))
+  if (_cogl_has_private_feature (context,
+                                 COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS))
     GE( context, glDeleteSamplers (1, &entry->sampler_object) );
 
   g_slice_free (CoglSamplerCacheEntry, entry);

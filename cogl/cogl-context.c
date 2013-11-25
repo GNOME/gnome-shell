@@ -79,10 +79,10 @@ static void
 _cogl_init_feature_overrides (CoglContext *ctx)
 {
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_VBOS)))
-    ctx->private_feature_flags &= ~COGL_PRIVATE_FEATURE_VBOS;
+    COGL_FLAGS_SET (ctx->private_features, COGL_PRIVATE_FEATURE_VBOS, FALSE);
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_PBOS)))
-    ctx->private_feature_flags &= ~COGL_PRIVATE_FEATURE_PBOS;
+    COGL_FLAGS_SET (ctx->private_features, COGL_PRIVATE_FEATURE_PBOS, FALSE);
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_ARBFP)))
     {
@@ -179,7 +179,7 @@ cogl_context_new (CoglDisplay *display,
   /* Init default values */
   memset (context->features, 0, sizeof (context->features));
   context->feature_flags = 0;
-  context->private_feature_flags = 0;
+  memset (context->private_features, 0, sizeof (context->private_features));
 
   context->rectangle_state = COGL_WINSYS_RECTANGLE_STATE_UNKNOWN;
 
@@ -219,7 +219,8 @@ cogl_context_new (CoglDisplay *display,
   context->driver_vtable = display->renderer->driver_vtable;
   context->texture_driver = display->renderer->texture_driver;
 
-  context->private_feature_flags |= display->renderer->private_feature_flags;
+  for (i = 0; i < G_N_ELEMENTS (context->private_features); i++)
+    context->private_features[i] |= display->renderer->private_features[i];
 
   winsys = _cogl_context_get_winsys (context);
   if (!winsys->context_init (context, error))
@@ -284,7 +285,7 @@ cogl_context_new (CoglDisplay *display,
   context->texture_units =
     g_array_new (FALSE, FALSE, sizeof (CoglTextureUnit));
 
-  if ((context->private_feature_flags & COGL_PRIVATE_FEATURE_ANY_GL))
+  if (_cogl_has_private_feature (context, COGL_PRIVATE_FEATURE_ANY_GL))
     {
       /* See cogl-pipeline.c for more details about why we leave texture unit 1
        * active by default... */
@@ -396,7 +397,7 @@ cogl_context_new (CoglDisplay *display,
   context->blit_texture_pipeline = NULL;
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
-  if ((context->private_feature_flags & COGL_PRIVATE_FEATURE_ALPHA_TEST))
+  if (_cogl_has_private_feature (context, COGL_PRIVATE_FEATURE_ALPHA_TEST))
     /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
      * the test being disabled therefore we assume that for all drivers there
      * will be no performance impact if we always leave the test enabled which
@@ -479,7 +480,7 @@ cogl_context_new (CoglDisplay *display,
      pipeline to track whether any layers have point sprite coords
      enabled. We don't need to do this for GL3 or GLES2 because point
      sprites are handled using a builtin varying in the shader. */
-  if ((context->private_feature_flags & COGL_PRIVATE_FEATURE_GL_FIXED) &&
+  if (_cogl_has_private_feature (context, COGL_PRIVATE_FEATURE_GL_FIXED) &&
       cogl_has_feature (context, COGL_FEATURE_ID_POINT_SPRITE))
     GE (context, glEnable (GL_POINT_SPRITE));
 

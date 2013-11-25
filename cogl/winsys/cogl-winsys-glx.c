@@ -857,7 +857,9 @@ update_winsys_features (CoglContext *context, CoglError **error)
 
   /* We'll manually handle queueing dirty events in response to
    * Expose events from X */
-  context->private_feature_flags |= COGL_PRIVATE_FEATURE_DIRTY_EVENTS;
+  COGL_FLAGS_SET (context->private_features,
+                  COGL_PRIVATE_FEATURE_DIRTY_EVENTS,
+                  TRUE);
 
   return TRUE;
 }

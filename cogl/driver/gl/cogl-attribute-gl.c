@@ -55,8 +55,8 @@ toggle_builtin_attribute_enabled_cb (int bit_num, void *user_data)
   ForeachChangedBitState *state = user_data;
   CoglContext *context = state->context;
 
-  _COGL_RETURN_VAL_IF_FAIL ((context->private_feature_flags &
-                             COGL_PRIVATE_FEATURE_GL_FIXED),
+  _COGL_RETURN_VAL_IF_FAIL (_cogl_has_private_feature
+                            (context, COGL_PRIVATE_FEATURE_GL_FIXED),
                             FALSE);
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
@@ -92,8 +92,8 @@ toggle_texcood_attribute_enabled_cb (int bit_num, void *user_data)
   ForeachChangedBitState *state = user_data;
   CoglContext *context = state->context;
 
-  _COGL_RETURN_VAL_IF_FAIL ((context->private_feature_flags &
-                             COGL_PRIVATE_FEATURE_GL_FIXED),
+  _COGL_RETURN_VAL_IF_FAIL (_cogl_has_private_feature
+                            (context, COGL_PRIVATE_FEATURE_GL_FIXED),
                             FALSE);
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
@@ -282,7 +282,7 @@ setup_legacy_buffered_attribute (CoglContext *ctx,
       break;
     case COGL_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY:
 #ifdef COGL_PIPELINE_PROGEND_GLSL
-      if (ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE)
+      if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE))
         setup_generic_buffered_attribute (ctx, pipeline, attribute, base);
 #endif
       break;
@@ -299,7 +299,7 @@ setup_legacy_const_attribute (CoglContext *ctx,
 #ifdef COGL_PIPELINE_PROGEND_GLSL
   if (attribute->name_state->name_id == COGL_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY)
     {
-      if (ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE)
+      if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE))
         setup_generic_const_attribute (ctx, pipeline, attribute);
     }
   else

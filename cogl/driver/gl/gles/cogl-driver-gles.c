@@ -84,8 +84,8 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
     case COGL_PIXEL_FORMAT_BGRA_8888:
     case COGL_PIXEL_FORMAT_BGRA_8888_PRE:
       /* There is an extension to support this format */
-      if ((context->private_feature_flags &
-           COGL_PRIVATE_FEATURE_TEXTURE_FORMAT_BGRA8888))
+      if (_cogl_has_private_feature
+          (context,  COGL_PRIVATE_FEATURE_TEXTURE_FORMAT_BGRA8888))
         {
           /* For some reason the extension says you have to specify
              BGRA for the internal format too */
@@ -190,9 +190,11 @@ static CoglBool
 _cogl_driver_update_features (CoglContext *context,
                               CoglError **error)
 {
-  CoglPrivateFeatureFlags private_flags = 0;
+  unsigned long private_features
+    [COGL_FLAGS_N_LONGS_FOR_SIZE (COGL_N_PRIVATE_FEATURES)] = { 0 };
   CoglFeatureFlags flags = 0;
   char **gl_extensions;
+  int i;
 
   /* We have to special case getting the pointer to the glGetString
      function because we need to use it to determine what functions we
@@ -239,7 +241,8 @@ _cogl_driver_update_features (CoglContext *context,
       int max_clip_planes;
       GE( context, glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
       if (max_clip_planes >= 4)
-        private_flags |= COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES;
+        COGL_FLAGS_SET (private_features,
+                        COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES, TRUE);
     }
 #endif
 
@@ -260,16 +263,20 @@ _cogl_driver_update_features (CoglContext *context,
       COGL_FLAGS_SET (context->features,
                       COGL_FEATURE_ID_PER_VERTEX_POINT_SIZE, TRUE);
 
-      private_flags |= COGL_PRIVATE_FEATURE_BLEND_CONSTANT;
+      COGL_FLAGS_SET (private_features,
+                      COGL_PRIVATE_FEATURE_BLEND_CONSTANT, TRUE);
     }
   else if (context->driver == COGL_DRIVER_GLES1)
-    private_flags |= (COGL_PRIVATE_FEATURE_GL_FIXED |
-                      COGL_PRIVATE_FEATURE_ALPHA_TEST |
-                      COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM);
+    {
+      COGL_FLAGS_SET (private_features, COGL_PRIVATE_FEATURE_GL_FIXED, TRUE);
+      COGL_FLAGS_SET (private_features, COGL_PRIVATE_FEATURE_ALPHA_TEST, TRUE);
+      COGL_FLAGS_SET (private_features,
+                      COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM, TRUE);
+    }
 
-  private_flags |= (COGL_PRIVATE_FEATURE_VBOS |
-                    COGL_PRIVATE_FEATURE_ANY_GL |
-                    COGL_PRIVATE_FEATURE_ALPHA_TEXTURES);
+  COGL_FLAGS_SET (private_features, COGL_PRIVATE_FEATURE_VBOS, TRUE);
+  COGL_FLAGS_SET (private_features, COGL_PRIVATE_FEATURE_ANY_GL, TRUE);
+  COGL_FLAGS_SET (private_features, COGL_PRIVATE_FEATURE_ALPHA_TEXTURES, TRUE);
 
   /* Both GLES 1.1 and GLES 2.0 support point sprites in core */
   flags |= COGL_FEATURE_POINT_SPRITE;
@@ -282,7 +289,8 @@ _cogl_driver_update_features (CoglContext *context,
     }
 
   if (context->glBlitFramebuffer)
-    private_flags |= COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT;
+    COGL_FLAGS_SET (private_features,
+                    COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT, TRUE);
 
   if (_cogl_check_extension ("GL_OES_element_index_uint", gl_extensions))
     {
@@ -338,25 +346,30 @@ _cogl_driver_update_features (CoglContext *context,
     }
 
   if (context->glEGLImageTargetTexture2D)
-    private_flags |= COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE;
+    COGL_FLAGS_SET (private_features,
+                    COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE, TRUE);
 
   if (_cogl_check_extension ("GL_OES_packed_depth_stencil", gl_extensions))
-    private_flags |= COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL;
+    COGL_FLAGS_SET (private_features,
+                    COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL, TRUE);
 
   if (_cogl_check_extension ("GL_EXT_texture_format_BGRA8888", gl_extensions))
-    private_flags |= COGL_PRIVATE_FEATURE_TEXTURE_FORMAT_BGRA8888;
+    COGL_FLAGS_SET (private_features,
+                    COGL_PRIVATE_FEATURE_TEXTURE_FORMAT_BGRA8888, TRUE);
 
   if (_cogl_check_extension ("GL_EXT_unpack_subimage", gl_extensions))
-    private_flags |= COGL_PRIVATE_FEATURE_UNPACK_SUBIMAGE;
+    COGL_FLAGS_SET (private_features,
+                    COGL_PRIVATE_FEATURE_UNPACK_SUBIMAGE, TRUE);
 
   /* A nameless vendor implemented the extension, but got the case wrong
    * per the spec. */
   if (_cogl_check_extension ("GL_OES_EGL_sync", gl_extensions) ||
       _cogl_check_extension ("GL_OES_egl_sync", gl_extensions))
-    private_flags |= COGL_PRIVATE_FEATURE_OES_EGL_SYNC;
+    COGL_FLAGS_SET (private_features, COGL_PRIVATE_FEATURE_OES_EGL_SYNC, TRUE);
 
   /* Cache features */
-  context->private_feature_flags |= private_flags;
+  for (i = 0; i < G_N_ELEMENTS (private_features); i++)
+    context->private_features[i] |= private_features[i];
   context->feature_flags |= flags;
 
   g_strfreev (gl_extensions);

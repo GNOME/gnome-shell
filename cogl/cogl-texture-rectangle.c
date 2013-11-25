@@ -398,8 +398,8 @@ cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
   /* Obtain texture parameters */
 
 #ifdef HAVE_COGL_GL
-  if ((ctx->private_feature_flags &
-       COGL_PRIVATE_FEATURE_QUERY_TEXTURE_PARAMETERS))
+  if (_cogl_has_private_feature
+      (ctx, COGL_PRIVATE_FEATURE_QUERY_TEXTURE_PARAMETERS))
     {
       GLint val;
 

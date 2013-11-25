@@ -352,7 +352,7 @@ emit_vertex_buffer_geometry (CoglFramebuffer *fb,
                                                  2 /* n_attributes */);
 
 #ifdef CLUTTER_COGL_HAS_GL
-      if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_QUADS))
+      if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_QUADS))
         cogl_primitive_set_mode (prim, GL_QUADS);
       else
 #endif

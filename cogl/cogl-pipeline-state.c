@@ -1039,7 +1039,7 @@ cogl_pipeline_set_blend_constant (CoglPipeline *pipeline,
 
   _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
-  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_BLEND_CONSTANT))
+  if (!_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_BLEND_CONSTANT))
     return;
 
 #if defined(HAVE_COGL_GLES2) || defined(HAVE_COGL_GL)

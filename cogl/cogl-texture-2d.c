@@ -268,9 +268,10 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
                             COGL_RENDERER_CONSTRAINT_USES_EGL,
                             NULL);
 
-  _COGL_RETURN_VAL_IF_FAIL (ctx->private_feature_flags &
-                        COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE,
-                        NULL);
+  _COGL_RETURN_VAL_IF_FAIL (_cogl_has_private_feature
+                            (ctx,
+                             COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE),
+                            NULL);
 
   if (ctx->driver_vtable->egl_texture_2d_new_from_image)
     return ctx->driver_vtable->egl_texture_2d_new_from_image (ctx,

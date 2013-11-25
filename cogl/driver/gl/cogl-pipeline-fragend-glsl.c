@@ -1022,7 +1022,7 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
                          "  cogl_color_out = cogl_color_in;\n");
 
 #if defined(HAVE_COGL_GLES2) || defined (HAVE_COGL_GL)
-      if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_ALPHA_TEST))
+      if (!_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_ALPHA_TEST))
         add_alpha_test_snippet (pipeline, shader_state);
 #endif
 

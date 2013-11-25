@@ -327,8 +327,8 @@ _cogl_framebuffer_gl_flush_state (CoglFramebuffer *draw_buffer,
           /* NB: Currently we only take advantage of binding separate
            * read/write buffers for offscreen framebuffer blit
            * purposes.  */
-          _COGL_RETURN_IF_FAIL (ctx->private_feature_flags &
-                                COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT);
+          _COGL_RETURN_IF_FAIL (_cogl_has_private_feature
+                                (ctx, COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT));
           _COGL_RETURN_IF_FAIL (draw_buffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN);
           _COGL_RETURN_IF_FAIL (read_buffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN);
 
@@ -390,12 +390,11 @@ create_depth_texture (CoglContext *ctx,
   CoglPixelFormat format;
   CoglTexture2D *depth_texture;
 
-  if (ctx->private_feature_flags &
-      (COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL |
-       COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL))
-    {
-      format = COGL_PIXEL_FORMAT_DEPTH_24_STENCIL_8;
-    }
+  if (_cogl_has_private_feature
+      (ctx, COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL) ||
+      _cogl_has_private_feature
+      (ctx, COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL))
+    format = COGL_PIXEL_FORMAT_DEPTH_24_STENCIL_8;
   else
     format = COGL_PIXEL_FORMAT_DEPTH_16;
 
@@ -476,15 +475,15 @@ try_creating_renderbuffers (CoglContext *ctx,
        * GL_OES_packed_depth_stencil doesn't allow GL_DEPTH_STENCIL to
        * be passed as an internal format to glRenderbufferStorage.
        */
-      if (ctx->private_feature_flags &
-          COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL)
+      if (_cogl_has_private_feature
+          (ctx, COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL))
         format = GL_DEPTH_STENCIL;
       else
         {
           _COGL_RETURN_VAL_IF_FAIL (
-                                  ctx->private_feature_flags &
-                                  COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL,
-                                  NULL);
+            _cogl_has_private_feature (ctx,
+              COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL),
+            NULL);
           format = GL_DEPTH24_STENCIL8;
         }
 #endif
@@ -794,9 +793,10 @@ _cogl_offscreen_gl_allocate (CoglOffscreen *offscreen,
        /* NB: WebGL introduces a DEPTH_STENCIL_ATTACHMENT and doesn't
         * need an extension to handle _FLAG_DEPTH_STENCIL */
 #ifndef HAVE_COGL_WEBGL
-       (ctx->private_feature_flags
-        & (COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL |
-           COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL)) &&
+       (_cogl_has_private_feature
+        (ctx, COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL) ||
+        _cogl_has_private_feature
+        (ctx, COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL)) &&
 #endif
        try_creating_fbo (ctx,
                          offscreen->texture,
@@ -955,8 +955,8 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
                                  COGL_FRAMEBUFFER_STATE_BIND);
 
 #ifdef HAVE_COGL_GL
-  if ((ctx->private_feature_flags &
-       COGL_PRIVATE_FEATURE_QUERY_FRAMEBUFFER_BITS) &&
+  if (_cogl_has_private_feature
+      (ctx, COGL_PRIVATE_FEATURE_QUERY_FRAMEBUFFER_BITS) &&
       framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
     {
       static const struct
@@ -1003,8 +1003,7 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
 
   /* If we don't have alpha textures then the alpha bits are actually
    * stored in the red component */
-  if ((ctx->private_feature_flags &
-       COGL_PRIVATE_FEATURE_ALPHA_TEXTURES) == 0 &&
+  if (!_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_ALPHA_TEXTURES) &&
       framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN &&
       framebuffer->format == COGL_PIXEL_FORMAT_A_8)
     {
@@ -1333,7 +1332,7 @@ _cogl_framebuffer_gl_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
 
   /* NB: All offscreen rendering is done upside down so there is no need
    * to flip in this case... */
-  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_MESA_PACK_INVERT) &&
+  if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_MESA_PACK_INVERT) &&
       (source & COGL_READ_PIXELS_NO_FLIP) == 0 &&
       !cogl_is_offscreen (framebuffer))
     {
@@ -1353,8 +1352,8 @@ _cogl_framebuffer_gl_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
      GL_RGBA/GL_UNSIGNED_BYTE and convert if necessary. We also need
      to use this intermediate buffer if the rowstride has padding
      because GLES does not support setting GL_ROW_LENGTH */
-  if ((!(ctx->private_feature_flags &
-         COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT) &&
+  if ((!_cogl_has_private_feature
+       (ctx, COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT) &&
        (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE ||
         cogl_bitmap_get_rowstride (bitmap) != 4 * width)) ||
       (required_format & ~COGL_PREMULT_BIT) != (format & ~COGL_PREMULT_BIT))
@@ -1365,8 +1364,8 @@ _cogl_framebuffer_gl_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       uint8_t *tmp_data;
       CoglBool succeeded;
 
-      if ((ctx->private_feature_flags &
-           COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT))
+      if (_cogl_has_private_feature
+          (ctx, COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT))
         read_format = required_format;
       else
         {

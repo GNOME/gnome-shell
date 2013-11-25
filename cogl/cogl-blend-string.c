@@ -245,8 +245,8 @@ validate_blend_statements (CoglBlendStringStatement *statements,
             goto error;
           }
 
-        if (!(ctx->private_feature_flags &
-              COGL_PRIVATE_FEATURE_BLEND_CONSTANT) &&
+        if (!_cogl_has_private_feature (ctx,
+                                        COGL_PRIVATE_FEATURE_BLEND_CONSTANT) &&
             arg->factor.is_color &&
             (arg->factor.source.info->type ==
              COGL_BLEND_STRING_COLOR_SOURCE_CONSTANT))

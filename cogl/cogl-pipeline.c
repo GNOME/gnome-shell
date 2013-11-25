@@ -3095,8 +3095,8 @@ _cogl_pipeline_get_state_for_vertex_codegen (CoglContext *context)
    * one in the GLSL but we'll only do this if the point size is
    * non-zero. Whether or not the point size is zero is represented by
    * COGL_PIPELINE_STATE_NON_ZERO_POINT_SIZE */
-  if (!(context->private_feature_flags &
-        COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM))
+  if (!_cogl_has_private_feature
+      (context, COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM))
     state |= COGL_PIPELINE_STATE_NON_ZERO_POINT_SIZE;
 
   return state;
@@ -3127,7 +3127,7 @@ _cogl_pipeline_get_state_for_fragment_codegen (CoglContext *context)
                              COGL_PIPELINE_STATE_USER_SHADER |
                              COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS);
 
-  if (!(context->private_feature_flags & COGL_PRIVATE_FEATURE_ALPHA_TEST))
+  if (!_cogl_has_private_feature (context, COGL_PRIVATE_FEATURE_ALPHA_TEST))
     state |= COGL_PIPELINE_STATE_ALPHA_FUNC;
 
   return state;

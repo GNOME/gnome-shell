@@ -505,7 +505,7 @@ _cogl_winsys_context_init (CoglContext *context, CoglError **error)
     }
 
   if ((egl_renderer->private_features & COGL_EGL_WINSYS_FEATURE_FENCE_SYNC) &&
-      (context->private_feature_flags & COGL_PRIVATE_FEATURE_OES_EGL_SYNC))
+      _cogl_has_private_feature (context, COGL_PRIVATE_FEATURE_OES_EGL_SYNC))
     COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_FENCE, TRUE);
 
   /* NB: We currently only support creating standalone GLES2 contexts

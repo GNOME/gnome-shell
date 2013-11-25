@@ -301,7 +301,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
     draw_flags |= COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE;
 
 #ifdef HAVE_COGL_GL
-  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_QUADS))
+  if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_QUADS))
     {
       /* XXX: it's rather evil that we sneak in the GL_QUADS enum here... */
       _cogl_framebuffer_draw_attributes (framebuffer,
@@ -632,7 +632,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                         4,
                         COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
 
-  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_QUADS))
+  if (!_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_QUADS))
     state->indices = cogl_get_rectangle_indices (ctx, batch_len);
 
   /* We only create new Attributes when the stride within the
@@ -1050,7 +1050,7 @@ create_attribute_buffer (CoglJournal *journal,
   /* If CoglBuffers are being emulated with malloc then there's not
      really any point in using the pool so we'll just allocate the
      buffer directly */
-  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_VBOS))
+  if (!_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_VBOS))
     return cogl_attribute_buffer_new_with_size (ctx, n_bytes);
 
   vbo = journal->vbo_pool[journal->next_vbo_in_pool];

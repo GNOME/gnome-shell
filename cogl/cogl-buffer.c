@@ -129,13 +129,13 @@ _cogl_buffer_initialize (CoglBuffer *buffer,
   if (default_target == COGL_BUFFER_BIND_TARGET_PIXEL_PACK ||
       default_target == COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK)
     {
-      if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_PBOS))
+      if (!_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_PBOS))
         use_malloc = TRUE;
     }
   else if (default_target == COGL_BUFFER_BIND_TARGET_ATTRIBUTE_BUFFER ||
            default_target == COGL_BUFFER_BIND_TARGET_INDEX_BUFFER)
     {
-      if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_VBOS))
+      if (!_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_VBOS))
         use_malloc = TRUE;
     }
 

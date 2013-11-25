@@ -439,7 +439,7 @@ flush_depth_state (CoglContext *ctx,
       (ctx->depth_range_near_cache != depth_state->range_near ||
        ctx->depth_range_far_cache != depth_state->range_far))
     {
-      if (ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_EMBEDDED)
+      if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_GL_EMBEDDED))
         GE (ctx, glDepthRangef (depth_state->range_near,
                                 depth_state->range_far));
       else
@@ -492,7 +492,7 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* On GLES2 we'll flush the color later */
-  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_FIXED) &&
+  if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_GL_FIXED) &&
       !with_color_attrib)
     {
       if ((pipelines_difference & COGL_PIPELINE_STATE_COLOR) ||
@@ -571,7 +571,7 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
 
-  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_ALPHA_TEST))
+  if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_ALPHA_TEST))
     {
       /* Under GLES2 the alpha function is implemented as part of the
          fragment shader */
@@ -692,8 +692,8 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
     }
 
 #ifdef HAVE_COGL_GL
-  if ((ctx->private_feature_flags &
-       COGL_PRIVATE_FEATURE_ENABLE_PROGRAM_POINT_SIZE) &&
+  if (_cogl_has_private_feature
+      (ctx, COGL_PRIVATE_FEATURE_ENABLE_PROGRAM_POINT_SIZE) &&
       (pipelines_difference & COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE))
     {
       unsigned long state = COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE;
@@ -730,7 +730,7 @@ get_max_activateable_texture_units (void)
       int i;
 
 #ifdef HAVE_COGL_GL
-      if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_EMBEDDED))
+      if (!_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_GL_EMBEDDED))
         {
           /* GL_MAX_TEXTURE_COORDS is provided for both GLSL and ARBfp. It
              defines the number of texture coordinates that can be
@@ -753,8 +753,8 @@ get_max_activateable_texture_units (void)
 #endif /* HAVE_COGL_GL */
 
 #ifdef HAVE_COGL_GLES2
-      if (ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_EMBEDDED &&
-          ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE)
+      if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_GL_EMBEDDED) &&
+          _cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE))
         {
           GE (ctx, glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, values + n_values));
           /* Two of the vertex attribs need to be used for the position
@@ -767,7 +767,7 @@ get_max_activateable_texture_units (void)
 #endif
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
-      if (ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_FIXED)
+      if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_GL_FIXED))
         {
           /* GL_MAX_TEXTURE_UNITS defines the number of units that are
              usable from the fixed function pipeline, therefore it isn't
@@ -897,7 +897,7 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
     }
 
   if ((layers_difference & COGL_PIPELINE_LAYER_STATE_SAMPLER) &&
-      (ctx->private_feature_flags & COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS))
+      _cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS))
     {
       const CoglSamplerCacheEntry *sampler_state;
 
@@ -912,7 +912,7 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
    * glsl progend.
    */
 #if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GL)
-  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_FIXED) &&
+  if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_GL_FIXED) &&
       (layers_difference & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS))
     {
       CoglPipelineState change = COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS;
@@ -1454,7 +1454,7 @@ done:
 
   /* Handle the fact that OpenGL associates texture filter and wrap
    * modes with the texture objects not the texture units... */
-  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS))
+  if (!_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS))
     foreach_texture_unit_update_filter_and_wrap_modes ();
 
   /* If this pipeline has more than one layer then we always need

@@ -1068,7 +1068,7 @@ cogl_texture_get_data (CoglTexture *texture,
    * this case the driver will be faking the alpha textures with a
    * red-component texture and it won't swizzle to the correct format
    * while reading */
-  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_ALPHA_TEXTURES) == 0)
+  if (!_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_ALPHA_TEXTURES))
     {
       if (texture_format == COGL_PIXEL_FORMAT_A_8)
         {

@@ -74,7 +74,8 @@ _cogl_texture_driver_gen (CoglContext *ctx,
        * "complete".
        */
 #ifdef HAVE_COGL_GL
-      if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_TEXTURE_MAX_LEVEL))
+      if (_cogl_has_private_feature
+          (ctx, COGL_PRIVATE_FEATURE_TEXTURE_MAX_LEVEL))
         GE( ctx, glTexParameteri (gl_target, GL_TEXTURE_MAX_LEVEL, 0));
 #endif
 
@@ -96,9 +97,8 @@ _cogl_texture_driver_gen (CoglContext *ctx,
   /* If the driver doesn't support alpha textures directly then we'll
    * fake them by setting the swizzle parameters */
   if (internal_format == COGL_PIXEL_FORMAT_A_8 &&
-      (ctx->private_feature_flags & (COGL_PRIVATE_FEATURE_ALPHA_TEXTURES |
-                                     COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE)) ==
-      COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE)
+      !_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_ALPHA_TEXTURES) &&
+      _cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE))
     {
       static const GLint red_swizzle[] = { GL_ZERO, GL_ZERO, GL_ZERO, GL_RED };
 

@@ -72,7 +72,7 @@ typedef struct
 
   /* This builtin is only necessary if the following private feature
    * is not implemented in the driver */
-  CoglPrivateFeatureFlags feature_replacement;
+  CoglPrivateFeature feature_replacement;
 } BuiltinUniformData;
 
 static BuiltinUniformData builtin_uniforms[] =
@@ -441,8 +441,8 @@ update_builtin_uniforms (CoglContext *context,
     return;
 
   for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
-    if ((context->private_feature_flags &
-         builtin_uniforms[i].feature_replacement) == 0 &&
+    if (!_cogl_has_private_feature (context,
+                                    builtin_uniforms[i].feature_replacement) &&
         (program_state->dirty_builtin_uniforms & (1 << i)) &&
         program_state->builtin_uniform_locations[i] != -1)
       builtin_uniforms[i].update_func (pipeline,
@@ -790,8 +790,8 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       clear_flushed_matrix_stacks (program_state);
 
       for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
-        if ((ctx->private_feature_flags &
-             builtin_uniforms[i].feature_replacement) == 0)
+        if (!_cogl_has_private_feature
+            (ctx, builtin_uniforms[i].feature_replacement))
           GE_RET( program_state->builtin_uniform_locations[i], ctx,
                   glGetUniformLocation (gl_program,
                                         builtin_uniforms[i].uniform_name) );
@@ -847,8 +847,8 @@ _cogl_pipeline_progend_glsl_pre_change_notify (CoglPipeline *pipeline,
       int i;
 
       for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
-        if ((ctx->private_feature_flags &
-             builtin_uniforms[i].feature_replacement) == 0 &&
+        if (!_cogl_has_private_feature
+            (ctx, builtin_uniforms[i].feature_replacement) &&
             (change & builtin_uniforms[i].change))
           {
             CoglPipelineProgramState *program_state

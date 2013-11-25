@@ -531,8 +531,8 @@ _cogl_bitmap_convert_for_upload (CoglBitmap *src_bmp,
    * won't work correctly to convert to/from component-alpha
    * textures */
 
-  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FORMAT_CONVERSION) &&
-      ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_ALPHA_TEXTURES) ||
+  if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_FORMAT_CONVERSION) &&
+      (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_ALPHA_TEXTURES) ||
        (src_format != COGL_PIXEL_FORMAT_A_8 &&
         internal_format != COGL_PIXEL_FORMAT_A_8) ||
        src_format == internal_format))

@@ -295,8 +295,8 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
   if (cogl_pipeline_get_per_vertex_point_size (pipeline))
     g_string_append (shader_state->header,
                      "attribute float cogl_point_size_in;\n");
-  else if (!(ctx->private_feature_flags &
-            COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM))
+  else if (!_cogl_has_private_feature
+           (ctx, COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM))
     {
       /* There is no builtin uniform for the point size on GLES2 so we
          need to copy it from the custom uniform in the vertex shader
@@ -532,8 +532,8 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
     }
 
 #ifdef HAVE_COGL_GL
-  if ((ctx->private_feature_flags &
-       COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM) &&
+  if (_cogl_has_private_feature
+      (ctx, COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM) &&
       (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE))
     {
       CoglPipeline *authority =
@@ -641,8 +641,8 @@ UNIT_TEST (check_point_size_shader,
    * size */
   if (shader_states[0])
     {
-      if ((test_ctx->private_feature_flags &
-           COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM))
+      if (_cogl_has_private_feature
+          (test_ctx, COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM))
         g_assert (shader_states[0] == shader_states[1]);
       else
         g_assert (shader_states[0] != shader_states[1]);

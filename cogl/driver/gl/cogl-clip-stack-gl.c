@@ -449,7 +449,7 @@ _cogl_clip_stack_gl_flush (CoglClipStack *stack,
   ctx->current_clip_stack = _cogl_clip_stack_ref (stack);
 
   has_clip_planes =
-    ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES;
+    _cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES);
 
   if (has_clip_planes)
     disable_clip_planes (ctx);

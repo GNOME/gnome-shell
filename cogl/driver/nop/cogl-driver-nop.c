@@ -43,7 +43,7 @@ _cogl_driver_update_features (CoglContext *ctx,
 {
   /* _cogl_gpu_info_init (ctx, &ctx->gpu); */
 
-  ctx->private_feature_flags = 0;
+  memset (ctx->private_features, 0, sizeof (ctx->private_features));
   ctx->feature_flags = 0;
 
   return TRUE;

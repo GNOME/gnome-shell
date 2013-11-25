@@ -95,15 +95,16 @@ typedef struct _CoglDriverDescription
   CoglDriver id;
   const char *name;
   CoglRendererConstraint constraints;
-  CoglPrivateFeatureFlags private_feature_flags;
+  /* It would be nice to make this a pointer and then use a compound
+   * literal from C99 to initialise it but we probably can't get away
+   * with using C99 here. Instead we'll just use a fixed-size array.
+   * GCC should complain if someone adds an 8th feature to a
+   * driver. */
+  const CoglPrivateFeature private_features[8];
   const CoglDriverVtable *vtable;
   const CoglTextureDriver *texture_driver;
   const char *libgl_name;
 } CoglDriverDescription;
-
-_COGL_STATIC_ASSERT(sizeof (CoglPrivateFeatureFlags) <=
-                    sizeof (uint32_t),
-                    "Private feature flags don't fit in 32 bits");
 
 static CoglDriverDescription _cogl_drivers[] =
 {
@@ -112,9 +113,10 @@ static CoglDriverDescription _cogl_drivers[] =
     COGL_DRIVER_GL,
     "gl",
     0,
-    COGL_PRIVATE_FEATURE_ANY_GL |
-      COGL_PRIVATE_FEATURE_GL_FIXED |
+    { COGL_PRIVATE_FEATURE_ANY_GL,
+      COGL_PRIVATE_FEATURE_GL_FIXED,
       COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE,
+      -1 },
     &_cogl_driver_gl,
     &_cogl_texture_driver_gl,
     COGL_GL_LIBNAME,
@@ -123,8 +125,9 @@ static CoglDriverDescription _cogl_drivers[] =
     COGL_DRIVER_GL3,
     "gl3",
     0,
-    COGL_PRIVATE_FEATURE_ANY_GL |
+    { COGL_PRIVATE_FEATURE_ANY_GL,
       COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE,
+      -1 },
     &_cogl_driver_gl,
     &_cogl_texture_driver_gl,
     COGL_GL_LIBNAME,
@@ -135,9 +138,10 @@ static CoglDriverDescription _cogl_drivers[] =
     COGL_DRIVER_GLES2,
     "gles2",
     COGL_RENDERER_CONSTRAINT_SUPPORTS_COGL_GLES2,
-    COGL_PRIVATE_FEATURE_ANY_GL |
-      COGL_PRIVATE_FEATURE_GL_EMBEDDED |
+    { COGL_PRIVATE_FEATURE_ANY_GL,
+      COGL_PRIVATE_FEATURE_GL_EMBEDDED,
       COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE,
+      -1 },
     &_cogl_driver_gles,
     &_cogl_texture_driver_gles,
     COGL_GLES2_LIBNAME,
@@ -148,9 +152,10 @@ static CoglDriverDescription _cogl_drivers[] =
     COGL_DRIVER_GLES1,
     "gles1",
     0,
-    COGL_PRIVATE_FEATURE_ANY_GL |
-      COGL_PRIVATE_FEATURE_GL_EMBEDDED |
+    { COGL_PRIVATE_FEATURE_ANY_GL,
+      COGL_PRIVATE_FEATURE_GL_EMBEDDED,
       COGL_PRIVATE_FEATURE_GL_FIXED,
+      -1 },
     &_cogl_driver_gles,
     &_cogl_texture_driver_gles,
     COGL_GLES1_LIBNAME,
@@ -161,10 +166,11 @@ static CoglDriverDescription _cogl_drivers[] =
     COGL_DRIVER_WEBGL,
     "webgl",
     0,
-    COGL_PRIVATE_FEATURE_ANY_GL |
-      COGL_PRIVATE_FEATURE_GL_EMBEDDED |
-      COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE |
+    { COGL_PRIVATE_FEATURE_ANY_GL,
+      COGL_PRIVATE_FEATURE_GL_EMBEDDED,
+      COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE,
       COGL_PRIVATE_FEATURE_GL_WEB,
+      -1 },
     &_cogl_driver_gles,
     &_cogl_texture_driver_gles,
     NULL,
@@ -174,7 +180,7 @@ static CoglDriverDescription _cogl_drivers[] =
     COGL_DRIVER_NOP,
     "nop",
     0, /* constraints satisfied */
-    0, /* flags */
+    { -1 },
     &_cogl_driver_nop,
     NULL, /* texture driver */
     NULL /* libgl_name */
@@ -495,6 +501,7 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
   const char *libgl_name;
   SatisfyConstraintsState state;
   const CoglDriverDescription *desc;
+  int i;
 
   if (!driver_name)
     driver_name = _cogl_config_driver;
@@ -569,12 +576,17 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
   renderer->driver = desc->id;
   renderer->driver_vtable = desc->vtable;
   renderer->texture_driver = desc->texture_driver;
-  renderer->private_feature_flags = desc->private_feature_flags;
   libgl_name = desc->libgl_name;
+
+  memset(renderer->private_features, 0, sizeof (renderer->private_features));
+  for (i = 0; desc->private_features[i] != -1; i++)
+    COGL_FLAGS_SET (renderer->private_features,
+                    desc->private_features[i], TRUE);
 
 #ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
 
-  if (renderer->private_feature_flags & COGL_PRIVATE_FEATURE_ANY_GL)
+  if (COGL_FLAGS_GET (renderer->private_features,
+                      COGL_PRIVATE_FEATURE_ANY_GL))
     {
       renderer->libgl_module = g_module_open (libgl_name,
                                               G_MODULE_BIND_LAZY);

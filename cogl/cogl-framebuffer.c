@@ -724,7 +724,7 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
        * one on allocation so that if the application only paints in
        * response to dirty events then it will at least paint once to
        * start */
-      if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_DIRTY_EVENTS))
+      if (!_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_DIRTY_EVENTS))
         _cogl_onscreen_queue_full_dirty (onscreen);
     }
   else
@@ -1614,8 +1614,8 @@ _cogl_blit_framebuffer (CoglFramebuffer *src,
 {
   CoglContext *ctx = src->context;
 
-  _COGL_RETURN_IF_FAIL (ctx->private_feature_flags &
-                        COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT);
+  _COGL_RETURN_IF_FAIL (_cogl_has_private_feature
+                        (ctx, COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT));
 
   /* We can only support blitting between offscreen buffers because
      otherwise we would need to mirror the image and GLES2.0 doesn't

@@ -322,7 +322,9 @@ _cogl_winsys_egl_context_init (CoglContext *context,
 
   /* We'll manually handle queueing dirty events in response to
    * Expose events from X */
-  context->private_feature_flags |= COGL_PRIVATE_FEATURE_DIRTY_EVENTS;
+  COGL_FLAGS_SET (context->private_features,
+                  COGL_PRIVATE_FEATURE_DIRTY_EVENTS,
+                  TRUE);
 
   return TRUE;
 }
@@ -705,8 +707,8 @@ _cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
 
   if (!(egl_renderer->private_features &
         COGL_EGL_WINSYS_FEATURE_EGL_IMAGE_FROM_X11_PIXMAP) ||
-      !(ctx->private_feature_flags &
-        COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE))
+      !_cogl_has_private_feature
+      (ctx, COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE))
     {
       tex_pixmap->winsys = NULL;
       return FALSE;

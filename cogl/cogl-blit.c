@@ -153,7 +153,7 @@ _cogl_blit_framebuffer_begin (CoglBlitData *data)
      format and the blit framebuffer extension is supported */
   if ((cogl_texture_get_format (data->src_tex) & ~COGL_A_BIT) !=
       (cogl_texture_get_format (data->dst_tex) & ~COGL_A_BIT) ||
-      !(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT))
+      !_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT))
     return FALSE;
 
   dst_offscreen = _cogl_offscreen_new_with_texture_full

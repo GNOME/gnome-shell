@@ -816,7 +816,7 @@ _cogl_matrix_flush_to_gl_builtin (CoglContext *ctx,
                                   CoglMatrix *matrix,
                                   CoglMatrixMode mode)
 {
-  g_assert ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_FIXED));
+  g_assert (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_GL_FIXED));
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
   if (ctx->flushed_matrix_mode != mode)
@@ -856,7 +856,7 @@ _cogl_matrix_entry_flush_to_gl_builtins (CoglContext *ctx,
                                          CoglFramebuffer *framebuffer,
                                          CoglBool disable_flip)
 {
-  g_assert ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_FIXED));
+  g_assert (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_GL_FIXED));
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
   {

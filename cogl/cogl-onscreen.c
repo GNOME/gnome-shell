@@ -633,8 +633,8 @@ _cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
 
   cogl_framebuffer_set_viewport (framebuffer, 0, 0, width, height);
 
-  if (!(framebuffer->context->private_feature_flags &
-        COGL_PRIVATE_FEATURE_DIRTY_EVENTS))
+  if (!_cogl_has_private_feature (framebuffer->context,
+                                  COGL_PRIVATE_FEATURE_DIRTY_EVENTS))
     _cogl_onscreen_queue_full_dirty (COGL_ONSCREEN (framebuffer));
 }
 
