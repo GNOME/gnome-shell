@@ -319,8 +319,11 @@ meta_wayland_surface_commit (struct wl_client *client,
 					     surface->pending.dx, surface->pending.dy);
 	}
 
-      meta_window_set_opaque_region (surface->window, surface->pending.opaque_region);
-      meta_window_set_input_region (surface->window, surface->pending.input_region);
+      if (surface->pending.opaque_region)
+        meta_window_set_opaque_region (surface->window, surface->pending.opaque_region);
+      if (surface->pending.input_region)
+        meta_window_set_input_region (surface->window, surface->pending.input_region);
+
       surface_process_damage (surface, surface->pending.damage);
     }
 
