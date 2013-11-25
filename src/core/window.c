@@ -8004,7 +8004,7 @@ meta_window_update_net_wm_type (MetaWindow *window)
   meta_window_recalc_window_type (window);
 }
 
-void
+static void
 meta_window_set_opaque_region (MetaWindow     *window,
                                cairo_region_t *region)
 {
@@ -8090,7 +8090,7 @@ region_create_from_x_rectangles (const XRectangle *rects,
   return cairo_region_create_rectangles (cairo_rects, n_rects);
 }
 
-void
+static void
 meta_window_set_input_region (MetaWindow     *window,
                               cairo_region_t *region)
 {
@@ -8175,7 +8175,7 @@ meta_window_update_input_region_x11 (MetaWindow *window)
   cairo_region_destroy (region);
 }
 
-void
+static void
 meta_window_set_shape_region (MetaWindow     *window,
                               cairo_region_t *region)
 {

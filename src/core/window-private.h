@@ -713,16 +713,8 @@ void meta_window_compute_tile_match (MetaWindow *window);
 
 gboolean meta_window_updates_are_frozen (MetaWindow *window);
 
-void meta_window_set_opaque_region        (MetaWindow     *window,
-                                           cairo_region_t *region);
 void meta_window_update_opaque_region_x11 (MetaWindow *window);
-
-void meta_window_set_input_region         (MetaWindow     *window,
-                                           cairo_region_t *region);
 void meta_window_update_input_region_x11  (MetaWindow *window);
-
-void meta_window_set_shape_region         (MetaWindow     *window,
-                                           cairo_region_t *region);
 void meta_window_update_shape_region_x11  (MetaWindow *window);
 
 void meta_window_set_title                (MetaWindow *window,
