@@ -445,42 +445,14 @@ surface_damaged (CoglandSurface *surface,
         wl_shm_buffer_get (surface->buffer_ref.buffer->resource);
 
       if (shm_buffer)
-        {
-          CoglPixelFormat format;
-          int stride = wl_shm_buffer_get_stride (shm_buffer);
-          const uint8_t *data = wl_shm_buffer_get_data (shm_buffer);
-
-          switch (wl_shm_buffer_get_format (shm_buffer))
-            {
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-            case WL_SHM_FORMAT_ARGB8888:
-              format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
-              break;
-            case WL_SHM_FORMAT_XRGB8888:
-              format = COGL_PIXEL_FORMAT_ARGB_8888;
-              break;
-#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
-            case WL_SHM_FORMAT_ARGB8888:
-              format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
-              break;
-            case WL_SHM_FORMAT_XRGB8888:
-              format = COGL_PIXEL_FORMAT_BGRA_8888;
-              break;
-#endif
-            default:
-              g_warn_if_reached ();
-              format = COGL_PIXEL_FORMAT_ARGB_8888;
-            }
-
-          cogl_texture_set_region (surface->texture,
-                                   x, y, /* src_x/y */
-                                   x, y, /* dst_x/y */
-                                   width, height, /* dst_width/height */
-                                   width, height, /* width/height */
-                                   format,
-                                   stride,
-                                   data);
-        }
+        cogl_wayland_texture_set_region_from_shm_buffer (surface->texture,
+                                                         x, y,
+                                                         width,
+                                                         height,
+                                                         shm_buffer,
+                                                         x, y,
+                                                         0, /* level */
+                                                         NULL);
     }
 
   cogland_queue_redraw (surface->compositor);
