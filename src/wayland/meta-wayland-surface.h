@@ -83,6 +83,7 @@ struct _MetaWaylandSurface
   MetaWaylandSurfaceExtension xdg_surface;
   MetaWaylandSurfaceExtension xdg_popup;
   MetaWaylandSurfaceExtension gtk_surface;
+  MetaWaylandSurfaceExtension subsurface;
 
   /* All the pending state, that wl_surface.commit will apply. */
   MetaWaylandDoubleBufferedState pending;

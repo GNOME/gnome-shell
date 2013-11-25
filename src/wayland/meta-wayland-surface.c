@@ -253,12 +253,12 @@ cursor_surface_commit (MetaWaylandSurface *surface)
   meta_wayland_seat_update_sprite (surface->compositor->seat);
 }
 
-static void
-toplevel_surface_commit (MetaWaylandSurface *surface)
+static gboolean
+actor_surface_commit (MetaWaylandSurface *surface)
 {
   MetaSurfaceActor *surface_actor = surface->surface_actor;
-  MetaWindow *window = surface->window;
   MetaWaylandBuffer *buffer = surface->pending.buffer;
+  gboolean changed = FALSE;
 
   /* wl_surface.attach */
   if (surface->pending.newly_attached && buffer != surface->buffer_ref.buffer)
@@ -267,9 +267,26 @@ toplevel_surface_commit (MetaWaylandSurface *surface)
       meta_wayland_buffer_reference (&surface->buffer_ref, buffer);
       meta_surface_actor_attach_wayland_buffer (surface_actor, buffer);
       surface_process_damage (surface, surface->pending.damage);
+      changed = TRUE;
+    }
+
+  if (surface->pending.opaque_region)
+    meta_surface_actor_set_opaque_region (surface_actor, surface->pending.opaque_region);
+  if (surface->pending.input_region)
+    meta_surface_actor_set_input_region (surface_actor, surface->pending.input_region);
+
+  return changed;
+}
+
+static void
+toplevel_surface_commit (MetaWaylandSurface *surface)
+{
+  if (actor_surface_commit (surface))
+    {
+      MetaWindow *window = surface->window;
+      MetaWaylandBuffer *buffer = surface->pending.buffer;
 
       meta_window_set_surface_mapped (window, buffer != NULL);
-
       /* We resize X based surfaces according to X events */
       if (buffer != NULL && window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
         {
@@ -286,11 +303,27 @@ toplevel_surface_commit (MetaWaylandSurface *surface)
                                              surface->pending.dx, surface->pending.dy);
         }
     }
+}
 
-  if (surface->pending.opaque_region)
-    meta_surface_actor_set_opaque_region (surface_actor, surface->pending.opaque_region);
-  if (surface->pending.input_region)
-    meta_surface_actor_set_input_region (surface_actor, surface->pending.input_region);
+static void
+subsurface_surface_commit (MetaWaylandSurface *surface)
+{
+  if (actor_surface_commit (surface))
+    {
+      MetaSurfaceActor *surface_actor = surface->surface_actor;
+      MetaWaylandBuffer *buffer = surface->pending.buffer;
+      float x, y;
+
+      if (buffer != NULL)
+        clutter_actor_show (CLUTTER_ACTOR (surface_actor));
+      else
+        clutter_actor_hide (CLUTTER_ACTOR (surface_actor));
+
+      clutter_actor_get_position (CLUTTER_ACTOR (surface_actor), &x, &y);
+      x += surface->pending.dx;
+      y += surface->pending.dy;
+      clutter_actor_set_position (CLUTTER_ACTOR (surface_actor), x, y);
+    }
 }
 
 static void
@@ -310,6 +343,8 @@ meta_wayland_surface_commit (struct wl_client *client,
     cursor_surface_commit (surface);
   else if (surface->window)
     toplevel_surface_commit (surface);
+  else if (surface->subsurface.resource)
+    subsurface_surface_commit (surface);
 
   if (surface->pending.buffer)
     {
@@ -903,6 +938,132 @@ bind_gtk_shell (struct wl_client *client,
   gtk_shell_send_capabilities (resource, GTK_SHELL_CAPABILITY_GLOBAL_APP_MENU);
 }
 
+static void
+wl_subsurface_destroy (struct wl_client *client,
+                       struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
+static void
+wl_subsurface_set_position (struct wl_client *client,
+                            struct wl_resource *resource,
+                            int32_t x,
+                            int32_t y)
+{
+  MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
+
+  clutter_actor_set_position (CLUTTER_ACTOR (surface->surface_actor), x, y);
+}
+
+static void
+wl_subsurface_place_above (struct wl_client *client,
+                           struct wl_resource *resource,
+                           struct wl_resource *sibling_resource)
+{
+  ClutterActor *parent_actor;
+  MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
+  MetaWaylandSurface *sibling = wl_resource_get_user_data (sibling_resource);
+
+  parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->surface_actor));
+
+  clutter_actor_set_child_above_sibling (parent_actor,
+                                         CLUTTER_ACTOR (surface->surface_actor),
+                                         CLUTTER_ACTOR (sibling->surface_actor));
+}
+
+static void
+wl_subsurface_place_below (struct wl_client *client,
+                           struct wl_resource *resource,
+                           struct wl_resource *sibling_resource)
+{
+  ClutterActor *parent_actor;
+  MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
+  MetaWaylandSurface *sibling = wl_resource_get_user_data (sibling_resource);
+
+  parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->surface_actor));
+
+  clutter_actor_set_child_below_sibling (parent_actor,
+                                         CLUTTER_ACTOR (surface->surface_actor),
+                                         CLUTTER_ACTOR (sibling->surface_actor));
+}
+
+static void
+wl_subsurface_set_sync (struct wl_client *client,
+                        struct wl_resource *resource)
+{
+  g_warning ("TODO: support wl_subsurface.set_sync");
+}
+
+static void
+wl_subsurface_set_desync (struct wl_client *client,
+                          struct wl_resource *resource)
+{
+  g_warning ("TODO: support wl_subsurface.set_desync");
+}
+
+static const struct wl_subsurface_interface meta_wayland_subsurface_interface = {
+  wl_subsurface_destroy,
+  wl_subsurface_set_position,
+  wl_subsurface_place_above,
+  wl_subsurface_place_below,
+  wl_subsurface_set_sync,
+  wl_subsurface_set_desync,
+};
+
+static void
+wl_subcompositor_destroy (struct wl_client *client,
+                          struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
+static void
+wl_subcompositor_get_subsurface (struct wl_client *client,
+                                 struct wl_resource *resource,
+                                 guint32 id,
+                                 struct wl_resource *surface_resource,
+                                 struct wl_resource *parent_resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  MetaWaylandSurface *parent = wl_resource_get_user_data (parent_resource);
+
+  if (!create_surface_extension (&surface->subsurface, client, surface_resource, resource, id,
+                                 META_GTK_SURFACE_VERSION,
+                                 &wl_subsurface_interface,
+                                 &meta_wayland_subsurface_interface))
+    {
+      wl_resource_post_error (surface_resource,
+                              WL_DISPLAY_ERROR_INVALID_OBJECT,
+                              "wl_subcompositor::get_subsurface already requested");
+      return;
+    }
+
+  clutter_actor_add_child (CLUTTER_ACTOR (parent->surface_actor),
+                           CLUTTER_ACTOR (surface->surface_actor));
+}
+
+static const struct wl_subcompositor_interface meta_wayland_subcompositor_interface = {
+  wl_subcompositor_destroy,
+  wl_subcompositor_get_subsurface,
+};
+
+static void
+bind_subcompositor (struct wl_client *client,
+                    void             *data,
+                    guint32           version,
+                    guint32           id)
+{
+  struct wl_resource *resource;
+
+  resource = wl_resource_create (client, &wl_subcompositor_interface,
+				 MIN (META_WL_SUBCOMPOSITOR_VERSION, version), id);
+  wl_resource_set_implementation (resource, &meta_wayland_subcompositor_interface, data, NULL);
+}
+
 void
 meta_wayland_init_shell (MetaWaylandCompositor *compositor)
 {
@@ -917,6 +1078,12 @@ meta_wayland_init_shell (MetaWaylandCompositor *compositor)
 			META_GTK_SHELL_VERSION,
 			compositor, bind_gtk_shell) == NULL)
     g_error ("Failed to register a global gtk-shell object");
+
+  if (wl_global_create (compositor->wayland_display,
+                        &wl_subcompositor_interface,
+                        META_WL_SUBCOMPOSITOR_VERSION,
+                        compositor, bind_subcompositor) == NULL)
+    g_error ("Failed to register a global wl-subcompositor object");
 }
 
 void

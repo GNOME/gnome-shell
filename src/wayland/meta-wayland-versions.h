@@ -42,6 +42,7 @@
 #define META_XSERVER_VERSION                1
 #define META_GTK_SHELL_VERSION              1
 #define META_XDG_SHELL_VERSION              1
+#define META_WL_SUBCOMPOSITOR_VERSION       1
 
 /* Slave objects (version inherited from a master object) */
 #define META_WL_DATA_OFFER_VERSION          1 /* from wl_data_device */
@@ -55,6 +56,7 @@
 #define META_GTK_SURFACE_VERSION            1 /* from gtk_shell */
 #define META_XDG_SURFACE_VERSION            1 /* from xdg_shell */
 #define META_XDG_POPUP_VERSION              1 /* from xdg_shell */
+#define META_WL_SUBSURFACE_VERSION          1 /* from wl_subcompositor */
 
 /* The first version to implement a specific event */
 #define META_WL_SEAT_HAS_NAME               2
