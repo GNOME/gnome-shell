@@ -243,6 +243,9 @@ ensure_buffer_texture (MetaWaylandBuffer *buffer)
   CoglError *catch_error = NULL;
   CoglTexture *texture;
 
+  if (!buffer)
+    return;
+
   texture = COGL_TEXTURE (cogl_wayland_texture_2d_new_from_buffer (ctx,
                                                                    buffer->resource,
                                                                    &catch_error));
@@ -277,14 +280,11 @@ meta_wayland_surface_commit (struct wl_client *client,
     {
       MetaWaylandBuffer *buffer = surface->pending.buffer;
 
-      if (buffer)
-        {
-          /* Note: we set this before informing any window-actor since the
-           * window actor will expect to find the new buffer within the
-           * surface. */
-          ensure_buffer_texture (buffer);
-          meta_wayland_buffer_reference (&surface->buffer_ref, buffer);
-        }
+      /* Note: we set this before informing any window-actor since the
+       * window actor will expect to find the new buffer within the
+       * surface. */
+      ensure_buffer_texture (buffer);
+      meta_wayland_buffer_reference (&surface->buffer_ref, buffer);
     }
 
   if (surface == compositor->seat->sprite)

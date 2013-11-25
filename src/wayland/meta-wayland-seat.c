@@ -68,7 +68,11 @@ meta_wayland_seat_update_sprite (MetaWaylandSeat *seat)
   if (seat->cursor_tracker == NULL)
     return;
 
-  buffer = seat->sprite->buffer_ref.buffer->resource;
+  if (seat->sprite->buffer_ref.buffer)
+    buffer = seat->sprite->buffer_ref.buffer->resource;
+  else
+    buffer = NULL;
+
   meta_cursor_tracker_set_window_cursor (seat->cursor_tracker,
                                          buffer,
                                          seat->hotspot_x,
