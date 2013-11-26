@@ -2068,9 +2068,6 @@ meta_window_unmanage (MetaWindow  *window,
   else
     meta_display_unregister_wayland_window (window->display, window);
 
-  if (window->surface)
-    meta_wayland_surface_free (window->surface);
-
   g_slist_free_full (window->pending_pings, (GDestroyNotify) ping_data_free);
 
   meta_prefs_remove_listener (prefs_changed_callback, window);

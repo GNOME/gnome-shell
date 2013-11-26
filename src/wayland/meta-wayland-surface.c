@@ -395,7 +395,7 @@ const struct wl_surface_interface meta_wayland_surface_interface = {
   meta_wayland_surface_set_buffer_scale
 };
 
-void
+static void
 meta_wayland_surface_free (MetaWaylandSurface *surface)
 {
   MetaWaylandCompositor *compositor = surface->compositor;
@@ -416,9 +416,35 @@ meta_wayland_surface_free (MetaWaylandSurface *surface)
 
   meta_wayland_compositor_repick (compositor);
 
+  g_object_unref (surface->surface_actor);
+
   if (surface->resource)
     wl_resource_set_user_data (surface->resource, NULL);
   g_slice_free (MetaWaylandSurface, surface);
+}
+
+static void
+unparent_actor (MetaWaylandSurface *surface)
+{
+  ClutterActor *parent_actor;
+
+  parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->surface_actor));
+  clutter_actor_remove_child (parent_actor, CLUTTER_ACTOR (surface->surface_actor));
+}
+
+static void
+destroy_window (MetaWaylandSurface *surface)
+{
+  MetaDisplay *display = meta_get_display ();
+  guint32 timestamp = meta_display_get_current_time_roundtrip (display);
+
+  /* Remove our actor from the parent, so it doesn't get destroyed when
+   * the MetaWindowActor is destroyed. */
+  unparent_actor (surface);
+
+  g_assert (surface->window != NULL);
+  meta_window_unmanage (surface->window, timestamp);
+  surface->window = NULL;
 }
 
 static void
@@ -441,16 +467,10 @@ meta_wayland_surface_resource_destroy_cb (struct wl_resource *resource)
 
       /* NB: If the surface corresponds to an X window then we will be
        * sure to free the MetaWindow according to some X event. */
-      if (surface->window &&
-	  surface->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
-	{
-	  MetaDisplay *display = meta_get_display ();
-	  guint32 timestamp = meta_display_get_current_time_roundtrip (display);
+      if (surface->window && surface->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+        destroy_window (surface);
 
-	  meta_window_unmanage (surface->window, timestamp);
-	}
-      else if (!surface->window)
-	meta_wayland_surface_free (surface);
+      meta_wayland_surface_free (surface);
     }
 }
 
@@ -486,14 +506,13 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
     surface_handle_pending_buffer_destroy;
   wl_list_init (&surface->pending.frame_callback_list);
 
-  surface->surface_actor = meta_surface_actor_new ();
+  surface->surface_actor = g_object_ref_sink (meta_surface_actor_new ());
   return surface;
 }
 
 static void
-destroy_surface_extension (struct wl_resource *resource)
+destroy_surface_extension (MetaWaylandSurfaceExtension *extension)
 {
-  MetaWaylandSurfaceExtension *extension = wl_resource_get_user_data (resource);
   wl_list_remove (&extension->surface_destroy_listener.link);
   extension->surface_destroy_listener.notify = NULL;
   extension->resource = NULL;
@@ -522,7 +541,8 @@ create_surface_extension (MetaWaylandSurfaceExtension *extension,
                           guint32                      id,
                           int                          max_version,
                           const struct wl_interface   *interface,
-                          const void                  *implementation)
+                          const void                  *implementation,
+                          wl_resource_destroy_func_t   destructor)
 {
   struct wl_resource *resource;
 
@@ -530,12 +550,22 @@ create_surface_extension (MetaWaylandSurfaceExtension *extension,
     return FALSE;
 
   resource = wl_resource_create (client, interface, get_resource_version (master_resource, max_version), id);
-  wl_resource_set_implementation (resource, implementation, extension, destroy_surface_extension);
+  wl_resource_set_implementation (resource, implementation, extension, destructor);
 
   extension->resource = resource;
   extension->surface_destroy_listener.notify = extension_handle_surface_destroy;
   wl_resource_add_destroy_listener (surface_resource, &extension->surface_destroy_listener);
   return TRUE;
+}
+
+static void
+xdg_surface_destructor (struct wl_resource *resource)
+{
+  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+
+  destroy_window (surface);
+  destroy_surface_extension (xdg_surface);
 }
 
 static void
@@ -777,7 +807,8 @@ get_xdg_surface (struct wl_client *client,
   if (!create_surface_extension (&surface->xdg_surface, client, surface_resource, resource, id,
                                  META_XDG_SURFACE_VERSION,
                                  &xdg_surface_interface,
-                                 &meta_wayland_xdg_surface_interface))
+                                 &meta_wayland_xdg_surface_interface,
+                                 xdg_surface_destructor))
     {
       wl_resource_post_error (surface_resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,
@@ -786,6 +817,16 @@ get_xdg_surface (struct wl_client *client,
     }
 
   surface->window = meta_window_new_for_wayland (meta_get_display (), surface);
+}
+
+static void
+xdg_popup_destructor (struct wl_resource *resource)
+{
+  MetaWaylandSurfaceExtension *xdg_popup = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = wl_container_of (xdg_popup, surface, xdg_popup);
+
+  destroy_window (surface);
+  destroy_surface_extension (xdg_popup);
 }
 
 static void
@@ -836,7 +877,8 @@ get_xdg_popup (struct wl_client *client,
   if (!create_surface_extension (&surface->xdg_popup, client, surface_resource, resource, id,
                                  META_XDG_POPUP_VERSION,
                                  &xdg_popup_interface,
-                                 &meta_wayland_xdg_popup_interface))
+                                 &meta_wayland_xdg_popup_interface,
+                                 xdg_popup_destructor))
     {
       wl_resource_post_error (surface_resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,
@@ -872,6 +914,15 @@ bind_xdg_shell (struct wl_client *client,
   resource = wl_resource_create (client, &xdg_shell_interface,
 				 MIN (META_XDG_SHELL_VERSION, version), id);
   wl_resource_set_implementation (resource, &meta_wayland_xdg_shell_interface, data, NULL);
+}
+
+static void
+gtk_surface_destructor (struct wl_resource *resource)
+{
+  MetaWaylandSurfaceExtension *gtk_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = wl_container_of (gtk_surface, surface, gtk_surface);
+
+  destroy_surface_extension (gtk_surface);
 }
 
 static void
@@ -911,7 +962,8 @@ get_gtk_surface (struct wl_client *client,
   if (!create_surface_extension (&surface->gtk_surface, client, surface_resource, resource, id,
                                  META_GTK_SURFACE_VERSION,
                                  &gtk_surface_interface,
-                                 &meta_wayland_gtk_surface_interface))
+                                 &meta_wayland_gtk_surface_interface,
+                                 gtk_surface_destructor))
     {
       wl_resource_post_error (surface_resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,
@@ -938,6 +990,16 @@ bind_gtk_shell (struct wl_client *client,
 
   /* FIXME: ask the plugin */
   gtk_shell_send_capabilities (resource, GTK_SHELL_CAPABILITY_GLOBAL_APP_MENU);
+}
+
+static void
+wl_subsurface_destructor (struct wl_resource *resource)
+{
+  MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
+
+  unparent_actor (surface);
+  destroy_surface_extension (subsurface);
 }
 
 static void
@@ -1036,7 +1098,8 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
   if (!create_surface_extension (&surface->subsurface, client, surface_resource, resource, id,
                                  META_GTK_SURFACE_VERSION,
                                  &wl_subsurface_interface,
-                                 &meta_wayland_subsurface_interface))
+                                 &meta_wayland_subsurface_interface,
+                                 wl_subsurface_destructor))
     {
       wl_resource_post_error (surface_resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,
