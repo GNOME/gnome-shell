@@ -266,9 +266,10 @@ actor_surface_commit (MetaWaylandSurface *surface)
       ensure_buffer_texture (buffer);
       meta_wayland_buffer_reference (&surface->buffer_ref, buffer);
       meta_surface_actor_attach_wayland_buffer (surface_actor, buffer);
-      surface_process_damage (surface, surface->pending.damage);
       changed = TRUE;
     }
+
+  surface_process_damage (surface, surface->pending.damage);
 
   if (surface->pending.opaque_region)
     meta_surface_actor_set_opaque_region (surface_actor, surface->pending.opaque_region);
