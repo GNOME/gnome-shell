@@ -796,7 +796,7 @@ cogl_gst_ayuv_glsl_setup_pipeline (CoglGstVideoSink *sink,
       g_free (source);
     }
 
-  setup_pipeline_from_cache_entry (sink, pipeline, entry, 3);
+  setup_pipeline_from_cache_entry (sink, pipeline, entry, 1);
 }
 
 static CoglBool
@@ -835,7 +835,7 @@ static CoglGstRenderer ayuv_glsl_renderer =
   COGL_GST_AYUV,
   COGL_GST_RENDERER_NEEDS_GLSL,
   GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE ("AYUV")),
-  3, /* n_layers */
+  1, /* n_layers */
   cogl_gst_ayuv_glsl_setup_pipeline,
   cogl_gst_ayuv_upload,
 };
