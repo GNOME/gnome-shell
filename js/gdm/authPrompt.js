@@ -263,10 +263,8 @@ const AuthPrompt = new Lang.Class({
     },
 
     _onReset: function() {
-        if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED) {
-            this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
-            this.reset();
-        }
+        this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
+        this.reset();
     },
 
     addActorToDefaultButtonWell: function(actor) {
