@@ -8755,7 +8755,9 @@ clutter_actor_allocate_internal (ClutterActor           *self,
 
   CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_RELAYOUT);
 
-  clutter_actor_queue_redraw (self);
+  /* Caller should call clutter_actor_queue_redraw() if needed
+   * for that particular case.
+   */
 }
 
 /**
@@ -8861,6 +8863,14 @@ clutter_actor_allocate (ClutterActor           *self,
   if (!priv->needs_allocation && !stage_allocation_changed)
     {
       CLUTTER_NOTE (LAYOUT, "No allocation needed");
+      return;
+    }
+
+  if (!stage_allocation_changed)
+    {
+      /* If the actor didn't move but needs_allocation is set, we just
+       * need to allocate the children */
+      clutter_actor_allocate_internal (self, &real_allocation, flags);
       return;
     }
 
@@ -12665,6 +12675,7 @@ clutter_actor_set_animatable_property (ClutterActor *actor,
       clutter_actor_allocate_internal (actor,
                                        g_value_get_boxed (value),
                                        actor->priv->allocation_flags);
+      clutter_actor_queue_redraw (actor);
       break;
 
     case PROP_Z_POSITION:
