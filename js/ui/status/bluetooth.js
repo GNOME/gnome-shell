@@ -3,7 +3,6 @@
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
-const GnomeBluetoothApplet = imports.gi.GnomeBluetoothApplet;
 const GnomeBluetooth = imports.gi.GnomeBluetooth;
 const Lang = imports.lang;
 const St = imports.gi.St;

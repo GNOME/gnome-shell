@@ -191,7 +191,7 @@ gnome_shell_CPPFLAGS = \
 
 # Here, and after, we repeat mutter and bluetooth libraries just for the rpath
 # The dependency is already pulled in by libtool
-gnome_shell_LDADD = libgnome-shell.la libgnome-shell-js.la $(GNOME_SHELL_LIBS) $(MUTTER_LIBS) $(BLUETOOTH_LIBS)
+gnome_shell_LDADD = libgnome-shell.la libgnome-shell-js.la $(GNOME_SHELL_LIBS) $(MUTTER_LIBS)
 gnome_shell_DEPENDENCIES = libgnome-shell.la
 
 if HAVE_MUTTER_WAYLAND
@@ -205,7 +205,7 @@ gnome_shell_wayland_CPPFLAGS = \
 	$(MUTTER_WAYLAND_CFLAGS) \
 	$(gnome_shell_cflags)
 
-gnome_shell_wayland_LDADD = libgnome-shell-wayland.la libgnome-shell-js.la $(GNOME_SHELL_LIBS) $(MUTTER_WAYLAND_LIBS) $(BLUETOOTH_LIBS)
+gnome_shell_wayland_LDADD = libgnome-shell-wayland.la libgnome-shell-js.la $(GNOME_SHELL_LIBS) $(MUTTER_WAYLAND_LIBS)
 gnome_shell_wayland_DEPENDENCIES = libgnome-shell-wayland.la
 endif HAVE_MUTTER_WAYLAND
 
@@ -259,7 +259,7 @@ gnome_shell_perf_helper_LDADD = $(SHELL_PERF_HELPER_LIBS)
 noinst_PROGRAMS += run-js-test
 
 run_js_test_CPPFLAGS = $(MUTTER_CFLAGS) $(gnome_shell_cflags)
-run_js_test_LDADD = libgnome-shell.la $(GNOME_SHELL_JS_LIBS) $(MUTTER_LIBS) $(BLUETOOTH_LIBS)
+run_js_test_LDADD = libgnome-shell.la $(GNOME_SHELL_JS_LIBS) $(MUTTER_LIBS)
 run_js_test_LDFLAGS = -export-dynamic
 
 run_js_test_SOURCES =			\
@@ -331,8 +331,7 @@ ShellMenu_0_1_gir_FILES = \
 	gtkmenutrackeritem.h		\
 	$(NULL)
 ShellMenu_0_1_gir_SCANNERFLAGS = 	\
-	--namespace=ShellMenu --identifier-prefix=Gtk \
-	$(if $(BLUETOOTH_DIR),-L $(BLUETOOTH_DIR),)
+	--namespace=ShellMenu --identifier-prefix=Gtk
 INTROSPECTION_GIRS += ShellMenu-0.1.gir
 CLEANFILES += ShellMenu-0.1.gir
 
@@ -348,7 +347,7 @@ Shell_0_1_gir_FILES = $(libgnome_shell_la_gir_sources)
 Shell_0_1_gir_SCANNERFLAGS =	\
 	--include-uninstalled=$(builddir)/St-1.0.gir \
 	--include-uninstalled=$(builddir)/ShellMenu-0.1.gir \
-	--add-include-path=$(MUTTER_GIR_DIR) $(if $(BLUETOOTH_DIR),-L $(BLUETOOTH_DIR),)
+	--add-include-path=$(MUTTER_GIR_DIR)
 INTROSPECTION_GIRS += Shell-0.1.gir
 CLEANFILES += Shell-0.1.gir
 

@@ -173,10 +173,6 @@ shell_introspection_init (void)
 
   g_irepository_prepend_search_path (MUTTER_TYPELIB_DIR);
   g_irepository_prepend_search_path (GNOME_SHELL_PKGLIBDIR);
-#if HAVE_BLUETOOTH
-  g_irepository_prepend_search_path (BLUETOOTH_DIR);
-#endif
-
 }
 
 static void
