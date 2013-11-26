@@ -614,8 +614,53 @@ cogl_gst_yv12_upload (CoglGstVideoSink *sink,
                       GstBuffer *buffer)
 {
   CoglGstVideoSinkPrivate *priv = sink->priv;
-  GstVideoFrame frame;
   CoglPixelFormat format = COGL_PIXEL_FORMAT_A_8;
+  GstVideoFrame frame;
+
+  if (!gst_video_frame_map (&frame, &priv->info, buffer, GST_MAP_READ))
+    goto map_fail;
+
+  clear_frame_textures (sink);
+
+  priv->frame[0] =
+    video_texture_new_from_data (priv->ctx,
+                                 GST_VIDEO_INFO_COMP_WIDTH (&priv->info, 0),
+                                 GST_VIDEO_INFO_COMP_HEIGHT (&priv->info, 0),
+                                 format, format,
+                                 priv->info.stride[0], frame.data[0], NULL);
+
+  priv->frame[2] =
+    video_texture_new_from_data (priv->ctx,
+                                 GST_VIDEO_INFO_COMP_WIDTH (&priv->info, 1),
+                                 GST_VIDEO_INFO_COMP_HEIGHT (&priv->info, 1),
+                                 format, format,
+                                 priv->info.stride[1], frame.data[1], NULL);
+
+  priv->frame[1] =
+    video_texture_new_from_data (priv->ctx,
+                                 GST_VIDEO_INFO_COMP_WIDTH (&priv->info, 2),
+                                 GST_VIDEO_INFO_COMP_HEIGHT (&priv->info, 2),
+                                 format, format,
+                                 priv->info.stride[2], frame.data[2], NULL);
+
+  gst_video_frame_unmap (&frame);
+
+  return TRUE;
+
+map_fail:
+  {
+    GST_ERROR_OBJECT (sink, "Could not map incoming video frame");
+    return FALSE;
+  }
+}
+
+static CoglBool
+cogl_gst_i420_upload (CoglGstVideoSink *sink,
+                      GstBuffer *buffer)
+{
+  CoglGstVideoSinkPrivate *priv = sink->priv;
+  CoglPixelFormat format = COGL_PIXEL_FORMAT_A_8;
+  GstVideoFrame frame;
 
   if (!gst_video_frame_map (&frame, &priv->info, buffer, GST_MAP_READ))
     goto map_fail;
@@ -673,9 +718,9 @@ cogl_gst_yv12_glsl_setup_pipeline (CoglGstVideoSink *sink,
                          "cogl_gst_sample_video%i (vec2 UV)\n"
                          "{\n"
                          "  float y = 1.1640625 * "
-                         "(texture2D (cogl_sampler%i, UV).a - 0.0625);\n"
-                         "  float u = texture2D (cogl_sampler%i, UV).a - 0.5;\n"
-                         "  float v = texture2D (cogl_sampler%i, UV).a - 0.5;\n"
+                         "(texture2D (cogl_sampler%i, UV).g - 0.0625);\n"
+                         "  float u = texture2D (cogl_sampler%i, UV).g - 0.5;\n"
+                         "  float v = texture2D (cogl_sampler%i, UV).g - 0.5;\n"
                          "  vec4 color;\n"
                          "  color.r = y + 1.59765625 * v;\n"
                          "  color.g = y - 0.390625 * u - 0.8125 * v;\n"
@@ -714,7 +759,7 @@ static CoglGstRenderer i420_glsl_renderer =
   GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE ("I420")),
   3, /* n_layers */
   cogl_gst_yv12_glsl_setup_pipeline,
-  cogl_gst_yv12_upload,
+  cogl_gst_i420_upload,
 };
 
 static void
