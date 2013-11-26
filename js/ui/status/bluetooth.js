@@ -52,16 +52,45 @@ const Indicator = new Lang.Class({
         this._item.menu.addSettingsAction(_("Bluetooth Settings"), 'gnome-bluetooth-panel.desktop');
         this.menu.addMenuItem(this._item);
 
-        this._applet = new GnomeBluetoothApplet.Applet();
-        this._applet.connect('devices-changed', Lang.bind(this, this._sync));
+        this._client = new GnomeBluetooth.Client();
+        this._model = this._client.get_model();
+        this._model.connect('row-changed', Lang.bind(this, this._sync));
+        this._model.connect('row-deleted', Lang.bind(this, this._sync));
+        this._model.connect('row-inserted', Lang.bind(this, this._sync));
         this._sync();
     },
 
+    _getDefaultAdapter: function() {
+        let [ret, iter] = this._model.get_iter_first();
+        while (ret) {
+            let isDefault = this._model.get_value(iter,
+                                                  GnomeBluetooth.Column.DEFAULT);
+            if (isDefault)
+                return iter;
+            ret = this._model.iter_next(iter);
+        }
+        return null;
+    },
+
+    _getNConnectedDevices: function() {
+        let adapter = this._getDefaultAdapter();
+        if (!adapter)
+            return 0;
+
+        let nDevices = 0;
+        let [ret, iter] = this._model.iter_children(adapter);
+        while (ret) {
+            let isConnected = this._model.get_value(iter,
+                                                    GnomeBluetooth.Column.CONNECTED);
+            if (isConnected)
+                nDevices++;
+            ret = this._model.iter_next(iter);
+        }
+        return nDevices;
+    },
+
     _sync: function() {
-        let connectedDevices = this._applet.get_devices().filter(function(device) {
-            return device.connected;
-        });
-        let nDevices = connectedDevices.length;
+        let nDevices = this._getNConnectedDevices();
 
         let on = nDevices > 0;
         this._indicator.visible = on;
