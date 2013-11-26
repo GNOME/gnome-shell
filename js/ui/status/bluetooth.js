@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const GnomeBluetoothApplet = imports.gi.GnomeBluetoothApplet;
 const GnomeBluetooth = imports.gi.GnomeBluetooth;
 const Lang = imports.lang;
@@ -11,6 +12,17 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+
+const BUS_NAME = 'org.gnome.SettingsDaemon.Rfkill';
+const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
+
+const RfkillManagerInterface = '<node> \
+<interface name="org.gnome.SettingsDaemon.Rfkill"> \
+<property name="BluetoothAirplaneMode" type="b" access="readwrite" /> \
+</interface> \
+</node>';
+
+const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface);
 
 const Indicator = new Lang.Class({
     Name: 'BTIndicator',
@@ -22,12 +34,20 @@ const Indicator = new Lang.Class({
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'bluetooth-active-symbolic';
 
+        this._proxy = new RfkillManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
+                                             Lang.bind(this, function(proxy, error) {
+                                                 if (error) {
+                                                     log(error.message);
+                                                     return;
+                                                 }
+                                             }));
+
         // The Bluetooth menu only appears when Bluetooth is in use,
         // so just statically build it with a "Turn Off" menu item.
         this._item = new PopupMenu.PopupSubMenuMenuItem(_("Bluetooth"), true);
         this._item.icon.icon_name = 'bluetooth-active-symbolic';
         this._item.menu.addAction(_("Turn Off"), Lang.bind(this, function() {
-            this._applet.killswitch_state = GnomeBluetooth.KillswitchState.SOFT_BLOCKED;
+            this._proxy.BluetoothAirplaneMode = true;
         }));
         this._item.menu.addSettingsAction(_("Bluetooth Settings"), 'gnome-bluetooth-panel.desktop');
         this.menu.addMenuItem(this._item);
