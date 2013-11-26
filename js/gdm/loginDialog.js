@@ -885,6 +885,10 @@ const LoginDialog = new Lang.Class({
         Main.ctrlAltTabManager.removeGroup(this.dialogLayout);
     },
 
+    cancel: function() {
+        this._authPrompt.cancel();
+    },
+
     addCharacter: function(unichar) {
         this._authPrompt.addCharacter(unichar);
     },
