@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+apiversion=@COGL_API_VERSION@
+requires=@COGL_PKG_REQUIRES@
+
+Name: Cogl
+Description: A 2D path drawing library for Cogl
+Version: @COGL_VERSION@
+Libs: -L${libdir} -lcogl-path
+Cflags: -I${includedir}/cogl
+Requires: ${requires}

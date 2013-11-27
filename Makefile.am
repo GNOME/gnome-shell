@@ -1,13 +1,10 @@
 SUBDIRS = deps test-fixtures
 
-# Until we can bump the cogl soname cogl-path is built as
-# a noinst_LTLIBRARY and linked into libcogl.so so it needs
-# to be built before cogl...
+SUBDIRS += cogl
+
 if BUILD_COGL_PATH
 SUBDIRS += cogl-path
 endif
-
-SUBDIRS += cogl
 
 if BUILD_COGL_PANGO
 SUBDIRS += cogl-pango

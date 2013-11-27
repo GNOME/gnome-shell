@@ -70,11 +70,19 @@ glib_enum_headers = $(source_1_x_h)
 include $(top_srcdir)/build/autotools/Makefile.am.enums
 endif
 
-noinst_LTLIBRARIES = libcogl-path.la
+lib_LTLIBRARIES = libcogl-path.la
 
 libcogl_path_la_SOURCES = $(source_c) $(source_h)
 nodist_libcogl_path_la_SOURCES = $(BUILT_SOURCES)
-libcogl_path_la_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_GST_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
+libcogl_path_la_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
+libcogl_path_la_LIBADD = $(top_builddir)/cogl/libcogl.la
+libcogl_path_la_LIBADD += $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
+libcogl_path_la_LDFLAGS = \
+	-export-dynamic \
+	-export-symbols-regex "^(cogl|cogl2)_(framebuffer|path|is)_.*" \
+	-no-undefined \
+	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@ \
+	-rpath $(libdir)
 
 AM_CPPFLAGS = \
 	-DCOGL_COMPILATION		\
@@ -91,6 +99,15 @@ cogl_pathheaders_HEADERS = $(source_h)
 if USE_GLIB
 nodist_cogl_pathheaders_HEADERS = cogl-path-enum-types.h
 endif
+
+pc_files = cogl-path-1.0.pc \
+	   cogl-path-2.0-experimental.pc
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = $(pc_files)
+
+EXTRA_DIST += cogl-path.pc.in
+DISTCLEANFILES += $(pc_files)
 
 dist-hook:	\
 	$(top_builddir)/build/win32/vs9/cogl-path.vcproj	\

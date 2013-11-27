@@ -531,9 +531,6 @@ endif
 if UNIT_TESTS
 libcogl_la_LIBADD += $(top_builddir)/test-fixtures/libtest-fixtures.la
 endif
-if BUILD_COGL_PATH
-libcogl_la_LIBADD += $(top_builddir)/cogl-path/libcogl-path.la
-endif
 # XXX: The aim is to eventually get rid of all private API exports
 # for cogl-pango.
 libcogl_la_LDFLAGS = \
@@ -664,13 +661,7 @@ if UNIT_TESTS
 Cogl_1_0_gir_LIBS += $(top_builddir)/test-fixtures/libtest-fixtures.la
 endif
 Cogl_1_0_gir_FILES = $(cogl_1_public_h) cogl-enum-types.h
-if BUILD_COGL_PATH
-Cogl_1_0_gir_FILES += \
-	$(top_builddir)/cogl-path/cogl-path-enum-types.h \
-	$(top_srcdir)/cogl-path/cogl-path-types.h \
-	$(top_srcdir)/cogl-path/cogl1-path-functions.h
-endif
-Cogl_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_ENABLE_EXPERIMENTAL_API -UCOGL_ENABLE_EXPERIMENTAL_2_0_API -UCOGL_COMPILATION -D__COGL_H_INSIDE__ -D__COGL_XLIB_H_INSIDE__
+Cogl_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_ENABLE_EXPERIMENTAL_API -UCOGL_ENABLE_EXPERIMENTAL_2_0_API -UCOGL_COMPILATION -D__COGL_H_INSIDE__ -D__COGL_XLIB_H_INSIDE__ -DCOGL_GIR_SCANNING
 Cogl_1_0_gir_INCLUDES = GL-1.0 GObject-2.0
 Cogl_1_0_gir_EXPORT_PACKAGES = cogl-1.0
 Cogl_1_0_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'

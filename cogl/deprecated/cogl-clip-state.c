@@ -38,7 +38,6 @@
 #include "cogl-util.h"
 #include "cogl-matrix-private.h"
 #include "cogl1-context.h"
-#include "cogl-path/cogl-path.h"
 
 void
 cogl_clip_push_window_rectangle (int x_offset,

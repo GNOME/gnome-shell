@@ -1470,6 +1470,8 @@ cogl-pango/cogl-pango-1.0.pc
 cogl-pango/cogl-pango-2.0-experimental.pc
 cogl-pango/cogl-pango.rc
 cogl-path/Makefile
+cogl-path/cogl-path-1.0.pc
+cogl-path/cogl-path-2.0-experimental.pc
 cogl-gst/Makefile
 cogl-gst/cogl-gst.pc
 cogl-gles2/Makefile

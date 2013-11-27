@@ -44,7 +44,11 @@
  * rather then in the absolute coordinates.
  */
 
+#include <cogl/cogl-defines.h>
+
+#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <cogl-path/cogl-path-enum-types.h>
+#endif
 
 #include <cogl-path/cogl-path-types.h>
 
