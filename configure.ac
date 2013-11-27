@@ -1091,7 +1091,7 @@ AS_IF([test "x$enable_kms_egl_platform" = "xyes"],
                            COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gbm"
                            COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES libdrm"
                          ],
-                         [AC_MSG_ERROR([Unable to locate required kms libraries])])
+                         [AC_MSG_ERROR([Unable to locate required libgbm library for the KMS egl platform])])
 
         GBM_VERSION=`$PKG_CONFIG --modversion gbm`
         GBM_MAJOR=`echo $GBM_VERSION | cut -d'.' -f1`
