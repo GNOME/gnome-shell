@@ -138,9 +138,6 @@
  * code has been migrated down into Cogl! */
 #include <cogl/deprecated/cogl-clutter.h>
 #endif
-#ifdef COGL_HAS_SDL_SUPPORT
-#include <cogl/cogl-sdl.h>
-#endif
 
 /*
  * API deprecations

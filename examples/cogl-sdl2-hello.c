@@ -1,4 +1,5 @@
 #include <cogl/cogl.h>
+#include <cogl/cogl-sdl.h>
 #include <stdio.h>
 #include <SDL.h>
 
