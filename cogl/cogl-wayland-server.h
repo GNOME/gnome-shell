@@ -95,14 +95,6 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
                                          struct wl_resource *buffer,
                                          CoglError **error);
 
-void
-cogl_wayland_texture_2d_update_area (CoglTexture2D *texture,
-                                     struct wl_shm_buffer *shm_buffer,
-                                     int x,
-                                     int y,
-                                     int width,
-                                     int height);
-
 COGL_END_DECLS
 
 /* The gobject introspection scanner seems to parse public headers in
