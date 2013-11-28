@@ -673,7 +673,7 @@ Cogl_1_0_gir_FILES += \
 	$(top_srcdir)/cogl-path/cogl-path-types.h \
 	$(top_srcdir)/cogl-path/cogl1-path-functions.h
 endif
-Cogl_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_ENABLE_EXPERIMENTAL_API -UCOGL_ENABLE_EXPERIMENTAL_2_0_API
+Cogl_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_ENABLE_EXPERIMENTAL_API -UCOGL_ENABLE_EXPERIMENTAL_2_0_API -UCOGL_COMPILATION -D__COGL_H_INSIDE__ -D__COGL_XLIB_H_INSIDE__
 Cogl_1_0_gir_INCLUDES = GL-1.0 GObject-2.0
 Cogl_1_0_gir_EXPORT_PACKAGES = cogl-1.0
 Cogl_1_0_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'

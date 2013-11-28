@@ -33,8 +33,15 @@
  * definitions
  */
 #ifndef COGL_COMPILATION
+
+/* Note: When building Cogl .gir we explicitly define
+ * __COGL_H_INSIDE__ */
+#ifndef __COGL_H_INSIDE__
 #define __COGL_H_INSIDE__
+#define __COGL_MUST_UNDEF_COGL_H_INSIDE__
 #endif
+
+#endif /* COGL_COMPILATION */
 
 #include <cogl/cogl-context.h>
 #include <cogl/cogl-texture-2d.h>
@@ -97,5 +104,18 @@ cogl_wayland_texture_2d_update_area (CoglTexture2D *texture,
                                      int height);
 
 COGL_END_DECLS
+
+/* The gobject introspection scanner seems to parse public headers in
+ * isolation which means we need to be extra careful about how we
+ * define and undefine __COGL_H_INSIDE__ used to detect when internal
+ * headers are incorrectly included by developers. In the gobject
+ * introspection case we have to manually define __COGL_H_INSIDE__ as
+ * a commandline argument for the scanner which means we must be
+ * careful not to undefine it in a header...
+ */
+#ifdef __COGL_MUST_UNDEF_COGL_H_INSIDE__
+#undef __COGL_H_INSIDE__
+#undef __COGL_MUST_UNDEF_COGL_H_INSIDE__
+#endif
 
 #endif /* __COGL_WAYLAND_SERVER_H */
