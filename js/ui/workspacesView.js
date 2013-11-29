@@ -614,7 +614,7 @@ const WorkspacesDisplay = new Lang.Class({
 
     _onScrollEvent: function(actor, event) {
         if (!this.actor.mapped)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
         let activeWs = global.screen.get_active_workspace();
         let ws;
         switch (event.get_scroll_direction()) {
@@ -625,10 +625,10 @@ const WorkspacesDisplay = new Lang.Class({
             ws = activeWs.get_neighbor(Meta.MotionDirection.DOWN);
             break;
         default:
-            return false;
+            return Clutter.EVENT_PROPAGATE;
         }
         Main.wm.actionMoveWorkspace(ws);
-        return true;
+        return Clutter.EVENT_STOP;
     }
 });
 Signals.addSignalMethods(WorkspacesDisplay.prototype);

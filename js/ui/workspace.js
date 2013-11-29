@@ -537,15 +537,17 @@ const WindowOverlay = new Lang.Class({
         // as the close button will be shown as needed when the overlays
         // are shown again
         if (this._hidden)
-            return;
+            return Clutter.EVENT_PROPAGATE;
 
         this._animateVisible();
         this.emit('show-close-button');
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onLeave: function() {
         if (this._idleToggleCloseId == 0)
             this._idleToggleCloseId = Mainloop.timeout_add(750, Lang.bind(this, this._idleToggleCloseButton));
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _idleToggleCloseButton: function() {

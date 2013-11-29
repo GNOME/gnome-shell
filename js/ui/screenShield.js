@@ -669,11 +669,11 @@ const ScreenShield = new Lang.Class({
         // down after cancel.
 
         if (this._lockScreenState != MessageTray.State.SHOWN)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         let isEnter = (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_KP_Enter);
         if (!isEnter && !(GLib.unichar_isprint(unichar) || symbol == Clutter.KEY_Escape))
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         if (this._isLocked &&
             this._ensureUnlockDialog(true, true) &&
@@ -681,12 +681,12 @@ const ScreenShield = new Lang.Class({
             this._dialog.addCharacter(unichar);
 
         this._liftShield(true, 0);
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _onLockScreenScroll: function(actor, event) {
         if (this._lockScreenState != MessageTray.State.SHOWN)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         let delta = 0;
         if (event.get_scroll_direction() == Clutter.ScrollDirection.UP)
@@ -701,7 +701,7 @@ const ScreenShield = new Lang.Class({
             this._liftShield(true, 0);
         }
 
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _inhibitSuspend: function() {
@@ -1097,7 +1097,7 @@ const ScreenShield = new Lang.Class({
                 global.stage.disconnect(motionId);
             }
 
-            return false;
+            return Clutter.EVENT_PROPAGATE;
         }));
         this._cursorTracker.set_pointer_visible(false);
 

@@ -82,8 +82,16 @@ const Key = new Lang.Class({
                                       style_class: 'keyboard-key' });
 
         button.key_width = this._key.width;
-        button.connect('button-press-event', Lang.bind(this, function () { this._key.press(); }));
-        button.connect('button-release-event', Lang.bind(this, function () { this._key.release(); }));
+        button.connect('button-press-event', Lang.bind(this,
+            function () {
+                this._key.press();
+                return Clutter.EVENT_PROPAGATE;
+            }));
+        button.connect('button-release-event', Lang.bind(this,
+            function () {
+                this._key.release();
+                return Clutter.EVENT_PROPAGATE;
+            }));
 
         return button;
     },
@@ -106,8 +114,16 @@ const Key = new Lang.Class({
             let label = this._getUnichar(extended_key);
             let key = new St.Button({ label: label, style_class: 'keyboard-key' });
             key.extended_key = extended_key;
-            key.connect('button-press-event', Lang.bind(this, function () { extended_key.press(); }));
-            key.connect('button-release-event', Lang.bind(this, function () { extended_key.release(); }));
+            key.connect('button-press-event', Lang.bind(this,
+                function () {
+                    extended_key.press();
+                    return Clutter.EVENT_PROPAGATE;
+                }));
+            key.connect('button-release-event', Lang.bind(this,
+                function () {
+                    extended_key.release();
+                    return Clutter.EVENT_PROPAGATE;
+                }));
             this._extended_keyboard.add(key);
         }
         this._boxPointer.bin.add_actor(this._extended_keyboard);
@@ -297,7 +313,7 @@ const Keyboard = new Lang.Class({
         else if (release && this._capturedPress)
             this._hideSubkeys();
 
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _addRows : function (keys, layout) {

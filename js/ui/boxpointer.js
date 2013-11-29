@@ -69,7 +69,7 @@ const BoxPointer = new Lang.Class({
     _muteInput: function() {
         if (this._capturedEventId == 0)
             this._capturedEventId = this.actor.connect('captured-event',
-                                                       function() { return true; });
+                                                       function() { return Clutter.EVENT_STOP; });
     },
 
     _unmuteInput: function() {

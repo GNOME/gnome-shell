@@ -1226,20 +1226,20 @@ const HotCorner = new Lang.Class({
             this._entered = true;
             this._toggleOverview();
         }
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onCornerLeft : function(actor, event) {
         if (event.get_related() != this.actor)
             this._entered = false;
         // Consume event, otherwise this will confuse onEnvironsLeft
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _onEnvironsLeft : function(actor, event) {
         if (event.get_related() != this._corner)
             this._entered = false;
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     }
 });
 

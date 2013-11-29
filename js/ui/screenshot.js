@@ -206,12 +206,12 @@ const SelectArea = new Lang.Class({
         if (event.get_key_symbol() == Clutter.Escape)
             this._destroy(null, false);
 
-        return;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onMotionEvent: function(actor, event) {
         if (this._startX == -1 || this._startY == -1)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         [this._lastX, this._lastY] = event.get_coords();
         let geometry = this._getGeometry();
@@ -219,19 +219,19 @@ const SelectArea = new Lang.Class({
         this._rubberband.set_position(geometry.x, geometry.y);
         this._rubberband.set_size(geometry.width, geometry.height);
 
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onButtonPress: function(actor, event) {
         [this._startX, this._startY] = event.get_coords();
         this._rubberband.set_position(this._startX, this._startY);
 
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onButtonRelease: function(actor, event) {
         this._destroy(this._getGeometry(), true);
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _destroy: function(geometry, fade) {

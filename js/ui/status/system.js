@@ -81,7 +81,7 @@ const AltSwitcher = new Lang.Class({
                 this._sync();
         }
 
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 });
 

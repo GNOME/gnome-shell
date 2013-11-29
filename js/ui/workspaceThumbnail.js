@@ -131,7 +131,7 @@ const WindowClone = new Lang.Class({
     _onButtonRelease : function (actor, event) {
         this.emit('selected', event.get_time());
 
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _onDragBegin : function (draggable, time) {
@@ -562,7 +562,7 @@ const ThumbnailsBox = new Lang.Class({
 
         this._thumbnails = [];
 
-        this.actor.connect('button-press-event', function() { return true; });
+        this.actor.connect('button-press-event', function() { return Clutter.EVENT_STOP; });
         this.actor.connect('button-release-event', Lang.bind(this, this._onButtonRelease));
 
         Main.overview.connect('showing',
@@ -607,7 +607,7 @@ const ThumbnailsBox = new Lang.Class({
             }
         }
 
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _onDragBegin: function() {

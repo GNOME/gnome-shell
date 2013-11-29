@@ -194,7 +194,7 @@ const SwitcherPopup = new Lang.Class({
         else
             this._keyPressHandler(keysym, backwards, action);
 
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _keyReleaseEvent: function(actor, event) {
@@ -204,11 +204,12 @@ const SwitcherPopup = new Lang.Class({
         if (state == 0)
             this._finish(event.get_time());
 
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _clickedOutside: function(actor, event) {
         this.destroy();
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _scrollHandler: function(direction) {
@@ -220,6 +221,7 @@ const SwitcherPopup = new Lang.Class({
 
     _scrollEvent: function(actor, event) {
         this._scrollHandler(event.get_scroll_direction());
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _itemActivatedHandler: function(n) {
@@ -403,6 +405,7 @@ const SwitcherList = new Lang.Class({
 
     _onItemEnter: function (index) {
         this._itemEntered(index);
+        return Clutter.EVENT_PROPAGATE;
     },
 
     highlight: function(index, justOutline) {

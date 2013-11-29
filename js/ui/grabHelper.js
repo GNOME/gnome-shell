@@ -280,7 +280,7 @@ const GrabHelper = new Lang.Class({
         if (type == Clutter.EventType.KEY_PRESS &&
             event.get_key_symbol() == Clutter.KEY_Escape) {
             this.ungrab({ isUser: true });
-            return true;
+            return Clutter.EVENT_STOP;
         }
 
         let press = type == Clutter.EventType.BUTTON_PRESS;
@@ -289,14 +289,14 @@ const GrabHelper = new Lang.Class({
 
         if (release && this._ignoreRelease) {
             this._ignoreRelease = false;
-            return true;
+            return Clutter.EVENT_STOP;
         }
 
         if (this._isWithinGrabbedActor(event.get_source()))
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         if (Main.keyboard.shouldTakeEvent(event))
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         if (button) {
             // If we have a press event, ignore the next event,
@@ -305,9 +305,9 @@ const GrabHelper = new Lang.Class({
                 this._ignoreRelease = true;
             let i = this._actorInGrabStack(event.get_source()) + 1;
             this.ungrab({ actor: this._grabStack[i].actor, isUser: true });
-            return true;
+            return Clutter.EVENT_STOP;
         }
 
-        return true;
+        return Clutter.EVENT_STOP;
     },
 });

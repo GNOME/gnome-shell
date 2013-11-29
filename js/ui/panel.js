@@ -602,14 +602,15 @@ const ActivitiesButton = new Lang.Class({
     _onCapturedEvent: function(actor, event) {
         if (event.type() == Clutter.EventType.BUTTON_PRESS) {
             if (!Main.overview.shouldToggleByCornerOrButton())
-                return true;
+                return Clutter.EVENT_STOP;
         }
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onButtonRelease: function() {
         Main.overview.toggle();
         this.menu.close();
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onKeyRelease: function(actor, event) {
@@ -617,6 +618,7 @@ const ActivitiesButton = new Lang.Class({
         if (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_space) {
             Main.overview.toggle();
         }
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _xdndToggleOverview: function(actor) {
@@ -984,23 +986,23 @@ const Panel = new Lang.Class({
 
     _onButtonPress: function(actor, event) {
         if (Main.modalCount > 0)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         if (event.get_source() != actor)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         let button = event.get_button();
         if (button != 1)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         let focusWindow = global.display.focus_window;
         if (!focusWindow)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         let dragWindow = focusWindow.is_attached_dialog() ? focusWindow.get_transient_for()
                                                           : focusWindow;
         if (!dragWindow)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         let rect = dragWindow.get_outer_rect();
         let [stageX, stageY] = event.get_coords();
@@ -1009,7 +1011,7 @@ const Panel = new Lang.Class({
                         stageX > rect.x && stageX < rect.x + rect.width;
 
         if (!allowDrag)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         global.display.begin_grab_op(global.screen,
                                      dragWindow,
@@ -1021,7 +1023,7 @@ const Panel = new Lang.Class({
                                      event.get_time(),
                                      stageX, stageY);
 
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     toggleAppMenu: function() {

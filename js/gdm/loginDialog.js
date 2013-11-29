@@ -764,7 +764,7 @@ const LoginDialog = new Lang.Class({
         global.stage.connect('captured-event',
                              Lang.bind(this, function(actor, event) {
                                 if (this._timedLoginDelay == undefined)
-                                    return false;
+                                    return Clutter.EVENT_PROPAGATE;
 
                                 if (event.type() == Clutter.EventType.KEY_PRESS ||
                                     event.type() == Clutter.EventType.BUTTON_PRESS) {
@@ -777,7 +777,7 @@ const LoginDialog = new Lang.Class({
                                     this._resetTimedLogin();
                                 }
 
-                                return false;
+                                return Clutter.EVENT_PROPAGATE;
                              }));
     },
 

@@ -497,6 +497,7 @@ const Calendar = new Lang.Class({
             this._onNextMonthButtonClicked();
             break;
         }
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onPrevMonthButtonClicked: function() {

@@ -48,7 +48,7 @@ const Indicator = new Lang.Class({
         this._item.actor.add(icon);
         this._item.actor.add(this._slider.actor, { expand: true });
         this._item.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
-            this._slider.startDragging(event);
+            return this._slider.startDragging(event);
         }));
         this._item.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
             return this._slider.onKeyPressEvent(actor, event);

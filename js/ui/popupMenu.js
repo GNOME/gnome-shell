@@ -126,7 +126,7 @@ const PopupBaseMenuItem = new Lang.Class({
 
     _onButtonReleaseEvent: function (actor, event) {
         this.activate(event);
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _onKeyPressEvent: function (actor, event) {
@@ -134,9 +134,9 @@ const PopupBaseMenuItem = new Lang.Class({
 
         if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
             this.activate(event);
-            return true;
+            return Clutter.EVENT_STOP;
         }
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onKeyFocusIn: function (actor) {
@@ -928,10 +928,10 @@ const PopupSubMenu = new Lang.Class({
         if (this.isOpen && event.get_key_symbol() == Clutter.KEY_Left) {
             this.close(BoxPointer.PopupAnimation.FULL);
             this.sourceActor._delegate.setActive(true);
-            return true;
+            return Clutter.EVENT_STOP;
         }
 
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     }
 });
 
@@ -1056,10 +1056,10 @@ const PopupSubMenuMenuItem = new Lang.Class({
         if (symbol == Clutter.KEY_Right) {
             this._setOpenState(true);
             this.menu.actor.navigate_focus(null, Gtk.DirectionType.DOWN, false);
-            return true;
+            return Clutter.EVENT_STOP;
         } else if (symbol == Clutter.KEY_Left && this._getOpenState()) {
             this._setOpenState(false);
-            return true;
+            return Clutter.EVENT_STOP;
         }
 
         return this.parent(actor, event);
@@ -1071,6 +1071,7 @@ const PopupSubMenuMenuItem = new Lang.Class({
 
     _onButtonReleaseEvent: function(actor) {
         this._setOpenState(!this._getOpenState());
+        return Clutter.EVENT_PROPAGATE;
     }
 });
 
@@ -1102,7 +1103,7 @@ const PopupMenuManager = new Lang.Class({
         if (source) {
             if (!menu.blockSourceEvents)
                 this._grabHelper.addActor(source);
-            menudata.enterId = source.connect('enter-event', Lang.bind(this, function() { this._onMenuSourceEnter(menu); }));
+            menudata.enterId = source.connect('enter-event', Lang.bind(this, function() { return this._onMenuSourceEnter(menu); }));
             menudata.focusInId = source.connect('key-focus-in', Lang.bind(this, function() { this._onMenuSourceEnter(menu); }));
         }
 
@@ -1164,13 +1165,13 @@ const PopupMenuManager = new Lang.Class({
 
     _onMenuSourceEnter: function(menu) {
         if (!this._grabHelper.grabbed)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         if (this._grabHelper.isActorGrabbed(menu.actor))
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         this._changeMenu(menu);
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onMenuDestroy: function(menu) {

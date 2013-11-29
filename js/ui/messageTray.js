@@ -187,7 +187,7 @@ const URLHighlighter = new Lang.Class({
             // The MessageTray doesn't actually hide us, so
             // we need to check for paint opacities as well.
             if (!actor.visible || actor.get_paint_opacity() == 0)
-                return false;
+                return Clutter.EVENT_PROPAGATE;
 
             // Keep Notification.actor from seeing this and taking
             // a pointer grab, which would block our button-release-event
@@ -196,7 +196,7 @@ const URLHighlighter = new Lang.Class({
         }));
         this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
             if (!actor.visible || actor.get_paint_opacity() == 0)
-                return false;
+                return Clutter.EVENT_PROPAGATE;
 
             let urlId = this._findUrlAtPos(event);
             if (urlId != -1) {
@@ -205,13 +205,13 @@ const URLHighlighter = new Lang.Class({
                     url = 'http://' + url;
 
                 Gio.app_info_launch_default_for_uri(url, global.create_app_launch_context());
-                return true;
+                return Clutter.EVENT_STOP;
             }
-            return false;
+            return Clutter.EVENT_PROPAGATE;
         }));
         this.actor.connect('motion-event', Lang.bind(this, function(actor, event) {
             if (!actor.visible || actor.get_paint_opacity() == 0)
-                return false;
+                return Clutter.EVENT_PROPAGATE;
 
             let urlId = this._findUrlAtPos(event);
             if (urlId != -1 && !this._cursorChanged) {
@@ -221,16 +221,17 @@ const URLHighlighter = new Lang.Class({
                 global.screen.set_cursor(Meta.Cursor.DEFAULT);
                 this._cursorChanged = false;
             }
-            return false;
+            return Clutter.EVENT_PROPAGATE;
         }));
         this.actor.connect('leave-event', Lang.bind(this, function() {
             if (!this.actor.visible || this.actor.get_paint_opacity() == 0)
-                return;
+                return Clutter.EVENT_PROPAGATE;
 
             if (this._cursorChanged) {
                 this._cursorChanged = false;
                 global.screen.set_cursor(Meta.Cursor.DEFAULT);
             }
+            return Clutter.EVENT_PROPAGATE;
         }));
     },
 
@@ -1523,9 +1524,9 @@ const SummaryItem = new Lang.Class({
     _onKeyPress: function(actor, event) {
         if (event.get_key_symbol() == Clutter.KEY_Up) {
             actor.emit('clicked', 1);
-            return true;
+            return Clutter.EVENT_STOP;
         }
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     prepareNotificationStackForShowing: function() {
@@ -1783,6 +1784,7 @@ const MessageTray = new Lang.Class({
             this._setClickedSummaryItem(null);
             this._updateState();
             actor.grab_key_focus();
+            return Clutter.EVENT_PROPAGATE;
         }));
         global.focus_manager.add_group(this.actor);
         this._summary = new St.BoxLayout({ style_class: 'message-tray-summary',
@@ -2010,10 +2012,10 @@ const MessageTray = new Lang.Class({
     _onNotificationKeyRelease: function(actor, event) {
         if (event.get_key_symbol() == Clutter.KEY_Escape && event.get_state() == 0) {
             this._closeNotification();
-            return true;
+            return Clutter.EVENT_STOP;
         }
 
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _closeNotification: function() {
@@ -2865,13 +2867,13 @@ const MessageTray = new Lang.Class({
         case Clutter.KEY_Escape:
             this._setClickedSummaryItem(null);
             this._updateState();
-            return true;
+            return Clutter.EVENT_STOP;
         case Clutter.KEY_Delete:
             this._clickedSummaryItem.source.destroy();
             this._escapeTray();
-            return true;
+            return Clutter.EVENT_STOP;
         }
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onSummaryBoxPointerUngrabbed: function() {

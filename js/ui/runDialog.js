@@ -128,7 +128,7 @@ const RunDialog = new Lang.Class({
                     !this.pushModal())
                     this.close();
 
-                return true;
+                return Clutter.EVENT_STOP;
             }
             if (symbol == Clutter.Tab) {
                 let text = o.get_text();
@@ -142,9 +142,9 @@ const RunDialog = new Lang.Class({
                     o.insert_text(postfix, -1);
                     o.set_cursor_position(text.length + postfix.length);
                 }
-                return true;
+                return Clutter.EVENT_STOP;
             }
-            return false;
+            return Clutter.EVENT_PROPAGATE;
         }));
     },
 

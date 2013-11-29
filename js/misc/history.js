@@ -89,7 +89,7 @@ const HistoryManager = new Lang.Class({
         } else if (symbol == Clutter.KEY_Down) {
             return this._setNextItem(entry.get_text());
         }
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _indexChanged: function() {

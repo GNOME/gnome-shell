@@ -132,14 +132,14 @@ function _setMenuAlignment(entry, stageX) {
 function _onButtonPressEvent(actor, event, entry) {
     if (entry.menu.isOpen) {
         entry.menu.close(BoxPointer.PopupAnimation.FULL);
-        return true;
+        return Clutter.EVENT_STOP;
     } else if (event.get_button() == 3) {
         let [stageX, stageY] = event.get_coords();
         _setMenuAlignment(entry, stageX);
         entry.menu.open(BoxPointer.PopupAnimation.FULL);
-        return true;
+        return Clutter.EVENT_STOP;
     }
-    return false;
+    return Clutter.EVENT_PROPAGATE;
 };
 
 function _onPopup(actor, entry) {

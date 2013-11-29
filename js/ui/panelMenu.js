@@ -137,29 +137,30 @@ const Button = new Lang.Class({
 
     _onButtonPress: function(actor, event) {
         if (!this.menu)
-            return;
+            return Clutter.EVENT_PROPAGATE;
 
         this.menu.toggle();
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onSourceKeyPress: function(actor, event) {
         if (!this.menu)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
             this.menu.toggle();
-            return true;
+            return Clutter.EVENT_STOP;
         } else if (symbol == Clutter.KEY_Escape && this.menu.isOpen) {
             this.menu.close();
-            return true;
+            return Clutter.EVENT_STOP;
         } else if (symbol == Clutter.KEY_Down) {
             if (!this.menu.isOpen)
                 this.menu.toggle();
             this.menu.actor.navigate_focus(this.actor, Gtk.DirectionType.DOWN, false);
-            return true;
+            return Clutter.EVENT_STOP;
         } else
-            return false;
+            return Clutter.EVENT_PROPAGATE;
     },
 
     _onVisibilityChanged: function() {
@@ -172,7 +173,7 @@ const Button = new Lang.Class({
 
     _onMenuKeyPress: function(actor, event) {
         if (global.focus_manager.navigate_from_event(event))
-            return true;
+            return Clutter.EVENT_STOP;
 
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Left || symbol == Clutter.KEY_Right) {
@@ -180,10 +181,10 @@ const Button = new Lang.Class({
             if (group) {
                 let direction = (symbol == Clutter.KEY_Left) ? Gtk.DirectionType.LEFT : Gtk.DirectionType.RIGHT;
                 group.navigate_focus(this.actor, direction, false);
-                return true;
+                return Clutter.EVENT_STOP;
             }
         }
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onOpenStateChanged: function(menu, open) {

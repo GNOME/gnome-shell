@@ -32,6 +32,7 @@ const CandidateArea = new Lang.Class({
             let j = i;
             box.connect('button-release-event', Lang.bind(this, function(actor, event) {
                 this.emit('candidate-clicked', j, event.get_button(), event.get_state());
+                return Clutter.EVENT_PROPAGATE;
             }));
         }
 

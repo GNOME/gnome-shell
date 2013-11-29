@@ -80,6 +80,7 @@ const AuthPrompt = new Lang.Class({
                                if (event.get_key_symbol() == Clutter.KEY_Escape) {
                                    this.cancel();
                                }
+                               return Clutter.EVENT_PROPAGATE;
                            }));
 
         this._userWell = new St.Bin({ x_fill: true,

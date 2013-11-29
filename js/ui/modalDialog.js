@@ -229,6 +229,7 @@ const ModalDialog = new Lang.Class({
 
     _onKeyPressEvent: function(object, event) {
         this._pressedKey = event.get_key_symbol();
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onKeyReleaseEvent: function(object, event) {
@@ -237,21 +238,21 @@ const ModalDialog = new Lang.Class({
 
         let symbol = event.get_key_symbol();
         if (symbol != pressedKey)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         let buttonInfo = this._buttonKeys[symbol];
         if (!buttonInfo)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         let button = buttonInfo['button'];
         let action = buttonInfo['action'];
 
         if (action && button.reactive) {
             action();
-            return true;
+            return Clutter.EVENT_STOP;
         }
 
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onGroupDestroy: function() {

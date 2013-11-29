@@ -148,7 +148,7 @@ const Overview = new Lang.Class({
         this._coverPane = new Clutter.Actor({ opacity: 0,
                                               reactive: true });
         Main.layoutManager.overviewGroup.add_child(this._coverPane);
-        this._coverPane.connect('event', Lang.bind(this, function (actor, event) { return true; }));
+        this._coverPane.connect('event', Lang.bind(this, function (actor, event) { return Clutter.EVENT_STOP; }));
 
         this._stack.add_actor(this._overview);
         Main.layoutManager.overviewGroup.add_child(this._stack);
@@ -379,6 +379,7 @@ const Overview = new Lang.Class({
 
     _onScrollEvent: function(actor, event) {
         this.emit('scroll-event', event);
+        return Clutter.EVENT_PROPAGATE;
     },
 
     addAction: function(action) {

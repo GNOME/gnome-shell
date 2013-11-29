@@ -415,7 +415,7 @@ const AllView = new Lang.Class({
 
     _onScroll: function(actor, event) {
         if (this._displayingPopup)
-            return true;
+            return Clutter.EVENT_STOP;
 
         let direction = event.get_scroll_direction();
         if (direction == Clutter.ScrollDirection.UP)
@@ -423,7 +423,7 @@ const AllView = new Lang.Class({
         else if (direction == Clutter.ScrollDirection.DOWN)
             this.goToPage(this._currentPage + 1);
 
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _onPan: function(action) {
@@ -454,17 +454,17 @@ const AllView = new Lang.Class({
 
     _onKeyPressEvent: function(actor, event) {
         if (this._displayingPopup)
-            return true;
+            return Clutter.EVENT_STOP;
 
         if (event.get_key_symbol() == Clutter.Page_Up) {
             this.goToPage(this._currentPage - 1);
-            return true;
+            return Clutter.EVENT_STOP;
         } else if (event.get_key_symbol() == Clutter.Page_Down) {
             this.goToPage(this._currentPage + 1);
-            return true;
+            return Clutter.EVENT_STOP;
         }
 
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _getItemId: function(item) {
@@ -1223,13 +1223,13 @@ const AppFolderPopup = new Lang.Class({
 
     _onKeyPress: function(actor, event) {
         if (!this._isOpen)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         if (event.get_key_symbol() != Clutter.KEY_Escape)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         this.popdown();
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     toggle: function() {
@@ -1374,9 +1374,9 @@ const AppIcon = new Lang.Class({
                 }));
         } else if (button == 3) {
             this.popupMenu();
-            return true;
+            return Clutter.EVENT_STOP;
         }
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onClicked: function(actor, button) {

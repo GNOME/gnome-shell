@@ -106,10 +106,10 @@ const _Draggable = new Lang.Class({
 
     _onButtonPress : function (actor, event) {
         if (event.get_button() != 1)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         if (Tweener.getTweenCount(actor))
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         this._buttonDown = true;
         this._grabActor();
@@ -118,7 +118,7 @@ const _Draggable = new Lang.Class({
         this._dragStartX = stageX;
         this._dragStartY = stageY;
 
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _grabActor: function() {
@@ -164,11 +164,11 @@ const _Draggable = new Lang.Class({
             } else if (this._dragActor != null && !this._animationInProgress) {
                 // Drag must have been cancelled with Esc.
                 this._dragComplete();
-                return true;
+                return Clutter.EVENT_STOP;
             } else {
                 // Drag has never started.
                 this._ungrabActor();
-                return false;
+                return Clutter.EVENT_PROPAGATE;
             }
         // We intercept MOTION event to figure out if the drag has started and to draw
         // this._dragActor under the pointer when dragging is in progress
@@ -184,11 +184,11 @@ const _Draggable = new Lang.Class({
             let symbol = event.get_key_symbol();
             if (symbol == Clutter.Escape) {
                 this._cancelDrag(event.get_time());
-                return true;
+                return Clutter.EVENT_STOP;
             }
         }
 
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     /**

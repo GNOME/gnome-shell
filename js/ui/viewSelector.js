@@ -268,7 +268,7 @@ const ViewSelector = new Lang.Class({
         // Ignore events while anything but the overview has
         // pushed a modal (system modals, looking glass, ...)
         if (Main.modalCount > 1)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         let modifiers = event.get_state();
         let symbol = event.get_key_symbol();
@@ -280,11 +280,11 @@ const ViewSelector = new Lang.Class({
                 this._showAppsButton.checked = false;
             else
                 Main.overview.hide();
-            return true;
+            return Clutter.EVENT_STOP;
         } else if (this._shouldTriggerSearch(symbol)) {
             this.startSearch(event);
         }
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _searchCancelled: function() {
@@ -400,7 +400,7 @@ const ViewSelector = new Lang.Class({
         if (symbol == Clutter.Escape) {
             if (this._isActivated()) {
                 this.reset();
-                return true;
+                return Clutter.EVENT_STOP;
             }
         } else if (this._searchActive) {
             let arrowNext, nextDirection;
@@ -414,18 +414,18 @@ const ViewSelector = new Lang.Class({
 
             if (symbol == Clutter.Tab) {
                 this._searchResults.navigateFocus(Gtk.DirectionType.TAB_FORWARD);
-                return true;
+                return Clutter.EVENT_STOP;
             } else if (symbol == Clutter.ISO_Left_Tab) {
                 this._focusTrap.can_focus = false;
                 this._searchResults.navigateFocus(Gtk.DirectionType.TAB_BACKWARD);
                 this._focusTrap.can_focus = true;
-                return true;
+                return Clutter.EVENT_STOP;
             } else if (symbol == Clutter.Down) {
                 this._searchResults.navigateFocus(Gtk.DirectionType.DOWN);
-                return true;
+                return Clutter.EVENT_STOP;
             } else if (symbol == arrowNext && this._text.position == -1) {
                 this._searchResults.navigateFocus(nextDirection);
-                return true;
+                return Clutter.EVENT_STOP;
             } else if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
                 // We can't connect to 'activate' here because search providers
                 // might want to do something with the modifiers in activateDefault.
@@ -434,10 +434,10 @@ const ViewSelector = new Lang.Class({
                     this._doSearch();
                 }
                 this._searchResults.activateDefault();
-                return true;
+                return Clutter.EVENT_STOP;
             }
         }
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onCapturedEvent: function(actor, event) {
@@ -452,7 +452,7 @@ const ViewSelector = new Lang.Class({
             }
         }
 
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _doSearch: function () {

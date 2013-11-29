@@ -111,12 +111,12 @@ const Slider = new Lang.Class({
     },
 
     _startDragging: function(actor, event) {
-        this.startDragging(event);
+        return this.startDragging(event);
     },
 
     startDragging: function(event) {
         if (this._dragging)
-            return false;
+            return Clutter.EVENT_PROPAGATE;
 
         this._dragging = true;
 
@@ -129,7 +129,7 @@ const Slider = new Lang.Class({
         let absX, absY;
         [absX, absY] = event.get_coords();
         this._moveHandle(absX, absY);
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _endDragging: function() {
@@ -143,7 +143,7 @@ const Slider = new Lang.Class({
 
             this.emit('drag-end');
         }
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     scroll: function(event) {
@@ -151,7 +151,7 @@ const Slider = new Lang.Class({
         let delta;
 
         if (event.is_pointer_emulated())
-            return;
+            return Clutter.EVENT_PROPAGATE;
 
         if (direction == Clutter.ScrollDirection.DOWN) {
             delta = -SLIDER_SCROLL_STEP;
@@ -168,17 +168,18 @@ const Slider = new Lang.Class({
 
         this.actor.queue_repaint();
         this.emit('value-changed', this._value);
+        return Clutter.EVENT_STOP;
     },
 
     _onScrollEvent: function(actor, event) {
-        this.scroll(event);
+        return this.scroll(event);
     },
 
     _motionEvent: function(actor, event) {
         let absX, absY;
         [absX, absY] = event.get_coords();
         this._moveHandle(absX, absY);
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     onKeyPressEvent: function (actor, event) {
@@ -189,9 +190,9 @@ const Slider = new Lang.Class({
             this.actor.queue_repaint();
             this.emit('value-changed', this._value);
             this.emit('drag-end');
-            return true;
+            return Clutter.EVENT_STOP;
         }
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _moveHandle: function(absX, absY) {

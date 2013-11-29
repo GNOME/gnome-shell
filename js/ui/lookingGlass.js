@@ -109,6 +109,7 @@ const AutoComplete = new Lang.Class({
             }
             this._lastTabTime = currTime;
         }
+        return Clutter.EVENT_PROPAGATE;
     },
 
     // Insert characters of text not already included in head at cursor position.  i.e., if text="abc" and head="a",
@@ -558,7 +559,7 @@ const Inspector = new Lang.Class({
     _onKeyPressEvent: function (actor, event) {
         if (event.get_key_symbol() == Clutter.Escape)
             this._close();
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _onButtonPressEvent: function (actor, event) {
@@ -567,7 +568,7 @@ const Inspector = new Lang.Class({
             this.emit('target', this._target, stageX, stageY);
         }
         this._close();
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _onScrollEvent: function (actor, event) {
@@ -601,12 +602,12 @@ const Inspector = new Lang.Class({
         default:
             break;
         }
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _onMotionEvent: function (actor, event) {
         this._update(event);
-        return true;
+        return Clutter.EVENT_STOP;
     },
 
     _update: function(event) {
@@ -828,7 +829,7 @@ const LookingGlass = new Lang.Class({
                 global.stage.set_key_focus(this._entry);
             }));
             this.actor.hide();
-            return true;
+            return Clutter.EVENT_STOP;
         }));
 
         let gcIcon = new St.Icon({ icon_name: 'gnome-fs-trash-full',
@@ -843,6 +844,7 @@ const LookingGlass = new Lang.Class({
                 Mainloop.source_remove(this._timeoutId);
                 return GLib.SOURCE_REMOVE;
            }));
+           return Clutter.EVENT_PROPAGATE;
         }));
 
         let notebook = new Notebook();
@@ -1064,7 +1066,7 @@ const LookingGlass = new Lang.Class({
             } else {
                 this.close();
             }
-            return true;
+            return Clutter.EVENT_STOP;
         }
         // Ctrl+PgUp and Ctrl+PgDown switches tabs in the notebook view
         if (modifierState & Clutter.ModifierType.CONTROL_MASK) {
@@ -1074,7 +1076,7 @@ const LookingGlass = new Lang.Class({
                 this._notebook.nextTab();
             }
         }
-        return false;
+        return Clutter.EVENT_PROPAGATE;
     },
 
     open : function() {

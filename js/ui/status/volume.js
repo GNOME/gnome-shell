@@ -42,7 +42,7 @@ const StreamSlider = new Lang.Class({
         this.item.actor.add(this._icon);
         this.item.actor.add(this._slider.actor, { expand: true });
         this.item.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
-            this._slider.startDragging(event);
+            return this._slider.startDragging(event);
         }));
         this.item.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
             return this._slider.onKeyPressEvent(actor, event);
@@ -94,7 +94,7 @@ const StreamSlider = new Lang.Class({
     },
 
     scroll: function(event) {
-        this._slider.scroll(event);
+        return this._slider.scroll(event);
     },
 
     setValue: function(value) {
@@ -276,7 +276,7 @@ const VolumeMenu = new Lang.Class({
     },
 
     scroll: function(event) {
-        this._output.scroll(event);
+        return this._output.scroll(event);
     },
 
     _onControlStateChanged: function() {
@@ -329,6 +329,6 @@ const Indicator = new Lang.Class({
     },
 
     _onScrollEvent: function(actor, event) {
-        this._volumeMenu.scroll(event);
+        return this._volumeMenu.scroll(event);
     }
 });
