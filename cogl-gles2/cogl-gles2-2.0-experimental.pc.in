@@ -9,5 +9,5 @@ Name: CoglGLES2
 Description: Cogl OpenGL ES 2.0 frontend api
 Version: @COGL_VERSION@
 Libs: -L${libdir} -lcogl-gles2
-Cflags: -I${includedir}/cogl-gles2
+Cflags: -I${includedir}/cogl
 Requires: ${requires}

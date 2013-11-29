@@ -29,5 +29,8 @@ coglgles2include_HEADERS = \
 	GLES2/gl2ext.h \
 	GLES2/gl2platform.h
 
+pc_files = cogl-gles2-1.0.pc \
+	   cogl-gles2-2.0-experimental.pc
+
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = cogl-gles2-experimental.pc
+pkgconfig_DATA = $(pc_files)
