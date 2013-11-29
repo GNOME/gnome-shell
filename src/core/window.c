@@ -6201,7 +6201,7 @@ meta_window_get_frame_rect (const MetaWindow *window,
  * area that we or the client adds to the window, or any area that the
  * client adds to draw a client-side shadow.
  *
- * Deprecated: 3.10: Use meta_window_get_frame_rect() instead.
+ * Deprecated: 3.12: Use meta_window_get_frame_rect() instead.
  */
 void
 meta_window_get_outer_rect (const MetaWindow *window,
