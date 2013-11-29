@@ -111,7 +111,7 @@ update_area (MetaSurfaceActor *self,
       if (shm_buffer)
         {
           CoglTexture2D *texture = COGL_TEXTURE_2D (priv->buffer->texture);
-          cogl_wayland_texture_2d_update_area (texture, shm_buffer, x, y, width, height);
+          cogl_wayland_texture_set_region_from_shm_buffer (texture, x, y, width, height, shm_buffer, 0, 0, 0, NULL);
         }
     }
   else
