@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+apiversion=1.0
+requires=@COGL_PKG_REQUIRES@ cogl-1.0
+
+Name: Cogl
+Description: A GStreamer integration library for Cogl
+Version: @COGL_1_VERSION@
+Libs: -L${libdir} -lcogl-gst
+Cflags: -I${includedir}/cogl
+Requires: ${requires}

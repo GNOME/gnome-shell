@@ -60,8 +60,8 @@ libgstcogl_la_LDFLAGS =	\
 	-avoid-version -no-undefined		\
 	$(NULL)
 
-
-pc_files = cogl-gst.pc
+pc_files = cogl-gst-1.0.pc \
+	   cogl-gst-2.0-experimental.pc
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)

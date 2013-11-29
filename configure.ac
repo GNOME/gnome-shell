@@ -1473,7 +1473,8 @@ cogl-path/Makefile
 cogl-path/cogl-path-1.0.pc
 cogl-path/cogl-path-2.0-experimental.pc
 cogl-gst/Makefile
-cogl-gst/cogl-gst.pc
+cogl-gst/cogl-gst-1.0.pc
+cogl-gst/cogl-gst-2.0-experimental.pc
 cogl-gles2/Makefile
 cogl-gles2/cogl-gles2-1.0.pc
 cogl-gles2/cogl-gles2-2.0-experimental.pc
