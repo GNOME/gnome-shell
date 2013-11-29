@@ -73,8 +73,8 @@
  * 1.x only api...
  */
 #ifndef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#include <cogl/cogl-clip-state.h>
 #include <cogl/cogl-enum-types.h>
+#include <cogl/deprecated/cogl-clip-state.h>
 #include <cogl/deprecated/cogl-vertex-buffer.h>
 #include <cogl/deprecated/cogl-fixed.h>
 #include <cogl/deprecated/cogl-material-compat.h>
