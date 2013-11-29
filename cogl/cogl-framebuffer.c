@@ -232,9 +232,14 @@ _cogl_framebuffer_clear_without_flush4f (CoglFramebuffer *framebuffer,
 }
 
 void
-_cogl_framebuffer_mark_mid_scene (CoglFramebuffer *framebuffer)
+_cogl_framebuffer_mark_clear_clip_dirty (CoglFramebuffer *framebuffer)
 {
   framebuffer->clear_clip_dirty = TRUE;
+}
+
+void
+_cogl_framebuffer_mark_mid_scene (CoglFramebuffer *framebuffer)
+{
   framebuffer->mid_scene = TRUE;
 }
 
@@ -399,6 +404,7 @@ cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
 cleared:
 
   _cogl_framebuffer_mark_mid_scene (framebuffer);
+  _cogl_framebuffer_mark_clear_clip_dirty (framebuffer);
 
   if (buffers & COGL_BUFFER_BIT_COLOR && buffers & COGL_BUFFER_BIT_DEPTH)
     {

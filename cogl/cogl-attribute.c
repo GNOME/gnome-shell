@@ -647,6 +647,7 @@ _cogl_flush_attributes_state (CoglFramebuffer *framebuffer,
    * in the journal. For this optimization to work we need to track
    * when the framebuffer really does get drawn to. */
   _cogl_framebuffer_mark_mid_scene (framebuffer);
+  _cogl_framebuffer_mark_clear_clip_dirty (framebuffer);
 
   if (G_UNLIKELY (!(flags & COGL_DRAW_SKIP_LEGACY_STATE)) &&
       G_UNLIKELY (ctx->legacy_state_set) &&
