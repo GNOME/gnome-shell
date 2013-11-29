@@ -5767,8 +5767,8 @@ meta_window_get_input_rect (const MetaWindow *window,
 /**
  * meta_window_client_rect_to_frame_rect:
  * @window: a #MetaWindow
- * @frame_rect: client rectangle in root coordinates
- * @client_rect: (out): location to store the computed corresponding frame bounds.
+ * @client_rect: client rectangle in root coordinates
+ * @frame_rect: (out): location to store the computed corresponding frame bounds.
  *
  * Converts a desired bounds of the client window - what is passed to meta_window_move_resize() -
  * into the corresponding bounds of the window frame (excluding invisible borders
@@ -5776,13 +5776,13 @@ meta_window_get_input_rect (const MetaWindow *window,
  */
 void
 meta_window_client_rect_to_frame_rect (MetaWindow    *window,
-                                       MetaRectangle *frame_rect,
-                                       MetaRectangle *client_rect)
+                                       MetaRectangle *client_rect,
+                                       MetaRectangle *frame_rect)
 {
-  if (!client_rect)
+  if (!frame_rect)
     return;
 
-  *client_rect = *frame_rect;
+  *frame_rect = *client_rect;
 
   /* The support for G_MAXINT here to mean infinity is a convenience for
    * constraints.c:get_size_limits() and not something that we provide
@@ -5793,24 +5793,24 @@ meta_window_client_rect_to_frame_rect (MetaWindow    *window,
       MetaFrameBorders borders;
       meta_frame_calc_borders (window->frame, &borders);
 
-      client_rect->x -= borders.visible.left;
-      client_rect->y -= borders.visible.top;
-      if (client_rect->width != G_MAXINT)
-        client_rect->width += borders.visible.left + borders.visible.right;
-      if (client_rect->height != G_MAXINT)
-        client_rect->height += borders.visible.top  + borders.visible.bottom;
+      frame_rect->x -= borders.visible.left;
+      frame_rect->y -= borders.visible.top;
+      if (frame_rect->width != G_MAXINT)
+        frame_rect->width += borders.visible.left + borders.visible.right;
+      if (frame_rect->height != G_MAXINT)
+        frame_rect->height += borders.visible.top  + borders.visible.bottom;
     }
   else
     {
       if (window->has_custom_frame_extents)
         {
           const GtkBorder *extents = &window->custom_frame_extents;
-          client_rect->x += extents->left;
-          client_rect->y += extents->top;
-          if (client_rect->width != G_MAXINT)
-            client_rect->width -= extents->left + extents->right;
-          if (client_rect->height != G_MAXINT)
-            client_rect->height -= extents->top + extents->bottom;
+          frame_rect->x += extents->left;
+          frame_rect->y += extents->top;
+          if (frame_rect->width != G_MAXINT)
+            frame_rect->width -= extents->left + extents->right;
+          if (frame_rect->height != G_MAXINT)
+            frame_rect->height -= extents->top + extents->bottom;
         }
     }
 }
