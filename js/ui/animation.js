@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const St = imports.gi.St;
@@ -59,7 +60,7 @@ const Animation = new Lang.Class({
 
     _update: function() {
         this._showFrame(this._frame + 1);
-        return true;
+        return GLib.SOURCE_CONTINUE;
     },
 
     _animationsLoaded: function() {

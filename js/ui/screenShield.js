@@ -752,7 +752,7 @@ const ScreenShield = new Lang.Class({
                              });
         }
 
-        return true;
+        return GLib.SOURCE_CONTINUE;
     },
 
     _onDragBegin: function() {
@@ -848,7 +848,7 @@ const ScreenShield = new Lang.Class({
                                                        Lang.bind(this, function() {
                                                            this._lockTimeoutId = 0;
                                                            this.lock(false);
-                                                           return false;
+                                                           return GLib.SOURCE_REMOVE;
                                                        }));
         }
 
@@ -1110,6 +1110,7 @@ const ScreenShield = new Lang.Class({
 
             Mainloop.timeout_add(1000 * MANUAL_FADE_TIME, Lang.bind(this, function() {
                 this._activateFade(this._shortLightbox, MANUAL_FADE_TIME);
+                return GLib.SOURCE_REMOVE;
             }));
         } else {
             if (params.fadeToBlack)

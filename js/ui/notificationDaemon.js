@@ -247,7 +247,7 @@ const FdoNotificationDaemon = new Lang.Class({
             Mainloop.idle_add(Lang.bind(this,
                                         function () {
                                             this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
-                                            return false;
+                                            return GLib.SOURCE_REMOVE;
                                         }));
             return invocation.return_value(GLib.Variant.new('(u)', [id]));
         }

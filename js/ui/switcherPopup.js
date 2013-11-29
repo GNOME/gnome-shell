@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -163,6 +164,7 @@ const SwitcherPopup = new Lang.Class({
                                                                Main.osdWindow.cancel();
                                                                this.actor.opacity = 255;
                                                                this._initialDelayTimeoutId = 0;
+                                                               return GLib.SOURCE_REMOVE;
                                                            }));
         return true;
     },
@@ -251,6 +253,7 @@ const SwitcherPopup = new Lang.Class({
     _mouseTimedOut: function() {
         this._motionTimeoutId = 0;
         this.mouseActive = true;
+        return GLib.SOURCE_REMOVE;
     },
 
     _popModal: function() {

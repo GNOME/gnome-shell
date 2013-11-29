@@ -1370,7 +1370,7 @@ const AppIcon = new Lang.Class({
                 Lang.bind(this, function() {
                     this._menuTimeoutId = 0;
                     this.popupMenu();
-                    return false;
+                    return GLib.SOURCE_REMOVE;
                 }));
         } else if (button == 3) {
             this.popupMenu();

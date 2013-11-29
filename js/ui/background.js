@@ -262,6 +262,7 @@ const BackgroundCache = new Lang.Class({
             if (params.onLoaded) {
                 GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
                     params.onLoaded(this._animation);
+                    return GLib.SOURCE_REMOVE;
                 }));
             }
         }
@@ -276,6 +277,7 @@ const BackgroundCache = new Lang.Class({
                            if (params.onLoaded) {
                                GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
                                    params.onLoaded(this._animation);
+                                   return GLib.SOURCE_REMOVE;
                                }));
                            }
                        }));
@@ -375,7 +377,7 @@ const Background = new Lang.Class({
 
         GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
             this.emit('loaded');
-            return false;
+            return GLib.SOURCE_REMOVE;
         }));
     },
 
@@ -517,7 +519,7 @@ const Background = new Lang.Class({
                                                       Lang.bind(this, function() {
                                                                     this._updateAnimationTimeoutId = 0;
                                                                     this._updateAnimation();
-                                                                    return false;
+                                                                    return GLib.SOURCE_REMOVE;
                                                                 }));
     },
 

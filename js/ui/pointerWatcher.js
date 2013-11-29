@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -110,7 +111,7 @@ const PointerWatcher = new Lang.Class({
 
     _onTimeout: function() {
         this._updatePointer();
-        return true;
+        return GLib.SOURCE_CONTINUE;
     },
 
     _updatePointer: function() {

@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -325,7 +326,7 @@ const WorkspaceThumbnail = new Lang.Class({
                                                 metaWin.get_compositor_private() &&
                                                 metaWin.get_workspace() == this.metaWorkspace)
                                                 this._doAddWindow(metaWin);
-                                            return false;
+                                            return GLib.SOURCE_REMOVE;
                                         }));
             return;
         }

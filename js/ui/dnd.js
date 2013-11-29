@@ -362,7 +362,7 @@ const _Draggable = new Lang.Class({
                 let result = motionFunc(dragEvent);
                 if (result != DragMotionResult.CONTINUE) {
                     global.screen.set_cursor(DRAG_CURSOR_MAP[result]);
-                    return false;
+                    return GLib.SOURCE_REMOVE;
                 }
             }
         }
@@ -380,13 +380,13 @@ const _Draggable = new Lang.Class({
                                                              0);
                 if (result != DragMotionResult.CONTINUE) {
                     global.screen.set_cursor(DRAG_CURSOR_MAP[result]);
-                    return false;
+                    return GLib.SOURCE_REMOVE;
                 }
             }
             target = target.get_parent();
         }
         global.screen.set_cursor(Meta.Cursor.DND_IN_DRAG);
-        return false;
+        return GLib.SOURCE_REMOVE;
     },
 
     _queueUpdateDragHover: function() {

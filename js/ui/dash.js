@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Signals = imports.signals;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
@@ -577,7 +578,7 @@ const Dash = new Lang.Class({
                         this._labelShowing = true;
                         item.showLabel();
                         this._showLabelTimeoutId = 0;
-                        return false;
+                        return GLib.SOURCE_REMOVE;
                     }));
                 if (this._resetHoverTimeoutId > 0) {
                     Mainloop.source_remove(this._resetHoverTimeoutId);
@@ -594,7 +595,7 @@ const Dash = new Lang.Class({
                     Lang.bind(this, function() {
                         this._labelShowing = false;
                         this._resetHoverTimeoutId = 0;
-                        return false;
+                        return GLib.SOURCE_REMOVE;
                     }));
             }
         }

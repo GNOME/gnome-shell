@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -41,7 +42,7 @@ function sleep(milliseconds) {
     Mainloop.timeout_add(milliseconds, function() {
                              if (cb)
                                  cb();
-                             return false;
+                             return GLib.SOURCE_REMOVE;
                          });
 
     return function(callback) {

@@ -252,7 +252,10 @@ const Keyboard = new Lang.Class({
 
         if (!this._showIdleId)
             this._showIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE,
-                                             Lang.bind(this, function() { this.Show(time); }));
+                                             Lang.bind(this, function() {
+                                                 this.Show(time);
+                                                 return GLib.SOURCE_REMOVE;
+                                             }));
     },
 
     _createLayersForGroup: function (gname) {
@@ -479,6 +482,7 @@ const Keyboard = new Lang.Class({
                                                    Lang.bind(this, function() {
                                                        this._clearKeyboardRestTimer();
                                                        this._show(monitor);
+                                                       return GLib.SOURCE_REMOVE;
                                                    }));
     },
 
@@ -504,6 +508,7 @@ const Keyboard = new Lang.Class({
                                                    Lang.bind(this, function() {
                                                        this._clearKeyboardRestTimer();
                                                        this._hide();
+                                                       return GLib.SOURCE_REMOVE;
                                                    }));
     },
 

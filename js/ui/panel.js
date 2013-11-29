@@ -628,6 +628,7 @@ const ActivitiesButton = new Lang.Class({
 
         Mainloop.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = 0;
+        return GLib.SOURCE_REMOVE;
     }
 });
 

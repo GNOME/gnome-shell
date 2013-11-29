@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -312,7 +313,7 @@ const AppSwitcherPopup = new Lang.Class({
             this._createThumbnails();
         this._thumbnailTimeoutId = 0;
         this._thumbnailsFocused = false;
-        return false;
+        return GLib.SOURCE_REMOVE;
     },
 
     _destroyThumbnails : function() {
@@ -547,7 +548,7 @@ const AppSwitcher = new Lang.Class({
                                                         Lang.bind(this, function () {
                                                                             this._enterItem(index);
                                                                             this._mouseTimeOutId = 0;
-                                                                            return false;
+                                                                            return GLib.SOURCE_REMOVE;
                                                         }));
         } else
            this._itemEntered(index);

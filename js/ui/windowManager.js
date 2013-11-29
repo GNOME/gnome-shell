@@ -106,11 +106,11 @@ const DisplayChangeDialog = new Lang.Class({
             /* mutter already takes care of failing at timeout */
             this._timeoutId = 0;
             this.close();
-            return false;
+            return GLib.SOURCE_REMOVE;
         }
 
         this._descriptionLabel.text = this._formatCountDown();
-        return true;
+        return GLib.SOURCE_CONTINUE;
     },
 
     _onFailure: function() {
@@ -278,7 +278,7 @@ const WorkspaceTracker = new Lang.Class({
         workspace._keepAliveId = Mainloop.timeout_add(duration, Lang.bind(this, function() {
             workspace._keepAliveId = 0;
             this._queueCheckWorkspaces();
-            return false;
+            return GLib.SOURCE_REMOVE;
         }));
     },
 
@@ -290,7 +290,7 @@ const WorkspaceTracker = new Lang.Class({
                 workspace._lastRemovedWindow = null;
                 this._queueCheckWorkspaces();
             }
-            return false;
+            return GLib.SOURCE_REMOVE;
         }));
     },
 

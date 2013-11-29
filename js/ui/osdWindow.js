@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const St = imports.gi.St;
 
 const Lang = imports.lang;
@@ -173,6 +174,7 @@ const OsdWindow = new Lang.Class({
                               Meta.enable_unredirect_for_screen(global.screen);
                            })
                          });
+        return GLib.SOURCE_REMOVE;
     },
 
     _reset: function() {

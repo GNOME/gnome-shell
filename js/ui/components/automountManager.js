@@ -77,7 +77,7 @@ const AutomountManager = new Lang.Class({
         }));
 
         this._mountAllId = 0;
-        return false;
+        return GLib.SOURCE_REMOVE;
     },
 
     _onDriveConnected: function() {
@@ -236,7 +236,7 @@ const AutomountManager = new Lang.Class({
     _allowAutorunExpire: function(volume) {
         Mainloop.timeout_add_seconds(AUTORUN_EXPIRE_TIMEOUT_SECS, function() {
             volume.allowAutorun = false;
-            return false;
+            return GLib.SOURCE_REMOVE;
         });
     }
 });

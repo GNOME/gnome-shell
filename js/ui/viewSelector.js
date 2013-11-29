@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -461,6 +462,8 @@ const ViewSelector = new Lang.Class({
 
         this._searchResults.setTerms(terms);
         this._showPage(this._searchPage);
+
+        return GLib.SOURCE_REMOVE;
     },
 
     getActivePage: function() {

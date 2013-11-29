@@ -675,7 +675,7 @@ const ChatSource = new Lang.Class({
 
         this._notifyTimeoutId = 0;
 
-        return false;
+        return GLib.SOURCE_REMOVE;
     },
 
     // This is called for both messages we send from
@@ -975,7 +975,7 @@ const ChatNotification = new Lang.Class({
 
         this._filterMessages();
 
-        return false;
+        return GLib.SOURCE_REMOVE;
     },
 
     appendAliasChange: function(oldAlias, newAlias) {
@@ -1013,7 +1013,7 @@ const ChatNotification = new Lang.Class({
 
         this.source.setChatState(Tp.ChannelChatState.PAUSED);
 
-        return false;
+        return GLib.SOURCE_REMOVE;
     },
 
     _onEntryChanged: function() {

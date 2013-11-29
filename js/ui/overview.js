@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Mainloop = imports.mainloop;
@@ -369,7 +370,7 @@ const Overview = new Lang.Class({
                                                                     this._windowSwitchTimestamp);
                                                 this.hide();
                                                 this._lastHoveredWindow = null;
-                                                return false;
+                                                return GLib.SOURCE_REMOVE;
                                             }));
         }
 

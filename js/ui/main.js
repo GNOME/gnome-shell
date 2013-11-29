@@ -609,7 +609,7 @@ function queueDeferredWork(workId) {
         _deferredTimeoutId = Mainloop.timeout_add_seconds(DEFERRED_TIMEOUT_SECONDS, function () {
             _runAllDeferredWork();
             _deferredTimeoutId = 0;
-            return false;
+            return GLib.SOURCE_REMOVE;
         });
     }
 }

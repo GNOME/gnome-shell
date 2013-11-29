@@ -411,7 +411,7 @@ const EndSessionDialog = new Lang.Class({
                 this._secondsLeft = this._totalSecondsToStayOpen - secondsElapsed;
                 if (this._secondsLeft > 0) {
                     this._sync();
-                    return true;
+                    return GLib.SOURCE_CONTINUE;
                 }
 
                 let dialogContent = DialogContent[this._type];
@@ -419,7 +419,7 @@ const EndSessionDialog = new Lang.Class({
                 this._confirm(button.signal);
                 this._timerId = 0;
 
-                return false;
+                return GLib.SOURCE_REMOVE;
             }));
     },
 

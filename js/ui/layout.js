@@ -622,7 +622,7 @@ const LayoutManager = new Lang.Class({
         // when the system is bogged down
         GLib.idle_add(GLib.PRIORITY_LOW, Lang.bind(this, function() {
             this._startupAnimation();
-            return false;
+            return GLib.SOURCE_REMOVE;
         }));
     },
 
@@ -1039,7 +1039,7 @@ const LayoutManager = new Lang.Class({
             workspace.set_builtin_struts(struts);
         }
 
-        return false;
+        return GLib.SOURCE_REMOVE;
     }
 });
 Signals.addSignalMethods(LayoutManager.prototype);

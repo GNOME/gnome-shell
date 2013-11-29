@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const St = imports.gi.St;
@@ -94,7 +95,7 @@ const ATIndicator = new Lang.Class({
 
         this.actor.visible = alwaysShow || items.some(function(f) { return !!f.state; });
 
-        return false;
+        return GLib.SOURCE_REMOVE;
     },
 
     _queueSyncMenuVisibility: function() {

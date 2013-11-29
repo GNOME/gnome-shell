@@ -250,6 +250,7 @@ const ShellUserVerifier = new Lang.Class({
                                                        Lang.bind(this, function() {
                                                            this._messageQueueTimeoutId = 0;
                                                            this._queueMessageTimeout();
+                                                           return GLib.SOURCE_REMOVE;
                                                        }));
     },
 

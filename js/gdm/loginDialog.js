@@ -644,7 +644,7 @@ const LoginDialog = new Lang.Class({
                            onComplete: function() {
                                Mainloop.idle_add(Lang.bind(this, function() {
                                    this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
-                                   return false;
+                                   return GLib.SOURCE_REMOVE;
                                }));
                            },
                            onCompleteScope: this });
@@ -699,6 +699,7 @@ const LoginDialog = new Lang.Class({
                                                                      function() {
                                                                          this._timedLoginAnimationTime -= _TIMED_LOGIN_IDLE_THRESHOLD;
                                                                          hold.release();
+                                                                         return GLib.SOURCE_REMOVE;
                                                                      });
         return hold;
     },

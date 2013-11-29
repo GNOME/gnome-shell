@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta  = imports.gi.Meta;
@@ -156,6 +157,7 @@ const WorkspaceSwitcherPopup = new Lang.Class({
                                             onComplete: function() { this.destroy(); },
                                             onCompleteScope: this
                                            });
+        return GLib.SOURCE_REMOVE;
     },
 
     destroy: function() {

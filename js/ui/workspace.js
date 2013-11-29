@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -472,7 +473,7 @@ const WindowOverlay = new Lang.Class({
             Mainloop.idle_add(Lang.bind(this,
                                         function() {
                                             this._windowClone.emit('selected');
-                                            return false;
+                                            return GLib.SOURCE_REMOVE;
                                         }));
         }
     },
@@ -554,7 +555,7 @@ const WindowOverlay = new Lang.Class({
             !this.closeButton.has_pointer)
             this._animateInvisible();
 
-        return false;
+        return GLib.SOURCE_REMOVE;
     },
 
     hideCloseButton: function() {
@@ -1222,18 +1223,18 @@ const Workspace = new Lang.Class({
             // store current cursor position
             this._cursorX = x;
             this._cursorY = y;
-            return true;
+            return GLib.SOURCE_CONTINUE;
         }
 
         let actorUnderPointer = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
         for (let i = 0; i < this._windows.length; i++) {
             if (this._windows[i].actor == actorUnderPointer)
-                return true;
+                return GLib.SOURCE_CONTINUE;
         }
 
         this._recalculateWindowPositions(WindowPositionFlags.ANIMATE);
         this._repositionWindowsId = 0;
-        return false;
+        return GLib.SOURCE_REMOVE;
     },
 
     _doRemoveWindow : function(metaWin) {
@@ -1308,7 +1309,7 @@ const Workspace = new Lang.Class({
                                                 metaWin.get_compositor_private() &&
                                                 metaWin.get_workspace() == this.metaWorkspace)
                                                 this._doAddWindow(metaWin);
-                                            return false;
+                                            return GLib.SOURCE_REMOVE;
                                         }));
             return;
         }

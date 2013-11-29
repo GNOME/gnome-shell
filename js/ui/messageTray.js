@@ -1988,23 +1988,23 @@ const MessageTray = new Lang.Class({
         this._trayDwellTimeoutId = 0;
 
         if (Main.layoutManager.bottomMonitor.inFullscreen)
-            return false;
+            return GLib.SOURCE_REMOVE;
 
         // We don't want to open the tray when a modal dialog
         // is up, so we check the modal count for that. When we are in the
         // overview we have to take the overview's modal push into account
         if (Main.modalCount > (Main.overview.visible ? 1 : 0))
-            return false;
+            return GLib.SOURCE_REMOVE;
 
         // If the user interacted with the focus window since we started the tray
         // dwell (by clicking or typing), don't activate the message tray
         let focusWindow = global.display.focus_window;
         let currentUserTime = focusWindow ? focusWindow.user_time : 0;
         if (currentUserTime != this._trayDwellUserTime)
-            return false;
+            return GLib.SOURCE_REMOVE;
 
         this.openTray();
-        return false;
+        return GLib.SOURCE_REMOVE;
     },
 
     _onNotificationKeyRelease: function(actor, event) {
@@ -2334,7 +2334,7 @@ const MessageTray = new Lang.Class({
             this._updateNotificationTimeout(0);
             this._updateState();
         }
-        return false;
+        return GLib.SOURCE_REMOVE;
     },
 
     _escapeTray: function() {
@@ -2667,7 +2667,7 @@ const MessageTray = new Lang.Class({
 
         this._lastSeenMouseX = x;
         this._lastSeenMouseY = y;
-        return false;
+        return GLib.SOURCE_REMOVE;
     },
 
     _hideNotification: function(animate) {
