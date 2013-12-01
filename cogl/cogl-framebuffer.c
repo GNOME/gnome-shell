@@ -165,6 +165,13 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
 }
 
 void
+_cogl_framebuffer_set_internal_format (CoglFramebuffer *framebuffer,
+                                       CoglPixelFormat internal_format)
+{
+  framebuffer->internal_format = internal_format;
+}
+
+void
 _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
 {
   CoglContext *ctx = framebuffer->context;

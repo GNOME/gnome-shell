@@ -802,27 +802,29 @@ EXIT:
 }
 
 static CoglBool
-get_texture_bits_via_offscreen (CoglTexture    *texture,
-                                int             x,
-                                int             y,
-                                int             width,
-                                int             height,
-                                uint8_t         *dst_bits,
-                                unsigned int    dst_rowstride,
-                                CoglPixelFormat dst_format)
+get_texture_bits_via_offscreen (CoglTexture *meta_texture,
+                                CoglTexture *sub_texture,
+                                int x,
+                                int y,
+                                int width,
+                                int height,
+                                uint8_t *dst_bits,
+                                unsigned int dst_rowstride,
+                                CoglPixelFormat closest_format)
 {
-  CoglContext *ctx = texture->context;
+  CoglContext *ctx = sub_texture->context;
   CoglOffscreen *offscreen;
   CoglFramebuffer *framebuffer;
   CoglBitmap *bitmap;
   CoglBool ret;
   CoglError *ignore_error = NULL;
+  CoglPixelFormat real_format;
 
   if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     return FALSE;
 
   offscreen = _cogl_offscreen_new_with_texture_full
-                                      (texture,
+                                      (sub_texture,
                                        COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL,
                                        0);
 
@@ -833,9 +835,23 @@ get_texture_bits_via_offscreen (CoglTexture    *texture,
       return FALSE;
     }
 
+  /* Currently the framebuffer's internal format corresponds to the
+   * internal format of @sub_texture but in the case of atlas textures
+   * it's possible that this format doesn't reflect the correct
+   * premultiplied alpha status or what components are valid since
+   * atlas textures are always stored in a shared texture with a
+   * format of _RGBA_8888.
+   *
+   * Here we override the internal format to make sure the
+   * framebuffer's internal format matches the internal format of the
+   * parent meta_texture instead.
+   */
+  real_format = _cogl_texture_get_format (meta_texture);
+  _cogl_framebuffer_set_internal_format (framebuffer, real_format);
+
   bitmap = cogl_bitmap_new_for_data (ctx,
                                      width, height,
-                                     dst_format,
+                                     closest_format,
                                      dst_rowstride,
                                      dst_bits);
   ret = _cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
@@ -904,6 +920,7 @@ get_texture_bits_via_copy (CoglTexture *texture,
 
 typedef struct
 {
+  CoglTexture *meta_texture;
   int orig_width;
   int orig_height;
   CoglBitmap *target_bmp;
@@ -913,17 +930,18 @@ typedef struct
 } CoglTextureGetData;
 
 static void
-texture_get_cb (CoglTexture *texture,
+texture_get_cb (CoglTexture *subtexture,
                 const float *subtexture_coords,
                 const float *virtual_coords,
                 void        *user_data)
 {
   CoglTextureGetData *tg_data = user_data;
-  CoglPixelFormat format = cogl_bitmap_get_format (tg_data->target_bmp);
-  int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
+  CoglTexture *meta_texture = tg_data->meta_texture;
+  CoglPixelFormat closest_format = cogl_bitmap_get_format (tg_data->target_bmp);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (closest_format);
   unsigned int rowstride = cogl_bitmap_get_rowstride (tg_data->target_bmp);
-  int subtexture_width = cogl_texture_get_width (texture);
-  int subtexture_height = cogl_texture_get_height (texture);
+  int subtexture_width = cogl_texture_get_width (subtexture);
+  int subtexture_height = cogl_texture_get_height (subtexture);
 
   int x_in_subtexture = (int) (0.5 + subtexture_width * subtexture_coords[0]);
   int y_in_subtexture = (int) (0.5 + subtexture_height * subtexture_coords[1]);
@@ -944,33 +962,35 @@ texture_get_cb (CoglTexture *texture,
   /* If we can read everything as a single slice, then go ahead and do that
    * to avoid allocating an FBO. We'll leave it up to the GL implementation to
    * do glGetTexImage as efficiently as possible. (GLES doesn't have that,
-   * so we'll fall through) */
+   * so we'll fall through)
+   */
   if (x_in_subtexture == 0 && y_in_subtexture == 0 &&
       width == subtexture_width && height == subtexture_height)
     {
-      if (texture->vtable->get_data (texture,
-                                     format,
-                                     rowstride,
-                                     dst_bits))
+      if (subtexture->vtable->get_data (subtexture,
+                                        closest_format,
+                                        rowstride,
+                                        dst_bits))
         return;
     }
 
   /* Next best option is a FBO and glReadPixels */
-  if (get_texture_bits_via_offscreen (texture,
+  if (get_texture_bits_via_offscreen (meta_texture,
+                                      subtexture,
                                       x_in_subtexture, y_in_subtexture,
                                       width, height,
                                       dst_bits,
                                       rowstride,
-                                      format))
+                                      closest_format))
     return;
 
   /* Getting ugly: read the entire texture, copy out the part we want */
-  if (get_texture_bits_via_copy (texture,
+  if (get_texture_bits_via_copy (subtexture,
                                  x_in_subtexture, y_in_subtexture,
                                  width, height,
                                  dst_bits,
                                  rowstride,
-                                 format))
+                                 closest_format))
     return;
 
   /* No luck, the caller will fall back to the draw-to-backbuffer and
@@ -1084,6 +1104,7 @@ cogl_texture_get_data (CoglTexture *texture,
                                           &ignore_error);
   if (tg_data.target_bits)
     {
+      tg_data.meta_texture = texture;
       tg_data.orig_width = tex_width;
       tg_data.orig_height = tex_height;
       tg_data.target_bmp = target_bmp;
