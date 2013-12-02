@@ -303,7 +303,7 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
   struct wl_resource *resource, *kr;
   uint32_t serial;
 
-  if (pointer->focus == surface)
+  if (pointer->focus == surface && pointer->focus_resource != NULL)
     return;
 
   resource = pointer->focus_resource;

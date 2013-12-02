@@ -501,7 +501,7 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
   struct wl_resource *resource;
   uint32_t serial;
 
-  if (keyboard->focus == surface)
+  if (keyboard->focus == surface && keyboard->focus_resource != NULL)
     return;
 
   resource = keyboard->focus_resource;
