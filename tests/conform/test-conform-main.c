@@ -59,7 +59,7 @@ main (int argc, char **argv)
   UNPORTED_TEST (test_readpixels);
 #ifdef COGL_HAS_COGL_PATH_SUPPORT
   ADD_TEST (test_path, 0, 0);
-  ADD_TEST (test_path_clip, 0, TEST_KNOWN_FAILURE);
+  ADD_TEST (test_path_clip, 0, 0);
 #endif
   ADD_TEST (test_depth_test, 0, 0);
   ADD_TEST (test_color_mask, 0, 0);

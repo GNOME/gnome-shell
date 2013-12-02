@@ -278,7 +278,7 @@ _cogl_clip_stack_push_primitive (CoglClipStack *stack,
   entry->bounds_y2 = bounds_y2;
 
   cogl_matrix_entry_get (modelview_entry, &modelview);
-  cogl_matrix_entry_get (modelview_entry, &projection);
+  cogl_matrix_entry_get (projection_entry, &projection);
 
   get_transformed_corners (bounds_x1, bounds_y1, bounds_x2, bounds_y2,
                            &modelview,
