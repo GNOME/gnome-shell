@@ -76,7 +76,9 @@ test_sources += test-fence.c
 endif
 
 if BUILD_COGL_PATH
-test_sources += test-path.c
+test_sources += \
+	test-path.c \
+	test-path-clip.c
 endif
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
