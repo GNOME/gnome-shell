@@ -79,9 +79,16 @@ const UserWidgetLabel = new Lang.Class({
         this._userLoadedId = this._user.connect('notify::is-loaded', Lang.bind(this, this._updateUser));
         this._userChangedId = this._user.connect('changed', Lang.bind(this, this._updateUser));
         this._updateUser();
+
+        // We can't override the destroy vfunc because that might be called during
+        // object finalization, and we can't call any JS inside a GC finalize callback,
+        // so we use a signal, that will be disconnected by GObject the first time
+        // the actor is destroyed (which is guaranteed to be as part of a normal
+        // destroy() call from JS, possibly from some ancestor)
+        this.connect('destroy', Lang.bind(this, this._onDestroy));
     },
 
-    vfunc_destroy: function() {
+    _onDestroy: function() {
         if (this._userLoadedId != 0) {
             this._user.disconnect(this._userLoadedId);
             this._userLoadedId = 0;
@@ -91,8 +98,6 @@ const UserWidgetLabel = new Lang.Class({
             this._user.disconnect(this._userChangedId);
             this._userChangedId = 0;
         }
-
-        this.parent();
     },
 
     vfunc_allocate: function(box, flags) {
