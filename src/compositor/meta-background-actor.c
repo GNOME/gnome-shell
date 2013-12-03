@@ -119,26 +119,6 @@ meta_background_actor_get_preferred_height (ClutterActor *actor,
     *natural_height_p = height;
 }
 
-static gboolean
-meta_background_actor_get_paint_volume (ClutterActor       *actor,
-                                        ClutterPaintVolume *volume)
-{
-  ClutterContent *content;
-  gfloat width, height;
-
-  content = clutter_actor_get_content (actor);
-
-  if (!content)
-    return FALSE;
-
-  clutter_content_get_preferred_size (content, &width, &height);
-
-  clutter_paint_volume_set_width (volume, width);
-  clutter_paint_volume_set_height (volume, height);
-
-  return TRUE;
-}
-
 static void
 meta_background_actor_class_init (MetaBackgroundActorClass *klass)
 {
@@ -151,7 +131,6 @@ meta_background_actor_class_init (MetaBackgroundActorClass *klass)
 
   actor_class->get_preferred_width = meta_background_actor_get_preferred_width;
   actor_class->get_preferred_height = meta_background_actor_get_preferred_height;
-  actor_class->get_paint_volume = meta_background_actor_get_paint_volume;
 }
 
 static void
