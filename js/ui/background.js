@@ -409,27 +409,26 @@ const Background = new Lang.Class({
         this._fileWatches[filename] = signalId;
     },
 
-    _addImage: function(content, index, filename) {
-        content.brightness = this._brightness;
-        content.vignette_sharpness = this._vignetteSharpness;
+    _ensureImage: function(index) {
+        if (this._images[index])
+            return;
 
         let actor = new Meta.BackgroundActor();
-        actor.content = content;
 
         // The background pattern is the first actor in
         // the group, and all images should be above that.
         this.actor.insert_child_at_index(actor, index + 1);
-
         this._images[index] = actor;
-        this._watchCacheFile(filename);
     },
 
-    _updateImage: function(content, index, filename) {
+    _updateImage: function(index, content, filename) {
         content.brightness = this._brightness;
         content.vignette_sharpness = this._vignetteSharpness;
 
-        this._cache.removeImageContent(this._images[index].content);
-        this._images[index].content = content;
+        let image = this._images[index];
+        if (image.content)
+            this._cache.removeImageContent(content);
+        image.content = content;
         this._watchCacheFile(filename);
     },
 
@@ -477,11 +476,8 @@ const Background = new Lang.Class({
                                                   return;
                                               }
 
-                                              if (!this._images[i]) {
-                                                  this._addImage(content, i, files[i]);
-                                              } else {
-                                                  this._updateImage(content, i, files[i]);
-                                              }
+                                              this._ensureImage(i);
+                                              this._updateImage(i, content, files[i]);
 
                                               if (numPendingImages == 0) {
                                                   this._setLoaded();
@@ -543,8 +539,10 @@ const Background = new Lang.Class({
                                       filename: filename,
                                       cancellable: this._cancellable,
                                       onFinished: Lang.bind(this, function(content) {
-                                          if (content)
-                                              this._addImage(content, 0, filename);
+                                          if (content) {
+                                              this._ensureImage(0);
+                                              this._updateImage(0, content, filename);
+                                          }
                                           this._setLoaded();
                                       })
                                     });
