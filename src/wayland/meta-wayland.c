@@ -500,11 +500,9 @@ const static struct wl_compositor_interface meta_wayland_compositor_interface = 
   meta_wayland_compositor_create_region
 };
 
-static void
-paint_finished_cb (ClutterActor *self, void *user_data)
+void
+meta_wayland_compositor_paint_finished (MetaWaylandCompositor *compositor)
 {
-  MetaWaylandCompositor *compositor = user_data;
-
   while (!wl_list_empty (&compositor->frame_callbacks))
     {
       MetaWaylandFrameCallback *callback =
@@ -711,8 +709,6 @@ meta_wayland_init (void)
   compositor->outputs = meta_wayland_compositor_update_outputs (compositor, monitors);
 
   compositor->stage = meta_wayland_stage_new ();
-  g_signal_connect_after (compositor->stage, "paint",
-                          G_CALLBACK (paint_finished_cb), compositor);
   g_signal_connect (compositor->stage, "destroy",
                     G_CALLBACK (stage_destroy_cb), NULL);
 

@@ -109,5 +109,6 @@ void                    meta_wayland_buffer_reference           (MetaWaylandBuff
 
 void                    meta_wayland_compositor_update          (MetaWaylandCompositor *compositor,
                                                                  const ClutterEvent    *event);
+void                    meta_wayland_compositor_paint_finished  (MetaWaylandCompositor *compositor);
 
 #endif /* META_WAYLAND_PRIVATE_H */

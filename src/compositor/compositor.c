@@ -637,6 +637,8 @@ after_stage_paint (ClutterStage *stage,
 
   for (l = info->windows; l; l = l->next)
     meta_window_actor_post_paint (l->data);
+
+  meta_wayland_compositor_paint_finished (meta_wayland_compositor_get_default ());
 }
 
 static void
