@@ -113,9 +113,9 @@ const BackgroundCache = new Lang.Class({
 
     _removeContent: function(contentList, content) {
         let index = contentList.indexOf(content);
-
-        if (index >= 0)
-            contentList.splice(index, 1);
+        if (index < 0)
+            throw new Error("Trying to remove invalid content: " + content);
+        contentList.splice(index, 1);
     },
 
     removePatternContent: function(content) {
