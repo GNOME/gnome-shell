@@ -1312,6 +1312,9 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
       return;
     }
 
+  if (redraw_clip->is_empty)
+    return;
+
   _clutter_paint_volume_get_stage_paint_box (redraw_clip,
                                              stage,
                                              &bounding_box);
