@@ -135,13 +135,13 @@ LT_INIT([disable-static])
 AC_HEADER_STDC
 
 # required versions for dependencies
-m4_define([glib_req_version],           [2.37.3])
+m4_define([glib_req_version],           [2.39.0])
 m4_define([cogl_req_version],           [1.17.5])
 m4_define([json_glib_req_version],      [0.12.0])
 m4_define([atk_req_version],            [2.5.3])
 m4_define([cairo_req_version],          [1.12.0])
 m4_define([pango_req_version],          [1.30])
-m4_define([gi_req_version],             [0.9.5])
+m4_define([gi_req_version],             [1.39.0])
 m4_define([uprof_req_version],          [0.3])
 m4_define([gtk_doc_req_version],        [1.20])
 m4_define([xcomposite_req_version],     [0.4])
