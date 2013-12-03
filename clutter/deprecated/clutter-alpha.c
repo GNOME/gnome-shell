@@ -915,7 +915,7 @@ clutter_alpha_register_func (ClutterAlphaFunc func,
 }
 
 /**
- * clutter_alpha_register_closure:
+ * clutter_alpha_register_closure: (rename-to clutter_alpha_register_func)
  * @closure: a #GClosure
  *
  * #GClosure variant of clutter_alpha_register_func().
@@ -924,8 +924,6 @@ clutter_alpha_register_func (ClutterAlphaFunc func,
  * to be used by clutter_alpha_set_mode() or by #ClutterAnimation.
  *
  * The logical id is always greater than %CLUTTER_ANIMATION_LAST.
- *
- * Rename to: clutter_alpha_register_func
  *
  * Return value: the logical id of the alpha function
  *

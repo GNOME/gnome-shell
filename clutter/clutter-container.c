@@ -393,7 +393,7 @@ clutter_container_add (ClutterContainer *container,
 }
 
 /**
- * clutter_container_add_actor:
+ * clutter_container_add_actor: (virtual add)
  * @container: a #ClutterContainer
  * @actor: the first #ClutterActor to add
  *
@@ -405,8 +405,6 @@ clutter_container_add (ClutterContainer *container,
  * This function will call #ClutterContainerIface.add(), which is a
  * deprecated virtual function. The default implementation will
  * call clutter_actor_add_child().
- *
- * Virtual: add
  *
  * Since: 0.4
  *
@@ -485,7 +483,7 @@ clutter_container_remove (ClutterContainer *container,
 }
 
 /**
- * clutter_container_remove_actor:
+ * clutter_container_remove_actor: (virtual remove)
  * @container: a #ClutterContainer
  * @actor: a #ClutterActor
  *
@@ -497,8 +495,6 @@ clutter_container_remove (ClutterContainer *container,
  * This function will call #ClutterContainerIface.remove(), which is a
  * deprecated virtual function. The default implementation will call
  * clutter_actor_remove_child().
- *
- * Virtual: remove
  *
  * Since: 0.4
  *
@@ -672,7 +668,7 @@ clutter_container_foreach_with_internals (ClutterContainer *container,
 }
 
 /**
- * clutter_container_raise_child:
+ * clutter_container_raise_child: (virtual raise)
  * @container: a #ClutterContainer
  * @actor: the actor to raise
  * @sibling: (allow-none): the sibling to raise to, or %NULL to raise
@@ -683,8 +679,6 @@ clutter_container_foreach_with_internals (ClutterContainer *container,
  * This function calls the #ClutterContainerIface.raise() virtual function,
  * which has been deprecated. The default implementation will call
  * clutter_actor_set_child_above_sibling().
- *
- * Virtual: raise
  *
  * Since: 0.6
  *
@@ -743,7 +737,7 @@ clutter_container_raise_child (ClutterContainer *container,
 }
 
 /**
- * clutter_container_lower_child:
+ * clutter_container_lower_child: (virtual lower)
  * @container: a #ClutterContainer
  * @actor: the actor to raise
  * @sibling: (allow-none): the sibling to lower to, or %NULL to lower
@@ -754,8 +748,6 @@ clutter_container_raise_child (ClutterContainer *container,
  * This function calls the #ClutterContainerIface.lower() virtual function,
  * which has been deprecated. The default implementation will call
  * clutter_actor_set_child_below_sibling().
- *
- * Virtual: lower
  *
  * Since: 0.6
  *

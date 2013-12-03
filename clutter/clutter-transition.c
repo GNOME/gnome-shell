@@ -509,7 +509,7 @@ clutter_transition_set_value (ClutterTransition *transition,
 }
 
 /**
- * clutter_transition_set_from_value:
+ * clutter_transition_set_from_value: (rename-to clutter_transition_set_from)
  * @transition: a #ClutterTransition
  * @value: a #GValue with the initial value of the transition
  *
@@ -528,8 +528,6 @@ clutter_transition_set_value (ClutterTransition *transition,
  *
  * This function is meant to be used by language bindings.
  *
- * Rename to: clutter_transition_set_from
- *
  * Since: 1.12
  */
 void
@@ -545,7 +543,7 @@ clutter_transition_set_from_value (ClutterTransition *transition,
 }
 
 /**
- * clutter_transition_set_to_value:
+ * clutter_transition_set_to_value: (rename-to clutter_transition_set_to)
  * @transition: a #ClutterTransition
  * @value: a #GValue with the final value of the transition
  *
@@ -563,8 +561,6 @@ clutter_transition_set_from_value (ClutterTransition *transition,
  * as the interval's #ClutterInterval:value-type property.
  *
  * This function is meant to be used by language bindings.
- *
- * Rename to: clutter_transition_set_to
  *
  * Since: 1.12
  */

@@ -1099,7 +1099,7 @@ cally_actor_add_action (CallyActor      *cally_actor,
 }
 
 /**
- * cally_actor_add_action_full:
+ * cally_actor_add_action_full: (rename-to cally_actor_add_action)
  * @cally_actor: a #CallyActor
  * @action_name: the action name
  * @action_description: the action description
@@ -1111,8 +1111,6 @@ cally_actor_add_action (CallyActor      *cally_actor,
  * Adds a new action to be accessed with the #AtkAction interface.
  *
  * Return value: added action id, or -1 if failure
- *
- * Rename to: cally_actor_add_action
  *
  * Since: 1.6
  */

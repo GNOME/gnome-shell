@@ -953,7 +953,7 @@ _clutter_threads_dispatch_free (gpointer data)
 }
 
 /**
- * clutter_threads_add_idle_full:
+ * clutter_threads_add_idle_full: (rename-to clutter_threads_add_idle)
  * @priority: the priority of the timeout source. Typically this will be in the
  *    range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE
  * @func: function to call
@@ -1041,8 +1041,6 @@ _clutter_threads_dispatch_free (gpointer data)
  *                                  NULL);
  * ]|
  *
- * Rename to: clutter_threads_add_idle
- *
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 0.4
@@ -1091,7 +1089,7 @@ clutter_threads_add_idle (GSourceFunc func,
 }
 
 /**
- * clutter_threads_add_timeout_full:
+ * clutter_threads_add_timeout_full: (rename-to clutter_threads_add_timeout)
  * @priority: the priority of the timeout source. Typically this will be in the
  *            range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
  * @interval: the time between calls to the function, in milliseconds
@@ -1112,8 +1110,6 @@ clutter_threads_add_idle (GSourceFunc func,
  * "keep up" with the interval.
  *
  * See also clutter_threads_add_idle_full().
- *
- * Rename to: clutter_threads_add_timeout
  *
  * Return value: the ID (greater than 0) of the event source.
  *

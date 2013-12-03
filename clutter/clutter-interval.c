@@ -885,14 +885,12 @@ clutter_interval_get_value_type (ClutterInterval *interval)
 }
 
 /**
- * clutter_interval_set_initial_value:
+ * clutter_interval_set_initial_value: (rename-to clutter_interval_set_initial)
  * @interval: a #ClutterInterval
  * @value: a #GValue
  *
  * Sets the initial value of @interval to @value. The value is copied
  * inside the #ClutterInterval.
- *
- * Rename to: clutter_interval_set_initial
  *
  * Since: 1.0
  */
@@ -977,14 +975,12 @@ clutter_interval_peek_initial_value (ClutterInterval *interval)
 }
 
 /**
- * clutter_interval_set_final_value:
+ * clutter_interval_set_final_value: (rename-to clutter_interval_set_final)
  * @interval: a #ClutterInterval
  * @value: a #GValue
  *
  * Sets the final value of @interval to @value. The value is
  * copied inside the #ClutterInterval.
- *
- * Rename to: clutter_interval_set_final
  *
  * Since: 1.0
  */
