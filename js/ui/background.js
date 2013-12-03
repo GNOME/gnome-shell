@@ -728,8 +728,8 @@ const BackgroundManager = new Lang.Class({
         }
     },
 
-    _updateBackground: function(background, monitorIndex) {
-        let newBackground = this._createBackground(monitorIndex);
+    _updateBackground: function(background) {
+        let newBackground = this._createBackground();
         newBackground.vignetteSharpness = background.vignetteSharpness;
         newBackground.brightness = background.brightness;
         newBackground.visible = background.visible;
@@ -778,7 +778,7 @@ const BackgroundManager = new Lang.Class({
         background.changeSignalId = background.connect('changed', Lang.bind(this, function() {
             background.disconnect(background.changeSignalId);
             background.changeSignalId = 0;
-            this._updateBackground(background, this._monitorIndex);
+            this._updateBackground(background);
         }));
 
         background.actor.connect('destroy', Lang.bind(this, function() {
