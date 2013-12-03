@@ -199,11 +199,30 @@ meta_window_group_paint (ClutterActor *actor)
   meta_cullable_reset_culling (META_CULLABLE (window_group));
 }
 
+/* Adapted from clutter_actor_update_default_paint_volume() */
 static gboolean
-meta_window_group_get_paint_volume (ClutterActor       *actor,
+meta_window_group_get_paint_volume (ClutterActor       *self,
                                     ClutterPaintVolume *volume)
 {
-  return clutter_paint_volume_set_from_allocation (volume, actor);
+  ClutterActorIter iter;
+  ClutterActor *child;
+
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
+    {
+      const ClutterPaintVolume *child_volume;
+
+      if (!CLUTTER_ACTOR_IS_MAPPED (child))
+        continue;
+
+      child_volume = clutter_actor_get_transformed_paint_volume (child, self);
+      if (child_volume == NULL)
+        return FALSE;
+
+      clutter_paint_volume_union (volume, child_volume);
+    }
+
+  return TRUE;
 }
 
 static void
