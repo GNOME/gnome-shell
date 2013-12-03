@@ -320,6 +320,8 @@ void                            _clutter_actor_queue_redraw_on_clones           
 void                            _clutter_actor_queue_relayout_on_clones                 (ClutterActor *actor);
 void                            _clutter_actor_queue_only_relayout                      (ClutterActor *actor);
 
+CoglFramebuffer *               _clutter_actor_get_active_framebuffer                   (ClutterActor *actor);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_PRIVATE_H__ */

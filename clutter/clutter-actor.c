@@ -20399,3 +20399,29 @@ clutter_actor_has_mapped_clones (ClutterActor *self)
 
   return FALSE;
 }
+
+CoglFramebuffer *
+_clutter_actor_get_active_framebuffer (ClutterActor *self)
+{
+  ClutterStage *stage;
+
+  if (!CLUTTER_ACTOR_IN_PAINT (self))
+    {
+      g_critical ("The active framebuffer of actor '%s' can only be "
+                  "retrieved during the paint sequence. Please, check "
+                  "your code.",
+                  _clutter_actor_get_debug_name (self));
+      return NULL;
+    }
+
+  stage = (ClutterStage *) _clutter_actor_get_stage_internal (self);
+  if (stage == NULL)
+    {
+      g_critical ("The active framebuffer of actor '%s' is only available "
+                  "if the actor is associated to a ClutterStage.",
+                  _clutter_actor_get_debug_name (self));
+      return NULL;
+    }
+
+  return _clutter_stage_get_active_framebuffer (stage);
+}
