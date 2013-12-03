@@ -453,8 +453,10 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
       XRRFreeCrtcInfo (crtc);
     }
 
+  meta_error_trap_push (meta_get_display ());
   primary_output = XRRGetOutputPrimary (manager_xrandr->xdisplay,
 					DefaultRootWindow (manager_xrandr->xdisplay));
+  meta_error_trap_pop (meta_get_display ());
 
   n_actual_outputs = 0;
   for (i = 0; i < (unsigned)resources->noutput; i++)
@@ -693,10 +695,11 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
 						 unsigned int         n_outputs)
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
+  MetaDisplay *display = meta_get_display ();
   unsigned i;
   int width, height, width_mm, height_mm;
 
-  meta_display_grab (meta_get_display ());
+  meta_display_grab (display);
 
   /* First compute the new size of the screen (framebuffer) */
   width = 0; height = 0;
@@ -790,10 +793,10 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
    */
   width_mm = (width / DPI_FALLBACK) * 25.4 + 0.5;
   height_mm = (height / DPI_FALLBACK) * 25.4 + 0.5;
-  meta_error_trap_push (meta_get_display ());
+  meta_error_trap_push (display);
   XRRSetScreenSize (manager_xrandr->xdisplay, DefaultRootWindow (manager_xrandr->xdisplay),
                     width, height, width_mm, height_mm);
-  meta_error_trap_pop (meta_get_display ());
+  meta_error_trap_pop (display);
 
   for (i = 0; i < n_crtcs; i++)
     {
@@ -850,7 +853,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
               goto next;
             }
 
-          meta_error_trap_push (meta_get_display ());
+          meta_error_trap_push (display);
           ok = XRRSetCrtcConfig (manager_xrandr->xdisplay,
                                  manager_xrandr->resources,
                                  (XID)crtc->crtc_id,
@@ -859,7 +862,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
                                  (XID)mode->mode_id,
                                  wl_transform_to_xrandr (crtc_info->transform),
                                  outputs, n_outputs);
-          meta_error_trap_pop (meta_get_display ());
+          meta_error_trap_pop (display);
 
           if (ok != Success)
             {
@@ -900,9 +903,11 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
 
       if (output_info->is_primary)
         {
+          meta_error_trap_push (display);
           XRRSetOutputPrimary (manager_xrandr->xdisplay,
                                DefaultRootWindow (manager_xrandr->xdisplay),
                                (XID)output_info->output->output_id);
+          meta_error_trap_pop (display);
         }
 
       output_set_presentation_xrandr (manager_xrandr,
@@ -928,7 +933,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
       output->is_primary = FALSE;
     }
 
-  meta_display_ungrab (meta_get_display ());
+  meta_display_ungrab (display);
 }
 
 static void
