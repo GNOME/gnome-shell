@@ -634,7 +634,13 @@ const SystemBackground = new Lang.Class({
                                           this.emit('loaded');
                                       })
                                     });
-    }
+
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+    },
+
+    _onDestroy: function() {
+        this._cache.removeImageContent(this.actor.content);
+    },
 });
 Signals.addSignalMethods(SystemBackground.prototype);
 
