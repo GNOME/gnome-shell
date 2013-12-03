@@ -3352,10 +3352,11 @@ in_clone_paint (void)
  * means there's no point in trying to cull descendants of the current
  * node. */
 static gboolean
-cull_actor (ClutterActor *self, ClutterCullResult *result_out)
+cull_actor (ClutterActor      *self,
+            ClutterCullResult *result_out)
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterActor *stage;
+  ClutterStage *stage;
   const ClutterPlane *stage_clip;
 
   if (!priv->last_paint_volume_valid)
@@ -3369,8 +3370,8 @@ cull_actor (ClutterActor *self, ClutterCullResult *result_out)
   if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_DISABLE_CULLING))
     return FALSE;
 
-  stage = _clutter_actor_get_stage_internal (self);
-  stage_clip = _clutter_stage_get_clip (CLUTTER_STAGE (stage));
+  stage = (ClutterStage *) _clutter_actor_get_stage_internal (self);
+  stage_clip = _clutter_stage_get_clip (stage);
   if (G_UNLIKELY (!stage_clip))
     {
       CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
@@ -3379,8 +3380,7 @@ cull_actor (ClutterActor *self, ClutterCullResult *result_out)
       return FALSE;
     }
 
-  if (cogl_get_draw_framebuffer () !=
-      _clutter_stage_get_active_framebuffer (CLUTTER_STAGE (stage)))
+  if (cogl_get_draw_framebuffer () != _clutter_stage_get_active_framebuffer (stage))
     {
       CLUTTER_NOTE (CLIPPING, "Bail from cull_actor without culling (%s): "
                     "Current framebuffer doesn't correspond to stage",
@@ -3390,6 +3390,7 @@ cull_actor (ClutterActor *self, ClutterCullResult *result_out)
 
   *result_out =
     _clutter_paint_volume_cull (&priv->last_paint_volume, stage_clip);
+
   return TRUE;
 }
 
@@ -3664,6 +3665,7 @@ clutter_actor_paint (ClutterActor *self)
   ClutterPickMode pick_mode;
   gboolean clip_set = FALSE;
   gboolean shader_applied = FALSE;
+  ClutterStage *stage;
 
   CLUTTER_STATIC_COUNTER (actor_paint_counter,
                           "Actor real-paint counter",
@@ -3703,10 +3705,12 @@ clutter_actor_paint (ClutterActor *self)
   if (!CLUTTER_ACTOR_IS_MAPPED (self))
     return;
 
+  stage = (ClutterStage *) _clutter_actor_get_stage_internal (self);
+
   /* mark that we are in the paint process */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IN_PAINT);
 
-  cogl_push_matrix();
+  cogl_push_matrix ();
 
   if (priv->enable_model_view_transform)
     {
@@ -3761,20 +3765,23 @@ clutter_actor_paint (ClutterActor *self)
 
   if (priv->has_clip)
     {
-      cogl_clip_push_rectangle (priv->clip.origin.x,
-                                priv->clip.origin.y,
-                                priv->clip.origin.x + priv->clip.size.width,
-                                priv->clip.origin.y + priv->clip.size.height);
+      CoglFramebuffer *fb = _clutter_stage_get_active_framebuffer (stage);
+      cogl_framebuffer_push_rectangle_clip (fb,
+                                            priv->clip.origin.x,
+                                            priv->clip.origin.y,
+                                            priv->clip.origin.x + priv->clip.size.width,
+                                            priv->clip.origin.y + priv->clip.size.height);
       clip_set = TRUE;
     }
   else if (priv->clip_to_allocation)
     {
+      CoglFramebuffer *fb = _clutter_stage_get_active_framebuffer (stage);
       gfloat width, height;
 
       width  = priv->allocation.x2 - priv->allocation.x1;
       height = priv->allocation.y2 - priv->allocation.y1;
 
-      cogl_clip_push_rectangle (0, 0, width, height);
+      cogl_framebuffer_push_rectangle_clip (fb, 0, 0, width, height);
       clip_set = TRUE;
     }
 
@@ -3871,9 +3878,13 @@ done:
     priv->is_dirty = FALSE;
 
   if (clip_set)
-    cogl_clip_pop();
+    {
+      CoglFramebuffer *fb = _clutter_stage_get_active_framebuffer (stage);
 
-  cogl_pop_matrix();
+      cogl_framebuffer_pop_clip (fb);
+    }
+
+  cogl_pop_matrix ();
 
   /* paint sequence complete */
   CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_IN_PAINT);

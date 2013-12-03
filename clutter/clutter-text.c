@@ -1632,6 +1632,11 @@ selection_paint (ClutterText *self)
           PangoLayout *layout = clutter_text_get_layout (self);
           CoglPath *selection_path = cogl_path_new ();
           CoglColor cogl_color = { 0, };
+          CoglFramebuffer *fb;
+
+          fb = _clutter_actor_get_active_framebuffer (actor);
+          if (G_UNLIKELY (fb == NULL))
+            return;
 
           /* Paint selection background */
           if (priv->selection_color_set)
@@ -1653,8 +1658,7 @@ selection_paint (ClutterText *self)
           cogl_path_fill (selection_path);
 
           /* Paint selected text */
-          cogl_framebuffer_push_path_clip (cogl_get_draw_framebuffer (),
-                                           selection_path);
+          cogl_framebuffer_push_path_clip (fb, selection_path);
           cogl_object_unref (selection_path);
 
           if (priv->selected_text_color_set)
@@ -1670,7 +1674,7 @@ selection_paint (ClutterText *self)
 
           cogl_pango_render_layout (layout, priv->text_x, 0, &cogl_color, 0);
 
-          cogl_clip_pop ();
+          cogl_framebuffer_pop_clip (fb);
         }
     }
 }
@@ -2205,6 +2209,7 @@ clutter_text_paint (ClutterActor *self)
 {
   ClutterText *text = CLUTTER_TEXT (self);
   ClutterTextPrivate *priv = text->priv;
+  CoglFramebuffer *fb;
   PangoLayout *layout;
   ClutterActorBox alloc = { 0, };
   CoglColor color = { 0, };
@@ -2214,6 +2219,10 @@ clutter_text_paint (ClutterActor *self)
   gboolean clip_set = FALSE;
   gboolean bg_color_set = FALSE;
   guint n_chars;
+  float alloc_width;
+  float alloc_height;
+
+  fb = _clutter_actor_get_active_framebuffer (self);
 
   /* Note that if anything in this paint method changes it needs to be
      reflected in the get_paint_volume implementation which is tightly
@@ -2221,6 +2230,8 @@ clutter_text_paint (ClutterActor *self)
   n_chars = clutter_text_buffer_get_length (get_buffer (text));
 
   clutter_actor_get_allocation_box (self, &alloc);
+  alloc_width = alloc.x2 - alloc.x1;
+  alloc_height = alloc.y2 - alloc.y1;
 
   g_object_get (self, "background-color-set", &bg_color_set, NULL);
   if (bg_color_set)
@@ -2236,7 +2247,7 @@ clutter_text_paint (ClutterActor *self)
                                 bg_color.green,
                                 bg_color.blue,
                                 bg_color.alpha);
-      cogl_rectangle (0, 0, alloc.x2 - alloc.x1, alloc.y2 - alloc.y1);
+      cogl_rectangle (0, 0, alloc_width, alloc_height);
     }
 
   /* don't bother painting an empty text actor, unless it's
@@ -2256,9 +2267,7 @@ clutter_text_paint (ClutterActor *self)
        */
       if (priv->wrap && priv->ellipsize)
         {
-          layout = clutter_text_create_layout (text,
-                                               alloc.x2 - alloc.x1,
-                                               alloc.y2 - alloc.y1);
+          layout = clutter_text_create_layout (text, alloc_width, alloc_height);
         }
       else
         {
@@ -2275,9 +2284,7 @@ clutter_text_paint (ClutterActor *self)
            * in the assigned width, then we clip the actor if the
            * logical rectangle overflows the allocation.
            */
-          layout = clutter_text_create_layout (text,
-                                               alloc.x2 - alloc.x1,
-                                               -1);
+          layout = clutter_text_create_layout (text, alloc_width, -1);
         }
     }
 
@@ -2292,13 +2299,10 @@ clutter_text_paint (ClutterActor *self)
 
       pango_layout_get_extents (layout, NULL, &logical_rect);
 
-      cogl_clip_push_rectangle (0, 0,
-                                (alloc.x2 - alloc.x1),
-                                (alloc.y2 - alloc.y1));
+      cogl_framebuffer_push_rectangle_clip (fb, 0, 0, alloc_width, alloc_height);
       clip_set = TRUE;
 
-      actor_width = (alloc.x2 - alloc.x1)
-                  - 2 * TEXT_PADDING;
+      actor_width = alloc_width - 2 * TEXT_PADDING;
       text_width  = logical_rect.width / PANGO_SCALE;
 
       rtl = clutter_actor_get_text_direction (self) == CLUTTER_TEXT_DIRECTION_RTL;
@@ -2339,12 +2343,10 @@ clutter_text_paint (ClutterActor *self)
       pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
 
       /* don't clip if the layout managed to fit inside our allocation */
-      if (logical_rect.width > (alloc.x2 - alloc.x1) ||
-          logical_rect.height > (alloc.y2 - alloc.y1))
+      if (logical_rect.width > alloc_width ||
+          logical_rect.height > alloc_height)
         {
-          cogl_clip_push_rectangle (0, 0,
-                                    alloc.x2 - alloc.x1,
-                                    alloc.y2 - alloc.y1);
+          cogl_framebuffer_push_rectangle_clip (fb, 0, 0, alloc_width, alloc_height);
           clip_set = TRUE;
         }
 
@@ -2379,7 +2381,7 @@ clutter_text_paint (ClutterActor *self)
   selection_paint (text);
 
   if (clip_set)
-    cogl_clip_pop ();
+    cogl_framebuffer_pop_clip (fb);
 }
 
 static void

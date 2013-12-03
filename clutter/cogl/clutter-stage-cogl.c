@@ -518,6 +518,8 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
   if (use_clipped_redraw)
     {
+      CoglFramebuffer *fb = COGL_FRAMEBUFFER (stage_cogl->onscreen);
+
       CLUTTER_NOTE (CLIPPING,
                     "Stage clip pushed: x=%d, y=%d, width=%d, height=%d\n",
                     clip_region->x,
@@ -527,12 +529,13 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
       stage_cogl->using_clipped_redraw = TRUE;
 
-      cogl_clip_push_window_rectangle (clip_region->x * window_scale,
-                                       clip_region->y * window_scale,
-                                       clip_region->width * window_scale,
-                                       clip_region->height * window_scale);
+      cogl_framebuffer_push_rectangle_clip (fb,
+                                            clip_region->x * window_scale,
+                                            clip_region->y * window_scale,
+                                            clip_region->width * window_scale,
+                                            clip_region->height * window_scale);
       _clutter_stage_do_paint (CLUTTER_STAGE (wrapper), clip_region);
-      cogl_clip_pop ();
+      cogl_framebuffer_pop_clip (fb);
 
       stage_cogl->using_clipped_redraw = FALSE;
     }

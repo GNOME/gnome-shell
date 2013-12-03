@@ -1490,6 +1490,8 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   clutter_stage_ensure_current (stage);
   window_scale = _clutter_stage_window_get_scale_factor (priv->impl);
 
+  fb = cogl_get_draw_framebuffer ();
+
   _clutter_backend_ensure_context (context->backend, stage);
 
   /* needed for when a context switch happens */
@@ -1498,7 +1500,7 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   _clutter_stage_window_get_dirty_pixel (priv->impl, &dirty_x, &dirty_y);
 
   if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-    cogl_clip_push_window_rectangle (dirty_x * window_scale, dirty_y * window_scale, 1, 1);
+    cogl_framebuffer_push_scissor_clip (fb, dirty_x * window_scale, dirty_y * window_scale, 1, 1);
 
   cogl_set_viewport (priv->viewport[0] * window_scale - x * window_scale + dirty_x * window_scale,
                      priv->viewport[1] * window_scale - y * window_scale + dirty_y * window_scale,
@@ -1518,7 +1520,6 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_clear);
 
   /* Disable dithering (if any) when doing the painting in pick mode */
-  fb = cogl_get_draw_framebuffer ();
   dither_enabled_save = cogl_framebuffer_get_dither_enabled (fb);
   cogl_framebuffer_set_dither_enabled (fb, FALSE);
 
@@ -1563,7 +1564,7 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   cogl_framebuffer_set_dither_enabled (fb, dither_enabled_save);
 
   if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-    cogl_clip_pop ();
+    cogl_framebuffer_pop_clip (fb);
 
   _clutter_stage_dirty_viewport (stage);
 

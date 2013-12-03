@@ -758,10 +758,13 @@ clutter_text_node_draw (ClutterPaintNode *node)
 {
   ClutterTextNode *tnode = CLUTTER_TEXT_NODE (node);
   PangoRectangle extents;
+  CoglFramebuffer *fb;
   guint i;
 
   if (node->operations == NULL)
     return;
+
+  fb = cogl_get_draw_framebuffer ();
 
   pango_layout_get_pixel_extents (tnode->layout, NULL, &extents);
 
@@ -786,10 +789,11 @@ clutter_text_node_draw (ClutterPaintNode *node)
           if (extents.width > op_width ||
               extents.height > op_height)
             {
-              cogl_clip_push_rectangle (op->op.texrect[0],
-                                        op->op.texrect[1],
-                                        op->op.texrect[2],
-                                        op->op.texrect[3]);
+              cogl_framebuffer_push_rectangle_clip (fb,
+                                                    op->op.texrect[0],
+                                                    op->op.texrect[1],
+                                                    op->op.texrect[2],
+                                                    op->op.texrect[3]);
               clipped = TRUE;
             }
 
@@ -800,7 +804,7 @@ clutter_text_node_draw (ClutterPaintNode *node)
                                     0);
 
           if (clipped)
-            cogl_clip_pop ();
+            cogl_framebuffer_pop_clip (fb);
           break;
 
         case PAINT_OP_PATH:
