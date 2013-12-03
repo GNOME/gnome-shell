@@ -94,6 +94,7 @@ struct _MetaWaylandKeyboard
   struct wl_list resource_list;
   MetaWaylandSurface *focus;
   struct wl_resource *focus_resource;
+  struct wl_listener focus_listener;
   uint32_t focus_serial;
 
   MetaWaylandKeyboardGrab *grab;
