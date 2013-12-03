@@ -255,6 +255,7 @@ const NetworkSecretDialog = new Lang.Class({
         case 'leap':
         case 'ttls':
         case 'peap':
+        case 'fast':
             // TTLS and PEAP are actually much more complicated, but this complication
             // is not visible here since we only care about phase2 authentication
             // (and don't even care of which one)
