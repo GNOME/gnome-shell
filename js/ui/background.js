@@ -188,6 +188,7 @@ const BackgroundCache = new Lang.Class({
                                                           if (content && pendingLoad.callers[j].shouldCopy) {
                                                               newContent = content.copy(pendingLoad.callers[j].monitorIndex,
                                                                                         pendingLoad.callers[j].effects);
+                                                              this._images.push(newContent);
                                                           } else {
                                                               newContent = content;
                                                           }
