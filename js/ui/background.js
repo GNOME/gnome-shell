@@ -536,24 +536,25 @@ const Background = new Lang.Class({
                                            });
     },
 
-    _loadFile: function(filename) {
+    _loadImage: function(filename) {
         this._cache.getImageContent({ monitorIndex: this._monitorIndex,
                                       effects: this._effects,
                                       style: this._style,
                                       filename: filename,
                                       cancellable: this._cancellable,
                                       onFinished: Lang.bind(this, function(content) {
-                                          if (!content) {
-                                              if (!this._cancellable.is_cancelled())
-                                                  this._loadAnimation(filename);
-                                              return;
-                                          }
-
-                                          this._addImage(content, 0, filename);
+                                          if (content)
+                                              this._addImage(content, 0, filename);
                                           this._setLoaded();
                                       })
                                     });
+    },
 
+    _loadFile: function(filename) {
+        if (filename.endsWith('.xml'))
+            this._loadAnimation(filename);
+        else
+            this._loadImage(filename);
     },
 
     _load: function () {
