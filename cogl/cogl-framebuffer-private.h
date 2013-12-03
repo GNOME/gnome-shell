@@ -26,12 +26,12 @@
 
 #include "cogl-object-private.h"
 #include "cogl-matrix-stack-private.h"
+#include "cogl-clip-state-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-winsys-private.h"
 #include "cogl-attribute-private.h"
 #include "cogl-offscreen.h"
 #include "cogl-gl-header.h"
-#include "cogl-clip-stack.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xlib.h>
@@ -142,7 +142,7 @@ struct _CoglFramebuffer
   int                 viewport_age;
   int                 viewport_age_for_scissor_workaround;
 
-  CoglClipStack      *clip_stack;
+  CoglClipState       clip_state;
 
   CoglBool            dither_enabled;
   CoglBool            depth_writing_enabled;
@@ -241,6 +241,9 @@ _cogl_framebuffer_clear_without_flush4f (CoglFramebuffer *framebuffer,
 
 void
 _cogl_framebuffer_mark_mid_scene (CoglFramebuffer *framebuffer);
+
+CoglClipState *
+_cogl_framebuffer_get_clip_state (CoglFramebuffer *framebuffer);
 
 /*
  * _cogl_framebuffer_get_clip_stack:

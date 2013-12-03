@@ -30,13 +30,14 @@
 
 #include <glib.h>
 
-#include "cogl-clip-state.h"
 #include "cogl-clip-stack.h"
+#include "cogl-clip-state-private.h"
 #include "cogl-context-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-util.h"
 #include "cogl-matrix-private.h"
+#include "cogl-clip-state.h"
 #include "cogl1-context.h"
 #include "cogl-path/cogl-path.h"
 
@@ -107,16 +108,13 @@ cogl_clip_pop (void)
 void
 cogl_clip_stack_save (void)
 {
-  /* This function was just used to temporarily switch the clip stack
-   * when using an offscreen buffer. This is no longer needed because
-   * each framebuffer maintains its own clip stack. The function is
-   * documented to do nothing since version 1.2 */
+  _cogl_framebuffer_save_clip_stack (cogl_get_draw_framebuffer ());
 }
 
 void
 cogl_clip_stack_restore (void)
 {
-  /* Do nothing. See cogl_clip_stack_save() */
+  _cogl_framebuffer_restore_clip_stack (cogl_get_draw_framebuffer ());
 }
 
 /* XXX: This should never have been made public API! */
@@ -129,4 +127,61 @@ cogl_clip_ensure (void)
    * are basically vague enough that we can get away with doing
    * nothing here.
    */
+}
+
+void
+_cogl_clip_state_init (CoglClipState *clip_state)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  clip_state->stacks = NULL;
+
+  /* Add an intial stack */
+  _cogl_clip_state_save_clip_stack (clip_state);
+}
+
+void
+_cogl_clip_state_destroy (CoglClipState *clip_state)
+{
+  /* Destroy all of the stacks */
+  while (clip_state->stacks)
+    _cogl_clip_state_restore_clip_stack (clip_state);
+}
+
+CoglClipStack *
+_cogl_clip_state_get_stack (CoglClipState *clip_state)
+{
+  return clip_state->stacks->data;
+}
+
+void
+_cogl_clip_state_set_stack (CoglClipState *clip_state,
+                            CoglClipStack *stack)
+{
+  /* Replace the top of the stack of stacks */
+  _cogl_clip_stack_ref (stack);
+  _cogl_clip_stack_unref (clip_state->stacks->data);
+  clip_state->stacks->data = stack;
+}
+
+void
+_cogl_clip_state_save_clip_stack (CoglClipState *clip_state)
+{
+  clip_state->stacks = g_slist_prepend (clip_state->stacks, NULL);
+}
+
+void
+_cogl_clip_state_restore_clip_stack (CoglClipState *clip_state)
+{
+  CoglClipStack *stack;
+
+  _COGL_RETURN_IF_FAIL (clip_state->stacks != NULL);
+
+  stack = clip_state->stacks->data;
+
+  _cogl_clip_stack_unref (stack);
+
+  /* Revert to an old stack */
+  clip_state->stacks = g_slist_delete_link (clip_state->stacks,
+                                            clip_state->stacks);
 }

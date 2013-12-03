@@ -1471,6 +1471,7 @@ void
 cogl_framebuffer_push_path_clip (CoglFramebuffer *framebuffer,
                                  CoglPath *path)
 {
+  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
   CoglMatrixEntry *modelview_entry =
     _cogl_framebuffer_get_modelview_entry (framebuffer);
   CoglMatrixEntry *projection_entry =
@@ -1484,8 +1485,8 @@ cogl_framebuffer_push_path_clip (CoglFramebuffer *framebuffer,
       framebuffer->viewport_height
   };
 
-  framebuffer->clip_stack =
-    _cogl_clip_stack_push_from_path (framebuffer->clip_stack,
+  clip_state->stacks->data =
+    _cogl_clip_stack_push_from_path (clip_state->stacks->data,
                                      path,
                                      modelview_entry,
                                      projection_entry,
