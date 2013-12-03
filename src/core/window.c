@@ -3369,6 +3369,9 @@ meta_window_show (MetaWindow *window)
   if (did_show)
     meta_screen_queue_check_fullscreen (window->screen);
 
+  if (did_show && window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+    meta_wayland_compositor_repick (meta_wayland_compositor_get_default ());
+
   /*
    * Now that we have shown the window, we no longer want to consider the
    * initial timestamp in any subsequent deliberations whether to focus this
