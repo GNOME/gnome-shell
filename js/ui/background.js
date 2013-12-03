@@ -222,7 +222,7 @@ const BackgroundCache = new Lang.Class({
                 continue;
 
             if (params.style == GDesktopEnums.BackgroundStyle.SPANNED &&
-                this._images[i].monitor_index != this._monitorIndex)
+                this._images[i].monitor != params.monitorIndex)
                 continue;
 
             candidateContent = this._images[i];
