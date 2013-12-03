@@ -68,6 +68,8 @@ struct _ClutterPaintNodeClass
   void     (* post_draw) (ClutterPaintNode *node);
 
   JsonNode*(* serialize) (ClutterPaintNode *node);
+
+  CoglFramebuffer *(* get_framebuffer) (ClutterPaintNode *node);
 };
 
 #define PAINT_OP_INIT   { PAINT_OP_INVALID }
@@ -137,6 +139,8 @@ G_GNUC_INTERNAL
 ClutterPaintNode *      clutter_paint_node_get_last_child               (ClutterPaintNode      *node);
 G_GNUC_INTERNAL
 ClutterPaintNode *      clutter_paint_node_get_parent                   (ClutterPaintNode      *node);
+G_GNUC_INTERNAL
+CoglFramebuffer *       clutter_paint_node_get_framebuffer              (ClutterPaintNode      *node);
 
 #define CLUTTER_TYPE_LAYER_NODE                 (_clutter_layer_node_get_type ())
 #define CLUTTER_LAYER_NODE(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_LAYER_NODE, ClutterLayerNode))

@@ -135,6 +135,14 @@ clutter_root_node_finalize (ClutterPaintNode *node)
   CLUTTER_PAINT_NODE_CLASS (clutter_root_node_parent_class)->finalize (node);
 }
 
+static CoglFramebuffer *
+clutter_root_node_get_framebuffer (ClutterPaintNode *node)
+{
+  ClutterRootNode *rnode = (ClutterRootNode *) node;
+
+  return rnode->framebuffer;
+}
+
 static void
 clutter_root_node_class_init (ClutterRootNodeClass *klass)
 {
@@ -143,6 +151,7 @@ clutter_root_node_class_init (ClutterRootNodeClass *klass)
   node_class->pre_draw = clutter_root_node_pre_draw;
   node_class->post_draw = clutter_root_node_post_draw;
   node_class->finalize = clutter_root_node_finalize;
+  node_class->get_framebuffer = clutter_root_node_get_framebuffer;
 }
 
 static void
@@ -262,6 +271,7 @@ struct _ClutterDummyNode
   ClutterPaintNode parent_instance;
 
   ClutterActor *actor;
+  CoglFramebuffer *framebuffer;
 };
 
 G_DEFINE_TYPE (ClutterDummyNode, clutter_dummy_node, CLUTTER_TYPE_PAINT_NODE)
@@ -296,6 +306,14 @@ clutter_dummy_node_serialize (ClutterPaintNode *node)
   return res;
 }
 
+static CoglFramebuffer *
+clutter_dummy_node_get_framebuffer (ClutterPaintNode *node)
+{
+  ClutterDummyNode *dnode = (ClutterDummyNode *) node;
+
+  return dnode->framebuffer;
+}
+
 static void
 clutter_dummy_node_class_init (ClutterDummyNodeClass *klass)
 {
@@ -303,6 +321,7 @@ clutter_dummy_node_class_init (ClutterDummyNodeClass *klass)
 
   node_class->pre_draw = clutter_dummy_node_pre_draw;
   node_class->serialize = clutter_dummy_node_serialize;
+  node_class->get_framebuffer = clutter_dummy_node_get_framebuffer;
 }
 
 static void
@@ -314,10 +333,13 @@ ClutterPaintNode *
 _clutter_dummy_node_new (ClutterActor *actor)
 {
   ClutterPaintNode *res;
+  ClutterDummyNode *dnode;
 
   res = _clutter_paint_node_create (_clutter_dummy_node_get_type ());
 
-  ((ClutterDummyNode *) res)->actor = actor;
+  dnode = (ClutterDummyNode *) res;
+  dnode->actor = actor;
+  dnode->framebuffer = _clutter_actor_get_active_framebuffer (actor);
 
   return res;
 }
@@ -378,6 +400,7 @@ static void
 clutter_pipeline_node_draw (ClutterPaintNode *node)
 {
   ClutterPipelineNode *pnode = CLUTTER_PIPELINE_NODE (node);
+  CoglFramebuffer *fb;
   guint i;
 
   if (pnode->pipeline == NULL)
@@ -385,6 +408,8 @@ clutter_pipeline_node_draw (ClutterPaintNode *node)
 
   if (node->operations == NULL)
     return;
+
+  fb = clutter_paint_node_get_framebuffer (node);
 
   for (i = 0; i < node->operations->len; i++)
     {
@@ -413,12 +438,9 @@ clutter_pipeline_node_draw (ClutterPaintNode *node)
           break;
 
         case PAINT_OP_PRIMITIVE:
-          {
-            CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
-
-            cogl_framebuffer_draw_primitive (fb, pnode->pipeline,
-                                             op->op.primitive);
-          }
+          cogl_framebuffer_draw_primitive (fb,
+                                           pnode->pipeline,
+                                           op->op.primitive);
           break;
         }
     }
@@ -764,7 +786,7 @@ clutter_text_node_draw (ClutterPaintNode *node)
   if (node->operations == NULL)
     return;
 
-  fb = cogl_get_draw_framebuffer ();
+  fb = clutter_paint_node_get_framebuffer (node);
 
   pango_layout_get_pixel_extents (tnode->layout, NULL, &extents);
 
@@ -948,7 +970,7 @@ clutter_clip_node_pre_draw (ClutterPaintNode *node)
   if (node->operations == NULL)
     return FALSE;
 
-  fb = cogl_get_draw_framebuffer ();
+  fb = clutter_paint_node_get_framebuffer (node);
 
   for (i = 0; i < node->operations->len; i++)
     {
@@ -990,7 +1012,7 @@ clutter_clip_node_post_draw (ClutterPaintNode *node)
   if (node->operations == NULL)
     return;
 
-  fb = cogl_get_draw_framebuffer ();
+  fb = clutter_paint_node_get_framebuffer (node);
 
   for (i = 0; i < node->operations->len; i++)
     {
