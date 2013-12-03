@@ -850,6 +850,7 @@ get_xdg_popup (struct wl_client *client,
   surface->window->rect.x = parent_rect.x + x;
   surface->window->rect.y = parent_rect.y + y;
   surface->window->placed = TRUE;
+  meta_window_set_transient_for (surface->window, parent_surf->window);
 
   meta_wayland_pointer_start_popup_grab (&seat->pointer, surface);
 }
