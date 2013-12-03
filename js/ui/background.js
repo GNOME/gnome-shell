@@ -183,13 +183,16 @@ const BackgroundCache = new Lang.Class({
 
                                                   for (let j = 0; j < pendingLoad.callers.length; j++) {
                                                       if (pendingLoad.callers[j].onFinished) {
-                                                          if (content && pendingLoad.callers[j].shouldCopy) {
-                                                              content = object.copy(pendingLoad.callers[j].monitorIndex,
-                                                                                    pendingLoad.callers[j].effects);
+                                                          let newContent;
 
+                                                          if (content && pendingLoad.callers[j].shouldCopy) {
+                                                              newContent = content.copy(pendingLoad.callers[j].monitorIndex,
+                                                                                        pendingLoad.callers[j].effects);
+                                                          } else {
+                                                              newContent = content;
                                                           }
 
-                                                          pendingLoad.callers[j].onFinished(content);
+                                                          pendingLoad.callers[j].onFinished(newContent);
                                                       }
                                                   }
 
