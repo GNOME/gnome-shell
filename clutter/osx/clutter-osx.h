@@ -24,7 +24,7 @@
 
 #import <AppKit/AppKit.h>
 
-#include <clutter/clutter-stage.h>
+#include <clutter/clutter.h>
 
 @class NSEvent;
 
@@ -37,6 +37,8 @@ void _clutter_events_osx_init   (void);
 void _clutter_events_osx_uninit (void);
 
 void _clutter_event_osx_put     (NSEvent *nsevent, ClutterStage *wrapper);
+
+void clutter_osx_disable_event_retrieval (void);
 
 G_END_DECLS
 

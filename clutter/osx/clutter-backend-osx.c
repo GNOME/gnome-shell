@@ -42,6 +42,9 @@
 
 G_DEFINE_TYPE (ClutterBackendOSX, clutter_backend_osx, CLUTTER_TYPE_BACKEND)
 
+/* various flags corresponding to pre init setup calls */
+static gboolean _no_event_retrieval = FALSE;
+
 /*************************************************************************/
 static gboolean
 clutter_backend_osx_post_parse (ClutterBackend  *backend,
@@ -73,6 +76,19 @@ clutter_backend_osx_post_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
+void
+clutter_osx_disable_event_retrieval (void)
+{
+  if (_clutter_context_is_initialized ())
+    {
+      g_warning ("clutter_osx_disable_event_retrieval() can only be "
+                 "called before clutter_init()");
+      return;
+    }
+
+  _no_event_retrieval = TRUE;
+}
+
 static ClutterFeatureFlags
 clutter_backend_osx_get_features (ClutterBackend *backend)
 {
@@ -95,7 +111,8 @@ _clutter_backend_osx_events_init (ClutterBackend *backend)
                   "backend", CLUTTER_BACKEND(backend_osx),
                   NULL);
 
-  _clutter_osx_event_loop_init ();
+  if (!_no_event_retrieval)
+    _clutter_osx_event_loop_init ();
 }
 
 static gboolean
