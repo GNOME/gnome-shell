@@ -86,19 +86,5 @@ void shell_tp_client_set_handle_channels_func (ShellTpClient *self,
     gpointer user_data,
     GDestroyNotify destroy);
 
-typedef void (*ShellTpClientContactListChangedImpl) (
-    TpConnection *connection,
-    GPtrArray *added,
-    GPtrArray *removed,
-    gpointer user_data);
-
-void shell_tp_client_set_contact_list_changed_func (ShellTpClient *self,
-    ShellTpClientContactListChangedImpl contact_list_changed_impl,
-    gpointer user_data,
-    GDestroyNotify destroy);
-
-void shell_tp_client_grab_contact_list_changed (ShellTpClient *self,
-    TpConnection *conn);
-
 G_END_DECLS
 #endif /* __SHELL_TP_CLIENT_H__ */

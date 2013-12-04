@@ -21,10 +21,6 @@ struct _ShellTpClientPrivate
   ShellTpClientHandleChannelsImpl handle_channels_impl;
   gpointer user_data_handle_channels;
   GDestroyNotify destroy_handle_channels;
-
-  ShellTpClientContactListChangedImpl contact_list_changed_impl;
-  gpointer user_data_contact_list_changed;
-  GDestroyNotify destroy_contact_list_changed;
 };
 
 /**
@@ -81,16 +77,6 @@ struct _ShellTpClientPrivate
  *  D-Bus call
  *
  * Signature of the implementation of the HandleChannels method.
- */
-
-/**
- * ShellTpClientContactListChangedImpl:
- * @connection: a #TpConnection having %TP_CONNECTION_FEATURE_CORE prepared
- * if possible
- * @added: (element-type TelepathyGLib.Contact): a #GPtrArray of added #TpContact
- * @removed: (element-type TelepathyGLib.Contact): a #GPtrArray of removed #TpContact
- *
- * Signature of the implementation of the ContactListChanged method.
  */
 
 static void
@@ -226,13 +212,6 @@ shell_tp_client_dispose (GObject *object)
       self->priv->user_data_handle_channels = NULL;
     }
 
-  if (self->priv->destroy_contact_list_changed != NULL)
-    {
-      self->priv->destroy_contact_list_changed (self->priv->user_data_contact_list_changed);
-      self->priv->destroy_contact_list_changed = NULL;
-      self->priv->user_data_contact_list_changed = NULL;
-    }
-
   if (dispose != NULL)
     dispose (object);
 }
@@ -289,41 +268,4 @@ shell_tp_client_set_handle_channels_func (ShellTpClient *self,
   self->priv->handle_channels_impl = handle_channels_impl;
   self->priv->user_data_handle_channels = user_data;
   self->priv->destroy_handle_channels = destroy;
-}
-
-void
-shell_tp_client_set_contact_list_changed_func (ShellTpClient *self,
-    ShellTpClientContactListChangedImpl contact_list_changed_impl,
-    gpointer user_data,
-    GDestroyNotify destroy)
-{
-  g_assert (self->priv->contact_list_changed_impl == NULL);
-
-  self->priv->contact_list_changed_impl = contact_list_changed_impl;
-  self->priv->user_data_handle_channels = user_data;
-  self->priv->destroy_handle_channels = destroy;
-}
-
-static void
-on_contact_list_changed (TpConnection *conn,
-                         GPtrArray *added,
-                         GPtrArray *removed,
-                         gpointer user_data)
-{
-  ShellTpClient *self = (ShellTpClient *) user_data;
-
-  g_assert (self->priv->contact_list_changed_impl != NULL);
-
-  self->priv->contact_list_changed_impl (conn,
-      added, removed,
-      self->priv->user_data_contact_list_changed);
-}
-
-void
-shell_tp_client_grab_contact_list_changed (ShellTpClient *self,
-                                           TpConnection *conn)
-{
-  g_signal_connect (conn, "contact-list-changed",
-                    G_CALLBACK (on_contact_list_changed),
-                    self);
 }
