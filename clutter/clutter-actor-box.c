@@ -455,7 +455,7 @@ clutter_actor_box_clamp_to_pixel (ClutterActorBox *box)
 
 /**
  * clutter_actor_box_union:
- * @a: (in) the first #ClutterActorBox
+ * @a: (in): the first #ClutterActorBox
  * @b: (in): the second #ClutterActorBox
  * @result: (out): the #ClutterActorBox representing a union
  *   of @a and @b

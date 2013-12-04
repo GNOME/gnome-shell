@@ -15521,7 +15521,7 @@ clutter_actor_create_pango_context (ClutterActor *self)
 /**
  * clutter_actor_create_pango_layout:
  * @self: a #ClutterActor
- * @text: (allow-none) the text to set on the #PangoLayout, or %NULL
+ * @text: (allow-none): the text to set on the #PangoLayout, or %NULL
  *
  * Creates a new #PangoLayout from the same #PangoContext used
  * by the #ClutterActor. The #PangoLayout is already configured
