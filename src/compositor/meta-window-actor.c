@@ -420,6 +420,7 @@ meta_window_actor_constructed (GObject *object)
                           "allocation-changed",
                           G_CALLBACK (surface_allocation_changed_notify),
                           self);
+      meta_window_actor_update_shape (self);
 
       g_signal_connect_object (window, "notify::decorated",
                                G_CALLBACK (window_decorated_notify), self, 0);
