@@ -1441,7 +1441,7 @@ meta_window_new_for_wayland (MetaDisplay        *display,
                                    None,
                                    FALSE,
                                    WithdrawnState,
-                                   META_COMP_EFFECT_NONE,
+                                   META_COMP_EFFECT_CREATE,
                                    &attrs);
 
   meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
