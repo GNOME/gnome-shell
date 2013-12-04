@@ -125,8 +125,7 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
 
   framebuffer->samples_per_pixel = 0;
 
-  /* Initialise the clip stack */
-  _cogl_clip_state_init (&framebuffer->clip_state);
+  framebuffer->clip_stack = NULL;
 
   framebuffer->journal = _cogl_journal_new (framebuffer);
 
@@ -173,7 +172,7 @@ _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
 
   _cogl_fence_cancel_fences_for_framebuffer (framebuffer);
 
-  _cogl_clip_state_destroy (&framebuffer->clip_state);
+  _cogl_clip_stack_unref (framebuffer->clip_stack);
 
   cogl_object_unref (framebuffer->modelview_stack);
   framebuffer->modelview_stack = NULL;
@@ -459,27 +458,19 @@ cogl_framebuffer_get_height (CoglFramebuffer *framebuffer)
   return framebuffer->height;
 }
 
-CoglClipState *
-_cogl_framebuffer_get_clip_state (CoglFramebuffer *framebuffer)
-{
-  return &framebuffer->clip_state;
-}
-
 CoglClipStack *
 _cogl_framebuffer_get_clip_stack (CoglFramebuffer *framebuffer)
 {
-  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-  return _cogl_clip_state_get_stack (clip_state);
+  return framebuffer->clip_stack;
 }
 
 void
 _cogl_framebuffer_set_clip_stack (CoglFramebuffer *framebuffer,
                                   CoglClipStack *stack)
 {
-  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-  _cogl_clip_state_set_stack (clip_state, stack);
+  _cogl_clip_stack_ref (stack);
+  _cogl_clip_stack_unref (framebuffer->clip_stack);
+  framebuffer->clip_stack = stack;
 }
 
 void
@@ -1046,10 +1037,7 @@ static unsigned long
 _cogl_framebuffer_compare_clip_state (CoglFramebuffer *a,
                                       CoglFramebuffer *b)
 {
-  if (((a->clip_state.stacks == NULL || b->clip_state.stacks == NULL) &&
-       a->clip_state.stacks != b->clip_state.stacks)
-      ||
-      a->clip_state.stacks->data != b->clip_state.stacks->data)
+  if (a->clip_stack != b->clip_stack)
     return COGL_FRAMEBUFFER_STATE_CLIP;
   else
     return 0;
@@ -1959,10 +1947,8 @@ cogl_framebuffer_push_scissor_clip (CoglFramebuffer *framebuffer,
                                     int width,
                                     int height)
 {
-  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-  clip_state->stacks->data =
-    _cogl_clip_stack_push_window_rectangle (clip_state->stacks->data,
+  framebuffer->clip_stack =
+    _cogl_clip_stack_push_window_rectangle (framebuffer->clip_stack,
                                             x, y, width, height);
 
   if (framebuffer->context->current_draw_buffer == framebuffer)
@@ -1977,7 +1963,6 @@ cogl_framebuffer_push_rectangle_clip (CoglFramebuffer *framebuffer,
                                       float x_2,
                                       float y_2)
 {
-  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
   CoglMatrixEntry *modelview_entry =
     _cogl_framebuffer_get_modelview_entry (framebuffer);
   CoglMatrixEntry *projection_entry =
@@ -1991,8 +1976,8 @@ cogl_framebuffer_push_rectangle_clip (CoglFramebuffer *framebuffer,
       framebuffer->viewport_height
   };
 
-  clip_state->stacks->data =
-    _cogl_clip_stack_push_rectangle (clip_state->stacks->data,
+  framebuffer->clip_stack =
+    _cogl_clip_stack_push_rectangle (framebuffer->clip_stack,
                                      x_1, y_1, x_2, y_2,
                                      modelview_entry,
                                      projection_entry,
@@ -2011,7 +1996,6 @@ cogl_framebuffer_push_primitive_clip (CoglFramebuffer *framebuffer,
                                       float bounds_x2,
                                       float bounds_y2)
 {
-  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
   CoglMatrixEntry *modelview_entry =
     _cogl_framebuffer_get_modelview_entry (framebuffer);
   CoglMatrixEntry *projection_entry =
@@ -2025,8 +2009,8 @@ cogl_framebuffer_push_primitive_clip (CoglFramebuffer *framebuffer,
       framebuffer->viewport_height
   };
 
-  clip_state->stacks->data =
-    _cogl_clip_stack_push_primitive (clip_state->stacks->data,
+  framebuffer->clip_stack =
+    _cogl_clip_stack_push_primitive (framebuffer->clip_stack,
                                      primitive,
                                      bounds_x1, bounds_y1,
                                      bounds_x2, bounds_y2,
@@ -2042,31 +2026,7 @@ cogl_framebuffer_push_primitive_clip (CoglFramebuffer *framebuffer,
 void
 cogl_framebuffer_pop_clip (CoglFramebuffer *framebuffer)
 {
-  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-
-  clip_state->stacks->data = _cogl_clip_stack_pop (clip_state->stacks->data);
-
-  if (framebuffer->context->current_draw_buffer == framebuffer)
-    framebuffer->context->current_draw_buffer_changes |=
-      COGL_FRAMEBUFFER_STATE_CLIP;
-}
-
-void
-_cogl_framebuffer_save_clip_stack (CoglFramebuffer *framebuffer)
-{
-  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-  _cogl_clip_state_save_clip_stack (clip_state);
-
-  if (framebuffer->context->current_draw_buffer == framebuffer)
-    framebuffer->context->current_draw_buffer_changes |=
-      COGL_FRAMEBUFFER_STATE_CLIP;
-}
-
-void
-_cogl_framebuffer_restore_clip_stack (CoglFramebuffer *framebuffer)
-{
-  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
-  _cogl_clip_state_restore_clip_stack (clip_state);
+  framebuffer->clip_stack = _cogl_clip_stack_pop (framebuffer->clip_stack);
 
   if (framebuffer->context->current_draw_buffer == framebuffer)
     framebuffer->context->current_draw_buffer_changes |=

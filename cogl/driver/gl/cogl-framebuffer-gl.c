@@ -148,8 +148,7 @@ _cogl_framebuffer_gl_flush_viewport_state (CoglFramebuffer *framebuffer)
 static void
 _cogl_framebuffer_gl_flush_clip_state (CoglFramebuffer *framebuffer)
 {
-  CoglClipStack *stack = _cogl_clip_state_get_stack (&framebuffer->clip_state);
-  _cogl_clip_stack_flush (stack, framebuffer);
+  _cogl_clip_stack_flush (framebuffer->clip_stack, framebuffer);
 }
 
 static void
