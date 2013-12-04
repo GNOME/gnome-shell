@@ -157,9 +157,9 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/rectangle", rectangle_set_size);
   TEST_CONFORM_SIMPLE ("/rectangle", rectangle_set_color);
 
-  TEST_CONFORM_SIMPLE ("/texture", texture_pick_with_alpha);
-  TEST_CONFORM_SIMPLE ("/texture", texture_fbo);
-  TEST_CONFORM_SIMPLE ("/texture/cairo", texture_cairo);
+  TEST_CONFORM_SKIP (g_test_slow (), "/texture", texture_pick_with_alpha);
+  TEST_CONFORM_SKIP (g_test_slow (), "/texture", texture_fbo);
+  TEST_CONFORM_SKIP (g_test_slow (), "/texture/cairo", texture_cairo);
 
   TEST_CONFORM_SIMPLE ("/interval", interval_initial_state);
   TEST_CONFORM_SIMPLE ("/interval", interval_transform);
