@@ -2382,7 +2382,7 @@ const MessageTray = new Lang.Class({
         } else if (this._notificationState == State.SHOWN) {
             let expired = (this._userActiveWhileNotificationShown &&
                            this._notificationTimeoutId == 0 &&
-                           !(this._notification.urgency == Urgency.CRITICAL) &&
+                           this._notification.urgency != Urgency.CRITICAL &&
                            !this._notification.focused &&
                            !this._pointerInNotification);
             let mustClose = (this._notificationRemoved || !hasNotifications || expired || this._traySummoned);
