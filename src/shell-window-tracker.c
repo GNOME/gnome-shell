@@ -489,9 +489,6 @@ track_window (ShellWindowTracker *self,
 {
   ShellApp *app;
 
-  if (!shell_window_tracker_is_window_interesting (window))
-    return;
-
   app = get_app_for_window (self, window);
   if (!app)
     return;
@@ -530,11 +527,8 @@ disassociate_window (ShellWindowTracker   *self,
 
   g_hash_table_remove (self->window_to_app, window);
 
-  if (shell_window_tracker_is_window_interesting (window))
-    {
-      _shell_app_remove_window (app, window);
-      g_signal_handlers_disconnect_by_func (window, G_CALLBACK(on_wm_class_changed), self);
-    }
+  _shell_app_remove_window (app, window);
+  g_signal_handlers_disconnect_by_func (window, G_CALLBACK(on_wm_class_changed), self);
 
   g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0);
 
