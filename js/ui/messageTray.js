@@ -76,7 +76,7 @@ const Urgency = {
     NORMAL: 1,
     HIGH: 2,
     CRITICAL: 3
-}
+};
 
 function _fixMarkup(text, allowMarkup) {
     if (allowMarkup) {
