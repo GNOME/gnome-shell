@@ -243,20 +243,6 @@ gvalue_destroy_notify (gpointer data)
   g_slice_free (GValue, value);
 }
 
-static gboolean
-strv_has (gchar **haystack,
-          gchar  *needle)
-{
-  gchar *iter;
-  for (iter = *haystack; iter; iter++)
-    {
-      if (g_strcmp0 (iter, needle) == 0)
-        return TRUE;
-    }
-
-  return FALSE;
-}
-
 static void
 get_secrets_keyring_cb (GObject            *source,
                         GAsyncResult       *result,
@@ -267,7 +253,6 @@ get_secrets_keyring_cb (GObject            *source,
   ShellNetworkAgentPrivate *priv;
   GError *secret_error = NULL;
   GError *error = NULL;
-  gint n_found = 0;
   GList *items;
   GList *l;
   GHashTable *outer;
@@ -327,11 +312,6 @@ get_secrets_keyring_cb (GObject            *source,
               else
                 g_hash_table_insert (closure->vpn_entries, secret_name, g_strdup (secret_value_get (secret, NULL)));
 
-              if (closure->hints)
-                n_found += strv_has (closure->hints, secret_name);
-              else
-                n_found += 1;
-
               g_hash_table_unref (attributes);
               secret_value_unref (secret);
               break;
@@ -344,8 +324,10 @@ get_secrets_keyring_cb (GObject            *source,
 
   g_list_free_full (items, g_object_unref);
 
-  if (n_found == 0 &&
-      (closure->flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_ALLOW_INTERACTION))
+  /* All VPN requests get sent to the VPN's auth dialog, since it knows better
+   * than the agent do about what secrets are required.
+   */
+  if (closure->is_vpn)
     {
       nm_connection_update_secrets (closure->connection, closure->setting_name, closure->entries, NULL);
 
