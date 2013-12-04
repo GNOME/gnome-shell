@@ -2847,12 +2847,12 @@ const MessageTray = new Lang.Class({
                                                                                   Lang.bind(this, this._onSourceDoneDisplayingContent));
 
         this._summaryBoxPointer.bin.child = child;
-        this._grabHelper.grab({ actor: this._summaryBoxPointer.bin.child,
-                                onUngrab: Lang.bind(this, this._onSummaryBoxPointerUngrabbed) });
-
         this._summaryBoxPointer.actor.opacity = 0;
         this._summaryBoxPointer.actor.show();
         this._adjustSummaryBoxPointerPosition();
+
+        this._grabHelper.grab({ actor: this._summaryBoxPointer.bin.child,
+                                onUngrab: Lang.bind(this, this._onSummaryBoxPointerUngrabbed) });
 
         this._summaryBoxPointerState = State.SHOWING;
         this._summaryBoxPointer.show(BoxPointer.PopupAnimation.FULL, Lang.bind(this, function() {
