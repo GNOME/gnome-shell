@@ -56,6 +56,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
+#include "clutter-gesture-action-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
@@ -398,10 +399,14 @@ clutter_zoom_action_class_init (ClutterZoomActionClass *klass)
 static void
 clutter_zoom_action_init (ClutterZoomAction *self)
 {
+  ClutterGestureAction *gesture;
+
   self->priv = clutter_zoom_action_get_instance_private (self);
   self->priv->zoom_axis = CLUTTER_ZOOM_BOTH;
 
-  clutter_gesture_action_set_n_touch_points (CLUTTER_GESTURE_ACTION (self), 2);
+  gesture = CLUTTER_GESTURE_ACTION (self);
+  clutter_gesture_action_set_n_touch_points (gesture, 2);
+  clutter_gesture_action_set_threshold_trigger_edge (gesture, CLUTTER_GESTURE_TRIGGER_EDGE_NONE);
 }
 
 /**

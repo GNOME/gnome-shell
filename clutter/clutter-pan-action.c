@@ -61,6 +61,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
+#include "clutter-gesture-action-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include <math.h>
@@ -556,10 +557,15 @@ clutter_pan_action_class_init (ClutterPanActionClass *klass)
 static void
 clutter_pan_action_init (ClutterPanAction *self)
 {
+  ClutterGestureAction *gesture;
+
   self->priv = clutter_pan_action_get_instance_private (self);
   self->priv->deceleration_rate = default_deceleration_rate;
   self->priv->acceleration_factor = default_acceleration_factor;
   self->priv->state = PAN_STATE_INACTIVE;
+
+  gesture = CLUTTER_GESTURE_ACTION (self);
+  clutter_gesture_action_set_threshold_trigger_edge (gesture, CLUTTER_GESTURE_TRIGGER_EDGE_AFTER);
 }
 
 /**

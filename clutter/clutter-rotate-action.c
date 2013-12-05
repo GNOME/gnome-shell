@@ -43,6 +43,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
+#include "clutter-gesture-action-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 
@@ -214,9 +215,13 @@ clutter_rotate_action_class_init (ClutterRotateActionClass *klass)
 static void
 clutter_rotate_action_init (ClutterRotateAction *self)
 {
+  ClutterGestureAction *gesture;
+
   self->priv = clutter_rotate_action_get_instance_private (self);
 
-  clutter_gesture_action_set_n_touch_points (CLUTTER_GESTURE_ACTION (self), 2);
+  gesture = CLUTTER_GESTURE_ACTION (self);
+  clutter_gesture_action_set_n_touch_points (gesture, 2);
+  clutter_gesture_action_set_threshold_trigger_edge (gesture, CLUTTER_GESTURE_TRIGGER_EDGE_NONE);
 }
 
 /**

@@ -45,6 +45,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
+#include "clutter-gesture-action-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 
@@ -245,6 +246,9 @@ static void
 clutter_swipe_action_init (ClutterSwipeAction *self)
 {
   self->priv = clutter_swipe_action_get_instance_private (self);
+
+  clutter_gesture_action_set_threshold_trigger_edge (CLUTTER_GESTURE_ACTION (self),
+                                                     CLUTTER_GESTURE_TRIGGER_EDGE_AFTER);
 }
 
 /**
