@@ -529,11 +529,11 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
       stage_cogl->using_clipped_redraw = TRUE;
 
-      cogl_framebuffer_push_rectangle_clip (fb,
-                                            clip_region->x * window_scale,
-                                            clip_region->y * window_scale,
-                                            clip_region->width * window_scale,
-                                            clip_region->height * window_scale);
+      cogl_framebuffer_push_scissor_clip (fb,
+                                          clip_region->x * window_scale,
+                                          clip_region->y * window_scale,
+                                          clip_region->width * window_scale,
+                                          clip_region->height * window_scale);
       _clutter_stage_do_paint (CLUTTER_STAGE (wrapper), clip_region);
       cogl_framebuffer_pop_clip (fb);
 
