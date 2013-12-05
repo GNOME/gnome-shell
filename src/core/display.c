@@ -1707,9 +1707,19 @@ update_focus_window (MetaDisplay   *display,
 
   if (display->focus_window)
     {
+      ClutterActor *window_actor;
+
       meta_topic (META_DEBUG_FOCUS, "* Focus --> %s with serial %lu\n",
                   display->focus_window->desc, serial);
       meta_window_set_focused_internal (display->focus_window, TRUE);
+
+      /* XXX -- this is sort of a layer violation, but because we
+       * rely on the compositor for event delivery anyway, I don't
+       * think it's too bad... */
+
+      window_actor = CLUTTER_ACTOR (display->focus_window->compositor_private);
+      if (window_actor)
+        clutter_actor_grab_key_focus (window_actor);
     }
   else
     meta_topic (META_DEBUG_FOCUS, "* Focus --> NULL with serial %lu\n", serial);

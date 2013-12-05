@@ -215,8 +215,6 @@ meta_wayland_compositor_set_input_focus (MetaWaylandCompositor *compositor,
   meta_wayland_keyboard_set_focus (&compositor->seat->keyboard,
                                    surface);
   meta_wayland_data_device_set_keyboard_focus (compositor->seat);
-
-  clutter_stage_set_key_focus (CLUTTER_STAGE (compositor->stage), window_actor);
 }
 
 void
