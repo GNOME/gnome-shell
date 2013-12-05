@@ -1604,7 +1604,7 @@ get_window_for_event (MetaDisplay        *display,
 {
   ClutterActor *source;
 
-  if (display->grab_window)
+  if (display->grab_op != META_GRAB_OP_NONE)
     return display->grab_window;
 
   source = clutter_event_get_source (event);
