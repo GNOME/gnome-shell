@@ -398,6 +398,8 @@ static void
 clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  cairo_rectangle_int_t geom;
+  gboolean have_clip;
   gboolean may_use_clipped_redraw;
   gboolean use_clipped_redraw;
   gboolean can_blit_sub_buffer;
@@ -435,11 +437,19 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
   has_buffer_age = cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_BUFFER_AGE);
 
+  _clutter_stage_window_get_geometry (stage_window, &geom);
+
+  /* NB: a zero width redraw clip == full stage redraw */
+  have_clip = (stage_cogl->bounding_redraw_clip.width != 0 &&
+	       !(stage_cogl->bounding_redraw_clip.x == 0 &&
+		 stage_cogl->bounding_redraw_clip.y == 0 &&
+		 stage_cogl->bounding_redraw_clip.width == geom.width &&
+		 stage_cogl->bounding_redraw_clip.height == geom.height));
+
   may_use_clipped_redraw = FALSE;
   if (_clutter_stage_window_can_clip_redraws (stage_window) &&
       can_blit_sub_buffer &&
-      /* NB: a zero width redraw clip == full stage redraw */
-      stage_cogl->bounding_redraw_clip.width != 0 &&
+      have_clip &&
       /* some drivers struggle to get going and produce some junk
        * frames when starting up... */
       stage_cogl->frame_count > 3)
