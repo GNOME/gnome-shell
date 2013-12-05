@@ -554,7 +554,7 @@ default_event_handler (ClutterGestureAction *action,
 
 
 /*< private >
- * _clutter_gesture_action_set_threshold_trigger_edge:
+ * clutter_gesture_action_set_threshold_trigger_edge:
  * @action: a #ClutterGestureAction
  * @edge: the %ClutterGestureTriggerEdge
  *
@@ -562,14 +562,28 @@ default_event_handler (ClutterGestureAction *action,
  *
  * This function can be called by #ClutterGestureAction subclasses that needs
  * to change the %CLUTTER_GESTURE_TRIGGER_EDGE_AFTER default.
- *
- * Since: 1.14
  */
 void
-_clutter_gesture_action_set_threshold_trigger_edge  (ClutterGestureAction     *action,
-                                                     ClutterGestureTriggerEdge edge)
+clutter_gesture_action_set_threshold_trigger_edge (ClutterGestureAction      *action,
+                                                   ClutterGestureTriggerEdge  edge)
 {
-  action->priv->edge = edge;
+  if (action->priv->edge != edge)
+    action->priv->edge = edge;
+}
+
+/*< private >
+ * clutter_gesture_action_get_threshold_trigger_egde:
+ * @action: a #ClutterGestureAction
+ *
+ * Retrieves the edge trigger of the gesture @action, as set using
+ * clutter_gesture_action_set_threshold_trigger_edge().
+ *
+ * Return value: the edge trigger
+ */
+ClutterGestureTriggerEdge
+clutter_gesture_action_get_threshold_trigger_egde (ClutterGestureAction *action)
+{
+  return action->priv->edge;
 }
 
 static void

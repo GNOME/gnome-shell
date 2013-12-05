@@ -122,8 +122,8 @@ clutter_tap_action_class_init (ClutterTapActionClass *klass)
 static void
 clutter_tap_action_init (ClutterTapAction *self)
 {
-  _clutter_gesture_action_set_threshold_trigger_edge (CLUTTER_GESTURE_ACTION (self),
-                                                      CLUTTER_GESTURE_TRIGGER_EDGE_BEFORE);
+  clutter_gesture_action_set_threshold_trigger_edge (CLUTTER_GESTURE_ACTION (self),
+                                                     CLUTTER_GESTURE_TRIGGER_EDGE_BEFORE);
 }
 
 /**
