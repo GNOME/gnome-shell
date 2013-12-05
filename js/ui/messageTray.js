@@ -234,6 +234,10 @@ const URLHighlighter = new Lang.Class({
         }));
     },
 
+    hasText: function() {
+        return !!this._text;
+    },
+
     setMarkup: function(text, allowMarkup) {
         text = text ? _fixMarkup(text, allowMarkup) : '';
         this._text = text;
@@ -440,23 +444,11 @@ const NotificationApplicationPolicy = new Lang.Class({
 // elements that were added to it or if the @banner text did not
 // fit fully in the banner mode. When the notification is expanded,
 // the @banner text from the top line is always removed. The complete
-// @banner text is added as the first element in the content section,
-// unless 'customContent' parameter with the value 'true' is specified
-// in @params.
+// @banner text is added to the notification by default. You can change
+// what is displayed by setting the child of this._bodyBin.
 //
-// Additional notification content can be added with addActor(). The
-// notification content is put inside a scrollview, so if it gets too
-// tall, the notification will scroll rather than continue to grow.
-// In addition to this main content area, there is also a single-row
-// action area, which is not scrolled and can contain a single actor.
-// The action area can be set by calling setActionArea() method. There
-// is also a convenience method addButton() for adding a button to the
-// action area.
-//
-// If @params contains a 'customContent' parameter with the value %true,
-// then @banner will not be shown in the body of the notification when the
-// notification is expanded and calls to update() will not clear the content
-// unless 'clear' parameter with value %true is explicitly specified.
+// You can also add buttons to the notification with addButton(),
+// and you can construct simple default buttons with addAction().
 //
 // By default, the icon shown is the same as the source's.
 // However, if @params contains a 'gicon' parameter, the passed in gicon
@@ -472,8 +464,6 @@ const NotificationApplicationPolicy = new Lang.Class({
 //
 // If @params contains a 'clear' parameter with the value %true, then
 // the content and the action area of the notification will be cleared.
-// The content area is also always cleared if 'customContent' is false
-// because it might contain the @banner that didn't fit in the banner mode.
 //
 // If @params contains 'soundName' or 'soundFile', the corresponding
 // event sound is played when the notification is shown (if the policy for
@@ -481,7 +471,7 @@ const NotificationApplicationPolicy = new Lang.Class({
 const Notification = new Lang.Class({
     Name: 'Notification',
 
-    ICON_SIZE: 24,
+    ICON_SIZE: 32,
 
     _init: function(source, title, banner, params) {
         this.source = source;
@@ -495,49 +485,80 @@ const Notification = new Lang.Class({
         this.focused = false;
         this.acknowledged = false;
         this._destroyed = false;
-        this._customContent = false;
-        this.bannerBodyText = null;
-        this.bannerBodyMarkup = false;
-        this._bannerBodyAdded = false;
-        this._titleFitsInBannerMode = true;
-        this._spacing = 0;
-        this._scrollPolicy = Gtk.PolicyType.AUTOMATIC;
         this._soundName = null;
         this._soundFile = null;
         this._soundPlayed = false;
 
-        this.actor = new St.Button({ accessible_role: Atk.Role.NOTIFICATION });
-        this.actor.add_style_class_name('notification-unexpanded');
+        // Let me draw you a picture. I am a bad artist:
+        //
+        //      ,. this._iconBin         ,. this._titleLabel
+        //      |        ,-- this._second|ryIconBin
+        // .----|--------|---------------|-----------.
+        // | .----. | .----.-----------------------. |
+        // | |    | | |    |                       |--- this._titleBox
+        // | '....' | '....'.......................' |
+        // |        |                                |- this._hbox
+        // |        |        this._bodyBin           |-.
+        // |________|________________________________| |- this.actor
+        // | this._actionArea                        |-'
+        // |_________________________________________|
+        // | this._buttonBox                         |
+        // |_________________________________________|
+
+        this.actor = new St.BoxLayout({ vertical: true,
+                                        style_class: 'notification',
+                                        accessible_role: Atk.Role.NOTIFICATION });
         this.actor._delegate = this;
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        this._table = new St.Table({ style_class: 'notification',
-                                     reactive: true });
-        this._table.connect('style-changed', Lang.bind(this, this._styleChanged));
-        this.actor.set_child(this._table);
+        this._mainButton = new St.Button({ style_class: 'notification-main-button',
+                                           can_focus: true,
+                                           x_fill: true, y_fill: true });
+        this._mainButton.connect('clicked', Lang.bind(this, this._onClicked));
+        this.actor.add_child(this._mainButton);
 
-        // The first line should have the title, followed by the
-        // banner text, but ellipsized if they won't both fit. We can't
-        // make St.Table or St.BoxLayout do this the way we want (don't
-        // show banner at all if title needs to be ellipsized), so we
-        // use Shell.GenericContainer.
-        this._bannerBox = new Shell.GenericContainer();
-        this._bannerBox.connect('get-preferred-width', Lang.bind(this, this._bannerBoxGetPreferredWidth));
-        this._bannerBox.connect('get-preferred-height', Lang.bind(this, this._bannerBoxGetPreferredHeight));
-        this._bannerBox.connect('allocate', Lang.bind(this, this._bannerBoxAllocate));
-        this._table.add(this._bannerBox, { row: 0,
-                                           col: 1,
-                                           col_span: 2,
-                                           x_expand: false,
-                                           y_expand: false,
-                                           y_fill: false });
+        // Separates the icon and title/body
+        this._hbox = new St.BoxLayout({ style_class: 'notification-main-content' });
+        this._mainButton.child = this._hbox;
 
-        this._titleLabel = new St.Label();
-        this._bannerBox.add_actor(this._titleLabel);
-        this._bannerUrlHighlighter = new URLHighlighter();
-        this._bannerLabel = this._bannerUrlHighlighter.actor;
-        this._bannerBox.add_actor(this._bannerLabel);
+        this._iconBin = new St.Bin({ y_align: St.Align.START });
+        this._hbox.add_child(this._iconBin);
+
+        this._titleBodyBox = new St.BoxLayout({ style_class: 'notification-title-body-box',
+                                                vertical: true });
+        this._hbox.add_child(this._titleBodyBox);
+
+        this._titleBox = new St.BoxLayout({ style_class: 'notification-title-box',
+                                            x_expand: true, x_align: Clutter.ActorAlign.START });
+        this._secondaryIconBin = new St.Bin();
+        this._titleBox.add_child(this._secondaryIconBin);
+        this._titleLabel = new St.Label({ x_expand: true });
+        this._titleBox.add_child(this._titleLabel);
+        this._titleBodyBox.add(this._titleBox);
+
+        this._bodyScrollArea = new St.ScrollView({ style_class: 'notification-scrollview',
+                                                   hscrollbar_policy: Gtk.PolicyType.NEVER });
+        this._titleBodyBox.add(this._bodyScrollArea);
+
+        this._bodyScrollable = new St.BoxLayout();
+        this._bodyScrollArea.add_actor(this._bodyScrollable);
+
+        this._bodyBin = new St.Bin();
+        this._bodyScrollable.add_actor(this._bodyBin);
+
+        // By default, this._bodyBin contains a URL highlighter. Subclasses
+        // can override this to provide custom content if they want to.
+        this._bodyUrlHighlighter = new URLHighlighter();
+        this._bodyBin.child = this._bodyUrlHighlighter.actor;
+
+        this._actionAreaBin = new St.Bin({ style_class: 'notification-action-area',
+                                           x_expand: true, y_expand: true });
+        this.actor.add_child(this._actionAreaBin);
+
+        this._buttonBox = new St.BoxLayout({ style_class: 'notification-button-box',
+                                             x_expand: true, y_expand: true });
+        global.focus_manager.add_group(this._buttonBox);
+        this.actor.add_child(this._buttonBox);
 
         // If called with only one argument we assume the caller
         // will call .update() later on. This is the case of
@@ -545,6 +566,31 @@ const Notification = new Lang.Class({
         // for new and updated notifications
         if (arguments.length != 1)
             this.update(title, banner, params);
+
+        this._sync();
+    },
+
+    _sync: function() {
+        this._actionAreaBin.visible = this.expanded && (this._actionArea != null);
+        this._buttonBox.visible = this.expanded && (this._buttonBox.get_n_children() > 0);
+
+        this._iconBin.visible = (this._icon != null && this._icon.visible);
+        this._secondaryIconBin.visible = (this._secondaryIcon != null);
+
+        if (this.expanded) {
+            this._titleLabel.clutter_text.line_wrap = true;
+            this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            this._bodyUrlHighlighter.actor.clutter_text.line_wrap = true;
+            this._bodyUrlHighlighter.actor.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        } else {
+            this._titleLabel.clutter_text.line_wrap = false;
+            this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+            this._bodyUrlHighlighter.actor.clutter_text.line_wrap = false;
+            this._bodyUrlHighlighter.actor.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+        }
+        this.enableScrolling(this.expanded);
+
+        this._bodyUrlHighlighter.actor.visible = this._bodyUrlHighlighter.hasText();
     },
 
     // update:
@@ -556,50 +602,31 @@ const Notification = new Lang.Class({
     // the title/banner. If @params.clear is %true, it will also
     // remove any additional actors/action buttons previously added.
     update: function(title, banner, params) {
-        params = Params.parse(params, { customContent: false,
-                                        gicon: null,
+        params = Params.parse(params, { gicon: null,
                                         secondaryGIcon: null,
                                         bannerMarkup: false,
                                         clear: false,
                                         soundName: null,
                                         soundFile: null });
 
-        this._customContent = params.customContent;
-
         let oldFocus = global.stage.key_focus;
 
-        if (this._icon && (params.gicon || params.clear)) {
-            this._icon.destroy();
-            this._icon = null;
-        }
-
-        if (this._secondaryIcon && (params.secondaryGIcon || params.clear)) {
-            this._secondaryIcon.destroy();
-            this._secondaryIcon = null;
-        }
-
-        // We always clear the content area if we don't have custom
-        // content because it might contain the @banner that didn't
-        // fit in the banner mode.
-        if (this._scrollArea && (!this._customContent || params.clear)) {
-            if (oldFocus && this._scrollArea.contains(oldFocus))
-                this.actor.grab_key_focus();
-
-            this._scrollArea.destroy();
-            this._scrollArea = null;
-            this._contentArea = null;
-        }
         if (this._actionArea && params.clear) {
             if (oldFocus && this._actionArea.contains(oldFocus))
                 this.actor.grab_key_focus();
 
             this._actionArea.destroy();
             this._actionArea = null;
-            this._buttonBox = null;
         }
 
-        if (!this._scrollArea && !this._actionArea)
-            this._table.remove_style_class_name('multi-line-notification');
+        if (params.clear) {
+            this._buttonBox.destroy_all_children();
+        }
+
+        if (this._icon && (params.gicon || params.clear)) {
+            this._icon.destroy();
+            this._icon = null;
+        }
 
         if (params.gicon) {
             this._icon = new St.Icon({ gicon: params.gicon,
@@ -608,19 +635,18 @@ const Notification = new Lang.Class({
             this._icon = this.source.createIcon(this.ICON_SIZE);
         }
 
-        if (this._icon) {
-            this._table.add(this._icon, { row: 0,
-                                          col: 0,
-                                          x_expand: false,
-                                          y_expand: false,
-                                          y_fill: false,
-                                          y_align: St.Align.START });
+        if (this._icon)
+            this._iconBin.child = this._icon;
+
+        if (this._secondaryIcon && (params.secondaryGIcon || params.clear)) {
+            this._secondaryIcon.destroy();
+            this._secondaryIcon = null;
         }
 
         if (params.secondaryGIcon) {
             this._secondaryIcon = new St.Icon({ gicon: params.secondaryGIcon,
                                                 style_class: 'secondary-icon' });
-            this._bannerBox.add_actor(this._secondaryIcon);
+            this._secondaryIconBin.child = this._secondaryIcon;
         }
 
         this.title = title;
@@ -639,24 +665,9 @@ const Notification = new Lang.Class({
         // arguably for action buttons as well. Labels other than the title
         // will be allocated at the available width, so that their alignment
         // is done correctly automatically.
-        this._table.set_text_direction(titleDirection);
+        this.actor.set_text_direction(titleDirection);
 
-        // Unless the notification has custom content, we save this.bannerBodyText
-        // to add it to the content of the notification if the notification is
-        // expandable due to other elements in its content area or due to the banner
-        // not fitting fully in the single-line mode.
-        this.bannerBodyText = this._customContent ? null : banner;
-        this.bannerBodyMarkup = params.bannerMarkup;
-        this._bannerBodyAdded = false;
-
-        banner = banner ? banner.replace(/\n/g, '  ') : '';
-
-        this._bannerUrlHighlighter.setMarkup(banner, params.bannerMarkup);
-        this._bannerLabel.queue_relayout();
-
-        // Add the bannerBody now if we know for sure we'll need it
-        if (this.bannerBodyText && this.bannerBodyText.indexOf('\n') > -1)
-            this._addBannerBody();
+        this._bodyUrlHighlighter.setMarkup(banner, params.bannerMarkup);
 
         if (this._soundName != params.soundName ||
             this._soundFile != params.soundFile) {
@@ -665,56 +676,18 @@ const Notification = new Lang.Class({
             this._soundPlayed = false;
         }
 
-        this.updated();
+        this._sync();
     },
 
     setIconVisible: function(visible) {
         this._icon.visible = visible;
+        this._sync();
     },
 
     enableScrolling: function(enableScrolling) {
-        this._scrollPolicy = enableScrolling ? Gtk.PolicyType.AUTOMATIC : Gtk.PolicyType.NEVER;
-        if (this._scrollArea) {
-            this._scrollArea.vscrollbar_policy = this._scrollPolicy;
-            this._scrollArea.enable_mouse_scrolling = enableScrolling;
-        }
-    },
-
-    _createScrollArea: function() {
-        this._table.add_style_class_name('multi-line-notification');
-        this._scrollArea = new St.ScrollView({ style_class: 'notification-scrollview',
-                                               vscrollbar_policy: this._scrollPolicy,
-                                               hscrollbar_policy: Gtk.PolicyType.NEVER,
-                                               visible: this.expanded });
-        this._table.add(this._scrollArea, { row: 1,
-                                            col: 2 });
-        this._contentArea = new St.BoxLayout({ style_class: 'notification-body',
-                                               vertical: true });
-        this._scrollArea.add_actor(this._contentArea);
-        // If we know the notification will be expandable, we need to add
-        // the banner text to the body as the first element.
-        this._addBannerBody();
-    },
-
-    // addActor:
-    // @actor: actor to add to the body of the notification
-    //
-    // Appends @actor to the notification's body
-    addActor: function(actor, style) {
-        if (!this._scrollArea) {
-            this._createScrollArea();
-        }
-
-        this._contentArea.add(actor, style ? style : {});
-        this.updated();
-    },
-
-    _addBannerBody: function() {
-        if (this.bannerBodyText && !this._bannerBodyAdded) {
-            let label = new URLHighlighter(this.bannerBodyText, true, this.bannerBodyMarkup);
-            this.addActor(label.actor);
-            this._bannerBodyAdded = true;
-        }
+        let scrollPolicy = enableScrolling ? Gtk.PolicyType.AUTOMATIC : Gtk.PolicyType.NEVER;
+        this._bodyScrollArea.vscrollbar_policy = scrollPolicy;
+        this._bodyScrollArea.enable_mouse_scrolling = enableScrolling;
     },
 
     // scrollTo:
@@ -722,53 +695,23 @@ const Notification = new Lang.Class({
     //
     // Scrolls the content area (if scrollable) to the indicated edge
     scrollTo: function(side) {
-        let adjustment = this._scrollArea.vscroll.adjustment;
+        let adjustment = this._bodyScrollArea.vscroll.adjustment;
         if (side == St.Side.TOP)
             adjustment.value = adjustment.lower;
         else if (side == St.Side.BOTTOM)
             adjustment.value = adjustment.upper;
     },
 
-    // setActionArea:
-    // @actor: the actor
-    // @props: (option) St.Table child properties
-    //
-    // Puts @actor into the action area of the notification, replacing
-    // the previous contents
-    setActionArea: function(actor, props) {
-        if (this._actionArea) {
+    setActionArea: function(actor) {
+        if (this._actionArea)
             this._actionArea.destroy();
-            this._actionArea = null;
-            if (this._buttonBox)
-                this._buttonBox = null;
-        } else {
-            this._addBannerBody();
-        }
+
         this._actionArea = actor;
-        this._actionArea.visible = this.expanded;
-
-        if (!props)
-            props = {};
-        props.row = 2;
-        props.col = 2;
-
-        this._table.add_style_class_name('multi-line-notification');
-        this._table.add(this._actionArea, props);
-        this.updated();
+        this._actionAreaBin.child = actor;
+        this._sync();
     },
 
     addButton: function(button, callback) {
-        if (!this._buttonBox) {
-            let box = new St.BoxLayout({ style_class: 'notification-actions' });
-            this.setActionArea(box, { x_expand: false,
-                                      y_expand: false,
-                                      x_fill: false,
-                                      y_fill: false,
-                                      x_align: St.Align.END });
-            this._buttonBox = box;
-            global.focus_manager.add_group(this._buttonBox);
-        }
-
         this._buttonBox.add(button);
         button.connect('clicked', Lang.bind(this, function() {
             callback();
@@ -777,7 +720,7 @@ const Notification = new Lang.Class({
             this.destroy();
         }));
 
-        this.updated();
+        this._sync();
         return button;
     },
 
@@ -790,8 +733,7 @@ const Notification = new Lang.Class({
     // the notification.
     addAction: function(label, callback) {
         let button = new St.Button({ style_class: 'notification-button',
-                                     label: label,
-                                     can_focus: true });
+                                     x_expand: true, label: label, can_focus: true });
 
         return this.addButton(button, callback);
     },
@@ -827,113 +769,6 @@ const Notification = new Lang.Class({
         }
     },
 
-    _bannerBoxGetPreferredHeight: function(actor, forWidth, alloc) {
-        [alloc.min_size, alloc.natural_size] =
-            this._titleLabel.get_preferred_height(forWidth);
-    },
-
-    _bannerBoxAllocate: function(actor, box, flags) {
-        let availWidth = box.x2 - box.x1;
-
-        let [titleMinW, titleNatW] = this._titleLabel.get_preferred_width(-1);
-        let [titleMinH, titleNatH] = this._titleLabel.get_preferred_height(availWidth);
-        let [bannerMinW, bannerNatW] = this._bannerLabel.get_preferred_width(availWidth);
-
-        let rtl = (this._titleDirection == Clutter.TextDirection.RTL);
-        let x = rtl ? availWidth : 0;
-
-        if (this._secondaryIcon) {
-            let [iconMinW, iconNatW] = this._secondaryIcon.get_preferred_width(-1);
-            let [iconMinH, iconNatH] = this._secondaryIcon.get_preferred_height(availWidth);
-
-            let secondaryIconBox = new Clutter.ActorBox();
-            let secondaryIconBoxW = Math.min(iconNatW, availWidth);
-
-            // allocate secondary icon box
-            if (rtl) {
-                secondaryIconBox.x1 = x - secondaryIconBoxW;
-                secondaryIconBox.x2 = x;
-                x = x - (secondaryIconBoxW + this._spacing);
-            } else {
-                secondaryIconBox.x1 = x;
-                secondaryIconBox.x2 = x + secondaryIconBoxW;
-                x = x + secondaryIconBoxW + this._spacing;
-            }
-            secondaryIconBox.y1 = 0;
-            // Using titleNatH ensures that the secondary icon is centered vertically
-            secondaryIconBox.y2 = titleNatH;
-
-            availWidth = availWidth - (secondaryIconBoxW + this._spacing);
-            this._secondaryIcon.allocate(secondaryIconBox, flags);
-        }
-
-        let titleBox = new Clutter.ActorBox();
-        let titleBoxW = Math.min(titleNatW, availWidth);
-        if (rtl) {
-            titleBox.x1 = availWidth - titleBoxW;
-            titleBox.x2 = availWidth;
-        } else {
-            titleBox.x1 = x;
-            titleBox.x2 = titleBox.x1 + titleBoxW;
-        }
-        titleBox.y1 = 0;
-        titleBox.y2 = titleNatH;
-        this._titleLabel.allocate(titleBox, flags);
-        this._titleFitsInBannerMode = (titleNatW <= availWidth);
-
-        let bannerFits = true;
-        if (titleBoxW + this._spacing > availWidth) {
-            this._bannerLabel.opacity = 0;
-            bannerFits = false;
-        } else {
-            let bannerBox = new Clutter.ActorBox();
-
-            if (rtl) {
-                bannerBox.x1 = 0;
-                bannerBox.x2 = titleBox.x1 - this._spacing;
-
-                bannerFits = (bannerBox.x2 - bannerNatW >= 0);
-            } else {
-                bannerBox.x1 = titleBox.x2 + this._spacing;
-                bannerBox.x2 = availWidth;
-
-                bannerFits = (bannerBox.x1 + bannerNatW <= availWidth);
-            }
-            bannerBox.y1 = 0;
-            bannerBox.y2 = titleNatH;
-            this._bannerLabel.allocate(bannerBox, flags);
-
-            // Make _bannerLabel visible if the entire notification
-            // fits on one line, or if the notification is currently
-            // unexpanded and only showing one line anyway.
-            if (!this.expanded || (bannerFits && this._table.row_count == 1))
-                this._bannerLabel.opacity = 255;
-        }
-
-        // If the banner doesn't fully fit in the banner box, we possibly need to add the
-        // banner to the body. We can't do that from here though since that will force a
-        // relayout, so we add it to the main loop.
-        if (!bannerFits && this._canExpandContent())
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                           Lang.bind(this,
-                                     function() {
-                                         if (this._destroyed)
-                                             return false;
-
-                                        if (this._canExpandContent()) {
-                                            this._addBannerBody();
-                                            this._table.add_style_class_name('multi-line-notification');
-                                            this.updated();
-                                        }
-                                        return false;
-                                     }));
-    },
-
-    _canExpandContent: function() {
-        return (this.bannerBodyText && !this._bannerBodyAdded) ||
-               (!this._titleFitsInBannerMode && !this._table.has_style_class_name('multi-line-notification'));
-    },
-
     playSound: function() {
         if (this._soundPlayed)
             return;
@@ -966,69 +801,18 @@ const Notification = new Lang.Class({
         }
     },
 
-    updated: function() {
-        if (this.expanded)
-            this.expand(false);
-    },
-
     expand: function(animate) {
         this.expanded = true;
-        this.actor.remove_style_class_name('notification-unexpanded');
-
-        // Show additional content that we keep hidden in banner mode
-        if (this._actionArea)
-            this._actionArea.show();
-        if (this._scrollArea)
-            this._scrollArea.show();
-
-        // The banner is never shown when the title did not fit, so this
-        // can be an if-else statement.
-        if (!this._titleFitsInBannerMode) {
-            // Remove ellipsization from the title label and make it wrap so that
-            // we show the full title when the notification is expanded.
-            this._titleLabel.clutter_text.line_wrap = true;
-            this._titleLabel.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
-            this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        } else if (this._table.row_count > 1 && this._bannerLabel.opacity != 0) {
-            // We always hide the banner if the notification has additional content.
-            //
-            // We don't need to wrap the banner that doesn't fit the way we wrap the
-            // title that doesn't fit because we won't have a notification with
-            // row_count=1 that has a banner that doesn't fully fit. We'll either add
-            // that banner to the content of the notification in _bannerBoxAllocate()
-            // or the notification will have custom content.
-            if (animate)
-                Tweener.addTween(this._bannerLabel,
-                                 { opacity: 0,
-                                   time: ANIMATION_TIME,
-                                   transition: 'easeOutQuad' });
-            else
-                this._bannerLabel.opacity = 0;
-        }
+        this._sync();
         this.emit('expanded');
     },
 
     collapseCompleted: function() {
         if (this._destroyed)
             return;
+
         this.expanded = false;
-
-        // Hide additional content that we keep hidden in banner mode
-        if (this._actionArea)
-            this._actionArea.hide();
-        if (this._scrollArea)
-            this._scrollArea.hide();
-
-        // Make sure we don't line wrap the title, and ellipsize it instead.
-        this._titleLabel.clutter_text.line_wrap = false;
-        this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-
-        // Restore banner opacity in case the notification is shown in the
-        // banner mode again on update.
-        this._bannerLabel.opacity = 255;
-
-        // Restore height requisition
-        this.actor.add_style_class_name('notification-unexpanded');
+        this._sync();
     },
 
     _onClicked: function() {

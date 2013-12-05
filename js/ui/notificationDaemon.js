@@ -319,13 +319,14 @@ const FdoNotificationDaemon = new Lang.Class({
     },
 
     _makeButton: function(id, label, useActionIcons) {
-        let button = new St.Button({ can_focus: true });
+        let button = new St.Button({ can_focus: true,
+                                     x_expand: true,
+                                     style_class: 'notification-button' });
         let iconName = id.endsWith('-symbolic') ? id : id + '-symbolic';
+
         if (useActionIcons && Gtk.IconTheme.get_default().has_icon(iconName)) {
-            button.add_style_class_name('notification-icon-button');
-            button.child = new St.Icon({ icon_name: iconName });
+            button.child = new St.Icon({ icon_name: iconName, icon_size: 16 });
         } else {
-            button.add_style_class_name('notification-button');
             button.label = label;
         }
         return button;
