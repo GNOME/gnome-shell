@@ -8,7 +8,9 @@
     <file>gdm/oVirt.js</file>
     <file>gdm/realmd.js</file>
     <file>gdm/util.js</file>
+
     <file>extensionPrefs/main.js</file>
+
     <file>misc/config.js</file>
     <file>misc/extensionUtils.js</file>
     <file>misc/fileUtils.js</file>
@@ -22,7 +24,9 @@
     <file>misc/params.js</file>
     <file>misc/smartcardManager.js</file>
     <file>misc/util.js</file>
+
     <file>perf/core.js</file>
+
     <file>ui/altTab.js</file>
     <file>ui/animation.js</file>
     <file>ui/appDisplay.js</file>
@@ -37,12 +41,12 @@
     <file>ui/dateMenu.js</file>
     <file>ui/dnd.js</file>
     <file>ui/endSessionDialog.js</file>
-    <file>ui/extensionSystem.js</file>
-    <file>ui/extensionDownloader.js</file>
     <file>ui/environment.js</file>
+    <file>ui/extensionDownloader.js</file>
+    <file>ui/extensionSystem.js</file>
     <file>ui/focusCaretTracker.js</file>
-    <file>ui/ibusCandidatePopup.js</file>
     <file>ui/grabHelper.js</file>
+    <file>ui/ibusCandidatePopup.js</file>
     <file>ui/iconGrid.js</file>
     <file>ui/keyboard.js</file>
     <file>ui/layout.js</file>
@@ -53,11 +57,6 @@
     <file>ui/main.js</file>
     <file>ui/messageTray.js</file>
     <file>ui/modalDialog.js</file>
-    <file>ui/separator.js</file>
-    <file>ui/sessionMode.js</file>
-    <file>ui/shellEntry.js</file>
-    <file>ui/shellMountOperation.js</file>
-    <file>ui/slider.js</file>
     <file>ui/notificationDaemon.js</file>
     <file>ui/osdWindow.js</file>
     <file>ui/overview.js</file>
@@ -66,15 +65,41 @@
     <file>ui/panelMenu.js</file>
     <file>ui/pointerWatcher.js</file>
     <file>ui/popupMenu.js</file>
-    <file>ui/remoteSearch.js</file>
     <file>ui/remoteMenu.js</file>
+    <file>ui/remoteSearch.js</file>
     <file>ui/runDialog.js</file>
+    <file>ui/screenShield.js</file>
     <file>ui/screencast.js</file>
     <file>ui/screenshot.js</file>
-    <file>ui/screenShield.js</file>
     <file>ui/scripting.js</file>
     <file>ui/search.js</file>
+    <file>ui/separator.js</file>
+    <file>ui/sessionMode.js</file>
     <file>ui/shellDBus.js</file>
+    <file>ui/shellEntry.js</file>
+    <file>ui/shellMountOperation.js</file>
+    <file>ui/slider.js</file>
+    <file>ui/switcherPopup.js</file>
+    <file>ui/tweener.js</file>
+    <file>ui/unlockDialog.js</file>
+    <file>ui/userWidget.js</file>
+    <file>ui/viewSelector.js</file>
+    <file>ui/windowAttentionHandler.js</file>
+    <file>ui/windowManager.js</file>
+    <file>ui/workspace.js</file>
+    <file>ui/workspaceSwitcherPopup.js</file>
+    <file>ui/workspaceThumbnail.js</file>
+    <file>ui/workspacesView.js</file>
+    <file>ui/xdndHandler.js</file>
+
+    <file>ui/components/__init__.js</file>
+    <file>ui/components/autorunManager.js</file>
+    <file>ui/components/automountManager.js</file>
+    <file>ui/components/networkAgent.js</file>
+    <file>ui/components/polkitAgent.js</file>
+    <file>ui/components/telepathyClient.js</file>
+    <file>ui/components/keyring.js</file>
+
     <file>ui/status/accessibility.js</file>
     <file>ui/status/brightness.js</file>
     <file>ui/status/keyboard.js</file>
@@ -85,24 +110,5 @@
     <file>ui/status/bluetooth.js</file>
     <file>ui/status/screencast.js</file>
     <file>ui/status/system.js</file>
-    <file>ui/switcherPopup.js</file>
-    <file>ui/tweener.js</file>
-    <file>ui/unlockDialog.js</file>
-    <file>ui/userWidget.js</file>
-    <file>ui/viewSelector.js</file>
-    <file>ui/windowAttentionHandler.js</file>
-    <file>ui/windowManager.js</file>
-    <file>ui/workspace.js</file>
-    <file>ui/workspaceThumbnail.js</file>
-    <file>ui/workspacesView.js</file>
-    <file>ui/workspaceSwitcherPopup.js</file>
-    <file>ui/xdndHandler.js</file>
-    <file>ui/components/__init__.js</file>
-    <file>ui/components/autorunManager.js</file>
-    <file>ui/components/automountManager.js</file>
-    <file>ui/components/networkAgent.js</file>
-    <file>ui/components/polkitAgent.js</file>
-    <file>ui/components/telepathyClient.js</file>
-    <file>ui/components/keyring.js</file>
   </gresource>
 </gresources>
