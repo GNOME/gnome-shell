@@ -2229,9 +2229,11 @@ handle_input_xevent (MetaDisplay *display,
                      XIEvent     *input_event,
                      gulong       serial)
 {
+  XIDeviceEvent *device_event = (XIDeviceEvent *) input_event;
   XIEnterEvent *enter_event = (XIEnterEvent *) input_event;
   Window modified;
   MetaWindow *window;
+  gboolean frame_was_receiver;
 
   if (input_event == NULL)
     return FALSE;
@@ -2239,8 +2241,242 @@ handle_input_xevent (MetaDisplay *display,
   modified = xievent_get_modified_window (display, input_event);
   window = modified != None ? meta_display_lookup_x_window (display, modified) : NULL;
 
+  frame_was_receiver = FALSE;
+  if (window &&
+      window->frame &&
+      modified == window->frame->xwindow)
+    {
+      /* Note that if the frame and the client both have an
+       * XGrabButton (as is normal with our setup), the event
+       * goes to the frame.
+       */
+      frame_was_receiver = TRUE;
+      meta_topic (META_DEBUG_EVENTS, "Frame was receiver of event for %s\n",
+                  window->desc);
+    }
+
+  if (window && !window->override_redirect &&
+      (input_event->evtype == XI_KeyPress || input_event->evtype == XI_ButtonPress))
+    {
+      if (CurrentTime == display->current_time)
+        {
+          /* We can't use missing (i.e. invalid) timestamps to set user time,
+           * nor do we want to use them to sanity check other timestamps.
+           * See bug 313490 for more details.
+           */
+          meta_warning ("Event has no timestamp! You may be using a broken "
+                        "program such as xse.  Please ask the authors of that "
+                        "program to fix it.\n");
+        }
+      else
+        {
+          meta_window_set_user_time (window, display->current_time);
+          sanity_check_timestamps (display, display->current_time);
+        }
+    }
+
   switch (input_event->evtype)
     {
+    case XI_ButtonPress:
+      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+        break;
+
+      display->overlay_key_only_pressed = FALSE;
+
+      if (device_event->detail == 4 || device_event->detail == 5)
+        /* Scrollwheel event, do nothing and deliver event to compositor below */
+        break;
+
+      if ((window &&
+           meta_grab_op_is_mouse (display->grab_op) &&
+           (device_event->mods.effective & display->window_grab_modifiers) &&
+           display->grab_button != device_event->detail &&
+           display->grab_window == window) ||
+          grab_op_is_keyboard (display->grab_op))
+        {
+          meta_topic (META_DEBUG_WINDOW_OPS,
+                      "Ending grab op %u on window %s due to button press\n",
+                      display->grab_op,
+                      (display->grab_window ?
+                       display->grab_window->desc :
+                       "none"));
+          if (GRAB_OP_IS_WINDOW_SWITCH (display->grab_op))
+            {
+              MetaScreen *screen;
+              meta_topic (META_DEBUG_WINDOW_OPS,
+                          "Syncing to old stack positions.\n");
+              screen =
+                meta_display_screen_for_root (display, device_event->event);
+
+              if (screen!=NULL)
+                meta_stack_set_positions (screen->stack,
+                                          display->grab_old_window_stacking);
+            }
+          meta_display_end_grab_op (display,
+                                    device_event->time);
+        }
+      else if (window && display->grab_op == META_GRAB_OP_NONE)
+        {
+          gboolean begin_move = FALSE;
+          unsigned int grab_mask;
+          gboolean unmodified;
+
+          grab_mask = display->window_grab_modifiers;
+          if (g_getenv ("MUTTER_DEBUG_BUTTON_GRABS"))
+            grab_mask |= ControlMask;
+
+          /* Two possible sources of an unmodified event; one is a
+           * client that's letting button presses pass through to the
+           * frame, the other is our focus_window_grab on unmodified
+           * button 1.  So for all such events we focus the window.
+           */
+          unmodified = (device_event->mods.effective & grab_mask) == 0;
+
+          if (unmodified ||
+              device_event->detail == 1)
+            {
+              /* don't focus if frame received, will be lowered in
+               * frames.c or special-cased if the click was on a
+               * minimize/close button.
+               */
+              if (!frame_was_receiver)
+                {
+                  if (meta_prefs_get_raise_on_click ())
+                    meta_window_raise (window);
+                  else
+                    meta_topic (META_DEBUG_FOCUS,
+                                "Not raising window on click due to don't-raise-on-click option\n");
+
+                  /* Don't focus panels--they must explicitly request focus.
+                   * See bug 160470
+                   */
+                  if (window->type != META_WINDOW_DOCK)
+                    {
+                      meta_topic (META_DEBUG_FOCUS,
+                                  "Focusing %s due to unmodified button %u press (display.c)\n",
+                                  window->desc, device_event->detail);
+                      meta_window_focus (window, device_event->time);
+                    }
+                  else
+                    /* However, do allow terminals to lose focus due to new
+                     * window mappings after the user clicks on a panel.
+                     */
+                    display->allow_terminal_deactivation = TRUE;
+                }
+
+              /* you can move on alt-click but not on
+               * the click-to-focus
+               */
+              if (!unmodified)
+                begin_move = TRUE;
+            }
+          else if (!unmodified && device_event->detail == meta_prefs_get_mouse_button_resize())
+            {
+              if (window->has_resize_func)
+                {
+                  gboolean north, south;
+                  gboolean west, east;
+                  MetaRectangle frame_rect;
+                  MetaGrabOp op;
+
+                  meta_window_get_frame_rect (window, &frame_rect);
+
+                  west = device_event->root_x <  (frame_rect.x + 1 * frame_rect.width  / 3);
+                  east = device_event->root_x >  (frame_rect.x + 2 * frame_rect.width  / 3);
+                  north = device_event->root_y < (frame_rect.y + 1 * frame_rect.height / 3);
+                  south = device_event->root_y > (frame_rect.y + 2 * frame_rect.height / 3);
+
+                  if (north && west)
+                    op = META_GRAB_OP_RESIZING_NW;
+                  else if (north && east)
+                    op = META_GRAB_OP_RESIZING_NE;
+                  else if (south && west)
+                    op = META_GRAB_OP_RESIZING_SW;
+                  else if (south && east)
+                    op = META_GRAB_OP_RESIZING_SE;
+                  else if (north)
+                    op = META_GRAB_OP_RESIZING_N;
+                  else if (west)
+                    op = META_GRAB_OP_RESIZING_W;
+                  else if (east)
+                    op = META_GRAB_OP_RESIZING_E;
+                  else if (south)
+                    op = META_GRAB_OP_RESIZING_S;
+                  else /* Middle region is no-op to avoid user triggering wrong action */
+                    op = META_GRAB_OP_NONE;
+
+                  if (op != META_GRAB_OP_NONE)
+                    meta_display_begin_grab_op (display,
+                                                window->screen,
+                                                window,
+                                                op,
+                                                TRUE,
+                                                FALSE,
+                                                device_event->detail,
+                                                0,
+                                                device_event->time,
+                                                device_event->root_x,
+                                                device_event->root_y);
+                }
+            }
+          else if (device_event->detail == meta_prefs_get_mouse_button_menu())
+            {
+              if (meta_prefs_get_raise_on_click ())
+                meta_window_raise (window);
+              meta_window_show_menu (window,
+                                     device_event->root_x,
+                                     device_event->root_y,
+                                     device_event->detail,
+                                     device_event->time);
+            }
+
+          if (!frame_was_receiver && unmodified)
+            {
+              /* This is from our synchronous grab since
+               * it has no modifiers and was on the client window
+               */
+
+              meta_verbose ("Allowing events time %u\n",
+                            (unsigned int)device_event->time);
+
+              XIAllowEvents (display->xdisplay, device_event->deviceid,
+                             XIReplayDevice, device_event->time);
+            }
+
+          if (begin_move && window->has_move_func)
+            {
+              meta_display_begin_grab_op (display,
+                                          window->screen,
+                                          window,
+                                          META_GRAB_OP_MOVING,
+                                          TRUE,
+                                          FALSE,
+                                          device_event->detail,
+                                          0,
+                                          device_event->time,
+                                          device_event->root_x,
+                                          device_event->root_y);
+            }
+        }
+      break;
+    case XI_ButtonRelease:
+      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+        break;
+
+      display->overlay_key_only_pressed = FALSE;
+
+      if (display->grab_window == window &&
+          meta_grab_op_is_mouse (display->grab_op))
+        meta_window_handle_mouse_grab_op_xevent (window, device_event);
+      break;
+    case XI_Motion:
+      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+        break;
+
+      if (display->grab_window == window &&
+          meta_grab_op_is_mouse (display->grab_op))
+        meta_window_handle_mouse_grab_op_xevent (window, device_event);
+      break;
     case XI_Enter:
       if (display->grab_op == META_GRAB_OP_COMPOSITOR)
         break;

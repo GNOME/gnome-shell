@@ -10029,20 +10029,96 @@ update_resize (MetaWindow *window,
     g_get_current_time (&window->display->grab_last_moveresize_time);
 }
 
-static gboolean
-check_use_this_motion_notify (MetaWindow         *window,
-                              const ClutterEvent *event)
+typedef struct
 {
-  /* XXX: Previously this code would walk through the X event queue
-     and filter out motion events that are followed by a later motion
-     event. There currently isn't any API to do the equivalent
-     procedure with the Clutter event queue so this function does
-     nothing. Clutter does its own motion event squashing so it may be
-     the case that this function isn't necessary. If it turns out that
-     we do need additional motion event squashing we could add some
-     extra API to the Clutter event queue and implement this function
-     properly. */
-  return TRUE;
+  Window  window;
+  int     count;
+  guint32 last_time;
+} EventScannerData;
+
+static Bool
+find_last_time_predicate (Display  *display,
+                          XEvent   *ev,
+                          XPointer  arg)
+{
+  EventScannerData *esd = (void*) arg;
+  XIEvent *xev;
+
+  if (ev->type != GenericEvent)
+    return False;
+
+  /* We are peeking into events not yet handled by GDK,
+   * Allocate cookie events here so we can handle XI2.
+   *
+   * GDK will handle later these events, and eventually
+   * free the cookie data itself.
+   */
+  XGetEventData (display, &ev->xcookie);
+  xev = (XIEvent *) ev->xcookie.data;
+
+  if (xev->evtype != XI_Motion)
+    return False;
+
+  if (esd->window != ((XIDeviceEvent *) xev)->event)
+    return False;
+
+  esd->count += 1;
+  esd->last_time = xev->time;
+
+  return False;
+}
+
+static gboolean
+check_use_this_motion_notify (MetaWindow *window,
+                              XIDeviceEvent *xev)
+{
+  EventScannerData esd;
+  XEvent useless;
+
+  /* This code is copied from Owen's GDK code. */
+
+  if (window->display->grab_motion_notify_time != 0)
+    {
+      /* == is really the right test, but I'm all for paranoia */
+      if (window->display->grab_motion_notify_time <=
+          xev->time)
+        {
+          meta_topic (META_DEBUG_RESIZING,
+                      "Arrived at event with time %u (waiting for %u), using it\n",
+                      (unsigned int)xev->time,
+                      window->display->grab_motion_notify_time);
+          window->display->grab_motion_notify_time = 0;
+          return TRUE;
+        }
+      else
+        return FALSE; /* haven't reached the saved timestamp yet */
+    }
+
+  esd.window = xev->event;
+  esd.count = 0;
+  esd.last_time = 0;
+
+  /* "useless" isn't filled in because the predicate never returns True */
+  XCheckIfEvent (window->display->xdisplay,
+                 &useless,
+                 find_last_time_predicate,
+                 (XPointer) &esd);
+
+  if (esd.count > 0)
+    meta_topic (META_DEBUG_RESIZING,
+                "Will skip %d motion events and use the event with time %u\n",
+                esd.count, (unsigned int) esd.last_time);
+
+  if (esd.last_time == 0)
+    return TRUE;
+  else
+    {
+      /* Save this timestamp, and ignore all motion notify
+       * until we get to the one with this stamp.
+       */
+      window->display->grab_motion_notify_time = esd.last_time;
+      return FALSE;
+    }
 }
 
 static void
@@ -10116,8 +10192,98 @@ meta_window_update_sync_request_counter (MetaWindow *window,
 #endif /* HAVE_XSYNC */
 
 void
-meta_window_handle_mouse_grab_op_event (MetaWindow         *window,
-                                        const ClutterEvent *event)
+meta_window_handle_mouse_grab_op_xevent (MetaWindow         *window,
+                                         XIDeviceEvent      *xevent)
+{
+  gboolean is_window_root = (xevent->root == window->screen->xroot);
+
+  switch (xevent->evtype)
+    {
+    case XI_ButtonRelease:
+      if (xevent->detail == 1 ||
+          xevent->detail == meta_prefs_get_mouse_button_resize ())
+        {
+          meta_display_check_threshold_reached (window->display,
+                                                xevent->root_x,
+                                                xevent->root_y);
+          /* If the user was snap moving then ignore the button
+           * release because they may have let go of shift before
+           * releasing the mouse button and they almost certainly do
+           * not want a non-snapped movement to occur from the button
+           * release.
+           */
+          if (!window->display->grab_last_user_action_was_snap)
+            {
+              if (meta_grab_op_is_moving (window->display->grab_op))
+                {
+                  if (window->tile_mode != META_TILE_NONE)
+                    meta_window_tile (window);
+                  else if (is_window_root)
+                    update_move (window,
+                                 xevent->mods.effective & ShiftMask,
+                                 xevent->root_x,
+                                 xevent->root_y);
+                }
+              else if (meta_grab_op_is_resizing (window->display->grab_op))
+                {
+                  if (is_window_root)
+                    update_resize (window,
+                                   xevent->mods.effective & ShiftMask,
+                                   xevent->root_x,
+                                   xevent->root_y,
+                                   TRUE);
+
+                  /* If a tiled window has been dragged free with a
+                   * mouse resize without snapping back to the tiled
+                   * state, it will end up with an inconsistent tile
+                   * mode on mouse release; cleaning the mode earlier
+                   * would break the ability to snap back to the tiled
+                   * state, so we wait until mouse release.
+                   */
+                  update_tile_mode (window);
+                }
+              meta_display_end_grab_op (window->display, xevent->time);
+            }
+        }
+      break;
+
+    case XI_Motion:
+      meta_display_check_threshold_reached (window->display,
+                                            xevent->root_x,
+                                            xevent->root_y);
+      if (meta_grab_op_is_moving (window->display->grab_op))
+        {
+          if (is_window_root)
+            {
+              if (check_use_this_motion_notify (window, xevent))
+                update_move (window,
+                             xevent->mods.effective & ShiftMask,
+                             xevent->root_x,
+                             xevent->root_y);
+            }
+        }
+      else if (meta_grab_op_is_resizing (window->display->grab_op))
+        {
+          if (is_window_root)
+            {
+              if (check_use_this_motion_notify (window, xevent))
+                update_resize (window,
+                               xevent->mods.effective & ShiftMask,
+                               xevent->root_x,
+                               xevent->root_y,
+                               FALSE);
+            }
+        }
+      break;
+
+    default:
+      break;
+    }
+}
+
+void
+meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
+                                         const ClutterEvent *event)
 {
   gboolean is_window_root = (event->any.stage != NULL &&
                              window &&
@@ -10170,7 +10336,6 @@ meta_window_handle_mouse_grab_op_event (MetaWindow         *window,
                    */
                   update_tile_mode (window);
                 }
-
               meta_display_end_grab_op (window->display, event->any.time);
             }
         }
@@ -10184,23 +10349,21 @@ meta_window_handle_mouse_grab_op_event (MetaWindow         *window,
         {
           if (is_window_root)
             {
-              if (check_use_this_motion_notify (window, event))
-                update_move (window,
-                             event->button.modifier_state & CLUTTER_SHIFT_MASK,
-                             event->motion.x,
-                             event->motion.y);
+              update_move (window,
+                           event->button.modifier_state & CLUTTER_SHIFT_MASK,
+                           event->motion.x,
+                           event->motion.y);
             }
         }
       else if (meta_grab_op_is_resizing (window->display->grab_op))
         {
           if (is_window_root)
             {
-              if (check_use_this_motion_notify (window, event))
-                update_resize (window,
-                               event->button.modifier_state & CLUTTER_SHIFT_MASK,
-                               event->motion.x,
-                               event->motion.y,
-                               FALSE);
+              update_resize (window,
+                             event->button.modifier_state & CLUTTER_SHIFT_MASK,
+                             event->motion.x,
+                             event->motion.y,
+                             FALSE);
             }
         }
       break;
