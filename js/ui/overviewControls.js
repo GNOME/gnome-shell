@@ -451,45 +451,21 @@ const MessagesIndicator = new Lang.Class({
         this.actor.add_actor(this._container);
         this.actor.add_actor(this._highlight);
 
-        Main.messageTray.connect('source-added', Lang.bind(this, this._onSourceAdded));
-        Main.messageTray.connect('source-removed', Lang.bind(this, this._onSourceRemoved));
-
-        let sources = Main.messageTray.getSources();
-        sources.forEach(Lang.bind(this, function(source) { this._onSourceAdded(null, source); }));
+        Main.messageTray.connect('indicator-count-updated', Lang.bind(this, this._sync));
+        this._sync();
 
         this._viewSelector.connect('page-changed', Lang.bind(this, this._updateVisibility));
         Main.overview.connect('showing', Lang.bind(this, this._updateVisibility));
     },
 
-    _onSourceAdded: function(tray, source) {
-        if (source.trayIcon)
-            return;
-
-        source.connect('count-updated', Lang.bind(this, this._updateCount));
-        this._sources.push(source);
-        this._updateCount();
-    },
-
-    _onSourceRemoved: function(tray, source) {
-        this._sources.splice(this._sources.indexOf(source), 1);
-        this._updateCount();
-    },
-
-    _updateCount: function() {
-        let count = 0;
-        let hasChats = false;
-        this._sources.forEach(Lang.bind(this,
-            function(source) {
-                count += source.indicatorCount;
-                hasChats |= source.isChat;
-            }));
-
+    _sync: function() {
+        let count = Main.messageTray.indicatorCount;
         this._count = count;
         this._label.text = ngettext("%d new message",
                                     "%d new messages",
                                    count).format(count);
 
-        this._icon.visible = hasChats;
+        this._icon.visible = Main.messageTray.hasChatSources;
         this._updateVisibility();
     },
 

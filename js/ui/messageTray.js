@@ -1821,7 +1821,8 @@ const MessageTray = new Lang.Class({
             summaryItem: new SummaryItem(source),
             notifyId: 0,
             destroyId: 0,
-            mutedChangedId: 0
+            mutedChangedId: 0,
+            countChangedId: 0,
         };
         let summaryItem = obj.summaryItem;
 
@@ -1846,6 +1847,9 @@ const MessageTray = new Lang.Class({
                         return source != notification.source;
                     });
             }));
+        obj.countChangedId = source.connect('count-updated', Lang.bind(this, function() {
+            this.emit('indicator-count-updated');
+        }));
 
         summaryItem.actor.connect('clicked', Lang.bind(this,
             function(actor, button) {
@@ -1865,6 +1869,7 @@ const MessageTray = new Lang.Class({
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() { this._updateState(); return false; }));
 
         this.emit('source-added', source);
+        this.emit('indicator-count-updated');
 
         this._updateNoMessagesLabel();
     },
@@ -1883,10 +1888,12 @@ const MessageTray = new Lang.Class({
         source.disconnect(obj.notifyId);
         source.disconnect(obj.destroyId);
         source.disconnect(obj.mutedChangedId);
+        source.disconnect(obj.countChangedId);
 
         summaryItem.destroy();
 
         this.emit('source-removed', source);
+        this.emit('indicator-count-updated');
 
         this._updateNoMessagesLabel();
     },
@@ -1909,6 +1916,23 @@ const MessageTray = new Lang.Class({
 
     _onSourceDestroy: function(source) {
         this._removeSource(source);
+    },
+
+    get hasChatSources() {
+        for (let source of this._sources.keys())
+            if (source.isChat)
+                return true;
+        return false;
+    },
+
+    get indicatorCount() {
+        if (!this._sources.size)
+            return 0;
+
+        let count = 0;
+        for (let source of this._sources.keys())
+            count += source.indicatorCount;
+        return count;
     },
 
     _onNotificationDestroy: function(notification) {
