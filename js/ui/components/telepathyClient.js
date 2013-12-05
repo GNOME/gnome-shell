@@ -735,7 +735,11 @@ const ChatNotification = new Lang.Class({
         }
 
         this._lastMessageBox = new St.BoxLayout({ vertical: false });
-        this._lastMessageBox.add(body, props.childProps);
+
+        let revealer = new MessageTray.Revealer(body);
+        this._lastMessageBox.add(revealer, props.childProps);
+        revealer.show(true);
+
         this._bodyBox.add_child(this._lastMessageBox);
 
         let timestamp = props.timestamp;
