@@ -1620,7 +1620,7 @@ const MessageTrayMenu = new Lang.Class({
         this._clearItem = this.addAction(_("Clear Messages"), function() {
             let toDestroy = tray.getSources().filter(function(source) {
                 return source.isClearable;
-            })
+            });
 
             toDestroy.forEach(function(source) {
                 source.destroy();
