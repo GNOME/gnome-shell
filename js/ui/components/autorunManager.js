@@ -394,12 +394,12 @@ const AutorunTransientNotification = new Lang.Class({
     Extends: MessageTray.Notification,
 
     _init: function(manager, source) {
-        this.parent(source, source.title, null, { customContent: true });
+        this.parent(source, source.title);
 
         this._manager = manager;
         this._box = new St.BoxLayout({ style_class: 'hotplug-transient-box',
                                        vertical: true });
-        this.addActor(this._box);
+        this._bodyBin.child = this._box;
 
         this._mount = source.mount;
 
