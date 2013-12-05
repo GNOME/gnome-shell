@@ -19,6 +19,7 @@ const BoxPointer = imports.ui.boxpointer;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const GnomeSession = imports.misc.gnomeSession;
 const GrabHelper = imports.ui.grabHelper;
+const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const PointerWatcher = imports.ui.pointerWatcher;
@@ -47,6 +48,9 @@ const TRAY_DWELL_TIME = 1000; // ms
 const TRAY_DWELL_CHECK_INTERVAL = 100; // ms
 
 const IDLE_TIME = 1000;
+
+const MESSAGE_TRAY_PRESSURE_THRESHOLD = 250; // pixels
+const MESSAGE_TRAY_PRESSURE_TIMEOUT = 1000; // ms
 
 const State = {
     HIDDEN:  0,
@@ -1500,6 +1504,118 @@ const MessageTrayMenuButton = new Lang.Class({
     },
 });
 
+const MessageTrayIndicator = new Lang.Class({
+    Name: 'MessageTrayIndicator',
+
+    _init: function(tray) {
+        this._tray = tray;
+
+        this.actor = new St.BoxLayout({ style_class: 'message-tray-indicator',
+                                        reactive: true,
+                                        track_hover: true,
+                                        vertical: true,
+                                        x_expand: true,
+                                        y_expand: true,
+                                        y_align: Clutter.ActorAlign.START });
+        this.actor.connect('notify::height', Lang.bind(this, function() {
+            this.actor.translation_y = -this.actor.height;
+        }));
+        this.actor.connect('button-press-event', Lang.bind(this, function() {
+            this._tray.openTray();
+            this._pressureBarrier.reset();
+        }));
+
+        this._count = new St.Label({ style_class: 'message-tray-indicator-count',
+                                     x_expand: true,
+                                     x_align: Clutter.ActorAlign.CENTER });
+        this.actor.add_child(this._count);
+
+        this._tray.connect('indicator-count-updated', Lang.bind(this, this._syncCount));
+        this._syncCount();
+
+        this._glow = new St.Widget({ style_class: 'message-tray-indicator-glow',
+                                     x_expand: true });
+        this.actor.add_child(this._glow);
+
+        this._pressureBarrier = new Layout.PressureBarrier(MESSAGE_TRAY_PRESSURE_THRESHOLD,
+                                                           MESSAGE_TRAY_PRESSURE_TIMEOUT,
+                                                           Shell.KeyBindingMode.NORMAL |
+                                                           Shell.KeyBindingMode.OVERVIEW);
+        this._pressureBarrier.setEventFilter(this._barrierEventFilter);
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._updateBarrier));
+        this._updateBarrier();
+
+        this._pressureBarrier.connect('pressure-changed', Lang.bind(this, this._updatePressure));
+        this._pressureValue = 0;
+        this._syncGlow();
+    },
+
+    _updateBarrier: function() {
+        let monitor = Main.layoutManager.bottomMonitor;
+
+        if (this._barrier) {
+            this._pressureBarrier.removeBarrier(this._trayBarrier);
+            this._barrier.destroy();
+            this._barrier = null;
+        }
+
+        this._barrier = new Meta.Barrier({ display: global.display,
+                                           x1: monitor.x, x2: monitor.x + monitor.width,
+                                           y1: monitor.y + monitor.height, y2: monitor.y + monitor.height,
+                                           directions: Meta.BarrierDirection.NEGATIVE_Y });
+        this._pressureBarrier.addBarrier(this._barrier);
+    },
+
+    _trayBarrierEventFilter: function(event) {
+        // Throw out all events where the pointer was grabbed by another
+        // client, as the client that grabbed the pointer expects to have
+        // complete control over it
+        if (event.grabbed && Main.modalCount == 0)
+            return true;
+
+        if (this._tray.hasVisibleNotification())
+            return true;
+
+        return false;
+    },
+
+    _syncCount: function() {
+        let count = this._tray.indicatorCount;
+        this._count.visible = (count > 0);
+        this._count.text = '' + count;
+    },
+
+    _syncGlow: function() {
+        let value = this._pressureValue;
+        let percent = value / this._pressureBarrier.threshold;
+        this.actor.opacity = Math.min(percent * 255, 255);
+        this.actor.visible = (value > 0);
+    },
+
+    get pressureValue() {
+        return this._pressureValue;
+    },
+
+    set pressureValue(value) {
+        this._pressureValue = value;
+        this._syncGlow();
+   },
+
+    _updatePressure: function() {
+        let value = this._pressureBarrier.currentPressure;
+        this.pressureValue = value;
+        if (value > 0) {
+            Tweener.removeTweens(this);
+            Tweener.addTween(this, { time: this._pressureBarrier.timeout / 1000,
+                                     pressureValue: 0 });
+        }
+    },
+
+    destroy: function() {
+        this.actor.destroy();
+    },
+});
+
 const MessageTray = new Lang.Class({
     Name: 'MessageTray',
 
@@ -1683,6 +1799,11 @@ const MessageTray = new Lang.Class({
 
         this._messageTrayMenuButton = new MessageTrayMenuButton(this);
         this.actor.add_actor(this._messageTrayMenuButton.actor);
+
+        this._indicator = new MessageTrayIndicator(this);
+        Main.layoutManager.trayBox.add_child(this._indicator.actor);
+        Main.layoutManager.trackChrome(this._indicator.actor);
+        this._grabHelper.addActor(this._indicator.actor);
     },
 
     close: function() {
@@ -2147,6 +2268,10 @@ const MessageTray = new Lang.Class({
         this._setClickedSummaryItem(null);
         this._updateNotificationTimeout(0);
         this._updateState();
+    },
+
+    hasVisibleNotification: function() {
+        return this._notificationState != State.HIDDEN;
     },
 
     // All of the logic for what happens when occurs here; the various

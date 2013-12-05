@@ -22,11 +22,6 @@ const KEYBOARD_ANIMATION_TIME = 0.15;
 const BACKGROUND_FADE_ANIMATION_TIME = 1.0;
 const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
-// The message tray takes this much pressure
-// in the pressure barrier at once to release it.
-const MESSAGE_TRAY_PRESSURE_THRESHOLD = 250; // pixels
-const MESSAGE_TRAY_PRESSURE_TIMEOUT = 1000; // ms
-
 const HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
 const HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
 
@@ -150,7 +145,6 @@ const LayoutManager = new Lang.Class({
 
         this._keyboardIndex = -1;
         this._rightPanelBarrier = null;
-        this._trayBarrier = null;
 
         this._inOverview = false;
         this._updateRegionIdle = 0;
@@ -210,7 +204,6 @@ const LayoutManager = new Lang.Class({
         this.trayBox = new St.Widget({ name: 'trayBox',
                                        layout_manager: new Clutter.BinLayout() }); 
         this.addChrome(this.trayBox);
-        this._setupTrayPressure();
 
         this.modalDialogGroup = new St.Widget({ name: 'modalDialogGroup',
                                                 layout_manager: new Clutter.BinLayout() });
@@ -449,50 +442,9 @@ const LayoutManager = new Lang.Class({
         }
     },
 
-    _setupTrayPressure: function() {
-        this._trayPressure = new PressureBarrier(MESSAGE_TRAY_PRESSURE_THRESHOLD,
-                                                 MESSAGE_TRAY_PRESSURE_TIMEOUT,
-                                                 Shell.KeyBindingMode.NORMAL |
-                                                 Shell.KeyBindingMode.OVERVIEW);
-        this._trayPressure.setEventFilter(this._trayBarrierEventFilter);
-        this._trayPressure.connect('trigger', function(barrier) {
-            if (Main.layoutManager.bottomMonitor.inFullscreen)
-                return;
-
-            Main.messageTray.openTray();
-        });
-    },
-
-    _updateTrayBarrier: function() {
-        let monitor = this.bottomMonitor;
-
-        if (this._trayBarrier) {
-            this._trayPressure.removeBarrier(this._trayBarrier);
-            this._trayBarrier.destroy();
-            this._trayBarrier = null;
-        }
-
-        this._trayBarrier = new Meta.Barrier({ display: global.display,
-                                               x1: monitor.x, x2: monitor.x + monitor.width,
-                                               y1: monitor.y + monitor.height, y2: monitor.y + monitor.height,
-                                               directions: Meta.BarrierDirection.NEGATIVE_Y });
-        this._trayPressure.addBarrier(this._trayBarrier);
-    },
-
-    _trayBarrierEventFilter: function(event) {
-        // Throw out all events where the pointer was grabbed by another
-        // client, as the client that grabbed the pointer expects to have
-        // complete control over it
-        if (event.grabbed && Main.modalCount == 0)
-            return true;
-
-        return false;
-    },
-
     _monitorsChanged: function() {
         this._updateMonitors();
         this._updateBoxes();
-        this._updateTrayBarrier();
         this._updateHotCorners();
         this._updateBackgrounds();
         this._updateFullscreen();
@@ -1096,10 +1048,10 @@ const HotCorner = new Lang.Class({
 
         this._setupFallbackCornerIfNeeded(layoutManager);
 
-        this._pressureBarrier = new PressureBarrier(HOT_CORNER_PRESSURE_THRESHOLD,
-                                                    HOT_CORNER_PRESSURE_TIMEOUT,
-                                                    Shell.KeyBindingMode.NORMAL |
-                                                    Shell.KeyBindingMode.OVERVIEW);
+        this._pressureBarrier = new TriggerablePressureBarrier(HOT_CORNER_PRESSURE_THRESHOLD,
+                                                               HOT_CORNER_PRESSURE_TIMEOUT,
+                                                               Shell.KeyBindingMode.NORMAL |
+                                                               Shell.KeyBindingMode.OVERVIEW);
         this._pressureBarrier.connect('trigger', Lang.bind(this, this._toggleOverview));
 
         // Cache the three ripples instead of dynamically creating and destroying them.
@@ -1277,14 +1229,12 @@ const PressureBarrier = new Lang.Class({
     Name: 'PressureBarrier',
 
     _init: function(threshold, timeout, keybindingMode) {
-        this._threshold = threshold;
-        this._timeout = timeout;
+        this.threshold = threshold;
+        this.timeout = timeout;
         this._keybindingMode = keybindingMode;
         this._barriers = [];
         this._eventFilter = null;
-
-        this._isTriggered = false;
-        this._reset();
+        this.reset();
     },
 
     addBarrier: function(barrier) {
@@ -1313,10 +1263,10 @@ const PressureBarrier = new Lang.Class({
         this._eventFilter = filter;
     },
 
-    _reset: function() {
+    reset: function() {
         this._barrierEvents = [];
-        this._currentPressure = 0;
         this._lastTime = 0;
+        this.currentPressure = 0;
     },
 
     _isHorizontal: function(barrier) {
@@ -1337,12 +1287,21 @@ const PressureBarrier = new Lang.Class({
             return Math.abs(event.dy);
     },
 
+    get currentPressure() {
+        return this._currentPressure;
+    },
+
+    set currentPressure(value) {
+        this._currentPressure = value;
+        this.emit('pressure-changed');
+    },
+
     _trimBarrierEvents: function() {
         // Events are guaranteed to be sorted in time order from
         // oldest to newest, so just look for the first old event,
         // and then chop events after that off.
         let i = 0;
-        let threshold = this._lastTime - this._timeout;
+        let threshold = this._lastTime - this.timeout;
 
         while (i < this._barrierEvents.length) {
             let [time, distance] = this._barrierEvents[i];
@@ -1355,21 +1314,75 @@ const PressureBarrier = new Lang.Class({
 
         for (i = 0; i < firstNewEvent; i++) {
             let [time, distance] = this._barrierEvents[i];
-            this._currentPressure -= distance;
+            this.currentPressure = distance;
         }
 
         this._barrierEvents = this._barrierEvents.slice(firstNewEvent);
     },
 
     _onBarrierLeft: function(barrier, event) {
-        this._reset();
+        this.reset();
+    },
+
+    _shouldUseEvent: function(barrier, event) {
+        if (this._eventFilter && this._eventFilter(event))
+            return false;
+
+        // Throw out all events not in the proper keybinding mode
+        if (!(this._keybindingMode & Main.keybindingMode))
+            return false;
+
+        let slide = this._getDistanceAlongBarrier(barrier, event);
+        let distance = this._getDistanceAcrossBarrier(barrier, event);
+
+        // Throw out events where the cursor is move more
+        // along the axis of the barrier than moving with
+        // the barrier.
+        if (slide > distance)
+            return false;
+
+        return true;
+    },
+
+    _appendEvent: function(barrier, event) {
+        let distance = this._getDistanceAcrossBarrier(barrier, event);
+
+        this._lastTime = event.time;
+
+        this._trimBarrierEvents();
+        distance = Math.min(15, distance);
+
+        this._barrierEvents.push([event.time, distance]);
+        this.currentPressure += distance;
+    },
+
+    _onBarrierHit: function(barrier, event) {
+        if (!this._shouldUseEvent(barrier, event))
+            return;
+
+        this._appendEvent(barrier, event);
+    }
+});
+Signals.addSignalMethods(PressureBarrier.prototype);
+
+const TriggerablePressureBarrier = new Lang.Class({
+    Name: 'TriggerablePressureBarrier',
+    Extends: PressureBarrier,
+
+    _init: function(threshold, timeout, keybindingMode) {
+        this.parent(threshold, timeout, keybindingMode);
         this._isTriggered = false;
     },
 
     _trigger: function() {
         this._isTriggered = true;
         this.emit('trigger');
-        this._reset();
+        this.reset();
+    },
+
+    _onBarrierLeft: function() {
+        this.parent();
+        this._isTriggered = false;
     },
 
     _onBarrierHit: function(barrier, event) {
@@ -1378,37 +1391,17 @@ const PressureBarrier = new Lang.Class({
         if (this._isTriggered)
             return;
 
-        if (this._eventFilter && this._eventFilter(event))
+        if (!this._shouldUseEvent(barrier, event))
             return;
 
-        // Throw out all events not in the proper keybinding mode
-        if (!(this._keybindingMode & Main.keybindingMode))
-            return;
-
-        let slide = this._getDistanceAlongBarrier(barrier, event);
-        let distance = this._getDistanceAcrossBarrier(barrier, event);
-
-        if (distance >= this._threshold) {
+        if (distance >= this.threshold) {
             this._trigger();
             return;
         }
 
-        // Throw out events where the cursor is move more
-        // along the axis of the barrier than moving with
-        // the barrier.
-        if (slide > distance)
-            return;
+        this._appendEvent(barrier, event);
 
-        this._lastTime = event.time;
-
-        this._trimBarrierEvents();
-        distance = Math.min(15, distance);
-
-        this._barrierEvents.push([event.time, distance]);
-        this._currentPressure += distance;
-
-        if (this._currentPressure >= this._threshold)
+        if (this.currentPressure >= this.threshold)
             this._trigger();
-    }
+    },
 });
-Signals.addSignalMethods(PressureBarrier.prototype);

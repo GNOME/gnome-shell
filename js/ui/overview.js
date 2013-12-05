@@ -263,8 +263,6 @@ const Overview = new Lang.Class({
         this._overview.add(this._controls.actor, { y_fill: true, expand: true });
         this._controls.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 
-        this._stack.add_actor(this._controls.indicatorActor);
-
         // TODO - recalculate everything when desktop size changes
         this.dashIconSize = this._dash.iconSize;
         this._dash.connect('icon-size-changed',

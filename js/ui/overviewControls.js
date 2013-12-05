@@ -396,87 +396,6 @@ const DashSpacer = new Lang.Class({
     }
 });
 
-const MessagesIndicator = new Lang.Class({
-    Name: 'MessagesIndicator',
-
-    _init: function(viewSelector) {
-        this._count = 0;
-        this._sources = [];
-        this._viewSelector = viewSelector;
-
-        this._container = new St.BoxLayout({ style_class: 'messages-indicator-contents',
-                                             reactive: true,
-                                             track_hover: true,
-                                             x_expand: true,
-                                             y_expand: true,
-                                             x_align: Clutter.ActorAlign.CENTER });
-
-        this._icon = new St.Icon({ icon_name: 'user-idle-symbolic',
-                                   icon_size: 16 });
-        this._container.add_actor(this._icon);
-
-        this._label = new St.Label();
-        this._container.add_actor(this._label);
-
-        this._highlight = new St.Widget({ style_class: 'messages-indicator-highlight',
-                                          x_expand: true,
-                                          y_expand: true,
-                                          y_align: Clutter.ActorAlign.END,
-                                          visible: false });
-
-        this._container.connect('notify::hover', Lang.bind(this,
-            function() {
-                this._highlight.visible = this._container.hover;
-            }));
-
-        let clickAction = new Clutter.ClickAction();
-        this._container.add_action(clickAction);
-        clickAction.connect('clicked', Lang.bind(this,
-            function() {
-                Main.messageTray.openTray();
-            }));
-
-        Main.messageTray.connect('showing', Lang.bind(this,
-            function() {
-                this._highlight.visible = false;
-                this._container.hover = false;
-            }));
-
-        let layout = new Clutter.BinLayout();
-        this.actor = new St.Widget({ layout_manager: layout,
-                                     style_class: 'messages-indicator',
-                                     y_expand: true,
-                                     y_align: Clutter.ActorAlign.END,
-                                     visible: false });
-        this.actor.add_actor(this._container);
-        this.actor.add_actor(this._highlight);
-
-        Main.messageTray.connect('indicator-count-updated', Lang.bind(this, this._sync));
-        this._sync();
-
-        this._viewSelector.connect('page-changed', Lang.bind(this, this._updateVisibility));
-        Main.overview.connect('showing', Lang.bind(this, this._updateVisibility));
-    },
-
-    _sync: function() {
-        let count = Main.messageTray.indicatorCount;
-        this._count = count;
-        this._label.text = ngettext("%d new message",
-                                    "%d new messages",
-                                   count).format(count);
-
-        this._icon.visible = Main.messageTray.hasChatSources;
-        this._updateVisibility();
-    },
-
-    _updateVisibility: function() {
-        let activePage = this._viewSelector.getActivePage();
-        let visible = ((this._count > 0) && (activePage == ViewSelector.ViewPage.WINDOWS));
-
-        this.actor.visible = visible;
-    }
-});
-
 const ControlsLayout = new Lang.Class({
     Name: 'ControlsLayout',
     Extends: Clutter.BinLayout,
@@ -504,9 +423,6 @@ const ControlsManager = new Lang.Class({
                                                           this.dash.showAppsButton);
         this.viewSelector.connect('page-changed', Lang.bind(this, this._setVisibility));
         this.viewSelector.connect('page-empty', Lang.bind(this, this._onPageEmpty));
-
-        this._indicator = new MessagesIndicator(this.viewSelector);
-        this.indicatorActor = this._indicator.actor;
 
         let layout = new ControlsLayout();
         this.actor = new St.Widget({ layout_manager: layout,
