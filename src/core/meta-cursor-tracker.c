@@ -696,7 +696,6 @@ meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
     return FALSE;
 
   set_window_cursor (tracker, FALSE, NULL);
-  g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
 
   return TRUE;
 }
@@ -970,12 +969,15 @@ sync_displayed_cursor (MetaCursorTracker *tracker)
   if (displayed_cursor)
     tracker->displayed_cursor = meta_cursor_reference_ref (displayed_cursor);
 
-  if (displayed_cursor)
-    cogl_pipeline_set_layer_texture (tracker->pipeline, 0, COGL_TEXTURE (displayed_cursor->texture));
-  else
-    cogl_pipeline_set_layer_texture (tracker->pipeline, 0, NULL);
+  if (meta_is_wayland_compositor ())
+    {
+      if (displayed_cursor)
+        cogl_pipeline_set_layer_texture (tracker->pipeline, 0, COGL_TEXTURE (displayed_cursor->texture));
+      else
+        cogl_pipeline_set_layer_texture (tracker->pipeline, 0, NULL);
 
-  update_hw_cursor (tracker);
+      update_hw_cursor (tracker);
+    }
 
   g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
 }
@@ -1034,10 +1036,13 @@ sync_cursor (MetaCursorTracker *tracker)
       tracker->current_rect.height = 0;
     }
 
-  if (tracker->has_hw_cursor)
-    move_hw_cursor (tracker);
-  else
-    meta_cursor_tracker_queue_redraw (tracker);
+  if (meta_is_wayland_compositor ())
+    {
+      if (tracker->has_hw_cursor)
+        move_hw_cursor (tracker);
+      else
+        meta_cursor_tracker_queue_redraw (tracker);
+    }
 }
 
 void
