@@ -484,8 +484,6 @@ const Notification = new Lang.Class({
 
     ICON_SIZE: 24,
 
-    IMAGE_SIZE: 125,
-
     _init: function(source, title, banner, params) {
         this.source = source;
         this.title = title;
@@ -505,7 +503,6 @@ const Notification = new Lang.Class({
         this._titleFitsInBannerMode = true;
         this._spacing = 0;
         this._scrollPolicy = Gtk.PolicyType.AUTOMATIC;
-        this._imageBin = null;
         this._soundName = null;
         this._soundFile = null;
         this._soundPlayed = false;
@@ -536,14 +533,6 @@ const Notification = new Lang.Class({
                                            x_expand: false,
                                            y_expand: false,
                                            y_fill: false });
-
-        // This is an empty cell that overlaps with this._bannerBox cell to ensure
-        // that this._bannerBox cell expands horizontally, while not forcing the
-        // this._imageBin that is also in col: 2 to expand horizontally.
-        this._table.add(new St.Bin(), { row: 0,
-                                        col: 2,
-                                        y_expand: false,
-                                        y_fill: false });
 
         this._titleLabel = new St.Label();
         this._bannerBox.add_actor(this._titleLabel);
@@ -609,10 +598,8 @@ const Notification = new Lang.Class({
             this._actionArea = null;
             this._buttonBox = null;
         }
-        if (params.clear)
-            this.unsetImage();
 
-        if (!this._scrollArea && !this._actionArea && !this._imageBin)
+        if (!this._scrollArea && !this._actionArea)
             this._table.remove_style_class_name('multi-line-notification');
 
         if (params.gicon) {
@@ -702,7 +689,6 @@ const Notification = new Lang.Class({
                                                visible: this.expanded });
         this._table.add(this._scrollArea, { row: 1,
                                             col: 2 });
-        this._updateLastColumnSettings();
         this._contentArea = new St.BoxLayout({ style_class: 'notification-body',
                                                vertical: true });
         this._scrollArea.add_actor(this._contentArea);
@@ -783,51 +769,7 @@ const Notification = new Lang.Class({
 
         this._table.add_style_class_name('multi-line-notification');
         this._table.add(this._actionArea, props);
-        this._updateLastColumnSettings();
         this.updated();
-    },
-
-    _updateLastColumnSettings: function() {
-        if (this._scrollArea)
-            this._table.child_set(this._scrollArea, { col: this._imageBin ? 2 : 1,
-                                                      col_span: this._imageBin ? 1 : 2 });
-        if (this._actionArea)
-            this._table.child_set(this._actionArea, { col: this._imageBin ? 2 : 1,
-                                                      col_span: this._imageBin ? 1 : 2 });
-    },
-
-    setImage: function(image) {
-        this.unsetImage();
-
-        if (!image)
-            return;
-
-        this._imageBin = new St.Bin({ opacity: 230,
-                                      child: image,
-                                      visible: this.expanded });
-
-        this._table.add_style_class_name('multi-line-notification');
-        this._table.add_style_class_name('notification-with-image');
-        this._addBannerBody();
-        this._updateLastColumnSettings();
-        this._table.add(this._imageBin, { row: 1,
-                                          col: 1,
-                                          row_span: 2,
-                                          x_expand: false,
-                                          y_expand: false,
-                                          x_fill: false,
-                                          y_fill: false });
-    },
-
-    unsetImage: function() {
-        if (this._imageBin) {
-            this._table.remove_style_class_name('notification-with-image');
-            this._table.remove_actor(this._imageBin);
-            this._imageBin = null;
-            this._updateLastColumnSettings();
-            if (!this._scrollArea && !this._actionArea)
-                this._table.remove_style_class_name('multi-line-notification');
-        }
     },
 
     addButton: function(button, callback) {
@@ -1049,8 +991,6 @@ const Notification = new Lang.Class({
         this.actor.remove_style_class_name('notification-unexpanded');
 
         // Show additional content that we keep hidden in banner mode
-        if (this._imageBin)
-            this._imageBin.show();
         if (this._actionArea)
             this._actionArea.show();
         if (this._scrollArea)
@@ -1089,8 +1029,6 @@ const Notification = new Lang.Class({
         this.expanded = false;
 
         // Hide additional content that we keep hidden in banner mode
-        if (this._imageBin)
-            this._imageBin.hide();
         if (this._actionArea)
             this._actionArea.hide();
         if (this._scrollArea)
