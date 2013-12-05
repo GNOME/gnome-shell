@@ -1159,7 +1159,7 @@ const SourceActor = new Lang.Class({
         }));
         this._actorDestroyed = false;
 
-        this._counterLabel = new St.Label( {x_align: Clutter.ActorAlign.CENTER,
+        this._counterLabel = new St.Label({ x_align: Clutter.ActorAlign.CENTER,
                                             x_expand: true,
                                             y_align: Clutter.ActorAlign.CENTER,
                                             y_expand: true });
