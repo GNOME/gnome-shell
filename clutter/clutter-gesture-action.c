@@ -133,6 +133,7 @@ enum
   PROP_0,
 
   PROP_N_TOUCH_POINTS,
+  PROP_THRESHOLD_TRIGGER_EDGE,
 
   PROP_LAST
 };
@@ -552,40 +553,6 @@ default_event_handler (ClutterGestureAction *action,
   return TRUE;
 }
 
-
-/*< private >
- * clutter_gesture_action_set_threshold_trigger_edge:
- * @action: a #ClutterGestureAction
- * @edge: the %ClutterGestureTriggerEdge
- *
- * Sets the edge trigger for the gesture drag threshold, if any.
- *
- * This function can be called by #ClutterGestureAction subclasses that needs
- * to change the %CLUTTER_GESTURE_TRIGGER_EDGE_AFTER default.
- */
-void
-clutter_gesture_action_set_threshold_trigger_edge (ClutterGestureAction      *action,
-                                                   ClutterGestureTriggerEdge  edge)
-{
-  if (action->priv->edge != edge)
-    action->priv->edge = edge;
-}
-
-/*< private >
- * clutter_gesture_action_get_threshold_trigger_egde:
- * @action: a #ClutterGestureAction
- *
- * Retrieves the edge trigger of the gesture @action, as set using
- * clutter_gesture_action_set_threshold_trigger_edge().
- *
- * Return value: the edge trigger
- */
-ClutterGestureTriggerEdge
-clutter_gesture_action_get_threshold_trigger_egde (ClutterGestureAction *action)
-{
-  return action->priv->edge;
-}
-
 static void
 clutter_gesture_action_set_property (GObject      *gobject,
                                      guint         prop_id,
@@ -598,6 +565,10 @@ clutter_gesture_action_set_property (GObject      *gobject,
     {
     case PROP_N_TOUCH_POINTS:
       clutter_gesture_action_set_n_touch_points (self, g_value_get_int (value));
+      break;
+
+    case PROP_THRESHOLD_TRIGGER_EDGE:
+      clutter_gesture_action_set_threshold_trigger_edge (self, g_value_get_enum (value));
       break;
 
     default:
@@ -618,6 +589,10 @@ clutter_gesture_action_get_property (GObject    *gobject,
     {
     case PROP_N_TOUCH_POINTS:
       g_value_set_int (value, self->priv->requested_nb_points);
+      break;
+
+    case PROP_THRESHOLD_TRIGGER_EDGE:
+      g_value_set_enum (value, self->priv->edge);
       break;
 
     default:
@@ -665,6 +640,24 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
                       P_("Number of touch points"),
                       1, G_MAXINT, 1,
                       CLUTTER_PARAM_READWRITE);
+
+  /**
+   * ClutterGestureAction:threshold-trigger-edge:
+   *
+   * The trigger edge to be used by the action to either emit the
+   * #ClutterGestureAction::gesture-begin signal or to emit the
+   * #ClutterGestureAction::gesture-cancel signal.
+   *
+   * Since: 1.18
+   */
+  gesture_props[PROP_THRESHOLD_TRIGGER_EDGE] =
+    g_param_spec_enum ("threshold-trigger-edge",
+                       P_("Threshold Trigger Edge"),
+                       P_("The trigger edge used by the action"),
+                       CLUTTER_TYPE_GESTURE_TRIGGER_EDGE,
+                       CLUTTER_GESTURE_TRIGGER_EDGE_NONE,
+                       CLUTTER_PARAM_READWRITE |
+                       G_PARAM_CONSTRUCT_ONLY);
 
   g_object_class_install_properties (gobject_class,
                                      PROP_LAST,
@@ -1160,4 +1153,50 @@ clutter_gesture_action_cancel (ClutterGestureAction *action)
   g_return_if_fail (CLUTTER_IS_GESTURE_ACTION (action));
 
   cancel_gesture (action);
+}
+
+/**
+ * clutter_gesture_action_set_threshold_trigger_edge:
+ * @action: a #ClutterGestureAction
+ * @edge: the %ClutterGestureTriggerEdge
+ *
+ * Sets the edge trigger for the gesture drag threshold, if any.
+ *
+ * This function should only be called by sub-classes of
+ * #ClutterGestureAction during their construction phase.
+ *
+ * Since: 1.18
+ */
+void
+clutter_gesture_action_set_threshold_trigger_edge (ClutterGestureAction      *action,
+                                                   ClutterGestureTriggerEdge  edge)
+{
+  g_return_if_fail (CLUTTER_IS_GESTURE_ACTION (action));
+
+  if (action->priv->edge == edge)
+    return;
+
+  action->priv->edge = edge;
+
+  g_object_notify_by_pspec (G_OBJECT (action), gesture_props[PROP_THRESHOLD_TRIGGER_EDGE]);
+}
+
+/**
+ * clutter_gesture_action_get_threshold_trigger_egde:
+ * @action: a #ClutterGestureAction
+ *
+ * Retrieves the edge trigger of the gesture @action, as set using
+ * clutter_gesture_action_set_threshold_trigger_edge().
+ *
+ * Return value: the edge trigger
+ *
+ * Since: 1.18
+ */
+ClutterGestureTriggerEdge
+clutter_gesture_action_get_threshold_trigger_egde (ClutterGestureAction *action)
+{
+  g_return_val_if_fail (CLUTTER_IS_GESTURE_ACTION (action),
+                        CLUTTER_GESTURE_TRIGGER_EDGE_NONE);
+
+  return action->priv->edge;
 }

@@ -149,6 +149,12 @@ const ClutterEvent *   clutter_gesture_action_get_last_event       (ClutterGestu
 CLUTTER_AVAILABLE_IN_1_12
 void                   clutter_gesture_action_cancel               (ClutterGestureAction *action);
 
+CLUTTER_AVAILABLE_IN_1_18
+void                            clutter_gesture_action_set_threshold_trigger_edge       (ClutterGestureAction      *action,
+                                                                                         ClutterGestureTriggerEdge  edge);
+CLUTTER_AVAILABLE_IN_1_18
+ClutterGestureTriggerEdge       clutter_gesture_action_get_threshold_trigger_egde       (ClutterGestureAction      *action);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_GESTURE_ACTION_H__ */

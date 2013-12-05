@@ -26,34 +26,6 @@
 
 G_BEGIN_DECLS
 
-/*< private >
- * ClutterGestureTriggerEdge:
- * @CLUTTER_GESTURE_TRIGGER_EDGE_NONE: Tell #ClutterGestureAction that
- * the gesture must begin immediately and there's no drag limit that
- * will cause its cancellation;
- * @CLUTTER_GESTURE_TRIGGER_EDGE_AFTER: Tell #ClutterGestureAction that
- * it needs to wait until the drag threshold has been exceeded before
- * considering that the gesture has begun;
- * @CLUTTER_GESTURE_TRIGGER_EDGE_BEFORE: Tell #ClutterGestureAction that
- * the gesture must begin immediately and that it must be cancelled
- * once the drag exceed the configured threshold.
- *
- * Enum passed to the clutter_gesture_action_set_threshold_trigger_edge()
- * function.
- */
-typedef enum
-{
-  CLUTTER_GESTURE_TRIGGER_EDGE_NONE  = 0,
-  CLUTTER_GESTURE_TRIGGER_EDGE_AFTER,
-  CLUTTER_GESTURE_TRIGGER_EDGE_BEFORE
-} ClutterGestureTriggerEdge;
-
-G_GNUC_INTERNAL
-void                            clutter_gesture_action_set_threshold_trigger_edge       (ClutterGestureAction      *action,
-                                                                                         ClutterGestureTriggerEdge  edge);
-G_GNUC_INTERNAL
-ClutterGestureTriggerEdge       clutter_gesture_action_get_threshold_trigger_egde       (ClutterGestureAction      *action);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_GESTURE_ACTION_PRIVATE_H__ */
