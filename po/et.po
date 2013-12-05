@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-30 11:41+0000\n"
-"PO-Revision-Date: 2013-10-01 16:40+0300\n"
+"POT-Creation-Date: 2013-11-22 21:44+0000\n"
+"PO-Revision-Date: 2013-11-18 13:56+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -218,6 +218,13 @@ msgstr "Tööalad peamisel monitoril"
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Hiire all asuv aken saab fookuse alles hiire peatumisel"
 
+#, javascript-format
+msgid "There was an error loading the preferences dialog for %s:"
+msgstr "%s jaoks eelistuste dialoogi laadimisel esines viga:"
+
+msgid "Extension"
+msgstr "Laiendus"
+
 msgid "Select an extension to configure using the combobox above."
 msgstr "Vali seadistatav laiendus kasutades ülemist valikukasti."
 
@@ -240,6 +247,7 @@ msgstr "Seansi valimine"
 msgid "Not listed?"
 msgstr "Pole loendis?"
 
+#, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(nt 'user' või %s)"
 
@@ -261,6 +269,7 @@ msgstr "Käsku ei leitud"
 msgid "Could not parse command:"
 msgstr "Käsku pole võimalik analüüsida:"
 
+#, javascript-format
 msgid "Execution of '%s' failed:"
 msgstr "'%s' käivitamine nurjus:"
 
@@ -282,9 +291,11 @@ msgstr "Eemalda lemmikutest"
 msgid "Add to Favorites"
 msgstr "Lisa lemmikutesse"
 
+#, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s lisati lemmikutesse."
 
+#, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s eemaldati lemmikutest."
 
@@ -437,6 +448,7 @@ msgstr "Väline ketas eemaldati"
 msgid "Removable Devices"
 msgstr "Eemaldatavad seadmed"
 
+#, javascript-format
 msgid "Open with %s"
 msgstr "Ava programmiga %s"
 
@@ -470,6 +482,7 @@ msgstr "Teenus: "
 msgid "Authentication required by wireless network"
 msgstr "Juhtmeta võrgu jaoks on vajalik autentimine"
 
+#, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "'%s'."
@@ -497,6 +510,7 @@ msgstr "PIN: "
 msgid "Mobile broadband network password"
 msgstr "Mobiiliühenduse võrgu parool"
 
+#, javascript-format
 msgid "A password is required to connect to '%s'."
 msgstr "'%s' ühenduse loomiseks on vaja parooli."
 
@@ -552,17 +566,20 @@ msgstr "<b>%d. %B %Y</b>, <b>%H:%M</b>"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
+#, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s nimi on nüüd %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
+#, javascript-format
 msgid "Invitation to %s"
 msgstr "Kutse: %s"
 
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
+#, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s kutsub sind liituma: %s"
 
@@ -573,10 +590,12 @@ msgid "Accept"
 msgstr "Nõustu"
 
 #. translators: argument is a contact name like Alice for example. */
+#, javascript-format
 msgid "Video call from %s"
 msgstr "%s tahab alustada videokõnet"
 
 #. translators: argument is a contact name like Alice for example. */
+#, javascript-format
 msgid "Call from %s"
 msgstr "%s helistab"
 
@@ -589,10 +608,12 @@ msgstr "Vasta"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
+#, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s saadab sulle %s"
 
 #. To translators: The parameter is the contact's alias */
+#, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s palub sinu luba, et näha, kui sa oled võrgus"
 
@@ -677,6 +698,7 @@ msgstr "Sisemine viga"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
+#, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Pole võimalik ühenduda võrguga %s"
 
@@ -710,6 +732,7 @@ msgstr "Kuupäeva ja kella sätted"
 msgid "%A %B %e, %Y"
 msgstr "%A, %d. %B %Y"
 
+#, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s väljalogimine"
@@ -718,11 +741,13 @@ msgctxt "title"
 msgid "Log Out"
 msgstr "Väljalogimine"
 
+#, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s logitakse %d sekundi pärast automaatselt välja."
 msgstr[1] "%s logitakse %d sekundi pärast automaatselt välja."
 
+#, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Sind logitakse %d sekundi pärast automaatselt välja."
@@ -736,6 +761,7 @@ msgctxt "title"
 msgid "Power Off"
 msgstr "Väljalülitamine"
 
+#, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "%d sekundi pärast lülitub süsteem automaatselt välja."
@@ -753,6 +779,7 @@ msgctxt "title"
 msgid "Restart"
 msgstr "Taaskäivitamine"
 
+#, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Süsteem taaskäivitub automaatselt %d sekundi pärast."
@@ -762,6 +789,7 @@ msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Taaskäivitamine ja uuenduste paigaldamine"
 
+#, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -779,16 +807,19 @@ msgid "Other users are logged in."
 msgstr "Teised kasutajad on sisse logitud."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
+#, javascript-format
 msgid "%s (remote)"
 msgstr "%s (kaugühendus)"
 
 #. Translators: Console here refers to a tty like a VT console */
+#, javascript-format
 msgid "%s (console)"
 msgstr "%s (konsool)"
 
 msgid "Install"
 msgstr "Paigalda"
 
+#, javascript-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Kas laadida alla ja paigaldada '%s' aadressilt extensions.gnome.org?"
 
@@ -799,6 +830,7 @@ msgid "No extensions installed"
 msgstr "Ühtegi laiendust pole paigaldatud"
 
 #. Translators: argument is an extension UUID. */
+#, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s ei ole väljastanud ühtegi veateadet."
 
@@ -811,6 +843,8 @@ msgstr "Näita vigu"
 msgid "Enabled"
 msgstr "Lubatud"
 
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
 msgid "Disabled"
@@ -837,6 +871,9 @@ msgstr "Ava"
 msgid "Remove"
 msgstr "Eemalda"
 
+msgid "Notifications"
+msgstr "Märguanded"
+
 msgid "Clear Messages"
 msgstr "Kustuta teated"
 
@@ -859,6 +896,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Tundmatu"
 
+#, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d uus sõnum"
@@ -902,6 +940,7 @@ msgstr "Sulge"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
+#, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d uus märguanne"
@@ -985,14 +1024,17 @@ msgstr "Lülita välja"
 msgid "Bluetooth Settings"
 msgstr "Bluetoothi sätted"
 
+#, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d ühendatud seade"
 msgstr[1] "%d ühendatud seadet"
 
+#, javascript-format
 msgid "Authorization request from %s"
 msgstr "Autoriseerimise päring seadmelt %s"
 
+#, javascript-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Seade '%s' tahab selle arvutiga paarduda"
 
@@ -1002,6 +1044,7 @@ msgstr "Luba"
 msgid "Deny"
 msgstr "Keela"
 
+#, javascript-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Seade %s soovib ligipääsu teenusele '%s'"
 
@@ -1015,9 +1058,11 @@ msgid "Reject"
 msgstr "Lükka tagasi"
 
 #. Translators: argument is the device short name */
+#, javascript-format
 msgid "Pairing confirmation for %s"
 msgstr "Paardumise kinnitus seadmele %s"
 
+#, javascript-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr "Palun kontrolli, kas parool '%06d' kattub seadme parooliga."
@@ -1029,6 +1074,7 @@ msgstr "Kattub"
 msgid "Does not match"
 msgstr "Ei kattu"
 
+#, javascript-format
 msgid "Pairing request for %s"
 msgstr "Seadmega %s paardumise päring"
 
@@ -1041,14 +1087,14 @@ msgstr "Olgu"
 msgid "Brightness"
 msgstr "Heledus"
 
+msgid "Show Keyboard Layout"
+msgstr "Klaviatuuripaigutuse kuvamine"
+
 msgid "<unknown>"
 msgstr "<tundmatu>"
 
 msgid "Off"
 msgstr "Väljas"
-
-msgid "Network Settings"
-msgstr "Võrgusätted"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
@@ -1078,6 +1124,12 @@ msgstr "pole saadaval"
 msgid "connection failed"
 msgstr "ühendumine nurjus"
 
+msgid "Mobile Broadband Settings"
+msgstr "Mobiiliühenduse sätted"
+
+msgid "Hardware Disabled"
+msgstr "Riistvara on keelatud"
+
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi võrgud"
 
@@ -1090,8 +1142,14 @@ msgstr "Võrke pole"
 msgid "Select Network"
 msgstr "Võrgu valimine"
 
+msgid "Wi-Fi Settings"
+msgstr "Wi-Fi sätted"
+
 msgid "Turn On"
 msgstr "Lülita sisse"
+
+msgid "Not Connected"
+msgstr "Pole ühenduses"
 
 msgid "VPN"
 msgstr "VPN"
@@ -1105,9 +1163,6 @@ msgstr "Ühendus nurjus"
 msgid "Activation of network connection failed"
 msgstr "Võrguühenduse aktiveerimine nurjus"
 
-msgid "Battery"
-msgstr "Aku"
-
 msgid "Power Settings"
 msgstr "Toitesätted..."
 
@@ -1117,17 +1172,28 @@ msgstr "Täiesti täis"
 msgid "Estimating…"
 msgstr "Andmete kogumine…"
 
+#, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "%d∶%02d jäänud (%d%%)"
 
+#, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d∶%02d täitumiseni (%d%%)"
+
+msgid "UPS"
+msgstr "UPS"
+
+msgid "Battery"
+msgstr "Aku"
 
 msgid "Airplane Mode"
 msgstr "Lennukirežiim"
 
 msgid "On"
 msgstr "Sees"
+
+msgid "Network Settings"
+msgstr "Võrgusätted"
 
 msgid "Switch User"
 msgstr "Vaheta kasutajat"
@@ -1165,16 +1231,7 @@ msgstr "Rakendused"
 msgid "Search"
 msgstr "Otsing"
 
-msgid ""
-"Sorry, no wisdom for you today:\n"
-"%s"
-msgstr ""
-"Vabandust, tänaseks tarkuseteri pole:\n"
-"%s"
-
-msgid "%s the Oracle says"
-msgstr "Oraakel %s ütleb"
-
+#, javascript-format
 msgid "'%s' is ready"
 msgstr "'%s' on valmis"
 
@@ -1190,6 +1247,7 @@ msgstr "Taasta sätted"
 msgid "Keep Changes"
 msgstr "Säilita muudatused"
 
+#, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Sätete muudatused ennistatakse %d sekundi pärast"
@@ -1242,11 +1300,15 @@ msgstr "Parool ei saa olla tühi"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Kasutaja katkestas autentimisdialoogi"
 
-#~ msgid "There was an error loading the preferences dialog for %s:"
-#~ msgstr "%s jaoks eelistuste dialoogi laadimisel esines viga:"
+#~ msgid ""
+#~ "Sorry, no wisdom for you today:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Vabandust, tänaseks tarkuseteri pole:\n"
+#~ "%s"
 
-#~ msgid "Extension"
-#~ msgstr "Laiendus"
+#~ msgid "%s the Oracle says"
+#~ msgstr "Oraakel %s ütleb"
 
 #~ msgctxt "event list time"
 #~ msgid "%H\\u2236%M"
@@ -1255,9 +1317,6 @@ msgstr "Kasutaja katkestas autentimisdialoogi"
 #~ msgctxt "event list time"
 #~ msgid "%l\\u2236%M\\u2009%p"
 #~ msgstr "%l\\u2236%M\\u2009%p"
-
-#~ msgid "Show Keyboard Layout"
-#~ msgstr "Klaviatuuripaigutuse kuvamine"
 
 #~ msgid "Settings Menu"
 #~ msgstr "Sätete menüü"
@@ -1400,9 +1459,6 @@ msgstr "Kasutaja katkestas autentimisdialoogi"
 #~ msgid "Set Up a New Device…"
 #~ msgstr "Uue seadme häälestamine…"
 
-#~ msgid "hardware disabled"
-#~ msgstr "riistvara on keelatud"
-
 #~ msgid "Connection"
 #~ msgstr "Ühendus"
 
@@ -1438,9 +1494,6 @@ msgstr "Kasutaja katkestas autentimisdialoogi"
 
 #~ msgid "Auto Ethernet"
 #~ msgstr "Automaatne ethernet"
-
-#~ msgid "Mobile broadband"
-#~ msgstr "Mobiiliühendus"
 
 #~ msgid "Auto broadband"
 #~ msgstr "Automaatne lairibaühendus"
@@ -1496,9 +1549,6 @@ msgstr "Kasutaja katkestas autentimisdialoogi"
 #~ msgid "Laptop Battery"
 #~ msgstr "Sülearvuti aku"
 
-#~ msgid "UPS"
-#~ msgstr "UPS"
-
 #~ msgid "Monitor"
 #~ msgstr "Monitor"
 
@@ -1538,9 +1588,6 @@ msgstr "Kasutaja katkestas autentimisdialoogi"
 
 #~ msgid "Idle"
 #~ msgstr "Jõude"
-
-#~ msgid "Notifications"
-#~ msgstr "Märguanded"
 
 #~ msgid "Your chat status will be set to busy"
 #~ msgstr "Sinu vestluse olekuks määratakse hõivatud"
