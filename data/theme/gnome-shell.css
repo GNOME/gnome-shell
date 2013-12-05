@@ -414,8 +414,6 @@ StScrollBar StButton#vhandle:active {
 /* Buttons */
 
 .candidate-page-button,
-.notification-button,
-.notification-icon-button,
 .hotplug-notification-item,
 .modal-dialog-button,
 .app-view-control {
@@ -430,16 +428,12 @@ StScrollBar StButton#vhandle:active {
 }
 
 .candidate-page-button:hover,
-.notification-button:hover,
-.notification-icon-button:hover,
 .hotplug-notification-item:hover,
 .modal-dialog-button:hover {
     background-gradient-start: rgba(255, 255, 255, 0.3);
     background-gradient-end: rgba(255, 255, 255, 0.1);
 }
 
-.notification-button:focus,
-.notification-icon-button:focus,
 .hotplug-notification-item:focus,
 .modal-dialog-button:focus,
 .app-view-control:focus {
@@ -453,8 +447,6 @@ StScrollBar StButton#vhandle:active {
 
 .candidate-page-button:active,
 .candidate-page-button:pressed,
-.notification-button:active,
-.notification-icon-button:active,
 .hotplug-notification-item:active,
 .modal-dialog-button:active,
 .modal-dialog-button:pressed,
@@ -464,8 +456,6 @@ StScrollBar StButton#vhandle:active {
 }
 
 .candidate-page-button:insensitive,
-.notification-button:insensitive,
-.notification-icon-button:insensitive,
 .modal-dialog-button:insensitive {
     border-color: #666666;
     color: #9f9f9f;
@@ -477,7 +467,6 @@ StScrollBar StButton#vhandle:active {
 
 #searchEntry,
 .modal-dialog-button,
-.notification-button,
 .hotplug-notification-item,
 .app-view-controls,
 #screenShieldNotifications {
@@ -1532,23 +1521,55 @@ StScrollBar StButton#vhandle:active {
     color: #999999;
 }
 
-.notification {
+.notification, #notification-container {
+    font-size: 11pt;
+    width: 34em;
+}
+
+.notification-main-content {
+    padding: 8px;
+    spacing: 8px;
     border-radius: 10px 10px 0px 0px;
-    background: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.8);
+}
+
+.notification-action-area {
     padding: 8px;
 }
 
-.notification-hbox {
-    spacing: 8px;
+.notification-action-area,
+.notification-button {
+    background: rgba(0,0,0,0.8);
+    border-top: 1px solid #666;
+}
+
+.notification-button {
+    padding: 8px 0px;
+    border-right: 1px solid #666;
+}
+
+.notification-button:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.notification-button:active {
+    background: rgba(255,255,255,0.1);
+}
+
+.notification-button:last-child {
+    border-right-width: 0px;
 }
 
 .notification-title-box {
     spacing: 8px;
 }
 
-.notification, #notification-container {
-    font-size: 11pt;
-    width: 34em;
+.notification-scrollview:ltr > StScrollBar {
+    padding-left: 6px;
+}
+
+.notification-scrollview:rtl > StScrollBar {
+    padding-right: 6px;
 }
 
 .summary-boxpointer {
@@ -1588,43 +1609,6 @@ StScrollBar StButton#vhandle:active {
 .notification-scrollview {
     max-height: 10em;
     -st-vfade-offset: 24px;
-}
-
-.notification-scrollview:ltr > StScrollBar {
-    padding-left: 6px;
-}
-
-.notification-scrollview:rtl > StScrollBar {
-    padding-right: 6px;
-}
-
-.notification-actions {
-    padding-top: 18px;
-    spacing: 10px;
-}
-
-.notification-button {
-    -st-natural-width: 140px;
-    padding: 4px 4px 5px;
-}
-
-.notification-button:focus {
-    -st-natural-width: 138px;
-    padding: 3px 4px 4px;
-}
-
-.notification-icon-button {
-    border-radius: 5px;
-    padding: 5px;
-}
-
-.notification-icon-button:focus {
-    padding: 4px;
-}
-
-.notification-icon-button > StIcon {
-    icon-size: 16px;
-    padding: 8px;
 }
 
 .secondary-icon {
@@ -2611,8 +2595,7 @@ StScrollBar StButton#vhandle:active {
     padding-bottom: 0px;
 }
 
-#screenShieldNotifications .notification-button,
-#screenShieldNotifications .notification-icon-button {
+#screenShieldNotifications .notification-button {
     border: 1px rgba(255,255,255,0.5);
 }
 

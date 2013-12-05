@@ -463,7 +463,7 @@ const NotificationApplicationPolicy = new Lang.Class({
 const Notification = new Lang.Class({
     Name: 'Notification',
 
-    ICON_SIZE: 24,
+    ICON_SIZE: 32,
 
     _init: function(source, title, banner, params) {
         this.source = source;
@@ -507,18 +507,17 @@ const Notification = new Lang.Class({
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         // Separates the notification content, action area and button box
-        this._vbox = new St.BoxLayout({ style_class: 'notification-vbox', vertical: true });
+        this._vbox = new St.BoxLayout({ vertical: true });
         this.actor.child = this._vbox;
 
         // Separates the icon and title/body
-        this._hbox = new St.BoxLayout({ style_class: 'notification-hbox' });
+        this._hbox = new St.BoxLayout({ style_class: 'notification-main-content' });
         this._vbox.add_child(this._hbox);
 
         this._iconBin = new St.Bin();
-        this._iconBin.set_y_align(Clutter.ActorAlign.START);
         this._hbox.add_child(this._iconBin);
 
-        this._titleBodyBox = new St.BoxLayout({ style_class: 'notification-vbox',
+        this._titleBodyBox = new St.BoxLayout({ style_class: 'notification-title-body-box',
                                                 vertical: true });
         this._hbox.add_child(this._titleBodyBox);
 
@@ -544,14 +543,13 @@ const Notification = new Lang.Class({
         // By default, this._bodyBin contains a URL highlighter. Subclasses
         // can override this to provide custom content if they want to.
         this._bodyUrlHighlighter = new URLHighlighter();
-        this._bodyUrlHighlighter.actor.clutter_text.line_wrap = true;
-        this._bodyUrlHighlighter.actor.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._bodyBin.child = this._bodyUrlHighlighter.actor;
 
-        this._actionAreaBin = new St.Bin({ x_expand: true, y_expand: true });
+        this._actionAreaBin = new St.Bin({ style_class: 'notification-action-area',
+                                           x_expand: true, y_expand: true });
         this._vbox.add_child(this._actionAreaBin);
 
-        this._buttonBox = new St.BoxLayout({ style_class: 'notification-actions',
+        this._buttonBox = new St.BoxLayout({ style_class: 'notification-button-box',
                                              x_expand: true, y_expand: true });
         global.focus_manager.add_group(this._buttonBox);
         this._vbox.add_child(this._buttonBox);
@@ -573,10 +571,20 @@ const Notification = new Lang.Class({
         this._iconBin.visible = (this._icon != null && this._icon.visible);
         this._secondaryIconBin.visible = (this._secondaryIcon != null);
 
-        this._titleLabel.clutter_text.line_wrap = this.expanded;
-        this._bodyUrlHighlighter.actor.visible = this.expanded && this._bodyUrlHighlighter.hasText();
+        if (this.expanded) {
+            this._titleLabel.clutter_text.line_wrap = true;
+            this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            this._bodyUrlHighlighter.actor.clutter_text.line_wrap = true;
+            this._bodyUrlHighlighter.actor.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        } else {
+            this._titleLabel.clutter_text.line_wrap = false;
+            this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+            this._bodyUrlHighlighter.actor.clutter_text.line_wrap = false;
+            this._bodyUrlHighlighter.actor.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+        }
+        this.enableScrolling(this.expanded);
 
-        this._bodyScrollArea.visible = this.expanded && (this._bodyBin.child != null && this._bodyBin.child.visible);
+        this._bodyUrlHighlighter.actor.visible = this._bodyUrlHighlighter.hasText();
     },
 
     // update:
@@ -718,8 +726,7 @@ const Notification = new Lang.Class({
     // the notification.
     addAction: function(label, callback) {
         let button = new St.Button({ style_class: 'notification-button',
-                                     label: label,
-                                     can_focus: true });
+                                     x_expand: true, label: label, can_focus: true });
 
         return this.addButton(button, callback);
     },
