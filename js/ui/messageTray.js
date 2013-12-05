@@ -1693,6 +1693,9 @@ const MessageTray = new Lang.Class({
                                                    layout_manager: new Clutter.BinLayout() });
         this._notificationWidget.connect('key-release-event', Lang.bind(this, this._onNotificationKeyRelease));
         this._notificationWidget.connect('notify::hover', Lang.bind(this, this._onNotificationHoverChanged));
+        this._notificationWidget.connect('notify::height', Lang.bind(this, function() {
+            this._notificationWidget.translation_y = -this._notificationWidget.height;
+        }));
 
         this._notificationBin = new St.Bin({ y_expand: true });
         this._notificationBin.set_y_align(Clutter.ActorAlign.START);
@@ -2520,7 +2523,6 @@ const MessageTray = new Lang.Class({
         this._notificationBin.child = this._notification.actor;
 
         this._notificationWidget.opacity = 0;
-        this._notificationWidget.y = 0;
         this._notificationWidget.show();
 
         this._updateShowingNotification();
@@ -2555,23 +2557,16 @@ const MessageTray = new Lang.Class({
         // We tween all notifications to full opacity. This ensures that both new notifications and
         // notifications that might have been in the process of hiding get full opacity.
         //
-        // We tween any notification showing in the banner mode to the appropriate height
-        // (which is banner height or expanded height, depending on the notification state)
-        // This ensures that both new notifications and notifications in the banner mode that might
-        // have been in the process of hiding are shown with the correct height.
-        //
         // We use this._showNotificationCompleted() onComplete callback to extend the time the updated
         // notification is being shown.
 
-        let tweenParams = { opacity: 255,
-                            y: -this._notificationWidget.height,
-                            time: ANIMATION_TIME,
-                            transition: 'easeOutQuad',
-                            onComplete: this._showNotificationCompleted,
-                            onCompleteScope: this
-                          };
-
-        this._tween(this._notificationWidget, '_notificationState', State.SHOWN, tweenParams);
+        this._tween(this._notificationWidget, '_notificationState', State.SHOWN,
+                    { opacity: 255,
+                      time: ANIMATION_TIME,
+                      transition: 'easeOutQuad',
+                      onComplete: this._showNotificationCompleted,
+                      onCompleteScope: this
+                    });
    },
 
     _showNotificationCompleted: function() {
@@ -2636,8 +2631,7 @@ const MessageTray = new Lang.Class({
 
         if (animate) {
             this._tween(this._notificationWidget, '_notificationState', State.HIDDEN,
-                        { y: this.actor.height,
-                          opacity: 0,
+                        { opacity: 0,
                           time: ANIMATION_TIME,
                           transition: 'easeOutQuad',
                           onComplete: this._hideNotificationCompleted,
@@ -2645,7 +2639,6 @@ const MessageTray = new Lang.Class({
                         });
         } else {
             Tweener.removeTweens(this._notificationWidget);
-            this._notificationWidget.y = this.actor.height;
             this._notificationWidget.opacity = 0;
             this._notificationState = State.HIDDEN;
             this._hideNotificationCompleted();
@@ -2688,28 +2681,7 @@ const MessageTray = new Lang.Class({
     },
 
     _onNotificationExpanded: function() {
-        let expandedY = - this._notificationWidget.height;
         this._closeButton.show();
-
-        // Don't animate the notification to its new position if it has shrunk:
-        // there will be a very visible "gap" that breaks the illusion.
-        if (this._notificationWidget.y < expandedY) {
-            this._notificationWidget.y = expandedY;
-        } else if (this._notification.y != expandedY) {
-            // Tween also opacity here, to override a possible tween that's
-            // currently hiding the notification.
-            Tweener.addTween(this._notificationWidget,
-                             { y: expandedY,
-                               opacity: 255,
-                               time: ANIMATION_TIME,
-                               transition: 'easeOutQuad',
-                               // HACK: Drive the state machine here better,
-                               // instead of overwriting tweens
-                               onComplete: Lang.bind(this, function() {
-                                   this._notificationState = State.SHOWN;
-                               }),
-                             });
-        }
     },
 
     _ensureNotificationFocused: function() {
