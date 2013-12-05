@@ -1535,25 +1535,20 @@ StScrollBar StButton#vhandle:active {
 .notification {
     border-radius: 10px 10px 0px 0px;
     background: rgba(0,0,0,0.9);
-    padding: 8px 8px 4px 8px;
-    spacing-rows: 4px;
-    spacing-columns: 10px;
+    padding: 8px;
+}
+
+.notification-hbox {
+    spacing: 8px;
+}
+
+.notification-title-box {
+    spacing: 8px;
 }
 
 .notification, #notification-container {
     font-size: 11pt;
     width: 34em;
-}
-
-.notification.multi-line-notification {
-    padding-bottom: 8px;
-}
-
-.notification-unexpanded {
-    /* We want to force the actor at a specific size, irrespective
-       of its minimum and preferred size, so we override both */
-    min-height: 36px;
-    height: 36px;
 }
 
 .summary-boxpointer {
@@ -1601,10 +1596,6 @@ StScrollBar StButton#vhandle:active {
 
 .notification-scrollview:rtl > StScrollBar {
     padding-right: 6px;
-}
-
-.notification-body {
-    spacing: 5px;
 }
 
 .notification-actions {
@@ -1697,7 +1688,11 @@ StScrollBar StButton#vhandle:active {
     padding-right: 4px;
 }
 
-.chat-notification-scrollview{
+.chat-notification-body-box {
+    spacing: 5px;
+}
+
+.chat-notification-scrollview {
     max-height: 22em;
 }
 

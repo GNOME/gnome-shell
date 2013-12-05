@@ -366,7 +366,7 @@ const ChatSource = new Lang.Class({
 
     _updateAvatarIcon: function() {
         this.iconUpdated();
-        this._notification.update(this._notification.title, null, { customContent: true });
+        this._notification.update(this._notification.title);
     },
 
     open: function() {
@@ -558,7 +558,7 @@ const ChatSource = new Lang.Class({
 
         title = GLib.markup_escape_text(this.title, -1);
 
-        this._notification.update(this._notification.title, null, { customContent: true, secondaryGIcon: this.getSecondaryIcon() });
+        this._notification.update(this._notification.title, null, { secondaryGIcon: this.getSecondaryIcon() });
 
         if (message)
             msg += ' <i>(' + GLib.markup_escape_text(message, -1) + ')</i>';
@@ -585,7 +585,7 @@ const ChatNotification = new Lang.Class({
     Extends: MessageTray.Notification,
 
     _init: function(source) {
-        this.parent(source, source.title, null, { customContent: true, secondaryGIcon: source.getSecondaryIcon() });
+        this.parent(source, source.title, null, { secondaryGIcon: source.getSecondaryIcon() });
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response',
                                              can_focus: true });
@@ -601,15 +601,17 @@ const ChatNotification = new Lang.Class({
             this.emit('unfocused');
         }));
 
-        this._createScrollArea();
         this._lastGroup = null;
+
+        this._bodyBox = new St.BoxLayout({ style_class: 'chat-notification-body-box' });
+        this._bodyBin.child = this._bodyBox;
 
         // Keep track of the bottom position for the current adjustment and
         // force a scroll to the bottom if things change while we were at the
         // bottom
-        this._oldMaxScrollValue = this._scrollArea.vscroll.adjustment.value;
-        this._scrollArea.add_style_class_name('chat-notification-scrollview');
-        this._scrollArea.vscroll.adjustment.connect('changed', Lang.bind(this, function(adjustment) {
+        this._oldMaxScrollValue = this._bodyScrollArea.vscroll.adjustment.value;
+        this._bodyScrollArea.add_style_class_name('chat-notification-scrollview');
+        this._bodyScrollArea.vscroll.adjustment.connect('changed', Lang.bind(this, function(adjustment) {
             if (adjustment.value == this._oldMaxScrollValue)
                 this.scrollTo(St.Side.BOTTOM);
             this._oldMaxScrollValue = Math.max(adjustment.lower, adjustment.upper - adjustment.page_size);
@@ -646,8 +648,7 @@ const ChatNotification = new Lang.Class({
         }
 
         if (message.direction == NotificationDirection.RECEIVED) {
-            this.update(this.source.title, messageBody, { customContent: true,
-                                                          bannerMarkup: true });
+            this.update(this.source.title, messageBody, { bannerMarkup: true });
         }
 
         let group = (message.direction == NotificationDirection.RECEIVED ?
@@ -684,7 +685,7 @@ const ChatNotification = new Lang.Class({
                 expired[i].actor.destroy();
         }
 
-        let groups = this._contentArea.get_children();
+        let groups = this._bodyBox.get_children();
         for (let i = 0; i < groups.length; i++) {
             let group = groups[i];
             if (group.get_n_children() == 0)
@@ -716,9 +717,9 @@ const ChatNotification = new Lang.Class({
         if (this._timestampTimeoutId)
             Mainloop.source_remove(this._timestampTimeoutId);
 
-        let highlighter = new MessageTray.URLHighlighter(props.body,
-                                                         true,  // line wrap?
-                                                         true); // allow markup?
+        let highlighter = new MessageTray.URLHighlighter();
+        highlighter.actor.clutter_text.line_wrap = true;
+        highlighter.setMarkup(props.body, true);
 
         let body = highlighter.actor;
 
@@ -730,12 +731,12 @@ const ChatNotification = new Lang.Class({
         if (group != this._lastGroup) {
             this._lastGroup = group;
             let emptyLine = new St.Label({ style_class: 'chat-empty-line' });
-            this.addActor(emptyLine);
+            this._bodyBox.add_child(emptyLine);
         }
 
         this._lastMessageBox = new St.BoxLayout({ vertical: false });
         this._lastMessageBox.add(body, props.childProps);
-        this.addActor(this._lastMessageBox);
+        this._bodyBox.add_child(this._lastMessageBox);
 
         this.updated();
 
@@ -872,7 +873,7 @@ const ChatNotification = new Lang.Class({
                                    group: 'meta',
                                    styles: ['chat-meta-message'] });
 
-        this.update(newAlias, null, { customContent: true });
+        this.update(newAlias);
 
         this._filterMessages();
     },
