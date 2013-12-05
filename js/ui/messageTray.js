@@ -443,15 +443,14 @@ const NotificationApplicationPolicy = new Lang.Class({
 // unless 'customContent' parameter with the value 'true' is specified
 // in @params.
 //
-// Additional notification content can be added with addActor() and
-// addBody() methods. The notification content is put inside a
-// scrollview, so if it gets too tall, the notification will scroll
-// rather than continue to grow. In addition to this main content
-// area, there is also a single-row action area, which is not
-// scrolled and can contain a single actor. The action area can
-// be set by calling setActionArea() method. There is also a
-// convenience method addButton() for adding a button to the action
-// area.
+// Additional notification content can be added with addActor(). The
+// notification content is put inside a scrollview, so if it gets too
+// tall, the notification will scroll rather than continue to grow.
+// In addition to this main content area, there is also a single-row
+// action area, which is not scrolled and can contain a single actor.
+// The action area can be set by calling setActionArea() method. There
+// is also a convenience method addButton() for adding a button to the
+// action area.
 //
 // If @params contains a 'customContent' parameter with the value %true,
 // then @banner will not be shown in the body of the notification when the
@@ -709,25 +708,11 @@ const Notification = new Lang.Class({
         this.updated();
     },
 
-    // addBody:
-    // @text: the text
-    // @markup: %true if @text contains pango markup
-    // @style: style to use when adding the actor containing the text
-    //
-    // Adds a multi-line label containing @text to the notification.
-    //
-    // Return value: the newly-added label
-    addBody: function(text, markup, style) {
-        let label = new URLHighlighter(text, true, markup);
-
-        this.addActor(label.actor, style);
-        return label.actor;
-    },
-
     _addBannerBody: function() {
         if (this.bannerBodyText && !this._bannerBodyAdded) {
+            let label = new URLHighlighter(this.bannerBodyText, true, this.bannerBodyMarkup);
+            this.addActor(label.actor);
             this._bannerBodyAdded = true;
-            this.addBody(this.bannerBodyText, this.bannerBodyMarkup);
         }
     },
 
