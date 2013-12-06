@@ -35,12 +35,12 @@ void meta_window_actor_frame_complete (MetaWindowActor    *self,
 
 void meta_window_actor_invalidate_shadow (MetaWindowActor *self);
 
-void meta_window_actor_set_redirected (MetaWindowActor *self, gboolean state);
-
-gboolean meta_window_actor_should_unredirect (MetaWindowActor *self);
-
 void meta_window_actor_get_shape_bounds (MetaWindowActor       *self,
                                           cairo_rectangle_int_t *bounds);
+
+gboolean meta_window_actor_should_unredirect   (MetaWindowActor *self);
+void     meta_window_actor_set_unredirected    (MetaWindowActor *self,
+                                                gboolean         unredirected);
 
 gboolean meta_window_actor_effect_in_progress  (MetaWindowActor *self);
 void     meta_window_actor_sync_actor_geometry (MetaWindowActor *self,
