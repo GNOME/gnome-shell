@@ -1725,15 +1725,11 @@ meta_window_actor_cull_out (MetaCullable   *cullable,
                             cairo_region_t *clip_region)
 {
   MetaWindowActor *self = META_WINDOW_ACTOR (cullable);
+  MetaWindowActorPrivate *priv = self->priv;
 
-  if (!meta_is_wayland_compositor ())
-    {
-      MetaCompScreen *info = meta_screen_get_compositor_data (self->priv->screen);
-
-      /* Don't do any culling for the unredirected window */
-      if (self == info->unredirected_window)
-        return;
-    }
+  /* Don't do any culling for the unredirected window */
+  if (priv->unredirected)
+    return;
 
   meta_cullable_cull_out_children (cullable, unobscured_region, clip_region);
   meta_window_actor_set_clip_region_beneath (self, clip_region);
