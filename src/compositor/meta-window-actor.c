@@ -384,14 +384,6 @@ meta_window_actor_constructed (GObject *object)
                                G_CALLBACK (surface_allocation_changed_notify), self, 0);
       meta_window_actor_update_shape (self);
     }
-  else
-    {
-      /*
-       * This is the case where existing window is gaining/loosing frame.
-       * Just ensure the actor is top most (i.e., above shadow).
-       */
-      clutter_actor_set_child_above_sibling (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface), NULL);
-    }
 
   meta_window_actor_update_opacity (self);
 
