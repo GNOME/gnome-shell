@@ -392,14 +392,6 @@ meta_window_actor_constructed (GObject *object)
       g_signal_connect_object (window, "notify::appears-focused",
                                G_CALLBACK (window_appears_focused_notify), self, 0);
     }
-  else
-    {
-      /*
-       * This is the case where existing window is gaining/loosing frame.
-       * Just ensure the actor is top most (i.e., above shadow).
-       */
-      clutter_actor_set_child_above_sibling (CLUTTER_ACTOR (self), priv->actor, NULL);
-    }
 
   meta_window_actor_update_opacity (self);
 
