@@ -283,8 +283,7 @@ meta_core_lower_beneath_grab_window (Display *xdisplay,
     return;
 
   changes.stack_mode = Below;
-  changes.sibling = grab_window->frame ? grab_window->frame->xwindow
-                                       : grab_window->xwindow;
+  changes.sibling = meta_window_get_toplevel_xwindow (grab_window);
 
   stack_window.any.type = META_WINDOW_CLIENT_TYPE_X11;
   stack_window.x11.xwindow = xwindow;

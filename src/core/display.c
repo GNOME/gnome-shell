@@ -4204,7 +4204,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
    *   key grab on the RootWindow.
    */
   if (grab_window)
-    grab_xwindow = grab_window->frame ? grab_window->frame->xwindow : grab_window->xwindow;
+    grab_xwindow = meta_window_get_toplevel_xwindow (grab_window);
   else
     grab_xwindow = screen->xroot;
 

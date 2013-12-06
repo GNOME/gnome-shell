@@ -12343,3 +12343,9 @@ meta_window_ping (MetaWindow        *window,
   else
     meta_wayland_surface_ping (window->surface, timestamp);
 }
+
+Window
+meta_window_get_toplevel_xwindow (MetaWindow *window)
+{
+  return window->frame ? window->frame->xwindow : window->xwindow;
+}

@@ -754,5 +754,6 @@ void meta_window_ping (MetaWindow         *window,
                        void               *user_data);
 void meta_window_pong (MetaWindow *window,
                        guint32     timestamp);
+Window meta_window_get_toplevel_xwindow (MetaWindow *window);
 
 #endif
