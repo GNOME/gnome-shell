@@ -67,21 +67,8 @@ meta_surface_actor_init (MetaSurfaceActor *self)
                                                    META_TYPE_SURFACE_ACTOR,
                                                    MetaSurfaceActorPrivate);
 
-  priv->texture = NULL;
-}
-
-MetaSurfaceActor *
-meta_surface_actor_new (void)
-{
-  MetaSurfaceActor *self = g_object_new (META_TYPE_SURFACE_ACTOR, NULL);
-  MetaShapedTexture *stex;
-
-  stex = META_SHAPED_TEXTURE (meta_shaped_texture_new ());
-  self->priv->texture = stex;
-
-  clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (stex));
-
-  return self;
+  priv->texture = META_SHAPED_TEXTURE (meta_shaped_texture_new ());
+  clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->texture));
 }
 
 cairo_surface_t *
@@ -182,4 +169,10 @@ meta_surface_actor_set_opaque_region (MetaSurfaceActor *self,
                                       cairo_region_t   *region)
 {
   meta_shaped_texture_set_opaque_region (self->priv->texture, region);
+}
+
+MetaSurfaceActor *
+meta_surface_actor_new (void)
+{
+  return g_object_new (META_TYPE_SURFACE_ACTOR, NULL);
 }
