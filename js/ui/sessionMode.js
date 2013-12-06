@@ -128,14 +128,14 @@ function _loadMode(file, info) {
     _modes[modeName]['isPrimary'] = true;
 }
 
-function _getModes() {
+function _loadModes() {
     FileUtils.collectFromDatadirs('modes', false, _loadMode);
 }
 
 function listModes() {
-    let modes = _getModes();
+    _loadModes();
     modes.forEach(function() {
-        let names = Object.getOwnPropertyNames(modes);
+        let names = Object.getOwnPropertyNames(_modes);
         for (let i = 0; i < names.length; i++)
             if (_modes[names[i]].isPrimary)
                 print(names[i]);
