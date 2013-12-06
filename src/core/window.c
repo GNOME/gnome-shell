@@ -11438,3 +11438,9 @@ meta_window_can_close (MetaWindow *window)
 {
   return window->has_close_func;
 }
+
+Window
+meta_window_get_toplevel_xwindow (MetaWindow *window)
+{
+  return window->frame ? window->frame->xwindow : window->xwindow;
+}

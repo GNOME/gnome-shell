@@ -305,22 +305,15 @@ window_decorated_notify (MetaWindow *mw,
 {
   MetaWindowActor        *self     = META_WINDOW_ACTOR (data);
   MetaWindowActorPrivate *priv     = self->priv;
-  MetaFrame              *frame    = meta_window_get_frame (mw);
   MetaScreen             *screen   = priv->screen;
   MetaDisplay            *display  = meta_screen_get_display (screen);
   Display                *xdisplay = meta_display_get_xdisplay (display);
-  Window                  new_xwindow;
 
   /*
    * Basically, we have to reconstruct the the internals of this object
    * from scratch, as everything has changed.
    */
   priv->redecorating = TRUE;
-
-  if (frame)
-    new_xwindow = meta_frame_get_xwindow (frame);
-  else
-    new_xwindow = meta_window_get_xwindow (mw);
 
   meta_window_actor_detach (self);
 
@@ -336,7 +329,7 @@ window_decorated_notify (MetaWindow *mw,
       priv->damage = None;
     }
 
-  priv->xwindow = new_xwindow;
+  priv->xwindow = meta_window_get_toplevel_xwindow (priv->window);
 
   /*
    * Recreate the contents.
@@ -1615,16 +1608,10 @@ meta_window_actor_new (MetaWindow *window)
   MetaCompScreen         *info = meta_screen_get_compositor_data (screen);
   MetaWindowActor        *self;
   MetaWindowActorPrivate *priv;
-  MetaFrame		 *frame;
   Window		  top_window;
   ClutterActor           *window_group;
 
-  frame = meta_window_get_frame (window);
-  if (frame)
-    top_window = meta_frame_get_xwindow (frame);
-  else
-    top_window = meta_window_get_xwindow (window);
-
+  top_window = meta_window_get_toplevel_xwindow (window);
   meta_verbose ("add window: Meta %p, xwin 0x%x\n", window, (guint)top_window);
 
   self = g_object_new (META_TYPE_WINDOW_ACTOR,

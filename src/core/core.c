@@ -280,8 +280,7 @@ meta_core_lower_beneath_grab_window (Display *xdisplay,
     return;
 
   changes.stack_mode = Below;
-  changes.sibling = grab_window->frame ? grab_window->frame->xwindow
-                                       : grab_window->xwindow;
+  changes.sibling = meta_window_get_toplevel_xwindow (grab_window);
 
   meta_stack_tracker_record_lower_below (screen->stack_tracker,
                                          xwindow,

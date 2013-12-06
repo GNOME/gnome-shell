@@ -696,4 +696,6 @@ void meta_window_set_shape_region         (MetaWindow     *window,
                                            cairo_region_t *region);
 void meta_window_update_shape_region_x11  (MetaWindow *window);
 
+Window meta_window_get_toplevel_xwindow (MetaWindow *window);
+
 #endif
