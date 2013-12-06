@@ -37,15 +37,6 @@
 #include "monitor-private.h"
 #include "meta-cullable.h"
 
-enum {
-  POSITION_CHANGED,
-  SIZE_CHANGED,
-  LAST_SIGNAL
-};
-
-static guint signals[LAST_SIGNAL] = {0};
-
-
 struct _MetaWindowActorPrivate
 {
   MetaWindow       *window;
@@ -245,19 +236,6 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_SHADOW_CLASS,
                                    pspec);
-
-  signals[POSITION_CHANGED] =
-    g_signal_new ("position-changed",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
-  signals[SIZE_CHANGED] =
-    g_signal_new ("size-changed",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -327,8 +305,6 @@ surface_allocation_changed_notify (ClutterActor           *actor,
 {
   meta_window_actor_sync_actor_geometry (self, FALSE);
   meta_window_actor_update_shape (self);
-
-  g_signal_emit (self, signals[SIZE_CHANGED], 0);
 }
 
 static gboolean
@@ -1392,8 +1368,6 @@ meta_window_actor_sync_actor_geometry (MetaWindowActor *self,
                               window_rect.x, window_rect.y);
   clutter_actor_set_size (CLUTTER_ACTOR (self),
                           window_rect.width, window_rect.height);
-
-  g_signal_emit (self, signals[POSITION_CHANGED], 0);
 }
 
 void
@@ -1760,17 +1734,6 @@ check_needs_x11_pixmap (MetaWindowActor *self)
         g_warning ("NOTE: Not using GLX TFP!\n");
 
       meta_surface_actor_set_texture (META_SURFACE_ACTOR (priv->surface), texture);
-
-      /* ::size-changed is supposed to refer to meta_window_get_frame_rect().
-       * Emitting it here works pretty much OK because a new value of the
-       * *input* rect (which is the outer rect with the addition of invisible
-       * borders) forces a new pixmap and we get here. In the rare case where
-       * a change to the window size was exactly balanced by a change to the
-       * invisible borders, we would miss emitting the signal. We would also
-       * emit spurious signals when we get a new pixmap without a new size,
-       * but that should be mostly harmless.
-       */
-      g_signal_emit (self, signals[SIZE_CHANGED], 0);
     }
 
   priv->needs_pixmap = FALSE;
