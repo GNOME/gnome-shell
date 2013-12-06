@@ -179,31 +179,6 @@ process_damage (MetaCompositor     *compositor,
   meta_window_actor_process_x11_damage (window_actor, event);
 }
 
-static void
-process_property_notify (MetaCompositor	*compositor,
-                         XPropertyEvent *event,
-                         MetaWindow     *window)
-{
-  MetaWindowActor *window_actor;
-
-  if (window == NULL)
-    return;
-
-  window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  if (window_actor == NULL)
-    return;
-
-  /* Check for the opacity changing */
-  if (event->atom == compositor->atom_net_wm_window_opacity)
-    {
-      meta_window_actor_update_opacity (window_actor);
-      DEBUG_TRACE ("process_property_notify: net_wm_window_opacity\n");
-      return;
-    }
-
-  DEBUG_TRACE ("process_property_notify: unknown\n");
-}
-
 static Window
 get_output_window (MetaScreen *screen)
 {
@@ -998,6 +973,18 @@ meta_compositor_window_shape_changed (MetaCompositor *compositor,
   meta_window_actor_update_shape (window_actor);
 }
 
+void
+meta_compositor_window_opacity_changed (MetaCompositor *compositor,
+                                        MetaWindow     *window)
+{
+  MetaWindowActor *window_actor;
+  window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
+  if (!window_actor)
+    return;
+
+  meta_window_actor_update_opacity (window_actor);
+}
+
 /* Clutter makes the assumption that there is only one X window
  * per stage, which is a valid assumption to make for a generic
  * application toolkit. As such, it will ignore any events sent
@@ -1102,29 +1089,20 @@ meta_compositor_process_event (MetaCompositor *compositor,
 	}
     }
 
-  switch (event->type)
+  if (!meta_is_wayland_compositor () &&
+      event->type == meta_display_get_damage_event_base (compositor->display) + XDamageNotify)
     {
-    case PropertyNotify:
-      process_property_notify (compositor, (XPropertyEvent *) event, window);
-      break;
-
-    default:
-      if (!meta_is_wayland_compositor () &&
-          event->type == meta_display_get_damage_event_base (compositor->display) + XDamageNotify)
+      /* Core code doesn't handle damage events, so we need to extract the MetaWindow
+       * ourselves
+       */
+      if (window == NULL)
         {
-          /* Core code doesn't handle damage events, so we need to extract the MetaWindow
-           * ourselves
-           */
-          if (window == NULL)
-            {
-              Window xwin = ((XDamageNotifyEvent *) event)->drawable;
-              window = meta_display_lookup_x_window (compositor->display, xwin);
-            }
-
-	  DEBUG_TRACE ("meta_compositor_process_event (process_damage)\n");
-          process_damage (compositor, (XDamageNotifyEvent *) event, window);
+          Window xwin = ((XDamageNotifyEvent *) event)->drawable;
+          window = meta_display_lookup_x_window (compositor->display, xwin);
         }
-      break;
+
+      DEBUG_TRACE ("meta_compositor_process_event (process_damage)\n");
+      process_damage (compositor, (XDamageNotifyEvent *) event, window);
     }
 
   /* Clutter needs to know about MapNotify events otherwise it will
@@ -1649,12 +1627,7 @@ on_shadow_factory_changed (MetaShadowFactory *factory,
 MetaCompositor *
 meta_compositor_new (MetaDisplay *display)
 {
-  char *atom_names[] = {
-    "_NET_WM_WINDOW_OPACITY",
-  };
-  Atom                   atoms[G_N_ELEMENTS(atom_names)];
   MetaCompositor        *compositor;
-  Display               *xdisplay = meta_display_get_xdisplay (display);
 
   if (!composite_at_least_version (display, 0, 3))
     return NULL;
@@ -1666,16 +1639,10 @@ meta_compositor_new (MetaDisplay *display)
   if (g_getenv("META_DISABLE_MIPMAPS"))
     compositor->no_mipmaps = TRUE;
 
-  meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
-  XInternAtoms (xdisplay, atom_names, G_N_ELEMENTS (atom_names),
-                False, atoms);
-
   g_signal_connect (meta_shadow_factory_get_default (),
                     "changed",
                     G_CALLBACK (on_shadow_factory_changed),
                     compositor);
-
-  compositor->atom_net_wm_window_opacity = atoms[0];
 
   compositor->repaint_func_id = clutter_threads_add_repaint_func (meta_repaint_func,
                                                                   compositor,

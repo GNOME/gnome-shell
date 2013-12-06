@@ -1077,6 +1077,8 @@ meta_window_new_shared (MetaDisplay         *display,
   else
     meta_display_register_wayland_window (display, window);
 
+  window->opacity = 0xFF;
+
   /* assign the window to its group, or create a new group if needed
    */
   window->group = NULL;
@@ -11957,6 +11959,16 @@ meta_window_set_transient_for (MetaWindow *window,
 
   if (meta_window_appears_focused (window) && window->transient_for != None)
     meta_window_propagate_focus_appearance (window, TRUE);
+}
+
+void
+meta_window_set_opacity (MetaWindow *window,
+                         guint       opacity)
+{
+  window->opacity = opacity;
+
+  if (window->display->compositor)
+    meta_compositor_window_opacity_changed (window->display->compositor, window);
 }
 
 static void

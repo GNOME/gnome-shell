@@ -17,7 +17,6 @@ struct _MetaCompositor
 {
   MetaDisplay    *display;
 
-  Atom            atom_net_wm_window_opacity;
   guint           repaint_func_id;
 
   ClutterActor   *shadow_src;
