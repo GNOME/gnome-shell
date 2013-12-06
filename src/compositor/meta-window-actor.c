@@ -722,7 +722,11 @@ meta_window_actor_get_paint_volume (ClutterActor       *actor,
     }
 
   if (priv->unobscured_region)
-    cairo_region_intersect_rectangle (priv->unobscured_region, &bounds);
+    {
+      cairo_rectangle_int_t unobscured_bounds;
+      cairo_region_get_extents (priv->unobscured_region, &unobscured_bounds);
+      gdk_rectangle_intersect (&bounds, &unobscured_bounds, &bounds);
+    }
 
   origin.x = bounds.x;
   origin.y = bounds.y;
