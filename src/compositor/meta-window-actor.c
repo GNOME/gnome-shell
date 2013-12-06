@@ -1321,6 +1321,9 @@ meta_window_actor_should_unredirect (MetaWindowActor *self)
   MetaWindow *metaWindow = meta_window_actor_get_meta_window (self);
   MetaWindowActorPrivate *priv = self->priv;
 
+  if (meta_is_wayland_compositor ())
+    return FALSE;
+
   if (meta_window_requested_dont_bypass_compositor (metaWindow))
     return FALSE;
 
@@ -1342,7 +1345,7 @@ meta_window_actor_should_unredirect (MetaWindowActor *self)
   if (meta_window_is_override_redirect (metaWindow))
     return TRUE;
 
-  if (!meta_is_wayland_compositor () && priv->does_full_damage)
+  if (priv->does_full_damage)
     return TRUE;
 
   return FALSE;
