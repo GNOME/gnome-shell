@@ -202,6 +202,8 @@ enum
   FOCUS,
   RAISED,
   UNMANAGED,
+  SIZE_CHANGED,
+  POSITION_CHANGED,
 
   LAST_SIGNAL
 };
@@ -607,6 +609,40 @@ meta_window_class_init (MetaWindowClass *klass)
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MetaWindowClass, unmanaged),
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
+  /**
+   * MetaWindow::position-changed:
+   * @window: a #MetaWindow
+   *
+   * This is emitted when the position of a window might
+   * have changed. Specifically, this is emitted when the
+   * position of the toplevel window has changed, or when
+   * the position of the client window has changed.
+   */
+  window_signals[POSITION_CHANGED] =
+    g_signal_new ("position-changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
+  /**
+   * MetaWindow::size-changed:
+   * @window: a #MetaWindow
+   *
+   * This is emitted when the position of a window might
+   * have changed. Specifically, this is emitted when the
+   * size of the toplevel window has changed, or when the
+   * size of the client window has changed.
+   */
+  window_signals[SIZE_CHANGED] =
+    g_signal_new ("size-changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 }
@@ -4953,6 +4989,12 @@ meta_window_move_resize_internal (MetaWindow          *window,
     force_save_user_window_placement (window);
   else if (is_user_action)
     save_user_window_placement (window);
+
+  if (need_move_client || need_move_frame)
+    g_signal_emit (window, window_signals[POSITION_CHANGED], 0);
+
+  if (need_resize_client || need_resize_frame)
+    g_signal_emit (window, window_signals[SIZE_CHANGED], 0);
 
   if (need_move_frame || need_resize_frame ||
       need_move_client || need_resize_client ||
