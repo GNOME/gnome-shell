@@ -2292,7 +2292,7 @@ event_callback (XEvent   *event,
       XIEnterEvent *enter_event = (XIEnterEvent *) input_event;
 
       if (window && !window->override_redirect &&
-          ((input_event->type == XI_KeyPress) || (input_event->type == XI_ButtonPress)))
+          ((input_event->evtype == XI_KeyPress) || (input_event->evtype == XI_ButtonPress)))
         {
           if (CurrentTime == display->current_time)
             {
