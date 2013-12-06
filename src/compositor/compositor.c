@@ -745,6 +745,30 @@ meta_shape_cow_for_window (MetaScreen *screen,
     }
 }
 
+static void
+set_unredirected_window (MetaCompScreen *info,
+                         MetaWindow     *window)
+{
+  if (info->unredirected_window == window)
+    return;
+
+  if (info->unredirected_window != NULL)
+    {
+      MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (info->unredirected_window));
+      meta_window_actor_set_redirected (window_actor, TRUE);
+    }
+
+  info->unredirected_window = window;
+
+  if (info->unredirected_window != NULL)
+    {
+      MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (info->unredirected_window));
+      meta_window_actor_set_redirected (window_actor, FALSE);
+    }
+
+  meta_shape_cow_for_window (info->screen, info->unredirected_window);
+}
+
 void
 meta_compositor_add_window (MetaCompositor    *compositor,
                             MetaWindow        *window)
@@ -776,13 +800,8 @@ meta_compositor_remove_window (MetaCompositor *compositor,
   screen = meta_window_get_screen (window);
   info = meta_screen_get_compositor_data (screen);
 
-  if (window_actor == info->unredirected_window)
-    {
-      meta_window_actor_set_redirected (window_actor, TRUE);
-      meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (info->unredirected_window)),
-                                 NULL);
-      info->unredirected_window = NULL;
-    }
+  if (info->unredirected_window == window)
+    set_unredirected_window (info, NULL);
 
   meta_window_actor_destroy (window_actor);
 }
@@ -1395,7 +1414,6 @@ pre_paint_windows (MetaCompScreen *info)
 {
   GList *l;
   MetaWindowActor *top_window;
-  MetaWindowActor *expected_unredirected_window = NULL;
 
   if (info->onscreen == NULL)
     {
@@ -1413,26 +1431,9 @@ pre_paint_windows (MetaCompScreen *info)
 
   if (meta_window_actor_should_unredirect (top_window) &&
       info->disable_unredirect_count == 0)
-    expected_unredirected_window = top_window;
-
-  if (info->unredirected_window != expected_unredirected_window)
-    {
-      if (info->unredirected_window != NULL)
-        {
-          meta_window_actor_set_redirected (info->unredirected_window, TRUE);
-          meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (info->unredirected_window)),
-                                     NULL);
-        }
-
-      if (expected_unredirected_window != NULL)
-        {
-          meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (top_window)),
-                                     meta_window_actor_get_meta_window (top_window));
-          meta_window_actor_set_redirected (top_window, FALSE);
-        }
-
-      info->unredirected_window = expected_unredirected_window;
-    }
+    set_unredirected_window (info, meta_window_actor_get_meta_window (top_window));
+  else
+    set_unredirected_window (info, NULL);
 
   for (l = info->windows; l; l = l->next)
     meta_window_actor_pre_paint (l->data);
