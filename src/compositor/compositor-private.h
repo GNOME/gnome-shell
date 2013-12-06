@@ -46,8 +46,8 @@ struct _MetaCompScreen
   CoglFrameClosure      *frame_closure;
 
   /* Used for unredirecting fullscreen windows */
-  guint                   disable_unredirect_count;
-  MetaWindowActor             *unredirected_window;
+  guint                  disable_unredirect_count;
+  MetaWindow            *unredirected_window;
 
   gint                   switch_workspace_in_progress;
 
