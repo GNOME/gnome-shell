@@ -815,7 +815,7 @@ set_unredirected_window (MetaCompScreen *info,
   if (info->unredirected_window != NULL)
     {
       MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (info->unredirected_window));
-      meta_window_actor_set_redirected (window_actor, TRUE);
+      meta_window_actor_set_unredirected (window_actor, FALSE);
     }
 
   info->unredirected_window = window;
@@ -823,7 +823,7 @@ set_unredirected_window (MetaCompScreen *info,
   if (info->unredirected_window != NULL)
     {
       MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (info->unredirected_window));
-      meta_window_actor_set_redirected (window_actor, FALSE);
+      meta_window_actor_set_unredirected (window_actor, TRUE);
     }
 
   meta_shape_cow_for_window (info->screen, info->unredirected_window);
