@@ -49,7 +49,6 @@ static guint signals[LAST_SIGNAL] = {0};
 struct _MetaWindowActorPrivate
 {
   MetaWindow       *window;
-  Window            xwindow;
   MetaScreen       *screen;
 
   MetaSurfaceActor *surface;
@@ -160,7 +159,6 @@ enum
 {
   PROP_META_WINDOW = 1,
   PROP_META_SCREEN,
-  PROP_X_WINDOW,
   PROP_NO_SHADOW,
   PROP_SHADOW_CLASS
 };
@@ -244,18 +242,6 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
                                    PROP_META_SCREEN,
                                    pspec);
 
-  pspec = g_param_spec_ulong ("x-window",
-			      "Window",
-			      "Window",
-			      0,
-			      G_MAXULONG,
-			      0,
-			      G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
-
-  g_object_class_install_property (object_class,
-                                   PROP_X_WINDOW,
-                                   pspec);
-
   pspec = g_param_spec_boolean ("no-shadow",
                                 "No shadow",
                                 "Do not add shaddow to this window",
@@ -336,8 +322,6 @@ window_decorated_notify (MetaWindow *mw,
         }
     }
 
-  priv->xwindow = meta_window_get_toplevel_xwindow (priv->window);
-
   /*
    * Recreate the contents.
    */
@@ -371,8 +355,8 @@ meta_window_actor_constructed (GObject *object)
   MetaWindowActorPrivate *priv     = self->priv;
   MetaScreen             *screen   = priv->screen;
   MetaDisplay            *display  = meta_screen_get_display (screen);
-  Window                  xwindow  = priv->xwindow;
   MetaWindow             *window   = priv->window;
+  Window                  xwindow  = meta_window_get_toplevel_xwindow (window);
   Display                *xdisplay = meta_display_get_xdisplay (display);
 
   if (!meta_is_wayland_compositor ())
@@ -521,9 +505,6 @@ meta_window_actor_set_property (GObject      *object,
     case PROP_META_SCREEN:
       priv->screen = g_value_get_pointer (value);
       break;
-    case PROP_X_WINDOW:
-      priv->xwindow = g_value_get_ulong (value);
-      break;
     case PROP_NO_SHADOW:
       {
         gboolean newv = g_value_get_boolean (value);
@@ -570,9 +551,6 @@ meta_window_actor_get_property (GObject      *object,
       break;
     case PROP_META_SCREEN:
       g_value_set_pointer (value, priv->screen);
-      break;
-    case PROP_X_WINDOW:
-      g_value_set_ulong (value, priv->xwindow);
       break;
     case PROP_NO_SHADOW:
       g_value_set_boolean (value, priv->no_shadow);
@@ -839,20 +817,6 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
 #endif
 
   return FALSE;
-}
-
-/**
- * meta_window_actor_get_x_window: (skip)
- * @self: a #MetaWindowActor
- *
- */
-Window
-meta_window_actor_get_x_window (MetaWindowActor *self)
-{
-  if (!self)
-    return None;
-
-  return self->priv->xwindow;
 }
 
 /**
@@ -1406,7 +1370,7 @@ meta_window_actor_set_redirected (MetaWindowActor *self, gboolean state)
   MetaDisplay *display = meta_window_get_display (metaWindow);
 
   Display *xdisplay = meta_display_get_xdisplay (display);
-  Window  xwin = meta_window_actor_get_x_window (self);
+  Window  xwin = meta_window_get_toplevel_xwindow (metaWindow);
 
   if (state)
     {
@@ -1670,25 +1634,11 @@ meta_window_actor_new (MetaWindow *window)
   MetaCompScreen         *info = meta_screen_get_compositor_data (screen);
   MetaWindowActor        *self;
   MetaWindowActorPrivate *priv;
-  Window		  top_window;
   ClutterActor           *window_group;
 
-  if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
-    {
-      top_window = meta_window_get_toplevel_xwindow (window);
-      meta_verbose ("add window: Meta %p, xwin 0x%x\n", window, (guint)top_window);
-    }
-  else
-    {
-      meta_verbose ("add window: Meta %p, wayland surface %p\n",
-                    window, window->surface);
-      top_window = None;
-    }
-
   self = g_object_new (META_TYPE_WINDOW_ACTOR,
-                       "meta-window",         window,
-                       "x-window",            top_window,
-                       "meta-screen",         screen,
+                       "meta-window", window,
+                       "meta-screen", screen,
                        NULL);
 
   priv = self->priv;
@@ -1915,7 +1865,7 @@ check_needs_x11_pixmap (MetaWindowActor *self)
   MetaDisplay         *display  = meta_screen_get_display (screen);
   Display             *xdisplay = meta_display_get_xdisplay (display);
   MetaCompScreen      *info     = meta_screen_get_compositor_data (screen);
-  Window               xwindow  = priv->xwindow;
+  Window               xwindow  = meta_window_get_toplevel_xwindow (priv->window);
 
   if (!priv->needs_pixmap)
     return;
