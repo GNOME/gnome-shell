@@ -116,7 +116,7 @@ meta_surface_actor_damage_all (MetaSurfaceActor *self,
   CoglTexture *texture = meta_shaped_texture_get_texture (priv->texture);
 
   update_area (self, 0, 0, cogl_texture_get_width (texture), cogl_texture_get_height (texture));
-  return meta_shaped_texture_update_area (self->priv->texture,
+  return meta_shaped_texture_update_area (priv->texture,
                                           0, 0,
                                           cogl_texture_get_width (texture),
                                           cogl_texture_get_height (texture),
@@ -131,8 +131,10 @@ meta_surface_actor_damage_area (MetaSurfaceActor *self,
                                 int               height,
                                 cairo_region_t   *unobscured_region)
 {
+  MetaSurfaceActorPrivate *priv = self->priv;
+
   update_area (self, x, y, width, height);
-  return meta_shaped_texture_update_area (self->priv->texture,
+  return meta_shaped_texture_update_area (priv->texture,
                                           x, y, width, height,
                                           unobscured_region);
 }
@@ -145,30 +147,33 @@ meta_surface_actor_attach_wayland_buffer (MetaSurfaceActor *self,
   priv->buffer = buffer;
 
   if (buffer)
-    meta_shaped_texture_set_texture (self->priv->texture, buffer->texture);
+    meta_shaped_texture_set_texture (priv->texture, buffer->texture);
   else
-    meta_shaped_texture_set_texture (self->priv->texture, NULL);
+    meta_shaped_texture_set_texture (priv->texture, NULL);
 }
 
 void
 meta_surface_actor_set_texture (MetaSurfaceActor *self,
                                 CoglTexture      *texture)
 {
-  meta_shaped_texture_set_texture (self->priv->texture, texture);
+  MetaSurfaceActorPrivate *priv = self->priv;
+  meta_shaped_texture_set_texture (priv->texture, texture);
 }
 
 void
 meta_surface_actor_set_input_region (MetaSurfaceActor *self,
                                      cairo_region_t   *region)
 {
-  meta_shaped_texture_set_input_shape_region (self->priv->texture, region);
+  MetaSurfaceActorPrivate *priv = self->priv;
+  meta_shaped_texture_set_input_shape_region (priv->texture, region);
 }
 
 void
 meta_surface_actor_set_opaque_region (MetaSurfaceActor *self,
                                       cairo_region_t   *region)
 {
-  meta_shaped_texture_set_opaque_region (self->priv->texture, region);
+  MetaSurfaceActorPrivate *priv = self->priv;
+  meta_shaped_texture_set_opaque_region (priv->texture, region);
 }
 
 MetaSurfaceActor *
