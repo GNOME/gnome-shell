@@ -1352,7 +1352,8 @@ meta_window_actor_should_unredirect (MetaWindowActor *self)
 }
 
 void
-meta_window_actor_set_redirected (MetaWindowActor *self, gboolean state)
+meta_window_actor_set_unredirected (MetaWindowActor *self,
+                                    gboolean         unredirected)
 {
   MetaWindow *metaWindow = meta_window_actor_get_meta_window (self);
   MetaDisplay *display = meta_window_get_display (metaWindow);
@@ -1360,21 +1361,20 @@ meta_window_actor_set_redirected (MetaWindowActor *self, gboolean state)
   Display *xdisplay = meta_display_get_xdisplay (display);
   Window  xwin = meta_window_get_toplevel_xwindow (metaWindow);
 
-  if (state)
+  meta_error_trap_push (display);
+
+  if (unredirected)
     {
-      meta_error_trap_push (display);
-      XCompositeRedirectWindow (xdisplay, xwin, CompositeRedirectManual);
-      meta_error_trap_pop (display);
-      meta_window_actor_detach_x11_pixmap (self);
-      self->priv->unredirected = FALSE;
+      XCompositeUnredirectWindow (xdisplay, xwin, CompositeRedirectManual);
     }
   else
     {
-      meta_error_trap_push (display);
-      XCompositeUnredirectWindow (xdisplay, xwin, CompositeRedirectManual);
-      meta_error_trap_pop (display);
-      self->priv->unredirected = TRUE;
+      XCompositeRedirectWindow (xdisplay, xwin, CompositeRedirectManual);
+      meta_window_actor_detach_x11_pixmap (self);
     }
+
+  self->priv->unredirected = unredirected;
+  meta_error_trap_pop (display);
 }
 
 void
