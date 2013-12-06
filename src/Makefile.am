@@ -29,11 +29,9 @@ CLEANFILES += $(service_DATA)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 
-bin_SCRIPTS += gnome-shell-extension-tool gnome-shell-extension-prefs \
-	       gnome-shell-perf-tool
-EXTRA_DIST += gnome-shell-extension-tool.in gnome-shell-extension-prefs.in \
-	      gnome-shell-perf-tool.in
-bin_PROGRAMS = gnome-shell
+bin_SCRIPTS += gnome-shell-extension-tool gnome-shell-perf-tool
+EXTRA_DIST += gnome-shell-extension-tool.in gnome-shell-perf-tool.in
+bin_PROGRAMS = gnome-shell gnome-shell-extension-prefs
 
 if HAVE_MUTTER_WAYLAND
 bin_PROGRAMS += gnome-shell-wayland
@@ -52,9 +50,6 @@ generated_script_substitutions = \
 	    -e "s|@GJS_CONSOLE[@]|$(GJS_CONSOLE)|g"
 
 gnome-shell-extension-tool: gnome-shell-extension-tool.in Makefile
-	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
-
-gnome-shell-extension-prefs: gnome-shell-extension-prefs.in Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
 
 gnome-shell-perf-tool: gnome-shell-perf-tool.in Makefile
@@ -208,6 +203,13 @@ gnome_shell_wayland_CPPFLAGS = \
 gnome_shell_wayland_LDADD = libgnome-shell-wayland.la libgnome-shell-js.la $(GNOME_SHELL_LIBS) $(MUTTER_WAYLAND_LIBS)
 gnome_shell_wayland_DEPENDENCIES = libgnome-shell-wayland.la
 endif HAVE_MUTTER_WAYLAND
+
+gnome_shell_extension_prefs_SOURCES = gnome-shell-extension-prefs.c \
+	$(top_builddir)/js/js-resources.c		\
+	$(top_builddir)/js/js-resources.h		\
+	$(NULL)
+gnome_shell_extension_prefs_CPPFLAGS = $(gnome_shell_cflags)
+gnome_shell_extension_prefs_LDADD = libgnome-shell-js.la
 
 ########################################
 
