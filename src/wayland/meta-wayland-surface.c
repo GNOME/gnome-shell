@@ -69,11 +69,7 @@ surface_process_damage (MetaWaylandSurface *surface,
       cairo_rectangle_int_t rect;
       cairo_region_get_rectangle (region, i, &rect);
       meta_surface_actor_damage_area (surface->surface_actor,
-                                      rect.x,
-                                      rect.y,
-                                      rect.width,
-                                      rect.height,
-                                      NULL);
+                                      rect.x, rect.y, rect.width, rect.height);
     }
 }
 

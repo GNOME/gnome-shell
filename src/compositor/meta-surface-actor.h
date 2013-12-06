@@ -43,15 +43,14 @@ cairo_surface_t *meta_surface_actor_get_image (MetaSurfaceActor      *self,
 
 MetaShapedTexture *meta_surface_actor_get_texture (MetaSurfaceActor *self);
 
-gboolean meta_surface_actor_damage_all (MetaSurfaceActor *self,
-                                        cairo_region_t   *unobscured_region);
-
+gboolean meta_surface_actor_damage_all  (MetaSurfaceActor *self);
 gboolean meta_surface_actor_damage_area (MetaSurfaceActor *self,
                                          int               x,
                                          int               y,
                                          int               width,
-                                         int               height,
-                                         cairo_region_t   *unobscured_region);
+                                         int               height);
+
+gboolean meta_surface_actor_is_obscured (MetaSurfaceActor *self);
 
 void meta_surface_actor_set_texture (MetaSurfaceActor *self,
                                      CoglTexture      *texture);
