@@ -148,6 +148,7 @@ const SessionMode = new Lang.Class({
     Name: 'SessionMode',
 
     _init: function() {
+        _loadModes();
         let isPrimary = (_modes[global.session_mode] &&
                          _modes[global.session_mode].isPrimary);
         let mode = isPrimary ? global.session_mode : 'user';
