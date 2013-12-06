@@ -1738,10 +1738,10 @@ meta_window_actor_cull_out (MetaCullable   *cullable,
                             cairo_region_t *clip_region)
 {
   MetaWindowActor *self = META_WINDOW_ACTOR (cullable);
-  MetaCompScreen *info = meta_screen_get_compositor_data (self->priv->screen);
+  MetaWindowActorPrivate *priv = self->priv;
 
   /* Don't do any culling for the unredirected window */
-  if (self == info->unredirected_window)
+  if (priv->unredirected)
     return;
 
   meta_window_actor_set_unobscured_region (self, unobscured_region);
