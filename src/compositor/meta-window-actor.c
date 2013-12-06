@@ -154,7 +154,6 @@ struct _FrameData
 enum
 {
   PROP_META_WINDOW = 1,
-  PROP_META_SCREEN,
   PROP_NO_SHADOW,
   PROP_SHADOW_CLASS
 };
@@ -227,15 +226,6 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
 
   g_object_class_install_property (object_class,
                                    PROP_META_WINDOW,
-                                   pspec);
-
-  pspec = g_param_spec_pointer ("meta-screen",
-				"MetaScreen",
-				"MetaScreen",
-				G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
-
-  g_object_class_install_property (object_class,
-                                   PROP_META_SCREEN,
                                    pspec);
 
   pspec = g_param_spec_boolean ("no-shadow",
@@ -336,15 +326,16 @@ meta_window_actor_constructed (GObject *object)
 {
   MetaWindowActor        *self     = META_WINDOW_ACTOR (object);
   MetaWindowActorPrivate *priv     = self->priv;
-  MetaScreen             *screen   = priv->screen;
-  MetaDisplay            *display  = meta_screen_get_display (screen);
   MetaWindow             *window   = priv->window;
+  MetaScreen             *screen   = meta_window_get_screen (window);
+  MetaDisplay            *display  = meta_screen_get_display (screen);
   Display                *xdisplay = meta_display_get_xdisplay (display);
   XRenderPictFormat      *format;
   Window                  xwindow;
 
   xwindow = meta_window_get_toplevel_xwindow (window);
 
+  priv->screen = screen;
   priv->damage = XDamageCreate (xdisplay, xwindow,
                                 XDamageReportBoundingBox);
 
@@ -470,9 +461,6 @@ meta_window_actor_set_property (GObject      *object,
         priv->window = g_value_dup_object (value);
       }
       break;
-    case PROP_META_SCREEN:
-      priv->screen = g_value_get_pointer (value);
-      break;
     case PROP_NO_SHADOW:
       {
         gboolean newv = g_value_get_boolean (value);
@@ -516,9 +504,6 @@ meta_window_actor_get_property (GObject      *object,
     {
     case PROP_META_WINDOW:
       g_value_set_object (value, priv->window);
-      break;
-    case PROP_META_SCREEN:
-      g_value_set_pointer (value, priv->screen);
       break;
     case PROP_NO_SHADOW:
       g_value_set_boolean (value, priv->no_shadow);
@@ -1580,7 +1565,6 @@ meta_window_actor_new (MetaWindow *window)
 
   self = g_object_new (META_TYPE_WINDOW_ACTOR,
                        "meta-window", window,
-                       "meta-screen", screen,
                        NULL);
 
   priv = self->priv;
