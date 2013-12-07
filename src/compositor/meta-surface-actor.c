@@ -39,8 +39,8 @@ meta_surface_actor_class_init (MetaSurfaceActorClass *klass)
 
 static void
 meta_surface_actor_cull_out (MetaCullable   *cullable,
-                                cairo_region_t *unobscured_region,
-                                cairo_region_t *clip_region)
+                             cairo_region_t *unobscured_region,
+                             cairo_region_t *clip_region)
 {
   meta_cullable_cull_out_children (cullable, unobscured_region, clip_region);
 }
