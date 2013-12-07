@@ -506,8 +506,7 @@ meta_display_open (void)
 
   the_display->xids = g_hash_table_new (meta_unsigned_long_hash,
                                         meta_unsigned_long_equal);
-  the_display->pending_pings = g_hash_table_new (meta_unsigned_long_hash,
-                                                 meta_unsigned_long_equal);
+  the_display->pending_pings = g_hash_table_new (g_int_hash, g_int_equal);
   the_display->wayland_windows = g_hash_table_new (NULL, NULL);
 
   i = 0;
