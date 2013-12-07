@@ -12231,9 +12231,6 @@ meta_window_pong (MetaWindow *window,
                                           ping_data->timestamp,
                                           ping_data->user_data);
 
-          /* Remove the ping data from the list */
-          window->pending_pings = g_slist_remove (window->pending_pings, ping_data);
-
           ping_data_free (ping_data);
 
           break;
@@ -12332,6 +12329,8 @@ meta_window_ping (MetaWindow        *window,
   ping_data->ping_timeout_func = ping_timeout_func;
   ping_data->user_data = user_data;
   ping_data->ping_timeout_id = g_timeout_add (PING_TIMEOUT_DELAY, ping_timeout, ping_data);
+
+  window->pending_pings = g_slist_prepend (window->pending_pings, ping_data);
 
   g_hash_table_insert (display->pending_pings, &ping_data->timestamp, window);
 
