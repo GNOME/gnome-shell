@@ -54,8 +54,6 @@ struct _MetaWindowActorPrivate
 
   MetaSurfaceActor *surface;
 
-  guint             surface_allocation_changed_id;
-
   /* MetaShadowFactory only caches shadows that are actually in use;
    * to avoid unnecessary recomputation we do two things: 1) we store
    * both a focused and unfocused shadow for the window. If the window
@@ -300,8 +298,6 @@ meta_window_actor_init (MetaWindowActor *self)
   priv = self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
 						   META_TYPE_WINDOW_ACTOR,
 						   MetaWindowActorPrivate);
-
-  priv->surface_allocation_changed_id = 0;
   priv->opacity = 0xff;
   priv->shadow_class = NULL;
 }
@@ -415,11 +411,8 @@ meta_window_actor_constructed (GObject *object)
 
       clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
 
-      priv->surface_allocation_changed_id =
-        g_signal_connect (CLUTTER_ACTOR (priv->surface),
-                          "allocation-changed",
-                          G_CALLBACK (surface_allocation_changed_notify),
-                          self);
+      g_signal_connect_object (priv->surface, "allocation-changed",
+                               G_CALLBACK (surface_allocation_changed_notify), self, 0);
       meta_window_actor_update_shape (self);
 
       g_signal_connect_object (window, "notify::decorated",
@@ -494,11 +487,6 @@ meta_window_actor_dispose (GObject *object)
   info->windows = g_list_remove (info->windows, (gconstpointer) self);
 
   g_clear_object (&priv->window);
-
-  if (priv->surface != NULL && priv->surface_allocation_changed_id != 0)
-    g_signal_handler_disconnect (priv->surface,
-                                 priv->surface_allocation_changed_id);
-  priv->surface_allocation_changed_id = 0;
 
   /*
    * Release the extra reference we took on the actor.
