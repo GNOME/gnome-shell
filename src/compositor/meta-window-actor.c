@@ -383,11 +383,6 @@ meta_window_actor_constructed (GObject *object)
       g_signal_connect_object (priv->surface, "allocation-changed",
                                G_CALLBACK (surface_allocation_changed_notify), self, 0);
       meta_window_actor_update_shape (self);
-
-      g_signal_connect_object (window, "notify::decorated",
-                               G_CALLBACK (window_decorated_notify), self, 0);
-      g_signal_connect_object (window, "notify::appears-focused",
-                               G_CALLBACK (window_appears_focused_notify), self, 0);
     }
   else
     {
@@ -489,6 +484,11 @@ meta_window_actor_set_property (GObject      *object,
     {
     case PROP_META_WINDOW:
       priv->window = g_value_dup_object (value);
+
+      g_signal_connect_object (priv->window, "notify::decorated",
+                               G_CALLBACK (window_decorated_notify), self, 0);
+      g_signal_connect_object (priv->window, "notify::appears-focused",
+                               G_CALLBACK (window_appears_focused_notify), self, 0);
       break;
     case PROP_NO_SHADOW:
       {
