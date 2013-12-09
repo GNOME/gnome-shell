@@ -39,25 +39,15 @@ xserver_set_window_id (struct wl_client *client,
                        struct wl_resource *surface_resource,
                        guint32 xid)
 {
-  MetaWaylandCompositor *compositor =
-    wl_resource_get_user_data (compositor_resource);
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
   MetaDisplay *display = meta_get_display ();
   MetaWindow *window;
 
-  window  = meta_display_lookup_x_window (display, xid);
+  window = meta_display_lookup_x_window (display, xid);
   if (window)
     {
       surface->window = window;
       window->surface = surface;
-
-      /* If the window is already meant to have focus then the
-       * original attempt to call this in response to the FocusIn
-       * event will have been lost because there was no surface
-       * yet. */
-      if (window->has_focus)
-        meta_wayland_compositor_set_input_focus (compositor, window);
-
     }
 }
 
