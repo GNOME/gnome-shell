@@ -343,7 +343,7 @@ meta_window_actor_sync_surface_actor (MetaWindowActor *self)
     {
       if (window->surface)
         surface = window->surface->surface_actor;
-      else
+      else if (!meta_is_wayland_compositor ())
         surface = meta_surface_actor_x11_new (window);
     }
 
