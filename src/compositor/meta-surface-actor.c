@@ -10,20 +10,18 @@
  */
 
 #include <config.h>
-#include <clutter/clutter.h>
-#include <cogl/cogl-wayland-server.h>
-#include <cogl/cogl-texture-pixmap-x11.h>
-#include <meta/meta-shaped-texture.h>
+
 #include "meta-surface-actor.h"
+
+#include <clutter/clutter.h>
+#include <meta/meta-shaped-texture.h>
 #include "meta-wayland-private.h"
 #include "meta-cullable.h"
-
 #include "meta-shaped-texture-private.h"
 
 struct _MetaSurfaceActorPrivate
 {
   MetaShapedTexture *texture;
-  MetaWaylandBuffer *buffer;
 
   /* The region that is visible, used to optimize out redraws */
   cairo_region_t   *unobscured_region;
@@ -31,8 +29,8 @@ struct _MetaSurfaceActorPrivate
 
 static void cullable_iface_init (MetaCullableInterface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (MetaSurfaceActor, meta_surface_actor, CLUTTER_TYPE_ACTOR,
-                         G_IMPLEMENT_INTERFACE (META_TYPE_CULLABLE, cullable_iface_init));
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (MetaSurfaceActor, meta_surface_actor, CLUTTER_TYPE_ACTOR,
+                                  G_IMPLEMENT_INTERFACE (META_TYPE_CULLABLE, cullable_iface_init));
 
 static gboolean
 meta_surface_actor_get_paint_volume (ClutterActor       *actor,
@@ -160,30 +158,6 @@ meta_surface_actor_get_texture (MetaSurfaceActor *self)
   return self->priv->texture;
 }
 
-static void
-update_area (MetaSurfaceActor *self,
-             int x, int y, int width, int height)
-{
-  MetaSurfaceActorPrivate *priv = self->priv;
-
-  if (meta_is_wayland_compositor ())
-    {
-      struct wl_resource *resource = priv->buffer->resource;
-      struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (resource);
-
-      if (shm_buffer)
-        {
-          CoglTexture2D *texture = COGL_TEXTURE_2D (priv->buffer->texture);
-          cogl_wayland_texture_set_region_from_shm_buffer (texture, x, y, width, height, shm_buffer, x, y, 0, NULL);
-        }
-    }
-  else
-    {
-      CoglTexturePixmapX11 *texture = COGL_TEXTURE_PIXMAP_X11 (meta_shaped_texture_get_texture (priv->texture));
-      cogl_texture_pixmap_x11_update_area (texture, x, y, width, height);
-    }
-}
-
 static cairo_region_t *
 effective_unobscured_region (MetaSurfaceActor *self)
 {
@@ -193,29 +167,11 @@ effective_unobscured_region (MetaSurfaceActor *self)
 }
 
 gboolean
-meta_surface_actor_damage_all (MetaSurfaceActor *self)
-{
-  MetaSurfaceActorPrivate *priv = self->priv;
-  CoglTexture *texture = meta_shaped_texture_get_texture (priv->texture);
-
-  update_area (self, 0, 0, cogl_texture_get_width (texture), cogl_texture_get_height (texture));
-  return meta_shaped_texture_update_area (priv->texture,
-                                          0, 0,
-                                          cogl_texture_get_width (texture),
-                                          cogl_texture_get_height (texture),
-                                          effective_unobscured_region (self));
-}
-
-gboolean
-meta_surface_actor_damage_area (MetaSurfaceActor *self,
-                                int               x,
-                                int               y,
-                                int               width,
-                                int               height)
+meta_surface_actor_redraw_area (MetaSurfaceActor *self,
+                                int x, int y, int width, int height)
 {
   MetaSurfaceActorPrivate *priv = self->priv;
 
-  update_area (self, x, y, width, height);
   return meta_shaped_texture_update_area (priv->texture,
                                           x, y, width, height,
                                           effective_unobscured_region (self));
@@ -230,27 +186,6 @@ meta_surface_actor_is_obscured (MetaSurfaceActor *self)
     return cairo_region_is_empty (priv->unobscured_region);
   else
     return FALSE;
-}
-
-void
-meta_surface_actor_attach_wayland_buffer (MetaSurfaceActor *self,
-                                          MetaWaylandBuffer *buffer)
-{
-  MetaSurfaceActorPrivate *priv = self->priv;
-  priv->buffer = buffer;
-
-  if (buffer)
-    meta_shaped_texture_set_texture (priv->texture, buffer->texture);
-  else
-    meta_shaped_texture_set_texture (priv->texture, NULL);
-}
-
-void
-meta_surface_actor_set_texture (MetaSurfaceActor *self,
-                                CoglTexture      *texture)
-{
-  MetaSurfaceActorPrivate *priv = self->priv;
-  meta_shaped_texture_set_texture (priv->texture, texture);
 }
 
 void
@@ -269,8 +204,58 @@ meta_surface_actor_set_opaque_region (MetaSurfaceActor *self,
   meta_shaped_texture_set_opaque_region (priv->texture, region);
 }
 
-MetaSurfaceActor *
-meta_surface_actor_new (void)
+void
+meta_surface_actor_process_damage (MetaSurfaceActor *actor,
+                                   int x, int y, int width, int height)
 {
-  return g_object_new (META_TYPE_SURFACE_ACTOR, NULL);
+  META_SURFACE_ACTOR_GET_CLASS (actor)->process_damage (actor, x, y, width, height);
+}
+
+void
+meta_surface_actor_pre_paint (MetaSurfaceActor *actor)
+{
+  META_SURFACE_ACTOR_GET_CLASS (actor)->pre_paint (actor);
+}
+
+gboolean
+meta_surface_actor_is_argb32 (MetaSurfaceActor *actor)
+{
+  return META_SURFACE_ACTOR_GET_CLASS (actor)->is_argb32 (actor);
+}
+
+gboolean
+meta_surface_actor_is_visible (MetaSurfaceActor *actor)
+{
+  return META_SURFACE_ACTOR_GET_CLASS (actor)->is_visible (actor);
+}
+
+void
+meta_surface_actor_freeze (MetaSurfaceActor *actor)
+{
+  META_SURFACE_ACTOR_GET_CLASS (actor)->freeze (actor);
+}
+
+void
+meta_surface_actor_thaw (MetaSurfaceActor *actor)
+{
+  META_SURFACE_ACTOR_GET_CLASS (actor)->thaw (actor);
+}
+
+gboolean
+meta_surface_actor_is_frozen (MetaSurfaceActor *actor)
+{
+  return META_SURFACE_ACTOR_GET_CLASS (actor)->is_frozen (actor);
+}
+
+gboolean
+meta_surface_actor_should_unredirect (MetaSurfaceActor *actor)
+{
+  return META_SURFACE_ACTOR_GET_CLASS (actor)->should_unredirect (actor);
+}
+
+void
+meta_surface_actor_set_unredirected (MetaSurfaceActor *actor,
+                                     gboolean          unredirected)
+{
+  META_SURFACE_ACTOR_GET_CLASS (actor)->set_unredirected (actor, unredirected);
 }
