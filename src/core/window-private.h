@@ -355,6 +355,9 @@ struct _MetaWindow
   /* the input shape region for picking */
   cairo_region_t *input_region;
 
+  /* _NET_WM_WINDOW_OPACITY */
+  guint opacity;
+
   /* if TRUE, the we have the new form of sync request counter which
    * also handles application frames */
   guint extended_sync_request_counter : 1;
@@ -695,6 +698,8 @@ void meta_window_update_input_region_x11  (MetaWindow *window);
 void meta_window_set_shape_region         (MetaWindow     *window,
                                            cairo_region_t *region);
 void meta_window_update_shape_region_x11  (MetaWindow *window);
+void meta_window_set_opacity              (MetaWindow *window,
+                                           guint       opacity);
 
 Window meta_window_get_toplevel_xwindow (MetaWindow *window);
 
