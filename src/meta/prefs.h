@@ -393,7 +393,7 @@ struct _MetaKeyCombo
  * @display: a #MetaDisplay
  * @screen: a #MetaScreen
  * @window: a #MetaWindow
- * @event: a #ClutterKeyEvent
+ * @event: (type gpointer): a #ClutterKeyEvent
  * @binding: a #MetaKeyBinding
  * @user_data: data passed to the function
  *
