@@ -306,6 +306,51 @@ meta_window_actor_thaw (MetaWindowActor *self)
 }
 
 static void
+set_surface_actor (MetaWindowActor  *self,
+                   MetaSurfaceActor *surface)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+
+  if (priv->surface)
+    {
+      g_object_unref (priv->surface);
+      clutter_actor_remove_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
+    }
+
+  priv->surface = surface;
+
+  if (priv->surface)
+    {
+      g_object_ref_sink (priv->surface);
+      clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
+
+      g_signal_connect_object (priv->surface, "allocation-changed",
+                               G_CALLBACK (surface_allocation_changed_notify), self, 0);
+    }
+
+  meta_window_actor_update_shape (self);
+}
+
+static void
+meta_window_actor_sync_surface_actor (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaWindow *window = priv->window;
+
+  MetaSurfaceActor *surface = NULL;
+
+  if (window)
+    {
+      if (window->surface)
+        surface = window->surface->surface_actor;
+      else
+        surface = meta_surface_actor_x11_new (window);
+    }
+
+  set_surface_actor (self, surface);
+}
+
+static void
 meta_window_actor_constructed (GObject *object)
 {
   MetaWindowActor        *self     = META_WINDOW_ACTOR (object);
@@ -314,21 +359,7 @@ meta_window_actor_constructed (GObject *object)
 
   priv->screen = window->screen;
 
-  if (!priv->surface)
-    {
-      if (window->surface)
-        priv->surface = window->surface->surface_actor;
-      else
-        priv->surface = meta_surface_actor_x11_new (window);
-      g_object_ref_sink (priv->surface);
-
-      clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
-
-      g_signal_connect_object (priv->surface, "allocation-changed",
-                               G_CALLBACK (surface_allocation_changed_notify), self, 0);
-      meta_window_actor_update_shape (self);
-    }
-
+  meta_window_actor_sync_surface_actor (self);
   meta_window_actor_update_opacity (self);
 
   /* Start off with an empty shape region to maintain the invariant
@@ -370,10 +401,7 @@ meta_window_actor_dispose (GObject *object)
 
   g_clear_object (&priv->window);
 
-  /*
-   * Release the extra reference we took on the actor.
-   */
-  g_clear_object (&priv->surface);
+  meta_window_actor_sync_surface_actor (self);
 
   G_OBJECT_CLASS (meta_window_actor_parent_class)->dispose (object);
 }
