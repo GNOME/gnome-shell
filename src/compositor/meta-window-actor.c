@@ -305,8 +305,6 @@ window_decorated_notify (MetaWindow *mw,
       priv->damage = None;
     }
 
-  priv->xwindow = meta_window_get_toplevel_xwindow (priv->window);
-
   /*
    * Recreate the contents.
    */
