@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-07 17:09+0200\n"
-"PO-Revision-Date: 2013-10-07 17:09+0200\n"
+"POT-Creation-Date: 2013-12-11 06:55+0200\n"
+"PO-Revision-Date: 2013-12-11 06:57+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
@@ -212,7 +212,7 @@ msgstr "المنظور مقسوم على اليسار"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:596
+#: ../src/compositor/compositor.c:571
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -255,12 +255,12 @@ msgstr "ا_نتظر"
 msgid "_Force Quit"
 msgstr "أ_جبر الإنهاء"
 
-#: ../src/core/display.c:422
+#: ../src/core/display.c:415
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "الامتداد %s مفقود، لكنه مطلوب للتركيب"
 
-#: ../src/core/display.c:514
+#: ../src/core/display.c:507
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "فشل فتح عرض نظام نوافذ إكس '%s'\n"
@@ -314,16 +314,16 @@ msgstr "تعذّر إيجاد سِمة! تأكد من وجود %s و احتوا�
 
 #: ../src/core/monitor.c:696
 msgid "Built-in display"
-msgstr ""
+msgstr "شاشة مدمجة"
 
 #. TRANSLATORS: this is a monitor name (in case we don't know
 #. the vendor), it's Unknown followed by a size in inches,
 #. like 'Unknown 15"'
 #.
 #: ../src/core/monitor.c:724
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown %s"
-msgstr "عنصر مجهول %s"
+msgstr "غير معروفة %s"
 
 #: ../src/core/mutter.c:40
 #, c-format
@@ -382,12 +382,12 @@ msgstr ""
 msgid "Workspace %d"
 msgstr "مساحة العمل %d"
 
-#: ../src/core/screen.c:537
+#: ../src/core/screen.c:540
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "الشاشة %d على العرض '%s' غير صحيحة\n"
 
-#: ../src/core/screen.c:553
+#: ../src/core/screen.c:556
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -396,18 +396,18 @@ msgstr ""
 "الشاشة %d على العرض \"%s\" لها مدير نوافذ بالفعل، حاول استعمال خيار التبديل "
 "--replace لتحُلّ محلّ مدير النوافذ الحالي.\n"
 
-#: ../src/core/screen.c:580
+#: ../src/core/screen.c:583
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "لا يمكن الحصول على اختيار مدير النوافذ على الشاشة %d العرض \"%s\"\n"
 
-#: ../src/core/screen.c:658
+#: ../src/core/screen.c:661
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "الشاشة %d على العرض \"%s\" لها مدير نوافذ بالفعل\n"
 
-#: ../src/core/screen.c:850
+#: ../src/core/screen.c:853
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "لا يمكن ترك الشاشة %d على العرض \"%s\"\n"
@@ -503,7 +503,7 @@ msgid "Window manager error: "
 msgstr "خطأ مدير النوافذ: "
 
 #. first time through
-#: ../src/core/window.c:7515
+#: ../src/core/window.c:7615
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -519,7 +519,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8345
+#: ../src/core/window.c:8537
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -528,22 +528,22 @@ msgstr ""
 "ضبطت النافذة %s تلميحة MWM يدل على انه لا يمكن تحجيمها، لكنها تضبط الحجم "
 "الأدنى %d x %d و الحجم الأقصى %d x %d، هذا ليس له أي معنى.\n"
 
-#: ../src/core/window-props.c:347
+#: ../src/core/window-props.c:350
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "ضبط التطبيق رمز NET_WM_PID غير مفهوم %lu\n"
 
-#: ../src/core/window-props.c:463
+#: ../src/core/window-props.c:466
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (على %s)"
 
-#: ../src/core/window-props.c:1546
+#: ../src/core/window-props.c:1549
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "نافذة WM_TRANSIENT_FOR  0x%lx غير صحيحة ل %s.\n"
 
-#: ../src/core/window-props.c:1557
+#: ../src/core/window-props.c:1560
 #, fuzzy, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "نافذة WM_TRANSIENT_FOR  0x%lx غير صحيحة ل %s.\n"
@@ -929,8 +929,8 @@ msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
-"يحب أن يكون لتخصيص حالة ألوان جتك قوس غلق قائم بعد الحالة/ مثال gtk:"
-"fg[NORMAL]، NORMAL هنا هو الحالة، لا يمكن تحليل \"%s\""
+"يحب أن يكون لتخصيص حالة ألوان جتك قوس غلق قائم بعد الحالة/ مثال "
+"gtk:fg[NORMAL]، NORMAL هنا هو الحالة، لا يمكن تحليل \"%s\""
 
 #: ../src/ui/theme.c:1219
 #, c-format
