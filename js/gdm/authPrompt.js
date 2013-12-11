@@ -93,7 +93,7 @@ const AuthPrompt = new Lang.Class({
 
         this.actor.add(this._label,
                        { expand: true,
-                         x_fill: true,
+                         x_fill: false,
                          y_fill: true,
                          x_align: St.Align.START });
         this._entry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
@@ -111,7 +111,7 @@ const AuthPrompt = new Lang.Class({
         this._message = new St.Label({ opacity: 0,
                                        styleClass: 'login-dialog-message' });
         this._message.clutter_text.line_wrap = true;
-        this.actor.add(this._message, { x_fill: true, y_align: St.Align.START });
+        this.actor.add(this._message, { x_fill: false, x_align: St.Align.START, y_align: St.Align.START });
 
         this._buttonBox = new St.BoxLayout({ style_class: 'login-dialog-button-box',
                                              vertical: false });
