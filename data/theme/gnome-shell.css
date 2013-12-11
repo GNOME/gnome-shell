@@ -1944,6 +1944,7 @@ StScrollBar StButton#vhandle:active {
 
 .end-session-dialog-description:rtl {
     padding-right: 17px;
+    text-align: right;
 }
 
 .end-session-dialog-logout-icon {
@@ -1974,6 +1975,10 @@ StScrollBar StButton#vhandle:active {
 
 .end-session-dialog-list-header {
     font-weight: bold;
+}
+
+.end-session-dialog-list-header:rtl {
+    text-align: right;
 }
 
 .end-session-dialog-app-list-item,

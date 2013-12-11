@@ -249,7 +249,9 @@ const EndSessionDialog = new Lang.Class({
         this._subjectLabel = new St.Label({ style_class: 'end-session-dialog-subject' });
 
         messageLayout.add(this._subjectLabel,
-                          { y_fill:  false,
+                          { x_fill: false,
+                            y_fill:  false,
+                            x_align: St.Align.START,
                             y_align: St.Align.START });
 
         this._descriptionLabel = new St.Label({ style_class: 'end-session-dialog-description' });
