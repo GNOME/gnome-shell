@@ -138,6 +138,7 @@ const KeyringDialog = new Lang.Class({
         warning.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         warning.clutter_text.line_wrap = true;
         layout.pack(warning, 1, row);
+        layout.child_set(warning, { x_fill: false, x_align: Clutter.TableAlignment.START });
         this.prompt.bind_property('warning-visible', warning, 'visible', GObject.BindingFlags.SYNC_CREATE);
         this.prompt.bind_property('warning', warning, 'text', GObject.BindingFlags.SYNC_CREATE);
 
