@@ -2479,9 +2479,16 @@ StScrollBar StButton#vhandle:active {
     font-size: 20px;
     font-weight: bold;
     text-align: left;
-    padding-left: 18px;
     color:white;
     text-shadow: black 0px 4px 3px 0px;
+}
+
+.user-widget-label:ltr {
+    padding-left: 18px;
+}
+
+.user-widget-label:rtl {
+    padding-right: 18px;
 }
 
 /* Screen shield */
