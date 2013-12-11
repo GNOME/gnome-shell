@@ -142,7 +142,7 @@ const AuthenticationDialog = new Lang.Class({
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
-        messageBox.add(this._errorMessageLabel);
+        messageBox.add(this._errorMessageLabel, { x_fill: false, x_align: St.Align.START });
         this._errorMessageLabel.hide();
 
         this._infoMessageLabel = new St.Label({ style_class: 'prompt-dialog-info-label' });
