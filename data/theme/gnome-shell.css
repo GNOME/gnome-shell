@@ -2095,6 +2095,10 @@ StScrollBar StButton#vhandle:active {
     color: #666666;
 }
 
+.prompt-dialog-description:rtl {
+    text-align: right;
+}
+
 .prompt-dialog-password-box {
     spacing: 1em;
     padding-bottom: 1em;

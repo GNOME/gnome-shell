@@ -45,7 +45,9 @@ const KeyringDialog = new Lang.Class({
         this.prompt.bind_property('message', subject, 'text', GObject.BindingFlags.SYNC_CREATE);
 
         this._messageBox.add(subject,
-                             { y_fill:  false,
+                             { x_fill: false,
+                               y_fill:  false,
+                               x_align: St.Align.START,
                                y_align: St.Align.START });
 
         let description = new St.Label({ style_class: 'prompt-dialog-description' });
