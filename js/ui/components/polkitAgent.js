@@ -54,7 +54,9 @@ const AuthenticationDialog = new Lang.Class({
                                             text: _("Authentication Required") });
 
         messageBox.add(this._subjectLabel,
-                       { y_fill:  false,
+                       { x_fill: false,
+                         y_fill:  false,
+                         x_align: St.Align.START,
                          y_align: St.Align.START });
 
         this._descriptionLabel = new St.Label({ style_class: 'prompt-dialog-description',
@@ -63,7 +65,9 @@ const AuthenticationDialog = new Lang.Class({
         this._descriptionLabel.clutter_text.line_wrap = true;
 
         messageBox.add(this._descriptionLabel,
-                       { y_fill:  true,
+                       { x_fill: false,
+                         y_fill:  true,
+                         x_align: St.Align.START,
                          y_align: St.Align.START });
 
         if (userNames.length > 1) {
@@ -95,7 +99,8 @@ const AuthenticationDialog = new Lang.Class({
         if (userIsRoot) {
             let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-root-label',
                                             text: userRealName }));
-            messageBox.add(userLabel);
+            messageBox.add(userLabel, { x_fill: false,
+                                        x_align: St.Align.START });
         } else {
             let userBox = new St.BoxLayout({ style_class: 'polkit-dialog-user-layout',
                                              vertical: false });
