@@ -71,7 +71,7 @@ const UnlockDialog = new Lang.Class({
                                                     child: otherUserLabel,
                                                     reactive: true,
                                                     x_align: St.Align.START,
-                                                    x_fill: true });
+                                                    x_fill: false });
             this._otherUserButton.connect('clicked', Lang.bind(this, this._otherUserClicked));
             this._promptBox.add_child(this._otherUserButton);
         } else {
