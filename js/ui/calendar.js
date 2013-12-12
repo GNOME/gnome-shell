@@ -329,25 +329,22 @@ const DBusEventSource = new Lang.Class({
             return;
 
         if (this._curRequestBegin && this._curRequestEnd){
-            let callFlags = Gio.DBusCallFlags.NO_AUTO_START;
-            if (forceReload)
-                callFlags = Gio.DBusCallFlags.NONE;
             this._dbusProxy.GetEventsRemote(this._curRequestBegin.getTime() / 1000,
                                             this._curRequestEnd.getTime() / 1000,
                                             forceReload,
                                             Lang.bind(this, this._onEventsReceived),
-                                            callFlags);
+                                            Gio.DBusCallFlags.NONE);
         }
     },
 
-    requestRange: function(begin, end, forceReload) {
-        if (forceReload || !(_datesEqual(begin, this._lastRequestBegin) && _datesEqual(end, this._lastRequestEnd))) {
+    requestRange: function(begin, end) {
+        if (!(_datesEqual(begin, this._lastRequestBegin) && _datesEqual(end, this._lastRequestEnd))) {
             this.isLoading = true;
             this._lastRequestBegin = begin;
             this._lastRequestEnd = end;
             this._curRequestBegin = begin;
             this._curRequestEnd = end;
-            this._loadEvents(forceReload);
+            this._loadEvents(false);
         }
     },
 
@@ -419,21 +416,19 @@ const Calendar = new Lang.Class({
     setEventSource: function(eventSource) {
         this._eventSource = eventSource;
         this._eventSource.connect('changed', Lang.bind(this, function() {
-            this._update(false);
+            this._update();
         }));
-        this._update(true);
+        this._update();
     },
 
     // Sets the calendar to show a specific date
-    setDate: function(date, forceReload) {
-        if (!_sameDay(date, this._selectedDate)) {
-            this._selectedDate = date;
-            this._update(forceReload);
-            this.emit('selected-date-changed', new Date(this._selectedDate));
-        } else {
-            if (forceReload)
-                this._update(forceReload);
-        }
+    setDate: function(date) {
+        if (_sameDay(date, this._selectedDate))
+            return;
+
+        this._selectedDate = date;
+        this._update();
+        this.emit('selected-date-changed', new Date(this._selectedDate));
     },
 
     _buildHeader: function() {
@@ -521,7 +516,7 @@ const Calendar = new Lang.Class({
 
         this._backButton.grab_key_focus();
 
-        this.setDate(newDate, false);
+        this.setDate(newDate);
     },
 
     _onNextMonthButtonClicked: function() {
@@ -545,16 +540,16 @@ const Calendar = new Lang.Class({
 
         this._forwardButton.grab_key_focus();
 
-        this.setDate(newDate, false);
+        this.setDate(newDate);
     },
 
     _onSettingsChange: function() {
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
         this._buildHeader();
-        this._update(false);
+        this._update();
     },
 
-    _update: function(forceReload) {
+    _update: function() {
         let now = new Date();
 
         if (_sameYear(this._selectedDate, now))
@@ -614,7 +609,7 @@ const Calendar = new Lang.Class({
                 this._shouldDateGrabFocus = true;
 
                 let newlySelectedDate = new Date(iterStr);
-                this.setDate(newlySelectedDate, false);
+                this.setDate(newlySelectedDate);
 
                 this._shouldDateGrabFocus = false;
             }));
@@ -671,7 +666,7 @@ const Calendar = new Lang.Class({
         }
         // Signal to the event source that we are interested in events
         // only from this date range
-        this._eventSource.requestRange(beginDate, iter, forceReload);
+        this._eventSource.requestRange(beginDate, iter);
     }
 });
 
