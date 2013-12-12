@@ -622,9 +622,9 @@ const Calendar = new Lang.Class({
             let styleClass = 'calendar-day-base calendar-day';
 
             if (_isWorkDay(iter))
-                styleClass += ' calendar-work-day'
+                styleClass += ' calendar-work-day';
             else
-                styleClass += ' calendar-nonwork-day'
+                styleClass += ' calendar-nonwork-day';
 
             // Hack used in lieu of border-collapse - see gnome-shell.css
             if (row == 2)
@@ -641,7 +641,7 @@ const Calendar = new Lang.Class({
                 styleClass += ' calendar-other-month-day';
 
             if (hasEvents)
-                styleClass += ' calendar-day-with-events'
+                styleClass += ' calendar-day-with-events';
 
             button.style_class = styleClass;
 
