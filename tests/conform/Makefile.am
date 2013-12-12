@@ -79,6 +79,7 @@ script_tests = \
 $(srcdir)/.gitignore: Makefile
 	$(AM_V_GEN)( echo "/*.trs" ; \
 		     echo "/*.log" ; \
+		     echo "/*.test" ; \
 		     echo "/.gitignore" ; \
 		     for p in $(test_programs); do \
 			echo "/$$p" ; \
