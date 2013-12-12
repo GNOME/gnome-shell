@@ -3,15 +3,12 @@
 
 #include <clutter/clutter.h>
 
-#include "test-conform-common.h"
-
-void
-actor_meta_clear (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
-                  gconstpointer             data G_GNUC_UNUSED)
+static void
+actor_meta_clear (void)
 {
   ClutterActor *actor, *stage;
 
-  stage = clutter_stage_new ();
+  stage = clutter_test_get_stage ();
 
   actor = clutter_actor_new ();
   g_object_ref_sink (actor);
@@ -36,6 +33,8 @@ actor_meta_clear (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
 
   clutter_actor_destroy (actor);
   g_assert (actor == NULL);
-
-  clutter_actor_destroy (stage);
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/actor/meta/clear", actor_meta_clear)
+)

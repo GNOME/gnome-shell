@@ -1,18 +1,15 @@
 #include <clutter/clutter.h>
 #include <stdlib.h>
 
-#include "test-conform-common.h"
-
-void
-opacity_label (TestConformSimpleFixture *fixture,
-               gpointer                  dummy)
+static void
+opacity_label (void)
 {
   ClutterActor *stage;
   ClutterActor *label;
   ClutterColor label_color = { 255, 0, 0, 128 };
   ClutterColor color_check = { 0, };
 
-  stage = clutter_stage_new ();
+  stage = clutter_test_get_stage ();
 
   label = clutter_text_new_with_text ("Sans 18px", "Label, 50% opacity");
   clutter_text_set_color (CLUTTER_TEXT (label), &label_color);
@@ -22,7 +19,7 @@ opacity_label (TestConformSimpleFixture *fixture,
   clutter_text_get_color (CLUTTER_TEXT (label), &color_check);
   g_assert (color_check.alpha == label_color.alpha);
 
-  clutter_container_add (CLUTTER_CONTAINER (stage), label, NULL);
+  clutter_actor_add_child (stage, label);
   clutter_actor_set_position (label, 10, 10);
 
   if (g_test_verbose ())
@@ -38,20 +35,18 @@ opacity_label (TestConformSimpleFixture *fixture,
     g_print ("label 50%%.get_paint_opacity()/2\n");
   clutter_actor_set_opacity (label, 128);
   g_assert (clutter_actor_get_paint_opacity (label) == 128);
-
-  clutter_actor_destroy (stage);
 }
 
-void
-opacity_rectangle (TestConformSimpleFixture *fixture,
-                   gpointer                  dummy)
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+static void
+opacity_rectangle (void)
 {
   ClutterActor *stage;
   ClutterActor *rect;
   ClutterColor rect_color = { 0, 0, 255, 255 };
   ClutterColor color_check = { 0, };
 
-  stage = clutter_stage_new ();
+  stage = clutter_test_get_stage ();
 
   rect = clutter_rectangle_new_with_color (&rect_color);
   clutter_actor_set_size (rect, 128, 128);
@@ -62,7 +57,7 @@ opacity_rectangle (TestConformSimpleFixture *fixture,
   clutter_rectangle_get_color (CLUTTER_RECTANGLE (rect), &color_check);
   g_assert (color_check.alpha == rect_color.alpha);
 
-  clutter_container_add (CLUTTER_CONTAINER (stage), rect, NULL);
+  clutter_actor_add_child (stage, rect);
 
   if (g_test_verbose ())
     g_print ("rect 100%%.get_color()/2\n");
@@ -72,13 +67,12 @@ opacity_rectangle (TestConformSimpleFixture *fixture,
   if (g_test_verbose ())
     g_print ("rect 100%%.get_paint_opacity()\n");
   g_assert (clutter_actor_get_paint_opacity (rect) == 255);
-
-  clutter_actor_destroy (stage);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
-void
-opacity_paint (TestConformSimpleFixture *fixture,
-               gpointer                  dummy)
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+static void
+opacity_paint (void)
 {
   ClutterActor *stage, *group1, *group2;
   ClutterActor *label, *rect;
@@ -86,7 +80,7 @@ opacity_paint (TestConformSimpleFixture *fixture,
   ClutterColor rect_color = { 0, 0, 255, 255 };
   ClutterColor color_check = { 0, };
 
-  stage = clutter_stage_new ();
+  stage = clutter_test_get_stage ();
 
   group1 = clutter_group_new ();
   clutter_actor_set_opacity (group1, 128);
@@ -137,6 +131,11 @@ opacity_paint (TestConformSimpleFixture *fixture,
   if (g_test_verbose ())
     g_print ("rect 100%%.get_paint_opacity()\n");
   g_assert (clutter_actor_get_paint_opacity (rect) == 128);
-
-  clutter_actor_destroy (stage);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/actor/opacity/text", opacity_label)
+  CLUTTER_TEST_UNIT ("/actor/opacity/rectangle", opacity_rectangle)
+  CLUTTER_TEST_UNIT ("/actor/opacity/paint", opacity_paint)
+)

@@ -1,5 +1,5 @@
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
-#include "test-conform-common.h"
 
 #define TEST_TYPE_DESTROY               (test_destroy_get_type ())
 #define TEST_DESTROY(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), TEST_TYPE_DESTROY, TestDestroy))
@@ -25,6 +25,8 @@ struct _TestDestroyClass
 };
 
 static void clutter_container_init (ClutterContainerIface *iface);
+
+GType test_destroy_get_type (void);
 
 G_DEFINE_TYPE_WITH_CODE (TestDestroy, test_destroy, CLUTTER_TYPE_ACTOR,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
@@ -160,12 +162,17 @@ on_destroy (ClutterActor *actor,
   *destroy_called = TRUE;
 }
 
-void
+static void
 actor_destruction (void)
 {
   ClutterActor *test = g_object_new (TEST_TYPE_DESTROY, NULL);
   ClutterActor *child = clutter_rectangle_new ();
   gboolean destroy_called = FALSE;
+
+  g_object_ref_sink (test);
+
+  g_object_add_weak_pointer (G_OBJECT (test), (gpointer *) &test);
+  g_object_add_weak_pointer (G_OBJECT (child), (gpointer *) &child);
 
   if (g_test_verbose ())
     g_print ("Adding external child...\n");
@@ -179,4 +186,10 @@ actor_destruction (void)
 
   clutter_actor_destroy (test);
   g_assert (destroy_called);
+  g_assert_null (child);
+  g_assert_null (test);
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/actor/destruction", actor_destruction)
+)

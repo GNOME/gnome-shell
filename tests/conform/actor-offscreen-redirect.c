@@ -1,6 +1,5 @@
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
-
-#include "test-conform-common.h"
 
 typedef struct _FooActor      FooActor;
 typedef struct _FooActorClass FooActorClass;
@@ -97,6 +96,8 @@ struct _FooGroup
 {
   ClutterActor parent;
 };
+
+GType foo_group_get_type (void);
 
 G_DEFINE_TYPE (FooGroup, foo_group, CLUTTER_TYPE_ACTOR)
 
@@ -294,21 +295,15 @@ run_verify (gpointer user_data)
   return G_SOURCE_REMOVE;
 }
 
-void
-actor_offscreen_redirect (TestConformSimpleFixture *fixture,
-                          gconstpointer test_data)
+static void
+actor_offscreen_redirect (void)
 {
   Data data;
 
   if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
-    {
-      if (g_test_verbose ())
-        g_print ("Offscreen buffers are not available, skipping test.\n");
+    return;
 
-      return;
-    }
-
-  data.stage = clutter_stage_new ();
+  data.stage = clutter_test_get_stage ();
   data.parent_container = clutter_actor_new ();
   data.container = g_object_new (foo_group_get_type (), NULL);
   data.foo_actor = g_object_new (foo_actor_get_type (), NULL);
@@ -335,6 +330,8 @@ actor_offscreen_redirect (TestConformSimpleFixture *fixture,
 
   while (!data.was_painted)
     g_main_context_iteration (NULL, FALSE);
-
-  clutter_actor_destroy (data.stage);
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/actor/offscreen/redirect", actor_offscreen_redirect)
+)

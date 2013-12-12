@@ -13,6 +13,19 @@ AM_CPPFLAGS = \
 	$(CLUTTER_PROFILE_CFLAGS)
 
 actor_tests = \
+	actor-anchors \
+	actor-destroy \
+	actor-graph \
+	actor-invariants \
+	actor-iter \
+	actor-layout \
+	actor-meta \
+	actor-offscreen-limit-max-size \
+	actor-offscreen-redirect \
+	actor-paint-opacity \
+	actor-pick \
+	actor-shader-effect \
+	actor-size \
 	$(NULL)
 
 general_tests = \

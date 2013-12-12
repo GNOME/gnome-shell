@@ -1,6 +1,6 @@
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
-
-#include "test-conform-common.h"
 
 /****************************************************************
  Old style shader effect
@@ -26,6 +26,8 @@ typedef struct _FooOldShaderEffect
 {
   ClutterShaderEffect parent;
 } FooOldShaderEffect;
+
+GType foo_old_shader_effect_get_type (void);
 
 G_DEFINE_TYPE (FooOldShaderEffect,
                foo_old_shader_effect,
@@ -84,6 +86,8 @@ typedef struct _FooNewShaderEffect
 {
   ClutterShaderEffect parent;
 } FooNewShaderEffect;
+
+GType foo_new_shader_effect_get_type (void);
 
 G_DEFINE_TYPE (FooNewShaderEffect,
                foo_new_shader_effect,
@@ -160,6 +164,8 @@ typedef struct _FooAnotherNewShaderEffect
   ClutterShaderEffect parent;
 } FooAnotherNewShaderEffect;
 
+GType foo_another_new_shader_effect_get_type (void);
+
 G_DEFINE_TYPE (FooAnotherNewShaderEffect,
                foo_another_new_shader_effect,
                CLUTTER_TYPE_SHADER_EFFECT);
@@ -218,8 +224,11 @@ get_pixel (int x, int y)
 }
 
 static void
-paint_cb (ClutterActor *stage)
+paint_cb (ClutterStage *stage,
+          gpointer      data)
 {
+  gboolean *was_painted = data;
+
   /* old shader effect */
   g_assert_cmpint (get_pixel (50, 50), ==, 0xff0000);
   /* new shader effect */
@@ -229,15 +238,15 @@ paint_cb (ClutterActor *stage)
   /* new shader effect */
   g_assert_cmpint (get_pixel (350, 50), ==, 0x00ffff);
 
-  clutter_main_quit ();
+  *was_painted = TRUE;
 }
 
-void
-actor_shader_effect (TestConformSimpleFixture *fixture,
-                     gconstpointer data)
+static void
+actor_shader_effect (void)
 {
   ClutterActor *stage;
   ClutterActor *rect;
+  gboolean was_painted;
 
   if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
     return;
@@ -261,12 +270,16 @@ actor_shader_effect (TestConformSimpleFixture *fixture,
 
   clutter_actor_show (stage);
 
-  g_signal_connect_after (stage, "paint", G_CALLBACK (paint_cb), NULL);
+  was_painted = FALSE;
+  clutter_stage_set_paint_callback (CLUTTER_STAGE (stage),
+                                    paint_cb,
+                                    &was_painted,
+                                    NULL);
 
-  clutter_main ();
-
-  clutter_actor_destroy (stage);
-
-  if (g_test_verbose ())
-    g_print ("OK\n");
+  while (!was_painted)
+    g_main_context_iteration (NULL, FALSE);
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/actor/shader-effect", actor_shader_effect)
+)

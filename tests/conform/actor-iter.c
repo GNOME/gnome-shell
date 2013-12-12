@@ -1,10 +1,8 @@
 #include <glib.h>
 #include <clutter/clutter.h>
-#include "test-conform-common.h"
 
-void
-actor_iter_traverse_children (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
-                              gconstpointer dummy G_GNUC_UNUSED)
+static void
+actor_iter_traverse_children (void)
 {
   ClutterActorIter iter;
   ClutterActor *actor;
@@ -78,9 +76,8 @@ actor_iter_traverse_children (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
   g_object_unref (actor);
 }
 
-void
-actor_iter_traverse_remove (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
-                            gconstpointer dummy G_GNUC_UNUSED)
+static void
+actor_iter_traverse_remove (void)
 {
   ClutterActorIter iter;
   ClutterActor *actor;
@@ -135,9 +132,8 @@ actor_iter_traverse_remove (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
   g_assert_cmpint (0, ==, clutter_actor_get_n_children (actor));
 }
 
-void
-actor_iter_assignment (TestConformSimpleFixture *fixure G_GNUC_UNUSED,
-                       gconstpointer dummy G_GNUC_UNUSED)
+static void
+actor_iter_assignment (void)
 {
   ClutterActorIter iter_a, iter_b;
   ClutterActor *actor;
@@ -214,3 +210,9 @@ actor_iter_assignment (TestConformSimpleFixture *fixure G_GNUC_UNUSED,
 
   g_object_unref (actor);
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/actor/iter/traverse-children", actor_iter_traverse_children)
+  CLUTTER_TEST_UNIT ("/actor/iter/traverse-remove", actor_iter_traverse_remove)
+  CLUTTER_TEST_UNIT ("/actor/iter/assignment", actor_iter_assignment)
+)
