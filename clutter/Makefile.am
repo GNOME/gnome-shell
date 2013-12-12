@@ -1054,6 +1054,7 @@ clutter_all_c_sources = \
 	$(built_source_c)
 
 TESTS_ENVIRONMENT = srcdir="$(srcdir)" CLUTTER_BACKENDS="$(CLUTTER_BACKENDS)"
+LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/build/autotools/tap-driver.sh
 if OS_LINUX
 TESTS = abicheck.sh
 endif
