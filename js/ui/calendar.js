@@ -17,14 +17,16 @@ const SHOW_WEEKDATE_KEY = 'show-weekdate';
 // in org.gnome.desktop.interface
 const CLOCK_FORMAT_KEY        = 'clock-format';
 
-function _sameDay(dateA, dateB) {
-    return (dateA.getDate() == dateB.getDate() &&
-            dateA.getMonth() == dateB.getMonth() &&
-            dateA.getYear() == dateB.getYear());
-}
-
 function _sameYear(dateA, dateB) {
     return (dateA.getYear() == dateB.getYear());
+}
+
+function _sameMonth(dateA, dateB) {
+    return _sameYear(dateA, dateB) && (dateA.getMonth() == dateB.getMonth());
+}
+
+function _sameDay(dateA, dateB) {
+    return _sameMonth(dateA, dateB) && (dateA.getDate() == dateB.getDate());
 }
 
 /* TODO: maybe needs config - right now we assume that Saturday and
@@ -549,18 +551,15 @@ const Calendar = new Lang.Class({
         this._update();
     },
 
-    _update: function() {
+    _rebuildCalendar: function() {
         let now = new Date();
-
-        if (_sameYear(this._selectedDate, now))
-            this._monthLabel.text = this._selectedDate.toLocaleFormat(this._headerFormatWithoutYear);
-        else
-            this._monthLabel.text = this._selectedDate.toLocaleFormat(this._headerFormat);
 
         // Remove everything but the topBox and the weekday labels
         let children = this.actor.get_children();
         for (let i = this._firstDayIndex; i < children.length; i++)
             children[i].destroy();
+
+        this._buttons = [];
 
         // Start at the beginning of the week before the start of the month
         //
@@ -579,11 +578,13 @@ const Calendar = new Lang.Class({
         // Actually computing the number of weeks is complex, but we know that the
         // problematic categories (2 and 4) always start on week start, and that
         // all months at the end have 6 weeks.
-
         let beginDate = new Date(this._selectedDate);
         beginDate.setDate(1);
         beginDate.setSeconds(0);
         beginDate.setHours(12);
+
+        this._calendarBegin = new Date(beginDate);
+
         let year = beginDate.getYear();
 
         let daysToWeekStart = (7 + beginDate.getDay() - this._weekStart) % 7;
@@ -604,14 +605,9 @@ const Calendar = new Lang.Class({
             if (this._eventSource.isDummy)
                 button.reactive = false;
 
-            let iterStr = iter.toUTCString();
+            button._date = new Date(iter);
             button.connect('clicked', Lang.bind(this, function() {
-                this._shouldDateGrabFocus = true;
-
-                let newlySelectedDate = new Date(iterStr);
-                this.setDate(newlySelectedDate);
-
-                this._shouldDateGrabFocus = false;
+                this.setDate(button._date);
             }));
 
             let hasEvents = this._eventSource.hasEvents(iter);
@@ -645,12 +641,7 @@ const Calendar = new Lang.Class({
             this.actor.add(button,
                            { row: row, col: offsetCols + (7 + iter.getDay() - this._weekStart) % 7 });
 
-            if (_sameDay(this._selectedDate, iter)) {
-                button.add_style_pseudo_class('active');
-
-                if (this._shouldDateGrabFocus)
-                    button.grab_key_focus();
-            }
+            this._buttons.push(button);
 
             if (this._useWeekdate && iter.getDay() == 4) {
                 let label = new St.Label({ text: _getCalendarWeekForDate(iter).toString(),
@@ -664,9 +655,29 @@ const Calendar = new Lang.Class({
             if (iter.getDay() == this._weekStart)
                 row++;
         }
+
         // Signal to the event source that we are interested in events
         // only from this date range
         this._eventSource.requestRange(beginDate, iter);
+    },
+
+    _update: function() {
+        let now = new Date();
+
+        if (_sameYear(this._selectedDate, now))
+            this._monthLabel.text = this._selectedDate.toLocaleFormat(this._headerFormatWithoutYear);
+        else
+            this._monthLabel.text = this._selectedDate.toLocaleFormat(this._headerFormat);
+
+        if (!this._calendarBegin || !_sameMonth(this._selectedDate, this._calendarBegin))
+            this._rebuildCalendar();
+
+        this._buttons.forEach(Lang.bind(this, function(button) {
+            if (_sameDay(button._date, this._selectedDate))
+                button.add_style_pseudo_class('active');
+            else
+                button.remove_style_pseudo_class('active');
+        }));
     }
 });
 
