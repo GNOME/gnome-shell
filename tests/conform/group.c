@@ -1,9 +1,8 @@
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
-#include "test-conform-common.h"
 
-void
-group_depth_sorting (TestConformSimpleFixture *fixture,
-                     gconstpointer data)
+static void
+group_depth_sorting (void)
 {
   ClutterActor *group;
   ClutterActor *child, *test;
@@ -55,3 +54,7 @@ group_depth_sorting (TestConformSimpleFixture *fixture,
 
   clutter_actor_destroy (group);
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/group/depth-sorting", group_depth_sorting)
+)

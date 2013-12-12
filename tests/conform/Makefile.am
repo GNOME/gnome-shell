@@ -12,6 +12,7 @@ AM_CPPFLAGS = \
 	$(CLUTTER_DEBUG_CFLAGS)			\
 	$(CLUTTER_PROFILE_CFLAGS)
 
+# Basic actor API
 actor_tests = \
 	actor-anchors \
 	actor-destroy \
@@ -28,10 +29,29 @@ actor_tests = \
 	actor-size \
 	$(NULL)
 
-general_tests = \
+# Actor classes
+classes_tests = \
+	text \
 	$(NULL)
 
+# General API
+general_tests = \
+	binding-pool \
+	color \
+	events-touch \
+	interval \
+	model \
+	script-parser \
+	units \
+	$(NULL)
+
+# Test for deprecated functionality
 deprecated_tests = \
+	animator \
+	behaviours \
+	group \
+	rectangle \
+	texture \
 	$(NULL)
 
 test_programs = $(actor_tests) $(general_tests) $(deprecated_tests)
@@ -54,3 +74,16 @@ script_tests = \
 	test-script-single.json \
 	test-script-timeline-markers.json \
 	test-state-1.json
+
+# simple rules for generating a Git ignore file for the conformance test suite
+$(srcdir)/.gitignore: Makefile
+	$(AM_V_GEN)( echo "/*.trs" ; \
+		     echo "/*.log" ; \
+		     echo "/.gitignore" ; \
+		     for p in $(test_programs); do \
+			echo "/$$p" ; \
+		     done ) > $(@F)
+
+gitignore: $(srcdir)/.gitignore
+
+all-am: gitignore

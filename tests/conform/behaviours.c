@@ -1,28 +1,21 @@
-#include <glib.h>
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
 
-#include "test-conform-common.h"
-
-typedef struct _BehaviourFixture BehaviourFixture;
-
-typedef void (* BehaviourTestFunc) (BehaviourFixture *fixture);
-
-struct _BehaviourFixture
-{
-  ClutterTimeline *timeline;
-  ClutterAlpha *alpha;
-  ClutterActor *rect;
-};
-
 static void
-opacity_behaviour (BehaviourFixture *fixture)
+behaviour_opacity (void)
 {
   ClutterBehaviour *behaviour;
+  ClutterTimeline *timeline;
+  ClutterAlpha *alpha;
   guint8 start, end;
   guint starti;
 
-  behaviour = clutter_behaviour_opacity_new (fixture->alpha, 0, 255);
+  timeline = clutter_timeline_new (500);
+  alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
+  behaviour = clutter_behaviour_opacity_new (alpha, 0, 255);
   g_assert (CLUTTER_IS_BEHAVIOUR_OPACITY (behaviour));
+  g_object_add_weak_pointer (G_OBJECT (behaviour), (gpointer *) &behaviour);
+  g_object_add_weak_pointer (G_OBJECT (timeline), (gpointer *) &timeline);
 
   clutter_behaviour_opacity_get_bounds (CLUTTER_BEHAVIOUR_OPACITY (behaviour),
                                         &start,
@@ -51,40 +44,37 @@ opacity_behaviour (BehaviourFixture *fixture)
   g_assert_cmpint (starti, ==, 255);
 
   g_object_unref (behaviour);
+  g_object_unref (timeline);
+
+  g_assert_null (behaviour);
+  g_assert_null (timeline);
 }
 
-static const struct
+static struct
 {
-  const gchar *desc;
-  BehaviourTestFunc func;
+  const gchar *path;
+  GTestFunc func;
 } behaviour_tests[] = {
-  { "BehaviourOpacity", opacity_behaviour }
+  { "opacity", behaviour_opacity },
 };
 
-static const gint n_behaviour_tests = G_N_ELEMENTS (behaviour_tests);
+static const int n_behaviour_tests = G_N_ELEMENTS (behaviour_tests);
 
-void
-behaviours_base (TestConformSimpleFixture *fixture,
-                 gconstpointer dummy)
+int
+main (int argc, char *argv[])
 {
-  BehaviourFixture b_fixture;
-  gint i;
+  int i;
 
-  b_fixture.timeline = clutter_timeline_new (1000);
-  b_fixture.alpha = clutter_alpha_new_full (b_fixture.timeline, CLUTTER_LINEAR);
-  b_fixture.rect = clutter_rectangle_new ();
-
-  g_object_ref_sink (b_fixture.alpha);
-  g_object_unref (b_fixture.timeline);
+  clutter_test_init (&argc, &argv);
 
   for (i = 0; i < n_behaviour_tests; i++)
     {
-      if (g_test_verbose ())
-        g_print ("Testing: %s\n", behaviour_tests[i].desc);
+      char *path = g_strconcat ("/behaviours/", behaviour_tests[i].path, NULL);
 
-      behaviour_tests[i].func (&b_fixture);
+      clutter_test_add (path, behaviour_tests[i].func);
+
+      g_free (path);
     }
 
-  g_object_unref (b_fixture.alpha);
-  clutter_actor_destroy (b_fixture.rect);
+  return clutter_test_run ();
 }

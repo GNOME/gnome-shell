@@ -2,8 +2,6 @@
 #include <clutter/clutter.h>
 #include <string.h>
 
-#include "test-conform-common.h"
-
 typedef struct {
   gunichar   unichar;
   const char bytes[6];
@@ -16,7 +14,7 @@ test_text_data[] = {
   { 0x2665, "\xe2\x99\xa5", 3 }  /* BLACK HEART SUIT */
 };
 
-void
+static void
 text_utf8_validation (void)
 {
   int i;
@@ -32,11 +30,11 @@ text_utf8_validation (void)
 
       nbytes = g_unichar_to_utf8 (t->unichar, bytes);
       bytes[nbytes] = '\0';
-      g_assert (nbytes == t->nbytes);
+      g_assert_cmpint (nbytes, ==, t->nbytes);
       g_assert (memcmp (t->bytes, bytes, nbytes) == 0);
 
       unichar = g_utf8_get_char_validated (bytes, nbytes);
-      g_assert (unichar == t->unichar);
+      g_assert_cmpint (unichar, ==, t->unichar);
     }
 }
 
@@ -69,10 +67,11 @@ insert_unichar (ClutterText *text, gunichar unichar, int position)
   clutter_text_insert_unichar (text, unichar);
 }
 
-void
+static void
 text_set_empty (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
+  g_object_ref_sink (text);
 
   g_assert_cmpstr (clutter_text_get_text (text), ==, "");
   g_assert_cmpint (*clutter_text_get_text (text), ==, '\0');
@@ -86,10 +85,11 @@ text_set_empty (void)
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
 
-void
+static void
 text_set_text (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
+  g_object_ref_sink (text);
 
   clutter_text_set_text (text, "abcdef");
   g_assert_cmpint (get_nchars (text), ==, 6);
@@ -107,11 +107,13 @@ text_set_text (void)
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
 
-void
+static void
 text_append_some (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
+
+  g_object_ref_sink (text);
 
   for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
@@ -133,11 +135,13 @@ text_append_some (void)
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
 
-void
+static void
 text_prepend_some (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
+
+  g_object_ref_sink (text);
 
   for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
@@ -165,11 +169,13 @@ text_prepend_some (void)
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
 
-void
+static void
 text_insert (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
+
+  g_object_ref_sink (text);
 
   for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
@@ -190,11 +196,13 @@ text_insert (void)
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
 
-void
+static void
 text_delete_chars (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
+
+  g_object_ref_sink (text);
 
   for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
@@ -222,11 +230,13 @@ text_delete_chars (void)
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
 
-void
+static void
 text_get_chars (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   gchar *chars;
+
+  g_object_ref_sink (text);
 
   clutter_text_set_text (text, "00abcdef11");
   g_assert_cmpint (get_nchars (text), ==, 10);
@@ -252,11 +262,13 @@ text_get_chars (void)
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
 
-void
+static void
 text_delete_text (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
+
+  g_object_ref_sink (text);
 
   for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
@@ -282,10 +294,12 @@ text_delete_text (void)
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
 
-void
+static void
 text_password_char (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
+
+  g_object_ref_sink (text);
 
   g_assert_cmpint (clutter_text_get_password_char (text), ==, 0);
 
@@ -339,11 +353,13 @@ send_unichar (ClutterText *text, gunichar unichar)
   clutter_event_free (event);
 }
 
-void
+static void
 text_cursor (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
+
+  g_object_ref_sink (text);
 
   /* only editable entries listen to events */
   clutter_text_set_editable (text, TRUE);
@@ -385,11 +401,13 @@ text_cursor (void)
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
 
-void
+static void
 text_event (void)
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
+
+  g_object_ref_sink (text);
 
   /* only editable entries listen to events */
   clutter_text_set_editable (text, TRUE);
@@ -449,7 +467,7 @@ validate_markup_attributes (ClutterText   *text,
   pango_attr_iterator_destroy (iter);
 }
 
-void
+static void
 text_idempotent_use_markup (void)
 {
   ClutterText *text;
@@ -465,6 +483,7 @@ text_idempotent_use_markup (void)
   text = g_object_new (CLUTTER_TYPE_TEXT,
                        "text", contents, "use-markup", TRUE,
                        NULL);
+  g_object_ref_sink (text);
 
   if (g_test_verbose ())
     g_print ("Contents: '%s' (expected: '%s')\n",
@@ -502,3 +521,19 @@ text_idempotent_use_markup (void)
 
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/text/utf8-validation", text_utf8_validation)
+  CLUTTER_TEST_UNIT ("/text/set-empty", text_set_empty)
+  CLUTTER_TEST_UNIT ("/text/set-text", text_set_text)
+  CLUTTER_TEST_UNIT ("/text/append-some", text_append_some)
+  CLUTTER_TEST_UNIT ("/text/prepend-some", text_prepend_some)
+  CLUTTER_TEST_UNIT ("/text/insert", text_insert)
+  CLUTTER_TEST_UNIT ("/text/delete-chars", text_delete_chars)
+  CLUTTER_TEST_UNIT ("/text/get-chars", text_get_chars)
+  CLUTTER_TEST_UNIT ("/text/delete-text", text_delete_text)
+  CLUTTER_TEST_UNIT ("/text/password-char", text_password_char)
+  CLUTTER_TEST_UNIT ("/text/cursor", text_cursor)
+  CLUTTER_TEST_UNIT ("/text/event", text_event)
+  CLUTTER_TEST_UNIT ("/text/idempotent-use-markup", text_idempotent_use_markup)
+)

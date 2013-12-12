@@ -1,11 +1,7 @@
-#include <stdio.h>
 #include <clutter/clutter.h>
 
-#include "test-conform-common.h"
-
-void
-units_cache (TestConformSimpleFixture *fixture,
-             gconstpointer data)
+static void
+units_cache (void)
 {
   ClutterUnits units;
   ClutterSettings *settings;
@@ -28,9 +24,8 @@ units_cache (TestConformSimpleFixture *fixture,
   g_object_set (settings, "font-dpi", old_dpi, NULL);
 }
 
-void
-units_constructors (TestConformSimpleFixture *fixture,
-                    gconstpointer data)
+static void
+units_constructors (void)
 {
   ClutterUnits units, units_cm;
 
@@ -56,9 +51,8 @@ units_constructors (TestConformSimpleFixture *fixture,
                      clutter_units_to_pixels (&units_cm));
 }
 
-void
-units_string (TestConformSimpleFixture *fixture,
-              gconstpointer data)
+static void
+units_string (void)
 {
   ClutterUnits units;
   gchar *string;
@@ -129,3 +123,9 @@ units_string (TestConformSimpleFixture *fixture,
 
   g_free (string);
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/units/string", units_string)
+  CLUTTER_TEST_UNIT ("/units/cache", units_cache)
+  CLUTTER_TEST_UNIT ("/units/constructors", units_constructors)
+)

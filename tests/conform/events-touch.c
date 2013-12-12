@@ -19,7 +19,6 @@
  *
  */
 
-#include "config.h"
 #include <clutter/clutter.h>
 
 #if defined CLUTTER_WINDOWING_X11 && OS_LINUX && HAVE_XINPUT_2_2
@@ -35,8 +34,6 @@
 #include <dlfcn.h>
 
 #include <clutter/x11/clutter-x11.h>
-
-#include "test-conform-common.h"
 
 #define ABS_MAX_X 32768
 #define ABS_MAX_Y 32768
@@ -360,7 +357,7 @@ error:
 
 #endif /* defined CLUTTER_WINDOWING_X11 && OS_LINUX && HAVE_XINPUT_2_2 */
 
-void
+static void
 events_touch (void)
 {
 #if defined CLUTTER_WINDOWING_X11 && OS_LINUX && HAVE_XINPUT_2_2
@@ -374,7 +371,7 @@ events_touch (void)
   state.pass = TRUE;
   state.gesture_points = 0;
 
-  stage = clutter_stage_new ();
+  stage = clutter_test_get_stage ();
   g_signal_connect (stage, "event", G_CALLBACK (event_cb), &state);
   clutter_stage_set_fullscreen (CLUTTER_STAGE (stage), TRUE);
   clutter_actor_show (stage);
@@ -387,7 +384,9 @@ events_touch (void)
     g_print ("end result: %s\n", state.pass ? "pass" : "FAIL");
 
   g_assert (state.pass);
-
-  clutter_actor_destroy (stage);
 #endif /* defined CLUTTER_WINDOWING_X11 && OS_LINUX && HAVE_XINPUT_2_2 */
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/events/touch", events_touch)
+)

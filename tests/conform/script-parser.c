@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
-#include <clutter/clutter.h>
 
-#include "test-conform-common.h"
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#include <clutter/clutter.h>
 
 #define TEST_TYPE_GROUP                 (test_group_get_type ())
 #define TEST_TYPE_GROUP_META            (test_group_meta_get_type ())
@@ -13,7 +13,8 @@
 #define TEST_GROUP_META(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), TEST_TYPE_GROUP_META, TestGroupMeta))
 #define TEST_IS_GROUP_META(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TEST_TYPE_GROUP_META))
 
-typedef struct _ClutterGroup            TestGroup;
+typedef struct _ClutterActor            TestGroup;
+typedef struct _ClutterActorClass       TestGroupClass;
 
 typedef struct _TestGroupMeta {
   ClutterChildMeta parent_instance;
@@ -21,10 +22,11 @@ typedef struct _TestGroupMeta {
   guint is_focus : 1;
 } TestGroupMeta;
 
-typedef struct _ClutterGroupClass       TestGroupClass;
 typedef struct _ClutterChildMetaClass   TestGroupMetaClass;
 
-G_DEFINE_TYPE (TestGroupMeta, test_group_meta, CLUTTER_TYPE_CHILD_META);
+GType test_group_meta_get_type (void);
+
+G_DEFINE_TYPE (TestGroupMeta, test_group_meta, CLUTTER_TYPE_CHILD_META)
 
 enum
 {
@@ -100,9 +102,11 @@ clutter_container_iface_init (ClutterContainerIface *iface)
   iface->child_meta_type = TEST_TYPE_GROUP_META;
 }
 
-G_DEFINE_TYPE_WITH_CODE (TestGroup, test_group, CLUTTER_TYPE_GROUP,
+GType test_group_get_type (void);
+
+G_DEFINE_TYPE_WITH_CODE (TestGroup, test_group, CLUTTER_TYPE_ACTOR,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                clutter_container_iface_init));
+                                                clutter_container_iface_init))
 
 static void
 test_group_class_init (TestGroupClass *klass)
@@ -114,9 +118,8 @@ test_group_init (TestGroup *self)
 {
 }
 
-void
-script_child (TestConformSimpleFixture *fixture,
-              gconstpointer dummy)
+static void
+script_child (void)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *container, *actor;
@@ -124,16 +127,12 @@ script_child (TestConformSimpleFixture *fixture,
   gboolean focus_ret;
   gchar *test_file;
 
-  test_file = clutter_test_get_data_file ("test-script-child.json");
+  test_file = g_test_build_filename (G_TEST_DIST, "scripts", "test-script-child.json", NULL);
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
 
-#if GLIB_CHECK_VERSION (2, 20, 0)
   g_assert_no_error (error);
-#else
-  g_assert (error == NULL);
-#endif
 
   container = actor = NULL;
   clutter_script_get_objects (script,
@@ -164,9 +163,8 @@ script_child (TestConformSimpleFixture *fixture,
   g_free (test_file);
 }
 
-void
-script_single (TestConformSimpleFixture *fixture,
-               gconstpointer dummy)
+static void
+script_single (void)
 {
   ClutterScript *script = clutter_script_new ();
   ClutterColor color = { 0, };
@@ -175,16 +173,12 @@ script_single (TestConformSimpleFixture *fixture,
   ClutterActor *rect;
   gchar *test_file;
 
-  test_file = clutter_test_get_data_file ("test-script-single.json");
+  test_file = g_test_build_filename (G_TEST_DIST, "scripts", "test-script-single.json", NULL);
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
 
-#if GLIB_CHECK_VERSION (2, 20, 0)
   g_assert_no_error (error);
-#else
-  g_assert (error == NULL);
-#endif
 
   actor = clutter_script_get_object (script, "test");
   g_assert (CLUTTER_IS_RECTANGLE (actor));
@@ -202,9 +196,8 @@ script_single (TestConformSimpleFixture *fixture,
   g_free (test_file);
 }
 
-void
-script_implicit_alpha (TestConformSimpleFixture *fixture,
-                       gconstpointer dummy)
+static void
+script_implicit_alpha (void)
 {
   ClutterScript *script = clutter_script_new ();
   ClutterTimeline *timeline;
@@ -213,7 +206,7 @@ script_implicit_alpha (TestConformSimpleFixture *fixture,
   ClutterAlpha *alpha;
   gchar *test_file;
 
-  test_file = clutter_test_get_data_file ("test-script-implicit-alpha.json");
+  test_file = g_test_build_filename (G_TEST_DIST, "scripts", "test-script-implicit-alpha.json", NULL);
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
@@ -241,9 +234,8 @@ script_implicit_alpha (TestConformSimpleFixture *fixture,
   g_free (test_file);
 }
 
-void
-script_object_property (TestConformSimpleFixture *fixture,
-                        gconstpointer dummy)
+static void
+script_object_property (void)
 {
   ClutterScript *script = clutter_script_new ();
   ClutterLayoutManager *manager;
@@ -251,16 +243,12 @@ script_object_property (TestConformSimpleFixture *fixture,
   GError *error = NULL;
   gchar *test_file;
 
-  test_file = clutter_test_get_data_file ("test-script-object-property.json");
+  test_file = g_test_build_filename (G_TEST_DIST, "scripts", "test-script-object-property.json", NULL);
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
 
-#if GLIB_CHECK_VERSION (2, 20, 0)
   g_assert_no_error (error);
-#else
-  g_assert (error == NULL);
-#endif
 
   actor = clutter_script_get_object (script, "test");
   g_assert (CLUTTER_IS_BOX (actor));
@@ -272,9 +260,8 @@ script_object_property (TestConformSimpleFixture *fixture,
   g_free (test_file);
 }
 
-void
-script_named_object (TestConformSimpleFixture *fixture,
-                     gconstpointer dummy)
+static void
+script_named_object (void)
 {
   ClutterScript *script = clutter_script_new ();
   ClutterLayoutManager *manager;
@@ -282,16 +269,12 @@ script_named_object (TestConformSimpleFixture *fixture,
   GError *error = NULL;
   gchar *test_file;
 
-  test_file = clutter_test_get_data_file ("test-script-named-object.json");
+  test_file = g_test_build_filename (G_TEST_DIST, "scripts", "test-script-named-object.json", NULL);
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
 
-#if GLIB_CHECK_VERSION (2, 20, 0)
   g_assert_no_error (error);
-#else
-  g_assert (error == NULL);
-#endif
 
   actor = clutter_script_get_object (script, "test");
   g_assert (CLUTTER_IS_BOX (actor));
@@ -304,25 +287,20 @@ script_named_object (TestConformSimpleFixture *fixture,
   g_free (test_file);
 }
 
-void
-script_animation (TestConformSimpleFixture *fixture,
-                  gconstpointer dummy)
+static void
+script_animation (void)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *animation = NULL;
   GError *error = NULL;
   gchar *test_file;
 
-  test_file = clutter_test_get_data_file ("test-script-animation.json");
+  test_file = g_test_build_filename (G_TEST_DIST, "scripts", "test-script-animation.json", NULL);
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
 
-#if GLIB_CHECK_VERSION (2, 20, 0)
   g_assert_no_error (error);
-#else
-  g_assert (error == NULL);
-#endif
 
   animation = clutter_script_get_object (script, "test");
   g_assert (CLUTTER_IS_ANIMATION (animation));
@@ -331,9 +309,8 @@ script_animation (TestConformSimpleFixture *fixture,
   g_free (test_file);
 }
 
-void
-script_layout_property (TestConformSimpleFixture *fixture,
-                        gconstpointer dummy G_GNUC_UNUSED)
+static void
+script_layout_property (void)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *manager, *container, *actor1, *actor2;
@@ -342,16 +319,12 @@ script_layout_property (TestConformSimpleFixture *fixture,
   gboolean x_fill, expand;
   ClutterBoxAlignment y_align;
 
-  test_file = clutter_test_get_data_file ("test-script-layout-property.json");
+  test_file = g_test_build_filename (G_TEST_DIST, "scripts", "test-script-layout-property.json", NULL);
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
 
-#if GLIB_CHECK_VERSION (2, 20, 0)
   g_assert_no_error (error);
-#else
-  g_assert (error == NULL);
-#endif
 
   manager = container = actor1 = actor2 = NULL;
   clutter_script_get_objects (script,
@@ -399,16 +372,15 @@ script_layout_property (TestConformSimpleFixture *fixture,
   g_object_unref (script);
 }
 
-void
-script_margin (TestConformSimpleFixture *fixture,
-               gpointer                  dummy)
+static void
+script_margin (void)
 {
   ClutterScript *script = clutter_script_new ();
   ClutterActor *actor;
   gchar *test_file;
   GError *error = NULL;
 
-  test_file = clutter_test_get_data_file ("test-script-margin.json");
+  test_file = g_test_build_filename (G_TEST_DIST, "scripts", "test-script-margin.json", NULL);
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
@@ -443,37 +415,13 @@ script_margin (TestConformSimpleFixture *fixture,
   g_free (test_file);
 }
 
-void
-script_interval (TestConformSimpleFixture *fixture,
-                 gpointer                  dummy)
-{
-  ClutterScript *script = clutter_script_new ();
-  ClutterInterval *interval;
-  gchar *test_file;
-  GError *error = NULL;
-  GValue *initial, *final;
-
-  test_file = clutter_test_get_data_file ("test-script-interval.json");
-  clutter_script_load_from_file (script, test_file, &error);
-  if (g_test_verbose () && error)
-    g_print ("Error: %s", error->message);
-
-  g_assert_no_error (error);
-
-  interval = CLUTTER_INTERVAL (clutter_script_get_object (script, "int-1"));
-  initial = clutter_interval_peek_initial_value (interval);
-  g_assert (G_VALUE_HOLDS (initial, G_TYPE_FLOAT));
-  g_assert_cmpfloat (g_value_get_float (initial), ==, 23.3f);
-  final = clutter_interval_peek_final_value (interval);
-  g_assert (G_VALUE_HOLDS (final, G_TYPE_FLOAT));
-  g_assert_cmpfloat (g_value_get_float (final), ==, 42.2f);
-
-  interval = CLUTTER_INTERVAL (clutter_script_get_object (script, "int-2"));
-  initial = clutter_interval_peek_initial_value (interval);
-  g_assert (G_VALUE_HOLDS (initial, CLUTTER_TYPE_COLOR));
-  final = clutter_interval_peek_final_value (interval);
-  g_assert (G_VALUE_HOLDS (final, CLUTTER_TYPE_COLOR));
-
-  g_object_unref (script);
-  g_free (test_file);
-}
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/script/single-object", script_single)
+  CLUTTER_TEST_UNIT ("/script/container-child", script_child)
+  CLUTTER_TEST_UNIT ("/script/named-object", script_named_object)
+  CLUTTER_TEST_UNIT ("/script/animation", script_animation)
+  CLUTTER_TEST_UNIT ("/script/implicit-alpha", script_implicit_alpha)
+  CLUTTER_TEST_UNIT ("/script/object-property", script_object_property)
+  CLUTTER_TEST_UNIT ("/script/layout-property", script_layout_property)
+  CLUTTER_TEST_UNIT ("/script/actor-margin", script_margin)
+)
