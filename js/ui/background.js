@@ -125,7 +125,8 @@ const BackgroundCache = new Lang.Class({
     removeImageContent: function(content) {
         let filename = content.get_filename();
 
-        if (filename && this._fileMonitors[filename])
+        let hasOtherUsers = this._images.some(function(content) { return filename == content.get_filename(); });
+        if (!hasOtherUsers)
             delete this._fileMonitors[filename];
 
         this._removeContent(this._images, content);
