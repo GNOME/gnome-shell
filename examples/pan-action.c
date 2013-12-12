@@ -15,7 +15,7 @@ create_content_actor (void)
   content = clutter_actor_new ();
   clutter_actor_set_size (content, 720, 720);
 
-  pixbuf = gdk_pixbuf_new_from_file (TESTS_DATADIR G_DIR_SEPARATOR_S "redhand.png", NULL);
+  pixbuf = gdk_pixbuf_new_from_file ("redhand.png", NULL);
   image = clutter_image_new ();
   clutter_image_set_data (CLUTTER_IMAGE (image),
                           gdk_pixbuf_get_pixels (pixbuf),

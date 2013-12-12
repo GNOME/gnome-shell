@@ -31,7 +31,6 @@ LDADD = \
 AM_CFLAGS = $(CLUTTER_CFLAGS) $(GDK_PIXBUF_CFLAGS) $(MAINTAINER_CFLAGS)
 
 AM_CPPFLAGS = \
-	-DTESTS_DATADIR=\""$(abs_top_srcdir)/tests/data"\" \
 	-DG_DISABLE_SINGLE_INCLUDES \
 	-DGLIB_DISABLE_DEPRECATION_WARNINGS \
 	-I$(top_srcdir)	\
@@ -40,5 +39,7 @@ AM_CPPFLAGS = \
 	-I$(top_builddir)/clutter
 
 noinst_PROGRAMS = $(all_examples)
+
+EXTRA_DIST = redhand.png
 
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore

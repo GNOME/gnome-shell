@@ -148,7 +148,7 @@ test_interactive_SOURCES = test-main.c $(UNIT_TESTS)
 nodist_test_interactive_SOURCES = test-unit-names.h
 test_interactive_CFLAGS = $(CLUTTER_CFLAGS) $(GDK_PIXBUF_CFLAGS)
 test_interactive_CPPFLAGS = \
-	-DTESTS_DATADIR=\""$(abs_top_srcdir)/tests/data"\" \
+	-DTESTS_DATADIR=\""$(abs_srcdir)"\" \
 	-DG_DISABLE_SINGLE_INCLUDES \
 	-DGLIB_DISABLE_DEPRECATION_WARNINGS \
 	-DCOGL_DISABLE_DEPRECATION_WARNINGS \
@@ -161,8 +161,11 @@ test_interactive_LDFLAGS = -export-dynamic
 test_interactive_LDADD = $(CLUTTER_LIBS) $(GDK_PIXBUF_LIBS) $(common_ldadd) -lm
 
 EXTRA_DIST = \
-	wrapper.sh.in			\
-	$(top_builddir)/build/win32/test-unit-names.h
+	wrapper.sh.in \
+	$(top_builddir)/build/win32/test-unit-names.h \
+	test-script.json \
+	test-script-signals.json \
+	redhand.png
 
 DISTCLEANFILES = wrapper.sh .gitignore test-unit-names.h
 

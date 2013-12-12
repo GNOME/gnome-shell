@@ -191,12 +191,6 @@ AC_ARG_ENABLE([Bsymbolic],
 AS_IF([test "x$enable_Bsymbolic" = "xyes"], [CLUTTER_LINK_FLAGS=-Wl[,]-Bsymbolic-functions])
 AC_SUBST(CLUTTER_LINK_FLAGS)
 
-AC_ARG_ENABLE(installed_tests,
-              AS_HELP_STRING([--enable-installed-tests],
-                             [Install test programs (default: no)]),,
-              [enable_installed_tests=no])
-AM_CONDITIONAL(ENABLE_INSTALLED_TESTS, test x$enable_installed_tests = xyes)
-
 AC_CACHE_SAVE
 
 dnl ========================================================================
@@ -1125,16 +1119,7 @@ dnl = Build optionals =========================================================
 
 dnl === Conformance test suite ================================================
 
-AC_ARG_ENABLE([conformance],
-              [AS_HELP_STRING([--disable-conformance], [Whether the conformance tests should be built])],
-              [],
-              [enable_conformance=yes])
-
-AC_ARG_ENABLE([tests],
-              [AS_HELP_STRING([--disable-tests], [Whether tests should be built])],
-              [],
-              [enable_tests=yes])
-AM_CONDITIONAL(BUILD_TESTS, [test "x$enable_tests" = "xyes" && test "x$enable_conformance" = "xyes"])
+GLIB_TESTS
 
 AC_ARG_ENABLE([examples],
               [AS_HELP_STRING([--disable-examples], [Whether examples should be built])],
@@ -1168,8 +1153,6 @@ AC_CONFIG_FILES([
 	tests/Makefile
 	tests/accessibility/Makefile
 	tests/conform/Makefile
-	tests/conform/test-launcher.sh
-	tests/data/Makefile
 	tests/interactive/Makefile
 	tests/interactive/wrapper.sh
 	tests/micro-bench/Makefile
@@ -1224,9 +1207,10 @@ echo "        Build Additional Documentation: ${enable_docs} (Generate PDF: ${en
 echo ""
 echo " • Extra:"
 echo "        Build introspection data: ${enable_introspection}"
-echo "        Build test suites: ${enable_tests}"
-if test "x$enable_tests" = "xyes"; then
+if test "x$x11_tests" = "xyes"; then
 echo "        Build X11-specific tests: ${x11_tests}"
+fi
+if test "x$pixbuf_tests" = "xyes"; then
 echo "        Build tests using GDK-Pixbuf: ${pixbuf_tests}"
 fi
 echo "        Install test suites: ${enable_installed_tests}"
