@@ -3948,6 +3948,12 @@ clutter_check_windowing_backend (const char *backend_type)
   return FALSE;
 }
 
+void
+_clutter_set_sync_to_vblank (gboolean sync_to_vblank)
+{
+  clutter_sync_to_vblank = !!sync_to_vblank;
+}
+
 gboolean
 _clutter_get_sync_to_vblank (void)
 {

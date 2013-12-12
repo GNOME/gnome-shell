@@ -10,6 +10,7 @@
 #include "clutter-event.h"
 #include "clutter-keysyms.h"
 #include "clutter-main.h"
+#include "clutter-private.h"
 #include "clutter-stage.h"
 
 typedef struct {
@@ -54,11 +55,10 @@ clutter_test_init (int    *argc,
     }
 #endif
 
-  /* by explicitly setting CLUTTER_VBLANK to "none" we disable the
-   * synchronisation, and run the master clock using a 60 fps timer
-   * instead.
+  /* we explicitly disable the synchronisation to the vertical refresh
+   * rate, and run the master clock using a 60 fps timer instead.
    */
-  g_setenv ("CLUTTER_VBLANK", "none", FALSE);
+  _clutter_set_sync_to_vblank (FALSE);
 
   g_test_init (argc, argv, NULL);
   g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=%s");

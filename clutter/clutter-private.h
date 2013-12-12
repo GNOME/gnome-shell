@@ -231,6 +231,7 @@ void            _clutter_id_to_color            (guint         id,
 ClutterActor *  _clutter_get_actor_by_id        (ClutterStage *stage,
                                                  guint32       actor_id);
 
+void            _clutter_set_sync_to_vblank     (gboolean      sync_to_vblank);
 gboolean        _clutter_get_sync_to_vblank     (void);
 
 /* use this function as the accumulator if you have a signal with
