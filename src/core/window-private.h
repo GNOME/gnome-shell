@@ -629,7 +629,6 @@ void meta_window_handle_mouse_grab_op_event (MetaWindow *window,
 
 GList* meta_window_get_workspaces (MetaWindow *window);
 
-int meta_window_get_current_tile_monitor_number (MetaWindow *window);
 void meta_window_get_current_tile_area         (MetaWindow    *window,
                                                 MetaRectangle *tile_area);
 

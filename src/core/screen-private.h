@@ -67,6 +67,7 @@ struct _MetaScreen
   MetaRectangle rect;  /* Size of screen; rect.x & rect.y are always 0 */
   MetaUI *ui;
   MetaTabPopup *tab_popup, *ws_popup;
+  MetaTilePreview *tile_preview;
 
   guint tile_preview_timeout_id;
 
@@ -168,9 +169,9 @@ void          meta_screen_workspace_popup_select       (MetaScreen    *screen,
 MetaWorkspace*meta_screen_workspace_popup_get_selected (MetaScreen    *screen);
 void          meta_screen_workspace_popup_destroy      (MetaScreen    *screen);
 
-void          meta_screen_update_tile_preview          (MetaScreen    *screen,
+void          meta_screen_tile_preview_update          (MetaScreen    *screen,
                                                         gboolean       delay);
-void          meta_screen_hide_tile_preview            (MetaScreen    *screen);
+void          meta_screen_tile_preview_hide            (MetaScreen    *screen);
 
 MetaWindow*   meta_screen_get_mouse_window     (MetaScreen                 *screen,
                                                 MetaWindow                 *not_this_one);

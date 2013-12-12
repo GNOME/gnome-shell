@@ -163,6 +163,8 @@ libmutter_la_SOURCES =				\
 	ui/resizepopup.h			\
 	ui/tabpopup.c				\
 	ui/tabpopup.h				\
+	ui/tile-preview.c			\
+	ui/tile-preview.h			\
 	ui/theme-parser.c			\
 	ui/theme.c				\
 	meta/theme.h				\
