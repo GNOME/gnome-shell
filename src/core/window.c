@@ -4983,6 +4983,11 @@ meta_window_move_resize_internal (MetaWindow          *window,
                          &old_rect,
                          &new_rect);
 
+  /* meta_window_constrain() might have maximized the window after placement,
+   * changing the borders.
+   */
+  meta_frame_calc_borders (window->frame, &borders);
+
   w = new_rect.width;
   h = new_rect.height;
   root_x_nw = new_rect.x;
