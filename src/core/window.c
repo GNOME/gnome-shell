@@ -5245,6 +5245,11 @@ meta_window_move_resize_internal (MetaWindow          *window,
        * the interaction with frames and the synthetic configure notifies.
        */
 
+      /* meta_window_constrain() might have maximized the window after placement,
+       * changing the borders.
+       */
+      meta_frame_calc_borders (window->frame, &borders);
+
       root_x_nw = new_rect.x;
       root_y_nw = new_rect.y;
       w = new_rect.width;
