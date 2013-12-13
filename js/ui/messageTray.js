@@ -1606,7 +1606,8 @@ const MessageTrayIndicator = new Lang.Class({
         this.pressureValue = value;
         if (value > 0) {
             Tweener.removeTweens(this);
-            Tweener.addTween(this, { time: this._pressureBarrier.timeout / 1000,
+            Tweener.addTween(this, { time: 1,
+                                     delay: this._pressureBarrier.timeout / 1000,
                                      pressureValue: 0 });
         }
     },
