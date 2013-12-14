@@ -389,6 +389,8 @@ int
 meta_screen_monitor_index_to_xinerama_index (MetaScreen *screen,
                                              int         index)
 {
+  g_return_val_if_fail (index >= 0 && index < screen->n_monitor_infos, -1);
+
   meta_screen_ensure_xinerama_indices (screen);
 
   return screen->monitor_infos[index].xinerama_index;
