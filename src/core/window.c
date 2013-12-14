@@ -2061,23 +2061,35 @@ set_net_wm_state (MetaWindow *window)
 
   if (window->fullscreen)
     {
-      data[0] = meta_screen_monitor_index_to_xinerama_index (window->screen,
-                                                             window->fullscreen_monitors[0]);
-      data[1] = meta_screen_monitor_index_to_xinerama_index (window->screen,
-                                                             window->fullscreen_monitors[1]);
-      data[2] = meta_screen_monitor_index_to_xinerama_index (window->screen,
-                                                             window->fullscreen_monitors[2]);
-      data[3] = meta_screen_monitor_index_to_xinerama_index (window->screen,
-                                                             window->fullscreen_monitors[3]);
+      if (window->fullscreen_monitors[0] >= 0)
+        {
+          data[0] = meta_screen_monitor_index_to_xinerama_index (window->screen,
+                                                                 window->fullscreen_monitors[0]);
+          data[1] = meta_screen_monitor_index_to_xinerama_index (window->screen,
+                                                                 window->fullscreen_monitors[1]);
+          data[2] = meta_screen_monitor_index_to_xinerama_index (window->screen,
+                                                                 window->fullscreen_monitors[2]);
+          data[3] = meta_screen_monitor_index_to_xinerama_index (window->screen,
+                                                                 window->fullscreen_monitors[3]);
 
-      meta_verbose ("Setting _NET_WM_FULLSCREEN_MONITORS\n");
-      meta_error_trap_push (window->display);
-      XChangeProperty (window->display->xdisplay,
-                       window->xwindow,
-                       window->display->atom__NET_WM_FULLSCREEN_MONITORS,
-                       XA_CARDINAL, 32, PropModeReplace,
-                       (guchar*) data, 4);
-      meta_error_trap_pop (window->display);
+          meta_verbose ("Setting _NET_WM_FULLSCREEN_MONITORS\n");
+          meta_error_trap_push (window->display);
+          XChangeProperty (window->display->xdisplay,
+                           window->xwindow,
+                           window->display->atom__NET_WM_FULLSCREEN_MONITORS,
+                           XA_CARDINAL, 32, PropModeReplace,
+                           (guchar*) data, 4);
+          meta_error_trap_pop (window->display);
+        }
+      else
+        {
+          meta_verbose ("Clearing _NET_WM_FULLSCREEN_MONITORS\n");
+          meta_error_trap_push (window->display);
+          XDeleteProperty (window->display->xdisplay,
+                           window->xwindow,
+                           window->display->atom__NET_WM_FULLSCREEN_MONITORS);
+          meta_error_trap_pop (window->display);
+        }
     }
 }
 
