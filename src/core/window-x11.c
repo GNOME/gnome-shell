@@ -377,9 +377,9 @@ meta_window_x11_update_input_region (MetaWindow *window)
           if (n_rects > 1 ||
               (n_rects == 1 &&
                (rects[0].x != x_bounding ||
-                rects[1].y != y_bounding ||
-                rects[2].width != w_bounding ||
-                rects[3].height != h_bounding)))
+                rects[0].y != y_bounding ||
+                rects[0].width != w_bounding ||
+                rects[0].height != h_bounding)))
             region = region_create_from_x_rectangles (rects, n_rects);
 
           XFree (rects);
