@@ -4,6 +4,7 @@
  * An OpenGL based 'interactive canvas' library.
  *
  * Copyright (C) 2010 Intel Corp.
+ * Copyright (C) 2014 Jonas Ådahl
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,19 +20,20 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  *
  * Author: Damien Lespiau <damien.lespiau@intel.com>
+ * Author: Jonas Ådahl <jadahl@gmail.com>
  */
 
 #ifndef __CLUTTER_INPUT_DEVICE_EVDEV_H__
 #define __CLUTTER_INPUT_DEVICE_EVDEV_H__
 
 #include <glib-object.h>
-#include <gudev/gudev.h>
+#include <libinput.h>
 
 #include <clutter/clutter-input-device.h>
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_INPUT_DEVICE_EVDEV clutter_input_device_evdev_get_type()
+#define CLUTTER_TYPE_INPUT_DEVICE_EVDEV _clutter_input_device_evdev_get_type()
 
 #define CLUTTER_INPUT_DEVICE_EVDEV(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
@@ -54,11 +56,34 @@ G_BEGIN_DECLS
   CLUTTER_TYPE_INPUT_DEVICE_EVDEV, ClutterInputDeviceEvdevClass))
 
 typedef struct _ClutterInputDeviceEvdev ClutterInputDeviceEvdev;
+typedef struct _ClutterSeatEvdev ClutterSeatEvdev;
 
-GType                     clutter_input_device_evdev_get_type         (void) G_GNUC_CONST;
+struct _ClutterInputDeviceEvdev
+{
+  ClutterInputDevice parent;
 
-const gchar *             _clutter_input_device_evdev_get_sysfs_path  (ClutterInputDeviceEvdev *device);
-const gchar *             _clutter_input_device_evdev_get_device_path (ClutterInputDeviceEvdev *device);
+  struct libinput_device *libinput_device;
+  ClutterSeatEvdev *seat;
+  li_fixed_t dx_frac;
+  li_fixed_t dy_frac;
+};
+
+GType                     _clutter_input_device_evdev_get_type        (void) G_GNUC_CONST;
+
+ClutterInputDevice *      _clutter_input_device_evdev_new             (ClutterDeviceManager    *manager,
+                                                                       ClutterSeatEvdev        *seat,
+                                                                       struct libinput_device  *libinput_device);
+
+ClutterInputDevice *      _clutter_input_device_evdev_new_virtual     (ClutterDeviceManager    *manager,
+                                                                       ClutterSeatEvdev        *seat,
+                                                                       ClutterInputDeviceType   type);
+
+ClutterSeatEvdev *        _clutter_input_device_evdev_get_seat        (ClutterInputDeviceEvdev *device);
+
+void                      _clutter_input_device_evdev_update_leds     (ClutterInputDeviceEvdev *device,
+                                                                       enum libinput_led        leds);
+
+ClutterInputDeviceType    _clutter_input_device_evdev_determine_type  (struct libinput_device  *libinput_device);
 
 G_END_DECLS
 

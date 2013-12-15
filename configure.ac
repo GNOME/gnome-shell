@@ -146,7 +146,8 @@ m4_define([uprof_req_version],          [0.3])
 m4_define([gtk_doc_req_version],        [1.15])
 m4_define([xcomposite_req_version],     [0.4])
 m4_define([gdk_req_version],            [3.3.18])
-m4_define([libevdev_req_version],       [0.4])
+m4_define([libinput_req_version],       [0.0.90])
+m4_define([libudev_req_version],        [136])
 
 AC_SUBST([GLIB_REQ_VERSION],       [glib_req_version])
 AC_SUBST([COGL_REQ_VERSION],       [cogl_req_version])
@@ -159,7 +160,8 @@ AC_SUBST([UPROF_REQ_VERSION],      [uprof_req_version])
 AC_SUBST([GTK_DOC_REQ_VERSION],    [gtk_doc_req_version])
 AC_SUBST([XCOMPOSITE_REQ_VERSION], [xcomposite_req_version])
 AC_SUBST([GDK_REQ_VERSION],        [gdk_req_version])
-AC_SUBST([LIBEVDEV_REQ_VERSION],   [libevdev_req_version])
+AC_SUBST([LIBINPUT_REQ_VERSION],   [libinput_req_version])
+AC_SUBST([LIBUDEV_REQ_VERSION],    [libudev_req_version])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AM_PATH_GLIB_2_0([glib_req_version],
@@ -474,7 +476,7 @@ AS_IF([test "x$enable_evdev" = "xyes"],
         AS_IF([test "x$have_evdev" = "xyes"],
               [
                 CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS evdev"
-                BACKEND_PC_FILES="$BACKEND_PC_FILES gudev-1.0 libevdev >= $LIBEVDEV_REQ_VERSION xkbcommon"
+                BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE libudev >= $LIBUDEV_REQ_VERSION libinput >= $LIBINPUT_REQ_VERSION xkbcommon"
                 experimental_input_backend="yes"
                 AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
                 SUPPORT_EVDEV=1

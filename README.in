@@ -40,7 +40,8 @@ When building the CEx100 backend, Clutter also depends on:
 When building the evdev input backend, Clutter also depends on:
 
   • xkbcommon
-  • libevdev ≥ @LIBEVDEV_REQ_VERSION@
+  • libudev ≥ @LIBUDEV_REQ_VERSION@
+  • libinput ≥ @LIBINPUT_REQ_VERSION@
 
 If you are building the API reference you will also need:
 
@@ -320,6 +321,10 @@ Release Notes for Clutter 1.18
   contents of the ClutterTextBuffer are changed, as documented. The signal
   emission cannot be guaranteed if the ClutterTextBuffer API is used instead
   of the ClutterText API.
+
+• Starting from 1.18, the Clutter evdev input device backend no longer uses
+  libevdev and libgudev directly, but relies on libinput for discovering,
+  reading and processing input devices.
 
 Release Notes for Clutter 1.16
 -------------------------------------------------------------------------------

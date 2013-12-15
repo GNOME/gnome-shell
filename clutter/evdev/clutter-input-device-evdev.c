@@ -4,6 +4,7 @@
  * An OpenGL based 'interactive canvas' library.
  *
  * Copyright (C) 2010 Intel Corp.
+ * Copyright (C) 2014 Jonas Ådahl
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +20,7 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  *
  * Author: Damien Lespiau <damien.lespiau@intel.com>
+ * Author: Jonas Ådahl <jadahl@gmail.com>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -31,89 +33,32 @@
 #include "clutter-input-device-evdev.h"
 
 typedef struct _ClutterInputDeviceClass        ClutterInputDeviceEvdevClass;
-typedef struct _ClutterInputDeviceEvdevPrivate ClutterInputDeviceEvdevPrivate;
 
-enum
-{
-  PROP_0,
+#define clutter_input_device_evdev_get_type _clutter_input_device_evdev_get_type
 
-  PROP_SYSFS_PATH,
-  PROP_DEVICE_PATH,
+G_DEFINE_TYPE (ClutterInputDeviceEvdev,
+               clutter_input_device_evdev,
+               CLUTTER_TYPE_INPUT_DEVICE)
 
-  PROP_LAST
-};
+/*
+ * Clutter makes the assumption that two core devices have ID's 2 and 3 (core
+ * pointer and core keyboard).
+ *
+ * Since the two first devices that will ever be created will be the virtual
+ * pointer and virtual keyboard of the first seat, we fulfill the made
+ * assumptions by having the first device having ID 2 and following 3.
+ */
+#define INITIAL_DEVICE_ID 2
 
-struct _ClutterInputDeviceEvdevPrivate
-{
-  gchar *sysfs_path;
-  gchar *device_path;
-};
-
-struct _ClutterInputDeviceEvdev
-{
-  ClutterInputDevice parent;
-
-  ClutterInputDeviceEvdevPrivate *priv;
-};
-
-G_DEFINE_TYPE_WITH_PRIVATE (ClutterInputDeviceEvdev,
-                            clutter_input_device_evdev,
-                            CLUTTER_TYPE_INPUT_DEVICE)
-
-static GParamSpec *obj_props[PROP_LAST];
-
-static void
-clutter_input_device_evdev_get_property (GObject    *object,
-                                         guint       property_id,
-                                         GValue     *value,
-                                         GParamSpec *pspec)
-{
-  ClutterInputDeviceEvdev  *input = CLUTTER_INPUT_DEVICE_EVDEV (object);
-  ClutterInputDeviceEvdevPrivate *priv = input->priv;
-
-  switch (property_id)
-    {
-    case PROP_SYSFS_PATH:
-      g_value_set_string (value, priv->sysfs_path);
-      break;
-    case PROP_DEVICE_PATH:
-      g_value_set_string (value, priv->device_path);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-    }
-}
-
-static void
-clutter_input_device_evdev_set_property (GObject      *object,
-                                         guint         property_id,
-                                         const GValue *value,
-                                         GParamSpec   *pspec)
-{
-  ClutterInputDeviceEvdev  *input = CLUTTER_INPUT_DEVICE_EVDEV (object);
-  ClutterInputDeviceEvdevPrivate *priv = input->priv;
-
-  switch (property_id)
-    {
-    case PROP_SYSFS_PATH:
-      priv->sysfs_path = g_value_dup_string (value);
-      break;
-    case PROP_DEVICE_PATH:
-      priv->device_path = g_value_dup_string (value);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-    }
-}
+static gint global_device_id_next = INITIAL_DEVICE_ID;
 
 static void
 clutter_input_device_evdev_finalize (GObject *object)
 {
-  ClutterInputDeviceEvdev  *input = CLUTTER_INPUT_DEVICE_EVDEV (object);
-  ClutterInputDeviceEvdevPrivate *priv = input->priv;
+  ClutterInputDeviceEvdev *device = CLUTTER_INPUT_DEVICE_EVDEV (object);
 
-  g_free (priv->sysfs_path);
-  g_free (priv->device_path);
+  if (device->libinput_device)
+    libinput_device_unref (device->libinput_device);
 
   G_OBJECT_CLASS (clutter_input_device_evdev_parent_class)->finalize (object);
 }
@@ -135,64 +80,121 @@ static void
 clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
-  object_class->get_property = clutter_input_device_evdev_get_property;
-  object_class->set_property = clutter_input_device_evdev_set_property;
   object_class->finalize = clutter_input_device_evdev_finalize;
   klass->keycode_to_evdev = clutter_input_device_evdev_keycode_to_evdev;
-
-  /*
-   * ClutterInputDeviceEvdev:udev-device:
-   *
-   * The Sysfs path of the device
-   *
-   * Since: 1.6
-   */
-  pspec =
-    g_param_spec_string ("sysfs-path",
-                         P_("sysfs Path"),
-                         P_("Path of the device in sysfs"),
-                         NULL,
-                         G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_SYSFS_PATH] = pspec;
-  g_object_class_install_property (object_class, PROP_SYSFS_PATH, pspec);
-
-  /*
-   * ClutterInputDeviceEvdev:device-path
-   *
-   * The path of the device file.
-   *
-   * Since: 1.6
-   */
-  pspec =
-    g_param_spec_string ("device-path",
-                         P_("Device Path"),
-                         P_("Path of the device node"),
-                         NULL,
-                         G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE);
-  obj_props[PROP_DEVICE_PATH] = pspec;
-  g_object_class_install_property (object_class, PROP_DEVICE_PATH, pspec);
 }
 
 static void
 clutter_input_device_evdev_init (ClutterInputDeviceEvdev *self)
 {
-  self->priv = clutter_input_device_evdev_get_instance_private (self);
 }
 
-const gchar *
-_clutter_input_device_evdev_get_sysfs_path (ClutterInputDeviceEvdev *device)
+/*
+ * _clutter_input_device_evdev_new:
+ * @manager: the device manager
+ * @seat: the seat the device will belong to
+ * @libinput_device: the libinput device
+ *
+ * Create a new ClutterInputDevice given a libinput device and associate
+ * it with the provided seat.
+ */
+ClutterInputDevice *
+_clutter_input_device_evdev_new (ClutterDeviceManager *manager,
+                                 ClutterSeatEvdev *seat,
+                                 struct libinput_device *libinput_device)
 {
-  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE_EVDEV (device), NULL);
+  ClutterInputDeviceEvdev *device;
+  ClutterInputDeviceType type;
 
-  return device->priv->sysfs_path;
+  type = _clutter_input_device_evdev_determine_type (libinput_device);
+  device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV,
+                         "id", global_device_id_next++,
+                         "name", libinput_device_get_sysname (libinput_device),
+                         "device-manager", manager,
+                         "device-type", type,
+                         "device-mode", CLUTTER_INPUT_MODE_SLAVE,
+                         "enabled", TRUE,
+                         NULL);
+
+  device->seat = seat;
+  device->libinput_device = libinput_device;
+
+  libinput_device_set_user_data (libinput_device, device);
+  libinput_device_ref (libinput_device);
+
+  return CLUTTER_INPUT_DEVICE (device);
 }
 
-const gchar *
-_clutter_input_device_evdev_get_device_path (ClutterInputDeviceEvdev *device)
+/*
+ * _clutter_input_device_evdev_new_virtual:
+ * @manager: the device manager
+ * @seat: the seat the device will belong to
+ * @type: the input device type
+ *
+ * Create a new virtual ClutterInputDevice of the given type.
+ */
+ClutterInputDevice *
+_clutter_input_device_evdev_new_virtual (ClutterDeviceManager *manager,
+                                         ClutterSeatEvdev *seat,
+                                         ClutterInputDeviceType type)
 {
-  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE_EVDEV (device), NULL);
+  ClutterInputDeviceEvdev *device;
+  const char *name;
 
-  return device->priv->device_path;
+  switch (type)
+    {
+    case CLUTTER_KEYBOARD_DEVICE:
+      name = "Virtual keyboard device for seat";
+      break;
+    case CLUTTER_POINTER_DEVICE:
+      name = "Virtual pointer device for seat";
+      break;
+    default:
+      name = "Virtual device for seat";
+      break;
+    };
+
+  device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV,
+                         "id", global_device_id_next++,
+                         "name", name,
+                         "device-manager", manager,
+                         "device-type", type,
+                         "device-mode", CLUTTER_INPUT_MODE_MASTER,
+                         "enabled", TRUE,
+                         NULL);
+
+  device->seat = seat;
+
+  return CLUTTER_INPUT_DEVICE (device);
+}
+
+ClutterSeatEvdev *
+_clutter_input_device_evdev_get_seat (ClutterInputDeviceEvdev *device)
+{
+  return device->seat;
+}
+
+void
+_clutter_input_device_evdev_update_leds (ClutterInputDeviceEvdev *device,
+                                         enum libinput_led leds)
+{
+  if (!device->libinput_device)
+    return;
+
+  libinput_device_led_update (device->libinput_device, leds);
+}
+
+ClutterInputDeviceType
+_clutter_input_device_evdev_determine_type (struct libinput_device *ldev)
+{
+
+  if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_KEYBOARD))
+    return CLUTTER_KEYBOARD_DEVICE;
+  else if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_POINTER))
+    return CLUTTER_POINTER_DEVICE;
+  else if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_TOUCH))
+    return CLUTTER_TOUCHSCREEN_DEVICE;
+  else
+    return CLUTTER_EXTENSION_DEVICE;
 }
