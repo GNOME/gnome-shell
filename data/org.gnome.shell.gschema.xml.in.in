@@ -29,14 +29,6 @@
         will be displayed in the favorites area.
       </_description>
     </key>
-    <key name="app-folder-categories" type="as">
-      <default>[ 'Utilities', 'Sundry' ]</default>
-      <_summary>List of categories that should be displayed as folders</_summary>
-      <_description>
-        Each category name in this list will be represented as folder in the
-        application view, rather than being displayed inline in the main view.
-      </_description>
-    </key>
     <key name="app-picker-view" type="u">
       <default>0</default>
       <summary>App Picker View</summary>
