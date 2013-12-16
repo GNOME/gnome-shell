@@ -5,7 +5,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const GMenu = imports.gi.GMenu;
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Signals = imports.signals;
@@ -47,25 +46,6 @@ const INDICATORS_ANIMATION_MAX_TIME = 0.75;
 const PAGE_SWITCH_TRESHOLD = 0.2;
 const PAGE_SWITCH_TIME = 0.3;
 
-// Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
-function _loadCategory(dir, view) {
-    let iter = dir.iter();
-    let appSystem = Shell.AppSystem.get_default();
-    let nextType;
-    while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
-        if (nextType == GMenu.TreeItemType.ENTRY) {
-            let entry = iter.get_entry();
-            let appInfo = entry.get_app_info();
-            let app = appSystem.lookup_app(entry.get_desktop_file_id());
-            if (appInfo.should_show())
-                view.addApp(app);
-        } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
-            let itemDir = iter.get_directory();
-            _loadCategory(itemDir, view);
-        }
-    }
-};
-
 const BaseAppView = new Lang.Class({
     Name: 'BaseAppView',
     Abstract: true,
@@ -97,7 +77,7 @@ const BaseAppView = new Lang.Class({
         this._allItems = [];
     },
 
-    _addItem: function(icon) {
+    addItem: function(icon) {
         let id = icon.id;
         if (this._items[id] !== undefined)
             return;
@@ -263,7 +243,7 @@ const AllView = new Lang.Class({
         this._pageIndicators.actor.connect('scroll-event', Lang.bind(this, this._onScroll));
         this.actor.add_actor(this._pageIndicators.actor);
 
-        this._folderIcons = [];
+        this.folderIcons = [];
 
         this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         let box = new St.BoxLayout({ vertical: true });
@@ -450,25 +430,8 @@ const AllView = new Lang.Class({
     },
 
     removeAll: function() {
-        this._folderIcons = [];
+        this.folderIcons = [];
         this.parent();
-    },
-
-    addApp: function(app) {
-        let icon = new AppIcon(app);
-        this._addItem(icon);
-        if (icon)
-            icon.actor.connect('key-focus-in',
-                               Lang.bind(this, this._ensureIconVisible));
-    },
-
-    addFolder: function(dir) {
-        let icon = new FolderIcon(dir, this);
-        this._addItem(icon);
-        this._folderIcons.push(icon);
-        if (icon)
-            icon.actor.connect('key-focus-in',
-                               Lang.bind(this, this._ensureIconVisible));
     },
 
     addFolderPopup: function(popup) {
@@ -535,8 +498,8 @@ const AllView = new Lang.Class({
         this._availWidth = availWidth;
         this._availHeight = availHeight;
         // Update folder views
-        for (let i = 0; i < this._folderIcons.length; i++)
-            this._folderIcons[i].adaptToSize(availWidth, availHeight);
+        for (let i = 0; i < this.folderIcons.length; i++)
+            this.folderIcons[i].adaptToSize(availWidth, availHeight);
     }
 });
 Signals.addSignalMethods(AllView.prototype);
@@ -659,8 +622,9 @@ const AppDisplay = new Lang.Class({
         Main.overview.connect('showing', Lang.bind(this, function() {
             Main.queueDeferredWork(this._frequentAppsWorkId);
         }));
-        global.settings.connect('changed::app-folder-categories', Lang.bind(this, function() {
-            Main.queueDeferredWork(this._allAppsWorkId);
+        this._softwareSettings = new Gio.Settings({ schema: 'org.gnome.software' });
+        this._softwareSettings.connect('changed::app-folders', Lang.bind(this, function() {
+            Main.queueDeferredWork(this._frequentAppsWorkId);
         }));
         this._privacySettings = new Gio.Settings({ schema: 'org.gnome.desktop.privacy' });
         this._privacySettings.connect('changed::remember-app-usage',
@@ -774,23 +738,26 @@ const AppDisplay = new Lang.Class({
 
         view.removeAll();
 
-        let tree = new GMenu.Tree({ menu_basename: "applications.menu" });
-        tree.load_sync();
-        let root = tree.get_root_directory();
+        let apps = Gio.AppInfo.get_all();
 
-        let iter = root.iter();
-        let nextType;
-        let folderCategories = global.settings.get_strv('app-folder-categories');
-        while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
-            if (nextType == GMenu.TreeItemType.DIRECTORY) {
-                let dir = iter.get_directory();
-
-                if (folderCategories.indexOf(dir.get_menu_id()) != -1)
-                    view.addFolder(dir);
-                else
-                    _loadCategory(dir, view);
-            }
+        let folders = this._softwareSettings.get_value('app-folders').deep_unpack();
+        for (let id in folders) {
+            let folderApps = folders[id];
+            let icon = new FolderIcon(id, id, folderApps, view);
+            view.addItem(icon);
+            view.folderIcons.push(icon);
         }
+
+        let appSys = Shell.AppSystem.get_default();
+        apps.forEach(Lang.bind(this, function(appInfo) {
+            if (!appInfo.should_show())
+                return;
+
+            let app = appSys.lookup_app(appInfo.get_id());
+            let icon = new AppIcon(app);
+            view.addItem(icon);
+        }));
+
         view.loadGrid();
 
         if (this._focusDummy) {
@@ -914,11 +881,6 @@ const FolderView = new Lang.Class({
         this.actor.add_action(action);
     },
 
-    addApp: function(app) {
-        let icon = new AppIcon(app);
-        this._addItem(icon);
-    },
-
     createFolderIcon: function(size) {
         let icon = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                    style_class: 'app-folder-icon',
@@ -1004,11 +966,9 @@ const FolderView = new Lang.Class({
 const FolderIcon = new Lang.Class({
     Name: 'FolderIcon',
 
-    _init: function(dir, parentView) {
-        this._dir = dir;
-        this.id = dir.get_menu_id();
-        this.name = dir.get_name();
-
+    _init: function(id, name, apps, parentView) {
+        this.id = id;
+        this.name = name;
         this._parentView = parentView;
 
         this.actor = new St.Button({ style_class: 'app-well-app app-folder',
@@ -1027,7 +987,15 @@ const FolderIcon = new Lang.Class({
         this.actor.label_actor = this.icon.label;
 
         this.view = new FolderView();
-        _loadCategory(dir, this.view);
+        let appSys = Shell.AppSystem.get_default();
+        apps.forEach(Lang.bind(this, function(appId) {
+            let app = appSys.lookup_app(appId + '.desktop');
+            if (!app)
+                return;
+
+            let icon = new AppIcon(app);
+            this.view.addItem(icon);
+        }));
         this.view.loadGrid();
 
         this.actor.connect('clicked', Lang.bind(this,
