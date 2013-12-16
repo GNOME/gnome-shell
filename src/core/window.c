@@ -6363,6 +6363,25 @@ meta_window_focus (MetaWindow  *window,
                       "Sending WM_TAKE_FOCUS to %s since take_focus = true\n",
                       window->desc);
 
+          if (!window->input)
+            {
+              /* The "Globally Active Input" window case, where the window
+               * doesn't want us to call XSetInputFocus on it, but does
+               * want us to send a WM_TAKE_FOCUS.
+               *
+               * Normally, we want to just leave the focus undisturbed until
+               * the window respnds to WM_TAKE_FOCUS, but if we're unmanaging
+               * the current focus window we *need* to move the focus away, so
+               * we focus the no_focus_window now (and set
+               * display->focus_window to that) before sending WM_TAKE_FOCUS.
+               */
+              if (window->display->focus_window != NULL &&
+                  window->display->focus_window->unmanaging)
+                meta_display_focus_the_no_focus_window (window->display,
+                                                        window->screen,
+                                                        timestamp);
+            }
+
           meta_display_request_take_focus (window->display,
                                            window,
                                            timestamp);
