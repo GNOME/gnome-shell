@@ -118,10 +118,6 @@
       <Project>{0da94d83-b64e-40ac-8074-96c2416bbbe8}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="test-conformance-clutter.vcxproj">
-      <Project>{0f08f253-de1a-40cb-a890-93ae3ca23ade}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="test-interactive-clutter.vcxproj">
       <Project>{75f9e5af-040c-448e-96be-c282efffe2d9}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
