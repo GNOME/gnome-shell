@@ -97,40 +97,22 @@ const BaseAppView = new Lang.Class({
         this._allItems = [];
     },
 
-    _getItemId: function(item) {
-        throw new Error('Not implemented');
-    },
-
-    _createItemIcon: function(item) {
-        throw new Error('Not implemented');
-    },
-
-    _compareItems: function(a, b) {
-        throw new Error('Not implemented');
-    },
-
-    _addItem: function(item) {
-        let id = this._getItemId(item);
+    _addItem: function(icon) {
+        let id = icon.id;
         if (this._items[id] !== undefined)
-            return null;
+            return;
 
-        let itemIcon = this._createItemIcon(item);
-        this._allItems.push(item);
-        this._items[id] = itemIcon;
-
-        return itemIcon;
+        this._allItems.push(icon);
+        this._items[id] = icon;
     },
 
     loadGrid: function() {
-        this._allItems.sort(Lang.bind(this, this._compareItems));
-
-        for (let i = 0; i < this._allItems.length; i++) {
-            let id = this._getItemId(this._allItems[i]);
-            if (!id)
-                continue;
-            this._grid.addItem(this._items[id]);
-        }
-
+        this._allItems.sort(Lang.bind(this, function(a, b) {
+            return a.name.localeCompare(b.name);
+        }));
+        this._allItems.forEach(Lang.bind(this, function(item) {
+            this._grid.addItem(item);
+        }));
         this.emit('view-loaded');
     },
 
@@ -467,50 +449,26 @@ const AllView = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _getItemId: function(item) {
-        if (item instanceof Shell.App)
-            return item.get_id();
-        else if (item instanceof GMenu.TreeDirectory)
-            return item.get_menu_id();
-        else
-            return null;
-    },
-
-    _createItemIcon: function(item) {
-        if (item instanceof Shell.App)
-            return new AppIcon(item);
-        else if (item instanceof GMenu.TreeDirectory)
-            return new FolderIcon(item, this);
-        else
-            return null;
-    },
-
-    _compareItems: function(itemA, itemB) {
-        // bit of a hack: rely on both ShellApp and GMenuTreeDirectory
-        // having a get_name() method
-        let nameA = GLib.utf8_collate_key(itemA.get_name(), -1);
-        let nameB = GLib.utf8_collate_key(itemB.get_name(), -1);
-        return (nameA > nameB) ? 1 : (nameA < nameB ? -1 : 0);
-    },
-
     removeAll: function() {
         this._folderIcons = [];
         this.parent();
     },
 
     addApp: function(app) {
-        let appIcon = this._addItem(app);
-        if (appIcon)
-            appIcon.actor.connect('key-focus-in',
-                                  Lang.bind(this, this._ensureIconVisible));
+        let icon = new AppIcon(app);
+        this._addItem(icon);
+        if (icon)
+            icon.actor.connect('key-focus-in',
+                               Lang.bind(this, this._ensureIconVisible));
     },
 
     addFolder: function(dir) {
-        let folderIcon = this._addItem(dir);
-        this._folderIcons.push(folderIcon);
-        if (folderIcon)
-            folderIcon.actor.connect('key-focus-in',
-                                     Lang.bind(this, this._ensureIconVisible));
+        let icon = new FolderIcon(dir, this);
+        this._addItem(icon);
+        this._folderIcons.push(icon);
+        if (icon)
+            icon.actor.connect('key-focus-in',
+                               Lang.bind(this, this._ensureIconVisible));
     },
 
     addFolderPopup: function(popup) {
@@ -956,20 +914,9 @@ const FolderView = new Lang.Class({
         this.actor.add_action(action);
     },
 
-    _getItemId: function(item) {
-        return item.get_id();
-    },
-
-    _createItemIcon: function(item) {
-        return new AppIcon(item);
-    },
-
-    _compareItems: function(a, b) {
-        return a.compare_by_name(b);
-    },
-
     addApp: function(app) {
-        this._addItem(app);
+        let icon = new AppIcon(app);
+        this._addItem(icon);
     },
 
     createFolderIcon: function(size) {
@@ -980,7 +927,7 @@ const FolderView = new Lang.Class({
 
         let aligns = [ Clutter.ActorAlign.START, Clutter.ActorAlign.END ];
         for (let i = 0; i < Math.min(this._allItems.length, 4); i++) {
-            let texture = this._allItems[i].create_icon_texture(subSize);
+            let texture = this._allItems[i].app.create_icon_texture(subSize);
             let bin = new St.Bin({ child: texture,
                                    x_expand: true, y_expand: true });
             bin.set_x_align(aligns[i % 2]);
@@ -1059,6 +1006,9 @@ const FolderIcon = new Lang.Class({
 
     _init: function(dir, parentView) {
         this._dir = dir;
+        this.id = dir.get_menu_id();
+        this.name = dir.get_name();
+
         this._parentView = parentView;
 
         this.actor = new St.Button({ style_class: 'app-well-app app-folder',
@@ -1071,8 +1021,7 @@ const FolderIcon = new Lang.Class({
         // whether we need to update arrow side, position etc.
         this._popupInvalidated = false;
 
-        let label = this._dir.get_name();
-        this.icon = new IconGrid.BaseIcon(label,
+        this.icon = new IconGrid.BaseIcon(this.name,
                                           { createIcon: Lang.bind(this, this._createIcon), setSizeManually: true });
         this.actor.set_child(this.icon.actor);
         this.actor.label_actor = this.icon.label;
@@ -1288,6 +1237,9 @@ const AppIcon = new Lang.Class({
 
     _init : function(app, iconParams) {
         this.app = app;
+        this.id = app.get_id();
+        this.name = app.get_name();
+
         this.actor = new St.Button({ style_class: 'app-well-app',
                                      reactive: true,
                                      button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
