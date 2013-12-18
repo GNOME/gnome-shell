@@ -6291,7 +6291,8 @@ meta_window_focus (MetaWindow  *window,
               window->desc, window->input, window->take_focus);
 
   if (window->display->grab_window &&
-      window->display->grab_window->all_keys_grabbed)
+      window->display->grab_window->all_keys_grabbed &&
+      !window->display->grab_window->unmanaging)
     {
       meta_topic (META_DEBUG_FOCUS,
                   "Current focus window %s has global keygrab, not focusing window %s after all\n",
