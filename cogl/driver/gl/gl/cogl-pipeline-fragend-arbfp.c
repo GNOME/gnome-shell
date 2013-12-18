@@ -86,18 +86,22 @@ typedef struct
   /* We need to track the last pipeline that an ARBfp program was used
    * with so know if we need to update any program.local parameters. */
   CoglPipeline *last_used_for_pipeline;
+
+  CoglPipelineCacheEntry *cache_entry;
 } CoglPipelineShaderState;
 
 static CoglUserDataKey shader_state_key;
 
 static CoglPipelineShaderState *
-shader_state_new (int n_layers)
+shader_state_new (int n_layers,
+                  CoglPipelineCacheEntry *cache_entry)
 {
   CoglPipelineShaderState *shader_state;
 
   shader_state = g_slice_new0 (CoglPipelineShaderState);
   shader_state->ref_count = 1;
   shader_state->unit_state = g_new0 (UnitState, n_layers);
+  shader_state->cache_entry = cache_entry;
 
   return shader_state;
 }
@@ -123,6 +127,10 @@ destroy_shader_state (void *user_data,
   if (shader_state->last_used_for_pipeline == instance)
     shader_state->last_used_for_pipeline = NULL;
 
+  if (shader_state->cache_entry &&
+      shader_state->cache_entry->pipeline != instance)
+    shader_state->cache_entry->usage_count--;
+
   if (--shader_state->ref_count == 0)
     {
       if (shader_state->gl_program)
@@ -140,6 +148,17 @@ destroy_shader_state (void *user_data,
 static void
 set_shader_state (CoglPipeline *pipeline, CoglPipelineShaderState *shader_state)
 {
+  if (shader_state)
+    {
+      shader_state->ref_count++;
+
+      /* If we're not setting the state on the template pipeline then
+       * mark it as a usage of the pipeline cache entry */
+      if (shader_state->cache_entry &&
+          shader_state->cache_entry->pipeline != pipeline)
+        shader_state->cache_entry->usage_count++;
+    }
+
   _cogl_object_set_user_data (COGL_OBJECT (pipeline),
                               &shader_state_key,
                               shader_state,
@@ -162,7 +181,7 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
 {
   CoglPipelineShaderState *shader_state;
   CoglPipeline *authority;
-  CoglPipeline *template_pipeline = NULL;
+  CoglPipelineCacheEntry *cache_entry = NULL;
   CoglProgram *user_program = cogl_pipeline_get_user_program (pipeline);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -194,7 +213,6 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
       /* If we are going to share our program state with an arbfp-authority
        * then add a reference to the program state associated with that
        * arbfp-authority... */
-      shader_state->ref_count++;
       set_shader_state (pipeline, shader_state);
       return;
     }
@@ -204,11 +222,11 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
    * program in the pipeline_cache. */
   if (G_LIKELY (!(COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_PROGRAM_CACHES))))
     {
-      template_pipeline =
+      cache_entry =
         _cogl_pipeline_cache_get_fragment_template (ctx->pipeline_cache,
                                                     authority);
 
-      shader_state = get_shader_state (template_pipeline);
+      shader_state = get_shader_state (cache_entry->pipeline);
 
       if (shader_state)
         shader_state->ref_count++;
@@ -218,7 +236,7 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
      a new one */
   if (shader_state == NULL)
     {
-      shader_state = shader_state_new (n_layers);
+      shader_state = shader_state_new (n_layers, cache_entry);
 
       shader_state->user_program = user_program;
       if (user_program == COGL_INVALID_HANDLE)
@@ -239,22 +257,18 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
 
   set_shader_state (pipeline, shader_state);
 
+  shader_state->ref_count--;
+
   /* Since we have already resolved the arbfp-authority at this point
    * we might as well also associate any program we find from the cache
    * with the authority too... */
   if (authority != pipeline)
-    {
-      shader_state->ref_count++;
-      set_shader_state (authority, shader_state);
-    }
+    set_shader_state (authority, shader_state);
 
   /* If we found a template then we'll attach it to that too so that
      next time a similar pipeline is used it can use the same state */
-  if (template_pipeline)
-    {
-      shader_state->ref_count++;
-      set_shader_state (template_pipeline, shader_state);
-    }
+  if (cache_entry)
+    set_shader_state (cache_entry->pipeline, shader_state);
 }
 
 static const char *

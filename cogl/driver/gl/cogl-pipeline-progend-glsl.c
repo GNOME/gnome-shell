@@ -139,6 +139,8 @@ typedef struct
   int flushed_flip_state;
 
   UnitState *unit_state;
+
+  CoglPipelineCacheEntry *cache_entry;
 } CoglPipelineProgramState;
 
 static CoglUserDataKey program_state_key;
@@ -228,7 +230,8 @@ clear_flushed_matrix_stacks (CoglPipelineProgramState *program_state)
 }
 
 static CoglPipelineProgramState *
-program_state_new (int n_layers)
+program_state_new (int n_layers,
+                   CoglPipelineCacheEntry *cache_entry)
 {
   CoglPipelineProgramState *program_state;
 
@@ -238,6 +241,7 @@ program_state_new (int n_layers)
   program_state->unit_state = g_new (UnitState, n_layers);
   program_state->uniform_locations = NULL;
   program_state->attribute_locations = NULL;
+  program_state->cache_entry = cache_entry;
   _cogl_matrix_entry_cache_init (&program_state->modelview_cache);
   _cogl_matrix_entry_cache_init (&program_state->projection_cache);
 
@@ -258,6 +262,10 @@ destroy_program_state (void *user_data,
      uniforms */
   if (program_state->last_used_for_pipeline == instance)
     program_state->last_used_for_pipeline = NULL;
+
+  if (program_state->cache_entry &&
+      program_state->cache_entry->pipeline != instance)
+    program_state->cache_entry->usage_count--;
 
   if (--program_state->ref_count == 0)
     {
@@ -282,6 +290,17 @@ static void
 set_program_state (CoglPipeline *pipeline,
                   CoglPipelineProgramState *program_state)
 {
+  if (program_state)
+    {
+      program_state->ref_count++;
+
+      /* If we're not setting the state on the template pipeline then
+       * mark it as a usage of the pipeline cache entry */
+      if (program_state->cache_entry &&
+          program_state->cache_entry->pipeline != pipeline)
+        program_state->cache_entry->usage_count++;
+    }
+
   _cogl_object_set_user_data (COGL_OBJECT (pipeline),
                               &program_state_key,
                               program_state,
@@ -641,7 +660,7 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
   CoglBool program_changed = FALSE;
   UpdateUniformsState state;
   CoglProgram *user_program;
-  CoglPipeline *template_pipeline = NULL;
+  CoglPipelineCacheEntry *cache_entry = NULL;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -673,33 +692,30 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
           if (G_LIKELY (!(COGL_DEBUG_ENABLED
                           (COGL_DEBUG_DISABLE_PROGRAM_CACHES))))
             {
-              template_pipeline =
+              cache_entry =
                 _cogl_pipeline_cache_get_combined_template (ctx->pipeline_cache,
                                                             authority);
 
-              program_state = get_program_state (template_pipeline);
+              program_state = get_program_state (cache_entry->pipeline);
             }
 
           if (program_state)
             program_state->ref_count++;
           else
             program_state
-              = program_state_new (cogl_pipeline_get_n_layers (authority));
+              = program_state_new (cogl_pipeline_get_n_layers (authority),
+                                   cache_entry);
 
           set_program_state (authority, program_state);
 
-          if (template_pipeline)
-            {
-              program_state->ref_count++;
-              set_program_state (template_pipeline, program_state);
-            }
+          program_state->ref_count--;
+
+          if (cache_entry)
+            set_program_state (cache_entry->pipeline, program_state);
         }
 
       if (authority != pipeline)
-        {
-          program_state->ref_count++;
-          set_program_state (pipeline, program_state);
-        }
+        set_program_state (pipeline, program_state);
     }
 
   /* If the program has changed since the last link then we do

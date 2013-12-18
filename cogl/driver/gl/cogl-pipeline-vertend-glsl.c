@@ -56,17 +56,19 @@ typedef struct
   GLuint gl_shader;
   GString *header, *source;
 
+  CoglPipelineCacheEntry *cache_entry;
 } CoglPipelineShaderState;
 
 static CoglUserDataKey shader_state_key;
 
 static CoglPipelineShaderState *
-shader_state_new (void)
+shader_state_new (CoglPipelineCacheEntry *cache_entry)
 {
   CoglPipelineShaderState *shader_state;
 
   shader_state = g_slice_new0 (CoglPipelineShaderState);
   shader_state->ref_count = 1;
+  shader_state->cache_entry = cache_entry;
 
   return shader_state;
 }
@@ -78,11 +80,16 @@ get_shader_state (CoglPipeline *pipeline)
 }
 
 static void
-destroy_shader_state (void *user_data)
+destroy_shader_state (void *user_data,
+                      void *instance)
 {
   CoglPipelineShaderState *shader_state = user_data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (shader_state->cache_entry &&
+      shader_state->cache_entry->pipeline != instance)
+    shader_state->cache_entry->usage_count--;
 
   if (--shader_state->ref_count == 0)
     {
@@ -97,10 +104,21 @@ static void
 set_shader_state (CoglPipeline *pipeline,
                   CoglPipelineShaderState *shader_state)
 {
-  cogl_object_set_user_data (COGL_OBJECT (pipeline),
-                             &shader_state_key,
-                             shader_state,
-                             destroy_shader_state);
+  if (shader_state)
+    {
+      shader_state->ref_count++;
+
+      /* If we're not setting the state on the template pipeline then
+       * mark it as a usage of the pipeline cache entry */
+      if (shader_state->cache_entry &&
+          shader_state->cache_entry->pipeline != pipeline)
+        shader_state->cache_entry->usage_count++;
+    }
+
+  _cogl_object_set_user_data (COGL_OBJECT (pipeline),
+                              &shader_state_key,
+                              shader_state,
+                              destroy_shader_state);
 }
 
 static void
@@ -194,7 +212,7 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
                                    unsigned long pipelines_difference)
 {
   CoglPipelineShaderState *shader_state;
-  CoglPipeline *template_pipeline = NULL;
+  CoglPipelineCacheEntry *cache_entry = NULL;
   CoglProgram *user_program = cogl_pipeline_get_user_program (pipeline);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -224,32 +242,28 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
           if (G_LIKELY (!(COGL_DEBUG_ENABLED
                           (COGL_DEBUG_DISABLE_PROGRAM_CACHES))))
             {
-              template_pipeline =
+              cache_entry =
                 _cogl_pipeline_cache_get_vertex_template (ctx->pipeline_cache,
                                                           authority);
 
-              shader_state = get_shader_state (template_pipeline);
+              shader_state = get_shader_state (cache_entry->pipeline);
             }
 
           if (shader_state)
             shader_state->ref_count++;
           else
-            shader_state = shader_state_new ();
+            shader_state = shader_state_new (cache_entry);
 
           set_shader_state (authority, shader_state);
 
-          if (template_pipeline)
-            {
-              shader_state->ref_count++;
-              set_shader_state (template_pipeline, shader_state);
-            }
+          shader_state->ref_count--;
+
+          if (cache_entry)
+            set_shader_state (cache_entry->pipeline, shader_state);
         }
 
       if (authority != pipeline)
-        {
-          shader_state->ref_count++;
-          set_shader_state (pipeline, shader_state);
-        }
+        set_shader_state (pipeline, shader_state);
     }
 
   if (user_program)

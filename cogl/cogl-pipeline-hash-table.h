@@ -24,7 +24,7 @@
 #ifndef __COGL_PIPELINE_HASH_H__
 #define __COGL_PIPELINE_HASH_H__
 
-#include "cogl-pipeline.h"
+#include "cogl-pipeline-cache.h"
 
 typedef struct
 {
@@ -33,6 +33,11 @@ typedef struct
    * generate a warning if an unusually high number of pipelines are
    * generated */
   int n_unique_pipelines;
+
+  /* This is the expected minimum size we could prune the hash table
+   * to if we were to remove all pipelines that are not in use. This
+   * is only updated after we prune the table */
+  int expected_min_size;
 
   /* String that will be used to describe the usage of this hash table
    * in the debug warning when too many pipelines are generated. This
@@ -62,7 +67,7 @@ _cogl_pipeline_hash_table_destroy (CoglPipelineHashTable *hash);
  * it will be used next time the function is called with a similar
  * pipeline. In that case the copy itself will be returned
  */
-CoglPipeline *
+CoglPipelineCacheEntry *
 _cogl_pipeline_hash_table_get (CoglPipelineHashTable *hash,
                                CoglPipeline *key_pipeline);
 

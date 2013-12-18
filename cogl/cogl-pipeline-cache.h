@@ -28,6 +28,15 @@
 
 typedef struct _CoglPipelineCache CoglPipelineCache;
 
+typedef struct
+{
+  CoglPipeline *pipeline;
+
+  /* Number of usages of this template. If this drops to zero then it
+   * will be a candidate for removal from the cache */
+  int usage_count;
+} CoglPipelineCacheEntry;
+
 CoglPipelineCache *
 _cogl_pipeline_cache_new (void);
 
@@ -43,7 +52,7 @@ _cogl_pipeline_cache_free (CoglPipelineCache *cache);
  * with a similar pipeline. In that case the copy itself will be
  * returned
  */
-CoglPipeline *
+CoglPipelineCacheEntry *
 _cogl_pipeline_cache_get_fragment_template (CoglPipelineCache *cache,
                                             CoglPipeline *key_pipeline);
 
@@ -56,7 +65,7 @@ _cogl_pipeline_cache_get_fragment_template (CoglPipelineCache *cache,
  * with a similar pipeline. In that case the copy itself will be
  * returned
  */
-CoglPipeline *
+CoglPipelineCacheEntry *
 _cogl_pipeline_cache_get_vertex_template (CoglPipelineCache *cache,
                                           CoglPipeline *key_pipeline);
 
@@ -70,7 +79,7 @@ _cogl_pipeline_cache_get_vertex_template (CoglPipelineCache *cache,
  * with a similar pipeline. In that case the copy itself will be
  * returned
  */
-CoglPipeline *
+CoglPipelineCacheEntry *
 _cogl_pipeline_cache_get_combined_template (CoglPipelineCache *cache,
                                             CoglPipeline *key_pipeline);
 
