@@ -1,3 +1,37 @@
+3.11.3
+======
+* Fix fade effect of desktop icons [Florian; #707671]
+* Fix issues with background management code [Jasper; #709313]
+* Use new Glib facilities for application search [Jasper; #711631]
+* Add focus indication to session menu button [Sebastien; #710539]
+* Fix hover tracking for StEntries [Jasper; #706749]
+* Fix reentrancy issue in message tray [Jasper; #711694]
+* Tone down zoom animation on login/unlock [Jasper; #712362]
+* Allow specifying monitor for OSD [Carlos; #712664]
+* Fix resetting prompt on user switch [Ray; #710456]
+* Stop using gnome-bluetooth-applet [Bastien; #719341]
+* Add support for EAP-FAST password requests [Dan; #719813]
+* Fix entry focus of chat notifications [Jasper; #709853]
+* Make window previews keyboard navigatable [Jasper; #644306]
+* Fix app switcher order with dialog windows [Florian; #719824]
+* Allow remote search providers without icons [Debarshi; #719965]
+* Fix various alignment issues in RTL locales [Yosef; #712638, #712596,
+  #712594, #712600, #712579]
+* Misc. bug fixes and cleanups [Jasper, Florian, Giovanni, Dan; #712727,
+  #712753, #719378, #719730, #719803, #710115, #720017, #719815, #719567,
+  #720298]
+
+Contributors:
+  Giovanni Campagna, Carlos Garnacho, Sebastien Lafargue, Tim Lunn,
+  Florian Müllner, Bastien Nocera, Yosef Or Boczko, Debarshi Ray,
+  Jasper St. Pierre, Ray Strode, Dan Williams
+
+Translations:
+  Kjartan Maraas [nb], Reinout van Schouwen [nl], Rafael Ferreira [pt_BR],
+  Mattias Põldaru [et], Emin Tufan Çetin [tr], Jiri Grönroos [fi],
+  Khaled Hosny [ar], Fran Diéguez [gl], Victor Ibragimov [tg],
+  Daniel Mustieles [es]
+
 3.11.2
 ======
 * Cache search result display actors [Jasper; #704912]
