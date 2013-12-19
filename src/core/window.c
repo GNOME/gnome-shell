@@ -7885,7 +7885,7 @@ meta_window_titlebar_is_onscreen (MetaWindow *window)
   gboolean       is_onscreen;
 
   const int min_height_needed  = 8;
-  const int min_width_percent  = 0.5;
+  const float min_width_percent  = 0.5;
   const int min_width_absolute = 50;
 
   /* Titlebar can't be offscreen if there is no titlebar... */
