@@ -1,3 +1,20 @@
+3.11.3
+======
+* Fix focus issues with external OSKs[Jasper; #715030]
+* Add a MetaCullable interface [Jasper; #714706]
+* Fix window keybindings [Rui; #719724]
+* Fix settings keyboard/pointer focus for new clients [Rui; #719725]
+* Fix window group paint volume [Owen; #719669]
+* Fix frame extents problems [Owen; #714707]
+* Add shortcut to move windows between monitors [Florian; #671054]
+* Fix problems with focus tracking [Owen; #720558]
+* Misc. bug fixes and cleanups: [Rui, Colin, Lionel, Jasper, Owen; #712833,
+  #719557, #719695, #719833, #678989, #720417, #720630]
+
+Contributors:
+  Lionel Landwerlin, Rui Matos, Alberto Milone, Florian Müllner,
+  Jasper St. Pierre, Rico Tzschichholz, Owen W. Taylor, Colin Walters
+
 3.11.2
 ======
 * Support setting a NULL opaque region [Andreas; #711518]
