@@ -2806,14 +2806,14 @@ handle_other_xevent (MetaDisplay *display,
           && meta_display_screen_for_root (display, event->xmap.event))
         {
           window = meta_window_new (display, event->xmap.window,
-                                    FALSE);
+                                    FALSE, META_COMP_EFFECT_CREATE);
         }
       break;
     case MapRequest:
       if (window == NULL)
         {
           window = meta_window_new (display, event->xmaprequest.window,
-                                    FALSE);
+                                    FALSE, META_COMP_EFFECT_CREATE);
         }
       /* if frame was receiver it's some malicious send event or something */
       else if (!frame_was_receiver && window)

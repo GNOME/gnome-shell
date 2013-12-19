@@ -510,12 +510,8 @@ struct _MetaWindowClass
 
 MetaWindow* meta_window_new                (MetaDisplay *display,
                                             Window       xwindow,
-                                            gboolean     must_be_viewable);
-MetaWindow* meta_window_new_with_attrs     (MetaDisplay       *display,
-                                            Window             xwindow,
-                                            gboolean           must_be_viewable,
-                                            MetaCompEffect     effect,
-                                            XWindowAttributes *attrs);
+                                            gboolean     must_be_viewable,
+                                            MetaCompEffect     effect);
 MetaWindow *meta_window_new_for_wayland    (MetaDisplay        *display,
                                             MetaWaylandSurface *surface);
 void        meta_window_unmanage           (MetaWindow  *window,
