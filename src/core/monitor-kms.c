@@ -111,8 +111,7 @@ make_output_name (drmModeConnector *connector)
   };
   const char *connector_type_name;
 
-  if (connector->connector_type >= 0 &&
-      connector->connector_type < G_N_ELEMENTS (connector_type_names))
+  if (connector->connector_type < G_N_ELEMENTS (connector_type_names))
     connector_type_name = connector_type_names[connector->connector_type];
   else
     connector_type_name = "unknown";
