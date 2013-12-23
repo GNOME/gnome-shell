@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.11.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-21 21:24+0100\n"
-"PO-Revision-Date: 2013-11-03 16:03+0100\n"
+"POT-Creation-Date: 2013-12-23 10:24+0100\n"
+"PO-Revision-Date: 2013-12-23 10:25+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -265,23 +265,23 @@ msgstr "Utvidelse"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Velg en utvidelse som skal konfigureres med komboboksen over."
 
-#: ../js/gdm/authPrompt.js:146 ../js/ui/components/networkAgent.js:136
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:357
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:359
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:726
+#: ../js/ui/status/network.js:726
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../js/gdm/authPrompt.js:168 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:217
 msgid "Next"
 msgstr "Neste"
 
-#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Lås opp"
 
-#: ../js/gdm/authPrompt.js:214
+#: ../js/gdm/authPrompt.js:215
 msgctxt "button"
 msgid "Sign In"
 msgstr "Logg inn"
@@ -299,20 +299,20 @@ msgstr "Ikke listet?"
 msgid "(e.g., user or %s)"
 msgstr "(f.eks. bruker eller %s)"
 
-#: ../js/gdm/loginDialog.js:605 ../js/ui/components/networkAgent.js:261
-#: ../js/ui/components/networkAgent.js:279
+#: ../js/gdm/loginDialog.js:605 ../js/ui/components/networkAgent.js:262
+#: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Brukernavn: "
 
-#: ../js/gdm/loginDialog.js:869
+#: ../js/gdm/loginDialog.js:870
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
-#: ../js/gdm/util.js:321
+#: ../js/gdm/util.js:322
 msgid "Authentication error"
 msgstr "Autentiseringsfeil"
 
-#: ../js/gdm/util.js:451
+#: ../js/gdm/util.js:452
 msgid "(or swipe finger)"
 msgstr "(eller dra finger)"
 
@@ -341,15 +341,15 @@ msgstr "Ofte"
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:1539
+#: ../js/ui/appDisplay.js:1541
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:1542 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1544 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:1543
+#: ../js/ui/appDisplay.js:1545
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -363,7 +363,7 @@ msgstr "%s ble lagt til i dine favoritter."
 msgid "%s has been removed from your favorites."
 msgstr "%s ble fjernet fra dine favoritter."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:806
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:809
 #: ../js/ui/status/system.js:334
 msgid "Settings"
 msgstr "Innstillinger"
@@ -375,14 +375,14 @@ msgstr "Bytt bakgrunn …"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:62
+#: ../js/ui/calendar.js:64
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Hele dagen"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:68
+#: ../js/ui/calendar.js:70
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H.%M"
@@ -390,7 +390,7 @@ msgstr "%H.%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space */
-#: ../js/ui/calendar.js:77
+#: ../js/ui/calendar.js:79
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%H.%M"
@@ -400,43 +400,43 @@ msgstr "%H.%M"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:110
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:112
 msgctxt "grid monday"
 msgid "M"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:112
+#: ../js/ui/calendar.js:114
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:116
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "O"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:118
 msgctxt "grid thursday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:118
+#: ../js/ui/calendar.js:120
 msgctxt "grid friday"
 msgid "F"
 msgstr "F"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:120
+#: ../js/ui/calendar.js:122
 msgctxt "grid saturday"
 msgid "S"
 msgstr "L"
@@ -447,89 +447,89 @@ msgstr "L"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #. */
-#: ../js/ui/calendar.js:133
+#: ../js/ui/calendar.js:135
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Sø"
 
 #. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:135
+#: ../js/ui/calendar.js:137
 msgctxt "list monday"
 msgid "M"
 msgstr "Ma"
 
 #. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:137
+#: ../js/ui/calendar.js:139
 msgctxt "list tuesday"
 msgid "T"
 msgstr "Ti"
 
 #. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:141
 msgctxt "list wednesday"
 msgid "W"
 msgstr "On"
 
 #. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:143
 msgctxt "list thursday"
 msgid "Th"
 msgstr "To"
 
 #. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:143
+#: ../js/ui/calendar.js:145
 msgctxt "list friday"
 msgid "F"
 msgstr "Fr"
 
 #. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:145
+#: ../js/ui/calendar.js:147
 msgctxt "list saturday"
 msgid "S"
 msgstr "Lø"
 
-#: ../js/ui/calendar.js:391
+#: ../js/ui/calendar.js:390
 msgid "calendar:MY"
 msgstr ""
 
-#: ../js/ui/calendar.js:449
+#: ../js/ui/calendar.js:446
 msgid "Previous month"
 msgstr "Forrige måned"
 
-#: ../js/ui/calendar.js:459
+#: ../js/ui/calendar.js:456
 msgid "Next month"
 msgstr "Neste måned"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:755
+#: ../js/ui/calendar.js:762
 msgid "Nothing Scheduled"
 msgstr "Ingenting planlagt"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:773
+#: ../js/ui/calendar.js:780
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:776
+#: ../js/ui/calendar.js:783
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %B %d, %Y"
 
-#: ../js/ui/calendar.js:787
+#: ../js/ui/calendar.js:794
 msgid "Today"
 msgstr "I dag"
 
-#: ../js/ui/calendar.js:791
+#: ../js/ui/calendar.js:798
 msgid "Tomorrow"
 msgstr "I morgen"
 
-#: ../js/ui/calendar.js:802
+#: ../js/ui/calendar.js:809
 msgid "This week"
 msgstr "Denne uken"
 
-#: ../js/ui/calendar.js:810
+#: ../js/ui/calendar.js:817
 msgid "Next week"
 msgstr "Neste uke"
 
@@ -554,11 +554,11 @@ msgstr "Åpne med %s"
 msgid "Eject"
 msgstr "Løs ut"
 
-#: ../js/ui/components/keyring.js:89 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
 msgstr "Passord:"
 
-#: ../js/ui/components/keyring.js:108
+#: ../js/ui/components/keyring.js:110
 msgid "Type again:"
 msgstr "Skriv på nytt:"
 
@@ -569,9 +569,9 @@ msgstr "Koble til"
 
 #: ../js/ui/components/networkAgent.js:224
 #: ../js/ui/components/networkAgent.js:236
-#: ../js/ui/components/networkAgent.js:263
-#: ../js/ui/components/networkAgent.js:283
-#: ../js/ui/components/networkAgent.js:293
+#: ../js/ui/components/networkAgent.js:264
+#: ../js/ui/components/networkAgent.js:284
+#: ../js/ui/components/networkAgent.js:294
 msgid "Password: "
 msgstr "Passord: "
 
@@ -579,23 +579,23 @@ msgstr "Passord: "
 msgid "Key: "
 msgstr "Nøkkel: "
 
-#: ../js/ui/components/networkAgent.js:267
+#: ../js/ui/components/networkAgent.js:268
 msgid "Identity: "
 msgstr "Identitet: "
 
-#: ../js/ui/components/networkAgent.js:269
+#: ../js/ui/components/networkAgent.js:270
 msgid "Private key password: "
 msgstr "Passord for privat nøkkel: "
 
-#: ../js/ui/components/networkAgent.js:281
+#: ../js/ui/components/networkAgent.js:282
 msgid "Service: "
 msgstr "Tjeneste: "
 
-#: ../js/ui/components/networkAgent.js:310
+#: ../js/ui/components/networkAgent.js:311
 msgid "Authentication required by wireless network"
 msgstr "Autentisering kreves av trådløst nettverk"
 
-#: ../js/ui/components/networkAgent.js:311
+#: ../js/ui/components/networkAgent.js:312
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -604,35 +604,35 @@ msgstr ""
 "Passord eller krypteringsnøkler kreves for å koble til trådløst nettverk "
 "«%s»."
 
-#: ../js/ui/components/networkAgent.js:315
+#: ../js/ui/components/networkAgent.js:316
 msgid "Wired 802.1X authentication"
 msgstr "802.1X autentisering for trådbundet nettverk"
 
-#: ../js/ui/components/networkAgent.js:317
+#: ../js/ui/components/networkAgent.js:318
 msgid "Network name: "
 msgstr "Navn på nettverk: "
 
-#: ../js/ui/components/networkAgent.js:322
+#: ../js/ui/components/networkAgent.js:323
 msgid "DSL authentication"
 msgstr "DSL-autentisering"
 
-#: ../js/ui/components/networkAgent.js:329
+#: ../js/ui/components/networkAgent.js:330
 msgid "PIN code required"
 msgstr "PIN-kode kreves"
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:331
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN-kode kreves for mobil bredbåndsenhet"
 
-#: ../js/ui/components/networkAgent.js:331
+#: ../js/ui/components/networkAgent.js:332
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:338
 msgid "Mobile broadband network password"
 msgstr "Nettverkspassord for mobilt bredbånd"
 
-#: ../js/ui/components/networkAgent.js:338
+#: ../js/ui/components/networkAgent.js:339
 #, javascript-format
 msgid "A password is required to connect to '%s'."
 msgstr "Et passord kreves for å koble til «%s»."
@@ -641,11 +641,11 @@ msgstr "Et passord kreves for å koble til «%s»."
 msgid "Authentication Required"
 msgstr "Autentisering kreves"
 
-#: ../js/ui/components/polkitAgent.js:92
+#: ../js/ui/components/polkitAgent.js:96
 msgid "Administrator"
 msgstr "Administrator"
 
-#: ../js/ui/components/polkitAgent.js:170
+#: ../js/ui/components/polkitAgent.js:175
 msgid "Authenticate"
 msgstr "Autentiser"
 
@@ -653,7 +653,7 @@ msgstr "Autentiser"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance. */
-#: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:271 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Beklager, det virket ikke. Vennligst prøv igjen."
 
@@ -888,15 +888,15 @@ msgstr "Vis konto"
 msgid "Unknown reason"
 msgstr "Ukjent årsak"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:95
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
 msgid "Windows"
 msgstr "Vinduer"
 
-#: ../js/ui/dash.js:248 ../js/ui/dash.js:286
+#: ../js/ui/dash.js:249 ../js/ui/dash.js:287
 msgid "Show Applications"
 msgstr "Vis programmer"
 
-#: ../js/ui/dash.js:442
+#: ../js/ui/dash.js:443
 msgid "Dash"
 msgstr "Favoritter"
 
@@ -915,7 +915,7 @@ msgstr "Innstillinger for dato og klokkeslett"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:202
+#: ../js/ui/dateMenu.js:187
 msgid "%A %B %e, %Y"
 msgstr "%a %e %B, %Y"
 
@@ -1005,22 +1005,22 @@ msgctxt "button"
 msgid "Restart & Install"
 msgstr "Start på nytt og installer"
 
-#: ../js/ui/endSessionDialog.js:275
+#: ../js/ui/endSessionDialog.js:277
 msgid "Some applications are busy or have unsaved work."
 msgstr "Noen programmer er opptatt eller har arbeid som ikke er lagret."
 
-#: ../js/ui/endSessionDialog.js:282
+#: ../js/ui/endSessionDialog.js:284
 msgid "Other users are logged in."
 msgstr "Andre brukere er logget inn."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:486
+#: ../js/ui/endSessionDialog.js:488
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (ekstern)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:489
+#: ../js/ui/endSessionDialog.js:491
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konsoll)"
@@ -1034,29 +1034,29 @@ msgstr "Installer"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Last ned og installer «%s» fra extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:621 ../js/ui/status/keyboard.js:335
+#: ../js/ui/keyboard.js:641 ../js/ui/status/keyboard.js:335
 msgid "Keyboard"
 msgstr "Tastatur"
 
-#: ../js/ui/lookingGlass.js:640
+#: ../js/ui/lookingGlass.js:641
 msgid "No extensions installed"
 msgstr "Ingen utvidelser installert"
 
 #. Translators: argument is an extension UUID. */
-#: ../js/ui/lookingGlass.js:694
+#: ../js/ui/lookingGlass.js:695
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s har ikke avgitt noen feil."
 
-#: ../js/ui/lookingGlass.js:700
+#: ../js/ui/lookingGlass.js:701
 msgid "Hide Errors"
 msgstr "Skjul feil"
 
-#: ../js/ui/lookingGlass.js:704 ../js/ui/lookingGlass.js:764
+#: ../js/ui/lookingGlass.js:705 ../js/ui/lookingGlass.js:765
 msgid "Show Errors"
 msgstr "Vis feil"
 
-#: ../js/ui/lookingGlass.js:713
+#: ../js/ui/lookingGlass.js:714
 msgid "Enabled"
 msgstr "Aktivert"
 
@@ -1064,28 +1064,28 @@ msgstr "Aktivert"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/network.js:472
+#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:472
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Deaktivert"
 
-#: ../js/ui/lookingGlass.js:718
+#: ../js/ui/lookingGlass.js:719
 msgid "Error"
 msgstr "Feil"
 
-#: ../js/ui/lookingGlass.js:720
+#: ../js/ui/lookingGlass.js:721
 msgid "Out of date"
 msgstr "Utdatert"
 
-#: ../js/ui/lookingGlass.js:722
+#: ../js/ui/lookingGlass.js:723
 msgid "Downloading"
 msgstr "Laster ned"
 
-#: ../js/ui/lookingGlass.js:746
+#: ../js/ui/lookingGlass.js:747
 msgid "View Source"
 msgstr "Vis kildekode"
 
-#: ../js/ui/lookingGlass.js:755
+#: ../js/ui/lookingGlass.js:756
 msgid "Web Page"
 msgstr "Nettside"
 
@@ -1097,51 +1097,51 @@ msgstr "Åpne"
 msgid "Remove"
 msgstr "Fjern"
 
-#: ../js/ui/messageTray.js:1618
+#: ../js/ui/messageTray.js:1614
 msgid "Notifications"
 msgstr "Varslinger"
 
-#: ../js/ui/messageTray.js:1625
+#: ../js/ui/messageTray.js:1621
 msgid "Clear Messages"
 msgstr "Tøm meldinger"
 
-#: ../js/ui/messageTray.js:1644
+#: ../js/ui/messageTray.js:1640
 msgid "Notification Settings"
 msgstr "Innstillinger for varsling"
 
-#: ../js/ui/messageTray.js:1697
+#: ../js/ui/messageTray.js:1693
 msgid "Tray Menu"
 msgstr "Meny for varslingsområde"
 
-#: ../js/ui/messageTray.js:1913
+#: ../js/ui/messageTray.js:1910
 msgid "No Messages"
 msgstr "Ingen meldinger"
 
-#: ../js/ui/messageTray.js:1951
+#: ../js/ui/messageTray.js:1948
 msgid "Message Tray"
 msgstr "Meldingstrau"
 
-#: ../js/ui/messageTray.js:2936
+#: ../js/ui/messageTray.js:2931
 msgid "System Information"
 msgstr "Systeminformasjon"
 
-#: ../js/ui/notificationDaemon.js:539 ../src/shell-app.c:397
+#: ../js/ui/notificationDaemon.js:515 ../src/shell-app.c:397
 msgctxt "program"
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: ../js/ui/overviewControls.js:486 ../js/ui/screenShield.js:153
+#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:153
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d ny melding"
 msgstr[1] "%d nye meldinger"
 
-#: ../js/ui/overview.js:82
+#: ../js/ui/overview.js:83
 msgid "Undo"
 msgstr "Angre"
 
-#: ../js/ui/overview.js:122
+#: ../js/ui/overview.js:123
 msgid "Overview"
 msgstr "Oversikt"
 
@@ -1149,7 +1149,7 @@ msgstr "Oversikt"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters. */
-#: ../js/ui/overview.js:256
+#: ../js/ui/overview.js:257
 msgid "Type to search…"
 msgstr "Skriv for å søke …"
 
@@ -1163,7 +1163,7 @@ msgstr "Avslutt"
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:900
+#: ../js/ui/panel.js:903
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -1175,7 +1175,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Oppgi en kommando"
 
-#: ../js/ui/runDialog.js:110
+#: ../js/ui/runDialog.js:114
 msgid "Close"
 msgstr "Lukk"
 
@@ -1192,19 +1192,19 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d ny varsling"
 msgstr[1] "%d nye varslinger"
 
-#: ../js/ui/screenShield.js:478 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "Lås"
 
-#: ../js/ui/screenShield.js:712
+#: ../js/ui/screenShield.js:708
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME må låse skjermen"
 
-#: ../js/ui/screenShield.js:839 ../js/ui/screenShield.js:1305
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1302
 msgid "Unable to lock"
 msgstr "Kan ikke låse"
 
-#: ../js/ui/screenShield.js:840 ../js/ui/screenShield.js:1306
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1303
 msgid "Lock was blocked by an application"
 msgstr "Låsing ble stoppet av et program"
 
@@ -1240,141 +1240,69 @@ msgstr "Passord"
 msgid "Remember Password"
 msgstr "Husk passord"
 
-#: ../js/ui/status/accessibility.js:41
+#: ../js/ui/status/accessibility.js:42
 msgid "Accessibility"
 msgstr "Tilgjengelighet"
 
-#: ../js/ui/status/accessibility.js:56
+#: ../js/ui/status/accessibility.js:57
 msgid "Zoom"
 msgstr "Zoom"
 
-#: ../js/ui/status/accessibility.js:63
+#: ../js/ui/status/accessibility.js:64
 msgid "Screen Reader"
 msgstr "Skjermleser"
 
-#: ../js/ui/status/accessibility.js:67
+#: ../js/ui/status/accessibility.js:68
 msgid "Screen Keyboard"
 msgstr "Tastatur på skjermen"
 
-#: ../js/ui/status/accessibility.js:71
+#: ../js/ui/status/accessibility.js:72
 msgid "Visual Alerts"
 msgstr "Synlig varsling"
 
-#: ../js/ui/status/accessibility.js:74
+#: ../js/ui/status/accessibility.js:75
 msgid "Sticky Keys"
 msgstr "Klebrige taster"
 
-#: ../js/ui/status/accessibility.js:77
+#: ../js/ui/status/accessibility.js:78
 msgid "Slow Keys"
 msgstr "Trege taster"
 
-#: ../js/ui/status/accessibility.js:80
+#: ../js/ui/status/accessibility.js:81
 msgid "Bounce Keys"
 msgstr "Spretne taster"
 
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:84
 msgid "Mouse Keys"
 msgstr "Mustaster"
 
-#: ../js/ui/status/accessibility.js:142
+#: ../js/ui/status/accessibility.js:143
 msgid "High Contrast"
 msgstr "Høy kontrast"
 
-#: ../js/ui/status/accessibility.js:191
+#: ../js/ui/status/accessibility.js:192
 msgid "Large Text"
 msgstr "Stor tekst"
 
-#: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:62
-#: ../js/ui/status/bluetooth.js:99 ../js/ui/status/bluetooth.js:127
-#: ../js/ui/status/bluetooth.js:163 ../js/ui/status/bluetooth.js:194
+#: ../js/ui/status/bluetooth.js:45
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:29 ../js/ui/status/network.js:132
+#: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:132
 #: ../js/ui/status/network.js:1083 ../js/ui/status/rfkill.js:48
 msgid "Turn Off"
 msgstr "Slå av"
 
-#: ../js/ui/status/bluetooth.js:32
+#: ../js/ui/status/bluetooth.js:50
 msgid "Bluetooth Settings"
 msgstr "Innstillinger for Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:57
+#: ../js/ui/status/bluetooth.js:98
 #, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d tilkoblet enhet"
 msgstr[1] "%d tilkoblede enheter"
-
-#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
-#, javascript-format
-msgid "Authorization request from %s"
-msgstr "Forespørsel om autorisering fra %s"
-
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/bluetooth.js:171
-#: ../js/ui/status/bluetooth.js:202
-#, javascript-format
-msgid "Device %s wants to pair with this computer"
-msgstr "Enhet %s vil koble seg sammen med denne datamaskinen"
-
-#: ../js/ui/status/bluetooth.js:108
-msgid "Allow"
-msgstr "Tillat"
-
-#: ../js/ui/status/bluetooth.js:109
-msgid "Deny"
-msgstr "Nekt"
-
-#: ../js/ui/status/bluetooth.js:134
-#, javascript-format
-msgid "Device %s wants access to the service '%s'"
-msgstr "Enhet %s vil ha tilgang til tjenesten «%s»"
-
-#: ../js/ui/status/bluetooth.js:136
-msgid "Always grant access"
-msgstr "Alltid gi tilgang"
-
-#: ../js/ui/status/bluetooth.js:137
-msgid "Grant this time only"
-msgstr "Gi tilgang kun denne ene gangen"
-
-#: ../js/ui/status/bluetooth.js:138
-msgid "Reject"
-msgstr "Avvis"
-
-#. Translators: argument is the device short name */
-#: ../js/ui/status/bluetooth.js:165
-#, javascript-format
-msgid "Pairing confirmation for %s"
-msgstr "Bekreftelse for tilkobling for %s"
-
-#: ../js/ui/status/bluetooth.js:172
-#, javascript-format
-msgid ""
-"Please confirm whether the Passkey '%06d' matches the one on the device."
-msgstr "Vennligst bekreft om passord «%06d» er lik den som brukes på enheten."
-
-#. Translators: this is the verb, not the noun */
-#: ../js/ui/status/bluetooth.js:175
-msgid "Matches"
-msgstr "Stemmer overens"
-
-#: ../js/ui/status/bluetooth.js:176
-msgid "Does not match"
-msgstr "Stemmer ikke overens"
-
-#: ../js/ui/status/bluetooth.js:195
-#, javascript-format
-msgid "Pairing request for %s"
-msgstr "Forespørsel om tilkobling for %s"
-
-#: ../js/ui/status/bluetooth.js:203
-msgid "Please enter the PIN mentioned on the device."
-msgstr "Vennligst oppgi PIN som oppgitt på enheten."
-
-#: ../js/ui/status/bluetooth.js:220
-msgid "OK"
-msgstr "OK"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1562,11 +1490,11 @@ msgstr "Logg inn som en annen bruker"
 msgid "Unlock Window"
 msgstr "Lås opp vindu"
 
-#: ../js/ui/viewSelector.js:99
+#: ../js/ui/viewSelector.js:100
 msgid "Applications"
 msgstr "Programmer"
 
-#: ../js/ui/viewSelector.js:103
+#: ../js/ui/viewSelector.js:104
 msgid "Search"
 msgstr "Søk"
 
@@ -1623,19 +1551,19 @@ msgstr[1] "%u innganger"
 msgid "System Sounds"
 msgstr "Systemlyder"
 
-#: ../src/main.c:351
+#: ../src/main.c:347
 msgid "Print version"
 msgstr "Skriv ut versjon"
 
-#: ../src/main.c:357
+#: ../src/main.c:353
 msgid "Mode used by GDM for login screen"
 msgstr "Modus som brukes av GDM for innloggingsskjermen"
 
-#: ../src/main.c:363
+#: ../src/main.c:359
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Bruk spesifikt modus, f.eks «gdm» for innloggingsskjerm"
 
-#: ../src/main.c:369
+#: ../src/main.c:365
 msgid "List possible modes"
 msgstr "Vis mulige modi"
 
