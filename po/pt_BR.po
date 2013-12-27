@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2013-12-26 23:56-0200\n"
+"POT-Creation-Date: 2013-12-27 00:03-0200\n"
 "PO-Revision-Date: 2013-07-30 07:37-0300\n"
 "Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
@@ -1155,12 +1155,11 @@ msgstr "Número de pontos de toque"
 
 #: ../clutter/clutter-gesture-action.c:655
 msgid "Threshold Trigger Edge"
-msgstr ""
+msgstr "Borda de limite de disparo"
 
 #: ../clutter/clutter-gesture-action.c:656
-#, fuzzy
 msgid "The trigger edge used by the action"
-msgstr "A linha do tempo utilizado pela animação"
+msgstr "A linha do tempo utilizado pela ação"
 
 #: ../clutter/clutter-grid-layout.c:1223
 msgid "Left attachment"
