@@ -792,11 +792,14 @@ meta_window_new (MetaDisplay   *display,
       return NULL;
     }
 
-  /* Grab server */
-  meta_display_grab (display);
   meta_error_trap_push (display); /* Push a trap over all of window
                                    * creation, to reduce XSync() calls
                                    */
+  /*
+   * This function executes without any server grabs held. This means that
+   * the window could have already gone away, or could go away at any point,
+   * so we must be careful with X error handling.
+   */
 
   if (!XGetWindowAttributes (display->xdisplay, xwindow, &attrs))
     {
@@ -1437,7 +1440,6 @@ meta_window_new (MetaDisplay   *display,
     unminimize_window_and_all_transient_parents (window);
 
   meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
-  meta_display_ungrab (display);
 
   window->constructing = FALSE;
 
@@ -1453,7 +1455,6 @@ meta_window_new (MetaDisplay   *display,
 
 error:
   meta_error_trap_pop (display);
-  meta_display_ungrab (display);
   return NULL;
 }
 
