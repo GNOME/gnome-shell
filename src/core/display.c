@@ -825,8 +825,6 @@ meta_display_open (void)
 
   enable_compositor (the_display);
    
-  meta_display_grab (the_display);
-  
   /* Now manage all existing windows */
   tmp = the_display->screens;
   while (tmp != NULL)
@@ -893,8 +891,6 @@ meta_display_open (void)
   }
 
   meta_idle_monitor_init_dbus ();
-
-  meta_display_ungrab (the_display);
 
   /* Done opening new display */
   the_display->display_opening = FALSE;

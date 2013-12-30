@@ -1329,12 +1329,6 @@ meta_window_new_shared (MetaDisplay         *display,
 
   window->constructing = FALSE;
 
-  return window;
-}
-
-static void
-display_notify_window (MetaDisplay *display, MetaWindow *window)
-{
   meta_display_notify_window_created (display, window);
 
   if (window->wm_state_demands_attention)
@@ -1342,6 +1336,8 @@ display_notify_window (MetaDisplay *display, MetaWindow *window)
 
   if (window->wm_hints_urgent)
     g_signal_emit_by_name (window->display, "window-marked-urgent", window);
+
+  return window;
 }
 
 MetaWindow *
@@ -1376,15 +1372,12 @@ meta_window_new_for_wayland (MetaDisplay        *display,
   attrs.override_redirect = 0;
   attrs.screen = scr->xscreen;
 
-  /* XXX: Note: In the Wayland case we currently still grab the
-   * xserver and trap X errors while creating a MetaWindow because we
-   * will still be making various redundant X requests (passing a
-   * window xid of None) until we thoroughly audit all the code to
-   * make sure it knows about non X based clients...
+  /* XXX: Note: In the Wayland case we currently still trap X errors while
+   * creating a MetaWindow because we will still be making various redundant
+   * X requests (passing a window xid of None) until we thoroughly audit all
+   * the code to make sure it knows about non X based clients...
    */
 
-  /* Grab server */
-  meta_display_grab (display);
   meta_error_trap_push (display); /* Push a trap over all of window
                                    * creation, to reduce XSync() calls
                                    */
@@ -1400,14 +1393,12 @@ meta_window_new_for_wayland (MetaDisplay        *display,
                                    &attrs);
 
   meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
-  meta_display_ungrab (display);
 
   /* XXX: Maybe this could be called in meta_window_new_shared() but
    * before splitting the X11 specific code out it came after the
-   * meta_display_ungrab() and we wanted to minimize the risk of
+   * meta_error_trap_pop() and we wanted to minimize the risk of
    * breaking something.
    */
-  display_notify_window (window->display, window);
 
   return window;
 }
@@ -1434,11 +1425,14 @@ meta_window_new (MetaDisplay       *display,
       return NULL;
     }
 
-  /* Grab server */
-  meta_display_grab (display);
   meta_error_trap_push (display); /* Push a trap over all of window
                                    * creation, to reduce XSync() calls
                                    */
+  /*
+   * This function executes without any server grabs held. This means that
+   * the window could have already gone away, or could go away at any point,
+   * so we must be careful with X error handling.
+   */
 
   if (!XGetWindowAttributes (display->xdisplay, xwindow, &attrs))
     {
@@ -1581,20 +1575,11 @@ meta_window_new (MetaDisplay       *display,
                                    &attrs);
 
   meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
-  meta_display_ungrab (display);
-
-  /* XXX: Maybe this could be called in meta_window_new_shared() but
-   * before splitting the X11 specific code out it came after the
-   * meta_display_ungrab() and we wanted to minimize the risk of
-   * breaking something.
-   */
-  display_notify_window (display, window);
 
   return window;
 
 error:
   meta_error_trap_pop (display);
-  meta_display_ungrab (display);
   return NULL;
 }
 
