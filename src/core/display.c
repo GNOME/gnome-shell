@@ -1155,7 +1155,18 @@ meta_display_screen_for_x_screen (MetaDisplay *display,
   return NULL;
 }
 
-/* Grab/ungrab routines taken from fvwm */
+/* Grab/ungrab routines taken from fvwm.
+ * Calling this function will cause X to ignore all other clients until
+ * you ungrab. This may not be quite as bad as it sounds, yet there is
+ * agreement that avoiding server grabs except when they are clearly needed
+ * is a good thing.
+ *
+ * If you do use such grabs, please clearly explain the necessity for their
+ * usage in a comment. Try to keep their scope extremely limited. In
+ * particular, try to avoid emitting any signals or notifications while
+ * a grab is active (if the signal receiver tries to block on an X request
+ * from another client at this point, you will have a deadlock).
+ */
 void
 meta_display_grab (MetaDisplay *display)
 {
