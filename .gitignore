@@ -48,7 +48,6 @@ po/*.pot
 50-metacity-key.xml
 libmutter.pc
 mutter
-mutter-launch
 org.gnome.mutter.gschema.valid
 org.gnome.mutter.gschema.xml
 org.gnome.mutter.wayland.gschema.valid
@@ -78,6 +77,7 @@ src/mutter-marshal.[ch]
 src/stamp-mutter-marshal.h
 src/meta-dbus-display-config.[ch]
 src/meta-dbus-idle-monitor.[ch]
+src/meta-dbus-login1.[ch]
 src/gtk-shell-protocol.c
 src/gtk-shell-server-protocol.h
 src/xdg-shell-protocol.c

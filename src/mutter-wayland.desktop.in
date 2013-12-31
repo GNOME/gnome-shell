@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 _Name=Mutter (wayland compositor)
-Exec=mutter-launch -- mutter --wayland --display-server
+Exec=mutter --wayland --display-server
 NoDisplay=true
 # name of loadable control center module
 X-GNOME-WMSettingsModule=metacity

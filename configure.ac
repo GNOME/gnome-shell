@@ -127,7 +127,6 @@ AM_GLIB_GNU_GETTEXT
 ## here we get the flags we'll actually use
 # GRegex requires Glib-2.14.0
 PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.14.0)
-PKG_CHECK_MODULES(MUTTER_LAUNCH, libdrm libsystemd-login)
 
 # Unconditionally use this dir to avoid a circular dep with gnomecc
 GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
@@ -200,7 +199,7 @@ AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
 AC_SUBST([WAYLAND_SCANNER])
 AC_SUBST(XWAYLAND_PATH)
 
-MUTTER_PC_MODULES="$MUTTER_PC_MODULES clutter-wayland-1.0 clutter-wayland-compositor-1.0 clutter-egl-1.0 wayland-server >= 1.4.93 libdrm"
+MUTTER_PC_MODULES="$MUTTER_PC_MODULES clutter-wayland-1.0 clutter-wayland-compositor-1.0 clutter-egl-1.0 wayland-server >= 1.4.93 libdrm libsystemd"
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
 
 PKG_CHECK_EXISTS([xi >= 1.6.99.1],

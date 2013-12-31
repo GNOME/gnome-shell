@@ -35,6 +35,7 @@ INCLUDES=								\
 mutter_built_sources = \
 	$(dbus_idle_built_sources)		\
 	$(dbus_display_config_built_sources)	\
+	$(dbus_login1_built_sources)		\
 	mutter-enum-types.h 			\
 	mutter-enum-types.c			\
 	gtk-shell-protocol.c			\
@@ -80,6 +81,8 @@ libmutter_la_SOURCES =				\
 	backends/native/meta-monitor-manager-kms.h	\
 	backends/native/meta-launcher.c			\
 	backends/native/meta-launcher.h			\
+	backends/native/dbus-utils.c			\
+	backends/native/dbus-utils.h			\
 	backends/x11/meta-backend-x11.c			\
 	backends/x11/meta-backend-x11.h			\
 	backends/x11/meta-cursor-renderer-x11.c		\
@@ -293,19 +296,6 @@ bin_PROGRAMS=mutter
 mutter_SOURCES = core/mutter.c
 mutter_LDADD = $(MUTTER_LIBS) libmutter.la
 
-bin_PROGRAMS+=mutter-launch
-
-mutter_launch_SOURCES = 			\
-	backends/native/weston-launch.c 	\
-	backends/native/weston-launch.h
-
-mutter_launch_CFLAGS = $(MUTTER_LAUNCH_CFLAGS) -DLIBDIR=\"$(libdir)\"
-mutter_launch_LDFLAGS = $(MUTTER_LAUNCH_LIBS) -lpam
-
-install-exec-hook:
-	-chown root $(DESTDIR)$(bindir)/mutter-launch
-	-chmod u+s $(DESTDIR)$(bindir)/mutter-launch
-
 if HAVE_INTROSPECTION
 include $(INTROSPECTION_MAKEFILE)
 
@@ -441,6 +431,15 @@ $(dbus_idle_built_sources) : Makefile.am org.gnome.Mutter.IdleMonitor.xml
 		--generate-c-code meta-dbus-idle-monitor				\
 		--c-generate-object-manager						\
 		$(srcdir)/org.gnome.Mutter.IdleMonitor.xml
+
+dbus_login1_built_sources = meta-dbus-login1.c meta-dbus-login1.h
+
+$(dbus_login1_built_sources) : Makefile.am org.freedesktop.login1.xml
+	$(AM_V_GEN)gdbus-codegen							\
+		--interface-prefix org.freedesktop.login1				\
+		--c-namespace Login1							\
+		--generate-c-code meta-dbus-login1					\
+		$(srcdir)/org.freedesktop.login1.xml
 
 %-protocol.c : $(srcdir)/wayland/protocol/%.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
