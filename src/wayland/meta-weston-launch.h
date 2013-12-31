@@ -37,10 +37,6 @@ GType             meta_launcher_get_type                (void) G_GNUC_CONST;
 
 MetaLauncher     *meta_launcher_new                     (void);
 
-gboolean          meta_launcher_activate_vt             (MetaLauncher  *self,
-							 int            number,
-							 GError       **error);
-
 gboolean          meta_launcher_set_drm_fd              (MetaLauncher  *self,
 							 int            drm_fd,
 							 GError       **error);

@@ -270,40 +270,6 @@ out:
 }
 
 static int
-handle_activate_vt(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
-{
-        struct weston_launcher_reply reply;
-	struct weston_launcher_activate_vt *message;
-
-	reply.header.opcode = WESTON_LAUNCHER_ACTIVATE_VT;
-	reply.ret = -1;
-
-	if (len != sizeof(*message)) {
-		error(0, 0, "missing value in activate_vt request");
-		goto out;
-	}
-
-	message = msg->msg_iov->iov_base;
-
-	reply.ret = ioctl(wl->tty, VT_ACTIVATE, message->vt);
-	if (reply.ret < 0)
-		reply.ret = -errno;
-
-	if (wl->verbose)
-		fprintf(stderr, "mutter-launch: activate VT, ret: %d\n", reply.ret);
-
-out:
-	do {
-		len = send(wl->sock[0], &reply, sizeof reply, 0);
-	} while (len < 0 && errno == EINTR);
-	if (len < 0)
-		return -1;
-
-	return 0;
-}
-
-
-static int
 handle_open(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 {
         struct weston_launcher_reply reply;
@@ -418,9 +384,6 @@ handle_socket_msg(struct weston_launch *wl)
 		break;
 	case WESTON_LAUNCHER_CONFIRM_VT_SWITCH:
 		ret = handle_confirm_vt_switch(wl, &msg, len);
-		break;
-	case WESTON_LAUNCHER_ACTIVATE_VT:
-		ret = handle_activate_vt(wl, &msg, len);
 		break;
 	}
 
