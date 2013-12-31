@@ -43,18 +43,8 @@
 
 #include "meta-weston-launch.h"
 
-struct _MetaLauncherClass
-{
-  GObjectClass parent_class;
-
-  void (*enter) (MetaLauncher *);
-  void (*leave) (MetaLauncher *);
-};
-
 struct _MetaLauncher
 {
-  GObject parent;
-
   GSocket *weston_launch;
 
   gboolean vt_switched;
@@ -65,16 +55,6 @@ struct _MetaLauncher
   GSource *inner_source;
   GSource *outer_source;
 };
-
-enum {
-  SIGNAL_ENTER,
-  SIGNAL_LEAVE,
-  SIGNAL_LAST
-};
-
-static int signals[SIGNAL_LAST];
-
-G_DEFINE_TYPE (MetaLauncher, meta_launcher, G_TYPE_OBJECT);
 
 static void handle_request_vt_switch (MetaLauncher *self);
 
@@ -240,22 +220,6 @@ meta_launcher_open_input_device (MetaLauncher  *self,
 }
 
 static void
-meta_launcher_finalize (GObject *object)
-{
-  MetaLauncher *launcher = META_LAUNCHER (object);
-
-  g_source_destroy (launcher->outer_source);
-  g_source_destroy (launcher->inner_source);
-
-  g_main_loop_unref (launcher->nested_loop);
-  g_main_context_unref (launcher->nested_context);
-
-  g_object_unref (launcher->weston_launch);
-
-  G_OBJECT_CLASS (meta_launcher_parent_class)->finalize (object);
-}
-
-static void
 meta_launcher_enter (MetaLauncher *launcher)
 {
   ClutterBackend *backend;
@@ -302,7 +266,7 @@ handle_request_vt_switch (MetaLauncher *launcher)
   GError *error;
   gboolean ok;
 
-  g_signal_emit (launcher, signals[SIGNAL_LEAVE], 0);
+  meta_launcher_leave (launcher);
 
   message.opcode = WESTON_LAUNCHER_CONFIRM_VT_SWITCH;
 
@@ -326,7 +290,7 @@ handle_request_vt_switch (MetaLauncher *launcher)
   g_assert (launcher->vt_switched);
   launcher->vt_switched = FALSE;
 
-  g_signal_emit (launcher, signals[SIGNAL_ENTER], 0);
+  meta_launcher_enter (launcher);
 }
 
 static gboolean
@@ -378,9 +342,10 @@ env_get_fd (const char *env)
     return g_ascii_strtoll (value, NULL, 10);
 }
 
-static void
-meta_launcher_init (MetaLauncher *self)
+MetaLauncher *
+meta_launcher_new (void)
 {
+  MetaLauncher *self = g_slice_new0 (MetaLauncher);
   int launch_fd;
 
   launch_fd = env_get_fd ("WESTON_LAUNCHER_SOCK");
@@ -403,37 +368,20 @@ meta_launcher_init (MetaLauncher *self)
   g_source_set_callback (self->inner_source, (GSourceFunc)on_socket_readable, self, NULL);
   g_source_attach (self->inner_source, self->nested_context);
   g_source_unref (self->inner_source);
+
+  return self;
 }
 
-static void
-meta_launcher_class_init (MetaLauncherClass *klass)
+void
+meta_launcher_free (MetaLauncher *launcher)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  g_source_destroy (launcher->outer_source);
+  g_source_destroy (launcher->inner_source);
 
-  object_class->finalize = meta_launcher_finalize;
+  g_main_loop_unref (launcher->nested_loop);
+  g_main_context_unref (launcher->nested_context);
 
-  klass->enter = meta_launcher_enter;
-  klass->leave = meta_launcher_leave;
+  g_object_unref (launcher->weston_launch);
 
-  signals[SIGNAL_ENTER] = g_signal_new ("enter",
-					G_TYPE_FROM_CLASS (klass),
-					G_SIGNAL_RUN_FIRST,
-					G_STRUCT_OFFSET (MetaLauncherClass, enter),
-					NULL, NULL, /* accumulator */
-					g_cclosure_marshal_VOID__VOID,
-					G_TYPE_NONE, 0);
-
-  signals[SIGNAL_LEAVE] = g_signal_new ("leave",
-					G_TYPE_FROM_CLASS (klass),
-					G_SIGNAL_RUN_FIRST,
-					G_STRUCT_OFFSET (MetaLauncherClass, leave),
-					NULL, NULL, /* accumulator */
-					g_cclosure_marshal_VOID__VOID,
-					G_TYPE_NONE, 0);
-}
-
-MetaLauncher *
-meta_launcher_new (void)
-{
-  return g_object_new (META_TYPE_LAUNCHER, NULL);
+  g_slice_free (MetaLauncher, launcher);
 }

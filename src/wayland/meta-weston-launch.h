@@ -23,19 +23,10 @@
 #include <glib-object.h>
 #include "weston-launch.h"
 
-#define META_TYPE_LAUNCHER              (meta_launcher_get_type())
-#define META_LAUNCHER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_LAUNCHER, MetaLauncher))
-#define META_LAUNCHER_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), META_TYPE_LAUNCHER, MetaLauncherClass))
-#define META_IS_LAUNCHER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_LAUNCHER))
-#define META_IS_LAUNCHER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), META_TYPE_LAUNCHER))
-#define META_LAUNCHER_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), META_LAUNCHER, MetaLauncherClass))
-
-typedef struct _MetaLauncher      MetaLauncher;
-typedef struct _MetaLauncherClass MetaLauncherClass;
-
-GType             meta_launcher_get_type                (void) G_GNUC_CONST;
+typedef struct _MetaLauncher MetaLauncher;
 
 MetaLauncher     *meta_launcher_new                     (void);
+void              meta_launcher_free                    (MetaLauncher  *self);
 
 gboolean          meta_launcher_set_drm_fd              (MetaLauncher  *self,
 							 int            drm_fd,
