@@ -623,15 +623,31 @@ meta_wayland_log_func (const char *fmt,
   g_free (str);
 }
 
+static gboolean
+are_we_native (int *out_drm_fd)
+{
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *cogl_context = clutter_backend_get_cogl_context (backend);
+  CoglRenderer *cogl_renderer = cogl_display_get_renderer (cogl_context_get_display (cogl_context));
+
+  if (cogl_renderer_get_winsys_id (cogl_renderer) == COGL_WINSYS_ID_EGL_KMS)
+    {
+      *out_drm_fd = cogl_kms_renderer_get_kms_fd (cogl_renderer);
+      return TRUE;
+    }
+  else
+    {
+      return FALSE;
+    }
+}
+
 void
 meta_wayland_init (void)
 {
   MetaWaylandCompositor *compositor = &_meta_wayland_compositor;
   MetaMonitorManager *monitors;
-  ClutterBackend *backend;
-  CoglContext *cogl_context;
-  CoglRenderer *cogl_renderer;
   char *display_name;
+  int drm_fd;
 
   memset (compositor, 0, sizeof (MetaWaylandCompositor));
 
@@ -676,25 +692,20 @@ meta_wayland_init (void)
   if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
     g_error ("Failed to initialize Clutter");
 
-  backend = clutter_get_default_backend ();
-  cogl_context = clutter_backend_get_cogl_context (backend);
-  cogl_renderer = cogl_display_get_renderer (cogl_context_get_display (cogl_context));
-
-  if (cogl_renderer_get_winsys_id (cogl_renderer) == COGL_WINSYS_ID_EGL_KMS)
-    compositor->drm_fd = cogl_kms_renderer_get_kms_fd (cogl_renderer);
-  else
-    compositor->drm_fd = -1;
-
-  if (compositor->drm_fd >= 0)
+  if (are_we_native (&drm_fd))
     {
-      GError *error;
-
-      error = NULL;
-      if (!meta_launcher_set_drm_fd (compositor->launcher, compositor->drm_fd, &error))
+      GError *error = NULL;
+      if (!meta_launcher_set_drm_fd (compositor->launcher, drm_fd, &error))
 	{
 	  g_error ("Failed to set DRM fd to weston-launch and become DRM master: %s", error->message);
 	  g_error_free (error);
 	}
+
+      compositor->native = TRUE;
+    }
+  else
+    {
+      compositor->native = FALSE;
     }
 
   meta_monitor_manager_initialize ();
@@ -711,8 +722,7 @@ meta_wayland_init (void)
 
   meta_wayland_data_device_manager_init (compositor->wayland_display);
 
-  compositor->seat = meta_wayland_seat_new (compositor->wayland_display,
-					    compositor->drm_fd >= 0);
+  compositor->seat = meta_wayland_seat_new (compositor->wayland_display, compositor->native);
 
   meta_wayland_init_shell (compositor);
 
@@ -757,5 +767,5 @@ meta_wayland_finalize (void)
 gboolean
 meta_wayland_compositor_is_native (MetaWaylandCompositor *compositor)
 {
-  return compositor->drm_fd >= 0;
+  return compositor->native;
 }

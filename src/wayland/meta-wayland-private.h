@@ -80,7 +80,7 @@ struct _MetaWaylandCompositor
   struct wl_resource *xserver_resource;
 
   MetaLauncher *launcher;
-  int drm_fd;
+  gboolean native;
 
   MetaWaylandSeat *seat;
 };
