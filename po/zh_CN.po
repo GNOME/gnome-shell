@@ -13,15 +13,16 @@
 # Aron Xu <aronxu@gnome.org>, 2010, 2011, 2012, 2013.
 # Wylmer Wang <wantinghard@gmail.com>, 2013.
 # eternalhui <www.eternalhui@gmail.com>, 2013.
+# Tong Hui <tonghuix@gmail.com>, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-22 12:17+0000\n"
-"PO-Revision-Date: 2013-07-07 22:59+0800\n"
-"Last-Translator: Sphinx Jiang <yishanj13@gmail.com>\n"
+"POT-Creation-Date: 2013-12-30 06:41+0000\n"
+"PO-Revision-Date: 2013-12-30 22:36+0800\n"
+"Last-Translator: Tong Hui <tonghuix@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +65,6 @@ msgid "Window management and application launching"
 msgstr "窗口管理和应用程序启动"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-#: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extension Preferences"
 msgstr "GNOME Shell 扩展首选项"
 
@@ -261,16 +261,7 @@ msgstr "仅在主显示器上显示工作区"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr "将鼠标模式下焦点的改变推迟到光标停止移动以后"
-
-#: ../js/extensionPrefs/main.js:125
-#, c-format
-msgid "There was an error loading the preferences dialog for %s:"
-msgstr "载入 %s 的首选想对话框出错："
-
-#: ../js/extensionPrefs/main.js:165
-msgid "Extension"
-msgstr "扩展"
+msgstr "将鼠标模式下焦点的更改推迟到指针停止移动之后"
 
 #: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
@@ -301,23 +292,15 @@ msgstr "登录"
 msgid "Choose Session"
 msgstr "选择会话"
 
-#. translators: this message is shown below the user list on the
-#. login screen. It can be activated to reveal an entry for
-#. manually entering the username.
 #: ../js/gdm/loginDialog.js:454
 msgid "Not listed?"
 msgstr "未列出？"
 
-#. Translators: this message is shown below the username entry field
-#. to clue the user in on how to login to the local network realm
 #: ../js/gdm/loginDialog.js:622
-#, c-format
+#, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(如 user 或 %s)"
 
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
 #: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:259
 #: ../js/ui/components/networkAgent.js:277
 msgid "Username: "
@@ -331,11 +314,6 @@ msgstr "登录窗口"
 msgid "Authentication error"
 msgstr "认证出错"
 
-#. We don't show fingerprint messages directly since it's
-#. not the main auth service. Instead we use the messages
-#. as a cue to display our own message.
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
 #: ../js/gdm/util.js:451
 msgid "(or swipe finger)"
 msgstr "(或滑动手指)"
@@ -344,20 +322,18 @@ msgstr "(或滑动手指)"
 msgid "Command not found"
 msgstr "命令未找到"
 
-#. Replace "Error invoking GLib.shell_parse_argv: " with
-#. something nicer
 #: ../js/misc/util.js:148
 msgid "Could not parse command:"
 msgstr "不能解析命令："
 
 #: ../js/misc/util.js:156
-#, c-format
+#, javascript-format
 msgid "Execution of '%s' failed:"
 msgstr "运行“%s”失败："
 
 #: ../js/ui/appDisplay.js:596
 msgid "Frequently used applications will appear here"
-msgstr "常用的应用程序将会出现在这里"
+msgstr "常用的应用程序会出现在这里"
 
 #: ../js/ui/appDisplay.js:712
 msgid "Frequent"
@@ -380,12 +356,12 @@ msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
 #: ../js/ui/appFavorites.js:87
-#, c-format
+#, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s 已经添加到了您的收藏夹。"
 
 #: ../js/ui/appFavorites.js:121
-#, c-format
+#, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s 已经从您的收藏夹移除。"
 
@@ -400,68 +376,68 @@ msgstr "更换壁纸..."
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
+#. */
 #: ../js/ui/calendar.js:62
 msgctxt "event list time"
 msgid "All Day"
 msgstr "全天"
 
 #. Translators: Shown in calendar event list, if 24h format,
-#. \u2236 is a ratio character, similar to :
+#. \u2236 is a ratio character, similar to : */
 #: ../js/ui/calendar.js:68
 msgctxt "event list time"
-msgid "%H\\u2236%M"
-msgstr "%H\\u2236%M"
+msgid "%H∶%M"
+msgstr "%H∶%M"
 
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
-#. a thin space
+#. a thin space */
 #: ../js/ui/calendar.js:77
 msgctxt "event list time"
-msgid "%l\\u2236%M\\u2009%p"
-msgstr "%l\\u2236%M\\u2009%p"
+msgid "%l∶%M %p"
+msgstr "%p %l∶%M"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
+#. */
 #: ../js/ui/calendar.js:108
 msgctxt "grid sunday"
 msgid "S"
 msgstr "日"
 
-#. Translators: Calendar grid abbreviation for Monday
+#. Translators: Calendar grid abbreviation for Monday */
 #: ../js/ui/calendar.js:110
 msgctxt "grid monday"
 msgid "M"
 msgstr "一"
 
-#. Translators: Calendar grid abbreviation for Tuesday
+#. Translators: Calendar grid abbreviation for Tuesday */
 #: ../js/ui/calendar.js:112
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "二"
 
-#. Translators: Calendar grid abbreviation for Wednesday
+#. Translators: Calendar grid abbreviation for Wednesday */
 #: ../js/ui/calendar.js:114
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "三"
 
-#. Translators: Calendar grid abbreviation for Thursday
+#. Translators: Calendar grid abbreviation for Thursday */
 #: ../js/ui/calendar.js:116
 msgctxt "grid thursday"
 msgid "T"
 msgstr "四"
 
-#. Translators: Calendar grid abbreviation for Friday
+#. Translators: Calendar grid abbreviation for Friday */
 #: ../js/ui/calendar.js:118
 msgctxt "grid friday"
 msgid "F"
 msgstr "五"
 
-#. Translators: Calendar grid abbreviation for Saturday
+#. Translators: Calendar grid abbreviation for Saturday */
 #: ../js/ui/calendar.js:120
 msgctxt "grid saturday"
 msgid "S"
@@ -472,47 +448,51 @@ msgstr "六"
 #. * NOTE: These list abbreviations are normally not shown together
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
-#.
+#. */
 #: ../js/ui/calendar.js:133
 msgctxt "list sunday"
 msgid "Su"
 msgstr "星期日"
 
-#. Translators: Event list abbreviation for Monday
+#. Translators: Event list abbreviation for Monday */
 #: ../js/ui/calendar.js:135
 msgctxt "list monday"
 msgid "M"
 msgstr "星期一"
 
-#. Translators: Event list abbreviation for Tuesday
+#. Translators: Event list abbreviation for Tuesday */
 #: ../js/ui/calendar.js:137
 msgctxt "list tuesday"
 msgid "T"
 msgstr "星期二"
 
-#. Translators: Event list abbreviation for Wednesday
+#. Translators: Event list abbreviation for Wednesday */
 #: ../js/ui/calendar.js:139
 msgctxt "list wednesday"
 msgid "W"
 msgstr "星期三"
 
-#. Translators: Event list abbreviation for Thursday
+#. Translators: Event list abbreviation for Thursday */
 #: ../js/ui/calendar.js:141
 msgctxt "list thursday"
 msgid "Th"
 msgstr "星期四"
 
-#. Translators: Event list abbreviation for Friday
+#. Translators: Event list abbreviation for Friday */
 #: ../js/ui/calendar.js:143
 msgctxt "list friday"
 msgid "F"
 msgstr "星期五"
 
-#. Translators: Event list abbreviation for Saturday
+#. Translators: Event list abbreviation for Saturday */
 #: ../js/ui/calendar.js:145
 msgctxt "list saturday"
 msgid "S"
 msgstr "星期六"
+
+#: ../js/ui/calendar.js:389
+msgid "calendar:MY"
+msgstr "日历：我"
 
 #: ../js/ui/calendar.js:447
 msgid "Previous month"
@@ -522,18 +502,18 @@ msgstr "上个月"
 msgid "Next month"
 msgstr "下个月"
 
-#. Translators: Text to show if there are no events
+#. Translators: Text to show if there are no events */
 #: ../js/ui/calendar.js:753
 msgid "Nothing Scheduled"
 msgstr "无计划"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current year */
 #: ../js/ui/calendar.js:771
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on different year */
 #: ../js/ui/calendar.js:774
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
@@ -568,7 +548,7 @@ msgid "Removable Devices"
 msgstr "可移动设备"
 
 #: ../js/ui/components/autorunManager.js:594
-#, c-format
+#, javascript-format
 msgid "Open with %s"
 msgstr "使用 %s 打开"
 
@@ -589,7 +569,6 @@ msgstr "再输一次："
 msgid "Connect"
 msgstr "连接"
 
-#. Cisco LEAP
 #: ../js/ui/components/networkAgent.js:222
 #: ../js/ui/components/networkAgent.js:234
 #: ../js/ui/components/networkAgent.js:261
@@ -598,7 +577,6 @@ msgstr "连接"
 msgid "Password: "
 msgstr "密码："
 
-#. static WEP
 #: ../js/ui/components/networkAgent.js:227
 msgid "Key: "
 msgstr "密钥："
@@ -620,7 +598,7 @@ msgid "Authentication required by wireless network"
 msgstr "无线网络要求身份认证"
 
 #: ../js/ui/components/networkAgent.js:309
-#, c-format
+#, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "'%s'."
@@ -655,7 +633,7 @@ msgid "Mobile broadband network password"
 msgstr "移动宽带网络密码"
 
 #: ../js/ui/components/networkAgent.js:336
-#, c-format
+#, javascript-format
 msgid "A password is required to connect to '%s'."
 msgstr "连接到“%s”需要密码。"
 
@@ -674,23 +652,19 @@ msgstr "认证"
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
-#. * for instance.
+#. * for instance. */
 #: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "抱歉，您的输入有误。请重试。"
 
-#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
-#. system-users for now as Empathy does.
 #: ../js/ui/components/telepathyClient.js:237
 msgid "Invitation"
 msgstr "邀请"
 
-#. We got the TpContact
 #: ../js/ui/components/telepathyClient.js:297
 msgid "Call"
 msgstr "呼叫"
 
-#. We got the TpContact
 #: ../js/ui/components/telepathyClient.js:313
 msgid "File Transfer"
 msgstr "文件传送"
@@ -707,49 +681,45 @@ msgstr "取消静音"
 msgid "Mute"
 msgstr "静音"
 
-#. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"
+#. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:941
-#, no-c-format
 msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgstr "<b>昨天 %H:%M</b>"
 
-#. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30
+#. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30*/
 #: ../js/ui/components/telepathyClient.js:947
-#, no-c-format
 msgid "<b>%A</b>, <b>%H:%M</b>"
 msgstr "<b>%A %H:%M</b>"
 
-#. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"
+#. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:952
-#, no-c-format
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
 msgstr "<b>%B %H:%M</b>"
 
-#. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"
+#. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:956
-#, no-c-format
 msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 msgstr "<b>%Y年%B%d日 %H:%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
-#. IM name.
+#. IM name. */
 #: ../js/ui/components/telepathyClient.js:985
-#, c-format
+#, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s 现在叫做 %s"
 
 #. translators: argument is a room name like
-#. * room@jabber.org for example.
+#. * room@jabber.org for example. */
 #: ../js/ui/components/telepathyClient.js:1088
-#, c-format
+#, javascript-format
 msgid "Invitation to %s"
 msgstr "邀请 %s"
 
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example.
+#. * for example. */
 #: ../js/ui/components/telepathyClient.js:1096
-#, c-format
+#, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s 要请您加入 %s"
 
@@ -766,19 +736,19 @@ msgstr "拒绝"
 msgid "Accept"
 msgstr "接受"
 
-#. translators: argument is a contact name like Alice for example.
+#. translators: argument is a contact name like Alice for example. */
 #: ../js/ui/components/telepathyClient.js:1129
-#, c-format
+#, javascript-format
 msgid "Video call from %s"
 msgstr "来自 %s 的视频呼叫"
 
-#. translators: argument is a contact name like Alice for example.
+#. translators: argument is a contact name like Alice for example. */
 #: ../js/ui/components/telepathyClient.js:1132
-#, c-format
+#, javascript-format
 msgid "Call from %s"
 msgstr "来自 %s 的呼叫"
 
-#. translators: this is a button label (verb), not a noun
+#. translators: this is a button label (verb), not a noun */
 #: ../js/ui/components/telepathyClient.js:1141
 msgid "Answer"
 msgstr "接听"
@@ -787,15 +757,15 @@ msgstr "接听"
 #. * the contact's alias and the second one is the
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
-#.
+#. */
 #: ../js/ui/components/telepathyClient.js:1173
-#, c-format
+#, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s 正在向您发送 %s"
 
-#. To translators: The parameter is the contact's alias
+#. To translators: The parameter is the contact's alias */
 #: ../js/ui/components/telepathyClient.js:1208
-#, c-format
+#, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s 想得到授权来查看您的在线状态"
 
@@ -900,9 +870,9 @@ msgid "Internal error"
 msgstr "内部错误"
 
 #. translators: argument is the account name, like
-#. * name@jabber.org for example.
+#. * name@jabber.org for example. */
 #: ../js/ui/components/telepathyClient.js:1356
-#, c-format
+#, javascript-format
 msgid "Unable to connect to %s"
 msgstr "无法连接到 %s"
 
@@ -922,8 +892,6 @@ msgstr "窗口"
 msgid "Show Applications"
 msgstr "显示应用程序"
 
-#. Translators: this is the name of the dock/favorites area on
-#. the left of the overview
 #: ../js/ui/dash.js:442
 msgid "Dash"
 msgstr "Dash"
@@ -942,13 +910,13 @@ msgstr "日期和时间设置"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#.
+#. */
 #: ../js/ui/dateMenu.js:202
 msgid "%A %B %e, %Y"
 msgstr "%Y年%m月%d日%A"
 
 #: ../js/ui/endSessionDialog.js:62
-#, c-format
+#, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "注销 %s"
@@ -959,13 +927,13 @@ msgid "Log Out"
 msgstr "注销"
 
 #: ../js/ui/endSessionDialog.js:65
-#, c-format
+#, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s 将在 %d 秒后自动注销。"
 
 #: ../js/ui/endSessionDialog.js:70
-#, c-format
+#, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "您将在 %d 秒后自动注销。"
@@ -981,7 +949,7 @@ msgid "Power Off"
 msgstr "关机"
 
 #: ../js/ui/endSessionDialog.js:83
-#, c-format
+#, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动关机。"
@@ -1002,7 +970,7 @@ msgid "Restart"
 msgstr "重启"
 
 #: ../js/ui/endSessionDialog.js:99
-#, c-format
+#, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动重启。"
@@ -1013,7 +981,7 @@ msgid "Restart & Install Updates"
 msgstr "重启并安装更新"
 
 #: ../js/ui/endSessionDialog.js:114
-#, c-format
+#, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -1026,21 +994,21 @@ msgstr "重启并安装"
 
 #: ../js/ui/endSessionDialog.js:271
 msgid "Some applications are busy or have unsaved work."
-msgstr "某些应用程序正忙或有未保存的工作。"
+msgstr "有些应用程序正忙或有未保存的工作。"
 
 #: ../js/ui/endSessionDialog.js:277
 msgid "Other users are logged in."
 msgstr "有其他用户登录。"
 
-#. Translators: Remote here refers to a remote session, like a ssh login
+#. Translators: Remote here refers to a remote session, like a ssh login */
 #: ../js/ui/endSessionDialog.js:479
-#, c-format
+#, javascript-format
 msgid "%s (remote)"
 msgstr "%s (远程)"
 
-#. Translators: Console here refers to a tty like a VT console
+#. Translators: Console here refers to a tty like a VT console */
 #: ../js/ui/endSessionDialog.js:482
-#, c-format
+#, javascript-format
 msgid "%s (console)"
 msgstr "%s (控制台)"
 
@@ -1049,11 +1017,11 @@ msgid "Install"
 msgstr "安装"
 
 #: ../js/ui/extensionDownloader.js:204
-#, c-format
+#, javascript-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "从 extensions.gnome.org 下载并安装 %s？"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
+#: ../js/ui/keyboard.js:619
 msgid "Keyboard"
 msgstr "键盘"
 
@@ -1061,9 +1029,9 @@ msgstr "键盘"
 msgid "No extensions installed"
 msgstr "未安装扩展"
 
-#. Translators: argument is an extension UUID.
+#. Translators: argument is an extension UUID. */
 #: ../js/ui/lookingGlass.js:743
-#, c-format
+#, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s 没有传出任何错误信息。"
 
@@ -1080,7 +1048,7 @@ msgid "Enabled"
 msgstr "已启用"
 
 #. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode)
+#. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
 #: ../js/ui/lookingGlass.js:765 ../js/ui/status/network.js:472
@@ -1150,7 +1118,7 @@ msgid "Unknown"
 msgstr "未知"
 
 #: ../js/ui/overviewControls.js:488 ../js/ui/screenShield.js:153
-#, c-format
+#, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d 条新消息"
@@ -1166,7 +1134,7 @@ msgstr "概览"
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
-#. characters.
+#. characters. */
 #: ../js/ui/overview.js:258
 msgid "Type to search…"
 msgstr "搜索..."
@@ -1176,7 +1144,7 @@ msgid "Quit"
 msgstr "退出"
 
 #. Translators: If there is no suitable word for "Activities"
-#. in your language, you can use the word for "Overview".
+#. in your language, you can use the word for "Overview". */
 #: ../js/ui/panel.js:568
 msgid "Activities"
 msgstr "活动"
@@ -1185,11 +1153,6 @@ msgstr "活动"
 msgid "Top Bar"
 msgstr "顶栏"
 
-#. Translators: this MUST be either "toggle-switch-us"
-#. (for toggle switches containing the English words
-#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
-#. switches containing "◯" and "|"). Other values will
-#. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:260
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
@@ -1203,13 +1166,13 @@ msgid "Close"
 msgstr "关闭"
 
 #. Translators: This is a time format for a date in
-#. long format
+#. long format */
 #: ../js/ui/screenShield.js:89
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
 #: ../js/ui/screenShield.js:155
-#, c-format
+#, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d 个新提示"
@@ -1222,13 +1185,6 @@ msgstr "锁定"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME 需要锁定屏幕"
 
-#. We could not become modal, so we can't activate the
-#. screenshield. The user is probably very upset at this
-#. point, but any application using global grabs is broken
-#. Just tell him to stop using this app
-#.
-#. XXX: another option is to kick the user into the gdm login
-#. screen, where we're not affected by grabs
 #: ../js/ui/screenShield.js:839 ../js/ui/screenShield.js:1305
 msgid "Unable to lock"
 msgstr "无法锁定"
@@ -1313,8 +1269,6 @@ msgstr "高对比度"
 msgid "Large Text"
 msgstr "大号文本"
 
-#. The Bluetooth menu only appears when Bluetooth is in use,
-#. so just statically build it with a "Turn Off" menu item.
 #: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:62
 #: ../js/ui/status/bluetooth.js:99 ../js/ui/status/bluetooth.js:127
 #: ../js/ui/status/bluetooth.js:163 ../js/ui/status/bluetooth.js:194
@@ -1331,19 +1285,19 @@ msgid "Bluetooth Settings"
 msgstr "蓝牙设置"
 
 #: ../js/ui/status/bluetooth.js:57
-#, c-format
+#, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "已连接 %d 台设备"
 
 #: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
-#, c-format
+#, javascript-format
 msgid "Authorization request from %s"
 msgstr "来自 %s 的认证请求"
 
 #: ../js/ui/status/bluetooth.js:106 ../js/ui/status/bluetooth.js:171
 #: ../js/ui/status/bluetooth.js:202
-#, c-format
+#, javascript-format
 msgid "Device %s wants to pair with this computer"
 msgstr "设备 %s 希望与此电脑配对"
 
@@ -1356,7 +1310,7 @@ msgid "Deny"
 msgstr "拒绝"
 
 #: ../js/ui/status/bluetooth.js:134
-#, c-format
+#, javascript-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "设备 %s 希望访问 %s 服务"
 
@@ -1372,19 +1326,19 @@ msgstr "允许一次"
 msgid "Reject"
 msgstr "拒绝"
 
-#. Translators: argument is the device short name
+#. Translators: argument is the device short name */
 #: ../js/ui/status/bluetooth.js:165
-#, c-format
+#, javascript-format
 msgid "Pairing confirmation for %s"
 msgstr "%s 的配对确认"
 
 #: ../js/ui/status/bluetooth.js:172
-#, c-format
+#, javascript-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr "请确认密钥“%06d”是否与设备上的相符。"
 
-#. Translators: this is the verb, not the noun
+#. Translators: this is the verb, not the noun */
 #: ../js/ui/status/bluetooth.js:175
 msgid "Matches"
 msgstr "相同"
@@ -1394,7 +1348,7 @@ msgid "Does not match"
 msgstr "不同"
 
 #: ../js/ui/status/bluetooth.js:195
-#, c-format
+#, javascript-format
 msgid "Pairing request for %s"
 msgstr "%s 的配对请求"
 
@@ -1410,10 +1364,6 @@ msgstr "确定"
 msgid "Brightness"
 msgstr "亮度"
 
-#: ../js/ui/status/keyboard.js:401
-msgid "Show Keyboard Layout"
-msgstr "显示键盘布局"
-
 #: ../js/ui/status/network.js:71
 msgid "<unknown>"
 msgstr "<未知>"
@@ -1424,7 +1374,7 @@ msgid "Off"
 msgstr "关"
 
 #. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu)
+#. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:385
 msgid "unmanaged"
 msgstr "设备未托管"
@@ -1437,19 +1387,19 @@ msgstr "正在断开..."
 msgid "connecting..."
 msgstr "正在连接..."
 
-#. Translators: this is for network connections that require some kind of key or password
+#. Translators: this is for network connections that require some kind of key or password */
 #: ../js/ui/status/network.js:396 ../js/ui/status/network.js:1177
 msgid "authentication required"
 msgstr "需要认证"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing
+#. module, which is missing */
 #: ../js/ui/status/network.js:404
 msgid "firmware missing"
 msgstr "固件缺失"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage
+#. is disabled by rfkill, or it has no coverage */
 #: ../js/ui/status/network.js:408
 msgid "unavailable"
 msgstr "不可用"
@@ -1472,7 +1422,7 @@ msgstr "Wi-Fi 网络"
 
 #: ../js/ui/status/network.js:709
 msgid "Select a network"
-msgstr "选择一个网络"
+msgstr "选择网络"
 
 #: ../js/ui/status/network.js:733
 msgid "No Networks"
@@ -1488,11 +1438,11 @@ msgstr "Wi-Fi 设置"
 
 #: ../js/ui/status/network.js:1099
 msgid "Turn On"
-msgstr "打开"
+msgstr "开启"
 
 #: ../js/ui/status/network.js:1122
 msgid "Not Connected"
-msgstr "未连接"
+msgstr "无连接"
 
 #: ../js/ui/status/network.js:1242
 msgid "VPN"
@@ -1520,32 +1470,22 @@ msgstr "电源设置"
 
 #: ../js/ui/status/power.js:63
 msgid "Fully Charged"
-msgstr "已充满"
+msgstr "已充满电"
 
-#. 0 is reported when UPower does not have enough data
-#. to estimate battery life
-#. state is one of PENDING_CHARGING, PENDING_DISCHARGING
 #: ../js/ui/status/power.js:69 ../js/ui/status/power.js:86
 msgid "Estimating…"
 msgstr "正在估计..."
 
-#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:77
-#, c-format
-#| msgid "%d∶%02d Remaining (%d%%)"
-msgid "%d\\u2236%02d Remaining (%d%%)"
-msgstr "剩余 %d\\u2236%02d (%d%%)"
+#, javascript-format
+msgid "%d∶%02d Remaining (%d%%)"
+msgstr "剩余 %d:%02d (%d%%)"
 
-#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:82
-#, c-format
-#| msgid "%d∶%02d Until Full (%d%%)"
-msgid "%d\\u2236%02d Until Full (%d%%)"
-msgstr "距充满还有 %d\\u2236%02d (%d%%)"
+#, javascript-format
+msgid "%d∶%02d Until Full (%d%%)"
+msgstr "距充满还剩 %d:%02d (%d%%)"
 
-#. The menu only appears when airplane mode is on, so just
-#. statically build it as if it was on, rather than dynamically
-#. changing the menu contents.
 #: ../js/ui/status/rfkill.js:43
 msgid "Airplane Mode"
 msgstr "飞行模式"
@@ -1568,7 +1508,7 @@ msgstr "注销"
 
 #: ../js/ui/status/system.js:338
 msgid "Orientation Lock"
-msgstr "方向锁"
+msgstr "方向锁定"
 
 #: ../js/ui/status/system.js:346
 msgid "Suspend"
@@ -1607,7 +1547,7 @@ msgid "Search"
 msgstr "搜索"
 
 #: ../js/ui/wanda.js:77
-#, c-format
+#, javascript-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
 "%s"
@@ -1616,35 +1556,35 @@ msgstr ""
 "%s"
 
 #: ../js/ui/wanda.js:81
-#, c-format
+#, javascript-format
 msgid "%s the Oracle says"
 msgstr "预言家 %s 说"
 
 #: ../js/ui/windowAttentionHandler.js:19
-#, c-format
+#, javascript-format
 msgid "'%s' is ready"
 msgstr "%s 已就绪"
 
 #: ../js/ui/windowManager.js:56
 msgid "Do you want to keep these display settings?"
-msgstr "您想要保存这些显示器设置吗？"
+msgstr "你想保留这些显示设置吗？"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
-#.
+#. */
 #: ../js/ui/windowManager.js:75
 msgid "Revert Settings"
 msgstr "还原设置"
 
 #: ../js/ui/windowManager.js:79
 msgid "Keep Changes"
-msgstr "保存修改"
+msgstr "保留更改"
 
 #: ../js/ui/windowManager.js:97
-#, c-format
+#, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
-msgstr[0] "设置将会在 %d 秒后还原"
+msgstr[0] "设置更改将在 %d 后还原"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1703,19 +1643,25 @@ msgstr "密码不能为空"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "认证对话框被用户驳回"
 
+#~ msgid "There was an error loading the preferences dialog for %s:"
+#~ msgstr "载入 %s 的首选想对话框出错："
+
+#~ msgid "Extension"
+#~ msgstr "扩展"
+
+#~ msgid "Show Keyboard Layout"
+#~ msgstr "显示键盘布局"
+
+#~ msgid "UPS"
+#~ msgstr "UPS"
+
 #~ msgctxt "event list time"
-#~ msgid "%H∶%M"
-#~ msgstr "%H∶%M"
+#~ msgid "%H\\u2236%M"
+#~ msgstr "%H\\u2236%M"
 
-#, fuzzy
-#~ msgid "calendar:MY"
-#~ msgstr "日历：月年"
-
-#~ msgid "Screenshots"
-#~ msgstr "屏幕截图"
-
-#~ msgid "Record a screencast"
-#~ msgstr "屏幕录像"
+#~ msgctxt "event list time"
+#~ msgid "%l\\u2236%M\\u2009%p"
+#~ msgstr "%l\\u2236%M\\u2009%p"
 
 #~ msgid ""
 #~ "Internally used to store the last IM presence explicitly set by the user. "
@@ -1730,6 +1676,41 @@ msgstr "认证对话框被用户驳回"
 #~ msgstr ""
 #~ "用于内部保存上次会话用户的在线状态。这里的值取自 GsmPresenceStatus 枚举变"
 #~ "量。"
+
+#~ msgid "Session"
+#~ msgstr "会话"
+
+#~ msgid "Click Log Out to quit these applications and log out of the system."
+#~ msgstr "点“注销“来退出这些应用程序及系统"
+
+#~ msgid "Logging out of the system."
+#~ msgstr "从系统注销"
+
+#~ msgid "Click Power Off to quit these applications and power off the system."
+#~ msgstr "点击关机以退出应用程序并关闭系统。"
+
+#~ msgid "Powering off the system."
+#~ msgstr "关闭系统。"
+
+#~ msgid "Click Restart to quit these applications and restart the system."
+#~ msgstr "点“重启”来退出这些应用程序并重启系统。"
+
+#~ msgid "Restarting the system."
+#~ msgstr "正在重启系统。"
+
+#, fuzzy
+#~| msgid "Settings"
+#~ msgid "Settings Menu"
+#~ msgstr "设置"
+
+#~ msgid "Shutting down might cause them to lose unsaved work."
+#~ msgstr "关机可能导致他们丢失尚未保存的工作内容。"
+
+#~ msgid "Screenshots"
+#~ msgstr "屏幕截图"
+
+#~ msgid "Record a screencast"
+#~ msgstr "屏幕录像"
 
 #~ msgid "Keybinding to toggle the screen recorder"
 #~ msgstr "用来开关屏幕录像程序的快捷键"
@@ -1781,9 +1762,6 @@ msgstr "认证对话框被用户驳回"
 #~ "录制的屏幕录像的文件名将是根据当前时间得到的独特值，并使用这个扩展名。录制"
 #~ "另外一个不同容器格式的录像时，它应该被更改。"
 
-#~ msgid "Session"
-#~ msgstr "会话"
-
 #~ msgid "Power"
 #~ msgstr "电源"
 
@@ -1793,23 +1771,8 @@ msgstr "认证对话框被用户驳回"
 #~ msgid "Screencast from %d %t"
 #~ msgstr "%d %t 的屏幕录像"
 
-#~ msgid "Click Log Out to quit these applications and log out of the system."
-#~ msgstr "点“注销“来退出这些应用程序及系统"
-
-#~ msgid "Logging out of the system."
-#~ msgstr "从系统注销"
-
-#~ msgid "Click Power Off to quit these applications and power off the system."
-#~ msgstr "点击关机以退出应用程序并关闭系统。"
-
-#~ msgid "Powering off the system."
-#~ msgstr "关闭系统。"
-
-#~ msgid "Click Restart to quit these applications and restart the system."
-#~ msgstr "点“重启”来退出这些应用程序并重启系统。"
-
-#~ msgid "Restarting the system."
-#~ msgstr "正在重启系统。"
+#~ msgid "Volume, network, battery"
+#~ msgstr "Volume, network, battery, 卷, 网络, 电源"
 
 #~ msgid "Universal Access Settings"
 #~ msgstr "通用访问设置"
@@ -1840,9 +1803,6 @@ msgstr "认证对话框被用户驳回"
 
 #~ msgid "Region & Language Settings"
 #~ msgstr "区域和语言设置"
-
-#~ msgid "Volume, network, battery"
-#~ msgstr "Volume, network, battery, 卷, 网络, 电源"
 
 #~ msgid "Wi-Fi"
 #~ msgstr "Wi-Fi"
@@ -1887,9 +1847,6 @@ msgstr "认证对话框被用户驳回"
 
 #~ msgid "Laptop Battery"
 #~ msgstr "笔记本电池"
-
-#~ msgid "UPS"
-#~ msgstr "UPS"
 
 #~ msgid "Monitor"
 #~ msgstr "显示器"
@@ -1941,9 +1898,6 @@ msgstr "认证对话框被用户驳回"
 #~ msgstr ""
 #~ "提示现已禁用，聊天消息也同时被禁用。您的在线状态已被自动调整，以便他人知道"
 #~ "您可能无法看到消息。"
-
-#~ msgid "Shutting down might cause them to lose unsaved work."
-#~ msgstr "关机可能导致他们丢失尚未保存的工作内容。"
 
 #~ msgid "cable unplugged"
 #~ msgstr "线缆被拔出"
