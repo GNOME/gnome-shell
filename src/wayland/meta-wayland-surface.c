@@ -56,7 +56,6 @@
 #include <meta/main.h>
 #include "frame.h"
 #include "meta-idle-monitor-private.h"
-#include "meta-weston-launch.h"
 #include "monitor-private.h"
 
 static void
