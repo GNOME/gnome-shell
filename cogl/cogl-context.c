@@ -50,6 +50,8 @@
 #include "cogl-config-private.h"
 #include "cogl-error-private.h"
 
+#include "cogl/deprecated/cogl-framebuffer-deprecated.h"
+
 #include <string.h>
 #include <stdlib.h>
 
