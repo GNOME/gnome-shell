@@ -300,7 +300,6 @@ shell_global_init (ShellGlobal *global)
 
   global->js_context = g_object_new (GJS_TYPE_CONTEXT,
                                      "search-path", search_path,
-                                     "js-version", "1.8",
                                      "gc-notifications", TRUE,
                                      NULL);
   g_signal_connect (global->js_context, "gc", G_CALLBACK (shell_global_on_gc), global);
