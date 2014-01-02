@@ -27,9 +27,7 @@
  *  Robert Bragg   <robert@linux.intel.com>
  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#include <config.h>
 
 #include "cogl-context-private.h"
 #include "cogl-texture.h"
@@ -46,6 +44,8 @@
 #include "cogl-texture-rectangle.h"
 #include "cogl-sub-texture.h"
 #include "cogl-texture-2d-gl.h"
+
+#include "deprecated/cogl-auto-texture.h"
 
 static CoglTexture *
 _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
@@ -396,4 +396,17 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
       cogl_texture_allocate (tex, NULL);
       return tex;
     }
+}
+
+CoglTexture *
+cogl_texture_new_from_sub_texture (CoglTexture *full_texture,
+                                   int sub_x,
+                                   int sub_y,
+                                   int sub_width,
+                                   int sub_height)
+{
+  _COGL_GET_CONTEXT (ctx, NULL);
+  return COGL_TEXTURE (cogl_sub_texture_new (ctx,
+                                             full_texture, sub_x, sub_y,
+                                             sub_width, sub_height));
 }

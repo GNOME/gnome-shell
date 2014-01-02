@@ -88,6 +88,8 @@
  * they enable the experimental api... */
 #include <cogl/deprecated/cogl-type-casts.h>
 
+#include <cogl/deprecated/cogl-auto-texture.h>
+
 /*
  * 2.0 api that's compatible with the 1.x api...
  */

@@ -78,6 +78,7 @@ cogl_deprecated_h = \
 	$(srcdir)/deprecated/cogl-type-casts.h       	\
 	$(srcdir)/deprecated/cogl-framebuffer-deprecated.h \
 	$(srcdir)/deprecated/cogl-texture-deprecated.h	\
+	$(srcdir)/deprecated/cogl-auto-texture.h	\
 	$(NULL)
 
 # public 1.x api headers
