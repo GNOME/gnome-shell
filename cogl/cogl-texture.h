@@ -158,7 +158,7 @@ cogl_texture_set_components (CoglTexture *texture,
  * using the format of the source data that is first uploaded to
  * the given @texture.
  */
-CoglBool
+CoglTextureComponents
 cogl_texture_get_components (CoglTexture *texture);
 
 /**

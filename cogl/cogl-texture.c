@@ -1480,7 +1480,7 @@ cogl_texture_set_components (CoglTexture *texture,
   texture->components = components;
 }
 
-CoglBool
+CoglTextureComponents
 cogl_texture_get_components (CoglTexture *texture)
 {
   return texture->components;
