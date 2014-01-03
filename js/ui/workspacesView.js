@@ -237,28 +237,31 @@ const WorkspacesView = new Lang.Class({
     },
 
     _updateWorkspaces: function() {
-        let oldNumWorkspaces = this._workspaces.length;
         let newNumWorkspaces = global.screen.n_workspaces;
 
         this.scrollAdjustment.upper = newNumWorkspaces;
 
-        if (newNumWorkspaces > oldNumWorkspaces) {
-            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
-                let metaWorkspace = global.screen.get_workspace_by_index(w);
-                let workspace = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
-                this._workspaces.push(workspace);
-                this.actor.add_actor(workspace.actor);
-            }
+        let needsUpdate = false;
+        for (let j = 0; j < newNumWorkspaces; j++) {
+            let metaWorkspace = global.screen.get_workspace_by_index(j);
+            let workspace;
 
-            if (this._fullGeometry)
-                this._updateWorkspaceActors(false);
-        } else if (newNumWorkspaces < oldNumWorkspaces) {
-            let nRemoved = (newNumWorkspaces - oldNumWorkspaces);
-            let removed = this._workspaces.splice(oldNumWorkspaces, nRemoved);
-            removed.forEach(function(workspace) {
-                workspace.destroy();
-            });
+            if (j >= this._workspaces.length) { /* added */
+                workspace = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
+                this.actor.add_actor(workspace.actor);
+                this._workspaces[j] = workspace;
+            } else  {
+                workspace = this._workspaces[j];
+
+                if (workspace.metaWorkspace != metaWorkspace) { /* removed */
+                    workspace.destroy();
+                    this._workspaces.splice(j, 1);
+                } /* else kept */
+            }
         }
+
+        if (this._fullGeometry)
+            this._updateWorkspaceActors(false);
 
         this._syncGeometry();
     },
