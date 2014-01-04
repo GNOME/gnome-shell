@@ -172,8 +172,9 @@ shell_tray_icon_new (ShellEmbeddedWindow *window)
  * @event: the #ClutterEvent triggering the fake click
  *
  * Fakes a press and release on @icon. @event must be a
- * %CLUTTER_BUTTON_RELEASE event. Its relevant details will be passed
- * on to the icon, but its coordinates will be ignored; the click is
+ * %CLUTTER_BUTTON_RELEASE, %CLUTTER_KEY_PRESS or %CLUTTER_KEY_RELEASE event.
+ * Its relevant details will be passed on to the icon, but its
+ * coordinates will be ignored; the click is
  * always made on the center of @icon.
  */
 void
@@ -191,6 +192,7 @@ shell_tray_icon_click (ShellTrayIcon *icon,
   ClutterEventType event_type = clutter_event_type (event);
 
   g_return_if_fail (event_type == CLUTTER_BUTTON_RELEASE ||
+                    event_type == CLUTTER_KEY_PRESS ||
                     event_type == CLUTTER_KEY_RELEASE);
 
   gdk_error_trap_push ();
@@ -249,12 +251,24 @@ shell_tray_icon_click (ShellTrayIcon *icon,
       xkevent.y_root = xcevent.y_root;
       xkevent.state = clutter_event_get_state (event);
       xkevent.same_screen = True;
-      xkevent.type = KeyPress;
       xkevent.keycode = clutter_event_get_key_code (event);
+
+      xkevent.type = KeyPress;
       XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xkevent);
 
-      xkevent.type = KeyRelease;
-      XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xkevent);
+      if (event_type == CLUTTER_KEY_RELEASE)
+        {
+          /* If the application takes a grab on KeyPress, we don't
+           * want to send it a KeyRelease. There's no good way of
+           * knowing whether a tray icon will take a grab, so just
+           * assume it does, and don't send the KeyRelease. That might
+           * make the tracking for key events messed up if it doesn't take
+           * a grab, but the tray icon won't get key focus in normal cases,
+           * so let's hope this isn't too damaging...
+           */
+          xkevent.type = KeyRelease;
+          XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xkevent);
+        }
     }
 
   /* And move the pointer back out */
