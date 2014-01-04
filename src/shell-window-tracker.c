@@ -256,6 +256,17 @@ get_app_from_window_wmclass (MetaWindow  *window)
   return NULL;
 }
 
+/**
+ * get_app_from_gapplication_id:
+ * @monitor: a #ShellWindowTracker
+ * @window: a #MetaWindow
+ *
+ * Looks only at the given window, and attempts to determine
+ * an application based on _GTK_APPLICATION_ID.  If one can't be determined,
+ * return %NULL.
+ *
+ * Return value: (transfer full): A newly-referenced #ShellApp, or %NULL
+ */
 static ShellApp *
 get_app_from_gapplication_id (MetaWindow  *window)
 {
@@ -268,10 +279,12 @@ get_app_from_gapplication_id (MetaWindow  *window)
 
   id = meta_window_get_gtk_application_id (window);
   if (!id)
-    return FALSE;
+    return NULL;
 
   desktop_file = g_strconcat (id, ".desktop", NULL);
   app = shell_app_system_lookup_app (appsys, desktop_file);
+  if (app)
+    g_object_ref (app);
 
   g_free (desktop_file);
   return app;
