@@ -167,6 +167,7 @@ clutter_wayland_handle_axis (void *data,
   ClutterStageCogl          *stage_cogl;
   ClutterEvent              *event;
   gdouble                    delta_x, delta_y;
+  gdouble                    delta_factor;
 
   if (!device->pointer_focus)
     return;
@@ -179,15 +180,19 @@ clutter_wayland_handle_axis (void *data,
   event->scroll.x = device->x;
   event->scroll.y = device->y;
 
+  /* Wayland pointer axis events are in pointer motion coordinate space.
+   * To convert to Xi2 discrete step coordinate space, multiply the factor
+   * 1/10. */
+  delta_factor = 1.0 / 10.0;
   if (axis == WL_POINTER_AXIS_HORIZONTAL_SCROLL)
     {
-      delta_x = -wl_fixed_to_double(value) * 23;
+      delta_x = wl_fixed_to_double (value) * delta_factor;
       delta_y = 0;
     }
   else
     {
       delta_x = 0;
-      delta_y = -wl_fixed_to_double(value) * 23; /* XXX: based on my bcm5794 */
+      delta_y = wl_fixed_to_double (value) * delta_factor;
     }
   clutter_event_set_scroll_delta (event, delta_x, delta_y);
 

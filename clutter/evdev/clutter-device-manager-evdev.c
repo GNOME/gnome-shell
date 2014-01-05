@@ -442,7 +442,7 @@ notify_scroll (ClutterInputDevice *input_device,
   ClutterStage *stage;
   ClutterEvent *event = NULL;
   ClutterPoint point;
-  const gdouble scroll_factor = 10.0f;
+  gdouble scroll_factor;
 
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
@@ -460,7 +460,11 @@ notify_scroll (ClutterInputDevice *input_device,
   event->scroll.device = seat->core_pointer;
   _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
 
+  /* libinput pointer axis events are in pointer motion coordinate space.
+   * To convert to Xi2 discrete step coordinate space, multiply the factor
+   * 1/10. */
   event->scroll.direction = CLUTTER_SCROLL_SMOOTH;
+  scroll_factor = 1.0 / 10.0;
   clutter_event_set_scroll_delta (event,
                                   scroll_factor * dx,
                                   scroll_factor * dy);
