@@ -836,7 +836,7 @@ update_winsys_features (CoglContext *context, CoglError **error)
            arch == COGL_GPU_INFO_ARCHITECTURE_SWRAST))
 	{
 	  COGL_FLAGS_SET (context->winsys_features,
-			  COGL_WINSYS_FEATURE_SWAP_REGION, TRUE);
+			  COGL_WINSYS_FEATURE_SWAP_REGION, FALSE);
 	}
     }
 
