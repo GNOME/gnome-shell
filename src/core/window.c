@@ -1440,28 +1440,12 @@ meta_window_new (MetaDisplay       *display,
                                    * creation, to reduce XSync() calls
                                    */
 
-  meta_error_trap_push_with_return (display);
-
-  if (XGetWindowAttributes (display->xdisplay, xwindow, &attrs))
-   {
-      if(meta_error_trap_pop_with_return (display) != Success)
-       {
-          meta_verbose ("Failed to get attributes for window 0x%lx\n",
-                        xwindow);
-          meta_error_trap_pop (display);
-          meta_display_ungrab (display);
-          return NULL;
-       }
-   }
-  else
-   {
-         meta_error_trap_pop_with_return (display);
-         meta_verbose ("Failed to get attributes for window 0x%lx\n",
-                        xwindow);
-         meta_error_trap_pop (display);
-         meta_display_ungrab (display);
-         return NULL;
-   }
+  if (!XGetWindowAttributes (display->xdisplay, xwindow, &attrs))
+    {
+      meta_verbose ("Failed to get attributes for window 0x%lx\n",
+                    xwindow);
+      goto error;
+    }
 
   for (tmp = display->screens; tmp != NULL; tmp = tmp->next)
     {
@@ -1494,17 +1478,13 @@ meta_window_new (MetaDisplay       *display,
       )
      ) {
     meta_verbose ("Not managing our own windows\n");
-    meta_error_trap_pop (display);
-    meta_display_ungrab (display);
-    return NULL;
+    goto error;
   }
 
   if (maybe_filter_xwindow (display, xwindow, must_be_viewable, &attrs))
     {
       meta_verbose ("Not managing filtered window\n");
-      meta_error_trap_pop (display);
-      meta_display_ungrab (display);
-      return NULL;
+      goto error;
     }
 
   existing_wm_state = WithdrawnState;
@@ -1521,9 +1501,7 @@ meta_window_new (MetaDisplay       *display,
             (state == IconicState || state == NormalState)))
         {
           meta_verbose ("Deciding not to manage unmapped or unviewable window 0x%lx\n", xwindow);
-          meta_error_trap_pop (display);
-          meta_display_ungrab (display);
-          return NULL;
+          goto error;
         }
 
       existing_wm_state = state;
@@ -1536,15 +1514,13 @@ meta_window_new (MetaDisplay       *display,
   /*
    * XAddToSaveSet can only be called on windows created by a different
    * client.  with Mutter we want to be able to create manageable windows
-   * from within the process (such as a dummy desktop window), so we do not
-   * want this call failing to prevent the window from being managed -- wrap
-   * it in its own error trap (we use the _with_return() version here to
-   * ensure that XSync() is done on the pop, otherwise the error will not
-   * get caught).
+   * from within the process (such as a dummy desktop window). As we do not
+   * want this call failing to prevent the window from being managed, we
+   * call this before creating the return-checked error trap.
    */
-  meta_error_trap_push_with_return (display);
   XAddToSaveSet (display->xdisplay, xwindow);
-  meta_error_trap_pop_with_return (display);
+
+  meta_error_trap_push_with_return (display);
 
   event_mask = PropertyChangeMask | ColormapChangeMask;
   if (attrs.override_redirect)
@@ -1591,9 +1567,7 @@ meta_window_new (MetaDisplay       *display,
     {
       meta_verbose ("Window 0x%lx disappeared just as we tried to manage it\n",
                     xwindow);
-      meta_error_trap_pop (display);
-      meta_display_ungrab (display);
-      return NULL;
+      goto error;
     }
 
   window = meta_window_new_shared (display,
@@ -1617,6 +1591,11 @@ meta_window_new (MetaDisplay       *display,
   display_notify_window (display, window);
 
   return window;
+
+error:
+  meta_error_trap_pop (display);
+  meta_display_ungrab (display);
+  return NULL;
 }
 
 /* This function should only be called from the end of meta_window_new_with_attrs () */
