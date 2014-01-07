@@ -13,12 +13,12 @@
     </key>
     <key name="enabled-extensions" type="as">
       <default>[]</default>
-      <_summary>Uuids of extensions to enable</_summary>
+      <_summary>UUIDs of extensions to enable</_summary>
       <_description>
-        GNOME Shell extensions have a uuid property; this key lists extensions
+        GNOME Shell extensions have a UUID property; this key lists extensions
         which should be loaded. Any extension that wants to be loaded needs
         to be in this list. You can also manipulate this list with the
-        EnableExtension and DisableExtension DBus methods on org.gnome.Shell.
+        EnableExtension and DisableExtension D-Bus methods on org.gnome.Shell.
       </_description>
     </key>
     <key name="favorite-apps" type="as">
@@ -54,10 +54,10 @@
     </key>
     <key name="always-show-log-out" type="b">
       <default>false</default>
-      <_summary>Always show the 'Log out' menuitem in the user menu.</_summary>
+      <_summary>Always show the 'Log out' menu item in the user menu.</_summary>
       <_description>
         This key overrides the automatic hiding of the 'Log out'
-        menuitem in single-user, single-session situations.
+        menu item in single-user, single-session situations.
       </_description>
     </key>
     <key name="remember-mount-password" type="b">
