@@ -2398,7 +2398,6 @@ idle_calc_showing (gpointer data)
   GSList *should_hide;
   GSList *unplaced;
   GSList *displays;
-  MetaWindow *first_window;
   guint queue_index = GPOINTER_TO_INT (data);
 
   g_return_val_if_fail (queue_pending[queue_index] != NULL, FALSE);
@@ -2450,10 +2449,6 @@ idle_calc_showing (gpointer data)
   /* top to bottom */
   should_show = g_slist_sort (should_show, stackcmp);
   should_show = g_slist_reverse (should_show);
-
-  first_window = copy->data;
-
-  meta_display_grab (first_window->display);
 
   tmp = unplaced;
   while (tmp != NULL)
@@ -2526,8 +2521,6 @@ idle_calc_showing (gpointer data)
           tmp = tmp->next;
         }
     }
-
-  meta_display_ungrab (first_window->display);
 
   g_slist_free (copy);
 
