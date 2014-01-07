@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Tajik Gnome\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-05 14:32+0000\n"
-"PO-Revision-Date: 2014-01-07 13:45+0500\n"
+"POT-Creation-Date: 2014-01-07 17:55+0000\n"
+"PO-Revision-Date: 2014-01-07 23:31+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: \n"
 "Language: tg\n"
@@ -80,21 +80,27 @@ msgstr ""
 "тавассути равзанаи гуфтугӯи Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
-msgid "Uuids of extensions to enable"
-msgstr "Рамзҳои uuid-и пасвандҳои фаъолшаванда"
+#| msgid "Uuids of extensions to enable"
+msgid "UUIDs of extensions to enable"
+msgstr "Рамзҳои UUID барои пасвандҳои фаъолшаванда"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
+#| msgid ""
+#| "GNOME Shell extensions have a uuid property; this key lists extensions "
+#| "which should be loaded. Any extension that wants to be loaded needs to be "
+#| "in this list. You can also manipulate this list with the EnableExtension "
+#| "and DisableExtension DBus methods on org.gnome.Shell."
 msgid ""
-"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
 "list. You can also manipulate this list with the EnableExtension and "
-"DisableExtension DBus methods on org.gnome.Shell."
+"DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"Пасвандҳои GNOME Shell хусусияти uuid доранд; ин калид пасвандҳоеро, ки бояд "
+"Пасвандҳои GNOME Shell хусусияти UUID доранд; ин калид пасвандҳоеро, ки бояд "
 "бор карда шаванд, номбар мекунад. Ҳар як пасванде, ки бояд бор карда шавад, "
 "бояд дар ин рӯйхат бошад. Шумо инчунин метавонед ин рӯйхатро тавассути "
-"усулҳои DBus-и EnableExtension ва DisableExtension дар org.gnome.Shell "
-"таҳрир кунед."
+"усулҳои DisableExtension D-Bus ва EnableExtension дар org.gnome.Shell таҳрир "
+"кунед."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "List of desktop file IDs for favorite applications"
@@ -129,16 +135,20 @@ msgid "History for the looking glass dialog"
 msgstr "Таърих барои равзанаи гуфтугӯи оина"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-msgid "Always show the 'Log out' menuitem in the user menu."
+#| msgid "Always show the 'Log out' menuitem in the user menu."
+msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "Ҳамеша намоиш додани объекти менюи \"Баромадан\" дар менюи корбар."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#| msgid ""
+#| "This key overrides the automatic hiding of the 'Log out' menuitem in "
+#| "single-user, single-session situations."
 msgid ""
-"This key overrides the automatic hiding of the 'Log out' menuitem in single-"
+"This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
 msgstr ""
 "Ин калид пинҳонкунии худкори объекти менюи \"Баромадан\"-ро дар вазъиятҳои "
-"корбари ягона ва ҷаласаи ягона бекор мекунад."
+"корбари ягона ва ҷаласаи ягона идора мекунад."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid ""
@@ -1450,13 +1460,11 @@ msgstr "Ҳисоб шуда истодааст..."
 
 #: ../js/ui/status/power.js:86
 #, javascript-format
-#| msgid "%d\\u2236%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "%d∶%02d боқӣ мондааст (%d%%)"
 
 #: ../js/ui/status/power.js:91
 #, javascript-format
-#| msgid "%d\\u2236%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d∶%02d то пур шудан (%d%%)"
 
