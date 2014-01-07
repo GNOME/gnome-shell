@@ -380,6 +380,8 @@ main (int argc, char **argv)
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
+  session_mode = (char *) g_getenv ("GNOME_SHELL_SESSION_MODE");
+
   ctx = meta_get_option_context ();
   g_option_context_add_main_entries (ctx, gnome_shell_options, GETTEXT_PACKAGE);
   g_option_context_add_group (ctx, g_irepository_get_option_group ());
