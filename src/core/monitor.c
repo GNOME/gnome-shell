@@ -691,46 +691,61 @@ static char *
 make_display_name (MetaMonitorManager *manager,
                    MetaOutput         *output)
 {
+  char *inches = NULL;
+  char *vendor_name = NULL;
+  char *ret;
+  gboolean is_unknown = FALSE;
+
   if (g_str_has_prefix (output->name, "LVDS") ||
       g_str_has_prefix (output->name, "eDP"))
-    return g_strdup (_("Built-in display"));
+    {
+      ret = g_strdup (_("Built-in display"));
+      goto out;
+    }
 
-  if (output->width_mm != -1 && output->height_mm != -1)
+  if (output->width_mm > 0 && output->height_mm > 0)
     {
       double d = sqrt (output->width_mm * output->width_mm +
                        output->height_mm * output->height_mm);
-      char *inches = diagonal_to_str (d / 25.4);
-      char *vendor_name;
-      char *ret;
+      inches = diagonal_to_str (d / 25.4);
+    }
 
-      if (g_strcmp0 (output->vendor, "unknown") != 0)
-        {
-          if (!manager->pnp_ids)
-            manager->pnp_ids = gnome_pnp_ids_new ();
+  if (g_strcmp0 (output->vendor, "unknown") != 0)
+    {
+      if (!manager->pnp_ids)
+        manager->pnp_ids = gnome_pnp_ids_new ();
 
-          vendor_name = gnome_pnp_ids_get_pnp_id (manager->pnp_ids,
-                                                  output->vendor);
+      vendor_name = gnome_pnp_ids_get_pnp_id (manager->pnp_ids,
+                                              output->vendor);
 
-          ret = g_strdup_printf ("%s %s", vendor_name, inches);
-
-          g_free (vendor_name);
-        }
-      else
-        {
-          /* TRANSLATORS: this is a monitor name (in case we don't know
-             the vendor), it's Unknown followed by a size in inches,
-             like 'Unknown 15"'
-          */
-          ret = g_strdup_printf (_("Unknown %s"), inches);
-        }
-
-      g_free (inches);
-      return ret;
+      if (!vendor_name)
+        vendor_name = g_strdup (output->vendor);
     }
   else
     {
-      return g_strdup (output->vendor);
+      if (inches != NULL)
+        vendor_name = g_strdup (_("Unknown"));
+      else
+        vendor_name = g_strdup (_("Unknown Display"));
     }
+
+  if (inches != NULL)
+    {
+      /* TRANSLATORS: this is a monitor vendor name, followed by a
+       * size in inches, like 'Dell 15"'
+       */
+      ret = g_strdup_printf (_("%s %s"), vendor_name, inches);
+    }
+  else
+    {
+      ret = g_strdup (vendor_name);
+    }
+
+ out:
+  g_free (inches);
+  g_free (vendor_name);
+
+  return ret;
 }
 
 static gboolean
