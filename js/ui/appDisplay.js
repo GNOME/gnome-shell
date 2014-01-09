@@ -47,6 +47,10 @@ const INDICATORS_ANIMATION_MAX_TIME = 0.75;
 const PAGE_SWITCH_TRESHOLD = 0.2;
 const PAGE_SWITCH_TIME = 0.3;
 
+function _isTerminal(app) {
+    return app.get_app_info().get_categories().indexOf('TerminalEmulator') > -1;
+};
+
 // Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
 function _loadCategory(dir, view) {
     let iter = dir.iter();
@@ -913,7 +917,7 @@ const AppSearchProvider = new Lang.Class({
         let app = this._appSys.lookup_app(result);
         let event = Clutter.get_current_event();
         let modifiers = event ? event.get_state() : 0;
-        let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK;
+        let openNewWindow = (modifiers & Clutter.ModifierType.CONTROL_MASK) || _isTerminal(app);
 
         if (openNewWindow)
             app.open_new_window(-1);
@@ -1448,8 +1452,9 @@ const AppIcon = new Lang.Class({
     _onActivate: function (event) {
         let modifiers = event.get_state();
 
-        if (modifiers & Clutter.ModifierType.CONTROL_MASK
-            && this.app.state == Shell.AppState.RUNNING) {
+        if ((modifiers & Clutter.ModifierType.CONTROL_MASK
+             && this.app.state == Shell.AppState.RUNNING)
+            || _isTerminal(this.app)) {
             this.app.open_new_window(-1);
         } else {
             this.app.activate();
