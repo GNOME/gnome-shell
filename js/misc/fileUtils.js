@@ -5,26 +5,6 @@ const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Params = imports.misc.params;
 
-function listDirAsync(file, callback) {
-    let allFiles = [];
-    file.enumerate_children_async('standard::name,standard::type',
-                                  Gio.FileQueryInfoFlags.NONE,
-                                  GLib.PRIORITY_LOW, null, function (obj, res) {
-        let enumerator = obj.enumerate_children_finish(res);
-        function onNextFileComplete(obj, res) {
-            let files = obj.next_files_finish(res);
-            if (files.length) {
-                allFiles = allFiles.concat(files);
-                enumerator.next_files_async(100, GLib.PRIORITY_LOW, null, onNextFileComplete);
-            } else {
-                enumerator.close(null);
-                callback(allFiles);
-            }
-        }
-        enumerator.next_files_async(100, GLib.PRIORITY_LOW, null, onNextFileComplete);
-    });
-}
-
 function collectFromDatadirs(subdir, includeUserDir, processFile) {
     let dataDirs = GLib.get_system_data_dirs();
     if (includeUserDir)
