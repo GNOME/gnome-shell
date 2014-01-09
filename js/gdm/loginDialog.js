@@ -464,7 +464,7 @@ const LoginDialog = new Lang.Class({
                                                                       }
                                                                   }));
         else
-            this._loadUserList();
+            GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, this._loadUserList));
 
         this._userList.connect('activate',
                                Lang.bind(this, function(userList, item) {
