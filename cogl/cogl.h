@@ -79,7 +79,6 @@
 #include <cogl/deprecated/cogl-fixed.h>
 #include <cogl/deprecated/cogl-material-compat.h>
 #include <cogl/deprecated/cogl-shader.h>
-#include <cogl/deprecated/cogl-framebuffer-deprecated.h>
 #include <cogl/deprecated/cogl-texture-deprecated.h>
 #endif
 
@@ -88,6 +87,7 @@
  * they enable the experimental api... */
 #include <cogl/deprecated/cogl-type-casts.h>
 
+#include <cogl/deprecated/cogl-framebuffer-deprecated.h>
 #include <cogl/deprecated/cogl-auto-texture.h>
 
 /*
