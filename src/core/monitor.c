@@ -694,7 +694,6 @@ make_display_name (MetaMonitorManager *manager,
   char *inches = NULL;
   char *vendor_name = NULL;
   char *ret;
-  gboolean is_unknown = FALSE;
 
   if (g_str_has_prefix (output->name, "LVDS") ||
       g_str_has_prefix (output->name, "eDP"))
