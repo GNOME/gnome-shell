@@ -69,12 +69,14 @@ struct _GtkMenuTracker
 
 struct _GtkMenuTrackerSection
 {
-  GMenuModel *model;
+  gpointer    model;   /* may be a GtkMenuTrackerItem or a GMenuModel */
   GSList     *items;
   gchar      *action_namespace;
 
+  guint       separator_label : 1;
   guint       with_separators : 1;
   guint       has_separator   : 1;
+  guint       is_fake         : 1;
 
   gulong      handler;
 };
@@ -82,13 +84,14 @@ struct _GtkMenuTrackerSection
 static GtkMenuTrackerSection *  gtk_menu_tracker_section_new    (GtkMenuTracker        *tracker,
                                                                  GMenuModel            *model,
                                                                  gboolean               with_separators,
+                                                                 gboolean               separator_label,
                                                                  gint                   offset,
                                                                  const gchar           *action_namespace);
 static void                    gtk_menu_tracker_section_free    (GtkMenuTrackerSection *section);
 
 static GtkMenuTrackerSection *
 gtk_menu_tracker_section_find_model (GtkMenuTrackerSection *section,
-                                     GMenuModel            *model,
+                                     gpointer               model,
                                      gint                  *offset)
 {
   GSList *item;
@@ -139,8 +142,8 @@ gtk_menu_tracker_section_find_model (GtkMenuTrackerSection *section,
  *
  * could_have_separator is true in two situations:
  *
- *  - our parent section had with_separators defined and we are not the
- *    first section (ie: we should add a separator if we have content in
+ *  - our parent section had with_separators defined and there are items
+ *    before us (ie: we should add a separator if we have content in
  *    order to divide us from the items above)
  *
  *  - if we had a 'label' attribute set for this section
@@ -175,11 +178,13 @@ gtk_menu_tracker_section_sync_separators (GtkMenuTrackerSection *section,
         {
           gboolean could_have_separator;
 
-          could_have_separator = (section->with_separators && i > 0) ||
-                                 g_menu_model_get_item_attribute (section->model, i, "label", "s", NULL);
+          could_have_separator = (section->with_separators && n_items > 0) || subsection->separator_label;
 
+          /* Only pass the parent_model and parent_index in case they may be used to create the separator. */
           n_items += gtk_menu_tracker_section_sync_separators (subsection, tracker, offset + n_items,
-                                                               could_have_separator, section->model, i);
+                                                               could_have_separator,
+                                                               could_have_separator ? section->model : NULL,
+                                                               could_have_separator ? i : 0);
         }
       else
         n_items++;
@@ -187,7 +192,7 @@ gtk_menu_tracker_section_sync_separators (GtkMenuTrackerSection *section,
       i++;
     }
 
-  should_have_separator = could_have_separator && n_items != 0;
+  should_have_separator = !section->is_fake && could_have_separator && n_items != 0;
 
   if (should_have_separator > section->has_separator)
     {
@@ -210,6 +215,38 @@ gtk_menu_tracker_section_sync_separators (GtkMenuTrackerSection *section,
   n_items += section->has_separator;
 
   return n_items;
+}
+
+static void
+gtk_menu_tracker_item_visibility_changed (GtkMenuTrackerItem *item,
+                                          gboolean            is_now_visible,
+                                          gpointer            user_data)
+{
+  GtkMenuTracker *tracker = user_data;
+  GtkMenuTrackerSection *section;
+  gboolean was_visible;
+  gint offset = 0;
+
+  /* remember: the item is our model */
+  section = gtk_menu_tracker_section_find_model (tracker->toplevel, item, &offset);
+
+  was_visible = section->items != NULL;
+
+  if (is_now_visible == was_visible)
+    return;
+
+  if (is_now_visible)
+    {
+      section->items = g_slist_prepend (NULL, NULL);
+      (* tracker->insert_func) (section->model, offset, tracker->user_data);
+    }
+  else
+    {
+      section->items = g_slist_delete_link (section->items, section->items);
+      (* tracker->remove_func) (offset, tracker->user_data);
+    }
+
+  gtk_menu_tracker_section_sync_separators (tracker->toplevel, tracker, 0, FALSE, NULL, 0);
 }
 
 static gint
@@ -275,6 +312,10 @@ gtk_menu_tracker_add_items (GtkMenuTracker         *tracker,
         {
           GtkMenuTrackerSection *subsection;
           gchar *action_namespace = NULL;
+          gboolean has_label;
+
+          has_label = g_menu_model_get_item_attribute (model, position + n_items,
+                                                       G_MENU_ATTRIBUTE_LABEL, "s", NULL);
 
           g_menu_model_get_item_attribute (model, position + n_items,
                                            G_MENU_ATTRIBUTE_ACTION_NAMESPACE, "s", &action_namespace);
@@ -284,11 +325,11 @@ gtk_menu_tracker_add_items (GtkMenuTracker         *tracker,
               gchar *namespace;
 
               namespace = g_strjoin (".", section->action_namespace, action_namespace, NULL);
-              subsection = gtk_menu_tracker_section_new (tracker, submenu, FALSE, offset, namespace);
+              subsection = gtk_menu_tracker_section_new (tracker, submenu, FALSE, has_label, offset, namespace);
               g_free (namespace);
             }
           else
-            subsection = gtk_menu_tracker_section_new (tracker, submenu, FALSE, offset, section->action_namespace);
+            subsection = gtk_menu_tracker_section_new (tracker, submenu, FALSE, has_label, offset, action_namespace);
 
           *change_point = g_slist_prepend (*change_point, subsection);
           g_free (action_namespace);
@@ -300,10 +341,61 @@ gtk_menu_tracker_add_items (GtkMenuTracker         *tracker,
 
           item = _gtk_menu_tracker_item_new (tracker->observable, model, position + n_items,
                                              section->action_namespace, FALSE);
-          (* tracker->insert_func) (item, offset, tracker->user_data);
-          g_object_unref (item);
 
-          *change_point = g_slist_prepend (*change_point, NULL);
+          /* In the case that the item may disappear we handle that by
+           * treating the item that we just created as being its own
+           * subsection.  This happens as so:
+           *
+           *  - the subsection is created without the possibility of
+           *    showing a separator
+           *
+           *  - the subsection will have either 0 or 1 item in it at all
+           *    times: either the shown item or not (in the case it is
+           *    hidden)
+           *
+           *  - the created item acts as the "model" for this section
+           *    and we use its "visiblity-changed" signal in the same
+           *    way that we use the "items-changed" signal from a real
+           *    GMenuModel
+           *
+           * We almost never use the '->model' stored in the section for
+           * anything other than lookups and for dropped the ref and
+           * disconnecting the signal when we destroy the menu, and we
+           * need to do exactly those things in this case as well.
+           *
+           * The only other thing that '->model' is used for is in the
+           * case that we want to show a separator, but we will never do
+           * that because separators are not shown for this fake section.
+           */
+          if (_gtk_menu_tracker_item_may_disappear (item))
+            {
+              GtkMenuTrackerSection *fake_section;
+
+              fake_section = g_slice_new0 (GtkMenuTrackerSection);
+              fake_section->is_fake = TRUE;
+              fake_section->model = g_object_ref (item);
+              fake_section->handler = g_signal_connect (item, "visibility-changed",
+                                                        G_CALLBACK (gtk_menu_tracker_item_visibility_changed),
+                                                        tracker);
+              *change_point = g_slist_prepend (*change_point, fake_section);
+
+              if (_gtk_menu_tracker_item_is_visible (item))
+                {
+                  (* tracker->insert_func) (item, offset, tracker->user_data);
+                  fake_section->items = g_slist_prepend (NULL, NULL);
+                }
+            }
+          else
+            {
+              /* In the normal case, we store NULL in the linked list.
+               * The measurement and lookup code count NULL always as
+               * exactly 1: an item that will always be there.
+               */
+              (* tracker->insert_func) (item, offset, tracker->user_data);
+              *change_point = g_slist_prepend (*change_point, NULL);
+            }
+
+          g_object_unref (item);
         }
     }
 }
@@ -375,6 +467,7 @@ static GtkMenuTrackerSection *
 gtk_menu_tracker_section_new (GtkMenuTracker *tracker,
                               GMenuModel     *model,
                               gboolean        with_separators,
+                              gboolean        separator_label,
                               gint            offset,
                               const gchar    *action_namespace)
 {
@@ -384,6 +477,7 @@ gtk_menu_tracker_section_new (GtkMenuTracker *tracker,
   section->model = g_object_ref (model);
   section->with_separators = with_separators;
   section->action_namespace = g_strdup (action_namespace);
+  section->separator_label = separator_label;
 
   gtk_menu_tracker_add_items (tracker, section, &section->items, offset, model, 0, g_menu_model_get_n_items (model));
   section->handler = g_signal_connect (model, "items-changed", G_CALLBACK (gtk_menu_tracker_model_changed), tracker);
@@ -459,7 +553,7 @@ gtk_menu_tracker_new (GtkActionObservable      *observable,
   tracker->remove_func = remove_func;
   tracker->user_data = user_data;
 
-  tracker->toplevel = gtk_menu_tracker_section_new (tracker, model, with_separators, 0, action_namespace);
+  tracker->toplevel = gtk_menu_tracker_section_new (tracker, model, with_separators, FALSE, 0, action_namespace);
   gtk_menu_tracker_section_sync_separators (tracker->toplevel, tracker, 0, FALSE, NULL, 0);
 
   return tracker;
@@ -471,11 +565,20 @@ gtk_menu_tracker_new_for_item_submenu (GtkMenuTrackerItem       *item,
                                        GtkMenuTrackerRemoveFunc  remove_func,
                                        gpointer                  user_data)
 {
-  return gtk_menu_tracker_new (_gtk_menu_tracker_item_get_observable (item),
-                               _gtk_menu_tracker_item_get_submenu (item),
-                               TRUE,
-                               _gtk_menu_tracker_item_get_submenu_namespace (item),
-                               insert_func, remove_func, user_data);
+  GtkMenuTracker *tracker;
+  GMenuModel *submenu;
+  gchar *namespace;
+
+  submenu = _gtk_menu_tracker_item_get_submenu (item);
+  namespace = _gtk_menu_tracker_item_get_submenu_namespace (item);
+
+  tracker = gtk_menu_tracker_new (_gtk_menu_tracker_item_get_observable (item), submenu,
+                                  TRUE, namespace, insert_func, remove_func, user_data);
+
+  g_object_unref (submenu);
+  g_free (namespace);
+
+  return tracker;
 }
 
 /*< private >
