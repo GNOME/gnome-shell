@@ -455,10 +455,15 @@ video_texture_new_from_data (CoglContext *ctx,
       cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_BASIC))
     {
       tex = cogl_texture_2d_new_from_bitmap (bitmap);
-      if (!tex)
+
+      cogl_texture_set_premultiplied (tex, FALSE);
+
+      if (!cogl_texture_allocate (tex, &internal_error))
         {
           cogl_error_free (internal_error);
           internal_error = NULL;
+          cogl_object_unref (tex);
+          tex = NULL;
         }
     }
   else
@@ -469,11 +474,13 @@ video_texture_new_from_data (CoglContext *ctx,
       /* Otherwise create a sliced texture */
       tex = cogl_texture_2d_sliced_new_from_bitmap (bitmap,
                                                     -1); /* no maximum waste */
+
+      cogl_texture_set_premultiplied (tex, FALSE);
+
+      cogl_texture_allocate (tex, NULL);
     }
 
   cogl_object_unref (bitmap);
-
-  cogl_texture_set_premultiplied (tex, FALSE);
 
   return tex;
 }
