@@ -89,11 +89,8 @@ scan_startup_wm_class_to_id (ShellAppSystem *self)
       startup_wm_class = g_desktop_app_info_get_startup_wm_class (G_DESKTOP_APP_INFO (info));
 
       if (startup_wm_class != NULL)
-        {
-          g_hash_table_insert (priv->startup_wm_class_to_id,
-                               g_strdup (startup_wm_class), g_strdup (id));
-          g_debug ("Application %s has StartupWMClass %s", id, startup_wm_class);
-        }
+        g_hash_table_insert (priv->startup_wm_class_to_id,
+                             g_strdup (startup_wm_class), g_strdup (id));
     }
 
   g_list_free_full (apps, g_object_unref);
