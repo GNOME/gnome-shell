@@ -445,9 +445,11 @@ cogl_gst_rgb_setup_pipeline (CoglGstVideoSink *sink,
                              priv->custom_start,
                              priv->custom_start);
 
-          setup_pipeline_from_cache_entry (sink, pipeline, entry, 1);
+          entry = add_cache_entry (sink, &snippet_cache, source);
           g_free (source);
         }
+
+      setup_pipeline_from_cache_entry (sink, pipeline, entry, 1);
     }
   else
     setup_pipeline_from_cache_entry (sink, pipeline, NULL, 1);
