@@ -454,18 +454,6 @@ const LoginDialog = new Lang.Class({
         this.actor.add_child(this._logoBin);
         this._updateLogo();
 
-        if (!this._userManager.is_loaded)
-            this._userManagerLoadedId = this._userManager.connect('notify::is-loaded',
-                                                                  Lang.bind(this, function() {
-                                                                      if (this._userManager.is_loaded) {
-                                                                          this._loadUserList();
-                                                                          this._userManager.disconnect(this._userManagerLoadedId);
-                                                                          this._userManagerLoadedId = 0;
-                                                                      }
-                                                                  }));
-        else
-            GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, this._loadUserList));
-
         this._userList.connect('activate',
                                Lang.bind(this, function(userList, item) {
                                    this._onUserListActivated(item);
@@ -480,6 +468,18 @@ const LoginDialog = new Lang.Class({
         this._sessionMenuButton.actor.opacity = 0;
         this._sessionMenuButton.actor.show();
         this._authPrompt.addActorToDefaultButtonWell(this._sessionMenuButton.actor);
+
+        if (!this._userManager.is_loaded)
+            this._userManagerLoadedId = this._userManager.connect('notify::is-loaded',
+                                                                  Lang.bind(this, function() {
+                                                                      if (this._userManager.is_loaded) {
+                                                                          this._loadUserList();
+                                                                          this._userManager.disconnect(this._userManagerLoadedId);
+                                                                          this._userManagerLoadedId = 0;
+                                                                      }
+                                                                  }));
+        else
+            GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, this._loadUserList));
 
    },
 
