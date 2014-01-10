@@ -1714,7 +1714,8 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
     }
 
   meta_shaped_texture_set_mask_texture (stex, mask_texture);
-  cogl_object_unref (mask_texture);
+  if (mask_texture)
+    cogl_object_unref (mask_texture);
 
   g_free (mask_data);
 }
