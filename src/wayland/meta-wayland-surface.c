@@ -58,6 +58,19 @@
 #include "meta-idle-monitor-private.h"
 #include "monitor-private.h"
 
+typedef enum
+{
+  META_WAYLAND_SUBSURFACE_PLACEMENT_ABOVE,
+  META_WAYLAND_SUBSURFACE_PLACEMENT_BELOW
+} MetaWaylandSubsurfacePlacement;
+
+typedef struct
+{
+  MetaWaylandSubsurfacePlacement placement;
+  MetaWaylandSurface *sibling;
+  struct wl_listener sibling_destroy_listener;
+} MetaWaylandSubsurfacePlacementOp;
+
 static void
 surface_process_damage (MetaWaylandSurface *surface,
                         cairo_region_t *region)
@@ -1012,6 +1025,44 @@ wl_subsurface_parent_surface_committed (gpointer data, gpointer user_data)
                                   surface->sub.pending_y);
       surface->sub.pending_pos = FALSE;
     }
+
+  if (surface->sub.pending_placement_ops)
+    {
+      GSList *it;
+      for (it = surface->sub.pending_placement_ops; it; it = it->next)
+        {
+          MetaWaylandSubsurfacePlacementOp *op = it->data;
+          ClutterActor *surface_actor;
+          ClutterActor *parent_actor;
+          ClutterActor *sibling_actor;
+
+          if (!op->sibling)
+            {
+              g_slice_free (MetaWaylandSubsurfacePlacementOp, op);
+              continue;
+            }
+
+          surface_actor = CLUTTER_ACTOR (surface->surface_actor);
+          parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->sub.parent));
+          sibling_actor = CLUTTER_ACTOR (op->sibling->surface_actor);
+
+          switch (op->placement)
+            {
+            case META_WAYLAND_SUBSURFACE_PLACEMENT_ABOVE:
+              clutter_actor_set_child_above_sibling (parent_actor, surface_actor, sibling_actor);
+              break;
+            case META_WAYLAND_SUBSURFACE_PLACEMENT_BELOW:
+              clutter_actor_set_child_below_sibling (parent_actor, surface_actor, sibling_actor);
+              break;
+            }
+
+          wl_list_remove (&op->sibling_destroy_listener.link);
+          g_slice_free (MetaWaylandSubsurfacePlacementOp, op);
+        }
+
+      g_slist_free (surface->sub.pending_placement_ops);
+      surface->sub.pending_placement_ops = NULL;
+    }
 }
 
 static void
@@ -1063,11 +1114,38 @@ is_valid_sibling (MetaWaylandSurface *surface, MetaWaylandSurface *sibling)
 }
 
 static void
+subsurface_handle_pending_sibling_destroyed (struct wl_listener *listener, void *data)
+{
+  MetaWaylandSubsurfacePlacementOp *op =
+    wl_container_of (listener, op, sibling_destroy_listener);
+
+  op->sibling = NULL;
+}
+
+static void
+queue_subsurface_placement (MetaWaylandSurface *surface,
+                            MetaWaylandSurface *sibling,
+                            MetaWaylandSubsurfacePlacement placement)
+{
+  MetaWaylandSubsurfacePlacementOp *op =
+    g_slice_new (MetaWaylandSubsurfacePlacementOp);
+
+  op->placement = placement;
+  op->sibling = sibling;
+  op->sibling_destroy_listener.notify =
+    subsurface_handle_pending_sibling_destroyed;
+  wl_resource_add_destroy_listener (sibling->resource,
+                                    &op->sibling_destroy_listener);
+
+  surface->sub.pending_placement_ops =
+    g_slist_append (surface->sub.pending_placement_ops, op);
+}
+
+static void
 wl_subsurface_place_above (struct wl_client *client,
                            struct wl_resource *resource,
                            struct wl_resource *sibling_resource)
 {
-  ClutterActor *parent_actor;
   MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
   MetaWaylandSurface *sibling = wl_resource_get_user_data (sibling_resource);
@@ -1081,11 +1159,9 @@ wl_subsurface_place_above (struct wl_client *client,
       return;
     }
 
-  parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->surface_actor));
-
-  clutter_actor_set_child_above_sibling (parent_actor,
-                                         CLUTTER_ACTOR (surface->surface_actor),
-                                         CLUTTER_ACTOR (sibling->surface_actor));
+  queue_subsurface_placement (surface,
+                              sibling,
+                              META_WAYLAND_SUBSURFACE_PLACEMENT_ABOVE);
 }
 
 static void
@@ -1093,7 +1169,6 @@ wl_subsurface_place_below (struct wl_client *client,
                            struct wl_resource *resource,
                            struct wl_resource *sibling_resource)
 {
-  ClutterActor *parent_actor;
   MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
   MetaWaylandSurface *sibling = wl_resource_get_user_data (sibling_resource);
@@ -1107,11 +1182,9 @@ wl_subsurface_place_below (struct wl_client *client,
       return;
     }
 
-  parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->surface_actor));
-
-  clutter_actor_set_child_below_sibling (parent_actor,
-                                         CLUTTER_ACTOR (surface->surface_actor),
-                                         CLUTTER_ACTOR (sibling->surface_actor));
+  queue_subsurface_placement (surface,
+                              sibling,
+                              META_WAYLAND_SUBSURFACE_PLACEMENT_BELOW);
 }
 
 static void

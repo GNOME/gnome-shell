@@ -94,6 +94,7 @@ struct _MetaWaylandSurface
     int32_t pending_x;
     int32_t pending_y;
     gboolean pending_pos;
+    GSList *pending_placement_ops;
   } sub;
 
   /* All the pending state, that wl_surface.commit will apply. */
