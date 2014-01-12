@@ -90,6 +90,10 @@ struct _MetaWaylandSurface
   struct {
     MetaWaylandSurface *parent;
     struct wl_listener parent_destroy_listener;
+
+    int32_t pending_x;
+    int32_t pending_y;
+    gboolean pending_pos;
   } sub;
 
   /* All the pending state, that wl_surface.commit will apply. */

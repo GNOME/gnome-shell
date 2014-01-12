@@ -327,6 +327,9 @@ subsurface_surface_commit (MetaWaylandSurface *surface)
 }
 
 static void
+wl_subsurface_parent_surface_committed (gpointer data, gpointer user_data);
+
+static void
 meta_wayland_surface_commit (struct wl_client *client,
                              struct wl_resource *resource)
 {
@@ -345,6 +348,10 @@ meta_wayland_surface_commit (struct wl_client *client,
     toplevel_surface_commit (surface);
   else if (surface->subsurface.resource)
     subsurface_surface_commit (surface);
+
+  g_list_foreach (surface->subsurfaces,
+                  wl_subsurface_parent_surface_committed,
+                  NULL);
 
   if (surface->pending.buffer)
     {
@@ -994,6 +1001,20 @@ bind_gtk_shell (struct wl_client *client,
 }
 
 static void
+wl_subsurface_parent_surface_committed (gpointer data, gpointer user_data)
+{
+  MetaWaylandSurface *surface = data;
+
+  if (surface->sub.pending_pos)
+    {
+      clutter_actor_set_position (CLUTTER_ACTOR (surface->surface_actor),
+                                  surface->sub.pending_x,
+                                  surface->sub.pending_y);
+      surface->sub.pending_pos = FALSE;
+    }
+}
+
+static void
 wl_subsurface_destructor (struct wl_resource *resource)
 {
   MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
@@ -1026,7 +1047,9 @@ wl_subsurface_set_position (struct wl_client *client,
   MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
 
-  clutter_actor_set_position (CLUTTER_ACTOR (surface->surface_actor), x, y);
+  surface->sub.pending_x = x;
+  surface->sub.pending_y = y;
+  surface->sub.pending_pos = TRUE;
 }
 
 static gboolean
