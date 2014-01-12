@@ -85,6 +85,13 @@ struct _MetaWaylandSurface
   MetaWaylandSurfaceExtension gtk_surface;
   MetaWaylandSurfaceExtension subsurface;
 
+  GList *subsurfaces;
+
+  struct {
+    MetaWaylandSurface *parent;
+    struct wl_listener parent_destroy_listener;
+  } sub;
+
   /* All the pending state, that wl_surface.commit will apply. */
   MetaWaylandDoubleBufferedState pending;
 };

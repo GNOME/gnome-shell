@@ -999,7 +999,14 @@ wl_subsurface_destructor (struct wl_resource *resource)
   MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
 
-  unparent_actor (surface);
+  if (surface->sub.parent)
+    {
+      wl_list_remove (&surface->sub.parent_destroy_listener.link);
+      surface->sub.parent->subsurfaces =
+        g_list_remove (surface->sub.parent->subsurfaces, surface);
+      unparent_actor (surface);
+      surface->sub.parent = NULL;
+    }
   destroy_surface_extension (subsurface);
 }
 
@@ -1022,6 +1029,16 @@ wl_subsurface_set_position (struct wl_client *client,
   clutter_actor_set_position (CLUTTER_ACTOR (surface->surface_actor), x, y);
 }
 
+static gboolean
+is_valid_sibling (MetaWaylandSurface *surface, MetaWaylandSurface *sibling)
+{
+  if (surface->sub.parent == sibling)
+    return TRUE;
+  if (surface->sub.parent == sibling->sub.parent)
+    return TRUE;
+  return FALSE;
+}
+
 static void
 wl_subsurface_place_above (struct wl_client *client,
                            struct wl_resource *resource,
@@ -1031,6 +1048,15 @@ wl_subsurface_place_above (struct wl_client *client,
   MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
   MetaWaylandSurface *sibling = wl_resource_get_user_data (sibling_resource);
+
+  if (!is_valid_sibling (surface, sibling))
+    {
+      wl_resource_post_error (resource, WL_SUBSURFACE_ERROR_BAD_SURFACE,
+                              "wl_subsurface::place_above: wl_surface@%d is "
+                              "not a valid parent or sibling",
+                              wl_resource_get_id (sibling->resource));
+      return;
+    }
 
   parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->surface_actor));
 
@@ -1048,6 +1074,15 @@ wl_subsurface_place_below (struct wl_client *client,
   MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
   MetaWaylandSurface *sibling = wl_resource_get_user_data (sibling_resource);
+
+  if (!is_valid_sibling (surface, sibling))
+    {
+      wl_resource_post_error (resource, WL_SUBSURFACE_ERROR_BAD_SURFACE,
+                              "wl_subsurface::place_below: wl_surface@%d is "
+                              "not a valid parent or sibling",
+                              wl_resource_get_id (sibling->resource));
+      return;
+    }
 
   parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->surface_actor));
 
@@ -1087,6 +1122,18 @@ wl_subcompositor_destroy (struct wl_client *client,
 }
 
 static void
+surface_handle_parent_surface_destroyed (struct wl_listener *listener,
+                                         void *data)
+{
+  MetaWaylandSurface *surface = wl_container_of (listener,
+                                                 surface,
+                                                 sub.parent_destroy_listener);
+
+  surface->sub.parent = NULL;
+  unparent_actor (surface);
+}
+
+static void
 wl_subcompositor_get_subsurface (struct wl_client *client,
                                  struct wl_resource *resource,
                                  guint32 id,
@@ -1107,6 +1154,13 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
                               "wl_subcompositor::get_subsurface already requested");
       return;
     }
+
+  surface->sub.parent = parent;
+  surface->sub.parent_destroy_listener.notify =
+    surface_handle_parent_surface_destroyed;
+  wl_resource_add_destroy_listener (parent->resource,
+                                    &surface->sub.parent_destroy_listener);
+  parent->subsurfaces = g_list_append (parent->subsurfaces, surface);
 
   clutter_actor_add_child (CLUTTER_ACTOR (parent->surface_actor),
                            CLUTTER_ACTOR (surface->surface_actor));
