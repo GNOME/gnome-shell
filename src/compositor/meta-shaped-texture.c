@@ -605,8 +605,8 @@ get_clip (MetaShapedTexture *stex,
   ClutterActor *self = CLUTTER_ACTOR (stex);
   MetaShapedTexturePrivate *priv;
   ClutterActorBox allocation;
-  float scale_x;
-  float scale_y;
+  double scale_x;
+  double scale_y;
 
   /* NB: clutter_actor_queue_redraw_with_clip expects a box in the actor's
    * coordinate space so we need to convert from surface coordinates to
