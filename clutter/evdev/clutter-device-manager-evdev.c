@@ -72,6 +72,15 @@ struct _ClutterSeatEvdev
   xkb_led_index_t num_lock_led;
   xkb_led_index_t scroll_lock_led;
   uint32_t button_state;
+
+  /* keyboard repeat */
+  gboolean repeat;
+  guint32 repeat_delay;
+  guint32 repeat_interval;
+  guint32 repeat_key;
+  guint32 repeat_count;
+  guint32 repeat_timer;
+  ClutterInputDevice *repeat_device;
 };
 
 typedef struct _ClutterEventSource  ClutterEventSource;
@@ -207,6 +216,20 @@ remove_key (GArray  *keys,
 }
 
 static void
+clear_repeat_timer (ClutterSeatEvdev *seat)
+{
+  if (seat->repeat_timer)
+    {
+      g_source_remove (seat->repeat_timer);
+      seat->repeat_timer = 0;
+      g_clear_object (&seat->repeat_device);
+    }
+}
+
+static gboolean
+keyboard_repeat (gpointer data);
+
+static void
 clutter_seat_evdev_sync_leds (ClutterSeatEvdev *seat);
 
 static void
@@ -227,7 +250,10 @@ notify_key_device (ClutterInputDevice *input_device,
    * associated with the device yet. */
   stage = _clutter_input_device_get_stage (input_device);
   if (!stage)
-    return;
+    {
+      clear_repeat_timer (seat);
+      return;
+    }
 
   event = _clutter_key_event_new_from_evdev (input_device,
 					     seat->core_keyboard,
@@ -253,12 +279,71 @@ notify_key_device (ClutterInputDevice *input_device,
 	}
     }
   else
-    changed_state = 0;
+    {
+      changed_state = 0;
+      clutter_event_set_flags (event, CLUTTER_EVENT_FLAG_SYNTHETIC);
+    }
 
   queue_event (event);
 
   if (update_keys && (changed_state & XKB_STATE_LEDS))
     clutter_seat_evdev_sync_leds (seat);
+
+  if (state == 0 ||             /* key release */
+      !seat->repeat ||
+      !xkb_keymap_key_repeats (xkb_state_get_keymap (seat->xkb), event->key.hardware_keycode))
+    {
+      clear_repeat_timer (seat);
+      return;
+    }
+
+  if (state == 1)               /* key press */
+    seat->repeat_count = 0;
+
+  seat->repeat_count += 1;
+  seat->repeat_key = key;
+
+  switch (seat->repeat_count)
+    {
+    case 1:
+    case 2:
+      {
+        guint32 interval;
+
+        clear_repeat_timer (seat);
+        seat->repeat_device = g_object_ref (input_device);
+
+        if (seat->repeat_count == 1)
+          interval = seat->repeat_delay;
+        else
+          interval = seat->repeat_interval;
+
+        seat->repeat_timer =
+          clutter_threads_add_timeout_full (CLUTTER_PRIORITY_EVENTS,
+                                            interval,
+                                            keyboard_repeat,
+                                            seat,
+                                            NULL);
+        return;
+      }
+    default:
+      return;
+    }
+}
+
+static gboolean
+keyboard_repeat (gpointer data)
+{
+  ClutterSeatEvdev *seat = data;
+  guint32 time;
+
+  g_return_val_if_fail (seat->repeat_device != NULL, G_SOURCE_REMOVE);
+
+  time = g_source_get_time (g_main_context_find_source_by_id (NULL, seat->repeat_timer)) / 1000;
+
+  notify_key_device (seat->repeat_device, time, seat->repeat_key, AUTOREPEAT_VALUE, FALSE);
+
+  return G_SOURCE_CONTINUE;
 }
 
 static void
@@ -642,6 +727,10 @@ clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev,
       xkb_keymap_unref (keymap);
     }
 
+  seat->repeat = TRUE;
+  seat->repeat_delay = 250;     /* ms */
+  seat->repeat_interval = 33;   /* ms */
+
   return seat;
 }
 
@@ -660,6 +749,8 @@ clutter_seat_evdev_free (ClutterSeatEvdev *seat)
 
   xkb_state_unref (seat->xkb);
   g_array_free (seat->keys, TRUE);
+
+  clear_repeat_timer (seat);
 
   libinput_seat_unref (seat->libinput_seat);
 
@@ -772,6 +863,9 @@ clutter_device_manager_evdev_remove_device (ClutterDeviceManager *manager,
   /* Remove the device */
   seat->devices = g_slist_remove (seat->devices, device);
   priv->devices = g_slist_remove (priv->devices, device);
+
+  if (seat->repeat_timer && seat->repeat_device == device)
+    clear_repeat_timer (seat);
 
   g_object_unref (device);
 }
@@ -1479,4 +1573,35 @@ clutter_evdev_set_pointer_constrain_callback (ClutterDeviceManager            *e
   priv->constrain_callback = callback;
   priv->constrain_data = user_data;
   priv->constrain_data_notify = user_data_notify;
+}
+
+/**
+ * clutter_evdev_set_keyboard_repeat:
+ * @evdev: the #ClutterDeviceManager created by the evdev backend
+ * @repeat: whether to enable or disable keyboard repeat events
+ * @delay: the delay in ms between the hardware key press event and
+ * the first synthetic event
+ * @interval: the period in ms between consecutive synthetic key
+ * press events
+ *
+ * Enables or disables sythetic key press events, allowing for initial
+ * delay and interval period to be specified.
+ */
+void
+clutter_evdev_set_keyboard_repeat (ClutterDeviceManager *evdev,
+                                   gboolean              repeat,
+                                   guint32               delay,
+                                   guint32               interval)
+{
+  ClutterDeviceManagerEvdev *manager_evdev;
+  ClutterSeatEvdev *seat;
+
+  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev));
+
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (evdev);
+  seat = manager_evdev->priv->main_seat;
+
+  seat->repeat = repeat;
+  seat->repeat_delay = delay;
+  seat->repeat_interval = interval;
 }

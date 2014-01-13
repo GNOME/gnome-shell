@@ -85,6 +85,10 @@ void  clutter_evdev_set_pointer_constrain_callback (ClutterDeviceManager        
 void               clutter_evdev_set_keyboard_map   (ClutterDeviceManager *evdev,
 						     struct xkb_keymap    *keymap);
 
+void clutter_evdev_set_keyboard_repeat (ClutterDeviceManager *evdev,
+                                        gboolean              repeat,
+                                        guint32               delay,
+                                        guint32               interval);
 
 G_END_DECLS
 
