@@ -1184,7 +1184,7 @@ const ZoomRegion = new Lang.Class({
 
         // Clone the group that contains all of UI on the screen.  This is the
         // chrome, the windows, etc.
-        this._uiGroupClone = new Clutter.Clone({ source: Main.uiGroup });
+        this._uiGroupClone = new Clutter.Clone({ source: Main.layoutManager.uiGroup });
         mainGroup.add_actor(this._uiGroupClone);
 
         // Add either the given mouseSourceActor to the ZoomRegion, or a clone of

@@ -503,7 +503,7 @@ const Inspector = new Lang.Class({
         let container = new Shell.GenericContainer({ width: 0,
                                                      height: 0 });
         container.connect('allocate', Lang.bind(this, this._allocate));
-        Main.uiGroup.add_actor(container);
+        Main.layoutManager.sessionGroup.add_actor(container);
 
         let eventHandler = new St.BoxLayout({ name: 'LookingGlassDialog',
                                               vertical: false,
@@ -801,16 +801,14 @@ const LookingGlass = new Lang.Class({
         this._updateFont();
 
         // We want it to appear to slide out from underneath the panel
-        Main.uiGroup.add_actor(this.actor);
-        Main.uiGroup.set_child_below_sibling(this.actor,
-                                             Main.layoutManager.panelBox);
-        Main.layoutManager.panelBox.connect('allocation-changed',
-                                            Lang.bind(this, this._queueResize));
+        Main.layoutManager.sessionGroup.add_actor(this.actor);
+        Main.layoutManager.panelGroup.connect('allocation-changed',
+                                              Lang.bind(this, this._queueResize));
         Main.layoutManager.keyboardBox.connect('allocation-changed',
                                                Lang.bind(this, this._queueResize));
 
         this._objInspector = new ObjInspector(this);
-        Main.uiGroup.add_actor(this._objInspector.actor);
+        Main.layoutManager.sessionGroup.add_actor(this._objInspector.actor);
         this._objInspector.actor.hide();
 
         let toolbar = new St.BoxLayout({ name: 'Toolbar' });
@@ -1037,7 +1035,7 @@ const LookingGlass = new Lang.Class({
         let availableHeight = primary.height - Main.layoutManager.keyboardBox.height;
         let myHeight = Math.min(primary.height * 0.7, availableHeight * 0.9);
         this.actor.x = primary.x + (primary.width - myWidth) / 2;
-        this._hiddenY = primary.y + Main.layoutManager.panelBox.height - myHeight - 4; // -4 to hide the top corners
+        this._hiddenY = primary.y + Main.layoutManager.panelGroup.height - myHeight - 4; // -4 to hide the top corners
         this._targetY = this._hiddenY + myHeight;
         this.actor.y = this._hiddenY;
         this.actor.width = myWidth;

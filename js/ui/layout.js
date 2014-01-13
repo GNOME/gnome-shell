@@ -184,29 +184,27 @@ const LayoutManager = new Lang.Class({
                             let height = global.stage.height;
                             [alloc.min_size, alloc.natural_size] = [height, height];
                         });
+        global.stage.add_child(this.uiGroup);
+
+        this.systemGroup = new St.Widget({ name: 'systemGroup',
+                                           layout_manager: new Clutter.BinLayout() });
+        this.uiGroup.add_actor(this.systemGroup);
+
+        this.sessionGroup = new St.Widget({ name: 'sessionGroup' });
+        this.uiGroup.add_child(this.sessionGroup);
 
         global.stage.remove_actor(global.window_group);
-        this.uiGroup.add_actor(global.window_group);
-
-        global.stage.add_child(this.uiGroup);
+        this.sessionGroup.add_actor(global.window_group);
 
         this.overviewGroup = new St.Widget({ name: 'overviewGroup',
                                              visible: false });
         this.addChrome(this.overviewGroup);
 
         this.screenShieldGroup = new St.Widget({ name: 'screenShieldGroup',
-                                                 visible: false,
                                                  clip_to_allocation: true,
                                                  layout_manager: new Clutter.BinLayout(),
                                                });
-        this.addChrome(this.screenShieldGroup);
-
-        this.panelBox = new St.BoxLayout({ name: 'panelBox',
-                                           vertical: true });
-        this.addChrome(this.panelBox, { affectsStruts: true,
-                                        trackFullscreen: true });
-        this.panelBox.connect('allocation-changed',
-                              Lang.bind(this, this._panelBoxChanged));
+        this.uiGroup.add_child(this.screenShieldGroup);
 
         this.trayBox = new St.Widget({ name: 'trayBox',
                                        layout_manager: new Clutter.BinLayout() }); 
@@ -219,25 +217,39 @@ const LayoutManager = new Lang.Class({
         this.addChrome(this.keyboardBox);
         this._keyboardHeightNotifyId = 0;
 
-        this.menuGroup = new St.Widget();
-        this.uiGroup.add_actor(this.menuGroup);
-
         this.osdGroup = new St.Widget();
-        this.uiGroup.add_actor(this.osdGroup);
+        this.sessionGroup.add_child(this.osdGroup);
 
         this.switcherPopupGroup = new St.Widget();
-        this.uiGroup.add_actor(this.switcherPopupGroup);
+        this.sessionGroup.add_child(this.switcherPopupGroup);
 
         this.dialogGroup = new St.Widget();
-        this.uiGroup.add_actor(this.dialogGroup);
+        this.sessionGroup.add_child(this.dialogGroup);
 
         // A dummy actor that tracks the mouse or text cursor, based on the
         // position set in setDummyCursorPosition.
         this.dummyCursor = new St.Widget({ width: 0, height: 0 });
-        this.uiGroup.add_actor(this.dummyCursor);
+        this.uiGroup.add_child(this.dummyCursor);
 
-        global.stage.remove_actor(global.top_window_group);
-        this.uiGroup.add_actor(global.top_window_group);
+        // The panel group isn't in the session, as it needs to go above the screen
+        // shield, and it isn't animated in the login animation.
+        this.panelGroup = new St.Widget({ name: 'panelGroup' });
+        this.uiGroup.add_child(this.panelGroup);
+        this._trackActor(this.panelGroup, { affectsStruts: true,
+                                            trackFullscreen: true });
+        this.panelGroup.connect('allocation-changed',
+                                Lang.bind(this, this._panelGroupChanged));
+
+        this.overlayGroup = new St.Widget({ name: 'overlayGroup' });
+        this.uiGroup.add_child(this.overlayGroup);
+
+        this.menuGroup = new St.Widget();
+        this.overlayGroup.add_child(this.menuGroup);
+
+        this._topSessionGroup = new St.Widget();
+        this.overlayGroup.add_child(this._topSessionGroup);
+        global.stage.remove_child(global.top_window_group);
+        this._topSessionGroup.add_child(global.top_window_group);
 
         this._backgroundGroup = new Meta.BackgroundGroup();
         global.window_group.add_child(this._backgroundGroup);
@@ -318,7 +330,7 @@ const LayoutManager = new Lang.Class({
         });
         this.hotCorners = [];
 
-        let size = this.panelBox.height;
+        let size = this.panelGroup.height;
 
         // build new hot corners
         for (let i = 0; i < this.monitors.length; i++) {
@@ -418,11 +430,11 @@ const LayoutManager = new Lang.Class({
     },
 
     _updateBoxes: function() {
-        this.screenShieldGroup.set_position(0, 0);
-        this.screenShieldGroup.set_size(global.screen_width, global.screen_height);
+        this.systemGroup.set_position(0, 0);
+        this.systemGroup.set_size(global.screen_width, global.screen_height);
 
-        this.panelBox.set_position(this.primaryMonitor.x, this.primaryMonitor.y);
-        this.panelBox.set_size(this.primaryMonitor.width, -1);
+        this.panelGroup.set_position(this.primaryMonitor.x, this.primaryMonitor.y);
+        this.panelGroup.set_size(this.primaryMonitor.width, -1);
 
         if (this.keyboardIndex < 0)
             this.keyboardIndex = this.primaryIndex;
@@ -432,10 +444,10 @@ const LayoutManager = new Lang.Class({
         this.trayBox.set_size(this.bottomMonitor.width, -1);
     },
 
-    _panelBoxChanged: function() {
+    _panelGroupChanged: function() {
         this._updatePanelBarrier();
 
-        let size = this.panelBox.height;
+        let size = this.panelGroup.height;
         this.hotCorners.forEach(function(corner) {
             if (corner)
                 corner.setBarrierSize(size);
@@ -448,12 +460,12 @@ const LayoutManager = new Lang.Class({
             this._rightPanelBarrier = null;
         }
 
-        if (this.panelBox.height) {
+        if (this.panelGroup.height) {
             let primary = this.primaryMonitor;
 
             this._rightPanelBarrier = new Meta.Barrier({ display: global.display,
                                                          x1: primary.x + primary.width, y1: primary.y,
-                                                         x2: primary.x + primary.width, y2: primary.y + this.panelBox.height,
+                                                         x2: primary.x + primary.width, y2: primary.y + this.panelGroup.height,
                                                          directions: Meta.BarrierDirection.NEGATIVE_X });
         }
     },
@@ -563,8 +575,7 @@ const LayoutManager = new Lang.Class({
         this._systemBackground = new Background.SystemBackground();
         this._systemBackground.actor.hide();
 
-        global.stage.insert_child_below(this._systemBackground.actor, null);
-
+        this.systemGroup.add_child(this._systemBackground.actor, null);
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.ALL });
         this._systemBackground.actor.add_constraint(constraint);
@@ -607,7 +618,7 @@ const LayoutManager = new Lang.Class({
         this.addChrome(this._coverPane);
 
         if (Main.sessionMode.isGreeter) {
-            this.panelBox.translation_y = -this.panelBox.height;
+            this.panelGroup.translation_y = -this.panelGroup.height;
         } else {
             this._updateBackgrounds();
 
@@ -622,10 +633,10 @@ const LayoutManager = new Lang.Class({
             let x = monitor.x + monitor.width / 2.0;
             let y = monitor.y + monitor.height / 2.0;
 
-            this.uiGroup.set_pivot_point(x / global.screen_width,
-                                         y / global.screen_height);
-            this.uiGroup.scale_x = this.uiGroup.scale_y = 0.75;
-            this.uiGroup.opacity = 0;
+            this.sessionGroup.set_pivot_point(x / global.screen_width,
+                                              y / global.screen_height);
+            this.sessionGroup.scale_x = this.sessionGroup.scale_y = 0.75;
+            this.sessionGroup.opacity = 0;
             global.window_group.set_clip(monitor.x, monitor.y, monitor.width, monitor.height);
         }
 
@@ -651,7 +662,7 @@ const LayoutManager = new Lang.Class({
     },
 
     _startupAnimationGreeter: function() {
-        Tweener.addTween(this.panelBox,
+        Tweener.addTween(this.panelGroup,
                          { translation_y: 0,
                            time: STARTUP_ANIMATION_TIME,
                            transition: 'easeOutQuad',
@@ -660,7 +671,7 @@ const LayoutManager = new Lang.Class({
     },
 
     _startupAnimationSession: function() {
-        Tweener.addTween(this.uiGroup,
+        Tweener.addTween(this.sessionGroup,
                          { scale_x: 1,
                            scale_y: 1,
                            opacity: 255,
@@ -770,9 +781,9 @@ const LayoutManager = new Lang.Class({
     // monitor (it will be hidden whenever a fullscreen window is visible,
     // and shown otherwise)
     addChrome: function(actor, params) {
-        this.uiGroup.add_actor(actor);
-        if (this.uiGroup.contains(global.top_window_group))
-            this.uiGroup.set_child_below_sibling(actor, global.top_window_group);
+        this.sessionGroup.add_actor(actor);
+        if (this.sessionGroup.contains(global.top_window_group))
+            this.sessionGroup.set_child_below_sibling(actor, global.top_window_group);
         this._trackActor(actor, params);
     },
 
@@ -823,7 +834,7 @@ const LayoutManager = new Lang.Class({
     //
     // Removes @actor from the chrome
     removeChrome: function(actor) {
-        this.uiGroup.remove_actor(actor);
+        this.sessionGroup.remove_actor(actor);
         this._untrackActor(actor);
     },
 
@@ -1092,9 +1103,9 @@ const HotCorner = new Lang.Class({
         this._ripple2 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0, visible: false });
         this._ripple3 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0, visible: false });
 
-        layoutManager.uiGroup.add_actor(this._ripple1);
-        layoutManager.uiGroup.add_actor(this._ripple2);
-        layoutManager.uiGroup.add_actor(this._ripple3);
+        layoutManager.sessionGroup.add_actor(this._ripple1);
+        layoutManager.sessionGroup.add_actor(this._ripple2);
+        layoutManager.sessionGroup.add_actor(this._ripple3);
     },
 
     setBarrierSize: function(size) {

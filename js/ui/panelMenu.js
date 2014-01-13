@@ -130,7 +130,7 @@ const Button = new Lang.Class({
             this.menu.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
             this.menu.actor.connect('key-press-event', Lang.bind(this, this._onMenuKeyPress));
 
-            Main.layoutManager.menuGroup.add_actor(this.menu.actor);
+            Main.layoutManager.menuGroup.add_child(this.menu.actor);
             this.menu.actor.hide();
         }
     },

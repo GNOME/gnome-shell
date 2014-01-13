@@ -46,7 +46,7 @@ let dragMonitors = [];
 function _getEventHandlerActor() {
     if (!eventHandlerActor) {
         eventHandlerActor = new Clutter.Actor({ width: 0, height: 0 });
-        Main.uiGroup.add_actor(eventHandlerActor);
+        Main.layoutManager.sessionGroup.add_actor(eventHandlerActor);
         // We connect to 'event' rather than 'captured-event' because the capturing phase doesn't happen
         // when you've grabbed the pointer.
         eventHandlerActor.connect('event',
@@ -236,7 +236,7 @@ const _Draggable = new Lang.Class({
 
         if (this.actor._delegate && this.actor._delegate.getDragActor) {
             this._dragActor = this.actor._delegate.getDragActor();
-            Main.uiGroup.add_child(this._dragActor);
+            Main.layoutManager.sessionGroup.add_child(this._dragActor);
             this._dragActor.raise_top();
             Shell.util_set_hidden_from_pick(this._dragActor, true);
 
@@ -276,7 +276,7 @@ const _Draggable = new Lang.Class({
             this._dragOrigScale = this._dragActor.scale_x;
 
             // Set the actor's scale such that it will keep the same
-            // transformed size when it's reparented to the uiGroup
+            // transformed size when it's reparented to the sessionGroup
             let [scaledWidth, scaledHeight] = this.actor.get_transformed_size();
             this._dragActor.set_scale(scaledWidth / this.actor.width,
                                       scaledHeight / this.actor.height);
@@ -286,7 +286,7 @@ const _Draggable = new Lang.Class({
             this._dragOffsetY = actorStageY - this._dragStartY;
 
             this._dragOrigParent.remove_actor(this._dragActor);
-            Main.uiGroup.add_child(this._dragActor);
+            Main.layoutManager.sessionGroup.add_child(this._dragActor);
             this._dragActor.raise_top();
             Shell.util_set_hidden_from_pick(this._dragActor, true);
         }
@@ -448,7 +448,7 @@ const _Draggable = new Lang.Class({
                                                 event.get_time())) {
                     // If it accepted the drop without taking the actor,
                     // handle it ourselves.
-                    if (this._dragActor.get_parent() == Main.uiGroup) {
+                    if (this._dragActor.get_parent() == Main.layoutManager.sessionGroup) {
                         if (this._restoreOnSuccess) {
                             this._restoreDragActor(event.get_time());
                             return true;
@@ -557,7 +557,7 @@ const _Draggable = new Lang.Class({
 
     _onAnimationComplete : function (dragActor, eventTime) {
         if (this._dragOrigParent) {
-            Main.uiGroup.remove_child(this._dragActor);
+            Main.layoutManager.sessionGroup.remove_child(this._dragActor);
             this._dragOrigParent.add_actor(this._dragActor);
             dragActor.set_scale(this._dragOrigScale, this._dragOrigScale);
             dragActor.set_position(this._dragOrigX, this._dragOrigY);

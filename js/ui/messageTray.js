@@ -2512,7 +2512,7 @@ const MessageTray = new Lang.Class({
         let cloneSource = Main.overview.visible ? Main.layoutManager.overviewGroup : global.window_group;
         this._desktopClone = new Clutter.Clone({ source: cloneSource,
                                                  clip: new Clutter.Geometry(this._bottomMonitorGeometry) });
-        Main.uiGroup.insert_child_above(this._desktopClone, cloneSource);
+        Main.layoutManager.sessionGroup.insert_child_above(this._desktopClone, cloneSource);
         this._desktopClone.x = 0;
         this._desktopClone.y = 0;
         this._desktopClone.show();

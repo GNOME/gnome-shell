@@ -64,7 +64,6 @@ let screencastService = null;
 let modalCount = 0;
 let keybindingMode = Shell.KeyBindingMode.NONE;
 let modalActorFocusStack = [];
-let uiGroup = null;
 let magnifier = null;
 let xdndHandler = null;
 let keyboard = null;
@@ -149,11 +148,6 @@ function _initializeUI() {
 
     // Setup the stage hierarchy early
     layoutManager = new Layout.LayoutManager();
-
-    // Various parts of the codebase still refers to Main.uiGroup
-    // instead using the layoutManager.  This keeps that code
-    // working until it's updated.
-    uiGroup = layoutManager.uiGroup;
 
     screencastService = new Screencast.ScreencastService();
     xdndHandler = new XdndHandler.XdndHandler();

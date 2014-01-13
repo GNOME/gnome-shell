@@ -456,8 +456,6 @@ const ScreenShield = new Lang.Class({
     Name: 'ScreenShield',
 
     _init: function() {
-        this.actor = Main.layoutManager.screenShieldGroup;
-
         this._lockScreenState = MessageTray.State.HIDDEN;
         this._lockScreenGroup = new St.Widget({ x_expand: true,
                                                 y_expand: true,
@@ -466,6 +464,7 @@ const ScreenShield = new Lang.Class({
                                                 name: 'lockScreenGroup',
                                                 visible: false,
                                               });
+
         this._lockScreenGroup.connect('key-press-event',
                                       Lang.bind(this, this._onLockScreenKeyPress));
         this._lockScreenGroup.connect('scroll-event',
@@ -516,10 +515,9 @@ const ScreenShield = new Lang.Class({
                                                 reactive: true,
                                                 pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
                                                 name: 'lockDialogGroup' });
+        Main.layoutManager.systemGroup.add_child(this._lockDialogGroup);
 
-        this.actor.add_actor(this._lockDialogGroup);
-        this.actor.add_actor(this._lockScreenGroup);
-
+        Main.layoutManager.screenShieldGroup.add_child(this._lockScreenGroup);
         this._presence = new GnomeSession.Presence(Lang.bind(this, function(proxy, error) {
             if (error) {
                 logError(error, 'Error while reading gnome-session presence');
@@ -577,17 +575,25 @@ const ScreenShield = new Lang.Class({
         // The "long" lightbox is used for the longer (20 seconds) fade from session
         // to idle status, the "short" is used for quickly fading to black when locking
         // manually
-        this._longLightbox = new Lightbox.Lightbox(Main.uiGroup,
+        this._longLightbox = new Lightbox.Lightbox(Main.layoutManager.overlayGroup,
                                                    { inhibitEvents: true,
                                                      fadeFactor: 1 });
         this._longLightbox.connect('shown', Lang.bind(this, this._onLongLightboxShown));
-        this._shortLightbox = new Lightbox.Lightbox(Main.uiGroup,
+        this._shortLightbox = new Lightbox.Lightbox(Main.layoutManager.overlayGroup,
                                                     { inhibitEvents: true,
                                                       fadeFactor: 1 });
         this._shortLightbox.connect('shown', Lang.bind(this, this._onShortLightboxShown));
 
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._monitorsChanged));
+        this._monitorsChanged();
+
         this.idleMonitor = Meta.IdleMonitor.get_core();
         this._cursorTracker = Meta.CursorTracker.get_for_screen(global.screen);
+    },
+
+    _monitorsChanged: function() {
+        this._longLightbox.actor.set_size(global.screen_width, global.screen_height);
+        this._shortLightbox.actor.set_size(global.screen_width, global.screen_height);
     },
 
     _createBackground: function(monitorIndex) {
@@ -647,14 +653,14 @@ const ScreenShield = new Lang.Class({
         if (this._isModal)
             return true;
 
-        this._isModal = Main.pushModal(this.actor, { keybindingMode: Shell.KeyBindingMode.LOCK_SCREEN });
+        this._isModal = Main.pushModal(this._lockDialogGroup, { keybindingMode: Shell.KeyBindingMode.LOCK_SCREEN });
         if (this._isModal)
             return true;
 
         // We failed to get a pointer grab, it means that
         // something else has it. Try with a keyboard grab only
-        this._isModal = Main.pushModal(this.actor, { options: Meta.ModalOptions.POINTER_ALREADY_GRABBED,
-                                                     keybindingMode: Shell.KeyBindingMode.LOCK_SCREEN });
+        this._isModal = Main.pushModal(this._lockDialogGroup, { options: Meta.ModalOptions.POINTER_ALREADY_GRABBED,
+                                                                keybindingMode: Shell.KeyBindingMode.LOCK_SCREEN });
         return this._isModal;
     },
 
@@ -912,7 +918,7 @@ const ScreenShield = new Lang.Class({
             return false;
         }));
 
-        this.actor.show();
+        this._lockDialogGroup.show();
         this._isGreeter = Main.sessionMode.isGreeter;
         this._isLocked = true;
         if (this._ensureUnlockDialog(true, true))
@@ -1224,7 +1230,7 @@ const ScreenShield = new Lang.Class({
             this._dialog.popModal();
 
         if (this._isModal) {
-            Main.popModal(this.actor);
+            Main.popModal(this._lockDialogGroup);
             this._isModal = false;
         }
 
@@ -1246,7 +1252,7 @@ const ScreenShield = new Lang.Class({
 
         this._longLightbox.hide();
         this._shortLightbox.hide();
-        this.actor.hide();
+        this._lockScreenGroup.hide();
 
         if (this._becameActiveId != 0) {
             this.idleMonitor.remove_watch(this._becameActiveId);
@@ -1270,7 +1276,7 @@ const ScreenShield = new Lang.Class({
         if (this._activationTime == 0)
             this._activationTime = GLib.get_monotonic_time();
 
-        this.actor.show();
+        this._lockScreenGroup.show();
 
         if (Main.sessionMode.currentMode != 'unlock-dialog' &&
             Main.sessionMode.currentMode != 'lock-screen') {

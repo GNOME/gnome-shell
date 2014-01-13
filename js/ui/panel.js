@@ -901,7 +901,7 @@ const Panel = new Lang.Class({
             this.actor.remove_style_pseudo_class('overview');
         }));
 
-        Main.layoutManager.panelBox.add(this.actor);
+        Main.layoutManager.panelGroup.add_child(this.actor);
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'emblem-system-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
 
