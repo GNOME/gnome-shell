@@ -6860,46 +6860,36 @@ meta_window_client_message (MetaWindow *window,
         }
 
       if (first == display->atom__NET_WM_STATE_MAXIMIZED_HORZ ||
-          second == display->atom__NET_WM_STATE_MAXIMIZED_HORZ)
+          second == display->atom__NET_WM_STATE_MAXIMIZED_HORZ ||
+          first == display->atom__NET_WM_STATE_MAXIMIZED_VERT ||
+          second == display->atom__NET_WM_STATE_MAXIMIZED_VERT)
         {
           gboolean max;
+          MetaMaximizeFlags directions = 0;
 
           max = (action == _NET_WM_STATE_ADD ||
                  (action == _NET_WM_STATE_TOGGLE &&
                   !window->maximized_horizontally));
+
+          if (first == display->atom__NET_WM_STATE_MAXIMIZED_HORZ ||
+              second == display->atom__NET_WM_STATE_MAXIMIZED_HORZ)
+            directions |= META_MAXIMIZE_HORIZONTAL;
+
+          if (first == display->atom__NET_WM_STATE_MAXIMIZED_VERT ||
+              second == display->atom__NET_WM_STATE_MAXIMIZED_VERT)
+            directions |= META_MAXIMIZE_VERTICAL;
+
           if (max && window->has_maximize_func)
             {
               if (meta_prefs_get_raise_on_click ())
                 meta_window_raise (window);
-              meta_window_maximize (window, META_MAXIMIZE_HORIZONTAL);
+              meta_window_maximize (window, directions);
             }
           else
             {
               if (meta_prefs_get_raise_on_click ())
                 meta_window_raise (window);
-              meta_window_unmaximize (window, META_MAXIMIZE_HORIZONTAL);
-            }
-        }
-
-      if (first == display->atom__NET_WM_STATE_MAXIMIZED_VERT ||
-          second == display->atom__NET_WM_STATE_MAXIMIZED_VERT)
-        {
-          gboolean max;
-
-          max = (action == _NET_WM_STATE_ADD ||
-                 (action == _NET_WM_STATE_TOGGLE &&
-                  !window->maximized_vertically));
-          if (max && window->has_maximize_func)
-            {
-              if (meta_prefs_get_raise_on_click ())
-                meta_window_raise (window);
-              meta_window_maximize (window, META_MAXIMIZE_VERTICAL);
-            }
-          else
-            {
-              if (meta_prefs_get_raise_on_click ())
-                meta_window_raise (window);
-              meta_window_unmaximize (window, META_MAXIMIZE_VERTICAL);
+              meta_window_unmaximize (window, directions);
             }
         }
 
