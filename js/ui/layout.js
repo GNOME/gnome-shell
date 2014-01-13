@@ -162,9 +162,9 @@ const LayoutManager = new Lang.Class({
         this._startingUp = true;
 
         // Normally, the stage is always covered so Clutter doesn't need to clear
-        // it; however it becomes visible during the startup animation
-        // See the comment below for a longer explanation
+        // it; however it becomes visible when using the magnifier.
         global.stage.color = DEFAULT_BACKGROUND_COLOR;
+        global.stage.no_clear_hint = true;
 
         // Set up stage hierarchy to group all UI actors under one container.
         this.uiGroup = new Shell.GenericContainer({ name: 'uiGroup' });
@@ -271,8 +271,7 @@ const LayoutManager = new Lang.Class({
     // This is called by Main after everything else is constructed
     init: function() {
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
-
-        this._loadBackground();
+        this._prepareStartupAnimation();
     },
 
     showOverview: function() {
@@ -571,24 +570,6 @@ const LayoutManager = new Lang.Class({
         return this._keyboardIndex;
     },
 
-    _loadBackground: function() {
-        this._systemBackground = new Background.SystemBackground();
-        this._systemBackground.actor.hide();
-
-        this.systemGroup.add_child(this._systemBackground.actor, null);
-        let constraint = new Clutter.BindConstraint({ source: global.stage,
-                                                      coordinate: Clutter.BindCoordinate.ALL });
-        this._systemBackground.actor.add_constraint(constraint);
-
-        let signalId = this._systemBackground.connect('loaded', Lang.bind(this, function() {
-            this._systemBackground.disconnect(signalId);
-            this._systemBackground.actor.show();
-            global.stage.show();
-
-            this._prepareStartupAnimation();
-        }));
-    },
-
     // Startup Animations
     //
     // We have two different animations, depending on whether we're a greeter
@@ -609,6 +590,8 @@ const LayoutManager = new Lang.Class({
     // screen. So, we set no_clear_hint at the end of the animation.
 
     _prepareStartupAnimation: function() {
+        global.stage.show();
+
         // During the initial transition, add a simple actor to block all events,
         // so they don't get delivered to X11 windows that have been transformed.
         this._coverPane = new Clutter.Actor({ opacity: 0,
@@ -682,15 +665,8 @@ const LayoutManager = new Lang.Class({
     },
 
     _startupAnimationComplete: function() {
-        // At this point, the UI group is covering everything, so
-        // we no longer need to clear the stage
-        global.stage.no_clear_hint = true;
-
         this._coverPane.destroy();
         this._coverPane = null;
-
-        this._systemBackground.actor.destroy();
-        this._systemBackground = null;
 
         this._startingUp = false;
 

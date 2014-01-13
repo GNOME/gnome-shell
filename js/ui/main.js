@@ -166,6 +166,19 @@ function _initializeUI() {
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     componentManager = new Components.ComponentManager();
 
+    if (sessionMode.isGreeter && screenShield) {
+        layoutManager.connect('startup-prepared', function() {
+            screenShield.showDialog();
+        });
+    }
+
+    layoutManager.connect('startup-complete', function() {
+        if (keybindingMode == Shell.KeyBindingMode.NONE)
+            keybindingMode = Shell.KeyBindingMode.NORMAL;
+        if (screenShield)
+            screenShield.lockIfWasLocked();
+    });
+
     layoutManager.init();
     overview.init();
 
@@ -196,21 +209,6 @@ function _initializeUI() {
 
     ExtensionDownloader.init();
     ExtensionSystem.init();
-
-    if (sessionMode.isGreeter && screenShield) {
-        layoutManager.connect('startup-prepared', function() {
-            screenShield.showDialog();
-        });
-    }
-
-    layoutManager.connect('startup-complete', function() {
-                              if (keybindingMode == Shell.KeyBindingMode.NONE) {
-                                  keybindingMode = Shell.KeyBindingMode.NORMAL;
-                              }
-                              if (screenShield) {
-                                  screenShield.lockIfWasLocked();
-                              }
-                          });
 }
 
 function _loadDefaultStylesheet() {
