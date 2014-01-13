@@ -91,6 +91,9 @@ struct _MetaWaylandSurface
     MetaWaylandSurface *parent;
     struct wl_listener parent_destroy_listener;
 
+    gboolean synchronous;
+    MetaWaylandDoubleBufferedState pending_surface_state;
+
     int32_t pending_x;
     int32_t pending_y;
     gboolean pending_pos;
