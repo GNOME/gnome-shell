@@ -565,7 +565,7 @@ const Background = new Lang.Class({
     _load: function () {
         this._cache = getBackgroundCache();
 
-        this._loadPattern(this._cache);
+        this._loadPattern();
 
         this._style = this._settings.get_enum(BACKGROUND_STYLE_KEY);
         if (this._style == GDesktopEnums.BackgroundStyle.NONE) {
