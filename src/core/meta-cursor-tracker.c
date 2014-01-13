@@ -305,7 +305,6 @@ meta_cursor_reference_from_theme (MetaCursorTracker  *tracker,
   self->texture = cogl_texture_2d_new_from_data (cogl_context,
                                                  width, height,
                                                  cogl_format,
-                                                 COGL_PIXEL_FORMAT_ANY,
                                                  rowstride,
                                                  (uint8_t*)image->pixels,
                                                  NULL);
@@ -365,7 +364,7 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
   ClutterBackend *backend;
   CoglContext *cogl_context;
   MetaCursorReference *self;
-  CoglPixelFormat cogl_format, cogl_internal_format;
+  CoglPixelFormat cogl_format;
   struct wl_shm_buffer *shm_buffer;
   uint32_t gbm_format;
 
@@ -389,37 +388,31 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
 #if G_BYTE_ORDER == G_BIG_ENDIAN
           case WL_SHM_FORMAT_ARGB8888:
             cogl_format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
-            cogl_internal_format = COGL_PIXEL_FORMAT_ANY;
             gbm_format = GBM_FORMAT_ARGB8888;
             break;
           case WL_SHM_FORMAT_XRGB8888:
             cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
-            cogl_internal_format = COGL_PIXEL_FORMAT_RGB_888;
             gbm_format = GBM_FORMAT_XRGB8888;
             break;
 #else
           case WL_SHM_FORMAT_ARGB8888:
             cogl_format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
-            cogl_internal_format = COGL_PIXEL_FORMAT_ANY;
             gbm_format = GBM_FORMAT_ARGB8888;
             break;
           case WL_SHM_FORMAT_XRGB8888:
             cogl_format = COGL_PIXEL_FORMAT_BGRA_8888;
-            cogl_internal_format = COGL_PIXEL_FORMAT_BGR_888;
             gbm_format = GBM_FORMAT_XRGB8888;
             break;
 #endif
           default:
             g_warn_if_reached ();
             cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
-            cogl_internal_format = COGL_PIXEL_FORMAT_ANY;
             gbm_format = GBM_FORMAT_ARGB8888;
         }
 
       self->texture = cogl_texture_2d_new_from_data (cogl_context,
                                                      width, height,
                                                      cogl_format,
-                                                     cogl_internal_format,
                                                      rowstride,
                                                      wl_shm_buffer_get_data (shm_buffer),
                                                      NULL);
