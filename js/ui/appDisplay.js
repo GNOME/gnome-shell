@@ -48,7 +48,8 @@ const PAGE_SWITCH_TRESHOLD = 0.2;
 const PAGE_SWITCH_TIME = 0.3;
 
 function _isTerminal(app) {
-    return app.get_app_info().get_categories().indexOf('TerminalEmulator') > -1;
+    let categories = app.get_app_info().get_categories() || [];
+    return categories.indexOf('TerminalEmulator') > -1;
 }
 
 // Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
