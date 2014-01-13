@@ -2172,9 +2172,18 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
 
   if (meta_texture_rectangle_check (paint_tex))
     {
-      mask_texture = meta_texture_rectangle_new (tex_width, tex_height,
-                                                 COGL_PIXEL_FORMAT_A_8,
-                                                 stride, mask_data);
+      ClutterBackend *backend = clutter_get_default_backend ();
+      CoglContext *context = clutter_backend_get_cogl_context (backend);
+
+      mask_texture = COGL_TEXTURE (cogl_texture_rectangle_new_with_size (context, tex_width, tex_height));
+      cogl_texture_set_components (mask_texture, COGL_TEXTURE_COMPONENTS_A);
+      cogl_texture_set_region (mask_texture,
+                               0, 0, /* src_x/y */
+                               0, 0, /* dst_x/y */
+                               tex_width, tex_height, /* dst_width/height */
+                               tex_width, tex_height, /* width/height */
+                               COGL_PIXEL_FORMAT_A_8,
+                               stride, mask_data);
     }
   else
     {
