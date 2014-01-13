@@ -452,10 +452,9 @@ const SwitcherList = new Lang.Class({
                            time: POPUP_SCROLL_TIME,
                            transition: 'easeOutQuad',
                            onComplete: Lang.bind(this, function () {
-                                if (this._highlighted == 0) {
+                                if (this._highlighted == 0)
                                     this._scrollableLeft = false;
-                                    this.actor.queue_relayout();
-                                }
+                                this.actor.queue_relayout();
                            })
                           });
     },
@@ -477,10 +476,9 @@ const SwitcherList = new Lang.Class({
                            time: POPUP_SCROLL_TIME,
                            transition: 'easeOutQuad',
                            onComplete: Lang.bind(this, function () {
-                                if (this._highlighted == this._items.length - 1) {
+                                if (this._highlighted == this._items.length - 1)
                                     this._scrollableRight = false;
-                                    this.actor.queue_relayout();
-                                }
+                                this.actor.queue_relayout();
                             })
                           });
     },
