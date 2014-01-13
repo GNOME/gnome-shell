@@ -748,7 +748,6 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
                                           cursor_image->width,
                                           cursor_image->height,
                                           CLUTTER_CAIRO_FORMAT_ARGB32,
-                                          COGL_PIXEL_FORMAT_ANY,
                                           cursor_image->width * 4, /* stride */
                                           cursor_data,
                                           NULL);
