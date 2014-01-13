@@ -733,17 +733,17 @@ const BackgroundManager = new Lang.Class({
         }
     },
 
-    _updateBackground: function(background) {
+    _updateBackground: function() {
         let newBackground = this._createBackground();
-        newBackground.vignetteSharpness = background.vignetteSharpness;
-        newBackground.brightness = background.brightness;
-        newBackground.visible = background.visible;
+        newBackground.vignetteSharpness = this.background.vignetteSharpness;
+        newBackground.brightness = this.background.brightness;
+        newBackground.visible = this.background.visible;
 
         newBackground.loadedSignalId = newBackground.connect('loaded',
             Lang.bind(this, function() {
                 newBackground.disconnect(newBackground.loadedSignalId);
                 newBackground.loadedSignalId = 0;
-                Tweener.addTween(background.actor,
+                Tweener.addTween(this.background.actor,
                                  { opacity: 0,
                                    time: FADE_ANIMATION_TIME,
                                    transition: 'easeOutQuad',
@@ -755,8 +755,7 @@ const BackgroundManager = new Lang.Class({
                                            newBackground.actor.destroy();
                                        }
 
-                                       background.actor.destroy();
-
+                                       this.background.actor.destroy();
                                        this.emit('changed');
                                    })
                                  });
@@ -783,7 +782,7 @@ const BackgroundManager = new Lang.Class({
         background.changeSignalId = background.connect('changed', Lang.bind(this, function() {
             background.disconnect(background.changeSignalId);
             background.changeSignalId = 0;
-            this._updateBackground(background);
+            this._updateBackground();
         }));
 
         background.actor.connect('destroy', Lang.bind(this, function() {
