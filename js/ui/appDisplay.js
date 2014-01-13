@@ -49,7 +49,7 @@ const PAGE_SWITCH_TIME = 0.3;
 
 function _isTerminal(app) {
     return app.get_app_info().get_categories().indexOf('TerminalEmulator') > -1;
-};
+}
 
 // Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
 function _loadCategory(dir, view) {
@@ -68,7 +68,7 @@ function _loadCategory(dir, view) {
             _loadCategory(itemDir, view);
         }
     }
-};
+}
 
 const BaseAppView = new Lang.Class({
     Name: 'BaseAppView',
