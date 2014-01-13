@@ -193,46 +193,16 @@ _cogl_texture_rectangle_create_base (CoglContext *ctx,
 CoglTextureRectangle *
 cogl_texture_rectangle_new_with_size (CoglContext *ctx,
                                       int width,
-                                      int height,
-                                      CoglPixelFormat internal_format,
-                                      CoglError **error)
+                                      int height)
 {
-  CoglTextureLoader *loader;
-  CoglTextureRectangle *tex_rect;
-
-  /* Since no data, we need some internal format */
-  if (internal_format == COGL_PIXEL_FORMAT_ANY)
-    internal_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
-
-  loader = _cogl_texture_create_loader ();
+  CoglTextureLoader *loader = _cogl_texture_create_loader ();
   loader->src_type = COGL_TEXTURE_SOURCE_TYPE_SIZED;
   loader->src.sized.width = width;
   loader->src.sized.height = height;
 
-  tex_rect = _cogl_texture_rectangle_create_base (ctx, width, height,
-                                                  internal_format, loader);
-
-  /* XXX: This api has been changed for Cogl 2.0 on the master branch
-   * to not take a CoglError to allow the storage to be allocated
-   * lazily but since Mutter uses this api we are currently
-   * maintaining the semantics of immediately allocating the storage
-   */
-
-  /* By default tex->premultiplied is set to TRUE and tex->components
-   * get initialized according to a given source-format in
-   * _cogl_texture_init(). Since this api has an internal-format
-   * argument for compatibility we need to make sure the
-   * ->premultiplied and ->components state are initialized according
-   * to the users given @internal_format. */
-  _cogl_texture_set_internal_format (COGL_TEXTURE (tex_rect), internal_format);
-
-  if (!cogl_texture_allocate (COGL_TEXTURE (tex_rect), error))
-    {
-      cogl_object_unref (tex_rect);
-      return NULL;
-    }
-
-  return tex_rect;
+  return _cogl_texture_rectangle_create_base (ctx, width, height,
+                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                              loader);
 }
 
 static CoglBool

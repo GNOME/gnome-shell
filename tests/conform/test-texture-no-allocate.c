@@ -74,9 +74,7 @@ test_texture_no_allocate (void)
     {
       CoglTextureRectangle *texture_rect =
         cogl_texture_rectangle_new_with_size (test_ctx,
-                                              64, 64,
-                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                              NULL /* error */);
+                                              64, 64);
       cogl_object_unref (texture_rect);
     }
 }
