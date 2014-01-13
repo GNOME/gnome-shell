@@ -280,6 +280,9 @@ const LayoutManager = new Lang.Class({
         this._inOverview = true;
         this._updateVisibility();
         this._updateRegions();
+
+        global.window_group.hide();
+        global.top_window_group.hide();
     },
 
     hideOverview: function() {
@@ -288,6 +291,9 @@ const LayoutManager = new Lang.Class({
         this._inOverview = false;
         this._updateVisibility();
         this._queueUpdateRegions();
+
+        global.window_group.show();
+        global.top_window_group.show();
     },
 
     _sessionUpdated: function() {
@@ -857,9 +863,6 @@ const LayoutManager = new Lang.Class({
 
     _updateVisibility: function() {
         let windowsVisible = Main.sessionMode.hasWindows && !this._inOverview;
-
-        global.window_group.visible = windowsVisible;
-        global.top_window_group.visible = windowsVisible;
 
         for (let i = 0; i < this._trackedActors.length; i++) {
             let actorData = this._trackedActors[i], visible;

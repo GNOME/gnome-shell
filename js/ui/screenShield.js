@@ -1008,6 +1008,7 @@ const ScreenShield = new Lang.Class({
             return;
 
         this._ensureLockScreen();
+        this._lockDialogGroup.hide();
         this._lockDialogGroup.scale_x = 1;
         this._lockDialogGroup.scale_y = 1;
 
@@ -1106,8 +1107,10 @@ const ScreenShield = new Lang.Class({
         }));
         this._cursorTracker.set_pointer_visible(false);
 
-        this._lockScreenState = MessageTray.State.SHOWN;
+        this._lockDialogGroup.show();
         this._lockScreenGroup.fixed_position_set = false;
+        this._lockScreenState = MessageTray.State.SHOWN;
+        Main.layoutManager.sessionGroup.hide();
         this._lockScreenScrollCounter = 0;
 
         if (params.fadeToBlack && params.animateFade) {
@@ -1234,6 +1237,7 @@ const ScreenShield = new Lang.Class({
             this._isModal = false;
         }
 
+        Main.layoutManager.sessionGroup.show();
         Tweener.addTween(this._lockDialogGroup, {
             scale_x: 0,
             scale_y: 0,
