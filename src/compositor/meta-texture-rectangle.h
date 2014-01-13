@@ -32,10 +32,8 @@ CoglTexture *
 meta_texture_rectangle_new (unsigned int width,
                             unsigned int height,
                             CoglPixelFormat format,
-                            CoglPixelFormat internal_format,
                             unsigned int rowstride,
-                            const guint8 *data,
-                            GError **error);
+                            const guint8 *data);
 
 gboolean
 meta_texture_rectangle_check (CoglTexture *texture);
