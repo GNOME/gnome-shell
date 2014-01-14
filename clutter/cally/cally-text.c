@@ -1233,6 +1233,7 @@ cally_text_get_n_selections (AtkText *text)
 {
   ClutterActor *actor           = NULL;
   gint          selection_bound = -1;
+  gint          cursor_position = -1;
 
   actor = CALLY_GET_CLUTTER_ACTOR (text);
   if (actor == NULL) /* State is defunct */
@@ -1242,11 +1243,12 @@ cally_text_get_n_selections (AtkText *text)
     return 0;
 
   selection_bound = clutter_text_get_selection_bound (CLUTTER_TEXT (actor));
+  cursor_position = clutter_text_get_cursor_position (CLUTTER_TEXT (actor));
 
-  if (selection_bound > 0)
-    return 1;
-  else
+  if (selection_bound == cursor_position)
     return 0;
+  else
+    return 1;
 }
 
 static gchar*
