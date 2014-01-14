@@ -556,6 +556,12 @@ const WindowManager = new Lang.Class({
                                         Shell.KeyBindingMode.LOGIN_SCREEN,
                                         Lang.bind(this, this._startA11ySwitcher));
 
+        this.addKeybinding('toggle-tweens',
+                           new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                           Meta.KeyBindingFlags.NONE,
+                           Shell.KeyBindingMode.ALL,
+                           Lang.bind(this, this._toggleTweens));
+
         this.addKeybinding('open-application-menu',
                            new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.NONE,
@@ -1086,6 +1092,15 @@ const WindowManager = new Lang.Class({
 
     _toggleAppMenu : function(display, screen, window, event, binding) {
         Main.panel.toggleAppMenu();
+    },
+
+    _toggleTweens: function() {
+        this._tweensPaused = !this._tweensPaused;
+        const OrigTweener = imports.tweener.tweener;
+        if (this._tweensPaused)
+            OrigTweener.pauseAllTweens();
+        else
+            OrigTweener.resumeAllTweens();
     },
 
     _showWorkspaceSwitcher : function(display, screen, window, binding) {

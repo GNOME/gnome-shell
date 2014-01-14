@@ -116,6 +116,11 @@
         Keybinding to focus the active notification.
       </_description>
     </key>
+    <key name="pause-resume-tweens" type="as">
+      <default>[]</default>
+      <summary>Keybinding that pauses and resumes all running tweens, for debugging purposes</summary>
+      <description></description>
+    </key>
   </schema>
 
   <schema id="org.gnome.shell.keyboard" path="/org/gnome/shell/keyboard/"
