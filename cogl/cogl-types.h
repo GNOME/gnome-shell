@@ -298,6 +298,9 @@ typedef struct _CoglTextureVertex       CoglTextureVertex;
  * CoglPixelFormat:
  * @COGL_PIXEL_FORMAT_ANY: Any format
  * @COGL_PIXEL_FORMAT_A_8: 8 bits alpha mask
+ * @COGL_PIXEL_FORMAT_RG_88: RG, 16 bits. Note that red-green textures
+ *   are only available if %COGL_FEATURE_ID_TEXTURE_RG is advertised.
+ *   See cogl_texture_set_components() for details.
  * @COGL_PIXEL_FORMAT_RGB_565: RGB, 16 bits
  * @COGL_PIXEL_FORMAT_RGBA_4444: RGBA, 16 bits
  * @COGL_PIXEL_FORMAT_RGBA_5551: RGBA, 16 bits
@@ -354,6 +357,8 @@ typedef enum { /*< prefix=COGL_PIXEL_FORMAT >*/
   COGL_PIXEL_FORMAT_RGBA_5551     = 6 | COGL_A_BIT,
   COGL_PIXEL_FORMAT_YUV           = 7,
   COGL_PIXEL_FORMAT_G_8           = 8,
+
+  COGL_PIXEL_FORMAT_RG_88         = 9,
 
   COGL_PIXEL_FORMAT_RGB_888       = 2,
   COGL_PIXEL_FORMAT_BGR_888       = (2 | COGL_BGR_BIT),

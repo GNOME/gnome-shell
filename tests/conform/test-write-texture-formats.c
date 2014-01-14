@@ -141,6 +141,11 @@ test_write_texture_formats (void)
   test_write_byte (test_ctx, COGL_PIXEL_FORMAT_G_8, 0x34, 0x340000ff);
 #endif
 
+  /* We should always be able to read from an RG buffer regardless of
+   * whether RG textures are supported because Cogl will do the
+   * conversion for us */
+  test_write_bytes (test_ctx, COGL_PIXEL_FORMAT_RG_88, 0x123456ff, 0x123400ff);
+
   test_write_short (test_ctx, COGL_PIXEL_FORMAT_RGB_565, 0x0843, 0x080819ff);
   test_write_short (test_ctx, COGL_PIXEL_FORMAT_RGBA_4444_PRE, 0x1234, 0x11223344);
   test_write_short (test_ctx, COGL_PIXEL_FORMAT_RGBA_5551_PRE, 0x0887, 0x081019ff);

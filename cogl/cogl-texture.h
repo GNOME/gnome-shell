@@ -127,6 +127,9 @@ cogl_is_texture (void *object);
 /**
  * CoglTextureComponents:
  * @COGL_TEXTURE_COMPONENTS_A: Only the alpha component
+ * @COGL_TEXTURE_COMPONENTS_RG: Red and green components. Note that
+ *   this can only be used if the %COGL_FEATURE_ID_TEXTURE_RG feature
+ *   is advertised.
  * @COGL_TEXTURE_COMPONENTS_RGB: Red, green and blue components
  * @COGL_TEXTURE_COMPONENTS_RGBA: Red, green, blue and alpha components
  * @COGL_TEXTURE_COMPONENTS_DEPTH: Only a depth component
@@ -138,6 +141,7 @@ cogl_is_texture (void *object);
 typedef enum _CoglTextureComponents
 {
   COGL_TEXTURE_COMPONENTS_A = 1,
+  COGL_TEXTURE_COMPONENTS_RG,
   COGL_TEXTURE_COMPONENTS_RGB,
   COGL_TEXTURE_COMPONENTS_RGBA,
   COGL_TEXTURE_COMPONENTS_DEPTH
@@ -157,6 +161,15 @@ typedef enum _CoglTextureComponents
  * is %COGL_TEXTURE_COMPONENTS_RGBA. The other constructors which take
  * a %CoglBitmap or a data pointer default to the same components as
  * the pixel format of the data.
+ *
+ * Note that the %COGL_TEXTURE_COMPONENTS_RG format is not available
+ * on all drivers. The availability can be determined by checking for
+ * the %COGL_FEATURE_ID_TEXTURE_RG feature. If this format is used on
+ * a driver where it is not available then %COGL_TEXTURE_ERROR_FORMAT
+ * will be raised when the texture is allocated. Even if the feature
+ * is not available then %COGL_PIXEL_FORMAT_RG_88 can still be used as
+ * an image format as long as %COGL_TEXTURE_COMPONENTS_RG isn't used
+ * as the texture's components.
  *
  * Since: 1.18
  */

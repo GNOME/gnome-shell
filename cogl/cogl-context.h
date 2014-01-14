@@ -200,6 +200,9 @@ cogl_is_context (void *object);
  *    and %COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT features combined.
  * @COGL_FEATURE_ID_TEXTURE_RECTANGLE: Support for rectangular
  *    textures with non-normalized texture coordinates.
+ * @COGL_FEATURE_ID_TEXTURE_RG: Support for
+ *    %COGL_TEXTURE_COMPONENTS_RG as the internal components of a
+ *    texture.
  * @COGL_FEATURE_ID_TEXTURE_3D: 3D texture support
  * @COGL_FEATURE_ID_OFFSCREEN: Offscreen rendering support
  * @COGL_FEATURE_ID_OFFSCREEN_MULTISAMPLE: Multisample support for
@@ -263,6 +266,7 @@ typedef enum _CoglFeatureID
   COGL_FEATURE_ID_PRESENTATION_TIME,
   COGL_FEATURE_ID_FENCE,
   COGL_FEATURE_ID_PER_VERTEX_POINT_SIZE,
+  COGL_FEATURE_ID_TEXTURE_RG,
 
   /*< private >*/
   _COGL_N_FEATURE_IDS   /*< skip >*/

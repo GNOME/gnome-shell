@@ -79,6 +79,22 @@ G_PASTE (_cogl_unpack_g_8_, component_size) (const uint8_t *src,
 }
 
 inline static void
+G_PASTE (_cogl_unpack_rg_88_, component_size) (const uint8_t *src,
+                                               component_type *dst,
+                                               int width)
+{
+  while (width-- > 0)
+    {
+      dst[0] = UNPACK_BYTE (src[0]);
+      dst[1] = UNPACK_BYTE (src[1]);
+      dst[2] = 0;
+      dst[3] = UNPACK_BYTE (255);
+      dst += 4;
+      src += 2;
+    }
+}
+
+inline static void
 G_PASTE (_cogl_unpack_rgb_888_, component_size) (const uint8_t *src,
                                                  component_type *dst,
                                                  int width)
@@ -321,6 +337,9 @@ G_PASTE (_cogl_unpack_, component_size) (CoglPixelFormat format,
     case COGL_PIXEL_FORMAT_G_8:
       G_PASTE (_cogl_unpack_g_8_, component_size) (src, dst, width);
       break;
+    case COGL_PIXEL_FORMAT_RG_88:
+      G_PASTE (_cogl_unpack_rg_88_, component_size) (src, dst, width);
+      break;
     case COGL_PIXEL_FORMAT_RGB_888:
       G_PASTE (_cogl_unpack_rgb_888_, component_size) (src, dst, width);
       break;
@@ -421,6 +440,20 @@ G_PASTE (_cogl_pack_g_8_, component_size) (const component_type *src,
       *dst = PACK_BYTE (v);
       src += 4;
       dst++;
+    }
+}
+
+inline static void
+G_PASTE (_cogl_pack_rg_88_, component_size) (const component_type *src,
+                                             uint8_t *dst,
+                                             int width)
+{
+  while (width-- > 0)
+    {
+      dst[0] = PACK_BYTE (src[0]);
+      dst[1] = PACK_BYTE (src[1]);
+      src += 4;
+      dst += 2;
     }
 }
 
@@ -664,6 +697,9 @@ G_PASTE (_cogl_pack_, component_size) (CoglPixelFormat format,
       break;
     case COGL_PIXEL_FORMAT_G_8:
       G_PASTE (_cogl_pack_g_8_, component_size) (src, dst, width);
+      break;
+    case COGL_PIXEL_FORMAT_RG_88:
+      G_PASTE (_cogl_pack_rg_88_, component_size) (src, dst, width);
       break;
     case COGL_PIXEL_FORMAT_RGB_888:
       G_PASTE (_cogl_pack_rgb_888_, component_size) (src, dst, width);

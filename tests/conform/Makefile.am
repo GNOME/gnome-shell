@@ -67,6 +67,7 @@ test_sources = \
 	test-pipeline-cache-unrefs-texture.c \
 	test-texture-no-allocate.c \
 	test-pipeline-shader-state.c \
+	test-texture-rg.c \
 	$(NULL)
 
 if !USING_EMSCRIPTEN

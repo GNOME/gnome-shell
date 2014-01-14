@@ -42,6 +42,12 @@ check_flags (TestFlags flags,
       return FALSE;
     }
 
+  if (flags & TEST_REQUIREMENT_TEXTURE_RG &&
+      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_TEXTURE_RG))
+    {
+      return FALSE;
+    }
+
   if (flags & TEST_REQUIREMENT_POINT_SPRITE &&
       !cogl_has_feature (test_ctx, COGL_FEATURE_ID_POINT_SPRITE))
     {

@@ -149,6 +149,8 @@ main (int argc, char **argv)
 
   ADD_TEST (test_texture_no_allocate, 0, 0);
 
+  ADD_TEST (test_texture_rg, TEST_REQUIREMENT_TEXTURE_RG, 0);
+
   g_printerr ("Unknown test name \"%s\"\n", argv[1]);
 
   return 1;

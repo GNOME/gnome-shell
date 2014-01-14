@@ -44,6 +44,12 @@
 #ifndef GL_DEPTH_STENCIL
 #define GL_DEPTH_STENCIL 0x84F9
 #endif
+#ifndef GL_RG
+#define GL_RG 0x8227
+#endif
+#ifndef GL_RG8
+#define GL_RG8 0x822B
+#endif
 
 static CoglBool
 _cogl_driver_pixel_format_from_gl_internal (CoglContext *context,
@@ -78,6 +84,26 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
     case COGL_PIXEL_FORMAT_G_8:
       glintformat = GL_LUMINANCE;
       glformat = GL_LUMINANCE;
+      gltype = GL_UNSIGNED_BYTE;
+      break;
+
+    case COGL_PIXEL_FORMAT_RG_88:
+      if (cogl_has_feature (context, COGL_FEATURE_ID_TEXTURE_RG))
+        {
+          glintformat = GL_RG8;
+          glformat = GL_RG;
+        }
+      else
+        {
+          /* If red-green textures aren't supported then we'll use RGB
+           * as an internal format. Note this should only end up
+           * mattering for downloading the data because Cogl will
+           * refuse to allocate a texture with RG components if RG
+           * textures aren't supported */
+          glintformat = GL_RGB;
+          glformat = GL_RGB;
+          required_format = COGL_PIXEL_FORMAT_RGB_888;
+        }
       gltype = GL_UNSIGNED_BYTE;
       break;
 
@@ -366,6 +392,11 @@ _cogl_driver_update_features (CoglContext *context,
   if (_cogl_check_extension ("GL_OES_EGL_sync", gl_extensions) ||
       _cogl_check_extension ("GL_OES_egl_sync", gl_extensions))
     COGL_FLAGS_SET (private_features, COGL_PRIVATE_FEATURE_OES_EGL_SYNC, TRUE);
+
+  if (_cogl_check_extension ("GL_EXT_texture_rg", gl_extensions))
+    COGL_FLAGS_SET (context->features,
+                    COGL_FEATURE_ID_TEXTURE_RG,
+                    TRUE);
 
   /* Cache features */
   for (i = 0; i < G_N_ELEMENTS (private_features); i++)

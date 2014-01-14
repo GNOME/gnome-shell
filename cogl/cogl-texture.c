@@ -1377,6 +1377,14 @@ cogl_texture_allocate (CoglTexture *texture,
   if (texture->allocated)
     return TRUE;
 
+  if (texture->components == COGL_TEXTURE_COMPONENTS_RG &&
+      !cogl_has_feature (texture->context, COGL_FEATURE_ID_TEXTURE_RG))
+    _cogl_set_error (error,
+                     COGL_TEXTURE_ERROR,
+                     COGL_TEXTURE_ERROR_FORMAT,
+                     "A red-green texture was requested but the driver "
+                     "does not support them");
+
   texture->allocated = texture->vtable->allocate (texture, error);
 
   return texture->allocated;
@@ -1394,6 +1402,11 @@ _cogl_texture_set_internal_format (CoglTexture *texture,
   if (internal_format == COGL_PIXEL_FORMAT_A_8)
     {
       texture->components = COGL_TEXTURE_COMPONENTS_A;
+      return;
+    }
+  else if (internal_format == COGL_PIXEL_FORMAT_RG_88)
+    {
+      texture->components = COGL_TEXTURE_COMPONENTS_RG;
       return;
     }
   else if (internal_format & COGL_DEPTH_BIT)
@@ -1437,6 +1450,8 @@ _cogl_texture_determine_internal_format (CoglTexture *texture,
         }
     case COGL_TEXTURE_COMPONENTS_A:
       return COGL_PIXEL_FORMAT_A_8;
+    case COGL_TEXTURE_COMPONENTS_RG:
+      return COGL_PIXEL_FORMAT_RG_88;
     case COGL_TEXTURE_COMPONENTS_RGB:
       if (src_format != COGL_PIXEL_FORMAT_ANY &&
           !(src_format & COGL_A_BIT) && !(src_format & COGL_DEPTH_BIT))

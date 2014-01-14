@@ -80,6 +80,23 @@ test_read_888 (CoglTexture2D *tex_2d,
 }
 
 static void
+test_read_88 (CoglTexture2D *tex_2d,
+              CoglPixelFormat format,
+              uint32_t expected_pixel)
+{
+  uint8_t pixel[4];
+
+  pixel[2] = 0x00;
+
+  cogl_texture_get_data (tex_2d,
+                         format,
+                         2, /* rowstride */
+                         pixel);
+
+  test_utils_compare_pixel (pixel, expected_pixel);
+}
+
+static void
 test_read_8888 (CoglTexture2D *tex_2d,
                 CoglPixelFormat format,
                 uint32_t expected_pixel)
@@ -161,6 +178,11 @@ test_read_texture_formats (void)
      wrong. */
   test_read_byte (tex_2d, COGL_PIXEL_FORMAT_G_8, 0x9c);
 #endif
+
+  /* We should always be able to read into an RG buffer regardless of
+   * whether RG textures are supported because Cogl will do the
+   * conversion for us */
+  test_read_88 (tex_2d, COGL_PIXEL_FORMAT_RG_88, 0x123400ff);
 
   test_read_short (tex_2d, COGL_PIXEL_FORMAT_RGB_565,
                    5, 0x12, 6, 0x34, 5, 0x56,
