@@ -475,13 +475,6 @@ const ViewSelector = new Lang.Class({
             return ViewPage.SEARCH;
     },
 
-    setActivePage: function(page) {
-        if (page == ViewPage.WINDOWS)
-            this._showPage(this._workspacesPage);
-        else
-            this._showPage(this._appsPage);
-    },
-
     fadeIn: function() {
         let actor = this._activePage;
         Tweener.addTween(actor, { opacity: 255,
