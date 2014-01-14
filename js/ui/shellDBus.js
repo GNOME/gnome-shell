@@ -10,7 +10,6 @@ const Config = imports.misc.config;
 const ExtensionSystem = imports.ui.extensionSystem;
 const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
-const Hash = imports.misc.hash;
 const Main = imports.ui.main;
 const Screenshot = imports.ui.screenshot;
 const ViewSelector = imports.ui.viewSelector;
@@ -83,8 +82,8 @@ const GnomeShell = new Lang.Class({
         this._extensionsService = new GnomeShellExtensions();
         this._screenshotService = new Screenshot.ScreenshotService();
 
-        this._grabbedAccelerators = new Hash.Map();
-        this._grabbers = new Hash.Map();
+        this._grabbedAccelerators = new Map();
+        this._grabbers = new Map();
 
         global.display.connect('accelerator-activated', Lang.bind(this,
             function(display, action, deviceid, timestamp) {
@@ -228,9 +227,8 @@ const GnomeShell = new Lang.Class({
     },
 
     _onGrabberBusNameVanished: function(connection, name) {
-        let grabs = this._grabbedAccelerators.items();
-        for (let i = 0; i < grabs.length; i++) {
-            let [action, sender] = grabs[i];
+        let grabs = this._grabbedAccelerators.entries();
+        for (let [action, sender] of grabs) {
             if (sender == name)
                 this._ungrabAccelerator(action);
         }

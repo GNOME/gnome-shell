@@ -11,7 +11,6 @@ const NMGtk = imports.gi.NMGtk;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
-const Hash = imports.misc.hash;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -176,7 +175,7 @@ const NMConnectionSection = new Lang.Class({
     _init: function(client) {
         this._client = client;
 
-        this._connectionItems = new Hash.Map();
+        this._connectionItems = new Map();
         this._connections = [];
 
         this._labelSection = new PopupMenu.PopupMenuSection();
@@ -194,7 +193,7 @@ const NMConnectionSection = new Lang.Class({
     },
 
     _sync: function() {
-        let nItems = this._connectionItems.size();
+        let nItems = this._connectionItems.size;
 
         this._switchSection.actor.visible = (nItems > 1);
         this._labelSection.actor.visible = (nItems == 1);
@@ -213,8 +212,7 @@ const NMConnectionSection = new Lang.Class({
 
     _getStatus: function() {
         let values = this._connectionItems.values();
-        for (let i = 0; i < values.length; i++) {
-            let item = values[i];
+        for (let item of values) {
             if (item.isActive())
                 return item.getName();
         }
@@ -365,7 +363,7 @@ const NMConnectionDevice = new Lang.Class({
     },
 
     _sync: function() {
-        let nItems = this._connectionItems.size();
+        let nItems = this._connectionItems.size;
         this._autoConnectItem.actor.visible = (nItems == 0);
         this.parent();
     },
@@ -1217,7 +1215,7 @@ const NMVPNSection = new Lang.Class({
     },
 
     _sync: function() {
-        let nItems = this._connectionItems.size();
+        let nItems = this._connectionItems.size;
         this.item.actor.visible = (nItems > 0);
         this.parent();
     },
@@ -1239,9 +1237,10 @@ const NMVPNSection = new Lang.Class({
     },
 
     setActiveConnections: function(vpnConnections) {
-        this._connectionItems.values().forEach(function(item) {
+        let connections = this._connectionItems.values();
+        for (let item of connections) {
             item.setActiveConnection(null);
-        });
+        }
         vpnConnections.forEach(Lang.bind(this, function(a) {
             let item = this._connectionItems.get(a._connection.get_uuid());
             item.setActiveConnection(a);
@@ -1254,8 +1253,7 @@ const NMVPNSection = new Lang.Class({
 
     getIndicatorIcon: function() {
         let items = this._connectionItems.values();
-        for (let i = 0; i < items.length; i++) {
-            let item = items[i];
+        for (let item of items) {
             let icon = item.getIndicatorIcon();
             if (icon)
                 return icon;

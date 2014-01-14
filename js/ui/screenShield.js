@@ -17,7 +17,6 @@ const TweenerEquations = imports.tweener.equations;
 
 const Background = imports.ui.background;
 const GnomeSession = imports.misc.gnomeSession;
-const Hash = imports.misc.hash;
 const Layout = imports.ui.layout;
 const OVirt = imports.gdm.oVirt;
 const LoginManager = imports.misc.loginManager;
@@ -115,7 +114,7 @@ const NotificationsBox = new Lang.Class({
         this.actor.add(this._musicBin);
         this.actor.add(this._scrollView, { x_fill: true, x_align: St.Align.START });
 
-        this._sources = new Hash.Map();
+        this._sources = new Map();
         Main.messageTray.getSources().forEach(Lang.bind(this, function(source) {
             this._sourceAdded(Main.messageTray, source, true);
         }));
@@ -130,9 +129,8 @@ const NotificationsBox = new Lang.Class({
             this._sourceAddedId = 0;
         }
 
-        let items = this._sources.items();
-        for (let i = 0; i < items.length; i++) {
-            let [source, obj] = items[i];
+        let items = this._sources.entries();
+        for (let [source, obj] of items) {
             this._removeSource(source, obj);
         }
 

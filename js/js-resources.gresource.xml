@@ -15,7 +15,6 @@
     <file>misc/extensionUtils.js</file>
     <file>misc/fileUtils.js</file>
     <file>misc/gnomeSession.js</file>
-    <file>misc/hash.js</file>
     <file>misc/history.js</file>
     <file>misc/jsParse.js</file>
     <file>misc/loginManager.js</file>
