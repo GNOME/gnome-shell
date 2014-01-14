@@ -19,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-06-05 13:34+0000\n"
-"PO-Revision-Date: 2013-05-28 16:14+0800\n"
+"PO-Revision-Date: 2014-01-14 18:41+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -1735,7 +1735,7 @@ msgstr "解锁窗口"
 
 #: ../js/ui/userMenu.js:193
 msgid "Available"
-msgstr "可用"
+msgstr "有空"
 
 #: ../js/ui/userMenu.js:196
 msgid "Busy"
