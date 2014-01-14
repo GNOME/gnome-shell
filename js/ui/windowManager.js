@@ -556,7 +556,7 @@ const WindowManager = new Lang.Class({
                                         Shell.KeyBindingMode.LOGIN_SCREEN,
                                         Lang.bind(this, this._startA11ySwitcher));
 
-        this.addKeybinding('toggle-tweens',
+        this.addKeybinding('pause-resume-tweens',
                            new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.NONE,
                            Shell.KeyBindingMode.ALL,
