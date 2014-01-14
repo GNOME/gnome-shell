@@ -1521,34 +1521,39 @@ const Workspace = new Lang.Class({
         this._recalculateWindowPositions(WindowPositionFlags.ANIMATE | WindowPositionFlags.INITIAL);
     },
 
-    // Animates the return from Overview mode
-    zoomFromOverview : function() {
+    _leavingOverview: function() {
         let currentWorkspace = global.screen.get_active_workspace();
+        if (this.metaWorkspace != null && this.metaWorkspace != currentWorkspace)
+            return false;
 
         this.leavingOverview = true;
+        this._overviewHiddenId = Main.overview.connect('hidden', Lang.bind(this,
+                                                                           this._doneLeavingOverview));
 
         for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
             Tweener.removeTweens(clone.actor);
+
+            let overlay = this._windowOverlays[i];
+            if (overlay)
+                overlay.hide();
         }
 
         if (this._repositionWindowsId > 0) {
             Mainloop.source_remove(this._repositionWindowsId);
             this._repositionWindowsId = 0;
         }
-        this._overviewHiddenId = Main.overview.connect('hidden', Lang.bind(this,
-                                                                           this._doneLeavingOverview));
 
-        if (this.metaWorkspace != null && this.metaWorkspace != currentWorkspace)
+        return true;
+    },
+
+    // Animates the return from Overview mode
+    zoomFromOverview : function() {
+        if (!this._leavingOverview())
             return;
 
-        // Position and scale the windows.
         for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
-            let overlay = this._windowOverlays[i];
-
-            if (overlay)
-                overlay.hide();
 
             if (clone.metaWindow.showing_on_its_workspace()) {
                 let [origX, origY] = clone.getOriginalPosition();
@@ -1571,6 +1576,31 @@ const Workspace = new Lang.Class({
                                    time: Overview.ANIMATION_TIME,
                                    transition: 'easeOutQuad'
                                  });
+            }
+        }
+    },
+
+    fadeFromOverview: function() {
+        if (!this._leavingOverview())
+            return;
+
+        for (let i = 0; i < this._windows.length; i++) {
+            let clone = this._windows[i];
+
+            if (clone.metaWindow.showing_on_its_workspace()) {
+                clone.actor.x = clone.origX;
+                clone.actor.y = clone.origY;
+                clone.actor.scale_x = 1.0;
+                clone.actor.scale_y = 1.0;
+                clone.actor.opacity = 0;
+
+                Tweener.addTween(clone.actor,
+                                 { opacity: 255,
+                                   time: Overview.ANIMATION_TIME,
+                                   transition: 'easeOutQuad'
+                                 });
+            } else {
+                clone.actor.hide();
             }
         }
     },

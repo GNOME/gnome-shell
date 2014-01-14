@@ -118,13 +118,11 @@ const ViewSelector = new Lang.Class({
         this._stageKeyPressId = 0;
         Main.overview.connect('showing', Lang.bind(this,
             function () {
-                this._showAppsButton.checked = false;
                 this._stageKeyPressId = global.stage.connect('key-press-event',
                                                              Lang.bind(this, this._onStageKeyPress));
             }));
         Main.overview.connect('hiding', Lang.bind(this,
             function () {
-                this._showAppsButton.checked = false;
                 if (this._stageKeyPressId != 0) {
                     global.stage.disconnect(this._stageKeyPressId);
                     this._stageKeyPressId = 0;
@@ -160,6 +158,11 @@ const ViewSelector = new Lang.Class({
     show: function() {
         this.reset();
 
+        this._showAppsBlocked = true;
+        this._showAppsButton.checked = false;
+        this._showAppsBlocked = false;
+
+        this._workspacesPage.opacity = 255;
         this._workspacesDisplay.show();
         this._activePage = null;
         this._syncActivePage();
@@ -168,11 +171,13 @@ const ViewSelector = new Lang.Class({
             Main.overview.fadeOutDesktop();
     },
 
-    zoomFromOverview: function() {
-        this._workspacesDisplay.zoomFromOverview();
-
+    leaveOverview: function() {
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeInDesktop();
+
+        // If we're not on the windows page, don't zoom back the primary monitor.
+        let zoomPrimary = (this._activePage == this._workspacesPage);
+        this._workspacesDisplay.leaveOverview(zoomPrimary);
     },
 
     setWorkspacesFullGeometry: function(geom) {
@@ -181,6 +186,9 @@ const ViewSelector = new Lang.Class({
 
     hide: function() {
         this._workspacesDisplay.hide();
+        if (this._activePage)
+            this._activePage.hide();
+        this._activePage = null;
     },
 
     _addPage: function(actor, name, a11yIcon, params) {
@@ -215,13 +223,13 @@ const ViewSelector = new Lang.Class({
         this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
         this._activePage.show();
         Tweener.addTween(this._activePage,
-            { opacity: 255,
-              time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
-              transition: 'easeOutQuad'
-            });
+                         { opacity: 255,
+                           time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
     },
 
-    _showPage: function(page) {
+    _setActivePage: function(page) {
         if (page == this._activePage)
             return;
 
@@ -261,11 +269,12 @@ const ViewSelector = new Lang.Class({
         let activePage = this._getActivePage();
         if (activePage == this._activePage)
             return;
-        this._showPage(activePage);
+        this._setActivePage(activePage);
     },
 
     _onShowAppsButtonToggled: function() {
-        this._syncActivePage();
+        if (!this._showAppsBlocked)
+            this._syncActivePage();
     },
 
     _onStageKeyPress: function(actor, event) {

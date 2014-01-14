@@ -145,11 +145,22 @@ const WorkspacesView = new Lang.Class({
         this._updateWorkspaceActors(false);
     },
 
-    zoomFromOverview: function() {
+    _leaveOverview: function() {
         this.actor.remove_clip();
+    },
 
-        for (let w = 0; w < this._workspaces.length; w++)
-            this._workspaces[w].zoomFromOverview();
+    zoomFromOverview: function() {
+        this._leaveOverview();
+        this._workspaces.forEach(function(w) {
+            w.zoomFromOverview();
+        });
+    },
+
+    fadeFromOverview: function() {
+        this._leaveOverview();
+        this._workspaces.forEach(function(w) {
+            w.fadeFromOverview();
+        });
     },
 
     syncStacking: function(stackIndices) {
@@ -365,6 +376,10 @@ const ExtraWorkspaceView = new Lang.Class({
         this._workspace.zoomFromOverview();
     },
 
+    fadeFromOverview: function() {
+        this._workspace.fadeFromOverview();
+    },
+
     syncStacking: function(stackIndices) {
         this._workspace.syncStacking(stackIndices);
     },
@@ -466,9 +481,18 @@ const WorkspacesDisplay = new Lang.Class({
             this._scrollEventId = Main.overview.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
     },
 
-    zoomFromOverview: function() {
-        for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].zoomFromOverview();
+    leaveOverview: function(zoomPrimary) {
+        for (let i = 0; i < this._workspacesViews.length; i++) {
+            let view = this._workspacesViews[i];
+            if (i == this._primaryIndex) {
+                if (zoomPrimary)
+                    view.zoomFromOverview();
+                else
+                    view.fadeFromOverview();
+            } else {
+                view.zoomFromOverview();
+            }
+        }
     },
 
     hide: function() {
