@@ -1514,6 +1514,26 @@ clutter_evdev_set_keyboard_map (ClutterDeviceManager *evdev,
 }
 
 /**
+ * clutter_evdev_get_keyboard_map: (skip)
+ * @evdev: the #ClutterDeviceManager created by the evdev backend
+ *
+ * Retrieves the #xkb_keymap in use by the evdev backend.
+ *
+ * Return value: the #xkb_keymap.
+ */
+struct xkb_keymap *
+clutter_evdev_get_keyboard_map (ClutterDeviceManager *evdev)
+{
+  ClutterDeviceManagerEvdev *manager_evdev;
+
+  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev));
+
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (evdev);
+
+  return xkb_state_get_keymap (manager_evdev->priv->main_seat->xkb);
+}
+
+/**
  * clutter_evdev_set_pointer_constrain_callback:
  * @evdev: the #ClutterDeviceManager created by the evdev backend
  * @callback: the callback
