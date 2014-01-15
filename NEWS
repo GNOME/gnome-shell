@@ -1,3 +1,26 @@
+3.10.3
+======
+* Fix reentrancy issue in message tray [Jasper; #711694]
+* Fix resetting prompt on user switch [Ray; #710456]
+* Fix screen shield on login screen [Florian; #719378]
+* Catch more extension errors on enable/disable [Sebastien; #688331]
+* Fix entry focus of chat notifications [Jasper; #709853]
+* Fix app switcher order with dialog windows [Florian; #719824]
+* Allow remote search providers without icons [Debarshi; #719965]
+* Fix ref-counting issue in ShellApp [Giovanni; #721439]
+
+Contributors:
+  Giovanni Campagna, Sebastien Lafargue, Florian Müllner, Debarshi Ray,
+  Jasper St. Pierre, Ray Strode
+
+Translations:
+  Emin Tufan Çetin [tr], Muhammet Kara [tr], A S Alam [pa], Khaled Hosny [ar],
+  Dušan Kazik [sk], Wylmer Wang [zh_CN], Benjamin Steinwender [de],
+  Matej Urbančič [sl], Aurimas Černius [lt], Rafael Ferreira [pt_BR],
+  Andika Triwidada [id], Marek Černocký [cs], Tong Hui [zh_CN],
+  Adorilson Bezerra [pt_BR], Christian Kirbach [de],
+  Мирослав Николић [sr, sr@latin]
+
 3.10.2.1
 ========
 * Lower mutter requirement to not end up without wayland support
