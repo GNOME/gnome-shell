@@ -1,3 +1,19 @@
+3.11.4
+======
+* Don't leave focus on windows that are being unmanaged [Owen; #711618]
+* Reduce server grabs [Daniel Drake; #721345, #721709]
+* Improve heuristic to determine display output name [Cosimo Cecchi; #721674]
+* Atomically unmaximize both directions [Jasper; #722108]
+* Misc bug fixes [Debarshi, Andika; #721517, #721674]
+
+Contributors:
+  Cosimo Cecchi, Daniel Drake, Debarshi Ray, Jasper St. Pierre,
+  Andika Triwidada, Owen W. Taylor
+
+Translations:
+  Rafael Ferreira [pt_BR], Dimitris Spingos [el], Daniel Mustieles [es],
+  Milo Casagrande [it], Yosef Or Boczko [he]
+
 3.11.3
 ======
 * xrandr: Use "hotplug_mode_update" property [Marc-André; #711216]
