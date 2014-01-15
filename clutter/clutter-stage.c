@@ -1430,17 +1430,19 @@ _clutter_stage_do_pick (ClutterStage   *stage,
                         gint            y,
                         ClutterPickMode mode)
 {
-  ClutterStagePrivate *priv;
+  ClutterActor *actor = CLUTTER_ACTOR (stage);
+  ClutterStagePrivate *priv = stage->priv;
   ClutterMainContext *context;
   guchar pixel[4] = { 0xff, 0xff, 0xff, 0xff };
   CoglColor stage_pick_id;
   gboolean dither_enabled_save;
+  ClutterActor *retval;
   CoglFramebuffer *fb;
-  ClutterActor *actor;
   gint dirty_x;
   gint dirty_y;
   gint read_x;
   gint read_y;
+  float stage_width, stage_height;
   int window_scale;
 
   CLUTTER_STATIC_COUNTER (do_pick_counter,
@@ -1468,18 +1470,20 @@ _clutter_stage_do_pick (ClutterStage   *stage,
                         "The time spent issuing a read pixels",
                         0 /* no application private data */);
 
-  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
-
   priv = stage->priv;
 
   if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
-    return CLUTTER_ACTOR (stage);
+    return actor;
 
   if (G_UNLIKELY (clutter_pick_debug_flags & CLUTTER_DEBUG_NOP_PICKING))
-    return CLUTTER_ACTOR (stage);
+    return actor;
 
   if (G_UNLIKELY (priv->impl == NULL))
-    return CLUTTER_ACTOR (stage);
+    return actor;
+
+  clutter_actor_get_size (CLUTTER_ACTOR (stage), &stage_width, &stage_height);
+  if (x < 0 || x >= stage_width || y < 0 || y >= stage_height)
+    return actor;
 
 #ifdef CLUTTER_ENABLE_PROFILE
   if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
@@ -1515,11 +1519,9 @@ _clutter_stage_do_pick (ClutterStage   *stage,
 
   CLUTTER_NOTE (PICK, "Performing pick at %i,%i", x, y);
 
-  cogl_color_init_from_4ub (&stage_pick_id, 255, 255, 255, 255);
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_clear);
-  cogl_clear (&stage_pick_id,
-	      COGL_BUFFER_BIT_COLOR |
-	      COGL_BUFFER_BIT_DEPTH);
+  cogl_color_init_from_4ub (&stage_pick_id, 255, 255, 255, 255);
+  cogl_clear (&stage_pick_id, COGL_BUFFER_BIT_COLOR | COGL_BUFFER_BIT_DEPTH);
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_clear);
 
   /* Disable dithering (if any) when doing the painting in pick mode */
@@ -1553,12 +1555,10 @@ _clutter_stage_do_pick (ClutterStage   *stage,
     {
       char *file_name =
         g_strconcat ("pick-buffer-",
-                     _clutter_actor_get_debug_name (CLUTTER_ACTOR (stage)),
+                     _clutter_actor_get_debug_name (actor),
                      NULL);
 
-      read_pixels_to_file (file_name, 0, 0,
-                           clutter_actor_get_width (CLUTTER_ACTOR (stage)),
-                           clutter_actor_get_height (CLUTTER_ACTOR (stage)));
+      read_pixels_to_file (file_name, 0, 0, stage_width, stage_height);
 
       g_free (file_name);
     }
@@ -1572,14 +1572,12 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   _clutter_stage_dirty_viewport (stage);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
-    {
-      actor = CLUTTER_ACTOR (stage);
-    }
+    retval = actor;
   else
     {
       guint32 id_ = _clutter_pixel_to_id (pixel);
 
-      actor = _clutter_get_actor_by_id (stage, id_);
+      retval = _clutter_get_actor_by_id (stage, id_);
     }
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_timer);
@@ -1589,10 +1587,8 @@ _clutter_stage_do_pick (ClutterStage   *stage,
     _clutter_profile_suspend ();
 #endif
 
-  return actor;
+  return retval;
 }
-
-
 
 static gboolean
 clutter_stage_real_delete_event (ClutterStage *stage,
@@ -2892,6 +2888,8 @@ clutter_stage_get_actor_at_pos (ClutterStage    *stage,
                                 gint             x,
                                 gint             y)
 {
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+
   return _clutter_stage_do_pick (stage, x, y, pick_mode);
 }
 
