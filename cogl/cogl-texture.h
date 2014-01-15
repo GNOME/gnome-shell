@@ -67,7 +67,7 @@ COGL_BEGIN_DECLS
  *
  * #CoglError domain for texture errors.
  *
- * Since: 2.0
+ * Since: 1.8
  * Stability: Unstable
  */
 #define COGL_TEXTURE_ERROR (cogl_texture_error_quark ())
@@ -76,10 +76,13 @@ COGL_BEGIN_DECLS
 /**
  * CoglTextureError:
  * @COGL_TEXTURE_ERROR_SIZE: Unsupported size
+ * @COGL_TEXTURE_ERROR_FORMAT: Unsupported format
+ * @COGL_TEXTURE_ERROR_TYPE: A primitive texture type that is
+ *   unsupported by the driver was used
  *
  * Error codes that can be thrown when allocating textures.
  *
- * Since: 2.0
+ * Since: 1.8
  * Stability: Unstable
  */
 typedef enum {
@@ -121,6 +124,17 @@ uint32_t cogl_texture_error_quark (void);
 CoglBool
 cogl_is_texture (void *object);
 
+/**
+ * CoglTextureComponents:
+ * @COGL_TEXTURE_COMPONENTS_A: Only the alpha component
+ * @COGL_TEXTURE_COMPONENTS_RGB: Red, green and blue components
+ * @COGL_TEXTURE_COMPONENTS_RGBA: Red, green, blue and alpha components
+ * @COGL_TEXTURE_COMPONENTS_DEPTH: Only a depth component
+ *
+ * See cogl_texture_set_components().
+ *
+ * Since: 1.18
+ */
 typedef enum _CoglTextureComponents
 {
   COGL_TEXTURE_COMPONENTS_A = 1,
@@ -133,15 +147,18 @@ typedef enum _CoglTextureComponents
  * cogl_texture_set_components:
  * @texture: a #CoglTexture pointer.
  *
- * Affects the internal storage format for this texture by
- * determinging what components will be required for sampling later.
+ * Affects the internal storage format for this texture by specifying
+ * what components will be required for sampling later.
  *
  * This api affects how data is uploaded to the GPU since unused
  * components can potentially be discarded from source data.
  *
- * By default the required components are automatically determined
- * using the format of the source data that is first uploaded to
- * the given @texture.
+ * For textures created by the ‘_with_size’ constructors the default
+ * is %COGL_TEXTURE_COMPONENTS_RGBA. The other constructors which take
+ * a %CoglBitmap or a data pointer default to the same components as
+ * the pixel format of the data.
+ *
+ * Since: 1.18
  */
 void
 cogl_texture_set_components (CoglTexture *texture,
@@ -154,9 +171,12 @@ cogl_texture_set_components (CoglTexture *texture,
  * Queries what components the given @texture stores internally as set
  * via cogl_texture_set_components().
  *
- * By default the required components are automatically determined
- * using the format of the source data that is first uploaded to
- * the given @texture.
+ * For textures created by the ‘_with_size’ constructors the default
+ * is %COGL_TEXTURE_COMPONENTS_RGBA. The other constructors which take
+ * a %CoglBitmap or a data pointer default to the same components as
+ * the pixel format of the data.
+ *
+ * Since: 1.18
  */
 CoglTextureComponents
 cogl_texture_get_components (CoglTexture *texture);
@@ -168,7 +188,7 @@ cogl_texture_get_components (CoglTexture *texture);
  *                 components are pre-multiplied by an alpha
  *                 component.
  *
- * Affects the internal storage format for this texture by determining
+ * Affects the internal storage format for this texture by specifying
  * whether red, green and blue color components should be stored as
  * pre-multiplied alpha values.
  *
@@ -189,6 +209,8 @@ cogl_texture_get_components (CoglTexture *texture);
  * converted.
  *
  * By default the @premultipled state is @TRUE.
+ *
+ * Since: 1.18
  */
 void
 cogl_texture_set_premultiplied (CoglTexture *texture,
@@ -207,6 +229,7 @@ cogl_texture_set_premultiplied (CoglTexture *texture,
  * Return value: %TRUE if red, green and blue components are
  *               internally stored pre-multiplied by the alpha
  *               value or %FALSE if not.
+ * Since: 1.18
  */
 CoglBool
 cogl_texture_get_premultiplied (CoglTexture *texture);

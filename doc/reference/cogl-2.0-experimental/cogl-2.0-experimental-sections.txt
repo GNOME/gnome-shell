@@ -400,6 +400,11 @@ CoglTexture
 cogl_is_texture
 
 <SUBSECTION>
+COGL_TEXTURE_ERROR
+CoglTextureError
+
+<SUBSECTION>
+cogl_texture_allocate
 cogl_texture_get_width
 cogl_texture_get_height
 cogl_texture_is_sliced
@@ -407,6 +412,11 @@ cogl_texture_get_data
 cogl_texture_set_data
 cogl_texture_set_region
 CoglTextureType
+CoglTextureComponents
+cogl_texture_set_components
+cogl_texture_get_components
+cogl_texture_set_premultiplied
+cogl_texture_get_premultiplied
 
 <SUBSECTION Private>
 COGL_TEXTURE_MAX_WASTE
