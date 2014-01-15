@@ -406,11 +406,18 @@ var ActivitiesButton = new Lang.Class({
 
         this.actor.name = 'panelActivities';
 
+        let box = new St.BoxLayout();
+        this.actor.add_actor(box);
+        let iconFile = Gio.File.new_for_path('/usr/share/icons/hicolor/scalable/apps/start-here.svg');
+        this._icon = new St.Icon({ gicon: new Gio.FileIcon({ file: iconFile }),
+                                   style_class: 'panel-logo-icon' });
+        box.add_actor(this._icon);
+
         /* Translators: If there is no suitable word for "Activities"
            in your language, you can use the word for "Overview". */
         this._label = new St.Label({ text: _("Activities"),
                                      y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_actor(this._label);
+        box.add_actor(this._label);
 
         this.actor.label_actor = this._label;
 

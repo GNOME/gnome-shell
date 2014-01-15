@@ -776,6 +776,11 @@ StScrollBar {
       //dimensions of the icon are hardcoded
     }
 
+    .panel-logo-icon {
+      padding-right: .4em;
+      icon-size: 1em;
+    }
+
     .system-status-icon,
     .app-menu-icon > StIcon,
     .popup-menu-arrow {
