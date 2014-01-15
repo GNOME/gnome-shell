@@ -1001,6 +1001,9 @@ const Notification = new Lang.Class({
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
                            Lang.bind(this,
                                      function() {
+                                         if (this._destroyed)
+                                             return false;
+
                                         if (this._canExpandContent()) {
                                             this._addBannerBody();
                                             this._table.add_style_class_name('multi-line-notification');
