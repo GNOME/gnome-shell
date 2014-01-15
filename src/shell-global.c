@@ -98,8 +98,6 @@ struct _ShellGlobal {
 
   guint32 xdnd_timestamp;
 
-  gint64 last_gc_end_time;
-
   gboolean has_modal;
 };
 
@@ -300,9 +298,7 @@ shell_global_init (ShellGlobal *global)
 
   global->js_context = g_object_new (GJS_TYPE_CONTEXT,
                                      "search-path", search_path,
-                                     "gc-notifications", TRUE,
                                      NULL);
-  g_signal_connect (global->js_context, "gc", G_CALLBACK (shell_global_on_gc), global);
 
   g_strfreev (search_path);
 }
@@ -1153,13 +1149,6 @@ shell_global_reexec_self (ShellGlobal *global)
   execvp (arr->pdata[0], (char**)arr->pdata);
   g_warning ("failed to reexec: %s", g_strerror (errno));
   g_ptr_array_free (arr, TRUE);
-}
-
-static void
-shell_global_on_gc (GjsContext   *context,
-                    ShellGlobal  *global)
-{
-  global->last_gc_end_time = g_get_monotonic_time ();
 }
 
 /**
