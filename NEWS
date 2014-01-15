@@ -1,3 +1,15 @@
+3.11.4
+======
+* Don't leave focus on windows that are being unmanaged [Owen; #711618]
+* Reduce server grabs [Daniel Drake; #721345, #721709]
+* Improve heuristic to determine display output name [Cosimo Cecchi; #721674]
+* Atomically unmaximize both directions [Jasper; #722108]
+* Misc bug fixes [Debarshi, Andika, Florian; #721517, #721674, #722347]
+
+Contributors:
+  Cosimo Cecchi, Daniel Drake, Florian Müllner, Debarshi Ray, Jasper St. Pierre,
+  Andika Triwidada, Owen W. Taylor
+
 3.11.3
 ======
 * Fix focus issues with external OSKs[Jasper; #715030]
