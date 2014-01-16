@@ -279,14 +279,14 @@ meta_get_window_actors (MetaScreen *screen)
   return info->windows;
 }
 
-static void
-do_set_stage_input_region (MetaScreen   *screen,
-                           XserverRegion region)
+void
+meta_set_stage_input_region (MetaScreen   *screen,
+                             XserverRegion region)
 {
-  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-  MetaDisplay *display = meta_screen_get_display (screen);
-  Display        *xdpy = meta_display_get_xdisplay (display);
-  Window        xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
+  MetaCompScreen *info    = meta_screen_get_compositor_data (screen);
+  MetaDisplay    *display = meta_screen_get_display (screen);
+  Display        *xdpy    = meta_display_get_xdisplay (display);
+  Window          xstage  = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
 
   XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
 
@@ -296,35 +296,6 @@ do_set_stage_input_region (MetaScreen   *screen,
    */
   meta_display_add_ignored_crossing_serial (display, XNextRequest (xdpy));
   XFixesSetWindowShapeRegion (xdpy, info->output, ShapeInput, 0, 0, region);
-}
-
-void
-meta_set_stage_input_region (MetaScreen   *screen,
-                             XserverRegion region)
-{
-  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-  MetaDisplay  *display = meta_screen_get_display (screen);
-  Display      *xdpy    = meta_display_get_xdisplay (display);
-
-  if (info->stage && info->output)
-    {
-      do_set_stage_input_region (screen, region);
-    }
-  else 
-    {
-      /* Reset info->pending_input_region if one existed before and set the new
-       * one to use it later. */ 
-      if (info->pending_input_region)
-        {
-          XFixesDestroyRegion (xdpy, info->pending_input_region);
-          info->pending_input_region = None;
-        }
-      if (region != None)
-        {
-          info->pending_input_region = XFixesCreateRegion (xdpy, NULL, 0);
-          XFixesCopyRegion (xdpy, info->pending_input_region, region);
-        }
-    } 
 }
 
 void
@@ -592,14 +563,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
     return;
 
   info = g_new0 (MetaCompScreen, 1);
-  /*
-   * We use an empty input region for Clutter as a default because that allows
-   * the user to interact with all the windows displayed on the screen.
-   * We have to initialize info->pending_input_region to an empty region explicitly, 
-   * because None value is used to mean that the whole screen is an input region.
-   */
-  info->pending_input_region = XFixesCreateRegion (xdisplay, NULL, 0);
-
   info->screen = screen;
 
   meta_screen_set_compositor_data (screen, info);
@@ -673,14 +636,20 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   */
   XFixesSetWindowShapeRegion (xdisplay, info->output, ShapeBounding, 0, 0, None);
 
-  do_set_stage_input_region (screen, info->pending_input_region);
-  if (info->pending_input_region != None)
-    {
-      XFixesDestroyRegion (xdisplay, info->pending_input_region);
-      info->pending_input_region = None;
-    }
+  info->output = get_output_window (screen);
+  XReparentWindow (xdisplay, xwin, info->output, 0, 0);
 
-  info->plugin_mgr = meta_plugin_manager_new (screen);
+  meta_empty_stage_input_region (screen);
+
+  /* Make sure there isn't any left-over output shape on the 
+   * overlay window by setting the whole screen to be an
+   * output region.
+   * 
+   * Note: there doesn't seem to be any real chance of that
+   *  because the X server will destroy the overlay window
+   *  when the last client using it exits.
+   */
+  XFixesSetWindowShapeRegion (xdisplay, info->output, ShapeBounding, 0, 0, None);
 
   /* Map overlay window before redirecting windows offscreen so we catch their
    * contents until we show the stage.
