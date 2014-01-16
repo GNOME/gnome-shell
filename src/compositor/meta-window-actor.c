@@ -70,11 +70,6 @@ struct _MetaWindowActorPrivate
 
   /* A region that matches the shape of the window, including frame bounds */
   cairo_region_t   *shape_region;
-  /* If the window has an input shape, a region that matches the shape */
-  cairo_region_t   *input_region;
-  /* The opaque region, from _NET_WM_OPAQUE_REGION, intersected with
-   * the shape region. */
-  cairo_region_t   *opaque_region;
   /* The region we should clip to when painting the shadow */
   cairo_region_t   *shadow_clip;
 
@@ -366,8 +361,8 @@ meta_window_actor_constructed (GObject *object)
 
   meta_window_actor_update_opacity (self);
 
-  /* Start off with an empty region to maintain the invariant that
-     the shape region is always set */
+  /* Start off with an empty shape region to maintain the invariant
+   * that it's always set */
   priv->shape_region = cairo_region_create ();
 }
 
@@ -401,8 +396,6 @@ meta_window_actor_dispose (GObject *object)
 
   g_clear_pointer (&priv->unobscured_region, cairo_region_destroy);
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
-  g_clear_pointer (&priv->input_region, cairo_region_destroy);
-  g_clear_pointer (&priv->opaque_region, cairo_region_destroy);
   g_clear_pointer (&priv->shadow_clip, cairo_region_destroy);
 
   g_clear_pointer (&priv->shadow_class, g_free);
@@ -1642,28 +1635,6 @@ meta_window_actor_unmapped (MetaWindowActor *self)
   priv->needs_pixmap = FALSE;
 }
 
-/**
- * meta_window_actor_get_obscured_region:
- * @self: a #MetaWindowActor
- *
- * Gets the region that is completely obscured by the window. Coordinates
- * are relative to the upper-left of the window.
- *
- * Return value: (transfer none): the area obscured by the window,
- *  %NULL is the same as an empty region.
- */
-static cairo_region_t *
-meta_window_actor_get_obscured_region (MetaWindowActor *self)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-  MetaWindow *window = priv->window;
-
-  if (priv->back_pixmap && window->opacity != 0xFF && !priv->window->shaded)
-    return priv->opaque_region;
-  else
-    return NULL;
-}
-
 #if 0
 /* Print out a region; useful for debugging */
 static void
@@ -1713,8 +1684,6 @@ see_region (cairo_region_t *region,
  *
  * Provides a hint as to what areas of the window need to queue
  * redraws when damaged. Regions not in @unobscured_region are completely obscured.
- * Unlike meta_window_actor_set_clip_region(), the region here
- * doesn't take into account any clipping that is in effect while drawing.
  */
 void
 meta_window_actor_set_unobscured_region (MetaWindowActor *self,
@@ -1729,27 +1698,6 @@ meta_window_actor_set_unobscured_region (MetaWindowActor *self,
     priv->unobscured_region = cairo_region_copy (unobscured_region);
   else
     priv->unobscured_region = NULL;
-}
-
-/**
- * meta_window_actor_set_clip_region:
- * @self: a #MetaWindowActor
- * @clip_region: the region of the screen that isn't completely
- *  obscured.
- *
- * Provides a hint as to what areas of the window need to be
- * drawn. Regions not in @clip_region are completely obscured or
- * not drawn in this frame.
- * This will be set before painting then unset afterwards.
- */
-static void
-meta_window_actor_set_clip_region (MetaWindowActor *self,
-                                   cairo_region_t  *clip_region)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-
-  meta_shaped_texture_set_clip_region (META_SHAPED_TEXTURE (priv->actor),
-                                       clip_region);
 }
 
 /**
@@ -1797,18 +1745,7 @@ meta_window_actor_cull_out (MetaCullable   *cullable,
     return;
 
   meta_window_actor_set_unobscured_region (self, unobscured_region);
-  meta_window_actor_set_clip_region (self, clip_region);
-
-  if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (self)) == 0xff)
-    {
-      cairo_region_t *obscured_region = meta_window_actor_get_obscured_region (self);
-      if (obscured_region)
-        {
-          cairo_region_subtract (unobscured_region, obscured_region);
-          cairo_region_subtract (clip_region, obscured_region);
-        }
-    }
-
+  meta_cullable_cull_out_children (cullable, unobscured_region, clip_region);
   meta_window_actor_set_clip_region_beneath (self, clip_region);
 }
 
@@ -1818,9 +1755,8 @@ meta_window_actor_reset_culling (MetaCullable *cullable)
   MetaWindowActor *self = META_WINDOW_ACTOR (cullable);
   MetaWindowActorPrivate *priv = self->priv;
 
-  meta_shaped_texture_set_clip_region (META_SHAPED_TEXTURE (priv->actor),
-                                       NULL);
   g_clear_pointer (&priv->shadow_clip, cairo_region_destroy);
+  meta_cullable_reset_culling_children (cullable);
 }
 
 static void
@@ -2274,8 +2210,7 @@ static void
 meta_window_actor_update_opaque_region (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
-
-  g_clear_pointer (&priv->opaque_region, cairo_region_destroy);
+  cairo_region_t *opaque_region;
 
   if (priv->argb32 && priv->window->opaque_region != NULL)
     {
@@ -2293,17 +2228,17 @@ meta_window_actor_update_opaque_region (MetaWindowActor *self)
        * to be undefined, and considered a client bug. In mutter's
        * case, graphical glitches will occur.
        */
-      priv->opaque_region = cairo_region_copy (priv->window->opaque_region);
-      cairo_region_translate (priv->opaque_region, borders.total.left, borders.total.top);
-      cairo_region_intersect (priv->opaque_region, priv->shape_region);
+      opaque_region = cairo_region_copy (priv->window->opaque_region);
+      cairo_region_translate (opaque_region, borders.total.left, borders.total.top);
+      cairo_region_intersect (opaque_region, priv->shape_region);
     }
   else if (priv->argb32)
-    priv->opaque_region = NULL;
+    opaque_region = NULL;
   else
-    priv->opaque_region = cairo_region_reference (priv->shape_region);
+    opaque_region = cairo_region_reference (priv->shape_region);
 
-  meta_shaped_texture_set_opaque_region (META_SHAPED_TEXTURE (priv->actor),
-                                         priv->opaque_region);
+  meta_shaped_texture_set_opaque_region (META_SHAPED_TEXTURE (priv->actor), opaque_region);
+  cairo_region_destroy (opaque_region);
 }
 
 static void

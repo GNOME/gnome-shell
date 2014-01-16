@@ -84,9 +84,6 @@ void meta_shaped_texture_set_mask_texture (MetaShapedTexture *stex,
 void meta_shaped_texture_set_input_shape_region (MetaShapedTexture *stex,
                                                  cairo_region_t    *shape_region);
 
-void meta_shaped_texture_set_clip_region (MetaShapedTexture *stex,
-					  cairo_region_t    *clip_region);
-
 void meta_shaped_texture_set_opaque_region (MetaShapedTexture *stex,
                                             cairo_region_t    *opaque_region);
 
