@@ -46,6 +46,9 @@ const INDICATORS_ANIMATION_MAX_TIME = 0.75;
 const PAGE_SWITCH_TRESHOLD = 0.2;
 const PAGE_SWITCH_TIME = 0.3;
 
+const VIEWS_SWITCH_TIME = 0.4;
+const VIEWS_SWITCH_ANIMATION_DELAY = 0.1;
+
 function _getCategories(info) {
     let categoriesStr = info.get_categories();
     if (!categoriesStr)
@@ -248,7 +251,8 @@ const PageIndicators = new Lang.Class({
             Tweener.addTween(children[i],
                              { translation_x: 0,
                                time: INDICATORS_BASE_TIME + delay * i,
-                               transition: 'easeInOutQuad'
+                               transition: 'easeInOutQuad',
+                               delay: VIEWS_SWITCH_ANIMATION_DELAY
                              });
         }
     }
@@ -783,8 +787,10 @@ const AppDisplay = new Lang.Class({
     _showView: function(activeIndex) {
         for (let i = 0; i < this._views.length; i++) {
             let actor = this._views[i].view.actor;
-            let params = { time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
-                           opacity: (i == activeIndex) ? 255 : 0 };
+
+            let params = { time: VIEWS_SWITCH_TIME,
+                           opacity: (i == activeIndex) ? 255 : 0,
+                           delay: (i == activeIndex) ? VIEWS_SWITCH_ANIMATION_DELAY : 0 };
             if (i == activeIndex)
                 actor.visible = true;
             else
