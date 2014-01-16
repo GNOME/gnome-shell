@@ -211,10 +211,13 @@ const DateMenuButton = new Lang.Class({
             return this._calendarApp;
 
         let apps = Gio.AppInfo.get_recommended_for_type('text/calendar');
-        if (apps && (apps.length > 0))
-            this._calendarApp = apps[0];
-        else
+        if (apps && (apps.length > 0)) {
+            let app = Gio.AppInfo.get_default_for_type('text/calendar', false);
+            let defaultInRecommended = apps.some(function(a) { return a.equal(app); });
+            this._calendarApp = defaultInRecommended ? app : apps[0];
+        } else {
             this._calendarApp = null;
+        }
         return this._calendarApp;
     },
 
