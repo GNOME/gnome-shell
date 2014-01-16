@@ -382,6 +382,20 @@ set_cursor_visible (ClutterStageX11 *stage_x11)
 }
 
 static void
+on_window_scaling_factor_notify (GObject         *settings,
+                                 GParamSpec      *pspec,
+                                 ClutterStageX11 *stage_x11)
+{
+  g_object_get (settings,
+                "window-scaling-factor", &stage_x11->scale_factor,
+                NULL);
+
+  clutter_stage_x11_resize (CLUTTER_STAGE_WINDOW (stage_x11),
+                            stage_x11->xwin_width,
+                            stage_x11->xwin_height);
+}
+
+static void
 clutter_stage_x11_unrealize (ClutterStageWindow *stage_window)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
@@ -822,7 +836,12 @@ clutter_stage_x11_set_scale_factor (ClutterStageWindow *stage_window,
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
+  if (stage_x11->scale_factor == factor)
+    return;
+
   stage_x11->scale_factor = factor;
+
+  clutter_stage_x11_resize (stage_window, stage_x11->xwin_width, stage_x11->xwin_height);
 }
 
 static int
@@ -866,6 +885,8 @@ clutter_stage_x11_class_init (ClutterStageX11Class *klass)
 static void
 clutter_stage_x11_init (ClutterStageX11 *stage)
 {
+  ClutterSettings *settings;
+
   stage->xwin = None;
   stage->xwin_width = 640;
   stage->xwin_height = 480;
@@ -879,11 +900,11 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
 
   stage->title = NULL;
 
-  g_object_get (clutter_settings_get_default (),
-                "window-scaling-factor", &stage->scale_factor,
-                NULL);
-  stage->xwin_width *= stage->scale_factor;
-  stage->xwin_height *= stage->scale_factor;
+  settings = clutter_settings_get_default ();
+  g_signal_connect (settings, "notify::window-scaling-factor",
+                    G_CALLBACK (on_window_scaling_factor_notify),
+                    stage);
+  on_window_scaling_factor_notify (G_OBJECT (settings), NULL, stage);
 }
 
 static void
