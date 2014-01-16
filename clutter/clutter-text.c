@@ -4257,7 +4257,6 @@ buffer_inserted_text (ClutterTextBuffer *buffer,
   ClutterTextPrivate *priv;
   gint new_position;
   gint new_selection_bound;
-  gsize n_bytes;
 
   priv = self->priv;
   if (priv->position >= 0 || priv->selection_bound >= 0)
@@ -4273,10 +4272,6 @@ buffer_inserted_text (ClutterTextBuffer *buffer,
       if (priv->position != new_position || priv->selection_bound != new_selection_bound)
         clutter_text_set_positions (self, new_position, new_selection_bound);
     }
-
-  n_bytes = g_utf8_offset_to_pointer (chars, n_chars) - chars;
-  g_signal_emit (self, text_signals[INSERT_TEXT], 0, chars,
-                 n_bytes, &position);
 
   /* TODO: What are we supposed to with the out value of position? */
 }
@@ -5894,6 +5889,33 @@ clutter_text_get_max_length (ClutterText *self)
   return clutter_text_buffer_get_max_length (get_buffer (self));
 }
 
+static void
+clutter_text_real_insert_text (ClutterText *self,
+                               guint        start_pos,
+                               const gchar *chars,
+                               guint        n_chars)
+{
+  gsize n_bytes;
+
+  n_bytes = g_utf8_offset_to_pointer (chars, n_chars) - chars;
+
+  /*
+   * insert-text is emitted here instead of as part of a
+   * buffer_inserted_text() callback because that should be emitted
+   * before the buffer changes, while ClutterTextBuffer::deleted-text
+   * is emitter after. See BG#722220 for more info.
+   */
+  g_signal_emit (self, text_signals[INSERT_TEXT], 0, chars,
+                 n_bytes, &start_pos);
+
+  /*
+   * The actual insertion from the buffer. This will end firing the
+   * following signal handlers: buffer_inserted_text(),
+   * buffer_notify_text(), buffer_notify_max_length()
+   */
+  clutter_text_buffer_insert_text (get_buffer (self), start_pos, chars, n_chars);
+}
+
 /**
  * clutter_text_insert_unichar:
  * @self: a #ClutterText
@@ -5916,10 +5938,11 @@ clutter_text_insert_unichar (ClutterText *self,
   new = g_string_new ("");
   g_string_append_unichar (new, wc);
 
-  clutter_text_buffer_insert_text (get_buffer (self), priv->position, new->str, 1);
+  clutter_text_real_insert_text (self, priv->position, new->str, 1);
 
   g_string_free (new, TRUE);
 }
+
 
 /**
  * clutter_text_insert_text:
@@ -5944,8 +5967,7 @@ clutter_text_insert_text (ClutterText *self,
   g_return_if_fail (CLUTTER_IS_TEXT (self));
   g_return_if_fail (text != NULL);
 
-  clutter_text_buffer_insert_text (get_buffer (self), position, text,
-                                   g_utf8_strlen (text, -1));
+  clutter_text_real_insert_text (self, position, text, g_utf8_strlen (text, -1));
 }
 
 static
