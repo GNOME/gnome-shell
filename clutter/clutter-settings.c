@@ -263,22 +263,6 @@ settings_update_fontmap (ClutterSettings *self,
 }
 
 static void
-settings_update_window_scale (ClutterSettings *self)
-{
-  ClutterStageManager *manager;
-  const GSList *stages, *l;
-
-  manager = clutter_stage_manager_get_default ();
-  stages = clutter_stage_manager_peek_stages (manager);
-  for (l = stages; l != NULL; l = l->next)
-    {
-      ClutterStage *stage = l->data;
-
-      _clutter_stage_set_scale_factor (stage, self->window_scaling_factor);
-    }
-}
-
-static void
 clutter_settings_finalize (GObject *gobject)
 {
   ClutterSettings *self = CLUTTER_SETTINGS (gobject);
@@ -363,10 +347,7 @@ clutter_settings_set_property (GObject      *gobject,
 
     case PROP_WINDOW_SCALING_FACTOR:
       if (!self->fixed_scaling_factor)
-        {
-          self->window_scaling_factor = g_value_get_int (value);
-          settings_update_window_scale (self);
-        }
+        self->window_scaling_factor = g_value_get_int (value);
       break;
 
     case PROP_UNSCALED_FONT_DPI:
