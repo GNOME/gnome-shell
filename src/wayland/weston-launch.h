@@ -32,7 +32,8 @@ enum weston_launcher_message_type {
 enum weston_launcher_opcode {
 	WESTON_LAUNCHER_OPEN              = (1 << 1 | WESTON_LAUNCHER_REQUEST),
 	WESTON_LAUNCHER_DRM_SET_FD        = (2 << 1 | WESTON_LAUNCHER_REQUEST),
-	WESTON_LAUNCHER_CONFIRM_VT_SWITCH = (3 << 1 | WESTON_LAUNCHER_REQUEST),
+	WESTON_LAUNCHER_ACTIVATE_VT       = (3 << 1 | WESTON_LAUNCHER_REQUEST),
+	WESTON_LAUNCHER_CONFIRM_VT_SWITCH = (4 << 1 | WESTON_LAUNCHER_REQUEST),
 };
 
 enum weston_launcher_server_opcode {

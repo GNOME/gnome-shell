@@ -764,6 +764,12 @@ meta_wayland_finalize (void)
   meta_launcher_free (compositor->launcher);
 }
 
+MetaLauncher *
+meta_wayland_compositor_get_launcher (MetaWaylandCompositor *compositor)
+{
+  return compositor->launcher;
+}
+
 gboolean
 meta_wayland_compositor_is_native (MetaWaylandCompositor *compositor)
 {

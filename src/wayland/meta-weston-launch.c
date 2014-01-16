@@ -385,3 +385,17 @@ meta_launcher_free (MetaLauncher *launcher)
 
   g_slice_free (MetaLauncher, launcher);
 }
+
+gboolean
+meta_launcher_activate_vt (MetaLauncher  *launcher,
+			   int            vt,
+			   GError       **error)
+{
+  struct weston_launcher_activate_vt message;
+
+  message.header.opcode = WESTON_LAUNCHER_ACTIVATE_VT;
+  message.vt = vt;
+
+  return send_message_to_wl (launcher, &message, sizeof (message), NULL, NULL, error);
+}
+
