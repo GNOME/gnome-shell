@@ -1613,7 +1613,8 @@ meta_window_new (MetaDisplay       *display,
                                    META_WINDOW_CLIENT_TYPE_X11,
                                    NULL,
                                    xwindow,
-                                   TRUE,
+                                   /* XXX */
+                                   !meta_is_wayland_compositor (),
                                    existing_wm_state,
                                    effect,
                                    &attrs);
