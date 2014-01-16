@@ -62,10 +62,12 @@
 #include "clutter-cairo.h"
 #include "clutter-color.h"
 #include "clutter-content-private.h"
+#include "clutter-debug.h"
 #include "clutter-marshal.h"
 #include "clutter-paint-node.h"
 #include "clutter-paint-nodes.h"
 #include "clutter-private.h"
+#include "clutter-settings.h"
 
 struct _ClutterCanvasPrivate
 {
@@ -353,14 +355,28 @@ static void
 clutter_canvas_emit_draw (ClutterCanvas *self)
 {
   ClutterCanvasPrivate *priv = self->priv;
+  int real_width, real_height;
   cairo_surface_t *surface;
   gboolean mapped_buffer;
   unsigned char *data;
   CoglBuffer *buffer;
+  int window_scale = 1;
   gboolean res;
   cairo_t *cr;
 
   g_assert (priv->width > 0 && priv->width > 0);
+
+  g_object_get (clutter_settings_get_default (),
+                "window-scaling-factor", &window_scale,
+                NULL);
+
+  real_width = priv->width * window_scale;
+  real_height = priv->height * window_scale;
+
+  CLUTTER_NOTE (MISC, "Creating Cairo surface with size %d x %d (real: %d x %d, scale: %d)",
+                priv->width, priv->height,
+                real_width, real_height,
+                window_scale);
 
   if (priv->buffer == NULL)
     {
@@ -368,8 +384,8 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
 
       ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
       priv->buffer = cogl_bitmap_new_with_size (ctx,
-                                                priv->width,
-                                                priv->height,
+                                                real_width,
+                                                real_height,
                                                 CLUTTER_CAIRO_FORMAT_ARGB32);
     }
 
@@ -389,19 +405,23 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
 
       surface = cairo_image_surface_create_for_data (data,
                                                      CAIRO_FORMAT_ARGB32,
-                                                     priv->width,
-                                                     priv->height,
+                                                     real_width,
+                                                     real_height,
                                                      bitmap_stride);
       mapped_buffer = TRUE;
     }
   else
     {
       surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                            priv->width,
-                                            priv->height);
+                                            real_width,
+                                            real_height);
 
       mapped_buffer = FALSE;
     }
+
+#ifdef HAVE_CAIRO_SURFACE_SET_DEVICE_SCALE
+  cairo_surface_set_device_scale (surface, window_scale, window_scale);
+#endif
 
   self->priv->cr = cr = cairo_create (surface);
 
