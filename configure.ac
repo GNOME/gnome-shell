@@ -139,7 +139,7 @@ m4_define([glib_req_version],           [2.37.3])
 m4_define([cogl_req_version],           [1.17.1])
 m4_define([json_glib_req_version],      [0.12.0])
 m4_define([atk_req_version],            [2.5.3])
-m4_define([cairo_req_version],          [1.10])
+m4_define([cairo_req_version],          [1.12.0])
 m4_define([pango_req_version],          [1.30])
 m4_define([gi_req_version],             [0.9.5])
 m4_define([uprof_req_version],          [0.3])
@@ -792,6 +792,18 @@ AS_CASE([$enable_pixbuf],
 )
 
 AM_CONDITIONAL([PIXBUF_TESTS], [test "x$pixbuf_tests" = "xyes"])
+
+# Check for cairo_set_device_scale, as we don't want to depend hard on
+# this until there is a stable release with it
+saved_CFLAGS="$CFLAGS"
+saved_LIBS="$LIBS"
+CAIRO_CFLAGS=`$PKG_CONFIG --cflags cairo`
+CAIRO_LIBS=`$PKG_CONFIG --libs cairo`
+CFLAGS="$CFLAGS $CAIRO_CFLAGS"
+LIBS="$CAIRO_LIBS $LIBS"
+AC_CHECK_FUNCS(cairo_surface_set_device_scale)
+LIBS="$saved_LIBS"
+CFLAGS="$saved_CFLAGS"
 
 dnl === Enable debug level ====================================================
 
