@@ -274,25 +274,6 @@ meta_get_window_actors (MetaScreen *screen)
   return info->windows;
 }
 
-static void
-do_set_stage_input_region (MetaScreen   *screen,
-                           XserverRegion region)
-{
-  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-  MetaDisplay *display = meta_screen_get_display (screen);
-  Display        *xdpy = meta_display_get_xdisplay (display);
-  Window        xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
-
-  XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
-
-  /* It's generally a good heuristic that when a crossing event is generated because
-   * we reshape the overlay, we don't want it to affect focus-follows-mouse focus -
-   * it's not the user doing something, it's the environment changing under the user.
-   */
-  meta_display_add_ignored_crossing_serial (display, XNextRequest (xdpy));
-  XFixesSetWindowShapeRegion (xdpy, info->output, ShapeInput, 0, 0, region);
-}
-
 void
 meta_set_stage_input_region (MetaScreen   *screen,
                              XserverRegion region)
@@ -304,29 +285,19 @@ meta_set_stage_input_region (MetaScreen   *screen,
    */
   if (!meta_is_wayland_compositor ())
     {
-      MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-      MetaDisplay  *display = meta_screen_get_display (screen);
-      Display      *xdpy    = meta_display_get_xdisplay (display);
+      MetaCompScreen *info    = meta_screen_get_compositor_data (screen);
+      MetaDisplay    *display = meta_screen_get_display (screen);
+      Display        *xdpy    = meta_display_get_xdisplay (display);
+      Window          xstage  = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
 
-      if (info->stage && info->output)
-        {
-          do_set_stage_input_region (screen, region);
-        }
-      else 
-        {
-          /* Reset info->pending_input_region if one existed before and set the new
-           * one to use it later. */ 
-          if (info->pending_input_region)
-            {
-              XFixesDestroyRegion (xdpy, info->pending_input_region);
-              info->pending_input_region = None;
-            }
-          if (region != None)
-            {
-              info->pending_input_region = XFixesCreateRegion (xdpy, NULL, 0);
-              XFixesCopyRegion (xdpy, info->pending_input_region, region);
-            }
-        } 
+      XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
+
+      /* It's generally a good heuristic that when a crossing event is generated because
+       * we reshape the overlay, we don't want it to affect focus-follows-mouse focus -
+       * it's not the user doing something, it's the environment changing under the user.
+       */
+      meta_display_add_ignored_crossing_serial (display, XNextRequest (xdpy));
+      XFixesSetWindowShapeRegion (xdpy, info->output, ShapeInput, 0, 0, region);
     }
 }
 
@@ -668,21 +639,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
     return;
 
   info = g_new0 (MetaCompScreen, 1);
-  /*
-   * We use an empty input region for Clutter as a default because that allows
-   * the user to interact with all the windows displayed on the screen.
-   * We have to initialize info->pending_input_region to an empty region explicitly, 
-   * because None value is used to mean that the whole screen is an input region.
-   */
-  if (!meta_is_wayland_compositor ())
-    info->pending_input_region = XFixesCreateRegion (xdisplay, NULL, 0);
-  else
-    {
-      /* Stage input region trickery isn't needed when we're running as a
-       * wayland compositor. */
-      info->pending_input_region = None;
-    }
-
   info->screen = screen;
 
   meta_screen_set_compositor_data (screen, info);
@@ -768,6 +724,8 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
       info->output = get_output_window (screen);
       XReparentWindow (xdisplay, xwin, info->output, 0, 0);
 
+      meta_empty_stage_input_region (screen);
+
       /* Make sure there isn't any left-over output shape on the 
        * overlay window by setting the whole screen to be an
        * output region.
@@ -777,13 +735,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
        *  when the last client using it exits.
        */
       XFixesSetWindowShapeRegion (xdisplay, info->output, ShapeBounding, 0, 0, None);
-
-      do_set_stage_input_region (screen, info->pending_input_region);
-      if (info->pending_input_region != None)
-        {
-          XFixesDestroyRegion (xdisplay, info->pending_input_region);
-          info->pending_input_region = None;
-        }
 
       /* Map overlay window before redirecting windows offscreen so we catch their
        * contents until we show the stage.
