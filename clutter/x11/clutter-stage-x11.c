@@ -822,9 +822,6 @@ clutter_stage_x11_set_scale_factor (ClutterStageWindow *stage_window,
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
-  if (stage_x11->fixed_scale_factor)
-    return;
-
   stage_x11->scale_factor = factor;
 }
 
@@ -869,8 +866,6 @@ clutter_stage_x11_class_init (ClutterStageX11Class *klass)
 static void
 clutter_stage_x11_init (ClutterStageX11 *stage)
 {
-  const char *scale_str;
-
   stage->xwin = None;
   stage->xwin_width = 640;
   stage->xwin_height = 480;
@@ -884,19 +879,11 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
 
   stage->title = NULL;
 
-  scale_str = g_getenv ("CLUTTER_SCALE");
-  if (scale_str != NULL)
-    {
-      CLUTTER_NOTE (BACKEND, "Scale factor set using environment variable: %d ('%s')",
-                    atol (scale_str),
-                    scale_str);
-      stage->fixed_scale_factor = TRUE;
-      stage->scale_factor = atol (scale_str);
-      stage->xwin_width *= stage->scale_factor;
-      stage->xwin_height *= stage->scale_factor;
-    }
-  else
-    stage->scale_factor = 1;
+  g_object_get (clutter_settings_get_default (),
+                "window-scaling-factor", &stage->scale_factor,
+                NULL);
+  stage->xwin_width *= stage->scale_factor;
+  stage->xwin_height *= stage->scale_factor;
 }
 
 static void
