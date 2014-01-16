@@ -468,47 +468,10 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
 
       if (tracker->gbm)
         {
-          cogl_format = cogl_texture_get_format (COGL_TEXTURE (self->texture));
-          switch (cogl_format)
-            {
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-            case COGL_PIXEL_FORMAT_ARGB_8888_PRE:
-            case COGL_PIXEL_FORMAT_ARGB_8888:
-              gbm_format = GBM_FORMAT_BGRA8888;
-              break;
-            case COGL_PIXEL_FORMAT_BGRA_8888_PRE:
-            case COGL_PIXEL_FORMAT_BGRA_8888:
-              break;
-            case COGL_PIXEL_FORMAT_RGB_888:
-              break;
-#else
-            case COGL_PIXEL_FORMAT_ARGB_8888_PRE:
-            case COGL_PIXEL_FORMAT_ARGB_8888:
-              gbm_format = GBM_FORMAT_ARGB8888;
-              break;
-            case COGL_PIXEL_FORMAT_BGRA_8888_PRE:
-            case COGL_PIXEL_FORMAT_BGRA_8888:
-              gbm_format = GBM_FORMAT_BGRA8888;
-              break;
-            case COGL_PIXEL_FORMAT_RGB_888:
-              gbm_format = GBM_FORMAT_RGB888;
-              break;
-#endif
-            default:
-              meta_warning ("Unknown cogl format %d\n", cogl_format);
-              return self;
-            }
-
-          if (gbm_device_is_format_supported (tracker->gbm, gbm_format,
-                                              GBM_BO_USE_CURSOR_64X64))
-            {
-              self->bo = gbm_bo_import (tracker->gbm, GBM_BO_IMPORT_WL_BUFFER,
-                                        buffer, GBM_BO_USE_CURSOR_64X64);
-              if (!self->bo)
-                meta_warning ("Importing HW cursor from wl_buffer failed\n");
-            }
-          else
-            meta_warning ("HW cursor for format %d not supported\n", gbm_format);
+          self->bo = gbm_bo_import (tracker->gbm, GBM_BO_IMPORT_WL_BUFFER,
+                                    buffer, GBM_BO_USE_CURSOR_64X64);
+          if (!self->bo)
+            meta_warning ("Importing HW cursor from wl_buffer failed\n");
         }
      }
 
