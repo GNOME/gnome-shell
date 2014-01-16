@@ -4305,8 +4305,6 @@ buffer_deleted_text (ClutterTextBuffer *buffer,
       if (priv->position != new_position || priv->selection_bound != new_selection_bound)
         clutter_text_set_positions (self, new_position, new_selection_bound);
     }
-
-  g_signal_emit (self, text_signals[DELETE_TEXT], 0, position, position + n_chars);
 }
 
 static void
@@ -5950,6 +5948,29 @@ clutter_text_insert_text (ClutterText *self,
                                    g_utf8_strlen (text, -1));
 }
 
+static
+void clutter_text_real_delete_text (ClutterText *self,
+                                    gssize       start_pos,
+                                    gssize       end_pos)
+{
+  /*
+   * delete-text is emitted here instead of as part of a
+   * buffer_deleted_text() callback because that should be emitted
+   * before the buffer changes, while ClutterTextBuffer::deleted-text
+   * is emitter after. See BG#722220 for more info.
+   */
+  g_signal_emit (self, text_signals[DELETE_TEXT], 0, start_pos, end_pos);
+
+  /*
+   * The actual deletion from the buffer. This will end firing the
+   * following signal handlers: buffer_deleted_text(),
+   * buffer_notify_text(), buffer_notify_max_length()
+   */
+  clutter_text_buffer_delete_text (get_buffer (self), start_pos, end_pos - start_pos);
+}
+
+
+
 /**
  * clutter_text_delete_text:
  * @self: a #ClutterText
@@ -5971,7 +5992,7 @@ clutter_text_delete_text (ClutterText *self,
 {
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  clutter_text_buffer_delete_text (get_buffer (self), start_pos, end_pos - start_pos);
+  clutter_text_real_delete_text (self, start_pos, end_pos);
 }
 
 /**
@@ -5997,7 +6018,7 @@ clutter_text_delete_chars (ClutterText *self,
 
   priv = self->priv;
 
-  clutter_text_buffer_delete_text (get_buffer (self), priv->position, n_chars);
+  clutter_text_real_delete_text (self, priv->position, n_chars);
 
   if (priv->position > 0)
     clutter_text_set_cursor_position (self, priv->position - n_chars);
