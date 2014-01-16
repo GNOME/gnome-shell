@@ -49,9 +49,6 @@ struct _MetaCompScreen
   guint                  disable_unredirect_count;
   MetaWindow            *unredirected_window;
 
-  /* Before we create the output window */
-  XserverRegion     pending_input_region;
-
   gint                   switch_workspace_in_progress;
 
   MetaPluginManager *plugin_mgr;
