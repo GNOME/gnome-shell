@@ -77,6 +77,7 @@ struct _ClutterSettings
 
   gint window_scaling_factor;
   gint unscaled_font_dpi;
+  guint fixed_scaling_factor : 1;
 };
 
 struct _ClutterSettingsClass
@@ -361,8 +362,11 @@ clutter_settings_set_property (GObject      *gobject,
       break;
 
     case PROP_WINDOW_SCALING_FACTOR:
-      self->window_scaling_factor = g_value_get_int (value);
-      settings_update_window_scale (self);
+      if (!self->fixed_scaling_factor)
+        {
+          self->window_scaling_factor = g_value_get_int (value);
+          settings_update_window_scale (self);
+        }
       break;
 
     case PROP_UNSCALED_FONT_DPI:
@@ -428,6 +432,10 @@ clutter_settings_get_property (GObject    *gobject,
 
     case PROP_PASSWORD_HINT_TIME:
       g_value_set_uint (value, self->password_hint_time);
+      break;
+
+    case PROP_WINDOW_SCALING_FACTOR:
+      g_value_set_int (value, self->window_scaling_factor);
       break;
 
     default:
@@ -674,7 +682,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                       P_("The scaling factor to be applied to windows"),
                       1, G_MAXINT,
                       1,
-                      CLUTTER_PARAM_WRITABLE);
+                      CLUTTER_PARAM_READWRITE);
 
   obj_props[PROP_FONTCONFIG_TIMESTAMP] =
     g_param_spec_uint ("fontconfig-timestamp",
@@ -713,6 +721,8 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
 static void
 clutter_settings_init (ClutterSettings *self)
 {
+  const char *scale_str;
+
   self->resolution = -1.0;
 
   self->double_click_time = 250;
@@ -728,6 +738,18 @@ clutter_settings_init (ClutterSettings *self)
   self->xft_rgba = NULL;
 
   self->long_press_duration = 500;
+
+  /* if the scaling factor was set by the environment we ignore
+   * any explicit setting
+   */
+  scale_str = g_getenv ("CLUTTER_SCALE");
+  if (scale_str != NULL)
+    {
+      self->window_scaling_factor = atol (scale_str);
+      self->fixed_scaling_factor = TRUE;
+    }
+  else
+    self->window_scaling_factor = 1;
 }
 
 /**
