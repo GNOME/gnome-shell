@@ -1,3 +1,27 @@
+3.11.4
+======
+* Fix removal of workspacaes that are not at the end [Giovanni; #721417]
+* Allow session mode to be specified in the environment [Ray; #720894]
+* Special-case launching of terminals [Debarshi; #695010]
+* Always show arrow if app switcher is scrollable [Jonh; #711467]
+* Implement new app folders system [Jasper; #722117]
+* Remove arrow from background menu [Tarun; #699608]
+* Misc bug fixes and cleanups [Giovanni, Andika, Florian, Ray; #721039,
+  #721439, #721507, #721629, #721868, #722210]
+
+Contributors:
+  Giovanni Campagna, Piotr Drąg, Tarun Kumar Joshi, Florian Müllner,
+  Debarshi Ray, Jasper St. Pierre, Ray Strode, Andika Triwidada, Jonh Wendell
+
+Translations:
+  Dušan Kazik [sk], Tong Hui [zh_CN], Benjamin Steinwender [de],
+  Matej Urbančič [sl], Jorge Pérez Pérez [an], Kjartan Maraas [nb],
+  Milo Casagrande [it], Rafael Ferreira [pt_BR], Marek Černocký [cs],
+  Daniel Mustieles [es], Adorilson Bezerra [pt_BR], Christian Kirbach [de],
+  Aurimas Černius [lt], Andika Triwidada [id], Baurzhan Muftakhidinov [kk],
+  Victor Ibragimov [tg], Yosef Or Boczko [he], Dimitris Spingos [el],
+  Fran Diéguez [gl]
+
 3.11.3
 ======
 * Fix fade effect of desktop icons [Florian; #707671]
