@@ -3225,6 +3225,8 @@ ClutterCanvas
 ClutterCanvasClass
 clutter_canvas_new
 clutter_canvas_set_size
+clutter_canvas_set_scale_factor
+clutter_canvas_get_scale_factor
 <SUBSECTION Standard>
 CLUTTER_TYPE_CANVAS
 CLUTTER_CANVAS
