@@ -509,7 +509,7 @@ const SwitcherList = new Lang.Class({
     _getPreferredWidth: function (actor, forHeight, alloc) {
         let [maxChildMin, maxChildNat] = this._maxChildWidth(forHeight);
 
-        let totalSpacing = this._list.spacing * (this._items.length - 1);
+        let totalSpacing = Math.max(this._list.spacing * (this._items.length - 1), 0);
         alloc.min_size = this._items.length * maxChildMin + totalSpacing;
         alloc.natural_size = alloc.min_size;
         this._minSize = alloc.min_size;
@@ -539,7 +539,7 @@ const SwitcherList = new Lang.Class({
         let childHeight = box.y2 - box.y1;
 
         let [maxChildMin, maxChildNat] = this._maxChildWidth(childHeight);
-        let totalSpacing = this._list.spacing * (this._items.length - 1);
+        let totalSpacing = Math.max(this._list.spacing * (this._items.length - 1), 0);
 
         let childWidth = Math.floor(Math.max(0, box.x2 - box.x1 - totalSpacing) / this._items.length);
 
