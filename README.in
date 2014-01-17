@@ -291,9 +291,9 @@ if possible, add new unit tests for the conformance test suite in case of new
 features. Ensure you run the conformance test suite every for every patch you
 wish to submit, by using:
 
-  cd tests/conform && make test
+  make -C tests/conform check
 
-and verifying that the test suite passes.
+and verifying that the whole test suite passes.
 
 RELEASE NOTES
 -------------------------------------------------------------------------------
