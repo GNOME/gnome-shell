@@ -405,7 +405,7 @@ const WorkspacesDisplay = new Lang.Class({
         Main.overview.addAction(clickAction);
         this.actor.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
-        let panAction = new Clutter.PanAction();
+        let panAction = new Clutter.PanAction({ threshold_trigger_edge: Clutter.GestureTriggerEdge.AFTER });
         panAction.connect('pan', Lang.bind(this, this._onPan));
         panAction.connect('gesture-begin', Lang.bind(this, function() {
             for (let i = 0; i < this._workspacesViews.length; i++)
@@ -413,7 +413,6 @@ const WorkspacesDisplay = new Lang.Class({
             return true;
         }));
         panAction.connect('gesture-cancel', Lang.bind(this, function() {
-            clickAction.release();
             for (let i = 0; i < this._workspacesViews.length; i++)
                 this._workspacesViews[i].endSwipeScroll();
         }));
