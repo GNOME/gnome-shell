@@ -637,7 +637,7 @@ shell_app_activate_full (ShellApp      *app,
           if (!shell_app_launch (app, timestamp, workspace, &error))
             {
               char *msg;
-              msg = g_strdup_printf (_("Failed to launch '%s'"), shell_app_get_name (app));
+              msg = g_strdup_printf (_("Failed to launch “%s”"), shell_app_get_name (app));
               shell_global_notify_error (global,
                                          msg,
                                          error->message);

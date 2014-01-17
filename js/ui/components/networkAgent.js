@@ -309,7 +309,7 @@ const NetworkSecretDialog = new Lang.Class({
             wirelessSetting = this._connection.get_setting_wireless();
             ssid = NetworkManager.utils_ssid_to_utf8(wirelessSetting.get_ssid());
             content.title = _("Authentication required by wireless network");
-            content.message = _("Passwords or encryption keys are required to access the wireless network '%s'.").format(ssid);
+            content.message = _("Passwords or encryption keys are required to access the wireless network “%s”.").format(ssid);
             this._getWirelessSecrets(content.secrets, wirelessSetting);
             break;
         case '802-3-ethernet':
@@ -336,7 +336,7 @@ const NetworkSecretDialog = new Lang.Class({
         case 'cdma':
         case 'bluetooth':
             content.title = _("Mobile broadband network password");
-            content.message = _("A password is required to connect to '%s'.").format(connectionSetting.get_id());
+            content.message = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
             this._getMobileSecrets(content.secrets, connectionType);
             break;
         default:

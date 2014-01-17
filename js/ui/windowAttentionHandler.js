@@ -16,7 +16,7 @@ const WindowAttentionHandler = new Lang.Class({
 
     _getTitleAndBanner: function(app, window) {
         let title = app.get_name();
-        let banner = _("'%s' is ready").format(window.get_title());
+        let banner = _("“%s” is ready").format(window.get_title());
         return [title, banner]
     },
 

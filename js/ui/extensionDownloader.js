@@ -201,7 +201,7 @@ const InstallExtensionDialog = new Lang.Class({
                            default: true
                          }]);
 
-        let message = _("Download and install '%s' from extensions.gnome.org?").format(info.name);
+        let message = _("Download and install “%s” from extensions.gnome.org?").format(info.name);
 
         let box = new St.BoxLayout();
         this.contentLayout.add(box);

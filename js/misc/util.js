@@ -153,7 +153,7 @@ function trySpawnCommandLine(command_line) {
 }
 
 function _handleSpawnError(command, err) {
-    let title = _("Execution of '%s' failed:").format(command);
+    let title = _("Execution of “%s” failed:").format(command);
     Main.notifyError(title, err.message);
 }
 
