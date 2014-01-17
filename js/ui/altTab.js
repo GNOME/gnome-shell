@@ -460,9 +460,10 @@ const AppSwitcher = new Lang.Class({
             appIcon.cachedWindows = allWindows.filter(function(w) {
                 return windowTracker.get_window_app (w) == appIcon.app;
             });
-            if (workspace == null || appIcon.cachedWindows.length > 0) {
+            if (appIcon.cachedWindows.length > 0)
                 this._addIcon(appIcon);
-            }
+            else if (workspace == null)
+                throw new Error('%s appears to be running, but doesn\'t have any windows'.format(appIcon.app.get_name()));
         }
 
         this._curApp = -1;
