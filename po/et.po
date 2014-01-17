@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-11-22 21:44+0000\n"
-"PO-Revision-Date: 2013-11-18 13:56+0300\n"
+"POT-Creation-Date: 2014-01-14 01:18+0000\n"
+"PO-Revision-Date: 2014-01-14 13:33+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -68,14 +68,14 @@ msgstr ""
 "Lubab ligipääsu sisemistele silumise ja monitoorimise tööriistadele Alt-F2 "
 "dialoogi kaudu."
 
-msgid "Uuids of extensions to enable"
+msgid "UUIDs of extensions to enable"
 msgstr "Lubatavate laienduste UUID-d"
 
 msgid ""
-"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
 "list. You can also manipulate this list with the EnableExtension and "
-"DisableExtension DBus methods on org.gnome.Shell."
+"DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
 "GNOME Shelli laiendustel on UUID omadus; selles võtmes loetletud laiendused "
 "tuleks laadida. Seda loendit saab muuta kasutades EnableExtension ja "
@@ -106,11 +106,11 @@ msgstr "Käsudialoogi (Alt-F2) ajalugu"
 msgid "History for the looking glass dialog"
 msgstr "Otsingudialoogi ajalugu"
 
-msgid "Always show the 'Log out' menuitem in the user menu."
+msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "Kasutajamenüüs näidatakse alati 'Logi välja' menüükirjet."
 
 msgid ""
-"This key overrides the automatic hiding of the 'Log out' menuitem in single-"
+"This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
 msgstr ""
 "See võti keelab automaatse 'Logi välja' menüükirje peitmise, kui arvutis on "
@@ -1030,60 +1030,6 @@ msgid_plural "%d Connected Devices"
 msgstr[0] "%d ühendatud seade"
 msgstr[1] "%d ühendatud seadet"
 
-#, javascript-format
-msgid "Authorization request from %s"
-msgstr "Autoriseerimise päring seadmelt %s"
-
-#, javascript-format
-msgid "Device %s wants to pair with this computer"
-msgstr "Seade '%s' tahab selle arvutiga paarduda"
-
-msgid "Allow"
-msgstr "Luba"
-
-msgid "Deny"
-msgstr "Keela"
-
-#, javascript-format
-msgid "Device %s wants access to the service '%s'"
-msgstr "Seade %s soovib ligipääsu teenusele '%s'"
-
-msgid "Always grant access"
-msgstr "Luba alati"
-
-msgid "Grant this time only"
-msgstr "Luba ainult seekord"
-
-msgid "Reject"
-msgstr "Lükka tagasi"
-
-#. Translators: argument is the device short name */
-#, javascript-format
-msgid "Pairing confirmation for %s"
-msgstr "Paardumise kinnitus seadmele %s"
-
-#, javascript-format
-msgid ""
-"Please confirm whether the Passkey '%06d' matches the one on the device."
-msgstr "Palun kontrolli, kas parool '%06d' kattub seadme parooliga."
-
-#. Translators: this is the verb, not the noun */
-msgid "Matches"
-msgstr "Kattub"
-
-msgid "Does not match"
-msgstr "Ei kattu"
-
-#, javascript-format
-msgid "Pairing request for %s"
-msgstr "Seadmega %s paardumise päring"
-
-msgid "Please enter the PIN mentioned on the device."
-msgstr "Palun sisesta seadme poolt öeldav PIN-kood."
-
-msgid "OK"
-msgstr "Olgu"
-
 msgid "Brightness"
 msgstr "Heledus"
 
@@ -1299,6 +1245,52 @@ msgstr "Parool ei saa olla tühi"
 
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Kasutaja katkestas autentimisdialoogi"
+
+#~ msgid "Authorization request from %s"
+#~ msgstr "Autoriseerimise päring seadmelt %s"
+
+#~ msgid "Device %s wants to pair with this computer"
+#~ msgstr "Seade '%s' tahab selle arvutiga paarduda"
+
+#~ msgid "Allow"
+#~ msgstr "Luba"
+
+#~ msgid "Deny"
+#~ msgstr "Keela"
+
+#~ msgid "Device %s wants access to the service '%s'"
+#~ msgstr "Seade %s soovib ligipääsu teenusele '%s'"
+
+#~ msgid "Always grant access"
+#~ msgstr "Luba alati"
+
+#~ msgid "Grant this time only"
+#~ msgstr "Luba ainult seekord"
+
+#~ msgid "Reject"
+#~ msgstr "Lükka tagasi"
+
+#~ msgid "Pairing confirmation for %s"
+#~ msgstr "Paardumise kinnitus seadmele %s"
+
+#~ msgid ""
+#~ "Please confirm whether the Passkey '%06d' matches the one on the device."
+#~ msgstr "Palun kontrolli, kas parool '%06d' kattub seadme parooliga."
+
+#~ msgid "Matches"
+#~ msgstr "Kattub"
+
+#~ msgid "Does not match"
+#~ msgstr "Ei kattu"
+
+#~ msgid "Pairing request for %s"
+#~ msgstr "Seadmega %s paardumise päring"
+
+#~ msgid "Please enter the PIN mentioned on the device."
+#~ msgstr "Palun sisesta seadme poolt öeldav PIN-kood."
+
+#~ msgid "OK"
+#~ msgstr "Olgu"
 
 #~ msgid ""
 #~ "Sorry, no wisdom for you today:\n"
