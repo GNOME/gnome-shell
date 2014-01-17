@@ -384,7 +384,12 @@ get_app_for_window (ShellWindowTracker    *tracker,
                     MetaWindow            *window)
 {
   ShellApp *result = NULL;
+  MetaWindow *transient_for;
   const char *startup_id;
+
+  transient_for = meta_window_get_transient_for (window);
+  if (transient_for != NULL)
+    return get_app_for_window (tracker, transient_for);
 
   /* First, we check whether we already know about this window,
    * if so, just return that.
@@ -681,12 +686,7 @@ ShellApp *
 shell_window_tracker_get_window_app (ShellWindowTracker *tracker,
                                      MetaWindow         *metawin)
 {
-  MetaWindow *transient_for;
   ShellApp *app;
-
-  transient_for = meta_window_get_transient_for (metawin);
-  if (transient_for != NULL)
-    metawin = transient_for;
 
   app = g_hash_table_lookup (tracker->window_to_app, metawin);
   if (app)
