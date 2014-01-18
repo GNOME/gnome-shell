@@ -13,15 +13,15 @@
 # Aron Xu <aronxu@gnome.org>, 2010, 2011, 2012, 2013.
 # Wylmer Wang <wantinghard@gmail.com>, 2013.
 # eternalhui <www.eternalhui@gmail.com>, 2013.
-# Tong Hui <tonghuix@gmail.com>, 2013.
+# Tong Hui <tonghuix@gmail.com>, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-30 10:56+0000\n"
-"PO-Revision-Date: 2013-12-30 22:36+0800\n"
+"POT-Creation-Date: 2014-01-17 21:35+0000\n"
+"PO-Revision-Date: 2014-01-13 01:00+0800\n"
 "Last-Translator: Tong Hui <tonghuix@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -88,17 +88,17 @@ msgid ""
 msgstr "允许使用 Alt-F2 对话框访问内部调试和监视工具。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
-msgid "Uuids of extensions to enable"
-msgstr "要启用的扩展的 uuid"
+msgid "UUIDs of extensions to enable"
+msgstr "要启用的扩展的 UUID"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
 msgid ""
-"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
 "list. You can also manipulate this list with the EnableExtension and "
-"DisableExtension DBus methods on org.gnome.Shell."
+"DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"GNOME Shell 扩展有一个 uuid 属性，此键列出了应该加载的扩展。任何需要加载的扩"
+"GNOME Shell 扩展有一个 UUID 属性，此键列出了应该加载的扩展。任何需要加载的扩"
 "展都需出现在此列表中。您还可以通过 DBus 的方式对 org.gnome.Shell 里的 "
 "EnableExtension 和 DisableExtension 的值进行修改，以修改此列表。"
 
@@ -113,43 +113,31 @@ msgid ""
 msgstr "符合这些标示的应用程序将显示在收藏区中。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
-msgid "List of categories that should be displayed as folders"
-msgstr "应显示为文件夹的类别列表"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
-msgid ""
-"Each category name in this list will be represented as folder in the "
-"application view, rather than being displayed inline in the main view."
-msgstr ""
-"在应用程序视图中，这个列表中的每个类别的名称都会显示为文件夹，而不是在主视图"
-"中内嵌显示。"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
 msgstr "命令对话框(Alt-F2)的历史记录"
 
 # http://live.gnome.org/GnomeShell/LookingGlass
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid "History for the looking glass dialog"
 msgstr "Looking Glass 控制台历史"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-msgid "Always show the 'Log out' menuitem in the user menu."
-msgstr "总在用户菜单中显示“注销”。"
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+msgid "Always show the 'Log out' menu item in the user menu."
+msgstr "总在用户菜单中显示“注销”选项。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid ""
-"This key overrides the automatic hiding of the 'Log out' menuitem in single-"
+"This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
 msgstr ""
 "单用户、单会话情形下，“注销”菜单项默认隐藏，使用这个按键会覆盖这种行为。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr "是否记住挂载加密文件系统或远程文件系统时所使用的密码"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -159,68 +147,68 @@ msgstr ""
 "挂载加密设备或远程文件系统时 Gnome Shell 将要求输入密码。如果该密码可以记住并"
 "在今后使用，则会有“记住密码”复选框出现。这个键设置了该复选框的默认状态。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Show the week date in the calendar"
 msgstr "在日历中显示星期"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid "If true, display the ISO week date in the calendar."
 msgstr "如果为真，在日历中显示 ISO 周日期。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Keybinding to open the application menu"
 msgstr "用于打开应用程序菜单的按键组合"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "Keybinding to open the application menu."
 msgstr "用于打开应用程序菜单的按键组合。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "用于打开应用程序菜单的按键组合"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr "用于在活动视图中打开应用程序菜单的按键组合。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the overview"
 msgstr "用于打开概览的按键组合"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to open the Activities Overview."
 msgstr "用于打开活动概览的按键组合。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "用来切换消息托盘是否可见的快捷键"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "用来切换消息托盘是否可见的快捷键。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to focus the active notification"
 msgstr "用于移动焦点到活动通知的快捷键"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to focus the active notification."
 msgstr "用于移动焦点到活动通知的快捷键。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Which keyboard to use"
 msgstr "使用哪个键盘"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "The type of keyboard to use."
 msgstr "要使用的键盘类型。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "The application icon mode."
 msgstr "应用程序图标模式。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -229,38 +217,38 @@ msgstr ""
 "配置窗口如何显示于切换器中。有效的值有“thumbnail-only”“app-icon-"
 "only”和“both”。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Attach modal dialog to the parent window"
 msgstr "将模态对话框附到其父窗口上"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "当 GNOME Shell 运行时，此键覆盖 org.gnome.mutter 键。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Arrangement of buttons on the titlebar"
 msgstr "管理标题栏上的按钮"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
 msgstr "当 GNOME Shell 运行时，此键覆盖 org.gnome.desktop.wm.preferences 键。"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "启用拖拽到屏幕边缘时平铺窗口的功能"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "Workspaces are managed dynamically"
 msgstr "动态管理工作区"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Workspaces only on primary monitor"
 msgstr "仅在主显示器上显示工作区"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "将鼠标模式下焦点的更改推迟到指针停止移动之后"
 
@@ -278,9 +266,9 @@ msgid "Select an extension to configure using the combobox above."
 msgstr "使用上面的下拉框选择一个要配置的扩展。"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:359
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:357
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:726
+#: ../js/ui/status/network.js:724
 msgid "Cancel"
 msgstr "取消"
 
@@ -298,25 +286,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "登录"
 
-#: ../js/gdm/loginDialog.js:272
+#: ../js/gdm/loginDialog.js:270
 msgid "Choose Session"
 msgstr "选择会话"
 
-#: ../js/gdm/loginDialog.js:432
+#: ../js/gdm/loginDialog.js:430
 msgid "Not listed?"
 msgstr "未列出？"
 
-#: ../js/gdm/loginDialog.js:600
+#: ../js/gdm/loginDialog.js:598
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(如 user 或 %s)"
 
-#: ../js/gdm/loginDialog.js:605 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:603 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "用户名："
 
-#: ../js/gdm/loginDialog.js:870
+#: ../js/gdm/loginDialog.js:868
 msgid "Login Window"
 msgstr "登录窗口"
 
@@ -337,31 +325,32 @@ msgid "Could not parse command:"
 msgstr "不能解析命令："
 
 #: ../js/misc/util.js:156
-#, javascript-format
-msgid "Execution of '%s' failed:"
+#, fuzzy, javascript-format
+#| msgid "Execution of '%s' failed:"
+msgid "Execution of “%s” failed:"
 msgstr "运行“%s”失败："
 
-#: ../js/ui/appDisplay.js:596
+#: ../js/ui/appDisplay.js:540
 msgid "Frequently used applications will appear here"
 msgstr "常用的应用程序会出现在这里"
 
-#: ../js/ui/appDisplay.js:715
+#: ../js/ui/appDisplay.js:660
 msgid "Frequent"
 msgstr "常用"
 
-#: ../js/ui/appDisplay.js:722
+#: ../js/ui/appDisplay.js:667
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:1541
+#: ../js/ui/appDisplay.js:1498
 msgid "New Window"
 msgstr "新窗口"
 
-#: ../js/ui/appDisplay.js:1544 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1501 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: ../js/ui/appDisplay.js:1545
+#: ../js/ui/appDisplay.js:1502
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
@@ -574,8 +563,8 @@ msgstr "密码："
 msgid "Type again:"
 msgstr "再输一次："
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:295 ../js/ui/status/network.js:729
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:131
+#: ../js/ui/status/network.js:293 ../js/ui/status/network.js:727
 msgid "Connect"
 msgstr "连接"
 
@@ -608,10 +597,13 @@ msgid "Authentication required by wireless network"
 msgstr "无线网络要求身份认证"
 
 #: ../js/ui/components/networkAgent.js:312
-#, javascript-format
+#, fuzzy, javascript-format
+#| msgid ""
+#| "Passwords or encryption keys are required to access the wireless network "
+#| "'%s'."
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
-"'%s'."
+"“%s”."
 msgstr "访问无线网络“%s”需要密码或密钥。"
 
 #: ../js/ui/components/networkAgent.js:316
@@ -643,8 +635,9 @@ msgid "Mobile broadband network password"
 msgstr "移动宽带网络密码"
 
 #: ../js/ui/components/networkAgent.js:339
-#, javascript-format
-msgid "A password is required to connect to '%s'."
+#, fuzzy, javascript-format
+#| msgid "A password is required to connect to '%s'."
+msgid "A password is required to connect to “%s”."
 msgstr "连接到“%s”需要密码。"
 
 #: ../js/ui/components/polkitAgent.js:54
@@ -925,99 +918,99 @@ msgstr "日期和时间设置"
 msgid "%A %B %e, %Y"
 msgstr "%Y年%m月%d日%A"
 
-#: ../js/ui/endSessionDialog.js:64
+#: ../js/ui/endSessionDialog.js:62
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "注销 %s"
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Log Out"
 msgstr "注销"
 
-#: ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:65
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s 将在 %d 秒后自动注销。"
 
-#: ../js/ui/endSessionDialog.js:72
+#: ../js/ui/endSessionDialog.js:70
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "您将在 %d 秒后自动注销。"
 
-#: ../js/ui/endSessionDialog.js:77
+#: ../js/ui/endSessionDialog.js:75
 msgctxt "button"
 msgid "Log Out"
 msgstr "注销"
 
-#: ../js/ui/endSessionDialog.js:83
+#: ../js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Power Off"
 msgstr "关机"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:83
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动关机。"
 
-#: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:106
+#: ../js/ui/endSessionDialog.js:88 ../js/ui/endSessionDialog.js:104
 msgctxt "button"
 msgid "Restart"
 msgstr "重启"
 
-#: ../js/ui/endSessionDialog.js:92
+#: ../js/ui/endSessionDialog.js:90
 msgctxt "button"
 msgid "Power Off"
 msgstr "关机"
 
-#: ../js/ui/endSessionDialog.js:99
+#: ../js/ui/endSessionDialog.js:97
 msgctxt "title"
 msgid "Restart"
 msgstr "重启"
 
-#: ../js/ui/endSessionDialog.js:101
+#: ../js/ui/endSessionDialog.js:99
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动重启。"
 
-#: ../js/ui/endSessionDialog.js:114
+#: ../js/ui/endSessionDialog.js:112
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "重启并安装更新"
 
-#: ../js/ui/endSessionDialog.js:116
+#: ../js/ui/endSessionDialog.js:114
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动重启并安装更新。"
 
-#: ../js/ui/endSessionDialog.js:121
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "重启并安装"
 
-#: ../js/ui/endSessionDialog.js:277
+#: ../js/ui/endSessionDialog.js:275
 msgid "Some applications are busy or have unsaved work."
 msgstr "有些应用程序正忙或有未保存的工作。"
 
-#: ../js/ui/endSessionDialog.js:284
+#: ../js/ui/endSessionDialog.js:282
 msgid "Other users are logged in."
 msgstr "有其他用户登录。"
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:488
+#: ../js/ui/endSessionDialog.js:486
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (远程)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:491
+#: ../js/ui/endSessionDialog.js:489
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (控制台)"
@@ -1027,8 +1020,9 @@ msgid "Install"
 msgstr "安装"
 
 #: ../js/ui/extensionDownloader.js:204
-#, javascript-format
-msgid "Download and install '%s' from extensions.gnome.org?"
+#, fuzzy, javascript-format
+#| msgid "Download and install '%s' from extensions.gnome.org?"
+msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "从 extensions.gnome.org 下载并安装 %s？"
 
 #: ../js/ui/keyboard.js:641 ../js/ui/status/keyboard.js:335
@@ -1061,7 +1055,7 @@ msgstr "已启用"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:472
+#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:470
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "已禁用"
@@ -1086,35 +1080,35 @@ msgstr "查看源"
 msgid "Web Page"
 msgstr "网页"
 
-#: ../js/ui/messageTray.js:1310
+#: ../js/ui/messageTray.js:1309
 msgid "Open"
 msgstr "打开"
 
-#: ../js/ui/messageTray.js:1317
+#: ../js/ui/messageTray.js:1316
 msgid "Remove"
 msgstr "移除"
 
-#: ../js/ui/messageTray.js:1614
+#: ../js/ui/messageTray.js:1613
 msgid "Notifications"
 msgstr "提示"
 
-#: ../js/ui/messageTray.js:1621
+#: ../js/ui/messageTray.js:1620
 msgid "Clear Messages"
 msgstr "清空消息"
 
-#: ../js/ui/messageTray.js:1640
+#: ../js/ui/messageTray.js:1639
 msgid "Notification Settings"
 msgstr "提示设置"
 
-#: ../js/ui/messageTray.js:1693
+#: ../js/ui/messageTray.js:1692
 msgid "Tray Menu"
 msgstr "托盘菜单"
 
-#: ../js/ui/messageTray.js:1910
+#: ../js/ui/messageTray.js:1909
 msgid "No Messages"
 msgstr "无消息"
 
-#: ../js/ui/messageTray.js:1948
+#: ../js/ui/messageTray.js:1947
 msgid "Message Tray"
 msgstr "消息托盘"
 
@@ -1127,7 +1121,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "未知"
 
-#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:153
+#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:151
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1177,29 +1171,29 @@ msgstr "关闭"
 
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:89
+#: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
-#: ../js/ui/screenShield.js:155
+#: ../js/ui/screenShield.js:153
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d 个新提示"
 
-#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:472 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "锁定"
 
-#: ../js/ui/screenShield.js:708
+#: ../js/ui/screenShield.js:706
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME 需要锁定屏幕"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1302
+#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1300
 msgid "Unable to lock"
 msgstr "无法锁定"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1303
+#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1301
 msgid "Lock was blocked by an application"
 msgstr "一个应用程序阻止了锁定"
 
@@ -1283,8 +1277,8 @@ msgstr "大号文本"
 msgid "Bluetooth"
 msgstr "蓝牙"
 
-#: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:1083 ../js/ui/status/rfkill.js:48
+#: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:131
+#: ../js/ui/status/network.js:1081 ../js/ui/status/rfkill.js:48
 msgid "Turn Off"
 msgstr "关闭"
 
@@ -1306,99 +1300,99 @@ msgstr "亮度"
 msgid "Show Keyboard Layout"
 msgstr "显示键盘布局"
 
-#: ../js/ui/status/network.js:71
+#: ../js/ui/status/network.js:70
 msgid "<unknown>"
 msgstr "<未知>"
 
-#: ../js/ui/status/network.js:222 ../js/ui/status/network.js:379
-#: ../js/ui/status/network.js:1104
+#: ../js/ui/status/network.js:220 ../js/ui/status/network.js:377
+#: ../js/ui/status/network.js:1102
 msgid "Off"
 msgstr "关"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:385
+#: ../js/ui/status/network.js:383
 msgid "unmanaged"
 msgstr "设备未托管"
 
-#: ../js/ui/status/network.js:387
+#: ../js/ui/status/network.js:385
 msgid "disconnecting..."
 msgstr "正在断开..."
 
-#: ../js/ui/status/network.js:393 ../js/ui/status/network.js:1158
+#: ../js/ui/status/network.js:391 ../js/ui/status/network.js:1156
 msgid "connecting..."
 msgstr "正在连接..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:396 ../js/ui/status/network.js:1161
+#: ../js/ui/status/network.js:394 ../js/ui/status/network.js:1159
 msgid "authentication required"
 msgstr "需要认证"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:404
+#: ../js/ui/status/network.js:402
 msgid "firmware missing"
 msgstr "固件缺失"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:408
+#: ../js/ui/status/network.js:406
 msgid "unavailable"
 msgstr "不可用"
 
-#: ../js/ui/status/network.js:410 ../js/ui/status/network.js:1163
+#: ../js/ui/status/network.js:408 ../js/ui/status/network.js:1161
 msgid "connection failed"
 msgstr "连接失败"
 
-#: ../js/ui/status/network.js:426 ../js/ui/status/network.js:512
+#: ../js/ui/status/network.js:424 ../js/ui/status/network.js:510
 msgid "Mobile Broadband Settings"
 msgstr "移动宽带设置"
 
-#: ../js/ui/status/network.js:468 ../js/ui/status/network.js:1102
+#: ../js/ui/status/network.js:466 ../js/ui/status/network.js:1100
 msgid "Hardware Disabled"
 msgstr "已通过硬件开关禁用"
 
-#: ../js/ui/status/network.js:694
+#: ../js/ui/status/network.js:692
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi 网络"
 
-#: ../js/ui/status/network.js:696
+#: ../js/ui/status/network.js:694
 msgid "Select a network"
 msgstr "选择网络"
 
-#: ../js/ui/status/network.js:720
+#: ../js/ui/status/network.js:718
 msgid "No Networks"
 msgstr "无网络"
 
-#: ../js/ui/status/network.js:989
+#: ../js/ui/status/network.js:987
 msgid "Select Network"
 msgstr "选择网络"
 
-#: ../js/ui/status/network.js:995
+#: ../js/ui/status/network.js:993
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi 设置"
 
-#: ../js/ui/status/network.js:1083
+#: ../js/ui/status/network.js:1081
 msgid "Turn On"
 msgstr "开启"
 
-#: ../js/ui/status/network.js:1106
+#: ../js/ui/status/network.js:1104
 msgid "Not Connected"
 msgstr "无连接"
 
-#: ../js/ui/status/network.js:1226
+#: ../js/ui/status/network.js:1224
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1366
+#: ../js/ui/status/network.js:1364
 msgid "Network Manager"
 msgstr "网络管理器"
 
-#: ../js/ui/status/network.js:1405
+#: ../js/ui/status/network.js:1403
 msgid "Connection failed"
 msgstr "连接失败"
 
-#: ../js/ui/status/network.js:1406
+#: ../js/ui/status/network.js:1404
 msgid "Activation of network connection failed"
 msgstr "启用网络连接失败"
 
@@ -1493,8 +1487,9 @@ msgid "Search"
 msgstr "搜索"
 
 #: ../js/ui/windowAttentionHandler.js:19
-#, javascript-format
-msgid "'%s' is ready"
+#, fuzzy, javascript-format
+#| msgid "'%s' is ready"
+msgid "“%s” is ready"
 msgstr "%s 已就绪"
 
 #: ../js/ui/windowManager.js:56
@@ -1559,8 +1554,9 @@ msgid "List possible modes"
 msgstr "列出可用的模式"
 
 #: ../src/shell-app.c:640
-#, c-format
-msgid "Failed to launch '%s'"
+#, fuzzy, c-format
+#| msgid "Failed to launch '%s'"
+msgid "Failed to launch “%s”"
 msgstr "启动 %s 失败"
 
 #: ../src/shell-keyring-prompt.c:714
@@ -1574,6 +1570,16 @@ msgstr "密码不能为空"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "认证对话框被用户驳回"
+
+#~ msgid "List of categories that should be displayed as folders"
+#~ msgstr "应显示为文件夹的类别列表"
+
+#~ msgid ""
+#~ "Each category name in this list will be represented as folder in the "
+#~ "application view, rather than being displayed inline in the main view."
+#~ msgstr ""
+#~ "在应用程序视图中，这个列表中的每个类别的名称都会显示为文件夹，而不是在主视"
+#~ "图中内嵌显示。"
 
 #~ msgctxt "event list time"
 #~ msgid "%H\\u2236%M"
