@@ -47,7 +47,10 @@ const PAGE_SWITCH_TRESHOLD = 0.2;
 const PAGE_SWITCH_TIME = 0.3;
 
 function _isTerminal(app) {
-    let categories = app.get_app_info().get_categories() || [];
+    let info = app.get_app_info();
+    if (!info)
+        return false;
+    let categories = info.get_categories() || [];
     return categories.indexOf('TerminalEmulator') > -1;
 }
 
