@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-14 21:16+0000\n"
-"PO-Revision-Date: 2014-01-17 12:26+0100\n"
+"POT-Creation-Date: 2014-01-17 21:35+0000\n"
+"PO-Revision-Date: 2014-01-18 12:21+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -274,7 +274,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:357
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:726
+#: ../js/ui/status/network.js:724
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -330,7 +330,7 @@ msgid "Could not parse command:"
 msgstr "Nelze analyzovat příkaz:"
 
 #: ../js/misc/util.js:156
-msgid "Execution of '%s' failed:"
+msgid "Execution of “%s” failed:"
 msgstr "Vykonání „%s“ selhalo:"
 
 #: ../js/ui/appDisplay.js:540
@@ -563,8 +563,8 @@ msgstr "Heslo:"
 msgid "Type again:"
 msgstr "Napište znovu:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:295 ../js/ui/status/network.js:729
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:131
+#: ../js/ui/status/network.js:293 ../js/ui/status/network.js:727
 msgid "Connect"
 msgstr "Připojit"
 
@@ -599,7 +599,7 @@ msgstr "K bezdrátové síti je vyžadováno ověření"
 #: ../js/ui/components/networkAgent.js:312
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
-"'%s'."
+"“%s”."
 msgstr ""
 "Pro přístup k bezdrátové síti „%s“ jsou vyžadována hesla nebo šifrovací "
 "klíče."
@@ -633,7 +633,7 @@ msgid "Mobile broadband network password"
 msgstr "Heslo k mobilní širokopásmové síti"
 
 #: ../js/ui/components/networkAgent.js:339
-msgid "A password is required to connect to '%s'."
+msgid "A password is required to connect to “%s”."
 msgstr "Pro připojení k „%s“ je vyžadováno heslo."
 
 #: ../js/ui/components/polkitAgent.js:54
@@ -1021,7 +1021,7 @@ msgid "Install"
 msgstr "Instalovat"
 
 #: ../js/ui/extensionDownloader.js:204
-msgid "Download and install '%s' from extensions.gnome.org?"
+msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Stáhnout a nainstalovat „%s“ z extensions.gnome.org?"
 
 #: ../js/ui/keyboard.js:641 ../js/ui/status/keyboard.js:335
@@ -1053,7 +1053,7 @@ msgstr "Povoleno"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:472
+#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:470
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Zakázáno"
@@ -1078,35 +1078,35 @@ msgstr "Zobrazit zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
-#: ../js/ui/messageTray.js:1310
+#: ../js/ui/messageTray.js:1309
 msgid "Open"
 msgstr "Otevřít"
 
-#: ../js/ui/messageTray.js:1317
+#: ../js/ui/messageTray.js:1316
 msgid "Remove"
 msgstr "Odstranit"
 
-#: ../js/ui/messageTray.js:1614
+#: ../js/ui/messageTray.js:1613
 msgid "Notifications"
 msgstr "Upozornění"
 
-#: ../js/ui/messageTray.js:1621
+#: ../js/ui/messageTray.js:1620
 msgid "Clear Messages"
 msgstr "Vymazat zprávy"
 
-#: ../js/ui/messageTray.js:1640
+#: ../js/ui/messageTray.js:1639
 msgid "Notification Settings"
 msgstr "Nastavení upozornění"
 
-#: ../js/ui/messageTray.js:1693
+#: ../js/ui/messageTray.js:1692
 msgid "Tray Menu"
 msgstr "Nabídka lišty zpráv"
 
-#: ../js/ui/messageTray.js:1910
+#: ../js/ui/messageTray.js:1909
 msgid "No Messages"
 msgstr "Žádné zprávy"
 
-#: ../js/ui/messageTray.js:1948
+#: ../js/ui/messageTray.js:1947
 msgid "Message Tray"
 msgstr "Lišta zpráv"
 
@@ -1119,7 +1119,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:153
+#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:151
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d nová zpráva"
@@ -1170,30 +1170,30 @@ msgstr "Zavřít"
 
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:89
+#: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
-#: ../js/ui/screenShield.js:155
+#: ../js/ui/screenShield.js:153
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d nové upozornění"
 msgstr[1] "%d nová upozornění"
 msgstr[2] "%d nových upozornění"
 
-#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:472 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "Uzamknout"
 
-#: ../js/ui/screenShield.js:708
+#: ../js/ui/screenShield.js:706
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME potřebuje uzamknout obrazovku"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1302
+#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1300
 msgid "Unable to lock"
 msgstr "Nelze uzamknout obrazovku"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1303
+#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1301
 msgid "Lock was blocked by an application"
 msgstr "Zamknutí bylo zablokováno některou z aplikací"
 
@@ -1277,8 +1277,8 @@ msgstr "Styl velkého textu"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:1083 ../js/ui/status/rfkill.js:48
+#: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:131
+#: ../js/ui/status/network.js:1081 ../js/ui/status/rfkill.js:48
 msgid "Turn Off"
 msgstr "Vypnout"
 
@@ -1301,99 +1301,99 @@ msgstr "Jas"
 msgid "Show Keyboard Layout"
 msgstr "Zobrazit rozložení klávesnice"
 
-#: ../js/ui/status/network.js:71
+#: ../js/ui/status/network.js:70
 msgid "<unknown>"
 msgstr "<neznámé>"
 
-#: ../js/ui/status/network.js:222 ../js/ui/status/network.js:379
-#: ../js/ui/status/network.js:1104
+#: ../js/ui/status/network.js:220 ../js/ui/status/network.js:377
+#: ../js/ui/status/network.js:1102
 msgid "Off"
 msgstr "Vypnuto"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:385
+#: ../js/ui/status/network.js:383
 msgid "unmanaged"
 msgstr "nespravováno"
 
-#: ../js/ui/status/network.js:387
+#: ../js/ui/status/network.js:385
 msgid "disconnecting..."
 msgstr "odpojování…"
 
-#: ../js/ui/status/network.js:393 ../js/ui/status/network.js:1158
+#: ../js/ui/status/network.js:391 ../js/ui/status/network.js:1156
 msgid "connecting..."
 msgstr "připojování…"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:396 ../js/ui/status/network.js:1161
+#: ../js/ui/status/network.js:394 ../js/ui/status/network.js:1159
 msgid "authentication required"
 msgstr "je vyžadováno ověření"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:404
+#: ../js/ui/status/network.js:402
 msgid "firmware missing"
 msgstr "nedostupný firmware"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:408
+#: ../js/ui/status/network.js:406
 msgid "unavailable"
 msgstr "nedostupné"
 
-#: ../js/ui/status/network.js:410 ../js/ui/status/network.js:1163
+#: ../js/ui/status/network.js:408 ../js/ui/status/network.js:1161
 msgid "connection failed"
 msgstr "připojení selhalo"
 
-#: ../js/ui/status/network.js:426 ../js/ui/status/network.js:512
+#: ../js/ui/status/network.js:424 ../js/ui/status/network.js:510
 msgid "Mobile Broadband Settings"
 msgstr "Nastavení mobilní širokopásmové sítě"
 
-#: ../js/ui/status/network.js:468 ../js/ui/status/network.js:1102
+#: ../js/ui/status/network.js:466 ../js/ui/status/network.js:1100
 msgid "Hardware Disabled"
 msgstr "Hardware zakázán"
 
-#: ../js/ui/status/network.js:694
+#: ../js/ui/status/network.js:692
 msgid "Wi-Fi Networks"
 msgstr "Sítě WiFi"
 
-#: ../js/ui/status/network.js:696
+#: ../js/ui/status/network.js:694
 msgid "Select a network"
 msgstr "Vyberte síť"
 
-#: ../js/ui/status/network.js:720
+#: ../js/ui/status/network.js:718
 msgid "No Networks"
 msgstr "Žádné sítě"
 
-#: ../js/ui/status/network.js:989
+#: ../js/ui/status/network.js:987
 msgid "Select Network"
 msgstr "Vybrat síť"
 
-#: ../js/ui/status/network.js:995
+#: ../js/ui/status/network.js:993
 msgid "Wi-Fi Settings"
 msgstr "Nastavení WiFi"
 
-#: ../js/ui/status/network.js:1083
+#: ../js/ui/status/network.js:1081
 msgid "Turn On"
 msgstr "Zapnout"
 
-#: ../js/ui/status/network.js:1106
+#: ../js/ui/status/network.js:1104
 msgid "Not Connected"
 msgstr "Nepřipojeno"
 
-#: ../js/ui/status/network.js:1226
+#: ../js/ui/status/network.js:1224
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1366
+#: ../js/ui/status/network.js:1364
 msgid "Network Manager"
 msgstr "Network Manager"
 
-#: ../js/ui/status/network.js:1405
+#: ../js/ui/status/network.js:1403
 msgid "Connection failed"
 msgstr "Připojení selhalo"
 
-#: ../js/ui/status/network.js:1406
+#: ../js/ui/status/network.js:1404
 msgid "Activation of network connection failed"
 msgstr "Aktivace síťového připojení selhala"
 
@@ -1486,7 +1486,7 @@ msgid "Search"
 msgstr "Hledat"
 
 #: ../js/ui/windowAttentionHandler.js:19
-msgid "'%s' is ready"
+msgid "“%s” is ready"
 msgstr "Připraveno „%s“"
 
 #: ../js/ui/windowManager.js:56
@@ -1549,7 +1549,7 @@ msgstr "Režim použitý GDM pro přihlašovací obrazovku"
 
 #: ../src/main.c:359
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
-msgstr "Použít pro přihlašovací obrazovku určitý mód, např. „gdm“."
+msgstr "Použít pro přihlašovací obrazovku zadaný režim, např. „gdm“."
 
 #: ../src/main.c:365
 msgid "List possible modes"
@@ -1557,7 +1557,7 @@ msgstr "Vypsat možné režimy"
 
 #: ../src/shell-app.c:640
 #, c-format
-msgid "Failed to launch '%s'"
+msgid "Failed to launch “%s”"
 msgstr "Nelze spustit „%s“"
 
 #: ../src/shell-keyring-prompt.c:714
