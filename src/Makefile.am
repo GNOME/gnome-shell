@@ -209,7 +209,7 @@ gnome_shell_extension_prefs_SOURCES = gnome-shell-extension-prefs.c \
 	$(top_builddir)/js/js-resources.h		\
 	$(NULL)
 gnome_shell_extension_prefs_CPPFLAGS = $(gnome_shell_cflags)
-gnome_shell_extension_prefs_LDADD = libgnome-shell-js.la
+gnome_shell_extension_prefs_LDADD = libgnome-shell-js.la $(GNOME_SHELL_LIBS)
 
 ########################################
 
