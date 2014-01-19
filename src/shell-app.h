@@ -74,6 +74,11 @@ gboolean shell_app_launch (ShellApp     *app,
                            int           workspace,
                            GError      **error);
 
+void shell_app_launch_action (ShellApp        *app,
+                              const char      *action_name,
+                              guint            timestamp,
+                              int              workspace);
+
 int shell_app_compare_by_name (ShellApp *app, ShellApp *other);
 
 int shell_app_compare (ShellApp *app, ShellApp *other);

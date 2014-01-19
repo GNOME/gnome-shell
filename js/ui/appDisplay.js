@@ -1501,7 +1501,18 @@ const AppIconMenu = new Lang.Class({
                 this._source.app.open_new_window(-1);
                 this.emit('activate-window', null);
             }));
+            this._appendSeparator();
 
+            let appInfo = this._source.app.get_app_info();
+            let actions = appInfo.list_actions();
+            for (let i = 0; i < actions.length; i++) {
+                let action = actions[i];
+                let item = this._appendMenuItem(appInfo.get_action_name(action));
+                item.connect('activate', Lang.bind(this, function(emitter, event) {
+                    this._source.app.launch_action(action, event.get_time(), -1);
+                    this.emit('activate-window', null);
+                }));
+            }
             this._appendSeparator();
 
             let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._source.app.get_id());

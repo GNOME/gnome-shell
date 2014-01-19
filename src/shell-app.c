@@ -1185,30 +1185,14 @@ app_child_setup (gpointer user_data)
 }
 #endif
 
-/**
- * shell_app_launch:
- * @timestamp: Event timestamp, or 0 for current event timestamp
- * @workspace: Start on this workspace, or -1 for default
- * @error: A #GError
- */
-gboolean
-shell_app_launch (ShellApp     *app,
-                  guint         timestamp,
-                  int           workspace,
-                  GError      **error)
+static GAppLaunchContext *
+make_launch_context (guint timestamp,
+                     int   workspace)
 {
   GdkAppLaunchContext *context;
-  gboolean ret;
   ShellGlobal *global;
   MetaScreen *screen;
   GdkDisplay *gdisplay;
-
-  if (app->info == NULL)
-    {
-      MetaWindow *window = window_backed_app_get_window (app);
-      meta_window_activate (window, timestamp);
-      return TRUE;
-    }
 
   global = shell_global_get ();
   screen = shell_global_get_screen (global);
@@ -1224,8 +1208,35 @@ shell_app_launch (ShellApp     *app,
   gdk_app_launch_context_set_timestamp (context, timestamp);
   gdk_app_launch_context_set_desktop (context, workspace);
 
+  return G_APP_LAUNCH_CONTEXT (context);
+}
+
+/**
+ * shell_app_launch:
+ * @timestamp: Event timestamp, or 0 for current event timestamp
+ * @workspace: Start on this workspace, or -1 for default
+ * @error: A #GError
+ */
+gboolean
+shell_app_launch (ShellApp     *app,
+                  guint         timestamp,
+                  int           workspace,
+                  GError      **error)
+{
+  GAppLaunchContext *context;
+  gboolean ret;
+
+  if (app->info == NULL)
+    {
+      MetaWindow *window = window_backed_app_get_window (app);
+      meta_window_activate (window, timestamp);
+      return TRUE;
+    }
+
+  context = make_launch_context (timestamp, workspace),
+
   ret = g_desktop_app_info_launch_uris_as_manager (app->info, NULL,
-                                                   G_APP_LAUNCH_CONTEXT (context),
+                                                   context,
                                                    G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
 #ifdef HAVE_SYSTEMD
                                                    app_child_setup, (gpointer)shell_app_get_id (app),
@@ -1237,6 +1248,30 @@ shell_app_launch (ShellApp     *app,
   g_object_unref (context);
 
   return ret;
+}
+
+/**
+ * shell_app_launch_action:
+ * @app: the #ShellApp
+ * @action_name: the name of the action to launch (as obtained by
+ *               g_desktop_app_info_list_actions())
+ * @timestamp: Event timestamp, or 0 for current event timestamp
+ * @workspace: Start on this workspace, or -1 for default
+ */
+void
+shell_app_launch_action (ShellApp        *app,
+                         const char      *action_name,
+                         guint            timestamp,
+                         int              workspace)
+{
+  GAppLaunchContext *context;
+
+  context = make_launch_context (timestamp, workspace);
+
+  g_desktop_app_info_launch_action (G_DESKTOP_APP_INFO (app->info),
+                                    action_name, context);
+
+  g_object_unref (context);
 }
 
 /**
