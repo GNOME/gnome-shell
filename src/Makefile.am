@@ -204,7 +204,10 @@ gnome_shell_wayland_LDADD = libgnome-shell-wayland.la libgnome-shell-js.la $(GNO
 gnome_shell_wayland_DEPENDENCIES = libgnome-shell-wayland.la
 endif HAVE_MUTTER_WAYLAND
 
-gnome_shell_extension_prefs_SOURCES = gnome-shell-extension-prefs.c \
+gnome_shell_extension_prefs_SOURCES = \
+	gnome-shell-extension-prefs.c \
+	$(NULL)
+nodist_gnome_shell_extension_prefs_SOURCES = \
 	$(top_builddir)/js/js-resources.c		\
 	$(top_builddir)/js/js-resources.h		\
 	$(NULL)
