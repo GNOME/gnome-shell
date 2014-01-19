@@ -106,9 +106,6 @@ const WindowClone = new Lang.Class({
             return true;
         });
         this.metaWindow.foreach_transient(iter);
-
-        this._dimmer = new WindowManager.WindowDimmer(this.clone);
-        this._updateDimmer();
     },
 
     // Find the actor just below us, respecting reparenting done
@@ -148,7 +145,6 @@ const WindowClone = new Lang.Class({
 
     addAttachedDialog: function(win) {
         this._doAddAttachedDialog(win, win.get_compositor_private());
-        this._updateDimmer();
     },
 
     _doAddAttachedDialog: function(metaDialog, realDialog) {
@@ -159,18 +155,8 @@ const WindowClone = new Lang.Class({
                                              Lang.bind(this, this._updateDialogPosition, clone));
         clone._destroyId = realDialog.connect('destroy', Lang.bind(this, function() {
             clone.destroy();
-            this._updateDimmer();
         }));
         this.actor.add_child(clone);
-    },
-
-    _updateDimmer: function() {
-        if (this.actor.get_n_children() > 1) {
-            this._dimmer.setEnabled(true);
-            this._dimmer.dimFactor = 1.0;
-        } else {
-            this._dimmer.setEnabled(false);
-        }
     },
 
     _updateDialogPosition: function(realDialog, cloneDialog) {

@@ -569,6 +569,15 @@ const WindowManager = new Lang.Class({
                            Shell.KeyBindingMode.TOPBAR_POPUP,
                            Lang.bind(this, this._toggleAppMenu));
 
+        Main.overview.connect('showing', Lang.bind(this, function() {
+            for (let i = 0; i < this._dimmedWindows.length; i++)
+                this._undimWindow(this._dimmedWindows[i]);
+        }));
+        Main.overview.connect('hiding', Lang.bind(this, function() {
+            for (let i = 0; i < this._dimmedWindows.length; i++)
+                this._dimWindow(this._dimmedWindows[i]);
+        }));
+
         if (Main.sessionMode.hasWorkspaces)
             this._workspaceTracker = new WorkspaceTracker(this);
 

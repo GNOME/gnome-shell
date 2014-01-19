@@ -194,7 +194,6 @@ const WindowClone = new Lang.Class({
     addAttachedDialog: function(win) {
         this._doAddAttachedDialog(win, win.get_compositor_private());
         this._computeBoundingBox();
-        this._updateDimmer();
         this.emit('size-changed');
     },
 
@@ -208,7 +207,6 @@ const WindowClone = new Lang.Class({
             clone.destroy();
 
             this._computeBoundingBox();
-            this._updateDimmer();
             this.emit('size-changed');
         }));
         this.actor.add_child(clone);
@@ -228,18 +226,6 @@ const WindowClone = new Lang.Class({
             return true;
         });
         this.metaWindow.foreach_transient(iter);
-
-        this._dimmer = new WindowManager.WindowDimmer(this._windowClone);
-        this._updateDimmer();
-    },
-
-    _updateDimmer: function() {
-        if (this.actor.get_n_children() > 1) {
-            this._dimmer.setEnabled(true);
-            this._dimmer.dimFactor = 1.0;
-        } else {
-            this._dimmer.setEnabled(false);
-        }
     },
 
     get boundingBox() {
