@@ -1628,12 +1628,14 @@ const AppIconMenu = new Lang.Class({
         if (!this._source.app.is_window_backed()) {
             this._appendSeparator();
 
-            this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
-            this._newWindowMenuItem.connect('activate', Lang.bind(this, function() {
-                this._source.app.open_new_window(-1);
-                this.emit('activate-window', null);
-            }));
-            this._appendSeparator();
+            if (this._source.app.can_open_new_window()) {
+                this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
+                this._newWindowMenuItem.connect('activate', Lang.bind(this, function() {
+                    this._source.app.open_new_window(-1);
+                    this.emit('activate-window', null);
+                }));
+                this._appendSeparator();
+            }
 
             let appInfo = this._source.app.get_app_info();
             let actions = appInfo.list_actions();

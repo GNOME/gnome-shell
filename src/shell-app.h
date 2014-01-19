@@ -56,6 +56,7 @@ void shell_app_activate_full (ShellApp      *app,
 
 void shell_app_open_new_window (ShellApp *app,
                                 int       workspace);
+gboolean shell_app_can_open_new_window (ShellApp *app);
 
 ShellAppState shell_app_get_state (ShellApp *app);
 
