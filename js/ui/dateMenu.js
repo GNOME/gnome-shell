@@ -211,7 +211,7 @@ const DateMenuButton = new Lang.Class({
         let app = this._getCalendarApp();
         if (app.get_id() == 'evolution.desktop')
             app = Gio.DesktopAppInfo.new('evolution-calendar.desktop');
-        app.launch([], global.create_app_launch_context());
+        app.launch([], global.create_app_launch_context(0, -1));
     },
 
     _onOpenClocksActivate: function() {

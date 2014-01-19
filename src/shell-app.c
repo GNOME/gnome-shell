@@ -1185,32 +1185,6 @@ app_child_setup (gpointer user_data)
 }
 #endif
 
-static GAppLaunchContext *
-make_launch_context (guint timestamp,
-                     int   workspace)
-{
-  GdkAppLaunchContext *context;
-  ShellGlobal *global;
-  MetaScreen *screen;
-  GdkDisplay *gdisplay;
-
-  global = shell_global_get ();
-  screen = shell_global_get_screen (global);
-  gdisplay = gdk_screen_get_display (shell_global_get_gdk_screen (global));
-
-  if (timestamp == 0)
-    timestamp = shell_global_get_current_time (global);
-
-  if (workspace < 0)
-    workspace = meta_screen_get_active_workspace_index (screen);
-
-  context = gdk_display_get_app_launch_context (gdisplay);
-  gdk_app_launch_context_set_timestamp (context, timestamp);
-  gdk_app_launch_context_set_desktop (context, workspace);
-
-  return G_APP_LAUNCH_CONTEXT (context);
-}
-
 /**
  * shell_app_launch:
  * @timestamp: Event timestamp, or 0 for current event timestamp
@@ -1223,6 +1197,7 @@ shell_app_launch (ShellApp     *app,
                   int           workspace,
                   GError      **error)
 {
+  ShellGlobal *global;
   GAppLaunchContext *context;
   gboolean ret;
 
@@ -1233,7 +1208,8 @@ shell_app_launch (ShellApp     *app,
       return TRUE;
     }
 
-  context = make_launch_context (timestamp, workspace),
+  global = shell_global_get ();
+  context = shell_global_create_app_launch_context (global, timestamp, workspace);
 
   ret = g_desktop_app_info_launch_uris_as_manager (app->info, NULL,
                                                    context,
@@ -1264,9 +1240,11 @@ shell_app_launch_action (ShellApp        *app,
                          guint            timestamp,
                          int              workspace)
 {
+  ShellGlobal *global;
   GAppLaunchContext *context;
 
-  context = make_launch_context (timestamp, workspace);
+  global = shell_global_get ();
+  context = shell_global_create_app_launch_context (global, timestamp, workspace);
 
   g_desktop_app_info_launch_action (G_DESKTOP_APP_INFO (app->info),
                                     action_name, context);

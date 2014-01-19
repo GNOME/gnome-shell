@@ -203,7 +203,7 @@ const URLHighlighter = new Lang.Class({
                 if (url.indexOf(':') == -1)
                     url = 'http://' + url;
 
-                Gio.app_info_launch_default_for_uri(url, global.create_app_launch_context());
+                Gio.app_info_launch_default_for_uri(url, global.create_app_launch_context(0, -1));
                 return Clutter.EVENT_STOP;
             }
             return Clutter.EVENT_PROPAGATE;

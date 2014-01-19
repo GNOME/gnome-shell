@@ -1339,7 +1339,7 @@ const AccountNotification = new Lang.Class({
             let cmd = 'empathy-accounts --select-account=' +
                 account.get_path_suffix();
             let app_info = Gio.app_info_create_from_commandline(cmd, null, 0);
-            app_info.launch([], global.create_app_launch_context());
+            app_info.launch([], global.create_app_launch_context(0, -1));
         }));
 
         this._enabledId = account.connect('notify::enabled',

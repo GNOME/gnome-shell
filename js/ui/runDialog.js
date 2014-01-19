@@ -233,7 +233,7 @@ const RunDialog = new Lang.Class({
                     let file = Gio.file_new_for_path(path);
                     try {
                         Gio.app_info_launch_default_for_uri(file.get_uri(),
-                                                            global.create_app_launch_context());
+                                                            global.create_app_launch_context(0, -1));
                     } catch (e) {
                         // The exception from gjs contains an error string like:
                         //     Error invoking Gio.app_info_launch_default_for_uri: No application

@@ -670,13 +670,13 @@ const Extensions = new Lang.Class({
     _onViewSource: function (actor) {
         let extension = actor._extension;
         let uri = extension.dir.get_uri();
-        Gio.app_info_launch_default_for_uri(uri, global.create_app_launch_context());
+        Gio.app_info_launch_default_for_uri(uri, global.create_app_launch_context(0, -1));
         this._lookingGlass.close();
     },
 
     _onWebPage: function (actor) {
         let extension = actor._extension;
-        Gio.app_info_launch_default_for_uri(extension.metadata.url, global.create_app_launch_context());
+        Gio.app_info_launch_default_for_uri(extension.metadata.url, global.create_app_launch_context(0, -1));
         this._lookingGlass.close();
     },
 

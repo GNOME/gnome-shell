@@ -1326,6 +1326,8 @@ shell_global_get_current_time (ShellGlobal *global)
 /**
  * shell_global_create_app_launch_context:
  * @global: A #ShellGlobal
+ * @timestamp: the timestamp for the launch (or 0 for current time)
+ * @workspace: a workspace index, or -1 to indicate the current one
  *
  * Create a #GAppLaunchContext set up with the correct timestamp, and
  * targeted to activate on the current workspace.
@@ -1333,16 +1335,21 @@ shell_global_get_current_time (ShellGlobal *global)
  * Return value: (transfer full): A new #GAppLaunchContext
  */
 GAppLaunchContext *
-shell_global_create_app_launch_context (ShellGlobal *global)
+shell_global_create_app_launch_context (ShellGlobal *global,
+                                        int          timestamp,
+                                        int          workspace)
 {
   GdkAppLaunchContext *context;
 
   context = gdk_display_get_app_launch_context (global->gdk_display);
-  gdk_app_launch_context_set_timestamp (context, shell_global_get_current_time (global));
 
-  // Make sure that the app is opened on the current workspace even if
-  // the user switches before it starts
-  gdk_app_launch_context_set_desktop (context, meta_screen_get_active_workspace_index (global->meta_screen));
+  if (timestamp == 0)
+    timestamp = shell_global_get_current_time (global);
+  gdk_app_launch_context_set_timestamp (context, timestamp);
+
+  if (workspace < 0)
+    workspace = meta_screen_get_active_workspace_index (global->meta_screen);
+  gdk_app_launch_context_set_desktop (context, workspace);
 
   return (GAppLaunchContext *)context;
 }

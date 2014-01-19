@@ -85,7 +85,9 @@ void shell_global_run_at_leisure (ShellGlobal          *global,
 void     shell_global_sync_pointer              (ShellGlobal  *global);
 
 GAppLaunchContext *
-         shell_global_create_app_launch_context (ShellGlobal  *global);
+         shell_global_create_app_launch_context (ShellGlobal  *global,
+                                                 int           timestamp,
+                                                 int           workspace);
 
 void     shell_global_play_theme_sound          (ShellGlobal *global,
                                                  guint        id,
