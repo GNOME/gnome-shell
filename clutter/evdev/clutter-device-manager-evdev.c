@@ -66,7 +66,6 @@ struct _ClutterSeatEvdev
   ClutterInputDevice *core_pointer;
   ClutterInputDevice *core_keyboard;
 
-  GArray *keys;
   struct xkb_state *xkb;
   xkb_led_index_t caps_lock_led;
   xkb_led_index_t num_lock_led;
@@ -193,29 +192,6 @@ queue_event (ClutterEvent *event)
 }
 
 static void
-add_key (GArray  *keys,
-	 guint32  key)
-{
-  g_array_append_val (keys, key);
-}
-
-static void
-remove_key (GArray  *keys,
-	    guint32  key)
-{
-  unsigned int i;
-
-  for (i = 0; i < keys->len; i++)
-    {
-      if (g_array_index (keys, guint32, i) == key)
-	{
-	  g_array_remove_index_fast (keys, i);
-	  return;
-	}
-    }
-}
-
-static void
 clear_repeat_timer (ClutterSeatEvdev *seat)
 {
   if (seat->repeat_timer)
@@ -269,14 +245,6 @@ notify_key_device (ClutterInputDevice *input_device,
       changed_state = xkb_state_update_key (seat->xkb,
                                             event->key.hardware_keycode,
                                             state ? XKB_KEY_DOWN : XKB_KEY_UP);
-
-      if (update_keys)
-	{
-	  if (state)
-	    add_key (seat->keys, event->key.hardware_keycode);
-	  else
-	    remove_key (seat->keys, event->key.hardware_keycode);
-	}
     }
   else
     {
@@ -700,8 +668,6 @@ clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev,
   _clutter_device_manager_add_device (manager, device);
   seat->core_keyboard = device;
 
-  seat->keys = g_array_new (FALSE, FALSE, sizeof (guint32));
-
   ctx = xkb_context_new(0);
   g_assert (ctx);
 
@@ -748,7 +714,6 @@ clutter_seat_evdev_free (ClutterSeatEvdev *seat)
   g_slist_free (seat->devices);
 
   xkb_state_unref (seat->xkb);
-  g_array_free (seat->keys, TRUE);
 
   clear_repeat_timer (seat);
 
@@ -1503,7 +1468,9 @@ clutter_evdev_set_open_callback (ClutterOpenDeviceCallback callback,
  * @keymap: the new keymap
  *
  * Instructs @evdev to use the speficied keyboard map. This will cause
- * the backend to drop the state and create a new one with the new map.
+ * the backend to drop the state and create a new one with the new
+ * map. To avoid state being lost, callers should ensure that no key
+ * is pressed when calling this function.
  */
 void
 clutter_evdev_set_keyboard_map (ClutterDeviceManager *evdev,
@@ -1513,7 +1480,6 @@ clutter_evdev_set_keyboard_map (ClutterDeviceManager *evdev,
   ClutterDeviceManagerEvdevPrivate *priv;
   GSList *iter;
   ClutterSeatEvdev *seat;
-  unsigned int i;
   xkb_mod_mask_t latched_mods;
   xkb_mod_mask_t locked_mods;
 
@@ -1542,13 +1508,6 @@ clutter_evdev_set_keyboard_map (ClutterDeviceManager *evdev,
       seat->caps_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_CAPS);
       seat->num_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_NUM);
       seat->scroll_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_SCROLL);
-
-      for (i = 0; i < seat->keys->len; i++)
-        {
-          xkb_state_update_key (seat->xkb,
-                                g_array_index (seat->keys, guint32, i),
-                                XKB_KEY_DOWN);
-        }
 
       clutter_seat_evdev_sync_leds (seat);
     }
