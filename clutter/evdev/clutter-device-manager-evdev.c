@@ -1514,6 +1514,8 @@ clutter_evdev_set_keyboard_map (ClutterDeviceManager *evdev,
   GSList *iter;
   ClutterSeatEvdev *seat;
   unsigned int i;
+  xkb_mod_mask_t latched_mods;
+  xkb_mod_mask_t locked_mods;
 
   g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev));
 
@@ -1524,8 +1526,18 @@ clutter_evdev_set_keyboard_map (ClutterDeviceManager *evdev,
     {
       seat = iter->data;
 
+      latched_mods = xkb_state_serialize_mods (seat->xkb,
+                                               XKB_STATE_MODS_LATCHED);
+      locked_mods = xkb_state_serialize_mods (seat->xkb,
+                                              XKB_STATE_MODS_LOCKED);
       xkb_state_unref (seat->xkb);
       seat->xkb = xkb_state_new (keymap);
+
+      xkb_state_update_mask (seat->xkb,
+                             0, /* depressed */
+                             latched_mods,
+                             locked_mods,
+                             0, 0, 0);
 
       seat->caps_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_CAPS);
       seat->num_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_NUM);
