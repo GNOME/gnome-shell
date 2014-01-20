@@ -25,7 +25,7 @@ m4_define([cogl_version],
 dnl Since the core Cogl library has to also maintain support for the
 dnl Cogl 1.x API for Clutter then we track the 1.x version separately.
 m4_define([cogl_1_minor_version], [17])
-m4_define([cogl_1_micro_version], [2])
+m4_define([cogl_1_micro_version], [3])
 m4_define([cogl_1_version], [1.cogl_1_minor_version.cogl_1_micro_version])
 
 dnl ================================================================
@@ -70,7 +70,7 @@ dnl ================================================================
 # libtool version info we don't automatically derive this from the
 # pretty version number because we want to test the results of
 # updating the version number in advance of a release.
-m4_define([cogl_release_status], [snapshot])
+m4_define([cogl_release_status], [git])
 
 AC_INIT(cogl, [cogl_1_version])
 AC_CONFIG_SRCDIR(cogl/cogl.h)
