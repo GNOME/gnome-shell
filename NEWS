@@ -1,3 +1,56 @@
+Cogl 1.17.2                                                        2014-01-20
+
+  • List of changes since Cogl 1.16.0
+
+  » Textures are now allocated lazily. This means the textures can
+    optionally be configured with extra API before data is uploaded to
+    them.
+  » The internal format for textures has been replaced with a simpler
+    property to just set the number of components that will be
+    required when sampling.
+  » Depth writing can now be disabled per-framebuffer as well as on
+    the CoglPipeline.
+  » The interface typedefs such as CoglTexture, CoglFramebuffer and
+    CoglBitmap etc are now defined as void so that it is no longer
+    necessary to use type-cast macros when passing them to interface
+    methods.
+  » YV12/I420 support in cogl-gst is fixed.
+  » Added support for red-green 2-component textures.
+  » The cache of GLSL shaders is now garbage collected when it gets
+    too large.
+  » cogl_framebuffer_push_path_clip is fixed.
+  » cogl-path is now split out into a separate library.
+  » New function cogl_wayland_texture_set_region_from_shm_buffer to
+    update a texture from a Wayland SHM bufffer.
+  » The pkg-config files for cogl-gst and cogl-gles2 have new more
+    consistent names.
+
+  • Gnome Bugzilla bugs closed since 1.16.0:
+
+    #706808 - "Unable to locate required kms libraries" message is really
+              uninformative
+    #709827 - Add API to control per-FB depth writing
+    #710135 - Fix build on big endian
+    #710926 - Build fails without declaration of wl_resource
+    #712562 - Fixes for the journal
+    #712830 - Add COGL_PIXEL_FORMAT_U_V
+    #719546 - cogl-framebuffer: Fix a potential NULL pointer dereference
+    #719582 - cogl-framebuffer: Don't mark the clear clip dirty from the
+              journal
+    #720287 - cogl-path: Export cogl_clip_push_from_path
+    #721450 - Re-enable swap_region for mesa 10.1+ llvmpipe / swrast
+
+Many thanks to:
+
+  Robert Bragg
+  Jasper St. Pierre
+  Adel Gadllah
+  Lionel Landwerlin
+  Chun-wei Fan
+  Colin Walters
+  Emilio Pozuelo Monfort
+  Hans Petter Jansson
+
 Cogl 1.16.0                                                        2013-09-23
 
   • List of changes since Cogl 1.15.10
