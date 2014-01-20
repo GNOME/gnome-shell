@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-07 17:55+0000\n"
-"PO-Revision-Date: 2014-01-08 10:40+0100\n"
+"POT-Creation-Date: 2014-01-19 15:04+0000\n"
+"PO-Revision-Date: 2014-01-20 12:32+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -82,16 +82,10 @@ msgstr ""
 "usando el diálogo Alt+F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
-#| msgid "Uuids of extensions to enable"
 msgid "UUIDs of extensions to enable"
 msgstr "UUID de las extensiones que activar"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
-#| msgid ""
-#| "GNOME Shell extensions have a uuid property; this key lists extensions "
-#| "which should be loaded. Any extension that wants to be loaded needs to be "
-#| "in this list. You can also manipulate this list with the EnableExtension "
-#| "and DisableExtension DBus methods on org.gnome.Shell."
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -116,36 +110,19 @@ msgstr ""
 "el área de favoritos."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
-msgid "List of categories that should be displayed as folders"
-msgstr "Lista de categorías que se deben mostrar como carpetas"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
-msgid ""
-"Each category name in this list will be represented as folder in the "
-"application view, rather than being displayed inline in the main view."
-msgstr ""
-"Cada nombre de categoría de esta lista se representará como una carpeta en "
-"la vista de aplicaciones, en lugar de mostrarse en línea en la vista "
-"principal."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
 msgstr "Histórico del diálogo de comandos (Alt+F2)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid "History for the looking glass dialog"
 msgstr "Histórico del diálogo de «looking glass»"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-#| msgid "Always show the 'Log out' menuitem in the user menu."
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "Always show the 'Log out' menu item in the user menu."
 msgstr ""
 "Mostrar siempre el elemento de menú «Cerrar sesión» en el menú del usuario."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menuitem in "
-#| "single-user, single-session situations."
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
@@ -153,14 +130,14 @@ msgstr ""
 "Esta clave sobreescribe la ocultación automática del elemento de menú "
 "«Cerrar sesión» en situaciones de un único usuario o de una única sesión."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Indica si se debe recordar la contraseña para montar sistemas de archivos "
 "remotos o cifrados"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -172,70 +149,70 @@ msgstr ""
 "en un futuro, se mostrará la casilla «Recordar contraseña». Esta clave "
 "establece el valor predeterminado de la casilla."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Show the week date in the calendar"
 msgstr "Mostrar la fecha de la semana en el calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Si es cierta, muestra la fecha de semana ISO en el calendario."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Keybinding to open the application menu"
 msgstr "Asociación de teclas para abrir el menú de la aplicación"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "Keybinding to open the application menu."
 msgstr "Asociación de teclas para abrir el menú de la aplicación."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Asociación de teclas para la vista «Mostrar aplicaciones»"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "Asociación de teclas para abrir la vista «Mostrar aplicaciones» de la vista "
 "de actividades."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the overview"
 msgstr "Asociación de teclas para la vista general"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to open the Activities Overview."
 msgstr "Asociación de teclas para abrir la Vista de actividades"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "Asociación de teclas cambiar la visibilidad de la bandeja de mensajes"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "Asociación de teclas cambiar la visibilidad de la bandeja de mensajes."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to focus the active notification"
 msgstr "Asociación de teclas para dar el foco a la notificación activa"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to focus the active notification."
 msgstr "Asociación de teclas para dar el foco a la notificación activa."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Which keyboard to use"
 msgstr "Qué teclado usar"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "The type of keyboard to use."
 msgstr "El tipo de teclado que usar."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "The application icon mode."
 msgstr "El modo de icono de la aplicación."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -245,21 +222,21 @@ msgstr ""
 "son «thumbnail-only» (muestra una miniatura de la ventana), «app-icon-"
 "only» (sólo muestra el icono de la aplicación) «both»."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Attach modal dialog to the parent window"
 msgstr "Acoplar un diálogo modal a la ventana padre"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Esta clave sobreescribe la clave en org.gnome.mutter al ejecutar GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Orden de los botones en la barra de título"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
@@ -267,21 +244,21 @@ msgstr ""
 "Esta clave sobreescribe la clave en org.gnome.desktop.wm.preferences al "
 "ejecutar GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Activar el mosaico en los bordes al arrastrar ventanas a los bordes de la "
 "ventana"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "Workspaces are managed dynamically"
 msgstr "Las áreas de trabajo se gestionan dinámicamente"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Workspaces only on primary monitor"
 msgstr "Áreas de trabajo solo en la pantalla principal"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Retardo al cambiar el foco del ratón hasta que el puntero deja de moverse"
@@ -300,9 +277,9 @@ msgstr ""
 "Seleccione una extensión que configurar usando la caja combinada de arriba."
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:359
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:357
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:726
+#: ../js/ui/status/network.js:724
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -320,24 +297,24 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
-#: ../js/gdm/loginDialog.js:272
+#: ../js/gdm/loginDialog.js:270
 msgid "Choose Session"
 msgstr "Elegir sesión"
 
-#: ../js/gdm/loginDialog.js:432
+#: ../js/gdm/loginDialog.js:430
 msgid "Not listed?"
 msgstr "¿No está en la lista?"
 
-#: ../js/gdm/loginDialog.js:600
+#: ../js/gdm/loginDialog.js:598
 msgid "(e.g., user or %s)"
 msgstr "(ej., usuario o %s)"
 
-#: ../js/gdm/loginDialog.js:605 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:603 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Nombre de usuario:"
 
-#: ../js/gdm/loginDialog.js:870
+#: ../js/gdm/loginDialog.js:868
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
@@ -358,30 +335,31 @@ msgid "Could not parse command:"
 msgstr "No se pudo analizar el comando:"
 
 #: ../js/misc/util.js:156
-msgid "Execution of '%s' failed:"
+#| msgid "Execution of '%s' failed:"
+msgid "Execution of “%s” failed:"
 msgstr "Falló la ejecución de «%s»:"
 
-#: ../js/ui/appDisplay.js:596
+#: ../js/ui/appDisplay.js:543
 msgid "Frequently used applications will appear here"
 msgstr "Las aplicaciones usadas frecuentemente aparecerán aquí"
 
-#: ../js/ui/appDisplay.js:715
+#: ../js/ui/appDisplay.js:663
 msgid "Frequent"
 msgstr "Frecuentes"
 
-#: ../js/ui/appDisplay.js:722
+#: ../js/ui/appDisplay.js:670
 msgid "All"
 msgstr "Todas"
 
-#: ../js/ui/appDisplay.js:1541
+#: ../js/ui/appDisplay.js:1501
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:1544 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1504 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:1545
+#: ../js/ui/appDisplay.js:1505
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
@@ -591,8 +569,8 @@ msgstr "Contraseña:"
 msgid "Type again:"
 msgstr "Escriba de nuevo:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:295 ../js/ui/status/network.js:729
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:131
+#: ../js/ui/status/network.js:293 ../js/ui/status/network.js:727
 msgid "Connect"
 msgstr "Conectar"
 
@@ -625,9 +603,12 @@ msgid "Authentication required by wireless network"
 msgstr "La red inalámbrica requiere autenticación"
 
 #: ../js/ui/components/networkAgent.js:312
+#| msgid ""
+#| "Passwords or encryption keys are required to access the wireless network "
+#| "'%s'."
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
-"'%s'."
+"“%s”."
 msgstr ""
 "Se necesitan contraseñas o claves de cifrado para acceder a la red "
 "inalámbrica «%s»."
@@ -661,8 +642,9 @@ msgid "Mobile broadband network password"
 msgstr "Contraseña de la red de banda ancha móvil"
 
 #: ../js/ui/components/networkAgent.js:339
-msgid "A password is required to connect to '%s'."
-msgstr "Se requiere una contraseña para conectar a «%s»."
+#| msgid "A password is required to connect to '%s'."
+msgid "A password is required to connect to “%s”."
+msgstr "Se requiere una contraseña para conectarse a «%s»."
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -941,71 +923,71 @@ msgstr "Configuración de hora y fecha"
 msgid "%A %B %e, %Y"
 msgstr "%A, %e de %B de %Y"
 
-#: ../js/ui/endSessionDialog.js:64
+#: ../js/ui/endSessionDialog.js:62
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Cerrar la sesión %s"
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Log Out"
 msgstr "Cerrar la sesión"
 
-#: ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:65
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "se cerrará automáticamente la sesión de %s en %d segundo."
 msgstr[1] "se cerrará automáticamente la sesión de %s en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:72
+#: ../js/ui/endSessionDialog.js:70
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Su sesión se cerrará automáticamente en %d segundo."
 msgstr[1] "Su sesión se cerrará automáticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:77
+#: ../js/ui/endSessionDialog.js:75
 msgctxt "button"
 msgid "Log Out"
 msgstr "Cerrar la sesión"
 
-#: ../js/ui/endSessionDialog.js:83
+#: ../js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Power Off"
 msgstr "Apagar"
 
-#: ../js/ui/endSessionDialog.js:85
+#: ../js/ui/endSessionDialog.js:83
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "El sistema se apagará automáticamente en %d segundo."
 msgstr[1] "El sistema se apagará automáticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:106
+#: ../js/ui/endSessionDialog.js:88 ../js/ui/endSessionDialog.js:104
 msgctxt "button"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/ui/endSessionDialog.js:92
+#: ../js/ui/endSessionDialog.js:90
 msgctxt "button"
 msgid "Power Off"
 msgstr "Apagar"
 
-#: ../js/ui/endSessionDialog.js:99
+#: ../js/ui/endSessionDialog.js:97
 msgctxt "title"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/ui/endSessionDialog.js:101
+#: ../js/ui/endSessionDialog.js:99
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "El sistema se reiniciará automáticamente en %d segundo."
 msgstr[1] "El sistema se reiniciará automáticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:114
+#: ../js/ui/endSessionDialog.js:112
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Reiniciar e instalar actualizaciones"
 
-#: ../js/ui/endSessionDialog.js:116
+#: ../js/ui/endSessionDialog.js:114
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -1016,26 +998,26 @@ msgstr[1] ""
 "El sistema se reiniciará automáticamente e instalará las actualizaciones en "
 "%d segundos."
 
-#: ../js/ui/endSessionDialog.js:121
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "Reiniciar e instalar"
 
-#: ../js/ui/endSessionDialog.js:277
+#: ../js/ui/endSessionDialog.js:275
 msgid "Some applications are busy or have unsaved work."
 msgstr "Algunas aplicaciones están ocupadas o tienen trabajo sin guardar."
 
-#: ../js/ui/endSessionDialog.js:284
+#: ../js/ui/endSessionDialog.js:282
 msgid "Other users are logged in."
 msgstr "Hay otros usuarios con la sesión iniciada"
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:488
+#: ../js/ui/endSessionDialog.js:486
 msgid "%s (remote)"
 msgstr "%s (remoto)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:491
+#: ../js/ui/endSessionDialog.js:489
 msgid "%s (console)"
 msgstr "%s (consola)"
 
@@ -1044,7 +1026,8 @@ msgid "Install"
 msgstr "Instalar"
 
 #: ../js/ui/extensionDownloader.js:204
-msgid "Download and install '%s' from extensions.gnome.org?"
+#| msgid "Download and install '%s' from extensions.gnome.org?"
+msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
 
 #: ../js/ui/keyboard.js:641 ../js/ui/status/keyboard.js:335
@@ -1076,7 +1059,7 @@ msgstr "Activado"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:472
+#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:470
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Desactivado"
@@ -1101,39 +1084,39 @@ msgstr "Ver fuente"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:1310
+#: ../js/ui/messageTray.js:1312
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:1317
+#: ../js/ui/messageTray.js:1319
 msgid "Remove"
 msgstr "Quitar"
 
-#: ../js/ui/messageTray.js:1614
+#: ../js/ui/messageTray.js:1616
 msgid "Notifications"
 msgstr "Notificaciones"
 
-#: ../js/ui/messageTray.js:1621
+#: ../js/ui/messageTray.js:1623
 msgid "Clear Messages"
 msgstr "Limpiar mensajes"
 
-#: ../js/ui/messageTray.js:1640
+#: ../js/ui/messageTray.js:1642
 msgid "Notification Settings"
 msgstr "Configuración de las notificaciones"
 
-#: ../js/ui/messageTray.js:1693
+#: ../js/ui/messageTray.js:1695
 msgid "Tray Menu"
 msgstr "Bandeja de menú"
 
-#: ../js/ui/messageTray.js:1910
+#: ../js/ui/messageTray.js:1912
 msgid "No Messages"
 msgstr "No hay mensajes"
 
-#: ../js/ui/messageTray.js:1948
+#: ../js/ui/messageTray.js:1950
 msgid "Message Tray"
 msgstr "Bandeja de mensajes"
 
-#: ../js/ui/messageTray.js:2931
+#: ../js/ui/messageTray.js:2934
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -1142,7 +1125,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:153
+#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:151
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d mensaje nuevo"
@@ -1192,29 +1175,29 @@ msgstr "Cerrar"
 
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:89
+#: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/screenShield.js:155
+#: ../js/ui/screenShield.js:153
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nueva"
 msgstr[1] "%d notificaciones nuevas"
 
-#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:472 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/screenShield.js:708
+#: ../js/ui/screenShield.js:706
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME necesita bloquear la pantalla"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1302
+#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1300
 msgid "Unable to lock"
 msgstr "No se pudo bloquear"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1303
+#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1301
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
@@ -1298,8 +1281,8 @@ msgstr "Texto grande"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:1083 ../js/ui/status/rfkill.js:48
+#: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:131
+#: ../js/ui/status/network.js:1081 ../js/ui/status/rfkill.js:48
 msgid "Turn Off"
 msgstr "Apagar"
 
@@ -1321,99 +1304,99 @@ msgstr "Brillo"
 msgid "Show Keyboard Layout"
 msgstr "Mostrar la distribución del teclado"
 
-#: ../js/ui/status/network.js:71
+#: ../js/ui/status/network.js:70
 msgid "<unknown>"
 msgstr "<desconocido>"
 
-#: ../js/ui/status/network.js:222 ../js/ui/status/network.js:379
-#: ../js/ui/status/network.js:1104
+#: ../js/ui/status/network.js:220 ../js/ui/status/network.js:377
+#: ../js/ui/status/network.js:1102
 msgid "Off"
 msgstr "Desconectado"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:385
+#: ../js/ui/status/network.js:383
 msgid "unmanaged"
 msgstr "no gestionada"
 
-#: ../js/ui/status/network.js:387
+#: ../js/ui/status/network.js:385
 msgid "disconnecting..."
 msgstr "deconectando…"
 
-#: ../js/ui/status/network.js:393 ../js/ui/status/network.js:1158
+#: ../js/ui/status/network.js:391 ../js/ui/status/network.js:1156
 msgid "connecting..."
 msgstr "conectando…"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:396 ../js/ui/status/network.js:1161
+#: ../js/ui/status/network.js:394 ../js/ui/status/network.js:1159
 msgid "authentication required"
 msgstr "se necesita autenticación"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:404
+#: ../js/ui/status/network.js:402
 msgid "firmware missing"
 msgstr "falta el «firmware»"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:408
+#: ../js/ui/status/network.js:406
 msgid "unavailable"
 msgstr "no disponible"
 
-#: ../js/ui/status/network.js:410 ../js/ui/status/network.js:1163
+#: ../js/ui/status/network.js:408 ../js/ui/status/network.js:1161
 msgid "connection failed"
 msgstr "falló la conexión"
 
-#: ../js/ui/status/network.js:426 ../js/ui/status/network.js:512
+#: ../js/ui/status/network.js:424 ../js/ui/status/network.js:510
 msgid "Mobile Broadband Settings"
 msgstr "Configuración de banda ancha móvil"
 
-#: ../js/ui/status/network.js:468 ../js/ui/status/network.js:1102
+#: ../js/ui/status/network.js:466 ../js/ui/status/network.js:1100
 msgid "Hardware Disabled"
 msgstr "Hardware desactivado"
 
-#: ../js/ui/status/network.js:694
+#: ../js/ui/status/network.js:692
 msgid "Wi-Fi Networks"
 msgstr "Redes Wi-Fi"
 
-#: ../js/ui/status/network.js:696
+#: ../js/ui/status/network.js:694
 msgid "Select a network"
 msgstr "Seleccionar una red"
 
-#: ../js/ui/status/network.js:720
+#: ../js/ui/status/network.js:718
 msgid "No Networks"
 msgstr "No hay redes"
 
-#: ../js/ui/status/network.js:989
+#: ../js/ui/status/network.js:987
 msgid "Select Network"
 msgstr "Seleccionar red"
 
-#: ../js/ui/status/network.js:995
+#: ../js/ui/status/network.js:993
 msgid "Wi-Fi Settings"
 msgstr "Configuración de Wi-Fi"
 
-#: ../js/ui/status/network.js:1083
+#: ../js/ui/status/network.js:1081
 msgid "Turn On"
 msgstr "Enceder"
 
-#: ../js/ui/status/network.js:1106
+#: ../js/ui/status/network.js:1104
 msgid "Not Connected"
 msgstr "No conectado"
 
-#: ../js/ui/status/network.js:1226
+#: ../js/ui/status/network.js:1224
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1366
+#: ../js/ui/status/network.js:1364
 msgid "Network Manager"
 msgstr "Gestor de la red"
 
-#: ../js/ui/status/network.js:1405
+#: ../js/ui/status/network.js:1403
 msgid "Connection failed"
 msgstr "Falló la conexión"
 
-#: ../js/ui/status/network.js:1406
+#: ../js/ui/status/network.js:1404
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
 
@@ -1506,7 +1489,8 @@ msgid "Search"
 msgstr "Buscar"
 
 #: ../js/ui/windowAttentionHandler.js:19
-msgid "'%s' is ready"
+#| msgid "'%s' is ready"
+msgid "“%s” is ready"
 msgstr "«%s» está preparado"
 
 #: ../js/ui/windowManager.js:56
@@ -1576,7 +1560,8 @@ msgstr "Listar los modos posibles"
 
 #: ../src/shell-app.c:640
 #, c-format
-msgid "Failed to launch '%s'"
+#| msgid "Failed to launch '%s'"
+msgid "Failed to launch “%s”"
 msgstr "Falló al lanzar «%s»"
 
 #: ../src/shell-keyring-prompt.c:714
@@ -1590,6 +1575,17 @@ msgstr "La contraseña no puede estar vacía"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "El usuario rechazó el diálogo de autenticación"
+
+#~ msgid "List of categories that should be displayed as folders"
+#~ msgstr "Lista de categorías que se deben mostrar como carpetas"
+
+#~ msgid ""
+#~ "Each category name in this list will be represented as folder in the "
+#~ "application view, rather than being displayed inline in the main view."
+#~ msgstr ""
+#~ "Cada nombre de categoría de esta lista se representará como una carpeta "
+#~ "en la vista de aplicaciones, en lugar de mostrarse en línea en la vista "
+#~ "principal."
 
 #~ msgctxt "event list time"
 #~ msgid "%H\\u2236%M"
