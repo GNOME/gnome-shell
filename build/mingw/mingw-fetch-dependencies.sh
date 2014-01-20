@@ -52,7 +52,7 @@ function download_file ()
 
     case "$DOWNLOAD_PROG" in
 	curl)
-	    curl -o "$DOWNLOAD_DIR/$filename" "$url";
+	    curl -L -o "$DOWNLOAD_DIR/$filename" "$url";
 	    ;;
 	*)
 	    $DOWNLOAD_PROG -O "$DOWNLOAD_DIR/$filename" "$url";
