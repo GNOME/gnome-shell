@@ -621,7 +621,11 @@ const ChatSource = new Lang.Class({
             this.notify();
     },
 
-    _channelClosed: function() {
+    destroy: function(reason) {
+        if (this._destroyed)
+            return;
+
+        this._destroyed = true;
         this._channel.disconnect(this._closedId);
         this._channel.disconnect(this._receivedId);
         this._channel.disconnect(this._pendingId);
@@ -631,7 +635,14 @@ const ChatSource = new Lang.Class({
         this._contact.disconnect(this._notifyAvatarId);
         this._contact.disconnect(this._presenceChangedId);
 
-        this.destroy();
+        if (this._timestampTimeoutId)
+            Mainloop.source_remove(this._timestampTimeoutId);
+
+        this.parent(reason);
+    },
+
+    _channelClosed: function() {
+        this.destroy(MessageTray.NotificationDestroyedReason.SOURCE_CLOSED);
     },
 
     /* All messages are new messages for Telepathy sources */
