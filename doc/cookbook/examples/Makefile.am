@@ -39,7 +39,6 @@ noinst_PROGRAMS = \
 	events-pointer-motion			\
 	events-pointer-motion-crossing		\
 	events-pointer-motion-stacked		\
-	events-pointer-motion-scribbler		\
 	textures-crossfade			\
 	textures-crossfade-cogl			\
 	textures-crossfade-slideshow		\
@@ -105,7 +104,6 @@ events_mouse_scroll_SOURCES                = events-mouse-scroll.c
 events_pointer_motion_SOURCES              = events-pointer-motion.c
 events_pointer_motion_crossing_SOURCES     = events-pointer-motion-crossing.c
 events_pointer_motion_stacked_SOURCES      = events-pointer-motion-stacked.c
-events_pointer_motion_scribbler_SOURCES    = events-pointer-motion-scribbler.c
 textures_crossfade_SOURCES                 = textures-crossfade.c
 textures_crossfade_cogl_SOURCES            = textures-crossfade-cogl.c
 textures_crossfade_slideshow_SOURCES       = textures-crossfade-slideshow.c
