@@ -1126,7 +1126,11 @@ cogl_gst_video_sink_get_caps (GstBaseSink *bsink,
 {
   CoglGstVideoSink *sink;
   sink = COGL_GST_VIDEO_SINK (bsink);
-  return gst_caps_ref (sink->priv->caps);
+
+  if (sink->priv->caps == NULL)
+    return NULL;
+  else
+    return gst_caps_ref (sink->priv->caps);
 }
 
 static CoglBool
