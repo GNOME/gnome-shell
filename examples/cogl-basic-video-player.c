@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include <cogl/cogl.h>
 #include <cogl-gst/cogl-gst.h>
@@ -234,6 +235,120 @@ _set_up_pipeline (gpointer instance,
   g_signal_connect (data->sink, "new-frame", G_CALLBACK (_new_frame_cb), data);
 }
 
+static CoglBool
+is_uri (const char *str)
+{
+  const char *p = str;
+
+  while (g_ascii_isalpha (*p))
+    p++;
+
+  return p > str && g_str_has_prefix (p, "://");
+}
+
+static CoglGstVideoSink *
+find_cogl_gst_video_sink (GstElement *element)
+{
+  GstElement *sink_element = NULL;
+  GstIterator *iterator;
+  GstElement *iterator_value;
+  GValue value;
+
+  if (!GST_IS_BIN (element))
+    return NULL;
+
+  iterator = gst_bin_iterate_recurse (GST_BIN (element));
+
+  g_value_init (&value, GST_TYPE_ELEMENT);
+
+  while (gst_iterator_next (iterator, &value) == GST_ITERATOR_OK)
+    {
+      iterator_value = g_value_get_object (&value);
+
+      g_value_reset (&value);
+
+      if (COGL_GST_IS_VIDEO_SINK (iterator_value))
+        {
+          sink_element = iterator_value;
+          break;
+        }
+    }
+
+  g_value_unset (&value);
+
+  gst_iterator_free (iterator);
+
+  return COGL_GST_VIDEO_SINK (sink_element);
+}
+
+
+static CoglBool
+make_pipeline_for_uri (CoglContext *ctx,
+                       const char *uri,
+                       GstElement **pipeline_out,
+                       CoglGstVideoSink **sink_out,
+                       GError **error)
+{
+  GstElement *pipeline;
+  GstElement *bin;
+  CoglGstVideoSink *sink;
+  GError *tmp_error = NULL;
+
+  if (is_uri (uri))
+    {
+      pipeline = gst_pipeline_new ("gst-player");
+      bin = gst_element_factory_make ("playbin", "bin");
+
+      sink = cogl_gst_video_sink_new (ctx);
+
+      g_object_set (G_OBJECT (bin),
+                    "video-sink",
+                    GST_ELEMENT (sink),
+                    NULL);
+
+      gst_bin_add (GST_BIN (pipeline), bin);
+
+      g_object_set (G_OBJECT (bin), "uri", uri, NULL);
+    }
+  else
+    {
+      pipeline = gst_parse_launch (uri, &tmp_error);
+
+      if (tmp_error)
+        {
+          if (pipeline)
+            g_object_unref (pipeline);
+
+          g_propagate_error (error, tmp_error);
+
+          return FALSE;
+        }
+
+      sink = find_cogl_gst_video_sink (pipeline);
+
+      if (sink == NULL)
+        {
+          g_set_error (error,
+                       GST_STREAM_ERROR,
+                       GST_STREAM_ERROR_FAILED,
+                       "The pipeline does not contain a CoglGstVideoSink. "
+                       "Make sure you add a 'coglsink' element somewhere in "
+                       "the pipeline");
+          g_object_unref (pipeline);
+          return FALSE;
+        }
+
+      g_object_ref (sink);
+
+      cogl_gst_video_sink_set_context (sink, ctx);
+    }
+
+  *pipeline_out = pipeline;
+  *sink_out = sink;
+
+  return TRUE;
+}
+
 int
 main (int argc,
       char **argv)
@@ -242,10 +357,10 @@ main (int argc,
   CoglContext *ctx;
   CoglOnscreen *onscreen;
   GstElement *pipeline;
-  GstElement *bin;
   GSource *cogl_source;
   GstBus *bus;
   char *uri;
+  GError *error = NULL;
 
   memset (&data, 0, sizeof (Data));
 
@@ -279,22 +394,17 @@ main (int argc,
      context with cogl_gst_video_sink_set_context.
   */
 
-  data.sink = cogl_gst_video_sink_new (ctx);
-
-  pipeline = gst_pipeline_new ("gst-player");
-  bin = gst_element_factory_make ("playbin", "bin");
-
   if (argc < 2)
     uri = "http://docs.gstreamer.com/media/sintel_trailer-480p.webm";
   else
     uri = argv[1];
 
-  g_object_set (G_OBJECT (bin), "video-sink", GST_ELEMENT (data.sink), NULL);
-
-
-  gst_bin_add (GST_BIN (pipeline), bin);
-
-  g_object_set (G_OBJECT (bin), "uri", uri, NULL);
+  if (!make_pipeline_for_uri (ctx, uri, &pipeline, &data.sink, &error))
+    {
+      g_print ("Error creating pipeline: %s\n", error->message);
+      g_clear_error (&error);
+      return EXIT_FAILURE;
+    }
 
   gst_element_set_state (pipeline, GST_STATE_PLAYING);
   bus = gst_pipeline_get_bus (GST_PIPELINE (pipeline));
