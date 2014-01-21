@@ -812,17 +812,11 @@ sync_client_window_mapped (MetaWindow *window)
   if (should_be_mapped)
     {
       XMapWindow (window->display->xdisplay, window->xwindow);
-
-      if (window->display->compositor)
-        meta_compositor_window_mapped (window->display->compositor, window);
     }
   else
     {
       XUnmapWindow (window->display->xdisplay, window->xwindow);
       window->unmaps_pending ++;
-
-      if (window->display->compositor)
-        meta_compositor_window_unmapped (window->display->compositor, window);
     }
   meta_error_trap_pop (window->display);
 }
@@ -1322,9 +1316,6 @@ meta_window_new_shared (MetaDisplay         *display,
       set_net_wm_state (window);
     }
 
-  if (screen->display->compositor)
-    meta_compositor_add_window (screen->display->compositor, window);
-
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
 
@@ -1797,10 +1788,13 @@ meta_window_unmanage (MetaWindow  *window,
   if (window->display->compositor)
     {
       if (window->visible_to_compositor)
-        meta_compositor_hide_window (window->display->compositor, window,
-                                     META_COMP_EFFECT_DESTROY);
+        {
+          meta_compositor_hide_window (window->display->compositor, window,
+                                       META_COMP_EFFECT_DESTROY);
 
-      meta_compositor_remove_window (window->display->compositor, window);
+          /* XXX - support destroy effects better */
+          meta_compositor_remove_window (window->display->compositor, window);
+        }
     }
 
   if (window->display->window_with_menu == window)
@@ -3177,8 +3171,8 @@ meta_window_show (MetaWindow *window)
               break;
             }
 
-          meta_compositor_show_window (window->display->compositor,
-                                       window, effect);
+          meta_compositor_add_window (window->display->compositor, window);
+          meta_compositor_show_window (window->display->compositor, window, effect);
         }
     }
 
@@ -3270,8 +3264,7 @@ meta_window_hide (MetaWindow *window)
               break;
             }
 
-          meta_compositor_hide_window (window->display->compositor,
-                                       window, effect);
+          meta_compositor_hide_window (window->display->compositor, window, effect);
         }
     }
 
