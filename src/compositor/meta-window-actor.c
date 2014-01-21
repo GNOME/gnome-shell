@@ -1206,7 +1206,7 @@ meta_window_actor_after_effects (MetaWindowActor *self)
 
   if (!meta_is_wayland_compositor ())
     {
-      if (!meta_window_is_mapped (priv->window))
+      if (!priv->mapped)
         meta_window_actor_detach_x11_pixmap (self);
 
       if (priv->needs_pixmap)
@@ -1629,7 +1629,10 @@ meta_window_actor_new (MetaWindow *window)
                        NULL);
 
   priv = self->priv;
-  priv->mapped = meta_window_toplevel_is_mapped (priv->window);
+
+  /* We know that when the compositor first adds our window, it will
+   * be before the toplevel window is mapped. */
+  priv->mapped = FALSE;
 
   if (!meta_is_wayland_compositor ())
     {

@@ -792,6 +792,41 @@ meta_window_should_attach_to_parent (MetaWindow *window)
     }
 }
 
+static gboolean
+client_window_should_be_mapped (MetaWindow *window)
+{
+  return !window->shaded;
+}
+
+static void
+sync_client_window_mapped (MetaWindow *window)
+{
+  gboolean should_be_mapped = client_window_should_be_mapped (window);
+
+  if (window->mapped == should_be_mapped)
+    return;
+
+  window->mapped = should_be_mapped;
+
+  meta_error_trap_push (window->display);
+  if (should_be_mapped)
+    {
+      XMapWindow (window->display->xdisplay, window->xwindow);
+
+      if (window->display->compositor)
+        meta_compositor_window_mapped (window->display->compositor, window);
+    }
+  else
+    {
+      XUnmapWindow (window->display->xdisplay, window->xwindow);
+      window->unmaps_pending ++;
+
+      if (window->display->compositor)
+        meta_compositor_window_unmapped (window->display->compositor, window);
+    }
+  meta_error_trap_pop (window->display);
+}
+
 static MetaWindow*
 meta_window_new_shared (MetaDisplay         *display,
                         MetaScreen          *screen,
@@ -1302,6 +1337,8 @@ meta_window_new_shared (MetaDisplay         *display,
 
   /* disable show desktop mode unless we're a desktop component */
   maybe_leave_show_desktop_mode (window);
+
+  sync_client_window_mapped (window);
 
   meta_window_queue (window, META_QUEUE_CALC_SHOWING);
   /* See bug 303284; a transient of the given window can already exist, in which
@@ -2346,6 +2383,8 @@ implement_showing (MetaWindow *window,
   meta_verbose ("Implement showing = %d for window %s\n",
                 showing, window->desc);
 
+  sync_client_window_mapped (window);
+
   if (!showing)
     {
       /* When we manage a new window, we normally delay placing it
@@ -2934,94 +2973,6 @@ window_would_be_covered (const MetaWindow *newbie)
   return FALSE; /* none found */
 }
 
-static gboolean
-map_frame (MetaWindow *window)
-{
-  if (window->frame && !window->frame->mapped)
-    {
-      meta_topic (META_DEBUG_WINDOW_STATE,
-                  "Frame actually needs map\n");
-      window->frame->mapped = TRUE;
-      meta_ui_map_frame (window->screen->ui, window->frame->xwindow);
-      return TRUE;
-    }
-  else
-    return FALSE;
-}
-
-static gboolean
-map_client_window (MetaWindow *window)
-{
-  if (!window->mapped)
-    {
-      meta_topic (META_DEBUG_WINDOW_STATE,
-                  "%s actually needs map\n", window->desc);
-      window->mapped = TRUE;
-      meta_error_trap_push (window->display);
-      XMapWindow (window->display->xdisplay, window->xwindow);
-      meta_error_trap_pop (window->display);
-
-      return TRUE;
-    }
-  else
-    return FALSE;
-}
-
-static gboolean
-unmap_client_window (MetaWindow *window,
-                     const char *reason)
-{
-  if (window->mapped)
-    {
-      meta_topic (META_DEBUG_WINDOW_STATE,
-                  "%s actually needs unmap%s\n",
-                  window->desc, reason);
-      meta_topic (META_DEBUG_WINDOW_STATE,
-                  "Incrementing unmaps_pending on %s%s\n",
-                  window->desc, reason);
-      window->mapped = FALSE;
-      window->unmaps_pending += 1;
-      meta_error_trap_push (window->display);
-      XUnmapWindow (window->display->xdisplay, window->xwindow);
-      meta_error_trap_pop (window->display);
-
-      return TRUE;
-    }
-  else
-    return FALSE;
-}
-
-/**
- * meta_window_is_mapped:
- * @window: a #MetaWindow
- *
- * Determines whether the X window for the MetaWindow is mapped.
- */
-gboolean
-meta_window_is_mapped (MetaWindow  *window)
-{
-  return window->mapped;
-}
-
-/**
- * meta_window_toplevel_is_mapped:
- * @window: a #MetaWindow
- *
- * Determines whether the toplevel X window for the MetaWindow is
- * mapped. (The frame window is mapped even without the client window
- * when a window is shaded.)
- *
- * Return Value: %TRUE if the toplevel is mapped.
- */
-gboolean
-meta_window_toplevel_is_mapped (MetaWindow *window)
-{
-  /* The frame is mapped but not the client window when the window
-   * is shaded.
-   */
-  return window->mapped || (window->frame && window->frame->mapped);
-}
-
 static void
 meta_window_force_placement (MetaWindow *window)
 {
@@ -3060,15 +3011,11 @@ meta_window_show (MetaWindow *window)
   gboolean place_on_top_on_map;
   gboolean needs_stacking_adjustment;
   MetaWindow *focus_window;
-  gboolean toplevel_was_mapped;
-  gboolean toplevel_now_mapped;
   gboolean notify_demands_attention = FALSE;
 
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Showing window %s, shaded: %d iconic: %d placed: %d\n",
               window->desc, window->shaded, window->iconic, window->placed);
-
-  toplevel_was_mapped = meta_window_toplevel_is_mapped (window);
 
   focus_window = window->display->focus_window;  /* May be NULL! */
   did_show = FALSE;
@@ -3196,46 +3143,18 @@ meta_window_show (MetaWindow *window)
         }
     }
 
-  /* Shaded means the frame is mapped but the window is not */
-
-  if (map_frame (window))
-    did_show = TRUE;
-
-  if (window->shaded)
+  if (window->hidden)
     {
-      unmap_client_window (window, " (shading)");
-
-      if (!window->iconic)
-        {
-          window->iconic = TRUE;
-          set_wm_state (window, IconicState);
-        }
-    }
-  else
-    {
-      if (map_client_window (window))
-        did_show = TRUE;
-
-      if (window->hidden)
-        {
-          meta_stack_freeze (window->screen->stack);
-          window->hidden = FALSE;
-          meta_stack_thaw (window->screen->stack);
-          did_show = TRUE;
-        }
-
-      if (window->iconic)
-        {
-          window->iconic = FALSE;
-          set_wm_state (window, NormalState);
-        }
+      meta_stack_freeze (window->screen->stack);
+      window->hidden = FALSE;
+      meta_stack_thaw (window->screen->stack);
+      did_show = TRUE;
     }
 
-  toplevel_now_mapped = meta_window_toplevel_is_mapped (window);
-  if (toplevel_now_mapped != toplevel_was_mapped)
+  if (window->iconic)
     {
-      if (window->display->compositor)
-        meta_compositor_window_mapped (window->display->compositor, window);
+      window->iconic = FALSE;
+      set_wm_state (window, NormalState);
     }
 
   if (!window->visible_to_compositor)
@@ -3327,13 +3246,9 @@ static void
 meta_window_hide (MetaWindow *window)
 {
   gboolean did_hide;
-  gboolean toplevel_was_mapped;
-  gboolean toplevel_now_mapped;
 
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Hiding window %s\n", window->desc);
-
-  toplevel_was_mapped = meta_window_toplevel_is_mapped (window);
 
   if (window->visible_to_compositor)
     {
@@ -3362,12 +3277,6 @@ meta_window_hide (MetaWindow *window)
 
   did_hide = FALSE;
 
-  /* If this is the first time that we've calculating the showing
-   * state of the window, the frame and client window might not
-   * yet be mapped, so we need to map them now */
-  map_frame (window);
-  map_client_window (window);
-
   if (!window->hidden)
     {
       meta_stack_freeze (window->screen->stack);
@@ -3381,19 +3290,6 @@ meta_window_hide (MetaWindow *window)
     {
       window->iconic = TRUE;
       set_wm_state (window, IconicState);
-    }
-
-  toplevel_now_mapped = meta_window_toplevel_is_mapped (window);
-  if (toplevel_now_mapped != toplevel_was_mapped)
-    {
-      if (window->display->compositor)
-        {
-          /* As above, we may be *mapping* live hidden windows */
-          if (toplevel_now_mapped)
-            meta_compositor_window_mapped (window->display->compositor, window);
-          else
-            meta_compositor_window_unmapped (window->display->compositor, window);
-        }
     }
 
   set_net_wm_state (window);
@@ -8217,7 +8113,7 @@ redraw_icon (MetaWindow *window)
   /* We could probably be smart and just redraw the icon here,
    * instead of the whole frame.
    */
-  if (window->frame && (window->mapped || window->frame->mapped))
+  if (window->frame)
     meta_ui_queue_frame_draw (window->screen->ui, window->frame->xwindow);
 }
 

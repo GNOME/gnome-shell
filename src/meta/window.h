@@ -189,8 +189,6 @@ gboolean          meta_window_requested_bypass_compositor (MetaWindow *window);
 gboolean          meta_window_requested_dont_bypass_compositor (MetaWindow *window);
 gint             *meta_window_get_all_monitors (MetaWindow *window, gsize *length);
 
-gboolean meta_window_is_mapped (MetaWindow  *window);
-gboolean meta_window_toplevel_is_mapped (MetaWindow  *window);
 gboolean meta_window_get_icon_geometry (MetaWindow    *window,
                                         MetaRectangle *rect);
 void meta_window_set_icon_geometry (MetaWindow    *window,

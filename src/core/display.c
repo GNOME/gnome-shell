@@ -2777,7 +2777,7 @@ handle_other_xevent (MetaDisplay *display,
 
           if (display->grab_op != META_GRAB_OP_NONE &&
               display->grab_window == window &&
-              ((window->frame == NULL) || !window->frame->mapped))
+              window->frame == NULL)
             meta_display_end_grab_op (display, timestamp);
 
           if (!frame_was_receiver)
