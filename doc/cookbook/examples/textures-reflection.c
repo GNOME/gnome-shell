@@ -86,7 +86,7 @@ main (int argc, char *argv[])
 
   texture = clutter_texture_new ();
   clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
-                                 TESTS_DATA_DIR "/redhand.png",
+                                 "redhand.png",
                                  &error);
   clutter_actor_add_constraint (texture, clutter_align_constraint_new (stage, CLUTTER_ALIGN_X_AXIS, 0.5));
   clutter_actor_add_constraint (texture, clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.2));

@@ -56,15 +56,13 @@ LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la -lm
 AM_CFLAGS = $(CLUTTER_CFLAGS)
 
 AM_CPPFLAGS = \
-	-DG_DISABLE_SINGLE_INCLUDES \
-	-DCOGL_DISABLE_DEPRECATED \
-	-DCOGL_DISABLE_DEPRECATION_WARNINGS \
-	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS \
-	-DTESTS_DATA_DIR=\""$(top_srcdir)/tests/data/"\" \
 	-I$(top_srcdir)/ \
 	-I$(top_builddir)/ \
 	-I$(top_srcdir)/clutter \
 	-I$(top_builddir)/clutter \
+	-DG_DISABLE_SINGLE_INCLUDES \
+	-DCOGL_DISABLE_DEPRECATION_WARNINGS \
+	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS \
 	$(NULL)
 
 AM_LDFLAGS = $(CLUTTER_LIBS) -export-dynamic
@@ -128,7 +126,12 @@ ui_data = \
 	$(srcdir)/script-ui.json			\
 	$(NULL)
 
+img_data = \
+	$(srcdir)/redhand.png \
+	$(srcdir)/smiley.png \
+	$(NULL)
+
 examplesdir = $(datadir)/clutter-1.0/cookbook/examples
-examples_DATA = $(uidata) $(srcdir)/*.c $(srcdir)/*.h
+examples_DATA = $(uidata) $(img_data) $(srcdir)/*.c $(srcdir)/*.h
 
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore

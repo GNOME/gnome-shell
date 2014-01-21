@@ -68,7 +68,7 @@ main (int argc, char *argv[])
   ClutterActor *viewport;
   ClutterActor *texture;
 
-  gchar *image_file_path = TESTS_DATA_DIR "/redhand.png";
+  const gchar *image_file_path = "redhand.png";
 
   if (argc > 1)
     {
