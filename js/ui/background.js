@@ -748,14 +748,16 @@ const BackgroundManager = new Lang.Class({
                                    time: FADE_ANIMATION_TIME,
                                    transition: 'easeOutQuad',
                                    onComplete: Lang.bind(this, function() {
-                                       if (this._newBackground == newBackground) {
-                                           this.background = newBackground;
-                                           this._newBackground = null;
-                                       } else {
+                                       if (this._newBackground != newBackground) {
+                                           /* Not interesting, we queued another load */
                                            newBackground.actor.destroy();
+                                           return;
                                        }
 
                                        this.background.actor.destroy();
+                                       this.background = newBackground;
+                                       this._newBackground = null;
+
                                        this.emit('changed');
                                    })
                                  });
