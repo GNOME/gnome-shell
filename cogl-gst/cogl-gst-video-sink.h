@@ -82,7 +82,9 @@
  * called cogl_gst_sample_video0 which takes a single vec2 argument.
  * This can be used by custom snippets set the by the application to
  * sample from the video. The vec2 argument represents the normalised
- * coordinates within the video.
+ * coordinates within the video. The function returns a vec4
+ * containing a pre-multiplied RGBA color of the pixel within the
+ * video.
  *
  * Since: 1.16
  */

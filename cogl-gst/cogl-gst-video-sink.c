@@ -421,40 +421,6 @@ clear_frame_textures (CoglGstVideoSink *sink)
   priv->frame_dirty = TRUE;
 }
 
-static void
-cogl_gst_rgb_setup_pipeline (CoglGstVideoSink *sink,
-                             CoglPipeline *pipeline)
-{
-  CoglGstVideoSinkPrivate *priv = sink->priv;
-
-  if (cogl_has_feature (priv->ctx, COGL_FEATURE_ID_GLSL))
-    {
-      static SnippetCache snippet_cache;
-      SnippetCacheEntry *entry = get_cache_entry (sink, &snippet_cache);
-
-      if (entry == NULL)
-        {
-          char *source;
-
-          source =
-            g_strdup_printf ("vec4\n"
-                             "cogl_gst_sample_video%i (vec2 UV)\n"
-                             "{\n"
-                             "  return texture2D (cogl_sampler%i, UV);\n"
-                             "}\n",
-                             priv->custom_start,
-                             priv->custom_start);
-
-          entry = add_cache_entry (sink, &snippet_cache, source);
-          g_free (source);
-        }
-
-      setup_pipeline_from_cache_entry (sink, pipeline, entry, 1);
-    }
-  else
-    setup_pipeline_from_cache_entry (sink, pipeline, NULL, 1);
-}
-
 static inline CoglBool
 is_pot (unsigned int number)
 {
@@ -508,7 +474,44 @@ video_texture_new_from_data (CoglContext *ctx,
 
   cogl_object_unref (bitmap);
 
+  cogl_texture_set_premultiplied (tex, FALSE);
+
   return tex;
+}
+
+static void
+cogl_gst_rgb24_glsl_setup_pipeline (CoglGstVideoSink *sink,
+                                    CoglPipeline *pipeline)
+{
+  CoglGstVideoSinkPrivate *priv = sink->priv;
+  static SnippetCache snippet_cache;
+  SnippetCacheEntry *entry = get_cache_entry (sink, &snippet_cache);
+
+  if (entry == NULL)
+    {
+      char *source;
+
+      source =
+        g_strdup_printf ("vec4\n"
+                         "cogl_gst_sample_video%i (vec2 UV)\n"
+                         "{\n"
+                         "  return texture2D (cogl_sampler%i, UV);\n"
+                         "}\n",
+                         priv->custom_start,
+                         priv->custom_start);
+
+      entry = add_cache_entry (sink, &snippet_cache, source);
+      g_free (source);
+    }
+
+  setup_pipeline_from_cache_entry (sink, pipeline, entry, 1);
+}
+
+static void
+cogl_gst_rgb24_setup_pipeline (CoglGstVideoSink *sink,
+                               CoglPipeline *pipeline)
+{
+  setup_pipeline_from_cache_entry (sink, pipeline, NULL, 1);
 }
 
 static CoglBool
@@ -546,6 +549,17 @@ map_fail:
   }
 }
 
+static CoglGstRenderer rgb24_glsl_renderer =
+{
+  "RGB 24",
+  COGL_GST_RGB24,
+  COGL_GST_RENDERER_NEEDS_GLSL,
+  GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE ("{ RGB, BGR }")),
+  1, /* n_layers */
+  cogl_gst_rgb24_glsl_setup_pipeline,
+  cogl_gst_rgb24_upload,
+};
+
 static CoglGstRenderer rgb24_renderer =
 {
   "RGB 24",
@@ -553,9 +567,60 @@ static CoglGstRenderer rgb24_renderer =
   0,
   GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE ("{ RGB, BGR }")),
   1, /* n_layers */
-  cogl_gst_rgb_setup_pipeline,
+  cogl_gst_rgb24_setup_pipeline,
   cogl_gst_rgb24_upload,
 };
+
+static void
+cogl_gst_rgb32_glsl_setup_pipeline (CoglGstVideoSink *sink,
+                                    CoglPipeline *pipeline)
+{
+  CoglGstVideoSinkPrivate *priv = sink->priv;
+  static SnippetCache snippet_cache;
+  SnippetCacheEntry *entry = get_cache_entry (sink, &snippet_cache);
+
+  if (entry == NULL)
+    {
+      char *source;
+
+      source =
+        g_strdup_printf ("vec4\n"
+                         "cogl_gst_sample_video%i (vec2 UV)\n"
+                         "{\n"
+                         "  vec4 color = texture2D (cogl_sampler%i, UV);\n"
+                         /* Premultiply the color */
+                         "  color.rgb *= color.a;\n"
+                         "  return color;\n"
+                         "}\n",
+                         priv->custom_start,
+                         priv->custom_start);
+
+      entry = add_cache_entry (sink, &snippet_cache, source);
+      g_free (source);
+    }
+
+  setup_pipeline_from_cache_entry (sink, pipeline, entry, 1);
+}
+
+static void
+cogl_gst_rgb32_setup_pipeline (CoglGstVideoSink *sink,
+                               CoglPipeline *pipeline)
+{
+  CoglGstVideoSinkPrivate *priv = sink->priv;
+  char *layer_combine;
+
+  setup_pipeline_from_cache_entry (sink, pipeline, NULL, 1);
+
+  /* Premultiply the texture using the a special layer combine */
+  layer_combine = g_strdup_printf ("RGB=MODULATE(PREVIOUS, TEXTURE_%i[A])\n"
+                                   "A=REPLACE(PREVIOUS[A])",
+                                   priv->custom_start);
+  cogl_pipeline_set_layer_combine (pipeline,
+                                   priv->custom_start + 1,
+                                   layer_combine,
+                                   NULL);
+  g_free(layer_combine);
+}
 
 static CoglBool
 cogl_gst_rgb32_upload (CoglGstVideoSink *sink,
@@ -592,14 +657,25 @@ map_fail:
   }
 }
 
+static CoglGstRenderer rgb32_glsl_renderer =
+{
+  "RGB 32",
+  COGL_GST_RGB32,
+  COGL_GST_RENDERER_NEEDS_GLSL,
+  GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE ("{ RGBA, BGRA }")),
+  1, /* n_layers */
+  cogl_gst_rgb32_glsl_setup_pipeline,
+  cogl_gst_rgb32_upload,
+};
+
 static CoglGstRenderer rgb32_renderer =
 {
   "RGB 32",
   COGL_GST_RGB32,
   0,
   GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE ("{ RGBA, BGRA }")),
-  1, /* n_layers */
-  cogl_gst_rgb_setup_pipeline,
+  2, /* n_layers */
+  cogl_gst_rgb32_setup_pipeline,
   cogl_gst_rgb32_upload,
 };
 
@@ -782,6 +858,8 @@ cogl_gst_ayuv_glsl_setup_pipeline (CoglGstVideoSink *sink,
                            "  color.r = y + 1.59765625 * v;\n"
                            "  color.g = y - 0.390625 * u - 0.8125 * v;\n"
                            "  color.b = y + 2.015625 * u;\n"
+                           /* Premultiply the color */
+                           "  color.rgb *= color.a;\n"
                            "  return color;\n"
                            "}\n", priv->custom_start,
                            priv->custom_start);
@@ -842,8 +920,13 @@ cogl_gst_build_renderers_list (CoglContext *ctx)
   int i;
   static CoglGstRenderer *const renderers[] =
   {
+    /* These are in increasing order of priority so that the
+     * priv->renderers will be in decreasing order. That way the GLSL
+     * renderers will be preferred if they are available */
     &rgb24_renderer,
     &rgb32_renderer,
+    &rgb24_glsl_renderer,
+    &rgb32_glsl_renderer,
     &yv12_glsl_renderer,
     &i420_glsl_renderer,
     &ayuv_glsl_renderer,
@@ -920,6 +1003,8 @@ cogl_gst_find_renderer_by_format (CoglGstVideoSink *sink,
   CoglGstRenderer *renderer = NULL;
   GSList *element;
 
+  /* The renderers list is in decreasing order of priority so we'll
+   * pick the first one that matches */
   for (element = priv->renderers; element; element = g_slist_next (element))
     {
       CoglGstRenderer *candidate = (CoglGstRenderer *) element->data;
