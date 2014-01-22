@@ -6,6 +6,7 @@
 #include <config.h>
 
 #include <meta/meta-shaped-texture.h>
+#include "meta-wayland-types.h"
 
 G_BEGIN_DECLS
 
@@ -24,20 +25,6 @@ struct _MetaSurfaceActorClass
 {
   /*< private >*/
   ClutterActorClass parent_class;
-
-  void     (* process_damage)    (MetaSurfaceActor *actor,
-                                  int x, int y, int width, int height);
-  void     (* pre_paint)         (MetaSurfaceActor *actor);
-  gboolean (* is_argb32)         (MetaSurfaceActor *actor);
-  gboolean (* is_visible)        (MetaSurfaceActor *actor);
-
-  void     (* freeze)            (MetaSurfaceActor *actor);
-  void     (* thaw)              (MetaSurfaceActor *actor);
-  gboolean (* is_frozen)         (MetaSurfaceActor *actor);
-
-  gboolean (* should_unredirect) (MetaSurfaceActor *actor);
-  void     (* set_unredirected)  (MetaSurfaceActor *actor,
-                                  gboolean          unredirected);
 };
 
 struct _MetaSurfaceActor
@@ -49,34 +36,31 @@ struct _MetaSurfaceActor
 
 GType meta_surface_actor_get_type (void);
 
+MetaSurfaceActor *meta_surface_actor_new (void);
+
 cairo_surface_t *meta_surface_actor_get_image (MetaSurfaceActor      *self,
                                                cairo_rectangle_int_t *clip);
 
 MetaShapedTexture *meta_surface_actor_get_texture (MetaSurfaceActor *self);
 
-gboolean meta_surface_actor_is_obscured (MetaSurfaceActor *self);
+gboolean meta_surface_actor_damage_all (MetaSurfaceActor *self,
+                                        cairo_region_t   *unobscured_region);
 
+gboolean meta_surface_actor_damage_area (MetaSurfaceActor *self,
+                                         int               x,
+                                         int               y,
+                                         int               width,
+                                         int               height,
+                                         cairo_region_t   *unobscured_region);
+
+void meta_surface_actor_set_texture (MetaSurfaceActor *self,
+                                     CoglTexture      *texture);
+void meta_surface_actor_attach_wayland_buffer (MetaSurfaceActor  *self,
+                                               MetaWaylandBuffer *buffer);
 void meta_surface_actor_set_input_region (MetaSurfaceActor *self,
                                           cairo_region_t   *region);
 void meta_surface_actor_set_opaque_region (MetaSurfaceActor *self,
                                            cairo_region_t   *region);
-
-gboolean meta_surface_actor_redraw_area (MetaSurfaceActor *actor,
-                                         int x, int y, int width, int height);
-
-void meta_surface_actor_process_damage (MetaSurfaceActor *actor,
-                                        int x, int y, int width, int height);
-void meta_surface_actor_pre_paint (MetaSurfaceActor *actor);
-gboolean meta_surface_actor_is_argb32 (MetaSurfaceActor *actor);
-gboolean meta_surface_actor_is_visible (MetaSurfaceActor *actor);
-
-void meta_surface_actor_freeze (MetaSurfaceActor *actor);
-void meta_surface_actor_thaw (MetaSurfaceActor *actor);
-gboolean meta_surface_actor_is_frozen (MetaSurfaceActor *actor);
-
-gboolean meta_surface_actor_should_unredirect (MetaSurfaceActor *actor);
-void meta_surface_actor_set_unredirected (MetaSurfaceActor *actor,
-                                          gboolean          unredirected);
 
 G_END_DECLS
 

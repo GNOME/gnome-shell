@@ -62,6 +62,7 @@ meta_window_ensure_frame (MetaWindow *window)
   frame->right_width = 0;
   frame->current_cursor = 0;
 
+  frame->mapped = FALSE;
   frame->is_flashing = FALSE;
   frame->borders_cached = FALSE;
   
@@ -156,8 +157,6 @@ meta_window_ensure_frame (MetaWindow *window)
 
   /* Move keybindings to frame instead of window */
   meta_window_grab_keys (window);
-
-  meta_ui_map_frame (frame->window->screen->ui, frame->xwindow);
 }
 
 void

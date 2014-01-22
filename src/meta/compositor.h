@@ -75,10 +75,11 @@ gboolean meta_compositor_filter_keybinding (MetaCompositor *compositor,
                                             MetaScreen     *screen,
                                             MetaKeyBinding *binding);
 
-void meta_compositor_add_window        (MetaCompositor      *compositor,
-                                        MetaWindow          *window);
-void meta_compositor_remove_window     (MetaCompositor      *compositor,
-                                        MetaWindow          *window);
+void meta_compositor_add_window    (MetaCompositor *compositor,
+                                    MetaWindow     *window);
+void meta_compositor_remove_window (MetaCompositor *compositor,
+                                    MetaWindow     *window);
+
 void meta_compositor_show_window       (MetaCompositor      *compositor,
                                         MetaWindow          *window,
                                         MetaCompEffect       effect);
@@ -100,6 +101,10 @@ void meta_compositor_unmaximize_window (MetaCompositor      *compositor,
                                         MetaRectangle       *old_rect,
                                         MetaRectangle       *new_rect);
 
+void meta_compositor_window_mapped        (MetaCompositor *compositor,
+                                           MetaWindow     *window);
+void meta_compositor_window_unmapped      (MetaCompositor *compositor,
+                                           MetaWindow     *window);
 void meta_compositor_sync_window_geometry (MetaCompositor *compositor,
                                            MetaWindow     *window,
                                            gboolean        did_placement);

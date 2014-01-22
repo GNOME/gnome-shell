@@ -42,6 +42,15 @@
  * the call, so it may be necessary to readjust the display based on the
  * old_rect to start the animation.
  *
+ * meta_compositor_window_mapped() and meta_compositor_window_unmapped() are
+ * notifications when the toplevel window (frame or client window) is mapped or
+ * unmapped. That is, when the result of meta_window_toplevel_is_mapped()
+ * changes. The main use of this is to drop resources when a window is unmapped.
+ * A window will always be mapped before meta_compositor_show_window()
+ * is called and will not be unmapped until after meta_compositor_hide_window()
+ * is called. If the live_hidden_windows preference is set, windows will never
+ * be unmapped.
+ *
  * # Containers #
  *
  * There's two containers in the stage that are used to place window actors, here
@@ -274,6 +283,25 @@ meta_get_window_actors (MetaScreen *screen)
   return info->windows;
 }
 
+static void
+do_set_stage_input_region (MetaScreen   *screen,
+                           XserverRegion region)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+  MetaDisplay *display = meta_screen_get_display (screen);
+  Display        *xdpy = meta_display_get_xdisplay (display);
+  Window        xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
+
+  XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
+
+  /* It's generally a good heuristic that when a crossing event is generated because
+   * we reshape the overlay, we don't want it to affect focus-follows-mouse focus -
+   * it's not the user doing something, it's the environment changing under the user.
+   */
+  meta_display_add_ignored_crossing_serial (display, XNextRequest (xdpy));
+  XFixesSetWindowShapeRegion (xdpy, info->output, ShapeInput, 0, 0, region);
+}
+
 void
 meta_set_stage_input_region (MetaScreen   *screen,
                              XserverRegion region)
@@ -285,19 +313,29 @@ meta_set_stage_input_region (MetaScreen   *screen,
    */
   if (!meta_is_wayland_compositor ())
     {
-      MetaCompScreen *info    = meta_screen_get_compositor_data (screen);
-      MetaDisplay    *display = meta_screen_get_display (screen);
-      Display        *xdpy    = meta_display_get_xdisplay (display);
-      Window          xstage  = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
+      MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+      MetaDisplay  *display = meta_screen_get_display (screen);
+      Display      *xdpy    = meta_display_get_xdisplay (display);
 
-      XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
-
-      /* It's generally a good heuristic that when a crossing event is generated because
-       * we reshape the overlay, we don't want it to affect focus-follows-mouse focus -
-       * it's not the user doing something, it's the environment changing under the user.
-       */
-      meta_display_add_ignored_crossing_serial (display, XNextRequest (xdpy));
-      XFixesSetWindowShapeRegion (xdpy, info->output, ShapeInput, 0, 0, region);
+      if (info->stage && info->output)
+        {
+          do_set_stage_input_region (screen, region);
+        }
+      else 
+        {
+          /* Reset info->pending_input_region if one existed before and set the new
+           * one to use it later. */ 
+          if (info->pending_input_region)
+            {
+              XFixesDestroyRegion (xdpy, info->pending_input_region);
+              info->pending_input_region = None;
+            }
+          if (region != None)
+            {
+              info->pending_input_region = XFixesCreateRegion (xdpy, NULL, 0);
+              XFixesCopyRegion (xdpy, info->pending_input_region, region);
+            }
+        } 
     }
 }
 
@@ -639,6 +677,21 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
     return;
 
   info = g_new0 (MetaCompScreen, 1);
+  /*
+   * We use an empty input region for Clutter as a default because that allows
+   * the user to interact with all the windows displayed on the screen.
+   * We have to initialize info->pending_input_region to an empty region explicitly, 
+   * because None value is used to mean that the whole screen is an input region.
+   */
+  if (!meta_is_wayland_compositor ())
+    info->pending_input_region = XFixesCreateRegion (xdisplay, NULL, 0);
+  else
+    {
+      /* Stage input region trickery isn't needed when we're running as a
+       * wayland compositor. */
+      info->pending_input_region = None;
+    }
+
   info->screen = screen;
 
   meta_screen_set_compositor_data (screen, info);
@@ -724,8 +777,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
       info->output = get_output_window (screen);
       XReparentWindow (xdisplay, xwin, info->output, 0, 0);
 
-      meta_empty_stage_input_region (screen);
-
       /* Make sure there isn't any left-over output shape on the 
        * overlay window by setting the whole screen to be an
        * output region.
@@ -735,6 +786,13 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
        *  when the last client using it exits.
        */
       XFixesSetWindowShapeRegion (xdisplay, info->output, ShapeBounding, 0, 0, None);
+
+      do_set_stage_input_region (screen, info->pending_input_region);
+      if (info->pending_input_region != None)
+        {
+          XFixesDestroyRegion (xdisplay, info->pending_input_region);
+          info->pending_input_region = None;
+        }
 
       /* Map overlay window before redirecting windows offscreen so we catch their
        * contents until we show the stage.
@@ -805,30 +863,6 @@ meta_shape_cow_for_window (MetaScreen *screen,
     }
 }
 
-static void
-set_unredirected_window (MetaCompScreen *info,
-                         MetaWindow     *window)
-{
-  if (info->unredirected_window == window)
-    return;
-
-  if (info->unredirected_window != NULL)
-    {
-      MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (info->unredirected_window));
-      meta_window_actor_set_unredirected (window_actor, FALSE);
-    }
-
-  info->unredirected_window = window;
-
-  if (info->unredirected_window != NULL)
-    {
-      MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (info->unredirected_window));
-      meta_window_actor_set_unredirected (window_actor, TRUE);
-    }
-
-  meta_shape_cow_for_window (info->screen, info->unredirected_window);
-}
-
 void
 meta_compositor_add_window (MetaCompositor    *compositor,
                             MetaWindow        *window)
@@ -857,11 +891,19 @@ meta_compositor_remove_window (MetaCompositor *compositor,
   if (!window_actor)
     return;
 
-  screen = meta_window_get_screen (window);
-  info = meta_screen_get_compositor_data (screen);
+  if (!meta_is_wayland_compositor ())
+    {
+      screen = meta_window_get_screen (window);
+      info = meta_screen_get_compositor_data (screen);
 
-  if (info->unredirected_window == window)
-    set_unredirected_window (info, NULL);
+      if (window_actor == info->unredirected_window)
+        {
+          meta_window_actor_set_redirected (window_actor, TRUE);
+          meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (info->unredirected_window)),
+                                     NULL);
+          info->unredirected_window = NULL;
+        }
+    }
 
   meta_window_actor_destroy (window_actor);
 }
@@ -1361,6 +1403,30 @@ meta_compositor_sync_stack (MetaCompositor  *compositor,
 }
 
 void
+meta_compositor_window_mapped (MetaCompositor *compositor,
+                               MetaWindow     *window)
+{
+  MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
+  DEBUG_TRACE ("meta_compositor_window_mapped\n");
+  if (!window_actor)
+    return;
+
+  meta_window_actor_mapped (window_actor);
+}
+
+void
+meta_compositor_window_unmapped (MetaCompositor *compositor,
+                                 MetaWindow     *window)
+{
+  MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
+  DEBUG_TRACE ("meta_compositor_window_unmapped\n");
+  if (!window_actor)
+    return;
+
+  meta_window_actor_unmapped (window_actor);
+}
+
+void
 meta_compositor_sync_window_geometry (MetaCompositor *compositor,
 				      MetaWindow *window,
                                       gboolean did_placement)
@@ -1467,6 +1533,7 @@ pre_paint_windows (MetaCompScreen *info)
 {
   GList *l;
   MetaWindowActor *top_window;
+  MetaWindowActor *expected_unredirected_window = NULL;
 
   if (info->onscreen == NULL)
     {
@@ -1480,13 +1547,33 @@ pre_paint_windows (MetaCompScreen *info)
   if (info->windows == NULL)
     return;
 
-  top_window = g_list_last (info->windows)->data;
+  if (!meta_is_wayland_compositor ())
+    {
+      top_window = g_list_last (info->windows)->data;
 
-  if (meta_window_actor_should_unredirect (top_window) &&
-      info->disable_unredirect_count == 0)
-    set_unredirected_window (info, meta_window_actor_get_meta_window (top_window));
-  else
-    set_unredirected_window (info, NULL);
+      if (meta_window_actor_should_unredirect (top_window) &&
+          info->disable_unredirect_count == 0)
+        expected_unredirected_window = top_window;
+
+      if (info->unredirected_window != expected_unredirected_window)
+        {
+          if (info->unredirected_window != NULL)
+            {
+              meta_window_actor_set_redirected (info->unredirected_window, TRUE);
+              meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (info->unredirected_window)),
+                                         NULL);
+            }
+
+          if (expected_unredirected_window != NULL)
+            {
+              meta_shape_cow_for_window (meta_window_get_screen (meta_window_actor_get_meta_window (top_window)),
+                                         meta_window_actor_get_meta_window (top_window));
+              meta_window_actor_set_redirected (top_window, FALSE);
+            }
+
+          info->unredirected_window = expected_unredirected_window;
+        }
+    }
 
   for (l = info->windows; l; l = l->next)
     meta_window_actor_pre_paint (l->data);

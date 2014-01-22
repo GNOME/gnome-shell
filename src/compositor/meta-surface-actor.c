@@ -10,99 +10,31 @@
  */
 
 #include <config.h>
-
-#include "meta-surface-actor.h"
-
 #include <clutter/clutter.h>
+#include <cogl/cogl-wayland-server.h>
+#include <cogl/cogl-texture-pixmap-x11.h>
 #include <meta/meta-shaped-texture.h>
+#include "meta-surface-actor.h"
 #include "meta-wayland-private.h"
 #include "meta-cullable.h"
+
 #include "meta-shaped-texture-private.h"
 
 struct _MetaSurfaceActorPrivate
 {
   MetaShapedTexture *texture;
-
-  /* The region that is visible, used to optimize out redraws */
-  cairo_region_t   *unobscured_region;
+  MetaWaylandBuffer *buffer;
 };
 
 static void cullable_iface_init (MetaCullableInterface *iface);
 
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE (MetaSurfaceActor, meta_surface_actor, CLUTTER_TYPE_ACTOR,
-                                  G_IMPLEMENT_INTERFACE (META_TYPE_CULLABLE, cullable_iface_init));
-
-static gboolean
-meta_surface_actor_get_paint_volume (ClutterActor       *actor,
-                                     ClutterPaintVolume *volume)
-{
-  MetaSurfaceActor *self = META_SURFACE_ACTOR (actor);
-  MetaSurfaceActorPrivate *priv = self->priv;
-
-  if (!CLUTTER_ACTOR_CLASS (meta_surface_actor_parent_class)->get_paint_volume (actor, volume))
-    return FALSE;
-
-  if (priv->unobscured_region)
-    {
-      ClutterVertex origin;
-      cairo_rectangle_int_t bounds, unobscured_bounds;
-
-      /* I hate ClutterPaintVolume so much... */
-      clutter_paint_volume_get_origin (volume, &origin);
-      bounds.x = origin.x;
-      bounds.y = origin.y;
-      bounds.width = clutter_paint_volume_get_width (volume);
-      bounds.height = clutter_paint_volume_get_height (volume);
-
-      cairo_region_get_extents (priv->unobscured_region, &unobscured_bounds);
-      gdk_rectangle_intersect (&bounds, &unobscured_bounds, &bounds);
-
-      origin.x = bounds.x;
-      origin.y = bounds.y;
-      clutter_paint_volume_set_origin (volume, &origin);
-      clutter_paint_volume_set_width (volume, bounds.width);
-      clutter_paint_volume_set_height (volume, bounds.height);
-    }
-
-  return TRUE;
-}
-
-static void
-meta_surface_actor_dispose (GObject *object)
-{
-  MetaSurfaceActor *self = META_SURFACE_ACTOR (object);
-  MetaSurfaceActorPrivate *priv = self->priv;
-
-  g_clear_pointer (&priv->unobscured_region, cairo_region_destroy);
-
-  G_OBJECT_CLASS (meta_surface_actor_parent_class)->dispose (object);
-}
+G_DEFINE_TYPE_WITH_CODE (MetaSurfaceActor, meta_surface_actor, CLUTTER_TYPE_ACTOR,
+                         G_IMPLEMENT_INTERFACE (META_TYPE_CULLABLE, cullable_iface_init));
 
 static void
 meta_surface_actor_class_init (MetaSurfaceActorClass *klass)
 {
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  actor_class->get_paint_volume = meta_surface_actor_get_paint_volume;
-  object_class->dispose = meta_surface_actor_dispose;
-
   g_type_class_add_private (klass, sizeof (MetaSurfaceActorPrivate));
-}
-
-static void
-set_unobscured_region (MetaSurfaceActor *self,
-                       cairo_region_t   *unobscured_region)
-{
-  MetaSurfaceActorPrivate *priv = self->priv;
-
-  if (priv->unobscured_region)
-    cairo_region_destroy (priv->unobscured_region);
-
-  if (unobscured_region)
-    priv->unobscured_region = cairo_region_copy (unobscured_region);
-  else
-    priv->unobscured_region = NULL;
 }
 
 static void
@@ -110,18 +42,12 @@ meta_surface_actor_cull_out (MetaCullable   *cullable,
                              cairo_region_t *unobscured_region,
                              cairo_region_t *clip_region)
 {
-  MetaSurfaceActor *self = META_SURFACE_ACTOR (cullable);
-
-  set_unobscured_region (self, unobscured_region);
   meta_cullable_cull_out_children (cullable, unobscured_region, clip_region);
 }
 
 static void
 meta_surface_actor_reset_culling (MetaCullable *cullable)
 {
-  MetaSurfaceActor *self = META_SURFACE_ACTOR (cullable);
-
-  set_unobscured_region (self, NULL);
   meta_cullable_reset_culling_children (cullable);
 }
 
@@ -158,34 +84,80 @@ meta_surface_actor_get_texture (MetaSurfaceActor *self)
   return self->priv->texture;
 }
 
-static cairo_region_t *
-effective_unobscured_region (MetaSurfaceActor *self)
+static void
+update_area (MetaSurfaceActor *self,
+             int x, int y, int width, int height)
 {
   MetaSurfaceActorPrivate *priv = self->priv;
 
-  return clutter_actor_has_mapped_clones (CLUTTER_ACTOR (self)) ? NULL : priv->unobscured_region;
+  if (meta_is_wayland_compositor ())
+    {
+      struct wl_resource *resource = priv->buffer->resource;
+      struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (resource);
+
+      if (shm_buffer)
+        {
+          CoglTexture2D *texture = COGL_TEXTURE_2D (priv->buffer->texture);
+          cogl_wayland_texture_set_region_from_shm_buffer (texture, x, y, width, height, shm_buffer, x, y, 0, NULL);
+        }
+    }
+  else
+    {
+      CoglTexturePixmapX11 *texture = COGL_TEXTURE_PIXMAP_X11 (meta_shaped_texture_get_texture (priv->texture));
+      cogl_texture_pixmap_x11_update_area (texture, x, y, width, height);
+    }
 }
 
 gboolean
-meta_surface_actor_redraw_area (MetaSurfaceActor *self,
-                                int x, int y, int width, int height)
+meta_surface_actor_damage_all (MetaSurfaceActor *self,
+                               cairo_region_t   *unobscured_region)
+{
+  MetaSurfaceActorPrivate *priv = self->priv;
+  CoglTexture *texture = meta_shaped_texture_get_texture (priv->texture);
+
+  update_area (self, 0, 0, cogl_texture_get_width (texture), cogl_texture_get_height (texture));
+  return meta_shaped_texture_update_area (priv->texture,
+                                          0, 0,
+                                          cogl_texture_get_width (texture),
+                                          cogl_texture_get_height (texture),
+                                          unobscured_region);
+}
+
+gboolean
+meta_surface_actor_damage_area (MetaSurfaceActor *self,
+                                int               x,
+                                int               y,
+                                int               width,
+                                int               height,
+                                cairo_region_t   *unobscured_region)
 {
   MetaSurfaceActorPrivate *priv = self->priv;
 
+  update_area (self, x, y, width, height);
   return meta_shaped_texture_update_area (priv->texture,
                                           x, y, width, height,
-                                          effective_unobscured_region (self));
+                                          unobscured_region);
 }
 
-gboolean
-meta_surface_actor_is_obscured (MetaSurfaceActor *self)
+void
+meta_surface_actor_attach_wayland_buffer (MetaSurfaceActor *self,
+                                          MetaWaylandBuffer *buffer)
 {
   MetaSurfaceActorPrivate *priv = self->priv;
+  priv->buffer = buffer;
 
-  if (priv->unobscured_region)
-    return cairo_region_is_empty (priv->unobscured_region);
+  if (buffer)
+    meta_shaped_texture_set_texture (priv->texture, buffer->texture);
   else
-    return FALSE;
+    meta_shaped_texture_set_texture (priv->texture, NULL);
+}
+
+void
+meta_surface_actor_set_texture (MetaSurfaceActor *self,
+                                CoglTexture      *texture)
+{
+  MetaSurfaceActorPrivate *priv = self->priv;
+  meta_shaped_texture_set_texture (priv->texture, texture);
 }
 
 void
@@ -204,58 +176,8 @@ meta_surface_actor_set_opaque_region (MetaSurfaceActor *self,
   meta_shaped_texture_set_opaque_region (priv->texture, region);
 }
 
-void
-meta_surface_actor_process_damage (MetaSurfaceActor *actor,
-                                   int x, int y, int width, int height)
+MetaSurfaceActor *
+meta_surface_actor_new (void)
 {
-  META_SURFACE_ACTOR_GET_CLASS (actor)->process_damage (actor, x, y, width, height);
-}
-
-void
-meta_surface_actor_pre_paint (MetaSurfaceActor *actor)
-{
-  META_SURFACE_ACTOR_GET_CLASS (actor)->pre_paint (actor);
-}
-
-gboolean
-meta_surface_actor_is_argb32 (MetaSurfaceActor *actor)
-{
-  return META_SURFACE_ACTOR_GET_CLASS (actor)->is_argb32 (actor);
-}
-
-gboolean
-meta_surface_actor_is_visible (MetaSurfaceActor *actor)
-{
-  return META_SURFACE_ACTOR_GET_CLASS (actor)->is_visible (actor);
-}
-
-void
-meta_surface_actor_freeze (MetaSurfaceActor *actor)
-{
-  META_SURFACE_ACTOR_GET_CLASS (actor)->freeze (actor);
-}
-
-void
-meta_surface_actor_thaw (MetaSurfaceActor *actor)
-{
-  META_SURFACE_ACTOR_GET_CLASS (actor)->thaw (actor);
-}
-
-gboolean
-meta_surface_actor_is_frozen (MetaSurfaceActor *actor)
-{
-  return META_SURFACE_ACTOR_GET_CLASS (actor)->is_frozen (actor);
-}
-
-gboolean
-meta_surface_actor_should_unredirect (MetaSurfaceActor *actor)
-{
-  return META_SURFACE_ACTOR_GET_CLASS (actor)->should_unredirect (actor);
-}
-
-void
-meta_surface_actor_set_unredirected (MetaSurfaceActor *actor,
-                                     gboolean          unredirected)
-{
-  META_SURFACE_ACTOR_GET_CLASS (actor)->set_unredirected (actor, unredirected);
+  return g_object_new (META_TYPE_SURFACE_ACTOR, NULL);
 }

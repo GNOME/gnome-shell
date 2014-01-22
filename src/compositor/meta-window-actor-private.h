@@ -39,12 +39,12 @@ void meta_window_actor_frame_complete (MetaWindowActor    *self,
 
 void meta_window_actor_invalidate_shadow (MetaWindowActor *self);
 
+void meta_window_actor_set_redirected (MetaWindowActor *self, gboolean state);
+
+gboolean meta_window_actor_should_unredirect (MetaWindowActor *self);
+
 void meta_window_actor_get_shape_bounds (MetaWindowActor       *self,
                                           cairo_rectangle_int_t *bounds);
-
-gboolean meta_window_actor_should_unredirect   (MetaWindowActor *self);
-void     meta_window_actor_set_unredirected    (MetaWindowActor *self,
-                                                gboolean         unredirected);
 
 gboolean meta_window_actor_effect_in_progress  (MetaWindowActor *self);
 void     meta_window_actor_sync_actor_geometry (MetaWindowActor *self,
@@ -58,6 +58,9 @@ void     meta_window_actor_set_updates_frozen  (MetaWindowActor *self,
                                                 gboolean         updates_frozen);
 void     meta_window_actor_queue_frame_drawn   (MetaWindowActor *self,
                                                 gboolean         no_delay_frame);
+
+void meta_window_actor_set_unobscured_region      (MetaWindowActor *self,
+                                                   cairo_region_t  *unobscured_region);
 
 void meta_window_actor_effect_completed (MetaWindowActor *actor,
                                          gulong           event);
