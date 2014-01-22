@@ -205,12 +205,22 @@ settings_update_font_name (ClutterSettings *self)
 static void
 settings_update_resolution (ClutterSettings *self)
 {
+  const char *scale_env = NULL;
+
   if (self->unscaled_font_dpi > 0)
     self->resolution = (gdouble) self->unscaled_font_dpi / 1024.0;
   else if (self->font_dpi > 0)
     self->resolution = (gdouble) self->font_dpi / 1024.0;
   else
     self->resolution = 96.0;
+
+  scale_env = g_getenv ("GDK_DPI_SCALE");
+  if (scale_env != NULL)
+    {
+      double scale = g_ascii_strtod (scale_env, NULL);
+      if (scale != 0 && self->resolution > 0)
+        self->resolution *= scale;
+    }
 
   CLUTTER_NOTE (BACKEND, "New resolution: %.2f (%s)",
                 self->resolution,
@@ -705,6 +715,9 @@ clutter_settings_init (ClutterSettings *self)
   const char *scale_str;
 
   self->resolution = -1.0;
+
+  self->font_dpi = -1;
+  self->unscaled_font_dpi = -1;
 
   self->double_click_time = 250;
   self->double_click_distance = 5;
