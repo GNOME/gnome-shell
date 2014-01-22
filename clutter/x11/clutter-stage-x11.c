@@ -292,6 +292,14 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
                          height);
         }
     }
+  else
+    {
+      /* if the backing window hasn't been created yet, we just
+       * need to store the new window size
+       */
+      stage_x11->xwin_width = width;
+      stage_x11->xwin_height = height;
+    }
 }
 
 static inline void
