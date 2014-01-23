@@ -303,7 +303,7 @@ const NMConnectionDevice = new Lang.Class({
         }
         if (this._activeConnectionChangedId) {
             GObject.Object.prototype.disconnect.call(this._device, this._activeConnectionChangedId);
-            this._stateChangedId = 0;
+            this._activeConnectionChangedId = 0;
         }
 
         this.parent();
