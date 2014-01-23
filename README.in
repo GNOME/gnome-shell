@@ -302,6 +302,25 @@ Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
 features).
 
+Release Notes for Clutter 1.18
+-------------------------------------------------------------------------------
+
+• Until 1.18, ClutterStage removed its children during its dispose()
+  implementation, before the default ClutterActor::destroy() implementation
+  would run. ClutterStage will now destroy the children when it is destroyed
+  to ensure that the children are destroyed, and that custom code can remove
+  references through the ClutterActor::destroy signal.
+
+• Clutter does not depend on the XFIXES extension API on X11 any more. Before
+  1.18 Clutter used the XFIXES API to hide the cursor; the API is less than
+  useful for toolkits and applications, so Clutter unconditionally uses the
+  fall back code that was in place in case XFIXES was not available.
+
+• ClutterText emits the ::insert-text and ::delete-text signals before the
+  contents of the ClutterTextBuffer are changed, as documented. The signal
+  emission cannot be guaranteed if the ClutterTextBuffer API is used instead
+  of the ClutterText API.
+
 Release Notes for Clutter 1.16
 -------------------------------------------------------------------------------
 

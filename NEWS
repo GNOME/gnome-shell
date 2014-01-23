@@ -1,3 +1,79 @@
+Clutter 1.17.2                                                       2014-01-22
+===============================================================================
+
+  • List of changes since Clutter 1.16.0
+
+    - Allow ClutterScript definitions for Interval and Transition classes
+    ClutterInterval instances can be defined, and used, in ClutterScript
+    UI definition files.
+
+    - Add generic API for event filtering
+    Event filtering is meant to be used to intercept events before they
+    reach the scene graph.
+
+    - Deprecated ClutterTableLayout
+    The Table layout manager is fully superceded by ClutterGridLayout, which
+    supports dynamic grid layouts, RTL flipping, expansion and alignment of
+    children using the ClutterActor flags, and implicit animations using the
+    actor's easing state.
+
+    - Allow GestureAction subclasses to change the trigger edge
+    GestureAction can emit the ::gesture-begin signal depending on the
+    value of the :threshold-trigger-edge property. Using this property it
+    is possible to specify whether the gesture begins after a certain
+    threshold is passed; before a certain threshold is passed; or
+    immediately.
+
+    - Use the window scaling factor when creating Cairo surfaces
+    ClutterCanvas will use the window scaling factor setting when creating
+    Cairo surfaces; it is also possible to set the scaling factor on a
+    per-instance basis, for future compatibility.
+
+    - Detect window scaling factor automatically on X11
+    Use the XSETTING exposed by the environment to change the window
+    scaling factor.
+
+    - Support ClutterStage cursor visibility in the Wayland backend
+    It is possible to show and hide the cursor on the Stage on Wayland.
+
+    - Translations updates
+    Czech, Greek, Hebrew, Chinese simplified, Brazilian Portuguese,
+    Galician, Italian, Spanish.
+
+  • List of bugs fixed since Clutter 1.16.0
+
+    705915 - Support high dpi displays
+    722322 - check coordinate validity in do_pick()
+    722220 - Incorrect string reported in accessible text-changed events
+             when text is removed
+    722188 - atk_text_get_n_selections() should return 0 when no text is
+             selected
+    710229 - Restore initial ClutterGestureAction behavior
+    710227 - ClutterGestureAction memory corruption
+    719901 - ClutterStageCogl: Ignore a clip the size of the stage
+    719900 - ClutterStageCogl: Clip in the right coordinate system
+    719747 - ClutterStage: Don't add empty actors to the stage clip
+    719716 - Make test-clip friendly for people with only one mouse button
+    719563 - input-device: Guard against double free
+    719368 - Don't queue redraws when reallocating actor that haven't moved
+    719367 - Bind constraints: Don't force redraws on source relayout
+    712816 - device-manager-evdev: Stop using deprecated libevdev API
+    712812 - Crash and memory leak fixes for device removals
+    712563 - Fixes for cogl journal usage when picking
+    707560 - Event filter
+    712322 - input-device-xi2: Calculate the correct state for button events
+    707071 - Remove use of XFixes for showing/hiding the cursor
+    709762 - ClutterDragAction can mix pointer and touch events
+    709590 - wayland: Implement support for 'cursor-visible' stage property
+
+Many thanks to:
+
+  Jasper St. Pierre, Rui Matos, Owen W. Taylor, Alejandro Piñeiro, Lionel
+  Landwerlin, Bastian Winkler, Neil Roberts, Rafael Ferreira, Chun-wei Fan,
+  Daniel Mustieles, Dimitris Spingos, Enrico Nicoletto, Florian Müllner, Fran
+  Diéguez, Jonas Ådahl, Marek Černocký, Milo Casagrande, Piotr Drąg, Robert
+  Bragg, Sphinx Jiang, Yosef Or Boczko
+
 Clutter 1.16.0                                                       2013-09-23
 ===============================================================================
 
