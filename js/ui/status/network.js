@@ -609,7 +609,7 @@ const NMWirelessDialog = new Lang.Class({
     Name: 'NMWirelessDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(client, device, settings) {
+    _init: function(client, device) {
         this.parent({ styleClass: 'nm-dialog' });
 
         this._client = client;
@@ -618,10 +618,7 @@ const NMWirelessDialog = new Lang.Class({
         this._networks = [];
         this._buildLayout();
 
-        let connections = settings.list_connections();
-        this._connections = connections.filter(Lang.bind(this, function(connection) {
-            return device.connection_valid(connection);
-        }));
+        this._connections = device.get_available_connections();
 
         this._apAddedId = device.connect('access-point-added', Lang.bind(this, this._accessPointAdded));
         this._apRemovedId = device.connect('access-point-removed', Lang.bind(this, this._accessPointRemoved));
@@ -971,10 +968,9 @@ const NMDeviceWireless = new Lang.Class({
     Name: 'NMDeviceWireless',
     category: NMConnectionCategory.WIRELESS,
 
-    _init: function(client, device, settings) {
+    _init: function(client, device) {
         this._client = client;
         this._device = device;
-        this._settings = settings;
 
         this._description = '';
 
@@ -1042,7 +1038,7 @@ const NMDeviceWireless = new Lang.Class({
     },
 
     _showDialog: function() {
-        this._dialog = new NMWirelessDialog(this._client, this._device, this._settings);
+        this._dialog = new NMWirelessDialog(this._client, this._device);
         this._dialog.connect('closed', Lang.bind(this, this._dialogClosed));
         this._dialog.open();
     },
