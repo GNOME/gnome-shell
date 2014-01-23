@@ -21,6 +21,7 @@ const Util = imports.misc.util;
 
 const NMConnectionCategory = {
     INVALID: 'invalid',
+    WIRED: 'wired',
     WIRELESS: 'wireless',
     WWAN: 'wwan',
     VPN: 'vpn'
@@ -296,6 +297,11 @@ const NMConnectionDevice = new Lang.Class({
         this._activeConnectionChangedId = this._device.connect('notify::active-connection', Lang.bind(this, this._activeConnectionChanged));
     },
 
+    _autoConnect: function() {
+        let connection = new NetworkManager.Connection();
+        this._client.add_and_activate_connection(connection, this._device, null, null);
+    },
+
     destroy: function() {
         if (this._stateChangedId) {
             GObject.Object.prototype.disconnect.call(this._device, this._stateChangedId);
@@ -413,6 +419,48 @@ const NMConnectionDevice = new Lang.Class({
     },
 });
 
+const NMDeviceWired = new Lang.Class({
+    Name: 'NMDeviceWired',
+    Extends: NMConnectionDevice,
+    category: NMConnectionCategory.WIRED,
+
+    _init: function(client, device, settings) {
+        this.parent(client, device, settings);
+
+        this.item.menu.addMenuItem(createSettingsAction(_("Wired Settings"), device));
+    },
+
+    _isConnected: function() {
+        if (!this._device.active_connection)
+            return false;
+
+        let state = this._device.active_connection.state;
+        return state >= NetworkManager.ActiveConnectionState.ACTIVATING;
+    },
+
+    _sync: function() {
+        this.item.actor.visible = this._isConnected();
+        this.parent();
+    },
+
+    _getMenuIcon: function() {
+        if (this._device.active_connection)
+            return this.getIndicatorIcon();
+        else
+            return 'network-wired-disconnected-symbolic';
+    },
+
+    getIndicatorIcon: function() {
+        let state = this._device.active_connection.state;
+        if (state == NetworkManager.ActiveConnectionState.ACTIVATING)
+            return 'network-wired-acquiring-symbolic';
+        else if (state == NetworkManager.ActiveConnectionState.ACTIVATED)
+            return 'network-wired-symbolic';
+        else
+            return 'network-wired-disconnected-symbolic';
+    }
+});
+
 const NMDeviceModem = new Lang.Class({
     Name: 'NMDeviceModem',
     Extends: NMConnectionDevice,
@@ -508,18 +556,6 @@ const NMDeviceBluetooth = new Lang.Class({
         this.parent(client, device, settings);
 
         this.item.menu.addMenuItem(createSettingsAction(_("Mobile Broadband Settings"), device));
-    },
-
-    _autoConnect: function() {
-        // FIXME: DUN devices are configured like modems, so
-        // We need to spawn the mobile wizard
-        // but the network panel doesn't support bluetooth at the moment
-        // so we just create an empty connection and hope
-        // that this phone supports PAN
-
-        let connection = new NetworkManager.Connection();
-        this._client.add_and_activate_connection(connection, this._device, null, null);
-        return true;
     },
 
     _getMenuIcon: function() {
@@ -1266,6 +1302,7 @@ const NMApplet = new Lang.Class({
 
         // Device types
         this._dtypes = { };
+        this._dtypes[NetworkManager.DeviceType.ETHERNET] = NMDeviceWired;
         this._dtypes[NetworkManager.DeviceType.WIFI] = NMDeviceWireless;
         this._dtypes[NetworkManager.DeviceType.MODEM] = NMDeviceModem;
         this._dtypes[NetworkManager.DeviceType.BT] = NMDeviceBluetooth;
@@ -1273,6 +1310,7 @@ const NMApplet = new Lang.Class({
 
         // Connection types
         this._ctypes = { };
+        this._ctypes[NetworkManager.SETTING_WIRED_SETTING_NAME] = NMConnectionCategory.WIRED;
         this._ctypes[NetworkManager.SETTING_WIRELESS_SETTING_NAME] = NMConnectionCategory.WIRELESS;
         this._ctypes[NetworkManager.SETTING_BLUETOOTH_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NetworkManager.SETTING_CDMA_SETTING_NAME] = NMConnectionCategory.WWAN;
@@ -1295,6 +1333,15 @@ const NMApplet = new Lang.Class({
         this._tryLateInit();
     },
 
+    _createDeviceCategory: function() {
+        let category = {
+            section: new PopupMenu.PopupMenuSection(),
+            devices: [ ],
+        };
+        this.menu.addMenuItem(category.section);
+        return category;
+    },
+
     _tryLateInit: function() {
         if (!this._client || !this._settings)
             return;
@@ -1310,17 +1357,9 @@ const NMApplet = new Lang.Class({
         this._nmDevices = [];
         this._devices = { };
 
-        this._devices.wireless = {
-            section: new PopupMenu.PopupMenuSection(),
-            devices: [ ],
-        };
-        this.menu.addMenuItem(this._devices.wireless.section);
-
-        this._devices.wwan = {
-            section: new PopupMenu.PopupMenuSection(),
-            devices: [ ],
-        };
-        this.menu.addMenuItem(this._devices.wwan.section);
+        this._devices.wired = this._createDeviceCategory();
+        this._devices.wireless = this._createDeviceCategory();
+        this._devices.wwan = this._createDeviceCategory();
 
         this._vpnSection = new NMVPNSection(this._client);
         this._vpnSection.connect('activation-failed', Lang.bind(this, this._onActivationFailed));
