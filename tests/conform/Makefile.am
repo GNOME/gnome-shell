@@ -88,3 +88,5 @@ $(srcdir)/.gitignore: Makefile
 gitignore: $(srcdir)/.gitignore
 
 all-am: gitignore
+
+DISTCLEANFILES += .gitignore
