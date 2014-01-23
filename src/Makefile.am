@@ -163,6 +163,8 @@ libmutter_wayland_la_SOURCES =			\
 	core/util-private.h			\
 	core/window-props.c			\
 	core/window-props.h			\
+	core/window-x11.c			\
+	core/window-x11.h			\
 	core/window.c				\
 	core/window-private.h			\
 	meta/window.h				\

@@ -615,12 +615,6 @@ void     meta_window_move_resize_wayland (MetaWindow *window,
                                           int         height,
                                           int         dx,
                                           int         dy);
-gboolean meta_window_configure_request (MetaWindow *window,
-                                        XEvent     *event);
-gboolean meta_window_property_notify   (MetaWindow *window,
-                                        XEvent     *event);
-gboolean meta_window_client_message    (MetaWindow *window,
-                                        XEvent     *event);
 void     meta_window_set_focused_internal (MetaWindow *window,
                                            gboolean    focused);
 
@@ -697,8 +691,6 @@ void meta_window_set_user_time (MetaWindow *window,
 
 void meta_window_update_icon_now (MetaWindow *window);
 
-void meta_window_update_role (MetaWindow *window);
-void meta_window_update_net_wm_type (MetaWindow *window);
 void meta_window_update_for_monitors_changed (MetaWindow *window);
 void meta_window_update_on_all_workspaces (MetaWindow *window);
 
@@ -711,10 +703,6 @@ gboolean meta_window_can_tile_side_by_side   (MetaWindow *window);
 void meta_window_compute_tile_match (MetaWindow *window);
 
 gboolean meta_window_updates_are_frozen (MetaWindow *window);
-
-void meta_window_update_opaque_region_x11 (MetaWindow *window);
-void meta_window_update_input_region_x11  (MetaWindow *window);
-void meta_window_update_shape_region_x11  (MetaWindow *window);
 
 void meta_window_set_title                (MetaWindow *window,
                                            const char *title);
@@ -755,5 +743,10 @@ void meta_window_ping (MetaWindow         *window,
 void meta_window_pong (MetaWindow *window,
                        guint32     timestamp);
 Window meta_window_get_toplevel_xwindow (MetaWindow *window);
+
+void meta_window_activate_full (MetaWindow     *window,
+                                guint32         timestamp,
+                                MetaClientType  source_indication,
+                                MetaWorkspace  *workspace);
 
 #endif

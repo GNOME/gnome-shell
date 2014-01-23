@@ -36,6 +36,7 @@
 #include <meta/main.h>
 #include "screen-private.h"
 #include "window-private.h"
+#include "window-x11.h"
 #include "window-props.h"
 #include "group-props.h"
 #include "frame.h"
@@ -1581,7 +1582,7 @@ handle_net_restack_window (MetaDisplay* display,
        *
        * Also, unconditionally following these is REALLY stupid--we should
        * combine this code with the stuff in
-       * meta_window_configure_request() which is smart about whether to
+       * meta_window_x11_configure_request() which is smart about whether to
        * follow the request or do something else (though not smart enough
        * and is also too stupid to handle the sibling stuff).
        */
@@ -2692,9 +2693,9 @@ handle_other_xevent (MetaDisplay *display,
           XShapeEvent *sev = (XShapeEvent*) event;
 
           if (sev->kind == ShapeBounding)
-            meta_window_update_shape_region_x11 (window);
+            meta_window_x11_update_shape_region (window);
           else if (sev->kind == ShapeInput)
-            meta_window_update_input_region_x11 (window);
+            meta_window_x11_update_input_region (window);
         }
       else
         {
@@ -2903,7 +2904,7 @@ handle_other_xevent (MetaDisplay *display,
       else
         {
           if (!frame_was_receiver)
-            meta_window_configure_request (window, event);
+            meta_window_x11_configure_request (window, event);
         }
       break;
     case GravityNotify:
@@ -2920,9 +2921,9 @@ handle_other_xevent (MetaDisplay *display,
         MetaScreen *screen;
 
         if (window && !frame_was_receiver)
-          meta_window_property_notify (window, event);
+          meta_window_x11_property_notify (window, event);
         else if (property_for_window && !frame_was_receiver)
-          meta_window_property_notify (property_for_window, event);
+          meta_window_x11_property_notify (property_for_window, event);
 
         group = meta_display_lookup_group (display,
                                            event->xproperty.window);
@@ -2993,7 +2994,7 @@ handle_other_xevent (MetaDisplay *display,
       if (window)
         {
           if (!frame_was_receiver)
-            meta_window_client_message (window, event);
+            meta_window_x11_client_message (window, event);
         }
       else
         {

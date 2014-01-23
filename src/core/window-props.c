@@ -39,6 +39,7 @@
 
 #include <config.h>
 #include "window-props.h"
+#include "window-x11.h"
 #include <meta/errors.h>
 #include "xprops.h"
 #include "frame.h"
@@ -229,7 +230,7 @@ reload_net_wm_window_type (MetaWindow    *window,
                            MetaPropValue *value,
                            gboolean       initial)
 {
-  meta_window_update_net_wm_type (window);
+  meta_window_x11_update_net_wm_type (window);
 }
 
 static void
@@ -333,7 +334,7 @@ reload_wm_window_role (MetaWindow    *window,
                        MetaPropValue *value,
                        gboolean       initial)
 {
-  meta_window_update_role (window);
+  meta_window_x11_update_role (window);
 }
 
 static void
@@ -558,7 +559,7 @@ reload_opaque_region (MetaWindow    *window,
                       MetaPropValue *value,
                       gboolean       initial)
 {
-  meta_window_update_opaque_region_x11 (window);
+  meta_window_x11_update_opaque_region (window);
 }
 
 static void
