@@ -1060,14 +1060,7 @@ meta_window_new_shared (MetaDisplay         *display,
 
   if (!window->override_redirect &&
       client_type == META_WINDOW_CLIENT_TYPE_X11)
-    {
-      update_sm_hints (window); /* must come after transient_for */
-
-      meta_window_update_role (window);
-    }
-
-  if (client_type == META_WINDOW_CLIENT_TYPE_X11)
-    meta_window_update_net_wm_type (window);
+    update_sm_hints (window); /* must come after transient_for */
 
   if (!window->override_redirect)
     meta_window_update_icon_now (window);
