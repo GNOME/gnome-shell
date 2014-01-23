@@ -891,12 +891,6 @@ shell_app_state_transition (ShellApp      *app,
                       state == SHELL_APP_STATE_STARTING));
   app->state = state;
 
-  if (app->state == SHELL_APP_STATE_STOPPED && app->running_state)
-    {
-      unref_running_state (app->running_state);
-      app->running_state = NULL;
-    }
-
   _shell_app_system_notify_app_state_changed (shell_app_system_get_default (), app);
 
   g_object_notify (G_OBJECT (app), "state");
@@ -1057,6 +1051,9 @@ _shell_app_remove_window (ShellApp   *app,
 
   if (app->running_state->interesting_windows == 0)
     shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
+
+  if (app->running_state && app->running_state->windows == NULL)
+    g_clear_pointer (&app->running_state, unref_running_state);
 
   g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
 }
