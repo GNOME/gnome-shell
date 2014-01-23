@@ -207,9 +207,7 @@ settings_update_resolution (ClutterSettings *self)
 {
   const char *scale_env = NULL;
 
-  if (self->unscaled_font_dpi > 0)
-    self->resolution = (gdouble) self->unscaled_font_dpi / 1024.0;
-  else if (self->font_dpi > 0)
+  if (self->font_dpi > 0)
     self->resolution = (gdouble) self->font_dpi / 1024.0;
   else
     self->resolution = 96.0;
@@ -361,7 +359,7 @@ clutter_settings_set_property (GObject      *gobject,
       break;
 
     case PROP_UNSCALED_FONT_DPI:
-      self->unscaled_font_dpi = g_value_get_int (value);
+      self->font_dpi = g_value_get_int (value);
       settings_update_resolution (self);
       break;
 
@@ -572,15 +570,6 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                       -1,
                       CLUTTER_PARAM_READWRITE);
 
-  /**
-   * ClutterSettings:unscaled-font-dpi:
-   *
-   * The DPI used when rendering unscaled text, as a value of 1024 * dots/inch.
-   *
-   * If set to -1, the system's default will be used instead
-   *
-   * Since: 1.4
-   */
   obj_props[PROP_UNSCALED_FONT_DPI] =
     g_param_spec_int ("unscaled-font-dpi",
                       P_("Font DPI"),
