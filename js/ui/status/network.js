@@ -733,16 +733,11 @@ const NMWirelessDialog = new Lang.Class({
 
     _connect: function() {
         let network = this._selectedNetwork;
-        let accessPoints = network.accessPoints;
         if (network.connections.length > 0) {
             let connection = network.connections[0];
-            for (let i = 0; i < accessPoints.length; i++) {
-                if (accessPoints[i].connection_valid(connection)) {
-                    this._client.activate_connection(connection, this._device, accessPoints[i].dbus_path, null);
-                    break;
-                }
-            }
+            this._client.activate_connection(connection, this._device, null, null);
         } else {
+            let accessPoints = network.accessPoints;
             if ((accessPoints[0]._secType == NMAccessPointSecurity.WPA2_ENT)
                 || (accessPoints[0]._secType == NMAccessPointSecurity.WPA_ENT)) {
                 // 802.1x-enabled APs require further configuration, so they're
