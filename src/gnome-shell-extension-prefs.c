@@ -1,10 +1,13 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 #include "config.h"
 
 #include <girepository.h>
 #include <gjs/gjs.h>
+#include <glib/gi18n.h>
 
 int
-main (int argc, char *argv)
+main (int argc, char *argv[])
 {
   const char *search_path[] = { "resource:///org/gnome/shell", NULL };
   GError *error = NULL;
