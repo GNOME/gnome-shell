@@ -66,6 +66,7 @@ const LevelBar = new Lang.Class({
         cr.arc(radius, h - radius, radius, 0.5 * Math.PI, Math.PI);
         cr.arc(radius, radius, radius, Math.PI, 1.5 * Math.PI);
         cr.fill();
+        cr.$dispose();
     }
 });
 

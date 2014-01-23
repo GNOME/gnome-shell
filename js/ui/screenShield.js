@@ -413,6 +413,7 @@ const Arrow = new Lang.Class({
         cr.lineTo(w/2, thickness);
         cr.lineTo(w - thickness / 2, h - thickness / 2);
         cr.stroke();
+        cr.$dispose();
     },
 
     vfunc_style_changed: function() {
