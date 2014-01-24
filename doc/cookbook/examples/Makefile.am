@@ -4,7 +4,12 @@ NULL =
 
 EXTRA_DIST =
 
-noinst_PROGRAMS = \
+noinst_PROGRAMS =
+examples_DATA =
+
+examplesdir = $(datadir)/clutter-1.0/cookbook/examples
+
+all_examples = \
 	actors-composite-main 			\
 	animations-complex			\
 	animations-looping-animator		\
@@ -131,7 +136,9 @@ img_data = \
 	$(srcdir)/smiley.png \
 	$(NULL)
 
-examplesdir = $(datadir)/clutter-1.0/cookbook/examples
-examples_DATA = $(uidata) $(img_data) $(srcdir)/*.c $(srcdir)/*.h
+EXTRA_DIST += $(ui_data) $(img_data)
+
+examples_DATA += $(ui_data) $(img_data) $(srcdir)/*.c $(srcdir)/*.h
+noinst_PROGRAMS += $(all_examples)
 
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore
