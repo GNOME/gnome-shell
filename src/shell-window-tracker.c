@@ -424,6 +424,16 @@ update_focus_app (ShellWindowTracker *self)
   ShellApp *new_focus_app;
 
   new_focus_win = meta_display_get_focus_window (shell_global_get_display (shell_global_get ()));
+
+  /* we only consider an app focused if the focus window can be clearly
+   * associated with a running app; this is the case if the focus window
+   * or one of its parents is visible in the taskbar, e.g.
+   *   - 'nautilus' should appear focused when its about dialog has focus
+   *   - 'nautilus' should not appear focused when the DESKTOP has focus
+   */
+  while (new_focus_win && meta_window_is_skip_taskbar (new_focus_win))
+    new_focus_win = meta_window_get_transient_for (new_focus_win);
+
   new_focus_app = new_focus_win ? shell_window_tracker_get_window_app (self, new_focus_win) : NULL;
 
   if (new_focus_app)
