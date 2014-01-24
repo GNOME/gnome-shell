@@ -484,6 +484,8 @@ update_focus_app (ShellWindowTracker *self)
     }
 
   set_focus_app (self, new_focus_app);
+
+  g_clear_object (&new_focus_app);
 }
 
 static void
