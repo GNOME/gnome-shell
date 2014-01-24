@@ -212,14 +212,25 @@ text_delete_chars (void)
       for (j = 0; j < 4; j++)
         clutter_text_insert_unichar (text, t->unichar);
 
+      if (g_test_verbose ())
+        g_print ("text: %s\n", clutter_text_get_text (text));
+
       clutter_text_set_cursor_position (text, 2);
       clutter_text_delete_chars (text, 1);
+      if (g_test_verbose ())
+        g_print ("text: %s (cursor at: %d)\n",
+                 clutter_text_get_text (text),
+                 clutter_text_get_cursor_position (text));
       g_assert_cmpint (get_nchars (text), ==, 3);
       g_assert_cmpint (get_nbytes (text), ==, 3 * t->nbytes);
       g_assert_cmpint (clutter_text_get_cursor_position (text), ==, 1);
 
       clutter_text_set_cursor_position (text, 2);
       clutter_text_delete_chars (text, 1);
+      if (g_test_verbose ())
+        g_print ("text: %s (cursor at: %d)\n",
+                 clutter_text_get_text (text),
+                 clutter_text_get_cursor_position (text));
       g_assert_cmpint (get_nchars (text), ==, 2);
       g_assert_cmpint (get_nbytes (text), ==, 2 * t->nbytes);
       g_assert_cmpint (clutter_text_get_cursor_position (text), ==, 1);
