@@ -496,7 +496,7 @@ on_wm_class_changed (MetaWindow  *window,
   /* It's simplest to just treat this as a remove + add. */
   disassociate_window (self, window);
   track_window (self, window);
-  /* also just recaulcuate the focused app, in case it was the focused
+  /* also just recalculate the focused app, in case it was the focused
      window that changed */
   update_focus_app (self);
 }
