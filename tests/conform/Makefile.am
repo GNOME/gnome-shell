@@ -54,7 +54,7 @@ deprecated_tests = \
 	texture \
 	$(NULL)
 
-test_programs = $(actor_tests) $(general_tests) $(deprecated_tests)
+test_programs = $(actor_tests) $(general_tests) $(classes_tests) $(deprecated_tests)
 
 dist_test_data = $(script_ui_files)
 script_ui_files = $(addprefix scripts/,$(script_tests))
