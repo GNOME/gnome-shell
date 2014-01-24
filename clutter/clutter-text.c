@@ -6040,7 +6040,7 @@ clutter_text_delete_chars (ClutterText *self,
 
   priv = self->priv;
 
-  clutter_text_real_delete_text (self, priv->position, n_chars);
+  clutter_text_real_delete_text (self, priv->position, priv->position + n_chars);
 
   if (priv->position > 0)
     clutter_text_set_cursor_position (self, priv->position - n_chars);
