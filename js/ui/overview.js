@@ -131,7 +131,7 @@ const Overview = new Lang.Class({
         Main.layoutManager.overviewGroup.add_child(this._backgroundGroup);
         this._bgManagers = [];
 
-        this._desktopFade = new St.Bin();
+        this._desktopFade = new St.Widget();
         Main.layoutManager.overviewGroup.add_child(this._desktopFade);
 
         this._activationTime = 0;
@@ -493,8 +493,8 @@ const Overview = new Lang.Class({
     },
 
     fadeOutDesktop: function() {
-        if (!this._desktopFade.child)
-            this._desktopFade.child = this._getDesktopClone();
+        if (!this._desktopFade.get_n_children())
+            this._desktopFade.add_child(this._getDesktopClone());
 
         this._desktopFade.opacity = 255;
         this._desktopFade.show();
