@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: clutter 1.16\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-02 01:54+0000\n"
-"PO-Revision-Date: 2014-01-17 19:02+0100\n"
+"POT-Creation-Date: 2014-01-26 02:36+0000\n"
+"PO-Revision-Date: 2014-01-26 17:30+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -45,7 +45,7 @@ msgstr "Poloha"
 msgid "The position of the origin of the actor"
 msgstr "Poloha počátku účastníka"
 
-#: ../clutter/clutter-actor.c:6274 ../clutter/clutter-canvas.c:224
+#: ../clutter/clutter-actor.c:6274 ../clutter/clutter-canvas.c:247
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
@@ -55,7 +55,7 @@ msgstr "Šířka"
 msgid "Width of the actor"
 msgstr "Šířka účastníka"
 
-#: ../clutter/clutter-actor.c:6293 ../clutter/clutter-canvas.c:240
+#: ../clutter/clutter-actor.c:6293 ../clutter/clutter-canvas.c:263
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
@@ -933,13 +933,29 @@ msgstr "Kontrast"
 msgid "The contrast change to apply"
 msgstr "Změna kontrastu, která se má použít"
 
-#: ../clutter/clutter-canvas.c:225
+#: ../clutter/clutter-canvas.c:248
 msgid "The width of the canvas"
 msgstr "Šířka plátna"
 
-#: ../clutter/clutter-canvas.c:241
+#: ../clutter/clutter-canvas.c:264
 msgid "The height of the canvas"
 msgstr "Výška plátna"
+
+#: ../clutter/clutter-canvas.c:283
+msgid "Scale Factor Set"
+msgstr "Faktor škálování nastaven"
+
+#: ../clutter/clutter-canvas.c:284
+msgid "Whether the scale-factor property is set"
+msgstr "Zda je nastavena vlastnost scale-factor"
+
+#: ../clutter/clutter-canvas.c:305
+msgid "Scale Factor"
+msgstr "Faktor škálování"
+
+#: ../clutter/clutter-canvas.c:306
+msgid "The scaling factor for the surface"
+msgstr "Faktor škálování pro plochu"
 
 #: ../clutter/clutter-child-meta.c:127
 msgid "Container"
@@ -969,7 +985,7 @@ msgstr "Držení"
 msgid "Whether the clickable has a grab"
 msgstr "Zda má klikatelný objekt místu k uchopení"
 
-#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:607
+#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:653
 msgid "Long Press Duration"
 msgstr "Doba dlouhého zmáčknutí"
 
@@ -1461,45 +1477,45 @@ msgstr "Režim posouvání"
 msgid "The scrolling direction"
 msgstr "Směr posouvání"
 
-#: ../clutter/clutter-settings.c:448
+#: ../clutter/clutter-settings.c:486
 msgid "Double Click Time"
 msgstr "Čas dvojitého kliknutí"
 
-#: ../clutter/clutter-settings.c:449
+#: ../clutter/clutter-settings.c:487
 msgid "The time between clicks necessary to detect a multiple click"
 msgstr "Čas mezi dvěma kliknutími nutný k rozpoznání vícenásobného kliknutí"
 
-#: ../clutter/clutter-settings.c:464
+#: ../clutter/clutter-settings.c:502
 msgid "Double Click Distance"
 msgstr "Vzdálenost dvojitého kliknutí"
 
-#: ../clutter/clutter-settings.c:465
+#: ../clutter/clutter-settings.c:503
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr ""
 "Vzdálenost mezi dvěma kliknutími nutná k rozpoznání vícenásobného kliknutí"
 
-#: ../clutter/clutter-settings.c:480
+#: ../clutter/clutter-settings.c:518
 msgid "Drag Threshold"
 msgstr "Práh tažení"
 
-#: ../clutter/clutter-settings.c:481
+#: ../clutter/clutter-settings.c:519
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "Vzdálenost, kterou musí kurzor urazit, než je započata funkce tažení"
 
-#: ../clutter/clutter-settings.c:496 ../clutter/clutter-text.c:3404
+#: ../clutter/clutter-settings.c:534 ../clutter/clutter-text.c:3404
 msgid "Font Name"
 msgstr "Název písma"
 
-#: ../clutter/clutter-settings.c:497
+#: ../clutter/clutter-settings.c:535
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
 msgstr "Popis výchozího písma, které by mohlo být zpracováno systémem Pango"
 
-#: ../clutter/clutter-settings.c:512
+#: ../clutter/clutter-settings.c:550
 msgid "Font Antialias"
 msgstr "Vyhlazování písma"
 
-#: ../clutter/clutter-settings.c:513
+#: ../clutter/clutter-settings.c:551
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
@@ -1507,66 +1523,74 @@ msgstr ""
 "Zda používat vyhlazování (1 pro zapnutí, 0 pro vypnutí a -1 pro použití "
 "výchozího nastavení)"
 
-#: ../clutter/clutter-settings.c:529
+#: ../clutter/clutter-settings.c:567 ../clutter/clutter-settings.c:575
 msgid "Font DPI"
 msgstr "DPI písma"
 
-#: ../clutter/clutter-settings.c:530
+#: ../clutter/clutter-settings.c:568 ../clutter/clutter-settings.c:576
 msgid ""
 "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr ""
 "Rozlišení písma v 1024násobcích bodů na palec nebo -1 pro použití výchozího "
 "nastavení"
 
-#: ../clutter/clutter-settings.c:546
+#: ../clutter/clutter-settings.c:592
 msgid "Font Hinting"
 msgstr "Hinting písma"
 
-#: ../clutter/clutter-settings.c:547
+#: ../clutter/clutter-settings.c:593
 msgid ""
 "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr ""
 "Zda se má použít hinting (1 zapnut, 0 vypnut a -1 pro použití výchozího "
 "nastavení)"
 
-#: ../clutter/clutter-settings.c:568
+#: ../clutter/clutter-settings.c:614
 msgid "Font Hint Style"
 msgstr "Styl hintingu písma"
 
-#: ../clutter/clutter-settings.c:569
+#: ../clutter/clutter-settings.c:615
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
 msgstr ""
 "Styl hintingu (hintnone – žádný, hintslight – lehký, hintmedium – střední, "
 "hintfull – plný)"
 
-#: ../clutter/clutter-settings.c:590
+#: ../clutter/clutter-settings.c:636
 msgid "Font Subpixel Order"
 msgstr "Pořadí subpixelů písma"
 
-#: ../clutter/clutter-settings.c:591
+#: ../clutter/clutter-settings.c:637
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
 msgstr ""
 "Typ vyhlazování subpixelů (none – žádný, rgb – červená vlevo, bgr – modrá "
 "vlevo, vrgb – červená nahoře, vbgr – modrá nahoře)"
 
-#: ../clutter/clutter-settings.c:608
+#: ../clutter/clutter-settings.c:654
 msgid "The minimum duration for a long press gesture to be recognized"
 msgstr ""
 "Minimální doba trvání pro gesto dlouhého zmáčknutí, aby bylo rozpoznáno"
 
-#: ../clutter/clutter-settings.c:615
+#: ../clutter/clutter-settings.c:661
+msgid "Window Scaling Factor"
+msgstr "Faktor škálování oken"
+
+#: ../clutter/clutter-settings.c:662
+msgid "The scaling factor to be applied to windows"
+msgstr "Faktor škálování, který se má použít u oken"
+
+#: ../clutter/clutter-settings.c:669
 msgid "Fontconfig configuration timestamp"
 msgstr "Časové razítko nastavení fontconfig"
 
-#: ../clutter/clutter-settings.c:616
+#: ../clutter/clutter-settings.c:670
 msgid "Timestamp of the current fontconfig configuration"
 msgstr "Časové razítko aktuálního nastavení fontconfig"
 
-#: ../clutter/clutter-settings.c:633
+#: ../clutter/clutter-settings.c:687
 msgid "Password Hint Time"
 msgstr "Prodleva skrytí hesla"
 
-#: ../clutter/clutter-settings.c:634
+#: ../clutter/clutter-settings.c:688
 msgid "How long to show the last input character in hidden entries"
 msgstr ""
 "Jak dlouho zobrazovat poslední vložený znak ve skrývaných vstupních polích"
@@ -1603,108 +1627,108 @@ msgstr "Hrana účastníka, která by se měla přichytávat"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Posun v pixelech, při kterém se má použít omezení"
 
-#: ../clutter/clutter-stage.c:1903
+#: ../clutter/clutter-stage.c:1899
 msgid "Fullscreen Set"
 msgstr "Nastavena celá obrazovka"
 
-#: ../clutter/clutter-stage.c:1904
+#: ../clutter/clutter-stage.c:1900
 msgid "Whether the main stage is fullscreen"
 msgstr "Zda je hlavní scéna v režimu celé obrazovky"
 
-#: ../clutter/clutter-stage.c:1918
+#: ../clutter/clutter-stage.c:1914
 msgid "Offscreen"
 msgstr "V paměti"
 
-#: ../clutter/clutter-stage.c:1919
+#: ../clutter/clutter-stage.c:1915
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Zda by měla být hlavní scéna vykreslována v paměti bez zobrazení"
 
-#: ../clutter/clutter-stage.c:1931 ../clutter/clutter-text.c:3518
+#: ../clutter/clutter-stage.c:1927 ../clutter/clutter-text.c:3518
 msgid "Cursor Visible"
 msgstr "Kurzor viditelný"
 
-#: ../clutter/clutter-stage.c:1932
+#: ../clutter/clutter-stage.c:1928
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Zda je ukazatel myši viditelný na hlavní scéně"
 
-#: ../clutter/clutter-stage.c:1946
+#: ../clutter/clutter-stage.c:1942
 msgid "User Resizable"
 msgstr "Uživatelsky měnitelná velikost"
 
-#: ../clutter/clutter-stage.c:1947
+#: ../clutter/clutter-stage.c:1943
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Zda uživatel může interaktivně měnit velikost scény"
 
-#: ../clutter/clutter-stage.c:1962 ../clutter/deprecated/clutter-box.c:256
+#: ../clutter/clutter-stage.c:1958 ../clutter/deprecated/clutter-box.c:256
 #: ../clutter/deprecated/clutter-rectangle.c:270
 msgid "Color"
 msgstr "Barva"
 
-#: ../clutter/clutter-stage.c:1963
+#: ../clutter/clutter-stage.c:1959
 msgid "The color of the stage"
 msgstr "Barva scény"
 
-#: ../clutter/clutter-stage.c:1978
+#: ../clutter/clutter-stage.c:1974
 msgid "Perspective"
 msgstr "Perspektiva"
 
-#: ../clutter/clutter-stage.c:1979
+#: ../clutter/clutter-stage.c:1975
 msgid "Perspective projection parameters"
 msgstr "Parametry perspektivní projekce"
 
-#: ../clutter/clutter-stage.c:1994
+#: ../clutter/clutter-stage.c:1990
 msgid "Title"
 msgstr "Název"
 
-#: ../clutter/clutter-stage.c:1995
+#: ../clutter/clutter-stage.c:1991
 msgid "Stage Title"
 msgstr "Název scény"
 
-#: ../clutter/clutter-stage.c:2012
+#: ../clutter/clutter-stage.c:2008
 msgid "Use Fog"
 msgstr "Použít zamlžení"
 
-#: ../clutter/clutter-stage.c:2013
+#: ../clutter/clutter-stage.c:2009
 msgid "Whether to enable depth cueing"
 msgstr "Zda zapnout zvýraznění hloubky"
 
-#: ../clutter/clutter-stage.c:2029
+#: ../clutter/clutter-stage.c:2025
 msgid "Fog"
 msgstr "Zamlžení"
 
-#: ../clutter/clutter-stage.c:2030
+#: ../clutter/clutter-stage.c:2026
 msgid "Settings for the depth cueing"
 msgstr "Nastavení pro zvýraznění hloubky"
 
-#: ../clutter/clutter-stage.c:2046
+#: ../clutter/clutter-stage.c:2042
 msgid "Use Alpha"
 msgstr "Použít alfu"
 
-#: ../clutter/clutter-stage.c:2047
+#: ../clutter/clutter-stage.c:2043
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Zda se řídit komponentou alfa z barvy scény"
 
-#: ../clutter/clutter-stage.c:2063
+#: ../clutter/clutter-stage.c:2059
 msgid "Key Focus"
 msgstr "Hlavní zaměření"
 
-#: ../clutter/clutter-stage.c:2064
+#: ../clutter/clutter-stage.c:2060
 msgid "The currently key focused actor"
 msgstr "Aktuálně hlavní zaměřený účastník"
 
-#: ../clutter/clutter-stage.c:2080
+#: ../clutter/clutter-stage.c:2076
 msgid "No Clear Hint"
 msgstr "Nemazat bez pokynu"
 
-#: ../clutter/clutter-stage.c:2081
+#: ../clutter/clutter-stage.c:2077
 msgid "Whether the stage should clear its contents"
 msgstr "Zda by scéna měla vymazat svůj obsah"
 
-#: ../clutter/clutter-stage.c:2094
+#: ../clutter/clutter-stage.c:2090
 msgid "Accept Focus"
 msgstr "Přijímat zaměření"
 
-#: ../clutter/clutter-stage.c:2095
+#: ../clutter/clutter-stage.c:2091
 msgid "Whether the stage should accept focus on show"
 msgstr "Zda by měla scéna při zobrazení přijímat zaměření"
 
