@@ -94,8 +94,6 @@ static void ping_data_free (MetaPingData *ping_data);
 
 static void     update_sm_hints           (MetaWindow     *window);
 static void     update_net_frame_extents  (MetaWindow     *window);
-static void     recalc_window_type        (MetaWindow     *window);
-static void     recalc_window_features    (MetaWindow     *window);
 static void     invalidate_work_areas     (MetaWindow     *window);
 static void     set_wm_state_on_xwindow   (MetaDisplay    *display,
                                            Window          xwindow,
@@ -236,7 +234,7 @@ prefs_changed_callback (MetaPreference pref,
            window->type == META_WINDOW_MODAL_DIALOG)
     {
       window->attached = meta_window_should_attach_to_parent (window);
-      recalc_window_features (window);
+      meta_window_recalc_window_features (window);
       meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
     }
 }
@@ -1126,7 +1124,7 @@ meta_window_new_shared (MetaDisplay         *display,
 
   window->attached = meta_window_should_attach_to_parent (window);
   if (window->attached)
-    recalc_window_features (window);
+    meta_window_recalc_window_features (window);
 
   if (window->decorated)
     meta_window_ensure_frame (window);
@@ -3635,7 +3633,7 @@ meta_window_maximize_internal (MetaWindow        *window,
   if (maximize_horizontally || maximize_vertically)
     window->force_save_user_rect = FALSE;
 
-  recalc_window_features (window);
+  meta_window_recalc_window_features (window);
   set_net_wm_state (window);
 
   g_object_freeze_notify (G_OBJECT (window));
@@ -4119,7 +4117,7 @@ meta_window_unmaximize_internal (MetaWindow        *window,
           window->display->grab_anchor_window_pos = window->user_rect;
         }
 
-      recalc_window_features (window);
+      meta_window_recalc_window_features (window);
       set_net_wm_state (window);
     }
 
@@ -4223,7 +4221,7 @@ meta_window_make_fullscreen_internal (MetaWindow  *window)
       meta_window_raise (window);
       meta_stack_thaw (window->screen->stack);
 
-      recalc_window_features (window);
+      meta_window_recalc_window_features (window);
       set_net_wm_state (window);
 
       /* For the auto-minimize feature, if we fail to get focus */
@@ -4269,7 +4267,7 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
 
       /* Need to update window->has_resize_func before we move_resize()
        */
-      recalc_window_features (window);
+      meta_window_recalc_window_features (window);
       set_net_wm_state (window);
 
       meta_window_move_resize (window,
@@ -4947,7 +4945,7 @@ meta_window_update_monitor (MetaWindow *window)
 
       /* If we're changing monitors, we need to update the has_maximize_func flag,
        * as the working area has changed. */
-      recalc_window_features (window);
+      meta_window_recalc_window_features (window);
     }
 }
 
@@ -7192,7 +7190,7 @@ meta_window_client_message (MetaWindow *window,
             (action == _NET_WM_STATE_ADD) ||
             (action == _NET_WM_STATE_TOGGLE && !window->wm_state_modal);
 
-          recalc_window_type (window);
+          meta_window_recalc_window_type (window);
           meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
         }
 
@@ -7203,7 +7201,7 @@ meta_window_client_message (MetaWindow *window,
             (action == _NET_WM_STATE_ADD) ||
             (action == _NET_WM_STATE_TOGGLE && !window->skip_pager);
 
-          recalc_window_features (window);
+          meta_window_recalc_window_features (window);
           set_net_wm_state (window);
         }
 
@@ -7214,7 +7212,7 @@ meta_window_client_message (MetaWindow *window,
             (action == _NET_WM_STATE_ADD) ||
             (action == _NET_WM_STATE_TOGGLE && !window->skip_taskbar);
 
-          recalc_window_features (window);
+          meta_window_recalc_window_features (window);
           set_net_wm_state (window);
         }
 
@@ -8517,12 +8515,6 @@ meta_window_update_struts (MetaWindow *window)
 void
 meta_window_recalc_window_type (MetaWindow *window)
 {
-  recalc_window_type (window);
-}
-
-static void
-recalc_window_type (MetaWindow *window)
-{
   MetaWindowType old_type;
 
   old_type = window->type;
@@ -8642,7 +8634,7 @@ meta_window_type_changed (MetaWindow *window)
   GObject  *object = G_OBJECT (window);
 
   window->attached = meta_window_should_attach_to_parent (window);
-  recalc_window_features (window);
+  meta_window_recalc_window_features (window);
 
   if (!window->override_redirect)
     set_net_wm_state (window);
@@ -8748,12 +8740,6 @@ set_allowed_actions_hint (MetaWindow *window)
 
 void
 meta_window_recalc_features (MetaWindow *window)
-{
-  recalc_window_features (window);
-}
-
-static void
-recalc_window_features (MetaWindow *window)
 {
   gboolean old_has_close_func;
   gboolean old_has_minimize_func;
