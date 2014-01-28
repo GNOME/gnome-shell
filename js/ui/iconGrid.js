@@ -433,6 +433,10 @@ const IconGrid = new Lang.Class({
             this._grid.add_actor(item.actor);
     },
 
+    removeItem: function(item) {
+        this._grid.remove_child(item.actor);
+    },
+
     getItemAtIndex: function(index) {
         return this._grid.get_child_at_index(index);
     },

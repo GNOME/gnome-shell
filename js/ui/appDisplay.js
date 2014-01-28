@@ -115,6 +115,10 @@ const BaseAppView = new Lang.Class({
         this._loadApps();
     },
 
+    getAllItems: function() {
+        return this._allItems;
+    },
+
     addItem: function(icon) {
         let id = icon.id;
         if (this._items[id] !== undefined)
@@ -124,10 +128,12 @@ const BaseAppView = new Lang.Class({
         this._items[id] = icon;
     },
 
+    _compareItems: function(a, b) {
+        return a.name.localeCompare(b.name);
+    },
+
     loadGrid: function() {
-        this._allItems.sort(Lang.bind(this, function(a, b) {
-            return a.name.localeCompare(b.name);
-        }));
+        this._allItems.sort(this._compareItems);
         this._allItems.forEach(Lang.bind(this, function(item) {
             this._grid.addItem(item);
         }));
@@ -363,6 +369,32 @@ const AllView = new Lang.Class({
         this.parent();
     },
 
+    _itemNameChanged: function(item) {
+        // If an item's name changed, we can pluck it out of where it's
+        // supposed to be and reinsert it where it's sorted.
+        let oldIdx = this._allItems.indexOf(item);
+        this._allItems.splice(oldIdx, 1);
+        let newIdx = Util.insertSorted(this._allItems, item, this._compareItems);
+
+        this._grid.removeItem(item);
+        this._grid.addItem(item, newIdx);
+    },
+
+    _refilterApps: function() {
+        this._allItems.forEach(function(icon) {
+            if (icon instanceof AppIcon)
+                icon.actor.visible = true;
+        });
+
+        this.folderIcons.forEach(Lang.bind(this, function(folder) {
+            let folderApps = folder.getAppIds();
+            folderApps.forEach(Lang.bind(this, function(appId) {
+                let appIcon = this._items[appId];
+                appIcon.actor.visible = false;
+            }));
+        }));
+    },
+
     _loadApps: function() {
         let apps = Gio.AppInfo.get_all().filter(function(appInfo) {
             return appInfo.should_show();
@@ -374,20 +406,10 @@ const AllView = new Lang.Class({
 
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(Lang.bind(this, function(id) {
-            let folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
-                                            path: this._folderSettings.path + 'folders/' + id + '/' });
-            folder.connect('changed', Lang.bind(this, function() {
-                Main.queueDeferredWork(this._redisplayWorkId);
-            }));
-
-            let folderName = _getFolderName(folder);
-            let folderApps = folder.get_strv('apps');
-            folderApps.forEach(function(appId) {
-                let idx = apps.indexOf(appId);
-                if (idx >= 0)
-                    apps.splice(idx, 1);
-            });
-            let icon = new FolderIcon(id, folderName, folderApps, this);
+            let path = this._folderSettings.path + 'folders/' + id + '/';
+            let icon = new FolderIcon(id, path, this);
+            icon.connect('name-changed', Lang.bind(this, this._itemNameChanged));
+            icon.connect('apps-changed', Lang.bind(this, this._refilterApps));
             this.addItem(icon);
             this.folderIcons.push(icon);
         }));
@@ -399,6 +421,7 @@ const AllView = new Lang.Class({
         }));
 
         this.loadGrid();
+        this._refilterApps();
     },
 
     getCurrentPageY: function() {
@@ -986,11 +1009,12 @@ const FolderView = new Lang.Class({
 const FolderIcon = new Lang.Class({
     Name: 'FolderIcon',
 
-    _init: function(id, name, apps, parentView) {
+    _init: function(id, path, parentView) {
         this.id = id;
-        this.name = name;
         this._parentView = parentView;
 
+        this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
+                                          path: path });
         this.actor = new St.Button({ style_class: 'app-well-app app-folder',
                                      button_mask: St.ButtonMask.ONE,
                                      toggle_mode: true,
@@ -1001,22 +1025,11 @@ const FolderIcon = new Lang.Class({
         // whether we need to update arrow side, position etc.
         this._popupInvalidated = false;
 
-        this.icon = new IconGrid.BaseIcon(this.name,
-                                          { createIcon: Lang.bind(this, this._createIcon), setSizeManually: true });
+        this.icon = new IconGrid.BaseIcon('', { createIcon: Lang.bind(this, this._createIcon), setSizeManually: true });
         this.actor.set_child(this.icon.actor);
         this.actor.label_actor = this.icon.label;
 
         this.view = new FolderView();
-        let appSys = Shell.AppSystem.get_default();
-        apps.forEach(Lang.bind(this, function(appId) {
-            let app = appSys.lookup_app(appId);
-            if (!app)
-                return;
-
-            let icon = new AppIcon(app);
-            this.view.addItem(icon);
-        }));
-        this.view.loadGrid();
 
         this.actor.connect('clicked', Lang.bind(this,
             function() {
@@ -1029,6 +1042,48 @@ const FolderIcon = new Lang.Class({
                 if (!this.actor.mapped && this._popup)
                     this._popup.popdown();
             }));
+
+        this._folder.connect('changed', Lang.bind(this, this._redisplay));
+        this._redisplay();
+    },
+
+    getAppIds: function() {
+        return this.view.getAllItems().map(function(item) {
+            return item.id;
+        });
+    },
+
+    _updateName: function() {
+        let name = _getFolderName(this._folder);
+        if (this.name == name)
+            return;
+
+        this.name = name;
+        this.icon.label.text = this.name;
+        this.emit('name-changed');
+    },
+
+    _redisplay: function() {
+        this._updateName();
+
+        this.view.removeAll();
+
+        let appSys = Shell.AppSystem.get_default();
+
+        let folderApps = this._folder.get_strv('apps');
+        folderApps.forEach(Lang.bind(this, function(appId) {
+            let app = appSys.lookup_app(appId);
+            if (!app)
+                return;
+
+            if (!app.get_app_info().should_show())
+                return;
+
+            let icon = new AppIcon(app);
+            this.view.addItem(icon);
+        }));
+        this.view.loadGrid();
+        this.emit('apps-changed');
     },
 
     _createIcon: function(iconSize) {
@@ -1107,6 +1162,7 @@ const FolderIcon = new Lang.Class({
         this._popupInvalidated = true;
     },
 });
+Signals.addSignalMethods(FolderIcon.prototype);
 
 const AppFolderPopup = new Lang.Class({
     Name: 'AppFolderPopup',
