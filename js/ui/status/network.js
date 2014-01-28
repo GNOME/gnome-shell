@@ -432,16 +432,15 @@ const NMDeviceWired = new Lang.Class({
         this.item.menu.addMenuItem(createSettingsAction(_("Wired Settings"), device));
     },
 
-    _isConnected: function() {
-        if (!this._device.active_connection)
-            return false;
-
-        let state = this._device.active_connection.state;
-        return state >= NetworkManager.ActiveConnectionState.ACTIVATING;
+    _hasCarrier: function() {
+        if (this._device instanceof NMClient.DeviceEthernet)
+            return this._device.carrier;
+        else
+            return true;
     },
 
     _sync: function() {
-        this.item.actor.visible = this._isConnected();
+        this.item.actor.visible = this._hasCarrier();
         this.parent();
     },
 
