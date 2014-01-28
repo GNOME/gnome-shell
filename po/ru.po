@@ -9,24 +9,25 @@
 # Sergey Davidoff <shnatsel@gmail.com>, 2010.
 # Yuri Kozlov <yuray@komyakino.ru>, 2011, 2012.
 # Yuri Myasoedov <omerta13@yandex.ru>, 2012, 2013.
-# Stas Solovey <whats_up@tut.by>, 2011, 2013.
 # JDronova <juliette.tux@gmail.com>, 2013.
+# Stas Solovey <whats_up@tut.by>, 2011, 2013, 2014.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-11-01 12:09+0000\n"
-"PO-Revision-Date: 2013-11-01 23:30+0400\n"
-"Last-Translator: Yuri Myasoedov <ymyasoedov@yandex.ru>\n"
-"Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"POT-Creation-Date: 2014-01-23 17:46+0000\n"
+"PO-Revision-Date: 2014-01-28 19:19+0300\n"
+"Last-Translator: Stas Solovey <whats_up@tut.by>\n"
+"Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.5.7\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -356,15 +357,15 @@ msgstr "Популярные"
 msgid "All"
 msgstr "Все"
 
-#: ../js/ui/appDisplay.js:1523
+#: ../js/ui/appDisplay.js:1525
 msgid "New Window"
 msgstr "Новое окно"
 
-#: ../js/ui/appDisplay.js:1526 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1528 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Удалить из избранного"
 
-#: ../js/ui/appDisplay.js:1527
+#: ../js/ui/appDisplay.js:1529
 msgid "Add to Favorites"
 msgstr "Добавить в избранное"
 
@@ -520,17 +521,19 @@ msgstr "Следующий месяц"
 msgid "Nothing Scheduled"
 msgstr "Нет событий"
 
+# fix для даты в календаре и на экране блокировки, за разъяснением обращаться к Stas Solovey <whats_up@tut.by>
 #. Translators: Shown on calendar heading when selected day occurs on current year */
 #: ../js/ui/calendar.js:771
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr "%A, %B %d"
+msgstr "%A, %d %b., %Y"
 
+# fix для даты в календаре и на экране блокировки
 #. Translators: Shown on calendar heading when selected day occurs on different year */
 #: ../js/ui/calendar.js:774
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%A, %B %d, %Y"
+msgstr "%A, %d %b., %Y"
 
 #: ../js/ui/calendar.js:785
 msgid "Today"
@@ -705,15 +708,17 @@ msgstr "<b>Вчера</b>, <b>%H:%M</b>"
 msgid "<b>%A</b>, <b>%H:%M</b>"
 msgstr "<b>%A</b>, <b>%H:%M</b>"
 
+# fix для даты в календаре и на экране блокировки
 #. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:952
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-msgstr "<b>%d</b> <b>%B</b>, <b>%H:%M</b>"
+msgstr "<b>%d</b> <b>%b</b>., <b>%H:%M</b>"
 
+# fix для даты в календаре и на экране блокировки
 #. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
 #: ../js/ui/components/telepathyClient.js:956
 msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-msgstr "<b>%d</b> <b>%B</b> <b>%Y</b>, <b>%H:%M</b> "
+msgstr "<b>%d</b> <b>%b</b>., <b>%Y</b>, <b>%H:%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
@@ -927,12 +932,13 @@ msgstr "Открыть часы"
 msgid "Date & Time Settings"
 msgstr "Настроить дату и время"
 
+# fix для даты в календаре и на экране блокировки
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
 #: ../js/ui/dateMenu.js:202
 msgid "%A %B %e, %Y"
-msgstr "%A, %e %B, %Y"
+msgstr "%A, %e %b., %Y"
 
 #: ../js/ui/endSessionDialog.js:62
 #, javascript-format
@@ -1110,43 +1116,43 @@ msgstr "Показать код"
 msgid "Web Page"
 msgstr "Веб-страница"
 
-#: ../js/ui/messageTray.js:1347
+#: ../js/ui/messageTray.js:1350
 msgid "Open"
 msgstr "Открыть"
 
-#: ../js/ui/messageTray.js:1354
+#: ../js/ui/messageTray.js:1357
 msgid "Remove"
 msgstr "Удалить"
 
-#: ../js/ui/messageTray.js:1657
+#: ../js/ui/messageTray.js:1660
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: ../js/ui/messageTray.js:1664
+#: ../js/ui/messageTray.js:1667
 msgid "Clear Messages"
 msgstr "Очистить список сообщений"
 
-#: ../js/ui/messageTray.js:1683
+#: ../js/ui/messageTray.js:1686
 msgid "Notification Settings"
 msgstr "Параметры уведомлений"
 
-#: ../js/ui/messageTray.js:1736
+#: ../js/ui/messageTray.js:1739
 msgid "Tray Menu"
 msgstr "Меню панели"
 
-#: ../js/ui/messageTray.js:1952
+#: ../js/ui/messageTray.js:1955
 msgid "No Messages"
 msgstr "Нет сообщений"
 
-#: ../js/ui/messageTray.js:1990
+#: ../js/ui/messageTray.js:1993
 msgid "Message Tray"
 msgstr "Панель сообщений"
 
-#: ../js/ui/messageTray.js:2965
+#: ../js/ui/messageTray.js:2977
 msgid "System Information"
 msgstr "Системная информация"
 
-#: ../js/ui/notificationDaemon.js:510 ../src/shell-app.c:396
+#: ../js/ui/notificationDaemon.js:510 ../src/shell-app.c:398
 msgctxt "program"
 msgid "Unknown"
 msgstr "Неизвестно"
@@ -1201,11 +1207,12 @@ msgstr "Введите команду"
 msgid "Close"
 msgstr "Закрыть"
 
+# fix для даты в календаре и на экране блокировки
 #. Translators: This is a time format for a date in
 #. long format */
 #: ../js/ui/screenShield.js:89
 msgid "%A, %B %d"
-msgstr "%d %B, %A"
+msgstr "%A, %d %b., %Y"
 
 #: ../js/ui/screenShield.js:155
 #, javascript-format
@@ -1673,7 +1680,7 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Список возможных режимов"
 
-#: ../src/shell-app.c:644
+#: ../src/shell-app.c:646
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Не удалось запустить «%s»"
