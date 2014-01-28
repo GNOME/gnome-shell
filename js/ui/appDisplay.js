@@ -747,11 +747,6 @@ const AppDisplay = new Lang.Class({
             this._showView(Views.ALL);
     },
 
-    _redisplay: function() {
-        this._redisplayFrequentApps();
-        this._redisplayAllApps();
-    },
-
     _redisplayFrequentApps: function() {
         let view = this._views[Views.FREQUENT].view;
 
