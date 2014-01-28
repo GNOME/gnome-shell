@@ -289,6 +289,20 @@ StScrollBar StButton#vhandle:active {
     spacing: 10px;
 }
 
+.nm-dialog-airplane-box {
+    spacing: 12px;
+}
+
+.nm-dialog-airplane-headline {
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.nm-dialog-airplane-text {
+    color: #999999;
+}
+
 .nm-dialog-header-icon {
     icon-size: 32px;
 }
@@ -1451,6 +1465,10 @@ StScrollBar StButton#vhandle:active {
 .no-messages-label,
 .no-networks-label {
     color: #999999;
+}
+
+.no-networks-box {
+    spacing: 12px;
 }
 
 .notification {

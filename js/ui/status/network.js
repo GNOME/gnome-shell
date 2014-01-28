@@ -11,12 +11,14 @@ const NMGtk = imports.gi.NMGtk;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
+const Animation = imports.ui.animation;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
 const ModemManager = imports.misc.modemManager;
+const Rfkill = imports.ui.status.rfkill;
 const Util = imports.misc.util;
 
 const NMConnectionCategory = {
@@ -651,6 +653,13 @@ const NMWirelessDialog = new Lang.Class({
         this._client = client;
         this._device = device;
 
+        this._wirelessEnabledChangedId = this._client.connect('notify::wireless-enabled',
+                                                              Lang.bind(this, this._syncView));
+
+        this._rfkill = Rfkill.getRfkillManager();
+        this._airplaneModeChangedId = this._rfkill.connect('airplane-mode-changed',
+                                                           Lang.bind(this, this._syncView));
+
         this._networks = [];
         this._buildLayout();
 
@@ -669,6 +678,7 @@ const NMWirelessDialog = new Lang.Class({
         this._selectedNetwork = null;
         this._activeApChanged();
         this._updateSensitivity();
+        this._syncView();
 
         if (accessPoints.length == 0) {
             /* If there are no visible access points, request a scan */
@@ -688,6 +698,14 @@ const NMWirelessDialog = new Lang.Class({
         if (this._activeApChangedId) {
             GObject.Object.prototype.disconnect.call(this._device, this._activeApChangedId);
             this._activeApChangedId = 0;
+        }
+        if (this._wirelessEnabledChangedId) {
+            this._client.disconnect(this._wirelessEnabledChangedId);
+            this._wirelessEnabledChangedId = 0;
+        }
+        if (this._airplaneModeChangedId) {
+            this._rfkill.disconnect(this._airplaneModeChangedId);
+            this._airplaneModeChangedId = 0;
         }
 
         this.parent();
@@ -710,13 +728,44 @@ const NMWirelessDialog = new Lang.Class({
     },
 
     _updateSensitivity: function() {
-        let connectSensitive = this._selectedNetwork && (this._selectedNetwork != this._activeNetwork);
+        let connectSensitive = this._client.wireless_enabled && this._selectedNetwork && (this._selectedNetwork != this._activeNetwork);
         this._connectButton.reactive = connectSensitive;
         this._connectButton.can_focus = connectSensitive;
     },
 
-    _updateVisibility: function() {
-        this._noNetworksLabel.visible = (this._networks.length == 0);
+    _syncView: function() {
+        if (this._rfkill.airplaneMode) {
+            this._airplaneBox.show();
+
+            this._airplaneIcon.icon_name = 'airplane-mode-symbolic';
+            this._airplaneHeadline.text = _("Airplane Mode is On");
+            this._airplaneText.text = _("Wi-Fi is disabled when airplane mode is on.");
+            this._airplaneButton.label = _("Turn Off Airplane Mode");
+
+            this._airplaneButton.visible = !this._rfkill.hwAirplaneMode;
+            this._airplaneInactive.visible = this._rfkill.hwAirplaneMode;
+            this._noNetworksBox.hide();
+        } else if (!this._client.wireless_enabled) {
+            this._airplaneBox.show();
+
+            this._airplaneIcon.icon_name = 'dialog-information-symbolic';
+            this._airplaneHeadline.text = _("Wi-Fi is Off");
+            this._airplaneText.text = _("Wi-Fi needs to be turned on in order to connect to a network.");
+            this._airplaneButton.label = _("Turn On Wi-Fi");
+
+            this._airplaneButton.show();
+            this._airplaneInactive.hide();
+            this._noNetworksBox.hide();
+        } else {
+            this._airplaneBox.hide();
+
+            this._noNetworksBox.visible = (this._networks.length == 0);
+        }
+
+        if (this._noNetworksBox.visible)
+            this._noNetworksSpinner.play();
+        else
+            this._noNetworksSpinner.stop();
     },
 
     _buildLayout: function() {
@@ -750,11 +799,43 @@ const NMWirelessDialog = new Lang.Class({
         this._scrollView.add_actor(this._itemBox);
         this._stack.add_child(this._scrollView);
 
-        this._noNetworksLabel = new St.Label({ style_class: 'no-networks-label',
+        this._noNetworksBox = new St.BoxLayout({ vertical: true,
+                                                 style_class: 'no-networks-box',
+                                                 x_align: Clutter.ActorAlign.CENTER,
+                                                 y_align: Clutter.ActorAlign.CENTER });
+
+        this._noNetworksSpinner = new Animation.AnimatedIcon(global.datadir + '/theme/process-working.svg', 24, 24);
+        this._noNetworksBox.add_actor(this._noNetworksSpinner.actor);
+        this._noNetworksBox.add_actor(new St.Label({ style_class: 'no-networks-label',
+                                                     text: _("No Networks") }));
+        this._stack.add_child(this._noNetworksBox);
+
+        this._airplaneBox = new St.BoxLayout({ vertical: true,
+                                               style_class: 'nm-dialog-airplane-box',
                                                x_align: Clutter.ActorAlign.CENTER,
-                                               y_align: Clutter.ActorAlign.CENTER,
-                                               text: _("No Networks") });
-        this._stack.add_child(this._noNetworksLabel);
+                                               y_align: Clutter.ActorAlign.CENTER });
+        this._airplaneIcon = new St.Icon({ icon_size: 48 });
+        this._airplaneHeadline = new St.Label({ style_class: 'nm-dialog-airplane-headline' });
+        this._airplaneText = new St.Label({ style_class: 'nm-dialog-airplane-text' });
+
+        let airplaneSubStack = new St.Widget({ layout_manager: new Clutter.BinLayout });
+        this._airplaneButton = new St.Button({ style_class: 'modal-dialog-button' });
+        this._airplaneButton.connect('clicked', Lang.bind(this, function() {
+            if (this._rfkill.airplaneMode)
+                this._rfkill.airplaneMode = false;
+            else
+                this._client.wireless_enabled = true;
+        }));
+        airplaneSubStack.add_actor(this._airplaneButton);
+        this._airplaneInactive = new St.Label({ style_class: 'nm-dialog-airplane-text',
+                                                text: _("Use hardware switch to turn off") });
+        airplaneSubStack.add_actor(this._airplaneInactive);
+
+        this._airplaneBox.add(this._airplaneIcon, { x_align: St.Align.MIDDLE });
+        this._airplaneBox.add(this._airplaneHeadline, { x_align: St.Align.MIDDLE });
+        this._airplaneBox.add(this._airplaneText, { x_align: St.Align.MIDDLE });
+        this._airplaneBox.add(airplaneSubStack, { x_align: St.Align.MIDDLE });
+        this._stack.add_child(this._airplaneBox);
 
         this.contentLayout.add(this._stack, { expand: true });
 
@@ -947,7 +1028,7 @@ const NMWirelessDialog = new Lang.Class({
             this._itemBox.insert_child_at_index(network.item.actor, newPos);
         }
 
-        this._updateVisibility();
+        this._syncView();
     },
 
     _accessPointRemoved: function(device, accessPoint) {
@@ -969,7 +1050,7 @@ const NMWirelessDialog = new Lang.Class({
             this._resortItems();
         }
 
-        this._updateVisibility();
+        this._syncView();
     },
 
     _resortItems: function() {
