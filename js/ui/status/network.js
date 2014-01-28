@@ -131,7 +131,7 @@ const NMConnectionItem = new Lang.Class({
 
     _sync: function() {
         let isActive = this.isActive();
-        this.labelItem.label.text = isActive ? _("Turn Off") : _("Connect");
+        this.labelItem.label.text = isActive ? _("Turn Off") : this._section.getConnectLabel();
         this.switchItem.setToggleState(isActive);
         this.switchItem.setStatus(this._getStatus());
         this.emit('icon-changed');
@@ -221,6 +221,10 @@ const NMConnectionSection = new Lang.Class({
         }
 
         return _("Off");
+    },
+
+    getConnectLabel: function() {
+        return _("Connect");
     },
 
     _hasConnection: function(connection) {
@@ -564,6 +568,14 @@ const NMDeviceBluetooth = new Lang.Class({
             return this.getIndicatorIcon();
         else
             return 'network-cellular-signal-none-symbolic';
+    },
+
+    _getDescription: function() {
+        return this._device.name;
+    },
+
+    getConnectLabel: function() {
+        return _("Use as Internet connection");
     },
 
     getIndicatorIcon: function() {
