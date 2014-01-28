@@ -1075,8 +1075,12 @@ const FolderIcon = new Lang.Class({
 
         this.view.removeAll();
 
+        let excludedApps = this._folder.get_strv('excluded-apps');
         let appSys = Shell.AppSystem.get_default();
         let addAppId = (function addAppId(appId) {
+            if (excludedApps.indexOf(appId) >= 0)
+                return;
+
             let app = appSys.lookup_app(appId);
             if (!app)
                 return;
