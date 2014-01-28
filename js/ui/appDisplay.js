@@ -61,6 +61,13 @@ function _isTerminal(app) {
     return categories.indexOf('TerminalEmulator') > -1;
 }
 
+function _listsIntersect(a, b) {
+    for (let itemA of a)
+        if (b.indexOf(itemA) >= 0)
+            return true;
+    return false;
+}
+
 function _getFolderName(folder) {
     let name = folder.get_string('name');
 
@@ -1069,9 +1076,7 @@ const FolderIcon = new Lang.Class({
         this.view.removeAll();
 
         let appSys = Shell.AppSystem.get_default();
-
-        let folderApps = this._folder.get_strv('apps');
-        folderApps.forEach(Lang.bind(this, function(appId) {
+        let addAppId = (function addAppId(appId) {
             let app = appSys.lookup_app(appId);
             if (!app)
                 return;
@@ -1081,7 +1086,20 @@ const FolderIcon = new Lang.Class({
 
             let icon = new AppIcon(app);
             this.view.addItem(icon);
-        }));
+        }).bind(this);
+
+        let folderApps = this._folder.get_strv('apps');
+        folderApps.forEach(addAppId);
+
+        let folderCategories = this._folder.get_strv('categories');
+        Gio.AppInfo.get_all().forEach(function(appInfo) {
+            let appCategories = _getCategories(appInfo);
+            if (!_listsIntersect(folderCategories, appCategories))
+                return;
+
+            addAppId(appInfo.get_id());
+        });
+
         this.view.loadGrid();
         this.emit('apps-changed');
     },
