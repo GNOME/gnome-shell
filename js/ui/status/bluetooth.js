@@ -38,7 +38,10 @@ const Indicator = new Lang.Class({
                                                      log(error.message);
                                                      return;
                                                  }
+
+                                                 this._sync();
                                              }));
+        this._proxy.connect('g-properties-changed', Lang.bind(this, this._sync));
 
         // The Bluetooth menu only appears when Bluetooth is in use,
         // so just statically build it with a "Turn Off" menu item.
@@ -90,11 +93,12 @@ const Indicator = new Lang.Class({
     _sync: function() {
         let nDevices = this._getNConnectedDevices();
 
-        let on = nDevices > 0;
-        this._indicator.visible = on;
-        this._item.actor.visible = on;
+        this._indicator.visible = nDevices > 0;
+        this._item.actor.visible = !this._proxy.BluetoothAirplaneMode;
 
-        if (on)
+        if (nDevices > 0)
             this._item.status.text = ngettext("%d Connected Device", "%d Connected Devices", nDevices).format(nDevices);
+        else
+            this._item.status.text = _("Not Connected");
     },
 });
