@@ -125,10 +125,14 @@ const Magnifier = new Lang.Class({
             zoomRegion.setActive(activate);
         });
 
-        if (activate)
+        if (activate) {
+            Meta.disable_unredirect_for_screen(global.screen);
             this.startTrackingMouse();
-        else
+        }
+        else {
+            Meta.enable_unredirect_for_screen(global.screen);
             this.stopTrackingMouse();
+        }
 
         // Make sure system mouse pointer is shown when all zoom regions are
         // invisible.
