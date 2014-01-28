@@ -34,6 +34,7 @@
 
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
+#include <stddef.h>
 #include <drm.h>
 #include <xf86drm.h>
 #include <xf86drmMode.h>
