@@ -110,6 +110,11 @@ const BaseAppView = new Lang.Class({
         this._allItems = [];
     },
 
+    _redisplay: function() {
+        this.removeAll();
+        this._loadApps();
+    },
+
     addItem: function(icon) {
         let id = icon.id;
         if (this._items[id] !== undefined)
@@ -341,6 +346,59 @@ const AllView = new Lang.Class({
                     this._keyPressEventId = 0;
                 }
             }));
+
+        this._redisplayWorkId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
+
+        Shell.AppSystem.get_default().connect('installed-changed', Lang.bind(this, function() {
+            Main.queueDeferredWork(this._redisplayWorkId);
+        }));
+        this._folderSettings = new Gio.Settings({ schema: 'org.gnome.desktop.app-folders' });
+        this._folderSettings.connect('changed::folder-children', Lang.bind(this, function() {
+            Main.queueDeferredWork(this._redisplayWorkId);
+        }));
+    },
+
+    removeAll: function() {
+        this.folderIcons = [];
+        this.parent();
+    },
+
+    _loadApps: function() {
+        let apps = Gio.AppInfo.get_all().filter(function(appInfo) {
+            return appInfo.should_show();
+        }).map(function(app) {
+            return app.get_id();
+        });
+
+        let appSys = Shell.AppSystem.get_default();
+
+        let folders = this._folderSettings.get_strv('folder-children');
+        folders.forEach(Lang.bind(this, function(id) {
+            let folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
+                                            path: this._folderSettings.path + 'folders/' + id + '/' });
+            folder.connect('changed', Lang.bind(this, function() {
+                Main.queueDeferredWork(this._redisplayWorkId);
+            }));
+
+            let folderName = _getFolderName(folder);
+            let folderApps = folder.get_strv('apps');
+            folderApps.forEach(function(appId) {
+                let idx = apps.indexOf(appId);
+                if (idx >= 0)
+                    apps.splice(idx, 1);
+            });
+            let icon = new FolderIcon(id, folderName, folderApps, this);
+            this.addItem(icon);
+            this.folderIcons.push(icon);
+        }));
+
+        apps.forEach(Lang.bind(this, function(appId) {
+            let app = appSys.lookup_app(appId);
+            let icon = new AppIcon(app);
+            this.addItem(icon);
+        }));
+
+        this.loadGrid();
     },
 
     getCurrentPageY: function() {
@@ -460,11 +518,6 @@ const AllView = new Lang.Class({
         }
 
         return Clutter.EVENT_PROPAGATE;
-    },
-
-    removeAll: function() {
-        this.folderIcons = [];
-        this.parent();
     },
 
     addFolderPopup: function(popup) {
@@ -587,11 +640,6 @@ const FrequentView = new Lang.Class({
         }
     },
 
-    _redisplay: function() {
-        this.removeAll();
-        this._loadApps();
-    },
-
     // Called before allocation to calculate dynamic spacing
     adaptToSize: function(width, height) {
         let box = new Clutter.ActorBox();
@@ -655,13 +703,6 @@ const AppDisplay = new Lang.Class({
     Name: 'AppDisplay',
 
     _init: function() {
-        Shell.AppSystem.get_default().connect('installed-changed', Lang.bind(this, function() {
-            Main.queueDeferredWork(this._allAppsWorkId);
-        }));
-        this._folderSettings = new Gio.Settings({ schema: 'org.gnome.desktop.app-folders' });
-        this._folderSettings.connect('changed::folder-children', Lang.bind(this, function() {
-            Main.queueDeferredWork(this._allAppsWorkId);
-        }));
         this._privacySettings = new Gio.Settings({ schema: 'org.gnome.desktop.privacy' });
         this._privacySettings.connect('changed::remember-app-usage',
                                       Lang.bind(this, this._updateFrequentVisibility));
@@ -715,14 +756,6 @@ const AppDisplay = new Lang.Class({
             initialView = Views.ALL;
         this._showView(initialView);
         this._updateFrequentVisibility();
-
-        // We need a dummy actor to catch the keyboard focus if the
-        // user Ctrl-Alt-Tabs here before the deferred work creates
-        // our real contents
-        this._focusDummy = new St.Bin({ can_focus: true });
-        this._viewStack.add_actor(this._focusDummy);
-
-        this._allAppsWorkId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplayAllApps));
     },
 
     _showView: function(activeIndex) {
@@ -754,55 +787,6 @@ const AppDisplay = new Lang.Class({
 
         if (!enabled && this._views[Views.FREQUENT].view.actor.visible)
             this._showView(Views.ALL);
-    },
-
-    _redisplayAllApps: function() {
-        let view = this._views[Views.ALL].view;
-        view.removeAll();
-
-        let apps = Gio.AppInfo.get_all().filter(function(appInfo) {
-            return appInfo.should_show();
-        }).map(function(app) {
-            return app.get_id();
-        });
-
-        let appSys = Shell.AppSystem.get_default();
-
-        let folders = this._folderSettings.get_strv('folder-children');
-        folders.forEach(Lang.bind(this, function(id) {
-            let folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
-                                            path: this._folderSettings.path + 'folders/' + id + '/' });
-            folder.connect('changed', Lang.bind(this, function() {
-                Main.queueDeferredWork(this._allAppsWorkId);
-            }));
-
-            let folderName = _getFolderName(folder);
-            let folderApps = folder.get_strv('apps');
-            folderApps.forEach(function(appId) {
-                let idx = apps.indexOf(appId);
-                if (idx >= 0)
-                    apps.splice(idx, 1);
-            });
-            let icon = new FolderIcon(id, folderName, folderApps, view);
-            view.addItem(icon);
-            view.folderIcons.push(icon);
-        }));
-
-        apps.forEach(Lang.bind(this, function(appId) {
-            let app = appSys.lookup_app(appId);
-            let icon = new AppIcon(app);
-            view.addItem(icon);
-        }));
-
-        view.loadGrid();
-
-        if (this._focusDummy) {
-            let focused = this._focusDummy.has_key_focus();
-            this._focusDummy.destroy();
-            this._focusDummy = null;
-            if (focused)
-                this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-        }
     },
 
     selectApp: function(id) {
