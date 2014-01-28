@@ -1384,11 +1384,9 @@ shell_app_dispose (GObject *object)
 
   g_clear_object (&app->info);
 
-  if (app->running_state)
-    {
-      while (app->running_state->windows)
-        _shell_app_remove_window (app, app->running_state->windows->data);
-    }
+  while (app->running_state)
+    _shell_app_remove_window (app, app->running_state->windows->data);
+
   /* We should have been transitioned when we removed all of our windows */
   g_assert (app->state == SHELL_APP_STATE_STOPPED);
   g_assert (app->running_state == NULL);
