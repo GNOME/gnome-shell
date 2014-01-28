@@ -561,17 +561,18 @@ const FrequentView = new Lang.Class({
         this._noFrequentAppsLabel.hide();
 
         this._usage = Shell.AppUsage.get_default();
+
+        this.actor.connect('notify::mapped', Lang.bind(this, function() {
+            if (this.actor.mapped)
+                this._redisplay();
+        }));
     },
 
     hasUsefulData: function() {
         return this._usage.get_most_used("").length >= MIN_FREQUENT_APPS_COUNT;
     },
 
-    removeAll: function() {
-        this._grid.destroyAll();
-    },
-
-    loadApps: function() {
+    _loadApps: function() {
         let mostUsed = this._usage.get_most_used ("");
         let hasUsefulData = this.hasUsefulData();
         this._noFrequentAppsLabel.visible = !hasUsefulData;
@@ -584,6 +585,11 @@ const FrequentView = new Lang.Class({
             let appIcon = new AppIcon(mostUsed[i]);
             this._grid.addItem(appIcon, -1);
         }
+    },
+
+    _redisplay: function() {
+        this.removeAll();
+        this._loadApps();
     },
 
     // Called before allocation to calculate dynamic spacing
@@ -652,9 +658,6 @@ const AppDisplay = new Lang.Class({
         Shell.AppSystem.get_default().connect('installed-changed', Lang.bind(this, function() {
             Main.queueDeferredWork(this._allAppsWorkId);
         }));
-        Main.overview.connect('showing', Lang.bind(this, function() {
-            Main.queueDeferredWork(this._frequentAppsWorkId);
-        }));
         this._folderSettings = new Gio.Settings({ schema: 'org.gnome.desktop.app-folders' });
         this._folderSettings.connect('changed::folder-children', Lang.bind(this, function() {
             Main.queueDeferredWork(this._allAppsWorkId);
@@ -720,7 +723,6 @@ const AppDisplay = new Lang.Class({
         this._viewStack.add_actor(this._focusDummy);
 
         this._allAppsWorkId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplayAllApps));
-        this._frequentAppsWorkId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplayFrequentApps));
     },
 
     _showView: function(activeIndex) {
@@ -752,13 +754,6 @@ const AppDisplay = new Lang.Class({
 
         if (!enabled && this._views[Views.FREQUENT].view.actor.visible)
             this._showView(Views.ALL);
-    },
-
-    _redisplayFrequentApps: function() {
-        let view = this._views[Views.FREQUENT].view;
-
-        view.removeAll();
-        view.loadApps();
     },
 
     _redisplayAllApps: function() {
