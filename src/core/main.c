@@ -302,8 +302,12 @@ event_dispatch (GSource    *source,
                 gpointer    user_data)
 {
   ClutterEvent *event = clutter_event_get ();
+
   if (event)
-    clutter_do_event (event);
+    {
+      clutter_do_event (event);
+      clutter_event_free (event);
+    }
 
   return TRUE;
 }
