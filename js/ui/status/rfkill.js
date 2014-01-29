@@ -2,6 +2,7 @@
 
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
+const Signals = imports.signals;
 
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -18,13 +19,10 @@ const RfkillManagerInterface = '<node> \
 
 const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface);
 
-const Indicator = new Lang.Class({
-    Name: 'RfkillIndicator',
-    Extends: PanelMenu.SystemIndicator,
+const RfkillManager = new Lang.Class({
+    Name: 'RfkillManager',
 
     _init: function() {
-        this.parent();
-
         this._proxy = new RfkillManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
                                              Lang.bind(this, function(proxy, error) {
                                                  if (error) {
@@ -32,9 +30,47 @@ const Indicator = new Lang.Class({
                                                      return;
                                                  }
                                                  this._proxy.connect('g-properties-changed',
-                                                                     Lang.bind(this, this._sync));
-                                                 this._sync();
+                                                                     Lang.bind(this, this._changed));
+                                                 this._changed();
                                              }));
+    },
+
+    get airplaneMode() {
+        return this._proxy.AirplaneMode;
+    },
+
+    set airplaneMode(v) {
+        this._proxy.AirplaneMode = v;
+    },
+
+    get hwAirplaneMode() {
+        return this._proxy.HardwareAirplaneMode;
+    },
+
+    _changed: function() {
+        this.emit('airplane-mode-changed');
+    }
+});
+Signals.addSignalMethods(RfkillManager.prototype);
+
+var _manager;
+function getRfkillManager() {
+    if (_manager != null)
+        return _manager;
+
+    _manager = new RfkillManager();
+    return _manager;
+}
+
+const Indicator = new Lang.Class({
+    Name: 'RfkillIndicator',
+    Extends: PanelMenu.SystemIndicator,
+
+    _init: function() {
+        this.parent();
+
+        this._manager = getRfkillManager();
+        this._manager.connect('airplane-mode-changed', Lang.bind(this, this._sync));
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'airplane-mode-symbolic';
@@ -54,8 +90,10 @@ const Indicator = new Lang.Class({
     },
 
     _sync: function() {
-        let airplaneMode = this._proxy.AirplaneMode;
-        let hwAirplaneMode = this._proxy.HardwareAirplaneMode;
+        let airplaneMode = this._manager.airplaneMode;
+        let hwAirplaneMode = this._manager.hwAirplaneMode;
+        let changed = (airplaneMode != this._indicator.visible) ||
+            (hwAirplaneMode != this._offItem.actor.visible);
 
         this._indicator.visible = airplaneMode;
         this._item.actor.visible = airplaneMode;
