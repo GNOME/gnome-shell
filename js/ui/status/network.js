@@ -957,7 +957,7 @@ const NMWirelessDialog = new Lang.Class({
         network.accessPoints.splice(res.ap, 1);
 
         if (network.accessPoints.length == 0) {
-            network.item.destroy();
+            network.item.actor.destroy();
             this._networks.splice(res.network, 1);
         } else {
             network.item.updateBestAP(network.accessPoints[0]);
