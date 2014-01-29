@@ -669,6 +669,11 @@ const NMWirelessDialog = new Lang.Class({
         this._selectedNetwork = null;
         this._activeApChanged();
         this._updateSensitivity();
+
+        if (accessPoints.length == 0) {
+            /* If there are no visible access points, request a scan */
+            this._device.request_scan_simple(null);
+        }
     },
 
     destroy: function() {
