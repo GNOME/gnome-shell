@@ -52,7 +52,7 @@ xserver_set_window_id (struct wl_client *client,
 }
 
 static const struct xserver_interface xserver_implementation = {
-    xserver_set_window_id
+  xserver_set_window_id
 };
 
 static void
@@ -123,7 +123,7 @@ create_lockfile (int display, int *display_out)
               /* ignore error and try the next display number */
               display++;
               continue;
-          }
+            }
           close (fd);
 
           other = strtol (pid, &end, 0);
@@ -135,7 +135,7 @@ create_lockfile (int display, int *display_out)
               /* ignore error and try the next display number */
               display++;
               continue;
-          }
+            }
 
           if (kill (other, 0) < 0 && errno == ESRCH)
             {
@@ -148,7 +148,7 @@ create_lockfile (int display, int *display_out)
                 }
               g_free (filename);
               continue;
-          }
+            }
 
           g_free (filename);
           display++;
@@ -240,11 +240,12 @@ bind_to_unix_socket (int display)
       return -1;
     }
 
-  if (listen (fd, 1) < 0) {
+  if (listen (fd, 1) < 0)
+    {
       unlink (addr.sun_path);
       close (fd);
       return -1;
-  }
+    }
 
   return fd;
 }
@@ -310,8 +311,8 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
       lockfile = create_lockfile (display, &display);
       if (!lockfile)
         {
-         g_warning ("Failed to create an X lock file");
-         return FALSE;
+          g_warning ("Failed to create an X lock file");
+          return FALSE;
         }
 
       compositor->xwayland_abstract_fd = bind_to_abstract_socket (display);
