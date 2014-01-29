@@ -213,6 +213,10 @@ const NMConnectionSection = new Lang.Class({
             this.item.label.text = '';
     },
 
+    _getMenuIcon: function() {
+        return this.getIndicatorIcon();
+    },
+
     _getStatus: function() {
         let values = this._connectionItems.values();
         for (let item of values) {
@@ -448,20 +452,17 @@ const NMDeviceWired = new Lang.Class({
         this.parent();
     },
 
-    _getMenuIcon: function() {
-        if (this._device.active_connection)
-            return this.getIndicatorIcon();
-        else
-            return 'network-wired-disconnected-symbolic';
-    },
-
     getIndicatorIcon: function() {
-        let state = this._device.active_connection.state;
-        if (state == NetworkManager.ActiveConnectionState.ACTIVATING)
-            return 'network-wired-acquiring-symbolic';
-        else if (state == NetworkManager.ActiveConnectionState.ACTIVATED)
-            return 'network-wired-symbolic';
-        else
+        if (this._device.active_connection) {
+            let state = this._device.active_connection.state;
+
+            if (state == NetworkManager.ActiveConnectionState.ACTIVATING)
+                return 'network-wired-acquiring-symbolic';
+            else if (state == NetworkManager.ActiveConnectionState.ACTIVATED)
+                return 'network-wired-symbolic';
+            else
+                return 'network-wired-disconnected-symbolic';
+        } else
             return 'network-wired-disconnected-symbolic';
     }
 });
@@ -528,28 +529,20 @@ const NMDeviceModem = new Lang.Class({
             return this.parent();
     },
 
-    _getMenuIcon: function() {
-        if (this._device.active_connection)
-            return this.getIndicatorIcon();
-        else
+    getIndicatorIcon: function() {
+        if (this._device.active_connection) {
+            if (this._device.active_connection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
+                return 'network-cellular-acquiring-symbolic';
+
+            return this._getSignalIcon();
+        } else {
             return 'network-cellular-signal-none-symbolic';
+        }
     },
 
     _getSignalIcon: function() {
         return 'network-cellular-signal-' + signalToIcon(this._mobileDevice.signal_quality) + '-symbolic';
     },
-
-    getIndicatorIcon: function() {
-        if (this._device.active_connection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
-            return 'network-cellular-acquiring-symbolic';
-
-        if (!this._mobileDevice) {
-            // this can happen for bluetooth in PAN mode
-            return 'network-cellular-connected-symbolic';
-        }
-
-        return this._getSignalIcon();
-    }
 });
 
 const NMDeviceBluetooth = new Lang.Class({
@@ -563,13 +556,6 @@ const NMDeviceBluetooth = new Lang.Class({
         this.item.menu.addMenuItem(createSettingsAction(_("Mobile Broadband Settings"), device));
     },
 
-    _getMenuIcon: function() {
-        if (this._device.active_connection)
-            return this.getIndicatorIcon();
-        else
-            return 'network-cellular-signal-none-symbolic';
-    },
-
     _getDescription: function() {
         return this._device.name;
     },
@@ -579,13 +565,17 @@ const NMDeviceBluetooth = new Lang.Class({
     },
 
     getIndicatorIcon: function() {
-        let state = this._device.active_connection.state;
-        if (state == NetworkManager.ActiveConnectionState.ACTIVATING)
-            return 'network-cellular-acquiring-symbolic';
-        else if (state == NetworkManager.ActiveConnectionState.ACTIVATED)
-            return 'network-cellular-connected-symbolic';
-        else
+        if (this._device.active_connection) {
+            let state = this._device.active_connection.state;
+            if (state == NetworkManager.ActiveConnectionState.ACTIVATING)
+                return 'network-cellular-acquiring-symbolic';
+            else if (state == NetworkManager.ActiveConnectionState.ACTIVATED)
+                return 'network-cellular-connected-symbolic';
+            else
+                return 'network-cellular-signal-none-symbolic';
+        } else {
             return 'network-cellular-signal-none-symbolic';
+        }
     }
 });
 
@@ -1242,8 +1232,9 @@ const NMDeviceWireless = new Lang.Class({
     },
 
     getIndicatorIcon: function() {
-        if (this._device.state >= NetworkManager.DeviceState.PREPARE &&
-            this._device.state < NetworkManager.DeviceState.ACTIVATED)
+        if (this._device.state < NetworkManager.DeviceState.PREPARE)
+            return 'network-wireless-disconnected-symbolic';
+        if (this._device.state < NetworkManager.DeviceState.ACTIVATED)
             return 'network-wireless-acquiring-symbolic';
 
         let ap = this._device.active_access_point;
