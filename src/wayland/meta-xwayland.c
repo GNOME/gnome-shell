@@ -73,13 +73,8 @@ bind_xserver (struct wl_client *client,
   wl_resource_set_implementation (compositor->xserver_resource,
 				  &xserver_implementation, compositor, NULL);
 
-  wl_resource_post_event (compositor->xserver_resource,
-                          XSERVER_LISTEN_SOCKET,
-                          compositor->xwayland_abstract_fd);
-
-  wl_resource_post_event (compositor->xserver_resource,
-                          XSERVER_LISTEN_SOCKET,
-                          compositor->xwayland_unix_fd);
+  xserver_send_listen_socket (compositor->xserver_resource, compositor->xwayland_abstract_fd);
+  xserver_send_listen_socket (compositor->xserver_resource, compositor->xwayland_unix_fd);
 
   /* Make sure xwayland will recieve the above sockets in a finite
    * time before unblocking the initialization mainloop since we are
