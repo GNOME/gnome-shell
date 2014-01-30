@@ -126,27 +126,6 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
                                                    G_TYPE_NONE, 0);
 }
 
-/**
- * shell_window_tracker_is_window_interesting:
- *
- * The ShellWindowTracker associates certain kinds of windows with
- * applications; however, others we don't want to
- * appear in places where we want to give a list of windows
- * for an application, such as the alt-tab dialog.
- *
- * An example of a window we don't want to show is the root
- * desktop window.  We skip all override-redirect types, and also
- * exclude other window types like tooltip explicitly, though generally
- * most of these should be override-redirect.
- *
- * Returns: %TRUE iff a window is "interesting"
- */
-gboolean
-shell_window_tracker_is_window_interesting (MetaWindow *window)
-{
-  return !meta_window_is_skip_taskbar (window);
-}
-
 /*
  * get_app_from_window_wmclass:
  *

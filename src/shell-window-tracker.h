@@ -35,8 +35,6 @@ ShellApp *shell_window_tracker_get_window_app (ShellWindowTracker *tracker, Meta
 
 ShellApp *shell_window_tracker_get_app_from_pid (ShellWindowTracker *tracker, int pid);
 
-gboolean shell_window_tracker_is_window_interesting (MetaWindow *window);
-
 const char *_shell_window_tracker_get_app_context (ShellWindowTracker *tracker, ShellApp *app);
 
 GSList *shell_window_tracker_get_startup_sequences (ShellWindowTracker *tracker);
