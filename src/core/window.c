@@ -97,7 +97,6 @@ static void     update_net_frame_extents  (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
 static void     invalidate_work_areas     (MetaWindow     *window);
-static void     recalc_window_type        (MetaWindow     *window);
 static void     set_wm_state_on_xwindow   (MetaDisplay    *display,
                                            Window          xwindow,
                                            int             state);
