@@ -921,6 +921,33 @@ shell_app_on_user_time_changed (MetaWindow *window,
 }
 
 static void
+shell_app_maybe_start_stop (ShellApp *app)
+{
+  g_return_if_fail (app->running_state != NULL);
+
+  if (app->running_state->interesting_windows == 0)
+    shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
+  else if (app->state != SHELL_APP_STATE_STARTING)
+    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
+}
+
+
+static void
+shell_app_on_skip_taskbar_changed (MetaWindow *window,
+                                   GParamSpec *pspec,
+                                   ShellApp   *app)
+{
+  g_assert (app->running_state != NULL);
+
+  if (meta_window_is_skip_taskbar (window))
+    app->running_state->interesting_windows--;
+  else
+    app->running_state->interesting_windows++;
+
+  shell_app_maybe_start_stop (app);
+}
+
+static void
 shell_app_on_ws_switch (MetaScreen         *screen,
                         int                 from,
                         int                 to,
@@ -1016,16 +1043,14 @@ _shell_app_add_window (ShellApp        *app,
   app->running_state->windows = g_slist_prepend (app->running_state->windows, g_object_ref (window));
   g_signal_connect (window, "unmanaged", G_CALLBACK(shell_app_on_unmanaged), app);
   g_signal_connect (window, "notify::user-time", G_CALLBACK(shell_app_on_user_time_changed), app);
+  g_signal_connect (window, "notify::skip-taskbar", G_CALLBACK(shell_app_on_skip_taskbar_changed), app);
 
   shell_app_update_app_menu (app, window);
   shell_app_ensure_busy_watch (app);
 
   if (shell_window_tracker_is_window_interesting (window))
     app->running_state->interesting_windows++;
-
-  if (app->state != SHELL_APP_STATE_STARTING &&
-      app->running_state->interesting_windows > 0)
-    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
+  shell_app_maybe_start_stop (app);
 
   g_object_thaw_notify (G_OBJECT (app));
 
@@ -1043,14 +1068,13 @@ _shell_app_remove_window (ShellApp   *app,
 
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_unmanaged), app);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_user_time_changed), app);
+  g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_skip_taskbar_changed), app);
   g_object_unref (window);
   app->running_state->windows = g_slist_remove (app->running_state->windows, window);
 
   if (shell_window_tracker_is_window_interesting (window))
     app->running_state->interesting_windows--;
-
-  if (app->running_state->interesting_windows == 0)
-    shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
+  shell_app_maybe_start_stop (app);
 
   if (app->running_state && app->running_state->windows == NULL)
     g_clear_pointer (&app->running_state, unref_running_state);
