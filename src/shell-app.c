@@ -1048,7 +1048,7 @@ _shell_app_add_window (ShellApp        *app,
   shell_app_update_app_menu (app, window);
   shell_app_ensure_busy_watch (app);
 
-  if (shell_window_tracker_is_window_interesting (window))
+  if (!meta_window_is_skip_taskbar (window))
     app->running_state->interesting_windows++;
   shell_app_maybe_start_stop (app);
 
@@ -1072,7 +1072,7 @@ _shell_app_remove_window (ShellApp   *app,
   g_object_unref (window);
   app->running_state->windows = g_slist_remove (app->running_state->windows, window);
 
-  if (shell_window_tracker_is_window_interesting (window))
+  if (!meta_window_is_skip_taskbar (window))
     app->running_state->interesting_windows--;
   shell_app_maybe_start_stop (app);
 
@@ -1166,7 +1166,7 @@ shell_app_request_quit (ShellApp   *app)
     {
       MetaWindow *win = iter->data;
 
-      if (!shell_window_tracker_is_window_interesting (win))
+      if (meta_window_is_skip_taskbar (win))
         continue;
 
       meta_window_delete (win, shell_global_get_current_time (shell_global_get ()));

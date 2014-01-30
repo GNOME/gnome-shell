@@ -1619,8 +1619,7 @@ const Workspace = new Lang.Class({
 
     // Tests if @win should be shown in the Overview
     _isOverviewWindow : function (win) {
-        let tracker = Shell.WindowTracker.get_default();
-        return tracker.is_window_interesting(win.get_meta_window());
+        return !win.get_meta_window().skip_taskbar;
     },
 
     // Create a clone of a (non-desktop) window and add it to the window list

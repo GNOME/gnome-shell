@@ -1532,7 +1532,7 @@ const AppIconMenu = new Lang.Class({
         this.removeAll();
 
         let windows = this._source.app.get_windows().filter(function(w) {
-            return Shell.WindowTracker.is_window_interesting(w);
+            return !w.skip_taskbar;
         });
 
         // Display the app windows menu items and the separator between windows
