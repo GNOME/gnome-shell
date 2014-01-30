@@ -196,6 +196,7 @@ enum {
   PROP_USER_TIME,
   PROP_DEMANDS_ATTENTION,
   PROP_URGENT,
+  PROP_SKIP_TASKBAR,
   PROP_MUTTER_HINTS,
   PROP_APPEARS_FOCUSED,
   PROP_RESIZEABLE,
@@ -331,6 +332,9 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_URGENT:
       g_value_set_boolean (value, win->wm_hints_urgent);
+      break;
+    case PROP_SKIP_TASKBAR:
+      g_value_set_boolean (value, win->skip_taskbar);
       break;
     case PROP_MUTTER_HINTS:
       g_value_set_string (value, win->mutter_hints);
@@ -489,6 +493,14 @@ meta_window_class_init (MetaWindowClass *klass)
                                    g_param_spec_boolean ("urgent",
                                                          "Urgent",
                                                          "Whether the urgent flag of WM_HINTS is set",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_SKIP_TASKBAR,
+                                   g_param_spec_boolean ("skip-taskbar",
+                                                         "Skip taskbar",
+                                                         "Whether the skip-taskbar flag of WM_HINTS is set",
                                                          FALSE,
                                                          G_PARAM_READABLE));
 
@@ -8750,6 +8762,7 @@ recalc_window_features (MetaWindow *window)
   gboolean old_has_resize_func;
   gboolean old_has_shade_func;
   gboolean old_always_sticky;
+  gboolean old_skip_taskbar;
 
   old_has_close_func = window->has_close_func;
   old_has_minimize_func = window->has_minimize_func;
@@ -8757,6 +8770,7 @@ recalc_window_features (MetaWindow *window)
   old_has_resize_func = window->has_resize_func;
   old_has_shade_func = window->has_shade_func;
   old_always_sticky = window->always_sticky;
+  old_skip_taskbar = window->skip_taskbar;
 
   /* Use MWM hints initially */
   if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
@@ -8945,6 +8959,9 @@ recalc_window_features (MetaWindow *window)
               window->has_shade_func,
               window->skip_taskbar,
               window->skip_pager);
+
+  if (old_skip_taskbar != window->skip_taskbar)
+    g_object_notify (G_OBJECT (window), "skip-taskbar");
 
   /* FIXME:
    * Lame workaround for recalc_window_features
