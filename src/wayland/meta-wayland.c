@@ -505,8 +505,7 @@ meta_wayland_compositor_paint_finished (MetaWaylandCompositor *compositor)
       MetaWaylandFrameCallback *callback =
         wl_container_of (compositor->frame_callbacks.next, callback, link);
 
-      wl_resource_post_event (callback->resource,
-                              WL_CALLBACK_DONE, get_time ());
+      wl_callback_send_done (callback->resource, get_time ());
       wl_resource_destroy (callback->resource);
     }
 }
