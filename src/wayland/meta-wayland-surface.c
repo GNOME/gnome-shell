@@ -91,28 +91,28 @@ surface_process_damage (MetaWaylandSurface *surface,
 }
 
 static void
-meta_wayland_surface_destroy (struct wl_client *wayland_client,
-                              struct wl_resource *wayland_resource)
+meta_wayland_surface_destroy (struct wl_client *client,
+                              struct wl_resource *resource)
 {
-  wl_resource_destroy (wayland_resource);
+  wl_resource_destroy (resource);
 }
 
 static void
-meta_wayland_surface_attach (struct wl_client *wayland_client,
-                             struct wl_resource *wayland_surface_resource,
-                             struct wl_resource *wayland_buffer_resource,
+meta_wayland_surface_attach (struct wl_client *client,
+                             struct wl_resource *surface_resource,
+                             struct wl_resource *buffer_resource,
                              gint32 dx, gint32 dy)
 {
   MetaWaylandSurface *surface =
-    wl_resource_get_user_data (wayland_surface_resource);
+    wl_resource_get_user_data (surface_resource);
   MetaWaylandBuffer *buffer;
 
   /* X11 unmanaged window */
   if (!surface)
     return;
 
-  if (wayland_buffer_resource)
-    buffer = meta_wayland_buffer_from_resource (wayland_buffer_resource);
+  if (buffer_resource)
+    buffer = meta_wayland_buffer_from_resource (buffer_resource);
   else
     buffer = NULL;
 
@@ -588,7 +588,7 @@ meta_wayland_surface_resource_destroy_cb (struct wl_resource *resource)
 
 MetaWaylandSurface *
 meta_wayland_surface_create (MetaWaylandCompositor *compositor,
-			     struct wl_client      *wayland_client,
+			     struct wl_client      *client,
 			     guint32                id,
 			     guint32                version)
 {
@@ -596,9 +596,7 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
 
   surface->compositor = compositor;
 
-  surface->resource = wl_resource_create (wayland_client,
-					  &wl_surface_interface,
-					  version, id);
+  surface->resource = wl_resource_create (client, &wl_surface_interface, version, id);
   wl_resource_set_implementation (surface->resource, &meta_wayland_surface_interface, surface,
 				  meta_wayland_surface_resource_destroy_cb);
 
