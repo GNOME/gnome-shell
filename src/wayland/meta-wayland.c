@@ -686,7 +686,7 @@ meta_wayland_init (void)
   clutter_wayland_set_compositor_display (compositor->wayland_display);
 
   if (getenv ("WESTON_LAUNCHER_SOCK"))
-      compositor->launcher = meta_launcher_new ();
+    compositor->launcher = meta_launcher_new ();
 
   if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
     g_error ("Failed to initialize Clutter");
