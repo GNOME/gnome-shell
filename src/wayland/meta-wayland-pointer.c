@@ -322,12 +322,16 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
     return;
 
   resource = pointer->focus_resource;
-  if (resource && pointer->focus->resource)
+  if (resource)
     {
-      struct wl_client *client = wl_resource_get_client (resource);
-      struct wl_display *display = wl_client_get_display (client);
-      serial = wl_display_next_serial (display);
-      wl_pointer_send_leave (resource, serial, pointer->focus->resource);
+      if (pointer->focus->resource)
+        {
+          struct wl_client *client = wl_resource_get_client (resource);
+          struct wl_display *display = wl_client_get_display (client);
+          serial = wl_display_next_serial (display);
+          wl_pointer_send_leave (resource, serial, pointer->focus->resource);
+        }
+
       wl_list_remove (&pointer->focus_listener.link);
     }
 
