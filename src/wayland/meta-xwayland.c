@@ -44,11 +44,11 @@ xserver_set_window_id (struct wl_client *client,
   MetaWindow *window;
 
   window = meta_display_lookup_x_window (display, xid);
-  if (window)
-    {
-      surface->window = window;
-      window->surface = surface;
-    }
+  if (!window)
+    return;
+
+  surface->window = window;
+  window->surface = surface;
 }
 
 static const struct xserver_interface xserver_implementation = {
