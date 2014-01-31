@@ -760,7 +760,9 @@ meta_wayland_finalize (void)
   compositor = meta_wayland_compositor_get_default ();
 
   meta_xwayland_stop (compositor);
-  meta_launcher_free (compositor->launcher);
+
+  if (compositor->launcher)
+    meta_launcher_free (compositor->launcher);
 }
 
 MetaLauncher *
