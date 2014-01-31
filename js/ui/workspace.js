@@ -131,7 +131,7 @@ const WindowClone = new Lang.Class({
         this._dragSlot = [0, 0, 0, 0];
         this._stackAbove = null;
 
-        this._windowClone._updateId = this.realWindow.connect('size-changed',
+        this._windowClone._updateId = this.metaWindow.connect('size-changed',
             Lang.bind(this, this._onRealWindowSizeChanged));
         this._windowClone._destroyId = this.realWindow.connect('destroy', Lang.bind(this, function() {
             // First destroy the clone and then destroy everything
@@ -199,7 +199,7 @@ const WindowClone = new Lang.Class({
 
     _doAddAttachedDialog: function(metaWin, realWin) {
         let clone = new Clutter.Clone({ source: realWin });
-        clone._updateId = realWin.connect('size-changed', Lang.bind(this, function() {
+        clone._updateId = metaWin.connect('size-changed', Lang.bind(this, function() {
             this._computeBoundingBox();
             this.emit('size-changed');
         }));
