@@ -452,10 +452,9 @@ meta_screen_create_guard_window (Display *xdisplay, MetaScreen *screen)
   Window guard_window;
   gulong create_serial;
   MetaStackWindow stack_window;
-  
+
   attributes.event_mask = NoEventMask;
   attributes.override_redirect = True;
-  attributes.background_pixel = BlackPixel (xdisplay, screen->number);
 
   /* We have to call record_add() after we have the new window ID,
    * so save the serial for the CreateWindow request until then */
@@ -468,10 +467,10 @@ meta_screen_create_guard_window (Display *xdisplay, MetaScreen *screen)
 		   screen->rect.width,
 		   screen->rect.height,
 		   0, /* border width */
-		   CopyFromParent, /* depth */
-		   CopyFromParent, /* class */
+		   0, /* depth */
+		   InputOnly, /* class */
 		   CopyFromParent, /* visual */
-		   CWEventMask|CWOverrideRedirect|CWBackPixel,
+		   CWEventMask|CWOverrideRedirect,
 		   &attributes);
 
   {
