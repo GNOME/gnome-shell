@@ -921,7 +921,7 @@ shell_app_on_user_time_changed (MetaWindow *window,
 }
 
 static void
-shell_app_maybe_start_stop (ShellApp *app)
+shell_app_sync_running_state (ShellApp *app)
 {
   g_return_if_fail (app->running_state != NULL);
 
@@ -939,12 +939,16 @@ shell_app_on_skip_taskbar_changed (MetaWindow *window,
 {
   g_assert (app->running_state != NULL);
 
+  /* we rely on MetaWindow:skip-taskbar only being notified
+   * when it actually changes; when that assumption breaks,
+   * we'll have to track the "interesting" windows themselves
+   */
   if (meta_window_is_skip_taskbar (window))
     app->running_state->interesting_windows--;
   else
     app->running_state->interesting_windows++;
 
-  shell_app_maybe_start_stop (app);
+  shell_app_sync_running_state (app);
 }
 
 static void
@@ -1050,7 +1054,7 @@ _shell_app_add_window (ShellApp        *app,
 
   if (!meta_window_is_skip_taskbar (window))
     app->running_state->interesting_windows++;
-  shell_app_maybe_start_stop (app);
+  shell_app_sync_running_state (app);
 
   g_object_thaw_notify (G_OBJECT (app));
 
@@ -1074,7 +1078,7 @@ _shell_app_remove_window (ShellApp   *app,
 
   if (!meta_window_is_skip_taskbar (window))
     app->running_state->interesting_windows--;
-  shell_app_maybe_start_stop (app);
+  shell_app_sync_running_state (app);
 
   if (app->running_state && app->running_state->windows == NULL)
     g_clear_pointer (&app->running_state, unref_running_state);
