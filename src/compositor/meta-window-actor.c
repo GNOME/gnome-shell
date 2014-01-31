@@ -687,7 +687,7 @@ meta_window_actor_get_paint_volume (ClutterActor       *actor,
       gdk_rectangle_union (&bounds, &shadow_bounds, &bounds);
     }
 
-  if (priv->unobscured_region)
+  if (priv->unobscured_region && !clutter_actor_has_mapped_clones (actor))
     {
       cairo_rectangle_int_t unobscured_bounds;
       cairo_region_get_extents (priv->unobscured_region, &unobscured_bounds);
