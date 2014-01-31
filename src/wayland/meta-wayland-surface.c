@@ -172,11 +172,8 @@ meta_wayland_surface_frame (struct wl_client *client,
 
   callback = g_slice_new0 (MetaWaylandFrameCallback);
   callback->compositor = surface->compositor;
-  callback->resource = wl_resource_create (client,
-					   &wl_callback_interface, 1,
-					   callback_id);
-  wl_resource_set_user_data (callback->resource, callback);
-  wl_resource_set_destructor (callback->resource, destroy_frame_callback);
+  callback->resource = wl_resource_create (client, &wl_callback_interface, META_WL_CALLBACK_VERSION, callback_id);
+  wl_resource_set_implementation (callback->resource, NULL, callback, destroy_frame_callback);
 
   wl_list_insert (surface->pending.frame_callback_list.prev, &callback->link);
 }
@@ -610,7 +607,6 @@ static void
 destroy_surface_extension (MetaWaylandSurfaceExtension *extension)
 {
   wl_list_remove (&extension->surface_destroy_listener.link);
-  extension->surface_destroy_listener.notify = NULL;
   extension->resource = NULL;
 }
 
@@ -640,17 +636,15 @@ create_surface_extension (MetaWaylandSurfaceExtension *extension,
                           const void                  *implementation,
                           wl_resource_destroy_func_t   destructor)
 {
-  struct wl_resource *resource;
-
   if (extension->resource != NULL)
     return FALSE;
 
-  resource = wl_resource_create (client, interface, get_resource_version (master_resource, max_version), id);
-  wl_resource_set_implementation (resource, implementation, extension, destructor);
+  extension->resource = wl_resource_create (client, interface, get_resource_version (master_resource, max_version), id);
+  wl_resource_set_implementation (extension->resource, implementation, extension, destructor);
 
-  extension->resource = resource;
   extension->surface_destroy_listener.notify = extension_handle_surface_destroy;
   wl_resource_add_destroy_listener (surface_resource, &extension->surface_destroy_listener);
+
   return TRUE;
 }
 
