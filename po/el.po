@@ -7,16 +7,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell.po.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-10 21:15+0000\n"
-"PO-Revision-Date: 2014-01-11 14:55+0300\n"
+"POT-Creation-Date: 2014-01-29 20:43+0000\n"
+"PO-Revision-Date: 2014-01-30 20:22+0300\n"
 "Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
-"Language-Team: www.gnome.gr\n"
+"Language-Team: team@lists.gnome.gr\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Virtaal 0.7.0\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Project-Style: gnome\n"
@@ -111,30 +111,18 @@ msgstr ""
 "περιοχή αγαπημένων."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
-msgid "List of categories that should be displayed as folders"
-msgstr "Η λίστα των κατηγοριών που πρέπει να εμφανίζονται ως φάκελοι"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
-msgid ""
-"Each category name in this list will be represented as folder in the "
-"application view, rather than being displayed inline in the main view."
-msgstr ""
-"Το όνομα κάθε κατηγορίας σε αυτή τη λίστα θα αναπαριστάται ως φάκελος στην "
-"προβολή εφαρμογής, αντί να εμφανίζεται ενσωματωμένο στην κύρια προβολή."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
 msgstr "Ιστορικό του διαλόγου εντολών (Alt-F2)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid "History for the looking glass dialog"
 msgstr "Ιστορικό του διαλόγου καθρέπτη"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "Να εμφανίζεται πάντα το στοιχείο μενού 'Αποσύνδεση' στο μενού χρήστη."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
@@ -142,14 +130,14 @@ msgstr ""
 "Αυτό το κλειδί υπερισχύει της αυτόματης απόκρυψης του στοιχείου μενού "
 "'Αποσύνδεση' σε μεμονωμένο χρήστη, σε καταστάσεις μεμονωμένης συνεδρίας."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Εάν θα θυμάται τον κωδικό πρόσβασης για προσάρτηση κρυπτογραφημένων ή "
 "απομακρυσμένων συστημάτων αρχείων"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -162,71 +150,71 @@ msgstr ""
 "μην απαιτείται ο κωδικός πρόσβασης'. Αυτό το κλειδί ορίζει την προεπιλεγμένη "
 "κατάσταση του πλαισίου ελέγχου."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Show the week date in the calendar"
 msgstr "Εμφάνιση του αριθμού εβδομάδας στο ημερολόγιο"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid "If true, display the ISO week date in the calendar."
 msgstr ""
 "Αν αληθές, εμφανίζει τον αριθμό εβδομάδας σύμφωνα με το ISO στο ημερολόγιο."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Keybinding to open the application menu"
 msgstr "Συνδυασμός πλήκτρων για το άνοιγμα του μενού εφαρμογών"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "Keybinding to open the application menu."
 msgstr "Συνδυασμός πλήκτρων για το άνοιγμα του μενού εφαρμογών."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Συνδυασμός πλήκτρων για το άνοιγμα της προβολής \"Εμφάνιση εφαρμογών\""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "Ο συνδυασμός πλήκτρων για το άνοιγμα της προβολής \"Εμφάνιση εφαρμογών\" της "
 "επισκόπησης ενεργειών."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the overview"
 msgstr "Συνδυασμός πλήκτρων για το άνοιγμα της επισκόπησης"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to open the Activities Overview."
 msgstr "Συνδυασμός πλήκτρων για το άνοιγμα της επισκόπησης δραστηριοτήτων."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "Συνδυασμός πλήκτρων για εναλλαγή ορατότητας της περιοχής ειδοποιήσεων"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "Συνδυασμός πλήκτρων για εναλλαγή ορατότητας της περιοχής ειδοποιήσεων."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to focus the active notification"
 msgstr "Συνδυασμός πλήκτρων για εστίαση της ενεργής ειδοποίησης"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to focus the active notification."
 msgstr "Συνδυασμός πλήκτρων για εστίαση της ενεργής ειδοποίησης."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Which keyboard to use"
 msgstr "Ποιο πληκτρολόγιο θα χρησιμοποιηθεί"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "The type of keyboard to use."
 msgstr "Ο τύπος του πληκτρολογίου που θα χρησιμοποιηθεί."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "The application icon mode."
 msgstr "Η κατάσταση εικονιδίου εφαρμογής."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -237,22 +225,22 @@ msgstr ""
 "παραθύρου), 'app-icon-only' (εμφανίζει μόνο το εικονίδιο της εφαρμογής) ή "
 "'both' - και τα δύο."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Attach modal dialog to the parent window"
 msgstr "Προσάρτηση αποκλειστικού διαλόγου στο γονικό παράθυρο"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Αυτό το κλειδί υπερισχύει του κλειδιού στο org.gnome.mutter όταν εκτελείται "
 "το GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Διάταξη των κουμπιών στη γραμμή τίτλου"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
@@ -260,21 +248,21 @@ msgstr ""
 "Αυτό το κλειδί υπερισχύει του κλειδιού στο org.gnome.desktop.wm.preferences "
 "όταν εκτελείται το GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Ενεργοποίηση της προσάρτηση άκρων, όταν αφήνετε παράθυρα στις άκρες της "
 "οθόνης"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "Workspaces are managed dynamically"
 msgstr "Οι χώροι εργασίας διαχειρίζονται δυναμικά"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Workspaces only on primary monitor"
 msgstr "Χώροι εργασίας μόνο στην κύρια οθόνη"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Καθυστέρηση εστίασης αλλαγών στην κατάσταση ποντικιού μέχρι να σταματήσει να "
@@ -300,7 +288,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:357
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:726
+#: ../js/ui/status/network.js:757
 msgid "Cancel"
 msgstr "Ακύρωση"
 
@@ -358,30 +346,30 @@ msgstr "Δεν ήταν δυνατό να επεξεργαστεί η εντολ
 
 #: ../js/misc/util.js:156
 #, javascript-format
-msgid "Execution of '%s' failed:"
-msgstr "Η εκτέλεση του '%s' απέτυχε:"
+msgid "Execution of “%s” failed:"
+msgstr "Η εκτέλεση του “%s” απέτυχε:"
 
-#: ../js/ui/appDisplay.js:600
+#: ../js/ui/appDisplay.js:633
 msgid "Frequently used applications will appear here"
 msgstr "Οι συχνά χρησιμοποιούμενες εφαρμογές θα εμφανιστούν εδώ"
 
-#: ../js/ui/appDisplay.js:719
+#: ../js/ui/appDisplay.js:744
 msgid "Frequent"
 msgstr "Συχνά"
 
-#: ../js/ui/appDisplay.js:726
+#: ../js/ui/appDisplay.js:751
 msgid "All"
 msgstr "Όλα"
 
-#: ../js/ui/appDisplay.js:1546
+#: ../js/ui/appDisplay.js:1558
 msgid "New Window"
 msgstr "Νέο παράθυρο"
 
-#: ../js/ui/appDisplay.js:1549 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1580 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Αφαίρεση από τα αγαπημένα"
 
-#: ../js/ui/appDisplay.js:1550
+#: ../js/ui/appDisplay.js:1586
 msgid "Add to Favorites"
 msgstr "Προσθήκη στα αγαπημένα"
 
@@ -595,7 +583,7 @@ msgid "Type again:"
 msgstr "Πληκτρολογήστε ξανά:"
 
 #: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:295 ../js/ui/status/network.js:729
+#: ../js/ui/status/network.js:294 ../js/ui/status/network.js:760
 msgid "Connect"
 msgstr "Σύνδεση"
 
@@ -631,10 +619,10 @@ msgstr "Απαιτείται πιστοποίηση από το ασύρματο
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
-"'%s'."
+"“%s”."
 msgstr ""
-"Κωδικοί ή κλειδιά κρυπτογράφησης απαιτούνται για πρόσβαση στο ασύρματο "
-"δίκτυο '%s'."
+"Κωδικοί πρόσβασης ή κλειδιά κρυπτογράφησης απαιτούνται για πρόσβαση στο "
+"ασύρματο δίκτυο “%s”."
 
 #: ../js/ui/components/networkAgent.js:316
 msgid "Wired 802.1X authentication"
@@ -666,8 +654,8 @@ msgstr "Κωδικός δικτύου κινητής ευρυζωνικής σύ
 
 #: ../js/ui/components/networkAgent.js:339
 #, javascript-format
-msgid "A password is required to connect to '%s'."
-msgstr "Απαιτείται κωδικός για σύνδεση στο '%s'."
+msgid "A password is required to connect to “%s”."
+msgstr "Απαιτείται κωδικός πρόσβασης για σύνδεση στο “%s”."
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -714,35 +702,35 @@ msgid "Mute"
 msgstr "Σίγαση"
 
 #. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"*/
-#: ../js/ui/components/telepathyClient.js:941
+#: ../js/ui/components/telepathyClient.js:952
 msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgstr "<b>Χθες</b>, <b>%Ω:%Λ</b>"
 
 #. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30*/
-#: ../js/ui/components/telepathyClient.js:947
+#: ../js/ui/components/telepathyClient.js:958
 msgid "<b>%A</b>, <b>%H:%M</b>"
 msgstr "<b>%ΗΗΗΗ</b>, <b>%Ω:%Λ</b>"
 
 #. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
-#: ../js/ui/components/telepathyClient.js:952
+#: ../js/ui/components/telepathyClient.js:963
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
 msgstr "<b>%Η</b> <b>%ΜΜΜΜ</b>, <b>%Ω:%Λ</b>"
 
 #. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
-#: ../js/ui/components/telepathyClient.js:956
+#: ../js/ui/components/telepathyClient.js:967
 msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 msgstr "<b>%Η</b> <b>%ΜΜΜΜ</b> <b>%ΕΕΕΕ</b>, <b>%Ω:%Λ</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:987
+#: ../js/ui/components/telepathyClient.js:998
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "Ο %s είναι τώρα γνωστός ως %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1090
+#: ../js/ui/components/telepathyClient.js:1101
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "Πρόσκληση στο %s"
@@ -750,38 +738,38 @@ msgstr "Πρόσκληση στο %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1098
+#: ../js/ui/components/telepathyClient.js:1109
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "Ο %s σας προσκαλεί να μπείτε στο %s"
 
-#: ../js/ui/components/telepathyClient.js:1100
-#: ../js/ui/components/telepathyClient.js:1135
-#: ../js/ui/components/telepathyClient.js:1169
-#: ../js/ui/components/telepathyClient.js:1226
+#: ../js/ui/components/telepathyClient.js:1111
+#: ../js/ui/components/telepathyClient.js:1146
+#: ../js/ui/components/telepathyClient.js:1180
+#: ../js/ui/components/telepathyClient.js:1237
 msgid "Decline"
 msgstr "Απόρριψη"
 
-#: ../js/ui/components/telepathyClient.js:1106
-#: ../js/ui/components/telepathyClient.js:1175
-#: ../js/ui/components/telepathyClient.js:1231
+#: ../js/ui/components/telepathyClient.js:1117
+#: ../js/ui/components/telepathyClient.js:1186
+#: ../js/ui/components/telepathyClient.js:1242
 msgid "Accept"
 msgstr "Αποδοχή"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1125
+#: ../js/ui/components/telepathyClient.js:1136
 #, javascript-format
 msgid "Video call from %s"
 msgstr "Βιντεοκλήση από %s"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1128
+#: ../js/ui/components/telepathyClient.js:1139
 #, javascript-format
 msgid "Call from %s"
 msgstr "Κλήση από %s"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1142
+#: ../js/ui/components/telepathyClient.js:1153
 msgid "Answer"
 msgstr "Απάντηση"
 
@@ -790,112 +778,112 @@ msgstr "Απάντηση"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1163
+#: ../js/ui/components/telepathyClient.js:1174
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "Ο %s σας στέλνει το %s"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1192
+#: ../js/ui/components/telepathyClient.js:1203
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "Ο %s ζητάει άδεια για να βλέπει πότε είστε συνδεδεμένος"
 
-#: ../js/ui/components/telepathyClient.js:1277
+#: ../js/ui/components/telepathyClient.js:1288
 msgid "Network error"
 msgstr "Σφάλμα δικτύου"
 
-#: ../js/ui/components/telepathyClient.js:1279
+#: ../js/ui/components/telepathyClient.js:1290
 msgid "Authentication failed"
 msgstr "Η πιστοποίηση απέτυχε"
 
-#: ../js/ui/components/telepathyClient.js:1281
+#: ../js/ui/components/telepathyClient.js:1292
 msgid "Encryption error"
 msgstr "Σφάλμα κρυπτογράφησης"
 
-#: ../js/ui/components/telepathyClient.js:1283
+#: ../js/ui/components/telepathyClient.js:1294
 msgid "Certificate not provided"
 msgstr "Δεν υπάρχει πιστοποιητικό"
 
-#: ../js/ui/components/telepathyClient.js:1285
+#: ../js/ui/components/telepathyClient.js:1296
 msgid "Certificate untrusted"
 msgstr "Μη έμπιστο πιστοποιητικό"
 
-#: ../js/ui/components/telepathyClient.js:1287
+#: ../js/ui/components/telepathyClient.js:1298
 msgid "Certificate expired"
 msgstr "Ληγμένο πιστοποιητικό"
 
-#: ../js/ui/components/telepathyClient.js:1289
+#: ../js/ui/components/telepathyClient.js:1300
 msgid "Certificate not activated"
 msgstr "Το πιστοποιητικό δεν ενεργοποιήθηκε"
 
-#: ../js/ui/components/telepathyClient.js:1291
+#: ../js/ui/components/telepathyClient.js:1302
 msgid "Certificate hostname mismatch"
 msgstr "Αναντιστοιχία ονόματος κεντρικού υπολογιστή στο πιστοποιητικό"
 
-#: ../js/ui/components/telepathyClient.js:1293
+#: ../js/ui/components/telepathyClient.js:1304
 msgid "Certificate fingerprint mismatch"
 msgstr "Αναντιστοιχία αποτυπώματος πιστοποιητικού"
 
-#: ../js/ui/components/telepathyClient.js:1295
+#: ../js/ui/components/telepathyClient.js:1306
 msgid "Certificate self-signed"
 msgstr "Αυτο-υπογεγραμμένο πιστοποιητικό"
 
-#: ../js/ui/components/telepathyClient.js:1297
+#: ../js/ui/components/telepathyClient.js:1308
 msgid "Status is set to offline"
 msgstr "Η κατάσταση έχει ορισθεί σε εκτός σύνδεσης"
 
-#: ../js/ui/components/telepathyClient.js:1299
+#: ../js/ui/components/telepathyClient.js:1310
 msgid "Encryption is not available"
 msgstr "Δεν υπάρχει διαθέσιμη κρυπτογράφηση"
 
-#: ../js/ui/components/telepathyClient.js:1301
+#: ../js/ui/components/telepathyClient.js:1312
 msgid "Certificate is invalid"
 msgstr "Το πιστοποιητικό είναι άκυρο"
 
-#: ../js/ui/components/telepathyClient.js:1303
+#: ../js/ui/components/telepathyClient.js:1314
 msgid "Connection has been refused"
 msgstr "Άρνηση σύνδεσης"
 
-#: ../js/ui/components/telepathyClient.js:1305
+#: ../js/ui/components/telepathyClient.js:1316
 msgid "Connection can't be established"
 msgstr "Δεν είναι δυνατή η σύνδεση"
 
-#: ../js/ui/components/telepathyClient.js:1307
+#: ../js/ui/components/telepathyClient.js:1318
 msgid "Connection has been lost"
 msgstr "Η σύνδεση χάθηκε"
 
-#: ../js/ui/components/telepathyClient.js:1309
+#: ../js/ui/components/telepathyClient.js:1320
 msgid "This account is already connected to the server"
 msgstr "Αυτός ο λογαριασμός είναι ήδη συνδεδεμένος στον εξυπηρετητή"
 
-#: ../js/ui/components/telepathyClient.js:1311
+#: ../js/ui/components/telepathyClient.js:1322
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Η σύνδεση έχει αντικατασταθεί από μια νέα σύνδεση που χρησιμοποιεί τον ίδιο "
 "πόρο"
 
-#: ../js/ui/components/telepathyClient.js:1313
+#: ../js/ui/components/telepathyClient.js:1324
 msgid "The account already exists on the server"
 msgstr "Ο λογαριασμός υπάρχει ήδη στον εξυπηρετητή"
 
-#: ../js/ui/components/telepathyClient.js:1315
+#: ../js/ui/components/telepathyClient.js:1326
 msgid "Server is currently too busy to handle the connection"
 msgstr "Ο εξυπηρετητής είναι πολύ απασχολημένος ώστε να χειριστεί τη σύνδεση"
 
-#: ../js/ui/components/telepathyClient.js:1317
+#: ../js/ui/components/telepathyClient.js:1328
 msgid "Certificate has been revoked"
 msgstr "Το πιστοποιητικό έχει ανακληθεί"
 
-#: ../js/ui/components/telepathyClient.js:1319
+#: ../js/ui/components/telepathyClient.js:1330
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Το πιστοποιητικό χρησιμοποιεί ένα μη ασφαλή αλγόριθμο αποτυπώματος ή είναι "
 "αδύναμο κρυπτογραφικά"
 
-#: ../js/ui/components/telepathyClient.js:1321
+#: ../js/ui/components/telepathyClient.js:1332
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -904,22 +892,22 @@ msgstr ""
 "πιστοποιητικού του εξυπηρετητή υπερβαίνει τα όρια που επιτρέπει η βιβλιοθήκη "
 "κρυπτογραφίας"
 
-#: ../js/ui/components/telepathyClient.js:1323
+#: ../js/ui/components/telepathyClient.js:1334
 msgid "Internal error"
 msgstr "Εσωτερικό σφάλμα"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1333
+#: ../js/ui/components/telepathyClient.js:1344
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Αδυναμία σύνδεσης με %s"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1349
 msgid "View account"
 msgstr "Προβολή λογαριασμού"
 
-#: ../js/ui/components/telepathyClient.js:1370
+#: ../js/ui/components/telepathyClient.js:1381
 msgid "Unknown reason"
 msgstr "Άγνωστος λόγος"
 
@@ -1067,8 +1055,8 @@ msgstr "Εγκατάσταση"
 
 #: ../js/ui/extensionDownloader.js:204
 #, javascript-format
-msgid "Download and install '%s' from extensions.gnome.org?"
-msgstr "Λήψη και εγκατάσταση '%s' από το extensions.gnome.org;"
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr "Λήψη και εγκατάσταση του “%s” από το extensions.gnome.org;"
 
 #: ../js/ui/keyboard.js:641 ../js/ui/status/keyboard.js:335
 msgid "Keyboard"
@@ -1100,7 +1088,7 @@ msgstr "Ενεργοποιημένο"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:472
+#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:518
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
@@ -1125,48 +1113,48 @@ msgstr "Προβολή πηγής"
 msgid "Web Page"
 msgstr "Ιστοσελίδα"
 
-#: ../js/ui/messageTray.js:1310
+#: ../js/ui/messageTray.js:1312
 msgid "Open"
 msgstr "Άνοιγμα"
 
-#: ../js/ui/messageTray.js:1317
+#: ../js/ui/messageTray.js:1319
 msgid "Remove"
 msgstr "Αφαίρεση"
 
-#: ../js/ui/messageTray.js:1614
+#: ../js/ui/messageTray.js:1616
 msgid "Notifications"
 msgstr "Ειδοποιήσεις"
 
-#: ../js/ui/messageTray.js:1621
+#: ../js/ui/messageTray.js:1623
 msgid "Clear Messages"
 msgstr "Καθαρισμός μηνυμάτων"
 
-#: ../js/ui/messageTray.js:1640
+#: ../js/ui/messageTray.js:1642
 msgid "Notification Settings"
 msgstr "Ρυθμίσεις ειδοποιήσεων"
 
-#: ../js/ui/messageTray.js:1693
+#: ../js/ui/messageTray.js:1695
 msgid "Tray Menu"
 msgstr "Μενού περιοχής ειδοποιήσεων"
 
-#: ../js/ui/messageTray.js:1910
+#: ../js/ui/messageTray.js:1912
 msgid "No Messages"
 msgstr "Κανένα μήνυμα"
 
-#: ../js/ui/messageTray.js:1948
+#: ../js/ui/messageTray.js:1950
 msgid "Message Tray"
 msgstr "Περιοχή ειδοποιήσεων μηνυμάτων"
 
-#: ../js/ui/messageTray.js:2931
+#: ../js/ui/messageTray.js:2934
 msgid "System Information"
 msgstr "Πληροφορίες συστήματος"
 
-#: ../js/ui/notificationDaemon.js:515 ../src/shell-app.c:397
+#: ../js/ui/notificationDaemon.js:515 ../src/shell-app.c:399
 msgctxt "program"
 msgid "Unknown"
 msgstr "Άγνωστο"
 
-#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:153
+#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:151
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1199,7 +1187,7 @@ msgstr "Έξοδος"
 msgid "Activities"
 msgstr "Δραστηριότητες"
 
-#: ../js/ui/panel.js:903
+#: ../js/ui/panel.js:905
 msgid "Top Bar"
 msgstr "Πάνω μπάρα"
 
@@ -1217,30 +1205,30 @@ msgstr "Κλείσιμο"
 
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:89
+#: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:155
+#: ../js/ui/screenShield.js:153
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d νέα ειδοποίηση"
 msgstr[1] "%d νέες ειδοποιήσεις"
 
-#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "Κλείδωμα"
 
-#: ../js/ui/screenShield.js:708
+#: ../js/ui/screenShield.js:707
 msgid "GNOME needs to lock the screen"
 msgstr "Το GNOME χρειάζεται να κλειδώσει την οθόνη"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1302
+#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1301
 msgid "Unable to lock"
 msgstr "Αδυναμία κλειδώματος"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1303
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1302
 msgid "Lock was blocked by an application"
 msgstr "Το κλείδωμα εμποδίστηκε από μια εφαρμογή"
 
@@ -1325,7 +1313,7 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:1083 ../js/ui/status/rfkill.js:48
+#: ../js/ui/status/network.js:1108 ../js/ui/status/rfkill.js:48
 msgid "Turn Off"
 msgstr "Σβήσιμο"
 
@@ -1352,95 +1340,99 @@ msgstr "Εμφάνιση διάταξης πληκτρολογίου"
 msgid "<unknown>"
 msgstr "<άγνωστο>"
 
-#: ../js/ui/status/network.js:222 ../js/ui/status/network.js:379
-#: ../js/ui/status/network.js:1104
+#: ../js/ui/status/network.js:221 ../js/ui/status/network.js:383
+#: ../js/ui/status/network.js:1129
 msgid "Off"
 msgstr "Εκτός σύνδεσης"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:385
+#: ../js/ui/status/network.js:389
 msgid "unmanaged"
 msgstr "μη διαχειριζόμενες"
 
-#: ../js/ui/status/network.js:387
+#: ../js/ui/status/network.js:391
 msgid "disconnecting..."
 msgstr "αποσύνδεση..."
 
-#: ../js/ui/status/network.js:393 ../js/ui/status/network.js:1158
+#: ../js/ui/status/network.js:397 ../js/ui/status/network.js:1183
 msgid "connecting..."
 msgstr "σύνδεση..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:396 ../js/ui/status/network.js:1161
+#: ../js/ui/status/network.js:400 ../js/ui/status/network.js:1186
 msgid "authentication required"
 msgstr "απαιτείται πιστοποίηση"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:404
+#: ../js/ui/status/network.js:408
 msgid "firmware missing"
 msgstr "έλλειψη firmware"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:408
+#: ../js/ui/status/network.js:412
 msgid "unavailable"
 msgstr "μη διαθέσιμο"
 
-#: ../js/ui/status/network.js:410 ../js/ui/status/network.js:1163
+#: ../js/ui/status/network.js:414 ../js/ui/status/network.js:1188
 msgid "connection failed"
 msgstr "αποτυχία σύνδεσης"
 
-#: ../js/ui/status/network.js:426 ../js/ui/status/network.js:512
+#: ../js/ui/status/network.js:430
+msgid "Wired Settings"
+msgstr "Ενσύρματες ρυθμίσεις"
+
+#: ../js/ui/status/network.js:472 ../js/ui/status/network.js:558
 msgid "Mobile Broadband Settings"
 msgstr "Ρυθμίσεις Κινήτης Ευρυζωνικής"
 
-#: ../js/ui/status/network.js:468 ../js/ui/status/network.js:1102
+#: ../js/ui/status/network.js:514 ../js/ui/status/network.js:1127
 msgid "Hardware Disabled"
 msgstr "Το Υλικό Απενεργοποιήθηκε"
 
-#: ../js/ui/status/network.js:694
+#: ../js/ui/status/network.js:725
 msgid "Wi-Fi Networks"
 msgstr "Δίκτυα Wi-Fi"
 
-#: ../js/ui/status/network.js:696
+#: ../js/ui/status/network.js:727
 msgid "Select a network"
 msgstr "Επιλογή δικτύου"
 
-#: ../js/ui/status/network.js:720
+#: ../js/ui/status/network.js:751
 msgid "No Networks"
 msgstr "Χωρίς δίκτυα"
 
-#: ../js/ui/status/network.js:989
+#: ../js/ui/status/network.js:1014
 msgid "Select Network"
 msgstr "Επιλογή δικτύου"
 
-#: ../js/ui/status/network.js:995
+#: ../js/ui/status/network.js:1020
 msgid "Wi-Fi Settings"
 msgstr "Ρυθμίσεις Wi-Fi"
 
-#: ../js/ui/status/network.js:1083
+#: ../js/ui/status/network.js:1108
 msgid "Turn On"
 msgstr "Ενεργοποίηση"
 
-#: ../js/ui/status/network.js:1106
+#: ../js/ui/status/network.js:1131
 msgid "Not Connected"
 msgstr "Χωρίς σύνδεση"
 
-#: ../js/ui/status/network.js:1226
+#: ../js/ui/status/network.js:1251
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1366
+#: ../js/ui/status/network.js:1394
 msgid "Network Manager"
 msgstr "Διαχειριστής δικτύου"
 
-#: ../js/ui/status/network.js:1405
+#: ../js/ui/status/network.js:1433
 msgid "Connection failed"
 msgstr "Αποτυχία σύνδεσης"
 
-#: ../js/ui/status/network.js:1406
+#: ../js/ui/status/network.js:1434
 msgid "Activation of network connection failed"
 msgstr "Απέτυχε η ενεργοποίηση της σύνδεσης δικτύου"
 
@@ -1536,8 +1528,8 @@ msgstr "Αναζήτηση"
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, javascript-format
-msgid "'%s' is ready"
-msgstr "Το '%s' είναι έτοιμο"
+msgid "“%s” is ready"
+msgstr "Το “%s” είναι έτοιμο"
 
 #: ../js/ui/windowManager.js:56
 msgid "Do you want to keep these display settings?"
@@ -1606,10 +1598,10 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Λίστα πιθανών καταστάσεων λειτουργίας"
 
-#: ../src/shell-app.c:640
+#: ../src/shell-app.c:642
 #, c-format
-msgid "Failed to launch '%s'"
-msgstr "Αποτυχία εκκίνησης '%s'"
+msgid "Failed to launch “%s”"
+msgstr "Αποτυχία εκκίνησης του “%s”"
 
 #: ../src/shell-keyring-prompt.c:714
 msgid "Passwords do not match."
@@ -1622,6 +1614,17 @@ msgstr "Ο κωδικός δεν μπορεί να είναι κενός"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Το παράθυρο πιστοποίησης έκλεισε από τον χρήστη"
+
+#~ msgid "List of categories that should be displayed as folders"
+#~ msgstr "Η λίστα των κατηγοριών που πρέπει να εμφανίζονται ως φάκελοι"
+
+#~ msgid ""
+#~ "Each category name in this list will be represented as folder in the "
+#~ "application view, rather than being displayed inline in the main view."
+#~ msgstr ""
+#~ "Το όνομα κάθε κατηγορίας σε αυτή τη λίστα θα αναπαριστάται ως φάκελος "
+#~ "στην προβολή εφαρμογής, αντί να εμφανίζεται ενσωματωμένο στην κύρια "
+#~ "προβολή."
 
 #~ msgid "Authorization request from %s"
 #~ msgstr "Αίτηση εξουσιοδότησης από %s"
