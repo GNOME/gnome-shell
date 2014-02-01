@@ -777,25 +777,27 @@ is_our_xwindow (MetaDisplay       *display,
                 Window             xwindow,
                 XWindowAttributes *attrs)
 {
-  /* A black list of override redirect windows that we don't need to manage: */
-  if (attrs->override_redirect &&
-      (xwindow == screen->no_focus_window ||
-       xwindow == screen->flash_window ||
-       xwindow == screen->wm_sn_selection_window ||
-       attrs->class == InputOnly ||
-       /* any windows created via meta_create_offscreen_window: */
-       (attrs->x == -100 && attrs->y == -100
-	&& attrs->width == 1 && attrs->height == 1) ||
-       xwindow == screen->wm_cm_selection_window ||
-       xwindow == screen->guard_window ||
-       (display->compositor &&
-        xwindow == XCompositeGetOverlayWindow (display->xdisplay,
-					       screen->xroot)
-       )
-      )
-     ) {
+  if (xwindow == screen->no_focus_window)
     return TRUE;
-  }
+
+  if (xwindow == screen->flash_window)
+    return TRUE;
+
+  if (xwindow == screen->wm_sn_selection_window)
+    return TRUE;
+
+  if (xwindow == screen->wm_cm_selection_window)
+    return TRUE;
+
+  if (xwindow == screen->guard_window)
+    return TRUE;
+
+  if (display->compositor && xwindow == XCompositeGetOverlayWindow (display->xdisplay, screen->xroot))
+    return TRUE;
+
+  /* Any windows created via meta_create_offscreen_window */
+  if (attrs->override_redirect && attrs->x == -100 && attrs->height == -100 && attrs->width == 1 && attrs->height == 1)
+    return TRUE;
 
   return FALSE;
 }
