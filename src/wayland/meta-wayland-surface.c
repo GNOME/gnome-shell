@@ -434,12 +434,12 @@ subsurface_surface_commit (MetaWaylandSurface *surface)
 }
 
 static void
-subsurface_parent_surface_commited (MetaWaylandSurface *surface);
+subsurface_parent_surface_committed (MetaWaylandSurface *surface);
 
 static void
 parent_surface_committed (gpointer data, gpointer user_data)
 {
-  subsurface_parent_surface_commited (data);
+  subsurface_parent_surface_committed (data);
 }
 
 static void
@@ -1085,7 +1085,7 @@ bind_gtk_shell (struct wl_client *client,
 }
 
 static void
-subsurface_parent_surface_commited (MetaWaylandSurface *surface)
+subsurface_parent_surface_committed (MetaWaylandSurface *surface)
 {
   MetaWaylandCompositor *compositor = surface->compositor;
   MetaWaylandDoubleBufferedState *pending_surface_state =
@@ -1295,7 +1295,7 @@ wl_subsurface_set_desync (struct wl_client *client,
     wl_container_of (subsurface, surface, subsurface);
 
   if (surface->sub.synchronous)
-    subsurface_parent_surface_commited (surface);
+    subsurface_parent_surface_committed (surface);
 
   surface->sub.synchronous = FALSE;
 }
