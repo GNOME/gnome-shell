@@ -518,14 +518,12 @@ meta_wayland_surface_free (MetaWaylandSurface *surface)
 
   meta_wayland_buffer_reference (&surface->buffer_ref, NULL);
   double_buffered_state_destroy (&surface->pending);
-
-  meta_wayland_compositor_repick (compositor);
-
   g_object_unref (surface->surface_actor);
-
   if (surface->resource)
     wl_resource_set_user_data (surface->resource, NULL);
   g_slice_free (MetaWaylandSurface, surface);
+
+  meta_wayland_compositor_repick (compositor);
 }
 
 static void
