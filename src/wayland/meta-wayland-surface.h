@@ -39,13 +39,7 @@ struct _MetaWaylandBuffer
 
   CoglTexture *texture;
   int32_t width, height;
-  uint32_t busy_count;
-};
-
-struct _MetaWaylandBufferReference
-{
-  MetaWaylandBuffer *buffer;
-  struct wl_listener destroy_listener;
+  uint32_t ref_count;
 };
 
 typedef struct
@@ -77,7 +71,7 @@ struct _MetaWaylandSurface
 {
   struct wl_resource *resource;
   MetaWaylandCompositor *compositor;
-  MetaWaylandBufferReference buffer_ref;
+  MetaWaylandBuffer *buffer;
   MetaSurfaceActor *surface_actor;
   MetaWindow *window;
   MetaWaylandSurfaceExtension xdg_surface;

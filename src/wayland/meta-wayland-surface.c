@@ -72,6 +72,22 @@ typedef struct
 } MetaWaylandSubsurfacePlacementOp;
 
 static void
+surface_set_buffer (MetaWaylandSurface *surface,
+                    MetaWaylandBuffer  *buffer)
+{
+  if (surface->buffer == buffer)
+    return;
+
+  if (surface->buffer)
+    meta_wayland_buffer_unref (surface->buffer);
+
+  surface->buffer = buffer;
+
+  if (surface->buffer)
+    meta_wayland_buffer_ref (surface->buffer);
+}
+
+static void
 surface_process_damage (MetaWaylandSurface *surface,
                         cairo_region_t *region)
 {
@@ -298,8 +314,8 @@ toplevel_surface_commit (MetaWaylandSurface             *surface,
           int new_width;
           int new_height;
 
-          new_width = surface->buffer_ref.buffer->width;
-          new_height = surface->buffer_ref.buffer->height;
+          new_width = surface->buffer->width;
+          new_height = surface->buffer->height;
           if (new_width != window->rect.width ||
               new_height != window->rect.height ||
               pending->dx != 0 ||
@@ -449,9 +465,9 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
   gboolean buffer_changed = FALSE;
 
   /* wl_surface.attach */
-  if (pending->newly_attached && pending->buffer != surface->buffer_ref.buffer)
+  if (pending->newly_attached && surface->buffer != pending->buffer)
     {
-      meta_wayland_buffer_reference (&surface->buffer_ref, pending->buffer);
+      surface_set_buffer (surface, pending->buffer);
       buffer_changed = TRUE;
     }
 
@@ -528,7 +544,7 @@ meta_wayland_surface_free (MetaWaylandSurface *surface)
 
   compositor->surfaces = g_list_remove (compositor->surfaces, surface);
 
-  meta_wayland_buffer_reference (&surface->buffer_ref, NULL);
+  surface_set_buffer (surface, NULL);
   double_buffered_state_destroy (&surface->pending);
   g_object_unref (surface->surface_actor);
   if (surface->resource)

@@ -72,8 +72,8 @@ meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat)
   if (seat->cursor_tracker == NULL)
     return;
 
-  if (seat->cursor_surface && seat->cursor_surface->buffer_ref.buffer)
-    buffer = seat->cursor_surface->buffer_ref.buffer->resource;
+  if (seat->cursor_surface && seat->cursor_surface->buffer)
+    buffer = seat->cursor_surface->buffer->resource;
   else
     buffer = NULL;
 

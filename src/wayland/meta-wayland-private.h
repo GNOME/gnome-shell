@@ -102,10 +102,9 @@ gboolean                meta_wayland_compositor_handle_event    (MetaWaylandComp
 MetaLauncher           *meta_wayland_compositor_get_launcher    (MetaWaylandCompositor *compositor);
 gboolean                meta_wayland_compositor_is_native       (MetaWaylandCompositor *compositor);
 
-MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource *resource);
-
-void                    meta_wayland_buffer_reference           (MetaWaylandBufferReference *ref,
-								 MetaWaylandBuffer          *buffer);
+MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource    *resource);
+void                    meta_wayland_buffer_ref                 (MetaWaylandBuffer     *buffer);
+void                    meta_wayland_buffer_unref               (MetaWaylandBuffer     *buffer);
 
 void                    meta_wayland_compositor_update          (MetaWaylandCompositor *compositor,
                                                                  const ClutterEvent    *event);

@@ -138,6 +138,24 @@ meta_wayland_buffer_destroy_handler (struct wl_listener *listener,
   g_slice_free (MetaWaylandBuffer, buffer);
 }
 
+void
+meta_wayland_buffer_ref (MetaWaylandBuffer *buffer)
+{
+  buffer->ref_count++;
+}
+
+void
+meta_wayland_buffer_unref (MetaWaylandBuffer *buffer)
+{
+  buffer->ref_count--;
+  if (buffer->ref_count == 0)
+    {
+      g_clear_pointer (&buffer->texture, cogl_object_unref);
+      g_assert (wl_resource_get_client (buffer->resource));
+      wl_resource_queue_event (buffer->resource, WL_BUFFER_RELEASE);
+    }
+}
+
 MetaWaylandBuffer *
 meta_wayland_buffer_from_resource (struct wl_resource *resource)
 {
@@ -163,46 +181,6 @@ meta_wayland_buffer_from_resource (struct wl_resource *resource)
     }
 
   return buffer;
-}
-
-static void
-meta_wayland_buffer_reference_handle_destroy (struct wl_listener *listener,
-                                              void *data)
-{
-  MetaWaylandBufferReference *ref =
-    wl_container_of (listener, ref, destroy_listener);
-
-  g_assert (data == ref->buffer);
-
-  ref->buffer = NULL;
-}
-
-void
-meta_wayland_buffer_reference (MetaWaylandBufferReference *ref,
-                               MetaWaylandBuffer *buffer)
-{
-  if (ref->buffer && buffer != ref->buffer)
-    {
-      ref->buffer->busy_count--;
-
-      if (ref->buffer->busy_count == 0)
-        {
-	  g_clear_pointer (&ref->buffer->texture, cogl_object_unref);
-          g_assert (wl_resource_get_client (ref->buffer->resource));
-          wl_resource_queue_event (ref->buffer->resource, WL_BUFFER_RELEASE);
-        }
-
-      wl_list_remove (&ref->destroy_listener.link);
-    }
-
-  if (buffer && buffer != ref->buffer)
-    {
-      buffer->busy_count++;
-      wl_signal_add (&buffer->destroy_signal, &ref->destroy_listener);
-    }
-
-  ref->buffer = buffer;
-  ref->destroy_listener.notify = meta_wayland_buffer_reference_handle_destroy;
 }
 
 void
