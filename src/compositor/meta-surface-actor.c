@@ -10,30 +10,38 @@
  */
 
 #include <config.h>
-#include <clutter/clutter.h>
-#include <cogl/cogl-wayland-server.h>
-#include <cogl/cogl-texture-pixmap-x11.h>
-#include <meta/meta-shaped-texture.h>
+
 #include "meta-surface-actor.h"
+
+#include <clutter/clutter.h>
+#include <meta/meta-shaped-texture.h>
 #include "meta-wayland-private.h"
 #include "meta-cullable.h"
-
 #include "meta-shaped-texture-private.h"
 
 struct _MetaSurfaceActorPrivate
 {
-  MetaWaylandSurface *surface;
-
   MetaShapedTexture *texture;
-  MetaWaylandBuffer *buffer;
 
   cairo_region_t *input_region;
+
+  /* Freeze/thaw accounting */
+  guint freeze_count;
+  guint needs_damage_all : 1;
 };
 
 static void cullable_iface_init (MetaCullableInterface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (MetaSurfaceActor, meta_surface_actor, CLUTTER_TYPE_ACTOR,
-                         G_IMPLEMENT_INTERFACE (META_TYPE_CULLABLE, cullable_iface_init));
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (MetaSurfaceActor, meta_surface_actor, CLUTTER_TYPE_ACTOR,
+                                  G_IMPLEMENT_INTERFACE (META_TYPE_CULLABLE, cullable_iface_init));
+
+enum {
+  REPAINT_SCHEDULED,
+
+  LAST_SIGNAL,
+};
+
+static guint signals[LAST_SIGNAL];
 
 gboolean
 meta_surface_actor_get_unobscured_bounds (MetaSurfaceActor      *self,
@@ -114,6 +122,13 @@ meta_surface_actor_class_init (MetaSurfaceActorClass *klass)
   object_class->dispose = meta_surface_actor_dispose;
   actor_class->pick = meta_surface_actor_pick;
 
+  signals[REPAINT_SCHEDULED] = g_signal_new ("repaint-scheduled",
+                                             G_TYPE_FROM_CLASS (object_class),
+                                             G_SIGNAL_RUN_LAST,
+                                             0,
+                                             NULL, NULL, NULL,
+                                             G_TYPE_NONE, 0);
+
   g_type_class_add_private (klass, sizeof (MetaSurfaceActorPrivate));
 }
 
@@ -164,51 +179,14 @@ meta_surface_actor_get_texture (MetaSurfaceActor *self)
   return self->priv->texture;
 }
 
-static void
-update_area (MetaSurfaceActor *self,
-             int x, int y, int width, int height)
+void
+meta_surface_actor_update_area (MetaSurfaceActor *self,
+                                int x, int y, int width, int height)
 {
   MetaSurfaceActorPrivate *priv = self->priv;
 
-  if (meta_is_wayland_compositor ())
-    {
-      struct wl_resource *resource = priv->buffer->resource;
-      struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (resource);
-
-      if (shm_buffer)
-        {
-          CoglTexture2D *texture = COGL_TEXTURE_2D (priv->buffer->texture);
-          cogl_wayland_texture_set_region_from_shm_buffer (texture, x, y, width, height, shm_buffer, x, y, 0, NULL);
-        }
-    }
-  else
-    {
-      CoglTexturePixmapX11 *texture = COGL_TEXTURE_PIXMAP_X11 (meta_shaped_texture_get_texture (priv->texture));
-      cogl_texture_pixmap_x11_update_area (texture, x, y, width, height);
-    }
-}
-
-gboolean
-meta_surface_actor_damage_all (MetaSurfaceActor *self)
-{
-  MetaSurfaceActorPrivate *priv = self->priv;
-  CoglTexture *texture = meta_shaped_texture_get_texture (priv->texture);
-
-  update_area (self, 0, 0, cogl_texture_get_width (texture), cogl_texture_get_height (texture));
-  return meta_shaped_texture_update_area (priv->texture, 0, 0, cogl_texture_get_width (texture), cogl_texture_get_height (texture));
-}
-
-gboolean
-meta_surface_actor_damage_area (MetaSurfaceActor *self,
-                                int               x,
-                                int               y,
-                                int               width,
-                                int               height)
-{
-  MetaSurfaceActorPrivate *priv = self->priv;
-
-  update_area (self, x, y, width, height);
-  return meta_shaped_texture_update_area (priv->texture, x, y, width, height);
+  if (meta_shaped_texture_update_area (priv->texture, x, y, width, height))
+    g_signal_emit (self, signals[REPAINT_SCHEDULED], 0);
 }
 
 gboolean
@@ -216,27 +194,6 @@ meta_surface_actor_is_obscured (MetaSurfaceActor *self)
 {
   MetaSurfaceActorPrivate *priv = self->priv;
   return meta_shaped_texture_is_obscured (priv->texture);
-}
-
-void
-meta_surface_actor_attach_wayland_buffer (MetaSurfaceActor *self,
-                                          MetaWaylandBuffer *buffer)
-{
-  MetaSurfaceActorPrivate *priv = self->priv;
-  priv->buffer = buffer;
-
-  if (buffer)
-    meta_shaped_texture_set_texture (priv->texture, buffer->texture);
-  else
-    meta_shaped_texture_set_texture (priv->texture, NULL);
-}
-
-void
-meta_surface_actor_set_texture (MetaSurfaceActor *self,
-                                CoglTexture      *texture)
-{
-  MetaSurfaceActorPrivate *priv = self->priv;
-  meta_shaped_texture_set_texture (priv->texture, texture);
 }
 
 void
@@ -262,20 +219,114 @@ meta_surface_actor_set_opaque_region (MetaSurfaceActor *self,
   meta_shaped_texture_set_opaque_region (priv->texture, region);
 }
 
-MetaWaylandSurface *
-meta_surface_actor_get_surface (MetaSurfaceActor *self)
+static gboolean
+is_frozen (MetaSurfaceActor *self)
 {
   MetaSurfaceActorPrivate *priv = self->priv;
-  return priv->surface;
+  return (priv->freeze_count > 0);
 }
 
-MetaSurfaceActor *
-meta_surface_actor_new (MetaWaylandSurface *surface)
+void
+meta_surface_actor_process_damage (MetaSurfaceActor *self,
+                                   int x, int y, int width, int height)
 {
-  MetaSurfaceActor *self = g_object_new (META_TYPE_SURFACE_ACTOR, NULL);
   MetaSurfaceActorPrivate *priv = self->priv;
 
-  priv->surface = surface;
+  if (is_frozen (self))
+    {
+      /* The window is frozen due to an effect in progress: we ignore damage
+       * here on the off chance that this will stop the corresponding
+       * texture_from_pixmap from being update.
+       *
+       * needs_damage_all tracks that some unknown damage happened while the
+       * window was frozen so that when the window becomes unfrozen we can
+       * issue a full window update to cover any lost damage.
+       *
+       * It should be noted that this is an unreliable mechanism since it's
+       * quite likely that drivers will aim to provide a zero-copy
+       * implementation of the texture_from_pixmap extension and in those cases
+       * any drawing done to the window is always immediately reflected in the
+       * texture regardless of damage event handling.
+       */
+      priv->needs_damage_all = TRUE;
+      return;
+    }
 
-  return self;
+  META_SURFACE_ACTOR_GET_CLASS (self)->process_damage (self, x, y, width, height);
+}
+
+void
+meta_surface_actor_pre_paint (MetaSurfaceActor *self)
+{
+  META_SURFACE_ACTOR_GET_CLASS (self)->pre_paint (self);
+}
+
+gboolean
+meta_surface_actor_is_argb32 (MetaSurfaceActor *self)
+{
+  return META_SURFACE_ACTOR_GET_CLASS (self)->is_argb32 (self);
+}
+
+gboolean
+meta_surface_actor_is_visible (MetaSurfaceActor *self)
+{
+  return META_SURFACE_ACTOR_GET_CLASS (self)->is_visible (self);
+}
+
+void
+meta_surface_actor_freeze (MetaSurfaceActor *self)
+{
+  MetaSurfaceActorPrivate *priv = self->priv;
+
+  priv->freeze_count ++;
+}
+
+void
+meta_surface_actor_thaw (MetaSurfaceActor *self)
+{
+  MetaSurfaceActorPrivate *priv = self->priv;
+
+  if (priv->freeze_count == 0)
+    {
+      g_critical ("Error in freeze/thaw accounting.");
+      return;
+    }
+
+  priv->freeze_count --;
+
+  /* Since we ignore damage events while a window is frozen for certain effects
+   * we may need to issue an update_area() covering the whole pixmap if we
+   * don't know what real damage has happened. */
+  if (priv->needs_damage_all)
+    {
+      meta_surface_actor_process_damage (self, 0, 0,
+                                         clutter_actor_get_width (CLUTTER_ACTOR (priv->texture)),
+                                         clutter_actor_get_height (CLUTTER_ACTOR (priv->texture)));
+      priv->needs_damage_all = FALSE;
+    }
+}
+
+gboolean
+meta_surface_actor_is_frozen (MetaSurfaceActor *self)
+{
+  return is_frozen (self);
+}
+
+gboolean
+meta_surface_actor_should_unredirect (MetaSurfaceActor *self)
+{
+  return META_SURFACE_ACTOR_GET_CLASS (self)->should_unredirect (self);
+}
+
+void
+meta_surface_actor_set_unredirected (MetaSurfaceActor *self,
+                                     gboolean          unredirected)
+{
+  META_SURFACE_ACTOR_GET_CLASS (self)->set_unredirected (self, unredirected);
+}
+
+gboolean
+meta_surface_actor_is_unredirected (MetaSurfaceActor *self)
+{
+  return META_SURFACE_ACTOR_GET_CLASS (self)->is_unredirected (self);
 }

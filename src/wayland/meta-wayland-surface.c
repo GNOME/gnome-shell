@@ -44,11 +44,11 @@
 #include "meta-wayland-private.h"
 #include "meta-xwayland-private.h"
 #include "meta-wayland-stage.h"
-#include "meta-surface-actor.h"
 #include "meta-wayland-seat.h"
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-data-device.h"
+
 #include "meta-cursor-tracker-private.h"
 #include "display-private.h"
 #include "window-private.h"
@@ -57,6 +57,9 @@
 #include "frame.h"
 #include "meta-idle-monitor-private.h"
 #include "monitor-private.h"
+
+#include "meta-surface-actor.h"
+#include "meta-surface-actor-wayland.h"
 
 typedef enum
 {
@@ -114,8 +117,8 @@ surface_process_damage (MetaWaylandSurface *surface,
     {
       cairo_rectangle_int_t rect;
       cairo_region_get_rectangle (region, i, &rect);
-      meta_surface_actor_damage_area (surface->surface_actor,
-                                      rect.x, rect.y, rect.width, rect.height);
+      meta_surface_actor_process_damage (surface->surface_actor,
+                                         rect.x, rect.y, rect.width, rect.height);
     }
 }
 
@@ -295,7 +298,7 @@ actor_surface_commit (MetaWaylandSurface             *surface,
   if (buffer_changed)
     {
       ensure_buffer_texture (buffer);
-      meta_surface_actor_attach_wayland_buffer (surface_actor, buffer);
+      meta_surface_actor_wayland_set_buffer (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor), buffer);
     }
 
   surface_process_damage (surface, pending->damage);
@@ -645,7 +648,7 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   wl_resource_set_implementation (surface->resource, &meta_wayland_surface_interface, surface, wl_surface_destructor);
 
   surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
-  surface->surface_actor = g_object_ref_sink (meta_surface_actor_new (surface));
+  surface->surface_actor = g_object_ref_sink (meta_surface_actor_wayland_new (surface));
   clutter_actor_set_reactive (CLUTTER_ACTOR (surface->surface_actor), TRUE);
 
   double_buffered_state_init (&surface->pending);

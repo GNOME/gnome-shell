@@ -73,6 +73,7 @@
 #include <unistd.h>
 
 #include "meta-xwayland-private.h"
+#include "meta-surface-actor-wayland.h"
 
 #define GRAB_OP_IS_WINDOW_SWITCH(g)                     \
         (g == META_GRAB_OP_KEYBOARD_TABBING_NORMAL  ||  \
@@ -1682,9 +1683,9 @@ get_window_for_event (MetaDisplay        *display,
     return display->grab_window;
 
   source = clutter_event_get_source (event);
-  if (META_IS_SURFACE_ACTOR (source))
+  if (META_IS_SURFACE_ACTOR_WAYLAND (source))
     {
-      MetaWaylandSurface *surface = meta_surface_actor_get_surface (META_SURFACE_ACTOR (source));
+      MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (source));
       g_assert (surface != NULL);
       return surface->window;
     }

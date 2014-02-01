@@ -38,6 +38,7 @@
 #include "meta-shaped-texture-private.h"
 #include "meta-wayland-stage.h"
 #include "meta-cursor-tracker-private.h"
+#include "meta-surface-actor-wayland.h"
 
 #define DEFAULT_AXIS_STEP_DISTANCE wl_fixed_from_int (10)
 
@@ -420,8 +421,8 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
   else
     seat->current_stage = NULL;
 
-  if (META_IS_SURFACE_ACTOR (actor))
-    surface = meta_surface_actor_get_surface (META_SURFACE_ACTOR (actor));
+  if (META_IS_SURFACE_ACTOR_WAYLAND (actor))
+    surface = meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (actor));
 
   pointer->current = surface;
   if (surface != pointer->focus_surface)
