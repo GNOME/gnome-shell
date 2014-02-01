@@ -249,11 +249,12 @@ ensure_buffer_texture (MetaWaylandBuffer *buffer)
 }
 
 static void
-cursor_surface_commit (MetaWaylandSurface *surface)
+cursor_surface_commit (MetaWaylandSurface             *surface,
+                       MetaWaylandDoubleBufferedState *pending)
 {
-  MetaWaylandBuffer *buffer = surface->pending.buffer;
+  MetaWaylandBuffer *buffer = pending->buffer;
 
-  if (surface->pending.newly_attached && buffer != surface->buffer_ref.buffer)
+  if (pending->newly_attached && buffer != surface->buffer_ref.buffer)
     {
       ensure_buffer_texture (buffer);
       meta_wayland_buffer_reference (&surface->buffer_ref, buffer);
@@ -263,7 +264,7 @@ cursor_surface_commit (MetaWaylandSurface *surface)
 }
 
 static gboolean
-actor_surface_commit (MetaWaylandSurface *surface,
+actor_surface_commit (MetaWaylandSurface             *surface,
                       MetaWaylandDoubleBufferedState *pending)
 {
   MetaSurfaceActor *surface_actor = surface->surface_actor;
@@ -290,12 +291,13 @@ actor_surface_commit (MetaWaylandSurface *surface,
 }
 
 static void
-toplevel_surface_commit (MetaWaylandSurface *surface)
+toplevel_surface_commit (MetaWaylandSurface             *surface,
+                         MetaWaylandDoubleBufferedState *pending)
 {
-  if (actor_surface_commit (surface, &surface->pending))
+  if (actor_surface_commit (surface, pending))
     {
       MetaWindow *window = surface->window;
-      MetaWaylandBuffer *buffer = surface->pending.buffer;
+      MetaWaylandBuffer *buffer = pending->buffer;
 
       meta_window_set_surface_mapped (window, buffer != NULL);
       /* We resize X based surfaces according to X events */
@@ -308,10 +310,9 @@ toplevel_surface_commit (MetaWaylandSurface *surface)
           new_height = surface->buffer_ref.buffer->height;
           if (new_width != window->rect.width ||
               new_height != window->rect.height ||
-              surface->pending.dx != 0 ||
-              surface->pending.dy != 0)
-            meta_window_move_resize_wayland (window, new_width, new_height,
-                                             surface->pending.dx, surface->pending.dy);
+              pending->dx != 0 ||
+              pending->dy != 0)
+            meta_window_move_resize_wayland (window, new_width, new_height, pending->dx, pending->dy);
         }
     }
 }
@@ -396,7 +397,8 @@ move_double_buffered_state (MetaWaylandDoubleBufferedState *from,
 }
 
 static void
-subsurface_surface_commit (MetaWaylandSurface *surface)
+subsurface_surface_commit (MetaWaylandSurface             *surface,
+                           MetaWaylandDoubleBufferedState *pending)
 {
   /*
    * If the sub-surface is in synchronous mode, post-pone the commit of its
@@ -412,13 +414,12 @@ subsurface_surface_commit (MetaWaylandSurface *surface)
    */
   if (surface->sub.synchronous)
     {
-      move_double_buffered_state (&surface->pending,
-                                  &surface->sub.pending_surface_state);
+      move_double_buffered_state (pending, &surface->sub.pending_surface_state);
     }
-  else if (actor_surface_commit (surface, &surface->pending))
+  else if (actor_surface_commit (surface, pending))
     {
       MetaSurfaceActor *surface_actor = surface->surface_actor;
-      MetaWaylandBuffer *buffer = surface->pending.buffer;
+      MetaWaylandBuffer *buffer = pending->buffer;
       float x, y;
 
       if (buffer != NULL)
@@ -427,8 +428,8 @@ subsurface_surface_commit (MetaWaylandSurface *surface)
         clutter_actor_hide (CLUTTER_ACTOR (surface_actor));
 
       clutter_actor_get_position (CLUTTER_ACTOR (surface_actor), &x, &y);
-      x += surface->pending.dx;
-      y += surface->pending.dy;
+      x += pending->dx;
+      y += pending->dy;
       clutter_actor_set_position (CLUTTER_ACTOR (surface_actor), x, y);
     }
 }
@@ -443,41 +444,46 @@ parent_surface_committed (gpointer data, gpointer user_data)
 }
 
 static void
-meta_wayland_surface_commit (struct wl_client *client,
-                             struct wl_resource *resource)
+commit_double_buffered_state (MetaWaylandSurface             *surface,
+                              MetaWaylandDoubleBufferedState *pending)
 {
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  MetaWaylandCompositor *compositor;
-
-  /* X11 unmanaged window */
-  if (!surface)
-    return;
-
-  compositor = surface->compositor;
+  MetaWaylandCompositor *compositor = surface->compositor;
 
   if (surface == compositor->seat->sprite)
-    cursor_surface_commit (surface);
+    cursor_surface_commit (surface, pending);
   else if (surface->window)
-    toplevel_surface_commit (surface);
+    toplevel_surface_commit (surface, pending);
   else if (surface->subsurface.resource)
-    subsurface_surface_commit (surface);
+    subsurface_surface_commit (surface, pending);
 
   g_list_foreach (surface->subsurfaces,
                   parent_surface_committed,
                   NULL);
 
-  if (surface->pending.buffer)
+  if (pending->buffer)
     {
-      wl_list_remove (&surface->pending.buffer_destroy_listener.link);
-      surface->pending.buffer = NULL;
+      wl_list_remove (&pending->buffer_destroy_listener.link);
+      pending->buffer = NULL;
     }
 
   /* wl_surface.frame */
-  wl_list_insert_list (&compositor->frame_callbacks,
-                       &surface->pending.frame_callback_list);
-  wl_list_init (&surface->pending.frame_callback_list);
+  wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);
+  wl_list_init (&pending->frame_callback_list);
 
-  double_buffered_state_reset (&surface->pending);
+  double_buffered_state_reset (pending);
+}
+
+static void
+meta_wayland_surface_commit (struct wl_client *client,
+                             struct wl_resource *resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
+
+  commit_double_buffered_state (surface, &surface->pending);
 }
 
 static void
@@ -1081,9 +1087,7 @@ bind_gtk_shell (struct wl_client *client,
 static void
 subsurface_parent_surface_committed (MetaWaylandSurface *surface)
 {
-  MetaWaylandCompositor *compositor = surface->compositor;
-  MetaWaylandDoubleBufferedState *pending_surface_state =
-    &surface->sub.pending_surface_state;
+  MetaWaylandDoubleBufferedState *pending_surface_state = &surface->sub.pending_surface_state;
 
   if (surface->sub.pending_pos)
     {
@@ -1132,15 +1136,9 @@ subsurface_parent_surface_committed (MetaWaylandSurface *surface)
     }
 
   if (surface->sub.synchronous)
-    {
-      actor_surface_commit (surface, pending_surface_state);
+    commit_double_buffered_state (surface, pending_surface_state);
 
-      wl_list_insert_list (&compositor->frame_callbacks,
-                           &pending_surface_state->frame_callback_list);
-      wl_list_init (&pending_surface_state->frame_callback_list);
-    }
-
-  double_buffered_state_reset (&surface->sub.pending_surface_state);
+  double_buffered_state_reset (pending_surface_state);
 }
 
 static void
