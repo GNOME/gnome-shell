@@ -48,16 +48,19 @@ unbind_resource (struct wl_resource *resource)
 }
 
 static void
-pointer_unmap_sprite (MetaWaylandSeat *seat)
+set_cursor_surface (MetaWaylandSeat    *seat,
+                    MetaWaylandSurface *surface)
 {
-  if (seat->cursor_tracker)
-    meta_cursor_tracker_set_window_cursor (seat->cursor_tracker, NULL, 0, 0);
+  if (seat->sprite == surface)
+    return;
 
   if (seat->sprite)
-    {
-      wl_list_remove (&seat->sprite_destroy_listener.link);
-      seat->sprite = NULL;
-    }
+    wl_list_remove (&seat->sprite_destroy_listener.link);
+
+  seat->sprite = surface;
+
+  if (seat->sprite)
+    wl_resource_add_destroy_listener (seat->sprite->resource, &seat->sprite_destroy_listener);
 }
 
 void
@@ -68,7 +71,7 @@ meta_wayland_seat_update_sprite (MetaWaylandSeat *seat)
   if (seat->cursor_tracker == NULL)
     return;
 
-  if (seat->sprite->buffer_ref.buffer)
+  if (seat->sprite && seat->sprite->buffer_ref.buffer)
     buffer = seat->sprite->buffer_ref.buffer->resource;
   else
     buffer = NULL;
@@ -89,9 +92,7 @@ pointer_set_cursor (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface;
 
-  surface = (surface_resource ?
-             wl_resource_get_user_data (surface_resource) :
-             NULL);
+  surface = (surface_resource ? wl_resource_get_user_data (surface_resource) : NULL);
 
   if (seat->pointer.focus == NULL)
     return;
@@ -102,29 +103,13 @@ pointer_set_cursor (struct wl_client *client,
 
   seat->hotspot_x = x;
   seat->hotspot_y = y;
-
-  if (seat->sprite != surface)
-    {
-      pointer_unmap_sprite (seat);
-
-      if (!surface)
-        return;
-
-      wl_resource_add_destroy_listener (surface->resource,
-                                        &seat->sprite_destroy_listener);
-
-      seat->sprite = surface;
-
-      if (seat->sprite->buffer_ref.buffer)
-        meta_wayland_seat_update_sprite (seat);
-    }
+  set_cursor_surface (seat, surface);
+  meta_wayland_seat_update_sprite (seat);
 }
 
-static const struct wl_pointer_interface
-pointer_interface =
-  {
-    pointer_set_cursor
-  };
+static const struct wl_pointer_interface pointer_interface = {
+  pointer_set_cursor
+};
 
 static void
 seat_get_pointer (struct wl_client *client,
@@ -211,10 +196,10 @@ bind_seat (struct wl_client *client,
 static void
 pointer_handle_sprite_destroy (struct wl_listener *listener, void *data)
 {
-  MetaWaylandSeat *seat =
-    wl_container_of (listener, seat, sprite_destroy_listener);
+  MetaWaylandSeat *seat = wl_container_of (listener, seat, sprite_destroy_listener);
 
-  pointer_unmap_sprite (seat);
+  set_cursor_surface (seat, NULL);
+  meta_wayland_seat_update_sprite (seat);
 }
 
 MetaWaylandSeat *
@@ -457,7 +442,7 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
 void
 meta_wayland_seat_free (MetaWaylandSeat *seat)
 {
-  pointer_unmap_sprite (seat);
+  set_cursor_surface (seat, NULL);
 
   meta_wayland_pointer_release (&seat->pointer);
   meta_wayland_keyboard_release (&seat->keyboard);
