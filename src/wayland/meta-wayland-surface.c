@@ -517,10 +517,6 @@ meta_wayland_surface_free (MetaWaylandSurface *surface)
   compositor->surfaces = g_list_remove (compositor->surfaces, surface);
 
   meta_wayland_buffer_reference (&surface->buffer_ref, NULL);
-
-  if (surface->pending.buffer)
-    wl_list_remove (&surface->pending.buffer_destroy_listener.link);
-
   double_buffered_state_destroy (&surface->pending);
 
   meta_wayland_compositor_repick (compositor);
