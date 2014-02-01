@@ -771,6 +771,35 @@ maybe_filter_xwindow (MetaDisplay       *display,
   return filtered;
 }
 
+static gboolean
+is_our_xwindow (MetaDisplay       *display,
+                MetaScreen        *screen
+                Window             xwindow,
+                XWindowAttributes *attrs)
+{
+  /* A black list of override redirect windows that we don't need to manage: */
+  if (attrs->override_redirect &&
+      (xwindow == screen->no_focus_window ||
+       xwindow == screen->flash_window ||
+       xwindow == screen->wm_sn_selection_window ||
+       attrs->class == InputOnly ||
+       /* any windows created via meta_create_offscreen_window: */
+       (attrs->x == -100 && attrs->y == -100
+	&& attrs->width == 1 && attrs->height == 1) ||
+       xwindow == screen->wm_cm_selection_window ||
+       xwindow == screen->guard_window ||
+       (display->compositor &&
+        xwindow == XCompositeGetOverlayWindow (display->xdisplay,
+					       screen->xroot)
+       )
+      )
+     ) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
 gboolean
 meta_window_should_attach_to_parent (MetaWindow *window)
 {
@@ -1449,26 +1478,11 @@ meta_window_new (MetaDisplay       *display,
 
   g_assert (screen);
 
-  /* A black list of override redirect windows that we don't need to manage: */
-  if (attrs.override_redirect &&
-      (xwindow == screen->no_focus_window ||
-       xwindow == screen->flash_window ||
-       xwindow == screen->wm_sn_selection_window ||
-       attrs.class == InputOnly ||
-       /* any windows created via meta_create_offscreen_window: */
-       (attrs.x == -100 && attrs.y == -100
-	&& attrs.width == 1 && attrs.height == 1) ||
-       xwindow == screen->wm_cm_selection_window ||
-       xwindow == screen->guard_window ||
-       (display->compositor &&
-        xwindow == XCompositeGetOverlayWindow (display->xdisplay,
-					       screen->xroot)
-       )
-      )
-     ) {
-    meta_verbose ("Not managing our own windows\n");
-    goto error;
-  }
+  if (is_our_xwindow (display, screen, xwindow, &attrs))
+    {
+      meta_verbose ("Not managing our own windows\n");
+      goto error;
+    }
 
   if (maybe_filter_xwindow (display, xwindow, must_be_viewable, &attrs))
     {
