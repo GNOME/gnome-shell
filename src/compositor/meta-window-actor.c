@@ -1264,7 +1264,7 @@ meta_window_actor_set_unredirected (MetaWindowActor *self,
   else
     {
       XCompositeRedirectWindow (xdisplay, xwin, CompositeRedirectManual);
-      meta_window_actor_detach_x11_pixmap (self);
+      meta_window_actor_detach (self);
     }
 
   self->priv->unredirected = unredirected;
