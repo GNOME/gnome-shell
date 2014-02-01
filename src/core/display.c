@@ -1984,6 +1984,7 @@ meta_display_handle_event (MetaDisplay        *display,
                            const ClutterEvent *event)
 {
   MetaWindow *window;
+  gboolean bypass_clutter = FALSE, bypass_wayland = FALSE;
 
   /* XXX -- we need to fill this in properly at some point... */
   gboolean frame_was_receiver = FALSE;
@@ -2055,8 +2056,9 @@ meta_display_handle_event (MetaDisplay        *display,
                 meta_stack_set_positions (window->screen->stack,
                                           display->grab_old_window_stacking);
             }
-          meta_display_end_grab_op (display,
-                                    event->any.time);
+          meta_display_end_grab_op (display, event->any.time);
+          bypass_clutter = TRUE;
+          bypass_wayland = TRUE;
         }
       else if (window && display->grab_op == META_GRAB_OP_NONE)
         {
@@ -2171,20 +2173,8 @@ meta_display_handle_event (MetaDisplay        *display,
                                      event->button.y,
                                      event->button.button,
                                      event->any.time);
-            }
-
-          if (!frame_was_receiver && unmodified)
-            {
-              /* This is from our synchronous grab since
-               * it has no modifiers and was on the client window
-               */
-
-              meta_verbose ("Allowing events time %u\n",
-                            (unsigned int) event->any.time);
-
-              /* XXX -- implement this in Wayland */
-              XIAllowEvents (display->xdisplay, META_VIRTUAL_CORE_POINTER_ID,
-                             XIReplayDevice, event->any.time);
+              bypass_clutter = TRUE;
+              bypass_wayland = TRUE;
             }
 
           if (begin_move && window->has_move_func)
@@ -2200,6 +2190,8 @@ meta_display_handle_event (MetaDisplay        *display,
                                           event->any.time,
                                           event->button.x,
                                           event->button.y);
+              bypass_clutter = TRUE;
+              bypass_wayland = TRUE;
             }
         }
       break;
@@ -2211,7 +2203,11 @@ meta_display_handle_event (MetaDisplay        *display,
 
       if (display->grab_window == window &&
           meta_grab_op_is_mouse (display->grab_op))
-        meta_window_handle_mouse_grab_op_event (window, event);
+        {
+          meta_window_handle_mouse_grab_op_event (window, event);
+          bypass_clutter = TRUE;
+          bypass_wayland = TRUE;
+        }
       break;
     case CLUTTER_MOTION:
       if (display->grab_op == META_GRAB_OP_COMPOSITOR)
@@ -2219,7 +2215,11 @@ meta_display_handle_event (MetaDisplay        *display,
 
       if (display->grab_window == window &&
           meta_grab_op_is_mouse (display->grab_op))
-        meta_window_handle_mouse_grab_op_event (window, event);
+        {
+          meta_window_handle_mouse_grab_op_event (window, event);
+          bypass_clutter = TRUE;
+          bypass_wayland = TRUE;
+        }
       break;
 
     case CLUTTER_KEY_PRESS:
@@ -2231,22 +2231,28 @@ meta_display_handle_event (MetaDisplay        *display,
        * want to pass the key event to the compositor or Wayland at all.
        */
       if (meta_display_process_key_event (display, window, (ClutterKeyEvent *) event))
-        return TRUE;
+        {
+          bypass_clutter = TRUE;
+          bypass_wayland = TRUE;
+        }
 
     default:
       break;
     }
 
+  /* If the compositor has a grab, don't pass that through to Wayland */
+  if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+    bypass_wayland = TRUE;
+
 #ifdef HAVE_WAYLAND
-  if (compositor && (display->grab_op == META_GRAB_OP_NONE))
+  if (compositor && !bypass_wayland)
     {
       if (meta_wayland_compositor_handle_event (compositor, event))
-        return TRUE;
+        bypass_clutter = TRUE;
     }
 #endif /* HAVE_WAYLAND */
 
-  return (display->grab_op != META_GRAB_OP_NONE &&
-          display->grab_op != META_GRAB_OP_COMPOSITOR);
+  return bypass_clutter;
 }
 
 static gboolean
