@@ -254,7 +254,7 @@ cursor_surface_commit (MetaWaylandSurface             *surface,
                        gboolean                        buffer_changed)
 {
   if (buffer_changed)
-    meta_wayland_seat_update_sprite (surface->compositor->seat);
+    meta_wayland_seat_update_cursor_surface (surface->compositor->seat);
 }
 
 static void
@@ -455,7 +455,7 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
       buffer_changed = TRUE;
     }
 
-  if (surface == compositor->seat->sprite)
+  if (surface == compositor->seat->cursor_surface)
     cursor_surface_commit (surface, pending, buffer_changed);
   else if (surface->window)
     toplevel_surface_commit (surface, pending, buffer_changed);

@@ -66,9 +66,9 @@ struct _MetaWaylandSeat
   struct wl_display *display;
 
   MetaCursorTracker *cursor_tracker;
-  MetaWaylandSurface *sprite;
+  MetaWaylandSurface *cursor_surface;
   int hotspot_x, hotspot_y;
-  struct wl_listener sprite_destroy_listener;
+  struct wl_listener cursor_surface_destroy_listener;
 
   ClutterActor *current_stage;
 };
@@ -90,7 +90,7 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
 			  const ClutterEvent *for_event);
 
 void
-meta_wayland_seat_update_sprite (MetaWaylandSeat *seat);
+meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat);
 
 void
 meta_wayland_seat_free (MetaWaylandSeat *seat);
