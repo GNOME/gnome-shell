@@ -229,7 +229,7 @@ prefs_changed_callback (MetaPreference pref,
            window->type == META_WINDOW_MODAL_DIALOG)
     {
       window->attached = meta_window_should_attach_to_parent (window);
-      meta_window_recalc_window_features (window);
+      meta_window_recalc_features (window);
       meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
     }
 }
@@ -1112,7 +1112,7 @@ meta_window_new_shared (MetaDisplay         *display,
 
   window->attached = meta_window_should_attach_to_parent (window);
   if (window->attached)
-    meta_window_recalc_window_features (window);
+    meta_window_recalc_features (window);
 
   if (window->decorated)
     meta_window_ensure_frame (window);
@@ -3524,7 +3524,7 @@ meta_window_maximize_internal (MetaWindow        *window,
   if (maximize_horizontally || maximize_vertically)
     window->force_save_user_rect = FALSE;
 
-  meta_window_recalc_window_features (window);
+  meta_window_recalc_features (window);
   set_net_wm_state (window);
 
   g_object_freeze_notify (G_OBJECT (window));
@@ -3914,7 +3914,7 @@ meta_window_unmaximize_internal (MetaWindow        *window,
       window->maximized_vertically =
         window->maximized_vertically   && !unmaximize_vertically;
 
-      /* recalc_window_features() will eventually clear the cached frame
+      /* recalc_features() will eventually clear the cached frame
        * extents, but we need the correct frame extents in the code below,
        * so invalidate the old frame extents manually up front.
        */
@@ -4008,7 +4008,7 @@ meta_window_unmaximize_internal (MetaWindow        *window,
           window->display->grab_anchor_window_pos = window->user_rect;
         }
 
-      meta_window_recalc_window_features (window);
+      meta_window_recalc_features (window);
       set_net_wm_state (window);
     }
 
@@ -4112,7 +4112,7 @@ meta_window_make_fullscreen_internal (MetaWindow  *window)
       meta_window_raise (window);
       meta_stack_thaw (window->screen->stack);
 
-      meta_window_recalc_window_features (window);
+      meta_window_recalc_features (window);
       set_net_wm_state (window);
 
       /* For the auto-minimize feature, if we fail to get focus */
@@ -4158,7 +4158,7 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
 
       /* Need to update window->has_resize_func before we move_resize()
        */
-      meta_window_recalc_window_features (window);
+      meta_window_recalc_features (window);
       set_net_wm_state (window);
 
       meta_window_move_resize (window,
@@ -4832,7 +4832,7 @@ meta_window_update_monitor (MetaWindow *window)
 
       /* If we're changing monitors, we need to update the has_maximize_func flag,
        * as the working area has changed. */
-      meta_window_recalc_window_features (window);
+      meta_window_recalc_features (window);
     }
 }
 
@@ -7537,7 +7537,7 @@ meta_window_type_changed (MetaWindow *window)
   GObject  *object = G_OBJECT (window);
 
   window->attached = meta_window_should_attach_to_parent (window);
-  meta_window_recalc_window_features (window);
+  meta_window_recalc_features (window);
 
   if (!window->override_redirect)
     set_net_wm_state (window);
@@ -7852,10 +7852,9 @@ meta_window_recalc_features (MetaWindow *window)
     g_object_notify (G_OBJECT (window), "skip-taskbar");
 
   /* FIXME:
-   * Lame workaround for recalc_window_features
-   * being used overzealously. The fix is to
-   * only recalc_window_features when something
-   * has actually changed.
+   * Lame workaround for recalc_features being used overzealously.
+   * The fix is to only recalc_features when something has
+   * actually changed.
    */
   if (window->constructing                               ||
       old_has_close_func != window->has_close_func       ||
