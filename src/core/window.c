@@ -98,8 +98,7 @@ static void     invalidate_work_areas     (MetaWindow     *window);
 static void     set_wm_state_on_xwindow   (MetaDisplay    *display,
                                            Window          xwindow,
                                            int             state);
-static void     set_wm_state              (MetaWindow     *window,
-                                           int             state);
+static void     set_wm_state              (MetaWindow     *window);
 static void     set_net_wm_state          (MetaWindow     *window);
 static void     meta_window_set_above     (MetaWindow     *window,
                                            gboolean        new_value);
@@ -1310,7 +1309,7 @@ meta_window_new_shared (MetaDisplay         *display,
       /* FIXME we have a tendency to set this then immediately
        * change it again.
        */
-      set_wm_state (window, window->iconic ? IconicState : NormalState);
+      set_wm_state (window);
       set_net_wm_state (window);
     }
 
@@ -1950,7 +1949,7 @@ meta_window_unmanage (MetaWindow  *window,
       XDeleteProperty (window->display->xdisplay,
                        window->xwindow,
                        window->display->atom__NET_WM_FULLSCREEN_MONITORS);
-      set_wm_state (window, WithdrawnState);
+      set_wm_state (window);
       meta_error_trap_pop (window->display);
     }
   else
@@ -1961,7 +1960,7 @@ meta_window_unmanage (MetaWindow  *window,
       if (!window->minimized)
         {
           meta_error_trap_push (window->display);
-          set_wm_state (window, NormalState);
+          set_wm_state (window);
           meta_error_trap_pop (window->display);
         }
 
@@ -2117,11 +2116,16 @@ set_wm_state_on_xwindow (MetaDisplay *display,
 }
 
 static void
-set_wm_state (MetaWindow *window,
-              int         state)
+set_wm_state (MetaWindow *window)
 {
-  meta_verbose ("Setting wm state %s on %s\n",
-                wm_state_to_string (state), window->desc);
+  int state;
+
+  if (window->withdrawn)
+    state = WithdrawnState;
+  else if (window->iconic)
+    state = IconicState;
+  else
+    state = NormalState;
 
   set_wm_state_on_xwindow (window->display, window->xwindow, state);
 }
@@ -3130,7 +3134,7 @@ meta_window_show (MetaWindow *window)
       if (!window->iconic)
         {
           window->iconic = TRUE;
-          set_wm_state (window, IconicState);
+          set_wm_state (window);
         }
     }
   else
@@ -3149,7 +3153,7 @@ meta_window_show (MetaWindow *window)
       if (window->iconic)
         {
           window->iconic = FALSE;
-          set_wm_state (window, NormalState);
+          set_wm_state (window);
         }
     }
 
@@ -3302,7 +3306,7 @@ meta_window_hide (MetaWindow *window)
   if (!window->iconic)
     {
       window->iconic = TRUE;
-      set_wm_state (window, IconicState);
+      set_wm_state (window);
     }
 
   toplevel_now_mapped = meta_window_toplevel_is_mapped (window);
