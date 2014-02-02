@@ -5,15 +5,15 @@
 # Og Maciel <ogmaciel@gnome.org>, 2011.
 # Jonh Wendell <jwendell@gnome.org>, 2012.
 # Enrico Nicoletto <liverig@gmail.com>, 2012.
-# Rafael Ferreira <rafael.f.f1@gmail.com>, 2013.
+# Rafael Ferreira <rafael.f.f1@gmail.com>, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter\n"
-"POT-Creation-Date: 2013-12-27 00:03-0200\n"
-"PO-Revision-Date: 2013-07-30 07:37-0300\n"
+"product=clutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-02-01 16:10+0000\n"
+"PO-Revision-Date: 2014-02-02 00:41-0300\n"
 "Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.6.3\n"
 
 #: ../clutter/clutter-actor.c:6214
 msgid "X coordinate"
@@ -47,7 +47,7 @@ msgstr "Posição"
 msgid "The position of the origin of the actor"
 msgstr "A posição da origem do ator"
 
-#: ../clutter/clutter-actor.c:6274 ../clutter/clutter-canvas.c:224
+#: ../clutter/clutter-actor.c:6274 ../clutter/clutter-canvas.c:247
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
@@ -57,7 +57,7 @@ msgstr "Largura"
 msgid "Width of the actor"
 msgstr "Largura do ator"
 
-#: ../clutter/clutter-actor.c:6293 ../clutter/clutter-canvas.c:240
+#: ../clutter/clutter-actor.c:6293 ../clutter/clutter-canvas.c:263
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
@@ -936,13 +936,29 @@ msgstr "Contraste"
 msgid "The contrast change to apply"
 msgstr "A mudança de contraste para aplicar"
 
-#: ../clutter/clutter-canvas.c:225
+#: ../clutter/clutter-canvas.c:248
 msgid "The width of the canvas"
 msgstr "A largura do canvas"
 
-#: ../clutter/clutter-canvas.c:241
+#: ../clutter/clutter-canvas.c:264
 msgid "The height of the canvas"
 msgstr "A altura do canvas"
+
+#: ../clutter/clutter-canvas.c:283
+msgid "Scale Factor Set"
+msgstr "Fator de escala definido"
+
+#: ../clutter/clutter-canvas.c:284
+msgid "Whether the scale-factor property is set"
+msgstr "Se a propriedade de fator de escala está definida"
+
+#: ../clutter/clutter-canvas.c:305
+msgid "Scale Factor"
+msgstr "Fator de escala"
+
+#: ../clutter/clutter-canvas.c:306
+msgid "The scaling factor for the surface"
+msgstr "O fator de escala da superfície"
 
 #: ../clutter/clutter-child-meta.c:127
 msgid "Container"
@@ -972,7 +988,7 @@ msgstr "Seguro"
 msgid "Whether the clickable has a grab"
 msgstr "Se o clicável tem uma garra"
 
-#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:607
+#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:653
 msgid "Long Press Duration"
 msgstr "Duração de pressionamento prolongado"
 
@@ -1464,46 +1480,46 @@ msgstr "Modo de rolagem"
 msgid "The scrolling direction"
 msgstr "A direção da rolagem"
 
-#: ../clutter/clutter-settings.c:448
+#: ../clutter/clutter-settings.c:486
 msgid "Double Click Time"
 msgstr "Tempo de clique duplo"
 
-#: ../clutter/clutter-settings.c:449
+#: ../clutter/clutter-settings.c:487
 msgid "The time between clicks necessary to detect a multiple click"
 msgstr "O tempo entre os cliques necessários para detectar um clique múltiplo"
 
-#: ../clutter/clutter-settings.c:464
+#: ../clutter/clutter-settings.c:502
 msgid "Double Click Distance"
 msgstr "Distância entre cliques duplos"
 
-#: ../clutter/clutter-settings.c:465
+#: ../clutter/clutter-settings.c:503
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr ""
 "A distância entre cliques duplos necessários para detectar um clique múltiplo"
 
-#: ../clutter/clutter-settings.c:480
+#: ../clutter/clutter-settings.c:518
 msgid "Drag Threshold"
 msgstr "Limite de arrasto"
 
-#: ../clutter/clutter-settings.c:481
+#: ../clutter/clutter-settings.c:519
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "A distância que o cursor deve mover antes de começar a arrastar"
 
-#: ../clutter/clutter-settings.c:496 ../clutter/clutter-text.c:3404
+#: ../clutter/clutter-settings.c:534 ../clutter/clutter-text.c:3404
 msgid "Font Name"
 msgstr "Nome da fonte"
 
-#: ../clutter/clutter-settings.c:497
+#: ../clutter/clutter-settings.c:535
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
 msgstr ""
 "A descrição da fonte padrão, como algo que pode ser analisado pelo Pango"
 
-#: ../clutter/clutter-settings.c:512
+#: ../clutter/clutter-settings.c:550
 msgid "Font Antialias"
 msgstr "Suavização de fonte"
 
-#: ../clutter/clutter-settings.c:513
+#: ../clutter/clutter-settings.c:551
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
@@ -1511,60 +1527,68 @@ msgstr ""
 "Se usar suavização (1 para habilitar, 0 para desabilitar e -1 para usar o "
 "padrão)"
 
-#: ../clutter/clutter-settings.c:529
+#: ../clutter/clutter-settings.c:567 ../clutter/clutter-settings.c:575
 msgid "Font DPI"
 msgstr "DPI da fonte"
 
-#: ../clutter/clutter-settings.c:530
+#: ../clutter/clutter-settings.c:568 ../clutter/clutter-settings.c:576
 msgid ""
 "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr ""
 "A resolução da fonte, em 1024 * pontos / polegada, ou -1 para usar o padrão"
 
-#: ../clutter/clutter-settings.c:546
+#: ../clutter/clutter-settings.c:592
 msgid "Font Hinting"
 msgstr "Dicas de fonte"
 
-#: ../clutter/clutter-settings.c:547
+#: ../clutter/clutter-settings.c:593
 msgid ""
 "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr ""
 "Se usar dicas (1 para habilitar, 0 para desabilitar e -1 para usar o padrão)"
 
-#: ../clutter/clutter-settings.c:568
+#: ../clutter/clutter-settings.c:614
 msgid "Font Hint Style"
 msgstr "Estilo de dicas de fonte"
 
-#: ../clutter/clutter-settings.c:569
+#: ../clutter/clutter-settings.c:615
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
 msgstr "O estilo de dicas (nenhuma, leve, média, completa)"
 
-#: ../clutter/clutter-settings.c:590
+#: ../clutter/clutter-settings.c:636
 msgid "Font Subpixel Order"
 msgstr "Ordem subpixel da fonte"
 
-#: ../clutter/clutter-settings.c:591
+#: ../clutter/clutter-settings.c:637
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
 msgstr "O tipo de suavização de subpixel (nenhum, rgb, bgr, vrgb vbgr)"
 
-#: ../clutter/clutter-settings.c:608
+#: ../clutter/clutter-settings.c:654
 msgid "The minimum duration for a long press gesture to be recognized"
 msgstr ""
 "A duração mínima para um gesto de pressionamento prolongado ser reconhecido"
 
-#: ../clutter/clutter-settings.c:615
+#: ../clutter/clutter-settings.c:661
+msgid "Window Scaling Factor"
+msgstr "Fator de escala de janela"
+
+#: ../clutter/clutter-settings.c:662
+msgid "The scaling factor to be applied to windows"
+msgstr "O fator de escala a ser aplicado em janelas"
+
+#: ../clutter/clutter-settings.c:669
 msgid "Fontconfig configuration timestamp"
 msgstr "Marca de tempo de configuração da configuração de fontes"
 
-#: ../clutter/clutter-settings.c:616
+#: ../clutter/clutter-settings.c:670
 msgid "Timestamp of the current fontconfig configuration"
 msgstr "A marca de tempo da configuração atual da configuração de fontes"
 
-#: ../clutter/clutter-settings.c:633
+#: ../clutter/clutter-settings.c:687
 msgid "Password Hint Time"
 msgstr "Tempo de amostra da senha"
 
-#: ../clutter/clutter-settings.c:634
+#: ../clutter/clutter-settings.c:688
 msgid "How long to show the last input character in hidden entries"
 msgstr ""
 "Por quanto tempo mostrar o último caractere em entradas de texto ocultas"
@@ -1601,108 +1625,108 @@ msgstr "A borda da fonte que deve ser encaixada"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "O deslocamento em pixels para aplicar a restrição"
 
-#: ../clutter/clutter-stage.c:1903
+#: ../clutter/clutter-stage.c:1899
 msgid "Fullscreen Set"
 msgstr "Tela cheia definida"
 
-#: ../clutter/clutter-stage.c:1904
+#: ../clutter/clutter-stage.c:1900
 msgid "Whether the main stage is fullscreen"
 msgstr "Se o palco principal é uma tela cheia"
 
-#: ../clutter/clutter-stage.c:1918
+#: ../clutter/clutter-stage.c:1914
 msgid "Offscreen"
 msgstr "Fora da tela"
 
-#: ../clutter/clutter-stage.c:1919
+#: ../clutter/clutter-stage.c:1915
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Se o palco principal deve ser processado fora da tela"
 
-#: ../clutter/clutter-stage.c:1931 ../clutter/clutter-text.c:3518
+#: ../clutter/clutter-stage.c:1927 ../clutter/clutter-text.c:3518
 msgid "Cursor Visible"
 msgstr "Cursor visível"
 
-#: ../clutter/clutter-stage.c:1932
+#: ../clutter/clutter-stage.c:1928
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Se o ponteiro do mouse está visível no palco principal"
 
-#: ../clutter/clutter-stage.c:1946
+#: ../clutter/clutter-stage.c:1942
 msgid "User Resizable"
 msgstr "Redimensionável pelo usuário"
 
-#: ../clutter/clutter-stage.c:1947
+#: ../clutter/clutter-stage.c:1943
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Se o palco pode ser redimensionado pelo usuário"
 
-#: ../clutter/clutter-stage.c:1962 ../clutter/deprecated/clutter-box.c:256
+#: ../clutter/clutter-stage.c:1958 ../clutter/deprecated/clutter-box.c:256
 #: ../clutter/deprecated/clutter-rectangle.c:270
 msgid "Color"
 msgstr "Cor"
 
-#: ../clutter/clutter-stage.c:1963
+#: ../clutter/clutter-stage.c:1959
 msgid "The color of the stage"
 msgstr "A cor do palco"
 
-#: ../clutter/clutter-stage.c:1978
+#: ../clutter/clutter-stage.c:1974
 msgid "Perspective"
 msgstr "Perspectiva"
 
-#: ../clutter/clutter-stage.c:1979
+#: ../clutter/clutter-stage.c:1975
 msgid "Perspective projection parameters"
 msgstr "Parâmetros de projeção de perspectiva"
 
-#: ../clutter/clutter-stage.c:1994
+#: ../clutter/clutter-stage.c:1990
 msgid "Title"
 msgstr "Título"
 
-#: ../clutter/clutter-stage.c:1995
+#: ../clutter/clutter-stage.c:1991
 msgid "Stage Title"
 msgstr "Título do palco"
 
-#: ../clutter/clutter-stage.c:2012
+#: ../clutter/clutter-stage.c:2008
 msgid "Use Fog"
 msgstr "Usar nevoeiro"
 
-#: ../clutter/clutter-stage.c:2013
+#: ../clutter/clutter-stage.c:2009
 msgid "Whether to enable depth cueing"
 msgstr "Se habilitar profundidade"
 
-#: ../clutter/clutter-stage.c:2029
+#: ../clutter/clutter-stage.c:2025
 msgid "Fog"
 msgstr "Nevoeiro"
 
-#: ../clutter/clutter-stage.c:2030
+#: ../clutter/clutter-stage.c:2026
 msgid "Settings for the depth cueing"
 msgstr "Definições para a profundidade"
 
-#: ../clutter/clutter-stage.c:2046
+#: ../clutter/clutter-stage.c:2042
 msgid "Use Alpha"
 msgstr "Usar alfa"
 
-#: ../clutter/clutter-stage.c:2047
+#: ../clutter/clutter-stage.c:2043
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Se respeitar o componente alfa da cor do palco"
 
-#: ../clutter/clutter-stage.c:2063
+#: ../clutter/clutter-stage.c:2059
 msgid "Key Focus"
 msgstr "Foco da chave"
 
-#: ../clutter/clutter-stage.c:2064
+#: ../clutter/clutter-stage.c:2060
 msgid "The currently key focused actor"
 msgstr "O ator atualmente focado pela chave"
 
-#: ../clutter/clutter-stage.c:2080
+#: ../clutter/clutter-stage.c:2076
 msgid "No Clear Hint"
 msgstr "Nenhuma dica para limpar"
 
-#: ../clutter/clutter-stage.c:2081
+#: ../clutter/clutter-stage.c:2077
 msgid "Whether the stage should clear its contents"
 msgstr "Se o palco deve limpar o seu contúedo"
 
-#: ../clutter/clutter-stage.c:2094
+#: ../clutter/clutter-stage.c:2090
 msgid "Accept Focus"
 msgstr "Aceitar foco"
 
-#: ../clutter/clutter-stage.c:2095
+#: ../clutter/clutter-stage.c:2091
 msgid "Whether the stage should accept focus on show"
 msgstr "Se o palco deve aceitar o foco ao expor"
 
