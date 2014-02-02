@@ -102,7 +102,6 @@ struct _MetaWindowActorPrivate
   GList            *frames;
 
   guint		    visible                : 1;
-  guint		    mapped                 : 1;
   guint		    argb32                 : 1;
   guint		    disposed               : 1;
   guint             redecorating           : 1;
@@ -890,7 +889,7 @@ meta_window_actor_damage_all (MetaWindowActor *self)
 
   texture = meta_shaped_texture_get_texture (META_SHAPED_TEXTURE (priv->actor));
 
-  if (!priv->mapped || priv->needs_pixmap)
+  if (priv->needs_pixmap)
     return;
 
   update_area (self, 0, 0, cogl_texture_get_width (texture), cogl_texture_get_height (texture));
@@ -966,7 +965,7 @@ meta_window_actor_queue_frame_drawn (MetaWindowActor *self,
         {
           queue_send_frame_messages_timeout (self);
         }
-      else if (priv->mapped && !priv->needs_pixmap)
+      else
         {
           const cairo_rectangle_int_t clip = { 0, 0, 1, 1 };
           clutter_actor_queue_redraw_with_clip (priv->actor, &clip);
@@ -997,9 +996,6 @@ meta_window_actor_queue_create_pixmap (MetaWindowActor *self)
   MetaWindowActorPrivate *priv = self->priv;
 
   priv->needs_pixmap = TRUE;
-
-  if (!priv->mapped)
-    return;
 
   if (is_frozen (self))
     return;
@@ -1095,9 +1091,6 @@ meta_window_actor_after_effects (MetaWindowActor *self)
 
   meta_window_actor_sync_visibility (self);
   meta_window_actor_sync_actor_geometry (self, FALSE);
-
-  if (!meta_window_is_mapped (priv->window))
-    meta_window_actor_detach (self);
 
   if (priv->needs_pixmap)
     clutter_actor_queue_redraw (priv->actor);
@@ -1515,9 +1508,7 @@ meta_window_actor_new (MetaWindow *window)
   priv->last_width = -1;
   priv->last_height = -1;
 
-  priv->mapped = meta_window_toplevel_is_mapped (priv->window);
-  if (priv->mapped)
-    meta_window_actor_queue_create_pixmap (self);
+  meta_window_actor_queue_create_pixmap (self);
 
   meta_window_actor_set_updates_frozen (self,
                                         meta_window_updates_are_frozen (priv->window));
@@ -1550,34 +1541,6 @@ meta_window_actor_new (MetaWindow *window)
   info->windows = g_list_append (info->windows, self);
 
   return self;
-}
-
-void
-meta_window_actor_mapped (MetaWindowActor *self)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-
-  g_return_if_fail (!priv->mapped);
-
-  priv->mapped = TRUE;
-
-  meta_window_actor_queue_create_pixmap (self);
-}
-
-void
-meta_window_actor_unmapped (MetaWindowActor *self)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-
-  g_return_if_fail (priv->mapped);
-
-  priv->mapped = FALSE;
-
-  if (meta_window_actor_effect_in_progress (self))
-    return;
-
-  meta_window_actor_detach (self);
-  priv->needs_pixmap = FALSE;
 }
 
 #if 0
@@ -1706,9 +1669,6 @@ check_needs_pixmap (MetaWindowActor *self)
   if (!priv->needs_pixmap)
     return;
 
-  if (!priv->mapped)
-    return;
-
   if (xwindow == meta_screen_get_xroot (screen) ||
       xwindow == clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage)))
     return;
@@ -1787,9 +1747,6 @@ check_needs_shadow (MetaWindowActor *self)
   gboolean recompute_shadow;
   gboolean should_have_shadow;
   gboolean appears_focused;
-
-  if (!priv->mapped)
-    return;
 
   /* Calling meta_window_actor_has_shadow() here at every pre-paint is cheap
    * and avoids the need to explicitly handle window type changes, which
@@ -1894,7 +1851,7 @@ meta_window_actor_process_damage (MetaWindowActor    *self,
       return;
     }
 
-  if (!priv->mapped || priv->needs_pixmap)
+  if (priv->needs_pixmap)
     return;
 
   update_area (self, event->area.x, event->area.y, event->area.width, event->area.height);
@@ -2164,9 +2121,6 @@ check_needs_reshape (MetaWindowActor *self)
   MetaWindowActorPrivate *priv = self->priv;
   MetaFrameBorders borders;
   cairo_rectangle_int_t client_area;
-
-  if (!priv->mapped)
-    return;
 
   if (!priv->needs_reshape)
     return;
