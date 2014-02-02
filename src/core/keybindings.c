@@ -4089,28 +4089,28 @@ handle_switch_vt (MetaDisplay     *display,
                   MetaKeyBinding  *binding,
                   gpointer         dummy)
 {
-    gint vt = binding->handler->data;
-    MetaWaylandCompositor *compositor;
-    MetaLauncher *launcher;
+  gint vt = binding->handler->data;
+  MetaWaylandCompositor *compositor;
+  MetaLauncher *launcher;
 
-    compositor = meta_wayland_compositor_get_default ();
-    launcher = meta_wayland_compositor_get_launcher (compositor);
+  compositor = meta_wayland_compositor_get_default ();
+  launcher = meta_wayland_compositor_get_launcher (compositor);
 
-    if (launcher)
-      {
-        GError *error;
+  if (launcher)
+    {
+      GError *error;
 
-        error = NULL;
-        if (!meta_launcher_activate_vt (launcher, vt, &error))
-          {
-            g_warning ("Failed to switch VT: %s", error->message);
-            g_error_free (error);
-          }
-      }
-    else
-      {
-        g_debug ("Ignoring VT switch keybinding, not running as VT manager");
-      }
+      error = NULL;
+      if (!meta_launcher_activate_vt (launcher, vt, &error))
+        {
+          g_warning ("Failed to switch VT: %s", error->message);
+          g_error_free (error);
+        }
+    }
+  else
+    {
+      g_debug ("Ignoring VT switch keybinding, not running as VT manager");
+    }
 }
 #endif
 
