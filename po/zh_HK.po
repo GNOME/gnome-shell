@@ -8,17 +8,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 3.3.4\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 16:30+0800\n"
-"PO-Revision-Date: 2013-09-06 16:30+0800\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-01-07 17:48+0000\n"
+"PO-Revision-Date: 2014-02-02 20:44+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
-"Language: \n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.6.3\n"
 
 #: ../src/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -211,7 +212,7 @@ msgstr "檢視分割於右側"
 # FIXME: I'm still unclear about the meaning of XGetSelectionOwner -- Abel
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:596
+#: ../src/compositor/compositor.c:571
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -254,24 +255,24 @@ msgstr "等待(_W)"
 msgid "_Force Quit"
 msgstr "強制結束(_F)"
 
-#: ../src/core/display.c:422
+#: ../src/core/display.c:415
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "遺失複合視窗管理所需的 %s 延伸功能"
 
-#: ../src/core/display.c:514
+#: ../src/core/display.c:507
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "無法開啟 X Window 畫面‘%s’\n"
 
-#: ../src/core/keybindings.c:1136
+#: ../src/core/keybindings.c:1137
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "其它程式已經使用了按鍵 %s 加上特殊按鍵 %x 作為按鍵組合\n"
 
-#: ../src/core/keybindings.c:1333
+#: ../src/core/keybindings.c:1334
 #, c-format
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "「%s」不是有效的捷徑鍵\n"
@@ -311,18 +312,27 @@ msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "找不到任何佈景主題！請確定 %s 存在及其中存放了平常使用的佈景主題。\n"
 
-#: ../src/core/monitor.c:699
+#: ../src/core/monitor.c:702
 msgid "Built-in display"
 msgstr "內置顯示"
 
-#. TRANSLATORS: this is a monitor name (in case we don't know
-#. the vendor), it's Unknown followed by a size in inches,
-#. like 'Unknown 15"'
-#.
 #: ../src/core/monitor.c:727
+#| msgid "Unknown %s"
+msgid "Unknown"
+msgstr "不明"
+
+#: ../src/core/monitor.c:729
+#| msgid "Unknown %s"
+msgid "Unknown Display"
+msgstr "不明的顯示器"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: ../src/core/monitor.c:737
 #, c-format
-msgid "Unknown %s"
-msgstr "不明的 %s"
+msgid "%s %s"
+msgstr "%s %s"
 
 #: ../src/core/mutter.c:40
 #, c-format
@@ -377,12 +387,12 @@ msgstr "組態資料庫中的“%s”不是按鍵組合“%s”的有效設定�
 msgid "Workspace %d"
 msgstr "工作區 %d"
 
-#: ../src/core/screen.c:537
+#: ../src/core/screen.c:540
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "畫面‘%2$s’中的第 %1$d 個螢幕無效\n"
 
-#: ../src/core/screen.c:553
+#: ../src/core/screen.c:556
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -390,18 +400,18 @@ msgid ""
 msgstr "畫面‘%2$s’中的第 %1$d 個螢幕已經有了視窗管理員；請嘗試使用 --replace 選項來替換目前的視窗管理員。\n"
 
 # FIXME: I'm still unclear about the meaning of XGetSelectionOwner -- Abel
-#: ../src/core/screen.c:580
+#: ../src/core/screen.c:583
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "無法在畫面“%2$s”中的第 %1$d 個螢幕進行視窗管理員選擇程序\n"
 
-#: ../src/core/screen.c:658
+#: ../src/core/screen.c:661
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "畫面“%2$s”中的第 %1$d 個螢幕已經有了視窗總管\n"
 
-#: ../src/core/screen.c:850
+#: ../src/core/screen.c:853
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "無法釋放畫面“%2$s”中的第 %1$d 個螢幕\n"
@@ -495,7 +505,7 @@ msgid "Window manager error: "
 msgstr "視窗總管錯誤："
 
 #. first time through
-#: ../src/core/window.c:7512
+#: ../src/core/window.c:7597
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -509,29 +519,29 @@ msgstr "視窗 %s 將 SM_CLIENT_ID 設定為該視窗本身，而不是 ICCCM �
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8342
+#: ../src/core/window.c:8519
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
 "%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "視窗 %s 設定了 MWM 提示，表示它不可以調整大小，但又將大小下限定為 %d×%d 及將大小上限定為 %d×%d；這種做法不符合常理。\n"
 
-#: ../src/core/window-props.c:347
+#: ../src/core/window-props.c:350
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "程式設定了多餘的 _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:463
+#: ../src/core/window-props.c:466
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s（在 %s）"
 
-#: ../src/core/window-props.c:1546
+#: ../src/core/window-props.c:1549
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "%2$s 指定了無效的 WM_TRANSIENT_FOR 視窗 0x%1$lx。\n"
 
-#: ../src/core/window-props.c:1557
+#: ../src/core/window-props.c:1560
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "%2$s 的 WM_TRANSIENT_FOR 視窗 0x%1$lx 會造成迴圈。\n"
