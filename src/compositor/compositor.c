@@ -657,6 +657,8 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   XMapWindow (xdisplay, info->output);
 
   redirect_windows (compositor, screen);
+
+  info->plugin_mgr = meta_plugin_manager_new (screen);
 }
 
 void
