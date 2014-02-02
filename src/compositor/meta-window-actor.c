@@ -103,7 +103,6 @@ struct _MetaWindowActorPrivate
   Damage            damage; /* Not used in wayland compositor mode */
 
   guint		    visible                : 1;
-  guint		    mapped                 : 1;
   guint		    argb32                 : 1;
   guint		    disposed               : 1;
   guint             redecorating           : 1;
@@ -922,7 +921,7 @@ meta_window_actor_damage_all (MetaWindowActor *self)
   if (!priv->needs_damage_all)
     return;
 
-  if (!priv->mapped || priv->needs_pixmap)
+  if (priv->needs_pixmap)
     return;
 
   redraw_queued = meta_surface_actor_damage_all (priv->surface);
@@ -997,7 +996,7 @@ meta_window_actor_queue_frame_drawn (MetaWindowActor *self,
         {
           queue_send_frame_messages_timeout (self);
         }
-      else if (priv->mapped && (!meta_is_wayland_compositor () || !priv->needs_pixmap))
+      else
         {
           const cairo_rectangle_int_t clip = { 0, 0, 1, 1 };
           clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (priv->surface), &clip);
@@ -1028,9 +1027,6 @@ meta_window_actor_queue_create_x11_pixmap (MetaWindowActor *self)
   MetaWindowActorPrivate *priv = self->priv;
 
   priv->needs_pixmap = TRUE;
-
-  if (!priv->mapped)
-    return;
 
   if (is_frozen (self))
     return;
@@ -1129,9 +1125,6 @@ meta_window_actor_after_effects (MetaWindowActor *self)
 
   if (!meta_is_wayland_compositor ())
     {
-      if (!meta_window_is_mapped (priv->window))
-        meta_window_actor_detach_x11_pixmap (self);
-
       if (priv->needs_pixmap)
         clutter_actor_queue_redraw (CLUTTER_ACTOR (priv->surface));
     }
@@ -1558,15 +1551,13 @@ meta_window_actor_new (MetaWindow *window)
                        NULL);
 
   priv = self->priv;
-  priv->mapped = meta_window_toplevel_is_mapped (priv->window);
 
   if (!meta_is_wayland_compositor ())
     {
       priv->last_width = -1;
       priv->last_height = -1;
 
-      if (priv->mapped)
-        meta_window_actor_queue_create_x11_pixmap (self);
+      meta_window_actor_queue_create_x11_pixmap (self);
 
       meta_window_actor_set_updates_frozen (self,
                                             meta_window_updates_are_frozen (priv->window));
@@ -1600,38 +1591,6 @@ meta_window_actor_new (MetaWindow *window)
   info->windows = g_list_append (info->windows, self);
 
   return self;
-}
-
-void
-meta_window_actor_mapped (MetaWindowActor *self)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-
-  g_return_if_fail (!priv->mapped);
-
-  priv->mapped = TRUE;
-
-  if (!meta_is_wayland_compositor ())
-    meta_window_actor_queue_create_x11_pixmap (self);
-}
-
-void
-meta_window_actor_unmapped (MetaWindowActor *self)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-
-  g_return_if_fail (priv->mapped);
-
-  priv->mapped = FALSE;
-
-  if (meta_window_actor_effect_in_progress (self))
-    return;
-
-  if (!meta_is_wayland_compositor ())
-    {
-      meta_window_actor_detach_x11_pixmap (self);
-      priv->needs_pixmap = FALSE;
-    }
 }
 
 #if 0
@@ -1763,9 +1722,6 @@ check_needs_x11_pixmap (MetaWindowActor *self)
   if (!priv->needs_pixmap)
     return;
 
-  if (!priv->mapped)
-    return;
-
   if (xwindow == meta_screen_get_xroot (screen) ||
       xwindow == clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage)))
     return;
@@ -1838,9 +1794,6 @@ check_needs_shadow (MetaWindowActor *self)
   gboolean recompute_shadow;
   gboolean should_have_shadow;
   gboolean appears_focused;
-
-  if (!priv->mapped)
-    return;
 
   /* Calling meta_window_actor_has_shadow() here at every pre-paint is cheap
    * and avoids the need to explicitly handle window type changes, which
@@ -1945,7 +1898,7 @@ meta_window_actor_process_x11_damage (MetaWindowActor    *self,
       return;
     }
 
-  if (!priv->mapped || priv->needs_pixmap)
+  if (priv->needs_pixmap)
     return;
 
   redraw_queued = meta_surface_actor_damage_area (priv->surface,
@@ -2217,9 +2170,6 @@ check_needs_reshape (MetaWindowActor *self)
   MetaWindowActorPrivate *priv = self->priv;
   MetaFrameBorders borders;
   cairo_rectangle_int_t client_area;
-
-  if (!priv->mapped)
-    return;
 
   if (!priv->needs_reshape)
     return;

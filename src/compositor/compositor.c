@@ -42,15 +42,6 @@
  * the call, so it may be necessary to readjust the display based on the
  * old_rect to start the animation.
  *
- * meta_compositor_window_mapped() and meta_compositor_window_unmapped() are
- * notifications when the toplevel window (frame or client window) is mapped or
- * unmapped. That is, when the result of meta_window_toplevel_is_mapped()
- * changes. The main use of this is to drop resources when a window is unmapped.
- * A window will always be mapped before meta_compositor_show_window()
- * is called and will not be unmapped until after meta_compositor_hide_window()
- * is called. If the live_hidden_windows preference is set, windows will never
- * be unmapped.
- *
  * # Containers #
  *
  * There's two containers in the stage that are used to place window actors, here
@@ -1367,30 +1358,6 @@ meta_compositor_sync_stack (MetaCompositor  *compositor,
     }
 
   sync_actor_stacking (info);
-}
-
-void
-meta_compositor_window_mapped (MetaCompositor *compositor,
-                               MetaWindow     *window)
-{
-  MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("meta_compositor_window_mapped\n");
-  if (!window_actor)
-    return;
-
-  meta_window_actor_mapped (window_actor);
-}
-
-void
-meta_compositor_window_unmapped (MetaCompositor *compositor,
-                                 MetaWindow     *window)
-{
-  MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("meta_compositor_window_unmapped\n");
-  if (!window_actor)
-    return;
-
-  meta_window_actor_unmapped (window_actor);
 }
 
 void
