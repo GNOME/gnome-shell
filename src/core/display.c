@@ -830,22 +830,12 @@ meta_display_open (void)
     {
       MetaScreen *screen = tmp->data;
 
-      if (meta_is_wayland_compositor ())
-        {
-          /* Instead of explicitly enumerating all windows during
-           * initialization, when we run as a wayland compositor we can rely on
-           * xwayland notifying us of all top level windows so we create
-           * MetaWindows when we get those notifications.
-           *
-           * We still want a guard window so we can avoid
-           * unmapping/withdrawing minimized windows for live
-           * thumbnails...
-           */
-          if (screen->guard_window == None)
-            screen->guard_window =
-              meta_screen_create_guard_window (screen->display->xdisplay, screen);
-        }
-      else
+      meta_screen_create_guard_window (screen);
+
+      /* We know that if mutter is running as a Wayland compositor,
+       * we start out with no windows.
+       */
+      if (!meta_is_wayland_compositor ())
         meta_screen_manage_all_windows (screen);
 
       tmp = tmp->next;

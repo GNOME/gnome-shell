@@ -445,8 +445,8 @@ reload_monitor_infos (MetaScreen *screen)
  * should effectively be forwarded to events on the background actor,
  * providing that the scene graph is set up correctly.
  */
-Window
-meta_screen_create_guard_window (Display *xdisplay, MetaScreen *screen)
+static Window
+create_guard_window (Display *xdisplay, MetaScreen *screen)
 {
   XSetWindowAttributes attributes;
   Window guard_window;
@@ -878,15 +878,18 @@ meta_screen_free (MetaScreen *screen,
 }
 
 void
+meta_screen_create_guard_window (MetaScreen *screen)
+{
+  if (screen->guard_window == None)
+    screen->guard_window = create_guard_window (screen->display->xdisplay, screen);
+}
+
+void
 meta_screen_manage_all_windows (MetaScreen *screen)
 {
   MetaStackWindow *_children;
   MetaStackWindow *children;
   int n_children, i;
-
-  if (screen->guard_window == None)
-    screen->guard_window =
-      meta_screen_create_guard_window (screen->display->xdisplay, screen);
 
   meta_stack_freeze (screen->stack);
   meta_stack_tracker_get_stack (screen->stack_tracker, &_children, &n_children);
