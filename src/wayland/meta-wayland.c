@@ -743,14 +743,24 @@ meta_wayland_finalize (void)
     meta_launcher_free (compositor->launcher);
 }
 
-MetaLauncher *
-meta_wayland_compositor_get_launcher (MetaWaylandCompositor *compositor)
-{
-  return compositor->launcher;
-}
-
 gboolean
 meta_wayland_compositor_is_native (MetaWaylandCompositor *compositor)
 {
   return compositor->native;
+}
+
+gboolean
+meta_wayland_compositor_activate_vt (MetaWaylandCompositor  *compositor,
+                                     int                     vt,
+                                     GError                **error)
+{
+  if (compositor->launcher)
+    {
+      return meta_launcher_activate_vt (compositor->launcher, vt, error);
+    }
+  else
+    {
+      g_debug ("Ignoring VT switch keybinding, not running as VT manager");
+      return TRUE;
+    }
 }

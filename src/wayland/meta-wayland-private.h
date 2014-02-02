@@ -99,7 +99,6 @@ void                    meta_wayland_compositor_set_input_focus (MetaWaylandComp
 gboolean                meta_wayland_compositor_handle_event    (MetaWaylandCompositor *compositor,
                                                                  const ClutterEvent    *event);
 
-MetaLauncher           *meta_wayland_compositor_get_launcher    (MetaWaylandCompositor *compositor);
 gboolean                meta_wayland_compositor_is_native       (MetaWaylandCompositor *compositor);
 
 MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource    *resource);
@@ -109,5 +108,9 @@ void                    meta_wayland_buffer_unref               (MetaWaylandBuff
 void                    meta_wayland_compositor_update          (MetaWaylandCompositor *compositor,
                                                                  const ClutterEvent    *event);
 void                    meta_wayland_compositor_paint_finished  (MetaWaylandCompositor *compositor);
+
+gboolean                meta_wayland_compositor_activate_vt     (MetaWaylandCompositor  *compositor,
+                                                                 int                     vt,
+                                                                 GError                **error);
 
 #endif /* META_WAYLAND_PRIVATE_H */
