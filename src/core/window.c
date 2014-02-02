@@ -773,7 +773,7 @@ maybe_filter_xwindow (MetaDisplay       *display,
 
 static gboolean
 is_our_xwindow (MetaDisplay       *display,
-                MetaScreen        *screen
+                MetaScreen        *screen,
                 Window             xwindow,
                 XWindowAttributes *attrs)
 {
