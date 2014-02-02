@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: clutter 1.9.15\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter\n"
-"POT-Creation-Date: 2013-08-06 19:34+0800\n"
-"PO-Revision-Date: 2013-08-05 21:01+0800\n"
+"product=clutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-01-24 16:26+0000\n"
+"PO-Revision-Date: 2014-02-01 22:42+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese Traditional <zh_TW@li.org>\n"
 "Language: zh_TW\n"
@@ -17,666 +17,666 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.6.3\n"
 
-#: ../clutter/clutter-actor.c:6177
+#: ../clutter/clutter-actor.c:6214
 msgid "X coordinate"
 msgstr "X 坐標"
 
-#: ../clutter/clutter-actor.c:6178
+#: ../clutter/clutter-actor.c:6215
 msgid "X coordinate of the actor"
 msgstr "參與者的 X 坐標"
 
-#: ../clutter/clutter-actor.c:6196
+#: ../clutter/clutter-actor.c:6233
 msgid "Y coordinate"
 msgstr "Y 坐標"
 
-#: ../clutter/clutter-actor.c:6197
+#: ../clutter/clutter-actor.c:6234
 msgid "Y coordinate of the actor"
 msgstr "參與者的 Y 坐標"
 
-#: ../clutter/clutter-actor.c:6219
+#: ../clutter/clutter-actor.c:6256
 msgid "Position"
 msgstr "位置"
 
-#: ../clutter/clutter-actor.c:6220
+#: ../clutter/clutter-actor.c:6257
 msgid "The position of the origin of the actor"
 msgstr "參與者的原始位置"
 
-#: ../clutter/clutter-actor.c:6237 ../clutter/clutter-canvas.c:224
+#: ../clutter/clutter-actor.c:6274 ../clutter/clutter-canvas.c:247
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
 msgstr "寬度"
 
-#: ../clutter/clutter-actor.c:6238
+#: ../clutter/clutter-actor.c:6275
 msgid "Width of the actor"
 msgstr "參與者的寬度"
 
-#: ../clutter/clutter-actor.c:6256 ../clutter/clutter-canvas.c:240
+#: ../clutter/clutter-actor.c:6293 ../clutter/clutter-canvas.c:263
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
 msgstr "高度"
 
-#: ../clutter/clutter-actor.c:6257
+#: ../clutter/clutter-actor.c:6294
 msgid "Height of the actor"
 msgstr "參與者的高度"
 
-#: ../clutter/clutter-actor.c:6278
+#: ../clutter/clutter-actor.c:6315
 msgid "Size"
 msgstr "大小"
 
-#: ../clutter/clutter-actor.c:6279
+#: ../clutter/clutter-actor.c:6316
 msgid "The size of the actor"
 msgstr "參與者的大小"
 
-#: ../clutter/clutter-actor.c:6297
+#: ../clutter/clutter-actor.c:6334
 msgid "Fixed X"
 msgstr "固定 X 坐標"
 
-#: ../clutter/clutter-actor.c:6298
+#: ../clutter/clutter-actor.c:6335
 msgid "Forced X position of the actor"
 msgstr "參與者的強制 X 位置"
 
-#: ../clutter/clutter-actor.c:6315
+#: ../clutter/clutter-actor.c:6352
 msgid "Fixed Y"
 msgstr "固定 Y 坐標"
 
-#: ../clutter/clutter-actor.c:6316
+#: ../clutter/clutter-actor.c:6353
 msgid "Forced Y position of the actor"
 msgstr "參與者的強制 Y 位置"
 
-#: ../clutter/clutter-actor.c:6331
+#: ../clutter/clutter-actor.c:6368
 msgid "Fixed position set"
 msgstr "固定的位置設定"
 
-#: ../clutter/clutter-actor.c:6332
+#: ../clutter/clutter-actor.c:6369
 msgid "Whether to use fixed positioning for the actor"
 msgstr "參與者是否要使用固定的位置"
 
-#: ../clutter/clutter-actor.c:6350
+#: ../clutter/clutter-actor.c:6387
 msgid "Min Width"
 msgstr "最小寬度"
 
-#: ../clutter/clutter-actor.c:6351
+#: ../clutter/clutter-actor.c:6388
 msgid "Forced minimum width request for the actor"
 msgstr "參與者要求強制最小寬度"
 
-#: ../clutter/clutter-actor.c:6369
+#: ../clutter/clutter-actor.c:6406
 msgid "Min Height"
 msgstr "最小高度"
 
-#: ../clutter/clutter-actor.c:6370
+#: ../clutter/clutter-actor.c:6407
 msgid "Forced minimum height request for the actor"
 msgstr "參與者要求強制最小高度"
 
-#: ../clutter/clutter-actor.c:6388
+#: ../clutter/clutter-actor.c:6425
 msgid "Natural Width"
 msgstr "自然寬度"
 
-#: ../clutter/clutter-actor.c:6389
+#: ../clutter/clutter-actor.c:6426
 msgid "Forced natural width request for the actor"
 msgstr "參與者要求強制自然寬度"
 
-#: ../clutter/clutter-actor.c:6407
+#: ../clutter/clutter-actor.c:6444
 msgid "Natural Height"
 msgstr "自然高度"
 
-#: ../clutter/clutter-actor.c:6408
+#: ../clutter/clutter-actor.c:6445
 msgid "Forced natural height request for the actor"
 msgstr "參與者要求強制自然高度"
 
-#: ../clutter/clutter-actor.c:6423
+#: ../clutter/clutter-actor.c:6460
 msgid "Minimum width set"
 msgstr "最小寬度設定"
 
-#: ../clutter/clutter-actor.c:6424
+#: ../clutter/clutter-actor.c:6461
 msgid "Whether to use the min-width property"
 msgstr "是否使用最小寬度屬性"
 
-#: ../clutter/clutter-actor.c:6438
+#: ../clutter/clutter-actor.c:6475
 msgid "Minimum height set"
 msgstr "最小高度設定"
 
-#: ../clutter/clutter-actor.c:6439
+#: ../clutter/clutter-actor.c:6476
 msgid "Whether to use the min-height property"
 msgstr "是否使用最小高度屬性"
 
-#: ../clutter/clutter-actor.c:6453
+#: ../clutter/clutter-actor.c:6490
 msgid "Natural width set"
 msgstr "自然寬度設定"
 
-#: ../clutter/clutter-actor.c:6454
+#: ../clutter/clutter-actor.c:6491
 msgid "Whether to use the natural-width property"
 msgstr "是否使用自然寬度屬性"
 
-#: ../clutter/clutter-actor.c:6468
+#: ../clutter/clutter-actor.c:6505
 msgid "Natural height set"
 msgstr "自然高度設定"
 
-#: ../clutter/clutter-actor.c:6469
+#: ../clutter/clutter-actor.c:6506
 msgid "Whether to use the natural-height property"
 msgstr "是否使用自然高度屬性"
 
-#: ../clutter/clutter-actor.c:6485
+#: ../clutter/clutter-actor.c:6522
 msgid "Allocation"
 msgstr "定位"
 
-#: ../clutter/clutter-actor.c:6486
+#: ../clutter/clutter-actor.c:6523
 msgid "The actor's allocation"
 msgstr "參與者的定位"
 
-#: ../clutter/clutter-actor.c:6543
+#: ../clutter/clutter-actor.c:6580
 msgid "Request Mode"
 msgstr "請求模式"
 
-#: ../clutter/clutter-actor.c:6544
+#: ../clutter/clutter-actor.c:6581
 msgid "The actor's request mode"
 msgstr "參與者的要求模式"
 
-#: ../clutter/clutter-actor.c:6568
+#: ../clutter/clutter-actor.c:6605
 msgid "Depth"
 msgstr "色深"
 
-#: ../clutter/clutter-actor.c:6569
+#: ../clutter/clutter-actor.c:6606
 msgid "Position on the Z axis"
 msgstr "在 Z 軸上的位置"
 
-#: ../clutter/clutter-actor.c:6596
+#: ../clutter/clutter-actor.c:6633
 msgid "Z Position"
 msgstr "Z 位置"
 
-#: ../clutter/clutter-actor.c:6597
+#: ../clutter/clutter-actor.c:6634
 msgid "The actor's position on the Z axis"
 msgstr "參與者在 Z 軸上的位置"
 
-#: ../clutter/clutter-actor.c:6614
+#: ../clutter/clutter-actor.c:6651
 msgid "Opacity"
 msgstr "濁度"
 
-#: ../clutter/clutter-actor.c:6615
+#: ../clutter/clutter-actor.c:6652
 msgid "Opacity of an actor"
 msgstr "參與者的濁度"
 
-#: ../clutter/clutter-actor.c:6635
+#: ../clutter/clutter-actor.c:6672
 msgid "Offscreen redirect"
 msgstr "螢幕外重新導向"
 
-#: ../clutter/clutter-actor.c:6636
+#: ../clutter/clutter-actor.c:6673
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr "控制何時將參與者扁平化為單一影像的旗標"
 
-#: ../clutter/clutter-actor.c:6650
+#: ../clutter/clutter-actor.c:6687
 msgid "Visible"
 msgstr "可見度"
 
-#: ../clutter/clutter-actor.c:6651
+#: ../clutter/clutter-actor.c:6688
 msgid "Whether the actor is visible or not"
 msgstr "是否參與者為可見"
 
-#: ../clutter/clutter-actor.c:6665
+#: ../clutter/clutter-actor.c:6702
 msgid "Mapped"
 msgstr "映射"
 
-#: ../clutter/clutter-actor.c:6666
+#: ../clutter/clutter-actor.c:6703
 msgid "Whether the actor will be painted"
 msgstr "是否參與者將被繪製"
 
-#: ../clutter/clutter-actor.c:6679
+#: ../clutter/clutter-actor.c:6716
 msgid "Realized"
 msgstr "實現"
 
-#: ../clutter/clutter-actor.c:6680
+#: ../clutter/clutter-actor.c:6717
 msgid "Whether the actor has been realized"
 msgstr "是否參與者已被實現"
 
-#: ../clutter/clutter-actor.c:6695
+#: ../clutter/clutter-actor.c:6732
 msgid "Reactive"
 msgstr "重新活躍"
 
-#: ../clutter/clutter-actor.c:6696
+#: ../clutter/clutter-actor.c:6733
 msgid "Whether the actor is reactive to events"
 msgstr "是否參與者對於事件重新活躍"
 
-#: ../clutter/clutter-actor.c:6707
+#: ../clutter/clutter-actor.c:6744
 msgid "Has Clip"
 msgstr "具有裁剪"
 
-#: ../clutter/clutter-actor.c:6708
+#: ../clutter/clutter-actor.c:6745
 msgid "Whether the actor has a clip set"
 msgstr "是否參與者有裁剪設定"
 
-#: ../clutter/clutter-actor.c:6721
+#: ../clutter/clutter-actor.c:6758
 msgid "Clip"
 msgstr "裁剪"
 
-#: ../clutter/clutter-actor.c:6722
+#: ../clutter/clutter-actor.c:6759
 msgid "The clip region for the actor"
 msgstr "參與者的裁剪區域"
 
-#: ../clutter/clutter-actor.c:6741
+#: ../clutter/clutter-actor.c:6778
 msgid "Clip Rectangle"
 msgstr "剪裁矩形"
 
-#: ../clutter/clutter-actor.c:6742
+#: ../clutter/clutter-actor.c:6779
 msgid "The visible region of the actor"
 msgstr "參與者的可視區域"
 
-#: ../clutter/clutter-actor.c:6756 ../clutter/clutter-actor-meta.c:205
-#: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:258
+#: ../clutter/clutter-actor.c:6793 ../clutter/clutter-actor-meta.c:205
+#: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:247
 msgid "Name"
 msgstr "名稱"
 
-#: ../clutter/clutter-actor.c:6757
+#: ../clutter/clutter-actor.c:6794
 msgid "Name of the actor"
 msgstr "參與者的名稱"
 
-#: ../clutter/clutter-actor.c:6778
+#: ../clutter/clutter-actor.c:6815
 msgid "Pivot Point"
 msgstr "樞軸點"
 
-#: ../clutter/clutter-actor.c:6779
+#: ../clutter/clutter-actor.c:6816
 msgid "The point around which the scaling and rotation occur"
 msgstr "縮放和旋轉繞著這個點"
 
-#: ../clutter/clutter-actor.c:6797
+#: ../clutter/clutter-actor.c:6834
 msgid "Pivot Point Z"
 msgstr "樞軸點 Z"
 
-#: ../clutter/clutter-actor.c:6798
+#: ../clutter/clutter-actor.c:6835
 msgid "Z component of the pivot point"
 msgstr "樞軸點的 Z 元件"
 
-#: ../clutter/clutter-actor.c:6816
+#: ../clutter/clutter-actor.c:6853
 msgid "Scale X"
 msgstr "伸縮 X 坐標"
 
-#: ../clutter/clutter-actor.c:6817
+#: ../clutter/clutter-actor.c:6854
 msgid "Scale factor on the X axis"
 msgstr "在 X 軸上的伸縮比值"
 
-#: ../clutter/clutter-actor.c:6835
+#: ../clutter/clutter-actor.c:6872
 msgid "Scale Y"
 msgstr "伸縮 Y 坐標"
 
-#: ../clutter/clutter-actor.c:6836
+#: ../clutter/clutter-actor.c:6873
 msgid "Scale factor on the Y axis"
 msgstr "在 Y 軸上的伸縮比值"
 
-#: ../clutter/clutter-actor.c:6854
+#: ../clutter/clutter-actor.c:6891
 msgid "Scale Z"
 msgstr "縮放 Z"
 
-#: ../clutter/clutter-actor.c:6855
+#: ../clutter/clutter-actor.c:6892
 msgid "Scale factor on the Z axis"
 msgstr "在 Z 軸上的伸縮比值"
 
-#: ../clutter/clutter-actor.c:6873
+#: ../clutter/clutter-actor.c:6910
 msgid "Scale Center X"
 msgstr "伸縮中心 X 坐標"
 
-#: ../clutter/clutter-actor.c:6874
+#: ../clutter/clutter-actor.c:6911
 msgid "Horizontal scale center"
 msgstr "水平伸縮中心"
 
-#: ../clutter/clutter-actor.c:6892
+#: ../clutter/clutter-actor.c:6929
 msgid "Scale Center Y"
 msgstr "伸縮中心 Y 坐標"
 
-#: ../clutter/clutter-actor.c:6893
+#: ../clutter/clutter-actor.c:6930
 msgid "Vertical scale center"
 msgstr "垂直伸縮中心"
 
-#: ../clutter/clutter-actor.c:6911
+#: ../clutter/clutter-actor.c:6948
 msgid "Scale Gravity"
 msgstr "伸縮引力"
 
-#: ../clutter/clutter-actor.c:6912
+#: ../clutter/clutter-actor.c:6949
 msgid "The center of scaling"
 msgstr "伸縮的中心"
 
-#: ../clutter/clutter-actor.c:6930
+#: ../clutter/clutter-actor.c:6967
 msgid "Rotation Angle X"
 msgstr "旋轉角度 X 坐標"
 
-#: ../clutter/clutter-actor.c:6931
+#: ../clutter/clutter-actor.c:6968
 msgid "The rotation angle on the X axis"
 msgstr "在 X 軸上的旋轉角度"
 
-#: ../clutter/clutter-actor.c:6949
+#: ../clutter/clutter-actor.c:6986
 msgid "Rotation Angle Y"
 msgstr "旋轉角度 Y 坐標"
 
-#: ../clutter/clutter-actor.c:6950
+#: ../clutter/clutter-actor.c:6987
 msgid "The rotation angle on the Y axis"
 msgstr "在 Y 軸上的旋轉角度"
 
-#: ../clutter/clutter-actor.c:6968
+#: ../clutter/clutter-actor.c:7005
 msgid "Rotation Angle Z"
 msgstr "旋轉角度 Z 坐標"
 
-#: ../clutter/clutter-actor.c:6969
+#: ../clutter/clutter-actor.c:7006
 msgid "The rotation angle on the Z axis"
 msgstr "在 Z 軸上的旋轉角度"
 
-#: ../clutter/clutter-actor.c:6987
+#: ../clutter/clutter-actor.c:7024
 msgid "Rotation Center X"
 msgstr "旋轉中心 X 坐標"
 
-#: ../clutter/clutter-actor.c:6988
+#: ../clutter/clutter-actor.c:7025
 msgid "The rotation center on the X axis"
 msgstr "在 X 軸上的旋轉中心"
 
-#: ../clutter/clutter-actor.c:7005
+#: ../clutter/clutter-actor.c:7042
 msgid "Rotation Center Y"
 msgstr "旋轉中心 Y 坐標"
 
-#: ../clutter/clutter-actor.c:7006
+#: ../clutter/clutter-actor.c:7043
 msgid "The rotation center on the Y axis"
 msgstr "在 Y 軸上的旋轉中心"
 
-#: ../clutter/clutter-actor.c:7023
+#: ../clutter/clutter-actor.c:7060
 msgid "Rotation Center Z"
 msgstr "旋轉中心 Z 坐標"
 
-#: ../clutter/clutter-actor.c:7024
+#: ../clutter/clutter-actor.c:7061
 msgid "The rotation center on the Z axis"
 msgstr "在 Z 軸上的旋轉中心"
 
-#: ../clutter/clutter-actor.c:7041
+#: ../clutter/clutter-actor.c:7078
 msgid "Rotation Center Z Gravity"
 msgstr "旋轉中心 Z 引力"
 
-#: ../clutter/clutter-actor.c:7042
+#: ../clutter/clutter-actor.c:7079
 msgid "Center point for rotation around the Z axis"
 msgstr "圍繞 Z 軸旋轉的中心點"
 
-#: ../clutter/clutter-actor.c:7070
+#: ../clutter/clutter-actor.c:7107
 msgid "Anchor X"
 msgstr "錨點 X 坐標"
 
-#: ../clutter/clutter-actor.c:7071
+#: ../clutter/clutter-actor.c:7108
 msgid "X coordinate of the anchor point"
 msgstr "錨點的 X 坐標"
 
-#: ../clutter/clutter-actor.c:7099
+#: ../clutter/clutter-actor.c:7136
 msgid "Anchor Y"
 msgstr "錨點 Y 坐標"
 
-#: ../clutter/clutter-actor.c:7100
+#: ../clutter/clutter-actor.c:7137
 msgid "Y coordinate of the anchor point"
 msgstr "錨點的 Y 坐標"
 
-#: ../clutter/clutter-actor.c:7127
+#: ../clutter/clutter-actor.c:7164
 msgid "Anchor Gravity"
 msgstr "錨點引力"
 
-#: ../clutter/clutter-actor.c:7128
+#: ../clutter/clutter-actor.c:7165
 msgid "The anchor point as a ClutterGravity"
 msgstr "錨點做為 ClutterGravity"
 
-#: ../clutter/clutter-actor.c:7147
+#: ../clutter/clutter-actor.c:7184
 msgid "Translation X"
 msgstr "轉換 X"
 
-#: ../clutter/clutter-actor.c:7148
+#: ../clutter/clutter-actor.c:7185
 msgid "Translation along the X axis"
 msgstr "沿 X 軸的轉換"
 
-#: ../clutter/clutter-actor.c:7167
+#: ../clutter/clutter-actor.c:7204
 msgid "Translation Y"
 msgstr "轉換 Y"
 
-#: ../clutter/clutter-actor.c:7168
+#: ../clutter/clutter-actor.c:7205
 msgid "Translation along the Y axis"
 msgstr "沿 Y 軸的轉換"
 
-#: ../clutter/clutter-actor.c:7187
+#: ../clutter/clutter-actor.c:7224
 msgid "Translation Z"
 msgstr "轉換 Z"
 
-#: ../clutter/clutter-actor.c:7188
+#: ../clutter/clutter-actor.c:7225
 msgid "Translation along the Z axis"
 msgstr "沿 Z 軸的轉換"
 
-#: ../clutter/clutter-actor.c:7218
+#: ../clutter/clutter-actor.c:7255
 msgid "Transform"
 msgstr "轉換"
 
-#: ../clutter/clutter-actor.c:7219
+#: ../clutter/clutter-actor.c:7256
 msgid "Transformation matrix"
 msgstr "轉換矩陣"
 
-#: ../clutter/clutter-actor.c:7234
+#: ../clutter/clutter-actor.c:7271
 msgid "Transform Set"
 msgstr "轉換設定"
 
-#: ../clutter/clutter-actor.c:7235
+#: ../clutter/clutter-actor.c:7272
 msgid "Whether the transform property is set"
 msgstr "是否已經設定轉換屬性"
 
-#: ../clutter/clutter-actor.c:7256
+#: ../clutter/clutter-actor.c:7293
 msgid "Child Transform"
 msgstr "子項變形"
 
-#: ../clutter/clutter-actor.c:7257
+#: ../clutter/clutter-actor.c:7294
 msgid "Children transformation matrix"
 msgstr "子項變形矩陣"
 
-#: ../clutter/clutter-actor.c:7272
+#: ../clutter/clutter-actor.c:7309
 msgid "Child Transform Set"
 msgstr "子項變形設定"
 
-#: ../clutter/clutter-actor.c:7273
+#: ../clutter/clutter-actor.c:7310
 msgid "Whether the child-transform property is set"
 msgstr "是否已經設定子項轉換屬性"
 
-#: ../clutter/clutter-actor.c:7290
+#: ../clutter/clutter-actor.c:7327
 msgid "Show on set parent"
 msgstr "設定為上層時顯示"
 
-#: ../clutter/clutter-actor.c:7291
+#: ../clutter/clutter-actor.c:7328
 msgid "Whether the actor is shown when parented"
 msgstr "參與者設定為上層時是否顯示"
 
-#: ../clutter/clutter-actor.c:7308
+#: ../clutter/clutter-actor.c:7345
 msgid "Clip to Allocation"
 msgstr "裁剪到定位"
 
-#: ../clutter/clutter-actor.c:7309
+#: ../clutter/clutter-actor.c:7346
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "設定裁剪區域以追蹤參與者的定位"
 
-#: ../clutter/clutter-actor.c:7322
+#: ../clutter/clutter-actor.c:7359
 msgid "Text Direction"
 msgstr "文字方向"
 
-#: ../clutter/clutter-actor.c:7323
+#: ../clutter/clutter-actor.c:7360
 msgid "Direction of the text"
 msgstr "文字的方向"
 
-#: ../clutter/clutter-actor.c:7338
+#: ../clutter/clutter-actor.c:7375
 msgid "Has Pointer"
 msgstr "具有指標"
 
-#: ../clutter/clutter-actor.c:7339
+#: ../clutter/clutter-actor.c:7376
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "是否參與者含有輸入裝置的指標"
 
-#: ../clutter/clutter-actor.c:7352
+#: ../clutter/clutter-actor.c:7389
 msgid "Actions"
 msgstr "動作"
 
-#: ../clutter/clutter-actor.c:7353
+#: ../clutter/clutter-actor.c:7390
 msgid "Adds an action to the actor"
 msgstr "加入一項動作給參與者"
 
-#: ../clutter/clutter-actor.c:7366
+#: ../clutter/clutter-actor.c:7403
 msgid "Constraints"
 msgstr "條件約束"
 
-#: ../clutter/clutter-actor.c:7367
+#: ../clutter/clutter-actor.c:7404
 msgid "Adds a constraint to the actor"
 msgstr "加入條件約束給參與者"
 
-#: ../clutter/clutter-actor.c:7380
+#: ../clutter/clutter-actor.c:7417
 msgid "Effect"
 msgstr "效果"
 
-#: ../clutter/clutter-actor.c:7381
+#: ../clutter/clutter-actor.c:7418
 msgid "Add an effect to be applied on the actor"
 msgstr "加入一項效果給參與者"
 
-#: ../clutter/clutter-actor.c:7395
+#: ../clutter/clutter-actor.c:7432
 msgid "Layout Manager"
 msgstr "版面配置管理員"
 
-#: ../clutter/clutter-actor.c:7396
+#: ../clutter/clutter-actor.c:7433
 msgid "The object controlling the layout of an actor's children"
 msgstr "用來控制動作者子項配置的物件"
 
-#: ../clutter/clutter-actor.c:7410
+#: ../clutter/clutter-actor.c:7447
 msgid "X Expand"
 msgstr "X 擴展"
 
-#: ../clutter/clutter-actor.c:7411
+#: ../clutter/clutter-actor.c:7448
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr "是否應指派給參與者額外的水平空間"
 
-#: ../clutter/clutter-actor.c:7426
+#: ../clutter/clutter-actor.c:7463
 msgid "Y Expand"
 msgstr "Y 擴展"
 
-#: ../clutter/clutter-actor.c:7427
+#: ../clutter/clutter-actor.c:7464
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr "是否應指派給參與者額外的垂直空間"
 
-#: ../clutter/clutter-actor.c:7443
+#: ../clutter/clutter-actor.c:7480
 msgid "X Alignment"
 msgstr "X 對齊"
 
-#: ../clutter/clutter-actor.c:7444
+#: ../clutter/clutter-actor.c:7481
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "在 X 軸的配置之內參與者的垂直對齊"
 
-#: ../clutter/clutter-actor.c:7459
+#: ../clutter/clutter-actor.c:7496
 msgid "Y Alignment"
 msgstr "Y 對齊"
 
-#: ../clutter/clutter-actor.c:7460
+#: ../clutter/clutter-actor.c:7497
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "在 Y 軸的配置之內參與者的垂直對齊"
 
-#: ../clutter/clutter-actor.c:7479
+#: ../clutter/clutter-actor.c:7516
 msgid "Margin Top"
 msgstr "頂端邊界"
 
-#: ../clutter/clutter-actor.c:7480
+#: ../clutter/clutter-actor.c:7517
 msgid "Extra space at the top"
 msgstr "頂端額外的空間"
 
-#: ../clutter/clutter-actor.c:7501
+#: ../clutter/clutter-actor.c:7538
 msgid "Margin Bottom"
 msgstr "底部邊界"
 
-#: ../clutter/clutter-actor.c:7502
+#: ../clutter/clutter-actor.c:7539
 msgid "Extra space at the bottom"
 msgstr "底部額外的空間"
 
-#: ../clutter/clutter-actor.c:7523
+#: ../clutter/clutter-actor.c:7560
 msgid "Margin Left"
 msgstr "左邊邊界"
 
-#: ../clutter/clutter-actor.c:7524
+#: ../clutter/clutter-actor.c:7561
 msgid "Extra space at the left"
 msgstr "左側額外的空間"
 
-#: ../clutter/clutter-actor.c:7545
+#: ../clutter/clutter-actor.c:7582
 msgid "Margin Right"
 msgstr "右邊邊界"
 
-#: ../clutter/clutter-actor.c:7546
+#: ../clutter/clutter-actor.c:7583
 msgid "Extra space at the right"
 msgstr "右側額外的空間"
 
-#: ../clutter/clutter-actor.c:7562
+#: ../clutter/clutter-actor.c:7599
 msgid "Background Color Set"
 msgstr "背景顏色設定"
 
-#: ../clutter/clutter-actor.c:7563 ../clutter/deprecated/clutter-box.c:271
+#: ../clutter/clutter-actor.c:7600 ../clutter/deprecated/clutter-box.c:271
 msgid "Whether the background color is set"
 msgstr "是否已設定背景顏色"
 
-#: ../clutter/clutter-actor.c:7579
+#: ../clutter/clutter-actor.c:7616
 msgid "Background color"
 msgstr "背景顏色"
 
-#: ../clutter/clutter-actor.c:7580
+#: ../clutter/clutter-actor.c:7617
 msgid "The actor's background color"
 msgstr "參與者的背景顏色"
 
-#: ../clutter/clutter-actor.c:7595
+#: ../clutter/clutter-actor.c:7632
 msgid "First Child"
 msgstr "第一個子項目"
 
-#: ../clutter/clutter-actor.c:7596
+#: ../clutter/clutter-actor.c:7633
 msgid "The actor's first child"
 msgstr "參與者的第一個子項目"
 
-#: ../clutter/clutter-actor.c:7609
+#: ../clutter/clutter-actor.c:7646
 msgid "Last Child"
 msgstr "最後一個子項目"
 
-#: ../clutter/clutter-actor.c:7610
+#: ../clutter/clutter-actor.c:7647
 msgid "The actor's last child"
 msgstr "參與者的最後一個子項目"
 
-#: ../clutter/clutter-actor.c:7624
+#: ../clutter/clutter-actor.c:7661
 msgid "Content"
 msgstr "內容"
 
-#: ../clutter/clutter-actor.c:7625
+#: ../clutter/clutter-actor.c:7662
 msgid "Delegate object for painting the actor's content"
 msgstr "指派繪製參與者內容的物件"
 
-#: ../clutter/clutter-actor.c:7650
+#: ../clutter/clutter-actor.c:7687
 msgid "Content Gravity"
 msgstr "內容引力"
 
-#: ../clutter/clutter-actor.c:7651
+#: ../clutter/clutter-actor.c:7688
 msgid "Alignment of the actor's content"
 msgstr "參與者內容的排列"
 
-#: ../clutter/clutter-actor.c:7671
+#: ../clutter/clutter-actor.c:7708
 msgid "Content Box"
 msgstr "內容方塊"
 
-#: ../clutter/clutter-actor.c:7672
+#: ../clutter/clutter-actor.c:7709
 msgid "The bounding box of the actor's content"
 msgstr "參與者內容的綁定方塊"
 
-#: ../clutter/clutter-actor.c:7680
+#: ../clutter/clutter-actor.c:7717
 msgid "Minification Filter"
 msgstr "縮小過濾器"
 
-#: ../clutter/clutter-actor.c:7681
+#: ../clutter/clutter-actor.c:7718
 msgid "The filter used when reducing the size of the content"
 msgstr "縮小內容大小時所用的過濾器"
 
-#: ../clutter/clutter-actor.c:7688
+#: ../clutter/clutter-actor.c:7725
 msgid "Magnification Filter"
 msgstr "放大過濾器"
 
-#: ../clutter/clutter-actor.c:7689
+#: ../clutter/clutter-actor.c:7726
 msgid "The filter used when increasing the size of the content"
 msgstr "增加內容大小時所用的過濾器"
 
-#: ../clutter/clutter-actor.c:7703
+#: ../clutter/clutter-actor.c:7740
 msgid "Content Repeat"
 msgstr "內容重複"
 
-#: ../clutter/clutter-actor.c:7704
+#: ../clutter/clutter-actor.c:7741
 msgid "The repeat policy for the actor's content"
 msgstr "參與者內容的重複原則"
 
@@ -692,7 +692,7 @@ msgstr "參與者附加到中繼物件"
 msgid "The name of the meta"
 msgstr "中繼物件的名稱"
 
-#: ../clutter/clutter-actor-meta.c:219 ../clutter/clutter-input-device.c:337
+#: ../clutter/clutter-actor-meta.c:219 ../clutter/clutter-input-device.c:326
 #: ../clutter/deprecated/clutter-shader.c:309
 msgid "Enabled"
 msgstr "已啟用"
@@ -728,11 +728,11 @@ msgstr "因子"
 msgid "The alignment factor, between 0.0 and 1.0"
 msgstr "對齊因子，在 0.0 和 1.0 之間"
 
-#: ../clutter/clutter-backend.c:376
+#: ../clutter/clutter-backend.c:380
 msgid "Unable to initialize the Clutter backend"
 msgstr "無法初始化 Clutter 後端"
 
-#: ../clutter/clutter-backend.c:450
+#: ../clutter/clutter-backend.c:454
 #, c-format
 msgid "The backend of type '%s' does not support creating multiple stages"
 msgstr "類型「%s」的後端不支援建立多重階段"
@@ -764,7 +764,8 @@ msgid "The unique name of the binding pool"
 msgstr "連結池的獨一名稱"
 
 #: ../clutter/clutter-bin-layout.c:238 ../clutter/clutter-bin-layout.c:651
-#: ../clutter/clutter-box-layout.c:388 ../clutter/clutter-table-layout.c:604
+#: ../clutter/clutter-box-layout.c:388
+#: ../clutter/deprecated/clutter-table-layout.c:610
 msgid "Horizontal Alignment"
 msgstr "水平對齊"
 
@@ -773,7 +774,8 @@ msgid "Horizontal alignment for the actor inside the layout manager"
 msgstr "用於版面管理器之內參與者的水平對齊"
 
 #: ../clutter/clutter-bin-layout.c:247 ../clutter/clutter-bin-layout.c:671
-#: ../clutter/clutter-box-layout.c:397 ../clutter/clutter-table-layout.c:619
+#: ../clutter/clutter-box-layout.c:397
+#: ../clutter/deprecated/clutter-table-layout.c:625
 msgid "Vertical Alignment"
 msgstr "垂直對齊"
 
@@ -797,98 +799,110 @@ msgstr "展開"
 msgid "Allocate extra space for the child"
 msgstr "配置額外空間給子物件"
 
-#: ../clutter/clutter-box-layout.c:370 ../clutter/clutter-table-layout.c:583
+#: ../clutter/clutter-box-layout.c:370
+#: ../clutter/deprecated/clutter-table-layout.c:589
 msgid "Horizontal Fill"
 msgstr "水平填充"
 
-#: ../clutter/clutter-box-layout.c:371 ../clutter/clutter-table-layout.c:584
+#: ../clutter/clutter-box-layout.c:371
+#: ../clutter/deprecated/clutter-table-layout.c:590
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the horizontal axis"
 msgstr "當容器正在水平軸上配置備用空間時，子物件是否應該接收優先權"
 
-#: ../clutter/clutter-box-layout.c:379 ../clutter/clutter-table-layout.c:590
+#: ../clutter/clutter-box-layout.c:379
+#: ../clutter/deprecated/clutter-table-layout.c:596
 msgid "Vertical Fill"
 msgstr "垂直填充"
 
-#: ../clutter/clutter-box-layout.c:380 ../clutter/clutter-table-layout.c:591
+#: ../clutter/clutter-box-layout.c:380
+#: ../clutter/deprecated/clutter-table-layout.c:597
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the vertical axis"
 msgstr "當容器正在垂直軸上配置備用空間時，子物件是否應該接收優先權"
 
-#: ../clutter/clutter-box-layout.c:389 ../clutter/clutter-table-layout.c:605
+#: ../clutter/clutter-box-layout.c:389
+#: ../clutter/deprecated/clutter-table-layout.c:611
 msgid "Horizontal alignment of the actor within the cell"
 msgstr "在方格之內參與者的水平對齊"
 
-#: ../clutter/clutter-box-layout.c:398 ../clutter/clutter-table-layout.c:620
+#: ../clutter/clutter-box-layout.c:398
+#: ../clutter/deprecated/clutter-table-layout.c:626
 msgid "Vertical alignment of the actor within the cell"
 msgstr "在方格之內參與者的垂直對齊"
 
-#: ../clutter/clutter-box-layout.c:1361
+#: ../clutter/clutter-box-layout.c:1359
 msgid "Vertical"
 msgstr "垂直"
 
-#: ../clutter/clutter-box-layout.c:1362
+#: ../clutter/clutter-box-layout.c:1360
 msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "版面配置是否應該是垂直而非水平"
 
-#: ../clutter/clutter-box-layout.c:1379 ../clutter/clutter-flow-layout.c:942
+#: ../clutter/clutter-box-layout.c:1377 ../clutter/clutter-flow-layout.c:942
 #: ../clutter/clutter-grid-layout.c:1549
 msgid "Orientation"
 msgstr "方向"
 
-#: ../clutter/clutter-box-layout.c:1380 ../clutter/clutter-flow-layout.c:943
+#: ../clutter/clutter-box-layout.c:1378 ../clutter/clutter-flow-layout.c:943
 #: ../clutter/clutter-grid-layout.c:1550
 msgid "The orientation of the layout"
 msgstr "版面配置的方向"
 
-#: ../clutter/clutter-box-layout.c:1396 ../clutter/clutter-flow-layout.c:958
+#: ../clutter/clutter-box-layout.c:1394 ../clutter/clutter-flow-layout.c:958
 msgid "Homogeneous"
 msgstr "同質的"
 
-#: ../clutter/clutter-box-layout.c:1397
+#: ../clutter/clutter-box-layout.c:1395
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr "版面配置是否應該是同質的，也就是所有子物件都具有相同的大小"
 
-#: ../clutter/clutter-box-layout.c:1412
+#: ../clutter/clutter-box-layout.c:1410
 msgid "Pack Start"
 msgstr "包裝開始"
 
-#: ../clutter/clutter-box-layout.c:1413
+#: ../clutter/clutter-box-layout.c:1411
 msgid "Whether to pack items at the start of the box"
 msgstr "是否要從方框的起始去包裝各個項目"
 
-#: ../clutter/clutter-box-layout.c:1426
+#: ../clutter/clutter-box-layout.c:1424
 msgid "Spacing"
 msgstr "間隔"
 
-#: ../clutter/clutter-box-layout.c:1427
+#: ../clutter/clutter-box-layout.c:1425
 msgid "Spacing between children"
 msgstr "子物件之間的間隔"
 
-#: ../clutter/clutter-box-layout.c:1444 ../clutter/clutter-table-layout.c:1667
+#: ../clutter/clutter-box-layout.c:1442
+#: ../clutter/deprecated/clutter-table-layout.c:1677
 msgid "Use Animations"
 msgstr "使用動畫"
 
-#: ../clutter/clutter-box-layout.c:1445 ../clutter/clutter-table-layout.c:1668
+#: ../clutter/clutter-box-layout.c:1443
+#: ../clutter/deprecated/clutter-table-layout.c:1678
 msgid "Whether layout changes should be animated"
 msgstr "是否版面配置的變更應該以動畫顯示"
 
-#: ../clutter/clutter-box-layout.c:1469 ../clutter/clutter-table-layout.c:1692
+#: ../clutter/clutter-box-layout.c:1467
+#: ../clutter/deprecated/clutter-table-layout.c:1702
 msgid "Easing Mode"
 msgstr "簡易模式"
 
-#: ../clutter/clutter-box-layout.c:1470 ../clutter/clutter-table-layout.c:1693
+#: ../clutter/clutter-box-layout.c:1468
+#: ../clutter/deprecated/clutter-table-layout.c:1703
 msgid "The easing mode of the animations"
 msgstr "簡易模式的動畫"
 
-#: ../clutter/clutter-box-layout.c:1490 ../clutter/clutter-table-layout.c:1713
+#: ../clutter/clutter-box-layout.c:1488
+#: ../clutter/deprecated/clutter-table-layout.c:1723
 msgid "Easing Duration"
 msgstr "簡易持續時間"
 
-#: ../clutter/clutter-box-layout.c:1491 ../clutter/clutter-table-layout.c:1714
+#: ../clutter/clutter-box-layout.c:1489
+#: ../clutter/deprecated/clutter-table-layout.c:1724
 msgid "The duration of the animations"
 msgstr "動畫的持續時間"
 
@@ -908,13 +922,33 @@ msgstr "對比"
 msgid "The contrast change to apply"
 msgstr "要套用的對比"
 
-#: ../clutter/clutter-canvas.c:225
+#: ../clutter/clutter-canvas.c:248
 msgid "The width of the canvas"
 msgstr "畫布的寬度"
 
-#: ../clutter/clutter-canvas.c:241
+#: ../clutter/clutter-canvas.c:264
 msgid "The height of the canvas"
 msgstr "畫布的高度"
+
+#: ../clutter/clutter-canvas.c:283
+#| msgid "Selection Color Set"
+msgid "Scale Factor Set"
+msgstr "縮放因素設定"
+
+#: ../clutter/clutter-canvas.c:284
+#| msgid "Whether the transform property is set"
+msgid "Whether the scale-factor property is set"
+msgstr "是否已經設定縮放因素屬性"
+
+#: ../clutter/clutter-canvas.c:305
+#| msgid "Factor"
+msgid "Scale Factor"
+msgstr "縮放因素"
+
+#: ../clutter/clutter-canvas.c:306
+#| msgid "The height of the Cairo surface"
+msgid "The scaling factor for the surface"
+msgstr "表面的縮放因素"
 
 #: ../clutter/clutter-child-meta.c:127
 msgid "Container"
@@ -928,35 +962,35 @@ msgstr "用以建立此資料的容器"
 msgid "The actor wrapped by this data"
 msgstr "由此資料所換列的參與者"
 
-#: ../clutter/clutter-click-action.c:557
+#: ../clutter/clutter-click-action.c:586
 msgid "Pressed"
 msgstr "已按下"
 
-#: ../clutter/clutter-click-action.c:558
+#: ../clutter/clutter-click-action.c:587
 msgid "Whether the clickable should be in pressed state"
 msgstr "可點選者是否應該處於已按下狀態"
 
-#: ../clutter/clutter-click-action.c:571
+#: ../clutter/clutter-click-action.c:600
 msgid "Held"
 msgstr "持有"
 
-#: ../clutter/clutter-click-action.c:572
+#: ../clutter/clutter-click-action.c:601
 msgid "Whether the clickable has a grab"
 msgstr "可點選者是否可抓取"
 
-#: ../clutter/clutter-click-action.c:589 ../clutter/clutter-settings.c:607
+#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:653
 msgid "Long Press Duration"
 msgstr "長時間按壓期間"
 
-#: ../clutter/clutter-click-action.c:590
+#: ../clutter/clutter-click-action.c:619
 msgid "The minimum duration of a long press to recognize the gesture"
 msgstr "長時間按壓辨識為手勢的最小持續時間"
 
-#: ../clutter/clutter-click-action.c:608
+#: ../clutter/clutter-click-action.c:637
 msgid "Long Press Threshold"
 msgstr "長時間按壓界限"
 
-#: ../clutter/clutter-click-action.c:609
+#: ../clutter/clutter-click-action.c:638
 msgid "The maximum threshold before a long press is cancelled"
 msgstr "取消長時間按壓前的最大界限"
 
@@ -1001,7 +1035,7 @@ msgid "The desaturation factor"
 msgstr "稀化因子"
 
 #: ../clutter/clutter-device-manager.c:127
-#: ../clutter/clutter-input-device.c:366
+#: ../clutter/clutter-input-device.c:355
 #: ../clutter/x11/clutter-keymap-x11.c:321
 msgid "Backend"
 msgstr "後端程式"
@@ -1010,51 +1044,51 @@ msgstr "後端程式"
 msgid "The ClutterBackend of the device manager"
 msgstr "裝置管理器的 Clutter 後端程式"
 
-#: ../clutter/clutter-drag-action.c:740
+#: ../clutter/clutter-drag-action.c:741
 msgid "Horizontal Drag Threshold"
 msgstr "水平拖曳臨界值"
 
-#: ../clutter/clutter-drag-action.c:741
+#: ../clutter/clutter-drag-action.c:742
 msgid "The horizontal amount of pixels required to start dragging"
 msgstr "啟動拖曳所需的水平像素數目"
 
-#: ../clutter/clutter-drag-action.c:768
+#: ../clutter/clutter-drag-action.c:769
 msgid "Vertical Drag Threshold"
 msgstr "垂直拖曳臨界值"
 
-#: ../clutter/clutter-drag-action.c:769
+#: ../clutter/clutter-drag-action.c:770
 msgid "The vertical amount of pixels required to start dragging"
 msgstr "啟動拖曳所需的垂直像素數目"
 
-#: ../clutter/clutter-drag-action.c:790
+#: ../clutter/clutter-drag-action.c:791
 msgid "Drag Handle"
 msgstr "拖曳控柄"
 
-#: ../clutter/clutter-drag-action.c:791
+#: ../clutter/clutter-drag-action.c:792
 msgid "The actor that is being dragged"
 msgstr "正在拖曳的參與者"
 
-#: ../clutter/clutter-drag-action.c:804
+#: ../clutter/clutter-drag-action.c:805
 msgid "Drag Axis"
 msgstr "拖曳軸線"
 
-#: ../clutter/clutter-drag-action.c:805
+#: ../clutter/clutter-drag-action.c:806
 msgid "Constraints the dragging to an axis"
 msgstr "約束拖曳之於軸線"
 
-#: ../clutter/clutter-drag-action.c:821
+#: ../clutter/clutter-drag-action.c:822
 msgid "Drag Area"
 msgstr "拖曳區域"
 
-#: ../clutter/clutter-drag-action.c:822
+#: ../clutter/clutter-drag-action.c:823
 msgid "Constrains the dragging to a rectangle"
 msgstr "限制矩形拖曳"
 
-#: ../clutter/clutter-drag-action.c:835
+#: ../clutter/clutter-drag-action.c:836
 msgid "Drag Area Set"
 msgstr "拖曳區域設定"
 
-#: ../clutter/clutter-drag-action.c:836
+#: ../clutter/clutter-drag-action.c:837
 msgid "Whether the drag area is set"
 msgstr "是否已經設定拖曳區域"
 
@@ -1062,7 +1096,8 @@ msgstr "是否已經設定拖曳區域"
 msgid "Whether each item should receive the same allocation"
 msgstr "每個項目是否應該獲得相同的配置"
 
-#: ../clutter/clutter-flow-layout.c:974 ../clutter/clutter-table-layout.c:1629
+#: ../clutter/clutter-flow-layout.c:974
+#: ../clutter/deprecated/clutter-table-layout.c:1637
 msgid "Column Spacing"
 msgstr "欄間隔"
 
@@ -1070,7 +1105,8 @@ msgstr "欄間隔"
 msgid "The spacing between columns"
 msgstr "直欄之間的間隔"
 
-#: ../clutter/clutter-flow-layout.c:991 ../clutter/clutter-table-layout.c:1643
+#: ../clutter/clutter-flow-layout.c:991
+#: ../clutter/deprecated/clutter-table-layout.c:1653
 msgid "Row Spacing"
 msgstr "列間隔"
 
@@ -1114,13 +1150,22 @@ msgstr "每一列的最大高度"
 msgid "Snap to grid"
 msgstr "貼齊格線"
 
-#: ../clutter/clutter-gesture-action.c:646
+#: ../clutter/clutter-gesture-action.c:639
 msgid "Number touch points"
 msgstr "觸控點數目"
 
-#: ../clutter/clutter-gesture-action.c:647
+#: ../clutter/clutter-gesture-action.c:640
 msgid "Number of touch points"
 msgstr "觸控點數目"
+
+#: ../clutter/clutter-gesture-action.c:655
+msgid "Threshold Trigger Edge"
+msgstr "界限觸發邊緣"
+
+#: ../clutter/clutter-gesture-action.c:656
+#| msgid "The timeline used by the animation"
+msgid "The trigger edge used by the action"
+msgstr "動作使用的觸發邊緣"
 
 #: ../clutter/clutter-grid-layout.c:1223
 msgid "Left attachment"
@@ -1178,92 +1223,92 @@ msgstr "欄寬一致"
 msgid "If TRUE, the columns are all the same width"
 msgstr "如果設定為「TRUE」，表示所有欄的寬度都一樣"
 
-#: ../clutter/clutter-image.c:246 ../clutter/clutter-image.c:309
-#: ../clutter/clutter-image.c:397
+#: ../clutter/clutter-image.c:249 ../clutter/clutter-image.c:312
+#: ../clutter/clutter-image.c:400
 msgid "Unable to load image data"
 msgstr "無法載入圖片資料"
 
-#: ../clutter/clutter-input-device.c:242
+#: ../clutter/clutter-input-device.c:231
 msgid "Id"
 msgstr "識別號"
 
-#: ../clutter/clutter-input-device.c:243
+#: ../clutter/clutter-input-device.c:232
 msgid "Unique identifier of the device"
 msgstr "裝置唯一識別號"
 
-#: ../clutter/clutter-input-device.c:259
+#: ../clutter/clutter-input-device.c:248
 msgid "The name of the device"
 msgstr "裝置名稱"
 
-#: ../clutter/clutter-input-device.c:273
+#: ../clutter/clutter-input-device.c:262
 msgid "Device Type"
 msgstr "裝置類型"
 
-#: ../clutter/clutter-input-device.c:274
+#: ../clutter/clutter-input-device.c:263
 msgid "The type of the device"
 msgstr "裝置的類型"
 
-#: ../clutter/clutter-input-device.c:289
+#: ../clutter/clutter-input-device.c:278
 msgid "Device Manager"
 msgstr "裝置管理程式"
 
-#: ../clutter/clutter-input-device.c:290
+#: ../clutter/clutter-input-device.c:279
 msgid "The device manager instance"
 msgstr "裝置管理程式實體"
 
-#: ../clutter/clutter-input-device.c:303
+#: ../clutter/clutter-input-device.c:292
 msgid "Device Mode"
 msgstr "裝置模式"
 
-#: ../clutter/clutter-input-device.c:304
+#: ../clutter/clutter-input-device.c:293
 msgid "The mode of the device"
 msgstr "裝置的模式"
 
-#: ../clutter/clutter-input-device.c:318
+#: ../clutter/clutter-input-device.c:307
 msgid "Has Cursor"
 msgstr "具有游標"
 
-#: ../clutter/clutter-input-device.c:319
+#: ../clutter/clutter-input-device.c:308
 msgid "Whether the device has a cursor"
 msgstr "裝置是否有游標"
 
-#: ../clutter/clutter-input-device.c:338
+#: ../clutter/clutter-input-device.c:327
 msgid "Whether the device is enabled"
 msgstr "裝置是否已啟用"
 
-#: ../clutter/clutter-input-device.c:351
+#: ../clutter/clutter-input-device.c:340
 msgid "Number of Axes"
 msgstr "軸的數目"
 
-#: ../clutter/clutter-input-device.c:352
+#: ../clutter/clutter-input-device.c:341
 msgid "The number of axes on the device"
 msgstr "裝置中的軸數"
 
-#: ../clutter/clutter-input-device.c:367
+#: ../clutter/clutter-input-device.c:356
 msgid "The backend instance"
 msgstr "後端實體"
 
-#: ../clutter/clutter-interval.c:503
+#: ../clutter/clutter-interval.c:553
 msgid "Value Type"
 msgstr "變數值類型"
 
-#: ../clutter/clutter-interval.c:504
+#: ../clutter/clutter-interval.c:554
 msgid "The type of the values in the interval"
 msgstr "在間隔之中的變數值型態"
 
-#: ../clutter/clutter-interval.c:519
+#: ../clutter/clutter-interval.c:569
 msgid "Initial Value"
 msgstr "初始值"
 
-#: ../clutter/clutter-interval.c:520
+#: ../clutter/clutter-interval.c:570
 msgid "Initial value of the interval"
 msgstr "間隔的初始值"
 
-#: ../clutter/clutter-interval.c:534
+#: ../clutter/clutter-interval.c:584
 msgid "Final Value"
 msgstr "最終值"
 
-#: ../clutter/clutter-interval.c:535
+#: ../clutter/clutter-interval.c:585
 msgid "Final value of the interval"
 msgstr "間隔的最終值"
 
@@ -1286,87 +1331,87 @@ msgstr "用以建立此資料的管理器"
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1669
+#: ../clutter/clutter-main.c:1622
 msgid "Show frames per second"
 msgstr "顯示圖框速率"
 
-#: ../clutter/clutter-main.c:1671
+#: ../clutter/clutter-main.c:1624
 msgid "Default frame rate"
 msgstr "預設圖框率"
 
-#: ../clutter/clutter-main.c:1673
+#: ../clutter/clutter-main.c:1626
 msgid "Make all warnings fatal"
 msgstr "所有警告視為嚴重錯誤"
 
-#: ../clutter/clutter-main.c:1676
+#: ../clutter/clutter-main.c:1629
 msgid "Direction for the text"
 msgstr "文字方向"
 
-#: ../clutter/clutter-main.c:1679
+#: ../clutter/clutter-main.c:1632
 msgid "Disable mipmapping on text"
 msgstr "在文字上停用 MIP 對應"
 
-#: ../clutter/clutter-main.c:1682
+#: ../clutter/clutter-main.c:1635
 msgid "Use 'fuzzy' picking"
 msgstr "使用「模糊」挑選"
 
-#: ../clutter/clutter-main.c:1685
+#: ../clutter/clutter-main.c:1638
 msgid "Clutter debugging flags to set"
 msgstr "要設定的 Clutter 除錯標記"
 
-#: ../clutter/clutter-main.c:1687
+#: ../clutter/clutter-main.c:1640
 msgid "Clutter debugging flags to unset"
 msgstr "要取消設定的 Clutter 除錯標記"
 
-#: ../clutter/clutter-main.c:1691
+#: ../clutter/clutter-main.c:1644
 msgid "Clutter profiling flags to set"
 msgstr "要設定的 Clutter 效能分析標記"
 
-#: ../clutter/clutter-main.c:1693
+#: ../clutter/clutter-main.c:1646
 msgid "Clutter profiling flags to unset"
 msgstr "要取消設定的 Clutter 效能分析標記"
 
-#: ../clutter/clutter-main.c:1696
+#: ../clutter/clutter-main.c:1649
 msgid "Enable accessibility"
 msgstr "啟用輔助工具"
 
-#: ../clutter/clutter-main.c:1888
+#: ../clutter/clutter-main.c:1841
 msgid "Clutter Options"
 msgstr "Clutter 選項"
 
-#: ../clutter/clutter-main.c:1889
+#: ../clutter/clutter-main.c:1842
 msgid "Show Clutter Options"
 msgstr "顯示 Clutter 選項"
 
-#: ../clutter/clutter-pan-action.c:445
+#: ../clutter/clutter-pan-action.c:446
 msgid "Pan Axis"
 msgstr "平移軸線"
 
-#: ../clutter/clutter-pan-action.c:446
+#: ../clutter/clutter-pan-action.c:447
 msgid "Constraints the panning to an axis"
 msgstr "限制平移至軸線"
 
-#: ../clutter/clutter-pan-action.c:460
+#: ../clutter/clutter-pan-action.c:461
 msgid "Interpolate"
 msgstr "內插法"
 
-#: ../clutter/clutter-pan-action.c:461
+#: ../clutter/clutter-pan-action.c:462
 msgid "Whether interpolated events emission is enabled."
 msgstr "內插事件散發是否已啟用。"
 
-#: ../clutter/clutter-pan-action.c:477
+#: ../clutter/clutter-pan-action.c:478
 msgid "Deceleration"
 msgstr "減速"
 
-#: ../clutter/clutter-pan-action.c:478
+#: ../clutter/clutter-pan-action.c:479
 msgid "Rate at which the interpolated panning will decelerate in"
 msgstr "內插平移要減速的速率"
 
-#: ../clutter/clutter-pan-action.c:495
+#: ../clutter/clutter-pan-action.c:496
 msgid "Initial acceleration factor"
 msgstr "初始加速係數"
 
-#: ../clutter/clutter-pan-action.c:496
+#: ../clutter/clutter-pan-action.c:497
 msgid "Factor applied to the momentum when starting the interpolated phase"
 msgstr "當開始內插階段時套用到動量的係數"
 
@@ -1424,100 +1469,109 @@ msgstr "捲動模式"
 msgid "The scrolling direction"
 msgstr "捲動方向"
 
-#: ../clutter/clutter-settings.c:448
+#: ../clutter/clutter-settings.c:486
 msgid "Double Click Time"
 msgstr "雙擊時間"
 
-#: ../clutter/clutter-settings.c:449
+#: ../clutter/clutter-settings.c:487
 msgid "The time between clicks necessary to detect a multiple click"
 msgstr "偵測多重點擊時每個點擊間隔的時間"
 
-#: ../clutter/clutter-settings.c:464
+#: ../clutter/clutter-settings.c:502
 msgid "Double Click Distance"
 msgstr "雙擊間距"
 
-#: ../clutter/clutter-settings.c:465
+#: ../clutter/clutter-settings.c:503
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr "偵測多重點擊時每個點擊間隔的距離"
 
-#: ../clutter/clutter-settings.c:480
+#: ../clutter/clutter-settings.c:518
 msgid "Drag Threshold"
 msgstr "拖曳距離界限"
 
-#: ../clutter/clutter-settings.c:481
+#: ../clutter/clutter-settings.c:519
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "開始拖曳前游標移動的距離"
 
-#: ../clutter/clutter-settings.c:496 ../clutter/clutter-text.c:3393
+#: ../clutter/clutter-settings.c:534 ../clutter/clutter-text.c:3404
 msgid "Font Name"
 msgstr "字型名稱"
 
-#: ../clutter/clutter-settings.c:497
+#: ../clutter/clutter-settings.c:535
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
 msgstr "預設字型的描述，等同由 Pango 分析的資料"
 
-#: ../clutter/clutter-settings.c:512
+#: ../clutter/clutter-settings.c:550
 msgid "Font Antialias"
 msgstr "字型平滑化"
 
-#: ../clutter/clutter-settings.c:513
+#: ../clutter/clutter-settings.c:551
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
 msgstr "是否使用平滑化 (1 為啟用，0 為停用，而 -1 為使用預設值)"
 
-#: ../clutter/clutter-settings.c:529
+#: ../clutter/clutter-settings.c:567 ../clutter/clutter-settings.c:575
 msgid "Font DPI"
 msgstr "字型 DPI"
 
-#: ../clutter/clutter-settings.c:530
+#: ../clutter/clutter-settings.c:568 ../clutter/clutter-settings.c:576
 msgid ""
 "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr "字型的解析度，單位為 1024 * 點數/英吋，或是 -1 為使用預設值"
 
-#: ../clutter/clutter-settings.c:546
+#: ../clutter/clutter-settings.c:592
 msgid "Font Hinting"
 msgstr "字型 Hinting"
 
-#: ../clutter/clutter-settings.c:547
+#: ../clutter/clutter-settings.c:593
 msgid ""
 "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr "是否使用 hinting (1 為啟用，0 為停用，而 -1 為使用預設值)"
 
-#: ../clutter/clutter-settings.c:568
+#: ../clutter/clutter-settings.c:614
 msgid "Font Hint Style"
 msgstr "字型 Hint 樣式"
 
-#: ../clutter/clutter-settings.c:569
+#: ../clutter/clutter-settings.c:615
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
 msgstr "hinting 的類型 (hintnone, hintslight, hintmedium, hintfull)"
 
-#: ../clutter/clutter-settings.c:590
+#: ../clutter/clutter-settings.c:636
 msgid "Font Subpixel Order"
 msgstr "字型次像素順序"
 
-#: ../clutter/clutter-settings.c:591
+#: ../clutter/clutter-settings.c:637
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
 msgstr "次像素平滑化的類型 (none, rgb, bgr, vrgb, vbgr)"
 
-#: ../clutter/clutter-settings.c:608
+#: ../clutter/clutter-settings.c:654
 msgid "The minimum duration for a long press gesture to be recognized"
 msgstr "辨識長時間按壓手勢的最小持續時間"
 
-#: ../clutter/clutter-settings.c:615
+#: ../clutter/clutter-settings.c:661
+msgid "Window Scaling Factor"
+msgstr "視窗縮放因素"
+
+#: ../clutter/clutter-settings.c:662
+#| msgid "Add an effect to be applied on the actor"
+msgid "The scaling factor to be applied to windows"
+msgstr "套用到視窗的縮放因素"
+
+#: ../clutter/clutter-settings.c:669
 msgid "Fontconfig configuration timestamp"
 msgstr "Fontconfig 組態時刻戳記"
 
-#: ../clutter/clutter-settings.c:616
+#: ../clutter/clutter-settings.c:670
 msgid "Timestamp of the current fontconfig configuration"
 msgstr "目前的 fontconfig 組態的時刻戳記"
 
-#: ../clutter/clutter-settings.c:633
+#: ../clutter/clutter-settings.c:687
 msgid "Password Hint Time"
 msgstr "密碼提示時間"
 
-#: ../clutter/clutter-settings.c:634
+#: ../clutter/clutter-settings.c:688
 msgid "How long to show the last input character in hidden entries"
 msgstr "要顯示隱藏項目中最後輸入的字元多長的時間"
 
@@ -1553,168 +1607,112 @@ msgstr "來源要貼齊的邊緣"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "套用到限制的像素偏移值"
 
-#: ../clutter/clutter-stage.c:1945
+#: ../clutter/clutter-stage.c:1899
 msgid "Fullscreen Set"
 msgstr "全螢幕設定"
 
-#: ../clutter/clutter-stage.c:1946
+#: ../clutter/clutter-stage.c:1900
 msgid "Whether the main stage is fullscreen"
 msgstr "主舞臺是否為全螢幕"
 
-#: ../clutter/clutter-stage.c:1960
+#: ../clutter/clutter-stage.c:1914
 msgid "Offscreen"
 msgstr "螢幕外"
 
-#: ../clutter/clutter-stage.c:1961
+#: ../clutter/clutter-stage.c:1915
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "主舞臺是否應該在幕後潤算"
 
-#: ../clutter/clutter-stage.c:1973 ../clutter/clutter-text.c:3507
+#: ../clutter/clutter-stage.c:1927 ../clutter/clutter-text.c:3518
 msgid "Cursor Visible"
 msgstr "游標可見"
 
-#: ../clutter/clutter-stage.c:1974
+#: ../clutter/clutter-stage.c:1928
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "滑鼠指標是可見於主舞臺之上"
 
-#: ../clutter/clutter-stage.c:1988
+#: ../clutter/clutter-stage.c:1942
 msgid "User Resizable"
 msgstr "使用者可變更大小"
 
-#: ../clutter/clutter-stage.c:1989
+#: ../clutter/clutter-stage.c:1943
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "舞臺是否能夠透過使用者交互作用而調整大小"
 
-#: ../clutter/clutter-stage.c:2004 ../clutter/deprecated/clutter-box.c:256
+#: ../clutter/clutter-stage.c:1958 ../clutter/deprecated/clutter-box.c:256
 #: ../clutter/deprecated/clutter-rectangle.c:270
 msgid "Color"
 msgstr "顏色"
 
-#: ../clutter/clutter-stage.c:2005
+#: ../clutter/clutter-stage.c:1959
 msgid "The color of the stage"
 msgstr "舞臺的顏色"
 
-#: ../clutter/clutter-stage.c:2020
+#: ../clutter/clutter-stage.c:1974
 msgid "Perspective"
 msgstr "視角"
 
-#: ../clutter/clutter-stage.c:2021
+#: ../clutter/clutter-stage.c:1975
 msgid "Perspective projection parameters"
 msgstr "視角投影參數"
 
-#: ../clutter/clutter-stage.c:2036
+#: ../clutter/clutter-stage.c:1990
 msgid "Title"
 msgstr "標題"
 
-#: ../clutter/clutter-stage.c:2037
+#: ../clutter/clutter-stage.c:1991
 msgid "Stage Title"
 msgstr "舞臺標題"
 
-#: ../clutter/clutter-stage.c:2054
+#: ../clutter/clutter-stage.c:2008
 msgid "Use Fog"
 msgstr "使用霧化效果"
 
-#: ../clutter/clutter-stage.c:2055
+#: ../clutter/clutter-stage.c:2009
 msgid "Whether to enable depth cueing"
 msgstr "是否要啟用景深暗示"
 
-#: ../clutter/clutter-stage.c:2071
+#: ../clutter/clutter-stage.c:2025
 msgid "Fog"
 msgstr "霧化"
 
-#: ../clutter/clutter-stage.c:2072
+#: ../clutter/clutter-stage.c:2026
 msgid "Settings for the depth cueing"
 msgstr "景深暗示的設定值"
 
-#: ../clutter/clutter-stage.c:2088
+#: ../clutter/clutter-stage.c:2042
 msgid "Use Alpha"
 msgstr "使用α組成"
 
-#: ../clutter/clutter-stage.c:2089
+#: ../clutter/clutter-stage.c:2043
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "是否要考量舞臺顏色的α組成"
 
-#: ../clutter/clutter-stage.c:2105
+#: ../clutter/clutter-stage.c:2059
 msgid "Key Focus"
 msgstr "按鍵焦點"
 
-#: ../clutter/clutter-stage.c:2106
+#: ../clutter/clutter-stage.c:2060
 msgid "The currently key focused actor"
 msgstr "目前按鍵焦點的參與者"
 
-#: ../clutter/clutter-stage.c:2122
+#: ../clutter/clutter-stage.c:2076
 msgid "No Clear Hint"
 msgstr "無清空提示"
 
-#: ../clutter/clutter-stage.c:2123
+#: ../clutter/clutter-stage.c:2077
 msgid "Whether the stage should clear its contents"
 msgstr "舞臺是否應該清空它的內容"
 
-#: ../clutter/clutter-stage.c:2136
+#: ../clutter/clutter-stage.c:2090
 msgid "Accept Focus"
 msgstr "接受聚焦"
 
-#: ../clutter/clutter-stage.c:2137
+#: ../clutter/clutter-stage.c:2091
 msgid "Whether the stage should accept focus on show"
 msgstr "階段是否應該套用顯示的焦點"
 
-#: ../clutter/clutter-table-layout.c:537
-msgid "Column Number"
-msgstr "欄編號"
-
-#: ../clutter/clutter-table-layout.c:538
-msgid "The column the widget resides in"
-msgstr "視窗元件所在的欄編號"
-
-#: ../clutter/clutter-table-layout.c:545
-msgid "Row Number"
-msgstr "列編號"
-
-#: ../clutter/clutter-table-layout.c:546
-msgid "The row the widget resides in"
-msgstr "視窗元件所在的列編號"
-
-#: ../clutter/clutter-table-layout.c:553
-msgid "Column Span"
-msgstr "合併欄"
-
-#: ../clutter/clutter-table-layout.c:554
-msgid "The number of columns the widget should span"
-msgstr "視窗元件要跨越的欄數"
-
-#: ../clutter/clutter-table-layout.c:561
-msgid "Row Span"
-msgstr "合併列"
-
-#: ../clutter/clutter-table-layout.c:562
-msgid "The number of rows the widget should span"
-msgstr "視窗元件要跨越的列數"
-
-#: ../clutter/clutter-table-layout.c:569
-msgid "Horizontal Expand"
-msgstr "水平擴展"
-
-#: ../clutter/clutter-table-layout.c:570
-msgid "Allocate extra space for the child in horizontal axis"
-msgstr "在水平軸線上配置額外空間給子物件"
-
-#: ../clutter/clutter-table-layout.c:576
-msgid "Vertical Expand"
-msgstr "垂直擴展"
-
-#: ../clutter/clutter-table-layout.c:577
-msgid "Allocate extra space for the child in vertical axis"
-msgstr "在垂直軸線配置額外空間給子物件"
-
-#: ../clutter/clutter-table-layout.c:1630
-msgid "Spacing between columns"
-msgstr "欄之間的間隔"
-
-#: ../clutter/clutter-table-layout.c:1644
-msgid "Spacing between rows"
-msgstr "列之間的間隔"
-
-#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3428
+#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3439
 msgid "Text"
 msgstr "文字"
 
@@ -1738,203 +1736,203 @@ msgstr "最大長度"
 msgid "Maximum number of characters for this entry. Zero if no maximum"
 msgstr "這個項目中字元數目的上限。0 為沒有上限"
 
-#: ../clutter/clutter-text.c:3375
+#: ../clutter/clutter-text.c:3386
 msgid "Buffer"
 msgstr "緩衝區"
 
-#: ../clutter/clutter-text.c:3376
+#: ../clutter/clutter-text.c:3387
 msgid "The buffer for the text"
 msgstr "文字的緩衝區"
 
-#: ../clutter/clutter-text.c:3394
+#: ../clutter/clutter-text.c:3405
 msgid "The font to be used by the text"
 msgstr "文字所用的字型"
 
-#: ../clutter/clutter-text.c:3411
+#: ../clutter/clutter-text.c:3422
 msgid "Font Description"
 msgstr "字型描述"
 
-#: ../clutter/clutter-text.c:3412
+#: ../clutter/clutter-text.c:3423
 msgid "The font description to be used"
 msgstr "所用的字型描述"
 
-#: ../clutter/clutter-text.c:3429
+#: ../clutter/clutter-text.c:3440
 msgid "The text to render"
 msgstr "要潤算的文字"
 
-#: ../clutter/clutter-text.c:3443
+#: ../clutter/clutter-text.c:3454
 msgid "Font Color"
 msgstr "字型顏色"
 
-#: ../clutter/clutter-text.c:3444
+#: ../clutter/clutter-text.c:3455
 msgid "Color of the font used by the text"
 msgstr "文字字型所用的顏色"
 
-#: ../clutter/clutter-text.c:3459
+#: ../clutter/clutter-text.c:3470
 msgid "Editable"
 msgstr "可編輯"
 
-#: ../clutter/clutter-text.c:3460
+#: ../clutter/clutter-text.c:3471
 msgid "Whether the text is editable"
 msgstr "文字是否可以編輯"
 
-#: ../clutter/clutter-text.c:3475
+#: ../clutter/clutter-text.c:3486
 msgid "Selectable"
 msgstr "可選取"
 
-#: ../clutter/clutter-text.c:3476
+#: ../clutter/clutter-text.c:3487
 msgid "Whether the text is selectable"
 msgstr "文字是否可以選取"
 
-#: ../clutter/clutter-text.c:3490
+#: ../clutter/clutter-text.c:3501
 msgid "Activatable"
 msgstr "可啟用"
 
-#: ../clutter/clutter-text.c:3491
+#: ../clutter/clutter-text.c:3502
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "按下輸入鍵是否會造成發出啟用信號"
 
-#: ../clutter/clutter-text.c:3508
+#: ../clutter/clutter-text.c:3519
 msgid "Whether the input cursor is visible"
 msgstr "輸入游標是否可見"
 
-#: ../clutter/clutter-text.c:3522 ../clutter/clutter-text.c:3523
+#: ../clutter/clutter-text.c:3533 ../clutter/clutter-text.c:3534
 msgid "Cursor Color"
 msgstr "游標顏色"
 
-#: ../clutter/clutter-text.c:3538
+#: ../clutter/clutter-text.c:3549
 msgid "Cursor Color Set"
 msgstr "游標顏色設定"
 
-#: ../clutter/clutter-text.c:3539
+#: ../clutter/clutter-text.c:3550
 msgid "Whether the cursor color has been set"
 msgstr "游標顏色是否已設定"
 
-#: ../clutter/clutter-text.c:3554
+#: ../clutter/clutter-text.c:3565
 msgid "Cursor Size"
 msgstr "游標大小"
 
-#: ../clutter/clutter-text.c:3555
+#: ../clutter/clutter-text.c:3566
 msgid "The width of the cursor, in pixels"
 msgstr "游標的像素寬度"
 
-#: ../clutter/clutter-text.c:3571 ../clutter/clutter-text.c:3589
+#: ../clutter/clutter-text.c:3582 ../clutter/clutter-text.c:3600
 msgid "Cursor Position"
 msgstr "游標位置"
 
-#: ../clutter/clutter-text.c:3572 ../clutter/clutter-text.c:3590
+#: ../clutter/clutter-text.c:3583 ../clutter/clutter-text.c:3601
 msgid "The cursor position"
 msgstr "游標的位置"
 
-#: ../clutter/clutter-text.c:3605
+#: ../clutter/clutter-text.c:3616
 msgid "Selection-bound"
 msgstr "選取區邊界"
 
-#: ../clutter/clutter-text.c:3606
+#: ../clutter/clutter-text.c:3617
 msgid "The cursor position of the other end of the selection"
 msgstr "選取區另一端的游標位置"
 
-#: ../clutter/clutter-text.c:3621 ../clutter/clutter-text.c:3622
+#: ../clutter/clutter-text.c:3632 ../clutter/clutter-text.c:3633
 msgid "Selection Color"
 msgstr "選取區顏色"
 
-#: ../clutter/clutter-text.c:3637
+#: ../clutter/clutter-text.c:3648
 msgid "Selection Color Set"
 msgstr "選取區顏色設定"
 
-#: ../clutter/clutter-text.c:3638
+#: ../clutter/clutter-text.c:3649
 msgid "Whether the selection color has been set"
 msgstr "選取區顏色是否已設定"
 
-#: ../clutter/clutter-text.c:3653
+#: ../clutter/clutter-text.c:3664
 msgid "Attributes"
 msgstr "屬性"
 
-#: ../clutter/clutter-text.c:3654
+#: ../clutter/clutter-text.c:3665
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "要套用到參與者內容的樣式屬性清單"
 
-#: ../clutter/clutter-text.c:3676
+#: ../clutter/clutter-text.c:3687
 msgid "Use markup"
 msgstr "使用標記"
 
-#: ../clutter/clutter-text.c:3677
+#: ../clutter/clutter-text.c:3688
 msgid "Whether or not the text includes Pango markup"
 msgstr "文字是否包含 Pango 標記"
 
-#: ../clutter/clutter-text.c:3693
+#: ../clutter/clutter-text.c:3704
 msgid "Line wrap"
 msgstr "自動換列"
 
-#: ../clutter/clutter-text.c:3694
+#: ../clutter/clutter-text.c:3705
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "設定之後如果文字變得太寬就會換列"
 
-#: ../clutter/clutter-text.c:3709
+#: ../clutter/clutter-text.c:3720
 msgid "Line wrap mode"
 msgstr "自動換列模式"
 
-#: ../clutter/clutter-text.c:3710
+#: ../clutter/clutter-text.c:3721
 msgid "Control how line-wrapping is done"
 msgstr "控制換列行為"
 
-#: ../clutter/clutter-text.c:3725
+#: ../clutter/clutter-text.c:3736
 msgid "Ellipsize"
 msgstr "略寫"
 
-#: ../clutter/clutter-text.c:3726
+#: ../clutter/clutter-text.c:3737
 msgid "The preferred place to ellipsize the string"
 msgstr "略寫字串的偏好位置"
 
-#: ../clutter/clutter-text.c:3742
+#: ../clutter/clutter-text.c:3753
 msgid "Line Alignment"
 msgstr "對齊"
 
-#: ../clutter/clutter-text.c:3743
+#: ../clutter/clutter-text.c:3754
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "多列文字中偏好的字串對齊方式"
 
-#: ../clutter/clutter-text.c:3759
+#: ../clutter/clutter-text.c:3770
 msgid "Justify"
 msgstr "調整"
 
-#: ../clutter/clutter-text.c:3760
+#: ../clutter/clutter-text.c:3771
 msgid "Whether the text should be justified"
 msgstr "文字是否應該調整"
 
-#: ../clutter/clutter-text.c:3775
+#: ../clutter/clutter-text.c:3786
 msgid "Password Character"
 msgstr "密碼字元"
 
-#: ../clutter/clutter-text.c:3776
+#: ../clutter/clutter-text.c:3787
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr "如果不是空值就使用這個字元以顯示參與者內容"
 
-#: ../clutter/clutter-text.c:3790
+#: ../clutter/clutter-text.c:3801
 msgid "Max Length"
 msgstr "最大長度"
 
-#: ../clutter/clutter-text.c:3791
+#: ../clutter/clutter-text.c:3802
 msgid "Maximum length of the text inside the actor"
 msgstr "參與者內部文字的最大長度值"
 
-#: ../clutter/clutter-text.c:3814
+#: ../clutter/clutter-text.c:3825
 msgid "Single Line Mode"
 msgstr "單列模式"
 
-#: ../clutter/clutter-text.c:3815
+#: ../clutter/clutter-text.c:3826
 msgid "Whether the text should be a single line"
 msgstr "文字是否只應使用一列"
 
-#: ../clutter/clutter-text.c:3829 ../clutter/clutter-text.c:3830
+#: ../clutter/clutter-text.c:3840 ../clutter/clutter-text.c:3841
 msgid "Selected Text Color"
 msgstr "選取的文字顏色"
 
-#: ../clutter/clutter-text.c:3845
+#: ../clutter/clutter-text.c:3856
 msgid "Selected Text Color Set"
 msgstr "選取的文字顏色設定"
 
-#: ../clutter/clutter-text.c:3846
+#: ../clutter/clutter-text.c:3857
 msgid "Whether the selected text color has been set"
 msgstr "選取的文字顏色是否已設定"
 
@@ -2025,11 +2023,11 @@ msgstr "完成時移除"
 msgid "Detach the transition when completed"
 msgstr "完成時分離轉換"
 
-#: ../clutter/clutter-zoom-action.c:354
+#: ../clutter/clutter-zoom-action.c:355
 msgid "Zoom Axis"
 msgstr "縮放軸線"
 
-#: ../clutter/clutter-zoom-action.c:355
+#: ../clutter/clutter-zoom-action.c:356
 msgid "Constraints the zoom to an axis"
 msgstr "限制縮放至軸線"
 
@@ -2457,6 +2455,62 @@ msgstr "目前設定狀態，(有可能尚未完全轉換到這個狀態)"
 msgid "Default transition duration"
 msgstr "預設轉換時間"
 
+#: ../clutter/deprecated/clutter-table-layout.c:543
+msgid "Column Number"
+msgstr "欄編號"
+
+#: ../clutter/deprecated/clutter-table-layout.c:544
+msgid "The column the widget resides in"
+msgstr "視窗元件所在的欄編號"
+
+#: ../clutter/deprecated/clutter-table-layout.c:551
+msgid "Row Number"
+msgstr "列編號"
+
+#: ../clutter/deprecated/clutter-table-layout.c:552
+msgid "The row the widget resides in"
+msgstr "視窗元件所在的列編號"
+
+#: ../clutter/deprecated/clutter-table-layout.c:559
+msgid "Column Span"
+msgstr "合併欄"
+
+#: ../clutter/deprecated/clutter-table-layout.c:560
+msgid "The number of columns the widget should span"
+msgstr "視窗元件要跨越的欄數"
+
+#: ../clutter/deprecated/clutter-table-layout.c:567
+msgid "Row Span"
+msgstr "合併列"
+
+#: ../clutter/deprecated/clutter-table-layout.c:568
+msgid "The number of rows the widget should span"
+msgstr "視窗元件要跨越的列數"
+
+#: ../clutter/deprecated/clutter-table-layout.c:575
+msgid "Horizontal Expand"
+msgstr "水平擴展"
+
+#: ../clutter/deprecated/clutter-table-layout.c:576
+msgid "Allocate extra space for the child in horizontal axis"
+msgstr "在水平軸線上配置額外空間給子物件"
+
+#: ../clutter/deprecated/clutter-table-layout.c:582
+msgid "Vertical Expand"
+msgstr "垂直擴展"
+
+#: ../clutter/deprecated/clutter-table-layout.c:583
+msgid "Allocate extra space for the child in vertical axis"
+msgstr "在垂直軸線配置額外空間給子物件"
+
+#: ../clutter/deprecated/clutter-table-layout.c:1638
+msgid "Spacing between columns"
+msgstr "欄之間的間隔"
+
+#: ../clutter/deprecated/clutter-table-layout.c:1654
+msgid "Spacing between rows"
+msgstr "列之間的間隔"
+
 #: ../clutter/deprecated/clutter-texture.c:992
 msgid "Sync size of actor"
 msgstr "同步參與者的大小"
@@ -2592,19 +2646,19 @@ msgstr "不支援 YUV 材質"
 msgid "YUV2 textues are not supported"
 msgstr "不支援 YUV2 材質"
 
-#: ../clutter/evdev/clutter-input-device-evdev.c:152
+#: ../clutter/evdev/clutter-input-device-evdev.c:154
 msgid "sysfs Path"
 msgstr "sysfs 路徑"
 
-#: ../clutter/evdev/clutter-input-device-evdev.c:153
+#: ../clutter/evdev/clutter-input-device-evdev.c:155
 msgid "Path of the device in sysfs"
 msgstr "sysfs 裝置的路徑"
 
-#: ../clutter/evdev/clutter-input-device-evdev.c:168
+#: ../clutter/evdev/clutter-input-device-evdev.c:170
 msgid "Device Path"
 msgstr "裝置路徑"
 
-#: ../clutter/evdev/clutter-input-device-evdev.c:169
+#: ../clutter/evdev/clutter-input-device-evdev.c:171
 msgid "Path of the device node"
 msgstr "裝置節點的路徑"
 
