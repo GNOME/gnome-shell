@@ -833,7 +833,6 @@ meta_window_new_shared (MetaDisplay         *display,
                         MetaWindowClientType client_type,
                         MetaWaylandSurface  *surface,
                         Window               xwindow,
-                        gboolean             surface_mapped,
                         gulong               existing_wm_state,
                         MetaCompEffect       effect,
                         XWindowAttributes   *attrs)
@@ -863,7 +862,7 @@ meta_window_new_shared (MetaDisplay         *display,
   window->client_type = client_type;
   window->surface = surface;
   window->xwindow = xwindow;
-  window->surface_mapped = surface_mapped;
+  window->surface_mapped = FALSE;
 
   /* this is in window->screen->display, but that's too annoying to
    * type
@@ -1413,7 +1412,6 @@ meta_window_new_for_wayland (MetaDisplay        *display,
                                    META_WINDOW_CLIENT_TYPE_WAYLAND,
                                    surface,
                                    None,
-                                   FALSE,
                                    WithdrawnState,
                                    META_COMP_EFFECT_CREATE,
                                    &attrs);
@@ -1584,6 +1582,14 @@ meta_window_new (MetaDisplay       *display,
                                    existing_wm_state,
                                    effect,
                                    &attrs);
+
+  /* When running as an X compositor, we can simply show the window now.
+   *
+   * When running as a Wayland compositor, we need to wait until we see
+   * the Wayland surface appear. We will later call meta_window_set_surface_mapped()
+   * to show the window in our in our set_surface_id implementation */
+  if (!meta_is_wayland_compositor ())
+    meta_window_set_surface_mapped (window, TRUE);
 
   meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
 
