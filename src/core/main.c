@@ -347,14 +347,10 @@ meta_clutter_init (void)
 static void
 meta_select_display (gchar *display_name)
 {
-  gchar *envVar = "";
-  if (display_name)
-    envVar = g_strconcat ("DISPLAY=", display_name, NULL);
-  else if (g_getenv ("MUTTER_DISPLAY"))
-    envVar = g_strconcat ("DISPLAY=",
-      g_getenv ("MUTTER_DISPLAY"), NULL);
-  /* DO NOT FREE envVar, putenv() sucks */
-  putenv (envVar);
+  if (!display_name)
+    display_name = g_getenv ("MUTTER_DISPLAY");
+
+  g_setenv ("DISPLAY", display_name, TRUE);
 }
 
 static void

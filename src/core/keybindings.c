@@ -28,7 +28,6 @@
  */
 
 #define _GNU_SOURCE
-#define _SVID_SOURCE /* for putenv() */
 
 #include <config.h>
 #include "keybindings-private.h"
