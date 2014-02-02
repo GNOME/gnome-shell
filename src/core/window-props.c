@@ -846,7 +846,7 @@ reload_mwm_hints (MetaWindow    *window,
 
   meta_window_recalc_features (window);
   
-  /* We do all this anyhow at the end of meta_window_new() */
+  /* We do all this anyhow at the end of meta_window_x11_new() */
   if (!window->constructing)
     {
       if (window->decorated)

@@ -32,6 +32,9 @@
 #include <X11/extensions/shape.h>
 #endif
 
+#include <X11/extensions/Xcomposite.h>
+#include "core.h"
+
 #include <meta/common.h>
 #include <meta/errors.h>
 #include <meta/prefs.h>
@@ -1145,4 +1148,344 @@ meta_window_x11_client_message (MetaWindow *window,
     }
 
   return FALSE;
+}
+
+static void
+set_wm_state_on_xwindow (MetaDisplay *display,
+                         Window       xwindow,
+                         int          state)
+{
+  unsigned long data[2];
+
+  /* Mutter doesn't use icon windows, so data[1] should be None
+   * according to the ICCCM 2.0 Section 4.1.3.1.
+   */
+  data[0] = state;
+  data[1] = None;
+
+  meta_error_trap_push (display);
+  XChangeProperty (display->xdisplay, xwindow,
+                   display->atom_WM_STATE,
+                   display->atom_WM_STATE,
+                   32, PropModeReplace, (guchar*) data, 2);
+  meta_error_trap_pop (display);
+}
+
+void
+meta_window_x11_set_wm_state (MetaWindow *window)
+{
+  int state;
+
+  if (window->withdrawn)
+    state = WithdrawnState;
+  else if (window->iconic)
+    state = IconicState;
+  else
+    state = NormalState;
+
+  set_wm_state_on_xwindow (window->display, window->xwindow, state);
+}
+
+/* The MUTTER_WM_CLASS_FILTER environment variable is designed for
+ * performance and regression testing environments where we want to do
+ * tests with only a limited set of windows and ignore all other windows
+ *
+ * When it is set to a comma separated list of WM_CLASS class names, all
+ * windows not matching the list will be ignored.
+ *
+ * Returns TRUE if window has been filtered out and should be ignored.
+ */
+static gboolean
+maybe_filter_xwindow (MetaDisplay       *display,
+                      Window             xwindow,
+                      gboolean           must_be_viewable,
+                      XWindowAttributes *attrs)
+{
+  static char **filter_wm_classes = NULL;
+  static gboolean initialized = FALSE;
+  XClassHint class_hint;
+  gboolean filtered;
+  Status success;
+  int i;
+
+  if (!initialized)
+    {
+      const char *filter_string = g_getenv ("MUTTER_WM_CLASS_FILTER");
+      if (filter_string)
+        filter_wm_classes = g_strsplit (filter_string, ",", -1);
+      initialized = TRUE;
+    }
+
+  if (!filter_wm_classes || !filter_wm_classes[0])
+    return FALSE;
+
+  filtered = TRUE;
+
+  meta_error_trap_push (display);
+  success = XGetClassHint (display->xdisplay, xwindow, &class_hint);
+
+  if (success)
+    {
+      for (i = 0; filter_wm_classes[i]; i++)
+        {
+          if (strcmp (class_hint.res_class, filter_wm_classes[i]) == 0)
+            {
+              filtered = FALSE;
+              break;
+            }
+        }
+
+      XFree (class_hint.res_name);
+      XFree (class_hint.res_class);
+    }
+
+  if (filtered)
+    {
+      /* We want to try and get the window managed by the next WM that come along,
+       * so we need to make sure that windows that are requested to be mapped while
+       * Mutter is running (!must_be_viewable), or windows already viewable at startup
+       * get a non-withdrawn WM_STATE property. Previously unmapped windows are left
+       * with whatever WM_STATE property they had.
+       */
+      if (!must_be_viewable || attrs->map_state == IsViewable)
+        {
+          gulong old_state;
+
+          if (!meta_prop_get_cardinal_with_atom_type (display, xwindow,
+                                                      display->atom_WM_STATE,
+                                                      display->atom_WM_STATE,
+                                                      &old_state))
+            old_state = WithdrawnState;
+
+          if (old_state == WithdrawnState)
+            set_wm_state_on_xwindow (display, xwindow, NormalState);
+        }
+
+      /* Make sure filtered windows are hidden from view */
+      XUnmapWindow (display->xdisplay, xwindow);
+    }
+
+  meta_error_trap_pop (display);
+
+  return filtered;
+}
+
+static gboolean
+is_our_xwindow (MetaDisplay       *display,
+                MetaScreen        *screen,
+                Window             xwindow,
+                XWindowAttributes *attrs)
+{
+  if (xwindow == screen->no_focus_window)
+    return TRUE;
+
+  if (xwindow == screen->flash_window)
+    return TRUE;
+
+  if (xwindow == screen->wm_sn_selection_window)
+    return TRUE;
+
+  if (xwindow == screen->wm_cm_selection_window)
+    return TRUE;
+
+  if (xwindow == screen->guard_window)
+    return TRUE;
+
+  if (display->compositor && xwindow == XCompositeGetOverlayWindow (display->xdisplay, screen->xroot))
+    return TRUE;
+
+  /* Any windows created via meta_create_offscreen_window */
+  if (attrs->override_redirect && attrs->x == -100 && attrs->height == -100 && attrs->width == 1 && attrs->height == 1)
+    return TRUE;
+
+  return FALSE;
+}
+
+#ifdef WITH_VERBOSE_MODE
+static const char*
+wm_state_to_string (int state)
+{
+  switch (state)
+    {
+    case NormalState:
+      return "NormalState";
+    case IconicState:
+      return "IconicState";
+    case WithdrawnState:
+      return "WithdrawnState";
+    }
+
+  return "Unknown";
+}
+#endif
+
+MetaWindow *
+meta_window_x11_new (MetaDisplay       *display,
+                     Window             xwindow,
+                     gboolean           must_be_viewable,
+                     MetaCompEffect     effect)
+{
+  XWindowAttributes attrs;
+  MetaScreen *screen = NULL;
+  GSList *tmp;
+  gulong existing_wm_state;
+  MetaWindow *window = NULL;
+  gulong event_mask;
+
+  meta_verbose ("Attempting to manage 0x%lx\n", xwindow);
+
+  if (meta_display_xwindow_is_a_no_focus_window (display, xwindow))
+    {
+      meta_verbose ("Not managing no_focus_window 0x%lx\n",
+                    xwindow);
+      return NULL;
+    }
+
+  meta_error_trap_push (display); /* Push a trap over all of window
+                                   * creation, to reduce XSync() calls
+                                   */
+  /*
+   * This function executes without any server grabs held. This means that
+   * the window could have already gone away, or could go away at any point,
+   * so we must be careful with X error handling.
+   */
+
+  if (!XGetWindowAttributes (display->xdisplay, xwindow, &attrs))
+    {
+      meta_verbose ("Failed to get attributes for window 0x%lx\n",
+                    xwindow);
+      goto error;
+    }
+
+  for (tmp = display->screens; tmp != NULL; tmp = tmp->next)
+    {
+      MetaScreen *scr = tmp->data;
+
+      if (scr->xroot == attrs.root)
+        {
+          screen = tmp->data;
+          break;
+        }
+    }
+
+  g_assert (screen);
+
+  if (is_our_xwindow (display, screen, xwindow, &attrs))
+    {
+      meta_verbose ("Not managing our own windows\n");
+      goto error;
+    }
+
+  if (maybe_filter_xwindow (display, xwindow, must_be_viewable, &attrs))
+    {
+      meta_verbose ("Not managing filtered window\n");
+      goto error;
+    }
+
+  existing_wm_state = WithdrawnState;
+  if (must_be_viewable && attrs.map_state != IsViewable)
+    {
+      /* Only manage if WM_STATE is IconicState or NormalState */
+      gulong state;
+
+      /* WM_STATE isn't a cardinal, it's type WM_STATE, but is an int */
+      if (!(meta_prop_get_cardinal_with_atom_type (display, xwindow,
+                                                   display->atom_WM_STATE,
+                                                   display->atom_WM_STATE,
+                                                   &state) &&
+            (state == IconicState || state == NormalState)))
+        {
+          meta_verbose ("Deciding not to manage unmapped or unviewable window 0x%lx\n", xwindow);
+          goto error;
+        }
+
+      existing_wm_state = state;
+      meta_verbose ("WM_STATE of %lx = %s\n", xwindow,
+                    wm_state_to_string (existing_wm_state));
+    }
+
+  meta_error_trap_push_with_return (display);
+
+  /*
+   * XAddToSaveSet can only be called on windows created by a different
+   * client.  with Mutter we want to be able to create manageable windows
+   * from within the process (such as a dummy desktop window). As we do not
+   * want this call failing to prevent the window from being managed, we
+   * call this before creating the return-checked error trap.
+   */
+  XAddToSaveSet (display->xdisplay, xwindow);
+
+  meta_error_trap_push_with_return (display);
+
+  event_mask = PropertyChangeMask | ColormapChangeMask;
+  if (attrs.override_redirect)
+    event_mask |= StructureNotifyMask;
+
+  /* If the window is from this client (a menu, say) we need to augment
+   * the event mask, not replace it. For windows from other clients,
+   * attrs.your_event_mask will be empty at this point.
+   */
+  XSelectInput (display->xdisplay, xwindow, attrs.your_event_mask | event_mask);
+
+  {
+    unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+    XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+
+    meta_core_add_old_event_mask (display->xdisplay, xwindow, &mask);
+
+    XISetMask (mask.mask, XI_Enter);
+    XISetMask (mask.mask, XI_Leave);
+    XISetMask (mask.mask, XI_FocusIn);
+    XISetMask (mask.mask, XI_FocusOut);
+
+    XISelectEvents (display->xdisplay, xwindow, &mask, 1);
+  }
+
+  /* Get rid of any borders */
+  if (attrs.border_width != 0)
+    XSetWindowBorderWidth (display->xdisplay, xwindow, 0);
+
+  /* Get rid of weird gravities */
+  if (attrs.win_gravity != NorthWestGravity)
+    {
+      XSetWindowAttributes set_attrs;
+
+      set_attrs.win_gravity = NorthWestGravity;
+
+      XChangeWindowAttributes (display->xdisplay,
+                               xwindow,
+                               CWWinGravity,
+                               &set_attrs);
+    }
+
+  if (meta_error_trap_pop_with_return (display) != Success)
+    {
+      meta_verbose ("Window 0x%lx disappeared just as we tried to manage it\n",
+                    xwindow);
+      goto error;
+    }
+
+  window = _meta_window_shared_new (display,
+                                    screen,
+                                    META_WINDOW_CLIENT_TYPE_X11,
+                                    NULL,
+                                    xwindow,
+                                    existing_wm_state,
+                                    effect,
+                                    &attrs);
+
+  /* When running as an X compositor, we can simply show the window now.
+   *
+   * When running as a Wayland compositor, we need to wait until we see
+   * the Wayland surface appear. We will later call meta_window_set_surface_mapped()
+   * to show the window in our in our set_surface_id implementation */
+  if (!meta_is_wayland_compositor ())
+    meta_window_set_surface_mapped (window, TRUE);
+
+  meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
+  return window;
+
+error:
+  meta_error_trap_pop (display);
+  return NULL;
 }

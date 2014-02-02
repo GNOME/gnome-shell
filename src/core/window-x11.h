@@ -26,13 +26,14 @@
 #include <meta/window.h>
 #include <X11/Xlib.h>
 
-void meta_window_x11_set_net_wm_state  (MetaWindow *window);
+void meta_window_x11_set_net_wm_state            (MetaWindow *window);
+void meta_window_x11_set_wm_state                (MetaWindow *window);
 
-void meta_window_x11_update_role (MetaWindow *window);
-void meta_window_x11_update_net_wm_type (MetaWindow *window);
-void meta_window_x11_update_opaque_region (MetaWindow *window);
-void meta_window_x11_update_input_region  (MetaWindow *window);
-void meta_window_x11_update_shape_region  (MetaWindow *window);
+void meta_window_x11_update_role                 (MetaWindow *window);
+void meta_window_x11_update_net_wm_type          (MetaWindow *window);
+void meta_window_x11_update_opaque_region        (MetaWindow *window);
+void meta_window_x11_update_input_region         (MetaWindow *window);
+void meta_window_x11_update_shape_region         (MetaWindow *window);
 
 gboolean meta_window_x11_configure_request       (MetaWindow *window,
                                                   XEvent     *event);

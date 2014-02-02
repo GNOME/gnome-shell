@@ -506,12 +506,22 @@ struct _MetaWindowClass
 #define META_WINDOW_ALLOWS_HORIZONTAL_RESIZE(w) (META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS (w) && (w)->size_hints.min_width < (w)->size_hints.max_width)
 #define META_WINDOW_ALLOWS_VERTICAL_RESIZE(w)   (META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS (w) && (w)->size_hints.min_height < (w)->size_hints.max_height)
 
-MetaWindow* meta_window_new                (MetaDisplay *display,
-                                            Window       xwindow,
-                                            gboolean     must_be_viewable,
-                                            MetaCompEffect     effect);
-MetaWindow *meta_window_new_for_wayland    (MetaDisplay        *display,
+MetaWindow * _meta_window_shared_new       (MetaDisplay         *display,
+                                            MetaScreen          *screen,
+                                            MetaWindowClientType client_type,
+                                            MetaWaylandSurface  *surface,
+                                            Window               xwindow,
+                                            gulong               existing_wm_state,
+                                            MetaCompEffect       effect,
+                                            XWindowAttributes   *attrs);
+
+MetaWindow * meta_window_x11_new           (MetaDisplay        *display,
+                                            Window              xwindow,
+                                            gboolean            must_be_viewable,
+                                            MetaCompEffect      effect);
+MetaWindow * meta_window_wayland_new       (MetaDisplay        *display,
                                             MetaWaylandSurface *surface);
+
 void        meta_window_unmanage           (MetaWindow  *window,
                                             guint32      timestamp);
 void        meta_window_calc_showing       (MetaWindow  *window);
