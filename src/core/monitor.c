@@ -288,7 +288,7 @@ make_logical_config (MetaMonitorManager *manager)
 
       for (j = 0; j < monitor_infos->len; j++)
         {
-          MetaMonitorInfo *info = &g_array_index (monitor_infos, MetaMonitorInfo, i);
+          MetaMonitorInfo *info = &g_array_index (monitor_infos, MetaMonitorInfo, j);
           if (meta_rectangle_equal (&crtc->rect,
                                     &info->rect))
             {
