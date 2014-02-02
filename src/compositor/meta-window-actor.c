@@ -1338,6 +1338,12 @@ meta_window_actor_destroy (MetaWindowActor *self)
   window_type = meta_window_get_window_type (window);
   meta_window_set_compositor_private (window, NULL);
 
+  if (priv->send_frame_messages_timer != 0)
+    {
+      g_source_remove (priv->send_frame_messages_timer);
+      priv->send_frame_messages_timer = 0;
+    }
+
   /*
    * We remove the window from internal lookup hashes and thus any other
    * unmap events etc fail
