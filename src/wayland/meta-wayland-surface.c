@@ -72,6 +72,17 @@ typedef struct
 } MetaWaylandSubsurfacePlacementOp;
 
 static void
+surface_handle_buffer_destroy (struct wl_listener *listener, void *data)
+{
+  MetaWaylandSurface *surface = wl_container_of (listener, surface, buffer_destroy_listener);
+
+  wl_resource_post_error (surface->resource, WL_DISPLAY_ERROR_INVALID_OBJECT,
+                          "Destroyed buffer while it was attached to the surface");
+  surface->buffer = NULL;
+  wl_list_remove (&surface->buffer_destroy_listener.link);
+}
+
+static void
 surface_set_buffer (MetaWaylandSurface *surface,
                     MetaWaylandBuffer  *buffer)
 {
@@ -79,12 +90,18 @@ surface_set_buffer (MetaWaylandSurface *surface,
     return;
 
   if (surface->buffer)
-    meta_wayland_buffer_unref (surface->buffer);
+    {
+      meta_wayland_buffer_unref (surface->buffer);
+      wl_list_remove (&surface->buffer_destroy_listener.link);
+    }
 
   surface->buffer = buffer;
 
   if (surface->buffer)
-    meta_wayland_buffer_ref (surface->buffer);
+    {
+      meta_wayland_buffer_ref (surface->buffer);
+      wl_signal_add (&surface->buffer->destroy_signal, &surface->buffer_destroy_listener);
+    }
 }
 
 static void
@@ -620,6 +637,8 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
 				  meta_wayland_surface_resource_destroy_cb);
 
   double_buffered_state_init (&surface->pending);
+
+  surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
 
   surface->surface_actor = g_object_ref_sink (meta_surface_actor_new ());
   return surface;

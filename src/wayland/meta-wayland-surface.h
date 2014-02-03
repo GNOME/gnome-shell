@@ -71,13 +71,15 @@ struct _MetaWaylandSurface
 {
   struct wl_resource *resource;
   MetaWaylandCompositor *compositor;
-  MetaWaylandBuffer *buffer;
   MetaSurfaceActor *surface_actor;
   MetaWindow *window;
   MetaWaylandSurfaceExtension xdg_surface;
   MetaWaylandSurfaceExtension xdg_popup;
   MetaWaylandSurfaceExtension gtk_surface;
   MetaWaylandSurfaceExtension subsurface;
+
+  MetaWaylandBuffer *buffer;
+  struct wl_listener buffer_destroy_listener;
 
   GList *subsurfaces;
 
