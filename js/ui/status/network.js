@@ -307,6 +307,13 @@ const NMConnectionDevice = new Lang.Class({
         this._activeConnectionChangedId = this._device.connect('notify::active-connection', Lang.bind(this, this._activeConnectionChanged));
     },
 
+    _canReachInternet: function() {
+        if (this._client.primary_connection != this._device.active_connection)
+            return true;
+
+        return this._client.connectivity == NetworkManager.ConnectivityState.FULL;
+    },
+
     _autoConnect: function() {
         let connection = new NetworkManager.Connection();
         this._client.add_and_activate_connection(connection, this._device, null, null);
@@ -456,12 +463,16 @@ const NMDeviceWired = new Lang.Class({
         if (this._device.active_connection) {
             let state = this._device.active_connection.state;
 
-            if (state == NetworkManager.ActiveConnectionState.ACTIVATING)
+            if (state == NetworkManager.ActiveConnectionState.ACTIVATING) {
                 return 'network-wired-acquiring-symbolic';
-            else if (state == NetworkManager.ActiveConnectionState.ACTIVATED)
-                return 'network-wired-symbolic';
-            else
+            } else if (state == NetworkManager.ActiveConnectionState.ACTIVATED) {
+                if (this._canReachInternet())
+                    return 'network-wired-symbolic';
+                else
+                    return 'network-wired-no-route-symbolic';
+            } else {
                 return 'network-wired-disconnected-symbolic';
+            }
         } else
             return 'network-wired-disconnected-symbolic';
     }
@@ -1212,7 +1223,12 @@ const NMDeviceWireless = new Lang.Class({
     _getStatus: function() {
         let ap = this._device.active_access_point;
 
-        if (ap)
+        if (this._isHotSpotMaster())
+            return _("Hotspot Active");
+        else if (this._device.state >= NetworkManager.DeviceState.PREPARE &&
+                 this._device.state < NetworkManager.DeviceState.ACTIVATED)
+            return _("Connecting");
+        else if (ap)
             return ssidToLabel(ap.get_ssid());
         else if (!this._client.wireless_hardware_enabled)
             return _("Hardware Disabled");
@@ -1231,21 +1247,52 @@ const NMDeviceWireless = new Lang.Class({
             return 'network-wireless-signal-none-symbolic';
     },
 
+    _canReachInternet: function() {
+        if (this._client.primary_connection != this._device.active_connection)
+            return true;
+
+        return this._client.connectivity == NetworkManager.ConnectivityState.FULL;
+    },
+
+    _isHotSpotMaster: function() {
+        if (!this._device.active_connection)
+            return false;
+
+        let connection = this._settings.get_connection_by_path(this._device.active_connection.connection);
+        if (!connection)
+            return false;
+
+        let ip4config = connection.get_setting_ip4_config();
+        if (!ip4config)
+            return false;
+
+        return ip4config.get_method() == NetworkManager.SETTING_IP4_CONFIG_METHOD_SHARED;
+    },
+
     getIndicatorIcon: function() {
         if (this._device.state < NetworkManager.DeviceState.PREPARE)
             return 'network-wireless-disconnected-symbolic';
         if (this._device.state < NetworkManager.DeviceState.ACTIVATED)
             return 'network-wireless-acquiring-symbolic';
 
+        if (this._isHotSpotMaster())
+            return 'network-wireless-hotspot-symbolic';
+
         let ap = this._device.active_access_point;
         if (!ap) {
             if (this._device.mode != NM80211Mode.ADHOC)
                 log('An active wireless connection, in infrastructure mode, involves no access point?');
 
-            return 'network-wireless-connected-symbolic';
+            if (this._canReachInternet())
+                return 'network-wireless-connected-symbolic';
+            else
+                return 'network-wireless-no-route-symbolic';
         }
 
-        return 'network-wireless-signal-' + signalToIcon(ap.strength) + '-symbolic';
+        if (this._canReachInternet())
+            return 'network-wireless-signal-' + signalToIcon(ap.strength) + '-symbolic';
+        else
+            return 'network-wireless-no-route-symbolic';
     },
 });
 Signals.addSignalMethods(NMDeviceWireless.prototype);
