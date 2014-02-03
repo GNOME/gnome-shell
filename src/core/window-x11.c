@@ -1295,7 +1295,7 @@ is_our_xwindow (MetaDisplay       *display,
     return TRUE;
 
   /* Any windows created via meta_create_offscreen_window */
-  if (attrs->override_redirect && attrs->x == -100 && attrs->height == -100 && attrs->width == 1 && attrs->height == 1)
+  if (attrs->override_redirect && attrs->x == -100 && attrs->y == -100 && attrs->width == 1 && attrs->height == 1)
     return TRUE;
 
   return FALSE;
