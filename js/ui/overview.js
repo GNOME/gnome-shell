@@ -493,8 +493,13 @@ const Overview = new Lang.Class({
     },
 
     fadeOutDesktop: function() {
-        if (!this._desktopFade.get_n_children())
-            this._desktopFade.add_child(this._getDesktopClone());
+        if (!this._desktopFade.get_n_children()) {
+            let clone = this._getDesktopClone();
+            if (!clone)
+                return;
+
+            this._desktopFade.add_child(clone);
+        }
 
         this._desktopFade.opacity = 255;
         this._desktopFade.show();
