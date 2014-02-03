@@ -215,7 +215,9 @@ _cogl_fence_cancel_fences_for_framebuffer (CoglFramebuffer *framebuffer)
 
   while (!_cogl_list_empty (&journal->pending_fences))
     {
-      fence = _cogl_container_of (journal->pending_fences.next, fence, link);
+      fence = _cogl_container_of (journal->pending_fences.next,
+                                  CoglFenceClosure,
+                                  link);
       cogl_framebuffer_cancel_fence_callback (framebuffer, fence);
     }
 

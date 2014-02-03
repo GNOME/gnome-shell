@@ -909,7 +909,7 @@ _cogl_pipeline_fragend_glsl_add_layer (CoglPipeline *pipeline,
   else
     {
       LayerData *first =
-        _cogl_container_of (shader_state->layers.next, first, link);
+        _cogl_container_of (shader_state->layers.next, LayerData, link);
       layer_data->previous_layer_index = first->layer->index;
     }
 
@@ -1018,7 +1018,7 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
           LayerData *layer_data, *tmp;
 
           layer_data = _cogl_container_of (shader_state->layers.next,
-                                           layer_data,
+                                           LayerData,
                                            link);
           last_layer = layer_data->layer;
 

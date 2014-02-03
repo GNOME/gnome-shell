@@ -124,9 +124,9 @@ _cogl_memory_stack_alloc (CoglMemoryStack *stack, size_t bytes)
    * is made then we may need to skip over one or more of the
    * sub-stacks that are too small for the requested allocation
    * size... */
-  for (sub_stack = _cogl_container_of (sub_stack->link.next, sub_stack, link);
+  for (_cogl_list_set_iterator (sub_stack->link.next, sub_stack, link);
        &sub_stack->link != &stack->sub_stacks;
-       sub_stack = _cogl_container_of (sub_stack->link.next, sub_stack, link))
+       _cogl_list_set_iterator (sub_stack->link.next, sub_stack, link))
     {
       if (sub_stack->bytes >= bytes)
         {
@@ -143,11 +143,15 @@ _cogl_memory_stack_alloc (CoglMemoryStack *stack, size_t bytes)
    * requested allocation if that's bigger.
    */
 
-  sub_stack = _cogl_container_of (stack->sub_stacks.prev, sub_stack, link);
+  sub_stack = _cogl_container_of (stack->sub_stacks.prev,
+                                  CoglMemorySubStack,
+                                  link);
 
   _cogl_memory_stack_add_sub_stack (stack, MAX (sub_stack->bytes, bytes) * 2);
 
-  sub_stack = _cogl_container_of (stack->sub_stacks.prev, sub_stack, link);
+  sub_stack = _cogl_container_of (stack->sub_stacks.prev,
+                                  CoglMemorySubStack,
+                                  link);
 
   stack->sub_stack_offset += bytes;
 
@@ -158,7 +162,7 @@ void
 _cogl_memory_stack_rewind (CoglMemoryStack *stack)
 {
   stack->sub_stack = _cogl_container_of (stack->sub_stacks.next,
-                                         stack->sub_stack,
+                                         CoglMemorySubStack,
                                          link);
   stack->sub_stack_offset = 0;
 }
@@ -177,7 +181,7 @@ _cogl_memory_stack_free (CoglMemoryStack *stack)
   while (!_cogl_list_empty (&stack->sub_stacks))
     {
       CoglMemorySubStack *sub_stack =
-        _cogl_container_of (stack->sub_stacks.next, sub_stack, link);
+        _cogl_container_of (stack->sub_stacks.next, CoglMemorySubStack, link);
       _cogl_list_remove (&sub_stack->link);
       _cogl_memory_sub_stack_free (sub_stack);
     }

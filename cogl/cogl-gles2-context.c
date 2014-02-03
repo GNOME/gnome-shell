@@ -1520,7 +1520,7 @@ _cogl_gles2_context_free (CoglGLES2Context *gles2_context)
     {
       CoglGLES2Offscreen *gles2_offscreen =
         _cogl_container_of (gles2_context->foreign_offscreens.next,
-                            gles2_offscreen,
+                            CoglGLES2Offscreen,
                             link);
 
       /* Note: this will also indirectly free the gles2_offscreen by

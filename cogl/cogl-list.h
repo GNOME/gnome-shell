@@ -26,6 +26,8 @@
 #ifndef COGL_LIST_H
 #define COGL_LIST_H
 
+#include <stddef.h>
+
 /**
  * CoglList - linked list
  *
@@ -84,40 +86,44 @@ void
 _cogl_list_insert_list (CoglList *list,
                         CoglList *other);
 
-#ifdef __GNUC__
-#define _cogl_container_of(ptr, sample, member)                         \
-  (__typeof__(sample))((char *)(ptr)    -                               \
-                       ((char *)&(sample)->member - (char *)(sample)))
-#else
-#define _cogl_container_of(ptr, sample, member)                 \
-  (void *)((char *)(ptr)        -                               \
-           ((char *)&(sample)->member - (char *)(sample)))
-#endif
+/* This assigns to iterator first so that taking a reference to it
+ * later in the second step won't be an undefined operation. It
+ * assigns the value of list_node rather than 0 so that it is possible
+ * have list_node be based on the previous value of iterator. In that
+ * respect iterator is just used as a convenient temporary variable.
+ * The compiler optimises all of this down to a single subtraction by
+ * a constant */
+#define _cogl_list_set_iterator(list_node, iterator, member)    \
+  ((iterator) = (void *) (list_node),                           \
+   (iterator) = (void *) ((char *) (iterator) -                 \
+                          (((char *) &(iterator)->member) -     \
+                           (char *) (iterator))))
+
+#define _cogl_container_of(ptr, type, member)           \
+  (type *) ((char *) (ptr) - offsetof (type, member))
 
 #define _cogl_list_for_each(pos, head, member)                          \
-  for (pos = 0, pos = _cogl_container_of((head)->next, pos, member);    \
+  for (_cogl_list_set_iterator ((head)->next, pos, member);             \
        &pos->member != (head);                                          \
-       pos = _cogl_container_of(pos->member.next, pos, member))
+       _cogl_list_set_iterator (pos->member.next, pos, member))
 
 #define _cogl_list_for_each_safe(pos, tmp, head, member)                \
-  for (pos = 0, tmp = 0,                                                \
-         pos = _cogl_container_of((head)->next, pos, member),           \
-         tmp = _cogl_container_of((pos)->member.next, tmp, member);     \
+  for (_cogl_list_set_iterator ((head)->next, pos, member),             \
+         _cogl_list_set_iterator ((pos)->member.next, tmp, member);     \
        &pos->member != (head);                                          \
        pos = tmp,                                                       \
-         tmp = _cogl_container_of(pos->member.next, tmp, member))
+         _cogl_list_set_iterator (pos->member.next, tmp, member))
 
 #define _cogl_list_for_each_reverse(pos, head, member)                  \
-  for (pos = 0, pos = _cogl_container_of((head)->prev, pos, member);    \
+  for (_cogl_list_set_iterator ((head)->prev, pos, member);             \
        &pos->member != (head);                                          \
-       pos = _cogl_container_of(pos->member.prev, pos, member))
+       _cogl_list_set_iterator (pos->member.prev, pos, member))
 
 #define _cogl_list_for_each_reverse_safe(pos, tmp, head, member)        \
-  for (pos = 0, tmp = 0,                                                \
-         pos = _cogl_container_of((head)->prev, pos, member),           \
-         tmp = _cogl_container_of((pos)->member.prev, tmp, member);     \
+  for (_cogl_list_set_iterator ((head)->prev, pos, member),             \
+         _cogl_list_set_iterator ((pos)->member.prev, tmp, member);     \
        &pos->member != (head);                                          \
        pos = tmp,                                                       \
-         tmp = _cogl_container_of(pos->member.prev, tmp, member))
+         _cogl_list_set_iterator (pos->member.prev, tmp, member))
 
 #endif /* COGL_LIST_H */
