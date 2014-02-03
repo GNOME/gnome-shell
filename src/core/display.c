@@ -1815,6 +1815,9 @@ get_input_event (MetaDisplay *display,
 
       switch (input_event->evtype)
         {
+        case XI_TouchBegin:
+        case XI_TouchUpdate:
+        case XI_TouchEnd:
         case XI_Motion:
         case XI_ButtonPress:
         case XI_ButtonRelease:
@@ -2293,6 +2296,7 @@ event_callback (XEvent   *event,
     {
       XIDeviceEvent *device_event = (XIDeviceEvent *) input_event;
       XIEnterEvent *enter_event = (XIEnterEvent *) input_event;
+      gint button = 0;
 
       if (window && !window->override_redirect &&
           ((input_event->evtype == XI_KeyPress) || (input_event->evtype == XI_ButtonPress)))
@@ -2328,20 +2332,33 @@ event_callback (XEvent   *event,
           if (meta_display_process_key_event (display, window, (XIDeviceEvent *) input_event))
             filter_out_event = bypass_compositor = TRUE;
           break;
+        case XI_TouchBegin:
+          /* Filter out non-pointer-emulating touches */
+          if ((((XIDeviceEvent *) input_event)->flags & XITouchEmulatingPointer) == 0)
+            break;
+
+          /* Fall through */
         case XI_ButtonPress:
           if (display->grab_op == META_GRAB_OP_COMPOSITOR)
             break;
 
           display->overlay_key_only_pressed = FALSE;
 
-          if (device_event->detail == 4 || device_event->detail == 5)
-            /* Scrollwheel event, do nothing and deliver event to compositor below */
-            break;
+          if (input_event->evtype == XI_ButtonPress)
+            {
+              if (device_event->detail == 4 || device_event->detail == 5)
+                /* Scrollwheel event, do nothing and deliver event to compositor below */
+                break;
+              else
+                button = device_event->detail;
+            }
+          else if (input_event->evtype == XI_TouchBegin)
+            button = 1;
 
           if ((window &&
                meta_grab_op_is_mouse (display->grab_op) &&
                (device_event->mods.effective & display->window_grab_modifiers) &&
-               display->grab_button != device_event->detail &&
+               display->grab_button != button &&
                display->grab_window == window) ||
               grab_op_is_keyboard (display->grab_op))
             {
@@ -2371,8 +2388,7 @@ event_callback (XEvent   *event,
                */
               unmodified = (device_event->mods.effective & grab_mask) == 0;
           
-              if (unmodified ||
-                  device_event->detail == 1)
+              if (unmodified || button == 1)
                 {
                   /* don't focus if frame received, will be lowered in
                    * frames.c or special-cased if the click was on a
@@ -2393,7 +2409,7 @@ event_callback (XEvent   *event,
                         {
                           meta_topic (META_DEBUG_FOCUS,
                                       "Focusing %s due to unmodified button %u press (display.c)\n",
-                                      window->desc, device_event->detail);
+                                      window->desc, button);
                           meta_window_focus (window, device_event->time);
                         }
                       else
@@ -2409,7 +2425,7 @@ event_callback (XEvent   *event,
                   if (!unmodified)
                     begin_move = TRUE;
                 }
-              else if (!unmodified && device_event->detail == meta_prefs_get_mouse_button_resize())
+              else if (!unmodified && button == meta_prefs_get_mouse_button_resize())
                 {
                   if (window->has_resize_func)
                     {
@@ -2451,21 +2467,21 @@ event_callback (XEvent   *event,
                                                     op,
                                                     TRUE,
                                                     FALSE,
-                                                    device_event->detail,
+                                                    button,
                                                     0,
                                                     device_event->time,
                                                     device_event->root_x,
                                                     device_event->root_y);
                     }
                 }
-              else if (device_event->detail == meta_prefs_get_mouse_button_menu())
+              else if (button == meta_prefs_get_mouse_button_menu())
                 {
                   if (meta_prefs_get_raise_on_click ())
                     meta_window_raise (window);
                   meta_window_show_menu (window,
                                          device_event->root_x,
                                          device_event->root_y,
-                                         device_event->detail,
+                                         button,
                                          device_event->time);
                 }
 
@@ -2490,7 +2506,7 @@ event_callback (XEvent   *event,
                                               META_GRAB_OP_MOVING,
                                               TRUE,
                                               FALSE,
-                                              device_event->detail,
+                                              button,
                                               0,
                                               device_event->time,
                                               device_event->root_x,
@@ -2640,6 +2656,18 @@ event_callback (XEvent   *event,
             filter_out_event = bypass_compositor = TRUE;
           break;
 #endif /* HAVE_XI23 */
+        case XI_TouchUpdate:
+        case XI_TouchEnd:
+          /* Filter out non-pointer-emulating touches */
+          if ((((XIDeviceEvent *) input_event)->flags & XITouchEmulatingPointer) == 0)
+            break;
+
+          /* Currently unhandled, if any grab_op is started through XI_TouchBegin,
+           * the XIGrabDevice() evmask drops touch events, so only emulated
+           * XI_Motions and XI_ButtonRelease will follow.
+           */
+          g_assert_not_reached ();
+          break;
         }
     }
   else
@@ -3115,6 +3143,9 @@ event_get_modified_window (MetaDisplay *display,
         case XI_ButtonRelease:
         case XI_KeyPress:
         case XI_KeyRelease:
+        case XI_TouchBegin:
+        case XI_TouchUpdate:
+        case XI_TouchEnd:
           return ((XIDeviceEvent *) input_event)->event;
         case XI_FocusIn:
         case XI_FocusOut:
@@ -3401,6 +3432,15 @@ meta_spew_xi2_event (MetaDisplay *display,
     case XI_Leave:
       name = "XI_Leave";
       break;
+    case XI_TouchBegin:
+      name = "XI_TouchBegin";
+      break;
+    case XI_TouchUpdate:
+      name = "XI_TouchUpdate";
+      break;
+    case XI_TouchEnd:
+      name = "XI_TouchEnd";
+      break;
 #ifdef HAVE_XI23
     case XI_BarrierHit:
       name = "XI_BarrierHit";
@@ -3457,6 +3497,18 @@ meta_spew_xi2_event (MetaDisplay *display,
                                enter_event->focus,
                                enter_event->root_x,
                                enter_event->root_y);
+      break;
+    case XI_TouchBegin:
+    case XI_TouchUpdate:
+    case XI_TouchEnd:
+      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx touch sequence: %d x: %g y: %g state: 0x%x flags: 0x%x",
+                               device_event->event,
+                               device_event->root,
+                               device_event->detail,
+                               device_event->root_x,
+                               device_event->root_y,
+                               device_event->mods.effective,
+                               device_event->flags);
       break;
     }
 

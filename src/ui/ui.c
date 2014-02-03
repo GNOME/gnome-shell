@@ -123,6 +123,7 @@ maybe_redirect_mouse_event (XEvent *xevent)
 
   switch (xev->evtype)
     {
+    case XI_TouchBegin:
     case XI_ButtonPress:
     case XI_ButtonRelease:
     case XI_Motion:
@@ -159,20 +160,27 @@ maybe_redirect_mouse_event (XEvent *xevent)
 
   switch (xev->evtype)
     {
+    case XI_TouchBegin:
     case XI_ButtonPress:
     case XI_ButtonRelease:
-      if (xev_d->evtype == XI_ButtonPress)
+      if (xev_d->evtype == XI_ButtonPress || xev_d->evtype == XI_TouchBegin)
         {
           GtkSettings *settings = gtk_settings_get_default ();
           int double_click_time;
           int double_click_distance;
+          int button;
 
           g_object_get (settings,
                         "gtk-double-click-time", &double_click_time,
                         "gtk-double-click-distance", &double_click_distance,
                         NULL);
 
-          if (xev_d->detail == ui->button_click_number &&
+          if (xev->evtype == XI_TouchBegin)
+            button = 1;
+          else
+            button = xev_d->detail;
+
+          if (button == ui->button_click_number &&
               xev_d->event == ui->button_click_window &&
               xev_d->time < ui->button_click_time + double_click_time &&
               ABS (xev_d->event_x - ui->button_click_x) <= double_click_distance &&
@@ -185,20 +193,22 @@ maybe_redirect_mouse_event (XEvent *xevent)
           else
             {
               gevent = gdk_event_new (GDK_BUTTON_PRESS);
-              ui->button_click_number = xev_d->detail;
+              ui->button_click_number = button;
               ui->button_click_window = xev_d->event;
               ui->button_click_time = xev_d->time;
               ui->button_click_x = xev_d->event_x;
               ui->button_click_y = xev_d->event_y;
             }
+
+          gevent->button.button = button;
         }
       else
         {
           gevent = gdk_event_new (GDK_BUTTON_RELEASE);
+          gevent->button.button = xev_d->detail;
         }
 
       gevent->button.window = g_object_ref (gdk_window);
-      gevent->button.button = xev_d->detail;
       gevent->button.time = xev_d->time;
       gevent->button.x = xev_d->event_x;
       gevent->button.y = xev_d->event_y;
