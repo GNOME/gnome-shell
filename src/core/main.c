@@ -345,9 +345,13 @@ meta_clutter_init (void)
  * also is %NULL, use the default - :0.0
  */
 static void
-meta_select_display (gchar *display_name)
+meta_select_display (char *display_arg)
 {
-  if (!display_name)
+  const char *display_name;
+
+  if (display_arg)
+    display_name = (const char *) display_arg;
+  else
     display_name = g_getenv ("MUTTER_DISPLAY");
 
   g_setenv ("DISPLAY", display_name, TRUE);
