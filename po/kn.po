@@ -1,23 +1,25 @@
 # Kannada translation for gnome-shell.
 # Copyright (C) 2011 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-#
+# 
 # Shankar Prasad <svenkate@redhat.com>, 2011, 2012, 2013.
+# Shankar <svenkate@redhat.com>, 2013. #zanata
+# Shankar <svenkate@redhat.com>, 2014. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-14 18:11+0000\n"
-"PO-Revision-Date: 2013-03-23 19:00+0530\n"
-"Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
+"PO-Revision-Date: 2014-01-21 10:16-0500\n"
+"Last-Translator: Shankar <svenkate@redhat.com>\n"
 "Language-Team: Kannada <kn@li.org>\n"
-"Language: kn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: kn\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Zanata 3.2.3\n"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
 msgid "Screenshots"
@@ -36,18 +38,14 @@ msgid "Show the message tray"
 msgstr "ಸಂದೇಶ ಟ್ರೇ ಅನ್ನು ತೋರಿಸು"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
-#| msgid "%d new notification"
-#| msgid_plural "%d new notifications"
 msgid "Focus the active notification"
 msgstr "ಸಕ್ರಿಯ ಸೂಚನೆಯತ್ತ ಗಮನಹರಿಸು"
 
 #: ../data/50-gnome-shell-system.xml.in.h:4
-#| msgid "Show Applications"
 msgid "Show all applications"
 msgstr "ಎಲ್ಲಾ ಅನ್ವಯಗಳನ್ನು ತೋರಿಸು"
 
 #: ../data/50-gnome-shell-system.xml.in.h:5
-#| msgid "Keybinding to open the application menu"
 msgid "Open the application menu"
 msgstr "ಅನ್ವಯಗಳ ಮೆನುವನ್ನು ತೆರೆ"
 
@@ -62,11 +60,11 @@ msgstr "ಕಿಟಕಿ ನಿರ್ವಹಣೆ ಹಾಗು ಅನ್ವಯವ
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extension Preferences"
-msgstr "GNOME ಶೆಲ್ ಎಕ್ಸ್‍ಟೆನ್ಶನ್ಸ್‍ ಆದ್ಯತೆಗಳು"
+msgstr "GNOME ಶೆಲ್ ಎಕ್ಸ‍ಟೆನ್ಶನ್‍ ಆದ್ಯತೆಗಳು"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
-msgstr "GNOME ಶೆಲ್ ಎಕ್ಸ್‍ಟೆನ್ಶನ್ಸ್‍ ಅನ್ನು ಸಂರಚಿಸಿ"
+msgstr "GNOME ಶೆಲ್ ಎಕ್ಸ‍ಟೆನ್ಶನ್ಸ್ ಅನ್ನು ಸಂರಚಿಸಿ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -80,8 +78,7 @@ msgid ""
 "dialog."
 msgstr ""
 "Alt-F2 ಸಂವಾದಚೌಕವನ್ನು ಬಳಸಿಕೊಂಡು ಆಂತರಿಕ ದೋಷ ನಿವಾರಣೆ ಹಾಗು ಮೇಲ್ವಿಚಾರಣೆ "
-"ಉಪಕರಣಗಳನ್ನು "
-"ನಿಲುಕಿಸಿಕೊಳ್ಳಲು ಅನುವುಮಾಡಿಕೊಡುತ್ತದೆ."
+"ಉಪಕರಣಗಳನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳಲು ಅನುವುಮಾಡಿಕೊಡುತ್ತದೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "Uuids of extensions to enable"
@@ -95,11 +92,10 @@ msgid ""
 "DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
 "GNOME ಶೆಲ್ ವಿಸ್ತರಣೆಗಳು ಒಂದು uuid ಗುಣವನ್ನು ಹೊಂದಿವೆ; ಈ ಕೀಲಿ ಪಟ್ಟಿಯು ಲೋಡ್ "
-"ಮಾಡಬೇಕಿರುವ "
-"ವಿಸ್ತರಣೆಗಳ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸುತ್ತದೆ. ಯಾವುದೆ ವಿಸ್ತರಣೆಗಳನ್ನು ಲೋಡ್‌ ಮಾಡಬೇಕಿದ್ದಲ್ಲಿ "
-"ಅದು ಈ "
-"ಪಟ್ಟಿಯಲ್ಲಿ ಇರುವುದು ಅತ್ಯಗತ್ಯ. org.gnome.Shell ನಲ್ಲಿ EnableExtension ಮತ್ತು "
-"DisableExtension DBus ವಿಧಾನಗಳನ್ನು ಬಳಸಿಕೊಂಡೂ ಸಹ ಈ ಪಟ್ಟಿಯನ್ನು ನಿರ್ವಹಿಸಬಹುದು."
+"ಮಾಡಬೇಕಿರುವ ವಿಸ್ತರಣೆಗಳ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸುತ್ತದೆ. ಯಾವುದೆ ವಿಸ್ತರಣೆಗಳನ್ನು ಲೋಡ್‌ "
+"ಮಾಡಬೇಕಿದ್ದಲ್ಲಿ ಅದು ಈ ಪಟ್ಟಿಯಲ್ಲಿ ಇರುವುದು ಅತ್ಯಗತ್ಯ. org.gnome.Shell ನಲ್ಲಿ "
+"EnableExtension ಮತ್ತು DisableExtension DBus ವಿಧಾನಗಳನ್ನು ಬಳಸಿಕೊಂಡೂ ಸಹ ಈ "
+"ಪಟ್ಟಿಯನ್ನು ನಿರ್ವಹಿಸಬಹುದು."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Whether to collect stats about applications usage"
@@ -114,9 +110,9 @@ msgid ""
 msgstr ""
 "ಶೆಲ್‌ ಸಾಮಾನ್ಯವಾಗಿ ಹೆಚ್ಚಾಗಿ ಬಳಸಲಾದ  (ಉದಾ. ಆರಂಭಕಗಳಲ್ಲಿ) ಅನ್ವಯಗಳನ್ನು ತೋರಿಸಲು "
 "ಸಕ್ರಿಯವಾದವುಗಳನ್ನು ಮೇಲ್ವಿಚಾರಣೆ ನಡೆಸುತ್ತದೆ. ಈ ದತ್ತಾಂಶವನ್ನು ಗೌಪ್ಯವಾಗಿ "
-"ಇರಿಸಲಾಗುತ್ತದೆ, "
-"ಹಾಗೂ ಗೌಪ್ಯತಾ ಕಾರಣಗಳಿದ್ದಲ್ಲಿ ನೀವು ಅದನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಬಹುದು. ಹಾಗೆ ಮಾಡುವುದರಿಂದ "
-"ಉಳಿಸಲಾದ ಯಾವದೆ ದತ್ತಾಂಶವು ತೆಗೆದುಹಾಕಲ್ಪಡುವುದಿಲ್ಲ ಎನ್ನುವುದನ್ನು ನೆನಪಿಡಿ."
+"ಇರಿಸಲಾಗುತ್ತದೆ, ಹಾಗೂ ಗೌಪ್ಯತಾ ಕಾರಣಗಳಿದ್ದಲ್ಲಿ ನೀವು ಅದನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಬಹುದು. "
+"ಹಾಗೆ ಮಾಡುವುದರಿಂದ ಉಳಿಸಲಾದ ಯಾವದೆ ದತ್ತಾಂಶವು ತೆಗೆದುಹಾಕಲ್ಪಡುವುದಿಲ್ಲ ಎನ್ನುವುದನ್ನು "
+"ನೆನಪಿಡಿ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -154,7 +150,7 @@ msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
 msgstr ""
-"ಆಂತರಿಕವಾಗಿ ಬಳಕೆದಾರರಿಂದ ಸ್ಪಷ್ಟವಾಗಿ ಹೊಂದಿಸಲಾದ ಕೊನೆಯ IM ಅನ್ನು ಶೇಖರಿಸಿಡಸಲು "
+"ಆಂತರಿಕವಾಗಿ ಬಳಕೆದಾರರಿಂದ ಸ್ಪಷ್ಟವಾಗಿ ಹೊಂದಿಸಲಾದ ಕೊನೆಯ IM ಅನ್ನು ಶೇಖರಿರಿಸಲು "
 "ಬಳಸಲಾಗುತ್ತದೆ. ಇಲ್ಲಿರುವ ಮೌಲ್ಯವು TpConnectionPresenceType ಎನ್ಯೂಮರೇಶನ್‌ನಿಂದ "
 "ಬಂದಿರುತ್ತದೆ."
 
@@ -163,8 +159,9 @@ msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
 msgstr ""
-"ಆಂತರಿಕವಾಗಿ ಬಳಕೆದಾರರಿಂದ ಸ್ಪಷ್ಟವಾಗಿ ಹೊಂದಿಸಲಾದ ಕೊನೆಯ ಅಧಿವೇಶನವನ್ನು ಶೇಖರಿಸಿಡಸಲು "
-"ಬಳಸಲಾಗುತ್ತದೆ. ಇಲ್ಲಿರುವ ಮೌಲ್ಯವು GsmPresenceStatus ಎನ್ಯೂಮರೇಶನ್‌ನಿಂದ ಬಂದಿರುತ್ತದೆ."
+"ಆಂತರಿಕವಾಗಿ ಬಳಕೆದಾರರಿಂದ ಸ್ಪಷ್ಟವಾಗಿ ಹೊಂದಿಸಲಾದ ಕೊನೆಯ ಅಧಿವೇಶನವನ್ನು ಶೇಖರಿರಿಸಲು "
+"ಬಳಸಲಾಗುತ್ತದೆ. ಇಲ್ಲಿರುವ ಮೌಲ್ಯವು GsmPresenceStatus ಎನ್ಯೂಮರೇಶನ್‌ನಿಂದ "
+"ಬಂದಿರುತ್ತದೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Always show the 'Log out' menuitem in the user menu."
@@ -214,14 +211,13 @@ msgid "Keybinding to open the application menu."
 msgstr "ಅನ್ವಯಗಳ ಮೆನುವನ್ನು ತೆರೆಯಬೇಕಿರುವ ಕೀಲಿಬೈಂಡಿಂಗ್."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "\"ಅನ್ವಯಗಳನ್ನು ತೋರಿಸು\" ನೋಟವನ್ನು ತೆರೆಯಬೇಕಿರುವ ಕೀಲಿಬೈಂಡಿಂಗ್"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:24
-#| msgid "Keybinding to open the application menu."
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
+""
 msgstr ""
 "ಚಟುವಟಿಕೆ ಅವಲೋಕನದ ನೋಟದಲ್ಲಿನ \"ಅನ್ವಯಗಳನ್ನು ತೋರಿಸು\" ಅನ್ನು ತೆರೆಯಬೇಕಿರುವ "
 "ಕೀಲಿಬೈಂಡಿಂಗ್."
@@ -235,12 +231,10 @@ msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "ಸಂದೇಶ ಟ್ರೇಯ ಗೋಚರಿಕೆಯನ್ನು ಹೊರಳಿಸಲು ಕೀಬೈಂಡಿಂಗ್."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to focus the active notification"
 msgstr "ಸಕ್ರಿಯ ಸೂಚನೆಯತ್ತ ಗಮನ ಹರಿಸಲು ಕೀಲಿಬೈಂಡಿಂಗ್"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
-#| msgid "Keybinding to open the application menu."
 msgid "Keybinding to focus the active notification."
 msgstr "ಸಕ್ರಿಯ ಸೂಚನೆಯತ್ತ ಗಮನ ಹರಿಸಲು ಕೀಲಿಬೈಂಡಿಂಗ್."
 
@@ -270,8 +264,7 @@ msgid ""
 "screencast recorder in frames-per-second."
 msgstr ""
 "ಪ್ರತಿ ಸೆಕೆಂಡಿನ ಫ್ರೇಮ್‌ಗಳಲ್ಲಿನ GNOME ಶೆಲ್‌ನ ಸ್ಕ್ರೀನ್‌ಕ್ಯಾಸ್ಟ್‍ ರೆಕಾರ್ಡರಿನಿಂದ "
-"ರೆಕಾರ್ಡು ಮಾಡಲಾದ "
-"ಸ್ಕ್ರೀನ್‌ಕ್ಯಾಸ್ಟಿನ ಫ್ರೇಮ್‌ದರ. "
+"ರೆಕಾರ್ಡು ಮಾಡಲಾದ ಸ್ಕ್ರೀನ್‌ಕ್ಯಾಸ್ಟಿನ ಫ್ರೇಮ್‌ದರ. "
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "The gstreamer pipeline used to encode the screencast"
@@ -292,24 +285,18 @@ msgid ""
 "used as a placeholder for a guess at the optimal thread count on the system."
 msgstr ""
 "ರೆಕಾರ್ಡಿಂಗ್‌ಗಳನ್ನು ಎನ್ಕೋಡ್ ಮಾಡಲು ಬಳಸಲಾದ GStreamer ಪೈಪ್‌ಲೈನ್‌ ಅನ್ನು "
-"ಹೊಂದಿಸುತ್ತದೆ. ಇದು gst-"
-"launch ನಲ್ಲಿ ಬಳಸಲಾದ ಸಿಂಟ್ಯಾಕ್ಸನ್ನು ಅನುಸರಿಸುತ್ತದೆ. ಪೈಪ್‌ಲೈನ್ ವಿಡಿಯೊವನ್ನು "
-"ರೆಕಾರ್ಡು ಮಾಡಲು "
-"ಒಂದು ನಿಯೋಜಿಸದೇ ಇರುವ ಸಿಂಕ್‌ಪ್ಯಾಡ್‌ಗೆ ಸಂಪರ್ಕಿತಗೊಂಡಿರಬೇಕು. ಇದು ಸಾಮಾನ್ಯವಾಗಿ "
-"ಸಂಪರ್ಕಿತಗೊಂಡಿರದೆ ಇರುವ ಪೈಪ್‌ಲೈನ್ ಅನ್ನು ಹೊಂದಿರುತ್ತದೆ; ಆ ಪ್ಯಾಡ್‌ನಿಂದ ಔಟ್‌ಪುಟ್ "
-"ಅನ್ನು ಔಟ್‌ಪುಟ್ "
-"ಕಡತಕ್ಕೆ ಬರೆಯಲಾಗುತ್ತದೆ. ಆದರೆ ಪೈಪ್‌ಲೈನ್ ತನ್ನದೆ ಆದ ಔಟ್‌ಪುಟ್ ಅನ್ನು "
-"ನೋಡಿಕೊಳ್ಳಬಲ್ಲದು - "
-"shout2send ಅಥವ ಅದೇ ರೀತಿಯದರ ಮೂಲಕ icecast ಪೂರೈಕೆಗಣಕಕ್ಕೆ ಔಟ್‌ಪುಟ್ ಅನ್ನು ಕಳುಹಿಸಲು "
-"ಇದನ್ನು ಬಳಸಬಹುದಾಗಿರುತ್ತದೆ. ಇದರ ಹೊಂದಿಕೆಯನ್ನು ರದ್ದುಗೊಳಿಸಿದಲ್ಲಿ ಅಥವ ಒಂದು ಖಾಲಿ "
-"ಮೌಲ್ಯಕ್ಕೆ "
-"ಹೊಂದಿಸಿದಲ್ಲಿ, ಪೂರ್ವನಿಯೋಜಿತ ಪೈಪ್‌ಲೈನ್ ಅನ್ನು ಬಳಸಲಾಗುತ್ತದೆ. ಇದು ಪ್ರಸ್ತುತ 'vp8enc "
-"min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! "
-"queue ! webmmux' ಆಗಿರುತ್ತದೆ ಮತ್ತು VP8 ಕೋಡೆಕ್ ಅನ್ನು ಬಳಸಿಕೊಂಡು WEBM ಅನ್ನು "
-"ರೆಕಾರ್ಡು "
-"ಮಾಡುತ್ತದೆ. %T ಎನ್ನು ವ್ಯವಸ್ತೆಯಲ್ಲಿನ ಸೂಕ್ತವಾದ ಎಳೆಯ ಎಣಿಕೆಯನ್ನು ಊಹಿಸಲು ಒಂದು "
-"ಪ್ಲೇಸ್‌ಹೋಲ್ಡರ್ "
-"ಆಗಿ ಬಳಸಲಾಗುತ್ತದೆ."
+"ಹೊಂದಿಸುತ್ತದೆ. ಇದು gst-launch ನಲ್ಲಿ ಬಳಸಲಾದ ಸಿಂಟ್ಯಾಕ್ಸನ್ನು ಅನುಸರಿಸುತ್ತದೆ. "
+"ಪೈಪ್‌ಲೈನ್ ವಿಡಿಯೊವನ್ನು ರೆಕಾರ್ಡು ಮಾಡಲು ಒಂದು ನಿಯೋಜಿಸದೇ ಇರುವ ಸಿಂಕ್‌ಪ್ಯಾಡ್‌ಗೆ "
+"ಸಂಪರ್ಕಿತಗೊಂಡಿರಬೇಕು. ಇದು ಸಾಮಾನ್ಯವಾಗಿ ಸಂಪರ್ಕಿತಗೊಂಡಿರದೆ ಇರುವ ಪೈಪ್‌ಲೈನ್ ಅನ್ನು "
+"ಹೊಂದಿರುತ್ತದೆ; ಆ ಪ್ಯಾಡ್‌ನಿಂದ ಔಟ್‌ಪುಟ್ ಅನ್ನು ಔಟ್‌ಪುಟ್ ಕಡತಕ್ಕೆ ಬರೆಯಲಾಗುತ್ತದೆ. "
+"ಆದರೆ ಪೈಪ್‌ಲೈನ್ ತನ್ನದೆ ಆದ ಔಟ್‌ಪುಟ್ ಅನ್ನು ನೋಡಿಕೊಳ್ಳಬಲ್ಲದು - shout2send ಅಥವ ಅದೇ "
+"ರೀತಿಯದರ ಮೂಲಕ icecast ಪೂರೈಕೆಗಣಕಕ್ಕೆ ಔಟ್‌ಪುಟ್ ಅನ್ನು ಕಳುಹಿಸಲು ಇದನ್ನು "
+"ಬಳಸಬಹುದಾಗಿರುತ್ತದೆ. ಇದರ ಹೊಂದಿಕೆಯನ್ನು ರದ್ದುಗೊಳಿಸಿದಲ್ಲಿ ಅಥವ ಒಂದು ಖಾಲಿ ಮೌಲ್ಯಕ್ಕೆ "
+"ಹೊಂದಿಸಿದಲ್ಲಿ, ಪೂರ್ವನಿಯೋಜಿತ ಪೈಪ್‌ಲೈನ್ ಅನ್ನು ಬಳಸಲಾಗುತ್ತದೆ. ಇದು ಪ್ರಸ್ತುತ "
+"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux' ಆಗಿರುತ್ತದೆ ಮತ್ತು VP8 ಕೋಡೆಕ್ ಅನ್ನು ಬಳಸಿಕೊಂಡು "
+"WEBM ಅನ್ನು ರೆಕಾರ್ಡು ಮಾಡುತ್ತದೆ. %T ಎನ್ನು ವ್ಯವಸ್ತೆಯಲ್ಲಿನ ಸೂಕ್ತವಾದ ಎಳೆಯ "
+"ಎಣಿಕೆಯನ್ನು ಊಹಿಸಲು ಒಂದು ಪ್ಲೇಸ್‌ಹೋಲ್ಡರ್ ಆಗಿ ಬಳಸಲಾಗುತ್ತದೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "File extension used for storing the screencast"
@@ -321,10 +308,9 @@ msgid ""
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
-"ರೆಕಾರ್ಡು ಮಾಡಲಾದ ಸ್ಕ್ರೀನ್‌ಕ್ಯಾಸ್ಟುಗಳಿಗಾಗಿನ ಕಡತದ ಹೆಸರು ಪ್ರಸಕ್ತ ದಿನಾಂಕದ ಆಧರಿತವಾದ "
-"ಒಂದು "
-"ವಿಶೇಷವಾದ ಕಡತದ ಹೆಸರಾಗಿರುತ್ತದೆ, ಹಾಗು ಈ ವಿಸ್ತರಣೆಯನ್ನು ಬಳಸುತ್ತದೆ. ಬೇರೊಂದು ಕಂಟೈನರ್ "
-"ಶೈಲಿಗೆ ರೆಕಾರ್ಡ್ ಮಾಡುವಾಗ ಇದನ್ನು ಬದಲಾಯಿಸಬೇಕಾಗುತ್ತದೆ."
+"ರೆಕಾರ್ಡು ಮಾಡಲಾದ ಸ್ಕ್ರೀನ್‌ಕ್ಯಾಸ್ಟುಗಳಿಗಾಗಿನ ಕಡತದ ಹೆಸರು ಪ್ರಸಕ್ತ ದಿನಾಂಕದ "
+"ಆಧರಿತವಾದ ಒಂದು ವಿಶೇಷವಾದ ಕಡತದ ಹೆಸರಾಗಿರುತ್ತದೆ, ಹಾಗು ಈ ವಿಸ್ತರಣೆಯನ್ನು ಬಳಸುತ್ತದೆ. "
+"ಬೇರೊಂದು ಕಂಟೈನರ್ ಶೈಲಿಗೆ ರೆಕಾರ್ಡ್ ಮಾಡುವಾಗ ಇದನ್ನು ಬದಲಾಯಿಸಬೇಕಾಗುತ್ತದೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "The application icon mode."
@@ -333,8 +319,8 @@ msgstr "ಅನ್ವಯ ಚಿಹ್ನೆ ಕ್ರಮ."
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-"only' (shows only the application icon) or 'both'."
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only' "
+"(shows only the application icon) or 'both'."
 msgstr ""
 "ಸ್ವಿಚರಿನಲ್ಲಿ ಕಿಟಕಿಗಳನ್ನು ಹೇಗೆ ತೋರಿಸಲಾಗುತ್ತದೆ ಎನ್ನುವುದನ್ನು ಸಂರಚಿಸುತ್ತದೆ. "
 "ಮಾನ್ಯವಾದ ಸಾಧ್ಯತೆಗಳೆಂದರೆ 'ತಂಬ್‌ನೈಲ್-ಮಾತ್ರ' (ಕಿಟಕಿಯ ಒಂದು ತಂಬ್‌ನೈಲ್ ಅನ್ನು "
@@ -361,12 +347,13 @@ msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
 msgstr ""
-"ಈ ಕೀಲಿಯು GNOME ಶೆಲ್‌ ಅನ್ನು ಚಲಾಯಿಸುವಾಗ org.gnome.desktop.wm.preferences ನಲ್ಲಿನ "
-"ಕೀಲಿಯನ್ನು ಅತಿಕ್ರಮಿಸುತ್ತದೆ."
+"ಈ ಕೀಲಿಯು GNOME ಶೆಲ್‌ ಅನ್ನು ಚಲಾಯಿಸುವಾಗ org.gnome.desktop.wm.preferences "
+"ನಲ್ಲಿನ ಕೀಲಿಯನ್ನು ಅತಿಕ್ರಮಿಸುತ್ತದೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:46
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "ಕಿಟಕಿಗಳನ್ನು ತೆರೆಯ ಅಂಚಿನಲ್ಲಿ ಬೀಳಿಸುವಾಗ ಅಂಚಿನ ಟೈಲಿಂಗ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸು"
+msgstr ""
+"ಕಿಟಕಿಗಳನ್ನು ತೆರೆಯ ಅಂಚಿನಲ್ಲಿ ಬೀಳಿಸುವಾಗ ಅಂಚಿನ ಟೈಲಿಂಗ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸು"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:47
 msgid "Workspaces are managed dynamically"
@@ -390,45 +377,38 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "ಮೇಲಿನ ಸಂಯೋಜನಾಚೌಕವನ್ನು ಬಳಸಿಕೊಂಡು ಸಂರಚಿಸಬೇಕಿರುವ ಒಂದು ವಿಸ್ತರಣೆಯನ್ನು ಆರಿಸಿ."
 
-#: ../js/gdm/loginDialog.js:405
-#| msgid "Session..."
-msgid "Session…"
-msgstr "ಅಧಿವೇಶನ…"
+#: ../js/gdm/loginDialog.js:300
+msgid "Choose Session"
+msgstr "ಅಧಿವೇಶನವನ್ನು ಆರಿಸಿ"
+
+#: ../js/gdm/loginDialog.js:318
+msgid "Session"
+msgstr "ಅಧಿವೇಶನ"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:630
+#: ../js/gdm/loginDialog.js:469
 msgid "Not listed?"
 msgstr "ಪಟ್ಟಿಯಲ್ಲಿಲ್ಲವೆ?"
 
-#: ../js/gdm/loginDialog.js:784 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:375
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:98
-#: ../js/ui/userMenu.js:938
-msgid "Cancel"
-msgstr "ರದ್ದು ಮಾಡು"
-
-#: ../js/gdm/loginDialog.js:800
-msgctxt "button"
-msgid "Sign In"
-msgstr "ಒಳಗೆ ಪ್ರವೇಶಿಸು"
-
-#: ../js/gdm/loginDialog.js:800
-#| msgid "Next week"
-msgid "Next"
-msgstr "ಮುಂದಿನ"
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: ../js/gdm/loginDialog.js:637
+#, c-format
+msgid "(e.g., user or %s)"
+msgstr "(ಉದಾ., ಬಳಕೆದಾರ ಅಥವ %s)"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:915 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:642
+#: ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "ಬಳಕೆದಾರ ಹೆಸರು: "
 
-#: ../js/gdm/loginDialog.js:1159
+#: ../js/gdm/loginDialog.js:903
 msgid "Login Window"
 msgstr "ಪ್ರವೇಶದ ಕಿಟಕಿ"
 
@@ -437,7 +417,9 @@ msgstr "ಪ್ರವೇಶದ ಕಿಟಕಿ"
 msgid "Power"
 msgstr "ವಿದ್ಯುಚ್ಛಕ್ತಿ"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:696 ../js/ui/userMenu.js:700
+#: ../js/gdm/powerMenu.js:93
+#: ../js/ui/userMenu.js:696
+#: ../js/ui/userMenu.js:700
 #: ../js/ui/userMenu.js:816
 msgid "Suspend"
 msgstr "ಅಮಾನತ್ತಿನಲ್ಲಿಡು"
@@ -446,25 +428,26 @@ msgstr "ಅಮಾನತ್ತಿನಲ್ಲಿಡು"
 msgid "Restart"
 msgstr "ಮರಳಿ ಆರಂಭಿಸು"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:698
-#: ../js/ui/userMenu.js:700 ../js/ui/userMenu.js:815 ../js/ui/userMenu.js:942
+#: ../js/gdm/powerMenu.js:103
+#: ../js/ui/userMenu.js:698
+#: ../js/ui/userMenu.js:700
+#: ../js/ui/userMenu.js:815
+#: ../js/ui/userMenu.js:942
 msgid "Power Off"
 msgstr "ಸ್ಥಗಿತಗೊಳಿಸು"
 
-#: ../js/gdm/util.js:182
+#: ../js/gdm/util.js:301
 msgid "Authentication error"
 msgstr "ದೃಢೀಕರಣ ದೋಷ"
 
+#. We don't show fingeprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:299
+#: ../js/gdm/util.js:445
 msgid "(or swipe finger)"
 msgstr "(ಅಥವ ನಿಮ್ಮ ಬೆರಳನ್ನು ಉಜ್ಜಿ)"
-
-#: ../js/gdm/util.js:324
-#, c-format
-msgid "(e.g., user or %s)"
-msgstr "(ಉದಾ., ಬಳಕೆದಾರ ಅಥವ %s)"
 
 #: ../js/misc/util.js:97
 msgid "Command not found"
@@ -481,38 +464,39 @@ msgstr "ಆದೇಶವನ್ನು ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ�
 msgid "Execution of '%s' failed:"
 msgstr "'%s' ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ:"
 
-#: ../js/ui/appDisplay.js:325
+#: ../js/ui/appDisplay.js:392
 msgid "Frequent"
 msgstr "ಪುನರಾವರ್ತನೆ"
 
-#: ../js/ui/appDisplay.js:332
+#: ../js/ui/appDisplay.js:399
 msgid "All"
 msgstr "ಎಲ್ಲಾ"
 
-#: ../js/ui/appDisplay.js:890
+#: ../js/ui/appDisplay.js:977
 msgid "New Window"
 msgstr "ಹೊಸ ಕಿಟಕಿ"
 
-#: ../js/ui/appDisplay.js:893 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:980
+#: ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "ಎಲ್ಲಾ ಅಚ್ಚುಮೆಚ್ಚಿನವುಗಳನ್ನು ತೆಗೆದುಹಾಕು"
 
-#: ../js/ui/appDisplay.js:894
+#: ../js/ui/appDisplay.js:981
 msgid "Add to Favorites"
 msgstr "ಅಚ್ಚುಮೆಚ್ಚಿನವುಗಳಿಗೆ ಸೇರಿಸು"
 
-#: ../js/ui/appFavorites.js:87
+#: ../js/ui/appFavorites.js:93
 #, c-format
 msgid "%s has been added to your favorites."
 msgstr "%s ಅನ್ನು ನಿಮ್ಮ ಅಚ್ಚುಮೆಚ್ಚಿನವುಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ."
 
-#: ../js/ui/appFavorites.js:121
+#: ../js/ui/appFavorites.js:127
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s ಅನ್ನು ನಿಮ್ಮ ಅಚ್ಚುಮೆಚ್ಚಿನವುಗಳಿಂದ ತೆಗೆದುಹಾಕಲಾಗಿದೆ."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:789
-#| msgid "Mouse Settings"
+#: ../js/ui/backgroundMenu.js:19
+#: ../js/ui/userMenu.js:789
 msgid "Settings"
 msgstr "ಸಿದ್ಧತೆಗಳು"
 
@@ -522,7 +506,6 @@ msgstr "ಹಿನ್ನೆಲೆಯನ್ನು ಬದಲಾಯಿಸು…"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
 #: ../js/ui/calendar.js:62
 msgctxt "event list time"
 msgid "All Day"
@@ -535,7 +518,7 @@ msgctxt "event list time"
 msgid "%H\\u2236%M"
 msgstr "%H\\u2236%M"
 
-#. Transators: Shown in calendar event list, if 12h format,
+#. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space
 #: ../js/ui/calendar.js:77
@@ -547,7 +530,6 @@ msgstr "%l\\u2236%M\\u2009%p"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
 #: ../js/ui/calendar.js:108
 msgctxt "grid sunday"
 msgid "S"
@@ -594,7 +576,6 @@ msgstr "ಶ"
 #. * NOTE: These list abbreviations are normally not shown together
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
-#.
 #: ../js/ui/calendar.js:133
 msgctxt "list sunday"
 msgid "Su"
@@ -681,26 +662,37 @@ msgstr "ಬಾಹ್ಯ ಡ್ರೈವ್‌ನಿಂದ ಸಂಪರ್ಕ ಕ
 msgid "Removable Devices"
 msgstr "ತೆಗೆದುಹಾಕಬಹುದಾದ ಸಾಧನಗಳು"
 
-#: ../js/ui/components/autorunManager.js:593
+#: ../js/ui/components/autorunManager.js:594
 #, c-format
 msgid "Open with %s"
 msgstr "%s ನೊಂದಿಗೆ ತೆರೆ"
 
-#: ../js/ui/components/autorunManager.js:619
+#: ../js/ui/components/autorunManager.js:620
 msgid "Eject"
 msgstr "ಹೊರತಳ್ಳು"
 
-#: ../js/ui/components/keyring.js:82 ../js/ui/components/polkitAgent.js:268
+#: ../js/ui/components/keyring.js:88
+#: ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "ದಾಟುಪದ:"
 
-#: ../js/ui/components/keyring.js:101
+#: ../js/ui/components/keyring.js:107
 msgid "Type again:"
 msgstr "ಇನ್ನೊಮ್ಮೆ ನಮೂದಿಸಿ:"
 
 #: ../js/ui/components/networkAgent.js:132
 msgid "Connect"
 msgstr "ಸಂಪರ್ಕ ಜೋಡಿಸು"
+
+#: ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:161
+#: ../js/ui/endSessionDialog.js:376
+#: ../js/ui/extensionDownloader.js:195
+#: ../js/ui/shellMountOperation.js:399
+#: ../js/ui/status/bluetooth.js:415
+#: ../js/ui/userMenu.js:938
+msgid "Cancel"
+msgstr "ರದ್ದು ಮಾಡು"
 
 #. Cisco LEAP
 #: ../js/ui/components/networkAgent.js:223
@@ -774,15 +766,15 @@ msgstr "ಮೊಬೈಲ್ ಬ್ರಾಡ್‌ಬ್ಯಾಂಡ್ ಜಾಲ�
 msgid "A password is required to connect to '%s'."
 msgstr "'%s' ನೊಂದಿಗೆ ಸಂಪರ್ಕಸಾಧಿಸಲು ದಾಟುಪದದ ಅಗತ್ಯವಿದೆ."
 
-#: ../js/ui/components/polkitAgent.js:55
+#: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
 msgstr "ದೃಢೀಕರಣದ ಅಗತ್ಯವಿದೆ"
 
-#: ../js/ui/components/polkitAgent.js:93
+#: ../js/ui/components/polkitAgent.js:92
 msgid "Administrator"
 msgstr "ವ್ಯವಸ್ಥಾಪಕ"
 
-#: ../js/ui/components/polkitAgent.js:165
+#: ../js/ui/components/polkitAgent.js:170
 msgid "Authenticate"
 msgstr "ದೃಢೀಕರಿಸು"
 
@@ -790,12 +782,13 @@ msgstr "ದೃಢೀಕರಿಸು"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:256 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:266
+#: ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "ಕ್ಷಮಿಸು, ಅದು ಕೆಲಸ ಮಾಡಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/components/recorder.js:48
+#: ../js/ui/components/recorder.js:47
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "%d %t ಇಂದ ತೆರೆಚಲನಚಿತ್ರ"
@@ -837,14 +830,12 @@ msgstr "<b>ನಿನ್ನೆ</b>, <b>%H:%M</b>"
 #. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30
 #: ../js/ui/components/telepathyClient.js:948
 #, no-c-format
-#| msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgid "<b>%A</b>, <b>%H:%M</b>"
 msgstr "<b>%A</b>, <b>%H:%M</b>"
 
 #. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"
 #: ../js/ui/components/telepathyClient.js:953
 #, no-c-format
-#| msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
 msgstr "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
 
@@ -856,14 +847,14 @@ msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:985
+#: ../js/ui/components/telepathyClient.js:986
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s ಈಗ %s ಆಗಿದ್ದಾರೆ"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1088
+#: ../js/ui/components/telepathyClient.js:1089
 #, c-format
 msgid "Invitation to %s"
 msgstr "%s ಗಾಗಿನ ಆಹ್ವಾನ"
@@ -871,38 +862,38 @@ msgstr "%s ಗಾಗಿನ ಆಹ್ವಾನ"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1096
+#: ../js/ui/components/telepathyClient.js:1097
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s ನಿಮ್ಮನ್ನು %s ಗೆ ಸೇರುವಂತೆ ಆಹ್ವಾನಿಸುತ್ತಿದ್ದಾರೆ"
 
-#: ../js/ui/components/telepathyClient.js:1098
-#: ../js/ui/components/telepathyClient.js:1137
-#: ../js/ui/components/telepathyClient.js:1177
-#: ../js/ui/components/telepathyClient.js:1240
+#: ../js/ui/components/telepathyClient.js:1099
+#: ../js/ui/components/telepathyClient.js:1138
+#: ../js/ui/components/telepathyClient.js:1178
+#: ../js/ui/components/telepathyClient.js:1241
 msgid "Decline"
 msgstr "ತಿರಸ್ಕರಿಸು"
 
-#: ../js/ui/components/telepathyClient.js:1099
-#: ../js/ui/components/telepathyClient.js:1178
-#: ../js/ui/components/telepathyClient.js:1241
+#: ../js/ui/components/telepathyClient.js:1100
+#: ../js/ui/components/telepathyClient.js:1179
+#: ../js/ui/components/telepathyClient.js:1242
 msgid "Accept"
 msgstr "ಅಂಗೀಕರಿಸು"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1129
+#: ../js/ui/components/telepathyClient.js:1130
 #, c-format
 msgid "Video call from %s"
 msgstr "%s ಇಂದ ವೀಡಿಯೊ ಕರೆ ಬಂದಿದೆ"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1132
+#: ../js/ui/components/telepathyClient.js:1133
 #, c-format
 msgid "Call from %s"
 msgstr "%s ಇಂದ ಕರೆ ಬಂದಿದೆ"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1139
+#: ../js/ui/components/telepathyClient.js:1140
 msgid "Answer"
 msgstr "ಉತ್ತರ"
 
@@ -910,154 +901,152 @@ msgstr "ಉತ್ತರ"
 #. * the contact's alias and the second one is the
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
-#.
-#: ../js/ui/components/telepathyClient.js:1171
+#: ../js/ui/components/telepathyClient.js:1172
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s ರವರು ನಿಮಗೆ %s ಅನ್ನು ಕಳುಹಿಸುತ್ತಿದ್ದಾರೆ"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1206
+#: ../js/ui/components/telepathyClient.js:1207
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr ""
 "ನೀವು ಯಾವಾಗ ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಇರುತ್ತೀರಿ ಎಂದು ತಿಳಿಯಲು %s ರವರು ನಿಮ್ಮ ಅನುಮತಿಯನ್ನು "
 "ಕೋರಿದ್ದಾರೆ"
 
-#: ../js/ui/components/telepathyClient.js:1298
+#: ../js/ui/components/telepathyClient.js:1299
 msgid "Network error"
 msgstr "ಜಾಲಬಂಧದ ದೋಷ"
 
-#: ../js/ui/components/telepathyClient.js:1300
+#: ../js/ui/components/telepathyClient.js:1301
 msgid "Authentication failed"
 msgstr "ದೃಢೀಕರಣವು ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../js/ui/components/telepathyClient.js:1302
+#: ../js/ui/components/telepathyClient.js:1303
 msgid "Encryption error"
 msgstr "ಗೂಢಲಿಪೀಕರಣ ದೋಷ"
 
-#: ../js/ui/components/telepathyClient.js:1304
+#: ../js/ui/components/telepathyClient.js:1305
 msgid "Certificate not provided"
 msgstr "ಪ್ರಮಾಣಪತ್ರವನ್ನು ಒದಗಿಸಲಾಗಿಲ್ಲ"
 
-#: ../js/ui/components/telepathyClient.js:1306
+#: ../js/ui/components/telepathyClient.js:1307
 msgid "Certificate untrusted"
 msgstr "ಪ್ರಮಾಣಪತ್ರವನ್ನು ನಂಬಲಾಗಿಲ್ಲ"
 
-#: ../js/ui/components/telepathyClient.js:1308
+#: ../js/ui/components/telepathyClient.js:1309
 msgid "Certificate expired"
 msgstr "ಪ್ರಮಾಣಪತ್ರದ ಕಾಲಾವಧಿ ತೀರಿದೆ"
 
-#: ../js/ui/components/telepathyClient.js:1310
+#: ../js/ui/components/telepathyClient.js:1311
 msgid "Certificate not activated"
 msgstr "ಪ್ರಮಾಣಪತ್ರವು ಸಕ್ರಿಯಗೊಂಡಿಲ್ಲ"
 
-#: ../js/ui/components/telepathyClient.js:1312
+#: ../js/ui/components/telepathyClient.js:1313
 msgid "Certificate hostname mismatch"
 msgstr "ಪ್ರಮಾಣಪತ್ರದ ಅತಿಥೇಯದ ಹೆಸರು ತಾಳೆಯಾಗುತ್ತಿಲ್ಲ"
 
-#: ../js/ui/components/telepathyClient.js:1314
+#: ../js/ui/components/telepathyClient.js:1315
 msgid "Certificate fingerprint mismatch"
 msgstr "ಪ್ರಮಾಣಪತ್ರದ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ತಾಳೆಯಾಗುತ್ತಿಲ್ಲ"
 
-#: ../js/ui/components/telepathyClient.js:1316
+#: ../js/ui/components/telepathyClient.js:1317
 msgid "Certificate self-signed"
 msgstr "ಪ್ರಮಾಣಪತ್ರವು ಸ್ವತಃ ಸೈನ್ ಮಾಡಲ್ಪಟ್ಟಿದೆ"
 
-#: ../js/ui/components/telepathyClient.js:1318
+#: ../js/ui/components/telepathyClient.js:1319
 msgid "Status is set to offline"
 msgstr "ಸ್ಥಿತಿಯನ್ನು ಆಫ್‌ಲೈನ್‌ ಎಂದು ಸೂಚಿಸಿದ್ದಾರೆ."
 
-#: ../js/ui/components/telepathyClient.js:1320
+#: ../js/ui/components/telepathyClient.js:1321
 msgid "Encryption is not available"
 msgstr "ಗೂಢಲಿಪೀಕರಣ ಲಭ್ಯವಿಲ್ಲ"
 
-#: ../js/ui/components/telepathyClient.js:1322
+#: ../js/ui/components/telepathyClient.js:1323
 msgid "Certificate is invalid"
 msgstr "ಪ್ರಮಾಣಪತ್ರವು ಅಮಾನ್ಯವಾಗಿದೆ"
 
-#: ../js/ui/components/telepathyClient.js:1324
+#: ../js/ui/components/telepathyClient.js:1325
 msgid "Connection has been refused"
 msgstr "ಸಂಪರ್ಕವನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ"
 
-#: ../js/ui/components/telepathyClient.js:1326
+#: ../js/ui/components/telepathyClient.js:1327
 msgid "Connection can't be established"
 msgstr "ಸಂಪರ್ಕವನ್ನು ಸಾಧಿಸಲಾಗಿಲ್ಲ"
 
-#: ../js/ui/components/telepathyClient.js:1328
+#: ../js/ui/components/telepathyClient.js:1329
 msgid "Connection has been lost"
 msgstr "ಸಂಪರ್ಕವು ಕಡಿದು ಹೋಗಿದೆ"
 
-#: ../js/ui/components/telepathyClient.js:1330
+#: ../js/ui/components/telepathyClient.js:1331
 msgid "This account is already connected to the server"
 msgstr "ಈ ಖಾತೆಯು ಈಗಾಗಲೆ ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ಸಂಪರ್ಕ ಜೋಡಿಸಲಾಗಿದೆ"
 
-#: ../js/ui/components/telepathyClient.js:1332
+#: ../js/ui/components/telepathyClient.js:1333
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "ಒಂದು ಹೊಸ ಸಂಪರ್ಕದಿಂದ ಈ ಸಂಪರ್ಕವನ್ನು ಇದೇ ಸಂಪನ್ಮೂಲವನ್ನು ಬಳಸಿಕೊಂಡು ಬದಲಾಯಿಸಲಾಗಿದೆ"
 
-#: ../js/ui/components/telepathyClient.js:1334
+#: ../js/ui/components/telepathyClient.js:1335
 msgid "The account already exists on the server"
 msgstr "ಖಾತೆಯು ಈಗಾಗಲೆ ಪೂರೈಕೆಗಣಕದಲ್ಲಿ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ"
 
-#: ../js/ui/components/telepathyClient.js:1336
+#: ../js/ui/components/telepathyClient.js:1337
 msgid "Server is currently too busy to handle the connection"
 msgstr "ಪೂರೈಕೆಗಣಕಕ್ಕೆ ಬಿಡುವಿಲ್ಲದ ಕಾರಣ ಸಂಪರ್ಕವನ್ನು ನಿಭಾಯಿಸಲಾಗುತ್ತಿಲ್ಲ"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1339
 msgid "Certificate has been revoked"
 msgstr "ಪ್ರಮಾಣಪತ್ರವನ್ನು ಹಿಂದಕ್ಕೆ ತೆಗೆದುಕೊಳ್ಳಲಾಗಿದೆ"
 
-#: ../js/ui/components/telepathyClient.js:1340
+#: ../js/ui/components/telepathyClient.js:1341
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "ಪ್ರಮಾಣಪತ್ರವು ಅಸುರಕ್ಷಿತವಾದ ಸಿಫರ್ ಅಲ್ಗಾರಿತಮ್ ಅನ್ನು ಬಳಸುತ್ತದೆ ಅಥವ ದುರ್ಬಲ "
-"ಗೂಢಲಿಪೀಕರಣವನ್ನು "
-"ಹೊಂದಿದೆ"
+"ಗೂಢಲಿಪೀಕರಣವನ್ನು ಹೊಂದಿದೆ"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1343
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
 msgstr ""
 "ಪೂರೈಕೆಗಣಕ ಪ್ರಮಾಣಪತ್ರದ ಉದ್ದ ಅಥವ ಪೂರೈಕೆಗಣಕ ಪ್ರಮಾಣಪತ್ರ ಸರಣಿಯ ಆಳವು ಕ್ರಿಪ್ಟೋಗ್ರಫಿ "
-"ಲೈಬ್ರರಿಯಿಂದ "
-"ನಿಗದಿ ಪಡಿಸಲಾದ ಮಿತಿಗಳನ್ನು ಮೀರಿದೆ."
+"ಲೈಬ್ರರಿಯಿಂದ ನಿಗದಿ ಪಡಿಸಲಾದ ಮಿತಿಗಳನ್ನು ಮೀರಿದೆ."
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1345
 msgid "Internal error"
 msgstr "ಆಂತರಿಕ ತಪ್ಪು"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1355
 #, c-format
 msgid "Unable to connect to %s"
 msgstr "%s ನೊಂದಿಗೆ ಸಂಪರ್ಕ ಸಾಧಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../js/ui/components/telepathyClient.js:1359
-#| msgid "Edit account"
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "View account"
 msgstr "ಖಾತೆಯನ್ನು ನೋಡು"
 
-#: ../js/ui/components/telepathyClient.js:1398
+#: ../js/ui/components/telepathyClient.js:1399
 msgid "Unknown reason"
 msgstr "ಅಜ್ಞಾತ ಕಾರಣ"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
+#: ../js/ui/ctrlAltTab.js:29
+#: ../js/ui/viewSelector.js:96
 msgid "Windows"
 msgstr "ವಿಂಡೋಸ್"
 
-#: ../js/ui/dash.js:248 ../js/ui/dash.js:286
+#: ../js/ui/dash.js:248
+#: ../js/ui/dash.js:286
 msgid "Show Applications"
 msgstr "ಅನ್ವಯಗಳನ್ನು ತೋರಿಸು"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/dash.js:435
+#: ../js/ui/dash.js:445
 msgid "Dash"
 msgstr "ಡ್ಯಾಶ್"
 
@@ -1069,15 +1058,13 @@ msgstr "ಕ್ಯಾಲೆಂಡರನ್ನು ತೆರೆ"
 msgid "Open Clocks"
 msgstr "ಗಡಿಯಾರವನ್ನು ತೆರೆ"
 
-#: ../js/ui/dateMenu.js:105
-#| msgid "Date and Time Settings"
+#: ../js/ui/dateMenu.js:104
 msgid "Date & Time Settings"
 msgstr "ದಿನಾಂಕ ಹಾಗು ಸಮಯದ ಸಿದ್ಧತೆಗಳು"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#.
-#: ../js/ui/dateMenu.js:215
+#: ../js/ui/dateMenu.js:216
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
 
@@ -1141,7 +1128,8 @@ msgstr[1] "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡುಗಳಲ್�
 msgid "Powering off the system."
 msgstr "ವ್ಯವಸ್ಥೆಯನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲಾಗುತ್ತಿದೆ."
 
-#: ../js/ui/endSessionDialog.js:92 ../js/ui/endSessionDialog.js:109
+#: ../js/ui/endSessionDialog.js:92
+#: ../js/ui/endSessionDialog.js:109
 msgctxt "button"
 msgid "Restart"
 msgstr "ಮರಳಿ ಆರಂಭಿಸು"
@@ -1182,7 +1170,8 @@ msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr ""
 "'%s' ಅನ್ನು extensions.gnome.org ಇಂದ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿಕೊಂಡು ಅನುಸ್ಥಾಪಿಸಬೇಕೆ?"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:314
+#: ../js/ui/keyboard.js:619
+#: ../js/ui/status/keyboard.js:333
 #: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "ಕೀಲಿಮಣೆ"
@@ -1201,7 +1190,8 @@ msgstr "%s ಯಾವುದೆ ದೋಷಗಳನ್ನು ತೋರಿಸಿಲ�
 msgid "Hide Errors"
 msgstr "ದೋಷಗಳನ್ನು ಅಡಗಿಸು"
 
-#: ../js/ui/lookingGlass.js:757 ../js/ui/lookingGlass.js:817
+#: ../js/ui/lookingGlass.js:757
+#: ../js/ui/lookingGlass.js:817
 msgid "Show Errors"
 msgstr "ದೋಷಗಳನ್ನು ತೋರಿಸು"
 
@@ -1211,7 +1201,8 @@ msgstr "ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:769 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:769
+#: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 
@@ -1248,29 +1239,29 @@ msgid "Clear Messages"
 msgstr "ಸಂದೇಶಗಳನ್ನು ಅಳಿಸು"
 
 #: ../js/ui/messageTray.js:1528
-#| msgid "Notifications"
 msgid "Notification Settings"
 msgstr "ಸೂಚನೆಯ ಸಿದ್ಧತೆಗಳು"
 
-#: ../js/ui/messageTray.js:1711
-#| msgid "Message Tray"
+#: ../js/ui/messageTray.js:1707
 msgid "No Messages"
 msgstr "ಯಾವುದೆ ಸಂದೇಶವಿಲ್ಲ"
 
-#: ../js/ui/messageTray.js:1784
+#: ../js/ui/messageTray.js:1783
 msgid "Message Tray"
 msgstr "ಸಂದೇಶ ಟ್ರೇ"
 
-#: ../js/ui/messageTray.js:2816
+#: ../js/ui/messageTray.js:2822
 msgid "System Information"
 msgstr "ವ್ಯವಸ್ಥೆಯ ಮಾಹಿತಿ"
 
-#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:374
+#: ../js/ui/notificationDaemon.js:629
+#: ../src/shell-app.c:392
 msgctxt "program"
 msgid "Unknown"
 msgstr "ಗೊತ್ತಿಲ್ಲದ"
 
-#: ../js/ui/overviewControls.js:463 ../js/ui/screenShield.js:148
+#: ../js/ui/overviewControls.js:463
+#: ../js/ui/screenShield.js:150
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1290,21 +1281,20 @@ msgstr "ಅವಲೋಕನ"
 #. active; it should not exceed ~30
 #. characters.
 #: ../js/ui/overview.js:271
-#| msgid "Type to search..."
 msgid "Type to search…"
 msgstr "ಹುಡುಕಲು ನಮೂದಿಸು…"
 
-#: ../js/ui/panel.js:612
+#: ../js/ui/panel.js:636
 msgid "Quit"
 msgstr "ನಿರ್ಗಮಿಸು"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:636
+#: ../js/ui/panel.js:687
 msgid "Activities"
 msgstr "ಚಟುವಟಿಕೆಗಳು"
 
-#: ../js/ui/panel.js:933
+#: ../js/ui/panel.js:983
 msgid "Top Bar"
 msgstr "ಮೇಲಿನ ಪಟ್ಟಿ"
 
@@ -1313,37 +1303,37 @@ msgstr "ಮೇಲಿನ ಪಟ್ಟಿ"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:727
+#: ../js/ui/popupMenu.js:740
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:73
-#| msgid "Please enter a command:"
+#: ../js/ui/runDialog.js:74
 msgid "Enter a Command"
 msgstr "ಒಂದು ಆದೇಶವನ್ನು ನಮೂದಿಸಿ"
 
-#: ../js/ui/runDialog.js:109
+#: ../js/ui/runDialog.js:110
 msgid "Close"
 msgstr "ಮುಚ್ಚು"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:85
+#: ../js/ui/screenShield.js:87
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:150
+#: ../js/ui/screenShield.js:152
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d ಹೊಸ ಸೂಚನೆ"
 msgstr[1] "%d ಹೊಸ ಸೂಚನೆಗಳು"
 
-#: ../js/ui/screenShield.js:437 ../js/ui/userMenu.js:807
+#: ../js/ui/screenShield.js:439
+#: ../js/ui/userMenu.js:807
 msgid "Lock"
 msgstr "ಲಾಕ್ ಮಾಡು"
 
-#: ../js/ui/screenShield.js:635
+#: ../js/ui/screenShield.js:649
 msgid "GNOME needs to lock the screen"
 msgstr "ತೆರೆಯನ್ನು ಲಾಕ್ ಮಾಡುವಂತೆ GNOME ಬಯಸುತ್ತದೆ"
 
@@ -1351,41 +1341,39 @@ msgstr "ತೆರೆಯನ್ನು ಲಾಕ್ ಮಾಡುವಂತೆ GNOME 
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell him to stop using this app
-#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:756 ../js/ui/screenShield.js:1151
-#| msgid "Unlock"
+#: ../js/ui/screenShield.js:772
+#: ../js/ui/screenShield.js:1209
 msgid "Unable to lock"
 msgstr "ಲಾಕ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../js/ui/screenShield.js:757 ../js/ui/screenShield.js:1152
-#| msgid "No such application"
+#: ../js/ui/screenShield.js:773
+#: ../js/ui/screenShield.js:1210
 msgid "Lock was blocked by an application"
 msgstr "ಲಾಕ್ ಮಾಡದಂತೆ ಒಂದು ಅನ್ವಯವು ತಡೆದಿದೆ"
 
-#: ../js/ui/searchDisplay.js:451
-#| msgid "Searching..."
+#: ../js/ui/searchDisplay.js:453
 msgid "Searching…"
 msgstr "ಹುಡುಕಲಾಗುತ್ತಿದೆ…"
 
-#: ../js/ui/searchDisplay.js:495
+#: ../js/ui/searchDisplay.js:497
 msgid "No results."
 msgstr "ಯಾವುದೆ ಫಲಿತಾಂಶಗಳಿಲ್ಲ."
 
-#: ../js/ui/shellEntry.js:29
+#: ../js/ui/shellEntry.js:27
 msgid "Copy"
 msgstr "ಪ್ರತಿಮಾಡು"
 
-#: ../js/ui/shellEntry.js:34
+#: ../js/ui/shellEntry.js:32
 msgid "Paste"
 msgstr "ಅಂಟಿಸು"
 
-#: ../js/ui/shellEntry.js:106
+#: ../js/ui/shellEntry.js:99
 msgid "Show Text"
 msgstr "ಪಠ್ಯವನ್ನು ತೋರಿಸು"
 
-#: ../js/ui/shellEntry.js:108
+#: ../js/ui/shellEntry.js:101
 msgid "Hide Text"
 msgstr "ಪಠ್ಯವನ್ನು ಅಡಗಿಸು"
 
@@ -1397,7 +1385,8 @@ msgstr "ಗುಪ್ತಪದ"
 msgid "Remember Password"
 msgstr "ಈ ಗುಪ್ತಪದವನ್ನು ನೆನಪಿನಲ್ಲಿಡು"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:112
+#: ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:57
 msgid "Unlock"
 msgstr "ಅನ್‌ಲಾಕ್ ಮಾಡು"
 
@@ -1449,9 +1438,12 @@ msgstr "ಅತಿ ಹೆಚ್ಚು ವೈದೃಶ್ಯ"
 msgid "Large Text"
 msgstr "ದೊಡ್ಡ ಪಠ್ಯ"
 
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
-#: ../js/ui/status/bluetooth.js:289 ../js/ui/status/bluetooth.js:321
-#: ../js/ui/status/bluetooth.js:357 ../js/ui/status/bluetooth.js:388
+#: ../js/ui/status/bluetooth.js:28
+#: ../js/ui/status/bluetooth.js:32
+#: ../js/ui/status/bluetooth.js:289
+#: ../js/ui/status/bluetooth.js:321
+#: ../js/ui/status/bluetooth.js:357
+#: ../js/ui/status/bluetooth.js:388
 #: ../js/ui/status/network.js:826
 msgid "Bluetooth"
 msgstr "ಬ್ಲೂಟೂತ್"
@@ -1461,12 +1453,10 @@ msgid "Visibility"
 msgstr "ಗೋಚರಿಕೆ"
 
 #: ../js/ui/status/bluetooth.js:59
-#| msgid "Send Files to Device..."
 msgid "Send Files to Device…"
 msgstr "ಸಾಧನಕ್ಕೆ ಕಡತಗಳನ್ನು ಕಳುಹಿಸಿ…"
 
 #: ../js/ui/status/bluetooth.js:60
-#| msgid "Set up a New Device..."
 msgid "Set Up a New Device…"
 msgstr "ಒಂದು ಹೊಸ ಸಾಧನವನ್ನು ಸಿದ್ಧಗೊಳಿಸು…"
 
@@ -1475,7 +1465,8 @@ msgid "Bluetooth Settings"
 msgstr "ಬ್ಲೂಟೂತ್ ಸಿದ್ಧತೆಗಳು"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:104 ../js/ui/status/network.js:178
+#: ../js/ui/status/bluetooth.js:104
+#: ../js/ui/status/network.js:178
 msgid "hardware disabled"
 msgstr "ಯಂತ್ರಾಂಶವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 
@@ -1483,17 +1474,18 @@ msgstr "ಯಂತ್ರಾಂಶವನ್ನು ನಿಷ್ಕ್ರಿಯಗ�
 msgid "Connection"
 msgstr "ಸಂಪರ್ಕ"
 
-#: ../js/ui/status/bluetooth.js:208 ../js/ui/status/network.js:460
+#: ../js/ui/status/bluetooth.js:208
+#: ../js/ui/status/network.js:460
 msgid "disconnecting..."
 msgstr "ಸಂಪರ್ಕ ಕಡಿದುಹಾಕಲಾಗುತ್ತಿದೆ..."
 
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:466
+#: ../js/ui/status/bluetooth.js:221
+#: ../js/ui/status/network.js:466
 #: ../js/ui/status/network.js:1546
 msgid "connecting..."
 msgstr "ಸಂಪರ್ಕ ಹೊಂದಲಾಗುತ್ತಿದೆ..."
 
 #: ../js/ui/status/bluetooth.js:239
-#| msgid "Send Files..."
 msgid "Send Files…"
 msgstr "ಕಡತಗಳನ್ನು ಕಳುಹಿಸು…"
 
@@ -1505,7 +1497,8 @@ msgstr "ಕೀಲಿಮಣೆ ಸಿದ್ಧತೆಗಳು"
 msgid "Mouse Settings"
 msgstr "ಮೌಸ್‌ನ ಸಿದ್ಧತೆಗಳು"
 
-#: ../js/ui/status/bluetooth.js:254 ../js/ui/status/volume.js:316
+#: ../js/ui/status/bluetooth.js:254
+#: ../js/ui/status/volume.js:316
 msgid "Sound Settings"
 msgstr "ಧ್ವನಿಯ ಸಿದ್ಧತೆಗಳು"
 
@@ -1537,7 +1530,8 @@ msgstr "ತಿರಸ್ಕರಿಸು"
 msgid "Pairing confirmation for %s"
 msgstr "%s ಗಾಗಿ ಪೇರಿಂಗ್ ಖಚಿತಪಡಿಕೆ"
 
-#: ../js/ui/status/bluetooth.js:365 ../js/ui/status/bluetooth.js:396
+#: ../js/ui/status/bluetooth.js:365
+#: ../js/ui/status/bluetooth.js:396
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "%s ಎನ್ನುವ ಸಾಧನದೊಂದಿಗೆ ಸಂಪರ್ಕ ಜೋಡಿಸಲು ಬಯಸುತ್ತಿದೆ"
@@ -1570,12 +1564,11 @@ msgstr "ದಯವಿಟ್ಟು ಸಾಧನದಲ್ಲಿ ಸೂಚಿಸಿ�
 msgid "OK"
 msgstr "ಸರಿ"
 
-#: ../js/ui/status/keyboard.js:368
+#: ../js/ui/status/keyboard.js:396
 msgid "Show Keyboard Layout"
 msgstr "ಕೀಲಿಮಣೆ ವಿನ್ಯಾಸವನ್ನು ತೋರಿಸು"
 
-#: ../js/ui/status/keyboard.js:373
-#| msgid "Region and Language Settings"
+#: ../js/ui/status/keyboard.js:401
 msgid "Region & Language Settings"
 msgstr "ಪ್ರದೇಶ ಮತ್ತು ಭಾಷೆ ಸಿದ್ಧತೆಗಳು"
 
@@ -1599,7 +1592,8 @@ msgid "unmanaged"
 msgstr "ನೋಡಿಕೊಳ್ಳದಿರುವ"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1549
+#: ../js/ui/status/network.js:469
+#: ../js/ui/status/network.js:1549
 msgid "authentication required"
 msgstr "ದೃಢೀಕರಣದ ಅಗತ್ಯವಿದೆ"
 
@@ -1620,18 +1614,21 @@ msgstr "ಕೇಬಲ್‌ ಅನ್ನು ತೆಗೆದುಹಾಕಲಾಗ�
 msgid "unavailable"
 msgstr "ಅಲಭ್ಯ"
 
-#: ../js/ui/status/network.js:493 ../js/ui/status/network.js:1551
+#: ../js/ui/status/network.js:493
+#: ../js/ui/status/network.js:1551
 msgid "connection failed"
 msgstr "ಸಂಪರ್ಕ ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1435
+#: ../js/ui/status/network.js:552
+#: ../js/ui/status/network.js:1435
 #: ../js/ui/status/network.js:1627
 msgid "More…"
 msgstr "ಇನ್ನಷ್ಟು …"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1365
+#: ../js/ui/status/network.js:588
+#: ../js/ui/status/network.js:1365
 msgid "Connected (private)"
 msgstr "ಸಂಪರ್ಕಿತಗೊಂಡಿದೆ (ಖಾಸಗಿ)"
 
@@ -1656,7 +1653,8 @@ msgid "Auto dial-up"
 msgstr "ಸ್ವಯಂ ಡಯಲ್-ಅಪ್"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:861 ../js/ui/status/network.js:1382
+#: ../js/ui/status/network.js:861
+#: ../js/ui/status/network.js:1382
 #, c-format
 msgid "Auto %s"
 msgstr "ಸ್ವಯಂ %s"
@@ -1693,7 +1691,7 @@ msgstr "ಸಂಪರ್ಕವು ವಿಫಲಗೊಂಡಿದೆ"
 msgid "Activation of network connection failed"
 msgstr "ಜಾಲಬಂಧ ಸಂಪರ್ಕವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../js/ui/status/network.js:2276
+#: ../js/ui/status/network.js:2282
 msgid "Networking is disabled"
 msgstr "ಜಾಲಬಂಧವು ವಿಫಲಗೊಂಡಿದೆ"
 
@@ -1708,7 +1706,6 @@ msgstr "ವಿದ್ಯುಚ್ಛಕ್ತಿ ಸಿದ್ಧತೆಗಳು"
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
 #: ../js/ui/status/power.js:99
-#| msgid "Estimating..."
 msgid "Estimating…"
 msgstr "ಊಹಿಸಲಾಗುತ್ತಿದೆ…"
 
@@ -1744,19 +1741,18 @@ msgid_plural "%d minutes remaining"
 msgstr[0] "%d ನಿಮಿಷ ಬಾಕಿ ಇದೆ"
 msgstr[1] "%d ನಿಮಿಷಗಳು ಬಾಕಿ ಇವೆ"
 
-#: ../js/ui/status/power.js:117 ../js/ui/status/power.js:191
+#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:191
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
 #: ../js/ui/status/power.js:201
-#| msgid "AC adapter"
 msgid "AC Adapter"
 msgstr "AC ಅಡಾಪ್ಟರ್"
 
 #: ../js/ui/status/power.js:203
-#| msgid "Laptop battery"
 msgid "Laptop Battery"
 msgstr "ಲ್ಯಾಪ್‌ಟಾಪ್ ಬ್ಯಾಟರಿ"
 
@@ -1777,12 +1773,10 @@ msgid "PDA"
 msgstr "PDA"
 
 #: ../js/ui/status/power.js:215
-#| msgid "Cell phone"
 msgid "Cell Phone"
 msgstr "ಸೆಲ್ ಫೋನ್"
 
 #: ../js/ui/status/power.js:217
-#| msgid "Media player"
 msgid "Media Player"
 msgstr "ಮಾಧ್ಯಮ ಚಾಲಕ"
 
@@ -1800,12 +1794,12 @@ msgid "Unknown"
 msgstr "ಗೊತ್ತಿಲ್ಲದ"
 
 #: ../js/ui/status/volume.js:124
-#| msgid "Volume"
 msgid "Volume changed"
 msgstr "ಧ್ವನಿ ಪ್ರಮಾಣವನ್ನು ಬದಲಾಯಿಸಲಾಗಿದೆ"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:249 ../js/ui/status/volume.js:297
+#: ../js/ui/status/volume.js:249
+#: ../js/ui/status/volume.js:297
 msgid "Volume"
 msgstr "ಧ್ವನಿ ಪ್ರಮಾಣ"
 
@@ -1813,12 +1807,11 @@ msgstr "ಧ್ವನಿ ಪ್ರಮಾಣ"
 msgid "Microphone"
 msgstr "ಮೈಕ್ರೊಫೋನ್"
 
-#: ../js/ui/unlockDialog.js:123
+#: ../js/ui/unlockDialog.js:65
 msgid "Log in as another user"
 msgstr "ಇನ್ನೊಬ್ಬ ಬಳಕೆದಾರನಾಗಿ ಪ್ರವೇಶಿಸಿ"
 
-#: ../js/ui/unlockDialog.js:144
-#| msgid "Login Window"
+#: ../js/ui/unlockDialog.js:82
 msgid "Unlock Window"
 msgstr "ಕಿಟಕಿಯನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡು"
 
@@ -1873,8 +1866,7 @@ msgid ""
 msgstr ""
 "ಸಂಭಾಷಣೆಯ ಸಂದೇಶಗಳೂ ಸಹ ಸೇರಿದಂತೆ ಸೂಚನೆಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿರುತ್ತದೆ. ನೀವು "
 "ಬೇರೆಯವರಿಂದ ಬಂದ ಸಂದೇಶಗಳನ್ನು ನೀವು ನೋಡಿಲ್ಲ ಎಂದು ಅವರಿಗೆ ಗೊತ್ತಾಗುವಂತೆ ನಿಮ್ಮ "
-"ಆನ್‌ಲೈನ್ "
-"ಸ್ಥಿತಿಯನ್ನು ಹೊಂದಿಸಲಾಗಿರುತ್ತದೆ."
+"ಆನ್‌ಲೈನ್ ಸ್ಥಿತಿಯನ್ನು ಹೊಂದಿಸಲಾಗಿರುತ್ತದೆ."
 
 #: ../js/ui/userMenu.js:888
 msgid "Other users are logged in."
@@ -1906,11 +1898,9 @@ msgstr "ಹುಡುಕು"
 
 #: ../js/ui/wanda.js:77
 #, c-format
-msgid ""
-"Sorry, no wisdom for you today:\n"
+msgid "Sorry, no wisdom for you today:\n"
 "%s"
-msgstr ""
-"ಕ್ಷಮಿಸಿ, ನಿಮಗಾಗಿ ಯಾವುದೆ ವಿವೇಕವಾಣಿ ಇಲ್ಲ :\n"
+msgstr "ಕ್ಷಮಿಸಿ, ನಿಮಗಾಗಿ ಯಾವುದೆ ವಿವೇಕವಾಣಿ ಇಲ್ಲ :\n"
 "%s"
 
 #: ../js/ui/wanda.js:81
@@ -1945,275 +1935,39 @@ msgid_plural "%u Inputs"
 msgstr[0] "%u ಇನ್‌ಪುಟ್"
 msgstr[1] "%u ಇನ್‌ಪುಟ್‌ಗಳು"
 
-#: ../src/gvc/gvc-mixer-control.c:2371
+#: ../src/gvc/gvc-mixer-control.c:2373
 msgid "System Sounds"
 msgstr "ವ್ಯವಸ್ಥೆಯ ಧ್ವನಿಗಳು"
 
-#: ../src/main.c:347
+#: ../src/main.c:328
 msgid "Print version"
 msgstr "ಮುದ್ರಿಸಬಹುದಾದ ಆವೃತ್ತಿ"
 
-#: ../src/main.c:353
+#: ../src/main.c:334
 msgid "Mode used by GDM for login screen"
 msgstr "ಪ್ರವೇಶದ ತೆರೆಗಾಗಿ GDM ಬಳಸಿದ ಪ್ರಕಾರ"
 
-#: ../src/main.c:359
+#: ../src/main.c:340
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "ನಿಶ್ಚಿತ ಸ್ಥಿತಿಯನ್ನು ಬಳಸು, ಉದಾ. ಪ್ರವೇಶ ತೆರೆಗಾಗಿ \"gdm\""
 
-#: ../src/main.c:365
+#: ../src/main.c:346
 msgid "List possible modes"
 msgstr "ಸಾಧ್ಯವಿರುವ ಸ್ಥಿತಿಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡು"
 
-#: ../src/shell-app.c:622
+#: ../src/shell-app.c:640
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "'%s' ಅನ್ನು ಆರಂಭಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../src/shell-keyring-prompt.c:708
+#: ../src/shell-keyring-prompt.c:714
 msgid "Passwords do not match."
 msgstr "ದಾಟುಪದಗಳು ತಾಳೆಯಾಗುವುದಿಲ್ಲ."
 
-#: ../src/shell-keyring-prompt.c:716
+#: ../src/shell-keyring-prompt.c:722
 msgid "Password cannot be blank"
 msgstr "ದಾಟುಪದವು ಖಾಲಿ ಇರುವಂತಿಲ್ಲ"
 
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "ದೃಢೀಕರಣದ ಸಂವಾದವನ್ನು ಬಳಕೆದಾರರಿಂದ ತಿರಸ್ಕರಿಸಲಾಗಿದೆ"
-
-#~ msgctxt "title"
-#~ msgid "Sign In"
-#~ msgstr "ಒಳ ಪ್ರವೇಶಿಸಿ"
-
-#~ msgid "APPLICATIONS"
-#~ msgstr "APPLICATIONS"
-
-#~ msgid "SETTINGS"
-#~ msgstr "SETTINGS"
-
-#~ msgctxt "event list time"
-#~ msgid "%H:%M"
-#~ msgstr "%H:%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l:%M %p"
-#~ msgstr "%l:%M %p"
-
-#~ msgid "Subscription request"
-#~ msgstr "ಚಂದಾದಾರಿಕೆ ಮನವಿ"
-
-#~ msgid "Connection error"
-#~ msgstr "ಸಂಪರ್ಕ ದೋಷ"
-
-#~ msgid "Sent at <b>%X</b> on <b>%A</b>"
-#~ msgstr "<b>%A</b>  ರಂದು <b>%X</b> ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ"
-
-#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-#~ msgstr "%A</b>, <b>%B %d</b>, %Y ರಂದು ಕಳುಹಿಸಲಾಗಿದೆ"
-
-#~ msgid "Connection to %s failed"
-#~ msgstr "%s ಗಾಗಿನ ಸಂಪರ್ಕವು ವಿಫಲಗೊಂಡಿದೆ"
-
-#~ msgid "Reconnect"
-#~ msgstr "ಮರಳಿ ಸಂಪರ್ಕ ಜೋಡಿಸು"
-
-#~ msgid "tray"
-#~ msgstr "ಟ್ರೇ"
-
-#~ msgid "Browse Files..."
-#~ msgstr "ಕಡತಗಳಿಗಾಗಿ ವೀಕ್ಷಿಸು..."
-
-#~ msgid "Error browsing device"
-#~ msgstr "ಸಾಧನವನ್ನು ವೀಕ್ಷಿಸುವಲ್ಲಿ ದೋಷ"
-
-#~ msgid "The requested device cannot be browsed, error is '%s'"
-#~ msgstr "ಮನವಿ ಸಲ್ಲಿಸಲಾದ ಸಾಧನವನ್ನು ವೀಕ್ಷಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ, ದೋಷವು '%s' ಆಗಿದೆ"
-
-#~ msgid "More..."
-#~ msgstr "ಇನ್ನಷ್ಟು..."
-
-#~ msgid "Wireless"
-#~ msgstr "ತಂತಿರಹಿತ"
-
-#~ msgid "VPN Connections"
-#~ msgstr "VPN ಸಂಪರ್ಕಗಳು"
-
-#~ msgid "Unavailable"
-#~ msgstr "ಅಲಭ್ಯ"
-
-#~ msgid "System Settings"
-#~ msgstr "ವ್ಯವಸ್ಥೆಯ ಸಿದ್ಧತೆಗಳು"
-
-#~ msgid "Your favorite Easter Egg"
-#~ msgstr "ನಿಮ್ಮ ಮೆಚ್ಚಿನ ಈಸ್ಟರ್ ಮೊಟ್ಟೆ"
-
-#~ msgid "United Kingdom"
-#~ msgstr "ಯುನೈಟೆಡ್ ಕಿಂಗ್‌ಡಮ್"
-
-#~ msgid "Default"
-#~ msgstr "ಪೂರ್ವನಿಯೋಜಿತ"
-
-#~| msgid "Switch User"
-#~ msgid "Switch Session"
-#~ msgstr "ಅಧಿವೇಶನವನ್ನು ಬದಲಿಸು"
-
-#~ msgid "disabled OpenSearch providers"
-#~ msgstr "ಅಶಕ್ತಗೊಳಿಸಲಾದ OpenSearch ಒದಗಿಸುವವರು"
-
-#~ msgid "Show time with seconds"
-#~ msgstr "ಸಮಯದೊಂದಿಗೆ ಸೆಕೆಂಡುಗಳನ್ನು ತೋರಿಸು"
-
-#~ msgid "If true, display seconds in time."
-#~ msgstr "true ಆದಲ್ಲಿ, ಸಮಯದಲ್ಲಿ ಸೆಕೆಂಡುಗಳನ್ನು ತೋರಿಸಲಾಗುತ್ತದೆ."
-
-#~ msgid "Show date in clock"
-#~ msgstr "ಗಡಿಯಾರದಲ್ಲಿ ದಿನಾಂಕವನ್ನು ತೋರಿಸು"
-
-#~ msgid "If true, display date in the clock, in addition to time."
-#~ msgstr "true ಆದಲ್ಲಿ, ದಿನಾಂಕವನ್ನು ಸಮಯದ ಜೊತೆಗೆ ಗಡಿಯಾರದಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತದೆ."
-
-#~ msgid "CONTACTS"
-#~ msgstr "CONTACTS"
-
-#~ msgid "%a %b %e, %R:%S"
-#~ msgstr "%a %b %e, %R:%S"
-
-#~ msgid "%a %b %e, %R"
-#~ msgstr "%a %b %e, %R"
-
-#~ msgid "%a %R:%S"
-#~ msgstr "%a %R:%S"
-
-#~ msgid "%a %R"
-#~ msgstr "%a %R"
-
-#~ msgid "%a %b %e, %l:%M:%S %p"
-#~ msgstr "%a %b %e, %l:%M:%S %p"
-
-#~ msgid "%a %b %e, %l:%M %p"
-#~ msgstr "%a %b %e, %l:%M %p"
-
-#~ msgid "%a %l:%M:%S %p"
-#~ msgstr "%a %l:%M:%S %p"
-
-#~ msgid "%a %l:%M %p"
-#~ msgstr "%a %l:%M %p"
-
-#~ msgid "Failed to unmount '%s'"
-#~ msgstr "'%s' ಅನ್ನು ಅವರೋಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
-
-#~ msgid "Retry"
-#~ msgstr "ಮರಳಿ ಆರಂಭಿಸು"
-
-#~ msgid "Connect to..."
-#~ msgstr "ಇದಕ್ಕೆ ಸಂಪರ್ಕ ಜೋಡಿಸಿ..."
-
-#~ msgid "PLACES & DEVICES"
-#~ msgstr "PLACES & DEVICES"
-
-#~ msgid "Wrong password, please try again"
-#~ msgstr "ದಾಟುಪದ ತಪ್ಪಾಗಿದೆ; ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸು"
-
-#~| msgid "Next week"
-#~ msgid "Network"
-#~ msgstr "ಜಾಲಬಂಧ"
-
-#~ msgid "%s is online."
-#~ msgstr "%s ಆನ್‌ಲೈನ್‌ನಲ್ಲಿದ್ದಾರೆ."
-
-#~ msgid "%s is offline."
-#~ msgstr "%s ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿದ್ದಾರೆ."
-
-#~ msgid "%s is away."
-#~ msgstr "%s ಆಚೆ ಹೋಗಿದ್ದಾರೆ."
-
-#~ msgid "%s is busy."
-#~ msgstr "%s\" ಕಾರ್ಯನಿರತವಾಗಿದ್ದಾರೆ."
-
-#~ msgid "Hidden"
-#~ msgstr "ಅಡಗಿಸಲಾದ"
-
-#~ msgid "Power Off..."
-#~ msgstr "ಸ್ಥಗಿತಗೊಳಿಸು..."
-
-#~| msgid "My Account"
-#~ msgid "Online Accounts"
-#~ msgstr "ಅಂತರಜಾಲದಲ್ಲಿನ ಖಾತೆಗಳು"
-
-#~ msgid "Lock Screen"
-#~ msgstr "ತೆರೆಯನ್ನು ಲಾಕ್ ಮಾಡಿ"
-
-#~ msgid "Log Out..."
-#~ msgstr "ನಿರ್ಗಮಿಸಿ..."
-
-#~| msgid "Volume"
-#~ msgid "Home"
-#~ msgstr "ನೆಲೆ"
-
-#~ msgid "%1$s: %2$s"
-#~ msgstr "%1$s: %2$s"
-
-#~ msgid ""
-#~ "GNOME Shell extensions have a uuid property; this key lists extensions "
-#~ "which should not be loaded."
-#~ msgstr ""
-#~ "GNOME Shell extensions have a uuid property; this key lists extensions "
-#~ "which should not be loaded."
-
-#~ msgid "PREFERENCES"
-#~ msgstr "PREFERENCES"
-
-#~ msgid "RECENT ITEMS"
-#~ msgstr "RECENT ITEMS"
-
-#~ msgid "Shut Down"
-#~ msgstr "ಸ್ಥಗಿತಗೊಳಿಸು"
-
-#~ msgid "Click Shut Down to quit these applications and shut down the system."
-#~ msgstr ""
-#~ "ಈ ಅನ್ವಯದಿಂದ ನಿರ್ಗಮಿಸಿ ನಂತರ ವ್ಯವಸ್ಥೆಯನ್ನು ಸ್ಥಗಿತಗೊಳಿಲು ಸ್ಥಗಿತಗೊಳಿಸು ಅನ್ನು ಒತ್ತಿ."
-
-#~ msgid "The system will shut down automatically in %d seconds."
-#~ msgstr "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸ್ಥಗಿತಗೊಳ್ಳುತ್ತದೆ."
-
-#~ msgid "Shutting down the system."
-#~ msgstr "ವ್ಯವಸ್ಥೆಯನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲಾಗುತ್ತಿದೆ."
-
-#~ msgid "Confirm"
-#~ msgstr "ಖಚಿತಪಡಿಸಿ"
-
-#~ msgid "Shut Down..."
-#~ msgstr "ಸ್ಥಗಿತಗೊಳಿಸಿ..."
-
-#~ msgid "Localization Settings"
-#~ msgstr "ಲೋಕಲೈಸೇಶನ್ ಸಿದ್ಧತೆಗಳು"
-
-#~ msgid "%s has finished starting"
-#~ msgstr "ಆರಂಭಗೊಳಿಸುವುದನ್ನು %s ಪೂರ್ಣಗೊಳಿಸಿದ್ದಾರೆ"
-
-#~ msgid "Less than a minute ago"
-#~ msgstr "ಒಂದು ನಿಮಿಷಕ್ಕೂ ಹಿಂದೆ"
-
-#~ msgid "%d minute ago"
-#~ msgid_plural "%d minutes ago"
-#~ msgstr[0] "%d ನಿಮಿಷದ ಹಿಂದೆ"
-#~ msgstr[1] "%d ನಿಮಿಷಗಳ ಹಿಂದೆ"
-
-#~ msgid "%d hour ago"
-#~ msgid_plural "%d hours ago"
-#~ msgstr[0] "%d ಗಂಟೆಯ ಹಿಂದೆ"
-#~ msgstr[1] "%d ಗಂಟೆಗಳ ಹಿಂದೆ"
-
-#~ msgid "%d day ago"
-#~ msgid_plural "%d days ago"
-#~ msgstr[0] "%d ದಿನದ ಹಿಂದೆ"
-#~ msgstr[1] "%d ದಿನಗಳ ಹಿಂದೆ"
-
-#~ msgid "%d week ago"
-#~ msgid_plural "%d weeks ago"
-#~ msgstr[0] "%d ವಾರದ ಹಿಂದೆ"
-#~ msgstr[1] "%d ವಾರಗಳ ಹಿಂದೆ"
-
-#~ msgid "Home Folder"
-#~ msgstr "ನೆಲೆ ಕಡತಕೋಶ"
