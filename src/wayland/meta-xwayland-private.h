@@ -25,12 +25,14 @@
 #include <glib.h>
 
 gboolean
-meta_xwayland_start (MetaWaylandCompositor *compositor);
+meta_xwayland_start (MetaXWaylandManager  *manager,
+                     struct wl_display    *display,
+                     char                **display_name_out);
 
 void
 meta_xwayland_complete_init (void);
 
 void
-meta_xwayland_stop (MetaWaylandCompositor *compositor);
+meta_xwayland_stop (MetaXWaylandManager *manager);
 
 #endif /* META_XWAYLAND_PRIVATE_H */

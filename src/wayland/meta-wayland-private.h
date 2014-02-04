@@ -59,25 +59,31 @@ typedef struct
   struct wl_resource *resource;
 } MetaWaylandFrameCallback;
 
+typedef struct
+{
+  int display_index;
+  char *lockfile;
+  int abstract_fd;
+  int unix_fd;
+  pid_t pid;
+  struct wl_client *client;
+  struct wl_resource *xserver_resource;
+
+  GMainLoop *init_loop;
+} MetaXWaylandManager;
+
 struct _MetaWaylandCompositor
 {
   struct wl_display *wayland_display;
   char *display_name;
   struct wl_event_loop *wayland_loop;
-  GMainLoop *init_loop;
   ClutterActor *stage;
   GHashTable *outputs;
   GSource *wayland_event_source;
   GList *surfaces;
   struct wl_list frame_callbacks;
 
-  int xwayland_display_index;
-  char *xwayland_lockfile;
-  int xwayland_abstract_fd;
-  int xwayland_unix_fd;
-  pid_t xwayland_pid;
-  struct wl_client *xwayland_client;
-  struct wl_resource *xserver_resource;
+  MetaXWaylandManager xwayland_manager;
 
   MetaLauncher *launcher;
   gboolean native;

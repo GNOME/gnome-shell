@@ -63,20 +63,20 @@ bind_xserver (struct wl_client *client,
               guint32 version,
               guint32 id)
 {
-  MetaWaylandCompositor *compositor = data;
+  MetaXWaylandManager *manager = data;
 
   /* If it's a different client than the xserver we launched,
-   * don't start the wm. */
-  if (client != compositor->xwayland_client)
+   * just freeze up... */
+  if (client != manager->client)
     return;
 
-  compositor->xserver_resource = wl_resource_create (client, &xserver_interface,
-						     MIN (META_XSERVER_VERSION, version), id);
-  wl_resource_set_implementation (compositor->xserver_resource,
-				  &xserver_implementation, compositor, NULL);
+  manager->xserver_resource = wl_resource_create (client, &xserver_interface,
+                                                  MIN (META_XSERVER_VERSION, version), id);
+  wl_resource_set_implementation (manager->xserver_resource,
+				  &xserver_implementation, manager, NULL);
 
-  xserver_send_listen_socket (compositor->xserver_resource, compositor->xwayland_abstract_fd);
-  xserver_send_listen_socket (compositor->xserver_resource, compositor->xwayland_unix_fd);
+  xserver_send_listen_socket (manager->xserver_resource, manager->abstract_fd);
+  xserver_send_listen_socket (manager->xserver_resource, manager->unix_fd);
 
   /* Make sure xwayland will recieve the above sockets in a finite
    * time before unblocking the initialization mainloop since we are
@@ -88,8 +88,8 @@ bind_xserver (struct wl_client *client,
    * connections so we can quit the transient initialization mainloop
    * and unblock meta_wayland_init() to continue initializing mutter.
    * */
-  g_main_loop_quit (compositor->init_loop);
-  g_clear_pointer (&compositor->init_loop, g_main_loop_unref);
+  g_main_loop_quit (manager->init_loop);
+  g_clear_pointer (&manager->init_loop, g_main_loop_unref);
 }
 
 static char *
@@ -285,7 +285,9 @@ x_io_error (Display *display)
 }
 
 gboolean
-meta_xwayland_start (MetaWaylandCompositor *compositor)
+meta_xwayland_start (MetaXWaylandManager  *manager,
+                     struct wl_display    *wl_display,
+                     char                **display_name_out)
 {
   int display = 0;
   char *lockfile = NULL;
@@ -298,10 +300,9 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
   char *args[11];
   GError *error;
 
-  wl_global_create (compositor->wayland_display,
-		    &xserver_interface,
+  wl_global_create (wl_display, &xserver_interface,
 		    META_XSERVER_VERSION,
-		    compositor, bind_xserver);
+		    manager, bind_xserver);
 
   do
     {
@@ -312,8 +313,8 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
           return FALSE;
         }
 
-      compositor->xwayland_abstract_fd = bind_to_abstract_socket (display);
-      if (compositor->xwayland_abstract_fd < 0)
+      manager->abstract_fd = bind_to_abstract_socket (display);
+      if (manager->abstract_fd < 0)
         {
           unlink (lockfile);
 
@@ -326,11 +327,11 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
             return FALSE;
         }
 
-      compositor->xwayland_unix_fd = bind_to_unix_socket (display);
-      if (compositor->xwayland_abstract_fd < 0)
+      manager->unix_fd = bind_to_unix_socket (display);
+      if (manager->abstract_fd < 0)
         {
           unlink (lockfile);
-          close (compositor->xwayland_abstract_fd);
+          close (manager->abstract_fd);
           return FALSE;
         }
 
@@ -338,8 +339,8 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
     }
   while (1);
 
-  compositor->xwayland_display_index = display;
-  compositor->xwayland_lockfile = lockfile;
+  manager->display_index = display;
+  manager->lockfile = lockfile;
 
   /* We want xwayland to be a wayland client so we make a socketpair to setup a
    * wayland protocol connection. */
@@ -355,8 +356,7 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
   env = g_environ_setenv (env, "WAYLAND_SOCKET", fd_string, TRUE);
   g_free (fd_string);
 
-  display_name = g_strdup_printf (":%d",
-                                  compositor->xwayland_display_index);
+  display_name = g_strdup_printf (":%d", manager->display_index);
   log_path = g_build_filename (g_get_user_cache_dir (), "xwayland.log", NULL);
 
   args[0] = XWAYLAND_PATH;
@@ -387,10 +387,9 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
       g_message ("forked X server, pid %d\n", pid);
 
       close (sp[1]);
-      compositor->xwayland_client =
-        wl_client_create (compositor->wayland_display, sp[0]);
+      manager->client = wl_client_create (wl_display, sp[0]);
 
-      compositor->xwayland_pid = pid;
+      manager->pid = pid;
       g_child_watch_add (pid, xserver_died, NULL);
     }
   else
@@ -405,9 +404,10 @@ meta_xwayland_start (MetaWaylandCompositor *compositor)
   /* We need to run a mainloop until we know xwayland has a binding
    * for our xserver interface at which point we can assume it's
    * ready to start accepting connections. */
-  compositor->init_loop = g_main_loop_new (NULL, FALSE);
+  manager->init_loop = g_main_loop_new (NULL, FALSE);
+  g_main_loop_run (manager->init_loop);
 
-  g_main_loop_run (compositor->init_loop);
+  *display_name_out = display_name;
 
   return TRUE;
 }
@@ -425,16 +425,14 @@ meta_xwayland_complete_init (void)
 }
 
 void
-meta_xwayland_stop (MetaWaylandCompositor *compositor)
+meta_xwayland_stop (MetaXWaylandManager *manager)
 {
   char path[256];
 
-  snprintf (path, sizeof path, "/tmp/.X%d-lock",
-            compositor->xwayland_display_index);
+  snprintf (path, sizeof path, "/tmp/.X%d-lock", manager->display_index);
   unlink (path);
-  snprintf (path, sizeof path, "/tmp/.X11-unix/X%d",
-            compositor->xwayland_display_index);
+  snprintf (path, sizeof path, "/tmp/.X11-unix/X%d", manager->display_index);
   unlink (path);
 
-  unlink (compositor->xwayland_lockfile);
+  unlink (manager->lockfile);
 }

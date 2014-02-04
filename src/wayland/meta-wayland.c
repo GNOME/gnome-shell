@@ -720,12 +720,10 @@ meta_wayland_init (void)
    * and so EGL must be initialized by this point.
    */
 
-  if (!meta_xwayland_start (compositor))
+  if (!meta_xwayland_start (&compositor->xwayland_manager, compositor->wayland_display, &display_name))
     g_error ("Failed to start X Wayland");
 
-  display_name = g_strdup_printf (":%d", compositor->xwayland_display_index);
   set_gnome_env ("DISPLAY", display_name);
-  g_free (display_name);
 
   set_gnome_env ("WAYLAND_DISPLAY", compositor->display_name);
 }
@@ -737,7 +735,7 @@ meta_wayland_finalize (void)
 
   compositor = meta_wayland_compositor_get_default ();
 
-  meta_xwayland_stop (compositor);
+  meta_xwayland_stop (&compositor->xwayland_manager);
 
   if (compositor->launcher)
     meta_launcher_free (compositor->launcher);

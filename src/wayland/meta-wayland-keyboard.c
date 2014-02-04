@@ -115,7 +115,7 @@ inform_clients_of_new_keymap (MetaWaylandKeyboard *keyboard,
   struct wl_resource *keyboard_resource;
 
   compositor = meta_wayland_compositor_get_default ();
-  xclient = compositor->xwayland_client;
+  xclient = compositor->xwayland_manager.client;
 
   wl_resource_for_each (keyboard_resource, &keyboard->resource_list)
     {
