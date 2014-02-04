@@ -79,13 +79,10 @@ src/meta-dbus-xrandr.[ch]
 src/meta-dbus-idle-monitor.[ch]
 src/mutter-plugins.pc
 src/wayland/gtk-shell-protocol.c
-src/wayland/gtk-shell-client-protocol.h
 src/wayland/gtk-shell-server-protocol.h
 src/wayland/xdg-shell-protocol.c
-src/wayland/xdg-shell-client-protocol.h
 src/wayland/xdg-shell-server-protocol.h
 src/wayland/xserver-protocol.c
-src/wayland/xserver-client-protocol.h
 src/wayland/xserver-server-protocol.h
 doc/reference/*.args
 doc/reference/*.bak

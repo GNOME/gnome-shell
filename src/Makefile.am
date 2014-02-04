@@ -42,13 +42,10 @@ mutter_built_sources = \
 	mutter-enum-types.c			\
 	wayland/gtk-shell-protocol.c		\
 	wayland/gtk-shell-server-protocol.h	\
-	wayland/gtk-shell-client-protocol.h	\
 	wayland/xdg-shell-protocol.c		\
 	wayland/xdg-shell-server-protocol.h	\
-	wayland/xdg-shell-client-protocol.h	\
 	wayland/xserver-protocol.c		\
-	wayland/xserver-server-protocol.h	\
-	wayland/xserver-client-protocol.h
+	wayland/xserver-server-protocol.h
 
 libmutter_wayland_la_SOURCES =			\
 	core/async-getprop.c			\
@@ -420,6 +417,3 @@ wayland/%-protocol.c : $(top_builddir)/protocol/%.xml
 wayland/%-server-protocol.h : $(top_builddir)/protocol/%.xml
 	mkdir -p wayland
 	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@
-wayland/%-client-protocol.h : $(top_builddir)/protocol/%.xml
-	mkdir -p wayland
-	$(AM_V_GEN)$(WAYLAND_SCANNER) client-header < $< > $@
