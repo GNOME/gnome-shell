@@ -186,7 +186,7 @@ output_get_backlight_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 
   XRRGetOutputProperty (manager_xrandr->xdisplay,
                         (XID)output->output_id,
-                        display->atom_BACKLIGHT,
+                        display->atom_Backlight,
                         0, G_MAXLONG, False, False, XA_INTEGER,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
@@ -211,7 +211,7 @@ output_get_backlight_limits_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
   meta_error_trap_push (display);
   info = XRRQueryOutputProperty (manager_xrandr->xdisplay,
                                  (XID)output->output_id,
-                                 display->atom_BACKLIGHT);
+                                 display->atom_Backlight);
   meta_error_trap_pop (display);
 
   if (info == NULL)
@@ -947,7 +947,7 @@ meta_monitor_manager_xrandr_change_backlight (MetaMonitorManager *manager,
   meta_error_trap_push (display);
   XRRChangeOutputProperty (manager_xrandr->xdisplay,
                            (XID)output->output_id,
-                           display->atom_BACKLIGHT,
+                           display->atom_Backlight,
                            XA_INTEGER, 32, PropModeReplace,
                            (unsigned char *) &hw_value, 1);
   meta_error_trap_pop (display);
