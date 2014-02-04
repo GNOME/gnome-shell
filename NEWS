@@ -1,3 +1,33 @@
+3.11.5
+======
+* Fix extension preference tool [Florian; #722334]
+* Fix keyboard activation of legacy tray icons [Giovanni; #721267]
+* Add radial background shade for modal dialogs [Giovanni; #669798]
+* Show attached modal windows in the overview [Giovanni; #650843]
+* Add support for desktop actions [Giovanni; #669603]
+* Indicate in system status when location service is used [Zeeshan; #709372]
+* Add support for extended app folder schema [Jasper; #723179]
+* Show status icon for wired network connections [Jasper; #708966]
+* Indicate airplane mode in network selection dialog [Giovanni; #709128]
+* Misc bug fixes and cleanups [Florian, Sebastian, Giovanni, Tim, Matt, Jasper;
+  #722417, #722494, #722547, #722593, #722434, #722787, #722690, #722840,
+  #722660, #722812, #723197, #722927, #723306, #723308, #723523, #709685,
+  #723570]
+
+Contributors:
+  Zeeshan Ali (Khattak), Magdalen Berns, Giovanni Campagna, William Jon McCann,
+  Sebastian Keller, Tim Lunn, Florian Müllner, Carlos Soriano,
+  Jasper St. Pierre, Rico Tzschichholz, Matt Watson
+
+Translations:
+  Marek Černocký [cs], Mattias Põldaru [et], Tong Hui [zh_CN],
+  Victor Ibragimov [tg], Enrico Nicoletto [pt_BR], Daniel Mustieles [es],
+  Fran Diéguez [gl], Kjartan Maraas [nb], Nilamdyuti Goswami [as],
+  Aurimas Černius [lt], Stas Solovey [ru], Yosef Or Boczko [he],
+  Jorge Pérez Pérez [an], Dimitris Spingos [el], Baurzhan Muftakhidinov [kk],
+  Chao-Hsiung Liao [zh_HK, zh_TW], Shankar Prasad [kn], Yaron Shahrabani [he],
+  Andika Triwidada [id]
+
 3.11.4
 ======
 * Fix removal of workspacaes that are not at the end [Giovanni; #721417]
