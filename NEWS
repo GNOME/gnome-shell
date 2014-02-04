@@ -1,3 +1,18 @@
+3.11.5
+======
+* Fix CSD titlebars being placed off-screen [Jasper; #719772]
+* Expose MetaWindow:skip-taskbar property [Florian; #723307]
+* Fix legacy tray icons showing up blank [Adel; #721596]
+* Fix configuration of cloned monitors [Adel; #710610]
+* Misc bug fixes and cleanups [Jasper, Adel, Jonas; #720631, #723468, #723563]
+
+Contributors:
+  Jonas Ådahl, Marek Ch, Adel Gadllah, Florian Müllner, Jasper St. Pierre
+
+Translations:
+  Rafael Ferreira [pt_BR], Enrico Nicoletto [pt_BR], Fran Diéguez [gl],
+  Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.11.4
 ======
 * Don't leave focus on windows that are being unmanaged [Owen; #711618]
