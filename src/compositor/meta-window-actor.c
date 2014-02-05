@@ -74,9 +74,6 @@ struct _MetaWindowActorPrivate
   /* The region we should clip to when painting the shadow */
   cairo_region_t   *shadow_clip;
 
-  /* The region that is visible, used to optimize out redraws */
-  cairo_region_t   *unobscured_region;
-
   guint              send_frame_messages_timer;
   gint64             frame_drawn_time;
 
@@ -395,7 +392,6 @@ meta_window_actor_dispose (GObject *object)
       priv->send_frame_messages_timer = 0;
     }
 
-  g_clear_pointer (&priv->unobscured_region, cairo_region_destroy);
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
   g_clear_pointer (&priv->shadow_clip, cairo_region_destroy);
 
@@ -663,7 +659,7 @@ meta_window_actor_get_paint_volume (ClutterActor       *actor,
 {
   MetaWindowActor *self = META_WINDOW_ACTOR (actor);
   MetaWindowActorPrivate *priv = self->priv;
-  cairo_rectangle_int_t bounds;
+  cairo_rectangle_int_t unobscured_bounds, bounds;
   gboolean appears_focused = meta_window_appears_focused (priv->window);
   ClutterVertex origin;
 
@@ -688,12 +684,8 @@ meta_window_actor_get_paint_volume (ClutterActor       *actor,
       gdk_rectangle_union (&bounds, &shadow_bounds, &bounds);
     }
 
-  if (priv->unobscured_region && !clutter_actor_has_mapped_clones (actor))
-    {
-      cairo_rectangle_int_t unobscured_bounds;
-      cairo_region_get_extents (priv->unobscured_region, &unobscured_bounds);
-      gdk_rectangle_intersect (&bounds, &unobscured_bounds, &bounds);
-    }
+  if (meta_shaped_texture_get_unobscured_bounds (META_SHAPED_TEXTURE (priv->actor), &unobscured_bounds))
+    gdk_rectangle_intersect (&bounds, &unobscured_bounds, &bounds);
 
   origin.x = bounds.x;
   origin.y = bounds.y;
@@ -905,9 +897,7 @@ meta_window_actor_damage_all (MetaWindowActor *self)
   redraw_queued = meta_shaped_texture_update_area (META_SHAPED_TEXTURE (priv->actor),
                                                    0, 0,
                                                    cogl_texture_get_width (texture),
-                                                   cogl_texture_get_height (texture),
-                                                   clutter_actor_has_mapped_clones (priv->actor) ?
-                                                   NULL : priv->unobscured_region);
+                                                   cogl_texture_get_height (texture));
   priv->repaint_scheduled = priv->repaint_scheduled || redraw_queued;
   priv->needs_damage_all = FALSE;
 }
@@ -962,17 +952,7 @@ meta_window_actor_queue_frame_drawn (MetaWindowActor *self,
 
   if (!priv->repaint_scheduled)
     {
-      gboolean is_obscured = FALSE;
-
-      /* Find out whether the window is completly obscured */
-      if (priv->unobscured_region)
-        {
-          cairo_region_t *unobscured_window_region;
-          unobscured_window_region = cairo_region_copy (priv->shape_region);
-          cairo_region_intersect (unobscured_window_region, priv->unobscured_region);
-          is_obscured = cairo_region_is_empty (unobscured_window_region);
-          cairo_region_destroy (unobscured_window_region);
-        }
+      gboolean is_obscured = meta_shaped_texture_is_obscured (META_SHAPED_TEXTURE (priv->actor));
 
       /* A frame was marked by the client without actually doing any
        * damage or any unobscured, or while we had the window frozen
@@ -1642,30 +1622,6 @@ see_region (cairo_region_t *region,
 #endif
 
 /**
- * meta_window_actor_set_unobscured_region:
- * @self: a #MetaWindowActor
- * @unobscured_region: the region of the screen that isn't completely
- *  obscured.
- *
- * Provides a hint as to what areas of the window need to queue
- * redraws when damaged. Regions not in @unobscured_region are completely obscured.
- */
-static void
-meta_window_actor_set_unobscured_region (MetaWindowActor *self,
-                                         cairo_region_t  *unobscured_region)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-
-  if (priv->unobscured_region)
-    cairo_region_destroy (priv->unobscured_region);
-
-  if (unobscured_region)
-    priv->unobscured_region = cairo_region_copy (unobscured_region);
-  else
-    priv->unobscured_region = NULL;
-}
-
-/**
  * meta_window_actor_set_clip_region_beneath:
  * @self: a #MetaWindowActor
  * @clip_region: the region of the screen that isn't completely
@@ -1715,7 +1671,6 @@ meta_window_actor_cull_out (MetaCullable   *cullable,
   if (priv->unredirected)
     return;
 
-  meta_window_actor_set_unobscured_region (self, unobscured_region);
   meta_cullable_cull_out_children (cullable, unobscured_region, clip_region);
   meta_window_actor_set_clip_region_beneath (self, clip_region);
 }
@@ -1947,9 +1902,7 @@ meta_window_actor_process_damage (MetaWindowActor    *self,
                                                    event->area.x,
                                                    event->area.y,
                                                    event->area.width,
-                                                   event->area.height,
-                                                   clutter_actor_has_mapped_clones (priv->actor) ?
-                                                   NULL : priv->unobscured_region);
+                                                   event->area.height);
   priv->repaint_scheduled = priv->repaint_scheduled || redraw_queued;
 }
 
