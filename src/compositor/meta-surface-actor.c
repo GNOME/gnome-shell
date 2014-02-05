@@ -31,6 +31,14 @@ static void cullable_iface_init (MetaCullableInterface *iface);
 G_DEFINE_TYPE_WITH_CODE (MetaSurfaceActor, meta_surface_actor, CLUTTER_TYPE_ACTOR,
                          G_IMPLEMENT_INTERFACE (META_TYPE_CULLABLE, cullable_iface_init));
 
+gboolean
+meta_surface_actor_get_unobscured_bounds (MetaSurfaceActor      *self,
+                                          cairo_rectangle_int_t *unobscured_bounds)
+{
+  MetaSurfaceActorPrivate *priv = self->priv;
+  return meta_shaped_texture_get_unobscured_bounds (priv->texture, unobscured_bounds);
+}
+
 static void
 meta_surface_actor_class_init (MetaSurfaceActorClass *klass)
 {
@@ -109,18 +117,13 @@ update_area (MetaSurfaceActor *self,
 }
 
 gboolean
-meta_surface_actor_damage_all (MetaSurfaceActor *self,
-                               cairo_region_t   *unobscured_region)
+meta_surface_actor_damage_all (MetaSurfaceActor *self)
 {
   MetaSurfaceActorPrivate *priv = self->priv;
   CoglTexture *texture = meta_shaped_texture_get_texture (priv->texture);
 
   update_area (self, 0, 0, cogl_texture_get_width (texture), cogl_texture_get_height (texture));
-  return meta_shaped_texture_update_area (priv->texture,
-                                          0, 0,
-                                          cogl_texture_get_width (texture),
-                                          cogl_texture_get_height (texture),
-                                          unobscured_region);
+  return meta_shaped_texture_update_area (priv->texture, 0, 0, cogl_texture_get_width (texture), cogl_texture_get_height (texture));
 }
 
 gboolean
@@ -128,15 +131,19 @@ meta_surface_actor_damage_area (MetaSurfaceActor *self,
                                 int               x,
                                 int               y,
                                 int               width,
-                                int               height,
-                                cairo_region_t   *unobscured_region)
+                                int               height)
 {
   MetaSurfaceActorPrivate *priv = self->priv;
 
   update_area (self, x, y, width, height);
-  return meta_shaped_texture_update_area (priv->texture,
-                                          x, y, width, height,
-                                          unobscured_region);
+  return meta_shaped_texture_update_area (priv->texture, x, y, width, height);
+}
+
+gboolean
+meta_surface_actor_is_obscured (MetaSurfaceActor *self)
+{
+  MetaSurfaceActorPrivate *priv = self->priv;
+  return meta_shaped_texture_is_obscured (priv->texture);
 }
 
 void
