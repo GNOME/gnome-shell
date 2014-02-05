@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Tajik Gnome\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-01 06:16+0000\n"
-"PO-Revision-Date: 2014-02-01 17:51+0500\n"
+"POT-Creation-Date: 2014-02-04 21:25+0000\n"
+"PO-Revision-Date: 2014-02-05 10:58+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: \n"
 "Language: tg\n"
@@ -284,7 +284,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:357
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:757
+#: ../js/ui/status/network.js:842
 msgid "Cancel"
 msgstr "Бекор кардан"
 
@@ -578,8 +578,8 @@ msgstr "Парол:"
 msgid "Type again:"
 msgstr "Аз нав ворид кунед:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:294 ../js/ui/status/network.js:760
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:134
+#: ../js/ui/status/network.js:296 ../js/ui/status/network.js:845
 msgid "Connect"
 msgstr "Пайваст шудан"
 
@@ -1080,7 +1080,7 @@ msgstr "Фаъол"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:518
+#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:519
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Ғайрифаъол"
@@ -1304,8 +1304,9 @@ msgstr "Матни бузург"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:1108 ../js/ui/status/rfkill.js:48
+#: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:134
+#: ../js/ui/status/network.js:1193 ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "Хомӯш кардан"
 
@@ -1328,104 +1329,135 @@ msgstr "Дурахшонӣ"
 msgid "Show Keyboard Layout"
 msgstr "Намоиш додани тарҳбандии клавиатура"
 
-#: ../js/ui/status/network.js:71
+#: ../js/ui/status/network.js:73
 msgid "<unknown>"
 msgstr "<номаълум>"
 
-#: ../js/ui/status/network.js:221 ../js/ui/status/network.js:383
-#: ../js/ui/status/network.js:1129
+#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:385
+#: ../js/ui/status/network.js:1214
 msgid "Off"
 msgstr "Хомӯш"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:389
+#: ../js/ui/status/network.js:391
 msgid "unmanaged"
 msgstr "идоранашуда"
 
-#: ../js/ui/status/network.js:391
+#: ../js/ui/status/network.js:393
 msgid "disconnecting..."
 msgstr "қатъ кардани пайваст..."
 
-#: ../js/ui/status/network.js:397 ../js/ui/status/network.js:1183
+#: ../js/ui/status/network.js:399 ../js/ui/status/network.js:1268
 msgid "connecting..."
 msgstr "пайвастшавӣ..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:400 ../js/ui/status/network.js:1186
+#: ../js/ui/status/network.js:402 ../js/ui/status/network.js:1271
 msgid "authentication required"
 msgstr "санҷиши ҳаққоният лозим аст"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:408
+#: ../js/ui/status/network.js:410
 msgid "firmware missing"
 msgstr "нармафзори дарунсохт вуҷуд надорад"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:412
+#: ../js/ui/status/network.js:414
 msgid "unavailable"
 msgstr "дастнорас"
 
-#: ../js/ui/status/network.js:414 ../js/ui/status/network.js:1188
+#: ../js/ui/status/network.js:416 ../js/ui/status/network.js:1273
 msgid "connection failed"
 msgstr "пайваст қатъ шудааст"
 
-#: ../js/ui/status/network.js:430
-#| msgid "Wi-Fi Settings"
+#: ../js/ui/status/network.js:432
 msgid "Wired Settings"
 msgstr "Танзимоти шабакаи симдор"
 
-#: ../js/ui/status/network.js:472 ../js/ui/status/network.js:558
+#: ../js/ui/status/network.js:473 ../js/ui/status/network.js:559
 msgid "Mobile Broadband Settings"
 msgstr "Танзимоти паҳннавори мобилӣ"
 
-#: ../js/ui/status/network.js:514 ../js/ui/status/network.js:1127
+#: ../js/ui/status/network.js:515 ../js/ui/status/network.js:1212
 msgid "Hardware Disabled"
 msgstr "Сахтафзор ғайрифаъол шудааст"
 
-#: ../js/ui/status/network.js:725
+#: ../js/ui/status/network.js:740
+#| msgid "Airplane Mode"
+msgid "Airplane Mode is On"
+msgstr "Ҳолати ҳавопаймо фаъол аст"
+
+#: ../js/ui/status/network.js:741
+msgid "Wi-Fi is disabled when airplane mode is on."
+msgstr "Ҳангоми фаъол будани ҳолати ҳавопаймо Wi-Fi ғайрифаъол аст."
+
+#: ../js/ui/status/network.js:742
+#| msgid "Airplane Mode"
+msgid "Turn Off Airplane Mode"
+msgstr "Ҳолати ҳавопаймо хомӯш аст"
+
+#: ../js/ui/status/network.js:751
+#| msgid "Wi-Fi Settings"
+msgid "Wi-Fi is Off"
+msgstr "Wi-Fi хомӯш аст"
+
+#: ../js/ui/status/network.js:752
+msgid "Wi-Fi needs to be turned on in order to connect to a network."
+msgstr "Барои пайваст шудан ба шабака, Wi-Fi бояд фаъол карда шавад."
+
+#: ../js/ui/status/network.js:753
+#| msgid "Turn On"
+msgid "Turn On Wi-Fi"
+msgstr "Фаъол кардани Wi-Fi"
+
+#: ../js/ui/status/network.js:778
 msgid "Wi-Fi Networks"
 msgstr "Шабакаҳои Wi-Fi"
 
-#: ../js/ui/status/network.js:727
+#: ../js/ui/status/network.js:780
 msgid "Select a network"
 msgstr "Интихоб кардани шабака"
 
-#: ../js/ui/status/network.js:751
+#: ../js/ui/status/network.js:809
 msgid "No Networks"
 msgstr "Ягон шабака нест"
 
-#: ../js/ui/status/network.js:1014
+#: ../js/ui/status/network.js:830 ../js/ui/status/rfkill.js:103
+msgid "Use hardware switch to turn off"
+msgstr "Истифодаи калиди сахтафзорӣ барои фаъолсозӣ ё хомӯшкунӣ"
+
+#: ../js/ui/status/network.js:1099
 msgid "Select Network"
 msgstr "Интихоби шабака"
 
-#: ../js/ui/status/network.js:1020
+#: ../js/ui/status/network.js:1105
 msgid "Wi-Fi Settings"
 msgstr "Танзимоти Wi-Fi"
 
-#: ../js/ui/status/network.js:1108
+#: ../js/ui/status/network.js:1193
 msgid "Turn On"
 msgstr "Фаъол кардан"
 
-#: ../js/ui/status/network.js:1131
+#: ../js/ui/status/network.js:1216
 msgid "Not Connected"
 msgstr "Пайваст нашудааст"
 
-#: ../js/ui/status/network.js:1251
+#: ../js/ui/status/network.js:1336
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1394
+#: ../js/ui/status/network.js:1479
 msgid "Network Manager"
 msgstr "Мудири шабака"
 
-#: ../js/ui/status/network.js:1433
+#: ../js/ui/status/network.js:1518
 msgid "Connection failed"
 msgstr "Пайваст қатъ шудааст"
 
-#: ../js/ui/status/network.js:1434
+#: ../js/ui/status/network.js:1519
 msgid "Activation of network connection failed"
 msgstr "Фаъолсозии пайвасти шабака қатъ шудааст."
 
@@ -1459,15 +1491,15 @@ msgstr "UPS"
 msgid "Battery"
 msgstr "Батарея"
 
-#: ../js/ui/status/rfkill.js:45
+#: ../js/ui/status/rfkill.js:82
 msgid "Airplane Mode"
 msgstr "Ҳолати ҳавопаймо"
 
-#: ../js/ui/status/rfkill.js:47
+#: ../js/ui/status/rfkill.js:84
 msgid "On"
 msgstr "Фаъол"
 
-#: ../js/ui/status/rfkill.js:51
+#: ../js/ui/status/rfkill.js:88
 msgid "Network Settings"
 msgstr "Танзимоти шабака"
 
