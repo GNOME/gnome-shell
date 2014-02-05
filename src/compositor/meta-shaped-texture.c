@@ -668,7 +668,6 @@ meta_shaped_texture_get_unobscured_bounds (MetaShapedTexture     *self,
 gboolean
 meta_shaped_texture_is_obscured (MetaShapedTexture *self)
 {
-  MetaShapedTexturePrivate *priv = self->priv;
   cairo_region_t *unobscured_region = effective_unobscured_region (self);
 
   if (unobscured_region)
