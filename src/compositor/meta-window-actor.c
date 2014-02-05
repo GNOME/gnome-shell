@@ -1707,7 +1707,7 @@ see_region (cairo_region_t *region,
  * Provides a hint as to what areas of the window need to queue
  * redraws when damaged. Regions not in @unobscured_region are completely obscured.
  */
-void
+static void
 meta_window_actor_set_unobscured_region (MetaWindowActor *self,
                                          cairo_region_t  *unobscured_region)
 {
@@ -1744,13 +1744,19 @@ meta_window_actor_set_clip_region_beneath (MetaWindowActor *self,
   if (appears_focused ? priv->focused_shadow : priv->unfocused_shadow)
     {
       g_clear_pointer (&priv->shadow_clip, cairo_region_destroy);
-      priv->shadow_clip = cairo_region_copy (beneath_region);
 
-      if (clip_shadow_under_window (self))
+      if (beneath_region)
         {
-          cairo_region_t *frame_bounds = meta_window_get_frame_bounds (priv->window);
-          cairo_region_subtract (priv->shadow_clip, frame_bounds);
+          priv->shadow_clip = cairo_region_copy (beneath_region);
+
+          if (clip_shadow_under_window (self))
+            {
+              cairo_region_t *frame_bounds = meta_window_get_frame_bounds (priv->window);
+              cairo_region_subtract (priv->shadow_clip, frame_bounds);
+            }
         }
+      else
+        priv->shadow_clip = NULL;
     }
 }
 

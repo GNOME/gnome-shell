@@ -70,9 +70,15 @@ meta_cullable_cull_out_children (MetaCullable   *cullable,
   while (clutter_actor_iter_prev (&iter, &child))
     {
       float x, y;
+      gboolean needs_culling;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!META_IS_CULLABLE (child))
         continue;
+
+      needs_culling = (unobscured_region != NULL && clip_region != NULL);
+
+      if (needs_culling && !CLUTTER_ACTOR_IS_VISIBLE (child))
+        needs_culling = FALSE;
 
       /* If an actor has effects applied, then that can change the area
        * it paints and the opacity, so we no longer can figure out what
@@ -90,25 +96,29 @@ meta_cullable_cull_out_children (MetaCullable   *cullable,
        * as well for the same reason, but omitted for simplicity in the
        * hopes that no-one will do that.
        */
-      if (clutter_actor_has_effects (child))
-        continue;
+      if (needs_culling && clutter_actor_has_effects (child))
+        needs_culling = FALSE;
 
-      if (!META_IS_CULLABLE (child))
-        continue;
+      if (needs_culling && !meta_actor_is_untransformed (child, NULL, NULL))
+        needs_culling = FALSE;
 
-      if (!meta_actor_is_untransformed (child, NULL, NULL))
-        continue;
+      if (needs_culling)
+        {
+          clutter_actor_get_position (child, &x, &y);
 
-      clutter_actor_get_position (child, &x, &y);
+          /* Temporarily move to the coordinate system of the actor */
+          cairo_region_translate (unobscured_region, - x, - y);
+          cairo_region_translate (clip_region, - x, - y);
 
-      /* Temporarily move to the coordinate system of the actor */
-      cairo_region_translate (unobscured_region, - x, - y);
-      cairo_region_translate (clip_region, - x, - y);
+          meta_cullable_cull_out (META_CULLABLE (child), unobscured_region, clip_region);
 
-      meta_cullable_cull_out (META_CULLABLE (child), unobscured_region, clip_region);
-
-      cairo_region_translate (unobscured_region, x, y);
-      cairo_region_translate (clip_region, x, y);
+          cairo_region_translate (unobscured_region, x, y);
+          cairo_region_translate (clip_region, x, y);
+        }
+      else
+        {
+          meta_cullable_cull_out (META_CULLABLE (child), NULL, NULL);
+        }
     }
 }
 
