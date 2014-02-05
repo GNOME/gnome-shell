@@ -602,18 +602,17 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
           cairo_region_get_extents (intersection, &damage_rect);
           clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stex), &damage_rect);
           cairo_region_destroy (intersection);
-
           return TRUE;
         }
 
       cairo_region_destroy (intersection);
-
       return FALSE;
     }
-
-  clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stex), &clip);
-
-  return TRUE;
+  else
+    {
+      clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stex), &clip);
+      return TRUE;
+    }
 }
 
 static void
