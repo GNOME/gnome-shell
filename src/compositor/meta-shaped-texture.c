@@ -621,7 +621,7 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
 				 cairo_region_t    *unobscured_region)
 {
   MetaShapedTexturePrivate *priv;
-  cairo_rectangle_int_t clip = { x, y, width, height };
+  const cairo_rectangle_int_t clip = { x, y, width, height };
 
   priv = stex->priv;
 
