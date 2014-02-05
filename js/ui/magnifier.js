@@ -736,7 +736,8 @@ const ZoomRegion = new Lang.Class({
         if (!component || event.detail1 != 1)
             return;
         let extents = component.get_extents(Atspi.CoordType.SCREEN);
-        [this._xFocus, this._yFocus] = [extents.x, extents.y]
+        [this._xFocus, this._yFocus] = [extents.x + (extents.width / 2),
+                                        extents.y + (extents.height / 2)];
         this._centerFromFocusPosition();
     },
 
