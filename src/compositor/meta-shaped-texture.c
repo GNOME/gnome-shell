@@ -594,52 +594,6 @@ meta_shaped_texture_set_mask_texture (MetaShapedTexture *stex,
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
 }
 
-static gboolean
-get_clip (MetaShapedTexture *stex,
-          int x,
-          int y,
-          int width,
-          int height,
-          cairo_rectangle_int_t *clip)
-{
-  ClutterActor *self = CLUTTER_ACTOR (stex);
-  MetaShapedTexturePrivate *priv;
-  ClutterActorBox allocation;
-  double scale_x;
-  double scale_y;
-
-  /* NB: clutter_actor_queue_redraw_with_clip expects a box in the actor's
-   * coordinate space so we need to convert from surface coordinates to
-   * actor coordinates...
-   */
-
-  /* Calling clutter_actor_get_allocation_box() is enormously expensive
-   * if the actor has an out-of-date allocation, since it triggers
-   * a full redraw. clutter_actor_queue_redraw_with_clip() would redraw
-   * the whole stage anyways in that case, so just go ahead and do
-   * it here.
-   */
-  if (!clutter_actor_has_allocation (self))
-    return FALSE;
-
-  priv = stex->priv;
-
-  if (priv->tex_width == 0 || priv->tex_height == 0)
-    return FALSE;
-
-  clutter_actor_get_allocation_box (self, &allocation);
-
-  scale_x = (allocation.x2 - allocation.x1) / priv->tex_width;
-  scale_y = (allocation.y2 - allocation.y1) / priv->tex_height;
-
-  clip->x = x * scale_x;
-  clip->y = y * scale_y;
-  clip->width = width * scale_x;
-  clip->height = height * scale_y;
-
-  return TRUE;
-}
-
 /**
  * meta_shaped_texture_update_area:
  * @stex: #MetaShapedTexture
@@ -667,8 +621,7 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
 				 cairo_region_t    *unobscured_region)
 {
   MetaShapedTexturePrivate *priv;
-  cairo_rectangle_int_t clip;
-  gboolean has_clip;
+  cairo_rectangle_int_t clip = { x, y, width, height };
 
   priv = stex->priv;
 
@@ -676,8 +629,6 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
     return FALSE;
 
   meta_texture_tower_update_area (priv->paint_tower, x, y, width, height);
-
-  has_clip = get_clip (stex, x, y, width, height, &clip);
 
   if (unobscured_region)
     {
@@ -687,8 +638,7 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
         return FALSE;
 
       intersection = cairo_region_copy (unobscured_region);
-      if (has_clip)
-	cairo_region_intersect_rectangle (intersection, &clip);
+      cairo_region_intersect_rectangle (intersection, &clip);
 
       if (!cairo_region_is_empty (intersection))
         {
@@ -705,10 +655,7 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
       return FALSE;
     }
 
-  if (has_clip)
-    clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stex), &clip);
-  else
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
+  clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stex), &clip);
 
   return TRUE;
 }
