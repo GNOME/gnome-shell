@@ -55,9 +55,6 @@ void     meta_window_actor_set_updates_frozen  (MetaWindowActor *self,
 void     meta_window_actor_queue_frame_drawn   (MetaWindowActor *self,
                                                 gboolean         no_delay_frame);
 
-void meta_window_actor_set_unobscured_region      (MetaWindowActor *self,
-                                                   cairo_region_t  *unobscured_region);
-
 void meta_window_actor_effect_completed (MetaWindowActor *actor,
                                          gulong           event);
 

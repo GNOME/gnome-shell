@@ -857,8 +857,10 @@ meta_shaped_texture_cull_out (MetaCullable   *cullable,
     {
       if (priv->opaque_region)
         {
-          cairo_region_subtract (unobscured_region, priv->opaque_region);
-          cairo_region_subtract (clip_region, priv->opaque_region);
+          if (unobscured_region)
+            cairo_region_subtract (unobscured_region, priv->opaque_region);
+          if (clip_region)
+            cairo_region_subtract (clip_region, priv->opaque_region);
         }
     }
 }

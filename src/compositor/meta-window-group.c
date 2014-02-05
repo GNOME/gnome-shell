@@ -115,8 +115,6 @@ meta_window_group_paint (ClutterActor *actor)
 {
   cairo_region_t *clip_region;
   cairo_region_t *unobscured_region;
-  ClutterActorIter iter;
-  ClutterActor *child;
   cairo_rectangle_int_t visible_rect, clip_rect;
   int paint_x_offset, paint_y_offset;
   int paint_x_origin, paint_y_origin;
@@ -125,18 +123,6 @@ meta_window_group_paint (ClutterActor *actor)
   MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
   ClutterActor *stage = clutter_actor_get_stage (actor);
   MetaCompScreen *info = meta_screen_get_compositor_data (window_group->screen);
-
-  /* Start off by treating all windows as completely unobscured, so damage anywhere
-   * in a window queues redraws, but confine it more below. */
-  clutter_actor_iter_init (&iter, actor);
-  while (clutter_actor_iter_next (&iter, &child))
-    {
-      if (META_IS_WINDOW_ACTOR (child))
-        {
-          MetaWindowActor *window_actor = META_WINDOW_ACTOR (child);
-          meta_window_actor_set_unobscured_region (window_actor, NULL);
-        }
-    }
 
   /* Normally we expect an actor to be drawn at it's position on the screen.
    * However, if we're inside the paint of a ClutterClone, that won't be the
