@@ -893,9 +893,7 @@ meta_window_actor_damage_all (MetaWindowActor *self)
                                                    cogl_texture_get_height (texture),
                                                    clutter_actor_has_mapped_clones (priv->actor) ?
                                                    NULL : priv->unobscured_region);
-
-  priv->repaint_scheduled = priv->repaint_scheduled  || redraw_queued;
-
+  priv->repaint_scheduled = priv->repaint_scheduled || redraw_queued;
   priv->needs_damage_all = FALSE;
 }
 
@@ -1937,9 +1935,7 @@ meta_window_actor_process_damage (MetaWindowActor    *self,
                                                    event->area.height,
                                                    clutter_actor_has_mapped_clones (priv->actor) ?
                                                    NULL : priv->unobscured_region);
-
-  priv->repaint_scheduled = priv->repaint_scheduled  || redraw_queued;
-
+  priv->repaint_scheduled = priv->repaint_scheduled || redraw_queued;
 }
 
 void
