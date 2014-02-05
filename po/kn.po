@@ -1,23 +1,23 @@
 # translation of metacity.HEAD.po to Kannada
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Shankar Prasad <svenkate@redhat.com>, 2008, 2011, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=mutter&keywords=I18N+L10N&component=general\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product="
+"mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-22 10:02+0000\n"
-"PO-Revision-Date: 2013-03-28 15:58+0530\n"
+"PO-Revision-Date: 2013-03-28 06:28-0400\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
-"Language: kn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.5\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"Language: kn\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Zanata 3.2.3\n"
 
 #: ../src/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -64,7 +64,6 @@ msgid "Switch windows"
 msgstr "ಕಿಟಕಿಗಳನ್ನು ಬದಲಿಸು"
 
 #: ../src/50-mutter-navigation.xml.in.h:12
-#| msgid "Move between windows of an application immediately"
 msgid "Switch windows of an application"
 msgstr "ಒಂದು ಅನ್ವಯದ ಕಿಟಕಿಗಳನ್ನು ಬದಲಾಯಿಸು"
 
@@ -77,7 +76,6 @@ msgid "Switch windows directly"
 msgstr "ಕಿಟಿಕಿಗಳನ್ನು ನೇರವಾಗಿ ಬದಲಾಯಿಸು"
 
 #: ../src/50-mutter-navigation.xml.in.h:15
-#| msgid "Move between windows of an application immediately"
 msgid "Switch windows of an app directly"
 msgstr "ಒಂದು ಅನ್ವಯದ ಕಿಟಕಿಗಳನ್ನು ನೇರವಾಗಿ ಬದಲಾಯಿಸು"
 
@@ -86,7 +84,6 @@ msgid "Switch system controls directly"
 msgstr "ವ್ಯವಸ್ಥೆಯ ನಿಯಂತ್ರಣಗಳನ್ನು ನೇರವಾಗಿ ಬದಲಾಯಿಸು"
 
 #: ../src/50-mutter-navigation.xml.in.h:17
-#| msgid "Hide all normal windows and set focus to the desktop"
 msgid "Hide all normal windows"
 msgstr "ಎಲ್ಲಾ ಸಾಮಾನ್ಯ ಕಿಟಕಿಗಳನ್ನು ಅಡಗಿಸು"
 
@@ -107,22 +104,18 @@ msgid "Switch to workspace 4"
 msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 4 ಕ್ಕೆ ಬದಲಾಯಿಸು"
 
 #: ../src/50-mutter-navigation.xml.in.h:22
-#| msgid "Move to Workspace _Left"
 msgid "Move to workspace left"
 msgstr "ಎಡಭಾಗದ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
 
 #: ../src/50-mutter-navigation.xml.in.h:23
-#| msgid "Move to Workspace R_ight"
 msgid "Move to workspace right"
 msgstr "ಬಲಭಾಗದ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
 
 #: ../src/50-mutter-navigation.xml.in.h:24
-#| msgid "Move to Workspace _Left"
 msgid "Move to workspace above"
 msgstr "ಮೇಲ್ಭಾಗದ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
 
 #: ../src/50-mutter-navigation.xml.in.h:25
-#| msgid "Move to Workspace _Down"
 msgid "Move to workspace below"
 msgstr "ಕೆಳಗಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
 
@@ -131,7 +124,6 @@ msgid "System"
 msgstr "ವ್ಯವಸ್ಥೆ"
 
 #: ../src/50-mutter-system.xml.in.h:2
-#| msgid "Show the panel's main menu"
 msgid "Show the run command prompt"
 msgstr "ಚಲಾಯಿಸುವ ಆದೇಶ ಪ್ರಾಂಪ್ಟನ್ನು ತೋರಿಸು"
 
@@ -172,7 +164,6 @@ msgid "Close window"
 msgstr "ಕಿಟಕಿಯನ್ನು ಮುಚ್ಚು"
 
 #: ../src/50-mutter-windows.xml.in.h:9
-#| msgid "Resize window"
 msgid "Hide window"
 msgstr "ಕಿಟಕಿಯನ್ನು ಅಡಗಿಸು"
 
@@ -185,12 +176,10 @@ msgid "Resize window"
 msgstr "ಕಿಟಕಿಯನ್ನು ಮರುಗಾತ್ರಿಸು"
 
 #: ../src/50-mutter-windows.xml.in.h:12
-#| msgid "Move window one workspace down"
 msgid "Toggle window on all workspaces or one"
 msgstr "ಎಲ್ಲಾ ಕಾರ್ಯಸ್ಥಳಗಳಲ್ಲಿ ಅಥವ ಒಂದು ಕಿಟಕಿಯಲ್ಲಿ ಹೊರಳಿಸು"
 
 #: ../src/50-mutter-windows.xml.in.h:13
-#| msgid "Raise window above other windows"
 msgid "Raise window if covered, otherwise lower it"
 msgstr "ಕಿಟಕಿಯನ್ನು ಆವರಿಸಲಾಗಿದ್ದರೆ ಎತ್ತರಿಸು, ಇಲ್ಲದೆ ಹೋದಲ್ಲಿ ಕೆಳಕ್ಕಿಳಿಸು"
 
@@ -223,13 +212,13 @@ msgstr "ಬಲಭಾಗದಲ್ಲಿ ಸೀಳನ್ನು ನೋಡು"
 #: ../src/compositor/compositor.c:568
 #, c-format
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
+"Another compositing manager is already running on screen %i on display "
+"\"%s\"."
 msgstr ""
 "ಬೇರೊಂದು ಕಂಪೋಸಿಟಿಂಗ್ ವ್ಯವಸ್ಥಾಪಕವು ಈಗಾಗಲೆ %i ತೆರೆಯಲ್ಲಿನ \"%s \" ಪ್ರದರ್ಶಕದಲ್ಲಿ "
 "ಚಾಲನೆಯಲ್ಲಿದೆ."
 
-#: ../src/compositor/meta-background.c:1191
+#: ../src/compositor/meta-background.c:1076
 msgid "background texture could not be created from file"
 msgstr "ಹಿನ್ನಲೆಯ ರಚನೆಯನ್ನು ಕಡತದಿಂದ ರಚಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ"
 
@@ -244,7 +233,6 @@ msgstr "ಗೊತ್ತಿರದ ಕಿಟಕಿಯ ಮಾಹಿತಿಯ ಮನ
 
 #: ../src/core/delete.c:111
 #, c-format
-#| msgid "%s is not responding."
 msgid "“%s” is not responding."
 msgstr "“%s“ ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತಿಲ್ಲ."
 
@@ -268,17 +256,17 @@ msgstr "ನಿರೀಕ್ಷಿಸು (_W)"
 msgid "_Force Quit"
 msgstr "ಬಲವಂತವಾಗಿ ಮುಚ್ಚು (_F)"
 
-#: ../src/core/display.c:401
+#: ../src/core/display.c:421
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "ಕಂಪೋಸಿಟಿಂಗ್ ಮಾಡಲು ಅಗತ್ಯವಿರುವ %s ವಿಸ್ತರಣೆಯು ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
-#: ../src/core/display.c:493
+#: ../src/core/display.c:513
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X ಕಿಟಕಿ ಗಣಕ ಪ್ರದರ್ಶಕ '%s' ಅನ್ನು ತೆರೆಯುವಲ್ಲಿ ವಿಫಲತೆ\n"
 
-#: ../src/core/keybindings.c:935
+#: ../src/core/keybindings.c:1138
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -287,9 +275,8 @@ msgstr ""
 "ಬೇರೊಂದಿ ಪ್ರೊಗ್ರಾಂ, ಕೀಲಿ %s ಅನ್ನು ಮಾರ್ಪಡಕಗಳಾದ %x ದೊಂದಿಗೆ ಬೈಂಡಿಂಗ್ ಆಗಿ ಈಗಾಗಲೆ "
 "ಬಳಸುತ್ತಿದೆ\n"
 
-#: ../src/core/keybindings.c:1135
+#: ../src/core/keybindings.c:1335
 #, c-format
-#| msgid "\"%s\" is not a valid value for focus attribute"
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "\"%s\" ಯು ಒಂದು ಮಾನ್ಯವಾದ ವೇಗವರ್ಧಕವಲ್ಲ\n"
 
@@ -328,8 +315,7 @@ msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "ಥೀಮ್‍ಗಳನ್ನು ಪತ್ತೆ ಮಾಡಲಾಗಲಿಲ್ಲ! %s ವು ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ ಹಾಗು ರೂಢಿಯ ಥೀಮ್‍ಗಳನ್ನು "
-"ಹೊಂದಿದೆ "
-"ಎಂದು ಖಚಿತ ಪಡಿಸಿಕೊಳ್ಳಿ.\n"
+"ಹೊಂದಿದೆ ಎಂದು ಖಚಿತ ಪಡಿಸಿಕೊಳ್ಳಿ.\n"
 
 #: ../src/core/mutter.c:40
 #, c-format
@@ -354,33 +340,31 @@ msgstr "ಮುದ್ರಿಸಬಹುದಾದ ಆವೃತ್ತಿ"
 msgid "Mutter plugin to use"
 msgstr "ಬಳಸಬೇಕಿರುವ Mutter ಪ್ಲಗ್ಇನ್"
 
-#: ../src/core/prefs.c:1095
+#: ../src/core/prefs.c:1210
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
 "ಹಾಳಾದ ಅನ್ವಯಗಳಿಗಾಗಿನ ಪರ್ಯಾಯ ಮಾರ್ಗಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ. ಕೆಲವು ಅನ್ವಯಗಳು "
-"ಸರಿಯಾಗಿ "
-"ಕೆಲಸ ಮಾಡದೆ ಇರಬಹುದು.\n"
+"ಸರಿಯಾಗಿ ಕೆಲಸ ಮಾಡದೆ ಇರಬಹುದು.\n"
 
-#: ../src/core/prefs.c:1170
+#: ../src/core/prefs.c:1285
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "\"%s\" ಎಂಬ ಅಕ್ಷರಶೈಲಿ ವಿವರಣೆಯನ್ನು  %s ಎಂಬ GSettings ಕೀಲಿಯಿಂದ ಇಂದ ಪಾರ್ಸ್ "
 "ಮಾಡಲಾಗಿಲ್ಲ\n"
 
-#: ../src/core/prefs.c:1236
+#: ../src/core/prefs.c:1351
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
 "ಸಂರಚನಾ ದತ್ತಸಂಚಯದಲ್ಲಿ ಕಂಡುಬಂದಂತಹ \"%s\" ಮೌಸ್ ಗುಂಡಿಯ ಮಾರ್ಪಡಕಕ್ಕಾಗಿ ಒಂದು "
-"ಮಾನ್ಯವಾದ "
-"ಮೌಲ್ಯವಲ್ಲ\n"
+"ಮಾನ್ಯವಾದ ಮೌಲ್ಯವಲ್ಲ\n"
 
-#: ../src/core/prefs.c:1788
+#: ../src/core/prefs.c:1928
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -389,7 +373,7 @@ msgstr ""
 "ಸಂರಚನಾ ದತ್ತಸಂಚಯದಲ್ಲಿ ಕಂಡುಬಂದಂತಹ \"%s\" ಕೀಲಿಬೈಂಡಿಂಗ್ \"%s\" ಗೆ ಒಂದು ಮಾನ್ಯವಾದ "
 "ಮೌಲ್ಯವಲ್ಲ\n"
 
-#: ../src/core/prefs.c:1887
+#: ../src/core/prefs.c:2018
 #, c-format
 msgid "Workspace %d"
 msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ %d"
@@ -406,13 +390,11 @@ msgid ""
 "replace option to replace the current window manager.\n"
 msgstr ""
 "ತೆರೆ %d ಯು (ಪ್ರದರ್ಶಕ \"%s\" ದಲ್ಲಿನ) ಈಗಾಗಲೆ ಒಂದು ಕಿಟಕಿ ವ್ಯವಸ್ಥಾಪಕವನ್ನು "
-"ಹೊಂದಿದೆ; --"
-"replace ಅನ್ನು ಬಳಸಿಕೊಂಡು ಪ್ರಸಕ್ತ ಕಿಟಕಿ ವ್ಯವಸ್ಥಾಪಕವನ್ನು ಬದಲಾಯಿಸಿ.\n"
+"ಹೊಂದಿದೆ; --replace ಅನ್ನು ಬಳಸಿಕೊಂಡು ಪ್ರಸಕ್ತ ಕಿಟಕಿ ವ್ಯವಸ್ಥಾಪಕವನ್ನು ಬದಲಾಯಿಸಿ.\n"
 
 #: ../src/core/screen.c:734
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "ತೆರೆ %d ಯಲ್ಲಿನ ಪ್ರದರ್ಶಕ \"%s\" ದಲ್ಲಿನ ಕಿಟಕಿ ವ್ಯವಸ್ಥಾಪಕದ ಆಯ್ಕೆಯನ್ನು "
 "ಪಡೆಯಲಾಗಲಿಲ್ಲ\n"
@@ -429,7 +411,8 @@ msgstr ""
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ತೆರೆ %d ಯನ್ನು (ಪ್ರದರ್ಶಕ \"%s\" ದಲ್ಲಿನ) ಬಿಡುಗಡೆಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ\n"
 
-#: ../src/core/session.c:843 ../src/core/session.c:850
+#: ../src/core/session.c:843
+#: ../src/core/session.c:850
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "ಕೋಶ '%s' ಅನ್ನು ಸೃಜಿಸಲಾಗಲಿಲ್ಲ: %s\n"
@@ -461,8 +444,10 @@ msgstr ""
 "<mutter_session> ಗುಣ ವಿಶೇಷವು ಕಾಣಿಸಿಕೊಂಡಿದೆ ಆದರೆ ನಾವು ಅಧಿವೇಶನ ID ಅನ್ನು "
 "ಹೊಂದಿದ್ದೇನೆ"
 
-#: ../src/core/session.c:1198 ../src/core/session.c:1273
-#: ../src/core/session.c:1305 ../src/core/session.c:1377
+#: ../src/core/session.c:1198
+#: ../src/core/session.c:1273
+#: ../src/core/session.c:1305
+#: ../src/core/session.c:1377
 #: ../src/core/session.c:1437
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
@@ -484,8 +469,7 @@ msgid ""
 "be restarted manually next time you log in."
 msgstr ""
 "ಈ ಕಿಟಕಿಗಳು &quot;ಪ್ರಸಕ್ತ ಸಿದ್ಧತೆಗಳನ್ನು ಉಳಿಸು&quot;ವುದನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ "
-"ಹಾಗು "
-"ನೀವು ಮುಂದಿನ ಬಾರಿ ಪ್ರವೇಶಿಸಿದಾಗ ಕೈಯಾರೆ ಅದನ್ನು ಮರಳಿ ಆರಂಭಿಸಬೇಕಾಗುತ್ತದೆ."
+"ಹಾಗು ನೀವು ಮುಂದಿನ ಬಾರಿ ಪ್ರವೇಶಿಸಿದಾಗ ಕೈಯಾರೆ ಅದನ್ನು ಮರಳಿ ಆರಂಭಿಸಬೇಕಾಗುತ್ತದೆ."
 
 #: ../src/core/util.c:84
 #, c-format
@@ -502,7 +486,8 @@ msgstr "ದಾಖಲೆ ಕಡತವನ್ನು %s fdopen() ಮಾಡುವಲ�
 msgid "Opened log file %s\n"
 msgstr "ದಾಖಲೆ ಕಡತ %s ಅನ್ನು ತೆರೆಯಲಾಗಿದೆ\n"
 
-#: ../src/core/util.c:119 ../src/tools/mutter-message.c:149
+#: ../src/core/util.c:119
+#: ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "ವರ್ಬೋಸ್ ಕ್ರಮಕ್ಕಾಗಿನ ಬೆಂಬಲವಿಲ್ಲದೆ Mutter ಅನ್ನು ಕಂಪೈಲ್ ಮಾಡಲಾಗಿದೆ\n"
@@ -524,7 +509,7 @@ msgid "Window manager error: "
 msgstr "ಕಿಟಕಿ ವ್ಯವಸ್ಥಾಪಕ ದೋಷ: "
 
 #. first time through
-#: ../src/core/window.c:7596
+#: ../src/core/window.c:7643
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -539,18 +524,15 @@ msgstr ""
 #. * leads to e.g. us not fullscreening their windows.  Apps that set
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
-#.
-#: ../src/core/window.c:8320
+#: ../src/core/window.c:8367
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
 "%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 "ಕಿಟಕಿ %s ಗಾತ್ರವನ್ನು ಬದಲಾಯಿಸಲಾಗುವುದಿಲ್ಲ ಎಂದು ಸೂಚಿಸಲು ಒಂದು MWM ಸುಳಿವನ್ನು "
-"ನೀಡುತ್ತದೆ, "
-"ಆದರೆ ಕನಿಷ್ಟ ಗಾತ್ರ %d  x %d ಹಾಗು ಗರಿಷ್ಟ ಗಾತ್ರ %d x %d ಅನ್ನು ಹೊಂದಿಸುತ್ತದೆ; "
-"ಇದಕ್ಕೆ "
-"ಯಾವುದೆ ಅರ್ಥವಿರುವುದಿಲ್ಲ.\n"
+"ನೀಡುತ್ತದೆ, ಆದರೆ ಕನಿಷ್ಟ ಗಾತ್ರ %d  x %d ಹಾಗು ಗರಿಷ್ಟ ಗಾತ್ರ %d x %d ಅನ್ನು "
+"ಹೊಂದಿಸುತ್ತದೆ; ಇದಕ್ಕೆ ಯಾವುದೆ ಅರ್ಥವಿರುವುದಿಲ್ಲ.\n"
 
 #: ../src/core/window-props.c:318
 #, c-format
@@ -597,13 +579,14 @@ msgstr "ಗುಣ %s ವು (ಕಿಟಕಿ 0x%lx ದಲ್ಲಿನ) ಅಮಾ
 #: ../src/core/xprops.c:494
 #, c-format
 msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the "
+"list\n"
 msgstr ""
 "ಗುಣ %s ವು (ಕಿಟಕಿ 0x%lx ದಲ್ಲಿನ) ಪಟ್ಟಿಯಲ್ಲಿನ ಅಂಶ %d ಕ್ಕಾಗಿ ಅಮಾನ್ಯವಾದ UTF-8 "
-"ಅನ್ನು "
-"ಹೊಂದಿದೆ\n"
+"ಅನ್ನು ಹೊಂದಿದೆ\n"
 
-#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
+#: ../src/mutter.desktop.in.h:1
+#: ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
@@ -620,9 +603,8 @@ msgid ""
 msgstr ""
 "ಈ ಕೀಲಿಯು \"ಓವರ್ಲೇ\" ಅನ್ನು ಆರಂಭಿಸುತ್ತದೆ, ಈ ಸಂಯೋಜನಾ ಕಿಟಕಿಯ ಅವಲೋಕನ ಮತ್ತು ಅನ್ವಯ "
 "ಆರಂಭಿಸುವ ವ್ಯವಸ್ಥೆಯಾಗಿರುತ್ತದೆ. ಪೂರ್ವನಿಯೋಜಿತವು PC ಯ ಯಂತ್ರಾಂಶದಲ್ಲಿನ \"ವಿಂಡೋಸ್ "
-"ಕೀಲಿ\" "
-"ಆಗಿರುತ್ತದೆ. ಈ ಬೈಂಡಿಂಗ್ ಒಂದು ಪೂರ್ವನಿಯೋಜಿತವಾಗಿರಬೇಕು ಅಥವ ಖಾಲಿ ವಾಕ್ಯಾಂಶಕ್ಕೆ "
-"ಸೂಚಿತಗೊಂಡಿರಬೇಕು ಎಂದು ನಿರೀಕ್ಷಿಸಲಾಗುತ್ತದೆ."
+"ಕೀಲಿ\" ಆಗಿರುತ್ತದೆ. ಈ ಬೈಂಡಿಂಗ್ ಒಂದು ಪೂರ್ವನಿಯೋಜಿತವಾಗಿರಬೇಕು ಅಥವ ಖಾಲಿ "
+"ವಾಕ್ಯಾಂಶಕ್ಕೆ ಸೂಚಿತಗೊಂಡಿರಬೇಕು ಎಂದು ನಿರೀಕ್ಷಿಸಲಾಗುತ್ತದೆ."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
@@ -640,19 +622,19 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "ಕಿಟಕಿಗಳನ್ನು ತೆರೆಯ ಅಂಚಿನಲ್ಲಿ ಬೀಳಿಸುವಾಗ ಅಂಚಿನ ಟೈಲಿಂಗ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸು"
+msgstr ""
+"ಕಿಟಕಿಗಳನ್ನು ತೆರೆಯ ಅಂಚಿನಲ್ಲಿ ಬೀಳಿಸುವಾಗ ಅಂಚಿನ ಟೈಲಿಂಗ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸು"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
-"vertically and resizes them horizontally to cover half of the available "
-"area. Dropping windows on the top screen edge maximizes them completely."
+"vertically and resizes them horizontally to cover half of the available area."
+" Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
 "ಸಕ್ರಿಯಗೊಳಿಸಿದಲ್ಲಿ, ಲಂಬ ತೆರೆಯ ಅಂಚುಗಳಲ್ಲಿ ಕಿಟಕಿಗಳನ್ನು ಬೀಳಿಸಿದಾಗ ಅವುಗಳನ್ನು "
-"ಲಂಬವಾಗಿ "
-"ಹಿಗ್ಗಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ಲಭ್ಯವಿರುವ ಜಾಗದ ಅರ್ಧ ಭಾಗವನ್ನು ಆವರಿಸುವಂತೆ ಅಡ್ಡಲಾಗಿ ಗಾತ್ರ "
-"ಬದಲಿಸಲಾಗುತ್ತದೆ. ಕಿಟಕಿಗಳನ್ನು ಮೇಲಿನ ತೆರೆಯ ಅಂಚಿನ ಮೇಲೆ ಬೀಳಿಸಿದಾಗ ಅವುಗಳನ್ನು "
-"ಸಂಪೂರ್ಣವಾಗಿ ಹಿಗ್ಗಿಸುವಂತೆ ಮಾಡಲಾಗುತ್ತದೆ."
+"ಲಂಬವಾಗಿ ಹಿಗ್ಗಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ಲಭ್ಯವಿರುವ ಜಾಗದ ಅರ್ಧ ಭಾಗವನ್ನು ಆವರಿಸುವಂತೆ "
+"ಅಡ್ಡಲಾಗಿ ಗಾತ್ರ ಬದಲಿಸಲಾಗುತ್ತದೆ. ಕಿಟಕಿಗಳನ್ನು ಮೇಲಿನ ತೆರೆಯ ಅಂಚಿನ ಮೇಲೆ ಬೀಳಿಸಿದಾಗ "
+"ಅವುಗಳನ್ನು ಸಂಪೂರ್ಣವಾಗಿ ಹಿಗ್ಗಿಸುವಂತೆ ಮಾಡಲಾಗುತ್ತದೆ."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
@@ -665,10 +647,8 @@ msgid ""
 "gnome.desktop.wm.preferences)."
 msgstr ""
 "ಕಾರ್ಯಸ್ಥಳಗಳನ್ನು ಕ್ರಿಯಾತ್ಮಕವಾಗಿ ನಿರ್ವಹಿಸಲಾಗುತ್ತದೆಯೆ ಅಥವ ಒಂದು ಸ್ಥಿರ ಸಂಖ್ಯೆಯ "
-"ಕಾರ್ಯಸ್ಥಳಗಳು "
-"ಇರುತ್ತವೆಯೆ ಎನ್ನುವುದನ್ನು ನಿರ್ಧರಿಸುತ್ತದೆ (org.gnome.desktop.wm.preferences "
-"ನಲ್ಲಿನ "
-"num-workspaces ಕೀಲಿಯಿಂದ ನಿರ್ಧರಿತಗೊಳ್ಳುತ್ತದೆ)."
+"ಕಾರ್ಯಸ್ಥಳಗಳು ಇರುತ್ತವೆಯೆ ಎನ್ನುವುದನ್ನು ನಿರ್ಧರಿಸುತ್ತದೆ (org.gnome.desktop.wm."
+"preferences ನಲ್ಲಿನ num-workspaces ಕೀಲಿಯಿಂದ ನಿರ್ಧರಿತಗೊಳ್ಳುತ್ತದೆ)."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
@@ -787,7 +767,8 @@ msgstr "ಶೀರ್ಷಿಕೆಪಟ್ಟಿಯನ್ನು ತೆರೆಯ �
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:86 ../src/ui/menu.c:88
+#: ../src/ui/menu.c:86
+#: ../src/ui/menu.c:88
 msgid "Always on _Top"
 msgstr "ಯಾವಾಗಲೂ ಮೇಲ್ಭಾಗದಲ್ಲಿ (_T)"
 
@@ -850,7 +831,6 @@ msgstr "ಇನ್ನೊಂದು ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕ�
 #. * that use the shift key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
-#.
 #: ../src/ui/metaaccellabel.c:77
 msgid "Shift"
 msgstr "Shift"
@@ -859,7 +839,6 @@ msgstr "Shift"
 #. * that use the control key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
-#.
 #: ../src/ui/metaaccellabel.c:83
 msgid "Ctrl"
 msgstr "Ctrl"
@@ -868,7 +847,6 @@ msgstr "Ctrl"
 #. * that use the alt key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
-#.
 #: ../src/ui/metaaccellabel.c:89
 msgid "Alt"
 msgstr "Alt"
@@ -877,7 +855,6 @@ msgstr "Alt"
 #. * that use the meta key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
-#.
 #: ../src/ui/metaaccellabel.c:95
 msgid "Meta"
 msgstr "ಮೆಟಾ"
@@ -886,7 +863,6 @@ msgstr "ಮೆಟಾ"
 #. * that use the super key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
-#.
 #: ../src/ui/metaaccellabel.c:101
 msgid "Super"
 msgstr "ಸೂಪರ್"
@@ -895,7 +871,6 @@ msgstr "ಸೂಪರ್"
 #. * that use the hyper key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
-#.
 #: ../src/ui/metaaccellabel.c:107
 msgid "Hyper"
 msgstr "ಹೈಪರ್"
@@ -904,7 +879,6 @@ msgstr "ಹೈಪರ್"
 #. * that use the mod2 key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
-#.
 #: ../src/ui/metaaccellabel.c:113
 msgid "Mod2"
 msgstr "Mod2"
@@ -913,7 +887,6 @@ msgstr "Mod2"
 #. * that use the mod3 key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
-#.
 #: ../src/ui/metaaccellabel.c:119
 msgid "Mod3"
 msgstr "Mod3"
@@ -922,7 +895,6 @@ msgstr "Mod3"
 #. * that use the mod4 key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
-#.
 #: ../src/ui/metaaccellabel.c:125
 msgid "Mod4"
 msgstr "Mod4"
@@ -931,14 +903,12 @@ msgstr "Mod4"
 #. * that use the mod5 key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
-#.
 #: ../src/ui/metaaccellabel.c:131
 msgid "Mod5"
 msgstr "Mod5"
 
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
-#.
 #: ../src/ui/resizepopup.c:136
 #, c-format
 msgid "%d x %d"
@@ -1001,8 +971,8 @@ msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
 msgstr ""
-"gtk:custom ನಲ್ಲಿನ color_name ನಲ್ಲಿ ಅಮಾನ್ಯವಾದ ಅಕ್ಷರ '%c' ಕಂಡುಬಂದಿದೆ, ಕೇವಲ A-Za-"
-"z0-9-_ ಮಾತ್ರ ಮಾನ್ಯವಾದವುಗಳಾಗಿರುತ್ತವೆ"
+"gtk:custom ನಲ್ಲಿನ color_name ನಲ್ಲಿ ಅಮಾನ್ಯವಾದ ಅಕ್ಷರ '%c' ಕಂಡುಬಂದಿದೆ, ಕೇವಲ A-"
+"Za-z0-9-_ ಮಾತ್ರ ಮಾನ್ಯವಾದವುಗಳಾಗಿರುತ್ತವೆ"
 
 #: ../src/ui/theme.c:1233
 #, c-format
@@ -1010,8 +980,8 @@ msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
 "fit the format"
 msgstr ""
-"Gtk:ಅಗತ್ಯಾನುಗುಣ ವಿನ್ಯಾಸವು \"gtk:custom(color_name,fallback)\" ಆಗಿರುತ್ತದೆ, \"%s"
-"\" ಎನ್ನುವುದು ವಿನ್ಯಾಸಕ್ಕೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ"
+"Gtk:ಅಗತ್ಯಾನುಗುಣ ವಿನ್ಯಾಸವು \"gtk:custom(color_name,fallback)\" ಆಗಿರುತ್ತದೆ, "
+"\"%s\" ಎನ್ನುವುದು ವಿನ್ಯಾಸಕ್ಕೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ"
 
 #: ../src/ui/theme.c:1278
 #, c-format
@@ -1019,10 +989,9 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK ಬಣ್ಣವನ್ನು ಸೂಚಿಸುವಿಕೆಗಾಗಿ ಸ್ಥಿತಿಯಲ್ಲಿ ಆವರಣ ಚಿಹ್ನೆಯು ಇರಬೇಕು, ಉದಾ. gtk:fg"
-"[NORMAL] ಆಗಿರುತ್ತದೆ, ಇಲ್ಲಿ NORMAL ಸ್ಥಿತಿಯನ್ನು ಸೂಚಿಸುತ್ತದೆ; \"%s\" ಅನ್ನು "
-"ಪಾರ್ಸ್ ಮಾಡಲು "
-"ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+"GTK ಬಣ್ಣವನ್ನು ಸೂಚಿಸುವಿಕೆಗಾಗಿ ಸ್ಥಿತಿಯಲ್ಲಿ ಆವರಣ ಚಿಹ್ನೆಯು ಇರಬೇಕು, ಉದಾ. gtk:"
+"fg[NORMAL] ಆಗಿರುತ್ತದೆ, ಇಲ್ಲಿ NORMAL ಸ್ಥಿತಿಯನ್ನು ಸೂಚಿಸುತ್ತದೆ; \"%s\" ಅನ್ನು "
+"ಪಾರ್ಸ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 #: ../src/ui/theme.c:1292
 #, c-format
@@ -1032,8 +1001,7 @@ msgid ""
 msgstr ""
 "GTK ಬಣ್ಣವನ್ನು ಸೂಚಿಸುವಿಕೆಗಾಗಿ ಸ್ಥಿತಿಯ ನಂತರ ಮುಚ್ಚಲಾದ ಒಂದು ಆವರಣ ಚಿಹ್ನೆಯನ್ನು "
 "ಸೂಚಿಸಬೇಕು, ಉದಾ. gtk:fg[NORMAL] ಆಗಿರುತ್ತದೆ, ಇಲ್ಲಿ NORMAL ಸ್ಥಿತಿಯನ್ನು "
-"ಸೂಚಿಸುತ್ತದೆ; "
-"\"%s\" ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+"ಸೂಚಿಸುತ್ತದೆ; \"%s\" ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 #: ../src/ui/theme.c:1303
 #, c-format
@@ -1071,7 +1039,8 @@ msgstr ""
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
-"ಮಬ್ಬು ವಿನ್ಯಾಸ \"shade/base_color/factor\", \"%s\" ವಿನ್ಯಾಸಕ್ಕೆ ಸರಿಹೊಂದುತ್ತಿಲ್ಲ"
+"ಮಬ್ಬು ವಿನ್ಯಾಸ \"shade/base_color/factor\", \"%s\" ವಿನ್ಯಾಸಕ್ಕೆ "
+"ಸರಿಹೊಂದುತ್ತಿಲ್ಲ"
 
 #: ../src/ui/theme.c:1424
 #, c-format
@@ -1101,8 +1070,7 @@ msgid ""
 "parsed"
 msgstr ""
 "ಪಾರ್ಸ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗದೆ ಇರುವಂತಹ ತೇಲುವ ಬಿಂದು (ಫ್ಲೋಟಿಂಗ್ ಪಾಯಿಂಟ್‌) ಸಂಖ್ಯೆ '%s' "
-"ಅನ್ನು "
-"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಹೊಂದಿದೆ"
+"ಅನ್ನು ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಹೊಂದಿದೆ"
 
 #: ../src/ui/theme.c:1821
 #, c-format
@@ -1125,7 +1093,9 @@ msgstr ""
 msgid "Coordinate expression was empty or not understood"
 msgstr "ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಖಾಲಿ ಇದೆ ಅಥವ ಅರ್ಥ ಮಾಡಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme.c:2112 ../src/ui/theme.c:2122 ../src/ui/theme.c:2156
+#: ../src/ui/theme.c:2112
+#: ../src/ui/theme.c:2122
+#: ../src/ui/theme.c:2156
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್ ಶೂನ್ಯದಿಂದ ಭಾಗಾಕಾರಕ್ಕೆ ಕಾರಣವಾಗಿದೆ"
@@ -1144,8 +1114,7 @@ msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ನಲ್ಲಿ ಎಲ್ಲಿ operand ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತೊ ಅಲ್ಲಿ ಒಂದು "
-"ಆಪರೇಟರ್ \"%s"
-"\" ಇದೆ"
+"ಆಪರೇಟರ್ \"%s\" ಇದೆ"
 
 #: ../src/ui/theme.c:2229
 #, c-format
@@ -1165,11 +1134,11 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಆಪೇರೇಟರ್ \"%c\" ಹಾಗು ಅಪರೇಟರ್ \"%c\" ಅನ್ನು ಹೊಂದಿದೆ ಆದರೆ "
-"ನಡುವೆ "
-"ಯಾವುದೆ operand ಅನ್ನು ಹೊಂದಿಲ್ಲ"
+"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಆಪೇರೇಟರ್ \"%c\" ಹಾಗು ಅಪರೇಟರ್ \"%c\" ಅನ್ನು ಹೊಂದಿದೆ "
+"ಆದರೆ ನಡುವೆ ಯಾವುದೆ operand ಅನ್ನು ಹೊಂದಿಲ್ಲ"
 
-#: ../src/ui/theme.c:2398 ../src/ui/theme.c:2443
+#: ../src/ui/theme.c:2398
+#: ../src/ui/theme.c:2443
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
@@ -1186,30 +1155,31 @@ msgstr "ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್ ಪಾರ�
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಯಾವುದೆ ತೆರೆದ ಆವರಣ ಚಿಹ್ನೆ ಇರದೆ ಕೇವಲ ಮುಚ್ಚಲ್ಪಟ್ಟ ಆವರಣ "
-"ಚಿಹ್ನೆಯನ್ನು "
-"ಹೊಂದಿದೆ"
+"ಚಿಹ್ನೆಯನ್ನು ಹೊಂದಿದೆ"
 
 #: ../src/ui/theme.c:2590
 #, c-format
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgid ""
+"Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಯಾವುದೆ ಮುಚ್ಚಲ್ಪಟ್ಟ ಆವರಣ ಚಿಹ್ನೆ ಇರದೆ ಕೇವಲ ತೆರೆದ ಆವರಣ "
-"ಚಿಹ್ನೆಯನ್ನು "
-"ಹೊಂದಿದೆ"
+"ಚಿಹ್ನೆಯನ್ನು ಹೊಂದಿದೆ"
 
 #: ../src/ui/theme.c:2601
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಯಾವುದೆ ಬಗೆಯ ಆಪರೇಟರುಗಳನ್ನು ಅಥವ ಆಪರಾಂಡ್‌ಗಳನ್ನು "
-"(operands) "
-"ಹೊಂದಿರುವಂತೆ ತೋರುತ್ತಿಲ್ಲ"
+"(operands) ಹೊಂದಿರುವಂತೆ ತೋರುತ್ತಿಲ್ಲ"
 
-#: ../src/ui/theme.c:2814 ../src/ui/theme.c:2834 ../src/ui/theme.c:2854
+#: ../src/ui/theme.c:2814
+#: ../src/ui/theme.c:2834
+#: ../src/ui/theme.c:2854
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr ""
-"ಒಂದು ದೋಷಕ್ಕೆ ಕಾರಣವಾದಂತಹ ಒಂದು ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಪರಿಸರವಿನ್ಯಾಸದಲ್ಲಿ ಕಂಡುಬಂದಿದೆ: %s\n"
+"ಒಂದು ದೋಷಕ್ಕೆ ಕಾರಣವಾದಂತಹ ಒಂದು ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಪರಿಸರವಿನ್ಯಾಸದಲ್ಲಿ ಕಂಡುಬಂದಿದೆ: "
+"%s\n"
 
 #: ../src/ui/theme.c:4500
 #, c-format
@@ -1220,10 +1190,10 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> ವು ಈ ಚೌಕಟ್ಟಿನ "
 "ಶೈಲಿಗೆ ಸೂಚಿತಗೊಳ್ಳಬೇಕು"
 
-#: ../src/ui/theme.c:5011 ../src/ui/theme.c:5036
+#: ../src/ui/theme.c:5011
+#: ../src/ui/theme.c:5036
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> "
 "ಕಾಣುತ್ತಿಲ್ಲ"
@@ -1233,8 +1203,11 @@ msgstr ""
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "\"%s\" ಥೀಮನ್ನು ಲೋಡ್‍ ಮಾಡಲು ವಿಫಲಗೊಂಡಿದೆ: %s\n"
 
-#: ../src/ui/theme.c:5220 ../src/ui/theme.c:5227 ../src/ui/theme.c:5234
-#: ../src/ui/theme.c:5241 ../src/ui/theme.c:5248
+#: ../src/ui/theme.c:5220
+#: ../src/ui/theme.c:5227
+#: ../src/ui/theme.c:5234
+#: ../src/ui/theme.c:5241
+#: ../src/ui/theme.c:5248
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "ಯಾವುದೆ <%s> ಅನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ (ಪರಿಸರವಿನ್ಯಾಸ \"%s\" ಕ್ಕಾಗಿ)"
@@ -1245,33 +1218,34 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"ಬಗೆ \"%s\" ಗಾಗಿ \"%s\" ಪರಿಸರವಿನ್ಯಾಸದಲ್ಲಿ ಯಾವುದೆ ಚೌಕಟ್ಟು ಶೈಲಿ ಇಲ್ಲ, ಒಂದು <"
-"window "
-"type=\"%s\" style_set=\"whatever\"/> ಘಟಕವನ್ನು ಸೇರಿಸಿ"
+"ಬಗೆ \"%s\" ಗಾಗಿ \"%s\" ಪರಿಸರವಿನ್ಯಾಸದಲ್ಲಿ ಯಾವುದೆ ಚೌಕಟ್ಟು ಶೈಲಿ ಇಲ್ಲ, ಒಂದು "
+"<window type=\"%s\" style_set=\"whatever\"/> ಘಟಕವನ್ನು ಸೇರಿಸಿ"
 
-#: ../src/ui/theme.c:5663 ../src/ui/theme.c:5725 ../src/ui/theme.c:5788
+#: ../src/ui/theme.c:5663
+#: ../src/ui/theme.c:5725
+#: ../src/ui/theme.c:5788
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
-"ಬಳಕೆದಾರರಿಂದ ಸೂಚಿತಗೊಂಡ ಸ್ಥಿರಾಂಕಗಳು ಕ್ಯಾಪಿಟಲ್ ಅಕ್ಷರಗಳಿಂದ ಆರಂಭಗೊಳ್ಳಬೇಕು; ಆದರೆ \"%"
-"s\" "
-"ಹೊಂದಿಲ್ಲ"
+"ಬಳಕೆದಾರರಿಂದ ಸೂಚಿತಗೊಂಡ ಸ್ಥಿರಾಂಕಗಳು ಕ್ಯಾಪಿಟಲ್ ಅಕ್ಷರಗಳಿಂದ ಆರಂಭಗೊಳ್ಳಬೇಕು; ಆದರೆ "
+"\"%s\" ಹೊಂದಿಲ್ಲ"
 
-#: ../src/ui/theme.c:5671 ../src/ui/theme.c:5733 ../src/ui/theme.c:5796
+#: ../src/ui/theme.c:5671
+#: ../src/ui/theme.c:5733
+#: ../src/ui/theme.c:5796
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "\"%s\" ಸ್ತಿರಾಂಕವು ಈಗಾಗಲೆ ಸೂಚಿತಗೊಂಡಿದೆ"
 
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
-#.
 #: ../src/ui/theme-parser.c:236
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "\"%s\" ಗುಣ ವಿಶೇಷವು <%s> ಘಟಕದಲ್ಲಿ ಇಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:265 ../src/ui/theme-parser.c:283
+#: ../src/ui/theme-parser.c:265
+#: ../src/ui/theme-parser.c:283
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "ಸಾಲು %d ಅಕ್ಷರ %d: %s"
@@ -1281,7 +1255,8 @@ msgstr "ಸಾಲು %d ಅಕ್ಷರ %d: %s"
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "ವೈಶಿಷ್ಟ್ಯ \"%s\" ವು <%s> ಘಟಕದಲ್ಲಿ ಎರಡು ಬಾರಿ ಪುನರಾವರ್ತಿತವಾಗಿದೆ"
 
-#: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
+#: ../src/ui/theme-parser.c:503
+#: ../src/ui/theme-parser.c:552
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "ಗುಣವಿಶೇಷ \"%s\" ವು ಈ ಸನ್ನಿವೇಶದಲ್ಲಿನ <%s> ಅಂಶದಲ್ಲಿ ಅಮಾನ್ಯವಾಗಿದೆ"
@@ -1291,11 +1266,13 @@ msgstr "ಗುಣವಿಶೇಷ \"%s\" ವು ಈ ಸನ್ನಿವೇಶದ�
 msgid "Could not parse \"%s\" as an integer"
 msgstr "\"%s\" ಅನ್ನು ಒಂದು ಪೂರ್ಣಾಂಕವಾಗಿ ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:603 ../src/ui/theme-parser.c:658
+#: ../src/ui/theme-parser.c:603
+#: ../src/ui/theme-parser.c:658
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr ""
-"\"%s\" ಹಿಂದಿರುವ ಅಕ್ಷರಗಳನ್ನು (ವಾಕ್ಯ \"%s\" ದಲ್ಲಿ) ಅರ್ಥ ಮಾಡಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+"\"%s\" ಹಿಂದಿರುವ ಅಕ್ಷರಗಳನ್ನು (ವಾಕ್ಯ \"%s\" ದಲ್ಲಿ) ಅರ್ಥ ಮಾಡಿಕೊಳ್ಳಲು "
+"ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:613
 #, c-format
@@ -1307,14 +1284,16 @@ msgstr "%ld ಪೂರ್ಣಾಂಕವು ಧನವಾಗಿರಬೇಕು"
 msgid "Integer %ld is too large, current max is %d"
 msgstr "%ld ಪೂರ್ಣಾಂಕವು ಬಹಳ ದೊಡ್ಡದಾಗಿದೆ, ಈಗಿನ ಗರಿಷ್ಟವು %d ಆಗಿದೆ"
 
-#: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
+#: ../src/ui/theme-parser.c:649
+#: ../src/ui/theme-parser.c:765
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr ""
 "\"%s\" ಅನ್ನು ಒಂದು ತೇಲುವ ಬಿಂದು (ಫ್ಲೋಟಿಂಗ್ ಪಾಯಿಂಟ್‌) ಸಂಖ್ಯೆಯಾಗಿ ಪಾರ್ಸ್ ಮಾಡಲು "
 "ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
+#: ../src/ui/theme-parser.c:680
+#: ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "ಬೂಲಿಯನ್ ಮೌಲ್ಯಗಳು \"true\" ಅಥವ \"false\" ಆಗಿರಬೇಕೆ ಹೊರತು \"%s\" ಅಲ್ಲ"
@@ -1332,19 +1311,22 @@ msgstr "ಆಲ್ಫಾವು 0.0 (ಅಗೋಚರ) ಹಾಗು 1.0 (ಸಂಪ�
 #: ../src/ui/theme-parser.c:863
 #, c-format
 msgid ""
-"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
+"Invalid title scale \"%s\" (must be one of xx-small,x-"
+"small,small,medium,large,x-large,xx-large)\n"
 msgstr ""
 "ಅಮಾನ್ಯವಾದ ಶೀರ್ಷಿಕೆ ಅಳತೆ \"%s\" (ಇದು xx-small,x-small,small,medium,large,x-"
 "large,xx-large ಗಳಲ್ಲಿ ಒಂದನ್ನು ಹೊಂದಿರಬೇಕು)\n"
 
-#: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
-#: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
+#: ../src/ui/theme-parser.c:1019
+#: ../src/ui/theme-parser.c:1082
+#: ../src/ui/theme-parser.c:1116
+#: ../src/ui/theme-parser.c:1219
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s> ಹೆಸರು \"%s\" ಎರಡನೆಯ ಬಾರಿಗೆ ಬಳಸಲಾಗಿದೆ"
 
-#: ../src/ui/theme-parser.c:1031 ../src/ui/theme-parser.c:1128
+#: ../src/ui/theme-parser.c:1031
+#: ../src/ui/theme-parser.c:1128
 #: ../src/ui/theme-parser.c:1231
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
@@ -1359,7 +1341,8 @@ msgstr "<%s> ಜ್ಯಾಮಿತಿಯು \"%s\" ಸೂಚಿತಗೊಂಡ�
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr ""
-"<%s> ಯು ಒಂದೋ ಜ್ಯಾಮಿತಿಯನ್ನು ಅಥವ ಒಂದು ಜ್ಯಾಮಿತಿಯನ್ನು ಹೊಂದಿರುವ ಮೂಲವನ್ನು ಸೂಚಿಸಬೇಕು"
+"<%s> ಯು ಒಂದೋ ಜ್ಯಾಮಿತಿಯನ್ನು ಅಥವ ಒಂದು ಜ್ಯಾಮಿತಿಯನ್ನು ಹೊಂದಿರುವ ಮೂಲವನ್ನು "
+"ಸೂಚಿಸಬೇಕು"
 
 #: ../src/ui/theme-parser.c:1196
 msgid "You must specify a background for an alpha value to be meaningful"
@@ -1382,16 +1365,22 @@ msgstr "ಗೊತ್ತಿರದ style_set \"%s\", <%s> ಘಟಕದಲ್ಲಿ
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "ಕಿಟಕಿ ಬಗೆ \"%s\" ಈಗಾಗಲೆ ಶೈಲಿ ಜೋಡಿಯನ್ನು ನಿಯೋಜಿಸಿದೆ"
 
-#: ../src/ui/theme-parser.c:1313 ../src/ui/theme-parser.c:1377
-#: ../src/ui/theme-parser.c:1603 ../src/ui/theme-parser.c:2838
-#: ../src/ui/theme-parser.c:2884 ../src/ui/theme-parser.c:3034
-#: ../src/ui/theme-parser.c:3273 ../src/ui/theme-parser.c:3311
-#: ../src/ui/theme-parser.c:3349 ../src/ui/theme-parser.c:3387
+#: ../src/ui/theme-parser.c:1313
+#: ../src/ui/theme-parser.c:1377
+#: ../src/ui/theme-parser.c:1603
+#: ../src/ui/theme-parser.c:2838
+#: ../src/ui/theme-parser.c:2884
+#: ../src/ui/theme-parser.c:3034
+#: ../src/ui/theme-parser.c:3273
+#: ../src/ui/theme-parser.c:3311
+#: ../src/ui/theme-parser.c:3349
+#: ../src/ui/theme-parser.c:3387
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "ಅಂಶ <%s> ವು <%s> ನ ಕೆಳಗೆ ಅನುಮತಿ ಇಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:1427 ../src/ui/theme-parser.c:1441
+#: ../src/ui/theme-parser.c:1427
+#: ../src/ui/theme-parser.c:1441
 #: ../src/ui/theme-parser.c:1486
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
@@ -1430,18 +1419,21 @@ msgstr "<%s> ಘಟಕದಲ್ಲಿ ಯಾವುದೆ \"extent_angle\" ಅಥ
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "ಗ್ರೇಡಿಯಂಟ್‌ನ ಬಗೆಗೆ ಮೌಲ್ಯ \"%s\" ವು ಅರ್ಥವಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:2193 ../src/ui/theme-parser.c:2568
+#: ../src/ui/theme-parser.c:2193
+#: ../src/ui/theme-parser.c:2568
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "\"%s\" ತುಂಬಿಸುವ ಬಗೆಯನ್ನು  <%s> ಘಟಕಕ್ಕಾಗಿ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲಾಗಲಿಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:2360 ../src/ui/theme-parser.c:2443
+#: ../src/ui/theme-parser.c:2360
+#: ../src/ui/theme-parser.c:2443
 #: ../src/ui/theme-parser.c:2506
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "\"%s\" ಸ್ಥಿತಿಯನ್ನು <%s> ಘಟಕಕ್ಕಾಗಿ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲಾಗಲಿಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:2370 ../src/ui/theme-parser.c:2453
+#: ../src/ui/theme-parser.c:2370
+#: ../src/ui/theme-parser.c:2453
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "\"%s\" ಛಾಯೆಯನ್ನು <%s> ಘಟಕಕ್ಕಾಗಿ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲಾಗಲಿಲ್ಲ"
@@ -1451,12 +1443,14 @@ msgstr "\"%s\" ಛಾಯೆಯನ್ನು <%s> ಘಟಕಕ್ಕಾಗಿ ಅ�
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "\"%s\" ಬಾಣದ ಗುರುತನ್ನು <%s> ಘಟಕಕ್ಕಾಗಿ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲಾಗಲಿಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
+#: ../src/ui/theme-parser.c:2694
+#: ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "ಯಾವುದೆ <draw_ops> ಕರೆ \"%s\" ಅನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:2706 ../src/ui/theme-parser.c:2802
+#: ../src/ui/theme-parser.c:2706
+#: ../src/ui/theme-parser.c:2802
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr ""
@@ -1473,7 +1467,8 @@ msgstr "ಚೌಕಟ್ಟು ಅಂಶಕ್ಕಾಗಿ ತಿಳಿಯದ ಸ
 msgid "Frame style already has a piece at position %s"
 msgstr "%s ಸ್ಥಾನದಲ್ಲಿ ಚೌಕಟ್ಟು ಶೈಲಿಯು ಈಗಾಗಲೆ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ"
 
-#: ../src/ui/theme-parser.c:2942 ../src/ui/theme-parser.c:3019
+#: ../src/ui/theme-parser.c:2942
+#: ../src/ui/theme-parser.c:3019
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "\"%s\" ಹೆಸರಿನ ಯಾವುದೆ <draw_ops> ಆಯ್ಕೆಯನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ"
@@ -1514,7 +1509,8 @@ msgstr "\"%s\" ಯು ಸ್ಥಿತಿ ಗುಣ ವಿಶೇಷಕ್ಕೆ �
 msgid "A style called \"%s\" has not been defined"
 msgstr "\"%s\" ಎಂದು ಕರೆಯಲ್ಪಡುವ ಒಂದು ಶೈಲಿಯು ಸೂಚಿತಗೊಂಡಿಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:3113 ../src/ui/theme-parser.c:3136
+#: ../src/ui/theme-parser.c:3113
+#: ../src/ui/theme-parser.c:3136
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" ಯು ಗಾತ್ರ ಬದಲಾವಣೆ ಗುಣ ವಿಶೇಷಕ್ಕೆ ಒಂದು ಮಾನ್ಯವಾದ ಮೌಲ್ಯವಲ್ಲ"
@@ -1526,8 +1522,7 @@ msgid ""
 "states"
 msgstr ""
 "ಗರಿಷ್ಟಗೊಳಿಸಲಾದ/ಮಬ್ಬುಗೊಳಿಸಲಾದ ಸ್ಥಿತಿಗಳಿಗಾಗಿ <%s> ಅಂಶದಲ್ಲಿ \"resize\" "
-"ಗುಣವಿಶೇಷವು "
-"ಇರುವಂತಿಲ್ಲ"
+"ಗುಣವಿಶೇಷವು ಇರುವಂತಿಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3161
 #, c-format
@@ -1536,14 +1531,18 @@ msgid ""
 msgstr ""
 "ಗರಿಷ್ಟಗೊಳಿಸಲಾದ ಸ್ಥಿತಿಗಳಿಗಾಗಿ <%s> ಅಂಶದಲ್ಲಿ \"resize\" ಗುಣವಿಶೇಷವು ಇರುವಂತಿಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
+#: ../src/ui/theme-parser.c:3175
+#: ../src/ui/theme-parser.c:3222
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "ಸ್ಥಿತಿ %s ಗಾತ್ರ ಬದಲಾವಣೆ %s ಗಮನ %s ಕ್ಕಾಗಿ ಶೈಲಿಯನ್ನು ಈಗಾಗಲೆ ಸೂಚಿಸಲಾಗಿದೆ"
 
-#: ../src/ui/theme-parser.c:3186 ../src/ui/theme-parser.c:3197
-#: ../src/ui/theme-parser.c:3208 ../src/ui/theme-parser.c:3233
-#: ../src/ui/theme-parser.c:3244 ../src/ui/theme-parser.c:3255
+#: ../src/ui/theme-parser.c:3186
+#: ../src/ui/theme-parser.c:3197
+#: ../src/ui/theme-parser.c:3208
+#: ../src/ui/theme-parser.c:3233
+#: ../src/ui/theme-parser.c:3244
+#: ../src/ui/theme-parser.c:3255
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "ಸ್ಥಿತಿ %s ಗಮನ %s ಕ್ಕಾಗಿ ಶೈಲಿಯನ್ನು ಈಗಾಗಲೆ ಸೂಚಿಸಲಾಗಿದೆ"
@@ -1562,9 +1561,9 @@ msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"ಒಂದು <button> ಘಟಕದಲ್ಲಿ ಎರಡು draw_ops ಇರುವಂತಿಲ್ಲ (ಪರಿಸರವಿನ್ಯಾಸವು ಒಂದು draw_ops "
-"ಗುಣವಿಶೇಷವನ್ನು ಹಾಗು ಒಂದು <draw_ops> ಘಟಕವನ್ನೂ ಸಹ ಸೂಚಿಸಿದೆ, ಅಥವ ಎರಡು ಘಟಕಗಳನ್ನು "
-"ಸೂಚಿಸಿದೆ)"
+"ಒಂದು <button> ಘಟಕದಲ್ಲಿ ಎರಡು draw_ops ಇರುವಂತಿಲ್ಲ (ಪರಿಸರವಿನ್ಯಾಸವು ಒಂದು "
+"draw_ops ಗುಣವಿಶೇಷವನ್ನು ಹಾಗು ಒಂದು <draw_ops> ಘಟಕವನ್ನೂ ಸಹ ಸೂಚಿಸಿದೆ, ಅಥವ ಎರಡು "
+"ಘಟಕಗಳನ್ನು ಸೂಚಿಸಿದೆ)"
 
 #: ../src/ui/theme-parser.c:3370
 msgid ""
@@ -1585,8 +1584,8 @@ msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
 msgstr ""
-"\"version\" ಗುಣವಿಶೇಷವನ್ನು metacity-theme-1.xml ಅಥವ metacity-theme-2.xml ನಲ್ಲಿ "
-"ಬಳಸಲು ಸಾಧ್ಯವಿರುವುದಿಲ್ಲ"
+"\"version\" ಗುಣವಿಶೇಷವನ್ನು metacity-theme-1.xml ಅಥವ metacity-theme-2.xml "
+"ನಲ್ಲಿ ಬಳಸಲು ಸಾಧ್ಯವಿರುವುದಿಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3530
 #, c-format
@@ -1598,7 +1597,8 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3562
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "ಅತ್ಯಂತ ಹೊರಗಿನ ಪರಿಸರವಿನ್ಯಾಸವು <metacity_theme> ಆಗಿರಬೇಕೆ ಹೊರತು <%s> ಅಲ್ಲ"
+msgstr ""
+"ಅತ್ಯಂತ ಹೊರಗಿನ ಪರಿಸರವಿನ್ಯಾಸವು <metacity_theme> ಆಗಿರಬೇಕೆ ಹೊರತು <%s> ಅಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3582
 #, c-format
@@ -1623,8 +1623,10 @@ msgstr ""
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "ಒಂದು ಎಳೆಯುವಿಕೆ ಕಾರ್ಯದ ಒಳಗೆ ಘಟಕ <%s> ಕ್ಕೆ ಅನುಮತಿ ಇಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:3631 ../src/ui/theme-parser.c:3661
-#: ../src/ui/theme-parser.c:3666 ../src/ui/theme-parser.c:3671
+#: ../src/ui/theme-parser.c:3631
+#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3666
+#: ../src/ui/theme-parser.c:3671
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "<%s> ಘಟಕಕ್ಕೆ ಒಂದು <%s> ಘಟಕದ ಒಳಗೆ ಇರಲು ಅನುಮತಿ ಇಲ್ಲ"
@@ -1642,8 +1644,10 @@ msgstr "ಗುಂಡಿಗಾಗಿ draw_ops ಅನ್ನು ಒದಗಿಸಲ�
 msgid "No text is allowed inside element <%s>"
 msgstr "<%s> ಘಟಕದ ಒಳಗೆ ಯಾವುದೆ ಪಠ್ಯಕ್ಕೆ ಅನುಮತಿ ಇಲ್ಲ"
 
-#: ../src/ui/theme-parser.c:4026 ../src/ui/theme-parser.c:4038
-#: ../src/ui/theme-parser.c:4050 ../src/ui/theme-parser.c:4062
+#: ../src/ui/theme-parser.c:4026
+#: ../src/ui/theme-parser.c:4038
+#: ../src/ui/theme-parser.c:4050
+#: ../src/ui/theme-parser.c:4062
 #: ../src/ui/theme-parser.c:4074
 #, c-format
 msgid "<%s> specified twice for this theme"
@@ -1812,10 +1816,8 @@ msgid ""
 "frame)\n"
 msgstr ""
 "%d ಚೌಕಟ್ಟುಗಳನ್ನು %g ಕ್ಲೈಟ್‌-ಬದಿಯ ಸೆಕೆಂಡುಗಳಲ್ಲಿ (ಪ್ರತಿ ಚೌಕಟ್ಟಿಗೂ %g "
-"ಮಿಲಿಸೆಕೆಂಡುಗಳು) "
-"ಹಾಗು X ಪರಿಚಾರಕ ಸಂಪನ್ಮೂನಗಳನ್ನೂ ಸಹ ಒಳಗೊಂಡು %g ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಗೋಡೆ ಗಡಿಯಾರದ "
-"ಸಮಯದಲ್ಲಿ "
-"(ಪ್ರತಿ ಚೌಕಟ್ಟಿಗೂ %g ಮಿಲಿಸೆಕೆಂಡುಗಳು)\n"
+"ಮಿಲಿಸೆಕೆಂಡುಗಳು) ಹಾಗು X ಪರಿಚಾರಕ ಸಂಪನ್ಮೂನಗಳನ್ನೂ ಸಹ ಒಳಗೊಂಡು %g ಸೆಕೆಂಡುಗಳಲ್ಲಿ "
+"ಗೋಡೆ ಗಡಿಯಾರದ ಸಮಯದಲ್ಲಿ (ಪ್ರತಿ ಚೌಕಟ್ಟಿಗೂ %g ಮಿಲಿಸೆಕೆಂಡುಗಳು)\n"
 
 #: ../src/ui/theme-viewer.c:1273
 msgid "position expression test returned TRUE but set error"
@@ -1859,1663 +1861,3 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ಗಳನ್ನು %g ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಪಾರ್ಸ್ ಮಾಡಲಾಗಿದೆ (ಸರಾಸರಿ %g "
 "ಸೆಕೆಂಡುಗಳು)\n"
-
-#~ msgid "Switch to workspace 5"
-#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 5 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#~ msgid "Switch to workspace 6"
-#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 6 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#~ msgid "Switch to workspace 7"
-#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 7 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#~ msgid "Switch to workspace 8"
-#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 8 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#~ msgid "Switch to workspace 9"
-#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 9 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#~ msgid "Switch to workspace 10"
-#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 10 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#~ msgid "Switch to workspace 11"
-#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 11 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#~ msgid "Switch to workspace 12"
-#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 12 ಕ್ಕೆ ಬದಲಾಯಿಸು"
-
-#~| msgid "Switch to workspace on the left"
-#~ msgid "Switch to workspace on the left of the current workspace"
-#~ msgstr "ಪ್ರಸಕ್ತ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಎಡಭಾಗದಲ್ಲಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
-
-#~| msgid "Switch to workspace on the right"
-#~ msgid "Switch to workspace on the right of the current workspace"
-#~ msgstr "ಪ್ರಸಕ್ತ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಬಲಭಾಗದಲ್ಲಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
-
-#~| msgid "Switch to workspace above this one"
-#~ msgid "Switch to workspace above the current workspace"
-#~ msgstr "ಪ್ರಸಕ್ತ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಮೇಲ್ಭಾಗದಲ್ಲಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
-
-#~| msgid "Switch to workspace below this one"
-#~ msgid "Switch to workspace below the current workspace"
-#~ msgstr "ಪ್ರಸಕ್ತ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಕೆಳಭಾಗದಲ್ಲಿನ ಕಾರ್ಯಕ್ಷೇತ್ರಕ್ಕೆ ವರ್ಗಾಯಿಸು"
-
-#~ msgid "Move between windows of an application, using a popup window"
-#~ msgstr ""
-#~ "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ಒಂದು ಅನ್ವಯದ ವಿಂಡೋಗಳ ನಡುವೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#~ msgid ""
-#~ "Move backward between windows of an application, using a popup window"
-#~ msgstr ""
-#~ "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ಒಂದು ಅನ್ವಯದ ವಿಂಡೋಗಳ ನಡುವೆ ಹಿಂದಕ್ಕೆ "
-#~ "ಸ್ಥಳಾಂತರಿಸು"
-
-#~| msgid "Move between windows of an application immediately"
-#~ msgid "Move between windows, using a popup window"
-#~ msgstr "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ವಿಂಡೋಗಳ ನಡುವೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#~ msgid "Move backward between windows, using a popup window"
-#~ msgstr "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ವಿಂಡೋಗಳ ನಡುವೆ ಹಿಂದಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#~ msgid "Move between panels and the desktop, using a popup window"
-#~ msgstr ""
-#~ "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ಫಲಕಗಳು ಹಾಗು ಗಣಕತೆರೆಯ ನಡುವೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#~ msgid "Move backward between panels and the desktop, using a popup window"
-#~ msgstr ""
-#~ "ಪುಟಿಕೆ (ಪಾಪ್ಅಪ್) ವಿಂಡೊವನ್ನು ಬಳಸಿಕೊಂಡು ಫಲಕಗಳು ಹಾಗು ಗಣಕತೆರೆಯ ನಡುವೆ ಹಿಂದಕ್ಕೆ "
-#~ "ಸ್ಥಳಾಂತರಿಸು"
-
-#~| msgid "Move between windows of an application immediately"
-#~ msgid "Move backward between windows of an application immediately"
-#~ msgstr "ಒಂದು ಅನ್ವಯದ ವಿಂಡೋಗಳ ನಡುವೆ ತಕ್ಷಣ ಹಿಂದಕ್ಕೆ ಜರುಗಿಸು"
-
-#~ msgid "Move between windows immediately"
-#~ msgstr "ವಿಂಡೋಗಳ ನಡುವೆ ತಕ್ಷಣ ಜರುಗಿಸು"
-
-#~| msgid "Move backwards between windows immediately"
-#~ msgid "Move backward between windows immediately"
-#~ msgstr "ವಿಂಡೋಗಳ ನಡುವೆ ತಕ್ಷಣ ಹಿಂದಕ್ಕೆ ಜರುಗಿಸು"
-
-#~ msgid "Move between panels and the desktop immediately"
-#~ msgstr "ಫಲಕ ಹಾಗು ಗಣಕತೆರೆಗಳ ನಡುವೆ ತಕ್ಷಣ ಜರುಗಿಸು"
-
-#~ msgid "Move backward between panels and the desktop immediately"
-#~ msgstr "ಫಲಕ ಹಾಗು ಗಣಕತೆರೆಗಳ ನಡುವೆ ತಕ್ಷಣ ಹಿಂದಕ್ಕೆ ಜರುಗಿಸು"
-
-#~ msgid "Start or stop recording the session"
-#~ msgstr "ಅಧಿವೇಶನವನ್ನು ರೆಕಾರ್ಡಿಂಗ್ ಮಾಡುವುದನ್ನು ಆರಂಭಿಸು ಅಥವ ನಿಲ್ಲಿಸು"
-
-#~ msgid "Take a screenshot"
-#~ msgstr "ಒಂದು ತೆರೆಚಿತ್ರವನ್ನು ತೆಗೆ"
-
-#~ msgid "Take a screenshot of a window"
-#~ msgstr "ಒಂದು ವಿಂಡೊದ ತೆರೆಚಿತ್ರವನ್ನು ತೆಗೆ"
-
-#~ msgid "Run a terminal"
-#~ msgstr "ಟರ್ಮಿನಲ್‍ನಲ್ಲಿ ಚಲಾಯಿಸು"
-
-#~ msgid "Minimize window"
-#~ msgstr "ವಿಂಡೊವನು ಕುಗ್ಗಿಸು"
-
-#~ msgid "Move window to workspace 5"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 5 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#~ msgid "Move window to workspace 6"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 6 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#~ msgid "Move window to workspace 7"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 7 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#~ msgid "Move window to workspace 8"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 8 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#~ msgid "Move window to workspace 9"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 9 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#~ msgid "Move window to workspace 10"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 10 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#~ msgid "Move window to workspace 11"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 11 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#~ msgid "Move window to workspace 12"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಕಾರ್ಯಕ್ಷೇತ್ರ 12 ಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸು"
-
-#~| msgid "Move window to north-west corner"
-#~ msgid "Move window to north-west (top left) corner"
-#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಉತ್ತರ-ಪಶ್ಚಿಮ (ಮೇಲಿನ ಎಡಭಾಗ) ಮೂಲೆಗೆ ಜರುಗಿಸು"
-
-#~| msgid "Move window to north-east corner"
-#~ msgid "Move window to north-east (top right) corner"
-#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಉತ್ತರ-ಪೂರ್ವ (ಮೇಲಿನ ಬಲಭಾಗ) ಮೂಲೆಗೆ ಜರುಗಿಸು"
-
-#~| msgid "Move window to south-west corner"
-#~ msgid "Move window to south-west (bottom left) corner"
-#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ದಕ್ಷಿಣ-ಪಶ್ಚಿಮ (ಕೆಳಗಿನ ಎಡಭಾಗ) ಮೂಲೆಗೆ ಜರುಗಿಸು"
-
-#~| msgid "Move window to south-east corner"
-#~ msgid "Move window to south-east (bottom right) corner"
-#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ದಕ್ಷಿಣ-ಪೂರ್ವ (ಕೆಳಗಿನ ಬಲಭಾಗ) ಮೂಲೆಗೆ ಜರುಗಿಸು"
-
-#~| msgid "Move window to north side of screen"
-#~ msgid "Move window to north (top) side of screen"
-#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಉತ್ತರ (ಮೇಲೆ) ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
-
-#~| msgid "Move window to south side of screen"
-#~ msgid "Move window to south (bottom) side of screen"
-#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ದಕ್ಷಿಣ (ಕೆಳಗೆ) ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
-
-#~| msgid "Move window to east side of screen"
-#~ msgid "Move window to east (right) side of screen"
-#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಪೂರ್ವ (ಬಲ) ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
-
-#~| msgid "Move window to west side of screen"
-#~ msgid "Move window to west (left) side of screen"
-#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಪಶ್ಚಿಮ (ಎಡ) ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
-
-#~| msgid "Move window to east side of screen"
-#~ msgid "Move window to center of screen"
-#~ msgstr "ವಿಂಡೋವನ್ನು ತೆರೆಯ ಮಧ್ಯ ಭಾಗಕ್ಕೆ ಜರುಗಿಸು"
-
-#~| msgid ""
-#~| "There was an error running \"%s\":\n"
-#~| "%s."
-#~ msgid ""
-#~ "There was an error running <tt>%s</tt>:\n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "<tt>%s</tt> ಅನ್ನು ಚಲಾಯಿಸುವಲ್ಲಿ ದೋಷ ಎದುರಾಗಿದೆ:\n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid "No command %d has been defined.\n"
-#~ msgstr "ಯಾವುದೆ %d ಆಜ್ಞೆಯು ಸೂಚಿತಗೊಂಡಿಲ್ಲ.\n"
-
-#~ msgid "No terminal command has been defined.\n"
-#~ msgstr "ಯಾವುದೆ ಟರ್ಮಿನಲ್ ಆಜ್ಞೆಯು ಸೂಚಿತಗೊಂಡಿಲ್ಲ.\n"
-
-#~ msgid "GConf key '%s' is set to an invalid value\n"
-#~ msgstr "GConf ಕೀಲಿ \"%s\" ಯು ಒಂದು ಮಾನ್ಯವಾದ ಮೌಲ್ಯಕ್ಕೆ ಹೊಂದಿಸಲ್ಪಟ್ಟಿಲ್ಲ\n"
-
-#~ msgid "GConf key \"%s\" is set to an invalid type\n"
-#~ msgstr "GConf ಕೀಲಿ \"%s\" ಯು ಒಂದು ಮಾನ್ಯವಾದ ಬಗೆಗೆ ಹೊಂದಿಸಲ್ಪಟ್ಟಿಲ್ಲ\n"
-
-#~ msgid "GConf key %s is already in use and can't be used to override %s\n"
-#~ msgstr ""
-#~ "%s ಎಂಬ GConf ಕೀಲಿಯು ಈಗಾಗಲೆ ಬಳಕೆಯಲ್ಲಿದೆ ಹಾಗು ಅದನ್ನು %s ಅನ್ನು ಅತಿಕ್ರಮಿಸಲು ಬಳಸಲು "
-#~ "ಸಾಧ್ಯವಿಲ್ಲ\n"
-
-#~ msgid "Can't override GConf key, %s not found\n"
-#~ msgstr "GConf ಕೀಲಿಯನ್ನು ಅತಿಕ್ರಮಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ, %s ಕಂಡುಬಂದಿಲ್ಲ\n"
-
-#~ msgid "Error setting number of workspaces to %d: %s\n"
-#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರಗಳ ಸಂಖ್ಯೆಯನ್ನು %d ಗೆ ಹೊಂದಿಸುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ: %s\n"
-
-#~ msgid "Close Window"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಮುಚ್ಚು"
-
-#~ msgid "Window Menu"
-#~ msgstr "ವಿಂಡೊ ಮೆನು"
-
-#~ msgid "Minimize Window"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಕುಗ್ಗಿಸು"
-
-#~ msgid "Maximize Window"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಹಿಗ್ಗಿಸು"
-
-#~| msgid "Resize window"
-#~ msgid "Restore Window"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಮರಳಿ ಸ್ಥಾಪಿಸು"
-
-#~ msgid "Roll Up Window"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಉರುಳಿಸಿ"
-
-#~ msgid "Unroll Window"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಸುತ್ತಿ"
-
-#~ msgid "Keep Window On Top"
-#~ msgstr "ವಿಂಡೊ ಅನ್ನು ಮೇಲ್ಭಾಗದಲ್ಲಿ ಇರಿಸು"
-
-#~ msgid "Always On Visible Workspace"
-#~ msgstr "ಯಾವಾಗಲೂ ಕಾಣಿಸುವ ಕಾರ್ಯಕ್ಷೇತ್ರದಲ್ಲಿ"
-
-#~ msgid "Put Window On Only One Workspace"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಕೇವಲ ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದಲ್ಲಿ ಇರಿಸು"
-
-#~ msgid "Window Management"
-#~ msgstr "ವಿಂಡೊ ನಿರ್ವಹಣೆ"
-
-#, fuzzy
-#~ msgid "Failed to parse message \"%s\" from dialog process\n"
-#~ msgstr "ವಿಫಲಗೊಂಡ ಸಂದೇಶ n"
-
-#~ msgid "Error reading from dialog display process: %s\n"
-#~ msgstr "ಸಂವಾದ ಪ್ರದರ್ಶಕ ಪ್ರಕ್ರಿಯೆ ಇಂದ ಓದುವಲ್ಲಿ ದೋಷ: %s\n"
-
-#, fuzzy
-#~ msgid ""
-#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
-#~ msgstr "ದೋಷ ಅನ್ವಯ n"
-
-#~ msgid "Failed to get hostname: %s\n"
-#~ msgstr "ಅತಿಥೇಯದ ಹೆಸರನ್ನು ಪಡೆಯುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ: %s\n"
-
-#, fuzzy
-#~ msgid "Fatal IO error %d (%s) on display '%s'.\n"
-#~ msgstr "ನಲ್ಲಿ n"
-
-#, fuzzy
-#~ msgid ""
-#~ "Error launching metacity-dialog to print an error about a command: %s\n"
-#~ msgstr "ದೋಷ n"
-
-#~ msgid "Failed to restart: %s\n"
-#~ msgstr "ಪುನರ್ ಆರಂಭಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ: %s\n"
-
-#~ msgid "Type of %s was not integer"
-#~ msgstr "%s ನ ಬಗೆಯು ಪೂರ್ಣಾಂಕವಾಗಿಲ್ಲ"
-
-#, fuzzy
-#~ msgid ""
-#~ "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-#~ "range 1..128\n"
-#~ msgstr "GConf   n"
-
-#, fuzzy
-#~ msgid ""
-#~ "%d stored in GConf key %s is not a reasonable number of workspaces, "
-#~ "current maximum is %d\n"
-#~ msgstr "GConf   ಸಂಖ್ಯೆ   n"
-
-#~ msgid "Failed to read saved session file %s: %s\n"
-#~ msgstr "ಉಳಿಸಲಾದ ಅಧಿವೇಶನ ಕಡತ %s ಅನ್ನು ಓದಲು ವಿಫಲಗೊಂಡಿದೆ: %s\n"
-
-#, fuzzy
-#~ msgid "Unknown attribute %s on <metacity_session> element"
-#~ msgstr "ಗೊತ್ತಿರದ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ<metacity_session>"
-
-#, fuzzy
-#~ msgid "Unknown attribute %s on <maximized> element"
-#~ msgstr "ಗೊತ್ತಿರದ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ<maximized>"
-
-#, fuzzy
-#~ msgid "Unknown attribute %s on <geometry> element"
-#~ msgstr "ಗೊತ್ತಿರದ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ<geometry>"
-
-#~ msgid "Metacity"
-#~ msgstr "ಮೆಟಾಸಿಟಿ"
-
-#, fuzzy
-#~ msgid ""
-#~ "A font description string describing a font for window titlebars. The "
-#~ "size from the description will only be used if the titlebar_font_size "
-#~ "option is set to 0. Also, this option is disabled if the "
-#~ "titlebar_uses_desktop_font option is set to true."
-#~ msgstr "A ವಿವರಣೆ ವಾಕ್ಯ ಗೆ ವಿಂಡೊ ವಿವರಣೆ ಆಯ್ಕೆ   ಆಯ್ಕೆ   ಅಶಕ್ತಗೊಂಡ ಆಯ್ಕೆ  ."
-
-#~ msgid "Arrangement of buttons on the titlebar"
-#~ msgstr "ಶೀರ್ಷಿಕೆಯ ಪಟ್ಟಿಯಲ್ಲಿ ಗುಂಡಿಗಳ ವ್ಯವಸ್ಥೆಗೊಳಿಕೆ"
-
-#~ msgid "Commands to run in response to keybindings"
-#~ msgstr "ಕೀಬೈಂಡೀಗ್‍ಗಳಿಗೆ ಪ್ರತ್ಯುತ್ತರವಾಗಿ ಚಲಾಯಿಸಬೇಕಿರುವ ಆಜ್ಞೆಗಳು"
-
-#, fuzzy
-#~ msgid "Compositing Manager"
-#~ msgstr "ಮ್ಯಾನೇಜರ್"
-
-#, fuzzy
-#~ msgid "Control how new windows get focus"
-#~ msgstr "ನಿಯಂತ್ರಣ"
-
-#~ msgid "Current theme"
-#~ msgstr "ಈಗಿರುವ ಥೀಮ್"
-
-#, fuzzy
-#~ msgid "Delay in milliseconds for the auto raise option"
-#~ msgstr "ಗೆ auto ಆಯ್ಕೆ"
-
-#, fuzzy
-#~ msgid "Determines whether Metacity is a compositing manager."
-#~ msgstr " ."
-
-#, fuzzy
-#~ msgid ""
-#~ "Determines whether applications or the system can generate audible "
-#~ "'beeps'; may be used in conjunction with 'visual bell' to allow silent "
-#~ "'beeps'."
-#~ msgstr "ನೊಂದಿಗೆ."
-
-#~ msgid "Enable Visual Bell"
-#~ msgstr "ಗೋಚರ ಗಂಟೆಯನ್ನು ಶಕ್ತಗೊಳಿಸು"
-
-#, fuzzy
-#~ msgid ""
-#~ "If true, ignore the titlebar_font option, and use the standard "
-#~ "application font for window titles."
-#~ msgstr "ಆಯ್ಕೆ ಅನ್ವಯ ಗೆ ವಿಂಡೊ."
-
-#, fuzzy
-#~ msgid ""
-#~ "If true, metacity will give the user less feedback by using wireframes, "
-#~ "avoiding animations, or other means. This is a significant reduction in "
-#~ "usability for many users, but may allow legacy applications to continue "
-#~ "working, and may also be a useful tradeoff for terminal servers. However, "
-#~ "the wireframe feature is disabled when accessibility is on."
-#~ msgstr "ಫೀಡ್-ಬ್ಯಾಕ್   ಗೆ ಗೆ ಟರ್ಮಿನಲ್   ಅಶಕ್ತಗೊಂಡ   ನಲ್ಲಿ."
-
-#, fuzzy
-#~ msgid ""
-#~ "If true, then Metacity works in terms of applications rather than "
-#~ "windows. The concept is a bit abstract, but in general an application-"
-#~ "based setup is more like the Mac and less like Windows. When you focus a "
-#~ "window in application-based mode, all the windows in the application will "
-#~ "be raised. Also, in application-based mode, focus clicks are not passed "
-#~ "through to windows in other applications. Application-based mode is, "
-#~ "however, largely unimplemented at the moment."
-#~ msgstr "  ಅನ್ವಯ   ವಿಂಡೋಗಳು ವಿಂಡೊ ಅನ್ವಯ ಅನ್ವಯ ಅನ್ವಯ ಅನ್ವಯ  ."
-
-#, fuzzy
-#~ msgid "If true, trade off usability for less resource usage"
-#~ msgstr "ಆಫ್ ಗೆ"
-
-#~ msgid "Name of workspace"
-#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರದ ಹೆಸರು"
-
-#~ msgid "Number of workspaces"
-#~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರಗಳ ಸಂಖ್ಯೆ"
-
-#, fuzzy
-#~ msgid ""
-#~ "Number of workspaces. Must be more than zero, and has a fixed maximum to "
-#~ "prevent making the desktop unusable by accidentally asking for too many "
-#~ "workspaces."
-#~ msgstr "ಗೆ."
-
-#~ msgid "Run a defined command"
-#~ msgstr "ಸೂಚಿತವಾದ ಒಂದು ಆಜ್ಞೆಯನ್ನು ಚಲಾಯಿಸು"
-
-#, fuzzy
-#~ msgid ""
-#~ "Some applications disregard specifications in ways that result in window "
-#~ "manager misfeatures. This option puts Metacity in a rigorously correct "
-#~ "mode, which gives a more consistent user interface, provided one does not "
-#~ "need to run any misbehaving applications."
-#~ msgstr "ವಿಂಡೊ ಆಯ್ಕೆ."
-
-#~ msgid "System Bell is Audible"
-#~ msgstr "ಗಣಕಗ ಗಂಟೆಯು ಕೇಳಿಸಬಲ್ಲದು"
-
-#, fuzzy
-#~ msgid ""
-#~ "Tells Metacity how to implement the visual indication that the system "
-#~ "bell or another application 'bell' indicator has been rung. Currently "
-#~ "there are two valid values, \"fullscreen\", which causes a fullscreen "
-#~ "white-black flash, and \"frame_flash\" which causes the titlebar of the "
-#~ "application which sent the bell signal to flash. If the application which "
-#~ "sent the bell is unknown (as is usually the case for the default \"system "
-#~ "beep\"), the currently focused window's titlebar is flashed."
-#~ msgstr "ಅನ್ವಯ ಎರಡು ಚೌಕಟ್ಟು ಅನ್ವಯ ಅನ್ವಯ   ಗೊತ್ತಿರದ   ಗೆ ಪೂರ್ವನಿಯೋಜಿತ ವಿಂಡೊ  ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_N keys define "
-#~ "keybindings that correspond to these commands. Pressing the keybinding "
-#~ "for run_command_N will execute command_N."
-#~ msgstr "N ಗೆ N N."
-
-#, fuzzy
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-#~ "defines a keybinding which causes the command specified by this setting "
-#~ "to be invoked."
-#~ msgstr "ವಿಂಡೊ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding that runs the correspondingly-numbered command in /apps/"
-#~ "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" "
-#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ "
-#~ "ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace above the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಈಗಿರುವ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಮೇಲ್ಭಾಗಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ "
-#~ "ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ "
-#~ "ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;"
-#~ "\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು "
-#~ "ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ "
-#~ "ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace below the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಈಗಿರುವ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಕೆಳಭಾಗಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ "
-#~ "ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ "
-#~ "ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;"
-#~ "\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು "
-#~ "ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ "
-#~ "ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace on the left of the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಈಗಿರುವ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಎಡಭಾಗಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ "
-#~ "ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ "
-#~ "ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;"
-#~ "\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು "
-#~ "ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ "
-#~ "ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace on the right of the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಈಗಿರುವ ಕಾರ್ಯಕ್ಷೇತ್ರದ ಬಲಭಾಗಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ "
-#~ "ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ "
-#~ "ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;"
-#~ "\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು "
-#~ "ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ "
-#~ "ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 1. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 1 ಕ್ಕೆ ಬದಲಾಯಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 10. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 10 ಕ್ಕೆ ಬದಲಾಯಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 11. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 11 ಕ್ಕೆ ಬದಲಾಯಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 12. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 12 ಕ್ಕೆ ಬದಲಾಯಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 2. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 2 ಕ್ಕೆ ಬದಲಾಯಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 3. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 3 ಕ್ಕೆ ಬದಲಾಯಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 4. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 4 ಕ್ಕೆ ಬದಲಾಯಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 5. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 5 ಕ್ಕೆ ಬದಲಾಯಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 6. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 6 ಕ್ಕೆ ಬದಲಾಯಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 7. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 7 ಕ್ಕೆ ಬದಲಾಯಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 8. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 8 ಕ್ಕೆ ಬದಲಾಯಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 9. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 9 ಕ್ಕೆ ಬದಲಾಯಿಸುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to activate the window menu. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ವಿಂಡೋ ಮೆನು ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ "
-#~ "ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ "
-#~ "ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;"
-#~ "\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು "
-#~ "ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ "
-#~ "ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ. ಗೆ."
-
-#~ msgid ""
-#~ "The keybinding used to close a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ವಿಂಡೋ ಅನ್ನು ಮುಚ್ಚಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to enter \"move mode\" and begin moving a window "
-#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "\"ಸ್ಥಳಾಂತರಿಸುವ ಕ್ರಮ\"ಕ್ಕೆ ದಾಖಲಿಸಲು ಹಾಗು ಕೀಲಿ ಮಣೆಯನ್ನು ಬಳಸಿಕೊಂಡು ಒಂದು "
-#~ "ವಿಂಡೋವನ್ನು ಸ್ಥಳಾಂತರಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ "
-#~ "\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ "
-#~ "ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು "
-#~ "\"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to enter \"resize mode\" and begin resizing a window "
-#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "\"ಮರುಗಾತ್ರಿಸುವ ಕ್ರಮ\"ಕ್ಕೆ ದಾಖಲಿಸಲು ಹಾಗು ಕೀಲಿ ಮಣೆಯನ್ನು ಬಳಸಿಕೊಂಡು ಒಂದು "
-#~ "ವಿಂಡೋವನ್ನು ಮರುಗಾತ್ರಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ "
-#~ "\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ "
-#~ "ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು "
-#~ "\"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to hide all normal windows and set the focus to the "
-#~ "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಎಲ್ಲಾ ಸಾಮಾನ್ಯ ವಿಂಡೋಗಳನ್ನು ಅನ್ನು ಅಡಗಿಸಲು ಹಾಗು ಎಲ್ಲಾ ಕೇಂದ್ರೀಕರಣವನ್ನು ಗಣಕತೆರೆಯ "
-#~ "ಹಿನ್ನಲೆಯತ್ತ ಇರಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ \"&lt;"
-#~ "Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು "
-#~ "ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;"
-#~ "Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to maximize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಒಂದು ವಿಂಡೋ ಅನ್ನು ಹಿಗ್ಗಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ"
-#~ "\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ "
-#~ "ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು "
-#~ "\"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to minimize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಒಂದು ವಿಂಡೋ ಅನ್ನು ಕುಗ್ಗಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ"
-#~ "\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ "
-#~ "ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು "
-#~ "\"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ "
-#~ "ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace down. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದಿಂದ ಕೆಳಗೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. "
-#~ "ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace to the left. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದಿಂದ ಎಡಭಾಗಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. "
-#~ "ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace to the right. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದಿಂದ ಬಲಭಾಗಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. "
-#~ "ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace up. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದಿಂದ ಮೇಲಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. "
-#~ "ಇದರ ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 1. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 1 ಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ "
-#~ "ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 10. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 10 ಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ "
-#~ "ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 11. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 11 ಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ "
-#~ "ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 12. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 12 ಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ "
-#~ "ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 2. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 2 ಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ "
-#~ "ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 3. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 3 ಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ "
-#~ "ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 4. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 4 ಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ "
-#~ "ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 5. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 5 ಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ "
-#~ "ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 6. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 6 ಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ "
-#~ "ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 7. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 7 ಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ "
-#~ "ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 8. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 8 ಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ "
-#~ "ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 9. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಕಾರ್ಯಕ್ಷೇತ್ರ 9 ಕ್ಕೆ ಒಂದು ವಿಂಡೋ ಅನ್ನು ವರ್ಗಾಯಿಸಲು ಬಳಸಲಾಗುವ ಕೀಬೈಂಡಿಂಗ್. ಇದರ "
-#~ "ವಿನ್ಯಾಸವು ಹೀಗೆ ಕಾಣಿಸುತ್ತದೆ\"&lt;Control&gt;a\" ಅಥವ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". ಪಾರ್ಸರ್ ಬಹಳ ಉದಾರಿ ಹಾಗು ಕೆಳಗಿನ ಹಾಗು ಮೇಲಿನ ಕೇಸ್‍ಗಳನ್ನು "
-#~ "ಅನುಮತಿಸುತ್ತದೆ, ಹಾಗು \"&lt;Ctl&gt;\" ಮತ್ತು \"&lt;Ctrl&gt;\" ನಂತಹ ಸಂಕ್ಷಿಪ್ತ "
-#~ "ರೂಪಗಳನ್ನೂ ಸಹ ಅನುಮತಿಸುತ್ತದೆ. ನೀವು ವಿಶೇಷ ವಾಕ್ಯದ ಆಯ್ಕೆಯನ್ನು \"ಅಶಕ್ತಗೊಂಡ\" ಕ್ಕೆ "
-#~ "ಹೊಂದಿಸಿದಲ್ಲಿ, ಯಾವುದೆ ಕೀಬೈಂಡಿಂಗ್ ಕ್ರಿಯೆಯು ಇರುವುದಿಲ್ಲ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between panels and the "
-#~ "desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" "
-#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಪುಟಿಕೆ(ಪಾಪ್ಅಪ್) ವಿಂಡೊ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;"
-#~ "&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between panels and the "
-#~ "desktop, without a popup window. The format looks like \"&lt;Control&gt;a"
-#~ "\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಪುಟಿಕೆ(ಪಾಪ್ಅಪ್) ವಿಂಡೊ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;"
-#~ "&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows of an "
-#~ "application without a popup window. Holding \"shift\" together with this "
-#~ "binding makes the direction go forward again. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಅನ್ವಯ ಪುಟಿಕೆ(ಪಾಪ್ಅಪ್) ವಿಂಡೊ ಶಿಫ್ಟ್‍ ನೊಂದಿಗೆ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; "
-#~ "Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows of an "
-#~ "application, using a popup window. Holding \"shift\" together with this "
-#~ "binding makes the direction go forward again. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಅನ್ವಯ ಪುಟಿಕೆ(ಪಾಪ್ಅಪ್) ವಿಂಡೊ ಶಿಫ್ಟ್‍ ನೊಂದಿಗೆ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; "
-#~ "Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows without a "
-#~ "popup window. Holding \"shift\" together with this binding makes the "
-#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಪುಟಿಕೆ(ಪಾಪ್ಅಪ್) ವಿಂಡೊ ಶಿಫ್ಟ್‍ ನೊಂದಿಗೆ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; "
-#~ "Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows, using a "
-#~ "popup window. Holding \"shift\" together with this binding makes the "
-#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಪುಟಿಕೆ(ಪಾಪ್ಅಪ್) ವಿಂಡೊ ಶಿಫ್ಟ್‍ ನೊಂದಿಗೆ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; "
-#~ "Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to move focus between panels and the desktop, using a "
-#~ "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಪುಟಿಕೆ(ಪಾಪ್ಅಪ್) ವಿಂಡೊ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;"
-#~ "&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to move focus between panels and the desktop, without "
-#~ "a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಪುಟಿಕೆ(ಪಾಪ್ಅಪ್) ವಿಂಡೊ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;"
-#~ "&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to move focus between windows of an application "
-#~ "without a popup window. Holding the \"shift\" key while using this "
-#~ "binding reverses the direction of movement. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಅನ್ವಯ ಪುಟಿಕೆ(ಪಾಪ್ಅಪ್) ವಿಂಡೊ ಶಿಫ್ಟ್‍&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; "
-#~ "F1  &lt;&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to move focus between windows of an application, "
-#~ "using a popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" "
-#~ "key while using this binding reverses the direction of movement. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ಅನ್ವಯ ಪುಟಿಕೆ(ಪಾಪ್ಅಪ್) ವಿಂಡೊ&lt; Alt&gt; F6 ಶಿಫ್ಟ್‍&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;"
-#~ "&lt; Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to move focus between windows without a popup window. "
-#~ "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using "
-#~ "this binding reverses the direction of movement. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಪುಟಿಕೆ(ಪಾಪ್ಅಪ್) ವಿಂಡೊ&lt; Alt&gt; ಎಸ್ಕೇಪ್ ಶಿಫ್ಟ್‍&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;"
-#~ "&lt; Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to move focus between windows, using a popup window. "
-#~ "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-#~ "binding reverses the direction of movement. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಪುಟಿಕೆ(ಪಾಪ್ಅಪ್) ವಿಂಡೊ&lt; Alt&gt; ಶಿಫ್ಟ್‍&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; "
-#~ "Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to toggle always on top. A window that is always on "
-#~ "top will always be visible over other overlapping windows. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ಹೊರಳಿಸು ನಲ್ಲಿ A ವಿಂಡೊ   ನಲ್ಲಿ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  "
-#~ "&lt;&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to toggle fullscreen mode. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಹೊರಳಿಸು&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
-#~ "Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to toggle maximization. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಹೊರಳಿಸು&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
-#~ "Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to toggle shaded/unshaded state. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಹೊರಳಿಸು&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
-#~ "Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to toggle whether the window is on all workspaces or "
-#~ "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಹೊರಳಿಸು ವಿಂಡೊ   ನಲ್ಲಿ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;"
-#~ "&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding used to unmaximize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; "
-#~ "ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding which display's the panel's \"Run Application\" dialog "
-#~ "box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "ಫಲಕ ಚಲಾಯಿಸು ಅನ್ವಯ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;"
-#~ "&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding which invokes a terminal. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ಟರ್ಮಿನಲ್&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
-#~ "Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding which invokes the panel's screenshot utility to take a "
-#~ "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ಫಲಕ ವಿಂಡೊ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
-#~ "Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding which invokes the panel's screenshot utility. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ಫಲಕ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; "
-#~ "ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The keybinding which shows the panel's main menu. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ಫಲಕ ಮೆನು&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
-#~ "Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#~ msgid "The name of a workspace."
-#~ msgstr "ಒಂದು ಕಾರ್ಯಕ್ಷೇತ್ರದ ಹೆಸರು."
-
-#~ msgid "The screenshot command"
-#~ msgstr "ತೆರೆಚಿತ್ರದ ಆಜ್ಞೆ"
-
-#, fuzzy
-#~ msgid ""
-#~ "The theme determines the appearance of window borders, titlebar, and so "
-#~ "forth."
-#~ msgstr "ವಿಂಡೊ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The time delay before raising a window if auto_raise is set to true. The "
-#~ "delay is given in thousandths of a second."
-#~ msgstr "ಮೊದಲು ವಿಂಡೊ auto     ಎರಡನೆಯ."
-
-#, fuzzy
-#~ msgid ""
-#~ "The window focus mode indicates how windows are activated. It has three "
-#~ "possible values; \"click\" means windows must be clicked in order to "
-#~ "focus them, \"sloppy\" means windows are focused when the mouse enters "
-#~ "the window, and \"mouse\" means windows are focused when the mouse enters "
-#~ "the window and unfocused when the mouse leaves the window."
-#~ msgstr "ವಿಂಡೊ ಮೂರು ಕ್ಲಿಕ್ ವಿಂಡೊ ವಿಂಡೊ ವಿಂಡೊ."
-
-#~ msgid "The window screenshot command"
-#~ msgstr "ವಿಂಡೊ ತೆರೆಚಿತ್ರದ ಆಜ್ಞೆ"
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding changes whether a window is above or below other windows. "
-#~ "If the window is covered by another one, it raises the window above all "
-#~ "others, and if the window is already fully visible, it lowers it below "
-#~ "all others. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ   ವಿಂಡೊ   ವಿಂಡೊ ವಿಂಡೊ  &lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; "
-#~ "F1  &lt;&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding lowers a window below other windows. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; "
-#~ "ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding moves a window against the north (top) side of the "
-#~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; "
-#~ "ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding moves a window into the east (right) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1\". The parser is fairly liberal and allows lower or upper case, and "
-#~ "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-#~ "set the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ ರೈಟ್&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
-#~ "Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding moves a window into the north-east (top right) corner of "
-#~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ ರೈಟ್&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
-#~ "Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding moves a window into the north-west (top left) corner of "
-#~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ ಲೆಫ್ಟ್‍&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
-#~ "Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding moves a window into the south (bottom) side of the "
-#~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; "
-#~ "ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding moves a window into the south-east (bottom right) corner "
-#~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ ರೈಟ್&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
-#~ "Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding moves a window into the south-west (bottom left) corner "
-#~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ ಲೆಫ್ಟ್‍&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
-#~ "Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding moves a window into the west (left) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1\". The parser is fairly liberal and allows lower or upper case, and "
-#~ "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-#~ "set the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ ಲೆಫ್ಟ್‍&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
-#~ "Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding raises the window above other windows. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; Ctrl&gt; "
-#~ "ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding resizes a window to fill available horizontal space. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ ಲಭ್ಯವಿರುವ ಖಾಲಿ ಜಾಗ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;"
-#~ "&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding resizes a window to fill available vertical space. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ವಿಂಡೊ ಲಭ್ಯವಿರುವ ಖಾಲಿ ಜಾಗ&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;"
-#~ "&gt;&lt; Ctrl&gt; ಆಯ್ಕೆ ವಾಕ್ಯ ಅಶಕ್ತಗೊಂಡ ಗೆ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This option determines the effects of middle-clicking on the title bar. "
-#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
-#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#~ "'minimize' which will minimize the window, and 'none' which will not do "
-#~ "anything."
-#~ msgstr "ಆಯ್ಕೆ ನಲ್ಲಿ ಆಯ್ಕೆಗಳು ಹೊರಳಿಸು ವಿಂಡೊ ಹೊರಳಿಸು ವಿಂಡೊ ವಿಂಡೊ ಯಾವುದೂ ಇಲ್ಲ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This option determines the effects of right-clicking on the title bar. "
-#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
-#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#~ "'minimize' which will minimize the window, and 'none' which will not do "
-#~ "anything."
-#~ msgstr "ಆಯ್ಕೆ ರೈಟ್ ನಲ್ಲಿ ಆಯ್ಕೆಗಳು ಹೊರಳಿಸು ವಿಂಡೊ ಹೊರಳಿಸು ವಿಂಡೊ ವಿಂಡೊ ಯಾವುದೂ ಇಲ್ಲ."
-
-#, fuzzy
-#~ msgid ""
-#~ "This option provides additional control over how newly created windows "
-#~ "get focus. It has two possible values; \"smart\" applies the user's "
-#~ "normal focus mode, and \"strict\" results in windows started from a "
-#~ "terminal not being given focus."
-#~ msgstr "ಆಯ್ಕೆ ಕಂಟ್ರೋಲ್ ಎರಡು ಸಾಮಾನ್ಯ ಟರ್ಮಿನಲ್."
-
-#, fuzzy
-#~ msgid ""
-#~ "Turns on a visual indication when an application or the system issues a "
-#~ "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-#~ "environments."
-#~ msgstr "ನಲ್ಲಿ ಅನ್ವಯ ಗೆ ಗೆ."
-
-#~ msgid "Unmaximize window"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಹಿಗ್ಗಿಸಬೇಡ"
-
-#~ msgid "Use standard system font in window titles"
-#~ msgstr "ವಿಂಡೊ ಶೀರ್ಷಿಕೆಗಳಲ್ಲಿ ಗಣಕದ ಅಕ್ಷರಶೈಲಿಯನ್ನು ಬಳಸು"
-
-#~ msgid "Visual Bell Type"
-#~ msgstr "ಗೋಚರಿಸು ಗಂಟೆಯ ಬಗೆ"
-
-#, fuzzy
-#~ msgid "Window focus mode"
-#~ msgstr "ವಿಂಡೊ"
-
-#~ msgid "Window title font"
-#~ msgstr "ವಿಂಡೊದ ಶೀರ್ಷಿಕೆಯ ಅಕ್ಷರಶೈಲಿ"
-
-#~ msgid "Unmaximize Window"
-#~ msgstr "ವಿಂಡೊವನ್ನು ಹಿಗ್ಗಿಸಬೇಡ"
-
-#~ msgid "Title"
-#~ msgstr "ಶೀರ್ಷಿಕೆ"
-
-#~ msgid "Class"
-#~ msgstr "ವರ್ಗ"
-
-#, fuzzy
-#~ msgid "No \"%s\" attribute on <%s> element"
-#~ msgstr "ಇಲ್ಲ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ"
-
-#~ msgid "Theme already has a fallback icon"
-#~ msgstr "ಥೀಮ್ ಈಗಾಗಲೆ ಫಾಲ್‍ಬ್ಯಾಕ್ ಚಿಹ್ನೆಯನ್ನು ಹೊಂದಿದೆ"
-
-#, fuzzy
-#~ msgid "No \"name\" attribute on element <%s>"
-#~ msgstr "ಇಲ್ಲ ಹೆಸರು ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ"
-
-#, fuzzy
-#~ msgid "No \"value\" attribute on element <%s>"
-#~ msgstr "ಇಲ್ಲ ಮೌಲ್ಯ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ"
-
-#~ msgid "No \"top\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಮೇಲ್ಭಾಗ\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"bottom\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಕೆಳಭಾಗ\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"left\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಎಡಭಾಗ\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"right\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಬಲಭಾಗ\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"color\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಬಣ್ಣ\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"x1\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"x1\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"y1\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"y1\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"x2\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"x2\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"y2\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"y2\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"y\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"y\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"width\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಅಗಲ\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"height\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಎತ್ತರ\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"start_angle\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಆರಂಭದ ಕೋನ(_a\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#, fuzzy
-#~ msgid "No \"extent_angle\" attribute on element <%s>"
-#~ msgstr "ಇಲ್ಲ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ"
-
-#~ msgid "No \"alpha\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಆಲ್ಫಾ\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"type\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಪ್ರಕಾರ\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#, fuzzy
-#~ msgid "No \"filename\" attribute on element <%s>"
-#~ msgstr "ಇಲ್ಲ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ"
-
-#~ msgid "No \"state\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಸ್ಥಿತಿ\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"shadow\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಛಾಯೆ\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#~ msgid "No \"arrow\" attribute on element <%s>"
-#~ msgstr "<%s> ಘಟಕದಲ್ಲಿ \"ಬಾಣದ ಗುರುತು\" ಗುಣ ವಿಶೇಷವು ಇಲ್ಲ"
-
-#, fuzzy
-#~ msgid "No \"value\" attribute on <%s> element"
-#~ msgstr "ಇಲ್ಲ ಮೌಲ್ಯ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ"
-
-#, fuzzy
-#~ msgid "No \"position\" attribute on <%s> element"
-#~ msgstr "ಇಲ್ಲ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ"
-
-#, fuzzy
-#~ msgid "No \"function\" attribute on <%s> element"
-#~ msgstr "ಇಲ್ಲ ಕ್ರಿಯೆ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ"
-
-#, fuzzy
-#~ msgid "No \"state\" attribute on <%s> element"
-#~ msgstr "ಇಲ್ಲ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ"
-
-#, fuzzy
-#~ msgid "No \"focus\" attribute on <%s> element"
-#~ msgstr "ಇಲ್ಲ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ"
-
-#, fuzzy
-#~ msgid "No \"style\" attribute on <%s> element"
-#~ msgstr "ಇಲ್ಲ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ"
-
-#, fuzzy
-#~ msgid "No \"resize\" attribute on <%s> element"
-#~ msgstr "ಇಲ್ಲ ಗುಣ ವಿಶೇಷ ನಲ್ಲಿ"
-
-#~ msgid "<author> specified twice for this theme"
-#~ msgstr "<author> ಈ ಥೀಮ್‍ಗೆ ಎರಡು ಬಾರಿ ಸೂಚಿಸಲ್ಪಟ್ಟಿದೆ"
-
-#~ msgid "<copyright> specified twice for this theme"
-#~ msgstr "<copyright> ಈ ಥೀಮ್‍ಗೆ ಎರಡು ಬಾರಿ ಸೂಚಿಸಲ್ಪಟ್ಟಿದೆ"
-
-#~ msgid "<date> specified twice for this theme"
-#~ msgstr "<date> ಈ ಥೀಮ್‍ಗೆ ಎರಡು ಬಾರಿ ಸೂಚಿಸಲ್ಪಟ್ಟಿದೆ"
-
-#~ msgid "<description> specified twice for this theme"
-#~ msgstr "<description> ಈ ಥೀಮ್‍ಗೆ ಎರಡು ಬಾರಿ ಸೂಚಿಸಲ್ಪಟ್ಟಿದೆ"
-
-#~ msgid "Theme file %s did not contain a root <metacity_theme> element"
-#~ msgstr "%s ಥೀಮ್ ಕಡತವು ಒಂದು ಮೂಲ<metacity_theme> ಘಟಕವನ್ನು ಹೊಂದಿಲ್ಲ"
-
-#~ msgid "/Windows/tearoff"
-#~ msgstr "/ವಿಂಡೋಗಳು/ಹರಿದು ಹಾಕು"
-
-#~ msgid "/Windows/_Dialog"
-#~ msgstr "/ವಿಂಡೋಗಳು/ಸಂವಾದ(_D)"
-
-#~ msgid "/Windows/Des_ktop"
-#~ msgstr "/ವಿಂಡೋಗಳು/ಗಣಕತೆರೆ(_k)"
