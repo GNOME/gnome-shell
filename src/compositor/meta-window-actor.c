@@ -939,7 +939,6 @@ meta_window_actor_damage_all (MetaWindowActor *self)
     ? NULL : priv->unobscured_region;
 
   redraw_queued = meta_surface_actor_damage_all (priv->surface, unobscured_region);
-
   priv->repaint_scheduled = priv->repaint_scheduled || redraw_queued;
   priv->needs_damage_all = FALSE;
 }
@@ -2001,9 +2000,7 @@ meta_window_actor_process_x11_damage (MetaWindowActor    *self,
                                                   event->area.width,
                                                   event->area.height,
                                                   unobscured_region);
-
-  priv->repaint_scheduled = priv->repaint_scheduled  || redraw_queued;
-
+  priv->repaint_scheduled = priv->repaint_scheduled || redraw_queued;
 }
 
 void
