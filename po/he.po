@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-05 00:27+0200\n"
-"PO-Revision-Date: 2014-02-05 00:31+0200\n"
+"POT-Creation-Date: 2014-02-06 20:21+0200\n"
+"PO-Revision-Date: 2014-02-06 20:24+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -271,7 +271,7 @@ msgstr "יש לבחור את ההרחבה להגדרה באמצעות תיבת �
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:357
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:842
+#: ../js/ui/status/network.js:854
 msgid "Cancel"
 msgstr "ביטול"
 
@@ -493,7 +493,7 @@ msgstr "ש׳"
 
 #: ../js/ui/calendar.js:390
 msgid "calendar:MY"
-msgstr ""
+msgstr "calendar:YM"
 
 #: ../js/ui/calendar.js:446
 msgid "Previous month"
@@ -565,8 +565,8 @@ msgstr "ססמה:"
 msgid "Type again:"
 msgstr "נא להקליד שוב:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:134
-#: ../js/ui/status/network.js:296 ../js/ui/status/network.js:845
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:227
+#: ../js/ui/status/network.js:300 ../js/ui/status/network.js:857
 msgid "Connect"
 msgstr "התחברות"
 
@@ -1059,7 +1059,7 @@ msgstr "פעיל"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:519
+#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:523
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "מנוטרל"
@@ -1281,27 +1281,31 @@ msgstr "ניגודיות גבוהה"
 msgid "Large Text"
 msgstr "טקסט גדול"
 
-#: ../js/ui/status/bluetooth.js:45
+#: ../js/ui/status/bluetooth.js:48
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:134
-#: ../js/ui/status/network.js:1193 ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/network.js:134
+#: ../js/ui/status/network.js:1205 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "כיבוי"
 
-#: ../js/ui/status/bluetooth.js:50
+#: ../js/ui/status/bluetooth.js:53
 msgid "Bluetooth Settings"
 msgstr "הגדרות Bluetooth"
 
 # javascript-format
-#: ../js/ui/status/bluetooth.js:98
+#: ../js/ui/status/bluetooth.js:100
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "התקן אחד מחובר"
 msgstr[1] "%d התקנים מחוברים"
+
+#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1228
+msgid "Not Connected"
+msgstr "לא מחובר"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1315,127 +1319,127 @@ msgstr "הצגת פריסת המקלדת"
 msgid "<unknown>"
 msgstr "<לא ידוע>"
 
-#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:385
-#: ../js/ui/status/network.js:1214
+#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:389
+#: ../js/ui/status/network.js:1226
 msgid "Off"
 msgstr "כבוימנותק"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:391
+#: ../js/ui/status/network.js:395
 msgid "unmanaged"
 msgstr "לא מנוהל"
 
-#: ../js/ui/status/network.js:393
+#: ../js/ui/status/network.js:397
 msgid "disconnecting..."
 msgstr "בהליכי ניתוק..."
 
-#: ../js/ui/status/network.js:399 ../js/ui/status/network.js:1268
+#: ../js/ui/status/network.js:403 ../js/ui/status/network.js:1280
 msgid "connecting..."
 msgstr "בהתחברות..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:402 ../js/ui/status/network.js:1271
+#: ../js/ui/status/network.js:406 ../js/ui/status/network.js:1283
 msgid "authentication required"
 msgstr "נדרש אימות"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:410
+#: ../js/ui/status/network.js:414
 msgid "firmware missing"
 msgstr "הקושחה חסרה"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:414
+#: ../js/ui/status/network.js:418
 msgid "unavailable"
 msgstr "לא זמין"
 
-#: ../js/ui/status/network.js:416 ../js/ui/status/network.js:1273
+#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1285
 msgid "connection failed"
 msgstr "החיבור נכשל"
 
-#: ../js/ui/status/network.js:432
+#: ../js/ui/status/network.js:436
 msgid "Wired Settings"
 msgstr "הגדרות רשת קווית"
 
-#: ../js/ui/status/network.js:473 ../js/ui/status/network.js:559
+#: ../js/ui/status/network.js:477 ../js/ui/status/network.js:563
 msgid "Mobile Broadband Settings"
 msgstr "הגדרות פס־רחב נייד"
 
-#: ../js/ui/status/network.js:515 ../js/ui/status/network.js:1212
+#: ../js/ui/status/network.js:519 ../js/ui/status/network.js:1224
 msgid "Hardware Disabled"
 msgstr "מנוטרל חומרתית"
 
-#: ../js/ui/status/network.js:740
+#: ../js/ui/status/network.js:578
+msgid "Use as Internet connection"
+msgstr "שימוש כחיבור לאינטרנט"
+
+#: ../js/ui/status/network.js:752
 msgid "Airplane Mode is On"
 msgstr "מצב טיסה מופעל"
 
-#: ../js/ui/status/network.js:741
+#: ../js/ui/status/network.js:753
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "רשת אלחוטית מושבתת כאשר מצב טיסה מופעל."
 
-#: ../js/ui/status/network.js:742
+#: ../js/ui/status/network.js:754
 msgid "Turn Off Airplane Mode"
 msgstr "כיבוי מצב טיסה"
 
-#: ../js/ui/status/network.js:751
+#: ../js/ui/status/network.js:763
 msgid "Wi-Fi is Off"
 msgstr "רשת אלחוטית כבויה"
 
-#: ../js/ui/status/network.js:752
+#: ../js/ui/status/network.js:764
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "רשת אלחוטית צריכה להיות מופעלת על מנת להתחבר לרשת."
 
-#: ../js/ui/status/network.js:753
+#: ../js/ui/status/network.js:765
 msgid "Turn On Wi-Fi"
 msgstr "הפעלת רשת אלחוטית"
 
-#: ../js/ui/status/network.js:778
+#: ../js/ui/status/network.js:790
 msgid "Wi-Fi Networks"
 msgstr "רשתות אלחוטיות"
 
-#: ../js/ui/status/network.js:780
+#: ../js/ui/status/network.js:792
 msgid "Select a network"
 msgstr "בחירת רשת"
 
-#: ../js/ui/status/network.js:809
+#: ../js/ui/status/network.js:821
 msgid "No Networks"
 msgstr "אין רשתות"
 
-#: ../js/ui/status/network.js:830 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:842 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
 msgstr "שימוש במתג של החומרה לכיבוי"
 
-#: ../js/ui/status/network.js:1099
+#: ../js/ui/status/network.js:1111
 msgid "Select Network"
 msgstr "בחירת רשת"
 
-#: ../js/ui/status/network.js:1105
+#: ../js/ui/status/network.js:1117
 msgid "Wi-Fi Settings"
 msgstr "הגדרות רשת אלחוטית"
 
-#: ../js/ui/status/network.js:1193
+#: ../js/ui/status/network.js:1205
 msgid "Turn On"
 msgstr "הפעלה"
 
-#: ../js/ui/status/network.js:1216
-msgid "Not Connected"
-msgstr "לא מחובר"
-
-#: ../js/ui/status/network.js:1336
+#: ../js/ui/status/network.js:1348
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1479
+#: ../js/ui/status/network.js:1491
 msgid "Network Manager"
 msgstr "מנהל הרשתות"
 
-#: ../js/ui/status/network.js:1518
+#: ../js/ui/status/network.js:1530
 msgid "Connection failed"
 msgstr "ההתחברות נכשל"
 
-#: ../js/ui/status/network.js:1519
+#: ../js/ui/status/network.js:1531
 msgid "Activation of network connection failed"
 msgstr "הפעלת חיבור הרשת נכשלה"
 
@@ -1452,12 +1456,12 @@ msgid "Estimating…"
 msgstr "מתבצע שערוך…"
 
 #: ../js/ui/status/power.js:86
-#, c-format
+#, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "%d\\u2236%02d נותרו (%d%%)"
 
 #: ../js/ui/status/power.js:91
-#, c-format
+#, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d\\u2236%02d עד לטעינה מלאה (%d%%)"
 
