@@ -1204,9 +1204,6 @@ _meta_window_shared_new (MetaDisplay         *display,
       set_net_wm_state (window);
     }
 
-  if (screen->display->compositor)
-    meta_compositor_add_window (screen->display->compositor, window);
-
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
 
@@ -2757,8 +2754,8 @@ meta_window_show (MetaWindow *window)
               break;
             }
 
-          meta_compositor_show_window (window->display->compositor,
-                                       window, effect);
+          meta_compositor_add_window (window->display->compositor, window);
+          meta_compositor_show_window (window->display->compositor, window, effect);
         }
     }
 
