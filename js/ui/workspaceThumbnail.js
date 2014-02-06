@@ -804,22 +804,25 @@ const ThumbnailsBox = new Lang.Class({
             [newWorkspaceIndex, this._dropPlaceholderPos] = [this._dropPlaceholderPos, -1];
 
             // Nab all the windows below us.
-            let windows = global.get_window_actors().filter(function(win) {
+            let windows = global.get_window_actors().filter(function(winActor) {
                 // If the window is attached to an ancestor, we don't need/want to move it
-                if (!!win.meta_window.get_transient_for())
+                let window = winActor.meta_window;
+
+                if (window.get_transient_for() != null)
                     return false;
 
                 if (isWindow)
-                    return win.get_workspace() >= newWorkspaceIndex && win != source;
+                    return window.get_workspace() >= newWorkspaceIndex && winActor != source;
                 else
-                    return win.get_workspace() >= newWorkspaceIndex;
+                    return window.get_workspace() >= newWorkspaceIndex;
             });
 
             this._spliceIndex = newWorkspaceIndex;
 
             // ... move them down one.
-            windows.forEach(function(win) {
-                win.meta_window.change_workspace_by_index(win.get_workspace() + 1, true);
+            windows.forEach(function(winActor) {
+                let window = winActor.meta_window;
+                window.change_workspace_by_index(window.get_workspace() + 1, true);
             });
 
             if (isWindow)
