@@ -273,13 +273,17 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
   /*
    * Ensure that that we've received the messages setting up the
-   * compostor and shell object. This is better than just
-   * wl_display_iterate since it will always ensure that something
-   * is available to be read
+   * compostor and shell object.
    */
-  while (!(wayland_renderer->wayland_compositor &&
-           wayland_renderer->wayland_shell))
-    wl_display_roundtrip (wayland_renderer->wayland_display);
+  wl_display_roundtrip (wayland_renderer->wayland_display);
+  if (!wayland_renderer->wayland_compositor || !wayland_renderer->wayland_shell)
+    {
+      _cogl_set_error (error,
+                       COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_INIT,
+                       "Unable to find wl_compositor or wl_shell");
+      goto error;
+    }
 
   egl_renderer->edpy =
     eglGetDisplay ((EGLNativeDisplayType) wayland_renderer->wayland_display);
