@@ -115,5 +115,6 @@ void                meta_wayland_surface_focused_unset (MetaWaylandSurface *surf
 
 void                meta_wayland_surface_ping (MetaWaylandSurface *surface,
                                                guint32             serial);
+void                meta_wayland_surface_delete (MetaWaylandSurface *surface);
 
 #endif

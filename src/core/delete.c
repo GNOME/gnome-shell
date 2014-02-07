@@ -37,6 +37,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "meta-wayland-surface.h"
+
 static void meta_window_present_delete_dialog (MetaWindow *window,
                                                guint32     timestamp);
 
@@ -141,24 +143,31 @@ void
 meta_window_delete (MetaWindow  *window,
                     guint32      timestamp)
 {
-  meta_error_trap_push (window->display);
-  if (window->delete_window)
+  if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
     {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Deleting %s with delete_window request\n",
-                  window->desc);
-      meta_window_send_icccm_message (window,
-                                      window->display->atom_WM_DELETE_WINDOW,
-                                      timestamp);
+      meta_error_trap_push (window->display);
+      if (window->delete_window)
+        {
+          meta_topic (META_DEBUG_WINDOW_OPS,
+                      "Deleting %s with delete_window request\n",
+                      window->desc);
+          meta_window_send_icccm_message (window,
+                                          window->display->atom_WM_DELETE_WINDOW,
+                                          timestamp);
+        }
+      else
+        {
+          meta_topic (META_DEBUG_WINDOW_OPS,
+                      "Deleting %s with explicit kill\n",
+                      window->desc);
+          XKillClient (window->display->xdisplay, window->xwindow);
+        }
+      meta_error_trap_pop (window->display);
     }
   else
     {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Deleting %s with explicit kill\n",
-                  window->desc);
-      XKillClient (window->display->xdisplay, window->xwindow);
+      meta_wayland_surface_delete (window->surface);
     }
-  meta_error_trap_pop (window->display);
 
   meta_window_check_alive (window, timestamp);
 

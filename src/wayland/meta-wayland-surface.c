@@ -1464,3 +1464,10 @@ meta_wayland_surface_ping (MetaWaylandSurface *surface,
   else if (surface->xdg_popup.resource)
     xdg_popup_send_ping (surface->xdg_popup.resource, timestamp);
 }
+
+void
+meta_wayland_surface_delete (MetaWaylandSurface *surface)
+{
+  if (surface->xdg_surface.resource)
+    xdg_surface_send_delete (surface->xdg_surface.resource);
+}
