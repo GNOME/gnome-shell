@@ -4741,9 +4741,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
           need_resize_client = TRUE;
           meta_wayland_surface_configure_notify (window->surface,
                                                  new_rect.width,
-                                                 new_rect.height,
-                                                 (dx != 0 ? WL_SHELL_SURFACE_RESIZE_LEFT : 0) |
-                                                 (dy != 0 ? WL_SHELL_SURFACE_RESIZE_TOP : 0));
+                                                 new_rect.height);
         }
       else
         {

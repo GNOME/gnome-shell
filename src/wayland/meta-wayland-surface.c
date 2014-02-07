@@ -1434,12 +1434,11 @@ meta_wayland_init_shell (MetaWaylandCompositor *compositor)
 void
 meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
 				       int                 new_width,
-				       int                 new_height,
-				       int                 edges)
+				       int                 new_height)
 {
   if (surface->xdg_surface.resource)
     xdg_surface_send_configure (surface->xdg_surface.resource,
-                                edges, new_width, new_height);
+                                new_width, new_height);
 }
 
 void

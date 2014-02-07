@@ -108,8 +108,7 @@ MetaWaylandSurface *meta_wayland_surface_create (MetaWaylandCompositor *composit
 						 guint32                version);
 void                meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
 							   int                 width,
-							   int                 height,
-							   int                 edges);
+							   int                 height);
 
 void                meta_wayland_surface_focused_set (MetaWaylandSurface *surface);
 void                meta_wayland_surface_focused_unset (MetaWaylandSurface *surface);
