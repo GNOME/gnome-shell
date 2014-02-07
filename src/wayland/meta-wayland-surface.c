@@ -721,6 +721,26 @@ xdg_surface_set_transient_for (struct wl_client *client,
 }
 
 static void
+xdg_surface_set_margin (struct wl_client *client,
+                        struct wl_resource *resource,
+                        int32_t left_margin,
+                        int32_t right_margin,
+                        int32_t top_margin,
+                        int32_t bottom_margin)
+{
+  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  GtkBorder extents;
+
+  extents.left = left_margin;
+  extents.right = right_margin;
+  extents.top = top_margin;
+  extents.bottom = bottom_margin;
+
+  meta_window_set_custom_frame_extents (surface->window, &extents);
+}
+
+static void
 xdg_surface_set_title (struct wl_client *client,
                        struct wl_resource *resource,
                        const char *title)
@@ -901,6 +921,7 @@ xdg_surface_set_minimized (struct wl_client *client,
 static const struct xdg_surface_interface meta_wayland_xdg_surface_interface = {
   xdg_surface_destroy,
   xdg_surface_set_transient_for,
+  xdg_surface_set_margin,
   xdg_surface_set_title,
   xdg_surface_set_app_id,
   xdg_surface_pong,

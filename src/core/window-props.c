@@ -303,22 +303,18 @@ reload_gtk_frame_extents (MetaWindow    *window,
         }
       else
         {
-          GtkBorder *extents = &window->custom_frame_extents;
-
-          window->has_custom_frame_extents = TRUE;
-          extents->left   = (int)value->v.cardinal_list.cardinals[0];
-          extents->right  = (int)value->v.cardinal_list.cardinals[1];
-          extents->top    = (int)value->v.cardinal_list.cardinals[2];
-          extents->bottom = (int)value->v.cardinal_list.cardinals[3];
+          GtkBorder extents;
+          extents.left   = (int)value->v.cardinal_list.cardinals[0];
+          extents.right  = (int)value->v.cardinal_list.cardinals[1];
+          extents.top    = (int)value->v.cardinal_list.cardinals[2];
+          extents.bottom = (int)value->v.cardinal_list.cardinals[3];
+          meta_window_set_custom_frame_extents (window, &extents);
         }
     }
   else
     {
-      window->has_custom_frame_extents = FALSE;
+      meta_window_set_custom_frame_extents (window, NULL);
     }
-
-  if (!initial)
-    meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
 }
 
 static void

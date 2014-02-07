@@ -10882,3 +10882,20 @@ meta_window_get_toplevel_xwindow (MetaWindow *window)
 {
   return window->frame ? window->frame->xwindow : window->xwindow;
 }
+
+void
+meta_window_set_custom_frame_extents (MetaWindow *window,
+                                      GtkBorder  *extents)
+{
+  if (extents)
+    {
+      window->has_custom_frame_extents = TRUE;
+      window->custom_frame_extents = *extents;
+    }
+  else
+    {
+      window->has_custom_frame_extents = FALSE;
+    }
+
+  meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
+}
