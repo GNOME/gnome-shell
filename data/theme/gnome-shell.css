@@ -2406,12 +2406,13 @@ StScrollBar StButton#vhandle:active {
     color: #E8E8E8;
 }
 
-.login-dialog-username {
+.login-dialog-username,
+.user-widget-label {
     font-size: 16pt;
     font-weight: bold;
     text-align: left;
     padding-left: 15px;
-    text-shadow: black 0px 4px 3px 0px;
+    text-shadow: rgba(0, 0, 0, 0.5) 0px 2px 1px 0px;
 }
 
 .login-dialog-prompt-layout {
@@ -2503,11 +2504,6 @@ StScrollBar StButton#vhandle:active {
 }
 
 .user-widget-label {
-    font-size: 20px;
-    font-weight: bold;
-    text-align: left;
-    color:white;
-    text-shadow: black 0px 4px 3px 0px;
 }
 
 .user-widget-label:ltr {
