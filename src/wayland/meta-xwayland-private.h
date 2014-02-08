@@ -25,9 +25,8 @@
 #include <glib.h>
 
 gboolean
-meta_xwayland_start (MetaXWaylandManager  *manager,
-                     struct wl_display    *display,
-                     char                **display_name_out);
+meta_xwayland_start (MetaXWaylandManager *manager,
+                     struct wl_display   *display);
 
 void
 meta_xwayland_complete_init (void);

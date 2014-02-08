@@ -68,6 +68,7 @@ typedef struct
   pid_t pid;
   struct wl_client *client;
   struct wl_resource *xserver_resource;
+  char *display_name;
 
   GMainLoop *init_loop;
 } MetaXWaylandManager;

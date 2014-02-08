@@ -623,7 +623,6 @@ meta_wayland_init (void)
 {
   MetaWaylandCompositor *compositor = &_meta_wayland_compositor;
   MetaMonitorManager *monitors;
-  char *display_name;
   int drm_fd;
 
   memset (compositor, 0, sizeof (MetaWaylandCompositor));
@@ -720,11 +719,10 @@ meta_wayland_init (void)
    * and so EGL must be initialized by this point.
    */
 
-  if (!meta_xwayland_start (&compositor->xwayland_manager, compositor->wayland_display, &display_name))
+  if (!meta_xwayland_start (&compositor->xwayland_manager, compositor->wayland_display))
     g_error ("Failed to start X Wayland");
 
-  set_gnome_env ("DISPLAY", display_name);
-
+  set_gnome_env ("DISPLAY", compositor->xwayland_manager.display_name);
   set_gnome_env ("WAYLAND_DISPLAY", compositor->display_name);
 }
 

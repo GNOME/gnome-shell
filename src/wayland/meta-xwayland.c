@@ -285,9 +285,8 @@ x_io_error (Display *display)
 }
 
 gboolean
-meta_xwayland_start (MetaXWaylandManager  *manager,
-                     struct wl_display    *wl_display,
-                     char                **display_name_out)
+meta_xwayland_start (MetaXWaylandManager *manager,
+                     struct wl_display   *wl_display)
 {
   int display = 0;
   char *lockfile = NULL;
@@ -295,7 +294,6 @@ meta_xwayland_start (MetaXWaylandManager  *manager,
   pid_t pid;
   char **env;
   char *fd_string;
-  char *display_name;
   char *log_path;
   char *args[11];
   GError *error;
@@ -356,11 +354,11 @@ meta_xwayland_start (MetaXWaylandManager  *manager,
   env = g_environ_setenv (env, "WAYLAND_SOCKET", fd_string, TRUE);
   g_free (fd_string);
 
-  display_name = g_strdup_printf (":%d", manager->display_index);
+  manager->display_name = g_strdup_printf (":%d", manager->display_index);
   log_path = g_build_filename (g_get_user_cache_dir (), "xwayland.log", NULL);
 
   args[0] = XWAYLAND_PATH;
-  args[1] = display_name;
+  args[1] = manager->display_name;
   args[2] = "-wayland";
   args[3] = "-rootless";
   args[4] = "-retro";
@@ -398,7 +396,6 @@ meta_xwayland_start (MetaXWaylandManager  *manager,
     }
 
   g_strfreev (env);
-  g_free (display_name);
   g_free (log_path);
 
   /* We need to run a mainloop until we know xwayland has a binding
@@ -406,8 +403,6 @@ meta_xwayland_start (MetaXWaylandManager  *manager,
    * ready to start accepting connections. */
   manager->init_loop = g_main_loop_new (NULL, FALSE);
   g_main_loop_run (manager->init_loop);
-
-  *display_name_out = display_name;
 
   return TRUE;
 }
