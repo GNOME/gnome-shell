@@ -118,6 +118,19 @@ const NMConnectionItem = new Lang.Class({
         this.switchItem.destroy();
     },
 
+    updateForConnection: function(connection) {
+        // connection should always be the same object
+        // (and object path) as this._connection, but
+        // this can be false if NetworkManager was restarted
+        // and picked up connections in a different order
+        // Just to be safe, we set it here again
+
+        this._connection = connection;
+        this.switchItem.label.text = connection.get_id();
+        this._sync();
+        this.emit('name-changed');
+    },
+
     getName: function() {
         return this._connection.get_id();
     },
@@ -231,10 +244,6 @@ const NMConnectionSection = new Lang.Class({
         return _("Connect");
     },
 
-    _hasConnection: function(connection) {
-        return this._connectionItems.has(connection.get_uuid());
-    },
-
     _connectionValid: function(connection) {
         return true;
     },
@@ -254,10 +263,20 @@ const NMConnectionSection = new Lang.Class({
         if (!this._connectionValid(connection))
             return;
 
-        if (this._hasConnection(connection))
-            return;
+        // This function is called everytime connection is added or updated
+        // In the usual case, we already added this connection and UUID
+        // didn't change. So we need to check if we already have an item,
+        // and update it for properties in the connection that changed
+        // (the only one we care about is the name)
+        // But it's also possible we didn't know about this connection
+        // (eg, during coldplug, or because it was updated and suddenly
+        // it's valid for this device), in which case we add a new item
 
-        this._addConnection(connection);
+        let item = this._connectionItems.get(connection.get_uuid());
+        if (item)
+            item.updateForConnection(connection);
+        else
+            this._addConnection(connection);
     },
 
     _addConnection: function(connection) {
@@ -271,6 +290,7 @@ const NMConnectionSection = new Lang.Class({
         item.connect('activation-failed', Lang.bind(this, function(item, reason) {
             this.emit('activation-failed', reason);
         }));
+        item.connect('name-changed', Lang.bind(this, this._sync));
 
         let pos = Util.insertSorted(this._connections, connection, Lang.bind(this, this._connectionSortFunction));
         this._labelSection.addMenuItem(item.labelItem, pos);
