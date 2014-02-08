@@ -808,12 +808,7 @@ meta_display_open (void)
 
   screen = meta_screen_new (the_display, i, timestamp);
 
-  if (screen)
-    screens = g_slist_prepend (screens, screen);
-  
-  the_display->screens = screens;
-  
-  if (screens == NULL)
+  if (!screen)
     {
       /* This would typically happen because all the screens already
        * have window managers.
@@ -822,24 +817,19 @@ meta_display_open (void)
       return FALSE;
     }
 
+  screens = g_slist_prepend (screens, screen);
+
+  the_display->screens = screens;
+
   enable_compositor (the_display);
-   
-  /* Now manage all existing windows */
-  tmp = the_display->screens;
-  while (tmp != NULL)
-    {
-      MetaScreen *screen = tmp->data;
 
-      meta_screen_create_guard_window (screen);
+  meta_screen_create_guard_window (screen);
 
-      /* We know that if mutter is running as a Wayland compositor,
-       * we start out with no windows.
-       */
-      if (!meta_is_wayland_compositor ())
-        meta_screen_manage_all_windows (screen);
-
-      tmp = tmp->next;
-    }
+  /* We know that if mutter is running as a Wayland compositor,
+   * we start out with no windows.
+   */
+  if (!meta_is_wayland_compositor ())
+    meta_screen_manage_all_windows (screen);
 
   {
     Window focus;
