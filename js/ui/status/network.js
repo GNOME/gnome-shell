@@ -104,18 +104,21 @@ const NMConnectionItem = new Lang.Class({
         this._activeConnection = null;
         this._activeConnectionChangedId = 0;
 
+        this._buildUI();
+        this._sync();
+    },
+
+    _buildUI: function() {
         this.labelItem = new PopupMenu.PopupMenuItem('');
         this.labelItem.connect('activate', Lang.bind(this, this._toggle));
 
-        this.switchItem = new PopupMenu.PopupSwitchMenuItem(connection.get_id(), false);
-        this.switchItem.connect('toggled', Lang.bind(this, this._toggle));
-
-        this._sync();
+        this.radioItem = new PopupMenu.PopupMenuItem(this._connection.get_id(), false);
+        this.radioItem.connect('activate', Lang.bind(this, this._activate));
     },
 
     destroy: function() {
         this.labelItem.destroy();
-        this.switchItem.destroy();
+        this.radioItem.destroy();
     },
 
     updateForConnection: function(connection) {
@@ -126,7 +129,7 @@ const NMConnectionItem = new Lang.Class({
         // Just to be safe, we set it here again
 
         this._connection = connection;
-        this.switchItem.label.text = connection.get_id();
+        this.radioItem.label.text = connection.get_id();
         this._sync();
         this.emit('name-changed');
     },
@@ -145,8 +148,7 @@ const NMConnectionItem = new Lang.Class({
     _sync: function() {
         let isActive = this.isActive();
         this.labelItem.label.text = isActive ? _("Turn Off") : this._section.getConnectLabel();
-        this.switchItem.setToggleState(isActive);
-        this.switchItem.setStatus(this._getStatus());
+        this.radioItem.setOrnament(isActive ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
         this.emit('icon-changed');
     },
 
@@ -159,8 +161,11 @@ const NMConnectionItem = new Lang.Class({
         this._sync();
     },
 
-    _getStatus: function() {
-        return null;
+    _activate: function() {
+        if (this._activeConnection == null)
+            this._section.activateConnection(this._connection);
+
+        this._sync();
     },
 
     _connectionStateChanged: function(ac, newstate, reason) {
@@ -195,11 +200,11 @@ const NMConnectionSection = new Lang.Class({
         this._connections = [];
 
         this._labelSection = new PopupMenu.PopupMenuSection();
-        this._switchSection = new PopupMenu.PopupMenuSection();
+        this._radioSection = new PopupMenu.PopupMenuSection();
 
         this.item = new PopupMenu.PopupSubMenuMenuItem('', true);
         this.item.menu.addMenuItem(this._labelSection);
-        this.item.menu.addMenuItem(this._switchSection);
+        this.item.menu.addMenuItem(this._radioSection);
 
         this.connect('icon-changed', Lang.bind(this, this._sync));
     },
@@ -211,7 +216,7 @@ const NMConnectionSection = new Lang.Class({
     _sync: function() {
         let nItems = this._connectionItems.size;
 
-        this._switchSection.actor.visible = (nItems > 1);
+        this._radioSection.actor.visible = (nItems > 1);
         this._labelSection.actor.visible = (nItems == 1);
 
         this.item.status.text = this._getStatus();
@@ -291,7 +296,7 @@ const NMConnectionSection = new Lang.Class({
 
         let pos = Util.insertSorted(this._connections, connection, Lang.bind(this, this._connectionSortFunction));
         this._labelSection.addMenuItem(item.labelItem, pos);
-        this._switchSection.addMenuItem(item.switchItem, pos);
+        this._radioSection.addMenuItem(item.radioItem, pos);
         this._connectionItems.set(connection.get_uuid(), item);
         this._sync();
     },
@@ -319,6 +324,7 @@ const NMConnectionDevice = new Lang.Class({
         this._settings = settings;
 
         this._autoConnectItem = this.item.menu.addAction(_("Connect"), Lang.bind(this, this._autoConnect));
+        this._deactivateItem = this._radioSection.addAction(_("Turn Off"), Lang.bind(this, this.deactivateConnection));
 
         this._stateChangedId = this._device.connect('state-changed', Lang.bind(this, this._deviceStateChanged));
         this._activeConnectionChangedId = this._device.connect('notify::active-connection', Lang.bind(this, this._activeConnectionChanged));
@@ -405,6 +411,7 @@ const NMConnectionDevice = new Lang.Class({
     _sync: function() {
         let nItems = this._connectionItems.size;
         this._autoConnectItem.actor.visible = (nItems == 0);
+        this._deactivateItem.actor.visible = this._device.state > NetworkManager.DeviceState.DISCONNECTED;
         this.parent();
     },
 
@@ -1323,6 +1330,22 @@ const NMVPNConnectionItem = new Lang.Class({
             return false;
 
         return this._activeConnection.vpn_state != NetworkManager.VPNConnectionState.DISCONNECTED;
+    },
+
+    _buildUI: function() {
+        this.labelItem = new PopupMenu.PopupMenuItem('');
+        this.labelItem.connect('activate', Lang.bind(this, this._toggle));
+
+        this.radioItem = new PopupMenu.PopupSwitchMenuItem(this._connection.get_id(), false);
+        this.radioItem.connect('toggled', Lang.bind(this, this._toggle));
+    },
+
+    _sync: function() {
+        let isActive = this.isActive();
+        this.labelItem.label.text = isActive ? _("Turn Off") : this._section.getConnectLabel();
+        this.radioItem.setToggleState(isActive);
+        this.radioItem.setStatus(this._getStatus());
+        this.emit('icon-changed');
     },
 
     _getStatus: function() {
