@@ -834,6 +834,8 @@ const LayoutManager = new Lang.Class({
                                             Lang.bind(this, this._queueUpdateRegions));
         actorData.allocationId = actor.connect('notify::allocation',
                                                Lang.bind(this, this._queueUpdateRegions));
+        actorData.destroyId = actor.connect('destroy',
+                                            Lang.bind(this, this._untrackActor));
         // Note that destroying actor will unset its parent, so we don't
         // need to connect to 'destroy' too.
 
@@ -852,6 +854,7 @@ const LayoutManager = new Lang.Class({
         actor.disconnect(actorData.visibleId);
         actor.disconnect(actorData.allocationId);
         actor.disconnect(actorData.parentSetId);
+        actor.disconnect(actorData.destroyId);
 
         this._queueUpdateRegions();
     },
