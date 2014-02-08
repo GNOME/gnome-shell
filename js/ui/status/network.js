@@ -249,10 +249,7 @@ const NMConnectionSection = new Lang.Class({
     },
 
     _connectionSortFunction: function(one, two) {
-        if (one._timestamp == two._timestamp)
-            return GLib.utf8_collate(one.get_id(), two.get_id());
-
-        return two._timestamp - one._timestamp;
+        return GLib.utf8_collate(one.get_id(), two.get_id());
     },
 
     _makeConnectionItem: function(connection) {
@@ -1788,7 +1785,6 @@ const NMApplet = new Lang.Class({
         let connectionSettings = connection.get_setting_by_name(NetworkManager.SETTING_CONNECTION_SETTING_NAME);
         connection._type = connectionSettings.type;
         connection._section = this._ctypes[connection._type] || NMConnectionCategory.INVALID;
-        connection._timestamp = connectionSettings.timestamp;
 
         let section = connection._section;
 
