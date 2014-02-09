@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-29 20:43+0000\n"
-"PO-Revision-Date: 2014-01-30 19:56+0100\n"
+"POT-Creation-Date: 2014-02-08 10:22+0000\n"
+"PO-Revision-Date: 2014-02-08 19:31+0100\n"
 "Last-Translator: Jorge Pérez Pérez <jorgtum@gmail.com>\n"
 "Language-Team: Aragonese <softaragones@googlegroups.com>\n"
 "Language: an\n"
@@ -280,7 +280,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:357
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:757
+#: ../js/ui/status/network.js:857
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -574,8 +574,8 @@ msgstr "Clau de paso:"
 msgid "Type again:"
 msgstr "Escriba atra vegada:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:294 ../js/ui/status/network.js:760
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:227
+#: ../js/ui/status/network.js:300 ../js/ui/status/network.js:860
 msgid "Connect"
 msgstr "Connectar"
 
@@ -1077,7 +1077,7 @@ msgstr "Activau"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:518
+#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:523
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Desactivau"
@@ -1297,25 +1297,30 @@ msgstr "Contraste alto"
 msgid "Large Text"
 msgstr "Texto gran"
 
-#: ../js/ui/status/bluetooth.js:45
+#: ../js/ui/status/bluetooth.js:48
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:1108 ../js/ui/status/rfkill.js:48
+#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/network.js:134
+#: ../js/ui/status/network.js:1209 ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "Desenchegar"
 
-#: ../js/ui/status/bluetooth.js:50
+#: ../js/ui/status/bluetooth.js:53
 msgid "Bluetooth Settings"
 msgstr "Cofiguracion de Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:98
+#: ../js/ui/status/bluetooth.js:100
 #, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d dispositivo connectau"
 msgstr[1] "%d dispositivos connectaus"
+
+#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1232
+msgid "Not Connected"
+msgstr "No connectau"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1325,103 +1330,133 @@ msgstr "Brilo"
 msgid "Show Keyboard Layout"
 msgstr "Amostrar a distribución d'o teclau"
 
-#: ../js/ui/status/network.js:71
+#: ../js/ui/status/network.js:73
 msgid "<unknown>"
 msgstr "<desconoxiu>"
 
-#: ../js/ui/status/network.js:221 ../js/ui/status/network.js:383
-#: ../js/ui/status/network.js:1129
+#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:389
+#: ../js/ui/status/network.js:1230
 msgid "Off"
 msgstr "DESENCHEGAU"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:389
+#: ../js/ui/status/network.js:395
 msgid "unmanaged"
 msgstr "no chestionada"
 
-#: ../js/ui/status/network.js:391
+#: ../js/ui/status/network.js:397
 msgid "disconnecting..."
 msgstr "deconectando…"
 
-#: ../js/ui/status/network.js:397 ../js/ui/status/network.js:1183
+#: ../js/ui/status/network.js:403 ../js/ui/status/network.js:1284
 msgid "connecting..."
 msgstr "conectando…"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:400 ../js/ui/status/network.js:1186
+#: ../js/ui/status/network.js:406 ../js/ui/status/network.js:1287
 msgid "authentication required"
 msgstr "s'amenista autenticacion"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:408
+#: ../js/ui/status/network.js:414
 msgid "firmware missing"
 msgstr "falta o \"firmware\""
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:412
+#: ../js/ui/status/network.js:418
 msgid "unavailable"
 msgstr "no disponible"
 
-#: ../js/ui/status/network.js:414 ../js/ui/status/network.js:1188
+#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1289
 msgid "connection failed"
 msgstr "falló a connexión"
 
-#: ../js/ui/status/network.js:430
+#: ../js/ui/status/network.js:436
 msgid "Wired Settings"
 msgstr "Opcions inalambricas"
 
-#: ../js/ui/status/network.js:472 ../js/ui/status/network.js:558
+#: ../js/ui/status/network.js:477 ../js/ui/status/network.js:563
 msgid "Mobile Broadband Settings"
 msgstr "Opcions de Banda ampla mobil"
 
-#: ../js/ui/status/network.js:514 ../js/ui/status/network.js:1127
+#: ../js/ui/status/network.js:519 ../js/ui/status/network.js:1228
 msgid "Hardware Disabled"
 msgstr "Hardware desactivau"
 
-#: ../js/ui/status/network.js:725
+#: ../js/ui/status/network.js:578
+msgid "Use as Internet connection"
+msgstr "Fer servir como una connexión a internet"
+
+#: ../js/ui/status/network.js:755
+msgid "Airplane Mode is On"
+msgstr "O modo avión ye enchegau"
+
+#: ../js/ui/status/network.js:756
+msgid "Wi-Fi is disabled when airplane mode is on."
+msgstr "O wi-Fi ye desactivau quan o modo avión  ye enchegau."
+
+#: ../js/ui/status/network.js:757
+msgid "Turn Off Airplane Mode"
+msgstr "Desenchegar o modo avión"
+
+#: ../js/ui/status/network.js:766
+msgid "Wi-Fi is Off"
+msgstr "O wi-fi ye desenchegau"
+
+#: ../js/ui/status/network.js:767
+msgid "Wi-Fi needs to be turned on in order to connect to a network."
+msgstr "O wi-Fi ameniste estar enchegau ta connectar-se a un ret."
+
+#: ../js/ui/status/network.js:768
+#, fuzzy
+#| msgid "Turn On"
+msgid "Turn On Wi-Fi"
+msgstr "Enchegar"
+
+#: ../js/ui/status/network.js:793
 msgid "Wi-Fi Networks"
 msgstr "Retz inalambricos"
 
-#: ../js/ui/status/network.js:727
+#: ../js/ui/status/network.js:795
 msgid "Select a network"
 msgstr "Selecciona un ret"
 
-#: ../js/ui/status/network.js:751
+#: ../js/ui/status/network.js:824
 msgid "No Networks"
 msgstr "No bi ha retz"
 
-#: ../js/ui/status/network.js:1014
+#: ../js/ui/status/network.js:845 ../js/ui/status/rfkill.js:103
+msgid "Use hardware switch to turn off"
+msgstr "Fer servir o selector de hardware ta desenchegar-lo"
+
+#: ../js/ui/status/network.js:1115
 msgid "Select Network"
 msgstr "Selecciona o ret"
 
-#: ../js/ui/status/network.js:1020
+#: ../js/ui/status/network.js:1121
 msgid "Wi-Fi Settings"
 msgstr "Opcions inalambricas"
 
-#: ../js/ui/status/network.js:1108
+#: ../js/ui/status/network.js:1209
 msgid "Turn On"
 msgstr "Enchegar"
 
-#: ../js/ui/status/network.js:1131
-msgid "Not Connected"
-msgstr "No connectau"
-
-#: ../js/ui/status/network.js:1251
+#: ../js/ui/status/network.js:1352
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1394
+#: ../js/ui/status/network.js:1495
 msgid "Network Manager"
 msgstr "Chestor d'o rete"
 
-#: ../js/ui/status/network.js:1433
+#: ../js/ui/status/network.js:1534
 msgid "Connection failed"
 msgstr "Falló a connexión"
 
-#: ../js/ui/status/network.js:1434
+#: ../js/ui/status/network.js:1535
 msgid "Activation of network connection failed"
 msgstr "Falló l'activación d'a connexión de ret"
 
@@ -1455,15 +1490,15 @@ msgstr "SAI"
 msgid "Battery"
 msgstr "Batería"
 
-#: ../js/ui/status/rfkill.js:45
+#: ../js/ui/status/rfkill.js:82
 msgid "Airplane Mode"
 msgstr "Modo avión"
 
-#: ../js/ui/status/rfkill.js:47
+#: ../js/ui/status/rfkill.js:84
 msgid "On"
 msgstr "Enchegau"
 
-#: ../js/ui/status/rfkill.js:51
+#: ../js/ui/status/rfkill.js:88
 msgid "Network Settings"
 msgstr "Configuracion d'o rete"
 
