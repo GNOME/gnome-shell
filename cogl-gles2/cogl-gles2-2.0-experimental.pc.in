@@ -3,7 +3,7 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 apiversion=@COGL_API_VERSION@
-requires=cogl-1.0
+requires=cogl-2.0-experimental
 
 Name: CoglGLES2
 Description: Cogl OpenGL ES 2.0 frontend api

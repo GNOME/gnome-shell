@@ -2,8 +2,8 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
-apiversion=1.0
-requires=@COGL_PKG_REQUIRES@ cogl-1.0
+apiversion=@COGL_API_VERSION@
+requires=@COGL_PKG_REQUIRES@ cogl-2.0-experimental
 
 Name: Cogl
 Description: An object oriented GL/GLES Abstraction/Utility Layer
