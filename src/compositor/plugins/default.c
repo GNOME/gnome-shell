@@ -704,15 +704,15 @@ map (MetaPlugin *plugin, MetaWindowActor *window_actor)
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
       ActorPrivate *apriv = get_actor_private (window_actor);
 
-      clutter_actor_move_anchor_point_from_gravity (actor,
-                                                    CLUTTER_GRAVITY_CENTER);
-
-      clutter_actor_set_scale (actor, 0.0, 0.0);
+      clutter_actor_set_pivot_point (actor, 0.5, 0.5);
+      clutter_actor_set_opacity (actor, 0);
+      clutter_actor_set_scale (actor, 0.5, 0.5);
       clutter_actor_show (actor);
 
       animation = clutter_actor_animate (actor,
-                                         CLUTTER_EASE_IN_SINE,
+                                         CLUTTER_EASE_OUT_QUAD,
                                          MAP_TIMEOUT,
+                                         "opacity", 255,
                                          "scale-x", 1.0,
                                          "scale-y", 1.0,
                                          NULL);
