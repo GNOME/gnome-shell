@@ -44,6 +44,12 @@ struct _MetaWaylandBuffer
 
 typedef struct
 {
+  guint changed : 1;
+  guint value : 1;
+} MetaWaylandStateFlag;
+
+typedef struct
+{
   /* wl_surface.attach */
   gboolean newly_attached;
   MetaWaylandBuffer *buffer;
@@ -59,6 +65,9 @@ typedef struct
 
   /* wl_surface.frame */
   struct wl_list frame_callback_list;
+
+  MetaWaylandStateFlag fullscreen;
+  MetaWaylandStateFlag maximized;
 } MetaWaylandDoubleBufferedState;
 
 typedef struct

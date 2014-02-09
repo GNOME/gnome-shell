@@ -336,6 +336,22 @@ toplevel_surface_commit (MetaWaylandSurface             *surface,
             meta_window_move_resize_wayland (window, new_width, new_height, pending->dx, pending->dy);
         }
     }
+
+  if (pending->maximized.changed)
+    {
+      if (pending->maximized.value)
+        meta_window_maximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
+      else
+        meta_window_unmaximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
+    }
+
+  if (pending->fullscreen.changed)
+    {
+      if (pending->fullscreen.value)
+        meta_window_make_fullscreen (surface->window);
+      else
+        meta_window_unmake_fullscreen (surface->window);
+    }
 }
 
 static void
@@ -359,6 +375,9 @@ double_buffered_state_init (MetaWaylandDoubleBufferedState *state)
   state->buffer_destroy_listener.notify =
     surface_handle_pending_buffer_destroy;
   wl_list_init (&state->frame_callback_list);
+
+  state->maximized.changed = FALSE;
+  state->fullscreen.changed = FALSE;
 }
 
 static void
@@ -875,7 +894,8 @@ xdg_surface_set_fullscreen (struct wl_client *client,
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
 
-  meta_window_make_fullscreen (surface->window);
+  surface->pending.fullscreen.changed = TRUE;
+  surface->pending.fullscreen.value = TRUE;
 }
 
 static void
@@ -885,7 +905,8 @@ xdg_surface_unset_fullscreen (struct wl_client *client,
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
 
-  meta_window_unmake_fullscreen (surface->window);
+  surface->pending.fullscreen.changed = TRUE;
+  surface->pending.fullscreen.value = FALSE;
 }
 
 static void
@@ -895,7 +916,8 @@ xdg_surface_set_maximized (struct wl_client *client,
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
 
-  meta_window_maximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
+  surface->pending.maximized.changed = TRUE;
+  surface->pending.maximized.value = TRUE;
 }
 
 static void
@@ -905,7 +927,8 @@ xdg_surface_unset_maximized (struct wl_client *client,
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
 
-  meta_window_unmaximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
+  surface->pending.maximized.changed = TRUE;
+  surface->pending.maximized.value = FALSE;
 }
 
 static void
