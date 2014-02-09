@@ -1,23 +1,23 @@
 # clutter Italian translation
-# Copyright (C) 2012, 2013 The Free Software Foundation
+# Copyright (C) 2012, 2013, 2014 The Free Software Foundation
 # This file is distributed under the same license as the clutter package.
-# Milo Casagrande <milo@ubuntu.com>, 2012, 2013.
+# Milo Casagrande <milo@ubuntu.com>, 2012, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter\n"
-"POT-Creation-Date: 2013-12-12 09:35+0100\n"
-"PO-Revision-Date: 2013-12-12 09:35+0100\n"
+"product=clutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-02-09 04:08+0000\n"
+"PO-Revision-Date: 2014-02-09 12:29+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8-bit\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Poedit 1.6.4\n"
 
 #: ../clutter/clutter-actor.c:6214
 msgid "X coordinate"
@@ -43,7 +43,7 @@ msgstr "Posizione"
 msgid "The position of the origin of the actor"
 msgstr "La posizione dell'origine dell'attore"
 
-#: ../clutter/clutter-actor.c:6274 ../clutter/clutter-canvas.c:224
+#: ../clutter/clutter-actor.c:6274 ../clutter/clutter-canvas.c:247
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
@@ -53,7 +53,7 @@ msgstr "Larghezza"
 msgid "Width of the actor"
 msgstr "Larghezza dell'attore"
 
-#: ../clutter/clutter-actor.c:6293 ../clutter/clutter-canvas.c:240
+#: ../clutter/clutter-actor.c:6293 ../clutter/clutter-canvas.c:263
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
@@ -93,7 +93,7 @@ msgstr "Imposta posizione fissa"
 
 #: ../clutter/clutter-actor.c:6369
 msgid "Whether to use fixed positioning for the actor"
-msgstr "Se usare il posizionamento fisso per l'attore"
+msgstr "Indica se usare il posizionamento fisso per l'attore"
 
 #: ../clutter/clutter-actor.c:6387
 msgid "Min Width"
@@ -133,7 +133,7 @@ msgstr "Imposta larghezza minima"
 
 #: ../clutter/clutter-actor.c:6461
 msgid "Whether to use the min-width property"
-msgstr "Se utilizzare la proprietà larghezza minima"
+msgstr "Indica se utilizzare la proprietà larghezza minima"
 
 #: ../clutter/clutter-actor.c:6475
 msgid "Minimum height set"
@@ -141,7 +141,7 @@ msgstr "Imposta altezza minima"
 
 #: ../clutter/clutter-actor.c:6476
 msgid "Whether to use the min-height property"
-msgstr "Se usare la proprietà altezza minima"
+msgstr "Indica se usare la proprietà altezza minima"
 
 #: ../clutter/clutter-actor.c:6490
 msgid "Natural width set"
@@ -149,7 +149,7 @@ msgstr "Imposta larghezza naturale"
 
 #: ../clutter/clutter-actor.c:6491
 msgid "Whether to use the natural-width property"
-msgstr "Se usare la proprietà larghezza naturale"
+msgstr "Indica se usare la proprietà larghezza naturale"
 
 #: ../clutter/clutter-actor.c:6505
 msgid "Natural height set"
@@ -157,7 +157,7 @@ msgstr "Imposta altezza naturale"
 
 #: ../clutter/clutter-actor.c:6506
 msgid "Whether to use the natural-height property"
-msgstr "Se usare la proprietà altezza naturale"
+msgstr "Indica se usare la proprietà altezza naturale"
 
 #: ../clutter/clutter-actor.c:6522
 msgid "Allocation"
@@ -213,7 +213,7 @@ msgstr "Visibile"
 
 #: ../clutter/clutter-actor.c:6688
 msgid "Whether the actor is visible or not"
-msgstr "Se l'attore è visibile o meno"
+msgstr "Indica se l'attore è visibile o meno"
 
 #: ../clutter/clutter-actor.c:6702
 msgid "Mapped"
@@ -221,7 +221,7 @@ msgstr "Mappato"
 
 #: ../clutter/clutter-actor.c:6703
 msgid "Whether the actor will be painted"
-msgstr "Se l'attore sarà disegnato"
+msgstr "Indica se l'attore sarà disegnato"
 
 #: ../clutter/clutter-actor.c:6716
 msgid "Realized"
@@ -229,7 +229,7 @@ msgstr "Realizzato"
 
 #: ../clutter/clutter-actor.c:6717
 msgid "Whether the actor has been realized"
-msgstr "Se l'attore è stato realizzato"
+msgstr "Indica se l'attore è stato realizzato"
 
 #: ../clutter/clutter-actor.c:6732
 msgid "Reactive"
@@ -237,7 +237,7 @@ msgstr "Reattivo"
 
 #: ../clutter/clutter-actor.c:6733
 msgid "Whether the actor is reactive to events"
-msgstr "Se l'attore è reattivo agli eventi"
+msgstr "Indica se l'attore è reattivo agli eventi"
 
 #: ../clutter/clutter-actor.c:6744
 msgid "Has Clip"
@@ -935,13 +935,33 @@ msgstr "Contrasto"
 msgid "The contrast change to apply"
 msgstr "Il contrasto da applicare"
 
-#: ../clutter/clutter-canvas.c:225
+#: ../clutter/clutter-canvas.c:248
 msgid "The width of the canvas"
 msgstr "La larghezza della superficie"
 
-#: ../clutter/clutter-canvas.c:241
+#: ../clutter/clutter-canvas.c:264
 msgid "The height of the canvas"
 msgstr "L'altezza della superficie"
+
+#: ../clutter/clutter-canvas.c:283
+#| msgid "Selection Color Set"
+msgid "Scale Factor Set"
+msgstr "Imposta il fattore di scala"
+
+#: ../clutter/clutter-canvas.c:284
+#| msgid "Whether the transform property is set"
+msgid "Whether the scale-factor property is set"
+msgstr "Indica se la proprietà scale-factor è impostata"
+
+#: ../clutter/clutter-canvas.c:305
+#| msgid "Factor"
+msgid "Scale Factor"
+msgstr "Fattore di scala"
+
+#: ../clutter/clutter-canvas.c:306
+#| msgid "The height of the Cairo surface"
+msgid "The scaling factor for the surface"
+msgstr "Il fattore di scala per la superficie"
 
 #: ../clutter/clutter-child-meta.c:127
 msgid "Container"
@@ -971,7 +991,7 @@ msgstr "Mantenuto"
 msgid "Whether the clickable has a grab"
 msgstr "Se il cliccabile ha la maniglia"
 
-#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:607
+#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:653
 msgid "Long Press Duration"
 msgstr "Durata pressione lunga"
 
@@ -1464,46 +1484,46 @@ msgstr "Modalità scorrimento"
 msgid "The scrolling direction"
 msgstr "La direzione di scorrimento"
 
-#: ../clutter/clutter-settings.c:448
+#: ../clutter/clutter-settings.c:486
 msgid "Double Click Time"
 msgstr "Durata doppio-clic"
 
-#: ../clutter/clutter-settings.c:449
+#: ../clutter/clutter-settings.c:487
 msgid "The time between clicks necessary to detect a multiple click"
 msgstr "Il tempo tra i clic per determinare un clic multiplo"
 
-#: ../clutter/clutter-settings.c:464
+#: ../clutter/clutter-settings.c:502
 msgid "Double Click Distance"
 msgstr "Distanza doppio-clic"
 
-#: ../clutter/clutter-settings.c:465
+#: ../clutter/clutter-settings.c:503
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr "La distanza tra i clic per determinare un clic multiplo"
 
-#: ../clutter/clutter-settings.c:480
+#: ../clutter/clutter-settings.c:518
 msgid "Drag Threshold"
 msgstr "Soglia di trascinamento"
 
-#: ../clutter/clutter-settings.c:481
+#: ../clutter/clutter-settings.c:519
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "La distanza coperta dal cursore prima di avviare il trascinamento"
 
-#: ../clutter/clutter-settings.c:496 ../clutter/clutter-text.c:3404
+#: ../clutter/clutter-settings.c:534 ../clutter/clutter-text.c:3404
 msgid "Font Name"
 msgstr "Nome carattere"
 
-#: ../clutter/clutter-settings.c:497
+#: ../clutter/clutter-settings.c:535
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
 msgstr ""
 "La descrizione del carattere predefinito, come una descrizione leggibile da "
 "Pango"
 
-#: ../clutter/clutter-settings.c:512
+#: ../clutter/clutter-settings.c:550
 msgid "Font Antialias"
 msgstr "Antialas carattere"
 
-#: ../clutter/clutter-settings.c:513
+#: ../clutter/clutter-settings.c:551
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
@@ -1511,62 +1531,71 @@ msgstr ""
 "Indica se usare l'antialias (1 per abilitare, 0 per disabilitare e -1 per il "
 "predefinito)"
 
-#: ../clutter/clutter-settings.c:529
+#: ../clutter/clutter-settings.c:567 ../clutter/clutter-settings.c:575
 msgid "Font DPI"
 msgstr "DPI carattere"
 
-#: ../clutter/clutter-settings.c:530
+#: ../clutter/clutter-settings.c:568 ../clutter/clutter-settings.c:576
 msgid ""
 "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr ""
 "La risoluzione del carattere, espressa come 1024 * dot/inch o -1 per il "
 "valore predefinito"
 
-#: ../clutter/clutter-settings.c:546
+#: ../clutter/clutter-settings.c:592
 msgid "Font Hinting"
 msgstr "Hinting del carattere"
 
-#: ../clutter/clutter-settings.c:547
+#: ../clutter/clutter-settings.c:593
 msgid ""
 "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr ""
 "Indica se usare l'hinting (1 per abilitare, 0 per disabilitare e -1 per il "
 "predefinito)"
 
-#: ../clutter/clutter-settings.c:568
+#: ../clutter/clutter-settings.c:614
 msgid "Font Hint Style"
 msgstr "Stile di hint del carattere"
 
-#: ../clutter/clutter-settings.c:569
+#: ../clutter/clutter-settings.c:615
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
 msgstr "Lo stile dell'hinting (hintnone, hintslight, hintmedium, hintfull)"
 
-#: ../clutter/clutter-settings.c:590
+#: ../clutter/clutter-settings.c:636
 msgid "Font Subpixel Order"
 msgstr "Ordine sub-pixel del carattere"
 
-#: ../clutter/clutter-settings.c:591
+#: ../clutter/clutter-settings.c:637
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
 msgstr "Il tipo di antialias sub-pixel (none, rgb, bgr, vrgb, vbgr)"
 
-#: ../clutter/clutter-settings.c:608
+#: ../clutter/clutter-settings.c:654
 msgid "The minimum duration for a long press gesture to be recognized"
 msgstr ""
 "La durata minima di una pressione lunga per essere riconosciuta come gesto"
 
-#: ../clutter/clutter-settings.c:615
+#: ../clutter/clutter-settings.c:661
+msgid "Window Scaling Factor"
+msgstr "Fattore di scala della finestra"
+
+#: ../clutter/clutter-settings.c:662
+#| msgid "Add an effect to be applied on the actor"
+msgid "The scaling factor to be applied to windows"
+msgstr "Il fattore di scala da applicare alle finestre"
+
+#: ../clutter/clutter-settings.c:669
 msgid "Fontconfig configuration timestamp"
 msgstr "Marcatura oraria della configurazione fontconfig"
 
-#: ../clutter/clutter-settings.c:616
+#: ../clutter/clutter-settings.c:670
 msgid "Timestamp of the current fontconfig configuration"
 msgstr "Marcatura oraria della configurazione fontconfig corrente"
 
-#: ../clutter/clutter-settings.c:633
+#: ../clutter/clutter-settings.c:687
 msgid "Password Hint Time"
 msgstr "Tempo suggerimento della password"
 
-#: ../clutter/clutter-settings.c:634
+#: ../clutter/clutter-settings.c:688
 msgid "How long to show the last input character in hidden entries"
 msgstr ""
 "Quanto a lungo deve essere mostrato l'ultimo carattere nei campi di testo "
@@ -1604,109 +1633,109 @@ msgstr "Il bordo della fonte che dovrebbe essere spezzato"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Lo spostamento in pixel da applicare al vincolo"
 
-#: ../clutter/clutter-stage.c:1903
+#: ../clutter/clutter-stage.c:1899
 msgid "Fullscreen Set"
 msgstr "Imposta a schermo intero"
 
-#: ../clutter/clutter-stage.c:1904
+#: ../clutter/clutter-stage.c:1900
 msgid "Whether the main stage is fullscreen"
 msgstr "Se il livello principale è a schermo intero"
 
-#: ../clutter/clutter-stage.c:1918
+#: ../clutter/clutter-stage.c:1914
 msgid "Offscreen"
 msgstr "Fuorischermo"
 
-#: ../clutter/clutter-stage.c:1919
+#: ../clutter/clutter-stage.c:1915
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Se il livello principale dovrebbe essere renderizzato fuori schermo"
 
-#: ../clutter/clutter-stage.c:1931 ../clutter/clutter-text.c:3518
+#: ../clutter/clutter-stage.c:1927 ../clutter/clutter-text.c:3518
 msgid "Cursor Visible"
 msgstr "Cursore visibile"
 
-#: ../clutter/clutter-stage.c:1932
+#: ../clutter/clutter-stage.c:1928
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Se il puntatore del mouse è visibile sul livello principale"
 
-#: ../clutter/clutter-stage.c:1946
+#: ../clutter/clutter-stage.c:1942
 msgid "User Resizable"
 msgstr "Ridimensionabile dall'utente"
 
-#: ../clutter/clutter-stage.c:1947
+#: ../clutter/clutter-stage.c:1943
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr ""
 "Se il livello può essere ridimensionato attraverso l'interazione dell'utente"
 
-#: ../clutter/clutter-stage.c:1962 ../clutter/deprecated/clutter-box.c:256
+#: ../clutter/clutter-stage.c:1958 ../clutter/deprecated/clutter-box.c:256
 #: ../clutter/deprecated/clutter-rectangle.c:270
 msgid "Color"
 msgstr "Colore"
 
-#: ../clutter/clutter-stage.c:1963
+#: ../clutter/clutter-stage.c:1959
 msgid "The color of the stage"
 msgstr "Il colore del livello"
 
-#: ../clutter/clutter-stage.c:1978
+#: ../clutter/clutter-stage.c:1974
 msgid "Perspective"
 msgstr "Prospettiva"
 
-#: ../clutter/clutter-stage.c:1979
+#: ../clutter/clutter-stage.c:1975
 msgid "Perspective projection parameters"
 msgstr "Parametri di proiezione prospettica"
 
-#: ../clutter/clutter-stage.c:1994
+#: ../clutter/clutter-stage.c:1990
 msgid "Title"
 msgstr "Titolo"
 
-#: ../clutter/clutter-stage.c:1995
+#: ../clutter/clutter-stage.c:1991
 msgid "Stage Title"
 msgstr "Titolo del livello"
 
-#: ../clutter/clutter-stage.c:2012
+#: ../clutter/clutter-stage.c:2008
 msgid "Use Fog"
 msgstr "Usa nebbia"
 
-#: ../clutter/clutter-stage.c:2013
+#: ../clutter/clutter-stage.c:2009
 msgid "Whether to enable depth cueing"
 msgstr "Indica se abilitare il depth cueing"
 
-#: ../clutter/clutter-stage.c:2029
+#: ../clutter/clutter-stage.c:2025
 msgid "Fog"
 msgstr "Nebbia"
 
-#: ../clutter/clutter-stage.c:2030
+#: ../clutter/clutter-stage.c:2026
 msgid "Settings for the depth cueing"
 msgstr "Impostazioni per il depth cueing"
 
-#: ../clutter/clutter-stage.c:2046
+#: ../clutter/clutter-stage.c:2042
 msgid "Use Alpha"
 msgstr "Usa Alpha"
 
-#: ../clutter/clutter-stage.c:2047
+#: ../clutter/clutter-stage.c:2043
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Se rispettare il componente alpha del colore del livello"
 
-#: ../clutter/clutter-stage.c:2063
+#: ../clutter/clutter-stage.c:2059
 msgid "Key Focus"
 msgstr "Fuoco chiave"
 
-#: ../clutter/clutter-stage.c:2064
+#: ../clutter/clutter-stage.c:2060
 msgid "The currently key focused actor"
 msgstr "L'attore chiave attuale con fuoco"
 
-#: ../clutter/clutter-stage.c:2080
+#: ../clutter/clutter-stage.c:2076
 msgid "No Clear Hint"
 msgstr "Suggerimento per nessuna pulizia"
 
-#: ../clutter/clutter-stage.c:2081
+#: ../clutter/clutter-stage.c:2077
 msgid "Whether the stage should clear its contents"
 msgstr "Indica se lo stadio debba ripulire il proprio contenuto"
 
-#: ../clutter/clutter-stage.c:2094
+#: ../clutter/clutter-stage.c:2090
 msgid "Accept Focus"
 msgstr "Accetta il focus"
 
-#: ../clutter/clutter-stage.c:2095
+#: ../clutter/clutter-stage.c:2091
 msgid "Whether the stage should accept focus on show"
 msgstr "Indica se lo stadio debba accettare il focus alla visualizzazione"
 
