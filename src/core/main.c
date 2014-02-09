@@ -389,7 +389,8 @@ meta_init (void)
 {
   struct sigaction act;
   sigset_t empty_mask;
-  
+  ClutterSettings *clutter_settings;
+
   sigemptyset (&empty_mask);
   act.sa_handler = SIG_IGN;
   act.sa_mask    = empty_mask;
