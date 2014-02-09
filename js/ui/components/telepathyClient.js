@@ -1421,7 +1421,12 @@ const AccountNotification = new Lang.Class({
                 if (status == Tp.ConnectionStatus.CONNECTED) {
                     this.destroy();
                 } else if (status == Tp.ConnectionStatus.DISCONNECTED) {
-                    this.update(this.title, this._getMessage(account.connection_error));
+                    let connectionError = account.connection_error;
+
+                    if (connectionError == Tp.error_get_dbus_name(Tp.Error.CANCELLED))
+                        this.destroy();
+                    else
+                        this.update(this.title, this._getMessage(connectionError));
                 }
             }));
     },
