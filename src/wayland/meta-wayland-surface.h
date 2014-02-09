@@ -43,12 +43,6 @@ struct _MetaWaylandBuffer
 
 typedef struct
 {
-  guint changed : 1;
-  guint value : 1;
-} MetaWaylandStateFlag;
-
-typedef struct
-{
   /* wl_surface.attach */
   gboolean newly_attached;
   MetaWaylandBuffer *buffer;
@@ -67,9 +61,6 @@ typedef struct
 
   gboolean frame_extents_changed;
   GtkBorder frame_extents;
-
-  MetaWaylandStateFlag fullscreen;
-  MetaWaylandStateFlag maximized;
 } MetaWaylandDoubleBufferedState;
 
 typedef struct
@@ -107,6 +98,8 @@ struct _MetaWaylandSurface
     GSList *pending_placement_ops;
   } sub;
 
+  uint32_t state_changed_serial;
+
   /* All the pending state, that wl_surface.commit will apply. */
   MetaWaylandDoubleBufferedState pending;
 };
@@ -124,6 +117,10 @@ void                meta_wayland_surface_window_unmanaged (MetaWaylandSurface *s
 void                meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
 							   int                 width,
 							   int                 height);
+void                meta_wayland_surface_send_maximized (MetaWaylandSurface *surface);
+void                meta_wayland_surface_send_unmaximized (MetaWaylandSurface *surface);
+void                meta_wayland_surface_send_fullscreened (MetaWaylandSurface *surface);
+void                meta_wayland_surface_send_unfullscreened (MetaWaylandSurface *surface);
 
 void                meta_wayland_surface_activated (MetaWaylandSurface *surface);
 void                meta_wayland_surface_deactivated (MetaWaylandSurface *surface);
