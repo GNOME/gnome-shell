@@ -384,6 +384,7 @@ meta_init (void)
   struct sigaction act;
   sigset_t empty_mask;
   GIOChannel *channel;
+  ClutterSettings *clutter_settings;
   
   sigemptyset (&empty_mask);
   act.sa_handler = SIG_IGN;
@@ -447,6 +448,13 @@ meta_init (void)
    * Clutter can only be initialized after the UI.
    */
   meta_clutter_init ();
+
+  /*
+   * XXX: We cannot handle high dpi scaling yet, so fix the scale to 1
+   * for now.
+   */
+  clutter_settings = clutter_settings_get_default ();
+  g_object_set (clutter_settings, "window-scaling-factor", 1, NULL);
 }
 
 /**
