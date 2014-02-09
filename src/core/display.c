@@ -388,7 +388,6 @@ meta_display_open (void)
   Display *xdisplay;
   GSList *screens;
   MetaScreen *screen;
-  GSList *tmp;
   int i;
   guint32 timestamp;
 
