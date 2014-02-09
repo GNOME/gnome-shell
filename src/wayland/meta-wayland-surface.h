@@ -125,8 +125,8 @@ void                meta_wayland_surface_configure_notify (MetaWaylandSurface *s
 							   int                 width,
 							   int                 height);
 
-void                meta_wayland_surface_focused_set (MetaWaylandSurface *surface);
-void                meta_wayland_surface_focused_unset (MetaWaylandSurface *surface);
+void                meta_wayland_surface_activated (MetaWaylandSurface *surface);
+void                meta_wayland_surface_deactivated (MetaWaylandSurface *surface);
 
 void                meta_wayland_surface_ping (MetaWaylandSurface *surface,
                                                guint32             serial);

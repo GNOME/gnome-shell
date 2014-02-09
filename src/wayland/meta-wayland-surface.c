@@ -1508,17 +1508,17 @@ meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
 }
 
 void
-meta_wayland_surface_focused_set (MetaWaylandSurface *surface)
+meta_wayland_surface_activated (MetaWaylandSurface *surface)
 {
   if (surface->xdg_surface.resource)
-    xdg_surface_send_focused_set (surface->xdg_surface.resource);
+    xdg_surface_send_activated (surface->xdg_surface.resource);
 }
 
 void
-meta_wayland_surface_focused_unset (MetaWaylandSurface *surface)
+meta_wayland_surface_deactivated (MetaWaylandSurface *surface)
 {
   if (surface->xdg_surface.resource)
-    xdg_surface_send_focused_unset (surface->xdg_surface.resource);
+    xdg_surface_send_deactivated (surface->xdg_surface.resource);
 }
 
 void
