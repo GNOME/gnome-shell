@@ -6852,7 +6852,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
     g_param_spec_double ("scale-x",
                          P_("Scale X"),
                          P_("Scale factor on the X axis"),
-                         0.0, G_MAXDOUBLE,
+                         -G_MAXDOUBLE, G_MAXDOUBLE,
                          1.0,
                          G_PARAM_READWRITE |
                          G_PARAM_STATIC_STRINGS |
@@ -6871,7 +6871,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
     g_param_spec_double ("scale-y",
                          P_("Scale Y"),
                          P_("Scale factor on the Y axis"),
-                         0.0, G_MAXDOUBLE,
+                         -G_MAXDOUBLE, G_MAXDOUBLE,
                          1.0,
                          G_PARAM_READWRITE |
                          G_PARAM_STATIC_STRINGS |
@@ -6890,7 +6890,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
     g_param_spec_double ("scale-z",
                          P_("Scale Z"),
                          P_("Scale factor on the Z axis"),
-                         0.0, G_MAXDOUBLE,
+                         -G_MAXDOUBLE, G_MAXDOUBLE,
                          1.0,
                          G_PARAM_READWRITE |
                          G_PARAM_STATIC_STRINGS |
