@@ -918,6 +918,7 @@ MAINTAINER_COMPILER_FLAGS="$MAINTAINER_COMPILER_FLAGS
                            -Wcast-align
                            -Wuninitialized
                            -Wno-strict-aliasing
+                           -Werror=logical-op
                            -Werror=pointer-arith
                            -Werror=missing-declarations
                            -Werror=redundant-decls
