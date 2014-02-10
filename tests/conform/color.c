@@ -81,6 +81,7 @@ color_from_string_invalid (void)
   g_assert (!clutter_color_from_string (&color, "hsl(100, 0, 0)"));
   g_assert (!clutter_color_from_string (&color, "hsla(10%, 0%, 50%)"));
   g_assert (!clutter_color_from_string (&color, "hsla(100%, 0%, 50%, 20%)"));
+  g_assert (!clutter_color_from_string (&color, "hsla(0.5, 0.9, 0.2, 0.4)"));
 }
 
 static void
@@ -216,6 +217,8 @@ color_from_string_valid (void)
   g_assert_cmpuint (color.blue, ==, 0);
   g_assert_cmpuint (color.alpha, ==, 255);
 
+  g_assert (clutter_color_from_string (&color, "hsl( 0, 100%, 50%     )"));
+
   g_assert (clutter_color_from_string (&color, "hsla( 0, 100%, 50%, 0.5 )"));
   if (g_test_verbose ())
     {
@@ -229,6 +232,9 @@ color_from_string_valid (void)
   g_assert_cmpuint (color.green, ==, 0);
   g_assert_cmpuint (color.blue, ==, 0);
   g_assert_cmpuint (color.alpha, ==, 127);
+
+  g_test_bug ("662818");
+  g_assert (clutter_color_from_string (&color, "hsla(0,100%,50% , 0.5)"));
 }
 
 static void
