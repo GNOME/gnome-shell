@@ -86,10 +86,10 @@ clutter_wayland_handle_motion (void *data,
   event = clutter_event_new (CLUTTER_MOTION);
   event->motion.stage = stage_cogl->wrapper;
   event->motion.device = CLUTTER_INPUT_DEVICE (device);
-  event->motion.time = _clutter_wayland_get_time();
+  event->motion.time = _clutter_wayland_get_time ();
   event->motion.modifier_state = 0;
-  event->motion.x = wl_fixed_to_double(x);
-  event->motion.y = wl_fixed_to_double(y);
+  event->motion.x = wl_fixed_to_double (x);
+  event->motion.y = wl_fixed_to_double (y);
 
   device->x = event->motion.x;
   device->y = event->motion.y;
@@ -122,7 +122,7 @@ clutter_wayland_handle_button (void *data,
   event = clutter_event_new (type);
   event->button.stage = stage_cogl->wrapper;
   event->button.device = CLUTTER_INPUT_DEVICE (device);
-  event->button.time = _clutter_wayland_get_time();
+  event->button.time = _clutter_wayland_get_time ();
   event->button.x = device->x;
   event->button.y = device->y;
   _clutter_xkb_translate_state (event, device->xkb, 0);
@@ -173,7 +173,7 @@ clutter_wayland_handle_axis (void *data,
 
   stage_cogl = device->pointer_focus;
   event = clutter_event_new (CLUTTER_SCROLL);
-  event->scroll.time = _clutter_wayland_get_time();
+  event->scroll.time = _clutter_wayland_get_time ();
   event->scroll.stage = stage_cogl->wrapper;
   event->scroll.direction = CLUTTER_SCROLL_SMOOTH;
   event->scroll.x = device->x;
@@ -230,7 +230,7 @@ clutter_wayland_handle_keymap (void *data,
   map_str = mmap (NULL, size, PROT_READ, MAP_SHARED, fd, 0);
   if (map_str == MAP_FAILED)
     {
-      close(fd);
+      close (fd);
       return;
     }
 
@@ -248,7 +248,7 @@ clutter_wayland_handle_keymap (void *data,
       return;
     }
 
-  device->xkb = xkb_state_new(keymap);
+  device->xkb = xkb_state_new (keymap);
   xkb_map_unref (keymap);
   if (!device->xkb)
     {
@@ -309,7 +309,7 @@ clutter_wayland_handle_key (void *data,
 					     (ClutterInputDevice *) device,
                                              stage_cogl->wrapper,
                                              device->xkb, 0,
-                                             _clutter_wayland_get_time(),
+                                             _clutter_wayland_get_time (),
                                              key, state);
 
   _clutter_event_push (event, FALSE);
@@ -384,9 +384,9 @@ clutter_wayland_handle_pointer_enter (void *data,
 
   event = clutter_event_new (CLUTTER_ENTER);
   event->crossing.stage = stage_cogl->wrapper;
-  event->crossing.time = _clutter_wayland_get_time();
-  event->crossing.x = wl_fixed_to_double(x);
-  event->crossing.y = wl_fixed_to_double(y);
+  event->crossing.time = _clutter_wayland_get_time ();
+  event->crossing.x = wl_fixed_to_double (x);
+  event->crossing.y = wl_fixed_to_double (y);
   event->crossing.source = CLUTTER_ACTOR (stage_cogl->wrapper);
   event->crossing.device = CLUTTER_INPUT_DEVICE (device);
 
@@ -447,7 +447,7 @@ clutter_wayland_handle_pointer_leave (void *data,
 
   event = clutter_event_new (CLUTTER_LEAVE);
   event->crossing.stage = stage_cogl->wrapper;
-  event->crossing.time = _clutter_wayland_get_time();
+  event->crossing.time = _clutter_wayland_get_time ();
   event->crossing.x = device->x;
   event->crossing.y = device->y;
   event->crossing.source = CLUTTER_ACTOR (stage_cogl->wrapper);
