@@ -656,9 +656,9 @@ parse_hsla (ClutterColor *color,
  * and 100%; the percentages require the '%' character. The 'a' value, if
  * specified, can only be a floating point value between 0.0 and 1.0.
  *
- * In the hls() and hlsa() formats, the 'h' value (hue) it's an angle between
+ * In the hls() and hlsa() formats, the 'h' value (hue) is an angle between
  * 0 and 360.0 degrees; the 'l' and 's' values (luminance and saturation) are
- * a floating point value between 0.0 and 1.0. The 'a' value, if specified,
+ * percentage values in the range between 0% and 100%. The 'a' value, if specified,
  * can only be a floating point value between 0.0 and 1.0.
  *
  * Whitespace inside the definitions is ignored; no leading whitespace
