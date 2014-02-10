@@ -2447,9 +2447,9 @@ clutter_timeline_get_step_progress (ClutterTimeline *timeline,
 {
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
 
-  if (timeline->priv->progress_mode != CLUTTER_STEPS ||
-      timeline->priv->progress_mode != CLUTTER_STEP_START ||
-      timeline->priv->progress_mode != CLUTTER_STEP_END)
+  if (!(timeline->priv->progress_mode == CLUTTER_STEPS ||
+        timeline->priv->progress_mode == CLUTTER_STEP_START ||
+        timeline->priv->progress_mode == CLUTTER_STEP_END))
     return FALSE;
 
   if (n_steps != NULL)
@@ -2521,11 +2521,11 @@ clutter_timeline_get_cubic_bezier_progress (ClutterTimeline *timeline,
 {
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
 
-  if (timeline->priv->progress_mode != CLUTTER_CUBIC_BEZIER ||
-      timeline->priv->progress_mode != CLUTTER_EASE ||
-      timeline->priv->progress_mode != CLUTTER_EASE_IN ||
-      timeline->priv->progress_mode != CLUTTER_EASE_OUT ||
-      timeline->priv->progress_mode != CLUTTER_EASE_IN_OUT)
+  if (!(timeline->priv->progress_mode == CLUTTER_CUBIC_BEZIER ||
+        timeline->priv->progress_mode == CLUTTER_EASE ||
+        timeline->priv->progress_mode == CLUTTER_EASE_IN ||
+        timeline->priv->progress_mode == CLUTTER_EASE_OUT ||
+        timeline->priv->progress_mode == CLUTTER_EASE_IN_OUT))
     return FALSE;
 
   if (c_1 != NULL)
