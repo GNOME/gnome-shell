@@ -26,8 +26,8 @@
  * @Title: ClutterTransition
  * @Short_Description: Transition between two values
  *
- * #ClutterTransition is a subclass of #ClutterTimeline that computes
- * the interpolation between two values, stored by a #ClutterInterval.
+ * #ClutterTransition is an abstract subclass of #ClutterTimeline that
+ * computes the interpolation between two values, stored by a #ClutterInterval.
  */
 
 #ifdef HAVE_CONFIG_H
