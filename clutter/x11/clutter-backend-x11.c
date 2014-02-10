@@ -1344,11 +1344,8 @@ _clutter_x11_input_device_translate_screen_coord (ClutterInputDevice *device,
     return FALSE;
 
   info = &g_array_index (device->axes, ClutterAxisInfo, index_);
-  if (info->axis != CLUTTER_INPUT_AXIS_X ||
-      info->axis != CLUTTER_INPUT_AXIS_Y)
-    {
-      return FALSE;
-    }
+  if (!(info->axis == CLUTTER_INPUT_AXIS_X || info->axis == CLUTTER_INPUT_AXIS_Y))
+    return FALSE;
 
   width = info->max_value - info->min_value;
 
