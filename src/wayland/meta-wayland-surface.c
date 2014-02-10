@@ -337,6 +337,9 @@ toplevel_surface_commit (MetaWaylandSurface             *surface,
         }
     }
 
+  if (pending->frame_extents_changed)
+    meta_window_set_custom_frame_extents (surface->window, &pending->frame_extents);
+
   if (pending->maximized.changed)
     {
       if (pending->maximized.value)
@@ -376,6 +379,7 @@ double_buffered_state_init (MetaWaylandDoubleBufferedState *state)
     surface_handle_pending_buffer_destroy;
   wl_list_init (&state->frame_callback_list);
 
+  state->frame_extents_changed = FALSE;
   state->maximized.changed = FALSE;
   state->fullscreen.changed = FALSE;
 }
@@ -749,14 +753,12 @@ xdg_surface_set_margin (struct wl_client *client,
 {
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
-  GtkBorder extents;
 
-  extents.left = left_margin;
-  extents.right = right_margin;
-  extents.top = top_margin;
-  extents.bottom = bottom_margin;
-
-  meta_window_set_custom_frame_extents (surface->window, &extents);
+  surface->pending.frame_extents_changed = TRUE;
+  surface->pending.frame_extents.left = left_margin;
+  surface->pending.frame_extents.right = right_margin;
+  surface->pending.frame_extents.top = top_margin;
+  surface->pending.frame_extents.bottom = bottom_margin;
 }
 
 static void

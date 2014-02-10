@@ -66,6 +66,9 @@ typedef struct
   /* wl_surface.frame */
   struct wl_list frame_callback_list;
 
+  gboolean frame_extents_changed;
+  GtkBorder frame_extents;
+
   MetaWaylandStateFlag fullscreen;
   MetaWaylandStateFlag maximized;
 } MetaWaylandDoubleBufferedState;
