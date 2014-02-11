@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-17 21:35+0000\n"
-"PO-Revision-Date: 2014-01-23 19:06+0630\n"
+"POT-Creation-Date: 2014-02-11 08:31+0000\n"
+"PO-Revision-Date: 2014-02-11 18:44+0630\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as_IN\n"
@@ -83,16 +83,10 @@ msgstr ""
 "দিয়ে।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
-#| msgid "Uuids of extensions to enable"
 msgid "UUIDs of extensions to enable"
 msgstr "সামৰ্থবান কৰিব লগিয়া সম্প্ৰসাৰণসমূহৰ UUIDs"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
-#| msgid ""
-#| "GNOME Shell extensions have a uuid property; this key lists extensions "
-#| "which should be loaded. Any extension that wants to be loaded needs to be "
-#| "in this list. You can also manipulate this list with the EnableExtension "
-#| "and DisableExtension DBus methods on org.gnome.Shell."
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -126,20 +120,17 @@ msgid "History for the looking glass dialog"
 msgstr "চোৱা কাঁচ ডাইলগৰ কাৰণে ইতিহাস"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
-#| msgid "Always show the 'Log out' menuitem in the user menu."
 msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "ব্যৱহাৰকাৰী মেনুত 'লগ আউট' মেনু আইটেম সদায় দেখুৱাব।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:10
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menuitem in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
 msgstr ""
 "এই কি'য়ে এটা-ব্যৱহাৰকাৰী, এটা-অধিবেশন অৱস্থাবোৰত 'লগ আউট' মেনুআইটেম "
-"স্বচালিতভাৱে লুকুৱা অভাৰৰাইড কৰে।"
+"স্বচালিতভাৱে "
+"লুকুৱা অভাৰৰাইড কৰে।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid ""
@@ -289,7 +280,7 @@ msgstr "উপৰত দিয়া কম্বোবাকচ ব্যৱহা
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:357
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:724
+#: ../js/ui/status/network.js:857
 msgid "Cancel"
 msgstr "বাতিল কৰক"
 
@@ -347,31 +338,30 @@ msgstr "কমান্ড বিশ্লেষন কৰিব নোৱাৰ
 
 #: ../js/misc/util.js:156
 #, javascript-format
-#| msgid "Execution of '%s' failed:"
 msgid "Execution of “%s” failed:"
 msgstr "“%s” ৰ প্ৰেৰণ ব্যৰ্থ হল:"
 
-#: ../js/ui/appDisplay.js:540
+#: ../js/ui/appDisplay.js:633
 msgid "Frequently used applications will appear here"
 msgstr "সঘনে ব্যৱহাৰ কৰা এপ্লিকেচনসমূহ ইয়াত উপস্থিত হব"
 
-#: ../js/ui/appDisplay.js:660
+#: ../js/ui/appDisplay.js:744
 msgid "Frequent"
 msgstr "সঘন"
 
-#: ../js/ui/appDisplay.js:667
+#: ../js/ui/appDisplay.js:751
 msgid "All"
 msgstr "সকলো"
 
-#: ../js/ui/appDisplay.js:1498
+#: ../js/ui/appDisplay.js:1558
 msgid "New Window"
 msgstr "নতুন উইন্ডো"
 
-#: ../js/ui/appDisplay.js:1501 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1580 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "পছন্দৰ পৰা আতৰাওক"
 
-#: ../js/ui/appDisplay.js:1502
+#: ../js/ui/appDisplay.js:1586
 msgid "Add to Favorites"
 msgstr "পছন্দলে যোগ কৰক"
 
@@ -584,8 +574,8 @@ msgstr "পাছৱাৰ্ড:"
 msgid "Type again:"
 msgstr "আকৌ টাইপ কৰক:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:131
-#: ../js/ui/status/network.js:293 ../js/ui/status/network.js:727
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:227
+#: ../js/ui/status/network.js:300 ../js/ui/status/network.js:860
 msgid "Connect"
 msgstr "সংযোগ কৰক"
 
@@ -619,9 +609,6 @@ msgstr "বেতাঁৰ নেটৱাৰ্কৰ দ্বাৰা প্
 
 #: ../js/ui/components/networkAgent.js:312
 #, javascript-format
-#| msgid ""
-#| "Passwords or encryption keys are required to access the wireless network "
-#| "'%s'."
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
@@ -659,7 +646,6 @@ msgstr "মবাইল ব্ৰডবেণ্ড নেটৱাৰ্ক প
 
 #: ../js/ui/components/networkAgent.js:339
 #, javascript-format
-#| msgid "A password is required to connect to '%s'."
 msgid "A password is required to connect to “%s”."
 msgstr "“%s” লে সংযোগ কৰিবলে এটা পাছৱাৰ্ডৰ প্ৰয়োজন।"
 
@@ -708,35 +694,35 @@ msgid "Mute"
 msgstr "মোন কৰক"
 
 #. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"*/
-#: ../js/ui/components/telepathyClient.js:941
+#: ../js/ui/components/telepathyClient.js:952
 msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgstr "<b>যোৱাকালী</b>, <b>%H:%M</b>"
 
 #. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30*/
-#: ../js/ui/components/telepathyClient.js:947
+#: ../js/ui/components/telepathyClient.js:958
 msgid "<b>%A</b>, <b>%H:%M</b>"
 msgstr "<b>%A</b>, <b>%H:%M</b>"
 
 #. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
-#: ../js/ui/components/telepathyClient.js:952
+#: ../js/ui/components/telepathyClient.js:963
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
 msgstr "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
 
 #. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
-#: ../js/ui/components/telepathyClient.js:956
+#: ../js/ui/components/telepathyClient.js:967
 msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:987
+#: ../js/ui/components/telepathyClient.js:998
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s এতিয়া %s হিচাপে জনাজাত"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1090
+#: ../js/ui/components/telepathyClient.js:1101
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "%s লে নিমন্ত্ৰণ"
@@ -744,38 +730,38 @@ msgstr "%s লে নিমন্ত্ৰণ"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1098
+#: ../js/ui/components/telepathyClient.js:1109
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s এ আপোনাক %s ত অংশগ্ৰহণ কৰিবলে আমন্ত্ৰণ জনাইছে"
 
-#: ../js/ui/components/telepathyClient.js:1100
-#: ../js/ui/components/telepathyClient.js:1135
-#: ../js/ui/components/telepathyClient.js:1169
-#: ../js/ui/components/telepathyClient.js:1226
+#: ../js/ui/components/telepathyClient.js:1111
+#: ../js/ui/components/telepathyClient.js:1146
+#: ../js/ui/components/telepathyClient.js:1180
+#: ../js/ui/components/telepathyClient.js:1237
 msgid "Decline"
 msgstr "নাকচ কৰক"
 
-#: ../js/ui/components/telepathyClient.js:1106
-#: ../js/ui/components/telepathyClient.js:1175
-#: ../js/ui/components/telepathyClient.js:1231
+#: ../js/ui/components/telepathyClient.js:1117
+#: ../js/ui/components/telepathyClient.js:1186
+#: ../js/ui/components/telepathyClient.js:1242
 msgid "Accept"
 msgstr "গ্ৰহন কৰক"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1125
+#: ../js/ui/components/telepathyClient.js:1136
 #, javascript-format
 msgid "Video call from %s"
 msgstr "%s ৰ পৰা ভিডিঅ' কল"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1128
+#: ../js/ui/components/telepathyClient.js:1139
 #, javascript-format
 msgid "Call from %s"
 msgstr "%s ৰ পৰা কল"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1142
+#: ../js/ui/components/telepathyClient.js:1153
 msgid "Answer"
 msgstr "উত্তৰ দিয়ক"
 
@@ -784,110 +770,110 @@ msgstr "উত্তৰ দিয়ক"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1163
+#: ../js/ui/components/telepathyClient.js:1174
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s এ আপোনাক %s পঠাই আছে"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1192
+#: ../js/ui/components/telepathyClient.js:1203
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "আপুনি কেতিয়া অনলাইন আছে চাবলে %s এ অনুমতি বিচাৰিব"
 
-#: ../js/ui/components/telepathyClient.js:1277
+#: ../js/ui/components/telepathyClient.js:1288
 msgid "Network error"
 msgstr "নেটৱাৰ্ক ত্ৰুটি"
 
-#: ../js/ui/components/telepathyClient.js:1279
+#: ../js/ui/components/telepathyClient.js:1290
 msgid "Authentication failed"
 msgstr "প্ৰমাণীকৰণ ব্যৰ্থ"
 
-#: ../js/ui/components/telepathyClient.js:1281
+#: ../js/ui/components/telepathyClient.js:1292
 msgid "Encryption error"
 msgstr "ইনক্ৰিপষণ ত্ৰুটি"
 
-#: ../js/ui/components/telepathyClient.js:1283
+#: ../js/ui/components/telepathyClient.js:1294
 msgid "Certificate not provided"
 msgstr "প্ৰমাণপত্ৰ প্ৰদান কৰা হোৱা নাই"
 
-#: ../js/ui/components/telepathyClient.js:1285
+#: ../js/ui/components/telepathyClient.js:1296
 msgid "Certificate untrusted"
 msgstr "প্ৰমাণপত্ৰক ভৰষা কৰিব নোৱাৰি"
 
-#: ../js/ui/components/telepathyClient.js:1287
+#: ../js/ui/components/telepathyClient.js:1298
 msgid "Certificate expired"
 msgstr "প্ৰমাণপত্ৰৰ অৱসান ঘটিছে"
 
-#: ../js/ui/components/telepathyClient.js:1289
+#: ../js/ui/components/telepathyClient.js:1300
 msgid "Certificate not activated"
 msgstr "প্ৰমাণপত্ৰ সক্ৰিয় কৰা হোৱা নাই"
 
-#: ../js/ui/components/telepathyClient.js:1291
+#: ../js/ui/components/telepathyClient.js:1302
 msgid "Certificate hostname mismatch"
 msgstr "প্ৰমাণপত্ৰ হস্টনাম অমিল"
 
-#: ../js/ui/components/telepathyClient.js:1293
+#: ../js/ui/components/telepathyClient.js:1304
 msgid "Certificate fingerprint mismatch"
 msgstr "প্ৰমাণপত্ৰ ফিংগাৰপ্ৰিন্ট অমিল"
 
-#: ../js/ui/components/telepathyClient.js:1295
+#: ../js/ui/components/telepathyClient.js:1306
 msgid "Certificate self-signed"
 msgstr "প্ৰমাণপত্ৰ স্ব-স্বাক্ষৰীত"
 
-#: ../js/ui/components/telepathyClient.js:1297
+#: ../js/ui/components/telepathyClient.js:1308
 msgid "Status is set to offline"
 msgstr "অৱস্থা অফলাইনলে সংহতি কৰা হৈছে"
 
-#: ../js/ui/components/telepathyClient.js:1299
+#: ../js/ui/components/telepathyClient.js:1310
 msgid "Encryption is not available"
 msgstr "ইনক্ৰিপষণ উপলব্ধ নহয়"
 
-#: ../js/ui/components/telepathyClient.js:1301
+#: ../js/ui/components/telepathyClient.js:1312
 msgid "Certificate is invalid"
 msgstr "প্ৰমাণপত্ৰ অবৈধ"
 
-#: ../js/ui/components/telepathyClient.js:1303
+#: ../js/ui/components/telepathyClient.js:1314
 msgid "Connection has been refused"
 msgstr "সংযোগ নাকচ কৰা হৈছে"
 
-#: ../js/ui/components/telepathyClient.js:1305
+#: ../js/ui/components/telepathyClient.js:1316
 msgid "Connection can't be established"
 msgstr "সংযোগ স্থাপন কৰিব নোৱাৰি"
 
-#: ../js/ui/components/telepathyClient.js:1307
+#: ../js/ui/components/telepathyClient.js:1318
 msgid "Connection has been lost"
 msgstr "সংযোগ হেৰাইছে"
 
-#: ../js/ui/components/telepathyClient.js:1309
+#: ../js/ui/components/telepathyClient.js:1320
 msgid "This account is already connected to the server"
 msgstr "এই একাওন্ট ইতিমধ্যে চাৰ্ভাৰৰ সৈতে সংযোগিত"
 
-#: ../js/ui/components/telepathyClient.js:1311
+#: ../js/ui/components/telepathyClient.js:1322
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "সংযোগক একে সম্পদ ব্যৱহাৰ কৰি এটা নতুন সংযোগৰে প্ৰতিস্থাপন কৰা হৈছে"
 
-#: ../js/ui/components/telepathyClient.js:1313
+#: ../js/ui/components/telepathyClient.js:1324
 msgid "The account already exists on the server"
 msgstr "একাওন্ট ইতিমধ্যে চাৰ্ভাৰত উপস্থিত"
 
-#: ../js/ui/components/telepathyClient.js:1315
+#: ../js/ui/components/telepathyClient.js:1326
 msgid "Server is currently too busy to handle the connection"
 msgstr "চাৰ্ভাৰ সংযোগ ব্যৱস্থাপনা কৰিবলে বৰ্তমানে অতি ব্যস্ত"
 
-#: ../js/ui/components/telepathyClient.js:1317
+#: ../js/ui/components/telepathyClient.js:1328
 msgid "Certificate has been revoked"
 msgstr "প্ৰমাণপত্ৰ প্ৰত্যাহাৰ কৰা হৈছে"
 
-#: ../js/ui/components/telepathyClient.js:1319
+#: ../js/ui/components/telepathyClient.js:1330
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "প্ৰমাণপত্ৰয় এটা অসুৰক্ষিত চিফাৰ এলগৰিথম ব্যৱহাৰ কৰে অথবা ক্ৰিপ্টোগ্ৰাফিয়ভাৱে "
 "দুৰ্বল"
 
-#: ../js/ui/components/telepathyClient.js:1321
+#: ../js/ui/components/telepathyClient.js:1332
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -896,22 +882,22 @@ msgstr ""
 "ক্ৰিপ্টোগ্ৰাফী "
 "লাইব্ৰেৰীয়ে প্ৰণয়ন কৰা সীমাসমূহত অতিক্ৰম কৰে"
 
-#: ../js/ui/components/telepathyClient.js:1323
+#: ../js/ui/components/telepathyClient.js:1334
 msgid "Internal error"
 msgstr "অভ্যন্তৰীক ত্ৰুটি"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1333
+#: ../js/ui/components/telepathyClient.js:1344
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "%s ৰ সৈতে সংযোগ কৰিবলে অক্ষম"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1349
 msgid "View account"
 msgstr "একাওন্ট দৰ্শন কৰক"
 
-#: ../js/ui/components/telepathyClient.js:1370
+#: ../js/ui/components/telepathyClient.js:1381
 msgid "Unknown reason"
 msgstr "অজ্ঞাত কাৰণ"
 
@@ -1058,7 +1044,6 @@ msgstr "ইনস্টল কৰক"
 
 #: ../js/ui/extensionDownloader.js:204
 #, javascript-format
-#| msgid "Download and install '%s' from extensions.gnome.org?"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org ৰ পৰা  “%s” ক ডাউনল'ড আৰু ইনস্টল কৰিব নে?"
 
@@ -1092,7 +1077,7 @@ msgstr "সামৰ্থবান কৰা আছে"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:470
+#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:523
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "অসামৰ্থবান কৰা আছে"
@@ -1117,43 +1102,43 @@ msgstr "উৎস দৰ্শন কৰক"
 msgid "Web Page"
 msgstr "ৱেব পৃষ্ঠা"
 
-#: ../js/ui/messageTray.js:1309
+#: ../js/ui/messageTray.js:1312
 msgid "Open"
 msgstr "খোলক"
 
-#: ../js/ui/messageTray.js:1316
+#: ../js/ui/messageTray.js:1319
 msgid "Remove"
 msgstr "আতৰাওক"
 
-#: ../js/ui/messageTray.js:1613
+#: ../js/ui/messageTray.js:1616
 msgid "Notifications"
 msgstr "অধিসূচনাসমূহ"
 
-#: ../js/ui/messageTray.js:1620
+#: ../js/ui/messageTray.js:1623
 msgid "Clear Messages"
 msgstr "বাৰ্তাসমূহ পৰিষ্কাৰ কৰক"
 
-#: ../js/ui/messageTray.js:1639
+#: ../js/ui/messageTray.js:1642
 msgid "Notification Settings"
 msgstr "অধিসূচনা সংহতিসমূহ"
 
-#: ../js/ui/messageTray.js:1692
+#: ../js/ui/messageTray.js:1695
 msgid "Tray Menu"
 msgstr "ট্ৰে মেনু"
 
-#: ../js/ui/messageTray.js:1909
+#: ../js/ui/messageTray.js:1912
 msgid "No Messages"
 msgstr "কোনো বাৰ্তা নাই"
 
-#: ../js/ui/messageTray.js:1947
+#: ../js/ui/messageTray.js:1950
 msgid "Message Tray"
 msgstr "বাৰ্তা ট্ৰে"
 
-#: ../js/ui/messageTray.js:2931
+#: ../js/ui/messageTray.js:2934
 msgid "System Information"
 msgstr "চিস্টেম তথ্য"
 
-#: ../js/ui/notificationDaemon.js:515 ../src/shell-app.c:397
+#: ../js/ui/notificationDaemon.js:515 ../src/shell-app.c:399
 msgctxt "program"
 msgid "Unknown"
 msgstr "অজ্ঞাত"
@@ -1191,7 +1176,7 @@ msgstr "প্ৰস্থান কৰক"
 msgid "Activities"
 msgstr "কাৰ্য্যসমূহ"
 
-#: ../js/ui/panel.js:903
+#: ../js/ui/panel.js:905
 msgid "Top Bar"
 msgstr "উপৰৰ বাৰ"
 
@@ -1220,19 +1205,19 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d নতুন অধিসূচনা"
 msgstr[1] "%d নতুন অধিসূচনাসমূহ"
 
-#: ../js/ui/screenShield.js:472 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "লক কৰক"
 
-#: ../js/ui/screenShield.js:706
+#: ../js/ui/screenShield.js:707
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME এ পৰ্দা লক কৰিব লাগিব"
 
-#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1300
+#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1301
 msgid "Unable to lock"
 msgstr "লক কৰিবলে অক্ষম"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1301
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1302
 msgid "Lock was blocked by an application"
 msgstr "লক কাৰ্য্য এটা এপ্লিকেচন দ্বাৰা প্ৰতিৰোধ কৰা হৈছিল"
 
@@ -1312,25 +1297,30 @@ msgstr "উচ্চ কন্ট্ৰাস্ট"
 msgid "Large Text"
 msgstr "ডাঙৰ লিখনী"
 
-#: ../js/ui/status/bluetooth.js:45
+#: ../js/ui/status/bluetooth.js:48
 msgid "Bluetooth"
 msgstr "ব্লুটুথ"
 
-#: ../js/ui/status/bluetooth.js:47 ../js/ui/status/network.js:131
-#: ../js/ui/status/network.js:1081 ../js/ui/status/rfkill.js:48
+#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/network.js:134
+#: ../js/ui/status/network.js:1209 ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "বন্ধ কৰক"
 
-#: ../js/ui/status/bluetooth.js:50
+#: ../js/ui/status/bluetooth.js:53
 msgid "Bluetooth Settings"
 msgstr "ব্লুটুথ সংহতিসমূহ"
 
-#: ../js/ui/status/bluetooth.js:98
+#: ../js/ui/status/bluetooth.js:100
 #, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d সংযুক্ত ডিভাইচ"
 msgstr[1] "%d সংযুক্ত ডিভাইচসমূহ"
+
+#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1232
+msgid "Not Connected"
+msgstr "সংযুক্ত নহয়"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1340,103 +1330,136 @@ msgstr "উজ্জ্বলতা"
 msgid "Show Keyboard Layout"
 msgstr "কিবৰ্ড বিন্যাস দেখুৱাওক"
 
-#: ../js/ui/status/network.js:70
+#: ../js/ui/status/network.js:73
 msgid "<unknown>"
 msgstr "<unknown>"
 
-#: ../js/ui/status/network.js:220 ../js/ui/status/network.js:377
-#: ../js/ui/status/network.js:1102
+#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:389
+#: ../js/ui/status/network.js:1230
 msgid "Off"
 msgstr "অফ"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:383
+#: ../js/ui/status/network.js:395
 msgid "unmanaged"
 msgstr "অব্যৱস্থাপিত"
 
-#: ../js/ui/status/network.js:385
+#: ../js/ui/status/network.js:397
 msgid "disconnecting..."
 msgstr "বিচ্ছিনিত কৰা হৈছে..."
 
-#: ../js/ui/status/network.js:391 ../js/ui/status/network.js:1156
+#: ../js/ui/status/network.js:403 ../js/ui/status/network.js:1284
 msgid "connecting..."
 msgstr "সংযোগ কৰা হৈছে..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:394 ../js/ui/status/network.js:1159
+#: ../js/ui/status/network.js:406 ../js/ui/status/network.js:1287
 msgid "authentication required"
 msgstr "প্ৰমাণীকৰণৰ প্ৰয়োজন"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:402
+#: ../js/ui/status/network.js:414
 msgid "firmware missing"
 msgstr "ফাৰ্মৱেৰ সন্ধানহীন"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:406
+#: ../js/ui/status/network.js:418
 msgid "unavailable"
 msgstr "উপলব্ধ নাই"
 
-#: ../js/ui/status/network.js:408 ../js/ui/status/network.js:1161
+#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1289
 msgid "connection failed"
 msgstr "সংযোগ ব্যৰ্থ"
 
-#: ../js/ui/status/network.js:424 ../js/ui/status/network.js:510
-#| msgid "Mobile broadband"
+#: ../js/ui/status/network.js:436
+#| msgid "Wi-Fi Settings"
+msgid "Wired Settings"
+msgstr "তাঁৰযুক্ত সংহতিসমূহ"
+
+#: ../js/ui/status/network.js:477 ../js/ui/status/network.js:563
 msgid "Mobile Broadband Settings"
 msgstr "মবাইল ব্ৰডবেণ্ড সংহতিসমূহ"
 
-#: ../js/ui/status/network.js:466 ../js/ui/status/network.js:1100
-#| msgid "hardware disabled"
+#: ../js/ui/status/network.js:519 ../js/ui/status/network.js:1228
 msgid "Hardware Disabled"
 msgstr "হাৰ্ডৱেৰ অসামৰ্থবান কৰা আছে"
 
-#: ../js/ui/status/network.js:692
+#: ../js/ui/status/network.js:578
+msgid "Use as Internet connection"
+msgstr "ইন্টাৰনেট সংযোগ ৰূপে ব্যৱহাৰ কৰক"
+
+#: ../js/ui/status/network.js:755
+#| msgid "Airplane Mode"
+msgid "Airplane Mode is On"
+msgstr "বিমান অৱস্থা অন আছে"
+
+#: ../js/ui/status/network.js:756
+msgid "Wi-Fi is disabled when airplane mode is on."
+msgstr "বিমান অৱস্থা অন থকা অৱস্থাত Wi-Fi অসামৰ্থবান থাকে।"
+
+#: ../js/ui/status/network.js:757
+#| msgid "Airplane Mode"
+msgid "Turn Off Airplane Mode"
+msgstr "বিমান অৱস্থা বন্ধ কৰক"
+
+#: ../js/ui/status/network.js:766
+#| msgid "Wi-Fi Settings"
+msgid "Wi-Fi is Off"
+msgstr "Wi-Fi অফ আছে"
+
+#: ../js/ui/status/network.js:767
+msgid "Wi-Fi needs to be turned on in order to connect to a network."
+msgstr "এটা নেটৱাৰ্কৰ সৈতে সংযোগ কৰিবলে Wi-Fi অন কৰিব লাগিব।"
+
+#: ../js/ui/status/network.js:768
+#| msgid "Turn On"
+msgid "Turn On Wi-Fi"
+msgstr "Wi-Fi অন কৰক"
+
+#: ../js/ui/status/network.js:793
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi নেটৱাৰ্কসমূহ"
 
-#: ../js/ui/status/network.js:694
+#: ../js/ui/status/network.js:795
 msgid "Select a network"
 msgstr "এটা নেটৱাৰ্ক বাছক"
 
-#: ../js/ui/status/network.js:718
+#: ../js/ui/status/network.js:824
 msgid "No Networks"
 msgstr "কোনো নেটৱাৰ্ক নাই"
 
-#: ../js/ui/status/network.js:987
+#: ../js/ui/status/network.js:845 ../js/ui/status/rfkill.js:103
+msgid "Use hardware switch to turn off"
+msgstr "বন্ধ কৰিবলে হাৰ্ডৱেৰ চুইচ ব্যৱহাৰ কৰক"
+
+#: ../js/ui/status/network.js:1115
 msgid "Select Network"
 msgstr "নেটৱাৰ্ক বাছক"
 
-#: ../js/ui/status/network.js:993
-#| msgid "Settings"
+#: ../js/ui/status/network.js:1121
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi সংহতিসমূহ"
 
-#: ../js/ui/status/network.js:1081
+#: ../js/ui/status/network.js:1209
 msgid "Turn On"
 msgstr "অন কৰক"
 
-#: ../js/ui/status/network.js:1104
-#| msgid "Connect"
-msgid "Not Connected"
-msgstr "সংযুক্ত নহয়"
-
-#: ../js/ui/status/network.js:1224
+#: ../js/ui/status/network.js:1352
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1364
+#: ../js/ui/status/network.js:1495
 msgid "Network Manager"
 msgstr "নেটৱাৰ্ক ব্যৱস্থাপক"
 
-#: ../js/ui/status/network.js:1403
+#: ../js/ui/status/network.js:1534
 msgid "Connection failed"
 msgstr "সংযোগ ব্যৰ্থ"
 
-#: ../js/ui/status/network.js:1404
+#: ../js/ui/status/network.js:1535
 msgid "Activation of network connection failed"
 msgstr "নেটৱাৰ্ক সংযোগ সক্ৰিয়কৰণ ব্যৰ্থ হল"
 
@@ -1470,15 +1493,15 @@ msgstr "UPS"
 msgid "Battery"
 msgstr "বেটাৰি"
 
-#: ../js/ui/status/rfkill.js:45
+#: ../js/ui/status/rfkill.js:82
 msgid "Airplane Mode"
 msgstr "বিমান অৱস্থা"
 
-#: ../js/ui/status/rfkill.js:47
+#: ../js/ui/status/rfkill.js:84
 msgid "On"
 msgstr "অন"
 
-#: ../js/ui/status/rfkill.js:51
+#: ../js/ui/status/rfkill.js:88
 msgid "Network Settings"
 msgstr "নেটৱাৰ্ক সংহতিসমূহ"
 
@@ -1532,7 +1555,6 @@ msgstr "সন্ধান কৰক"
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, javascript-format
-#| msgid "'%s' is ready"
 msgid "“%s” is ready"
 msgstr "“%s” প্ৰস্তুত"
 
@@ -1600,9 +1622,8 @@ msgstr "লগিন পৰ্দাৰ বাবে এটা বিশেষ �
 msgid "List possible modes"
 msgstr "সম্ভাব্য অৱস্থাসমূহ তালিকাভুক্ত কৰক"
 
-#: ../src/shell-app.c:640
+#: ../src/shell-app.c:642
 #, c-format
-#| msgid "Failed to launch '%s'"
 msgid "Failed to launch “%s”"
 msgstr "“%s” লঞ্চ কৰিবলে ব্যৰ্থ"
 
