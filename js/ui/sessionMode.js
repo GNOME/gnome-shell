@@ -10,6 +10,8 @@ const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
+const Config = imports.misc.config;
+
 const DEFAULT_MODE = 'restrictive';
 
 const _modes = {
@@ -92,8 +94,12 @@ const _modes = {
         isLocked: false,
         isPrimary: true,
         unlockDialog: imports.ui.unlockDialog.UnlockDialog,
-        components: ['networkAgent', 'polkitAgent', 'telepathyClient',
+        components: Config.HAVE_NETWORKMANAGER ?
+                    ['networkAgent', 'polkitAgent', 'telepathyClient',
+                     'keyring', 'autorunManager', 'automountManager'] :
+                    ['polkitAgent', 'telepathyClient',
                      'keyring', 'autorunManager', 'automountManager'],
+
         panel: {
             left: ['activities', 'appMenu'],
             center: ['dateMenu'],

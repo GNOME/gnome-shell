@@ -98,7 +98,6 @@ shell_public_headers_h =		\
 	shell-invert-lightness-effect.h	\
 	shell-keybinding-modes.h	\
 	shell-mount-operation.h		\
-	shell-network-agent.h		\
 	shell-perf-log.h		\
 	shell-screenshot.h		\
 	shell-slicer.h			\
@@ -109,6 +108,10 @@ shell_public_headers_h =		\
 	shell-util.h			\
 	shell-window-tracker.h		\
 	shell-wm.h
+
+if HAVE_NETWORKMANAGER
+shell_public_headers_h +=  shell-network-agent.h
+endif
 
 libgnome_shell_menu_la_SOURCES = 	\
 	gtkactionmuxer.h		\
@@ -136,7 +139,6 @@ libgnome_shell_base_la_SOURCES = 	\
 	shell-menu-tracker.c		\
 	shell-menu-tracker.h		\
 	shell-mount-operation.c		\
-	shell-network-agent.c		\
 	shell-perf-log.c		\
 	shell-polkit-authentication-agent.h	\
 	shell-polkit-authentication-agent.c	\
@@ -146,6 +148,10 @@ libgnome_shell_base_la_SOURCES = 	\
 	shell-stack.c			\
 	shell-tp-client.c		\
 	$(NULL)
+
+if HAVE_NETWORKMANAGER
+libgnome_shell_base_la_SOURCES +=  shell-network-agent.c
+endif
 
 libgnome_shell_sources =		\
 	$(shell_public_headers_h)	\
@@ -343,7 +349,10 @@ INTROSPECTION_GIRS += ShellMenu-0.1.gir
 CLEANFILES += ShellMenu-0.1.gir
 
 Shell-0.1.gir: gnome-shell St-1.0.gir ShellMenu-0.1.gir
-Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 TelepathyGLib-0.12 Soup-2.4 GMenu-3.0 NetworkManager-1.0 NMClient-1.0
+Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 TelepathyGLib-0.12 Soup-2.4 GMenu-3.0
+if HAVE_NETWORKMANAGER
+Shell_0_1_gir_INCLUDES += NetworkManager-1.0 NMClient-1.0
+endif
 Shell_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
 # Hack! we use PROGRAM instead of LIBS so that the soname is not included
 # in the typelib. This way the symbols will be resolved with the libgnome-shell

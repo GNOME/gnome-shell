@@ -812,7 +812,11 @@ const AggregateMenu = new Lang.Class({
         this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
         this.actor.add_child(this._indicators);
 
-        this._network = new imports.ui.status.network.NMApplet();
+        if (Config.HAVE_NETWORKMANAGER) {
+            this._network = new imports.ui.status.network.NMApplet();
+        } else {
+            this._network = null;
+        }
         if (Config.HAVE_BLUETOOTH) {
             this._bluetooth = new imports.ui.status.bluetooth.Indicator();
         } else {
@@ -829,7 +833,9 @@ const AggregateMenu = new Lang.Class({
 
         this._indicators.add_child(this._screencast.indicators);
         this._indicators.add_child(this._location.indicators);
-        this._indicators.add_child(this._network.indicators);
+        if (this._network) {
+            this._indicators.add_child(this._network.indicators);
+        }
         if (this._bluetooth) {
             this._indicators.add_child(this._bluetooth.indicators);
         }
@@ -841,7 +847,9 @@ const AggregateMenu = new Lang.Class({
         this.menu.addMenuItem(this._volume.menu);
         this.menu.addMenuItem(this._brightness.menu);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addMenuItem(this._network.menu);
+        if (this._network) {
+            this.menu.addMenuItem(this._network.menu);
+        }
         if (this._bluetooth) {
             this.menu.addMenuItem(this._bluetooth.menu);
         }

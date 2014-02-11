@@ -105,9 +105,7 @@ SHARED_PCS="gio-unix-2.0 >= $GIO_MIN_VERSION
             libcanberra libcanberra-gtk3
             telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
             polkit-agent-1 >= $POLKIT_MIN_VERSION
-            libnm-glib libnm-util >= $NETWORKMANAGER_MIN_VERSION
-            libnm-gtk >= $NETWORKMANAGER_MIN_VERSION
-            libsecret-unstable gcr-base-3 >= $GCR_MIN_VERSION"
+            gcr-base-3 >= $GCR_MIN_VERSION"
 if test x$have_systemd = xyes; then
   SHARED_PCS="${SHARED_PCS} libsystemd-journal"
 fi
@@ -182,6 +180,38 @@ if test "$langinfo_ok" = "yes"; then
             [Define if _NL_TIME_FIRST_WEEKDAY is available])
 fi
 
+AC_ARG_ENABLE(networkmanager,
+             AS_HELP_STRING([--disable-networkmanager],
+                            [disable NetworkManager support  @<:@default=auto@:>@]),,
+              [enable_networkmanager=auto])
+
+if test "x$enable_networkmanager" != "xno"; then
+   PKG_CHECK_MODULES(NETWORKMANAGER,
+                     [libnm-glib
+                     libnm-util >= $NETWORKMANAGER_MIN_VERSION
+                     libnm-gtk >= $NETWORKMANAGER_MIN_VERSION
+                     libsecret-unstable],
+                     [have_networkmanager=yes],
+                     [have_networkmanager=no])
+
+   GNOME_SHELL_CFLAGS="$GNOME_SHELL_CFLAGS $NETWORKMANAGER_CFLAGS"
+   GNOME_SHELL_LIBS="$GNOME_SHELL_LIBS $NETWORKMANAGER_LIBS"
+else
+   have_networkmanager="no  (disabled)"
+fi
+
+if test "x$have_networkmanager" = "xyes"; then
+   AC_DEFINE(HAVE_NETWORKMANAGER, [1], [Define if we have NetworkManager])
+   AC_SUBST([HAVE_NETWORKMANAGER], [1])
+else
+   if test "x$enable_networkmanager" = "xyes"; then
+      AC_MSG_ERROR([Couldn't find NetworkManager.])
+   fi
+   AC_SUBST([HAVE_NETWORKMANAGER], [0])
+fi
+
+AM_CONDITIONAL(HAVE_NETWORKMANAGER, test "$have_networkmanager" = "yes")
+
 # Sets GLIB_GENMARSHAL and GLIB_MKENUMS
 AM_PATH_GLIB_2_0()
 
@@ -223,3 +253,15 @@ AC_CONFIG_FILES([
   man/Makefile
 ])
 AC_OUTPUT
+
+echo "
+Build configuration:
+
+       Prefix:                                 ${prefix}
+       Source code location:                   ${srcdir}
+       Compiler:                               ${CC}
+       Compiler Warnings:                      $enable_compile_warnings
+
+       Support for NetworkManager:             $have_networkmanager
+       Support for GStreamer recording:        $build_recorder
+"

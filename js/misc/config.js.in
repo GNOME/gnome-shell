@@ -6,6 +6,8 @@ const PACKAGE_NAME = '@PACKAGE_NAME@';
 const PACKAGE_VERSION = '@PACKAGE_VERSION@';
 /* 1 if gnome-bluetooth is available, 0 otherwise */
 const HAVE_BLUETOOTH = @HAVE_BLUETOOTH@;
+/* 1 if networkmanager is available, 0 otherwise */
+const HAVE_NETWORKMANAGER = @HAVE_NETWORKMANAGER@;
 /* gettext package */
 const GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
 /* locale dir */
