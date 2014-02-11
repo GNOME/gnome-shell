@@ -1388,9 +1388,6 @@ const AppIcon = new Lang.Class({
         if (button == 1) {
             this._onActivate(Clutter.get_current_event());
         } else if (button == 2) {
-            // Last workspace is always empty
-            let launchWorkspace = global.screen.get_workspace_by_index(global.screen.n_workspaces - 1);
-            launchWorkspace.activate(global.get_current_time());
             this.app.open_new_window(-1);
             Main.overview.hide();
         }
