@@ -46,21 +46,6 @@ const INDICATORS_ANIMATION_MAX_TIME = 0.75;
 const PAGE_SWITCH_TRESHOLD = 0.2;
 const PAGE_SWITCH_TIME = 0.3;
 
-function _getCategories(info) {
-    let categoriesStr = info.get_categories();
-    if (!categoriesStr)
-        return [];
-    return categoriesStr.split(';');
-}
-
-function _isTerminal(app) {
-    let info = app.get_app_info();
-    if (!info)
-        return false;
-    let categories = _getCategories(info);
-    return categories.indexOf('TerminalEmulator') > -1;
-}
-
 function _listsIntersect(a, b) {
     for (let itemA of a)
         if (b.indexOf(itemA) >= 0)
@@ -888,7 +873,7 @@ const AppSearchProvider = new Lang.Class({
         let app = this._appSys.lookup_app(result);
         let event = Clutter.get_current_event();
         let modifiers = event ? event.get_state() : 0;
-        let openNewWindow = (modifiers & Clutter.ModifierType.CONTROL_MASK) || _isTerminal(app);
+        let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK;
 
         if (openNewWindow)
             app.open_new_window(-1);
@@ -1466,9 +1451,8 @@ const AppIcon = new Lang.Class({
     _onActivate: function (event) {
         let modifiers = event.get_state();
 
-        if ((modifiers & Clutter.ModifierType.CONTROL_MASK
-             && this.app.state == Shell.AppState.RUNNING)
-            || _isTerminal(this.app)) {
+        if (modifiers & Clutter.ModifierType.CONTROL_MASK
+            && this.app.state == Shell.AppState.RUNNING) {
             this.app.open_new_window(-1);
         } else {
             this.app.activate();
