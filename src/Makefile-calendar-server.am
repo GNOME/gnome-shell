@@ -23,7 +23,7 @@ gnome_shell_calendar_server_CFLAGS =		\
 	$(CALENDAR_SERVER_CFLAGS)		\
 	$(NULL)
 
-gnome_shell_calendar_server_LDFLAGS =		\
+gnome_shell_calendar_server_LDADD =		\
 	$(CALENDAR_SERVER_LIBS)			\
 	$(NULL)
 
