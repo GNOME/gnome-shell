@@ -54,7 +54,7 @@ struct _ClutterSwipeActionPrivate
   ClutterSwipeDirection h_direction;
   ClutterSwipeDirection v_direction;
 
-  int threshold;
+  float distance_x, distance_y;
 };
 
 enum
@@ -74,13 +74,15 @@ gesture_begin (ClutterGestureAction  *action,
                ClutterActor          *actor)
 {
   ClutterSwipeActionPrivate *priv = CLUTTER_SWIPE_ACTION (action)->priv;
-  ClutterSettings *settings = clutter_settings_get_default ();
 
   /* reset the state at the beginning of a new gesture */
   priv->h_direction = 0;
   priv->v_direction = 0;
 
-  g_object_get (settings, "dnd-drag-threshold", &priv->threshold, NULL);
+  g_object_get (action,
+                "threshold-trigger-distance-x", &priv->distance_x,
+                "threshold-trigger-distance-y", &priv->distance_y,
+                NULL);
 
   return TRUE;
 }
@@ -108,14 +110,14 @@ gesture_progress (ClutterGestureAction *action,
   delta_x = press_x - motion_x;
   delta_y = press_y - motion_y;
 
-  if (delta_x >= priv->threshold)
+  if (delta_x >= priv->distance_x)
     h_direction = CLUTTER_SWIPE_DIRECTION_RIGHT;
-  else if (delta_x < -priv->threshold)
+  else if (delta_x < -priv->distance_x)
     h_direction = CLUTTER_SWIPE_DIRECTION_LEFT;
 
-  if (delta_y >= priv->threshold)
+  if (delta_y >= priv->distance_y)
     v_direction = CLUTTER_SWIPE_DIRECTION_DOWN;
-  else if (delta_y < -priv->threshold)
+  else if (delta_y < -priv->distance_y)
     v_direction = CLUTTER_SWIPE_DIRECTION_UP;
 
   /* cancel gesture on direction reversal */
@@ -152,14 +154,14 @@ gesture_end (ClutterGestureAction *action,
                                              0,
                                              &release_x, &release_y);
 
-  if (release_x - press_x > priv->threshold)
+  if (release_x - press_x > priv->distance_y)
     direction |= CLUTTER_SWIPE_DIRECTION_RIGHT;
-  else if (press_x - release_x > priv->threshold)
+  else if (press_x - release_x > priv->distance_x)
     direction |= CLUTTER_SWIPE_DIRECTION_LEFT;
 
-  if (release_y - press_y > priv->threshold)
+  if (release_y - press_y > priv->distance_y)
     direction |= CLUTTER_SWIPE_DIRECTION_DOWN;
-  else if (press_y - release_y > priv->threshold)
+  else if (press_y - release_y > priv->distance_y)
     direction |= CLUTTER_SWIPE_DIRECTION_UP;
 
   /* XXX:2.0 remove */
