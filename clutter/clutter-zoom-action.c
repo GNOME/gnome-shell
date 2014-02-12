@@ -327,12 +327,22 @@ clutter_zoom_action_dispose (GObject *gobject)
 }
 
 static void
+clutter_zoom_action_constructed (GObject *gobject)
+{
+  ClutterGestureAction *gesture;
+
+  gesture = CLUTTER_GESTURE_ACTION (gobject);
+  clutter_gesture_action_set_threshold_trigger_edge (gesture, CLUTTER_GESTURE_TRIGGER_EDGE_NONE);
+}
+
+static void
 clutter_zoom_action_class_init (ClutterZoomActionClass *klass)
 {
   ClutterGestureActionClass *gesture_class =
     CLUTTER_GESTURE_ACTION_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+  gobject_class->constructed = clutter_zoom_action_constructed;
   gobject_class->set_property = clutter_zoom_action_set_property;
   gobject_class->get_property = clutter_zoom_action_get_property;
   gobject_class->dispose = clutter_zoom_action_dispose;
@@ -406,7 +416,6 @@ clutter_zoom_action_init (ClutterZoomAction *self)
 
   gesture = CLUTTER_GESTURE_ACTION (self);
   clutter_gesture_action_set_n_touch_points (gesture, 2);
-  clutter_gesture_action_set_threshold_trigger_edge (gesture, CLUTTER_GESTURE_TRIGGER_EDGE_NONE);
 }
 
 /**

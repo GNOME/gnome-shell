@@ -173,12 +173,25 @@ clutter_rotate_action_gesture_cancel (ClutterGestureAction *action,
 }
 
 static void
+clutter_rotate_action_constructed (GObject *gobject)
+{
+  ClutterGestureAction *gesture;
+
+  gesture = CLUTTER_GESTURE_ACTION (gobject);
+  clutter_gesture_action_set_threshold_trigger_edge (gesture, CLUTTER_GESTURE_TRIGGER_EDGE_NONE);
+}
+
+static void
 clutter_rotate_action_class_init (ClutterRotateActionClass *klass)
 {
   ClutterGestureActionClass *gesture_class =
     CLUTTER_GESTURE_ACTION_CLASS (klass);
+  GObjectClass *object_class =
+    G_OBJECT_CLASS (klass);
 
   klass->rotate = clutter_rotate_action_real_rotate;
+
+  object_class->constructed = clutter_rotate_action_constructed;
 
   gesture_class->gesture_begin = clutter_rotate_action_gesture_begin;
   gesture_class->gesture_progress = clutter_rotate_action_gesture_progress;
@@ -221,7 +234,6 @@ clutter_rotate_action_init (ClutterRotateAction *self)
 
   gesture = CLUTTER_GESTURE_ACTION (self);
   clutter_gesture_action_set_n_touch_points (gesture, 2);
-  clutter_gesture_action_set_threshold_trigger_edge (gesture, CLUTTER_GESTURE_TRIGGER_EDGE_NONE);
 }
 
 /**

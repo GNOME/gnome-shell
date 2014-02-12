@@ -92,10 +92,21 @@ gesture_end (ClutterGestureAction *gesture,
 }
 
 static void
+clutter_tap_action_constructed (GObject *object)
+{
+  clutter_gesture_action_set_threshold_trigger_edge (CLUTTER_GESTURE_ACTION (object),
+                                                     CLUTTER_GESTURE_TRIGGER_EDGE_BEFORE);
+}
+
+static void
 clutter_tap_action_class_init (ClutterTapActionClass *klass)
 {
   ClutterGestureActionClass *gesture_class =
       CLUTTER_GESTURE_ACTION_CLASS (klass);
+  GObjectClass *object_class =
+      G_OBJECT_CLASS (klass);
+
+  object_class->constructed = clutter_tap_action_constructed;
 
   gesture_class->gesture_end = gesture_end;
 
@@ -122,8 +133,6 @@ clutter_tap_action_class_init (ClutterTapActionClass *klass)
 static void
 clutter_tap_action_init (ClutterTapAction *self)
 {
-  clutter_gesture_action_set_threshold_trigger_edge (CLUTTER_GESTURE_ACTION (self),
-                                                     CLUTTER_GESTURE_TRIGGER_EDGE_BEFORE);
 }
 
 /**

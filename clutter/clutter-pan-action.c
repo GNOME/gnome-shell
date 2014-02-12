@@ -387,6 +387,15 @@ clutter_pan_action_get_property (GObject    *gobject,
 }
 
 static void
+clutter_pan_action_constructed (GObject *gobject)
+{
+  ClutterGestureAction *gesture;
+
+  gesture = CLUTTER_GESTURE_ACTION (gobject);
+  clutter_gesture_action_set_threshold_trigger_edge (gesture, CLUTTER_GESTURE_TRIGGER_EDGE_AFTER);
+}
+
+static void
 clutter_pan_action_dispose (GObject *gobject)
 {
   ClutterPanActionPrivate *priv = CLUTTER_PAN_ACTION (gobject)->priv;
@@ -498,6 +507,7 @@ clutter_pan_action_class_init (ClutterPanActionClass *klass)
                          1.0, G_MAXDOUBLE, default_acceleration_factor,
                          CLUTTER_PARAM_READWRITE);
 
+  gobject_class->constructed = clutter_pan_action_constructed;
   gobject_class->set_property = clutter_pan_action_set_property;
   gobject_class->get_property = clutter_pan_action_get_property;
   gobject_class->dispose = clutter_pan_action_dispose;
@@ -557,15 +567,10 @@ clutter_pan_action_class_init (ClutterPanActionClass *klass)
 static void
 clutter_pan_action_init (ClutterPanAction *self)
 {
-  ClutterGestureAction *gesture;
-
   self->priv = clutter_pan_action_get_instance_private (self);
   self->priv->deceleration_rate = default_deceleration_rate;
   self->priv->acceleration_factor = default_acceleration_factor;
   self->priv->state = PAN_STATE_INACTIVE;
-
-  gesture = CLUTTER_GESTURE_ACTION (self);
-  clutter_gesture_action_set_threshold_trigger_edge (gesture, CLUTTER_GESTURE_TRIGGER_EDGE_AFTER);
 }
 
 /**

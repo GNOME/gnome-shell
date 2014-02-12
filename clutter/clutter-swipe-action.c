@@ -179,10 +179,21 @@ clutter_swipe_action_real_swipe (ClutterSwipeAction    *action,
 }
 
 static void
+clutter_swipe_action_constructed (GObject *object)
+{
+  clutter_gesture_action_set_threshold_trigger_edge (CLUTTER_GESTURE_ACTION (object),
+                                                     CLUTTER_GESTURE_TRIGGER_EDGE_AFTER);
+}
+
+static void
 clutter_swipe_action_class_init (ClutterSwipeActionClass *klass)
 {
   ClutterGestureActionClass *gesture_class =
       CLUTTER_GESTURE_ACTION_CLASS (klass);
+  GObjectClass *object_class =
+      G_OBJECT_CLASS (klass);
+
+  object_class->constructed = clutter_swipe_action_constructed;
 
   gesture_class->gesture_begin = gesture_begin;
   gesture_class->gesture_progress = gesture_progress;
@@ -246,9 +257,6 @@ static void
 clutter_swipe_action_init (ClutterSwipeAction *self)
 {
   self->priv = clutter_swipe_action_get_instance_private (self);
-
-  clutter_gesture_action_set_threshold_trigger_edge (CLUTTER_GESTURE_ACTION (self),
-                                                     CLUTTER_GESTURE_TRIGGER_EDGE_AFTER);
 }
 
 /**
