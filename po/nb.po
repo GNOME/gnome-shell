@@ -5,9 +5,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: clutter 1.8.x\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter\n"
+"Project-Id-Version: clutter 1.17.x\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter\n"
 "POT-Creation-Date: 2014-02-12 20:26+0100\n"
 "PO-Revision-Date: 2014-02-12 20:29+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
