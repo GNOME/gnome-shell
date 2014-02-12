@@ -853,7 +853,6 @@ const LayoutManager = new Lang.Class({
         this._trackedActors.splice(i, 1);
         actor.disconnect(actorData.visibleId);
         actor.disconnect(actorData.allocationId);
-        actor.disconnect(actorData.parentSetId);
         actor.disconnect(actorData.destroyId);
 
         this._queueUpdateRegions();
