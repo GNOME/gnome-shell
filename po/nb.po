@@ -1,14 +1,15 @@
 # Norwegian bokmål translation of cogl.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Kjartan Maraas <kmaraas@gnome.org>, 2011-2012.
+# Kjartan Maraas <kmaraas@gnome.org>, 2011-2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl 1.11.x\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter\n"
-"POT-Creation-Date: 2012-07-10 13:26+0200\n"
-"PO-Revision-Date: 2012-07-10 13:30+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=clutter\n"
+"POT-Creation-Date: 2014-02-12 20:24+0100\n"
+"PO-Revision-Date: 2014-02-12 20:25+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -26,7 +27,36 @@ msgstr "Spesielle feilsøkingsverdier:"
 
 #: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
-msgstr "Slår på alle feilsøkingsalternativer som ikke har med oppførsel å gjøre"
+msgstr ""
+"Slår på alle feilsøkingsalternativer som ikke har med oppførsel å gjøre"
+
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr ""
+
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr ""
+
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr ""
+
+#: ../cogl/cogl-debug.c:237
+msgid "Cogl debugging flags to set"
+msgstr ""
+
+#: ../cogl/cogl-debug.c:239
+msgid "Cogl debugging flags to unset"
+msgstr ""
+
+#: ../cogl/cogl-debug.c:288
+msgid "Cogl Options"
+msgstr "Alternativer for Cogl"
+
+#: ../cogl/cogl-debug.c:289
+msgid "Show Cogl options"
+msgstr "Vis alternativer for Cogl"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
