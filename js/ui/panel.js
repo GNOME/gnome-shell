@@ -853,6 +853,7 @@ const AggregateMenu = new Lang.Class({
         if (this._bluetooth) {
             this.menu.addMenuItem(this._bluetooth.menu);
         }
+        this.menu.addMenuItem(this._location.menu);
         this.menu.addMenuItem(this._rfkill.menu);
         this.menu.addMenuItem(this._power.menu);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
