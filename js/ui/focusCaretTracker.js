@@ -34,7 +34,11 @@ const FocusCaretTracker = new Lang.Class({
     _init: function() {
         Atspi.init();
         Atspi.set_timeout(250, 250);
+
         this._atspiListener = Atspi.EventListener.new(Lang.bind(this, this._onChanged));
+
+        this._focusListenerRegistered = false;
+        this._caretListenerRegistered = false;
     },
 
     _onChanged: function(event) {
@@ -45,21 +49,39 @@ const FocusCaretTracker = new Lang.Class({
     },
 
     registerFocusListener: function() {
-        return this._atspiListener.register(STATECHANGED + ':focused') &&
-               this._atspiListener.register(STATECHANGED + ':selected');
+        if (this._focusListenerRegistered)
+            return;
+
+        // Ignore the return value, we get an exception if they fail
+        // And they should never fail
+        this._atspiListener.register(STATECHANGED + ':focused');
+        this._atspiListener.register(STATECHANGED + ':selected');
+        this._focusListenerRegistered = true;
     },
 
     registerCaretListener: function() {
-        return this._atspiListener.register(CARETMOVED);
+        if (this._caretListenerRegistered)
+            return;
+
+        this._atspiListener.register(CARETMOVED);
+        this._caretListenerRegistered = true;
     },
 
     deregisterFocusListener: function() {
-        return this._atspiListener.deregister(STATECHANGED + ':focused') &&
-               this._atspiListener.deregister(STATECHANGED + ':selected');
+        if (!this._focusListenerRegistered)
+            return;
+
+        this._atspiListener.deregister(STATECHANGED + ':focused');
+        this._atspiListener.deregister(STATECHANGED + ':selected');
+        this._focusListenerRegistered = false;
     },
 
     deregisterCaretListener: function() {
-        return this._atspiListener.deregister(CARETMOVED);
+        if (!this._caretListenerRegistered)
+            return;
+
+        this._atspiListener.deregister(CARETMOVED);
+        this._caretListenerRegistered = false;
     }
 });
 Signals.addSignalMethods(FocusCaretTracker.prototype);

@@ -766,6 +766,9 @@ const ZoomRegion = new Lang.Class({
         } else {
             this._destroyActors();
         }
+
+        this._syncCaretTracking();
+        this._syncFocusTracking();
     },
 
     /**
@@ -825,10 +828,7 @@ const ZoomRegion = new Lang.Class({
      */
     setFocusTrackingMode: function(mode) {
         this._focusTrackingMode = mode;
-        if (this._focusTrackingMode == GDesktopEnums.MagnifierFocusTrackingMode.NONE)
-            this._focusCaretTracker.deregisterFocusListener();
-        else
-            this._focusCaretTracker.registerFocusListener();
+        this._syncFocusTracking();
     },
 
     /**
@@ -837,10 +837,27 @@ const ZoomRegion = new Lang.Class({
      */
     setCaretTrackingMode: function(mode) {
         this._caretTrackingMode = mode;
-        if (this._caretTrackingMode == GDesktopEnums.MagnifierCaretTrackingMode.NONE)
-            this._focusCaretTracker.deregisterCaretListener();
+        this._syncCaretTracking();
+    },
+
+    _syncFocusTracking: function() {
+        let enabled = this._focusTrackingMode != GDesktopEnums.MagnifierFocusTrackingMode.NONE &&
+            this.isActive();
+
+        if (enabled)
+            this._focusCaretTracker.registerFocusListener();
         else
+            this._focusCaretTracker.deregisterFocusListener();
+    },
+
+    _syncCaretTracking: function() {
+        let enabled = this._caretTrackingMode != GDesktopEnums.MagnifierCaretTrackingMode.NONE &&
+            this.isActive();
+
+        if (enabled)
             this._focusCaretTracker.registerCaretListener();
+        else
+            this._focusCaretTracker.deregisterCaretListener();
     },
 
     /**
