@@ -11,6 +11,7 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 
+const Background = imports.ui.background;
 const FocusCaretTracker = imports.ui.focusCaretTracker;
 const Main = imports.ui.main;
 const MagnifierDBus = imports.ui.magnifierDBus;
@@ -1198,8 +1199,11 @@ const ZoomRegion = new Lang.Class({
         // Add a background for when the magnified uiGroup is scrolled
         // out of view (don't want to see desktop showing through).
         this._background = new Clutter.Actor({ background_color: Main.DEFAULT_BACKGROUND_COLOR,
+                                               layout_manager: new Clutter.BinLayout(),
                                                width: global.screen_width,
                                                height: global.screen_height });
+        let noiseTexture = (new Background.SystemBackground()).actor;
+        this._background.add_actor(noiseTexture);
         mainGroup.add_actor(this._background);
 
         // Clone the group that contains all of UI on the screen.  This is the
