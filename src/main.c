@@ -271,7 +271,9 @@ default_log_handler (const char     *log_domain,
 
   g_get_current_time (&now);
 
-  tp_debug_sender_add_message (sender, &now, log_domain, log_level, message);
+  /* Send telepathy debug through DBus */
+  if (log_domain != NULL && g_str_has_prefix (log_domain, "tp-glib"))
+    tp_debug_sender_add_message (sender, &now, log_domain, log_level, message);
 
   /* Filter out telepathy-glib logs, we don't want to flood Shell's output
    * with those. */
