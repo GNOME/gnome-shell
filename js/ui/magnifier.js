@@ -719,7 +719,14 @@ const ZoomRegion = new Lang.Class({
         let component = event.source.get_component_iface();
         if (!component || event.detail1 != 1)
             return;
-        let extents = component.get_extents(Atspi.CoordType.SCREEN);
+        let extents;
+        try {
+            extents = component.get_extents(Atspi.CoordType.SCREEN);
+        } catch(e) {
+            log('Failed to read extents of focused component: ' + e.message);
+            return;
+        }
+
         [this._xFocus, this._yFocus] = [extents.x + (extents.width / 2),
                                         extents.y + (extents.height / 2)];
         this._centerFromFocusPosition();
@@ -729,7 +736,14 @@ const ZoomRegion = new Lang.Class({
         let text = event.source.get_text_iface();
         if (!text)
             return;
-        let extents = text.get_character_extents(text.get_caret_offset(), 0);
+        let extents;
+        try {
+            extents = text.get_character_extents(text.get_caret_offset(), 0);
+        } catch(e) {
+            log('Failed to read extents of text caret: ' + e.message);
+            return;
+        }
+
         [this._xCaret, this._yCaret] = [extents.x, extents.y];
         this._centerFromCaretPosition();
     },
