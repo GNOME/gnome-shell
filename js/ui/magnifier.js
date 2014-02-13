@@ -105,17 +105,20 @@ const Magnifier = new Lang.Class({
      * @activate:   Boolean to activate or de-activate the magnifier.
      */
     setActive: function(activate) {
+        let isActive = this.isActive();
+
         this._zoomRegions.forEach (function(zoomRegion, index, array) {
             zoomRegion.setActive(activate);
         });
 
-        if (activate) {
-            Meta.disable_unredirect_for_screen(global.screen);
-            this.startTrackingMouse();
-        }
-        else {
-            Meta.enable_unredirect_for_screen(global.screen);
-            this.stopTrackingMouse();
+        if (isActive != activate) {
+            if (activate) {
+                Meta.disable_unredirect_for_screen(global.screen);
+                this.startTrackingMouse();
+            } else {
+                Meta.enable_unredirect_for_screen(global.screen);
+                this.stopTrackingMouse();
+            }
         }
 
         // Make sure system mouse pointer is shown when all zoom regions are
