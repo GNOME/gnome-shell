@@ -202,7 +202,7 @@ const DateMenuButton = new Lang.Class({
     },
 
     _getClockApp: function() {
-        return Shell.AppSystem.get_default().lookup_app('gnome-clocks.desktop');
+        return Shell.AppSystem.get_default().lookup_app('org.gnome.clocks.desktop');
     },
 
     _onOpenCalendarActivate: function() {
