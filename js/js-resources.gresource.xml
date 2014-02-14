@@ -18,6 +18,7 @@
     <file>misc/history.js</file>
     <file>misc/ibusManager.js</file>
     <file>misc/jsParse.js</file>
+    <file>misc/keyboardManager.js</file>
     <file>misc/loginManager.js</file>
     <file>misc/modemManager.js</file>
     <file>misc/objectManager.js</file>

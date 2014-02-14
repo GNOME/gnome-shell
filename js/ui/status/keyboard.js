@@ -2,8 +2,6 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GnomeDesktop = imports.gi.GnomeDesktop;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -11,14 +9,14 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 const Gettext = imports.gettext;
 
+const IBus = imports.misc.ibusManager.IBus;
+const IBusManager = imports.misc.ibusManager;
+const KeyboardManager = imports.misc.keyboardManager;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const SwitcherPopup = imports.ui.switcherPopup;
 const Util = imports.misc.util;
-
-const IBus = imports.misc.ibusManager.IBus;
-const IBusManager = imports.misc.ibusManager;
 
 const DESKTOP_INPUT_SOURCES_SCHEMA = 'org.gnome.desktop.input-sources';
 const KEY_CURRENT_INPUT_SOURCE = 'current';
@@ -26,34 +24,6 @@ const KEY_INPUT_SOURCES = 'sources';
 
 const INPUT_SOURCE_TYPE_XKB = 'xkb';
 const INPUT_SOURCE_TYPE_IBUS = 'ibus';
-
-// This is the longest we'll keep the keyboard frozen until an input
-// source is active.
-const MAX_INPUT_SOURCE_ACTIVATION_TIME = 4000; // ms
-
-const BUS_NAME = 'org.gnome.SettingsDaemon.Keyboard';
-const OBJECT_PATH = '/org/gnome/SettingsDaemon/Keyboard';
-
-const KeyboardManagerInterface = '<node> \
-<interface name="org.gnome.SettingsDaemon.Keyboard"> \
-<method name="SetInputSource"> \
-    <arg type="u" direction="in" /> \
-</method> \
-</interface> \
-</node>';
-
-const KeyboardManagerProxy = Gio.DBusProxy.makeProxyWrapper(KeyboardManagerInterface);
-
-function releaseKeyboard() {
-    if (Main.modalCount > 0)
-        global.display.unfreeze_keyboard(global.get_current_time());
-    else
-        global.display.ungrab_keyboard(global.get_current_time());
-}
-
-function holdKeyboard() {
-    global.freeze_keyboard(global.get_current_time());
-}
 
 const LayoutMenuItem = new Lang.Class({
     Name: 'LayoutMenuItem',
@@ -225,7 +195,7 @@ const InputSourceIndicator = new Lang.Class({
         this._settings.connect('changed::' + KEY_CURRENT_INPUT_SOURCE, Lang.bind(this, this._currentInputSourceChanged));
         this._settings.connect('changed::' + KEY_INPUT_SOURCES, Lang.bind(this, this._inputSourcesChanged));
 
-        this._xkbInfo = new GnomeDesktop.XkbInfo();
+        this._xkbInfo = KeyboardManager.getXkbInfo();
 
         this._propSeparator = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(this._propSeparator);
@@ -240,12 +210,7 @@ const InputSourceIndicator = new Lang.Class({
         this._ibusManager.connect('property-updated', Lang.bind(this, this._ibusPropertyUpdated));
         this._inputSourcesChanged();
 
-        this._keyboardManager = new KeyboardManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-                                                         function(proxy, error) {
-                                                             if (error)
-                                                                 log(error.message);
-                                                         });
-        this._keyboardManager.g_default_timeout = MAX_INPUT_SOURCE_ACTIVATION_TIME;
+        this._keyboardManager = KeyboardManager.getKeyboardManager();
 
         global.display.connect('modifiers-accelerator-activated', Lang.bind(this, this._modifiersSwitcher));
 
@@ -283,7 +248,7 @@ const InputSourceIndicator = new Lang.Class({
     _modifiersSwitcher: function() {
         let sourceIndexes = Object.keys(this._inputSources);
         if (sourceIndexes.length == 0) {
-            releaseKeyboard();
+            KeyboardManager.releaseKeyboard();
             return true;
         }
 
@@ -406,8 +371,7 @@ const InputSourceIndicator = new Lang.Class({
             let is = new InputSource(type, id, displayName, shortName, i);
 
             is.connect('activate', Lang.bind(this, function() {
-                holdKeyboard();
-                this._keyboardManager.SetInputSourceRemote(is.index, releaseKeyboard);
+                this._keyboardManager.SetInputSource(is);
             }));
 
             if (!(is.shortName in inputSourcesByShortName))
