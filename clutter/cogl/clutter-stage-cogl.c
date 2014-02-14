@@ -476,10 +476,10 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
         cairo_rectangle_int_t *current_damage;
 
         current_damage = g_new0 (cairo_rectangle_int_t, 1);
-        current_damage->x = clip_region->x * window_scale;
-        current_damage->y = clip_region->y * window_scale;
-        current_damage->width = clip_region->width * window_scale;
-        current_damage->height = clip_region->height * window_scale;
+        current_damage->x = clip_region->x;
+        current_damage->y = clip_region->y;
+        current_damage->width = clip_region->width;
+        current_damage->height = clip_region->height;
 
         stage_cogl->damage_history = g_slist_prepend (stage_cogl->damage_history, current_damage);
 
