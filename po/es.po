@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-23 12:48+0000\n"
-"PO-Revision-Date: 2014-01-23 18:15+0100\n"
+"POT-Creation-Date: 2014-02-14 04:10+0000\n"
+"PO-Revision-Date: 2014-02-14 09:56+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -943,22 +943,18 @@ msgid "The height of the canvas"
 msgstr "La altura del lienzo"
 
 #: ../clutter/clutter-canvas.c:283
-#| msgid "Selection Color Set"
 msgid "Scale Factor Set"
 msgstr "Conjunto de factor de escalado establecido"
 
 #: ../clutter/clutter-canvas.c:284
-#| msgid "Whether the transform property is set"
 msgid "Whether the scale-factor property is set"
 msgstr "Indica si la propiedad de factor de escalado está establecida"
 
 #: ../clutter/clutter-canvas.c:305
-#| msgid "Factor"
 msgid "Scale Factor"
 msgstr "Factor de escalado"
 
 #: ../clutter/clutter-canvas.c:306
-#| msgid "The height of the Cairo surface"
 msgid "The scaling factor for the surface"
 msgstr "El factor de escalado para la superficie"
 
@@ -1163,21 +1159,41 @@ msgstr "Altura máxima de cada fila"
 msgid "Snap to grid"
 msgstr "Ajustar a la cuadrícula"
 
-#: ../clutter/clutter-gesture-action.c:639
+#: ../clutter/clutter-gesture-action.c:668
 msgid "Number touch points"
 msgstr "Numerar puntos táctiles"
 
-#: ../clutter/clutter-gesture-action.c:640
+#: ../clutter/clutter-gesture-action.c:669
 msgid "Number of touch points"
 msgstr "Número de puntos táctiles"
 
-#: ../clutter/clutter-gesture-action.c:655
+#: ../clutter/clutter-gesture-action.c:684
 msgid "Threshold Trigger Edge"
 msgstr "Borde del disparador del umbral"
 
-#: ../clutter/clutter-gesture-action.c:656
+#: ../clutter/clutter-gesture-action.c:685
 msgid "The trigger edge used by the action"
 msgstr "El borde del disparador usado por la acción"
+
+#: ../clutter/clutter-gesture-action.c:704
+#| msgid "Threshold Trigger Edge"
+msgid "Threshold Trigger Horizontal Distance"
+msgstr "Distancia horizontal del disparador del umbral"
+
+#: ../clutter/clutter-gesture-action.c:705
+#| msgid "The trigger edge used by the action"
+msgid "The horizontal trigger distance used by the action"
+msgstr "La distancia horizontal del disparador usado por la acción"
+
+#: ../clutter/clutter-gesture-action.c:723
+#| msgid "Threshold Trigger Edge"
+msgid "Threshold Trigger Vertical Distance"
+msgstr "Distancia vertical del disparador del umbral"
+
+#: ../clutter/clutter-gesture-action.c:724
+#| msgid "The trigger edge used by the action"
+msgid "The vertical trigger distance used by the action"
+msgstr "La distancia vertical del disparador usado por la acción"
 
 #: ../clutter/clutter-grid-layout.c:1223
 msgid "Left attachment"
@@ -1395,35 +1411,35 @@ msgstr "Opciones de Clutter"
 msgid "Show Clutter Options"
 msgstr "Mostrar las opciones de Clutter"
 
-#: ../clutter/clutter-pan-action.c:446
+#: ../clutter/clutter-pan-action.c:455
 msgid "Pan Axis"
 msgstr "Eje de movimiento horizontal"
 
-#: ../clutter/clutter-pan-action.c:447
+#: ../clutter/clutter-pan-action.c:456
 msgid "Constraints the panning to an axis"
 msgstr "Restringe el movimiento horizontal a un eje"
 
-#: ../clutter/clutter-pan-action.c:461
+#: ../clutter/clutter-pan-action.c:470
 msgid "Interpolate"
 msgstr "Interpolar"
 
-#: ../clutter/clutter-pan-action.c:462
+#: ../clutter/clutter-pan-action.c:471
 msgid "Whether interpolated events emission is enabled."
 msgstr "Indica si la emisión de eventos interpolados está activada."
 
-#: ../clutter/clutter-pan-action.c:478
+#: ../clutter/clutter-pan-action.c:487
 msgid "Deceleration"
 msgstr "Deceleración"
 
-#: ../clutter/clutter-pan-action.c:479
+#: ../clutter/clutter-pan-action.c:488
 msgid "Rate at which the interpolated panning will decelerate in"
 msgstr "Tasa a la que el movimiento horizontal interpolado decelerará"
 
-#: ../clutter/clutter-pan-action.c:496
+#: ../clutter/clutter-pan-action.c:505
 msgid "Initial acceleration factor"
 msgstr "Factor inicial de aceleración"
 
-#: ../clutter/clutter-pan-action.c:497
+#: ../clutter/clutter-pan-action.c:506
 msgid "Factor applied to the momentum when starting the interpolated phase"
 msgstr "Factor aplicado al momento al iniciar la fase de interpolación"
 
@@ -1579,7 +1595,6 @@ msgid "Window Scaling Factor"
 msgstr "Factor de escalado de la ventana"
 
 #: ../clutter/clutter-settings.c:662
-#| msgid "Add an effect to be applied on the actor"
 msgid "The scaling factor to be applied to windows"
 msgstr "El factor de escalado que aplicar a las ventanas"
 
@@ -2052,11 +2067,11 @@ msgstr "Quitar al completar"
 msgid "Detach the transition when completed"
 msgstr "Quitar la transición cuando se complete"
 
-#: ../clutter/clutter-zoom-action.c:355
+#: ../clutter/clutter-zoom-action.c:365
 msgid "Zoom Axis"
 msgstr "Ampliar eje"
 
-#: ../clutter/clutter-zoom-action.c:356
+#: ../clutter/clutter-zoom-action.c:366
 msgid "Constraints the zoom to an axis"
 msgstr "Restringe la ampliación a un eje"
 
