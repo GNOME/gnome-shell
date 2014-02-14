@@ -111,6 +111,7 @@ const PopupBaseMenuItem = new Lang.Class({
 
         this.actor.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
         this.actor.connect('key-focus-out', Lang.bind(this, this._onKeyFocusOut));
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
     },
 
     _getTopMenu: function() {
@@ -192,6 +193,9 @@ const PopupBaseMenuItem = new Lang.Class({
 
     destroy: function() {
         this.actor.destroy();
+    },
+
+    _onDestroy: function() {
         this.emit('destroy');
     },
 
