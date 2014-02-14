@@ -46,6 +46,13 @@ const INDICATORS_ANIMATION_MAX_TIME = 0.75;
 const PAGE_SWITCH_TRESHOLD = 0.2;
 const PAGE_SWITCH_TIME = 0.3;
 
+function _getCategories(info) {
+    let categoriesStr = info.get_categories();
+    if (!categoriesStr)
+        return [];
+    return categoriesStr.split(';');
+}
+
 function _listsIntersect(a, b) {
     for (let itemA of a)
         if (b.indexOf(itemA) >= 0)
