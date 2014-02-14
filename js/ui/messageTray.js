@@ -1162,32 +1162,12 @@ const SourceActor = new Lang.Class({
         }));
         this._actorDestroyed = false;
 
-        this._counterLabel = new St.Label({ x_align: Clutter.ActorAlign.CENTER,
-                                            x_expand: true,
-                                            y_align: Clutter.ActorAlign.CENTER,
-                                            y_expand: true });
-
-        this._counterBin = new St.Bin({ style_class: 'summary-source-counter',
-                                        child: this._counterLabel,
-                                        layout_manager: new Clutter.BinLayout() });
-        this._counterBin.hide();
-
-        this._counterBin.connect('style-changed', Lang.bind(this, function() {
-            let themeNode = this._counterBin.get_theme_node();
-            this._counterBin.translation_x = themeNode.get_length('-shell-counter-overlap-x');
-            this._counterBin.translation_y = themeNode.get_length('-shell-counter-overlap-y');
-        }));
-
         this._iconBin = new St.Bin({ width: size,
                                      height: size,
                                      x_fill: true,
                                      y_fill: true });
 
         this.actor.add_actor(this._iconBin);
-        this.actor.add_actor(this._counterBin);
-
-        this._source.connect('count-updated', Lang.bind(this, this._updateCount));
-        this._updateCount();
 
         this._source.connect('icon-updated', Lang.bind(this, this._updateIcon));
         this._updateIcon();
@@ -1211,6 +1191,48 @@ const SourceActor = new Lang.Class({
     _allocate: function(actor, box, flags) {
         // the iconBin should fill our entire box
         this._iconBin.allocate(box, flags);
+    },
+
+    _updateIcon: function() {
+        if (this._actorDestroyed)
+            return;
+
+        if (!this._iconSet)
+            this._iconBin.child = this._source.createIcon(this._size);
+    }
+});
+
+const SourceActorWithLabel = new Lang.Class({
+    Name: 'SourceActorWithLabel',
+    Extends: SourceActor,
+
+    _init: function(source, size) {
+        this.parent(source, size);
+
+        this._counterLabel = new St.Label({ x_align: Clutter.ActorAlign.CENTER,
+                                            x_expand: true,
+                                            y_align: Clutter.ActorAlign.CENTER,
+                                            y_expand: true });
+
+        this._counterBin = new St.Bin({ style_class: 'summary-source-counter',
+                                        child: this._counterLabel,
+                                        layout_manager: new Clutter.BinLayout() });
+        this._counterBin.hide();
+
+        this._counterBin.connect('style-changed', Lang.bind(this, function() {
+            let themeNode = this._counterBin.get_theme_node();
+            this._counterBin.translation_x = themeNode.get_length('-shell-counter-overlap-x');
+            this._counterBin.translation_y = themeNode.get_length('-shell-counter-overlap-y');
+        }));
+
+        this.actor.add_actor(this._counterBin);
+
+        this._source.connect('count-updated', Lang.bind(this, this._updateCount));
+        this._updateCount();
+    },
+
+    _allocate: function(actor, box, flags) {
+        this.parent(actor, box, flags);
 
         let childBox = new Clutter.ActorBox();
 
@@ -1231,14 +1253,6 @@ const SourceActor = new Lang.Class({
         childBox.y2 = box.y2;
 
         this._counterBin.allocate(childBox, flags);
-    },
-
-    _updateIcon: function() {
-        if (this._actorDestroyed)
-            return;
-
-        if (!this._iconSet)
-            this._iconBin.child = this._source.createIcon(this._size);
     },
 
     _updateCount: function() {
@@ -1353,7 +1367,7 @@ const Source = new Lang.Class({
         if (this._mainIcon)
             return;
 
-        this._mainIcon = new SourceActor(this, this.SOURCE_ICON_SIZE);
+        this._mainIcon = new SourceActorWithLabel(this, this.SOURCE_ICON_SIZE);
     },
 
     // Unlike createIcon, this always returns the same actor;
