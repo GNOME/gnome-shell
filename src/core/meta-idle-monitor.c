@@ -499,7 +499,7 @@ make_watch (MetaIdleMonitor           *monitor,
       if (meta_idle_monitor_get_idletime (monitor) > (gint64)timeout_msec)
         watch->idle_source_id = g_idle_add (fire_watch_idle, watch);
     }
-  else
+  else if (monitor->user_active_alarm != None)
     {
       watch->xalarm = monitor->user_active_alarm;
 
