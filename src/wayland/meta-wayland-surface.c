@@ -709,6 +709,15 @@ create_surface_extension (MetaWaylandSurfaceExtension *extension,
 }
 
 static void
+xdg_shell_use_unstable_version (struct wl_client *client,
+                                struct wl_resource *resource,
+                                int32_t version)
+{
+  if (version != META_XDG_SHELL_VERSION)
+    g_warning ("Bad xdg_shell version: %d", version);
+}
+
+static void
 xdg_surface_destructor (struct wl_resource *resource)
 {
   MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
@@ -961,19 +970,10 @@ static const struct xdg_surface_interface meta_wayland_xdg_surface_interface = {
 };
 
 static void
-use_unstable_version (struct wl_client *client,
-                      struct wl_resource *resource,
-                      int32_t version)
-{
-  if (version != META_XDG_SHELL_VERSION)
-    g_warning ("Bad xdg_shell version: %d", version);
-}
-
-static void
-get_xdg_surface (struct wl_client *client,
-                 struct wl_resource *resource,
-                 guint32 id,
-                 struct wl_resource *surface_resource)
+xdg_shell_get_xdg_surface (struct wl_client *client,
+                           struct wl_resource *resource,
+                           guint32 id,
+                           struct wl_resource *surface_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
 
@@ -1026,16 +1026,16 @@ static const struct xdg_popup_interface meta_wayland_xdg_popup_interface = {
 };
 
 static void
-get_xdg_popup (struct wl_client *client,
-               struct wl_resource *resource,
-               uint32_t id,
-               struct wl_resource *surface_resource,
-               struct wl_resource *parent_resource,
-               struct wl_resource *seat_resource,
-               uint32_t serial,
-               int32_t x,
-               int32_t y,
-               uint32_t flags)
+xdg_shell_get_xdg_popup (struct wl_client *client,
+                         struct wl_resource *resource,
+                         uint32_t id,
+                         struct wl_resource *surface_resource,
+                         struct wl_resource *parent_resource,
+                         struct wl_resource *seat_resource,
+                         uint32_t serial,
+                         int32_t x,
+                         int32_t y,
+                         uint32_t flags)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
   MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
@@ -1073,9 +1073,9 @@ get_xdg_popup (struct wl_client *client,
 }
 
 static const struct xdg_shell_interface meta_wayland_xdg_shell_interface = {
-  use_unstable_version,
-  get_xdg_surface,
-  get_xdg_popup,
+  xdg_shell_use_unstable_version,
+  xdg_shell_get_xdg_surface,
+  xdg_shell_get_xdg_popup,
 };
 
 static void
