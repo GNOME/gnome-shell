@@ -27,7 +27,7 @@ const Indicator = new Lang.Class({
         this._watchId = Gio.bus_watch_name(Gio.BusType.SYSTEM,
                                            'org.freedesktop.GeoClue2',
                                            0,
-                                           Lang.bind(this, this._onGeoclueAppeared),
+                                           Lang.bind(this, this._connectToGeoclue),
                                            Lang.bind(this, this._onGeoclueVanished));
     },
 
@@ -40,7 +40,7 @@ const Indicator = new Lang.Class({
         this._indicator.visible = this._proxy.InUse;
     },
 
-    _onGeoclueAppeared: function() {
+    _connectToGeoclue: function() {
         new GeoclueManager(Gio.DBus.system,
                            'org.freedesktop.GeoClue2',
                            '/org/freedesktop/GeoClue2/Manager',
