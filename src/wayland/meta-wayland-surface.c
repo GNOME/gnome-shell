@@ -713,7 +713,7 @@ xdg_shell_use_unstable_version (struct wl_client *client,
                                 struct wl_resource *resource,
                                 int32_t version)
 {
-  if (version != META_XDG_SHELL_VERSION)
+  if (version != XDG_SHELL_VERSION_CURRENT)
     g_warning ("Bad xdg_shell version: %d", version);
 }
 
@@ -1086,8 +1086,13 @@ bind_xdg_shell (struct wl_client *client,
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &xdg_shell_interface,
-				 MIN (META_XDG_SHELL_VERSION, version), id);
+  if (version != 1)
+    {
+      g_warning ("using xdg-shell without stable version 1\n");
+      return;
+    }
+
+  resource = wl_resource_create (client, &xdg_shell_interface, 1, id);
   wl_resource_set_implementation (resource, &meta_wayland_xdg_shell_interface, data, NULL);
 }
 
@@ -1466,8 +1471,7 @@ void
 meta_wayland_init_shell (MetaWaylandCompositor *compositor)
 {
   if (wl_global_create (compositor->wayland_display,
-			&xdg_shell_interface,
-			META_XDG_SHELL_VERSION,
+			&xdg_shell_interface, 1,
 			compositor, bind_xdg_shell) == NULL)
     g_error ("Failed to register a global xdg-shell object");
 
