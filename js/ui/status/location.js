@@ -41,13 +41,19 @@ const Indicator = new Lang.Class({
     },
 
     _connectToGeoclue: function() {
+        if (this._proxy != null || this._connecting)
+            return false;
+
+        this._connecting = true;
         new GeoclueManager(Gio.DBus.system,
                            'org.freedesktop.GeoClue2',
                            '/org/freedesktop/GeoClue2/Manager',
                            Lang.bind(this, this._onProxyReady));
+        return true;
     },
 
     _onProxyReady: function (proxy, error) {
+        this._connecting = false;
         if (error != null) {
             log (error.message);
             return;
