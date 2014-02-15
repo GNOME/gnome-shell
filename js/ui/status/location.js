@@ -41,7 +41,6 @@ const Indicator = new Lang.Class({
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'find-location-symbolic';
-        this._syncIndicator();
 
         this._item = new PopupMenu.PopupSubMenuMenuItem(_("Location"), true);
         this._item.icon.icon_name = 'find-location-symbolic';
@@ -122,14 +121,9 @@ const Indicator = new Lang.Class({
         }
 
         this._proxy = proxy;
-        this._proxy.connect('g-properties-changed', Lang.bind(this, this._syncIndicator));
+        this._proxy.connect('g-properties-changed', Lang.bind(this, this._onGeocluePropsChanged));
 
-        if (!this._availableAccuracyLevel) {
-            this._availableAccuracyLevel = this._proxy.AvailableAccuracyLevel;
-            this._maxAccuracyLevel = this._availableAccuracyLevel;
-            this._updateMenuVisibility();
-        }
-
+        this._updateMenuVisibility();
         this._syncIndicator();
 
         this._proxy.AddAgentRemote('gnome-shell', Lang.bind(this, this._onAgentRegistered));
@@ -187,7 +181,20 @@ const Indicator = new Lang.Class({
     },
 
     _updateMenuVisibility: function() {
+        this._availableAccuracyLevel = this._proxy.AvailableAccuracyLevel;
+        if (!this._maxAccuracyLevelInitialized) {
+            this._maxAccuracyLevel = this._availableAccuracyLevel;
+            this._maxAccuracyLevelInitialized = true;
+        }
         this.menu.actor.visible = (this._availableAccuracyLevel != 0);
+    },
+
+    _onGeocluePropsChanged: function(proxy, properties) {
+        let unpacked = properties.deep_unpack();
+        if ("InUse" in unpacked)
+            this._syncIndicator();
+        if ("AvailableAccuracyLevel" in unpacked)
+            this._updateMenuVisibility();
     }
 });
 
