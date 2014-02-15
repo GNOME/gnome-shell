@@ -127,6 +127,7 @@ const Indicator = new Lang.Class({
         if (!this._availableAccuracyLevel) {
             this._availableAccuracyLevel = this._proxy.AvailableAccuracyLevel;
             this._maxAccuracyLevel = this._availableAccuracyLevel;
+            this._updateMenuVisibility();
         }
 
         this._syncIndicator();
@@ -183,6 +184,10 @@ const Indicator = new Lang.Class({
         var variant = new GLib.Variant('u', this._maxAccuracyLevel);
         this._agent.emit_property_changed ('MaxAccuracyLevel', variant);
         this._userSetAccuracy = false;
+    },
+
+    _updateMenuVisibility: function() {
+        this.menu.actor.visible = (this._availableAccuracyLevel != 0);
     }
 });
 
