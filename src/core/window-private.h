@@ -467,8 +467,6 @@ struct _MetaWindow
 
   /* Bypass compositor hints */
   guint bypass_compositor;
-
-  GSList *pending_pings;
 };
 
 struct _MetaWindowClass
@@ -744,17 +742,6 @@ void meta_window_handle_enter (MetaWindow  *window,
 void meta_window_set_surface_mapped (MetaWindow *window,
                                      gboolean    surface_mapped);
 
-typedef void (* MetaWindowPingFunc) (MetaWindow  *window,
-				     guint32      timestamp,
-				     gpointer     user_data);
-
-void meta_window_ping (MetaWindow         *window,
-                       guint32             timestamp,
-                       MetaWindowPingFunc  ping_reply_func,
-                       MetaWindowPingFunc  ping_timeout_func,
-                       void               *user_data);
-void meta_window_pong (MetaWindow *window,
-                       guint32     timestamp);
 Window meta_window_get_toplevel_xwindow (MetaWindow *window);
 
 void meta_window_activate_full (MetaWindow     *window,

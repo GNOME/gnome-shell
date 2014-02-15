@@ -132,11 +132,11 @@ void
 meta_window_check_alive (MetaWindow *window,
                          guint32     timestamp)
 {
-  meta_window_ping (window,
-                    timestamp,
-                    delete_ping_reply_func,
-                    delete_ping_timeout_func,
-                    NULL);
+  meta_display_ping_window (window,
+                            timestamp,
+                            delete_ping_reply_func,
+                            delete_ping_timeout_func,
+                            NULL);
 }
 
 void
