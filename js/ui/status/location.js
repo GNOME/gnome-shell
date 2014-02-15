@@ -41,10 +41,19 @@ const Indicator = new Lang.Class({
     },
 
     _onGeoclueAppeared: function() {
-        // FIXME: This should be done async
-        this._proxy = new GeoclueManager(Gio.DBus.system,
-                                         'org.freedesktop.GeoClue2',
-                                         '/org/freedesktop/GeoClue2/Manager');
+        new GeoclueManager(Gio.DBus.system,
+                           'org.freedesktop.GeoClue2',
+                           '/org/freedesktop/GeoClue2/Manager',
+                           Lang.bind(this, this._onProxyReady));
+    },
+
+    _onProxyReady: function (proxy, error) {
+        if (error != null) {
+            log (error.message);
+            return;
+        }
+
+        this._proxy = proxy;
         this._proxy.connect('g-properties-changed', Lang.bind(this, this._sync));
 
         this._sync();
