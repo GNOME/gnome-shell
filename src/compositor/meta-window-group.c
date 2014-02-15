@@ -164,19 +164,6 @@ meta_window_group_paint (ClutterActor *actor)
   paint_y_offset = paint_y_origin - actor_y_origin;
   cairo_region_translate (clip_region, -paint_x_offset, -paint_y_offset);
 
-  if (!meta_is_wayland_compositor ())
-    {
-      MetaCompScreen *info = meta_screen_get_compositor_data (window_group->screen);
-      if (info->unredirected_window != NULL)
-        {
-          cairo_rectangle_int_t unredirected_rect;
-
-          meta_window_get_frame_rect (info->unredirected_window, (MetaRectangle *)&unredirected_rect);
-          cairo_region_subtract_rectangle (unobscured_region, &unredirected_rect);
-          cairo_region_subtract_rectangle (clip_region, &unredirected_rect);
-        }
-    }
-
   meta_cullable_cull_out (META_CULLABLE (window_group), unobscured_region, clip_region);
 
   cairo_region_destroy (unobscured_region);
