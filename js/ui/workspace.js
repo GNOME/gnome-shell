@@ -295,7 +295,7 @@ const WindowClone = new Lang.Class({
             else
                 realWindow = child.source;
 
-            realWindow.disconnect(child._updateId);
+            realWindow.meta_window.disconnect(child._updateId);
             realWindow.disconnect(child._destroyId);
         }));
     },

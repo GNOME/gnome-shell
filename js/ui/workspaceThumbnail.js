@@ -176,7 +176,7 @@ const WindowClone = new Lang.Class({
         this.actor.get_children().forEach(function(child) {
             let realWindow = child.source;
 
-            realWindow.disconnect(child._updateId);
+            realWindow.meta_window.disconnect(child._updateId);
             realWindow.disconnect(child._destroyId);
         });
     },
