@@ -45,6 +45,7 @@ js/ui/status/accessibility.js
 js/ui/status/bluetooth.js
 js/ui/status/brightness.js
 js/ui/status/keyboard.js
+js/ui/status/location.js
 js/ui/status/network.js
 js/ui/status/power.js
 js/ui/status/rfkill.js
