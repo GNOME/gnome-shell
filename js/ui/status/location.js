@@ -25,7 +25,7 @@ const GeoclueManager = Gio.DBusProxy.makeProxyWrapper(GeoclueIface);
 
 var AgentIface = '<node> \
   <interface name="org.freedesktop.GeoClue2.Agent"> \
-    <property name="MaxAccuracyLevel" type="u" access="readwrite"/> \
+    <property name="MaxAccuracyLevel" type="u" access="read"/> \
     <method name="AuthorizeApp"> \
       <arg name="desktop_id" type="s" direction="in"/> \
       <arg name="req_accuracy_level" type="u" direction="in"/> \
