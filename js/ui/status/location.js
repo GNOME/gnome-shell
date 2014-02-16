@@ -74,7 +74,7 @@ const Indicator = new Lang.Class({
             // If user set the max accuracy level, don't let geoclue override
             return;
 
-        this._setMaxAccuracyLevel (value, false);
+        this._setMaxAccuracyLevel(value, false);
     },
 
     // We (and geoclue) have currently no way to reliably identifying apps so
@@ -112,9 +112,9 @@ const Indicator = new Lang.Class({
         return true;
     },
 
-    _onProxyReady: function (proxy, error) {
+    _onProxyReady: function(proxy, error) {
         if (error != null) {
-            log (error.message);
+            log(error.message);
             this._userSetAccuracy = false;
             this._connecting = false;
             return;
@@ -134,7 +134,7 @@ const Indicator = new Lang.Class({
         this._notifyMaxAccuracyLevel();
 
         if (error != null)
-            log (error.message);
+            log(error.message);
     },
 
     _onGeoclueVanished: function() {
@@ -145,9 +145,9 @@ const Indicator = new Lang.Class({
 
     _onOnOffAction: function() {
         if (this._maxAccuracyLevel == 0)
-            this._setMaxAccuracyLevel (this._availableAccuracyLevel, true);
+            this._setMaxAccuracyLevel(this._availableAccuracyLevel, true);
         else
-            this._setMaxAccuracyLevel (0, true);
+            this._setMaxAccuracyLevel(0, true);
     },
 
     _setMaxAccuracyLevel: function(maxAccuracyLevel, userSet) {
@@ -176,7 +176,7 @@ const Indicator = new Lang.Class({
             return;
 
         var variant = new GLib.Variant('u', this._maxAccuracyLevel);
-        this._agent.emit_property_changed ('MaxAccuracyLevel', variant);
+        this._agent.emit_property_changed('MaxAccuracyLevel', variant);
         this._userSetAccuracy = false;
     },
 
