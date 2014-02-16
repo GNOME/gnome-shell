@@ -924,9 +924,9 @@ const FolderView = new Lang.Class({
     },
 
     createFolderIcon: function(size) {
-        let icon = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                   style_class: 'app-folder-icon',
-                                   width: size, height: size });
+        let layout = new Clutter.TableLayout();
+        let icon = new St.Widget({ layout_manager: layout,
+                                   style_class: 'app-folder-icon' });
         let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
 
         let aligns = [ Clutter.ActorAlign.START, Clutter.ActorAlign.END ];
@@ -936,7 +936,7 @@ const FolderView = new Lang.Class({
                                    x_expand: true, y_expand: true });
             bin.set_x_align(aligns[i % 2]);
             bin.set_y_align(aligns[Math.floor(i / 2)]);
-            icon.add_actor(bin);
+            layout.pack(bin, i % 2, Math.floor(i / 2));
         }
 
         return icon;
