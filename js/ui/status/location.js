@@ -74,7 +74,7 @@ const Indicator = new Lang.Class({
             // If user set the max accuracy level, don't let geoclue override
             return;
 
-        this._setAccuracy (value, false);
+        this._setMaxAccuracyLevel (value, false);
     },
 
     // We (and geoclue) have currently no way to reliably identifying apps so
@@ -145,12 +145,12 @@ const Indicator = new Lang.Class({
 
     _onOnOffAction: function() {
         if (this._maxAccuracyLevel == 0)
-            this._setAccuracy (this._availableAccuracyLevel, true);
+            this._setMaxAccuracyLevel (this._availableAccuracyLevel, true);
         else
-            this._setAccuracy (0, true);
+            this._setMaxAccuracyLevel (0, true);
     },
 
-    _setAccuracy: function(maxAccuracyLevel, userSet) {
+    _setMaxAccuracyLevel: function(maxAccuracyLevel, userSet) {
         this._maxAccuracyLevel = maxAccuracyLevel;
 
         if (this._maxAccuracyLevel == 0) {
