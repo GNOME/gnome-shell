@@ -381,6 +381,8 @@ const DashActor = new Lang.Class({
     }
 });
 
+const baseIconSizes = [ 16, 22, 24, 32, 48, 64 ];
+
 const Dash = new Lang.Class({
     Name: 'Dash',
 
@@ -632,25 +634,24 @@ const Dash = new Lang.Class({
         let minHeight, natHeight;
 
         // Enforce the current icon size during the size request
-        let [currentWidth, currentHeight] = firstIcon.icon.get_size();
-
-        firstIcon.icon.set_size(this.iconSize, this.iconSize);
+        firstIcon.setIconSize(this.iconSize);
         [minHeight, natHeight] = firstButton.get_preferred_height(-1);
 
-        firstIcon.icon.set_size(currentWidth, currentHeight);
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let iconSizes = baseIconSizes.map(function(s) {
+            return s * scaleFactor;
+        });
 
         // Subtract icon padding and box spacing from the available height
-        availHeight -= iconChildren.length * (natHeight - this.iconSize) +
+        availHeight -= iconChildren.length * (natHeight - this.iconSize * scaleFactor) +
                        (iconChildren.length - 1) * spacing;
 
         let availSize = availHeight / iconChildren.length;
 
-        let iconSizes = [ 16, 22, 24, 32, 48, 64 ];
-
-        let newIconSize = 16;
+        let newIconSize = baseIconSizes[0];
         for (let i = 0; i < iconSizes.length; i++) {
             if (iconSizes[i] < availSize)
-                newIconSize = iconSizes[i];
+                newIconSize = baseIconSizes[i];
         }
 
         if (newIconSize == this.iconSize)
