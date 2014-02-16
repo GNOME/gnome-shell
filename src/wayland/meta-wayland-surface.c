@@ -1113,6 +1113,13 @@ set_dbus_properties (struct wl_client   *client,
   MetaWaylandSurfaceExtension *gtk_surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *surface = wl_container_of (gtk_surface, surface, gtk_surface);
 
+  /* Broken client, let it die instead of us */
+  if (!surface->window)
+    {
+      meta_warning ("meta-wayland-surface: set_dbus_properties called with invalid window!\n");
+      return;
+    }
+
   meta_window_set_gtk_dbus_properties (surface->window,
                                        application_id,
                                        unique_bus_name,
