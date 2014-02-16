@@ -160,6 +160,15 @@ window_backed_app_get_icon (ShellApp *app,
 {
   MetaWindow *window;
   ClutterActor *actor;
+  gint scale;
+  ShellGlobal *global;
+  StThemeContext *context;
+
+  global = shell_global_get ();
+  context = st_theme_context_get_for_stage (shell_global_get_stage (global));
+  g_object_get (context, "scale-factor", &scale, NULL);
+
+  size *= scale;
 
   /* During a state transition from running to not-running for
    * window-backend apps, it's possible we get a request for the icon.
@@ -223,6 +232,7 @@ shell_app_create_icon_texture (ShellApp   *app,
 typedef struct {
   ShellApp *app;
   int size;
+  int scale;
   ClutterTextDirection direction;
 } CreateFadedIconData;
 
@@ -236,6 +246,7 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
   ShellApp *app;
   GdkPixbuf *pixbuf;
   int size;
+  int scale;
   CoglHandle texture;
   gint width, height, rowstride;
   guint8 n_channels;
@@ -251,23 +262,24 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
 
   app = data->app;
   size = data->size;
+  scale = data->scale;
 
   info = NULL;
 
   icon = g_app_info_get_icon (G_APP_INFO (app->info));
   if (icon != NULL)
     {
-      info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
-                                             icon, size,
-                                             GTK_ICON_LOOKUP_FORCE_SIZE);
+      info = gtk_icon_theme_lookup_by_gicon_for_scale (gtk_icon_theme_get_default (),
+                                                       icon, size, scale,
+                                                       GTK_ICON_LOOKUP_FORCE_SIZE);
     }
 
   if (info == NULL)
     {
       icon = g_themed_icon_new ("application-x-executable");
-      info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
-                                             icon, size,
-                                             GTK_ICON_LOOKUP_FORCE_SIZE);
+      info = gtk_icon_theme_lookup_by_gicon_for_scale (gtk_icon_theme_get_default (),
+                                                       icon, size, scale,
+                                                       GTK_ICON_LOOKUP_FORCE_SIZE);
       g_object_unref (icon);
     }
 
@@ -351,6 +363,9 @@ shell_app_get_faded_icon (ShellApp *app, int size, ClutterTextDirection directio
   ClutterActor *result;
   char *cache_key;
   CreateFadedIconData data;
+  gint scale;
+  ShellGlobal *global;
+  StThemeContext *context;
 
   /* Don't fade for window backed apps for now...easier to reuse the
    * property tracking bits, and this helps us visually distinguish
@@ -359,14 +374,19 @@ shell_app_get_faded_icon (ShellApp *app, int size, ClutterTextDirection directio
   if (!app->info)
     return window_backed_app_get_icon (app, size);
 
+  global = shell_global_get ();
+  context = st_theme_context_get_for_stage (shell_global_get_stage (global));
+  g_object_get (context, "scale-factor", &scale, NULL);
+
   /* Use icon: prefix so that we get evicted from the cache on
    * icon theme changes. */
-  cache_key = g_strdup_printf ("icon:%s,size=%d,faded-%s",
+  cache_key = g_strdup_printf ("icon:%s,size=%d,scale=%d,faded-%s",
                                shell_app_get_id (app),
-                               size,
+                               size, scale,
                                direction == CLUTTER_TEXT_DIRECTION_RTL ? "rtl" : "ltr");
   data.app = app;
   data.size = size;
+  data.scale = scale;
   data.direction = direction;
   texture = st_texture_cache_load (st_texture_cache_get_default (),
                                    cache_key,
@@ -384,7 +404,7 @@ shell_app_get_faded_icon (ShellApp *app, int size, ClutterTextDirection directio
   else
     {
       result = clutter_texture_new ();
-      g_object_set (result, "opacity", 0, "width", (float) size, "height", (float) size, NULL);
+      g_object_set (result, "opacity", 0, "width", (float) size * scale, "height", (float) size * scale, NULL);
 
     }
   return result;
