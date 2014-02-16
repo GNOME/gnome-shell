@@ -143,11 +143,6 @@ const BaseIcon = new Lang.Class({
         this.icon = this.createIcon(this.iconSize);
 
         this._iconBin.child = this.icon;
-
-        // The icon returned by createIcon() might actually be smaller than
-        // the requested icon size (for instance StTextureCache does this
-        // for fallback icons), so set the size explicitly.
-        this._iconBin.set_size(this.iconSize, this.iconSize);
     },
 
     _onStyleChanged: function() {
