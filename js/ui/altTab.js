@@ -430,7 +430,6 @@ const AppIcon = new Lang.Class({
 
     set_size: function(size) {
         this.icon = this.app.create_icon_texture(size);
-        this._iconBin.set_size(size, size);
         this._iconBin.child = this.icon;
     }
 });
@@ -479,12 +478,13 @@ const AppSwitcher = new Lang.Class({
             Mainloop.source_remove(this._mouseTimeOutId);
     },
 
-    _getPreferredHeight: function (actor, forWidth, alloc) {
+    _setIconSize: function() {
         let j = 0;
         while(this._items.length > 1 && this._items[j].style_class != 'item-box') {
                 j++;
         }
         let themeNode = this._items[j].get_theme_node();
+
         let iconPadding = themeNode.get_horizontal_padding();
         let iconBorder = themeNode.get_border_width(St.Side.LEFT) + themeNode.get_border_width(St.Side.RIGHT);
         let [iconMinHeight, iconNaturalHeight] = this.icons[j].label.get_preferred_height(-1);
@@ -495,19 +495,17 @@ const AppSwitcher = new Lang.Class({
         let primary = Main.layoutManager.primaryMonitor;
         let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
         let availWidth = primary.width - parentPadding - this.actor.get_theme_node().get_horizontal_padding();
-        let height = 0;
-
-        for(let i =  0; i < iconSizes.length; i++) {
-                this._iconSize = iconSizes[i];
-                height = iconSizes[i] + iconSpacing;
-                let w = height * this._items.length + totalSpacing;
-                if (w <= availWidth)
-                        break;
-        }
 
         if (this._items.length == 1) {
             this._iconSize = iconSizes[0];
-            height = iconSizes[0] + iconSpacing;
+        } else {
+            for(let i =  0; i < iconSizes.length; i++) {
+                this._iconSize = iconSizes[i];
+                let height = iconSizes[i] + iconSpacing;
+                let w = height * this._items.length + totalSpacing;
+                if (w <= availWidth)
+                    break;
+            }
         }
 
         for(let i = 0; i < this.icons.length; i++) {
@@ -515,9 +513,11 @@ const AppSwitcher = new Lang.Class({
                 break;
             this.icons[i].set_size(this._iconSize);
         }
+    },
 
-        alloc.min_size = height;
-        alloc.natural_size = height;
+    _getPreferredHeight: function (actor, forWidth, alloc) {
+        this._setIconSize();
+        this.parent(actor, forWidth, alloc);
     },
 
     _allocate: function (actor, box, flags) {
