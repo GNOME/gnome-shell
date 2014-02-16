@@ -29,6 +29,7 @@
 #include "st-enum-types.h"
 #include "st-icon.h"
 #include "st-texture-cache.h"
+#include "st-theme-context.h"
 #include "st-private.h"
 
 enum
@@ -430,6 +431,9 @@ st_icon_update (StIcon *icon)
   StIconPrivate *priv = icon->priv;
   StThemeNode *theme_node;
   StTextureCache *cache;
+  gint scale;
+  ClutterActor *stage;
+  StThemeContext *context;
 
   if (priv->pending_texture)
     {
@@ -443,13 +447,18 @@ st_icon_update (StIcon *icon)
   if (theme_node == NULL)
     return;
 
+  stage = clutter_actor_get_stage (CLUTTER_ACTOR (icon));
+  context = st_theme_context_get_for_stage (CLUTTER_STAGE (stage));
+  g_object_get (context, "scale-factor", &scale, NULL);
+
   cache = st_texture_cache_get_default ();
   if (priv->gicon)
     {
       priv->pending_texture = st_texture_cache_load_gicon (cache,
                                                            theme_node,
                                                            priv->gicon,
-                                                           priv->icon_size);
+                                                           priv->icon_size,
+                                                           scale);
     }
 
   if (priv->pending_texture)
@@ -483,7 +492,19 @@ st_icon_update_icon_size (StIcon *icon)
   if (priv->prop_icon_size > 0)
     new_size = priv->prop_icon_size;
   else if (priv->theme_icon_size > 0)
-    new_size = priv->theme_icon_size;
+    {
+      gint scale;
+      ClutterActor *stage;
+      StThemeContext *context;
+
+      /* The theme will give us an already-scaled size, so we
+       * undo it here, as priv->icon_size is in unscaled pixels.
+       */
+      stage = clutter_actor_get_stage (CLUTTER_ACTOR (icon));
+      context = st_theme_context_get_for_stage (CLUTTER_STAGE (stage));
+      g_object_get (context, "scale-factor", &scale, NULL);
+      new_size = (gint) (priv->theme_icon_size / scale);
+    }
   else
     new_size = DEFAULT_ICON_SIZE;
 

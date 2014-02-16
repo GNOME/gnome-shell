@@ -909,6 +909,7 @@ static ClutterActor *
 load_gicon_with_colors (StTextureCache    *cache,
                         GIcon             *icon,
                         gint               size,
+                        gint               scale,
                         StIconColors      *colors)
 {
   AsyncTextureLoadData *request;
@@ -922,7 +923,7 @@ load_gicon_with_colors (StTextureCache    *cache,
   /* Do theme lookups in the main thread to avoid thread-unsafety */
   theme = cache->priv->icon_theme;
 
-  info = gtk_icon_theme_lookup_by_gicon (theme, icon, size, GTK_ICON_LOOKUP_USE_BUILTIN);
+  info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon, size, scale, GTK_ICON_LOOKUP_USE_BUILTIN);
   if (info == NULL)
     return NULL;
 
@@ -936,8 +937,8 @@ load_gicon_with_colors (StTextureCache    *cache,
   if (colors)
     {
       /* This raises some doubts about the practice of using string keys */
-      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,colors=%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x",
-                             gicon_string, size,
+      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,scale=%d,colors=%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x",
+                             gicon_string, size, scale,
                              colors->foreground.red, colors->foreground.blue, colors->foreground.green, colors->foreground.alpha,
                              colors->warning.red, colors->warning.blue, colors->warning.green, colors->warning.alpha,
                              colors->error.red, colors->error.blue, colors->error.green, colors->error.alpha,
@@ -945,13 +946,13 @@ load_gicon_with_colors (StTextureCache    *cache,
     }
   else
     {
-      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d",
-                             gicon_string, size);
+      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,scale=%d",
+                             gicon_string, size, scale);
     }
   g_free (gicon_string);
 
   texture = (ClutterActor *) create_default_texture ();
-  clutter_actor_set_size (texture, size, size);
+  clutter_actor_set_size (texture, size * scale, size * scale);
 
   if (ensure_request (cache, key, policy, &request, texture))
     {
@@ -969,7 +970,7 @@ load_gicon_with_colors (StTextureCache    *cache,
       request->policy = policy;
       request->colors = colors ? st_icon_colors_ref (colors) : NULL;
       request->icon_info = info;
-      request->width = request->height = size;
+      request->width = request->height = size * scale;
       request->enforced_square = TRUE;
 
       load_texture_async (cache, request);
@@ -985,6 +986,7 @@ load_gicon_with_colors (StTextureCache    *cache,
  *                            if the icon must not be recolored
  * @icon: the #GIcon to load
  * @size: Size of themed
+ * @scale: Scale factor of display
  *
  * This method returns a new #ClutterActor for a given #GIcon. If the
  * icon isn't loaded already, the texture will be filled
@@ -996,9 +998,10 @@ ClutterActor *
 st_texture_cache_load_gicon (StTextureCache    *cache,
                              StThemeNode       *theme_node,
                              GIcon             *icon,
-                             gint               size)
+                             gint               size,
+                             gint               scale)
 {
-  return load_gicon_with_colors (cache, icon, size, theme_node ? st_theme_node_get_icon_colors (theme_node) : NULL);
+  return load_gicon_with_colors (cache, icon, size, scale, theme_node ? st_theme_node_get_icon_colors (theme_node) : NULL);
 }
 
 static ClutterActor *

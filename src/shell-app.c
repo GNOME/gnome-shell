@@ -193,8 +193,14 @@ shell_app_create_icon_texture (ShellApp   *app,
                                int         size)
 {
   GIcon *icon;
+  gint scale;
   ClutterActor *ret;
+  ShellGlobal *global;
+  StThemeContext *context;
 
+  global = shell_global_get ();
+  context = st_theme_context_get_for_stage (shell_global_get_stage (global));
+  g_object_get (context, "scale-factor", &scale, NULL);
   ret = NULL;
 
   if (app->info == NULL)
@@ -202,12 +208,12 @@ shell_app_create_icon_texture (ShellApp   *app,
 
   icon = g_app_info_get_icon (G_APP_INFO (app->info));
   if (icon != NULL)
-    ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), NULL, icon, size);
+    ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), NULL, icon, size, scale);
 
   if (ret == NULL)
     {
       icon = g_themed_icon_new ("application-x-executable");
-      ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), NULL, icon, size);
+      ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), NULL, icon, size, scale);
       g_object_unref (icon);
     }
 

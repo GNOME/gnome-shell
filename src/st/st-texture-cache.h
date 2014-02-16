@@ -83,7 +83,8 @@ ClutterActor *st_texture_cache_bind_pixbuf_property (StTextureCache    *cache,
 ClutterActor *st_texture_cache_load_gicon (StTextureCache *cache,
                                            StThemeNode    *theme_node,
                                            GIcon          *icon,
-                                           gint            size);
+                                           gint            size,
+                                           gint            scale);
 
 ClutterActor *st_texture_cache_load_uri_async (StTextureCache    *cache,
                                                const gchar       *uri,
