@@ -655,17 +655,19 @@ const ThumbnailList = new Lang.Class({
         totalPadding += this.actor.get_theme_node().get_horizontal_padding() + this.actor.get_theme_node().get_vertical_padding();
         let [labelMinHeight, labelNaturalHeight] = this._labels[0].get_preferred_height(-1);
         let spacing = this._items[0].child.get_theme_node().get_length('spacing');
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let thumbnailSize = THUMBNAIL_DEFAULT_SIZE * scaleFactor;
 
-        availHeight = Math.min(availHeight - labelNaturalHeight - totalPadding - spacing, THUMBNAIL_DEFAULT_SIZE);
+        availHeight = Math.min(availHeight - labelNaturalHeight - totalPadding - spacing, thumbnailSize);
         let binHeight = availHeight + this._items[0].get_theme_node().get_vertical_padding() + this.actor.get_theme_node().get_vertical_padding() - spacing;
-        binHeight = Math.min(THUMBNAIL_DEFAULT_SIZE, binHeight);
+        binHeight = Math.min(thumbnailSize, binHeight);
 
         for (let i = 0; i < this._thumbnailBins.length; i++) {
             let mutterWindow = this._windows[i].get_compositor_private();
             if (!mutterWindow)
                 continue;
 
-            let clone = _createWindowClone(mutterWindow, THUMBNAIL_DEFAULT_SIZE);
+            let clone = _createWindowClone(mutterWindow, thumbnailSize);
             this._thumbnailBins[i].set_height(binHeight);
             this._thumbnailBins[i].add_actor(clone);
             this._clones.push(clone);
