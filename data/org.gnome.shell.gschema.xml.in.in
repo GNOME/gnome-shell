@@ -65,6 +65,7 @@
     <child name="calendar" schema="org.gnome.shell.calendar"/>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
     <child name="keyboard" schema="org.gnome.shell.keyboard"/>
+    <child name="location" schema="org.gnome.shell.location"/>
   </schema>
 
   <schema id="org.gnome.shell.calendar" path="/org/gnome/shell/calendar/"
@@ -130,6 +131,32 @@
       <_summary>Which keyboard to use</_summary>
       <_description>
         The type of keyboard to use.
+      </_description>
+    </key>
+  </schema>
+
+  <enum id="org.gnome.shell.geoclue.AccuracyLevel">
+    <value value="0" nick="off"/>
+    <value value="1" nick="country"/>
+    <value value="4" nick="city"/>
+    <value value="5" nick="neighborhood"/>
+    <value value="6" nick="street"/>
+    <value value="8" nick="exact"/>
+  </enum>
+  <schema id="org.gnome.shell.location"
+          path="/org/gnome/shell/location/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="max-accuracy-level" enum="org.gnome.shell.geoclue.AccuracyLevel">
+      <default>'exact'</default>
+      <_summary>The maximum accuracy level of location.</_summary>
+      <_description>
+        Configures the maximum level of location accuracy applications are
+        allowed to see. Valid options are 'off' (disable location tracking),
+        'country', 'city', 'neighborhood', 'street', and 'exact' (typically
+        requires GPS receiver). Please keep in mind that this only controls
+        what Geoclue will allow applications to see and they can find user's
+        location on their own using network resources (albeit with street-level
+        accuracy at best).
       </_description>
     </key>
   </schema>

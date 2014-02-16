@@ -8,6 +8,9 @@ const Shell = imports.gi.Shell;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
+const LOCATION_SCHEMA = 'org.gnome.shell.location';
+const MAX_ACCURACY_LEVEL = 'max-accuracy-level';
+
 var GeoclueIface = '<node> \
   <interface name="org.freedesktop.GeoClue2.Manager"> \
     <property name="InUse" type="b" access="read"/> \
@@ -39,6 +42,10 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent();
 
+        this._settings = new Gio.Settings({ schema: LOCATION_SCHEMA });
+        this._settings.connect('changed::' + MAX_ACCURACY_LEVEL,
+                               Lang.bind(this, this._onMaxAccuracyLevelChanged));
+
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'find-location-symbolic';
 
@@ -61,20 +68,12 @@ const Indicator = new Lang.Class({
                                            0,
                                            Lang.bind(this, this._connectToGeoclue),
                                            Lang.bind(this, this._onGeoclueVanished));
-
+        this._onMaxAccuracyLevelChanged();
         this._connectToGeoclue();
     },
 
     get MaxAccuracyLevel() {
-        return this._maxAccuracyLevel;
-    },
-
-    set MaxAccuracyLevel(value) {
-        if (this._userSetAccuracy)
-            // If user set the max accuracy level, don't let geoclue override
-            return;
-
-        this._setMaxAccuracyLevel(value, false);
+        return this._getMaxAccuracyLevel();
     },
 
     // We (and geoclue) have currently no way to reliably identifying apps so
@@ -87,7 +86,7 @@ const Indicator = new Lang.Class({
             return [false, 0];
         }
 
-        var allowedAccuracyLevel = clamp(reqAccuracyLevel, 0, this._maxAccuracyLevel);
+        let allowedAccuracyLevel = clamp(reqAccuracyLevel, 0, this._getMaxAccuracyLevel());
         return [true, allowedAccuracyLevel];
     },
 
@@ -115,7 +114,6 @@ const Indicator = new Lang.Class({
     _onProxyReady: function(proxy, error) {
         if (error != null) {
             log(error.message);
-            this._userSetAccuracy = false;
             this._connecting = false;
             return;
         }
@@ -144,16 +142,14 @@ const Indicator = new Lang.Class({
     },
 
     _onOnOffAction: function() {
-        if (this._maxAccuracyLevel == 0)
-            this._setMaxAccuracyLevel(this._availableAccuracyLevel, true);
+        if (this._getMaxAccuracyLevel() == 0)
+            this._settings.set_enum(MAX_ACCURACY_LEVEL, this._availableAccuracyLevel);
         else
-            this._setMaxAccuracyLevel(0, true);
+            this._settings.set_enum(MAX_ACCURACY_LEVEL, 0);
     },
 
-    _setMaxAccuracyLevel: function(maxAccuracyLevel, userSet) {
-        this._maxAccuracyLevel = maxAccuracyLevel;
-
-        if (this._maxAccuracyLevel == 0) {
+    _onMaxAccuracyLevelChanged: function() {
+        if (this._getMaxAccuracyLevel() == 0) {
             this._item.status.text = _("Off");
             this._onoffAction.label.text = "Turn On";
         } else {
@@ -161,31 +157,23 @@ const Indicator = new Lang.Class({
             this._onoffAction.label.text = "Turn Off";
         }
 
-        if (!userSet)
-            return;
-
-        this._userSetAccuracy = true;
         // Gotta ensure geoclue is up and we are registered as agent to it
         // before we emit the notify for this property change.
         if (!this._connectToGeoclue())
             this._notifyMaxAccuracyLevel();
     },
 
-    _notifyMaxAccuracyLevel: function() {
-        if (!this._userSetAccuracy)
-            return;
+    _getMaxAccuracyLevel: function() {
+        return this._settings.get_enum(MAX_ACCURACY_LEVEL);
+    },
 
-        var variant = new GLib.Variant('u', this._maxAccuracyLevel);
+    _notifyMaxAccuracyLevel: function() {
+        let variant = new GLib.Variant('u', this._getMaxAccuracyLevel());
         this._agent.emit_property_changed('MaxAccuracyLevel', variant);
-        this._userSetAccuracy = false;
     },
 
     _updateMenuVisibility: function() {
         this._availableAccuracyLevel = this._proxy.AvailableAccuracyLevel;
-        if (!this._maxAccuracyLevelInitialized) {
-            this._maxAccuracyLevel = this._availableAccuracyLevel;
-            this._maxAccuracyLevelInitialized = true;
-        }
         this.menu.actor.visible = (this._availableAccuracyLevel != 0);
     },
 
