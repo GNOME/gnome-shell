@@ -11,18 +11,18 @@
 # Adorilson Bezerra <adorilson@gmail.com>, 2011, 2014.
 # Djavan Fagundes <djavan@comum.org>, 2012.
 # Enrico Nicoletto <liverig@gmail.com>, 2013, 2014.
-# Rafael Ferreira <rafael.f.f1@gmail.com>, 2013.
 # Juan Diego Martins da Costa Cruz <juan.martins@ifrn.edu.br>, 2013.
 # Fábio Nogueira <fnogueira@gnome.org>, 2014.
+# Rafael Ferreira <rafael.f.f1@gmail.com>, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-06 18:07+0000\n"
-"PO-Revision-Date: 2014-02-06 16:52-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"POT-Creation-Date: 2014-02-15 20:28+0000\n"
+"PO-Revision-Date: 2014-02-16 02:51-0300\n"
+"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -293,7 +293,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:357
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:854
+#: ../js/ui/status/network.js:857
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -354,27 +354,27 @@ msgstr "Não foi possível analisar comando:"
 msgid "Execution of “%s” failed:"
 msgstr "A execução de \"%s\" falhou:"
 
-#: ../js/ui/appDisplay.js:633
+#: ../js/ui/appDisplay.js:625
 msgid "Frequently used applications will appear here"
 msgstr "Aplicativos usados frequentemente vão aparecer aqui"
 
-#: ../js/ui/appDisplay.js:744
+#: ../js/ui/appDisplay.js:736
 msgid "Frequent"
 msgstr "Frequente"
 
-#: ../js/ui/appDisplay.js:751
+#: ../js/ui/appDisplay.js:743
 msgid "All"
 msgstr "Todos"
 
-#: ../js/ui/appDisplay.js:1558
+#: ../js/ui/appDisplay.js:1546
 msgid "New Window"
 msgstr "Nova janela"
 
-#: ../js/ui/appDisplay.js:1580 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1568 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
-#: ../js/ui/appDisplay.js:1586
+#: ../js/ui/appDisplay.js:1574
 msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
@@ -588,7 +588,7 @@ msgid "Type again:"
 msgstr "Digite novamente:"
 
 #: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:227
-#: ../js/ui/status/network.js:300 ../js/ui/status/network.js:857
+#: ../js/ui/status/network.js:300 ../js/ui/status/network.js:860
 msgid "Connect"
 msgstr "Conectar"
 
@@ -1189,7 +1189,7 @@ msgstr "Sair"
 msgid "Activities"
 msgstr "Atividades"
 
-#: ../js/ui/panel.js:905
+#: ../js/ui/panel.js:914
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1314,9 +1314,9 @@ msgstr "Texto grande"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/network.js:134
-#: ../js/ui/status/network.js:1205 ../js/ui/status/rfkill.js:85
-#: ../js/ui/status/rfkill.js:105
+#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:55
+#: ../js/ui/status/network.js:134 ../js/ui/status/network.js:1209
+#: ../js/ui/status/rfkill.js:85 ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "Desligar"
 
@@ -1331,7 +1331,7 @@ msgid_plural "%d Connected Devices"
 msgstr[0] "%d dispositivo conectado"
 msgstr[1] "%d dispositivos conectados"
 
-#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1228
+#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1232
 msgid "Not Connected"
 msgstr "Não conectado"
 
@@ -1343,15 +1343,24 @@ msgstr "Brilho"
 msgid "Show Keyboard Layout"
 msgstr "Exibir disposição de teclado"
 
+#: ../js/ui/status/location.js:45
+msgid "Location"
+msgstr "Localização"
+
+#: ../js/ui/status/location.js:54 ../js/ui/status/location.js:160
+#: ../js/ui/status/rfkill.js:84
+msgid "On"
+msgstr "On"
+
+# Referente ao estado "desligado" da rede.
+#: ../js/ui/status/location.js:157 ../js/ui/status/network.js:223
+#: ../js/ui/status/network.js:389 ../js/ui/status/network.js:1230
+msgid "Off"
+msgstr "Desligado"
+
 #: ../js/ui/status/network.js:73
 msgid "<unknown>"
 msgstr "<desconhecido>"
-
-# Referente ao estado "desligado" da rede.
-#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:389
-#: ../js/ui/status/network.js:1226
-msgid "Off"
-msgstr "Desligado"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
@@ -1363,12 +1372,12 @@ msgstr "não gerenciado"
 msgid "disconnecting..."
 msgstr "desconectando..."
 
-#: ../js/ui/status/network.js:403 ../js/ui/status/network.js:1280
+#: ../js/ui/status/network.js:403 ../js/ui/status/network.js:1284
 msgid "connecting..."
 msgstr "conectando..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:406 ../js/ui/status/network.js:1283
+#: ../js/ui/status/network.js:406 ../js/ui/status/network.js:1287
 msgid "authentication required"
 msgstr "autenticação necessária"
 
@@ -1384,7 +1393,7 @@ msgstr "firmware faltando"
 msgid "unavailable"
 msgstr "indisponível"
 
-#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1285
+#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1289
 msgid "connection failed"
 msgstr "conexão falhou"
 
@@ -1396,7 +1405,7 @@ msgstr "Configurações da rede cabeada"
 msgid "Mobile Broadband Settings"
 msgstr "Configurações de banda larga móvel"
 
-#: ../js/ui/status/network.js:519 ../js/ui/status/network.js:1224
+#: ../js/ui/status/network.js:519 ../js/ui/status/network.js:1228
 msgid "Hardware Disabled"
 msgstr "Hardware desabilitado"
 
@@ -1404,71 +1413,71 @@ msgstr "Hardware desabilitado"
 msgid "Use as Internet connection"
 msgstr "Usar como conexão de Internet"
 
-#: ../js/ui/status/network.js:752
+#: ../js/ui/status/network.js:755
 msgid "Airplane Mode is On"
 msgstr "Modo avião ligado"
 
-#: ../js/ui/status/network.js:753
+#: ../js/ui/status/network.js:756
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "O Wi-Fi é desabilitado quando o modo avião está ligado."
 
-#: ../js/ui/status/network.js:754
+#: ../js/ui/status/network.js:757
 msgid "Turn Off Airplane Mode"
 msgstr "Desligar modo avião"
 
-#: ../js/ui/status/network.js:763
+#: ../js/ui/status/network.js:766
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi desligado"
 
-#: ../js/ui/status/network.js:764
+#: ../js/ui/status/network.js:767
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "O Wi-Fi precisa ser ligado a fim de conectar-se a uma rede."
 
-#: ../js/ui/status/network.js:765
+#: ../js/ui/status/network.js:768
 msgid "Turn On Wi-Fi"
 msgstr "Ligar Wi-Fi"
 
-#: ../js/ui/status/network.js:790
+#: ../js/ui/status/network.js:793
 msgid "Wi-Fi Networks"
 msgstr "Redes Wi-Fi"
 
-#: ../js/ui/status/network.js:792
+#: ../js/ui/status/network.js:795
 msgid "Select a network"
 msgstr "Selecione uma rede"
 
-#: ../js/ui/status/network.js:821
+#: ../js/ui/status/network.js:824
 msgid "No Networks"
 msgstr "Nenhuma rede"
 
-#: ../js/ui/status/network.js:842 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:845 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
 msgstr "Usar alternador de hardware para desligar"
 
-#: ../js/ui/status/network.js:1111
+#: ../js/ui/status/network.js:1115
 msgid "Select Network"
 msgstr "Selecione a rede"
 
-#: ../js/ui/status/network.js:1117
+#: ../js/ui/status/network.js:1121
 msgid "Wi-Fi Settings"
 msgstr "Configurações de Wi-Fi"
 
-#: ../js/ui/status/network.js:1205
+#: ../js/ui/status/network.js:1209
 msgid "Turn On"
 msgstr "Ligar"
 
-#: ../js/ui/status/network.js:1348
+#: ../js/ui/status/network.js:1352
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1491
+#: ../js/ui/status/network.js:1495
 msgid "Network Manager"
 msgstr "Gerenciador de rede"
 
-#: ../js/ui/status/network.js:1530
+#: ../js/ui/status/network.js:1534
 msgid "Connection failed"
 msgstr "Falha de conexão"
 
-#: ../js/ui/status/network.js:1531
+#: ../js/ui/status/network.js:1535
 msgid "Activation of network connection failed"
 msgstr "Falha ao ativar a conexão da rede"
 
@@ -1507,10 +1516,6 @@ msgstr "Bateria"
 #: ../js/ui/status/rfkill.js:82
 msgid "Airplane Mode"
 msgstr "Modo avião"
-
-#: ../js/ui/status/rfkill.js:84
-msgid "On"
-msgstr "On"
 
 #: ../js/ui/status/rfkill.js:88
 msgid "Network Settings"
@@ -1617,19 +1622,19 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/main.c:347
+#: ../src/main.c:349
 msgid "Print version"
 msgstr "Versão de impressão"
 
-#: ../src/main.c:353
+#: ../src/main.c:355
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado pelo GDM para a tela de início de sessão"
 
-#: ../src/main.c:359
+#: ../src/main.c:361
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Utilizar um modo específico, ex.: \"gdm\" para a tela de login"
 
-#: ../src/main.c:365
+#: ../src/main.c:367
 msgid "List possible modes"
 msgstr "Listar modos possíveis"
 
