@@ -24,7 +24,7 @@ const WINDOW_PREVIEW_SIZE = 128;
 const APP_ICON_SIZE = 96;
 const APP_ICON_SIZE_SMALL = 48;
 
-const iconSizes = [96, 64, 48, 32, 22];
+const baseIconSizes = [96, 64, 48, 32, 22];
 
 const AppIconMode = {
     THUMBNAIL_ONLY: 1,
@@ -496,11 +496,16 @@ const AppSwitcher = new Lang.Class({
         let parentPadding = this.actor.get_parent().get_theme_node().get_horizontal_padding();
         let availWidth = primary.width - parentPadding - this.actor.get_theme_node().get_horizontal_padding();
 
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let iconSizes = baseIconSizes.map(function(s) {
+            return s * scaleFactor;
+        });
+
         if (this._items.length == 1) {
-            this._iconSize = iconSizes[0];
+            this._iconSize = baseIconSizes[0];
         } else {
-            for(let i =  0; i < iconSizes.length; i++) {
-                this._iconSize = iconSizes[i];
+            for(let i =  0; i < baseIconSizes.length; i++) {
+                this._iconSize = baseIconSizes[i];
                 let height = iconSizes[i] + iconSpacing;
                 let w = height * this._items.length + totalSpacing;
                 if (w <= availWidth)
