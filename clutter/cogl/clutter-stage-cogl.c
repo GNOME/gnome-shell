@@ -483,11 +483,12 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
         stage_cogl->damage_history = g_slist_prepend (stage_cogl->damage_history, current_damage);
 
-        if (age != 0 && !stage_cogl->dirty_backbuffer && g_slist_length (stage_cogl->damage_history) >= age)
+        if (age != 0 && !stage_cogl->dirty_backbuffer && g_slist_length (stage_cogl->damage_history) > age)
           {
             int i = 0;
             GSList *tmp = NULL;
-            for (tmp = stage_cogl->damage_history; tmp; tmp = tmp->next)
+            /* We skip the first entry because it is the clip_region itself */
+            for (tmp = stage_cogl->damage_history->next; tmp; tmp = tmp->next)
               {
                 _clutter_util_rectangle_union (clip_region, tmp->data, clip_region);
                 i++;
