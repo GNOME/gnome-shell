@@ -469,8 +469,6 @@ on_minimize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
   /* FIXME - we shouldn't assume the original scale, it should be saved
    * at the start of the effect */
   clutter_actor_set_scale (data->actor, 1.0, 1.0);
-  clutter_actor_move_anchor_point_from_gravity (data->actor,
-                                                CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
   meta_plugin_minimize_completed (plugin, window_actor);
@@ -506,9 +504,6 @@ minimize (MetaPlugin *plugin, MetaWindowActor *window_actor)
       ActorPrivate *apriv = get_actor_private (window_actor);
 
       apriv->is_minimized = TRUE;
-
-      clutter_actor_move_anchor_point_from_gravity (actor,
-                                                    CLUTTER_GRAVITY_CENTER);
 
       animation = clutter_actor_animate (actor,
                                          CLUTTER_EASE_IN_SINE,
@@ -548,8 +543,6 @@ on_maximize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
 
   /* FIXME - don't assume the original scale was 1.0 */
   clutter_actor_set_scale (data->actor, 1.0, 1.0);
-  clutter_actor_move_anchor_point_from_gravity (data->actor,
-                                                CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
   meta_plugin_maximize_completed (plugin, window_actor);
@@ -574,10 +567,8 @@ maximize (MetaPlugin *plugin,
   ClutterActor *actor = CLUTTER_ACTOR (window_actor);
   MetaWindow *meta_window = meta_window_actor_get_meta_window (window_actor);
 
-  gdouble  scale_x    = 1.0;
-  gdouble  scale_y    = 1.0;
-  gfloat   anchor_x   = 0;
-  gfloat   anchor_y   = 0;
+  gdouble  scale_x = 1.0;
+  gdouble  scale_y = 1.0;
 
   type = meta_window_get_window_type (meta_window);
 
@@ -600,13 +591,6 @@ maximize (MetaPlugin *plugin,
        */
       scale_x = (gdouble)end_width / (gdouble) width;
       scale_y = (gdouble)end_height / (gdouble) height;
-
-      anchor_x = (gdouble)(x - end_x)*(gdouble)width /
-        ((gdouble)(end_width - width));
-      anchor_y = (gdouble)(y - end_y)*(gdouble)height /
-        ((gdouble)(end_height - height));
-
-      clutter_actor_move_anchor_point (actor, anchor_x, anchor_y);
 
       animation = clutter_actor_animate (actor,
                                          CLUTTER_EASE_IN_SINE,
@@ -661,9 +645,6 @@ on_map_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
   ActorPrivate  *apriv = get_actor_private (window_actor);
 
   apriv->tml_map = NULL;
-
-  clutter_actor_move_anchor_point_from_gravity (data->actor,
-                                                CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
   meta_plugin_map_completed (plugin, window_actor);
@@ -749,9 +730,6 @@ destroy (MetaPlugin *plugin, MetaWindowActor *window_actor)
       ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
       ActorPrivate *apriv = get_actor_private (window_actor);
-
-      clutter_actor_move_anchor_point_from_gravity (actor,
-                                                    CLUTTER_GRAVITY_CENTER);
 
       animation = clutter_actor_animate (actor,
                                          CLUTTER_EASE_IN_SINE,
