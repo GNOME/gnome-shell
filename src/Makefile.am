@@ -199,6 +199,21 @@ nodist_gnome_shell_extension_prefs_SOURCES = \
 gnome_shell_extension_prefs_CPPFLAGS = $(gnome_shell_cflags)
 gnome_shell_extension_prefs_LDADD = libgnome-shell-js.la $(GNOME_SHELL_LIBS)
 
+if HAVE_NETWORKMANAGER
+
+libexec_PROGRAMS += gnome-shell-portal-helper
+gnome_shell_portal_helper_SOURCES = \
+	gnome-shell-portal-helper.c \
+	$(NULL)
+nodist_gnome_shell_portal_helper_SOURCES = \
+	$(top_builddir)/js/js-resources.c		\
+	$(top_builddir)/js/js-resources.h		\
+	$(NULL)
+gnome_shell_portal_helper_CPPFLAGS = $(gnome_shell_cflags)
+gnome_shell_portal_helper_LDADD = libgnome-shell-js.la $(GNOME_SHELL_LIBS)
+
+endif
+
 ########################################
 
 libgnome_shell_js_la_SOURCES =		\

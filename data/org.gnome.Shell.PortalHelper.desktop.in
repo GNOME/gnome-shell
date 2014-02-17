@@ -1,0 +1,9 @@
+[Desktop Entry]
+_Name=Captive Portal
+Type=Application
+Exec=gapplication launch org.gnome.Shell.PortalHelper
+DBusActivatable=true
+NoDisplay=true
+Icon=network-workgroup
+StartupNotify=true
+OnlyShowIn=GNOME;

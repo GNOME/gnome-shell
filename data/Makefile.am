@@ -1,5 +1,23 @@
+CLEANFILES =
+
 desktopdir=$(datadir)/applications
 desktop_DATA = gnome-shell.desktop gnome-shell-wayland.desktop  gnome-shell-extension-prefs.desktop
+
+if HAVE_NETWORKMANAGER
+desktop_DATA += org.gnome.Shell.PortalHelper.desktop
+
+servicedir = $(datadir)/dbus-1/services
+service_DATA = org.gnome.Shell.PortalHelper.service
+
+CLEANFILES += \
+	org.gnome.Shell.PortalHelper.service \
+	org.gnome.Shell.PortalHelper.desktop
+
+endif
+
+%.service: %.service.in
+	$(AM_V_GEN) sed -e "s|@libexecdir[@]|$(libexecdir)|" \
+	    $< > $@ || rm $@
 
 # We substitute in bindir so it works as an autostart
 # file when built in a non-system prefix
@@ -88,9 +106,11 @@ EXTRA_DIST =						\
 	$(menu_DATA)					\
 	$(convert_DATA)					\
 	$(keys_in_files)				\
+	org.gnome.Shell.PortalHelper.desktop.in		\
+	org.gnome.Shell.PortalHelper.service.in		\
 	org.gnome.shell.gschema.xml.in.in
 
-CLEANFILES =						\
+CLEANFILES +=						\
 	gnome-shell.desktop.in				\
 	gnome-shell-wayland.desktop.in			\
 	gnome-shell-extension-prefs.in			\
