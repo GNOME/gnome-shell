@@ -190,10 +190,10 @@ const Indicator = new Lang.Class({
         if (this._availableAccuracyLevel < AccuracyLevel.EXACT) {
             if (maxAccuracyLevel == 0) {
                 this._item.status.text = _("Off");
-                this._onoffAction.label.text = "Turn On";
+                this._onOffAction.label.text = _("Turn On");
             } else {
                 this._item.status.text = _("On");
-                this._onoffAction.label.text = "Turn Off";
+                this._onOffAction.label.text = _("Turn Off");
             }
         } else {
             if (maxAccuracyLevel == 0) {
