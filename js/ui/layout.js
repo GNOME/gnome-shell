@@ -497,8 +497,8 @@ const LayoutManager = new Lang.Class({
             St.ThemeContext.get_for_stage(global.stage).scale_factor = 1;
             return;
         }
-        let dpi_x = primary.width / (global.gdk_screen.get_monitor_width_mm(this.primaryIndex) / 25.4);
-        let dpi_y = primary.height / (global.gdk_screen.get_monitor_height_mm(this.primaryIndex) / 25.4);
+        let dpi_x = primary.width / (width_mm / 25.4);
+        let dpi_y = primary.height / (height_mm / 25.4);
         if (dpi_x > HIGH_DPI_LIMIT && dpi_y > HIGH_DPI_LIMIT)
             St.ThemeContext.get_for_stage(global.stage).scale_factor = 2;
         else
