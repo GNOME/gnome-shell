@@ -295,7 +295,7 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   char **env;
   char *fd_string;
   char *log_path;
-  char *args[11];
+  char *args[10];
   GError *error;
 
   wl_global_create (wl_display, &xserver_interface,
@@ -361,13 +361,12 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   args[1] = manager->display_name;
   args[2] = "-wayland";
   args[3] = "-rootless";
-  args[4] = "-retro";
-  args[5] = "-noreset";
-  args[6] = "-logfile";
-  args[7] = log_path;
-  args[8] = "-nolisten";
-  args[9] = "all";
-  args[10] = NULL;
+  args[4] = "-noreset";
+  args[5] = "-logfile";
+  args[6] = log_path;
+  args[7] = "-nolisten";
+  args[8] = "all";
+  args[9] = NULL;
 
   error = NULL;
   if (g_spawn_async (NULL, /* cwd */
