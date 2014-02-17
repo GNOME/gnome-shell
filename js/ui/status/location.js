@@ -35,14 +35,6 @@ var AgentIface = '<node> \
   </interface> \
 </node>';
 
-const AccuracyLevel = {
-    NONE: 0,
-    COUNTRY: 1,
-    CITY: 4,
-    STREET: 6,
-    EXACT: 8,
-};
-
 const Indicator = new Lang.Class({
     Name: 'LocationIndicator',
     Extends: PanelMenu.SystemIndicator,
@@ -68,18 +60,6 @@ const Indicator = new Lang.Class({
 
         this._item.status.text = _("On");
         this._onOffAction = this._item.menu.addAction(_("Turn Off"), Lang.bind(this, this._onOnOffAction));
-
-        this._accurateItem = new PopupMenu.PopupMenuItem(_("Accurate (GPS + Network)"), false);
-        this._accurateItem.connect('activate', Lang.bind(this, this._onAccurateItemActivated));
-        this._item.menu.addMenuItem(this._accurateItem);
-
-        this._powerSavingItem = new PopupMenu.PopupMenuItem(_("Power Saving (Network Only)"), false);
-        this._powerSavingItem.connect('activate', Lang.bind(this, this._onPowerSavingItemActivated));
-        this._item.menu.addMenuItem(this._powerSavingItem);
-
-        this._offItem = new PopupMenu.PopupMenuItem(_("Off"), false);
-        this._offItem.connect('activate', Lang.bind(this, this._onOffItemActivated));
-        this._item.menu.addMenuItem(this._offItem);
 
         this.menu.addMenuItem(this._item);
 
@@ -170,48 +150,16 @@ const Indicator = new Lang.Class({
         if (this._getMaxAccuracyLevel() == 0)
             this._settings.set_enum(MAX_ACCURACY_LEVEL, this._availableAccuracyLevel);
         else
-            this._settings.set_enum(MAX_ACCURACY_LEVEL, AccuracyLevel.NONE);
-    },
-
-    _onAccurateItemActivated: function() {
-        this._settings.set_enum(MAX_ACCURACY_LEVEL, AccuracyLevel.EXACT);
-    },
-
-    _onPowerSavingItemActivated: function() {
-        this._settings.set_enum(MAX_ACCURACY_LEVEL, AccuracyLevel.STREET);
-    },
-
-    _onOffItemActivated: function() {
-        this._settings.set_enum(MAX_ACCURACY_LEVEL, AccuracyLevel.NONE);
+            this._settings.set_enum(MAX_ACCURACY_LEVEL, 0);
     },
 
     _onMaxAccuracyLevelChanged: function() {
-        let maxAccuracyLevel = this._getMaxAccuracyLevel();
-        if (this._availableAccuracyLevel < AccuracyLevel.EXACT) {
-            if (maxAccuracyLevel == 0) {
-                this._item.status.text = _("Off");
-                this._onOffAction.label.text = _("Turn On");
-            } else {
-                this._item.status.text = _("On");
-                this._onOffAction.label.text = _("Turn Off");
-            }
+        if (this._getMaxAccuracyLevel() == 0) {
+            this._item.status.text = _("Off");
+            this._onOffAction.label.text = _("Turn On");
         } else {
-            if (maxAccuracyLevel == 0) {
-                this._item.status.text = _("Off");
-                this._offItem.setOrnament(PopupMenu.Ornament.DOT);
-                this._accurateItem.setOrnament(PopupMenu.Ornament.NONE);
-                this._powerSavingItem.setOrnament(PopupMenu.Ornament.NONE);
-            } else if (maxAccuracyLevel < AccuracyLevel.EXACT) {
-                this._item.status.text = _("Power Saving");
-                this._powerSavingItem.setOrnament(PopupMenu.Ornament.DOT);
-                this._accurateItem.setOrnament(PopupMenu.Ornament.NONE);
-                this._offItem.setOrnament(PopupMenu.Ornament.NONE);
-            } else {
-                this._item.status.text = _("Accurate");
-                this._accurateItem.setOrnament(PopupMenu.Ornament.DOT);
-                this._offItem.setOrnament(PopupMenu.Ornament.NONE);
-                this._powerSavingItem.setOrnament(PopupMenu.Ornament.NONE);
-            }
+            this._item.status.text = _("On");
+            this._onOffAction.label.text = _("Turn Off");
         }
 
         // Gotta ensure geoclue is up and we are registered as agent to it
@@ -232,22 +180,6 @@ const Indicator = new Lang.Class({
     _updateMenu: function() {
         this._availableAccuracyLevel = this._proxy.AvailableAccuracyLevel;
         this.menu.actor.visible = (this._availableAccuracyLevel != 0);
-        if (this._availableAccuracyLevel == 0)
-            return;
-
-        if (this._availableAccuracyLevel < AccuracyLevel.EXACT) {
-            this._onOffAction.actor.show();
-            this._accurateItem.actor.hide();
-            this._powerSavingItem.actor.hide();
-            this._offItem.actor.hide();
-        } else {
-            this._onOffAction.actor.hide();
-            this._accurateItem.actor.show();
-            this._powerSavingItem.actor.show();
-            this._offItem.actor.show();
-        }
-
-        this._onMaxAccuracyLevelChanged();
     },
 
     _onGeocluePropsChanged: function(proxy, properties) {
