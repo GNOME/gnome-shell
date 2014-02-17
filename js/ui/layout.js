@@ -489,6 +489,12 @@ const LayoutManager = new Lang.Class({
 
     _updateScaling: function() {
         let primary = this.monitors[this.primaryIndex];
+        let width_mm = global.gdk_screen.get_monitor_width_mm(this.primaryIndex);
+        let height_mm = global.gdk_screen.get_monitor_height_mm(this.primaryIndex);
+        if (width_mm == 0 || height_mm == 0) {
+            St.ThemeContext.get_for_stage(global.stage).scale_factor = 1;
+            return;
+        }
         let dpi_x = primary.width / (global.gdk_screen.get_monitor_width_mm(this.primaryIndex) / 25.4);
         let dpi_y = primary.height / (global.gdk_screen.get_monitor_height_mm(this.primaryIndex) / 25.4);
         if (dpi_x > HIGH_DPI_LIMIT && dpi_y > HIGH_DPI_LIMIT)
