@@ -1074,7 +1074,7 @@ static void
 xdg_shell_handle_client_destroy (struct wl_listener *listener, void *data)
 {
   XdgShell *xdg_shell = wl_container_of (listener, xdg_shell, client_destroy_listener);
-  g_slice_free (XdgShell, data);
+  g_slice_free (XdgShell, xdg_shell);
 }
 
 static struct wl_resource *
