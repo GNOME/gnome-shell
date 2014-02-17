@@ -295,6 +295,7 @@ on_monitors_changed (MetaScreen *screen,
 {
   MetaDefaultPlugin *self = META_DEFAULT_PLUGIN (plugin);
   int i, n;
+  GRand *rand = g_rand_new_with_seed (12345);
 
   clutter_actor_destroy_all_children (self->priv->background_group);
 
@@ -317,14 +318,16 @@ on_monitors_changed (MetaScreen *screen,
          reproducible.
       */
       clutter_color_init (&color,
-                          g_random_int () % 255,
-                          g_random_int () % 255,
-                          g_random_int () % 255,
+                          g_rand_int_range (rand, 0, 255),
+                          g_rand_int_range (rand, 0, 255),
+                          g_rand_int_range (rand, 0, 255),
                           255);
       clutter_actor_set_background_color (background, &color);
 
       clutter_actor_add_child (self->priv->background_group, background);
     }
+
+  g_rand_free (rand);
 }
 
 static void
