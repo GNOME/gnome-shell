@@ -122,7 +122,7 @@ const Indicator = new Lang.Class({
         this._propertiesChangedId = this._proxy.connect('g-properties-changed',
                                                         Lang.bind(this, this._onGeocluePropsChanged));
 
-        this._updateMenuVisibility();
+        this._updateMenu();
         this._syncIndicator();
 
         this._proxy.AddAgentRemote('gnome-shell', Lang.bind(this, this._onAgentRegistered));
@@ -177,7 +177,7 @@ const Indicator = new Lang.Class({
         this._agent.emit_property_changed('MaxAccuracyLevel', variant);
     },
 
-    _updateMenuVisibility: function() {
+    _updateMenu: function() {
         this._availableAccuracyLevel = this._proxy.AvailableAccuracyLevel;
         this.menu.actor.visible = (this._availableAccuracyLevel != 0);
     },
@@ -187,7 +187,7 @@ const Indicator = new Lang.Class({
         if ("InUse" in unpacked)
             this._syncIndicator();
         if ("AvailableAccuracyLevel" in unpacked)
-            this._updateMenuVisibility();
+            this._updateMenu();
     }
 });
 
