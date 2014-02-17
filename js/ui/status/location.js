@@ -119,7 +119,8 @@ const Indicator = new Lang.Class({
         }
 
         this._proxy = proxy;
-        this._proxy.connect('g-properties-changed', Lang.bind(this, this._onGeocluePropsChanged));
+        this._propertiesChangedId = this._proxy.connect('g-properties-changed',
+                                                        Lang.bind(this, this._onGeocluePropsChanged));
 
         this._updateMenuVisibility();
         this._syncIndicator();
@@ -136,6 +137,10 @@ const Indicator = new Lang.Class({
     },
 
     _onGeoclueVanished: function() {
+        if (this._propertiesChangedId) {
+            this._proxy.disconnect(this._propertiesChangedId);
+            this._propertiesChangedId = 0;
+        }
         this._proxy = null;
 
         this._syncIndicator();
