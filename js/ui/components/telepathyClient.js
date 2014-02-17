@@ -944,28 +944,28 @@ const ChatNotification = new Lang.Class({
 
         // Show only the hour if date is on today
         if(daysAgo < 1){
-            format = _("%H:%M");
+            format = _("%H\u2236%M");
         }
         // Show the word "Yesterday" and time if date is on yesterday
         else if(daysAgo <2){
             /* Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"*/
             // xgettext:no-c-format
-            format = _("Yesterday, %H:%M");
+            format = _("Yesterday, %H\u2236%M");
         }
         // Show a week day and time if date is in the last week
         else if (daysAgo < 7) {
             /* Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30*/
             // xgettext:no-c-format
-            format = _("%A, %H:%M");
+            format = _("%A, %H\u2236%M");
 
         } else if (date.getYear() == now.getYear()) {
             /* Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
             // xgettext:no-c-format
-            format = _("%B %d, %H:%M");
+            format = _("%B %d, %H\u2236%M");
         } else {
             /* Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
             // xgettext:no-c-format
-            format = _("%B %d %Y, %H:%M");
+            format = _("%B %d %Y, %H\u2236%M");
         }
 
         return date.toLocaleFormat(format);
