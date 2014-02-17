@@ -67,7 +67,7 @@ const Indicator = new Lang.Class({
                           '/org/freedesktop/GeoClue2/Agent/' + uid);
 
         this._item.status.text = _("On");
-        this._onoffAction = this._item.menu.addAction(_("Turn Off"), Lang.bind(this, this._onOnOffAction));
+        this._onOffAction = this._item.menu.addAction(_("Turn Off"), Lang.bind(this, this._onOnOffAction));
 
         this._accurateItem = new PopupMenu.PopupMenuItem(_("Accurate (GPS + Network)"), false);
         this._accurateItem.connect('activate', Lang.bind(this, this._onAccurateItemActivated));
@@ -236,12 +236,12 @@ const Indicator = new Lang.Class({
             return;
 
         if (this._availableAccuracyLevel < AccuracyLevel.EXACT) {
-            this._onoffAction.actor.show();
+            this._onOffAction.actor.show();
             this._accurateItem.actor.hide();
             this._powerSavingItem.actor.hide();
             this._offItem.actor.hide();
         } else {
-            this._onoffAction.actor.hide();
+            this._onOffAction.actor.hide();
             this._accurateItem.actor.show();
             this._powerSavingItem.actor.show();
             this._offItem.actor.show();
