@@ -289,20 +289,6 @@ on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
   meta_plugin_switch_workspace_completed (plugin);
 }
 
-static gboolean
-show_stage (MetaPlugin *plugin)
-{
-  MetaScreen *screen;
-  ClutterActor *stage;
-
-  screen = meta_plugin_get_screen (plugin);
-  stage = meta_get_stage_for_screen (screen);
-
-  clutter_actor_show (stage);
-
-  return FALSE;
-}
-
 static void
 on_monitors_changed (MetaScreen *screen,
                      MetaPlugin *plugin)
@@ -355,10 +341,7 @@ start (MetaPlugin *plugin)
                     G_CALLBACK (on_monitors_changed), plugin);
   on_monitors_changed (screen, plugin);
 
-  meta_later_add (META_LATER_BEFORE_REDRAW,
-                  (GSourceFunc) show_stage,
-                  plugin,
-                  NULL);
+  clutter_actor_show (meta_get_stage_for_screen (screen));
 }
 
 static void
