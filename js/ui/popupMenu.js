@@ -45,28 +45,35 @@ function isPopupMenuItemVisible(child) {
 /**
  * @side Side to which the arrow points.
  */
-function unicodeArrow(side) {
-    let arrowChar;
+function arrowIcon(side) {
+    let rotation;
     switch (side) {
         case St.Side.TOP:
-            arrowChar = '\u25B4';
+            rotation = 180;
             break;
         case St.Side.RIGHT:
-            arrowChar = '\u25B8';
+            rotation = - 90;
             break;
         case St.Side.BOTTOM:
-            arrowChar = '\u25BE';
+            rotation = 0;
             break;
         case St.Side.LEFT:
-            arrowChar = '\u25C2';
+            rotation = 90;
             break;
     }
 
-    return new St.Label({ text: arrowChar,
-                          style_class: 'unicode-arrow',
-                          accessible_role: Atk.Role.ARROW,
-                          y_expand: true,
-                          y_align: Clutter.ActorAlign.CENTER });
+    let gicon = new Gio.FileIcon({ file: Gio.File.new_for_path(global.datadir +
+                                             '/theme/menu-arrow-symbolic.svg') });
+
+    let arrow = new St.Icon({ style_class: 'popup-menu-arrow',
+                              gicon: gicon,
+                              accessible_role: Atk.Role.ARROW,
+                              y_expand: true,
+                              y_align: Clutter.ActorAlign.CENTER });
+
+    arrow.rotation_angle_z = rotation;
+
+    return arrow;
 }
 
 const PopupBaseMenuItem = new Lang.Class({
@@ -993,7 +1000,7 @@ const PopupSubMenuMenuItem = new Lang.Class({
                                      y_align: Clutter.ActorAlign.CENTER });
         this.actor.add_child(this.status);
 
-        this._triangle = unicodeArrow(St.Side.RIGHT);
+        this._triangle = arrowIcon(St.Side.RIGHT);
         this._triangle.pivot_point = new Clutter.Point({ x: 0.5, y: 0.6 });
 
         this._triangleBin = new St.Widget({ y_expand: true,

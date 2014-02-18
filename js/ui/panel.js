@@ -213,7 +213,7 @@ const AppMenuButton = new Lang.Class({
         this._label = new TextShadower();
         this._label.actor.y_align = Clutter.ActorAlign.CENTER;
         this._hbox.add_actor(this._label.actor);
-        this._arrow = PopupMenu.unicodeArrow(St.Side.BOTTOM);
+        this._arrow = PopupMenu.arrowIcon(St.Side.BOTTOM);
         this._hbox.add_actor(this._arrow);
 
         this._iconBottomClip = 0;
@@ -842,7 +842,7 @@ const AggregateMenu = new Lang.Class({
         this._indicators.add_child(this._rfkill.indicators);
         this._indicators.add_child(this._volume.indicators);
         this._indicators.add_child(this._power.indicators);
-        this._indicators.add_child(PopupMenu.unicodeArrow(St.Side.BOTTOM));
+        this._indicators.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
 
         this.menu.addMenuItem(this._volume.menu);
         this.menu.addMenuItem(this._brightness.menu);

@@ -157,8 +157,9 @@ StScrollBar StButton#vhandle:active {
     min-width: 200px;
 }
 
-.unicode-arrow {
-    font-size: 120%;
+.popup-menu-arrow {
+    width: 16px;
+    height: 16px;
 }
 
 .popup-submenu-menu-item:open {
