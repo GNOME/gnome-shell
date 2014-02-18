@@ -739,6 +739,20 @@ global_stage_after_paint (gpointer data)
   return TRUE;
 }
 
+
+static void
+update_scale_factor (gpointer data)
+{
+  ShellGlobal *global = SHELL_GLOBAL (data);
+  ClutterStage *stage = CLUTTER_STAGE (global->stage);
+  StThemeContext *context = st_theme_context_get_for_stage (stage);
+  GValue value = G_VALUE_INIT;
+
+  g_value_init (&value, G_TYPE_INT);
+  gdk_screen_get_setting (global->gdk_screen, "gdk-window-scaling-factor", &value);
+  g_object_set (context, "scale-factor", g_value_get_int (&value), NULL);
+}
+
 /* This is an IBus workaround. The flow of events with IBus is that every time
  * it gets gets a key event, it:
  *
@@ -917,9 +931,19 @@ _shell_global_set_plugin (ShellGlobal *global,
   g_signal_connect (global->meta_display, "notify::focus-window",
                     G_CALLBACK (focus_window_changed), global);
 
+  /*
+   * We connect to GdkScreen's monitors-changed here to avoid
+   * a race condition. GdkScreen's monitors-changed signal is
+   * emitted *after* the xsetting has been updated.
+   */
+  g_signal_connect (global->gdk_screen, "monitors-changed",
+                    G_CALLBACK (update_scale_factor), global);
+
   gdk_event_handler_set (gnome_shell_gdk_event_handler, global, NULL);
 
   global->focus_manager = st_focus_manager_get_for_stage (global->stage);
+
+  update_scale_factor (global);
 }
 
 GjsContext *
