@@ -21,6 +21,15 @@
         EnableExtension and DisableExtension D-Bus methods on org.gnome.Shell.
       </_description>
     </key>
+    <key name="disable-extension-version-validation" type="b">
+      <default>false</default>
+      <_summary>Disables the validation of extension version compatibility</_summary>
+      <_description>
+        GNOME Shell will only load extensions that claim to support the current
+        running version. Enabling this option will disable this check and try to
+        load all extensions regardless of the versions they claim to support.
+      </_description>
+    </key>
     <key name="favorite-apps" type="as">
       <default>[ 'epiphany.desktop', 'evolution.desktop', 'empathy.desktop', 'rhythmbox.desktop', 'shotwell.desktop', 'libreoffice-writer.desktop', 'nautilus.desktop', 'gnome-documents.desktop' ]</default>
       <_summary>List of desktop file IDs for favorite applications</_summary>

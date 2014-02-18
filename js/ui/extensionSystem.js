@@ -38,6 +38,7 @@ const connect = Lang.bind(_signals, _signals.connect);
 const disconnect = Lang.bind(_signals, _signals.disconnect);
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
+const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validation';
 
 var initted = false;
 var enabled;
@@ -156,7 +157,9 @@ function loadExtension(extension) {
     // Default to error, we set success as the last step
     extension.state = ExtensionState.ERROR;
 
-    if (ExtensionUtils.isOutOfDate(extension)) {
+    let checkVersion = !global.settings.get_boolean(EXTENSION_DISABLE_VERSION_CHECK_KEY);
+
+    if (checkVersion && ExtensionUtils.isOutOfDate(extension)) {
         extension.state = ExtensionState.OUT_OF_DATE;
     } else {
         let enabled = enabledExtensions.indexOf(extension.uuid) != -1;
@@ -267,8 +270,19 @@ function onEnabledExtensionsChanged() {
     enabledExtensions = newEnabledExtensions;
 }
 
+function _onVersionValidationChanged() {
+    if (Main.sessionMode.allowExtensions) {
+        enabledExtensions.forEach(function(uuid) {
+            if (ExtensionUtils.extensions[uuid])
+                reloadExtension(ExtensionUtils.extensions[uuid]);
+        });
+    }
+}
+
 function _loadExtensions() {
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
+    global.settings.connect('changed::' + EXTENSION_DISABLE_VERSION_CHECK_KEY, _onVersionValidationChanged);
+
     enabledExtensions = getEnabledExtensions();
 
     let finder = new ExtensionUtils.ExtensionFinder();
