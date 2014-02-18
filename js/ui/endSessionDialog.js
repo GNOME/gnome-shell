@@ -37,7 +37,7 @@ const UserWidget = imports.ui.userWidget;
 let _endSessionDialog = null;
 
 const _ITEM_ICON_SIZE = 48;
-const _DIALOG_ICON_SIZE = 32;
+const _DIALOG_ICON_SIZE = 48;
 
 const GSM_SESSION_MANAGER_LOGOUT_FORCE = 2;
 

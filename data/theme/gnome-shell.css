@@ -1970,22 +1970,22 @@ StScrollBar StButton#vhandle:active {
 .end-session-dialog-logout-icon {
     border: 2px solid #8b8b8b;
     border-radius: 5px;
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     background-size: contain;
 }
 
 .end-session-dialog-shutdown-icon {
     color: #bebebe;
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
 }
 
 .end-session-dialog-inhibitor-layout {
     spacing: 16px;
     max-height: 200px;
-    padding-right: 50px;
-    padding-left: 50px;
+    padding-right: 65px;
+    padding-left: 65px;
 }
 
 .end-session-dialog-session-list,
