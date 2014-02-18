@@ -590,12 +590,12 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
   if (pointer->grab != &pointer->default_grab)
     {
       if (pointer->grab->interface == &popup_grab_interface)
-	{
-	  grab = (MetaWaylandPopupGrab*)pointer->grab;
+        {
+          grab = (MetaWaylandPopupGrab*)pointer->grab;
 
-	  if (wl_resource_get_client (surface->resource) != grab->grab_client)
-	    return FALSE;
-	}
+          if (wl_resource_get_client (surface->resource) != grab->grab_client)
+            return FALSE;
+        }
 
       return FALSE;
     }
