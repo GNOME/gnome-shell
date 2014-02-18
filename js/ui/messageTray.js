@@ -1162,9 +1162,7 @@ const SourceActor = new Lang.Class({
         }));
         this._actorDestroyed = false;
 
-        this._iconBin = new St.Bin({ width: size,
-                                     height: size,
-                                     x_fill: true,
+        this._iconBin = new St.Bin({ x_fill: true,
                                      y_fill: true });
 
         this.actor.add_actor(this._iconBin);
