@@ -1498,6 +1498,9 @@ meta_window_unmanage (MetaWindow  *window,
 
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
 
+  if (window->surface)
+    meta_wayland_surface_window_unmanaged (window->surface);
+
   if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
     {
       MetaStackWindow stack_window;

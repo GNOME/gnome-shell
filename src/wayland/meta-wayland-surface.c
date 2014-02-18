@@ -574,9 +574,47 @@ const struct wl_surface_interface meta_wayland_surface_interface = {
 };
 
 static void
-meta_wayland_surface_free (MetaWaylandSurface *surface)
+unparent_actor (MetaWaylandSurface *surface)
 {
+  ClutterActor *parent_actor;
+
+  parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->surface_actor));
+  clutter_actor_remove_child (parent_actor, CLUTTER_ACTOR (surface->surface_actor));
+}
+
+void
+meta_wayland_surface_window_unmanaged (MetaWaylandSurface *surface)
+{
+  /* The window is being unmanaged. Unparent our surface actor
+   * before the window actor is destroyed, as we need to hold
+   * onto it... */
+  unparent_actor (surface);
+
+  surface->window = NULL;
+}
+
+static void
+destroy_window (MetaWaylandSurface *surface)
+{
+  MetaDisplay *display = meta_get_display ();
+  guint32 timestamp = meta_display_get_current_time_roundtrip (display);
+
+  g_assert (surface->window != NULL);
+  meta_window_unmanage (surface->window, timestamp);
+  g_assert (surface->window == NULL);
+}
+
+static void
+wl_surface_destructor (struct wl_resource *resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
   MetaWaylandCompositor *compositor = surface->compositor;
+
+  /* At the time when the wl_surface is destroyed, we should
+   * no longer have a window, unless we're an XWayland window
+   * in which case we received the wl_surface.destroy before
+   * the UnmapNotify/DestroyNotify. */
+  g_assert (surface->window == NULL || surface->window->client_type == META_WINDOW_CLIENT_TYPE_X11);
 
   compositor->surfaces = g_list_remove (compositor->surfaces, surface);
 
@@ -588,57 +626,6 @@ meta_wayland_surface_free (MetaWaylandSurface *surface)
   g_slice_free (MetaWaylandSurface, surface);
 
   meta_wayland_compositor_repick (compositor);
-}
-
-static void
-unparent_actor (MetaWaylandSurface *surface)
-{
-  ClutterActor *parent_actor;
-
-  parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->surface_actor));
-  clutter_actor_remove_child (parent_actor, CLUTTER_ACTOR (surface->surface_actor));
-}
-
-static void
-destroy_window (MetaWaylandSurface *surface)
-{
-  MetaDisplay *display = meta_get_display ();
-  guint32 timestamp = meta_display_get_current_time_roundtrip (display);
-
-  /* Remove our actor from the parent, so it doesn't get destroyed when
-   * the MetaWindowActor is destroyed. */
-  unparent_actor (surface);
-
-  g_assert (surface->window != NULL);
-  meta_window_unmanage (surface->window, timestamp);
-  surface->window = NULL;
-}
-
-static void
-wl_surface_destructor (struct wl_resource *resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  /* There are four cases here:
-     - An X11 unmanaged window -> surface is NULL, nothing to do
-     - An X11 unmanaged window, but we got the wayland event first ->
-       just clear the resource pointer
-     - A wayland surface without window (destroyed before set_toplevel) ->
-       need to free the surface itself
-     - A wayland window -> need to unmanage
-  */
-
-  if (surface)
-    {
-      surface->resource = NULL;
-
-      /* NB: If the surface corresponds to an X window then we will be
-       * sure to free the MetaWindow according to some X event. */
-      if (surface->window && surface->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
-        destroy_window (surface);
-
-      meta_wayland_surface_free (surface);
-    }
 }
 
 MetaWaylandSurface *
