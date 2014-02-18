@@ -748,7 +748,7 @@ global_stage_after_paint (gpointer data)
 
 
 static void
-update_scale_factor (gpointer data)
+update_scale_factor (GdkScreen *screen, gpointer data)
 {
   ShellGlobal *global = SHELL_GLOBAL (data);
   ClutterStage *stage = CLUTTER_STAGE (global->stage);
@@ -950,7 +950,7 @@ _shell_global_set_plugin (ShellGlobal *global,
 
   global->focus_manager = st_focus_manager_get_for_stage (global->stage);
 
-  update_scale_factor (global);
+  update_scale_factor (global->gdk_screen, global);
 }
 
 GjsContext *
