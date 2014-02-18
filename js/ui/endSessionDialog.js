@@ -240,7 +240,8 @@ const EndSessionDialog = new Lang.Class({
                                 x_align: St.Align.END,
                                 y_align: St.Align.START });
 
-        let messageLayout = new St.BoxLayout({ vertical: true });
+        let messageLayout = new St.BoxLayout({ vertical: true,
+                                               style_class: 'end-session-dialog-layout' });
         mainContentLayout.add(messageLayout,
                               { y_align: St.Align.START });
 

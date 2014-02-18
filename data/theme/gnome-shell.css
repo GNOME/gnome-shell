@@ -1948,22 +1948,22 @@ StScrollBar StButton#vhandle:active {
 }
 
 .end-session-dialog-subject {
-    padding-left: 17px;
     padding-bottom: 20px;
 }
 
-.end-session-dialog-subject:rtl {
-    padding-left: 0px;
+.end-session-dialog-layout {
+    padding-left: 17px;
+}
+
+.end-session-dialog-layout:rtl {
     padding-right: 17px;
 }
 
 .end-session-dialog-description {
-    padding-left: 17px;
     width: 28em;
 }
 
 .end-session-dialog-description:rtl {
-    padding-right: 17px;
     text-align: right;
 }
 
