@@ -46,9 +46,11 @@ struct _MetaWaylandPointerGrab
 struct _MetaWaylandPointer
 {
   struct wl_list resource_list;
-  MetaWaylandSurface *focus;
-  struct wl_resource *focus_resource;
+
+  MetaWaylandSurface *focus_surface;
   struct wl_listener focus_surface_listener;
+  struct wl_resource *focus_resource;
+  struct wl_listener focus_resource_listener;
   guint32 focus_serial;
   guint32 click_serial;
 

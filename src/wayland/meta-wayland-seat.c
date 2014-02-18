@@ -95,9 +95,9 @@ pointer_set_cursor (struct wl_client *client,
 
   surface = (surface_resource ? wl_resource_get_user_data (surface_resource) : NULL);
 
-  if (seat->pointer.focus == NULL)
+  if (seat->pointer.focus_surface == NULL)
     return;
-  if (wl_resource_get_client (seat->pointer.focus->resource) != client)
+  if (wl_resource_get_client (seat->pointer.focus_surface->resource) != client)
     return;
   if (seat->pointer.focus_serial - serial > G_MAXUINT32 / 2)
     return;
@@ -125,9 +125,9 @@ seat_get_pointer (struct wl_client *client,
   wl_resource_set_implementation (cr, &pointer_interface, seat, unbind_resource);
   wl_list_insert (&seat->pointer.resource_list, wl_resource_get_link (cr));
 
-  if (seat->pointer.focus &&
-      wl_resource_get_client (seat->pointer.focus->resource) == client)
-    meta_wayland_pointer_set_focus (&seat->pointer, seat->pointer.focus);
+  if (seat->pointer.focus_surface &&
+      wl_resource_get_client (seat->pointer.focus_surface->resource) == client)
+    meta_wayland_pointer_set_focus (&seat->pointer, seat->pointer.focus_surface);
 }
 
 static void
@@ -148,10 +148,10 @@ seat_get_keyboard (struct wl_client *client,
                            seat->keyboard.xkb_info.keymap_fd,
                            seat->keyboard.xkb_info.keymap_size);
 
-  if (seat->keyboard.focus &&
-      wl_resource_get_client (seat->keyboard.focus->resource) == client)
+  if (seat->keyboard.focus_surface &&
+      wl_resource_get_client (seat->keyboard.focus_surface->resource) == client)
     {
-      meta_wayland_keyboard_set_focus (&seat->keyboard, seat->keyboard.focus);
+      meta_wayland_keyboard_set_focus (&seat->keyboard, seat->keyboard.focus_surface);
       meta_wayland_data_device_set_keyboard_focus (seat);
     }
 }
@@ -429,7 +429,7 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
     }
 
   pointer->current = surface;
-  if (surface != pointer->focus)
+  if (surface != pointer->focus_surface)
     {
       const MetaWaylandPointerGrabInterface *interface =
         pointer->grab->interface;

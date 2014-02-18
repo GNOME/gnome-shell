@@ -826,7 +826,7 @@ xdg_surface_move (struct wl_client *client,
 
   if (seat->pointer.button_count == 0 ||
       seat->pointer.grab_serial != serial ||
-      seat->pointer.focus != surface)
+      seat->pointer.focus_surface != surface)
     return;
 
   begin_grab_op_on_surface (surface, seat, META_GRAB_OP_MOVING);
@@ -872,7 +872,7 @@ xdg_surface_resize (struct wl_client *client,
 
   if (seat->pointer.button_count == 0 ||
       seat->pointer.grab_serial != serial ||
-      seat->pointer.focus != surface)
+      seat->pointer.focus_surface != surface)
     return;
 
   begin_grab_op_on_surface (surface, seat, grab_op_for_edge (edges));

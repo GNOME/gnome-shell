@@ -92,9 +92,11 @@ typedef struct
 struct _MetaWaylandKeyboard
 {
   struct wl_list resource_list;
-  MetaWaylandSurface *focus;
-  struct wl_resource *focus_resource;
+
+  MetaWaylandSurface *focus_surface;
   struct wl_listener focus_surface_listener;
+  struct wl_resource *focus_resource;
+  struct wl_listener focus_resource_listener;
   uint32_t focus_serial;
 
   MetaWaylandKeyboardGrab *grab;

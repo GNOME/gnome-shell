@@ -226,12 +226,24 @@ err_keymap_str:
 }
 
 static void
+release_focus (MetaWaylandKeyboard *keyboard)
+{
+  keyboard->focus_resource = NULL;
+  keyboard->focus_surface = NULL;
+}
+
+static void
 keyboard_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 {
   MetaWaylandKeyboard *keyboard = wl_container_of (listener, keyboard, focus_surface_listener);
+  release_focus (keyboard);
+}
 
-  keyboard->focus_resource = NULL;
-  keyboard->focus = NULL;
+static void
+keyboard_handle_focus_resource_destroy (struct wl_listener *listener, void *data)
+{
+  MetaWaylandKeyboard *keyboard = wl_container_of (listener, keyboard, focus_resource_listener);
+  release_focus (keyboard);
 }
 
 static gboolean
@@ -287,10 +299,9 @@ default_grab_modifiers (MetaWaylandKeyboardGrab *grab, uint32_t serial,
   wl_keyboard_send_modifiers (resource, serial, mods_depressed,
                               mods_latched, mods_locked, group);
 
-  if (pointer && pointer->focus && pointer->focus != keyboard->focus)
+  if (pointer && pointer->focus_surface && pointer->focus_surface != keyboard->focus_surface)
     {
-      pr = find_resource_for_surface (&keyboard->resource_list,
-                                      pointer->focus);
+      pr = find_resource_for_surface (&keyboard->resource_list, pointer->focus_surface);
       if (pr)
         {
           wl_keyboard_send_modifiers (pr, serial,
@@ -342,7 +353,10 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
 
   wl_list_init (&keyboard->resource_list);
   wl_array_init (&keyboard->keys);
+
   keyboard->focus_surface_listener.notify = keyboard_handle_focus_surface_destroy;
+  keyboard->focus_resource_listener.notify = keyboard_handle_focus_resource_destroy;
+
   keyboard->default_grab.interface = &default_keyboard_grab_interface;
   keyboard->default_grab.keyboard = keyboard;
   keyboard->grab = &keyboard->default_grab;
@@ -513,19 +527,27 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
   struct wl_resource *resource;
   uint32_t serial;
 
-  if (keyboard->focus == surface && keyboard->focus_resource != NULL)
+  if (keyboard->focus_surface == surface && keyboard->focus_resource != NULL)
     return;
 
   resource = keyboard->focus_resource;
-  if (keyboard->focus_resource && keyboard->focus->resource)
+  if (resource)
     {
-      struct wl_client *client = wl_resource_get_client (resource);
-      struct wl_display *display = wl_client_get_display (client);
-      serial = wl_display_next_serial (display);
-      wl_keyboard_send_leave (resource, serial, keyboard->focus->resource);
+      if (keyboard->focus_surface->resource)
+        {
+          struct wl_client *client = wl_resource_get_client (resource);
+          struct wl_display *display = wl_client_get_display (client);
+          serial = wl_display_next_serial (display);
+          wl_keyboard_send_leave (resource, serial, keyboard->focus_surface->resource);
+
+          meta_wayland_surface_focused_unset (keyboard->focus_surface);
+        }
+
+      wl_list_remove (&keyboard->focus_resource_listener.link);
       wl_list_remove (&keyboard->focus_surface_listener.link);
 
-      meta_wayland_surface_focused_unset (keyboard->focus);
+      keyboard->focus_resource = NULL;
+      keyboard->focus_surface = NULL;
     }
 
   resource = find_resource_for_surface (&keyboard->resource_list, surface);
@@ -558,14 +580,17 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
 	  wl_keyboard_send_enter (resource, serial, surface->resource,
 				  &keyboard->keys);
 	}
-      wl_resource_add_destroy_listener (surface->resource, &keyboard->focus_surface_listener);
-      keyboard->focus_serial = serial;
 
       meta_wayland_surface_focused_set (surface);
-    }
 
-  keyboard->focus_resource = resource;
-  keyboard->focus = surface;
+      keyboard->focus_resource = resource;
+      keyboard->focus_surface = surface;
+
+      wl_resource_add_destroy_listener (keyboard->focus_resource, &keyboard->focus_resource_listener);
+      wl_resource_add_destroy_listener (keyboard->focus_surface->resource, &keyboard->focus_surface_listener);
+
+      keyboard->focus_serial = serial;
+    }
 }
 
 void
@@ -591,8 +616,6 @@ meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
   xkb_context_unref (keyboard->xkb_context);
 
   /* XXX: What about keyboard->resource_list? */
-  if (keyboard->focus_resource)
-    wl_list_remove (&keyboard->focus_surface_listener.link);
   wl_array_release (&keyboard->keys);
 }
 
@@ -611,7 +634,7 @@ meta_wayland_keyboard_begin_modal (MetaWaylandKeyboard *keyboard,
   if (keyboard->grab != &keyboard->default_grab)
     return FALSE;
 
-  if (keyboard->focus)
+  if (keyboard->focus_surface)
     {
       /* Fake key release events for the focused app */
       serial = wl_display_next_serial (keyboard->display);
@@ -653,7 +676,7 @@ meta_wayland_keyboard_end_modal (MetaWaylandKeyboard *keyboard,
   meta_wayland_keyboard_end_grab (keyboard);
   g_slice_free (MetaWaylandKeyboardGrab, grab);
 
-  if (keyboard->focus)
+  if (keyboard->focus_surface)
     {
       /* Fake key press events for the focused app */
       serial = wl_display_next_serial (keyboard->display);
