@@ -615,11 +615,9 @@ meta_cursor_tracker_get_for_screen (MetaScreen *screen)
   if (screen->cursor_tracker)
     return screen->cursor_tracker;
 
-#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     self = make_wayland_cursor_tracker (screen);
   else
-#endif
     self = make_x11_cursor_tracker (screen);
 
   screen->cursor_tracker = self;

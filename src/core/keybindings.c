@@ -41,6 +41,7 @@
 #include "screen-private.h"
 #include <meta/prefs.h>
 #include "util-private.h"
+#include "meta-wayland-private.h"
 
 #include <X11/keysym.h>
 #include <string.h>
@@ -49,10 +50,6 @@
 
 #ifdef HAVE_XKB
 #include <X11/XKBlib.h>
-#endif
-
-#ifdef HAVE_WAYLAND
-#include "meta-wayland-private.h"
 #endif
 
 #define SCHEMA_COMMON_KEYBINDINGS "org.gnome.desktop.wm.keybindings"
@@ -4079,7 +4076,6 @@ handle_set_spew_mark (MetaDisplay     *display,
   meta_verbose ("-- MARK MARK MARK MARK --\n");
 }
 
-#ifdef HAVE_WAYLAND
 static void
 handle_switch_vt (MetaDisplay     *display,
                   MetaScreen      *screen,
@@ -4098,7 +4094,6 @@ handle_switch_vt (MetaDisplay     *display,
       g_error_free (error);
     }
 }
-#endif
 
 /**
  * meta_keybindings_set_custom_handler:
@@ -4403,7 +4398,6 @@ init_builtin_key_bindings (MetaDisplay *display)
                           META_KEYBINDING_ACTION_SET_SPEW_MARK,
                           handle_set_spew_mark, 0);
 
-#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     {
       add_builtin_keybinding (display,
@@ -4455,7 +4449,6 @@ init_builtin_key_bindings (MetaDisplay *display)
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 7);
     }
-#endif
 
 #undef REVERSES_AND_REVERSED
 

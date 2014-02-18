@@ -212,9 +212,6 @@ fi
 
 MUTTER_PC_MODULES="$MUTTER_PC_MODULES xcursor"
 
-# We always build with wayland enabled
-AC_DEFINE(HAVE_WAYLAND, , [Building with Wayland support])
-
 AC_PATH_PROG([WAYLAND_SCANNER],[wayland-scanner],[no])
 AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
   AC_MSG_ERROR([Could not find wayland-scanner in your PATH, required for parsing wayland extension protocols]))

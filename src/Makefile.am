@@ -188,12 +188,7 @@ libmutter_wayland_la_SOURCES =			\
 	ui/theme.c				\
 	meta/theme.h				\
 	ui/theme-private.h			\
-	ui/ui.c
-
-nodist_libmutter_wayland_la_SOURCES =		\
-	$(mutter_built_sources)
-
-libmutter_wayland_la_SOURCES +=			\
+	ui/ui.c					\
 	wayland/meta-wayland.c			\
 	wayland/meta-wayland-private.h		\
 	wayland/meta-xwayland-private.h		\
@@ -214,6 +209,9 @@ libmutter_wayland_la_SOURCES +=			\
 	wayland/meta-wayland-versions.h		\
 	wayland/meta-weston-launch.c		\
 	wayland/meta-weston-launch.h
+
+nodist_libmutter_wayland_la_SOURCES =		\
+	$(mutter_built_sources)
 
 libmutter_wayland_la_LDFLAGS = -no-undefined
 libmutter_wayland_la_LIBADD  = $(MUTTER_LIBS)

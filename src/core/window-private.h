@@ -79,9 +79,7 @@ struct _MetaWindow
   const MetaMonitorInfo *monitor;
   MetaWorkspace *workspace;
   MetaWindowClientType client_type;
-#ifdef HAVE_WAYLAND
   MetaWaylandSurface *surface;
-#endif
   Window xwindow;
   /* may be NULL! not all windows get decorated */
   MetaFrame *frame;

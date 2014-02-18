@@ -42,9 +42,7 @@
 #include <meta/screen.h>
 #include "stack-tracker.h"
 #include "ui.h"
-#ifdef HAVE_WAYLAND
 #include <wayland-server.h>
-#endif
 #include "meta-xrandr-shared.h"
 
 #include "meta-dbus-xrandr.h"
@@ -53,19 +51,6 @@ typedef struct _MetaMonitorManagerClass    MetaMonitorManagerClass;
 typedef struct _MetaMonitorManager         MetaMonitorManager;
 typedef struct _MetaMonitorConfigClass    MetaMonitorConfigClass;
 typedef struct _MetaMonitorConfig         MetaMonitorConfig;
-
-#ifndef HAVE_WAYLAND
-enum wl_output_transform {
-  WL_OUTPUT_TRANSFORM_NORMAL,
-  WL_OUTPUT_TRANSFORM_90,
-  WL_OUTPUT_TRANSFORM_180,
-  WL_OUTPUT_TRANSFORM_270,
-  WL_OUTPUT_TRANSFORM_FLIPPED,
-  WL_OUTPUT_TRANSFORM_FLIPPED_90,
-  WL_OUTPUT_TRANSFORM_FLIPPED_180,
-  WL_OUTPUT_TRANSFORM_FLIPPED_270
-};
-#endif
 
 typedef struct _MetaOutput MetaOutput;
 typedef struct _MetaCRTC MetaCRTC;

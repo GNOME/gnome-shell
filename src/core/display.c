@@ -2055,18 +2055,16 @@ meta_display_handle_event (MetaDisplay        *display,
 {
   MetaWindow *window;
   gboolean bypass_clutter = FALSE, bypass_wayland = FALSE;
+  MetaWaylandCompositor *compositor = NULL;
 
   /* XXX -- we need to fill this in properly at some point... */
   gboolean frame_was_receiver = FALSE;
-#ifdef HAVE_WAYLAND
-  MetaWaylandCompositor *compositor = NULL;
 
   if (meta_is_wayland_compositor ())
     {
       compositor = meta_wayland_compositor_get_default ();
       meta_wayland_compositor_update (compositor, event);
     }
-#endif  /* HAVE_WAYLAND */
 
   window = get_window_for_event (display, event);
 
@@ -2314,13 +2312,11 @@ meta_display_handle_event (MetaDisplay        *display,
   if (display->grab_op == META_GRAB_OP_COMPOSITOR)
     bypass_wayland = TRUE;
 
-#ifdef HAVE_WAYLAND
   if (compositor && !bypass_wayland)
     {
       if (meta_wayland_compositor_handle_event (compositor, event))
         bypass_clutter = TRUE;
     }
-#endif /* HAVE_WAYLAND */
 
   return bypass_clutter;
 }
