@@ -570,12 +570,14 @@ make_wayland_cursor_tracker (MetaScreen *screen)
   compositor = meta_wayland_compositor_get_default ();
   compositor->seat->cursor_tracker = self;
 
-  if (meta_wayland_compositor_is_native (compositor))
+#if defined(CLUTTER_WINDOWING_EGL)
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
     {
       CoglRenderer *cogl_renderer = cogl_display_get_renderer (cogl_context_get_display (ctx));
       self->drm_fd = cogl_kms_renderer_get_kms_fd (cogl_renderer);
       self->gbm = gbm_create_device (self->drm_fd);
     }
+#endif
 
   monitors = meta_monitor_manager_get ();
   g_signal_connect_object (monitors, "monitors-changed",
