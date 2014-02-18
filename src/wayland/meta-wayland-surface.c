@@ -620,7 +620,10 @@ wl_surface_destructor (struct wl_resource *resource)
 
   surface_set_buffer (surface, NULL);
   double_buffered_state_destroy (&surface->pending);
+
+  clutter_actor_destroy (surface->surface_actor);
   g_object_unref (surface->surface_actor);
+
   if (surface->resource)
     wl_resource_set_user_data (surface->resource, NULL);
   g_slice_free (MetaWaylandSurface, surface);
