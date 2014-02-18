@@ -228,6 +228,9 @@ err_keymap_str:
 static void
 release_focus (MetaWaylandKeyboard *keyboard)
 {
+  wl_list_remove (&keyboard->focus_surface_listener.link);
+  wl_list_remove (&keyboard->focus_resource_listener.link);
+
   keyboard->focus_resource = NULL;
   keyboard->focus_surface = NULL;
 }

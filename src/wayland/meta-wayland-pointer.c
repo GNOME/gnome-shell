@@ -66,6 +66,9 @@ meta_wayland_pointer_get_seat (MetaWaylandPointer *pointer)
 static void
 release_focus (MetaWaylandPointer *pointer)
 {
+  wl_list_remove (&pointer->focus_surface_listener.link);
+  wl_list_remove (&pointer->focus_resource_listener.link);
+
   pointer->focus_resource = NULL;
   pointer->focus_surface = NULL;
 }
