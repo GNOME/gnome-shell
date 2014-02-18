@@ -67,8 +67,7 @@ struct _MetaWaylandPointer
 };
 
 void
-meta_wayland_pointer_init (MetaWaylandPointer *pointer,
-			   gboolean            is_native);
+meta_wayland_pointer_init (MetaWaylandPointer *pointer);
 
 void
 meta_wayland_pointer_release (MetaWaylandPointer *pointer);

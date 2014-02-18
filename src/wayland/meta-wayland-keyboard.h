@@ -110,7 +110,6 @@ struct _MetaWaylandKeyboard
   struct wl_display *display;
 
   struct xkb_context *xkb_context;
-  gboolean is_evdev;
   MetaWaylandXkbInfo xkb_info;
 
   MetaWaylandKeyboardGrab input_method_grab;
@@ -119,8 +118,7 @@ struct _MetaWaylandKeyboard
 
 gboolean
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
-                            struct wl_display   *display,
-			    gboolean             is_evdev);
+                            struct wl_display   *display);
 
 typedef enum {
   META_WAYLAND_KEYBOARD_SKIP_XCLIENTS = 1,

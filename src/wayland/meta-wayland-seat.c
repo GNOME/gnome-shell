@@ -204,8 +204,7 @@ pointer_handle_cursor_surface_destroy (struct wl_listener *listener, void *data)
 }
 
 MetaWaylandSeat *
-meta_wayland_seat_new (struct wl_display *display,
-		       gboolean           is_native)
+meta_wayland_seat_new (struct wl_display *display)
 {
   MetaWaylandSeat *seat = g_new0 (MetaWaylandSeat, 1);
 
@@ -213,9 +212,8 @@ meta_wayland_seat_new (struct wl_display *display,
   wl_list_init (&seat->base_resource_list);
   wl_list_init (&seat->data_device_resource_list);
 
-  meta_wayland_pointer_init (&seat->pointer, is_native);
-
-  meta_wayland_keyboard_init (&seat->keyboard, display, is_native);
+  meta_wayland_pointer_init (&seat->pointer);
+  meta_wayland_keyboard_init (&seat->keyboard, display);
 
   seat->display = display;
 

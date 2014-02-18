@@ -201,13 +201,17 @@ meta_wayland_keyboard_take_keymap (MetaWaylandKeyboard *keyboard,
   strcpy (xkb_info->keymap_area, keymap_str);
   free (keymap_str);
 
-  if (keyboard->is_evdev)
+#if defined(CLUTTER_WINDOWING_EGL)
+  /* XXX -- the evdev backend can be used regardless of the
+   * windowing backend. To do this properly we need a Clutter
+   * API to check the input backend. */
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
     {
       ClutterDeviceManager *manager;
-
       manager = clutter_device_manager_get_default ();
       clutter_evdev_set_keyboard_map (manager, xkb_info->keymap);
     }
+#endif
 
   inform_clients_of_new_keymap (keyboard, flags);
 
@@ -331,8 +335,7 @@ static MetaWaylandKeyboardGrabInterface modal_grab = {
 
 gboolean
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
-                            struct wl_display   *display,
-			    gboolean             is_evdev)
+                            struct wl_display   *display)
 {
   memset (keyboard, 0, sizeof *keyboard);
   keyboard->xkb_info.keymap_fd = -1;
@@ -347,7 +350,6 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
   keyboard->display = display;
 
   keyboard->xkb_context = xkb_context_new (0 /* flags */);
-  keyboard->is_evdev = is_evdev;
 
   /* Compute a default until gnome-settings-daemon starts and sets
      the appropriate values

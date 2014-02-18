@@ -257,8 +257,7 @@ pointer_constrain_callback (ClutterInputDevice *device,
 }
 
 void
-meta_wayland_pointer_init (MetaWaylandPointer *pointer,
-			   gboolean            is_native)
+meta_wayland_pointer_init (MetaWaylandPointer *pointer)
 {
   ClutterDeviceManager *manager;
   ClutterInputDevice *device;
@@ -274,9 +273,16 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
   manager = clutter_device_manager_get_default ();
   device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
 
-  if (is_native)
-    clutter_evdev_set_pointer_constrain_callback (manager, pointer_constrain_callback,
-						  pointer, NULL);
+#if defined(CLUTTER_WINDOWING_EGL)
+  /* XXX -- the evdev backend can be used regardless of the
+   * windowing backend. To do this properly we need a Clutter
+   * API to check the input backend. */
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
+    {
+      clutter_evdev_set_pointer_constrain_callback (manager, pointer_constrain_callback,
+                                                    pointer, NULL);
+    }
+#endif
 
   clutter_input_device_get_coords (device, NULL, &current);
   pointer->x = wl_fixed_from_double (current.x);
