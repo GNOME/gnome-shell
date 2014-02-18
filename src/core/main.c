@@ -254,19 +254,8 @@ meta_get_option_context (void)
   bindtextdomain (GETTEXT_PACKAGE, MUTTER_LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
-  /* We must set the windowing backend here, because Clutter creates the backend
-     object when the first call is made.
-
-     We consider running from mutter-launch equivalent to running from bare metal.
-  */
-  if (getenv ("WESTON_LAUNCHER_SOCK"))
-    clutter_set_windowing_backend (CLUTTER_WINDOWING_EGL);
-
   ctx = g_option_context_new (NULL);
   g_option_context_add_main_entries (ctx, meta_options, GETTEXT_PACKAGE);
-  g_option_context_add_group (ctx, clutter_get_option_group_without_init ());
-  g_option_context_add_group (ctx, cogl_get_option_group ());
-
   return ctx;
 }
 
@@ -411,6 +400,10 @@ meta_init (void)
   if (g_getenv ("MUTTER_DEBUG"))
     meta_set_debugging (TRUE);
 
+  /* We consider running from mutter-launch equivalent to running from bare metal. */
+  if (getenv ("WESTON_LAUNCHER_SOCK"))
+    clutter_set_windowing_backend (CLUTTER_WINDOWING_EGL);
+
   meta_set_is_wayland_compositor (opt_wayland);
 
   if (g_get_home_dir ())
@@ -442,7 +435,7 @@ meta_init (void)
     meta_fatal ("Can't specify both SM save file and SM client id\n");
   
   meta_main_loop = g_main_loop_new (NULL, FALSE);
-  
+
   meta_ui_init ();
 
   /* If we are running with wayland then we don't wait until we have
