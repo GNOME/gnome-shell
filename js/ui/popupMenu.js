@@ -874,7 +874,7 @@ const PopupSubMenu = new Lang.Class({
             this.actor.height = 0;
             this.actor._arrowRotation = this._arrow.rotation_angle_z;
             Tweener.addTween(this.actor,
-                             { _arrowRotation: 90,
+                             { _arrowRotation: this.actor._arrowRotation + 90,
                                height: naturalHeight,
                                time: 0.25,
                                onUpdateScope: this,
@@ -887,7 +887,7 @@ const PopupSubMenu = new Lang.Class({
                                }
                              });
         } else {
-            this._arrow.rotation_angle_z = 90;
+            this._arrow.rotation_angle_z = this.actor._arrowRotation + 90;
         }
     },
 
@@ -907,7 +907,7 @@ const PopupSubMenu = new Lang.Class({
         if (animate) {
             this.actor._arrowRotation = this._arrow.rotation_angle_z;
             Tweener.addTween(this.actor,
-                             { _arrowRotation: 0,
+                             { _arrowRotation: this.actor._arrowRotation - 90,
                                height: 0,
                                time: 0.25,
                                onUpdateScope: this,
@@ -921,7 +921,7 @@ const PopupSubMenu = new Lang.Class({
                                },
                              });
         } else {
-            this._arrow.rotation_angle_z = 0;
+            this._arrow.rotation_angle_z = this.actor._arrowRotation - 90;
             this.actor.hide();
         }
     },
