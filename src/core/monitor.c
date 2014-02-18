@@ -374,6 +374,16 @@ get_default_backend (void)
     }
 #endif
 
+#if defined(CLUTTER_WINDOWING_WAYLAND)
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_WAYLAND))
+    {
+      /* Use the dummy implementation on Wayland for now.
+       * In the future, we should support wl_fullscreen_output
+       * which will have CRTC management in the protocol. */
+      return META_TYPE_MONITOR_MANAGER;
+    }
+#endif
+
   g_assert_not_reached ();
 }
 
