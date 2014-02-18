@@ -64,10 +64,9 @@ meta_wayland_pointer_get_seat (MetaWaylandPointer *pointer)
 }
 
 static void
-lose_pointer_focus (struct wl_listener *listener, void *data)
+pointer_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 {
-  MetaWaylandPointer *pointer =
-    wl_container_of (listener, pointer, focus_listener);
+  MetaWaylandPointer *pointer = wl_container_of (listener, pointer, focus_surface_listener);
 
   pointer->focus_resource = NULL;
   pointer->focus = NULL;
@@ -267,7 +266,7 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
 
   memset (pointer, 0, sizeof *pointer);
   wl_list_init (&pointer->resource_list);
-  pointer->focus_listener.notify = lose_pointer_focus;
+  pointer->focus_surface_listener.notify = pointer_handle_focus_surface_destroy;
   pointer->default_grab.interface = &default_pointer_grab_interface;
   pointer->default_grab.pointer = pointer;
   pointer->grab = &pointer->default_grab;
@@ -289,7 +288,7 @@ meta_wayland_pointer_release (MetaWaylandPointer *pointer)
 {
   /* XXX: What about pointer->resource_list? */
   if (pointer->focus_resource)
-    wl_list_remove (&pointer->focus_listener.link);
+    wl_list_remove (&pointer->focus_surface_listener.link);
 
   pointer->focus = NULL;
   pointer->focus_resource = NULL;
@@ -332,7 +331,7 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
           wl_pointer_send_leave (resource, serial, pointer->focus->resource);
         }
 
-      wl_list_remove (&pointer->focus_listener.link);
+      wl_list_remove (&pointer->focus_surface_listener.link);
     }
 
   resource = find_resource_for_surface (&pointer->resource_list, surface);
@@ -365,7 +364,7 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 wl_fixed_to_int (pointer->x),
                                 wl_fixed_to_int (pointer->y));
       wl_pointer_send_enter (resource, serial, surface->resource, sx, sy);
-      wl_resource_add_destroy_listener (resource, &pointer->focus_listener);
+      wl_resource_add_destroy_listener (resource, &pointer->focus_surface_listener);
       pointer->focus_serial = serial;
     }
 

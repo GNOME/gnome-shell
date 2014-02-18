@@ -48,7 +48,7 @@ struct _MetaWaylandPointer
   struct wl_list resource_list;
   MetaWaylandSurface *focus;
   struct wl_resource *focus_resource;
-  struct wl_listener focus_listener;
+  struct wl_listener focus_surface_listener;
   guint32 focus_serial;
   guint32 click_serial;
 
