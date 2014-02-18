@@ -87,7 +87,6 @@ struct _MetaWaylandCompositor
   MetaXWaylandManager xwayland_manager;
 
   MetaLauncher *launcher;
-  gboolean native;
 
   MetaWaylandSeat *seat;
 };
@@ -105,8 +104,6 @@ void                    meta_wayland_compositor_set_input_focus (MetaWaylandComp
                                                                  MetaWindow            *window);
 gboolean                meta_wayland_compositor_handle_event    (MetaWaylandCompositor *compositor,
                                                                  const ClutterEvent    *event);
-
-gboolean                meta_wayland_compositor_is_native       (MetaWaylandCompositor *compositor);
 
 MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource    *resource);
 void                    meta_wayland_buffer_ref                 (MetaWaylandBuffer     *buffer);
