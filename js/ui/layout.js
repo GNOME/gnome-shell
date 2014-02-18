@@ -31,9 +31,6 @@ const MESSAGE_TRAY_PRESSURE_TIMEOUT = 1000; // ms
 const HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
 const HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
 
-// We scale up when the dpi is higher then this (same value used by gsd)
-const HIGH_DPI_LIMIT = 192;
-
 function isPopupMetaWindow(actor) {
     switch(actor.meta_window.get_window_type()) {
     case Meta.WindowType.DROPDOWN_MENU:
@@ -489,25 +486,8 @@ const LayoutManager = new Lang.Class({
         return false;
     },
 
-    _updateScaling: function() {
-        let primary = this.monitors[this.primaryIndex];
-        let width_mm = global.gdk_screen.get_monitor_width_mm(this.primaryIndex);
-        let height_mm = global.gdk_screen.get_monitor_height_mm(this.primaryIndex);
-        if (width_mm == 0 || height_mm == 0) {
-            St.ThemeContext.get_for_stage(global.stage).scale_factor = 1;
-            return;
-        }
-        let dpi_x = primary.width / (width_mm / 25.4);
-        let dpi_y = primary.height / (height_mm / 25.4);
-        if (dpi_x > HIGH_DPI_LIMIT && dpi_y > HIGH_DPI_LIMIT)
-            St.ThemeContext.get_for_stage(global.stage).scale_factor = 2;
-        else
-            St.ThemeContext.get_for_stage(global.stage).scale_factor = 1;
-    },
-
     _monitorsChanged: function() {
         this._updateMonitors();
-        this._updateScaling();
         this._updateBoxes();
         this._updateTrayBarrier();
         this._updateHotCorners();
