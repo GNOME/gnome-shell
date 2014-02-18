@@ -41,6 +41,8 @@
 
 #define PLUGIN_API_VERSION 5
 
+#define EXTENSION_DISABLE_VERSION_CHECK_KEY "disable-extension-version-validation"
+
 typedef struct {
   GDBusProxy *proxy;
 } PluginData;
@@ -831,6 +833,16 @@ plugin_get_shell_version (PluginObject  *obj,
   return ret;
 }
 
+static gboolean
+plugin_get_version_validation_enabled (PluginObject  *obj,
+                                       NPVariant     *result)
+{
+  gboolean is_enabled = !g_settings_get_boolean (obj->settings, EXTENSION_DISABLE_VERSION_CHECK_KEY);
+  BOOLEAN_TO_NPVARIANT(is_enabled, *result);
+
+  return TRUE;
+}
+
 #define METHODS                                 \
   METHOD (list_extensions)                      \
   METHOD (get_info)                             \
@@ -850,6 +862,8 @@ static NPIdentifier api_version_id;
 static NPIdentifier shell_version_id;
 static NPIdentifier onextension_changed_id;
 static NPIdentifier onrestart_id;
+static NPIdentifier version_validation_enabled_id;
+
 
 static bool
 plugin_object_has_method (NPObject     *npobj,
@@ -892,7 +906,8 @@ plugin_object_has_property (NPObject     *npobj,
   return (name == onextension_changed_id ||
           name == onrestart_id ||
           name == api_version_id ||
-          name == shell_version_id);
+          name == shell_version_id ||
+          name == version_validation_enabled_id);
 }
 
 static bool
@@ -910,6 +925,8 @@ plugin_object_get_property (NPObject     *npobj,
     return plugin_get_api_version (obj, result);
   else if (name == shell_version_id)
     return plugin_get_shell_version (obj, result);
+  else if (name == version_validation_enabled_id)
+    return plugin_get_version_validation_enabled (obj, result);
   else if (name == onextension_changed_id)
     {
       if (obj->listener)
@@ -988,6 +1005,7 @@ init_methods_and_properties (void)
   /* this is the JS public API; it is manipulated through NPIdentifiers for speed */
   api_version_id = funcs.getstringidentifier ("apiVersion");
   shell_version_id = funcs.getstringidentifier ("shellVersion");
+  version_validation_enabled_id = funcs.getstringidentifier ("versionValidationEnabled");
 
   get_info_id = funcs.getstringidentifier ("getExtensionInfo");
   list_extensions_id = funcs.getstringidentifier ("listExtensions");
