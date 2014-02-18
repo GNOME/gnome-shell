@@ -364,7 +364,7 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 wl_fixed_to_int (pointer->x),
                                 wl_fixed_to_int (pointer->y));
       wl_pointer_send_enter (resource, serial, surface->resource, sx, sy);
-      wl_resource_add_destroy_listener (resource, &pointer->focus_surface_listener);
+      wl_resource_add_destroy_listener (surface->resource, &pointer->focus_surface_listener);
       pointer->focus_serial = serial;
     }
 
