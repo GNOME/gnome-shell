@@ -356,19 +356,25 @@ make_logical_config (MetaMonitorManager *manager)
 static GType
 get_default_backend (void)
 {
-  if (meta_is_wayland_compositor ())
+#if defined(CLUTTER_WINDOWING_EGL)
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
+    return META_TYPE_MONITOR_MANAGER_KMS;
+#endif
+
+#if defined(CLUTTER_WINDOWING_X11)
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
     {
-      MetaWaylandCompositor *compositor;
-
-      compositor = meta_wayland_compositor_get_default ();
-
-      if (meta_wayland_compositor_is_native (compositor))
-        return META_TYPE_MONITOR_MANAGER_KMS;
-      else
+      /* If we're a Wayland compositor using the X11 backend,
+       * we're a nested configuration, so return the dummy
+       * monitor setup. */
+      if (meta_is_wayland_compositor ())
         return META_TYPE_MONITOR_MANAGER;
+      else
+        return META_TYPE_MONITOR_MANAGER_XRANDR;
     }
-  else
-    return META_TYPE_MONITOR_MANAGER_XRANDR;
+#endif
+
+  g_assert_not_reached ();
 }
 
 static MetaMonitorManager *
