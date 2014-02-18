@@ -32,7 +32,7 @@
 #include <gmodule.h>
 #include <string.h>
 
-#define DESTROY_TIMEOUT   250
+#define DESTROY_TIMEOUT   100
 #define MINIMIZE_TIMEOUT  250
 #define MAXIMIZE_TIMEOUT  250
 #define MAP_TIMEOUT       250
@@ -732,10 +732,11 @@ destroy (MetaPlugin *plugin, MetaWindowActor *window_actor)
       ActorPrivate *apriv = get_actor_private (window_actor);
 
       animation = clutter_actor_animate (actor,
-                                         CLUTTER_EASE_IN_SINE,
+                                         CLUTTER_EASE_OUT_QUAD,
                                          DESTROY_TIMEOUT,
-                                         "scale-x", 0.0,
-                                         "scale-y", 1.0,
+                                         "opacity", 0,
+                                         "scale-x", 0.8,
+                                         "scale-y", 0.8,
                                          NULL);
       apriv->tml_destroy = clutter_animation_get_timeline (animation);
       data->plugin = plugin;
