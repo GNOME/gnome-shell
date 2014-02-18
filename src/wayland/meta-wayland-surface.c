@@ -615,7 +615,7 @@ destroy_window (MetaWaylandSurface *surface)
 }
 
 static void
-meta_wayland_surface_resource_destroy_cb (struct wl_resource *resource)
+wl_surface_destructor (struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
@@ -652,14 +652,13 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   surface->compositor = compositor;
 
   surface->resource = wl_resource_create (client, &wl_surface_interface, version, id);
-  wl_resource_set_implementation (surface->resource, &meta_wayland_surface_interface, surface,
-				  meta_wayland_surface_resource_destroy_cb);
+  wl_resource_set_implementation (surface->resource, &meta_wayland_surface_interface, surface, wl_surface_destructor);
+
+  surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
+  surface->surface_actor = g_object_ref_sink (meta_surface_actor_new ());
 
   double_buffered_state_init (&surface->pending);
 
-  surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
-
-  surface->surface_actor = g_object_ref_sink (meta_surface_actor_new ());
   return surface;
 }
 
