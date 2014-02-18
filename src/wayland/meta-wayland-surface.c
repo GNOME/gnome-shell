@@ -1020,7 +1020,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
   if (parent_surf == NULL || parent_surf->window == NULL)
     return;
 
-  meta_window_get_frame_rect (parent_surf->window, &parent_rect);
+  meta_window_get_rect (parent_surf->window, &parent_rect);
 
   if (!create_surface_extension (&surface->xdg_popup, client, surface_resource, resource, id,
                                  META_XDG_POPUP_VERSION,
