@@ -200,8 +200,9 @@ const OsdWindow = new Lang.Class({
         let scale = Math.min(scalew, scaleh);
         this._popupSize = 110 * Math.max(1, scale);
 
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        this._icon.icon_size = this._popupSize / (2 * scaleFactor);
         this._box.translation_y = monitor.height / 4;
-        this._icon.icon_size = this._popupSize / 2;
         this._box.style_changed();
     },
 
@@ -217,7 +218,10 @@ const OsdWindow = new Lang.Class({
         let minWidth = this._popupSize - verticalPadding - leftBorder - rightBorder;
         let minHeight = this._popupSize - horizontalPadding - topBorder - bottomBorder;
 
-        this._box.style = 'min-height: %dpx;'.format(Math.max(minWidth, minHeight));
+        // minWidth/minHeight here are in real pixels,
+        // but the theme takes measures in unscaled dimensions
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        this._box.style = 'min-height: %dpx;'.format(Math.max(minWidth, minHeight) / scaleFactor);
     },
 
     setMonitor: function(index) {
