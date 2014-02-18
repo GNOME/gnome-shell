@@ -116,7 +116,7 @@ const restartInstallDialogContent = {
                         seconds).format(seconds);
     },
     confirmButtons: [{ signal: 'ConfirmedReboot',
-                       label:  C_("button", "Restart & Install") }],
+                       label:  C_("button", "Restart &amp; Install") }],
     iconName: 'view-refresh-symbolic',
     iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
@@ -299,9 +299,6 @@ const EndSessionDialog = new Lang.Class({
         let open = (this.state == ModalDialog.State.OPENING || this.state == ModalDialog.State.OPENED);
         if (!open)
             return;
-
-        if (this._type == 2 && this._updatesFile.query_exists(null))
-            this._type = 3;
 
         let dialogContent = DialogContent[this._type];
 
@@ -544,6 +541,9 @@ const EndSessionDialog = new Lang.Class({
         let [type, timestamp, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._type = type;
+
+        if (this._type == 2 && this._updatesFile.query_exists(null))
+            this._type = 3;
 
         this._applications = [];
         this._applicationList.destroy_all_children();
