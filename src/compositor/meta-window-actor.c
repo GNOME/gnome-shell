@@ -1684,18 +1684,12 @@ cullable_iface_init (MetaCullableInterface *iface)
 static void
 check_needs_x11_pixmap (MetaWindowActor *self)
 {
-  MetaWindowActorPrivate *priv     = self->priv;
-  MetaScreen          *screen   = priv->screen;
-  MetaDisplay         *display  = meta_screen_get_display (screen);
-  Display             *xdisplay = meta_display_get_xdisplay (display);
-  MetaCompScreen      *info     = meta_screen_get_compositor_data (screen);
-  Window               xwindow  = meta_window_get_toplevel_xwindow (priv->window);
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaDisplay *display = meta_screen_get_display (screen);
+  Display *xdisplay = meta_display_get_xdisplay (display);
+  Window xwindow  = meta_window_get_toplevel_xwindow (priv->window);
 
   if (!priv->needs_pixmap)
-    return;
-
-  if (xwindow == meta_screen_get_xroot (screen) ||
-      xwindow == clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage)))
     return;
 
   if (priv->x11_size_changed)
