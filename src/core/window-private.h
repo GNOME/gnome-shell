@@ -238,7 +238,7 @@ struct _MetaWindow
   /* These are the flags from WM_PROTOCOLS */
   guint take_focus : 1;
   guint delete_window : 1;
-  guint net_wm_ping : 1;
+  guint can_ping : 1;
   /* Globally active / No input */
   guint input : 1;
   

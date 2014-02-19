@@ -874,7 +874,7 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->user_time_window = None;
   window->take_focus = FALSE;
   window->delete_window = FALSE;
-  window->net_wm_ping = FALSE;
+  window->can_ping = FALSE;
   window->input = TRUE;
   window->calc_placement = FALSE;
   window->shaken_loose = FALSE;
@@ -1320,6 +1320,7 @@ meta_window_wayland_new (MetaDisplay        *display,
                                     WithdrawnState,
                                     META_COMP_EFFECT_CREATE,
                                     &attrs);
+  window->can_ping = TRUE;
 
   meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
 

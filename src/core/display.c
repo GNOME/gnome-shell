@@ -4980,7 +4980,7 @@ meta_display_ping_window (MetaWindow        *window,
       return;
     }
 
-  if (!window->net_wm_ping)
+  if (!window->can_ping)
     {
       if (ping_reply_func)
         (* ping_reply_func) (window, timestamp, user_data);

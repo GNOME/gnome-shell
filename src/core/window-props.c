@@ -1407,7 +1407,7 @@ reload_wm_protocols (MetaWindow    *window,
   
   window->take_focus = FALSE;
   window->delete_window = FALSE;
-  window->net_wm_ping = FALSE;
+  window->can_ping = FALSE;
   
   if (value->type == META_PROP_VALUE_INVALID)    
     return;
@@ -1423,7 +1423,7 @@ reload_wm_protocols (MetaWindow    *window,
         window->delete_window = TRUE;
       else if (value->v.atom_list.atoms[i] ==
                window->display->atom__NET_WM_PING)
-        window->net_wm_ping = TRUE;
+        window->can_ping = TRUE;
       ++i;
     }
   
