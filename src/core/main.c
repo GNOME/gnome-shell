@@ -343,7 +343,8 @@ meta_select_display (char *display_arg)
   else
     display_name = g_getenv ("MUTTER_DISPLAY");
 
-  g_setenv ("DISPLAY", display_name, TRUE);
+  if (display_name)
+    g_setenv ("DISPLAY", display_name, TRUE);
 }
 
 static void
