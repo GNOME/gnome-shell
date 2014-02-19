@@ -1,3 +1,14 @@
+3.11.90
+=======
+* Fix double-scaling on high DPI resolutions [Adel; #723931]
+* Make tile previews a compositor effect [Stefano, Florian; #665758]
+* Misc. bug fixes and cleanups [Ryan, Giovanni, Jasper, Adel; #722530, #724257,
+  #724258, #720631, #724364, #724472]
+
+Contributors:
+  Giovanni Campagna, Marek Chalupa, Stefano Facchini, Adel Gadllah,
+  Ryan Lortie, Florian Müllner, Jasper St. Pierre, Rico Tzschichholz
+
 3.11.5
 ======
 * Fix CSD titlebars being placed off-screen [Jasper; #719772]
