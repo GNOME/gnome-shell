@@ -119,8 +119,6 @@ struct _MetaWindowActorPrivate
   guint		    needs_damage_all       : 1;
   guint		    received_x11_damage    : 1;
 
-  guint		    needs_pixmap           : 1;
-
   guint		    x11_size_changed       : 1;
   guint             updates_frozen         : 1;
 
@@ -897,7 +895,7 @@ meta_window_actor_damage_all (MetaWindowActor *self)
   if (!priv->needs_damage_all)
     return;
 
-  if (priv->needs_pixmap)
+  if (priv->back_pixmap == None)
     return;
 
   redraw_queued = meta_surface_actor_damage_all (priv->surface);
@@ -1080,7 +1078,7 @@ meta_window_actor_after_effects (MetaWindowActor *self)
 
   if (!meta_is_wayland_compositor ())
     {
-      if (priv->needs_pixmap)
+      if (priv->back_pixmap == None)
         clutter_actor_queue_redraw (CLUTTER_ACTOR (priv->surface));
     }
 }
@@ -1182,7 +1180,6 @@ meta_window_actor_detach_x11_pixmap (MetaWindowActor *self)
 
   XFreePixmap (xdisplay, priv->back_pixmap);
   priv->back_pixmap = None;
-  priv->needs_pixmap = TRUE;
 }
 
 gboolean
@@ -1332,7 +1329,7 @@ meta_window_actor_sync_actor_geometry (MetaWindowActor *self,
     {
       if (priv->x11_size_changed)
         {
-          priv->needs_pixmap = TRUE;
+          meta_window_actor_detach_x11_pixmap (self);
           meta_window_actor_update_shape (self);
         }
     }
@@ -1508,8 +1505,6 @@ meta_window_actor_new (MetaWindow *window)
       priv->last_width = -1;
       priv->last_height = -1;
 
-      priv->needs_pixmap = TRUE;
-
       meta_window_actor_set_updates_frozen (self,
                                             meta_window_updates_are_frozen (priv->window));
 
@@ -1667,9 +1662,8 @@ check_needs_x11_pixmap (MetaWindowActor *self)
   Display *xdisplay = meta_display_get_xdisplay (display);
   Window xwindow  = meta_window_get_toplevel_xwindow (priv->window);
 
-  if (!priv->needs_pixmap)
-    return;
-
+  /* If the size changed while we were frozen, the old pixmap
+   * will still be attached, and we need to create a new one. */
   if (priv->x11_size_changed)
     {
       meta_window_actor_detach_x11_pixmap (self);
@@ -1711,8 +1705,6 @@ check_needs_x11_pixmap (MetaWindowActor *self)
 
       meta_surface_actor_set_texture (META_SURFACE_ACTOR (priv->surface), texture);
     }
-
-  priv->needs_pixmap = FALSE;
 
  out:
   meta_error_trap_pop (display);
@@ -1831,7 +1823,7 @@ meta_window_actor_process_x11_damage (MetaWindowActor    *self,
       return;
     }
 
-  if (priv->needs_pixmap)
+  if (priv->back_pixmap == None)
     return;
 
   redraw_queued = meta_surface_actor_damage_area (priv->surface,
