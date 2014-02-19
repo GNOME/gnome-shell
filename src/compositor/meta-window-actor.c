@@ -1685,7 +1685,7 @@ static void
 check_needs_x11_pixmap (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  MetaDisplay *display = meta_screen_get_display (screen);
+  MetaDisplay *display = meta_screen_get_display (priv->screen);
   Display *xdisplay = meta_display_get_xdisplay (display);
   Window xwindow  = meta_window_get_toplevel_xwindow (priv->window);
 
