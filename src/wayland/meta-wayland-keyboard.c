@@ -527,68 +527,65 @@ void
 meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
                                  MetaWaylandSurface *surface)
 {
-  struct wl_resource *resource;
-  uint32_t serial;
-
   if (keyboard->focus_surface == surface && keyboard->focus_resource != NULL)
     return;
 
-  resource = keyboard->focus_resource;
-  if (resource)
+  if (keyboard->focus_surface != NULL)
     {
-      if (keyboard->focus_surface->resource)
-        {
-          struct wl_client *client = wl_resource_get_client (resource);
-          struct wl_display *display = wl_client_get_display (client);
-          serial = wl_display_next_serial (display);
-          wl_keyboard_send_leave (resource, serial, keyboard->focus_surface->resource);
-        }
-
-      wl_list_remove (&keyboard->focus_resource_listener.link);
       wl_list_remove (&keyboard->focus_surface_listener.link);
-
-      keyboard->focus_resource = NULL;
       keyboard->focus_surface = NULL;
+
+      if (keyboard->focus_resource)
+        {
+          if (keyboard->focus_surface->resource)
+            {
+              struct wl_client *client = wl_resource_get_client (keyboard->focus_resource);
+              struct wl_display *display = wl_client_get_display (client);
+              uint32_t serial = wl_display_next_serial (display);
+              wl_keyboard_send_leave (keyboard->focus_resource, serial, keyboard->focus_surface->resource);
+            }
+
+          wl_list_remove (&keyboard->focus_resource_listener.link);
+          keyboard->focus_resource = NULL;
+        }
     }
 
-  resource = find_resource_for_surface (&keyboard->resource_list, surface);
-  if (resource)
+  if (surface != NULL)
     {
-      struct wl_client *client = wl_resource_get_client (resource);
-      struct wl_display *display = wl_client_get_display (client);
-
-      serial = wl_display_next_serial (display);
-
-      /* If we're in a modal grab, the client is focused but doesn't see
-	 modifiers or pressed keys (and fix that up when we exit the modal) */
-      if (keyboard->grab->interface == &modal_grab)
-	{
-	  struct wl_array empty;
-	  wl_array_init (&empty);
-
-	  wl_keyboard_send_modifiers (resource, serial,
-				      0, 0, 0, 0);
-	  wl_keyboard_send_enter (resource, serial, surface->resource,
-				  &empty);
-	}
-      else
-	{
-	  wl_keyboard_send_modifiers (resource, serial,
-				      keyboard->modifier_state.mods_depressed,
-				      keyboard->modifier_state.mods_latched,
-				      keyboard->modifier_state.mods_locked,
-				      keyboard->modifier_state.group);
-	  wl_keyboard_send_enter (resource, serial, surface->resource,
-				  &keyboard->keys);
-	}
-
-      keyboard->focus_resource = resource;
       keyboard->focus_surface = surface;
-
-      wl_resource_add_destroy_listener (keyboard->focus_resource, &keyboard->focus_resource_listener);
       wl_resource_add_destroy_listener (keyboard->focus_surface->resource, &keyboard->focus_surface_listener);
 
-      keyboard->focus_serial = serial;
+      keyboard->focus_resource = find_resource_for_surface (&keyboard->resource_list, surface);
+      if (keyboard->focus_resource)
+        {
+          struct wl_client *client = wl_resource_get_client (keyboard->focus_resource);
+          struct wl_display *display = wl_client_get_display (client);
+          uint32_t serial = wl_display_next_serial (display);
+
+          /* If we're in a modal grab, the client is focused but doesn't see
+             modifiers or pressed keys (and fix that up when we exit the modal) */
+          if (keyboard->grab->interface == &modal_grab)
+            {
+              struct wl_array empty;
+              wl_array_init (&empty);
+
+              wl_keyboard_send_modifiers (keyboard->focus_resource, serial, 0, 0, 0, 0);
+              wl_keyboard_send_enter (keyboard->focus_resource, serial, keyboard->focus_surface->resource, &empty);
+            }
+          else
+            {
+              wl_keyboard_send_modifiers (keyboard->focus_resource, serial,
+                                          keyboard->modifier_state.mods_depressed,
+                                          keyboard->modifier_state.mods_latched,
+                                          keyboard->modifier_state.mods_locked,
+                                          keyboard->modifier_state.group);
+              wl_keyboard_send_enter (keyboard->focus_resource, serial, keyboard->focus_surface->resource,
+                                      &keyboard->keys);
+            }
+
+          wl_resource_add_destroy_listener (keyboard->focus_resource, &keyboard->focus_resource_listener);
+          keyboard->focus_serial = serial;
+        }
     }
 }
 

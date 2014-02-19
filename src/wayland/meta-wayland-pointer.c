@@ -333,68 +333,71 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
 {
   MetaWaylandSeat *seat = meta_wayland_pointer_get_seat (pointer);
   MetaWaylandKeyboard *kbd = &seat->keyboard;
-  struct wl_resource *resource, *kr;
-  uint32_t serial;
 
   if (pointer->focus_surface == surface && pointer->focus_resource != NULL)
     return;
 
-  resource = pointer->focus_resource;
-  if (resource)
+  if (pointer->focus_surface)
     {
-      if (pointer->focus_surface->resource)
-        {
-          struct wl_client *client = wl_resource_get_client (resource);
-          struct wl_display *display = wl_client_get_display (client);
-          serial = wl_display_next_serial (display);
-          wl_pointer_send_leave (resource, serial, pointer->focus_surface->resource);
-        }
-
       wl_list_remove (&pointer->focus_surface_listener.link);
-      wl_list_remove (&pointer->focus_resource_listener.link);
-
       pointer->focus_surface = NULL;
-      pointer->focus_resource = NULL;
+
+      if (pointer->focus_resource)
+        {
+          if (pointer->focus_surface->resource)
+            {
+              struct wl_client *client = wl_resource_get_client (pointer->focus_resource);
+              struct wl_display *display = wl_client_get_display (client);
+              uint32_t serial = wl_display_next_serial (display);
+              wl_pointer_send_leave (pointer->focus_resource, serial, pointer->focus_surface->resource);
+            }
+
+          wl_list_remove (&pointer->focus_resource_listener.link);
+
+          pointer->focus_surface = NULL;
+          pointer->focus_resource = NULL;
+        }
     }
 
-  resource = find_resource_for_surface (&pointer->resource_list, surface);
-  if (resource)
+  if (surface != NULL)
     {
-      struct wl_client *client = wl_resource_get_client (resource);
-      struct wl_display *display = wl_client_get_display (client);
-      wl_fixed_t sx, sy;
-
-      serial = wl_display_next_serial (display);
-
-      if (kbd)
-        {
-          kr = find_resource_for_surface (&kbd->resource_list, surface);
-          if (kr)
-            {
-              wl_keyboard_send_modifiers (kr,
-                                          serial,
-                                          kbd->modifier_state.mods_depressed,
-                                          kbd->modifier_state.mods_latched,
-                                          kbd->modifier_state.mods_locked,
-                                          kbd->modifier_state.group);
-            }
-        }
-
-      meta_wayland_pointer_get_relative_coordinates (pointer, surface, &sx, &sy);
-      meta_window_handle_enter (surface->window,
-                                /* XXX -- can we reliably get a timestamp for setting focus? */
-                                clutter_get_current_event_time (),
-                                wl_fixed_to_int (pointer->x),
-                                wl_fixed_to_int (pointer->y));
-      wl_pointer_send_enter (resource, serial, surface->resource, sx, sy);
-
-      pointer->focus_resource = resource;
       pointer->focus_surface = surface;
-
-      wl_resource_add_destroy_listener (pointer->focus_resource, &pointer->focus_resource_listener);
       wl_resource_add_destroy_listener (pointer->focus_surface->resource, &pointer->focus_surface_listener);
 
-      pointer->focus_serial = serial;
+      pointer->focus_resource = find_resource_for_surface (&pointer->resource_list, surface);
+      if (pointer->focus_resource)
+        {
+          struct wl_client *client = wl_resource_get_client (pointer->focus_resource);
+          struct wl_display *display = wl_client_get_display (client);
+          wl_fixed_t sx, sy;
+
+          uint32_t serial = wl_display_next_serial (display);
+
+          if (kbd)
+            {
+              struct wl_resource *kr = find_resource_for_surface (&kbd->resource_list, pointer->focus_surface);
+              if (kr)
+                {
+                  wl_keyboard_send_modifiers (kr,
+                                              serial,
+                                              kbd->modifier_state.mods_depressed,
+                                              kbd->modifier_state.mods_latched,
+                                              kbd->modifier_state.mods_locked,
+                                              kbd->modifier_state.group);
+                }
+            }
+
+          meta_wayland_pointer_get_relative_coordinates (pointer, pointer->focus_surface, &sx, &sy);
+          meta_window_handle_enter (pointer->focus_surface->window,
+                                    /* XXX -- can we reliably get a timestamp for setting focus? */
+                                    clutter_get_current_event_time (),
+                                    wl_fixed_to_int (pointer->x),
+                                    wl_fixed_to_int (pointer->y));
+          wl_pointer_send_enter (pointer->focus_resource, serial, pointer->focus_surface->resource, sx, sy);
+
+          wl_resource_add_destroy_listener (pointer->focus_resource, &pointer->focus_resource_listener);
+          pointer->focus_serial = serial;
+        }
     }
 }
 
