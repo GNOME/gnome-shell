@@ -1,3 +1,39 @@
+3.11.90
+=======
+* Stop showing two bluetooth entries [Giovanni; #709353]
+* Improve styling of login/lock screen [Reda; #723833]
+* Fix magnifier crosshairs [Magdalen; #723709]
+* Make NetworkManager support optional [Michael; #669495]
+* Make middle-click open a new instance [Florian; #695010]
+* Scale the UI on high resolution displays [Cosimo, Adel; #705410, #724607]
+* Remove notification counter on screen shield [Carlos; #709275]
+* Improve app picker transition [Carlos; #722331]
+* Add geolocation indicator to status menu [Zeeshan; #723684]
+* Improve timestamps in chat notifications [Carlos; #708031, #715158]
+* Improve network menus [Giovanni; #723570]
+* Add "VPN Setting" item to VPN submenu [Giovanni; #709167]
+* Improve appearance of disclosure arrows [Carlos; #720206]
+* Add GSetting key to disable version validation of extensions [Adel; #724683]
+* Delay auto-removing empty workspaces [Florian; #709064]
+* Offer offline updates in the shutdown dialog [Kalev; #722898]
+* Animate tile previews [Florian; #665758]
+* Misc. bug fixes and cleanups [Giovanni, Ryan, Debarshi, Florian; #709128,
+  #722342, #723661, #724184, #724256, #724293, #724305, #722554, #724282,
+  #724690, #722928]
+
+Contributors:
+  Zeeshan Ali (Khattak), Magdalen Berns, Michael Biebl, Giovanni Campagna,
+  Cosimo Cecchi, Adel Gadllah, Reda Lazri, Kalev Lember, Ryan Lortie,
+  Florian Müllner, Debarshi Ray, Carlos Soriano, Jasper St. Pierre,
+  Colin Walters
+
+Translations:
+  Victor Ibragimov [tg], Daniel Mustieles [es], Khaled Hosny [ar],
+  Enrico Nicoletto [pt_BR], Yosef Or Boczko [he], Fran Diéguez [gl],
+  Marek Černocký [cs], Baurzhan Muftakhidinov [kk], Jorge Pérez Pérez [an],
+  Kjartan Maraas [nb], David Lüder [de], Daniel Korostil [uk], ngoswami [as],
+  Rafael Ferreira [pt_BR]
+
 3.11.5
 ======
 * Fix extension preference tool [Florian; #722334]
