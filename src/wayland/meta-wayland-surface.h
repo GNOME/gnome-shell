@@ -38,7 +38,6 @@ struct _MetaWaylandBuffer
   struct wl_listener destroy_listener;
 
   CoglTexture *texture;
-  int32_t width, height;
   uint32_t ref_count;
 };
 

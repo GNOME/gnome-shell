@@ -273,8 +273,6 @@ ensure_buffer_texture (MetaWaylandBuffer *buffer)
     }
 
   buffer->texture = texture;
-  buffer->width = cogl_texture_get_width (texture);
-  buffer->height = cogl_texture_get_height (texture);
 }
 
 static void
@@ -324,11 +322,11 @@ toplevel_surface_commit (MetaWaylandSurface             *surface,
       /* We resize X based surfaces according to X events */
       if (buffer != NULL && window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
         {
-          int new_width;
-          int new_height;
+          int new_width, new_height;
 
-          new_width = surface->buffer->width;
-          new_height = surface->buffer->height;
+          new_width = cogl_texture_get_width (buffer->texture);
+          new_height = cogl_texture_get_height (buffer->texture);
+
           if (new_width != window->rect.width ||
               new_height != window->rect.height ||
               pending->dx != 0 ||
