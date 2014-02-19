@@ -872,14 +872,14 @@ const PopupSubMenu = new Lang.Class({
         if (animate) {
             let [minHeight, naturalHeight] = this.actor.get_preferred_height(-1);
             this.actor.height = 0;
-            this.actor._arrow_rotation = this._arrow.rotation_angle_z;
+            this.actor._arrowRotation = this._arrow.rotation_angle_z;
             Tweener.addTween(this.actor,
-                             { _arrow_rotation: 90,
+                             { _arrowRotation: 90,
                                height: naturalHeight,
                                time: 0.25,
                                onUpdateScope: this,
                                onUpdate: function() {
-                                   this._arrow.rotation_angle_z = this.actor._arrow_rotation;
+                                   this._arrow.rotation_angle_z = this.actor._arrowRotation;
                                },
                                onCompleteScope: this,
                                onComplete: function() {
@@ -905,14 +905,14 @@ const PopupSubMenu = new Lang.Class({
             animate = false;
 
         if (animate) {
-            this.actor._arrow_rotation = this._arrow.rotation_angle_z;
+            this.actor._arrowRotation = this._arrow.rotation_angle_z;
             Tweener.addTween(this.actor,
-                             { _arrow_rotation: 0,
+                             { _arrowRotation: 0,
                                height: 0,
                                time: 0.25,
                                onUpdateScope: this,
                                onUpdate: function() {
-                                   this._arrow.rotation_angle_z = this.actor._arrow_rotation;
+                                   this._arrow.rotation_angle_z = this.actor._arrowRotation;
                                },
                                onCompleteScope: this,
                                onComplete: function() {
