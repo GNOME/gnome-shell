@@ -127,6 +127,8 @@ const restartInstallDialogContent = {
     showBatteryWarning: true,
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  C_("button", "Restart &amp; Install") }],
+    unusedFutureButtonForTranslation: C_("button", "Install &amp; Power Off"),
+    unusedFutureCheckBoxForTranslation: C_("checkbox", "Power off after updates are installed"),
     iconName: 'view-refresh-symbolic',
     iconStyleClass: 'end-session-dialog-shutdown-icon',
     showOtherSessions: true,
