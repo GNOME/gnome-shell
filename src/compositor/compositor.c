@@ -138,6 +138,19 @@ meta_compositor_destroy (MetaCompositor *compositor)
 }
 
 static void
+add_win (MetaWindow *window)
+{
+  MetaScreen		*screen = meta_window_get_screen (window);
+  MetaCompScreen        *info = meta_screen_get_compositor_data (screen);
+
+  g_return_if_fail (info != NULL);
+
+  meta_window_actor_new (window);
+
+  sync_actor_stacking (info);
+}
+
+static void
 process_damage (MetaCompositor     *compositor,
                 XDamageNotifyEvent *event,
                 MetaWindow         *window)
@@ -725,20 +738,13 @@ meta_compositor_add_window (MetaCompositor    *compositor,
 {
   MetaScreen *screen = meta_window_get_screen (window);
   MetaDisplay *display = meta_screen_get_display (screen);
-  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
-  g_return_if_fail (info != NULL);
-
-  /* Window was already added previously, probably coming
-   * back from hiding */
-  if (window->compositor_private != NULL)
-    return;
-
+  DEBUG_TRACE ("meta_compositor_add_window\n");
   meta_error_trap_push (display);
-  meta_window_actor_new (window);
-  meta_error_trap_pop (display);
 
-  sync_actor_stacking (info);
+  add_win (window);
+
+  meta_error_trap_pop (display);
 }
 
 void
