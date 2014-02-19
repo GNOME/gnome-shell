@@ -1947,10 +1947,6 @@ StScrollBar StButton#vhandle:active {
     padding-top: 20px;
 }
 
-.end-session-dialog-subject {
-    padding-bottom: 20px;
-}
-
 .end-session-dialog-layout {
     padding-left: 17px;
 }
@@ -1961,9 +1957,12 @@ StScrollBar StButton#vhandle:active {
 
 .end-session-dialog-description {
     width: 28em;
+    padding-bottom: 10px;
 }
 
 .end-session-dialog-description:rtl {
+    width: 28em;
+    padding-bottom: 10px;
     text-align: right;
 }
 

@@ -25,9 +25,11 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Pango = imports.gi.Pango;
+const Polkit = imports.gi.Polkit;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
+const CheckBox = imports.ui.checkBox;
 const GnomeSession = imports.misc.gnomeSession;
 const LoginManager = imports.misc.loginManager;
 const ModalDialog = imports.ui.modalDialog;
@@ -35,6 +37,8 @@ const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
 
 let _endSessionDialog = null;
+
+const TRIGGER_OFFLINE_UPDATE = '/usr/libexec/pk-trigger-offline-update';
 
 const _ITEM_ICON_SIZE = 48;
 const _DIALOG_ICON_SIZE = 48;
@@ -79,11 +83,13 @@ const logoutDialogContent = {
 
 const shutdownDialogContent = {
     subject: C_("title", "Power Off"),
+    subjectWithUpdates: C_("title", "Install Updates & Power Off"),
     description: function(seconds) {
         return ngettext("The system will power off automatically in %d second.",
                         "The system will power off automatically in %d seconds.",
                         seconds).format(seconds);
     },
+    checkBoxText: C_("checkbox", "Install pending software updates"),
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  C_("button", "Restart") },
                      { signal: 'ConfirmedShutdown',
@@ -195,6 +201,18 @@ function _setLabelText(label, text) {
     }
 }
 
+function _setCheckBoxLabel(checkBox, text) {
+    let label = checkBox.getLabelActor();
+
+    if (text) {
+        label.set_text(text);
+        checkBox.actor.show();
+    } else {
+        label.set_text('');
+        checkBox.actor.hide();
+    }
+}
+
 function init() {
     // This always returns the same singleton object
     // By instantiating it initially, we register the
@@ -214,6 +232,7 @@ const EndSessionDialog = new Lang.Class({
         this._userManager = AccountsService.UserManager.get_default();
         this._user = this._userManager.get_user(GLib.get_user_name());
         this._updatesFile = Gio.File.new_for_path('/system-update');
+        this._preparedUpdateFile = Gio.File.new_for_path('/var/lib/PackageKit/prepared-update');
 
         this._secondsLeft = 0;
         this._totalSecondsToStayOpen = 0;
@@ -261,6 +280,10 @@ const EndSessionDialog = new Lang.Class({
                           { y_fill:  true,
                             y_align: St.Align.START });
 
+        this._checkBox = new CheckBox.CheckBox();
+        this._checkBox.actor.connect('clicked', Lang.bind(this, this._sync));
+        messageLayout.add(this._checkBox.actor);
+
         this._scrollView = new St.ScrollView({ style_class: 'end-session-dialog-list' });
         this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.contentLayout.add(this._scrollView,
@@ -286,6 +309,12 @@ const EndSessionDialog = new Lang.Class({
         this._inhibitorSection.add_actor(this._sessionHeader);
         this._inhibitorSection.add_actor(this._sessionList);
 
+        try {
+            this._updatesPermission = Polkit.Permission.new_sync("org.freedesktop.packagekit.trigger-offline-update", null, null);
+        } catch(e) {
+            log('No permission to trigger offline updates: %s'.format(e.toString()));
+        }
+
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(EndSessionDialogIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/SessionManager/EndSessionDialog');
     },
@@ -303,6 +332,10 @@ const EndSessionDialog = new Lang.Class({
         let dialogContent = DialogContent[this._type];
 
         let subject = dialogContent.subject;
+
+        // Use different title when we are installing updates
+        if (dialogContent.subjectWithUpdates && this._checkBox.actor.checked)
+            subject = dialogContent.subjectWithUpdates;
 
         let description;
         let displayTime = _roundSecondsToInterval(this._totalSecondsToStayOpen,
@@ -386,13 +419,73 @@ const EndSessionDialog = new Lang.Class({
     },
 
     _confirm: function(signal) {
-        this._fadeOutDialog();
-        this._stopTimer();
-        this._dbusImpl.emit_signal(signal, null);
+        let callback = Lang.bind(this, function() {
+            this._fadeOutDialog();
+            this._stopTimer();
+            this._dbusImpl.emit_signal(signal, null);
+        });
+
+        // Offline update not available; just emit the signal
+        if (!this._checkBox.actor.visible) {
+            callback();
+            return;
+        }
+
+        // Trigger the offline update as requested
+        if (this._checkBox.actor.checked) {
+            switch (signal) {
+                case "ConfirmedReboot":
+                    this._triggerOfflineUpdateReboot(callback);
+                    break;
+                case "ConfirmedShutdown":
+                    // To actually trigger the offline update, we need to
+                    // reboot to do the upgrade. When the upgrade is complete,
+                    // the computer will shut down automatically.
+                    signal = "ConfirmedReboot";
+                    this._triggerOfflineUpdateShutdown(callback);
+                    break;
+                default:
+                    callback();
+                    break;
+            }
+        } else {
+            this._triggerOfflineUpdateCancel(callback);
+        }
     },
 
     _onOpened: function() {
         this._sync();
+    },
+
+    _triggerOfflineUpdateReboot: function(callback) {
+        this._pkexecSpawn([TRIGGER_OFFLINE_UPDATE, 'reboot'], callback);
+    },
+
+    _triggerOfflineUpdateShutdown: function(callback) {
+        this._pkexecSpawn([TRIGGER_OFFLINE_UPDATE, 'power-off'], callback);
+    },
+
+    _triggerOfflineUpdateCancel: function(callback) {
+        this._pkexecSpawn([TRIGGER_OFFLINE_UPDATE, '--cancel'], callback);
+    },
+
+    _pkexecSpawn: function(argv, callback) {
+        let ret, pid;
+        try {
+            [ret, pid] = GLib.spawn_async(null, ['pkexec'].concat(argv), null,
+                                          GLib.SpawnFlags.DO_NOT_REAP_CHILD | GLib.SpawnFlags.SEARCH_PATH,
+                                          null);
+        } catch (e) {
+            log('Error spawning "pkexec %s": %s'.format(argv.join(' '), e.toString()));
+            callback();
+            return;
+        }
+
+        GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, function(pid, status) {
+            GLib.spawn_close_pid(pid);
+
+            callback();
+        });
     },
 
     _startTimer: function() {
@@ -557,6 +650,8 @@ const EndSessionDialog = new Lang.Class({
             return;
         }
 
+        let dialogContent = DialogContent[this._type];
+
         for (let i = 0; i < inhibitorObjectPaths.length; i++) {
             let inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i], Lang.bind(this, function(proxy, error) {
                 this._onInhibitorLoaded(proxy);
@@ -565,8 +660,16 @@ const EndSessionDialog = new Lang.Class({
             this._applications.push(inhibitor);
         }
 
-        if (DialogContent[type].showOtherSessions)
+        if (dialogContent.showOtherSessions)
             this._loadSessions();
+
+        let preparedUpdate = this._preparedUpdateFile.query_exists(null);
+        let updateAlreadyTriggered = this._updatesFile.query_exists(null);
+        let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
+
+        _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText);
+        this._checkBox.actor.visible = (dialogContent.checkBoxText && preparedUpdate && updatesAllowed);
+        this._checkBox.actor.checked = (preparedUpdate && updateAlreadyTriggered);
 
         this._updateButtons();
 
