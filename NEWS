@@ -1,3 +1,17 @@
+3.10.4
+======
+* Fix keyboard activation of legacy tray icons [Giovanni; #721267]
+* Fix regressions from window-tracking changes in 3.10.3 [Florian; #722434,
+  #722690, #722840, #723308, #722928]
+* Scale UI on high-resolution displays [Adel; #705410]
+* Misc. bug fixes [Giovanni, Jasper; #722547, #723197, #724256]
+
+Contributors:
+  Giovanni Campagna, Adel Gadllah, Florian Müllner, Jasper St. Pierre
+
+Translations:
+  Nilamdyuti Goswami [as], Stas Solovey [ru], A S Alam [pa]
+
 3.10.3
 ======
 * Fix reentrancy issue in message tray [Jasper; #711694]
