@@ -645,7 +645,8 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   wl_resource_set_implementation (surface->resource, &meta_wayland_surface_interface, surface, wl_surface_destructor);
 
   surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
-  surface->surface_actor = g_object_ref_sink (meta_surface_actor_new ());
+  surface->surface_actor = g_object_ref_sink (meta_surface_actor_new (surface));
+  clutter_actor_set_reactive (CLUTTER_ACTOR (surface->surface_actor), TRUE);
 
   double_buffered_state_init (&surface->pending);
 

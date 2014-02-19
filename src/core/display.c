@@ -1682,8 +1682,12 @@ get_window_for_event (MetaDisplay        *display,
     return display->grab_window;
 
   source = clutter_event_get_source (event);
-  if (META_IS_WINDOW_ACTOR (source))
-    return meta_window_actor_get_meta_window (META_WINDOW_ACTOR (source));
+  if (META_IS_SURFACE_ACTOR (source))
+    {
+      MetaWaylandSurface *surface = meta_surface_actor_get_surface (META_SURFACE_ACTOR (source));
+      g_assert (surface != NULL);
+      return surface->window;
+    }
 
   return NULL;
 }

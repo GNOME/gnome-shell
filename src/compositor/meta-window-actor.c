@@ -353,7 +353,7 @@ meta_window_actor_constructed (GObject *object)
       if (window->surface)
         priv->surface = window->surface->surface_actor;
       else
-        priv->surface = meta_surface_actor_new ();
+        priv->surface = meta_surface_actor_new (NULL);
       g_object_ref_sink (priv->surface);
 
       clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
@@ -1424,7 +1424,6 @@ meta_window_actor_hide (MetaWindowActor *self,
   g_return_if_fail (priv->visible);
 
   priv->visible = FALSE;
-  clutter_actor_set_reactive (CLUTTER_ACTOR (self), FALSE);
 
   /* If a plugin is animating a workspace transition, we have to
    * hold off on hiding the window, and do it after the workspace
@@ -1556,8 +1555,6 @@ meta_window_actor_new (MetaWindow *window)
   clutter_actor_add_child (window_group, CLUTTER_ACTOR (self));
 
   clutter_actor_hide (CLUTTER_ACTOR (self));
-
-  clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
   /* Initial position in the stack is arbitrary; stacking will be synced
    * before we first paint.

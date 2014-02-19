@@ -420,13 +420,8 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
   else
     seat->current_stage = NULL;
 
-  if (META_IS_WINDOW_ACTOR (actor))
-    {
-      MetaWindow *window =
-        meta_window_actor_get_meta_window (META_WINDOW_ACTOR (actor));
-
-      surface = window->surface;
-    }
+  if (META_IS_SURFACE_ACTOR (actor))
+    surface = meta_surface_actor_get_surface (META_SURFACE_ACTOR (actor));
 
   pointer->current = surface;
   if (surface != pointer->focus_surface)

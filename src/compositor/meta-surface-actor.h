@@ -36,7 +36,7 @@ struct _MetaSurfaceActor
 
 GType meta_surface_actor_get_type (void);
 
-MetaSurfaceActor *meta_surface_actor_new (void);
+MetaSurfaceActor *meta_surface_actor_new (MetaWaylandSurface *surface);
 
 cairo_surface_t *meta_surface_actor_get_image (MetaSurfaceActor      *self,
                                                cairo_rectangle_int_t *clip);
@@ -62,6 +62,8 @@ void meta_surface_actor_set_input_region (MetaSurfaceActor *self,
                                           cairo_region_t   *region);
 void meta_surface_actor_set_opaque_region (MetaSurfaceActor *self,
                                            cairo_region_t   *region);
+
+MetaWaylandSurface *meta_surface_actor_get_surface (MetaSurfaceActor *surface);
 
 G_END_DECLS
 
