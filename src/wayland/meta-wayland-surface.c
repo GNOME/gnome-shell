@@ -596,11 +596,14 @@ meta_wayland_surface_window_unmanaged (MetaWaylandSurface *surface)
 static void
 destroy_window (MetaWaylandSurface *surface)
 {
-  MetaDisplay *display = meta_get_display ();
-  guint32 timestamp = meta_display_get_current_time_roundtrip (display);
+  if (surface->window)
+    {
+      MetaDisplay *display = meta_get_display ();
+      guint32 timestamp = meta_display_get_current_time_roundtrip (display);
 
-  g_assert (surface->window != NULL);
-  meta_window_unmanage (surface->window, timestamp);
+      meta_window_unmanage (surface->window, timestamp);
+    }
+
   g_assert (surface->window == NULL);
 }
 
@@ -610,11 +613,11 @@ wl_surface_destructor (struct wl_resource *resource)
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
   MetaWaylandCompositor *compositor = surface->compositor;
 
-  /* At the time when the wl_surface is destroyed, we should
-   * no longer have a window, unless we're an XWayland window
-   * in which case we received the wl_surface.destroy before
-   * the UnmapNotify/DestroyNotify. */
-  g_assert (surface->window == NULL || surface->window->client_type == META_WINDOW_CLIENT_TYPE_X11);
+  /* If we still have a window at the time of destruction, that means that
+   * the client is disconnecting, as the resources are destroyed in a random
+   * order. Simply destroy the window in this case. */
+  if (surface->window)
+    destroy_window (surface);
 
   compositor->surfaces = g_list_remove (compositor->surfaces, surface);
 
