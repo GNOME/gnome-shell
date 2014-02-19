@@ -1526,6 +1526,7 @@ CLUTTER_VERSION_1_10
 CLUTTER_VERSION_1_12
 CLUTTER_VERSION_1_14
 CLUTTER_VERSION_1_16
+CLUTTER_VERSION_1_18
 CLUTTER_VERSION_MAX_ALLOWED
 CLUTTER_VERSION_MIN_REQUIRED
 
@@ -1547,6 +1548,7 @@ CLUTTER_AVAILABLE_IN_1_10
 CLUTTER_AVAILABLE_IN_1_12
 CLUTTER_AVAILABLE_IN_1_14
 CLUTTER_AVAILABLE_IN_1_16
+CLUTTER_AVAILABLE_IN_1_18
 CLUTTER_DEPRECATED_IN_1_0
 CLUTTER_DEPRECATED_IN_1_0_FOR
 CLUTTER_DEPRECATED_IN_1_2
@@ -1565,6 +1567,8 @@ CLUTTER_DEPRECATED_IN_1_14
 CLUTTER_DEPRECATED_IN_1_14_FOR
 CLUTTER_DEPRECATED_IN_1_16
 CLUTTER_DEPRECATED_IN_1_16_FOR
+CLUTTER_DEPRECATED_IN_1_18
+CLUTTER_DEPRECATED_IN_1_18_FOR
 CLUTTER_UNAVAILABLE
 </SECTION>
 
@@ -2989,6 +2993,9 @@ clutter_gesture_action_set_n_touch_points
 clutter_gesture_action_get_n_current_points
 clutter_gesture_action_get_sequence
 clutter_gesture_action_get_device
+clutter_gesture_action_get_threshold_trigger_distance
+clutter_gesture_action_set_threshold_trigger_distance
+ClutterGestureTriggerEdge
 clutter_gesture_action_set_threshold_trigger_edge
 clutter_gesture_action_get_threshold_trigger_egde
 clutter_gesture_action_cancel
