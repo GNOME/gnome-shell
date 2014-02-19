@@ -55,14 +55,6 @@
 
 static void meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer);
 
-static MetaWaylandSeat *
-meta_wayland_pointer_get_seat (MetaWaylandPointer *pointer)
-{
-  MetaWaylandSeat *seat = wl_container_of (pointer, seat, pointer);
-
-  return seat;
-}
-
 static void
 release_focus (MetaWaylandPointer *pointer)
 {
@@ -331,9 +323,6 @@ void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 MetaWaylandSurface *surface)
 {
-  MetaWaylandSeat *seat = meta_wayland_pointer_get_seat (pointer);
-  MetaWaylandKeyboard *kbd = &seat->keyboard;
-
   if (pointer->focus_surface == surface && pointer->focus_resource != NULL)
     return;
 
@@ -370,20 +359,6 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
           struct wl_client *client = wl_resource_get_client (pointer->focus_resource);
           struct wl_display *display = wl_client_get_display (client);
           uint32_t serial = wl_display_next_serial (display);
-
-          if (kbd)
-            {
-              struct wl_resource *kr = find_resource_for_surface (&kbd->resource_list, pointer->focus_surface);
-              if (kr)
-                {
-                  wl_keyboard_send_modifiers (kr,
-                                              serial,
-                                              kbd->modifier_state.mods_depressed,
-                                              kbd->modifier_state.mods_latched,
-                                              kbd->modifier_state.mods_locked,
-                                              kbd->modifier_state.group);
-                }
-            }
 
           meta_window_handle_enter (pointer->focus_surface->window,
                                     /* XXX -- can we reliably get a timestamp for setting focus? */

@@ -60,14 +60,6 @@
 
 #include "meta-wayland-private.h"
 
-static MetaWaylandSeat *
-meta_wayland_keyboard_get_seat (MetaWaylandKeyboard *keyboard)
-{
-  MetaWaylandSeat *seat = wl_container_of (keyboard, seat, keyboard);
-
-  return seat;
-}
-
 static int
 create_anonymous_file (off_t size,
                        GError **error)
@@ -291,28 +283,11 @@ default_grab_modifiers (MetaWaylandKeyboardGrab *grab, uint32_t serial,
                         uint32_t mods_locked, uint32_t group)
 {
   MetaWaylandKeyboard *keyboard = grab->keyboard;
-  MetaWaylandSeat *seat = meta_wayland_keyboard_get_seat (keyboard);
-  MetaWaylandPointer *pointer = &seat->pointer;
-  struct wl_resource *resource, *pr;
 
-  resource = keyboard->focus_resource;
-  if (!resource)
-    return;
-
-  wl_keyboard_send_modifiers (resource, serial, mods_depressed,
-                              mods_latched, mods_locked, group);
-
-  if (pointer && pointer->focus_surface && pointer->focus_surface != keyboard->focus_surface)
+  if (keyboard->focus_resource)
     {
-      pr = find_resource_for_surface (&keyboard->resource_list, pointer->focus_surface);
-      if (pr)
-        {
-          wl_keyboard_send_modifiers (pr, serial,
-				      mods_depressed,
-                                      mods_latched,
-                                      mods_locked,
-                                      group);
-        }
+      wl_keyboard_send_modifiers (keyboard->focus_resource, serial, mods_depressed,
+                                  mods_latched, mods_locked, group);
     }
 }
 
