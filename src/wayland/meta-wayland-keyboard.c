@@ -507,9 +507,6 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
 
   if (keyboard->focus_surface != NULL)
     {
-      wl_list_remove (&keyboard->focus_surface_listener.link);
-      keyboard->focus_surface = NULL;
-
       if (keyboard->focus_resource)
         {
           if (keyboard->focus_surface->resource)
@@ -523,6 +520,9 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
           wl_list_remove (&keyboard->focus_resource_listener.link);
           keyboard->focus_resource = NULL;
         }
+
+      wl_list_remove (&keyboard->focus_surface_listener.link);
+      keyboard->focus_surface = NULL;
     }
 
   if (surface != NULL)

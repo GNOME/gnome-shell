@@ -328,9 +328,6 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
 
   if (pointer->focus_surface)
     {
-      wl_list_remove (&pointer->focus_surface_listener.link);
-      pointer->focus_surface = NULL;
-
       if (pointer->focus_resource)
         {
           if (pointer->focus_surface->resource)
@@ -342,10 +339,11 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
             }
 
           wl_list_remove (&pointer->focus_resource_listener.link);
-
-          pointer->focus_surface = NULL;
           pointer->focus_resource = NULL;
         }
+
+      wl_list_remove (&pointer->focus_surface_listener.link);
+      pointer->focus_surface = NULL;
     }
 
   if (surface != NULL)
