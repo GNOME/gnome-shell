@@ -75,6 +75,7 @@ const logoutDialogContent = {
                         "You will be logged out automatically in %d seconds.",
                         seconds).format(seconds);
     },
+    showBatteryWarning: false,
     confirmButtons: [{ signal: 'ConfirmedLogout',
                        label:  C_("button", "Log Out") }],
     iconStyleClass: 'end-session-dialog-logout-icon',
@@ -90,6 +91,7 @@ const shutdownDialogContent = {
                         seconds).format(seconds);
     },
     checkBoxText: C_("checkbox", "Install pending software updates"),
+    showBatteryWarning: true,
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  C_("button", "Restart") },
                      { signal: 'ConfirmedShutdown',
@@ -106,6 +108,7 @@ const restartDialogContent = {
                         "The system will restart automatically in %d seconds.",
                         seconds).format(seconds);
     },
+    showBatteryWarning: false,
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  C_("button", "Restart") }],
     iconName: 'view-refresh-symbolic',
@@ -121,6 +124,7 @@ const restartInstallDialogContent = {
                         "The system will automatically restart and install updates in %d seconds.",
                         seconds).format(seconds);
     },
+    showBatteryWarning: true,
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  C_("button", "Restart &amp; Install") }],
     iconName: 'view-refresh-symbolic',
@@ -148,6 +152,14 @@ const LogindSessionIface = '<node> \
 </node>';
 
 const LogindSession = Gio.DBusProxy.makeProxyWrapper(LogindSessionIface);
+
+const UPowerIface = '<node> \
+<interface name="org.freedesktop.UPower"> \
+    <property name="OnBattery" type="b" access="read"/> \
+</interface> \
+</node>';
+
+const UPowerProxy = Gio.DBusProxy.makeProxyWrapper(UPowerIface);
 
 function findAppFromInhibitor(inhibitor) {
     let desktopFile;
@@ -234,6 +246,19 @@ const EndSessionDialog = new Lang.Class({
         this._updatesFile = Gio.File.new_for_path('/system-update');
         this._preparedUpdateFile = Gio.File.new_for_path('/var/lib/PackageKit/prepared-update');
 
+        this._powerProxy = new UPowerProxy(Gio.DBus.system,
+                                           'org.freedesktop.UPower',
+                                           '/org/freedesktop/UPower',
+                                           Lang.bind(this, function(proxy, error) {
+                                               if (error) {
+                                                   log(error.message);
+                                                   return;
+                                               }
+                                               this._powerProxy.connect('g-properties-changed',
+                                                                        Lang.bind(this, this._sync));
+                                               this._sync();
+                                           }));
+
         this._secondsLeft = 0;
         this._totalSecondsToStayOpen = 0;
         this._applications = [];
@@ -283,6 +308,12 @@ const EndSessionDialog = new Lang.Class({
         this._checkBox = new CheckBox.CheckBox();
         this._checkBox.actor.connect('clicked', Lang.bind(this, this._sync));
         messageLayout.add(this._checkBox.actor);
+
+        this._batteryWarning = new St.Label({ style_class: 'end-session-dialog-warning',
+                                              text: _("Running on battery power: please plug in before installing updates.") });
+        this._batteryWarning.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._batteryWarning.clutter_text.line_wrap = true;
+        messageLayout.add(this._batteryWarning);
 
         this._scrollView = new St.ScrollView({ style_class: 'end-session-dialog-list' });
         this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -336,6 +367,14 @@ const EndSessionDialog = new Lang.Class({
         // Use different title when we are installing updates
         if (dialogContent.subjectWithUpdates && this._checkBox.actor.checked)
             subject = dialogContent.subjectWithUpdates;
+
+        if (dialogContent.showBatteryWarning) {
+            // Warn when running on battery power
+            if (this._powerProxy.OnBattery && this._checkBox.actor.checked)
+                this._batteryWarning.opacity = 255;
+            else
+                this._batteryWarning.opacity = 0;
+        }
 
         let description;
         let displayTime = _roundSecondsToInterval(this._totalSecondsToStayOpen,
@@ -670,6 +709,12 @@ const EndSessionDialog = new Lang.Class({
         _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText);
         this._checkBox.actor.visible = (dialogContent.checkBoxText && preparedUpdate && updatesAllowed);
         this._checkBox.actor.checked = (preparedUpdate && updateAlreadyTriggered);
+
+        // We show the warning either together with the checkbox, or when
+        // updates have already been triggered, but the user doesn't have
+        // enough permissions to cancel them.
+        this._batteryWarning.visible = (dialogContent.showBatteryWarning &&
+                                        (this._checkBox.actor.visible || preparedUpdate && updateAlreadyTriggered && !updatesAllowed));
 
         this._updateButtons();
 

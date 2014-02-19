@@ -1966,6 +1966,19 @@ StScrollBar StButton#vhandle:active {
     text-align: right;
 }
 
+.end-session-dialog-warning {
+    width: 28em;
+    color: #f57900;
+    padding-top: 6px;
+}
+
+.end-session-dialog-warning:rtl {
+    width: 28em;
+    color: #f57900;
+    padding-top: 6px;
+    text-align: right;
+}
+
 .end-session-dialog-logout-icon {
     border: 2px solid #8b8b8b;
     border-radius: 5px;
