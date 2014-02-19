@@ -542,8 +542,6 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
           struct wl_display *display = wl_client_get_display (client);
           serial = wl_display_next_serial (display);
           wl_keyboard_send_leave (resource, serial, keyboard->focus_surface->resource);
-
-          meta_wayland_surface_deactivated (keyboard->focus_surface);
         }
 
       wl_list_remove (&keyboard->focus_resource_listener.link);
@@ -583,8 +581,6 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
 	  wl_keyboard_send_enter (resource, serial, surface->resource,
 				  &keyboard->keys);
 	}
-
-      meta_wayland_surface_activated (surface);
 
       keyboard->focus_resource = resource;
       keyboard->focus_surface = surface;

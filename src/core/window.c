@@ -6360,6 +6360,14 @@ meta_window_appears_focused_changed (MetaWindow *window)
 
   if (window->frame)
     meta_frame_queue_draw (window->frame);
+
+  if (window->surface)
+    {
+      if (meta_window_appears_focused (window))
+        meta_wayland_surface_activated (window->surface);
+      else
+        meta_wayland_surface_deactivated (window->surface);
+    }
 }
 
 /**
