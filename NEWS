@@ -1,3 +1,39 @@
+Clutter 1.17.4                                                       2014-02-19
+===============================================================================
+
+  • List of changes since Clutter 1.17.2
+
+    - Add per-gesture thresholds
+    It is possible to give horizontal and vertical thresholds to each
+    ClutterGestureAction instance; if unset, the default is to use the
+    dnd threshold from ClutterSettings.
+
+    - Allow negative factors in ClutterActor scale properties
+    The functions already accepted these values, but the properties did not.
+
+    - Depend on Cogl 1.17.3
+
+    - Translation updates
+    Spanish, Hebrew, Czech, Brazilian Portuguese, Traditional Chinese (Hong
+    Kong and Taiwan), Serbian, Galician, Indonesian, Italian, Aragonese,
+    Norwegian bokmål, Ukranian.
+
+  • List of bugs fixed since Clutter 1.17.2
+
+    #711540 - Fix bad logic in checks
+    #662818 - Fix documentation of 'hsla()' parsing
+    #710232 - Mention that ClutterTransition is abstract in the documentation
+    #706311 - Extend :scale-[xyz] factors in the negative range
+    #724242 - Add per-action thresholds
+
+Many thanks to:
+
+  Bastien Nocera, Daniel Mustieles, Kjartan Maraas, Milo Casagrande, Adel
+  Gadllah, Andika Triwidada, Chao-Hsiung Liao, Daniel Korostil, Fran Diéguez,
+  Jorge Pérez Pérez, Marek Černocký, Rafael Ferreira, Yosef Or Boczko,
+  Мирослав Николић
+
+
 Clutter 1.17.2                                                       2014-01-22
 ===============================================================================
 
