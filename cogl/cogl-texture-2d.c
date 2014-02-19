@@ -234,6 +234,7 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
                                      CoglError **error)
 {
   CoglTextureLoader *loader;
+  CoglTexture2D *tex;
 
   _COGL_RETURN_VAL_IF_FAIL (_cogl_context_get_winsys (ctx)->constraints &
                             COGL_RENDERER_CONSTRAINT_USES_EGL,
@@ -251,7 +252,15 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
   loader->src.egl_image.height = height;
   loader->src.egl_image.format = format;
 
-  return _cogl_texture_2d_create_base (ctx, width, height, format, loader);
+  tex = _cogl_texture_2d_create_base (ctx, width, height, format, loader);
+
+  if (!cogl_texture_allocate (COGL_TEXTURE (tex), error))
+    {
+      cogl_object_unref (tex);
+      return NULL;
+    }
+
+  return tex;
 }
 #endif /* defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base) */
 
