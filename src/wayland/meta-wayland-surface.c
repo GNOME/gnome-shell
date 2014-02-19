@@ -1015,12 +1015,9 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
   MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaRectangle parent_rect;
 
   if (parent_surf == NULL || parent_surf->window == NULL)
     return;
-
-  meta_window_get_rect (parent_surf->window, &parent_rect);
 
   if (!create_surface_extension (&surface->xdg_popup, client, surface_resource, resource, id,
                                  META_XDG_POPUP_VERSION,
@@ -1035,8 +1032,8 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
     }
 
   surface->window = meta_window_wayland_new (meta_get_display (), surface);
-  surface->window->rect.x = parent_rect.x + x;
-  surface->window->rect.y = parent_rect.y + y;
+  surface->window->rect.x = parent_surf->window->rect.x + x;
+  surface->window->rect.y = parent_surf->window->rect.y + y;
   surface->window->showing_for_first_time = FALSE;
   surface->window->placed = TRUE;
   meta_window_set_transient_for (surface->window, parent_surf->window);
