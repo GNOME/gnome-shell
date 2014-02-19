@@ -624,7 +624,6 @@ wl_surface_destructor (struct wl_resource *resource)
   surface_set_buffer (surface, NULL);
   double_buffered_state_destroy (&surface->pending);
 
-  clutter_actor_destroy (CLUTTER_ACTOR (surface->surface_actor));
   g_object_unref (surface->surface_actor);
 
   if (surface->resource)
