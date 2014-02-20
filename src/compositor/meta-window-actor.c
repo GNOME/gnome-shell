@@ -84,7 +84,6 @@ struct _MetaWindowActorPrivate
 
   guint		    visible                : 1;
   guint		    disposed               : 1;
-  guint             redecorating           : 1;
 
   /* If set, the client needs to be sent a _NET_WM_FRAME_DRAWN
    * client message using the most recent frame in ->frames */
@@ -217,26 +216,6 @@ meta_window_actor_init (MetaWindowActor *self)
 						   META_TYPE_WINDOW_ACTOR,
 						   MetaWindowActorPrivate);
   priv->shadow_class = NULL;
-}
-
-static void
-window_decorated_notify (MetaWindow *mw,
-                         GParamSpec *arg1,
-                         gpointer    data)
-{
-  MetaWindowActor        *self     = META_WINDOW_ACTOR (data);
-  MetaWindowActorPrivate *priv     = self->priv;
-
-  /*
-   * Basically, we have to reconstruct the the internals of this object
-   * from scratch, as everything has changed.
-   */
-  priv->redecorating = TRUE;
-
-  /*
-   * Recreate the contents.
-   */
-  meta_window_actor_constructed (G_OBJECT (self));
 }
 
 static void
@@ -414,9 +393,6 @@ meta_window_actor_set_property (GObject      *object,
     {
     case PROP_META_WINDOW:
       priv->window = g_value_dup_object (value);
-
-      g_signal_connect_object (priv->window, "notify::decorated",
-                               G_CALLBACK (window_decorated_notify), self, 0);
       g_signal_connect_object (priv->window, "notify::appears-focused",
                                G_CALLBACK (window_appears_focused_notify), self, 0);
       break;
@@ -1179,13 +1155,11 @@ meta_window_actor_show (MetaWindowActor   *self,
       g_assert_not_reached();
     }
 
-  if (priv->redecorating ||
-      info->switch_workspace_in_progress ||
+  if (info->switch_workspace_in_progress ||
       event == 0 ||
       !start_simple_effect (self, event))
     {
       clutter_actor_show (CLUTTER_ACTOR (self));
-      priv->redecorating = FALSE;
     }
 }
 

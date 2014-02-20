@@ -414,21 +414,43 @@ meta_surface_actor_x11_init (MetaSurfaceActorX11 *self)
   priv->last_height = -1;
 }
 
+static void
+create_damage (MetaSurfaceActorX11 *self)
+{
+  MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
+  Display *xdisplay = meta_display_get_xdisplay (priv->display);
+  Window xwindow = meta_window_get_toplevel_xwindow (priv->window);
+
+  priv->damage = XDamageCreate (xdisplay, xwindow, XDamageReportBoundingBox);
+}
+
+static void
+window_decorated_notify (MetaWindow *window,
+                         GParamSpec *pspec,
+                         gpointer    user_data)
+{
+  MetaSurfaceActorX11 *self = META_SURFACE_ACTOR_X11 (user_data);
+
+  free_damage (self);
+  create_damage (self);
+}
+
 MetaSurfaceActor *
 meta_surface_actor_x11_new (MetaWindow *window)
 {
   MetaSurfaceActorX11 *self = g_object_new (META_TYPE_SURFACE_ACTOR_X11, NULL);
   MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
   MetaDisplay *display = meta_window_get_display (window);
-  Display *xdisplay = meta_display_get_xdisplay (display);
-  Window xwindow = meta_window_get_toplevel_xwindow (window);
 
   g_assert (!meta_is_wayland_compositor ());
 
   priv->window = window;
   priv->display = display;
 
-  priv->damage = XDamageCreate (xdisplay, xwindow, XDamageReportBoundingBox);
+  create_damage (self);
+  g_signal_connect_object (priv->window, "notify::decorated",
+                           G_CALLBACK (window_decorated_notify), self, 0);
+
   update_is_argb32 (self);
 
   priv->unredirected = FALSE;
