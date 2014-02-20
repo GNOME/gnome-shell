@@ -256,6 +256,7 @@ get_secrets_keyring_cb (GObject            *source,
   GList *items;
   GList *l;
   GHashTable *outer;
+  gboolean secrets_found = FALSE;
 
   items = secret_service_search_finish (NULL, result, &secret_error);
 
@@ -312,6 +313,8 @@ get_secrets_keyring_cb (GObject            *source,
               else
                 g_hash_table_insert (closure->vpn_entries, secret_name, g_strdup (secret_value_get (secret, NULL)));
 
+              secrets_found = TRUE;
+
               g_hash_table_unref (attributes);
               secret_value_unref (secret);
               break;
@@ -325,9 +328,13 @@ get_secrets_keyring_cb (GObject            *source,
   g_list_free_full (items, g_object_unref);
 
   /* All VPN requests get sent to the VPN's auth dialog, since it knows better
-   * than the agent do about what secrets are required.
+   * than the agent about what secrets are required.  Otherwise, if no secrets
+   * were found and interaction is allowed the ask for some secrets, because
+   * NetworkManager will fail the connection if not secrets are returned
+   * instead of asking again with REQUEST_NEW.
    */
-  if (closure->is_vpn)
+  if (closure->is_vpn ||
+      (!secrets_found && (closure->flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_ALLOW_INTERACTION)))
     {
       nm_connection_update_secrets (closure->connection, closure->setting_name, closure->entries, NULL);
 
@@ -463,7 +470,6 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
 {
   ShellNetworkAgentPrivate *priv;
   ShellAgentRequest *request;
-  NMConnection *dup;
   GHashTable *outer;
 
   g_return_if_fail (SHELL_IS_NETWORK_AGENT (self));
@@ -498,11 +504,16 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
 
   /* response == SHELL_NETWORK_AGENT_CONFIRMED */
 
-  /* Save updated secrets */
-  dup = nm_connection_duplicate (request->connection);
+  /* Save any updated secrets */
+  if ((request->flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_ALLOW_INTERACTION) ||
+      (request->flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_REQUEST_NEW))
+    {
+      NMConnection *dup = nm_connection_duplicate (request->connection);
 
-  nm_connection_update_secrets (dup, request->setting_name, request->entries, NULL);
-  nm_secret_agent_save_secrets (NM_SECRET_AGENT (self), dup, NULL, NULL);
+      nm_connection_update_secrets (dup, request->setting_name, request->entries, NULL);
+      nm_secret_agent_save_secrets (NM_SECRET_AGENT (self), dup, NULL, NULL);
+      g_object_unref (dup);
+    }
 
   outer = g_hash_table_new (g_str_hash, g_str_equal);
   g_hash_table_insert (outer, request->setting_name, request->entries);
@@ -510,7 +521,6 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
   request->callback (NM_SECRET_AGENT (self), request->connection, outer, NULL, request->callback_data);
 
   g_hash_table_destroy (outer);
-  g_object_unref (dup);
   g_hash_table_remove (priv->requests, request_id);
 }
 
