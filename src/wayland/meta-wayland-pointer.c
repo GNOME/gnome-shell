@@ -56,27 +56,21 @@
 static void meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer);
 
 static void
-release_focus (MetaWaylandPointer *pointer)
-{
-  wl_list_remove (&pointer->focus_surface_listener.link);
-  wl_list_remove (&pointer->focus_resource_listener.link);
-
-  pointer->focus_resource = NULL;
-  pointer->focus_surface = NULL;
-}
-
-static void
 pointer_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 {
   MetaWaylandPointer *pointer = wl_container_of (listener, pointer, focus_surface_listener);
-  release_focus (pointer);
+
+  wl_list_remove (&pointer->focus_surface_listener.link);
+  pointer->focus_surface = NULL;
 }
 
 static void
 pointer_handle_focus_resource_destroy (struct wl_listener *listener, void *data)
 {
   MetaWaylandPointer *pointer = wl_container_of (listener, pointer, focus_resource_listener);
-  release_focus (pointer);
+
+  wl_list_remove (&pointer->focus_resource_listener.link);
+  pointer->focus_resource = NULL;
 }
 
 static void
@@ -302,7 +296,7 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer)
 void
 meta_wayland_pointer_release (MetaWaylandPointer *pointer)
 {
-  release_focus (pointer);
+  /* Do nothing. */
 }
 
 static struct wl_resource *

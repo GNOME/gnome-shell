@@ -218,27 +218,21 @@ err_keymap_str:
 }
 
 static void
-release_focus (MetaWaylandKeyboard *keyboard)
-{
-  wl_list_remove (&keyboard->focus_surface_listener.link);
-  wl_list_remove (&keyboard->focus_resource_listener.link);
-
-  keyboard->focus_resource = NULL;
-  keyboard->focus_surface = NULL;
-}
-
-static void
 keyboard_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 {
   MetaWaylandKeyboard *keyboard = wl_container_of (listener, keyboard, focus_surface_listener);
-  release_focus (keyboard);
+
+  wl_list_remove (&keyboard->focus_surface_listener.link);
+  keyboard->focus_surface = NULL;
 }
 
 static void
 keyboard_handle_focus_resource_destroy (struct wl_listener *listener, void *data)
 {
   MetaWaylandKeyboard *keyboard = wl_container_of (listener, keyboard, focus_resource_listener);
-  release_focus (keyboard);
+
+  wl_list_remove (&keyboard->focus_resource_listener.link);
+  keyboard->focus_resource = NULL;
 }
 
 static gboolean
