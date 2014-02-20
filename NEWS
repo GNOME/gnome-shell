@@ -1,3 +1,33 @@
+Cogl 1.17.4                                                        2014-02-20
+
+  • List of changes since Cogl 1.17.2
+
+  » cogl-gst now ensures that sampled video fragments are always
+    pre-multiplied with the alpha component.
+  » cogl-gst now has NV12 format support.
+  » The cogl-basic-video-player example can now be passed an
+    custom gstreamer pipeline description, as long as it contains
+    a coglsink element.
+  » The -experimental-2.0 pkg-config files now all depend on
+    cogl-2.0-experimental instead of cogl-1.0.
+  
+  • Gnome Bugzilla bugs closed since 1.17.2:
+
+    #712832 - video-sink: Add NV12 shader support
+    #719741 - GLX winsys: fix feature handling for INTEL_swap_event
+    #722765 - Fix the exported symbols regular expression in cogl-path
+    #723530 - cogl-pipeline: SEGV in _cogl_pipeline_fragend_glsl_end
+
+Many thanks to:
+
+  Neil Roberts
+  Lionel Landwerlin
+  Andreas Oberritter
+  Daniel Korostil
+  Emmanuele Bassi
+  Kjartan Maraas
+  Owen W. Taylor
+
 Cogl 1.17.2                                                        2014-01-20
 
   • List of changes since Cogl 1.16.0
