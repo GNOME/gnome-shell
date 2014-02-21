@@ -646,6 +646,9 @@ meta_window_actor_get_paint_volume (ClutterActor       *actor,
 
   meta_window_actor_get_shape_bounds (self, &bounds);
 
+  if (meta_shaped_texture_get_unobscured_bounds (META_SHAPED_TEXTURE (priv->actor), &unobscured_bounds))
+    gdk_rectangle_intersect (&bounds, &unobscured_bounds, &bounds);
+
   if (appears_focused ? priv->focused_shadow : priv->unfocused_shadow)
     {
       cairo_rectangle_int_t shadow_bounds;
@@ -660,9 +663,6 @@ meta_window_actor_get_paint_volume (ClutterActor       *actor,
       meta_window_actor_get_shadow_bounds (self, appears_focused, &shadow_bounds);
       gdk_rectangle_union (&bounds, &shadow_bounds, &bounds);
     }
-
-  if (meta_shaped_texture_get_unobscured_bounds (META_SHAPED_TEXTURE (priv->actor), &unobscured_bounds))
-    gdk_rectangle_intersect (&bounds, &unobscured_bounds, &bounds);
 
   origin.x = bounds.x;
   origin.y = bounds.y;
