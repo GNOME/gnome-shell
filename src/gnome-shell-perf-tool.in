@@ -99,6 +99,15 @@ def run_shell(perf_output=None):
     shell.wait()
     return shell.returncode == 0
 
+def restore_shell():
+    pid = os.fork()
+    if (pid == 0):
+        if "MUTTER_WM_CLASS_FILTER" in os.environ:
+            del os.environ["MUTTER_WM_CLASS_FILTER"]
+        os.execlp("gnome-shell", "gnome-shell", "--replace")
+    else:
+        sys.exit(0)
+
 def upload_performance_report(report_text):
     try:
         config_home = os.environ['XDG_CONFIG_HOME']
@@ -320,6 +329,6 @@ if args:
 
 normal_exit = run_performance_test()
 if normal_exit:
-    sys.exit(0)
+    restore_shell()
 else:
     sys.exit(1)
