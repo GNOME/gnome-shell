@@ -822,7 +822,7 @@ const ThumbnailsBox = new Lang.Class({
             // ... move them down one.
             windows.forEach(function(winActor) {
                 let window = winActor.meta_window;
-                window.change_workspace_by_index(window.get_workspace() + 1, true);
+                window.change_workspace_by_index(window.get_workspace().index() + 1, true);
             });
 
             if (isWindow)
