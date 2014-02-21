@@ -720,7 +720,7 @@ set_cogl_texture (MetaShapedTexture *stex,
     }
   else
     {
-      /* size changed to 0 going to an inavlid texture */
+      /* size changed to 0 going to an invalid texture */
       priv->tex_width = 0;
       priv->tex_height = 0;
       clutter_actor_queue_relayout (CLUTTER_ACTOR (stex));
