@@ -1,0 +1,1389 @@
+# Catalan gnome-shell translation.
+# Copyright (C) 2009 Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>
+# This file is distributed under the same license as the gnome-shell package.
+# Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>, 2009.
+# Gil Forcada <gilforcada@guifi.net>, 2010, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: HEAD\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-02-21 20:26+0000\n"
+"PO-Revision-Date: 2014-02-21 22:53+0100\n"
+"Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
+"Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bits\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Gestor de finestres i llançador d'aplicacions"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:1
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Habilita les eines internes en el diàleg de l'Alt+F2 que són útils per als "
+"desenvolupadors i provadors"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:2
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Permet l'accés a les eines de depuració i de seguiment internes a través del "
+"diàleg de l'Alt+F2."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:3
+msgid "Uuids of extensions to disable"
+msgstr "Identificadors únics de les extensions a inhabilitar"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:4
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should not be loaded."
+msgstr ""
+"Les extensions del GNOME Shell tenen un identificador universal. Aquesta "
+"clau conté una llista de les extensions que no s'han de carregar."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:5
+msgid "Whether to collect stats about applications usage"
+msgstr "Si s'han de recollir estadístiques d'ús de les aplicacions"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:6
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"El GNOME Shell normalment fa un seguiment de les aplicacions actives per tal "
+"de mostrar les més utilitzades (per exemple en els llançadors). Tot i que "
+"les dades es mantindran en privat, podeu inhabilitar-ho per motius de "
+"privadesa. Tingueu en compte que si ho inhabiliteu no es suprimiran les "
+"dades ja recollides."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:7
+msgid "List of desktop file IDs for favorite applications"
+msgstr ""
+"Llista d'identificadors de fitxers d'escriptori de les aplicacions preferides"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:8
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Es mostraran, a l'àrea de preferits, les aplicacions que corresponguin a "
+"aquests identificadors."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:9
+msgid "disabled OpenSearch providers"
+msgstr "inhabilita els proveïdors d'OpenSearch"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:10
+msgid "History for command (Alt-F2) dialog"
+msgstr "Historial de les ordres utilitzades en el diàleg de l'Alt+F2"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:11
+msgid "History for the looking glass dialog"
+msgstr "Historial del depurador del GNOME Shell"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:12
+msgid "Show the week date in the calendar"
+msgstr "Mostra el número de la setmana en el calendari"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:13
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Si és «true» (cert) es mostra el número de la setmana en el calendari."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:14
+msgid "Show time with seconds"
+msgstr "Mostra l'hora amb segons"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:15
+msgid "If true, display seconds in time."
+msgstr "Si és «true» (cert) es mostren els segons."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:16
+msgid "Show date in clock"
+msgstr "Mostra la data en el rellotge"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:17
+msgid "If true, display date in the clock, in addition to time."
+msgstr ""
+"Si és «true» (cert) es mostra la data en el rellotge a més a més de l'hora."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:18
+msgid "Framerate used for recording screencasts."
+msgstr "Imatges per segon per enregistrar els screencasts."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:19
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"Les imatges per segon, en fotogrames per segon, de l'screencast enregistrat "
+"per l'eina d'enregistrament del GNOME Shell."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:20
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "El conducte GStreamer per enregistrar els screencasts"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#, no-c-format
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
+"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
+"at the optimal thread count on the system."
+msgstr ""
+"Estableix el conducte del GStreamer per codificar els enregistraments. "
+"Utilitza la mateixa sintaxi que l'ordre gst-launch. El conducte hauria de "
+"tenir un camí de destinació no connectat on s'enregistrarà el vídeo. "
+"Normalment haurà de tenir un camí font no connectat, la seva sortida "
+"s'escriurà al fitxer de sortida. Tot i així el conducte pot tenir la seva "
+"pròpia sortida - pot ser útil per enviar la sortida a un servidor d'icecast "
+"a través del shout2send o algun programa semblant. Si no hi ha cap valor o "
+"s'estableix a un valor nul, s'utilitzarà el conducte predeterminat que ara "
+"mateix és «videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! "
+"webmmux» que enregistra amb el format WEBM amb el còdec VP8. El %T és una "
+"variable per estimar el nombre de fils d'execució paral·lels òptims del "
+"sistema."
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:23
+msgid "File extension used for storing the screencast"
+msgstr "Extensió de fitxer per desar l'screencast"
+
+#: ../data/org.gnome.shell.gschema.xml.in.h:24
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"El nom de fitxer dels screencasts enregistrats serà un nom de fitxer únic "
+"basat en l'hora de realització i utilitzarà aquesta extensió. S'hauria de "
+"canviar si s'enregistra en un format diferent."
+
+#: ../js/misc/util.js:71
+msgid "Command not found"
+msgstr "No s'ha trobat l'ordre"
+
+#: ../js/misc/util.js:98
+msgid "Could not parse command:"
+msgstr "No s'ha pogut analitzar l'ordre:"
+
+#: ../js/misc/util.js:106
+#, javascript-format
+msgid "Execution of '%s' failed:"
+msgstr "No s'ha pogut executar «%s»:"
+
+#. Translators: Filter to display all applications */
+#: ../js/ui/appDisplay.js:260
+msgid "All"
+msgstr "Totes"
+
+#: ../js/ui/appDisplay.js:359
+msgid "APPLICATIONS"
+msgstr "APLICACIONS"
+
+#: ../js/ui/appDisplay.js:385
+msgid "SETTINGS"
+msgstr "CONFIGURACIÓ"
+
+#: ../js/ui/appDisplay.js:656
+msgid "New Window"
+msgstr "Finestra nova"
+
+#: ../js/ui/appDisplay.js:659
+msgid "Remove from Favorites"
+msgstr "Suprimeix dels preferits"
+
+#: ../js/ui/appDisplay.js:660
+msgid "Add to Favorites"
+msgstr "Afegeix als preferits"
+
+#: ../js/ui/appFavorites.js:91
+#, javascript-format
+msgid "%s has been added to your favorites."
+msgstr "S'ha afegit %s als preferits."
+
+#: ../js/ui/appFavorites.js:122
+#, javascript-format
+msgid "%s has been removed from your favorites."
+msgstr "S'ha suprimit %s dels preferits."
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#. */
+#: ../js/ui/calendar.js:66
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Tot el dia"
+
+#. Translators: Shown in calendar event list, if 24h format */
+#: ../js/ui/calendar.js:71
+msgctxt "event list time"
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. Transators: Shown in calendar event list, if 12h format */
+#: ../js/ui/calendar.js:78
+msgctxt "event list time"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#. */
+#: ../js/ui/calendar.js:118
+msgctxt "grid sunday"
+msgid "S"
+msgstr "Dg"
+
+#. Translators: Calendar grid abbreviation for Monday */
+#: ../js/ui/calendar.js:120
+msgctxt "grid monday"
+msgid "M"
+msgstr "Dl"
+
+#. Translators: Calendar grid abbreviation for Tuesday */
+#: ../js/ui/calendar.js:122
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "Dt"
+
+#. Translators: Calendar grid abbreviation for Wednesday */
+#: ../js/ui/calendar.js:124
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "Dc"
+
+#. Translators: Calendar grid abbreviation for Thursday */
+#: ../js/ui/calendar.js:126
+msgctxt "grid thursday"
+msgid "T"
+msgstr "Dj"
+
+#. Translators: Calendar grid abbreviation for Friday */
+#: ../js/ui/calendar.js:128
+msgctxt "grid friday"
+msgid "F"
+msgstr "Dv"
+
+#. Translators: Calendar grid abbreviation for Saturday */
+#: ../js/ui/calendar.js:130
+msgctxt "grid saturday"
+msgid "S"
+msgstr "Ds"
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#. */
+#: ../js/ui/calendar.js:143
+msgctxt "list sunday"
+msgid "Su"
+msgstr "Dg."
+
+#. Translators: Event list abbreviation for Monday */
+#: ../js/ui/calendar.js:145
+msgctxt "list monday"
+msgid "M"
+msgstr "Dl."
+
+#. Translators: Event list abbreviation for Tuesday */
+#: ../js/ui/calendar.js:147
+msgctxt "list tuesday"
+msgid "T"
+msgstr "Dt."
+
+#. Translators: Event list abbreviation for Wednesday */
+#: ../js/ui/calendar.js:149
+msgctxt "list wednesday"
+msgid "W"
+msgstr "Dc."
+
+#. Translators: Event list abbreviation for Thursday */
+#: ../js/ui/calendar.js:151
+msgctxt "list thursday"
+msgid "Th"
+msgstr "Dj."
+
+#. Translators: Event list abbreviation for Friday */
+#: ../js/ui/calendar.js:153
+msgctxt "list friday"
+msgid "F"
+msgstr "Dv."
+
+#. Translators: Event list abbreviation for Saturday */
+#: ../js/ui/calendar.js:155
+msgctxt "list saturday"
+msgid "S"
+msgstr "Ds."
+
+#: ../js/ui/calendar.js:375 ../js/ui/calendar.js:644
+msgid "calendar:week_start:0"
+msgstr "calendar:week_start:1"
+
+#: ../js/ui/calendar.js:387
+msgid "calendar:MY"
+msgstr "calendar:MY"
+
+#. Translators: Text to show if there are no events */
+#: ../js/ui/calendar.js:704
+msgid "Nothing Scheduled"
+msgstr "No hi ha res apuntat"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year */
+#: ../js/ui/calendar.js:720 ../js/ui/telepathyClient.js:496
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A %d de %B"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year */
+#: ../js/ui/calendar.js:723 ../js/ui/telepathyClient.js:499
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A %d de %B de %Y"
+
+#: ../js/ui/calendar.js:733
+msgid "Today"
+msgstr "Avui"
+
+#: ../js/ui/calendar.js:737
+msgid "Tomorrow"
+msgstr "Demà"
+
+#: ../js/ui/calendar.js:746
+msgid "This week"
+msgstr "Aquesta setmana"
+
+#: ../js/ui/calendar.js:754
+msgid "Next week"
+msgstr "La setmana que ve"
+
+#: ../js/ui/dash.js:174 ../js/ui/messageTray.js:1037
+msgid "Remove"
+msgstr "Suprimeix"
+
+#: ../js/ui/dateMenu.js:91
+msgid "Date and Time Settings"
+msgstr "Configuració de la data i l'hora"
+
+#: ../js/ui/dateMenu.js:111
+msgid "Open Calendar"
+msgstr "Obre el calendari"
+
+#. Translators: This is the time format with date used
+#. in 24-hour mode. */
+#: ../js/ui/dateMenu.js:164
+msgid "%a %b %e, %R:%S"
+msgstr "%a %d de %b, %R:%S"
+
+#: ../js/ui/dateMenu.js:165
+msgid "%a %b %e, %R"
+msgstr "%a %d de %b, %R"
+
+#. Translators: This is the time format without date used
+#. in 24-hour mode. */
+#: ../js/ui/dateMenu.js:169
+msgid "%a %R:%S"
+msgstr "%a %R:%S"
+
+#: ../js/ui/dateMenu.js:170
+msgid "%a %R"
+msgstr "%a %R"
+
+#. Translators: This is a time format with date used
+#. for AM/PM. */
+#: ../js/ui/dateMenu.js:177
+msgid "%a %b %e, %l:%M:%S %p"
+msgstr "%a %d de %b, %l:%M:%S %p"
+
+#: ../js/ui/dateMenu.js:178
+msgid "%a %b %e, %l:%M %p"
+msgstr "%a %d de %b, %l:%M %p"
+
+#. Translators: This is a time format without date used
+#. for AM/PM. */
+#: ../js/ui/dateMenu.js:182
+msgid "%a %l:%M:%S %p"
+msgstr "%a %l:%M:%S %p"
+
+#: ../js/ui/dateMenu.js:183
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#. */
+#: ../js/ui/dateMenu.js:194
+msgid "%A %B %e, %Y"
+msgstr "%A %d de %B, %Y"
+
+#: ../js/ui/docDisplay.js:19
+msgid "RECENT ITEMS"
+msgstr "DOCUMENTS RECENTS"
+
+#: ../js/ui/endSessionDialog.js:63
+#, javascript-format
+msgid "Log Out %s"
+msgstr "Surt %s"
+
+#: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
+msgid "Log Out"
+msgstr "Surt"
+
+#: ../js/ui/endSessionDialog.js:65
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr "Feu clic a «Surt» per tancar les aplicacions i sortir de la sessió."
+
+#: ../js/ui/endSessionDialog.js:66
+#, javascript-format
+msgid "%s will be logged out automatically in %d seconds."
+msgstr "%s sortirà de la sessió automàticament d'aquí %d segons."
+
+#: ../js/ui/endSessionDialog.js:67
+#, javascript-format
+msgid "You will be logged out automatically in %d seconds."
+msgstr "Sortireu automàticament d'aquí %d segons."
+
+#: ../js/ui/endSessionDialog.js:68
+msgid "Logging out of the system."
+msgstr "S'està sortint de la sessió."
+
+#: ../js/ui/endSessionDialog.js:75 ../js/ui/endSessionDialog.js:82
+msgid "Power Off"
+msgstr "Apaga"
+
+#: ../js/ui/endSessionDialog.js:76
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Feu clic a «Apaga» per tancar les aplicacions i apagar l'ordinador."
+
+#: ../js/ui/endSessionDialog.js:77
+#, javascript-format
+msgid "The system will power off automatically in %d seconds."
+msgstr "S'apagarà l'ordinador automàticament d'aquí %d segons."
+
+#: ../js/ui/endSessionDialog.js:78
+msgid "Powering off the system."
+msgstr "S'està apagant l'ordinador."
+
+#: ../js/ui/endSessionDialog.js:80 ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:93
+msgid "Restart"
+msgstr "Reinicia"
+
+#: ../js/ui/endSessionDialog.js:89
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Feu clic a «Reinicia» per tancar les aplicacions i reiniciar l'ordinador."
+
+#: ../js/ui/endSessionDialog.js:90
+#, javascript-format
+msgid "The system will restart automatically in %d seconds."
+msgstr "Es reiniciarà l'ordinador automàticament d'aquí %d segons."
+
+#: ../js/ui/endSessionDialog.js:91
+msgid "Restarting the system."
+msgstr "S'està reiniciant l'ordinador."
+
+#: ../js/ui/endSessionDialog.js:413 ../js/ui/polkitAuthenticationAgent.js:172
+#: ../js/ui/status/bluetooth.js:466
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#: ../js/ui/lookingGlass.js:588
+msgid "No extensions installed"
+msgstr "No hi ha cap extensió instal·lada"
+
+#: ../js/ui/lookingGlass.js:625
+msgid "Enabled"
+msgstr "Habilitat"
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:627 ../src/gvc/gvc-mixer-control.c:1091
+msgid "Disabled"
+msgstr "Inhabilitat"
+
+#: ../js/ui/lookingGlass.js:629
+msgid "Error"
+msgstr "Error"
+
+#: ../js/ui/lookingGlass.js:631
+msgid "Out of date"
+msgstr "Fora d'hora"
+
+#: ../js/ui/lookingGlass.js:656
+msgid "View Source"
+msgstr "Visualitza el font"
+
+#: ../js/ui/lookingGlass.js:662
+msgid "Web Page"
+msgstr "Pàgina web"
+
+#: ../js/ui/messageTray.js:1030
+msgid "Open"
+msgstr "Obre"
+
+#: ../js/ui/messageTray.js:2194
+msgid "System Information"
+msgstr "Informació de l'ordinador"
+
+#: ../js/ui/overview.js:91
+msgid "Undo"
+msgstr "Desfés"
+
+#: ../js/ui/overview.js:186
+msgid "Windows"
+msgstr "Finestres"
+
+#: ../js/ui/overview.js:189
+msgid "Applications"
+msgstr "Aplicacions"
+
+#: ../js/ui/overview.js:205
+msgid "Dash"
+msgstr "Quadre d'aplicacions"
+
+#: ../js/ui/panel.js:533
+#, javascript-format
+msgid "Quit %s"
+msgstr "Tanca %s"
+
+#. Button on the left side of the panel. */
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview". */
+#: ../js/ui/panel.js:911
+msgid "Activities"
+msgstr "Activitats"
+
+#: ../js/ui/panel.js:1012
+msgid "Top Bar"
+msgstr "Barra superior"
+
+#: ../js/ui/placeDisplay.js:122
+#, javascript-format
+msgid "Failed to unmount '%s'"
+msgstr "No s'ha pogut desmuntar «%s»"
+
+#: ../js/ui/placeDisplay.js:125
+msgid "Retry"
+msgstr "Torna-ho a intentar"
+
+#: ../js/ui/placeDisplay.js:165
+msgid "Connect to..."
+msgstr "Connecta a..."
+
+#: ../js/ui/placeDisplay.js:380
+msgid "PLACES & DEVICES"
+msgstr "LLOCS I DISPOSITIUS"
+
+#: ../js/ui/polkitAuthenticationAgent.js:74
+msgid "Authentication Required"
+msgstr "Cal autenticació"
+
+#: ../js/ui/polkitAuthenticationAgent.js:108
+msgid "Administrator"
+msgstr "Administrador"
+
+#: ../js/ui/polkitAuthenticationAgent.js:176
+msgid "Authenticate"
+msgstr "Autentica"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance. */
+#: ../js/ui/polkitAuthenticationAgent.js:264
+msgid "Sorry, that didn't work. Please try again."
+msgstr "No ha funcionat. Torneu-ho a provar."
+
+#: ../js/ui/polkitAuthenticationAgent.js:276
+msgid "Password:"
+msgstr "Contrasenya:"
+
+#: ../js/ui/popupMenu.js:679
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
+
+#: ../js/ui/runDialog.js:205
+msgid "Please enter a command:"
+msgstr "Introduïu una ordre:"
+
+#: ../js/ui/searchDisplay.js:311
+msgid "Searching..."
+msgstr "S'està cercant..."
+
+#: ../js/ui/searchDisplay.js:325
+msgid "No matching results."
+msgstr "No s'ha trobat cap coincidència."
+
+#: ../js/ui/statusMenu.js:161 ../js/ui/statusMenu.js:163
+#: ../js/ui/statusMenu.js:228
+msgid "Power Off..."
+msgstr "Apaga..."
+
+#: ../js/ui/statusMenu.js:163 ../js/ui/statusMenu.js:227
+msgid "Suspend"
+msgstr "Atura temporalment"
+
+#: ../js/ui/statusMenu.js:184
+msgid "Available"
+msgstr "Disponible"
+
+#: ../js/ui/statusMenu.js:189
+msgid "Busy"
+msgstr "Ocupat"
+
+#: ../js/ui/statusMenu.js:197
+msgid "My Account"
+msgstr "El meu compte"
+
+#: ../js/ui/statusMenu.js:201
+msgid "System Settings"
+msgstr "Paràmetres de l'ordinador"
+
+#: ../js/ui/statusMenu.js:208
+msgid "Lock Screen"
+msgstr "Bloca la pantalla"
+
+#: ../js/ui/statusMenu.js:213
+msgid "Switch User"
+msgstr "Canvia d'usuari"
+
+#: ../js/ui/statusMenu.js:218
+msgid "Log Out..."
+msgstr "Surt..."
+
+#: ../js/ui/status/accessibility.js:62
+msgid "Zoom"
+msgstr "Amplia"
+
+#: ../js/ui/status/accessibility.js:77
+msgid "Visual Alerts"
+msgstr "Avisos visuals"
+
+#: ../js/ui/status/accessibility.js:80
+msgid "Sticky Keys"
+msgstr "Tecles enganxoses"
+
+#: ../js/ui/status/accessibility.js:83
+msgid "Slow Keys"
+msgstr "Tecles lentes"
+
+#: ../js/ui/status/accessibility.js:86
+msgid "Bounce Keys"
+msgstr "Tecles de salt"
+
+#: ../js/ui/status/accessibility.js:89
+msgid "Mouse Keys"
+msgstr "Tecles del ratolí"
+
+#: ../js/ui/status/accessibility.js:93
+msgid "Universal Access Settings"
+msgstr "Paràmetres d'accés universal"
+
+#: ../js/ui/status/accessibility.js:146
+msgid "High Contrast"
+msgstr "Alt contrast"
+
+#: ../js/ui/status/accessibility.js:183
+msgid "Large Text"
+msgstr "Text gran"
+
+#: ../js/ui/status/bluetooth.js:42 ../js/ui/status/bluetooth.js:237
+#: ../js/ui/status/bluetooth.js:333 ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:440
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:55
+msgid "Visibility"
+msgstr "Visibilitat"
+
+#: ../js/ui/status/bluetooth.js:69
+msgid "Send Files to Device..."
+msgstr "Envia fitxers al dispositiu..."
+
+#: ../js/ui/status/bluetooth.js:70
+msgid "Setup a New Device..."
+msgstr "Establiu un dispositiu nou..."
+
+#: ../js/ui/status/bluetooth.js:95
+msgid "Bluetooth Settings"
+msgstr "Paràmetres del Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:188
+msgid "Connection"
+msgstr "Connexió"
+
+#: ../js/ui/status/bluetooth.js:224
+msgid "Send Files..."
+msgstr "Envia fitxers..."
+
+#: ../js/ui/status/bluetooth.js:229
+msgid "Browse Files..."
+msgstr "Navega pels fitxers..."
+
+#: ../js/ui/status/bluetooth.js:238
+msgid "Error browsing device"
+msgstr "S'ha produït un error en navegar pel dispositiu"
+
+#: ../js/ui/status/bluetooth.js:239
+#, javascript-format
+msgid "The requested device cannot be browsed, error is '%s'"
+msgstr "No es pot navegar pel dispositiu degut a l'error «%s»"
+
+#: ../js/ui/status/bluetooth.js:247
+msgid "Keyboard Settings"
+msgstr "Paràmetres del teclat"
+
+#: ../js/ui/status/bluetooth.js:252
+msgid "Mouse Settings"
+msgstr "Paràmetres del ratolí"
+
+#: ../js/ui/status/bluetooth.js:259 ../js/ui/status/volume.js:66
+msgid "Sound Settings"
+msgstr "Paràmetres de so"
+
+#: ../js/ui/status/bluetooth.js:368
+#, javascript-format
+msgid "Authorization request from %s"
+msgstr "Hi ha una petició d'autorització des de %s"
+
+#: ../js/ui/status/bluetooth.js:374
+#, javascript-format
+msgid "Device %s wants access to the service '%s'"
+msgstr "El dispositiu %s vol accedir al servei «%s»"
+
+#: ../js/ui/status/bluetooth.js:376
+msgid "Always grant access"
+msgstr "Permet l'accés sempre"
+
+#: ../js/ui/status/bluetooth.js:377
+msgid "Grant this time only"
+msgstr "Permet-ho només ara"
+
+#: ../js/ui/status/bluetooth.js:378
+msgid "Reject"
+msgstr "Rebutja"
+
+#: ../js/ui/status/bluetooth.js:408
+#, javascript-format
+msgid "Pairing confirmation for %s"
+msgstr "Confirmació d'aparellament per %s"
+
+#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
+#, javascript-format
+msgid "Device %s wants to pair with this computer"
+msgstr "El dispositiu %s vol aparellar-se amb aquest ordinador"
+
+#: ../js/ui/status/bluetooth.js:415
+#, javascript-format
+msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgstr "Confirmeu que el PIN «%s» coincideix amb el que hi ha al dispositiu."
+
+#: ../js/ui/status/bluetooth.js:417
+msgid "Matches"
+msgstr "Coincideix"
+
+#: ../js/ui/status/bluetooth.js:418
+msgid "Does not match"
+msgstr "No coincideix"
+
+#: ../js/ui/status/bluetooth.js:441
+#, javascript-format
+msgid "Pairing request for %s"
+msgstr "Teniu una sol·licitud d'aparellament amb %s"
+
+#: ../js/ui/status/bluetooth.js:449
+msgid "Please enter the PIN mentioned on the device."
+msgstr "Introduïu el PIN que es mostra al dispositiu."
+
+#: ../js/ui/status/bluetooth.js:465
+msgid "OK"
+msgstr "D'acord"
+
+#: ../js/ui/status/keyboard.js:73
+msgid "Show Keyboard Layout..."
+msgstr "Mostra la disposició del teclat..."
+
+#: ../js/ui/status/keyboard.js:76
+msgid "Localization Settings"
+msgstr "Paràmetres de localització"
+
+#: ../js/ui/status/network.js:122 ../js/ui/status/network.js:1428
+msgid "<unknown>"
+msgstr "<desconegut>"
+
+#. Translators: this indicates that wireless or wwan is disabled by hardware killswitch */
+#: ../js/ui/status/network.js:339
+msgid "disabled"
+msgstr "inhabilitada"
+
+#: ../js/ui/status/network.js:538
+msgid "connecting..."
+msgstr "s'està connectant..."
+
+#. Translators: this is for network connections that require some kind of key or password */
+#: ../js/ui/status/network.js:541
+msgid "authentication required"
+msgstr "cal autenticació"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing */
+#: ../js/ui/status/network.js:551
+msgid "firmware missing"
+msgstr "manca el microprogramari"
+
+#. Translators: this is for wired network devices that are physically disconnected */
+#: ../js/ui/status/network.js:558
+msgid "cable unplugged"
+msgstr "s'ha desconnectat el cable"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage */
+#: ../js/ui/status/network.js:563
+msgid "unavailable"
+msgstr "no disponible"
+
+#: ../js/ui/status/network.js:565
+msgid "connection failed"
+msgstr "ha fallat la connexió"
+
+#. TRANSLATORS: this is the indication that a connection for another logged in user is active,
+#. and we cannot access its settings (including the name) */
+#: ../js/ui/status/network.js:646 ../js/ui/status/network.js:1376
+msgid "Connected (private)"
+msgstr "Connectat (privat)"
+
+#: ../js/ui/status/network.js:731
+msgid "Auto Ethernet"
+msgstr "Ethernet automàtic"
+
+#: ../js/ui/status/network.js:799
+msgid "Auto broadband"
+msgstr "Banda ampla automàtica"
+
+#: ../js/ui/status/network.js:802
+msgid "Auto dial-up"
+msgstr "Marcatge directe automàtic"
+
+#. TRANSLATORS: this the automatic wireless connection name (including the network name) */
+#: ../js/ui/status/network.js:926 ../js/ui/status/network.js:1388
+#, javascript-format
+msgid "Auto %s"
+msgstr "%s automàtic"
+
+#: ../js/ui/status/network.js:928
+msgid "Auto bluetooth"
+msgstr "Bluetooth automàtic"
+
+#: ../js/ui/status/network.js:1390
+msgid "Auto wireless"
+msgstr "Sense fil automàtic"
+
+#: ../js/ui/status/network.js:1459
+msgid "More..."
+msgstr "Més..."
+
+#: ../js/ui/status/network.js:1482
+msgid "Enable networking"
+msgstr "Habilita la xarxa"
+
+#: ../js/ui/status/network.js:1494
+msgid "Wired"
+msgstr "Amb fil"
+
+#: ../js/ui/status/network.js:1505
+msgid "Wireless"
+msgstr "Sense fil"
+
+#: ../js/ui/status/network.js:1515
+msgid "Mobile broadband"
+msgstr "Ampla de banda mòbil"
+
+#: ../js/ui/status/network.js:1525
+msgid "VPN Connections"
+msgstr "Connexions VPN"
+
+#: ../js/ui/status/network.js:1537
+msgid "Network Settings"
+msgstr "Paràmetres de xarxa"
+
+#: ../js/ui/status/network.js:1831
+#, javascript-format
+msgid "You're now connected to mobile broadband connection '%s'"
+msgstr "Us acabeu de connectar amb la connexió de banda ampla mòbil «%s»"
+
+#: ../js/ui/status/network.js:1835
+#, javascript-format
+msgid "You're now connected to wireless network '%s'"
+msgstr "Us acabeu de connectar a la xarxa sense fil «%s»"
+
+#: ../js/ui/status/network.js:1839
+#, javascript-format
+msgid "You're now connected to wired network '%s'"
+msgstr "Us acabeu de connectar a la xarxa amb fil «%s»"
+
+#: ../js/ui/status/network.js:1843
+#, javascript-format
+msgid "You're now connected to VPN network '%s'"
+msgstr "Us acabeu de connectar a la xarxa VPN «%s»"
+
+#: ../js/ui/status/network.js:1848
+#, javascript-format
+msgid "You're now connected to '%s'"
+msgstr "Us acabeu de connectar a «%s»"
+
+#: ../js/ui/status/network.js:1856
+msgid "Connection established"
+msgstr "S'ha establert la connexió"
+
+#: ../js/ui/status/network.js:1982
+msgid "Networking is disabled"
+msgstr "S'ha inhabilitat la xarxa"
+
+#: ../js/ui/status/network.js:2107
+msgid "Network Manager"
+msgstr "Gestor de connexions de xarxa"
+
+#: ../js/ui/status/power.js:85
+msgid "Power Settings"
+msgstr "Paràmetres d'energia"
+
+#: ../js/ui/status/power.js:111
+msgid "Estimating..."
+msgstr "S'està estimant la durada..."
+
+#: ../js/ui/status/power.js:118
+#, javascript-format
+msgid "%d hour remaining"
+msgid_plural "%d hours remaining"
+msgstr[0] "Queda %d hora"
+msgstr[1] "Queden %d hores"
+
+#. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining" */
+#: ../js/ui/status/power.js:121
+#, javascript-format
+msgid "%d %s %d %s remaining"
+msgstr "Queden %d %s %d %s"
+
+#: ../js/ui/status/power.js:123
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "hora"
+msgstr[1] "hores"
+
+#: ../js/ui/status/power.js:123
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "minut"
+msgstr[1] "minuts"
+
+#: ../js/ui/status/power.js:126
+#, javascript-format
+msgid "%d minute remaining"
+msgid_plural "%d minutes remaining"
+msgstr[0] "Queda %d minut"
+msgstr[1] "Queden %d minuts"
+
+#: ../js/ui/status/power.js:228
+msgid "AC adapter"
+msgstr "Adaptador de corrent"
+
+#: ../js/ui/status/power.js:230
+msgid "Laptop battery"
+msgstr "Bateria del portàtil"
+
+#: ../js/ui/status/power.js:232
+msgid "UPS"
+msgstr "SAI"
+
+#: ../js/ui/status/power.js:234
+msgid "Monitor"
+msgstr "Pantalla"
+
+#: ../js/ui/status/power.js:236
+msgid "Mouse"
+msgstr "Ratolí"
+
+#: ../js/ui/status/power.js:238
+msgid "Keyboard"
+msgstr "Teclat"
+
+#: ../js/ui/status/power.js:240
+msgid "PDA"
+msgstr "PDA"
+
+#: ../js/ui/status/power.js:242
+msgid "Cell phone"
+msgstr "Telèfon mòbil"
+
+#: ../js/ui/status/power.js:244
+msgid "Media player"
+msgstr "Reproductor multimèdia"
+
+#: ../js/ui/status/power.js:246
+msgid "Tablet"
+msgstr "Tauleta"
+
+#: ../js/ui/status/power.js:248
+msgid "Computer"
+msgstr "Ordinador"
+
+#: ../js/ui/status/power.js:250 ../src/shell-app-system.c:1088
+msgid "Unknown"
+msgstr "Desconegut"
+
+#: ../js/ui/status/volume.js:45
+msgid "Volume"
+msgstr "Volum"
+
+#: ../js/ui/status/volume.js:58
+msgid "Microphone"
+msgstr "Micròfon"
+
+#: ../js/ui/telepathyClient.js:335
+#, javascript-format
+msgid "%s is online."
+msgstr "%s és en línia."
+
+#: ../js/ui/telepathyClient.js:340
+#, javascript-format
+msgid "%s is offline."
+msgstr "%s no hi és."
+
+#: ../js/ui/telepathyClient.js:343
+#, javascript-format
+msgid "%s is away."
+msgstr "%s és lluny."
+
+#: ../js/ui/telepathyClient.js:346
+#, javascript-format
+msgid "%s is busy."
+msgstr "%s està ocupat."
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds. */
+#: ../js/ui/telepathyClient.js:488
+msgid "Sent at %X on %A"
+msgstr "Enviat a les %X del %A"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters. */
+#: ../js/ui/viewSelector.js:122
+msgid "Type to search..."
+msgstr "Teclegeu per cercar..."
+
+#: ../js/ui/viewSelector.js:142 ../src/shell-util.c:250
+msgid "Search"
+msgstr "Cerca"
+
+#: ../js/ui/windowAttentionHandler.js:42
+#, javascript-format
+msgid "%s has finished starting"
+msgstr "S'ha acabat d'iniciar %s"
+
+#: ../js/ui/windowAttentionHandler.js:44
+#, javascript-format
+msgid "'%s' is ready"
+msgstr "«%s» ja està apunt"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1098
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u sortida"
+msgstr[1] "%u sortides"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1108
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u entrada"
+msgstr[1] "%u entrades"
+
+#: ../src/gvc/gvc-mixer-control.c:1406
+msgid "System Sounds"
+msgstr "Sons del sistema"
+
+#: ../src/main.c:445
+msgid "Print version"
+msgstr "Mostra la versió"
+
+#: ../src/shell-app.c:464
+#, c-format
+msgid "Failed to launch '%s'"
+msgstr "No s'ha pogut iniciar «%s»"
+
+#: ../src/shell-global.c:1395
+msgid "Less than a minute ago"
+msgstr "Fa menys d'un minut"
+
+#: ../src/shell-global.c:1399
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "Fa %d minut"
+msgstr[1] "Fa %d minuts"
+
+#: ../src/shell-global.c:1404
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "Fa %d hora"
+msgstr[1] "Fa %d hores"
+
+#: ../src/shell-global.c:1409
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "Fa %d dia"
+msgstr[1] "Fa %d dies"
+
+#: ../src/shell-global.c:1414
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "Fa %d setmana"
+msgstr[1] "Fa %d setmanes"
+
+#: ../src/shell-mobile-providers.c:80
+msgid "United Kingdom"
+msgstr "Regne Unit"
+
+#: ../src/shell-mobile-providers.c:526
+msgid "Default"
+msgstr "Predeterminat"
+
+#: ../src/shell-polkit-authentication-agent.c:334
+msgid "Authentication dialog was dismissed by the user"
+msgstr "L'usuari ha descartat el diàleg d'autenticació"
+
+#: ../src/shell-util.c:89
+msgid "Home Folder"
+msgstr "Carpeta d'inici"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-util.c:104
+msgid "File System"
+msgstr "Sistema de fitxers"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-util.c:300
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#~ msgid "Shut Down"
+#~ msgstr "Atura"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr "Feu clic a «Atura» per tancar les aplicacions i apagar l'ordinador."
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "S'apagarà l'ordinador automàticament d'aquí %d segons."
+
+#~ msgid "Shutting down the system."
+#~ msgstr "S'està apagant l'ordinador."
+
+#~ msgid "Confirm"
+#~ msgstr "D'acord"
+
+#~ msgid "Panel"
+#~ msgstr "Quadre"
+
+#~ msgid "No such application"
+#~ msgstr "No hi ha cap aplicació"
+
+#~ msgid "Screen Reader"
+#~ msgstr "Lector de pantalla"
+
+#~ msgid "Screen Keyboard"
+#~ msgstr "Teclat en pantalla"
+
+#~ msgid "PREFERENCES"
+#~ msgstr "PREFERÈNCIES"
+
+#~ msgid "Shut Down..."
+#~ msgstr "Atura..."
+
+#~ msgid "Clip the crosshairs at the center"
+#~ msgstr "Retalla la retícula al centre"
+
+#~ msgid "Color of the crosshairs"
+#~ msgstr "Color de la retícula"
+
+#~ msgid ""
+#~ "Determines the length of the vertical and horizontal lines that make up "
+#~ "the crosshairs."
+#~ msgstr ""
+#~ "Especifica la longitud vertical i horitzontal de les línies que creen la "
+#~ "retícula."
+
+#~ msgid ""
+#~ "Determines the position of the magnified mouse image within the magnified "
+#~ "view and how it reacts to system mouse movement. The values are - none: "
+#~ "no mouse tracking; - centered: the mouse image is displayed at the center "
+#~ "of the zoom region (which also represents the point under the system "
+#~ "mouse) and the magnified contents are scrolled as the system mouse moves; "
+#~ "- proportional: the position of the magnified mouse in the zoom region is "
+#~ "proportionally the same as the position of the system mouse on screen; - "
+#~ "push: when the magnified mouse intersects a boundary of the zoom region, "
+#~ "the contents are scrolled into view."
+#~ msgstr ""
+#~ "Especifica la posició dins de la visualització ampliada del ratolí, també "
+#~ "ampliat, i com reacciona als moviments del ratolí del sistema. Els valors "
+#~ "són: «none» (cap) no es fa cap seguiment del ratolí, «centered» (centrat) "
+#~ "la imatge del ratolí es mostra al centre de la zona ampliada (que a més a "
+#~ "més representa el punt on està el ratolí del sistema) i la zona ampliada "
+#~ "es desplaça a mesura que es mou el ratolí del sistema, "
+#~ "«proportional» (proporcional) la posició del ratolí ampliat en la zona "
+#~ "ampliada és proporcional a la posició del ratolí del sistema a la "
+#~ "pantalla, «push» (desplaçat) quan el ratolí ampliat arriba a una de les "
+#~ "vores de la zona ampliada es desplacen els continguts de la zona ampliada."
+
+#~ msgid ""
+#~ "Determines the transparency of the crosshairs, from fully opaque to fully "
+#~ "transparent."
+#~ msgstr ""
+#~ "Especifica la transparència de la retícula, des de totalment opac a "
+#~ "totalment transparent."
+
+#~ msgid ""
+#~ "Determines whether the crosshairs intersect the magnified mouse sprite, "
+#~ "or are clipped such that the ends of the horizontal and vertical lines "
+#~ "surround the mouse image."
+#~ msgstr ""
+#~ "Especifica si la retícula es talla amb el ratolí ampliat, o bé que es "
+#~ "tallen les línies horitzontals i verticals de la retícula perquè només "
+#~ "voregin la imatge del ratolí."
+
+#~ msgid "Enable lens mode"
+#~ msgstr "Habilita el mode de lens"
+
+#~ msgid ""
+#~ "Enables/disables display of crosshairs centered on the magnified mouse "
+#~ "sprite."
+#~ msgstr ""
+#~ "Habilita/inhabilita que es mostri una retícula centrat en el ratolí "
+#~ "ampliat."
+
+#~ msgid ""
+#~ "For centered mouse tracking, when the system pointer is at or near the "
+#~ "edge of the screen, the magnified contents continue to scroll such that "
+#~ "the screen edge moves into the magnified view."
+#~ msgstr ""
+#~ "Per el seguiment centrat del ratolí, quan el punter del sistema està a "
+#~ "prop d'una vora de la pantalla la zona ampliada continua desplaçant-se de "
+#~ "tal manera que entra dintre de la zona ampliada la vora de la pantalla."
+
+#~ msgid "Length of the crosshairs"
+#~ msgstr "Llargada de la retícula"
+
+#~ msgid "Magnification factor"
+#~ msgstr "Factor d'ampliació"
+
+#~ msgid "Mouse Tracking Mode"
+#~ msgstr "Mode de seguiment del ratolí"
+
+#~ msgid "Opacity of the crosshairs"
+#~ msgstr "Opacitat de la retícula"
+
+#~ msgid "Screen position"
+#~ msgstr "Posició de la pantalla"
+
+#~ msgid "Scroll magnified contents beyond the edges of the desktop"
+#~ msgstr ""
+#~ "Desplaça els continguts ampliats més enllà dels marges de l'escriptori"
+
+#~ msgid "Show or hide crosshairs"
+#~ msgstr "Mostra o oculta la retícula"
+
+#~ msgid "Show or hide the magnifier"
+#~ msgstr "Mostra o oculta l'ampliador"
+
+#~ msgid "Show or hide the magnifier and all of its zoom regions."
+#~ msgstr "Mostra o oculta l'ampliador i totes les seves regions ampliades."
+
+#~ msgid ""
+#~ "The color of the the vertical and horizontal lines that make up the "
+#~ "crosshairs."
+#~ msgstr ""
+#~ "El color de les línies verticals i horitzontals que creen la retícula."
+
+#~ msgid ""
+#~ "The magnified view either fills the entire screen, or occupies the top-"
+#~ "half, bottom-half, left-half, or right-half of the screen."
+#~ msgstr ""
+#~ "La visualització ampliada ocupa tota la pantalla, la part superior, la "
+#~ "part inferior, la part esquerra o la part dreta de la pantalla."
+
+#~ msgid ""
+#~ "The power of the magnification. A value of 1.0 means no magnification. A "
+#~ "value of 2.0 doubles the size."
+#~ msgstr ""
+#~ "El nivell d'ampliació. Amb el valor 1.0 no hi ha ampliació, amb el valor "
+#~ "2.0 s'amplia al doble."
+
+#~ msgid "Thickness of the crosshairs"
+#~ msgstr "Gruixudària de la retícula"
+
+#~ msgid ""
+#~ "Whether the magnified view should be centered over the location of the "
+#~ "system mouse and move with it."
+#~ msgstr ""
+#~ "Si la visualització ampliada s'hauria de centrar al voltant del ratolí "
+#~ "del sistema i moure's amb ell."
+
+#~ msgid ""
+#~ "Width of the vertical and horizontal lines that make up the crosshairs."
+#~ msgstr ""
+#~ "Amplada de les línies verticals i horitzontals que creen la retícula."
+
+#~ msgid "Bluetooth Agent"
+#~ msgstr "Agent Bluetooth"
+
+#~ msgid "Search your computer"
+#~ msgstr "Cerqueu a l'ordinador"
+
+#~ msgid ""
+#~ "Can't add a new workspace because maximum workspaces limit has been "
+#~ "reached."
+#~ msgstr ""
+#~ "No es pot afegir un espai de treball nou perquè ja s'ha arribat al límit "
+#~ "d'espais de treball."
+
+#~ msgid "Can't remove the first workspace."
+#~ msgstr "No es pot suprimir el primer espai de treball."
