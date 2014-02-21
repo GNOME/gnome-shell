@@ -2,31 +2,31 @@
   <schema id="org.gnome.mutter.wayland.keybindings" path="/org/gnome/mutter/wayland/keybindings/"
 	  gettext-domain="@GETTEXT_DOMAIN@">
     <key name="switch-to-session-1" type="as">
-      <default><![CDATA[['<Primary><Alt>F1']]]></default>
+      <default><![CDATA[['<Primary><Alt>F1', 'XF86Switch_VT_1']]]></default>
       <_summary>Switch to VT 1</_summary>
     </key>
     <key name="switch-to-session-2" type="as">
-      <default><![CDATA[['<Primary><Alt>F2']]]></default>
+      <default><![CDATA[['<Primary><Alt>F2', 'XF86Switch_VT_2']]]></default>
       <_summary>Switch to VT 2</_summary>
     </key>
     <key name="switch-to-session-3" type="as">
-      <default><![CDATA[['<Primary><Alt>F3']]]></default>
+      <default><![CDATA[['<Primary><Alt>F3', 'XF86Switch_VT_3']]]></default>
       <_summary>Switch to VT 3</_summary>
     </key>
     <key name="switch-to-session-4" type="as">
-      <default><![CDATA[['<Primary><Alt>F4']]]></default>
+      <default><![CDATA[['<Primary><Alt>F4', 'XF86Switch_VT_4']]]></default>
       <_summary>Switch to VT 4</_summary>
     </key>
     <key name="switch-to-session-5" type="as">
-      <default><![CDATA[['<Primary><Alt>F5']]]></default>
+      <default><![CDATA[['<Primary><Alt>F5', 'XF86Switch_VT_5']]]></default>
       <_summary>Switch to VT 5</_summary>
     </key>
     <key name="switch-to-session-6" type="as">
-      <default><![CDATA[['<Primary><Alt>F6']]]></default>
+      <default><![CDATA[['<Primary><Alt>F6', 'XF86Switch_VT_6']]]></default>
       <_summary>Switch to VT 6</_summary>
     </key>
     <key name="switch-to-session-7" type="as">
-      <default><![CDATA[['<Primary><Alt>F7']]]></default>
+      <default><![CDATA[['<Primary><Alt>F7', 'XF86Switch_VT_7']]]></default>
       <_summary>Switch to VT 7</_summary>
     </key>
   </schema>
