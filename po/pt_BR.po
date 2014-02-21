@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-01 16:10+0000\n"
-"PO-Revision-Date: 2014-02-02 00:41-0300\n"
+"POT-Creation-Date: 2014-02-21 04:08+0000\n"
+"PO-Revision-Date: 2014-02-21 11:51-0300\n"
 "Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.3\n"
+"X-Generator: Poedit 1.6.4\n"
 
 #: ../clutter/clutter-actor.c:6214
 msgid "X coordinate"
@@ -1161,21 +1161,41 @@ msgstr "A altura máxima para cada linha"
 msgid "Snap to grid"
 msgstr "Alinhar à grade"
 
-#: ../clutter/clutter-gesture-action.c:639
+#: ../clutter/clutter-gesture-action.c:668
 msgid "Number touch points"
 msgstr "Número de pontos de toque"
 
-#: ../clutter/clutter-gesture-action.c:640
+#: ../clutter/clutter-gesture-action.c:669
 msgid "Number of touch points"
 msgstr "Número de pontos de toque"
 
-#: ../clutter/clutter-gesture-action.c:655
+#: ../clutter/clutter-gesture-action.c:684
 msgid "Threshold Trigger Edge"
 msgstr "Borda de limite de disparo"
 
-#: ../clutter/clutter-gesture-action.c:656
+#: ../clutter/clutter-gesture-action.c:685
 msgid "The trigger edge used by the action"
 msgstr "A linha do tempo utilizado pela ação"
+
+#: ../clutter/clutter-gesture-action.c:704
+#| msgid "Threshold Trigger Edge"
+msgid "Threshold Trigger Horizontal Distance"
+msgstr "Distância horizontal de limite de disparo"
+
+#: ../clutter/clutter-gesture-action.c:705
+#| msgid "The trigger edge used by the action"
+msgid "The horizontal trigger distance used by the action"
+msgstr "A distância horizontal de disparo utilizado pela ação"
+
+#: ../clutter/clutter-gesture-action.c:723
+#| msgid "Threshold Trigger Edge"
+msgid "Threshold Trigger Vertical Distance"
+msgstr "Distância vertical de limite de disparo"
+
+#: ../clutter/clutter-gesture-action.c:724
+#| msgid "The trigger edge used by the action"
+msgid "The vertical trigger distance used by the action"
+msgstr "A distância vertical de disparo utilizado pela ação"
 
 #: ../clutter/clutter-grid-layout.c:1223
 msgid "Left attachment"
@@ -1394,35 +1414,35 @@ msgstr "Opções do Clutter"
 msgid "Show Clutter Options"
 msgstr "Mostrar opções do Clutter"
 
-#: ../clutter/clutter-pan-action.c:446
+#: ../clutter/clutter-pan-action.c:455
 msgid "Pan Axis"
 msgstr "Deslocar eixo"
 
-#: ../clutter/clutter-pan-action.c:447
+#: ../clutter/clutter-pan-action.c:456
 msgid "Constraints the panning to an axis"
 msgstr "Restringe o deslocamento para um eixo"
 
-#: ../clutter/clutter-pan-action.c:461
+#: ../clutter/clutter-pan-action.c:470
 msgid "Interpolate"
 msgstr "Interpolar"
 
-#: ../clutter/clutter-pan-action.c:462
+#: ../clutter/clutter-pan-action.c:471
 msgid "Whether interpolated events emission is enabled."
 msgstr "Se a emissão de eventos interpolados está ativada."
 
-#: ../clutter/clutter-pan-action.c:478
+#: ../clutter/clutter-pan-action.c:487
 msgid "Deceleration"
 msgstr "Desaceleração"
 
-#: ../clutter/clutter-pan-action.c:479
+#: ../clutter/clutter-pan-action.c:488
 msgid "Rate at which the interpolated panning will decelerate in"
 msgstr "Taxa a qual o deslocamento interpolado irá desacelerar"
 
-#: ../clutter/clutter-pan-action.c:496
+#: ../clutter/clutter-pan-action.c:505
 msgid "Initial acceleration factor"
 msgstr "Fator inicial de aceleração"
 
-#: ../clutter/clutter-pan-action.c:497
+#: ../clutter/clutter-pan-action.c:506
 msgid "Factor applied to the momentum when starting the interpolated phase"
 msgstr "Fator aplicado a força cinética quando inicia-se a fase interpolada"
 
@@ -2041,11 +2061,11 @@ msgstr "Remover ao completar"
 msgid "Detach the transition when completed"
 msgstr "Remove a transição quando tiver completado"
 
-#: ../clutter/clutter-zoom-action.c:355
+#: ../clutter/clutter-zoom-action.c:365
 msgid "Zoom Axis"
 msgstr "Ampliar eixo"
 
-#: ../clutter/clutter-zoom-action.c:356
+#: ../clutter/clutter-zoom-action.c:366
 msgid "Constraints the zoom to an axis"
 msgstr "Restringe a ampliação a um eixo"
 
