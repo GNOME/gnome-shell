@@ -62,6 +62,9 @@ pointer_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 
   wl_list_remove (&pointer->focus_surface_listener.link);
   pointer->focus_surface = NULL;
+
+  wl_list_remove (&pointer->focus_resource_listener.link);
+  pointer->focus_resource = NULL;
 }
 
 static void
