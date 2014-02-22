@@ -812,9 +812,9 @@ const ThumbnailsBox = new Lang.Class({
                     return false;
 
                 if (isWindow)
-                    return window.get_workspace() >= newWorkspaceIndex && winActor != source;
+                    return window.get_workspace().index() >= newWorkspaceIndex && winActor != source;
                 else
-                    return window.get_workspace() >= newWorkspaceIndex;
+                    return window.get_workspace().index() >= newWorkspaceIndex;
             });
 
             this._spliceIndex = newWorkspaceIndex;
