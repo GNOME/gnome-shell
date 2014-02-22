@@ -756,8 +756,8 @@ update_scale_factor (GdkScreen *screen, gpointer data)
   GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_INT);
-  gdk_screen_get_setting (global->gdk_screen, "gdk-window-scaling-factor", &value);
-  g_object_set (context, "scale-factor", g_value_get_int (&value), NULL);
+  if (gdk_screen_get_setting (global->gdk_screen, "gdk-window-scaling-factor", &value))
+    g_object_set (context, "scale-factor", g_value_get_int (&value), NULL);
 }
 
 /* This is an IBus workaround. The flow of events with IBus is that every time
