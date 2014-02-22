@@ -401,7 +401,9 @@ translate_hierarchy_event (ClutterBackendX11       *backend_x11,
 
   for (i = 0; i < ev->num_info; i++)
     {
-      if (ev->info[i].flags & XIDeviceEnabled)
+      if (ev->info[i].flags & XIDeviceEnabled &&
+          !g_hash_table_lookup (manager_xi2->devices_by_id,
+                                GINT_TO_POINTER (ev->info[i].deviceid)))
         {
           XIDeviceInfo *info;
           int n_devices;
@@ -1434,6 +1436,9 @@ clutter_device_manager_xi2_constructed (GObject *gobject)
   for (i = 0; i < n_devices; i++)
     {
       XIDeviceInfo *xi_device = &info[i];
+
+      if (!xi_device->enabled)
+        continue;
 
       add_device (manager_xi2, backend_x11, xi_device, TRUE);
 
