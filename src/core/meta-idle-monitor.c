@@ -653,8 +653,10 @@ meta_idle_monitor_remove_watch (MetaIdleMonitor *monitor,
 {
   g_return_if_fail (META_IS_IDLE_MONITOR (monitor));
 
+  g_object_ref (monitor);
   g_hash_table_remove (monitor->watches,
                        GUINT_TO_POINTER (id));
+  g_object_unref (monitor);
 }
 
 /**
