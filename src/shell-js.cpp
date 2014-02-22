@@ -4,7 +4,6 @@
 
 #include "shell-js.h"
 
-#include <jsapi.h>
 #include <gio/gio.h>
 #include <gjs/gjs.h>
 #include <gjs/gjs-module.h>
