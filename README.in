@@ -110,11 +110,15 @@ The experimental 2.0 API is documented here:
 --
 LICENSE
 -------------------------------------------------------------------------------
+Most of Cogl is licensed under the terms of the MIT license. There are
+also some files under the SGI Free Software License B, version 2.0,
+cogl-point-in-poly.c is under a 3 clause BSD license and stb_image.c
+is public domain. Please see individual files for details.
 
-Most of Cogl is licensed under the terms of the GNU Lesser General Public
-License, version 2.1 or (at your option) later. Some files are licensed under
-more permissive licenses MIT or BSD style licenses though so please see
-individual files for details.
+deps/glib is licensed under the LGPL (please see individual files for
+details and deps/glib/COPYING for a copy of the LGPL license) This
+code is only referenced when building Cogl with the --enable-standalone
+configure option.
 
 --
 BUILDING AND INSTALLATION
