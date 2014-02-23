@@ -52,6 +52,29 @@ COGL_OBJECT_DEFINE_WITH_CODE_GTYPE (Onscreen, onscreen,
 COGL_GTYPE_DEFINE_CLASS (Onscreen, onscreen,
                          COGL_GTYPE_IMPLEMENT_INTERFACE (framebuffer));
 
+static gpointer
+cogl_dummy_copy (gpointer data)
+{
+  return data;
+}
+
+static void
+cogl_dummy_free (gpointer data)
+{
+}
+
+COGL_GTYPE_DEFINE_BOXED (FrameClosure, frame_closure,
+                         cogl_dummy_copy,
+                         cogl_dummy_free);
+COGL_GTYPE_DEFINE_BOXED (OnscreenResizeClosure,
+                         onscreen_resize_closure,
+                         cogl_dummy_copy,
+                         cogl_dummy_free);
+COGL_GTYPE_DEFINE_BOXED (OnscreenDirtyClosure,
+                         onscreen_dirty_closure,
+                         cogl_dummy_copy,
+                         cogl_dummy_free);
+
 static void
 _cogl_onscreen_init_from_template (CoglOnscreen *onscreen,
                                    CoglOnscreenTemplate *onscreen_template)
