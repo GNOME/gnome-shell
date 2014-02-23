@@ -127,6 +127,8 @@ endif
 
 EXTRA_DIST = \
 	crate.jpg \
+	emscripten-example-js.h \
+	emscripten-example-js-library.js \
 	android/hello/AndroidManifest.xml \
 	android/hello/jni/Application.mk \
 	android/hello/jni/Android.mk \
