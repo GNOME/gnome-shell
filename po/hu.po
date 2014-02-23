@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the clutter package.
 #
 # Balázs Úr <urbalazs@gmail.com>, 2013.
-# Balázs Úr <urbalazs at gmail dot com>, 2013.
+# Balázs Úr <urbalazs at gmail dot com>, 2013, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter clutter-1.16\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-23 23:57+0000\n"
-"PO-Revision-Date: 2013-09-26 00:18+0200\n"
+"POT-Creation-Date: 2014-02-23 04:08+0000\n"
+"PO-Revision-Date: 2014-02-23 16:29+0100\n"
 "Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
 "Language-Team: Hungarian <gnome-hu-list@gnome.org>\n"
 "Language: hu\n"
@@ -20,665 +20,665 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.2\n"
 
-#: ../clutter/clutter-actor.c:6205
+#: ../clutter/clutter-actor.c:6214
 msgid "X coordinate"
 msgstr "X koordináta"
 
-#: ../clutter/clutter-actor.c:6206
+#: ../clutter/clutter-actor.c:6215
 msgid "X coordinate of the actor"
 msgstr "A szereplő X koordinátája"
 
-#: ../clutter/clutter-actor.c:6224
+#: ../clutter/clutter-actor.c:6233
 msgid "Y coordinate"
 msgstr "Y koordináta"
 
-#: ../clutter/clutter-actor.c:6225
+#: ../clutter/clutter-actor.c:6234
 msgid "Y coordinate of the actor"
 msgstr "A szereplő Y koordinátája"
 
-#: ../clutter/clutter-actor.c:6247
+#: ../clutter/clutter-actor.c:6256
 msgid "Position"
 msgstr "Pozíció"
 
-#: ../clutter/clutter-actor.c:6248
+#: ../clutter/clutter-actor.c:6257
 msgid "The position of the origin of the actor"
 msgstr "A szereplő kezdetének pozíciója"
 
-#: ../clutter/clutter-actor.c:6265 ../clutter/clutter-canvas.c:224
+#: ../clutter/clutter-actor.c:6274 ../clutter/clutter-canvas.c:247
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
 msgstr "Szélesség"
 
-#: ../clutter/clutter-actor.c:6266
+#: ../clutter/clutter-actor.c:6275
 msgid "Width of the actor"
 msgstr "A szereplő szélessége"
 
-#: ../clutter/clutter-actor.c:6284 ../clutter/clutter-canvas.c:240
+#: ../clutter/clutter-actor.c:6293 ../clutter/clutter-canvas.c:263
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
 msgstr "Magasság"
 
-#: ../clutter/clutter-actor.c:6285
+#: ../clutter/clutter-actor.c:6294
 msgid "Height of the actor"
 msgstr "A szereplő magassága"
 
-#: ../clutter/clutter-actor.c:6306
+#: ../clutter/clutter-actor.c:6315
 msgid "Size"
 msgstr "Méret"
 
-#: ../clutter/clutter-actor.c:6307
+#: ../clutter/clutter-actor.c:6316
 msgid "The size of the actor"
 msgstr "A szereplő mérete"
 
-#: ../clutter/clutter-actor.c:6325
+#: ../clutter/clutter-actor.c:6334
 msgid "Fixed X"
 msgstr "Rögzített X"
 
-#: ../clutter/clutter-actor.c:6326
+#: ../clutter/clutter-actor.c:6335
 msgid "Forced X position of the actor"
 msgstr "A szereplő erőltetett X pozíciója"
 
-#: ../clutter/clutter-actor.c:6343
+#: ../clutter/clutter-actor.c:6352
 msgid "Fixed Y"
 msgstr "Rögzített Y"
 
-#: ../clutter/clutter-actor.c:6344
+#: ../clutter/clutter-actor.c:6353
 msgid "Forced Y position of the actor"
 msgstr "A szereplő erőltetett Y pozíciója"
 
-#: ../clutter/clutter-actor.c:6359
+#: ../clutter/clutter-actor.c:6368
 msgid "Fixed position set"
 msgstr "Rögzített pozíció beállítva"
 
-#: ../clutter/clutter-actor.c:6360
+#: ../clutter/clutter-actor.c:6369
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Használjon-e rögzített pozicionálást a szereplőhöz"
 
-#: ../clutter/clutter-actor.c:6378
+#: ../clutter/clutter-actor.c:6387
 msgid "Min Width"
 msgstr "Minimális szélesség"
 
-#: ../clutter/clutter-actor.c:6379
+#: ../clutter/clutter-actor.c:6388
 msgid "Forced minimum width request for the actor"
 msgstr "Erőltetett minimális szélesség kérés a szereplőhöz"
 
-#: ../clutter/clutter-actor.c:6397
+#: ../clutter/clutter-actor.c:6406
 msgid "Min Height"
 msgstr "Minimális magasság"
 
-#: ../clutter/clutter-actor.c:6398
+#: ../clutter/clutter-actor.c:6407
 msgid "Forced minimum height request for the actor"
 msgstr "Erőltetett minimális magasság kérés a szereplőhöz"
 
-#: ../clutter/clutter-actor.c:6416
+#: ../clutter/clutter-actor.c:6425
 msgid "Natural Width"
 msgstr "Természetes szélesség"
 
-#: ../clutter/clutter-actor.c:6417
+#: ../clutter/clutter-actor.c:6426
 msgid "Forced natural width request for the actor"
 msgstr "Erőltetett természetes szélesség kérés a szereplőhöz"
 
-#: ../clutter/clutter-actor.c:6435
+#: ../clutter/clutter-actor.c:6444
 msgid "Natural Height"
 msgstr "Természetes magasság"
 
-#: ../clutter/clutter-actor.c:6436
+#: ../clutter/clutter-actor.c:6445
 msgid "Forced natural height request for the actor"
 msgstr "Erőltetett természetes magasság kérés a szereplőhöz"
 
-#: ../clutter/clutter-actor.c:6451
+#: ../clutter/clutter-actor.c:6460
 msgid "Minimum width set"
 msgstr "Minimális szélesség beállítva"
 
-#: ../clutter/clutter-actor.c:6452
+#: ../clutter/clutter-actor.c:6461
 msgid "Whether to use the min-width property"
 msgstr "Használja-e a min-width tulajdonságot"
 
-#: ../clutter/clutter-actor.c:6466
+#: ../clutter/clutter-actor.c:6475
 msgid "Minimum height set"
 msgstr "Minimális magasság beállítva"
 
-#: ../clutter/clutter-actor.c:6467
+#: ../clutter/clutter-actor.c:6476
 msgid "Whether to use the min-height property"
 msgstr "Használja-e a min-height tulajdonságot"
 
-#: ../clutter/clutter-actor.c:6481
+#: ../clutter/clutter-actor.c:6490
 msgid "Natural width set"
 msgstr "Természetes szélesség beállítva"
 
-#: ../clutter/clutter-actor.c:6482
+#: ../clutter/clutter-actor.c:6491
 msgid "Whether to use the natural-width property"
 msgstr "Használja-e a natural-width tulajdonságot"
 
-#: ../clutter/clutter-actor.c:6496
+#: ../clutter/clutter-actor.c:6505
 msgid "Natural height set"
 msgstr "Természetes magasság beállítva"
 
-#: ../clutter/clutter-actor.c:6497
+#: ../clutter/clutter-actor.c:6506
 msgid "Whether to use the natural-height property"
 msgstr "Használja-e a natural-height tulajdonságot"
 
-#: ../clutter/clutter-actor.c:6513
+#: ../clutter/clutter-actor.c:6522
 msgid "Allocation"
 msgstr "Lefoglalás"
 
-#: ../clutter/clutter-actor.c:6514
+#: ../clutter/clutter-actor.c:6523
 msgid "The actor's allocation"
 msgstr "A szereplő lefoglalása"
 
-#: ../clutter/clutter-actor.c:6571
+#: ../clutter/clutter-actor.c:6580
 msgid "Request Mode"
 msgstr "Kérés mód"
 
-#: ../clutter/clutter-actor.c:6572
+#: ../clutter/clutter-actor.c:6581
 msgid "The actor's request mode"
 msgstr "A szereplő kérés módja"
 
-#: ../clutter/clutter-actor.c:6596
+#: ../clutter/clutter-actor.c:6605
 msgid "Depth"
 msgstr "Mélység"
 
-#: ../clutter/clutter-actor.c:6597
+#: ../clutter/clutter-actor.c:6606
 msgid "Position on the Z axis"
 msgstr "Pozíció a Z tengelyen"
 
-#: ../clutter/clutter-actor.c:6624
+#: ../clutter/clutter-actor.c:6633
 msgid "Z Position"
 msgstr "Z pozíció"
 
-#: ../clutter/clutter-actor.c:6625
+#: ../clutter/clutter-actor.c:6634
 msgid "The actor's position on the Z axis"
 msgstr "A szereplő pozíciója a Z tengelyen"
 
-#: ../clutter/clutter-actor.c:6642
+#: ../clutter/clutter-actor.c:6651
 msgid "Opacity"
 msgstr "Átlátszatlanság"
 
-#: ../clutter/clutter-actor.c:6643
+#: ../clutter/clutter-actor.c:6652
 msgid "Opacity of an actor"
 msgstr "Egy szereplő átlátszatlansága"
 
-#: ../clutter/clutter-actor.c:6663
+#: ../clutter/clutter-actor.c:6672
 msgid "Offscreen redirect"
 msgstr "Képernyőn kívüli átirányítás"
 
-#: ../clutter/clutter-actor.c:6664
+#: ../clutter/clutter-actor.c:6673
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr ""
 "Zászlók annak vezérlésére, amikor a szereplő egy egyszerű képpé van lapítva"
 
-#: ../clutter/clutter-actor.c:6678
+#: ../clutter/clutter-actor.c:6687
 msgid "Visible"
 msgstr "Látható"
 
-#: ../clutter/clutter-actor.c:6679
+#: ../clutter/clutter-actor.c:6688
 msgid "Whether the actor is visible or not"
 msgstr "A szereplő legyen-e látható vagy ne"
 
-#: ../clutter/clutter-actor.c:6693
+#: ../clutter/clutter-actor.c:6702
 msgid "Mapped"
 msgstr "Leképezett"
 
-#: ../clutter/clutter-actor.c:6694
+#: ../clutter/clutter-actor.c:6703
 msgid "Whether the actor will be painted"
 msgstr "A szereplő legyen-e megrajzolva"
 
-#: ../clutter/clutter-actor.c:6707
+#: ../clutter/clutter-actor.c:6716
 msgid "Realized"
 msgstr "Megvalósult"
 
-#: ../clutter/clutter-actor.c:6708
+#: ../clutter/clutter-actor.c:6717
 msgid "Whether the actor has been realized"
 msgstr "A szereplő meg lett-e valósítva"
 
-#: ../clutter/clutter-actor.c:6723
+#: ../clutter/clutter-actor.c:6732
 msgid "Reactive"
 msgstr "Reaktív"
 
-#: ../clutter/clutter-actor.c:6724
+#: ../clutter/clutter-actor.c:6733
 msgid "Whether the actor is reactive to events"
 msgstr "A szereplő legyen-e reaktív az eseményekkel"
 
-#: ../clutter/clutter-actor.c:6735
+#: ../clutter/clutter-actor.c:6744
 msgid "Has Clip"
 msgstr "Van vágása"
 
-#: ../clutter/clutter-actor.c:6736
+#: ../clutter/clutter-actor.c:6745
 msgid "Whether the actor has a clip set"
 msgstr "A szereplőnek van-e beállított vágása"
 
-#: ../clutter/clutter-actor.c:6749
+#: ../clutter/clutter-actor.c:6758
 msgid "Clip"
 msgstr "Vágás"
 
-#: ../clutter/clutter-actor.c:6750
+#: ../clutter/clutter-actor.c:6759
 msgid "The clip region for the actor"
 msgstr "A vágási terület a szereplőhöz"
 
-#: ../clutter/clutter-actor.c:6769
+#: ../clutter/clutter-actor.c:6778
 msgid "Clip Rectangle"
 msgstr "Téglalap levágása"
 
-#: ../clutter/clutter-actor.c:6770
+#: ../clutter/clutter-actor.c:6779
 msgid "The visible region of the actor"
 msgstr "A szereplő látható területe"
 
-#: ../clutter/clutter-actor.c:6784 ../clutter/clutter-actor-meta.c:205
-#: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:260
+#: ../clutter/clutter-actor.c:6793 ../clutter/clutter-actor-meta.c:205
+#: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:247
 msgid "Name"
 msgstr "Név"
 
-#: ../clutter/clutter-actor.c:6785
+#: ../clutter/clutter-actor.c:6794
 msgid "Name of the actor"
 msgstr "A szereplő neve"
 
-#: ../clutter/clutter-actor.c:6806
+#: ../clutter/clutter-actor.c:6815
 msgid "Pivot Point"
 msgstr "Forgatási pont"
 
-#: ../clutter/clutter-actor.c:6807
+#: ../clutter/clutter-actor.c:6816
 msgid "The point around which the scaling and rotation occur"
 msgstr "Az a pont, amely körül a méretezés és a forgatás történik"
 
-#: ../clutter/clutter-actor.c:6825
+#: ../clutter/clutter-actor.c:6834
 msgid "Pivot Point Z"
 msgstr "Z forgatási pont"
 
-#: ../clutter/clutter-actor.c:6826
+#: ../clutter/clutter-actor.c:6835
 msgid "Z component of the pivot point"
 msgstr "A forgatási pont Z komponense"
 
-#: ../clutter/clutter-actor.c:6844
+#: ../clutter/clutter-actor.c:6853
 msgid "Scale X"
 msgstr "X méretezés"
 
-#: ../clutter/clutter-actor.c:6845
+#: ../clutter/clutter-actor.c:6854
 msgid "Scale factor on the X axis"
 msgstr "Méretezési tényező az X tengelyen"
 
-#: ../clutter/clutter-actor.c:6863
+#: ../clutter/clutter-actor.c:6872
 msgid "Scale Y"
 msgstr "Y méretezés"
 
-#: ../clutter/clutter-actor.c:6864
+#: ../clutter/clutter-actor.c:6873
 msgid "Scale factor on the Y axis"
 msgstr "Méretezési tényező az Y tengelyen"
 
-#: ../clutter/clutter-actor.c:6882
+#: ../clutter/clutter-actor.c:6891
 msgid "Scale Z"
 msgstr "Z méretezés"
 
-#: ../clutter/clutter-actor.c:6883
+#: ../clutter/clutter-actor.c:6892
 msgid "Scale factor on the Z axis"
 msgstr "Méretezési tényező a Z tengelyen"
 
-#: ../clutter/clutter-actor.c:6901
+#: ../clutter/clutter-actor.c:6910
 msgid "Scale Center X"
 msgstr "X méretezés közép"
 
-#: ../clutter/clutter-actor.c:6902
+#: ../clutter/clutter-actor.c:6911
 msgid "Horizontal scale center"
 msgstr "Vízszintes méretezés közép"
 
-#: ../clutter/clutter-actor.c:6920
+#: ../clutter/clutter-actor.c:6929
 msgid "Scale Center Y"
 msgstr "Y méretezés közép"
 
-#: ../clutter/clutter-actor.c:6921
+#: ../clutter/clutter-actor.c:6930
 msgid "Vertical scale center"
 msgstr "Függőleges méretezés közép"
 
-#: ../clutter/clutter-actor.c:6939
+#: ../clutter/clutter-actor.c:6948
 msgid "Scale Gravity"
 msgstr "Gravitáció méretezés"
 
-#: ../clutter/clutter-actor.c:6940
+#: ../clutter/clutter-actor.c:6949
 msgid "The center of scaling"
 msgstr "A méretezés közepe"
 
-#: ../clutter/clutter-actor.c:6958
+#: ../clutter/clutter-actor.c:6967
 msgid "Rotation Angle X"
 msgstr "X forgatási szög"
 
-#: ../clutter/clutter-actor.c:6959
+#: ../clutter/clutter-actor.c:6968
 msgid "The rotation angle on the X axis"
 msgstr "A forgatási szög az X tengelyen"
 
-#: ../clutter/clutter-actor.c:6977
+#: ../clutter/clutter-actor.c:6986
 msgid "Rotation Angle Y"
 msgstr "Y forgatási szög"
 
-#: ../clutter/clutter-actor.c:6978
+#: ../clutter/clutter-actor.c:6987
 msgid "The rotation angle on the Y axis"
 msgstr "A forgatási szög az Y tengelyen"
 
-#: ../clutter/clutter-actor.c:6996
+#: ../clutter/clutter-actor.c:7005
 msgid "Rotation Angle Z"
 msgstr "Z forgatási szög"
 
-#: ../clutter/clutter-actor.c:6997
+#: ../clutter/clutter-actor.c:7006
 msgid "The rotation angle on the Z axis"
 msgstr "A forgatási szög a Z tengelyen"
 
-#: ../clutter/clutter-actor.c:7015
+#: ../clutter/clutter-actor.c:7024
 msgid "Rotation Center X"
 msgstr "X forgatási közép"
 
-#: ../clutter/clutter-actor.c:7016
+#: ../clutter/clutter-actor.c:7025
 msgid "The rotation center on the X axis"
 msgstr "A forgatási közép az X tengelyen"
 
-#: ../clutter/clutter-actor.c:7033
+#: ../clutter/clutter-actor.c:7042
 msgid "Rotation Center Y"
 msgstr "Y forgatási közép"
 
-#: ../clutter/clutter-actor.c:7034
+#: ../clutter/clutter-actor.c:7043
 msgid "The rotation center on the Y axis"
 msgstr "A forgatási közép az Y tengelyen"
 
-#: ../clutter/clutter-actor.c:7051
+#: ../clutter/clutter-actor.c:7060
 msgid "Rotation Center Z"
 msgstr "Z forgatási közép"
 
-#: ../clutter/clutter-actor.c:7052
+#: ../clutter/clutter-actor.c:7061
 msgid "The rotation center on the Z axis"
 msgstr "A forgatási közép a Z tengelyen"
 
-#: ../clutter/clutter-actor.c:7069
+#: ../clutter/clutter-actor.c:7078
 msgid "Rotation Center Z Gravity"
 msgstr "Z forgatási közép gravitáció"
 
-#: ../clutter/clutter-actor.c:7070
+#: ../clutter/clutter-actor.c:7079
 msgid "Center point for rotation around the Z axis"
 msgstr "Középpont a Z tengely körüli forgatáshoz"
 
-#: ../clutter/clutter-actor.c:7098
+#: ../clutter/clutter-actor.c:7107
 msgid "Anchor X"
 msgstr "X horgony"
 
-#: ../clutter/clutter-actor.c:7099
+#: ../clutter/clutter-actor.c:7108
 msgid "X coordinate of the anchor point"
 msgstr "A horgonypont X koordinátája"
 
-#: ../clutter/clutter-actor.c:7127
+#: ../clutter/clutter-actor.c:7136
 msgid "Anchor Y"
 msgstr "Y horgony"
 
-#: ../clutter/clutter-actor.c:7128
+#: ../clutter/clutter-actor.c:7137
 msgid "Y coordinate of the anchor point"
 msgstr "A horgonypont Y koordinátája"
 
-#: ../clutter/clutter-actor.c:7155
+#: ../clutter/clutter-actor.c:7164
 msgid "Anchor Gravity"
 msgstr "Horgony gravitáció"
 
-#: ../clutter/clutter-actor.c:7156
+#: ../clutter/clutter-actor.c:7165
 msgid "The anchor point as a ClutterGravity"
 msgstr "A horgonypont mint egy ClutterGravity"
 
-#: ../clutter/clutter-actor.c:7175
+#: ../clutter/clutter-actor.c:7184
 msgid "Translation X"
 msgstr "X elcsúszás"
 
-#: ../clutter/clutter-actor.c:7176
+#: ../clutter/clutter-actor.c:7185
 msgid "Translation along the X axis"
 msgstr "Elcsúszás az X tengely mentén"
 
-#: ../clutter/clutter-actor.c:7195
+#: ../clutter/clutter-actor.c:7204
 msgid "Translation Y"
 msgstr "Y elcsúszás"
 
-#: ../clutter/clutter-actor.c:7196
+#: ../clutter/clutter-actor.c:7205
 msgid "Translation along the Y axis"
 msgstr "Elcsúszás az Y tengely mentén"
 
-#: ../clutter/clutter-actor.c:7215
+#: ../clutter/clutter-actor.c:7224
 msgid "Translation Z"
 msgstr "Z elcsúszás"
 
-#: ../clutter/clutter-actor.c:7216
+#: ../clutter/clutter-actor.c:7225
 msgid "Translation along the Z axis"
 msgstr "Elcsúszás a Z tengely mentén"
 
-#: ../clutter/clutter-actor.c:7246
+#: ../clutter/clutter-actor.c:7255
 msgid "Transform"
 msgstr "Átalakítás"
 
-#: ../clutter/clutter-actor.c:7247
+#: ../clutter/clutter-actor.c:7256
 msgid "Transformation matrix"
 msgstr "Transzformációs mátrix"
 
-#: ../clutter/clutter-actor.c:7262
+#: ../clutter/clutter-actor.c:7271
 msgid "Transform Set"
 msgstr "Átalakítás beállítva"
 
-#: ../clutter/clutter-actor.c:7263
+#: ../clutter/clutter-actor.c:7272
 msgid "Whether the transform property is set"
 msgstr "A transform tulajdonság be van-e állítva"
 
-#: ../clutter/clutter-actor.c:7284
+#: ../clutter/clutter-actor.c:7293
 msgid "Child Transform"
 msgstr "Gyermek átalakítás"
 
-#: ../clutter/clutter-actor.c:7285
+#: ../clutter/clutter-actor.c:7294
 msgid "Children transformation matrix"
 msgstr "Gyermekek transzformációs mátrix"
 
-#: ../clutter/clutter-actor.c:7300
+#: ../clutter/clutter-actor.c:7309
 msgid "Child Transform Set"
 msgstr "Gyermek átalakítás beállítva"
 
-#: ../clutter/clutter-actor.c:7301
+#: ../clutter/clutter-actor.c:7310
 msgid "Whether the child-transform property is set"
 msgstr "A child-transform tulajdonság be van-e állítva"
 
-#: ../clutter/clutter-actor.c:7318
+#: ../clutter/clutter-actor.c:7327
 msgid "Show on set parent"
 msgstr "A beállított szülő megjelenítése"
 
-#: ../clutter/clutter-actor.c:7319
+#: ../clutter/clutter-actor.c:7328
 msgid "Whether the actor is shown when parented"
 msgstr "Jelenjen-e meg a szereplő, amikor szülője van"
 
-#: ../clutter/clutter-actor.c:7336
+#: ../clutter/clutter-actor.c:7345
 msgid "Clip to Allocation"
 msgstr "Vágás a lefoglalásra"
 
-#: ../clutter/clutter-actor.c:7337
+#: ../clutter/clutter-actor.c:7346
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "Beállítja a vágási területet a szereplő foglalásának követéséhez"
 
-#: ../clutter/clutter-actor.c:7350
+#: ../clutter/clutter-actor.c:7359
 msgid "Text Direction"
 msgstr "Szövegirány"
 
-#: ../clutter/clutter-actor.c:7351
+#: ../clutter/clutter-actor.c:7360
 msgid "Direction of the text"
 msgstr "A szöveg iránya"
 
-#: ../clutter/clutter-actor.c:7366
+#: ../clutter/clutter-actor.c:7375
 msgid "Has Pointer"
 msgstr "Van mutatója"
 
-#: ../clutter/clutter-actor.c:7367
+#: ../clutter/clutter-actor.c:7376
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "A szereplő tartalmazza-e egy bemeneti eszköz mutatóját"
 
-#: ../clutter/clutter-actor.c:7380
+#: ../clutter/clutter-actor.c:7389
 msgid "Actions"
 msgstr "Műveletek"
 
-#: ../clutter/clutter-actor.c:7381
+#: ../clutter/clutter-actor.c:7390
 msgid "Adds an action to the actor"
 msgstr "Hozzáad egy műveletet a szereplőhöz"
 
-#: ../clutter/clutter-actor.c:7394
+#: ../clutter/clutter-actor.c:7403
 msgid "Constraints"
 msgstr "Megszorítások"
 
-#: ../clutter/clutter-actor.c:7395
+#: ../clutter/clutter-actor.c:7404
 msgid "Adds a constraint to the actor"
 msgstr "Hozzáad egy megszorítást a szereplőhöz"
 
-#: ../clutter/clutter-actor.c:7408
+#: ../clutter/clutter-actor.c:7417
 msgid "Effect"
 msgstr "Hatás"
 
-#: ../clutter/clutter-actor.c:7409
+#: ../clutter/clutter-actor.c:7418
 msgid "Add an effect to be applied on the actor"
 msgstr "A szereplőn alkalmazandó hatás hozzáadása"
 
-#: ../clutter/clutter-actor.c:7423
+#: ../clutter/clutter-actor.c:7432
 msgid "Layout Manager"
 msgstr "Elrendezéskezelő"
 
-#: ../clutter/clutter-actor.c:7424
+#: ../clutter/clutter-actor.c:7433
 msgid "The object controlling the layout of an actor's children"
 msgstr "Egy szereplő gyermekeinek elrendezését vezérlő objektum"
 
-#: ../clutter/clutter-actor.c:7438
+#: ../clutter/clutter-actor.c:7447
 msgid "X Expand"
 msgstr "X bővítés"
 
-#: ../clutter/clutter-actor.c:7439
+#: ../clutter/clutter-actor.c:7448
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr "Legyen-e további vízszintes térköz hozzárendelve a szereplőhöz"
 
-#: ../clutter/clutter-actor.c:7454
+#: ../clutter/clutter-actor.c:7463
 msgid "Y Expand"
 msgstr "Y bővítés"
 
-#: ../clutter/clutter-actor.c:7455
+#: ../clutter/clutter-actor.c:7464
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr "Legyen-e további függőleges térköz hozzárendelve a szereplőhöz"
 
-#: ../clutter/clutter-actor.c:7471
+#: ../clutter/clutter-actor.c:7480
 msgid "X Alignment"
 msgstr "X igazítás"
 
-#: ../clutter/clutter-actor.c:7472
+#: ../clutter/clutter-actor.c:7481
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "A szereplő igazítása az X tengelyen a lefoglalásán belül"
 
-#: ../clutter/clutter-actor.c:7487
+#: ../clutter/clutter-actor.c:7496
 msgid "Y Alignment"
 msgstr "Y igazítás"
 
-#: ../clutter/clutter-actor.c:7488
+#: ../clutter/clutter-actor.c:7497
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "A szereplő igazítása az Y tengelyen a lefoglalásán belül"
 
-#: ../clutter/clutter-actor.c:7507
+#: ../clutter/clutter-actor.c:7516
 msgid "Margin Top"
 msgstr "Felső margó"
 
-#: ../clutter/clutter-actor.c:7508
+#: ../clutter/clutter-actor.c:7517
 msgid "Extra space at the top"
 msgstr "További terület felül"
 
-#: ../clutter/clutter-actor.c:7529
+#: ../clutter/clutter-actor.c:7538
 msgid "Margin Bottom"
 msgstr "Alsó margó"
 
-#: ../clutter/clutter-actor.c:7530
+#: ../clutter/clutter-actor.c:7539
 msgid "Extra space at the bottom"
 msgstr "További terület alul"
 
-#: ../clutter/clutter-actor.c:7551
+#: ../clutter/clutter-actor.c:7560
 msgid "Margin Left"
 msgstr "Bal margó"
 
-#: ../clutter/clutter-actor.c:7552
+#: ../clutter/clutter-actor.c:7561
 msgid "Extra space at the left"
 msgstr "További terület a bal oldalon"
 
-#: ../clutter/clutter-actor.c:7573
+#: ../clutter/clutter-actor.c:7582
 msgid "Margin Right"
 msgstr "Jobb margó"
 
-#: ../clutter/clutter-actor.c:7574
+#: ../clutter/clutter-actor.c:7583
 msgid "Extra space at the right"
 msgstr "További terület a jobb oldalon"
 
-#: ../clutter/clutter-actor.c:7590
+#: ../clutter/clutter-actor.c:7599
 msgid "Background Color Set"
 msgstr "Háttérszín beállítva"
 
-#: ../clutter/clutter-actor.c:7591 ../clutter/deprecated/clutter-box.c:271
+#: ../clutter/clutter-actor.c:7600 ../clutter/deprecated/clutter-box.c:271
 msgid "Whether the background color is set"
 msgstr "A háttérszín be van-e állítva"
 
-#: ../clutter/clutter-actor.c:7607
+#: ../clutter/clutter-actor.c:7616
 msgid "Background color"
 msgstr "Háttérszín"
 
-#: ../clutter/clutter-actor.c:7608
+#: ../clutter/clutter-actor.c:7617
 msgid "The actor's background color"
 msgstr "A szereplő háttérszíne"
 
-#: ../clutter/clutter-actor.c:7623
+#: ../clutter/clutter-actor.c:7632
 msgid "First Child"
 msgstr "Első gyermek"
 
-#: ../clutter/clutter-actor.c:7624
+#: ../clutter/clutter-actor.c:7633
 msgid "The actor's first child"
 msgstr "A szereplő első gyermeke"
 
-#: ../clutter/clutter-actor.c:7637
+#: ../clutter/clutter-actor.c:7646
 msgid "Last Child"
 msgstr "Utolsó gyermek"
 
-#: ../clutter/clutter-actor.c:7638
+#: ../clutter/clutter-actor.c:7647
 msgid "The actor's last child"
 msgstr "A szereplő utolsó gyermeke"
 
-#: ../clutter/clutter-actor.c:7652
+#: ../clutter/clutter-actor.c:7661
 msgid "Content"
 msgstr "Tartalom"
 
-#: ../clutter/clutter-actor.c:7653
+#: ../clutter/clutter-actor.c:7662
 msgid "Delegate object for painting the actor's content"
 msgstr "Objektum delegálása a szereplő tartalmának kirajzolásához"
 
-#: ../clutter/clutter-actor.c:7678
+#: ../clutter/clutter-actor.c:7687
 msgid "Content Gravity"
 msgstr "Tartalom gravitáció"
 
-#: ../clutter/clutter-actor.c:7679
+#: ../clutter/clutter-actor.c:7688
 msgid "Alignment of the actor's content"
 msgstr "A szereplő tartalmának igazítása"
 
-#: ../clutter/clutter-actor.c:7699
+#: ../clutter/clutter-actor.c:7708
 msgid "Content Box"
 msgstr "Tartalom doboz"
 
-#: ../clutter/clutter-actor.c:7700
+#: ../clutter/clutter-actor.c:7709
 msgid "The bounding box of the actor's content"
 msgstr "A szereplő tartalmának határoló doboza"
 
-#: ../clutter/clutter-actor.c:7708
+#: ../clutter/clutter-actor.c:7717
 msgid "Minification Filter"
 msgstr "Kicsinyítési szűrő"
 
-#: ../clutter/clutter-actor.c:7709
+#: ../clutter/clutter-actor.c:7718
 msgid "The filter used when reducing the size of the content"
 msgstr "A tartalom méretének csökkentésekor használt szűrő"
 
-#: ../clutter/clutter-actor.c:7716
+#: ../clutter/clutter-actor.c:7725
 msgid "Magnification Filter"
 msgstr "Nagyítási szűrő"
 
-#: ../clutter/clutter-actor.c:7717
+#: ../clutter/clutter-actor.c:7726
 msgid "The filter used when increasing the size of the content"
 msgstr "A tartalom méretének növelésekor használt szűrő"
 
-#: ../clutter/clutter-actor.c:7731
+#: ../clutter/clutter-actor.c:7740
 msgid "Content Repeat"
 msgstr "Tartalom ismétlés"
 
-#: ../clutter/clutter-actor.c:7732
+#: ../clutter/clutter-actor.c:7741
 msgid "The repeat policy for the actor's content"
 msgstr "A szereplő tartalmának ismétlési házirendje"
 
@@ -694,7 +694,7 @@ msgstr "A metához csatolt szereplő"
 msgid "The name of the meta"
 msgstr "A meta neve"
 
-#: ../clutter/clutter-actor-meta.c:219 ../clutter/clutter-input-device.c:339
+#: ../clutter/clutter-actor-meta.c:219 ../clutter/clutter-input-device.c:326
 #: ../clutter/deprecated/clutter-shader.c:309
 msgid "Enabled"
 msgstr "Engedélyezve"
@@ -767,7 +767,8 @@ msgid "The unique name of the binding pool"
 msgstr "A kötéstároló egyedi neve"
 
 #: ../clutter/clutter-bin-layout.c:238 ../clutter/clutter-bin-layout.c:651
-#: ../clutter/clutter-box-layout.c:388 ../clutter/clutter-table-layout.c:604
+#: ../clutter/clutter-box-layout.c:388
+#: ../clutter/deprecated/clutter-table-layout.c:610
 msgid "Horizontal Alignment"
 msgstr "Vízszintes igazítás"
 
@@ -776,7 +777,8 @@ msgid "Horizontal alignment for the actor inside the layout manager"
 msgstr "Vízszintes igazítás a szereplőhöz az elrendezéskezelőn belül"
 
 #: ../clutter/clutter-bin-layout.c:247 ../clutter/clutter-bin-layout.c:671
-#: ../clutter/clutter-box-layout.c:397 ../clutter/clutter-table-layout.c:619
+#: ../clutter/clutter-box-layout.c:397
+#: ../clutter/deprecated/clutter-table-layout.c:625
 msgid "Vertical Alignment"
 msgstr "Függőleges igazítás"
 
@@ -802,11 +804,13 @@ msgstr "Bővítés"
 msgid "Allocate extra space for the child"
 msgstr "További terület lefoglalása a gyermeknek"
 
-#: ../clutter/clutter-box-layout.c:370 ../clutter/clutter-table-layout.c:583
+#: ../clutter/clutter-box-layout.c:370
+#: ../clutter/deprecated/clutter-table-layout.c:589
 msgid "Horizontal Fill"
 msgstr "Vízszintes kitöltés"
 
-#: ../clutter/clutter-box-layout.c:371 ../clutter/clutter-table-layout.c:584
+#: ../clutter/clutter-box-layout.c:371
+#: ../clutter/deprecated/clutter-table-layout.c:590
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the horizontal axis"
@@ -814,11 +818,13 @@ msgstr ""
 "Kapjon-e elsőbbséget a gyermek, amikor a konténer tartalék területet foglal "
 "le a vízszintes tengelyen"
 
-#: ../clutter/clutter-box-layout.c:379 ../clutter/clutter-table-layout.c:590
+#: ../clutter/clutter-box-layout.c:379
+#: ../clutter/deprecated/clutter-table-layout.c:596
 msgid "Vertical Fill"
 msgstr "Függőleges kitöltés"
 
-#: ../clutter/clutter-box-layout.c:380 ../clutter/clutter-table-layout.c:591
+#: ../clutter/clutter-box-layout.c:380
+#: ../clutter/deprecated/clutter-table-layout.c:597
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the vertical axis"
@@ -826,11 +832,13 @@ msgstr ""
 "Kapjon-e elsőbbséget a gyermek, amikor a konténer tartalék területet foglal "
 "le a függőleges tengelyen"
 
-#: ../clutter/clutter-box-layout.c:389 ../clutter/clutter-table-layout.c:605
+#: ../clutter/clutter-box-layout.c:389
+#: ../clutter/deprecated/clutter-table-layout.c:611
 msgid "Horizontal alignment of the actor within the cell"
 msgstr "A szereplő vízszintes igazítása a cellán belül"
 
-#: ../clutter/clutter-box-layout.c:398 ../clutter/clutter-table-layout.c:620
+#: ../clutter/clutter-box-layout.c:398
+#: ../clutter/deprecated/clutter-table-layout.c:626
 msgid "Vertical alignment of the actor within the cell"
 msgstr "A szereplő függőleges igazítása a cellán belül"
 
@@ -879,27 +887,33 @@ msgstr "Térköz"
 msgid "Spacing between children"
 msgstr "A gyermekek közötti térköz"
 
-#: ../clutter/clutter-box-layout.c:1442 ../clutter/clutter-table-layout.c:1667
+#: ../clutter/clutter-box-layout.c:1442
+#: ../clutter/deprecated/clutter-table-layout.c:1677
 msgid "Use Animations"
 msgstr "Animációk használata"
 
-#: ../clutter/clutter-box-layout.c:1443 ../clutter/clutter-table-layout.c:1668
+#: ../clutter/clutter-box-layout.c:1443
+#: ../clutter/deprecated/clutter-table-layout.c:1678
 msgid "Whether layout changes should be animated"
 msgstr "Az elrendezés változásai legyenek-e animálva"
 
-#: ../clutter/clutter-box-layout.c:1467 ../clutter/clutter-table-layout.c:1692
+#: ../clutter/clutter-box-layout.c:1467
+#: ../clutter/deprecated/clutter-table-layout.c:1702
 msgid "Easing Mode"
 msgstr "Enyhítés mód"
 
-#: ../clutter/clutter-box-layout.c:1468 ../clutter/clutter-table-layout.c:1693
+#: ../clutter/clutter-box-layout.c:1468
+#: ../clutter/deprecated/clutter-table-layout.c:1703
 msgid "The easing mode of the animations"
 msgstr "Az animációk enyhítés módja"
 
-#: ../clutter/clutter-box-layout.c:1488 ../clutter/clutter-table-layout.c:1713
+#: ../clutter/clutter-box-layout.c:1488
+#: ../clutter/deprecated/clutter-table-layout.c:1723
 msgid "Easing Duration"
 msgstr "Enyhítés időtartam"
 
-#: ../clutter/clutter-box-layout.c:1489 ../clutter/clutter-table-layout.c:1714
+#: ../clutter/clutter-box-layout.c:1489
+#: ../clutter/deprecated/clutter-table-layout.c:1724
 msgid "The duration of the animations"
 msgstr "Az animációk időtartama"
 
@@ -919,13 +933,33 @@ msgstr "Kontraszt"
 msgid "The contrast change to apply"
 msgstr "Az alkalmazandó kontraszt változtatás"
 
-#: ../clutter/clutter-canvas.c:225
+#: ../clutter/clutter-canvas.c:248
 msgid "The width of the canvas"
 msgstr "A vászon szélessége"
 
-#: ../clutter/clutter-canvas.c:241
+#: ../clutter/clutter-canvas.c:264
 msgid "The height of the canvas"
 msgstr "A vászon magassága"
+
+#: ../clutter/clutter-canvas.c:283
+#| msgid "Selection Color Set"
+msgid "Scale Factor Set"
+msgstr "Méretezési tényező beállítva"
+
+#: ../clutter/clutter-canvas.c:284
+#| msgid "Whether the transform property is set"
+msgid "Whether the scale-factor property is set"
+msgstr "A scale-factor tulajdonság be van-e állítva"
+
+#: ../clutter/clutter-canvas.c:305
+#| msgid "Factor"
+msgid "Scale Factor"
+msgstr "Méretezési tényező"
+
+#: ../clutter/clutter-canvas.c:306
+#| msgid "The height of the Cairo surface"
+msgid "The scaling factor for the surface"
+msgstr "A felület méretezési tényezője"
 
 #: ../clutter/clutter-child-meta.c:127
 msgid "Container"
@@ -955,7 +989,7 @@ msgstr "Visszatartva"
 msgid "Whether the clickable has a grab"
 msgstr "A kattinthatónak legyen-e fogantyúja"
 
-#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:607
+#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:653
 msgid "Long Press Duration"
 msgstr "Hosszú lenyomás időtartam"
 
@@ -1012,7 +1046,7 @@ msgid "The desaturation factor"
 msgstr "A telítetlenné tevési tényező"
 
 #: ../clutter/clutter-device-manager.c:127
-#: ../clutter/clutter-input-device.c:368
+#: ../clutter/clutter-input-device.c:355
 #: ../clutter/x11/clutter-keymap-x11.c:321
 msgid "Backend"
 msgstr "Háttérprogram"
@@ -1021,51 +1055,51 @@ msgstr "Háttérprogram"
 msgid "The ClutterBackend of the device manager"
 msgstr "Az eszközkezelő ClutterBackend-je"
 
-#: ../clutter/clutter-drag-action.c:740
+#: ../clutter/clutter-drag-action.c:741
 msgid "Horizontal Drag Threshold"
 msgstr "Vízszintes húzási küszöb"
 
-#: ../clutter/clutter-drag-action.c:741
+#: ../clutter/clutter-drag-action.c:742
 msgid "The horizontal amount of pixels required to start dragging"
 msgstr "A kívánt képpontok vízszintes mennyisége a húzás elkezdéséhez"
 
-#: ../clutter/clutter-drag-action.c:768
+#: ../clutter/clutter-drag-action.c:769
 msgid "Vertical Drag Threshold"
 msgstr "Függőleges húzási küszöb"
 
-#: ../clutter/clutter-drag-action.c:769
+#: ../clutter/clutter-drag-action.c:770
 msgid "The vertical amount of pixels required to start dragging"
 msgstr "A kívánt képpontok függőleges mennyisége a húzás elkezdéséhez"
 
-#: ../clutter/clutter-drag-action.c:790
+#: ../clutter/clutter-drag-action.c:791
 msgid "Drag Handle"
 msgstr "Húzási fogantyú"
 
-#: ../clutter/clutter-drag-action.c:791
+#: ../clutter/clutter-drag-action.c:792
 msgid "The actor that is being dragged"
 msgstr "Az a szereplő, amely húzva van"
 
-#: ../clutter/clutter-drag-action.c:804
+#: ../clutter/clutter-drag-action.c:805
 msgid "Drag Axis"
 msgstr "Húzási tengely"
 
-#: ../clutter/clutter-drag-action.c:805
+#: ../clutter/clutter-drag-action.c:806
 msgid "Constraints the dragging to an axis"
 msgstr "Kényszeríti a húzást egy tengelyre"
 
-#: ../clutter/clutter-drag-action.c:821
+#: ../clutter/clutter-drag-action.c:822
 msgid "Drag Area"
 msgstr "Húzási terület"
 
-#: ../clutter/clutter-drag-action.c:822
+#: ../clutter/clutter-drag-action.c:823
 msgid "Constrains the dragging to a rectangle"
 msgstr "Kényszeríti a húzást egy téglalapra"
 
-#: ../clutter/clutter-drag-action.c:835
+#: ../clutter/clutter-drag-action.c:836
 msgid "Drag Area Set"
 msgstr "Húzási terület beállítva"
 
-#: ../clutter/clutter-drag-action.c:836
+#: ../clutter/clutter-drag-action.c:837
 msgid "Whether the drag area is set"
 msgstr "A húzási terület be van-e állítva"
 
@@ -1073,7 +1107,8 @@ msgstr "A húzási terület be van-e állítva"
 msgid "Whether each item should receive the same allocation"
 msgstr "Minden egyes elem ugyanazt a lefoglalást kapja-e"
 
-#: ../clutter/clutter-flow-layout.c:974 ../clutter/clutter-table-layout.c:1629
+#: ../clutter/clutter-flow-layout.c:974
+#: ../clutter/deprecated/clutter-table-layout.c:1637
 msgid "Column Spacing"
 msgstr "Oszloptávolság"
 
@@ -1081,7 +1116,8 @@ msgstr "Oszloptávolság"
 msgid "The spacing between columns"
 msgstr "Az oszlopok közötti térköz"
 
-#: ../clutter/clutter-flow-layout.c:991 ../clutter/clutter-table-layout.c:1643
+#: ../clutter/clutter-flow-layout.c:991
+#: ../clutter/deprecated/clutter-table-layout.c:1653
 msgid "Row Spacing"
 msgstr "Sortávolság"
 
@@ -1125,13 +1161,40 @@ msgstr "Legnagyobb magasság minden sorhoz"
 msgid "Snap to grid"
 msgstr "Rácshoz illesztés"
 
-#: ../clutter/clutter-gesture-action.c:646
+#: ../clutter/clutter-gesture-action.c:668
 msgid "Number touch points"
 msgstr "Érintési pontok száma"
 
-#: ../clutter/clutter-gesture-action.c:647
+#: ../clutter/clutter-gesture-action.c:669
 msgid "Number of touch points"
 msgstr "Érintési pontok száma"
+
+#: ../clutter/clutter-gesture-action.c:684
+msgid "Threshold Trigger Edge"
+msgstr "Küszöbszint aktiváló szél"
+
+#: ../clutter/clutter-gesture-action.c:685
+#| msgid "The timeline used by the animation"
+msgid "The trigger edge used by the action"
+msgstr "A művelet által használt aktiváló szél"
+
+#: ../clutter/clutter-gesture-action.c:704
+msgid "Threshold Trigger Horizontal Distance"
+msgstr "Küszöbszint aktiváló vízszintes távolság"
+
+#: ../clutter/clutter-gesture-action.c:705
+#| msgid "The timeline used by the animation"
+msgid "The horizontal trigger distance used by the action"
+msgstr "A művelet által használt vízszintes aktiváló távolsága"
+
+#: ../clutter/clutter-gesture-action.c:723
+msgid "Threshold Trigger Vertical Distance"
+msgstr "Küszöbszint aktiváló függőleges távolság"
+
+#: ../clutter/clutter-gesture-action.c:724
+#| msgid "The timeline used by the animation"
+msgid "The vertical trigger distance used by the action"
+msgstr "A művelet által használt függőleges aktiváló távolsága"
 
 #: ../clutter/clutter-grid-layout.c:1223
 msgid "Left attachment"
@@ -1190,92 +1253,92 @@ msgstr "Oszlop homogenitás"
 msgid "If TRUE, the columns are all the same width"
 msgstr "Ha TRUE, akkor az oszlopok egyforma szélesek"
 
-#: ../clutter/clutter-image.c:246 ../clutter/clutter-image.c:309
-#: ../clutter/clutter-image.c:397
+#: ../clutter/clutter-image.c:249 ../clutter/clutter-image.c:312
+#: ../clutter/clutter-image.c:400
 msgid "Unable to load image data"
 msgstr "Nem lehet betölteni a képadatokat"
 
-#: ../clutter/clutter-input-device.c:244
+#: ../clutter/clutter-input-device.c:231
 msgid "Id"
 msgstr "Azonosító"
 
-#: ../clutter/clutter-input-device.c:245
+#: ../clutter/clutter-input-device.c:232
 msgid "Unique identifier of the device"
 msgstr "Az eszköz egyedi azonosítója"
 
-#: ../clutter/clutter-input-device.c:261
+#: ../clutter/clutter-input-device.c:248
 msgid "The name of the device"
 msgstr "Az eszköz neve"
 
-#: ../clutter/clutter-input-device.c:275
+#: ../clutter/clutter-input-device.c:262
 msgid "Device Type"
 msgstr "Eszköztípus"
 
-#: ../clutter/clutter-input-device.c:276
+#: ../clutter/clutter-input-device.c:263
 msgid "The type of the device"
 msgstr "Az eszköz típusa"
 
-#: ../clutter/clutter-input-device.c:291
+#: ../clutter/clutter-input-device.c:278
 msgid "Device Manager"
 msgstr "Eszközkezelő"
 
-#: ../clutter/clutter-input-device.c:292
+#: ../clutter/clutter-input-device.c:279
 msgid "The device manager instance"
 msgstr "Az eszközkezelő példány"
 
-#: ../clutter/clutter-input-device.c:305
+#: ../clutter/clutter-input-device.c:292
 msgid "Device Mode"
 msgstr "Eszközmód"
 
-#: ../clutter/clutter-input-device.c:306
+#: ../clutter/clutter-input-device.c:293
 msgid "The mode of the device"
 msgstr "Az eszköz módja"
 
-#: ../clutter/clutter-input-device.c:320
+#: ../clutter/clutter-input-device.c:307
 msgid "Has Cursor"
 msgstr "Van kurzora"
 
-#: ../clutter/clutter-input-device.c:321
+#: ../clutter/clutter-input-device.c:308
 msgid "Whether the device has a cursor"
 msgstr "Az eszköz rendelkezik-e kurzorral"
 
-#: ../clutter/clutter-input-device.c:340
+#: ../clutter/clutter-input-device.c:327
 msgid "Whether the device is enabled"
 msgstr "Az eszköz engedélyezve van-e"
 
-#: ../clutter/clutter-input-device.c:353
+#: ../clutter/clutter-input-device.c:340
 msgid "Number of Axes"
 msgstr "Tengelyek száma"
 
-#: ../clutter/clutter-input-device.c:354
+#: ../clutter/clutter-input-device.c:341
 msgid "The number of axes on the device"
 msgstr "Tengelyek száma az eszközön"
 
-#: ../clutter/clutter-input-device.c:369
+#: ../clutter/clutter-input-device.c:356
 msgid "The backend instance"
 msgstr "A háttérprogram példány"
 
-#: ../clutter/clutter-interval.c:503
+#: ../clutter/clutter-interval.c:553
 msgid "Value Type"
 msgstr "Értéktípus"
 
-#: ../clutter/clutter-interval.c:504
+#: ../clutter/clutter-interval.c:554
 msgid "The type of the values in the interval"
 msgstr "Az értékek típusa az időközben"
 
-#: ../clutter/clutter-interval.c:519
+#: ../clutter/clutter-interval.c:569
 msgid "Initial Value"
 msgstr "Kezdeti érték"
 
-#: ../clutter/clutter-interval.c:520
+#: ../clutter/clutter-interval.c:570
 msgid "Initial value of the interval"
 msgstr "Az időköz kezdeti értéke"
 
-#: ../clutter/clutter-interval.c:534
+#: ../clutter/clutter-interval.c:584
 msgid "Final Value"
 msgstr "Végső érték"
 
-#: ../clutter/clutter-interval.c:535
+#: ../clutter/clutter-interval.c:585
 msgid "Final value of the interval"
 msgstr "Az időköz végső értéke"
 
@@ -1350,35 +1413,35 @@ msgstr "Clutter beállítások"
 msgid "Show Clutter Options"
 msgstr "Clutter beállítások megjelenítése"
 
-#: ../clutter/clutter-pan-action.c:445
+#: ../clutter/clutter-pan-action.c:455
 msgid "Pan Axis"
 msgstr "Tengely mozgatása"
 
-#: ../clutter/clutter-pan-action.c:446
+#: ../clutter/clutter-pan-action.c:456
 msgid "Constraints the panning to an axis"
 msgstr "Kényszeríti a mozgatást egy tengelyre"
 
-#: ../clutter/clutter-pan-action.c:460
+#: ../clutter/clutter-pan-action.c:470
 msgid "Interpolate"
 msgstr "Interpolálás"
 
-#: ../clutter/clutter-pan-action.c:461
+#: ../clutter/clutter-pan-action.c:471
 msgid "Whether interpolated events emission is enabled."
 msgstr "Az interpolált események kibocsátása engedélyezve van-e."
 
-#: ../clutter/clutter-pan-action.c:477
+#: ../clutter/clutter-pan-action.c:487
 msgid "Deceleration"
 msgstr "Lassítás"
 
-#: ../clutter/clutter-pan-action.c:478
+#: ../clutter/clutter-pan-action.c:488
 msgid "Rate at which the interpolated panning will decelerate in"
 msgstr "Az az arány, amelyre az interpolált mozgatás lassulni fog"
 
-#: ../clutter/clutter-pan-action.c:495
+#: ../clutter/clutter-pan-action.c:505
 msgid "Initial acceleration factor"
 msgstr "Kezdeti gyorsítási tényező"
 
-#: ../clutter/clutter-pan-action.c:496
+#: ../clutter/clutter-pan-action.c:506
 msgid "Factor applied to the momentum when starting the interpolated phase"
 msgstr "A lendületre alkalmazott tényező az interpolált fázis kezdetekor"
 
@@ -1436,46 +1499,46 @@ msgstr "Görgetés mód"
 msgid "The scrolling direction"
 msgstr "A görgetés iránya"
 
-#: ../clutter/clutter-settings.c:448
+#: ../clutter/clutter-settings.c:486
 msgid "Double Click Time"
 msgstr "Dupla kattintás ideje"
 
-#: ../clutter/clutter-settings.c:449
+#: ../clutter/clutter-settings.c:487
 msgid "The time between clicks necessary to detect a multiple click"
 msgstr "A többszörös kattintás észleléséhez szükséges kattintások közötti idő"
 
-#: ../clutter/clutter-settings.c:464
+#: ../clutter/clutter-settings.c:502
 msgid "Double Click Distance"
 msgstr "Dupla kattintás távolsága"
 
-#: ../clutter/clutter-settings.c:465
+#: ../clutter/clutter-settings.c:503
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr ""
 "A többszörös kattintás észleléséhez szükséges kattintások közötti távolság"
 
-#: ../clutter/clutter-settings.c:480
+#: ../clutter/clutter-settings.c:518
 msgid "Drag Threshold"
 msgstr "Húzási küszöb"
 
-#: ../clutter/clutter-settings.c:481
+#: ../clutter/clutter-settings.c:519
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "Az a távolság, ameddig a kurzornak mozognia kell a húzás előtt"
 
-#: ../clutter/clutter-settings.c:496 ../clutter/clutter-text.c:3396
+#: ../clutter/clutter-settings.c:534 ../clutter/clutter-text.c:3404
 msgid "Font Name"
 msgstr "Betűkészlet neve"
 
-#: ../clutter/clutter-settings.c:497
+#: ../clutter/clutter-settings.c:535
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
 msgstr ""
 "Az alapértelmezett betűkészlet leírása úgy, ahogy a Pango feldolgozhatja"
 
-#: ../clutter/clutter-settings.c:512
+#: ../clutter/clutter-settings.c:550
 msgid "Font Antialias"
 msgstr "Betűkészlet élsimítás"
 
-#: ../clutter/clutter-settings.c:513
+#: ../clutter/clutter-settings.c:551
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
@@ -1483,61 +1546,70 @@ msgstr ""
 "Használjon-e élsimítást (1: engedélyezve, 0: tiltva, -1: alapértelmezett "
 "használata)"
 
-#: ../clutter/clutter-settings.c:529
+#: ../clutter/clutter-settings.c:567 ../clutter/clutter-settings.c:575
 msgid "Font DPI"
 msgstr "Betűkészlet DPI"
 
-#: ../clutter/clutter-settings.c:530
+#: ../clutter/clutter-settings.c:568 ../clutter/clutter-settings.c:576
 msgid ""
 "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr ""
 "A betűkészlet felbontása 1024 * pont/hüvelykben, vagy -1 esetén az "
 "alapértelmezett használata"
 
-#: ../clutter/clutter-settings.c:546
+#: ../clutter/clutter-settings.c:592
 msgid "Font Hinting"
 msgstr "Betűkészlet hinting"
 
-#: ../clutter/clutter-settings.c:547
+#: ../clutter/clutter-settings.c:593
 msgid ""
 "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr ""
 "Használjon-e hintinget (: engedélyezve, 0: tiltva, -1: alapértelmezett "
 "használata)"
 
-#: ../clutter/clutter-settings.c:568
+#: ../clutter/clutter-settings.c:614
 msgid "Font Hint Style"
 msgstr "Betűstílus hint stílus"
 
-#: ../clutter/clutter-settings.c:569
+#: ../clutter/clutter-settings.c:615
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
 msgstr "A hinting stílusa (hintnone, hintslight, hintmedium, hintfull)"
 
-#: ../clutter/clutter-settings.c:590
+#: ../clutter/clutter-settings.c:636
 msgid "Font Subpixel Order"
 msgstr "Betűkészlet képponton belüli sorrend"
 
-#: ../clutter/clutter-settings.c:591
+#: ../clutter/clutter-settings.c:637
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
 msgstr "A képponton belüli élsimítás típusa (none, rgb, bgr, vrgb, vbgr)"
 
-#: ../clutter/clutter-settings.c:608
+#: ../clutter/clutter-settings.c:654
 msgid "The minimum duration for a long press gesture to be recognized"
 msgstr "Egy hosszú lenyomás minimális időtartama a gesztus felismeréséhez"
 
-#: ../clutter/clutter-settings.c:615
+#: ../clutter/clutter-settings.c:661
+msgid "Window Scaling Factor"
+msgstr "Ablakméretezési tényező"
+
+#: ../clutter/clutter-settings.c:662
+#| msgid "Add an effect to be applied on the actor"
+msgid "The scaling factor to be applied to windows"
+msgstr "Az ablakokon alkalmazandó méretezési tényező"
+
+#: ../clutter/clutter-settings.c:669
 msgid "Fontconfig configuration timestamp"
 msgstr "Fontconfig beállítás időbélyeg"
 
-#: ../clutter/clutter-settings.c:616
+#: ../clutter/clutter-settings.c:670
 msgid "Timestamp of the current fontconfig configuration"
 msgstr "A jelenlegi fontconfig beállítás időbélyege"
 
-#: ../clutter/clutter-settings.c:633
+#: ../clutter/clutter-settings.c:687
 msgid "Password Hint Time"
 msgstr "Jelszótipp ideje"
 
-#: ../clutter/clutter-settings.c:634
+#: ../clutter/clutter-settings.c:688
 msgid "How long to show the last input character in hidden entries"
 msgstr ""
 "Meddig jelenjen meg az utoljára bevitt karakter a rejtett bejegyzésekben"
@@ -1574,169 +1646,113 @@ msgstr "Az illesztendő forrás éle"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "A megszorításra alkalmazandó eltolás képpontokban"
 
-#: ../clutter/clutter-stage.c:1969
+#: ../clutter/clutter-stage.c:1899
 msgid "Fullscreen Set"
 msgstr "Teljes képernyő beállítva"
 
-#: ../clutter/clutter-stage.c:1970
+#: ../clutter/clutter-stage.c:1900
 msgid "Whether the main stage is fullscreen"
 msgstr "A fő helyszín teljes képernyős-e"
 
-#: ../clutter/clutter-stage.c:1984
+#: ../clutter/clutter-stage.c:1914
 msgid "Offscreen"
 msgstr "Képernyőn kívüli"
 
-#: ../clutter/clutter-stage.c:1985
+#: ../clutter/clutter-stage.c:1915
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "A fő helyszín képernyőn kívül legyen-e megjelenítve"
 
-#: ../clutter/clutter-stage.c:1997 ../clutter/clutter-text.c:3510
+#: ../clutter/clutter-stage.c:1927 ../clutter/clutter-text.c:3518
 msgid "Cursor Visible"
 msgstr "Kurzor látható"
 
-#: ../clutter/clutter-stage.c:1998
+#: ../clutter/clutter-stage.c:1928
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Az egérmutató látható-e a fő helyszínen"
 
-#: ../clutter/clutter-stage.c:2012
+#: ../clutter/clutter-stage.c:1942
 msgid "User Resizable"
 msgstr "A felhasználó átméretezhető"
 
-#: ../clutter/clutter-stage.c:2013
+#: ../clutter/clutter-stage.c:1943
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr ""
 "A fő helyszín átméretezhető legyen-e felhasználói interakción keresztül"
 
-#: ../clutter/clutter-stage.c:2028 ../clutter/deprecated/clutter-box.c:256
+#: ../clutter/clutter-stage.c:1958 ../clutter/deprecated/clutter-box.c:256
 #: ../clutter/deprecated/clutter-rectangle.c:270
 msgid "Color"
 msgstr "Szín"
 
-#: ../clutter/clutter-stage.c:2029
+#: ../clutter/clutter-stage.c:1959
 msgid "The color of the stage"
 msgstr "A helyszín színe"
 
-#: ../clutter/clutter-stage.c:2044
+#: ../clutter/clutter-stage.c:1974
 msgid "Perspective"
 msgstr "Perspektíva"
 
-#: ../clutter/clutter-stage.c:2045
+#: ../clutter/clutter-stage.c:1975
 msgid "Perspective projection parameters"
 msgstr "Perspektíva vetítési paraméterek"
 
-#: ../clutter/clutter-stage.c:2060
+#: ../clutter/clutter-stage.c:1990
 msgid "Title"
 msgstr "Cím"
 
-#: ../clutter/clutter-stage.c:2061
+#: ../clutter/clutter-stage.c:1991
 msgid "Stage Title"
 msgstr "Helyszín címe"
 
-#: ../clutter/clutter-stage.c:2078
+#: ../clutter/clutter-stage.c:2008
 msgid "Use Fog"
 msgstr "Köd használata"
 
-#: ../clutter/clutter-stage.c:2079
+#: ../clutter/clutter-stage.c:2009
 msgid "Whether to enable depth cueing"
 msgstr "Engedélyezze-e a mélység jelzést"
 
-#: ../clutter/clutter-stage.c:2095
+#: ../clutter/clutter-stage.c:2025
 msgid "Fog"
 msgstr "Köd"
 
-#: ../clutter/clutter-stage.c:2096
+#: ../clutter/clutter-stage.c:2026
 msgid "Settings for the depth cueing"
 msgstr "A mélység jelzés beállításai"
 
-#: ../clutter/clutter-stage.c:2112
+#: ../clutter/clutter-stage.c:2042
 msgid "Use Alpha"
 msgstr "Alfa használata"
 
-#: ../clutter/clutter-stage.c:2113
+#: ../clutter/clutter-stage.c:2043
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Tartsa-e tiszteletben a helyszín színének alfa komponensét"
 
-#: ../clutter/clutter-stage.c:2129
+#: ../clutter/clutter-stage.c:2059
 msgid "Key Focus"
 msgstr "Kulcsfókusz"
 
-#: ../clutter/clutter-stage.c:2130
+#: ../clutter/clutter-stage.c:2060
 msgid "The currently key focused actor"
 msgstr "A jelenlegi kulcsfókuszált szereplő"
 
-#: ../clutter/clutter-stage.c:2146
+#: ../clutter/clutter-stage.c:2076
 msgid "No Clear Hint"
 msgstr "Ne javaslat törlés"
 
-#: ../clutter/clutter-stage.c:2147
+#: ../clutter/clutter-stage.c:2077
 msgid "Whether the stage should clear its contents"
 msgstr "A helyszín törölheti-e a tartalmait"
 
-#: ../clutter/clutter-stage.c:2160
+#: ../clutter/clutter-stage.c:2090
 msgid "Accept Focus"
 msgstr "Fókusz fogadása"
 
-#: ../clutter/clutter-stage.c:2161
+#: ../clutter/clutter-stage.c:2091
 msgid "Whether the stage should accept focus on show"
 msgstr "A helyszín fogadhat-e fókuszt megjelenítéskor"
 
-#: ../clutter/clutter-table-layout.c:537
-msgid "Column Number"
-msgstr "Oszlopszám"
-
-#: ../clutter/clutter-table-layout.c:538
-msgid "The column the widget resides in"
-msgstr "Az oszlop, amelyben a felületi elem található"
-
-#: ../clutter/clutter-table-layout.c:545
-msgid "Row Number"
-msgstr "Sorszám"
-
-#: ../clutter/clutter-table-layout.c:546
-msgid "The row the widget resides in"
-msgstr "A sor, amelyben a felületi elem található"
-
-#: ../clutter/clutter-table-layout.c:553
-msgid "Column Span"
-msgstr "Oszlopátnyúlás"
-
-#: ../clutter/clutter-table-layout.c:554
-msgid "The number of columns the widget should span"
-msgstr "Az oszlopok száma, amelybe a felületi elem átnyúlhat"
-
-#: ../clutter/clutter-table-layout.c:561
-msgid "Row Span"
-msgstr "Sorátnyúlás"
-
-#: ../clutter/clutter-table-layout.c:562
-msgid "The number of rows the widget should span"
-msgstr "A sorok száma, amelybe a felületi elem átnyúlhat"
-
-#: ../clutter/clutter-table-layout.c:569
-msgid "Horizontal Expand"
-msgstr "Vízszintes bővülés"
-
-#: ../clutter/clutter-table-layout.c:570
-msgid "Allocate extra space for the child in horizontal axis"
-msgstr "További terület lefoglalása a gyermeknek a vízszintes tengelyen"
-
-#: ../clutter/clutter-table-layout.c:576
-msgid "Vertical Expand"
-msgstr "Függőleges bővülés"
-
-#: ../clutter/clutter-table-layout.c:577
-msgid "Allocate extra space for the child in vertical axis"
-msgstr "További terület lefoglalása a gyermeknek a függőleges tengelyen"
-
-#: ../clutter/clutter-table-layout.c:1630
-msgid "Spacing between columns"
-msgstr "Térköz az oszlopok között"
-
-#: ../clutter/clutter-table-layout.c:1644
-msgid "Spacing between rows"
-msgstr "Térköz a sorok között"
-
-#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3431
+#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3439
 msgid "Text"
 msgstr "Szöveg"
 
@@ -1762,205 +1778,205 @@ msgstr ""
 "A bejegyzésben felhasználható karakterek maximális száma. Ha nulla, akkor "
 "nincs maximum "
 
-#: ../clutter/clutter-text.c:3378
+#: ../clutter/clutter-text.c:3386
 msgid "Buffer"
 msgstr "Puffer"
 
-#: ../clutter/clutter-text.c:3379
+#: ../clutter/clutter-text.c:3387
 msgid "The buffer for the text"
 msgstr "A szöveg puffere"
 
-#: ../clutter/clutter-text.c:3397
+#: ../clutter/clutter-text.c:3405
 msgid "The font to be used by the text"
 msgstr "A szöveg által használandó betűkészlet"
 
-#: ../clutter/clutter-text.c:3414
+#: ../clutter/clutter-text.c:3422
 msgid "Font Description"
 msgstr "Betűkészlet leírása"
 
-#: ../clutter/clutter-text.c:3415
+#: ../clutter/clutter-text.c:3423
 msgid "The font description to be used"
 msgstr "A használandó betűkészlet leírása"
 
-#: ../clutter/clutter-text.c:3432
+#: ../clutter/clutter-text.c:3440
 msgid "The text to render"
 msgstr "A megjelenítendő szöveg"
 
-#: ../clutter/clutter-text.c:3446
+#: ../clutter/clutter-text.c:3454
 msgid "Font Color"
 msgstr "Betűkészlet színe"
 
-#: ../clutter/clutter-text.c:3447
+#: ../clutter/clutter-text.c:3455
 msgid "Color of the font used by the text"
 msgstr "A szöveg által használandó betűkészlet színe"
 
-#: ../clutter/clutter-text.c:3462
+#: ../clutter/clutter-text.c:3470
 msgid "Editable"
 msgstr "Szerkeszthető"
 
-#: ../clutter/clutter-text.c:3463
+#: ../clutter/clutter-text.c:3471
 msgid "Whether the text is editable"
 msgstr "A szöveg szerkeszthető-e"
 
-#: ../clutter/clutter-text.c:3478
+#: ../clutter/clutter-text.c:3486
 msgid "Selectable"
 msgstr "Kijelölhető"
 
-#: ../clutter/clutter-text.c:3479
+#: ../clutter/clutter-text.c:3487
 msgid "Whether the text is selectable"
 msgstr "A szöveg kijelölhető-e"
 
-#: ../clutter/clutter-text.c:3493
+#: ../clutter/clutter-text.c:3501
 msgid "Activatable"
 msgstr "Aktiválható"
 
-#: ../clutter/clutter-text.c:3494
+#: ../clutter/clutter-text.c:3502
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "A visszaadott lenyomás okozza-e a kibocsátandó jel aktiválását"
 
-#: ../clutter/clutter-text.c:3511
+#: ../clutter/clutter-text.c:3519
 msgid "Whether the input cursor is visible"
 msgstr "A bemeneti kurzor látható-e"
 
-#: ../clutter/clutter-text.c:3525 ../clutter/clutter-text.c:3526
+#: ../clutter/clutter-text.c:3533 ../clutter/clutter-text.c:3534
 msgid "Cursor Color"
 msgstr "Kurzor színe"
 
-#: ../clutter/clutter-text.c:3541
+#: ../clutter/clutter-text.c:3549
 msgid "Cursor Color Set"
 msgstr "Kurzor színe beállítva"
 
-#: ../clutter/clutter-text.c:3542
+#: ../clutter/clutter-text.c:3550
 msgid "Whether the cursor color has been set"
 msgstr "A kurzor színe be lett-e állítva"
 
-#: ../clutter/clutter-text.c:3557
+#: ../clutter/clutter-text.c:3565
 msgid "Cursor Size"
 msgstr "Kurzor mérete"
 
-#: ../clutter/clutter-text.c:3558
+#: ../clutter/clutter-text.c:3566
 msgid "The width of the cursor, in pixels"
 msgstr "A kurzor szélessége képpontokban"
 
-#: ../clutter/clutter-text.c:3574 ../clutter/clutter-text.c:3592
+#: ../clutter/clutter-text.c:3582 ../clutter/clutter-text.c:3600
 msgid "Cursor Position"
 msgstr "Kurzor pozíciója"
 
-#: ../clutter/clutter-text.c:3575 ../clutter/clutter-text.c:3593
+#: ../clutter/clutter-text.c:3583 ../clutter/clutter-text.c:3601
 msgid "The cursor position"
 msgstr "A kurzor pozíciója"
 
-#: ../clutter/clutter-text.c:3608
+#: ../clutter/clutter-text.c:3616
 msgid "Selection-bound"
 msgstr "Kijelölés-határ"
 
-#: ../clutter/clutter-text.c:3609
+#: ../clutter/clutter-text.c:3617
 msgid "The cursor position of the other end of the selection"
 msgstr "A kijelölés másik végének kurzor pozíciója"
 
-#: ../clutter/clutter-text.c:3624 ../clutter/clutter-text.c:3625
+#: ../clutter/clutter-text.c:3632 ../clutter/clutter-text.c:3633
 msgid "Selection Color"
 msgstr "Kijelölés színe"
 
-#: ../clutter/clutter-text.c:3640
+#: ../clutter/clutter-text.c:3648
 msgid "Selection Color Set"
 msgstr "Kijelölés színe beállítva"
 
-#: ../clutter/clutter-text.c:3641
+#: ../clutter/clutter-text.c:3649
 msgid "Whether the selection color has been set"
 msgstr "A kijelölés színe be lett-e állítva"
 
-#: ../clutter/clutter-text.c:3656
+#: ../clutter/clutter-text.c:3664
 msgid "Attributes"
 msgstr "Attribútumok"
 
-#: ../clutter/clutter-text.c:3657
+#: ../clutter/clutter-text.c:3665
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "A szereplő tartalmain alkalmazandó stílusattribútumok listája"
 
-#: ../clutter/clutter-text.c:3679
+#: ../clutter/clutter-text.c:3687
 msgid "Use markup"
 msgstr "Jelölőkód használata"
 
-#: ../clutter/clutter-text.c:3680
+#: ../clutter/clutter-text.c:3688
 msgid "Whether or not the text includes Pango markup"
 msgstr "A szöveg tartalmaz-e Pango jelölőkódot vagy sem"
 
-#: ../clutter/clutter-text.c:3696
+#: ../clutter/clutter-text.c:3704
 msgid "Line wrap"
 msgstr "Sorok tördelése"
 
-#: ../clutter/clutter-text.c:3697
+#: ../clutter/clutter-text.c:3705
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "Ha be van állítva, a sorok megtörnek, ha a szöveg túl hosszú"
 
-#: ../clutter/clutter-text.c:3712
+#: ../clutter/clutter-text.c:3720
 msgid "Line wrap mode"
 msgstr "Sorok tördelésének módja"
 
-#: ../clutter/clutter-text.c:3713
+#: ../clutter/clutter-text.c:3721
 msgid "Control how line-wrapping is done"
 msgstr "Annak vezérlése, hogy hogyan teljesüljön a sorok tördelése"
 
-#: ../clutter/clutter-text.c:3728
+#: ../clutter/clutter-text.c:3736
 msgid "Ellipsize"
 msgstr "Kihagyások"
 
-#: ../clutter/clutter-text.c:3729
+#: ../clutter/clutter-text.c:3737
 msgid "The preferred place to ellipsize the string"
 msgstr "A szöveg kihagyásának előnyben részesített helye"
 
-#: ../clutter/clutter-text.c:3745
+#: ../clutter/clutter-text.c:3753
 msgid "Line Alignment"
 msgstr "Sorok igazítása"
 
-#: ../clutter/clutter-text.c:3746
+#: ../clutter/clutter-text.c:3754
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "A szöveg előnyben részesített igazítása többsoros szövegnél"
 
-#: ../clutter/clutter-text.c:3762
+#: ../clutter/clutter-text.c:3770
 msgid "Justify"
 msgstr "Sorkizárt"
 
-#: ../clutter/clutter-text.c:3763
+#: ../clutter/clutter-text.c:3771
 msgid "Whether the text should be justified"
 msgstr "A szöveg legyen-e sorkizárt"
 
-#: ../clutter/clutter-text.c:3778
+#: ../clutter/clutter-text.c:3786
 msgid "Password Character"
 msgstr "Jelszó karakter"
 
-#: ../clutter/clutter-text.c:3779
+#: ../clutter/clutter-text.c:3787
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr ""
 "Ha nem nulla, használja ezt a karaktert a szereplő tartalmainak "
 "megjelenítéséhez"
 
-#: ../clutter/clutter-text.c:3793
+#: ../clutter/clutter-text.c:3801
 msgid "Max Length"
 msgstr "Legnagyobb hossz"
 
-#: ../clutter/clutter-text.c:3794
+#: ../clutter/clutter-text.c:3802
 msgid "Maximum length of the text inside the actor"
 msgstr "A szöveg legnagyobb hossza a szereplőn belül"
 
-#: ../clutter/clutter-text.c:3817
+#: ../clutter/clutter-text.c:3825
 msgid "Single Line Mode"
 msgstr "Egysoros mód"
 
-#: ../clutter/clutter-text.c:3818
+#: ../clutter/clutter-text.c:3826
 msgid "Whether the text should be a single line"
 msgstr "A szöveg lehet-e egysoros"
 
-#: ../clutter/clutter-text.c:3832 ../clutter/clutter-text.c:3833
+#: ../clutter/clutter-text.c:3840 ../clutter/clutter-text.c:3841
 msgid "Selected Text Color"
 msgstr "Kijelölt szöveg színe"
 
-#: ../clutter/clutter-text.c:3848
+#: ../clutter/clutter-text.c:3856
 msgid "Selected Text Color Set"
 msgstr "Kijelölt szöveg színe beállítva"
 
-#: ../clutter/clutter-text.c:3849
+#: ../clutter/clutter-text.c:3857
 msgid "Whether the selected text color has been set"
 msgstr "A kijelölt szöveg színe be lett-e állítva"
 
@@ -2051,11 +2067,11 @@ msgstr "Eltávolítás befejezéskor"
 msgid "Detach the transition when completed"
 msgstr "Átmenet leválasztása, amikor befejeződött"
 
-#: ../clutter/clutter-zoom-action.c:354
+#: ../clutter/clutter-zoom-action.c:365
 msgid "Zoom Axis"
 msgstr "Nagyítási tengely"
 
-#: ../clutter/clutter-zoom-action.c:355
+#: ../clutter/clutter-zoom-action.c:366
 msgid "Constraints the zoom to an axis"
 msgstr "Kényszeríti a nagyítást egy tengelyre"
 
@@ -2487,6 +2503,62 @@ msgstr ""
 msgid "Default transition duration"
 msgstr "Alapértelmezett átmenet időtartam"
 
+#: ../clutter/deprecated/clutter-table-layout.c:543
+msgid "Column Number"
+msgstr "Oszlopszám"
+
+#: ../clutter/deprecated/clutter-table-layout.c:544
+msgid "The column the widget resides in"
+msgstr "Az oszlop, amelyben a felületi elem található"
+
+#: ../clutter/deprecated/clutter-table-layout.c:551
+msgid "Row Number"
+msgstr "Sorszám"
+
+#: ../clutter/deprecated/clutter-table-layout.c:552
+msgid "The row the widget resides in"
+msgstr "A sor, amelyben a felületi elem található"
+
+#: ../clutter/deprecated/clutter-table-layout.c:559
+msgid "Column Span"
+msgstr "Oszlopátnyúlás"
+
+#: ../clutter/deprecated/clutter-table-layout.c:560
+msgid "The number of columns the widget should span"
+msgstr "Az oszlopok száma, amelybe a felületi elem átnyúlhat"
+
+#: ../clutter/deprecated/clutter-table-layout.c:567
+msgid "Row Span"
+msgstr "Sorátnyúlás"
+
+#: ../clutter/deprecated/clutter-table-layout.c:568
+msgid "The number of rows the widget should span"
+msgstr "A sorok száma, amelybe a felületi elem átnyúlhat"
+
+#: ../clutter/deprecated/clutter-table-layout.c:575
+msgid "Horizontal Expand"
+msgstr "Vízszintes bővülés"
+
+#: ../clutter/deprecated/clutter-table-layout.c:576
+msgid "Allocate extra space for the child in horizontal axis"
+msgstr "További terület lefoglalása a gyermeknek a vízszintes tengelyen"
+
+#: ../clutter/deprecated/clutter-table-layout.c:582
+msgid "Vertical Expand"
+msgstr "Függőleges bővülés"
+
+#: ../clutter/deprecated/clutter-table-layout.c:583
+msgid "Allocate extra space for the child in vertical axis"
+msgstr "További terület lefoglalása a gyermeknek a függőleges tengelyen"
+
+#: ../clutter/deprecated/clutter-table-layout.c:1638
+msgid "Spacing between columns"
+msgstr "Térköz az oszlopok között"
+
+#: ../clutter/deprecated/clutter-table-layout.c:1654
+msgid "Spacing between rows"
+msgstr "Térköz a sorok között"
+
 #: ../clutter/deprecated/clutter-texture.c:992
 msgid "Sync size of actor"
 msgstr "Szereplő méretének szinkronizálása"
@@ -2603,8 +2675,8 @@ msgid ""
 "Decode image data files inside a thread to reduce blocking when loading "
 "images from disk"
 msgstr ""
-"Képadat fájlok dekódolása egy szálon belül a blokkolás csökkentése érdekében, "
-"amikor képeket tölt be a lemezről"
+"Képadat fájlok dekódolása egy szálon belül a blokkolás csökkentése "
+"érdekében, amikor képeket tölt be a lemezről"
 
 #: ../clutter/deprecated/clutter-texture.c:1163
 msgid "Pick With Alpha"
@@ -2736,7 +2808,8 @@ msgstr "Automatikus frissítések"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:571
 msgid "If the texture should be kept in sync with any pixmap changes."
 msgstr ""
-"Ha a mintázatot szinkronizációban kellene tartani bármilyen képváltoztatással."
+"Ha a mintázatot szinkronizációban kellene tartani bármilyen "
+"képváltoztatással."
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:579
 msgid "Window"
