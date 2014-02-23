@@ -1041,7 +1041,7 @@ stack_tracker_event_received (MetaStackTracker *tracker,
 
   if (op->any.serial < tracker->xserver_serial)
     {
-      g_warning ("Spurious X event received affecting stack; doing full re-query");
+      /* g_warning ("Spurious X event received affecting stack; doing full re-query"); */
       resync_verified_stack_with_xserver_stack (tracker);
       meta_stack_tracker_dump (tracker);
       return;
