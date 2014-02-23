@@ -221,9 +221,7 @@ cogl_is_##type_name (void *object)                                      \
 
 #define COGL_OBJECT_DEFINE_WITH_CODE(TypeName, type_name, code)         \
                                                                         \
-COGL_OBJECT_COMMON_DEFINE_WITH_CODE(TypeName,                           \
-                                    type_name,                          \
-                                    do { code; } while (0);)            \
+COGL_OBJECT_COMMON_DEFINE_WITH_CODE(TypeName, type_name, code)          \
                                                                         \
 CoglBool                                                                \
 cogl_is_##type_name (void *object)                                      \

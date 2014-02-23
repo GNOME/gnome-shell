@@ -119,7 +119,7 @@ void
 _cogl_buffer_register_buffer_type (const CoglObjectClass *klass);
 
 #define COGL_BUFFER_DEFINE(TypeName, type_name)                         \
-  COGL_OBJECT_DEFINE_WITH_CODE_GTYPE                                    \
+  COGL_OBJECT_DEFINE_WITH_CODE                                          \
   (TypeName, type_name,                                                 \
    _cogl_buffer_register_buffer_type (&_cogl_##type_name##_class))
 
