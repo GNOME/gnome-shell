@@ -315,6 +315,8 @@ const SearchResultsBase = new Lang.Class({
     },
 
     clear: function() {
+        for (let resultId in this._resultDisplays)
+            this._resultDisplays[resultId].actor.destroy();
         this._resultDisplays = {};
         this._clearResultDisplay();
         this.actor.hide();
