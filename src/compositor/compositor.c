@@ -316,39 +316,33 @@ meta_focus_stage_window (MetaScreen *screen,
   if (!stage)
     return;
 
-  if (!meta_is_wayland_compositor ())
-    {
-      window = clutter_x11_get_stage_window (stage);
+  window = clutter_x11_get_stage_window (stage);
 
-      if (window == None)
-        return;
+  if (window == None)
+    return;
 
-      meta_display_set_input_focus_xwindow (screen->display,
-                                            screen,
-                                            META_FOCUS_STAGE,
-                                            window,
-                                            timestamp);
-    }
-  else
-    {
-      meta_display_set_input_focus_xwindow (screen->display,
-                                            screen,
-                                            META_FOCUS_STAGE,
-                                            None,
-                                            timestamp);
-    }
+  meta_display_set_input_focus_xwindow (screen->display,
+                                        screen,
+                                        window,
+                                        timestamp);
 }
 
 gboolean
 meta_stage_is_focused (MetaScreen *screen)
 {
   ClutterStage *stage;
+  Window window;
 
   stage = CLUTTER_STAGE (meta_get_stage_for_screen (screen));
   if (!stage)
     return FALSE;
 
-  return (screen->display->focus_type == META_FOCUS_STAGE);
+  window = clutter_x11_get_stage_window (stage);
+
+  if (window == None)
+    return FALSE;
+
+  return (screen->display->focus_xwindow == window);
 }
 
 static gboolean
