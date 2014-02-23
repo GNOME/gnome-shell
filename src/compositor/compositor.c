@@ -333,6 +333,9 @@ meta_stage_is_focused (MetaScreen *screen)
   ClutterStage *stage;
   Window window;
 
+  if (meta_is_wayland_compositor ())
+    return TRUE;
+
   stage = CLUTTER_STAGE (meta_get_stage_for_screen (screen));
   if (!stage)
     return FALSE;
