@@ -1485,14 +1485,7 @@ meta_window_x11_new (MetaDisplay       *display,
                                     existing_wm_state,
                                     effect,
                                     &attrs);
-
-  /* When running as an X compositor, we can simply show the window now.
-   *
-   * When running as a Wayland compositor, we need to wait until we see
-   * the Wayland surface appear. We will later call meta_window_set_surface_mapped()
-   * to show the window in our in our set_surface_id implementation */
-  if (!meta_is_wayland_compositor ())
-    meta_window_set_surface_mapped (window, TRUE);
+  meta_window_set_surface_mapped (window, TRUE);
 
   meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
   return window;

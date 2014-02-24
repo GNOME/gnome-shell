@@ -49,8 +49,6 @@ xserver_set_window_id (struct wl_client *client,
 
   surface->window = window;
   window->surface = surface;
-
-  meta_window_set_surface_mapped (window, TRUE);
 }
 
 static const struct xserver_interface xserver_implementation = {
