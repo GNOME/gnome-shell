@@ -52,11 +52,8 @@ const Indicator = new Lang.Class({
         this._item = new PopupMenu.PopupSubMenuMenuItem(_("Location"), true);
         this._item.icon.icon_name = 'find-location-symbolic';
 
-        var credentials = new Gio.Credentials();
-        var uid = credentials.get_unix_user();
         this._agent = Gio.DBusExportedObject.wrapJSObject(AgentIface, this);
-        this._agent.export(Gio.DBus.system,
-                          '/org/freedesktop/GeoClue2/Agent/' + uid);
+        this._agent.export(Gio.DBus.system, '/org/freedesktop/GeoClue2/Agent');
 
         this._item.status.text = _("On");
         this._onOffAction = this._item.menu.addAction(_("Turn Off"), Lang.bind(this, this._onOnOffAction));
