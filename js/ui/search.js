@@ -340,12 +340,22 @@ const SearchResultsBase = new Lang.Class({
         }));
 
         if (metasNeeded.length === 0) {
-            callback();
+            callback(true);
         } else {
             this._cancellable.cancel();
             this._cancellable.reset();
 
             this.provider.getResultMetas(metasNeeded, Lang.bind(this, function(metas) {
+                if (metas.length == 0) {
+                    callback(false);
+                    return;
+                }
+                if (metas.length != metasNeeded.length) {
+                    log('Wrong number of result metas returned by search provider');
+                    callback(false);
+                    return;
+                }
+
                 metasNeeded.forEach(Lang.bind(this, function(resultId, i) {
                     let meta = metas[i];
                     let display = this._createResultDisplay(meta);
@@ -353,7 +363,7 @@ const SearchResultsBase = new Lang.Class({
                     display.actor.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
                     this._resultDisplays[resultId] = display;
                 }));
-                callback();
+                callback(true);
             }), this._cancellable);
         }
     },
@@ -370,8 +380,10 @@ const SearchResultsBase = new Lang.Class({
             let results = this.provider.filterResults(providerResults, maxResults);
             let hasMoreResults = results.length < providerResults.length;
 
-            this._ensureResultActors(results, Lang.bind(this, function() {
+            this._ensureResultActors(results, Lang.bind(this, function(successful) {
                 this._clearResultDisplay();
+                if (!successful)
+                    return;
 
                 // To avoid CSS transitions causing flickering when
                 // the first search result stays the same, we hide the
