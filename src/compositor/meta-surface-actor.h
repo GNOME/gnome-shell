@@ -69,9 +69,8 @@ void meta_surface_actor_pre_paint (MetaSurfaceActor *actor);
 gboolean meta_surface_actor_is_argb32 (MetaSurfaceActor *actor);
 gboolean meta_surface_actor_is_visible (MetaSurfaceActor *actor);
 
-void meta_surface_actor_freeze (MetaSurfaceActor *actor);
-void meta_surface_actor_thaw (MetaSurfaceActor *actor);
-gboolean meta_surface_actor_is_frozen (MetaSurfaceActor *actor);
+void meta_surface_actor_set_frozen (MetaSurfaceActor *actor,
+                                    gboolean          frozen);
 
 gboolean meta_surface_actor_should_unredirect (MetaSurfaceActor *actor);
 void meta_surface_actor_set_unredirected (MetaSurfaceActor *actor,

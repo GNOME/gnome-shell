@@ -26,8 +26,8 @@ struct _MetaSurfaceActorPrivate
   cairo_region_t *input_region;
 
   /* Freeze/thaw accounting */
-  guint freeze_count;
   guint needs_damage_all : 1;
+  guint frozen : 1;
 };
 
 static void cullable_iface_init (MetaCullableInterface *iface);
@@ -223,7 +223,7 @@ static gboolean
 is_frozen (MetaSurfaceActor *self)
 {
   MetaSurfaceActorPrivate *priv = self->priv;
-  return (priv->freeze_count > 0);
+  return priv->frozen;
 }
 
 void
@@ -274,42 +274,24 @@ meta_surface_actor_is_visible (MetaSurfaceActor *self)
 }
 
 void
-meta_surface_actor_freeze (MetaSurfaceActor *self)
+meta_surface_actor_set_frozen (MetaSurfaceActor *self,
+                               gboolean          frozen)
 {
   MetaSurfaceActorPrivate *priv = self->priv;
 
-  priv->freeze_count ++;
-}
+  priv->frozen = frozen;
 
-void
-meta_surface_actor_thaw (MetaSurfaceActor *self)
-{
-  MetaSurfaceActorPrivate *priv = self->priv;
-
-  if (priv->freeze_count == 0)
+  if (!frozen && priv->needs_damage_all)
     {
-      g_critical ("Error in freeze/thaw accounting.");
-      return;
-    }
+      /* Since we ignore damage events while a window is frozen for certain effects
+       * we may need to issue an update_area() covering the whole pixmap if we
+       * don't know what real damage has happened. */
 
-  priv->freeze_count --;
-
-  /* Since we ignore damage events while a window is frozen for certain effects
-   * we may need to issue an update_area() covering the whole pixmap if we
-   * don't know what real damage has happened. */
-  if (priv->needs_damage_all)
-    {
       meta_surface_actor_process_damage (self, 0, 0,
                                          clutter_actor_get_width (CLUTTER_ACTOR (priv->texture)),
                                          clutter_actor_get_height (CLUTTER_ACTOR (priv->texture)));
       priv->needs_damage_all = FALSE;
     }
-}
-
-gboolean
-meta_surface_actor_is_frozen (MetaSurfaceActor *self)
-{
-  return is_frozen (self);
 }
 
 gboolean
