@@ -6,6 +6,7 @@ lib_LTLIBRARIES = libmutter-wayland.la
 SUBDIRS=compositor/plugins
 
 INCLUDES=								\
+	-DCLUTTER_ENABLE_COMPOSITOR_API					\
 	-DCLUTTER_ENABLE_EXPERIMENTAL_API				\
 	-DCOGL_ENABLE_EXPERIMENTAL_API					\
 	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API                              \
