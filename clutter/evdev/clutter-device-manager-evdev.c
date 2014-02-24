@@ -56,6 +56,11 @@
 
 #define AUTOREPEAT_VALUE 2
 
+/* Try to keep the pointer inside the stage. Hopefully no one is using
+ * this backend with stages smaller than this. */
+#define INITIAL_POINTER_X 16
+#define INITIAL_POINTER_Y 16
+
 struct _ClutterSeatEvdev
 {
   struct libinput_seat *libinput_seat;
@@ -1181,6 +1186,13 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
     }
 
   dispatch_libinput (manager_evdev);
+
+  g_assert (priv->main_seat != NULL);
+  g_assert (priv->main_seat->core_pointer != NULL);
+  _clutter_input_device_set_coords (priv->main_seat->core_pointer,
+                                    NULL,
+                                    INITIAL_POINTER_X, INITIAL_POINTER_Y,
+                                    NULL);
 
   source = clutter_event_source_new (manager_evdev);
   priv->event_source = source;
