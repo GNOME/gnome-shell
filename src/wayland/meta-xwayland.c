@@ -47,6 +47,8 @@ xserver_set_window_id (struct wl_client *client,
   if (!window)
     return;
 
+  meta_wayland_surface_make_toplevel (surface);
+
   surface->window = window;
   window->surface = surface;
 }

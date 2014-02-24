@@ -574,23 +574,16 @@ const struct wl_surface_interface meta_wayland_surface_interface = {
   meta_wayland_surface_set_buffer_scale
 };
 
-static void
-unparent_actor (MetaWaylandSurface *surface)
+void
+meta_wayland_surface_make_toplevel (MetaWaylandSurface *surface)
 {
-  ClutterActor *parent_actor;
-
-  parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->surface_actor));
-  clutter_actor_remove_child (parent_actor, CLUTTER_ACTOR (surface->surface_actor));
+  clutter_actor_set_reactive (CLUTTER_ACTOR (surface->surface_actor), TRUE);
 }
 
 void
 meta_wayland_surface_window_unmanaged (MetaWaylandSurface *surface)
 {
-  /* The window is being unmanaged. Unparent our surface actor
-   * before the window actor is destroyed, as we need to hold
-   * onto it... */
-  unparent_actor (surface);
-
+  clutter_actor_set_reactive (CLUTTER_ACTOR (surface->surface_actor), FALSE);
   surface->window = NULL;
 }
 
@@ -649,10 +642,8 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
 
   surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
   surface->surface_actor = g_object_ref_sink (meta_surface_actor_wayland_new (surface));
-  clutter_actor_set_reactive (CLUTTER_ACTOR (surface->surface_actor), TRUE);
 
   double_buffered_state_init (&surface->pending);
-
   return surface;
 }
 
@@ -980,6 +971,7 @@ xdg_shell_get_xdg_surface (struct wl_client *client,
       return;
     }
 
+  meta_wayland_surface_make_toplevel (surface);
   surface->window = meta_window_wayland_new (meta_get_display (), surface);
 }
 
@@ -1035,6 +1027,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
       return;
     }
 
+  meta_wayland_surface_make_toplevel (surface);
   surface->window = meta_window_wayland_new (meta_get_display (), surface);
   surface->window->rect.x = parent_surf->window->rect.x + x;
   surface->window->rect.y = parent_surf->window->rect.y + y;
@@ -1247,6 +1240,14 @@ subsurface_parent_surface_committed (MetaWaylandSurface *surface)
     commit_double_buffered_state (surface, pending_surface_state);
 
   double_buffered_state_reset (pending_surface_state);
+}
+
+static void
+unparent_actor (MetaWaylandSurface *surface)
+{
+  ClutterActor *parent_actor;
+  parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->surface_actor));
+  clutter_actor_remove_child (parent_actor, CLUTTER_ACTOR (surface->surface_actor));
 }
 
 static void

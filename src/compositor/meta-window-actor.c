@@ -68,6 +68,9 @@ struct _MetaWindowActorPrivate
   guint             send_frame_messages_timer;
   gint64            frame_drawn_time;
 
+  guint             repaint_scheduled_id;
+  guint             allocation_changed_id;
+
   /*
    * These need to be counters rather than flags, since more plugins
    * can implement same effect; the practicality of stacking effects
@@ -295,6 +298,57 @@ meta_window_actor_thaw (MetaWindowActor *self)
 }
 
 static void
+set_surface (MetaWindowActor  *self,
+             MetaSurfaceActor *surface)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+
+  if (priv->surface)
+    {
+      g_signal_handler_disconnect (priv->surface, priv->repaint_scheduled_id);
+      priv->repaint_scheduled_id = 0;
+      g_signal_handler_disconnect (priv->surface, priv->allocation_changed_id);
+      priv->allocation_changed_id = 0;
+      clutter_actor_remove_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
+      g_object_unref (priv->surface);
+    }
+
+  priv->surface = surface;
+
+  if (priv->surface)
+    {
+      g_object_ref_sink (priv->surface);
+      priv->repaint_scheduled_id = g_signal_connect (priv->surface, "repaint-scheduled",
+                                                     G_CALLBACK (surface_repaint_scheduled), self);
+      priv->allocation_changed_id = g_signal_connect (priv->surface, "allocation-changed",
+                                                      G_CALLBACK (surface_allocation_changed_notify), self);
+      clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
+
+      /* If the previous surface actor was frozen, start out
+       * frozen as well... */
+      if (priv->updates_frozen)
+        meta_surface_actor_freeze (priv->surface);
+
+      meta_window_actor_update_shape (self);
+    }
+}
+
+static void
+meta_window_actor_update_surface (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaWindow *window = priv->window;
+  MetaSurfaceActor *surface_actor;
+
+  if (window->surface)
+    surface_actor = window->surface->surface_actor;
+  else
+    surface_actor = meta_surface_actor_x11_new (window);
+
+  set_surface (self, surface_actor);
+}
+
+static void
 meta_window_actor_constructed (GObject *object)
 {
   MetaWindowActor        *self     = META_WINDOW_ACTOR (object);
@@ -303,22 +357,7 @@ meta_window_actor_constructed (GObject *object)
 
   priv->screen = window->screen;
 
-  if (!priv->surface)
-    {
-      if (window->surface)
-        priv->surface = window->surface->surface_actor;
-      else
-        priv->surface = meta_surface_actor_x11_new (window);
-      g_object_ref_sink (priv->surface);
-
-      clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
-
-      g_signal_connect_object (priv->surface, "repaint-scheduled",
-                               G_CALLBACK (surface_repaint_scheduled), self, 0);
-      g_signal_connect_object (priv->surface, "allocation-changed",
-                               G_CALLBACK (surface_allocation_changed_notify), self, 0);
-      meta_window_actor_update_shape (self);
-    }
+  meta_window_actor_update_surface (self);
 
   meta_window_actor_update_opacity (self);
 
@@ -361,10 +400,7 @@ meta_window_actor_dispose (GObject *object)
 
   g_clear_object (&priv->window);
 
-  /*
-   * Release the extra reference we took on the actor.
-   */
-  g_clear_object (&priv->surface);
+  set_surface (self, NULL);
 
   G_OBJECT_CLASS (meta_window_actor_parent_class)->dispose (object);
 }
