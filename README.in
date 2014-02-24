@@ -326,6 +326,12 @@ Release Notes for Clutter 1.18
   libevdev and libgudev directly, but relies on libinput for discovering,
   reading and processing input devices.
 
+• The Clutter evdev input device backend was already considered
+  experimental and not subject to Clutter's API and ABI stabitility
+  guarantees. Starting from 1.18, users have to explicitly acknowldge
+  this by having to #define CLUTTER_ENABLE_COMPOSITOR_API to use its
+  public API.
+
 Release Notes for Clutter 1.16
 -------------------------------------------------------------------------------
 

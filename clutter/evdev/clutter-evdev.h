@@ -31,6 +31,10 @@
 
 G_BEGIN_DECLS
 
+#if !defined(CLUTTER_ENABLE_COMPOSITOR_API) && !defined(CLUTTER_COMPILATION)
+#error "You need to define CLUTTER_ENABLE_COMPOSITOR_API before including clutter-evdev.h"
+#endif
+
 /**
  * ClutterOpenDeviceCallback:
  * @path: the device path
@@ -80,6 +84,7 @@ void  clutter_evdev_set_pointer_constrain_callback (ClutterDeviceManager        
 
 void               clutter_evdev_set_keyboard_map   (ClutterDeviceManager *evdev,
 						     struct xkb_keymap    *keymap);
+
 
 G_END_DECLS
 
