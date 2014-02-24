@@ -1,14 +1,14 @@
 # Serbian translation for clutter.
 # Copyright (C) 2011 clutter's COPYRIGHT HOLDER
 # This file is distributed under the same license as the clutter package.
-# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011, 2012, 2013, 2014.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011—2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutte"
 "r&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-03 16:12+0000\n"
-"PO-Revision-Date: 2014-02-03 21:19+0200\n"
+"POT-Creation-Date: 2014-02-24 16:09+0000\n"
+"PO-Revision-Date: 2014-02-24 22:38+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -936,22 +936,18 @@ msgid "The height of the canvas"
 msgstr "Visina platna"
 
 #: ../clutter/clutter-canvas.c:283
-#| msgid "Selection Color Set"
 msgid "Scale Factor Set"
 msgstr "Podešeni činilac srazmere"
 
 #: ../clutter/clutter-canvas.c:284
-#| msgid "Whether the transform property is set"
 msgid "Whether the scale-factor property is set"
 msgstr "Da li je podešeno svojstvo činioca srazmere"
 
 #: ../clutter/clutter-canvas.c:305
-#| msgid "Factor"
 msgid "Scale Factor"
 msgstr "Činilac srazmere"
 
 #: ../clutter/clutter-canvas.c:306
-#| msgid "The height of the Cairo surface"
 msgid "The scaling factor for the surface"
 msgstr "Činilac srazmere za površinu"
 
@@ -1155,22 +1151,41 @@ msgstr "Najveća visina za svaki red"
 msgid "Snap to grid"
 msgstr "Prioni na mrežu"
 
-#: ../clutter/clutter-gesture-action.c:639
+#: ../clutter/clutter-gesture-action.c:668
 msgid "Number touch points"
 msgstr "Broj tačaka dodira"
 
-#: ../clutter/clutter-gesture-action.c:640
+#: ../clutter/clutter-gesture-action.c:669
 msgid "Number of touch points"
 msgstr "Broj dodirnih tačaka"
 
-#: ../clutter/clutter-gesture-action.c:655
+#: ../clutter/clutter-gesture-action.c:684
 msgid "Threshold Trigger Edge"
-msgstr "Ivica okidača osetljivosti"
+msgstr "Osetljivost ivice okidača"
 
-#: ../clutter/clutter-gesture-action.c:656
-#| msgid "The timeline used by the animation"
+#: ../clutter/clutter-gesture-action.c:685
 msgid "The trigger edge used by the action"
 msgstr "Ivica okidača koju koristi radnja"
+
+#: ../clutter/clutter-gesture-action.c:704
+#| msgid "Threshold Trigger Edge"
+msgid "Threshold Trigger Horizontal Distance"
+msgstr "Osetljivost vodoravne udaljenosti okidača"
+
+#: ../clutter/clutter-gesture-action.c:705
+#| msgid "The trigger edge used by the action"
+msgid "The horizontal trigger distance used by the action"
+msgstr "Vodoravno odstojanje okidača koju koristi radnja"
+
+#: ../clutter/clutter-gesture-action.c:723
+#| msgid "Threshold Trigger Edge"
+msgid "Threshold Trigger Vertical Distance"
+msgstr "Osetljivost uspravne udaljenosti okidača"
+
+#: ../clutter/clutter-gesture-action.c:724
+#| msgid "The trigger edge used by the action"
+msgid "The vertical trigger distance used by the action"
+msgstr "Uspravno odstojanje okidača koju koristi radnja"
 
 #: ../clutter/clutter-grid-layout.c:1223
 msgid "Left attachment"
@@ -1388,35 +1403,35 @@ msgstr "Opcije Galamdžije"
 msgid "Show Clutter Options"
 msgstr "Prikazuje opcije Galamdžije"
 
-#: ../clutter/clutter-pan-action.c:446
+#: ../clutter/clutter-pan-action.c:455
 msgid "Pan Axis"
 msgstr "Osa pomeranja"
 
-#: ../clutter/clutter-pan-action.c:447
+#: ../clutter/clutter-pan-action.c:456
 msgid "Constraints the panning to an axis"
 msgstr "Ograničava pomeranje na osu"
 
-#: ../clutter/clutter-pan-action.c:461
+#: ../clutter/clutter-pan-action.c:470
 msgid "Interpolate"
 msgstr "Utapanje"
 
-#: ../clutter/clutter-pan-action.c:462
+#: ../clutter/clutter-pan-action.c:471
 msgid "Whether interpolated events emission is enabled."
 msgstr "Da li je uključeno odašiljanje utopljenih događaja"
 
-#: ../clutter/clutter-pan-action.c:478
+#: ../clutter/clutter-pan-action.c:487
 msgid "Deceleration"
 msgstr "Usporavanje"
 
-#: ../clutter/clutter-pan-action.c:479
+#: ../clutter/clutter-pan-action.c:488
 msgid "Rate at which the interpolated panning will decelerate in"
 msgstr "Odnos pri u kome će utopljeno pomeranje da uspori"
 
-#: ../clutter/clutter-pan-action.c:496
+#: ../clutter/clutter-pan-action.c:505
 msgid "Initial acceleration factor"
 msgstr "Sastojak početnog ubrzanja"
 
-#: ../clutter/clutter-pan-action.c:497
+#: ../clutter/clutter-pan-action.c:506
 msgid "Factor applied to the momentum when starting the interpolated phase"
 msgstr "Sastojak koji se primenjuje na zamah prilikom pokretanja faze utapanja"
 
@@ -1567,7 +1582,6 @@ msgid "Window Scaling Factor"
 msgstr "Činilac srazmeravanja prozora"
 
 #: ../clutter/clutter-settings.c:662
-#| msgid "Add an effect to be applied on the actor"
 msgid "The scaling factor to be applied to windows"
 msgstr "Činilac srazmeravanja koji će se primenjivati nad prozorima"
 
@@ -2036,11 +2050,11 @@ msgstr "Ukloni kada je obavljeno"
 msgid "Detach the transition when completed"
 msgstr "Otkačiće prelaz nakon što je obavljen"
 
-#: ../clutter/clutter-zoom-action.c:355
+#: ../clutter/clutter-zoom-action.c:365
 msgid "Zoom Axis"
 msgstr "Osa uvećanja"
 
-#: ../clutter/clutter-zoom-action.c:356
+#: ../clutter/clutter-zoom-action.c:366
 msgid "Constraints the zoom to an axis"
 msgstr "Ograničava uvećavanje na osu"
 
