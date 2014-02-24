@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-23 13:48+0200\n"
-"PO-Revision-Date: 2014-02-23 14:14+0200\n"
+"PO-Revision-Date: 2014-02-24 15:25+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -1429,7 +1429,7 @@ msgstr "פועל"
 #: ../js/ui/status/location.js:158 ../js/ui/status/network.js:246
 #: ../js/ui/status/network.js:425 ../js/ui/status/network.js:1261
 msgid "Off"
-msgstr "כבוימנותק"
+msgstr "כבוי"
 
 #: ../js/ui/status/location.js:159 ../js/ui/status/network.js:1235
 msgid "Turn On"
