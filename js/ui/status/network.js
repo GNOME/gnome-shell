@@ -1170,6 +1170,10 @@ const NMDeviceWireless = new Lang.Class({
             this._client.disconnect(this._wirelessHwEnabledChangedId);
             this._wirelessHwEnabledChangedId = 0;
         }
+        if (this._dialog) {
+            this._dialog.destroy();
+            this._dialog = null;
+        }
 
         this.item.destroy();
     },
