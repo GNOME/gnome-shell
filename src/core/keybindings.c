@@ -603,6 +603,7 @@ rebuild_binding_table (MetaDisplay     *display,
 
               (*bindings_p)[i].name = pref->name;
               (*bindings_p)[i].handler = handler;
+              (*bindings_p)[i].flags = handler->flags;
               (*bindings_p)[i].keysym = combo->keysym;
               (*bindings_p)[i].keycode = combo->keycode;
               (*bindings_p)[i].modifiers = combo->modifiers;
@@ -619,6 +620,7 @@ rebuild_binding_table (MetaDisplay     *display,
 
                   (*bindings_p)[i].name = pref->name;
                   (*bindings_p)[i].handler = handler;
+                  (*bindings_p)[i].flags = handler->flags;
                   (*bindings_p)[i].keysym = combo->keysym;
                   (*bindings_p)[i].keycode = combo->keycode;
                   (*bindings_p)[i].modifiers = combo->modifiers |
@@ -645,6 +647,7 @@ rebuild_binding_table (MetaDisplay     *display,
 
           (*bindings_p)[i].name = grab->name;
           (*bindings_p)[i].handler = handler;
+          (*bindings_p)[i].flags = handler->flags;
           (*bindings_p)[i].keysym = grab->combo->keysym;
           (*bindings_p)[i].keycode = grab->combo->keycode;
           (*bindings_p)[i].modifiers = grab->combo->modifiers;
@@ -1160,7 +1163,7 @@ change_binding_keygrabs (MetaKeyBinding *bindings,
   while (i < n_bindings)
     {
       if (!!binding_per_window ==
-          !!(bindings[i].handler->flags & META_KEY_BINDING_PER_WINDOW) &&
+          !!(bindings[i].flags & META_KEY_BINDING_PER_WINDOW) &&
           bindings[i].keycode != 0)
         {
           meta_change_keygrab (display, xwindow, grab,
