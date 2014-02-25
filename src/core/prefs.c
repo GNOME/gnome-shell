@@ -2154,11 +2154,6 @@ meta_prefs_remove_keybinding (const char *name)
   return TRUE;
 }
 
-/**
- * meta_prefs_get_keybindings:
- *
- * Returns: (element-type MetaKeyPref) (transfer container):
- */
 GList *
 meta_prefs_get_keybindings ()
 {
