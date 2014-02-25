@@ -531,7 +531,7 @@ count_bindings (GList *prefs)
   while (p)
     {
       MetaKeyPref *pref = (MetaKeyPref*)p->data;
-      GSList *tmp = pref->bindings;
+      GSList *tmp = pref->combos;
 
       while (tmp)
         {
@@ -575,7 +575,7 @@ rebuild_binding_table (MetaDisplay     *display,
   while (p)
     {
       MetaKeyPref *pref = (MetaKeyPref*)p->data;
-      GSList *tmp = pref->bindings;
+      GSList *tmp = pref->combos;
 
       while (tmp)
         {
