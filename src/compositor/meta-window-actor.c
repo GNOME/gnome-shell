@@ -2015,21 +2015,28 @@ meta_window_actor_update_input_region (MetaWindowActor *self)
 
   meta_window_get_client_area_rect (priv->window, &client_area);
 
-  if (priv->window->frame != NULL && priv->window->input_region != NULL)
+  if (priv->window->frame != NULL)
     {
       region = meta_frame_get_frame_bounds (priv->window->frame);
 
-      cairo_region_subtract_rectangle (region, &client_area);
-
-      /* input_region is in client window coordinates, so translate the
+      /* client area is in client window coordinates, so translate the
        * input region into that coordinate system and back */
       cairo_region_translate (region, -client_area.x, -client_area.y);
-      cairo_region_union (region, priv->window->input_region);
+      cairo_region_union_rectangle (region, &client_area);
       cairo_region_translate (region, client_area.x, client_area.y);
     }
-  else if (priv->window->input_region != NULL)
+  else if (priv->window->shape_region != NULL ||
+           priv->window->input_region != NULL)
     {
-      region = cairo_region_reference (priv->window->input_region);
+      if (priv->window->shape_region != NULL)
+        {
+          region = cairo_region_copy (priv->window->shape_region);
+
+          if (priv->window->input_region != NULL)
+            cairo_region_intersect (region, priv->window->input_region);
+        }
+      else
+        region = cairo_region_reference (priv->window->input_region);
     }
   else
     {

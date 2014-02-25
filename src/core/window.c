@@ -7771,6 +7771,17 @@ meta_window_update_input_region_x11 (MetaWindow *window)
 {
   cairo_region_t *region = NULL;
 
+  /* Decorated windows don't have an input region, because
+     we don't shape the frame to match the client windows
+     (so the events are blocked by the frame anyway)
+  */
+  if (window->decorated)
+    {
+      if (window->input_region)
+        meta_window_set_input_region (window, NULL);
+      return;
+    }
+
 #ifdef HAVE_SHAPE
   if (META_DISPLAY_HAS_SHAPE (window->display))
     {
@@ -7779,17 +7790,7 @@ meta_window_update_input_region_x11 (MetaWindow *window)
       XRectangle *rects = NULL;
       int n_rects, ordering;
 
-      int x_bounding, y_bounding, x_clip, y_clip;
-      unsigned w_bounding, h_bounding, w_clip, h_clip;
-      int bounding_shaped, clip_shaped;
-
       meta_error_trap_push (window->display);
-      XShapeQueryExtents (window->display->xdisplay, window->xwindow,
-                          &bounding_shaped, &x_bounding, &y_bounding,
-                          &w_bounding, &h_bounding,
-                          &clip_shaped, &x_clip, &y_clip,
-                          &w_clip, &h_clip);
-
       rects = XShapeGetRectangles (window->display->xdisplay,
                                    window->xwindow,
                                    ShapeInput,
@@ -7804,10 +7805,10 @@ meta_window_update_input_region_x11 (MetaWindow *window)
         {
           if (n_rects > 1 ||
               (n_rects == 1 &&
-               (rects[0].x != x_bounding ||
-                rects[0].y != y_bounding ||
-                rects[0].width != w_bounding ||
-                rects[0].height != h_bounding)))
+               (rects[0].x != 0 ||
+                rects[0].y != 0 ||
+                rects[0].width != window->rect.width ||
+                rects[0].height != window->rect.height)))
             region = region_create_from_x_rectangles (rects, n_rects);
 
           XFree (rects);
