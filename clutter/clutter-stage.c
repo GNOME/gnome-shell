@@ -691,6 +691,21 @@ _clutter_stage_do_paint (ClutterStage                *stage,
   clutter_stage_invoke_paint_callback (stage);
 }
 
+/* If we don't implement this here, we get the paint function
+ * from the deprecated clutter-group class, which doesn't
+ * respect the Z order as it uses our empty sort_depth_order.
+ */
+static void
+clutter_stage_paint (ClutterActor *self)
+{
+  ClutterActorIter iter;
+  ClutterActor *child;
+
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
+    clutter_actor_paint (child);
+}
+
 #if 0
 /* the Stage is cleared in clutter_actor_paint_node() */
 static void
@@ -1873,6 +1888,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   actor_class->allocate = clutter_stage_allocate;
   actor_class->get_preferred_width = clutter_stage_get_preferred_width;
   actor_class->get_preferred_height = clutter_stage_get_preferred_height;
+  actor_class->paint = clutter_stage_paint;
   actor_class->pick = clutter_stage_pick;
   actor_class->get_paint_volume = clutter_stage_get_paint_volume;
   actor_class->realize = clutter_stage_realize;
