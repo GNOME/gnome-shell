@@ -78,7 +78,7 @@ typedef struct
    * this keypref. If one has keysym==modifiers==0, it is
    * ignored.
    */
-  GSList *bindings;
+  GSList *combos;
 
   /* for keybindings that can have shift or not like Alt+Tab */
   gboolean      add_shift:1;
