@@ -1474,6 +1474,11 @@ meta_window_x11_new (MetaDisplay       *display,
     XISelectEvents (display->xdisplay, xwindow, &mask, 1);
   }
 
+#ifdef HAVE_SHAPE
+  if (META_DISPLAY_HAS_SHAPE (display))
+    XShapeSelectInput (display->xdisplay, xwindow, ShapeNotifyMask);
+#endif
+
   /* Get rid of any borders */
   if (attrs.border_width != 0)
     XSetWindowBorderWidth (display->xdisplay, xwindow, 0);
