@@ -350,10 +350,42 @@ meta_window_set_input_region (MetaWindow     *window,
     meta_compositor_window_shape_changed (window->display->compositor, window);
 }
 
+#if 0
+/* Print out a region; useful for debugging */
+static void
+print_region (cairo_region_t *region)
+{
+  int n_rects;
+  int i;
+
+  n_rects = cairo_region_num_rectangles (region);
+  g_print ("[");
+  for (i = 0; i < n_rects; i++)
+    {
+      cairo_rectangle_int_t rect;
+      cairo_region_get_rectangle (region, i, &rect);
+      g_print ("+%d+%dx%dx%d ",
+               rect.x, rect.y, rect.width, rect.height);
+    }
+  g_print ("]\n");
+}
+#endif
+
 void
 meta_window_x11_update_input_region (MetaWindow *window)
 {
   cairo_region_t *region = NULL;
+
+  /* Decorated windows don't have an input region, because
+     we don't shape the frame to match the client windows
+     (so the events are blocked by the frame anyway)
+  */
+  if (window->decorated)
+    {
+      if (window->input_region)
+        meta_window_set_input_region (window, NULL);
+      return;
+    }
 
 #ifdef HAVE_SHAPE
   if (META_DISPLAY_HAS_SHAPE (window->display))
@@ -362,17 +394,6 @@ meta_window_x11_update_input_region (MetaWindow *window)
        * get from the X server to a cairo_region. */
       XRectangle *rects = NULL;
       int n_rects, ordering;
-
-      int x_bounding, y_bounding, x_clip, y_clip;
-      unsigned w_bounding, h_bounding, w_clip, h_clip;
-      int bounding_shaped, clip_shaped;
-
-      meta_error_trap_push (window->display);
-      XShapeQueryExtents (window->display->xdisplay, window->xwindow,
-                          &bounding_shaped, &x_bounding, &y_bounding,
-                          &w_bounding, &h_bounding,
-                          &clip_shaped, &x_clip, &y_clip,
-                          &w_clip, &h_clip);
 
       rects = XShapeGetRectangles (window->display->xdisplay,
                                    window->xwindow,
@@ -388,10 +409,10 @@ meta_window_x11_update_input_region (MetaWindow *window)
         {
           if (n_rects > 1 ||
               (n_rects == 1 &&
-               (rects[0].x != x_bounding ||
-                rects[0].y != y_bounding ||
-                rects[0].width != w_bounding ||
-                rects[0].height != h_bounding)))
+               (rects[0].x != 0 ||
+                rects[0].y != 0 ||
+                rects[0].width != window->rect.width ||
+                rects[0].height != window->rect.height)))
             region = region_create_from_x_rectangles (rects, n_rects);
 
           XFree (rects);
