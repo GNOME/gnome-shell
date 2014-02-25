@@ -30,6 +30,7 @@
 #include <gio/gio.h>
 #include <meta/keybindings.h>
 
+typedef struct _MetaKeyHandler MetaKeyHandler;
 struct _MetaKeyHandler
 {
   char *name;
@@ -50,6 +51,44 @@ struct _MetaKeyBinding
   gint flags;
   MetaKeyHandler *handler;
 };
+
+/**
+ * MetaKeyCombo:
+ * @keysym: keysym
+ * @keycode: keycode
+ * @modifiers: modifiers
+ */
+typedef struct _MetaKeyCombo MetaKeyCombo;
+struct _MetaKeyCombo
+{
+  unsigned int keysym;
+  unsigned int keycode;
+  MetaVirtualModifier modifiers;
+};
+
+typedef struct
+{
+  char *name;
+  GSettings *settings;
+
+  MetaKeyBindingAction action;
+
+  /*
+   * A list of MetaKeyCombos. Each of them is bound to
+   * this keypref. If one has keysym==modifiers==0, it is
+   * ignored.
+   */
+  GSList *bindings;
+
+  /* for keybindings that can have shift or not like Alt+Tab */
+  gboolean      add_shift:1;
+
+  /* for keybindings that apply only to a window */
+  gboolean      per_window:1;
+
+  /* for keybindings not added with meta_display_add_keybinding() */
+  gboolean      builtin:1;
+} MetaKeyPref;
 
 void     meta_display_init_keys             (MetaDisplay *display);
 void     meta_display_shutdown_keys         (MetaDisplay *display);
@@ -78,5 +117,8 @@ gboolean meta_prefs_add_keybinding          (const char           *name,
 
 gboolean meta_prefs_remove_keybinding       (const char    *name);
 
+GList *meta_prefs_get_keybindings (void);
+void meta_prefs_get_overlay_binding (MetaKeyCombo *combo);
+const char *meta_prefs_get_iso_next_group_option (void);
 
 #endif

@@ -372,20 +372,6 @@ typedef enum
 } MetaKeyBindingFlags;
 
 /**
- * MetaKeyCombo:
- * @keysym: keysym
- * @keycode: keycode
- * @modifiers: modifiers
- */
-typedef struct _MetaKeyCombo MetaKeyCombo;
-struct _MetaKeyCombo
-{
-  unsigned int keysym;
-  unsigned int keycode;
-  MetaVirtualModifier modifiers;
-};
-
-/**
  * MetaKeyHandlerFunc:
  * @display: a #MetaDisplay
  * @screen: a #MetaScreen
@@ -402,44 +388,13 @@ typedef void (* MetaKeyHandlerFunc) (MetaDisplay     *display,
                                      MetaKeyBinding  *binding,
                                      gpointer         user_data);
 
-typedef struct _MetaKeyHandler MetaKeyHandler;
-
-typedef struct
-{
-  char *name;
-  GSettings *settings;
-
-  MetaKeyBindingAction action;
-
-  /*
-   * A list of MetaKeyCombos. Each of them is bound to
-   * this keypref. If one has keysym==modifiers==0, it is
-   * ignored.
-   */
-  GSList *bindings;
-
-  /* for keybindings that can have shift or not like Alt+Tab */
-  gboolean      add_shift:1;
-
-  /* for keybindings that apply only to a window */
-  gboolean      per_window:1;
-
-  /* for keybindings not added with meta_display_add_keybinding() */
-  gboolean      builtin:1;
-} MetaKeyPref;
-
 GType meta_key_binding_get_type    (void);
-
-GList *meta_prefs_get_keybindings (void);
 
 MetaKeyBindingAction meta_prefs_get_keybinding_action (const char *name);
 
 void meta_prefs_get_window_binding (const char          *name,
                                     unsigned int        *keysym,
                                     MetaVirtualModifier *modifiers);
-
-void meta_prefs_get_overlay_binding (MetaKeyCombo *combo);
-const char *meta_prefs_get_iso_next_group_option (void);
 
 gboolean           meta_prefs_get_visual_bell      (void);
 gboolean           meta_prefs_bell_is_audible      (void);
