@@ -993,6 +993,9 @@ _meta_window_shared_new (MetaDisplay         *display,
       client_type == META_WINDOW_CLIENT_TYPE_X11)
     update_sm_hints (window); /* must come after transient_for */
 
+  if (client_type == META_WINDOW_CLIENT_TYPE_X11)
+    meta_window_x11_update_net_wm_type (window);
+
   if (!window->override_redirect)
     meta_window_update_icon_now (window);
 
