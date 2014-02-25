@@ -254,7 +254,15 @@ static gboolean
 is_argb32 (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  return meta_surface_actor_is_argb32 (priv->surface);
+
+  /* assume we're argb until we get the window (because
+     in practice we're drawing nothing, so we're fully
+     transparent)
+  */
+  if (priv->surface)
+    return meta_surface_actor_is_argb32 (priv->surface);
+  else
+    return TRUE;
 }
 
 static gboolean
@@ -271,7 +279,7 @@ is_frozen (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
 
-  return priv->freeze_count > 0;
+  return priv->surface == NULL || priv->freeze_count > 0;
 }
 
 static void
@@ -279,7 +287,7 @@ meta_window_actor_freeze (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
 
-  if (priv->freeze_count == 0)
+  if (priv->freeze_count == 0 && priv->surface)
     meta_surface_actor_set_frozen (priv->surface, TRUE);
 
   priv->freeze_count ++;
@@ -297,7 +305,8 @@ meta_window_actor_thaw (MetaWindowActor *self)
   if (priv->freeze_count > 0)
     return;
 
-  meta_surface_actor_set_frozen (priv->surface, FALSE);
+  if (priv->surface)
+    meta_surface_actor_set_frozen (priv->surface, FALSE);
 
   /* We sometimes ignore moves and resizes on frozen windows */
   meta_window_actor_sync_actor_geometry (self, FALSE);
@@ -342,7 +351,7 @@ set_surface (MetaWindowActor  *self,
     }
 }
 
-static void
+void
 meta_window_actor_update_surface (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
@@ -351,8 +360,10 @@ meta_window_actor_update_surface (MetaWindowActor *self)
 
   if (window->surface)
     surface_actor = window->surface->surface_actor;
-  else
+  else if (!meta_is_wayland_compositor ())
     surface_actor = meta_surface_actor_x11_new (window);
+  else
+    surface_actor = NULL;
 
   set_surface (self, surface_actor);
 }
@@ -659,8 +670,11 @@ meta_window_actor_get_paint_volume (ClutterActor       *actor,
 
   meta_window_actor_get_shape_bounds (self, &bounds);
 
-  if (meta_surface_actor_get_unobscured_bounds (priv->surface, &unobscured_bounds))
-    gdk_rectangle_intersect (&bounds, &unobscured_bounds, &bounds);
+  if (priv->surface)
+    {
+      if (meta_surface_actor_get_unobscured_bounds (priv->surface, &unobscured_bounds))
+        gdk_rectangle_intersect (&bounds, &unobscured_bounds, &bounds);
+    }
 
   if (appears_focused ? priv->focused_shadow : priv->unfocused_shadow)
     {
@@ -771,21 +785,26 @@ meta_window_actor_get_meta_window (MetaWindowActor *self)
  * meta_window_actor_get_texture:
  * @self: a #MetaWindowActor
  *
- * Gets the ClutterActor that is used to display the contents of the window
+ * Gets the ClutterActor that is used to display the contents of the window,
+ * or NULL if no texture is shown yet, because the window is not mapped.
  *
  * Return value: (transfer none): the #ClutterActor for the contents
  */
 ClutterActor *
 meta_window_actor_get_texture (MetaWindowActor *self)
 {
-  return CLUTTER_ACTOR (meta_surface_actor_get_texture (self->priv->surface));
+  if (self->priv->surface)
+    return CLUTTER_ACTOR (meta_surface_actor_get_texture (self->priv->surface));
+  else
+    return NULL;
 }
 
 /**
  * meta_window_actor_get_surface:
  * @self: a #MetaWindowActor
  *
- * Gets the MetaSurfaceActor that draws the content of this window
+ * Gets the MetaSurfaceActor that draws the content of this window,
+ * or NULL if there is no surface yet associated with this window.
  *
  * Return value: (transfer none): the #MetaSurfaceActor for the contents
  */
@@ -884,7 +903,12 @@ meta_window_actor_queue_frame_drawn (MetaWindowActor *self,
 
   if (!priv->repaint_scheduled)
     {
-      gboolean is_obscured = meta_surface_actor_is_obscured (priv->surface);
+      gboolean is_obscured;
+
+      if (priv->surface)
+        is_obscured = meta_surface_actor_is_obscured (priv->surface);
+      else
+        is_obscured = FALSE;
 
       /* A frame was marked by the client without actually doing any
        * damage or any unobscured, or while we had the window frozen
@@ -900,9 +924,12 @@ meta_window_actor_queue_frame_drawn (MetaWindowActor *self,
         }
       else
         {
-          const cairo_rectangle_int_t clip = { 0, 0, 1, 1 };
-          clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (priv->surface), &clip);
-          priv->repaint_scheduled = TRUE;
+          if (priv->surface)
+            {
+              const cairo_rectangle_int_t clip = { 0, 0, 1, 1 };
+              clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (priv->surface), &clip);
+              priv->repaint_scheduled = TRUE;
+            }
         }
     }
 }
@@ -1075,7 +1102,10 @@ gboolean
 meta_window_actor_should_unredirect (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  return meta_surface_actor_should_unredirect (priv->surface);
+  if (priv->surface)
+    return meta_surface_actor_should_unredirect (priv->surface);
+  else
+    return FALSE;
 }
 
 void
@@ -1083,6 +1113,8 @@ meta_window_actor_set_unredirected (MetaWindowActor *self,
                                     gboolean         unredirected)
 {
   MetaWindowActorPrivate *priv = self->priv;
+
+  g_assert(priv->surface); /* because otherwise should_unredirect() is FALSE */
   meta_surface_actor_set_unredirected (priv->surface, unredirected);
 }
 
@@ -1528,11 +1560,12 @@ meta_window_actor_process_x11_damage (MetaWindowActor    *self,
 {
   MetaWindowActorPrivate *priv = self->priv;
 
-  meta_surface_actor_process_damage (priv->surface,
-                                     event->area.x,
-                                     event->area.y,
-                                     event->area.width,
-                                     event->area.height);
+  if (priv->surface)
+    meta_surface_actor_process_damage (priv->surface,
+                                       event->area.x,
+                                       event->area.y,
+                                       event->area.width,
+                                       event->area.height);
 }
 
 void
@@ -2035,7 +2068,8 @@ meta_window_actor_update_opacity (MetaWindowActor *self)
   MetaWindowActorPrivate *priv = self->priv;
   MetaWindow *window = priv->window;
 
-  clutter_actor_set_opacity (CLUTTER_ACTOR (self->priv->surface), window->opacity);
+  if (priv->surface)
+    clutter_actor_set_opacity (CLUTTER_ACTOR (priv->surface), window->opacity);
 }
 
 void

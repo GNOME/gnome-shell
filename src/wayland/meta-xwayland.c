@@ -51,6 +51,8 @@ xserver_set_window_id (struct wl_client *client,
 
   surface->window = window;
   window->surface = surface;
+
+  meta_compositor_window_surface_changed (display->compositor, window);
 }
 
 static const struct xserver_interface xserver_implementation = {

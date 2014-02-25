@@ -940,6 +940,18 @@ meta_compositor_window_opacity_changed (MetaCompositor *compositor,
   meta_window_actor_update_opacity (window_actor);
 }
 
+void
+meta_compositor_window_surface_changed (MetaCompositor *compositor,
+                                        MetaWindow     *window)
+{
+  MetaWindowActor *window_actor;
+  window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
+  if (!window_actor)
+    return;
+
+  meta_window_actor_update_surface (window_actor);
+}
+
 /* Clutter makes the assumption that there is only one X window
  * per stage, which is a valid assumption to make for a generic
  * application toolkit. As such, it will ignore any events sent
