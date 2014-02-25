@@ -3916,6 +3916,7 @@ init_builtin_key_bindings (MetaDisplay *display)
 
   g_object_unref (common_keybindings);
   g_object_unref (mutter_keybindings);
+  g_object_unref (mutter_wayland_keybindings);
 }
 
 void
