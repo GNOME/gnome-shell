@@ -2314,9 +2314,12 @@ handle_input_xevent (MetaDisplay *display,
   Window modified;
   MetaWindow *window;
   gboolean frame_was_receiver;
+  MetaScreen *screen;
 
   if (input_event == NULL)
     return FALSE;
+
+  screen = meta_display_screen_for_root (display, device_event->root);
 
   modified = xievent_get_modified_window (display, input_event);
   window = modified != None ? meta_display_lookup_x_window (display, modified) : NULL;
@@ -2382,13 +2385,10 @@ handle_input_xevent (MetaDisplay *display,
                        "none"));
           if (GRAB_OP_IS_WINDOW_SWITCH (display->grab_op))
             {
-              MetaScreen *screen;
               meta_topic (META_DEBUG_WINDOW_OPS,
                           "Syncing to old stack positions.\n");
-              screen =
-                meta_display_screen_for_root (display, device_event->event);
 
-              if (screen!=NULL)
+              if (device_event->root == device_event->event)
                 meta_stack_set_positions (screen->stack,
                                           display->grab_old_window_stacking);
             }
@@ -2612,10 +2612,7 @@ handle_input_xevent (MetaDisplay *display,
       if (!window)
         {
           /* Check if the window is a root window. */
-          MetaScreen *screen =
-            meta_display_screen_for_root(display,
-                                         enter_event->event);
-          if (screen == NULL)
+          if (enter_event->root == enter_event->event)
             break;
 
           if (enter_event->evtype == XI_FocusIn &&
