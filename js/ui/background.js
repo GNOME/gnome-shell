@@ -132,6 +132,10 @@ const BackgroundCache = new Lang.Class({
         this._removeContent(this._images, content);
     },
 
+    _attachCallerToFileLoad: function(caller, fileLoad) {
+        fileLoad.callers.push(caller);
+    },
+
     _loadImageContent: function(params) {
         params = Params.parse(params, { monitorIndex: 0,
                                         style: null,
@@ -140,21 +144,24 @@ const BackgroundCache = new Lang.Class({
                                         cancellable: null,
                                         onFinished: null });
 
+        let caller = { monitorIndex: params.monitorIndex,
+                       effects: params.effects,
+                       onFinished: params.onFinished };
+
         for (let i = 0; i < this._pendingFileLoads.length; i++) {
-            if (this._pendingFileLoads[i].filename == params.filename &&
-                this._pendingFileLoads[i].style == params.style) {
-                this._pendingFileLoads[i].callers.push({ monitorIndex: params.monitorIndex,
-                                                         effects: params.effects,
-                                                         onFinished: params.onFinished });
+            let fileLoad = this._pendingFileLoads[i];
+
+            if (fileLoad.filename == params.filename &&
+                fileLoad.style == params.style) {
+                this._attachCallerToFileLoad(caller, fileLoad);
                 return;
             }
         }
 
-        this._pendingFileLoads.push({ filename: params.filename,
-                                      style: params.style,
-                                      callers: [{ monitorIndex: params.monitorIndex,
-                                                  effects: params.effects,
-                                                  onFinished: params.onFinished }] });
+        let fileLoad = { filename: params.filename,
+                         style: params.style,
+                         callers: [] };
+        this._attachCallerToFileLoad(caller, fileLoad);
 
         let content = new Meta.Background({ meta_screen: global.screen });
 
