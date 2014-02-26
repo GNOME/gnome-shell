@@ -2486,17 +2486,20 @@ handle_input_xevent (MetaDisplay *display,
                     op = META_GRAB_OP_NONE;
 
                   if (op != META_GRAB_OP_NONE)
-                    meta_display_begin_grab_op (display,
-                                                window->screen,
-                                                window,
-                                                op,
-                                                TRUE,
-                                                FALSE,
-                                                device_event->detail,
-                                                0,
-                                                device_event->time,
-                                                device_event->root_x,
-                                                device_event->root_y);
+                    {
+                      meta_display_begin_grab_op (display,
+                                                  window->screen,
+                                                  window,
+                                                  op,
+                                                  TRUE,
+                                                  FALSE,
+                                                  device_event->detail,
+                                                  0,
+                                                  device_event->time,
+                                                  device_event->root_x,
+                                                  device_event->root_y);
+                      return TRUE;
+                    }
                 }
             }
           else if (device_event->detail == meta_prefs_get_mouse_button_menu())
@@ -2508,6 +2511,7 @@ handle_input_xevent (MetaDisplay *display,
                                      device_event->root_y,
                                      device_event->detail,
                                      device_event->time);
+              return TRUE;
             }
 
           if (!frame_was_receiver && unmodified)
@@ -2536,6 +2540,7 @@ handle_input_xevent (MetaDisplay *display,
                                           device_event->time,
                                           device_event->root_x,
                                           device_event->root_y);
+              return TRUE;
             }
         }
       break;
@@ -2547,7 +2552,10 @@ handle_input_xevent (MetaDisplay *display,
 
       if (display->grab_window == window &&
           meta_grab_op_is_mouse (display->grab_op))
-        meta_window_handle_mouse_grab_op_xevent (window, device_event);
+        {
+          meta_window_handle_mouse_grab_op_xevent (window, device_event);
+          return TRUE;
+        }
       break;
     case XI_Motion:
       if (display->grab_op == META_GRAB_OP_COMPOSITOR)
@@ -2555,7 +2563,10 @@ handle_input_xevent (MetaDisplay *display,
 
       if (display->grab_window == window &&
           meta_grab_op_is_mouse (display->grab_op))
-        meta_window_handle_mouse_grab_op_xevent (window, device_event);
+        {
+          meta_window_handle_mouse_grab_op_xevent (window, device_event);
+          return TRUE;
+        }
       break;
     case XI_Enter:
       if (display->grab_op == META_GRAB_OP_COMPOSITOR)
@@ -2640,7 +2651,9 @@ handle_input_xevent (MetaDisplay *display,
             }
 
         }
-      break;
+
+      /* Don't send FocusIn / FocusOut to Clutter */
+      return TRUE;
     }
 
   return FALSE;
