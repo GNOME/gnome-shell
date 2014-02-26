@@ -178,28 +178,22 @@ const BackgroundCache = new Lang.Class({
                                                   content = null;
                                               }
 
-                                              for (let i = 0; i < this._pendingFileLoads.length; i++) {
-                                                  let pendingLoad = this._pendingFileLoads[i];
-                                                  if (pendingLoad.filename != params.filename ||
-                                                      pendingLoad.style != params.style)
-                                                      continue;
+                                              for (let i = 0; i < fileLoad.callers.length; i++) {
+                                                  let caller = fileLoad.callers[i];
+                                                  if (caller.onFinished) {
+                                                      let newContent;
 
-                                                  for (let j = 0; j < pendingLoad.callers.length; j++) {
-                                                      if (pendingLoad.callers[j].onFinished) {
-                                                          let newContent;
-
-                                                          if (content) {
-                                                              newContent = content.copy(pendingLoad.callers[j].monitorIndex,
-                                                                                        pendingLoad.callers[j].effects);
-                                                              this._images.push(newContent);
-                                                          }
-
-                                                          pendingLoad.callers[j].onFinished(newContent);
+                                                      if (content) {
+                                                          newContent = content.copy(caller.monitorIndex, caller.effects);
+                                                          this._images.push(newContent);
                                                       }
-                                                  }
 
-                                                  this._pendingFileLoads.splice(i, 1);
+                                                      caller.onFinished(newContent);
+                                                  }
                                               }
+
+                                              let idx = this._pendingFileLoads.indexOf(fileLoad);
+                                              this._pendingFileLoads.splice(idx, 1);
                                           }));
     },
 
