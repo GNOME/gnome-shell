@@ -456,6 +456,7 @@ meta_surface_actor_x11_new (MetaWindow *window)
   priv->unredirected = FALSE;
   sync_unredirected (self);
 
+  clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
   return META_SURFACE_ACTOR (self);
 }
 

@@ -76,6 +76,7 @@
 #include "window-private.h" /* to check window->hidden */
 #include "display-private.h" /* for meta_display_lookup_x_window() */
 #include "util-private.h"
+#include "frame.h"
 #include "meta-wayland-private.h"
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-keyboard.h"
@@ -963,6 +964,7 @@ meta_compositor_window_surface_changed (MetaCompositor *compositor,
  */
 static void
 maybe_spoof_event_as_stage_event (MetaCompScreen *info,
+                                  MetaWindow     *window,
                                   XEvent         *event)
 {
   MetaDisplay *display = meta_screen_get_display (info->screen);
@@ -978,14 +980,17 @@ maybe_spoof_event_as_stage_event (MetaCompScreen *info,
         case XI_Motion:
         case XI_ButtonPress:
         case XI_ButtonRelease:
+          /* If this is a window frame, let GTK+ handle it without mangling */
+          if (window && window->frame && device_event->event == window->frame->xwindow)
+            break;
+
+        case XI_KeyPress:
+        case XI_KeyRelease:
             /* If this is a GTK+ widget, like a window menu, let GTK+ handle
              * it as-is without mangling. */
             if (meta_ui_window_is_widget (info->screen->ui, device_event->event))
               break;
 
-            /* fall through */
-        case XI_KeyPress:
-        case XI_KeyRelease:
             device_event->event = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
           break;
         default:
@@ -1021,7 +1026,7 @@ meta_compositor_process_event (MetaCompositor *compositor,
       return TRUE;
     }
 
-  maybe_spoof_event_as_stage_event (info, event);
+  maybe_spoof_event_as_stage_event (info, window, event);
 
   if (meta_plugin_manager_xevent_filter (info->plugin_mgr, event))
     {
