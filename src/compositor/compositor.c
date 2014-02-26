@@ -953,6 +953,29 @@ meta_compositor_window_surface_changed (MetaCompositor *compositor,
   meta_window_actor_update_surface (window_actor);
 }
 
+static gboolean
+grab_op_is_clicking (MetaGrabOp grab_op)
+{
+  switch (grab_op)
+    {
+    case META_GRAB_OP_CLICKING_MINIMIZE:
+    case META_GRAB_OP_CLICKING_MAXIMIZE:
+    case META_GRAB_OP_CLICKING_UNMAXIMIZE:
+    case META_GRAB_OP_CLICKING_DELETE:
+    case META_GRAB_OP_CLICKING_MENU:
+    case META_GRAB_OP_CLICKING_SHADE:
+    case META_GRAB_OP_CLICKING_UNSHADE:
+    case META_GRAB_OP_CLICKING_ABOVE:
+    case META_GRAB_OP_CLICKING_UNABOVE:
+    case META_GRAB_OP_CLICKING_STICK:
+    case META_GRAB_OP_CLICKING_UNSTICK:
+      return TRUE;
+
+    default:
+      return FALSE;
+    }
+}
+
 /* Clutter makes the assumption that there is only one X window
  * per stage, which is a valid assumption to make for a generic
  * application toolkit. As such, it will ignore any events sent
@@ -980,8 +1003,10 @@ maybe_spoof_event_as_stage_event (MetaCompScreen *info,
         case XI_Motion:
         case XI_ButtonPress:
         case XI_ButtonRelease:
-          /* If this is a window frame, let GTK+ handle it without mangling */
-          if (window && window->frame && device_event->event == window->frame->xwindow)
+          /* If this is a window frame, and we think GTK+ needs to handle the event,
+             let GTK+ handle it without mangling */
+          if (window && window->frame && device_event->event == window->frame->xwindow &&
+              (display->grab_op == META_GRAB_OP_NONE || grab_op_is_clicking (display->grab_op)))
             break;
 
         case XI_KeyPress:
@@ -992,6 +1017,8 @@ maybe_spoof_event_as_stage_event (MetaCompScreen *info,
               break;
 
             device_event->event = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
+            device_event->event_x = device_event->root_x;
+            device_event->event_y = device_event->root_y;
           break;
         default:
           break;
