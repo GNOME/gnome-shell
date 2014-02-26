@@ -1162,8 +1162,10 @@ const SourceActor = new Lang.Class({
         }));
         this._actorDestroyed = false;
 
+        let scale_factor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         this._iconBin = new St.Bin({ x_fill: true,
-                                     y_fill: true });
+                                     height: size * scale_factor,
+                                     width: size * scale_factor });
 
         this.actor.add_actor(this._iconBin);
 
