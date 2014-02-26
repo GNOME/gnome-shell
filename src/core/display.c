@@ -1682,6 +1682,16 @@ get_window_for_event (MetaDisplay        *display,
   if (display->grab_op != META_GRAB_OP_NONE)
     return display->grab_window;
 
+  /* Always use the key focused window for key events. */
+  switch (event->type)
+    {
+    case CLUTTER_KEY_PRESS:
+    case CLUTTER_KEY_RELEASE:
+      return display->focus_window;
+    default:
+      break;
+    }
+
   source = clutter_event_get_source (event);
   if (META_IS_SURFACE_ACTOR_WAYLAND (source))
     {
