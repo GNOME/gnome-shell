@@ -2027,11 +2027,16 @@ const MessageTray = new Lang.Class({
 
     _onNotificationKeyRelease: function(actor, event) {
         if (event.get_key_symbol() == Clutter.KEY_Escape && event.get_state() == 0) {
-            this._closeNotification();
+            this._expireNotification();
             return Clutter.EVENT_STOP;
         }
 
         return Clutter.EVENT_PROPAGATE;
+    },
+
+    _expireNotification: function() {
+        this._notificationExpired = true;
+        this._updateState();
     },
 
     _closeNotification: function() {
@@ -2398,7 +2403,7 @@ const MessageTray = new Lang.Class({
                            this._notificationTimeoutId == 0 &&
                            this._notification.urgency != Urgency.CRITICAL &&
                            !this._notification.focused &&
-                           !this._pointerInNotification);
+                           !this._pointerInNotification) || this._notificationExpired;
             let mustClose = (this._notificationRemoved || !hasNotifications || expired || this._traySummoned);
 
             if (mustClose) {
@@ -2459,6 +2464,10 @@ const MessageTray = new Lang.Class({
             this._hideDesktopClone();
 
         this._updatingState = false;
+
+        // Clean transient variables that are used to communicate actions
+        // to updateState()
+        this._notificationExpired = false;
     },
 
     _tween: function(actor, statevar, value, params) {
