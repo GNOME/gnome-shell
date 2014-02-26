@@ -1471,6 +1471,7 @@ meta_window_actor_cull_out (MetaCullable   *cullable,
 {
   MetaWindowActor *self = META_WINDOW_ACTOR (cullable);
 
+  meta_cullable_cull_out_children (cullable, unobscured_region, clip_region);
   meta_window_actor_set_clip_region_beneath (self, clip_region);
 }
 
