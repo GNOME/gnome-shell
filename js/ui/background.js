@@ -134,6 +134,21 @@ const BackgroundCache = new Lang.Class({
 
     _attachCallerToFileLoad: function(caller, fileLoad) {
         fileLoad.callers.push(caller);
+
+        if (!caller.cancellable)
+            return;
+
+        caller.cancellable.connect(Lang.bind(this, function() {
+            let idx = fileLoad.callers.indexOf(caller);
+            fileLoad.callers.splice(idx, 1);
+
+            if (fileLoad.callers.length == 0) {
+                fileLoad.cancellable.cancel();
+
+                let idx = this._pendingFileLoads.indexOf(fileLoad);
+                this._pendingFileLoads.splice(idx, 1);
+            }
+        }));
     },
 
     _loadImageContent: function(params) {
@@ -146,6 +161,7 @@ const BackgroundCache = new Lang.Class({
 
         let caller = { monitorIndex: params.monitorIndex,
                        effects: params.effects,
+                       cancellable: params.cancellable,
                        onFinished: params.onFinished };
 
         for (let i = 0; i < this._pendingFileLoads.length; i++) {
@@ -160,6 +176,7 @@ const BackgroundCache = new Lang.Class({
 
         let fileLoad = { filename: params.filename,
                          style: params.style,
+                         cancellable: new Gio.Cancellable(),
                          callers: [] };
         this._attachCallerToFileLoad(caller, fileLoad);
 
