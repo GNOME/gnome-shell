@@ -749,7 +749,6 @@ grab_key_bindings (MetaDisplay *display)
 
 static MetaKeyBinding *
 display_get_keybinding (MetaDisplay  *display,
-                        unsigned int  keysym,
                         unsigned int  keycode,
                         unsigned long mask)
 {
@@ -758,8 +757,7 @@ display_get_keybinding (MetaDisplay  *display,
   i = display->n_key_bindings - 1;
   while (i >= 0)
     {
-      if (display->key_bindings[i].keysym == keysym &&
-          display->key_bindings[i].keycode == keycode &&
+      if (display->key_bindings[i].keycode == keycode &&
           display->key_bindings[i].mask == mask)
         {
           return &display->key_bindings[i];
@@ -909,7 +907,6 @@ meta_display_get_keybinding_action (MetaDisplay  *display,
                                     unsigned long mask)
 {
   MetaKeyBinding *binding;
-  KeySym keysym;
 
   /* This is much more vague than the MetaDisplay::overlay-key signal,
    * which is only emitted if the overlay-key is the only key pressed;
@@ -920,12 +917,8 @@ meta_display_get_keybinding_action (MetaDisplay  *display,
   if (keycode == (unsigned int)display->overlay_key_combo.keycode)
     return META_KEYBINDING_ACTION_OVERLAY_KEY;
 
-  keysym = XKeycodeToKeysym (display->xdisplay, keycode, 0);
   mask = mask & 0xff & ~display->ignored_modifier_mask;
-  binding = display_get_keybinding (display, keysym, keycode, mask);
-
-  if (!binding && keycode == meta_display_get_above_tab_keycode (display))
-    binding = display_get_keybinding (display, META_KEY_ABOVE_TAB, keycode, mask);
+  binding = display_get_keybinding (display, keycode, mask);
 
   if (binding)
     {
@@ -1790,7 +1783,6 @@ process_overlay_key (MetaDisplay *display,
                          XIAsyncDevice, event->time);
 
           binding = display_get_keybinding (display,
-                                            display->overlay_key_combo.keysym,
                                             display->overlay_key_combo.keycode,
                                             display->grab_mask);
           if (binding &&
