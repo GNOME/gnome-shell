@@ -971,24 +971,22 @@ maybe_spoof_event_as_stage_event (MetaCompScreen *info,
       event->xcookie.extension == display->xinput_opcode)
     {
       XIEvent *input_event = (XIEvent *) event->xcookie.data;
+      XIDeviceEvent *device_event = ((XIDeviceEvent *) input_event);
 
       switch (input_event->evtype)
         {
         case XI_Motion:
         case XI_ButtonPress:
         case XI_ButtonRelease:
-        case XI_KeyPress:
-        case XI_KeyRelease:
-          {
-            XIDeviceEvent *device_event = ((XIDeviceEvent *) input_event);
-
             /* If this is a GTK+ widget, like a window menu, let GTK+ handle
              * it as-is without mangling. */
             if (meta_ui_window_is_widget (info->screen->ui, device_event->event))
               break;
 
+            /* fall through */
+        case XI_KeyPress:
+        case XI_KeyRelease:
             device_event->event = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
-          }
           break;
         default:
           break;
@@ -1008,6 +1006,12 @@ meta_compositor_process_event (MetaCompositor *compositor,
                                XEvent         *event,
                                MetaWindow     *window)
 {
+  MetaDisplay *display = compositor->display;
+  MetaScreen *screen = display->screens->data;
+  MetaCompScreen *info;
+
+  info = meta_screen_get_compositor_data (screen);
+
   if (compositor->modal_plugin && is_grabbed_event (compositor->display, event))
     {
       _meta_plugin_xevent_filter (compositor->modal_plugin, event);
@@ -1017,43 +1021,12 @@ meta_compositor_process_event (MetaCompositor *compositor,
       return TRUE;
     }
 
-  if (window)
+  maybe_spoof_event_as_stage_event (info, event);
+
+  if (meta_plugin_manager_xevent_filter (info->plugin_mgr, event))
     {
-      MetaCompScreen *info;
-      MetaScreen     *screen;
-
-      screen = meta_window_get_screen (window);
-      info = meta_screen_get_compositor_data (screen);
-
-      if (meta_plugin_manager_xevent_filter (info->plugin_mgr, event))
-	{
-	  DEBUG_TRACE ("meta_compositor_process_event (filtered,window==NULL)\n");
-	  return TRUE;
-	}
-    }
-  else
-    {
-      GSList *l;
-
-      l = meta_display_get_screens (compositor->display);
-
-      while (l)
-	{
-	  MetaScreen     *screen = l->data;
-	  MetaCompScreen *info;
-
-	  info = meta_screen_get_compositor_data (screen);
-
-          maybe_spoof_event_as_stage_event (info, event);
-
-	  if (meta_plugin_manager_xevent_filter (info->plugin_mgr, event))
-	    {
-	      DEBUG_TRACE ("meta_compositor_process_event (filtered,window==NULL)\n");
-	      return TRUE;
-	    }
-
-	  l = l->next;
-	}
+      DEBUG_TRACE ("meta_compositor_process_event (filtered,window==NULL)\n");
+      return TRUE;
     }
 
   if (!meta_is_wayland_compositor () &&

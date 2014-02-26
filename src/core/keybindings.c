@@ -1842,8 +1842,7 @@ process_event (MetaKeyBinding       *bindings,
                MetaDisplay          *display,
                MetaScreen           *screen,
                MetaWindow           *window,
-               ClutterKeyEvent      *event,
-               gboolean              on_window)
+               ClutterKeyEvent      *event)
 {
   int i;
 
@@ -1859,7 +1858,7 @@ process_event (MetaKeyBinding       *bindings,
     {
       MetaKeyHandler *handler = bindings[i].handler;
 
-      if ((!on_window && handler->flags & META_KEY_BINDING_PER_WINDOW) ||
+      if ((!window && handler->flags & META_KEY_BINDING_PER_WINDOW) ||
           (event->keyval != bindings[i].keysym) ||
           (event->modifier_state != bindings[i].mask) ||
           meta_compositor_filter_keybinding (display->compositor, screen, &bindings[i]))
@@ -1891,7 +1890,8 @@ process_event (MetaKeyBinding       *bindings,
 static gboolean
 process_overlay_key (MetaDisplay *display,
                      MetaScreen *screen,
-                     ClutterKeyEvent *event)
+                     ClutterKeyEvent *event,
+                     MetaWindow *window)
 {
   if (display->overlay_key_only_pressed)
     {
@@ -1913,8 +1913,7 @@ process_overlay_key (MetaDisplay *display,
            */
           if (process_event (display->key_bindings,
                              display->n_key_bindings,
-                             display, screen, NULL, event,
-                             FALSE))
+                             display, screen, window, event))
             {
               /* As normally, after we've handled a global key
                * binding, we unfreeze the keyboard but keep the grab
@@ -2056,7 +2055,7 @@ meta_display_process_key_event (MetaDisplay     *display,
   all_keys_grabbed = window ? window->all_keys_grabbed : screen->all_keys_grabbed;
   if (!all_keys_grabbed)
     {
-      handled = process_overlay_key (display, screen, event);
+      handled = process_overlay_key (display, screen, event, window);
       if (handled)
         return TRUE;
 
@@ -2150,8 +2149,7 @@ meta_display_process_key_event (MetaDisplay     *display,
   /* Do the normal keybindings */
   return process_event (display->key_bindings,
                         display->n_key_bindings,
-                        display, screen, window, event,
-                        !all_keys_grabbed && window);
+                        display, screen, window, event);
 }
 
 static gboolean
