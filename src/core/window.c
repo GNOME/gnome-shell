@@ -7667,7 +7667,7 @@ meta_window_update_net_wm_type (MetaWindow *window)
   meta_window_recalc_window_type (window);
 }
 
-void
+static void
 meta_window_set_opaque_region (MetaWindow     *window,
                                cairo_region_t *region)
 {
@@ -7753,17 +7753,17 @@ region_create_from_x_rectangles (const XRectangle *rects,
   return cairo_region_create_rectangles (cairo_rects, n_rects);
 }
 
-void
-meta_window_set_shape_region (MetaWindow     *window,
+static void
+meta_window_set_input_region (MetaWindow     *window,
                               cairo_region_t *region)
 {
-  g_clear_pointer (&window->shape_region, cairo_region_destroy);
+  g_clear_pointer (&window->input_region, cairo_region_destroy);
 
   if (region != NULL)
-    window->shape_region = cairo_region_reference (region);
+    window->input_region = cairo_region_reference (region);
 
   if (window->display->compositor)
-    meta_compositor_update_shape_region (window->display->compositor, window);
+    meta_compositor_update_input_region (window->display->compositor, window);
 }
 
 void
@@ -7839,17 +7839,17 @@ meta_window_update_input_region_x11 (MetaWindow *window)
   cairo_region_destroy (region);
 }
 
-void
-meta_window_set_input_region (MetaWindow     *window,
+static void
+meta_window_set_shape_region (MetaWindow     *window,
                               cairo_region_t *region)
 {
-  g_clear_pointer (&window->input_region, cairo_region_destroy);
+  g_clear_pointer (&window->shape_region, cairo_region_destroy);
 
   if (region != NULL)
-    window->input_region = cairo_region_reference (region);
+    window->shape_region = cairo_region_reference (region);
 
   if (window->display->compositor)
-    meta_compositor_update_input_region (window->display->compositor, window);
+    meta_compositor_update_shape_region (window->display->compositor, window);
 }
 
 void
