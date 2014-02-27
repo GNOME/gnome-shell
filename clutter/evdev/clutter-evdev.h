@@ -49,10 +49,13 @@ typedef int (*ClutterOpenDeviceCallback) (const char  *path,
 					  gpointer     user_data,
 					  GError     **error);
 
+CLUTTER_AVAILABLE_IN_1_16
 void  clutter_evdev_set_open_callback (ClutterOpenDeviceCallback callback,
 				       gpointer                  user_data);
 
+CLUTTER_AVAILABLE_IN_1_10
 void  clutter_evdev_release_devices (void);
+CLUTTER_AVAILABLE_IN_1_10
 void  clutter_evdev_reclaim_devices (void);
 
 /**
@@ -77,16 +80,20 @@ typedef void (*ClutterPointerConstrainCallback) (ClutterInputDevice *device,
 						 float              *y,
 						 gpointer            user_data);
 
+CLUTTER_AVAILABLE_IN_1_16
 void  clutter_evdev_set_pointer_constrain_callback (ClutterDeviceManager            *evdev,
 						    ClutterPointerConstrainCallback  callback,
 						    gpointer                         user_data,
 						    GDestroyNotify                   user_data_notify);
 
+CLUTTER_AVAILABLE_IN_1_16
 void               clutter_evdev_set_keyboard_map   (ClutterDeviceManager *evdev,
 						     struct xkb_keymap    *keymap);
 
+CLUTTER_AVAILABLE_IN_1_18
 struct xkb_keymap * clutter_evdev_get_keyboard_map (ClutterDeviceManager *evdev);
 
+CLUTTER_AVAILABLE_IN_1_18
 void clutter_evdev_set_keyboard_repeat (ClutterDeviceManager *evdev,
                                         gboolean              repeat,
                                         guint32               delay,
