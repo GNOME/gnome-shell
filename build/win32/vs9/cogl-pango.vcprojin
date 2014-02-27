@@ -27,7 +27,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(PreBuildCmd)"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -60,7 +60,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(PreBuildCmd)"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -94,7 +94,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(PreBuildCmd)"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -129,7 +129,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(PreBuildCmd)"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"

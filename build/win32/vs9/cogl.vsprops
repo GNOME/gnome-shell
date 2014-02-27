@@ -251,22 +251,29 @@ cd vs$(VSVer)&#x0D;&#x0A;
 	<UserMacro
 		Name="GenerateCoglDef"
 		Value="
-		       echo EXPORTS &gt; $(DefDir)\cogl.def&#x0D;&#x0A;
-		       cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def&#x0D;&#x0A;
+echo EXPORTS &gt; $(DefDir)\cogl.def&#x0D;&#x0A;
+cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def&#x0D;&#x0A;
 			  "
 	/>
 	<UserMacro
 		Name="GenerateCoglSDLDef"
 		Value="
-		       echo EXPORTS &gt; $(DefDir)\cogl.def&#x0D;&#x0A;
-		       cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def&#x0D;&#x0A;
+echo EXPORTS &gt; $(DefDir)\cogl.def&#x0D;&#x0A;
+cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def&#x0D;&#x0A;
+			  "
+	/>
+	<UserMacro
+		Name="GenerateCoglPathDef"
+		Value="
+echo EXPORTS &gt; $(DefDir)\cogl-path.def&#x0D;&#x0A;
+cl -EP ..\..\..\cogl-path\cogl-path.symbols &gt;&gt; $(DefDir)\cogl-path.def&#x0D;&#x0A;
 			  "
 	/>
 	<UserMacro
 		Name="GenerateCoglPangoDef"
 		Value="
-		       echo EXPORTS &gt; $(DefDir)\cogl-pango.def&#x0D;&#x0A;
-			   cl -EP ..\..\..\cogl-pango\cogl-pango.symbols &gt;&gt; $(DefDir)\cogl-pango.def&#x0D;&#x0A;
+echo EXPORTS &gt; $(DefDir)\cogl-pango.def&#x0D;&#x0A;
+cl -EP ..\..\..\cogl-pango\cogl-pango.symbols &gt;&gt; $(DefDir)\cogl-pango.def&#x0D;&#x0A;
 			  "
 	/>
 	<UserMacro
