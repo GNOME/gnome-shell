@@ -1720,16 +1720,18 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
 }
 
 static void
-meta_window_actor_update_shape_region (MetaWindowActor       *self,
-                                       cairo_rectangle_int_t *client_area)
+meta_window_actor_update_shape_region (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
   cairo_region_t *region = NULL;
+  cairo_rectangle_int_t client_area;
+
+  meta_window_get_client_area_rect (priv->window, &client_area);
 
   if (priv->window->frame != NULL && priv->window->shape_region != NULL)
     {
       region = cairo_region_copy (priv->window->shape_region);
-      cairo_region_translate (region, client_area->x, client_area->y);
+      cairo_region_translate (region, client_area.x, client_area.y);
     }
   else if (priv->window->shape_region != NULL)
     {
@@ -1740,11 +1742,11 @@ meta_window_actor_update_shape_region (MetaWindowActor       *self,
       /* If we don't have a shape on the server, that means that
        * we have an implicit shape of one rectangle covering the
        * entire window. */
-      region = cairo_region_create_rectangle (client_area);
+      region = cairo_region_create_rectangle (&client_area);
     }
 
   if ((priv->window->shape_region != NULL) || (priv->window->frame != NULL))
-    build_and_scan_frame_mask (self, client_area, region);
+    build_and_scan_frame_mask (self, &client_area, region);
 
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
   priv->shape_region = region;
@@ -1755,20 +1757,23 @@ meta_window_actor_update_shape_region (MetaWindowActor       *self,
 }
 
 static void
-meta_window_actor_update_input_region (MetaWindowActor       *self,
-                                       cairo_rectangle_int_t *client_area)
+meta_window_actor_update_input_region (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
   cairo_region_t *region = NULL;
+  cairo_rectangle_int_t client_area;
+
+  meta_window_get_client_area_rect (priv->window, &client_area);
 
   if (priv->window->frame != NULL)
     {
       region = meta_frame_get_frame_bounds (priv->window->frame);
-      /* client area is in client window coordinates, so translate the
+
+      /* input_region is in client window coordinates, so translate the
        * input region into that coordinate system and back */
-      cairo_region_translate (region, -client_area->x, -client_area->y);
-      cairo_region_union_rectangle (region, client_area);
-      cairo_region_translate (region, client_area->x, client_area->y);
+      cairo_region_translate (region, -client_area.x, -client_area.y);
+      cairo_region_union_rectangle (region, &client_area);
+      cairo_region_translate (region, client_area.x, client_area.y);
     }
   else if (priv->window->shape_region != NULL ||
            priv->window->input_region != NULL)
@@ -1788,7 +1793,7 @@ meta_window_actor_update_input_region (MetaWindowActor       *self,
       /* If we don't have a shape on the server, that means that
        * we have an implicit shape of one rectangle covering the
        * entire window. */
-      region = cairo_region_create_rectangle (client_area);
+      region = cairo_region_create_rectangle (&client_area);
     }
 
   meta_surface_actor_set_input_region (priv->surface, region);
@@ -1835,18 +1840,15 @@ static void
 check_needs_reshape (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  cairo_rectangle_int_t client_area;
 
   if (!priv->needs_reshape)
     return;
 
-  meta_window_get_client_area_rect (window, &client_area);
-
-  meta_window_actor_update_shape_region (self, &client_area);
+  meta_window_actor_update_shape_region (self);
 
   if (priv->window->client_type == META_WINDOW_CLIENT_TYPE_X11)
     {
-      meta_window_actor_update_input_region (self, &client_area);
+      meta_window_actor_update_input_region (self);
       meta_window_actor_update_opaque_region (self);
     }
 
