@@ -1465,6 +1465,9 @@ clutter_evdev_reclaim_devices (void)
  * Setting @callback to %NULL will reset the default behavior.
  *
  * For reliable effects, this function must be called before clutter_init().
+ *
+ * Since: 1.16
+ * Stability: unstable
  */
 void
 clutter_evdev_set_open_callback (ClutterOpenDeviceCallback callback,
@@ -1483,6 +1486,9 @@ clutter_evdev_set_open_callback (ClutterOpenDeviceCallback callback,
  * the backend to drop the state and create a new one with the new
  * map. To avoid state being lost, callers should ensure that no key
  * is pressed when calling this function.
+ *
+ * Since: 1.16
+ * Stability: unstable
  */
 void
 clutter_evdev_set_keyboard_map (ClutterDeviceManager *evdev,
@@ -1532,6 +1538,9 @@ clutter_evdev_set_keyboard_map (ClutterDeviceManager *evdev,
  * Retrieves the #xkb_keymap in use by the evdev backend.
  *
  * Return value: the #xkb_keymap.
+ *
+ * Since: 1.18
+ * Stability: unstable
  */
 struct xkb_keymap *
 clutter_evdev_get_keyboard_map (ClutterDeviceManager *evdev)
@@ -1555,6 +1564,9 @@ clutter_evdev_get_keyboard_map (ClutterDeviceManager *evdev)
  * Sets a callback to be invoked for every pointer motion. The callback
  * can then modify the new pointer coordinates to constrain movement within
  * a specific region.
+ *
+ * Since: 1.16
+ * Stability: unstable
  */
 void
 clutter_evdev_set_pointer_constrain_callback (ClutterDeviceManager            *evdev,
@@ -1589,6 +1601,9 @@ clutter_evdev_set_pointer_constrain_callback (ClutterDeviceManager            *e
  *
  * Enables or disables sythetic key press events, allowing for initial
  * delay and interval period to be specified.
+ *
+ * Since: 1.18
+ * Stability: unstable
  */
 void
 clutter_evdev_set_keyboard_repeat (ClutterDeviceManager *evdev,
