@@ -2388,7 +2388,7 @@ handle_input_xevent (MetaDisplay *display,
       if (!window)
         {
           /* Check if the window is a root window. */
-          if (enter_event->root == enter_event->event)
+          if (enter_event->root != enter_event->event)
             break;
 
           if (enter_event->evtype == XI_FocusIn &&
