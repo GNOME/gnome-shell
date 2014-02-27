@@ -7677,7 +7677,7 @@ meta_window_set_opaque_region (MetaWindow     *window,
     window->opaque_region = cairo_region_reference (region);
 
   if (window->display->compositor)
-    meta_compositor_window_shape_changed (window->display->compositor, window);
+    meta_compositor_update_opaque_region (window->display->compositor, window);
 }
 
 void
@@ -7763,7 +7763,7 @@ meta_window_set_shape_region (MetaWindow     *window,
     window->shape_region = cairo_region_reference (region);
 
   if (window->display->compositor)
-    meta_compositor_window_shape_changed (window->display->compositor, window);
+    meta_compositor_update_shape_region (window->display->compositor, window);
 }
 
 void
@@ -7848,7 +7848,7 @@ meta_window_set_input_region (MetaWindow     *window,
     window->input_region = cairo_region_reference (region);
 
   if (window->display->compositor)
-    meta_compositor_window_shape_changed (window->display->compositor, window);
+    meta_compositor_update_input_region (window->display->compositor, window);
 }
 
 void

@@ -62,7 +62,11 @@ void meta_compositor_manage_screen   (MetaCompositor *compositor,
 void meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                       MetaScreen     *screen);
 
-void meta_compositor_window_shape_changed (MetaCompositor *compositor,
+void meta_compositor_update_shape_region (MetaCompositor *compositor,
+                                          MetaWindow     *window);
+void meta_compositor_update_input_region (MetaCompositor *compositor,
+                                          MetaWindow     *window);
+void meta_compositor_update_opaque_region (MetaCompositor *compositor,
                                            MetaWindow     *window);
 void meta_compositor_window_opacity_changed (MetaCompositor *compositor,
                                              MetaWindow     *window);
