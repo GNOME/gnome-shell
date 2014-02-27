@@ -395,6 +395,7 @@ meta_window_x11_update_input_region (MetaWindow *window)
       XRectangle *rects = NULL;
       int n_rects, ordering;
 
+      meta_error_trap_push (window->display);
       rects = XShapeGetRectangles (window->display->xdisplay,
                                    window->xwindow,
                                    ShapeInput,
