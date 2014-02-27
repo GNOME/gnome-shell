@@ -2057,9 +2057,9 @@ meta_window_actor_update_opaque_region (MetaWindowActor *self)
 
   if (priv->argb32 && priv->window->opaque_region != NULL)
     {
-      MetaFrameBorders borders;
+      cairo_rectangle_int_t client_area;
 
-      meta_frame_calc_borders (priv->window->frame, &borders);
+      meta_window_get_client_area_rect (priv->window, &client_area);
 
       /* The opaque region is defined to be a part of the
        * window which ARGB32 will always paint with opaque
@@ -2072,7 +2072,7 @@ meta_window_actor_update_opaque_region (MetaWindowActor *self)
        * case, graphical glitches will occur.
        */
       opaque_region = cairo_region_copy (priv->window->opaque_region);
-      cairo_region_translate (opaque_region, borders.total.left, borders.total.top);
+      cairo_region_translate (opaque_region, client_area.x, client_area.y);
       cairo_region_intersect (opaque_region, priv->shape_region);
     }
   else if (priv->argb32)
