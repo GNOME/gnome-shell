@@ -1700,6 +1700,17 @@ get_input_event (MetaDisplay *display,
 
       switch (input_event->evtype)
         {
+        case XI_Motion:
+        case XI_ButtonPress:
+        case XI_ButtonRelease:
+          if (((XIDeviceEvent *) input_event)->deviceid == META_VIRTUAL_CORE_POINTER_ID)
+            return input_event;
+          break;
+        case XI_KeyPress:
+        case XI_KeyRelease:
+          if (((XIDeviceEvent *) input_event)->deviceid == META_VIRTUAL_CORE_KEYBOARD_ID)
+            return input_event;
+          break;
         case XI_FocusIn:
         case XI_FocusOut:
           if (((XIEnterEvent *) input_event)->deviceid == META_VIRTUAL_CORE_KEYBOARD_ID)
@@ -3097,6 +3108,12 @@ xievent_get_modified_window (MetaDisplay *display,
 {
   switch (input_event->evtype)
     {
+    case XI_Motion:
+    case XI_ButtonPress:
+    case XI_ButtonRelease:
+    case XI_KeyPress:
+    case XI_KeyRelease:
+      return ((XIDeviceEvent *) input_event)->event;
     case XI_FocusIn:
     case XI_FocusOut:
     case XI_Enter:
