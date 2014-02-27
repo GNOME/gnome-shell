@@ -5858,9 +5858,9 @@ meta_window_get_client_area_rect (const MetaWindow      *window,
 
   rect->width = window->rect.width;
   if (window->shaded)
-    rect->height = window->rect.height;
-  else
     rect->height = 0;
+  else
+    rect->height = window->rect.height;
 }
 
 const char*
