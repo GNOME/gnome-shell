@@ -312,3 +312,9 @@ meta_surface_actor_is_unredirected (MetaSurfaceActor *self)
 {
   return META_SURFACE_ACTOR_GET_CLASS (self)->is_unredirected (self);
 }
+
+MetaWindow *
+meta_surface_actor_get_window (MetaSurfaceActor *self)
+{
+  return META_SURFACE_ACTOR_GET_CLASS (self)->get_window (self);
+}

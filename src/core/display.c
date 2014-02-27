@@ -1693,12 +1693,8 @@ get_window_for_event (MetaDisplay        *display,
     }
 
   source = clutter_event_get_source (event);
-  if (META_IS_SURFACE_ACTOR_WAYLAND (source))
-    {
-      MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (source));
-      g_assert (surface != NULL);
-      return surface->window;
-    }
+  if (META_IS_SURFACE_ACTOR (source))
+    return meta_surface_actor_get_window (META_SURFACE_ACTOR (source));
 
   return NULL;
 }
