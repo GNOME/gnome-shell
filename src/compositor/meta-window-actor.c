@@ -2084,21 +2084,12 @@ static void
 check_needs_reshape (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  MetaFrameBorders borders;
   cairo_rectangle_int_t client_area;
 
   if (!priv->needs_reshape)
     return;
 
-  meta_frame_calc_borders (priv->window->frame, &borders);
-
-  client_area.x = borders.total.left;
-  client_area.y = borders.total.top;
-  client_area.width = priv->window->rect.width;
-  if (priv->window->shaded)
-    client_area.height = 0;
-  else
-    client_area.height = priv->window->rect.height;
+  meta_window_get_client_area_rect (window, &client_area);
 
   meta_window_actor_update_shape_region (self, &client_area);
   meta_window_actor_update_input_region (self, &client_area);

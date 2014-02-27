@@ -698,4 +698,7 @@ void meta_window_set_opacity              (MetaWindow *window,
 
 Window meta_window_get_toplevel_xwindow (MetaWindow *window);
 
+void meta_window_get_client_area_rect (const MetaWindow      *window,
+                                       cairo_rectangle_int_t *rect);
+
 #endif
