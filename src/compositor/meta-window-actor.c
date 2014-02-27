@@ -1713,7 +1713,7 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
   g_free (mask_data);
 }
 
-void
+static void
 meta_window_actor_update_shape_region (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
@@ -1750,7 +1750,7 @@ meta_window_actor_update_shape_region (MetaWindowActor *self)
   meta_window_actor_invalidate_shadow (self);
 }
 
-void
+static void
 meta_window_actor_update_input_region (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
@@ -1794,7 +1794,7 @@ meta_window_actor_update_input_region (MetaWindowActor *self)
   cairo_region_destroy (region);
 }
 
-void
+static void
 meta_window_actor_update_opaque_region (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
