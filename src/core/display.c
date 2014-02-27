@@ -1715,17 +1715,6 @@ get_input_event (MetaDisplay *display,
 
       switch (input_event->evtype)
         {
-        case XI_Motion:
-        case XI_ButtonPress:
-        case XI_ButtonRelease:
-          if (((XIDeviceEvent *) input_event)->deviceid == META_VIRTUAL_CORE_POINTER_ID)
-            return input_event;
-          break;
-        case XI_KeyPress:
-        case XI_KeyRelease:
-          if (((XIDeviceEvent *) input_event)->deviceid == META_VIRTUAL_CORE_KEYBOARD_ID)
-            return input_event;
-          break;
         case XI_FocusIn:
         case XI_FocusOut:
           if (((XIEnterEvent *) input_event)->deviceid == META_VIRTUAL_CORE_KEYBOARD_ID)
@@ -2316,17 +2305,13 @@ handle_input_xevent (MetaDisplay *display,
                      XIEvent     *input_event,
                      gulong       serial)
 {
-  XIDeviceEvent *device_event = (XIDeviceEvent *) input_event;
   XIEnterEvent *enter_event = (XIEnterEvent *) input_event;
   Window modified;
   MetaWindow *window;
-  gboolean frame_was_receiver;
   MetaScreen *screen;
 
   if (input_event == NULL)
     return FALSE;
-
-  screen = meta_display_screen_for_root (display, device_event->root);
 
   modified = xievent_get_modified_window (display, input_event);
   window = modified != None ? meta_display_lookup_x_window (display, modified) : NULL;
@@ -2390,6 +2375,8 @@ handle_input_xevent (MetaDisplay *display,
           /* Check if the window is a root window. */
           if (enter_event->root != enter_event->event)
             break;
+
+          screen = meta_display_screen_for_root (display, enter_event->root);
 
           if (enter_event->evtype == XI_FocusIn &&
               enter_event->mode == XINotifyDetailNone)
@@ -3138,12 +3125,6 @@ xievent_get_modified_window (MetaDisplay *display,
 {
   switch (input_event->evtype)
     {
-    case XI_Motion:
-    case XI_ButtonPress:
-    case XI_ButtonRelease:
-    case XI_KeyPress:
-    case XI_KeyRelease:
-      return ((XIDeviceEvent *) input_event)->event;
     case XI_FocusIn:
     case XI_FocusOut:
     case XI_Enter:
@@ -3412,26 +3393,10 @@ meta_spew_xi2_event (MetaDisplay *display,
   const char *name = NULL;
   char *extra = NULL;
 
-  XIDeviceEvent *device_event = (XIDeviceEvent *) input_event;
   XIEnterEvent *enter_event = (XIEnterEvent *) input_event;
 
   switch (input_event->evtype)
     {
-    case XI_Motion:
-      name = "XI_Motion";
-      break;
-    case XI_ButtonPress:
-      name = "XI_ButtonPress";
-      break;
-    case XI_ButtonRelease:
-      name = "XI_ButtonRelease";
-      break;
-    case XI_KeyPress:
-      name = "XI_KeyPress";
-      break;
-    case XI_KeyRelease:
-      name = "XI_KeyRelease";
-      break;
     case XI_FocusIn:
       name = "XI_FocusIn";
       break;
@@ -3456,34 +3421,6 @@ meta_spew_xi2_event (MetaDisplay *display,
 
   switch (input_event->evtype)
     {
-    case XI_Motion:
-      extra = g_strdup_printf ("win: 0x%lx x: %g y: %g",
-                               device_event->event,
-                               device_event->root_x,
-                               device_event->root_y);
-      break;
-    case XI_ButtonPress:
-    case XI_ButtonRelease:
-      extra = g_strdup_printf ("button %u x %g y %g root 0x%lx",
-                               device_event->detail,
-                               device_event->root_x,
-                               device_event->root_y,
-                               device_event->root);
-      break;
-    case XI_KeyPress:
-    case XI_KeyRelease:
-      {
-        KeySym keysym;
-        const char *str;
-  
-        keysym = XKeycodeToKeysym (display->xdisplay, device_event->detail, 0);
-
-        str = XKeysymToString (keysym);
-
-        extra = g_strdup_printf ("Key '%s' state 0x%x",
-                                 str ? str : "none", device_event->mods.effective);
-      }
-      break;
     case XI_FocusIn:
     case XI_FocusOut:
       extra = g_strdup_printf ("detail: %s mode: %s\n",
@@ -4111,7 +4048,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_latest_motion_y = root_y;
   display->grab_last_moveresize_time.tv_sec = 0;
   display->grab_last_moveresize_time.tv_usec = 0;
-  display->grab_motion_notify_time = 0;
   display->grab_old_window_stacking = NULL;
 #ifdef HAVE_XSYNC
   display->grab_last_user_action_was_snap = FALSE;
