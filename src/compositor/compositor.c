@@ -976,6 +976,28 @@ grab_op_is_clicking (MetaGrabOp grab_op)
     }
 }
 
+static gboolean
+event_is_passive_button_grab (MetaDisplay   *display,
+                              XIDeviceEvent *device_event)
+{
+  /* see display.c for which events are passive button
+     grabs (meta_display_grab_window_buttons() and
+     meta_display_handle_events())
+     we need to filter them here because normally they
+     would be sent to gtk+ (they are on gtk+ frame xwindow),
+     but we want to redirect them to clutter
+  */
+
+  if (device_event->evtype != XI_ButtonPress)
+    return FALSE;
+
+  if ((device_event->mods.effective & display->window_grab_modifiers) !=
+      display->window_grab_modifiers)
+    return FALSE;
+
+  return device_event->detail < 4;
+}
+
 /* Clutter makes the assumption that there is only one X window
  * per stage, which is a valid assumption to make for a generic
  * application toolkit. As such, it will ignore any events sent
@@ -1006,7 +1028,8 @@ maybe_spoof_event_as_stage_event (MetaCompScreen *info,
           /* If this is a window frame, and we think GTK+ needs to handle the event,
              let GTK+ handle it without mangling */
           if (window && window->frame && device_event->event == window->frame->xwindow &&
-              (display->grab_op == META_GRAB_OP_NONE || grab_op_is_clicking (display->grab_op)))
+              (grab_op_is_clicking (display->grab_op) ||
+               (display->grab_op == META_GRAB_OP_NONE && !event_is_passive_button_grab (display, device_event))))
             break;
 
         case XI_KeyPress:
