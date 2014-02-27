@@ -70,10 +70,6 @@
 		Value="G_LOG_DOMAIN=\&quot;Cogl-Pango\&quot;"
 	/>
 	<UserMacro
-		Name="TestProgDef"
-		Value="COGL_COMPILATION"
-	/>
-	<UserMacro
 		Name="CopyDefinesSDLH"
 		Value="
 if exist ..\..\..\cogl\SDL_DEFINES goto DONE_COGL_DEFINES_H&#x0D;&#x0A;
