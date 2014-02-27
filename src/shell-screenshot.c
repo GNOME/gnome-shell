@@ -253,7 +253,7 @@ get_pointer_coords (int *x,
   ClutterPoint point;
 
   manager = clutter_device_manager_get_default ();
-  device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
+  device = clutter_device_manager_get_device (manager, META_VIRTUAL_CORE_POINTER_ID);
 
   clutter_input_device_get_coords (device, NULL, &point);
   *x = point.x;

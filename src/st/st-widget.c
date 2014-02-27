@@ -46,6 +46,9 @@
 #include <gtk/gtk.h>
 #include <atk/atk-enum-types.h>
 
+/* This is set in stone and also hard-coded in GDK. */
+#define VIRTUAL_CORE_POINTER_ID 2
+
 /*
  * Forward declaration for sake of StWidgetChild
  */
@@ -1722,8 +1725,7 @@ st_widget_sync_hover (StWidget *widget)
   ClutterActor *pointer_actor;
 
   device_manager = clutter_device_manager_get_default ();
-  pointer = clutter_device_manager_get_core_device (device_manager,
-                                                    CLUTTER_POINTER_DEVICE);
+  pointer = clutter_device_manager_get_device (device_manager, VIRTUAL_CORE_POINTER_ID);
   pointer_actor = clutter_input_device_get_pointer_actor (pointer);
   if (pointer_actor)
     st_widget_set_hover (widget, clutter_actor_contains (CLUTTER_ACTOR (widget), pointer_actor));
