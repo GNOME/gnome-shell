@@ -31,6 +31,7 @@ cogl_set_path
 cogl_framebuffer_fill_path
 cogl_framebuffer_push_path_clip
 cogl_framebuffer_stroke_path
+cogl2_clip_push_from_path
 cogl2_path_arc
 cogl2_path_close
 cogl2_path_curve_to
