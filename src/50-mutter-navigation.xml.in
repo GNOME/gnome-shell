@@ -29,6 +29,18 @@
 	<KeyListEntry name="move-to-workspace-down"
 	              _description="Move window one workspace down" />
 
+	<KeyListEntry name="move-to-monitor-left"
+	              _description="Move window one monitor to the left" />
+
+	<KeyListEntry name="move-to-monitor-right"
+	              _description="Move window one monitor to the right" />
+
+	<KeyListEntry name="move-to-monitor-up"
+	              _description="Move window one monitor up" />
+
+	<KeyListEntry name="move-to-monitor-down"
+	              _description="Move window one monitor down" />
+
 	<KeyListEntry name="switch-applications"
 	              _description="Switch applications"/>
 
