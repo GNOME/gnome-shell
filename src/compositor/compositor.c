@@ -823,31 +823,7 @@ is_grabbed_event (MetaDisplay *display,
 }
 
 void
-meta_compositor_update_shape_region (MetaCompositor *compositor,
-                                     MetaWindow     *window)
-{
-  MetaWindowActor *window_actor;
-  window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  if (!window_actor)
-    return;
-
-  meta_window_actor_update_shape_region (window_actor);
-}
-
-void
-meta_compositor_update_input_region (MetaCompositor *compositor,
-                                     MetaWindow     *window)
-{
-  MetaWindowActor *window_actor;
-  window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  if (!window_actor)
-    return;
-
-  meta_window_actor_update_input_region (window_actor);
-}
-
-void
-meta_compositor_update_opaque_region (MetaCompositor *compositor,
+meta_compositor_window_shape_changed (MetaCompositor *compositor,
                                       MetaWindow     *window)
 {
   MetaWindowActor *window_actor;
@@ -855,7 +831,7 @@ meta_compositor_update_opaque_region (MetaCompositor *compositor,
   if (!window_actor)
     return;
 
-  meta_window_actor_update_opaque_region (window_actor);
+  meta_window_actor_update_shape (window_actor);
 }
 
 void
