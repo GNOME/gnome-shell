@@ -27,15 +27,12 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="
-$(DoDefines)
-$(PreBuildCmd)
-							"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\deprecated;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -65,15 +62,12 @@ $(PreBuildCmd)
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="
-$(DoDefinesSDL)
-$(PreBuildCmd)
-							"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\deprecated;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -102,15 +96,12 @@ $(PreBuildCmd)
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="
-$(DoDefines)
-$(PreBuildCmd)
-							"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\deprecated;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -140,15 +131,12 @@ $(PreBuildCmd)
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="
-$(DoDefinesSDL)
-$(PreBuildCmd)
-							"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\deprecated;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -178,15 +166,12 @@ $(PreBuildCmd)
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="
-$(DoDefines)
-$(PreBuildCmd)
-							"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\deprecated;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
 				RuntimeLibrary="2"
@@ -219,15 +204,12 @@ $(PreBuildCmd)
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="
-$(DoDefinesSDL)
-$(PreBuildCmd)
-							"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\deprecated;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
 				RuntimeLibrary="2"
@@ -258,14 +240,11 @@ $(PreBuildCmd)
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="
-$(DoDefines)
-$(PreBuildCmd)
-							"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\deprecated;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -295,14 +274,11 @@ $(PreBuildCmd)
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="
-$(DoDefinesSDL)
-$(PreBuildCmd)
-							"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\deprecated;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -364,6 +340,182 @@ $(PreBuildCmd)
 			>
 		</Filter>
 		<Filter Name="Resource Files">
+			<File RelativePath="..\..\..\config.h.win32">
+				<FileConfiguration Name="Debug|Win32">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32"
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_SDL|Win32">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32"
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|Win32">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32"
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_SDL|Win32">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32"
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32"
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_SDL|x64">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32"
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|x64">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32"
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_SDL|x64">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32"
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File RelativePath="..\..\..\cogl\cogl-gl-header.h.win32">
+				<FileConfiguration Name="Debug|Win32">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-gl-header.h from cogl-gl-header.h.win32"
+						CommandLine="$(CopyGLHeaderH)"
+						Outputs="..\..\..\cogl\cogl-gl-header.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_SDL|Win32">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-gl-header.h from cogl-gl-header.h.win32"
+						CommandLine="$(CopyGLHeaderH)"
+						Outputs="..\..\..\cogl\cogl-gl-header.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|Win32">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-gl-header.h from cogl-gl-header.h.win32"
+						CommandLine="$(CopyGLHeaderH)"
+						Outputs="..\..\..\cogl\cogl-gl-header.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_SDL|Win32">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-gl-header.h from cogl-gl-header.h.win32"
+						CommandLine="$(CopyGLHeaderH)"
+						Outputs="..\..\..\cogl\cogl-gl-header.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-gl-header.h from cogl-gl-header.h.win32"
+						CommandLine="$(CopyGLHeaderH)"
+						Outputs="..\..\..\cogl\cogl-gl-header.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_SDL|x64">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-gl-header.h from cogl-gl-header.h.win32"
+						CommandLine="$(CopyGLHeaderH)"
+						Outputs="..\..\..\cogl\cogl-gl-header.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|x64">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-gl-header.h from cogl-gl-header.h.win32"
+						CommandLine="$(CopyGLHeaderH)"
+						Outputs="..\..\..\cogl\cogl-gl-header.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_SDL|x64">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-gl-header.h from cogl-gl-header.h.win32"
+						CommandLine="$(CopyGLHeaderH)"
+						Outputs="..\..\..\cogl\cogl-gl-header.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File RelativePath="..\..\..\cogl\cogl-defines.h.win32">
+				<FileConfiguration Name="Debug|Win32">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-defines.h from cogl-defines.h.win32..."
+						CommandLine="$(CopyDefinesH)"
+						Outputs="..\..\..\cogl\cogl-defines.h;..\..\..\cogl\WGL_DEFINES"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|Win32">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-defines.h from cogl-defines.h.win32..."
+						CommandLine="$(CopyDefinesH)"
+						Outputs="..\..\..\cogl\cogl-defines.h;..\..\..\cogl\WGL_DEFINES"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-defines.h from cogl-defines.h.win32..."
+						CommandLine="$(CopyDefinesH)"
+						Outputs="..\..\..\cogl\cogl-defines.h;..\..\..\cogl\WGL_DEFINES"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|x64">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-defines.h from cogl-defines.h.win32..."
+						CommandLine="$(CopyDefinesH)"
+						Outputs="..\..\..\cogl\cogl-defines.h;..\..\..\cogl\WGL_DEFINES"
+					/>
+				</FileConfiguration>
+			</File>
+			<File RelativePath="..\..\..\cogl\cogl-defines.h.win32_sdl">
+				<FileConfiguration Name="Debug_SDL|Win32">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-defines.h from cogl-defines.h.win32_sdl..."
+						CommandLine="$(CopyDefinesSDLH)"
+						Outputs="..\..\..\cogl\cogl-defines.h;..\..\..\cogl\SDL_DEFINES"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_SDL|Win32">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-defines.h from cogl-defines.h.win32_sdl..."
+						CommandLine="$(CopyDefinesSDLH)"
+						Outputs="..\..\..\cogl\cogl-defines.h;..\..\..\cogl\SDL_DEFINES"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_SDL|x64">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-defines.h from cogl-defines.h.win32_sdl..."
+						CommandLine="$(CopyDefinesSDLH)"
+						Outputs="..\..\..\cogl\cogl-defines.h;..\..\..\cogl\SDL_DEFINES"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_SDL|x64">
+					<Tool Name="VCCustomBuildTool"
+						Description="Copying cogl-defines.h from cogl-defines.h.win32_sdl..."
+						CommandLine="$(CopyDefinesSDLH)"
+						Outputs="..\..\..\cogl\cogl-defines.h;..\..\..\cogl\SDL_DEFINES"
+					/>
+				</FileConfiguration>
+			</File>
 			<File RelativePath="..\..\..\cogl\cogl.symbols">
 				<FileConfiguration Name="Debug|Win32">
 					<Tool Name="VCCustomBuildTool"
