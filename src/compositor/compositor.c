@@ -1053,7 +1053,8 @@ meta_compositor_process_event (MetaCompositor *compositor,
       return TRUE;
     }
 
-  maybe_spoof_event_as_stage_event (info, window, event);
+  if (!meta_is_wayland_compositor ())
+    maybe_spoof_event_as_stage_event (info, window, event);
 
   if (meta_plugin_manager_xevent_filter (info->plugin_mgr, event))
     {
