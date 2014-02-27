@@ -78,7 +78,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				AdditionalDependencies="SDL2.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
 				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(IntDir)\cogl.def"
@@ -147,7 +147,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				AdditionalDependencies="SDL2.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
 				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(IntDir)\cogl.def"
@@ -220,7 +220,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				AdditionalDependencies="SDL2.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
 				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(IntDir)\cogl.def"
@@ -287,7 +287,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+				AdditionalDependencies="SDL2.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
 				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(IntDir)\cogl.def"
@@ -308,7 +308,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File RelativePath="..\..\..\cogl\winsys\cogl-winsys-wgl.c" />
-			<File RelativePath="..\..\..\cogl\winsys\cogl-winsys-sdl.c" >
+			<File RelativePath="..\..\..\cogl\winsys\cogl-winsys-sdl2.c" >
 				<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
