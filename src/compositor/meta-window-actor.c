@@ -94,6 +94,7 @@ struct _MetaWindowActorPrivate
   guint             needs_frame_drawn      : 1;
   guint             repaint_scheduled      : 1;
 
+  guint             needs_reshape          : 1;
   guint             recompute_focused_shadow   : 1;
   guint             recompute_unfocused_shadow : 1;
 
@@ -141,6 +142,8 @@ static gboolean meta_window_actor_get_paint_volume (ClutterActor       *actor,
 static gboolean meta_window_actor_has_shadow (MetaWindowActor *self);
 
 static void meta_window_actor_handle_updates (MetaWindowActor *self);
+
+static void check_needs_reshape (MetaWindowActor *self);
 
 static void do_send_frame_drawn (MetaWindowActor *self, FrameData *frame);
 static void do_send_frame_timings (MetaWindowActor  *self,
@@ -234,6 +237,7 @@ surface_allocation_changed_notify (ClutterActor           *actor,
                                    MetaWindowActor        *self)
 {
   meta_window_actor_sync_actor_geometry (self, FALSE);
+  meta_window_actor_update_shape (self);
 }
 
 static void
@@ -342,6 +346,8 @@ set_surface (MetaWindowActor  *self,
       /* If the previous surface actor was frozen, start out
        * frozen as well... */
       meta_surface_actor_set_frozen (priv->surface, priv->freeze_count > 0);
+
+      meta_window_actor_update_shape (self);
     }
 }
 
@@ -1831,6 +1837,38 @@ meta_window_actor_update_opaque_region (MetaWindowActor *self)
 }
 
 static void
+check_needs_reshape (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+
+  if (!priv->needs_reshape)
+    return;
+
+  meta_window_actor_update_shape_region (self);
+
+  if (priv->window->client_type == META_WINDOW_CLIENT_TYPE_X11)
+    {
+      meta_window_actor_update_input_region (self);
+      meta_window_actor_update_opaque_region (self);
+    }
+
+  priv->needs_reshape = FALSE;
+}
+
+void
+meta_window_actor_update_shape (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+
+  priv->needs_reshape = TRUE;
+
+  if (is_frozen (self))
+    return;
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (priv->surface));
+}
+
+static void
 meta_window_actor_handle_updates (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
@@ -1850,6 +1888,7 @@ meta_window_actor_handle_updates (MetaWindowActor *self)
   if (!meta_surface_actor_is_visible (priv->surface))
     return;
 
+  check_needs_reshape (self);
   check_needs_shadow (self);
 }
 
