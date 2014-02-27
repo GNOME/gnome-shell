@@ -1,25 +1,4 @@
-/* cogl2_clip_push_from_path is only for 1.10.x*/
-cogl2_clip_push_from_path
 
-cogl2_path_arc
-cogl2_path_close
-cogl2_path_curve_to
-cogl2_path_ellipse
-cogl2_path_fill
-cogl2_path_get_fill_rule
-cogl2_path_line
-cogl2_path_line_to
-cogl2_path_move_to
-cogl2_path_new
-cogl2_path_polygon
-cogl2_path_polyline
-cogl2_path_rectangle
-cogl2_path_rel_curve_to
-cogl2_path_rel_line_to
-cogl2_path_rel_move_to
-cogl2_path_round_rectangle
-cogl2_path_set_fill_rule
-cogl2_path_stroke
 
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
 cogl_android_set_native_window
@@ -100,8 +79,6 @@ cogl_clip_pop
 cogl_clip_push
 #endif
 
-cogl_clip_push_from_path
-cogl_clip_push_from_path_preserve
 cogl_clip_push_rectangle
 
 cogl_clip_push_window_rect
@@ -249,7 +226,6 @@ cogl_framebuffer_draw_rectangle
 cogl_framebuffer_draw_rectangles
 cogl_framebuffer_draw_textured_rectangle
 cogl_framebuffer_draw_textured_rectangles
-cogl_framebuffer_fill_path
 cogl_framebuffer_finish
 cogl_framebuffer_frustum
 cogl_framebuffer_get_alpha_bits
@@ -260,6 +236,7 @@ cogl_framebuffer_get_context
 cogl_framebuffer_get_depth_bits
 cogl_framebuffer_get_depth_texture
 cogl_framebuffer_get_depth_texture_enabled
+cogl_framebuffer_get_depth_write_enabled
 cogl_framebuffer_get_dither_enabled
 cogl_framebuffer_get_green_bits
 cogl_framebuffer_get_height
@@ -279,7 +256,6 @@ cogl_framebuffer_perspective
 cogl_framebuffer_pop_clip
 cogl_framebuffer_pop_matrix
 cogl_framebuffer_push_matrix
-cogl_framebuffer_push_path_clip
 cogl_framebuffer_push_primitive_clip
 cogl_framebuffer_push_rectangle_clip
 cogl_framebuffer_push_scissor_clip
@@ -297,12 +273,12 @@ cogl_framebuffer_rotate_quaternion
 cogl_framebuffer_scale
 cogl_framebuffer_set_color_mask
 cogl_framebuffer_set_depth_texture_enabled
+cogl_framebuffer_set_depth_write_enabled
 cogl_framebuffer_set_dither_enabled
 cogl_framebuffer_set_modelview_matrix
 cogl_framebuffer_set_projection_matrix
 cogl_framebuffer_set_samples_per_pixel
 cogl_framebuffer_set_viewport
-cogl_framebuffer_stroke_path
 cogl_framebuffer_transform
 cogl_framebuffer_translate
 cogl_framebuffer_vdraw_attributes
@@ -327,7 +303,6 @@ cogl_get_draw_framebuffer
 cogl_get_features
 cogl_get_modelview_matrix
 cogl_get_option_group
-cogl_get_path
 cogl_get_proc_address
 cogl_get_projection_matrix
 cogl_get_rectangle_indices
@@ -384,7 +359,6 @@ cogl_is_material
 cogl_is_matrix_stack
 cogl_is_offscreen
 cogl_is_output
-cogl_is_path
 cogl_is_pipeline
 cogl_is_pixel_buffer
 cogl_is_primitive
@@ -575,30 +549,6 @@ cogl_output_get_subpixel_order
 cogl_output_get_width
 cogl_output_get_x
 cogl_output_get_y
-
-cogl_path_arc
-cogl_path_close
-cogl_path_copy
-cogl_path_curve_to
-cogl_path_ellipse
-cogl_path_fill
-cogl_path_fill_preserve		/* this is COGL 1.0 API */
-cogl_path_fill_rule_get_type
-cogl_path_get_fill_rule
-cogl_path_line
-cogl_path_line_to
-cogl_path_move_to
-cogl_path_new
-cogl_path_polygon
-cogl_path_polyline
-cogl_path_rectangle
-cogl_path_rel_curve_to
-cogl_path_rel_line_to
-cogl_path_rel_move_to
-cogl_path_round_rectangle
-cogl_path_set_fill_rule
-cogl_path_stroke
-cogl_path_stroke_preserve	/* this is COGL 1.0 API */
 
 cogl_perspective
 
@@ -814,7 +764,6 @@ cogl_sdl_renderer_set_event_type
 
 cogl_set_framebuffer
 cogl_set_modelview_matrix
-cogl_set_path
 cogl_set_projection_matrix
 cogl_set_source
 cogl_set_source_color
@@ -864,11 +813,13 @@ cogl_system_error_get_type
 cogl_texture_allocate
 cogl_texture_error_get_type
 cogl_texture_flags_get_type
+cogl_texture_get_components
 cogl_texture_get_data
 cogl_texture_get_format
 cogl_texture_get_gl_texture
 cogl_texture_get_height
 cogl_texture_get_max_waste
+cogl_texture_get_premultiplied
 cogl_texture_get_rowstride
 cogl_texture_get_width
 cogl_texture_is_sliced
@@ -891,7 +842,9 @@ cogl_texture_rectangle_new_with_size
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_texture_ref
 #endif
+cogl_texture_set_components
 cogl_texture_set_data
+cogl_texture_set_premultiplied
 cogl_texture_set_region
 cogl_texture_set_region_from_bitmap
 cogl_texture_type_get_type
@@ -974,6 +927,7 @@ cogl_wayland_onscreen_set_foreign_surface
 cogl_wayland_renderer_get_display
 cogl_wayland_renderer_set_event_dispatch_enabled
 cogl_wayland_renderer_set_foreign_display
+cogl_wayland_texture_set_region_from_shm_buffer
 cogl_wayland_texture_2d_new_from_buffer
 #endif
 
@@ -1015,8 +969,23 @@ _cogl_atlas_new
 _cogl_atlas_reserve_space
 _cogl_atlas_texture_add_reorganize_callback
 _cogl_atlas_texture_remove_reorganize_callback
+_cogl_buffer_map_for_fill_or_fallback
+_cogl_buffer_unmap_for_fill_or_fallback
+_cogl_clip_stack_push_rectangle
+_cogl_clip_stack_push_primitive
 _cogl_context_get_default
+_cogl_debug_instances
+_cogl_framebuffer_get_modelview_stack
+_cogl_framebuffer_get_projection_stack
+_cogl_framebuffer_get_stencil_bits
+_cogl_object_default_unref
+_cogl_pipeline_foreach_layer_internal
+_cogl_pipeline_layer_get_texture
+_cogl_pipeline_prune_to_n_layers
+_cogl_primitive_draw
 _cogl_system_error_quark
+_cogl_texture_can_hardware_repeat
+_cogl_texture_get_format
 #endif
 
 cogl_fence_closure_get_user_data
