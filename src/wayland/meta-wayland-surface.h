@@ -75,7 +75,6 @@ typedef struct
 typedef struct
 {
   struct wl_resource *resource;
-  struct wl_listener surface_destroy_listener;
 } MetaWaylandSurfaceExtension;
 
 struct _MetaWaylandSurface

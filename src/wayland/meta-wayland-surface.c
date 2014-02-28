@@ -646,16 +646,7 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
 static void
 destroy_surface_extension (MetaWaylandSurfaceExtension *extension)
 {
-  wl_list_remove (&extension->surface_destroy_listener.link);
   extension->resource = NULL;
-}
-
-static void
-extension_handle_surface_destroy (struct wl_listener *listener,
-				  void *data)
-{
-  MetaWaylandSurfaceExtension *extension = wl_container_of (listener, extension, surface_destroy_listener);
-  wl_resource_destroy (extension->resource);
 }
 
 static int
@@ -683,9 +674,6 @@ create_surface_extension (MetaWaylandSurfaceExtension *extension,
   client = wl_resource_get_client (surface->resource);
   extension->resource = wl_resource_create (client, interface, get_resource_version (master_resource, max_version), id);
   wl_resource_set_implementation (extension->resource, implementation, surface, destructor);
-
-  extension->surface_destroy_listener.notify = extension_handle_surface_destroy;
-  wl_resource_add_destroy_listener (surface->resource, &extension->surface_destroy_listener);
 
   return TRUE;
 }
