@@ -2108,7 +2108,7 @@ meta_display_handle_event (MetaDisplay        *display,
            * care about. Just let the event through.
            */
           unmodified = (event->button.modifier_state & grab_mask) == 0;
-          fully_modified = (event->button.modifier_state & grab_mask) == grab_mask;
+          fully_modified = grab_mask && (event->button.modifier_state & grab_mask) == grab_mask;
 
           if (unmodified && window && window->have_focus_click_grab)
             {

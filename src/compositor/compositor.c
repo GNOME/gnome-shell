@@ -991,6 +991,9 @@ event_is_passive_button_grab (MetaDisplay   *display,
   if (device_event->evtype != XI_ButtonPress)
     return FALSE;
 
+  if (display->window_grab_modifiers == 0)
+    return FALSE;
+
   if ((device_event->mods.effective & display->window_grab_modifiers) !=
       display->window_grab_modifiers)
     return FALSE;
