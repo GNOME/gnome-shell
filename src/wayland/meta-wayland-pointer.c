@@ -49,7 +49,6 @@
 
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-private.h"
-#include "xdg-shell-server-protocol.h"
 
 #include <string.h>
 
@@ -530,14 +529,7 @@ meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer)
 
   wl_list_for_each_safe (popup, tmp, &popup_grab->all_popups, link)
     {
-      MetaWaylandSurfaceExtension *xdg_popup = &popup->surface->xdg_popup;
-      struct wl_client *client = wl_resource_get_client (xdg_popup->resource);
-      struct wl_display *display = wl_client_get_display (client);
-      uint32_t serial;
-
-      serial = wl_display_next_serial (display);
-
-      xdg_popup_send_popup_done (xdg_popup->resource, serial);
+      meta_wayland_surface_popup_done (popup->surface);
       wl_list_remove (&popup->surface_destroy_listener.link);
       wl_list_remove (&popup->link);
       g_slice_free (MetaWaylandPopup, popup);
@@ -597,7 +589,10 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
   popup->grab = grab;
   popup->surface = surface;
   popup->surface_destroy_listener.notify = on_popup_surface_destroy;
-  wl_resource_add_destroy_listener (surface->xdg_popup.resource, &popup->surface_destroy_listener);
+  if (surface->xdg_popup.resource)
+    wl_resource_add_destroy_listener (surface->xdg_popup.resource, &popup->surface_destroy_listener);
+  else if (surface->wl_shell_surface.resource)
+    wl_resource_add_destroy_listener (surface->wl_shell_surface.resource, &popup->surface_destroy_listener);
 
   wl_list_insert (&grab->all_popups, &popup->link);
       

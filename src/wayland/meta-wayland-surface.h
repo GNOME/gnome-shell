@@ -86,6 +86,7 @@ struct _MetaWaylandSurface
   MetaWindow *window;
   MetaWaylandSurfaceExtension xdg_surface;
   MetaWaylandSurfaceExtension xdg_popup;
+  MetaWaylandSurfaceExtension wl_shell_surface;
   MetaWaylandSurfaceExtension gtk_surface;
   MetaWaylandSurfaceExtension subsurface;
 
@@ -131,5 +132,8 @@ void                meta_wayland_surface_deactivated (MetaWaylandSurface *surfac
 void                meta_wayland_surface_ping (MetaWaylandSurface *surface,
                                                guint32             serial);
 void                meta_wayland_surface_delete (MetaWaylandSurface *surface);
+
+void                meta_wayland_surface_popup_done (MetaWaylandSurface *surface);
+
 
 #endif
