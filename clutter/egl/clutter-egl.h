@@ -87,6 +87,8 @@ EGLDisplay      clutter_egl_display             (void);
  */
 EGLDisplay      clutter_egl_get_egl_display     (void);
 
+void clutter_egl_set_kms_fd (int fd);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_EGL_H__ */
