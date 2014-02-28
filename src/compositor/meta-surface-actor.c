@@ -15,7 +15,6 @@
 
 #include <clutter/clutter.h>
 #include <meta/meta-shaped-texture.h>
-#include "meta-wayland-private.h"
 #include "meta-cullable.h"
 #include "meta-shaped-texture-private.h"
 

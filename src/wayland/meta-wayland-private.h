@@ -21,7 +21,6 @@
 #define META_WAYLAND_PRIVATE_H
 
 #include <wayland-server.h>
-#include <xkbcommon/xkbcommon.h>
 #include <clutter/clutter.h>
 
 #include <glib.h>
@@ -31,7 +30,7 @@
 #include "meta-weston-launch.h"
 #include <meta/meta-cursor-tracker.h>
 
-#include "meta-wayland-types.h"
+#include "meta-wayland.h"
 #include "meta-wayland-versions.h"
 #include "meta-wayland-surface.h"
 #include "meta-wayland-seat.h"
@@ -91,30 +90,8 @@ struct _MetaWaylandCompositor
   MetaWaylandSeat *seat;
 };
 
-void                    meta_wayland_init                       (void);
-void                    meta_wayland_finalize                   (void);
-
-/* We maintain a singleton MetaWaylandCompositor which can be got at via this
- * API after meta_wayland_init() has been called. */
-MetaWaylandCompositor  *meta_wayland_compositor_get_default     (void);
-
-void                    meta_wayland_compositor_repick          (MetaWaylandCompositor *compositor);
-
-void                    meta_wayland_compositor_set_input_focus (MetaWaylandCompositor *compositor,
-                                                                 MetaWindow            *window);
-gboolean                meta_wayland_compositor_handle_event    (MetaWaylandCompositor *compositor,
-                                                                 const ClutterEvent    *event);
-
 MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource    *resource);
 void                    meta_wayland_buffer_ref                 (MetaWaylandBuffer     *buffer);
 void                    meta_wayland_buffer_unref               (MetaWaylandBuffer     *buffer);
-
-void                    meta_wayland_compositor_update          (MetaWaylandCompositor *compositor,
-                                                                 const ClutterEvent    *event);
-void                    meta_wayland_compositor_paint_finished  (MetaWaylandCompositor *compositor);
-
-gboolean                meta_wayland_compositor_activate_vt     (MetaWaylandCompositor  *compositor,
-                                                                 int                     vt,
-                                                                 GError                **error);
 
 #endif /* META_WAYLAND_PRIVATE_H */

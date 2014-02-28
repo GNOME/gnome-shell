@@ -30,6 +30,7 @@
 #include "meta-plugin-manager.h"
 #include <meta/screen.h>
 #include <meta/display.h>
+#include <meta/util.h>
 
 #include <string.h>
 #include <X11/Xlib.h>

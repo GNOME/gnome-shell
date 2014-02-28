@@ -28,9 +28,9 @@
 #include "meta-window-actor-private.h"
 #include "meta-texture-rectangle.h"
 #include "region-utils.h"
-#include "meta-wayland-private.h"
 #include "monitor-private.h"
 #include "meta-cullable.h"
+#include "meta-wayland-private.h"
 
 #include "meta-surface-actor.h"
 #include "meta-surface-actor-x11.h"

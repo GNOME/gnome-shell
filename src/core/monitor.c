@@ -34,7 +34,6 @@
 #include "util-private.h"
 #include <meta/errors.h>
 #include "monitor-private.h"
-#include "meta-wayland-private.h"
 
 #include "meta-dbus-xrandr.h"
 

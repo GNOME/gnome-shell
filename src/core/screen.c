@@ -43,7 +43,7 @@
 #include <meta/compositor.h>
 #include "mutter-enum-types.h"
 #include "core.h"
-#include "meta-wayland-private.h"
+#include "meta-wayland.h"
 #include "meta-cursor-tracker-private.h"
 
 #include <X11/extensions/Xinerama.h>

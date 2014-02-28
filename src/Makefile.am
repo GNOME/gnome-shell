@@ -189,6 +189,7 @@ libmutter_wayland_la_SOURCES =			\
 	ui/theme-private.h			\
 	ui/ui.c					\
 	wayland/meta-wayland.c			\
+	wayland/meta-wayland.h			\
 	wayland/meta-wayland-private.h		\
 	wayland/meta-xwayland-private.h		\
 	wayland/meta-xwayland.c			\

@@ -53,7 +53,7 @@
 #include "session.h"
 #include <meta/prefs.h>
 #include <meta/compositor.h>
-#include "meta-wayland-private.h"
+#include "meta-wayland.h"
 
 #include <glib-object.h>
 #include <glib-unix.h>

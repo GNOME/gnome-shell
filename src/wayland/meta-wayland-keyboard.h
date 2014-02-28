@@ -47,6 +47,7 @@
 
 #include <clutter/clutter.h>
 #include <wayland-server.h>
+#include <xkbcommon/xkbcommon.h>
 
 struct _MetaWaylandKeyboardGrabInterface
 {

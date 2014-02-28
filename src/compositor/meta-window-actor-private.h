@@ -5,9 +5,6 @@
 
 #include <config.h>
 
-#include <wayland-server.h>
-#include <meta-wayland-private.h>
-
 #include <X11/extensions/Xdamage.h>
 #include <meta/compositor-mutter.h>
 #include "meta-surface-actor.h"
