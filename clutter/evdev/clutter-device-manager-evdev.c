@@ -1547,7 +1547,7 @@ clutter_evdev_get_keyboard_map (ClutterDeviceManager *evdev)
 {
   ClutterDeviceManagerEvdev *manager_evdev;
 
-  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev));
+  g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev), NULL);
 
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (evdev);
 
