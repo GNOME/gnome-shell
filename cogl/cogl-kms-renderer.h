@@ -39,6 +39,22 @@
 COGL_BEGIN_DECLS
 
 /**
+ * cogl_kms_renderer_set_kms_fd:
+ * @renderer: A #CoglRenderer
+ * @fd: The fd to kms to use
+ *
+ * Sets the file descriptor Cogl should use to communicate
+ * to the kms driver. If -1 (the default), then Cogl will
+ * open its own FD by trying to open "/dev/dri/card0".
+ *
+ * Since: 1.18
+ * Stability: unstable
+ */
+void
+cogl_kms_renderer_set_kms_fd (CoglRenderer *renderer,
+                              int fd);
+
+/**
  * cogl_kms_renderer_get_kms_fd:
  * @renderer: A #CoglRenderer
  *

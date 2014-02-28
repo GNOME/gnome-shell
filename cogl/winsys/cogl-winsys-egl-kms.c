@@ -69,6 +69,7 @@ static const CoglWinsysVtable *parent_vtable;
 typedef struct _CoglRendererKMS
 {
   int fd;
+  int opened_fd;
   struct gbm_device *gbm;
   CoglClosure *swap_notify_idle;
 } CoglRendererKMS;
@@ -285,14 +286,25 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
    * we're doing here... */
   g_setenv ("EGL_PLATFORM", "drm", 1);
 
-  kms_renderer->fd = open (device_name, O_RDWR);
-  if (kms_renderer->fd < 0)
+  kms_renderer->fd = -1;
+  kms_renderer->opened_fd = -1;
+
+  if (renderer->kms_fd >= 0)
     {
-      /* Probably permissions error */
-      _cogl_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_INIT,
-                   "Couldn't open %s", device_name);
-      return FALSE;
+      kms_renderer->fd = renderer->kms_fd;
+    }
+  else
+    {
+      kms_renderer->opened_fd = open (device_name, O_RDWR);
+      kms_renderer->fd = kms_renderer->opened_fd;
+      if (kms_renderer->fd < 0)
+        {
+          /* Probably permissions error */
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
+                           COGL_WINSYS_ERROR_INIT,
+                           "Couldn't open %s", device_name);
+          return FALSE;
+        }
     }
 
   kms_renderer->gbm = gbm_create_device (kms_renderer->fd);
@@ -330,7 +342,8 @@ egl_terminate:
 destroy_gbm_device:
   gbm_device_destroy (kms_renderer->gbm);
 close_fd:
-  close (kms_renderer->fd);
+  if (kms_renderer->opened_fd >= 0)
+    close (kms_renderer->opened_fd);
 
   _cogl_winsys_renderer_disconnect (renderer);
 
@@ -1073,6 +1086,17 @@ _cogl_winsys_egl_kms_get_vtable (void)
     }
 
   return &vtable;
+}
+
+void
+cogl_kms_renderer_set_kms_fd (CoglRenderer *renderer,
+                              int fd)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
+  /* NB: Renderers are considered immutable once connected */
+  _COGL_RETURN_IF_FAIL (!renderer->connected);
+
+  renderer->kms_fd = fd;
 }
 
 int

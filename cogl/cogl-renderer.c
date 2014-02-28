@@ -303,6 +303,10 @@ cogl_renderer_new (void)
   renderer->wayland_enable_event_dispatch = TRUE;
 #endif
 
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  renderer->kms_fd = -1;
+#endif
+
   return _cogl_renderer_object_new (renderer);
 }
 

@@ -88,6 +88,10 @@ struct _CoglRenderer
   CoglBool wayland_enable_event_dispatch;
 #endif
 
+#if defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
+  int kms_fd;
+#endif
+
 #ifdef COGL_HAS_SDL_SUPPORT
   CoglBool sdl_event_type_set;
   uint32_t sdl_event_type;
