@@ -82,7 +82,6 @@ surface_handle_buffer_destroy (struct wl_listener *listener, void *data)
   wl_resource_post_error (surface->resource, WL_DISPLAY_ERROR_INVALID_OBJECT,
                           "Destroyed buffer while it was attached to the surface");
   surface->buffer = NULL;
-  wl_list_remove (&surface->buffer_destroy_listener.link);
 }
 
 static void

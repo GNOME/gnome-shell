@@ -59,7 +59,6 @@ pointer_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 {
   MetaWaylandPointer *pointer = wl_container_of (listener, pointer, focus_surface_listener);
 
-  wl_list_remove (&pointer->focus_surface_listener.link);
   pointer->focus_surface = NULL;
 
   if (pointer->focus_resource)
@@ -74,7 +73,6 @@ pointer_handle_focus_resource_destroy (struct wl_listener *listener, void *data)
 {
   MetaWaylandPointer *pointer = wl_container_of (listener, pointer, focus_resource_listener);
 
-  wl_list_remove (&pointer->focus_resource_listener.link);
   pointer->focus_resource = NULL;
 }
 
