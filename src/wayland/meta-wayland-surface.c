@@ -262,9 +262,6 @@ ensure_buffer_texture (MetaWaylandBuffer *buffer)
   CoglError *catch_error = NULL;
   CoglTexture *texture;
 
-  if (!buffer)
-    return;
-
   texture = COGL_TEXTURE (cogl_wayland_texture_2d_new_from_buffer (ctx,
                                                                    buffer->resource,
                                                                    &catch_error));
@@ -295,7 +292,7 @@ actor_surface_commit (MetaWaylandSurface             *surface,
   MetaSurfaceActor *surface_actor = surface->surface_actor;
   MetaWaylandBuffer *buffer = pending->buffer;
 
-  if (buffer_changed)
+  if (buffer_changed && buffer)
     {
       ensure_buffer_texture (buffer);
       meta_surface_actor_wayland_set_buffer (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor), buffer);
