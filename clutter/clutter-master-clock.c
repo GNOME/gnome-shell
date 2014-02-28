@@ -93,6 +93,8 @@ struct _ClutterMasterClock
    */
   guint idle : 1;
   guint ensure_next_iteration : 1;
+
+  guint paused : 1;
 };
 
 struct _ClutterMasterClockClass
@@ -142,6 +144,9 @@ master_clock_is_running (ClutterMasterClock *master_clock)
   const GSList *stages, *l;
 
   stages = clutter_stage_manager_peek_stages (stage_manager);
+
+  if (master_clock->paused)
+    return FALSE;
 
   if (master_clock->timelines)
     return TRUE;
@@ -636,6 +641,7 @@ clutter_master_clock_init (ClutterMasterClock *self)
 
   self->idle = FALSE;
   self->ensure_next_iteration = FALSE;
+  self->paused = FALSE;
 
 #ifdef CLUTTER_ENABLE_DEBUG
   self->frame_budget = G_USEC_PER_SEC / 60;
@@ -739,4 +745,13 @@ _clutter_master_clock_ensure_next_iteration (ClutterMasterClock *master_clock)
   g_return_if_fail (CLUTTER_IS_MASTER_CLOCK (master_clock));
 
   master_clock->ensure_next_iteration = TRUE;
+}
+
+void
+_clutter_master_clock_set_paused (ClutterMasterClock *master_clock,
+                                  gboolean            paused)
+{
+  g_return_if_fail (CLUTTER_IS_MASTER_CLOCK (master_clock));
+
+  master_clock->paused = !!paused;
 }

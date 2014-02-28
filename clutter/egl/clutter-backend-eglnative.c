@@ -204,3 +204,57 @@ clutter_egl_set_kms_fd (int fd)
   _kms_fd = fd;
 }
 #endif
+
+/**
+ * clutter_egl_freeze_master_clock:
+ *
+ * Freezing the master clock makes Clutter stop processing events,
+ * redrawing, and advancing timelines. This is necessary when implementing
+ * a display server, to ensure that Clutter doesn't keep trying to page
+ * flip when DRM master has been dropped, e.g. when VT switched away.
+ *
+ * The master clock starts out running, so if you are VT switched away on
+ * startup, you need to call this immediately.
+ *
+ * If you're also using the evdev backend, make sure to also use
+ * clutter_evdev_release_devices() to make sure that Clutter doesn't also
+ * access revoked evdev devices when VT switched away.
+ *
+ * To unthaw a frozen master clock, use clutter_egl_thaw_master_clock().
+ *
+ * Since: 1.20
+ */
+void
+clutter_egl_freeze_master_clock (void)
+{
+  ClutterMasterClock *master_clock;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_EGL_NATIVE (clutter_get_default_backend ()));
+
+  master_clock = _clutter_master_clock_get_default ();
+  _clutter_master_clock_set_paused (master_clock, TRUE);
+}
+
+/**
+ * clutter_egl_thaw_master_clock:
+ *
+ * Thaws a master clock that has previously been frozen with
+ * clutter_egl_freeze_master_clock(), and start pumping the master clock
+ * again at the next iteration. Note that if you're switching back to your
+ * own VT, you should probably also queue a stage redraw with
+ * clutter_stage_ensure_redraw().
+ *
+ * Since: 1.20
+ */
+void
+clutter_egl_thaw_master_clock (void)
+{
+  ClutterMasterClock *master_clock;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_EGL_NATIVE (clutter_get_default_backend ()));
+
+  master_clock = _clutter_master_clock_get_default ();
+  _clutter_master_clock_set_paused (master_clock, FALSE);
+
+  _clutter_master_clock_start_running (master_clock);
+}

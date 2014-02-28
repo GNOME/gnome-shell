@@ -92,6 +92,11 @@ CLUTTER_AVAILABLE_IN_1_18
 void            clutter_egl_set_kms_fd          (int fd);
 #endif
 
+CLUTTER_AVAILABLE_IN_1_20
+void            clutter_egl_freeze_master_clock (void);
+CLUTTER_AVAILABLE_IN_1_20
+void            clutter_egl_thaw_master_clock   (void);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_EGL_H__ */
