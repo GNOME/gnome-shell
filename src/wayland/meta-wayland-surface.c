@@ -683,7 +683,7 @@ create_surface_extension (MetaWaylandSurfaceExtension *extension,
 
   client = wl_resource_get_client (surface->resource);
   extension->resource = wl_resource_create (client, interface, get_resource_version (master_resource, max_version), id);
-  wl_resource_set_implementation (extension->resource, implementation, extension, destructor);
+  wl_resource_set_implementation (extension->resource, implementation, surface, destructor);
 
   extension->surface_destroy_listener.notify = extension_handle_surface_destroy;
   wl_resource_add_destroy_listener (surface->resource, &extension->surface_destroy_listener);
@@ -713,11 +713,10 @@ xdg_shell_pong (struct wl_client *client,
 static void
 xdg_surface_destructor (struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   destroy_window (surface);
-  destroy_surface_extension (xdg_surface);
+  destroy_surface_extension (&surface->xdg_surface);
 }
 
 static void
@@ -732,8 +731,7 @@ xdg_surface_set_transient_for (struct wl_client *client,
                                struct wl_resource *resource,
                                struct wl_resource *parent_resource)
 {
-  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
   MetaWindow *transient_for = NULL;
 
   if (parent_resource)
@@ -753,8 +751,7 @@ xdg_surface_set_margin (struct wl_client *client,
                         int32_t top_margin,
                         int32_t bottom_margin)
 {
-  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   surface->pending.frame_extents_changed = TRUE;
   surface->pending.frame_extents.left = left_margin;
@@ -768,8 +765,7 @@ xdg_surface_set_title (struct wl_client *client,
                        struct wl_resource *resource,
                        const char *title)
 {
-  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   meta_window_set_title (surface->window, title);
 }
@@ -779,8 +775,7 @@ xdg_surface_set_app_id (struct wl_client *client,
                         struct wl_resource *resource,
                         const char *app_id)
 {
-  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   meta_window_set_wm_class (surface->window, app_id, app_id);
 }
@@ -815,8 +810,7 @@ xdg_surface_move (struct wl_client *client,
                   guint32 serial)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   if (seat->pointer.button_count == 0 ||
       seat->pointer.grab_serial != serial ||
@@ -861,8 +855,7 @@ xdg_surface_resize (struct wl_client *client,
                     guint32 edges)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   if (seat->pointer.button_count == 0 ||
       seat->pointer.grab_serial != serial ||
@@ -884,8 +877,7 @@ static void
 xdg_surface_set_fullscreen (struct wl_client *client,
                             struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   surface->pending.fullscreen.changed = TRUE;
   surface->pending.fullscreen.value = TRUE;
@@ -906,8 +898,7 @@ static void
 xdg_surface_set_maximized (struct wl_client *client,
                            struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   surface->pending.maximized.changed = TRUE;
   surface->pending.maximized.value = TRUE;
@@ -917,8 +908,7 @@ static void
 xdg_surface_unset_maximized (struct wl_client *client,
                              struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   surface->pending.maximized.changed = TRUE;
   surface->pending.maximized.value = FALSE;
@@ -928,8 +918,7 @@ static void
 xdg_surface_set_minimized (struct wl_client *client,
                            struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   meta_window_minimize (surface->window);
 }
@@ -978,11 +967,10 @@ xdg_shell_get_xdg_surface (struct wl_client *client,
 static void
 xdg_popup_destructor (struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *xdg_popup = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_popup, surface, xdg_popup);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   destroy_window (surface);
-  destroy_surface_extension (xdg_popup);
+  destroy_surface_extension (&surface->xdg_popup);
 }
 
 static void
@@ -1106,10 +1094,9 @@ bind_xdg_shell (struct wl_client *client,
 static void
 wl_shell_surface_destructor (struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *wl_shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (wl_shell_surface, surface, wl_shell_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
-  destroy_surface_extension (wl_shell_surface);
+  destroy_surface_extension (&surface->wl_shell_surface);
 }
 
 static void
@@ -1129,8 +1116,7 @@ wl_shell_surface_move (struct wl_client *client,
                        uint32_t serial)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWaylandSurfaceExtension *wl_shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (wl_shell_surface, surface, wl_shell_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   if (seat->pointer.button_count == 0 ||
       seat->pointer.grab_serial != serial ||
@@ -1175,8 +1161,7 @@ wl_shell_surface_resize (struct wl_client *client,
                          uint32_t edges)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWaylandSurfaceExtension *wl_shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (wl_shell_surface, surface, wl_shell_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   if (seat->pointer.button_count == 0 ||
       seat->pointer.grab_serial != serial ||
@@ -1211,8 +1196,7 @@ static void
 wl_shell_surface_set_toplevel (struct wl_client *client,
                                struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *wl_shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (wl_shell_surface, surface, wl_shell_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   wl_shell_surface_set_state (surface, SURFACE_STATE_TOPLEVEL);
 }
@@ -1225,9 +1209,8 @@ wl_shell_surface_set_transient (struct wl_client *client,
                                 int32_t y,
                                 uint32_t flags)
 {
-  MetaWaylandSurfaceExtension *wl_shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (wl_shell_surface, surface, wl_shell_surface);
   MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   wl_shell_surface_set_state (surface, SURFACE_STATE_TOPLEVEL);
 
@@ -1245,8 +1228,7 @@ wl_shell_surface_set_fullscreen (struct wl_client *client,
                                  uint32_t framerate,
                                  struct wl_resource *output)
 {
-  MetaWaylandSurfaceExtension *wl_shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (wl_shell_surface, surface, wl_shell_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   wl_shell_surface_set_state (surface, SURFACE_STATE_FULLSCREEN);
 }
@@ -1261,8 +1243,7 @@ wl_shell_surface_set_popup (struct wl_client *client,
                             int32_t y,
                             uint32_t flags)
 {
-  MetaWaylandSurfaceExtension *wl_shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (wl_shell_surface, surface, wl_shell_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
 
@@ -1282,8 +1263,7 @@ wl_shell_surface_set_maximized (struct wl_client *client,
                                 struct wl_resource *resource,
                                 struct wl_resource *output)
 {
-  MetaWaylandSurfaceExtension *wl_shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (wl_shell_surface, surface, wl_shell_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   wl_shell_surface_set_state (surface, SURFACE_STATE_MAXIMIZED);
 }
@@ -1293,8 +1273,7 @@ wl_shell_surface_set_title (struct wl_client *client,
                             struct wl_resource *resource,
                             const char *title)
 {
-  MetaWaylandSurfaceExtension *wl_shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (wl_shell_surface, surface, wl_shell_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   meta_window_set_title (surface->window, title);
 }
@@ -1304,8 +1283,7 @@ wl_shell_surface_set_class (struct wl_client *client,
                             struct wl_resource *resource,
                             const char *class_)
 {
-  MetaWaylandSurfaceExtension *wl_shell_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (wl_shell_surface, surface, wl_shell_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   meta_window_set_wm_class (surface->window, class_, class_);
 }
@@ -1368,10 +1346,9 @@ bind_wl_shell (struct wl_client *client,
 static void
 gtk_surface_destructor (struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *gtk_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (gtk_surface, surface, gtk_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
-  destroy_surface_extension (gtk_surface);
+  destroy_surface_extension (&surface->gtk_surface);
 }
 
 static void
@@ -1384,8 +1361,7 @@ set_dbus_properties (struct wl_client   *client,
 		     const char         *application_object_path,
 		     const char         *unique_bus_name)
 {
-  MetaWaylandSurfaceExtension *gtk_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (gtk_surface, surface, gtk_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   /* Broken client, let it die instead of us */
   if (!surface->window)
@@ -1517,8 +1493,7 @@ unparent_actor (MetaWaylandSurface *surface)
 static void
 wl_subsurface_destructor (struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   if (surface->sub.parent)
     {
@@ -1530,7 +1505,7 @@ wl_subsurface_destructor (struct wl_resource *resource)
     }
 
   double_buffered_state_destroy (&surface->sub.pending_surface_state);
-  destroy_surface_extension (subsurface);
+  destroy_surface_extension (&surface->subsurface);
 }
 
 static void
@@ -1546,8 +1521,7 @@ wl_subsurface_set_position (struct wl_client *client,
                             int32_t x,
                             int32_t y)
 {
-  MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   surface->sub.pending_x = x;
   surface->sub.pending_y = y;
@@ -1597,8 +1571,7 @@ wl_subsurface_place_above (struct wl_client *client,
                            struct wl_resource *resource,
                            struct wl_resource *sibling_resource)
 {
-  MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *sibling = wl_resource_get_user_data (sibling_resource);
 
   if (!is_valid_sibling (surface, sibling))
@@ -1620,8 +1593,7 @@ wl_subsurface_place_below (struct wl_client *client,
                            struct wl_resource *resource,
                            struct wl_resource *sibling_resource)
 {
-  MetaWaylandSurfaceExtension *subsurface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (subsurface, surface, subsurface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
   MetaWaylandSurface *sibling = wl_resource_get_user_data (sibling_resource);
 
   if (!is_valid_sibling (surface, sibling))
@@ -1642,10 +1614,7 @@ static void
 wl_subsurface_set_sync (struct wl_client *client,
                         struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *subsurface =
-    wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface =
-    wl_container_of (subsurface, surface, subsurface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   surface->sub.synchronous = TRUE;
 }
@@ -1654,10 +1623,7 @@ static void
 wl_subsurface_set_desync (struct wl_client *client,
                           struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *subsurface =
-    wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface =
-    wl_container_of (subsurface, surface, subsurface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   if (surface->sub.synchronous)
     subsurface_parent_surface_committed (surface);
