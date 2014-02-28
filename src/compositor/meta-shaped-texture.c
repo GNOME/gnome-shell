@@ -33,6 +33,7 @@
 #include "meta-texture-tower.h"
 
 #include "meta-shaped-texture-private.h"
+#include "meta-window-actor-private.h"
 
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
@@ -576,8 +577,18 @@ static cairo_region_t *
 effective_unobscured_region (MetaShapedTexture *self)
 {
   MetaShapedTexturePrivate *priv = self->priv;
+  ClutterActor *parent = clutter_actor_get_parent (CLUTTER_ACTOR (self));
 
-  return clutter_actor_has_mapped_clones (CLUTTER_ACTOR (self)) ? NULL : priv->unobscured_region;
+  if (clutter_actor_has_mapped_clones (CLUTTER_ACTOR (self)))
+    return NULL;
+
+  while (parent && !META_IS_WINDOW_ACTOR (parent))
+    parent = clutter_actor_get_parent (parent);
+
+  if (parent && clutter_actor_has_mapped_clones (parent))
+    return NULL;
+
+  return priv->unobscured_region;
 }
 
 gboolean
