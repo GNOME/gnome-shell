@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-24 08:30+0000\n"
-"PO-Revision-Date: 2014-02-24 17:22+0100\n"
+"POT-Creation-Date: 2014-02-27 08:29+0000\n"
+"PO-Revision-Date: 2014-02-28 12:47+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -108,6 +108,10 @@ msgid ""
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
+"GNOME Shell sólo cargará las extensiones que indiquen que soportan la "
+"versión actual en ejecución. Activar esta opción desactivará esta "
+"comprobación e intentará cargar todas las extensiones, independientemente de "
+"las versiones que indiquen que soportan."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -222,7 +226,7 @@ msgstr "El tipo de teclado que usar."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "The maximum accuracy level of location."
-msgstr ""
+msgstr "El nivel máximo de precisión de la ubicación."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid ""
@@ -233,6 +237,13 @@ msgid ""
 "allow applications to see and they can find user's location on their own "
 "using network resources (albeit with street-level accuracy at best)."
 msgstr ""
+"Configura el nivel máximo de precisión de la ubicación que se permite ver a "
+"las aplicaciones. Las opciones válidas son «off» (desactivar el rastreo de "
+"la ubicación), «country», «city», «neighborhood», «street», y "
+"«exact» (normalmente necesita un receptor GPS). Tenga en cuenta que esto "
+"sólo controla lo que Geoclue permitirá ver a las aplicaciones y lo que "
+"pueden encontrar sobre la ubicación de usuario usando los recursos de la red "
+"(aunque con precisión a nivel de la calle, en el mejor de los casos)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "The application icon mode."
@@ -1072,8 +1083,6 @@ msgstr[1] ""
 "%d segundos."
 
 #: ../js/ui/endSessionDialog.js:129
-#| msgctxt "button"
-#| msgid "Restart & Install"
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Reiniciar e instalar"
@@ -1091,6 +1100,7 @@ msgstr "Apagar después de instalar las actualizaciones"
 #: ../js/ui/endSessionDialog.js:315
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
+"Funcionando con batería: conéctese antes de instalar las actualizaciones."
 
 #: ../js/ui/endSessionDialog.js:332
 msgid "Some applications are busy or have unsaved work."
@@ -1172,39 +1182,39 @@ msgstr "Ver fuente"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:1324
+#: ../js/ui/messageTray.js:1326
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:1331
+#: ../js/ui/messageTray.js:1333
 msgid "Remove"
 msgstr "Quitar"
 
-#: ../js/ui/messageTray.js:1628
+#: ../js/ui/messageTray.js:1630
 msgid "Notifications"
 msgstr "Notificaciones"
 
-#: ../js/ui/messageTray.js:1635
+#: ../js/ui/messageTray.js:1637
 msgid "Clear Messages"
 msgstr "Limpiar mensajes"
 
-#: ../js/ui/messageTray.js:1654
+#: ../js/ui/messageTray.js:1656
 msgid "Notification Settings"
 msgstr "Configuración de las notificaciones"
 
-#: ../js/ui/messageTray.js:1707
+#: ../js/ui/messageTray.js:1709
 msgid "Tray Menu"
 msgstr "Bandeja de menú"
 
-#: ../js/ui/messageTray.js:1924
+#: ../js/ui/messageTray.js:1926
 msgid "No Messages"
 msgstr "No hay mensajes"
 
-#: ../js/ui/messageTray.js:1962
+#: ../js/ui/messageTray.js:1964
 msgid "Message Tray"
 msgstr "Bandeja de mensajes"
 
-#: ../js/ui/messageTray.js:2946
+#: ../js/ui/messageTray.js:2948
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -1369,8 +1379,8 @@ msgstr "Texto grande"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:162 ../js/ui/status/network.js:151
+#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:59
+#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:151
 #: ../js/ui/status/network.js:328 ../js/ui/status/network.js:1235
 #: ../js/ui/status/network.js:1346 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
@@ -1403,17 +1413,17 @@ msgstr "Mostrar la distribución del teclado"
 msgid "Location"
 msgstr "Ubicación"
 
-#: ../js/ui/status/location.js:61 ../js/ui/status/location.js:161
+#: ../js/ui/status/location.js:58 ../js/ui/status/location.js:158
 #: ../js/ui/status/rfkill.js:84
 msgid "On"
 msgstr "Encender"
 
-#: ../js/ui/status/location.js:158 ../js/ui/status/network.js:246
+#: ../js/ui/status/location.js:155 ../js/ui/status/network.js:246
 #: ../js/ui/status/network.js:425 ../js/ui/status/network.js:1261
 msgid "Off"
 msgstr "Desconectado"
 
-#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:1235
+#: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1235
 msgid "Turn On"
 msgstr "Enceder"
 
@@ -1522,7 +1532,7 @@ msgstr "Configuración de Wi-Fi"
 
 #: ../js/ui/status/network.js:1252
 msgid "Hotspot Active"
-msgstr ""
+msgstr "Punto de acceso activo"
 
 #: ../js/ui/status/network.js:1255
 msgid "Connecting"
