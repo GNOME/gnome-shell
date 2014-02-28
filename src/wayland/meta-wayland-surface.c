@@ -668,23 +668,25 @@ get_resource_version (struct wl_resource *master_resource,
 
 static gboolean
 create_surface_extension (MetaWaylandSurfaceExtension *extension,
-                          struct wl_client            *client,
+                          MetaWaylandSurface          *surface,
                           struct wl_resource          *master_resource,
-                          struct wl_resource          *surface_resource,
                           guint32                      id,
                           int                          max_version,
                           const struct wl_interface   *interface,
                           const void                  *implementation,
                           wl_resource_destroy_func_t   destructor)
 {
+  struct wl_client *client;
+
   if (extension->resource != NULL)
     return FALSE;
 
+  client = wl_resource_get_client (surface->resource);
   extension->resource = wl_resource_create (client, interface, get_resource_version (master_resource, max_version), id);
   wl_resource_set_implementation (extension->resource, implementation, extension, destructor);
 
   extension->surface_destroy_listener.notify = extension_handle_surface_destroy;
-  wl_resource_add_destroy_listener (surface_resource, &extension->surface_destroy_listener);
+  wl_resource_add_destroy_listener (surface->resource, &extension->surface_destroy_listener);
 
   return TRUE;
 }
@@ -956,7 +958,7 @@ xdg_shell_get_xdg_surface (struct wl_client *client,
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
 
-  if (!create_surface_extension (&surface->xdg_surface, client, surface_resource, resource, id,
+  if (!create_surface_extension (&surface->xdg_surface, surface, resource, id,
                                  META_XDG_SURFACE_VERSION,
                                  &xdg_surface_interface,
                                  &meta_wayland_xdg_surface_interface,
@@ -1012,7 +1014,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
   if (parent_surf == NULL || parent_surf->window == NULL)
     return;
 
-  if (!create_surface_extension (&surface->xdg_popup, client, surface_resource, resource, id,
+  if (!create_surface_extension (&surface->xdg_popup, surface, resource, id,
                                  META_XDG_POPUP_VERSION,
                                  &xdg_popup_interface,
                                  &meta_wayland_xdg_popup_interface,
@@ -1327,7 +1329,7 @@ wl_shell_get_shell_surface (struct wl_client *client,
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
 
-  if (!create_surface_extension (&surface->wl_shell_surface, client, surface_resource, resource, id,
+  if (!create_surface_extension (&surface->wl_shell_surface, surface, resource, id,
                                  META_WL_SHELL_SURFACE_VERSION,
                                  &wl_shell_surface_interface,
                                  &meta_wayland_wl_shell_surface_interface,
@@ -1410,7 +1412,7 @@ get_gtk_surface (struct wl_client *client,
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
 
-  if (!create_surface_extension (&surface->gtk_surface, client, surface_resource, resource, id,
+  if (!create_surface_extension (&surface->gtk_surface, surface, resource, id,
                                  META_GTK_SURFACE_VERSION,
                                  &gtk_surface_interface,
                                  &meta_wayland_gtk_surface_interface,
@@ -1697,7 +1699,7 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
   MetaWaylandSurface *parent = wl_resource_get_user_data (parent_resource);
 
-  if (!create_surface_extension (&surface->subsurface, client, surface_resource, resource, id,
+  if (!create_surface_extension (&surface->subsurface, surface, resource, id,
                                  META_GTK_SURFACE_VERSION,
                                  &wl_subsurface_interface,
                                  &meta_wayland_subsurface_interface,
