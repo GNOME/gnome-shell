@@ -1450,6 +1450,8 @@ clutter_evdev_reclaim_devices (void)
 
   libinput_resume (priv->libinput);
   process_events (manager_evdev);
+
+  priv->released = FALSE;
 }
 
 /**
