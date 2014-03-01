@@ -4,15 +4,15 @@
 # Copyright (C) 2005 THE PACKAGE'S COPYRIGHT HOLDER
 # Gil 'Dolfin' Osher <dolfin@rpg.org.il>, 2002,2003.
 # Yuval Tanny, 2005.
-# Yosef Or Boczko <yoseforb@gmail.com>, 2013, 2014.
+# Yosef Or Boczko <yoseforb@gnome.org>, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-13 08:50+0200\n"
-"PO-Revision-Date: 2014-01-13 08:51+0200\n"
-"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"POT-Creation-Date: 2014-03-02 01:10+0200\n"
+"PO-Revision-Date: 2014-03-02 01:11+0200\n"
+"Last-Translator: Yosef Or Boczko <yoseforb@gnome.org>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
@@ -58,66 +58,82 @@ msgid "Move window one workspace down"
 msgstr "העברת החלון למרחב העבודה שמלמטה"
 
 #: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Move window one monitor to the left"
+msgstr "העברת החלון לצג שמשמאל"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Move window one monitor to the right"
+msgstr "העברת החלון לצג שמימין"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Move window one monitor up"
+msgstr "העברת החלון לצג שמלמעלה"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Move window one monitor down"
+msgstr "העברת החלון לצג שמלמטה"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
 msgid "Switch applications"
 msgstr "החלפה בין יישומים"
 
-#: ../src/50-mutter-navigation.xml.in.h:11
+#: ../src/50-mutter-navigation.xml.in.h:15
 msgid "Switch windows"
 msgstr "החלפת חלונות"
 
-#: ../src/50-mutter-navigation.xml.in.h:12
+#: ../src/50-mutter-navigation.xml.in.h:16
 msgid "Switch windows of an application"
 msgstr "החלפה בין חלונות של יישום"
 
-#: ../src/50-mutter-navigation.xml.in.h:13
+#: ../src/50-mutter-navigation.xml.in.h:17
 msgid "Switch system controls"
 msgstr "החלפה בין פקדי המערכת"
 
-#: ../src/50-mutter-navigation.xml.in.h:14
+#: ../src/50-mutter-navigation.xml.in.h:18
 msgid "Switch windows directly"
 msgstr "החלפת החלונות באופן ישיר"
 
-#: ../src/50-mutter-navigation.xml.in.h:15
+#: ../src/50-mutter-navigation.xml.in.h:19
 msgid "Switch windows of an app directly"
 msgstr "החלפת חלונות של יישום באופן ישיר"
 
-#: ../src/50-mutter-navigation.xml.in.h:16
+#: ../src/50-mutter-navigation.xml.in.h:20
 msgid "Switch system controls directly"
 msgstr "החלפת פקדי המערכת באופן ישיר"
 
-#: ../src/50-mutter-navigation.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:21
 msgid "Hide all normal windows"
 msgstr "הסתרת כל החלונות הרגילים"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
+#: ../src/50-mutter-navigation.xml.in.h:22
 msgid "Switch to workspace 1"
 msgstr "מעבר למרחב עבודה 1"
 
-#: ../src/50-mutter-navigation.xml.in.h:19
+#: ../src/50-mutter-navigation.xml.in.h:23
 msgid "Switch to workspace 2"
 msgstr "מעבר למרחב עבודה 2"
 
-#: ../src/50-mutter-navigation.xml.in.h:20
+#: ../src/50-mutter-navigation.xml.in.h:24
 msgid "Switch to workspace 3"
 msgstr "מעבר למרחב עבודה 3"
 
-#: ../src/50-mutter-navigation.xml.in.h:21
+#: ../src/50-mutter-navigation.xml.in.h:25
 msgid "Switch to workspace 4"
 msgstr "מעבר למרחב עבודה 4"
 
-#: ../src/50-mutter-navigation.xml.in.h:22
+#: ../src/50-mutter-navigation.xml.in.h:26
 msgid "Move to workspace left"
 msgstr "העברה למרחב העבודה לשמאל"
 
-#: ../src/50-mutter-navigation.xml.in.h:23
+#: ../src/50-mutter-navigation.xml.in.h:27
 msgid "Move to workspace right"
 msgstr "העברה למרחב העבודה לימין"
 
-#: ../src/50-mutter-navigation.xml.in.h:24
+#: ../src/50-mutter-navigation.xml.in.h:28
 msgid "Move to workspace above"
 msgstr "העברה למרחב העבודה שמלמעלה"
 
-#: ../src/50-mutter-navigation.xml.in.h:25
+#: ../src/50-mutter-navigation.xml.in.h:29
 msgid "Move to workspace below"
 msgstr "העברה למרחב העבודה שמלמטה"
 
@@ -211,22 +227,22 @@ msgstr "פיצול הצפייה מימין"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:571
+#: ../src/compositor/compositor.c:534
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "מנהל תצוגת חלונות אחר כבר פועל במסך %i בתצוגה „%s“."
 
-#: ../src/compositor/meta-background.c:1073
+#: ../src/compositor/meta-background.c:1074
 msgid "background texture could not be created from file"
 msgstr "לא ניתן ליצור מרקם רקע מקובץ"
 
-#: ../src/core/bell.c:320
+#: ../src/core/bell.c:321
 msgid "Bell event"
 msgstr "אירוע פעמון"
 
-#: ../src/core/core.c:155
+#: ../src/core/core.c:156
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Unknown window information request: %d"
@@ -255,24 +271,24 @@ msgstr "ה_מתנה"
 msgid "_Force Quit"
 msgstr "_אילוץ סגירה"
 
-#: ../src/core/display.c:413
+#: ../src/core/display.c:405
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Missing %s extension required for compositing"
 
-#: ../src/core/display.c:505
+#: ../src/core/display.c:497
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Failed to open X Window System display '%s'\n"
 
-#: ../src/core/keybindings.c:1135
+#: ../src/core/keybindings.c:1113
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "תכנית אחרת כבר משתמשת במקש %s עם המקש %x כצירוף\n"
 
-#: ../src/core/keybindings.c:1332
+#: ../src/core/keybindings.c:1310
 #, c-format
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "\"%s\" אינו מקש האצה תקני\n"
@@ -301,12 +317,12 @@ msgstr "Initialize session from savefile"
 msgid "Make X calls synchronous"
 msgstr "Make X calls synchronous"
 
-#: ../src/core/main.c:532
+#: ../src/core/main.c:544
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Failed to scan themes directory: %s\n"
 
-#: ../src/core/main.c:548
+#: ../src/core/main.c:560
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -333,7 +349,7 @@ msgstr "תצוגה לא ידועה"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: ../src/core/mutter.c:38
+#: ../src/core/mutter.c:39
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -347,15 +363,15 @@ msgstr ""
 "זוהי תכנה חופשית; יש לעיין במקור כדי לקבל מידע אודות תנאי ההעתקה.\n"
 "לא קיימת שום אחריות; אפילו לא עבור סחר או התאמה לצרכים מסוימים.\n"
 
-#: ../src/core/mutter.c:52
+#: ../src/core/mutter.c:53
 msgid "Print version"
 msgstr "Print version"
 
-#: ../src/core/mutter.c:58
+#: ../src/core/mutter.c:59
 msgid "Mutter plugin to use"
 msgstr "תוסף ה־mutter לשימוש"
 
-#: ../src/core/prefs.c:1200
+#: ../src/core/prefs.c:1190
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -363,12 +379,12 @@ msgstr ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 
-#: ../src/core/prefs.c:1275
+#: ../src/core/prefs.c:1265
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Could not parse font description \"%s\" from GSettings key %s\n"
 
-#: ../src/core/prefs.c:1341
+#: ../src/core/prefs.c:1331
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -377,7 +393,7 @@ msgstr ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 
-#: ../src/core/prefs.c:1907
+#: ../src/core/prefs.c:1894
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -386,17 +402,17 @@ msgstr ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 
-#: ../src/core/prefs.c:1997
+#: ../src/core/prefs.c:1984
 #, c-format
 msgid "Workspace %d"
 msgstr "מרחב עבודה %d"
 
-#: ../src/core/screen.c:538
+#: ../src/core/screen.c:539
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Screen %d on display '%s' is invalid\n"
 
-#: ../src/core/screen.c:554
+#: ../src/core/screen.c:555
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -405,71 +421,71 @@ msgstr ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 
-#: ../src/core/screen.c:581
+#: ../src/core/screen.c:582
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 
-#: ../src/core/screen.c:659
+#: ../src/core/screen.c:660
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Screen %d on display \"%s\" already has a window manager\n"
 
-#: ../src/core/screen.c:851
+#: ../src/core/screen.c:848
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Could not release screen %d on display \"%s\"\n"
 
-#: ../src/core/session.c:841 ../src/core/session.c:848
+#: ../src/core/session.c:842 ../src/core/session.c:849
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Could not create directory '%s': %s\n"
 
-#: ../src/core/session.c:858
+#: ../src/core/session.c:859
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Could not open session file '%s' for writing: %s\n"
 
-#: ../src/core/session.c:999
+#: ../src/core/session.c:1000
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Error writing session file '%s': %s\n"
 
-#: ../src/core/session.c:1004
+#: ../src/core/session.c:1005
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Error closing session file '%s': %s\n"
 
-#: ../src/core/session.c:1134
+#: ../src/core/session.c:1135
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Failed to parse saved session file: %s\n"
 
-#: ../src/core/session.c:1183
+#: ../src/core/session.c:1184
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "התכונה <mutter_session> מופיעה אך כבר יש בידינו את מספר זיהוי ההפעלה"
 
-#: ../src/core/session.c:1196 ../src/core/session.c:1271
-#: ../src/core/session.c:1303 ../src/core/session.c:1375
-#: ../src/core/session.c:1435
+#: ../src/core/session.c:1197 ../src/core/session.c:1272
+#: ../src/core/session.c:1304 ../src/core/session.c:1376
+#: ../src/core/session.c:1436
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Unknown attribute %s on <%s> element"
 
-#: ../src/core/session.c:1213
+#: ../src/core/session.c:1214
 #, c-format
 msgid "nested <window> tag"
 msgstr "nested <window> tag"
 
-#: ../src/core/session.c:1455
+#: ../src/core/session.c:1456
 #, c-format
 msgid "Unknown element %s"
 msgstr "Unknown element %s"
 
-#: ../src/core/session.c:1807
+#: ../src/core/session.c:1808
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -513,7 +529,7 @@ msgid "Window manager error: "
 msgstr "Window manager error: "
 
 #. first time through
-#: ../src/core/window.c:7588
+#: ../src/core/window.c:7564
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -529,7 +545,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8510
+#: ../src/core/window.c:8489
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -538,22 +554,22 @@ msgstr ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
 "%d x %d and max size %d x %d; this doesn't make much sense.\n"
 
-#: ../src/core/window-props.c:348
+#: ../src/core/window-props.c:349
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Application set a bogus _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:464
+#: ../src/core/window-props.c:465
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (מעל %s)"
 
-#: ../src/core/window-props.c:1547
+#: ../src/core/window-props.c:1548
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 
-#: ../src/core/window-props.c:1558
+#: ../src/core/window-props.c:1559
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
