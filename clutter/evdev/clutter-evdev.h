@@ -48,10 +48,13 @@ typedef int (*ClutterOpenDeviceCallback) (const char  *path,
 					  int          flags,
 					  gpointer     user_data,
 					  GError     **error);
+typedef void (*ClutterCloseDeviceCallback) (int          fd,
+					    gpointer     user_data);
 
 CLUTTER_AVAILABLE_IN_1_16
-void  clutter_evdev_set_open_callback (ClutterOpenDeviceCallback callback,
-				       gpointer                  user_data);
+void  clutter_evdev_set_device_callbacks (ClutterOpenDeviceCallback  open_callback,
+                                          ClutterCloseDeviceCallback close_callback,
+                                          gpointer                   user_data);
 
 CLUTTER_AVAILABLE_IN_1_10
 void  clutter_evdev_release_devices (void);
