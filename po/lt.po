@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-20 08:32+0000\n"
-"PO-Revision-Date: 2014-02-20 22:41+0200\n"
+"POT-Creation-Date: 2014-03-02 16:24+0000\n"
+"PO-Revision-Date: 2014-03-02 19:56+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -228,18 +228,26 @@ msgid "The maximum accuracy level of location."
 msgstr "Didžiausias vietos tikslumo lygis."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#| msgid ""
+#| "Configures the maximum level of location accuracy applications are "
+#| "allowed to see. Valid options are 'off' (disable location tracking), "
+#| "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
+#| "requires GPS receiver). Please keep in mind that this only controls what "
+#| "Geoclue will allow applications to see and they can find user's location "
+#| "on their own using network resources (albeit with street-level accuracy "
+#| "at best)."
 msgid ""
 "Configures the maximum level of location accuracy applications are allowed "
 "to see. Valid options are 'off' (disable location tracking), 'country', "
 "'city', 'neighborhood', 'street', and 'exact' (typically requires GPS "
-"receiver). Please keep in mind that this only controls what Geoclue will "
+"receiver). Please keep in mind that this only controls what GeoClue will "
 "allow applications to see and they can find user's location on their own "
 "using network resources (albeit with street-level accuracy at best)."
 msgstr ""
 "Nustato didžiausią vietos tikslumo lygį, leidžiamą programoms matyti. "
 "Galimos vertės yra „off“ (išjungti vietos sekimą), „country“, „city“, "
 "„neighborhood“, „street“ ir „exact“ (paprastai reikalauja GPS imtuvo). "
-"Atminkite, kad tai valdo tik ką Geoclue leis programoms matyti ir jos gali "
+"Atminkite, kad tai valdo tik ką GeoClue leis programoms matyti ir jos gali "
 "nustatyti naudotojo vietą pačios naudodamos tinklo išteklius (nors tai "
 "suteikia geriausiu atveju gatvės lygmens tikslumą)."
 
@@ -725,23 +733,18 @@ msgstr "Nutildyti"
 
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:955
-#| msgctxt "event list time"
-#| msgid "%H∶%M"
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:962
-#| msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgid "Yesterday, %H∶%M"
 msgstr "Vakar, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:969
-#| msgctxt "event list time"
-#| msgid "%H∶%M"
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
@@ -749,8 +752,6 @@ msgstr "%A, %H∶%M"
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
 #: ../js/ui/components/telepathyClient.js:976
-#| msgctxt "event list time"
-#| msgid "%H∶%M"
 msgid "%B %d, %H∶%M"
 msgstr "%B %d, %H∶%M"
 
@@ -763,8 +764,6 @@ msgstr "%Y %m %d, %H∶%M"
 
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:991
-#| msgctxt "event list time"
-#| msgid "%l∶%M %p"
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
@@ -777,8 +776,6 @@ msgstr "Vakar, %l∶%M %p"
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1005
-#| msgctxt "event list time"
-#| msgid "%l∶%M %p"
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
@@ -786,8 +783,6 @@ msgstr "%A, %l∶%M %p"
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1012
-#| msgctxt "event list time"
-#| msgid "%l∶%M %p"
 msgid "%B %d, %l∶%M %p"
 msgstr "%B %d, %l∶%M %p"
 
@@ -1112,8 +1107,6 @@ msgstr[2] ""
 "Sistema bus paleista iš naujo ir įdiegs atnaujinimus po %d sekundžių."
 
 #: ../js/ui/endSessionDialog.js:129
-#| msgctxt "button"
-#| msgid "Restart & Install"
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Perleisti ir įdiegti"
@@ -1218,39 +1211,39 @@ msgstr "Žiūrėti šaltinį"
 msgid "Web Page"
 msgstr "Tinklalapis"
 
-#: ../js/ui/messageTray.js:1324
+#: ../js/ui/messageTray.js:1326
 msgid "Open"
 msgstr "Atverti"
 
-#: ../js/ui/messageTray.js:1331
+#: ../js/ui/messageTray.js:1333
 msgid "Remove"
 msgstr "Pašalinti"
 
-#: ../js/ui/messageTray.js:1628
+#: ../js/ui/messageTray.js:1630
 msgid "Notifications"
 msgstr "Pranešimai"
 
-#: ../js/ui/messageTray.js:1635
+#: ../js/ui/messageTray.js:1637
 msgid "Clear Messages"
 msgstr "Išvalyti pranešimus"
 
-#: ../js/ui/messageTray.js:1654
+#: ../js/ui/messageTray.js:1656
 msgid "Notification Settings"
 msgstr "Pranešimų nustatymai"
 
-#: ../js/ui/messageTray.js:1707
+#: ../js/ui/messageTray.js:1709
 msgid "Tray Menu"
 msgstr "Dėklo meniu"
 
-#: ../js/ui/messageTray.js:1924
+#: ../js/ui/messageTray.js:1926
 msgid "No Messages"
 msgstr "Nėra pranešimų"
 
-#: ../js/ui/messageTray.js:1962
+#: ../js/ui/messageTray.js:1964
 msgid "Message Tray"
 msgstr "Pranešimų juosta"
 
-#: ../js/ui/messageTray.js:2946
+#: ../js/ui/messageTray.js:2948
 msgid "System Information"
 msgstr "Sistemos informacija"
 
@@ -1419,8 +1412,8 @@ msgstr "Didelis tekstas"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:162 ../js/ui/status/network.js:151
+#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:59
+#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:151
 #: ../js/ui/status/network.js:328 ../js/ui/status/network.js:1235
 #: ../js/ui/status/network.js:1346 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
@@ -1452,21 +1445,20 @@ msgid "Show Keyboard Layout"
 msgstr "Rodyti klaviatūros išdėstymą"
 
 #: ../js/ui/status/location.js:52
-#| msgid "Notifications"
 msgid "Location"
 msgstr "Vieta"
 
-#: ../js/ui/status/location.js:61 ../js/ui/status/location.js:161
+#: ../js/ui/status/location.js:58 ../js/ui/status/location.js:158
 #: ../js/ui/status/rfkill.js:84
 msgid "On"
 msgstr "Įjungta"
 
-#: ../js/ui/status/location.js:158 ../js/ui/status/network.js:246
+#: ../js/ui/status/location.js:155 ../js/ui/status/network.js:246
 #: ../js/ui/status/network.js:425 ../js/ui/status/network.js:1261
 msgid "Off"
 msgstr "Išjungta"
 
-#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:1235
+#: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1235
 msgid "Turn On"
 msgstr "Įjungti"
 
@@ -1510,7 +1502,6 @@ msgid "connection failed"
 msgstr "nepavyko prisijungti"
 
 #: ../js/ui/status/network.js:472
-#| msgid "Wi-Fi Settings"
 msgid "Wired Settings"
 msgstr "Laidinio ryšio nustatymai"
 
@@ -1527,7 +1518,6 @@ msgid "Use as Internet connection"
 msgstr "Naudoti kaip interneto ryšį"
 
 #: ../js/ui/status/network.js:781
-#| msgid "Airplane Mode"
 msgid "Airplane Mode is On"
 msgstr "Skrydžio veiksena įjungta"
 
@@ -1536,12 +1526,10 @@ msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Belaidis ryšys yra išjungta skrydžio veiksenoje."
 
 #: ../js/ui/status/network.js:783
-#| msgid "Airplane Mode"
 msgid "Turn Off Airplane Mode"
 msgstr "Išjungti skrydžio veikseną"
 
 #: ../js/ui/status/network.js:792
-#| msgid "Wi-Fi Settings"
 msgid "Wi-Fi is Off"
 msgstr "Belaidžio ryšys išjungtas"
 
@@ -1550,7 +1538,6 @@ msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Norint prisijungti prie tinklo reikia įjungti belaidį ryšį."
 
 #: ../js/ui/status/network.js:794
-#| msgid "Turn On"
 msgid "Turn On Wi-Fi"
 msgstr "Įjungti belaidį ryšį"
 
@@ -1583,7 +1570,6 @@ msgid "Hotspot Active"
 msgstr "Prieigos taškas aktyvus"
 
 #: ../js/ui/status/network.js:1255
-#| msgid "Connect"
 msgid "Connecting"
 msgstr "Jungiamasi"
 
@@ -1592,7 +1578,6 @@ msgid "Network Settings"
 msgstr "Tinklo nustatymai"
 
 #: ../js/ui/status/network.js:1436
-#| msgid "Settings"
 msgid "VPN Settings"
 msgstr "VPN nustatymai"
 
@@ -1782,4 +1767,3 @@ msgstr "Slaptažodis negali būti tuščias"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Naudotojas užvėrė tapatybės patvirtinimo dialogą"
-
