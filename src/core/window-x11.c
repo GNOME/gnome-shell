@@ -38,6 +38,7 @@
 #include <meta/common.h>
 #include <meta/errors.h>
 #include <meta/prefs.h>
+#include <meta/meta-cursor-tracker.h>
 
 #include "window-private.h"
 #include "window-props.h"
@@ -673,35 +674,19 @@ meta_window_x11_property_notify (MetaWindow *window,
 static int
 query_pressed_buttons (MetaWindow *window)
 {
-  double x, y, query_root_x, query_root_y;
-  Window root, child;
-  XIButtonState buttons;
-  XIModifierState mods;
-  XIGroupState group;
+  ClutterModifierType mods;
   int button = 0;
 
-  meta_error_trap_push (window->display);
-  XIQueryPointer (window->display->xdisplay,
-                  META_VIRTUAL_CORE_POINTER_ID,
-                  window->xwindow,
-                  &root, &child,
-                  &query_root_x, &query_root_y,
-                  &x, &y,
-                  &buttons, &mods, &group);
+  meta_cursor_tracker_get_pointer (window->screen->cursor_tracker,
+                                   NULL, NULL, &mods);
 
-  if (meta_error_trap_pop_with_return (window->display) != Success)
-    goto out;
-
-  if (XIMaskIsSet (buttons.mask, Button1))
+  if (mods & CLUTTER_BUTTON1_MASK)
     button |= 1 << 1;
-  if (XIMaskIsSet (buttons.mask, Button2))
+  if (mods & CLUTTER_BUTTON2_MASK)
     button |= 1 << 2;
-  if (XIMaskIsSet (buttons.mask, Button3))
+  if (mods & CLUTTER_BUTTON3_MASK)
     button |= 1 << 3;
 
-  free (buttons.mask);
-
- out:
   return button;
 }
 

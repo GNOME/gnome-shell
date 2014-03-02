@@ -1076,10 +1076,12 @@ get_pointer_position_gdk (int         *x,
   gmanager = gdk_display_get_device_manager (gdk_display_get_default ());
   gdevice = gdk_device_manager_get_client_pointer (gmanager);
 
-  gdk_device_get_position (gdevice, &gscreen, x, y);
-  gdk_device_get_state (gdevice,
-                        gdk_screen_get_root_window (gscreen),
-                        NULL, (GdkModifierType*)mods);
+  if (x || y)
+    gdk_device_get_position (gdevice, &gscreen, x, y);
+  if (mods)
+    gdk_device_get_state (gdevice,
+                          gdk_screen_get_root_window (gscreen),
+                          NULL, (GdkModifierType*)mods);
 }
 
 static void
@@ -1095,9 +1097,12 @@ get_pointer_position_clutter (int         *x,
   cdevice = clutter_device_manager_get_core_device (cmanager, CLUTTER_POINTER_DEVICE);
 
   clutter_input_device_get_coords (cdevice, NULL, &point);
-  *x = point.x;
-  *y = point.y;
-  *mods = clutter_input_device_get_modifier_state (cdevice);
+  if (x)
+    *x = point.x;
+  if (y)
+    *y = point.y;
+  if (mods)
+    *mods = clutter_input_device_get_modifier_state (cdevice);
 }
 
 void

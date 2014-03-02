@@ -10343,25 +10343,15 @@ window_focus_on_pointer_rest_callback (gpointer data)
   MetaWindow *window = focus_data->window;
   MetaDisplay *display = window->display;
   MetaScreen *screen = window->screen;
-  Window root, child;
-  double root_x, root_y, x, y;
+  int root_x, root_y;
   guint32 timestamp;
-  XIButtonState buttons;
-  XIModifierState mods;
-  XIGroupState group;
+  ClutterActor *child;
 
   if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_CLICK)
     goto out;
 
-  meta_error_trap_push (display);
-  XIQueryPointer (display->xdisplay,
-                  META_VIRTUAL_CORE_POINTER_ID,
-                  screen->xroot,
-                  &root, &child,
-                  &root_x, &root_y, &x, &y,
-                  &buttons, &mods, &group);
-  meta_error_trap_pop (display);
-  free (buttons.mask);
+  meta_cursor_tracker_get_pointer (screen->cursor_tracker,
+                                   &root_x, &root_y, NULL);
 
   if (root_x != focus_data->pointer_x ||
       root_y != focus_data->pointer_y)
@@ -10371,17 +10361,15 @@ window_focus_on_pointer_rest_callback (gpointer data)
       return TRUE;
     }
 
-  /* Explicitly check for the overlay window, as get_focus_window_at_point()
-   * may return windows that extend underneath the chrome (like
-   * override-redirect or DESKTOP windows)
-   */
-  if (child == meta_get_overlay_window (screen))
+  child = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (clutter_stage_get_default ()),
+                                          CLUTTER_PICK_REACTIVE, root_x, root_y);
+  if (!META_IS_SURFACE_ACTOR (child))
     goto out;
 
   window =
     meta_stack_get_default_focus_window_at_point (screen->stack,
                                                   screen->active_workspace,
-                                                  None, root_x, root_y);
+                                                  NULL, root_x, root_y);
 
   if (window == NULL)
     goto out;

@@ -1514,38 +1514,19 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
                               MetaWindow  *not_this_one)
 {
   MetaWindow *window;
-  Window root_return, child_return;
-  double root_x_return, root_y_return;
-  double win_x_return, win_y_return;
-  XIButtonState buttons;
-  XIModifierState mods;
-  XIGroupState group;
+  int x, y;
 
   if (not_this_one)
     meta_topic (META_DEBUG_FOCUS,
                 "Focusing mouse window excluding %s\n", not_this_one->desc);
 
-  meta_error_trap_push (screen->display);
-  XIQueryPointer (screen->display->xdisplay,
-                  META_VIRTUAL_CORE_POINTER_ID,
-                  screen->xroot,
-                  &root_return,
-                  &child_return,
-                  &root_x_return,
-                  &root_y_return,
-                  &win_x_return,
-                  &win_y_return,
-                  &buttons,
-                  &mods,
-                  &group);
-  meta_error_trap_pop (screen->display);
-  free (buttons.mask);
+  meta_cursor_tracker_get_pointer (screen->cursor_tracker,
+                                   &x, &y, NULL);
 
   window = meta_stack_get_default_focus_window_at_point (screen->stack,
                                                          screen->active_workspace,
                                                          not_this_one,
-                                                         root_x_return,
-                                                         root_y_return);
+                                                         x, y);
 
   return window;
 }
@@ -1827,28 +1808,11 @@ meta_screen_get_current_monitor (MetaScreen *screen)
   
   if (screen->display->monitor_cache_invalidated)
     {
-      Window root_return, child_return;
-      double win_x_return, win_y_return;
-      double root_x_return, root_y_return;
-      XIButtonState buttons;
-      XIModifierState mods;
-      XIGroupState group;
+      int x, y;
 
-      XIQueryPointer (screen->display->xdisplay,
-                      META_VIRTUAL_CORE_POINTER_ID,
-                      screen->xroot,
-                      &root_return,
-                      &child_return,
-                      &root_x_return,
-                      &root_y_return,
-                      &win_x_return,
-                      &win_y_return,
-                      &buttons,
-                      &mods,
-                      &group);
-      free (buttons.mask);
-
-      meta_screen_get_current_monitor_for_pos (screen, root_x_return, root_y_return);
+      meta_cursor_tracker_get_pointer (screen->cursor_tracker,
+                                       &x, &y, NULL);
+      meta_screen_get_current_monitor_for_pos (screen, x, y);
     }
 
   return screen->last_monitor_index;
