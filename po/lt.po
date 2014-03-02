@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-21 10:51+0000\n"
-"PO-Revision-Date: 2014-02-21 22:22+0200\n"
+"POT-Creation-Date: 2014-03-02 10:50+0000\n"
+"PO-Revision-Date: 2014-03-02 20:08+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -62,66 +62,86 @@ msgid "Move window one workspace down"
 msgstr "Perkelti langą į žemiau esantį darbalaukį"
 
 #: ../src/50-mutter-navigation.xml.in.h:10
+#| msgid "Move window one workspace to the left"
+msgid "Move window one monitor to the left"
+msgstr "Perkelti langą į kairiau esantį monitorių"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#| msgid "Move window one workspace to the right"
+msgid "Move window one monitor to the right"
+msgstr "Perkelti langą į dešiniau esantį monitorių"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#| msgid "Move window one workspace up"
+msgid "Move window one monitor up"
+msgstr "Perkelti langą į aukščiau esantį monitorių"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#| msgid "Move window one workspace down"
+msgid "Move window one monitor down"
+msgstr "Perkelti langą į žemiau esantį monitorių"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
 msgid "Switch applications"
 msgstr "Persijungti tarp programų"
 
-#: ../src/50-mutter-navigation.xml.in.h:11
+#: ../src/50-mutter-navigation.xml.in.h:15
 msgid "Switch windows"
 msgstr "Persijungti tarp langų"
 
-#: ../src/50-mutter-navigation.xml.in.h:12
+#: ../src/50-mutter-navigation.xml.in.h:16
 msgid "Switch windows of an application"
 msgstr "Persijungti tarp programos langų"
 
-#: ../src/50-mutter-navigation.xml.in.h:13
+#: ../src/50-mutter-navigation.xml.in.h:17
 msgid "Switch system controls"
 msgstr "Persijungti tarp sistemos valdiklių"
 
-#: ../src/50-mutter-navigation.xml.in.h:14
+#: ../src/50-mutter-navigation.xml.in.h:18
 msgid "Switch windows directly"
 msgstr "Tiesiogiai persijungti tarp langų"
 
-#: ../src/50-mutter-navigation.xml.in.h:15
+#: ../src/50-mutter-navigation.xml.in.h:19
 msgid "Switch windows of an app directly"
 msgstr "Tiesiogiai persijungti tarp programos langų"
 
-#: ../src/50-mutter-navigation.xml.in.h:16
+#: ../src/50-mutter-navigation.xml.in.h:20
 msgid "Switch system controls directly"
 msgstr "Tiesiogiai persijungti tarp sistemos valdiklių"
 
-#: ../src/50-mutter-navigation.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:21
 msgid "Hide all normal windows"
 msgstr "Paslėpti visus įprastinius langus"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
+#: ../src/50-mutter-navigation.xml.in.h:22
 msgid "Switch to workspace 1"
 msgstr "Persijungti į darbalaukį Nr.1"
 
-#: ../src/50-mutter-navigation.xml.in.h:19
+#: ../src/50-mutter-navigation.xml.in.h:23
 msgid "Switch to workspace 2"
 msgstr "Persijungti į darbalaukį Nr.2"
 
-#: ../src/50-mutter-navigation.xml.in.h:20
+#: ../src/50-mutter-navigation.xml.in.h:24
 msgid "Switch to workspace 3"
 msgstr "Persijungti į darbalaukį Nr.3"
 
-#: ../src/50-mutter-navigation.xml.in.h:21
+#: ../src/50-mutter-navigation.xml.in.h:25
 msgid "Switch to workspace 4"
 msgstr "Persijungti į darbalaukį Nr.4"
 
-#: ../src/50-mutter-navigation.xml.in.h:22
+#: ../src/50-mutter-navigation.xml.in.h:26
 msgid "Move to workspace left"
 msgstr "Perkelti į darbalaukį kairėje"
 
-#: ../src/50-mutter-navigation.xml.in.h:23
+#: ../src/50-mutter-navigation.xml.in.h:27
 msgid "Move to workspace right"
 msgstr "Perkelti į darbalaukį dešinėje"
 
-#: ../src/50-mutter-navigation.xml.in.h:24
+#: ../src/50-mutter-navigation.xml.in.h:28
 msgid "Move to workspace above"
 msgstr "Perkelti į darbalaukį viršuje"
 
-#: ../src/50-mutter-navigation.xml.in.h:25
+#: ../src/50-mutter-navigation.xml.in.h:29
 msgid "Move to workspace below"
 msgstr "Perkelti į darbalaukį apačioje"
 
@@ -259,17 +279,17 @@ msgstr "_Laukti"
 msgid "_Force Quit"
 msgstr "_Priverstinai išeiti"
 
-#: ../src/core/display.c:413
+#: ../src/core/display.c:405
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Trūksta %s priedo, reikalingo komponavimui"
 
-#: ../src/core/display.c:505
+#: ../src/core/display.c:497
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepavyko atverti X Window sistemos ekrano „%s“\n"
 
-#: ../src/core/keybindings.c:1135
+#: ../src/core/keybindings.c:1113
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -278,7 +298,7 @@ msgstr ""
 "Kažkokia kita programa jau naudoja %s klavišą su modifikatoriais %x kaip "
 "susiejimą\n"
 
-#: ../src/core/keybindings.c:1332
+#: ../src/core/keybindings.c:1310
 #, c-format
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "„%s“ yra nepriimtinas spartusis klavišas\n"
@@ -325,12 +345,10 @@ msgid "Built-in display"
 msgstr "Integruotas vaizduoklis"
 
 #: ../src/core/monitor.c:724
-#| msgid "Unknown %s"
 msgid "Unknown"
 msgstr "Nežinomas"
 
 #: ../src/core/monitor.c:726
-#| msgid "Unknown %s"
 msgid "Unknown Display"
 msgstr "Nežinomas vaizduoklis"
 
@@ -367,7 +385,7 @@ msgstr "Parodyti versiją"
 msgid "Mutter plugin to use"
 msgstr "Naudojamas Mutter įskiepis"
 
-#: ../src/core/prefs.c:1200
+#: ../src/core/prefs.c:1190
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -375,12 +393,12 @@ msgstr ""
 "Apsauga nuo sugadintų programų atjungta. Kai kurios programos gali pradėti "
 "keistai elgtis.\n"
 
-#: ../src/core/prefs.c:1275
+#: ../src/core/prefs.c:1265
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Nepavyko perskaityti šrifto aprašymo „%s“ saugomo GSettings rakte %s\n"
 
-#: ../src/core/prefs.c:1341
+#: ../src/core/prefs.c:1331
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -389,7 +407,7 @@ msgstr ""
 "„%s“ reikšmė rasta nustatymų duomenų bazėje yra netinkama pelės mygtuko "
 "keitiklio aprašymui\n"
 
-#: ../src/core/prefs.c:1907
+#: ../src/core/prefs.c:1894
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -398,7 +416,7 @@ msgstr ""
 "„%s“ reikšmė rasta konfiguracijos duomenų bazė yra netinkama klavišų "
 "kombinacijai „%s“\n"
 
-#: ../src/core/prefs.c:1997
+#: ../src/core/prefs.c:1984
 #, c-format
 msgid "Workspace %d"
 msgstr "Darbalaukis %d"
@@ -429,7 +447,7 @@ msgstr ""
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ekranas %d vaizduoklyje „%s“ jau turi langų valdyklę\n"
 
-#: ../src/core/screen.c:851
+#: ../src/core/screen.c:848
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nepavyko pasitraukti iš ekrano %d vaizduoklyje „%s“\n"
@@ -525,7 +543,7 @@ msgid "Window manager error: "
 msgstr "Langų valdyklės klaida:"
 
 #. first time through
-#: ../src/core/window.c:7533
+#: ../src/core/window.c:7564
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -541,7 +559,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8457
+#: ../src/core/window.c:8489
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
