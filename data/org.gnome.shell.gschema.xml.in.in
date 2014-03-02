@@ -163,7 +163,7 @@
         allowed to see. Valid options are 'off' (disable location tracking),
         'country', 'city', 'neighborhood', 'street', and 'exact' (typically
         requires GPS receiver). Please keep in mind that this only controls
-        what Geoclue will allow applications to see and they can find user's
+        what GeoClue will allow applications to see and they can find user's
         location on their own using network resources (albeit with street-level
         accuracy at best).
       </_description>
