@@ -650,7 +650,7 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
     state = DRM_MODE_DPMS_SUSPEND;
     break;
   case META_POWER_SAVE_OFF:
-    state = DRM_MODE_DPMS_SUSPEND;
+    state = DRM_MODE_DPMS_OFF;
     break;
   default:
     return;
