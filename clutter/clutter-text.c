@@ -49,6 +49,7 @@
 
 #include "clutter-actor-private.h"
 #include "clutter-animatable.h"
+#include "clutter-backend-private.h"
 #include "clutter-binding-pool.h"
 #include "clutter-color.h"
 #include "clutter-debug.h"
@@ -539,14 +540,20 @@ clutter_text_create_layout_no_cache (ClutterText       *text,
 
       if (pango_dir == PANGO_DIRECTION_NEUTRAL)
         {
+          ClutterBackend *backend = clutter_get_default_backend ();
           ClutterTextDirection text_dir;
 
-          text_dir = clutter_actor_get_text_direction (CLUTTER_ACTOR (text));
-
-          if (text_dir == CLUTTER_TEXT_DIRECTION_RTL)
-            pango_dir = PANGO_DIRECTION_RTL;
+          if (clutter_actor_has_key_focus (CLUTTER_ACTOR (text)))
+            pango_dir = _clutter_backend_get_keymap_direction (backend);
           else
-            pango_dir = PANGO_DIRECTION_LTR;
+            {
+              text_dir = clutter_actor_get_text_direction (CLUTTER_ACTOR (text));
+
+              if (text_dir == CLUTTER_TEXT_DIRECTION_RTL)
+                pango_dir = PANGO_DIRECTION_RTL;
+              else
+                pango_dir = PANGO_DIRECTION_LTR;
+           }
         }
 
       pango_context_set_base_dir (clutter_actor_get_pango_context (CLUTTER_ACTOR (text)), pango_dir);
