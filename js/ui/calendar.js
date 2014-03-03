@@ -548,6 +548,7 @@ const Calendar = new Lang.Class({
     _onSettingsChange: function() {
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
         this._buildHeader();
+        this._rebuildCalendar();
         this._update();
     },
 
