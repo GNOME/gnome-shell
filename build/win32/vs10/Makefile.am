@@ -1,7 +1,9 @@
 EXTRA_DIST = \
 	cogl.sln		\
-	cogl_sdl.sln		\
-	cogl.props	\
+	cogl-version-paths.props	\
+	cogl-build-defines.props	\
+	cogl-gen-srcs.props	\
+	cogl-install.props	\
 	cogl.vcxproj		\
 	cogl.vcxprojin		\
 	cogl.vcxproj.filters	\
@@ -16,8 +18,8 @@ EXTRA_DIST = \
 	cogl-pango.vcxproj.filtersin	\
 	cogl-hello.vcxproj	\
 	cogl-hello.vcxproj.filters	\
-	cogl-sdl-hello.vcxproj	\
-	cogl-sdl-hello.vcxproj.filters	\
+	cogl-sdl2-hello.vcxproj	\
+	cogl-sdl2-hello.vcxproj.filters	\
 	cogl-msaa.vcxproj	\
 	cogl-msaa.vcxproj.filters	\
 	cogl-info.vcxproj	\
@@ -29,5 +31,4 @@ EXTRA_DIST = \
 	test-conformance-cogl.vcxproj.filters	\
 	test-conformance-cogl.vcxproj.filtersin	\
 	install.vcxproj	\
-	install-sdl.vcxproj	\
 	README.txt

@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+    <Import Project="cogl-build-defines.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <CoglDoInstallBin>
+mkdir $(CopyDir)\bin
+
+mkdir $(CopyDir)\lib
+
+
+if "$(Configuration)" == "Release_SDL" goto DO_REL_BIN
+
+if "$(Configuration)" == "Debug_SDL" goto DO_DBG_BIN
+
+
+copy $(Configuration)\$(Platform)\bin\*.dll $(CopyDir)\bin
+
+copy $(Configuration)\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
+
+copy $(Configuration)\$(Platform)\bin\*.exe $(CopyDir)\bin
+
+goto DONE_BIN
+
+
+:DO_REL_BIN
+
+copy Release\$(Platform)\bin\*.dll $(CopyDir)\bin
+
+copy Release\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
+
+copy Release\$(Platform)\bin\*.exe $(CopyDir)\bin
+
+goto DONE_BIN
+
+
+:DO_DBG_BIN
+
+copy Debug\$(Platform)\bin\*.dll $(CopyDir)\bin
+
+copy Debug\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
+
+copy Debug\$(Platform)\bin\*.exe $(CopyDir)\bin
+
+goto DONE_BIN
+
+:DONE_BIN
+    </CoglDoInstallBin>
+    <CoglDoInstall>
+$(CoglDoInstallBin)
+
+mkdir $(CopyDir)\share\cogl-$(ApiVersion)\examples-data
+
+copy ..\..\..\examples\*.jpg $(CopyDir)\share\cogl-$(ApiVersion)\examples-data
+
+
+mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-object.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-atlas-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-attribute-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-bitmap.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-color.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-deprecated.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-depth-state.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-error.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-euler.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-fence.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-fixed.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-frame-info.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-glib-source.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-macros.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-material-compat.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-pipeline.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-vector.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-matrix.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-matrix-stack.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-offscreen.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-onscreen.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-output.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-primitives.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-primitive-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-pipeline-layer-state.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-pipeline-state.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-pixel-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-poll.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-quaternion.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-shader.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-snippet.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-texture-2d.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-texture-2d-gl.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-texture-2d-sliced.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-sub-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-texture-rectangle.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-meta-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-texture-3d.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-types.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-vertex-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-index-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-indices.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-attribute.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-primitive.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-clip-state.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-framebuffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-clutter.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-defines.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-enum-types.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-renderer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-swap-chain.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-onscreen-template.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-display.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-context.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-version.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-win32-renderer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl1-context.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl2-experimental.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+
+mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango
+
+copy ..\..\..\cogl-pango\cogl-pango.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango
+
+
+mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path
+
+copy ..\..\..\cogl-path\cogl-path.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path
+
+copy ..\..\..\cogl-path\cogl-path-types.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path
+
+copy ..\..\..\cogl-path\cogl1-path-functions.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path
+
+copy ..\..\..\cogl-path\cogl2-path-functions.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path
+
+copy ..\..\..\cogl-path\cogl-path-enum-types.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl-path
+    </CoglDoInstall>
+    <CoglDoInstallSDL>copy ..\..\..\cogl\cogl-sdl.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl</CoglDoInstallSDL>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>coglinstallprops</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemGroup>
+    <BuildMacro Include="CoglDoInstallBin">
+      <Value>$(CoglDoInstall)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglDoInstall">
+      <Value>$(CoglDoInstall)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglDoInstallSDL">
+      <Value>$(CoglDoInstallSDL)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

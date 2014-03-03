@@ -7,7 +7,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\examples\cogl-sdl-hello.c">
+    <ClCompile Include="..\..\..\examples\cogl-sdl2-hello.c">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>

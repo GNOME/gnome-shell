@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+    <Import Project="cogl-build-defines.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <CopyDefinesSDLH>
+if exist ..\..\..\cogl\SDL_DEFINES goto DONE_COGL_DEFINES_H
+if not exist ..\..\..\cogl\WGL_DEFINES goto DO_COGL_DEFINES_H
+del ..\..\..\cogl\cogl-defines.h
+del ..\..\..\cogl\WGL_DEFINES
+:DO_COGL_DEFINES_H
+copy ..\..\..\cogl\cogl-defines.h.win32_sdl ..\..\..\cogl\SDL_DEFINES
+copy ..\..\..\cogl\SDL_DEFINES ..\..\..\cogl\cogl-defines.h
+:DONE_COGL_DEFINES_H
+    </CopyDefinesSDLH>
+    <CopyDefinesH>
+if exist ..\..\..\cogl\WGL_DEFINES goto DONE_COGL_DEFINES_H
+if not exist ..\..\..\cogl\SDL_DEFINES goto DO_COGL_DEFINES_H
+del ..\..\..\cogl\cogl-defines.h
+del ..\..\..\cogl\SDL_DEFINES
+:DO_COGL_DEFINES_H
+copy ..\..\..\cogl\cogl-defines.h.win32 ..\..\..\cogl\WGL_DEFINES
+copy ..\..\..\cogl\WGL_DEFINES ..\..\..\cogl\cogl-defines.h
+:DONE_COGL_DEFINES_H
+    </CopyDefinesH>
+    <CopyConfigH>copy ..\..\..\config.h.win32 ..\..\..\config.h</CopyConfigH>
+    <CopyGLHeaderH>copy ..\..\..\cogl\cogl-gl-header.h.win32 ..\..\..\cogl\cogl-gl-header.h</CopyGLHeaderH>
+    <GenCoglPathEnumsH>
+cd ..\..\..\cogl-path
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-path-enum-types.h.in cogl-path-types.h cogl1-path-functions.h &gt; cogl-path-enum-types.h
+cd $(SolutionDir)
+    </GenCoglPathEnumsH>
+    <GenCoglPathEnumsC>
+cd ..\..\..\cogl-path
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-path-enum-types.c.in cogl-path-types.h cogl1-path-functions.h &gt; cogl-path-enum-types.c
+cd $(SolutionDir)
+    </GenCoglPathEnumsC>
+    <GenCoglEnumsH>
+cd ..\..\..\cogl
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-enum-types.h.in deprecated\cogl-clip-state.h deprecated\cogl-fixed.h deprecated\cogl-material-compat.h deprecated\cogl-vertex-buffer.h deprecated\cogl-shader.h deprecated\cogl-clutter.h deprecated\cogl-type-casts.h deprecated\cogl-framebuffer-deprecated.h deprecated\cogl-texture-deprecated.h deprecated\cogl-auto-texture.h cogl1-context.h cogl-bitmap.h cogl-color.h cogl-matrix.h cogl-offscreen.h cogl-primitives.h cogl-texture.h cogl-types.h cogl.h cogl-win32-renderer.h &gt; cogl-enum-types.h
+cd $(SolutionDir)
+    </GenCoglEnumsH>
+    <GenCoglEnumsC>
+cd ..\..\..\cogl
+perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template cogl-enum-types.c.in deprecated\cogl-clip-state.h deprecated\cogl-fixed.h deprecated\cogl-material-compat.h deprecated\cogl-vertex-buffer.h deprecated\cogl-shader.h deprecated\cogl-clutter.h deprecated\cogl-type-casts.h deprecated\cogl-framebuffer-deprecated.h deprecated\cogl-texture-deprecated.h deprecated\cogl-auto-texture.h cogl1-context.h cogl-bitmap.h cogl-color.h cogl-matrix.h cogl-offscreen.h cogl-primitives.h cogl-texture.h cogl-types.h cogl.h cogl-win32-renderer.h &gt; cogl-enum-types.c
+cd $(SolutionDir)
+    </GenCoglEnumsC>
+    <GenerateCoglDef>
+echo EXPORTS &gt; $(DefDir)\cogl.def
+cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def
+    </GenerateCoglDef>
+    <GenerateCoglSDLDef>
+echo EXPORTS &gt; $(DefDir)\cogl.def
+cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def
+    </GenerateCoglSDLDef>
+    <GenerateCoglPathDef>
+echo EXPORTS &gt; $(DefDir)\cogl-path.def
+cl -EP ..\..\..\cogl-path\cogl-path.symbols &gt;&gt; $(DefDir)\cogl-path.def
+     </GenerateCoglPathDef>
+    <GenerateCoglPangoDef>
+echo EXPORTS &gt; $(DefDir)\cogl-pango.def
+cl -EP ..\..\..\cogl-pango\cogl-pango.symbols &gt;&gt; $(DefDir)\cogl-pango.def
+     </GenerateCoglPangoDef>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>coglprops</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemGroup>
+    <BuildMacro Include="CopyConfigH">
+      <Value>$(CopyConfigH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CopyGLHeaderH">
+      <Value>$(CopyGLHeaderH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CopyDefinesSDLH">
+      <Value>$(CopyDefinesSDLH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CopyDefinesH">
+      <Value>$(CopyDefinesH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenCoglPathEnumsH">
+      <Value>$(GenCoglPathEnumsH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenCoglPathEnumsC">
+      <Value>$(GenCoglPathEnumsC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenCoglEnumsH">
+      <Value>$(GenCoglEnumsH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenCoglEnumsC">
+      <Value>$(GenCoglEnumsC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenerateCoglDef">
+      <Value>$(GenerateCoglDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenerateCoglSDLDef">
+      <Value>$(GenerateCoglDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenerateCoglPathDef">
+      <Value>$(GenerateCoglPathDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenerateCoglPangoDef">
+      <Value>$(GenerateCoglPangoDef)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

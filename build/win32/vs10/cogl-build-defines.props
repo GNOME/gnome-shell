@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+    <Import Project="cogl-version-paths.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <BaseBuildDefines>_WIN32_WINNT=0x0500;COGL_ENABLE_DEBUG</BaseBuildDefines>
+    <LibBuildDefines>HAVE_CONFIG_H;COGL_COMPILATION;$(BaseBuildDefines)</LibBuildDefines>
+    <ReleaseLibBuildDefines>$(LibBuildDefines);G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS</ReleaseLibBuildDefines>
+    <DebugLibBuildDefines>_DEBUG;$(LibBuildDefines);COGL_GL_DEBUG;COGL_OBJECT_DEBUG;COGL_HANDLE_DEBUG</DebugLibBuildDefines>
+    <CoglBuildDefines>G_LOG_DOMAIN="Cogl";COGL_HAS_WIN32_SUPPORT;COGL_BUILD_EXP;COGL_GL_LIBNAME="";COGL_LOCALEDIR="/some/random/dir"</CoglBuildDefines>
+    <CoglPathBuildDefines>G_LOG_DOMAIN="CoglPath"</CoglPathBuildDefines>
+    <CoglPangoBuildDefines>G_LOG_DOMAIN="Cogl-Pango"</CoglPangoBuildDefines>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>coglbuilddefinesprops</_PropertySheetDisplayName>
+    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformName)\bin\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..;..\..\..\cogl;..\..\..\cogl\winsys;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>G_DISABLE_SINGLE_INCLUDES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ForcedIncludeFiles>msvc_recommended_pragmas.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>glib-2.0.lib;gobject-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(GlibEtcInstallRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="BaseBuildDefines">
+      <Value>$(BaseBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="LibBuildDefines">
+      <Value>$(LibBuildDefines)</Value>
+    </BuildMacro>
+	<BuildMacro Include="ReleaseLibBuildDefines">
+      <Value>$(ReleaseLibBuildDefines)</Value>
+    </BuildMacro>
+	<BuildMacro Include="DebugLibBuildDefines">
+      <Value>$(DebugLibBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglBuildDefines">
+      <Value>$(CoglBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglPathBuildDefines">
+      <Value>$(CoglPathBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglPangoBuildDefines">
+      <Value>$(CoglPangoBuildDefines)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <VSVer>10</VSVer>
+    <GlibEtcInstallRoot>$(SolutionDir)\..\..\..\..\vs$(VSVer)\$(Platform)</GlibEtcInstallRoot>
+    <ApiVersion>1.0</ApiVersion>
+    <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
+    <DefDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</DefDir>
+    <CoglLibtoolCompatibleDllPrefix>lib</CoglLibtoolCompatibleDllPrefix>
+    <CoglLibtoolCompatibleDllSuffix>-$(ApiVersion)-0</CoglLibtoolCompatibleDllSuffix>
+    <CoglSeparateVSDllPrefix />
+    <CoglSeparateVSDllSuffix>-1-vs$(VSVer)</CoglSeparateVSDllSuffix>
+    <!-- Change CoglSeparateVSDllPrefix to CoglLibtoolCompatibleDllPrefix if libtool-style DLL prefixes are desired -->
+    <!-- Change CoglSeparateVSDllSuffix to CoglLibtoolCompatibleDllSuffix if libtool-style DLL suffixes are desired -->
+    <CoglDllPrefix>$(CoglSeparateVSDllPrefix)</CoglDllPrefix>
+    <CoglDllSuffix>$(CoglSeparateVSDllSuffix)</CoglDllSuffix>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>coglversionpathsprops</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemGroup>
+    <BuildMacro Include="GlibEtcInstallRoot">
+      <Value>$(GlibEtcInstallRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CopyDir">
+      <Value>$(CopyDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DefDir">
+      <Value>$(DefDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ApiVersion">
+      <Value>$(ApiVersion)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglLibtoolCompatibleDllPrefix">
+      <Value>$(CoglLibtoolCompatibleDllPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglLibtoolCompatibleDllSuffix">
+      <Value>$(CoglLibtoolCompatibleDllSuffix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglSeparateVSDllPrefix">
+      <Value>$(CoglSeparateVSDllPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglSeparateVSDllSuffix">
+      <Value>$(CoglSeparateVSDllSuffix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglDllPrefix">
+      <Value>$(CoglDllPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglDllSuffix">
+      <Value>$(CoglDllSuffix)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

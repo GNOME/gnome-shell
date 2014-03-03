@@ -15,7 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\cogl\winsys\cogl-winsys-wgl.c"><Filter>Sources</Filter></ClCompile>
-    <ClCompile Include="..\..\..\cogl\winsys\cogl-winsys-sdl.c"><Filter>Sources</Filter></ClCompile>
+    <ClCompile Include="..\..\..\cogl\winsys\cogl-winsys-sdl2.c"><Filter>Sources</Filter></ClCompile>
     <ClCompile Include="..\..\..\cogl\cogl-sdl.c"><Filter>Sources</Filter></ClCompile>
     <ClCompile Include="..\..\..\cogl\cogl-win32-renderer.c"><Filter>Sources</Filter></ClCompile>
 #include "cogl.vs10.sourcefiles.filters"
@@ -30,6 +30,10 @@
     <ClCompile Include="..\..\..\cogl\driver\gl\cogl-util-gl.c"><Filter>Sources\Driver_GL</Filter></ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="..\..\..\config.h.win32"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="..\..\..\cogl\cogl-gl-headers.h.win32"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="..\..\..\cogl\cogl-defines.h.win32"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="..\..\..\cogl\cogl-defines.h.win32_SDL"><Filter>Resource Files</Filter></CustomBuild>
     <CustomBuild Include="..\..\..\cogl\cogl.symbols"><Filter>Resource Files</Filter></CustomBuild>
     <CustomBuild Include="..\..\..\cogl\cogl-enum-types.h.in"><Filter>Resource Files</Filter></CustomBuild>
     <CustomBuild Include="..\..\..\cogl\cogl-enum-types.c.in"><Filter>Resource Files</Filter></CustomBuild>
