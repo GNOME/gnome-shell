@@ -528,7 +528,30 @@ clutter_text_create_layout_no_cache (ClutterText       *text,
       pango_attr_list_unref (tmp_attrs);
     }
   else
-    pango_layout_set_text (layout, contents, contents_len);
+    {
+      PangoDirection pango_dir;
+
+      if (priv->password_char != 0)
+        pango_dir = PANGO_DIRECTION_NEUTRAL;
+      else
+        pango_dir = pango_find_base_dir (contents, contents_len);
+
+      if (pango_dir == PANGO_DIRECTION_NEUTRAL)
+        {
+          ClutterTextDirection text_dir;
+
+          text_dir = clutter_actor_get_text_direction (CLUTTER_ACTOR (text));
+
+          if (text_dir == CLUTTER_TEXT_DIRECTION_RTL)
+            pango_dir = PANGO_DIRECTION_RTL;
+          else
+            pango_dir = PANGO_DIRECTION_LTR;
+        }
+
+      pango_context_set_base_dir (clutter_actor_get_pango_context (CLUTTER_ACTOR (text)), pango_dir);
+
+      pango_layout_set_text (layout, contents, contents_len);
+    }
 
   /* This will merge the markup attributes and the attributes
    * property if needed */
