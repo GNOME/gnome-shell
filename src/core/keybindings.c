@@ -159,6 +159,22 @@ meta_key_grab_free (MetaKeyGrab *grab)
   g_free (grab);
 }
 
+static guint32
+key_binding_key (guint32 keycode,
+                 guint32 mask)
+{
+  /* On X, keycodes are only 8 bits while libxkbcommon supports 32 bit
+     keycodes, but since we're using the same XKB keymaps that X uses,
+     we won't find keycodes bigger than 8 bits in practice. The bits
+     that mutter cares about in the modifier mask are also all in the
+     lower 8 bits both on X and clutter key events. This means that we
+     can use a 32 bit integer to safely concatenate both keycode and
+     mask and thus making it easy to use them as an index in a
+     GHashTable. */
+  guint32 key = keycode & 0xffff;
+  return (key << 16) | (mask & 0xffff);
+}
+
 
 static void
 reload_keymap (MetaDisplay *display)
@@ -458,6 +474,18 @@ keysym_to_keycode (MetaDisplay *display,
 }
 
 static void
+binding_reload_keycode_foreach (gpointer key,
+                                gpointer value,
+                                gpointer data)
+{
+  MetaDisplay *display = data;
+  MetaKeyBinding *binding = value;
+
+  if (binding->keysym)
+    binding->keycode = keysym_to_keycode (display, binding->keysym);
+}
+
+static void
 reload_keycodes (MetaDisplay *display)
 {
   meta_topic (META_DEBUG_KEYBINDINGS,
@@ -475,22 +503,25 @@ reload_keycodes (MetaDisplay *display)
 
   reload_iso_next_group_combos (display);
 
-  if (display->key_bindings)
-    {
-      int i;
+  g_hash_table_foreach (display->key_bindings, binding_reload_keycode_foreach, display);
+}
 
-      i = 0;
-      while (i < display->n_key_bindings)
-        {
-          if (display->key_bindings[i].keysym != 0)
-            {
-              display->key_bindings[i].keycode =
-                keysym_to_keycode (display, display->key_bindings[i].keysym);
-            }
+static void
+binding_reload_modifiers_foreach (gpointer key,
+                                  gpointer value,
+                                  gpointer data)
+{
+  MetaDisplay *display = data;
+  MetaKeyBinding *binding = value;
 
-          ++i;
-        }
-    }
+  meta_display_devirtualize_modifiers (display,
+                                       binding->modifiers,
+                                       &binding->mask);
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              " Devirtualized mods 0x%x -> 0x%x (%s)\n",
+              binding->modifiers,
+              binding->mask,
+              binding->name);
 }
 
 static void
@@ -499,80 +530,48 @@ reload_modifiers (MetaDisplay *display)
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Reloading keycodes for binding tables\n");
 
-  if (display->key_bindings)
-    {
-      int i;
-
-      i = 0;
-      while (i < display->n_key_bindings)
-        {
-          meta_display_devirtualize_modifiers (display,
-                                               display->key_bindings[i].modifiers,
-                                               &display->key_bindings[i].mask);
-
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      " Devirtualized mods 0x%x -> 0x%x (%s)\n",
-                      display->key_bindings[i].modifiers,
-                      display->key_bindings[i].mask,
-                      display->key_bindings[i].name);
-
-          ++i;
-        }
-    }
+  g_hash_table_foreach (display->key_bindings, binding_reload_modifiers_foreach, display);
 }
 
-
-static int
-count_bindings (GList *prefs)
+static void
+index_binding (MetaDisplay    *display,
+               MetaKeyBinding *binding)
 {
-  GList *p;
-  int count;
+  guint32 index_key;
 
-  count = 0;
-  p = prefs;
-  while (p)
-    {
-      MetaKeyPref *pref = (MetaKeyPref*)p->data;
-      GSList *tmp = pref->combos;
+  index_key = key_binding_key (binding->keycode, binding->mask);
+  g_hash_table_replace (display->key_bindings_index,
+                        GINT_TO_POINTER (index_key), binding);
+}
 
-      while (tmp)
-        {
-          MetaKeyCombo *combo = tmp->data;
+static void
+binding_index_foreach (gpointer key,
+                       gpointer value,
+                       gpointer data)
+{
+  MetaDisplay *display = data;
+  MetaKeyBinding *binding = value;
 
-          if (combo && (combo->keysym != None || combo->keycode != 0))
-            {
-              count += 1;
+  index_binding (display, binding);
+}
 
-              if (pref->add_shift &&
-                  (combo->modifiers & META_VIRTUAL_SHIFT_MASK) == 0)
-                count += 1;
-            }
-
-          tmp = tmp->next;
-        }
-
-      p = p->next;
-    }
-
-  return count;
+static void
+rebuild_binding_index (MetaDisplay *display)
+{
+  g_hash_table_remove_all (display->key_bindings_index);
+  g_hash_table_foreach (display->key_bindings, binding_index_foreach, display);
 }
 
 static void
 rebuild_binding_table (MetaDisplay     *display,
-                       MetaKeyBinding **bindings_p,
-                       int             *n_bindings_p,
                        GList           *prefs,
                        GList           *grabs)
 {
+  MetaKeyBinding *b;
   GList *p, *g;
-  int n_bindings;
-  int i;
 
-  n_bindings = count_bindings (prefs) + g_list_length (grabs);
-  g_free (*bindings_p);
-  *bindings_p = g_new0 (MetaKeyBinding, n_bindings);
+  g_hash_table_remove_all (display->key_bindings);
 
-  i = 0;
   p = prefs;
   while (p)
     {
@@ -587,15 +586,17 @@ rebuild_binding_table (MetaDisplay     *display,
             {
               MetaKeyHandler *handler = HANDLER (pref->name);
 
-              (*bindings_p)[i].name = pref->name;
-              (*bindings_p)[i].handler = handler;
-              (*bindings_p)[i].flags = handler->flags;
-              (*bindings_p)[i].keysym = combo->keysym;
-              (*bindings_p)[i].keycode = combo->keycode;
-              (*bindings_p)[i].modifiers = combo->modifiers;
-              (*bindings_p)[i].mask = 0;
+              b = g_malloc0 (sizeof (MetaKeyBinding));
 
-              ++i;
+              b->name = pref->name;
+              b->handler = handler;
+              b->flags = handler->flags;
+              b->keysym = combo->keysym;
+              b->keycode = combo->keycode;
+              b->modifiers = combo->modifiers;
+              b->mask = 0;
+
+              g_hash_table_add (display->key_bindings, b);
 
               if (pref->add_shift &&
                   (combo->modifiers & META_VIRTUAL_SHIFT_MASK) == 0)
@@ -604,16 +605,17 @@ rebuild_binding_table (MetaDisplay     *display,
                               "Binding %s also needs Shift grabbed\n",
                               pref->name);
 
-                  (*bindings_p)[i].name = pref->name;
-                  (*bindings_p)[i].handler = handler;
-                  (*bindings_p)[i].flags = handler->flags;
-                  (*bindings_p)[i].keysym = combo->keysym;
-                  (*bindings_p)[i].keycode = combo->keycode;
-                  (*bindings_p)[i].modifiers = combo->modifiers |
-                    META_VIRTUAL_SHIFT_MASK;
-                  (*bindings_p)[i].mask = 0;
+                  b = g_malloc0 (sizeof (MetaKeyBinding));
 
-                  ++i;
+                  b->name = pref->name;
+                  b->handler = handler;
+                  b->flags = handler->flags;
+                  b->keysym = combo->keysym;
+                  b->keycode = combo->keycode;
+                  b->modifiers = combo->modifiers | META_VIRTUAL_SHIFT_MASK;
+                  b->mask = 0;
+
+                  g_hash_table_add (display->key_bindings, b);
                 }
             }
 
@@ -631,27 +633,25 @@ rebuild_binding_table (MetaDisplay     *display,
         {
           MetaKeyHandler *handler = HANDLER ("external-grab");
 
-          (*bindings_p)[i].name = grab->name;
-          (*bindings_p)[i].handler = handler;
-          (*bindings_p)[i].flags = handler->flags;
-          (*bindings_p)[i].keysym = grab->combo->keysym;
-          (*bindings_p)[i].keycode = grab->combo->keycode;
-          (*bindings_p)[i].modifiers = grab->combo->modifiers;
-          (*bindings_p)[i].mask = 0;
+          b = g_malloc0 (sizeof (MetaKeyBinding));
 
-          ++i;
+          b->name = grab->name;
+          b->handler = handler;
+          b->flags = handler->flags;
+          b->keysym = grab->combo->keysym;
+          b->keycode = grab->combo->keycode;
+          b->modifiers = grab->combo->modifiers;
+          b->mask = 0;
+
+          g_hash_table_add (display->key_bindings, b);
         }
 
       g = g->next;
     }
 
-  g_assert (i == n_bindings);
-
-  *n_bindings_p = i;
-
   meta_topic (META_DEBUG_KEYBINDINGS,
               " %d bindings in table\n",
-              *n_bindings_p);
+              g_hash_table_size (display->key_bindings));
 }
 
 static void
@@ -664,10 +664,7 @@ rebuild_key_binding_table (MetaDisplay *display)
 
   prefs = meta_prefs_get_keybindings ();
   grabs = g_hash_table_get_values (external_grabs);
-  rebuild_binding_table (display,
-                         &display->key_bindings,
-                         &display->n_key_bindings,
-                         prefs, grabs);
+  rebuild_binding_table (display, prefs, grabs);
   g_list_free (prefs);
   g_list_free (grabs);
 }
@@ -749,26 +746,15 @@ grab_key_bindings (MetaDisplay *display)
 
 static MetaKeyBinding *
 display_get_keybinding (MetaDisplay  *display,
-                        unsigned int  keycode,
-                        unsigned long mask)
+                        guint32       keycode,
+                        guint32       mask)
 {
-  int i;
+  guint32 key;
 
   mask = mask & 0xff & ~display->ignored_modifier_mask;
+  key = key_binding_key (keycode, mask);
 
-  i = display->n_key_bindings - 1;
-  while (i >= 0)
-    {
-      if (display->key_bindings[i].keycode == keycode &&
-          display->key_bindings[i].mask == mask)
-        {
-          return &display->key_bindings[i];
-        }
-
-      --i;
-    }
-
-  return NULL;
+  return g_hash_table_lookup (display->key_bindings_index, GINT_TO_POINTER (key));
 }
 
 static guint
@@ -987,6 +973,8 @@ meta_display_process_mapping_event (MetaDisplay *display,
 
       reload_modifiers (display);
 
+      rebuild_binding_index (display);
+
       grab_key_bindings (display);
     }
 }
@@ -1007,6 +995,7 @@ bindings_changed_callback (MetaPreference pref,
       rebuild_special_bindings (display);
       reload_keycodes (display);
       reload_modifiers (display);
+      rebuild_binding_index (display);
       grab_key_bindings (display);
       break;
     default:
@@ -1027,7 +1016,9 @@ meta_display_shutdown_keys (MetaDisplay *display)
 
   if (display->modmap)
     XFreeModifiermap (display->modmap);
-  g_free (display->key_bindings);
+
+  g_hash_table_destroy (display->key_bindings_index);
+  g_hash_table_destroy (display->key_bindings);
 }
 
 static const char*
@@ -1125,36 +1116,48 @@ meta_change_keygrab (MetaDisplay *display,
   meta_error_trap_pop (display);
 }
 
+typedef struct
+{
+  MetaDisplay *display;
+  Window xwindow;
+  gboolean binding_per_window;
+  gboolean grab;
+} ChangeKeygrabData;
+
 static void
-change_binding_keygrabs (MetaKeyBinding *bindings,
-                         int             n_bindings,
-                         MetaDisplay    *display,
+change_keygrab_foreach (gpointer key,
+                        gpointer value,
+                        gpointer user_data)
+{
+  ChangeKeygrabData *data = user_data;
+  MetaKeyBinding *binding = value;
+
+  if (!!data->binding_per_window ==
+      !!(binding->flags & META_KEY_BINDING_PER_WINDOW) &&
+      binding->keycode != 0)
+    {
+      meta_change_keygrab (data->display, data->xwindow, data->grab,
+                           binding->keysym,
+                           binding->keycode,
+                           binding->mask);
+    }
+}
+
+static void
+change_binding_keygrabs (MetaDisplay    *display,
                          Window          xwindow,
                          gboolean        binding_per_window,
                          gboolean        grab)
 {
-  int i;
+  ChangeKeygrabData data;
 
-  g_assert (n_bindings == 0 || bindings != NULL);
+  data.display = display;
+  data.xwindow = xwindow;
+  data.binding_per_window = binding_per_window;
+  data.grab = grab;
 
   meta_error_trap_push (display);
-
-  i = 0;
-  while (i < n_bindings)
-    {
-      if (!!binding_per_window ==
-          !!(bindings[i].flags & META_KEY_BINDING_PER_WINDOW) &&
-          bindings[i].keycode != 0)
-        {
-          meta_change_keygrab (display, xwindow, grab,
-                               bindings[i].keysym,
-                               bindings[i].keycode,
-                               bindings[i].mask);
-        }
-
-      ++i;
-    }
-
+  g_hash_table_foreach (display->key_bindings, change_keygrab_foreach, &data);
   meta_error_trap_pop (display);
 }
 
@@ -1186,10 +1189,7 @@ meta_screen_change_keygrabs (MetaScreen *screen,
         }
     }
 
-  change_binding_keygrabs (screen->display->key_bindings,
-                           screen->display->n_key_bindings,
-                           screen->display, screen->xroot,
-                           FALSE, grab);
+  change_binding_keygrabs (screen->display, screen->xroot, FALSE, grab);
 }
 
 void
@@ -1222,10 +1222,7 @@ meta_window_change_keygrabs (MetaWindow *window,
                              Window      xwindow,
                              gboolean    grab)
 {
-  change_binding_keygrabs (window->display->key_bindings,
-                           window->display->n_key_bindings,
-                           window->display, xwindow,
-                           TRUE, grab);
+  change_binding_keygrabs (window->display, xwindow, TRUE, grab);
 }
 
 void
@@ -1296,6 +1293,7 @@ guint
 meta_display_grab_accelerator (MetaDisplay *display,
                                const char  *accelerator)
 {
+  MetaKeyBinding *binding;
   MetaKeyGrab *grab;
   guint keysym = 0;
   guint keycode = 0;
@@ -1337,18 +1335,16 @@ meta_display_grab_accelerator (MetaDisplay *display,
 
   g_hash_table_insert (external_grabs, grab->name, grab);
 
-  display->n_key_bindings++;
-  display->key_bindings = g_renew (MetaKeyBinding,
-                                   display->key_bindings,
-                                   display->n_key_bindings);
-
-  MetaKeyBinding *binding = &display->key_bindings[display->n_key_bindings - 1];
+  binding = g_malloc0 (sizeof (MetaKeyBinding));
   binding->name = grab->name;
   binding->handler = HANDLER ("external-grab");
   binding->keysym = grab->combo->keysym;
   binding->keycode = grab->combo->keycode;
   binding->modifiers = grab->combo->modifiers;
   binding->mask = mask;
+
+  g_hash_table_add (display->key_bindings, binding);
+  index_binding (display, binding);
 
   return grab->action;
 }
@@ -1373,7 +1369,9 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
                                     grab->combo->modifiers);
   if (binding)
     {
+      guint32 index_key;
       GSList *l;
+
       for (l = display->screens; l; l = l->next)
         {
           MetaScreen *screen = l->data;
@@ -1383,10 +1381,10 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
                                binding->mask);
         }
 
-      binding->keysym = 0;
-      binding->keycode = 0;
-      binding->modifiers = 0;
-      binding->mask = 0;
+      index_key = key_binding_key (binding->keycode, binding->mask);
+      g_hash_table_remove (display->key_bindings_index, GINT_TO_POINTER (index_key));
+
+      g_hash_table_remove (display->key_bindings, binding);
     }
 
   g_hash_table_remove (external_grabs, key);
@@ -1662,9 +1660,7 @@ invoke_handler (MetaDisplay    *display,
 }
 
 static gboolean
-process_event (MetaKeyBinding       *bindings,
-               int                   n_bindings,
-               MetaDisplay          *display,
+process_event (MetaDisplay          *display,
                MetaScreen           *screen,
                MetaWindow           *window,
                XIDeviceEvent        *event,
@@ -1676,10 +1672,6 @@ process_event (MetaKeyBinding       *bindings,
   if (event->evtype == XI_KeyRelease)
     return FALSE;
 
-  /*
-   * TODO: This would be better done with a hash table;
-   * it doesn't suit to use O(n) for such a common operation.
-   */
   binding = display_get_keybinding (display,
                                     event->detail,
                                     event->mods.effective);
@@ -1746,10 +1738,7 @@ process_overlay_key (MetaDisplay *display,
            * the event. Other clients with global grabs will be out of
            * luck.
            */
-          if (process_event (display->key_bindings,
-                             display->n_key_bindings,
-                             display, screen, NULL, event,
-                             FALSE))
+          if (process_event (display, screen, NULL, event, FALSE))
             {
               /* As normally, after we've handled a global key
                * binding, we unfreeze the keyboard but keep the grab
@@ -1992,9 +1981,7 @@ meta_display_process_key_event (MetaDisplay   *display,
     }
 
   /* Do the normal keybindings */
-  return process_event (display->key_bindings,
-                        display->n_key_bindings,
-                        display, screen, window, event,
+  return process_event (display, screen, window, event,
                         !all_keys_grabbed && window);
 }
 
@@ -3917,8 +3904,9 @@ meta_display_init_keys (MetaDisplay *display)
   display->hyper_mask = 0;
   display->super_mask = 0;
   display->meta_mask = 0;
-  display->key_bindings = NULL;
-  display->n_key_bindings = 0;
+
+  display->key_bindings = g_hash_table_new_full (NULL, NULL, NULL, g_free);
+  display->key_bindings_index = g_hash_table_new (NULL, NULL);
 
   XDisplayKeycodes (display->xdisplay,
                     &display->min_keycode,
@@ -3965,6 +3953,7 @@ meta_display_init_keys (MetaDisplay *display)
 
   reload_keycodes (display);
   reload_modifiers (display);
+  rebuild_binding_index (display);
 
   /* Keys are actually grabbed in meta_screen_grab_keys() */
 
