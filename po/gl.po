@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-20 23:24+0100\n"
-"PO-Revision-Date: 2014-01-20 23:25+0200\n"
+"POT-Creation-Date: 2014-03-03 21:29+0100\n"
+"PO-Revision-Date: 2014-03-03 21:30+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -62,66 +62,82 @@ msgid "Move window one workspace down"
 msgstr "Mover xanela un espazo de traballo cara a abaixo"
 
 #: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Move window one monitor to the left"
+msgstr "Mover xanela un monitor á esquerda"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Move window one monitor to the right"
+msgstr "Mover xanela un monitor á dereita"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Move window one monitor up"
+msgstr "Mover xanela un monitor arriba"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Move window one monitor down"
+msgstr "Mover xanela un espazo de traballo abaixo"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
 msgid "Switch applications"
 msgstr "Cambiar entre aplicativos"
 
-#: ../src/50-mutter-navigation.xml.in.h:11
+#: ../src/50-mutter-navigation.xml.in.h:15
 msgid "Switch windows"
 msgstr "Cambiar xanelas"
 
-#: ../src/50-mutter-navigation.xml.in.h:12
+#: ../src/50-mutter-navigation.xml.in.h:16
 msgid "Switch windows of an application"
 msgstr "Cambiar entre as xanelas dun aplicativo"
 
-#: ../src/50-mutter-navigation.xml.in.h:13
+#: ../src/50-mutter-navigation.xml.in.h:17
 msgid "Switch system controls"
 msgstr "Cambiar entre os controles do sistema"
 
-#: ../src/50-mutter-navigation.xml.in.h:14
+#: ../src/50-mutter-navigation.xml.in.h:18
 msgid "Switch windows directly"
 msgstr "Cambiar xanelas directamente"
 
-#: ../src/50-mutter-navigation.xml.in.h:15
+#: ../src/50-mutter-navigation.xml.in.h:19
 msgid "Switch windows of an app directly"
 msgstr "Cambiar entre as xanelas dun aplicativo directamente"
 
-#: ../src/50-mutter-navigation.xml.in.h:16
+#: ../src/50-mutter-navigation.xml.in.h:20
 msgid "Switch system controls directly"
 msgstr "Cambiar entre os controles do sistema directamente"
 
-#: ../src/50-mutter-navigation.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:21
 msgid "Hide all normal windows"
 msgstr "Ocultar todas as xanelas normais"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
+#: ../src/50-mutter-navigation.xml.in.h:22
 msgid "Switch to workspace 1"
 msgstr "Cambiar ao espazo de traballo 1"
 
-#: ../src/50-mutter-navigation.xml.in.h:19
+#: ../src/50-mutter-navigation.xml.in.h:23
 msgid "Switch to workspace 2"
 msgstr "Cambiar ao espazo de traballo 2"
 
-#: ../src/50-mutter-navigation.xml.in.h:20
+#: ../src/50-mutter-navigation.xml.in.h:24
 msgid "Switch to workspace 3"
 msgstr "Cambiar ao espazo de traballo 3"
 
-#: ../src/50-mutter-navigation.xml.in.h:21
+#: ../src/50-mutter-navigation.xml.in.h:25
 msgid "Switch to workspace 4"
 msgstr "Cambiar ao espazo de traballo 4"
 
-#: ../src/50-mutter-navigation.xml.in.h:22
+#: ../src/50-mutter-navigation.xml.in.h:26
 msgid "Move to workspace left"
 msgstr "Mover ao espazo da esquerda"
 
-#: ../src/50-mutter-navigation.xml.in.h:23
+#: ../src/50-mutter-navigation.xml.in.h:27
 msgid "Move to workspace right"
 msgstr "Mover ao espazo da dereita"
 
-#: ../src/50-mutter-navigation.xml.in.h:24
+#: ../src/50-mutter-navigation.xml.in.h:28
 msgid "Move to workspace above"
 msgstr "Mover ao espazo de arriba"
 
-#: ../src/50-mutter-navigation.xml.in.h:25
+#: ../src/50-mutter-navigation.xml.in.h:29
 msgid "Move to workspace below"
 msgstr "Mover ao espazo de traballo de abaixo"
 
@@ -215,7 +231,7 @@ msgstr "Dividir vista á dereita"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:571
+#: ../src/compositor/compositor.c:534
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -224,15 +240,15 @@ msgstr ""
 "Xa se está a executar outro xestor de composición na pantalla %i na "
 "visualización «%s»"
 
-#: ../src/compositor/meta-background.c:1073
+#: ../src/compositor/meta-background.c:1074
 msgid "background texture could not be created from file"
 msgstr "a textura do fondo non puido crearse desde o ficheiro"
 
-#: ../src/core/bell.c:320
+#: ../src/core/bell.c:321
 msgid "Bell event"
 msgstr "Evento de campá"
 
-#: ../src/core/core.c:155
+#: ../src/core/core.c:156
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Petición de información de xanela descoñecida: %d"
@@ -262,17 +278,17 @@ msgstr "Espe_rar"
 msgid "_Force Quit"
 msgstr "_Forzar a saída"
 
-#: ../src/core/display.c:413
+#: ../src/core/display.c:405
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Falta a extensión %s que se require para a composición"
 
-#: ../src/core/display.c:505
+#: ../src/core/display.c:497
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Produciuse un erro ao abrir a visualización do X Window System «%s»\n"
 
-#: ../src/core/keybindings.c:1135
+#: ../src/core/keybindings.c:1113
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -281,7 +297,7 @@ msgstr ""
 "Algún outro programa xa está usando a tecla %s cos modificadores %x como "
 "combinación\n"
 
-#: ../src/core/keybindings.c:1332
+#: ../src/core/keybindings.c:1310
 #, c-format
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "«%s» non é un acelerador correcto\n"
@@ -310,12 +326,12 @@ msgstr "Inicializar sesión desde o ficheiro de salvagarda"
 msgid "Make X calls synchronous"
 msgstr "Facer que as chamadas a X sexan sincrónicas"
 
-#: ../src/core/main.c:532
+#: ../src/core/main.c:544
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Produciuse un erro ao dixitalizar o directorio de temas: %s\n"
 
-#: ../src/core/main.c:548
+#: ../src/core/main.c:560
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -343,7 +359,7 @@ msgstr "Pantalla descoñecida"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: ../src/core/mutter.c:38
+#: ../src/core/mutter.c:39
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -358,15 +374,15 @@ msgstr ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 
-#: ../src/core/mutter.c:52
+#: ../src/core/mutter.c:53
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: ../src/core/mutter.c:58
+#: ../src/core/mutter.c:59
 msgid "Mutter plugin to use"
 msgstr "Engadido de mutter que usar"
 
-#: ../src/core/prefs.c:1200
+#: ../src/core/prefs.c:1190
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -374,14 +390,14 @@ msgstr ""
 "Desactiváronse os arranxos para aplicativos danados. Pode que algúns "
 "aplicativos non se comporten correctamente.\n"
 
-#: ../src/core/prefs.c:1275
+#: ../src/core/prefs.c:1265
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Non foi posíbel analizar a descrición do tipo de letra «%s» da chave "
 "GSettings %s\n"
 
-#: ../src/core/prefs.c:1341
+#: ../src/core/prefs.c:1331
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -390,7 +406,7 @@ msgstr ""
 "«%s» atopados na base de datos de configuración non é un valor correcto para "
 "o modificador do botón do rato\n"
 
-#: ../src/core/prefs.c:1907
+#: ../src/core/prefs.c:1894
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -399,17 +415,17 @@ msgstr ""
 "«%s» atopados na base de datos de configuración non é un valor correcto para "
 "a combinación de teclas «%s»\n"
 
-#: ../src/core/prefs.c:1997
+#: ../src/core/prefs.c:1984
 #, c-format
 msgid "Workspace %d"
 msgstr "Espazo de traballo %d"
 
-#: ../src/core/screen.c:538
+#: ../src/core/screen.c:539
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A pantalla %d na visualización «%s» non é válida\n"
 
-#: ../src/core/screen.c:554
+#: ../src/core/screen.c:555
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -418,7 +434,7 @@ msgstr ""
 "A visualización %d na pantalla «%s» ten xa un xestor de xanelas, tente usar "
 "a opción --replace para substituír o xestor de xanelas.\n"
 
-#: ../src/core/screen.c:581
+#: ../src/core/screen.c:582
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -426,64 +442,64 @@ msgstr ""
 "Non foi posíbel obter a selección do xestor de xanelas na pantalla %d na "
 "visualización «%s»\n"
 
-#: ../src/core/screen.c:659
+#: ../src/core/screen.c:660
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A visualización %d na pantalla «%s» ten xa un xestor de xanelas\n"
 
-#: ../src/core/screen.c:851
+#: ../src/core/screen.c:848
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Non foi posíbel liberar a visualización %d na pantalla «%s»\n"
 
-#: ../src/core/session.c:841 ../src/core/session.c:848
+#: ../src/core/session.c:842 ../src/core/session.c:849
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Non foi posíbel crear o directorio «%s»: %s\n"
 
-#: ../src/core/session.c:858
+#: ../src/core/session.c:859
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Non foi posíbel abrir o ficheiro de sesión «%s» para escritura: %s\n"
 
-#: ../src/core/session.c:999
+#: ../src/core/session.c:1000
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Produciuse un erro ao escribir o ficheiro de sesión «%s»: %s\n"
 
-#: ../src/core/session.c:1004
+#: ../src/core/session.c:1005
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Produciuse un erro ao pechar o ficheiro de sesión «%s»: %s\n"
 
-#: ../src/core/session.c:1134
+#: ../src/core/session.c:1135
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Produciuse un erro ao analizar o ficheiro de sesión gardado: %s\n"
 
-#: ../src/core/session.c:1183
+#: ../src/core/session.c:1184
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "O atributo <mutter_session> foi visto pero xa temos o ID de sesión"
 
-#: ../src/core/session.c:1196 ../src/core/session.c:1271
-#: ../src/core/session.c:1303 ../src/core/session.c:1375
-#: ../src/core/session.c:1435
+#: ../src/core/session.c:1197 ../src/core/session.c:1272
+#: ../src/core/session.c:1304 ../src/core/session.c:1376
+#: ../src/core/session.c:1436
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Atributo descoñecido %s no elemento <%s>"
 
-#: ../src/core/session.c:1213
+#: ../src/core/session.c:1214
 #, c-format
 msgid "nested <window> tag"
 msgstr "etiqueta <window> aniñada"
 
-#: ../src/core/session.c:1455
+#: ../src/core/session.c:1456
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento descoñecido %s"
 
-#: ../src/core/session.c:1807
+#: ../src/core/session.c:1808
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -527,7 +543,7 @@ msgid "Window manager error: "
 msgstr "Erro do xestor de xanelas: "
 
 #. first time through
-#: ../src/core/window.c:7578
+#: ../src/core/window.c:7564
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -543,7 +559,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8500
+#: ../src/core/window.c:8489
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -553,23 +569,23 @@ msgstr ""
 "mais configurou o tamaño mínimo a %d x %d e o tamaño máximo a %d x %d, isto "
 "non ten moito sentido.\n"
 
-#: ../src/core/window-props.c:348
+#: ../src/core/window-props.c:349
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "O aplicativo configurou un _NET_WM_PID %lu falso\n"
 
-#: ../src/core/window-props.c:464
+#: ../src/core/window-props.c:465
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (en %s)"
 
-#: ../src/core/window-props.c:1547
+#: ../src/core/window-props.c:1548
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
 "WM_TRANSIENT_FOR non válido para a xanela 0x%lx especificada para %s.\n"
 
-#: ../src/core/window-props.c:1558
+#: ../src/core/window-props.c:1559
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR xanela 0x%lx para %s crearía un bucle.\n"
