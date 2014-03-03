@@ -93,6 +93,8 @@ struct _ClutterBackendClass
                                                 gpointer            native,
                                                 ClutterEvent       *event);
 
+  PangoDirection        (* get_keymap_direction) (ClutterBackend   *backend);
+
   /* signals */
   void (* resolution_changed) (ClutterBackend *backend);
   void (* font_changed)       (ClutterBackend *backend);
@@ -137,6 +139,8 @@ ClutterFeatureFlags     _clutter_backend_get_features                   (Clutter
 gfloat                  _clutter_backend_get_units_per_em               (ClutterBackend         *backend,
                                                                          PangoFontDescription   *font_desc);
 gint32                  _clutter_backend_get_units_serial               (ClutterBackend         *backend);
+
+PangoDirection          _clutter_backend_get_keymap_direction           (ClutterBackend         *backend);
 
 G_END_DECLS
 
