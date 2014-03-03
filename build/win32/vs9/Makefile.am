@@ -11,7 +11,7 @@ EXTRA_DIST = \
 	test-conformance-cogl.vcproj	\
 	test-conformance-cogl.vcprojin	\
 	cogl-hello.vcproj	\
-	cogl-sdl-hello.vcproj	\
+	cogl-sdl2-hello.vcproj	\
 	cogl-crate.vcproj	\
 	cogl-msaa.vcproj	\
 	cogl-info.vcproj	\

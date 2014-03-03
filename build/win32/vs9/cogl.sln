@@ -18,7 +18,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cogl-hello", "cogl-hello.vc
 		{F3A80987-5411-43DB-A23B-06F2076E1206} = {F3A80987-5411-43DB-A23B-06F2076E1206}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cogl-sdl-hello", "cogl-sdl-hello.vcproj", "{0B5D144D-1872-42CD-8437-FFDCDD08C03E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cogl-sdl2-hello", "cogl-sdl2-hello.vcproj", "{0B5D144D-1872-42CD-8437-FFDCDD08C03E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F3A80987-5411-43DB-A23B-06F2076E1206} = {F3A80987-5411-43DB-A23B-06F2076E1206}
 	EndProjectSection
