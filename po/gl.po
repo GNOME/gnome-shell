@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-24 14:58+0100\n"
-"PO-Revision-Date: 2014-02-24 15:22+0200\n"
+"POT-Creation-Date: 2014-03-03 17:33+0100\n"
+"PO-Revision-Date: 2014-03-03 17:34+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -233,14 +233,14 @@ msgid ""
 "Configures the maximum level of location accuracy applications are allowed "
 "to see. Valid options are 'off' (disable location tracking), 'country', "
 "'city', 'neighborhood', 'street', and 'exact' (typically requires GPS "
-"receiver). Please keep in mind that this only controls what Geoclue will "
+"receiver). Please keep in mind that this only controls what GeoClue will "
 "allow applications to see and they can find user's location on their own "
 "using network resources (albeit with street-level accuracy at best)."
 msgstr ""
 "Configura o nivel máximo de exactitude que os aplicativos de localización "
 "poden ver. As opcións válidas son 'off' (desactiva o seguimento de "
 "localización), 'country', 'city', 'neighborhood', 'street', e 'exact' "
-"(normalmente require dun GPS). Teña en conta que isto só controla o que "
+"(normalmente requiren dun GPS). Teña en conta que isto só controla o que "
 "Geoclue lle permitirá aos aplicativos ver e que eles poden buscar a "
 "localizaócin do usuario usando os seus propios recursos de rede (con "
 "exactitude a nivel de rúa no mellor caso)."
@@ -1204,39 +1204,39 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageTray.js:1324
+#: ../js/ui/messageTray.js:1326
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:1331
+#: ../js/ui/messageTray.js:1333
 msgid "Remove"
 msgstr "Retirar"
 
-#: ../js/ui/messageTray.js:1628
+#: ../js/ui/messageTray.js:1630
 msgid "Notifications"
 msgstr "Notificacións"
 
-#: ../js/ui/messageTray.js:1635
+#: ../js/ui/messageTray.js:1637
 msgid "Clear Messages"
 msgstr "Limpar mensaxes"
 
-#: ../js/ui/messageTray.js:1654
+#: ../js/ui/messageTray.js:1656
 msgid "Notification Settings"
 msgstr "Preferencias das notificacións"
 
-#: ../js/ui/messageTray.js:1707
+#: ../js/ui/messageTray.js:1709
 msgid "Tray Menu"
 msgstr "Menú da bandexa do sistema"
 
-#: ../js/ui/messageTray.js:1924
+#: ../js/ui/messageTray.js:1926
 msgid "No Messages"
 msgstr "Non hai mensaxes"
 
-#: ../js/ui/messageTray.js:1962
+#: ../js/ui/messageTray.js:1964
 msgid "Message Tray"
 msgstr "Bandexa de mensaxes"
 
-#: ../js/ui/messageTray.js:2946
+#: ../js/ui/messageTray.js:2948
 msgid "System Information"
 msgstr "Información do sistema"
 
@@ -1403,8 +1403,8 @@ msgstr "Texto grande"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:162 ../js/ui/status/network.js:151
+#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:59
+#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:151
 #: ../js/ui/status/network.js:328 ../js/ui/status/network.js:1235
 #: ../js/ui/status/network.js:1346 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
@@ -1438,17 +1438,17 @@ msgstr "Mostrar a distribución do teclado"
 msgid "Location"
 msgstr "Localización"
 
-#: ../js/ui/status/location.js:61 ../js/ui/status/location.js:161
+#: ../js/ui/status/location.js:58 ../js/ui/status/location.js:158
 #: ../js/ui/status/rfkill.js:84
 msgid "On"
 msgstr "Activado"
 
-#: ../js/ui/status/location.js:158 ../js/ui/status/network.js:246
+#: ../js/ui/status/location.js:155 ../js/ui/status/network.js:246
 #: ../js/ui/status/network.js:425 ../js/ui/status/network.js:1261
 msgid "Off"
 msgstr "Desactivar"
 
-#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:1235
+#: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1235
 msgid "Turn On"
 msgstr "Activar"
 
