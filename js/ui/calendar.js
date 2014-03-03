@@ -403,6 +403,8 @@ const Calendar = new Lang.Class({
         // Start off with the current date
         this._selectedDate = new Date();
 
+        this._shouldDateGrabFocus = false;
+
         this.actor = new St.Table({ homogeneous: false,
                                     style_class: 'calendar',
                                     reactive: true });
@@ -608,7 +610,9 @@ const Calendar = new Lang.Class({
 
             button._date = new Date(iter);
             button.connect('clicked', Lang.bind(this, function() {
+                this._shouldDateGrabFocus = true;
                 this.setDate(button._date);
+                this._shouldDateGrabFocus = false;
             }));
 
             let hasEvents = this._eventSource.hasEvents(iter);
@@ -674,8 +678,11 @@ const Calendar = new Lang.Class({
             this._rebuildCalendar();
 
         this._buttons.forEach(Lang.bind(this, function(button) {
-            if (_sameDay(button._date, this._selectedDate))
+            if (_sameDay(button._date, this._selectedDate)) {
                 button.add_style_pseudo_class('active');
+                if (this._shouldDateGrabFocus)
+                    button.grab_key_focus();
+            }
             else
                 button.remove_style_pseudo_class('active');
         }));
