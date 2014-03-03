@@ -232,8 +232,8 @@ struct _MetaDisplay
   int	      grab_resize_timeout_id;
 
   /* Keybindings stuff */
-  MetaKeyBinding *key_bindings;
-  int             n_key_bindings;
+  GHashTable     *key_bindings;
+  GHashTable     *key_bindings_index;
   int             min_keycode;
   int             max_keycode;
   KeySym *keymap;
