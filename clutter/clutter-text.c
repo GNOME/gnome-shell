@@ -200,6 +200,7 @@ struct _ClutterTextPrivate
   guint paint_volume_valid      : 1;
   guint show_password_hint      : 1;
   guint password_hint_visible   : 1;
+  guint resolved_direction      : 4;
 };
 
 enum
@@ -549,6 +550,8 @@ clutter_text_create_layout_no_cache (ClutterText       *text,
         }
 
       pango_context_set_base_dir (clutter_actor_get_pango_context (CLUTTER_ACTOR (text)), pango_dir);
+
+      priv->resolved_direction = pango_dir;
 
       pango_layout_set_text (layout, contents, contents_len);
     }
@@ -2334,7 +2337,7 @@ clutter_text_paint (ClutterActor *self)
       actor_width = alloc_width - 2 * TEXT_PADDING;
       text_width  = logical_rect.width / PANGO_SCALE;
 
-      rtl = clutter_actor_get_text_direction (self) == CLUTTER_TEXT_DIRECTION_RTL;
+      rtl = priv->resolved_direction == PANGO_DIRECTION_RTL;
 
       if (actor_width < text_width)
         {
