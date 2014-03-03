@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: "
 "http://bugzilla.gnome.org/enter_bug.cgi?product=clutter\n"
-"POT-Creation-Date: 2014-02-07 01:31+0100\n"
-"PO-Revision-Date: 2014-02-07 01:32+0200\n"
+"POT-Creation-Date: 2014-03-03 21:44+0100\n"
+"PO-Revision-Date: 2014-03-03 21:46+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -1158,21 +1158,37 @@ msgstr "A altura máxima de cada fila"
 msgid "Snap to grid"
 msgstr "Axustar á grella"
 
-#: ../clutter/clutter-gesture-action.c:639
+#: ../clutter/clutter-gesture-action.c:668
 msgid "Number touch points"
 msgstr "Número de puntos táctiles"
 
-#: ../clutter/clutter-gesture-action.c:640
+#: ../clutter/clutter-gesture-action.c:669
 msgid "Number of touch points"
 msgstr "Número de puntos táctiles"
 
-#: ../clutter/clutter-gesture-action.c:655
+#: ../clutter/clutter-gesture-action.c:684
 msgid "Threshold Trigger Edge"
 msgstr "Bordo do limiar de disparo"
 
-#: ../clutter/clutter-gesture-action.c:656
+#: ../clutter/clutter-gesture-action.c:685
 msgid "The trigger edge used by the action"
 msgstr "O bordo de disparo usado pola acción"
+
+#: ../clutter/clutter-gesture-action.c:704
+msgid "Threshold Trigger Horizontal Distance"
+msgstr "Distancia do horizontal do disparador do limiar"
+
+#: ../clutter/clutter-gesture-action.c:705
+msgid "The horizontal trigger distance used by the action"
+msgstr "O bordo do disparador usado pola acción"
+
+#: ../clutter/clutter-gesture-action.c:723
+msgid "Threshold Trigger Vertical Distance"
+msgstr "Distancia horizontal do disparador do humbral"
+
+#: ../clutter/clutter-gesture-action.c:724
+msgid "The vertical trigger distance used by the action"
+msgstr "A distancia vertical do disparador usado pola acción"
 
 #: ../clutter/clutter-grid-layout.c:1223
 msgid "Left attachment"
@@ -1390,35 +1406,35 @@ msgstr "Opcións de Clutter"
 msgid "Show Clutter Options"
 msgstr "Mostrar as opcións de Clutter"
 
-#: ../clutter/clutter-pan-action.c:446
+#: ../clutter/clutter-pan-action.c:455
 msgid "Pan Axis"
 msgstr "Eixo de movemento horizontal"
 
-#: ../clutter/clutter-pan-action.c:447
+#: ../clutter/clutter-pan-action.c:456
 msgid "Constraints the panning to an axis"
 msgstr "Restrinxe o movemento horizontal a un eixo"
 
-#: ../clutter/clutter-pan-action.c:461
+#: ../clutter/clutter-pan-action.c:470
 msgid "Interpolate"
 msgstr "Interpolar"
 
-#: ../clutter/clutter-pan-action.c:462
+#: ../clutter/clutter-pan-action.c:471
 msgid "Whether interpolated events emission is enabled."
 msgstr "Indica se a emisión de eventos interpolados está activada."
 
-#: ../clutter/clutter-pan-action.c:478
+#: ../clutter/clutter-pan-action.c:487
 msgid "Deceleration"
 msgstr "Deceleración"
 
-#: ../clutter/clutter-pan-action.c:479
+#: ../clutter/clutter-pan-action.c:488
 msgid "Rate at which the interpolated panning will decelerate in"
 msgstr "Taxa á que o movemento horizontal interpolado decrecerá"
 
-#: ../clutter/clutter-pan-action.c:496
+#: ../clutter/clutter-pan-action.c:505
 msgid "Initial acceleration factor"
 msgstr "Factor inicial de aceleración"
 
-#: ../clutter/clutter-pan-action.c:497
+#: ../clutter/clutter-pan-action.c:506
 msgid "Factor applied to the momentum when starting the interpolated phase"
 msgstr "Factor aplicado ao momento ao iniciar a fase de interpolación"
 
@@ -2042,11 +2058,11 @@ msgstr "Retirar ao completar"
 msgid "Detach the transition when completed"
 msgstr "Desacoplar a transición ao completala"
 
-#: ../clutter/clutter-zoom-action.c:355
+#: ../clutter/clutter-zoom-action.c:365
 msgid "Zoom Axis"
 msgstr "Ampliar eixo"
 
-#: ../clutter/clutter-zoom-action.c:356
+#: ../clutter/clutter-zoom-action.c:366
 msgid "Constraints the zoom to an axis"
 msgstr "Restrinxe o ampliación a un eixo"
 
@@ -2677,22 +2693,6 @@ msgstr "Non se admiten as texturas YUV"
 msgid "YUV2 textues are not supported"
 msgstr "Non se admiten as texturas YUV2"
 
-#: ../clutter/evdev/clutter-input-device-evdev.c:154
-msgid "sysfs Path"
-msgstr "Ruta a «sysfs»"
-
-#: ../clutter/evdev/clutter-input-device-evdev.c:155
-msgid "Path of the device in sysfs"
-msgstr "Ruta ao dispositivo en «sysfs»"
-
-#: ../clutter/evdev/clutter-input-device-evdev.c:170
-msgid "Device Path"
-msgstr "Ruta ao dispositivo"
-
-#: ../clutter/evdev/clutter-input-device-evdev.c:171
-msgid "Path of the device node"
-msgstr "Ruta ao nodo do dispositivo"
-
 #: ../clutter/gdk/clutter-backend-gdk.c:289
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
@@ -2843,6 +2843,18 @@ msgstr "Redireccionar substituír a xanela"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:636
 msgid "If this is an override-redirect window"
 msgstr "De ser unha substitución-redirección da xanela"
+
+#~ msgid "sysfs Path"
+#~ msgstr "Ruta a «sysfs»"
+
+#~ msgid "Path of the device in sysfs"
+#~ msgstr "Ruta ao dispositivo en «sysfs»"
+
+#~ msgid "Device Path"
+#~ msgstr "Ruta ao dispositivo"
+
+#~ msgid "Path of the device node"
+#~ msgstr "Ruta ao nodo do dispositivo"
 
 #~ msgid "Easing Delay"
 #~ msgstr "Retardo da desaceleración"
