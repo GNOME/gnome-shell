@@ -1,7 +1,9 @@
 EXTRA_DIST = \
 	cogl.sln		\
-	cogl_sdl.sln		\
-	cogl.vsprops	\
+	cogl-version-paths.vsprops	\
+	cogl-build-defines.vsprops	\
+	cogl-gen-srcs.vsprops	\
+	cogl-install.vsprops	\
 	cogl.vcproj		\
 	cogl.vcprojin		\
 	cogl-path.vcproj	\

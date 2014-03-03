@@ -22,7 +22,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\cogl.vsprops"
+			InheritedPropertySheets=".\cogl-build-defines.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -51,7 +51,7 @@
 		<Configuration
 			Name="Debug|x64"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\cogl.vsprops"
+			InheritedPropertySheets=".\cogl-build-defines.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -83,7 +83,7 @@
 		<Configuration
 			Name="Release|Win32"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\cogl.vsprops"
+			InheritedPropertySheets=".\cogl-build-defines.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -115,7 +115,7 @@
 		<Configuration
 			Name="Release|x64"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\cogl.vsprops"
+			InheritedPropertySheets=".\cogl-build-defines.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>

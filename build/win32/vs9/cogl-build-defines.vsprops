@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="coglbuilddefinesprops"
+	OutputDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin"
+	IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\$(ProjectName)"
+	InheritedPropertySheets=".\cogl-version-paths.vsprops"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		AdditionalIncludeDirectories="..\..\..;..\..\..\cogl;..\..\..\cogl\winsys;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include"
+		PreprocessorDefinitions="G_DISABLE_SINGLE_INCLUDES"
+		ForcedIncludeFiles="msvc_recommended_pragmas.h"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		AdditionalDependencies="glib-2.0.lib gobject-2.0.lib"
+		AdditionalLibraryDirectories="$(GlibEtcInstallRoot)\lib"
+	/>
+	<UserMacro
+		Name="BaseBuildDefines"
+		Value="_WIN32_WINNT=0x0500;COGL_ENABLE_DEBUG"
+	/>
+	<UserMacro
+		Name="LibBuildDefines"
+		Value="HAVE_CONFIG_H;COGL_COMPILATION;$(BaseBuildDefines)"
+	/>
+	<UserMacro
+		Name="ReleaseLibBuildDefines"
+		Value="$(LibBuildDefines);G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS"
+	/>
+	<UserMacro
+		Name="DebugLibBuildDefines"
+		Value="_DEBUG;$(LibBuildDefines);COGL_GL_DEBUG;COGL_OBJECT_DEBUG;COGL_HANDLE_DEBUG"
+	/>
+	<UserMacro
+		Name="CoglBuildDefines"
+		Value="G_LOG_DOMAIN=\&quot;Cogl\&quot;;COGL_HAS_WIN32_SUPPORT;COGL_BUILD_EXP;COGL_GL_LIBNAME=\&quot;\&quot;;COGL_LOCALEDIR=\&quot;/some/random/dir\&quot;"
+	/>
+	<UserMacro
+		Name="CoglPathBuildDefines"
+		Value="G_LOG_DOMAIN=\&quot;CoglPath\&quot;"
+	/>
+	<UserMacro
+		Name="CoglPangoBuildDefines"
+		Value="G_LOG_DOMAIN=\&quot;Cogl-Pango\&quot;"
+	/>
+</VisualStudioPropertySheet>
