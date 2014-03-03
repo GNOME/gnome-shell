@@ -754,6 +754,8 @@ display_get_keybinding (MetaDisplay  *display,
 {
   int i;
 
+  mask = mask & 0xff & ~display->ignored_modifier_mask;
+
   i = display->n_key_bindings - 1;
   while (i >= 0)
     {
@@ -917,7 +919,6 @@ meta_display_get_keybinding_action (MetaDisplay  *display,
   if (keycode == (unsigned int)display->overlay_key_combo.keycode)
     return META_KEYBINDING_ACTION_OVERLAY_KEY;
 
-  mask = mask & 0xff & ~display->ignored_modifier_mask;
   binding = display_get_keybinding (display, keycode, mask);
 
   if (binding)
@@ -1301,7 +1302,6 @@ meta_display_grab_accelerator (MetaDisplay *display,
   guint mask = 0;
   MetaVirtualModifier modifiers = 0;
   GSList *l;
-  int i;
 
   if (!meta_ui_parse_accelerator (accelerator, &keysym, &keycode, &modifiers))
     {
@@ -1318,10 +1318,8 @@ meta_display_grab_accelerator (MetaDisplay *display,
   if (keycode == 0)
     return META_KEYBINDING_ACTION_NONE;
 
-  for (i = 0; i < display->n_key_bindings; i++)
-    if (display->key_bindings[i].keycode == keycode &&
-        display->key_bindings[i].mask == mask)
-      return META_KEYBINDING_ACTION_NONE;
+  if (display_get_keybinding (display, keycode, mask))
+    return META_KEYBINDING_ACTION_NONE;
 
   for (l = display->screens; l; l = l->next)
     {
@@ -1359,9 +1357,9 @@ gboolean
 meta_display_ungrab_accelerator (MetaDisplay *display,
                                  guint        action)
 {
+  MetaKeyBinding *binding;
   MetaKeyGrab *grab;
   char *key;
-  int i;
 
   g_return_val_if_fail (action != META_KEYBINDING_ACTION_NONE, FALSE);
 
@@ -1370,27 +1368,26 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
   if (!grab)
     return FALSE;
 
-  for (i = 0; i < display->n_key_bindings; i++)
-    if (display->key_bindings[i].keysym == grab->combo->keysym &&
-        display->key_bindings[i].keycode == grab->combo->keycode &&
-        display->key_bindings[i].modifiers == grab->combo->modifiers)
-      {
-        GSList *l;
-        for (l = display->screens; l; l = l->next)
-          {
-            MetaScreen *screen = l->data;
-            meta_change_keygrab (display, screen->xroot, FALSE,
-                                 display->key_bindings[i].keysym,
-                                 display->key_bindings[i].keycode,
-                                 display->key_bindings[i].mask);
-          }
+  binding = display_get_keybinding (display,
+                                    grab->combo->keycode,
+                                    grab->combo->modifiers);
+  if (binding)
+    {
+      GSList *l;
+      for (l = display->screens; l; l = l->next)
+        {
+          MetaScreen *screen = l->data;
+          meta_change_keygrab (display, screen->xroot, FALSE,
+                               binding->keysym,
+                               binding->keycode,
+                               binding->mask);
+        }
 
-        display->key_bindings[i].keysym = 0;
-        display->key_bindings[i].keycode = 0;
-        display->key_bindings[i].modifiers = 0;
-        display->key_bindings[i].mask = 0;
-        break;
-      }
+      binding->keysym = 0;
+      binding->keycode = 0;
+      binding->modifiers = 0;
+      binding->mask = 0;
+    }
 
   g_hash_table_remove (external_grabs, key);
   g_free (key);
@@ -1673,7 +1670,7 @@ process_event (MetaKeyBinding       *bindings,
                XIDeviceEvent        *event,
                gboolean              on_window)
 {
-  int i;
+  MetaKeyBinding *binding;
 
   /* we used to have release-based bindings but no longer. */
   if (event->evtype == XI_KeyRelease)
@@ -1683,46 +1680,43 @@ process_event (MetaKeyBinding       *bindings,
    * TODO: This would be better done with a hash table;
    * it doesn't suit to use O(n) for such a common operation.
    */
-  for (i=0; i<n_bindings; i++)
-    {
-      MetaKeyHandler *handler = bindings[i].handler;
+  binding = display_get_keybinding (display,
+                                    event->detail,
+                                    event->mods.effective);
+  if (!binding ||
+      (!on_window && binding->flags & META_KEY_BINDING_PER_WINDOW) ||
+      meta_compositor_filter_keybinding (display->compositor, screen, binding))
+    goto not_found;
 
-      if ((!on_window && handler->flags & META_KEY_BINDING_PER_WINDOW) ||
-          bindings[i].keycode != event->detail ||
-          ((event->mods.effective & 0xff & ~(display->ignored_modifier_mask)) !=
-           bindings[i].mask) ||
-          meta_compositor_filter_keybinding (display->compositor, screen, &bindings[i]))
-        continue;
+  /*
+   * window must be non-NULL for on_window to be true,
+   * and so also window must be non-NULL if we get here and
+   * this is a META_KEY_BINDING_PER_WINDOW binding.
+   */
 
-      /*
-       * window must be non-NULL for on_window to be true,
-       * and so also window must be non-NULL if we get here and
-       * this is a META_KEY_BINDING_PER_WINDOW binding.
-       */
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Binding keycode 0x%x mask 0x%x matches event 0x%x state 0x%x\n",
+              binding->keycode, binding->mask,
+              event->detail, event->mods.effective);
 
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Binding keycode 0x%x mask 0x%x matches event 0x%x state 0x%x\n",
-                  bindings[i].keycode, bindings[i].mask,
-                  event->detail, event->mods.effective);
+  if (binding->handler == NULL)
+    meta_bug ("Binding %s has no handler\n", binding->name);
+  else
+    meta_topic (META_DEBUG_KEYBINDINGS,
+                "Running handler for %s\n",
+                binding->name);
 
-      if (handler == NULL)
-        meta_bug ("Binding %s has no handler\n", bindings[i].name);
-      else
-        meta_topic (META_DEBUG_KEYBINDINGS,
-                    "Running handler for %s\n",
-                    bindings[i].name);
+  /* Global keybindings count as a let-the-terminal-lose-focus
+   * due to new window mapping until the user starts
+   * interacting with the terminal again.
+   */
+  display->allow_terminal_deactivation = TRUE;
 
-      /* Global keybindings count as a let-the-terminal-lose-focus
-       * due to new window mapping until the user starts
-       * interacting with the terminal again.
-       */
-      display->allow_terminal_deactivation = TRUE;
+  invoke_handler (display, screen, binding->handler, window, event, binding);
 
-      invoke_handler (display, screen, handler, window, event, &bindings[i]);
+  return TRUE;
 
-      return TRUE;
-    }
-
+ not_found:
   meta_topic (META_DEBUG_KEYBINDINGS,
               "No handler found for this event in this binding table\n");
   return FALSE;
