@@ -55,7 +55,7 @@ mkdir $(CopyDir)\share\cogl-$(ApiVersion)\examples-data
 copy ..\..\..\examples\*.jpg $(CopyDir)\share\cogl-$(ApiVersion)\examples-data
 
 
-mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl\deprecated
 
 copy ..\..\..\cogl\cogl-object.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
@@ -79,15 +79,11 @@ copy ..\..\..\cogl\cogl-euler.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-fence.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
-copy ..\..\..\cogl\cogl-fixed.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
-
 copy ..\..\..\cogl\cogl-frame-info.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-glib-source.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-macros.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
-
-copy ..\..\..\cogl\cogl-material-compat.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-pipeline.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
@@ -117,8 +113,6 @@ copy ..\..\..\cogl\cogl-poll.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-quaternion.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
-copy ..\..\..\cogl\cogl-shader.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
-
 copy ..\..\..\cogl\cogl-snippet.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
@@ -139,8 +133,6 @@ copy ..\..\..\cogl\cogl-texture-3d.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-types.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
-copy ..\..\..\cogl\cogl-vertex-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
-
 copy ..\..\..\cogl\cogl-index-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-indices.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
@@ -149,11 +141,7 @@ copy ..\..\..\cogl\cogl-attribute.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-primitive.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
-copy ..\..\..\cogl\cogl-clip-state.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
-
 copy ..\..\..\cogl\cogl-framebuffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
-
-copy ..\..\..\cogl\cogl-clutter.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
@@ -178,6 +166,27 @@ copy ..\..\..\cogl\cogl-win32-renderer.h $(CopyDir)\include\cogl-$(ApiVersion)\c
 copy ..\..\..\cogl\cogl1-context.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl2-experimental.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl
+
+
+copy ..\..\..\cogl\deprecated\cogl-clip-state.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl\deprecated
+
+copy ..\..\..\cogl\deprecated\cogl-fixed.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl\deprecated
+
+copy ..\..\..\cogl\deprecated\cogl-material-compat.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl\deprecated
+
+copy ..\..\..\cogl\deprecated\cogl-vertex-buffer.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl\deprecated
+
+copy ..\..\..\cogl\deprecated\cogl-shader.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl\deprecated
+
+copy ..\..\..\cogl\deprecated\cogl-clutter.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl\deprecated
+
+copy ..\..\..\cogl\deprecated\cogl-type-casts.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl\deprecated
+
+copy ..\..\..\cogl\deprecated\cogl-framebuffer-deprecated.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl\deprecated
+
+copy ..\..\..\cogl\deprecated\cogl-texture-deprecated.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl\deprecated
+
+copy ..\..\..\cogl\deprecated\cogl-auto-texture.h $(CopyDir)\include\cogl-$(ApiVersion)\cogl\deprecated
 
 
 mkdir $(CopyDir)\include\cogl-$(ApiVersion)\cogl-pango
