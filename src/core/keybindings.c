@@ -1354,6 +1354,7 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
   MetaKeyBinding *binding;
   MetaKeyGrab *grab;
   char *key;
+  guint mask = 0;
 
   g_return_val_if_fail (action != META_KEYBINDING_ACTION_NONE, FALSE);
 
@@ -1362,9 +1363,9 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
   if (!grab)
     return FALSE;
 
-  binding = display_get_keybinding (display,
-                                    grab->combo->keycode,
-                                    grab->combo->modifiers);
+  meta_display_devirtualize_modifiers (display, grab->combo->modifiers, &mask);
+
+  binding = display_get_keybinding (display, grab->combo->keycode, mask);
   if (binding)
     {
       guint32 index_key;
