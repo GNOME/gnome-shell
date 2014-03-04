@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-02 17:21+0100\n"
-"PO-Revision-Date: 2014-03-02 17:22+0100\n"
+"POT-Creation-Date: 2014-03-04 18:14+0100\n"
+"PO-Revision-Date: 2014-03-04 18:15+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -325,7 +325,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:883
+#: ../js/ui/status/network.js:873
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -619,8 +619,8 @@ msgstr "Hasło:"
 msgid "Type again:"
 msgstr "Proszę wpisać ponownie:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:250
-#: ../js/ui/status/network.js:327 ../js/ui/status/network.js:886
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:240
+#: ../js/ui/status/network.js:317 ../js/ui/status/network.js:876
 msgid "Connect"
 msgstr "Połącz"
 
@@ -1195,7 +1195,7 @@ msgstr "Włączone"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:560
+#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:550
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Wyłączone"
@@ -1423,8 +1423,8 @@ msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:59
 #: ../js/ui/status/location.js:159 ../js/ui/status/network.js:151
-#: ../js/ui/status/network.js:328 ../js/ui/status/network.js:1235
-#: ../js/ui/status/network.js:1346 ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/network.js:318 ../js/ui/status/network.js:1225
+#: ../js/ui/status/network.js:1336 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "Wyłącz"
@@ -1441,7 +1441,7 @@ msgstr[0] "%d połączone urządzenie"
 msgstr[1] "%d połączone urządzenia"
 msgstr[2] "%d połączonych urządzeń"
 
-#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1263
+#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1253
 msgid "Not Connected"
 msgstr "Nie połączono"
 
@@ -1462,12 +1462,12 @@ msgstr "Położenie"
 msgid "On"
 msgstr "Włączone"
 
-#: ../js/ui/status/location.js:155 ../js/ui/status/network.js:246
-#: ../js/ui/status/network.js:425 ../js/ui/status/network.js:1261
+#: ../js/ui/status/location.js:155 ../js/ui/status/network.js:415
+#: ../js/ui/status/network.js:1251 ../js/ui/status/network.js:1455
 msgid "Off"
 msgstr "Wyłączone"
 
-#: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1235
+#: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1225
 msgid "Turn On"
 msgstr "Włącz"
 
@@ -1475,122 +1475,126 @@ msgstr "Włącz"
 msgid "<unknown>"
 msgstr "<nieznane>"
 
+#: ../js/ui/status/network.js:417
+msgid "Connected"
+msgstr "Połączono"
+
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:431
+#: ../js/ui/status/network.js:421
 msgid "unmanaged"
 msgstr "niezarządzane"
 
-#: ../js/ui/status/network.js:433
+#: ../js/ui/status/network.js:423
 msgid "disconnecting..."
 msgstr "rozłączanie…"
 
-#: ../js/ui/status/network.js:439 ../js/ui/status/network.js:1363
+#: ../js/ui/status/network.js:429 ../js/ui/status/network.js:1353
 msgid "connecting..."
 msgstr "łączenie…"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:442 ../js/ui/status/network.js:1366
+#: ../js/ui/status/network.js:432 ../js/ui/status/network.js:1356
 msgid "authentication required"
 msgstr "wymagane jest uwierzytelnienie"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:450
+#: ../js/ui/status/network.js:440
 msgid "firmware missing"
 msgstr "brak oprogramowania sprzętowego"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:454
+#: ../js/ui/status/network.js:444
 msgid "unavailable"
 msgstr "niedostępne"
 
-#: ../js/ui/status/network.js:456 ../js/ui/status/network.js:1368
+#: ../js/ui/status/network.js:446 ../js/ui/status/network.js:1358
 msgid "connection failed"
 msgstr "połączenie się nie powiodło"
 
-#: ../js/ui/status/network.js:472
+#: ../js/ui/status/network.js:462
 msgid "Wired Settings"
 msgstr "Ustawienia sieci przewodowej"
 
-#: ../js/ui/status/network.js:514 ../js/ui/status/network.js:592
+#: ../js/ui/status/network.js:504 ../js/ui/status/network.js:582
 msgid "Mobile Broadband Settings"
 msgstr "Ustawienia sieci komórkowej"
 
-#: ../js/ui/status/network.js:556 ../js/ui/status/network.js:1259
+#: ../js/ui/status/network.js:546 ../js/ui/status/network.js:1249
 msgid "Hardware Disabled"
 msgstr "Sprzęt jest wyłączony"
 
-#: ../js/ui/status/network.js:600
+#: ../js/ui/status/network.js:590
 msgid "Use as Internet connection"
 msgstr "Użyj jako połączenie internetowe"
 
-#: ../js/ui/status/network.js:781
+#: ../js/ui/status/network.js:771
 msgid "Airplane Mode is On"
 msgstr "Tryb samolotowy jest włączony"
 
-#: ../js/ui/status/network.js:782
+#: ../js/ui/status/network.js:772
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Sieć Wi-Fi jest wyłączona, kiedy tryb samolotowy jest włączony."
 
-#: ../js/ui/status/network.js:783
+#: ../js/ui/status/network.js:773
 msgid "Turn Off Airplane Mode"
 msgstr "Wyłącz tryb samolotowy"
 
-#: ../js/ui/status/network.js:792
+#: ../js/ui/status/network.js:782
 msgid "Wi-Fi is Off"
 msgstr "Sieć Wi-Fi jest wyłączona"
 
-#: ../js/ui/status/network.js:793
+#: ../js/ui/status/network.js:783
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Wi-Fi musi być włączone, aby połączyć z siecią."
 
-#: ../js/ui/status/network.js:794
+#: ../js/ui/status/network.js:784
 msgid "Turn On Wi-Fi"
 msgstr "Włącz sieć Wi-Fi"
 
-#: ../js/ui/status/network.js:819
+#: ../js/ui/status/network.js:809
 msgid "Wi-Fi Networks"
 msgstr "Sieci Wi-Fi"
 
-#: ../js/ui/status/network.js:821
+#: ../js/ui/status/network.js:811
 msgid "Select a network"
 msgstr "Wybór sieci"
 
-#: ../js/ui/status/network.js:850
+#: ../js/ui/status/network.js:840
 msgid "No Networks"
 msgstr "Brak sieci"
 
-#: ../js/ui/status/network.js:871 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:861 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
 msgstr "Należy użyć przełącznika sprzętowego, aby wyłączyć"
 
-#: ../js/ui/status/network.js:1141
+#: ../js/ui/status/network.js:1131
 msgid "Select Network"
 msgstr "Wybierz sieć"
 
-#: ../js/ui/status/network.js:1147
+#: ../js/ui/status/network.js:1137
 msgid "Wi-Fi Settings"
 msgstr "Ustawienia sieci Wi-Fi"
 
-#: ../js/ui/status/network.js:1252
+#: ../js/ui/status/network.js:1242
 msgid "Hotspot Active"
 msgstr "Hotspot jest aktywny"
 
-#: ../js/ui/status/network.js:1255
+#: ../js/ui/status/network.js:1245
 msgid "Connecting"
 msgstr "Łączenie"
 
-#: ../js/ui/status/network.js:1434 ../js/ui/status/rfkill.js:88
+#: ../js/ui/status/network.js:1424 ../js/ui/status/rfkill.js:88
 msgid "Network Settings"
 msgstr "Ustawienia sieci"
 
-#: ../js/ui/status/network.js:1436
+#: ../js/ui/status/network.js:1426
 msgid "VPN Settings"
 msgstr "Ustawienia sieci VPN"
 
-#: ../js/ui/status/network.js:1455
+#: ../js/ui/status/network.js:1445
 msgid "VPN"
 msgstr "VPN"
 
