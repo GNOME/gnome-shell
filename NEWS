@@ -1,3 +1,43 @@
+Clutter 1.17.6                                                       2014-03-03
+===============================================================================
+
+  • List of changes since Clutter 1.17.4
+
+    - Use libinput instead of libevdev
+    The evdev input backend is now based on libinput instead of directly
+    using the evdev API; this allows for shared input behaviour with
+    different toolkits.
+
+    - Improvements in the X11 input handling
+    Remove the chance of input devices going out of sync; avoid excessive
+    round trips when asking for the client pointer; retrieve the text
+    direction for the current keymap.
+
+    - Improve RTL handling in ClutterText
+    Try to use the correct text direction based on the contents, keymap,
+    and actor's direction instead of just the latter.
+
+    - Translation updates
+    Brazilian Portuguese, Lithuanian, Czech, Hungarian, Serbian, Polish,
+    Galician.
+
+  • List of bugs fixed
+
+    #
+    #724788 - stage-cogl: Fix buffer_age code path
+    #724971 - Avoid stale ClutterInputDevice pointers in the device list
+    #720566 - [RFC] evdev: Port evdev input backend to libinput
+    #725102 - Patches to rework the evdev backend's keymap handling
+    #725103 - evdev: Set the initial core pointer coordinates to a sane value
+    #705779 - The text in the search-entry isn't aligned to right in RTL text
+    #725561 - DeviceManagerXi2: Cache the client pointer
+
+Many thanks to:
+
+  Rui Matos, Adel Gadllah, Jasper St. Pierre, Aurimas Černius, Balázs Úr,
+  Carlos Garnacho, Fran Diéguez, Jonas Ådahl, Marek Černocký, Piotr Drąg,
+  Rafael Ferreira, Мирослав Николић.
+
 Clutter 1.17.4                                                       2014-02-19
 ===============================================================================
 
