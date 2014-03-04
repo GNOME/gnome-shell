@@ -236,16 +236,6 @@ const NMConnectionSection = new Lang.Class({
         return this.getIndicatorIcon();
     },
 
-    _getStatus: function() {
-        let values = this._connectionItems.values();
-        for (let item of values) {
-            if (item.isActive())
-                return item.getName();
-        }
-
-        return _("Off");
-    },
-
     getConnectLabel: function() {
         return _("Connect");
     },
@@ -424,7 +414,7 @@ const NMConnectionDevice = new Lang.Class({
         case NetworkManager.DeviceState.DISCONNECTED:
             return _("Off");
         case NetworkManager.DeviceState.ACTIVATED:
-            return this.parent();
+            return _("Connected");
         case NetworkManager.DeviceState.UNMANAGED:
             /* Translators: this is for network devices that are physically present but are not
                under NetworkManager's control (and thus cannot be used in the menu) */
@@ -1453,6 +1443,16 @@ const NMVPNSection = new Lang.Class({
 
     _getDescription: function() {
         return _("VPN");
+    },
+
+    _getStatus: function() {
+        let values = this._connectionItems.values();
+        for (let item of values) {
+            if (item.isActive())
+                return item.getName();
+        }
+
+        return _("Off");
     },
 
     _getMenuIcon: function() {
