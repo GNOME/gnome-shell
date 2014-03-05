@@ -1,3 +1,22 @@
+3.11.91
+=======
+* Don't use keysym to match keybindings [Rui; #678001]
+* Fix message tray icons showing up blank (again) [Adel; #725180]
+* Improve keybinding lookups [Rui; #725588]
+* Fix dynamic updates of titlebar style properties [Owen; #725751]
+* Fix positioning of manually positioned windows [Owen; #724049]
+* Misc. bug fixes [Carlos, Giovanni, Florian, Jasper; #724969, #724402, #722266,
+  #725338]
+
+Contributors:
+  Giovanni Campagna, Adel Gadllah, Carlos Garnacho, Rui Matos, Florian Müllner,
+  Jasper St. Pierre
+
+Translations:
+  Aurimas Černius [lt], Milo Casagrande [it], Balázs Úr [hu],
+  Matej Urbančič [sl], Enrico Nicoletto [pt_BR], Yosef Or Boczko [he],
+  Piotr Drąg [pl], Fran Diéguez [gl]
+
 3.11.90
 =======
 * Use correct output property for backlight control [Robert; #723606]
