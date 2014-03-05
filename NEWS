@@ -1,3 +1,22 @@
+3.11.91
+=======
+* Don't use network profile name in menu [Giovanni; #725586]
+* calendar: Make date label clickable to return to current date [Vit; #641366]
+* Misc. bug fixes [Florian, Zeeshan, Adel, Jasper, Dan, Volker; #724813,
+  #724686, #725082, #724870, #724779, #725533]
+
+Contributors:
+  Zeeshan Ali (Khattak), Giovanni Campagna, Piotr Drąg, Adel Gadllah,
+  Florian Müllner, Volker Sobek, Vit Stanislav, Jasper St. Pierre, Dan Williams
+
+Translations:
+  Victor Ibragimov [tg], Aurimas Černius [lt], Dimitris Spingos [el],
+  Andika Triwidada [id], Rafael Ferreira [pt_BR], Daniel Mustieles [es],
+  Baurzhan Muftakhidinov [kk], Marek Černocký [cs], Ihar Hrachyshka [be],
+  eternalhui [zh_CN], Yosef Or Boczko [he], Fran Diéguez [gl],
+  Khaled Hosny [ar], Ville-Pekka Vainio [fi], Piotr Drąg [pl],
+  Kjartan Maraas [nb], Changwoo Ryu [ko]
+
 3.11.90
 =======
 * Stop showing two bluetooth entries [Giovanni; #709353]
