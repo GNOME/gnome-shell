@@ -17,7 +17,7 @@ typedef struct {
   ClutterActor *stage;
 } ClutterTestEnvironment;
 
-static ClutterTestEnvironment *environ = NULL;
+static ClutterTestEnvironment *test_environ = NULL;
 
 /**
  * clutter_test_init:
@@ -32,7 +32,7 @@ void
 clutter_test_init (int    *argc,
                    char ***argv)
 {
-  if (G_UNLIKELY (environ != NULL))
+  if (G_UNLIKELY (test_environ != NULL))
     g_error ("Attempting to initialize the test suite more than once, "
              "aborting...\n");
 
@@ -67,7 +67,7 @@ clutter_test_init (int    *argc,
   g_assert (clutter_init (NULL, NULL) == CLUTTER_INIT_SUCCESS);
 
   /* our global state, accessible from each test unit */
-  environ = g_new0 (ClutterTestEnvironment, 1);
+  test_environ = g_new0 (ClutterTestEnvironment, 1);
 }
 
 /**
@@ -82,18 +82,18 @@ clutter_test_init (int    *argc,
 ClutterActor *
 clutter_test_get_stage (void)
 {
-  g_assert (environ != NULL);
+  g_assert (test_environ != NULL);
 
-  if (environ->stage == NULL)
+  if (test_environ->stage == NULL)
     {
       /* create a stage, and ensure that it goes away at the end */
-      environ->stage = clutter_stage_new ();
-      clutter_actor_set_name (environ->stage, "Test Stage");
-      g_object_add_weak_pointer (G_OBJECT (environ->stage),
-                                 (gpointer *) &environ->stage);
+      test_environ->stage = clutter_stage_new ();
+      clutter_actor_set_name (test_environ->stage, "Test Stage");
+      g_object_add_weak_pointer (G_OBJECT (test_environ->stage),
+                                 (gpointer *) &test_environ->stage);
     }
 
-  return environ->stage;
+  return test_environ->stage;
 }
 
 typedef struct {
@@ -108,7 +108,7 @@ clutter_test_func_wrapper (gconstpointer data_)
   const ClutterTestData *data = data_;
 
   /* ensure that the previous test state has been cleaned up */
-  g_assert_null (environ->stage);
+  g_assert_null (test_environ->stage);
 
   if (data->test_data != NULL)
     {
@@ -126,10 +126,10 @@ clutter_test_func_wrapper (gconstpointer data_)
   if (data->test_notify != NULL)
     data->test_notify (data->test_data);
 
-  if (environ->stage != NULL)
+  if (test_environ->stage != NULL)
     {
-      clutter_actor_destroy (environ->stage);
-      g_assert_null (environ->stage);
+      clutter_actor_destroy (test_environ->stage);
+      g_assert_null (test_environ->stage);
     }
 }
 
@@ -195,7 +195,7 @@ clutter_test_add_data_full (const char     *test_path,
   g_return_if_fail (test_path != NULL);
   g_return_if_fail (test_func != NULL);
 
-  g_assert (environ != NULL);
+  g_assert (test_environ != NULL);
 
   data = g_new (ClutterTestData, 1);
   data->test_func = test_func;
@@ -245,11 +245,11 @@ clutter_test_run (void)
 {
   int res;
 
-  g_assert (environ != NULL);
+  g_assert (test_environ != NULL);
   
   res = g_test_run ();
 
-  g_free (environ);
+  g_free (test_environ);
 
   return res;
 }
