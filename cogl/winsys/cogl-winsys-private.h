@@ -45,7 +45,7 @@
 #endif
 
 #ifdef COGL_HAS_EGL_SUPPORT
-#include "cogl-egl.h"
+#include "cogl-egl-private.h"
 #endif
 
 #include "cogl-poll.h"
