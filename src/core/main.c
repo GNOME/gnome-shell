@@ -42,7 +42,7 @@
  */
 
 #define _GNU_SOURCE
-#define _SVID_SOURCE /* for putenv() and some signal-related functions */
+#define _XOPEN_SOURCE /* for putenv() and some signal-related functions */
 
 #include <config.h>
 #include <meta/main.h>
