@@ -295,9 +295,12 @@ meta_ui_new (Display *xdisplay,
   g_assert (gdisplay == gdk_display_get_default ());
 
   ui->frames = meta_frames_new (XScreenNumberOfScreen (screen));
-  /* This does not actually show any widget. MetaFrames has been hacked so
-   * that showing it doesn't actually do anything. But we need the flags
-   * set for GTK to deliver events properly. */
+  /* GTK+ needs the frame-sync protocol to work in order to properly
+   * handle style changes. This means that the dummy widget we create
+   * to get the style for title bars actually needs to be mapped
+   * and fully tracked as a MetaWindow. Horrible, but mostly harmless -
+   * the window is a 1x1 overide redirect window positioned offscreen.
+   */
   gtk_widget_show (GTK_WIDGET (ui->frames));
 
   g_object_set_data (G_OBJECT (gdisplay), "meta-ui", ui);
