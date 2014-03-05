@@ -142,20 +142,6 @@ meta_wayland_keyboard_take_keymap (MetaWaylandKeyboard *keyboard,
     xkb_keymap_unref (xkb_info->keymap);
   xkb_info->keymap = keymap;
 
-  xkb_info->shift_mod =
-    xkb_map_mod_get_index (xkb_info->keymap, XKB_MOD_NAME_SHIFT);
-  xkb_info->caps_mod =
-    xkb_map_mod_get_index (xkb_info->keymap, XKB_MOD_NAME_CAPS);
-  xkb_info->ctrl_mod =
-    xkb_map_mod_get_index (xkb_info->keymap, XKB_MOD_NAME_CTRL);
-  xkb_info->alt_mod =
-    xkb_map_mod_get_index (xkb_info->keymap, XKB_MOD_NAME_ALT);
-  xkb_info->mod2_mod = xkb_map_mod_get_index (xkb_info->keymap, "Mod2");
-  xkb_info->mod3_mod = xkb_map_mod_get_index (xkb_info->keymap, "Mod3");
-  xkb_info->super_mod =
-    xkb_map_mod_get_index (xkb_info->keymap, XKB_MOD_NAME_LOGO);
-  xkb_info->mod5_mod = xkb_map_mod_get_index (xkb_info->keymap, "Mod5");
-
   keymap_str = xkb_map_get_as_string (xkb_info->keymap);
   if (keymap_str == NULL)
     {

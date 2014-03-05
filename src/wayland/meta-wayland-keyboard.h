@@ -72,14 +72,6 @@ typedef struct
   int keymap_fd;
   size_t keymap_size;
   char *keymap_area;
-  xkb_mod_index_t shift_mod;
-  xkb_mod_index_t caps_mod;
-  xkb_mod_index_t ctrl_mod;
-  xkb_mod_index_t alt_mod;
-  xkb_mod_index_t mod2_mod;
-  xkb_mod_index_t mod3_mod;
-  xkb_mod_index_t super_mod;
-  xkb_mod_index_t mod5_mod;
 } MetaWaylandXkbInfo;
 
 typedef struct
