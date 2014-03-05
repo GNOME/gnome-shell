@@ -278,7 +278,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
     goto error;
 
   egl_renderer->edpy =
-    eglGetDisplay ((NativeDisplayType) xlib_renderer->xdpy);
+    eglGetDisplay ((EGLNativeDisplayType) xlib_renderer->xdpy);
 
   if (!_cogl_winsys_egl_renderer_connect_common (renderer, error))
     goto error;
@@ -481,7 +481,7 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
   egl_onscreen->egl_surface =
     eglCreateWindowSurface (egl_renderer->edpy,
                             egl_config,
-                            (NativeWindowType) xlib_onscreen->xwin,
+                            (EGLNativeWindowType) xlib_onscreen->xwin,
                             NULL);
 
   return TRUE;
@@ -629,7 +629,7 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
   egl_display->dummy_surface =
     eglCreateWindowSurface (egl_renderer->edpy,
                             egl_display->egl_config,
-                            (NativeWindowType) xlib_display->dummy_xwin,
+                            (EGLNativeWindowType) xlib_display->dummy_xwin,
                             NULL);
 
   if (egl_display->dummy_surface == EGL_NO_SURFACE)

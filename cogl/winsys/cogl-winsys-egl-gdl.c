@@ -137,7 +137,7 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
   egl_display->egl_surface =
     eglCreateWindowSurface (egl_renderer->edpy,
                             egl_display->egl_config,
-                            (NativeWindowType) display->gdl_plane,
+                            (EGLNativeWindowType) display->gdl_plane,
                             NULL);
 
   if (egl_display->egl_surface == EGL_NO_SURFACE)

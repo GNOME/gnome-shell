@@ -53,8 +53,6 @@ G_BEGIN_DECLS
 #include <GLES/egl.h>
 #else
 #include <EGL/egl.h>
-#define NativeDisplayType EGLNativeDisplayType
-#define NativeWindowType EGLNativeWindowType
 #endif
 #endif
 

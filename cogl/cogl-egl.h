@@ -37,9 +37,6 @@
 
 COGL_BEGIN_DECLS
 
-#define NativeDisplayType EGLNativeDisplayType
-#define NativeWindowType EGLNativeWindowType
-
 #ifndef GL_OES_EGL_image
 #define GLeglImageOES void *
 #endif

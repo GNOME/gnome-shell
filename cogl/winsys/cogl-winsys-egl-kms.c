@@ -790,7 +790,7 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
   egl_display->dummy_surface =
     eglCreateWindowSurface (egl_renderer->edpy,
                             egl_display->egl_config,
-                            (NativeWindowType) kms_display->dummy_gbm_surface,
+                            (EGLNativeWindowType) kms_display->dummy_gbm_surface,
                             NULL);
   if (egl_display->dummy_surface == EGL_NO_SURFACE)
     {
@@ -986,7 +986,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   egl_onscreen->egl_surface =
     eglCreateWindowSurface (egl_renderer->edpy,
                             egl_display->egl_config,
-                            (NativeWindowType) kms_onscreen->surface,
+                            (EGLNativeWindowType) kms_onscreen->surface,
                             NULL);
   if (egl_onscreen->egl_surface == EGL_NO_SURFACE)
     {
@@ -1172,7 +1172,7 @@ cogl_kms_display_set_layout (CoglDisplay *display,
       new_egl_surface =
         eglCreateWindowSurface (egl_renderer->edpy,
                                 egl_display->egl_config,
-                                (NativeWindowType) new_surface,
+                                (EGLNativeWindowType) new_surface,
                                 NULL);
       if (new_egl_surface == EGL_NO_SURFACE)
         {
