@@ -59,6 +59,7 @@
 #include "cogl-error-private.h"
 #include "cogl-poll-private.h"
 #include "cogl-version.h"
+#include "cogl-glx.h"
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -2706,4 +2707,12 @@ const CoglWinsysVtable *
 _cogl_winsys_glx_get_vtable (void)
 {
   return &_cogl_winsys_vtable;
+}
+
+GLXContext
+cogl_glx_context_get_glx_context (CoglContext *context)
+{
+  CoglGLXDisplay *glx_display = context->display->winsys;
+
+  return glx_display->glx_context;
 }

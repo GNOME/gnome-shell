@@ -47,6 +47,7 @@
 #include "cogl-onscreen-template-private.h"
 #include "cogl-gles2-context-private.h"
 #include "cogl-error-private.h"
+#include "cogl-egl.h"
 
 #include "cogl-private.h"
 
@@ -860,14 +861,6 @@ _cogl_winsys_onscreen_update_swap_throttled (CoglOnscreen *onscreen)
   _cogl_winsys_onscreen_bind (onscreen);
 }
 
-static EGLDisplay
-_cogl_winsys_context_egl_get_egl_display (CoglContext *context)
-{
-  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
-
-  return egl_renderer->edpy;
-}
-
 static void
 _cogl_winsys_save_context (CoglContext *ctx)
 {
@@ -974,8 +967,6 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .display_destroy = _cogl_winsys_display_destroy,
     .context_init = _cogl_winsys_context_init,
     .context_deinit = _cogl_winsys_context_deinit,
-    .context_egl_get_egl_display =
-      _cogl_winsys_context_egl_get_egl_display,
     .context_create_gles2_context =
       _cogl_winsys_context_create_gles2_context,
     .destroy_gles2_context = _cogl_winsys_destroy_gles2_context,
@@ -1074,3 +1065,19 @@ _cogl_egl_query_wayland_buffer (CoglContext *ctx,
                                                  value);
 }
 #endif
+
+EGLDisplay
+cogl_egl_context_get_egl_display (CoglContext *context)
+{
+  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
+
+  return egl_renderer->edpy;
+}
+
+EGLContext
+cogl_egl_context_get_egl_context (CoglContext *context)
+{
+  CoglDisplayEGL *egl_display = context->display->winsys;
+
+  return egl_display->egl_context;
+}

@@ -145,11 +145,6 @@ typedef struct _CoglWinsysVtable
   int
   (*onscreen_get_buffer_age) (CoglOnscreen *onscreen);
 
-#ifdef COGL_HAS_EGL_SUPPORT
-  EGLDisplay
-  (*context_egl_get_egl_display) (CoglContext *context);
-#endif
-
 #ifdef COGL_HAS_XLIB_SUPPORT
   XVisualInfo *
   (*xlib_get_visual_info) (void);

@@ -639,19 +639,6 @@ cogl_context_get_renderer (CoglContext *context)
   return context->display->renderer;
 }
 
-#ifdef COGL_HAS_EGL_SUPPORT
-EGLDisplay
-cogl_egl_context_get_egl_display (CoglContext *context)
-{
-  const CoglWinsysVtable *winsys = _cogl_context_get_winsys (context);
-
-  /* This should only be called for EGL contexts */
-  _COGL_RETURN_VAL_IF_FAIL (winsys->context_egl_get_egl_display != NULL, NULL);
-
-  return winsys->context_egl_get_egl_display (context);
-}
-#endif
-
 CoglBool
 _cogl_context_update_features (CoglContext *context,
                                CoglError **error)

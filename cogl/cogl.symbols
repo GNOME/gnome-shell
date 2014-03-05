@@ -164,6 +164,11 @@ cogl_color_unpremultiply
 
 #ifdef COGL_HAS_EGL_SUPPORT
 cogl_egl_context_get_egl_display
+cogl_egl_context_get_egl_context
+#endif
+
+#ifdef COGL_HAS_GLX_SUPPORT
+cogl_glx_context_get_glx_context
 #endif
 
 cogl_context_get_display

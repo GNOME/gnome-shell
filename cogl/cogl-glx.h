@@ -1,9 +1,9 @@
 /*
  * Cogl
  *
- * A Low Level GPU Graphics and Utilities API
+ * A Low-Level GPU Graphics and Utilities API
  *
- * Copyright (C) 2007,2008,2009,2010 Intel Corporation.
+ * Copyright (C) 2014 Intel Corporation.
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -28,8 +28,8 @@
  *
  */
 
-#ifndef __COGL_EGL_H__
-#define __COGL_EGL_H__
+#ifndef __COGL_GLX_H__
+#define __COGL_GLX_H__
 
 /* NB: this is a top-level header that can be included directly but we
  * want to be careful not to define __COGL_H_INSIDE__ when this is
@@ -40,9 +40,9 @@
 #ifndef COGL_COMPILATION
 
 /* Note: When building Cogl .gir we explicitly define
- * __COGL_EGL_H_INSIDE__ */
-#ifndef __COGL_EGL_H_INSIDE__
-#define __COGL_EGL_H_INSIDE__
+ * __COGL_GLX_H_INSIDE__ */
+#ifndef __COGL_GLX_H_INSIDE__
+#define __COGL_GLX_H_INSIDE__
 #endif
 
 /* Note: When building Cogl .gir we explicitly define
@@ -55,49 +55,26 @@
 #endif /* COGL_COMPILATION */
 
 
-#include <cogl/cogl-egl-defines.h>
+#include <GL/glx.h>
 #include <cogl/cogl-types.h>
 
 COGL_BEGIN_DECLS
 
 /**
- * cogl_egl_context_get_egl_display:
+ * cogl_glx_context_get_glx_context:
  * @context: A #CoglContext pointer
  *
  * If you have done a runtime check to determine that Cogl is using
- * EGL internally then this API can be used to retrieve the EGLDisplay
+ * GLX internally then this API can be used to retrieve the GLXContext
  * handle that was setup internally. The result is undefined if Cogl
- * is not using EGL.
+ * is not using GLX.
  *
- * Note: The current window system backend can be checked using
- * cogl_renderer_get_winsys_id().
- *
- * Return value: The internally setup EGLDisplay handle.
- * Since: 1.8
- * Stability: unstable
- */
-EGLDisplay
-cogl_egl_context_get_egl_display (CoglContext *context);
-
-/**
- * cogl_egl_context_get_egl_context:
- * @context: A #CoglContext pointer
- *
- * If you have done a runtime check to determine that Cogl is using
- * EGL internally then this API can be used to retrieve the EGLContext
- * handle that was setup internally. The result is undefined if Cogl
- * is not using EGL.
- *
- * Note: The current window system backend can be checked using
- * cogl_renderer_get_winsys_id().
- *
- * Return value: The internally setup EGLDisplay handle.
+ * Return value: The internally setup GLXContext handle.
  * Since: 1.18
  * Stability: unstable
  */
-EGLContext
-cogl_egl_context_get_egl_context (CoglContext *context);
-
+GLXContext
+cogl_glx_context_get_glx_context (CoglContext *context);
 
 COGL_END_DECLS
 
@@ -111,8 +88,8 @@ COGL_END_DECLS
  */
 #ifdef __COGL_MUST_UNDEF_COGL_H_INSIDE__
 #undef __COGL_H_INSIDE__
-#undef __COGL_EGL_H_INSIDE__
+#undef __COGL_GLX_H_INSIDE__
 #undef __COGL_MUST_UNDEF_COGL_H_INSIDE__
 #endif
 
-#endif /* __COGL_EGL_H__ */
+#endif /* __COGL_GLX_H__ */
