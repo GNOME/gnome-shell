@@ -491,12 +491,17 @@ place_window_if_needed(MetaWindow     *window,
       !window->minimized &&
       !window->fullscreen)
     {
+      MetaRectangle orig_rect;
       MetaRectangle placed_rect;
       MetaWorkspace *cur_workspace;
       const MetaMonitorInfo *monitor_info;
 
       meta_window_get_frame_rect (window, &placed_rect);
-      meta_window_place (window, info->orig.x, info->orig.y,
+
+      orig_rect = info->orig;
+      extend_by_frame (window, &orig_rect);
+
+      meta_window_place (window, orig_rect.x, orig_rect.y,
                          &placed_rect.x, &placed_rect.y);
       did_placement = TRUE;
 
