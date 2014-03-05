@@ -2,131 +2,9 @@
 <VisualStudioPropertySheet
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="clutterprops"
-	OutputDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin"
-	IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\$(ProjectName)"
+	Name="clutterinstallprops"
+	InheritedPropertySheets=".\clutter-build-defines.vsprops"
 	>
-	<Tool
-		Name="VCCLCompilerTool"
-		AdditionalIncludeDirectories="..\..\..;..\..\..\clutter;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\atk-1.0;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\cogl-1.0;$(GlibEtcInstallRoot)\include\json-glib-1.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include"
-		PreprocessorDefinitions="G_DISABLE_SINGLE_INCLUDES"
-		ForcedIncludeFiles="msvc_recommended_pragmas.h"
-	/>
-	<Tool
-		Name="VCLinkerTool"
-		AdditionalDependencies="cogl-pango-1.0.lib cogl-1.0.lib glib-2.0.lib gobject-2.0.lib"
-		AdditionalLibraryDirectories="$(GlibEtcInstallRoot)\lib"
-	/>
-	<UserMacro
-		Name="VSVer"
-		Value="9"
-	/>
-	<UserMacro
-		Name="GlibEtcInstallRoot"
-		Value="$(SolutionDir)\..\..\..\..\vs$(VSVer)\$(PlatformName)"
-	/>
-	<UserMacro
-		Name="CopyDir"
-		Value="$(GlibEtcInstallRoot)"
-	/>
-	<UserMacro
-		Name="DefDir"
-		Value="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\$(ProjectName)"
-	/>
-	<UserMacro
-		Name="ApiVersion"
-		Value="1.0"
-	/>
-	<UserMacro
-		Name="BaseWinBuildDef"
-		Value="_WIN32_WINNT=0x0500"
-	/>
-	<UserMacro
-		Name="BaseBuildDef"
-		Value="$(BaseWinBuildDef)"
-	/>
-	<UserMacro
-		Name="LibBuildDefines"
-		Value="HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API;COGL_HAS_WIN32_SUPPORT;CLUTTER_ENABLE_EXPERIMENTAL_API"
-	/>
-	<UserMacro
-		Name="DebugLibBuildDefines"
-		Value="$(LibBuildDefines);_DEBUG;CLUTTER_ENABLE_DEBUG"
-	/>
-	<UserMacro
-		Name="ReleaseLibBuildDefines"
-		Value="$(LibBuildDefines);G_DISABLE_ASSERT;G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS"
-	/>
-	<UserMacro
-		Name="ClutterBuildDefines"
-		Value="$(BaseBuildDef);G_LOG_DOMAIN=\&quot;Clutter\&quot;;CLUTTER_LOCALEDIR=\&quot;../share/locale\&quot;;CLUTTER_SYSCONFDIR=\&quot;../etc\&quot;;COGL_DISABLE_DEPRECATION_WARNINGS"
-	/>
-	<UserMacro
-		Name="ClutterDisableDeprecationWarnings"
-		Value="CLUTTER_DISABLE_DEPRECATION_WARNINGS;GLIB_DISABLE_DEPRECATION_WARNINGS"
-	/>
-	<UserMacro
-		Name="CallyTestDefs"
-		Value="$(BaseWinBuildDef);PREFIXDIR=\&quot;/some/dummy/dir\&quot;;$(ClutterDisableDeprecationWarnings)"
-	/>
-	<UserMacro
-		Name="TestProgDef"
-		Value="$(BaseBuildDef);TESTS_DATADIR=\&quot;../share/clutter-$(ApiVersion)/data\&quot;"
-	/>
-	<UserMacro
-		Name="TestPerfProgDef"
-		Value="$(BaseBuildDef);TESTS_DATA_DIR=\&quot;../share/clutter-$(ApiVersion)/data\&quot;;$(ClutterDisableDeprecationWarnings)"
-	/>
-	<UserMacro
-		Name="DoConfigs"
-		Value="
-if exist ..\..\..\clutter\config.h goto DONE_CONFIG_H&#x0D;&#x0A;
-copy ..\..\..\clutter\config.h.win32 ..\..\..\clutter\config.h&#x0D;&#x0A;
-
-:DONE_CONFIG_H&#x0D;&#x0A;
-if &quot;$(ConfigurationName)&quot; == &quot;Release&quot; goto DO_CLUTTER_CONFIG_WIN32&#x0D;&#x0A;
-if &quot;$(ConfigurationName)&quot; == &quot;Debug&quot; goto DO_CLUTTER_CONFIG_WIN32&#x0D;&#x0A;
-
-if exist ..\..\..\clutter\clutter.bld.GDK.win32 goto DONE_CLUTTER_CONFIG_H&#x0D;&#x0A;
-if exist clutter.bld.*.win32 del clutter.bld.*.win32&#x0D;&#x0A;
-copy ..\..\..\clutter\clutter-config.h.win32_GDK clutter.bld.GDK.win32&#x0D;&#x0A;
-copy ..\..\..\clutter\clutter-config.h.win32_GDK ..\..\..\clutter\clutter-config.h&#x0D;&#x0A;
-goto DONE_CLUTTER_CONFIG_H&#x0D;&#x0A;
-
-:DO_CLUTTER_CONFIG_WIN32&#x0D;&#x0A;
-if exist ..\..\..\clutter\clutter.bld.win32.win32 goto DONE_CLUTTER_CONFIG_H&#x0D;&#x0A;
-if exist clutter.bld.*.win32 del clutter.bld.*.win32&#x0D;&#x0A;
-copy ..\..\..\clutter\clutter-config.h.win32 clutter.bld.win32.win32&#x0D;&#x0A;
-copy ..\..\..\clutter\clutter-config.h.win32 ..\..\..\clutter\clutter-config.h&#x0D;&#x0A;
-
-:DONE_CLUTTER_CONFIG_H&#x0D;&#x0A;
-			  "
-	/>
-	<UserMacro
-		Name="GenMarshalSrc"
-		Value="
-if exist ..\..\..\clutter\clutter-marshal.h goto DONE_CLUTTER_MARSHAL_H&#x0D;&#x0A;
-cd ..\..\..\clutter&#x0D;&#x0A;
-$(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --header clutter-marshal.list &gt; clutter-marshal.h&#x0D;&#x0A;
-cd ..\build\win32\vs$(VSVer)&#x0D;&#x0A;
-:DONE_CLUTTER_MARSHAL_H&#x0D;&#x0A;
-
-if exist ..\..\..\clutter\clutter-marshal.c goto DONE_CLUTTER_MARSHAL_C&#x0D;&#x0A;
-cd ..\..\..\clutter&#x0D;&#x0A;
-echo #include &quot;clutter-marshal.h&quot; &gt; clutter-marshal.c&#x0D;&#x0A;
-$(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --body clutter-marshal.list &gt;&gt; clutter-marshal.c&#x0D;&#x0A;
-cd ..\build\win32\vs$(VSVer)&#x0D;&#x0A;
-:DONE_CLUTTER_MARSHAL_C&#x0D;&#x0A;
-		       "
-	/>
-	<UserMacro
-		Name="GenEnumsSrc"
-		Value="
-cd ..&#x0D;&#x0A;
-call gen-enums.bat $(GlibEtcInstallRoot)&#x0D;&#x0A;
-cd .\vs$(VSVer)&#x0D;&#x0A;
-"
-	/>
 	<UserMacro
 		Name="ClutterDoInstall"
 		Value="
@@ -136,18 +14,17 @@ mkdir $(CopyDir)\share\clutter-$(ApiVersion)\data&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*.dll $(CopyDir)\bin&#x0D;&#x0A;
 
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*.exe $(CopyDir)\bin&#x0D;&#x0A;
-copy ..\*.bat $(CopyDir)\bin&#x0D;&#x0A;
-copy ..\..\..\tests\data\*.png $(CopyDir)\share\clutter-$(ApiVersion)\data&#x0D;&#x0A;
-copy ..\..\..\tests\data\clutter-1.0.suppressions $(CopyDir)\share\clutter-$(ApiVersion)\data&#x0D;&#x0A;
-copy ..\..\..\tests\data\*.json $(CopyDir)\share\clutter-$(ApiVersion)\data&#x0D;&#x0A;
+copy ..\..\..\tests\interactive\*.png $(CopyDir)\share\clutter-$(ApiVersion)\data&#x0D;&#x0A;
+copy ..\..\..\tests\clutter-1.0.suppressions $(CopyDir)\share\clutter-$(ApiVersion)\data&#x0D;&#x0A;
+copy ..\..\..\tests\interactive\*.json $(CopyDir)\share\clutter-$(ApiVersion)\data&#x0D;&#x0A;
 
 mkdir $(CopyDir)\lib&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*-$(ApiVersion).lib $(CopyDir)\lib&#x0D;&#x0A;
 
-if exist clutter.bld.win32.win32 goto DO_INSTALL_COMMON_HEADERS&#x0D;&#x0A;
+if &quot;$(ConfigurationName)&quot; == &quot;Release&quot; goto DO_INSTALL_COMMON_HEADERS&#x0D;&#x0A;
+if &quot;$(ConfigurationName)&quot; == &quot;Debug&quot; goto DO_INSTALL_COMMON_HEADERS&#x0D;&#x0A;
 
-mkdir $(CopyDir)\include\clutter-$(ApiVersion)\clutter\gdk&#x0D;&#x0A;
-copy ..\..\..\clutter\gdk\clutter-gdk.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\gdk&#x0D;&#x0A;
+$(ClutterDoInstallGDK)
 
 :DO_INSTALL_COMMON_HEADERS&#x0D;&#x0A;
 
@@ -227,8 +104,8 @@ copy ..\..\..\clutter\clutter-stage.h $(CopyDir)\include\clutter-$(ApiVersion)\c
 copy ..\..\..\clutter\clutter-stage-manager.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-stage-window.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-swipe-action.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter&#x0D;&#x0A;
-copy ..\..\..\clutter\clutter-table-layout.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-tap-action.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter&#x0D;&#x0A;
+copy ..\..\..\clutter\clutter-test-utils.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-texture.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-text.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter&#x0D;&#x0A;
 copy ..\..\..\clutter\clutter-text-buffer.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter&#x0D;&#x0A;
@@ -272,6 +149,7 @@ copy ..\..\..\clutter\deprecated\clutter-shader.h $(CopyDir)\include\clutter-$(A
 copy ..\..\..\clutter\deprecated\clutter-stage.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-stage-manager.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-state.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\deprecated&#x0D;&#x0A;
+copy ..\..\..\clutter\deprecated\clutter-table-layout.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-texture.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-timeline.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\deprecated&#x0D;&#x0A;
 copy ..\..\..\clutter\deprecated\clutter-timeout-pool.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\deprecated&#x0D;&#x0A;
@@ -300,45 +178,5 @@ mkdir $(CopyDir)\include\clutter-$(ApiVersion)\clutter\gdk&#x0D;&#x0A;
 
 copy ..\..\..\clutter\gdk\clutter-gdk.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\gdk&#x0D;&#x0A;
 			  "
-	/>
-	<UserMacro
-		Name="GenerateClutterDef"
-		Value="
-		       echo EXPORTS &gt; $(DefDir)\clutter.def&#x0D;&#x0A;
-			   cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; $(DefDir)\clutter.def&#x0D;&#x0A;
-			  "
-	/>
-	<UserMacro
-		Name="GenerateClutterGDKDef"
-		Value="
-		       echo EXPORTS &gt; $(DefDir)\clutter.def&#x0D;&#x0A;
-			   cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_WINDOWING_GDK -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; $(DefDir)\clutter.def&#x0D;&#x0A;
-			  "
-	/>
-	<UserMacro
-		Name="ClutterLibtoolCompatibleDllPrefix"
-		Value="lib"
-	/>
-	<UserMacro
-		Name="ClutterLibtoolCompatibleDllSuffix"
-		Value="-$(ApiVersion)-0"
-	/>
-	<UserMacro
-		Name="ClutterSeparateVSDllPrefix"
-		Value=""
-	/>
-	<UserMacro
-		Name="ClutterSeparateVSDllSuffix"
-		Value="-1-vs$(VSVer)"
-	/>
-	<!-- Change these two to GlibLibtoolCompatibleDllPrefix and
-	GlibLibtoolCompatibleDllSuffix if that is what you want -->
-	<UserMacro
-		Name="ClutterDllPrefix"
-		Value="$(ClutterSeparateVSDllPrefix)"
-	/>
-	<UserMacro
-		Name="ClutterDllSuffix"
-		Value="$(ClutterSeparateVSDllSuffix)"
 	/>
 </VisualStudioPropertySheet>

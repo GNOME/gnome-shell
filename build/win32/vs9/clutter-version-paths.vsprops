@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="clutterversionpathsprops"
+	>
+	<UserMacro
+		Name="VSVer"
+		Value="9"
+	/>
+	<UserMacro
+		Name="GlibEtcInstallRoot"
+		Value="$(SolutionDir)\..\..\..\..\vs$(VSVer)\$(PlatformName)"
+	/>
+	<UserMacro
+		Name="CopyDir"
+		Value="$(GlibEtcInstallRoot)"
+	/>
+	<UserMacro
+		Name="DefDir"
+		Value="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\$(ProjectName)"
+	/>
+	<UserMacro
+		Name="ApiVersion"
+		Value="1.0"
+	/>
+	<UserMacro
+		Name="ClutterLibtoolCompatibleDllPrefix"
+		Value="lib"
+	/>
+	<UserMacro
+		Name="ClutterLibtoolCompatibleDllSuffix"
+		Value="-$(ApiVersion)-0"
+	/>
+	<UserMacro
+		Name="ClutterSeparateVSDllPrefix"
+		Value=""
+	/>
+	<UserMacro
+		Name="ClutterSeparateVSDllSuffix"
+		Value="-1-vs$(VSVer)"
+	/>
+	<!-- Change these two to ClutterLibtoolCompatibleDllPrefix and
+	ClutterLibtoolCompatibleDllSuffix if using LibTool-style DLL names
+	is desired -->
+	<UserMacro
+		Name="ClutterDllPrefix"
+		Value="$(ClutterSeparateVSDllPrefix)"
+	/>
+	<UserMacro
+		Name="ClutterDllSuffix"
+		Value="$(ClutterSeparateVSDllSuffix)"
+	/>
+</VisualStudioPropertySheet>

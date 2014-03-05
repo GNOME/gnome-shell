@@ -20,7 +20,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			InheritedPropertySheets=".\clutter.vsprops"
+			InheritedPropertySheets=".\clutter-install.vsprops"
 			OutputDirectory="$(GlibEtcInstallRoot)"
 			ConfigurationType="10"
 			CharacterSet="2"
@@ -32,7 +32,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			InheritedPropertySheets=".\clutter.vsprops"
+			InheritedPropertySheets=".\clutter-install.vsprops"
 			OutputDirectory="$(GlibEtcInstallRoot)"
 			ConfigurationType="10"
 			CharacterSet="2"
@@ -45,7 +45,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			InheritedPropertySheets=".\clutter.vsprops"
+			InheritedPropertySheets=".\clutter-install.vsprops"
 			OutputDirectory="$(GlibEtcInstallRoot)"
 			ConfigurationType="10"
 			CharacterSet="2"
@@ -58,7 +58,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			InheritedPropertySheets=".\clutter.vsprops"
+			InheritedPropertySheets=".\clutter-install.vsprops"
 			OutputDirectory="$(GlibEtcInstallRoot)"
 			ConfigurationType="10"
 			CharacterSet="2"

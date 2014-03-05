@@ -21,18 +21,18 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			InheritedPropertySheets=".\clutter.vsprops"
+			InheritedPropertySheets=".\clutter-gen-srcs.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(DoConfigs)"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally"
+				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\cally;$(SolutionDir)"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(ClutterBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -42,15 +42,11 @@
 				DebugInformationFormat="4"
 			/>
 			<Tool
-				Name="VCPreLinkEventTool"
-				CommandLine="$(GenerateClutterDef)"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\clutter.def"
+				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -59,19 +55,19 @@
 		</Configuration>
 		<Configuration
 			Name="Debug_GDK|Win32"
-			InheritedPropertySheets=".\clutter.vsprops"
+			InheritedPropertySheets=".\clutter-gen-srcs.vsprops"
 			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(DoConfigs)"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0"
+				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;$(SolutionDir)"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(ClutterBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -81,15 +77,11 @@
 				DebugInformationFormat="4"
 			/>
 			<Tool
-				Name="VCPreLinkEventTool"
-				CommandLine="$(GenerateClutterGDKDef)"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\clutter.def"
+				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -98,18 +90,18 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			InheritedPropertySheets=".\clutter.vsprops"
+			InheritedPropertySheets=".\clutter-gen-srcs.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(DoConfigs)"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally"
+				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\cally;$(SolutionDir)"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(ClutterBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -119,15 +111,11 @@
 				DebugInformationFormat="3"
 			/>
 			<Tool
-				Name="VCPreLinkEventTool"
-				CommandLine="$(GenerateClutterDef)"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\clutter.def"
+				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -136,19 +124,19 @@
 		</Configuration>
 		<Configuration
 			Name="Debug_GDK|x64"
-			InheritedPropertySheets=".\clutter.vsprops"
+			InheritedPropertySheets=".\clutter-gen-srcs.vsprops"
 			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(DoConfigs)"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0"
+				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;$(SolutionDir)"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(ClutterBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -158,15 +146,11 @@
 				DebugInformationFormat="3"
 			/>
 			<Tool
-				Name="VCPreLinkEventTool"
-				CommandLine="$(GenerateClutterGDKDef)"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\clutter.def"
+				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -175,20 +159,20 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			InheritedPropertySheets=".\clutter.vsprops"
+			InheritedPropertySheets=".\clutter-gen-srcs.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(DoConfigs)"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally"
+				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\cally;$(SolutionDir)"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(ClutterBuildDefines)"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -197,15 +181,11 @@
 				DebugInformationFormat="3"
 			/>
 			<Tool
-				Name="VCPreLinkEventTool"
-				CommandLine="$(GenerateClutterDef)"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\clutter.def"
+				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -216,7 +196,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release_GDK|Win32"
-			InheritedPropertySheets=".\clutter.vsprops"
+			InheritedPropertySheets=".\clutter-gen-srcs.vsprops"
 			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
@@ -224,13 +204,13 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(DoConfigs)"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0"
+				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;$(SolutionDir)"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(ClutterBuildDefines)"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -239,15 +219,11 @@
 				DebugInformationFormat="3"
 			/>
 			<Tool
-				Name="VCPreLinkEventTool"
-				CommandLine="$(GenerateClutterGDKDef)"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\clutter.def"
+				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -258,17 +234,17 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			InheritedPropertySheets=".\clutter.vsprops"
+			InheritedPropertySheets=".\clutter-gen-srcs.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(DoConfigs)"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally"
+				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\cally;$(SolutionDir)"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(ClutterBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -276,15 +252,11 @@
 				DebugInformationFormat="3"
 			/>
 			<Tool
-				Name="VCPreLinkEventTool"
-				CommandLine="$(GenerateClutterDef)"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\clutter.def"
+				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -295,18 +267,18 @@
 		</Configuration>
 		<Configuration
 			Name="Release_GDK|x64"
-			InheritedPropertySheets=".\clutter.vsprops"
+			InheritedPropertySheets=".\clutter-gen-srcs.vsprops"
 			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(DoConfigs)"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0"
+				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;$(SolutionDir)"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(ClutterBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -314,15 +286,11 @@
 				DebugInformationFormat="3"
 			/>
 			<Tool
-				Name="VCPreLinkEventTool"
-				CommandLine="$(GenerateClutterGDKDef)"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\clutter.def"
+				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -386,69 +354,269 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File RelativePath="..\..\..\clutter\config.h.win32">
+				<FileConfiguration Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\clutter\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_GDK|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\clutter\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\clutter\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_GDK|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\clutter\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\clutter\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_GDK|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\clutter\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\clutter\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_GDK|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(CopyConfigH)"
+						Outputs="..\..\..\clutter\config.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File RelativePath="..\..\..\clutter\clutter-config.h.win32_GDK">
+				<FileConfiguration Name="Debug_GDK|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying clutter-config.h from clutter-config.h.win32_GDK..."
+						CommandLine="$(CopyClutterConfigGDKH)"
+						Outputs="..\..\..\clutter\clutter-config.h;clutter.bld.GDK.win32"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_GDK|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying clutter-config.h from clutter-config.h.win32_GDK..."
+						CommandLine="$(CopyClutterConfigGDKH)"
+						Outputs="..\..\..\clutter\clutter-config.h;clutter.bld.GDK.win32"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_GDK|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying clutter-config.h from clutter-config.h.win32_GDK..."
+						CommandLine="$(CopyClutterConfigGDKH)"
+						Outputs="..\..\..\clutter\clutter-config.h;clutter.bld.GDK.win32"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_GDK|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying clutter-config.h from clutter-config.h.win32_GDK..."
+						CommandLine="$(CopyClutterConfigGDKH)"
+						Outputs="..\..\..\clutter\clutter-config.h;clutter.bld.GDK.win32"
+					/>
+				</FileConfiguration>
+			</File>
+			<File RelativePath="..\..\..\clutter\clutter-config.h.win32">
+				<FileConfiguration Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying clutter-config.h from clutter-config.h.win32..."
+						CommandLine="$(CopyClutterConfigH)"
+						Outputs="..\..\..\clutter\clutter-config.h;clutter.bld.win32.win32"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying clutter-config.h from clutter-config.h.win32..."
+						CommandLine="$(CopyClutterConfigH)"
+						Outputs="..\..\..\clutter\clutter-config.h;clutter.bld.win32.win32"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying clutter-config.h from clutter-config.h.win32..."
+						CommandLine="$(CopyClutterConfigH)"
+						Outputs="..\..\..\clutter\clutter-config.h;clutter.bld.win32.win32"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying clutter-config.h from clutter-config.h.win32..."
+						CommandLine="$(CopyClutterConfigH)"
+						Outputs="..\..\..\clutter\clutter-config.h;clutter.bld.win32.win32"
+					/>
+				</FileConfiguration>
+			</File>
 			<File RelativePath="..\..\..\clutter\clutter-enum-types.h.in">
 				<FileConfiguration Name="Debug|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating Enumeration Sources..."
-						CommandLine="$(GenEnumsSrc)"
-						Outputs="..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c"
+						CommandLine="$(GenEnumsSrcH)"
+						Outputs="..\..\..\clutter\clutter-enum-types.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_GDK|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating Enumeration Header..."
+						CommandLine="$(GenEnumsSrcGDKH)"
+						Outputs="..\..\..\clutter\clutter-enum-types.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating Enumeration Header..."
+						CommandLine="$(GenEnumsSrcH)"
+						Outputs="..\..\..\clutter\clutter-enum-types.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_GDK|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating Enumeration Header..."
+						CommandLine="$(GenEnumsSrcGDKH)"
+						Outputs="..\..\..\clutter\clutter-enum-types.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating Enumeration Header..."
+						CommandLine="$(GenEnumsSrcH)"
+						Outputs="..\..\..\clutter\clutter-enum-types.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_GDK|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating Enumeration Header..."
+						CommandLine="$(GenEnumsSrcGDKH)"
+						Outputs="..\..\..\clutter\clutter-enum-types.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating Enumeration Header..."
+						CommandLine="$(GenEnumsSrcH)"
+						Outputs="..\..\..\clutter\clutter-enum-types.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_GDK|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating Enumeration Header..."
+						CommandLine="$(GenEnumsSrcGDKH)"
+						Outputs="..\..\..\clutter\clutter-enum-types.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File RelativePath="..\..\..\clutter\clutter-enum-types.c.in">
+				<FileConfiguration Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating Enumeration Sources..."
+						CommandLine="$(GenEnumsSrcC)"
+						Outputs="..\..\..\clutter\clutter-enum-types.c"
 					/>
 				</FileConfiguration>
 				<FileConfiguration Name="Debug_GDK|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating Enumeration Sources..."
-						CommandLine="$(GenEnumsSrc)"
-						Outputs="..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c"
+						CommandLine="$(GenEnumsSrcGDKC)"
+						Outputs="..\..\..\clutter\clutter-enum-types.c"
 					/>
 				</FileConfiguration>
 				<FileConfiguration Name="Release|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating Enumeration Sources..."
-						CommandLine="$(GenEnumsSrc)"
-						Outputs="..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c"
+						CommandLine="$(GenEnumsSrcC)"
+						Outputs="..\..\..\clutter\clutter-enum-types.c"
 					/>
 				</FileConfiguration>
 				<FileConfiguration Name="Release_GDK|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating Enumeration Sources..."
-						CommandLine="$(GenEnumsSrc)"
-						Outputs="..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c"
+						CommandLine="$(GenEnumsSrcGDKC)"
+						Outputs="..\..\..\clutter\clutter-enum-types.c"
 					/>
 				</FileConfiguration>
 				<FileConfiguration Name="Debug|x64">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating Enumeration Sources..."
-						CommandLine="$(GenEnumsSrc)"
-						Outputs="..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c"
+						CommandLine="$(GenEnumsSrcC)"
+						Outputs="..\..\..\clutter\clutter-enum-types.c"
 					/>
 				</FileConfiguration>
 				<FileConfiguration Name="Debug_GDK|x64">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating Enumeration Sources..."
-						CommandLine="$(GenEnumsSrc)"
-						Outputs="..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c"
+						CommandLine="$(GenEnumsSrcGDKC)"
+						Outputs="..\..\..\clutter\clutter-enum-types.c"
 					/>
 				</FileConfiguration>
 				<FileConfiguration Name="Release|x64">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating Enumeration Sources..."
-						CommandLine="$(GenEnumsSrc)"
-						Outputs="..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c"
+						CommandLine="$(GenEnumsSrcC)"
+						Outputs="..\..\..\clutter\clutter-enum-types.c"
 					/>
 				</FileConfiguration>
 				<FileConfiguration Name="Release_GDK|x64">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating Enumeration Sources..."
-						CommandLine="$(GenEnumsSrc)"
-						Outputs="..\..\..\clutter\clutter-enum-types.h;..\..\..\clutter\clutter-enum-types.c"
+						CommandLine="$(GenEnumsSrcGDKC)"
+						Outputs="..\..\..\clutter\clutter-enum-types.c"
 					/>
 				</FileConfiguration>
 			</File>
