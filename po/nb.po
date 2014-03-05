@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter 3.11.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-10 08:12+0100\n"
-"PO-Revision-Date: 2014-02-10 08:12+0100\n"
+"POT-Creation-Date: 2014-03-05 19:19+0100\n"
+"PO-Revision-Date: 2014-03-05 19:20+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "Language: \n"
@@ -52,66 +52,82 @@ msgid "Move window one workspace down"
 msgstr "Flytt vindu ett arbeidsområde ned"
 
 #: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Move window one monitor to the left"
+msgstr "Flytt vindu en skjerm til venstre"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Move window one monitor to the right"
+msgstr "Flytt vindu en skjerm til høyre"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Move window one monitor up"
+msgstr "Flytt vindu en skjerm opp"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Move window one monitor down"
+msgstr "Flytt vindu en skjerm ned"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
 msgid "Switch applications"
 msgstr "Bytt programmer"
 
-#: ../src/50-mutter-navigation.xml.in.h:11
+#: ../src/50-mutter-navigation.xml.in.h:15
 msgid "Switch windows"
 msgstr "Bytt vinduer"
 
-#: ../src/50-mutter-navigation.xml.in.h:12
+#: ../src/50-mutter-navigation.xml.in.h:16
 msgid "Switch windows of an application"
 msgstr "Bytt mellom et programs vinduer"
 
-#: ../src/50-mutter-navigation.xml.in.h:13
+#: ../src/50-mutter-navigation.xml.in.h:17
 msgid "Switch system controls"
 msgstr "Bytt systemkontroller"
 
-#: ../src/50-mutter-navigation.xml.in.h:14
+#: ../src/50-mutter-navigation.xml.in.h:18
 msgid "Switch windows directly"
 msgstr "Bytt vinduer direkte"
 
-#: ../src/50-mutter-navigation.xml.in.h:15
+#: ../src/50-mutter-navigation.xml.in.h:19
 msgid "Switch windows of an app directly"
 msgstr "Bytt mellom et programs vinduer direkte"
 
-#: ../src/50-mutter-navigation.xml.in.h:16
+#: ../src/50-mutter-navigation.xml.in.h:20
 msgid "Switch system controls directly"
 msgstr "Bytt systemkontroller direkte"
 
-#: ../src/50-mutter-navigation.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:21
 msgid "Hide all normal windows"
 msgstr "Skjul alle normale vinduer"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
+#: ../src/50-mutter-navigation.xml.in.h:22
 msgid "Switch to workspace 1"
 msgstr "Bytt til arbeidsområde 1"
 
-#: ../src/50-mutter-navigation.xml.in.h:19
+#: ../src/50-mutter-navigation.xml.in.h:23
 msgid "Switch to workspace 2"
 msgstr "Bytt til arbeidsområde 2"
 
-#: ../src/50-mutter-navigation.xml.in.h:20
+#: ../src/50-mutter-navigation.xml.in.h:24
 msgid "Switch to workspace 3"
 msgstr "Bytt til arbeidsområde 3"
 
-#: ../src/50-mutter-navigation.xml.in.h:21
+#: ../src/50-mutter-navigation.xml.in.h:25
 msgid "Switch to workspace 4"
 msgstr "Bytt til arbeidsområde 4"
 
-#: ../src/50-mutter-navigation.xml.in.h:22
+#: ../src/50-mutter-navigation.xml.in.h:26
 msgid "Move to workspace left"
 msgstr "Flytt til arbeidsområdet til venstre"
 
-#: ../src/50-mutter-navigation.xml.in.h:23
+#: ../src/50-mutter-navigation.xml.in.h:27
 msgid "Move to workspace right"
 msgstr "Flytt til arbeidsområdet til høyre"
 
-#: ../src/50-mutter-navigation.xml.in.h:24
+#: ../src/50-mutter-navigation.xml.in.h:28
 msgid "Move to workspace above"
 msgstr "Flytt til arbeidsområdet over"
 
-#: ../src/50-mutter-navigation.xml.in.h:25
+#: ../src/50-mutter-navigation.xml.in.h:29
 msgid "Move to workspace below"
 msgstr "Flytt til arbeidsområdet under"
 
@@ -205,22 +221,22 @@ msgstr "Visning delt til høyre"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:542
+#: ../src/compositor/compositor.c:534
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "En annen compositing manager kjører skjerm %i på display «%s»."
 
-#: ../src/compositor/meta-background.c:1073
+#: ../src/compositor/meta-background.c:1074
 msgid "background texture could not be created from file"
 msgstr "bakgrunnstekstur kunne ikke lages fra fil"
 
-#: ../src/core/bell.c:320
+#: ../src/core/bell.c:321
 msgid "Bell event"
 msgstr "Klokkehendelse"
 
-#: ../src/core/core.c:155
+#: ../src/core/core.c:156
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Ukjent forespørsel om vindusinformasjon: %d"
@@ -250,17 +266,17 @@ msgstr "_Vent"
 msgid "_Force Quit"
 msgstr "_Tvungen nedstenging"
 
-#: ../src/core/display.c:413
+#: ../src/core/display.c:405
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Mangler utvidelsen %s som kreves for komposittfunksjon"
 
-#: ../src/core/display.c:505
+#: ../src/core/display.c:497
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
 
-#: ../src/core/keybindings.c:1135
+#: ../src/core/keybindings.c:1105
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -269,7 +285,7 @@ msgstr ""
 "Et annet program bruker allerede nøkkelen %s med modifikatorer %x som "
 "binding\n"
 
-#: ../src/core/keybindings.c:1332
+#: ../src/core/keybindings.c:1308
 #, c-format
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "«%s» er ikke en gyldig aksellerator\n"
@@ -331,7 +347,7 @@ msgstr "Ukjent skjerm"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: ../src/core/mutter.c:38
+#: ../src/core/mutter.c:39
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -345,15 +361,15 @@ msgstr ""
 "Dette er fri programvare; se i kildekoden for kopibetingelser.\n"
 "Det gis INGEN garanti.\n"
 
-#: ../src/core/mutter.c:52
+#: ../src/core/mutter.c:53
 msgid "Print version"
 msgstr "Skriv versjonsnummer"
 
-#: ../src/core/mutter.c:58
+#: ../src/core/mutter.c:59
 msgid "Mutter plugin to use"
 msgstr "Mutter-tillegg som skal brukes"
 
-#: ../src/core/prefs.c:1200
+#: ../src/core/prefs.c:1190
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -361,12 +377,12 @@ msgstr ""
 "Funksjonalitet for å gå rundt ødelagte programmer er deaktivert. Noen "
 "programmer vil kanskje ikke oppføre seg korrekt.\n"
 
-#: ../src/core/prefs.c:1275
+#: ../src/core/prefs.c:1265
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GSettings-nøkkel %s\n"
 
-#: ../src/core/prefs.c:1341
+#: ../src/core/prefs.c:1331
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -375,7 +391,7 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for endring av "
 "musknapp\n"
 
-#: ../src/core/prefs.c:1907
+#: ../src/core/prefs.c:1894
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -384,17 +400,17 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
 "tastaturbinding «%s»\n"
 
-#: ../src/core/prefs.c:1997
+#: ../src/core/prefs.c:1984
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: ../src/core/screen.c:537
+#: ../src/core/screen.c:539
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
-#: ../src/core/screen.c:553
+#: ../src/core/screen.c:555
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -403,71 +419,71 @@ msgstr ""
 "Skjerm %d på display «%s» har allerede en vindushåndterer; prøv å bruke "
 "flagget --replace for å erstatte aktiv vindushåndterer.\n"
 
-#: ../src/core/screen.c:580
+#: ../src/core/screen.c:582
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Kunne ikke hente utvalg fra vinduhåndterer på skjerm %d, display «%s»\n"
 
-#: ../src/core/screen.c:658
+#: ../src/core/screen.c:660
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skjerm %d på display «%s» har allerede en vinduhåndterer\n"
 
-#: ../src/core/screen.c:850
+#: ../src/core/screen.c:848
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
 
-#: ../src/core/session.c:841 ../src/core/session.c:848
+#: ../src/core/session.c:842 ../src/core/session.c:849
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunne ikke opprette katalog «%s»: %s\n"
 
-#: ../src/core/session.c:858
+#: ../src/core/session.c:859
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunne ikke åpne sesjonsfil «%s» for skriving: %s\n"
 
-#: ../src/core/session.c:999
+#: ../src/core/session.c:1000
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Feil under skriving av sesjonsfil «%s»: %s\n"
 
-#: ../src/core/session.c:1004
+#: ../src/core/session.c:1005
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Feil under lukking av sesjonsfil «%s»: %s\n"
 
-#: ../src/core/session.c:1134
+#: ../src/core/session.c:1135
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Feil under tolking av lagret sesjonsfil: %s\n"
 
-#: ../src/core/session.c:1183
+#: ../src/core/session.c:1184
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "<mutter_session>-attributt sett men vi har allerede sesjons-ID"
 
-#: ../src/core/session.c:1196 ../src/core/session.c:1271
-#: ../src/core/session.c:1303 ../src/core/session.c:1375
-#: ../src/core/session.c:1435
+#: ../src/core/session.c:1197 ../src/core/session.c:1272
+#: ../src/core/session.c:1304 ../src/core/session.c:1376
+#: ../src/core/session.c:1436
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Ukjent attributt %s på <%s>-element"
 
-#: ../src/core/session.c:1213
+#: ../src/core/session.c:1214
 #, c-format
 msgid "nested <window> tag"
 msgstr "<window> tag med flere nivåer"
 
-#: ../src/core/session.c:1455
+#: ../src/core/session.c:1456
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukjent element %s"
 
-#: ../src/core/session.c:1807
+#: ../src/core/session.c:1808
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -511,7 +527,7 @@ msgid "Window manager error: "
 msgstr "Feil i vindushåndterer: "
 
 #. first time through
-#: ../src/core/window.c:7589
+#: ../src/core/window.c:7564
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -527,7 +543,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8513
+#: ../src/core/window.c:8489
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -537,22 +553,22 @@ msgstr ""
 "men setter minste størrelse %d x %d og maks størrelse %d x %d; dette virker "
 "ikke fornuftig.\n"
 
-#: ../src/core/window-props.c:348
+#: ../src/core/window-props.c:349
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Programmet satte en feil _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:464
+#: ../src/core/window-props.c:465
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
 
-#: ../src/core/window-props.c:1547
+#: ../src/core/window-props.c:1548
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ugyldig WM_TRANSIENT_FOR vindu 0x%lx oppgitt for %s.\n"
 
-#: ../src/core/window-props.c:1558
+#: ../src/core/window-props.c:1559
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR vindu 0x%lx for %s ville skapt en løkke.\n"
