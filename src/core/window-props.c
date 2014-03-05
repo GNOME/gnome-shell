@@ -35,7 +35,7 @@
  */
 
 #define _GNU_SOURCE
-#define _SVID_SOURCE /* for gethostname() */
+#define _XOPEN_SOURCE 500 /* for gethostname() */
 
 #include <config.h>
 #include "window-props.h"
