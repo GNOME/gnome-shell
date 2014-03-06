@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-21 20:29+0000\n"
+"POT-Creation-Date: 2014-03-06 08:32+0000\n"
 "PO-Revision-Date: 2014-02-22 08:50+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
@@ -229,7 +229,7 @@ msgid ""
 "Configures the maximum level of location accuracy applications are allowed "
 "to see. Valid options are 'off' (disable location tracking), 'country', "
 "'city', 'neighborhood', 'street', and 'exact' (typically requires GPS "
-"receiver). Please keep in mind that this only controls what Geoclue will "
+"receiver). Please keep in mind that this only controls what GeoClue will "
 "allow applications to see and they can find user's location on their own "
 "using network resources (albeit with street-level accuracy at best)."
 msgstr ""
@@ -237,7 +237,7 @@ msgstr ""
 "vidět. Platné hodnoty jsou „off“ (sledování polohy vypnuto), "
 "„country“ (země), „city“ (město), „neighborhood“ (čtvrť), „street“ (ulice) a "
 "„exact“ (přesná, typicky vyžaduje přijímač signálu GPS). Uvědomte si, že "
-"tímto se řídí, pouze kolik toho Geoclue dovolí vidět aplikacím, které si ale "
+"tímto se řídí, pouze kolik toho GeoClue dovolí vidět aplikacím, které si ale "
 "mohou polohu uživatele zjišťovat samy podle síťových zdrojů (třebaže s "
 "nejlepší přesností na úrovni ulic)."
 
@@ -310,7 +310,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:883
+#: ../js/ui/status/network.js:873
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -543,35 +543,35 @@ msgid "Next month"
 msgstr "Následující měsíc"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:762
+#: ../js/ui/calendar.js:763
 msgid "Nothing Scheduled"
 msgstr "Nic nenaplánováno"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:780
+#: ../js/ui/calendar.js:781
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:784
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %e. %B %Y"
 
-#: ../js/ui/calendar.js:794
+#: ../js/ui/calendar.js:795
 msgid "Today"
 msgstr "Dnes"
 
-#: ../js/ui/calendar.js:798
+#: ../js/ui/calendar.js:799
 msgid "Tomorrow"
 msgstr "Zítra"
 
-#: ../js/ui/calendar.js:809
+#: ../js/ui/calendar.js:810
 msgid "This week"
 msgstr "Tento týden"
 
-#: ../js/ui/calendar.js:817
+#: ../js/ui/calendar.js:818
 msgid "Next week"
 msgstr "Následující týden"
 
@@ -604,8 +604,8 @@ msgstr "Heslo:"
 msgid "Type again:"
 msgstr "Napište znovu:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:250
-#: ../js/ui/status/network.js:327 ../js/ui/status/network.js:886
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:240
+#: ../js/ui/status/network.js:317 ../js/ui/status/network.js:876
 msgid "Connect"
 msgstr "Připojit"
 
@@ -984,15 +984,15 @@ msgstr "Zobrazit aplikace"
 msgid "Dash"
 msgstr "Oblíbené"
 
-#: ../js/ui/dateMenu.js:86
+#: ../js/ui/dateMenu.js:91
 msgid "Open Calendar"
 msgstr "Otevřít kalendář"
 
-#: ../js/ui/dateMenu.js:90
+#: ../js/ui/dateMenu.js:95
 msgid "Open Clocks"
 msgstr "Otevřít Hodiny"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:102
 msgid "Date & Time Settings"
 msgstr "Nastavení data a času"
 
@@ -1000,7 +1000,7 @@ msgstr "Nastavení data a času"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:192
 msgid "%A %B %e, %Y"
 msgstr "%A, %e. %B, %Y"
 
@@ -1181,7 +1181,7 @@ msgstr "Povoleno"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:560
+#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:550
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Zakázáno"
@@ -1206,39 +1206,39 @@ msgstr "Zobrazit zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
-#: ../js/ui/messageTray.js:1324
+#: ../js/ui/messageTray.js:1326
 msgid "Open"
 msgstr "Otevřít"
 
-#: ../js/ui/messageTray.js:1331
+#: ../js/ui/messageTray.js:1333
 msgid "Remove"
 msgstr "Odstranit"
 
-#: ../js/ui/messageTray.js:1628
+#: ../js/ui/messageTray.js:1630
 msgid "Notifications"
 msgstr "Upozornění"
 
-#: ../js/ui/messageTray.js:1635
+#: ../js/ui/messageTray.js:1637
 msgid "Clear Messages"
 msgstr "Vymazat zprávy"
 
-#: ../js/ui/messageTray.js:1654
+#: ../js/ui/messageTray.js:1656
 msgid "Notification Settings"
 msgstr "Nastavení upozornění"
 
-#: ../js/ui/messageTray.js:1707
+#: ../js/ui/messageTray.js:1709
 msgid "Tray Menu"
 msgstr "Nabídka lišty zpráv"
 
-#: ../js/ui/messageTray.js:1924
+#: ../js/ui/messageTray.js:1926
 msgid "No Messages"
 msgstr "Žádné zprávy"
 
-#: ../js/ui/messageTray.js:1962
+#: ../js/ui/messageTray.js:1964
 msgid "Message Tray"
 msgstr "Lišta zpráv"
 
-#: ../js/ui/messageTray.js:2946
+#: ../js/ui/messageTray.js:2948
 msgid "System Information"
 msgstr "Informace o systému"
 
@@ -1407,10 +1407,10 @@ msgstr "Styl velkého textu"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:162 ../js/ui/status/network.js:151
-#: ../js/ui/status/network.js:328 ../js/ui/status/network.js:1235
-#: ../js/ui/status/network.js:1346 ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:59
+#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:151
+#: ../js/ui/status/network.js:318 ../js/ui/status/network.js:1225
+#: ../js/ui/status/network.js:1336 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "Vypnout"
@@ -1427,7 +1427,7 @@ msgstr[0] "%d připojené zařízení"
 msgstr[1] "%d připojená zařízení"
 msgstr[2] "%d připojených zařízení"
 
-#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1263
+#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1253
 msgid "Not Connected"
 msgstr "Nepřipojeno"
 
@@ -1443,17 +1443,17 @@ msgstr "Zobrazit rozložení klávesnice"
 msgid "Location"
 msgstr "Poloha"
 
-#: ../js/ui/status/location.js:61 ../js/ui/status/location.js:161
+#: ../js/ui/status/location.js:58 ../js/ui/status/location.js:158
 #: ../js/ui/status/rfkill.js:84
 msgid "On"
 msgstr "Zapnuto"
 
-#: ../js/ui/status/location.js:158 ../js/ui/status/network.js:246
-#: ../js/ui/status/network.js:425 ../js/ui/status/network.js:1261
+#: ../js/ui/status/location.js:155 ../js/ui/status/network.js:415
+#: ../js/ui/status/network.js:1251 ../js/ui/status/network.js:1455
 msgid "Off"
 msgstr "Vypnuto"
 
-#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:1235
+#: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1225
 msgid "Turn On"
 msgstr "Zapnout"
 
@@ -1461,124 +1461,126 @@ msgstr "Zapnout"
 msgid "<unknown>"
 msgstr "<neznámé>"
 
+#: ../js/ui/status/network.js:417
+msgid "Connected"
+msgstr "Připojeno"
+
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:431
+#: ../js/ui/status/network.js:421
 msgid "unmanaged"
 msgstr "nespravováno"
 
-#: ../js/ui/status/network.js:433
+#: ../js/ui/status/network.js:423
 msgid "disconnecting..."
 msgstr "odpojování…"
 
-#: ../js/ui/status/network.js:439 ../js/ui/status/network.js:1363
+#: ../js/ui/status/network.js:429 ../js/ui/status/network.js:1353
 msgid "connecting..."
 msgstr "připojování…"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:442 ../js/ui/status/network.js:1366
+#: ../js/ui/status/network.js:432 ../js/ui/status/network.js:1356
 msgid "authentication required"
 msgstr "je vyžadováno ověření"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:450
+#: ../js/ui/status/network.js:440
 msgid "firmware missing"
 msgstr "nedostupný firmware"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:454
+#: ../js/ui/status/network.js:444
 msgid "unavailable"
 msgstr "nedostupné"
 
-#: ../js/ui/status/network.js:456 ../js/ui/status/network.js:1368
+#: ../js/ui/status/network.js:446 ../js/ui/status/network.js:1358
 msgid "connection failed"
 msgstr "připojení selhalo"
 
-#: ../js/ui/status/network.js:472
+#: ../js/ui/status/network.js:462
 msgid "Wired Settings"
 msgstr "Nastavení připojení po drátu"
 
-#: ../js/ui/status/network.js:514 ../js/ui/status/network.js:592
+#: ../js/ui/status/network.js:504 ../js/ui/status/network.js:582
 msgid "Mobile Broadband Settings"
 msgstr "Nastavení mobilní širokopásmové sítě"
 
-#: ../js/ui/status/network.js:556 ../js/ui/status/network.js:1259
+#: ../js/ui/status/network.js:546 ../js/ui/status/network.js:1249
 msgid "Hardware Disabled"
 msgstr "Hardware zakázán"
 
-#: ../js/ui/status/network.js:600
+#: ../js/ui/status/network.js:590
 msgid "Use as Internet connection"
 msgstr "Použít jako připojení k Internetu"
 
-#: ../js/ui/status/network.js:781
+#: ../js/ui/status/network.js:771
 msgid "Airplane Mode is On"
 msgstr "Režim „letadlo“ je zapnutý"
 
-#: ../js/ui/status/network.js:782
+#: ../js/ui/status/network.js:772
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Když je zapnutý režim „letadlo“, je WiFi zakázána."
 
-#: ../js/ui/status/network.js:783
+#: ../js/ui/status/network.js:773
 msgid "Turn Off Airplane Mode"
 msgstr "Vypnout režim „letadlo“"
 
-#: ../js/ui/status/network.js:792
+#: ../js/ui/status/network.js:782
 msgid "Wi-Fi is Off"
 msgstr "WiFi je vypnutá"
 
-#: ../js/ui/status/network.js:793
+#: ../js/ui/status/network.js:783
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Abyste se připojili k síti, je zapotřebí zapnout WiFi."
 
-#: ../js/ui/status/network.js:794
+#: ../js/ui/status/network.js:784
 msgid "Turn On Wi-Fi"
 msgstr "Zapnout WiFi"
 
-#: ../js/ui/status/network.js:819
+#: ../js/ui/status/network.js:809
 msgid "Wi-Fi Networks"
 msgstr "Sítě WiFi"
 
-#: ../js/ui/status/network.js:821
+#: ../js/ui/status/network.js:811
 msgid "Select a network"
 msgstr "Vyberte síť"
 
-#: ../js/ui/status/network.js:850
+#: ../js/ui/status/network.js:840
 msgid "No Networks"
 msgstr "Žádné sítě"
 
-#: ../js/ui/status/network.js:871 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:861 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
 msgstr "K vypnutí použijte fyzický vypínač"
 
-#: ../js/ui/status/network.js:1141
+#: ../js/ui/status/network.js:1131
 msgid "Select Network"
 msgstr "Vybrat síť"
 
-#: ../js/ui/status/network.js:1147
+#: ../js/ui/status/network.js:1137
 msgid "Wi-Fi Settings"
 msgstr "Nastavení WiFi"
 
-#: ../js/ui/status/network.js:1252
+#: ../js/ui/status/network.js:1242
 msgid "Hotspot Active"
 msgstr "Hotspot aktivní"
 
-#: ../js/ui/status/network.js:1255
-#| msgid "Connect"
+#: ../js/ui/status/network.js:1245
 msgid "Connecting"
 msgstr "Připojuje se…"
 
-#: ../js/ui/status/network.js:1434 ../js/ui/status/rfkill.js:88
+#: ../js/ui/status/network.js:1424 ../js/ui/status/rfkill.js:88
 msgid "Network Settings"
 msgstr "Nastavení sítě"
 
-#: ../js/ui/status/network.js:1436
-#| msgid "Settings"
+#: ../js/ui/status/network.js:1426
 msgid "VPN Settings"
 msgstr "Nastavení VPN"
 
-#: ../js/ui/status/network.js:1455
+#: ../js/ui/status/network.js:1445
 msgid "VPN"
 msgstr "VPN"
 
