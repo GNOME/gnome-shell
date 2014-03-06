@@ -27,6 +27,8 @@ const CHEVRON = '>>> ';
 /* Imports...feel free to add here as needed */
 var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
                     'const GLib = imports.gi.GLib; ' +
+                    'const GObject = imports.gi.GObject; ' +
+                    'const Gio = imports.gi.Gio; ' +
                     'const Gtk = imports.gi.Gtk; ' +
                     'const Mainloop = imports.mainloop; ' +
                     'const Meta = imports.gi.Meta; ' +
