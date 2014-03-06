@@ -369,12 +369,12 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
   return TRUE;
 }
 
-typedef CoglBool (*DriverCallback) (CoglDriverDescription *description,
-                                    void *user_data);
+typedef CoglBool (*CoglDriverCallback) (CoglDriverDescription *description,
+                                        void *user_data);
 
 static void
 foreach_driver_description (CoglDriver driver_override,
-                            DriverCallback callback,
+                            CoglDriverCallback callback,
                             void *user_data)
 {
 #ifdef COGL_DEFAULT_DRIVER
