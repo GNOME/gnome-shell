@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-03-06 03:00+0000\n"
-"PO-Revision-Date: 2014-03-06 04:59+0100\n"
+"PO-Revision-Date: 2014-03-06 11:11+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -33,7 +33,7 @@ msgstr "Met a fûc le notifiche ative"
 
 #: ../data/50-gnome-shell-system.xml.in.h:4
 msgid "Show the overview"
-msgstr ""
+msgstr "Mostre la panoramiche"
 
 #: ../data/50-gnome-shell-system.xml.in.h:5
 msgid "Show all applications"
@@ -194,16 +194,14 @@ msgstr ""
 "Panoramiche Ativitâts"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
-#, fuzzy
 #| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the overview"
-msgstr "Tast rapit associât par vierzi la visuâl \"Mostre Aplicazions\""
+msgstr "Tast rapit associât par vierzi la panoramiche"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-#, fuzzy
 #| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the Activities Overview."
-msgstr "Tast rapit associât par vierzi la visuâl \"Mostre Aplicazions\""
+msgstr "Tast rapit associât par vierzi la visuâl \"Panoramiche Ativitâts\""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to toggle the visibility of the message tray"
@@ -430,7 +428,7 @@ msgstr "In zornade"
 #: ../js/ui/calendar.js:70
 msgctxt "event list time"
 msgid "%H∶%M"
-msgstr ""
+msgstr "%H∶%M"
 
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
@@ -554,13 +552,13 @@ msgstr "Nissun impegni"
 #: ../js/ui/calendar.js:781
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr ""
+msgstr "%A, %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
 #: ../js/ui/calendar.js:784
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr ""
+msgstr "%A, %e %B %Y"
 
 #: ../js/ui/calendar.js:795
 msgid "Today"
@@ -730,7 +728,7 @@ msgstr "Cidinâ audio"
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:955
 msgid "%H∶%M"
-msgstr ""
+msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
@@ -743,21 +741,21 @@ msgstr "<b>Îr</b>, <b>%H:%M</b>"
 #. string in 24h format. i.e. "Monday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:969
 msgid "%A, %H∶%M"
-msgstr ""
+msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
 #: ../js/ui/components/telepathyClient.js:976
 msgid "%B %d, %H∶%M"
-msgstr ""
+msgstr "%d %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
 #: ../js/ui/components/telepathyClient.js:982
 msgid "%B %d %Y, %H∶%M"
-msgstr ""
+msgstr "%d %B %Y, %H∶%M"
 
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:991
@@ -771,7 +769,7 @@ msgstr "%l:%M %p"
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:998
 msgid "Yesterday, %l∶%M %p"
-msgstr ""
+msgstr "Îr, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
@@ -787,14 +785,14 @@ msgstr "%l:%M %p"
 #. i.e. "May 25, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1012
 msgid "%B %d, %l∶%M %p"
-msgstr ""
+msgstr "%d %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
 #: ../js/ui/components/telepathyClient.js:1018
 msgid "%B %d %Y, %l∶%M %p"
-msgstr ""
+msgstr "%d %B %Y, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
@@ -1006,7 +1004,7 @@ msgstr "Impostazions Date e Ore"
 #. */
 #: ../js/ui/dateMenu.js:192
 msgid "%A %B %e, %Y"
-msgstr ""
+msgstr "%a %e %B %Y"
 
 #: ../js/ui/endSessionDialog.js:66
 msgctxt "title"
@@ -1055,7 +1053,7 @@ msgstr[1] "Il sisteme a si studarà automaticamentri in %d seconts."
 #: ../js/ui/endSessionDialog.js:93
 msgctxt "checkbox"
 msgid "Install pending software updates"
-msgstr ""
+msgstr "Instale i inzornaments software in spiete"
 
 #: ../js/ui/endSessionDialog.js:96 ../js/ui/endSessionDialog.js:113
 msgctxt "button"
@@ -1125,12 +1123,12 @@ msgstr "Altris utents a son jentrâts."
 #. Translators: Remote here refers to a remote session, like a ssh login */
 #: ../js/ui/endSessionDialog.js:618
 msgid "%s (remote)"
-msgstr ""
+msgstr "%s (esterni)"
 
 #. Translators: Console here refers to a tty like a VT console */
 #: ../js/ui/endSessionDialog.js:621
 msgid "%s (console)"
-msgstr ""
+msgstr "%s (locâl)"
 
 #: ../js/ui/extensionDownloader.js:199
 msgid "Install"
@@ -1291,7 +1289,7 @@ msgstr "Siere"
 #. long format */
 #: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
-msgstr ""
+msgstr "%A, %e %B"
 
 #: ../js/ui/screenShield.js:153
 msgid "%d new notification"
@@ -1513,7 +1511,7 @@ msgstr "Hardware Disabilitât"
 
 #: ../js/ui/status/network.js:590
 msgid "Use as Internet connection"
-msgstr ""
+msgstr "Dopre come conession internet"
 
 #: ../js/ui/status/network.js:771
 msgid "Airplane Mode is On"
@@ -1554,7 +1552,7 @@ msgstr "Nissune Rêt"
 
 #: ../js/ui/status/network.js:861 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
-msgstr ""
+msgstr "Dopre interutôr fisic par studâ"
 
 #: ../js/ui/status/network.js:1131
 msgid "Select Network"
@@ -1605,7 +1603,7 @@ msgstr "Impostazions di alimentazion"
 
 #: ../js/ui/status/power.js:65
 msgid "Fully Charged"
-msgstr ""
+msgstr "Cjarie"
 
 #: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
 #| msgid "Estimating..."
@@ -1613,12 +1611,14 @@ msgid "Estimating…"
 msgstr "In stime..."
 
 #: ../js/ui/status/power.js:86
+#, fuzzy
 msgid "%d∶%02d Remaining (%d%%)"
-msgstr ""
+msgstr "%d\\u002E%02d al reste (%d%%)"
 
 #: ../js/ui/status/power.js:91
+#, fuzzy
 msgid "%d∶%02d Until Full (%d%%)"
-msgstr ""
+msgstr "%d\\u002E%02d par sedi plene (%d%%)"
 
 #: ../js/ui/status/power.js:119
 msgid "UPS"
