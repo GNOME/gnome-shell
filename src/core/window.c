@@ -10127,6 +10127,24 @@ meta_window_same_client (MetaWindow *window,
           (other_window->xwindow & ~resource_mask));
 }
 
+/**
+ * meta_window_is_client_decorated:
+ *
+ * Check if if the window has decorations drawn by the client.
+ * (window->decorated refers only to whether we should add decorations)
+ */
+gboolean
+meta_window_is_client_decorated (MetaWindow *window)
+{
+  /* Currently the implementation here is hackish -
+   * has_custom_frame_extents() is set if _GTK_FRAME_EXTENTS is set
+   * to any value even 0. GTK+ always sets _GTK_FRAME_EXTENTS for
+   * client-side-decorated window, even if the value is 0 because
+   * the window is maxized and has no invisible borders or shadows.
+   */
+  return window->has_custom_frame_extents;
+}
+
 void
 meta_window_refresh_resize_popup (MetaWindow *window)
 {
