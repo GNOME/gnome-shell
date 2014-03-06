@@ -138,9 +138,11 @@ meta_wayland_keyboard_take_keymap (MetaWaylandKeyboard *keyboard,
       return;
     }
 
-  if (xkb_info->keymap)
-    xkb_keymap_unref (xkb_info->keymap);
+  xkb_keymap_unref (xkb_info->keymap);
   xkb_info->keymap = keymap;
+
+  xkb_state_unref (xkb_info->state);
+  xkb_info->state = xkb_state_new (keymap);
 
   keymap_str = xkb_map_get_as_string (xkb_info->keymap);
   if (keymap_str == NULL)
@@ -316,8 +318,8 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
 static void
 meta_wayland_xkb_info_destroy (MetaWaylandXkbInfo *xkb_info)
 {
-  if (xkb_info->keymap)
-    xkb_map_unref (xkb_info->keymap);
+  xkb_keymap_unref (xkb_info->keymap);
+  xkb_state_unref (xkb_info->state);
 
   if (xkb_info->keymap_area)
     munmap (xkb_info->keymap_area, xkb_info->keymap_size);
@@ -325,44 +327,27 @@ meta_wayland_xkb_info_destroy (MetaWaylandXkbInfo *xkb_info)
     close (xkb_info->keymap_fd);
 }
 
-static gboolean
-state_equal (MetaWaylandXkbState *one,
-	     MetaWaylandXkbState *two)
-{
-  return one->mods_depressed == two->mods_depressed &&
-    one->mods_latched == two->mods_latched &&
-    one->mods_locked == two->mods_locked &&
-    one->group == two->group;
-}
-
 static void
-set_modifiers (MetaWaylandKeyboard *keyboard,
-               guint32              serial,
-               ClutterEvent        *event)
+set_modifiers (MetaWaylandKeyboard   *keyboard,
+               guint32                serial,
+               const ClutterKeyEvent *event)
 {
   MetaWaylandKeyboardGrab *grab = keyboard->grab;
-  MetaWaylandXkbState new_state;
-  guint effective_state;
+  struct xkb_state *state = keyboard->xkb_info.state;
+  enum xkb_state_component changed_state;
 
-  clutter_event_get_state_full (event,
-				NULL,
-				&new_state.mods_depressed,
-				&new_state.mods_latched,
-				&new_state.mods_locked,
-				&effective_state);
-  new_state.group = (effective_state >> 13) & 0x3;
-
-  if (state_equal (&keyboard->modifier_state, &new_state))
+  changed_state = xkb_state_update_key (state,
+                                        event->hardware_keycode,
+                                        event->type == CLUTTER_KEY_PRESS ? XKB_KEY_DOWN : XKB_KEY_UP);
+  if (changed_state == 0)
     return;
-
-  keyboard->modifier_state = new_state;
 
   grab->interface->modifiers (grab,
                               serial,
-                              new_state.mods_depressed,
-			      new_state.mods_latched,
-			      new_state.mods_locked,
-                              new_state.group);
+                              xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
+                              xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
+                              xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
+                              xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
 }
 
 static void
@@ -432,7 +417,7 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
 
   serial = wl_display_next_serial (keyboard->display);
 
-  set_modifiers (keyboard, serial, (ClutterEvent*)event);
+  set_modifiers (keyboard, serial, event);
 
   handled = keyboard->grab->interface->key (keyboard->grab,
 					    event->time,
@@ -484,13 +469,14 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
         {
           struct wl_client *client = wl_resource_get_client (keyboard->focus_resource);
           struct wl_display *display = wl_client_get_display (client);
+          struct xkb_state *state = keyboard->xkb_info.state;
           uint32_t serial = wl_display_next_serial (display);
 
           wl_keyboard_send_modifiers (keyboard->focus_resource, serial,
-                                      keyboard->modifier_state.mods_depressed,
-                                      keyboard->modifier_state.mods_latched,
-                                      keyboard->modifier_state.mods_locked,
-                                      keyboard->modifier_state.group);
+                                      xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
+                                      xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
+                                      xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
+                                      xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
           wl_keyboard_send_enter (keyboard->focus_resource, serial, keyboard->focus_surface->resource,
                                   &keyboard->keys);
 

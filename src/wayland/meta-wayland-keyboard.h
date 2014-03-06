@@ -69,18 +69,11 @@ struct _MetaWaylandKeyboardGrab
 typedef struct
 {
   struct xkb_keymap *keymap;
+  struct xkb_state *state;
   int keymap_fd;
   size_t keymap_size;
   char *keymap_area;
 } MetaWaylandXkbInfo;
-
-typedef struct
-{
-  uint32_t mods_depressed;
-  uint32_t mods_latched;
-  uint32_t mods_locked;
-  uint32_t group;
-} MetaWaylandXkbState;
 
 struct _MetaWaylandKeyboard
 {
@@ -99,8 +92,6 @@ struct _MetaWaylandKeyboard
   uint32_t grab_time;
 
   struct wl_array keys;
-
-  MetaWaylandXkbState modifier_state;
 
   struct wl_display *display;
 
