@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+    <Import Project="clutter-version-paths.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <BaseWinBuildDef>_WIN32_WINNT=0x0501</BaseWinBuildDef>
+    <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API</LibBuildDefines>
+    <DebugLibBuildDefines>$(LibBuildDefines);_DEBUG;CLUTTER_ENABLE_DEBUG</DebugLibBuildDefines>
+    <ReleaseLibBuildDefines>$(LibBuildDefines);G_DISABLE_ASSERT;G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS</ReleaseLibBuildDefines>
+    <ClutterBuildDefines>$(BaseWinBuildDef);G_LOG_DOMAIN="Clutter";CLUTTER_LOCALEDIR="../share/locale";CLUTTER_SYSCONFDIR="../etc";COGL_DISABLE_DEPRECATION_WARNINGS</ClutterBuildDefines>
+    <ClutterDisableDeprecationWarnings>CLUTTER_DISABLE_DEPRECATION_WARNINGS;GLIB_DISABLE_DEPRECATION_WARNINGS</ClutterDisableDeprecationWarnings>
+    <CallyTestDefs>$(BaseWinBuildDef);PREFIXDIR="/some/dummy/dir";$(ClutterDisableDeprecationWarnings)</CallyTestDefs>
+    <TestProgDef>$(BaseWinBuildDef);TESTS_DATADIR="../share/clutter-$(ApiVersion)/data";TESTS_DATA_DIR="../share/clutter-$(ApiVersion)/data"</TestProgDef>
+    <TestPerfProgDef>$(TestProgDef);$(ClutterDisableDeprecationWarnings)</TestPerfProgDef>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>clutterbuilddefinesprops</_PropertySheetDisplayName>
+    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformName)\bin\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..;..\..\..\clutter;$(GlibEtcInstallRoot)\include\cogl-1.0;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\atk-1.0;$(GlibEtcInstallRoot)\include\json-glib-1.0;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>G_DISABLE_SINGLE_INCLUDES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ForcedIncludeFiles>msvc_recommended_pragmas.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>cogl-pango-1.0.lib;cogl-path-1.0.lib;cogl-1.0.lib;glib-2.0.lib;gobject-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(GlibEtcInstallRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="BaseWinBuildDef">
+      <Value>$(BaseWinBuildDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="LibBuildDefines">
+      <Value>$(LibBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DebugLibBuildDefines">
+      <Value>$(DebugLibBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ReleaseLibBuildDefines">
+      <Value>$(ReleaseLibBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterBuildDefines">
+      <Value>$(ClutterBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterDisableDeprecationWarnings">
+      <Value>$(ClutterDisableDeprecationWarnings)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CallyTestDefs">
+      <Value>$(CallyTestDefs)</Value>
+    </BuildMacro>
+    <BuildMacro Include="TestProgDef">
+      <Value>$(TestProgDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="TestPerfProgDef">
+      <Value>$(TestPerfProgDef)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

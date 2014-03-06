@@ -14,7 +14,10 @@ EXTRA_DIST = \
 	clutter.vcxprojin	\
 	clutter.vcxproj.filters		\
 	clutter.vcxproj.filtersin	\
-	clutter.props		\
+	clutter-build-defines.props	\
+	clutter-gen-srcs.props	\
+	clutter-install.props	\
+	clutter-version-paths.props	\
 	install.vcxproj	\
 	test-cogl-perf.vcxproj		\
 	test-cogl-perf.vcxproj.filters		\

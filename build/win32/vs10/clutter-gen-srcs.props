@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+    <Import Project="clutter-build-defines.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <CopyConfigH>copy ..\..\..\clutter\config.h.win32 ..\..\..\clutter\config.h</CopyConfigH>
+    <CopyClutterConfigH>
+if exist ..\..\..\clutter\clutter.bld.win32.win32 goto DONE_CLUTTER_CONFIG_H
+
+if exist clutter.bld.GDK.win32 del clutter.bld.GDK.win32
+
+copy ..\..\..\clutter\clutter-config.h.win32 clutter.bld.win32.win32
+
+copy ..\..\..\clutter\clutter-config.h.win32 ..\..\..\clutter\clutter-config.h
+
+
+:DONE_CLUTTER_CONFIG_H
+    </CopyClutterConfigH>
+    <CopyClutterConfigGDKH>
+if exist ..\..\..\clutter\clutter.bld.GDK.win32 goto DONE_CLUTTER_CONFIG_H
+
+if exist clutter.bld.win32.win32 del clutter.bld.win32.win32
+
+copy ..\..\..\clutter\clutter-config.h.win32_GDK clutter.bld.GDK.win32
+
+copy ..\..\..\clutter\clutter-config.h.win32_GDK ..\..\..\clutter\clutter-config.h
+
+
+:DONE_CLUTTER_CONFIG_H
+    </CopyClutterConfigGDKH>
+    <GenMarshalSrc>
+$(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --header ..\..\..\clutter\clutter-marshal.list &gt; ..\..\..\clutter\clutter-marshal.h
+
+
+echo #include "clutter-marshal.h" &gt; ..\..\..\clutter\clutter-marshal.c
+
+$(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --body ..\..\..\clutter\clutter-marshal.list &gt;&gt; ..\..\..\clutter\clutter-marshal.c
+    </GenMarshalSrc>
+    <EnumHeaders>..\..\..\clutter\clutter-action.h ..\..\..\clutter\clutter-actor-meta.h ..\..\..\clutter\clutter-actor.h ..\..\..\clutter\clutter-align-constraint.h ..\..\..\clutter\clutter-animatable.h ..\..\..\clutter\clutter-backend.h ..\..\..\clutter\clutter-bind-constraint.h ..\..\..\clutter\clutter-binding-pool.h ..\..\..\clutter\clutter-bin-layout.h ..\..\..\clutter\clutter-blur-effect.h ..\..\..\clutter\clutter-box-layout.h ..\..\..\clutter\clutter-brightness-contrast-effect.h ..\..\..\clutter\clutter-cairo.h ..\..\..\clutter\clutter-canvas.h ..\..\..\clutter\clutter-child-meta.h ..\..\..\clutter\clutter-click-action.h ..\..\..\clutter\clutter-cogl-compat.h ..\..\..\clutter\clutter-clone.h ..\..\..\clutter\clutter-color-static.h ..\..\..\clutter\clutter-color.h ..\..\..\clutter\clutter-colorize-effect.h ..\..\..\clutter\clutter-constraint.h ..\..\..\clutter\clutter-container.h ..\..\..\clutter\clutter-content.h ..\..\..\clutter\clutter-deform-effect.h ..\..\..\clutter\clutter-deprecated.h ..\..\..\clutter\clutter-desaturate-effect.h ..\..\..\clutter\clutter-device-manager.h ..\..\..\clutter\clutter-drag-action.h ..\..\..\clutter\clutter-drop-action.h ..\..\..\clutter\clutter-effect.h ..\..\..\clutter\clutter-enums.h ..\..\..\clutter\clutter-event.h ..\..\..\clutter\clutter-feature.h ..\..\..\clutter\clutter-fixed-layout.h ..\..\..\clutter\clutter-flow-layout.h ..\..\..\clutter\clutter-gesture-action.h ..\..\..\clutter\clutter-grid-layout.h ..\..\..\clutter\clutter-group.h ..\..\..\clutter\clutter-image.h ..\..\..\clutter\clutter-input-device.h ..\..\..\clutter\clutter-interval.h ..\..\..\clutter\clutter-keyframe-transition.h ..\..\..\clutter\clutter-keysyms.h ..\..\..\clutter\clutter-layout-manager.h ..\..\..\clutter\clutter-layout-meta.h ..\..\..\clutter\clutter-list-model.h ..\..\..\clutter\clutter-macros.h ..\..\..\clutter\clutter-main.h ..\..\..\clutter\clutter-model.h ..\..\..\clutter\clutter-offscreen-effect.h ..\..\..\clutter\clutter-page-turn-effect.h ..\..\..\clutter\clutter-paint-nodes.h ..\..\..\clutter\clutter-paint-node.h ..\..\..\clutter\clutter-pan-action.h ..\..\..\clutter\clutter-path-constraint.h ..\..\..\clutter\clutter-path.h ..\..\..\clutter\clutter-property-transition.h ..\..\..\clutter\clutter-rotate-action.h ..\..\..\clutter\clutter-script.h ..\..\..\clutter\clutter-scriptable.h ..\..\..\clutter\clutter-scroll-actor.h ..\..\..\clutter\clutter-settings.h ..\..\..\clutter\clutter-shader-effect.h ..\..\..\clutter\clutter-shader-types.h ..\..\..\clutter\clutter-swipe-action.h ..\..\..\clutter\clutter-snap-constraint.h ..\..\..\clutter\clutter-stage.h ..\..\..\clutter\clutter-stage-manager.h ..\..\..\clutter\clutter-tap-action.h ..\..\..\clutter\clutter-test-utils.h ..\..\..\clutter\clutter-texture.h ..\..\..\clutter\clutter-text.h ..\..\..\clutter\clutter-text-buffer.h ..\..\..\clutter\clutter-timeline.h ..\..\..\clutter\clutter-transition-group.h ..\..\..\clutter\clutter-transition.h ..\..\..\clutter\clutter-types.h ..\..\..\clutter\clutter-units.h ..\..\..\clutter\clutter-zoom-action.h ..\..\..\clutter\win32\clutter-win32.h</EnumHeaders>
+    <GdkEnumHeader>..\..\..\clutter\gdk\clutter-gdk.h</GdkEnumHeader>
+    <GenEnumsSrcH>perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template ..\..\..\clutter\clutter-enum-types.h.in $(EnumHeaders) &gt; ..\..\..\clutter\clutter-enum-types.h</GenEnumsSrcH>
+    <GenEnumsSrcC>perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template ..\..\..\clutter\clutter-enum-types.c.in $(EnumHeaders) &gt; ..\..\..\clutter\clutter-enum-types.c</GenEnumsSrcC>
+    <GenEnumsSrcGDKH>perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template ..\..\..\clutter\clutter-enum-types.h.in $(EnumHeaders) $(GdkEnumHeader) &gt; ..\..\..\clutter\clutter-enum-types.h</GenEnumsSrcGDKH>
+    <GenEnumsSrcGDKC>perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template ..\..\..\clutter\clutter-enum-types.c.in $(EnumHeaders) $(GdkEnumHeader) &gt; ..\..\..\clutter\clutter-enum-types.c</GenEnumsSrcGDKC>
+    <GenerateClutterDef>
+echo EXPORTS &gt; $(DefDir)\clutter.def
+
+cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; $(DefDir)\clutter.def
+    </GenerateClutterDef>
+    <GenerateClutterGDKDef>
+echo EXPORTS &gt; $(DefDir)\clutter.def
+
+cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_WINDOWING_GDK -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; $(DefDir)\clutter.def
+    </GenerateClutterGDKDef>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>cluttergensrcsprops</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemGroup>
+    <BuildMacro Include="CopyConfigH">
+      <Value>$(CopyConfigH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CopyClutterConfigH">
+      <Value>$(CopyClutterConfigH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CopyClutterConfigGDKH">
+      <Value>$(CopyClutterConfigGDKH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenMarshalSrc">
+      <Value>$(GenMarshalSrc)</Value>
+    </BuildMacro>
+    <BuildMacro Include="EnumHeaders">
+      <Value>$(EnumHeaders)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkEnumHeader">
+      <Value>$(GdkEnumHeader)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenEnumsSrcH">
+      <Value>$(GenEnumsSrcC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenEnumsSrcC">
+      <Value>$(GenEnumsSrcC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenEnumsSrcGDKH">
+      <Value>$(GenEnumsSrcGDKH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenEnumsSrcGDKC">
+      <Value>$(GenEnumsSrcGDKC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenerateClutterDef">
+      <Value>$(GenerateClutterDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenerateClutterGDKDef">
+      <Value>$(GenerateClutterGDKDef)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

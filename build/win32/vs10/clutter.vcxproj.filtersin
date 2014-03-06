@@ -24,8 +24,12 @@
     <ClCompile Include="..\..\..\clutter\cogl\clutter-stage-cogl.c"><Filter>Sources</Filter></ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="..\..\..\clutter\config.h.win32"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="..\..\..\clutter\clutter-config.h.win32"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="..\..\..\clutter\clutter-config.h.win32_GDK"><Filter>Resource Files</Filter></CustomBuild>
     <CustomBuild Include="..\..\..\clutter\clutter-marshal.list"><Filter>Resource Files</Filter></CustomBuild>
     <CustomBuild Include="..\..\..\clutter\clutter-enum-types.h.in"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="..\..\..\clutter\clutter-enum-types.c.in"><Filter>Resource Files</Filter></CustomBuild>
     <CustomBuild Include="..\..\..\clutter\clutter.symbols"><Filter>Resource Files</Filter></CustomBuild>
   </ItemGroup>
   <ItemGroup>

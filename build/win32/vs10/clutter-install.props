@@ -1,75 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+    <Import Project="clutter-build-defines.props" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros">
-    <VSVer>10</VSVer>
-    <GlibEtcInstallRoot>$(SolutionDir)\..\..\..\..\vs$(VSVer)\$(Platform)</GlibEtcInstallRoot>
-    <ApiVersion>1.0</ApiVersion>
-    <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
-    <DefDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</DefDir>
-    <BaseWinBuildDef>_WIN32_WINNT=0x0500</BaseWinBuildDef>
-    <BaseBuildDef>$(BaseWinBuildDef)</BaseBuildDef>
-    <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API;COGL_HAS_WIN32_SUPPORT;CLUTTER_ENABLE_EXPERIMENTAL_API</LibBuildDefines>
-    <DebugLibBuildDefines>$(LibBuildDefines);_DEBUG;CLUTTER_ENABLE_DEBUG</DebugLibBuildDefines>
-    <ReleaseLibBuildDefines>$(LibBuildDefines);G_DISABLE_ASSERT;G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS</ReleaseLibBuildDefines>
-    <ClutterBuildDefines>$(BaseBuildDef);G_LOG_DOMAIN="Clutter";CLUTTER_LOCALEDIR="../share/locale";CLUTTER_SYSCONFDIR="../etc";COGL_DISABLE_DEPRECATION_WARNINGS</ClutterBuildDefines>
-    <ClutterDisableDeprecationWarnings>CLUTTER_DISABLE_DEPRECATION_WARNINGS;GLIB_DISABLE_DEPRECATION_WARNINGS</ClutterDisableDeprecationWarnings>
-    <CallyTestDefs>$(BaseWinBuildDef);PREFIXDIR="/some/dummy/dir";$(ClutterDisableDeprecationWarnings)</CallyTestDefs>
-    <TestProgDef>$(BaseBuildDef);TESTS_DATADIR="../share/clutter-$(ApiVersion)/data"</TestProgDef>
-    <TestPerfProgDef>$(BaseBuildDef);TESTS_DATA_DIR="../share/clutter-$(ApiVersion)/data";$(ClutterDisableDeprecationWarnings)</TestPerfProgDef>
-    <DoConfigs>
-if exist ..\..\..\clutter\config.h goto DONE_CONFIG_H
-copy ..\..\..\clutter\config.h.win32 ..\..\..\clutter\config.h
-
-:DONE_CONFIG_H
-if "$(Configuration)" == "Release" goto DO_CLUTTER_CONFIG_WIN32
-if "$(Configuration)" == "Debug" goto DO_CLUTTER_CONFIG_WIN32
-
-if exist ..\..\..\clutter\clutter.bld.GDK.win32 goto DONE_CLUTTER_CONFIG_H
-if exist clutter.bld.*.win32 del clutter.bld.*.win32
-copy ..\..\..\clutter\clutter-config.h.win32_GDK clutter.bld.GDK.win32
-copy ..\..\..\clutter\clutter-config.h.win32_GDK ..\..\..\clutter\clutter-config.h
-goto DONE_CLUTTER_CONFIG_H
-
-:DO_CLUTTER_CONFIG_WIN32
-if exist ..\..\..\clutter\clutter.bld.win32.win32 goto DONE_CLUTTER_CONFIG_H
-if exist clutter.bld.*.win32 del clutter.bld.*.win32
-copy ..\..\..\clutter\clutter-config.h.win32 clutter.bld.win32.win32
-copy ..\..\..\clutter\clutter-config.h.win32 ..\..\..\clutter\clutter-config.h
-
-:DONE_CLUTTER_CONFIG_H
-	</DoConfigs>
-    <GenMarshalSrc>
-if exist ..\..\..\clutter\clutter-marshal.h goto DONE_CLUTTER_MARSHAL_H
-
-cd ..\..\..\clutter
-
-$(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --header clutter-marshal.list &gt; clutter-marshal.h
-
-cd ..\build\win32\vs$(VSVer)
-
-:DONE_CLUTTER_MARSHAL_H
-
-
-if exist ..\..\..\clutter\clutter-marshal.c goto DONE_CLUTTER_MARSHAL_C
-
-cd ..\..\..\clutter
-
-echo #include "clutter-marshal.h" &gt; clutter-marshal.c
-
-$(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --body clutter-marshal.list &gt;&gt; clutter-marshal.c
-
-cd ..\build\win32\vs$(VSVer)
-
-:DONE_CLUTTER_MARSHAL_C
-</GenMarshalSrc>
-
-<GenEnumsSrc>
-cd ..
-call gen-enums.bat $(GlibEtcInstallRoot)
-cd .\vs$(VSVer)
-</GenEnumsSrc>
-
-<ClutterDoInstall>
+    <ClutterDoInstall>
 mkdir $(CopyDir)
 
 mkdir $(CopyDir)\bin
@@ -81,13 +16,12 @@ copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.dll $(CopyDir)\bin
 
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.exe $(CopyDir)\bin
 
-copy ..\*.bat $(CopyDir)\bin
+copy ..\..\..\tests\interactive\*.png $(CopyDir)\share\clutter-$(ApiVersion)\data
 
-copy ..\..\..\tests\data\*.png $(CopyDir)\share\clutter-$(ApiVersion)\data
+copy ..\..\..\tests\clutter-1.0.suppressions $(CopyDir)\share\clutter-$(ApiVersion)\data
 
-copy ..\..\..\tests\data\clutter-1.0.suppressions $(CopyDir)\share\clutter-$(ApiVersion)\data
+copy ..\..\..\tests\interactive\*.json $(CopyDir)\share\clutter-$(ApiVersion)\data
 
-copy ..\..\..\tests\data\*.json $(CopyDir)\share\clutter-$(ApiVersion)\data
 
 
 mkdir $(CopyDir)\lib
@@ -97,11 +31,10 @@ copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDi
 
 mkdir $(CopyDir)\include\clutter-$(ApiVersion)\clutter\win32
 
-if exist clutter.bld.win32.win32 goto DO_INSTALL_COMMON_HEADERS
+if "$(Configuration)" == "Release" goto DO_INSTALL_COMMON_HEADERS
+if "$(Configuration)" == "Debug" goto DO_INSTALL_COMMON_HEADERS
 
-mkdir $(CopyDir)\include\clutter-$(ApiVersion)\clutter\gdk
-copy ..\..\..\clutter\gdk\clutter-gdk.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\gdk
-
+$(ClutterDoInstallGDK)
 
 :DO_INSTALL_COMMON_HEADERS
 
@@ -253,9 +186,9 @@ copy ..\..\..\clutter\clutter-stage-window.h $(CopyDir)\include\clutter-$(ApiVer
 
 copy ..\..\..\clutter\clutter-swipe-action.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter
 
-copy ..\..\..\clutter\clutter-table-layout.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter
-
 copy ..\..\..\clutter\clutter-tap-action.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter
+
+copy ..\..\..\clutter\clutter-test-utils.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter
 
 copy ..\..\..\clutter\clutter-texture.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter
 
@@ -342,6 +275,8 @@ copy ..\..\..\clutter\deprecated\clutter-stage-manager.h $(CopyDir)\include\clut
 
 copy ..\..\..\clutter\deprecated\clutter-state.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\deprecated
 
+copy ..\..\..\clutter\deprecated\clutter-table-layout.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\deprecated
+
 copy ..\..\..\clutter\deprecated\clutter-texture.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\deprecated
 
 copy ..\..\..\clutter\deprecated\clutter-timeline.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\deprecated
@@ -376,140 +311,22 @@ copy ..\..\..\clutter\cally\cally-text.h $(CopyDir)\include\clutter-$(ApiVersion
 copy ..\..\..\clutter\cally\cally-texture.h $(CopyDir)\include\clutter-$(ApiVersion)\cally
 
 copy ..\..\..\clutter\cally\cally-util.h $(CopyDir)\include\clutter-$(ApiVersion)\cally
-
-
-</ClutterDoInstall>
-<ClutterDoInstallGDK>
+    </ClutterDoInstall>
+    <ClutterDoInstallGDK>
 mkdir $(CopyDir)\include\clutter-$(ApiVersion)\clutter\gdk
 
 copy ..\..\..\clutter\gdk\clutter-gdk.h $(CopyDir)\include\clutter-$(ApiVersion)\clutter\gdk
-</ClutterDoInstallGDK>
-    <GenerateClutterDef>
-         echo EXPORTS &gt; $(DefDir)\clutter.def
-
-         cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; $(DefDir)\clutter.def
-
-    </GenerateClutterDef>
-    <GenerateClutterGDKDef>
-         echo EXPORTS &gt; $(DefDir)\clutter.def
-
-         cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_WINDOWING_GDK -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; $(DefDir)\clutter.def
-
-    </GenerateClutterGDKDef>
-    <ClutterLibtoolCompatibleDllPrefix>lib</ClutterLibtoolCompatibleDllPrefix>
-    <ClutterLibtoolCompatibleDllSuffix>-$(ApiVersion)-0</ClutterLibtoolCompatibleDllSuffix>
-    <ClutterSeparateVSDllPrefix />
-    <ClutterSeparateVSDllSuffix>-1-vs$(VSVer)</ClutterSeparateVSDllSuffix>
-    <ClutterDllPrefix>$(ClutterSeparateVSDllPrefix)</ClutterDllPrefix>
-    <ClutterDllSuffix>$(ClutterSeparateVSDllSuffix)</ClutterDllSuffix>
+    </ClutterDoInstallGDK>
   </PropertyGroup>
   <PropertyGroup>
-    <_PropertySheetDisplayName>clutterprops</_PropertySheetDisplayName>
-    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformName)\bin\</OutDir>
-    <IntDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</IntDir>
+    <_PropertySheetDisplayName>clutterinstallprops</_PropertySheetDisplayName>
   </PropertyGroup>
-  <ItemDefinitionGroup>
-    <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..;..\..\..\clutter;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\atk-1.0;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\cogl-1.0;$(GlibEtcInstallRoot)\include\json-glib-1.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>G_DISABLE_SINGLE_INCLUDES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ForcedIncludeFiles>msvc_recommended_pragmas.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>cogl-pango-1.0.lib;cogl-1.0.lib;glib-2.0.lib;gobject-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(GlibEtcInstallRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemGroup>
-    <BuildMacro Include="VSVer">
-      <Value>$(VSVer)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GlibEtcInstallRoot">
-      <Value>$(GlibEtcInstallRoot)</Value>
-    </BuildMacro>
-    <BuildMacro Include="CopyDir">
-      <Value>$(CopyDir)</Value>
-    </BuildMacro>
-    <BuildMacro Include="DefDir">
-      <Value>$(DefDir)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ApiVersion">
-      <Value>$(ApiVersion)</Value>
-    </BuildMacro>
-    <BuildMacro Include="BaseWinBuildDef">
-      <Value>$(BaseWinBuildDef)</Value>
-    </BuildMacro>
-    <BuildMacro Include="BaseBuildDef">
-      <Value>$(BaseBuildDef)</Value>
-    </BuildMacro>
-    <BuildMacro Include="LibBuildDefines">
-      <Value>$(LibBuildDefines)</Value>
-    </BuildMacro>
-    <BuildMacro Include="DebugLibBuildDefines">
-      <Value>$(DebugLibBuildDefines)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ReleaseLibBuildDefines">
-      <Value>$(ReleaseLibBuildDefines)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ClutterBuildDefines">
-      <Value>$(ClutterBuildDefines)</Value>
-    </BuildMacro>
-    <BuildMacro Include="CallyTestDefs">
-      <Value>$(CallyTestDefs)</Value>
-    </BuildMacro>
-    <BuildMacro Include="TestProgDef">
-      <Value>$(TestProgDef)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ClutterDisableDeprecationWarnings">
-      <Value>$(ClutterDisableDeprecationWarnings)</Value>
-    </BuildMacro>
-    <BuildMacro Include="TestPerfProgDef">
-      <Value>$(TestPerfProgDef)</Value>
-    </BuildMacro>
-    <BuildMacro Include="DoConfigs">
-      <Value>$(DoConfigs)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GenMarshalSrc">
-      <Value>$(GenMarshalSrc)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GenEnumsSrc">
-      <Value>$(GenEnumsSrc)</Value>
-    </BuildMacro>
     <BuildMacro Include="ClutterDoInstall">
       <Value>$(ClutterDoInstall)</Value>
     </BuildMacro>
     <BuildMacro Include="ClutterDoInstallGDK">
       <Value>$(ClutterDoInstallGDK)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ClutterDoInstallReleaseBin">
-      <Value>$(ClutterDoInstallReleaseBin)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ClutterDoInstallDebugBin">
-      <Value>$(ClutterDoInstallDebugBin)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GenerateClutterDef">
-      <Value>$(GenerateClutterDef)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GenerateClutterGDKDef">
-      <Value>$(GenerateClutterGDKDef)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ClutterLibtoolCompatibleDllPrefix">
-      <Value>$(ClutterLibtoolCompatibleDllPrefix)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ClutterLibtoolCompatibleDllSuffix">
-      <Value>$(ClutterLibtoolCompatibleDllSuffix)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ClutterSeparateVSDllPrefix">
-      <Value>$(ClutterSeparateVSDllPrefix)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ClutterSeparateVSDllSuffix">
-      <Value>$(ClutterSeparateVSDllSuffix)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ClutterDllPrefix">
-      <Value>$(ClutterDllPrefix)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ClutterDllSuffix">
-      <Value>$(ClutterDllSuffix)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>
