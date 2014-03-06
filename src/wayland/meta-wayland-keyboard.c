@@ -389,20 +389,21 @@ update_pressed_keys (MetaWaylandKeyboard   *keyboard,
     }
 }
 
+static guint
+evdev_code (const ClutterKeyEvent *event)
+{
+  /* clutter-xkb-utils.c adds a fixed offset of 8 to go into XKB's
+   * range, so we do the reverse here. */
+  return event->hardware_keycode - 8;
+}
+
 gboolean
 meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
                                     const ClutterKeyEvent *event)
 {
   gboolean is_press = event->type == CLUTTER_KEY_PRESS;
-  guint xkb_keycode, evdev_code;
   uint32_t serial;
   gboolean handled;
-
-  xkb_keycode = event->hardware_keycode;
-  if (event->device == NULL ||
-      !clutter_input_device_keycode_to_evdev (event->device,
-					      xkb_keycode, &evdev_code))
-    evdev_code = xkb_keycode - 8; /* What everyone is doing in practice... */
 
   /* Synthetic key events are for autorepeat. Ignore those, as
    * autorepeat in Wayland is done on the client side. */
@@ -411,7 +412,7 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
 
   meta_verbose ("Handling key %s event code %d\n",
 		is_press ? "press" : "release",
-		xkb_keycode);
+		event->hardware_keycode);
 
   update_pressed_keys (keyboard, evdev_code, is_press);
 
@@ -421,7 +422,7 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
 
   handled = keyboard->grab->interface->key (keyboard->grab,
 					    event->time,
-					    evdev_code,
+					    evdev_code (event),
 					    is_press);
 
   if (handled)
