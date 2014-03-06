@@ -1076,8 +1076,7 @@ get_pointer_position_gdk (int         *x,
   gmanager = gdk_display_get_device_manager (gdk_display_get_default ());
   gdevice = gdk_device_manager_get_client_pointer (gmanager);
 
-  if (x || y)
-    gdk_device_get_position (gdevice, &gscreen, x, y);
+  gdk_device_get_position (gdevice, &gscreen, x, y);
   if (mods)
     gdk_device_get_state (gdevice,
                           gdk_screen_get_root_window (gscreen),
