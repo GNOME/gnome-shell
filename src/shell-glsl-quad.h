@@ -61,4 +61,12 @@ void shell_glsl_quad_add_glsl_snippet (ShellGLSLQuad    *quad,
                                        const char       *code,
                                        gboolean          is_replace);
 
+int  shell_glsl_quad_get_uniform_location (ShellGLSLQuad *quad,
+                                           const char    *name);
+void shell_glsl_quad_set_uniform_float    (ShellGLSLQuad *quad,
+                                           int            uniform,
+                                           int            n_components,
+                                           int            total_count,
+                                           const float   *value);
+
 #endif /* __SHELL_GLSL_QUAD_H__ */

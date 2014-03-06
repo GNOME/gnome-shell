@@ -14,6 +14,7 @@ const Gdk = imports.gi.Gdk;
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const LayoutManager = imports.ui.layout;
+const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const OverviewControls = imports.ui.overviewControls;
@@ -196,11 +197,7 @@ const Overview = new Lang.Class({
 
             Tweener.addTween(background,
                              { brightness: 1.0,
-                               time: SHADE_ANIMATION_TIME,
-                               transition: 'easeOutQuad'
-                             });
-            Tweener.addTween(background,
-                             { vignetteSharpness: 0.0,
+                               vignetteSharpness: 0.0,
                                time: SHADE_ANIMATION_TIME,
                                transition: 'easeOutQuad'
                              });
@@ -213,12 +210,8 @@ const Overview = new Lang.Class({
             let background = backgrounds[i]._delegate;
 
             Tweener.addTween(background,
-                             { brightness: 0.8,
-                               time: SHADE_ANIMATION_TIME,
-                               transition: 'easeOutQuad'
-                             });
-            Tweener.addTween(background,
-                             { vignetteSharpness: 0.7,
+                             { brightness: Lightbox.VIGNETTE_BRIGHTNESS,
+                               vignetteSharpness: Lightbox.VIGNETTE_SHARPNESS,
                                time: SHADE_ANIMATION_TIME,
                                transition: 'easeOutQuad'
                              });

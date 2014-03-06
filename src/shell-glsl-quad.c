@@ -24,7 +24,6 @@ G_DEFINE_TYPE (ShellGLSLQuad, shell_glsl_quad, CLUTTER_TYPE_ACTOR);
 struct _ShellGLSLQuadPrivate
 {
   CoglPipeline  *pipeline;
-  CoglTexture2D *texture;
 };
 
 static void
@@ -40,9 +39,10 @@ shell_glsl_quad_paint (ClutterActor *actor)
   paint_opacity = clutter_actor_get_paint_opacity (actor);
   clutter_actor_get_allocation_box (actor, &box);
 
-  /* semi-transparent black */
   cogl_pipeline_set_color4ub (priv->pipeline,
-                              0, 0, 0,
+                              paint_opacity,
+                              paint_opacity,
+                              paint_opacity,
                               paint_opacity);
   cogl_framebuffer_draw_rectangle (cogl_get_draw_framebuffer (),
                                    priv->pipeline,
@@ -105,7 +105,6 @@ shell_glsl_quad_dispose (GObject *gobject)
   priv = self->priv;
 
   g_clear_pointer (&priv->pipeline, cogl_object_unref);
-  g_clear_pointer (&priv->texture, cogl_object_unref);
 
   G_OBJECT_CLASS (shell_glsl_quad_parent_class)->dispose (gobject);
 }
@@ -123,7 +122,6 @@ shell_glsl_quad_constructed (GObject *object)
   ShellGLSLQuadClass *klass;
   CoglContext *ctx =
     clutter_backend_get_cogl_context (clutter_get_default_backend ());
-  static const uint8_t tex_data[] = { 0, 0, 0, 0 };
 
   G_OBJECT_CLASS (shell_glsl_quad_parent_class)->constructed (object);
 
@@ -144,11 +142,7 @@ shell_glsl_quad_constructed (GObject *object)
 
   self->priv->pipeline = cogl_pipeline_copy (klass->base_pipeline);
 
-  self->priv->texture = cogl_texture_2d_new_from_data (ctx, 1, 1,
-                                                       COGL_PIXEL_FORMAT_RGBA_8888,
-                                                       0, tex_data, NULL);
-  cogl_pipeline_set_layer_texture (self->priv->pipeline, 0,
-                                   COGL_TEXTURE (self->priv->texture));
+  cogl_pipeline_set_layer_null_texture (self->priv->pipeline, 0, COGL_TEXTURE_TYPE_2D);
 }
 
 static void
@@ -163,4 +157,39 @@ shell_glsl_quad_class_init (ShellGLSLQuadClass *klass)
   actor_class->paint = shell_glsl_quad_paint;
 
   g_type_class_add_private (klass, sizeof (ShellGLSLQuadPrivate));
+}
+
+/**
+ * shell_glsl_quad_get_uniform_location:
+ * @quad: a #ShellGLSLQuad
+ * @name: the uniform name
+ *
+ * Returns: the location of the uniform named @name, that can be
+ *          passed to shell_glsl_quad_set_uniform_float().
+ */
+int
+shell_glsl_quad_get_uniform_location (ShellGLSLQuad *quad,
+                                      const char    *name)
+{
+  return cogl_pipeline_get_uniform_location (quad->priv->pipeline, name);
+}
+
+/**
+ * shell_glsl_quad_set_uniform_float:
+ * @quad: a #ShellGLSLQuad
+ * @uniform: the uniform location (as returned by shell_glsl_quad_get_uniform_location())
+ * @n_components: the number of components in the uniform (eg. 3 for a vec3)
+ * @total_count: the total number of floats in @value
+ * @value: (array length=total_count): the array of floats to set @uniform
+ */
+void
+shell_glsl_quad_set_uniform_float (ShellGLSLQuad *quad,
+                                   int            uniform,
+                                   int            n_components,
+                                   int            total_count,
+                                   const float   *value)
+{
+  cogl_pipeline_set_uniform_float (quad->priv->pipeline, uniform,
+                                   n_components, total_count / n_components,
+                                   value);
 }
