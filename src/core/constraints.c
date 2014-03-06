@@ -425,8 +425,9 @@ setup_constraint_info (ConstraintInfo      *info,
    * the monitor.
    */
   if (meta_prefs_get_force_fullscreen() &&
+      window->client_type != META_WINDOW_CLIENT_TYPE_WAYLAND &&
       !window->hide_titlebar_when_maximized &&
-      window->decorated &&
+      (window->decorated || !meta_window_is_client_decorated (window)) &&
       meta_rectangle_equal (new, &monitor_info->rect) &&
       window->has_fullscreen_func &&
       !window->fullscreen)

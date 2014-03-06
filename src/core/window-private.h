@@ -751,4 +751,6 @@ void meta_window_activate_full (MetaWindow     *window,
                                 MetaClientType  source_indication,
                                 MetaWorkspace  *workspace);
 
+gboolean meta_window_is_client_decorated (MetaWindow *window);
+
 #endif
