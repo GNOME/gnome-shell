@@ -386,7 +386,7 @@ meta_cursor_tracker_get_pointer (MetaCursorTracker   *tracker,
   GdkScreen *gscreen;
 
   gmanager = gdk_display_get_device_manager (gdk_display_get_default ());
-  gdevice = gdk_device_manager_get_client_pointer (gmanager);
+  gdevice = gdk_x11_device_manager_lookup (gmanager, META_VIRTUAL_CORE_POINTER_ID);
 
   gdk_device_get_position (gdevice, &gscreen, x, y);
   gdk_device_get_state (gdevice,
