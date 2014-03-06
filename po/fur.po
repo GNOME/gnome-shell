@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-03-06 03:00+0000\n"
-"PO-Revision-Date: 2014-03-06 04:22+0100\n"
+"PO-Revision-Date: 2014-03-06 04:59+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -63,7 +63,7 @@ msgstr "Configure Estensions di GNOME Shell"
 
 #: ../data/gnome-shell-wayland.desktop.in.in.h:1
 msgid "GNOME Shell (wayland compositor)"
-msgstr ""
+msgstr "GNOME Shell (wayland compositor)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 #, fuzzy
@@ -136,13 +136,11 @@ msgid "History for the looking glass dialog"
 msgstr "Storic par il barcon di conversazion looking glass "
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-#, fuzzy
 #| msgid "Always show the 'Log out' menuitem in the user menu."
 msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "Mostre simpri l'element 'Jes' tal menu dal utent."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:12
-#, fuzzy
 #| msgid ""
 #| "This key overrides the automatic hiding of the 'Log out' menuitem in "
 #| "single-user, single-session situations."
@@ -150,8 +148,8 @@ msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
 msgstr ""
-"Cheste clâf a sostituis il platâ automatic di 'Jes' tal menu cuanche si è in "
-"ugnul-utent, ugnule-session."
+"Cheste clâf a anule il platâ automatic de vôs di menu 'Jes' cuant che a si è "
+"in ugnul-utent, ugnule-session."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid ""
@@ -338,7 +336,7 @@ msgstr "Jentre"
 
 #: ../js/gdm/loginDialog.js:270
 msgid "Choose Session"
-msgstr ""
+msgstr "Selezione Session"
 
 #: ../js/gdm/loginDialog.js:430
 msgid "Not listed?"
@@ -374,18 +372,17 @@ msgid "Could not parse command:"
 msgstr "Impussibil analizâ il comant:"
 
 #: ../js/misc/util.js:156
-#, fuzzy
 #| msgid "Execution of '%s' failed:"
 msgid "Execution of “%s” failed:"
 msgstr "Esecuzion di '%s' falide:"
 
 #: ../js/ui/appDisplay.js:629
 msgid "Frequently used applications will appear here"
-msgstr ""
+msgstr "Lis aplicazions dopradis dispès a vegnaran mostradis ca"
 
 #: ../js/ui/appDisplay.js:740
 msgid "Frequent"
-msgstr ""
+msgstr "Dispès"
 
 #: ../js/ui/appDisplay.js:747
 msgid "All"
@@ -418,7 +415,7 @@ msgstr "Impostazions"
 
 #: ../js/ui/backgroundMenu.js:21
 msgid "Change Background…"
-msgstr ""
+msgstr "Cambie sfont..."
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -542,11 +539,11 @@ msgstr ""
 
 #: ../js/ui/calendar.js:446
 msgid "Previous month"
-msgstr ""
+msgstr "Mês indaûr"
 
 #: ../js/ui/calendar.js:456
 msgid "Next month"
-msgstr ""
+msgstr "Prossim mês"
 
 #. Translators: Text to show if there are no events */
 #: ../js/ui/calendar.js:763
@@ -643,7 +640,6 @@ msgid "Authentication required by wireless network"
 msgstr "Autenticazion domandade dae rêt wireless"
 
 #: ../js/ui/components/networkAgent.js:312
-#, fuzzy
 #| msgid ""
 #| "Passwords or encryption keys are required to access the wireless network "
 #| "'%s'."
@@ -683,10 +679,9 @@ msgid "Mobile broadband network password"
 msgstr "Passowrd rêt mobil"
 
 #: ../js/ui/components/networkAgent.js:339
-#, fuzzy
 #| msgid "A password is required to connect to '%s'."
 msgid "A password is required to connect to “%s”."
-msgstr "A si scugne dâ une password par conetisi a '%s'."
+msgstr "A covente une password par tacâsi a '%s'."
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -740,7 +735,6 @@ msgstr ""
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:962
-#, fuzzy
 #| msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgid "Yesterday, %H∶%M"
 msgstr "<b>Îr</b>, <b>%H:%M</b>"
@@ -1003,7 +997,6 @@ msgid "Open Clocks"
 msgstr "Vierç Orlois"
 
 #: ../js/ui/dateMenu.js:102
-#, fuzzy
 #| msgid "Date and Time Settings"
 msgid "Date & Time Settings"
 msgstr "Impostazions Date e Ore"
@@ -1048,11 +1041,10 @@ msgid "Power Off"
 msgstr "Stude"
 
 #: ../js/ui/endSessionDialog.js:87
-#, fuzzy
 #| msgid "Install Updates & Restart"
 msgctxt "title"
 msgid "Install Updates & Power Off"
-msgstr "Instale inzornaments e torne a inviâ il sisteme"
+msgstr "Instale inzornaments e Stude"
 
 #: ../js/ui/endSessionDialog.js:89
 msgid "The system will power off automatically in %d second."
@@ -1087,11 +1079,10 @@ msgstr[0] "Il sisteme a si reinviarà automaticamentri in %d secont."
 msgstr[1] "Il sisteme a si reinviarà automaticamentri in %d seconts."
 
 #: ../js/ui/endSessionDialog.js:121
-#, fuzzy
 #| msgid "Install Updates & Restart"
 msgctxt "title"
 msgid "Restart & Install Updates"
-msgstr "Instale inzornaments e torne a inviâ il sisteme"
+msgstr "Torne a inviâ e instale inzornaments"
 
 #: ../js/ui/endSessionDialog.js:123
 #| msgid "The system will restart automatically in %d second."
@@ -1115,19 +1106,21 @@ msgstr ""
 #: ../js/ui/endSessionDialog.js:131
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
-msgstr ""
+msgstr "Stude dopo vê instalât i inzornaments"
 
 #: ../js/ui/endSessionDialog.js:315
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
+"Funzionament su batarie: par plasê tache la spine prime di instalâ i "
+"inzornaments."
 
 #: ../js/ui/endSessionDialog.js:332
 msgid "Some applications are busy or have unsaved work."
-msgstr ""
+msgstr "Cualchi aplicazion a je impegnade o a à lavôrs no salvâts."
 
 #: ../js/ui/endSessionDialog.js:339
 msgid "Other users are logged in."
-msgstr ""
+msgstr "Altris utents a son jentrâts."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
 #: ../js/ui/endSessionDialog.js:618
@@ -1312,7 +1305,7 @@ msgstr "Bloche"
 
 #: ../js/ui/screenShield.js:707
 msgid "GNOME needs to lock the screen"
-msgstr ""
+msgstr "GNOME al scugne blocâ il visôr"
 
 #: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1301
 #| msgid "Unable to connect to %s"
@@ -1411,7 +1404,7 @@ msgstr "Bluetooth"
 #: ../js/ui/status/network.js:1336 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
-msgstr ""
+msgstr "Stude"
 
 #: ../js/ui/status/bluetooth.js:53
 msgid "Bluetooth Settings"
@@ -1422,7 +1415,7 @@ msgstr "Impostazions Bluetooth"
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d dispositîf tacât"
-msgstr[1] "Conetude (privade)"
+msgstr[1] "%d dispositîfs tacâts"
 
 #: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1253
 #| msgid "Connect"
@@ -1431,7 +1424,7 @@ msgstr "No tacât"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
-msgstr ""
+msgstr "Luminositât"
 
 #: ../js/ui/status/keyboard.js:403
 msgid "Show Keyboard Layout"
@@ -1457,7 +1450,7 @@ msgstr "Off"
 
 #: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1225
 msgid "Turn On"
-msgstr ""
+msgstr "Pie"
 
 #: ../js/ui/status/network.js:74
 msgid "<unknown>"
@@ -1524,31 +1517,31 @@ msgstr ""
 
 #: ../js/ui/status/network.js:771
 msgid "Airplane Mode is On"
-msgstr ""
+msgstr "Modalitât Avion a je On"
 
 #: ../js/ui/status/network.js:772
 msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr ""
+msgstr "Wi-Fi disabilitât cuant che la modalitât avion a je on."
 
 #: ../js/ui/status/network.js:773
 msgid "Turn Off Airplane Mode"
-msgstr ""
+msgstr "Stude Modalitât Avion"
 
 #: ../js/ui/status/network.js:782
 msgid "Wi-Fi is Off"
-msgstr ""
+msgstr "Wi-Fi al è Off"
 
 #: ../js/ui/status/network.js:783
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr ""
+msgstr "Wi-Fi al a bisugne di sedi piât par podêsi tacâ a une rêt."
 
 #: ../js/ui/status/network.js:784
 msgid "Turn On Wi-Fi"
-msgstr ""
+msgstr "Pie Wi-Fi"
 
 #: ../js/ui/status/network.js:809
 msgid "Wi-Fi Networks"
-msgstr ""
+msgstr "Rêts Wi-Fi"
 
 #: ../js/ui/status/network.js:811
 #| msgid "Enable networking"
@@ -1557,7 +1550,7 @@ msgstr "Selezione une rêt"
 
 #: ../js/ui/status/network.js:840
 msgid "No Networks"
-msgstr ""
+msgstr "Nissune Rêt"
 
 #: ../js/ui/status/network.js:861 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
@@ -1565,7 +1558,7 @@ msgstr ""
 
 #: ../js/ui/status/network.js:1131
 msgid "Select Network"
-msgstr ""
+msgstr "Selezione Rêt"
 
 #: ../js/ui/status/network.js:1137
 #| msgid "Settings"
@@ -1592,7 +1585,7 @@ msgstr "Impostazions VPN"
 
 #: ../js/ui/status/network.js:1445
 msgid "VPN"
-msgstr ""
+msgstr "VPN"
 
 #: ../js/ui/status/network.js:1598
 msgid "Network Manager"
@@ -1637,7 +1630,7 @@ msgstr "Batarie"
 
 #: ../js/ui/status/rfkill.js:82
 msgid "Airplane Mode"
-msgstr ""
+msgstr "Modalitât Avion"
 
 #: ../js/ui/status/system.js:314
 msgid "Switch User"
@@ -1649,7 +1642,7 @@ msgstr "Jes"
 
 #: ../js/ui/status/system.js:338
 msgid "Orientation Lock"
-msgstr ""
+msgstr "Bloche Orientament"
 
 #: ../js/ui/status/system.js:346
 msgid "Suspend"
@@ -1673,7 +1666,7 @@ msgstr "Microfon"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
-msgstr "Acêt come altri utent"
+msgstr "Jentre come altri utent"
 
 #: ../js/ui/unlockDialog.js:84
 msgid "Unlock Window"
@@ -1694,7 +1687,7 @@ msgstr "'%s' al è pront"
 
 #: ../js/ui/windowManager.js:56
 msgid "Do you want to keep these display settings?"
-msgstr ""
+msgstr "Vûs tu tignî chestis impostazions di visôr?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
@@ -1706,13 +1699,13 @@ msgstr "Ripristine impostazions"
 
 #: ../js/ui/windowManager.js:79
 msgid "Keep Changes"
-msgstr ""
+msgstr "Ten Cambiaments"
 
 #: ../js/ui/windowManager.js:97
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Lis impostazions cambiadis a vegnaran ripristinadis  in %d secont"
+msgstr[1] "Lis impostazions cambiadis a vegnaran ripristinadis  in %d seconts"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
