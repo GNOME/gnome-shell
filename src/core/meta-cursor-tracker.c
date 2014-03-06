@@ -34,6 +34,7 @@
 #include <clutter/clutter.h>
 
 #include <gdk/gdk.h>
+#include <gdk/gdkx.h>
 
 #include <X11/cursorfont.h>
 #include <X11/extensions/Xfixes.h>
