@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-01-25 12:11+0000\n"
-"PO-Revision-Date: 2014-03-06 03:44+0100\n"
+"PO-Revision-Date: 2014-03-06 03:58+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -25,7 +25,6 @@ msgid "Screenshots"
 msgstr "Screenshots"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:2
-#, fuzzy
 msgid "Record a screencast"
 msgstr "Regjistre un video dal visôr"
 
@@ -50,7 +49,6 @@ msgid "Open the application menu"
 msgstr "Vierç il menu aplicazions"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
-#, fuzzy
 msgid "GNOME Shell"
 msgstr "GNOME Shell"
 
@@ -75,7 +73,6 @@ msgstr ""
 "Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:2
-#, fuzzy
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
@@ -128,7 +125,6 @@ msgid ""
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
-#, fuzzy
 msgid "History for command (Alt-F2) dialog"
 msgstr "Storic comants in tal barcon di conversazion Alt-F2"
 
@@ -320,20 +316,18 @@ msgstr ""
 "al è in esecuzion GNOME Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:44
-#, fuzzy
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
-"Abilite l'orladure a piastrele cuanche si strisine i barcons tal ôr dal visôr"
+"Abilite l'orladure a piastrele cuant che a si strissine i barcons tal ôr dal "
+"visôr"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:45
-#, fuzzy
 msgid "Workspaces are managed dynamically"
-msgstr "Workspaces a son ministrât dinamicamentri"
+msgstr "Spazis di vore a son ministrât dinamicamentri"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:46
-#, fuzzy
 msgid "Workspaces only on primary monitor"
-msgstr "Workspaces nome tal visôr primari"
+msgstr "Spazis di vore nome tal visôr primari"
 
 #: ../js/extensionPrefs/main.js:124
 #, c-format
@@ -585,9 +579,8 @@ msgstr "Sa"
 
 #. Translators: Text to show if there are no events
 #: ../js/ui/calendar.js:674
-#, fuzzy
 msgid "Nothing Scheduled"
-msgstr "Nissun impegno"
+msgstr "Nissun impegni"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:690
@@ -1468,7 +1461,6 @@ msgid "Pairing request for %s"
 msgstr "Domande di associazion par %s"
 
 #: ../js/ui/status/bluetooth.js:395
-#, fuzzy
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Par plasê introdûs il PIN segnât sul dispositîf."
 
@@ -1710,7 +1702,7 @@ msgstr "Volum"
 
 #: ../js/ui/status/volume.js:259
 msgid "Microphone"
-msgstr ""
+msgstr "Microfon"
 
 #: ../js/ui/unlockDialog.js:203
 msgid "Log in as another user"
@@ -1761,9 +1753,8 @@ msgid "Log Out"
 msgstr "Jes"
 
 #: ../js/ui/userMenu.js:798
-#, fuzzy
 msgid "Install Updates & Restart"
-msgstr "Installe Atualizazions e Reinvie il sisteme"
+msgstr "Instale inzornaments e torne a inviâ il sisteme"
 
 #: ../js/ui/userMenu.js:816
 msgid "Your chat status will be set to busy"
