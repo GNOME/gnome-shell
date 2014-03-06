@@ -9005,7 +9005,7 @@ meta_window_titlebar_is_onscreen (MetaWindow *window)
 
   /* Titlebar can't be offscreen if there is no titlebar... */
   if (!window->frame)
-    return FALSE;
+    return TRUE;
 
   /* Get the rectangle corresponding to the titlebar */
   meta_window_get_frame_rect (window, &titlebar_rect);
