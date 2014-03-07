@@ -53,7 +53,6 @@ const UnlockDialog = new Lang.Class({
 
         this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
         this._authPrompt.connect('failed', Lang.bind(this, this._fail));
-        this._authPrompt.connect('cancelled', Lang.bind(this, this._fail));
         this._authPrompt.connect('reset', Lang.bind(this, this._onReset));
         this._authPrompt.setPasswordChar('\u25cf');
         this._authPrompt.nextButton.label = _("Unlock");

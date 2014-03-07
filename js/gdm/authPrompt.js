@@ -493,7 +493,6 @@ const AuthPrompt = new Lang.Class({
 
     cancel: function() {
         this.reset();
-        this.emit('cancelled');
     }
 });
 Signals.addSignalMethods(AuthPrompt.prototype);
