@@ -823,11 +823,7 @@ const LoginDialog = new Lang.Class({
         this._authPrompt.setUser(item.user);
 
         let userName = item.user.get_user_name();
-        let hold = new Batch.Hold();
-
-        this._authPrompt.begin({ userName: userName,
-                                 hold: hold });
-        return hold;
+        this._authPrompt.begin({ userName: userName });
     },
 
     _onUserListActivated: function(activatedItem) {
@@ -842,9 +838,9 @@ const LoginDialog = new Lang.Class({
 
         this._updateCancelButton();
 
-        let batch = new Batch.ConcurrentBatch(this, [new Batch.ConsecutiveBatch(this, tasks),
-                                                     this._beginVerificationForItem(activatedItem)]);
+        let batch = new Batch.ConsecutiveBatch(this, tasks);
         batch.run();
+        this._beginVerificationForItem(activatedItem);
     },
 
     _onDestroy: function() {
