@@ -487,11 +487,6 @@ const ShellUserVerifier = new Lang.Class({
         this.emit('verification-complete');
     },
 
-    _cancelAndReset: function() {
-        this.cancel();
-        this._onReset();
-    },
-
     _retry: function() {
         this.begin(this._userName, new Batch.Hold());
     },
@@ -518,12 +513,12 @@ const ShellUserVerifier = new Lang.Class({
             }
         } else {
             if (!this.hasPendingMessages) {
-                this._cancelAndReset();
+                this.cancel();
             } else {
                 let signalId = this.connect('no-more-messages',
                                             Lang.bind(this, function() {
                                                 this.disconnect(signalId);
-                                                this._cancelAndReset();
+                                                this.cancel();
                                             }));
             }
         }
