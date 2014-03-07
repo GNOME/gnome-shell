@@ -501,6 +501,8 @@ const ShellUserVerifier = new Lang.Class({
         let canRetry = retry && this._userName &&
             this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY);
 
+        this.emit('verification-failed');
+
         if (canRetry) {
             if (!this.hasPendingMessages) {
                 this._retry();
@@ -522,8 +524,6 @@ const ShellUserVerifier = new Lang.Class({
                                             }));
             }
         }
-
-        this.emit('verification-failed');
     },
 
     _onConversationStopped: function(client, serviceName) {
