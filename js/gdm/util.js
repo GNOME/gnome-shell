@@ -222,7 +222,7 @@ const ShellUserVerifier = new Lang.Class({
         return message.length * USER_READ_TIME;
     },
 
-    finishMessageQueue: function() {
+    _finishMessageQueue: function() {
         if (!this.hasPendingMessages)
             return;
 
@@ -234,7 +234,7 @@ const ShellUserVerifier = new Lang.Class({
 
     _queueMessageTimeout: function() {
         if (this._messageQueue.length == 0) {
-            this.finishMessageQueue();
+            this._finishMessageQueue();
             return;
         }
 
@@ -263,7 +263,7 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _clearMessageQueue: function() {
-        this.finishMessageQueue();
+        this._finishMessageQueue();
 
         if (this._messageQueueTimeoutId != 0) {
             GLib.source_remove(this._messageQueueTimeoutId);
