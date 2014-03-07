@@ -49,7 +49,6 @@ const AuthPrompt = new Lang.Class({
         this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
         this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
         this._userVerifier.connect('smartcard-status-changed', Lang.bind(this, this._onSmartcardStatusChanged));
-        this._userVerifier.connect('ovirt-user-authenticated', Lang.bind(this, this._onOVirtUserAuthenticated));
         this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         this.connect('next', Lang.bind(this, function() {
@@ -215,28 +214,8 @@ const AuthPrompt = new Lang.Class({
         this.emit('prompted');
     },
 
-    _onOVirtUserAuthenticated: function() {
-        if (this.verificationStatus != GdmUtil.VerificationStatus.VERIFICATION_SUCCEEDED)
-            this.reset();
-    },
-
     _onSmartcardStatusChanged: function() {
         this.smartcardDetected = this._userVerifier.smartcardDetected;
-
-        // Most of the time we want to reset if the user inserts or removes
-        // a smartcard. Smartcard insertion "preempts" what the user was
-        // doing, and smartcard removal aborts the preemption.
-        // The exceptions are: 1) Don't reset on smartcard insertion if we're already verifying
-        //                        with a smartcard
-        //                     2) Don't reset if we've already succeeded at verification and
-        //                        the user is getting logged in.
-        if (this._userVerifier.serviceIsDefault(GdmUtil.SMARTCARD_SERVICE_NAME) &&
-            this.verificationStatus == GdmUtil.VerificationStatus.VERIFYING &&
-            this.smartcardDetected)
-            return;
-
-        if (this.verificationStatus != GdmUtil.VerificationStatus.VERIFICATION_SUCCEEDED)
-            this.reset();
     },
 
     _onShowMessage: function(userVerifier, message, type) {

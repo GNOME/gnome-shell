@@ -306,7 +306,8 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _oVirtUserAuthenticated: function() {
-        this.emit('ovirt-user-authenticated');
+        if (this.verificationStatus != GdmUtil.VerificationStatus.VERIFICATION_SUCCEEDED)
+            this._reset();
     },
 
     _checkForSmartcard: function() {
@@ -319,10 +320,27 @@ const ShellUserVerifier = new Lang.Class({
         else
             smartcardDetected = this._smartcardManager.hasInsertedTokens();
 
-        if (smartcardDetected != this.smartcardDetected) {
-            this.smartcardDetected = smartcardDetected;
-            this.emit('smartcard-status-changed');
-        }
+        if (this.smartcardDetected == smartcardDetected)
+            return;
+
+        this.smartcardDetected = smartcardDetected;
+
+        // Most of the time we want to reset if the user inserts or removes
+        // a smartcard. Smartcard insertion "preempts" what the user was
+        // doing, and smartcard removal aborts the preemption.
+        // The exceptions are: 1) Don't reset on smartcard insertion if we're already verifying
+        //                        with a smartcard
+        //                     2) Don't reset if we've already succeeded at verification and
+        //                        the user is getting logged in.
+        if (this._serviceIsDefault(SMARTCARD_SERVICE_NAME) &&
+            this.verificationStatus == VerificationStatus.VERIFYING &&
+            this.smartcardDetected)
+            return;
+
+        if (this.verificationStatus != VerificationStatus.VERIFICATION_SUCCEEDED)
+            this._reset();
+
+        this.emit('smartcard-status-changed');
     },
 
     _reportInitError: function(where, error) {
