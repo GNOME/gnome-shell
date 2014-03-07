@@ -152,12 +152,9 @@ const ShellUserVerifier = new Lang.Class({
         this.reauthenticating = false;
 
         this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
-
+        this._oVirtCredentialsManager.connect('user-authenticated', Lang.bind(this, this._oVirtUserAuthenticated));
         if (this._oVirtCredentialsManager.hasToken())
             this._oVirtUserAuthenticated(this._oVirtCredentialsManager.getToken());
-
-        this._oVirtCredentialsManager.connect('user-authenticated',
-                                              Lang.bind(this, this._oVirtUserAuthenticated));
 
         this._reset();
     },
