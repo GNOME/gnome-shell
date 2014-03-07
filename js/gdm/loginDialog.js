@@ -861,6 +861,8 @@ const LoginDialog = new Lang.Class({
                                   Lang.bind(this, function(userManager, user) {
                                       this._userList.removeUser(user);
                                   }));
+
+        return GLib.SOURCE_REMOVE;
     },
 
     open: function() {
