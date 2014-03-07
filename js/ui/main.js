@@ -203,6 +203,10 @@ function _initializeUI() {
     ExtensionDownloader.init();
     ExtensionSystem.init();
 
+    layoutManager.connect('startup-prepared', function() {
+        Meta.activate_session();
+    });
+
     if (sessionMode.isGreeter && screenShield) {
         layoutManager.connect('startup-prepared', function() {
             screenShield.showDialog();
