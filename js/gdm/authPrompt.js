@@ -257,6 +257,8 @@ const AuthPrompt = new Lang.Class({
         this.updateSensitivity(true);
         this.setActorInDefaultButtonWell(null);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
+
+        this.emit('failed');
     },
 
     _onVerificationComplete: function() {
@@ -428,20 +430,16 @@ const AuthPrompt = new Lang.Class({
     },
 
     reset: function() {
-        let oldStatus = this.verificationStatus;
-        this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
-
-        if (oldStatus == AuthPromptStatus.VERIFYING)
+        if (this.verificationStatus == AuthPromptStatus.VERIFYING)
             this._userVerifier.cancel();
+
+        this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
 
         this._queryingService = null;
         this.clear();
         this._message.opacity = 0;
         this.setUser(null);
         this.stopSpinning();
-
-        if (oldStatus == AuthPromptStatus.VERIFICATION_FAILED)
-            this.emit('failed');
 
         let beginRequestType;
 
