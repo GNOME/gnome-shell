@@ -205,16 +205,21 @@ const ShellUserVerifier = new Lang.Class({
         this._clearMessageQueue();
     },
 
-    answerQuery: function(serviceName, answer) {
-        if (!this.hasPendingMessages) {
-            this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
+    _doAfterPendingMessages: function(func) {
+        if (this.hasPendingMessages) {
+            let signalId = this.connect('no-more-messages', Lang.bind(this, function() {
+                this.disconnect(signalId);
+                func();
+            }));
         } else {
-            let signalId = this.connect('no-more-messages',
-                                        Lang.bind(this, function() {
-                                            this.disconnect(signalId);
-                                            this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
-                                        }));
+            func();
         }
+    },
+
+    answerQuery: function(serviceName, answer) {
+        this._doAfterPendingMessages(Lang.bind(this, function() {
+            this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
+        }));
     },
 
     _getIntervalForMessage: function(message) {
@@ -503,27 +508,12 @@ const ShellUserVerifier = new Lang.Class({
 
         this.emit('verification-failed');
 
-        if (canRetry) {
-            if (!this.hasPendingMessages) {
+        this._doAfterPendingMessages(Lang.bind(this, function() {
+            if (canRetry)
                 this._retry();
-            } else {
-                let signalId = this.connect('no-more-messages',
-                                            Lang.bind(this, function() {
-                                                this.disconnect(signalId);
-                                                this._retry();
-                                            }));
-            }
-        } else {
-            if (!this.hasPendingMessages) {
+            else
                 this.cancel();
-            } else {
-                let signalId = this.connect('no-more-messages',
-                                            Lang.bind(this, function() {
-                                                this.disconnect(signalId);
-                                                this.cancel();
-                                            }));
-            }
-        }
+        }));
     },
 
     _onConversationStopped: function(client, serviceName) {
