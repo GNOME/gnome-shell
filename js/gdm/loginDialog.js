@@ -469,6 +469,17 @@ const LoginDialog = new Lang.Class({
         this._sessionMenuButton.actor.show();
         this._authPrompt.addActorToDefaultButtonWell(this._sessionMenuButton.actor);
 
+        this._disableUserList = undefined;
+        this._userListLoaded = false;
+
+        // If the user list is enabled, it should take key focus; make sure the
+        // screen shield is initialized first to prevent it from stealing the
+        // focus later
+        Main.layoutManager.connect('startup-complete',
+                                   Lang.bind(this, this._updateDisableUserList));
+    },
+
+    _ensureUserListLoaded: function() {
         if (!this._userManager.is_loaded)
             this._userManagerLoadedId = this._userManager.connect('notify::is-loaded',
                                                                   Lang.bind(this, function() {
@@ -480,8 +491,7 @@ const LoginDialog = new Lang.Class({
                                                                   }));
         else
             GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, this._loadUserList));
-
-   },
+    },
 
     _updateDisableUserList: function() {
         let disableUserList = this._settings.get_boolean(GdmUtil.DISABLE_USER_LIST_KEY);
@@ -801,6 +811,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _showUserList: function() {
+        this._ensureUserListLoaded();
         this._authPrompt.hide();
         this._sessionMenuButton.close();
         this._setUserListExpanded(true);
@@ -844,13 +855,16 @@ const LoginDialog = new Lang.Class({
     },
 
     _loadUserList: function() {
+        if (this._userListLoaded)
+            return GLib.SOURCE_REMOVE;
+
+        this._userListLoaded = true;
+
         let users = this._userManager.list_users();
 
         for (let i = 0; i < users.length; i++) {
             this._userList.addUser(users[i]);
         }
-
-        this._updateDisableUserList();
 
         this._userManager.connect('user-added',
                                   Lang.bind(this, function(userManager, user) {
