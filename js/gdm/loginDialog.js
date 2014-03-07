@@ -499,7 +499,7 @@ const LoginDialog = new Lang.Class({
         if (disableUserList != this._disableUserList) {
             this._disableUserList = disableUserList;
 
-            if (this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
+            if (this._authPrompt.verificationStatus == GdmUtil.VerificationStatus.NOT_VERIFYING)
                 this._authPrompt.reset();
         }
     },
@@ -509,7 +509,7 @@ const LoginDialog = new Lang.Class({
 
         // Hide the cancel button if the user list is disabled and we're asking for
         // a username
-        if (this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING && this._disableUserList)
+        if (this._authPrompt.verificationStatus == GdmUtil.VerificationStatus.NOT_VERIFYING && this._disableUserList)
             cancelVisible = false;
         else
             cancelVisible = true;
@@ -574,8 +574,8 @@ const LoginDialog = new Lang.Class({
     },
 
     _shouldShowSessionMenuButton: function() {
-        if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFYING &&
-            this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFICATION_FAILED)
+        if (this._authPrompt.verificationStatus != GdmUtil.VerificationStatus.VERIFYING &&
+            this._authPrompt.verificationStatus != GdmUtil.VerificationStatus.VERIFICATION_FAILED)
           return false;
 
         if (this._user && this._user.is_loaded && this._user.is_logged_in())

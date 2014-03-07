@@ -24,13 +24,6 @@ const AuthPromptMode = {
     UNLOCK_OR_LOG_IN: 1
 };
 
-const AuthPromptStatus = {
-    NOT_VERIFYING: 0,
-    VERIFYING: 1,
-    VERIFICATION_FAILED: 2,
-    VERIFICATION_SUCCEEDED: 3
-};
-
 const BeginRequestType = {
     PROVIDE_USERNAME: 0,
     DONT_PROVIDE_USERNAME: 1
@@ -40,8 +33,6 @@ const AuthPrompt = new Lang.Class({
     Name: 'AuthPrompt',
 
     _init: function(gdmClient, mode) {
-        this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
-
         this._gdmClient = gdmClient;
         this._mode = mode;
 
@@ -56,7 +47,6 @@ const AuthPrompt = new Lang.Class({
         this._userVerifier.connect('ask-question', Lang.bind(this, this._onAskQuestion));
         this._userVerifier.connect('show-message', Lang.bind(this, this._onShowMessage));
         this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
-        this._userVerifier.connect('verification-complete', Lang.bind(this, this._onVerificationComplete));
         this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
         this._userVerifier.connect('smartcard-status-changed', Lang.bind(this, this._onSmartcardStatusChanged));
         this._userVerifier.connect('ovirt-user-authenticated', Lang.bind(this, this._onOVirtUserAuthenticated));
@@ -131,6 +121,10 @@ const AuthPrompt = new Lang.Class({
         this._spinner.actor.opacity = 0;
         this._spinner.actor.show();
         this._defaultButtonWell.add_child(this._spinner.actor);
+    },
+
+    get verificationStatus() {
+        return this._userVerifier.verificationStatus;
     },
 
     _onDestroy: function() {
@@ -222,7 +216,7 @@ const AuthPrompt = new Lang.Class({
     },
 
     _onOVirtUserAuthenticated: function() {
-        if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
+        if (this.verificationStatus != GdmUtil.VerificationStatus.VERIFICATION_SUCCEEDED)
             this.reset();
     },
 
@@ -237,11 +231,11 @@ const AuthPrompt = new Lang.Class({
         //                     2) Don't reset if we've already succeeded at verification and
         //                        the user is getting logged in.
         if (this._userVerifier.serviceIsDefault(GdmUtil.SMARTCARD_SERVICE_NAME) &&
-            this.verificationStatus == AuthPromptStatus.VERIFYING &&
+            this.verificationStatus == GdmUtil.VerificationStatus.VERIFYING &&
             this.smartcardDetected)
             return;
 
-        if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
+        if (this.verificationStatus != GdmUtil.VerificationStatus.VERIFICATION_SUCCEEDED)
             this.reset();
     },
 
@@ -256,17 +250,11 @@ const AuthPrompt = new Lang.Class({
 
         this.updateSensitivity(true);
         this.setActorInDefaultButtonWell(null);
-        this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
 
         this.emit('failed');
     },
 
-    _onVerificationComplete: function() {
-        this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
-    },
-
     _onReset: function() {
-        this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.reset();
     },
 
@@ -430,11 +418,6 @@ const AuthPrompt = new Lang.Class({
     },
 
     reset: function() {
-        if (this.verificationStatus == AuthPromptStatus.VERIFYING)
-            this._userVerifier.cancel();
-
-        this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
-
         this._queryingService = null;
         this.clear();
         this._message.opacity = 0;
@@ -473,7 +456,6 @@ const AuthPrompt = new Lang.Class({
         this.updateSensitivity(false);
 
         this._userVerifier.begin(userName);
-        this.verificationStatus = AuthPromptStatus.VERIFYING;
     },
 
     finish: function(onComplete) {

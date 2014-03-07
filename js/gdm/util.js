@@ -119,6 +119,13 @@ function cloneAndFadeOutActor(actor) {
     return hold;
 }
 
+const VerificationStatus = {
+    NOT_VERIFYING: 0,
+    VERIFYING: 1,
+    VERIFICATION_FAILED: 2,
+    VERIFICATION_SUCCEEDED: 3
+};
+
 const ShellUserVerifier = new Lang.Class({
     Name: 'ShellUserVerifier',
 
@@ -161,12 +168,15 @@ const ShellUserVerifier = new Lang.Class({
 
     _reset: function() {
         // Clear previous attempts to authenticate
+        this.verificationStatus = VerificationStatus.NOT_VERIFYING;
         this._failCounter = 0;
         this._updateDefaultService();
         this.emit('reset');
     },
 
     begin: function(userName) {
+        this.verificationStatus = VerificationStatus.VERIFYING;
+
         this._cancellable = new Gio.Cancellable();
         this._userName = userName;
         this.reauthenticating = false;
@@ -479,7 +489,7 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _onVerificationComplete: function() {
-        this.emit('verification-complete');
+        this.verificationStatus = VerificationStatus.VERIFICATION_SUCCEEDED;
     },
 
     _retry: function() {
@@ -496,6 +506,7 @@ const ShellUserVerifier = new Lang.Class({
         let canRetry = retry && this._userName &&
             this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY);
 
+        this.verificationStatus = VerificationStatus.VERIFICATION_FAILED;
         this.emit('verification-failed');
 
         this._doAfterPendingMessages(Lang.bind(this, function() {
