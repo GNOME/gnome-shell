@@ -288,8 +288,7 @@ const ShellUserVerifier = new Lang.Class({
             }));
     },
 
-    _oVirtUserAuthenticated: function(token) {
-        this._preemptingService = OVIRT_SERVICE_NAME;
+    _oVirtUserAuthenticated: function() {
         this.emit('ovirt-user-authenticated');
     },
 
@@ -305,12 +304,6 @@ const ShellUserVerifier = new Lang.Class({
 
         if (smartcardDetected != this.smartcardDetected) {
             this.smartcardDetected = smartcardDetected;
-
-            if (this.smartcardDetected)
-                this._preemptingService = SMARTCARD_SERVICE_NAME;
-            else if (this._preemptingService == SMARTCARD_SERVICE_NAME)
-                this._preemptingService = null;
-
             this.emit('smartcard-status-changed');
         }
     },
@@ -372,8 +365,10 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _getForegroundService: function() {
-        if (this._preemptingService)
-            return this._preemptingService;
+        if (this._oVirtCredentialsManager.hasToken())
+            return OVIRT_SERVICE_NAME;
+        if (this.smartcardDetected)
+            return SMARTCARD_SERVICE_NAME;
 
         return this._defaultService;
     },
@@ -542,7 +537,6 @@ const ShellUserVerifier = new Lang.Class({
         // mechanism.
         if (this.serviceIsForeground(OVIRT_SERVICE_NAME)) {
             this._oVirtCredentialsManager.resetToken();
-            this._preemptingService = null;
             this._verificationFailed(false);
             return;
         }
