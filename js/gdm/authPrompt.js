@@ -472,16 +472,11 @@ const AuthPrompt = new Lang.Class({
     },
 
     begin: function(params) {
-        params = Params.parse(params, { userName: null,
-                                        hold: null });
+        params = Params.parse(params, { userName: null });
 
         this.updateSensitivity(false);
 
-        let hold = params.hold;
-        if (!hold)
-            hold = new Batch.Hold();
-
-        this._userVerifier.begin(params.userName, hold);
+        this._userVerifier.begin(params.userName);
         this.verificationStatus = AuthPromptStatus.VERIFYING;
     },
 

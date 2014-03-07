@@ -163,9 +163,8 @@ const ShellUserVerifier = new Lang.Class({
                                               Lang.bind(this, this._oVirtUserAuthenticated));
     },
 
-    begin: function(userName, hold) {
+    begin: function(userName) {
         this._cancellable = new Gio.Cancellable();
-        this._hold = hold;
         this._userName = userName;
         this.reauthenticating = false;
 
@@ -315,7 +314,6 @@ const ShellUserVerifier = new Lang.Class({
 
     _reportInitError: function(where, error) {
         logError(error, where);
-        this._hold.release();
 
         this._queueMessage(_("Authentication error"), MessageType.ERROR);
         this._verificationFailed(false);
@@ -341,7 +339,6 @@ const ShellUserVerifier = new Lang.Class({
         this.reauthenticating = true;
         this._connectSignals();
         this._beginVerification();
-        this._hold.release();
     },
 
     _userVerifierGot: function(client, result) {
@@ -356,7 +353,6 @@ const ShellUserVerifier = new Lang.Class({
 
         this._connectSignals();
         this._beginVerification();
-        this._hold.release();
     },
 
     _connectSignals: function() {
@@ -396,7 +392,6 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _startService: function(serviceName) {
-        this._hold.acquire();
         if (this._userName) {
            this._userVerifier.call_begin_verification_for_user(serviceName,
                                                                this._userName,
@@ -410,8 +405,6 @@ const ShellUserVerifier = new Lang.Class({
                    this._reportInitError('Failed to start verification for user', e);
                    return;
                }
-
-               this._hold.release();
            }));
         } else {
            this._userVerifier.call_begin_verification(serviceName,
@@ -425,8 +418,6 @@ const ShellUserVerifier = new Lang.Class({
                    this._reportInitError('Failed to start verification', e);
                    return;
                }
-
-               this._hold.release();
            }));
         }
     },
@@ -493,7 +484,7 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _retry: function() {
-        this.begin(this._userName, new Batch.Hold());
+        this.begin(this._userName);
     },
 
     _verificationFailed: function(retry) {
