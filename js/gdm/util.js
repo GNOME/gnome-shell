@@ -131,7 +131,6 @@ const ShellUserVerifier = new Lang.Class({
         this._settings = new Gio.Settings({ schema: LOGIN_SCREEN_SCHEMA });
         this._settings.connect('changed',
                                Lang.bind(this, this._updateDefaultService));
-        this._updateDefaultService();
 
         this._fprintManager = new Fprint.FprintManager();
         this._smartcardManager = SmartcardManager.getSmartcardManager();
@@ -152,8 +151,6 @@ const ShellUserVerifier = new Lang.Class({
         this.hasPendingMessages = false;
         this.reauthenticating = false;
 
-        this._failCounter = 0;
-
         this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
 
         if (this._oVirtCredentialsManager.hasToken())
@@ -161,6 +158,15 @@ const ShellUserVerifier = new Lang.Class({
 
         this._oVirtCredentialsManager.connect('user-authenticated',
                                               Lang.bind(this, this._oVirtUserAuthenticated));
+
+        this._reset();
+    },
+
+    _reset: function() {
+        // Clear previous attempts to authenticate
+        this._failCounter = 0;
+        this._updateDefaultService();
+        this.emit('reset');
     },
 
     begin: function(userName) {
@@ -472,11 +478,7 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _onReset: function() {
-        // Clear previous attempts to authenticate
-        this._failCounter = 0;
-        this._updateDefaultService();
-
-        this.emit('reset');
+        this._reset();
     },
 
     _onVerificationComplete: function() {
