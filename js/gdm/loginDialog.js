@@ -625,7 +625,7 @@ const LoginDialog = new Lang.Class({
                                                         this._user = this._userManager.get_user(answer);
                                                         this._authPrompt.clear();
                                                         this._authPrompt.startSpinning();
-                                                        this._authPrompt.begin({ userName: answer });
+                                                        this._authPrompt.begin(answer);
                                                         this._updateCancelButton();
 
                                                         realmManager.disconnect(realmSignalId)
@@ -823,7 +823,7 @@ const LoginDialog = new Lang.Class({
         this._authPrompt.setUser(item.user);
 
         let userName = item.user.get_user_name();
-        this._authPrompt.begin({ userName: userName });
+        this._authPrompt.begin(userName);
     },
 
     _onUserListActivated: function(activatedItem) {

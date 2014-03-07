@@ -471,12 +471,10 @@ const AuthPrompt = new Lang.Class({
         this._entry.clutter_text.insert_unichar(unichar);
     },
 
-    begin: function(params) {
-        params = Params.parse(params, { userName: null });
-
+    begin: function(userName) {
         this.updateSensitivity(false);
 
-        this._userVerifier.begin(params.userName);
+        this._userVerifier.begin(userName);
         this.verificationStatus = AuthPromptStatus.VERIFYING;
     },
 
