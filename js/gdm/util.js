@@ -193,16 +193,6 @@ const ShellUserVerifier = new Lang.Class({
         }
     },
 
-    cancel: function() {
-        if (this._cancellable)
-            this._cancellable.cancel();
-
-        if (this._userVerifier) {
-            this._userVerifier.call_cancel_sync(null);
-            this.clear();
-        }
-    },
-
     clear: function() {
         if (this._cancellable) {
             this._cancellable.cancel();
@@ -210,6 +200,7 @@ const ShellUserVerifier = new Lang.Class({
         }
 
         if (this._userVerifier) {
+            this._userVerifier.call_cancel_sync(null);
             this._userVerifier.run_dispose();
             this._userVerifier = null;
         }
@@ -531,7 +522,7 @@ const ShellUserVerifier = new Lang.Class({
             if (canRetry)
                 this._retry();
             else
-                this.cancel();
+                this.clear();
         }));
     },
 
