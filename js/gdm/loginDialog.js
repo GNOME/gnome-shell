@@ -421,6 +421,7 @@ const LoginDialog = new Lang.Class({
         this._authPrompt = new AuthPrompt.AuthPrompt(gdmClient, AuthPrompt.AuthPromptMode.UNLOCK_OR_LOG_IN);
         this._authPrompt.connect('prompted', Lang.bind(this, this._onPrompted));
         this._authPrompt.connect('reset', Lang.bind(this, this._onReset));
+        this._authPrompt.connect('needs-username', Lang.bind(this, this._onNeedsUserName));
         this._authPrompt.hide();
         this.actor.add_child(this._authPrompt.actor);
 
@@ -469,14 +470,13 @@ const LoginDialog = new Lang.Class({
         this._sessionMenuButton.actor.show();
         this._authPrompt.addActorToDefaultButtonWell(this._sessionMenuButton.actor);
 
-        this._disableUserList = undefined;
+        this._updateDisableUserList();
         this._userListLoaded = false;
 
         // If the user list is enabled, it should take key focus; make sure the
         // screen shield is initialized first to prevent it from stealing the
         // focus later
-        Main.layoutManager.connect('startup-complete',
-                                   Lang.bind(this, this._updateDisableUserList));
+        Main.layoutManager.connect('startup-complete', Lang.bind(this, this._reset));
     },
 
     _ensureUserListLoaded: function() {
@@ -493,15 +493,20 @@ const LoginDialog = new Lang.Class({
             GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, this._loadUserList));
     },
 
+    _reset: function() {
+        this._authPrompt.reset();
+        this._authPrompt.begin();
+    },
+
     _updateDisableUserList: function() {
         let disableUserList = this._settings.get_boolean(GdmUtil.DISABLE_USER_LIST_KEY);
+        if (disableUserList == this._disableUserList)
+            return;
 
-        if (disableUserList != this._disableUserList) {
-            this._disableUserList = disableUserList;
+        this._disableUserList = disableUserList;
 
-            if (this._authPrompt.verificationStatus == GdmUtil.VerificationStatus.NOT_VERIFYING)
-                this._authPrompt.reset();
-        }
+        if (this._authPrompt.verificationStatus == GdmUtil.VerificationStatus.ASKING_FOR_USERNAME)
+            this._reset();
     },
 
     _updateCancelButton: function() {
@@ -509,7 +514,7 @@ const LoginDialog = new Lang.Class({
 
         // Hide the cancel button if the user list is disabled and we're asking for
         // a username
-        if (this._authPrompt.verificationStatus == GdmUtil.VerificationStatus.NOT_VERIFYING && this._disableUserList)
+        if (this._authPrompt.verificationStatus == GdmUtil.VerificationStatus.ASKING_FOR_USERNAME && this._disableUserList)
             cancelVisible = false;
         else
             cancelVisible = true;
@@ -554,19 +559,18 @@ const LoginDialog = new Lang.Class({
         this._showPrompt();
     },
 
-    _onReset: function(authPrompt, beginRequest) {
+    _onReset: function() {
         this._sessionMenuButton.updateSensitivity(true);
-
         this._user = null;
 
-        if (beginRequest == AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
-            if (!this._disableUserList)
-                this._showUserList();
-            else
-                this._hideUserListAskForUsernameAndBeginVerification();
-        } else {
-            this._hideUserListAndBeginVerification();
-        }
+        this._reset();
+    },
+
+    _onNeedsUserName: function() {
+        if (!this._disableUserList)
+            this._showUserList();
+        else
+            this._hideUserListAskForUsernameAndBeginVerification();
     },
 
     _onDefaultSessionChanged: function(client, sessionId) {
@@ -625,7 +629,7 @@ const LoginDialog = new Lang.Class({
                                                         this._user = this._userManager.get_user(answer);
                                                         this._authPrompt.clear();
                                                         this._authPrompt.startSpinning();
-                                                        this._authPrompt.begin(answer);
+                                                        this._authPrompt.gotUserName(answer);
                                                         this._updateCancelButton();
 
                                                         realmManager.disconnect(realmSignalId)
@@ -805,11 +809,6 @@ const LoginDialog = new Lang.Class({
         this._askForUsernameAndBeginVerification();
     },
 
-    _hideUserListAndBeginVerification: function() {
-        this._hideUserList();
-        this._authPrompt.begin();
-    },
-
     _showUserList: function() {
         this._ensureUserListLoaded();
         this._authPrompt.hide();
@@ -823,7 +822,7 @@ const LoginDialog = new Lang.Class({
         this._authPrompt.setUser(item.user);
 
         let userName = item.user.get_user_name();
-        this._authPrompt.begin(userName);
+        this._authPrompt.gotUserName(userName);
     },
 
     _onUserListActivated: function(activatedItem) {

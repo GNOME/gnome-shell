@@ -121,9 +121,10 @@ function cloneAndFadeOutActor(actor) {
 
 const VerificationStatus = {
     NOT_VERIFYING: 0,
-    VERIFYING: 1,
-    VERIFICATION_FAILED: 2,
-    VERIFICATION_SUCCEEDED: 3
+    ASKING_FOR_USERNAME: 1,
+    VERIFYING: 2,
+    VERIFICATION_FAILED: 3,
+    VERIFICATION_SUCCEEDED: 4,
 };
 
 const ShellUserVerifier = new Lang.Class({
@@ -169,24 +170,52 @@ const ShellUserVerifier = new Lang.Class({
     _reset: function() {
         // Clear previous attempts to authenticate
         this.verificationStatus = VerificationStatus.NOT_VERIFYING;
+        this._userName = null;
         this._failCounter = 0;
         this._updateDefaultService();
         this.emit('reset');
     },
 
-    begin: function(userName) {
-        this.verificationStatus = VerificationStatus.VERIFYING;
+    begin: function() {
+        if (this._mode == AuthPromptMode.UNLOCK_ONLY) {
+            // The user is constant at the unlock screen, so it will immediately
+            // respond to the request with the username
+            needsUsername = true;
+        } else if (this.serviceIsForeground(GdmUtil.OVIRT_SERVICE_NAME) ||
+                   (this.smartcardDetected &&
+                    this.serviceIsForeground(GdmUtil.SMARTCARD_SERVICE_NAME))) {
+            // We don't need to know the username if the user preempted the login screen
+            // with a smartcard or with preauthenticated oVirt credentials
+            needsUsername = false;
+        } else {
+            // In all other cases, we should get the username up front.
+            needsUsername = true;
+        }
 
-        this._cancellable = new Gio.Cancellable();
+        if (needsUsername) {
+            this.verificationStatus = VerificationStatus.ASKING_FOR_USERNAME;
+            this.emit('needs-username');
+        } else {
+            this._beginAuthentication();
+        }
+    },
+
+    gotUserName: function(userName) {
         this._userName = userName;
+        this._beginAuthentication();
+    },
+
+    _beginAuthentication: function() {
+        this.verificationStatus = VerificationStatus.VERIFYING;
+        this._cancellable = new Gio.Cancellable();
         this.reauthenticating = false;
 
         this._checkForFingerprintReader();
 
-        if (userName) {
+        if (this._userName) {
             // If possible, reauthenticate an already running session,
             // so any session specific credentials get updated appropriately
-            this._client.open_reauthentication_channel(userName, this._cancellable,
+            this._client.open_reauthentication_channel(this._userName, this._cancellable,
                                                        Lang.bind(this, this._reauthenticationChannelOpened));
         } else {
             this._client.get_user_verifier(this._cancellable, Lang.bind(this, this._userVerifierGot));
@@ -501,10 +530,6 @@ const ShellUserVerifier = new Lang.Class({
         this.verificationStatus = VerificationStatus.VERIFICATION_SUCCEEDED;
     },
 
-    _retry: function() {
-        this.begin(this._userName);
-    },
-
     _verificationFailed: function(retry) {
         // For Not Listed / enterprise logins, immediately reset
         // the dialog
@@ -520,7 +545,7 @@ const ShellUserVerifier = new Lang.Class({
 
         this._doAfterPendingMessages(Lang.bind(this, function() {
             if (canRetry)
-                this._retry();
+                this._beginAuthentication();
             else
                 this.clear();
         }));

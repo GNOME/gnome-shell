@@ -24,11 +24,6 @@ const AuthPromptMode = {
     UNLOCK_OR_LOG_IN: 1
 };
 
-const BeginRequestType = {
-    PROVIDE_USERNAME: 0,
-    DONT_PROVIDE_USERNAME: 1
-};
-
 const AuthPrompt = new Lang.Class({
     Name: 'AuthPrompt',
 
@@ -44,6 +39,7 @@ const AuthPrompt = new Lang.Class({
 
         this._userVerifier = new GdmUtil.ShellUserVerifier(this._gdmClient, { reauthenticationOnly: reauthenticationOnly });
 
+        this._userVerifier.connect('needs-username', Lang.bind(this, this._onNeedsUserName));
         this._userVerifier.connect('ask-question', Lang.bind(this, this._onAskQuestion));
         this._userVerifier.connect('show-message', Lang.bind(this, this._onShowMessage));
         this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
@@ -184,6 +180,14 @@ const AuthPrompt = new Lang.Class({
         this._entry.clutter_text.connect('activate', Lang.bind(this, function() {
             this.emit('next');
         }));
+    },
+
+    _onNeedsUserName: function() {
+        this.emit('needs-username');
+    },
+
+    gotUserName: function(userName) {
+        this._userVerifier.gotUserName(userName);
     },
 
     _onAskQuestion: function(verifier, serviceName, question, passwordChar) {
@@ -403,24 +407,7 @@ const AuthPrompt = new Lang.Class({
         this.setUser(null);
         this.stopSpinning();
 
-        let beginRequestType;
-
-        if (this._mode == AuthPromptMode.UNLOCK_ONLY) {
-            // The user is constant at the unlock screen, so it will immediately
-            // respond to the request with the username
-            beginRequestType = BeginRequestType.PROVIDE_USERNAME;
-        } else if (this._userVerifier.serviceIsForeground(GdmUtil.OVIRT_SERVICE_NAME) ||
-                   (this.smartcardDetected &&
-                    this._userVerifier.serviceIsForeground(GdmUtil.SMARTCARD_SERVICE_NAME))) {
-            // We don't need to know the username if the user preempted the login screen
-            // with a smartcard or with preauthenticated oVirt credentials
-            beginRequestType = BeginRequestType.DONT_PROVIDE_USERNAME;
-        } else {
-            // In all other cases, we should get the username up front.
-            beginRequestType = BeginRequestType.PROVIDE_USERNAME;
-        }
-
-        this.emit('reset', beginRequestType);
+        this.emit('reset');
     },
 
     addCharacter: function(unichar) {
@@ -431,9 +418,12 @@ const AuthPrompt = new Lang.Class({
         this._entry.clutter_text.insert_unichar(unichar);
     },
 
-    begin: function(userName) {
+    begin: function() {
         this.updateSensitivity(false);
+        this._userVerifier.begin();
+    },
 
+    needsUsername: function() {
         this._userVerifier.begin(userName);
     },
 
