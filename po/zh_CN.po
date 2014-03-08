@@ -5,15 +5,16 @@
 # 甘霖 <thlgood@yucoat.com>, 2012.
 # fenghelong <fenghelongnjit@gmail.com>, 2012.
 # YunQiang Su <wzssyqa@gmail.com>, 2012.
+# Wylmer Wang <wantinghard@gmail.com>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-07 13:16+0000\n"
-"PO-Revision-Date: 2012-09-23 12:50+0800\n"
-"Last-Translator: YunQiang Su <wzssyqa@gmail.com>\n"
+"POT-Creation-Date: 2014-03-08 04:10+0000\n"
+"PO-Revision-Date: 2014-03-08 20:33+0800\n"
+"Last-Translator: Wylmer Wang <wantinghard@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -22,209 +23,225 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Gtranslator 2.91.5\n"
 
-#: ../cogl/cogl-debug.c:174
+#: ../cogl/cogl-debug.c:181
 msgid "Supported debug values:"
 msgstr "支持的调试值："
 
-#: ../cogl/cogl-debug.c:179
+#: ../cogl/cogl-debug.c:186
 msgid "Special debug values:"
 msgstr "特殊的调试值："
 
-#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
+#: ../cogl/cogl-debug.c:188 ../cogl/cogl-debug.c:190
 msgid "Enables all non-behavioural debug options"
 msgstr "启用所有非行为调式选项"
 
-#: ../cogl/cogl-debug.c:190
+#: ../cogl/cogl-debug.c:197
 msgid "Additional environment variables:"
 msgstr "附加环境变量："
 
-#: ../cogl/cogl-debug.c:191
+#: ../cogl/cogl-debug.c:198
 msgid "Comma-separated list of GL extensions to pretend are disabled"
-msgstr ""
+msgstr "逗号分隔的待伪装(pretend) GL 扩展列表 已禁用"
 
-#: ../cogl/cogl-debug.c:193
+#: ../cogl/cogl-debug.c:200
 msgid "Override the GL version that Cogl will assume the driver supports"
 msgstr "覆盖 Cogl 将假设驱动支持的 GL 版本"
 
-#: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
-#: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
-#: ../cogl/cogl-debug-options.h:45 ../cogl/cogl-debug-options.h:50
-#: ../cogl/cogl-debug-options.h:55 ../cogl/cogl-debug-options.h:61
-#: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
-#: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
-#: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
-#: ../cogl/cogl-debug-options.h:189
+#: ../cogl/cogl-debug.c:244
+msgid "Cogl debugging flags to set"
+msgstr "要设置的 Cogl 调试选项"
+
+#: ../cogl/cogl-debug.c:246
+msgid "Cogl debugging flags to unset"
+msgstr "要清除的 Cogl 调试选项"
+
+#: ../cogl/cogl-debug.c:295
+msgid "Cogl Options"
+msgstr "Cogl 选项"
+
+#: ../cogl/cogl-debug.c:296
+msgid "Show Cogl options"
+msgstr "显示  Cogl 选项"
+
+#: ../cogl/cogl-debug-options.h:32 ../cogl/cogl-debug-options.h:37
+#: ../cogl/cogl-debug-options.h:42 ../cogl/cogl-debug-options.h:47
+#: ../cogl/cogl-debug-options.h:52 ../cogl/cogl-debug-options.h:57
+#: ../cogl/cogl-debug-options.h:62 ../cogl/cogl-debug-options.h:68
+#: ../cogl/cogl-debug-options.h:73 ../cogl/cogl-debug-options.h:78
+#: ../cogl/cogl-debug-options.h:165 ../cogl/cogl-debug-options.h:170
+#: ../cogl/cogl-debug-options.h:175 ../cogl/cogl-debug-options.h:191
+#: ../cogl/cogl-debug-options.h:196
 msgid "Cogl Tracing"
 msgstr "Cogl 跟踪"
 
-#: ../cogl/cogl-debug-options.h:27
+#: ../cogl/cogl-debug-options.h:34
 msgid "CoglObject references"
 msgstr "CoglObject 引用"
 
-#: ../cogl/cogl-debug-options.h:28
+#: ../cogl/cogl-debug-options.h:35
 msgid "Debug ref counting issues for CoglObjects"
 msgstr "调试 CoglObjects 的引用计数问题"
 
-#: ../cogl/cogl-debug-options.h:32
+#: ../cogl/cogl-debug-options.h:39
 msgid "Trace Texture Slicing"
 msgstr "跟踪纹理切片"
 
-#: ../cogl/cogl-debug-options.h:33
+#: ../cogl/cogl-debug-options.h:40
 msgid "debug the creation of texture slices"
 msgstr "调试纹理切片的创建"
 
-#: ../cogl/cogl-debug-options.h:37
+#: ../cogl/cogl-debug-options.h:44
 msgid "Trace Atlas Textures"
 msgstr "跟踪 Atlas 纹理"
 
-#: ../cogl/cogl-debug-options.h:38
+#: ../cogl/cogl-debug-options.h:45
 msgid "Debug texture atlas management"
 msgstr "调试纹理 atlas 管理"
 
-#: ../cogl/cogl-debug-options.h:42
+#: ../cogl/cogl-debug-options.h:49
 msgid "Trace Blend Strings"
 msgstr "跟踪混合字符串"
 
-#: ../cogl/cogl-debug-options.h:43
+#: ../cogl/cogl-debug-options.h:50
 msgid "Debug CoglBlendString parsing"
 msgstr "调试 CoglBlendString 解析"
 
-#: ../cogl/cogl-debug-options.h:47
+#: ../cogl/cogl-debug-options.h:54
 msgid "Trace Journal"
 msgstr "跟踪日志"
 
-#: ../cogl/cogl-debug-options.h:48
+#: ../cogl/cogl-debug-options.h:55
 msgid "View all the geometry passing through the journal"
 msgstr "查看所有通过日志传递的几何体"
 
-#: ../cogl/cogl-debug-options.h:52
+#: ../cogl/cogl-debug-options.h:59
 msgid "Trace Batching"
 msgstr "跟踪批处理"
 
-#: ../cogl/cogl-debug-options.h:53
+#: ../cogl/cogl-debug-options.h:60
 msgid "Show how geometry is being batched in the journal"
 msgstr "显示几何体在日志中批处理的情况"
 
-#: ../cogl/cogl-debug-options.h:57
+#: ../cogl/cogl-debug-options.h:64
 msgid "Trace matrices"
 msgstr "跟踪矩阵"
 
-#: ../cogl/cogl-debug-options.h:58
+#: ../cogl/cogl-debug-options.h:65
 msgid "Trace all matrix manipulation"
 msgstr "跟踪所有矩阵操作"
 
-#: ../cogl/cogl-debug-options.h:63
+#: ../cogl/cogl-debug-options.h:70
 msgid "Trace Misc Drawing"
 msgstr "跟踪混杂绘制"
 
-#: ../cogl/cogl-debug-options.h:64
+#: ../cogl/cogl-debug-options.h:71
 msgid "Trace some misc drawing operations"
 msgstr "跟踪一些混杂的绘制操作"
 
-#: ../cogl/cogl-debug-options.h:68
+#: ../cogl/cogl-debug-options.h:75
 msgid "Trace Pango Renderer"
 msgstr "跟踪 Pango 渲染器"
 
-#: ../cogl/cogl-debug-options.h:69
+#: ../cogl/cogl-debug-options.h:76
 msgid "Trace the Cogl Pango renderer"
 msgstr "跟踪 Cogl Pango 渲染器"
 
-#: ../cogl/cogl-debug-options.h:73
+#: ../cogl/cogl-debug-options.h:80
 msgid "Trace CoglTexturePixmap backend"
 msgstr "跟踪 CoglTexturePixmap 后端"
 
-#: ../cogl/cogl-debug-options.h:74
+#: ../cogl/cogl-debug-options.h:81
 msgid "Trace the Cogl texture pixmap backend"
 msgstr "跟踪 Cogl 纹理 pixmap 后端"
 
-#: ../cogl/cogl-debug-options.h:76 ../cogl/cogl-debug-options.h:81
+#: ../cogl/cogl-debug-options.h:83 ../cogl/cogl-debug-options.h:88
 msgid "Visualize"
 msgstr "可视化"
 
-#: ../cogl/cogl-debug-options.h:78
+#: ../cogl/cogl-debug-options.h:85
 msgid "Outline rectangles"
 msgstr "突显矩形"
 
-#: ../cogl/cogl-debug-options.h:79
+#: ../cogl/cogl-debug-options.h:86
 msgid "Add wire outlines for all rectangular geometry"
 msgstr "对所有矩形形状添加实线外框"
 
-#: ../cogl/cogl-debug-options.h:83
+#: ../cogl/cogl-debug-options.h:90
 msgid "Show wireframes"
 msgstr "显示线框"
 
-#: ../cogl/cogl-debug-options.h:84
+#: ../cogl/cogl-debug-options.h:91
 msgid "Add wire outlines for all geometry"
 msgstr "对所有形状添加线框"
 
-#: ../cogl/cogl-debug-options.h:86 ../cogl/cogl-debug-options.h:91
-#: ../cogl/cogl-debug-options.h:96 ../cogl/cogl-debug-options.h:101
-#: ../cogl/cogl-debug-options.h:111 ../cogl/cogl-debug-options.h:116
-#: ../cogl/cogl-debug-options.h:122 ../cogl/cogl-debug-options.h:127
-#: ../cogl/cogl-debug-options.h:132 ../cogl/cogl-debug-options.h:137
-#: ../cogl/cogl-debug-options.h:142 ../cogl/cogl-debug-options.h:147
-#: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
-#: ../cogl/cogl-debug-options.h:178
+#: ../cogl/cogl-debug-options.h:93 ../cogl/cogl-debug-options.h:98
+#: ../cogl/cogl-debug-options.h:103 ../cogl/cogl-debug-options.h:108
+#: ../cogl/cogl-debug-options.h:118 ../cogl/cogl-debug-options.h:123
+#: ../cogl/cogl-debug-options.h:129 ../cogl/cogl-debug-options.h:134
+#: ../cogl/cogl-debug-options.h:139 ../cogl/cogl-debug-options.h:144
+#: ../cogl/cogl-debug-options.h:149 ../cogl/cogl-debug-options.h:154
+#: ../cogl/cogl-debug-options.h:160 ../cogl/cogl-debug-options.h:180
+#: ../cogl/cogl-debug-options.h:185
 msgid "Root Cause"
 msgstr "根目标"
 
-#: ../cogl/cogl-debug-options.h:88
+#: ../cogl/cogl-debug-options.h:95
 msgid "Disable Journal batching"
 msgstr "禁用日志批处理"
 
-#: ../cogl/cogl-debug-options.h:89
+#: ../cogl/cogl-debug-options.h:96
 msgid "Disable batching of geometry in the Cogl Journal."
 msgstr "在 Cogl 日志中禁用几何体批处理"
 
-#: ../cogl/cogl-debug-options.h:93
+#: ../cogl/cogl-debug-options.h:100
 msgid "Disable GL Vertex Buffers"
 msgstr "禁用 GL Vertex 缓冲"
 
-#: ../cogl/cogl-debug-options.h:94
+#: ../cogl/cogl-debug-options.h:101
 msgid "Disable use of OpenGL vertex buffer objects"
 msgstr "禁用使用 OpenGL 顶点缓存对象"
 
-#: ../cogl/cogl-debug-options.h:98
+#: ../cogl/cogl-debug-options.h:105
 msgid "Disable GL Pixel Buffers"
 msgstr "禁用 GL 像素缓存"
 
-#: ../cogl/cogl-debug-options.h:99
+#: ../cogl/cogl-debug-options.h:106
 msgid "Disable use of OpenGL pixel buffer objects"
 msgstr "禁止使用 OpenGL 像素缓存对象"
 
-#: ../cogl/cogl-debug-options.h:103
+#: ../cogl/cogl-debug-options.h:110
 msgid "Disable software rect transform"
 msgstr "禁用软件矩形变换"
 
-#: ../cogl/cogl-debug-options.h:104
+#: ../cogl/cogl-debug-options.h:111
 msgid "Use the GPU to transform rectangular geometry"
 msgstr "使用 GPU 来变换矩形"
 
-#: ../cogl/cogl-debug-options.h:106
+#: ../cogl/cogl-debug-options.h:113
 msgid "Cogl Specialist"
 msgstr "Cogl 专家"
 
-#: ../cogl/cogl-debug-options.h:108
+#: ../cogl/cogl-debug-options.h:115
 msgid "Dump atlas images"
 msgstr "转储 Atlas 图像"
 
-#: ../cogl/cogl-debug-options.h:109
+#: ../cogl/cogl-debug-options.h:116
 msgid "Dump texture atlas changes to an image file"
 msgstr "将纹理 Atlas 更改转储为图像文件"
 
-#: ../cogl/cogl-debug-options.h:113
+#: ../cogl/cogl-debug-options.h:120
 msgid "Disable texture atlasing"
 msgstr "禁用纹理平滑"
 
-#: ../cogl/cogl-debug-options.h:114
+#: ../cogl/cogl-debug-options.h:121
 msgid "Disable use of texture atlasing"
 msgstr "禁止使用纹理平滑"
 
-#: ../cogl/cogl-debug-options.h:118
+#: ../cogl/cogl-debug-options.h:125
 msgid "Disable sharing the texture atlas between text and images"
 msgstr "禁用文本和图形间的纹理 Atlas 共享"
 
-#: ../cogl/cogl-debug-options.h:119
+#: ../cogl/cogl-debug-options.h:126
 msgid ""
 "When this is set the glyph cache will always use a separate texture for its "
 "atlas. Otherwise it will try to share the atlas with images."
@@ -232,136 +249,118 @@ msgstr ""
 "一旦设置，图形字符缓存 Atlas 将总是使用单独的纹理。否则，它将尝试与图像共享 "
 "Atlas。"
 
-#: ../cogl/cogl-debug-options.h:124
+#: ../cogl/cogl-debug-options.h:131
 msgid "Disable texturing"
 msgstr "禁用纹理"
 
-#: ../cogl/cogl-debug-options.h:125
+#: ../cogl/cogl-debug-options.h:132
 msgid "Disable texturing any primitives"
 msgstr "禁止用任何元素使用纹理"
 
-#: ../cogl/cogl-debug-options.h:129
+#: ../cogl/cogl-debug-options.h:136
 msgid "Disable arbfp"
 msgstr "禁用 arbfp"
 
-#: ../cogl/cogl-debug-options.h:130
+#: ../cogl/cogl-debug-options.h:137
 msgid "Disable use of ARB fragment programs"
 msgstr "禁用 ARB 分割程序"
 
-#: ../cogl/cogl-debug-options.h:134
-#, fuzzy
+#: ../cogl/cogl-debug-options.h:141
 msgid "Disable fixed"
-msgstr "禁止定点"
+msgstr "禁止固定(fixed)"
 
-#: ../cogl/cogl-debug-options.h:135
-#, fuzzy
+#: ../cogl/cogl-debug-options.h:142
 msgid "Disable use of the fixed function pipeline backend"
-msgstr "禁用定点函数管道后端"
+msgstr "禁用固定的(fixed)函数管道后端"
 
-#: ../cogl/cogl-debug-options.h:139
+#: ../cogl/cogl-debug-options.h:146
 msgid "Disable GLSL"
 msgstr "禁用 GLSL"
 
-#: ../cogl/cogl-debug-options.h:140
+#: ../cogl/cogl-debug-options.h:147
 msgid "Disable use of GLSL"
 msgstr "禁止使用 GLSL"
 
-#: ../cogl/cogl-debug-options.h:144
+#: ../cogl/cogl-debug-options.h:151
 msgid "Disable blending"
 msgstr "禁用混合"
 
-#: ../cogl/cogl-debug-options.h:145
+#: ../cogl/cogl-debug-options.h:152
 msgid "Disable use of blending"
 msgstr "禁止使用混合"
 
-#: ../cogl/cogl-debug-options.h:149
-#, fuzzy
+#: ../cogl/cogl-debug-options.h:156
 msgid "Disable non-power-of-two textures"
-msgstr "禁用 non-power-of-two 纹理"
+msgstr "禁用(数量)非2的幂的纹理"
 
-#: ../cogl/cogl-debug-options.h:150
-#, fuzzy
+#: ../cogl/cogl-debug-options.h:157
 msgid ""
 "Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
 "will create sliced textures or textures with waste instead."
 msgstr ""
 "使 Cogl 认为 GL 驱动不支持 NPOT 纹理，以便使它创建切片纹理或用无效纹理代替。"
 
-#: ../cogl/cogl-debug-options.h:155
+#: ../cogl/cogl-debug-options.h:162
 msgid "Disable software clipping"
 msgstr "禁用软件裁剪"
 
-#: ../cogl/cogl-debug-options.h:156
+#: ../cogl/cogl-debug-options.h:163
 msgid "Disables Cogl's attempts to clip some rectangles in software."
 msgstr "禁止 Cogl 在软件中尝试裁剪某些矩形。"
 
-#: ../cogl/cogl-debug-options.h:160
+#: ../cogl/cogl-debug-options.h:167
 msgid "Show source"
 msgstr "显示源代码"
 
-#: ../cogl/cogl-debug-options.h:161
+#: ../cogl/cogl-debug-options.h:168
 msgid "Show generated ARBfp/GLSL source code"
 msgstr "显示生成的 ARBfp/GLSL 源代码"
 
-#: ../cogl/cogl-debug-options.h:165
+#: ../cogl/cogl-debug-options.h:172
 msgid "Trace some OpenGL"
 msgstr "跟踪某些 OpenGL"
 
-#: ../cogl/cogl-debug-options.h:166
+#: ../cogl/cogl-debug-options.h:173
 msgid "Traces some select OpenGL calls"
 msgstr "跟踪某些选择 OpenGL 的调用"
 
-#: ../cogl/cogl-debug-options.h:170
-#, fuzzy
+#: ../cogl/cogl-debug-options.h:177
 msgid "Trace offscreen support"
-msgstr "跟踪幕后支持"
+msgstr "跟踪幕后(offscreen)支持"
 
-#: ../cogl/cogl-debug-options.h:171
-#, fuzzy
+#: ../cogl/cogl-debug-options.h:178
 msgid "Debug offscreen support"
-msgstr "调试幕后支持"
+msgstr "调试幕后(offscreen)支持"
 
-#: ../cogl/cogl-debug-options.h:175
+#: ../cogl/cogl-debug-options.h:182
 msgid "Disable program caches"
 msgstr "禁用程序缓存"
 
-#: ../cogl/cogl-debug-options.h:176
+#: ../cogl/cogl-debug-options.h:183
 msgid "Disable fallback caches for arbfp and glsl programs"
 msgstr "禁用 arbfp 和 glsl 程序的后备缓存"
 
-#: ../cogl/cogl-debug-options.h:180
+#: ../cogl/cogl-debug-options.h:187
 msgid "Disable read pixel optimization"
 msgstr "禁用读取像素优化"
 
-#: ../cogl/cogl-debug-options.h:181
+#: ../cogl/cogl-debug-options.h:188
 msgid ""
 "Disable optimization for reading 1px for simple scenes of opaque rectangles"
 msgstr "禁止对在透明矩形场景中读取单个像素操作的优化"
 
-#: ../cogl/cogl-debug-options.h:186
+#: ../cogl/cogl-debug-options.h:193
 msgid "Trace clipping"
 msgstr "跟踪裁剪"
 
-#: ../cogl/cogl-debug-options.h:187
+#: ../cogl/cogl-debug-options.h:194
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "记录有关 Cogl 如何实施裁剪的信息"
 
-#: ../cogl/cogl-debug-options.h:191
+#: ../cogl/cogl-debug-options.h:198
 msgid "Trace performance concerns"
 msgstr "跟踪性能问题"
 
-#: ../cogl/cogl-debug-options.h:192
+#: ../cogl/cogl-debug-options.h:199
 msgid "Tries to highlight sub-optimal Cogl usage."
 msgstr "尝试突出显示欠佳的 Cogl 使用。"
-
-#~ msgid "Cogl debugging flags to set"
-#~ msgstr "要设置的 Cogl 调试选项"
-
-#~ msgid "Cogl debugging flags to unset"
-#~ msgstr "要清除的 Cogl 调试选项"
-
-#~ msgid "Cogl Options"
-#~ msgstr "Cogl 选项"
-
-#~ msgid "Show Cogl options"
-#~ msgstr "显示  Cogl 选项"
