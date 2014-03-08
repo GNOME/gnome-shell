@@ -293,8 +293,13 @@ const NMConnectionSection = new Lang.Class({
     },
 
     removeConnection: function(connection) {
-        this._connectionItems.get(connection.get_uuid()).destroy();
-        this._connectionItems.delete(connection.get_uuid());
+        let uuid = connection.get_uuid();
+        let item = this._connectionItems.get(uuid);
+        if (item == undefined)
+            return;
+
+        item.destroy();
+        this._connectionItems.delete(uuid);
 
         let pos = this._connections.indexOf(connection);
         this._connections.splice(pos, 1);
