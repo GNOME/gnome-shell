@@ -181,9 +181,9 @@ const ShellUserVerifier = new Lang.Class({
             // The user is constant at the unlock screen, so it will immediately
             // respond to the request with the username
             needsUsername = true;
-        } else if (this.serviceIsForeground(GdmUtil.OVIRT_SERVICE_NAME) ||
-                   (this.smartcardDetected &&
-                    this.serviceIsForeground(GdmUtil.SMARTCARD_SERVICE_NAME))) {
+        } else if (this._serviceIsForeground(GdmUtil.OVIRT_SERVICE_NAME) ||
+                   (this._smartcardDetected &&
+                    this._serviceIsForeground(GdmUtil.SMARTCARD_SERVICE_NAME))) {
             // We don't need to know the username if the user preempted the login screen
             // with a smartcard or with preauthenticated oVirt credentials
             needsUsername = false;
@@ -340,10 +340,10 @@ const ShellUserVerifier = new Lang.Class({
         else
             smartcardDetected = this._smartcardManager.hasInsertedTokens();
 
-        if (this.smartcardDetected == smartcardDetected)
+        if (this._smartcardDetected == smartcardDetected)
             return;
 
-        this.smartcardDetected = smartcardDetected;
+        this._smartcardDetected = smartcardDetected;
 
         // Most of the time we want to reset if the user inserts or removes
         // a smartcard. Smartcard insertion "preempts" what the user was
@@ -354,13 +354,11 @@ const ShellUserVerifier = new Lang.Class({
         //                        the user is getting logged in.
         if (this._serviceIsDefault(SMARTCARD_SERVICE_NAME) &&
             this.verificationStatus == VerificationStatus.VERIFYING &&
-            this.smartcardDetected)
+            this._smartcardDetected)
             return;
 
         if (this.verificationStatus != VerificationStatus.VERIFICATION_SUCCEEDED)
             this._reset();
-
-        this.emit('smartcard-status-changed');
     },
 
     _reportInitError: function(where, error) {
@@ -419,24 +417,24 @@ const ShellUserVerifier = new Lang.Class({
     _getForegroundService: function() {
         if (this._oVirtCredentialsManager.hasToken())
             return OVIRT_SERVICE_NAME;
-        if (this.smartcardDetected)
+        if (this._smartcardDetected)
             return SMARTCARD_SERVICE_NAME;
 
         return this._defaultService;
     },
 
-    serviceIsForeground: function(serviceName) {
+    _serviceIsForeground: function(serviceName) {
         return serviceName == this._getForegroundService();
     },
 
-    serviceIsDefault: function(serviceName) {
+    _serviceIsDefault: function(serviceName) {
         return serviceName == this._defaultService;
     },
 
     _updateDefaultService: function() {
         if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
             this._defaultService = PASSWORD_SERVICE_NAME;
-        else if (this.smartcardDetected)
+        else if (this._smartcardDetected)
             this._defaultService = SMARTCARD_SERVICE_NAME;
         else if (this._haveFingerprintReader)
             this._defaultService = FINGERPRINT_SERVICE_NAME;
@@ -476,12 +474,12 @@ const ShellUserVerifier = new Lang.Class({
     _beginVerification: function() {
         this._startService(this._getForegroundService());
 
-        if (this._userName && this._haveFingerprintReader && !this.serviceIsForeground(FINGERPRINT_SERVICE_NAME))
+        if (this._userName && this._haveFingerprintReader && !this._serviceIsForeground(FINGERPRINT_SERVICE_NAME))
             this._startService(FINGERPRINT_SERVICE_NAME);
     },
 
     _onInfo: function(client, serviceName, info) {
-        if (this.serviceIsForeground(serviceName)) {
+        if (this._serviceIsForeground(serviceName)) {
             this._queueMessage(info, MessageType.INFO);
         } else if (serviceName == FINGERPRINT_SERVICE_NAME &&
             this._haveFingerprintReader) {
@@ -496,21 +494,21 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _onProblem: function(client, serviceName, problem) {
-        if (!this.serviceIsForeground(serviceName))
+        if (!this._serviceIsForeground(serviceName))
             return;
 
         this._queueMessage(problem, MessageType.ERROR);
     },
 
     _onInfoQuery: function(client, serviceName, question) {
-        if (!this.serviceIsForeground(serviceName))
+        if (!this._serviceIsForeground(serviceName))
             return;
 
         this.emit('ask-question', serviceName, question, '');
     },
 
     _onSecretInfoQuery: function(client, serviceName, secretQuestion) {
-        if (!this.serviceIsForeground(serviceName))
+        if (!this._serviceIsForeground(serviceName))
             return;
 
         if (serviceName == OVIRT_SERVICE_NAME) {
@@ -555,7 +553,7 @@ const ShellUserVerifier = new Lang.Class({
         // If the login failed with the preauthenticated oVirt credentials
         // then discard the credentials and revert to default authentication
         // mechanism.
-        if (this.serviceIsForeground(OVIRT_SERVICE_NAME)) {
+        if (this._serviceIsForeground(OVIRT_SERVICE_NAME)) {
             this._oVirtCredentialsManager.resetToken();
             this._verificationFailed(false);
             return;
@@ -564,7 +562,7 @@ const ShellUserVerifier = new Lang.Class({
         // if the password service fails, then cancel everything.
         // But if, e.g., fingerprint fails, still give
         // password authentication a chance to succeed
-        if (this.serviceIsForeground(serviceName)) {
+        if (this._serviceIsForeground(serviceName)) {
             this._verificationFailed(true);
         }
     },

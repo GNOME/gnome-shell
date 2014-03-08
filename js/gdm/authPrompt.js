@@ -44,8 +44,6 @@ const AuthPrompt = new Lang.Class({
         this._userVerifier.connect('show-message', Lang.bind(this, this._onShowMessage));
         this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
         this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
-        this._userVerifier.connect('smartcard-status-changed', Lang.bind(this, this._onSmartcardStatusChanged));
-        this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         this.connect('next', Lang.bind(this, function() {
                          this.updateSensitivity(false);
@@ -216,10 +214,6 @@ const AuthPrompt = new Lang.Class({
 
         this.updateSensitivity(true);
         this.emit('prompted');
-    },
-
-    _onSmartcardStatusChanged: function() {
-        this.smartcardDetected = this._userVerifier.smartcardDetected;
     },
 
     _onShowMessage: function(userVerifier, message, type) {
