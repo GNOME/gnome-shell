@@ -473,6 +473,8 @@ const LoginDialog = new Lang.Class({
         this._updateDisableUserList();
         this._userListLoaded = false;
 
+        LoginManager.getLoginManager().getCurrentSessionProxy(Lang.bind(this, this._gotGreeterSessionProxy));
+
         // If the user list is enabled, it should take key focus; make sure the
         // screen shield is initialized first to prevent it from stealing the
         // focus later
@@ -637,6 +639,32 @@ const LoginDialog = new Lang.Class({
                                                     }));
         this._updateCancelButton();
         this._showPrompt();
+    },
+
+    _sessionActivated: function() {
+        // We fade out the shell after logging in, and then re-set
+        // the greeter wen we're VT switched to again.
+
+        // XXX: re-trigger startup animation
+        if (this._authPrompt.verificationStatus == GdmUtil.VerificationStatus.VERIFICATION_SUCCEEDED) {
+            this._reset();
+
+            // XXX: do something better here
+            this.actor.opacity = 255;
+
+            let children = Main.layoutManager.uiGroup.get_children();
+            for (let i = 0; i < children.length; i++) {
+                if (children[i] != Main.layoutManager.screenShieldGroup)
+                    children[i].opacity = 255;
+            }
+        }
+    },
+
+    _gotGreeterSessionProxy: function(proxy) {
+        proxy.connect('g-properties-changed', Lang.bind(this, function() {
+            if (proxy.Active)
+                this._sessionActivated();
+        }));
     },
 
     _startSession: function(serviceName) {
