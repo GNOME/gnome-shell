@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-19 23:28+0000\n"
+"POT-Creation-Date: 2014-03-08 08:32+0000\n"
 "PO-Revision-Date: 2014-02-05 18:33+0800\n"
 "Last-Translator: hui <www.eternalhui@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -112,8 +112,9 @@ msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
-msgstr "GNOME 只会加载声明支持当前运行版本的扩展。启用该选项会禁止此检查，"
-"并尝试加载所有扩展，无视它们声明支持的版本。"
+msgstr ""
+"GNOME 只会加载声明支持当前运行版本的扩展。启用该选项会禁止此检查，并尝试加载"
+"所有扩展，无视它们声明支持的版本。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -222,15 +223,24 @@ msgid "The maximum accuracy level of location."
 msgstr "最大位置精度。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#| msgid ""
+#| "Configures the maximum level of location accuracy applications are "
+#| "allowed to see. Valid options are 'off' (disable location tracking), "
+#| "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
+#| "requires GPS receiver). Please keep in mind that this only controls what "
+#| "Geoclue will allow applications to see and they can find user's location "
+#| "on their own using network resources (albeit with street-level accuracy "
+#| "at best)."
 msgid ""
 "Configures the maximum level of location accuracy applications are allowed "
 "to see. Valid options are 'off' (disable location tracking), 'country', "
 "'city', 'neighborhood', 'street', and 'exact' (typically requires GPS "
-"receiver). Please keep in mind that this only controls what Geoclue will "
+"receiver). Please keep in mind that this only controls what GeoClue will "
 "allow applications to see and they can find user's location on their own "
 "using network resources (albeit with street-level accuracy at best)."
-msgstr "配置应用程序可见的最大位置精度级别。有效选项有“off”(禁止追踪位置)、"
-"“country”(国家)、“city”(城市)、“neighborhood”(邻近)、“street”(街道)、"
+msgstr ""
+"配置应用程序可见的最大位置精度级别。有效选项有“off”(禁止追踪位"
+"置)、“country”(国家)、“city”(城市)、“neighborhood”(邻近)、“street”(街道)、"
 "和“exact”(精确，通常需要 GPS 传感器)。注意，这一选项只控制 Geoclue 让应用程序"
 "知道多少，但程序自己可以自行通过网络资源找到用户的位置(即使最多精确到街道)。"
 
@@ -264,7 +274,8 @@ msgstr "标题栏上的按钮排列"
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
-msgstr "当 GNOME Shell 运行时，此键会覆盖 org.gnome.desktop.wm.preferences 键。"
+msgstr ""
+"当 GNOME Shell 运行时，此键会覆盖 org.gnome.desktop.wm.preferences 键。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -298,7 +309,7 @@ msgstr "使用上面的下拉框选择一个要配置的扩展。"
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:883
+#: ../js/ui/status/network.js:873
 msgid "Cancel"
 msgstr "取消"
 
@@ -324,17 +335,17 @@ msgstr "选择会话"
 msgid "Not listed?"
 msgstr "未列出？"
 
-#: ../js/gdm/loginDialog.js:598
+#: ../js/gdm/loginDialog.js:608
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(如 user 或 %s)"
 
-#: ../js/gdm/loginDialog.js:603 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:613 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "用户名："
 
-#: ../js/gdm/loginDialog.js:868
+#: ../js/gdm/loginDialog.js:884
 msgid "Login Window"
 msgstr "登录窗口"
 
@@ -522,44 +533,44 @@ msgstr "周六"
 msgid "calendar:MY"
 msgstr "日历：我"
 
-#: ../js/ui/calendar.js:446
+#: ../js/ui/calendar.js:448
 msgid "Previous month"
 msgstr "上个月"
 
-#: ../js/ui/calendar.js:456
+#: ../js/ui/calendar.js:458
 msgid "Next month"
 msgstr "下个月"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:762
+#: ../js/ui/calendar.js:770
 msgid "Nothing Scheduled"
 msgstr "无计划"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:780
+#: ../js/ui/calendar.js:788
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:791
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%Y年%m月%d日%A"
 
-#: ../js/ui/calendar.js:794
+#: ../js/ui/calendar.js:802
 msgid "Today"
 msgstr "今天"
 
-#: ../js/ui/calendar.js:798
+#: ../js/ui/calendar.js:806
 msgid "Tomorrow"
 msgstr "明天"
 
-#: ../js/ui/calendar.js:809
+#: ../js/ui/calendar.js:817
 msgid "This week"
 msgstr "本周"
 
-#: ../js/ui/calendar.js:817
+#: ../js/ui/calendar.js:825
 msgid "Next week"
 msgstr "下周"
 
@@ -592,8 +603,8 @@ msgstr "密码："
 msgid "Type again:"
 msgstr "再输一次："
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:250
-#: ../js/ui/status/network.js:327 ../js/ui/status/network.js:886
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:240
+#: ../js/ui/status/network.js:317 ../js/ui/status/network.js:876
 msgid "Connect"
 msgstr "连接"
 
@@ -711,23 +722,18 @@ msgstr "静音"
 
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:955
-#| msgctxt "event list time"
-#| msgid "%H∶%M"
 msgid "%H∶%M"
 msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:962
-#| msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgid "Yesterday, %H∶%M"
 msgstr "昨天 %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:969
-#| msgctxt "event list time"
-#| msgid "%H∶%M"
 msgid "%A, %H∶%M"
 msgstr "%A %H:%M"
 
@@ -735,8 +741,6 @@ msgstr "%A %H:%M"
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
 #: ../js/ui/components/telepathyClient.js:976
-#| msgctxt "event list time"
-#| msgid "%H∶%M"
 msgid "%B %d, %H∶%M"
 msgstr "%m月%d日，%H:%M"
 
@@ -749,8 +753,6 @@ msgstr "%Y年%m月%d日，%H:%M"
 
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:991
-#| msgctxt "event list time"
-#| msgid "%l∶%M %p"
 msgid "%l∶%M %p"
 msgstr "%p %l:%M"
 
@@ -763,8 +765,6 @@ msgstr "昨天%p %l:%M"
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1005
-#| msgctxt "event list time"
-#| msgid "%l∶%M %p"
 msgid "%A, %l∶%M %p"
 msgstr "%A%p %l:%M"
 
@@ -772,8 +772,6 @@ msgstr "%A%p %l:%M"
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1012
-#| msgctxt "event list time"
-#| msgid "%l∶%M %p"
 msgid "%B %d, %l∶%M %p"
 msgstr "%m月%d日%p %l:%M"
 
@@ -979,22 +977,22 @@ msgstr "显示应用程序"
 msgid "Dash"
 msgstr "Dash"
 
-#: ../js/ui/dateMenu.js:86
+#: ../js/ui/dateMenu.js:91
 msgid "Open Calendar"
 msgstr "打开日历"
 
-#: ../js/ui/dateMenu.js:90
+#: ../js/ui/dateMenu.js:95
 msgid "Open Clocks"
 msgstr "打开时钟"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:102
 msgid "Date & Time Settings"
 msgstr "日期和时间设置"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:192
 msgid "%A %B %e, %Y"
 msgstr "%Y年%m月%d日%A"
 
@@ -1081,8 +1079,6 @@ msgid_plural ""
 msgstr[0] "系统将在 %d 秒后自动重启并安装更新。"
 
 #: ../js/ui/endSessionDialog.js:129
-#| msgctxt "button"
-#| msgid "Restart & Install"
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "重启并安装"
@@ -1134,25 +1130,25 @@ msgstr "从 extensions.gnome.org 下载并安装“%s”？"
 msgid "Keyboard"
 msgstr "键盘"
 
-#: ../js/ui/lookingGlass.js:641
+#: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
 msgstr "未安装扩展"
 
 #. Translators: argument is an extension UUID. */
-#: ../js/ui/lookingGlass.js:695
+#: ../js/ui/lookingGlass.js:697
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s 没有传出任何错误信息。"
 
-#: ../js/ui/lookingGlass.js:701
+#: ../js/ui/lookingGlass.js:703
 msgid "Hide Errors"
 msgstr "隐藏错误"
 
-#: ../js/ui/lookingGlass.js:705 ../js/ui/lookingGlass.js:765
+#: ../js/ui/lookingGlass.js:707 ../js/ui/lookingGlass.js:767
 msgid "Show Errors"
 msgstr "显示错误"
 
-#: ../js/ui/lookingGlass.js:714
+#: ../js/ui/lookingGlass.js:716
 msgid "Enabled"
 msgstr "已启用"
 
@@ -1160,64 +1156,64 @@ msgstr "已启用"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:560
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/network.js:550
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "已禁用"
 
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:721
 msgid "Error"
 msgstr "错误"
 
-#: ../js/ui/lookingGlass.js:721
+#: ../js/ui/lookingGlass.js:723
 msgid "Out of date"
 msgstr "过时"
 
-#: ../js/ui/lookingGlass.js:723
+#: ../js/ui/lookingGlass.js:725
 msgid "Downloading"
 msgstr "正在下载"
 
-#: ../js/ui/lookingGlass.js:747
+#: ../js/ui/lookingGlass.js:749
 msgid "View Source"
 msgstr "查看源"
 
-#: ../js/ui/lookingGlass.js:756
+#: ../js/ui/lookingGlass.js:758
 msgid "Web Page"
 msgstr "网页"
 
-#: ../js/ui/messageTray.js:1324
+#: ../js/ui/messageTray.js:1326
 msgid "Open"
 msgstr "打开"
 
-#: ../js/ui/messageTray.js:1331
+#: ../js/ui/messageTray.js:1333
 msgid "Remove"
 msgstr "移除"
 
-#: ../js/ui/messageTray.js:1628
+#: ../js/ui/messageTray.js:1630
 msgid "Notifications"
 msgstr "提示"
 
-#: ../js/ui/messageTray.js:1635
+#: ../js/ui/messageTray.js:1637
 msgid "Clear Messages"
 msgstr "清空消息"
 
-#: ../js/ui/messageTray.js:1654
+#: ../js/ui/messageTray.js:1656
 msgid "Notification Settings"
 msgstr "通知设置"
 
-#: ../js/ui/messageTray.js:1707
+#: ../js/ui/messageTray.js:1709
 msgid "Tray Menu"
 msgstr "托盘菜单"
 
-#: ../js/ui/messageTray.js:1924
+#: ../js/ui/messageTray.js:1926
 msgid "No Messages"
 msgstr "无消息"
 
-#: ../js/ui/messageTray.js:1962
+#: ../js/ui/messageTray.js:1964
 msgid "Message Tray"
 msgstr "消息托盘"
 
-#: ../js/ui/messageTray.js:2946
+#: ../js/ui/messageTray.js:2948
 msgid "System Information"
 msgstr "系统信息"
 
@@ -1382,10 +1378,10 @@ msgstr "大号文本"
 msgid "Bluetooth"
 msgstr "蓝牙"
 
-#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:162 ../js/ui/status/network.js:151
-#: ../js/ui/status/network.js:328 ../js/ui/status/network.js:1235
-#: ../js/ui/status/network.js:1346 ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:59
+#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:151
+#: ../js/ui/status/network.js:318 ../js/ui/status/network.js:1225
+#: ../js/ui/status/network.js:1336 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "关闭"
@@ -1400,7 +1396,7 @@ msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "已连接 %d 台设备"
 
-#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1263
+#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1253
 msgid "Not Connected"
 msgstr "无连接"
 
@@ -1413,21 +1409,20 @@ msgid "Show Keyboard Layout"
 msgstr "显示键盘布局"
 
 #: ../js/ui/status/location.js:52
-#| msgid "Notifications"
 msgid "Location"
 msgstr "位置"
 
-#: ../js/ui/status/location.js:61 ../js/ui/status/location.js:161
+#: ../js/ui/status/location.js:58 ../js/ui/status/location.js:158
 #: ../js/ui/status/rfkill.js:84
 msgid "On"
 msgstr "开"
 
-#: ../js/ui/status/location.js:158 ../js/ui/status/network.js:246
-#: ../js/ui/status/network.js:425 ../js/ui/status/network.js:1261
+#: ../js/ui/status/location.js:155 ../js/ui/status/network.js:415
+#: ../js/ui/status/network.js:1251 ../js/ui/status/network.js:1455
 msgid "Off"
 msgstr "关"
 
-#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:1235
+#: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1225
 msgid "Turn On"
 msgstr "开启"
 
@@ -1435,129 +1430,127 @@ msgstr "开启"
 msgid "<unknown>"
 msgstr "<未知>"
 
+#: ../js/ui/status/network.js:417
+#| msgid "Connect"
+msgid "Connected"
+msgstr "已连接"
+
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:431
+#: ../js/ui/status/network.js:421
 msgid "unmanaged"
 msgstr "未托管"
 
-#: ../js/ui/status/network.js:433
+#: ../js/ui/status/network.js:423
 msgid "disconnecting..."
 msgstr "正在断开..."
 
-#: ../js/ui/status/network.js:439 ../js/ui/status/network.js:1363
+#: ../js/ui/status/network.js:429 ../js/ui/status/network.js:1353
 msgid "connecting..."
 msgstr "正在连接..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:442 ../js/ui/status/network.js:1366
+#: ../js/ui/status/network.js:432 ../js/ui/status/network.js:1356
 msgid "authentication required"
 msgstr "需要认证"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:450
+#: ../js/ui/status/network.js:440
 msgid "firmware missing"
 msgstr "固件缺失"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:454
+#: ../js/ui/status/network.js:444
 msgid "unavailable"
 msgstr "不可用"
 
-#: ../js/ui/status/network.js:456 ../js/ui/status/network.js:1368
+#: ../js/ui/status/network.js:446 ../js/ui/status/network.js:1358
 msgid "connection failed"
 msgstr "连接失败"
 
-#: ../js/ui/status/network.js:472
-#| msgid "Wi-Fi Settings"
+#: ../js/ui/status/network.js:462
 msgid "Wired Settings"
 msgstr "有线设置"
 
-#: ../js/ui/status/network.js:514 ../js/ui/status/network.js:592
+#: ../js/ui/status/network.js:504 ../js/ui/status/network.js:582
 msgid "Mobile Broadband Settings"
 msgstr "移动宽带设置"
 
-#: ../js/ui/status/network.js:556 ../js/ui/status/network.js:1259
+#: ../js/ui/status/network.js:546 ../js/ui/status/network.js:1249
 msgid "Hardware Disabled"
 msgstr "已通过硬件禁用"
 
-#: ../js/ui/status/network.js:600
+#: ../js/ui/status/network.js:590
 msgid "Use as Internet connection"
 msgstr "使用互联网连接"
 
-#: ../js/ui/status/network.js:781
-#| msgid "Airplane Mode"
+#: ../js/ui/status/network.js:771
 msgid "Airplane Mode is On"
 msgstr "已开启乘机模式"
 
-#: ../js/ui/status/network.js:782
+#: ../js/ui/status/network.js:772
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "启用乘机模式时 Wi-Fi 会关闭"
 
-#: ../js/ui/status/network.js:783
-#| msgid "Airplane Mode"
+#: ../js/ui/status/network.js:773
 msgid "Turn Off Airplane Mode"
 msgstr "关闭乘机模式"
 
-#: ../js/ui/status/network.js:792
-#| msgid "Wi-Fi Settings"
+#: ../js/ui/status/network.js:782
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi 关闭"
 
-#: ../js/ui/status/network.js:793
+#: ../js/ui/status/network.js:783
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "连接网络需要开启 Wi-Fi"
 
-#: ../js/ui/status/network.js:794
-#| msgid "Turn On"
+#: ../js/ui/status/network.js:784
 msgid "Turn On Wi-Fi"
 msgstr "开启 Wi-Fi"
 
-#: ../js/ui/status/network.js:819
+#: ../js/ui/status/network.js:809
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi 网络"
 
-#: ../js/ui/status/network.js:821
+#: ../js/ui/status/network.js:811
 msgid "Select a network"
 msgstr "选择网络"
 
-#: ../js/ui/status/network.js:850
+#: ../js/ui/status/network.js:840
 msgid "No Networks"
 msgstr "无网络"
 
-#: ../js/ui/status/network.js:871 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:861 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
 msgstr "使用硬件开关关闭"
 
-#: ../js/ui/status/network.js:1141
+#: ../js/ui/status/network.js:1131
 msgid "Select Network"
 msgstr "选择网络"
 
-#: ../js/ui/status/network.js:1147
+#: ../js/ui/status/network.js:1137
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi 设置"
 
-#: ../js/ui/status/network.js:1252
+#: ../js/ui/status/network.js:1242
 msgid "Hotspot Active"
 msgstr "热点已激活"
 
-#: ../js/ui/status/network.js:1255
-#| msgid "Connection"
+#: ../js/ui/status/network.js:1245
 msgid "Connecting"
 msgstr "正在连接"
 
-#: ../js/ui/status/network.js:1434 ../js/ui/status/rfkill.js:88
+#: ../js/ui/status/network.js:1424 ../js/ui/status/rfkill.js:88
 msgid "Network Settings"
 msgstr "网络设置"
 
-#: ../js/ui/status/network.js:1436
-#| msgid "Settings"
+#: ../js/ui/status/network.js:1426
 msgid "VPN Settings"
 msgstr "VPN 设置"
 
-#: ../js/ui/status/network.js:1455
+#: ../js/ui/status/network.js:1445
 msgid "VPN"
 msgstr "VPN"
 
