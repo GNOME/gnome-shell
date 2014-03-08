@@ -36,6 +36,7 @@ const BoxPointer = imports.ui.boxpointer;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const GdmUtil = imports.gdm.util;
 const Layout = imports.ui.layout;
+const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const Realmd = imports.gdm.realmd;
@@ -472,6 +473,8 @@ const LoginDialog = new Lang.Class({
         this._disableUserList = undefined;
         this._userListLoaded = false;
 
+        LoginManager.getLoginManager().getCurrentSessionProxy(Lang.bind(this, this._gotGreeterSessionProxy));
+
         // If the user list is enabled, it should take key focus; make sure the
         // screen shield is initialized first to prevent it from stealing the
         // focus later
@@ -633,6 +636,36 @@ const LoginDialog = new Lang.Class({
                                                     }));
         this._updateCancelButton();
         this._showPrompt();
+    },
+
+    _loginScreenSessionActivated: function() {
+        if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFICATION_SUCCEEDED)
+            return;
+
+        Tweener.addTween(this.actor,
+                         { opacity: 255,
+                           time: _FADE_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onUpdate: function() {
+                               let children = Main.layoutManager.uiGroup.get_children();
+
+                               for (let i = 0; i < children.length; i++) {
+                                   if (children[i] != Main.layoutManager.screenShieldGroup)
+                                       children[i].opacity = this.actor.opacity;
+                               }
+                           },
+                           onUpdateScope: this,
+                           onComplete: function() {
+                               this._authPrompt.reset();
+                           },
+                           onCompleteScope: this });
+    },
+
+    _gotGreeterSessionProxy: function(proxy) {
+        proxy.connect('g-properties-changed', Lang.bind(this, function() {
+            if (proxy.Active)
+                this._loginScreenSessionActivated();
+        }));
     },
 
     _startSession: function(serviceName) {

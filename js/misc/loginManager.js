@@ -39,6 +39,7 @@ const SystemdLoginSessionIface = '<node> \
 <interface name="org.freedesktop.login1.Session"> \
 <signal name="Lock" /> \
 <signal name="Unlock" /> \
+<property name="Active" type="b" access="read" /> \
 </interface> \
 </node>';
 
