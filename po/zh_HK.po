@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter 1.9.15\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-24 16:26+0000\n"
-"PO-Revision-Date: 2014-02-02 20:05+0800\n"
+"POT-Creation-Date: 2014-03-06 04:09+0000\n"
+"PO-Revision-Date: 2014-03-09 11:29+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
 "Language: zh_TW\n"
@@ -931,22 +931,18 @@ msgid "The height of the canvas"
 msgstr "畫布的高度"
 
 #: ../clutter/clutter-canvas.c:283
-#| msgid "Selection Color Set"
 msgid "Scale Factor Set"
 msgstr "縮放因素設定"
 
 #: ../clutter/clutter-canvas.c:284
-#| msgid "Whether the transform property is set"
 msgid "Whether the scale-factor property is set"
 msgstr "是否已經設定縮放因素屬性"
 
 #: ../clutter/clutter-canvas.c:305
-#| msgid "Factor"
 msgid "Scale Factor"
 msgstr "縮放因素"
 
 #: ../clutter/clutter-canvas.c:306
-#| msgid "The height of the Cairo surface"
 msgid "The scaling factor for the surface"
 msgstr "表面的縮放因素"
 
@@ -1036,7 +1032,7 @@ msgstr "稀化因子"
 
 #: ../clutter/clutter-device-manager.c:127
 #: ../clutter/clutter-input-device.c:355
-#: ../clutter/x11/clutter-keymap-x11.c:321
+#: ../clutter/x11/clutter-keymap-x11.c:457
 msgid "Backend"
 msgstr "後端程式"
 
@@ -1150,22 +1146,41 @@ msgstr "每一列的最大高度"
 msgid "Snap to grid"
 msgstr "貼齊格線"
 
-#: ../clutter/clutter-gesture-action.c:639
+#: ../clutter/clutter-gesture-action.c:668
 msgid "Number touch points"
 msgstr "觸控點數目"
 
-#: ../clutter/clutter-gesture-action.c:640
+#: ../clutter/clutter-gesture-action.c:669
 msgid "Number of touch points"
 msgstr "觸控點數目"
 
-#: ../clutter/clutter-gesture-action.c:655
+#: ../clutter/clutter-gesture-action.c:684
 msgid "Threshold Trigger Edge"
 msgstr "界限觸發邊緣"
 
-#: ../clutter/clutter-gesture-action.c:656
-#| msgid "The timeline used by the animation"
+#: ../clutter/clutter-gesture-action.c:685
 msgid "The trigger edge used by the action"
 msgstr "動作使用的觸發邊緣"
+
+#: ../clutter/clutter-gesture-action.c:704
+#| msgid "Threshold Trigger Edge"
+msgid "Threshold Trigger Horizontal Distance"
+msgstr "界限觸發水平距離"
+
+#: ../clutter/clutter-gesture-action.c:705
+#| msgid "The trigger edge used by the action"
+msgid "The horizontal trigger distance used by the action"
+msgstr "動作使用的水平觸發距離"
+
+#: ../clutter/clutter-gesture-action.c:723
+#| msgid "Threshold Trigger Edge"
+msgid "Threshold Trigger Vertical Distance"
+msgstr "界限觸發垂直距離"
+
+#: ../clutter/clutter-gesture-action.c:724
+#| msgid "The trigger edge used by the action"
+msgid "The vertical trigger distance used by the action"
+msgstr "動作使用的垂直觸發距離"
 
 #: ../clutter/clutter-grid-layout.c:1223
 msgid "Left attachment"
@@ -1383,35 +1398,35 @@ msgstr "Clutter 選項"
 msgid "Show Clutter Options"
 msgstr "顯示 Clutter 選項"
 
-#: ../clutter/clutter-pan-action.c:446
+#: ../clutter/clutter-pan-action.c:455
 msgid "Pan Axis"
 msgstr "平移軸線"
 
-#: ../clutter/clutter-pan-action.c:447
+#: ../clutter/clutter-pan-action.c:456
 msgid "Constraints the panning to an axis"
 msgstr "限制平移至軸線"
 
-#: ../clutter/clutter-pan-action.c:461
+#: ../clutter/clutter-pan-action.c:470
 msgid "Interpolate"
 msgstr "插值法"
 
-#: ../clutter/clutter-pan-action.c:462
+#: ../clutter/clutter-pan-action.c:471
 msgid "Whether interpolated events emission is enabled."
 msgstr "內插事件散發是否已啟用。"
 
-#: ../clutter/clutter-pan-action.c:478
+#: ../clutter/clutter-pan-action.c:487
 msgid "Deceleration"
 msgstr "減速"
 
-#: ../clutter/clutter-pan-action.c:479
+#: ../clutter/clutter-pan-action.c:488
 msgid "Rate at which the interpolated panning will decelerate in"
 msgstr "內插平移要減速的速率"
 
-#: ../clutter/clutter-pan-action.c:496
+#: ../clutter/clutter-pan-action.c:505
 msgid "Initial acceleration factor"
 msgstr "初始加速系數"
 
-#: ../clutter/clutter-pan-action.c:497
+#: ../clutter/clutter-pan-action.c:506
 msgid "Factor applied to the momentum when starting the interpolated phase"
 msgstr "當開始內插階段時套用到動量的系數"
 
@@ -1493,7 +1508,7 @@ msgstr "拖曳距離界限"
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "開始拖曳前游標移動的距離"
 
-#: ../clutter/clutter-settings.c:534 ../clutter/clutter-text.c:3404
+#: ../clutter/clutter-settings.c:534 ../clutter/clutter-text.c:3437
 msgid "Font Name"
 msgstr "字型名稱"
 
@@ -1555,7 +1570,6 @@ msgid "Window Scaling Factor"
 msgstr "視窗縮放因素"
 
 #: ../clutter/clutter-settings.c:662
-#| msgid "Add an effect to be applied on the actor"
 msgid "The scaling factor to be applied to windows"
 msgstr "套用到視窗的縮放因素"
 
@@ -1623,7 +1637,7 @@ msgstr "螢幕外"
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "主舞臺是否應該在幕後潤算"
 
-#: ../clutter/clutter-stage.c:1927 ../clutter/clutter-text.c:3518
+#: ../clutter/clutter-stage.c:1927 ../clutter/clutter-text.c:3551
 msgid "Cursor Visible"
 msgstr "游標可見"
 
@@ -1712,7 +1726,7 @@ msgstr "接受聚焦"
 msgid "Whether the stage should accept focus on show"
 msgstr "階段是否應該套用顯示的焦點"
 
-#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3439
+#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3472
 msgid "Text"
 msgstr "文字"
 
@@ -1736,203 +1750,203 @@ msgstr "最大長度"
 msgid "Maximum number of characters for this entry. Zero if no maximum"
 msgstr "這個項目中字符數目的上限。0 為沒有上限"
 
-#: ../clutter/clutter-text.c:3386
+#: ../clutter/clutter-text.c:3419
 msgid "Buffer"
 msgstr "緩衝區"
 
-#: ../clutter/clutter-text.c:3387
+#: ../clutter/clutter-text.c:3420
 msgid "The buffer for the text"
 msgstr "文字的緩衝區"
 
-#: ../clutter/clutter-text.c:3405
+#: ../clutter/clutter-text.c:3438
 msgid "The font to be used by the text"
 msgstr "文字所用的字型"
 
-#: ../clutter/clutter-text.c:3422
+#: ../clutter/clutter-text.c:3455
 msgid "Font Description"
 msgstr "字型描述"
 
-#: ../clutter/clutter-text.c:3423
+#: ../clutter/clutter-text.c:3456
 msgid "The font description to be used"
 msgstr "所用的字型描述"
 
-#: ../clutter/clutter-text.c:3440
+#: ../clutter/clutter-text.c:3473
 msgid "The text to render"
 msgstr "要潤算的文字"
 
-#: ../clutter/clutter-text.c:3454
+#: ../clutter/clutter-text.c:3487
 msgid "Font Color"
 msgstr "字型顏色"
 
-#: ../clutter/clutter-text.c:3455
+#: ../clutter/clutter-text.c:3488
 msgid "Color of the font used by the text"
 msgstr "文字字型所用的顏色"
 
-#: ../clutter/clutter-text.c:3470
+#: ../clutter/clutter-text.c:3503
 msgid "Editable"
 msgstr "可編輯"
 
-#: ../clutter/clutter-text.c:3471
+#: ../clutter/clutter-text.c:3504
 msgid "Whether the text is editable"
 msgstr "文字是否可以編輯"
 
-#: ../clutter/clutter-text.c:3486
+#: ../clutter/clutter-text.c:3519
 msgid "Selectable"
 msgstr "可選取"
 
-#: ../clutter/clutter-text.c:3487
+#: ../clutter/clutter-text.c:3520
 msgid "Whether the text is selectable"
 msgstr "文字是否可以選取"
 
-#: ../clutter/clutter-text.c:3501
+#: ../clutter/clutter-text.c:3534
 msgid "Activatable"
 msgstr "可啟用"
 
-#: ../clutter/clutter-text.c:3502
+#: ../clutter/clutter-text.c:3535
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "按下輸入鍵是否會造成發出啟用信號"
 
-#: ../clutter/clutter-text.c:3519
+#: ../clutter/clutter-text.c:3552
 msgid "Whether the input cursor is visible"
 msgstr "輸入游標是否可見"
 
-#: ../clutter/clutter-text.c:3533 ../clutter/clutter-text.c:3534
+#: ../clutter/clutter-text.c:3566 ../clutter/clutter-text.c:3567
 msgid "Cursor Color"
 msgstr "游標顏色"
 
-#: ../clutter/clutter-text.c:3549
+#: ../clutter/clutter-text.c:3582
 msgid "Cursor Color Set"
 msgstr "游標顏色設定"
 
-#: ../clutter/clutter-text.c:3550
+#: ../clutter/clutter-text.c:3583
 msgid "Whether the cursor color has been set"
 msgstr "游標顏色是否已設定"
 
-#: ../clutter/clutter-text.c:3565
+#: ../clutter/clutter-text.c:3598
 msgid "Cursor Size"
 msgstr "游標大小"
 
-#: ../clutter/clutter-text.c:3566
+#: ../clutter/clutter-text.c:3599
 msgid "The width of the cursor, in pixels"
 msgstr "游標的像素闊度"
 
-#: ../clutter/clutter-text.c:3582 ../clutter/clutter-text.c:3600
+#: ../clutter/clutter-text.c:3615 ../clutter/clutter-text.c:3633
 msgid "Cursor Position"
 msgstr "游標位置"
 
-#: ../clutter/clutter-text.c:3583 ../clutter/clutter-text.c:3601
+#: ../clutter/clutter-text.c:3616 ../clutter/clutter-text.c:3634
 msgid "The cursor position"
 msgstr "游標的位置"
 
-#: ../clutter/clutter-text.c:3616
+#: ../clutter/clutter-text.c:3649
 msgid "Selection-bound"
 msgstr "選取區邊界"
 
-#: ../clutter/clutter-text.c:3617
+#: ../clutter/clutter-text.c:3650
 msgid "The cursor position of the other end of the selection"
 msgstr "選取區另一端的游標位置"
 
-#: ../clutter/clutter-text.c:3632 ../clutter/clutter-text.c:3633
+#: ../clutter/clutter-text.c:3665 ../clutter/clutter-text.c:3666
 msgid "Selection Color"
 msgstr "選取區顏色"
 
-#: ../clutter/clutter-text.c:3648
+#: ../clutter/clutter-text.c:3681
 msgid "Selection Color Set"
 msgstr "選取區顏色設定"
 
-#: ../clutter/clutter-text.c:3649
+#: ../clutter/clutter-text.c:3682
 msgid "Whether the selection color has been set"
 msgstr "選取區顏色是否已設定"
 
-#: ../clutter/clutter-text.c:3664
+#: ../clutter/clutter-text.c:3697
 msgid "Attributes"
 msgstr "屬性"
 
-#: ../clutter/clutter-text.c:3665
+#: ../clutter/clutter-text.c:3698
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "要套用到參與者內容的樣式屬性清單"
 
-#: ../clutter/clutter-text.c:3687
+#: ../clutter/clutter-text.c:3720
 msgid "Use markup"
 msgstr "使用標記"
 
-#: ../clutter/clutter-text.c:3688
+#: ../clutter/clutter-text.c:3721
 msgid "Whether or not the text includes Pango markup"
 msgstr "文字是否包含 Pango 標記"
 
-#: ../clutter/clutter-text.c:3704
+#: ../clutter/clutter-text.c:3737
 msgid "Line wrap"
 msgstr "自動換列"
 
-#: ../clutter/clutter-text.c:3705
+#: ../clutter/clutter-text.c:3738
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "設定之後如果文字變得太寬就會換列"
 
-#: ../clutter/clutter-text.c:3720
+#: ../clutter/clutter-text.c:3753
 msgid "Line wrap mode"
 msgstr "自動換列模式"
 
-#: ../clutter/clutter-text.c:3721
+#: ../clutter/clutter-text.c:3754
 msgid "Control how line-wrapping is done"
 msgstr "控制換列行為"
 
-#: ../clutter/clutter-text.c:3736
+#: ../clutter/clutter-text.c:3769
 msgid "Ellipsize"
 msgstr "略寫"
 
-#: ../clutter/clutter-text.c:3737
+#: ../clutter/clutter-text.c:3770
 msgid "The preferred place to ellipsize the string"
 msgstr "略寫字串的偏好位置"
 
-#: ../clutter/clutter-text.c:3753
+#: ../clutter/clutter-text.c:3786
 msgid "Line Alignment"
 msgstr "對齊"
 
-#: ../clutter/clutter-text.c:3754
+#: ../clutter/clutter-text.c:3787
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "多列文字中偏好的字串對齊方式"
 
-#: ../clutter/clutter-text.c:3770
+#: ../clutter/clutter-text.c:3803
 msgid "Justify"
 msgstr "調整"
 
-#: ../clutter/clutter-text.c:3771
+#: ../clutter/clutter-text.c:3804
 msgid "Whether the text should be justified"
 msgstr "文字是否應該調整"
 
-#: ../clutter/clutter-text.c:3786
+#: ../clutter/clutter-text.c:3819
 msgid "Password Character"
 msgstr "密碼字符"
 
-#: ../clutter/clutter-text.c:3787
+#: ../clutter/clutter-text.c:3820
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr "如果不是空值就使用這個字符以顯示參與者內容"
 
-#: ../clutter/clutter-text.c:3801
+#: ../clutter/clutter-text.c:3834
 msgid "Max Length"
 msgstr "最大長度"
 
-#: ../clutter/clutter-text.c:3802
+#: ../clutter/clutter-text.c:3835
 msgid "Maximum length of the text inside the actor"
 msgstr "參與者內部文字的最大長度值"
 
-#: ../clutter/clutter-text.c:3825
+#: ../clutter/clutter-text.c:3858
 msgid "Single Line Mode"
 msgstr "單列模式"
 
-#: ../clutter/clutter-text.c:3826
+#: ../clutter/clutter-text.c:3859
 msgid "Whether the text should be a single line"
 msgstr "文字是否只應使用一列"
 
-#: ../clutter/clutter-text.c:3840 ../clutter/clutter-text.c:3841
+#: ../clutter/clutter-text.c:3873 ../clutter/clutter-text.c:3874
 msgid "Selected Text Color"
 msgstr "選取的文字顏色"
 
-#: ../clutter/clutter-text.c:3856
+#: ../clutter/clutter-text.c:3889
 msgid "Selected Text Color Set"
 msgstr "選取的文字顏色設定"
 
-#: ../clutter/clutter-text.c:3857
+#: ../clutter/clutter-text.c:3890
 msgid "Whether the selected text color has been set"
 msgstr "選取的文字顏色是否已設定"
 
@@ -2023,11 +2037,11 @@ msgstr "完成時移除"
 msgid "Detach the transition when completed"
 msgstr "完成時分離轉換"
 
-#: ../clutter/clutter-zoom-action.c:355
+#: ../clutter/clutter-zoom-action.c:365
 msgid "Zoom Axis"
 msgstr "縮放軸線"
 
-#: ../clutter/clutter-zoom-action.c:356
+#: ../clutter/clutter-zoom-action.c:366
 msgid "Constraints the zoom to an axis"
 msgstr "限制縮放至軸線"
 
@@ -2646,22 +2660,6 @@ msgstr "不支援 YUV 材質"
 msgid "YUV2 textues are not supported"
 msgstr "不支援 YUV2 材質"
 
-#: ../clutter/evdev/clutter-input-device-evdev.c:154
-msgid "sysfs Path"
-msgstr "sysfs 路徑"
-
-#: ../clutter/evdev/clutter-input-device-evdev.c:155
-msgid "Path of the device in sysfs"
-msgstr "sysfs 裝置的路徑"
-
-#: ../clutter/evdev/clutter-input-device-evdev.c:170
-msgid "Device Path"
-msgstr "裝置路徑"
-
-#: ../clutter/evdev/clutter-input-device-evdev.c:171
-msgid "Path of the device node"
-msgstr "裝置節點的路徑"
-
 #: ../clutter/gdk/clutter-backend-gdk.c:289
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
@@ -2707,7 +2705,7 @@ msgstr "使 X 呼叫同步"
 msgid "Disable XInput support"
 msgstr "停用 XInput 支援"
 
-#: ../clutter/x11/clutter-keymap-x11.c:322
+#: ../clutter/x11/clutter-keymap-x11.c:458
 msgid "The Clutter backend"
 msgstr "Clutter 後端程式"
 
@@ -2806,3 +2804,15 @@ msgstr "視窗覆寫重新導向"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:636
 msgid "If this is an override-redirect window"
 msgstr "是否這是個覆寫重新導向的視窗"
+
+#~ msgid "sysfs Path"
+#~ msgstr "sysfs 路徑"
+
+#~ msgid "Path of the device in sysfs"
+#~ msgstr "sysfs 裝置的路徑"
+
+#~ msgid "Device Path"
+#~ msgstr "裝置路徑"
+
+#~ msgid "Path of the device node"
+#~ msgstr "裝置節點的路徑"
