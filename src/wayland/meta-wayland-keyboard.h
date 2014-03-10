@@ -142,13 +142,6 @@ meta_wayland_keyboard_start_grab (MetaWaylandKeyboard *device,
 void
 meta_wayland_keyboard_end_grab (MetaWaylandKeyboard *keyboard);
 
-gboolean
-meta_wayland_keyboard_begin_modal (MetaWaylandKeyboard *keyboard,
-				   guint32              timestamp);
-void
-meta_wayland_keyboard_end_modal   (MetaWaylandKeyboard *keyboard,
-				   guint32              timestamp);
-
 void
 meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard);
 

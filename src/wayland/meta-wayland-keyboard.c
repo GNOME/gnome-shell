@@ -281,31 +281,6 @@ static const MetaWaylandKeyboardGrabInterface
   default_grab_modifiers,
 };
 
-static gboolean
-modal_key (MetaWaylandKeyboardGrab *grab,
-	   uint32_t                 time,
-	   uint32_t                 key,
-	   uint32_t                 state)
-{
-  /* FALSE means: let the event through to clutter */
-  return FALSE;
-}
-
-static void
-modal_modifiers (MetaWaylandKeyboardGrab *grab,
-		 uint32_t                 serial,
-		 uint32_t                 mods_depressed,
-		 uint32_t                 mods_latched,
-		 uint32_t                 mods_locked,
-		 uint32_t                 group)
-{
-}
-
-static MetaWaylandKeyboardGrabInterface modal_grab = {
-  modal_key,
-  modal_modifiers,
-};
-
 gboolean
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
                             struct wl_display   *display)
@@ -521,26 +496,13 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
           struct wl_display *display = wl_client_get_display (client);
           uint32_t serial = wl_display_next_serial (display);
 
-          /* If we're in a modal grab, the client is focused but doesn't see
-             modifiers or pressed keys (and fix that up when we exit the modal) */
-          if (keyboard->grab->interface == &modal_grab)
-            {
-              struct wl_array empty;
-              wl_array_init (&empty);
-
-              wl_keyboard_send_modifiers (keyboard->focus_resource, serial, 0, 0, 0, 0);
-              wl_keyboard_send_enter (keyboard->focus_resource, serial, keyboard->focus_surface->resource, &empty);
-            }
-          else
-            {
-              wl_keyboard_send_modifiers (keyboard->focus_resource, serial,
-                                          keyboard->modifier_state.mods_depressed,
-                                          keyboard->modifier_state.mods_latched,
-                                          keyboard->modifier_state.mods_locked,
-                                          keyboard->modifier_state.group);
-              wl_keyboard_send_enter (keyboard->focus_resource, serial, keyboard->focus_surface->resource,
-                                      &keyboard->keys);
-            }
+          wl_keyboard_send_modifiers (keyboard->focus_resource, serial,
+                                      keyboard->modifier_state.mods_depressed,
+                                      keyboard->modifier_state.mods_latched,
+                                      keyboard->modifier_state.mods_locked,
+                                      keyboard->modifier_state.group);
+          wl_keyboard_send_enter (keyboard->focus_resource, serial, keyboard->focus_surface->resource,
+                                  &keyboard->keys);
 
           wl_resource_add_destroy_listener (keyboard->focus_resource, &keyboard->focus_resource_listener);
           keyboard->focus_serial = serial;
@@ -572,85 +534,6 @@ meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
 
   /* XXX: What about keyboard->resource_list? */
   wl_array_release (&keyboard->keys);
-}
-
-gboolean
-meta_wayland_keyboard_begin_modal (MetaWaylandKeyboard *keyboard,
-				   guint32              timestamp)
-{
-  MetaWaylandKeyboardGrab *grab;
-  uint32_t *end = (void *) ((char *) keyboard->keys.data +
-			    keyboard->keys.size);
-  uint32_t *k;
-  uint32_t serial;
-
-  meta_verbose ("Asked to acquire modal keyboard grab, timestamp %d\n", timestamp);
-
-  if (keyboard->grab != &keyboard->default_grab)
-    return FALSE;
-
-  if (keyboard->focus_surface)
-    {
-      /* Fake key release events for the focused app */
-      serial = wl_display_next_serial (keyboard->display);
-      keyboard->grab->interface->modifiers (keyboard->grab,
-					    serial,
-					    0, 0, 0, 0);
-
-      for (k = keyboard->keys.data; k < end; k++)
-	{
-	  keyboard->grab->interface->key (keyboard->grab,
-					  timestamp,
-					  *k, 0);
-	}
-    }
-
-  grab = g_slice_new0 (MetaWaylandKeyboardGrab);
-  grab->interface = &modal_grab;
-  meta_wayland_keyboard_start_grab (keyboard, grab);
-
-  meta_verbose ("Acquired modal keyboard grab, timestamp %d\n", timestamp);
-
-  return TRUE;
-}
-
-void
-meta_wayland_keyboard_end_modal (MetaWaylandKeyboard *keyboard,
-				 guint32              timestamp)
-{
-  MetaWaylandKeyboardGrab *grab;
-  uint32_t *end = (void *) ((char *) keyboard->keys.data +
-			    keyboard->keys.size);
-  uint32_t *k;
-  uint32_t serial;
-
-  grab = keyboard->grab;
-
-  g_assert (grab->interface == &modal_grab);
-
-  meta_wayland_keyboard_end_grab (keyboard);
-  g_slice_free (MetaWaylandKeyboardGrab, grab);
-
-  if (keyboard->focus_surface)
-    {
-      /* Fake key press events for the focused app */
-      serial = wl_display_next_serial (keyboard->display);
-      keyboard->grab->interface->modifiers (keyboard->grab,
-					    serial,
-					    keyboard->modifier_state.mods_depressed,
-					    keyboard->modifier_state.mods_latched, 
-					    keyboard->modifier_state.mods_locked,
-					    keyboard->modifier_state.group);
-
-      for (k = keyboard->keys.data; k < end; k++)
-	{
-	  keyboard->grab->interface->key (keyboard->grab,
-					  timestamp,
-					  *k, 1);
-	}
-    }
-
-  meta_verbose ("Released modal keyboard grab, timestamp %d\n", timestamp);
 }
 
 void

@@ -398,61 +398,6 @@ meta_wayland_pointer_end_grab (MetaWaylandPointer *pointer)
   interface->focus (pointer->grab, pointer->current, NULL);
 }
 
-static void
-modal_focus (MetaWaylandPointerGrab *grab,
-	     MetaWaylandSurface     *surface,
-	     const ClutterEvent     *event)
-{
-}
-
-static void
-modal_motion (MetaWaylandPointerGrab *grab,
-	      const ClutterEvent     *event)
-{
-}
-
-static void
-modal_button (MetaWaylandPointerGrab *grab,
-	      const ClutterEvent     *event)
-{
-}
-
-static MetaWaylandPointerGrabInterface modal_grab = {
-  modal_focus,
-  modal_motion,
-  modal_button
-};
-
-gboolean
-meta_wayland_pointer_begin_modal (MetaWaylandPointer *pointer)
-{
-  MetaWaylandPointerGrab *grab;
-
-  if (pointer->grab != &pointer->default_grab)
-    return FALSE;
-
-  meta_wayland_pointer_set_focus (pointer, NULL);
-
-  grab = g_slice_new0 (MetaWaylandPointerGrab);
-  grab->interface = &modal_grab;
-  meta_wayland_pointer_start_grab (pointer, grab);
-
-  return TRUE;
-}
-
-void
-meta_wayland_pointer_end_modal (MetaWaylandPointer *pointer)
-{
-  MetaWaylandPointerGrab *grab;
-
-  grab = pointer->grab;
-
-  g_assert (grab->interface == &modal_grab);
-
-  meta_wayland_pointer_end_grab (pointer);
-  g_slice_free (MetaWaylandPointerGrab, grab);
-}
-
 typedef struct {
   MetaWaylandPointerGrab  generic;
 

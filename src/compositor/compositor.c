@@ -436,45 +436,6 @@ begin_modal_x11 (MetaScreen       *screen,
   return FALSE;
 }
 
-static gboolean
-begin_modal_wayland (MetaScreen       *screen,
-                     MetaPlugin       *plugin,
-                     MetaModalOptions  options,
-                     guint32           timestamp)
-{
-  MetaWaylandCompositor *compositor;
-  gboolean pointer_grabbed = FALSE;
-  gboolean keyboard_grabbed = FALSE;
-
-  compositor = meta_wayland_compositor_get_default ();
-
-  if ((options & META_MODAL_POINTER_ALREADY_GRABBED) == 0)
-    {
-      if (!meta_wayland_pointer_begin_modal (&compositor->seat->pointer))
-        goto fail;
-
-      pointer_grabbed = TRUE;
-    }
-  if ((options & META_MODAL_KEYBOARD_ALREADY_GRABBED) == 0)
-    {
-      if (!meta_wayland_keyboard_begin_modal (&compositor->seat->keyboard,
-                                              timestamp))
-        goto fail;
-
-      keyboard_grabbed = TRUE;
-    }
-
-  return TRUE;
-
- fail:
-  if (pointer_grabbed)
-    meta_wayland_pointer_end_modal (&compositor->seat->pointer);
-  if (keyboard_grabbed)
-    meta_wayland_keyboard_end_modal (&compositor->seat->keyboard, timestamp);
-
-  return FALSE;
-}
-
 gboolean
 meta_begin_modal_for_plugin (MetaScreen       *screen,
                              MetaPlugin       *plugin,
@@ -493,7 +454,7 @@ meta_begin_modal_for_plugin (MetaScreen       *screen,
     return FALSE;
 
   if (meta_is_wayland_compositor ())
-    ok = begin_modal_wayland (screen, plugin, options, timestamp);
+    ok = TRUE;
   else
     ok = begin_modal_x11 (screen, plugin, options, timestamp);
   if (!ok)
@@ -521,15 +482,7 @@ meta_end_modal_for_plugin (MetaScreen     *screen,
 
   g_return_if_fail (compositor->modal_plugin == plugin);
 
-  if (meta_is_wayland_compositor ())
-    {
-      MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
-
-      meta_wayland_pointer_end_modal (&compositor->seat->pointer);
-      meta_wayland_keyboard_end_modal (&compositor->seat->keyboard,
-                                       timestamp);
-    }
-  else
+  if (!meta_is_wayland_compositor ())
     {
       XIUngrabDevice (xdpy, META_VIRTUAL_CORE_POINTER_ID, timestamp);
       XIUngrabDevice (xdpy, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
