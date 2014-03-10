@@ -281,6 +281,9 @@ handle_scroll_event (MetaWaylandSeat    *seat,
 
   notify_motion (seat, event);
 
+  if (!seat->pointer.focus_resource)
+    return;
+
   switch (clutter_event_get_scroll_direction (event))
     {
     case CLUTTER_SCROLL_UP:
@@ -307,11 +310,10 @@ handle_scroll_event (MetaWaylandSeat    *seat,
       return;
     }
 
-  if (seat->pointer.focus_resource)
-    wl_pointer_send_axis (seat->pointer.focus_resource,
-                          clutter_event_get_time (event),
-                          axis,
-                          value);
+  wl_pointer_send_axis (seat->pointer.focus_resource,
+                        clutter_event_get_time (event),
+                        axis,
+                        value);
 }
 
 static int
