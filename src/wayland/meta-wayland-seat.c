@@ -276,8 +276,7 @@ static void
 handle_scroll_event (MetaWaylandSeat    *seat,
                      const ClutterEvent *event)
 {
-  enum wl_pointer_axis axis;
-  wl_fixed_t value;
+  wl_fixed_t x_value = 0, y_value = 0;
 
   notify_motion (seat, event);
 
@@ -287,33 +286,31 @@ handle_scroll_event (MetaWaylandSeat    *seat,
   switch (clutter_event_get_scroll_direction (event))
     {
     case CLUTTER_SCROLL_UP:
-      axis = WL_POINTER_AXIS_VERTICAL_SCROLL;
-      value = -DEFAULT_AXIS_STEP_DISTANCE;
+      y_value = -DEFAULT_AXIS_STEP_DISTANCE;
       break;
 
     case CLUTTER_SCROLL_DOWN:
-      axis = WL_POINTER_AXIS_VERTICAL_SCROLL;
-      value = DEFAULT_AXIS_STEP_DISTANCE;
+      y_value = DEFAULT_AXIS_STEP_DISTANCE;
       break;
 
     case CLUTTER_SCROLL_LEFT:
-      axis = WL_POINTER_AXIS_HORIZONTAL_SCROLL;
-      value = -DEFAULT_AXIS_STEP_DISTANCE;
+      x_value = -DEFAULT_AXIS_STEP_DISTANCE;
       break;
 
     case CLUTTER_SCROLL_RIGHT:
-      axis = WL_POINTER_AXIS_HORIZONTAL_SCROLL;
-      value = DEFAULT_AXIS_STEP_DISTANCE;
+      x_value = DEFAULT_AXIS_STEP_DISTANCE;
       break;
 
     default:
       return;
     }
 
-  wl_pointer_send_axis (seat->pointer.focus_resource,
-                        clutter_event_get_time (event),
-                        axis,
-                        value);
+  if (x_value)
+    wl_pointer_send_axis (seat->pointer.focus_resource, clutter_event_get_time (event),
+                          WL_POINTER_AXIS_HORIZONTAL_SCROLL, x_value);
+  if (y_value)
+    wl_pointer_send_axis (seat->pointer.focus_resource, clutter_event_get_time (event),
+                          WL_POINTER_AXIS_VERTICAL_SCROLL, y_value);
 }
 
 static int
