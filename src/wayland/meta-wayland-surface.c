@@ -1464,8 +1464,6 @@ subsurface_parent_surface_committed (MetaWaylandSurface *surface)
 
   if (surface->sub.synchronous)
     commit_double_buffered_state (surface, pending_surface_state);
-
-  double_buffered_state_reset (pending_surface_state);
 }
 
 static void
