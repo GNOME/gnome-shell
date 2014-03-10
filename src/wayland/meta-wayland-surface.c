@@ -874,8 +874,7 @@ static void
 xdg_surface_unset_fullscreen (struct wl_client *client,
                               struct wl_resource *resource)
 {
-  MetaWaylandSurfaceExtension *xdg_surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface = wl_container_of (xdg_surface, surface, xdg_surface);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
   surface->pending.fullscreen.changed = TRUE;
   surface->pending.fullscreen.value = FALSE;
