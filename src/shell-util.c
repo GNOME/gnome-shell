@@ -313,33 +313,6 @@ shell_util_create_pixbuf_from_data (const guchar      *data,
                                    (GdkPixbufDestroyNotify) g_free, NULL);
 }
 
-/**
- * shell_util_wake_up_screen:
- *
- * Send a fake key event, resetting the IDLETIME counter and
- * causing gnome-settings-daemon to wake up the screen.
- */
-/* Shamelessly taken from gnome-settings-daemon/plugins/power/gpm-common.c */
-void
-shell_util_wake_up_screen (void)
-{
-  static gboolean inited = FALSE;
-  static KeyCode keycode1, keycode2;
-  static gboolean first_keycode = FALSE;
-
-  if (inited == FALSE) {
-    keycode1 = XKeysymToKeycode (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_KEY_Alt_L);
-    keycode2 = XKeysymToKeycode (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_KEY_Alt_R);
-  }
-
-  gdk_error_trap_push ();
-  /* send a left or right alt key; first press, then release */
-  XTestFakeKeyEvent (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), first_keycode ? keycode1 : keycode2, True, CurrentTime);
-  XTestFakeKeyEvent (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), first_keycode ? keycode1 : keycode2, False, CurrentTime);
-  first_keycode = !first_keycode;
-  gdk_error_trap_pop_ignored ();
-}
-
 void
 shell_util_cursor_tracker_to_clutter (MetaCursorTracker *tracker,
                                       ClutterTexture    *texture)

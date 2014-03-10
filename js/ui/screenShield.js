@@ -301,7 +301,7 @@ const NotificationsBox = new Lang.Class({
                              });
 
             this._updateVisibility();
-            Shell.util_wake_up_screen();
+            this.emit('wake-up-screen');
         }
     },
 
@@ -327,7 +327,7 @@ const NotificationsBox = new Lang.Class({
 
         this._updateVisibility();
         if (obj.sourceBox.visible)
-            Shell.util_wake_up_screen();
+            this.emit('wake-up-screen');
     },
 
     _visibleChanged: function(source, obj) {
@@ -342,7 +342,7 @@ const NotificationsBox = new Lang.Class({
 
         this._updateVisibility();
         if (obj.sourceBox.visible)
-            Shell.util_wake_up_screen();
+            this.emit('wake-up-screen');
     },
 
     _detailedChanged: function(source, obj) {
@@ -380,6 +380,7 @@ const NotificationsBox = new Lang.Class({
         this._sources.delete(source);
     },
 });
+Signals.addSignalMethods(NotificationsBox.prototype);
 
 const Arrow = new Lang.Class({
     Name: 'Arrow',
@@ -1151,6 +1152,7 @@ const ScreenShield = new Lang.Class({
         this._lockScreenContents.add_actor(this._lockScreenContentsBox);
 
         this._notificationsBox = new NotificationsBox();
+        this._wakeUpScreenId = this._notificationsBox.connect('wake-up-screen', Lang.bind(this, this._wakeUpScreen));
         this._lockScreenContentsBox.add(this._notificationsBox.actor, { x_fill: true,
                                                                         y_fill: true,
                                                                         expand: true });
@@ -1158,11 +1160,17 @@ const ScreenShield = new Lang.Class({
         this._hasLockScreen = true;
     },
 
+    _wakeUpScreen: function() {
+        this._onUserBecameActive();
+        this.emit('wake-up-screen');
+    },
+
     _clearLockScreen: function() {
         this._clock.destroy();
         this._clock = null;
 
         if (this._notificationsBox) {
+            this._notificationsBox.disconnect(this._wakeUpScreenId);
             this._notificationsBox.destroy();
             this._notificationsBox = null;
         }

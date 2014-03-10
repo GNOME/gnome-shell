@@ -69,6 +69,7 @@ const ScreenSaverIface = '<node> \
 <signal name="ActiveChanged"> \
     <arg name="new_value" type="b" /> \
 </signal> \
+<signal name="WakeUpScreen" /> \
 </interface> \
 </node>';
 
@@ -406,6 +407,9 @@ const ScreenSaverDBus = new Lang.Class({
         this._screenShield = screenShield;
         screenShield.connect('active-changed', Lang.bind(this, function(shield) {
             this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [shield.active]));
+        }));
+        screenShield.connect('wake-up-screen', Lang.bind(this, function(shield) {
+            this._dbusImpl.emit_signal('WakeUpScreen', null);
         }));
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenSaverIface, this);
