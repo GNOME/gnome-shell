@@ -636,6 +636,17 @@ clutter_event_source_free (ClutterEventSource *source)
   g_source_unref (g_source);
 }
 
+static void
+clutter_seat_evdev_set_libinput_seat (ClutterSeatEvdev *seat,
+                                      struct libinput_seat *libinput_seat)
+{
+  g_assert (seat->libinput_seat == NULL);
+
+  libinput_seat_ref (libinput_seat);
+  libinput_seat_set_user_data (libinput_seat, seat);
+  seat->libinput_seat = libinput_seat;
+}
+
 static ClutterSeatEvdev *
 clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev,
                         struct libinput_seat *libinput_seat)
@@ -652,9 +663,7 @@ clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev,
   if (!seat)
     return NULL;
 
-  libinput_seat_ref (libinput_seat);
-  libinput_seat_set_user_data (libinput_seat, seat);
-  seat->libinput_seat = libinput_seat;
+  clutter_seat_evdev_set_libinput_seat (seat, libinput_seat);
 
   device = _clutter_input_device_evdev_new_virtual (
     manager, seat, CLUTTER_POINTER_DEVICE);
