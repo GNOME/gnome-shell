@@ -659,6 +659,7 @@ clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev,
   device = _clutter_input_device_evdev_new_virtual (
     manager, seat, CLUTTER_POINTER_DEVICE);
   _clutter_input_device_set_stage (device, priv->stage);
+  _clutter_input_device_set_coords (device, NULL, INITIAL_POINTER_X, INITIAL_POINTER_Y, NULL);
   _clutter_device_manager_add_device (manager, device);
   seat->core_pointer = device;
 
@@ -1193,10 +1194,6 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
 
   g_assert (priv->main_seat != NULL);
   g_assert (priv->main_seat->core_pointer != NULL);
-  _clutter_input_device_set_coords (priv->main_seat->core_pointer,
-                                    NULL,
-                                    INITIAL_POINTER_X, INITIAL_POINTER_Y,
-                                    NULL);
 
   source = clutter_event_source_new (manager_evdev);
   priv->event_source = source;
