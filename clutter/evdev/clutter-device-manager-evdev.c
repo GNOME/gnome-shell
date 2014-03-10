@@ -648,8 +648,7 @@ clutter_seat_evdev_set_libinput_seat (ClutterSeatEvdev *seat,
 }
 
 static ClutterSeatEvdev *
-clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev,
-                        struct libinput_seat *libinput_seat)
+clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev)
 {
   ClutterDeviceManager *manager = CLUTTER_DEVICE_MANAGER (manager_evdev);
   ClutterDeviceManagerEvdevPrivate *priv = manager_evdev->priv;
@@ -663,20 +662,12 @@ clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev,
   if (!seat)
     return NULL;
 
-  clutter_seat_evdev_set_libinput_seat (seat, libinput_seat);
-
   device = _clutter_input_device_evdev_new_virtual (
     manager, seat, CLUTTER_POINTER_DEVICE);
   _clutter_input_device_set_stage (device, priv->stage);
   _clutter_input_device_set_coords (device, NULL, INITIAL_POINTER_X, INITIAL_POINTER_Y, NULL);
   _clutter_device_manager_add_device (manager, device);
   seat->core_pointer = device;
-
-  /* Clutter has the notion of global "core" pointers and keyboard devices,
-   * so we need to have a main seat to get them from. Make whatever seat comes
-   * first the main seat. */
-  if (priv->main_seat == NULL)
-    priv->main_seat = seat;
 
   device = _clutter_input_device_evdev_new_virtual (
     manager, seat, CLUTTER_KEYBOARD_DEVICE);
@@ -713,6 +704,7 @@ clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev,
   seat->repeat_delay = 250;     /* ms */
   seat->repeat_interval = 33;   /* ms */
 
+  priv->seats = g_slist_append (priv->seats, seat);
   return seat;
 }
 
@@ -733,7 +725,8 @@ clutter_seat_evdev_free (ClutterSeatEvdev *seat)
 
   clear_repeat_timer (seat);
 
-  libinput_seat_unref (seat->libinput_seat);
+  if (seat->libinput_seat)
+    libinput_seat_unref (seat->libinput_seat);
 
   g_free (seat);
 }
@@ -766,8 +759,15 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
   seat = libinput_seat_get_user_data (libinput_seat);
   if (seat == NULL)
     {
-      seat = clutter_seat_evdev_new (manager_evdev, libinput_seat);
-      priv->seats = g_slist_append (priv->seats, seat);
+      /* Clutter has the notion of global "core" pointers and keyboard devices,
+       * which are located on the main seat. Make whatever seat comes first the
+       * main seat. */
+      if (priv->main_seat->libinput_seat == NULL)
+        seat = priv->main_seat;
+      else
+        seat = clutter_seat_evdev_new (manager_evdev);
+
+      clutter_seat_evdev_set_libinput_seat (seat, libinput_seat);
     }
 
   device = _clutter_input_device_evdev_new (manager, seat, libinput_device);
@@ -1199,10 +1199,9 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
       return;
     }
 
-  dispatch_libinput (manager_evdev);
+  priv->main_seat = clutter_seat_evdev_new (manager_evdev);
 
-  g_assert (priv->main_seat != NULL);
-  g_assert (priv->main_seat->core_pointer != NULL);
+  dispatch_libinput (manager_evdev);
 
   source = clutter_event_source_new (manager_evdev);
   priv->event_source = source;
