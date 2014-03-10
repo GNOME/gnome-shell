@@ -283,6 +283,9 @@ handle_scroll_event (MetaWaylandSeat    *seat,
   if (!seat->pointer.focus_resource)
     return;
 
+  if (clutter_event_is_pointer_emulated (event))
+    return;
+
   switch (clutter_event_get_scroll_direction (event))
     {
     case CLUTTER_SCROLL_UP:
@@ -299,6 +302,15 @@ handle_scroll_event (MetaWaylandSeat    *seat,
 
     case CLUTTER_SCROLL_RIGHT:
       x_value = DEFAULT_AXIS_STEP_DISTANCE;
+      break;
+
+    case CLUTTER_SCROLL_SMOOTH:
+      {
+        double dx, dy;
+        clutter_event_get_scroll_delta (event, &dx, &dy);
+        x_value = wl_fixed_from_double (dx);
+        y_value = wl_fixed_from_double (dy);
+      }
       break;
 
     default:
