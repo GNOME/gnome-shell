@@ -228,7 +228,10 @@ typedef enum
   META_GRAB_OP_CLICKING_UNSTICK,
 
   /* Special grab op when the compositor asked for a grab */
-  META_GRAB_OP_COMPOSITOR
+  META_GRAB_OP_COMPOSITOR,
+
+  /* For when a client takes a popup grab */
+  META_GRAB_OP_WAYLAND_CLIENT,
 } MetaGrabOp;
 
 /**

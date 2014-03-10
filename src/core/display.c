@@ -1418,6 +1418,20 @@ meta_grab_op_is_moving (MetaGrabOp op)
     }
 }
 
+static gboolean
+grab_op_should_block_mouse_events (MetaGrabOp op)
+{
+  switch (op)
+    {
+    case META_GRAB_OP_WAYLAND_CLIENT:
+    case META_GRAB_OP_COMPOSITOR:
+      return TRUE;
+
+    default:
+      return FALSE;
+    }
+}
+
 /**
  * meta_display_xserver_time_is_before:
  * @display: a #MetaDisplay
@@ -2054,7 +2068,7 @@ meta_display_handle_event (MetaDisplay        *display,
   switch (event->type)
     {
     case CLUTTER_BUTTON_PRESS:
-      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+      if (grab_op_should_block_mouse_events (display->grab_op))
         break;
 
       display->overlay_key_only_pressed = FALSE;
@@ -2226,7 +2240,7 @@ meta_display_handle_event (MetaDisplay        *display,
         }
       break;
     case CLUTTER_BUTTON_RELEASE:
-      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+      if (grab_op_should_block_mouse_events (display->grab_op))
         break;
 
       display->overlay_key_only_pressed = FALSE;
@@ -2240,7 +2254,7 @@ meta_display_handle_event (MetaDisplay        *display,
         }
       break;
     case CLUTTER_MOTION:
-      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+      if (grab_op_should_block_mouse_events (display->grab_op))
         break;
 
       if (display->grab_window == window &&
@@ -2273,6 +2287,10 @@ meta_display_handle_event (MetaDisplay        *display,
   /* If the compositor has a grab, don't pass that through to Wayland */
   if (display->grab_op == META_GRAB_OP_COMPOSITOR)
     bypass_wayland = TRUE;
+
+  /* If a Wayland client has a grab, don't pass that through to Clutter */
+  if (display->grab_op == META_GRAB_OP_WAYLAND_CLIENT)
+    bypass_clutter = TRUE;
 
   if (compositor && !bypass_wayland)
     {

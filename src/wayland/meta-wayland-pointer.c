@@ -478,6 +478,12 @@ meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer)
       g_slice_free (MetaWaylandPopup, popup);
     }
 
+  {
+    MetaDisplay *display = meta_get_display ();
+    meta_display_end_grab_op (display,
+                              meta_display_get_current_time_roundtrip (display));
+  }
+
   meta_wayland_pointer_end_grab (pointer);
   g_slice_free (MetaWaylandPopupGrab, popup_grab);
 }
@@ -517,6 +523,8 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
 
   if (pointer->grab == &pointer->default_grab)
     {
+      MetaWindow *window = surface->window;
+
       grab = g_slice_new0 (MetaWaylandPopupGrab);
       grab->generic.interface = &popup_grab_interface;
       grab->generic.pointer = pointer;
@@ -524,6 +532,19 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
       wl_list_init (&grab->all_popups);
 
       meta_wayland_pointer_start_grab (pointer, (MetaWaylandPointerGrab*)grab);
+
+      meta_display_begin_grab_op (window->display,
+                                  window->screen,
+                                  window,
+                                  META_GRAB_OP_WAYLAND_CLIENT,
+                                  FALSE, /* pointer_already_grabbed */
+                                  FALSE, /* frame_action */
+                                  1, /* button. XXX? */
+                                  0, /* modmask */
+                                  meta_display_get_current_time_roundtrip (window->display),
+                                  wl_fixed_to_int (pointer->grab_x),
+                                  wl_fixed_to_int (pointer->grab_y));
+
     }
   else
     grab = (MetaWaylandPopupGrab*)pointer->grab;
@@ -538,7 +559,6 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
     wl_resource_add_destroy_listener (surface->wl_shell_surface.resource, &popup->surface_destroy_listener);
 
   wl_list_insert (&grab->all_popups, &popup->link);
-      
   return TRUE;
 }
 
