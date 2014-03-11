@@ -510,7 +510,7 @@ compute_request_for_child (ClutterGridRequest *request,
     }
   else
     {
-      if (orientation == CLUTTER_ORIENTATION_VERTICAL)
+      if (orientation == CLUTTER_ORIENTATION_HORIZONTAL)
         clutter_actor_get_preferred_width (child, -1, minimum, natural);
       else
         clutter_actor_get_preferred_height (child, -1, minimum, natural);
