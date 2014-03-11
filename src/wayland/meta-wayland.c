@@ -653,17 +653,6 @@ meta_wayland_init (void)
   if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
     g_error ("Failed to initialize Clutter");
 
-#if defined(CLUTTER_WINDOWING_EGL)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
-    {
-      ClutterBackend *backend = clutter_get_default_backend ();
-      CoglContext *cogl_context = clutter_backend_get_cogl_context (backend);
-      CoglRenderer *cogl_renderer = cogl_display_get_renderer (cogl_context_get_display (cogl_context));
-      int drm_fd = cogl_kms_renderer_get_kms_fd (cogl_renderer);
-      meta_launcher_set_drm_fd (compositor->launcher, drm_fd, NULL);
-    }
-#endif
-
   meta_monitor_manager_initialize ();
   monitors = meta_monitor_manager_get ();
   g_signal_connect (monitors, "monitors-changed",
