@@ -190,6 +190,7 @@ static gboolean  opt_replace_wm;
 static gboolean  opt_disable_sm;
 static gboolean  opt_sync;
 static gboolean  opt_wayland;
+static gboolean  opt_display_server;
 
 static GOptionEntry meta_options[] = {
   {
@@ -232,6 +233,11 @@ static GOptionEntry meta_options[] = {
     &opt_wayland,
     N_("Run as a wayland compositor"),
     NULL
+  },
+  {
+    "display-server", 0, 0, G_OPTION_ARG_NONE,
+    &opt_display_server,
+    N_("Run as a full display server, rather than nested")
   },
   {NULL}
 };
@@ -401,8 +407,7 @@ meta_init (void)
   if (g_getenv ("MUTTER_DEBUG"))
     meta_set_debugging (TRUE);
 
-  /* We consider running from mutter-launch equivalent to running from bare metal. */
-  if (getenv ("WESTON_LAUNCHER_SOCK"))
+  if (opt_display_server)
     clutter_set_windowing_backend (CLUTTER_WINDOWING_EGL);
 
   meta_set_is_wayland_compositor (opt_wayland);
