@@ -48,7 +48,7 @@ data_offer_accept (struct wl_client *client,
    * this be a wl_data_device request? */
 
   if (offer->source)
-    offer->source->accept (offer->source, serial, mime_type);
+    wl_data_source_send_target (offer->source->resource, mime_type);
 }
 
 static void
@@ -58,9 +58,9 @@ data_offer_receive (struct wl_client *client, struct wl_resource *resource,
   MetaWaylandDataOffer *offer = wl_resource_get_user_data (resource);
 
   if (offer->source)
-    offer->source->send (offer->source, mime_type, fd);
-  else
-    close (fd);
+    wl_data_source_send_send (offer->source->resource, mime_type, fd);
+
+  close (fd);
 }
 
 static void
@@ -391,7 +391,7 @@ meta_wayland_seat_set_selection (MetaWaylandSeat *seat,
 
   if (seat->selection_data_source)
     {
-      seat->selection_data_source->cancel (seat->selection_data_source);
+      wl_data_source_send_cancelled (seat->selection_data_source->resource);
       wl_list_remove (&seat->selection_data_source_listener.link);
       seat->selection_data_source = NULL;
     }
@@ -462,27 +462,6 @@ destroy_data_source (struct wl_resource *resource)
 }
 
 static void
-client_source_accept (MetaWaylandDataSource *source,
-                      guint32 time, const char *mime_type)
-{
-  wl_data_source_send_target (source->resource, mime_type);
-}
-
-static void
-client_source_send (MetaWaylandDataSource *source,
-                    const char *mime_type, int32_t fd)
-{
-  wl_data_source_send_send (source->resource, mime_type, fd);
-  close (fd);
-}
-
-static void
-client_source_cancel (MetaWaylandDataSource *source)
-{
-  wl_data_source_send_cancelled (source->resource);
-}
-
-static void
 create_data_source (struct wl_client *client,
                     struct wl_resource *resource, guint32 id)
 {
@@ -493,10 +472,6 @@ create_data_source (struct wl_client *client,
 					      wl_resource_get_version (resource)), id);
   wl_resource_set_implementation (source->resource, &data_source_interface,
 				  source, destroy_data_source);
-
-  source->accept = client_source_accept;
-  source->send = client_source_send;
-  source->cancel = client_source_cancel;
 
   wl_array_init (&source->mime_types);
 }

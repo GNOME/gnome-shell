@@ -43,12 +43,6 @@ struct _MetaWaylandDataSource
 {
   struct wl_resource *resource;
   struct wl_array mime_types;
-
-  void (*accept) (MetaWaylandDataSource * source,
-                  uint32_t serial, const char *mime_type);
-  void (*send) (MetaWaylandDataSource * source,
-                const char *mime_type, int32_t fd);
-  void (*cancel) (MetaWaylandDataSource * source);
 };
 
 struct _MetaWaylandSeat
