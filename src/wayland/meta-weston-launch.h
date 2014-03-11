@@ -31,8 +31,4 @@ void              meta_launcher_free                    (MetaLauncher  *self);
 gboolean          meta_launcher_activate_vt             (MetaLauncher  *self,
 							 signed char    vt,
 							 GError       **error);
-
-gboolean          meta_launcher_set_drm_fd              (MetaLauncher  *self,
-							 int            drm_fd,
-							 GError       **error);
 #endif
