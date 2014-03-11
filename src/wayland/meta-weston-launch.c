@@ -354,8 +354,6 @@ meta_launcher_new (void)
 
   self->weston_launch = g_socket_new_from_fd (launch_fd, NULL);
 
-  clutter_evdev_set_open_callback (on_evdev_device_open, self);
-
   self->nested_context = g_main_context_new ();
   self->nested_loop = g_main_loop_new (self->nested_context, FALSE);
 
@@ -368,6 +366,8 @@ meta_launcher_new (void)
   g_source_set_callback (self->inner_source, (GSourceFunc)on_socket_readable, self, NULL);
   g_source_attach (self->inner_source, self->nested_context);
   g_source_unref (self->inner_source);
+
+  clutter_evdev_set_open_callback (on_evdev_device_open, self);
 
   return self;
 }
