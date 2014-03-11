@@ -201,6 +201,7 @@ session_unpause (void)
   cogl_kms_display_queue_modes_reset (cogl_display);
 
   clutter_evdev_reclaim_devices ();
+  clutter_egl_thaw_master_clock ();
 
   {
     MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
@@ -220,6 +221,7 @@ static void
 session_pause (void)
 {
   clutter_evdev_release_devices ();
+  clutter_egl_freeze_master_clock ();
 }
 
 static int
