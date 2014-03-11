@@ -734,3 +734,18 @@ meta_wayland_compositor_activate_vt (MetaWaylandCompositor  *compositor,
       return TRUE;
     }
 }
+
+gboolean
+meta_wayland_compositor_activate_session (MetaWaylandCompositor  *compositor,
+                                          GError                **error)
+{
+  if (compositor->launcher)
+    {
+      return meta_launcher_activate_vt (compositor->launcher, -1, error);
+    }
+  else
+    {
+      g_debug ("Ignoring activate_session, not running as display server");
+      return TRUE;
+    }
+}

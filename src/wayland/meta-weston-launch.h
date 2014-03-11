@@ -29,7 +29,7 @@ MetaLauncher     *meta_launcher_new                     (void);
 void              meta_launcher_free                    (MetaLauncher  *self);
 
 gboolean          meta_launcher_activate_vt             (MetaLauncher  *self,
-							 int            number,
+							 signed char    vt,
 							 GError       **error);
 
 gboolean          meta_launcher_set_drm_fd              (MetaLauncher  *self,

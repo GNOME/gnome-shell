@@ -46,6 +46,8 @@ void                    meta_wayland_compositor_paint_finished  (MetaWaylandComp
 gboolean                meta_wayland_compositor_activate_vt     (MetaWaylandCompositor  *compositor,
                                                                  int                     vt,
                                                                  GError                **error);
+gboolean                meta_wayland_compositor_activate_session (MetaWaylandCompositor  *compositor,
+                                                                  GError                **error);
 
 #endif
 

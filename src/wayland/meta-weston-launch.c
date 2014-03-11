@@ -399,7 +399,7 @@ meta_launcher_free (MetaLauncher *launcher)
 
 gboolean
 meta_launcher_activate_vt (MetaLauncher  *launcher,
-			   int            vt,
+			   signed char    vt,
 			   GError       **error)
 {
   struct weston_launcher_activate_vt message;
