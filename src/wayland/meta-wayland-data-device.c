@@ -318,8 +318,12 @@ data_device_start_drag (struct wl_client *client,
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
   MetaWaylandDragGrab *drag_grab;
-  /* FIXME: Check that client has implicit grab on the origin
-   * surface that matches the given time. */
+
+  if ((seat->pointer.button_count == 0 ||
+       seat->pointer.grab_serial != serial ||
+       !seat->pointer.focus_surface ||
+       seat->pointer.focus_surface != wl_resource_get_user_data (origin_resource)))
+    return;
 
   /* FIXME: Check that the data source type array isn't empty. */
 
