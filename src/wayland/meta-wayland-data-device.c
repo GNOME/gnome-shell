@@ -451,7 +451,7 @@ static const struct wl_data_device_interface data_device_interface = {
 static void
 destroy_data_source (struct wl_resource *resource)
 {
-  MetaWaylandDataSource *source = wl_container_of (resource, source, resource);
+  MetaWaylandDataSource *source = wl_resource_get_user_data (resource);
   char **p;
 
   wl_array_for_each (p, &source->mime_types) free (*p);
