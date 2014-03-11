@@ -332,6 +332,7 @@ data_device_start_drag (struct wl_client *client,
   drag_grab->generic.pointer = &seat->pointer;
 
   drag_grab->drag_client = client;
+  drag_grab->seat = seat;
 
   if (source_resource)
     {
