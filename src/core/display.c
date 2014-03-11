@@ -1295,10 +1295,6 @@ meta_get_display (void)
   return the_display;
 }
 
-#ifdef WITH_VERBOSE_MODE
-static gboolean dump_events = TRUE;
-#endif
-
 static gboolean
 grab_op_is_mouse_only (MetaGrabOp op)
 {
@@ -2992,9 +2988,8 @@ meta_display_handle_xevent (MetaDisplay *display,
   MetaMonitorManager *monitor;
   MetaScreen *screen;
 
-#ifdef WITH_VERBOSE_MODE
-  if (dump_events)
-    meta_spew_event (display, event);
+#if 0
+  meta_spew_event (display, event);
 #endif
 
 #ifdef HAVE_STARTUP_NOTIFICATION
@@ -3270,8 +3265,7 @@ event_get_time (MetaDisplay *display,
     }
 }
 
-#ifdef WITH_VERBOSE_MODE
-const char*
+G_GNUC_UNUSED const char*
 meta_event_detail_to_string (int d)
 {
   const char *detail = "???";
@@ -3307,10 +3301,8 @@ meta_event_detail_to_string (int d)
 
   return detail;
 }
-#endif /* WITH_VERBOSE_MODE */
 
-#ifdef WITH_VERBOSE_MODE
-const char*
+G_GNUC_UNUSED const char*
 meta_event_mode_to_string (int m)
 {
   const char *mode = "???";
@@ -3332,10 +3324,8 @@ meta_event_mode_to_string (int m)
 
   return mode;
 }
-#endif /* WITH_VERBOSE_MODE */
 
-#ifdef WITH_VERBOSE_MODE
-static const char*
+G_GNUC_UNUSED static const char*
 stack_mode_to_string (int mode)
 {
   switch (mode)
@@ -3354,11 +3344,9 @@ stack_mode_to_string (int mode)
 
   return "Unknown";
 }
-#endif /* WITH_VERBOSE_MODE */
 
 #ifdef HAVE_XSYNC
-#ifdef WITH_VERBOSE_MODE
-static gint64
+G_GNUC_UNUSED static gint64
 sync_value_to_64 (const XSyncValue *value)
 {
   gint64 v;
@@ -3368,10 +3356,8 @@ sync_value_to_64 (const XSyncValue *value)
   
   return v;
 }
-#endif /* WITH_VERBOSE_MODE */
 
-#ifdef WITH_VERBOSE_MODE
-static const char*
+G_GNUC_UNUSED static const char*
 alarm_state_to_string (XSyncAlarmState state)
 {
   switch (state)
@@ -3386,12 +3372,9 @@ alarm_state_to_string (XSyncAlarmState state)
       return "(unknown)";
     }
 }
-#endif /* WITH_VERBOSE_MODE */
-
 #endif /* HAVE_XSYNC */
 
-#ifdef WITH_VERBOSE_MODE
-static void
+G_GNUC_UNUSED static void
 meta_spew_xi2_event (MetaDisplay *display,
                      XIEvent     *input_event,
                      const char **name_p,
@@ -3451,7 +3434,7 @@ meta_spew_xi2_event (MetaDisplay *display,
   *extra_p = extra;
 }
 
-static void
+G_GNUC_UNUSED static void
 meta_spew_core_event (MetaDisplay *display,
                       XEvent      *event,
                       const char **name_p,
@@ -3675,7 +3658,7 @@ meta_spew_core_event (MetaDisplay *display,
   *extra_p = extra;
 }
 
-static void
+G_GNUC_UNUSED static void
 meta_spew_event (MetaDisplay *display,
                  XEvent      *event)
 {
@@ -3684,9 +3667,6 @@ meta_spew_event (MetaDisplay *display,
   char *winname;
   MetaScreen *screen;
   XIEvent *input_event;
-
-  if (!meta_is_verbose())
-    return;
   
   /* filter overnumerous events */
   if (event->type == Expose || event->type == MotionNotify ||
@@ -3716,18 +3696,16 @@ meta_spew_event (MetaDisplay *display,
   else
     winname = g_strdup_printf ("0x%lx", event->xany.window);
 
-  meta_topic (META_DEBUG_EVENTS,
-              "%s on %s%s %s %sserial %lu\n", name, winname,
-              extra ? ":" : "", extra ? extra : "",
-              event->xany.send_event ? "SEND " : "",
-              event->xany.serial);
+  g_print ("%s on %s%s %s %sserial %lu\n", name, winname,
+           extra ? ":" : "", extra ? extra : "",
+           event->xany.send_event ? "SEND " : "",
+           event->xany.serial);
 
   g_free (winname);
 
   if (extra)
     g_free (extra);
 }
-#endif /* WITH_VERBOSE_MODE */
 
 MetaWindow*
 meta_display_lookup_x_window (MetaDisplay *display,
