@@ -47,6 +47,13 @@ xserver_set_window_id (struct wl_client *client,
   if (!window)
     return;
 
+  /* If the window has an existing surface, like if we're
+   * undecorating or decorating the window, then we need
+   * to detach the window from its old surface.
+   */
+  if (window->surface)
+    window->surface->window = NULL;
+
   meta_wayland_surface_make_toplevel (surface);
 
   surface->window = window;
