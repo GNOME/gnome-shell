@@ -232,6 +232,17 @@ meta_launcher_enter (MetaLauncher *launcher)
   cogl_kms_display_queue_modes_reset (cogl_display);
 
   clutter_evdev_reclaim_devices ();
+
+  {
+    MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+
+    /* When we mode-switch back, we need to immediately queue a redraw
+     * in case nothing else queued one for us, and force the cursor to
+     * update. */
+
+    clutter_actor_queue_redraw (compositor->stage);
+    meta_cursor_tracker_force_update (compositor->seat->cursor_tracker);
+  }
 }
 
 static void
