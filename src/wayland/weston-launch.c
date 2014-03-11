@@ -80,6 +80,7 @@ struct weston_launch {
 	struct termios terminal_attributes;
 	int kb_mode;
 	enum vt_state vt_state;
+	unsigned vt;
 
         int drm_fd;
 };
@@ -274,6 +275,7 @@ handle_activate_vt(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 {
         struct weston_launcher_reply reply;
 	struct weston_launcher_activate_vt *message;
+	unsigned vt;
 
 	reply.header.opcode = WESTON_LAUNCHER_ACTIVATE_VT;
 	reply.ret = -1;
@@ -285,7 +287,13 @@ handle_activate_vt(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 
 	message = msg->msg_iov->iov_base;
 
-	reply.ret = ioctl(wl->tty, VT_ACTIVATE, message->vt);
+	/* Negative values mean that we're activating our own VT */
+	if (message->vt > 0)
+		vt = message->vt;
+	else
+		vt = wl->vt;
+
+	reply.ret = ioctl(wl->tty, VT_ACTIVATE, vt);
 	if (reply.ret < 0)
 		reply.ret = -errno;
 
@@ -553,7 +561,6 @@ setup_tty(struct weston_launch *wl)
 	struct termios raw_attributes;
 	struct vt_mode mode = { 0 };
 	char *session;
-	unsigned vt;
 	char path[PATH_MAX];
 	int ok;
 
@@ -561,11 +568,11 @@ setup_tty(struct weston_launch *wl)
 	if (ok < 0)
 	  error(1, -ok, "could not determine current session");
 
-	ok = sd_session_get_vt(session, &vt);
+	ok = sd_session_get_vt(session, &wl->vt);
 	if (ok < 0)
 		error(1, -ok, "could not determine current TTY");
 
-	snprintf(path, PATH_MAX, "/dev/tty%u", vt);
+	snprintf(path, PATH_MAX, "/dev/tty%u", wl->vt);
 	wl->tty = open(path, O_RDWR | O_NOCTTY | O_CLOEXEC);
 
 	if (wl->tty < 0)

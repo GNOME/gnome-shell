@@ -53,7 +53,7 @@ struct weston_launcher_open {
 
 struct weston_launcher_activate_vt {
 	struct weston_launcher_message header;
-	int vt;
+	signed char vt;
 };
 
 struct weston_launcher_reply {
