@@ -552,7 +552,8 @@ setup_tty(struct weston_launch *wl)
 	struct stat buf;
 	struct termios raw_attributes;
 	struct vt_mode mode = { 0 };
-	char *session, *tty;
+	char *session;
+	unsigned vt;
 	char path[PATH_MAX];
 	int ok;
 
@@ -560,43 +561,12 @@ setup_tty(struct weston_launch *wl)
 	if (ok < 0)
 	  error(1, -ok, "could not determine current session");
 
-	ok = sd_session_get_tty(session, &tty);
-	if (ok == 0) {
-		/* Old systemd only has the tty name in the TTY
-		   field, new one has the full char device path.
-
-		   Check what we have and fix it properly.
-		*/
-		if (strncmp(tty, "/dev", strlen("/dev")) == 0) {
-			strncpy(path, tty, PATH_MAX);
-			path[PATH_MAX-1] = 0;
-		} else {
-			snprintf(path, PATH_MAX, "/dev/%s", tty);
-		}
-
-		wl->tty = open(path, O_RDWR | O_NOCTTY | O_CLOEXEC);
-		free(tty);
-#ifdef HAVE_SD_SESSION_GET_VT
-	} else if (ok == -ENOENT) {
-		unsigned vt;
-
-		/* Negative errnos are cool, right?
-		   So cool that we can't distinguish "session not found"
-		   from "key does not exist in the session file"!
-		   Let's assume the latter, as we got the value
-		   from sd_pid_get_session()...
-		*/
-
-		ok = sd_session_get_vt(session, &vt);
-		if (ok < 0)
-			error(1, -ok, "could not determine current TTY");
-
-		snprintf(path, PATH_MAX, "/dev/tty%u", vt);
-		wl->tty = open(path, O_RDWR | O_NOCTTY | O_CLOEXEC);
-		free(tty);
-#endif
-	} else
+	ok = sd_session_get_vt(session, &vt);
+	if (ok < 0)
 		error(1, -ok, "could not determine current TTY");
+
+	snprintf(path, PATH_MAX, "/dev/tty%u", vt);
+	wl->tty = open(path, O_RDWR | O_NOCTTY | O_CLOEXEC);
 
 	if (wl->tty < 0)
 		error(1, errno, "failed to open tty");

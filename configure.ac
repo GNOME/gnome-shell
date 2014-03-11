@@ -142,11 +142,6 @@ AM_GLIB_GNU_GETTEXT
 PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.14.0)
 PKG_CHECK_MODULES(MUTTER_LAUNCH, libdrm libsystemd-login)
 
-saved_LIBS="$LIBS"
-LIBS="$LIBS $MUTTER_LAUNCH"
-AC_CHECK_FUNCS([sd_session_get_vt])
-LIBS="$saved_LIBS"
-
 # Unconditionally use this dir to avoid a circular dep with gnomecc
 GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
 AC_SUBST(GNOME_KEYBINDINGS_KEYSDIR)
