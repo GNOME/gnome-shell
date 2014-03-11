@@ -179,11 +179,11 @@ meta_launcher_set_drm_fd (MetaLauncher  *self,
   return ok;
 }
 
-int
+static int
 meta_launcher_open_input_device (MetaLauncher  *self,
-				 const char    *name,
-				 int            flags,
-				 GError       **error)
+                                 const char    *name,
+                                 int            flags,
+                                 GError       **error)
 {
   struct weston_launcher_open *message;
   GSocketControlMessage *cmsg;

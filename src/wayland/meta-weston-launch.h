@@ -35,12 +35,4 @@ gboolean          meta_launcher_activate_vt             (MetaLauncher  *self,
 gboolean          meta_launcher_set_drm_fd              (MetaLauncher  *self,
 							 int            drm_fd,
 							 GError       **error);
-gboolean          meta_launcher_set_master              (MetaLauncher  *self,
-							 gboolean       master,
-							 GError       **error);
-int               meta_launcher_open_input_device       (MetaLauncher  *self,
-							 const char    *name,
-							 int            flags,
-							 GError       **error);
-
 #endif
