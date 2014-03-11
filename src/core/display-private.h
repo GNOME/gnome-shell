@@ -486,4 +486,6 @@ void meta_display_set_input_focus_xwindow (MetaDisplay *display,
                                            Window       window,
                                            guint32      timestamp);
 
+void meta_display_sync_wayland_input_focus (MetaDisplay *display);
+
 #endif

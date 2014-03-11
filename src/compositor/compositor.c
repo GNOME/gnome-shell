@@ -426,11 +426,8 @@ meta_begin_modal_for_plugin (MetaScreen       *screen,
   if (is_modal (display) || display->grab_op != META_GRAB_OP_NONE)
     return FALSE;
 
-  if (meta_is_wayland_compositor ())
-    ok = TRUE;
-  else
-    ok = begin_modal_x11 (screen, plugin, options, timestamp);
-  if (!ok)
+  if (!meta_is_wayland_compositor () &&
+      !begin_modal_x11 (screen, plugin, options, timestamp))
     return FALSE;
 
   display->grab_op = META_GRAB_OP_COMPOSITOR;
@@ -438,6 +435,9 @@ meta_begin_modal_for_plugin (MetaScreen       *screen,
   display->grab_screen = screen;
   display->grab_have_pointer = TRUE;
   display->grab_have_keyboard = TRUE;
+
+  if (meta_is_wayland_compositor ())
+    meta_display_sync_wayland_input_focus (display);
 
   return TRUE;
 }
@@ -452,17 +452,21 @@ meta_end_modal_for_plugin (MetaScreen     *screen,
 
   g_return_if_fail (is_modal (display));
 
-  if (!meta_is_wayland_compositor ())
-    {
-      XIUngrabDevice (xdpy, META_VIRTUAL_CORE_POINTER_ID, timestamp);
-      XIUngrabDevice (xdpy, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
-    }
-
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_window = NULL;
   display->grab_screen = NULL;
   display->grab_have_pointer = FALSE;
   display->grab_have_keyboard = FALSE;
+
+  if (meta_is_wayland_compositor ())
+    {
+      meta_display_sync_wayland_input_focus (display);
+    }
+  else
+    {
+      XIUngrabDevice (xdpy, META_VIRTUAL_CORE_POINTER_ID, timestamp);
+      XIUngrabDevice (xdpy, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
+    }
 }
 
 static void

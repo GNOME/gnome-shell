@@ -1742,6 +1742,29 @@ get_input_event (MetaDisplay *display,
   return NULL;
 }
 
+void
+meta_display_sync_wayland_input_focus (MetaDisplay *display)
+{
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+  MetaWindow *focus_window;
+
+  if (display->grab_op != META_GRAB_OP_NONE)
+    focus_window = NULL;
+  else if (meta_display_xwindow_is_a_no_focus_window (display, display->focus_xwindow))
+    focus_window = NULL;
+  else if (display->focus_window && display->focus_window->surface)
+    focus_window = display->focus_window;
+  else
+    meta_topic (META_DEBUG_FOCUS, "Focus change has no effect, because there is no matching wayland surface");
+
+  meta_wayland_compositor_set_input_focus (compositor, focus_window);
+
+  if (display->grab_op != META_GRAB_OP_NONE)
+    meta_wayland_pointer_set_focus (&compositor->seat->pointer, NULL);
+  else
+    meta_wayland_seat_repick (compositor->seat, NULL);
+}
+
 static void
 update_focus_window (MetaDisplay *display,
                      MetaWindow  *window,
@@ -1749,8 +1772,6 @@ update_focus_window (MetaDisplay *display,
                      gulong       serial,
                      gboolean     focused_by_us)
 {
-  MetaWaylandCompositor *compositor;
-
   display->focus_serial = serial;
   display->focused_by_us = focused_by_us;
 
@@ -1790,16 +1811,7 @@ update_focus_window (MetaDisplay *display,
     meta_topic (META_DEBUG_FOCUS, "* Focus --> NULL with serial %lu\n", serial);
 
   if (meta_is_wayland_compositor ())
-    {
-      compositor = meta_wayland_compositor_get_default ();
-
-      if (meta_display_xwindow_is_a_no_focus_window (display, xwindow))
-        meta_wayland_compositor_set_input_focus (compositor, NULL);
-      else if (window && window->surface)
-        meta_wayland_compositor_set_input_focus (compositor, window);
-      else
-        meta_topic (META_DEBUG_FOCUS, "Focus change has no effect, because there is no matching wayland surface");
-     }
+    meta_display_sync_wayland_input_focus (display);
 
   g_object_notify (G_OBJECT (display), "focus-window");
   meta_display_update_active_window_hint (display);
@@ -4070,6 +4082,9 @@ meta_display_begin_grab_op (MetaDisplay *display,
       meta_window_refresh_resize_popup (display->grab_window);
     }
 
+  if (meta_is_wayland_compositor ())
+    meta_display_sync_wayland_input_focus (display);
+
   g_signal_emit (display, display_signals[GRAB_OP_BEGIN], 0,
                  screen, display->grab_window, display->grab_op);
   
@@ -4163,6 +4178,9 @@ meta_display_end_grab_op (MetaDisplay *display,
       g_source_remove (display->grab_resize_timeout_id);
       display->grab_resize_timeout_id = 0;
     }
+
+  if (meta_is_wayland_compositor ())
+    meta_display_sync_wayland_input_focus (display);
 }
 
 /**
