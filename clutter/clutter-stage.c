@@ -446,11 +446,10 @@ clutter_stage_allocate (ClutterActor           *self,
       override.y2 = window_size.height;
 
       CLUTTER_NOTE (LAYOUT,
-                    "Overriding original allocation of %dx%d "
+                    "Overriding original allocation of %.2fx%.2f "
                     "with %.2fx%.2f (absolute origin %s)",
                     width, height,
-                    (int) (override.x2),
-                    (int) (override.y2),
+                    override.x2, override.y2,
                     (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED)
                       ? "changed"
                       : "not changed");
