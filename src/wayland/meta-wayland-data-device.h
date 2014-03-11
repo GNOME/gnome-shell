@@ -33,10 +33,4 @@ meta_wayland_data_device_set_keyboard_focus (MetaWaylandSeat *seat);
 int
 meta_wayland_data_device_manager_init (struct wl_display *display);
 
-void
-meta_wayland_seat_set_selection (MetaWaylandSeat *seat,
-                                 MetaWaylandDataSource *source,
-                                 uint32_t serial);
-
-
 #endif /* __META_WAYLAND_DATA_DEVICE_H__ */

@@ -377,7 +377,7 @@ destroy_selection_data_source (struct wl_listener *listener, void *data)
     }
 }
 
-void
+static void
 meta_wayland_seat_set_selection (MetaWaylandSeat *seat,
                                  MetaWaylandDataSource *source,
                                  guint32 serial)
