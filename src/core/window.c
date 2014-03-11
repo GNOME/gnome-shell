@@ -5082,6 +5082,7 @@ meta_window_move_resize_wayland (MetaWindow *window,
 
   meta_window_move_resize_internal (window, flags, NorthWestGravity,
                                     x, y, width, height);
+  save_user_window_placement (window);
 }
 
 /**
