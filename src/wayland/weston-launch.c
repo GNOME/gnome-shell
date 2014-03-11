@@ -331,20 +331,18 @@ handle_open(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 		goto err0;
 	}
 
+	if (major(s.st_rdev) != INPUT_MAJOR) {
+		fprintf(stderr, "Device %s is not an input device\n",
+			message->path);
+		reply.ret = -EPERM;
+		goto err0;
+	}
+
 	fd = open(message->path, message->flags);
 	if (fd < 0) {
 		fprintf(stderr, "Error opening device %s: %m\n",
 			message->path);
 		reply.ret = -errno;
-		goto err0;
-	}
-
-	if (major(s.st_rdev) != INPUT_MAJOR) {
-		close(fd);
-		fd = -1;
-		fprintf(stderr, "Device %s is not an input device\n",
-			message->path);
-		reply.ret = -EPERM;
 		goto err0;
 	}
 
