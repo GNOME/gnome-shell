@@ -643,6 +643,8 @@ meta_wayland_init (void)
 
   clutter_wayland_set_compositor_display (compositor->wayland_display);
 
+  /* If we're running on bare metal, we're a display server,
+   * so start talking to weston-launch. */
 #if defined(CLUTTER_WINDOWING_EGL)
   if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
     compositor->launcher = meta_launcher_new ();
@@ -728,7 +730,7 @@ meta_wayland_compositor_activate_vt (MetaWaylandCompositor  *compositor,
     }
   else
     {
-      g_debug ("Ignoring VT switch keybinding, not running as VT manager");
+      g_debug ("Ignoring VT switch keybinding, not running as display server");
       return TRUE;
     }
 }
