@@ -82,7 +82,8 @@ destroy_data_offer (struct wl_resource *resource)
 
   if (offer->source)
     wl_list_remove (&offer->source_destroy_listener.link);
-  free (offer);
+
+  g_slice_free (MetaWaylandDataOffer, offer);
 }
 
 static void
@@ -99,12 +100,8 @@ static struct wl_resource *
 meta_wayland_data_source_send_offer (MetaWaylandDataSource *source,
                                      struct wl_resource *target)
 {
-  MetaWaylandDataOffer *offer;
+  MetaWaylandDataOffer *offer = g_slice_new0 (MetaWaylandDataOffer);
   char **p;
-
-  offer = malloc (sizeof *offer);
-  if (offer == NULL)
-    return NULL;
 
   offer->source = source;
   offer->source_destroy_listener.notify = destroy_offer_data_source;
@@ -460,6 +457,8 @@ destroy_data_source (struct wl_resource *resource)
   wl_array_for_each (p, &source->mime_types) free (*p);
 
   wl_array_release (&source->mime_types);
+
+  g_slice_free (MetaWaylandDataSource, source);
 }
 
 static void
@@ -487,14 +486,7 @@ static void
 create_data_source (struct wl_client *client,
                     struct wl_resource *resource, guint32 id)
 {
-  MetaWaylandDataSource *source;
-
-  source = malloc (sizeof *source);
-  if (source == NULL)
-    {
-      wl_resource_post_no_memory (resource);
-      return;
-    }
+  MetaWaylandDataSource *source = g_slice_new0 (MetaWaylandDataSource);
 
   source->resource = wl_resource_create (client, &wl_data_source_interface,
 					 MIN (META_WL_DATA_SOURCE_VERSION,
