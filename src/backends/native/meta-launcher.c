@@ -42,14 +42,9 @@
 struct _MetaLauncher
 {
   GSocket *weston_launch;
+  GSource *weston_launch_source;
 
   gboolean vt_switched;
-
-  GMainContext *nested_context;
-  GMainLoop *nested_loop;
-
-  GSource *inner_source;
-  GSource *outer_source;
 };
 
 static void handle_request_vt_switch (MetaLauncher *self);
@@ -249,8 +244,7 @@ static void
 handle_vt_enter (MetaLauncher *launcher)
 {
   g_assert (launcher->vt_switched);
-
-  g_main_loop_quit (launcher->nested_loop);
+  launcher->vt_switched = FALSE;
 
   session_unpause ();
 }
@@ -271,20 +265,11 @@ handle_request_vt_switch (MetaLauncher *launcher)
   if (!ok) {
     g_warning ("Failed to acknowledge VT switch: %s", error->message);
     g_error_free (error);
-
     return;
   }
 
   g_assert (!launcher->vt_switched);
   launcher->vt_switched = TRUE;
-
-  /* We can't do anything at this point, because we don't
-     have input devices and we don't have the DRM master,
-     so let's run a nested busy loop until the VT is reentered */
-  g_main_loop_run (launcher->nested_loop);
-
-  g_assert (launcher->vt_switched);
-  launcher->vt_switched = FALSE;
 
   session_unpause ();
 }
@@ -352,18 +337,10 @@ meta_launcher_new (void)
 
   self->weston_launch = g_socket_new_from_fd (launch_fd, NULL);
 
-  self->nested_context = g_main_context_new ();
-  self->nested_loop = g_main_loop_new (self->nested_context, FALSE);
-
-  self->outer_source = g_socket_create_source (self->weston_launch, G_IO_IN, NULL);
-  g_source_set_callback (self->outer_source, (GSourceFunc)on_socket_readable, self, NULL);
-  g_source_attach (self->outer_source, NULL);
-  g_source_unref (self->outer_source);
-
-  self->inner_source = g_socket_create_source (self->weston_launch, G_IO_IN, NULL);
-  g_source_set_callback (self->inner_source, (GSourceFunc)on_socket_readable, self, NULL);
-  g_source_attach (self->inner_source, self->nested_context);
-  g_source_unref (self->inner_source);
+  self->weston_launch_source = g_socket_create_source (self->weston_launch, G_IO_IN, NULL);
+  g_source_set_callback (self->weston_launch_source, (GSourceFunc)on_socket_readable, self, NULL);
+  g_source_attach (self->weston_launch_source, NULL);
+  g_source_unref (self->weston_launch_source);
 
   kms_fd = meta_launcher_open_device (self, "/dev/dri/card0", O_RDWR, &error);
   if (error)
@@ -380,14 +357,8 @@ meta_launcher_new (void)
 void
 meta_launcher_free (MetaLauncher *launcher)
 {
-  g_source_destroy (launcher->outer_source);
-  g_source_destroy (launcher->inner_source);
-
-  g_main_loop_unref (launcher->nested_loop);
-  g_main_context_unref (launcher->nested_context);
-
+  g_source_destroy (launcher->weston_launch_source);
   g_object_unref (launcher->weston_launch);
-
   g_slice_free (MetaLauncher, launcher);
 }
 
