@@ -420,8 +420,10 @@ const Calendar = new Lang.Class({
     setEventSource: function(eventSource) {
         this._eventSource = eventSource;
         this._eventSource.connect('changed', Lang.bind(this, function() {
+            this._rebuildCalendar();
             this._update();
         }));
+        this._rebuildCalendar();
         this._update();
     },
 
