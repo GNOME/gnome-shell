@@ -18,5 +18,4 @@ EXTRA_DIST = \
 	cogl-msaa.vcproj	\
 	cogl-info.vcproj	\
 	install.vcproj	\
-	install_sdl.vcproj	\
 	README.txt
