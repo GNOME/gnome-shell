@@ -122,6 +122,9 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 
   eglTerminate (egl_renderer->edpy);
 
+  if (kms_renderer->opened_fd >= 0)
+    close (kms_renderer->opened_fd);
+
   g_slice_free (CoglRendererKMS, kms_renderer);
   g_slice_free (CoglRendererEGL, egl_renderer);
 }
