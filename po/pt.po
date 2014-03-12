@@ -1,15 +1,15 @@
 # mutter's Portuguese Translation
-# Copyright © 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 metacity/mutter
+# Copyright © 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 metacity/mutter
 # Distributed under the same licence as the metacity package
-# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013.
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 3.10\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-23 10:50+0000\n"
-"PO-Revision-Date: 2014-02-23 22:22+0100\n"
+"POT-Creation-Date: 2014-03-11 22:55+0000\n"
+"PO-Revision-Date: 2014-03-12 02:00+0100\n"
 "Last-Translator: Tiago S. <almosthumane@portugalmail.pt>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "Language: pt\n"
@@ -55,66 +55,82 @@ msgid "Move window one workspace down"
 msgstr "Mover a janela uma área de trabalho abaixo"
 
 #: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Move window one monitor to the left"
+msgstr "Mover a janela um monitor para a esquerda"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Move window one monitor to the right"
+msgstr "Mover a janela um monitor para a direita"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Move window one monitor up"
+msgstr "Mover a janela um monitor acima"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Move window one monitor down"
+msgstr "Mover a janela um monitor abaixo"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
 msgid "Switch applications"
 msgstr "Alternar entre aplicações"
 
-#: ../src/50-mutter-navigation.xml.in.h:11
+#: ../src/50-mutter-navigation.xml.in.h:15
 msgid "Switch windows"
 msgstr "Alternar entre janelas"
 
-#: ../src/50-mutter-navigation.xml.in.h:12
+#: ../src/50-mutter-navigation.xml.in.h:16
 msgid "Switch windows of an application"
 msgstr "Alternar entre janelas de uma aplicação"
 
-#: ../src/50-mutter-navigation.xml.in.h:13
+#: ../src/50-mutter-navigation.xml.in.h:17
 msgid "Switch system controls"
 msgstr "Alternar entre controlos de sistema"
 
-#: ../src/50-mutter-navigation.xml.in.h:14
+#: ../src/50-mutter-navigation.xml.in.h:18
 msgid "Switch windows directly"
 msgstr "Alternar diretamente entre janelas"
 
-#: ../src/50-mutter-navigation.xml.in.h:15
+#: ../src/50-mutter-navigation.xml.in.h:19
 msgid "Switch windows of an app directly"
 msgstr "Alternar diretamente entre janelas de uma aplicação"
 
-#: ../src/50-mutter-navigation.xml.in.h:16
+#: ../src/50-mutter-navigation.xml.in.h:20
 msgid "Switch system controls directly"
 msgstr "Alternar diretamente entre controlos de sistema"
 
-#: ../src/50-mutter-navigation.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:21
 msgid "Hide all normal windows"
 msgstr "Esconder todas as janelas normais"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
+#: ../src/50-mutter-navigation.xml.in.h:22
 msgid "Switch to workspace 1"
 msgstr "Alternar para a área de trabalho 1"
 
-#: ../src/50-mutter-navigation.xml.in.h:19
+#: ../src/50-mutter-navigation.xml.in.h:23
 msgid "Switch to workspace 2"
 msgstr "Alternar para a área de trabalho 2"
 
-#: ../src/50-mutter-navigation.xml.in.h:20
+#: ../src/50-mutter-navigation.xml.in.h:24
 msgid "Switch to workspace 3"
 msgstr "Alternar para a área de trabalho 3"
 
-#: ../src/50-mutter-navigation.xml.in.h:21
+#: ../src/50-mutter-navigation.xml.in.h:25
 msgid "Switch to workspace 4"
 msgstr "Alternar para a área de trabalho 4"
 
-#: ../src/50-mutter-navigation.xml.in.h:22
+#: ../src/50-mutter-navigation.xml.in.h:26
 msgid "Move to workspace left"
 msgstr "Mover para a área de trabalho à esquerda"
 
-#: ../src/50-mutter-navigation.xml.in.h:23
+#: ../src/50-mutter-navigation.xml.in.h:27
 msgid "Move to workspace right"
 msgstr "Mover para a área de trabalho à direita"
 
-#: ../src/50-mutter-navigation.xml.in.h:24
+#: ../src/50-mutter-navigation.xml.in.h:28
 msgid "Move to workspace above"
 msgstr "Mover para a área de trabalho acima"
 
-#: ../src/50-mutter-navigation.xml.in.h:25
+#: ../src/50-mutter-navigation.xml.in.h:29
 msgid "Move to workspace below"
 msgstr "Mover para a área de trabalho abaixo"
 
@@ -255,17 +271,17 @@ msgstr "_Aguardar"
 msgid "_Force Quit"
 msgstr "_Forçar Terminar"
 
-#: ../src/core/display.c:413
+#: ../src/core/display.c:405
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Incapaz de encontrar a extensão %s, necessária para a composição"
 
-#: ../src/core/display.c:505
+#: ../src/core/display.c:497
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir ecrã '%s' do Sistema Janelas X\n"
 
-#: ../src/core/keybindings.c:1135
+#: ../src/core/keybindings.c:1105
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -274,7 +290,7 @@ msgstr ""
 "A tecla %s com os modificadores %x já está a ser utilizada como atalho por "
 "outra aplicação\n"
 
-#: ../src/core/keybindings.c:1332
+#: ../src/core/keybindings.c:1308
 #, c-format
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "\"%s\" não é um atalho válido\n"
@@ -321,12 +337,10 @@ msgid "Built-in display"
 msgstr "Ecrã embutido"
 
 #: ../src/core/monitor.c:724
-#| msgid "Unknown %s"
 msgid "Unknown"
 msgstr "Desconhecido"
 
 #: ../src/core/monitor.c:726
-#| msgid "Unknown %s"
 msgid "Unknown Display"
 msgstr "Ecrã Desconhecido"
 
@@ -362,7 +376,7 @@ msgstr "Imprimir a versão"
 msgid "Mutter plugin to use"
 msgstr "Plugin Mutter a utilizar"
 
-#: ../src/core/prefs.c:1200
+#: ../src/core/prefs.c:1190
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -370,13 +384,13 @@ msgstr ""
 "Recursos para aplicações problemáticas inativos. Algumas aplicações poderão "
 "não funcionar corretamente.\n"
 
-#: ../src/core/prefs.c:1275
+#: ../src/core/prefs.c:1265
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Incapaz de processar a descrição de fonte \"%s\" da chave GSettings %s\n"
 
-#: ../src/core/prefs.c:1341
+#: ../src/core/prefs.c:1331
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -385,7 +399,7 @@ msgstr ""
 "\"%s\" encontrado na base de dados de configuração não é um valor válido "
 "para o modificador de botão de rato\n"
 
-#: ../src/core/prefs.c:1907
+#: ../src/core/prefs.c:1894
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -394,7 +408,7 @@ msgstr ""
 "\"%s\" encontrado na base de dados de configuração não é um valor válido "
 "para o atalho de teclado \"%s\"\n"
 
-#: ../src/core/prefs.c:1997
+#: ../src/core/prefs.c:1984
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de Trabalho %d"
@@ -425,7 +439,7 @@ msgstr ""
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ecrã %d no monitor \"%s\" já tem um gestor de janelas\n"
 
-#: ../src/core/screen.c:851
+#: ../src/core/screen.c:848
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Incapaz libertar ecrã %d no monitor \"%s\"\n"
@@ -522,7 +536,7 @@ msgid "Window manager error: "
 msgstr "Erro do gestor de janelas: "
 
 #. first time through
-#: ../src/core/window.c:7533
+#: ../src/core/window.c:7564
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -538,7 +552,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8457
+#: ../src/core/window.c:8489
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
