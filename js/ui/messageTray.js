@@ -2790,7 +2790,12 @@ const MessageTray = new Lang.Class({
                              { y: expandedY,
                                opacity: 255,
                                time: ANIMATION_TIME,
-                               transition: 'easeOutQuad'
+                               transition: 'easeOutQuad',
+                               // HACK: Drive the state machine here better,
+                               // instead of overwriting tweens
+                               onComplete: Lang.bind(this, function() {
+                                   this._notificationState = State.SHOWN;
+                               }),
                              });
         }
     },
