@@ -23,7 +23,6 @@
 #include <gio/gunixfdmessage.h>
 
 #include <clutter/clutter.h>
-#include <clutter/egl/clutter-egl.h>
 #include <clutter/evdev/clutter-evdev.h>
 
 #include <glib.h>
@@ -157,11 +156,36 @@ send_message_to_wl (MetaLauncher           *self,
   return TRUE;
 }
 
+gboolean
+meta_launcher_set_drm_fd (MetaLauncher  *self,
+			  int            drm_fd,
+			  GError       **error)
+{
+  struct weston_launcher_message message;
+  GSocketControlMessage *cmsg;
+  gboolean ok;
+
+  message.opcode = WESTON_LAUNCHER_DRM_SET_FD;
+
+  cmsg = g_unix_fd_message_new ();
+  if (g_unix_fd_message_append_fd (G_UNIX_FD_MESSAGE (cmsg),
+				   drm_fd, error) == FALSE)
+    {
+      g_object_unref (cmsg);
+      return FALSE;
+    }
+
+  ok = send_message_to_wl (self, &message, sizeof message, cmsg, NULL, error);
+
+  g_object_unref (cmsg);
+  return ok;
+}
+
 static int
-meta_launcher_open_device (MetaLauncher  *self,
-                           const char    *name,
-                           int            flags,
-                           GError       **error)
+meta_launcher_open_input_device (MetaLauncher  *self,
+                                 const char    *name,
+                                 int            flags,
+                                 GError       **error)
 {
   struct weston_launcher_open *message;
   GSocketControlMessage *cmsg;
@@ -237,7 +261,7 @@ on_evdev_device_open (const char  *path,
 {
   MetaLauncher *launcher = user_data;
 
-  return meta_launcher_open_device (launcher, path, flags, error);
+  return meta_launcher_open_input_device (launcher, path, flags, error);
 }
 
 static void
@@ -357,18 +381,6 @@ meta_launcher_new (void)
   g_source_unref (self->inner_source);
 
   clutter_evdev_set_open_callback (on_evdev_device_open, self);
-
-#if defined(CLUTTER_WINDOWING_EGL)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
-    {
-      GError *error = NULL;
-      int fd = meta_launcher_open_device (self, "/dev/dri/card0", O_RDWR, &error);
-      if (error)
-        g_error ("Failed to open /dev/dri/card0: %s", error->message);
-
-      clutter_egl_native_set_kms_fd (fd);
-    }
-#endif
 
   return self;
 }

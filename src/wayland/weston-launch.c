@@ -166,6 +166,69 @@ setenv_fd(const char *env, int fd)
 }
 
 static int
+handle_setdrmfd(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
+{
+        struct weston_launcher_reply reply;
+	struct cmsghdr *cmsg;
+	union cmsg_data *data;
+	struct stat s;
+
+	reply.header.opcode = WESTON_LAUNCHER_DRM_SET_FD;
+	reply.ret = -1;
+
+	if (wl->drm_fd != -1) {
+		error(0, 0, "DRM FD already set");
+		reply.ret = -EINVAL;
+		goto out;
+	}
+
+	cmsg = CMSG_FIRSTHDR(msg);
+	if (!cmsg ||
+	    cmsg->cmsg_level != SOL_SOCKET ||
+	    cmsg->cmsg_type != SCM_RIGHTS) {
+		error(0, 0, "invalid control message");
+		reply.ret = -EINVAL;
+		goto out;
+	}
+
+	data = (union cmsg_data *) CMSG_DATA(cmsg);
+	if (data->fd < 0) {
+		error(0, 0, "missing drm fd in socket request");
+		reply.ret = -EINVAL;
+		goto out;
+	}
+
+	if (fstat(data->fd, &s) < 0) {
+		reply.ret = -errno;
+		goto out;
+	}
+
+	if (major(s.st_rdev) != DRM_MAJOR) {
+		fprintf(stderr, "FD is not for DRM\n");
+		reply.ret = -EPERM;
+		goto out;
+	}
+
+	wl->drm_fd = data->fd;
+	reply.ret = drmSetMaster(data->fd);
+	if (reply.ret < 0)
+		reply.ret = -errno;
+
+	if (wl->verbose)
+		fprintf(stderr, "mutter-launch: set drm FD, ret: %d, fd: %d\n",
+			reply.ret, data->fd);
+
+out:
+	do {
+		len = send(wl->sock[0], &reply, sizeof reply, 0);
+	} while (len < 0 && errno == EINTR);
+	if (len < 0)
+		return -1;
+
+	return 0;
+}
+
+static int
 handle_confirm_vt_switch(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 {
         struct weston_launcher_reply reply;
@@ -260,7 +323,6 @@ handle_open(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 	struct iovec iov;
 	struct weston_launcher_open *message;
 	union cmsg_data *data;
-	int dev_major;
 
 	reply.header.opcode = WESTON_LAUNCHER_OPEN;
 	reply.ret = -1;
@@ -277,18 +339,9 @@ handle_open(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 		goto err0;
 	}
 
-	dev_major = major(s.st_rdev);
-
-	if (dev_major != INPUT_MAJOR ||
-	    dev_major != DRM_MAJOR) {
-		fprintf(stderr, "Device %s is not an input or DRM device\n",
+	if (major(s.st_rdev) != INPUT_MAJOR) {
+		fprintf(stderr, "Device %s is not an input device\n",
 			message->path);
-		reply.ret = -EPERM;
-		goto err0;
-	}
-
-	if (dev_major == DRM_MAJOR && wl->drm_fd != -1) {
-		fprintf(stderr, "Already have a DRM device open\n");
 		reply.ret = -EPERM;
 		goto err0;
 	}
@@ -299,10 +352,6 @@ handle_open(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 			message->path);
 		reply.ret = -errno;
 		goto err0;
-	}
-
-	if (dev_major == DRM_MAJOR) {
-		wl->drm_fd = fd;
 	}
 
 err0:
@@ -369,6 +418,9 @@ handle_socket_msg(struct weston_launch *wl)
 	switch (message->opcode) {
 	case WESTON_LAUNCHER_OPEN:
 		ret = handle_open(wl, &msg, len);
+		break;
+	case WESTON_LAUNCHER_DRM_SET_FD:
+		ret = handle_setdrmfd(wl, &msg, len);
 		break;
 	case WESTON_LAUNCHER_CONFIRM_VT_SWITCH:
 		ret = handle_confirm_vt_switch(wl, &msg, len);
