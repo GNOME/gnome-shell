@@ -427,7 +427,7 @@ msgstr "Celý den"
 #: ../js/ui/calendar.js:70
 msgctxt "event list time"
 msgid "%H∶%M"
-msgstr "%H∶%M"
+msgstr "%k∶%M"
 
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
@@ -726,33 +726,33 @@ msgstr "Ztlumit"
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:955
 msgid "%H∶%M"
-msgstr "%H∶%M"
+msgstr "%k∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:962
 msgid "Yesterday, %H∶%M"
-msgstr "včera, %H∶%M"
+msgstr "včera, %k∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:969
 msgid "%A, %H∶%M"
-msgstr "%A, %H∶%M"
+msgstr "%A, %k∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
 #: ../js/ui/components/telepathyClient.js:976
 msgid "%B %d, %H∶%M"
-msgstr "%e. %B %H∶%M"
+msgstr "%e. %B %k∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
 #: ../js/ui/components/telepathyClient.js:982
 msgid "%B %d %Y, %H∶%M"
-msgstr "%e. %B %Y, %H∶%M"
+msgstr "%e. %B %Y, %k∶%M"
 
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:991
