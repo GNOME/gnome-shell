@@ -247,10 +247,6 @@ struct _MetaDisplay
   /* Managed by group.c */
   GHashTable *groups_by_leader;
 
-  /* currently-active window menu if any */
-  MetaWindowMenu *window_menu;
-  MetaWindow *window_with_menu;
-
   /* Managed by window-props.c */
   MetaWindowPropHooks *prop_hooks_table;
   GHashTable *prop_hooks;

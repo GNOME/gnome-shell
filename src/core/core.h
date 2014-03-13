@@ -142,15 +142,8 @@ const char* meta_core_get_workspace_name_with_index (Display *xdisplay,
 
 void meta_core_show_window_menu (Display *xdisplay,
                                  Window   frame_xwindow,
-                                 int      root_x,
-                                 int      root_y,
-                                 int      button,
                                  guint32  timestamp);
 
-void meta_core_get_menu_accelerator (MetaMenuOp           menu_op,
-                                     int                  workspace,
-                                     unsigned int        *keysym,
-                                     MetaVirtualModifier *modifiers);
 
 gboolean   meta_core_begin_grab_op (Display    *xdisplay,
                                     Window      frame_xwindow,

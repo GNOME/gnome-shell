@@ -398,9 +398,6 @@ meta_core_change_workspace (Display *xdisplay,
 void
 meta_core_show_window_menu (Display *xdisplay,
                             Window   frame_xwindow,
-                            int      root_x,
-                            int      root_y,
-                            int      button,
                             guint32  timestamp)
 {
   MetaWindow *window = get_window (xdisplay, frame_xwindow);
@@ -409,121 +406,7 @@ meta_core_show_window_menu (Display *xdisplay,
     meta_window_raise (window);
   meta_window_focus (window, timestamp);
 
-  meta_window_show_menu (window, root_x, root_y, button, timestamp);
-}
-
-void
-meta_core_get_menu_accelerator (MetaMenuOp           menu_op,
-                                int                  workspace,
-                                unsigned int        *keysym,
-                                MetaVirtualModifier *modifiers)
-{
-  const char *name;
-
-  name = NULL;
-
-  switch (menu_op)
-    {
-    case META_MENU_OP_NONE:
-      /* No keybinding for this one */
-      break;
-    case META_MENU_OP_DELETE:
-      name = "close";
-      break;
-    case META_MENU_OP_MINIMIZE:
-      name = "minimize";
-      break;
-    case META_MENU_OP_UNMAXIMIZE:
-      name = "unmaximize";
-      break;
-    case META_MENU_OP_MAXIMIZE:
-      name = "maximize";
-      break;
-    case META_MENU_OP_UNSHADE:
-    case META_MENU_OP_SHADE:
-      name = "toggle_shaded";
-      break;
-    case META_MENU_OP_UNSTICK:
-    case META_MENU_OP_STICK:
-      name = "toggle-on-all-workspaces";
-      break;
-    case META_MENU_OP_ABOVE:
-    case META_MENU_OP_UNABOVE:
-      name = "toggle-above";
-      break;
-    case META_MENU_OP_WORKSPACES:
-      switch (workspace)
-        {
-        case 1:
-          name = "move-to-workspace-1";
-          break;
-        case 2:
-          name = "move-to-workspace-2";
-          break;
-        case 3:
-          name = "move-to-workspace-3";
-          break;
-        case 4:
-          name = "move-to-workspace-4";
-          break;
-        case 5:
-          name = "move-to-workspace-5";
-          break;
-        case 6:
-          name = "move-to-workspace-6";
-          break;
-        case 7:
-          name = "move-to-workspace-7";
-          break;
-        case 8:
-          name = "move-to-workspace-8";
-          break;
-        case 9:
-          name = "move-to-workspace-9";
-          break;
-        case 10:
-          name = "move-to-workspace-10";
-          break;
-        case 11:
-          name = "move-to-workspace-11";
-          break;
-        case 12:
-          name = "move-to-workspace-12";
-          break;
-        }
-      break;
-    case META_MENU_OP_MOVE:
-      name = "begin-move";
-      break;
-    case META_MENU_OP_RESIZE:
-      name = "begin-resize";
-      break;
-    case META_MENU_OP_MOVE_LEFT:
-      name = "move-to-workspace-left";
-      break;
-    case META_MENU_OP_MOVE_RIGHT:
-      name = "move-to-workspace-right";
-      break;
-    case META_MENU_OP_MOVE_UP:
-      name = "move-to-workspace-up";
-      break;
-    case META_MENU_OP_MOVE_DOWN:
-      name = "move-to-workspace-down";
-      break;
-    case META_MENU_OP_RECOVER:
-      /* No keybinding for this one */
-      break;
-    }
-
-  if (name)
-    {
-      meta_prefs_get_window_binding (name, keysym, modifiers);
-    }
-  else
-    {
-      *keysym = 0;
-      *modifiers = 0;
-    }
+  meta_window_show_menu (window);
 }
 
 const char*

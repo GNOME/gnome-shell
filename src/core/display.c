@@ -518,9 +518,6 @@ meta_display_open (void)
 
   the_display->groups_by_leader = NULL;
 
-  the_display->window_with_menu = NULL;
-  the_display->window_menu = NULL;
-
   the_display->screen = NULL;
 
 #ifdef HAVE_STARTUP_NOTIFICATION

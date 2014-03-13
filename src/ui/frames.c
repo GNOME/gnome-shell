@@ -1102,9 +1102,6 @@ meta_frame_titlebar_event (MetaUIFrame    *frame,
     case G_DESKTOP_TITLEBAR_ACTION_MENU:
       meta_core_show_window_menu (display,
                                   frame->xwindow,
-                                  event->x_root,
-                                  event->y_root,
-                                  event->button,
                                   event->time);
       break;
     }
@@ -1214,30 +1211,9 @@ meta_frames_button_press_event (GtkWidget      *widget,
       redraw_control (frames, frame, control);
 
       if (control == META_FRAME_CONTROL_MENU)
-        {
-          MetaFrameGeometry fgeom;
-          GdkRectangle *rect;
-          int dx, dy;
-
-          meta_frames_calc_geometry (frames, frame, &fgeom);
-
-          rect = control_rect (META_FRAME_CONTROL_MENU, &fgeom);
-
-          /* get delta to convert to root coords */
-          dx = event->x_root - event->x;
-          dy = event->y_root - event->y;
-
-          /* Align to the right end of the menu rectangle if RTL */
-          if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
-            dx += rect->width;
-
-          meta_core_show_window_menu (display,
-                                      frame->xwindow,
-                                      rect->x + dx,
-                                      rect->y + rect->height + dy,
-                                      event->button,
-                                      event->time);
-        }
+        meta_core_show_window_menu (display,
+                                    frame->xwindow,
+                                    event->time);
     }
   else if (event->button == 1 &&
            (control == META_FRAME_CONTROL_RESIZE_SE ||

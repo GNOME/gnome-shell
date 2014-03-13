@@ -2732,20 +2732,7 @@ handle_activate_window_menu (MetaDisplay     *display,
                              gpointer         dummy)
 {
   if (display->focus_window)
-    {
-      int x, y;
-
-      meta_window_get_position (display->focus_window,
-                                &x, &y);
-
-      if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
-        x += display->focus_window->rect.width;
-
-      meta_window_show_menu (display->focus_window,
-                             x, y,
-                             0,
-                             event->time);
-    }
+    meta_window_show_menu (display->focus_window);
 }
 
 static void

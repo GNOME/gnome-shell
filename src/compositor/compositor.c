@@ -1356,3 +1356,10 @@ meta_compositor_hide_tile_preview (MetaCompositor *compositor)
 {
   meta_plugin_manager_hide_tile_preview (compositor->plugin_mgr);
 }
+
+void
+meta_compositor_show_window_menu (MetaCompositor *compositor,
+                                  MetaWindow     *window)
+{
+  meta_plugin_manager_show_window_menu (compositor->plugin_mgr, window);
+}

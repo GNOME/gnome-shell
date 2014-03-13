@@ -87,61 +87,6 @@ typedef enum
 } MetaFrameFlags;
 
 /**
- * MetaMenuOp:
- * @META_MENU_OP_NONE: No menu operation
- * @META_MENU_OP_DELETE: Menu operation delete
- * @META_MENU_OP_MINIMIZE: Menu operation minimize
- * @META_MENU_OP_UNMAXIMIZE: Menu operation unmaximize
- * @META_MENU_OP_MAXIMIZE: Menu operation maximize
- * @META_MENU_OP_UNSHADE: Menu operation unshade
- * @META_MENU_OP_SHADE: Menu operation shade
- * @META_MENU_OP_UNSTICK: Menu operation unstick
- * @META_MENU_OP_STICK: Menu operation stick
- * @META_MENU_OP_WORKSPACES: Menu operation workspaces
- * @META_MENU_OP_MOVE: Menu operation move
- * @META_MENU_OP_RESIZE: Menu operation resize
- * @META_MENU_OP_ABOVE: Menu operation above
- * @META_MENU_OP_UNABOVE: Menu operation unabove
- * @META_MENU_OP_MOVE_LEFT: Menu operation left
- * @META_MENU_OP_MOVE_RIGHT: Menu operation right
- * @META_MENU_OP_MOVE_UP: Menu operation up
- * @META_MENU_OP_MOVE_DOWN: Menu operation down
- * @META_MENU_OP_RECOVER: Menu operation recover
- */
-typedef enum
-{
-  META_MENU_OP_NONE        = 0,
-  META_MENU_OP_DELETE      = 1 << 0,
-  META_MENU_OP_MINIMIZE    = 1 << 1,
-  META_MENU_OP_UNMAXIMIZE  = 1 << 2,
-  META_MENU_OP_MAXIMIZE    = 1 << 3,
-  META_MENU_OP_UNSHADE     = 1 << 4,
-  META_MENU_OP_SHADE       = 1 << 5,
-  META_MENU_OP_UNSTICK     = 1 << 6,
-  META_MENU_OP_STICK       = 1 << 7,
-  META_MENU_OP_WORKSPACES  = 1 << 8,
-  META_MENU_OP_MOVE        = 1 << 9,
-  META_MENU_OP_RESIZE      = 1 << 10,
-  META_MENU_OP_ABOVE       = 1 << 11,
-  META_MENU_OP_UNABOVE     = 1 << 12,
-  META_MENU_OP_MOVE_LEFT   = 1 << 13,
-  META_MENU_OP_MOVE_RIGHT  = 1 << 14,
-  META_MENU_OP_MOVE_UP     = 1 << 15,
-  META_MENU_OP_MOVE_DOWN   = 1 << 16,
-  META_MENU_OP_RECOVER     = 1 << 17
-} MetaMenuOp;
-
-typedef struct _MetaWindowMenu MetaWindowMenu;
-
-typedef void (* MetaWindowMenuFunc) (MetaWindowMenu *menu,
-                                     Display        *xdisplay,
-                                     Window          client_xwindow,
-                                     guint32         timestamp,
-                                     MetaMenuOp      op,
-                                     int             workspace,
-                                     gpointer        user_data);
-
-/**
  * MetaGrabOp:
  * @META_GRAB_OP_NONE: None
  * @META_GRAB_OP_MOVING: Moving with pointer

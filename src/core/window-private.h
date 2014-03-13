@@ -622,11 +622,7 @@ void     meta_window_set_current_workspace_hint (MetaWindow *window);
 
 unsigned long meta_window_get_net_wm_desktop (MetaWindow *window);
 
-void meta_window_show_menu (MetaWindow *window,
-                            int         root_x,
-                            int         root_y,
-                            int         button,
-                            guint32     timestamp);
+void meta_window_show_menu (MetaWindow *window);
 
 gboolean meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                                   const ClutterEvent *event);

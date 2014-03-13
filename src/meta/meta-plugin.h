@@ -164,6 +164,9 @@ struct _MetaPluginClass
                              int              tile_monitor_number);
   void (*hide_tile_preview) (MetaPlugin      *plugin);
 
+  void (*show_window_menu)  (MetaPlugin      *plugin,
+                             MetaWindow      *window);
+
   /**
    * MetaPluginClass::kill_window_effects:
    * @actor: a #MetaWindowActor

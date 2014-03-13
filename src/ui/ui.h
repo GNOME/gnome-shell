@@ -113,21 +113,6 @@ void meta_ui_update_frame_style (MetaUI  *ui,
 void meta_ui_repaint_frame (MetaUI *ui,
                             Window xwindow);
 
-MetaWindowMenu* meta_ui_window_menu_new   (MetaUI             *ui,
-                                           Window              client_xwindow,
-                                           MetaMenuOp          ops,
-                                           MetaMenuOp          insensitive,
-                                           unsigned long       active_workspace,
-                                           int                 n_workspaces,
-                                           MetaWindowMenuFunc  func,
-                                           gpointer            data);
-void            meta_ui_window_menu_popup (MetaWindowMenu     *menu,
-                                           int                 root_x,
-                                           int                 root_y,
-                                           int                 button,
-                                           guint32             timestamp);
-void            meta_ui_window_menu_free  (MetaWindowMenu     *menu);
-
 
 /* FIXME these lack a display arg */
 GdkPixbuf* meta_gdk_pixbuf_get_from_pixmap (Pixmap       xpixmap,
