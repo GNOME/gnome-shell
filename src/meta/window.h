@@ -244,6 +244,16 @@ void meta_window_begin_grab_op (MetaWindow *window,
                                 gboolean    frame_action,
                                 guint32     timestamp);
 
+gboolean meta_window_can_maximize (MetaWindow *window);
+gboolean meta_window_can_minimize (MetaWindow *window);
+gboolean meta_window_can_shade (MetaWindow *window);
 gboolean meta_window_can_close (MetaWindow *window);
+gboolean meta_window_is_always_on_all_workspaces (MetaWindow *window);
+gboolean meta_window_is_above (MetaWindow *window);
+gboolean meta_window_allows_move (MetaWindow *window);
+gboolean meta_window_allows_resize (MetaWindow *window);
+
+gboolean meta_window_titlebar_is_onscreen    (MetaWindow *window);
+void     meta_window_shove_titlebar_onscreen (MetaWindow *window);
 
 #endif
