@@ -1510,43 +1510,41 @@ error:
 void
 meta_window_x11_recalc_window_type (MetaWindow *window)
 {
-  MetaWindowType old_type;
-
-  old_type = window->type;
+  MetaWindowType type;
 
   if (window->type_atom != None)
     {
       if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DESKTOP)
-        window->type = META_WINDOW_DESKTOP;
+        type = META_WINDOW_DESKTOP;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DOCK)
-        window->type = META_WINDOW_DOCK;
+        type = META_WINDOW_DOCK;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_TOOLBAR)
-        window->type = META_WINDOW_TOOLBAR;
+        type = META_WINDOW_TOOLBAR;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_MENU)
-        window->type = META_WINDOW_MENU;
+        type = META_WINDOW_MENU;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_UTILITY)
-        window->type = META_WINDOW_UTILITY;
+        type = META_WINDOW_UTILITY;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_SPLASH)
-        window->type = META_WINDOW_SPLASHSCREEN;
+        type = META_WINDOW_SPLASHSCREEN;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DIALOG)
-        window->type = META_WINDOW_DIALOG;
+        type = META_WINDOW_DIALOG;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL)
-        window->type = META_WINDOW_NORMAL;
+        type = META_WINDOW_NORMAL;
       /* The below are *typically* override-redirect windows, but the spec does
        * not disallow using them for managed windows.
        */
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DROPDOWN_MENU)
-        window->type = META_WINDOW_DROPDOWN_MENU;
+        type = META_WINDOW_DROPDOWN_MENU;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_POPUP_MENU)
-        window->type = META_WINDOW_POPUP_MENU;
+        type = META_WINDOW_POPUP_MENU;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_TOOLTIP)
-        window->type = META_WINDOW_TOOLTIP;
+        type = META_WINDOW_TOOLTIP;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_NOTIFICATION)
-        window->type = META_WINDOW_NOTIFICATION;
+        type = META_WINDOW_NOTIFICATION;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_COMBO)
-        window->type = META_WINDOW_COMBO;
+        type = META_WINDOW_COMBO;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DND)
-        window->type = META_WINDOW_DND;
+        type = META_WINDOW_DND;
       else
         {
           char *atom_name;
@@ -1554,7 +1552,7 @@ meta_window_x11_recalc_window_type (MetaWindow *window)
           /*
            * Fallback on a normal type, and print warning. Don't abort.
            */
-          window->type = META_WINDOW_NORMAL;
+          type = META_WINDOW_NORMAL;
 
           meta_error_trap_push (window->display);
           atom_name = XGetAtomName (window->display->xdisplay,
@@ -1571,16 +1569,16 @@ meta_window_x11_recalc_window_type (MetaWindow *window)
     }
   else if (window->transient_for != NULL)
     {
-      window->type = META_WINDOW_DIALOG;
+      type = META_WINDOW_DIALOG;
     }
   else
     {
-      window->type = META_WINDOW_NORMAL;
+      type = META_WINDOW_NORMAL;
     }
 
-  if (window->type == META_WINDOW_DIALOG &&
+  if (type == META_WINDOW_DIALOG &&
       window->wm_state_modal)
-    window->type = META_WINDOW_MODAL_DIALOG;
+    type = META_WINDOW_MODAL_DIALOG;
 
   /* We don't want to allow override-redirect windows to have decorated-window
    * types since that's just confusing.
@@ -1595,7 +1593,7 @@ meta_window_x11_recalc_window_type (MetaWindow *window)
         case META_WINDOW_MODAL_DIALOG:
         case META_WINDOW_MENU:
         case META_WINDOW_UTILITY:
-          window->type = META_WINDOW_OVERRIDE_OTHER;
+          type = META_WINDOW_OVERRIDE_OTHER;
           break;
         /* Undecorated types, normally not override-redirect */
         case META_WINDOW_DESKTOP:
@@ -1616,8 +1614,6 @@ meta_window_x11_recalc_window_type (MetaWindow *window)
     }
 
   meta_verbose ("Calculated type %u for %s, old type %u\n",
-                window->type, window->desc, old_type);
-
-  if (old_type != window->type)
-    meta_window_type_changed (window);
+                type, window->desc, type);
+  meta_window_set_type (window, type);
 }

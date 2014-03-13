@@ -684,7 +684,8 @@ void meta_window_update_layer (MetaWindow *window);
 
 void meta_window_recalc_features    (MetaWindow *window);
 
-void meta_window_type_changed       (MetaWindow *window);
+void meta_window_set_type (MetaWindow     *window,
+                           MetaWindowType  type);
 
 void meta_window_frame_size_changed (MetaWindow *window);
 

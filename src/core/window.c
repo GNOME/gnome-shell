@@ -7064,7 +7064,7 @@ meta_window_update_struts (MetaWindow *window)
     }
 }
 
-void
+static void
 meta_window_type_changed (MetaWindow *window)
 {
   gboolean old_decorated = window->decorated;
@@ -7095,6 +7095,17 @@ meta_window_type_changed (MetaWindow *window)
   g_object_notify (object, "window-type");
 
   g_object_thaw_notify (object);
+}
+
+void
+meta_window_set_type (MetaWindow     *window,
+                      MetaWindowType  type)
+{
+  if (window->type == type)
+    return;
+
+  window->type = type;
+  meta_window_type_changed (window);
 }
 
 void
