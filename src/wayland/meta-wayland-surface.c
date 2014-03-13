@@ -770,6 +770,23 @@ xdg_surface_set_app_id (struct wl_client *client,
   meta_window_set_wm_class (surface->window, app_id, app_id);
 }
 
+static void
+xdg_surface_show_window_menu (struct wl_client *client,
+                              struct wl_resource *resource,
+                              struct wl_resource *seat_resource,
+                              uint32_t serial,
+                              uint32_t x,
+                              uint32_t y)
+{
+  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+
+  if (!meta_wayland_seat_can_grab_surface (seat, surface, serial))
+    return;
+
+  meta_window_show_menu (surface->window, x, y);
+}
+
 static gboolean
 begin_grab_op_on_surface (MetaWaylandSurface *surface,
                           MetaWaylandSeat    *seat,
@@ -910,6 +927,7 @@ static const struct xdg_surface_interface meta_wayland_xdg_surface_interface = {
   xdg_surface_set_margin,
   xdg_surface_set_title,
   xdg_surface_set_app_id,
+  xdg_surface_show_window_menu,
   xdg_surface_move,
   xdg_surface_resize,
   xdg_surface_ack_configure,

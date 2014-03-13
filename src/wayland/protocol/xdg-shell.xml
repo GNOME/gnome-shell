@@ -198,6 +198,22 @@
       <arg name="app_id" type="string"/>
     </request>
 
+    <request name="show_window_menu">
+      <description summary="show the window menu">
+        Clients implementing client-side decorations might want to show
+        a context menu when right-clicking on the decorations, giving the
+        user a menu that they can use to maximize or minimize the window.
+
+        The seat passed must have either pointer or keyboard focus to pop
+        up the window menu for a surface.
+      </description>
+
+      <arg name="seat" type="object" interface="wl_seat" summary="the seat to pop the window up on"/>
+      <arg name="serial" type="uint" summary="serial of the event to pop up the window for"/>
+      <arg name="x" type="uint"/>
+      <arg name="y" type="uint"/>
+    </request>
+
     <request name="move">
       <description summary="start an interactive move">
 	Start a pointer-driven move of the surface.
