@@ -84,6 +84,7 @@
     <file>ui/userWidget.js</file>
     <file>ui/viewSelector.js</file>
     <file>ui/windowAttentionHandler.js</file>
+    <file>ui/windowMenu.js</file>
     <file>ui/windowManager.js</file>
     <file>ui/workspace.js</file>
     <file>ui/workspaceSwitcherPopup.js</file>

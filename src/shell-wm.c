@@ -28,6 +28,7 @@ enum
   KILL_WINDOW_EFFECTS,
   SHOW_TILE_PREVIEW,
   HIDE_TILE_PREVIEW,
+  SHOW_WINDOW_MENU,
   FILTER_KEYBINDING,
   CONFIRM_DISPLAY_CHANGE,
 
@@ -135,6 +136,13 @@ shell_wm_class_init (ShellWMClass *klass)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
+  shell_wm_signals[SHOW_WINDOW_MENU] =
+    g_signal_new ("show-window-menu",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 1,
+                  META_TYPE_WINDOW);
   shell_wm_signals[FILTER_KEYBINDING] =
     g_signal_new ("filter-keybinding",
                   G_TYPE_FROM_CLASS (klass),
@@ -288,6 +296,12 @@ _shell_wm_hide_tile_preview (ShellWM *wm)
   g_signal_emit (wm, shell_wm_signals[HIDE_TILE_PREVIEW], 0);
 }
 
+void
+_shell_wm_show_window_menu (ShellWM    *wm,
+                            MetaWindow *window)
+{
+  g_signal_emit (wm, shell_wm_signals[SHOW_WINDOW_MENU], 0, window);
+}
 
 void
 _shell_wm_minimize (ShellWM         *wm,

@@ -15,6 +15,7 @@ const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
+const WindowMenu = imports.ui.windowMenu;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 const WINDOW_ANIMATION_TIME = 0.25;
@@ -480,6 +481,7 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('switch-workspace', Lang.bind(this, this._switchWorkspace));
         this._shellwm.connect('show-tile-preview', Lang.bind(this, this._showTilePreview));
         this._shellwm.connect('hide-tile-preview', Lang.bind(this, this._hideTilePreview));
+        this._shellwm.connect('show-window-menu', Lang.bind(this, this._showWindowMenu));
         this._shellwm.connect('minimize', Lang.bind(this, this._minimizeWindow));
         this._shellwm.connect('maximize', Lang.bind(this, this._maximizeWindow));
         this._shellwm.connect('unmaximize', Lang.bind(this, this._unmaximizeWindow));
@@ -668,6 +670,8 @@ const WindowManager = new Lang.Class({
             for (let i = 0; i < this._dimmedWindows.length; i++)
                 this._dimWindow(this._dimmedWindows[i]);
         }));
+
+        this._windowMenuManager = new WindowMenu.WindowMenuManager();
 
         if (Main.sessionMode.hasWorkspaces)
             this._workspaceTracker = new WorkspaceTracker(this);
@@ -1157,6 +1161,10 @@ const WindowManager = new Lang.Class({
         if (!this._tilePreview)
             return;
         this._tilePreview.hide();
+    },
+
+    _showWindowMenu: function(shellwm, window) {
+        this._windowMenuManager.showForWindow(window);
     },
 
     _startAppSwitcher : function(display, screen, window, binding) {
