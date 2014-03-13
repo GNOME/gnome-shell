@@ -727,7 +727,7 @@ reload_net_wm_state (MetaWindow    *window,
   meta_verbose ("Reloaded _NET_WM_STATE for %s\n",
                 window->desc);
 
-  meta_window_recalc_window_type (window);
+  meta_window_x11_recalc_window_type (window);
   meta_window_recalc_features (window);
 }
 

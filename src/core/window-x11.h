@@ -35,6 +35,8 @@ void meta_window_x11_update_opaque_region        (MetaWindow *window);
 void meta_window_x11_update_input_region         (MetaWindow *window);
 void meta_window_x11_update_shape_region         (MetaWindow *window);
 
+void meta_window_x11_recalc_window_type          (MetaWindow *window);
+
 gboolean meta_window_x11_configure_request       (MetaWindow *window,
                                                   XEvent     *event);
 gboolean meta_window_x11_property_notify         (MetaWindow *window,
