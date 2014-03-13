@@ -450,8 +450,7 @@ const AuthPrompt = new Lang.Class({
             // respond to the request with the username
             beginRequestType = BeginRequestType.PROVIDE_USERNAME;
         } else if (this._userVerifier.serviceIsForeground(GdmUtil.OVIRT_SERVICE_NAME) ||
-                   (this.smartcardDetected &&
-                    this._userVerifier.serviceIsForeground(GdmUtil.SMARTCARD_SERVICE_NAME))) {
+                   this._userVerifier.serviceIsForeground(GdmUtil.SMARTCARD_SERVICE_NAME)) {
             // We don't need to know the username if the user preempted the login screen
             // with a smartcard or with preauthenticated oVirt credentials
             beginRequestType = BeginRequestType.DONT_PROVIDE_USERNAME;
