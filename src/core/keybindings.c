@@ -1975,9 +1975,7 @@ process_mouse_move_resize_grab (MetaDisplay     *display,
        * moveresize now to get the position back to the original.
        */
       if (window->shaken_loose || window->tile_mode == META_TILE_MAXIMIZED)
-        meta_window_maximize (window,
-                              META_MAXIMIZE_HORIZONTAL |
-                              META_MAXIMIZE_VERTICAL);
+        meta_window_maximize (window, META_MAXIMIZE_BOTH);
       else if (window->tile_mode != META_TILE_NONE)
         meta_window_tile (window);
       else
@@ -2038,9 +2036,7 @@ process_keyboard_move_grab (MetaDisplay     *display,
        * now to get the position back to the original.
        */
       if (window->shaken_loose)
-        meta_window_maximize (window,
-                              META_MAXIMIZE_HORIZONTAL |
-                              META_MAXIMIZE_VERTICAL);
+        meta_window_maximize (window, META_MAXIMIZE_BOTH);
       else
         meta_window_move_resize (display->grab_window,
                                  TRUE,
@@ -2901,11 +2897,9 @@ handle_toggle_tiled (MetaDisplay     *display,
         : META_TILE_NONE;
 
       if (window->saved_maximize)
-        meta_window_maximize (window, META_MAXIMIZE_VERTICAL |
-                              META_MAXIMIZE_HORIZONTAL);
+        meta_window_maximize (window, META_MAXIMIZE_BOTH);
       else
-        meta_window_unmaximize (window, META_MAXIMIZE_VERTICAL |
-                                META_MAXIMIZE_HORIZONTAL);
+        meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
     }
   else if (meta_window_can_tile_side_by_side (window))
     {
@@ -2931,13 +2925,9 @@ handle_toggle_maximized    (MetaDisplay     *display,
                             gpointer         dummy)
 {
   if (META_WINDOW_MAXIMIZED (window))
-    meta_window_unmaximize (window,
-                            META_MAXIMIZE_HORIZONTAL |
-                            META_MAXIMIZE_VERTICAL);
+    meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
   else if (window->has_maximize_func)
-    meta_window_maximize (window,
-                          META_MAXIMIZE_HORIZONTAL |
-                          META_MAXIMIZE_VERTICAL);
+    meta_window_maximize (window, META_MAXIMIZE_BOTH);
 }
 
 static void
@@ -2949,9 +2939,7 @@ handle_maximize           (MetaDisplay     *display,
                            gpointer         dummy)
 {
   if (window->has_maximize_func)
-    meta_window_maximize (window,
-                          META_MAXIMIZE_HORIZONTAL |
-                          META_MAXIMIZE_VERTICAL);
+    meta_window_maximize (window, META_MAXIMIZE_BOTH);
 }
 
 static void
@@ -2963,9 +2951,7 @@ handle_unmaximize         (MetaDisplay     *display,
                            gpointer         dummy)
 {
   if (window->maximized_vertically || window->maximized_horizontally)
-    meta_window_unmaximize (window,
-                            META_MAXIMIZE_HORIZONTAL |
-                            META_MAXIMIZE_VERTICAL);
+    meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
 }
 
 static void

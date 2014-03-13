@@ -1368,9 +1368,7 @@ meta_window_apply_session_info (MetaWindow *window,
 
       if (window->has_maximize_func && info->maximized)
         {
-          meta_window_maximize (window,
-                                META_MAXIMIZE_HORIZONTAL |
-                                META_MAXIMIZE_VERTICAL);
+          meta_window_maximize (window, META_MAXIMIZE_BOTH);
 
           if (info->saved_rect_set)
             {
@@ -3370,7 +3368,7 @@ meta_window_tile (MetaWindow *window)
     return;
 
   if (window->tile_mode == META_TILE_MAXIMIZED)
-    directions = META_MAXIMIZE_VERTICAL | META_MAXIMIZE_HORIZONTAL;
+    directions = META_MAXIMIZE_BOTH;
   else
     directions = META_MAXIMIZE_VERTICAL;
 
@@ -7456,15 +7454,11 @@ menu_callback (MetaWindowMenu *menu,
           break;
 
         case META_MENU_OP_UNMAXIMIZE:
-          meta_window_unmaximize (window,
-                                  META_MAXIMIZE_HORIZONTAL |
-                                  META_MAXIMIZE_VERTICAL);
+          meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
           break;
 
         case META_MENU_OP_MAXIMIZE:
-          meta_window_maximize (window,
-                                META_MAXIMIZE_HORIZONTAL |
-                                META_MAXIMIZE_VERTICAL);
+          meta_window_maximize (window, META_MAXIMIZE_BOTH);
           break;
 
         case META_MENU_OP_UNSHADE:
@@ -7981,10 +7975,7 @@ update_move (MetaWindow  *window,
       display->grab_anchor_root_x = x;
       display->grab_anchor_root_y = y;
 
-      meta_window_unmaximize (window,
-                              META_MAXIMIZE_HORIZONTAL |
-                              META_MAXIMIZE_VERTICAL);
-
+      meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
       return;
     }
 
@@ -8028,9 +8019,7 @@ update_move (MetaWindow  *window,
                   window->user_rect.x = window->saved_rect.x;
                   window->user_rect.y = window->saved_rect.y;
 
-                  meta_window_unmaximize (window,
-                                          META_MAXIMIZE_HORIZONTAL |
-                                          META_MAXIMIZE_VERTICAL);
+                  meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
                 }
 
               display->grab_initial_window_pos = work_area;
@@ -8038,10 +8027,7 @@ update_move (MetaWindow  *window,
               display->grab_anchor_root_y = y;
               window->shaken_loose = FALSE;
 
-              meta_window_maximize (window,
-                                    META_MAXIMIZE_HORIZONTAL |
-                                    META_MAXIMIZE_VERTICAL);
-
+              meta_window_maximize (window, META_MAXIMIZE_BOTH);
               return;
             }
         }

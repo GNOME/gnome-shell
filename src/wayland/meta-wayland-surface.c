@@ -857,9 +857,9 @@ xdg_surface_request_change_state (struct wl_client *client,
     {
     case XDG_SURFACE_STATE_MAXIMIZED:
       if (value)
-        meta_window_maximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
+        meta_window_maximize (surface->window, META_MAXIMIZE_BOTH);
       else
-        meta_window_unmaximize (surface->window, META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
+        meta_window_unmaximize (surface->window, META_MAXIMIZE_BOTH);
       break;
     case XDG_SURFACE_STATE_FULLSCREEN:
       if (value)
@@ -1153,9 +1153,9 @@ wl_shell_surface_set_state (MetaWaylandSurface *surface,
     meta_window_unmake_fullscreen (surface->window);
 
   if (state == SURFACE_STATE_MAXIMIZED)
-    meta_window_maximize (surface->window, META_MAXIMIZE_VERTICAL | META_MAXIMIZE_HORIZONTAL);
+    meta_window_maximize (surface->window, META_MAXIMIZE_BOTH);
   else
-    meta_window_unmaximize (surface->window, META_MAXIMIZE_VERTICAL | META_MAXIMIZE_HORIZONTAL);
+    meta_window_unmaximize (surface->window, META_MAXIMIZE_BOTH);
 }
 
 static void

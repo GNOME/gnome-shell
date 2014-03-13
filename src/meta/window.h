@@ -72,11 +72,13 @@ typedef enum
  * MetaMaximizeFlags:
  * @META_MAXIMIZE_HORIZONTAL: Horizontal
  * @META_MAXIMIZE_VERTICAL: Vertical
+ * @META_MAXIMIZE_BOTH: Both
  */
 typedef enum
 {
   META_MAXIMIZE_HORIZONTAL = 1 << 0,
-  META_MAXIMIZE_VERTICAL   = 1 << 1
+  META_MAXIMIZE_VERTICAL   = 1 << 1,
+  META_MAXIMIZE_BOTH       = (1 << 0 | 1 << 1),
 } MetaMaximizeFlags;
 
 /**
