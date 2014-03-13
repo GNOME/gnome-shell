@@ -2726,6 +2726,11 @@ meta_window_x11_client_message (MetaWindow *window,
 
       meta_window_update_fullscreen_monitors (window, top, bottom, left, right);
     }
+  else if (event->xclient.message_type ==
+           display->atom__GTK_SHOW_WINDOW_MENU)
+    {
+      meta_window_show_menu (window);
+    }
 
   return FALSE;
 }
