@@ -254,6 +254,13 @@ void meta_window_begin_grab_op (MetaWindow *window,
                                 gboolean    frame_action,
                                 guint32     timestamp);
 
+gboolean meta_window_can_maximize (MetaWindow *window);
+gboolean meta_window_can_minimize (MetaWindow *window);
+gboolean meta_window_can_shade (MetaWindow *window);
 gboolean meta_window_can_close (MetaWindow *window);
+gboolean meta_window_is_always_on_all_workspaces (MetaWindow *window);
+gboolean meta_window_is_above (MetaWindow *window);
+gboolean meta_window_allows_move (MetaWindow *window);
+gboolean meta_window_allows_resize (MetaWindow *window);
 
 #endif

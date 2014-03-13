@@ -10051,12 +10051,6 @@ meta_window_compute_tile_match (MetaWindow *window)
     }
 }
 
-gboolean
-meta_window_can_close (MetaWindow *window)
-{
-  return window->has_close_func;
-}
-
 void
 meta_window_set_title (MetaWindow *window,
                        const char *title)
@@ -10397,4 +10391,52 @@ meta_window_set_custom_frame_extents (MetaWindow *window,
     }
 
   meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
+}
+
+gboolean
+meta_window_can_maximize (MetaWindow *window)
+{
+  return window->has_maximize_func;
+}
+
+gboolean
+meta_window_can_minimize (MetaWindow *window)
+{
+  return window->has_minimize_func;
+}
+
+gboolean
+meta_window_can_shade (MetaWindow *window)
+{
+  return window->has_shade_func;
+}
+
+gboolean
+meta_window_can_close (MetaWindow *window)
+{
+  return window->has_close_func;
+}
+
+gboolean
+meta_window_is_always_on_all_workspaces (MetaWindow *window)
+{
+  return window->always_sticky;
+}
+
+gboolean
+meta_window_is_above (MetaWindow *window)
+{
+  return window->wm_state_above;
+}
+
+gboolean
+meta_window_allows_move (MetaWindow *window)
+{
+  return META_WINDOW_ALLOWS_MOVE (window);
+}
+
+gboolean
+meta_window_allows_resize (MetaWindow *window)
+{
+  return META_WINDOW_ALLOWS_RESIZE (window);
 }
