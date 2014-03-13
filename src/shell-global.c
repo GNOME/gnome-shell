@@ -760,6 +760,10 @@ update_scale_factor (GtkSettings *settings,
   g_value_init (&value, G_TYPE_INT);
   if (gdk_screen_get_setting (global->gdk_screen, "gdk-window-scaling-factor", &value))
     g_object_set (context, "scale-factor", g_value_get_int (&value), NULL);
+
+  /* Make sure clutter and gdk scaling stays disabled */
+  g_object_set (clutter_settings_get_default (), "window-scaling-factor", 1, NULL);
+  gdk_x11_display_set_window_scale (gdk_display_get_default (), 1);
 }
 
 /* This is an IBus workaround. The flow of events with IBus is that every time
