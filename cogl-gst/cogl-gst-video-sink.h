@@ -413,6 +413,77 @@ cogl_gst_video_sink_get_height_for_width (CoglGstVideoSink *sink,
                                           float width);
 
 /**
+ * cogl_gst_video_sink_get_natural_size:
+ * @sink: A #CoglGstVideoSink
+ * @width: (out): return location for the video's natural width
+ * @height: (out): return location for the video's natural height
+ *
+ * Considering the real resolution of the video as well as the aspect
+ * ratio of pixel data that may need to be stretched when being displayed;
+ * this function calculates what the natural size of the underlying
+ * video source is.
+ *
+ * The natural size has the correct aspect ratio for displaying the
+ * video and is the minimum size where downscaling is not required.
+ *
+ * <note>This natural size is calculated assuming that the video will
+ * be displayed on square pixels.</note>
+ *
+ * Since: 1.18
+ * Stability: unstable
+ */
+void
+cogl_gst_video_sink_get_natural_size (CoglGstVideoSink *sink,
+                                      float *width,
+                                      float *height);
+
+/**
+ * cogl_gst_video_sink_get_natural_width:
+ * @sink: A #CoglGstVideoSink
+ *
+ * Considering the real resolution of the video as well as the aspect
+ * ratio of pixel data that may need to be stretched when being displayed;
+ * this function calculates what the natural size of the underlying
+ * video source is, and returns its width.
+ *
+ * The natural size has the correct aspect ratio for displaying the
+ * video and is the minimum size where downscaling is not required.
+ *
+ * <note>This natural size is calculated assuming that the video will
+ * be displayed on square pixels.</note>
+ *
+ * Return value: The video's natural width
+ *
+ * Since: 1.18
+ * Stability: unstable
+ */
+float
+cogl_gst_video_sink_get_natural_width (CoglGstVideoSink *sink);
+
+/**
+ * cogl_gst_video_sink_get_natural_height:
+ * @sink: A #CoglGstVideoSink
+ *
+ * Considering the real resolution of the video as well as the aspect
+ * ratio of pixel data that may need to be stretched when being displayed;
+ * this function calculates what the natural size of the underlying
+ * video source is, and returns its height.
+ *
+ * The natural size has the correct aspect ratio for displaying the
+ * video and is the minimum size where downscaling is not required.
+ *
+ * <note>This natural size is calculated assuming that the video will
+ * be displayed on square pixels.</note>
+ *
+ * Return value: The video's natural height
+ *
+ * Since: 1.18
+ * Stability: unstable
+ */
+float
+cogl_gst_video_sink_get_natural_height (CoglGstVideoSink *sink);
+
+/**
  * CoglGstRectangle:
  * @x: The X coordinate of the top left of the rectangle
  * @y: The Y coordinate of the top left of the rectangle

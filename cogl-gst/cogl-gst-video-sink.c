@@ -1658,6 +1658,54 @@ cogl_gst_video_sink_fit_size (CoglGstVideoSink *vt,
     }
 }
 
+void
+cogl_gst_video_sink_get_natural_size (CoglGstVideoSink *vt,
+                                      float *width,
+                                      float *height)
+{
+  GstVideoInfo *info;
+
+  g_return_val_if_fail (COGL_GST_IS_VIDEO_SINK (vt), 0.);
+
+  info = &vt->priv->info;
+
+  if (info->par_n > info->par_d)
+    {
+      /* To display the video at the right aspect ratio then in this
+       * case the pixels need to be stretched horizontally and so we
+       * use the unscaled height as our reference.
+       */
+
+      if (height)
+        *height = info->height;
+      if (width)
+        *width = cogl_gst_video_sink_get_width_for_height (vt, info->height);
+    }
+  else
+    {
+      if (width)
+        *width = info->width;
+      if (height)
+        *height = cogl_gst_video_sink_get_height_for_width (vt, info->width);
+    }
+}
+
+float
+cogl_gst_video_sink_get_natural_width (CoglGstVideoSink *vt)
+{
+  float width;
+  cogl_gst_video_sink_get_natural_size (vt, &width, NULL);
+  return width;
+}
+
+float
+cogl_gst_video_sink_get_natural_height (CoglGstVideoSink *vt)
+{
+  float height;
+  cogl_gst_video_sink_get_natural_size (vt, NULL, &height);
+  return height;
+}
+
 CoglBool
 cogl_gst_video_sink_is_ready (CoglGstVideoSink *sink)
 {
