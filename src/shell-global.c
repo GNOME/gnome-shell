@@ -748,7 +748,9 @@ global_stage_after_paint (gpointer data)
 
 
 static void
-update_scale_factor (GdkScreen *screen, gpointer data)
+update_scale_factor (GtkSettings *settings,
+                     GParamSpec *pspec,
+                     gpointer data)
 {
   ShellGlobal *global = SHELL_GLOBAL (data);
   ClutterStage *stage = CLUTTER_STAGE (global->stage);
@@ -938,19 +940,18 @@ _shell_global_set_plugin (ShellGlobal *global,
   g_signal_connect (global->meta_display, "notify::focus-window",
                     G_CALLBACK (focus_window_changed), global);
 
-  /*
-   * We connect to GdkScreen's monitors-changed here to avoid
-   * a race condition. GdkScreen's monitors-changed signal is
-   * emitted *after* the xsetting has been updated.
+  /* gdk-window-scaling-factor is not exported to gtk-settings
+   * because it is handled inside gdk, so we use gtk-xft-dpi instead
+   * which also changes when the scale factor changes.
    */
-  g_signal_connect (global->gdk_screen, "monitors-changed",
+  g_signal_connect (gtk_settings_get_default (), "notify::gtk-xft-dpi",
                     G_CALLBACK (update_scale_factor), global);
 
   gdk_event_handler_set (gnome_shell_gdk_event_handler, global, NULL);
 
   global->focus_manager = st_focus_manager_get_for_stage (global->stage);
 
-  update_scale_factor (global->gdk_screen, global);
+  update_scale_factor (gtk_settings_get_default (), NULL, global);
 }
 
 GjsContext *
