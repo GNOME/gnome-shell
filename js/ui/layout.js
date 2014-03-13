@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
-const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -907,8 +906,8 @@ const LayoutManager = new Lang.Class({
             return;
 
         if (!this._updateRegionIdle)
-            this._updateRegionIdle = Mainloop.idle_add(Lang.bind(this, this._updateRegions),
-                                                       Meta.PRIORITY_BEFORE_REDRAW);
+            this._updateRegionIdle = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
+                                                    Lang.bind(this, this._updateRegions));
     },
 
     _getWindowActorsForWorkspace: function(workspace) {
@@ -939,7 +938,7 @@ const LayoutManager = new Lang.Class({
         let rects = [], struts = [], i;
 
         if (this._updateRegionIdle) {
-            Mainloop.source_remove(this._updateRegionIdle);
+            Meta.later_remove(this._updateRegionIdle);
             delete this._updateRegionIdle;
         }
 
