@@ -169,12 +169,23 @@ _cogl_winsys_display_setup (CoglDisplay *display,
   set_gl_attribs_from_framebuffer_config (&display->onscreen_template->config);
 
   if (display->renderer->driver == COGL_DRIVER_GLES1)
-    SDL_GL_SetAttribute (SDL_GL_CONTEXT_MAJOR_VERSION, 1);
+    {
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_PROFILE_MASK,
+                           SDL_GL_CONTEXT_PROFILE_ES);
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_MAJOR_VERSION, 1);
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    }
   else if (display->renderer->driver == COGL_DRIVER_GLES2)
-    SDL_GL_SetAttribute (SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    {
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_PROFILE_MASK,
+                           SDL_GL_CONTEXT_PROFILE_ES);
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_MINOR_VERSION, 0);
+    }
   else if (display->renderer->driver == COGL_DRIVER_GL3)
     {
       SDL_GL_SetAttribute (SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_MINOR_VERSION, 1);
       SDL_GL_SetAttribute (SDL_GL_CONTEXT_PROFILE_MASK,
                            SDL_GL_CONTEXT_PROFILE_CORE);
       SDL_GL_SetAttribute (SDL_GL_CONTEXT_FLAGS,
@@ -241,12 +252,13 @@ _cogl_winsys_display_setup (CoglDisplay *display,
       break;
 
     case COGL_DRIVER_GLES2:
-      if (!g_str_has_prefix (gl_version, "OpenGL ES 2"))
+      if (!g_str_has_prefix (gl_version, "OpenGL ES 2") &&
+          !g_str_has_prefix (gl_version, "OpenGL ES 3"))
         {
           _cogl_set_error (error, COGL_WINSYS_ERROR,
                            COGL_WINSYS_ERROR_INIT,
                            "The GLES2 driver was requested but SDL is "
-                           "not using GLES2");
+                           "not using GLES2 or GLES3");
           goto error;
         }
       break;
