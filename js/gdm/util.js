@@ -298,7 +298,7 @@ const ShellUserVerifier = new Lang.Class({
 
         if (!this._settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY))
             smartcardDetected = false;
-        else if (this.reauthenticating)
+        else if (this._reauthOnly)
             smartcardDetected = this._smartcardManager.hasInsertedLoginToken();
         else
             smartcardDetected = this._smartcardManager.hasInsertedTokens();
