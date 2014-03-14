@@ -194,23 +194,7 @@ _set_up_pipeline (gpointer instance,
 {
   Data* data = (Data*) user_data;
 
-  /*
-    The cogl-gst sink, depending on the video format, can use up to 3 texture
-    layers to render a frame. To avoid overwriting frame data, the first
-    free layer in the cogl pipeline needs to be queried before adding any
-    additional textures.
-  */
-
-  int free_layer = cogl_gst_video_sink_get_free_layer (data->sink);
   data->video_pipeline = cogl_gst_video_sink_get_pipeline (data->sink);
-
-  while (free_layer > 0)
-    {
-      free_layer--;
-      cogl_pipeline_set_layer_filters (data->video_pipeline, free_layer,
-                                       COGL_PIPELINE_FILTER_LINEAR_MIPMAP_LINEAR,
-                                       COGL_PIPELINE_FILTER_LINEAR);
-    }
 
   /* disable blending... */
   cogl_pipeline_set_blend (data->video_pipeline,
