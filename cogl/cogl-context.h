@@ -234,6 +234,9 @@ cogl_is_context (void *object);
  * @COGL_FEATURE_ID_SWAP_BUFFERS_EVENT:
  *     Available if the window system supports reporting an event
  *     for swap buffer completions.
+ * @COGL_FEATURE_ID_BUFFER_AGE: Available if the age of #CoglOnscreen back
+ *    buffers are tracked and so cogl_onscreen_get_buffer_age() can be
+ *    expected to return age values other than 0.
  * @COGL_FEATURE_ID_GLES2_CONTEXT: Whether creating new GLES2 contexts is
  *    suported.
  * @COGL_FEATURE_ID_DEPTH_TEXTURE: Whether #CoglFramebuffer support rendering
@@ -273,6 +276,7 @@ typedef enum _CoglFeatureID
   COGL_FEATURE_ID_FENCE,
   COGL_FEATURE_ID_PER_VERTEX_POINT_SIZE,
   COGL_FEATURE_ID_TEXTURE_RG,
+  COGL_FEATURE_ID_BUFFER_AGE,
 
   /*< private >*/
   _COGL_N_FEATURE_IDS   /*< skip >*/

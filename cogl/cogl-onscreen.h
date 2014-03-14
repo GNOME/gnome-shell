@@ -390,6 +390,11 @@ cogl_onscreen_swap_buffers (CoglOnscreen *onscreen);
  * of back buffers then this function will always return 0 which
  * implies that the contents are undefined.</note>
  *
+ * <note>The %COGL_FEATURE_ID_BUFFER_AGE feature can optionally be
+ * explicitly checked to determine if Cogl is currently tracking the
+ * age of #CoglOnscreen back buffer contents. If this feature is
+ * missing then this function will always return 0.</note>
+ *
  * Return value: The age of the buffer contents or 0 when the buffer
  *               contents are undefined.
  *

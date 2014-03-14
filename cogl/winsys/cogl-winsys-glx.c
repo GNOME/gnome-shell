@@ -873,6 +873,9 @@ update_winsys_features (CoglContext *context, CoglError **error)
                   COGL_PRIVATE_FEATURE_DIRTY_EVENTS,
                   TRUE);
 
+  if (_cogl_winsys_has_feature (COGL_WINSYS_FEATURE_BUFFER_AGE))
+    COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_BUFFER_AGE, TRUE);
+
   return TRUE;
 }
 
