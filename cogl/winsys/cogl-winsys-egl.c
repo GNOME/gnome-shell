@@ -514,6 +514,11 @@ _cogl_winsys_context_init (CoglContext *context, CoglError **error)
       _cogl_has_private_feature (context, COGL_PRIVATE_FEATURE_OES_EGL_SYNC))
     COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_FENCE, TRUE);
 
+  if (egl_renderer->private_features & COGL_EGL_WINSYS_FEATURE_BUFFER_AGE)
+    COGL_FLAGS_SET (context->winsys_features,
+                    COGL_WINSYS_FEATURE_BUFFER_AGE,
+                    TRUE);
+
   /* NB: We currently only support creating standalone GLES2 contexts
    * for offscreen rendering and so we need a dummy (non-visible)
    * surface to be able to bind those contexts */
