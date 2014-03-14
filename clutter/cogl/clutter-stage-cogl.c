@@ -448,7 +448,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
   may_use_clipped_redraw = FALSE;
   if (_clutter_stage_window_can_clip_redraws (stage_window) &&
-      can_blit_sub_buffer &&
+      (can_blit_sub_buffer || has_buffer_age) &&
       have_clip &&
       /* some drivers struggle to get going and produce some junk
        * frames when starting up... */
