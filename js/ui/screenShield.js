@@ -729,7 +729,7 @@ const ScreenShield = new Lang.Class({
         } else {
             this._inhibitSuspend();
 
-            this._onUserBecameActive();
+            this._wakeUpScreen();
         }
     },
 
