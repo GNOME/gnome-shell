@@ -979,6 +979,8 @@ StScrollBar StButton#vhandle:active {
 
 .app-folder-icon {
     padding: 5px;
+    spacing-rows: 5px;
+    spacing-columns: 5px;
 }
 
 .dash-item-container > StButton {

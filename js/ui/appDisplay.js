@@ -933,15 +933,12 @@ const FolderView = new Lang.Class({
         let layout = new Clutter.TableLayout();
         let icon = new St.Widget({ layout_manager: layout,
                                    style_class: 'app-folder-icon' });
+        layout.hookup_style(icon);
         let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
 
-        let aligns = [ Clutter.ActorAlign.START, Clutter.ActorAlign.END ];
         for (let i = 0; i < Math.min(this._allItems.length, 4); i++) {
             let texture = this._allItems[i].app.create_icon_texture(subSize);
-            let bin = new St.Bin({ child: texture,
-                                   x_expand: true, y_expand: true });
-            bin.set_x_align(aligns[i % 2]);
-            bin.set_y_align(aligns[Math.floor(i / 2)]);
+            let bin = new St.Bin({ child: texture });
             layout.pack(bin, i % 2, Math.floor(i / 2));
         }
 
