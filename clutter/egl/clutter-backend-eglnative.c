@@ -53,6 +53,8 @@
 #include "clutter-egl.h"
 #endif
 
+#include "clutter-stage-eglnative.h"
+
 #define clutter_backend_egl_native_get_type     _clutter_backend_egl_native_get_type
 
 G_DEFINE_TYPE (ClutterBackendEglNative, clutter_backend_egl_native, CLUTTER_TYPE_BACKEND);
@@ -79,7 +81,7 @@ clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
 
   gobject_class->dispose = clutter_backend_egl_native_dispose;
 
-  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_COGL;
+  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_EGL_NATIVE;
 }
 
 static void

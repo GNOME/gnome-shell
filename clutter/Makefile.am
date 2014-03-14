@@ -644,8 +644,8 @@ egl_source_h = \
 	$(srcdir)/egl/clutter-egl.h		\
 	$(NULL)
 
-egl_source_h_priv = $(srcdir)/egl/clutter-backend-eglnative.h
-egl_source_c = $(srcdir)/egl/clutter-backend-eglnative.c
+egl_source_h_priv = $(srcdir)/egl/clutter-backend-eglnative.h $(srcdir)/egl/clutter-stage-eglnative.h
+egl_source_c = $(srcdir)/egl/clutter-backend-eglnative.c $(srcdir)/egl/clutter-stage-eglnative.c
 
 # Wayland backend rules
 if SUPPORT_WAYLAND
