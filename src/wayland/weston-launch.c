@@ -279,7 +279,7 @@ handle_open(struct weston_launch *wl, struct msghdr *msg, ssize_t len)
 
 	dev_major = major(s.st_rdev);
 
-	if (dev_major != INPUT_MAJOR ||
+	if (dev_major != INPUT_MAJOR &&
 	    dev_major != DRM_MAJOR) {
 		fprintf(stderr, "Device %s is not an input or DRM device\n",
 			message->path);
