@@ -229,6 +229,12 @@ clutter_stage_wayland_resize (ClutterStageWindow *stage_window,
     }
 }
 
+static gboolean
+clutter_stage_wayland_can_clip_redraws (ClutterStageWindow *stage_window)
+{
+  return TRUE;
+}
+
 static void
 clutter_stage_wayland_init (ClutterStageWayland *stage_wayland)
 {
@@ -245,6 +251,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->set_fullscreen = clutter_stage_wayland_set_fullscreen;
   iface->set_cursor_visible = clutter_stage_wayland_set_cursor_visible;
   iface->resize = clutter_stage_wayland_resize;
+  iface->can_clip_redraws = clutter_stage_wayland_can_clip_redraws;
 }
 
 static void
