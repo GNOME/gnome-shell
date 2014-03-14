@@ -5,7 +5,7 @@ srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
 PKG_NAME="mutter"
-REQUIRED_AUTOMAKE_VERSION=1.13
+REQUIRED_AUTOMAKE_VERSION=1.10
 
 (test -f $srcdir/configure.ac \
   && test -d $srcdir/src) || {
