@@ -97,6 +97,7 @@ COGL_WINSYS_FEATURE_FUNCTION (EGLBoolean, eglQueryWaylandBuffer,
                                struct wl_resource *buffer,
                                EGLint attribute, EGLint *value))
 COGL_WINSYS_FEATURE_END ()
+#endif /* EGL_WL_bind_wayland_display */
 
 COGL_WINSYS_FEATURE_BEGIN (create_context,
                            "KHR\0",
@@ -109,8 +110,6 @@ COGL_WINSYS_FEATURE_BEGIN (buffer_age,
                            "buffer_age\0",
                            COGL_EGL_WINSYS_FEATURE_BUFFER_AGE)
 COGL_WINSYS_FEATURE_END ()
-
-#endif
 
 COGL_WINSYS_FEATURE_BEGIN (swap_buffers_with_damage,
                            "EXT\0",
