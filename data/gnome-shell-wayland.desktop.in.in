@@ -2,7 +2,7 @@
 Type=Application
 _Name=GNOME Shell (wayland compositor)
 _Comment=Window management and application launching
-Exec=@bindir@/mutter-launch -- gnome-shell-wayland --wayland
+Exec=@bindir@/mutter-launch -- gnome-shell-wayland --wayland --display-server
 X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-Bugzilla-Product=gnome-shell
 X-GNOME-Bugzilla-Component=general
