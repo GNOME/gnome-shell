@@ -35,7 +35,7 @@
 /* Macro prototypes:
  * COGL_WINSYS_FEATURE_BEGIN (major_glx_version, minor_glx_version,
  *                            name, namespaces, extension_names,
- *                            implied_public_feature_flags,
+ *                            implied_legacy_feature_flags,
  *                            implied_winsys_feature)
  * COGL_WINSYS_FEATURE_FUNCTION (return_type, function_name,
  *                               (arguments))
