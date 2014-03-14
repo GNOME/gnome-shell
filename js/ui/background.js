@@ -754,17 +754,18 @@ const BackgroundManager = new Lang.Class({
             Lang.bind(this, function() {
                 newBackground.disconnect(newBackground.loadedSignalId);
                 newBackground.loadedSignalId = 0;
+
+                if (this._newBackground != newBackground) {
+                    /* Not interesting, we queued another load */
+                    newBackground.actor.destroy();
+                    return;
+                }
+
                 Tweener.addTween(this.background.actor,
                                  { opacity: 0,
                                    time: FADE_ANIMATION_TIME,
                                    transition: 'easeOutQuad',
                                    onComplete: Lang.bind(this, function() {
-                                       if (this._newBackground != newBackground) {
-                                           /* Not interesting, we queued another load */
-                                           newBackground.actor.destroy();
-                                           return;
-                                       }
-
                                        this.background.actor.destroy();
                                        this.background = newBackground;
                                        this._newBackground = null;
