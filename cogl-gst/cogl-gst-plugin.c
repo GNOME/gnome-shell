@@ -52,6 +52,6 @@ GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
                    "Sends video data from GStreamer to a Cogl pipeline",
                    _plugin_init,
                    COGL_VERSION_STRING,
-                   "MIT",
+                   "MIT/X11",
                    PACKAGE,
                    "http://cogl3d.org/")
