@@ -832,8 +832,7 @@ clutter_stage_x11_can_clip_redraws (ClutterStageWindow *stage_window)
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
   /* while resizing a window, clipped redraws are disabled in order to
-   * avoid artefacts. see clutter-event-x11.c:event_translate for a more
-   * detailed explanation
+   * avoid artefacts.
    */
   return stage_x11->clipped_redraws_cool_off == 0;
 }
