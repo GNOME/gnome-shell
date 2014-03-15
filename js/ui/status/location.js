@@ -4,9 +4,10 @@ const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
-const Shell = imports.gi.Shell;
+const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const Shell = imports.gi.Shell;
 
 const LOCATION_SCHEMA = 'org.gnome.shell.location';
 const MAX_ACCURACY_LEVEL = 'max-accuracy-level';
@@ -65,6 +66,8 @@ const Indicator = new Lang.Class({
                                            0,
                                            Lang.bind(this, this._connectToGeoclue),
                                            Lang.bind(this, this._onGeoclueVanished));
+        Main.sessionMode.connect('updated', Lang.bind(this, this._onSessionUpdated));
+        this._onSessionUpdated();
         this._onMaxAccuracyLevelChanged();
         this._connectToGeoclue();
     },
@@ -148,6 +151,11 @@ const Indicator = new Lang.Class({
             this._settings.set_enum(MAX_ACCURACY_LEVEL, this._availableAccuracyLevel);
         else
             this._settings.set_enum(MAX_ACCURACY_LEVEL, 0);
+    },
+
+    _onSessionUpdated: function() {
+        let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        this.menu.setSensitive(sensitive);
     },
 
     _onMaxAccuracyLevelChanged: function() {
