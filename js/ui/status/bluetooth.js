@@ -58,6 +58,7 @@ const Indicator = new Lang.Class({
         this._model.connect('row-changed', Lang.bind(this, this._sync));
         this._model.connect('row-deleted', Lang.bind(this, this._sync));
         this._model.connect('row-inserted', Lang.bind(this, this._sync));
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sync));
         this._sync();
     },
 
@@ -92,7 +93,9 @@ const Indicator = new Lang.Class({
 
     _sync: function() {
         let nDevices = this._getNConnectedDevices();
+        let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 
+        this.menu.setSensitive(sensitive);
         this._indicator.visible = nDevices > 0;
         this._item.actor.visible = !this._proxy.BluetoothAirplaneMode;
 
