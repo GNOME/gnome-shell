@@ -250,9 +250,11 @@ gboolean
 st_focus_manager_navigate_from_event (StFocusManager *manager,
                                       ClutterEvent   *event)
 {
+  ClutterActor *stage;
+
   if (event->type != CLUTTER_KEY_PRESS)
     return FALSE;
 
-  ClutterActor *stage = CLUTTER_ACTOR (event->key.stage);
+  stage = CLUTTER_ACTOR (event->key.stage);
   return st_focus_manager_stage_event (stage, event, manager);
 }
