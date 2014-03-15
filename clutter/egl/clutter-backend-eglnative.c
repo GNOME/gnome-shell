@@ -59,7 +59,9 @@
 
 G_DEFINE_TYPE (ClutterBackendEglNative, clutter_backend_egl_native, CLUTTER_TYPE_BACKEND);
 
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
 static int _kms_fd = -1;
+#endif
 
 static void
 clutter_backend_egl_native_dispose (GObject *gobject)
@@ -83,11 +85,13 @@ clutter_backend_egl_native_get_renderer (ClutterBackend  *backend,
 
   renderer = cogl_renderer_new ();
 
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
   if (_kms_fd > -1)
     {
       cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_EGL_KMS);
       cogl_kms_renderer_set_kms_fd (renderer, _kms_fd);
     }
+#endif
 
   return renderer;
 }
@@ -181,6 +185,7 @@ clutter_egl_get_egl_display (void)
 #endif
 }
 
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
 /**
  * clutter_egl_set_kms_fd:
  * @fd: The fd to talk to the kms driver with
@@ -198,3 +203,4 @@ clutter_egl_set_kms_fd (int fd)
 {
   _kms_fd = fd;
 }
+#endif

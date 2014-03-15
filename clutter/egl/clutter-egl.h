@@ -87,7 +87,9 @@ EGLDisplay      clutter_egl_display             (void);
  */
 EGLDisplay      clutter_egl_get_egl_display     (void);
 
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
 void clutter_egl_set_kms_fd (int fd);
+#endif
 
 G_END_DECLS
 
