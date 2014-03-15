@@ -207,11 +207,21 @@ const NMConnectionSection = new Lang.Class({
         this.item.menu.addMenuItem(this._labelSection);
         this.item.menu.addMenuItem(this._radioSection);
 
-        this.connect('icon-changed', Lang.bind(this, this._sync));
+        this._notifyConnectivityId = this._client.connect('notify::connectivity', Lang.bind(this, this._iconChanged));
     },
 
     destroy: function() {
+        if (this._notifyConnectivityId != 0) {
+            this._client.disconnect(this._notifyConnectivityId);
+            this._notifyConnectivityId = 0;
+        }
+
         this.item.destroy();
+    },
+
+    _iconChanged: function() {
+        this._sync();
+        this.emit('icon-changed');
     },
 
     _sync: function() {
@@ -278,7 +288,7 @@ const NMConnectionSection = new Lang.Class({
             return;
 
         item.connect('icon-changed', Lang.bind(this, function() {
-            this.emit('icon-changed');
+            this._iconChanged();
         }));
         item.connect('activation-failed', Lang.bind(this, function(item, reason) {
             this.emit('activation-failed', reason);
@@ -523,7 +533,7 @@ const NMDeviceModem = new Lang.Class({
         if (this._mobileDevice) {
             this._operatorNameId = this._mobileDevice.connect('notify::operator-name', Lang.bind(this, this._sync));
             this._signalQualityId = this._mobileDevice.connect('notify::signal-quality', Lang.bind(this, function() {
-                this.emit('icon-changed');
+                this._iconChanged();
             }));
         }
     },
@@ -1145,8 +1155,14 @@ const NMDeviceWireless = new Lang.Class({
         this._wirelessHwEnabledChangedId = this._client.connect('notify::wireless-hardware-enabled', Lang.bind(this, this._sync));
         this._activeApChangedId = this._device.connect('notify::active-access-point', Lang.bind(this, this._activeApChanged));
         this._stateChangedId = this._device.connect('state-changed', Lang.bind(this, this._deviceStateChanged));
+        this._notifyConnectivityId = this._client.connect('notify::connectivity', Lang.bind(this, this._iconChanged));
 
         this._sync();
+    },
+
+    _iconChanged: function() {
+        this._sync();
+        this.emit('icon-changed');
     },
 
     destroy: function() {
@@ -1173,6 +1189,10 @@ const NMDeviceWireless = new Lang.Class({
         if (this._dialog) {
             this._dialog.destroy();
             this._dialog = null;
+        }
+        if (this._notifyConnectivityId) {
+            this._client.disconnect(this._notifyConnectivityId);
+            this._notifyConnectivityId = 0;
         }
 
         this.item.destroy();
@@ -1211,7 +1231,7 @@ const NMDeviceWireless = new Lang.Class({
     },
 
     _strengthChanged: function() {
-        this.emit('icon-changed');
+        this._iconChanged();
     },
 
     _activeApChanged: function() {
