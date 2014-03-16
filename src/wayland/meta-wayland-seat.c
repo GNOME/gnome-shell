@@ -434,6 +434,13 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
   ClutterActor       *actor   = NULL;
   MetaWaylandPointer *pointer = &seat->pointer;
   MetaWaylandSurface *surface = NULL;
+  MetaDisplay        *display = meta_get_display ();
+
+  if (display->grab_op != META_GRAB_OP_NONE)
+    {
+      meta_wayland_pointer_update_current_focus (pointer, NULL);
+      return;
+    }
 
   if (for_event)
     {
@@ -456,13 +463,7 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
   if (META_IS_SURFACE_ACTOR_WAYLAND (actor))
     surface = meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (actor));
 
-  pointer->current = surface;
-  if (surface != pointer->focus_surface)
-    {
-      const MetaWaylandPointerGrabInterface *interface =
-        pointer->grab->interface;
-      interface->focus (pointer->grab, surface);
-    }
+  meta_wayland_pointer_update_current_focus (pointer, surface);
 }
 
 void

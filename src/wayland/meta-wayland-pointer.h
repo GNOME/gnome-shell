@@ -94,4 +94,8 @@ meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
 					       wl_fixed_t         *x,
 					       wl_fixed_t         *y);
 
+void
+meta_wayland_pointer_update_current_focus (MetaWaylandPointer *pointer,
+                                           MetaWaylandSurface *surface);
+
 #endif /* __META_WAYLAND_POINTER_H__ */

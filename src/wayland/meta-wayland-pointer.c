@@ -583,3 +583,16 @@ meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
   *sx = wl_fixed_from_double (xf);
   *sy = wl_fixed_from_double (yf);
 }
+
+void
+meta_wayland_pointer_update_current_focus (MetaWaylandPointer *pointer,
+                                           MetaWaylandSurface *surface)
+{
+  pointer->current = surface;
+  if (surface != pointer->focus_surface)
+    {
+      const MetaWaylandPointerGrabInterface *interface =
+        pointer->grab->interface;
+      interface->focus (pointer->grab, surface);
+    }
+}
