@@ -440,8 +440,7 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
     {
       const MetaWaylandPointerGrabInterface *interface =
         pointer->grab->interface;
-      interface->focus (pointer->grab,
-                        surface, for_event);
+      interface->focus (pointer->grab, surface);
     }
 }
 

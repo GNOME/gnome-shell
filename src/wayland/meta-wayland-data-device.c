@@ -175,8 +175,7 @@ destroy_drag_focus (struct wl_listener *listener, void *data)
 
 static void
 drag_grab_focus (MetaWaylandPointerGrab *grab,
-                 MetaWaylandSurface     *surface,
-		 const ClutterEvent     *event)
+                 MetaWaylandSurface     *surface)
 {
   MetaWaylandDragGrab *drag_grab = (MetaWaylandDragGrab*) grab;
   MetaWaylandSeat *seat = drag_grab->seat;
@@ -257,7 +256,7 @@ data_device_end_drag_grab (MetaWaylandDragGrab *drag_grab)
   if (drag_grab->drag_data_source)
     wl_list_remove (&drag_grab->drag_data_source_listener.link);
 
-  drag_grab_focus (&drag_grab->generic, NULL, NULL);
+  drag_grab_focus (&drag_grab->generic, NULL);
 
   meta_wayland_pointer_end_grab (drag_grab->generic.pointer);
   g_slice_free (MetaWaylandDragGrab, drag_grab);

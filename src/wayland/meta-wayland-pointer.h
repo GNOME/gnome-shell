@@ -29,8 +29,7 @@
 struct _MetaWaylandPointerGrabInterface
 {
   void (*focus) (MetaWaylandPointerGrab *grab,
-                 MetaWaylandSurface     *surface,
-		 const ClutterEvent     *event);
+                 MetaWaylandSurface     *surface);
   void (*motion) (MetaWaylandPointerGrab *grab,
 		  const ClutterEvent     *event);
   void (*button) (MetaWaylandPointerGrab *grab,

@@ -78,8 +78,7 @@ pointer_handle_focus_resource_destroy (struct wl_listener *listener, void *data)
 
 static void
 default_grab_focus (MetaWaylandPointerGrab *grab,
-                    MetaWaylandSurface     *surface,
-		    const ClutterEvent     *event)
+                    MetaWaylandSurface     *surface)
 {
   MetaWaylandPointer *pointer = grab->pointer;
 
@@ -385,7 +384,7 @@ meta_wayland_pointer_start_grab (MetaWaylandPointer *pointer,
   grab->pointer = pointer;
 
   if (pointer->current)
-    interface->focus (pointer->grab, pointer->current, NULL);
+    interface->focus (pointer->grab, pointer->current);
 }
 
 void
@@ -395,7 +394,7 @@ meta_wayland_pointer_end_grab (MetaWaylandPointer *pointer)
 
   pointer->grab = &pointer->default_grab;
   interface = pointer->grab->interface;
-  interface->focus (pointer->grab, pointer->current, NULL);
+  interface->focus (pointer->grab, pointer->current);
 }
 
 typedef struct {
@@ -415,15 +414,14 @@ typedef struct {
 
 static void
 popup_grab_focus (MetaWaylandPointerGrab *grab,
-		  MetaWaylandSurface     *surface,
-		  const ClutterEvent     *event)
+		  MetaWaylandSurface     *surface)
 {
   MetaWaylandPopupGrab *popup_grab = (MetaWaylandPopupGrab*)grab;
 
   /* Popup grabs are in owner-events mode (ie, events for the same client
      are reported as normal) */
   if (surface && wl_resource_get_client (surface->resource) == popup_grab->grab_client)
-    default_grab_focus (grab, surface, event);
+    default_grab_focus (grab, surface);
   else
     meta_wayland_pointer_set_focus (grab->pointer, NULL);
 }
