@@ -163,13 +163,6 @@ typedef void (* MetaWindowMenuFunc) (MetaWindowMenu *menu,
  * @META_GRAB_OP_KEYBOARD_RESIZING_NE: Resizing NE with keyboard
  * @META_GRAB_OP_KEYBOARD_RESIZING_SW: Resizing SW with keyboard
  * @META_GRAB_OP_KEYBOARD_RESIZING_NW: Resizing NS with keyboard
- * @META_GRAB_OP_KEYBOARD_TABBING_NORMAL: Tabbing
- * @META_GRAB_OP_KEYBOARD_TABBING_DOCK: Tabbing through docks
- * @META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL: Escaping
- * @META_GRAB_OP_KEYBOARD_ESCAPING_DOCK: Escaping through docks
- * @META_GRAB_OP_KEYBOARD_ESCAPING_GROUP: Escaping through groups
- * @META_GRAB_OP_KEYBOARD_TABBING_GROUP: Tabbing through groups
- * @META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING: Switch to another workspace
  * @META_GRAB_OP_CLICKING_MINIMIZE: Clicked minimize button
  * @META_GRAB_OP_CLICKING_MAXIMIZE: Clicked maximize button
  * @META_GRAB_OP_CLICKING_UNMAXIMIZE: Clicked unmaximize button
