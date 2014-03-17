@@ -564,9 +564,9 @@ void             clutter_actor_box_set_size       (ClutterActorBox       *box,
  *
  * The rectangle containing an actor's bounding box, measured in pixels.
  *
- * <warning>You should not use #ClutterGeometry, or operate on its fields
+ * You should not use #ClutterGeometry, or operate on its fields
  * directly; you should use #cairo_rectangle_int_t or #ClutterRect if you
- * need a rectangle type, depending on the precision required.</warning>
+ * need a rectangle type, depending on the precision required.
  *
  * Deprecated: 1.16
  */

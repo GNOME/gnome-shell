@@ -40,25 +40,26 @@
  * offscreen framebuffer, the redirection and the final paint of the texture on
  * the desired stage.
  *
- * <refsect2 id="ClutterOffscreenEffect-implementing">
- *   <title>Implementing a ClutterOffscreenEffect</title>
- *   <para>Creating a sub-class of #ClutterOffscreenEffect requires, in case
- *   of overriding the #ClutterEffect virtual functions, to chain up to the
- *   #ClutterOffscreenEffect's implementation.</para>
- *   <para>On top of the #ClutterEffect's virtual functions,
- *   #ClutterOffscreenEffect also provides a #ClutterOffscreenEffectClass.paint_target()
- *   function, which encapsulates the effective painting of the texture that
- *   contains the result of the offscreen redirection.</para>
- *   <para>The size of the target material is defined to be as big as the
- *   transformed size of the #ClutterActor using the offscreen effect.
- *   Sub-classes of #ClutterOffscreenEffect can change the texture creation
- *   code to provide bigger textures by overriding the
- *   #ClutterOffscreenEffectClass.create_texture() virtual function; no chain up
- *   to the #ClutterOffscreenEffect implementation is required in this
- *   case.</para>
- * </refsect2>
- *
  * #ClutterOffscreenEffect is available since Clutter 1.4
+ *
+ * ## Implementing a ClutterOffscreenEffect
+ *
+ * Creating a sub-class of #ClutterOffscreenEffect requires, in case
+ * of overriding the #ClutterEffect virtual functions, to chain up to the
+ * #ClutterOffscreenEffect's implementation.
+ *
+ * On top of the #ClutterEffect's virtual functions,
+ * #ClutterOffscreenEffect also provides a #ClutterOffscreenEffectClass.paint_target()
+ * function, which encapsulates the effective painting of the texture that
+ * contains the result of the offscreen redirection.
+ *
+ * The size of the target material is defined to be as big as the
+ * transformed size of the #ClutterActor using the offscreen effect.
+ * Sub-classes of #ClutterOffscreenEffect can change the texture creation
+ * code to provide bigger textures by overriding the
+ * #ClutterOffscreenEffectClass.create_texture() virtual function; no chain up
+ * to the #ClutterOffscreenEffect implementation is required in this
+ * case.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -596,7 +597,7 @@ clutter_offscreen_effect_create_texture (ClutterOffscreenEffect *effect,
  * paint the actor to which it has been applied.
  *
  * This function should only be called by #ClutterOffscreenEffect
- * implementations, from within the <function>paint_target()</function>
+ * implementations, from within the #ClutterOffscreenEffectClass.paint_target()
  * virtual function.
  *
  * Return value: %TRUE if the offscreen buffer has a valid size,
@@ -638,7 +639,7 @@ clutter_offscreen_effect_get_target_size (ClutterOffscreenEffect *effect,
  * paint the actor to which it has been applied.
  *
  * This function should only be called by #ClutterOffscreenEffect
- * implementations, from within the <function>paint_target()</function>
+ * implementations, from within the #ClutterOffscreenEffectClass.paint_target()
  * virtual function.
  *
  * Return value: %TRUE if the offscreen buffer has a valid rectangle,

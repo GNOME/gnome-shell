@@ -29,40 +29,25 @@
  * #ClutterFlowLayout is a layout manager which implements the following
  * policy:
  *
- * <itemizedlist>
- *   <listitem><para>the preferred natural size depends on the value
+ *   - the preferred natural size depends on the value
  *   of the #ClutterFlowLayout:orientation property; the layout will try
  *   to maintain all its children on a single row or
- *   column;</para></listitem>
- *   <listitem><para>if either the width or the height allocated are
+ *   column;
+ *   - if either the width or the height allocated are
  *   smaller than the preferred ones, the layout will wrap; in this case,
  *   the preferred height or width, respectively, will take into account
- *   the amount of columns and rows;</para></listitem>
- *   <listitem><para>each line (either column or row) in reflowing will
+ *   the amount of columns and rows;
+ *   - each line (either column or row) in reflowing will
  *   have the size of the biggest cell on that line; if the
  *   #ClutterFlowLayout:homogeneous property is set to %FALSE the actor
  *   will be allocated within that area, and if set to %TRUE instead the
- *   actor will be given exactly that area;</para></listitem>
- *   <listitem><para>the size of the columns or rows can be controlled
+ *   actor will be given exactly that area;
+ *   - the size of the columns or rows can be controlled
  *   for both minimum and maximum; the spacing can also be controlled
- *   in both columns and rows.</para></listitem>
- * </itemizedlist>
+ *   in both columns and rows.
  *
- * <figure id="flow-layout-image">
- *   <title>Horizontal flow layout</title>
- *   <para>The image shows a #ClutterFlowLayout with the
- *   #ClutterFlowLayout:orientation propert set to
- *   %CLUTTER_FLOW_HORIZONTAL.</para>
- *   <graphic fileref="flow-layout.png" format="PNG"/>
- * </figure>
- *
- * <informalexample>
- *  <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/flow-layout.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *  </programlisting>
- * </informalexample>
+ * The [flow-layout example](https://git.gnome.org/browse/clutter/tree/examples/flow-layout.c?h=clutter-1.18)
+ * shows how to use the #ClutterFlowLayout.
  *
  * #ClutterFlowLayout is available since Clutter 1.2
  */

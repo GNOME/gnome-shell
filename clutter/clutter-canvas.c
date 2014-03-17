@@ -36,13 +36,8 @@
  * that can be used to draw. #ClutterCanvas will emit the #ClutterCanvas::draw
  * signal when invalidated using clutter_content_invalidate().
  *
- * <informalexample id="canvas-example">
- *   <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/canvas.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *   </programlisting>
- * </informalexample>
+ * See [canvas.c](https://git.gnome.org/browse/clutter/tree/examples/canvas.c?h=clutter-1.18)
+ * for an example of how to use #ClutterCanvas.
  *
  * #ClutterCanvas is available since Clutter 1.10.
  */

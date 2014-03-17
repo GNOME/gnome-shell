@@ -36,14 +36,14 @@
  * can also be animated. For instance, the following code will set up three
  * actors to be bound to the same origin:
  *
- * |[
- * /&ast; source &ast;/
- * rect[0] = clutter_rectangle_new_with_color (&amp;red_color);
+ * |[<!-- language="C" -->
+ * // source
+ * rect[0] = clutter_rectangle_new_with_color (&red_color);
  * clutter_actor_set_position (rect[0], x_pos, y_pos);
  * clutter_actor_set_size (rect[0], 100, 100);
  *
- * /&ast; second rectangle &ast;/
- * rect[1] = clutter_rectangle_new_with_color (&amp;green_color);
+ * // second rectangle
+ * rect[1] = clutter_rectangle_new_with_color (&green_color);
  * clutter_actor_set_size (rect[1], 100, 100);
  * clutter_actor_set_opacity (rect[1], 0);
  *
@@ -52,8 +52,8 @@
  * constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_Y, 0.0);
  * clutter_actor_add_constraint_with_name (rect[1], "green-y", constraint);
  *
- * /&ast; third rectangle &ast;/
- * rect[2] = clutter_rectangle_new_with_color (&amp;blue_color);
+ * // third rectangle
+ * rect[2] = clutter_rectangle_new_with_color (&blue_color);
  * clutter_actor_set_size (rect[2], 100, 100);
  * clutter_actor_set_opacity (rect[2], 0);
  *
@@ -66,7 +66,7 @@
  * The following code animates the second and third rectangles to "expand"
  * them horizontally from underneath the first rectangle:
  *
- * |[
+ * |[<!-- language="C" -->
  * clutter_actor_animate (rect[1], CLUTTER_EASE_OUT_CUBIC, 250,
  *                        "@constraints.green-x.offset", 100.0,
  *                        "opacity", 255,
@@ -76,21 +76,6 @@
  *                        "opacity", 255,
  *                        NULL);
  * ]|
- *
- * <example id="bind-constraint-example">
- *   <title>Animating the offset property of ClutterBindConstraint</title>
- *   <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-bind-constraint.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *   </programlisting>
- *   <para>The example above creates eight rectangles and binds them to a
- *   rectangle positioned in the center of the stage; when the user presses
- *   the center rectangle, the #ClutterBindConstraint:offset property is
- *   animated through the clutter_actor_animate() function to lay out the
- *   eight rectangles around the center one. Pressing one of the outer
- *   rectangles will animate the offset back to 0.</para>
- * </example>
  *
  * #ClutterBindConstraint is available since Clutter 1.4
  */

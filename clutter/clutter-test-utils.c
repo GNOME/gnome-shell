@@ -226,7 +226,7 @@ clutter_test_add_data_full (const char     *test_path,
  * int
  * main (int argc, char *argv[])
  * {
- *   clutter_test_init (&amp;argc, &amp;argv);
+ *   clutter_test_init (&argc, &argv);
  *
  *   clutter_test_add ("/unit/foo", unit_foo);
  *   clutter_test_add ("/unit/bar", unit_bar);

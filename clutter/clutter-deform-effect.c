@@ -39,17 +39,16 @@
  * a #ClutterActor and then the Cogl vertex buffers API to submit the
  * geometry to the GPU.
  *
- * <refsect2>
- *   <title>Implementing ClutterDeformEffect</title>
- *   <para>Sub-classes of #ClutterDeformEffect should override the
- *   #ClutterDeformEffectClass.deform_vertex() virtual function; this function
- *   is called on every vertex that needs to be deformed by the effect.
- *   Each passed vertex is an in-out parameter that initially contains the
- *   position of the vertex and should be modified according to a specific
- *   deformation algorithm.</para>
- * </refsect2>
- *
  * #ClutterDeformEffect is available since Clutter 1.4
+ *
+ * ## Implementing ClutterDeformEffect
+ *
+ * Sub-classes of #ClutterDeformEffect should override the
+ * #ClutterDeformEffectClass.deform_vertex() virtual function; this function
+ * is called on every vertex that needs to be deformed by the effect.
+ * Each passed vertex is an in-out parameter that initially contains the
+ * position of the vertex and should be modified according to a specific
+ * deformation algorithm.
  */
 
 #ifdef HAVE_CONFIG_H

@@ -34,7 +34,7 @@
  * a #ClutterActor and setting it as reactive; for instance, the following
  * code:
  *
- * |[
+ * |[<!-- language="C" -->
  *   clutter_actor_add_action (actor, clutter_drag_action_new ());
  *   clutter_actor_set_reactive (actor, TRUE);
  * ]|
@@ -54,19 +54,11 @@
  * parented and exist between the emission of #ClutterDragAction::drag-begin
  * and #ClutterDragAction::drag-end.
  *
- * <example id="drag-action-example">
- *   <title>A simple draggable actor</title>
- *   <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/drag-action.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *   </programlisting>
- *   <para>The example program above allows dragging the rectangle around
- *   the stage using a #ClutterDragAction. When pressing the
- *   <keycap>Shift</keycap> key the actor that is going to be dragged is a
- *   separate rectangle, and when the drag ends, the original rectangle will
- *   be animated to the final coordinates.</para>
- * </example>
+ * The [drag-action example](https://git.gnome.org/browse/clutter/tree/examples/drag-action.c?h=clutter-1.18)
+ * allows dragging the rectangle around the stage using a #ClutterDragAction.
+ * When pressing the `Shift` key the actor that is being dragged will be a
+ * separate rectangle, and when the drag ends, the original rectangle will be
+ * animated to the final drop coordinates.
  *
  * #ClutterDragAction is available since Clutter 1.4
  */

@@ -29,34 +29,16 @@
  * #ClutterBinLayout is a layout manager which implements the following
  * policy:
  *
- * <itemizedlist>
- *   <listitem><simpara>the preferred size is the maximum preferred size
+ *   - the preferred size is the maximum preferred size
  *   between all the children of the container using the
- *   layout;</simpara></listitem>
- *   <listitem><simpara>each child is allocated in "layers", on on top
- *   of the other;</simpara></listitem>
- *   <listitem><simpara>for each layer there are horizontal and vertical
- *   alignment policies.</simpara></listitem>
- * </itemizedlist>
+ *   layout;
+ *   - each child is allocated in "layers", on on top
+ *   of the other;
+ *   - for each layer there are horizontal and vertical
+ *   alignment policies.
  *
- * <figure id="bin-layout">
- *   <title>Bin layout</title>
- *   <para>The image shows a #ClutterBinLayout with three layers:
- *   a background #ClutterCairoTexture, set to fill on both the X
- *   and Y axis; a #ClutterTexture, set to center on both the X and
- *   Y axis; and a #ClutterRectangle, set to %CLUTTER_BIN_ALIGNMENT_END
- *   on both the X and Y axis.</para>
- *   <graphic fileref="bin-layout.png" format="PNG"/>
- * </figure>
- *
- * <example id="example-clutter-bin-layout">
- *  <title>How to pack actors inside a BinLayout</title>
- *  <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/bin-layout.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *  </programlisting>
- * </example>
+ * The [bin-layout example](https://git.gnome.org/browse/clutter/tree/examples/bin-layout.c?h=clutter-1.18)
+ * shows how to pack actors inside a #ClutterBinLayout.
  *
  * #ClutterBinLayout is available since Clutter 1.2
  */

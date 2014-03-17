@@ -600,12 +600,11 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * The style of the hinting used when rendering text. Valid values
    * are:
-   * <itemizedlist>
-   *   <listitem><simpara>hintnone</simpara></listitem>
-   *   <listitem><simpara>hintslight</simpara></listitem>
-   *   <listitem><simpara>hintmedium</simpara></listitem>
-   *   <listitem><simpara>hintfull</simpara></listitem>
-   * </itemizedlist>
+   *
+   *   - hintnone
+   *   - hintslight
+   *   - hintmedium
+   *   - hintfull
    *
    * Since: 1.4
    */
@@ -621,13 +620,12 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * The type of sub-pixel antialiasing used when rendering text. Valid
    * values are:
-   * <itemizedlist>
-   *   <listitem><simpara>none</simpara></listitem>
-   *   <listitem><simpara>rgb</simpara></listitem>
-   *   <listitem><simpara>bgr</simpara></listitem>
-   *   <listitem><simpara>vrgb</simpara></listitem>
-   *   <listitem><simpara>vbgr</simpara></listitem>
-   * </itemizedlist>
+   *
+   *   - none
+   *   - rgb
+   *   - bgr
+   *   - vrgb
+   *   - vbgr
    *
    * Since: 1.4
    */

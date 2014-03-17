@@ -19,8 +19,6 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
- *
- *
  */
 
 /**
@@ -57,8 +55,8 @@
  * its #ClutterTimeline:duration.
  *
  * It is possible to connect to specific points in the timeline progress by
- * adding <emphasis>markers</emphasis> using clutter_timeline_add_marker_at_time()
- * and connecting to the #ClutterTimeline::marker-reached signal.
+ * adding markers using clutter_timeline_add_marker_at_time() and connecting
+ * to the #ClutterTimeline::marker-reached signal.
  *
  * Timelines can be made to loop once they reach the end of their duration, by
  * using clutter_timeline_set_repeat_count(); a looping timeline will still
@@ -75,13 +73,14 @@
  * Timelines are used in the Clutter animation framework by classes like
  * #ClutterAnimation, #ClutterAnimator, and #ClutterState.
  *
- * <refsect2 id="timeline-script">
- *  <title>Defining Timelines in ClutterScript</title>
- *  <para>A #ClutterTimeline can be described in #ClutterScript like any
- *  other object. Additionally, it is possible to define markers directly
- *  inside the JSON definition by using the <emphasis>markers</emphasis>
- *  JSON object member, such as:</para>
- *  <informalexample><programlisting><![CDATA[
+ * ## Defining Timelines in ClutterScript
+ *
+ * A #ClutterTimeline can be described in #ClutterScript like any
+ * other object. Additionally, it is possible to define markers directly
+ * inside the JSON definition by using the `markers` JSON object member,
+ * such as:
+ *
+ * |[
 {
   "type" : "ClutterTimeline",
   "duration" : 1000,
@@ -91,8 +90,7 @@
     { "name" : "three-quarters", "time" : 750 }
   ]
 }
- *  ]]></programlisting></informalexample>
- * </refsect2>
+ * ]|
  */
 
 #ifdef HAVE_CONFIG_H
@@ -1366,10 +1364,9 @@ clutter_timeline_skip (ClutterTimeline *timeline,
  * Advance timeline to the requested point. The point is given as a
  * time in milliseconds since the timeline started.
  *
- * <note><para>The @timeline will not emit the #ClutterTimeline::new-frame
+ * The @timeline will not emit the #ClutterTimeline::new-frame
  * signal for the given time. The first ::new-frame signal after the call to
  * clutter_timeline_advance() will be emit the skipped markers.
- * </para></note>
  */
 void
 clutter_timeline_advance (ClutterTimeline *timeline,
@@ -1423,15 +1420,15 @@ clutter_timeline_is_playing (ClutterTimeline *timeline)
  * Create a new #ClutterTimeline instance which has property values
  * matching that of supplied timeline. The cloned timeline will not
  * be started and will not be positioned to the current position of
- * the original @timeline: you will have to start it with clutter_timeline_start().
+ * the original @timeline: you will have to start it with
+ * clutter_timeline_start().
  *
- * <note><para>The only cloned properties are:</para>
- * <itemizedlist>
- *   <listitem><simpara>#ClutterTimeline:duration</simpara></listitem>
- *   <listitem><simpara>#ClutterTimeline:loop</simpara></listitem>
- *   <listitem><simpara>#ClutterTimeline:delay</simpara></listitem>
- *   <listitem><simpara>#ClutterTimeline:direction</simpara></listitem>
- * </itemizedlist></note>
+ * The only cloned properties are:
+ *
+ *  - #ClutterTimeline:duration
+ *  - #ClutterTimeline:loop
+ *  - #ClutterTimeline:delay
+ *  - #ClutterTimeline:direction
  *
  * Return value: (transfer full): a new #ClutterTimeline, cloned
  *   from @timeline
@@ -1934,10 +1931,10 @@ clutter_timeline_list_markers (ClutterTimeline *timeline,
  *
  * Advances @timeline to the time of the given @marker_name.
  *
- * <note><para>Like clutter_timeline_advance(), this function will not
+ * Like clutter_timeline_advance(), this function will not
  * emit the #ClutterTimeline::new-frame for the time where @marker_name
  * is set, nor it will emit #ClutterTimeline::marker-reached for
- * @marker_name.</para></note>
+ * @marker_name.
  *
  * Since: 0.8
  */

@@ -31,30 +31,16 @@
  *
  * The #ClutterBoxLayout is a #ClutterLayoutManager implementing the
  * following layout policy:
- * <itemizedlist>
- *   <listitem><para>all children are arranged on a single
- *   line;</para></listitem>
- *   <listitem><para>the axis used is controlled by the
- *   #ClutterBoxLayout:orientation property;</para></listitem>
- *   <listitem><para>the order of the packing is determined by the
- *   #ClutterBoxLayout:pack-start boolean property;</para></listitem>
- *   <listitem><para>each child will be allocated to its natural
- *   size or, if #ClutterActor:x-expand/#ClutterActor:y-expand
- *   is set, the available size;</para></listitem>
- *   <listitem><para>honours the #ClutterActor's #ClutterActor:x-align
- *   and #ClutterActor:y-align properties to fill the available
- *   size;</para></listitem>
- *   <listitem><para>if the #ClutterBoxLayout:homogeneous boolean property
- *   is set, then all widgets will get the same size, ignoring expand
- *   settings and the preferred sizes</para></listitem>
- * </itemizedlist>
  *
- *  <figure id="box-layout">
- *   <title>Box layout</title>
- *   <para>The image shows a #ClutterBoxLayout with the
- *   #ClutterBoxLayout:vertical property set to %FALSE.</para>
- *   <graphic fileref="box-layout.png" format="PNG"/>
- * </figure>
+ *  - all children are arranged on a single line
+ *  - the axis used is controlled by the #ClutterBoxLayout:orientation property
+ *  - the order of the packing is determined by the #ClutterBoxLayout:pack-start boolean property
+ *  - each child will be allocated to its natural size or, if #ClutterActor:x-expand or
+ *  #ClutterActor:y-expand are set, the available size
+ *  - honours the #ClutterActor's #ClutterActor:x-align and #ClutterActor:y-align properties
+ *  to fill the available size
+ *  - if the #ClutterBoxLayout:homogeneous boolean propert is set, then all widgets will
+ *  get the same size, ignoring expand settings and the preferred sizes
  *
  * It is possible to control the spacing between children of a
  * #ClutterBoxLayout by using clutter_box_layout_set_spacing().

@@ -33,32 +33,19 @@
  * The path consists of a series of nodes. Each node is one of the
  * following four types:
  *
- * <variablelist>
- * <varlistentry><term>%CLUTTER_PATH_MOVE_TO</term>
- * <listitem><para>
- * Changes the position of the path to the given pair of
- * coordinates. This is usually used as the first node of a path to
- * mark the start position. If it is used in the middle of a path then
- * the path will be disjoint and the actor will appear to jump to the
- * new position when animated.
- * </para></listitem></varlistentry>
- * <varlistentry><term>%CLUTTER_PATH_LINE_TO</term>
- * <listitem><para>
- * Creates a straight line from the previous point to the given point.
- * </para></listitem></varlistentry>
- * <varlistentry><term>%CLUTTER_PATH_CURVE_TO</term>
- * <listitem><para>
- * Creates a bezier curve. The end of the last node is used as the
- * first control point and the three subsequent coordinates given in
- * the node as used as the other three.
- * </para></listitem></varlistentry>
- * <varlistentry><term>%CLUTTER_PATH_CLOSE</term>
- * <listitem><para>
- * Creates a straight line from the last node to the last
- * %CLUTTER_PATH_MOVE_TO node. This can be used to close a path so
- * that it will appear as a loop when animated.
- * </para></listitem></varlistentry>
- * </variablelist>
+ *  - %CLUTTER_PATH_MOVE_TO, changes the position of the path to the
+ *  given pair of coordinates. This is usually used as the first node
+ *  of a path to mark the start position. If it is used in the middle
+ *  of a path then the path will be disjoint and the actor will appear
+ *  to jump to the new position when animated.
+ *  - %CLUTTER_PATH_LINE_TO, creates a straight line from the previous
+ *  point to the given point.
+ *  - %CLUTTER_PATH_CURVE_TO, creates a bezier curve. The end of the
+ *  last node is used as the first control point and the three
+ *  subsequent coordinates given in the node as used as the other three.
+ *  -%CLUTTER_PATH_CLOSE, creates a straight line from the last node to
+ *  the last %CLUTTER_PATH_MOVE_TO node. This can be used to close a
+ *  path so that it will appear as a loop when animated.
  *
  * The first three types have the corresponding relative versions
  * %CLUTTER_PATH_REL_MOVE_TO, %CLUTTER_PATH_REL_LINE_TO and
@@ -711,24 +698,10 @@ clutter_path_add_nodes (ClutterPath *path,
  * coordinates. The coordinates can be separated by spaces or a
  * comma. The types are:
  *
- * <variablelist>
- * <varlistentry><term>M</term>
- * <listitem><para>
- * Adds a %CLUTTER_PATH_MOVE_TO node. Takes one pair of coordinates.
- * </para></listitem></varlistentry>
- * <varlistentry><term>L</term>
- * <listitem><para>
- * Adds a %CLUTTER_PATH_LINE_TO node. Takes one pair of coordinates.
- * </para></listitem></varlistentry>
- * <varlistentry><term>C</term>
- * <listitem><para>
- * Adds a %CLUTTER_PATH_CURVE_TO node. Takes three pairs of coordinates.
- * </para></listitem></varlistentry>
- * <varlistentry><term>z</term>
- * <listitem><para>
- * Adds a %CLUTTER_PATH_CLOSE node. No coordinates are needed.
- * </para></listitem></varlistentry>
- * </variablelist>
+ *  - `M`: Adds a %CLUTTER_PATH_MOVE_TO node. Takes one pair of coordinates.
+ *  - `L`: Adds a %CLUTTER_PATH_LINE_TO node. Takes one pair of coordinates.
+ *  - `C`: Adds a %CLUTTER_PATH_CURVE_TO node. Takes three pairs of coordinates.
+ *  - `z`: Adds a %CLUTTER_PATH_CLOSE node. No coordinates are needed.
  *
  * The M, L and C commands can also be specified in lower case which
  * means the coordinates are relative to the previous node.
@@ -736,11 +709,9 @@ clutter_path_add_nodes (ClutterPath *path,
  * For example, to move an actor in a 100 by 100 pixel square centered
  * on the point 300,300 you could use the following path:
  *
- * <informalexample>
- *  <programlisting>
+ * |[
  *   M 250,350 l 0 -100 L 350,250 l 0 100 z
- *  </programlisting>
- * </informalexample>
+ * ]|
  *
  * If the path description isn't valid %FALSE will be returned and no
  * nodes will be added.

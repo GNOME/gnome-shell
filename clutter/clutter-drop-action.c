@@ -36,7 +36,7 @@
  * #ClutterDropAction::drop signal and handling the drop from there,
  * for instance:
  *
- * |[
+ * |[<!-- language="C" -->
  *   ClutterAction *action = clutter_drop_action ();
  *
  *   g_signal_connect (action, "drop", G_CALLBACK (on_drop), NULL);
@@ -49,17 +49,11 @@
  * cause the #ClutterDropAction::drop signal to be skipped when the input
  * device button is released.
  *
- * <example id="drop-action-example">
- *   <title>Drop targets</title>
- *   <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/drop-action.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *   </programlisting>
- * </example>
- *
  * It's important to note that #ClutterDropAction will only work with
  * actors dragged using #ClutterDragAction.
+ *
+ * See [drop-action.c](https://git.gnome.org/browse/clutter/tree/examples/drop-action.c?h=clutter-1.18)
+ * for an example of how to use #ClutterDropAction.
  *
  * #ClutterDropAction is available since Clutter 1.8
  */

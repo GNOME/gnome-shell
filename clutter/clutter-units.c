@@ -466,7 +466,7 @@ clutter_units_to_pixels (ClutterUnits *units)
  *   omg!1!ponies
  * ]|
  *
- * <note><para>If no unit is specified, pixels are assumed.</para></note>
+ * If no unit is specified, pixels are assumed.
  *
  * Return value: %TRUE if the string was successfully parsed,
  *   and %FALSE otherwise
@@ -595,9 +595,9 @@ clutter_unit_type_name (ClutterUnitType unit_type)
  * See clutter_units_from_string() for the units syntax and for
  * examples of output
  *
- * <note>Fractional values are truncated to the second decimal
+ * Fractional values are truncated to the second decimal
  * position for em, mm and cm, and to the first decimal position for
- * typographic points. Pixels are integers.</note>
+ * typographic points. Pixels are integers.
  *
  * Return value: a newly allocated string containing the encoded
  *   #ClutterUnits value. Use g_free() to free the string

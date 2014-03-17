@@ -63,14 +63,14 @@ typedef struct _ClutterChildMetaClass           ClutterChildMetaClass;
  * static void
  * my_container_iface_init (ClutterContainerIface *iface)
  * {
- *   /&ast; set the rest of the #ClutterContainer vtable &ast;/
+ *   // set the rest of the #ClutterContainer vtable
  *
  *   container_iface->child_meta_type  = MY_TYPE_CHILD_META;
  * }
  * ]|
  *
  * This will automatically create a #ClutterChildMeta of type
- * MY_TYPE_CHILD_META for every actor that is added to the container.
+ * `MY_TYPE_CHILD_META` for every actor that is added to the container.
  *
  * The child data for an actor can be retrieved using the
  * clutter_container_get_child_meta() function.
@@ -81,9 +81,8 @@ typedef struct _ClutterChildMetaClass           ClutterChildMetaClass;
  *
  * You can provide hooks for your own storage as well as control the
  * instantiation by overriding the #ClutterContainerIface virtual functions
- * <function>create_child_meta</function>,
- * <function>destroy_child_meta</function>,
- * and <function>get_child_meta</function>.
+ * #ClutterContainerIface.create_child_meta(), #ClutterContainerIface.destroy_child_meta(),
+ * and #ClutterContainerIface.get_child_meta().
  *
  * Since: 0.8
  */

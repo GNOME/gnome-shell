@@ -2179,9 +2179,9 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * It is possible to override the default behaviour by connecting
    * a new handler and returning %TRUE there.
    *
-   * <note>This signal is emitted only on Clutter backends that
+   * This signal is emitted only on Clutter backends that
    * embed #ClutterStage in native windows. It is not emitted for
-   * backends that use a static frame buffer.</note>
+   * backends that use a static frame buffer.
    *
    * Since: 1.2
    */
@@ -3194,29 +3194,29 @@ clutter_stage_set_use_fog (ClutterStage *stage,
  *     ClutterColor stage_color = { 0, };
  *     CoglColor fog_color = { 0, };
  *
- *     /&ast; set the fog color to the stage background color &ast;/
- *     clutter_stage_get_color (CLUTTER_STAGE (actor), &amp;stage_color);
- *     cogl_color_init_from_4ub (&amp;fog_color,
+ *     // set the fog color to the stage background color
+ *     clutter_stage_get_color (CLUTTER_STAGE (actor), &stage_color);
+ *     cogl_color_init_from_4ub (&fog_color,
  *                               stage_color.red,
  *                               stage_color.green,
  *                               stage_color.blue,
  *                               stage_color.alpha);
  *
- *     /&ast; enable fog &ast;/
- *     cogl_set_fog (&amp;fog_color,
- *                   COGL_FOG_MODE_EXPONENTIAL, /&ast; mode &ast;/
- *                   0.5,                       /&ast; density &ast;/
- *                   5.0, 30.0);                /&ast; z_near and z_far &ast;/
+ *     // enable fog //
+ *     cogl_set_fog (&fog_color,
+ *                   COGL_FOG_MODE_EXPONENTIAL, // mode
+ *                   0.5,                       // density
+ *                   5.0, 30.0);                // z_near and z_far
  *   }
  * ]|
  *
- * <note>The fogging functions only work correctly when the visible actors use
+ * The fogging functions only work correctly when the visible actors use
  * unmultiplied alpha colors. By default Cogl will premultiply textures and
  * cogl_set_source_color() will premultiply colors, so unless you explicitly
  * load your textures requesting an unmultiplied internal format and use
  * cogl_material_set_color() you can only use fogging with fully opaque actors.
  * Support for premultiplied colors will improve in the future when we can
- * depend on fragment shaders.</note>
+ * depend on fragment shaders.
  *
  * Since: 0.6
  *
@@ -3616,8 +3616,8 @@ clutter_stage_ensure_redraw (ClutterStage *stage)
  *
  * Queues a redraw for the passed stage.
  *
- * <note>Applications should call clutter_actor_queue_redraw() and not
- * this function.</note>
+ * Applications should call clutter_actor_queue_redraw() and not
+ * this function.
  *
  * Since: 0.8
  *
@@ -3925,12 +3925,12 @@ _clutter_stage_clear_update_time (ClutterStage *stage)
  * if the stage is always covered - for instance, in a full-screen
  * video player or in a game with a background texture.
  *
- * <note><para>This setting is a hint; Clutter might discard this
- * hint depending on its internal state.</para></note>
+ * This setting is a hint; Clutter might discard this hint
+ * depending on its internal state.
  *
- * <warning><para>If parts of the stage are visible and you disable
- * clearing you might end up with visual artifacts while painting the
- * contents of the stage.</para></warning>
+ * If parts of the stage are visible and you disable clearing you
+ * might end up with visual artifacts while painting the contents of
+ * the stage.
  *
  * Since: 1.4
  */
@@ -4232,14 +4232,12 @@ clutter_stage_get_accept_focus (ClutterStage *stage)
  *
  * The default is %TRUE.
  *
- * If @enable is %FALSE the following events will not be delivered
- * to the actors children of @stage.
+ * If @enable is %FALSE the following signals will not be emitted
+ * by the actors children of @stage:
  *
- * <itemizedlist>
- *   <listitem><para>#ClutterActor::motion-event</para></listitem>
- *   <listitem><para>#ClutterActor::enter-event</para></listitem>
- *   <listitem><para>#ClutterActor::leave-event</para></listitem>
- * </itemizedlist>
+ *  - #ClutterActor::motion-event
+ *  - #ClutterActor::enter-event
+ *  - #ClutterActor::leave-event
  *
  * The events will still be delivered to the #ClutterStage.
  *

@@ -64,7 +64,7 @@ G_BEGIN_DECLS
  * main (int   argc,
  *       char *argv[])
  * {
- *   clutter_test_init (&amp;argc, &amp;argv);
+ *   clutter_test_init (&argc, &argv);
  *
  *   clutter_test_add ("/foobarize", foobarize);
  *   clutter_test_add ("/bar-enabled", bar_enabled);

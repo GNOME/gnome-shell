@@ -28,13 +28,10 @@
  * @Short_Description: Image data content
  *
  * #ClutterImage is a #ClutterContent implementation that displays
- * image data.
+ * image data inside a #ClutterActor.
  *
- * <informalexample><programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/image-content.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- * </programlisting></informalexample>
+ * See [image.c](https://git.gnome.org/browse/clutter/tree/examples/image.c?h=clutter-1.18)
+ * for an example of how to use #ClutterImage.
  *
  * #ClutterImage is available since Clutter 1.10.
  */

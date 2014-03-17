@@ -37,8 +37,11 @@
  * The #ClutterModel class is a list model which can accept most GObject 
  * types as a column type.
  * 
- * Creating a simple clutter model:
- * <informalexample><programlisting>
+ * ## Creating a simple ClutterModel
+ *
+ * The example below shows how to create a simple list model.
+ *
+ * |[<!-- language="C" -->
  * enum
  * {
  *   COLUMN_INT,
@@ -51,10 +54,10 @@
  *   ClutterModel *model;
  *   gint i;
  *
- *   model = clutter_model_default_new (N_COLUMNS,
- *                                      /<!-- -->* column type, column title *<!-- -->/
- *                                      G_TYPE_INT,     "my integers",
- *                                      G_TYPE_STRING,  "my strings");
+ *   model = clutter_list_model_new (N_COLUMNS,
+ *                                   // column type, title
+ *                                   G_TYPE_INT,     "my integers",
+ *                                   G_TYPE_STRING,  "my strings");
  *   for (i = 0; i < 10; i++)
  *     {
  *       gchar *string = g_strdup_printf ("String %d", i);
@@ -67,7 +70,9 @@
  *
  *   
  * }
- * </programlisting></informalexample>
+ * ]|
+ *
+ * ## Iterating through a ClutterModel
  *
  * Iterating through the model consists of retrieving a new #ClutterModelIter
  * pointing to the starting row, and calling clutter_model_iter_next() or
@@ -79,8 +84,7 @@
  * after the last row. In an empty sequence, the first and last iterators are
  * the same.
  *
- * Iterating a #ClutterModel:
- * <informalexample><programlisting>
+ * |[<!-- language="C" -->
  * enum
  * {
  *   COLUMN_INT,
@@ -93,10 +97,10 @@
  *   ClutterModel *model;
  *   ClutterModelIter *iter = NULL;
  *
- *   /<!-- -->*  Fill the model *<!-- -->/
+ *   // fill the model
  *   model = populate_model ();
  *
- *   /<!-- -->* Get the first iter *<!-- -->/
+ *   // get the iterator for the first row in the model
  *   iter = clutter_model_get_first_iter (model);
  *   while (!clutter_model_iter_is_last (iter))
  *     {
@@ -105,32 +109,33 @@
  *       iter = clutter_model_iter_next (iter);
  *     }
  *
- *   /<!-- -->* Make sure to unref the iter *<!-- -->/
+ *   // Make sure to unref the iter
  *   g_object_unref (iter);
  * }
- * </programlisting></informalexample>
+ * ]|
  *
  * #ClutterModel is an abstract class. Clutter provides a list model
  * implementation called #ClutterListModel which has been optimised
  * for insertion and look up in sorted lists.
  *
- * <refsect2 id="ClutterModel-script">
- *   <title>ClutterModel custom properties for #ClutterScript</title>
- *   <para>#ClutterModel defines a custom property "columns" for #ClutterScript
- *   which allows defining the column names and types. It also defines a custom
- *   "rows" property which allows filling the #ClutterModel with some
- *   data.</para>
- *   <example id="ClutterModel-script-example">
- *     <title>Example of the "columns" and "rows" custom properties</title>
- *     <para>The definition below will create a #ClutterListModel with three
- *     columns: the first one with name "Name" and containing strings; the
- *     second one with name "Score" and containing integers; the third one with
- *     name "Icon" and containing #ClutterTexture<!-- -->s. The model is filled
- *     with three rows. A row can be defined either with an array that holds
- *     all columns of a row, or an object that holds "column-name" :
- *     "column-value" pairs.
- *     </para>
- *     <programlisting>
+ * #ClutterModel is available since Clutter 0.6
+ *
+ * ## ClutterModel custom properties for ClutterScript
+ *
+ * #ClutterModel defines a custom property "columns" for #ClutterScript
+ * which allows defining the column names and types. It also defines a custom
+ * "rows" property which allows filling the #ClutterModel with some
+ * data.
+ *
+ * The definition below will create a #ClutterListModel with three
+ * columns: the first one with name "Name" and containing strings; the
+ * second one with name "Score" and containing integers; the third one with
+ * name "Icon" and containing #ClutterTextures. The model is filled
+ * with three rows. A row can be defined either with an array that holds
+ * all columns of a row, or an object that holds "column-name" :
+ * "column-value" pairs.
+ *
+ * |[
  *  {
  *    "type" : "ClutterListModel",
  *    "id" : "teams-model",
@@ -145,11 +150,6 @@
  *      { "Name" : "Team 3", "Icon" : "team3-icon-script-id" }
  *    ]
  *  }
- *     </programlisting>
- *   </example>
- * </refsect2>
- *
- * #ClutterModel is available since Clutter 0.6
  */
 
 

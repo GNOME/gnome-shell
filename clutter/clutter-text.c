@@ -3709,10 +3709,10 @@ clutter_text_class_init (ClutterTextClass *klass)
    * For more informations about the Pango markup format, see
    * pango_layout_set_markup() in the Pango documentation.
    *
-   * <note>It is not possible to round-trip this property between
+   * It is not possible to round-trip this property between
    * %TRUE and %FALSE. Once a string with markup has been set on
    * a #ClutterText actor with :use-markup set to %TRUE, the markup
-   * is stripped from the string.</note>
+   * is stripped from the string.
    *
    * Since: 1.0
    */

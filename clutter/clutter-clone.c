@@ -30,9 +30,9 @@
  *
  * #ClutterClone can be used to efficiently clone any other actor.
  *
- * <note><para>This is different from clutter_texture_new_from_actor()
- * which requires support for FBOs in the underlying GL
- * implementation.</para></note>
+ * Unlike clutter_texture_new_from_actor(), #ClutterClone does not require
+ * the presence of support for FBOs in the underlying GL or GLES
+ * implementation.
  *
  * #ClutterClone is available since Clutter 1.0
  */

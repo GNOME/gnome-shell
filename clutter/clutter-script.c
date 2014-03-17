@@ -756,15 +756,15 @@ clutter_script_get_objects_valist (ClutterScript *script,
  * names/return location pairs should be listed, with a %NULL pointer
  * ending the list, like:
  *
- * <informalexample><programlisting>
+ * |[
  *   GObject *my_label, *a_button, *main_timeline;
  *
  *   clutter_script_get_objects (script,
- *                               "my-label", &amp;my_label,
- *                               "a-button", &amp;a_button,
- *                               "main-timeline", &amp;main_timeline,
+ *                               "my-label", &my_label,
+ *                               "a-button", &a_button,
+ *                               "main-timeline", &main_timeline,
  *                               NULL);
- * </programlisting></informalexample>
+ * ]|
  *
  * Note: This function does not increment the reference count of the
  * returned objects.

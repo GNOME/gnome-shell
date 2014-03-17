@@ -1344,12 +1344,12 @@ _clutter_backend_remove_event_translator (ClutterBackend         *backend,
  * @backend. A #CoglContext is required when using some of the
  * experimental 2.0 Cogl API.
  *
- * <note>Since CoglContext is itself experimental API this API should
- * be considered experimental too.</note>
+ * Since CoglContext is itself experimental API this API should
+ * be considered experimental too.
  *
- * <note>This API is not yet supported on OSX because OSX still
+ * This API is not yet supported on OSX because OSX still
  * uses the stub Cogl winsys and the Clutter backend doesn't
- * explicitly create a CoglContext.</note>
+ * explicitly create a CoglContext.
  *
  * Return value: (transfer none): The #CoglContext associated with @backend.
  *

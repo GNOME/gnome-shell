@@ -38,7 +38,7 @@
  * To use #ClutterGestureAction you just need to apply it to a #ClutterActor
  * using clutter_actor_add_action() and connect to the signals:
  *
- * |[
+ * |[<!-- language="C" -->
  *   ClutterAction *action = clutter_gesture_action_new ();
  *
  *   clutter_actor_add_action (actor, action);
@@ -48,37 +48,37 @@
  *   g_signal_connect (action, "gesture-end", G_CALLBACK (on_gesture_end), NULL);
  * ]|
  *
- * <refsect2 id="creating-gesture-action">
- *   <title>Creating Gesture actions</title>
- *   <para>A #ClutterGestureAction provides four separate states that can be
- *   used to recognize or ignore gestures when writing a new action class:</para>
- *   <informalexample><programlisting><![CDATA[
-  Prepare -> Cancel
-  Prepare -> Begin -> Cancel
-  Prepare -> Begin -> End
-  Prepare -> Begin -> Progress -> Cancel
-  Prepare -> Begin -> Progress -> End
- * ]]>
- *   </programlisting></informalexample>
- *   <para>Each #ClutterGestureAction starts in the "prepare" state, and calls
- *   the #ClutterGestureActionClass.gesture_prepare() virtual function; this
- *   state can be used to reset the internal state of a #ClutterGestureAction
- *   subclass, but it can also immediately cancel a gesture without going
- *   through the rest of the states.</para>
- *   <para>The "begin" state follows the "prepare" state, and calls the
- *   #ClutterGestureActionClass.gesture_begin() virtual function. This state
- *   signals the start of a gesture recognizing process. From the "begin" state
- *   the gesture recognition process can successfully end, by going to the
- *   "end" state; it can continue in the "progress" state, in case of a
- *   continuous gesture; or it can be terminated, by moving to the "cancel"
- *   state.</para>
- *   <para>In case of continuous gestures, the #ClutterGestureAction will use
- *   the "progress" state, calling the #ClutterGestureActionClass.gesture_progress()
- *   virtual function; the "progress" state will continue until the end of the
- *   gesture, in which case the "end" state will be reached, or until the
- *   gesture is cancelled, in which case the "cancel" gesture will be used
- *   instead.</para>
- * </refsect2>
+ * ## Creating Gesture actions
+ *
+ * A #ClutterGestureAction provides four separate states that can be
+ * used to recognize or ignore gestures when writing a new action class:
+ *
+ *  - Prepare -> Cancel
+ *  - Prepare -> Begin -> Cancel
+ *  - Prepare -> Begin -> End
+ *  - Prepare -> Begin -> Progress -> Cancel
+ *  - Prepare -> Begin -> Progress -> End
+ *
+ * Each #ClutterGestureAction starts in the "prepare" state, and calls
+ * the #ClutterGestureActionClass.gesture_prepare() virtual function; this
+ * state can be used to reset the internal state of a #ClutterGestureAction
+ * subclass, but it can also immediately cancel a gesture without going
+ * through the rest of the states.
+ *
+ * The "begin" state follows the "prepare" state, and calls the
+ * #ClutterGestureActionClass.gesture_begin() virtual function. This state
+ * signals the start of a gesture recognizing process. From the "begin" state
+ * the gesture recognition process can successfully end, by going to the
+ * "end" state; it can continue in the "progress" state, in case of a
+ * continuous gesture; or it can be terminated, by moving to the "cancel"
+ * state.
+ *
+ * In case of continuous gestures, the #ClutterGestureAction will use
+ * the "progress" state, calling the #ClutterGestureActionClass.gesture_progress()
+ * virtual function; the "progress" state will continue until the end of the
+ * gesture, in which case the "end" state will be reached, or until the
+ * gesture is cancelled, in which case the "cancel" gesture will be used
+ * instead.
  *
  * Since: 1.8
  */

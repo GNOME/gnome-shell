@@ -1036,9 +1036,9 @@ clutter_input_device_get_device_mode (ClutterInputDevice *device)
  * |[
  *   ClutterEvent c_event;
  *
- *   translate_native_event_to_clutter (native_event, &amp;c_event);
+ *   translate_native_event_to_clutter (native_event, &c_event);
  *
- *   clutter_do_event (&amp;c_event);
+ *   clutter_do_event (&c_event);
  * ]|
  *
  * Before letting clutter_do_event() process the event, it is necessary to call
@@ -1049,20 +1049,18 @@ clutter_input_device_get_device_mode (ClutterInputDevice *device)
  *   ClutterDeviceManager *manager;
  *   ClutterInputDevice *device;
  *
- *   translate_native_event_to_clutter (native_event, &amp;c_event);
+ *   translate_native_event_to_clutter (native_event, &c_event);
  *
- *   /&ast; get the device manager &ast;/
+ *   // get the device manager
  *   manager = clutter_device_manager_get_default ();
  *
- *   /&ast; use the default Core Pointer that Clutter
- *    &ast; backends register by default
- *    &ast;/
+ *   // use the default Core Pointer that Clutter backends register by default
  *   device = clutter_device_manager_get_core_device (manager, %CLUTTER_POINTER_DEVICE);
  *
- *   /&ast; update the state of the input device &ast;/
- *   clutter_input_device_update_from_event (device, &amp;c_event, FALSE);
+ *   // update the state of the input device
+ *   clutter_input_device_update_from_event (device, &c_event, FALSE);
  *
- *   clutter_do_event (&amp;c_event);
+ *   clutter_do_event (&c_event);
  * ]|
  *
  * The @update_stage boolean argument should be used when the input device
@@ -1272,7 +1270,7 @@ clutter_input_device_get_axis (ClutterInputDevice *device,
  *
  *   clutter_input_device_get_axis_value (device, axes,
  *                                        CLUTTER_INPUT_AXIS_PRESSURE,
- *                                        &amp;pressure_value);
+ *                                        &pressure_value);
  * ]|
  *
  * Return value: %TRUE if the value was set, and %FALSE otherwise

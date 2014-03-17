@@ -38,7 +38,7 @@
  * inside their class initialization function and then install actions
  * like this:
  *
- * |[
+ * |[<!-- language="C" -->
  * static void
  * foo_class_init (FooClass *klass)
  * {
@@ -59,7 +59,7 @@
  *
  * The callback has a signature of:
  *
- * |[
+ * |[<!-- language="C" -->
  *    gboolean (* callback) (GObject             *instance,
  *                           const gchar         *action_name,
  *                           guint                key_val,
@@ -71,19 +71,18 @@
  * use clutter_binding_pool_activate() to match a #ClutterKeyEvent structure
  * to one of the actions:
  *
- * |[
+ * |[<!-- language="C" -->
  *   ClutterBindingPool *pool;
  *
- *   /&ast; retrieve the binding pool for the type of the actor &ast;/
+ *   // retrieve the binding pool for the type of the actor
  *   pool = clutter_binding_pool_find (G_OBJECT_TYPE_NAME (actor));
  *
- *   /&ast; activate any callback matching the key symbol and modifiers
- *    &ast; mask of the key event. the returned value can be directly
- *    &ast; used to signal that the actor has handled the event.
- *    &ast;/
+ *   // activate any callback matching the key symbol and modifiers
+ *   // mask of the key event. the returned value can be directly
+ *   // used to signal that the actor has handled the event.
  *   return clutter_binding_pool_activate (pool,
- *                                         key_event-&gt;keyval,
- *                                         key_event-&gt;modifier_state,
+ *                                         key_event->keyval,
+ *                                         key_event->modifier_state,
  *                                         G_OBJECT (actor));
  * ]|
  *
