@@ -46,6 +46,7 @@
 #endif
 
 #include "clutter-egl-headers.h"
+#include <clutter/clutter.h>
 
 G_BEGIN_DECLS
 
@@ -85,10 +86,12 @@ EGLDisplay      clutter_egl_display             (void);
  *
  * Since: 1.6
  */
+CLUTTER_AVAILABLE_IN_1_6
 EGLDisplay      clutter_egl_get_egl_display     (void);
 
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-void clutter_egl_set_kms_fd (int fd);
+CLUTTER_AVAILABLE_IN_1_18
+void            clutter_egl_set_kms_fd          (int fd);
 #endif
 
 G_END_DECLS

@@ -41,17 +41,24 @@
 
 G_BEGIN_DECLS
 
+CLUTTER_AVAILABLE_IN_1_10
 GdkDisplay *    clutter_gdk_get_default_display         (void);
+CLUTTER_AVAILABLE_IN_1_10
 void            clutter_gdk_set_display                 (GdkDisplay   *display);
 
+CLUTTER_AVAILABLE_IN_1_10
 GdkWindow *     clutter_gdk_get_stage_window            (ClutterStage *stage);
+CLUTTER_AVAILABLE_IN_1_10
 gboolean        clutter_gdk_set_stage_foreign           (ClutterStage *stage,
                                                          GdkWindow    *window);
 
+CLUTTER_AVAILABLE_IN_1_10
 GdkFilterReturn clutter_gdk_handle_event                (GdkEvent     *event);
 
+CLUTTER_AVAILABLE_IN_1_10
 ClutterStage *  clutter_gdk_get_stage_from_window       (GdkWindow    *window);
 
+CLUTTER_AVAILABLE_IN_1_10
 void            clutter_gdk_disable_event_retrieval     (void);
 
 G_END_DECLS
