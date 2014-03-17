@@ -1424,6 +1424,35 @@ grab_op_should_block_mouse_events (MetaGrabOp op)
     }
 }
 
+gboolean
+meta_grab_op_is_clicking (MetaGrabOp grab_op)
+{
+  switch (grab_op)
+    {
+    case META_GRAB_OP_CLICKING_MINIMIZE:
+    case META_GRAB_OP_CLICKING_MAXIMIZE:
+    case META_GRAB_OP_CLICKING_UNMAXIMIZE:
+    case META_GRAB_OP_CLICKING_DELETE:
+    case META_GRAB_OP_CLICKING_MENU:
+    case META_GRAB_OP_CLICKING_SHADE:
+    case META_GRAB_OP_CLICKING_UNSHADE:
+    case META_GRAB_OP_CLICKING_ABOVE:
+    case META_GRAB_OP_CLICKING_UNABOVE:
+    case META_GRAB_OP_CLICKING_STICK:
+    case META_GRAB_OP_CLICKING_UNSTICK:
+      return TRUE;
+
+    default:
+      return FALSE;
+    }
+}
+
+gboolean
+meta_grab_op_is_wayland (MetaGrabOp op)
+{
+  return (op != META_GRAB_OP_NONE && !meta_grab_op_is_clicking (op));
+}
+
 /**
  * meta_display_xserver_time_is_before:
  * @display: a #MetaDisplay
@@ -1748,7 +1777,7 @@ meta_display_sync_wayland_input_focus (MetaDisplay *display)
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   MetaWindow *focus_window;
 
-  if (display->grab_op != META_GRAB_OP_NONE)
+  if (meta_grab_op_is_wayland (display->grab_op))
     focus_window = NULL;
   else if (meta_display_xwindow_is_a_no_focus_window (display, display->focus_xwindow))
     focus_window = NULL;
@@ -1759,7 +1788,7 @@ meta_display_sync_wayland_input_focus (MetaDisplay *display)
 
   meta_wayland_compositor_set_input_focus (compositor, focus_window);
 
-  if (display->grab_op != META_GRAB_OP_NONE)
+  if (meta_grab_op_is_wayland (display->grab_op))
     meta_wayland_pointer_set_focus (&compositor->seat->pointer, NULL);
   else
     meta_wayland_seat_repick (compositor->seat, NULL);
