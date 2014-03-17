@@ -1539,6 +1539,7 @@ clutter_check_version
 <SUBSECTION Private>
 CLUTTER_VERSION_CUR_STABLE
 CLUTTER_VERSION_PREV_STABLE
+CLUTTER_AVAILABLE_IN_ALL
 CLUTTER_AVAILABLE_IN_1_0
 CLUTTER_AVAILABLE_IN_1_2
 CLUTTER_AVAILABLE_IN_1_4
@@ -2153,6 +2154,7 @@ clutter_binding_pool_get_type
 clutter_egl_display
 clutter_eglx_display
 clutter_egl_get_egl_display
+clutter_egl_set_kms_fd
 </SECTION>
 
 <SECTION>
