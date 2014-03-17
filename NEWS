@@ -1,3 +1,42 @@
+Clutter 1.18.0                                                       2014-03-18
+===============================================================================
+
+  • List of changes since Clutter 1.17.6
+
+    - Update build environment for Visual Studio
+
+    - Improve the API for implementing Wayland compositors
+    Allow integrating with logind and KMS; provide clipped redraws on both
+    Wayland clients, and direct KMS.
+
+    - Port the documentation to MarkDown
+
+    - Use symbol annotations to ensure the public ABI
+
+    - Translations updates
+    Korean, Traditional Chinese (Hong Kong and Taiwan), Chinese, Portuguese,
+    Latvian, Russian, French.
+
+  • List of bugs fixed since Clutter 1.17.6
+
+    #725716 - Fix build of clutter-test-utils.c on Windows
+    #725873 - Fix the Win32 backend for newer Visual Studio Versions
+    #725722 - Grid layout actor width/height swapped
+    #726199 - evdev changes needed for logind integration work
+    #726341 - eglnative: Add clutter-stage-window implementation
+    #726315 - clutter-stage-wayland: Enable clipped redraws
+    #726313 - stage-cogl: Fix feature check in clutter_stage_cogl_redraw
+    #726198 - egl: Add a way to set the KMS FD
+    #708781 - wayland: Keep track of button modifier state
+    #711857 - Avoid needless event copies when queueing from a backend
+              to a stage
+
+Many thanks to:
+
+  Jasper St. Pierre, Chun-wei Fan, Adel Gadllah, Bastian Winkler, Changwoo Ryu,
+  Chao-Hsiung Liao, Duarte Loreto, Jonas Ådahl, Rui Matos, Rūdolfs Mazurs,
+  Wylmer Wang, Yuri Myasoedov, teuf.
+
 Clutter 1.17.6                                                       2014-03-03
 ===============================================================================
 
