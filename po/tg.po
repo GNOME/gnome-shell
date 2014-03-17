@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Tajik Gnome\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-26 20:31+0000\n"
-"PO-Revision-Date: 2014-02-27 12:10+0500\n"
+"POT-Creation-Date: 2014-03-16 20:30+0000\n"
+"PO-Revision-Date: 2014-03-17 12:24+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: \n"
 "Language: tg\n"
@@ -225,18 +225,26 @@ msgid "The maximum accuracy level of location."
 msgstr "Сатҳи аксари саҳеҳии ҷойгиршавӣ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#| msgid ""
+#| "Configures the maximum level of location accuracy applications are "
+#| "allowed to see. Valid options are 'off' (disable location tracking), "
+#| "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
+#| "requires GPS receiver). Please keep in mind that this only controls what "
+#| "Geoclue will allow applications to see and they can find user's location "
+#| "on their own using network resources (albeit with street-level accuracy "
+#| "at best)."
 msgid ""
 "Configures the maximum level of location accuracy applications are allowed "
 "to see. Valid options are 'off' (disable location tracking), 'country', "
 "'city', 'neighborhood', 'street', and 'exact' (typically requires GPS "
-"receiver). Please keep in mind that this only controls what Geoclue will "
+"receiver). Please keep in mind that this only controls what GeoClue will "
 "allow applications to see and they can find user's location on their own "
 "using network resources (albeit with street-level accuracy at best)."
 msgstr ""
 "Сатҳи баландтарини саҳеҳии ҷойгиршавиро барои барномаҳо танзим мекунад. "
 "Имконоти боэътибор: 'хомӯш' (пайгирии ҷойгиршавии ғайрифаъол), 'кишвар', "
 "'шаҳр', 'ҳамсоягӣ', 'кӯча' ва 'дақиқ' (қабулкунандаи GPS лозим аст). Лутфан, "
-"қайд кнед, ки ин танҳо Geoclue-ро идора мекунад ва ба барномаҳо иҷозат "
+"қайд кнед, ки ин танҳо GeoClue-ро идора мекунад ва ба барномаҳо иҷозат "
 "медиҳад, то ки тавонанд ҷойгиршавии корбаронро тавассути манбаъи шабакавии "
 "онҳо пайдо кунанд (ақаллан ҷойгиршавии саҳеҳии кӯча)."
 
@@ -318,7 +326,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:883
+#: ../js/ui/status/network.js:878
 msgid "Cancel"
 msgstr "Бекор кардан"
 
@@ -344,17 +352,17 @@ msgstr "Интихоби ҷаласа"
 msgid "Not listed?"
 msgstr "Вуҷуд надора?"
 
-#: ../js/gdm/loginDialog.js:598
+#: ../js/gdm/loginDialog.js:608
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(масалан, корбар ё %s)"
 
-#: ../js/gdm/loginDialog.js:603 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:613 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Номи корбар:"
 
-#: ../js/gdm/loginDialog.js:868
+#: ../js/gdm/loginDialog.js:884
 msgid "Login Window"
 msgstr "Равзанаи воридшавӣ"
 
@@ -391,15 +399,15 @@ msgstr "Роиҷ"
 msgid "All"
 msgstr "Ҳама"
 
-#: ../js/ui/appDisplay.js:1552
+#: ../js/ui/appDisplay.js:1555
 msgid "New Window"
 msgstr "Равзанаи нав"
 
-#: ../js/ui/appDisplay.js:1574 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1577 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Тоза кардан аз Баргузидаҳо"
 
-#: ../js/ui/appDisplay.js:1580
+#: ../js/ui/appDisplay.js:1583
 msgid "Add to Favorites"
 msgstr "Илова кардан ба Баргузидаҳо"
 
@@ -542,44 +550,44 @@ msgstr "Ш"
 msgid "calendar:MY"
 msgstr "тақвим:MY"
 
-#: ../js/ui/calendar.js:446
+#: ../js/ui/calendar.js:450
 msgid "Previous month"
 msgstr "Моҳи қаблӣ"
 
-#: ../js/ui/calendar.js:456
+#: ../js/ui/calendar.js:460
 msgid "Next month"
 msgstr "Моҳи навбатӣ"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:762
+#: ../js/ui/calendar.js:772
 msgid "Nothing Scheduled"
 msgstr "Ягон чиз ба нақша нагирифтааст"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:780
+#: ../js/ui/calendar.js:790
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:793
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:794
+#: ../js/ui/calendar.js:804
 msgid "Today"
 msgstr "Имрӯз"
 
-#: ../js/ui/calendar.js:798
+#: ../js/ui/calendar.js:808
 msgid "Tomorrow"
 msgstr "Фардо"
 
-#: ../js/ui/calendar.js:809
+#: ../js/ui/calendar.js:819
 msgid "This week"
 msgstr "Ҳафтаи ҷорӣ"
 
-#: ../js/ui/calendar.js:817
+#: ../js/ui/calendar.js:827
 msgid "Next week"
 msgstr "Ҳафтаи навбатӣ"
 
@@ -612,8 +620,8 @@ msgstr "Парол:"
 msgid "Type again:"
 msgstr "Аз нав ворид кунед:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:250
-#: ../js/ui/status/network.js:327 ../js/ui/status/network.js:886
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:240
+#: ../js/ui/status/network.js:322 ../js/ui/status/network.js:881
 msgid "Connect"
 msgstr "Пайваст шудан"
 
@@ -976,7 +984,7 @@ msgstr "Пайвастшавӣ ба %s имконнопазир аст"
 msgid "View account"
 msgstr "Намоиш додани ҳисоб"
 
-#: ../js/ui/components/telepathyClient.js:1434
+#: ../js/ui/components/telepathyClient.js:1439
 msgid "Unknown reason"
 msgstr "Сабаби номаълум"
 
@@ -992,22 +1000,22 @@ msgstr "Намоиш додани барномаҳо"
 msgid "Dash"
 msgstr "Рах"
 
-#: ../js/ui/dateMenu.js:86
+#: ../js/ui/dateMenu.js:91
 msgid "Open Calendar"
 msgstr "Кушодани тақвим"
 
-#: ../js/ui/dateMenu.js:90
+#: ../js/ui/dateMenu.js:95
 msgid "Open Clocks"
 msgstr "Кушодани соат"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:102
 msgid "Date & Time Settings"
 msgstr "Танзимоти сана ва вақт"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:192
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
 
@@ -1103,8 +1111,6 @@ msgstr[1] ""
 "насб мекунад."
 
 #: ../js/ui/endSessionDialog.js:129
-#| msgctxt "button"
-#| msgid "Restart & Install"
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Бозоғозӣ ва насб кардан"
@@ -1158,25 +1164,25 @@ msgstr "“%s”-ро аз extensions.gnome.org боргирӣ ва насб м�
 msgid "Keyboard"
 msgstr "Клавиатура"
 
-#: ../js/ui/lookingGlass.js:641
+#: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
 msgstr "Ягон пасванд насб нашудааст"
 
 #. Translators: argument is an extension UUID. */
-#: ../js/ui/lookingGlass.js:695
+#: ../js/ui/lookingGlass.js:697
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s ягон хато надорад."
 
-#: ../js/ui/lookingGlass.js:701
+#: ../js/ui/lookingGlass.js:703
 msgid "Hide Errors"
 msgstr "Пинҳон кардани хатоҳо"
 
-#: ../js/ui/lookingGlass.js:705 ../js/ui/lookingGlass.js:765
+#: ../js/ui/lookingGlass.js:707 ../js/ui/lookingGlass.js:767
 msgid "Show Errors"
 msgstr "Намоиш додани хатоҳо"
 
-#: ../js/ui/lookingGlass.js:714
+#: ../js/ui/lookingGlass.js:716
 msgid "Enabled"
 msgstr "Фаъол"
 
@@ -1184,28 +1190,28 @@ msgstr "Фаъол"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:560
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/network.js:555
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Ғайрифаъол"
 
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:721
 msgid "Error"
 msgstr "Хатогӣ"
 
-#: ../js/ui/lookingGlass.js:721
+#: ../js/ui/lookingGlass.js:723
 msgid "Out of date"
 msgstr "Аз мӯҳлат гузашта"
 
-#: ../js/ui/lookingGlass.js:723
+#: ../js/ui/lookingGlass.js:725
 msgid "Downloading"
 msgstr "Боргирӣ рафта истодааст"
 
-#: ../js/ui/lookingGlass.js:747
+#: ../js/ui/lookingGlass.js:749
 msgid "View Source"
 msgstr "Намоиш додани манбаъ"
 
-#: ../js/ui/lookingGlass.js:756
+#: ../js/ui/lookingGlass.js:758
 msgid "Web Page"
 msgstr "Саҳифаи веб"
 
@@ -1241,7 +1247,7 @@ msgstr "Ягон паём нест"
 msgid "Message Tray"
 msgstr "Қуттии паёмҳо"
 
-#: ../js/ui/messageTray.js:2948
+#: ../js/ui/messageTray.js:2962
 msgid "System Information"
 msgstr "Маълумоти система"
 
@@ -1257,11 +1263,11 @@ msgid_plural "%d new messages"
 msgstr[0] "%d паёми нав"
 msgstr[1] "%d паёми нав"
 
-#: ../js/ui/overview.js:83
+#: ../js/ui/overview.js:84
 msgid "Undo"
 msgstr "Ботил сохтан"
 
-#: ../js/ui/overview.js:123
+#: ../js/ui/overview.js:124
 msgid "Overview"
 msgstr "Хулоса"
 
@@ -1269,7 +1275,7 @@ msgstr "Хулоса"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters. */
-#: ../js/ui/overview.js:257
+#: ../js/ui/overview.js:250
 msgid "Type to search…"
 msgstr "Ҷустуҷӯ кардан..."
 
@@ -1312,27 +1318,27 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d огоҳии нав"
 msgstr[1] "%d огоҳии нав"
 
-#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "Қулф кардан"
 
-#: ../js/ui/screenShield.js:707
+#: ../js/ui/screenShield.js:708
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME бояд экранро қулф кунад"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1301
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1309
 msgid "Unable to lock"
 msgstr "Қулф карда намешавад"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1302
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1310
 msgid "Lock was blocked by an application"
 msgstr "Қулф аз тарави барнома баста шудааст"
 
-#: ../js/ui/search.js:589
+#: ../js/ui/search.js:603
 msgid "Searching…"
 msgstr "Ҷустуҷӯ рафта истодааст..."
 
-#: ../js/ui/search.js:632
+#: ../js/ui/search.js:646
 msgid "No results."
 msgstr "Ягон натиҷа нест."
 
@@ -1408,10 +1414,10 @@ msgstr "Матни бузург"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:59
-#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:151
-#: ../js/ui/status/network.js:328 ../js/ui/status/network.js:1235
-#: ../js/ui/status/network.js:1346 ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:60
+#: ../js/ui/status/location.js:167 ../js/ui/status/network.js:151
+#: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
+#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "Хомӯш кардан"
@@ -1420,14 +1426,14 @@ msgstr "Хомӯш кардан"
 msgid "Bluetooth Settings"
 msgstr "Танзимоти Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:100
+#: ../js/ui/status/bluetooth.js:103
 #, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d дастгоҳи пайвастшуда"
 msgstr[1] "%d дастгоҳи пайвастшуда"
 
-#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1263
+#: ../js/ui/status/bluetooth.js:105 ../js/ui/status/network.js:1262
 msgid "Not Connected"
 msgstr "Пайваст нашудааст"
 
@@ -1439,21 +1445,21 @@ msgstr "Дурахшонӣ"
 msgid "Show Keyboard Layout"
 msgstr "Намоиш додани тарҳбандии клавиатура"
 
-#: ../js/ui/status/location.js:52
+#: ../js/ui/status/location.js:53
 msgid "Location"
 msgstr "Ҷойгиршавӣ"
 
-#: ../js/ui/status/location.js:58 ../js/ui/status/location.js:158
+#: ../js/ui/status/location.js:59 ../js/ui/status/location.js:166
 #: ../js/ui/status/rfkill.js:84
 msgid "On"
 msgstr "Фаъол"
 
-#: ../js/ui/status/location.js:155 ../js/ui/status/network.js:246
-#: ../js/ui/status/network.js:425 ../js/ui/status/network.js:1261
+#: ../js/ui/status/location.js:163 ../js/ui/status/network.js:420
+#: ../js/ui/status/network.js:1260 ../js/ui/status/network.js:1464
 msgid "Off"
 msgstr "Хомӯш"
 
-#: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1235
+#: ../js/ui/status/location.js:164 ../js/ui/status/network.js:1234
 msgid "Turn On"
 msgstr "Фаъол кардан"
 
@@ -1461,134 +1467,139 @@ msgstr "Фаъол кардан"
 msgid "<unknown>"
 msgstr "<номаълум>"
 
+#: ../js/ui/status/network.js:422
+#| msgid "Connect"
+msgid "Connected"
+msgstr "Пайваст шудааст"
+
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:431
+#: ../js/ui/status/network.js:426
 msgid "unmanaged"
 msgstr "идоранашуда"
 
-#: ../js/ui/status/network.js:433
+#: ../js/ui/status/network.js:428
 msgid "disconnecting..."
 msgstr "қатъ кардани пайваст..."
 
-#: ../js/ui/status/network.js:439 ../js/ui/status/network.js:1363
+#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1362
 msgid "connecting..."
 msgstr "пайвастшавӣ..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:442 ../js/ui/status/network.js:1366
+#: ../js/ui/status/network.js:437 ../js/ui/status/network.js:1365
 msgid "authentication required"
 msgstr "санҷиши ҳаққоният лозим аст"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:450
+#: ../js/ui/status/network.js:445
 msgid "firmware missing"
 msgstr "нармафзори дарунсохт вуҷуд надорад"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:454
+#: ../js/ui/status/network.js:449
 msgid "unavailable"
 msgstr "дастнорас"
 
-#: ../js/ui/status/network.js:456 ../js/ui/status/network.js:1368
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1367
 msgid "connection failed"
 msgstr "пайваст қатъ шудааст"
 
-#: ../js/ui/status/network.js:472
+#: ../js/ui/status/network.js:467
 msgid "Wired Settings"
 msgstr "Танзимоти шабакаи симдор"
 
-#: ../js/ui/status/network.js:514 ../js/ui/status/network.js:592
+#: ../js/ui/status/network.js:509 ../js/ui/status/network.js:587
 msgid "Mobile Broadband Settings"
 msgstr "Танзимоти паҳннавори мобилӣ"
 
-#: ../js/ui/status/network.js:556 ../js/ui/status/network.js:1259
+#: ../js/ui/status/network.js:551 ../js/ui/status/network.js:1258
 msgid "Hardware Disabled"
 msgstr "Сахтафзор ғайрифаъол шудааст"
 
-#: ../js/ui/status/network.js:600
+#: ../js/ui/status/network.js:595
 msgid "Use as Internet connection"
 msgstr "Ҳамчун пайвасти Интернет истифода кардан"
 
-#: ../js/ui/status/network.js:781
+#: ../js/ui/status/network.js:776
 msgid "Airplane Mode is On"
 msgstr "Ҳолати ҳавопаймо фаъол аст"
 
-#: ../js/ui/status/network.js:782
+#: ../js/ui/status/network.js:777
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Ҳангоми фаъол будани ҳолати ҳавопаймо Wi-Fi ғайрифаъол аст."
 
-#: ../js/ui/status/network.js:783
+#: ../js/ui/status/network.js:778
 msgid "Turn Off Airplane Mode"
 msgstr "Ҳолати ҳавопаймо хомӯш аст"
 
-#: ../js/ui/status/network.js:792
+#: ../js/ui/status/network.js:787
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi хомӯш аст"
 
-#: ../js/ui/status/network.js:793
+#: ../js/ui/status/network.js:788
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Барои пайваст шудан ба шабака, Wi-Fi бояд фаъол карда шавад."
 
-#: ../js/ui/status/network.js:794
+#: ../js/ui/status/network.js:789
 msgid "Turn On Wi-Fi"
 msgstr "Фаъол кардани Wi-Fi"
 
-#: ../js/ui/status/network.js:819
+#: ../js/ui/status/network.js:814
 msgid "Wi-Fi Networks"
 msgstr "Шабакаҳои Wi-Fi"
 
-#: ../js/ui/status/network.js:821
+#: ../js/ui/status/network.js:816
 msgid "Select a network"
 msgstr "Интихоб кардани шабака"
 
-#: ../js/ui/status/network.js:850
+#: ../js/ui/status/network.js:845
 msgid "No Networks"
 msgstr "Ягон шабака нест"
 
-#: ../js/ui/status/network.js:871 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
 msgstr "Истифодаи калиди сахтафзорӣ барои фаъолсозӣ ё хомӯшкунӣ"
 
-#: ../js/ui/status/network.js:1141
+#: ../js/ui/status/network.js:1136
 msgid "Select Network"
 msgstr "Интихоби шабака"
 
-#: ../js/ui/status/network.js:1147
+#: ../js/ui/status/network.js:1142
 msgid "Wi-Fi Settings"
 msgstr "Танзимоти Wi-Fi"
 
-#: ../js/ui/status/network.js:1252
+#: ../js/ui/status/network.js:1251
 msgid "Hotspot Active"
 msgstr "Hotspot фаъол аст"
 
-#: ../js/ui/status/network.js:1255
+#: ../js/ui/status/network.js:1254
 msgid "Connecting"
 msgstr "Пайвастшавӣ"
 
-#: ../js/ui/status/network.js:1434 ../js/ui/status/rfkill.js:88
+#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:88
 msgid "Network Settings"
 msgstr "Танзимоти шабака"
 
-#: ../js/ui/status/network.js:1436
+#: ../js/ui/status/network.js:1435
 msgid "VPN Settings"
 msgstr "Танзимоти VPN"
 
-#: ../js/ui/status/network.js:1455
+#: ../js/ui/status/network.js:1454
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1598
+#: ../js/ui/status/network.js:1607
 msgid "Network Manager"
 msgstr "Мудири шабака"
 
-#: ../js/ui/status/network.js:1637
+#: ../js/ui/status/network.js:1646
 msgid "Connection failed"
 msgstr "Пайваст қатъ шудааст"
 
-#: ../js/ui/status/network.js:1638
+#: ../js/ui/status/network.js:1647
 msgid "Activation of network connection failed"
 msgstr "Фаъолсозии пайвасти шабака қатъ шудааст."
 
