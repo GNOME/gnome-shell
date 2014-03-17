@@ -46,7 +46,9 @@
 #include "cally-text.h"
 #include "cally-actor-private.h"
 
+#include "clutter-color.h"
 #include "clutter-main.h"
+#include "clutter-text.h"
 
 static void cally_text_finalize   (GObject *obj);
 

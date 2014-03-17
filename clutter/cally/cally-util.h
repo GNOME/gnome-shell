@@ -18,13 +18,14 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __CALLY_UTIL_H__
+#define __CALLY_UTIL_H__
+
 #if !defined(__CALLY_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <cally/cally.h> can be included directly."
 #endif
 
-#ifndef __CALLY_UTIL_H__
-#define __CALLY_UTIL_H__
-
+#include <clutter/clutter.h>
 #include <atk/atk.h>
 
 G_BEGIN_DECLS
@@ -73,6 +74,7 @@ struct _CallyUtilClass
   gpointer _padding_dummy[8];
 };
 
+CLUTTER_AVAILABLE_IN_1_4
 GType cally_util_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS

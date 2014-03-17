@@ -38,6 +38,8 @@
  * </itemizedlist>
  */
 
+#include "config.h"
+
 #include "cally-group.h"
 #include "cally-actor-private.h"
 

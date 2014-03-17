@@ -35,8 +35,14 @@
  * #ClutterStageManager).
  */
 
-#include <clutter/clutter.h>
+#include "config.h"
+
 #include "cally-root.h"
+
+#include "clutter-actor.h"
+#include "clutter-stage-private.h"
+#include "clutter-stage-manager.h"
+
 
 /* GObject */
 static void cally_root_finalize   (GObject *object);

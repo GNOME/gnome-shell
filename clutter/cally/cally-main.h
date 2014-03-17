@@ -22,16 +22,21 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __CALLY_MAIN_H__
+#define __CALLY_MAIN_H__
+
 #if !defined(__CALLY_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <cally/cally.h> can be included directly."
 #endif
 
-#ifndef __CALLY_MAIN_H__
-#define __CALLY_MAIN_H__
+#include <glib.h>
+#include <atk/atk.h>
 
 G_BEGIN_DECLS
 
+CLUTTER_AVAILABLE_IN_1_4
 gboolean cally_get_cally_initialized (void);
+CLUTTER_AVAILABLE_IN_1_4
 gboolean cally_accessibility_init    (void);
 
 G_END_DECLS

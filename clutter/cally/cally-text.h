@@ -18,15 +18,15 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __CALLY_TEXT_H__
+#define __CALLY_TEXT_H__
+
 #if !defined(__CALLY_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <cally/cally.h> can be included directly."
 #endif
 
-#ifndef __CALLY_TEXT_H__
-#define __CALLY_TEXT_H__
-
-#include <cally/cally-actor.h>
 #include <clutter/clutter.h>
+#include <cally/cally-actor.h>
 
 G_BEGIN_DECLS
 
@@ -74,7 +74,9 @@ struct _CallyTextClass
   gpointer _padding_dummy[8];
 };
 
+CLUTTER_AVAILABLE_IN_1_4
 GType      cally_text_get_type (void) G_GNUC_CONST;
+CLUTTER_AVAILABLE_IN_1_4
 AtkObject* cally_text_new      (ClutterActor *actor);
 
 G_END_DECLS

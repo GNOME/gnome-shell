@@ -22,12 +22,12 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __CALLY_ACTOR_H__
+#define __CALLY_ACTOR_H__
+
 #if !defined(__CALLY_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <cally/cally.h> can be included directly."
 #endif
-
-#ifndef __CALLY_ACTOR_H__
-#define __CALLY_ACTOR_H__
 
 #include <atk/atk.h>
 #include <clutter/clutter.h>
@@ -126,16 +126,19 @@ struct _CallyActorClass
   gpointer _padding_dummy[32];
 };
 
-
+CLUTTER_AVAILABLE_IN_1_4
 GType      cally_actor_get_type              (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_4
 AtkObject* cally_actor_new                   (ClutterActor        *actor);
 
+CLUTTER_AVAILABLE_IN_1_4
 guint      cally_actor_add_action            (CallyActor          *cally_actor,
                                               const gchar         *action_name,
                                               const gchar         *action_description,
                                               const gchar         *action_keybinding,
                                               CallyActionFunc      action_func);
+CLUTTER_AVAILABLE_IN_1_6
 guint      cally_actor_add_action_full       (CallyActor          *cally_actor,
                                               const gchar         *action_name,
                                               const gchar         *action_description,
@@ -144,9 +147,11 @@ guint      cally_actor_add_action_full       (CallyActor          *cally_actor,
                                               gpointer             user_data,
                                               GDestroyNotify       notify);
 
+CLUTTER_AVAILABLE_IN_1_4
 gboolean   cally_actor_remove_action         (CallyActor          *cally_actor,
                                               gint                 action_id);
 
+CLUTTER_AVAILABLE_IN_1_4
 gboolean   cally_actor_remove_action_by_name (CallyActor          *cally_actor,
                                               const gchar         *action_name);
 
