@@ -30,12 +30,8 @@
  * @see_also: #ClutterGroup
  *
  * #CallyGroup implements the required ATK interfaces of #ClutterGroup
- * In particular it exposes:
- *
- * <itemizedlist>
- *   <listitem><simpara>Each of the Clutter actors contained in the
- *   Group.</simpara></listitem>
- * </itemizedlist>
+ * In particular it exposes each of the Clutter actors contained in the
+ * group.
  */
 
 #include "config.h"
