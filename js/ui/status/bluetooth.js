@@ -17,6 +17,7 @@ const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
 const RfkillManagerInterface = '<node> \
 <interface name="org.gnome.SettingsDaemon.Rfkill"> \
 <property name="BluetoothAirplaneMode" type="b" access="readwrite" /> \
+<property name="BluetoothHasAirplaneMode" type="b" access="read" /> \
 </interface> \
 </node>';
 
@@ -97,7 +98,7 @@ const Indicator = new Lang.Class({
 
         this.menu.setSensitive(sensitive);
         this._indicator.visible = nDevices > 0;
-        this._item.actor.visible = !this._proxy.BluetoothAirplaneMode;
+        this._item.actor.visible = this._proxy.BluetoothHasAirplaneMode && !this._proxy.BluetoothAirplaneMode;
 
         if (nDevices > 0)
             this._item.status.text = ngettext("%d Connected Device", "%d Connected Devices", nDevices).format(nDevices);
