@@ -48,20 +48,28 @@ G_BEGIN_DECLS
 typedef struct _ClutterAlignConstraint          ClutterAlignConstraint;
 typedef struct _ClutterAlignConstraintClass     ClutterAlignConstraintClass;
 
+CLUTTER_AVAILABLE_IN_1_4
 GType clutter_align_constraint_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_4
 ClutterConstraint *clutter_align_constraint_new            (ClutterActor           *source,
                                                             ClutterAlignAxis        axis,
                                                             gfloat                  factor);
 
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_align_constraint_set_source     (ClutterAlignConstraint *align,
                                                             ClutterActor           *source);
+CLUTTER_AVAILABLE_IN_1_4
 ClutterActor *     clutter_align_constraint_get_source     (ClutterAlignConstraint *align);
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_align_constraint_set_align_axis (ClutterAlignConstraint *align,
                                                             ClutterAlignAxis        axis);
+CLUTTER_AVAILABLE_IN_1_4
 ClutterAlignAxis   clutter_align_constraint_get_align_axis (ClutterAlignConstraint *align);
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_align_constraint_set_factor     (ClutterAlignConstraint *align,
                                                             gfloat                  factor);
+CLUTTER_AVAILABLE_IN_1_4
 gfloat             clutter_align_constraint_get_factor     (ClutterAlignConstraint *align);
 
 G_END_DECLS

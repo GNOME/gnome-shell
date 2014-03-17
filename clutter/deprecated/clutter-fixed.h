@@ -75,6 +75,7 @@ struct _ClutterParamSpecFixed
   CoglFixed default_value;
 };
 
+CLUTTER_DEPRECATED_IN_1_10
 GType        clutter_param_fixed_get_type (void) G_GNUC_CONST;
 
 CLUTTER_DEPRECATED_IN_1_10_FOR(g_value_set_int)

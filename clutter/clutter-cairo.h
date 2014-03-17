@@ -50,7 +50,9 @@ G_BEGIN_DECLS
 #define CLUTTER_CAIRO_FORMAT_ARGB32     (COGL_PIXEL_FORMAT_ARGB_8888_PRE)
 #endif
 
+CLUTTER_AVAILABLE_IN_1_12
 void    clutter_cairo_clear             (cairo_t               *cr);
+CLUTTER_AVAILABLE_IN_1_0
 void    clutter_cairo_set_source_color  (cairo_t               *cr,
                                          const ClutterColor    *color);
 

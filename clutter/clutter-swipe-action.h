@@ -98,8 +98,10 @@ struct _ClutterSwipeActionClass
   void (* _clutter_swipe_action6) (void);
 };
 
+CLUTTER_AVAILABLE_IN_1_8
 GType clutter_swipe_action_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_8
 ClutterAction * clutter_swipe_action_new        (void);
 
 G_END_DECLS

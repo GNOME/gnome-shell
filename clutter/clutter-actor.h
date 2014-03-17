@@ -298,62 +298,90 @@ struct _ClutterActorIter
   gpointer CLUTTER_PRIVATE_FIELD (dummy5);
 };
 
+CLUTTER_AVAILABLE_IN_ALL
 GType clutter_actor_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_10
 ClutterActor *                  clutter_actor_new                               (void);
 
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_flags                         (ClutterActor                *self,
                                                                                  ClutterActorFlags            flags);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_unset_flags                       (ClutterActor                *self,
                                                                                  ClutterActorFlags            flags);
+CLUTTER_AVAILABLE_IN_ALL
 ClutterActorFlags               clutter_actor_get_flags                         (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_show                              (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_hide                              (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_realize                           (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_unrealize                         (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_map                               (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_unmap                             (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_paint                             (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_continue_paint                    (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_queue_redraw                      (ClutterActor                *self);
 CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_queue_redraw_with_clip            (ClutterActor                *self,
                                                                                  const cairo_rectangle_int_t *clip);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_queue_relayout                    (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_destroy                           (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_name                          (ClutterActor                *self,
                                                                                  const gchar                 *name);
+CLUTTER_AVAILABLE_IN_ALL
 const gchar *                   clutter_actor_get_name                          (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 AtkObject *                     clutter_actor_get_accessible                    (ClutterActor                *self);
 
 /* Size negotiation */
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_request_mode                  (ClutterActor                *self,
                                                                                  ClutterRequestMode           mode);
+CLUTTER_AVAILABLE_IN_ALL
 ClutterRequestMode              clutter_actor_get_request_mode                  (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_get_preferred_width               (ClutterActor                *self,
                                                                                  gfloat                       for_height,
                                                                                  gfloat                      *min_width_p,
                                                                                  gfloat                      *natural_width_p);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_get_preferred_height              (ClutterActor                *self,
                                                                                  gfloat                       for_width,
                                                                                  gfloat                      *min_height_p,
                                                                                  gfloat                      *natural_height_p);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_get_preferred_size                (ClutterActor                *self,
                                                                                  gfloat                      *min_width_p,
                                                                                  gfloat                      *min_height_p,
                                                                                  gfloat                      *natural_width_p,
                                                                                  gfloat                      *natural_height_p);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_allocate                          (ClutterActor                *self,
                                                                                  const ClutterActorBox       *box,
                                                                                  ClutterAllocationFlags       flags);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_allocate_preferred_size           (ClutterActor                *self,
                                                                                  ClutterAllocationFlags       flags);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_allocate_available_size           (ClutterActor                *self,
                                                                                  gfloat                       x,
                                                                                  gfloat                       y,
                                                                                  gfloat                       available_width,
                                                                                  gfloat                       available_height,
                                                                                  ClutterAllocationFlags       flags);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_allocate_align_fill               (ClutterActor                *self,
                                                                                  const ClutterActorBox       *box,
                                                                                  gdouble                      x_align,
@@ -361,45 +389,64 @@ void                            clutter_actor_allocate_align_fill               
                                                                                  gboolean                     x_fill,
                                                                                  gboolean                     y_fill,
                                                                                  ClutterAllocationFlags       flags);
+CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_set_allocation                    (ClutterActor                *self,
                                                                                  const ClutterActorBox       *box,
                                                                                  ClutterAllocationFlags       flags);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_get_allocation_box                (ClutterActor                *self,
                                                                                  ClutterActorBox             *box);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_get_allocation_vertices           (ClutterActor                *self,
                                                                                  ClutterActor                *ancestor,
                                                                                  ClutterVertex                verts[]);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_has_allocation                    (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_size                          (ClutterActor                *self,
                                                                                  gfloat                       width,
                                                                                  gfloat                       height);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_get_size                          (ClutterActor                *self,
                                                                                  gfloat                      *width,
                                                                                  gfloat                      *height);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_position                      (ClutterActor                *self,
                                                                                  gfloat                       x,
                                                                                  gfloat                       y);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_get_position                      (ClutterActor                *self,
                                                                                  gfloat                      *x,
                                                                                  gfloat                      *y);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_get_fixed_position_set            (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_fixed_position_set            (ClutterActor                *self,
                                                                                  gboolean                     is_set);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_move_by                           (ClutterActor                *self,
                                                                                  gfloat                       dx,
                                                                                  gfloat                       dy);
 
 /* Actor geometry */
+CLUTTER_AVAILABLE_IN_ALL
 gfloat                          clutter_actor_get_width                         (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 gfloat                          clutter_actor_get_height                        (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_width                         (ClutterActor                *self,
                                                                                  gfloat                       width);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_height                        (ClutterActor                *self,
                                                                                  gfloat                       height);
+CLUTTER_AVAILABLE_IN_ALL
 gfloat                          clutter_actor_get_x                             (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 gfloat                          clutter_actor_get_y                             (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_x                             (ClutterActor                *self,
                                                                                  gfloat                       x);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_y                             (ClutterActor                *self,
                                                                                  gfloat                       y);
 CLUTTER_AVAILABLE_IN_1_12
@@ -463,33 +510,49 @@ gboolean                        clutter_actor_needs_expand                      
                                                                                  ClutterOrientation           orientation);
 
 /* Paint */
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_clip                          (ClutterActor                *self,
                                                                                  gfloat                       xoff,
                                                                                  gfloat                       yoff,
                                                                                  gfloat                       width,
                                                                                  gfloat                       height);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_remove_clip                       (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_has_clip                          (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_get_clip                          (ClutterActor               *self,
                                                                                  gfloat                     *xoff,
                                                                                  gfloat                     *yoff,
                                                                                  gfloat                     *width,
                                                                                  gfloat                     *height);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_clip_to_allocation            (ClutterActor               *self,
                                                                                  gboolean                    clip_set);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_get_clip_to_allocation            (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_opacity                       (ClutterActor               *self,
                                                                                  guint8                      opacity);
+CLUTTER_AVAILABLE_IN_ALL
 guint8                          clutter_actor_get_opacity                       (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 guint8                          clutter_actor_get_paint_opacity                 (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_get_paint_visibility              (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_1_8
 void                            clutter_actor_set_offscreen_redirect            (ClutterActor               *self,
                                                                                  ClutterOffscreenRedirect    redirect);
+CLUTTER_AVAILABLE_IN_1_8
 ClutterOffscreenRedirect        clutter_actor_get_offscreen_redirect            (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_should_pick_paint                 (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_is_in_clone_paint                 (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_get_paint_box                     (ClutterActor               *self,
                                                                                  ClutterActorBox            *box);
+CLUTTER_AVAILABLE_IN_1_8
 gboolean                        clutter_actor_has_overlaps                      (ClutterActor               *self);
 
 /* Content */
@@ -525,30 +588,43 @@ void                            clutter_actor_set_background_color              
 CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_get_background_color              (ClutterActor               *self,
                                                                                  ClutterColor               *color);
+CLUTTER_AVAILABLE_IN_1_6
 const ClutterPaintVolume *      clutter_actor_get_paint_volume                  (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_1_6
 const ClutterPaintVolume *      clutter_actor_get_transformed_paint_volume      (ClutterActor               *self,
                                                                                  ClutterActor               *relative_to_ancestor);
 CLUTTER_AVAILABLE_IN_1_10
 const ClutterPaintVolume *      clutter_actor_get_default_paint_volume          (ClutterActor               *self);
 
 /* Events */
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_reactive                      (ClutterActor               *actor,
                                                                                  gboolean                    reactive);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_get_reactive                      (ClutterActor               *actor);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_has_key_focus                     (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_grab_key_focus                    (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_event                             (ClutterActor               *actor,
                                                                                  const ClutterEvent         *event,
                                                                                  gboolean                    capture);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_has_pointer                       (ClutterActor               *self);
 
 /* Text */
+CLUTTER_AVAILABLE_IN_ALL
 PangoContext *                  clutter_actor_get_pango_context                 (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 PangoContext *                  clutter_actor_create_pango_context              (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 PangoLayout *                   clutter_actor_create_pango_layout               (ClutterActor               *self,
                                                                                  const gchar                *text);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_text_direction                (ClutterActor               *self,
                                                                                  ClutterTextDirection        text_dir);
+CLUTTER_AVAILABLE_IN_ALL
 ClutterTextDirection            clutter_actor_get_text_direction                (ClutterActor               *self);
 
 /* Actor hierarchy */
@@ -593,9 +669,12 @@ CLUTTER_AVAILABLE_IN_1_10
 ClutterActor *                  clutter_actor_get_first_child                   (ClutterActor               *self);
 CLUTTER_AVAILABLE_IN_1_10
 ClutterActor *                  clutter_actor_get_last_child                    (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 ClutterActor *                  clutter_actor_get_parent                        (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_1_4
 gboolean                        clutter_actor_contains                          (ClutterActor               *self,
                                                                                  ClutterActor               *descendant);
+CLUTTER_AVAILABLE_IN_ALL
 ClutterActor*                   clutter_actor_get_stage                         (ClutterActor               *actor);
 CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_set_child_below_sibling           (ClutterActor               *self,
@@ -626,7 +705,9 @@ CLUTTER_AVAILABLE_IN_1_12
 gboolean                        clutter_actor_iter_is_valid                     (const ClutterActorIter     *iter);
 
 /* Transformations */
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_is_rotated                        (ClutterActor               *self);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_is_scaled                         (ClutterActor               *self);
 CLUTTER_AVAILABLE_IN_1_12
 void                            clutter_actor_set_pivot_point                   (ClutterActor               *self,
@@ -648,9 +729,11 @@ void                            clutter_actor_set_rotation_angle                
 CLUTTER_AVAILABLE_IN_1_12
 gdouble                         clutter_actor_get_rotation_angle                (ClutterActor               *self,
                                                                                  ClutterRotateAxis           axis);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_scale                         (ClutterActor               *self,
                                                                                  gdouble                     scale_x,
                                                                                  gdouble                     scale_y);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_get_scale                         (ClutterActor               *self,
                                                                                  gdouble                    *scale_x,
                                                                                  gdouble                    *scale_y);
@@ -681,22 +764,28 @@ void                            clutter_actor_set_child_transform               
 CLUTTER_AVAILABLE_IN_1_12
 void                            clutter_actor_get_child_transform               (ClutterActor               *self,
                                                                                  ClutterMatrix              *transform);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_get_transformed_position          (ClutterActor               *self,
                                                                                  gfloat                     *x,
                                                                                  gfloat                     *y);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_get_transformed_size              (ClutterActor               *self,
                                                                                  gfloat                     *width,
                                                                                  gfloat                     *height);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean                        clutter_actor_transform_stage_point             (ClutterActor               *self,
                                                                                  gfloat                      x,
                                                                                  gfloat                      y,
                                                                                  gfloat                     *x_out,
                                                                                  gfloat                     *y_out);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_get_abs_allocation_vertices       (ClutterActor               *self,
                                                                                  ClutterVertex               verts[]);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_apply_transform_to_point          (ClutterActor               *self,
                                                                                  const ClutterVertex        *point,
                                                                                  ClutterVertex              *vertex);
+CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_apply_relative_transform_to_point (ClutterActor               *self,
                                                                                  ClutterActor               *ancestor,
                                                                                  const ClutterVertex        *point,

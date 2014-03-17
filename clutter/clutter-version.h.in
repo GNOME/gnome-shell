@@ -311,12 +311,6 @@ CLUTTER_VAR const guint clutter_minor_version;
  */
 CLUTTER_VAR const guint clutter_micro_version;
 
-gboolean clutter_check_version (guint major,
-                                guint minor,
-                                guint micro);
-
-gboolean clutter_check_windowing_backend (const char *backend_type);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_VERSION_H__ */

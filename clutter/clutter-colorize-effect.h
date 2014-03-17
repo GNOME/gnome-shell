@@ -49,12 +49,16 @@ G_BEGIN_DECLS
 typedef struct _ClutterColorizeEffect           ClutterColorizeEffect;
 typedef struct _ClutterColorizeEffectClass      ClutterColorizeEffectClass;
 
+CLUTTER_AVAILABLE_IN_1_4
 GType clutter_colorize_effect_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_4
 ClutterEffect *clutter_colorize_effect_new      (const ClutterColor *tint);
 
+CLUTTER_AVAILABLE_IN_1_4
 void           clutter_colorize_effect_set_tint (ClutterColorizeEffect *effect,
                                                  const ClutterColor    *tint);
+CLUTTER_AVAILABLE_IN_1_4
 void           clutter_colorize_effect_get_tint (ClutterColorizeEffect *effect,
                                                  ClutterColor          *tint);
 

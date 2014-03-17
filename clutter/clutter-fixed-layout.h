@@ -71,8 +71,10 @@ struct _ClutterFixedLayoutClass
   ClutterLayoutManagerClass parent_class;
 };
 
+CLUTTER_AVAILABLE_IN_1_2
 GType clutter_fixed_layout_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_2
 ClutterLayoutManager *clutter_fixed_layout_new (void);
 
 G_END_DECLS

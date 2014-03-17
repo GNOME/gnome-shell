@@ -16,8 +16,10 @@ G_BEGIN_DECLS
 typedef struct _ClutterSettings         ClutterSettings;
 typedef struct _ClutterSettingsClass    ClutterSettingsClass;
 
+CLUTTER_AVAILABLE_IN_ALL
 GType clutter_settings_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_ALL
 ClutterSettings *clutter_settings_get_default (void);
 
 G_END_DECLS

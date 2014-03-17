@@ -51,20 +51,28 @@ G_BEGIN_DECLS
 typedef struct _ClutterPageTurnEffect           ClutterPageTurnEffect;
 typedef struct _ClutterPageTurnEffectClass      ClutterPageTurnEffectClass;
 
+CLUTTER_AVAILABLE_IN_1_4
 GType clutter_page_turn_effect_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_4
 ClutterEffect *clutter_page_turn_effect_new (gdouble period,
                                              gdouble angle,
                                              gfloat  radius);
 
+CLUTTER_AVAILABLE_IN_1_4
 void    clutter_page_turn_effect_set_period (ClutterPageTurnEffect *effect,
                                              gdouble                period);
+CLUTTER_AVAILABLE_IN_1_4
 gdouble clutter_page_turn_effect_get_period (ClutterPageTurnEffect *effect);
+CLUTTER_AVAILABLE_IN_1_4
 void    clutter_page_turn_effect_set_angle  (ClutterPageTurnEffect *effect,
                                              gdouble                angle);
+CLUTTER_AVAILABLE_IN_1_4
 gdouble clutter_page_turn_effect_get_angle  (ClutterPageTurnEffect *effect);
+CLUTTER_AVAILABLE_IN_1_4
 void    clutter_page_turn_effect_set_radius (ClutterPageTurnEffect *effect,
                                              gfloat                 radius);
+CLUTTER_AVAILABLE_IN_1_4
 gfloat  clutter_page_turn_effect_get_radius (ClutterPageTurnEffect *effect);
 
 G_END_DECLS

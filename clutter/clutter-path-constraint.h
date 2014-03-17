@@ -49,16 +49,22 @@ G_BEGIN_DECLS
 typedef struct _ClutterPathConstraint           ClutterPathConstraint;
 typedef struct _ClutterPathConstraintClass      ClutterPathConstraintClass;
 
+CLUTTER_AVAILABLE_IN_1_6
 GType clutter_path_constraint_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_6
 ClutterConstraint *clutter_path_constraint_new        (ClutterPath           *path,
                                                        gfloat                 offset);
 
+CLUTTER_AVAILABLE_IN_1_6
 void               clutter_path_constraint_set_path   (ClutterPathConstraint *constraint,
                                                        ClutterPath           *path);
+CLUTTER_AVAILABLE_IN_1_6
 ClutterPath *      clutter_path_constraint_get_path   (ClutterPathConstraint *constraint);
+CLUTTER_AVAILABLE_IN_1_6
 void               clutter_path_constraint_set_offset (ClutterPathConstraint *constraint,
                                                        gfloat                 offset);
+CLUTTER_AVAILABLE_IN_1_6
 gfloat             clutter_path_constraint_get_offset (ClutterPathConstraint *constraint);
 
 G_END_DECLS

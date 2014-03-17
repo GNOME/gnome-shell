@@ -46,9 +46,7 @@
  * #ClutterInterval is available since Clutter 1.0
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -64,6 +62,7 @@
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "deprecated/clutter-fixed.h"
 
 enum
@@ -104,11 +103,14 @@ G_DEFINE_TYPE_WITH_CODE (ClutterInterval,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
                                                 clutter_scriptable_iface_init));
 
+
 static gboolean
 clutter_interval_real_validate (ClutterInterval *interval,
                                 GParamSpec      *pspec)
 {
   GType pspec_gtype = G_PARAM_SPEC_VALUE_TYPE (pspec);
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
 
   /* check the GTypes we provide first */
   if (pspec_gtype == COGL_TYPE_FIXED)
@@ -124,6 +126,8 @@ clutter_interval_real_validate (ClutterInterval *interval,
       else
         return FALSE;
     }
+
+G_GNUC_END_IGNORE_DEPRECATIONS;
 
   /* then check the fundamental types */
   switch (G_TYPE_FUNDAMENTAL (pspec_gtype))

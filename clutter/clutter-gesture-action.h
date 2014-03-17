@@ -101,17 +101,23 @@ struct _ClutterGestureActionClass
   void (* _clutter_gesture_action6) (void);
 };
 
+CLUTTER_AVAILABLE_IN_1_8
 GType clutter_gesture_action_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_8
 ClutterAction *        clutter_gesture_action_new                      (void);
 
+CLUTTER_AVAILABLE_IN_1_8
 gint                   clutter_gesture_action_get_n_touch_points   (ClutterGestureAction *action);
+CLUTTER_AVAILABLE_IN_1_8
 void                   clutter_gesture_action_set_n_touch_points   (ClutterGestureAction *action,
                                                                     gint                  nb_points);
+CLUTTER_AVAILABLE_IN_1_8
 void                   clutter_gesture_action_get_press_coords     (ClutterGestureAction *action,
                                                                     guint                 point,
                                                                     gfloat               *press_x,
                                                                     gfloat               *press_y);
+CLUTTER_AVAILABLE_IN_1_8
 void                   clutter_gesture_action_get_motion_coords    (ClutterGestureAction *action,
                                                                     guint                 point,
                                                                     gfloat               *motion_x,
@@ -121,6 +127,7 @@ gfloat                 clutter_gesture_action_get_motion_delta     (ClutterGestu
                                                                     guint                 point,
                                                                     gfloat               *delta_x,
                                                                     gfloat               *delta_y);
+CLUTTER_AVAILABLE_IN_1_8
 void                   clutter_gesture_action_get_release_coords   (ClutterGestureAction *action,
                                                                     guint                 point,
                                                                     gfloat               *release_x,

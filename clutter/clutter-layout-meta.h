@@ -92,8 +92,10 @@ struct _ClutterLayoutMetaClass
   void (*_clutter_padding4) (void);
 };
 
+CLUTTER_AVAILABLE_IN_1_2
 GType clutter_layout_meta_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_2
 ClutterLayoutManager *clutter_layout_meta_get_manager (ClutterLayoutMeta *data);
 
 G_END_DECLS

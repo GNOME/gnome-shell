@@ -74,33 +74,47 @@ struct _ClutterFlowLayoutClass
   ClutterLayoutManagerClass parent_class;
 };
 
+CLUTTER_AVAILABLE_IN_1_2
 GType clutter_flow_layout_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_2
 ClutterLayoutManager * clutter_flow_layout_new                (ClutterFlowOrientation  orientation);
 
+CLUTTER_AVAILABLE_IN_1_2
 void                   clutter_flow_layout_set_orientation    (ClutterFlowLayout      *layout,
                                                                ClutterFlowOrientation  orientation);
+CLUTTER_AVAILABLE_IN_1_2
 ClutterFlowOrientation clutter_flow_layout_get_orientation    (ClutterFlowLayout      *layout);
+CLUTTER_AVAILABLE_IN_1_2
 void                   clutter_flow_layout_set_homogeneous    (ClutterFlowLayout      *layout,
                                                                gboolean                homogeneous);
+CLUTTER_AVAILABLE_IN_1_2
 gboolean               clutter_flow_layout_get_homogeneous    (ClutterFlowLayout      *layout);
 
+CLUTTER_AVAILABLE_IN_1_2
 void                   clutter_flow_layout_set_column_spacing (ClutterFlowLayout      *layout,
                                                                gfloat                  spacing);
+CLUTTER_AVAILABLE_IN_1_2
 gfloat                 clutter_flow_layout_get_column_spacing (ClutterFlowLayout      *layout);
+CLUTTER_AVAILABLE_IN_1_2
 void                   clutter_flow_layout_set_row_spacing    (ClutterFlowLayout      *layout,
                                                                gfloat                  spacing);
+CLUTTER_AVAILABLE_IN_1_2
 gfloat                 clutter_flow_layout_get_row_spacing    (ClutterFlowLayout      *layout);
 
+CLUTTER_AVAILABLE_IN_1_2
 void                   clutter_flow_layout_set_column_width   (ClutterFlowLayout      *layout,
                                                                gfloat                  min_width,
                                                                gfloat                  max_width);
+CLUTTER_AVAILABLE_IN_1_2
 void                   clutter_flow_layout_get_column_width   (ClutterFlowLayout      *layout,
                                                                gfloat                 *min_width,
                                                                gfloat                 *max_width);
+CLUTTER_AVAILABLE_IN_1_2
 void                   clutter_flow_layout_set_row_height     (ClutterFlowLayout      *layout,
                                                                gfloat                  min_height,
                                                                gfloat                  max_height);
+CLUTTER_AVAILABLE_IN_1_2
 void                   clutter_flow_layout_get_row_height     (ClutterFlowLayout      *layout,
                                                                gfloat                 *min_height,
                                                                gfloat                 *max_height);

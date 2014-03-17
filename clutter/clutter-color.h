@@ -68,56 +68,76 @@ struct _ClutterColor
  */
 #define CLUTTER_COLOR_INIT(r,g,b,a)     { (r), (g), (b), (a) }
 
-GType         clutter_color_get_type   (void) G_GNUC_CONST;
+CLUTTER_AVAILABLE_IN_ALL
+GType clutter_color_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_ALL
 ClutterColor *clutter_color_new         (guint8              red,
                                          guint8              green,
                                          guint8              blue,
                                          guint8              alpha);
+CLUTTER_AVAILABLE_IN_1_12
 ClutterColor *clutter_color_alloc       (void);
+CLUTTER_AVAILABLE_IN_1_12
 ClutterColor *clutter_color_init        (ClutterColor       *color,
                                          guint8              red,
                                          guint8              green,
                                          guint8              blue,
                                          guint8              alpha);
+CLUTTER_AVAILABLE_IN_ALL
 ClutterColor *clutter_color_copy        (const ClutterColor *color);
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_color_free        (ClutterColor       *color);
 
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_color_add         (const ClutterColor *a,
                                          const ClutterColor *b,
                                          ClutterColor       *result);
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_color_subtract    (const ClutterColor *a,
                                          const ClutterColor *b,
                                          ClutterColor       *result);
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_color_lighten     (const ClutterColor *color,
                                          ClutterColor       *result);
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_color_darken      (const ClutterColor *color,
                                          ClutterColor       *result);
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_color_shade       (const ClutterColor *color,
                                          gdouble             factor,
                                          ClutterColor       *result);
 
+CLUTTER_AVAILABLE_IN_ALL
 gchar *       clutter_color_to_string   (const ClutterColor *color);
+CLUTTER_AVAILABLE_IN_1_0
 gboolean      clutter_color_from_string (ClutterColor       *color,
                                          const gchar        *str);
 
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_color_to_hls      (const ClutterColor *color,
                                          gfloat             *hue,
 					 gfloat             *luminance,
 					 gfloat             *saturation);
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_color_from_hls    (ClutterColor       *color,
                                          gfloat              hue,
                                          gfloat              luminance,
                                          gfloat              saturation);
 
+CLUTTER_AVAILABLE_IN_ALL
 guint32       clutter_color_to_pixel    (const ClutterColor *color);
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_color_from_pixel  (ClutterColor       *color,
                                          guint32             pixel);
 
+CLUTTER_AVAILABLE_IN_1_0
 guint         clutter_color_hash        (gconstpointer       v);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean      clutter_color_equal       (gconstpointer       v1,
                                          gconstpointer       v2);
 
+CLUTTER_AVAILABLE_IN_1_6
 void          clutter_color_interpolate (const ClutterColor *initial,
                                          const ClutterColor *final,
                                          gdouble             progress,
@@ -157,17 +177,22 @@ struct _ClutterParamSpecColor
   ClutterColor *default_value;
 };
 
+CLUTTER_AVAILABLE_IN_1_0
 void                    clutter_value_set_color         (GValue             *value,
                                                          const ClutterColor *color);
+CLUTTER_AVAILABLE_IN_1_0
 const ClutterColor *    clutter_value_get_color         (const GValue       *value);
 
-GType       clutter_param_color_get_type (void) G_GNUC_CONST;
-GParamSpec *clutter_param_spec_color     (const gchar        *name,
-                                          const gchar        *nick,
-                                          const gchar        *blurb,
-                                          const ClutterColor *default_value,
-                                          GParamFlags         flags);
+CLUTTER_AVAILABLE_IN_1_0
+GType clutter_param_color_get_type (void) G_GNUC_CONST;
+CLUTTER_AVAILABLE_IN_1_0
+GParamSpec *    clutter_param_spec_color        (const gchar        *name,
+                                                 const gchar        *nick,
+                                                 const gchar        *blurb,
+                                                 const ClutterColor *default_value,
+                                                 GParamFlags         flags);
 
+CLUTTER_AVAILABLE_IN_1_6
 const ClutterColor *clutter_color_get_static (ClutterStaticColor color);
 
 G_END_DECLS

@@ -110,10 +110,13 @@ struct _ClutterChildMetaClass
   GObjectClass parent_class;
 }; 
 
-GType             clutter_child_meta_get_type      (void) G_GNUC_CONST;
+CLUTTER_AVAILABLE_IN_ALL
+GType clutter_child_meta_get_type (void) G_GNUC_CONST;
 
-ClutterContainer *clutter_child_meta_get_container (ClutterChildMeta *data);
-ClutterActor     *clutter_child_meta_get_actor     (ClutterChildMeta *data);
+CLUTTER_AVAILABLE_IN_ALL
+ClutterContainer *      clutter_child_meta_get_container        (ClutterChildMeta *data);
+CLUTTER_AVAILABLE_IN_ALL
+ClutterActor     *      clutter_child_meta_get_actor            (ClutterChildMeta *data);
 
 G_END_DECLS
 

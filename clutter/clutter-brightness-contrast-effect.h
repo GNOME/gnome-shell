@@ -49,27 +49,35 @@ G_BEGIN_DECLS
 typedef struct _ClutterBrightnessContrastEffect         ClutterBrightnessContrastEffect;
 typedef struct _ClutterBrightnessContrastEffectClass    ClutterBrightnessContrastEffectClass;
 
+CLUTTER_AVAILABLE_IN_1_10
 GType clutter_brightness_contrast_effect_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_10
 ClutterEffect * clutter_brightness_contrast_effect_new                          (void);
 
+CLUTTER_AVAILABLE_IN_1_10
 void            clutter_brightness_contrast_effect_set_brightness_full          (ClutterBrightnessContrastEffect *effect,
                                                                                  float                            red,
                                                                                  float                            green,
                                                                                  float                            blue);
+CLUTTER_AVAILABLE_IN_1_10
 void            clutter_brightness_contrast_effect_set_brightness               (ClutterBrightnessContrastEffect *effect,
                                                                                  float                            brightness);
+CLUTTER_AVAILABLE_IN_1_10
 void            clutter_brightness_contrast_effect_get_brightness               (ClutterBrightnessContrastEffect *effect,
                                                                                  float                           *red,
                                                                                  float                           *green,
                                                                                  float                           *blue);
 
+CLUTTER_AVAILABLE_IN_1_10
 void            clutter_brightness_contrast_effect_set_contrast_full            (ClutterBrightnessContrastEffect *effect,
                                                                                  float                            red,
                                                                                  float                            green,
                                                                                  float                            blue);
+CLUTTER_AVAILABLE_IN_1_10
 void            clutter_brightness_contrast_effect_set_contrast                 (ClutterBrightnessContrastEffect *effect,
                                                                                  float                            contrast);
+CLUTTER_AVAILABLE_IN_1_10
 void            clutter_brightness_contrast_effect_get_contrast                 (ClutterBrightnessContrastEffect *effect,
                                                                                  float                           *red,
                                                                                  float                           *green,

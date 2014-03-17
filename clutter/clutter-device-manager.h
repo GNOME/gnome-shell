@@ -88,16 +88,20 @@ struct _ClutterDeviceManagerClass
   gpointer _padding[7];
 };
 
-
-
+CLUTTER_AVAILABLE_IN_1_2
 GType clutter_device_manager_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_2
 ClutterDeviceManager *clutter_device_manager_get_default     (void);
+CLUTTER_AVAILABLE_IN_1_2
 GSList *              clutter_device_manager_list_devices    (ClutterDeviceManager   *device_manager);
+CLUTTER_AVAILABLE_IN_1_2
 const GSList *        clutter_device_manager_peek_devices    (ClutterDeviceManager   *device_manager);
 
+CLUTTER_AVAILABLE_IN_1_2
 ClutterInputDevice *  clutter_device_manager_get_device      (ClutterDeviceManager   *device_manager,
                                                               gint                    device_id);
+CLUTTER_AVAILABLE_IN_1_2
 ClutterInputDevice *  clutter_device_manager_get_core_device (ClutterDeviceManager   *device_manager,
                                                               ClutterInputDeviceType  device_type);
 

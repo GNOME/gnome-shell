@@ -87,16 +87,21 @@ struct _ClutterScriptableIface
                                         const GValue      *value);
 };
 
+CLUTTER_AVAILABLE_IN_ALL
 GType                 clutter_scriptable_get_type            (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_ALL
 void                  clutter_scriptable_set_id              (ClutterScriptable *scriptable,
                                                               const gchar       *id_);
+CLUTTER_AVAILABLE_IN_ALL
 const gchar *         clutter_scriptable_get_id              (ClutterScriptable *scriptable);
+CLUTTER_AVAILABLE_IN_ALL
 gboolean              clutter_scriptable_parse_custom_node   (ClutterScriptable *scriptable,
                                                               ClutterScript     *script,
                                                               GValue            *value,
                                                               const gchar       *name,
                                                               JsonNode          *node);
+CLUTTER_AVAILABLE_IN_ALL
 void                  clutter_scriptable_set_custom_property (ClutterScriptable *scriptable,
                                                               ClutterScript     *script,
                                                               const gchar       *name,

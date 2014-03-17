@@ -84,23 +84,32 @@ struct _ClutterConstraintClass
   void (* _clutter_constraint8) (void);
 };
 
+CLUTTER_AVAILABLE_IN_1_4
 GType clutter_constraint_get_type (void) G_GNUC_CONST;
 
 /* ClutterActor API */
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_actor_add_constraint            (ClutterActor      *self,
                                                             ClutterConstraint *constraint);
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_actor_add_constraint_with_name  (ClutterActor      *self,
                                                             const gchar       *name,
                                                             ClutterConstraint *constraint);
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_actor_remove_constraint         (ClutterActor      *self,
                                                             ClutterConstraint *constraint);
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_actor_remove_constraint_by_name (ClutterActor      *self,
                                                             const gchar       *name);
+CLUTTER_AVAILABLE_IN_1_4
 GList *            clutter_actor_get_constraints           (ClutterActor      *self);
+CLUTTER_AVAILABLE_IN_1_4
 ClutterConstraint *clutter_actor_get_constraint            (ClutterActor      *self,
                                                             const gchar       *name);
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_actor_clear_constraints         (ClutterActor      *self);
 
+CLUTTER_AVAILABLE_IN_1_10
 gboolean           clutter_actor_has_constraints           (ClutterActor *self);
 
 G_END_DECLS

@@ -97,15 +97,21 @@ struct _ClutterActorMetaClass
   void (* _clutter_meta7) (void);
 };
 
+CLUTTER_AVAILABLE_IN_1_4
 GType clutter_actor_meta_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_4
 void            clutter_actor_meta_set_name     (ClutterActorMeta *meta,
                                                  const gchar      *name);
+CLUTTER_AVAILABLE_IN_1_4
 const gchar *   clutter_actor_meta_get_name     (ClutterActorMeta *meta);
+CLUTTER_AVAILABLE_IN_1_4
 void            clutter_actor_meta_set_enabled  (ClutterActorMeta *meta,
                                                  gboolean          is_enabled);
+CLUTTER_AVAILABLE_IN_1_4
 gboolean        clutter_actor_meta_get_enabled  (ClutterActorMeta *meta);
 
+CLUTTER_AVAILABLE_IN_1_4
 ClutterActor *  clutter_actor_meta_get_actor    (ClutterActorMeta *meta);
 
 G_END_DECLS

@@ -48,20 +48,28 @@ G_BEGIN_DECLS
 typedef struct _ClutterBindConstraint           ClutterBindConstraint;
 typedef struct _ClutterBindConstraintClass      ClutterBindConstraintClass;
 
+CLUTTER_AVAILABLE_IN_1_4
 GType clutter_bind_constraint_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_4
 ClutterConstraint *   clutter_bind_constraint_new            (ClutterActor          *source,
                                                               ClutterBindCoordinate  coordinate,
                                                               gfloat                 offset);
 
+CLUTTER_AVAILABLE_IN_1_4
 void                  clutter_bind_constraint_set_source     (ClutterBindConstraint *constraint,
                                                               ClutterActor          *source);
+CLUTTER_AVAILABLE_IN_1_4
 ClutterActor *        clutter_bind_constraint_get_source     (ClutterBindConstraint *constraint);
+CLUTTER_AVAILABLE_IN_1_4
 void                  clutter_bind_constraint_set_coordinate (ClutterBindConstraint *constraint,
                                                               ClutterBindCoordinate  coordinate);
+CLUTTER_AVAILABLE_IN_1_4
 ClutterBindCoordinate clutter_bind_constraint_get_coordinate (ClutterBindConstraint *constraint);
+CLUTTER_AVAILABLE_IN_1_4
 void                  clutter_bind_constraint_set_offset     (ClutterBindConstraint *constraint,
                                                               gfloat                 offset);
+CLUTTER_AVAILABLE_IN_1_4
 gfloat                clutter_bind_constraint_get_offset     (ClutterBindConstraint *constraint);
 
 G_END_DECLS
