@@ -29,6 +29,7 @@ AM_CPPFLAGS = \
 	$(CLUTTER_DEPRECATED_CFLAGS)		\
 	$(CLUTTER_DEBUG_CFLAGS)			\
 	$(CLUTTER_PROFILE_CFLAGS)		\
+	$(CLUTTER_HIDDEN_VISIBILITY_CFLAGS)	\
 	$(NULL)
 
 AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
@@ -850,7 +851,6 @@ libclutter_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(CLUTTER_LINK_FLAGS) \
 	$(CLUTTER_LT_LDFLAGS) \
 	-export-dynamic \
-	-export-symbols-regex "^(clutter|cally).*" \
 	-rpath $(libdir) \
 	$(win32_resources_ldflag) \
 	$(NULL)
