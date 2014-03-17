@@ -94,8 +94,8 @@ clutter_actor_get_shader (ClutterActor *self)
  * If @shader is %NULL this function will unset any currently set shader
  * for the actor.
  *
- * <note>Any #ClutterEffect applied to @self will take the precedence
- * over the #ClutterShader set using this function.</note>
+ * Any #ClutterEffect applied to @self will take the precedence
+ * over the #ClutterShader set using this function.
  *
  * Return value: %TRUE if the shader was successfully applied
  *   or removed

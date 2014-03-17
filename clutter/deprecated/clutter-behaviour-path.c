@@ -53,9 +53,9 @@
  * }
  * ]|
  *
- * <note>If the alpha function is a periodic function, i.e. it returns to
+ * If the alpha function is a periodic function, i.e. it returns to
  * 0.0 after reaching 1.0, then the actors will walk the path back to the
- * starting #ClutterKnot.</note>
+ * starting #ClutterKnot.
  *
  * #ClutterBehaviourPath is available since Clutter 0.2
  *

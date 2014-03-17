@@ -37,58 +37,55 @@
  * through the #ClutterScript definition format, but it comes with a
  * convenience C API.
  *
- * <refsect2 id="ClutterAnimator-key-frames">
- *   <title>Key Frames</title>
- *   <para>Every animation handled by a #ClutterAnimator can be
- *   described in terms of "key frames". For each #GObject property
- *   there can be multiple key frames, each one defined by the end
- *   value for the property to be computed starting from the current
- *   value to a specific point in time, using a given easing
- *   mode.</para>
- *   <para>The point in time is defined using a value representing
- *   the progress in the normalized interval of [ 0, 1 ]. This maps
- *   the value returned by clutter_timeline_get_duration().</para>
- *   <figure id="easing-modes">
- *     <title>Key Frames</title>
- *     <graphic fileref="animator-key-frames.png" format="PNG"/>
- *   </figure>
- *   <para>In the image above the duration of the animation is
- *   represented by the blue line. Each key frame is the white dot,
- *   along with its progress. The red line represents the computed
- *   function of time given the easing mode.</para>
- * </refsect2>
+ * #ClutterAnimator is available since Clutter 1.2
  *
- * <refsect2 id="ClutterAnimator-script">
- *   <title>ClutterAnimator description for #ClutterScript</title>
- *   <para>#ClutterAnimator defines a custom "properties" property
- *   which allows describing the key frames for objects.</para>
- *   <para>The "properties" property has the following syntax:</para>
- *   <informalexample>
- *     <programlisting><![CDATA[
+ * #ClutterAnimator has been deprecated in Clutter 1.12
+ *
+ * ## Key Frames
+ *
+ * Every animation handled by a #ClutterAnimator can be
+ * described in terms of "key frames". For each #GObject property
+ * there can be multiple key frames, each one defined by the end
+ * value for the property to be computed starting from the current
+ * value to a specific point in time, using a given easing
+ * mode.
+ *
+ * The point in time is defined using a value representing
+ * the progress in the normalized interval of [ 0, 1 ]. This maps
+ * the value returned by clutter_timeline_get_duration().
+ *
+ * ## ClutterAnimator description for ClutterScript
+ *
+ * #ClutterAnimator defines a custom "properties" key
+ * which allows describing the key frames for objects as
+ * an array of key frames.
+ *
+ * The `properties` array has the following syntax:
+ *
+ * |[
  *  {
  *    "properties" : [
  *      {
- *        "object" : &lt;id of an object&gt;,
- *        "name" : &lt;name of the property&gt;,
- *        "ease-in" : &lt;boolean&gt;,
- *        "interpolation" : &lt;#ClutterInterpolation value&gt;,
+ *        "object" : object_id
+ *        "name" : property_name
+ *        "ease-in" : true_or_false
+ *        "interpolation" : interpolation_value
  *        "keys" : [
- *          [ &lt;progress&gt;, &lt;easing mode&gt;, &lt;final value&gt; ]
+ *          [ progress, easing_mode, final_value ]
  *        ]
  *    ]
  *  }
- *     ]]></programlisting>
- *   </informalexample>
- *   <example id="ClutterAnimator-script-example">
- *     <title>ClutterAnimator definition</title>
- *     <para>The following JSON fragment defines a #ClutterAnimator
- *     with the duration of 1 second and operating on the x and y
- *     properties of a #ClutterActor named "rect-01", with two frames
- *     for each property. The first frame will linearly move the actor
- *     from its current position to the 100, 100 position in 20 percent
- *     of the duration of the animation; the second will using a cubic
- *     easing to move the actor to the 200, 200 coordinates.</para>
- *     <programlisting><![CDATA[
+ * ]|
+ *
+ * The following JSON fragment defines a #ClutterAnimator
+ * with the duration of 1 second and operating on the x and y
+ * properties of a #ClutterActor named "rect-01", with two frames
+ * for each property. The first frame will linearly move the actor
+ * from its current position to the 100, 100 position in 20 percent
+ * of the duration of the animation; the second will using a cubic
+ * easing to move the actor to the 200, 200 coordinates.
+ *
+ * |[
  *  {
  *    "type" : "ClutterAnimator",
  *    "duration" : 1000,
@@ -113,13 +110,7 @@
  *      }
  *    ]
  *  }
- *     ]]></programlisting>
- *   </example>
- * </refsect2>
- *
- * #ClutterAnimator is available since Clutter 1.2
- *
- * #ClutterAnimator has been deprecated in Clutter 1.12
+ * ]|
  */
 
 #ifdef HAVE_CONFIG_H

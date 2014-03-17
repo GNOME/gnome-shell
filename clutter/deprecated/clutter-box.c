@@ -30,44 +30,42 @@
  * interface. A Box delegates the whole size requisition and size allocation to
  * a #ClutterLayoutManager instance.
  *
- * <example id="example-clutter-box">
- *   <title>Using ClutterBox</title>
- *   <para>The following code shows how to create a #ClutterBox with
- *   a #ClutterLayoutManager sub-class, and how to add children to
- *   it via clutter_box_pack().</para>
- *   <programlisting>
+ * #ClutterBox is available since Clutter 1.2
+ *
+ * Deprecated: 1.10: Use #ClutterActor instead.
+ *
+ * ## Using ClutterBox
+ *
+ * The following code shows how to create a #ClutterBox with
+ * a #ClutterLayoutManager sub-class, and how to add children to
+ * it via clutter_box_pack().
+ *
+ * |[<!-- language="C" -->
  *  ClutterActor *box;
  *  ClutterLayoutManager *layout;
  *
- *  /&ast; Create the layout manager first &ast;/
+ *  // Create the layout manager first
  *  layout = clutter_box_layout_new ();
  *  clutter_box_layout_set_homogeneous (CLUTTER_BOX_LAYOUT (layout), TRUE);
  *  clutter_box_layout_set_spacing (CLUTTER_BOX_LAYOUT (layout), 12);
  *
- *  /&ast; Then create the ClutterBox actor. The Box will take
- *   &ast; ownership of the ClutterLayoutManager instance by sinking
- *   &ast; its floating reference
- *   &ast;/
+ *  // Then create the ClutterBox actor. The Box will take
+ *  // ownership of the ClutterLayoutManager instance by sinking
+ *  // its floating reference
  *  box = clutter_box_new (layout);
  *
- *  /&ast; Now add children to the Box using the variadic arguments
- *   &ast; function clutter_box_pack() to set layout properties
- *   &ast;/
+ *  // Now add children to the Box using the variadic arguments
+ *  // function clutter_box_pack() to set layout properties
  *  clutter_box_pack (CLUTTER_BOX (box), actor,
  *                    "x-align", CLUTTER_BOX_ALIGNMENT_CENTER,
  *                    "y-align", CLUTTER_BOX_ALIGNMENT_END,
  *                    "expand", TRUE,
  *                    NULL);
- *   </programlisting>
- * </example>
+ * ]|
  *
- * #ClutterBox<!-- -->'s clutter_box_pack() wraps the generic
+ * #ClutterBox's clutter_box_pack() wraps the generic
  * clutter_container_add_actor() function, but it also allows setting
  * layout properties while adding the new child to the box.
- *
- * #ClutterBox is available since Clutter 1.2
- *
- * Deprecated: 1.10: Use #ClutterActor instead.
  */
 
 #ifdef HAVE_CONFIG_H

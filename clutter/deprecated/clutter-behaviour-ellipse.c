@@ -33,9 +33,9 @@
  * #ClutterBehaviourEllipse interpolates actors along a path defined by
  *  an ellipse.
  *
- * <note><para>When applying an ellipse behaviour to an actor, the
+ * When applying an ellipse behaviour to an actor, the
  * behaviour will update the actor's position and depth and set them
- * to what is dictated by the ellipses initial position.</para></note>
+ * to what is dictated by the ellipses initial position.
  *
  * Deprecated: 1.6: Use clutter_actor_animate(), #ClutterPath and a
  *   #ClutterPathConstraint instead.

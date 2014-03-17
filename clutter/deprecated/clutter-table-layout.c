@@ -36,22 +36,20 @@
  * The #ClutterTableLayout is a #ClutterLayoutManager implementing the
  * following layout policy:
  *
- * <itemizedlist>
- *   <listitem><para>children are arranged in a table</para></listitem>
- *   <listitem><para>each child specifies the specific row and column
- *   cell to appear;</para></listitem>
- *   <listitem><para>a child can also set a span, and this way, take
- *   more than one cell both horizontally and vertically;</para></listitem>
- *   <listitem><para>each child will be allocated to its natural
- *   size or, if set to expand, the available size;</para></listitem>
- *   <listitem><para>if a child is set to fill on either (or both)
+ *   - children are arranged in a table
+ *   - each child specifies the specific row and column
+ *   cell to appear;
+ *   - a child can also set a span, and this way, take
+ *   more than one cell both horizontally and vertically;
+ *   - each child will be allocated to its natural
+ *   size or, if set to expand, the available size;
+ *   - if a child is set to fill on either (or both)
  *   axis, its allocation will match all the available size; the
  *   fill layout property only makes sense if the expand property is
- *   also set;</para></listitem>
- *   <listitem><para>if a child is set to expand but not to fill then
+ *   also set;
+ *   - if a child is set to expand but not to fill then
  *   it is possible to control the alignment using the horizontal and
- *   vertical alignment layout properties.</para></listitem>
- * </itemizedlist>
+ *   vertical alignment layout properties.
  *
  * It is possible to control the spacing between children of a
  * #ClutterTableLayout by using clutter_table_layout_set_row_spacing()
@@ -66,12 +64,6 @@
  * used for the animations are controlled by the
  * #ClutterTableLayout:easing-mode and #ClutterTableLayout:easing-duration
  * properties and their accessor functions.
- *
- * <figure id="table-layout-image">
- *   <title>Table layout</title>
- *   <para>The image shows a #ClutterTableLayout.</para>
- *   <graphic fileref="table-layout.png" format="PNG"/>
- * </figure>
  *
  * #ClutterTableLayout is available since Clutter 1.4
  *

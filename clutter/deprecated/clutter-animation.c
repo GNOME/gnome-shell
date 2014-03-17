@@ -29,7 +29,7 @@
  *   #ClutterTimeline
  *
  * #ClutterAnimation is an object providing simple, implicit animations
- * for #GObject<!-- -->s.
+ * for #GObjects.
  *
  * #ClutterAnimation instances will bind one or more #GObject properties
  * belonging to a #GObject to a #ClutterInterval, and will then use a
@@ -57,91 +57,40 @@
  * #ClutterAnimatable interface it is possible for that instance to
  * control the way the initial and final states are interpolated.
  *
- * #ClutterAnimation<!-- -->s are distinguished from #ClutterBehaviour<!-- -->s
+ * #ClutterAnimations are distinguished from #ClutterBehaviours
  * because the former can only control #GObject properties of a single
  * #GObject instance, while the latter can control multiple properties
  * using accessor functions inside the #ClutterBehaviour
- * <function>alpha_notify</function> virtual function, and can control
- * multiple #ClutterActor<!-- -->s as well.
+ * `alpha_notify` virtual function, and can control multiple #ClutterActors
+ * as well.
  *
  * For convenience, it is possible to use the clutter_actor_animate()
  * function call which will take care of setting up and tearing down
  * a #ClutterAnimation instance and animate an actor between its current
  * state and the specified final state.
  *
- * <refsect2 id="clutter-AnimationMode-Script">
- *   <title>Defining ClutterAnimationMode inside ClutterScript</title>
- *   <para>When defining a #ClutterAnimation inside a ClutterScript
- *   file or string the #ClutterAnimation:mode can be defined either
- *   using the #ClutterAnimationMode enumeration values through their
- *   "nick" (the short string used inside #GEnumValue), their numeric
- *   id, or using the following strings:</para>
- *   <variablelist>
- *     <varlistentry>
- *       <term>easeInQuad, easeOutQuad, easeInOutQuad</term>
- *       <listitem><para>Corresponding to the quadratic easing
- *       modes</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term>easeInCubic, easeOutCubic, easeInOutCubic</term>
- *       <listitem><para>Corresponding to the cubic easing
- *       modes</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term>easeInQuart, easeOutQuart, easeInOutQuart</term>
- *       <listitem><para>Corresponding to the quartic easing
- *       modes</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term>easeInQuint, easeOutQuint, easeInOutQuint</term>
- *       <listitem><para>Corresponding to the quintic easing
- *       modes</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term>easeInSine, easeOutSine, easeInOutSine</term>
- *       <listitem><para>Corresponding to the sine easing
- *       modes</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term>easeInExpo, easeOutExpo, easeInOutExpo</term>
- *       <listitem><para>Corresponding to the exponential easing
- *       modes</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term>easeInCirc, easeOutCirc, easeInOutCirc</term>
- *       <listitem><para>Corresponding to the circular easing
- *       modes</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term>easeInElastic, easeOutElastic, easeInOutElastic</term>
- *       <listitem><para>Corresponding to the overshooting elastic
- *       easing modes</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term>easeInBack, easeOutBack, easeInOutBack</term>
- *       <listitem><para>Corresponding to the overshooting cubic
- *       easing modes</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term>easeInBounce, easeOutBounce, easeInOutBounce</term>
- *       <listitem><para>Corresponding to the bouncing easing
- *       modes</para></listitem>
- *     </varlistentry>
- *   </variablelist>
- * </refsect2>
- *
- * <example id="example-clutter-animation">
- *   <title>Tweening using clutter_actor_animate()</title>
- *   <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-easing.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *   </programlisting>
- * </example>
- *
  * #ClutterAnimation is available since Clutter 1.0.
  *
  * #ClutterAnimation has been deprecated in Clutter 1.12.
+ *
+ * ## Defining ClutterAnimationMode inside ClutterScript
+ *
+ * When defining a #ClutterAnimation inside a ClutterScript
+ * file or string the #ClutterAnimation:mode can be defined either
+ * using the #ClutterAnimationMode enumeration values through their
+ * "nick" (the short string used inside #GEnumValue), their numeric
+ * id, or using the following strings:
+ *
+ *  - easeInQuad, easeOutQuad, easeInOutQuad
+ *  - easeInCubic, easeOutCubic, easeInOutCubic
+ *  - easeInQuart, easeOutQuart, easeInOutQuart
+ *  - easeInQuint, easeOutQuint, easeInOutQuint
+ *  - easeInSine, easeOutSine, easeInOutSine
+ *  - easeInExpo, easeOutExpo, easeInOutExpo
+ *  - easeInCirc, easeOutCirc, easeInOutCirc
+ *  - easeInElastic, easeOutElastic, easeInOutElastic
+ *  - easeInBack, easeOutBack, easeInOutBack
+ *  - easeInBounce, easeOutBounce, easeInOutBounce
  */
 
 #ifdef HAVE_CONFIG_H
@@ -2233,7 +2182,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *
  * For example, this:
  *
- * |[
+ * |[<!-- language="C" -->
  *   clutter_actor_animate (rectangle, CLUTTER_LINEAR, 250,
  *                          "width", 100.0,
  *                          "height", 100.0,
@@ -2251,10 +2200,10 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * the animation but not updated during the animation, it should be prefixed
  * by the "fixed::" string, for instance:
  *
- * |[
+ * |[<!-- language="C" -->
  *   clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE, 100,
  *                          "rotation-angle-z", 360.0,
- *                          "fixed::rotation-center-z", &amp;center,
+ *                          "fixed::rotation-center-z", &center,
  *                          NULL);
  * ]|
  *
@@ -2272,8 +2221,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * are used as callback function and data for a signal handler installed on
  * the #ClutterAnimation object for the specified signal name, for instance:
  *
- * |[
- *
+ * |[<!-- language="C" -->
  *   static void
  *   on_animation_completed (ClutterAnimation *animation,
  *                           ClutterActor     *actor)
@@ -2289,7 +2237,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *
  * or, to automatically destroy an actor at the end of the animation:
  *
- * |[
+ * |[<!-- language="C" -->
  *   clutter_actor_animate (actor, CLUTTER_EASE_IN_CUBIC, 100,
  *                          "opacity", 0,
  *                          "signal-swapped-after::completed",
@@ -2314,7 +2262,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * will cause the current animation to change with the new final values,
  * the new easing mode and the new duration - that is, this code:
  *
- * |[
+ * |[<!-- language="C" -->
  *   clutter_actor_animate (actor, CLUTTER_LINEAR, 250,
  *                          "width", 100.0,
  *                          "height", 100.0,
@@ -2328,7 +2276,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *
  * is the equivalent of:
  *
- * |[
+ * |[<!-- language="C" -->
  *   clutter_actor_animate (actor, CLUTTER_EASE_IN_CUBIC, 500,
  *                          "x", 100.0,
  *                          "y", 100.0,
@@ -2337,9 +2285,9 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *                          NULL);
  * ]|
  *
- * <note>Unless the animation is looping, the #ClutterAnimation created by
+ * Unless the animation is looping, the #ClutterAnimation created by
  * clutter_actor_animate() will become invalid as soon as it is
- * complete.</note>
+ * complete.
  *
  * Since the created #ClutterAnimation instance attached to @actor
  * is guaranteed to be valid throughout the #ClutterAnimation::completed
@@ -2348,7 +2296,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * #ClutterAnimation::completed signal handler unless you use
  * g_signal_connect_after() to connect the callback function, for instance:
  *
- * |[
+ * |[<!-- language="C" -->
  *   static void
  *   on_animation_completed (ClutterAnimation *animation,
  *                           ClutterActor     *actor)
@@ -2424,8 +2372,8 @@ clutter_actor_animate (ClutterActor *actor,
  * This is the vector-based variant of clutter_actor_animate(), useful
  * for language bindings.
  *
- * <warning>Unlike clutter_actor_animate(), this function will not
- * allow you to specify "signal::" names and callbacks.</warning>
+ * Unlike clutter_actor_animate(), this function will not
+ * allow you to specify "signal::" names and callbacks.
  *
  * Return value: (transfer none): a #ClutterAnimation object. The object is
  *   owned by the #ClutterActor and should not be unreferenced with
@@ -2483,8 +2431,8 @@ clutter_actor_animatev (ClutterActor        *actor,
  * This is the vector-based variant of clutter_actor_animate_with_timeline(),
  * useful for language bindings.
  *
- * <warning>Unlike clutter_actor_animate_with_timeline(), this function
- * will not allow you to specify "signal::" names and callbacks.</warning>
+ * Unlike clutter_actor_animate_with_timeline(), this function
+ * will not allow you to specify "signal::" names and callbacks.
  *
  * Return value: (transfer none): a #ClutterAnimation object. The object is
  *    owned by the #ClutterActor and should not be unreferenced with
@@ -2540,8 +2488,8 @@ clutter_actor_animate_with_timelinev (ClutterActor        *actor,
  * This is the vector-based variant of clutter_actor_animate_with_alpha(),
  * useful for language bindings.
  *
- * <warning>Unlike clutter_actor_animate_with_alpha(), this function will
- * not allow you to specify "signal::" names and callbacks.</warning>
+ * Unlike clutter_actor_animate_with_alpha(), this function will
+ * not allow you to specify "signal::" names and callbacks.
  *
  * Return value: (transfer none): a #ClutterAnimation object. The object is owned by the
  *   #ClutterActor and should not be unreferenced with g_object_unref()

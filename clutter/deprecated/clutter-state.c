@@ -31,15 +31,20 @@
  * is NULL it is used for transition to the target state unless a specific key
  * exists for transitioning from the current state to the requested state.
  *
- * <example id="ClutterState-example">
- *   <title>A ClutterState example</title>
- *   <para>The following example defines a "base" and a "hover" state in a
- *   #ClutterState instance.</para>
- *   <programlisting>
+ * #ClutterState is available since Clutter 1.4.
+ *
+ * #ClutterState has been deprecated in Clutter 1.12.
+ *
+ * ## Using ClutterState
+ *
+ * The following example defines a "base" and a "hover" state in a
+ * #ClutterState instance.
+ *
+ * |[<!-- language="C" -->
  * ClutterState *state = clutter_state_new ();
  * ClutterColor color = { 0, };
  *
- * /&ast; transition from any state to the "base" state &ast;/
+ * // transition from any state to the "base" state
  * clutter_color_from_string (&color, "rgb(255, 0, 0)");
  * clutter_state_set (state, NULL, "base",
  *                    actor, "color", CLUTTER_LINEAR, &color,
@@ -47,7 +52,7 @@
  *                    actor, "scale-y", CLUTTER_EASE_IN_BOUNCE, 1.0,
  *                    NULL);
  *
- * /&ast; transition from the "base" state to the "hover" state &ast;/
+ * // transition from the "base" state to the "hover" state
  * clutter_color_from_string (&color, "rgb(0, 0, 255)");
  * clutter_state_set (state, "base", "hover",
  *                    actor, "color", CLUTTER_LINEAR, &color,
@@ -55,16 +60,18 @@
  *                    actor, "scale-y", CLUTTER_EASE_OUT_BOUNCE, 1.7,
  *                    NULL);
  *
- * /&ast; the default duration of any transition &ast;/
+ * // the default duration of any transition
  * clutter_state_set_duration (state, NULL, NULL, 500);
  *
- * /&ast; set "base" as the initial state &ast;/
+ * // set "base" as the initial state
  * clutter_state_warp_to_state (state, "base");
- *   </programlisting>
- *   <para>The actor then uses the #ClutterState to animate through the
- *   two states using callbacks for the #ClutterActor::enter-event and
- *   #ClutterActor::leave-event signals.</para>
- *   <programlisting>
+ * ]|
+ *
+ * The actor then uses the #ClutterState to animate through the
+ * two states using callbacks for the #ClutterActor::enter-event and
+ * #ClutterActor::leave-event signals.
+ *
+ * |[<!-- language="C" -->
  * static gboolean
  * on_enter (ClutterActor *actor,
  *           ClutterEvent *event,
@@ -72,7 +79,7 @@
  * {
  *   clutter_state_set_state (state, "hover");
  *
- *   return TRUE;
+ *   return CLUTTER_EVENT_STOP;
  * }
  *
  * static gboolean
@@ -82,67 +89,64 @@
  * {
  *   clutter_state_set_state (state, "base");
  *
- *   return TRUE;
+ *   return CLUTTER_EVENT_STOP;
  * }
- *   </programlisting>
- * </example>
  *
- * <refsect2 id="ClutterState-script">
- *   <title>ClutterState description for #ClutterScript</title>
- *   <para>#ClutterState defines a custom <emphasis>transitions</emphasis>
- *   property which allows describing the states.</para>
- *   <para>The <emphasis>transitions</emphasis> property has the following
- *   syntax:</para>
- *   <informalexample>
- *     <programlisting>
+ * ## ClutterState description for ClutterScript
+ *
+ * #ClutterState defines a custom `transitions` JSON object member which
+ * allows describing the states.
+ *
+ * The `transitions` property has the following syntax:
+ *
+ * |[
  * {
  *   "transitions" : [
  *     {
- *       "source" : "&lt;source-state&gt;",
- *       "target" : "&lt;target-state&gt;",
- *       "duration" : &lt;milliseconds&gt;,
+ *       "source" : "source-state",
+ *       "target" : "target-state",
+ *       "duration" : milliseconds,
  *       "keys" : [
  *         [
- *           "&lt;object-id&gt;",
- *           "&lt;property-name&gt;",
- *           "&lt;easing-mode&gt;",
- *           "&lt;final-value&gt;",
+ *           "object-id",
+ *           "property-name",
+ *           "easing-mode",
+ *           "final-value",
  *         ],
  *         [
- *           "&lt;object-id&gt;",
- *           "&lt;property-name&gt;",
- *           "&lt;easing-mode&gt;",
- *           "&lt;final-value&gt;",
- *           &lt;pre-delay&gt;,
- *           &lt;post-delay&gt;
+ *           "object-id",
+ *           "property-name",
+ *           "easing-mode",
+ *           "final-value",
+ *           pre-delay,
+ *           post-delay;
  *         ],
  *         ...
  *       ]
  *     },
  *     {
- *       "source" : "&lt;source-state&gt;",
- *       "target" : "&lt;target-state&gt;",
- *       "duration" : &lt;milliseconds&gt;,
- *       "animator" : "&lt;animator-definition&gt;"
+ *       "source" : "source-state",
+ *       "target" : "target-state",
+ *       "duration" : milliseconds,
+ *       "animator" : "animator-definition"
  *     },
  *     ...
  *   ]
  * }
- *     </programlisting>
- *   </informalexample>
- *   <para>Each element of the <emphasis>transitions</emphasis> array follows
- *   the same rules as clutter_state_set_key().</para>
- *   <para>The <emphasis>source</emphasis> and <emphasis>target</emphasis>
- *   values control the source and target state of the transition. The
- *   <emphasis>key</emphasis> and <emphasis>animator</emphasis> are mutually
- *   exclusive. The <emphasis>pre-delay</emphasis> and
- *   <emphasis>post-delay</emphasis> values are optional.</para>
- *   <example id="ClutterState-script-example">
- *     <title>ClutterState definition</title>
- *     <para>The example below is a translation into a #ClutterScript
- *     definition of the code in the <ulink linkend="ClutterState-example">example
- *     above</ulink>.</para>
- *     <programlisting>
+ * ]|
+ *
+ * Each element of the transitions array follows the same rules and order
+ * as clutter_state_set_key() function arguments.
+ *
+ * The source and target values control the source and target state of the
+ * transition. The key and animator properties are mutually exclusive.
+ *
+ * The pre-delay and post-delay values are optional.
+ *
+ * The example below is a translation into a #ClutterScript definition of
+ * the code in the #ClutterState example above.
+ *
+ * |[
  * {
  *   "id" : "button-state",
  *   "type" : "ClutterState",
@@ -168,13 +172,7 @@
  *     }
  *   ]
  * }
- *     </programlisting>
- *   </example>
- * </refsect2>
- *
- * #ClutterState is available since Clutter 1.4.
- *
- * #ClutterState has been deprecated in Clutter 1.12.
+ * ]|
  */
 
 #ifdef HAVE_CONFIG_H
@@ -933,7 +931,7 @@ get_property_from_object (GObject     *gobject,
  *
  * will create a transition from any state (a @source_state_name or NULL is
  * treated as a wildcard) and a state named "hover"; the
- * <emphasis>button</emphasis> object will have the #ClutterActor:opacity
+ * button object will have the #ClutterActor:opacity
  * property animated to a value of 255 using %CLUTTER_LINEAR as the animation
  * mode, and the #ClutterActor:scale-x and #ClutterActor:scale-y properties
  * animated to a value of 1.2 using %CLUTTER_EASE_OUT_CUBIC as the animation

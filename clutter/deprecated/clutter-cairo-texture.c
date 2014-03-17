@@ -34,11 +34,11 @@
  * Cairo image surface which will then be uploaded to a GL texture when
  * needed.
  *
- * <note><para>Since #ClutterCairoTexture uses a Cairo image surface
+ * Since #ClutterCairoTexture uses a Cairo image surface
  * internally all the drawing operations will be performed in
  * software and not using hardware acceleration. This can lead to
  * performance degradation if the contents of the texture change
- * frequently.</para></note>
+ * frequently.
  *
  * In order to use a #ClutterCairoTexture you should connect to the
  * #ClutterCairoTexture::draw signal; the signal is emitted each time
@@ -51,18 +51,10 @@
  * is owned by the #ClutterCairoTexture and should not be destroyed
  * explicitly.
  *
- * <example id="cairo-texture-example">
- *   <title>A simple ClutterCairoTexture canvas</title>
- *   <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../tests/interactive/test-cairo-clock.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *   </programlisting>
- * </example>
- *
  * #ClutterCairoTexture is available since Clutter 1.0.
  *
- * #ClutterCairoTexture is deprecated since Clutter 1.12.
+ * #ClutterCairoTexture is deprecated since Clutter 1.12. You should
+ * use #ClutterCanvas instead.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -845,9 +837,9 @@ clutter_cairo_texture_create_region_internal (ClutterCairoTexture *self,
  * Creates a new Cairo context that will updat the region defined
  * by @x_offset, @y_offset, @width and @height.
  *
- * <warning><para>Do not call this function within the paint virtual
+ * Do not call this function within the paint virtual
  * function or from a callback to the #ClutterActor::paint
- * signal.</para></warning>
+ * signal.
  *
  * Return value: a newly created Cairo context. Use cairo_destroy()
  *   to upload the contents of the context when done drawing
@@ -967,9 +959,9 @@ clutter_cairo_texture_invalidate (ClutterCairoTexture *self)
  * and @y_offset of 0, @width equal to the @cairo texture surface width
  * and @height equal to the @cairo texture surface height.
  *
- * <warning><para>Do not call this function within the paint virtual
+ * Do not call this function within the paint virtual
  * function or from a callback to the #ClutterActor::paint
- * signal.</para></warning>
+ * signal.
  *
  * Return value: a newly created Cairo context. Use cairo_destroy()
  *   to upload the contents of the context when done drawing
