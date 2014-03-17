@@ -29,9 +29,7 @@
  *
  * The EGL backend for Clutter provides some EGL specific API
  *
- * You need to include
- * <filename class="headerfile">&lt;clutter/egl/clutter-egl.h&gt;</filename>
- * to have access to the functions documented here.
+ * You need to include `clutter-egl.h` to have access to the functions documented here.
  */
 
 #ifndef __CLUTTER_EGL_H__

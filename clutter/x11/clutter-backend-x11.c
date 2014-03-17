@@ -949,15 +949,14 @@ clutter_x11_enable_xinput (void)
  * You also must call clutter_x11_handle_event() to let Clutter process
  * events and maintain its internal state.
  *
- * <warning>This function can only be called before calling
- * clutter_init().</warning>
+ * This function can only be called before calling clutter_init().
  *
- * <note>Even with event handling disabled, Clutter will still select
+ * Even with event handling disabled, Clutter will still select
  * all the events required to maintain its internal state on the stage
  * Window; compositors using Clutter and input regions to pass events
  * through to application windows should not rely on an empty input
  * region, and should instead clear it themselves explicitly using the
- * XFixes extension.</note>
+ * XFixes extension.
  *
  * This function should not be normally used by applications.
  *
@@ -1262,13 +1261,13 @@ clutter_x11_has_composite_extension (void)
  *
  * By default, Clutter requests RGB visuals.
  *
- * <note>If no ARGB visuals are found, the X11 backend will fall back to
- * requesting a RGB visual instead.</note>
+ * If no ARGB visuals are found, the X11 backend will fall back to
+ * requesting a RGB visual instead.
  *
  * ARGB visuals are required for the #ClutterStage:use-alpha property to work.
  *
- * <note>This function can only be called once, and before clutter_init() is
- * called.</note>
+ * This function can only be called once, and before clutter_init() is
+ * called.
  *
  * Since: 1.2
  */

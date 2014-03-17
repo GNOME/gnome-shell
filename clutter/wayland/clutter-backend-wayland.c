@@ -359,8 +359,7 @@ clutter_wayland_set_display (struct wl_display *display)
  * event dispatch; in general only a single source should be acting on changes
  * on the Wayland file descriptor.
  *
- * <warning>This function can only be called before calling
- * clutter_init().</warning>
+ * This function can only be called before calling clutter_init().
  *
  * This function should not be normally used by applications.
  *
