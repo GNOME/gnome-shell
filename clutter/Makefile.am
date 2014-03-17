@@ -1041,22 +1041,3 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif # HAVE_INTROSPECTION
-
-# Test
-clutter_all_c_sources = \
-	$(backend_source_c) \
-	$(backend_source_c_priv) \
-	$(source_c) \
-	$(source_c_priv) \
-	$(deprecated_c) \
-	$(deprecated_c_priv) \
-	$(cally_sources_c) \
-	$(built_source_c)
-
-TESTS_ENVIRONMENT = srcdir="$(srcdir)" CLUTTER_BACKENDS="$(CLUTTER_BACKENDS)"
-LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/build/autotools/tap-driver.sh
-if OS_LINUX
-TESTS = abicheck.sh
-endif
-
-EXTRA_DIST += abicheck.sh
