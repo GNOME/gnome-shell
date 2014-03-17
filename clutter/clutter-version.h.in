@@ -254,20 +254,11 @@ G_BEGIN_DECLS
          (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION > (minor)) || \
          (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION == (minor) && CLUTTER_MICRO_VERSION >= (micro)))
 
-/* annotation for exported variables
- *
- * XXX: this has to be defined here because clutter-macro.h imports this
- * header file.
- */
-#ifdef _MSC_VER
-# ifdef CLUTTER_COMPILATION
-#  define CLUTTER_VAR __declspec(dllexport)
-# else
-#  define CLUTTER_VAR extern __declspec(dllimport)
-# endif
-#else
-# define CLUTTER_VAR extern
+#ifndef _CLUTTER_EXTERN
+#define _CLUTTER_EXTERN extern
 #endif
+
+#define CLUTTER_VAR _CLUTTER_EXTERN
 
 /**
  * clutter_major_version:
