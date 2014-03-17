@@ -465,7 +465,6 @@ clutter_bind_constraint_set_offset
 clutter_bind_constraint_set_source
 clutter_bind_coordinate_get_type
 clutter_bin_alignment_get_type
-clutter_bin_layer_get_type
 clutter_bin_layout_add
 clutter_bin_layout_get_alignment
 clutter_bin_layout_get_type
@@ -474,7 +473,6 @@ clutter_bin_layout_set_alignment
 clutter_blur_effect_get_type
 clutter_blur_effect_new
 clutter_box_alignment_get_type
-clutter_box_child_get_type
 clutter_box_get_color
 clutter_box_get_layout_manager
 clutter_box_get_type
@@ -612,7 +610,6 @@ clutter_content_gravity_get_type
 clutter_content_invalidate
 clutter_content_repeat_get_type
 clutter_constraint_get_type
-clutter_debug_flags DATA
 clutter_deform_effect_get_back_material
 clutter_deform_effect_get_n_tiles
 clutter_deform_effect_get_type
@@ -791,7 +788,6 @@ clutter_grab_keyboard
 clutter_grab_pointer
 clutter_grab_pointer_for_device
 clutter_gravity_get_type
-clutter_grid_child_get_type
 clutter_grid_layout_get_type
 clutter_grid_layout_new
 clutter_grid_layout_attach
@@ -915,7 +911,6 @@ clutter_layout_manager_layout_changed
 clutter_layout_manager_list_child_properties
 clutter_layout_manager_set_container
 clutter_list_model_get_type
-clutter_list_model_iter_get_type
 clutter_list_model_new
 clutter_list_model_newv
 clutter_long_press_state_get_type
@@ -1011,7 +1006,6 @@ clutter_page_turn_effect_new
 clutter_page_turn_effect_set_angle
 clutter_page_turn_effect_set_period
 clutter_page_turn_effect_set_radius
-clutter_paint_debug_flags DATA
 clutter_paint_node_add_child
 clutter_paint_node_add_path
 clutter_paint_node_add_primitive
@@ -1094,7 +1088,6 @@ clutter_param_spec_fixed
 clutter_param_spec_units
 clutter_param_units_get_type
 clutter_perspective_get_type
-clutter_pick_debug_flags DATA
 clutter_pipeline_node_get_type
 clutter_pipeline_node_new
 clutter_pick_mode_get_type
@@ -1106,7 +1099,6 @@ clutter_point_free
 clutter_point_get_type
 clutter_point_init
 clutter_point_zero
-clutter_profile_flags DATA
 clutter_property_transition_get_property_name
 clutter_property_transition_get_type
 clutter_property_transition_new
@@ -1342,7 +1334,6 @@ clutter_swipe_action_get_type
 clutter_swipe_action_new
 clutter_swipe_direction_get_type
 clutter_table_alignment_get_type
-clutter_table_child_get_type
 clutter_table_layout_get_alignment
 clutter_table_layout_get_column_count
 clutter_table_layout_get_column_spacing
@@ -1674,3 +1665,5 @@ clutter_zoom_action_get_zoom_axis
 clutter_zoom_action_new
 clutter_zoom_action_set_zoom_axis
 clutter_zoom_axis_get_type
+_fini
+_init
