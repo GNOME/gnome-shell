@@ -159,8 +159,8 @@ struct _MetaWindow
   /* Whether we're fullscreen */
   guint fullscreen : 1;
 
-  /* Whether the urgent flag of WM_HINTS is set */
-  guint wm_hints_urgent : 1;
+  /* Whether the window is marked as urgent */
+  guint urgent : 1;
 
   /* Whether we have to fullscreen after placement */
   guint fullscreen_after_placement : 1;

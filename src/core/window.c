@@ -306,7 +306,7 @@ meta_window_get_property(GObject         *object,
       g_value_set_boolean (value, win->wm_state_demands_attention);
       break;
     case PROP_URGENT:
-      g_value_set_boolean (value, win->wm_hints_urgent);
+      g_value_set_boolean (value, win->urgent);
       break;
     case PROP_SKIP_TASKBAR:
       g_value_set_boolean (value, win->skip_taskbar);
@@ -833,7 +833,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   meta_icon_cache_init (&window->icon_cache);
   window->wm_hints_pixmap = None;
   window->wm_hints_mask = None;
-  window->wm_hints_urgent = FALSE;
 
   window->frame = NULL;
   window->has_focus = FALSE;
@@ -10378,10 +10377,10 @@ void
 meta_window_set_urgent (MetaWindow *window,
                         gboolean    urgent)
 {
-  if (window->wm_hints_urgent == urgent)
+  if (window->urgent == urgent)
     return;
 
-  window->wm_hints_urgent = urgent;
+  window->urgent = urgent;
   g_object_notify_by_pspec (window, props[PROP_URGENT]);
 
   if (urgent)
