@@ -344,7 +344,7 @@ avoid_being_obscured_as_second_modal_dialog (MetaWindow *window,
   /* denied_focus_and_not_transient is only set when focus_window != NULL */
 
   if (window->denied_focus_and_not_transient &&
-      window->wm_state_modal && /* FIXME: Maybe do this for all transients? */
+      window->type == META_WINDOW_MODAL_DIALOG &&
       meta_window_same_application (window, focus_window) &&
       window_overlaps_focus_window (window))
     {

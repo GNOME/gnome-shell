@@ -5687,7 +5687,7 @@ get_modal_transient (MetaWindow *window)
       MetaWindow *transient = tmp->data;
 
       if (transient->transient_for == modal_transient &&
-          transient->wm_state_modal)
+          transient->type == META_WINDOW_MODAL_DIALOG)
         {
           modal_transient = transient;
           tmp = windows;
