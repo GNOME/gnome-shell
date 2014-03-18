@@ -1460,10 +1460,9 @@ reload_wm_hints (MetaWindow    *window,
                  gboolean       initial)
 {
   Window old_group_leader;
-  gboolean old_urgent;
+  gboolean urgent;
 
   old_group_leader = window->xgroup_leader;
-  old_urgent = window->wm_hints_urgent;
   
   /* Fill in defaults */
   window->input = TRUE;
@@ -1471,7 +1470,7 @@ reload_wm_hints (MetaWindow    *window,
   window->xgroup_leader = None;
   window->wm_hints_pixmap = None;
   window->wm_hints_mask = None;
-  window->wm_hints_urgent = FALSE;
+  urgent = FALSE;
 
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -1493,7 +1492,7 @@ reload_wm_hints (MetaWindow    *window,
         window->wm_hints_mask = hints->icon_mask;
 
       if (hints->flags & XUrgencyHint)
-        window->wm_hints_urgent = TRUE;
+        urgent = TRUE;
 
       meta_verbose ("Read WM_HINTS input: %d iconic: %d group leader: 0x%lx pixmap: 0x%lx mask: 0x%lx\n",
                     window->input, window->initially_iconic,
@@ -1510,20 +1509,7 @@ reload_wm_hints (MetaWindow    *window,
       meta_window_group_leader_changed (window);
     }
 
-  /*
-   * Do not emit urgency notification on the inital property load
-   */
-  if (!initial && (window->wm_hints_urgent != old_urgent))
-    g_object_notify (G_OBJECT (window), "urgent");
-
-  /*
-   * Do not emit signal for the initial property load, let the constructor to
-   * take care of it once the MetaWindow is fully constructed.
-   *
-   * Only emit if the property is both changed and set.
-   */
-  if (!initial && window->wm_hints_urgent && !old_urgent)
-    g_signal_emit_by_name (window->display, "window-marked-urgent", window);
+  meta_window_set_urgent (window, urgent);
 
   meta_icon_cache_property_changed (&window->icon_cache,
                                     window->display,

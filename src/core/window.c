@@ -1269,9 +1269,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   if (window->wm_state_demands_attention)
     g_signal_emit_by_name (window->display, "window-demands-attention", window);
 
-  if (window->wm_hints_urgent)
-    g_signal_emit_by_name (window->display, "window-marked-urgent", window);
-
   return window;
 }
 
@@ -10375,4 +10372,18 @@ gboolean
 meta_window_allows_resize (MetaWindow *window)
 {
   return META_WINDOW_ALLOWS_RESIZE (window);
+}
+
+void
+meta_window_set_urgent (MetaWindow *window,
+                        gboolean    urgent)
+{
+  if (window->wm_hints_urgent == urgent)
+    return;
+
+  window->wm_hints_urgent = urgent;
+  g_object_notify_by_pspec (window, props[PROP_URGENT]);
+
+  if (urgent)
+    g_signal_emit_by_name (window->display, "window-marked-urgent", window);
 }
