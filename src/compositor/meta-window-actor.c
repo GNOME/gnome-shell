@@ -968,9 +968,6 @@ start_simple_effect (MetaWindowActor *self,
   gint *counter = NULL;
   gboolean use_freeze_thaw = FALSE;
 
-  if (!info->plugin_mgr)
-    return FALSE;
-
   switch (event)
   {
   case META_PLUGIN_MINIMIZE:
@@ -1299,8 +1296,7 @@ meta_window_actor_maximize (MetaWindowActor    *self,
   self->priv->maximize_in_progress++;
   meta_window_actor_freeze (self);
 
-  if (!info->plugin_mgr ||
-      !meta_plugin_manager_event_maximize (info->plugin_mgr,
+  if (!meta_plugin_manager_event_maximize (info->plugin_mgr,
                                            self,
                                            META_PLUGIN_MAXIMIZE,
                                            new_rect->x, new_rect->y,
@@ -1328,8 +1324,7 @@ meta_window_actor_unmaximize (MetaWindowActor   *self,
   self->priv->unmaximize_in_progress++;
   meta_window_actor_freeze (self);
 
-  if (!info->plugin_mgr ||
-      !meta_plugin_manager_event_maximize (info->plugin_mgr,
+  if (!meta_plugin_manager_event_maximize (info->plugin_mgr,
                                            self,
                                            META_PLUGIN_UNMAXIMIZE,
                                            new_rect->x, new_rect->y,
