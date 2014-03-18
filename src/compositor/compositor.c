@@ -83,6 +83,12 @@
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 
+static gboolean
+is_modal (MetaDisplay *display)
+{
+  return display->grab_op == META_GRAB_OP_COMPOSITOR;
+}
+
 /* #define DEBUG_TRACE g_print */
 #define DEBUG_TRACE(X)
 
@@ -446,11 +452,10 @@ meta_begin_modal_for_plugin (MetaScreen       *screen,
    * are significant differences in how we handle grabs that make it difficult to
    * merge the two.
    */
-  MetaDisplay    *display    = meta_screen_get_display (screen);
-  MetaCompositor *compositor = display->compositor;
+  MetaDisplay *display = meta_screen_get_display (screen);
   gboolean ok;
 
-  if (compositor->modal_plugin != NULL || display->grab_op != META_GRAB_OP_NONE)
+  if (is_modal (display) || display->grab_op != META_GRAB_OP_NONE)
     return FALSE;
 
   if (meta_is_wayland_compositor ())
@@ -466,8 +471,6 @@ meta_begin_modal_for_plugin (MetaScreen       *screen,
   display->grab_have_pointer = TRUE;
   display->grab_have_keyboard = TRUE;
 
-  compositor->modal_plugin = plugin;
-
   return TRUE;
 }
 
@@ -476,11 +479,10 @@ meta_end_modal_for_plugin (MetaScreen     *screen,
                            MetaPlugin     *plugin,
                            guint32         timestamp)
 {
-  MetaDisplay    *display    = meta_screen_get_display (screen);
-  Display        *xdpy = meta_display_get_xdisplay (display);
-  MetaCompositor *compositor = display->compositor;
+  MetaDisplay *display = meta_screen_get_display (screen);
+  Display *xdpy = meta_display_get_xdisplay (display);
 
-  g_return_if_fail (compositor->modal_plugin == plugin);
+  g_return_if_fail (is_modal (display));
 
   if (!meta_is_wayland_compositor ())
     {
@@ -493,8 +495,6 @@ meta_end_modal_for_plugin (MetaScreen     *screen,
   display->grab_screen = NULL;
   display->grab_have_pointer = FALSE;
   display->grab_have_keyboard = FALSE;
-
-  compositor->modal_plugin = NULL;
 }
 
 static void
@@ -1004,9 +1004,9 @@ meta_compositor_process_event (MetaCompositor *compositor,
 
   info = meta_screen_get_compositor_data (screen);
 
-  if (compositor->modal_plugin && is_grabbed_event (compositor->display, event))
+  if (is_modal (display) && is_grabbed_event (compositor->display, event))
     {
-      _meta_plugin_xevent_filter (compositor->modal_plugin, event);
+      meta_plugin_manager_xevent_filter (info->plugin_mgr, event);
 
       /* We always consume events even if the plugin says it didn't handle them;
        * exclusive is exclusive */

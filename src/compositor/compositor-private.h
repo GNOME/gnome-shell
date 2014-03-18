@@ -21,8 +21,6 @@ struct _MetaCompositor
 
   ClutterActor   *shadow_src;
 
-  MetaPlugin     *modal_plugin;
-
   gint64          server_time_query_time;
   gint64          server_time_offset;
 
