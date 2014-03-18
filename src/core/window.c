@@ -10381,7 +10381,7 @@ meta_window_set_urgent (MetaWindow *window,
     return;
 
   window->urgent = urgent;
-  g_object_notify_by_pspec (window, props[PROP_URGENT]);
+  g_object_notify (G_OBJECT (window), "urgent");
 
   if (urgent)
     g_signal_emit_by_name (window->display, "window-marked-urgent", window);
