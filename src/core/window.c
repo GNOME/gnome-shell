@@ -561,7 +561,7 @@ meta_window_class_init (MetaWindowClass *klass)
     g_signal_new ("workspace-changed",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MetaWindowClass, workspace_changed),
+                  0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   G_TYPE_INT);
@@ -570,7 +570,7 @@ meta_window_class_init (MetaWindowClass *klass)
     g_signal_new ("focus",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MetaWindowClass, focus),
+                  0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
@@ -578,7 +578,7 @@ meta_window_class_init (MetaWindowClass *klass)
     g_signal_new ("raised",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MetaWindowClass, raised),
+                  0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
@@ -586,7 +586,7 @@ meta_window_class_init (MetaWindowClass *klass)
     g_signal_new ("unmanaged",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MetaWindowClass, unmanaged),
+                  0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
