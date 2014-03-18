@@ -667,18 +667,25 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
     }
 }
 
-/*
- * Shapes the cow so that the given window is exposed,
- * when metaWindow is NULL it clears the shape again
+/**
+ * meta_shape_cow_for_window:
+ * @screen: A #MetaScreen
+ * @window: (allow-none): A #MetaWindow to shape the COW for
+ *
+ * Sets an bounding shape on the COW so that the given window
+ * is exposed. If @window is %NULL it clears the shape again.
+ *
+ * Used so we can unredirect windows, by shaping away the part
+ * of the COW, letting the raw window be seen through below.
  */
 static void
 meta_shape_cow_for_window (MetaScreen *screen,
-                           MetaWindow *metaWindow)
+                           MetaWindow *window)
 {
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
   Display *xdisplay = meta_display_get_xdisplay (meta_screen_get_display (screen));
 
-  if (metaWindow == NULL)
+  if (window == NULL)
       XFixesSetWindowShapeRegion (xdisplay, info->output, ShapeBounding, 0, 0, None);
   else
     {
@@ -687,7 +694,7 @@ meta_shape_cow_for_window (MetaScreen *screen,
       int width, height;
       MetaRectangle rect;
 
-      meta_window_get_frame_rect (metaWindow, &rect);
+      meta_window_get_frame_rect (window, &rect);
 
       window_bounds.x = rect.x;
       window_bounds.y = rect.y;
