@@ -4970,9 +4970,10 @@ meta_window_move_resize_internal (MetaWindow          *window,
                   newx, newy, window->rect.width, window->rect.height,
                   window->user_rect.x, window->user_rect.y,
                   window->user_rect.width, window->user_rect.height);
-      meta_compositor_sync_window_geometry (window->display->compositor,
-                                            window,
-                                            did_placement);
+      if (window->visible_to_compositor)
+        meta_compositor_sync_window_geometry (window->display->compositor,
+                                              window,
+                                              did_placement);
     }
   else
     {
