@@ -89,9 +89,6 @@ is_modal (MetaDisplay *display)
   return display->grab_op == META_GRAB_OP_COMPOSITOR;
 }
 
-/* #define DEBUG_TRACE g_print */
-#define DEBUG_TRACE(X)
-
 static inline gboolean
 composite_at_least_version (MetaDisplay *display, int maj, int min)
 {
@@ -115,13 +112,8 @@ meta_finish_workspace_switch (MetaCompScreen *info)
   for (l = info->windows; l; l = l->next)
     meta_window_actor_sync_visibility (l->data);
 
-  /*
-   * Fix up stacking order in case the plugin messed it up.
-   */
+  /* Fix up stacking order. */
   sync_actor_stacking (info);
-
-/*   printf ("... FINISHED DESKTOP SWITCH\n"); */
-
 }
 
 void
@@ -148,32 +140,11 @@ meta_compositor_destroy (MetaCompositor *compositor)
 }
 
 static void
-add_win (MetaWindow *window)
-{
-  MetaScreen		*screen = meta_window_get_screen (window);
-  MetaCompScreen        *info = meta_screen_get_compositor_data (screen);
-
-  g_return_if_fail (info != NULL);
-
-  meta_window_actor_new (window);
-
-  sync_actor_stacking (info);
-}
-
-static void
 process_damage (MetaCompositor     *compositor,
                 XDamageNotifyEvent *event,
                 MetaWindow         *window)
 {
-  MetaWindowActor *window_actor;
-
-  if (window == NULL)
-    return;
-
-  window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  if (window_actor == NULL)
-    return;
-
+  MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
   meta_window_actor_process_x11_damage (window_actor, event);
 }
 
@@ -767,11 +738,12 @@ meta_compositor_add_window (MetaCompositor    *compositor,
 {
   MetaScreen *screen = meta_window_get_screen (window);
   MetaDisplay *display = meta_screen_get_display (screen);
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
-  DEBUG_TRACE ("meta_compositor_add_window\n");
   meta_error_trap_push (display);
 
-  add_win (window);
+  meta_window_actor_new (window);
+  sync_actor_stacking (info);
 
   meta_error_trap_pop (display);
 }
@@ -780,17 +752,9 @@ void
 meta_compositor_remove_window (MetaCompositor *compositor,
                                MetaWindow     *window)
 {
-  MetaWindowActor         *window_actor     = NULL;
-  MetaScreen *screen;
-  MetaCompScreen *info;
-
-  DEBUG_TRACE ("meta_compositor_remove_window\n");
-  window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  if (!window_actor)
-    return;
-
-  screen = meta_window_get_screen (window);
-  info = meta_screen_get_compositor_data (screen);
+  MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
+  MetaScreen *screen = meta_window_get_screen (window);
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
   if (info->unredirected_window == window)
     set_unredirected_window (info, NULL);
@@ -803,13 +767,7 @@ meta_compositor_set_updates_frozen (MetaCompositor *compositor,
                                     MetaWindow     *window,
                                     gboolean        updates_frozen)
 {
-  MetaWindowActor *window_actor;
-
-  DEBUG_TRACE ("meta_compositor_set_updates_frozen\n");
-  window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  if (!window_actor)
-    return;
-
+  MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
   meta_window_actor_set_updates_frozen (window_actor, updates_frozen);
 }
 
@@ -818,13 +776,7 @@ meta_compositor_queue_frame_drawn (MetaCompositor *compositor,
                                    MetaWindow     *window,
                                    gboolean        no_delay_frame)
 {
-  MetaWindowActor *window_actor;
-
-  DEBUG_TRACE ("meta_compositor_queue_frame_drawn\n");
-  window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  if (!window_actor)
-    return;
-
+  MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
   meta_window_actor_queue_frame_drawn (window_actor, no_delay_frame);
 }
 
@@ -1017,10 +969,7 @@ meta_compositor_process_event (MetaCompositor *compositor,
     maybe_spoof_event_as_stage_event (info, window, event);
 
   if (meta_plugin_manager_xevent_filter (info->plugin_mgr, event))
-    {
-      DEBUG_TRACE ("meta_compositor_process_event (filtered,window==NULL)\n");
-      return TRUE;
-    }
+    return TRUE;
 
   if (!meta_is_wayland_compositor () &&
       event->type == meta_display_get_damage_event_base (compositor->display) + XDamageNotify)
@@ -1034,7 +983,6 @@ meta_compositor_process_event (MetaCompositor *compositor,
           window = meta_display_lookup_x_window (compositor->display, xwin);
         }
 
-      DEBUG_TRACE ("meta_compositor_process_event (process_damage)\n");
       process_damage (compositor, (XDamageNotifyEvent *) event, window);
     }
 
@@ -1069,11 +1017,7 @@ meta_compositor_show_window (MetaCompositor *compositor,
                              MetaCompEffect  effect)
 {
   MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("meta_compositor_show_window\n");
-  if (!window_actor)
-    return;
-
-  meta_window_actor_show (window_actor, effect);
+ meta_window_actor_show (window_actor, effect);
 }
 
 void
@@ -1082,10 +1026,6 @@ meta_compositor_hide_window (MetaCompositor *compositor,
                              MetaCompEffect  effect)
 {
   MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("meta_compositor_hide_window\n");
-  if (!window_actor)
-    return;
-
   meta_window_actor_hide (window_actor, effect);
 }
 
@@ -1096,10 +1036,6 @@ meta_compositor_maximize_window (MetaCompositor    *compositor,
 				 MetaRectangle	   *new_rect)
 {
   MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("meta_compositor_maximize_window\n");
-  if (!window_actor)
-    return;
-
   meta_window_actor_maximize (window_actor, old_rect, new_rect);
 }
 
@@ -1110,10 +1046,6 @@ meta_compositor_unmaximize_window (MetaCompositor    *compositor,
 				   MetaRectangle     *new_rect)
 {
   MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("meta_compositor_unmaximize_window\n");
-  if (!window_actor)
-    return;
-
   meta_window_actor_unmaximize (window_actor, old_rect, new_rect);
 }
 
@@ -1130,8 +1062,6 @@ meta_compositor_switch_workspace (MetaCompositor     *compositor,
   info      = meta_screen_get_compositor_data (screen);
   to_indx   = meta_workspace_index (to);
   from_indx = meta_workspace_index (from);
-
-  DEBUG_TRACE ("meta_compositor_switch_workspace\n");
 
   if (!info) /* During startup before manage_screen() */
     return;
@@ -1251,8 +1181,6 @@ meta_compositor_sync_stack (MetaCompositor  *compositor,
   GList *old_stack;
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
-  DEBUG_TRACE ("meta_compositor_sync_stack\n");
-
   /* This is painful because hidden windows that we are in the process
    * of animating out of existence. They'll be at the bottom of the
    * stack of X windows, but we want to leave them in their old position
@@ -1341,15 +1269,6 @@ meta_compositor_sync_window_geometry (MetaCompositor *compositor,
                                       gboolean did_placement)
 {
   MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  MetaScreen      *screen = meta_window_get_screen (window);
-  MetaCompScreen  *info = meta_screen_get_compositor_data (screen);
-
-  DEBUG_TRACE ("meta_compositor_sync_window_geometry\n");
-  g_return_if_fail (info);
-
-  if (!window_actor)
-    return;
-
   meta_window_actor_sync_actor_geometry (window_actor, did_placement);
 }
 
@@ -1381,7 +1300,6 @@ meta_compositor_sync_screen_size (MetaCompositor  *compositor,
       Display        *xdisplay;
       Window          xwin;
 
-      DEBUG_TRACE ("meta_compositor_sync_screen_size\n");
       g_return_if_fail (info);
 
       xdisplay = meta_display_get_xdisplay (display);

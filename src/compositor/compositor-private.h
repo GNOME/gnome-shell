@@ -19,14 +19,10 @@ struct _MetaCompositor
 
   guint           repaint_func_id;
 
-  ClutterActor   *shadow_src;
-
   gint64          server_time_query_time;
   gint64          server_time_offset;
 
   guint           server_time_is_monotonic_time : 1;
-  guint           show_redraw : 1;
-  guint           debug       : 1;
   guint           no_mipmaps  : 1;
 };
 
@@ -34,10 +30,9 @@ struct _MetaCompScreen
 {
   MetaScreen            *screen;
 
-  ClutterActor          *stage, *window_group, *top_window_group, *overlay_group;
+  ClutterActor          *stage, *window_group, *top_window_group;
   ClutterActor          *background_actor;
   GList                 *windows;
-  GHashTable            *windows_by_xid;
   Window                 output;
 
   CoglOnscreen          *onscreen;
