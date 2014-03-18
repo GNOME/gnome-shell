@@ -1010,11 +1010,7 @@ meta_compositor_filter_keybinding (MetaCompositor *compositor,
                                    MetaKeyBinding *binding)
 {
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-
-  if (info->plugin_mgr)
-    return meta_plugin_manager_filter_keybinding (info->plugin_mgr, binding);
-
-  return FALSE;
+  return meta_plugin_manager_filter_keybinding (info->plugin_mgr, binding);
 }
 
 void
@@ -1074,11 +1070,9 @@ meta_compositor_switch_workspace (MetaCompositor     *compositor,
 
   info->switch_workspace_in_progress++;
 
-  if (!info->plugin_mgr ||
-      !meta_plugin_manager_switch_workspace (info->plugin_mgr,
-					       from_indx,
-					       to_indx,
-					       direction))
+  if (!meta_plugin_manager_switch_workspace (info->plugin_mgr,
+                                             from_indx, to_indx,
+                                             direction))
     {
       info->switch_workspace_in_progress--;
 
@@ -1609,10 +1603,6 @@ meta_compositor_show_tile_preview (MetaCompositor *compositor,
                                    int             tile_monitor_number)
 {
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-
-  if (!info->plugin_mgr)
-    return;
-
   meta_plugin_manager_show_tile_preview (info->plugin_mgr,
                                          window, tile_rect, tile_monitor_number);
 }
@@ -1622,9 +1612,5 @@ meta_compositor_hide_tile_preview (MetaCompositor *compositor,
                                    MetaScreen     *screen)
 {
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-
-  if (!info->plugin_mgr)
-    return;
-
   meta_plugin_manager_hide_tile_preview (info->plugin_mgr);
 }
