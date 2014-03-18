@@ -26,6 +26,20 @@
 #include <meta/window.h>
 #include <X11/Xlib.h>
 
+G_BEGIN_DECLS
+
+#define META_TYPE_WINDOW_X11            (meta_window_x11_get_type())
+#define META_WINDOW_X11(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_WINDOW_X11, MetaWindowX11))
+#define META_WINDOW_X11_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_WINDOW_X11, MetaWindowX11Class))
+#define META_IS_WINDOW_X11(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_WINDOW_X11))
+#define META_IS_WINDOW_X11_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_WINDOW_X11))
+#define META_WINDOW_X11_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_WINDOW_X11, MetaWindowX11Class))
+
+GType meta_window_x11_get_type (void);
+
+typedef struct _MetaWindowX11      MetaWindowX11;
+typedef struct _MetaWindowX11Class MetaWindowX11Class;
+
 void meta_window_x11_set_net_wm_state            (MetaWindow *window);
 void meta_window_x11_set_wm_state                (MetaWindow *window);
 

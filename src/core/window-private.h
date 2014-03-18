@@ -266,10 +266,6 @@ struct _MetaWindow
   /* Weird "_NET_WM_STATE_MODAL" flag */
   guint wm_state_modal : 1;
 
-  /* TRUE if the client forced these on */
-  guint wm_state_skip_taskbar : 1;
-  guint wm_state_skip_pager : 1;
-
   /* Computed whether to skip taskbar or not */
   guint skip_taskbar : 1;
   guint skip_pager : 1;
@@ -465,6 +461,10 @@ struct _MetaWindow
 struct _MetaWindowClass
 {
   GObjectClass parent_class;
+
+  void (*get_default_skip_hints) (MetaWindow *window,
+                                  gboolean   *skip_taskbar_out,
+                                  gboolean   *skip_pager_out);
 };
 
 /* These differ from window->has_foo_func in that they consider

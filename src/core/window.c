@@ -209,6 +209,15 @@ prefs_changed_callback (MetaPreference pref,
 }
 
 static void
+meta_window_real_get_default_skip_hints (MetaWindow *window,
+                                         gboolean   *skip_taskbar_out,
+                                         gboolean   *skip_pager_out)
+{
+  *skip_taskbar_out = FALSE;
+  *skip_pager_out = FALSE;
+}
+
+static void
 meta_window_finalize (GObject *object)
 {
   MetaWindow *window = META_WINDOW (object);
@@ -364,6 +373,8 @@ meta_window_class_init (MetaWindowClass *klass)
 
   object_class->get_property = meta_window_get_property;
   object_class->set_property = meta_window_set_property;
+
+  klass->get_default_skip_hints = meta_window_real_get_default_skip_hints;
 
   g_object_class_install_property (object_class,
                                    PROP_TITLE,
@@ -757,7 +768,10 @@ _meta_window_shared_new (MetaDisplay         *display,
                 "IsUnviewable" :
                 "(unknown)");
 
-  window = g_object_new (META_TYPE_WINDOW, NULL);
+  if (client_type == META_WINDOW_CLIENT_TYPE_X11)
+    window = g_object_new (META_TYPE_WINDOW_X11, NULL);
+  else
+    window = g_object_new (META_TYPE_WINDOW, NULL);
 
   window->constructing = TRUE;
 
@@ -909,8 +923,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->wm_state_modal = FALSE;
   window->skip_taskbar = FALSE;
   window->skip_pager = FALSE;
-  window->wm_state_skip_taskbar = FALSE;
-  window->wm_state_skip_pager = FALSE;
   window->wm_state_above = FALSE;
   window->wm_state_below = FALSE;
   window->wm_state_demands_attention = FALSE;
@@ -7161,6 +7173,14 @@ set_allowed_actions_hint (MetaWindow *window)
 }
 
 static void
+meta_window_get_default_skip_hints (MetaWindow *window,
+                                    gboolean   *skip_taskbar_out,
+                                    gboolean   *skip_pager_out)
+{
+  META_WINDOW_GET_CLASS (window)->get_default_skip_hints (window, skip_taskbar_out, skip_pager_out);
+}
+
+static void
 meta_window_recalc_skip_features (MetaWindow *window)
 {
   switch (window->type)
@@ -7194,8 +7214,12 @@ meta_window_recalc_skip_features (MetaWindow *window)
       break;
 
     case META_WINDOW_NORMAL:
-      window->skip_taskbar = window->wm_state_skip_taskbar;
-      window->skip_pager = window->wm_state_skip_pager;
+      {
+        gboolean skip_taskbar_hint, skip_pager_hint;
+        meta_window_get_default_skip_hints (window, &skip_taskbar_hint, &skip_pager_hint);
+        window->skip_taskbar = skip_taskbar_hint;
+        window->skip_pager = skip_pager_hint;
+      }
       break;
     }
 }

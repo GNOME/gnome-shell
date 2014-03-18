@@ -40,6 +40,7 @@
 #include <config.h>
 #include "window-props.h"
 #include "window-x11.h"
+#include "window-x11-private.h"
 #include <meta/errors.h>
 #include "xprops.h"
 #include "frame.h"
@@ -666,6 +667,9 @@ reload_net_wm_state (MetaWindow    *window,
                      MetaPropValue *value,
                      gboolean       initial)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = window_x11->priv;
+
   int i;
 
   /* We know this is only an initial window creation,
@@ -684,8 +688,8 @@ reload_net_wm_state (MetaWindow    *window,
   window->maximized_vertically = FALSE;
   window->fullscreen = FALSE;
   window->wm_state_modal = FALSE;
-  window->wm_state_skip_taskbar = FALSE;
-  window->wm_state_skip_pager = FALSE;
+  priv->wm_state_skip_taskbar = FALSE;
+  priv->wm_state_skip_pager = FALSE;
   window->wm_state_above = FALSE;
   window->wm_state_below = FALSE;
   window->wm_state_demands_attention = FALSE;
@@ -707,9 +711,9 @@ reload_net_wm_state (MetaWindow    *window,
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_MODAL)
         window->wm_state_modal = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_SKIP_TASKBAR)
-        window->wm_state_skip_taskbar = TRUE;
+        priv->wm_state_skip_taskbar = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_SKIP_PAGER)
-        window->wm_state_skip_pager = TRUE;
+        priv->wm_state_skip_pager = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_FULLSCREEN)
         window->fullscreen_after_placement = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_ABOVE)

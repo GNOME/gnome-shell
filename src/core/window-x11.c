@@ -23,6 +23,7 @@
 #include "config.h"
 
 #include "window-x11.h"
+#include "window-x11-private.h"
 
 #include <string.h>
 #include <X11/Xatom.h>
@@ -43,6 +44,39 @@
 #include "window-private.h"
 #include "window-props.h"
 #include "xprops.h"
+
+struct _MetaWindowX11Class
+{
+  MetaWindowClass parent_class;
+};
+
+G_DEFINE_TYPE_WITH_PRIVATE (MetaWindowX11, meta_window_x11, META_TYPE_WINDOW)
+
+static void
+meta_window_x11_init (MetaWindowX11 *window_x11)
+{
+  window_x11->priv = meta_window_x11_get_instance_private (window_x11);
+}
+
+static void
+meta_window_x11_get_default_skip_hints (MetaWindow *window,
+                                        gboolean   *skip_taskbar_out,
+                                        gboolean   *skip_pager_out)
+{
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+
+  *skip_taskbar_out = priv->wm_state_skip_taskbar;
+  *skip_pager_out = priv->wm_state_skip_pager;
+}
+
+static void
+meta_window_x11_class_init (MetaWindowX11Class *klass)
+{
+  MetaWindowClass *window_class = META_WINDOW_CLASS (klass);
+
+  window_class->get_default_skip_hints = meta_window_x11_get_default_skip_hints;
+}
 
 void
 meta_window_x11_set_net_wm_state (MetaWindow *window)
@@ -694,6 +728,8 @@ gboolean
 meta_window_x11_client_message (MetaWindow *window,
                                 XEvent     *event)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   MetaDisplay *display;
 
   display = window->display;
@@ -879,7 +915,7 @@ meta_window_x11_client_message (MetaWindow *window,
       if (first == display->atom__NET_WM_STATE_SKIP_PAGER ||
           second == display->atom__NET_WM_STATE_SKIP_PAGER)
         {
-          window->wm_state_skip_pager =
+          priv->wm_state_skip_pager =
             (action == _NET_WM_STATE_ADD) ||
             (action == _NET_WM_STATE_TOGGLE && !window->skip_pager);
 
@@ -890,7 +926,7 @@ meta_window_x11_client_message (MetaWindow *window,
       if (first == display->atom__NET_WM_STATE_SKIP_TASKBAR ||
           second == display->atom__NET_WM_STATE_SKIP_TASKBAR)
         {
-          window->wm_state_skip_taskbar =
+          priv->wm_state_skip_taskbar =
             (action == _NET_WM_STATE_ADD) ||
             (action == _NET_WM_STATE_TOGGLE && !window->skip_taskbar);
 
