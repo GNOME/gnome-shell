@@ -405,7 +405,7 @@ meta_plugin_end_modal (MetaPlugin *plugin,
 
 MetaScreen *meta_plugin_get_screen        (MetaPlugin *plugin);
 
-void _meta_plugin_set_screen (MetaPlugin *plugin, MetaScreen *screen);
+void _meta_plugin_set_compositor (MetaPlugin *plugin, MetaCompositor *compositor);
 
 /* XXX: Putting this in here so it's in the public header. */
 void     meta_plugin_manager_set_plugin_type (GType gtype);

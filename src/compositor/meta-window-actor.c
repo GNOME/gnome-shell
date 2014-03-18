@@ -37,8 +37,8 @@
 
 struct _MetaWindowActorPrivate
 {
-  MetaWindow       *window;
-  MetaScreen       *screen;
+  MetaWindow *window;
+  MetaCompositor *compositor;
 
   MetaSurfaceActor *surface;
 
@@ -371,11 +371,11 @@ meta_window_actor_update_surface (MetaWindowActor *self)
 static void
 meta_window_actor_constructed (GObject *object)
 {
-  MetaWindowActor        *self     = META_WINDOW_ACTOR (object);
-  MetaWindowActorPrivate *priv     = self->priv;
-  MetaWindow             *window   = priv->window;
+  MetaWindowActor *self = META_WINDOW_ACTOR (object);
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaWindow *window = priv->window;
 
-  priv->screen = window->screen;
+  priv->compositor = window->display->compositor;
 
   meta_window_actor_update_surface (self);
 
@@ -389,18 +389,14 @@ meta_window_actor_constructed (GObject *object)
 static void
 meta_window_actor_dispose (GObject *object)
 {
-  MetaWindowActor        *self = META_WINDOW_ACTOR (object);
+  MetaWindowActor *self = META_WINDOW_ACTOR (object);
   MetaWindowActorPrivate *priv = self->priv;
-  MetaScreen             *screen;
-  MetaCompScreen         *info;
+  MetaCompositor *compositor = priv->compositor;
 
   if (priv->disposed)
     return;
 
   priv->disposed = TRUE;
-
-  screen   = priv->screen;
-  info     = meta_screen_get_compositor_data (screen);
 
   if (priv->send_frame_messages_timer != 0)
     {
@@ -416,7 +412,7 @@ meta_window_actor_dispose (GObject *object)
   g_clear_pointer (&priv->unfocused_shadow, meta_shadow_unref);
   g_clear_pointer (&priv->shadow_shape, meta_window_shape_unref);
 
-  info->windows = g_list_remove (info->windows, (gconstpointer) self);
+  compositor->windows = g_list_remove (compositor->windows, (gconstpointer) self);
 
   g_clear_object (&priv->window);
 
@@ -851,8 +847,7 @@ static void
 queue_send_frame_messages_timeout (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  MetaScreen  *screen  = priv->screen;
-  MetaDisplay *display = meta_screen_get_display (screen);
+  MetaDisplay *display = meta_window_get_display (priv->window);
   gint64 current_time = meta_compositor_monotonic_time_to_server_time (display, g_get_monotonic_time ());
   MetaMonitorManager *monitor_manager = meta_monitor_manager_get ();
   MetaWindow *window = priv->window;
@@ -964,7 +959,7 @@ start_simple_effect (MetaWindowActor *self,
                      gulong        event)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  MetaCompScreen *info = meta_screen_get_compositor_data (priv->screen);
+  MetaCompositor *compositor = priv->compositor;
   gint *counter = NULL;
   gboolean use_freeze_thaw = FALSE;
 
@@ -995,9 +990,7 @@ start_simple_effect (MetaWindowActor *self,
 
   (*counter)++;
 
-  if (!meta_plugin_manager_event_simple (info->plugin_mgr,
-                                         self,
-                                         event))
+  if (!meta_plugin_manager_event_simple (compositor->plugin_mgr, self, event))
     {
       (*counter)--;
       if (use_freeze_thaw)
@@ -1118,15 +1111,11 @@ meta_window_actor_set_unredirected (MetaWindowActor *self,
 void
 meta_window_actor_destroy (MetaWindowActor *self)
 {
-  MetaWindow	      *window;
-  MetaCompScreen      *info;
-  MetaWindowActorPrivate *priv;
-  MetaWindowType window_type;
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaWindow *window = priv->window;
+  MetaCompositor *compositor = priv->compositor;
+  MetaWindowType window_type = meta_window_get_window_type (window);
 
-  priv = self->priv;
-
-  window = priv->window;
-  window_type = meta_window_get_window_type (window);
   meta_window_set_compositor_private (window, NULL);
 
   if (priv->send_frame_messages_timer != 0)
@@ -1139,8 +1128,7 @@ meta_window_actor_destroy (MetaWindowActor *self)
    * We remove the window from internal lookup hashes and thus any other
    * unmap events etc fail
    */
-  info = meta_screen_get_compositor_data (priv->screen);
-  info->windows = g_list_remove (info->windows, (gconstpointer) self);
+  compositor->windows = g_list_remove (compositor->windows, (gconstpointer) self);
 
   if (window_type == META_WINDOW_DROPDOWN_MENU ||
       window_type == META_WINDOW_POPUP_MENU ||
@@ -1201,18 +1189,14 @@ void
 meta_window_actor_show (MetaWindowActor   *self,
                         MetaCompEffect     effect)
 {
-  MetaWindowActorPrivate *priv;
-  MetaCompScreen         *info;
-  gulong                  event;
-
-  priv = self->priv;
-  info = meta_screen_get_compositor_data (priv->screen);
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaCompositor *compositor = priv->compositor;
+  gulong event = 0;
 
   g_return_if_fail (!priv->visible);
 
   self->priv->visible = TRUE;
 
-  event = 0;
   switch (effect)
     {
     case META_COMP_EFFECT_CREATE:
@@ -1229,7 +1213,7 @@ meta_window_actor_show (MetaWindowActor   *self,
       g_assert_not_reached();
     }
 
-  if (info->switch_workspace_in_progress ||
+  if (compositor->switch_workspace_in_progress ||
       event == 0 ||
       !start_simple_effect (self, event))
     {
@@ -1241,12 +1225,9 @@ void
 meta_window_actor_hide (MetaWindowActor *self,
                         MetaCompEffect   effect)
 {
-  MetaWindowActorPrivate *priv;
-  MetaCompScreen         *info;
-  gulong                  event;
-
-  priv = self->priv;
-  info = meta_screen_get_compositor_data (priv->screen);
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaCompositor *compositor = priv->compositor;
+  gulong event = 0;
 
   g_return_if_fail (priv->visible);
 
@@ -1256,10 +1237,9 @@ meta_window_actor_hide (MetaWindowActor *self,
    * hold off on hiding the window, and do it after the workspace
    * switch completes
    */
-  if (info->switch_workspace_in_progress)
+  if (compositor->switch_workspace_in_progress)
     return;
 
-  event = 0;
   switch (effect)
     {
     case META_COMP_EFFECT_DESTROY:
@@ -1285,7 +1265,8 @@ meta_window_actor_maximize (MetaWindowActor    *self,
                             MetaRectangle      *old_rect,
                             MetaRectangle      *new_rect)
 {
-  MetaCompScreen *info = meta_screen_get_compositor_data (self->priv->screen);
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaCompositor *compositor = priv->compositor;
 
   /* The window has already been resized (in order to compute new_rect),
    * which by side effect caused the actor to be resized. Restore it to the
@@ -1296,7 +1277,7 @@ meta_window_actor_maximize (MetaWindowActor    *self,
   self->priv->maximize_in_progress++;
   meta_window_actor_freeze (self);
 
-  if (!meta_plugin_manager_event_maximize (info->plugin_mgr,
+  if (!meta_plugin_manager_event_maximize (compositor->plugin_mgr,
                                            self,
                                            META_PLUGIN_MAXIMIZE,
                                            new_rect->x, new_rect->y,
@@ -1313,7 +1294,8 @@ meta_window_actor_unmaximize (MetaWindowActor   *self,
                               MetaRectangle     *old_rect,
                               MetaRectangle     *new_rect)
 {
-  MetaCompScreen *info = meta_screen_get_compositor_data (self->priv->screen);
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaCompositor *compositor = priv->compositor;
 
   /* The window has already been resized (in order to compute new_rect),
    * which by side effect caused the actor to be resized. Restore it to the
@@ -1324,7 +1306,7 @@ meta_window_actor_unmaximize (MetaWindowActor   *self,
   self->priv->unmaximize_in_progress++;
   meta_window_actor_freeze (self);
 
-  if (!meta_plugin_manager_event_maximize (info->plugin_mgr,
+  if (!meta_plugin_manager_event_maximize (compositor->plugin_mgr,
                                            self,
                                            META_PLUGIN_UNMAXIMIZE,
                                            new_rect->x, new_rect->y,
@@ -1338,8 +1320,8 @@ meta_window_actor_unmaximize (MetaWindowActor   *self,
 MetaWindowActor *
 meta_window_actor_new (MetaWindow *window)
 {
-  MetaScreen	 	 *screen = meta_window_get_screen (window);
-  MetaCompScreen         *info = meta_screen_get_compositor_data (screen);
+  MetaDisplay *display = meta_window_get_display (window);
+  MetaCompositor *compositor = display->compositor;
   MetaWindowActor        *self;
   MetaWindowActorPrivate *priv;
   ClutterActor           *window_group;
@@ -1364,9 +1346,9 @@ meta_window_actor_new (MetaWindow *window)
   meta_window_set_compositor_private (window, G_OBJECT (self));
 
   if (window->layer == META_LAYER_OVERRIDE_REDIRECT)
-    window_group = info->top_window_group;
+    window_group = compositor->top_window_group;
   else
-    window_group = info->window_group;
+    window_group = compositor->window_group;
 
   clutter_actor_add_child (window_group, CLUTTER_ACTOR (self));
 
@@ -1375,7 +1357,7 @@ meta_window_actor_new (MetaWindow *window)
   /* Initial position in the stack is arbitrary; stacking will be synced
    * before we first paint.
    */
-  info->windows = g_list_append (info->windows, self);
+  compositor->windows = g_list_append (compositor->windows, self);
 
   return self;
 }
@@ -1912,8 +1894,7 @@ static void
 do_send_frame_drawn (MetaWindowActor *self, FrameData *frame)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  MetaScreen  *screen  = priv->screen;
-  MetaDisplay *display = meta_screen_get_display (screen);
+  MetaDisplay *display = meta_window_get_display (priv->window);
   Display *xdisplay = meta_display_get_xdisplay (display);
 
   XClientMessageEvent ev = { 0, };
@@ -1965,7 +1946,7 @@ do_send_frame_timings (MetaWindowActor  *self,
                        gint64           presentation_time)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  MetaDisplay *display = meta_screen_get_display (priv->screen);
+  MetaDisplay *display = meta_window_get_display (priv->window);
   Display *xdisplay = meta_display_get_xdisplay (display);
 
   XClientMessageEvent ev = { 0, };

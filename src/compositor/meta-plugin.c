@@ -49,7 +49,7 @@ G_DEFINE_ABSTRACT_TYPE (MetaPlugin, meta_plugin, G_TYPE_OBJECT);
 
 struct _MetaPluginPrivate
 {
-  MetaScreen *screen;
+  MetaCompositor *compositor;
 };
 
 static void
@@ -101,9 +101,8 @@ void
 meta_plugin_switch_workspace_completed (MetaPlugin *plugin)
 {
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-  MetaScreen *screen = priv->screen;
 
-  meta_switch_workspace_completed (screen);
+  meta_switch_workspace_completed (priv->compositor);
 }
 
 static void
@@ -177,7 +176,7 @@ meta_plugin_begin_modal (MetaPlugin       *plugin,
 {
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  return meta_begin_modal_for_plugin (priv->screen, plugin,
+  return meta_begin_modal_for_plugin (priv->compositor, plugin,
                                       options, timestamp);
 }
 
@@ -198,7 +197,7 @@ meta_plugin_end_modal (MetaPlugin *plugin,
 {
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  meta_end_modal_for_plugin (priv->screen, plugin, timestamp);
+  meta_end_modal_for_plugin (priv->compositor, plugin, timestamp);
 }
 
 /**
@@ -214,16 +213,15 @@ meta_plugin_get_screen (MetaPlugin *plugin)
 {
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  return priv->screen;
+  return priv->compositor->display->screen;
 }
 
 void
-_meta_plugin_set_screen (MetaPlugin *plugin,
-                         MetaScreen *screen)
+_meta_plugin_set_compositor (MetaPlugin *plugin, MetaCompositor *compositor)
 {
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  priv->screen = screen;
+  priv->compositor = compositor;
 }
 
 void

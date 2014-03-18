@@ -11,8 +11,6 @@
 #include "meta-window-actor-private.h"
 #include <clutter/clutter.h>
 
-typedef struct _MetaCompScreen MetaCompScreen;
-
 struct _MetaCompositor
 {
   MetaDisplay    *display;
@@ -24,11 +22,6 @@ struct _MetaCompositor
 
   guint           server_time_is_monotonic_time : 1;
   guint           no_mipmaps  : 1;
-};
-
-struct _MetaCompScreen
-{
-  MetaScreen            *screen;
 
   ClutterActor          *stage, *window_group, *top_window_group;
   ClutterActor          *background_actor;
@@ -50,13 +43,13 @@ struct _MetaCompScreen
 /* Wait 2ms after vblank before starting to draw next frame */
 #define META_SYNC_DELAY 2
 
-void meta_switch_workspace_completed (MetaScreen    *screen);
+void meta_switch_workspace_completed (MetaCompositor *compositor);
 
-gboolean meta_begin_modal_for_plugin (MetaScreen       *screen,
+gboolean meta_begin_modal_for_plugin (MetaCompositor   *compositor,
                                       MetaPlugin       *plugin,
                                       MetaModalOptions  options,
                                       guint32           timestamp);
-void     meta_end_modal_for_plugin   (MetaScreen       *screen,
+void     meta_end_modal_for_plugin   (MetaCompositor   *compositor,
                                       MetaPlugin       *plugin,
                                       guint32           timestamp);
 

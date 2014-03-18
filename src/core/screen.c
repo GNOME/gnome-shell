@@ -707,7 +707,6 @@ meta_screen_new (MetaDisplay *display,
   screen->columns_of_workspaces = -1;
   screen->vertical_workspaces = FALSE;
   screen->starting_corner = META_SCREEN_TOPLEFT;
-  screen->compositor_data = NULL;
   screen->guard_window = None;
 
   reload_monitor_infos (screen);
@@ -808,8 +807,7 @@ meta_screen_free (MetaScreen *screen,
   
   meta_display_grab (display);
 
-  meta_compositor_unmanage_screen (screen->display->compositor,
-                                   screen);
+  meta_compositor_unmanage (screen->display->compositor);
   
   meta_display_unmanage_windows_for_screen (display, screen, timestamp);
   
@@ -1439,11 +1437,10 @@ meta_screen_update_tile_preview_timeout (gpointer data)
       monitor = meta_window_get_current_tile_monitor_number (window);
       meta_window_get_current_tile_area (window, &tile_rect);
       meta_compositor_show_tile_preview (screen->display->compositor,
-                                         screen, window, &tile_rect, monitor);
+                                         window, &tile_rect, monitor);
     }
   else
-    meta_compositor_hide_tile_preview (screen->display->compositor,
-                                       screen);
+    meta_compositor_hide_tile_preview (screen->display->compositor);
 
   return FALSE;
 }
@@ -1479,8 +1476,7 @@ meta_screen_hide_tile_preview (MetaScreen *screen)
   if (screen->tile_preview_timeout_id > 0)
     g_source_remove (screen->tile_preview_timeout_id);
 
-  meta_compositor_hide_tile_preview (screen->display->compositor,
-                                     screen);
+  meta_compositor_hide_tile_preview (screen->display->compositor);
 }
 
 MetaWindow*
@@ -2498,7 +2494,6 @@ on_monitors_changed (MetaMonitorManager *manager,
     }
 
   meta_compositor_sync_screen_size (screen->display->compositor,
-                                    screen,
                                     screen->rect.width, screen->rect.height);
 
   /* Queue a resize on all the windows */
@@ -3037,24 +3032,6 @@ meta_screen_get_size (MetaScreen *screen,
 
   if (height != NULL)
     *height = screen->rect.height;
-}
-
-/**
- * meta_screen_get_compositor_data: (skip)
- * @screen: A #MetaScreen
- *
- */
-gpointer
-meta_screen_get_compositor_data (MetaScreen *screen)
-{
-  return screen->compositor_data;
-}
-
-void
-meta_screen_set_compositor_data (MetaScreen *screen,
-                                 gpointer    compositor)
-{
-  screen->compositor_data = compositor;
 }
 
 void

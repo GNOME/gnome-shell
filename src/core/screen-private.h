@@ -116,9 +116,6 @@ struct _MetaScreen
   guint all_keys_grabbed : 1;
   
   int closing;
-
-  /* Managed by compositor.c */
-  gpointer compositor_data;
   
   /* Instead of unmapping withdrawn windows we can leave them mapped
    * and restack them below a guard window. When using a compositor

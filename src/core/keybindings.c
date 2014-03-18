@@ -1660,7 +1660,7 @@ process_event (MetaDisplay          *display,
   /* If the compositor filtered out the keybindings, that
    * means they don't want the binding to trigger, so we do
    * the same thing as if the binding didn't exist. */
-  if (meta_compositor_filter_keybinding (display->compositor, screen, binding))
+  if (meta_compositor_filter_keybinding (display->compositor, binding))
     goto not_found;
 
   if (binding->handler == NULL)
@@ -1745,7 +1745,7 @@ process_overlay_key (MetaDisplay *display,
                                             display->overlay_key_combo.keycode,
                                             display->grab_mask);
           if (binding &&
-              meta_compositor_filter_keybinding (display->compositor, screen, binding))
+              meta_compositor_filter_keybinding (display->compositor, binding))
             return TRUE;
           meta_display_overlay_key_activate (display);
         }
