@@ -328,9 +328,6 @@ struct _MetaWindow
   guint using_net_wm_visible_name      : 1; /* tracked so we can clear it */
   guint using_net_wm_icon_name         : 1; /* vs. plain wm_icon_name */
   guint using_net_wm_visible_icon_name : 1; /* tracked so we can clear it */
-
-  /* icon props have changed */
-  guint need_reread_icon : 1;
   
   /* if TRUE, window was maximized at start of current grab op */
   guint shaken_loose : 1;

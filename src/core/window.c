@@ -939,8 +939,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->using_net_wm_icon_name         = FALSE;
   window->using_net_wm_visible_icon_name = FALSE;
 
-  window->need_reread_icon = TRUE;
-
   window->layer = META_LAYER_LAST; /* invalid value */
   window->stack_position = -1;
   window->initial_workspace = 0; /* not used */
