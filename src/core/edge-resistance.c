@@ -30,7 +30,6 @@
  */
 #define WINDOW_EDGES_RELEVANT(window, display) \
   meta_window_should_be_showing (window) &&    \
-  window->screen == display->grab_screen &&    \
   window         != display->grab_window &&    \
   window->type   != META_WINDOW_DESKTOP &&     \
   window->type   != META_WINDOW_MENU    &&     \
@@ -963,9 +962,9 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
   /*
    * 1st: Get the list of relevant windows, from bottom to top
    */
-  stacked_windows = 
-    meta_stack_list_windows (display->grab_screen->stack,
-                             display->grab_screen->active_workspace);
+  stacked_windows =
+    meta_stack_list_windows (display->screen->stack,
+                             display->screen->active_workspace);
 
   /*
    * 2nd: we need to separate that stacked list into a list of windows that
@@ -1026,7 +1025,7 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
            * by other windows or DOCKS, but that's handled below).
            */
           meta_rectangle_intersect (&cur_rect, 
-                                    &display->grab_screen->rect,
+                                    &display->screen->rect,
                                     &reduced);
 
           new_edges = NULL;
@@ -1123,8 +1122,8 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
    */
   cache_edges (display,
                edges,
-               display->grab_screen->active_workspace->monitor_edges,
-               display->grab_screen->active_workspace->screen_edges);
+               display->screen->active_workspace->monitor_edges,
+               display->screen->active_workspace->screen_edges);
   g_list_free (edges);
 
   /*

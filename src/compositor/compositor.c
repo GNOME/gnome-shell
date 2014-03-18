@@ -431,7 +431,6 @@ meta_begin_modal_for_plugin (MetaScreen       *screen,
 
   display->grab_op = META_GRAB_OP_COMPOSITOR;
   display->grab_window = NULL;
-  display->grab_screen = screen;
   display->grab_have_pointer = TRUE;
   display->grab_have_keyboard = TRUE;
 
@@ -453,7 +452,6 @@ meta_end_modal_for_plugin (MetaScreen     *screen,
 
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_window = NULL;
-  display->grab_screen = NULL;
   display->grab_have_pointer = FALSE;
   display->grab_have_keyboard = FALSE;
 

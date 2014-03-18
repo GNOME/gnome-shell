@@ -562,7 +562,6 @@ meta_display_open (void)
 
   the_display->grab_op = META_GRAB_OP_NONE;
   the_display->grab_window = NULL;
-  the_display->grab_screen = NULL;
   the_display->grab_resize_popup = NULL;
   the_display->grab_tile_mode = META_TILE_NONE;
   the_display->grab_tile_monitor_number = -1;
@@ -1977,7 +1976,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   
   display->grab_op = op;
   display->grab_window = grab_window;
-  display->grab_screen = screen;
   display->grab_xwindow = grab_xwindow;
   display->grab_button = button;
   display->grab_mask = modmask;
@@ -2030,7 +2028,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
               "Grab op %u on window %s successful\n",
               display->grab_op, window ? window->desc : "(null)");
 
-  g_assert (display->grab_window != NULL || display->grab_screen != NULL);
+  g_assert (display->grab_window != NULL);
   g_assert (display->grab_op != META_GRAB_OP_NONE);
 
   if (display->grab_window)
@@ -2058,7 +2056,7 @@ meta_display_end_grab_op (MetaDisplay *display,
     return;
 
   g_signal_emit (display, display_signals[GRAB_OP_END], 0,
-                 display->grab_screen, display->grab_window, display->grab_op);
+                 display->screen, display->grab_window, display->grab_op);
 
   if (display->grab_window != NULL)
     display->grab_window->shaken_loose = FALSE;
@@ -2110,14 +2108,13 @@ meta_display_end_grab_op (MetaDisplay *display,
       if (display->grab_window)
         meta_window_ungrab_all_keys (display->grab_window, timestamp);
       else
-        meta_screen_ungrab_all_keys (display->grab_screen, timestamp);
+        meta_screen_ungrab_all_keys (display->screen, timestamp);
     }
 
-  meta_cursor_tracker_set_grab_cursor (display->grab_screen->cursor_tracker, META_CURSOR_DEFAULT);
+  meta_cursor_tracker_set_grab_cursor (display->screen->cursor_tracker, META_CURSOR_DEFAULT);
 
   display->grab_timestamp = 0;
   display->grab_window = NULL;
-  display->grab_screen = NULL;
   display->grab_xwindow = None;
   display->grab_tile_mode = META_TILE_NONE;
   display->grab_tile_monitor_number = -1;

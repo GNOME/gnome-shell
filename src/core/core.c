@@ -667,10 +667,6 @@ meta_core_get_grab_frame (Display *xdisplay)
   display = meta_display_for_x_display (xdisplay);
 
   g_assert (display != NULL);
-  g_assert (display->grab_op == META_GRAB_OP_NONE || 
-            display->grab_screen != NULL);
-  g_assert (display->grab_op == META_GRAB_OP_NONE ||
-            display->grab_screen->display->xdisplay == xdisplay);
   
   if (display->grab_op != META_GRAB_OP_NONE &&
       display->grab_window &&
