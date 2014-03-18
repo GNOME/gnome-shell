@@ -624,9 +624,6 @@ void meta_window_show_menu (MetaWindow *window,
                             int         button,
                             guint32     timestamp);
 
-void meta_window_set_gravity (MetaWindow *window,
-                              int         gravity);
-
 #ifdef HAVE_XSYNC
 void meta_window_update_sync_request_counter (MetaWindow *window,
                                               gint64      new_counter_value);

@@ -4432,6 +4432,26 @@ meta_window_update_monitor (MetaWindow *window)
 }
 
 static void
+meta_window_set_gravity (MetaWindow *window,
+                         int         gravity)
+{
+  XSetWindowAttributes attrs;
+
+  meta_verbose ("Setting gravity of %s to %d\n", window->desc, gravity);
+
+  attrs.win_gravity = gravity;
+
+  meta_error_trap_push (window->display);
+
+  XChangeWindowAttributes (window->display->xdisplay,
+                           window->xwindow,
+                           CWWinGravity,
+                           &attrs);
+
+  meta_error_trap_pop (window->display);
+}
+
+static void
 meta_window_move_resize_internal (MetaWindow          *window,
                                   MetaMoveResizeFlags  flags,
                                   int                  gravity,
@@ -8534,26 +8554,6 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
     default:
       break;
     }
-}
-
-void
-meta_window_set_gravity (MetaWindow *window,
-                         int         gravity)
-{
-  XSetWindowAttributes attrs;
-
-  meta_verbose ("Setting gravity of %s to %d\n", window->desc, gravity);
-
-  attrs.win_gravity = gravity;
-
-  meta_error_trap_push (window->display);
-
-  XChangeWindowAttributes (window->display->xdisplay,
-                           window->xwindow,
-                           CWWinGravity,
-                           &attrs);
-
-  meta_error_trap_pop (window->display);
 }
 
 static void
