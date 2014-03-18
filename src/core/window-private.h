@@ -567,9 +567,6 @@ void        meta_window_change_workspace   (MetaWindow  *window,
 /* Return whether the window should be currently mapped */
 gboolean    meta_window_should_be_showing   (MetaWindow  *window);
 
-/* See warning in window.c about this function */
-gboolean    __window_is_terminal (MetaWindow *window);
-
 void        meta_window_update_struts      (MetaWindow  *window);
 
 /* this gets root coords */
