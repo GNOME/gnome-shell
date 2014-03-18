@@ -56,7 +56,7 @@ const ModalDialog = new Lang.Class({
                                       x: 0,
                                       y: 0,
                                       accessible_role: Atk.Role.DIALOG });
-        Main.uiGroup.add_actor(this._group);
+        Main.layoutManager.modalDialogGroup.add_actor(this._group);
 
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.ALL });
