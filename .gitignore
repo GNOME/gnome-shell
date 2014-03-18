@@ -101,3 +101,10 @@ doc/reference/meta-undocumented.txt
 doc/reference/meta-unused.txt
 doc/reference/meta-docs.sgml
 doc/reference/meta.types
+gtk-doc.m4
+intltool.m4
+libtool.m4
+ltoptions.m4
+ltsugar.m4
+ltversion.m4
+lt~obsolete.m4
