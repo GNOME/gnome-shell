@@ -2676,7 +2676,7 @@ handle_other_xevent (MetaDisplay *display,
         }
 
       if (window && window->override_redirect)
-        meta_window_configure_notify (window, &event->xconfigure);
+        meta_window_x11_configure_notify (window, &event->xconfigure);
 
       break;
     case ConfigureRequest:

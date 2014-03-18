@@ -132,8 +132,6 @@ static void meta_window_move_between_rects (MetaWindow          *window,
 static void unmaximize_window_before_freeing (MetaWindow        *window);
 static void unminimize_window_and_all_transient_parents (MetaWindow *window);
 
-static void meta_window_update_monitor (MetaWindow *window);
-
 /* Idle handlers for the three queues (run with meta_later_add()). The
  * "data" parameter in each case will be a GINT_TO_POINTER of the
  * index into the queue arrays to use.
@@ -4399,7 +4397,7 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
                                   &new->rect);
 }
 
-static void
+void
 meta_window_update_monitor (MetaWindow *window)
 {
   const MetaMonitorInfo *old;
@@ -5323,40 +5321,6 @@ idle_move_resize (gpointer data)
   destroying_windows_disallowed -= 1;
 
   return FALSE;
-}
-
-/**
- * meta_window_configure_notify: (skip)
- * @window: a #MetaWindow
- * @event: a #XConfigureEvent
- *
- * This is used to notify us of an unrequested configuration
- * (only applicable to override redirect windows)
- */
-void
-meta_window_configure_notify (MetaWindow      *window,
-                              XConfigureEvent *event)
-{
-  g_assert (window->override_redirect);
-  g_assert (window->frame == NULL);
-
-  window->rect.x = event->x;
-  window->rect.y = event->y;
-  window->rect.width = event->width;
-  window->rect.height = event->height;
-  meta_window_update_monitor (window);
-
-  /* Whether an override-redirect window is considered fullscreen depends
-   * on its geometry.
-   */
-  if (window->override_redirect)
-    meta_screen_queue_check_fullscreen (window->screen);
-
-  if (!event->override_redirect && !event->send_event)
-    meta_warning ("Unhandled change of windows override redirect status\n");
-
-  if (window->display->compositor)
-    meta_compositor_sync_window_geometry (window->display->compositor, window, FALSE);
 }
 
 void

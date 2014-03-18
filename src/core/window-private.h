@@ -746,4 +746,6 @@ void meta_window_activate_full (MetaWindow     *window,
 
 gboolean meta_window_is_client_decorated (MetaWindow *window);
 
+void meta_window_update_monitor (MetaWindow *window);
+
 #endif

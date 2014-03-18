@@ -44,4 +44,7 @@ gboolean meta_window_x11_property_notify         (MetaWindow *window,
 gboolean meta_window_x11_client_message          (MetaWindow *window,
                                                   XEvent     *event);
 
+void     meta_window_x11_configure_notify        (MetaWindow      *window,
+                                                  XConfigureEvent *event);
+
 #endif
