@@ -297,8 +297,7 @@ meta_window_set_opaque_region (MetaWindow     *window,
   if (region != NULL)
     window->opaque_region = cairo_region_reference (region);
 
-  if (window->display->compositor)
-    meta_compositor_window_shape_changed (window->display->compositor, window);
+  meta_compositor_window_shape_changed (window->display->compositor, window);
 }
 
 void
@@ -383,8 +382,7 @@ meta_window_set_input_region (MetaWindow     *window,
   if (region != NULL)
     window->input_region = cairo_region_reference (region);
 
-  if (window->display->compositor)
-    meta_compositor_window_shape_changed (window->display->compositor, window);
+  meta_compositor_window_shape_changed (window->display->compositor, window);
 }
 
 #if 0
@@ -490,8 +488,7 @@ meta_window_set_shape_region (MetaWindow     *window,
   if (region != NULL)
     window->shape_region = cairo_region_reference (region);
 
-  if (window->display->compositor)
-    meta_compositor_window_shape_changed (window->display->compositor, window);
+  meta_compositor_window_shape_changed (window->display->compositor, window);
 }
 
 void
@@ -1348,7 +1345,7 @@ is_our_xwindow (MetaDisplay       *display,
   if (xwindow == screen->guard_window)
     return TRUE;
 
-  if (display->compositor && xwindow == XCompositeGetOverlayWindow (display->xdisplay, screen->xroot))
+  if (xwindow == XCompositeGetOverlayWindow (display->xdisplay, screen->xroot))
     return TRUE;
 
   /* Any windows created via meta_create_offscreen_window */
@@ -1687,6 +1684,5 @@ meta_window_x11_configure_notify (MetaWindow      *window,
   if (!event->override_redirect && !event->send_event)
     meta_warning ("Unhandled change of windows override redirect status\n");
 
-  if (window->display->compositor)
-    meta_compositor_sync_window_geometry (window->display->compositor, window, FALSE);
+  meta_compositor_sync_window_geometry (window->display->compositor, window, FALSE);
 }

@@ -59,88 +59,6 @@
 #endif
 
 /**
- * bell_flash_screen:
- * @display:  The display which owns the screen (rather redundant)
- * @screen:   The screen to flash
- *
- * Flashes one entire screen.  This is done by making a window the size of the
- * whole screen (or reusing the old one, if it's still around), mapping it,
- * painting it white and then black, and then unmapping it. We set saveunder so
- * that all the windows behind it come back immediately.
- *
- * Unlike frame flashes, we don't do fullscreen flashes with a timeout; rather,
- * we do them in one go, because we don't have to rely on the theme code
- * redrawing the frame for us in order to do the flash.
- */
-/*
- * Bug: The way I read it, this appears not to do the flash
- * the first time we flash a particular display. Am I wrong?
- *
- * Bug: This appears to destroy our current XSync status.
- */
-static void
-bell_flash_screen (MetaDisplay *display, 
-			MetaScreen  *screen)
-{
-  Window root = screen->xroot;
-  int width = screen->rect.width;
-  int height = screen->rect.height;
-  
-  if (screen->flash_window == None)
-    {
-      Visual *visual = (Visual *)CopyFromParent;
-      XSetWindowAttributes xswa;
-      int depth = CopyFromParent;
-      xswa.save_under = True;
-      xswa.override_redirect = True;
-      /* 
-       * TODO: use XGetVisualInfo and determine which is an
-       * overlay, if one is present, and use the Overlay visual
-       * for this window (for performance reasons).  
-       * Not sure how to tell this yet... 
-       */
-      screen->flash_window = XCreateWindow (display->xdisplay, root,
-					    0, 0, width, height,
-					    0, depth,
-					    InputOutput,
-					    visual,
-				    /* note: XSun doesn't like SaveUnder here */
-					    CWSaveUnder | CWOverrideRedirect,
-					    &xswa);
-      XSelectInput (display->xdisplay, screen->flash_window, ExposureMask);
-      XMapWindow (display->xdisplay, screen->flash_window);
-      XSync (display->xdisplay, False);
-      XFlush (display->xdisplay);
-      XUnmapWindow (display->xdisplay, screen->flash_window);
-    }
-  else
-    {
-      /* just draw something in the window */
-      GC gc = XCreateGC (display->xdisplay, screen->flash_window, 0, NULL);
-      XMapWindow (display->xdisplay, screen->flash_window);
-      XSetForeground (display->xdisplay, gc,
-		      WhitePixel (display->xdisplay, 
-				  XScreenNumberOfScreen (screen->xscreen)));
-      XFillRectangle (display->xdisplay, screen->flash_window, gc,
-		      0, 0, width, height);
-      XSetForeground (display->xdisplay, gc,
-		      BlackPixel (display->xdisplay, 
-				  XScreenNumberOfScreen (screen->xscreen)));
-      XFillRectangle (display->xdisplay, screen->flash_window, gc,
-		      0, 0, width, height);
-      XFlush (display->xdisplay);
-      XSync (display->xdisplay, False);
-      XUnmapWindow (display->xdisplay, screen->flash_window);
-      XFreeGC (display->xdisplay, gc);
-    }
-
-  if (meta_prefs_get_focus_mode () != G_DESKTOP_FOCUS_MODE_CLICK &&
-      !display->mouse_mode)
-    meta_display_increment_focus_sentinel (display);
-  XFlush (display->xdisplay);
-}
-
-/**
  * bell_flash_fullscreen:
  * @display: The display the event came in on
  * @xkb_ev: The bell event
@@ -164,12 +82,7 @@ bell_flash_fullscreen (MetaDisplay *display,
     {
       screen = meta_display_screen_for_xwindow (display, xkb_bell_ev->window);
       if (screen)
-        {
-          if (display->compositor)
-            meta_compositor_flash_screen (display->compositor, screen);
-          else
-            bell_flash_screen (display, screen);
-        }
+        meta_compositor_flash_screen (display->compositor, screen);
     }
   else 
     {
@@ -177,10 +90,7 @@ bell_flash_fullscreen (MetaDisplay *display,
       while (screen_list) 
 	{
 	  screen = (MetaScreen *) screen_list->data;
-          if (display->compositor)
-            meta_compositor_flash_screen (display->compositor, screen);
-          else
-            bell_flash_screen (display, screen);
+          meta_compositor_flash_screen (display->compositor, screen);
 	  screen_list = screen_list->next;
 	}
     }

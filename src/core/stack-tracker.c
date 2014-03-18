@@ -1245,10 +1245,9 @@ meta_stack_tracker_sync_stack (MetaStackTracker *tracker)
         meta_windows = g_list_prepend (meta_windows, window->wayland.meta_window);
     }
 
-  if (tracker->screen->display->compositor)
-    meta_compositor_sync_stack (tracker->screen->display->compositor,
-                                tracker->screen,
-                                meta_windows);
+  meta_compositor_sync_stack (tracker->screen->display->compositor,
+                              tracker->screen,
+                              meta_windows);
   g_list_free (meta_windows);
 
   meta_screen_restacked (tracker->screen);

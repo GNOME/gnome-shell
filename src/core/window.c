@@ -1221,8 +1221,7 @@ _meta_window_shared_new (MetaDisplay         *display,
       set_net_wm_state (window);
     }
 
-  if (screen->display->compositor)
-    meta_compositor_add_window (screen->display->compositor, window);
+  meta_compositor_add_window (screen->display->compositor, window);
 
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
@@ -1505,14 +1504,11 @@ meta_window_unmanage (MetaWindow  *window,
                                         0);
     }
 
-  if (window->display->compositor)
-    {
-      if (window->visible_to_compositor)
-        meta_compositor_hide_window (window->display->compositor, window,
-                                     META_COMP_EFFECT_DESTROY);
+  if (window->visible_to_compositor)
+    meta_compositor_hide_window (window->display->compositor, window,
+                                 META_COMP_EFFECT_DESTROY);
 
-      meta_compositor_remove_window (window->display->compositor, window);
-    }
+  meta_compositor_remove_window (window->display->compositor, window);
 
   if (window->display->window_with_menu == window)
     {
@@ -2747,27 +2743,24 @@ meta_window_show (MetaWindow *window)
 
   if (!window->visible_to_compositor)
     {
+      MetaCompEffect effect = META_COMP_EFFECT_NONE;
+
       window->visible_to_compositor = TRUE;
 
-      if (window->display->compositor)
+      switch (window->pending_compositor_effect)
         {
-          MetaCompEffect effect = META_COMP_EFFECT_NONE;
-
-          switch (window->pending_compositor_effect)
-            {
-            case META_COMP_EFFECT_CREATE:
-            case META_COMP_EFFECT_UNMINIMIZE:
-              effect = window->pending_compositor_effect;
-              break;
-            case META_COMP_EFFECT_NONE:
-            case META_COMP_EFFECT_DESTROY:
-            case META_COMP_EFFECT_MINIMIZE:
-              break;
-            }
-
-          meta_compositor_show_window (window->display->compositor,
-                                       window, effect);
+        case META_COMP_EFFECT_CREATE:
+        case META_COMP_EFFECT_UNMINIMIZE:
+          effect = window->pending_compositor_effect;
+          break;
+        case META_COMP_EFFECT_NONE:
+        case META_COMP_EFFECT_DESTROY:
+        case META_COMP_EFFECT_MINIMIZE:
+          break;
         }
+
+      meta_compositor_show_window (window->display->compositor,
+                                   window, effect);
     }
 
   /* We don't want to worry about all cases from inside
@@ -2840,26 +2833,23 @@ meta_window_hide (MetaWindow *window)
 
   if (window->visible_to_compositor)
     {
+      MetaCompEffect effect = META_COMP_EFFECT_NONE;
+
       window->visible_to_compositor = FALSE;
 
-      if (window->display->compositor)
+      switch (window->pending_compositor_effect)
         {
-          MetaCompEffect effect = META_COMP_EFFECT_NONE;
-
-          switch (window->pending_compositor_effect)
-            {
-            case META_COMP_EFFECT_CREATE:
-            case META_COMP_EFFECT_UNMINIMIZE:
-            case META_COMP_EFFECT_NONE:
-              break;
-            case META_COMP_EFFECT_DESTROY:
-            case META_COMP_EFFECT_MINIMIZE:
-              effect = window->pending_compositor_effect;
-              break;
-            }
-
-          meta_compositor_hide_window (window->display->compositor, window, effect);
+        case META_COMP_EFFECT_CREATE:
+        case META_COMP_EFFECT_UNMINIMIZE:
+        case META_COMP_EFFECT_NONE:
+          break;
+        case META_COMP_EFFECT_DESTROY:
+        case META_COMP_EFFECT_MINIMIZE:
+          effect = window->pending_compositor_effect;
+          break;
         }
+
+      meta_compositor_hide_window (window->display->compositor, window, effect);
     }
 
   did_hide = FALSE;
@@ -3125,6 +3115,8 @@ meta_window_maximize (MetaWindow        *window,
 {
   MetaRectangle *saved_rect = NULL;
   gboolean maximize_horizontally, maximize_vertically;
+  MetaRectangle old_rect;
+  MetaRectangle new_rect;
 
   g_return_if_fail (!window->override_redirect);
 
@@ -3174,27 +3166,15 @@ meta_window_maximize (MetaWindow        *window,
                                      directions,
                                      saved_rect);
 
-      if (window->display->compositor)
-        {
-          MetaRectangle old_rect;
-	  MetaRectangle new_rect;
+      meta_window_get_frame_rect (window, &old_rect);
 
-	  meta_window_get_frame_rect (window, &old_rect);
+      meta_window_move_resize_now (window);
 
-          meta_window_move_resize_now (window);
-
-	  meta_window_get_frame_rect (window, &new_rect);
-          meta_compositor_maximize_window (window->display->compositor,
-                                           window,
-                                           &old_rect,
-					   &new_rect);
-        }
-      else
-        {
-          /* move_resize with new maximization constraints
-           */
-          meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
-        }
+      meta_window_get_frame_rect (window, &new_rect);
+      meta_compositor_maximize_window (window->display->compositor,
+                                       window,
+                                       &old_rect,
+                                       &new_rect);
     }
 }
 
@@ -3354,6 +3334,8 @@ void
 meta_window_tile (MetaWindow *window)
 {
   MetaMaximizeFlags directions;
+  MetaRectangle old_rect;
+  MetaRectangle new_rect;
 
   /* Don't do anything if no tiling is requested */
   if (window->tile_mode == META_TILE_NONE)
@@ -3367,31 +3349,19 @@ meta_window_tile (MetaWindow *window)
   meta_window_maximize_internal (window, directions, NULL);
   meta_screen_update_tile_preview (window->screen, FALSE);
 
-  if (window->display->compositor)
-    {
-      MetaRectangle old_rect;
-      MetaRectangle new_rect;
+  meta_window_get_frame_rect (window, &old_rect);
 
-      meta_window_get_frame_rect (window, &old_rect);
+  meta_window_move_resize_now (window);
 
-      meta_window_move_resize_now (window);
+  meta_window_get_frame_rect (window, &new_rect);
+  meta_compositor_maximize_window (window->display->compositor,
+                                   window,
+                                   &old_rect,
+                                   &new_rect);
 
-      meta_window_get_frame_rect (window, &new_rect);
-      meta_compositor_maximize_window (window->display->compositor,
-                                       window,
-                                       &old_rect,
-                                       &new_rect);
-
-      if (window->frame)
-        meta_ui_queue_frame_draw (window->screen->ui,
-                                  window->frame->xwindow);
-    }
-  else
-    {
-      /* move_resize with new tiling constraints
-       */
-      meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
-    }
+  if (window->frame)
+    meta_ui_queue_frame_draw (window->screen->ui,
+                              window->frame->xwindow);
 }
 
 static gboolean
@@ -3464,6 +3434,7 @@ meta_window_unmaximize_internal (MetaWindow        *window,
                                  int                gravity)
 {
   gboolean unmaximize_horizontally, unmaximize_vertically;
+  MetaRectangle new_rect;
 
   g_return_if_fail (!window->override_redirect);
 
@@ -3548,34 +3519,19 @@ meta_window_unmaximize_internal (MetaWindow        *window,
        */
       ensure_size_hints_satisfied (&target_rect, &window->size_hints);
 
-      if (window->display->compositor)
-        {
-          MetaRectangle new_rect;
+      meta_window_move_resize_internal (window,
+                                        META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION,
+                                        gravity,
+                                        target_rect.x,
+                                        target_rect.y,
+                                        target_rect.width,
+                                        target_rect.height);
 
-          meta_window_move_resize_internal (window,
-                                            META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION,
-                                            gravity,
-                                            target_rect.x,
-                                            target_rect.y,
-                                            target_rect.width,
-                                            target_rect.height);
-
-	  meta_window_get_frame_rect (window, &new_rect);
-          meta_compositor_unmaximize_window (window->display->compositor,
-					     window,
-                                             &old_rect,
-					     &new_rect);
-        }
-      else
-        {
-          meta_window_move_resize_internal (window,
-                                            META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION,
-                                            gravity,
-                                            target_rect.x,
-                                            target_rect.y,
-                                            target_rect.width,
-                                            target_rect.height);
-        }
+      meta_window_get_frame_rect (window, &new_rect);
+      meta_compositor_unmaximize_window (window->display->compositor,
+                                         window,
+                                         &old_rect,
+                                         &new_rect);
 
       /* Make sure user_rect is current.
        */
@@ -5014,10 +4970,9 @@ meta_window_move_resize_internal (MetaWindow          *window,
                   newx, newy, window->rect.width, window->rect.height,
                   window->user_rect.x, window->user_rect.y,
                   window->user_rect.width, window->user_rect.height);
-      if (window->display->compositor)
-        meta_compositor_sync_window_geometry (window->display->compositor,
-                                              window,
-                                              did_placement);
+      meta_compositor_sync_window_geometry (window->display->compositor,
+                                            window,
+                                            did_placement);
     }
   else
     {
@@ -10117,8 +10072,7 @@ meta_window_set_opacity (MetaWindow *window,
 {
   window->opacity = opacity;
 
-  if (window->display->compositor)
-    meta_compositor_window_opacity_changed (window->display->compositor, window);
+  meta_compositor_window_opacity_changed (window->display->compositor, window);
 }
 
 static void
