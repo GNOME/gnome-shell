@@ -254,9 +254,6 @@ struct _MetaPluginInfo
 
 GType meta_plugin_get_type (void);
 
-gboolean      meta_plugin_running             (MetaPlugin *plugin);
-gboolean      meta_plugin_debug_mode          (MetaPlugin *plugin);
-
 const MetaPluginInfo * meta_plugin_get_info (MetaPlugin *plugin);
 
 /**
@@ -408,8 +405,7 @@ meta_plugin_end_modal (MetaPlugin *plugin,
 
 MetaScreen *meta_plugin_get_screen        (MetaPlugin *plugin);
 
-void
-_meta_plugin_effect_started (MetaPlugin *plugin);
+void _meta_plugin_set_screen (MetaPlugin *plugin, MetaScreen *screen);
 
 /* XXX: Putting this in here so it's in the public header. */
 void     meta_plugin_manager_set_plugin_type (GType gtype);

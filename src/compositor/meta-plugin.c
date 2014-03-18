@@ -47,113 +47,21 @@ G_DEFINE_ABSTRACT_TYPE (MetaPlugin, meta_plugin, G_TYPE_OBJECT);
 #define META_PLUGIN_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), META_TYPE_PLUGIN, MetaPluginPrivate))
 
-enum
-{
-  PROP_0,
-  PROP_SCREEN,
-  PROP_DEBUG_MODE,
-};
-
 struct _MetaPluginPrivate
 {
-  MetaScreen   *screen;
-
-  gint          running;
-  gboolean      debug    : 1;
+  MetaScreen *screen;
 };
-
-static void
-meta_plugin_set_property (GObject      *object,
-                          guint         prop_id,
-                          const GValue *value,
-                          GParamSpec   *pspec)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (object)->priv;
-
-  switch (prop_id)
-    {
-    case PROP_SCREEN:
-      priv->screen = g_value_get_object (value);
-      break;
-    case PROP_DEBUG_MODE:
-      priv->debug = g_value_get_boolean (value);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
-}
-
-static void
-meta_plugin_get_property (GObject    *object,
-                          guint       prop_id,
-                          GValue     *value,
-                          GParamSpec *pspec)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (object)->priv;
-
-  switch (prop_id)
-    {
-    case PROP_SCREEN:
-      g_value_set_object (value, priv->screen);
-      break;
-    case PROP_DEBUG_MODE:
-      g_value_set_boolean (value, priv->debug);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
-}
-
 
 static void
 meta_plugin_class_init (MetaPluginClass *klass)
 {
-  GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
-
-  gobject_class->set_property    = meta_plugin_set_property;
-  gobject_class->get_property    = meta_plugin_get_property;
-
-  g_object_class_install_property (gobject_class,
-                                   PROP_SCREEN,
-                                   g_param_spec_object ("screen",
-                                                        "MetaScreen",
-                                                        "MetaScreen",
-                                                        META_TYPE_SCREEN,
-                                                        G_PARAM_READWRITE));
-
-  g_object_class_install_property (gobject_class,
-				   PROP_DEBUG_MODE,
-				   g_param_spec_boolean ("debug-mode",
-                                                      "Debug Mode",
-                                                      "Debug Mode",
-                                                      FALSE,
-                                                      G_PARAM_READABLE));
-
-  g_type_class_add_private (gobject_class, sizeof (MetaPluginPrivate));
+  g_type_class_add_private (klass, sizeof (MetaPluginPrivate));
 }
 
 static void
 meta_plugin_init (MetaPlugin *self)
 {
   self->priv = META_PLUGIN_GET_PRIVATE (self);
-}
-
-gboolean
-meta_plugin_running  (MetaPlugin *plugin)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
-  return (priv->running > 0);
-}
-
-gboolean
-meta_plugin_debug_mode (MetaPlugin *plugin)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
-  return priv->debug;
 }
 
 const MetaPluginInfo *
@@ -165,21 +73,6 @@ meta_plugin_get_info (MetaPlugin *plugin)
     return klass->plugin_info (plugin);
 
   return NULL;
-}
-
-/**
- * _meta_plugin_effect_started:
- * @plugin: the plugin
- *
- * Mark that an effect has started for the plugin. This is called
- * internally by MetaPluginManager.
- */
-void
-_meta_plugin_effect_started (MetaPlugin *plugin)
-{
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
-  priv->running++;
 }
 
 gboolean
@@ -208,14 +101,7 @@ void
 meta_plugin_switch_workspace_completed (MetaPlugin *plugin)
 {
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
   MetaScreen *screen = priv->screen;
-
-  if (priv->running-- < 0)
-    {
-      g_warning ("Error in running effect accounting, adjusting.");
-      priv->running = 0;
-    }
 
   meta_switch_workspace_completed (screen);
 }
@@ -225,26 +111,6 @@ meta_plugin_window_effect_completed (MetaPlugin      *plugin,
                                      MetaWindowActor *actor,
                                      unsigned long    event)
 {
-  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
-
-  if (priv->running-- < 0)
-    {
-      g_warning ("Error in running effect accounting, adjusting.");
-      priv->running = 0;
-    }
-
-  if (!actor)
-    {
-      const MetaPluginInfo *info;
-      const gchar            *name = NULL;
-
-      if (plugin && (info = meta_plugin_get_info (plugin)))
-        name = info->name;
-
-      g_warning ("Plugin [%s] passed NULL for actor!",
-                 name ? name : "unknown");
-    }
-
   meta_window_actor_effect_completed (actor, event);
 }
 
@@ -339,9 +205,7 @@ meta_plugin_end_modal (MetaPlugin *plugin,
  * meta_plugin_get_screen:
  * @plugin: a #MetaPlugin
  *
- * Gets the #MetaScreen corresponding to a plugin. Each plugin instance
- * is associated with exactly one screen; if Metacity is managing
- * multiple screens, multiple plugin instances will be created.
+ * Gets the #MetaScreen corresponding to a plugin.
  *
  * Return value: (transfer none): the #MetaScreen for the plugin
  */
@@ -351,6 +215,15 @@ meta_plugin_get_screen (MetaPlugin *plugin)
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
   return priv->screen;
+}
+
+void
+_meta_plugin_set_screen (MetaPlugin *plugin,
+                         MetaScreen *screen)
+{
+  MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
+
+  priv->screen = screen;
 }
 
 void
