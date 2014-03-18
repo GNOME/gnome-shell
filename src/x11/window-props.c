@@ -489,15 +489,18 @@ static void
 set_window_title (MetaWindow *window,
                   const char *title)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = window_x11->priv;
+
   char *new_title = NULL;
- 
+
   gboolean modified =
     set_title_text (window,
-                    window->using_net_wm_visible_name,
+                    priv->using_net_wm_visible_name,
                     title,
                     window->display->atom__NET_WM_VISIBLE_NAME,
                     &new_title);
-  window->using_net_wm_visible_name = modified;
+  priv->using_net_wm_visible_name = modified;
   
   meta_window_set_title (window, new_title);
 
@@ -509,10 +512,13 @@ reload_net_wm_name (MetaWindow    *window,
                     MetaPropValue *value,
                     gboolean       initial)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = window_x11->priv;
+
   if (value->type != META_PROP_VALUE_INVALID)
     {
       set_window_title (window, value->v.str);
-      window->using_net_wm_name = TRUE;
+      priv->using_net_wm_name = TRUE;
 
       meta_verbose ("Using _NET_WM_NAME for new title of %s: \"%s\"\n",
                     window->desc, window->title);
@@ -520,7 +526,7 @@ reload_net_wm_name (MetaWindow    *window,
   else
     {
       set_window_title (window, NULL);
-      window->using_net_wm_name = FALSE;
+      priv->using_net_wm_name = FALSE;
       if (!initial)
         meta_window_reload_property (window, XA_WM_NAME, FALSE);
     }
@@ -531,7 +537,10 @@ reload_wm_name (MetaWindow    *window,
                 MetaPropValue *value,
                 gboolean       initial)
 {
-  if (window->using_net_wm_name)
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = window_x11->priv;
+
+  if (priv->using_net_wm_name)
     {
       meta_verbose ("Ignoring WM_NAME \"%s\" as _NET_WM_NAME is set\n",
                     value->v.str);
@@ -606,13 +615,16 @@ static void
 set_icon_title (MetaWindow *window,
                 const char *title)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = window_x11->priv;
+
   gboolean modified =
     set_title_text (window,
-                    window->using_net_wm_visible_icon_name,
+                    priv->using_net_wm_visible_icon_name,
                     title,
                     window->display->atom__NET_WM_VISIBLE_ICON_NAME,
                     &window->icon_name);
-  window->using_net_wm_visible_icon_name = modified;
+  priv->using_net_wm_visible_icon_name = modified;
 }
 
 static void
@@ -620,10 +632,13 @@ reload_net_wm_icon_name (MetaWindow    *window,
                          MetaPropValue *value,
                          gboolean       initial)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = window_x11->priv;
+
   if (value->type != META_PROP_VALUE_INVALID)
     {
       set_icon_title (window, value->v.str);
-      window->using_net_wm_icon_name = TRUE;
+      priv->using_net_wm_icon_name = TRUE;
 
       meta_verbose ("Using _NET_WM_ICON_NAME for new title of %s: \"%s\"\n",
                     window->desc, window->title);
@@ -631,7 +646,7 @@ reload_net_wm_icon_name (MetaWindow    *window,
   else
     {
       set_icon_title (window, NULL);
-      window->using_net_wm_icon_name = FALSE;
+      priv->using_net_wm_icon_name = FALSE;
       if (!initial)
         meta_window_reload_property (window, XA_WM_ICON_NAME, FALSE);
     }
@@ -642,7 +657,10 @@ reload_wm_icon_name (MetaWindow    *window,
                      MetaPropValue *value,
                      gboolean       initial)
 {
-  if (window->using_net_wm_icon_name)
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = window_x11->priv;
+
+  if (priv->using_net_wm_icon_name)
     {
       meta_verbose ("Ignoring WM_ICON_NAME \"%s\" as _NET_WM_ICON_NAME is set\n",
                     value->v.str);
@@ -687,7 +705,7 @@ reload_net_wm_state (MetaWindow    *window,
   window->maximized_horizontally = FALSE;
   window->maximized_vertically = FALSE;
   window->fullscreen = FALSE;
-  window->wm_state_modal = FALSE;
+  priv->wm_state_modal = FALSE;
   priv->wm_state_skip_taskbar = FALSE;
   priv->wm_state_skip_pager = FALSE;
   window->wm_state_above = FALSE;
@@ -709,7 +727,7 @@ reload_net_wm_state (MetaWindow    *window,
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_HIDDEN)
         window->minimize_after_placement = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_MODAL)
-        window->wm_state_modal = TRUE;
+        priv->wm_state_modal = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_SKIP_TASKBAR)
         priv->wm_state_skip_taskbar = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_SKIP_PAGER)

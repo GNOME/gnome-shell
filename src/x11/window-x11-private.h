@@ -41,6 +41,15 @@ struct _MetaWindowX11Private
   /* TRUE if the client forced these on */
   guint wm_state_skip_taskbar : 1;
   guint wm_state_skip_pager : 1;
+
+  /* Weird "_NET_WM_STATE_MODAL" flag */
+  guint wm_state_modal : 1;
+
+  /* Info on which props we got our attributes from */
+  guint using_net_wm_name              : 1; /* vs. plain wm_name */
+  guint using_net_wm_visible_name      : 1; /* tracked so we can clear it */
+  guint using_net_wm_icon_name         : 1; /* vs. plain wm_icon_name */
+  guint using_net_wm_visible_icon_name : 1; /* tracked so we can clear it */
 };
 
 G_END_DECLS

@@ -81,6 +81,8 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
 void
 meta_window_x11_set_net_wm_state (MetaWindow *window)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   int i;
   unsigned long data[13];
 
@@ -90,7 +92,7 @@ meta_window_x11_set_net_wm_state (MetaWindow *window)
       data[i] = window->display->atom__NET_WM_STATE_SHADED;
       ++i;
     }
-  if (window->wm_state_modal)
+  if (priv->wm_state_modal)
     {
       data[i] = window->display->atom__NET_WM_STATE_MODAL;
       ++i;
@@ -904,9 +906,9 @@ meta_window_x11_client_message (MetaWindow *window,
       if (first == display->atom__NET_WM_STATE_MODAL ||
           second == display->atom__NET_WM_STATE_MODAL)
         {
-          window->wm_state_modal =
+          priv->wm_state_modal =
             (action == _NET_WM_STATE_ADD) ||
-            (action == _NET_WM_STATE_TOGGLE && !window->wm_state_modal);
+            (action == _NET_WM_STATE_TOGGLE && !priv->wm_state_modal);
 
           meta_window_x11_recalc_window_type (window);
           meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
@@ -1546,6 +1548,8 @@ error:
 void
 meta_window_x11_recalc_window_type (MetaWindow *window)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   MetaWindowType type;
 
   if (window->type_atom != None)
@@ -1612,8 +1616,7 @@ meta_window_x11_recalc_window_type (MetaWindow *window)
       type = META_WINDOW_NORMAL;
     }
 
-  if (type == META_WINDOW_DIALOG &&
-      window->wm_state_modal)
+  if (type == META_WINDOW_DIALOG && priv->wm_state_modal)
     type = META_WINDOW_MODAL_DIALOG;
 
   /* We don't want to allow override-redirect windows to have decorated-window

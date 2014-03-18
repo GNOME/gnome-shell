@@ -920,7 +920,6 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   window->always_sticky = FALSE;
 
-  window->wm_state_modal = FALSE;
   window->skip_taskbar = FALSE;
   window->skip_pager = FALSE;
   window->wm_state_above = FALSE;
@@ -945,11 +944,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->type_atom = None;
 
   window->struts = NULL;
-
-  window->using_net_wm_name              = FALSE;
-  window->using_net_wm_visible_name      = FALSE;
-  window->using_net_wm_icon_name         = FALSE;
-  window->using_net_wm_visible_icon_name = FALSE;
 
   window->layer = META_LAYER_LAST; /* invalid value */
   window->stack_position = -1;
