@@ -9734,25 +9734,6 @@ meta_window_get_transient_for (MetaWindow *window)
 }
 
 /**
- * meta_window_get_transient_for_as_xid:
- * @window: a #MetaWindow
- *
- * Returns the XID of the window that is pointed to by the
- * WM_TRANSIENT_FOR hint on this window (see XGetTransientForHint()
- * or XSetTransientForHint()). Metacity keeps transient windows above their
- * parents. A typical usage of this hint is for a dialog that wants to stay
- * above its associated window.
- *
- * Return value: (transfer none): the window this window is transient for, or
- * None if the WM_TRANSIENT_FOR hint is unset.
- */
-Window
-meta_window_get_transient_for_as_xid (MetaWindow *window)
-{
-  return window->xtransient_for;
-}
-
-/**
  * meta_window_get_pid:
  * @window: a #MetaWindow
  *
