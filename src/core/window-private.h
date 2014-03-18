@@ -431,8 +431,6 @@ struct _MetaWindow
    * gives the position and size of the client window (i.e. ignoring
    * the frame).
    *
-   * Position valid if user_has_moved, size valid if user_has_resized
-   *
    * Position always in root coords, unlike window->rect.
    */
   MetaRectangle user_rect;
