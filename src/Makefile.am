@@ -16,6 +16,7 @@ INCLUDES=								\
 	-I$(srcdir)/core						\
 	-I$(srcdir)/ui							\
 	-I$(srcdir)/compositor						\
+	-I$(srcdir)/x11							\
 	-DMUTTER_LIBEXECDIR=\"$(libexecdir)\"				\
 	-DHOST_ALIAS=\"@HOST_ALIAS@\"					\
 	-DMUTTER_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\"		\
@@ -49,8 +50,7 @@ mutter_built_sources = \
 	wayland/xserver-server-protocol.h
 
 libmutter_wayland_la_SOURCES =			\
-	core/async-getprop.c			\
-	core/async-getprop.h			\
+	core/above-tab-keycode.c		\
 	core/barrier.c				\
 	meta/barrier.h				\
 	core/bell.c				\
@@ -105,7 +105,6 @@ libmutter_wayland_la_SOURCES =			\
 	meta/meta-shadow-factory.h		\
 	meta/meta-window-actor.h		\
 	meta/compositor-mutter.h 		\
-	core/above-tab-keycode.c		\
 	core/constraints.c			\
 	core/constraints.h			\
 	core/core.c				\
@@ -123,13 +122,6 @@ libmutter_wayland_la_SOURCES =			\
 	core/frame.h				\
 	ui/gradient.c				\
 	meta/gradient.h				\
-	core/group-private.h			\
-	core/group-props.c			\
-	core/group-props.h			\
-	core/group.c				\
-	meta/group.h				\
-	core/iconcache.c			\
-	core/iconcache.h			\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
 	core/main.c				\
@@ -161,18 +153,11 @@ libmutter_wayland_la_SOURCES =			\
 	core/util.c				\
 	meta/util.h				\
 	core/util-private.h			\
-	core/window-props.c			\
-	core/window-props.h			\
-	core/window-x11.c			\
-	core/window-x11.h			\
-	core/window-x11-private.h		\
 	core/window.c				\
 	core/window-private.h			\
 	meta/window.h				\
 	core/workspace.c			\
 	core/workspace-private.h		\
-	core/xprops.c				\
-	core/xprops.h				\
 	meta/common.h				\
 	core/core.h				\
 	ui/ui.h					\
@@ -189,6 +174,22 @@ libmutter_wayland_la_SOURCES =			\
 	meta/theme.h				\
 	ui/theme-private.h			\
 	ui/ui.c					\
+	x11/iconcache.c				\
+	x11/iconcache.h				\
+	x11/async-getprop.c			\
+	x11/async-getprop.h			\
+	x11/group-private.h			\
+	x11/group-props.c			\
+	x11/group-props.h			\
+	x11/group.c				\
+	meta/group.h				\
+	x11/window-props.c			\
+	x11/window-props.h			\
+	x11/window-x11.c			\
+	x11/window-x11.h			\
+	x11/window-x11-private.h		\
+	x11/xprops.c				\
+	x11/xprops.h				\
 	wayland/meta-wayland.c			\
 	wayland/meta-wayland.h			\
 	wayland/meta-wayland-private.h		\
