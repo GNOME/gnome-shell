@@ -43,7 +43,7 @@ G_BEGIN_DECLS
 /**
  * ClutterPageTurnEffect:
  *
- * <structname>ClutterPageTurnEffect</structname> is an opaque structure
+ * #ClutterPageTurnEffect is an opaque structure
  * whose members can only be accessed using the provided API
  *
  * Since: 1.4

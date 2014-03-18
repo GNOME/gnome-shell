@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 /**
  * ClutterDesaturateEffect:
  *
- * <structname>ClutterDesaturateEffect</structname> is an opaque structure
+ * #ClutterDesaturateEffect is an opaque structure
  * whose members cannot be directly accessed
  *
  * Since: 1.4

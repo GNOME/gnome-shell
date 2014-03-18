@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 /**
  * ClutterSnapConstraint:
  *
- * <structname>ClutterSnapConstraint</structname> is an opaque structure
+ * #ClutterSnapConstraint is an opaque structure
  * whose members cannot be directly accesses
  *
  * Since: 1.6

@@ -53,7 +53,7 @@ typedef struct _ClutterTextBufferPrivate     ClutterTextBufferPrivate;
 /**
  * ClutterTextBuffer:
  *
- * The <structname>ClutterTextBuffer</structname> structure contains private
+ * The #ClutterTextBuffer structure contains private
  * data and it should only be accessed using the provided API.
  *
  * Since: 1.10
@@ -75,7 +75,7 @@ struct _ClutterTextBuffer
  * @insert_text: virtual function
  * @delete_text: virtual function
  *
- * The <structname>ClutterTextBufferClass</structname> structure contains
+ * The #ClutterTextBufferClass structure contains
  * only private data.
  *
  * Since: 1.10

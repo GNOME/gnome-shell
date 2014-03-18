@@ -47,7 +47,7 @@ typedef struct _ClutterCanvasClass      ClutterCanvasClass;
 /**
  * ClutterCanvas:
  *
- * The <structname>ClutterCanvas</structname> structure contains
+ * The #ClutterCanvas structure contains
  * private data and should only be accessed using the provided
  * API.
  *
@@ -65,7 +65,7 @@ struct _ClutterCanvas
  * ClutterCanvasClass:
  * @draw: class handler for the #ClutterCanvas::draw signal
  *
- * The <structname>ClutterCanvasClass</structname> structure contains
+ * The #ClutterCanvasClass structure contains
  * private data.
  *
  * Since: 1.10

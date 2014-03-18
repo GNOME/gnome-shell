@@ -55,7 +55,7 @@ typedef struct _ClutterPanActionClass         ClutterPanActionClass;
 /**
  * ClutterPanAction:
  *
- * The <structname>ClutterPanAction</structname> structure contains
+ * The #ClutterPanAction structure contains
  * only private data and should be accessed using the provided API
  *
  * Since: 1.12
@@ -73,7 +73,7 @@ struct _ClutterPanAction
  * @pan: class handler for the #ClutterPanAction::pan signal
  * @pan_stopped: class handler for the #ClutterPanAction::pan-stopped signal
  *
- * The <structname>ClutterPanActionClass</structname> structure contains
+ * The #ClutterPanActionClass structure contains
  * only private data.
  *
  * Since: 1.12

@@ -49,7 +49,7 @@ typedef struct _ClutterZoomActionClass          ClutterZoomActionClass;
 /**
  * ClutterZoomAction:
  *
- * The <structname>ClutterZoomAction</structname> structure contains only
+ * The #ClutterZoomAction structure contains only
  * private data and should be accessed using the provided API
  *
  * Since: 1.12
@@ -66,7 +66,7 @@ struct _ClutterZoomAction
  * ClutterZoomActionClass:
  * @zoom: class handler of the #ClutterZoomAction::zoom signal
  *
- * The <structname>ClutterZoomActionClass</structname> structure contains
+ * The #ClutterZoomActionClass structure contains
  * only private data
  *
  * Since: 1.12

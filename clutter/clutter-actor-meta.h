@@ -46,7 +46,7 @@ typedef struct _ClutterActorMetaClass           ClutterActorMetaClass;
 /**
  * ClutterActorMeta:
  *
- * The <structname>ClutterActorMeta</structname> structure contains only
+ * The #ClutterActorMeta structure contains only
  * private data and should be accessed using the provided API
  *
  * Since: 1.4
@@ -64,7 +64,7 @@ struct _ClutterActorMeta
  * @set_actor: virtual function, invoked when attaching and detaching
  *   a #ClutterActorMeta instance to a #ClutterActor
  *
- * The <structname>ClutterActorMetaClass</structname> structure contains
+ * The #ClutterActorMetaClass structure contains
  * only private data
  *
  * Since: 1.4

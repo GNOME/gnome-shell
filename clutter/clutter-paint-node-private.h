@@ -149,7 +149,7 @@ CoglFramebuffer *       clutter_paint_node_get_framebuffer              (Clutter
 /*
  * ClutterLayerNode:
  *
- * The <structname>ClutterLayerNode</structname> structure is an opaque
+ * The #ClutterLayerNode structure is an opaque
  * type whose members cannot be directly accessed.
  *
  * Since: 1.10

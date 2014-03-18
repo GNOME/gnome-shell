@@ -101,7 +101,7 @@ typedef union _ClutterEvent                     ClutterEvent;
 /**
  * ClutterEventSequence:
  *
- * The <structname>ClutterEventSequence</structname> structure is an opaque
+ * The #ClutterEventSequence structure is an opaque
  * type used to denote the event sequence of a touch event.
  *
  * Since: 1.12
@@ -115,14 +115,14 @@ typedef struct _ClutterShader                   ClutterShader; /* deprecated */
 /**
  * ClutterPaintVolume:
  *
- * <structname>ClutterPaintVolume</structname> is an opaque structure
+ * #ClutterPaintVolume is an opaque structure
  * whose members cannot be directly accessed.
  *
- * A <structname>ClutterPaintVolume</structname> represents an
+ * A #ClutterPaintVolume represents an
  * a bounding volume whose internal representation isn't defined but
  * can be set and queried in terms of an axis aligned bounding box.
  *
- * A <structname>ClutterPaintVolume</structname> for a #ClutterActor
+ * A #ClutterPaintVolume for a #ClutterActor
  * is defined to be relative from the current actor modelview matrix.
  *
  * Other internal representation and methods for describing the

@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 /**
  * ClutterBindConstraint:
  *
- * <structname>ClutterBindConstraint</structname> is an opaque structure
+ * #ClutterBindConstraint is an opaque structure
  * whose members cannot be directly accessed
  *
  * Since: 1.4

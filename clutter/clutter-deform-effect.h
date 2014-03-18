@@ -48,7 +48,7 @@ typedef struct _ClutterDeformEffectClass        ClutterDeformEffectClass;
 /**
  * ClutterDeformEffect:
  *
- * The <structname>ClutterDeformEffect</structname> structure contains
+ * The #ClutterDeformEffect structure contains
  * only private data and should be accessed using the provided API
  *
  * Since: 1.4
@@ -66,7 +66,7 @@ struct _ClutterDeformEffect
  * @deform_vertex: virtual function; sub-classes should override this
  *   function to compute the deformation of each vertex
  *
- * The <structname>ClutterDeformEffectClass</structname> structure contains
+ * The #ClutterDeformEffectClass structure contains
  * only private data
  *
  * Since: 1.4

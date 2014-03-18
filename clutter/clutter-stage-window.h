@@ -14,7 +14,7 @@ G_BEGIN_DECLS
 /*
  * ClutterStageWindow: (skip)
  *
- * <structname>ClutterStageWindow</structname> is an opaque structure
+ * #ClutterStageWindow is an opaque structure
  * whose members should not be accessed directly
  *
  * Since: 0.8

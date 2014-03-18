@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 /**
  * ClutterColorizeEffect:
  *
- * <structname>ClutterColorizeEffect</structname> is an opaque structure
+ * #ClutterColorizeEffect is an opaque structure
  * whose members cannot be directly accessed
  *
  * Since: 1.4

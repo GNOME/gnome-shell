@@ -45,8 +45,8 @@ typedef struct _ClutterActionClass      ClutterActionClass;
 /**
  * ClutterAction:
  *
- * The <structname>ClutterAction</structname> structure contains only
- * private data and should be accessed using the provided API
+ * The #ClutterAction structure contains only private data and
+ * should be accessed using the provided API.
  *
  * Since: 1.4
  */
@@ -59,8 +59,7 @@ struct _ClutterAction
 /**
  * ClutterActionClass:
  *
- * The <structname>ClutterActionClass</structname> structure contains
- * only private data
+ * The ClutterActionClass structure contains only private data
  *
  * Since: 1.4
  */

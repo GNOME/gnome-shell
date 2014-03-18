@@ -42,7 +42,7 @@ typedef struct _ClutterStateClass   ClutterStateClass;
 /**
  * ClutterStateKey:
  *
- * <structname>ClutterStateKey</structname> is an opaque structure whose
+ * #ClutterStateKey is an opaque structure whose
  * members cannot be accessed directly
  *
  * Since: 1.4
@@ -52,7 +52,7 @@ typedef struct _ClutterStateKey     ClutterStateKey;
 /**
  * ClutterState:
  *
- * The <structname>ClutterState</structname> structure contains only
+ * The #ClutterState structure contains only
  * private data and should be accessed using the provided API
  *
  * Since: 1.4
@@ -68,7 +68,7 @@ struct _ClutterState
  * ClutterStateClass:
  * @completed: class handler for the #ClutterState::completed signal
  *
- * The <structname>ClutterStateClass</structname> structure contains
+ * The #ClutterStateClass structure contains
  * only private data
  *
  * Since: 1.4

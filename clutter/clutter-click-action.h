@@ -51,7 +51,7 @@ typedef struct _ClutterClickActionClass         ClutterClickActionClass;
 /**
  * ClutterClickAction:
  *
- * The <structname>ClutterClickAction</structname> structure contains
+ * The #ClutterClickAction structure contains
  * only private data and should be accessed using the provided API
  *
  * Since: 1.4
@@ -69,7 +69,7 @@ struct _ClutterClickAction
  * @clicked: class handler for the #ClutterClickAction::clicked signal
  * @long_press: class handler for the #ClutterClickAction::long-press signal
  *
- * The <structname>ClutterClickActionClass</structname> structure
+ * The #ClutterClickActionClass structure
  * contains only private data
  *
  * Since: 1.4

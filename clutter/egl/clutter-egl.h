@@ -51,7 +51,7 @@ G_BEGIN_DECLS
 /**
  * clutter_eglx_display:
  *
- * Retrieves the <structname>EGLDisplay</structname> used by Clutter,
+ * Retrieves the #EGLDisplay used by Clutter,
  * if Clutter has been compiled with EGL and X11 support.
  *
  * Return value: the EGL display
@@ -66,7 +66,7 @@ EGLDisplay      clutter_eglx_display            (void);
 /**
  * clutter_egl_display:
  *
- * Retrieves the <structname>EGLDisplay</structname> used by Clutter
+ * Retrieves the #EGLDisplay used by Clutter
  *
  * Return value: the EGL display
  *
@@ -78,7 +78,7 @@ EGLDisplay      clutter_egl_display             (void);
 /**
  * clutter_egl_get_egl_display:
  *
- * Retrieves the  <structname>EGLDisplay</structname> used by Clutter.
+ * Retrieves the  #EGLDisplay used by Clutter.
  *
  * Return value: the EGL display
  *

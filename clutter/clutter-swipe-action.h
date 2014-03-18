@@ -51,7 +51,7 @@ typedef struct _ClutterSwipeActionClass         ClutterSwipeActionClass;
 /**
  * ClutterSwipeAction:
  *
- * The <structname>ClutterSwipeAction</structname> structure contains
+ * The #ClutterSwipeAction structure contains
  * only private data and should be accessed using the provided API
  *
  * Since: 1.8
@@ -70,7 +70,7 @@ struct _ClutterSwipeAction
  *   deprecated since 1.14
  * @swipe: class handler for the #ClutterSwipeAction::swipe signal
  *
- * The <structname>ClutterSwipeActionClass</structname> structure contains
+ * The #ClutterSwipeActionClass structure contains
  * only private data.
  *
  * Since: 1.8

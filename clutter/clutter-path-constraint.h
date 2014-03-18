@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 /**
  * ClutterPathConstraint:
  *
- * <structname>ClutterPathConstraint</structname> is an opaque structure
+ * #ClutterPathConstraint is an opaque structure
  * whose members cannot be directly accessed
  *
  * Since: 1.6

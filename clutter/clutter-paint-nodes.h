@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 /**
  * ClutterColorNode:
  *
- * The <structname>ClutterTextNode</structname> structure is an opaque
+ * The #ClutterTextNode structure is an opaque
  * type whose members cannot be directly accessed.
  *
  * Since: 1.10
@@ -62,7 +62,7 @@ ClutterPaintNode *      clutter_color_node_new          (const ClutterColor    *
 /**
  * ClutterTextureNode:
  *
- * The <structname>ClutterTextNode</structname> structure is an opaque
+ * The #ClutterTextNode structure is an opaque
  * type whose members cannot be directly accessed.
  *
  * Since: 1.10
@@ -86,7 +86,7 @@ ClutterPaintNode *      clutter_texture_node_new        (CoglTexture           *
 /**
  * ClutterClipNode:
  *
- * The <structname>ClutterTextNode</structname> structure is an opaque
+ * The #ClutterTextNode structure is an opaque
  * type whose members cannot be directly accessed.
  *
  * Since: 1.10
@@ -107,7 +107,7 @@ ClutterPaintNode *      clutter_clip_node_new           (void);
 /**
  * ClutterPipelineNode:
  *
- * The <structname>ClutterTextNode</structname> structure is an opaque
+ * The #ClutterTextNode structure is an opaque
  * type whose members cannot be directly accessed.
  *
  * Since: 1.10
@@ -130,7 +130,7 @@ ClutterPaintNode *      clutter_pipeline_node_new       (CoglPipeline          *
 /**
  * ClutterTextNode:
  *
- * The <structname>ClutterTextNode</structname> structure is an opaque
+ * The #ClutterTextNode structure is an opaque
  * type whose members cannot be directly accessed.
  *
  * Since: 1.10

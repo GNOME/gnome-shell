@@ -47,7 +47,7 @@ G_BEGIN_DECLS
 /**
  * ClutterBackend:
  *
- * <structname>ClutterBackend</structname> is an opaque structure whose
+ * #ClutterBackend is an opaque structure whose
  * members cannot be directly accessed.
  *
  * Since: 0.4

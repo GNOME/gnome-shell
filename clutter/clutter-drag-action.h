@@ -48,7 +48,7 @@ typedef struct _ClutterDragActionClass          ClutterDragActionClass;
 /**
  * ClutterDragAction:
  *
- * The <structname>ClutterDragAction</structname> structure contains only
+ * The #ClutterDragAction structure contains only
  * private data and should be accessed using the provided API
  *
  * Since: 1.4
@@ -68,7 +68,7 @@ struct _ClutterDragAction
  * @drag_end: class handler of the #ClutterDragAction::drag-end signal
  * @drag_progress: class handler of the #ClutterDragAction::drag-progress signal
  *
- * The <structname>ClutterDragActionClass</structname> structure contains
+ * The #ClutterDragActionClass structure contains
  * only private data
  *
  * Since: 1.4

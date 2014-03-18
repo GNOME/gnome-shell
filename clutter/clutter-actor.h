@@ -283,7 +283,7 @@ struct _ClutterActorClass
  * An iterator structure that allows to efficiently iterate over a
  * section of the scene graph.
  *
- * The contents of the <structname>ClutterActorIter</structname> structure
+ * The contents of the #ClutterActorIter structure
  * are private and should only be accessed using the provided API.
  *
  * Since: 1.10

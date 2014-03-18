@@ -43,7 +43,7 @@ typedef struct _ClutterContentIface     ClutterContentIface;
 /**
  * ClutterContent:
  *
- * The <structname>ClutterContent</structname> structure is an opaque type
+ * The #ClutterContent structure is an opaque type
  * whose members cannot be acccessed directly.
  *
  * Since: 1.10
@@ -62,7 +62,7 @@ typedef struct _ClutterContentIface     ClutterContentIface;
  * @invalidate: virtual function; called each time a #ClutterContent state
  *   is changed.
  *
- * The <structname>ClutterContentIface</structname> structure contains only
+ * The #ClutterContentIface structure contains only
  * private data.
  *
  * Since: 1.10

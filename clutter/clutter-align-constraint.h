@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 /**
  * ClutterAlignConstraint:
  *
- * <structname>ClutterAlignConstraint</structname> is an opaque structure
+ * #ClutterAlignConstraint is an opaque structure
  * whose members cannot be directly accesses
  *
  * Since: 1.4

@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 /**
  * ClutterBrightnessContrastEffect:
  *
- * <structname>ClutterBrightnessContrastEffect</structname> is an opaque structure
+ * #ClutterBrightnessContrastEffect is an opaque structure
  * whose members cannot be directly accessed
  *
  * Since: 1.10

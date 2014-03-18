@@ -48,7 +48,7 @@ typedef struct _ClutterGestureActionClass         ClutterGestureActionClass;
 /**
  * ClutterGestureAction:
  *
- * The <structname>ClutterGestureAction</structname> structure contains
+ * The #ClutterGestureAction structure contains
  * only private data and should be accessed using the provided API
  *
  * Since: 1.8
@@ -70,7 +70,7 @@ struct _ClutterGestureAction
  * @gesture_prepare: virtual function called before emitting the
  *   #ClutterGestureAction::gesture-cancel signal
  *
- * The <structname>ClutterGestureClass</structname> structure contains only
+ * The #ClutterGestureClass structure contains only
  * private data.
  *
  * Since: 1.8

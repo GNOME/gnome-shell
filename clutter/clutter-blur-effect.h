@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 /**
  * ClutterBlurEffect:
  *
- * <structname>ClutterBlurEffect</structname> is an opaque structure
+ * #ClutterBlurEffect is an opaque structure
  * whose members cannot be accessed directly
  *
  * Since: 1.4

@@ -45,7 +45,7 @@ typedef struct _ClutterConstraintClass          ClutterConstraintClass;
 /**
  * ClutterConstraint:
  *
- * The <structname>ClutterConstraint</structname> structure contains only
+ * The #ClutterConstraint structure contains only
  * private data and should be accessed using the provided API
  *
  * Since: 1.4
@@ -58,8 +58,10 @@ struct _ClutterConstraint
 
 /**
  * ClutterConstraintClass:
+ * @update_allocation: virtual function used to update the allocation
+ *   of the #ClutterActor using the #ClutterConstraint
  *
- * The <structname>ClutterConstraintClass</structname> structure contains
+ * The #ClutterConstraintClass structure contains
  * only private data
  *
  * Since: 1.4
@@ -69,6 +71,7 @@ struct _ClutterConstraintClass
   /*< private >*/
   ClutterActorMetaClass parent_class;
 
+  /*< public >*/
   void (* update_allocation) (ClutterConstraint *constraint,
                               ClutterActor      *actor,
                               ClutterActorBox   *allocation);

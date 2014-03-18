@@ -47,7 +47,7 @@ typedef struct _ClutterShaderEffectClass        ClutterShaderEffectClass;
 /**
  * ClutterShaderEffect:
  *
- * The <structname>ClutterShaderEffect</structname> structure contains
+ * The #ClutterShaderEffect structure contains
  * only private data and should be accessed using the provided API
  *
  * Since: 1.4
@@ -68,7 +68,7 @@ struct _ClutterShaderEffect
  *  many instances are used. It is expected that subclasses will return
  *  a copy of a static string from this function.
  *
- * The <structname>ClutterShaderEffectClass</structname> structure contains
+ * The #ClutterShaderEffectClass structure contains
  * only private data
  *
  * Since: 1.4
