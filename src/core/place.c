@@ -610,7 +610,7 @@ meta_window_place (MetaWindow        *window,
   meta_topic (META_DEBUG_PLACEMENT, "Placing window %s\n", window->desc);
 
   windows = NULL;
-  
+
   switch (window->type)
     {
       /* Run placement algorithm on these. */
@@ -638,7 +638,7 @@ meta_window_place (MetaWindow        *window,
     case META_WINDOW_OVERRIDE_OTHER:
       goto done_no_constraints;
     }
-  
+
   if (meta_prefs_get_disable_workarounds ())
     {
       switch (window->type)
@@ -699,18 +699,11 @@ meta_window_place (MetaWindow        *window,
           goto done_no_constraints;
         }
     }
-  
-  if ((window->type == META_WINDOW_DIALOG ||
-       window->type == META_WINDOW_MODAL_DIALOG) &&
-      window->xtransient_for != None)
-    {
-      /* Center horizontally, at top of parent vertically */
 
-      MetaWindow *parent;
-          
-      parent =
-        meta_display_lookup_x_window (window->display,
-                                      window->xtransient_for);
+  if (window->type == META_WINDOW_DIALOG ||
+      window->type == META_WINDOW_MODAL_DIALOG)
+    {
+      MetaWindow *parent = meta_window_get_transient_for (window);
 
       if (parent)
         {

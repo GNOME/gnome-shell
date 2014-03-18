@@ -1746,8 +1746,7 @@ get_default_focus_window (MetaStack     *stack,
       if (not_this_one != NULL)
         {
           if (transient_parent == NULL &&
-              not_this_one->xtransient_for != None &&
-              not_this_one->xtransient_for == window->xwindow)
+              meta_window_get_transient_for (not_this_one) == window)
             transient_parent = window;
 
           if (topmost_in_group == NULL &&
