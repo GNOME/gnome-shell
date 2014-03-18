@@ -365,7 +365,7 @@ set_modifiers (MetaWaylandKeyboard *keyboard,
                               new_state.group);
 }
 
-static gboolean
+static void
 update_pressed_keys (MetaWaylandKeyboard   *keyboard,
 		     uint32_t               evdev_code,
 		     gboolean               is_press)
@@ -376,13 +376,10 @@ update_pressed_keys (MetaWaylandKeyboard   *keyboard,
                                 keyboard->keys.size);
       uint32_t *k;
 
-      /* We want to ignore events that are sent because of auto-repeat. In
-	 the Clutter event stream these appear as a single key press
-	 event. We can detect that because the key will already have been
-	 pressed */
+      /* Make sure we don't already have this key. */
       for (k = keyboard->keys.data; k < end; k++)
         if (*k == evdev_code)
-          return TRUE;
+          return;
 
       /* Otherwise add the key to the list of pressed keys */
       k = wl_array_add (&keyboard->keys, sizeof (*k));
@@ -400,18 +397,11 @@ update_pressed_keys (MetaWaylandKeyboard   *keyboard,
           {
             *k = *(end - 1);
             keyboard->keys.size -= sizeof (*k);
-
-            goto found;
+            return;
           }
 
       g_warning ("unexpected key release event for key 0x%x", evdev_code);
-      return FALSE;
-
-    found:
-      (void) 0;
     }
-
-  return FALSE;
 }
 
 gboolean
@@ -421,7 +411,6 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
   gboolean is_press = event->type == CLUTTER_KEY_PRESS;
   guint xkb_keycode, evdev_code;
   uint32_t serial;
-  gboolean autorepeat;
   gboolean handled;
 
   xkb_keycode = event->hardware_keycode;
@@ -430,15 +419,16 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
 					      xkb_keycode, &evdev_code))
     evdev_code = xkb_keycode - 8; /* What everyone is doing in practice... */
 
-  autorepeat = update_pressed_keys (keyboard, evdev_code, is_press);
+  /* Synthetic key events are for autorepeat. Ignore those, as
+   * autorepeat in Wayland is done on the client side. */
+  if (event->flags & CLUTTER_EVENT_FLAG_SYNTHETIC)
+    return FALSE;
 
-  meta_verbose ("Handling key %s%s event code %d\n",
+  meta_verbose ("Handling key %s event code %d\n",
 		is_press ? "press" : "release",
-		autorepeat ? " (autorepeat)" : "",
 		xkb_keycode);
 
-  if (autorepeat)
-    return FALSE;
+  update_pressed_keys (keyboard, evdev_code, is_press);
 
   serial = wl_display_next_serial (keyboard->display);
 
