@@ -71,8 +71,8 @@ MetaWaylandSeat *
 meta_wayland_seat_new (struct wl_display *display);
 
 void
-meta_wayland_seat_update_pointer (MetaWaylandSeat *seat,
-                                  const ClutterEvent *event);
+meta_wayland_seat_update (MetaWaylandSeat    *seat,
+                          const ClutterEvent *event);
 
 gboolean
 meta_wayland_seat_handle_event (MetaWaylandSeat *seat,

@@ -508,6 +508,15 @@ stage_destroy_cb (void)
   meta_quit (META_EXIT_SUCCESS);
 }
 
+/**
+ * meta_wayland_compositor_update:
+ * @compositor: the #MetaWaylandCompositor instance
+ * @event: the #ClutterEvent used to update @seat's state
+ *
+ * This is used to update display server state like updating cursor
+ * position and keeping track of buttons and keys pressed. It must be
+ * called for all input events coming from the underlying devices.
+ */
 void
 meta_wayland_compositor_update (MetaWaylandCompositor *compositor,
                                 const ClutterEvent    *event)
@@ -536,18 +545,18 @@ meta_wayland_compositor_update (MetaWaylandCompositor *compositor,
       meta_idle_monitor_reset_idletime (device_monitor);
     }
 
-  switch (event->type)
-    {
-    case CLUTTER_MOTION:
-    case CLUTTER_BUTTON_PRESS:
-    case CLUTTER_BUTTON_RELEASE:
-    case CLUTTER_SCROLL:
-      meta_wayland_seat_update_pointer (compositor->seat, event);
-    default:
-      break;
-    }
+  meta_wayland_seat_update (compositor->seat, event);
 }
 
+/**
+ * meta_wayland_compositor_handle_event:
+ * @compositor: the #MetaWaylandCompositor instance
+ * @event: the #ClutterEvent to be sent
+ *
+ * This method sends events to the focused wayland client, if any.
+ *
+ * Return value: whether @event was sent to a wayland client.
+ */
 gboolean
 meta_wayland_compositor_handle_event (MetaWaylandCompositor *compositor,
                                       const ClutterEvent    *event)

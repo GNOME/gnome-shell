@@ -136,4 +136,8 @@ meta_wayland_keyboard_end_grab (MetaWaylandKeyboard *keyboard);
 void
 meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard);
 
+void
+meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
+                              const ClutterKeyEvent *event);
+
 #endif /* __META_WAYLAND_KEYBOARD_H__ */

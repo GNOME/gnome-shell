@@ -328,29 +328,6 @@ meta_wayland_xkb_info_destroy (MetaWaylandXkbInfo *xkb_info)
 }
 
 static void
-set_modifiers (MetaWaylandKeyboard   *keyboard,
-               guint32                serial,
-               const ClutterKeyEvent *event)
-{
-  MetaWaylandKeyboardGrab *grab = keyboard->grab;
-  struct xkb_state *state = keyboard->xkb_info.state;
-  enum xkb_state_component changed_state;
-
-  changed_state = xkb_state_update_key (state,
-                                        event->hardware_keycode,
-                                        event->type == CLUTTER_KEY_PRESS ? XKB_KEY_DOWN : XKB_KEY_UP);
-  if (changed_state == 0)
-    return;
-
-  grab->interface->modifiers (grab,
-                              serial,
-                              xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
-                              xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
-                              xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
-                              xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
-}
-
-static void
 update_pressed_keys (MetaWaylandKeyboard   *keyboard,
 		     uint32_t               evdev_code,
 		     gboolean               is_press)
@@ -397,12 +374,36 @@ evdev_code (const ClutterKeyEvent *event)
   return event->hardware_keycode - 8;
 }
 
+void
+meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
+                              const ClutterKeyEvent *event)
+{
+  MetaWaylandKeyboardGrab *grab = keyboard->grab;
+  gboolean is_press = event->type == CLUTTER_KEY_PRESS;
+  struct xkb_state *state = keyboard->xkb_info.state;
+  enum xkb_state_component changed_state;
+
+  update_pressed_keys (keyboard, evdev_code (event), is_press);
+
+  changed_state = xkb_state_update_key (state,
+                                        event->hardware_keycode,
+                                        is_press ? XKB_KEY_DOWN : XKB_KEY_UP);
+  if (changed_state == 0)
+    return;
+
+  grab->interface->modifiers (grab,
+                              wl_display_next_serial (keyboard->display),
+                              xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
+                              xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
+                              xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
+                              xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
+}
+
 gboolean
 meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
                                     const ClutterKeyEvent *event)
 {
   gboolean is_press = event->type == CLUTTER_KEY_PRESS;
-  uint32_t serial;
   gboolean handled;
 
   /* Synthetic key events are for autorepeat. Ignore those, as
@@ -413,12 +414,6 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
   meta_verbose ("Handling key %s event code %d\n",
 		is_press ? "press" : "release",
 		event->hardware_keycode);
-
-  update_pressed_keys (keyboard, evdev_code, is_press);
-
-  serial = wl_display_next_serial (keyboard->display);
-
-  set_modifiers (keyboard, serial, event);
 
   handled = keyboard->grab->interface->key (keyboard->grab,
 					    event->time,

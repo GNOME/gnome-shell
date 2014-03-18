@@ -347,7 +347,7 @@ count_buttons (const ClutterEvent *event)
   return count;
 }
 
-void
+static void
 meta_wayland_seat_update_pointer (MetaWaylandSeat    *seat,
                                   const ClutterEvent *event)
 {
@@ -367,6 +367,27 @@ meta_wayland_seat_update_pointer (MetaWaylandSeat    *seat,
 
       if (seat->pointer.current == NULL)
 	meta_cursor_tracker_unset_window_cursor (seat->cursor_tracker);
+    }
+}
+
+void
+meta_wayland_seat_update (MetaWaylandSeat    *seat,
+                          const ClutterEvent *event)
+{
+  switch (event->type)
+    {
+    case CLUTTER_MOTION:
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_BUTTON_RELEASE:
+    case CLUTTER_SCROLL:
+      meta_wayland_seat_update_pointer (seat, event);
+      break;
+    case CLUTTER_KEY_PRESS:
+    case CLUTTER_KEY_RELEASE:
+      meta_wayland_keyboard_update (&seat->keyboard, (const ClutterKeyEvent *) event);
+      break;
+    default:
+      break;
     }
 }
 
