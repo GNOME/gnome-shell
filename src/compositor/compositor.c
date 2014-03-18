@@ -497,25 +497,6 @@ meta_end_modal_for_plugin (MetaScreen     *screen,
   compositor->modal_plugin = NULL;
 }
 
-/* This is used when reloading plugins to make sure we don't have
- * a left-over modal grab for this screen.
- */
-void
-meta_check_end_modal (MetaScreen *screen)
-{
-  MetaDisplay    *display    = meta_screen_get_display (screen);
-  MetaCompositor *compositor = display->compositor;
-
-  if (compositor->modal_plugin &&
-      meta_plugin_get_screen (compositor->modal_plugin) == screen)
-    {
-      meta_end_modal_for_plugin (screen,
-                                   compositor->modal_plugin,
-
-                                 CurrentTime);
-    }
-}
-
 static void
 after_stage_paint (ClutterStage *stage,
                    gpointer      data)
