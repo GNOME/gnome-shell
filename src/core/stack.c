@@ -1705,8 +1705,8 @@ get_default_focus_window (MetaStack     *stack,
   MetaWindow *topmost_in_group;
   MetaWindow *topmost_overall;
   MetaGroup *not_this_one_group;
-  GList *link;
-  
+  GList *l;
+
   transient_parent = NULL;
   topmost_in_group = NULL;
   topmost_overall = NULL;
@@ -1718,49 +1718,50 @@ get_default_focus_window (MetaStack     *stack,
   stack_ensure_sorted (stack);
 
   /* top of this layer is at the front of the list */
-  link = stack->sorted;
-      
-  while (link)
+  for (l = stack->sorted; l != NULL; l = l->next)
     {
-      MetaWindow *window = link->data;
+      MetaWindow *window = l->data;
 
-      if (window &&
-          window != not_this_one &&
-          (window->unmaps_pending == 0) &&
-          !window->minimized &&
-          (window->input || window->take_focus) &&
-          (workspace == NULL ||
-           meta_window_located_on_workspace (window, workspace)))
+      if (!window)
+        continue;
+
+      if (window == not_this_one)
+        continue;
+
+      if (window->unmaps_pending > 0)
+        continue;
+
+      if (window->minimized)
+        continue;
+
+      if (!(window->input || window->take_focus))
+        continue;
+
+      if (workspace != NULL && !meta_window_located_on_workspace (window, workspace))
+        continue;
+
+      if (must_be_at_point && !window_contains_point (window, root_x, root_y))
+        continue;
+
+      if (not_this_one != NULL)
         {
-          if (not_this_one != NULL)
-            {
-              if (transient_parent == NULL &&
-                  not_this_one->xtransient_for != None &&
-                  not_this_one->xtransient_for == window->xwindow &&
-                  (!must_be_at_point ||
-                   window_contains_point (window, root_x, root_y)))
-                transient_parent = window;
+          if (transient_parent == NULL &&
+              not_this_one->xtransient_for != None &&
+              not_this_one->xtransient_for == window->xwindow)
+            transient_parent = window;
 
-              if (topmost_in_group == NULL &&
-                  not_this_one_group != NULL &&
-                  not_this_one_group == meta_window_get_group (window) &&
-                  (!must_be_at_point ||
-                   window_contains_point (window, root_x, root_y)))
-                topmost_in_group = window;
-            }
-
-          if (topmost_overall == NULL &&
-              window->type != META_WINDOW_DOCK &&
-              (!must_be_at_point ||
-               window_contains_point (window, root_x, root_y)))
-            topmost_overall = window;
-
-          /* We could try to bail out early here for efficiency in
-           * some cases, but it's just not worth the code.
-           */
+          if (topmost_in_group == NULL &&
+              not_this_one_group != NULL &&
+              not_this_one_group == meta_window_get_group (window))
+            topmost_in_group = window;
         }
 
-      link = link->next;
+      if (topmost_overall == NULL && window->type != META_WINDOW_DOCK)
+        topmost_overall = window;
+
+      /* We could try to bail out early here for efficiency in
+       * some cases, but it's just not worth the code.
+       */
     }
 
   if (transient_parent)
