@@ -1325,12 +1325,6 @@ meta_window_wayland_new (MetaDisplay        *display,
 
   meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
 
-  /* XXX: Maybe this could be called in meta_window_new_shared() but
-   * before splitting the X11 specific code out it came after the
-   * meta_error_trap_pop() and we wanted to minimize the risk of
-   * breaking something.
-   */
-
   return window;
 }
 
