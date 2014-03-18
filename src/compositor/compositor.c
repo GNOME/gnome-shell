@@ -349,7 +349,6 @@ begin_modal_x11 (MetaScreen       *screen,
   Display        *xdpy        = meta_display_get_xdisplay (display);
   MetaCompScreen *info        = meta_screen_get_compositor_data (screen);
   Window          grab_window = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
-  Cursor          cursor      = None;
   int             result;
   gboolean        pointer_grabbed = FALSE;
   gboolean        keyboard_grabbed = FALSE;
@@ -369,7 +368,7 @@ begin_modal_x11 (MetaScreen       *screen,
                              META_VIRTUAL_CORE_POINTER_ID,
                              grab_window,
                              timestamp,
-                             cursor,
+                             None,
                              XIGrabModeAsync, XIGrabModeAsync,
                              False, /* owner_events */
                              &mask);
