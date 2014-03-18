@@ -79,7 +79,6 @@ static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
 
 static void     meta_window_save_rect         (MetaWindow    *window);
-static void     force_save_user_window_placement (MetaWindow    *window);
 
 static void     ensure_mru_position_after (MetaWindow *window,
                                            MetaWindow *after_this_one);
@@ -831,7 +830,7 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   /* And this is our unmaximized size */
   window->saved_rect = window->rect;
-  window->user_rect = window->rect;
+  window->unconstrained_rect = window->rect;
 
   window->depth = attrs->depth;
   window->xvisual = attrs->visual;
@@ -877,7 +876,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   /* if already mapped we don't want to do the placement thing;
    * override-redirect windows are placed by the app */
   window->placed = ((window->mapped && !window->hidden) || window->override_redirect);
-  window->force_save_user_rect = TRUE;
   window->denied_focus_and_not_transient = FALSE;
   window->unmanaging = FALSE;
   window->is_in_queues = 0;
@@ -2715,49 +2713,6 @@ meta_window_save_rect (MetaWindow *window)
     }
 }
 
-/**
- * force_save_user_window_placement:
- * @window: Store current position of this window for future reference
- *
- * Save the user_rect regardless of whether the window is maximized or
- * fullscreen. See save_user_window_placement() for most uses.
- */
-static void
-force_save_user_window_placement (MetaWindow *window)
-{
-  meta_window_get_client_root_coords (window, &window->user_rect);
-}
-
-/**
- * save_user_window_placement:
- * @window: Store current position of this window for future reference
- *
- * Save the user_rect, but only if the window is neither maximized nor
- * fullscreen, otherwise the window may snap back to those dimensions
- * (bug #461927).
- */
-void
-meta_window_save_user_window_placement (MetaWindow *window)
-{
-  if (!(META_WINDOW_MAXIMIZED (window) || META_WINDOW_TILED_SIDE_BY_SIDE (window) || window->fullscreen))
-    {
-      MetaRectangle user_rect;
-
-      meta_window_get_client_root_coords (window, &user_rect);
-
-      if (!window->maximized_horizontally)
-	{
-	  window->user_rect.x     = user_rect.x;
-	  window->user_rect.width = user_rect.width;
-	}
-      if (!window->maximized_vertically)
-	{
-	  window->user_rect.y      = user_rect.y;
-	  window->user_rect.height = user_rect.height;
-	}
-    }
-}
-
 void
 meta_window_maximize_internal (MetaWindow        *window,
                                MetaMaximizeFlags  directions,
@@ -2788,8 +2743,6 @@ meta_window_maximize_internal (MetaWindow        *window,
     window->maximized_horizontally || maximize_horizontally;
   window->maximized_vertically =
     window->maximized_vertically   || maximize_vertically;
-  if (maximize_horizontally || maximize_vertically)
-    window->force_save_user_rect = FALSE;
 
   meta_window_recalc_features (window);
   set_net_wm_state (window);
@@ -3221,10 +3174,6 @@ meta_window_unmaximize_internal (MetaWindow        *window,
                                          &old_rect,
                                          &new_rect);
 
-      /* Make sure user_rect is current.
-       */
-      force_save_user_window_placement (window);
-
       /* When we unmaximize, if we're doing a mouse move also we could
        * get the window suddenly jumping to the upper left corner of
        * the workspace, since that's where it was when the grab op
@@ -3235,7 +3184,7 @@ meta_window_unmaximize_internal (MetaWindow        *window,
       if (meta_grab_op_is_moving (window->display->grab_op) &&
           window->display->grab_window == window)
         {
-          window->display->grab_anchor_window_pos = window->user_rect;
+          window->display->grab_anchor_window_pos = window->unconstrained_rect;
         }
 
       meta_window_recalc_features (window);
@@ -3334,7 +3283,6 @@ meta_window_make_fullscreen_internal (MetaWindow  *window)
       meta_window_save_rect (window);
 
       window->fullscreen = TRUE;
-      window->force_save_user_rect = FALSE;
 
       meta_stack_freeze (window->screen->stack);
       meta_window_update_layer (window);
@@ -3397,10 +3345,6 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
                                target_rect.y,
                                target_rect.width,
                                target_rect.height);
-
-      /* Make sure user_rect is current.
-       */
-      force_save_user_window_placement (window);
 
       meta_window_update_layer (window);
 
@@ -3754,7 +3698,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
    * this is the root position of the X11 window. For server-decorated
    * windows, this is the root position of the client area of the window.
    */
-  gboolean is_user_action;
   gboolean did_placement;
   /* used for the configure request, but may not be final
    * destination due to StaticGravity etc.
@@ -3770,7 +3713,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
    */
   g_assert (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION | META_IS_WAYLAND_RESIZE));
 
-  is_user_action = (flags & META_IS_USER_ACTION) != 0;
   did_placement = !window->placed && window->calc_placement;
 
   /* We don't need it in the idle queue anymore. */
@@ -3797,6 +3739,10 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   new_rect = requested_rect;
 
+  /* Save the unconstrained rectangle to the position we should be at
+   * before constraints kick in. */
+  window->unconstrained_rect = new_rect;
+
   if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
     {
       MetaRectangle old_rect;
@@ -3815,11 +3761,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   /* Do the protocol-specific move/resize logic */
   META_WINDOW_GET_CLASS (window)->move_resize_internal (window, gravity, requested_rect, new_rect, flags, &result);
-
-  if (!window->placed && window->force_save_user_rect && !window->fullscreen)
-    force_save_user_window_placement (window);
-  else if (is_user_action)
-    meta_window_save_user_window_placement (window);
 
   if (result & META_MOVE_RESIZE_RESULT_MOVED)
     g_signal_emit (window, window_signals[POSITION_CHANGED], 0);
@@ -3948,21 +3889,17 @@ meta_window_move_between_rects (MetaWindow  *window,
   int rel_x, rel_y;
   double scale_x, scale_y;
 
-  rel_x = window->user_rect.x - old_area->x;
-  rel_y = window->user_rect.y - old_area->y;
+  rel_x = window->unconstrained_rect.x - old_area->x;
+  rel_y = window->unconstrained_rect.y - old_area->y;
   scale_x = (double)new_area->width / old_area->width;
   scale_y = (double)new_area->height / old_area->height;
 
-  window->user_rect.x = new_area->x + rel_x * scale_x;
-  window->user_rect.y = new_area->y + rel_y * scale_y;
-  window->saved_rect.x = window->user_rect.x;
-  window->saved_rect.y = window->user_rect.y;
+  window->unconstrained_rect.x = new_area->x + rel_x * scale_x;
+  window->unconstrained_rect.y = new_area->y + rel_y * scale_y;
+  window->saved_rect.x = window->unconstrained_rect.x;
+  window->saved_rect.y = window->unconstrained_rect.y;
 
-  meta_window_move_resize (window, FALSE,
-                           window->user_rect.x,
-                           window->user_rect.y,
-                           window->user_rect.width,
-                           window->user_rect.height);
+  meta_window_move_resize_now (window);
 }
 
 /**
@@ -4068,15 +4005,11 @@ meta_window_resize_with_gravity (MetaWindow *window,
 static void
 meta_window_move_resize_now (MetaWindow  *window)
 {
-  /* If constraints have changed then we want to snap back to wherever
-   * the user had the window.  We use user_rect for this reason.  See
-   * also bug 426519 comment 3.
-   */
   meta_window_move_resize (window, FALSE,
-                           window->user_rect.x,
-                           window->user_rect.y,
-                           window->user_rect.width,
-                           window->user_rect.height);
+                           window->unconstrained_rect.x,
+                           window->unconstrained_rect.y,
+                           window->unconstrained_rect.width,
+                           window->unconstrained_rect.height);
 }
 
 static gboolean
@@ -5827,8 +5760,8 @@ update_move (MetaWindow  *window,
                       window->saved_rect.y += window->frame->child_y;
                     }
 
-                  window->user_rect.x = window->saved_rect.x;
-                  window->user_rect.y = window->saved_rect.y;
+                  window->unconstrained_rect.x = window->saved_rect.x;
+                  window->unconstrained_rect.y = window->saved_rect.y;
 
                   meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
                 }

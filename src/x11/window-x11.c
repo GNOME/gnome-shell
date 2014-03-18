@@ -2079,18 +2079,6 @@ meta_window_move_resize_request (MetaWindow *window,
       adjust_for_gravity (window, TRUE, gravity, &rect);
       meta_window_move_resize_internal (window, flags, gravity, rect);
     }
-
-  /* window->user_rect exists to allow "snapping-back" the window if a
-   * new strut is set (causing the window to move) and then the strut
-   * is later removed without the user moving the window in the
-   * interim.  We'd like to "snap-back" to the position specified by
-   * ConfigureRequest events (at least the constrained version of the
-   * ConfigureRequest, since that is guaranteed to be onscreen) so we
-   * set user_rect here.
-   *
-   * See also bug 426519.
-   */
-  meta_window_save_user_window_placement (window);
 }
 
 gboolean

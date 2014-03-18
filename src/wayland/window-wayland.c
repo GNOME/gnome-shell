@@ -289,5 +289,4 @@ meta_window_wayland_move_resize (MetaWindow *window,
 
   gravity = meta_resize_gravity_from_grab_op (window->display->grab_op);
   meta_window_move_resize_internal (window, flags, gravity, rect);
-  meta_window_save_user_window_placement (window);
 }

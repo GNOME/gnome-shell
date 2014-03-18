@@ -539,10 +539,10 @@ place_window_if_needed(MetaWindow     *window,
                        .083 * info->work_area_monitor.height;
             }
 
-          /* idle_move_resize() uses the user_rect, so make sure it uses the
-           * placed coordinates (bug #556696).
+          /* idle_move_resize() uses the unconstrained_rect, so make sure it
+           * uses the placed coordinates (bug #556696).
            */
-          window->user_rect = info->current;
+          window->unconstrained_rect = info->current;
 
           if (window->maximize_horizontally_after_placement ||
               window->maximize_vertically_after_placement)

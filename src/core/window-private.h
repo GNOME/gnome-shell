@@ -302,9 +302,6 @@ struct _MetaWindow
   /* Have we placed this window? */
   guint placed : 1;
 
-  /* Must we force_save_user_window_placement? */
-  guint force_save_user_rect : 1;
-
   /* Is this not a transient of the focus window which is being denied focus? */
   guint denied_focus_and_not_transient : 1;
 
@@ -422,17 +419,16 @@ struct _MetaWindow
    */
   MetaRectangle saved_rect;
 
-  /* This is the geometry the window had after the last user-initiated
-   * move/resize operations. We use this whenever we are moving the
-   * implicitly (for example, if we move to avoid a panel, we can snap
-   * back to this position if the panel moves again).  Note that this
-   * gives the position and size of the client window (i.e. ignoring
-   * the frame).
+  /* This is the geometry the window will have if no constraints have
+   * applied. We use this whenever we are moving implicitly (for example,
+   * if we move to avoid a panel, we can snap back to this position if
+   * the panel moves again).  Note that this gives the position and size
+   * of the client window (i.e. ignoring the frame).
    *
    * Position always in root coords, unlike window->rect.
    */
-  MetaRectangle user_rect;
-
+  MetaRectangle unconstrained_rect;
+  
   /* Cached net_wm_icon_geometry */
   MetaRectangle icon_geometry;
 
@@ -742,7 +738,6 @@ void meta_window_move_resize_internal (MetaWindow          *window,
                                        MetaMoveResizeFlags  flags,
                                        int                  gravity,
                                        MetaRectangle        client_rect);
-void meta_window_save_user_window_placement (MetaWindow *window);
 
 void meta_window_grab_op_began (MetaWindow *window, MetaGrabOp op);
 void meta_window_grab_op_ended (MetaWindow *window, MetaGrabOp op);
