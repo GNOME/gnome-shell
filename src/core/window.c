@@ -7160,6 +7160,46 @@ set_allowed_actions_hint (MetaWindow *window)
 #undef MAX_N_ACTIONS
 }
 
+static void
+meta_window_recalc_skip_features (MetaWindow *window)
+{
+  switch (window->type)
+    {
+      /* Force skip taskbar/pager on these window types */
+    case META_WINDOW_DESKTOP:
+    case META_WINDOW_DOCK:
+    case META_WINDOW_TOOLBAR:
+    case META_WINDOW_MENU:
+    case META_WINDOW_UTILITY:
+    case META_WINDOW_SPLASHSCREEN:
+    case META_WINDOW_DROPDOWN_MENU:
+    case META_WINDOW_POPUP_MENU:
+    case META_WINDOW_TOOLTIP:
+    case META_WINDOW_NOTIFICATION:
+    case META_WINDOW_COMBO:
+    case META_WINDOW_DND:
+    case META_WINDOW_OVERRIDE_OTHER:
+      window->skip_taskbar = TRUE;
+      window->skip_pager = TRUE;
+      break;
+
+    case META_WINDOW_DIALOG:
+    case META_WINDOW_MODAL_DIALOG:
+      /* only skip taskbar if we have a real transient parent
+         (and ignore the application hints) */
+      if (window->transient_for != NULL)
+        window->skip_taskbar = TRUE;
+      else
+        window->skip_taskbar = FALSE;
+      break;
+
+    case META_WINDOW_NORMAL:
+      window->skip_taskbar = window->wm_state_skip_taskbar;
+      window->skip_pager = window->wm_state_skip_pager;
+      break;
+    }
+}
+
 void
 meta_window_recalc_features (MetaWindow *window)
 {
@@ -7311,48 +7351,7 @@ meta_window_recalc_features (MetaWindow *window)
   if (!window->decorated || window->border_only)
     window->has_shade_func = FALSE;
 
-  window->skip_taskbar = FALSE;
-  window->skip_pager = FALSE;
-
-  if (window->wm_state_skip_taskbar)
-    window->skip_taskbar = TRUE;
-
-  if (window->wm_state_skip_pager)
-    window->skip_pager = TRUE;
-
-  switch (window->type)
-    {
-      /* Force skip taskbar/pager on these window types */
-    case META_WINDOW_DESKTOP:
-    case META_WINDOW_DOCK:
-    case META_WINDOW_TOOLBAR:
-    case META_WINDOW_MENU:
-    case META_WINDOW_UTILITY:
-    case META_WINDOW_SPLASHSCREEN:
-    case META_WINDOW_DROPDOWN_MENU:
-    case META_WINDOW_POPUP_MENU:
-    case META_WINDOW_TOOLTIP:
-    case META_WINDOW_NOTIFICATION:
-    case META_WINDOW_COMBO:
-    case META_WINDOW_DND:
-    case META_WINDOW_OVERRIDE_OTHER:
-      window->skip_taskbar = TRUE;
-      window->skip_pager = TRUE;
-      break;
-
-    case META_WINDOW_DIALOG:
-    case META_WINDOW_MODAL_DIALOG:
-      /* only skip taskbar if we have a real transient parent
-         (and ignore the application hints) */
-      if (window->transient_for != NULL)
-        window->skip_taskbar = TRUE;
-      else
-        window->skip_taskbar = FALSE;
-      break;
-
-    case META_WINDOW_NORMAL:
-      break;
-    }
+  meta_window_recalc_skip_features (window);
 
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Window %s decorated = %d border_only = %d has_close = %d has_minimize = %d has_maximize = %d has_move = %d has_shade = %d skip_taskbar = %d skip_pager = %d\n",
