@@ -63,8 +63,11 @@ const DateMenuButton = new Lang.Class({
         hbox.add(vbox);
 
         // Date
+        // Having the ability to go to the current date if the user is already
+        // on the current date can be confusing. So don't make the button reactive
+        // until the selected date changes.
         this._date = new St.Button({ style_class: 'datemenu-date-label',
-                                     can_focus: true,
+                                     reactive: false
                                    });
         this._date.connect('clicked',
                            Lang.bind(this, function() {
@@ -82,6 +85,9 @@ const DateMenuButton = new Lang.Class({
                                   // and the calender makes those dates unclickable when instantiated with
                                   // a null event source
                                    this._eventList.setDate(date);
+
+                                   // Make the button reactive only if the selected date is not the current date.
+                                   this._date.can_focus = this._date.reactive = !this._isToday(date)
                                }));
         vbox.add(this._calendar.actor);
 
@@ -130,6 +136,13 @@ const DateMenuButton = new Lang.Class({
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
         this._sessionUpdated();
+    },
+
+    _isToday: function(date) {
+        let now = new Date();
+        return now.getYear() == date.getYear() &&
+               now.getMonth() == date.getMonth() &&
+               now.getDay() == date.getDay();
     },
 
     _appInstalledChanged: function() {
