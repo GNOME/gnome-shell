@@ -527,9 +527,6 @@ meta_display_open (void)
   the_display->mouse_mode = TRUE; /* Only relevant for mouse or sloppy focus */
   the_display->allow_terminal_deactivation = TRUE; /* Only relevant for when a
                                                   terminal has the focus */
-
-  /* FIXME copy the checks from GDK probably */
-  the_display->static_gravity_works = g_getenv ("MUTTER_USE_STATIC_GRAVITY") != NULL;
   
   meta_bell_init (the_display);
 
