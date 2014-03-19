@@ -1,3 +1,35 @@
+3.11.92
+=======
+* calendar: Grab key focus after changing day [Volker; #725606]
+* gdm: Don't load user list if disabled [Florian; #725905]
+* Don't show network-offline in the top bar [Jasper; #725340]
+* Improve radial shade effect of modal dialogs [Giovanni; #725830]
+* Fix broken suspend-on-idle functionality [Giovanni; #712706]
+* Close wifi selection dialog when device disappears [Giovanni; #723935]
+* Don't close chats when pressing Escape [Giovanni; #724178]
+* Improve smartcard support in login/lock screen [Ray; #726262, #726263]
+* Wake up screen when resuming from suspend [Giovanni; #726378]
+* Make bluetooth and location items insensitive when locked [Florian; #726319]
+* Don't show bluetooth icon when there is no adapter [Giovanni; #725057]
+* Make sure to keep the OSK on top of modal dialogs [Rui; #719451]
+* Misc. bug fixes and cleanups [Giovanni, Ray, Adel, Daniel, Jasper, Florian;
+  #725832, #725958, #722149, #724977, #724798, #725020, #723976, #726119,
+  #726238, #585500, #704844, #726323, #726322, #726120, #726414]
+
+Contributors:
+  Giovanni Campagna, Daniel Drake, Adel Gadllah, Rui Matos, Florian Müllner,
+  Volker Sobek, Jasper St. Pierre, Ray Strode
+
+Translations:
+  Fabio Tomat [fur], Rafael Ferreira [pt_BR], Fran Diéguez [gl],
+  Marek Černocký [cs], Baurzhan Muftakhidinov [kk], Andika Triwidada [id],
+  A S Alam [pa], Rūdolfs Mazurs [lv], Wylmer Wang [zh_CN],
+  Aurimas Černius [lt], Cheng-Chia Tseng [zh_TW], Stas Solovey [ru],
+  Tiagosdot [pt], Benjamin Steinwender [de], Frédéric Peters [fr],
+  Daniel Korostil [uk], Yaron Shahrabani [he], Ville-Pekka Vainio [fi],
+  maria thukididu [el], Victor Ibragimov [tg], Kjartan Maraas [nb],
+  Gábor Kelemen [hu], Ask H. Larsen [da]
+
 3.11.91
 =======
 * Don't use network profile name in menu [Giovanni; #725586]
