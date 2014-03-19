@@ -41,6 +41,7 @@
 #include <meta/prefs.h>
 #include <meta/meta-cursor-tracker.h>
 
+#include "frame.h"
 #include "window-private.h"
 #include "window-props.h"
 #include "xprops.h"
@@ -159,6 +160,59 @@ update_sm_hints (MetaWindow *window)
 }
 
 static void
+send_configure_notify (MetaWindow *window)
+{
+  XEvent event;
+
+  /* from twm */
+
+  event.type = ConfigureNotify;
+  event.xconfigure.display = window->display->xdisplay;
+  event.xconfigure.event = window->xwindow;
+  event.xconfigure.window = window->xwindow;
+  event.xconfigure.x = window->rect.x - window->border_width;
+  event.xconfigure.y = window->rect.y - window->border_width;
+  if (window->frame)
+    {
+      if (window->withdrawn)
+        {
+          MetaFrameBorders borders;
+          /* We reparent the client window and put it to the position
+           * where the visible top-left of the frame window currently is.
+           */
+
+          meta_frame_calc_borders (window->frame, &borders);
+
+          event.xconfigure.x = window->frame->rect.x + borders.invisible.left;
+          event.xconfigure.y = window->frame->rect.y + borders.invisible.top;
+        }
+      else
+        {
+          /* Need to be in root window coordinates */
+          event.xconfigure.x += window->frame->rect.x;
+          event.xconfigure.y += window->frame->rect.y;
+        }
+    }
+  event.xconfigure.width = window->rect.width;
+  event.xconfigure.height = window->rect.height;
+  event.xconfigure.border_width = window->border_width; /* requested not actual */
+  event.xconfigure.above = None; /* FIXME */
+  event.xconfigure.override_redirect = False;
+
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Sending synthetic configure notify to %s with x: %d y: %d w: %d h: %d\n",
+              window->desc,
+              event.xconfigure.x, event.xconfigure.y,
+              event.xconfigure.width, event.xconfigure.height);
+
+  meta_error_trap_push (window->display);
+  XSendEvent (window->display->xdisplay,
+              window->xwindow,
+              False, StructureNotifyMask, &event);
+  meta_error_trap_pop (window->display);
+}
+
+static void
 meta_window_x11_manage (MetaWindow *window)
 {
   MetaDisplay *display = window->display;
@@ -259,7 +313,416 @@ meta_window_x11_unmanage (MetaWindow *window)
     XShapeSelectInput (window->display->xdisplay, window->xwindow, NoEventMask);
 #endif
 
+  /* The XReparentWindow call in meta_window_destroy_frame() moves the
+   * window so we need to send a configure notify; see bug 399552.  (We
+   * also do this just in case a window got unmaximized.)
+   */
+  send_configure_notify (window);
+
   meta_error_trap_pop (window->display);
+}
+
+static void
+update_net_frame_extents (MetaWindow *window)
+{
+  unsigned long data[4];
+  MetaFrameBorders borders;
+
+  meta_frame_calc_borders (window->frame, &borders);
+  /* Left */
+  data[0] = borders.visible.left;
+  /* Right */
+  data[1] = borders.visible.right;
+  /* Top */
+  data[2] = borders.visible.top;
+  /* Bottom */
+  data[3] = borders.visible.bottom;
+
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Setting _NET_FRAME_EXTENTS on managed window 0x%lx "
+ "to left = %lu, right = %lu, top = %lu, bottom = %lu\n",
+              window->xwindow, data[0], data[1], data[2], data[3]);
+
+  meta_error_trap_push (window->display);
+  XChangeProperty (window->display->xdisplay, window->xwindow,
+                   window->display->atom__NET_FRAME_EXTENTS,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 4);
+  meta_error_trap_pop (window->display);
+}
+
+#ifdef HAVE_XSYNC
+static gboolean
+sync_request_timeout (gpointer data)
+{
+  MetaWindow *window = data;
+
+  window->sync_request_timeout_id = 0;
+
+  /* We have now waited for more than a second for the
+   * application to respond to the sync request
+   */
+  window->disable_sync = TRUE;
+
+  /* Reset the wait serial, so we don't continue freezing
+   * window updates
+   */
+  window->sync_request_wait_serial = 0;
+  meta_compositor_set_updates_frozen (window->display->compositor, window,
+                                      meta_window_updates_are_frozen (window));
+
+  if (window == window->display->grab_window &&
+      meta_grab_op_is_resizing (window->display->grab_op))
+    {
+      meta_window_update_resize (window,
+                                 window->display->grab_last_user_action_was_snap,
+                                 window->display->grab_latest_motion_x,
+                                 window->display->grab_latest_motion_y,
+                                 TRUE);
+    }
+
+  return FALSE;
+}
+
+static void
+send_sync_request (MetaWindow *window)
+{
+  XClientMessageEvent ev;
+  gint64 wait_serial;
+
+  /* For the old style of _NET_WM_SYNC_REQUEST_COUNTER, we just have to
+   * increase the value, but for the new "extended" style we need to
+   * pick an even (unfrozen) value sufficiently ahead of the last serial
+   * that we received from the client; the same code still works
+   * for the old style. The increment of 240 is specified by the EWMH
+   * and is (1 second) * (60fps) * (an increment of 4 per frame).
+   */
+  wait_serial = window->sync_request_serial + 240;
+
+  window->sync_request_wait_serial = wait_serial;
+
+  ev.type = ClientMessage;
+  ev.window = window->xwindow;
+  ev.message_type = window->display->atom_WM_PROTOCOLS;
+  ev.format = 32;
+  ev.data.l[0] = window->display->atom__NET_WM_SYNC_REQUEST;
+  /* FIXME: meta_display_get_current_time() is bad, but since calls
+   * come from meta_window_move_resize_internal (which in turn come
+   * from all over), I'm not sure what we can do to fix it.  Do we
+   * want to use _roundtrip, though?
+   */
+  ev.data.l[1] = meta_display_get_current_time (window->display);
+  ev.data.l[2] = wait_serial & G_GUINT64_CONSTANT(0xffffffff);
+  ev.data.l[3] = wait_serial >> 32;
+  ev.data.l[4] = window->extended_sync_request_counter ? 1 : 0;
+
+  /* We don't need to trap errors here as we are already
+   * inside an error_trap_push()/pop() pair.
+   */
+  XSendEvent (window->display->xdisplay,
+	      window->xwindow, False, 0, (XEvent*) &ev);
+
+  /* We give the window 1 sec to respond to _NET_WM_SYNC_REQUEST;
+   * if this time expires, we consider the window unresponsive
+   * and resize it unsynchonized.
+   */
+  window->sync_request_timeout_id = g_timeout_add (1000,
+                                                   sync_request_timeout,
+                                                   window);
+
+  meta_compositor_set_updates_frozen (window->display->compositor, window,
+                                      meta_window_updates_are_frozen (window));
+}
+#endif
+
+static void
+meta_window_x11_move_resize_internal (MetaWindow                *window,
+                                      int                        gravity,
+                                      MetaRectangle              requested_rect,
+                                      MetaRectangle              constrained_rect,
+                                      MetaMoveResizeFlags        flags,
+                                      MetaMoveResizeResultFlags *result)
+{
+  int root_x_nw, root_y_nw;
+  int w, h;
+  int client_move_x, client_move_y;
+  int size_dx, size_dy;
+  XWindowChanges values;
+  unsigned int mask;
+  gboolean need_configure_notify;
+  MetaFrameBorders borders;
+  gboolean need_move_client = FALSE;
+  gboolean need_move_frame = FALSE;
+  gboolean need_resize_client = FALSE;
+  gboolean need_resize_frame = FALSE;
+  gboolean frame_shape_changed = FALSE;
+  gboolean configure_frame_first;
+
+  gboolean is_configure_request;
+
+  is_configure_request = (flags & META_IS_CONFIGURE_REQUEST) != 0;
+
+  /* meta_window_constrain() might have maximized the window after placement,
+   * changing the borders.
+   */
+  meta_frame_calc_borders (window->frame, &borders);
+
+  root_x_nw = constrained_rect.x;
+  root_y_nw = constrained_rect.y;
+  w = constrained_rect.width;
+  h = constrained_rect.height;
+
+  if (w != window->rect.width ||
+      h != window->rect.height)
+    need_resize_client = TRUE;
+
+  window->rect.width = w;
+  window->rect.height = h;
+
+  if (window->frame)
+    {
+      int frame_size_dx, frame_size_dy;
+      int new_w, new_h;
+
+      new_w = window->rect.width + borders.total.left + borders.total.right;
+
+      if (window->shaded)
+        new_h = borders.total.top;
+      else
+        new_h = window->rect.height + borders.total.top + borders.total.bottom;
+
+      frame_size_dx = new_w - window->frame->rect.width;
+      frame_size_dy = new_h - window->frame->rect.height;
+
+      need_resize_frame = (frame_size_dx != 0 || frame_size_dy != 0);
+
+      window->frame->rect.width = new_w;
+      window->frame->rect.height = new_h;
+
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Calculated frame size %dx%d\n",
+                  window->frame->rect.width,
+                  window->frame->rect.height);
+    }
+
+  /* For nice effect, when growing the window we want to move/resize
+   * the frame first, when shrinking the window we want to move/resize
+   * the client first. If we grow one way and shrink the other,
+   * see which way we're moving "more"
+   *
+   * Mail from Owen subject "Suggestion: Gravity and resizing from the left"
+   * http://mail.gnome.org/archives/wm-spec-list/1999-November/msg00088.html
+   *
+   * An annoying fact you need to know in this code is that StaticGravity
+   * does nothing if you _only_ resize or _only_ move the frame;
+   * it must move _and_ resize, otherwise you get NorthWestGravity
+   * behavior. The move and resize must actually occur, it is not
+   * enough to set CWX | CWWidth but pass in the current size/pos.
+   */
+
+  if (window->frame)
+    {
+      int new_x, new_y;
+      int frame_pos_dx, frame_pos_dy;
+
+      /* Compute new frame coords */
+      new_x = root_x_nw - borders.total.left;
+      new_y = root_y_nw - borders.total.top;
+
+      frame_pos_dx = new_x - window->frame->rect.x;
+      frame_pos_dy = new_y - window->frame->rect.y;
+
+      need_move_frame = (frame_pos_dx != 0 || frame_pos_dy != 0);
+
+      window->frame->rect.x = new_x;
+      window->frame->rect.y = new_y;
+
+      /* If frame will both move and resize, then StaticGravity
+       * on the child window will kick in and implicitly move
+       * the child with respect to the frame. The implicit
+       * move will keep the child in the same place with
+       * respect to the root window. If frame only moves
+       * or only resizes, then the child will just move along
+       * with the frame.
+       */
+
+      /* window->rect.x, window->rect.y are relative to frame,
+       * remember they are the server coords
+       */
+
+      new_x = borders.total.left;
+      new_y = borders.total.top;
+      client_move_x = new_x;
+      client_move_y = new_y;
+
+      if (client_move_x != window->rect.x ||
+          client_move_y != window->rect.y)
+        need_move_client = TRUE;
+
+      /* This is the final target position, but not necessarily what
+       * we pass to XConfigureWindow, due to StaticGravity implicit
+       * movement.
+       */
+      window->rect.x = new_x;
+      window->rect.y = new_y;
+    }
+  else
+    {
+      if (root_x_nw != window->rect.x ||
+          root_y_nw != window->rect.y)
+        need_move_client = TRUE;
+
+      window->rect.x = root_x_nw;
+      window->rect.y = root_y_nw;
+
+      client_move_x = window->rect.x;
+      client_move_y = window->rect.y;
+    }
+
+  /* If frame extents have changed, fill in other frame fields and
+     change frame's extents property. */
+  if (window->frame &&
+      (window->frame->child_x != borders.total.left ||
+       window->frame->child_y != borders.total.top ||
+       window->frame->right_width != borders.total.right ||
+       window->frame->bottom_height != borders.total.bottom))
+    {
+      window->frame->child_x = borders.total.left;
+      window->frame->child_y = borders.total.top;
+      window->frame->right_width = borders.total.right;
+      window->frame->bottom_height = borders.total.bottom;
+
+      update_net_frame_extents (window);
+    }
+
+  /* See ICCCM 4.1.5 for when to send ConfigureNotify */
+
+  need_configure_notify = FALSE;
+
+  /* If this is a configure request and we change nothing, then we
+   * must send configure notify.
+   */
+  if  (is_configure_request &&
+       !(need_move_client || need_move_frame ||
+         need_resize_client || need_resize_frame ||
+         window->border_width != 0))
+    need_configure_notify = TRUE;
+
+  /* We must send configure notify if we move but don't resize, since
+   * the client window may not get a real event
+   */
+  if ((need_move_client || need_move_frame) &&
+      !(need_resize_client || need_resize_frame))
+    need_configure_notify = TRUE;
+
+  /* MapRequest events with a PPosition or UPosition hint with a frame
+   * are moved by mutter without resizing; send a configure notify
+   * in such cases.  See #322840.  (Note that window->constructing is
+   * only true iff this call is due to a MapRequest, and when
+   * PPosition/UPosition hints aren't set, mutter seems to send a
+   * ConfigureNotify anyway due to the above code.)
+   */
+  if (window->constructing && window->frame &&
+      ((window->size_hints.flags & PPosition) ||
+       (window->size_hints.flags & USPosition)))
+    need_configure_notify = TRUE;
+
+  /* The rest of this function syncs our new size/pos with X as
+   * efficiently as possible
+   */
+
+  /* Normally, we configure the frame first depending on whether
+   * we grow the frame more than we shrink. The idea is to avoid
+   * messing up the window contents by having a temporary situation
+   * where the frame is smaller than the window. However, if we're
+   * cooperating with the client to create an atomic frame upate,
+   * and the window is redirected, then we should always update
+   * the frame first, since updating the frame will force a new
+   * backing pixmap to be allocated, and the old backing pixmap
+   * will be left undisturbed for us to paint to the screen until
+   * the client finishes redrawing.
+   */
+  if (window->extended_sync_request_counter)
+    {
+      configure_frame_first = TRUE;
+    }
+  else
+    {
+      size_dx = w - window->rect.width;
+      size_dy = h - window->rect.height;
+
+      configure_frame_first = size_dx + size_dy >= 0;
+    }
+
+  if (configure_frame_first && window->frame)
+    frame_shape_changed = meta_frame_sync_to_window (window->frame,
+                                                     gravity,
+                                                     need_move_frame, need_resize_frame);
+
+  values.border_width = 0;
+  values.x = client_move_x;
+  values.y = client_move_y;
+  values.width = window->rect.width;
+  values.height = window->rect.height;
+
+  mask = 0;
+  if (is_configure_request && window->border_width != 0)
+    mask |= CWBorderWidth; /* must force to 0 */
+  if (need_move_client)
+    mask |= (CWX | CWY);
+  if (need_resize_client)
+    mask |= (CWWidth | CWHeight);
+
+  if (mask != 0)
+    {
+      {
+        int newx, newy;
+        meta_window_get_position (window, &newx, &newy);
+        meta_topic (META_DEBUG_GEOMETRY,
+                    "Syncing new client geometry %d,%d %dx%d, border: %s pos: %s size: %s\n",
+                    newx, newy,
+                    window->rect.width, window->rect.height,
+                    mask & CWBorderWidth ? "true" : "false",
+                    need_move_client ? "true" : "false",
+                    need_resize_client ? "true" : "false");
+      }
+
+      meta_error_trap_push (window->display);
+
+#ifdef HAVE_XSYNC
+      if (window == window->display->grab_window &&
+          meta_grab_op_is_resizing (window->display->grab_op) &&
+          !window->disable_sync &&
+          window->sync_request_counter != None &&
+          window->sync_request_alarm != None &&
+          window->sync_request_timeout_id == 0)
+        {
+          send_sync_request (window);
+        }
+#endif
+
+      XConfigureWindow (window->display->xdisplay,
+                        window->xwindow,
+                        mask,
+                        &values);
+
+      meta_error_trap_pop (window->display);
+    }
+
+  if (!configure_frame_first && window->frame)
+    frame_shape_changed = meta_frame_sync_to_window (window->frame,
+                                                     gravity,
+                                                     need_move_frame, need_resize_frame);
+
+  if (need_configure_notify)
+    send_configure_notify (window);
+
+  if (frame_shape_changed)
+    *result |= META_MOVE_RESIZE_RESULT_FRAME_SHAPE_CHANGED;
+  if (need_move_client || need_move_frame)
+    *result |= META_MOVE_RESIZE_RESULT_MOVED;
+  if (need_resize_client || need_resize_frame)
+    *result |= META_MOVE_RESIZE_RESULT_RESIZED;
 }
 
 static void
@@ -281,6 +744,7 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
 
   window_class->manage = meta_window_x11_manage;
   window_class->unmanage = meta_window_x11_unmanage;
+  window_class->move_resize_internal = meta_window_x11_move_resize_internal;
   window_class->get_default_skip_hints = meta_window_x11_get_default_skip_hints;
 }
 

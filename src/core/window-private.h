@@ -65,13 +65,28 @@ typedef enum {
 
 #define NUMBER_OF_QUEUES 3
 
-
 typedef enum {
   _NET_WM_BYPASS_COMPOSITOR_HINT_AUTO = 0,
   _NET_WM_BYPASS_COMPOSITOR_HINT_ON = 1,
   _NET_WM_BYPASS_COMPOSITOR_HINT_OFF = 2,
 } MetaBypassCompositorHintValue;
 
+typedef enum
+{
+  META_IS_CONFIGURE_REQUEST = 1 << 0,
+  META_DO_GRAVITY_ADJUST    = 1 << 1,
+  META_IS_USER_ACTION       = 1 << 2,
+  META_IS_MOVE_ACTION       = 1 << 3,
+  META_IS_RESIZE_ACTION     = 1 << 4,
+  META_IS_WAYLAND_RESIZE    = 1 << 5
+} MetaMoveResizeFlags;
+
+typedef enum
+{
+  META_MOVE_RESIZE_RESULT_MOVED               = 1 << 0,
+  META_MOVE_RESIZE_RESULT_RESIZED             = 1 << 1,
+  META_MOVE_RESIZE_RESULT_FRAME_SHAPE_CHANGED = 1 << 2,
+} MetaMoveResizeResultFlags;
 
 struct _MetaWindow
 {
@@ -456,6 +471,12 @@ struct _MetaWindowClass
 
   void (*manage)                 (MetaWindow *window);
   void (*unmanage)               (MetaWindow *window);
+  void (*move_resize_internal)   (MetaWindow                *window,
+                                  int                        gravity,
+                                  MetaRectangle              requested_rect,
+                                  MetaRectangle              constrained_rect,
+                                  MetaMoveResizeFlags        flags,
+                                  MetaMoveResizeResultFlags *result);
   void (*get_default_skip_hints) (MetaWindow *window,
                                   gboolean   *skip_taskbar_out,
                                   gboolean   *skip_pager_out);
@@ -731,5 +752,10 @@ void meta_window_update_monitor (MetaWindow *window);
 
 void meta_window_set_urgent (MetaWindow *window,
                              gboolean    urgent);
+
+void meta_window_update_resize (MetaWindow *window,
+                                gboolean    snap,
+                                int x, int y,
+                                gboolean force);
 
 #endif
