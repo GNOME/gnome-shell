@@ -21,6 +21,7 @@
 
 #include <config.h>
 #include "group-props.h"
+#include "group-private.h"
 #include "xprops.h"
 #include <X11/Xatom.h>
 

@@ -39,6 +39,7 @@
 #include "ui.h"
 #include "place.h"
 #include <meta/prefs.h>
+#include <meta/group.h>
 #include "resizepopup.h"
 #include "constraints.h"
 #include "mutter-enum-types.h"
@@ -58,7 +59,6 @@
 #include "x11/window-x11.h"
 #include "x11/window-props.h"
 #include "x11/xprops.h"
-#include "x11/group.h"
 #include "x11/session.h"
 
 #include "wayland/meta-wayland-private.h"

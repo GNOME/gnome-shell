@@ -1,9 +1,9 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* MetaGroup property handling */
+/* Mutter window group private header */
 
 /* 
- * Copyright (C) 2002 Red Hat, Inc.
+ * Copyright (C) 2002 Red Hat Inc.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,18 +19,23 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef META_GROUP_PROPS_H
-#define META_GROUP_PROPS_H
+#ifndef META_GROUP_PRIVATE_H
+#define META_GROUP_PRIVATE_H
 
 #include <meta/group.h>
-#include "window-private.h"
 
-void meta_group_reload_property         (MetaGroup   *group,
-                                         Atom         property);
-void meta_group_reload_properties       (MetaGroup   *group,
-                                         const Atom  *properties,
-                                         int          n_properties);
-void meta_display_init_group_prop_hooks (MetaDisplay *display);
-void meta_display_free_group_prop_hooks (MetaDisplay *display);
+struct _MetaGroup
+{
+  int refcount;
+  MetaDisplay *display;
+  GSList *windows;
+  Window group_leader;
+  char *startup_id;
+  char *wm_client_machine;
+};
 
-#endif /* META_GROUP_PROPS_H */
+#endif
+
+
+
+

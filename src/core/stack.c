@@ -30,12 +30,13 @@
 #include "window-private.h"
 #include <meta/errors.h>
 #include "frame.h"
+#include <meta/group.h>
 #include <meta/prefs.h>
 #include <meta/workspace.h>
 
 #include <X11/Xatom.h>
 
-#include "x11/group.h"
+#include "x11/group-private.h"
 
 #define WINDOW_HAS_TRANSIENT_TYPE(w)                    \
           (w->type == META_WINDOW_DIALOG ||             \

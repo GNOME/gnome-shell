@@ -44,7 +44,7 @@
 #include <clutter/clutter.h>
 
 #include "x11/iconcache.h"
-#include "x11/group.h"
+#include "x11/group-private.h"
 
 #include "wayland/meta-wayland-types.h"
 

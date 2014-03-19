@@ -1,10 +1,10 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Mutter window group private header */
+/* Mutter window groups */
 
-/*
+/* 
  * Copyright (C) 2002 Red Hat Inc.
- *
+ * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -14,7 +14,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,21 +26,9 @@
 #include <glib.h>
 #include <meta/types.h>
 
-typedef struct _MetaGroup MetaGroup;
-
-struct _MetaGroup
-{
-  int refcount;
-  MetaDisplay *display;
-  GSList *windows;
-  Window group_leader;
-  char *startup_id;
-  char *wm_client_machine;
-};
-
 /* note, can return NULL */
 MetaGroup* meta_window_get_group       (MetaWindow *window);
-void       meta_window_compute_group   (MetaWindow *window);
+void       meta_window_compute_group   (MetaWindow* window);
 void       meta_window_shutdown_group  (MetaWindow *window);
 
 void       meta_window_group_leader_changed (MetaWindow *window);
@@ -61,3 +49,7 @@ gboolean meta_group_property_notify   (MetaGroup  *group,
                                        XEvent     *event);
 
 #endif
+
+
+
+

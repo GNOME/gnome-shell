@@ -30,6 +30,11 @@ typedef struct _MetaFrame       MetaFrame;
 typedef struct _MetaScreen      MetaScreen;
 typedef struct _MetaWindow      MetaWindow;
 typedef struct _MetaWorkspace   MetaWorkspace;
+/**
+ * MetaGroup: (skip)
+ *
+ */
+typedef struct _MetaGroup       MetaGroup;
 typedef struct _MetaKeyBinding  MetaKeyBinding;
 typedef struct _MetaCursorTracker MetaCursorTracker;
 
