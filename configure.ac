@@ -453,7 +453,6 @@ doc/reference/meta-docs.sgml
 src/Makefile
 src/libmutter-wayland.pc
 src/compositor/plugins/Makefile
-protocol/Makefile
 po/Makefile.in
 ])
 

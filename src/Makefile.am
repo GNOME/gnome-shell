@@ -49,6 +49,11 @@ mutter_built_sources = \
 	wayland/xserver-protocol.c		\
 	wayland/xserver-server-protocol.h
 
+wayland_protocols = \
+	wayland/protocol/gtk-shell.xml		\
+	wayland/protocol/xdg-shell.xml		\
+	wayland/protocol/xserver.xml
+
 libmutter_wayland_la_SOURCES =			\
 	core/above-tab-keycode.c		\
 	core/barrier.c				\
@@ -362,6 +367,7 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(desktopfiles_in_files)	\
 	$(wmproperties_in_files)	\
 	$(xml_in_files)			\
+	$(wayland_protocols)		\
 	org.gnome.mutter.gschema.xml.in \
 	org.gnome.mutter.wayland.gschema.xml.in \
 	mutter-schemas.convert \
@@ -411,9 +417,7 @@ $(dbus_idle_built_sources) : Makefile.am idle-monitor.xml
 		--c-generate-object-manager						\
 		$(srcdir)/idle-monitor.xml
 
-wayland/%-protocol.c : $(top_builddir)/protocol/%.xml
-	mkdir -p wayland
+wayland/%-protocol.c : $(srcdir)/wayland/protocol/%.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
-wayland/%-server-protocol.h : $(top_builddir)/protocol/%.xml
-	mkdir -p wayland
+wayland/%-server-protocol.h : $(srcdir)/wayland/protocol/%.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@
