@@ -28,7 +28,8 @@
 
 #include <cogl/cogl-wayland-server.h>
 #include "meta-shaped-texture-private.h"
-#include "meta-wayland-private.h"
+
+#include "wayland/meta-wayland-private.h"
 
 struct _MetaSurfaceActorWaylandPrivate
 {

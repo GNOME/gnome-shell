@@ -41,7 +41,6 @@
 #include "screen-private.h"
 #include <meta/prefs.h>
 #include "util-private.h"
-#include "meta-wayland.h"
 
 #include <X11/keysym.h>
 #include <string.h>
@@ -51,6 +50,8 @@
 #ifdef HAVE_XKB
 #include <X11/XKBlib.h>
 #endif
+
+#include "wayland/meta-wayland.h"
 
 #define SCHEMA_COMMON_KEYBINDINGS "org.gnome.desktop.wm.keybindings"
 #define SCHEMA_MUTTER_KEYBINDINGS "org.gnome.mutter.keybindings"

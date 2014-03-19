@@ -42,10 +42,11 @@
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter.h>
-#include "meta-wayland-types.h"
 
 #include "x11/iconcache.h"
 #include "x11/group.h"
+
+#include "wayland/meta-wayland-types.h"
 
 typedef struct _MetaWindowQueue MetaWindowQueue;
 

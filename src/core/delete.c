@@ -37,7 +37,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "meta-wayland-surface.h"
+#include "wayland/meta-wayland-surface.h"
 
 static void meta_window_present_delete_dialog (MetaWindow *window,
                                                guint32     timestamp);

@@ -29,10 +29,11 @@
 #include "region-utils.h"
 #include "monitor-private.h"
 #include "meta-cullable.h"
-#include "meta-wayland-private.h"
 
 #include "meta-surface-actor.h"
 #include "meta-surface-actor-x11.h"
+
+#include "wayland/meta-wayland-surface.h"
 
 struct _MetaWindowActorPrivate
 {

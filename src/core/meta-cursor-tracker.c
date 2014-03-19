@@ -47,8 +47,9 @@
 
 #include "meta-cursor-tracker-private.h"
 #include "screen-private.h"
-#include "meta-wayland-private.h"
 #include "monitor-private.h"
+
+#include "wayland/meta-wayland-private.h"
 
 #define META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_X 7
 #define META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_Y 4

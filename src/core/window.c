@@ -54,13 +54,14 @@
 #include <X11/extensions/shape.h>
 #endif
 
-#include "meta-wayland-private.h"
 #include "meta/compositor-mutter.h"
 
 #include "x11/window-x11.h"
 #include "x11/window-props.h"
 #include "x11/xprops.h"
 #include "x11/group.h"
+
+#include "wayland/meta-wayland-private.h"
 
 /* Windows that unmaximize to a size bigger than that fraction of the workarea
  * will be scaled down to that size (while maintaining aspect ratio).

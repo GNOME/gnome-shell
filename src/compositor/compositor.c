@@ -76,11 +76,10 @@
 #include "display-private.h" /* for meta_display_lookup_x_window() */
 #include "util-private.h"
 #include "frame.h"
-#include "meta-wayland-private.h"
-#include "meta-wayland-pointer.h"
-#include "meta-wayland-keyboard.h"
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
+
+#include "wayland/meta-wayland-private.h"
 
 static gboolean
 is_modal (MetaDisplay *display)

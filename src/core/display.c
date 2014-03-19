@@ -73,7 +73,7 @@
 #include "x11/group-props.h"
 #include "x11/xprops.h"
 
-#include "meta-xwayland-private.h"
+#include "wayland/meta-xwayland-private.h"
 #include "meta-surface-actor-wayland.h"
 
 /*

@@ -29,11 +29,7 @@ INCLUDES=								\
 	-DMUTTER_PLUGIN_API_VERSION=$(MUTTER_PLUGIN_API_VERSION)	\
 	-DMUTTER_PKGLIBDIR=\"$(pkglibdir)\"				\
 	-DMUTTER_PLUGIN_DIR=\"@MUTTER_PLUGIN_DIR@\"			\
-	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"
-
-INCLUDES += \
-	-I$(srcdir)/wayland						\
-	-I$(builddir)/wayland						\
+	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"			\
 	-DXWAYLAND_PATH='"@XWAYLAND_PATH@"'
 
 mutter_built_sources = \

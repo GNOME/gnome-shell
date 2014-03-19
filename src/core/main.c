@@ -53,7 +53,6 @@
 #include "session.h"
 #include <meta/prefs.h>
 #include <meta/compositor.h>
-#include "meta-wayland.h"
 
 #include <glib-object.h>
 #include <glib-unix.h>
@@ -78,6 +77,8 @@
 #ifdef HAVE_INTROSPECTION
 #include <girepository.h>
 #endif
+
+#include "wayland/meta-wayland.h"
 
 /*
  * The exit code we'll return to our parent process when we eventually die.

@@ -29,7 +29,7 @@
 
 #include "meta-surface-actor.h"
 
-#include "meta-wayland.h"
+#include "wayland/meta-wayland.h"
 
 G_BEGIN_DECLS
 
