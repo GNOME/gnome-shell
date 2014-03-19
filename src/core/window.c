@@ -146,7 +146,7 @@ static gboolean idle_calc_showing (gpointer data);
 static gboolean idle_move_resize (gpointer data);
 static gboolean idle_update_icon (gpointer data);
 
-G_DEFINE_TYPE (MetaWindow, meta_window, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (MetaWindow, meta_window, G_TYPE_OBJECT);
 
 enum {
   PROP_0,
