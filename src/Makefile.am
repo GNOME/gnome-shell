@@ -37,12 +37,12 @@ mutter_built_sources = \
 	$(dbus_xrandr_built_sources)		\
 	mutter-enum-types.h 			\
 	mutter-enum-types.c			\
-	wayland/gtk-shell-protocol.c		\
-	wayland/gtk-shell-server-protocol.h	\
-	wayland/xdg-shell-protocol.c		\
-	wayland/xdg-shell-server-protocol.h	\
-	wayland/xserver-protocol.c		\
-	wayland/xserver-server-protocol.h
+	gtk-shell-protocol.c			\
+	gtk-shell-server-protocol.h		\
+	xdg-shell-protocol.c			\
+	xdg-shell-server-protocol.h		\
+	xserver-protocol.c			\
+	xserver-server-protocol.h
 
 wayland_protocols = \
 	wayland/protocol/gtk-shell.xml		\
@@ -410,7 +410,7 @@ $(dbus_idle_built_sources) : Makefile.am idle-monitor.xml
 		--c-generate-object-manager						\
 		$(srcdir)/idle-monitor.xml
 
-wayland/%-protocol.c : $(srcdir)/wayland/protocol/%.xml
+%-protocol.c : $(srcdir)/wayland/protocol/%.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
-wayland/%-server-protocol.h : $(srcdir)/wayland/protocol/%.xml
+%-server-protocol.h : $(srcdir)/wayland/protocol/%.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@
