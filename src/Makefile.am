@@ -314,7 +314,7 @@ endif
 
 testboxes_SOURCES = core/testboxes.c
 testgradient_SOURCES = ui/testgradient.c
-testasyncgetprop_SOURCES = core/testasyncgetprop.c
+testasyncgetprop_SOURCES = x11/testasyncgetprop.c
 
 noinst_PROGRAMS=testboxes testgradient testasyncgetprop
 
