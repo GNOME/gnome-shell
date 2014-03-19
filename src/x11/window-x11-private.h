@@ -50,6 +50,8 @@ struct _MetaWindowX11Private
   guint using_net_wm_visible_name      : 1; /* tracked so we can clear it */
   guint using_net_wm_icon_name         : 1; /* vs. plain wm_icon_name */
   guint using_net_wm_visible_icon_name : 1; /* tracked so we can clear it */
+
+  Atom type_atom;
 };
 
 G_END_DECLS

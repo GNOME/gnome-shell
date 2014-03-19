@@ -199,11 +199,13 @@ meta_window_x11_set_net_wm_state (MetaWindow *window)
 void
 meta_window_x11_update_net_wm_type (MetaWindow *window)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   int n_atoms;
   Atom *atoms;
   int i;
 
-  window->type_atom = None;
+  priv->type_atom = None;
   n_atoms = 0;
   atoms = NULL;
 
@@ -234,7 +236,7 @@ meta_window_x11_update_net_wm_type (MetaWindow *window)
           atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_DND ||
           atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL)
         {
-          window->type_atom = atoms[i];
+          priv->type_atom = atoms[i];
           break;
         }
 
@@ -248,10 +250,10 @@ meta_window_x11_update_net_wm_type (MetaWindow *window)
       char *str;
 
       str = NULL;
-      if (window->type_atom != None)
+      if (priv->type_atom != None)
         {
           meta_error_trap_push (window->display);
-          str = XGetAtomName (window->display->xdisplay, window->type_atom);
+          str = XGetAtomName (window->display->xdisplay, priv->type_atom);
           meta_error_trap_pop (window->display);
         }
 
@@ -1549,38 +1551,38 @@ meta_window_x11_recalc_window_type (MetaWindow *window)
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   MetaWindowType type;
 
-  if (window->type_atom != None)
+  if (priv->type_atom != None)
     {
-      if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DESKTOP)
+      if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DESKTOP)
         type = META_WINDOW_DESKTOP;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DOCK)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DOCK)
         type = META_WINDOW_DOCK;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_TOOLBAR)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_TOOLBAR)
         type = META_WINDOW_TOOLBAR;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_MENU)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_MENU)
         type = META_WINDOW_MENU;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_UTILITY)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_UTILITY)
         type = META_WINDOW_UTILITY;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_SPLASH)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_SPLASH)
         type = META_WINDOW_SPLASHSCREEN;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DIALOG)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DIALOG)
         type = META_WINDOW_DIALOG;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL)
         type = META_WINDOW_NORMAL;
       /* The below are *typically* override-redirect windows, but the spec does
        * not disallow using them for managed windows.
        */
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DROPDOWN_MENU)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DROPDOWN_MENU)
         type = META_WINDOW_DROPDOWN_MENU;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_POPUP_MENU)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_POPUP_MENU)
         type = META_WINDOW_POPUP_MENU;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_TOOLTIP)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_TOOLTIP)
         type = META_WINDOW_TOOLTIP;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_NOTIFICATION)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_NOTIFICATION)
         type = META_WINDOW_NOTIFICATION;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_COMBO)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_COMBO)
         type = META_WINDOW_COMBO;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DND)
+      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DND)
         type = META_WINDOW_DND;
       else
         {
@@ -1593,7 +1595,7 @@ meta_window_x11_recalc_window_type (MetaWindow *window)
 
           meta_error_trap_push (window->display);
           atom_name = XGetAtomName (window->display->xdisplay,
-                                    window->type_atom);
+                                    priv->type_atom);
           meta_error_trap_pop (window->display);
 
           meta_warning ("Unrecognized type atom [%s] set for %s \n",

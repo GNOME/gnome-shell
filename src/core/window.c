@@ -940,7 +940,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->transient_parent_is_root_window = FALSE;
 
   window->type = META_WINDOW_NORMAL;
-  window->type_atom = None;
 
   window->struts = NULL;
 
@@ -9415,23 +9414,6 @@ MetaWindowType
 meta_window_get_window_type (MetaWindow *window)
 {
   return window->type;
-}
-
-/**
- * meta_window_get_window_type_atom: (skip)
- * @window: a #MetaWindow
- *
- * Gets the X atom from the _NET_WM_WINDOW_TYPE property used by the
- * application to set the window type. (Note that this is constrained
- * to be some value that Mutter recognizes - a completely unrecognized
- * type atom will be returned as None.)
- *
- * Return value: the raw X atom for the window type, or None
- */
-Atom
-meta_window_get_window_type_atom (MetaWindow *window)
-{
-  return window->type_atom;
 }
 
 /**

@@ -95,9 +95,8 @@ struct _MetaWindow
   MetaIconCache icon_cache;
   Pixmap wm_hints_pixmap;
   Pixmap wm_hints_mask;
-  
+
   MetaWindowType type;
-  Atom type_atom;
 
   /* NOTE these five are not in UTF-8, we just treat them as random
    * binary data
