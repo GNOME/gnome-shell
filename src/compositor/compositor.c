@@ -65,7 +65,6 @@
 #include <meta/window.h>
 #include "compositor-private.h"
 #include <meta/compositor-mutter.h>
-#include "xprops.h"
 #include <meta/prefs.h>
 #include <meta/main.h>
 #include <meta/meta-background-actor.h>

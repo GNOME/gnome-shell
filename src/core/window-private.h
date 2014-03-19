@@ -38,14 +38,14 @@
 #include "screen-private.h"
 #include <meta/util.h>
 #include "stack.h"
-#include "iconcache.h"
 #include <X11/Xutil.h>
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter.h>
 #include "meta-wayland-types.h"
 
-#include "group.h"
+#include "x11/iconcache.h"
+#include "x11/group.h"
 
 typedef struct _MetaWindowQueue MetaWindowQueue;
 

@@ -36,15 +36,11 @@
 #include <meta/main.h>
 #include "screen-private.h"
 #include "window-private.h"
-#include "window-x11.h"
-#include "window-props.h"
-#include "group-props.h"
 #include "frame.h"
 #include <meta/errors.h>
 #include "keybindings-private.h"
 #include <meta/prefs.h>
 #include "resizepopup.h"
-#include "xprops.h"
 #include "workspace-private.h"
 #include "bell.h"
 #include <meta/compositor.h>
@@ -71,6 +67,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "x11/window-x11.h"
+#include "x11/window-props.h"
+#include "x11/group-props.h"
+#include "x11/xprops.h"
 
 #include "meta-xwayland-private.h"
 #include "meta-surface-actor-wayland.h"

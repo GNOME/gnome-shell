@@ -39,7 +39,6 @@
 #include "workspace-private.h"
 #include "keybindings-private.h"
 #include "stack.h"
-#include "xprops.h"
 #include <meta/compositor.h>
 #include "mutter-enum-types.h"
 #include "core.h"
@@ -53,6 +52,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "x11/xprops.h"
 
 static char* get_screen_name (MetaDisplay *display,
                               int          number);

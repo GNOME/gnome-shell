@@ -20,7 +20,6 @@
 #include "frame.h"
 #include <meta/window.h>
 #include <meta/meta-shaped-texture.h>
-#include "xprops.h"
 
 #include "compositor-private.h"
 #include "meta-shaped-texture-private.h"

@@ -16,7 +16,6 @@ INCLUDES=								\
 	-I$(srcdir)/core						\
 	-I$(srcdir)/ui							\
 	-I$(srcdir)/compositor						\
-	-I$(srcdir)/x11							\
 	-DMUTTER_LIBEXECDIR=\"$(libexecdir)\"				\
 	-DHOST_ALIAS=\"@HOST_ALIAS@\"					\
 	-DMUTTER_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\"		\

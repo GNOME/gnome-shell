@@ -28,7 +28,6 @@
 
 #include <config.h>
 #include "window-private.h"
-#include "window-x11.h"
 #include "boxes-private.h"
 #include "edge-resistance.h"
 #include "util-private.h"
@@ -42,9 +41,6 @@
 #include "session.h"
 #include <meta/prefs.h>
 #include "resizepopup.h"
-#include "xprops.h"
-#include "group.h"
-#include "window-props.h"
 #include "constraints.h"
 #include "mutter-enum-types.h"
 #include "core.h"
@@ -60,6 +56,11 @@
 
 #include "meta-wayland-private.h"
 #include "meta/compositor-mutter.h"
+
+#include "x11/window-x11.h"
+#include "x11/window-props.h"
+#include "x11/xprops.h"
+#include "x11/group.h"
 
 /* Windows that unmaximize to a size bigger than that fraction of the workarea
  * will be scaled down to that size (while maintaining aspect ratio).
