@@ -742,6 +742,17 @@ sync_client_window_mapped (MetaWindow *window)
   meta_error_trap_pop (window->display);
 }
 
+static void
+meta_window_update_desc (MetaWindow *window)
+{
+  g_clear_pointer (&window->desc, g_free);
+
+  if (window->title)
+    window->desc = g_strdup_printf ("0x%lx (%.10s)", window->xwindow, window->title);
+  else
+    window->desc = g_strdup_printf ("0x%lx", window->xwindow);
+}
+
 MetaWindow *
 _meta_window_shared_new (MetaDisplay         *display,
                          MetaScreen          *screen,
@@ -797,7 +808,7 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   window->screen = screen;
 
-  window->desc = g_strdup_printf ("0x%lx", window->xwindow);
+  meta_window_update_desc (window);
 
   window->override_redirect = attrs->override_redirect;
 
@@ -9925,21 +9936,15 @@ void
 meta_window_set_title (MetaWindow *window,
                        const char *title)
 {
-  char *str;
-
   g_free (window->title);
   window->title = g_strdup (title);
-
-  /* strndup is a hack since GNU libc has broken %.10s */
-  str = g_strndup (window->title, 10);
-  g_free (window->desc);
-  window->desc = g_strdup_printf ("0x%lx (%s)", window->xwindow, str);
-  g_free (str);
 
   if (window->frame)
     meta_ui_set_frame_title (window->screen->ui,
                              window->frame->xwindow,
                              window->title);
+
+  meta_window_update_desc (window);
 
   g_object_notify (G_OBJECT (window), "title");
 }
