@@ -454,6 +454,8 @@ struct _MetaWindowClass
 {
   GObjectClass parent_class;
 
+  void (*manage)                 (MetaWindow *window);
+  void (*unmanage)               (MetaWindow *window);
   void (*get_default_skip_hints) (MetaWindow *window,
                                   gboolean   *skip_taskbar_out,
                                   gboolean   *skip_pager_out);

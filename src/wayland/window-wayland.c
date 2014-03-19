@@ -27,6 +27,8 @@
 #include "window-wayland.h"
 
 #include "window-private.h"
+#include "stack-tracker.h"
+#include "meta-wayland-surface.h"
 
 struct _MetaWindowWayland
 {
@@ -41,6 +43,38 @@ struct _MetaWindowWaylandClass
 G_DEFINE_TYPE (MetaWindowWayland, meta_window_wayland, META_TYPE_WINDOW)
 
 static void
+meta_window_wayland_manage (MetaWindow *window)
+{
+  MetaDisplay *display = window->display;
+
+  meta_display_register_wayland_window (display, window);
+
+  {
+    MetaStackWindow stack_window;
+    stack_window.any.type = META_WINDOW_CLIENT_TYPE_WAYLAND;
+    stack_window.wayland.meta_window = window;
+    meta_stack_tracker_record_add (window->screen->stack_tracker,
+                                   &stack_window,
+                                   0);
+  }
+}
+
+static void
+meta_window_wayland_unmanage (MetaWindow *window)
+{
+  {
+    MetaStackWindow stack_window;
+    stack_window.any.type = META_WINDOW_CLIENT_TYPE_WAYLAND;
+    stack_window.wayland.meta_window = window;
+    meta_stack_tracker_record_remove (window->screen->stack_tracker,
+                                      &stack_window,
+                                      0);
+  }
+
+  meta_display_unregister_wayland_window (window->display, window);
+}
+
+static void
 meta_window_wayland_init (MetaWindowWayland *window_wayland)
 {
 }
@@ -48,4 +82,8 @@ meta_window_wayland_init (MetaWindowWayland *window_wayland)
 static void
 meta_window_wayland_class_init (MetaWindowWaylandClass *klass)
 {
+  MetaWindowClass *window_class = META_WINDOW_CLASS (klass);
+
+  window_class->manage = meta_window_wayland_manage;
+  window_class->unmanage = meta_window_wayland_unmanage;
 }

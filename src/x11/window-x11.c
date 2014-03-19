@@ -58,6 +58,210 @@ meta_window_x11_init (MetaWindowX11 *window_x11)
   window_x11->priv = meta_window_x11_get_instance_private (window_x11);
 }
 
+static Window
+read_client_leader (MetaDisplay *display,
+                    Window       xwindow)
+{
+  Window retval = None;
+
+  meta_prop_get_window (display, xwindow,
+                        display->atom_WM_CLIENT_LEADER,
+                        &retval);
+
+  return retval;
+}
+
+typedef struct
+{
+  Window leader;
+} ClientLeaderData;
+
+static gboolean
+find_client_leader_func (MetaWindow *ancestor,
+                         void       *data)
+{
+  ClientLeaderData *d;
+
+  d = data;
+
+  d->leader = read_client_leader (ancestor->display,
+                                  ancestor->xwindow);
+
+  /* keep going if no client leader found */
+  return d->leader == None;
+}
+
+static void
+update_sm_hints (MetaWindow *window)
+{
+  Window leader;
+
+  window->xclient_leader = None;
+  window->sm_client_id = NULL;
+
+  /* If not on the current window, we can get the client
+   * leader from transient parents. If we find a client
+   * leader, we read the SM_CLIENT_ID from it.
+   */
+  leader = read_client_leader (window->display, window->xwindow);
+  if (leader == None)
+    {
+      ClientLeaderData d;
+      d.leader = None;
+      meta_window_foreach_ancestor (window, find_client_leader_func,
+                                    &d);
+      leader = d.leader;
+    }
+
+  if (leader != None)
+    {
+      char *str;
+
+      window->xclient_leader = leader;
+
+      if (meta_prop_get_latin1_string (window->display, leader,
+                                       window->display->atom_SM_CLIENT_ID,
+                                       &str))
+        {
+          window->sm_client_id = g_strdup (str);
+          meta_XFree (str);
+        }
+    }
+  else
+    {
+      meta_verbose ("Didn't find a client leader for %s\n", window->desc);
+
+      if (!meta_prefs_get_disable_workarounds ())
+        {
+          /* Some broken apps (kdelibs fault?) set SM_CLIENT_ID on the app
+           * instead of the client leader
+           */
+          char *str;
+
+          str = NULL;
+          if (meta_prop_get_latin1_string (window->display, window->xwindow,
+                                           window->display->atom_SM_CLIENT_ID,
+                                           &str))
+            {
+              if (window->sm_client_id == NULL) /* first time through */
+                meta_warning ("Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n",
+                              window->desc);
+
+              window->sm_client_id = g_strdup (str);
+              meta_XFree (str);
+            }
+        }
+    }
+
+  meta_verbose ("Window %s client leader: 0x%lx SM_CLIENT_ID: '%s'\n",
+                window->desc, window->xclient_leader,
+                window->sm_client_id ? window->sm_client_id : "none");
+}
+
+static void
+meta_window_x11_manage (MetaWindow *window)
+{
+  MetaDisplay *display = window->display;
+
+  meta_display_register_x_window (display, &window->xwindow, window);
+  meta_window_x11_update_shape_region (window);
+  meta_window_x11_update_input_region (window);
+
+  /* assign the window to its group, or create a new group if needed */
+  window->group = NULL;
+  window->xgroup_leader = None;
+  meta_window_compute_group (window);
+
+  meta_window_load_initial_properties (window);
+
+  if (!window->override_redirect)
+    update_sm_hints (window); /* must come after transient_for */
+
+  meta_window_x11_update_net_wm_type (window);
+}
+
+static void
+meta_window_x11_unmanage (MetaWindow *window)
+{
+  meta_error_trap_push (window->display);
+
+  if (window->withdrawn)
+    {
+      /* We need to clean off the window's state so it
+       * won't be restored if the app maps it again.
+       */
+      meta_verbose ("Cleaning state from window %s\n", window->desc);
+      XDeleteProperty (window->display->xdisplay,
+                       window->xwindow,
+                       window->display->atom__NET_WM_DESKTOP);
+      XDeleteProperty (window->display->xdisplay,
+                       window->xwindow,
+                       window->display->atom__NET_WM_STATE);
+      XDeleteProperty (window->display->xdisplay,
+                       window->xwindow,
+                       window->display->atom__NET_WM_FULLSCREEN_MONITORS);
+      meta_window_x11_set_wm_state (window);
+    }
+  else
+    {
+      /* We need to put WM_STATE so that others will understand it on
+       * restart.
+       */
+      if (!window->minimized)
+        meta_window_x11_set_wm_state (window);
+
+      /* If we're unmanaging a window that is not withdrawn, then
+       * either (a) mutter is exiting, in which case we need to map
+       * the window so the next WM will know that it's not Withdrawn,
+       * or (b) we want to create a new MetaWindow to replace the
+       * current one, which will happen automatically if we re-map
+       * the X Window.
+       */
+      XMapWindow (window->display->xdisplay,
+                  window->xwindow);
+    }
+
+  meta_display_unregister_x_window (window->display, window->xwindow);
+
+  /* Put back anything we messed up */
+  if (window->border_width != 0)
+    XSetWindowBorderWidth (window->display->xdisplay,
+                           window->xwindow,
+                           window->border_width);
+
+  /* No save set */
+  XRemoveFromSaveSet (window->display->xdisplay,
+                      window->xwindow);
+
+  /* Even though the window is now unmanaged, we can't unselect events. This
+   * window might be a window from this process, like a GdkMenu, in
+   * which case it will have pointer events and so forth selected
+   * for it by GDK. There's no way to disentangle those events from the events
+   * we've selected. Even for a window from a different X client,
+   * GDK could also have selected events for it for IPC purposes, so we
+   * can't unselect in that case either.
+   *
+   * Similarly, we can't unselected for events on window->user_time_window.
+   * It might be our own GDK focus window, or it might be a window that a
+   * different client is using for multiple different things:
+   * _NET_WM_USER_TIME_WINDOW and IPC, perhaps.
+   */
+
+  if (window->user_time_window != None)
+    {
+      meta_display_unregister_x_window (window->display,
+                                        window->user_time_window);
+      window->user_time_window = None;
+    }
+
+#ifdef HAVE_SHAPE
+  if (META_DISPLAY_HAS_SHAPE (window->display))
+    XShapeSelectInput (window->display->xdisplay, window->xwindow, NoEventMask);
+#endif
+
+  meta_error_trap_pop (window->display);
+}
+
 static void
 meta_window_x11_get_default_skip_hints (MetaWindow *window,
                                         gboolean   *skip_taskbar_out,
@@ -75,6 +279,8 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
 {
   MetaWindowClass *window_class = META_WINDOW_CLASS (klass);
 
+  window_class->manage = meta_window_x11_manage;
+  window_class->unmanage = meta_window_x11_unmanage;
   window_class->get_default_skip_hints = meta_window_x11_get_default_skip_hints;
 }
 
