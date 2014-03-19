@@ -175,8 +175,6 @@ static void    prefs_changed_callback    (MetaPreference pref,
 
 static void    sanity_check_timestamps   (MetaDisplay *display,
                                           guint32      known_good_timestamp);
- 
-MetaGroup*     get_focussed_group (MetaDisplay *display);
 
 static void
 meta_display_get_property(GObject         *object,
@@ -4776,8 +4774,8 @@ meta_display_pong_for_serial (MetaDisplay    *display,
     }
 }
 
-MetaGroup*
-get_focussed_group (MetaDisplay *display)
+static MetaGroup *
+get_focused_group (MetaDisplay *display)
 {
   if (display->focus_window)
     return display->focus_window->group;
@@ -4787,7 +4785,7 @@ get_focussed_group (MetaDisplay *display)
 
 #define IN_TAB_CHAIN(w,t) (((t) == META_TAB_LIST_NORMAL && META_WINDOW_IN_NORMAL_TAB_CHAIN (w)) \
     || ((t) == META_TAB_LIST_DOCKS && META_WINDOW_IN_DOCK_TAB_CHAIN (w)) \
-    || ((t) == META_TAB_LIST_GROUP && META_WINDOW_IN_GROUP_TAB_CHAIN (w, get_focussed_group(w->display))) \
+    || ((t) == META_TAB_LIST_GROUP && META_WINDOW_IN_GROUP_TAB_CHAIN (w, get_focused_group (w->display))) \
     || ((t) == META_TAB_LIST_NORMAL_ALL && META_WINDOW_IN_NORMAL_TAB_CHAIN_TYPE (w)))
 
 static MetaWindow*
