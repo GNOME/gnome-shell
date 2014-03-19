@@ -193,12 +193,6 @@ void       meta_core_set_screen_cursor (Display *xdisplay,
                                         Window   frame_on_screen,
                                         MetaCursor cursor);
 
-/* Used because we ignore EnterNotify when a window is unmapped that
- * really shouldn't cause focus changes, by comparing the event serial
- * of the EnterNotify and the UnmapNotify.
- */
-void meta_core_increment_event_serial (Display *display);
-
 void meta_invalidate_default_icons (void);
 
 void meta_core_add_old_event_mask (Display     *xdisplay,

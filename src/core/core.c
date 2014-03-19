@@ -719,16 +719,6 @@ meta_core_set_screen_cursor (Display *xdisplay,
 }
 
 void
-meta_core_increment_event_serial (Display *xdisplay)
-{
-  MetaDisplay *display;
-  
-  display = meta_display_for_x_display (xdisplay);
-
-  meta_display_increment_event_serial (display);
-}
-
-void
 meta_invalidate_default_icons (void)
 {
   MetaDisplay *display = meta_get_display ();
