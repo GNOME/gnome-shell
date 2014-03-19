@@ -38,7 +38,6 @@
 #include "keybindings-private.h"
 #include "ui.h"
 #include "place.h"
-#include "session.h"
 #include <meta/prefs.h>
 #include "resizepopup.h"
 #include "constraints.h"
@@ -60,6 +59,7 @@
 #include "x11/window-props.h"
 #include "x11/xprops.h"
 #include "x11/group.h"
+#include "x11/session.h"
 
 #include "wayland/meta-wayland-private.h"
 

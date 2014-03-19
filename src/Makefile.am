@@ -144,8 +144,6 @@ libmutter_wayland_la_SOURCES =			\
 	core/screen-private.h			\
 	meta/screen.h				\
 	meta/types.h				\
-	core/session.c				\
-	core/session.h				\
 	core/stack.c				\
 	core/stack.h				\
 	core/stack-tracker.c			\
@@ -182,6 +180,8 @@ libmutter_wayland_la_SOURCES =			\
 	x11/group-props.h			\
 	x11/group.c				\
 	x11/group.h				\
+	x11/session.c				\
+	x11/session.h				\
 	x11/window-props.c			\
 	x11/window-props.h			\
 	x11/window-x11.c			\

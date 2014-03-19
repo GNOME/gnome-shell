@@ -50,7 +50,6 @@
 #include "display-private.h"
 #include <meta/errors.h>
 #include "ui.h"
-#include "session.h"
 #include <meta/prefs.h>
 #include <meta/compositor.h>
 
@@ -77,6 +76,8 @@
 #ifdef HAVE_INTROSPECTION
 #include <girepository.h>
 #endif
+
+#include "x11/session.h"
 
 #include "wayland/meta-wayland.h"
 
