@@ -249,7 +249,6 @@ meta_window_finalize (GObject *object)
   g_free (window->res_class);
   g_free (window->res_name);
   g_free (window->title);
-  g_free (window->icon_name);
   g_free (window->desc);
   g_free (window->gtk_theme_variant);
   g_free (window->gtk_application_id);
@@ -838,7 +837,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->colormap = attrs->colormap;
 
   window->title = NULL;
-  window->icon_name = NULL;
   window->icon = NULL;
   window->mini_icon = NULL;
   meta_icon_cache_init (&window->icon_cache);

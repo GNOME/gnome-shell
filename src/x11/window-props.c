@@ -429,9 +429,8 @@ reload_net_wm_user_time_window (MetaWindow    *window,
 /**
  * set_title_text:
  *
- * Called by set_window_title() and set_icon_title() to set the value of
- * @target to @title. It required and @atom is set, it will update the
- * appropriate property.
+ * Called by set_window_title() to set the value of @target to @title.
+ * If required and @atom is set, it will update the appropriate property.
  *
  * Returns: %TRUE if a new title was set.
  */
@@ -608,75 +607,6 @@ reload_mutter_hints (MetaWindow    *window,
       window->mutter_hints = NULL;
 
       g_object_notify (G_OBJECT (window), "mutter-hints");
-    }
-}
-
-static void
-set_icon_title (MetaWindow *window,
-                const char *title)
-{
-  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
-  MetaWindowX11Private *priv = window_x11->priv;
-
-  gboolean modified =
-    set_title_text (window,
-                    priv->using_net_wm_visible_icon_name,
-                    title,
-                    window->display->atom__NET_WM_VISIBLE_ICON_NAME,
-                    &window->icon_name);
-  priv->using_net_wm_visible_icon_name = modified;
-}
-
-static void
-reload_net_wm_icon_name (MetaWindow    *window,
-                         MetaPropValue *value,
-                         gboolean       initial)
-{
-  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
-  MetaWindowX11Private *priv = window_x11->priv;
-
-  if (value->type != META_PROP_VALUE_INVALID)
-    {
-      set_icon_title (window, value->v.str);
-      priv->using_net_wm_icon_name = TRUE;
-
-      meta_verbose ("Using _NET_WM_ICON_NAME for new title of %s: \"%s\"\n",
-                    window->desc, window->title);
-    }
-  else
-    {
-      set_icon_title (window, NULL);
-      priv->using_net_wm_icon_name = FALSE;
-      if (!initial)
-        meta_window_reload_property (window, XA_WM_ICON_NAME, FALSE);
-    }
-}
-
-static void
-reload_wm_icon_name (MetaWindow    *window,
-                     MetaPropValue *value,
-                     gboolean       initial)
-{
-  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
-  MetaWindowX11Private *priv = window_x11->priv;
-
-  if (priv->using_net_wm_icon_name)
-    {
-      meta_verbose ("Ignoring WM_ICON_NAME \"%s\" as _NET_WM_ICON_NAME is set\n",
-                    value->v.str);
-      return;
-    }
-  
-  if (value->type != META_PROP_VALUE_INVALID)
-    {
-      set_icon_title (window, value->v.str);
-      
-      meta_verbose ("Using WM_ICON_NAME for new title of %s: \"%s\"\n",
-                    window->desc, window->title);
-    }
-  else
-    {
-      set_icon_title (window, NULL);
     }
 }
 
@@ -1741,8 +1671,6 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
     { XA_WM_NAME,                      META_PROP_VALUE_TEXT_PROPERTY, reload_wm_name,      TRUE,  TRUE },
     { display->atom__MUTTER_HINTS,     META_PROP_VALUE_TEXT_PROPERTY, reload_mutter_hints, TRUE,  TRUE },
     { display->atom__NET_WM_OPAQUE_REGION, META_PROP_VALUE_CARDINAL_LIST, reload_opaque_region, TRUE, TRUE },
-    { display->atom__NET_WM_ICON_NAME, META_PROP_VALUE_UTF8,     reload_net_wm_icon_name,  TRUE,  FALSE },
-    { XA_WM_ICON_NAME,                 META_PROP_VALUE_TEXT_PROPERTY, reload_wm_icon_name, TRUE,  FALSE },
     { display->atom__NET_WM_DESKTOP,   META_PROP_VALUE_CARDINAL, reload_net_wm_desktop,    TRUE,  FALSE },
     { display->atom__NET_STARTUP_ID,   META_PROP_VALUE_UTF8,     reload_net_startup_id,    TRUE,  FALSE },
     { display->atom__NET_WM_SYNC_REQUEST_COUNTER, META_PROP_VALUE_SYNC_COUNTER_LIST, reload_update_counter, TRUE, TRUE },

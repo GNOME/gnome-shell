@@ -91,7 +91,6 @@ struct _MetaWindow
   char *desc; /* used in debug spew */
   char *title;
 
-  char *icon_name;
   GdkPixbuf *icon;
   GdkPixbuf *mini_icon;
   MetaIconCache icon_cache;
