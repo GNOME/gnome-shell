@@ -3,7 +3,7 @@ AC_CONFIG_MACRO_DIR([m4])
 
 m4_define([mutter_major_version], [3])
 m4_define([mutter_minor_version], [11])
-m4_define([mutter_micro_version], [91])
+m4_define([mutter_micro_version], [92])
 
 m4_define([mutter_version],
           [mutter_major_version.mutter_minor_version.mutter_micro_version])

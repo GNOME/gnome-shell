@@ -1,3 +1,17 @@
+3.11.92
+=======
+* Fix identification of CSD windows [Owen; #723029]
+* Add minimal handling of touch events [Carlos; #723552]
+* Misc bug fixes and cleanups [Owen, Adel, Jasper; #723580, #726352]
+
+Contributors:
+  Adel Gadllah, Carlos Garnacho, Rui Matos, Jasper St. Pierre, Owen W. Taylor
+
+Translations:
+  Changwoo Ryu [ko], Rūdolfs Mazurs [lv], Wylmer Wang [zh_CN],
+  Chao-Hsiung Liao [zh_HK, zh_TW], Yuri Myasoedov [ru], Tiagosdot [pt],
+  Claude Paroz [fr], Duarte Loreto [pt], A S Alam [pa]
+
 3.11.91
 =======
 * Don't use keysym to match keybindings [Rui; #678001]
