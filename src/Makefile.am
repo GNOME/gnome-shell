@@ -210,7 +210,9 @@ libmutter_wayland_la_SOURCES =			\
 	wayland/meta-wayland-types.h		\
 	wayland/meta-wayland-versions.h		\
 	wayland/meta-weston-launch.c		\
-	wayland/meta-weston-launch.h
+	wayland/meta-weston-launch.h		\
+	wayland/window-wayland.c		\
+	wayland/window-wayland.h
 
 nodist_libmutter_wayland_la_SOURCES =		\
 	$(mutter_built_sources)

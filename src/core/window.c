@@ -61,6 +61,7 @@
 #include "x11/xprops.h"
 #include "x11/session.h"
 
+#include "wayland/window-wayland.h"
 #include "wayland/meta-wayland-private.h"
 
 /* Windows that unmaximize to a size bigger than that fraction of the workarea
@@ -783,7 +784,7 @@ _meta_window_shared_new (MetaDisplay         *display,
   if (client_type == META_WINDOW_CLIENT_TYPE_X11)
     window = g_object_new (META_TYPE_WINDOW_X11, NULL);
   else
-    window = g_object_new (META_TYPE_WINDOW, NULL);
+    window = g_object_new (META_TYPE_WINDOW_WAYLAND, NULL);
 
   window->constructing = TRUE;
 
