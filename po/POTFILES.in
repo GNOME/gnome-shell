@@ -16,11 +16,11 @@ src/core/monitor.c
 src/core/mutter.c
 src/core/prefs.c
 src/core/screen.c
-src/core/session.c
+src/x11/session.c
 src/core/util.c
 src/core/window.c
-src/core/window-props.c
-src/core/xprops.c
+src/x11/window-props.c
+src/x11/xprops.c
 src/mutter-wayland.desktop.in
 src/org.gnome.mutter.gschema.xml.in
 src/org.gnome.mutter.wayland.gschema.xml.in
