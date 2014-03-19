@@ -27,7 +27,7 @@
 
 #include <config.h>
 #include <meta/util.h>
-#include "group-private.h"
+#include "group.h"
 #include "group-props.h"
 #include "window-private.h"
 #include <meta/window.h>

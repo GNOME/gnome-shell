@@ -30,7 +30,7 @@
 #include "window-private.h"
 #include <meta/errors.h>
 #include "frame.h"
-#include <meta/group.h>
+#include "group.h"
 #include <meta/prefs.h>
 #include <meta/workspace.h>
 

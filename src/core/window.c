@@ -43,7 +43,7 @@
 #include <meta/prefs.h>
 #include "resizepopup.h"
 #include "xprops.h"
-#include <meta/group.h>
+#include "group.h"
 #include "window-props.h"
 #include "constraints.h"
 #include "mutter-enum-types.h"

@@ -45,6 +45,8 @@
 #include <clutter/clutter.h>
 #include "meta-wayland-types.h"
 
+#include "group.h"
+
 typedef struct _MetaWindowQueue MetaWindowQueue;
 
 typedef enum {

@@ -183,11 +183,10 @@ libmutter_wayland_la_SOURCES =			\
 	x11/iconcache.h				\
 	x11/async-getprop.c			\
 	x11/async-getprop.h			\
-	x11/group-private.h			\
 	x11/group-props.c			\
 	x11/group-props.h			\
 	x11/group.c				\
-	meta/group.h				\
+	x11/group.h				\
 	x11/window-props.c			\
 	x11/window-props.h			\
 	x11/window-x11.c			\
@@ -234,7 +233,6 @@ libmutterinclude_base_headers =		\
 	meta/display.h				\
 	meta/errors.h				\
 	meta/gradient.h				\
-	meta/group.h				\
 	meta/keybindings.h			\
 	meta/main.h				\
 	meta/meta-background-actor.h		\
