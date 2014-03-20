@@ -2184,9 +2184,6 @@ is_our_xwindow (MetaDisplay       *display,
   if (xwindow == screen->no_focus_window)
     return TRUE;
 
-  if (xwindow == screen->flash_window)
-    return TRUE;
-
   if (xwindow == screen->wm_sn_selection_window)
     return TRUE;
 

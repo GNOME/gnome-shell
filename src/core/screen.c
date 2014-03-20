@@ -690,7 +690,6 @@ meta_screen_new (MetaDisplay *display,
   screen->current_cursor = -1; /* invalid/unset */
   screen->default_xvisual = DefaultVisualOfScreen (screen->xscreen);
   screen->default_depth = DefaultDepthOfScreen (screen->xscreen);
-  screen->flash_window = None;
 
   screen->wm_sn_selection_window = new_wm_sn_owner;
   screen->wm_sn_atom = wm_sn_atom;

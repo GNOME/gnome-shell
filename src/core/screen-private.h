@@ -82,8 +82,6 @@ struct _MetaScreen
   MetaCursorTracker *cursor_tracker;
   MetaCursor current_cursor;
 
-  Window flash_window;
-
   Window wm_sn_selection_window;
   Atom wm_sn_atom;
   guint32 wm_sn_timestamp;
