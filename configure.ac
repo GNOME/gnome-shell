@@ -133,7 +133,7 @@ AC_ARG_WITH([wayland-protocols],
 AC_ARG_WITH([xwayland-path],
             [AS_HELP_STRING([--with-xwayland-path], [Absolute path for an X Wayland server])],
             [XWAYLAND_PATH="$withval"],
-            [XWAYLAND_PATH="$bindir/Xorg"])
+            [XWAYLAND_PATH="$bindir/Xwayland"])
 
 AM_GLIB_GNU_GETTEXT
 

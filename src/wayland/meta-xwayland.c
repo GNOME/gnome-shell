@@ -23,6 +23,7 @@
 
 #include "config.h"
 
+#include "meta-xwayland.h"
 #include "meta-xwayland-private.h"
 
 #include <glib.h>
@@ -35,9 +36,6 @@
 #include <sys/un.h>
 #include <sys/wait.h>
 #include <stdlib.h>
-
-#include "meta-window-actor-private.h"
-#include "xserver-server-protocol.h"
 
 static void
 associate_window_with_surface (MetaWindow         *window,
@@ -58,53 +56,63 @@ associate_window_with_surface (MetaWindow         *window,
   meta_compositor_window_surface_changed (display->compositor, window);
 }
 
-static void
-xserver_set_window_id (struct wl_client *client,
-                       struct wl_resource *compositor_resource,
-                       struct wl_resource *surface_resource,
-                       guint32 xid)
+static gboolean
+associate_window_with_surface_id (MetaXWaylandManager *manager,
+                                  MetaWindow          *window,
+                                  guint32              surface_id)
 {
-  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-  MetaDisplay *display = meta_get_display ();
-  MetaWindow *window;
+  struct wl_resource *resource;
 
-  window = meta_display_lookup_x_window (display, xid);
-  if (!window)
-    return;
-
-  associate_window_with_surface (window, surface);
+  resource = wl_client_get_object (manager->client, surface_id);
+  if (resource)
+    {
+      MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+      associate_window_with_surface (window, surface);
+      return TRUE;
+    }
+  else
+    return FALSE;
 }
 
-static const struct xserver_interface xserver_implementation = {
-  xserver_set_window_id
-};
+typedef struct {
+  MetaXWaylandManager *manager;
+  MetaWindow *window;
+  guint32 surface_id;
+} AssociateWindowWithSurfaceOp;
 
-static void
-bind_xserver (struct wl_client *client,
-	      void *data,
-              guint32 version,
-              guint32 id)
+static gboolean
+associate_window_with_surface_idle (gpointer user_data)
 {
-  MetaXWaylandManager *manager = data;
+  AssociateWindowWithSurfaceOp *op = user_data;
+  if (!associate_window_with_surface_id (op->manager, op->window, op->surface_id))
+    {
+      /* Not here? Oh well... nothing we can do */
+      g_warning ("Unknown surface ID %d (from window %s)", op->surface_id, op->window->desc);
+    }
+  g_free (op);
 
-  /* If it's a different client than the xserver we launched,
-   * just freeze up... */
-  if (client != manager->client)
-    return;
+  return G_SOURCE_REMOVE;
+}
 
-  manager->xserver_resource = wl_resource_create (client, &xserver_interface,
-                                                  MIN (META_XSERVER_VERSION, version), id);
-  wl_resource_set_implementation (manager->xserver_resource,
-				  &xserver_implementation, manager, NULL);
+void
+meta_xwayland_handle_wl_surface_id (MetaWindow *window,
+                                    guint32     surface_id)
+{
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+  MetaXWaylandManager *manager = &compositor->xwayland_manager;
 
-  xserver_send_listen_socket (manager->xserver_resource, manager->abstract_fd);
-  xserver_send_listen_socket (manager->xserver_resource, manager->unix_fd);
-
-  /* Make sure xwayland will recieve the above sockets in a finite
-   * time before unblocking the initialization mainloop since we are
-   * then going to immediately try and connect to those as the window
-   * manager. */
-  wl_client_flush (client);
+  if (!associate_window_with_surface_id (manager, window, surface_id))
+    {
+      /* No surface ID yet... it should arrive after the next
+       * iteration through the loop, so queue an idle and see
+       * what happens.
+       */
+      AssociateWindowWithSurfaceOp *op = g_new0 (AssociateWindowWithSurfaceOp, 1);
+      op->manager = manager;
+      op->window = window;
+      op->surface_id = surface_id;
+      g_idle_add (associate_window_with_surface_idle, op);
+    }
 }
 
 static char *
@@ -363,10 +371,6 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   if (!choose_xdisplay (manager))
     return FALSE;
 
-  wl_global_create (wl_display, &xserver_interface,
-		    META_XSERVER_VERSION,
-		    manager, bind_xserver);
-
   /* We want xwayland to be a wayland client so we make a socketpair to setup a
    * wayland protocol connection. */
   if (socketpair (AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, sp) < 0)
@@ -379,13 +383,19 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   manager->pid = fork ();
   if (manager->pid == 0)
     {
-      char socket_fd[8];
+      char socket_fd[8], unix_fd[8], abstract_fd[8];
 
       /* We passed SOCK_CLOEXEC, so dup the FD so it isn't
        * closed on exec.. */
       fd = dup (sp[1]);
       snprintf (socket_fd, sizeof (socket_fd), "%d", fd);
       setenv ("WAYLAND_SOCKET", socket_fd, TRUE);
+
+      fd = dup (manager->abstract_fd);
+      snprintf (abstract_fd, sizeof (abstract_fd), "%d", fd);
+
+      fd = dup (manager->unix_fd);
+      snprintf (unix_fd, sizeof (unix_fd), "%d", fd);
 
       /* xwayland, please. */
       if (getenv ("XWAYLAND_STFU"))
@@ -403,10 +413,10 @@ meta_xwayland_start (MetaXWaylandManager *manager,
 
       if (execl (XWAYLAND_PATH, XWAYLAND_PATH,
                  manager->display_name,
-                 "-wayland",
                  "-rootless",
                  "-noreset",
-                 "-nolisten", "all",
+                 "-listen", abstract_fd,
+                 "-listen", unix_fd,
                  NULL) < 0)
         {
           g_error ("Failed to spawn XWayland: %m");

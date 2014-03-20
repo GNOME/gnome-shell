@@ -41,14 +41,11 @@ mutter_built_sources = \
 	gtk-shell-protocol.c			\
 	gtk-shell-server-protocol.h		\
 	xdg-shell-protocol.c			\
-	xdg-shell-server-protocol.h		\
-	xserver-protocol.c			\
-	xserver-server-protocol.h
+	xdg-shell-server-protocol.h
 
 wayland_protocols = \
 	wayland/protocol/gtk-shell.xml		\
-	wayland/protocol/xdg-shell.xml		\
-	wayland/protocol/xserver.xml
+	wayland/protocol/xdg-shell.xml
 
 libmutter_wayland_la_SOURCES =			\
 	backends/meta-backend.c			\
@@ -214,8 +211,9 @@ libmutter_wayland_la_SOURCES =			\
 	wayland/meta-wayland.c			\
 	wayland/meta-wayland.h			\
 	wayland/meta-wayland-private.h		\
-	wayland/meta-xwayland-private.h		\
 	wayland/meta-xwayland.c			\
+	wayland/meta-xwayland.h			\
+	wayland/meta-xwayland-private.h		\
 	wayland/meta-wayland-data-device.c      \
 	wayland/meta-wayland-data-device.h      \
 	wayland/meta-wayland-keyboard.c		\
