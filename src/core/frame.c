@@ -35,8 +35,7 @@
                     ButtonPressMask | ButtonReleaseMask |          \
                     PointerMotionMask | PointerMotionHintMask |    \
                     EnterWindowMask | LeaveWindowMask |            \
-                    FocusChangeMask |                              \
-                    ColormapChangeMask)
+                    FocusChangeMask)
 
 void
 meta_window_ensure_frame (MetaWindow *window)

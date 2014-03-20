@@ -2322,7 +2322,7 @@ meta_window_x11_new (MetaDisplay       *display,
 
   meta_error_trap_push_with_return (display);
 
-  event_mask = PropertyChangeMask | ColormapChangeMask;
+  event_mask = PropertyChangeMask;
   if (attrs.override_redirect)
     event_mask |= StructureNotifyMask;
 

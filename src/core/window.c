@@ -833,7 +833,6 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   window->depth = attrs->depth;
   window->xvisual = attrs->visual;
-  window->colormap = attrs->colormap;
 
   window->title = NULL;
   window->icon = NULL;
