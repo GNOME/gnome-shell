@@ -214,6 +214,20 @@ const IconGrid = new Lang.Class({
         this._grid.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this._grid.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this._grid.connect('allocate', Lang.bind(this, this._allocate));
+        this._grid.connect('actor-added', Lang.bind(this, this._childAdded));
+        this._grid.connect('actor-removed', Lang.bind(this, this._childRemoved));
+    },
+
+    _keyFocusIn: function(actor) {
+        this.emit('key-focus-in', actor);
+    },
+
+    _childAdded: function(grid, child) {
+        child._iconGridKeyFocusInId = child.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
+    },
+
+    _childRemoved: function(grid, child) {
+        child.disconnect(child._iconGridKeyFocusInId);
     },
 
     _getPreferredWidth: function (grid, forHeight, alloc) {
@@ -527,6 +541,7 @@ const IconGrid = new Lang.Class({
         }
     }
 });
+Signals.addSignalMethods(IconGrid.prototype);
 
 const PaginatedIconGrid = new Lang.Class({
     Name: 'PaginatedIconGrid',
