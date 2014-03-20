@@ -1680,8 +1680,13 @@ process_event (MetaDisplay          *display,
                                     event->hardware_keycode,
                                     event->modifier_state);
   if (!binding ||
-      (!window && binding->flags & META_KEY_BINDING_PER_WINDOW) ||
-      meta_compositor_filter_keybinding (display->compositor, screen, binding))
+      (!window && binding->flags & META_KEY_BINDING_PER_WINDOW))
+    goto not_found;
+
+  /* If the compositor filtered out the keybindings, that
+   * means they don't want the binding to trigger, so we do
+   * the same thing as if the binding didn't exist. */
+  if (meta_compositor_filter_keybinding (display->compositor, screen, binding))
     goto not_found;
 
   if (binding->handler == NULL)
