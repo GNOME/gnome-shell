@@ -76,6 +76,19 @@ meta_window_wayland_unmanage (MetaWindow *window)
 }
 
 static void
+meta_window_wayland_delete (MetaWindow *window,
+                            guint32     timestamp)
+{
+  meta_wayland_surface_delete (window->surface);
+}
+
+static void
+meta_window_wayland_kill (MetaWindow *window)
+{
+  /* TODO */
+}
+
+static void
 meta_window_wayland_move_resize_internal (MetaWindow                *window,
                                           int                        gravity,
                                           MetaRectangle              requested_rect,
@@ -176,5 +189,7 @@ meta_window_wayland_class_init (MetaWindowWaylandClass *klass)
 
   window_class->manage = meta_window_wayland_manage;
   window_class->unmanage = meta_window_wayland_unmanage;
+  window_class->delete = meta_window_wayland_delete;
+  window_class->kill = meta_window_wayland_kill;
   window_class->move_resize_internal = meta_window_wayland_move_resize_internal;
 }

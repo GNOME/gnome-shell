@@ -323,6 +323,59 @@ meta_window_x11_unmanage (MetaWindow *window)
 }
 
 static void
+meta_window_x11_delete (MetaWindow *window,
+                        guint32     timestamp)
+{
+  meta_error_trap_push (window->display);
+  if (window->delete_window)
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Deleting %s with delete_window request\n",
+                  window->desc);
+      meta_window_send_icccm_message (window,
+                                      window->display->atom_WM_DELETE_WINDOW,
+                                      timestamp);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Deleting %s with explicit kill\n",
+                  window->desc);
+      XKillClient (window->display->xdisplay, window->xwindow);
+    }
+  meta_error_trap_pop (window->display);
+}
+
+static void
+meta_window_x11_kill (MetaWindow *window)
+{
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Killing %s brutally\n",
+              window->desc);
+
+  if (!meta_window_is_remote (window) &&
+      window->net_wm_pid > 0)
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Killing %s with kill()\n",
+                  window->desc);
+
+      if (kill (window->net_wm_pid, 9) < 0)
+        meta_topic (META_DEBUG_WINDOW_OPS,
+                    "Failed to signal %s: %s\n",
+                    window->desc, strerror (errno));
+    }
+
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Disconnecting %s with XKillClient()\n",
+              window->desc);
+
+  meta_error_trap_push (window->display);
+  XKillClient (window->display->xdisplay, window->xwindow);
+  meta_error_trap_pop (window->display);
+}
+
+static void
 update_net_frame_extents (MetaWindow *window)
 {
   unsigned long data[4];
@@ -744,6 +797,8 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
 
   window_class->manage = meta_window_x11_manage;
   window_class->unmanage = meta_window_x11_unmanage;
+  window_class->delete = meta_window_x11_delete;
+  window_class->kill = meta_window_x11_kill;
   window_class->move_resize_internal = meta_window_x11_move_resize_internal;
   window_class->get_default_skip_hints = meta_window_x11_get_default_skip_hints;
 }

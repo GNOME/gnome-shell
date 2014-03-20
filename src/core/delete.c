@@ -143,31 +143,7 @@ void
 meta_window_delete (MetaWindow  *window,
                     guint32      timestamp)
 {
-  if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
-    {
-      meta_error_trap_push (window->display);
-      if (window->delete_window)
-        {
-          meta_topic (META_DEBUG_WINDOW_OPS,
-                      "Deleting %s with delete_window request\n",
-                      window->desc);
-          meta_window_send_icccm_message (window,
-                                          window->display->atom_WM_DELETE_WINDOW,
-                                          timestamp);
-        }
-      else
-        {
-          meta_topic (META_DEBUG_WINDOW_OPS,
-                      "Deleting %s with explicit kill\n",
-                      window->desc);
-          XKillClient (window->display->xdisplay, window->xwindow);
-        }
-      meta_error_trap_pop (window->display);
-    }
-  else
-    {
-      meta_wayland_surface_delete (window->surface);
-    }
+  META_WINDOW_GET_CLASS (window)->delete (window, timestamp);
 
   meta_window_check_alive (window, timestamp);
 
@@ -200,33 +176,10 @@ meta_window_delete (MetaWindow  *window,
     }
 }
 
-
 void
 meta_window_kill (MetaWindow *window)
 {
-  meta_topic (META_DEBUG_WINDOW_OPS,
-              "Killing %s brutally\n",
-              window->desc);
-
-  if (!meta_window_is_remote (window) &&
-      window->net_wm_pid > 0)
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Killing %s with kill()\n",
-                  window->desc);
-
-      if (kill (window->net_wm_pid, 9) < 0)
-        meta_topic (META_DEBUG_WINDOW_OPS,
-                    "Failed to signal %s: %s\n",
-                    window->desc, strerror (errno));
-    }
-
-  meta_topic (META_DEBUG_WINDOW_OPS,
-              "Disconnecting %s with XKillClient()\n",
-              window->desc);
-  meta_error_trap_push (window->display);
-  XKillClient (window->display->xdisplay, window->xwindow);
-  meta_error_trap_pop (window->display);
+  META_WINDOW_GET_CLASS (window)->kill (window);
 }
 
 void
