@@ -387,6 +387,18 @@ meta_window_x11_kill (MetaWindow *window)
 }
 
 static void
+request_take_focus (MetaWindow *window,
+                    guint32     timestamp)
+{
+  MetaDisplay *display = window->display;
+
+  meta_topic (META_DEBUG_FOCUS, "WM_TAKE_FOCUS(%s, %u)\n",
+              window->desc, timestamp);
+
+  meta_window_send_icccm_message (window, display->atom_WM_TAKE_FOCUS, timestamp);
+}
+
+static void
 meta_window_x11_focus (MetaWindow *window,
                        guint32     timestamp)
 {
@@ -448,9 +460,7 @@ meta_window_x11_focus (MetaWindow *window,
                                                         timestamp);
             }
 
-          meta_display_request_take_focus (window->display,
-                                           window,
-                                           timestamp);
+          request_take_focus (window, timestamp);
         }
     }
 }

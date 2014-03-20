@@ -1700,9 +1700,9 @@ meta_display_update_focus_window (MetaDisplay *display,
   meta_display_update_active_window_hint (display);
 }
 
-static gboolean
-timestamp_too_old (MetaDisplay *display,
-                   guint32     *timestamp)
+gboolean
+meta_display_timestamp_too_old (MetaDisplay *display,
+                                guint32     *timestamp)
 {
   /* FIXME: If Soeren's suggestion in bug 151984 is implemented, it will allow
    * us to sanity check the timestamp here and ensure it doesn't correspond to
@@ -1738,7 +1738,7 @@ request_xserver_input_focus_change (MetaDisplay *display,
 {
   gulong serial;
 
-  if (timestamp_too_old (display, &timestamp))
+  if (meta_display_timestamp_too_old (display, &timestamp))
     return;
 
   meta_error_trap_push (display);
@@ -3402,22 +3402,6 @@ meta_display_set_input_focus_window (MetaDisplay *display,
                                       window,
                                       focus_frame ? window->frame->xwindow : window->xwindow,
                                       timestamp);
-}
-
-void
-meta_display_request_take_focus (MetaDisplay *display,
-                                 MetaWindow  *window,
-                                 guint32      timestamp)
-{
-  if (timestamp_too_old (display, &timestamp))
-    return;
-
-  meta_topic (META_DEBUG_FOCUS, "WM_TAKE_FOCUS(%s, %u)\n",
-              window->desc, timestamp);
-
-  meta_window_send_icccm_message (window,
-                                  display->atom_WM_TAKE_FOCUS,
-                                  timestamp);
 }
 
 void

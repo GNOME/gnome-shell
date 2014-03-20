@@ -498,5 +498,7 @@ void meta_display_update_focus_window (MetaDisplay *display,
 
 void meta_display_sanity_check_timestamps (MetaDisplay *display,
                                            guint32      timestamp);
+gboolean meta_display_timestamp_too_old (MetaDisplay *display,
+                                         guint32     *timestamp);
 
 #endif

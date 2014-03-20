@@ -163,10 +163,6 @@ void meta_display_set_input_focus_window   (MetaDisplay *display,
                                             gboolean     focus_frame,
                                             guint32      timestamp);
 
-void meta_display_request_take_focus       (MetaDisplay *display,
-                                            MetaWindow  *window,
-                                            guint32      timestamp);
-
 /* meta_display_focus_the_no_focus_window is called when the
  * designated no_focus_window should be focused, but is otherwise the
  * same as meta_display_set_input_focus_window
