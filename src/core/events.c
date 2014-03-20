@@ -1056,18 +1056,18 @@ static MetaScreen*
 find_screen_for_selection (MetaDisplay *display,
                            Window       owner,
                            Atom         selection)
-{  
-  GSList *tmp;  
-  
+{
+  GSList *tmp;
+
   tmp = display->screens;
   while (tmp != NULL)
     {
       MetaScreen *screen = tmp->data;
-      
+
       if (screen->wm_sn_selection_window == owner &&
           screen->wm_sn_atom == selection)
         return screen;
-  
+
       tmp = tmp->next;
     }
 
@@ -1109,7 +1109,7 @@ convert_property (MetaDisplay *display,
       meta_error_trap_pop_with_return (display);
       return FALSE;
     }
-  
+
   if (meta_error_trap_pop_with_return (display) != Success)
     return FALSE;
 
@@ -1138,20 +1138,20 @@ process_selection_request (MetaDisplay   *display,
   if (screen == NULL)
     {
       char *str;
-      
+
       meta_error_trap_push (display);
       str = XGetAtomName (display->xdisplay,
                           event->xselectionrequest.selection);
       meta_error_trap_pop (display);
-      
+
       meta_verbose ("Selection request with selection %s window 0x%lx not a WM_Sn selection we recognize\n",
                     str ? str : "(bad atom)", event->xselectionrequest.owner);
-      
+
       meta_XFree (str);
 
       return;
     }
-  
+
   reply.type = SelectionNotify;
   reply.display = display->xdisplay;
   reply.requestor = event->xselectionrequest.requestor;
@@ -1179,9 +1179,9 @@ process_selection_request (MetaDisplay   *display,
               meta_error_trap_pop_with_return (display);
               return;
             }
-          
+
           if (meta_error_trap_pop_with_return (display) == Success)
-            {              
+            {
               /* FIXME: to be 100% correct, should deal with rest > 0,
                * but since we have 4 possible targets, we will hardly ever
                * meet multiple requests with a length > 8
@@ -1212,7 +1212,7 @@ process_selection_request (MetaDisplay   *display,
     {
       if (event->xselectionrequest.property == None)
         event->xselectionrequest.property = event->xselectionrequest.target;
-      
+
       if (convert_property (display, screen,
                             event->xselectionrequest.requestor,
                             event->xselectionrequest.target,
@@ -1237,25 +1237,25 @@ process_selection_clear (MetaDisplay   *display,
   screen = find_screen_for_selection (display,
                                       event->xselectionclear.window,
                                       event->xselectionclear.selection);
-  
+
 
   if (screen != NULL)
     {
       meta_verbose ("Got selection clear for screen %d on display %s\n",
                     screen->number, display->name);
-      
-      meta_display_unmanage_screen (display, 
+
+      meta_display_unmanage_screen (display,
                                     screen,
                                     event->xselectionclear.time);
 
       /* display and screen may both be invalid memory... */
-      
+
       return;
     }
 
   {
     char *str;
-            
+
     meta_error_trap_push (display);
     str = XGetAtomName (display->xdisplay,
                         event->xselectionclear.selection);
@@ -1316,11 +1316,11 @@ handle_other_xevent (MetaDisplay *display,
 #endif /* HAVE_XSYNC */
 
 #ifdef HAVE_SHAPE
-  if (META_DISPLAY_HAS_SHAPE (display) && 
+  if (META_DISPLAY_HAS_SHAPE (display) &&
       event->type == (display->shape_event_base + ShapeNotify))
     {
       bypass_gtk = TRUE; /* GTK doesn't want to see this really */
-      
+
       if (window && !frame_was_receiver)
         {
           XShapeEvent *sev = (XShapeEvent*) event;
