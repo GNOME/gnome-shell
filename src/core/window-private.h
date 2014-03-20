@@ -612,12 +612,6 @@ void        meta_window_get_geometry         (MetaWindow  *window,
 
 void        meta_window_update_unfocused_button_grabs (MetaWindow *window);
 
-/* Sends a client message */
-void meta_window_send_icccm_message (MetaWindow *window,
-                                     Atom        atom,
-                                     guint32     timestamp);
-
-
 void     meta_window_move_resize_request(MetaWindow *window,
                                          guint       value_mask,
                                          int         gravity,

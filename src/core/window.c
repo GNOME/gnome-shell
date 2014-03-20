@@ -5363,42 +5363,6 @@ meta_window_lower (MetaWindow  *window)
 }
 
 void
-meta_window_send_icccm_message (MetaWindow *window,
-                                Atom        atom,
-                                guint32     timestamp)
-{
-  /* This comment and code are from twm, copyright
-   * Open Group, Evans & Sutherland, etc.
-   */
-
-  /*
-   * ICCCM Client Messages - Section 4.2.8 of the ICCCM dictates that all
-   * client messages will have the following form:
-   *
-   *     event type	ClientMessage
-   *     message type	_XA_WM_PROTOCOLS
-   *     window		tmp->w
-   *     format		32
-   *     data[0]		message atom
-   *     data[1]		time stamp
-   */
-
-    XClientMessageEvent ev;
-
-    ev.type = ClientMessage;
-    ev.window = window->xwindow;
-    ev.message_type = window->display->atom_WM_PROTOCOLS;
-    ev.format = 32;
-    ev.data.l[0] = atom;
-    ev.data.l[1] = timestamp;
-
-    meta_error_trap_push (window->display);
-    XSendEvent (window->display->xdisplay,
-                window->xwindow, False, 0, (XEvent*) &ev);
-    meta_error_trap_pop (window->display);
-}
-
-void
 meta_window_move_resize_request (MetaWindow *window,
                                  guint       value_mask,
                                  int         gravity,

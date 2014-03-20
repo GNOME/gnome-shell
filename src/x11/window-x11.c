@@ -59,6 +59,42 @@ meta_window_x11_init (MetaWindowX11 *window_x11)
   window_x11->priv = meta_window_x11_get_instance_private (window_x11);
 }
 
+static void
+send_icccm_message (MetaWindow *window,
+                    Atom        atom,
+                    guint32     timestamp)
+{
+  /* This comment and code are from twm, copyright
+   * Open Group, Evans & Sutherland, etc.
+   */
+
+  /*
+   * ICCCM Client Messages - Section 4.2.8 of the ICCCM dictates that all
+   * client messages will have the following form:
+   *
+   *     event type	ClientMessage
+   *     message type	_XA_WM_PROTOCOLS
+   *     window		tmp->w
+   *     format		32
+   *     data[0]		message atom
+   *     data[1]		time stamp
+   */
+
+  XClientMessageEvent ev;
+
+  ev.type = ClientMessage;
+  ev.window = window->xwindow;
+  ev.message_type = window->display->atom_WM_PROTOCOLS;
+  ev.format = 32;
+  ev.data.l[0] = atom;
+  ev.data.l[1] = timestamp;
+
+  meta_error_trap_push (window->display);
+  XSendEvent (window->display->xdisplay,
+              window->xwindow, False, 0, (XEvent*) &ev);
+  meta_error_trap_pop (window->display);
+}
+
 static Window
 read_client_leader (MetaDisplay *display,
                     Window       xwindow)
@@ -328,9 +364,7 @@ meta_window_x11_ping (MetaWindow *window,
 {
   MetaDisplay *display = window->display;
 
-  meta_window_send_icccm_message (window,
-                                  display->atom__NET_WM_PING,
-                                  serial);
+  send_icccm_message (window, display->atom__NET_WM_PING, serial);
 }
 
 static void
@@ -343,9 +377,7 @@ meta_window_x11_delete (MetaWindow *window,
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Deleting %s with delete_window request\n",
                   window->desc);
-      meta_window_send_icccm_message (window,
-                                      window->display->atom_WM_DELETE_WINDOW,
-                                      timestamp);
+      send_icccm_message (window, window->display->atom_WM_DELETE_WINDOW, timestamp);
     }
   else
     {
@@ -395,7 +427,7 @@ request_take_focus (MetaWindow *window,
   meta_topic (META_DEBUG_FOCUS, "WM_TAKE_FOCUS(%s, %u)\n",
               window->desc, timestamp);
 
-  meta_window_send_icccm_message (window, display->atom_WM_TAKE_FOCUS, timestamp);
+  send_icccm_message (window, display->atom_WM_TAKE_FOCUS, timestamp);
 }
 
 static void
