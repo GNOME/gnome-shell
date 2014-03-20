@@ -476,6 +476,8 @@ struct _MetaWindowClass
   void (*delete)                 (MetaWindow *window,
                                   guint32     timestamp);
   void (*kill)                   (MetaWindow *window);
+  void (*focus)                  (MetaWindow *window,
+                                  guint32     timestamp);
   void (*move_resize_internal)   (MetaWindow                *window,
                                   int                        gravity,
                                   MetaRectangle              requested_rect,

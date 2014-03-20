@@ -96,6 +96,16 @@ meta_window_wayland_kill (MetaWindow *window)
 }
 
 static void
+meta_window_wayland_focus (MetaWindow *window,
+                           guint32     timestamp)
+{
+  meta_display_set_input_focus_window (window->display,
+                                       window,
+                                       FALSE,
+                                       timestamp);
+}
+
+static void
 meta_window_wayland_move_resize_internal (MetaWindow                *window,
                                           int                        gravity,
                                           MetaRectangle              requested_rect,
@@ -199,5 +209,6 @@ meta_window_wayland_class_init (MetaWindowWaylandClass *klass)
   window_class->ping = meta_window_wayland_ping;
   window_class->delete = meta_window_wayland_delete;
   window_class->kill = meta_window_wayland_kill;
+  window_class->focus = meta_window_wayland_focus;
   window_class->move_resize_internal = meta_window_wayland_move_resize_internal;
 }

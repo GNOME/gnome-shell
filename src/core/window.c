@@ -5090,69 +5090,7 @@ meta_window_focus (MetaWindow  *window,
       return;
     }
 
-  /* For output-only or shaded windows, focus the frame.
-   * This seems to result in the client window getting key events
-   * though, so I don't know if it's icccm-compliant.
-   *
-   * Still, we have to do this or keynav breaks for these windows.
-   */
-  if (window->frame &&
-      (window->shaded ||
-       !(window->input || window->take_focus)))
-    {
-      if (window->frame)
-        {
-          meta_topic (META_DEBUG_FOCUS,
-                      "Focusing frame of %s\n", window->desc);
-          meta_display_set_input_focus_window (window->display,
-                                               window,
-                                               TRUE,
-                                               timestamp);
-        }
-    }
-  else
-    {
-      if (window->input)
-        {
-          meta_topic (META_DEBUG_FOCUS,
-                      "Setting input focus on %s since input = true\n",
-                      window->desc);
-          meta_display_set_input_focus_window (window->display,
-                                               window,
-                                               FALSE,
-                                               timestamp);
-        }
-
-      if (window->take_focus)
-        {
-          meta_topic (META_DEBUG_FOCUS,
-                      "Sending WM_TAKE_FOCUS to %s since take_focus = true\n",
-                      window->desc);
-
-          if (!window->input)
-            {
-              /* The "Globally Active Input" window case, where the window
-               * doesn't want us to call XSetInputFocus on it, but does
-               * want us to send a WM_TAKE_FOCUS.
-               *
-               * Normally, we want to just leave the focus undisturbed until
-               * the window respnds to WM_TAKE_FOCUS, but if we're unmanaging
-               * the current focus window we *need* to move the focus away, so
-               * we focus the no_focus_window now (and set
-               * display->focus_window to that) before sending WM_TAKE_FOCUS.
-               */
-              if (window->display->focus_window != NULL &&
-                  window->display->focus_window->unmanaging)
-                meta_display_focus_the_no_focus_window (window->display,
-                                                        window->screen,
-                                                        timestamp);
-            }
-
-          meta_display_request_take_focus (window->display,
-                                           window,
-                                           timestamp);
-        }
-    }
+  META_WINDOW_GET_CLASS (window)->focus (window, timestamp);
 
   if (window->wm_state_demands_attention)
     meta_window_unset_demands_attention(window);
