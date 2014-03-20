@@ -19,16 +19,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-03-11 17:10+0000\n"
-"PO-Revision-Date: 2014-03-11 21:13+0300\n"
-"Last-Translator: Stas Solovey <whats_up@tut.by>\n"
+"PO-Revision-Date: 2014-03-20 23:00+0300\n"
+"Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -240,6 +240,13 @@ msgid ""
 "allow applications to see and they can find user's location on their own "
 "using network resources (albeit with street-level accuracy at best)."
 msgstr ""
+"Устанавливает максимальную точность геолокации, доступную для приложений. "
+"Доступные значения: «off» (отключает геолокацию), «country» (страна), "
+"«city» (город), «neighbothood» (район), «street» (улица), «exact» (точное "
+"местоположение, обычно требуется GPS-приёмник). Заметьте, что этот параметр "
+"управляет только точностью геолокации GeoClue; с помощью сетевых ресурсов "
+"некоторые приложения могут самостоятельно определить ваше местоположение (в "
+"лучшем случае с точностью до улицы)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "The application icon mode."
@@ -296,7 +303,6 @@ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Задержка изменения фокуса в режиме мыши после остановки указателя"
 
 #: ../js/extensionPrefs/main.js:127
-#, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Возникла ошибка загрузки диалогового окна параметров для %s:"
 
@@ -338,7 +344,6 @@ msgid "Not listed?"
 msgstr "Нет в списке?"
 
 #: ../js/gdm/loginDialog.js:608
-#, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(например, пользователь или %s)"
 
@@ -368,7 +373,6 @@ msgid "Could not parse command:"
 msgstr "Не удалось разобрать команду:"
 
 #: ../js/misc/util.js:156
-#, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Не удалось выполнить «%s»:"
 
@@ -397,12 +401,10 @@ msgid "Add to Favorites"
 msgstr "Добавить в избранное"
 
 #: ../js/ui/appFavorites.js:87
-#, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Приложение %s добавлено в избранное."
 
 #: ../js/ui/appFavorites.js:121
-#, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Приложение %s удалено из избранного."
 
@@ -591,7 +593,6 @@ msgid "Removable Devices"
 msgstr "Съёмные устройства"
 
 #: ../js/ui/components/autorunManager.js:596
-#, javascript-format
 msgid "Open with %s"
 msgstr "Открыть с помощью %s"
 
@@ -641,7 +642,6 @@ msgid "Authentication required by wireless network"
 msgstr "Беспроводная сеть требует подтверждения подлинности"
 
 #: ../js/ui/components/networkAgent.js:312
-#, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
@@ -677,7 +677,6 @@ msgid "Mobile broadband network password"
 msgstr "Пароль для мобильной широкополосной сети"
 
 #: ../js/ui/components/networkAgent.js:339
-#, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Для подключения к «%s» требуется пароль."
 
@@ -795,14 +794,12 @@ msgstr "%d %b., %Y, %l∶%M %p"
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
 #: ../js/ui/components/telepathyClient.js:1051
-#, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s теперь известен как %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
 #: ../js/ui/components/telepathyClient.js:1154
-#, javascript-format
 msgid "Invitation to %s"
 msgstr "Приглашение в %s"
 
@@ -810,7 +807,6 @@ msgstr "Приглашение в %s"
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
 #: ../js/ui/components/telepathyClient.js:1162
-#, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s приглашает вас присоединиться к %s"
 
@@ -829,13 +825,11 @@ msgstr "Принять"
 
 #. translators: argument is a contact name like Alice for example. */
 #: ../js/ui/components/telepathyClient.js:1189
-#, javascript-format
 msgid "Video call from %s"
 msgstr "Видеозвонок от %s"
 
 #. translators: argument is a contact name like Alice for example. */
 #: ../js/ui/components/telepathyClient.js:1192
-#, javascript-format
 msgid "Call from %s"
 msgstr "Вас вызывает %s"
 
@@ -850,13 +844,11 @@ msgstr "Ответить"
 #. * like: "Alice is sending you test.ogg"
 #. */
 #: ../js/ui/components/telepathyClient.js:1227
-#, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s отправляет вам %s"
 
 #. To translators: The parameter is the contact's alias */
 #: ../js/ui/components/telepathyClient.js:1256
-#, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s хотел бы получить разрешение видеть, когда вы в сети"
 
@@ -968,7 +960,6 @@ msgstr "Внутренняя ошибка"
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
 #: ../js/ui/components/telepathyClient.js:1397
-#, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Не удалось подключиться к %s"
 
@@ -1013,7 +1004,6 @@ msgid "%A %B %e, %Y"
 msgstr "%A, %e %b., %Y"
 
 #: ../js/ui/endSessionDialog.js:66
-#, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Завершение сеанса пользователя %s"
@@ -1024,7 +1014,6 @@ msgid "Log Out"
 msgstr "Завершение сеанса"
 
 #: ../js/ui/endSessionDialog.js:69
-#, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] ""
@@ -1034,7 +1023,6 @@ msgstr[1] ""
 msgstr[2] "Сеанс пользователя %s будет автоматически завершён через %d секунд."
 
 #: ../js/ui/endSessionDialog.js:74
-#, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Сеанс будет автоматически завершён через %d секунду."
@@ -1057,7 +1045,6 @@ msgid "Install Updates & Power Off"
 msgstr "Установить обновления и выключить"
 
 #: ../js/ui/endSessionDialog.js:89
-#, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Система будет автоматически выключена через %d секунду."
@@ -1085,7 +1072,6 @@ msgid "Restart"
 msgstr "Перезапуск"
 
 #: ../js/ui/endSessionDialog.js:107
-#, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Система будет автоматически перезапущена через %d секунду."
@@ -1098,7 +1084,6 @@ msgid "Restart & Install Updates"
 msgstr "Перезапуск и установка обновлений"
 
 #: ../js/ui/endSessionDialog.js:123
-#, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -1140,13 +1125,11 @@ msgstr "В системе имеются открытые сеансы друг�
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
 #: ../js/ui/endSessionDialog.js:618
-#, javascript-format
 msgid "%s (remote)"
 msgstr "%s (удалённый)"
 
 #. Translators: Console here refers to a tty like a VT console */
 #: ../js/ui/endSessionDialog.js:621
-#, javascript-format
 msgid "%s (console)"
 msgstr "%s (консоль)"
 
@@ -1155,7 +1138,6 @@ msgid "Install"
 msgstr "Установить"
 
 #: ../js/ui/extensionDownloader.js:204
-#, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Загрузить и установить расширение «%s» из extensions.gnome.org?"
 
@@ -1169,7 +1151,6 @@ msgstr "Расширения не установлены"
 
 #. Translators: argument is an extension UUID. */
 #: ../js/ui/lookingGlass.js:697
-#, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s не сообщал о каких-либо ошибках."
 
@@ -1256,7 +1237,6 @@ msgid "Unknown"
 msgstr "Неизвестно"
 
 #: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:151
-#, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d новое сообщение"
@@ -1313,7 +1293,6 @@ msgid "%A, %B %d"
 msgstr "%A, %d %b., %Y"
 
 #: ../js/ui/screenShield.js:153
-#, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d новое уведомление"
@@ -1429,7 +1408,6 @@ msgid "Bluetooth Settings"
 msgstr "Настроить Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:100
-#, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "Подключено %d устройство"
@@ -1618,12 +1596,10 @@ msgid "Estimating…"
 msgstr "Выполняется подсчёт…"
 
 #: ../js/ui/status/power.js:86
-#, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "Осталось %d∶%02d (%d%%)"
 
 #: ../js/ui/status/power.js:91
-#, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "До полного заряда %d∶%02d (%d%%)"
 
@@ -1689,7 +1665,6 @@ msgid "Search"
 msgstr "Поиск"
 
 #: ../js/ui/windowAttentionHandler.js:19
-#, javascript-format
 msgid "“%s” is ready"
 msgstr "Окно «%s» ожидает"
 
@@ -1709,7 +1684,6 @@ msgid "Keep Changes"
 msgstr "Сохранить изменения"
 
 #: ../js/ui/windowManager.js:97
-#, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Изменения параметров будут отменены через %d секунду"
