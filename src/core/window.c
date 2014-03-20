@@ -4213,8 +4213,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
    *       we don't decorate wayland clients), and the client has acknowledged
    *       the window size change.
    */
-  gboolean frame_shape_changed = FALSE;
-
   gboolean is_configure_request;
   gboolean do_gravity_adjust;
   gboolean is_user_action;
@@ -4351,7 +4349,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
    *   b) all constraints are obeyed by window->rect and frame->rect
    */
 
-  if (frame_shape_changed && window->frame_bounds)
+  if ((result & META_MOVE_RESIZE_RESULT_FRAME_SHAPE_CHANGED) && window->frame_bounds)
     {
       cairo_region_destroy (window->frame_bounds);
       window->frame_bounds = NULL;
