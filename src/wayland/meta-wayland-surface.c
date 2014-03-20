@@ -75,16 +75,6 @@ typedef struct
 } MetaWaylandSubsurfacePlacementOp;
 
 static void
-surface_handle_buffer_destroy (struct wl_listener *listener, void *data)
-{
-  MetaWaylandSurface *surface = wl_container_of (listener, surface, buffer_destroy_listener);
-
-  wl_resource_post_error (surface->resource, WL_DISPLAY_ERROR_INVALID_OBJECT,
-                          "Destroyed buffer while it was attached to the surface");
-  surface->buffer = NULL;
-}
-
-static void
 surface_set_buffer (MetaWaylandSurface *surface,
                     MetaWaylandBuffer  *buffer)
 {
@@ -104,6 +94,14 @@ surface_set_buffer (MetaWaylandSurface *surface,
       meta_wayland_buffer_ref (surface->buffer);
       wl_signal_add (&surface->buffer->destroy_signal, &surface->buffer_destroy_listener);
     }
+}
+
+static void
+surface_handle_buffer_destroy (struct wl_listener *listener, void *data)
+{
+  MetaWaylandSurface *surface = wl_container_of (listener, surface, buffer_destroy_listener);
+
+  surface_set_buffer (surface, NULL);
 }
 
 static void

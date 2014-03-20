@@ -35,10 +35,23 @@ struct _MetaSurfaceActorWaylandPrivate
 {
   MetaWaylandSurface *surface;
   MetaWaylandBuffer *buffer;
+  struct wl_listener buffer_destroy_listener;
 };
 typedef struct _MetaSurfaceActorWaylandPrivate MetaSurfaceActorWaylandPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaSurfaceActorWayland, meta_surface_actor_wayland, META_TYPE_SURFACE_ACTOR)
+
+static void
+meta_surface_actor_handle_buffer_destroy (struct wl_listener *listener, void *data)
+{
+  MetaSurfaceActorWaylandPrivate *priv = wl_container_of (listener, priv, buffer_destroy_listener);
+
+  /* If the buffer is destroyed while we're attached to it,
+   * we want to unset priv->buffer so we don't access freed
+   * memory. Keep the texture set however so the user doesn't
+   * see the window disappear. */
+  priv->buffer = NULL;
+}
 
 static void
 meta_surface_actor_wayland_process_damage (MetaSurfaceActor *actor,
@@ -47,16 +60,19 @@ meta_surface_actor_wayland_process_damage (MetaSurfaceActor *actor,
   MetaSurfaceActorWayland *self = META_SURFACE_ACTOR_WAYLAND (actor);
   MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (self);
 
-  struct wl_resource *resource = priv->buffer->resource;
-  struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (resource);
-
-  if (shm_buffer)
+  if (priv->buffer)
     {
-      CoglTexture2D *texture = COGL_TEXTURE_2D (priv->buffer->texture);
-      cogl_wayland_texture_set_region_from_shm_buffer (texture, x, y, width, height, shm_buffer, x, y, 0, NULL);
-    }
+      struct wl_resource *resource = priv->buffer->resource;
+      struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (resource);
 
-  meta_surface_actor_update_area (META_SURFACE_ACTOR (self), x, y, width, height);
+      if (shm_buffer)
+        {
+          CoglTexture2D *texture = COGL_TEXTURE_2D (priv->buffer->texture);
+          cogl_wayland_texture_set_region_from_shm_buffer (texture, x, y, width, height, shm_buffer, x, y, 0, NULL);
+        }
+
+      meta_surface_actor_update_area (META_SURFACE_ACTOR (self), x, y, width, height);
+    }
 }
 
 static void
@@ -127,6 +143,9 @@ meta_surface_actor_wayland_class_init (MetaSurfaceActorWaylandClass *klass)
 static void
 meta_surface_actor_wayland_init (MetaSurfaceActorWayland *self)
 {
+  MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (self);
+
+  priv->buffer_destroy_listener.notify = meta_surface_actor_handle_buffer_destroy;
 }
 
 MetaSurfaceActor *
@@ -149,10 +168,16 @@ meta_surface_actor_wayland_set_buffer (MetaSurfaceActorWayland *self,
   MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (self);
   MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
 
+  if (priv->buffer)
+    wl_list_remove (&priv->buffer_destroy_listener.link);
+
   priv->buffer = buffer;
 
-  if (buffer)
-    meta_shaped_texture_set_texture (stex, buffer->texture);
+  if (priv->buffer)
+    {
+      wl_signal_add (&priv->buffer->destroy_signal, &priv->buffer_destroy_listener);
+      meta_shaped_texture_set_texture (stex, priv->buffer->texture);
+    }
   else
     meta_shaped_texture_set_texture (stex, NULL);
 }

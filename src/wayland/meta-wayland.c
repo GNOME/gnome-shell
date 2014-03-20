@@ -151,7 +151,6 @@ meta_wayland_buffer_unref (MetaWaylandBuffer *buffer)
   if (buffer->ref_count == 0)
     {
       g_clear_pointer (&buffer->texture, cogl_object_unref);
-      g_assert (wl_resource_get_client (buffer->resource));
       wl_resource_queue_event (buffer->resource, WL_BUFFER_RELEASE);
     }
 }
