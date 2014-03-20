@@ -3575,22 +3575,6 @@ meta_display_get_shape_event_base (MetaDisplay *display)
 #endif
 
 /**
- * meta_display_get_leader_window:
- * @display: a #MetaDisplay
- *
- * Returns the window manager's leader window (as defined by the
- * _NET_SUPPORTING_WM_CHECK mechanism of EWMH). For use by plugins that wish
- * to attach additional custom properties to this window.
- *
- * Return value: (transfer none): xid of the leader window.
- **/
-Window
-meta_display_get_leader_window (MetaDisplay *display)
-{
-  return display->leader_window;
-}
-
-/**
  * meta_display_clear_mouse_mode:
  * @display: a #MetaDisplay
  *
