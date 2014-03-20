@@ -5,7 +5,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
     <BaseWinBuildDef>_WIN32_WINNT=0x0501</BaseWinBuildDef>
-    <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API</LibBuildDefines>
+    <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API;DLL_EXPORT</LibBuildDefines>
     <DebugLibBuildDefines>$(LibBuildDefines);_DEBUG;CLUTTER_ENABLE_DEBUG</DebugLibBuildDefines>
     <ReleaseLibBuildDefines>$(LibBuildDefines);G_DISABLE_ASSERT;G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS</ReleaseLibBuildDefines>
     <ClutterBuildDefines>$(BaseWinBuildDef);G_LOG_DOMAIN="Clutter";CLUTTER_LOCALEDIR="../share/locale";CLUTTER_SYSCONFDIR="../etc";COGL_DISABLE_DEPRECATION_WARNINGS</ClutterBuildDefines>
