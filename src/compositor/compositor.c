@@ -421,7 +421,6 @@ meta_begin_modal_for_plugin (MetaScreen       *screen,
    * merge the two.
    */
   MetaDisplay *display = meta_screen_get_display (screen);
-  gboolean ok;
 
   if (is_modal (display) || display->grab_op != META_GRAB_OP_NONE)
     return FALSE;
