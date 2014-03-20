@@ -56,8 +56,8 @@ const Indicator = new Lang.Class({
         this._agent = Gio.DBusExportedObject.wrapJSObject(AgentIface, this);
         this._agent.export(Gio.DBus.system, '/org/freedesktop/GeoClue2/Agent');
 
-        this._item.status.text = _("On");
-        this._onOffAction = this._item.menu.addAction(_("Turn Off"), Lang.bind(this, this._onOnOffAction));
+        this._item.status.text = _("Enabled");
+        this._onOffAction = this._item.menu.addAction(_("Disable"), Lang.bind(this, this._onOnOffAction));
 
         this.menu.addMenuItem(this._item);
 
@@ -97,6 +97,7 @@ const Indicator = new Lang.Class({
         }
 
         this._indicator.visible = this._proxy.InUse;
+        this._updateMenuLabels();
     },
 
     _connectToGeoclue: function() {
@@ -158,14 +159,18 @@ const Indicator = new Lang.Class({
         this.menu.setSensitive(sensitive);
     },
 
-    _onMaxAccuracyLevelChanged: function() {
+    _updateMenuLabels: function() {
         if (this._getMaxAccuracyLevel() == 0) {
-            this._item.status.text = _("Off");
-            this._onOffAction.label.text = _("Turn On");
+            this._item.status.text = _("Disabled");
+            this._onOffAction.label.text = _("Enable");
         } else {
-            this._item.status.text = _("On");
-            this._onOffAction.label.text = _("Turn Off");
+            this._item.status.text = this._indicator.visible ? _("In Use") : _("Enabled");
+            this._onOffAction.label.text = _("Disable");
         }
+    },
+
+    _onMaxAccuracyLevelChanged: function() {
+        this._updateMenuLabels();
 
         // Gotta ensure geoclue is up and we are registered as agent to it
         // before we emit the notify for this property change.
