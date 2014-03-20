@@ -323,6 +323,17 @@ meta_window_x11_unmanage (MetaWindow *window)
 }
 
 static void
+meta_window_x11_ping (MetaWindow *window,
+                      guint32     serial)
+{
+  MetaDisplay *display = window->display;
+
+  meta_window_send_icccm_message (window,
+                                  display->atom__NET_WM_PING,
+                                  serial);
+}
+
+static void
 meta_window_x11_delete (MetaWindow *window,
                         guint32     timestamp)
 {
@@ -797,6 +808,7 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
 
   window_class->manage = meta_window_x11_manage;
   window_class->unmanage = meta_window_x11_unmanage;
+  window_class->ping = meta_window_x11_ping;
   window_class->delete = meta_window_x11_delete;
   window_class->kill = meta_window_x11_kill;
   window_class->move_resize_internal = meta_window_x11_move_resize_internal;

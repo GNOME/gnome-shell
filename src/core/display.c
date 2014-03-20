@@ -4701,12 +4701,7 @@ meta_display_ping_window (MetaWindow        *window,
               "Sending ping with timestamp %u to window %s\n",
               timestamp, window->desc);
 
-  if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
-    meta_window_send_icccm_message (window,
-                                    display->atom__NET_WM_PING,
-                                    timestamp);
-  else
-    meta_wayland_surface_ping (window->surface, timestamp);
+  META_WINDOW_GET_CLASS (window)->ping (window, timestamp);
 }
 
 static void
