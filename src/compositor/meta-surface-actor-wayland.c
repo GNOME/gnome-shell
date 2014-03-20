@@ -83,8 +83,21 @@ meta_surface_actor_wayland_pre_paint (MetaSurfaceActor *actor)
 static gboolean
 meta_surface_actor_wayland_is_argb32 (MetaSurfaceActor *actor)
 {
-  /* XXX -- look at the SHM buffer format. */
-  return TRUE;
+  MetaShapedTexture *stex = meta_surface_actor_get_texture (actor);
+  CoglTexture *texture = meta_shaped_texture_get_texture (stex);
+
+  switch (cogl_texture_get_components (texture))
+    {
+    case COGL_TEXTURE_COMPONENTS_A:
+    case COGL_TEXTURE_COMPONENTS_RGBA:
+      return TRUE;
+    case COGL_TEXTURE_COMPONENTS_RG:
+    case COGL_TEXTURE_COMPONENTS_RGB:
+    case COGL_TEXTURE_COMPONENTS_DEPTH:
+      return FALSE;
+    default:
+      g_assert_not_reached ();
+    }
 }
 
 static gboolean
