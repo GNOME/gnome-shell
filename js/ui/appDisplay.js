@@ -99,11 +99,18 @@ const BaseAppView = new Lang.Class({
         else
             this._grid = new IconGrid.IconGrid(gridParams);
 
+        this._grid.connect('key-focus-in', Lang.bind(this, function(grid, actor) {
+            this._keyFocusIn(actor);
+        }));
         // Standard hack for ClutterBinLayout
         this._grid.actor.x_expand = true;
 
         this._items = {};
         this._allItems = [];
+    },
+
+    _keyFocusIn: function(actor) {
+        // Nothing by default
     },
 
     removeAll: function() {
@@ -558,7 +565,7 @@ const AllView = new Lang.Class({
             }));
     },
 
-    _ensureIconVisible: function(icon) {
+    _keyFocusIn: function(icon) {
         let itemPage = this._grid.getItemPage(icon);
         this.goToPage(itemPage);
     },
@@ -927,6 +934,10 @@ const FolderView = new Lang.Class({
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', Lang.bind(this, this._onPan));
         this.actor.add_action(action);
+    },
+
+    _keyFocusIn: function(actor) {
+        Util.ensureActorVisibleInScrollView(this.actor, actor);
     },
 
     createFolderIcon: function(size) {
