@@ -426,9 +426,9 @@ meta_begin_modal_for_plugin (MetaScreen       *screen,
   if (is_modal (display) || display->grab_op != META_GRAB_OP_NONE)
     return FALSE;
 
-  if (!meta_is_wayland_compositor () &&
-      !begin_modal_x11 (screen, plugin, options, timestamp))
-    return FALSE;
+  if (!meta_is_wayland_compositor ())
+    if (!begin_modal_x11 (screen, plugin, options, timestamp))
+      return FALSE;
 
   display->grab_op = META_GRAB_OP_COMPOSITOR;
   display->grab_window = NULL;
