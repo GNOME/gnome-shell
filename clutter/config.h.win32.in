@@ -1,10 +1,10 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* Use CEX100 EGL backend */
-/*#undef CLUTTER_EGL_BACKEND_CEX100*/
+/* #undef CLUTTER_EGL_BACKEND_CEX100 */
 
 /* Use Generic EGL backend */
-/*#undef CLUTTER_EGL_BACKEND_GENERIC*/
+/* #undef CLUTTER_EGL_BACKEND_GENERIC*/
 
 /* Can use Cogl 2.0 API internally */
 #define COGL_ENABLE_EXPERIMENTAL_2_0_API 1
@@ -16,28 +16,31 @@
 /* The prefix for our gettext translation domains. */
 #define GETTEXT_PACKAGE "@GETTEXT_PACKAGE@"
 
+/* Define to 1 if you have the `cairo_surface_set_device_scale' function. */
+/* #undef HAVE_CAIRO_SURFACE_SET_DEVICE_SCALE */
+
 /* Define to 1 if you have the <CE4100/libgdl.h> header file. */
-/*#undef HAVE_CE4100_LIBGDL_H*/
+/* #undef HAVE_CE4100_LIBGDL_H */
 
 /* Define to 1 if you have the MacOS X function CFLocaleCopyCurrent in the
    CoreFoundation framework. */
-/*#undef HAVE_CFLOCALECOPYCURRENT*/
+/* #undef HAVE_CFLOCALECOPYCURRENT */
 
 /* Define to 1 if you have the MacOS X function CFPreferencesCopyAppValue in
    the CoreFoundation framework. */
-/*#undef HAVE_CFPREFERENCESCOPYAPPVALUE*/
+/* #undef HAVE_CFPREFERENCESCOPYAPPVALUE */
 
 /* Have the EGL backend */
-/*#undef HAVE_CLUTTER_EGL*/
+/* #undef HAVE_CLUTTER_EGL */
 
 /* Have the GLX backend */
-/*#undef HAVE_CLUTTER_GLX*/
+/* #undef HAVE_CLUTTER_GLX */
 
 /* Have the OSX backend */
-/*#undef HAVE_CLUTTER_OSX*/
+/* #undef HAVE_CLUTTER_OSX */
 
 /* Have the Wayland backend */
-/*#undef HAVE_CLUTTER_WAYLAND*/
+/* #undef HAVE_CLUTTER_WAYLAND */
 
 /* Have Wayland compositor support */
 /* #undef HAVE_CLUTTER_WAYLAND_COMPOSITOR */
@@ -50,10 +53,13 @@
 #define HAVE_DCGETTEXT 1
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
-/*#undef HAVE_DLFCN_H*/
+/* #undef HAVE_DLFCN_H */
 
 /* Have evdev support for input handling */
-/*#undef HAVE_EVDEV*/
+/* #undef HAVE_EVDEV */
+
+/* Whether you have gcov */
+/* #undef HAVE_GCOV */
 
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #define HAVE_GETTEXT 1
@@ -62,10 +68,12 @@
 #define HAVE_ICONV 1
 
 /* Define to 1 if you have the <inttypes.h> header file. */
-/*#undef HAVE_INTTYPES_H*/
+#if !defined (_MSC_VER) || (_MSC_VER >= 1800)
+#define HAVE_INTTYPES_H 1
+#endif
 
 /* Define to 1 if you have the <libgdl.h> header file. */
-/*#undef HAVE_LIBGDL_H*/
+/* #undef HAVE_LIBGDL_H */
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
@@ -74,7 +82,7 @@
 /* #undef HAVE_PANGO_FT2 */
 
 /* Define to 1 if you have the <stdint.h> header file. */
-#if (_MSC_VER >= 1600)
+#if !defined (_MSC_VER) || (_MSC_VER >= 1600)
 #define HAVE_STDINT_H 1
 #endif
 
@@ -82,7 +90,9 @@
 #define HAVE_STDLIB_H 1
 
 /* Define to 1 if you have the <strings.h> header file. */
-/*#undef HAVE_STRINGS_H*/
+#ifndef _MSC_VER
+#define HAVE_STRINGS_H 1
+#endif
 
 /* Define to 1 if you have the <string.h> header file. */
 #define HAVE_STRING_H 1
@@ -94,38 +104,46 @@
 #define HAVE_SYS_TYPES_H 1
 
 /* Have tslib for touchscreen handling */
-/*#undef HAVE_TSLIB*/
+/* #undef HAVE_TSLIB */
 
 /* Define to 1 if you have the <unistd.h> header file. */
-/*#undef HAVE_UNISTD_H*/
+#ifndef _MSC_VER
+#define HAVE_UNISTD_H 1
+#endif
 
 /* Define to 1 if you have the <X11/extensions/XInput2.h> header file. */
-/*#undef HAVE_X11_EXTENSIONS_XINPUT2_H*/
+/* #undef HAVE_X11_EXTENSIONS_XINPUT2_H */
 
 /* Define to 1 if we have the XCOMPOSITE X extension */
-/*#undef HAVE_XCOMPOSITE*/
+/* #undef HAVE_XCOMPOSITE */
 
 /* Define to 1 if we have the XDAMAGE X extension */
-/*#undef HAVE_XDAMAGE*/
+/* #undef HAVE_XDAMAGE */
 
 /* Define to 1 if we have the XEXT X extension */
-/*#undef HAVE_XEXT*/
+/* #undef HAVE_XEXT */
 
 /* Define to 1 if X Generic Extensions is available */
 /* #undef HAVE_XGE */
 
 /* Define to 1 if XI2 is available */
-/*#undef HAVE_XINPUT_2*/
+/* #undef HAVE_XINPUT_2 */
+
+/* Define to 1 if XInput 2.2 is available */
+/* #undef HAVE_XINPUT_2_2 */
 
 /* Define to use XKB extension */
-/*#undef HAVE_XKB*/
+/* #undef HAVE_XKB */
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
 #define LT_OBJDIR ".libs/"
 
 /* Define to 1 if your C compiler doesn't accept -c and -o together. */
-#define NO_MINUS_C_MINUS_O 1
+#undef NO_MINUS_C_MINUS_O */
+
+/* Define to 1 if building for Linux */
+/* #undef OS_LINUX */
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT "https://bugzilla.gnome.org/enter_bug.cgi?product=clutter"
