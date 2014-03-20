@@ -258,7 +258,19 @@ G_BEGIN_DECLS
 #define _CLUTTER_EXTERN extern
 #endif
 
-#define CLUTTER_VAR _CLUTTER_EXTERN
+#ifdef CLUTTER_WINDOWING_WIN32
+# ifdef CLUTTER_COMPILATION
+#  ifdef DLL_EXPORT
+#   define CLUTTER_VAR __declspec(dllexport)
+#  else
+#   define CLUTTER_VAR extern
+#  endif
+# else
+#  define CLUTTER_VAR __declspec(dllimport)
+# endif
+#else
+# define CLUTTER_VAR _CLUTTER_EXTERN
+#endif
 
 /**
  * clutter_major_version:
