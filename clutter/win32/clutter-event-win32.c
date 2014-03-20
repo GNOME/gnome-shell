@@ -294,7 +294,8 @@ clutter_event_dispatch (GSource     *source,
   if ((event = clutter_event_get ()))
     {
       /* forward the event into clutter for emission etc. */
-      _clutter_stage_queue_event (event->any.stage, event, FALSE);
+      if (event->any.stage)
+        _clutter_stage_queue_event (event->any.stage, event, FALSE);
     }
 
   _clutter_threads_release_lock ();
