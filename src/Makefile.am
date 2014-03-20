@@ -116,6 +116,8 @@ libmutter_wayland_la_SOURCES =			\
 	core/edge-resistance.h			\
 	core/edid-parse.c			\
 	core/edid.h				\
+	core/events.c				\
+	core/events.h				\
 	core/errors.c				\
 	meta/errors.h				\
 	core/frame.c				\

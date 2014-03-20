@@ -456,6 +456,7 @@ gboolean meta_grab_op_is_resizing (MetaGrabOp op);
 gboolean meta_grab_op_is_mouse    (MetaGrabOp op);
 gboolean meta_grab_op_is_clicking (MetaGrabOp op);
 gboolean meta_grab_op_is_wayland  (MetaGrabOp op);
+gboolean meta_grab_op_is_keyboard (MetaGrabOp op);
 
 void meta_display_devirtualize_modifiers (MetaDisplay        *display,
                                           MetaVirtualModifier modifiers,
@@ -489,5 +490,13 @@ void meta_display_set_input_focus_xwindow (MetaDisplay *display,
                                            guint32      timestamp);
 
 void meta_display_sync_wayland_input_focus (MetaDisplay *display);
+void meta_display_update_focus_window (MetaDisplay *display,
+                                       MetaWindow  *window,
+                                       Window       xwindow,
+                                       gulong       serial,
+                                       gboolean     focused_by_us);
+
+void meta_display_sanity_check_timestamps (MetaDisplay *display,
+                                           guint32      timestamp);
 
 #endif
