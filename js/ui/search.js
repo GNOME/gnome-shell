@@ -629,8 +629,11 @@ const SearchResults = new Lang.Class({
         if (newDefaultResult != this._defaultResult) {
             if (this._defaultResult)
                 this._defaultResult.setSelected(false);
-            if (newDefaultResult)
+            if (newDefaultResult) {
                 newDefaultResult.setSelected(this._highlightDefault);
+                if (this._highlightDefault)
+                    Util.ensureActorVisibleInScrollView(this._scrollView, newDefaultResult.actor);
+            }
 
             this._defaultResult = newDefaultResult;
         }
@@ -667,8 +670,11 @@ const SearchResults = new Lang.Class({
 
     highlightDefault: function(highlight) {
         this._highlightDefault = highlight;
-        if (this._defaultResult)
+        if (this._defaultResult) {
             this._defaultResult.setSelected(highlight);
+            if (highlight)
+                Util.ensureActorVisibleInScrollView(this._scrollView, this._defaultResult.actor);
+        }
     },
 
     navigateFocus: function(direction) {
