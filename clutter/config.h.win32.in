@@ -140,7 +140,7 @@
 #define LT_OBJDIR ".libs/"
 
 /* Define to 1 if your C compiler doesn't accept -c and -o together. */
-#undef NO_MINUS_C_MINUS_O */
+/* #undef NO_MINUS_C_MINUS_O */
 
 /* Define to 1 if building for Linux */
 /* #undef OS_LINUX */
