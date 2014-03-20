@@ -151,7 +151,6 @@
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)\$(ProjectName).def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -177,7 +176,6 @@
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)\$(ProjectName).def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -203,7 +201,6 @@
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)\$(ProjectName).def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -229,7 +226,6 @@
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)\$(ProjectName).def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -255,7 +251,6 @@
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)\$(ProjectName).def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -283,7 +278,6 @@
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)\$(ProjectName).def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -308,7 +302,6 @@
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)\$(ProjectName).def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -333,7 +326,6 @@
     <Link>
       <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)\$(ProjectName).def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -513,32 +505,6 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating Enumeration Sources...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenEnumsSrcC)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\clutter\clutter-enum-types.c;%(Outputs)</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\clutter\clutter.symbols">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">Generating clutter.def...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">$(GenerateClutterGDKDef)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|Win32'">$(IntDir)clutter.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating clutter.def...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenerateClutterDef)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)clutter.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">Generating clutter.def...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">$(GenerateClutterGDKDef)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_GDK|x64'">$(IntDir)clutter.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating clutter.def...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenerateClutterDef)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)clutter.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">Generating clutter.def...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">$(GenerateClutterGDKDef)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_GDK|Win32'">$(IntDir)clutter.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating clutter.def...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenerateClutterDef)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)clutter.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">Generating clutter.def...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">$(GenerateClutterGDKDef)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_GDK|x64'">$(IntDir)clutter.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating clutter.def...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenerateClutterDef)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)clutter.def;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

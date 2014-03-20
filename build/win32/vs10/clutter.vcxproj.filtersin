@@ -30,7 +30,6 @@
     <CustomBuild Include="..\..\..\clutter\clutter-marshal.list"><Filter>Resource Files</Filter></CustomBuild>
     <CustomBuild Include="..\..\..\clutter\clutter-enum-types.h.in"><Filter>Resource Files</Filter></CustomBuild>
     <CustomBuild Include="..\..\..\clutter\clutter-enum-types.c.in"><Filter>Resource Files</Filter></CustomBuild>
-    <CustomBuild Include="..\..\..\clutter\clutter.symbols"><Filter>Resource Files</Filter></CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\..\clutter\win32\resources.rc">

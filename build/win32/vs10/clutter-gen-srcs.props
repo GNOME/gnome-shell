@@ -43,16 +43,6 @@ $(GlibEtcInstallRoot)\bin\glib-genmarshal --prefix=_clutter_marshal --body ..\..
     <GenEnumsSrcC>perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template ..\..\..\clutter\clutter-enum-types.c.in $(EnumHeaders) &gt; ..\..\..\clutter\clutter-enum-types.c</GenEnumsSrcC>
     <GenEnumsSrcGDKH>perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template ..\..\..\clutter\clutter-enum-types.h.in $(EnumHeaders) $(GdkEnumHeader) &gt; ..\..\..\clutter\clutter-enum-types.h</GenEnumsSrcGDKH>
     <GenEnumsSrcGDKC>perl $(GlibEtcInstallRoot)\bin\glib-mkenums --template ..\..\..\clutter\clutter-enum-types.c.in $(EnumHeaders) $(GdkEnumHeader) &gt; ..\..\..\clutter\clutter-enum-types.c</GenEnumsSrcGDKC>
-    <GenerateClutterDef>
-echo EXPORTS &gt; $(DefDir)\clutter.def
-
-cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; $(DefDir)\clutter.def
-    </GenerateClutterDef>
-    <GenerateClutterGDKDef>
-echo EXPORTS &gt; $(DefDir)\clutter.def
-
-cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_WINDOWING_GDK -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; $(DefDir)\clutter.def
-    </GenerateClutterGDKDef>
   </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>cluttergensrcsprops</_PropertySheetDisplayName>
@@ -87,12 +77,6 @@ cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_WINDOWING_GDK -DCLUTTER_
     </BuildMacro>
     <BuildMacro Include="GenEnumsSrcGDKC">
       <Value>$(GenEnumsSrcGDKC)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GenerateClutterDef">
-      <Value>$(GenerateClutterDef)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GenerateClutterGDKDef">
-      <Value>$(GenerateClutterGDKDef)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>

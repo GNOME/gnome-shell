@@ -46,7 +46,6 @@
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -81,7 +80,6 @@
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -115,7 +113,6 @@
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -150,7 +147,6 @@
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -185,7 +181,6 @@
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -223,7 +218,6 @@
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -256,7 +250,6 @@
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -290,7 +283,6 @@
 				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\$(ProjectName).def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -683,72 +675,6 @@
 						Description="Generating Marshalling Sources..."
 						CommandLine="$(GenMarshalSrc)"
 						Outputs="..\..\..\clutter\clutter-marshal.h;..\..\..\clutter\clutter-marshal.c"
-					/>
-				</FileConfiguration>
-			</File>
-			<File RelativePath="..\..\..\clutter\clutter.symbols">
-				<FileConfiguration Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating clutter.def..."
-						CommandLine="$(GenerateClutterDef)"
-						Outputs="$(IntDir)\clutter.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration Name="Debug_GDK|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating clutter.def..."
-						CommandLine="$(GenerateClutterGDKDef)"
-						Outputs="$(IntDir)\clutter.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating clutter.def..."
-						CommandLine="$(GenerateClutterDef)"
-						Outputs="$(IntDir)\clutter.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration Name="Release_GDK|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating clutter.def..."
-						CommandLine="$(GenerateClutterGDKDef)"
-						Outputs="$(IntDir)\clutter.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration Name="Debug|x64">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating clutter.def..."
-						CommandLine="$(GenerateClutterDef)"
-						Outputs="$(IntDir)\clutter.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration Name="Debug_GDK|x64">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating clutter.def..."
-						CommandLine="$(GenerateClutterGDKDef)"
-						Outputs="$(IntDir)\clutter.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration Name="Release|x64">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating clutter.def..."
-						CommandLine="$(GenerateClutterDef)"
-						Outputs="$(IntDir)\clutter.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration Name="Release_GDK|x64">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating clutter.def..."
-						CommandLine="$(GenerateClutterGDKDef)"
-						Outputs="$(IntDir)\clutter.def"
 					/>
 				</FileConfiguration>
 			</File>
