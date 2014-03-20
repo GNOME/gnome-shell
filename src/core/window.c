@@ -5676,11 +5676,6 @@ meta_window_set_focused_internal (MetaWindow *window,
       if (window->frame)
         meta_frame_queue_draw (window->frame);
 
-      meta_error_trap_push (window->display);
-      XInstallColormap (window->display->xdisplay,
-                        window->colormap);
-      meta_error_trap_pop (window->display);
-
       /* move into FOCUSED_WINDOW layer */
       meta_window_update_layer (window);
 
@@ -5718,11 +5713,6 @@ meta_window_set_focused_internal (MetaWindow *window,
 
       if (!window->attached_focus_window)
         meta_window_appears_focused_changed (window);
-
-      meta_error_trap_push (window->display);
-      XUninstallColormap (window->display->xdisplay,
-                          window->colormap);
-      meta_error_trap_pop (window->display);
 
       /* move out of FOCUSED_WINDOW layer */
       meta_window_update_layer (window);
