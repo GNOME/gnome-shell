@@ -8,6 +8,8 @@ const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const Atk = imports.gi.Atk;
+
 const Signals = imports.signals;
 
 const DND = imports.ui.dnd;
@@ -121,6 +123,7 @@ const WindowClone = new Lang.Class({
         // the hierarchy that is sized to only the visible portion.
         this.actor = new St.Widget({ reactive: true,
                                      can_focus: true,
+                                     accessible_role: Atk.Role.PUSH_BUTTON,
                                      layout_manager: new WindowCloneLayout() });
 
         this.actor.add_child(this._windowClone);
@@ -424,6 +427,7 @@ const WindowOverlay = new Lang.Class({
                                    text: metaWindow.title });
         title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         title._spacing = 0;
+        windowClone.actor.label_actor = title;
 
         this._updateCaptionId = metaWindow.connect('notify::title',
             Lang.bind(this, function(w) {
