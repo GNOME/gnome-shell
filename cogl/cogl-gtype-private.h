@@ -191,7 +191,12 @@ cogl_##name##_get_gtype (void)                                      \
   static gpointer name##_parent_class = NULL;                           \
   static gint     Name##_private_offset;                                \
                                                                         \
-  _G_DEFINE_TYPE_EXTENDED_CLASS_INIT(Name, name)                        \
+  static void                                                           \
+  name##_class_intern_init (gpointer klass)                             \
+  {                                                                     \
+    name##_parent_class = g_type_class_peek_parent (klass);             \
+    name##_class_init ((Name##Class*) klass);                           \
+  }                                                                     \
                                                                         \
   static inline gpointer                                                \
   name##_get_instance_private (Name *self)                              \
