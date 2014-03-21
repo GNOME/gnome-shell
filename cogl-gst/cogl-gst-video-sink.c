@@ -1695,7 +1695,7 @@ cogl_gst_video_sink_get_natural_size (CoglGstVideoSink *vt,
 {
   GstVideoInfo *info;
 
-  g_return_val_if_fail (COGL_GST_IS_VIDEO_SINK (vt), 0.);
+  g_return_if_fail (COGL_GST_IS_VIDEO_SINK (vt));
 
   info = &vt->priv->info;
 
