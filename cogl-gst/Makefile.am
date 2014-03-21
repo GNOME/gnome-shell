@@ -93,7 +93,6 @@ CoglGst_2_0_gir_SCANNERFLAGS = \
 	--c-include="gst/gst.h" \
 	--include-uninstalled=$(top_builddir)/cogl/Cogl-2.0.gir \
 	--pkg gstreamer-1.0 \
-	--pkg cogl-2.0-experimental \
 	--add-init-section="gst_init(NULL, NULL);"
 
 INTROSPECTION_GIRS += CoglGst-2.0.gir
