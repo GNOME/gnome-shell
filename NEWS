@@ -1,3 +1,42 @@
+Cogl 1.18.0                                                        2014-03-21
+
+  • List of changes since Cogl 1.17.4
+
+  » The license has been changed to the MIT license. This is more
+    permissive than the previous LGPLv2 license and is still
+    compatible with the GPL and LGPL. For more background on why we
+    decided to make this change please see the following post on the
+    mailing list:
+    http://lists.freedesktop.org/archives/cogl/2013-December/001465.html
+  » GObject introspection support has been greatly improved.
+  » Add cogl_kms_renderer_set_kms_fd to make the KMS backend use a
+    non-default GPU.
+  » Fix a hang in the Wayland backend if it can't find some globals
+    that it needs.
+  » Add cogl_gst_video_sink_get_natural_size to query a suggested size
+    for a Cogl-GST sink
+  » Add API to query the EGL and GLX contexts. This is intended to be
+    used to make a shared GL context.
+  » Fix advertising the deprecated buffer age feature flag on EGL.
+  » Add a new non-deprecated feature flag for the buffer age.
+  » Fix a bug with allocating textures in Cogl-GST.
+  » Fix a bug with the cogl-basic-video-player example where it would
+    try to use non-existant mipmaps.
+  » Fix selecting the GL driver in the SDL2 winsys.
+  » Updates to the MSVC build files.
+
+  • Gnome Bugzilla bugs closed since 1.17.4:
+
+    #724992 - get the opengl context from cogl
+
+Many thanks to:
+
+  Chun-wei Fan
+  Robert Bragg
+  Lionel Landwerlin
+  Jasper St. Pierre
+  Wylmer Wang
+
 Cogl 1.17.4                                                        2014-02-20
 
   • List of changes since Cogl 1.17.2
