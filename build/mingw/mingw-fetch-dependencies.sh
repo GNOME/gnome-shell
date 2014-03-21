@@ -153,7 +153,7 @@ function find_compiler ()
     local gccbin fullpath;
 
     if [ -z "$MINGW_TOOL_PREFIX" ]; then
-	for gccbin in i{3,4,5,6}86{-pc,}-mingw32{,msvc}-gcc; do
+	for gccbin in i{3,4,5,6}86{-pc,-w64,}-mingw32{,msvc}-gcc; do
 	    fullpath="`which $gccbin 2>/dev/null`";
 	    if [ "$?" -eq 0 ]; then
 		MINGW_TOOL_PREFIX="${fullpath%%gcc}";
