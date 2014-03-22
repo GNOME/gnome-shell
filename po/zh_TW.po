@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-08 20:31+0000\n"
-"PO-Revision-Date: 2014-03-09 12:23+0800\n"
-"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"POT-Creation-Date: 2014-03-19 20:32+0000\n"
+"PO-Revision-Date: 2014-03-21 21:41+0800\n"
+"Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.6.3\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -290,7 +290,7 @@ msgstr "使用上面的組合方塊選擇要設定的擴充功能。"
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:873
+#: ../js/ui/status/network.js:878
 msgid "Cancel"
 msgstr "取消"
 
@@ -363,15 +363,15 @@ msgstr "常用"
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:1552
+#: ../js/ui/appDisplay.js:1555
 msgid "New Window"
 msgstr "新視窗"
 
-#: ../js/ui/appDisplay.js:1574 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1577 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "自喜好中移除"
 
-#: ../js/ui/appDisplay.js:1580
+#: ../js/ui/appDisplay.js:1583
 msgid "Add to Favorites"
 msgstr "加入喜好"
 
@@ -514,44 +514,44 @@ msgstr "六"
 msgid "calendar:MY"
 msgstr "calendar:MY"
 
-#: ../js/ui/calendar.js:448
+#: ../js/ui/calendar.js:450
 msgid "Previous month"
 msgstr "上個月"
 
-#: ../js/ui/calendar.js:458
+#: ../js/ui/calendar.js:460
 msgid "Next month"
 msgstr "下個月"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:770
+#: ../js/ui/calendar.js:772
 msgid "Nothing Scheduled"
 msgstr "沒有預訂行程"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:788
+#: ../js/ui/calendar.js:790
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:791
+#: ../js/ui/calendar.js:793
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%Y年%m月%d日%A"
 
-#: ../js/ui/calendar.js:802
+#: ../js/ui/calendar.js:804
 msgid "Today"
 msgstr "今天"
 
-#: ../js/ui/calendar.js:806
+#: ../js/ui/calendar.js:808
 msgid "Tomorrow"
 msgstr "明天"
 
-#: ../js/ui/calendar.js:817
+#: ../js/ui/calendar.js:819
 msgid "This week"
 msgstr "本週"
 
-#: ../js/ui/calendar.js:825
+#: ../js/ui/calendar.js:827
 msgid "Next week"
 msgstr "下週"
 
@@ -585,7 +585,7 @@ msgid "Type again:"
 msgstr "再輸入一次："
 
 #: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:240
-#: ../js/ui/status/network.js:317 ../js/ui/status/network.js:876
+#: ../js/ui/status/network.js:322 ../js/ui/status/network.js:881
 msgid "Connect"
 msgstr "連線"
 
@@ -703,23 +703,18 @@ msgstr "靜音"
 
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:955
-#| msgctxt "event list time"
-#| msgid "%H∶%M"
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:962
-#| msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgid "Yesterday, %H∶%M"
 msgstr "昨天 %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:969
-#| msgctxt "event list time"
-#| msgid "%H∶%M"
 msgid "%A, %H∶%M"
 msgstr "%A %H∶%M"
 
@@ -727,8 +722,6 @@ msgstr "%A %H∶%M"
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
 #: ../js/ui/components/telepathyClient.js:976
-#| msgctxt "event list time"
-#| msgid "%H∶%M"
 msgid "%B %d, %H∶%M"
 msgstr "%m月%d日 %H∶%M"
 
@@ -741,8 +734,6 @@ msgstr "%Y年%m月%d日 %H:%M"
 
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:991
-#| msgctxt "event list time"
-#| msgid "%l∶%M %p"
 msgid "%l∶%M %p"
 msgstr "%p %l∶%M"
 
@@ -755,8 +746,6 @@ msgstr "昨天 %p %l∶%M"
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1005
-#| msgctxt "event list time"
-#| msgid "%l∶%M %p"
 msgid "%A, %l∶%M %p"
 msgstr "%A%p %l∶%M"
 
@@ -764,8 +753,6 @@ msgstr "%A%p %l∶%M"
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1012
-#| msgctxt "event list time"
-#| msgid "%l∶%M %p"
 msgid "%B %d, %l∶%M %p"
 msgstr "%m月%d日%p %l∶%M"
 
@@ -955,7 +942,7 @@ msgstr "無法連線到 %s"
 msgid "View account"
 msgstr "檢視帳號"
 
-#: ../js/ui/components/telepathyClient.js:1434
+#: ../js/ui/components/telepathyClient.js:1439
 msgid "Unknown reason"
 msgstr "不明原因"
 
@@ -1073,8 +1060,6 @@ msgid_plural ""
 msgstr[0] "系統會在 %d 秒後自動重新啟動。"
 
 #: ../js/ui/endSessionDialog.js:129
-#| msgctxt "button"
-#| msgid "Restart & Install"
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "重新啟動並安裝"
@@ -1152,7 +1137,7 @@ msgstr "已啟用"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/network.js:550
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/network.js:555
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "已停用"
@@ -1209,7 +1194,7 @@ msgstr "沒有訊息"
 msgid "Message Tray"
 msgstr "訊息匣"
 
-#: ../js/ui/messageTray.js:2948
+#: ../js/ui/messageTray.js:2962
 msgid "System Information"
 msgstr "系統資訊"
 
@@ -1224,11 +1209,11 @@ msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d 個新訊息"
 
-#: ../js/ui/overview.js:83
+#: ../js/ui/overview.js:84
 msgid "Undo"
 msgstr "復原"
 
-#: ../js/ui/overview.js:123
+#: ../js/ui/overview.js:124
 msgid "Overview"
 msgstr "概覽"
 
@@ -1236,7 +1221,7 @@ msgstr "概覽"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters. */
-#: ../js/ui/overview.js:257
+#: ../js/ui/overview.js:250
 msgid "Type to search…"
 msgstr "輸入以搜尋…"
 
@@ -1278,27 +1263,27 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d 個新通知"
 
-#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "鎖定"
 
-#: ../js/ui/screenShield.js:707
+#: ../js/ui/screenShield.js:708
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME 需要鎖定螢幕"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1301
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1309
 msgid "Unable to lock"
 msgstr "無法鎖定"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1302
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1310
 msgid "Lock was blocked by an application"
 msgstr "鎖定被應用程式阻擋"
 
-#: ../js/ui/search.js:589
+#: ../js/ui/search.js:603
 msgid "Searching…"
 msgstr "搜尋…"
 
-#: ../js/ui/search.js:632
+#: ../js/ui/search.js:646
 msgid "No results."
 msgstr "沒有結果。"
 
@@ -1370,29 +1355,29 @@ msgstr "高反差"
 msgid "Large Text"
 msgstr "大型文字"
 
-#: ../js/ui/status/bluetooth.js:48
+#: ../js/ui/status/bluetooth.js:49
 msgid "Bluetooth"
 msgstr "藍牙"
 
-#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:59
-#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:151
-#: ../js/ui/status/network.js:318 ../js/ui/status/network.js:1225
-#: ../js/ui/status/network.js:1336 ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/location.js:60
+#: ../js/ui/status/location.js:167 ../js/ui/status/network.js:151
+#: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
+#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "關閉"
 
-#: ../js/ui/status/bluetooth.js:53
+#: ../js/ui/status/bluetooth.js:54
 msgid "Bluetooth Settings"
 msgstr "藍牙設定值"
 
-#: ../js/ui/status/bluetooth.js:100
+#: ../js/ui/status/bluetooth.js:104
 #, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d 已連線的裝置"
 
-#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1253
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1262
 msgid "Not Connected"
 msgstr "未連線"
 
@@ -1404,22 +1389,21 @@ msgstr "亮度"
 msgid "Show Keyboard Layout"
 msgstr "顯示鍵盤配置"
 
-#: ../js/ui/status/location.js:52
-#| msgid "Notifications"
+#: ../js/ui/status/location.js:53
 msgid "Location"
 msgstr "位置"
 
-#: ../js/ui/status/location.js:58 ../js/ui/status/location.js:158
+#: ../js/ui/status/location.js:59 ../js/ui/status/location.js:166
 #: ../js/ui/status/rfkill.js:84
 msgid "On"
 msgstr "開啟"
 
-#: ../js/ui/status/location.js:155 ../js/ui/status/network.js:415
-#: ../js/ui/status/network.js:1251 ../js/ui/status/network.js:1455
+#: ../js/ui/status/location.js:163 ../js/ui/status/network.js:420
+#: ../js/ui/status/network.js:1260 ../js/ui/status/network.js:1464
 msgid "Off"
 msgstr "關閉"
 
-#: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1225
+#: ../js/ui/status/location.js:164 ../js/ui/status/network.js:1234
 msgid "Turn On"
 msgstr "開啟"
 
@@ -1427,146 +1411,138 @@ msgstr "開啟"
 msgid "<unknown>"
 msgstr "<不明>"
 
-#: ../js/ui/status/network.js:417
-#| msgid "Connect"
+#: ../js/ui/status/network.js:422
 msgid "Connected"
 msgstr "已連線"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:421
+#: ../js/ui/status/network.js:426
 msgid "unmanaged"
 msgstr "未管理"
 
-#: ../js/ui/status/network.js:423
+#: ../js/ui/status/network.js:428
 msgid "disconnecting..."
 msgstr "正在中斷…"
 
-#: ../js/ui/status/network.js:429 ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1362
 msgid "connecting..."
 msgstr "連線中…"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:432 ../js/ui/status/network.js:1356
+#: ../js/ui/status/network.js:437 ../js/ui/status/network.js:1365
 msgid "authentication required"
 msgstr "要求核對"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:440
+#: ../js/ui/status/network.js:445
 msgid "firmware missing"
 msgstr "缺少韌體"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:444
+#: ../js/ui/status/network.js:449
 msgid "unavailable"
 msgstr "無法使用"
 
-#: ../js/ui/status/network.js:446 ../js/ui/status/network.js:1358
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1367
 msgid "connection failed"
 msgstr "連線失敗"
 
-#: ../js/ui/status/network.js:462
+#: ../js/ui/status/network.js:467
 msgid "Wired Settings"
 msgstr "有線設定值"
 
-#: ../js/ui/status/network.js:504 ../js/ui/status/network.js:582
+#: ../js/ui/status/network.js:509 ../js/ui/status/network.js:587
 msgid "Mobile Broadband Settings"
 msgstr "行動寬頻設定值"
 
-#: ../js/ui/status/network.js:546 ../js/ui/status/network.js:1249
+#: ../js/ui/status/network.js:551 ../js/ui/status/network.js:1258
 msgid "Hardware Disabled"
 msgstr "硬體已停用"
 
-#: ../js/ui/status/network.js:590
+#: ../js/ui/status/network.js:595
 msgid "Use as Internet connection"
 msgstr "作為網際網路連線"
 
-#: ../js/ui/status/network.js:771
-#| msgid "Airplane Mode"
+#: ../js/ui/status/network.js:776
 msgid "Airplane Mode is On"
 msgstr "飛安模式開啟"
 
-#: ../js/ui/status/network.js:772
+#: ../js/ui/status/network.js:777
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "開啟飛安模式時會停用 Wi-Fi 。"
 
-#: ../js/ui/status/network.js:773
-#| msgid "Airplane Mode"
+#: ../js/ui/status/network.js:778
 msgid "Turn Off Airplane Mode"
 msgstr "關閉飛安模式"
 
-#: ../js/ui/status/network.js:782
-#| msgid "Wi-Fi Settings"
+#: ../js/ui/status/network.js:787
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi 關閉"
 
-#: ../js/ui/status/network.js:783
+#: ../js/ui/status/network.js:788
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "需要開啟 Wi-Fi 才能連接網路。"
 
-#: ../js/ui/status/network.js:784
-#| msgid "Turn On"
+#: ../js/ui/status/network.js:789
 msgid "Turn On Wi-Fi"
 msgstr "開啟 Wi-Fi"
 
-#: ../js/ui/status/network.js:809
+#: ../js/ui/status/network.js:814
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi 網路"
 
-#: ../js/ui/status/network.js:811
+#: ../js/ui/status/network.js:816
 msgid "Select a network"
 msgstr "選擇一個網路"
 
-#: ../js/ui/status/network.js:840
+#: ../js/ui/status/network.js:845
 msgid "No Networks"
 msgstr "沒有網路"
 
-#: ../js/ui/status/network.js:861 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
 msgstr "使用硬體開關來關閉"
 
-#: ../js/ui/status/network.js:1131
+#: ../js/ui/status/network.js:1136
 msgid "Select Network"
 msgstr "選擇網路"
 
-#: ../js/ui/status/network.js:1137
+#: ../js/ui/status/network.js:1142
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi 設定值"
 
-#: ../js/ui/status/network.js:1242
-#, fuzzy
+#: ../js/ui/status/network.js:1251
 msgid "Hotspot Active"
 msgstr "熱點活動中"
 
-#: ../js/ui/status/network.js:1245
-#| msgid "Connect"
+#: ../js/ui/status/network.js:1254
 msgid "Connecting"
 msgstr "連線中"
 
-#: ../js/ui/status/network.js:1424 ../js/ui/status/rfkill.js:88
+#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:88
 msgid "Network Settings"
 msgstr "網路設定值"
 
-#: ../js/ui/status/network.js:1426
-#| msgid "Settings"
+#: ../js/ui/status/network.js:1435
 msgid "VPN Settings"
 msgstr "VPN 設定值"
 
-#: ../js/ui/status/network.js:1445
+#: ../js/ui/status/network.js:1454
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1598
+#: ../js/ui/status/network.js:1607
 msgid "Network Manager"
 msgstr "網路管理員"
 
-#: ../js/ui/status/network.js:1637
+#: ../js/ui/status/network.js:1646
 msgid "Connection failed"
 msgstr "連線失敗"
 
-#: ../js/ui/status/network.js:1638
+#: ../js/ui/status/network.js:1647
 msgid "Activation of network connection failed"
 msgstr "啟動網路連線失敗"
 
