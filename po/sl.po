@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-03-21 20:37+0000\n"
-"PO-Revision-Date: 2014-03-21 21:43+0100\n"
+"PO-Revision-Date: 2014-03-22 09:59+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -131,12 +131,10 @@ msgid "History for the looking glass dialog"
 msgstr "Zgodovina za pogovorno okno povečevalnega stekla"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-#, fuzzy
 msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "Vedno pokaži možnost 'Odjava' v meniju uporabnika."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:12
-#, fuzzy
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
@@ -1522,7 +1520,7 @@ msgstr "Omogoči način letala"
 
 #: ../js/ui/status/network.js:777
 msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr ""
+msgstr "Naprava Wi-Fi je v načinu latala onemogočena."
 
 #: ../js/ui/status/network.js:778
 msgid "Turn Off Airplane Mode"
@@ -1534,7 +1532,7 @@ msgstr "Wi-Fi je onemogočen"
 
 #: ../js/ui/status/network.js:788
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr ""
+msgstr "Napravo Wi-Fi je treba za povezavo najprej omogočiti."
 
 #: ../js/ui/status/network.js:789
 msgid "Turn On Wi-Fi"
@@ -1554,7 +1552,7 @@ msgstr "Ni omrežij"
 
 #: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
-msgstr ""
+msgstr "Uporabite strojni gumb za izklop"
 
 #: ../js/ui/status/network.js:1136
 msgid "Select Network"
@@ -1566,7 +1564,7 @@ msgstr "Nastavitve Wi-Fi"
 
 #: ../js/ui/status/network.js:1251
 msgid "Hotspot Active"
-msgstr ""
+msgstr "Vroča točka je dejavna"
 
 #: ../js/ui/status/network.js:1254
 msgid "Connecting"
