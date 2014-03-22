@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
 "&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-13 02:27+0000\n"
-"PO-Revision-Date: 2014-02-13 11:14+0300\n"
+"POT-Creation-Date: 2014-03-16 22:53+0000\n"
+"PO-Revision-Date: 2014-03-17 12:39+0300\n"
 "Last-Translator: Daniel Korostil <ted.korostiled@gmail.com>\n"
 "Language-Team: linux.org.ua\n"
 "Language: uk\n"
@@ -57,67 +57,86 @@ msgid "Move window one workspace down"
 msgstr "Перемістити вікно на робочий простір нижче"
 
 #: ../src/50-mutter-navigation.xml.in.h:10
+#| msgid "Move window one workspace to the left"
+msgid "Move window one monitor to the left"
+msgstr "Перемістити вікно на монітор ліворуч"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#| msgid "Move window one workspace to the right"
+msgid "Move window one monitor to the right"
+msgstr "Перемістити вікно на монітор праворуч"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#| msgid "Move window one workspace up"
+msgid "Move window one monitor up"
+msgstr "Перемістити вікно на монітор вище"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#| msgid "Move window one workspace down"
+msgid "Move window one monitor down"
+msgstr "Перемістити вікно на монітор нижче"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
 msgid "Switch applications"
 msgstr "Перемкнути програми"
 
-#: ../src/50-mutter-navigation.xml.in.h:11
-#| msgid "Switch windows directly"
+#: ../src/50-mutter-navigation.xml.in.h:15
 msgid "Switch windows"
 msgstr "Перемкнути вікна"
 
-#: ../src/50-mutter-navigation.xml.in.h:12
+#: ../src/50-mutter-navigation.xml.in.h:16
 msgid "Switch windows of an application"
 msgstr "Перемкнути вікна програм"
 
-#: ../src/50-mutter-navigation.xml.in.h:13
+#: ../src/50-mutter-navigation.xml.in.h:17
 msgid "Switch system controls"
 msgstr "Перемкнути системні керування"
 
-#: ../src/50-mutter-navigation.xml.in.h:14
+#: ../src/50-mutter-navigation.xml.in.h:18
 msgid "Switch windows directly"
 msgstr "Перемкнути вікна напряму"
 
-#: ../src/50-mutter-navigation.xml.in.h:15
+#: ../src/50-mutter-navigation.xml.in.h:19
 msgid "Switch windows of an app directly"
 msgstr "Перемкнути вікна програм напряму"
 
-#: ../src/50-mutter-navigation.xml.in.h:16
+#: ../src/50-mutter-navigation.xml.in.h:20
 msgid "Switch system controls directly"
 msgstr "Перемкнути системні керування напряму"
 
-#: ../src/50-mutter-navigation.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:21
 msgid "Hide all normal windows"
 msgstr "Сховати всі звичайні вікна"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
+#: ../src/50-mutter-navigation.xml.in.h:22
 msgid "Switch to workspace 1"
 msgstr "Перейти до робочого простору 1"
 
-#: ../src/50-mutter-navigation.xml.in.h:19
+#: ../src/50-mutter-navigation.xml.in.h:23
 msgid "Switch to workspace 2"
 msgstr "Перейти до робочого простору 2"
 
-#: ../src/50-mutter-navigation.xml.in.h:20
+#: ../src/50-mutter-navigation.xml.in.h:24
 msgid "Switch to workspace 3"
 msgstr "Перейти до робочого простору 3"
 
-#: ../src/50-mutter-navigation.xml.in.h:21
+#: ../src/50-mutter-navigation.xml.in.h:25
 msgid "Switch to workspace 4"
 msgstr "Перейти до робочого простору 4"
 
-#: ../src/50-mutter-navigation.xml.in.h:22
+#: ../src/50-mutter-navigation.xml.in.h:26
 msgid "Move to workspace left"
 msgstr "Перейти до робочого простору ліворуч"
 
-#: ../src/50-mutter-navigation.xml.in.h:23
+#: ../src/50-mutter-navigation.xml.in.h:27
 msgid "Move to workspace right"
 msgstr "Перейти до робочого простору праворуч"
 
-#: ../src/50-mutter-navigation.xml.in.h:24
+#: ../src/50-mutter-navigation.xml.in.h:28
 msgid "Move to workspace above"
 msgstr "Перейти до робочого простору вище"
 
-#: ../src/50-mutter-navigation.xml.in.h:25
+#: ../src/50-mutter-navigation.xml.in.h:29
 msgid "Move to workspace below"
 msgstr "Перейти до робочого простору знизу"
 
@@ -212,29 +231,28 @@ msgstr "Перегляд розділити праворуч"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:542
+#: ../src/compositor/compositor.c:534
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "Уже запущено інший композитний менеджер на екрані %i через показ «%s»."
 
-#: ../src/compositor/meta-background.c:1073
+#: ../src/compositor/meta-background.c:1074
 msgid "background texture could not be created from file"
 msgstr "будову тла неможливо створити з файла"
 
-#: ../src/core/bell.c:320
+#: ../src/core/bell.c:321
 msgid "Bell event"
 msgstr "Подія гудка"
 
-#: ../src/core/core.c:155
+#: ../src/core/core.c:156
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Запит інформації невідомого вікна: %d"
 
 #: ../src/core/delete.c:109
 #, c-format
-#| msgid "%s is not responding."
 msgid "“%s” is not responding."
 msgstr "«%s» не відповідає."
 
@@ -257,26 +275,25 @@ msgstr "_Зачекати"
 msgid "_Force Quit"
 msgstr "_Завершити примусово"
 
-#: ../src/core/display.c:413
+#: ../src/core/display.c:405
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Нема розширення %s, яке потрібне для композитного режиму"
 
-#: ../src/core/display.c:505
+#: ../src/core/display.c:497
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Не вдалось відкрити дисплей віконної системи X «%s»\n"
 
-#: ../src/core/keybindings.c:1135
+#: ../src/core/keybindings.c:1105
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "Клавішу «%s» з модифікаторами «%x» вже використовує інша програма\n"
 
-#: ../src/core/keybindings.c:1332
+#: ../src/core/keybindings.c:1308
 #, c-format
-#| msgid "\"%s\" is not a valid value for focus attribute"
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "«%s» — недійсний акселератор\n"
 
@@ -337,7 +354,7 @@ msgstr "Невідомий екран"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: ../src/core/mutter.c:38
+#: ../src/core/mutter.c:39
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -352,15 +369,15 @@ msgstr ""
 "Не надається НІЯКИХ гарантій; навіть ПРИДАТНОСТІ ДЛЯ ПРОДАЖУ чи "
 "ВІДПОВІДНОСТІ ПЕВНІЙ МЕТІ.\n"
 
-#: ../src/core/mutter.c:52
+#: ../src/core/mutter.c:53
 msgid "Print version"
 msgstr "Показати версію"
 
-#: ../src/core/mutter.c:58
+#: ../src/core/mutter.c:59
 msgid "Mutter plugin to use"
 msgstr "Додатки Clutter для використання"
 
-#: ../src/core/prefs.c:1200
+#: ../src/core/prefs.c:1190
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -368,12 +385,12 @@ msgstr ""
 "Обхід для роботи із зіпсованими програмами вимкнено. Деякі додатки можуть "
 "працювати некоректно.\n"
 
-#: ../src/core/prefs.c:1275
+#: ../src/core/prefs.c:1265
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Неможливо проаналізувати опис шрифту «%s» у ключі GSettings %s\n"
 
-#: ../src/core/prefs.c:1341
+#: ../src/core/prefs.c:1331
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -382,7 +399,7 @@ msgstr ""
 "У базі даних налаштування знайдено «%s» — що не є правильним значенням "
 "модифікатора клавіші миші.\n"
 
-#: ../src/core/prefs.c:1907
+#: ../src/core/prefs.c:1894
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -391,17 +408,17 @@ msgstr ""
 "Знайдене у базі даних налаштування значення «%s» не є правильним записом "
 "прив'язки клавіш «%s»\n"
 
-#: ../src/core/prefs.c:1997
+#: ../src/core/prefs.c:1984
 #, c-format
 msgid "Workspace %d"
 msgstr "Робочий простір %d"
 
-#: ../src/core/screen.c:537
+#: ../src/core/screen.c:539
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екран %d на дисплеї «%s» не правильний\n"
 
-#: ../src/core/screen.c:553
+#: ../src/core/screen.c:555
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -410,7 +427,7 @@ msgstr ""
 "Екран %d на дисплеї «%s» вже має менеджера вікон; спробуйте вказати параметр "
 "--replace, щоб замінити поточний менеджер вікон.\n"
 
-#: ../src/core/screen.c:580
+#: ../src/core/screen.c:582
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -418,64 +435,64 @@ msgstr ""
 "Не вдалось одержати функцію виділення менеджеру вікон на екрані %d дисплею "
 "«%s»\n"
 
-#: ../src/core/screen.c:658
+#: ../src/core/screen.c:660
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Екран %d на дисплеї «%s» вже має менеджера вікон\n"
 
-#: ../src/core/screen.c:850
+#: ../src/core/screen.c:848
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не вдалось відпустити екран %d на дисплеї «%s»\n"
 
-#: ../src/core/session.c:841 ../src/core/session.c:848
+#: ../src/core/session.c:842 ../src/core/session.c:849
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Не вдалось створити каталог «%s»: %s\n"
 
-#: ../src/core/session.c:858
+#: ../src/core/session.c:859
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Не вдалось відкрити для запису файл сеансу «%s»: %s\n"
 
-#: ../src/core/session.c:999
+#: ../src/core/session.c:1000
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Помилка запису файла сеансу \"%s\": %s\n"
 
-#: ../src/core/session.c:1004
+#: ../src/core/session.c:1005
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Помилка закриття файла сеансу «%s»: %s\n"
 
-#: ../src/core/session.c:1134
+#: ../src/core/session.c:1135
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Збій аналізування збереженого файла сеансу: %s\n"
 
-#: ../src/core/session.c:1183
+#: ../src/core/session.c:1184
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "Прочитано атрибут <mutter_session>, але вже є ідентифікатор сеансу"
 
-#: ../src/core/session.c:1196 ../src/core/session.c:1271
-#: ../src/core/session.c:1303 ../src/core/session.c:1375
-#: ../src/core/session.c:1435
+#: ../src/core/session.c:1197 ../src/core/session.c:1272
+#: ../src/core/session.c:1304 ../src/core/session.c:1376
+#: ../src/core/session.c:1436
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Невідомий атрибут %s у елементі <%s>"
 
-#: ../src/core/session.c:1213
+#: ../src/core/session.c:1214
 #, c-format
 msgid "nested <window> tag"
 msgstr "вкладена мітка <window>"
 
-#: ../src/core/session.c:1455
+#: ../src/core/session.c:1456
 #, c-format
 msgid "Unknown element %s"
 msgstr "Невідомий елемент %s"
 
-#: ../src/core/session.c:1807
+#: ../src/core/session.c:1808
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -519,7 +536,7 @@ msgid "Window manager error: "
 msgstr "Помилка віконного менеджера:"
 
 #. first time through
-#: ../src/core/window.c:7589
+#: ../src/core/window.c:7562
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -535,7 +552,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8513
+#: ../src/core/window.c:8487
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -545,22 +562,22 @@ msgstr ""
 "змінюватись, але встановило мінімальний розмір %d x %d та максимальний %d x "
 "%d;, в чому не має сенсу.\n"
 
-#: ../src/core/window-props.c:348
+#: ../src/core/window-props.c:349
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Програма встановила неправильне значення параметра _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:464
+#: ../src/core/window-props.c:465
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (на %s)"
 
-#: ../src/core/window-props.c:1547
+#: ../src/core/window-props.c:1548
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Неправильний параметр WM_TRANSIENT_FOR вікна 0x%lx вказано для %s.\n"
 
-#: ../src/core/window-props.c:1558
+#: ../src/core/window-props.c:1559
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "Вікно WM_TRANSIENT_FOR 0x%lx для %s створило б петлю.\n"
@@ -683,11 +700,6 @@ msgid "Delay focus changes until the pointer stops moving"
 msgstr "Затримувати зміни фокусу, поки вказівник не перестане рухатись"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:14
-#| msgid ""
-#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#| "the focused window will be automatically raised after a delay specified "
-#| "by the auto_raise_delay key. This is not related to clicking on a window "
-#| "to raise it, nor to entering a window during drag-and-drop."
 msgid ""
 "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
 "the focus will not be changed immediately when entering a window, but only "
