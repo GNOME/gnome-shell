@@ -19,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-03-15 13:20+0000\n"
-"PO-Revision-Date: 2014-03-15 16:57+0100\n"
+"PO-Revision-Date: 2014-03-22 15:35+0100\n"
 "Last-Translator: Mathieu Stumpf <psychoslave@culture-libre.org>\n"
 "Language-Team: français <gnomefr@traduc.org>\n"
 "Language: French\n"
@@ -1483,7 +1483,7 @@ msgstr "Afficher la disposition du clavier"
 
 #: ../js/ui/status/location.js:53
 msgid "Location"
-msgstr "Emplacement"
+msgstr "Localisation"
 
 #: ../js/ui/status/location.js:59 ../js/ui/status/location.js:166
 #: ../js/ui/status/rfkill.js:84
