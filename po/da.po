@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-23 23:09+0100\n"
-"PO-Revision-Date: 2014-03-23 18:14+0100\n"
+"POT-Creation-Date: 2014-03-23 23:29+0100\n"
+"PO-Revision-Date: 2014-03-23 23:28+0100\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -821,7 +821,7 @@ msgstr "%d. %B, %l∶%M %p"
 #: ../js/ui/components/telepathyClient.js:1018
 #, fuzzy, no-c-format
 msgid "%B %d %Y, %l\\u2236%M %p"
-msgstr "%d. %B %Y, %l∶%M %p"
+msgstr "%d. %B, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1844,8 +1844,20 @@ msgstr "Godkendelsesdialogen blev afvist af brugeren"
 #~ msgid "%B %d, %H∶%M"
 #~ msgstr "%d. %B, %H∶%M"
 
+#~ msgid "%B %d %Y, %H∶%M"
+#~ msgstr "%d. %B %Y, %H∶%M"
+
 #~ msgid "%l∶%M %p"
 #~ msgstr "%l∶%M %p"
+
+#~ msgid "%A, %l∶%M %p"
+#~ msgstr "%A, %l∶%M %p"
+
+#~ msgid "%B %d, %l∶%M %p"
+#~ msgstr "%d. %B, %l∶%M %p"
+
+#~ msgid "%B %d %Y, %l∶%M %p"
+#~ msgstr "%d. %B %Y, %l∶%M %p"
 
 #~ msgid "List of categories that should be displayed as folders"
 #~ msgstr "Liste over kategorier, som skal vises som mapper"
