@@ -1,15 +1,16 @@
 # Serbian translation for gnome-shell.
+# Courtesy of Prevod.org team (http://prevod.org/) -- 2010—2014.
 # Copyright (C) 2010 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011, 2012, 2013.
-# Милош Поповић <gpopac@gmail.com>, 2010, 2011.
+# Милош Поповић <gpopac@gmail.com>, 2010—2011.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-13 17:05+0000\n"
-"PO-Revision-Date: 2013-10-14 10:25+0200\n"
+"POT-Creation-Date: 2014-03-22 20:38+0000\n"
+"PO-Revision-Date: 2014-03-23 11:08+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -54,6 +55,7 @@ msgid "Window management and application launching"
 msgstr "Управник прозорима и покретач програма"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
+#: ../js/extensionPrefs/main.js:155
 msgid "GNOME Shell Extension Preferences"
 msgstr "Поставке проширења Гномове шкољке"
 
@@ -78,44 +80,52 @@ msgstr ""
 "коришћењем „Alt-F2“ прозорчета."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
-msgid "Uuids of extensions to enable"
-msgstr "Ууид-ови проширења за укључивање"
+#| msgid "Uuids of extensions to enable"
+msgid "UUIDs of extensions to enable"
+msgstr "ЈУИБ-ови проширења за укључивање"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
+#| msgid ""
+#| "GNOME Shell extensions have a uuid property; this key lists extensions "
+#| "which should be loaded. Any extension that wants to be loaded needs to be "
+#| "in this list. You can also manipulate this list with the EnableExtension "
+#| "and DisableExtension DBus methods on org.gnome.Shell."
 msgid ""
-"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
 "list. You can also manipulate this list with the EnableExtension and "
-"DisableExtension DBus methods on org.gnome.Shell."
+"DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"Проширења Гномове шкољке имају ууиб вредност; овај кључ исписује проширења "
+"Проширења Гномове шкољке имају ЈУИБ вредност; овај кључ исписује проширења "
 "која треба учитавати. Свако проширење које жели бити учитано мора бити на "
-"списку. Такође можете да управљате овим списком користећи начине Д-"
-"магистрале „Укључи проширење“ и „Искључи проширење“ на „org.gnome.Shell“."
+"списку. Такође можете да управљате овим списком користећи начине "
+"Д-магистрале „Укључи проширење“ и „Искључи проширење“ на „org.gnome.Shell“."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
+msgid "Disables the validation of extension version compatibility"
+msgstr "Искључује потврђивање сагласности издања проширења"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+"Гномова шкољка ће учитати само проширења која тврде да подржавају текуће "
+"покренуто издање. Укључивање ове опције ће искључити ову проверу и покушати "
+"да учита проширења без обзира на издања која тврде да подржавају."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Списак ИБ датотека радне површине са омиљеним програмима"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 "Програми који одговарају овим одредницама се приказују унутар области "
 "омиљених програмима."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
-msgid "List of categories that should be displayed as folders"
-msgstr "Списак категорија које треба да буду приказане као фасцикле"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
-msgid ""
-"Each category name in this list will be represented as folder in the "
-"application view, rather than being displayed inline in the main view."
-msgstr ""
-"Назив сваке категорије на списку ће бити представљен као фасцикла у прегледу "
-"програма, уместо да буде приказан непосредно у главном прегледу."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
@@ -126,12 +136,16 @@ msgid "History for the looking glass dialog"
 msgstr "Историјат прозорчета огледала"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-msgid "Always show the 'Log out' menuitem in the user menu."
+#| msgid "Always show the 'Log out' menuitem in the user menu."
+msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "Увек приказује ставку изборника „Одјави ме“ у изборнику корисника."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#| msgid ""
+#| "This key overrides the automatic hiding of the 'Log out' menuitem in "
+#| "single-user, single-session situations."
 msgid ""
-"This key overrides the automatic hiding of the 'Log out' menuitem in single-"
+"This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
 msgstr ""
 "Овај кључ превазилази самостално скривање ставке изборника „Одјави ме“ у "
@@ -214,10 +228,31 @@ msgid "The type of keyboard to use."
 msgstr "Врста тастатуре за употребу."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+msgid "The maximum accuracy level of location."
+msgstr "Највиши ниво тачности места."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+msgid ""
+"Configures the maximum level of location accuracy applications are allowed "
+"to see. Valid options are 'off' (disable location tracking), 'country', "
+"'city', 'neighborhood', 'street', and 'exact' (typically requires GPS "
+"receiver). Please keep in mind that this only controls what GeoClue will "
+"allow applications to see and they can find user's location on their own "
+"using network resources (albeit with street-level accuracy at best)."
+msgstr ""
+"Подешава највећи ниво тачности места коју програми могу да користе. Исправне "
+"могућности су „off“ (искључује праћење места), „country“ (држава), „city“ "
+"(град), „neighborhood“ (комшилук), „street“ (улица), и „exact“ (тачно — "
+"обично захтева ГПС пријемник). Имајте на уму да ће ово одлучити шта ће „Гео "
+"индиција“ дозволити програмима само да виде и да могу пронаћи корисниково "
+"место на своју руку користећи изворишта мреже (мада са тачношћу на нивоу "
+"улице у најбољем случају)."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "The application icon mode."
 msgstr "Режим иконице програма."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -227,21 +262,21 @@ msgstr ""
 "„thumbnail-only“ (приказује сличицу прозора), „app-icon-only“ (приказује "
 "само иконицу програма) или „both“ (оба)."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Attach modal dialog to the parent window"
 msgstr "Прикачиње прозорче родитељском прозору"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Овај кључ превазилази кључ у „org.gnome.mutter“ када покреће Гномову шкољку."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Распоред дугмића на траци наслова"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
@@ -249,75 +284,84 @@ msgstr ""
 "Овај кључ превазилази кључ у „org.gnome.desktop.wm.preferences“ када покреће "
 "Гномову шкољку."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Укључује поплочавање ивице приликом отпуштања прозора на ивицама екрана"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "Workspaces are managed dynamically"
 msgstr "Радним просторима се управља динамички"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid "Workspaces only on primary monitor"
 msgstr "Радни простори само на примарном монитору"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Застој првог плана се мења у режиму миша док се показивач не заустави"
 
-#: ../js/extensionPrefs/main.js:189
+#: ../js/extensionPrefs/main.js:127
+#, javascript-format
+msgid "There was an error loading the preferences dialog for %s:"
+msgstr "Дошло је до грешке при учитавању прозорчета поставки за „%s“:"
+
+#: ../js/extensionPrefs/main.js:167
+msgid "Extension"
+msgstr "Проширење"
+
+#: ../js/extensionPrefs/main.js:191
 msgid "Select an extension to configure using the combobox above."
 msgstr "Изаберите проширење за подешавање користећи прозорче за избор."
 
-#: ../js/gdm/authPrompt.js:145 ../js/ui/components/networkAgent.js:136
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:222 ../js/ui/status/network.js:728
+#: ../js/ui/status/network.js:878
 msgid "Cancel"
 msgstr "Откажи"
 
-#: ../js/gdm/authPrompt.js:167 ../js/gdm/authPrompt.js:215
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:217
 msgid "Next"
 msgstr "Даље"
 
-#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Откључај"
 
-#: ../js/gdm/authPrompt.js:213
+#: ../js/gdm/authPrompt.js:215
 msgctxt "button"
 msgid "Sign In"
 msgstr "Пријави ме"
 
-#: ../js/gdm/loginDialog.js:294
+#: ../js/gdm/loginDialog.js:270
 msgid "Choose Session"
 msgstr "Изабери сесију"
 
-#: ../js/gdm/loginDialog.js:454
+#: ../js/gdm/loginDialog.js:430
 msgid "Not listed?"
 msgstr "Није на списку?"
 
-#: ../js/gdm/loginDialog.js:622
+#: ../js/gdm/loginDialog.js:608
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(нпр., корисник или %s)"
 
-#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:259
-#: ../js/ui/components/networkAgent.js:277
+#: ../js/gdm/loginDialog.js:613 ../js/ui/components/networkAgent.js:262
+#: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Корисничко име: "
 
-#: ../js/gdm/loginDialog.js:891
+#: ../js/gdm/loginDialog.js:884
 msgid "Login Window"
 msgstr "Прозор за пријављивање"
 
-#: ../js/gdm/util.js:306
+#: ../js/gdm/util.js:322
 msgid "Authentication error"
 msgstr "Грешка потврђивања идентитета"
 
-#: ../js/gdm/util.js:436
+#: ../js/gdm/util.js:452
 msgid "(or swipe finger)"
 msgstr "(или лупите прст)"
 
@@ -331,30 +375,31 @@ msgstr "Не могу да обрадим наредбу:"
 
 #: ../js/misc/util.js:156
 #, javascript-format
-msgid "Execution of '%s' failed:"
-msgstr "Није успело покретање „%s“:"
+#| msgid "Execution of '%s' failed:"
+msgid "Execution of “%s” failed:"
+msgstr "Није успело извршавање „%s“:"
 
-#: ../js/ui/appDisplay.js:596
+#: ../js/ui/appDisplay.js:629
 msgid "Frequently used applications will appear here"
 msgstr "Често коришћени програми ће се појавити овде"
 
-#: ../js/ui/appDisplay.js:712
+#: ../js/ui/appDisplay.js:740
 msgid "Frequent"
 msgstr "Често"
 
-#: ../js/ui/appDisplay.js:719
+#: ../js/ui/appDisplay.js:747
 msgid "All"
 msgstr "Све"
 
-#: ../js/ui/appDisplay.js:1514
+#: ../js/ui/appDisplay.js:1555
 msgid "New Window"
 msgstr "Нови прозор"
 
-#: ../js/ui/appDisplay.js:1517 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1577 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Уклони из омиљених"
 
-#: ../js/ui/appDisplay.js:1518
+#: ../js/ui/appDisplay.js:1583
 msgid "Add to Favorites"
 msgstr "Додај у омиљене"
 
@@ -368,8 +413,8 @@ msgstr "„%s“ је додат међу омиљене."
 msgid "%s has been removed from your favorites."
 msgstr "„%s“ је уклоњен из омиљених."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:806
-#: ../js/ui/status/system.js:325
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:809
+#: ../js/ui/status/system.js:334
 msgid "Settings"
 msgstr "Подешавања"
 
@@ -380,14 +425,14 @@ msgstr "Измени позадину…"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:62
+#: ../js/ui/calendar.js:64
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Цео дан"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:68
+#: ../js/ui/calendar.js:70
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -395,7 +440,7 @@ msgstr "%H∶%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space */
-#: ../js/ui/calendar.js:77
+#: ../js/ui/calendar.js:79
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
@@ -405,43 +450,43 @@ msgstr "%l∶%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:110
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Н"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:112
 msgctxt "grid monday"
 msgid "M"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:112
+#: ../js/ui/calendar.js:114
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "У"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:116
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "С"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:118
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Ч"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:118
+#: ../js/ui/calendar.js:120
 msgctxt "grid friday"
 msgid "F"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:120
+#: ../js/ui/calendar.js:122
 msgctxt "grid saturday"
 msgid "S"
 msgstr "С"
@@ -452,89 +497,89 @@ msgstr "С"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #. */
-#: ../js/ui/calendar.js:133
+#: ../js/ui/calendar.js:135
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Нед"
 
 #. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:135
+#: ../js/ui/calendar.js:137
 msgctxt "list monday"
 msgid "M"
 msgstr "Пон"
 
 #. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:137
+#: ../js/ui/calendar.js:139
 msgctxt "list tuesday"
 msgid "T"
 msgstr "Уто"
 
 #. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:141
 msgctxt "list wednesday"
 msgid "W"
 msgstr "Сре"
 
 #. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:143
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Чет"
 
 #. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:143
+#: ../js/ui/calendar.js:145
 msgctxt "list friday"
 msgid "F"
 msgstr "Пет"
 
 #. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:145
+#: ../js/ui/calendar.js:147
 msgctxt "list saturday"
 msgid "S"
 msgstr "Суб"
 
-#: ../js/ui/calendar.js:389
+#: ../js/ui/calendar.js:390
 msgid "calendar:MY"
 msgstr "calendar:MY"
 
-#: ../js/ui/calendar.js:447
+#: ../js/ui/calendar.js:450
 msgid "Previous month"
 msgstr "Претходни месец"
 
-#: ../js/ui/calendar.js:457
+#: ../js/ui/calendar.js:460
 msgid "Next month"
 msgstr "Следећи месец"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:753
+#: ../js/ui/calendar.js:772
 msgid "Nothing Scheduled"
 msgstr "Ништа планирано"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:771
+#: ../js/ui/calendar.js:790
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:774
+#: ../js/ui/calendar.js:793
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d. %B %Y."
 
-#: ../js/ui/calendar.js:785
+#: ../js/ui/calendar.js:804
 msgid "Today"
 msgstr "Данас"
 
-#: ../js/ui/calendar.js:789
+#: ../js/ui/calendar.js:808
 msgid "Tomorrow"
 msgstr "Сутра"
 
-#: ../js/ui/calendar.js:800
+#: ../js/ui/calendar.js:819
 msgid "This week"
 msgstr "Ове недеље"
 
-#: ../js/ui/calendar.js:808
+#: ../js/ui/calendar.js:827
 msgid "Next week"
 msgstr "Следеће недеље"
 
@@ -546,110 +591,114 @@ msgstr "Спољни уређај је прикључен"
 msgid "External drive disconnected"
 msgstr "Спољни уређај је искључен"
 
-#: ../js/ui/components/autorunManager.js:294
+#: ../js/ui/components/autorunManager.js:296
 msgid "Removable Devices"
 msgstr "Уклоњиви уређаји"
 
-#: ../js/ui/components/autorunManager.js:594
+#: ../js/ui/components/autorunManager.js:596
 #, javascript-format
 msgid "Open with %s"
 msgstr "Отвори програмом %s"
 
-#: ../js/ui/components/autorunManager.js:620
+#: ../js/ui/components/autorunManager.js:622
 msgid "Eject"
 msgstr "Избаци"
 
-#: ../js/ui/components/keyring.js:89 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
 msgstr "Лозинка:"
 
-#: ../js/ui/components/keyring.js:108
+#: ../js/ui/components/keyring.js:110
 msgid "Type again:"
 msgstr "Упишите поново:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:133
-#: ../js/ui/status/network.js:296 ../js/ui/status/network.js:731
+#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:240
+#: ../js/ui/status/network.js:322 ../js/ui/status/network.js:881
 msgid "Connect"
 msgstr "Повежи се"
 
-#: ../js/ui/components/networkAgent.js:222
-#: ../js/ui/components/networkAgent.js:234
-#: ../js/ui/components/networkAgent.js:261
-#: ../js/ui/components/networkAgent.js:281
-#: ../js/ui/components/networkAgent.js:291
+#: ../js/ui/components/networkAgent.js:224
+#: ../js/ui/components/networkAgent.js:236
+#: ../js/ui/components/networkAgent.js:264
+#: ../js/ui/components/networkAgent.js:284
+#: ../js/ui/components/networkAgent.js:294
 msgid "Password: "
 msgstr "Лозинка: "
 
-#: ../js/ui/components/networkAgent.js:227
+#: ../js/ui/components/networkAgent.js:229
 msgid "Key: "
 msgstr "Кључ: "
 
-#: ../js/ui/components/networkAgent.js:265
+#: ../js/ui/components/networkAgent.js:268
 msgid "Identity: "
 msgstr "Идентитет: "
 
-#: ../js/ui/components/networkAgent.js:267
+#: ../js/ui/components/networkAgent.js:270
 msgid "Private key password: "
 msgstr "Лозинка приватног кључа: "
 
-#: ../js/ui/components/networkAgent.js:279
+#: ../js/ui/components/networkAgent.js:282
 msgid "Service: "
 msgstr "Услуга: "
 
-#: ../js/ui/components/networkAgent.js:308
+#: ../js/ui/components/networkAgent.js:311
 msgid "Authentication required by wireless network"
 msgstr "Бежична мрежа захтева потврђивање идентитета"
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:312
 #, javascript-format
+#| msgid ""
+#| "Passwords or encryption keys are required to access the wireless network "
+#| "'%s'."
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
-"'%s'."
+"“%s”."
 msgstr ""
-"Потребне су лозинке или кључеви шифровања за приступање бежичној мрежи „%s“."
+"Потребне су лозинке или кључеви шифровања за приступ бежичној мрежи „%s“."
 
-#: ../js/ui/components/networkAgent.js:313
+#: ../js/ui/components/networkAgent.js:316
 msgid "Wired 802.1X authentication"
 msgstr "Потврђивање идентитета за жичану 802.1X везу"
 
-#: ../js/ui/components/networkAgent.js:315
+#: ../js/ui/components/networkAgent.js:318
 msgid "Network name: "
 msgstr "Назив мреже: "
 
-#: ../js/ui/components/networkAgent.js:320
+#: ../js/ui/components/networkAgent.js:323
 msgid "DSL authentication"
 msgstr "Потврђивање идентитета ДСЛ-а"
 
-#: ../js/ui/components/networkAgent.js:327
+#: ../js/ui/components/networkAgent.js:330
 msgid "PIN code required"
 msgstr "Потребан је ПИН кôд"
 
-#: ../js/ui/components/networkAgent.js:328
+#: ../js/ui/components/networkAgent.js:331
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Потребан је ПИН код за повезивање мобилног широкопојасног уређаја"
 
-#: ../js/ui/components/networkAgent.js:329
+#: ../js/ui/components/networkAgent.js:332
 msgid "PIN: "
 msgstr "ПИН: "
 
-#: ../js/ui/components/networkAgent.js:335
+#: ../js/ui/components/networkAgent.js:338
 msgid "Mobile broadband network password"
 msgstr "Лозинка мобилне широкопојасне мреже"
 
-#: ../js/ui/components/networkAgent.js:336
+#: ../js/ui/components/networkAgent.js:339
 #, javascript-format
-msgid "A password is required to connect to '%s'."
+#| msgid "A password is required to connect to '%s'."
+msgid "A password is required to connect to “%s”."
 msgstr "Потребна је лозинка за повезивање на „%s“."
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
 msgstr "Потребна је пријава"
 
-#: ../js/ui/components/polkitAgent.js:92
+#: ../js/ui/components/polkitAgent.js:96
 msgid "Administrator"
 msgstr "Администратор"
 
-#: ../js/ui/components/polkitAgent.js:170
+#: ../js/ui/components/polkitAgent.js:175
 msgid "Authenticate"
 msgstr "Потврди идентитет"
 
@@ -657,103 +706,158 @@ msgstr "Потврди идентитет"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance. */
-#: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:271 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Погрешили сте! Покушајте поново."
 
-#: ../js/ui/components/telepathyClient.js:238
+#: ../js/ui/components/telepathyClient.js:240
 msgid "Invitation"
 msgstr "Позивница"
 
-#: ../js/ui/components/telepathyClient.js:298
+#: ../js/ui/components/telepathyClient.js:300
 msgid "Call"
 msgstr "Позив"
 
-#: ../js/ui/components/telepathyClient.js:314
+#: ../js/ui/components/telepathyClient.js:316
 msgid "File Transfer"
 msgstr "Пренос датотека"
 
-#: ../js/ui/components/telepathyClient.js:418
+#: ../js/ui/components/telepathyClient.js:420
 msgid "Chat"
 msgstr "Ћаскање"
 
-#: ../js/ui/components/telepathyClient.js:480
+#: ../js/ui/components/telepathyClient.js:483
 msgid "Unmute"
 msgstr "Укључи тон"
 
-#: ../js/ui/components/telepathyClient.js:480
+#: ../js/ui/components/telepathyClient.js:483
 msgid "Mute"
 msgstr "Утишај"
 
-#. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"*/
-#: ../js/ui/components/telepathyClient.js:942
-msgid "<b>Yesterday</b>, <b>%H:%M</b>"
-msgstr "<b>Јуче</b>, у <b>%H:%M</b>"
+#. Translators: Time in 24h format */
+#: ../js/ui/components/telepathyClient.js:955
+#| msgctxt "event list time"
+#| msgid "%H∶%M"
+msgid "%H∶%M"
+msgstr "%H∶%M"
 
-#. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30*/
-#: ../js/ui/components/telepathyClient.js:948
-msgid "<b>%A</b>, <b>%H:%M</b>"
-msgstr "<b>%A</b>, у <b>%H:%M</b>"
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30" */
+#: ../js/ui/components/telepathyClient.js:962
+#| msgid "<b>Yesterday</b>, <b>%H:%M</b>"
+msgid "Yesterday, %H∶%M"
+msgstr "Јуче, %H:%M"
 
-#. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
-#: ../js/ui/components/telepathyClient.js:953
-msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-msgstr "<b>%d</b>. <b>%B</b> у <b>%H:%M</b>"
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30" */
+#: ../js/ui/components/telepathyClient.js:969
+#| msgctxt "event list time"
+#| msgid "%H∶%M"
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
 
-#. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
-#: ../js/ui/components/telepathyClient.js:957
-msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-msgstr "<b>%d</b>. <b>%B</b> <b>%Y</b>. у <b>%H:%M</b>"
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30" */
+#: ../js/ui/components/telepathyClient.js:976
+#| msgctxt "event list time"
+#| msgid "%H∶%M"
+msgid "%B %d, %H∶%M"
+msgstr "%d. %B, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30" */
+#: ../js/ui/components/telepathyClient.js:982
+msgid "%B %d %Y, %H∶%M"
+msgstr "%d. %B %Y., %H:%M"
+
+#. Translators: Time in 24h format */
+#: ../js/ui/components/telepathyClient.js:991
+#| msgctxt "event list time"
+#| msgid "%l∶%M %p"
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+#: ../js/ui/components/telepathyClient.js:998
+msgid "Yesterday, %l∶%M %p"
+msgstr "Јуче, %l:%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm" */
+#: ../js/ui/components/telepathyClient.js:1005
+#| msgctxt "event list time"
+#| msgid "%l∶%M %p"
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm" */
+#: ../js/ui/components/telepathyClient.js:1012
+#| msgctxt "event list time"
+#| msgid "%l∶%M %p"
+msgid "%B %d, %l∶%M %p"
+msgstr "%d. %B, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"*/
+#: ../js/ui/components/telepathyClient.js:1018
+msgid "%B %d %Y, %l∶%M %p"
+msgstr "%d .%B %Y., %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:986
+#: ../js/ui/components/telepathyClient.js:1051
 #, javascript-format
 msgid "%s is now known as %s"
-msgstr "%s је сада познат као %s"
+msgstr "„%s“ је сада познат као „%s“"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1089
+#: ../js/ui/components/telepathyClient.js:1154
 #, javascript-format
 msgid "Invitation to %s"
-msgstr "Позивница за %s"
+msgstr "Позивница за „%s“"
 
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1097
+#: ../js/ui/components/telepathyClient.js:1162
 #, javascript-format
 msgid "%s is inviting you to join %s"
-msgstr "%s вас позива да се придружите %s"
+msgstr "%s вас позива да се придружите „%s“"
 
-#: ../js/ui/components/telepathyClient.js:1099
-#: ../js/ui/components/telepathyClient.js:1140
-#: ../js/ui/components/telepathyClient.js:1180
-#: ../js/ui/components/telepathyClient.js:1243
+#: ../js/ui/components/telepathyClient.js:1164
+#: ../js/ui/components/telepathyClient.js:1199
+#: ../js/ui/components/telepathyClient.js:1233
+#: ../js/ui/components/telepathyClient.js:1290
 msgid "Decline"
 msgstr "Одбиј"
 
-#: ../js/ui/components/telepathyClient.js:1100
-#: ../js/ui/components/telepathyClient.js:1181
-#: ../js/ui/components/telepathyClient.js:1244
+#: ../js/ui/components/telepathyClient.js:1170
+#: ../js/ui/components/telepathyClient.js:1239
+#: ../js/ui/components/telepathyClient.js:1295
 msgid "Accept"
 msgstr "Прихвати"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1130
+#: ../js/ui/components/telepathyClient.js:1189
 #, javascript-format
 msgid "Video call from %s"
 msgstr "%s вам је упутио видео позив"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1133
+#: ../js/ui/components/telepathyClient.js:1192
 #, javascript-format
 msgid "Call from %s"
 msgstr "%s вас зове"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1142
+#: ../js/ui/components/telepathyClient.js:1206
 msgid "Answer"
 msgstr "Одговори"
 
@@ -762,109 +866,109 @@ msgstr "Одговори"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1174
+#: ../js/ui/components/telepathyClient.js:1227
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s вам шаље „%s“"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1209
+#: ../js/ui/components/telepathyClient.js:1256
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s тражи одобрење да види када сте на вези"
 
-#: ../js/ui/components/telepathyClient.js:1301
+#: ../js/ui/components/telepathyClient.js:1341
 msgid "Network error"
 msgstr "Грешка мреже"
 
-#: ../js/ui/components/telepathyClient.js:1303
+#: ../js/ui/components/telepathyClient.js:1343
 msgid "Authentication failed"
 msgstr "Потврђивање идентитета није успело"
 
-#: ../js/ui/components/telepathyClient.js:1305
+#: ../js/ui/components/telepathyClient.js:1345
 msgid "Encryption error"
 msgstr "Грешка шифровања"
 
-#: ../js/ui/components/telepathyClient.js:1307
+#: ../js/ui/components/telepathyClient.js:1347
 msgid "Certificate not provided"
 msgstr "Уверење није прослеђено"
 
-#: ../js/ui/components/telepathyClient.js:1309
+#: ../js/ui/components/telepathyClient.js:1349
 msgid "Certificate untrusted"
 msgstr "Уверење није поверљиво"
 
-#: ../js/ui/components/telepathyClient.js:1311
+#: ../js/ui/components/telepathyClient.js:1351
 msgid "Certificate expired"
 msgstr "Уверење је истекло"
 
-#: ../js/ui/components/telepathyClient.js:1313
+#: ../js/ui/components/telepathyClient.js:1353
 msgid "Certificate not activated"
 msgstr "Уверење није активирано"
 
-#: ../js/ui/components/telepathyClient.js:1315
+#: ../js/ui/components/telepathyClient.js:1355
 msgid "Certificate hostname mismatch"
 msgstr "Назив домаћина уверења се не поклапа"
 
-#: ../js/ui/components/telepathyClient.js:1317
+#: ../js/ui/components/telepathyClient.js:1357
 msgid "Certificate fingerprint mismatch"
 msgstr "Отисак уверења се не поклапа"
 
-#: ../js/ui/components/telepathyClient.js:1319
+#: ../js/ui/components/telepathyClient.js:1359
 msgid "Certificate self-signed"
 msgstr "Уверење је самопотписано"
 
-#: ../js/ui/components/telepathyClient.js:1321
+#: ../js/ui/components/telepathyClient.js:1361
 msgid "Status is set to offline"
 msgstr "Стање је постављено на „неповезан“"
 
-#: ../js/ui/components/telepathyClient.js:1323
+#: ../js/ui/components/telepathyClient.js:1363
 msgid "Encryption is not available"
 msgstr "Шифровање није доступно"
 
-#: ../js/ui/components/telepathyClient.js:1325
+#: ../js/ui/components/telepathyClient.js:1365
 msgid "Certificate is invalid"
 msgstr "Уверење није исправно"
 
-#: ../js/ui/components/telepathyClient.js:1327
+#: ../js/ui/components/telepathyClient.js:1367
 msgid "Connection has been refused"
 msgstr "Веза је одбијена"
 
-#: ../js/ui/components/telepathyClient.js:1329
+#: ../js/ui/components/telepathyClient.js:1369
 msgid "Connection can't be established"
 msgstr "Веза не може бити успостављена"
 
-#: ../js/ui/components/telepathyClient.js:1331
+#: ../js/ui/components/telepathyClient.js:1371
 msgid "Connection has been lost"
 msgstr "Веза је изгубљена"
 
-#: ../js/ui/components/telepathyClient.js:1333
+#: ../js/ui/components/telepathyClient.js:1373
 msgid "This account is already connected to the server"
 msgstr "Овај налог је већ повезан са сервером"
 
-#: ../js/ui/components/telepathyClient.js:1335
+#: ../js/ui/components/telepathyClient.js:1375
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Веза је замењена новом везом користећи исти ресурс"
 
-#: ../js/ui/components/telepathyClient.js:1337
+#: ../js/ui/components/telepathyClient.js:1377
 msgid "The account already exists on the server"
 msgstr "Овај налог већ постоји на серверу"
 
-#: ../js/ui/components/telepathyClient.js:1339
+#: ../js/ui/components/telepathyClient.js:1379
 msgid "Server is currently too busy to handle the connection"
 msgstr "Сервер је тренутно превише заузет да би руковао везом"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1381
 msgid "Certificate has been revoked"
 msgstr "Уверење је опозвано"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1383
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Уверење користи несигуран алгоритам шифровања или је криптографски слабо"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1385
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -872,68 +976,68 @@ msgstr ""
 "Дужина уверења сервера, или дубина ланца уверења сервера, премашује границе "
 "које је задала библиотека шифровања"
 
-#: ../js/ui/components/telepathyClient.js:1347
+#: ../js/ui/components/telepathyClient.js:1387
 msgid "Internal error"
 msgstr "Унутрашња грешка"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1357
+#: ../js/ui/components/telepathyClient.js:1397
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Не могу да се повежем са „%s“"
 
-#: ../js/ui/components/telepathyClient.js:1362
+#: ../js/ui/components/telepathyClient.js:1402
 msgid "View account"
 msgstr "Види налог"
 
-#: ../js/ui/components/telepathyClient.js:1401
+#: ../js/ui/components/telepathyClient.js:1439
 msgid "Unknown reason"
 msgstr "Непознат разлог"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:100
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
 msgid "Windows"
 msgstr "Прозори"
 
-#: ../js/ui/dash.js:248 ../js/ui/dash.js:286
+#: ../js/ui/dash.js:249 ../js/ui/dash.js:287
 msgid "Show Applications"
 msgstr "Прикажи програме"
 
-#: ../js/ui/dash.js:442
+#: ../js/ui/dash.js:445
 msgid "Dash"
 msgstr "Полет"
 
-#: ../js/ui/dateMenu.js:86
+#: ../js/ui/dateMenu.js:91
 msgid "Open Calendar"
 msgstr "Отвори календар"
 
-#: ../js/ui/dateMenu.js:90
+#: ../js/ui/dateMenu.js:95
 msgid "Open Clocks"
 msgstr "Отвори сатове"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:102
 msgid "Date & Time Settings"
 msgstr "Подешавања датума и времена"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:202
+#: ../js/ui/dateMenu.js:192
 msgid "%A %B %e, %Y"
 msgstr "%A, %e. %b., %R"
 
-#: ../js/ui/endSessionDialog.js:62
+#: ../js/ui/endSessionDialog.js:66
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Одјави корисника „%s“"
 
-#: ../js/ui/endSessionDialog.js:63
+#: ../js/ui/endSessionDialog.js:67
 msgctxt "title"
 msgid "Log Out"
 msgstr "Одјави ме"
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:69
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -942,7 +1046,7 @@ msgstr[1] "%s ће бити одјављен за %d секунде."
 msgstr[2] "%s ће бити одјављен за %d секунди."
 msgstr[3] "%s ће бити одјављен за %d секунду."
 
-#: ../js/ui/endSessionDialog.js:70
+#: ../js/ui/endSessionDialog.js:74
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
@@ -951,17 +1055,22 @@ msgstr[1] "Бићете одјављени за %d секунде."
 msgstr[2] "Бићете одјављени за %d секунди."
 msgstr[3] "Бићете одјављени за %d секунду."
 
-#: ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:80
 msgctxt "button"
 msgid "Log Out"
 msgstr "Одјави"
 
-#: ../js/ui/endSessionDialog.js:81
+#: ../js/ui/endSessionDialog.js:86
 msgctxt "title"
 msgid "Power Off"
 msgstr "Искључи"
 
-#: ../js/ui/endSessionDialog.js:83
+#: ../js/ui/endSessionDialog.js:87
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "Инсталирај освежења и искључи"
+
+#: ../js/ui/endSessionDialog.js:89
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -970,22 +1079,27 @@ msgstr[1] "Рачунар ће се искључити за %d секунде."
 msgstr[2] "Рачунар ће се искључити за %d секунди."
 msgstr[3] "Рачунар ће се искључити за %d секунду."
 
-#: ../js/ui/endSessionDialog.js:88 ../js/ui/endSessionDialog.js:104
+#: ../js/ui/endSessionDialog.js:93
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "Инсталирај освежења софтвера на чекању"
+
+#: ../js/ui/endSessionDialog.js:96 ../js/ui/endSessionDialog.js:113
 msgctxt "button"
 msgid "Restart"
 msgstr "Поново покрени"
 
-#: ../js/ui/endSessionDialog.js:90
+#: ../js/ui/endSessionDialog.js:98
 msgctxt "button"
 msgid "Power Off"
 msgstr "Искључи"
 
-#: ../js/ui/endSessionDialog.js:97
+#: ../js/ui/endSessionDialog.js:105
 msgctxt "title"
 msgid "Restart"
 msgstr "Поново покрени"
 
-#: ../js/ui/endSessionDialog.js:99
+#: ../js/ui/endSessionDialog.js:107
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -994,12 +1108,12 @@ msgstr[1] "Систем ће се поново покренути за %d сек
 msgstr[2] "Систем ће се поново покренути за %d секунди."
 msgstr[3] "Систем ће се поново покренути за %d секунду."
 
-#: ../js/ui/endSessionDialog.js:112
+#: ../js/ui/endSessionDialog.js:121
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Поново покрени и инсталирај ажурирања"
 
-#: ../js/ui/endSessionDialog.js:114
+#: ../js/ui/endSessionDialog.js:123
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1013,27 +1127,45 @@ msgstr[2] ""
 msgstr[3] ""
 "Систем ће се сам поново покренути и инсталирати ажурирања за %d секунду."
 
-#: ../js/ui/endSessionDialog.js:119
+#: ../js/ui/endSessionDialog.js:129
+#| msgctxt "button"
+#| msgid "Restart & Install"
 msgctxt "button"
-msgid "Restart & Install"
+msgid "Restart &amp; Install"
 msgstr "Поново покрени и инсталирај"
 
-#: ../js/ui/endSessionDialog.js:271
+#: ../js/ui/endSessionDialog.js:130
+msgctxt "button"
+msgid "Install &amp; Power Off"
+msgstr "Инсталирај и искључи"
+
+#: ../js/ui/endSessionDialog.js:131
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr "Искључи након инсталирања освежења"
+
+#: ../js/ui/endSessionDialog.js:315
+msgid "Running on battery power: please plug in before installing updates."
+msgstr ""
+"Напајате се са батерије: прикључите мрежно напајање пре инсталирања "
+"освежења."
+
+#: ../js/ui/endSessionDialog.js:332
 msgid "Some applications are busy or have unsaved work."
 msgstr "Неки програми су заузети или имају несачувани рад."
 
-#: ../js/ui/endSessionDialog.js:277
+#: ../js/ui/endSessionDialog.js:339
 msgid "Other users are logged in."
 msgstr "Други корисници су пријављени."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:479
+#: ../js/ui/endSessionDialog.js:618
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (удаљено)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:482
+#: ../js/ui/endSessionDialog.js:621
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (љуска)"
@@ -1044,32 +1176,33 @@ msgstr "Инсталирај"
 
 #: ../js/ui/extensionDownloader.js:204
 #, javascript-format
-msgid "Download and install '%s' from extensions.gnome.org?"
-msgstr "Да преузмем и да инсталирам „%s“ са extensions.gnome.org?"
+#| msgid "Download and install '%s' from extensions.gnome.org?"
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr "Да преузмем и да инсталирам „%s“ са „extensions.gnome.org“-а?"
 
-#: ../js/ui/keyboard.js:619
+#: ../js/ui/keyboard.js:641 ../js/ui/status/keyboard.js:335
 msgid "Keyboard"
 msgstr "Тастатура"
 
-#: ../js/ui/lookingGlass.js:689
+#: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
 msgstr "Нису инсталирана проширења"
 
 #. Translators: argument is an extension UUID. */
-#: ../js/ui/lookingGlass.js:743
+#: ../js/ui/lookingGlass.js:697
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s није објавио никакве грешке."
 
-#: ../js/ui/lookingGlass.js:749
+#: ../js/ui/lookingGlass.js:703
 msgid "Hide Errors"
 msgstr "Сакриј грешке"
 
-#: ../js/ui/lookingGlass.js:753 ../js/ui/lookingGlass.js:813
+#: ../js/ui/lookingGlass.js:707 ../js/ui/lookingGlass.js:767
 msgid "Show Errors"
 msgstr "Прикажите грешке"
 
-#: ../js/ui/lookingGlass.js:762
+#: ../js/ui/lookingGlass.js:716
 msgid "Enabled"
 msgstr "Укључено"
 
@@ -1077,74 +1210,73 @@ msgstr "Укључено"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:765 ../js/ui/status/network.js:473
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/network.js:555
 #: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Искључено"
 
-#: ../js/ui/lookingGlass.js:767
+#: ../js/ui/lookingGlass.js:721
 msgid "Error"
 msgstr "Грешка"
 
-#: ../js/ui/lookingGlass.js:769
+#: ../js/ui/lookingGlass.js:723
 msgid "Out of date"
 msgstr "Изван датума"
 
-#: ../js/ui/lookingGlass.js:771
+#: ../js/ui/lookingGlass.js:725
 msgid "Downloading"
 msgstr "Преузимам"
 
-#: ../js/ui/lookingGlass.js:795
+#: ../js/ui/lookingGlass.js:749
 msgid "View Source"
 msgstr "Прикажи код"
 
-#: ../js/ui/lookingGlass.js:804
+#: ../js/ui/lookingGlass.js:758
 msgid "Web Page"
 msgstr "Веб страница"
 
-#: ../js/ui/messageTray.js:1227
+#: ../js/ui/messageTray.js:1326
 msgid "Open"
 msgstr "Отвори"
 
-#: ../js/ui/messageTray.js:1234
+#: ../js/ui/messageTray.js:1333
 msgid "Remove"
 msgstr "Уклони"
 
-#: ../js/ui/messageTray.js:1535
-#| msgid "Notification Settings"
+#: ../js/ui/messageTray.js:1630
 msgid "Notifications"
 msgstr "Обавештења"
 
-#: ../js/ui/messageTray.js:1542
+#: ../js/ui/messageTray.js:1637
 msgid "Clear Messages"
 msgstr "Очисти поруке"
 
-#: ../js/ui/messageTray.js:1569
+#: ../js/ui/messageTray.js:1656
 msgid "Notification Settings"
 msgstr "Поставке обавештења"
 
-#: ../js/ui/messageTray.js:1622
+#: ../js/ui/messageTray.js:1709
 msgid "Tray Menu"
 msgstr "Изборник фиоке"
 
-#: ../js/ui/messageTray.js:1838
+#: ../js/ui/messageTray.js:1926
 msgid "No Messages"
 msgstr "Нема порука"
 
-#: ../js/ui/messageTray.js:1876
+#: ../js/ui/messageTray.js:1964
 msgid "Message Tray"
 msgstr "Фиока порука"
 
-#: ../js/ui/messageTray.js:2851
+#: ../js/ui/messageTray.js:2962
 msgid "System Information"
 msgstr "Подаци о систему"
 
-#: ../js/ui/notificationDaemon.js:630 ../src/shell-app.c:396
+#: ../js/ui/notificationDaemon.js:515 ../src/shell-app.c:425
 msgctxt "program"
 msgid "Unknown"
 msgstr "Непознат"
 
-#: ../js/ui/overviewControls.js:488 ../js/ui/screenShield.js:152
+#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:151
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1153,11 +1285,11 @@ msgstr[1] "%d нове поруке"
 msgstr[2] "%d нових порука"
 msgstr[3] "%d нова порука"
 
-#: ../js/ui/overview.js:82
+#: ../js/ui/overview.js:84
 msgid "Undo"
 msgstr "Опозови"
 
-#: ../js/ui/overview.js:127
+#: ../js/ui/overview.js:124
 msgid "Overview"
 msgstr "Преглед"
 
@@ -1165,7 +1297,7 @@ msgstr "Преглед"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters. */
-#: ../js/ui/overview.js:258
+#: ../js/ui/overview.js:250
 msgid "Type to search…"
 msgstr "Упишите текст за претрагу…"
 
@@ -1179,11 +1311,11 @@ msgstr "Изађи"
 msgid "Activities"
 msgstr "Активности"
 
-#: ../js/ui/panel.js:900
+#: ../js/ui/panel.js:914
 msgid "Top Bar"
 msgstr "Горња трака"
 
-#: ../js/ui/popupMenu.js:259
+#: ../js/ui/popupMenu.js:271
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1191,7 +1323,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Унесите наредбу"
 
-#: ../js/ui/runDialog.js:110
+#: ../js/ui/runDialog.js:114
 msgid "Close"
 msgstr "Затвори"
 
@@ -1201,7 +1333,7 @@ msgstr "Затвори"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: ../js/ui/screenShield.js:154
+#: ../js/ui/screenShield.js:153
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1210,27 +1342,27 @@ msgstr[1] "%d нова обавештења"
 msgstr[2] "%d нових обавештења"
 msgstr[3] "%d ново обавештење"
 
-#: ../js/ui/screenShield.js:477 ../js/ui/status/system.js:333
+#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "Закључај"
 
-#: ../js/ui/screenShield.js:704
+#: ../js/ui/screenShield.js:708
 msgid "GNOME needs to lock the screen"
 msgstr "Гном мора да закључа екран"
 
-#: ../js/ui/screenShield.js:831 ../js/ui/screenShield.js:1297
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1309
 msgid "Unable to lock"
 msgstr "Не могу да закључам"
 
-#: ../js/ui/screenShield.js:832 ../js/ui/screenShield.js:1298
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1310
 msgid "Lock was blocked by an application"
 msgstr "Неки програм је блокирао закључавање"
 
-#: ../js/ui/searchDisplay.js:448
+#: ../js/ui/search.js:603
 msgid "Searching…"
 msgstr "Тражим…"
 
-#: ../js/ui/searchDisplay.js:492
+#: ../js/ui/search.js:646
 msgid "No results."
 msgstr "Нема одговарајућих резултата."
 
@@ -1258,66 +1390,67 @@ msgstr "Лозинка"
 msgid "Remember Password"
 msgstr "Запамти лозинку"
 
-#: ../js/ui/status/accessibility.js:41
+#: ../js/ui/status/accessibility.js:42
 msgid "Accessibility"
 msgstr "Приступачност"
 
-#: ../js/ui/status/accessibility.js:56
+#: ../js/ui/status/accessibility.js:57
 msgid "Zoom"
 msgstr "Зумирај"
 
-#: ../js/ui/status/accessibility.js:63
+#: ../js/ui/status/accessibility.js:64
 msgid "Screen Reader"
 msgstr "Читач екрана"
 
-#: ../js/ui/status/accessibility.js:67
+#: ../js/ui/status/accessibility.js:68
 msgid "Screen Keyboard"
 msgstr "Тастатура на екрану"
 
-#: ../js/ui/status/accessibility.js:71
+#: ../js/ui/status/accessibility.js:72
 msgid "Visual Alerts"
 msgstr "Визуелна упозорења"
 
-#: ../js/ui/status/accessibility.js:74
+#: ../js/ui/status/accessibility.js:75
 msgid "Sticky Keys"
 msgstr "Лепљиви тастери"
 
-#: ../js/ui/status/accessibility.js:77
+#: ../js/ui/status/accessibility.js:78
 msgid "Slow Keys"
 msgstr "Спори тастери"
 
-#: ../js/ui/status/accessibility.js:80
+#: ../js/ui/status/accessibility.js:81
 msgid "Bounce Keys"
 msgstr "Одскочни тастери"
 
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:84
 msgid "Mouse Keys"
 msgstr "Тастери миша"
 
-#: ../js/ui/status/accessibility.js:142
+#: ../js/ui/status/accessibility.js:143
 msgid "High Contrast"
 msgstr "Велики контраст"
 
-#: ../js/ui/status/accessibility.js:191
+#: ../js/ui/status/accessibility.js:192
 msgid "Large Text"
 msgstr "Велики текст"
 
-#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:63
-#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
-#: ../js/ui/status/bluetooth.js:164 ../js/ui/status/bluetooth.js:195
+#: ../js/ui/status/bluetooth.js:49
 msgid "Bluetooth"
 msgstr "Блутут"
 
-#: ../js/ui/status/bluetooth.js:30 ../js/ui/status/network.js:133
-#: ../js/ui/status/network.js:1085 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/location.js:60
+#: ../js/ui/status/location.js:167 ../js/ui/status/network.js:151
+#: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
+#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "Искључи"
 
-#: ../js/ui/status/bluetooth.js:33
+#: ../js/ui/status/bluetooth.js:54
 msgid "Bluetooth Settings"
 msgstr "Подешавања Блутута"
 
-#: ../js/ui/status/bluetooth.js:58
+#: ../js/ui/status/bluetooth.js:104
 #, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
@@ -1326,236 +1459,235 @@ msgstr[1] "%d прикључена уређаја"
 msgstr[2] "%d прикључених уређаја"
 msgstr[3] "%d прикључени уређај"
 
-#: ../js/ui/status/bluetooth.js:101 ../js/ui/status/bluetooth.js:129
-#, javascript-format
-msgid "Authorization request from %s"
-msgstr "Захтев за овлашћење са „%s“"
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1262
+msgid "Not Connected"
+msgstr "Неповезан"
 
-#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/bluetooth.js:172
-#: ../js/ui/status/bluetooth.js:203
-#, javascript-format
-msgid "Device %s wants to pair with this computer"
-msgstr "Уређај „%s“ жели да се упари са овим рачунаром"
-
-#: ../js/ui/status/bluetooth.js:109
-msgid "Allow"
-msgstr "Дозволи"
-
-#: ../js/ui/status/bluetooth.js:110
-msgid "Deny"
-msgstr "Забрани"
-
-#: ../js/ui/status/bluetooth.js:135
-#, javascript-format
-msgid "Device %s wants access to the service '%s'"
-msgstr "Уређај „%s“ жели приступ услузи „%s“"
-
-#: ../js/ui/status/bluetooth.js:137
-msgid "Always grant access"
-msgstr "Увек дозволи приступ"
-
-#: ../js/ui/status/bluetooth.js:138
-msgid "Grant this time only"
-msgstr "Одобри само овај пут"
-
-#: ../js/ui/status/bluetooth.js:139
-msgid "Reject"
-msgstr "Одбиј"
-
-#. Translators: argument is the device short name */
-#: ../js/ui/status/bluetooth.js:166
-#, javascript-format
-msgid "Pairing confirmation for %s"
-msgstr "Упарујем потврду за „%s“"
-
-#: ../js/ui/status/bluetooth.js:173
-#, javascript-format
-msgid ""
-"Please confirm whether the Passkey '%06d' matches the one on the device."
-msgstr ""
-"Молим потврдите да ли се пропусни кључ „%06d“ подудара са оним на уређају."
-
-#. Translators: this is the verb, not the noun */
-#: ../js/ui/status/bluetooth.js:176
-msgid "Matches"
-msgstr "Подудара се"
-
-#: ../js/ui/status/bluetooth.js:177
-msgid "Does not match"
-msgstr "Не подудара се"
-
-#: ../js/ui/status/bluetooth.js:196
-#, javascript-format
-msgid "Pairing request for %s"
-msgstr "Захтев за упаривање за „%s“"
-
-#: ../js/ui/status/bluetooth.js:204
-msgid "Please enter the PIN mentioned on the device."
-msgstr "Молим унесите ПИН назначен на уређају."
-
-#: ../js/ui/status/bluetooth.js:221
-msgid "OK"
-msgstr "У реду"
-
-#: ../js/ui/status/brightness.js:42
+#: ../js/ui/status/brightness.js:44
 msgid "Brightness"
 msgstr "Осветљеност"
 
-#: ../js/ui/status/network.js:72
-msgid "<unknown>"
-msgstr "<непознато>"
+#: ../js/ui/status/keyboard.js:403
+msgid "Show Keyboard Layout"
+msgstr "Покажи распоред тастатуре"
 
-#: ../js/ui/status/network.js:223 ../js/ui/status/network.js:380
-#: ../js/ui/status/network.js:1106
+#: ../js/ui/status/location.js:53
+#| msgid "Notifications"
+msgid "Location"
+msgstr "Место"
+
+#: ../js/ui/status/location.js:59 ../js/ui/status/location.js:166
+#: ../js/ui/status/rfkill.js:84
+msgid "On"
+msgstr "Укљ."
+
+#: ../js/ui/status/location.js:163 ../js/ui/status/network.js:420
+#: ../js/ui/status/network.js:1260 ../js/ui/status/network.js:1464
 msgid "Off"
 msgstr "Искљ."
 
+#: ../js/ui/status/location.js:164 ../js/ui/status/network.js:1234
+msgid "Turn On"
+msgstr "Укључи"
+
+#: ../js/ui/status/network.js:74
+msgid "<unknown>"
+msgstr "<непознато>"
+
+#: ../js/ui/status/network.js:422
+#| msgid "Connect"
+msgid "Connected"
+msgstr "Повезан"
+
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:386
+#: ../js/ui/status/network.js:426
 msgid "unmanaged"
 msgstr "није управљано"
 
-#: ../js/ui/status/network.js:388
+#: ../js/ui/status/network.js:428
 msgid "disconnecting..."
 msgstr "прекидам везу..."
 
-#: ../js/ui/status/network.js:394 ../js/ui/status/network.js:1160
+#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1362
 msgid "connecting..."
 msgstr "повезујем се..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:397 ../js/ui/status/network.js:1163
+#: ../js/ui/status/network.js:437 ../js/ui/status/network.js:1365
 msgid "authentication required"
 msgstr "потребна је пријава"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:405
+#: ../js/ui/status/network.js:445
 msgid "firmware missing"
 msgstr "недостаје фирмвер"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:409
+#: ../js/ui/status/network.js:449
 msgid "unavailable"
 msgstr "недоступно"
 
-#: ../js/ui/status/network.js:411 ../js/ui/status/network.js:1165
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1367
 msgid "connection failed"
 msgstr "повезивање није успело"
 
-#: ../js/ui/status/network.js:427 ../js/ui/status/network.js:513
-#| msgid "Mobile broadband network password"
+#: ../js/ui/status/network.js:467
+#| msgid "Wi-Fi Settings"
+msgid "Wired Settings"
+msgstr "Подешавања жичане везе"
+
+#: ../js/ui/status/network.js:509 ../js/ui/status/network.js:587
 msgid "Mobile Broadband Settings"
 msgstr "Подешавања мобилне широкопојасне везе"
 
-#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1104
-#| msgid "Disabled"
+#: ../js/ui/status/network.js:551 ../js/ui/status/network.js:1258
 msgid "Hardware Disabled"
 msgstr "Уређај је искључен"
 
-#: ../js/ui/status/network.js:696
+#: ../js/ui/status/network.js:595
+msgid "Use as Internet connection"
+msgstr "Користи као Интернет везу"
+
+#: ../js/ui/status/network.js:776
+#| msgid "Airplane Mode"
+msgid "Airplane Mode is On"
+msgstr "Режим у авиону је укључен"
+
+#: ../js/ui/status/network.js:777
+msgid "Wi-Fi is disabled when airplane mode is on."
+msgstr "Бежична веза је искључена када је укључен режим у авиону."
+
+#: ../js/ui/status/network.js:778
+#| msgid "Airplane Mode"
+msgid "Turn Off Airplane Mode"
+msgstr "Искључи режим у авиону"
+
+#: ../js/ui/status/network.js:787
+#| msgid "Wi-Fi Settings"
+msgid "Wi-Fi is Off"
+msgstr "Бежична веза је искључена"
+
+#: ../js/ui/status/network.js:788
+msgid "Wi-Fi needs to be turned on in order to connect to a network."
+msgstr "Бежична веза треба бити укључена да бисте се повезали на мрежу."
+
+#: ../js/ui/status/network.js:789
+#| msgid "Turn On"
+msgid "Turn On Wi-Fi"
+msgstr "Укључи бежичну везу"
+
+#: ../js/ui/status/network.js:814
 msgid "Wi-Fi Networks"
 msgstr "Бежичне мреже"
 
-#: ../js/ui/status/network.js:698
+#: ../js/ui/status/network.js:816
 msgid "Select a network"
 msgstr "Изаберите мрежу"
 
-#: ../js/ui/status/network.js:722
+#: ../js/ui/status/network.js:845
 msgid "No Networks"
 msgstr "Нема мрежа"
 
-#: ../js/ui/status/network.js:991
+#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:103
+msgid "Use hardware switch to turn off"
+msgstr "Користи физички прекидач за искључивање"
+
+#: ../js/ui/status/network.js:1136
 msgid "Select Network"
 msgstr "Изабери мрежу"
 
-#: ../js/ui/status/network.js:997
-#| msgid "Settings"
+#: ../js/ui/status/network.js:1142
 msgid "Wi-Fi Settings"
 msgstr "Подешавања бежичне везе"
 
-#: ../js/ui/status/network.js:1085
-msgid "Turn On"
-msgstr "Укључи"
+#: ../js/ui/status/network.js:1251
+msgid "Hotspot Active"
+msgstr "Врућа тачка је радна"
 
-#: ../js/ui/status/network.js:1108
+#: ../js/ui/status/network.js:1254
 #| msgid "Connect"
-msgid "Not Connected"
-msgstr "Неповезан"
+msgid "Connecting"
+msgstr "Повезујем се"
 
-#: ../js/ui/status/network.js:1228
+#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:88
+msgid "Network Settings"
+msgstr "Подешавања мреже"
+
+#: ../js/ui/status/network.js:1435
+#| msgid "Settings"
+msgid "VPN Settings"
+msgstr "ВПН подешавања"
+
+#: ../js/ui/status/network.js:1454
 msgid "VPN"
 msgstr "ВПН"
 
-#: ../js/ui/status/network.js:1368
+#: ../js/ui/status/network.js:1607
 msgid "Network Manager"
 msgstr "Управник мреже"
 
-#: ../js/ui/status/network.js:1407
+#: ../js/ui/status/network.js:1646
 msgid "Connection failed"
 msgstr "Повезивање није успело"
 
-#: ../js/ui/status/network.js:1408
+#: ../js/ui/status/network.js:1647
 msgid "Activation of network connection failed"
 msgstr "Активирање мрежне везе није успело"
 
-#: ../js/ui/status/power.js:46
-msgid "Battery"
-msgstr "Батерија"
-
-#: ../js/ui/status/power.js:47
+#: ../js/ui/status/power.js:49
 msgid "Power Settings"
 msgstr "Подешавања напајања"
 
-#: ../js/ui/status/power.js:63
+#: ../js/ui/status/power.js:65
 msgid "Fully Charged"
 msgstr "Потпуно пуна"
 
-#: ../js/ui/status/power.js:69 ../js/ui/status/power.js:86
+#: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
 msgid "Estimating…"
 msgstr "Приближно…"
 
-#: ../js/ui/status/power.js:77
+#: ../js/ui/status/power.js:86
 #, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "Преостаје %d:%02d (%d%%)"
 
-#: ../js/ui/status/power.js:82
+#: ../js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d:%02d до краја пуњења (%d%%)"
 
-#: ../js/ui/status/rfkill.js:43
+#: ../js/ui/status/power.js:119
+msgid "UPS"
+msgstr "Резервно напајање"
+
+#: ../js/ui/status/power.js:121
+msgid "Battery"
+msgstr "Батерија"
+
+#: ../js/ui/status/rfkill.js:82
 msgid "Airplane Mode"
 msgstr "Режим у авиону"
 
-#: ../js/ui/status/rfkill.js:45
-msgid "On"
-msgstr "Укљ."
-
-#: ../js/ui/status/rfkill.js:49
-msgid "Network Settings"
-msgstr "Подешавања мреже"
-
-#: ../js/ui/status/system.js:305
+#: ../js/ui/status/system.js:314
 msgid "Switch User"
 msgstr "Промени корисника"
 
-#: ../js/ui/status/system.js:310
+#: ../js/ui/status/system.js:319
 msgid "Log Out"
 msgstr "Одјави ме"
 
-#: ../js/ui/status/system.js:329
+#: ../js/ui/status/system.js:338
 msgid "Orientation Lock"
 msgstr "Катанац окренутости"
 
-#: ../js/ui/status/system.js:337
+#: ../js/ui/status/system.js:346
 msgid "Suspend"
 msgstr "Обустави"
 
-#: ../js/ui/status/system.js:340
+#: ../js/ui/status/system.js:349
 msgid "Power Off"
 msgstr "Искључи"
 
@@ -1579,31 +1711,18 @@ msgstr "Пријавите се као други корсник"
 msgid "Unlock Window"
 msgstr "Откључај прозор"
 
-#: ../js/ui/viewSelector.js:104
+#: ../js/ui/viewSelector.js:100
 msgid "Applications"
 msgstr "Програми"
 
-#: ../js/ui/viewSelector.js:108
+#: ../js/ui/viewSelector.js:104
 msgid "Search"
 msgstr "Тражи"
 
-#: ../js/ui/wanda.js:77
-#, javascript-format
-msgid ""
-"Sorry, no wisdom for you today:\n"
-"%s"
-msgstr ""
-"Извините, данас за вас нема мудрости:\n"
-"%s"
-
-#: ../js/ui/wanda.js:81
-#, javascript-format
-msgid "%s the Oracle says"
-msgstr "Пророк је рекао %s"
-
 #: ../js/ui/windowAttentionHandler.js:19
 #, javascript-format
-msgid "'%s' is ready"
+#| msgid "'%s' is ready"
+msgid "“%s” is ready"
 msgstr "„%s“ је спреман"
 
 #: ../js/ui/windowManager.js:56
@@ -1632,7 +1751,7 @@ msgstr[3] "Измене подешавања ће бити враћене за %
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
-msgstr "Еволуција календар"
+msgstr "Календар Еволуције"
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -1660,26 +1779,27 @@ msgstr[3] "%u улаз"
 msgid "System Sounds"
 msgstr "Системски звуци"
 
-#: ../src/main.c:353
+#: ../src/main.c:349
 msgid "Print version"
 msgstr "Исписује издање"
 
-#: ../src/main.c:359
+#: ../src/main.c:355
 msgid "Mode used by GDM for login screen"
 msgstr "Који режим користи ГДМ за екран пријављивања"
 
-#: ../src/main.c:365
+#: ../src/main.c:361
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Користи нарочит режим, нпр. „gdm“ за екран пријављивања"
 
-#: ../src/main.c:371
+#: ../src/main.c:367
 msgid "List possible modes"
 msgstr "Исписује могуће режиме"
 
-#: ../src/shell-app.c:644
+#: ../src/shell-app.c:666
 #, c-format
-msgid "Failed to launch '%s'"
-msgstr "Не могу да покренем „%s“"
+#| msgid "Failed to launch '%s'"
+msgid "Failed to launch “%s”"
+msgstr "Нисам успео да покренем „%s“"
 
 #: ../src/shell-keyring-prompt.c:714
 msgid "Passwords do not match."
@@ -1692,3 +1812,79 @@ msgstr "Лозинка не може бити празна"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Корисник је одбацио прозорче за потврђивање идентитета"
+
+#~ msgid "List of categories that should be displayed as folders"
+#~ msgstr "Списак категорија које треба да буду приказане као фасцикле"
+
+#~ msgid ""
+#~ "Each category name in this list will be represented as folder in the "
+#~ "application view, rather than being displayed inline in the main view."
+#~ msgstr ""
+#~ "Назив сваке категорије на списку ће бити представљен као фасцикла у "
+#~ "прегледу програма, уместо да буде приказан непосредно у главном прегледу."
+
+#~ msgid "<b>%A</b>, <b>%H:%M</b>"
+#~ msgstr "<b>%A</b>, у <b>%H:%M</b>"
+
+#~ msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+#~ msgstr "<b>%d</b>. <b>%B</b> у <b>%H:%M</b>"
+
+#~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+#~ msgstr "<b>%d</b>. <b>%B</b> <b>%Y</b>. у <b>%H:%M</b>"
+
+#~ msgid "Authorization request from %s"
+#~ msgstr "Захтев за овлашћење са „%s“"
+
+#~ msgid "Device %s wants to pair with this computer"
+#~ msgstr "Уређај „%s“ жели да се упари са овим рачунаром"
+
+#~ msgid "Allow"
+#~ msgstr "Дозволи"
+
+#~ msgid "Deny"
+#~ msgstr "Забрани"
+
+#~ msgid "Device %s wants access to the service '%s'"
+#~ msgstr "Уређај „%s“ жели приступ услузи „%s“"
+
+#~ msgid "Always grant access"
+#~ msgstr "Увек дозволи приступ"
+
+#~ msgid "Grant this time only"
+#~ msgstr "Одобри само овај пут"
+
+#~ msgid "Reject"
+#~ msgstr "Одбиј"
+
+#~ msgid "Pairing confirmation for %s"
+#~ msgstr "Упарујем потврду за „%s“"
+
+#~ msgid ""
+#~ "Please confirm whether the Passkey '%06d' matches the one on the device."
+#~ msgstr ""
+#~ "Молим потврдите да ли се пропусни кључ „%06d“ подудара са оним на уређају."
+
+#~ msgid "Matches"
+#~ msgstr "Подудара се"
+
+#~ msgid "Does not match"
+#~ msgstr "Не подудара се"
+
+#~ msgid "Pairing request for %s"
+#~ msgstr "Захтев за упаривање за „%s“"
+
+#~ msgid "Please enter the PIN mentioned on the device."
+#~ msgstr "Молим унесите ПИН назначен на уређају."
+
+#~ msgid "OK"
+#~ msgstr "У реду"
+
+#~ msgid ""
+#~ "Sorry, no wisdom for you today:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Извините, данас за вас нема мудрости:\n"
+#~ "%s"
+
+#~ msgid "%s the Oracle says"
+#~ msgstr "Пророк је рекао %s"
