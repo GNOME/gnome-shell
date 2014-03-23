@@ -2864,6 +2864,7 @@ StBorderImage *
 st_theme_node_get_border_image (StThemeNode *node)
 {
   int i;
+  int scale_factor;
 
   if (node->border_image_computed)
     return node->border_image;
@@ -2872,6 +2873,7 @@ st_theme_node_get_border_image (StThemeNode *node)
   node->border_image_computed = TRUE;
 
   ensure_properties (node);
+  g_object_get (node->context, "scale-factor", &scale_factor, NULL);
 
   for (i = node->n_properties - 1; i >= 0; i--)
     {
@@ -2978,7 +2980,8 @@ st_theme_node_get_border_image (StThemeNode *node)
             goto next_property;
 
           node->border_image = st_border_image_new (filename,
-                                                    border_top, border_right, border_bottom, border_left);
+                                                    border_top, border_right, border_bottom, border_left,
+                                                    scale_factor);
 
           g_free (filename);
 

@@ -43,7 +43,8 @@ StBorderImage *st_border_image_new (const char *filename,
                                     int         border_top,
                                     int         border_right,
                                     int         border_bottom,
-                                    int         border_left);
+                                    int         border_left,
+                                    int         scale_factor);
 
 const char *st_border_image_get_filename (StBorderImage *image);
 void        st_border_image_get_borders  (StBorderImage *image,

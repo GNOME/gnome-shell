@@ -32,6 +32,8 @@ struct _StBorderImage {
   int border_right;
   int border_bottom;
   int border_left;
+
+  int scale_factor;
 };
 
 struct _StBorderImageClass {
@@ -69,7 +71,8 @@ st_border_image_new (const char *filename,
                        int         border_top,
                        int         border_right,
                        int         border_bottom,
-                       int         border_left)
+                       int         border_left,
+                       int         scale_factor)
 {
   StBorderImage *image;
 
@@ -80,6 +83,7 @@ st_border_image_new (const char *filename,
   image->border_right = border_right;
   image->border_bottom = border_bottom;
   image->border_left = border_left;
+  image->scale_factor = scale_factor;
 
   return image;
 }
@@ -102,13 +106,13 @@ st_border_image_get_borders (StBorderImage *image,
   g_return_if_fail (ST_IS_BORDER_IMAGE (image));
 
   if (border_top)
-    *border_top = image->border_top;
+    *border_top = image->border_top * image->scale_factor;
   if (border_right)
-    *border_right = image->border_right;
+    *border_right = image->border_right * image->scale_factor;
   if (border_bottom)
-    *border_bottom = image->border_bottom;
+    *border_bottom = image->border_bottom * image->scale_factor;
   if (border_left)
-    *border_left = image->border_left;
+    *border_left = image->border_left * image->scale_factor;
 }
 
 /**
