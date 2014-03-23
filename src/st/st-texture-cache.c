@@ -265,6 +265,7 @@ typedef struct {
 
   guint width;
   guint height;
+  guint scale;
   GSList *textures;
 
   GtkIconInfo *icon_info;
@@ -510,7 +511,7 @@ load_pixbuf_thread (GSimpleAsyncResult *result,
   g_assert (data != NULL);
   g_assert (data->uri != NULL);
 
-  pixbuf = impl_load_pixbuf_file (data->uri, data->width, data->height, 1, &error);
+  pixbuf = impl_load_pixbuf_file (data->uri, data->width, data->height, data->scale, &error);
 
   if (error != NULL)
     {
@@ -1006,7 +1007,8 @@ load_gicon_with_colors (StTextureCache    *cache,
       request->policy = policy;
       request->colors = colors ? st_icon_colors_ref (colors) : NULL;
       request->icon_info = info;
-      request->width = request->height = size * scale;
+      request->width = request->height = size;
+      request->scale = scale;
       request->enforced_square = TRUE;
 
       load_texture_async (cache, request);
@@ -1280,6 +1282,7 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
  * @uri: uri of the image file from which to create a pixbuf
  * @available_width: available width for the image, can be -1 if not limited
  * @available_height: available height for the image, can be -1 if not limited
+ * @scale: scale factor of the display
  *
  * Asynchronously load an image.   Initially, the returned texture will have a natural
  * size of zero.  At some later point, either the image will be loaded successfully
@@ -1291,7 +1294,8 @@ ClutterActor *
 st_texture_cache_load_uri_async (StTextureCache *cache,
                                  const gchar    *uri,
                                  int             available_width,
-                                 int             available_height)
+                                 int             available_height,
+                                 int             scale)
 {
   ClutterActor *texture;
   AsyncTextureLoadData *request;
@@ -1320,6 +1324,7 @@ st_texture_cache_load_uri_async (StTextureCache *cache,
       request->policy = policy;
       request->width = available_width;
       request->height = available_height;
+      request->scale = scale;
 
       load_texture_async (cache, request);
     }

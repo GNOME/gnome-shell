@@ -90,7 +90,8 @@ ClutterActor *st_texture_cache_load_gicon (StTextureCache *cache,
 ClutterActor *st_texture_cache_load_uri_async (StTextureCache    *cache,
                                                const gchar       *uri,
                                                int                available_width,
-                                               int                available_height);
+                                               int                available_height,
+                                               int                scale);
 
 CoglHandle    st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
                                                           const gchar    *file_path,

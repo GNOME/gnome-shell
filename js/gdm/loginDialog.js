@@ -537,9 +537,12 @@ const LoginDialog = new Lang.Class({
             return;
 
         this._logoBin.destroy_all_children();
-        if (this._logoFileUri)
+        if (this._logoFileUri) {
+            let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
             this._logoBin.add_child(this._textureCache.load_uri_async(this._logoFileUri,
-                                                                      -1, _LOGO_ICON_HEIGHT));
+                                                                      -1, _LOGO_ICON_HEIGHT,
+                                                                      scaleFactor));
+        }
     },
 
     _updateLogo: function() {
