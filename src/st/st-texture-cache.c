@@ -178,7 +178,7 @@ st_texture_cache_finalize (GObject *object)
   G_OBJECT_CLASS (st_texture_cache_parent_class)->finalize (object);
 }
 
-static gboolean
+static void
 compute_pixbuf_scale (gint      width,
                       gint      height,
                       gint      available_width,
@@ -189,7 +189,10 @@ compute_pixbuf_scale (gint      width,
   int scaled_width, scaled_height;
 
   if (width == 0 || height == 0)
-    return FALSE;
+    {
+      *new_width = *new_height = 0;
+      return;
+    }
 
   if (available_width >= 0 && available_height >= 0)
     {
@@ -225,9 +228,12 @@ compute_pixbuf_scale (gint      width,
     {
       *new_width = scaled_width;
       *new_height = scaled_height;
-      return TRUE;
     }
-  return FALSE;
+  else
+    {
+      *new_width = width;
+      *new_height = height;
+    }
 }
 
 static void
@@ -314,9 +320,12 @@ on_image_size_prepared (GdkPixbufLoader *pixbuf_loader,
   int scaled_width;
   int scaled_height;
 
-  if (compute_pixbuf_scale (width, height, available_width, available_height,
-                            &scaled_width, &scaled_height))
-    gdk_pixbuf_loader_set_size (pixbuf_loader, scaled_width, scaled_height);
+  compute_pixbuf_scale (width, height, available_width, available_height,
+                        &scaled_width, &scaled_height);
+
+  gdk_pixbuf_loader_set_size (pixbuf_loader,
+                              scaled_width,
+                              scaled_height);
 }
 
 static GdkPixbuf *
