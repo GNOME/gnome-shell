@@ -1093,6 +1093,7 @@ ensure_monitor_for_uri (StTextureCache *cache,
 typedef struct {
   gchar *path;
   gint   grid_width, grid_height;
+  gint   scale_factor;
   ClutterActor *actor;
   GFunc load_callback;
   gpointer load_callback_data;
@@ -1143,6 +1144,18 @@ free_glist_unref_gobjects (gpointer p)
 }
 
 static void
+on_loader_size_prepared (GdkPixbufLoader *loader,
+                         gint width,
+                         gint height,
+                         gpointer user_data)
+{
+  AsyncImageData *data = user_data;
+  gdk_pixbuf_loader_set_size (loader,
+                              width * data->scale_factor,
+                              height * data->scale_factor);
+}
+
+static void
 load_sliced_image (GSimpleAsyncResult *result,
                    GObject *object,
                    GCancellable *cancellable)
@@ -1151,29 +1164,47 @@ load_sliced_image (GSimpleAsyncResult *result,
   GList *res = NULL;
   GdkPixbuf *pix;
   gint width, height, y, x;
+  GdkPixbufLoader *loader;
+  gchar *buffer = NULL;
+  gsize length;
 
   g_assert (!cancellable);
 
   data = g_object_get_data (G_OBJECT (result), "load_sliced_image");
   g_assert (data);
 
-  if (!(pix = gdk_pixbuf_new_from_file (data->path, NULL)))
-    return;
+  loader = gdk_pixbuf_loader_new ();
+  g_signal_connect (loader, "size-prepared", G_CALLBACK (on_loader_size_prepared), data);
 
+  if (!g_file_get_contents (data->path, &buffer, &length, NULL))
+    goto out;
+
+  if (!gdk_pixbuf_loader_write (loader, buffer, length, NULL))
+    goto out;
+
+  if (!gdk_pixbuf_loader_close (loader, NULL))
+    goto out;
+
+  pix = gdk_pixbuf_loader_get_pixbuf (loader);
   width = gdk_pixbuf_get_width (pix);
   height = gdk_pixbuf_get_height (pix);
-  for (y = 0; y < height; y += data->grid_height)
+  for (y = 0; y < height; y += data->grid_height * data->scale_factor)
     {
-      for (x = 0; x < width; x += data->grid_width)
+      for (x = 0; x < width; x += data->grid_width * data->scale_factor)
         {
-          GdkPixbuf *pixbuf = gdk_pixbuf_new_subpixbuf (pix, x, y, data->grid_width, data->grid_height);
+          GdkPixbuf *pixbuf = gdk_pixbuf_new_subpixbuf (pix, x, y,
+                                                        data->grid_width * data->scale_factor,
+                                                        data->grid_height * data->scale_factor);
           g_assert (pixbuf != NULL);
           res = g_list_append (res, pixbuf);
         }
     }
-  /* We don't need the original pixbuf anymore, though the subpixbufs
-     will hold a reference. */
-  g_object_unref (pix);
+
+ out:
+  /* We don't need the original pixbuf anymore, which is owned by the loader,
+   * though the subpixbufs will hold a reference. */
+  g_object_unref (loader);
+  g_free (buffer);
   g_simple_async_result_set_op_res_gpointer (result, res, free_glist_unref_gobjects);
 }
 
@@ -1183,6 +1214,7 @@ load_sliced_image (GSimpleAsyncResult *result,
  * @path: Path to a filename
  * @grid_width: Width in pixels
  * @grid_height: Height in pixels
+ * @scale: Scale factor of the display
  * @load_callback: (scope async) (allow-none): Function called when the image is loaded, or %NULL
  * @user_data: Data to pass to the load callback
  *
@@ -1198,6 +1230,7 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
                                     const gchar    *path,
                                     gint            grid_width,
                                     gint            grid_height,
+                                    gint            scale,
                                     GFunc           load_callback,
                                     gpointer        user_data)
 {
@@ -1208,6 +1241,7 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
   data = g_new0 (AsyncImageData, 1);
   data->grid_width = grid_width;
   data->grid_height = grid_height;
+  data->scale_factor = scale;
   data->path = g_strdup (path);
   data->actor = actor;
   data->load_callback = load_callback;

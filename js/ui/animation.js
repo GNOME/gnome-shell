@@ -21,7 +21,9 @@ const Animation = new Lang.Class({
         this._isPlaying = false;
         this._timeoutId = 0;
         this._frame = 0;
-        this._animations = St.TextureCache.get_default().load_sliced_image (filename, width, height,
+
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        this._animations = St.TextureCache.get_default().load_sliced_image (filename, width, height, scaleFactor,
                                                                             Lang.bind(this, this._animationsLoaded));
         this.actor.set_child(this._animations);
     },

@@ -73,6 +73,7 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
                                     const gchar    *path,
                                     gint            grid_width,
                                     gint            grid_height,
+                                    gint            scale,
                                     GFunc           load_callback,
                                     gpointer        user_data);
 
