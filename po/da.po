@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-23 23:29+0100\n"
-"PO-Revision-Date: 2014-03-23 23:28+0100\n"
+"POT-Creation-Date: 2014-03-23 23:36+0100\n"
+"PO-Revision-Date: 2014-03-23 23:35+0100\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -753,75 +753,73 @@ msgstr "Slå lyd fra"
 
 #. Translators: Time in 24h format
 #: ../js/ui/components/telepathyClient.js:955
-#, fuzzy
 msgid "%H\\u2236%M"
 msgstr "%H\\u2236%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
 #: ../js/ui/components/telepathyClient.js:962
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Yesterday, %H\\u2236%M"
-msgstr "I går, %H∶%M"
+msgstr "I går, %H\\u2236%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
 #: ../js/ui/components/telepathyClient.js:969
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%A, %H\\u2236%M"
-msgstr "%H\\u2236%M"
+msgstr "%A, %H\\u2236%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
 #: ../js/ui/components/telepathyClient.js:976
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %d, %H\\u2236%M"
-msgstr "%H\\u2236%M"
+msgstr "%d. %B, %H\\u2236%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
 #: ../js/ui/components/telepathyClient.js:982
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %d %Y, %H\\u2236%M"
-msgstr "%d. %B %Y, %H∶%M"
+msgstr "%d. %B %Y, %H\\u2236%M"
 
 #. Translators: Time in 24h format
 #: ../js/ui/components/telepathyClient.js:991
-#, fuzzy
 msgid "%l\\u2236%M %p"
 msgstr "%H\\u2236%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: ../js/ui/components/telepathyClient.js:998
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Yesterday, %l\\u2236%M %p"
-msgstr "I går, %l∶%M %p"
+msgstr "I går, %l\\u2236%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: ../js/ui/components/telepathyClient.js:1005
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%A, %l\\u2236%M %p"
-msgstr "%A, %l∶%M %p"
+msgstr "%A, %l\\u2236%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
 #: ../js/ui/components/telepathyClient.js:1012
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %d, %l\\u2236%M %p"
-msgstr "%d. %B, %l∶%M %p"
+msgstr "%d. %B, %l\\u2236%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
 #: ../js/ui/components/telepathyClient.js:1018
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %d %Y, %l\\u2236%M %p"
-msgstr "%d. %B, %l∶%M %p"
+msgstr "%d. %B %Y, %l\\u2236%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1654,15 +1652,15 @@ msgstr "Udregner…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:86
-#, fuzzy, c-format
+#, c-format
 msgid "%d\\u2236%02d Remaining (%d%%)"
-msgstr "%d∶%02d tilbage (%d%%)"
+msgstr "%d\\u2236%02d tilbage (%d%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:91
-#, fuzzy, c-format
+#, c-format
 msgid "%d\\u2236%02d Until Full (%d%%)"
-msgstr "%d∶%02d indtil fuld (%d%%)"
+msgstr "%d\\u2236%02d indtil fuld (%d%%)"
 
 #: ../js/ui/status/power.js:119
 msgid "UPS"
