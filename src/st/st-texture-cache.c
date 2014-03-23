@@ -246,10 +246,11 @@ rgba_from_clutter (GdkRGBA      *rgba,
   rgba->alpha = color->alpha / 255.;
 }
 
-/* A private structure for keeping width and height. */
+/* A private structure for keeping width, height and scale. */
 typedef struct {
   int width;
   int height;
+  int scale;
 } Dimensions;
 
 /* This struct corresponds to a request for an texture.
@@ -317,6 +318,7 @@ on_image_size_prepared (GdkPixbufLoader *pixbuf_loader,
   Dimensions *available_dimensions = data;
   int available_width = available_dimensions->width;
   int available_height = available_dimensions->height;
+  int scale_factor = available_dimensions->scale;
   int scaled_width;
   int scaled_height;
 
@@ -324,8 +326,8 @@ on_image_size_prepared (GdkPixbufLoader *pixbuf_loader,
                         &scaled_width, &scaled_height);
 
   gdk_pixbuf_loader_set_size (pixbuf_loader,
-                              scaled_width,
-                              scaled_height);
+                              scaled_width * scale_factor,
+                              scaled_height * scale_factor);
 }
 
 static GdkPixbuf *
@@ -333,6 +335,7 @@ impl_load_pixbuf_data (const guchar   *data,
                        gsize           size,
                        int             available_width,
                        int             available_height,
+                       int             scale,
                        GError        **error)
 {
   GdkPixbufLoader *pixbuf_loader = NULL;
@@ -346,6 +349,7 @@ impl_load_pixbuf_data (const guchar   *data,
 
   available_dimensions.width = available_width;
   available_dimensions.height = available_height;
+  available_dimensions.scale = scale;
   g_signal_connect (pixbuf_loader, "size-prepared",
                     G_CALLBACK (on_image_size_prepared), &available_dimensions);
 
@@ -379,6 +383,7 @@ impl_load_pixbuf_data (const guchar   *data,
       /* We know that the image will later be rotated, so we reverse the available dimensions. */
       available_dimensions.width = available_height;
       available_dimensions.height = available_width;
+      available_dimensions.scale = scale;
       g_signal_connect (pixbuf_loader, "size-prepared",
                         G_CALLBACK (on_image_size_prepared), &available_dimensions);
 
@@ -466,6 +471,7 @@ static GdkPixbuf *
 impl_load_pixbuf_file (const char     *uri,
                        int             available_width,
                        int             available_height,
+                       int             scale,
                        GError        **error)
 {
   GdkPixbuf *pixbuf = NULL;
@@ -481,6 +487,7 @@ impl_load_pixbuf_file (const char     *uri,
     {
       pixbuf = impl_load_pixbuf_data ((const guchar *) contents, size,
                                       available_width, available_height,
+                                      scale,
                                       error);
     }
 
@@ -503,7 +510,7 @@ load_pixbuf_thread (GSimpleAsyncResult *result,
   g_assert (data != NULL);
   g_assert (data->uri != NULL);
 
-  pixbuf = impl_load_pixbuf_file (data->uri, data->width, data->height, &error);
+  pixbuf = impl_load_pixbuf_file (data->uri, data->width, data->height, 1, &error);
 
   if (error != NULL)
     {
@@ -1328,6 +1335,7 @@ st_texture_cache_load_uri_sync_to_cogl_texture (StTextureCache *cache,
                                                 const gchar    *uri,
                                                 int             available_width,
                                                 int             available_height,
+                                                int             scale,
                                                 GError         **error)
 {
   CoglHandle texdata;
@@ -1340,7 +1348,7 @@ st_texture_cache_load_uri_sync_to_cogl_texture (StTextureCache *cache,
 
   if (texdata == NULL)
     {
-      pixbuf = impl_load_pixbuf_file (uri, available_width, available_height, error);
+      pixbuf = impl_load_pixbuf_file (uri, available_width, available_height, scale, error);
       if (!pixbuf)
         goto out;
 
@@ -1369,6 +1377,7 @@ st_texture_cache_load_uri_sync_to_cairo_surface (StTextureCache        *cache,
                                                  const gchar           *uri,
                                                  int                    available_width,
                                                  int                    available_height,
+                                                 int                    scale,
                                                  GError               **error)
 {
   cairo_surface_t *surface;
@@ -1381,7 +1390,7 @@ st_texture_cache_load_uri_sync_to_cairo_surface (StTextureCache        *cache,
 
   if (surface == NULL)
     {
-      pixbuf = impl_load_pixbuf_file (uri, available_width, available_height, error);
+      pixbuf = impl_load_pixbuf_file (uri, available_width, available_height, scale, error);
       if (!pixbuf)
         goto out;
 
@@ -1408,6 +1417,7 @@ out:
  * st_texture_cache_load_file_to_cogl_texture:
  * @cache: A #StTextureCache
  * @file_path: Path to a file in supported image format
+ * @scale: Scale factor of the display
  *
  * This function synchronously loads the given file path
  * into a COGL texture.  On error, a warning is emitted
@@ -1417,7 +1427,8 @@ out:
  */
 CoglHandle
 st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
-                                            const gchar    *file_path)
+                                            const gchar    *file_path,
+                                            gint            scale)
 {
   CoglHandle texture;
   GFile *file;
@@ -1428,7 +1439,7 @@ st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
   uri = g_file_get_uri (file);
 
   texture = st_texture_cache_load_uri_sync_to_cogl_texture (cache, ST_TEXTURE_CACHE_POLICY_FOREVER,
-                                                            uri, -1, -1, &error);
+                                                            uri, -1, -1, scale, &error);
   g_object_unref (file);
   g_free (uri);
 
@@ -1445,6 +1456,7 @@ st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
  * st_texture_cache_load_file_to_cairo_surface:
  * @cache: A #StTextureCache
  * @file_path: Path to a file in supported image format
+ * @scale: Scale factor of the display
  *
  * This function synchronously loads the given file path
  * into a cairo surface.  On error, a warning is emitted
@@ -1454,7 +1466,8 @@ st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
  */
 cairo_surface_t *
 st_texture_cache_load_file_to_cairo_surface (StTextureCache *cache,
-                                             const gchar    *file_path)
+                                             const gchar    *file_path,
+                                             gint            scale)
 {
   cairo_surface_t *surface;
   GFile *file;
@@ -1465,7 +1478,7 @@ st_texture_cache_load_file_to_cairo_surface (StTextureCache *cache,
   uri = g_file_get_uri (file);
 
   surface = st_texture_cache_load_uri_sync_to_cairo_surface (cache, ST_TEXTURE_CACHE_POLICY_FOREVER,
-                                                             uri, -1, -1, &error);
+                                                             uri, -1, -1, scale, &error);
   g_object_unref (file);
   g_free (uri);
 

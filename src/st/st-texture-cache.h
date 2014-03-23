@@ -93,10 +93,12 @@ ClutterActor *st_texture_cache_load_uri_async (StTextureCache    *cache,
                                                int                available_height);
 
 CoglHandle    st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
-                                                          const gchar    *file_path);
+                                                          const gchar    *file_path,
+                                                          gint            scale);
 
 cairo_surface_t *st_texture_cache_load_file_to_cairo_surface (StTextureCache *cache,
-                                                              const gchar    *file_path);
+                                                              const gchar    *file_path,
+                                                              gint            scale);
 
 /**
  * StTextureCacheLoader: (skip)

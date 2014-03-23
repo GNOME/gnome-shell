@@ -606,12 +606,14 @@ create_cairo_pattern_of_background_image (StThemeNode *node,
   gdouble background_image_width, background_image_height;
   gdouble x, y;
   gdouble scale_w, scale_h;
+  int scale_factor;
 
   file = st_theme_node_get_background_image (node);
 
   texture_cache = st_texture_cache_get_default ();
 
-  surface = st_texture_cache_load_file_to_cairo_surface (texture_cache, file);
+  g_object_get (node->context, "scale-factor", &scale_factor, NULL);
+  surface = st_texture_cache_load_file_to_cairo_surface (texture_cache, file, scale_factor);
 
   if (surface == NULL)
     return NULL;
@@ -1301,8 +1303,12 @@ st_theme_node_load_border_image (StThemeNode *node)
 
       const char *filename;
       filename = st_border_image_get_filename (border_image);
+
+      int scale_factor;
+      g_object_get (node->context, "scale-factor", &scale_factor, NULL);
+
       node->border_slices_texture = st_texture_cache_load_file_to_cogl_texture (st_texture_cache_get_default (),
-                                                                                filename);
+                                                                                filename, scale_factor);
       if (node->border_slices_texture == COGL_INVALID_HANDLE)
         goto out;
 
@@ -1347,9 +1353,12 @@ st_theme_node_load_background_image (StThemeNode *node)
       if (background_image == NULL)
         goto out;
 
+      int scale_factor;
+      g_object_get (node->context, "scale-factor", &scale_factor, NULL);
+
       background_image_shadow_spec = st_theme_node_get_background_image_shadow (node);
       node->background_texture = st_texture_cache_load_file_to_cogl_texture (st_texture_cache_get_default (),
-                                                                             background_image);
+                                                                             background_image, scale_factor);
       if (node->background_texture == COGL_INVALID_HANDLE)
         goto out;
 
