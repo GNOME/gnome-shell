@@ -303,7 +303,6 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   pid_t pid;
   char **env;
   char *fd_string;
-  char *log_path;
   char *args[10];
   GError *error;
 
@@ -364,15 +363,12 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   g_free (fd_string);
 
   manager->display_name = g_strdup_printf (":%d", manager->display_index);
-  log_path = g_build_filename (g_get_user_cache_dir (), "xwayland.log", NULL);
 
   args[0] = XWAYLAND_PATH;
   args[1] = manager->display_name;
   args[2] = "-wayland";
   args[3] = "-rootless";
   args[4] = "-noreset";
-  args[5] = "-logfile";
-  args[6] = log_path;
   args[7] = "-nolisten";
   args[8] = "all";
   args[9] = NULL;
@@ -382,9 +378,7 @@ meta_xwayland_start (MetaXWaylandManager *manager,
                      args,
                      env,
                      G_SPAWN_LEAVE_DESCRIPTORS_OPEN |
-                     G_SPAWN_DO_NOT_REAP_CHILD |
-                     G_SPAWN_STDOUT_TO_DEV_NULL |
-                     G_SPAWN_STDERR_TO_DEV_NULL,
+                     G_SPAWN_DO_NOT_REAP_CHILD,
                      uncloexec,
                      GINT_TO_POINTER (sp[1]),
                      &pid,
@@ -404,7 +398,6 @@ meta_xwayland_start (MetaXWaylandManager *manager,
     }
 
   g_strfreev (env);
-  g_free (log_path);
 
   /* We need to run a mainloop until we know xwayland has a binding
    * for our xserver interface at which point we can assume it's
