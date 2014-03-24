@@ -930,7 +930,6 @@ clutter.vsenums_c:
 EXTRA_DIST += \
 	clutter-config.h.win32	\
 	clutter-config.h.win32_GDK	\
-	clutter.symbols	\
 	$(NULL)
 
 # Let the VS9/VS10 Project files be cleared out before they are re-expanded...
