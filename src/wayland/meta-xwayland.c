@@ -372,14 +372,22 @@ meta_xwayland_start (MetaXWaylandManager *manager,
                       "-nolisten",
                       "all",
                       NULL };
+    int flags = 0;
+
+    flags |= G_SPAWN_LEAVE_DESCRIPTORS_OPEN;
+    flags |= G_SPAWN_DO_NOT_REAP_CHILD;
+
+    /* xwayland, please. */
+    if (getenv ("XWAYLAND_STFU"))
+      {
+        flags |= G_SPAWN_STDOUT_TO_DEV_NULL;
+        flags |= G_SPAWN_STDERR_TO_DEV_NULL;
+      }
 
     if (g_spawn_async (NULL, /* cwd */
                        args,
                        env,
-                       G_SPAWN_LEAVE_DESCRIPTORS_OPEN |
-                       G_SPAWN_DO_NOT_REAP_CHILD |
-                       G_SPAWN_STDOUT_TO_DEV_NULL |
-                       G_SPAWN_STDERR_TO_DEV_NULL,
+                       flags,
                        uncloexec,
                        GINT_TO_POINTER (sp[1]),
                        &pid,
