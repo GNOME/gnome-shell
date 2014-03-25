@@ -377,7 +377,9 @@ meta_xwayland_start (MetaXWaylandManager *manager,
                        args,
                        env,
                        G_SPAWN_LEAVE_DESCRIPTORS_OPEN |
-                       G_SPAWN_DO_NOT_REAP_CHILD,
+                       G_SPAWN_DO_NOT_REAP_CHILD |
+                       G_SPAWN_STDOUT_TO_DEV_NULL |
+                       G_SPAWN_STDERR_TO_DEV_NULL,
                        uncloexec,
                        GINT_TO_POINTER (sp[1]),
                        &pid,
