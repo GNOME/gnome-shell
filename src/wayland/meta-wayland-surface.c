@@ -83,8 +83,8 @@ surface_set_buffer (MetaWaylandSurface *surface,
 
   if (surface->buffer)
     {
-      meta_wayland_buffer_unref (surface->buffer);
       wl_list_remove (&surface->buffer_destroy_listener.link);
+      meta_wayland_buffer_unref (surface->buffer);
     }
 
   surface->buffer = buffer;
