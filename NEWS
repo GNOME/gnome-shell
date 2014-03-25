@@ -1,3 +1,17 @@
+3.12.0
+======
+* gdm: Reset greeter when coming back to login screen [Jasper; #726989]
+
+Contributors:
+  Jasper St. Pierre
+
+Translations:
+  Daniel Martinez [an], Yuri Myasoedov [ru], Inaki Larranaga Murgoitio [eu],
+  Abderrahim Kitouni [ar], Praveen Illa [te], Matej Urbančič [sl],
+  Chao-Hsiung Liao [zh_HK, zh_TW], Frédéric Péters [fr],
+  Мирослав Николић [sr, sr@latin], Ask H. Larsen [da], Kenneth Nielsen [da],
+  Jiro Matsuzawa [ja], Dušan Kazik [sk]
+
 3.11.92
 =======
 * calendar: Grab key focus after changing day [Volker; #725606]
