@@ -303,8 +303,6 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   pid_t pid;
   char **env;
   char *fd_string;
-  char *args[10];
-  GError *error;
 
   wl_global_create (wl_display, &xserver_interface,
 		    META_XSERVER_VERSION,
@@ -364,38 +362,40 @@ meta_xwayland_start (MetaXWaylandManager *manager,
 
   manager->display_name = g_strdup_printf (":%d", manager->display_index);
 
-  args[0] = XWAYLAND_PATH;
-  args[1] = manager->display_name;
-  args[2] = "-wayland";
-  args[3] = "-rootless";
-  args[4] = "-noreset";
-  args[7] = "-nolisten";
-  args[8] = "all";
-  args[9] = NULL;
+  {
+    GError *error = NULL;
+    gchar *args[] = { XWAYLAND_PATH,
+                      manager->display_name,
+                      "-wayland",
+                      "-rootless",
+                      "-noreset",
+                      "-nolisten",
+                      "all",
+                      NULL };
 
-  error = NULL;
-  if (g_spawn_async (NULL, /* cwd */
-                     args,
-                     env,
-                     G_SPAWN_LEAVE_DESCRIPTORS_OPEN |
-                     G_SPAWN_DO_NOT_REAP_CHILD,
-                     uncloexec,
-                     GINT_TO_POINTER (sp[1]),
-                     &pid,
-                     &error))
-    {
-      g_message ("forked X server, pid %d\n", pid);
+    if (g_spawn_async (NULL, /* cwd */
+                       args,
+                       env,
+                       G_SPAWN_LEAVE_DESCRIPTORS_OPEN |
+                       G_SPAWN_DO_NOT_REAP_CHILD,
+                       uncloexec,
+                       GINT_TO_POINTER (sp[1]),
+                       &pid,
+                       &error))
+      {
+        g_message ("forked X server, pid %d\n", pid);
 
-      close (sp[1]);
-      manager->client = wl_client_create (wl_display, sp[0]);
+        close (sp[1]);
+        manager->client = wl_client_create (wl_display, sp[0]);
 
-      manager->pid = pid;
-      g_child_watch_add (pid, xserver_died, NULL);
-    }
-  else
-    {
-      g_error ("Failed to fork for xwayland server: %s", error->message);
-    }
+        manager->pid = pid;
+        g_child_watch_add (pid, xserver_died, NULL);
+      }
+    else
+      {
+        g_error ("Failed to fork for xwayland server: %s", error->message);
+      }
+  }
 
   g_strfreev (env);
 
