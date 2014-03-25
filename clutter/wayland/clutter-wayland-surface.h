@@ -88,21 +88,28 @@ struct _ClutterWaylandSurfaceClass
   gpointer _padding_dummy[8];
 };
 
+CLUTTER_AVAILABLE_IN_1_10
 GType clutter_wayland_surface_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_8
 ClutterActor *clutter_wayland_surface_new               (struct wl_surface *surface);
+CLUTTER_AVAILABLE_IN_1_10
 void          clutter_wayland_surface_set_surface       (ClutterWaylandSurface *self,
                                                          struct wl_surface *surface);
+CLUTTER_AVAILABLE_IN_1_10
 struct wl_surface *clutter_wayland_surface_get_surface  (ClutterWaylandSurface *self);
+CLUTTER_AVAILABLE_IN_1_8
 gboolean      clutter_wayland_surface_attach_buffer     (ClutterWaylandSurface *self,
                                                          struct wl_resource *buffer,
                                                          GError **error);
+CLUTTER_AVAILABLE_IN_1_8
 void          clutter_wayland_surface_damage_buffer     (ClutterWaylandSurface *self,
                                                          struct wl_resource *buffer,
                                                          gint32 x,
                                                          gint32 y,
                                                          gint32 width,
                                                          gint32 height);
+CLUTTER_AVAILABLE_IN_1_10
 CoglTexture  *clutter_wayland_surface_get_cogl_texture  (ClutterWaylandSurface *self);
 
 G_END_DECLS
