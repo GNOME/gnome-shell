@@ -92,7 +92,13 @@ meta_window_wayland_delete (MetaWindow *window,
 static void
 meta_window_wayland_kill (MetaWindow *window)
 {
-  /* TODO */
+  MetaWaylandSurface *surface = window->surface;
+  struct wl_resource *resource = surface->resource;
+
+  /* Send the client an unrecoverable error to kill the client. */
+  wl_resource_post_error (resource,
+                          WL_DISPLAY_ERROR_NO_MEMORY,
+                          "User requested that we kill you. Sorry. Don't take it too personally.");
 }
 
 static void
