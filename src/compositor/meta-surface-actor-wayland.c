@@ -137,9 +137,20 @@ meta_surface_actor_wayland_get_window (MetaSurfaceActor *actor)
 }
 
 static void
+meta_surface_actor_wayland_dispose (GObject *object)
+{
+  MetaSurfaceActorWayland *self = META_SURFACE_ACTOR_WAYLAND (object);
+
+  meta_surface_actor_wayland_set_buffer (self, NULL);
+
+  G_OBJECT_CLASS (meta_surface_actor_wayland_parent_class)->dispose (object);
+}
+
+static void
 meta_surface_actor_wayland_class_init (MetaSurfaceActorWaylandClass *klass)
 {
   MetaSurfaceActorClass *surface_actor_class = META_SURFACE_ACTOR_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   surface_actor_class->process_damage = meta_surface_actor_wayland_process_damage;
   surface_actor_class->pre_paint = meta_surface_actor_wayland_pre_paint;
@@ -151,6 +162,8 @@ meta_surface_actor_wayland_class_init (MetaSurfaceActorWaylandClass *klass)
   surface_actor_class->is_unredirected = meta_surface_actor_wayland_is_unredirected;
 
   surface_actor_class->get_window = meta_surface_actor_wayland_get_window;
+
+  object_class->dispose = meta_surface_actor_wayland_dispose;
 }
 
 static void
