@@ -1629,7 +1629,7 @@ void
 meta_display_sync_wayland_input_focus (MetaDisplay *display)
 {
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
-  MetaWindow *focus_window;
+  MetaWindow *focus_window = NULL;
 
   if (meta_grab_op_is_wayland (display->grab_op))
     focus_window = NULL;
