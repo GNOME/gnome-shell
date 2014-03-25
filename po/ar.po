@@ -7,9 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-21 09:54+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-26 01:34+0200\n"
 "PO-Revision-Date: 2014-03-21 11:05+0100\n"
 "Last-Translator: Abderrahim Kitouni <a.kitouni@gmail.com>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -296,25 +295,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "ادخل"
 
-#: ../js/gdm/loginDialog.js:270
+#: ../js/gdm/loginDialog.js:271
 msgid "Choose Session"
 msgstr "أغلق الجلسة"
 
-#: ../js/gdm/loginDialog.js:430
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "غير مدرج؟"
 
-#: ../js/gdm/loginDialog.js:608
+#: ../js/gdm/loginDialog.js:611
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(مثلا مستخدم أو %s)"
 
-#: ../js/gdm/loginDialog.js:613 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:616 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "اسم المستخدم: "
 
-#: ../js/gdm/loginDialog.js:884
+#: ../js/gdm/loginDialog.js:917
 msgid "Login Window"
 msgstr "نافذة الولوج"
 
@@ -697,7 +696,6 @@ msgstr "%H:%M"
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:962
-#| msgid "Yesterday, %H\\u2236%M"
 msgid "Yesterday, %H∶%M"
 msgstr "بالأمس، %H∶%M"
 
@@ -718,7 +716,6 @@ msgstr "%d %B، %H:%M"
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
 #: ../js/ui/components/telepathyClient.js:982
-#| msgid "%B %d, %H∶%M"
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d %B، %H:%M"
 
@@ -730,14 +727,12 @@ msgstr "%l:%M %p"
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:998
-#| msgid "Yesterday, %l\\u2236%M %p"
 msgid "Yesterday, %l∶%M %p"
 msgstr "بالأمس، %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1005
-#| msgid "%l∶%M %p"
 msgid "%A, %l∶%M %p"
 msgstr "%l:%M %p"
 
@@ -745,7 +740,6 @@ msgstr "%l:%M %p"
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1012
-#| msgid "%B %d, %H∶%M"
 msgid "%B %d, %l∶%M %p"
 msgstr "%d %B، %H:%M"
 
@@ -753,7 +747,6 @@ msgstr "%d %B، %H:%M"
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
 #: ../js/ui/components/telepathyClient.js:1018
-#| msgid "%B %d %Y, %l\\u2236%M %p"
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d %B %Y، %l∶%M %p"
 
@@ -985,9 +978,6 @@ msgid "Log Out"
 msgstr "خروج"
 
 #: ../js/ui/endSessionDialog.js:69
-#, javascript-format
-#| msgid "%s will be logged out automatically in %d second."
-#| msgid_plural "%s will be logged out automatically in %d seconds."
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "سيُخرج %s تلقائيا الآن."
@@ -998,9 +988,6 @@ msgstr[4] "سيُخرج %s تلقائيا بعد %d ثانية."
 msgstr[5] "سيُخرج %s تلقائيا بعد %d ثانية."
 
 #: ../js/ui/endSessionDialog.js:74
-#, javascript-format
-#| msgid "You will be logged out automatically in %d second."
-#| msgid_plural "You will be logged out automatically in %d seconds."
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "ستُخرج تلقائيا الآن."
@@ -1026,9 +1013,6 @@ msgid "Install Updates & Power Off"
 msgstr "ثبّت التحديثات ثم أطفئ"
 
 #: ../js/ui/endSessionDialog.js:89
-#, javascript-format
-#| msgid "The system will power off automatically in %d second."
-#| msgid_plural "The system will power off automatically in %d seconds."
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "سيُطفأ النظام تلقائيا الآن."
@@ -1059,9 +1043,6 @@ msgid "Restart"
 msgstr "إعادة التشغيل"
 
 #: ../js/ui/endSessionDialog.js:107
-#, javascript-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "سيُعاد تشغيل النظام تلقائيا الآن."
@@ -1077,11 +1058,6 @@ msgid "Restart & Install Updates"
 msgstr "أعد التشغيل و ثبّت التحديثات"
 
 #: ../js/ui/endSessionDialog.js:123
-#, javascript-format
-#| msgid ""
-#| "The system will automatically restart and install updates in %d second."
-#| msgid_plural ""
-#| "The system will automatically restart and install updates in %d seconds."
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -1237,9 +1213,6 @@ msgid "Unknown"
 msgstr "غير معروف"
 
 #: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:151
-#, javascript-format
-#| msgid "%d new message"
-#| msgid_plural "%d new messages"
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "لا رسائل جديدة"
@@ -1298,9 +1271,6 @@ msgid "%A, %B %d"
 msgstr "%A، %d %B"
 
 #: ../js/ui/screenShield.js:153
-#, javascript-format
-#| msgid "%d new notification"
-#| msgid_plural "%d new notifications"
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "لا تنبيهات جديدة"
@@ -1419,9 +1389,6 @@ msgid "Bluetooth Settings"
 msgstr "إعدادات بلوتوث"
 
 #: ../js/ui/status/bluetooth.js:104
-#, javascript-format
-#| msgid "%d Connected Device"
-#| msgid_plural "%d Connected Devices"
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "لا أجهزة موصّلة"
@@ -1614,13 +1581,11 @@ msgstr "يَحسِب…"
 
 #: ../js/ui/status/power.js:86
 #, javascript-format
-#| msgid "%d\\u2236%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "بقي %d∶%02d ‏(%d%%)"
 
 #: ../js/ui/status/power.js:91
 #, javascript-format
-#| msgid "%d\\u2236%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "بقي على الاكتمال %d∶%02d ‏(%d%%)"
 
@@ -1705,9 +1670,6 @@ msgid "Keep Changes"
 msgstr "أبق على التغييرات"
 
 #: ../js/ui/windowManager.js:97
-#, javascript-format
-#| msgid "Settings changes will revert in %d second"
-#| msgid_plural "Settings changes will revert in %d seconds"
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "سيُتراجع عن التغييرات الآن"
