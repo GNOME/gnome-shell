@@ -28,7 +28,6 @@
 #include "meta-surface-actor-x11.h"
 
 #include <X11/extensions/Xcomposite.h>
-#include <X11/extensions/Xrender.h>
 #include <cogl/cogl-texture-pixmap-x11.h>
 
 #include <meta/errors.h>
@@ -54,7 +53,6 @@ struct _MetaSurfaceActorX11Private
   guint does_full_damage  : 1;
 
   /* Other state... */
-  guint argb32 : 1;
   guint received_damage : 1;
   guint size_changed : 1;
 
@@ -266,28 +264,6 @@ meta_surface_actor_x11_pre_paint (MetaSurfaceActor *actor)
   update_pixmap (self);
 }
 
-static void
-update_is_argb32 (MetaSurfaceActorX11 *self)
-{
-  MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
-  MetaDisplay *display = priv->display;
-  Display *xdisplay = meta_display_get_xdisplay (display);
-
-  XRenderPictFormat *format;
-  format = XRenderFindVisualFormat (xdisplay, priv->window->xvisual);
-
-  priv->argb32 = (format && format->type == PictTypeDirect && format->direct.alphaMask);
-}
-
-static gboolean
-meta_surface_actor_x11_is_argb32 (MetaSurfaceActor *actor)
-{
-  MetaSurfaceActorX11 *self = META_SURFACE_ACTOR_X11 (actor);
-  MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
-
-  return priv->argb32;
-}
-
 static gboolean
 meta_surface_actor_x11_is_visible (MetaSurfaceActor *actor)
 {
@@ -312,7 +288,7 @@ meta_surface_actor_x11_should_unredirect (MetaSurfaceActor *actor)
   if (window->shape_region != NULL)
     return FALSE;
 
-  if (priv->argb32 && !meta_window_requested_bypass_compositor (window))
+  if (meta_surface_actor_is_argb32 (actor) && !meta_window_requested_bypass_compositor (window))
     return FALSE;
 
   if (!meta_window_is_monitor_sized (window))
@@ -405,7 +381,6 @@ meta_surface_actor_x11_class_init (MetaSurfaceActorX11Class *klass)
 
   surface_actor_class->process_damage = meta_surface_actor_x11_process_damage;
   surface_actor_class->pre_paint = meta_surface_actor_x11_pre_paint;
-  surface_actor_class->is_argb32 = meta_surface_actor_x11_is_argb32;
   surface_actor_class->is_visible = meta_surface_actor_x11_is_visible;
 
   surface_actor_class->should_unredirect = meta_surface_actor_x11_should_unredirect;
@@ -460,8 +435,6 @@ meta_surface_actor_x11_new (MetaWindow *window)
   create_damage (self);
   g_signal_connect_object (priv->window, "notify::decorated",
                            G_CALLBACK (window_decorated_notify), self, 0);
-
-  update_is_argb32 (self);
 
   priv->unredirected = FALSE;
   sync_unredirected (self);

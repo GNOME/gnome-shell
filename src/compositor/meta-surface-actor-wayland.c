@@ -81,31 +81,6 @@ meta_surface_actor_wayland_pre_paint (MetaSurfaceActor *actor)
 }
 
 static gboolean
-meta_surface_actor_wayland_is_argb32 (MetaSurfaceActor *actor)
-{
-  MetaShapedTexture *stex = meta_surface_actor_get_texture (actor);
-  CoglTexture *texture = meta_shaped_texture_get_texture (stex);
-
-  /* If we don't have a texture, like during initialization, assume
-   * that we're ARGB32. */
-  if (!texture)
-    return TRUE;
-
-  switch (cogl_texture_get_components (texture))
-    {
-    case COGL_TEXTURE_COMPONENTS_A:
-    case COGL_TEXTURE_COMPONENTS_RGBA:
-      return TRUE;
-    case COGL_TEXTURE_COMPONENTS_RG:
-    case COGL_TEXTURE_COMPONENTS_RGB:
-    case COGL_TEXTURE_COMPONENTS_DEPTH:
-      return FALSE;
-    default:
-      g_assert_not_reached ();
-    }
-}
-
-static gboolean
 meta_surface_actor_wayland_is_visible (MetaSurfaceActor *actor)
 {
   /* TODO: ensure that the buffer isn't NULL, implement
@@ -159,7 +134,6 @@ meta_surface_actor_wayland_class_init (MetaSurfaceActorWaylandClass *klass)
 
   surface_actor_class->process_damage = meta_surface_actor_wayland_process_damage;
   surface_actor_class->pre_paint = meta_surface_actor_wayland_pre_paint;
-  surface_actor_class->is_argb32 = meta_surface_actor_wayland_is_argb32;
   surface_actor_class->is_visible = meta_surface_actor_wayland_is_visible;
 
   surface_actor_class->should_unredirect = meta_surface_actor_wayland_should_unredirect;

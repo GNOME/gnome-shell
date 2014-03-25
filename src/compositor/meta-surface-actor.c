@@ -263,7 +263,26 @@ meta_surface_actor_pre_paint (MetaSurfaceActor *self)
 gboolean
 meta_surface_actor_is_argb32 (MetaSurfaceActor *self)
 {
-  return META_SURFACE_ACTOR_GET_CLASS (self)->is_argb32 (self);
+  MetaShapedTexture *stex = meta_surface_actor_get_texture (self);
+  CoglTexture *texture = meta_shaped_texture_get_texture (stex);
+
+  /* If we don't have a texture, like during initialization, assume
+   * that we're ARGB32. */
+  if (!texture)
+    return TRUE;
+
+  switch (cogl_texture_get_components (texture))
+    {
+    case COGL_TEXTURE_COMPONENTS_A:
+    case COGL_TEXTURE_COMPONENTS_RGBA:
+      return TRUE;
+    case COGL_TEXTURE_COMPONENTS_RG:
+    case COGL_TEXTURE_COMPONENTS_RGB:
+    case COGL_TEXTURE_COMPONENTS_DEPTH:
+      return FALSE;
+    default:
+      g_assert_not_reached ();
+    }
 }
 
 gboolean

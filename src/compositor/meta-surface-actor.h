@@ -29,7 +29,6 @@ struct _MetaSurfaceActorClass
   void     (* process_damage)    (MetaSurfaceActor *actor,
                                   int x, int y, int width, int height);
   void     (* pre_paint)         (MetaSurfaceActor *actor);
-  gboolean (* is_argb32)         (MetaSurfaceActor *actor);
   gboolean (* is_visible)        (MetaSurfaceActor *actor);
 
   gboolean (* should_unredirect) (MetaSurfaceActor *actor);
