@@ -86,6 +86,11 @@ meta_surface_actor_wayland_is_argb32 (MetaSurfaceActor *actor)
   MetaShapedTexture *stex = meta_surface_actor_get_texture (actor);
   CoglTexture *texture = meta_shaped_texture_get_texture (stex);
 
+  /* If we don't have a texture, like during initialization, assume
+   * that we're ARGB32. */
+  if (!texture)
+    return TRUE;
+
   switch (cogl_texture_get_components (texture))
     {
     case COGL_TEXTURE_COMPONENTS_A:
