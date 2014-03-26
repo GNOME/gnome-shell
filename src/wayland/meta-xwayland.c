@@ -145,7 +145,6 @@ create_lockfile (int display, int *display_out)
 
           if (kill (other, 0) < 0 && errno == ESRCH)
             {
-              g_warning ("unlinking stale lock file %s", filename);
               if (unlink (filename) < 0)
                 {
                   const char *msg = strerror (errno);
@@ -393,8 +392,6 @@ meta_xwayland_start (MetaXWaylandManager *manager,
                        &pid,
                        &error))
       {
-        g_message ("forked X server, pid %d\n", pid);
-
         close (sp[1]);
         manager->client = wl_client_create (wl_display, sp[0]);
 
