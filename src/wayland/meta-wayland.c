@@ -575,14 +575,13 @@ set_gnome_env (const char *name,
 	       const char *value)
 {
   GDBusConnection *session_bus;
-  GError *error;
+  GError *error = NULL;
 
   setenv (name, value, TRUE);
 
   session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
   g_assert (session_bus);
 
-  error = NULL;
   g_dbus_connection_call_sync (session_bus,
 			       "org.gnome.SessionManager",
 			       "/org/gnome/SessionManager",
@@ -594,8 +593,10 @@ set_gnome_env (const char *name,
 			       -1, NULL, &error);
   if (error)
     {
-      meta_warning ("Failed to set environment variable %s for gnome-session: %s\n", name, error->message);
-      g_clear_error (&error);
+      if (g_strcmp0 (g_dbus_error_get_remote_error (error), "org.gnome.SessionManager.NotInInitialization") != 0)
+        meta_warning ("Failed to set environment variable %s for gnome-session: %s\n", name, error->message);
+
+      g_error_free (error);
     }
 }
 
