@@ -930,7 +930,8 @@ meta_compositor_process_event (MetaCompositor *compositor,
           window = meta_display_lookup_x_window (compositor->display, xwin);
         }
 
-      process_damage (compositor, (XDamageNotifyEvent *) event, window);
+      if (window)
+        process_damage (compositor, (XDamageNotifyEvent *) event, window);
     }
 
   /* Clutter needs to know about MapNotify events otherwise it will
