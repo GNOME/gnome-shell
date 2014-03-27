@@ -517,7 +517,7 @@ meta_compositor_manage (MetaCompositor *compositor)
   MetaDisplay *display = compositor->display;
   Display *xdisplay = display->xdisplay;
   MetaScreen *screen = display->screen;
-  Window xwin;
+  Window xwin = 0;
   gint width, height;
   MetaWaylandCompositor *wayland_compositor;
 
