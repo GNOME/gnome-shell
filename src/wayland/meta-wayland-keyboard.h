@@ -69,7 +69,7 @@ struct _MetaWaylandKeyboard
   struct wl_listener focus_surface_listener;
   uint32_t focus_serial;
 
-  struct wl_array keys;
+  struct wl_array pressed_keys;
 
   struct xkb_context *xkb_context;
   MetaWaylandXkbInfo xkb_info;

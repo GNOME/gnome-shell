@@ -359,7 +359,7 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
 
   keyboard->focus_surface_listener.notify = keyboard_handle_focus_surface_destroy;
 
-  wl_array_init (&keyboard->keys);
+  wl_array_init (&keyboard->pressed_keys);
 
   keyboard->xkb_context = xkb_context_new (0 /* flags */);
   keyboard->xkb_info.keymap_fd = -1;
@@ -397,43 +397,38 @@ meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
   xkb_context_unref (keyboard->xkb_context);
 
   /* XXX: What about keyboard->resource_list? */
-  wl_array_release (&keyboard->keys);
+  wl_array_release (&keyboard->pressed_keys);
 
   g_object_unref (keyboard->settings);
 }
 
 static void
-update_pressed_keys (MetaWaylandKeyboard   *keyboard,
-		     uint32_t               evdev_code,
-		     gboolean               is_press)
+update_pressed_keys (struct wl_array *keys,
+                     uint32_t         evdev_code,
+                     gboolean         is_press)
 {
+  uint32_t *end = (void *) ((char *) keys->data + keys->size);
+  uint32_t *k;
+
   if (is_press)
     {
-      uint32_t *end = (void *) ((char *) keyboard->keys.data +
-                                keyboard->keys.size);
-      uint32_t *k;
-
       /* Make sure we don't already have this key. */
-      for (k = keyboard->keys.data; k < end; k++)
+      for (k = keys->data; k < end; k++)
         if (*k == evdev_code)
           return;
 
       /* Otherwise add the key to the list of pressed keys */
-      k = wl_array_add (&keyboard->keys, sizeof (*k));
+      k = wl_array_add (keys, sizeof (*k));
       *k = evdev_code;
     }
   else
     {
-      uint32_t *end = (void *) ((char *) keyboard->keys.data +
-                                keyboard->keys.size);
-      uint32_t *k;
-
       /* Remove the key from the array */
-      for (k = keyboard->keys.data; k < end; k++)
+      for (k = keys->data; k < end; k++)
         if (*k == evdev_code)
           {
             *k = *(end - 1);
-            keyboard->keys.size -= sizeof (*k);
+            keys->size -= sizeof (*k);
             return;
           }
 
@@ -457,7 +452,7 @@ meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
   struct xkb_state *state = keyboard->xkb_info.state;
   enum xkb_state_component changed_state;
 
-  update_pressed_keys (keyboard, evdev_code (event), is_press);
+  update_pressed_keys (&keyboard->pressed_keys, evdev_code (event), is_press);
 
   changed_state = xkb_state_update_key (state,
                                         event->hardware_keycode,
@@ -581,7 +576,7 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
                                           xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
                                           xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
               wl_keyboard_send_enter (resource, serial, keyboard->focus_surface->resource,
-                                      &keyboard->keys);
+                                      &keyboard->pressed_keys);
             }
 
           keyboard->focus_serial = serial;
