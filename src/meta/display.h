@@ -96,6 +96,7 @@ unsigned int meta_display_get_ignored_modifier_mask (MetaDisplay  *display);
 
 GList* meta_display_get_tab_list (MetaDisplay   *display,
                                   MetaTabList    type,
+                                  MetaScreen    *screen,
                                   MetaWorkspace *workspace);
 
 MetaWindow* meta_display_get_tab_next (MetaDisplay   *display,
