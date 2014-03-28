@@ -1374,7 +1374,7 @@ handle_other_xevent (MetaDisplay *display,
       /* NB: override redirect windows wont cause a map request so we
        * watch out for map notifies against any root windows too if a
        * compositor is enabled: */
-      if (window == NULL)
+      if (window == NULL && event->xmap.event == display->screen->xroot)
         {
           window = meta_window_x11_new (display, event->xmap.window,
                                         FALSE, META_COMP_EFFECT_CREATE);
