@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-05 15:39+0000\n"
-"PO-Revision-Date: 2014-03-05 16:54+0100\n"
+"POT-Creation-Date: 2014-03-28 08:56+0000\n"
+"PO-Revision-Date: 2014-03-28 12:03+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -316,7 +316,7 @@ msgstr ""
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:873
+#: ../js/ui/status/network.js:878
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -334,24 +334,24 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
-#: ../js/gdm/loginDialog.js:270
+#: ../js/gdm/loginDialog.js:271
 msgid "Choose Session"
 msgstr "Elegir sesión"
 
-#: ../js/gdm/loginDialog.js:430
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "¿No está en la lista?"
 
-#: ../js/gdm/loginDialog.js:598
+#: ../js/gdm/loginDialog.js:611
 msgid "(e.g., user or %s)"
 msgstr "(ej., usuario o %s)"
 
-#: ../js/gdm/loginDialog.js:603 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:616 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Nombre de usuario:"
 
-#: ../js/gdm/loginDialog.js:868
+#: ../js/gdm/loginDialog.js:917
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
@@ -375,27 +375,27 @@ msgstr "No se pudo analizar el comando:"
 msgid "Execution of “%s” failed:"
 msgstr "Falló la ejecución de «%s»:"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:636
 msgid "Frequently used applications will appear here"
 msgstr "Las aplicaciones usadas frecuentemente aparecerán aquí"
 
-#: ../js/ui/appDisplay.js:740
+#: ../js/ui/appDisplay.js:747
 msgid "Frequent"
 msgstr "Frecuentes"
 
-#: ../js/ui/appDisplay.js:747
+#: ../js/ui/appDisplay.js:754
 msgid "All"
 msgstr "Todas"
 
-#: ../js/ui/appDisplay.js:1552
+#: ../js/ui/appDisplay.js:1566
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appDisplay.js:1574 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1588 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appDisplay.js:1580
+#: ../js/ui/appDisplay.js:1594
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
@@ -536,44 +536,44 @@ msgstr "S"
 msgid "calendar:MY"
 msgstr "calendario:MA"
 
-#: ../js/ui/calendar.js:446
+#: ../js/ui/calendar.js:450
 msgid "Previous month"
 msgstr "Mes anterior"
 
-#: ../js/ui/calendar.js:456
+#: ../js/ui/calendar.js:460
 msgid "Next month"
 msgstr "Siguiente mes"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:762
+#: ../js/ui/calendar.js:772
 msgid "Nothing Scheduled"
 msgstr "Nada programado"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:780
+#: ../js/ui/calendar.js:790
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:793
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:794
+#: ../js/ui/calendar.js:804
 msgid "Today"
 msgstr "Hoy"
 
-#: ../js/ui/calendar.js:798
+#: ../js/ui/calendar.js:808
 msgid "Tomorrow"
 msgstr "Mañana"
 
-#: ../js/ui/calendar.js:809
+#: ../js/ui/calendar.js:819
 msgid "This week"
 msgstr "Esta semana"
 
-#: ../js/ui/calendar.js:817
+#: ../js/ui/calendar.js:827
 msgid "Next week"
 msgstr "La semana que viene"
 
@@ -606,7 +606,7 @@ msgid "Type again:"
 msgstr "Escriba de nuevo:"
 
 #: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:240
-#: ../js/ui/status/network.js:317 ../js/ui/status/network.js:876
+#: ../js/ui/status/network.js:322 ../js/ui/status/network.js:881
 msgid "Connect"
 msgstr "Conectar"
 
@@ -962,7 +962,7 @@ msgstr "No se pudo conectar a %s"
 msgid "View account"
 msgstr "Ver cuenta"
 
-#: ../js/ui/components/telepathyClient.js:1434
+#: ../js/ui/components/telepathyClient.js:1439
 msgid "Unknown reason"
 msgstr "Razón desconocida"
 
@@ -978,22 +978,22 @@ msgstr "Mostrar aplicaciones"
 msgid "Dash"
 msgstr "Tablero"
 
-#: ../js/ui/dateMenu.js:86
+#: ../js/ui/dateMenu.js:91
 msgid "Open Calendar"
 msgstr "Abrir calendario"
 
-#: ../js/ui/dateMenu.js:90
+#: ../js/ui/dateMenu.js:95
 msgid "Open Clocks"
 msgstr "Abrir Relojes"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:102
 msgid "Date & Time Settings"
 msgstr "Configuración de hora y fecha"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:192
 msgid "%A %B %e, %Y"
 msgstr "%A, %e de %B de %Y"
 
@@ -1132,24 +1132,25 @@ msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
 msgid "Keyboard"
 msgstr "Teclado"
 
-#: ../js/ui/lookingGlass.js:641
+#: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
 msgstr "No hay extensiones instaladas"
 
 #. Translators: argument is an extension UUID. */
-#: ../js/ui/lookingGlass.js:695
+#: ../js/ui/lookingGlass.js:697
 msgid "%s has not emitted any errors."
 msgstr "%s no ha generado ningún error."
 
-#: ../js/ui/lookingGlass.js:701
+#: ../js/ui/lookingGlass.js:703
 msgid "Hide Errors"
 msgstr "Ocultar errores"
 
-#: ../js/ui/lookingGlass.js:705 ../js/ui/lookingGlass.js:765
+#: ../js/ui/lookingGlass.js:707 ../js/ui/lookingGlass.js:767
 msgid "Show Errors"
 msgstr "Mostrar errores"
 
-#: ../js/ui/lookingGlass.js:714
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:59
+#: ../js/ui/status/location.js:167
 msgid "Enabled"
 msgstr "Activado"
 
@@ -1157,28 +1158,28 @@ msgstr "Activado"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:550
-#: ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:164
+#: ../js/ui/status/network.js:555 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:721
 msgid "Error"
 msgstr "Error"
 
-#: ../js/ui/lookingGlass.js:721
+#: ../js/ui/lookingGlass.js:723
 msgid "Out of date"
 msgstr "Caducado"
 
-#: ../js/ui/lookingGlass.js:723
+#: ../js/ui/lookingGlass.js:725
 msgid "Downloading"
 msgstr "Descargando"
 
-#: ../js/ui/lookingGlass.js:747
+#: ../js/ui/lookingGlass.js:749
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: ../js/ui/lookingGlass.js:756
+#: ../js/ui/lookingGlass.js:758
 msgid "Web Page"
 msgstr "Página web"
 
@@ -1214,7 +1215,7 @@ msgstr "No hay mensajes"
 msgid "Message Tray"
 msgstr "Bandeja de mensajes"
 
-#: ../js/ui/messageTray.js:2948
+#: ../js/ui/messageTray.js:2962
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -1229,11 +1230,11 @@ msgid_plural "%d new messages"
 msgstr[0] "%d mensaje nuevo"
 msgstr[1] "%d mensajes nuevos"
 
-#: ../js/ui/overview.js:83
+#: ../js/ui/overview.js:84
 msgid "Undo"
 msgstr "Deshacer"
 
-#: ../js/ui/overview.js:123
+#: ../js/ui/overview.js:124
 msgid "Overview"
 msgstr "Vista general"
 
@@ -1241,7 +1242,7 @@ msgstr "Vista general"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters. */
-#: ../js/ui/overview.js:257
+#: ../js/ui/overview.js:250
 msgid "Type to search…"
 msgstr "Escribir para buscar…"
 
@@ -1283,27 +1284,27 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nueva"
 msgstr[1] "%d notificaciones nuevas"
 
-#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/screenShield.js:707
+#: ../js/ui/screenShield.js:708
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME necesita bloquear la pantalla"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1301
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1309
 msgid "Unable to lock"
 msgstr "No se pudo bloquear"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1302
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1310
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
-#: ../js/ui/search.js:589
+#: ../js/ui/search.js:603
 msgid "Searching…"
 msgstr "Buscando…"
 
-#: ../js/ui/search.js:632
+#: ../js/ui/search.js:649
 msgid "No results."
 msgstr "No se encontraron resultados."
 
@@ -1375,29 +1376,28 @@ msgstr "Contraste alto"
 msgid "Large Text"
 msgstr "Texto grande"
 
-#: ../js/ui/status/bluetooth.js:48
+#: ../js/ui/status/bluetooth.js:49
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:59
-#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:151
-#: ../js/ui/status/network.js:318 ../js/ui/status/network.js:1225
-#: ../js/ui/status/network.js:1336 ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:151
+#: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
+#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "Apagar"
 
-#: ../js/ui/status/bluetooth.js:53
+#: ../js/ui/status/bluetooth.js:54
 msgid "Bluetooth Settings"
 msgstr "Configuración de Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:100
+#: ../js/ui/status/bluetooth.js:104
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d dispositivo conectado"
 msgstr[1] "%d dispositivos conectados"
 
-#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1253
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1262
 msgid "Not Connected"
 msgstr "No conectado"
 
@@ -1409,161 +1409,169 @@ msgstr "Brillo"
 msgid "Show Keyboard Layout"
 msgstr "Mostrar la distribución del teclado"
 
-#: ../js/ui/status/location.js:52
+#: ../js/ui/status/location.js:53
 msgid "Location"
 msgstr "Ubicación"
 
-#: ../js/ui/status/location.js:58 ../js/ui/status/location.js:158
-#: ../js/ui/status/rfkill.js:84
-msgid "On"
-msgstr "Encender"
+#: ../js/ui/status/location.js:60 ../js/ui/status/location.js:168
+#| msgid "Disabled"
+msgid "Disable"
+msgstr "Desactivar"
 
-#: ../js/ui/status/location.js:155 ../js/ui/status/network.js:415
-#: ../js/ui/status/network.js:1251 ../js/ui/status/network.js:1455
-msgid "Off"
-msgstr "Desconectado"
+#: ../js/ui/status/location.js:165
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Activar"
 
-#: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1225
-msgid "Turn On"
-msgstr "Enceder"
+#: ../js/ui/status/location.js:167
+msgid "In Use"
+msgstr "En uso"
 
 #: ../js/ui/status/network.js:74
 msgid "<unknown>"
 msgstr "<desconocido>"
 
-#: ../js/ui/status/network.js:417
-#| msgid "Connect"
+#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1260
+#: ../js/ui/status/network.js:1464
+msgid "Off"
+msgstr "Desconectado"
+
+#: ../js/ui/status/network.js:422
 msgid "Connected"
 msgstr "Conectada"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:421
+#: ../js/ui/status/network.js:426
 msgid "unmanaged"
 msgstr "no gestionada"
 
-#: ../js/ui/status/network.js:423
+#: ../js/ui/status/network.js:428
 msgid "disconnecting..."
 msgstr "deconectando…"
 
-#: ../js/ui/status/network.js:429 ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1362
 msgid "connecting..."
 msgstr "conectando…"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:432 ../js/ui/status/network.js:1356
+#: ../js/ui/status/network.js:437 ../js/ui/status/network.js:1365
 msgid "authentication required"
 msgstr "se necesita autenticación"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:440
+#: ../js/ui/status/network.js:445
 msgid "firmware missing"
 msgstr "falta el «firmware»"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:444
+#: ../js/ui/status/network.js:449
 msgid "unavailable"
 msgstr "no disponible"
 
-#: ../js/ui/status/network.js:446 ../js/ui/status/network.js:1358
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1367
 msgid "connection failed"
 msgstr "falló la conexión"
 
-#: ../js/ui/status/network.js:462
+#: ../js/ui/status/network.js:467
 msgid "Wired Settings"
 msgstr "Configuración de Wi-Fi"
 
-#: ../js/ui/status/network.js:504 ../js/ui/status/network.js:582
+#: ../js/ui/status/network.js:509 ../js/ui/status/network.js:587
 msgid "Mobile Broadband Settings"
 msgstr "Configuración de banda ancha móvil"
 
-#: ../js/ui/status/network.js:546 ../js/ui/status/network.js:1249
+#: ../js/ui/status/network.js:551 ../js/ui/status/network.js:1258
 msgid "Hardware Disabled"
 msgstr "Hardware desactivado"
 
-#: ../js/ui/status/network.js:590
+#: ../js/ui/status/network.js:595
 msgid "Use as Internet connection"
 msgstr "Usar como conexión a Internet"
 
-#: ../js/ui/status/network.js:771
+#: ../js/ui/status/network.js:776
 msgid "Airplane Mode is On"
 msgstr "El modo avión está activado"
 
-#: ../js/ui/status/network.js:772
+#: ../js/ui/status/network.js:777
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "La Wi-Fi se desactiva cuando se activa el modo avión."
 
-#: ../js/ui/status/network.js:773
+#: ../js/ui/status/network.js:778
 msgid "Turn Off Airplane Mode"
 msgstr "Apagar el modo avión"
 
-#: ../js/ui/status/network.js:782
+#: ../js/ui/status/network.js:787
 msgid "Wi-Fi is Off"
 msgstr "La Wi-Fi está desactivada"
 
-#: ../js/ui/status/network.js:783
+#: ../js/ui/status/network.js:788
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Se debe activar la Wi-Fi para poder conectarse a la red."
 
-#: ../js/ui/status/network.js:784
+#: ../js/ui/status/network.js:789
 msgid "Turn On Wi-Fi"
 msgstr "Activar la Wi-Fi"
 
-#: ../js/ui/status/network.js:809
+#: ../js/ui/status/network.js:814
 msgid "Wi-Fi Networks"
 msgstr "Redes Wi-Fi"
 
-#: ../js/ui/status/network.js:811
+#: ../js/ui/status/network.js:816
 msgid "Select a network"
 msgstr "Seleccionar una red"
 
-#: ../js/ui/status/network.js:840
+#: ../js/ui/status/network.js:845
 msgid "No Networks"
 msgstr "No hay redes"
 
-#: ../js/ui/status/network.js:861 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
 msgstr "Usar el interruptor hardware para apagar"
 
-#: ../js/ui/status/network.js:1131
+#: ../js/ui/status/network.js:1136
 msgid "Select Network"
 msgstr "Seleccionar red"
 
-#: ../js/ui/status/network.js:1137
+#: ../js/ui/status/network.js:1142
 msgid "Wi-Fi Settings"
 msgstr "Configuración de Wi-Fi"
 
-#: ../js/ui/status/network.js:1242
+#: ../js/ui/status/network.js:1234
+msgid "Turn On"
+msgstr "Enceder"
+
+#: ../js/ui/status/network.js:1251
 msgid "Hotspot Active"
 msgstr "Punto de acceso activo"
 
-#: ../js/ui/status/network.js:1245
+#: ../js/ui/status/network.js:1254
 msgid "Connecting"
 msgstr "Conectando"
 
-#: ../js/ui/status/network.js:1424 ../js/ui/status/rfkill.js:88
+#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:88
 msgid "Network Settings"
 msgstr "Configuración de la red"
 
-#: ../js/ui/status/network.js:1426
+#: ../js/ui/status/network.js:1435
 msgid "VPN Settings"
 msgstr "Configuración de VPN"
 
-#: ../js/ui/status/network.js:1445
+#: ../js/ui/status/network.js:1454
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1598
+#: ../js/ui/status/network.js:1607
 msgid "Network Manager"
 msgstr "Gestor de la red"
 
-#: ../js/ui/status/network.js:1637
+#: ../js/ui/status/network.js:1646
 msgid "Connection failed"
 msgstr "Falló la conexión"
 
-#: ../js/ui/status/network.js:1638
+#: ../js/ui/status/network.js:1647
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
 
@@ -1598,6 +1606,10 @@ msgstr "Batería"
 #: ../js/ui/status/rfkill.js:82
 msgid "Airplane Mode"
 msgstr "Modo avión"
+
+#: ../js/ui/status/rfkill.js:84
+msgid "On"
+msgstr "Encender"
 
 #: ../js/ui/status/system.js:314
 msgid "Switch User"
