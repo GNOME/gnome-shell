@@ -2974,8 +2974,6 @@ meta_display_unmanage_screen (MetaDisplay *display,
 {
   meta_verbose ("Unmanaging screen %d on display %s\n",
                 screen->number, display->name);
-
-  meta_screen_free (screen, timestamp);
   meta_display_close (display, timestamp);
 }
 
