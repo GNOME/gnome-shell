@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.po.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-16 18:36+0000\n"
-"PO-Revision-Date: 2014-03-16 21:04+0300\n"
+"POT-Creation-Date: 2014-03-27 21:19+0000\n"
+"PO-Revision-Date: 2014-03-28 08:41+0300\n"
 "Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
 "Language-Team: team@lists.gnome.gr\n"
 "Language: el\n"
@@ -47,7 +47,7 @@ msgstr "Άνοιγμα του μενού εφαρμογών"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
-msgstr "GNOME Shell"
+msgstr "Κέλυφος GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 #: ../data/gnome-shell-wayland.desktop.in.in.h:2
@@ -57,21 +57,21 @@ msgstr "Διαχείριση παραθύρων και εκκίνηση εφαρ
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:155
 msgid "GNOME Shell Extension Preferences"
-msgstr "Προτιμήσεις επεκτάσεων του GNOME Shell"
+msgstr "Προτιμήσεις επεκτάσεων του κελύφους GNOME Shell"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
-msgstr "Ρύθμιση επεκτάσεων του GNOME Shell"
+msgstr "Ρύθμιση επεκτάσεων του κελύφους GNOME Shell"
 
 #: ../data/gnome-shell-wayland.desktop.in.in.h:1
 msgid "GNOME Shell (wayland compositor)"
-msgstr "GNOME Shell (συνθετητής wayland)"
+msgstr "Κέλυφος GNOME Shell (συνθετητής wayland)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 "Ενεργοποίηση εσωτερικών εργαλείων χρήσιμων για τους προγραμματιστές και τους "
-"δοκιμαστές με το Alt-F2"
+"δοκιμαστές, με το Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:2
 msgid ""
@@ -79,7 +79,7 @@ msgid ""
 "dialog."
 msgstr ""
 "Επιτρέπει την πρόσβαση σε εσωτερικά εργαλεία αποσφαλμάτωσης και "
-"παρακολούθησης με τη χρήση του διαλόγου Alt-F2."
+"παρακολούθησης, με τη χρήση του διαλόγου Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "UUIDs of extensions to enable"
@@ -92,10 +92,10 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"Η επεκτάσεις του κελύφους GNOME έχουν μια ιδιότητα UUID· αυτό το κλειδί "
+"Οι επεκτάσεις του κελύφους GNOME έχουν μια ιδιότητα UUID. Αυτό το κλειδί "
 "εμφανίζει τις επεκτάσεις που πρέπει να φορτωθούν. Οποιαδήποτε επέκταση που "
 "επιθυμεί να φορτωθεί πρέπει να είναι στον κατάλογο. Μπορείτε ακόμη να "
-"χειριστείτε αυτόν τον κατάλογο με τις μεθόδους διαύλου δεδομένων "
+"χειρισθείτε αυτόν τον κατάλογο με τις μεθόδους διαύλου δεδομένων "
 "EnableExtension and DisableExtension στο org.gnome.Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
@@ -152,7 +152,7 @@ msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Εάν θα θυμάται τον κωδικό πρόσβασης για προσάρτηση κρυπτογραφημένων ή "
-"απομακρυσμένων συστημάτων αρχείων"
+"απομεμακρυσμένων συστημάτων αρχείων"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
@@ -161,9 +161,9 @@ msgid ""
 "'Remember Password' checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"Το κέλυφος θα ζητήσει έναν κωδικό όταν μια κρυπτογραφημένη συσκευή ή ένα "
-"απομακρυσμένο σύστημα αρχείων προσαρτάται. Εάν ο κωδικός μπορεί να "
-"αποθηκευτεί για μελλοντική χρήση θα παρουσιάζεται ένα πλαίσιο ελέγχου 'Να "
+"Το κέλυφος θα ζητήσει έναν κωδικό όταν προσαρτάται μια κρυπτογραφημένη "
+"συσκευή ή ένα απομεμακρυσμένο σύστημα αρχείων. Εάν ο κωδικός μπορεί να "
+"αποθηκευθεί για μελλοντική χρήση, θα παρουσιάζεται ένα πλαίσιο ελέγχου 'Να "
 "μην απαιτείται ο κωδικός πρόσβασης'. Αυτό το κλειδί ορίζει την προεπιλεγμένη "
 "κατάσταση του πλαισίου ελέγχου."
 
@@ -174,7 +174,7 @@ msgstr "Εμφάνιση του αριθμού εβδομάδας στο ημε�
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "If true, display the ISO week date in the calendar."
 msgstr ""
-"Αν αληθές, εμφανίζει τον αριθμό εβδομάδας σύμφωνα με το ISO στο ημερολόγιο."
+"Αν true, εμφανίζει τον αριθμό εβδομάδας σύμφωνα με το ISO στο ημερολόγιο."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Keybinding to open the application menu"
@@ -240,7 +240,7 @@ msgid ""
 "allow applications to see and they can find user's location on their own "
 "using network resources (albeit with street-level accuracy at best)."
 msgstr ""
-"Ρυθμίζει το μέγιστο επίπεδο ακρίβειας στην εντόπιση της θέσης που "
+"Ρυθμίζει το μέγιστο επίπεδο ακρίβειας στην εντόπιση θέσης το οποίο "
 "επιτρέπεται να βλέπουν οι εφαρμογές. Οι έγκυρες επιλογές είναι "
 "'όχι' (απενεργοποίηση εντοπισμού θέσης), 'χώρα', 'πόλη', 'γειτονιά', 'οδός' "
 "και 'ακριβώς' (τυπικά, απαιτεί δέκτη GPS). Παρακαλούμε να θυμάστε ότι αυτό "
@@ -344,25 +344,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Σύνδεση"
 
-#: ../js/gdm/loginDialog.js:270
+#: ../js/gdm/loginDialog.js:271
 msgid "Choose Session"
 msgstr "Επιλογή συνεδρίας"
 
-#: ../js/gdm/loginDialog.js:430
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "Δεν είστε στη λίστα;"
 
-#: ../js/gdm/loginDialog.js:608
+#: ../js/gdm/loginDialog.js:611
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(π.χ., χρήστης ή %s)"
 
-#: ../js/gdm/loginDialog.js:613 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:616 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Όνομα χρήστη: "
 
-#: ../js/gdm/loginDialog.js:884
+#: ../js/gdm/loginDialog.js:917
 msgid "Login Window"
 msgstr "Παράθυρο σύνδεσης"
 
@@ -387,27 +387,27 @@ msgstr "Δεν ήταν δυνατό να γίνει ανάλυση της εν�
 msgid "Execution of “%s” failed:"
 msgstr "Η εκτέλεση του “%s” απέτυχε:"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:636
 msgid "Frequently used applications will appear here"
 msgstr "Οι πιο συχνά χρησιμοποιούμενες εφαρμογές θα εμφανιστούν εδώ"
 
-#: ../js/ui/appDisplay.js:740
+#: ../js/ui/appDisplay.js:747
 msgid "Frequent"
 msgstr "Συχνά"
 
-#: ../js/ui/appDisplay.js:747
+#: ../js/ui/appDisplay.js:754
 msgid "All"
 msgstr "Όλα"
 
-#: ../js/ui/appDisplay.js:1555
+#: ../js/ui/appDisplay.js:1566
 msgid "New Window"
 msgstr "Νέο παράθυρο"
 
-#: ../js/ui/appDisplay.js:1577 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1588 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Αφαίρεση από τα αγαπημένα"
 
-#: ../js/ui/appDisplay.js:1583
+#: ../js/ui/appDisplay.js:1594
 msgid "Add to Favorites"
 msgstr "Προσθήκη στα αγαπημένα"
 
@@ -567,13 +567,13 @@ msgstr "Τίποτα προγραμματισμένο"
 #: ../js/ui/calendar.js:790
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr "%A, %B %d"
+msgstr "%A, %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
 #: ../js/ui/calendar.js:793
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%A, %B %d, %Y"
+msgstr "%A, %d %B %Y"
 
 #: ../js/ui/calendar.js:804
 msgid "Today"
@@ -960,8 +960,8 @@ msgstr "Το πιστοποιητικό έχει ανακληθεί"
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
-"Το πιστοποιητικό χρησιμοποιεί έναν μη ασφαλή αλγόριθμο αποτυπώματος ή είναι "
-"αδύναμο κρυπτογραφικά"
+"Το πιστοποιητικό χρησιμοποιεί έναν μη ασφαλή αλγόριθμο αποκρυπτογράφησης "
+"αποτυπώματος ή είναι κρυπτογραφικά ασθενές"
 
 #: ../js/ui/components/telepathyClient.js:1385
 msgid ""
@@ -1020,7 +1020,7 @@ msgstr "Ρυθμίσεις ημερομηνίας & ώρας"
 #. */
 #: ../js/ui/dateMenu.js:192
 msgid "%A %B %e, %Y"
-msgstr "%A %B %e, %Y"
+msgstr "%A, %e %B %Y"
 
 #: ../js/ui/endSessionDialog.js:66
 #, javascript-format
@@ -1066,8 +1066,8 @@ msgstr "Εγκατάσταση ενημερώσεων & τερματισμός"
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Το σύστημα θα τερματιστεί αυτόματα σε %d δευτερόλεπτο."
-msgstr[1] "Το σύστημα θα τερματιστεί αυτόματα σε %d δευτερόλεπτα."
+msgstr[0] "Το σύστημα θα τερματισθεί αυτόματα σε %d δευτερόλεπτο."
+msgstr[1] "Το σύστημα θα τερματισθεί αυτόματα σε %d δευτερόλεπτα."
 
 #: ../js/ui/endSessionDialog.js:93
 msgctxt "checkbox"
@@ -1137,7 +1137,7 @@ msgstr ""
 #: ../js/ui/endSessionDialog.js:332
 msgid "Some applications are busy or have unsaved work."
 msgstr ""
-"Κάποιες εφαρμογές είναι απασχολημένες ή έχουν εργασία που δεν αποθηκεύτηκε."
+"Κάποιες εφαρμογές είναι απασχολημένες ή έχουν εργασία που δεν αποθηκεύθηκε."
 
 #: ../js/ui/endSessionDialog.js:339
 msgid "Other users are logged in."
@@ -1186,7 +1186,8 @@ msgstr "Απόκρυψη σφαλμάτων"
 msgid "Show Errors"
 msgstr "Εμφάνιση σφαλμάτων"
 
-#: ../js/ui/lookingGlass.js:716
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:59
+#: ../js/ui/status/location.js:167
 msgid "Enabled"
 msgstr "Ενεργοποιημένο"
 
@@ -1194,8 +1195,8 @@ msgstr "Ενεργοποιημένο"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/network.js:555
-#: ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:164
+#: ../js/ui/status/network.js:555 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
@@ -1313,7 +1314,7 @@ msgstr "Κλείσιμο"
 #. long format */
 #: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
-msgstr "%A, %B %d"
+msgstr "%A, %d %B"
 
 #: ../js/ui/screenShield.js:153
 #, javascript-format
@@ -1342,7 +1343,7 @@ msgstr "Το κλείδωμα εμποδίσθηκε από μια εφαρμο�
 msgid "Searching…"
 msgstr "Αναζήτηση…"
 
-#: ../js/ui/search.js:646
+#: ../js/ui/search.js:649
 msgid "No results."
 msgstr "Δε βρέθηκαν αποτελέσματα."
 
@@ -1414,30 +1415,29 @@ msgstr "Υψηλή αντίθεση"
 msgid "Large Text"
 msgstr "Μεγάλο κείμενο"
 
-#: ../js/ui/status/bluetooth.js:48
+#: ../js/ui/status/bluetooth.js:49
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:60
-#: ../js/ui/status/location.js:167 ../js/ui/status/network.js:151
+#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:151
 #: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
 #: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "Σβήσιμο"
 
-#: ../js/ui/status/bluetooth.js:53
+#: ../js/ui/status/bluetooth.js:54
 msgid "Bluetooth Settings"
 msgstr "Ρυθμίσεις Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:103
+#: ../js/ui/status/bluetooth.js:104
 #, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
-msgstr[0] "%d συνδεμένη συσκευή"
-msgstr[1] "%d συνδεμένες συσκευές"
+msgstr[0] "%d συνδεδεμένη συσκευή"
+msgstr[1] "%d συνδεδεμένες συσκευές"
 
-#: ../js/ui/status/bluetooth.js:105 ../js/ui/status/network.js:1262
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1262
 msgid "Not Connected"
 msgstr "Χωρίς σύνδεση"
 
@@ -1453,23 +1453,26 @@ msgstr "Εμφάνιση διάταξης πληκτρολογίου"
 msgid "Location"
 msgstr "Θέση"
 
-#: ../js/ui/status/location.js:59 ../js/ui/status/location.js:166
-#: ../js/ui/status/rfkill.js:84
-msgid "On"
+#: ../js/ui/status/location.js:60 ../js/ui/status/location.js:168
+msgid "Disable"
+msgstr "Απενεργοποίηση"
+
+#: ../js/ui/status/location.js:165
+msgid "Enable"
 msgstr "Ενεργοποίηση"
 
-#: ../js/ui/status/location.js:163 ../js/ui/status/network.js:420
-#: ../js/ui/status/network.js:1260 ../js/ui/status/network.js:1464
-msgid "Off"
-msgstr "Εκτός σύνδεσης"
-
-#: ../js/ui/status/location.js:164 ../js/ui/status/network.js:1234
-msgid "Turn On"
-msgstr "Ενεργοποίηση"
+#: ../js/ui/status/location.js:167
+msgid "In Use"
+msgstr "Σε χρήση"
 
 #: ../js/ui/status/network.js:74
 msgid "<unknown>"
 msgstr "<άγνωστο>"
+
+#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1260
+#: ../js/ui/status/network.js:1464
+msgid "Off"
+msgstr "Εκτός σύνδεσης"
 
 #: ../js/ui/status/network.js:422
 msgid "Connected"
@@ -1479,7 +1482,7 @@ msgstr "Συνδέθηκε"
 #. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:426
 msgid "unmanaged"
-msgstr "μη διαχειριζόμενες"
+msgstr "χωρίς διαχείριση"
 
 #: ../js/ui/status/network.js:428
 msgid "disconnecting..."
@@ -1498,7 +1501,7 @@ msgstr "απαιτείται πιστοποίηση"
 #. module, which is missing */
 #: ../js/ui/status/network.js:445
 msgid "firmware missing"
-msgstr "έλλειψη υλικολογισμικού"
+msgstr "έλλειψη λογισμικού υλικού (firmware)"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
@@ -1520,7 +1523,7 @@ msgstr "Ρυθμίσεις Κινήτης Ευρυζωνικής"
 
 #: ../js/ui/status/network.js:551 ../js/ui/status/network.js:1258
 msgid "Hardware Disabled"
-msgstr "Το Υλικό Απενεργοποιήθηκε"
+msgstr "Το Υλικό απενεργοποιήθηκε"
 
 #: ../js/ui/status/network.js:595
 msgid "Use as Internet connection"
@@ -1551,7 +1554,7 @@ msgstr ""
 
 #: ../js/ui/status/network.js:789
 msgid "Turn On Wi-Fi"
-msgstr "Ενεργοποιήστε το ασύρματο δικτύο"
+msgstr "Ενεργοποίηση του ασυρμάτου δικτύου Wi-Fi"
 
 #: ../js/ui/status/network.js:814
 msgid "Wi-Fi Networks"
@@ -1567,7 +1570,7 @@ msgstr "Χωρίς δίκτυα"
 
 #: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
-msgstr "Χρησιμοποιήστε διακόπτη υλικού για τερματισμό"
+msgstr "Χρήση διακόπτη υλικού για τερματισμό"
 
 #: ../js/ui/status/network.js:1136
 msgid "Select Network"
@@ -1576,6 +1579,10 @@ msgstr "Επιλογή δικτύου"
 #: ../js/ui/status/network.js:1142
 msgid "Wi-Fi Settings"
 msgstr "Ρυθμίσεις Wi-Fi"
+
+#: ../js/ui/status/network.js:1234
+msgid "Turn On"
+msgstr "Ενεργοποίηση"
 
 #: ../js/ui/status/network.js:1251
 msgid "Hotspot Active"
@@ -1642,6 +1649,10 @@ msgstr "Μπαταρία"
 #: ../js/ui/status/rfkill.js:82
 msgid "Airplane Mode"
 msgstr "Κατάσταση λειτουργίας αεροπλάνου"
+
+#: ../js/ui/status/rfkill.js:84
+msgid "On"
+msgstr "Ενεργοποίηση"
 
 #: ../js/ui/status/system.js:314
 msgid "Switch User"
@@ -1756,8 +1767,8 @@ msgstr ""
 #: ../src/main.c:361
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr ""
-"Χρησιμοποιήστε μια συγκεκριμένη κατάσταση λειτουργίας, π.χ. \"gdm\" για την "
-"οθόνη σύνδεσης"
+"Χρήση μιας συγκεκριμένης κατάστασης λειτουργίας, π.χ. \"gdm\" για την οθόνη "
+"σύνδεσης"
 
 #: ../src/main.c:367
 msgid "List possible modes"
