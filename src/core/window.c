@@ -1469,8 +1469,11 @@ meta_window_unmanage (MetaWindow  *window,
     meta_wayland_surface_window_unmanaged (window->surface);
 
   if (window->visible_to_compositor)
-    meta_compositor_hide_window (window->display->compositor, window,
-                                 META_COMP_EFFECT_DESTROY);
+    {
+      window->visible_to_compositor = FALSE;
+      meta_compositor_hide_window (window->display->compositor, window,
+                                   META_COMP_EFFECT_DESTROY);
+    }
 
   meta_compositor_remove_window (window->display->compositor, window);
 
