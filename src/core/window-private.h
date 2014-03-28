@@ -220,9 +220,17 @@ struct _MetaWindow
    */
   guint hidden : 1;
 
-  /* Whether the compositor thinks the window is visible
+  /* Whether the compositor thinks the window is visible.
+   * This should match up with calls to meta_compositor_show_window /
+   * meta_compositor_hide_window.
    */
   guint visible_to_compositor : 1;
+
+  /* Whether the compositor knows about the window.
+   * This should match up with calls to meta_compositor_add_window /
+   * meta_compositor_remove_window.
+   */
+  guint known_to_compositor : 1;
 
   /* When we next show or hide the window, what effect we should
    * tell the compositor to perform.

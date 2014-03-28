@@ -867,6 +867,7 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->iconic = FALSE;
   window->mapped = attrs->map_state != IsUnmapped;
   window->hidden = FALSE;
+  window->known_to_compositor = FALSE;
   window->visible_to_compositor = FALSE;
   window->pending_compositor_effect = effect;
   /* if already mapped, no need to worry about focus-on-first-time-showing */
@@ -1195,6 +1196,7 @@ _meta_window_shared_new (MetaDisplay         *display,
     }
 
   meta_compositor_add_window (screen->display->compositor, window);
+  window->known_to_compositor = TRUE;
 
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
@@ -1476,6 +1478,7 @@ meta_window_unmanage (MetaWindow  *window,
     }
 
   meta_compositor_remove_window (window->display->compositor, window);
+  window->known_to_compositor = FALSE;
 
   if (window->display->window_with_menu == window)
     {
@@ -4331,7 +4334,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
                   newx, newy, window->rect.width, window->rect.height,
                   window->user_rect.x, window->user_rect.y,
                   window->user_rect.width, window->user_rect.height);
-      if (window->visible_to_compositor)
+      if (window->known_to_compositor)
         meta_compositor_sync_window_geometry (window->display->compositor,
                                               window,
                                               did_placement);
