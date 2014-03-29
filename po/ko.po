@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-05 08:30+0000\n"
-"PO-Revision-Date: 2014-03-05 19:53+0900\n"
+"POT-Creation-Date: 2014-03-28 20:56+0000\n"
+"PO-Revision-Date: 2014-03-29 16:13+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: Korean\n"
@@ -108,7 +108,10 @@ msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
-msgstr "그놈 셸에서 현재 실행 중인 버전을 지원하는 확장 기능만 읽어들입니다. 이 옵션을 사용하면 이 버전 검사를 하지 않고, 지원한다고 지정된 버전에 관계없이 모든 확장 기능을 읽어들입니다."
+msgstr ""
+"그놈 셸에서 현재 실행 중인 버전을 지원하는 확장 기능만 읽어들입니다. 이 옵션"
+"을 사용하면 이 버전 검사를 하지 않고, 지원한다고 지정된 버전에 관계없이 모든 "
+"확장 기능을 읽어들입니다."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -136,7 +139,9 @@ msgstr "사용자 메뉴에 '로그아웃' 메뉴 항목을 항상 표시합니�
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
-msgstr "이 키를 설정하면, 단일 사용자 및 단일 세션에서 '로그아웃' 메뉴 항목 자동 감추기 기능을 사용하지 않습니다."
+msgstr ""
+"이 키를 설정하면, 단일 사용자 및 단일 세션에서 '로그아웃' 메뉴 항목 자동 감추"
+"기 기능을 사용하지 않습니다."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid ""
@@ -225,7 +230,13 @@ msgid ""
 "receiver). Please keep in mind that this only controls what GeoClue will "
 "allow applications to see and they can find user's location on their own "
 "using network resources (albeit with street-level accuracy at best)."
-msgstr "프로그램에서 확인할 수 있는 위치의 정확도 최대 단계를 설정합니다. 쓸 수 있는 값은 'off'(위치 추적 기능 사용하지 않음), 'country'(국가), 'city'(도시), 'neighborhood'(이웃), 'street'(길), 'exact'(정확한 위치, 보통 GPS 리시버 필요)입니다. 단 이 옵션은 GeoClue를 사용하는 프로그램이 쓸 수 있는 위치 정보만 설정합니다. 그래서 응용 프로그램이 자체적으로 네트워크를 사용해 사용자 위치를 알아낼 수는 있습니다(이 경우 보통 길 위치 정도만 알아낼 수 있지만)."
+msgstr ""
+"프로그램에서 확인할 수 있는 위치의 정확도 최대 단계를 설정합니다. 쓸 수 있는 "
+"값은 'off'(위치 추적 기능 사용하지 않음), 'country'(국가), 'city'(도시), "
+"'neighborhood'(이웃), 'street'(길), 'exact'(정확한 위치, 보통 GPS 리시버 필"
+"요)입니다. 단 이 옵션은 GeoClue를 사용하는 프로그램이 쓸 수 있는 위치 정보만 "
+"설정합니다. 그래서 응용 프로그램이 자체적으로 네트워크를 사용해 사용자 위치"
+"를 알아낼 수는 있습니다(이 경우 보통 길 위치 정도만 알아낼 수 있지만)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "The application icon mode."
@@ -292,7 +303,7 @@ msgstr "위의 콤보상자를 사용해 설정할 확장을 선택하십시오.
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:873
+#: ../js/ui/status/network.js:878
 msgid "Cancel"
 msgstr "취소"
 
@@ -310,25 +321,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "로그인"
 
-#: ../js/gdm/loginDialog.js:270
+#: ../js/gdm/loginDialog.js:271
 msgid "Choose Session"
 msgstr "세션 선택"
 
-#: ../js/gdm/loginDialog.js:430
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "목록에 없습니까?"
 
-#: ../js/gdm/loginDialog.js:598
+#: ../js/gdm/loginDialog.js:614
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(예를 들어, 사용자 또는 %s)"
 
-#: ../js/gdm/loginDialog.js:603 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "사용자 이름: "
 
-#: ../js/gdm/loginDialog.js:868
+#: ../js/gdm/loginDialog.js:920
 msgid "Login Window"
 msgstr "로그인 창"
 
@@ -353,27 +364,27 @@ msgstr "명령어를 파싱할 수 없습니다:"
 msgid "Execution of “%s” failed:"
 msgstr "“%s” 실행이 실패했습니다:"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:636
 msgid "Frequently used applications will appear here"
 msgstr "자주 사용하는 프로그램이 여기 나타납니다"
 
-#: ../js/ui/appDisplay.js:740
+#: ../js/ui/appDisplay.js:747
 msgid "Frequent"
 msgstr "자주"
 
-#: ../js/ui/appDisplay.js:747
+#: ../js/ui/appDisplay.js:754
 msgid "All"
 msgstr "모두"
 
-#: ../js/ui/appDisplay.js:1552
+#: ../js/ui/appDisplay.js:1566
 msgid "New Window"
 msgstr "새 창"
 
-#: ../js/ui/appDisplay.js:1574 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1588 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "즐겨찾기에서 제거"
 
-#: ../js/ui/appDisplay.js:1580
+#: ../js/ui/appDisplay.js:1594
 msgid "Add to Favorites"
 msgstr "즐겨찾기에 추가"
 
@@ -517,44 +528,44 @@ msgstr "토"
 msgid "calendar:MY"
 msgstr "calendar:YM"
 
-#: ../js/ui/calendar.js:446
+#: ../js/ui/calendar.js:450
 msgid "Previous month"
 msgstr "이전 달"
 
-#: ../js/ui/calendar.js:456
+#: ../js/ui/calendar.js:460
 msgid "Next month"
 msgstr "다음 달"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:762
+#: ../js/ui/calendar.js:772
 msgid "Nothing Scheduled"
 msgstr "일정이 없습니다"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:780
+#: ../js/ui/calendar.js:790
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%B %d일 %A"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:793
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%Y년 %B %d일 %A"
 
-#: ../js/ui/calendar.js:794
+#: ../js/ui/calendar.js:804
 msgid "Today"
 msgstr "오늘"
 
-#: ../js/ui/calendar.js:798
+#: ../js/ui/calendar.js:808
 msgid "Tomorrow"
 msgstr "내일"
 
-#: ../js/ui/calendar.js:809
+#: ../js/ui/calendar.js:819
 msgid "This week"
 msgstr "이번주"
 
-#: ../js/ui/calendar.js:817
+#: ../js/ui/calendar.js:827
 msgid "Next week"
 msgstr "다음주"
 
@@ -588,7 +599,7 @@ msgid "Type again:"
 msgstr "다시 입력하십시오:"
 
 #: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:240
-#: ../js/ui/status/network.js:317 ../js/ui/status/network.js:876
+#: ../js/ui/status/network.js:322 ../js/ui/status/network.js:881
 msgid "Connect"
 msgstr "연결"
 
@@ -791,13 +802,13 @@ msgstr "%s 님이 %s에 입장하도록 초대합니다"
 #: ../js/ui/components/telepathyClient.js:1164
 #: ../js/ui/components/telepathyClient.js:1199
 #: ../js/ui/components/telepathyClient.js:1233
-#: ../js/ui/components/telepathyClient.js:1290
+#: ../js/ui/components/telepathyClient.js:1291
 msgid "Decline"
 msgstr "거부"
 
 #: ../js/ui/components/telepathyClient.js:1170
 #: ../js/ui/components/telepathyClient.js:1239
-#: ../js/ui/components/telepathyClient.js:1295
+#: ../js/ui/components/telepathyClient.js:1296
 msgid "Accept"
 msgstr "허용"
 
@@ -834,97 +845,97 @@ msgstr "%s님이 %s 파일을 보냅니다"
 msgid "%s would like permission to see when you are online"
 msgstr "연결 상태인지 알 수 있는 권한을 %s님이 요청합니다"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1342
 msgid "Network error"
 msgstr "네트워크 오류"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1344
 msgid "Authentication failed"
 msgstr "인증이 실패했습니다"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Encryption error"
 msgstr "암호화 오류"
 
-#: ../js/ui/components/telepathyClient.js:1347
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Certificate not provided"
 msgstr "인증서가 없습니다"
 
-#: ../js/ui/components/telepathyClient.js:1349
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Certificate untrusted"
 msgstr "인증서를 신뢰할 수 없습니다"
 
-#: ../js/ui/components/telepathyClient.js:1351
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate expired"
 msgstr "인증서가 만료되었습니다"
 
-#: ../js/ui/components/telepathyClient.js:1353
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Certificate not activated"
 msgstr "인증서를 활성화하지 않았습니다"
 
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Certificate hostname mismatch"
 msgstr "인증서 호스트 이름이 맞지 않습니다"
 
-#: ../js/ui/components/telepathyClient.js:1357
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Certificate fingerprint mismatch"
 msgstr "인증서 핑거프린트가 맞지 않습니다"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "Certificate self-signed"
 msgstr "인증서가 자기 서명한 인증서입니다"
 
-#: ../js/ui/components/telepathyClient.js:1361
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "Status is set to offline"
 msgstr "상태를 오프라인으로 설정"
 
-#: ../js/ui/components/telepathyClient.js:1363
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Encryption is not available"
 msgstr "암호화를 사용할 수 없습니다"
 
-#: ../js/ui/components/telepathyClient.js:1365
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Certificate is invalid"
 msgstr "인증서가 올바르지 않습니다"
 
-#: ../js/ui/components/telepathyClient.js:1367
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Connection has been refused"
 msgstr "연결이 거부되었습니다"
 
-#: ../js/ui/components/telepathyClient.js:1369
+#: ../js/ui/components/telepathyClient.js:1370
 msgid "Connection can't be established"
 msgstr "연결할 수 없습니다"
 
-#: ../js/ui/components/telepathyClient.js:1371
+#: ../js/ui/components/telepathyClient.js:1372
 msgid "Connection has been lost"
 msgstr "연결이 끊어졌습니다"
 
-#: ../js/ui/components/telepathyClient.js:1373
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "This account is already connected to the server"
 msgstr "이 계정은 이미 서버에 연결했습니다"
 
-#: ../js/ui/components/telepathyClient.js:1375
+#: ../js/ui/components/telepathyClient.js:1376
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "같은 자원을 사용하는 새로운 연결로 바꾸었습니다"
 
-#: ../js/ui/components/telepathyClient.js:1377
+#: ../js/ui/components/telepathyClient.js:1378
 msgid "The account already exists on the server"
 msgstr "계정이 이미 서버에 있습니다"
 
-#: ../js/ui/components/telepathyClient.js:1379
+#: ../js/ui/components/telepathyClient.js:1380
 msgid "Server is currently too busy to handle the connection"
 msgstr "서버가 처리할 작업이 많아 연결을 처리할 수 없습니다"
 
-#: ../js/ui/components/telepathyClient.js:1381
+#: ../js/ui/components/telepathyClient.js:1382
 msgid "Certificate has been revoked"
 msgstr "인증서를 철회했습니다"
 
-#: ../js/ui/components/telepathyClient.js:1383
+#: ../js/ui/components/telepathyClient.js:1384
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "인증서가 보안에 취약한 알고리즘을 사용하거나 암호화 기능이 취약합니다."
 
-#: ../js/ui/components/telepathyClient.js:1385
+#: ../js/ui/components/telepathyClient.js:1386
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -932,22 +943,22 @@ msgstr ""
 "서버 인증서의 길이, 또는 서버 인증서 체인의 단계가 암호화 라이브러리의 제한"
 "을 넘어갑니다."
 
-#: ../js/ui/components/telepathyClient.js:1387
+#: ../js/ui/components/telepathyClient.js:1388
 msgid "Internal error"
 msgstr "내부 오류"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1397
+#: ../js/ui/components/telepathyClient.js:1398
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "%s에 연결할 수 없습니다"
 
-#: ../js/ui/components/telepathyClient.js:1402
+#: ../js/ui/components/telepathyClient.js:1403
 msgid "View account"
 msgstr "계정 보기"
 
-#: ../js/ui/components/telepathyClient.js:1434
+#: ../js/ui/components/telepathyClient.js:1440
 msgid "Unknown reason"
 msgstr "알 수 없는 이유"
 
@@ -963,22 +974,22 @@ msgstr "프로그램 표시"
 msgid "Dash"
 msgstr "대시보드"
 
-#: ../js/ui/dateMenu.js:86
+#: ../js/ui/dateMenu.js:91
 msgid "Open Calendar"
 msgstr "달력 열기"
 
-#: ../js/ui/dateMenu.js:90
+#: ../js/ui/dateMenu.js:95
 msgid "Open Clocks"
 msgstr "시계 열기"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:102
 msgid "Date & Time Settings"
 msgstr "날짜 및 시각 설정"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:187
+#: ../js/ui/dateMenu.js:192
 msgid "%A %B %e, %Y"
 msgstr "%Y년 %B %e일 %A"
 
@@ -1110,31 +1121,33 @@ msgstr "설치"
 #: ../js/ui/extensionDownloader.js:204
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr "extensions.gnome.org 사이트에서 “%s” 확장을 다운로드해 설치하시겠습니까?"
+msgstr ""
+"extensions.gnome.org 사이트에서 “%s” 확장을 다운로드해 설치하시겠습니까?"
 
 #: ../js/ui/keyboard.js:641 ../js/ui/status/keyboard.js:335
 msgid "Keyboard"
 msgstr "키보드"
 
-#: ../js/ui/lookingGlass.js:641
+#: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
 msgstr "확장을 설치하지 않았습니다"
 
 #. Translators: argument is an extension UUID. */
-#: ../js/ui/lookingGlass.js:695
+#: ../js/ui/lookingGlass.js:697
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s에서 발생한 에러가 없습니다."
 
-#: ../js/ui/lookingGlass.js:701
+#: ../js/ui/lookingGlass.js:703
 msgid "Hide Errors"
 msgstr "오류 숨기기"
 
-#: ../js/ui/lookingGlass.js:705 ../js/ui/lookingGlass.js:765
+#: ../js/ui/lookingGlass.js:707 ../js/ui/lookingGlass.js:767
 msgid "Show Errors"
 msgstr "오류 보이기"
 
-#: ../js/ui/lookingGlass.js:714
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:59
+#: ../js/ui/status/location.js:167
 msgid "Enabled"
 msgstr "사용"
 
@@ -1142,28 +1155,28 @@ msgstr "사용"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:717 ../js/ui/status/network.js:550
-#: ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:164
+#: ../js/ui/status/network.js:555 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "사용 않음"
 
-#: ../js/ui/lookingGlass.js:719
+#: ../js/ui/lookingGlass.js:721
 msgid "Error"
 msgstr "오류"
 
-#: ../js/ui/lookingGlass.js:721
+#: ../js/ui/lookingGlass.js:723
 msgid "Out of date"
 msgstr "오래 된 버전"
 
-#: ../js/ui/lookingGlass.js:723
+#: ../js/ui/lookingGlass.js:725
 msgid "Downloading"
 msgstr "다운로드 중"
 
-#: ../js/ui/lookingGlass.js:747
+#: ../js/ui/lookingGlass.js:749
 msgid "View Source"
 msgstr "소스 보기"
 
-#: ../js/ui/lookingGlass.js:756
+#: ../js/ui/lookingGlass.js:758
 msgid "Web Page"
 msgstr "웹페이지"
 
@@ -1199,7 +1212,7 @@ msgstr "메시지 없음"
 msgid "Message Tray"
 msgstr "메시지 트레이"
 
-#: ../js/ui/messageTray.js:2948
+#: ../js/ui/messageTray.js:2962
 msgid "System Information"
 msgstr "시스템 정보"
 
@@ -1214,11 +1227,11 @@ msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "새 메시지 %d개"
 
-#: ../js/ui/overview.js:83
+#: ../js/ui/overview.js:84
 msgid "Undo"
 msgstr "실행 취소"
 
-#: ../js/ui/overview.js:123
+#: ../js/ui/overview.js:124
 msgid "Overview"
 msgstr "개요"
 
@@ -1226,7 +1239,7 @@ msgstr "개요"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters. */
-#: ../js/ui/overview.js:257
+#: ../js/ui/overview.js:250
 msgid "Type to search…"
 msgstr "검색하려면 입력하십시오…"
 
@@ -1268,27 +1281,27 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "새 알림 %d개"
 
-#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "잠그기"
 
-#: ../js/ui/screenShield.js:707
+#: ../js/ui/screenShield.js:708
 msgid "GNOME needs to lock the screen"
 msgstr "그놈에서 화면을 잠궈야 합니다"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1301
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1309
 msgid "Unable to lock"
 msgstr "잠글 수 없습니다"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1302
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1310
 msgid "Lock was blocked by an application"
 msgstr "프로그램이 잠금을 막았습니다"
 
-#: ../js/ui/search.js:589
+#: ../js/ui/search.js:603
 msgid "Searching…"
 msgstr "검색하는 중…"
 
-#: ../js/ui/search.js:632
+#: ../js/ui/search.js:649
 msgid "No results."
 msgstr "결과가 없습니다."
 
@@ -1360,29 +1373,28 @@ msgstr "고대비"
 msgid "Large Text"
 msgstr "큰 글자"
 
-#: ../js/ui/status/bluetooth.js:48
+#: ../js/ui/status/bluetooth.js:49
 msgid "Bluetooth"
 msgstr "블루투스"
 
-#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:59
-#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:151
-#: ../js/ui/status/network.js:318 ../js/ui/status/network.js:1225
-#: ../js/ui/status/network.js:1336 ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:151
+#: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
+#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "끄기"
 
-#: ../js/ui/status/bluetooth.js:53
+#: ../js/ui/status/bluetooth.js:54
 msgid "Bluetooth Settings"
 msgstr "블루투스 설정"
 
-#: ../js/ui/status/bluetooth.js:100
+#: ../js/ui/status/bluetooth.js:104
 #, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "연결된 장치 %d개"
 
-#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1253
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1262
 msgid "Not Connected"
 msgstr "연결되지 않음"
 
@@ -1394,160 +1406,167 @@ msgstr "밝기"
 msgid "Show Keyboard Layout"
 msgstr "키보드 배치 표시"
 
-#: ../js/ui/status/location.js:52
+#: ../js/ui/status/location.js:53
 msgid "Location"
 msgstr "위치"
 
-#: ../js/ui/status/location.js:58 ../js/ui/status/location.js:158
-#: ../js/ui/status/rfkill.js:84
-msgid "On"
-msgstr "켜기"
+#: ../js/ui/status/location.js:60 ../js/ui/status/location.js:168
+msgid "Disable"
+msgstr "사용 않기"
 
-#: ../js/ui/status/location.js:155 ../js/ui/status/network.js:415
-#: ../js/ui/status/network.js:1251 ../js/ui/status/network.js:1455
-msgid "Off"
-msgstr "끄기"
+#: ../js/ui/status/location.js:165
+msgid "Enable"
+msgstr "사용"
 
-#: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1225
-msgid "Turn On"
-msgstr "켜기"
+#: ../js/ui/status/location.js:167
+msgid "In Use"
+msgstr "사용 중"
 
 #: ../js/ui/status/network.js:74
 msgid "<unknown>"
 msgstr "<알 수 없음>"
 
-#: ../js/ui/status/network.js:417
+#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1260
+#: ../js/ui/status/network.js:1464
+msgid "Off"
+msgstr "끄기"
+
+#: ../js/ui/status/network.js:422
 msgid "Connected"
 msgstr "연결됨"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:421
+#: ../js/ui/status/network.js:426
 msgid "unmanaged"
 msgstr "관리되지 않음"
 
-#: ../js/ui/status/network.js:423
+#: ../js/ui/status/network.js:428
 msgid "disconnecting..."
 msgstr "연결 끊는 중..."
 
-#: ../js/ui/status/network.js:429 ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1362
 msgid "connecting..."
 msgstr "연결하는 중..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:432 ../js/ui/status/network.js:1356
+#: ../js/ui/status/network.js:437 ../js/ui/status/network.js:1365
 msgid "authentication required"
 msgstr "인증 필요"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:440
+#: ../js/ui/status/network.js:445
 msgid "firmware missing"
 msgstr "펌웨어 없음"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:444
+#: ../js/ui/status/network.js:449
 msgid "unavailable"
 msgstr "사용 불가"
 
-#: ../js/ui/status/network.js:446 ../js/ui/status/network.js:1358
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1367
 msgid "connection failed"
 msgstr "연결 실패"
 
-#: ../js/ui/status/network.js:462
+#: ../js/ui/status/network.js:467
 msgid "Wired Settings"
 msgstr "유선 네트워크 설정"
 
-#: ../js/ui/status/network.js:504 ../js/ui/status/network.js:582
+#: ../js/ui/status/network.js:509 ../js/ui/status/network.js:587
 msgid "Mobile Broadband Settings"
 msgstr "휴대전화 네트워크 설정"
 
-#: ../js/ui/status/network.js:546 ../js/ui/status/network.js:1249
+#: ../js/ui/status/network.js:551 ../js/ui/status/network.js:1258
 msgid "Hardware Disabled"
 msgstr "하드웨어 사용 않음"
 
-#: ../js/ui/status/network.js:590
+#: ../js/ui/status/network.js:595
 msgid "Use as Internet connection"
 msgstr "인터넷 연결에 사용"
 
-#: ../js/ui/status/network.js:771
+#: ../js/ui/status/network.js:776
 msgid "Airplane Mode is On"
 msgstr "비행기 모드 켜짐"
 
-#: ../js/ui/status/network.js:772
+#: ../js/ui/status/network.js:777
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "비행기 모드에서는 와이파이를 사용하지 않습니다."
 
-#: ../js/ui/status/network.js:773
+#: ../js/ui/status/network.js:778
 msgid "Turn Off Airplane Mode"
 msgstr "비행기 모드 끄기"
 
-#: ../js/ui/status/network.js:782
+#: ../js/ui/status/network.js:787
 msgid "Wi-Fi is Off"
 msgstr "와이파이 꺼짐"
 
-#: ../js/ui/status/network.js:783
+#: ../js/ui/status/network.js:788
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "네트워크에 연결하려면 와이파이를 켜야 합니다."
 
-#: ../js/ui/status/network.js:784
+#: ../js/ui/status/network.js:789
 msgid "Turn On Wi-Fi"
 msgstr "와이파이 켜기"
 
-#: ../js/ui/status/network.js:809
+#: ../js/ui/status/network.js:814
 msgid "Wi-Fi Networks"
 msgstr "와이파이 네트워크"
 
-#: ../js/ui/status/network.js:811
+#: ../js/ui/status/network.js:816
 msgid "Select a network"
 msgstr "네트워크를 선택하십시오"
 
-#: ../js/ui/status/network.js:840
+#: ../js/ui/status/network.js:845
 msgid "No Networks"
 msgstr "네트워크 없음"
 
-#: ../js/ui/status/network.js:861 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:103
 msgid "Use hardware switch to turn off"
 msgstr "끄려면 하드웨어 스위치를 사용하십시오"
 
-#: ../js/ui/status/network.js:1131
+#: ../js/ui/status/network.js:1136
 msgid "Select Network"
 msgstr "네트워크 선택"
 
-#: ../js/ui/status/network.js:1137
+#: ../js/ui/status/network.js:1142
 msgid "Wi-Fi Settings"
 msgstr "와이파이 설정"
 
-#: ../js/ui/status/network.js:1242
+#: ../js/ui/status/network.js:1234
+msgid "Turn On"
+msgstr "켜기"
+
+#: ../js/ui/status/network.js:1251
 msgid "Hotspot Active"
 msgstr "핫스팟 사용 중"
 
-#: ../js/ui/status/network.js:1245
+#: ../js/ui/status/network.js:1254
 msgid "Connecting"
 msgstr "연결하는 중"
 
-#: ../js/ui/status/network.js:1424 ../js/ui/status/rfkill.js:88
+#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:88
 msgid "Network Settings"
 msgstr "네트워크 설정"
 
-#: ../js/ui/status/network.js:1426
+#: ../js/ui/status/network.js:1435
 msgid "VPN Settings"
 msgstr "가상사설망 설정"
 
-#: ../js/ui/status/network.js:1445
+#: ../js/ui/status/network.js:1454
 msgid "VPN"
 msgstr "가상사설망"
 
-#: ../js/ui/status/network.js:1598
+#: ../js/ui/status/network.js:1607
 msgid "Network Manager"
 msgstr "네트워크 관리"
 
-#: ../js/ui/status/network.js:1637
+#: ../js/ui/status/network.js:1646
 msgid "Connection failed"
 msgstr "연결이 실패했습니다"
 
-#: ../js/ui/status/network.js:1638
+#: ../js/ui/status/network.js:1647
 msgid "Activation of network connection failed"
 msgstr "네트워크 연결이 실패했습니다"
 
@@ -1584,6 +1603,10 @@ msgstr "배터리"
 #: ../js/ui/status/rfkill.js:82
 msgid "Airplane Mode"
 msgstr "비행기 모드"
+
+#: ../js/ui/status/rfkill.js:84
+msgid "On"
+msgstr "켜기"
 
 #: ../js/ui/status/system.js:314
 msgid "Switch User"
