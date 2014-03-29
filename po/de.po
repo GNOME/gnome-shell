@@ -20,9 +20,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-13 13:12+0000\n"
-"PO-Revision-Date: 2014-03-09 03:26+0100\n"
-"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
+"POT-Creation-Date: 2014-03-28 20:56+0000\n"
+"PO-Revision-Date: 2014-03-29 08:34+0100\n"
+"Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -348,25 +348,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Anmelden"
 
-#: ../js/gdm/loginDialog.js:270
+#: ../js/gdm/loginDialog.js:271
 msgid "Choose Session"
 msgstr "Sitzung wählen"
 
-#: ../js/gdm/loginDialog.js:430
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "Nicht aufgeführt?"
 
-#: ../js/gdm/loginDialog.js:608
+#: ../js/gdm/loginDialog.js:614
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(z.B. Benutzer oder %s)"
 
-#: ../js/gdm/loginDialog.js:613 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Benutzername:"
 
-#: ../js/gdm/loginDialog.js:884
+#: ../js/gdm/loginDialog.js:920
 msgid "Login Window"
 msgstr "Anmeldefenster"
 
@@ -391,27 +391,27 @@ msgstr "Befehl konnte nicht verarbeitet werden:"
 msgid "Execution of “%s” failed:"
 msgstr "Ausführung von »%s« ist gescheitert:"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:636
 msgid "Frequently used applications will appear here"
 msgstr "Häufig genutzte Anwendungen werden hier erscheinen"
 
-#: ../js/ui/appDisplay.js:740
+#: ../js/ui/appDisplay.js:747
 msgid "Frequent"
 msgstr "Häufig"
 
-#: ../js/ui/appDisplay.js:747
+#: ../js/ui/appDisplay.js:754
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:1552
+#: ../js/ui/appDisplay.js:1566
 msgid "New Window"
 msgstr "Neues Fenster"
 
-#: ../js/ui/appDisplay.js:1574 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1588 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Aus Favoriten entfernen"
 
-#: ../js/ui/appDisplay.js:1580
+#: ../js/ui/appDisplay.js:1594
 msgid "Add to Favorites"
 msgstr "Zu Favoriten hinzufügen"
 
@@ -831,13 +831,13 @@ msgstr "%s lädt Sie ein, %s beizutreten"
 #: ../js/ui/components/telepathyClient.js:1164
 #: ../js/ui/components/telepathyClient.js:1199
 #: ../js/ui/components/telepathyClient.js:1233
-#: ../js/ui/components/telepathyClient.js:1290
+#: ../js/ui/components/telepathyClient.js:1291
 msgid "Decline"
 msgstr "Ablehnen"
 
 #: ../js/ui/components/telepathyClient.js:1170
 #: ../js/ui/components/telepathyClient.js:1239
-#: ../js/ui/components/telepathyClient.js:1295
+#: ../js/ui/components/telepathyClient.js:1296
 msgid "Accept"
 msgstr "Annehmen"
 
@@ -874,102 +874,102 @@ msgstr "%s sendet Ihnen %s"
 msgid "%s would like permission to see when you are online"
 msgstr "%s bittet um das Recht, Ihre Online-Verfügbarkeit sehen zu dürfen"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1342
 msgid "Network error"
 msgstr "Netzwerkfehler"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1344
 msgid "Authentication failed"
 msgstr "Legitimierung fehlgeschlagen"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Encryption error"
 msgstr "Verschlüsselungsfehler"
 
-#: ../js/ui/components/telepathyClient.js:1347
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Certificate not provided"
 msgstr "Zertifikat wurde nicht bereitgestellt"
 
-#: ../js/ui/components/telepathyClient.js:1349
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Certificate untrusted"
 msgstr "Zertifikat nicht vertrauenswürdig"
 
-#: ../js/ui/components/telepathyClient.js:1351
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate expired"
 msgstr "Zertifikat abgelaufen"
 
-#: ../js/ui/components/telepathyClient.js:1353
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Certificate not activated"
 msgstr "Zertifikat nicht aktiviert"
 
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Certificate hostname mismatch"
 msgstr "Rechnername des Zertifikats stimmt nicht überein"
 
-#: ../js/ui/components/telepathyClient.js:1357
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Certificate fingerprint mismatch"
 msgstr "Fingerabdruck des Zertifikats stimmt nicht überein"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "Certificate self-signed"
 msgstr "Selbstsigniertes Zertifikat"
 
-#: ../js/ui/components/telepathyClient.js:1361
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "Status is set to offline"
 msgstr "Der Status ist auf »Abgemeldet« gesetzt"
 
-#: ../js/ui/components/telepathyClient.js:1363
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Encryption is not available"
 msgstr "Verschlüsselung ist nicht verfügbar"
 
-#: ../js/ui/components/telepathyClient.js:1365
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Certificate is invalid"
 msgstr "Zertifikat ist ungültig"
 
-#: ../js/ui/components/telepathyClient.js:1367
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Connection has been refused"
 msgstr "Verbindungsaufbau wurde verweigert"
 
-#: ../js/ui/components/telepathyClient.js:1369
+#: ../js/ui/components/telepathyClient.js:1370
 msgid "Connection can't be established"
 msgstr "Verbindung kann nicht hergestellt werden"
 
-#: ../js/ui/components/telepathyClient.js:1371
+#: ../js/ui/components/telepathyClient.js:1372
 msgid "Connection has been lost"
 msgstr "Verbindung wurde unterbrochen"
 
-#: ../js/ui/components/telepathyClient.js:1373
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "This account is already connected to the server"
 msgstr "Dieses Konto ist bereits mit dem Server verbunden"
 
-#: ../js/ui/components/telepathyClient.js:1375
+#: ../js/ui/components/telepathyClient.js:1376
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Die Verbindung wurde durch eine neue Verbindung mit der gleichen Ressource "
 "ersetzt"
 
-#: ../js/ui/components/telepathyClient.js:1377
+#: ../js/ui/components/telepathyClient.js:1378
 msgid "The account already exists on the server"
 msgstr "Dieses Konto ist bereits auf dem Server vorhanden"
 
-#: ../js/ui/components/telepathyClient.js:1379
+#: ../js/ui/components/telepathyClient.js:1380
 msgid "Server is currently too busy to handle the connection"
 msgstr ""
 "Der Server ist derzeit überlastet und kann die Verbindung nicht annehmen"
 
-#: ../js/ui/components/telepathyClient.js:1381
+#: ../js/ui/components/telepathyClient.js:1382
 msgid "Certificate has been revoked"
 msgstr "Zertifikat wurde zurückgezogen"
 
-#: ../js/ui/components/telepathyClient.js:1383
+#: ../js/ui/components/telepathyClient.js:1384
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Das Zertifikat verwendet einen unsicheren Chiffrier-Algorithmus oder ist "
 "kryptografisch schwach"
 
-#: ../js/ui/components/telepathyClient.js:1385
+#: ../js/ui/components/telepathyClient.js:1386
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -978,22 +978,22 @@ msgstr ""
 "überschreiten die durch die kryptografische Bibliothek gegebenen "
 "Beschränkungen"
 
-#: ../js/ui/components/telepathyClient.js:1387
+#: ../js/ui/components/telepathyClient.js:1388
 msgid "Internal error"
 msgstr "Interner Fehler"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1397
+#: ../js/ui/components/telepathyClient.js:1398
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Verbindung zu %s fehlgeschlagen"
 
-#: ../js/ui/components/telepathyClient.js:1402
+#: ../js/ui/components/telepathyClient.js:1403
 msgid "View account"
 msgstr "Konto anzeigen"
 
-#: ../js/ui/components/telepathyClient.js:1439
+#: ../js/ui/components/telepathyClient.js:1440
 msgid "Unknown reason"
 msgstr "Unbekannter Grund"
 
@@ -1191,7 +1191,8 @@ msgstr "Fehler verbergen"
 msgid "Show Errors"
 msgstr "Fehler anzeigen"
 
-#: ../js/ui/lookingGlass.js:716
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:59
+#: ../js/ui/status/location.js:167
 msgid "Enabled"
 msgstr "Aktiviert"
 
@@ -1199,8 +1200,8 @@ msgstr "Aktiviert"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/network.js:555
-#: ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:164
+#: ../js/ui/status/network.js:555 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Deaktiviert"
 
@@ -1256,7 +1257,7 @@ msgstr "Keine Nachrichten"
 msgid "Message Tray"
 msgstr "Benachrichtigungsfeld"
 
-#: ../js/ui/messageTray.js:2957
+#: ../js/ui/messageTray.js:2962
 msgid "System Information"
 msgstr "Systeminformationen"
 
@@ -1350,7 +1351,7 @@ msgstr "Sperrung wurde von einer Anwendung blockiert"
 msgid "Searching…"
 msgstr "Suche läuft …"
 
-#: ../js/ui/search.js:646
+#: ../js/ui/search.js:649
 msgid "No results."
 msgstr "Keine Ergebnisse."
 
@@ -1422,30 +1423,29 @@ msgstr "Hoher Kontrast"
 msgid "Large Text"
 msgstr "Große Schrift"
 
-#: ../js/ui/status/bluetooth.js:48
+#: ../js/ui/status/bluetooth.js:49
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:50 ../js/ui/status/location.js:59
-#: ../js/ui/status/location.js:159 ../js/ui/status/network.js:151
+#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:151
 #: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
 #: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
 msgid "Turn Off"
 msgstr "Ausschalten"
 
-#: ../js/ui/status/bluetooth.js:53
+#: ../js/ui/status/bluetooth.js:54
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-Einstellungen"
 
-#: ../js/ui/status/bluetooth.js:100
+#: ../js/ui/status/bluetooth.js:104
 #, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d Verbundes Gerät"
 msgstr[1] "%d Verbundene Geräte"
 
-#: ../js/ui/status/bluetooth.js:102 ../js/ui/status/network.js:1262
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1262
 msgid "Not Connected"
 msgstr "Nicht verbunden"
 
@@ -1457,27 +1457,32 @@ msgstr "Helligkeit"
 msgid "Show Keyboard Layout"
 msgstr "Tastaturbelegung anzeigen"
 
-#: ../js/ui/status/location.js:52
+#: ../js/ui/status/location.js:53
 msgid "Location"
 msgstr "Ort"
 
-#: ../js/ui/status/location.js:58 ../js/ui/status/location.js:158
-#: ../js/ui/status/rfkill.js:84
-msgid "On"
-msgstr "An"
+#: ../js/ui/status/location.js:60 ../js/ui/status/location.js:168
+#| msgid "Disabled"
+msgid "Disable"
+msgstr "Deaktivieren"
 
-#: ../js/ui/status/location.js:155 ../js/ui/status/network.js:420
-#: ../js/ui/status/network.js:1260 ../js/ui/status/network.js:1464
-msgid "Off"
-msgstr "Aus"
+#: ../js/ui/status/location.js:165
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Aktivieren"
 
-#: ../js/ui/status/location.js:156 ../js/ui/status/network.js:1234
-msgid "Turn On"
-msgstr "Einschalten"
+#: ../js/ui/status/location.js:167
+msgid "In Use"
+msgstr "In Verwendung"
 
 #: ../js/ui/status/network.js:74
 msgid "<unknown>"
 msgstr "<Unbekannt>"
+
+#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1260
+#: ../js/ui/status/network.js:1464
+msgid "Off"
+msgstr "Aus"
 
 #: ../js/ui/status/network.js:422
 msgid "Connected"
@@ -1585,6 +1590,10 @@ msgstr "Wählen Sie ein Netzwerk aus"
 msgid "Wi-Fi Settings"
 msgstr "Drahtlos-Einstellungen"
 
+#: ../js/ui/status/network.js:1234
+msgid "Turn On"
+msgstr "Einschalten"
+
 #: ../js/ui/status/network.js:1251
 msgid "Hotspot Active"
 msgstr "Hotspot aktiv"
@@ -1650,6 +1659,10 @@ msgstr "Akku"
 #: ../js/ui/status/rfkill.js:82
 msgid "Airplane Mode"
 msgstr "Flugzeugmodus"
+
+#: ../js/ui/status/rfkill.js:84
+msgid "On"
+msgstr "An"
 
 #: ../js/ui/status/system.js:314
 msgid "Switch User"
