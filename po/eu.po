@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-20 20:35+0000\n"
-"PO-Revision-Date: 2014-03-20 22:56+0100\n"
+"POT-Creation-Date: 2014-03-30 07:57+0000\n"
+"PO-Revision-Date: 2014-03-30 12:56+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
 "Language-Team: Basque <librezale@librezale.org>\n"
 "Language: eu\n"
@@ -82,16 +82,10 @@ msgstr ""
 "elkarrizketa-koadroa erabiliz."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
-#| msgid "Uuids of extensions to enable"
 msgid "UUIDs of extensions to enable"
 msgstr "Gaitzeko hedapenen UUIDak"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
-#| msgid ""
-#| "GNOME Shell extensions have a uuid property; this key lists extensions "
-#| "which should be loaded. Any extension that wants to be loaded needs to be "
-#| "in this list. You can also manipulate this list with the EnableExtension "
-#| "and DisableExtension DBus methods on org.gnome.Shell."
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -100,9 +94,8 @@ msgid ""
 msgstr ""
 "GNOME Shell gehigarriek UUID propietatea dute; kargatu beharko liratekeen "
 "gehigarriak zerrendatzen ditu gako honek. Kargatzea nahi diren gehigarri "
-"guztiak zerrenda honetan agertu behar dute. Zerrenda hau alda dezakezu "
-"DBus-eko "
-"'EnableExtension' (gehitu hedapena) eta 'DisableExtension' (desgaitu "
+"guztiak zerrenda honetan agertu behar dute. Zerrenda hau alda dezakezu DBus-"
+"eko 'EnableExtension' (gehitu hedapena) eta 'DisableExtension' (desgaitu "
 "hedapena) metodoekin 'org.gnome.Shell'-en."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
@@ -115,10 +108,10 @@ msgid ""
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
-"GNOME Shell-ek unean exekutatzen ari den bertsioarekin bat datozen "
-"hedapenak soilik kargatzen ditu. Aukera hau gaitzean egiaztapen hau "
-"desgaitzen da eta hedapen guztiak kargatzen saiatzen da, onartzen duten "
-"bertsioari ez ikusi eginez."
+"GNOME Shell-ek unean exekutatzen ari den bertsioarekin bat datozen hedapenak "
+"soilik kargatzen ditu. Aukera hau gaitzean egiaztapen hau desgaitzen da eta "
+"hedapen guztiak kargatzen saiatzen da, onartzen duten bertsioari ez ikusi "
+"eginez."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -140,14 +133,10 @@ msgid "History for the looking glass dialog"
 msgstr "Ikuskatzailearen elkarrizketa-koadroaren historia"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-#| msgid "Always show the 'Log out' menuitem in the user menu."
 msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "Erakutsi beti erabiltzaile-menuko 'Amaitu saioa' menu-elementua."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:12
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menuitem in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
@@ -246,14 +235,14 @@ msgid ""
 "allow applications to see and they can find user's location on their own "
 "using network resources (albeit with street-level accuracy at best)."
 msgstr ""
-"Kokalekua zehazteko baimendutako aplikazioen gehienezko "
-"maila konfiguratzen du. Balio erabilgarriak: "
-"'off' (desgaitu kokalekua araztea), 'country' (herrialdea), 'city' (herria), "
-"'neighborhood' (auzoteria), 'street' (kalea) eta 'exact' (GPS hartzailea "
-"behar izan ohi du). Jakin ezazu honek GeoClue-ek aplikazioei zer ikus "
-"dezaketen bakarrik kontrolatzen duela, eta aplikazio horiek beraien kasa "
-"aurki dezaketela erabiltzailearen kokalekua sarearen baliabideak "
-"erabiliz (hala ere, onenean kale-mailaren zaheaztasunarekin)."
+"Kokalekua zehazteko baimendutako aplikazioen gehienezko maila konfiguratzen "
+"du. Balio erabilgarriak: 'off' (desgaitu kokalekua araztea), "
+"'country' (herrialdea), 'city' (herria), 'neighborhood' (auzoteria), "
+"'street' (kalea) eta 'exact' (GPS hartzailea behar izan ohi du). Jakin ezazu "
+"honek GeoClue-ek aplikazioei zer ikus dezaketen bakarrik kontrolatzen duela, "
+"eta aplikazio horiek beraien kasa aurki dezaketela erabiltzailearen "
+"kokalekua sarearen baliabideak erabiliz (hala ere, onenean kale-mailaren "
+"zaheaztasunarekin)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "The application icon mode."
@@ -344,25 +333,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Hasi saioa"
 
-#: ../js/gdm/loginDialog.js:270
+#: ../js/gdm/loginDialog.js:271
 msgid "Choose Session"
 msgstr "Aukeratu saioa"
 
-#: ../js/gdm/loginDialog.js:430
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "Ez zaude zerrendan?"
 
-#: ../js/gdm/loginDialog.js:608
+#: ../js/gdm/loginDialog.js:614
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(adib., erabiltzailea edo %s)"
 
-#: ../js/gdm/loginDialog.js:613 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Erabiltzaile-izena: "
 
-#: ../js/gdm/loginDialog.js:884
+#: ../js/gdm/loginDialog.js:920
 msgid "Login Window"
 msgstr "Saio-hasierako leihoa"
 
@@ -384,31 +373,30 @@ msgstr "Ezin izan da komandoa analizatu:"
 
 #: ../js/misc/util.js:156
 #, javascript-format
-#| msgid "Execution of '%s' failed:"
 msgid "Execution of “%s” failed:"
 msgstr "Huts egin du '%s' exekutatzean:"
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:636
 msgid "Frequently used applications will appear here"
 msgstr "Maiztasunez erabilitako aplikazioak hemen agertuko dira"
 
-#: ../js/ui/appDisplay.js:740
+#: ../js/ui/appDisplay.js:747
 msgid "Frequent"
 msgstr "Askotan"
 
-#: ../js/ui/appDisplay.js:747
+#: ../js/ui/appDisplay.js:754
 msgid "All"
 msgstr "Denak"
 
-#: ../js/ui/appDisplay.js:1555
+#: ../js/ui/appDisplay.js:1566
 msgid "New Window"
 msgstr "Leiho berria"
 
-#: ../js/ui/appDisplay.js:1577 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1588 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Kendu gogokoetatik"
 
-#: ../js/ui/appDisplay.js:1583
+#: ../js/ui/appDisplay.js:1594
 msgid "Add to Favorites"
 msgstr "Gehitu gogokoei"
 
@@ -656,9 +644,6 @@ msgstr "Haririk gabeko sareak autentifikazioa eskatzen du"
 
 #: ../js/ui/components/networkAgent.js:312
 #, javascript-format
-#| msgid ""
-#| "Passwords or encryption keys are required to access the wireless network "
-#| "'%s'."
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
@@ -696,7 +681,6 @@ msgstr "Bandazabal mugikorreko sarearen pasahitza"
 
 #: ../js/ui/components/networkAgent.js:339
 #, javascript-format
-#| msgid "A password is required to connect to '%s'."
 msgid "A password is required to connect to “%s”."
 msgstr "Pasahitza behar da '%s'(e)ra konektatzeko."
 
@@ -746,23 +730,18 @@ msgstr "Mututu"
 
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:955
-#| msgctxt "event list time"
-#| msgid "%H∶%M"
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:962
-#| msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgid "Yesterday, %H∶%M"
 msgstr "Atzo, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:969
-#| msgctxt "event list time"
-#| msgid "%H∶%M"
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
@@ -770,8 +749,6 @@ msgstr "%A, %H∶%M"
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
 #: ../js/ui/components/telepathyClient.js:976
-#| msgctxt "event list time"
-#| msgid "%H∶%M"
 msgid "%B %d, %H∶%M"
 msgstr "%B %d, %H∶%M"
 
@@ -784,8 +761,6 @@ msgstr "%Y %B %d, %H∶%M"
 
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:991
-#| msgctxt "event list time"
-#| msgid "%l∶%M %p"
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
@@ -798,7 +773,6 @@ msgstr "Atzo, %I:%M %p"
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1005
-#| msgid "%a %l:%M %p"
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
@@ -806,7 +780,6 @@ msgstr "%A, %l∶%M %p"
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1012
-#| msgid "%a %b %e, %l:%M %p"
 msgid "%B %d, %l∶%M %p"
 msgstr "%B %d, %l∶%M %p"
 
@@ -814,7 +787,6 @@ msgstr "%B %d, %l∶%M %p"
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
 #: ../js/ui/components/telepathyClient.js:1018
-#| msgid "%a %b %e, %l:%M %p"
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%Y %B %d, %l∶%M %p"
 
@@ -843,13 +815,13 @@ msgstr "%s(e)k gonbidatzen zaitu '%s'(e)ra elkartzeko"
 #: ../js/ui/components/telepathyClient.js:1164
 #: ../js/ui/components/telepathyClient.js:1199
 #: ../js/ui/components/telepathyClient.js:1233
-#: ../js/ui/components/telepathyClient.js:1290
+#: ../js/ui/components/telepathyClient.js:1291
 msgid "Decline"
 msgstr "Ukatu"
 
 #: ../js/ui/components/telepathyClient.js:1170
 #: ../js/ui/components/telepathyClient.js:1239
-#: ../js/ui/components/telepathyClient.js:1295
+#: ../js/ui/components/telepathyClient.js:1296
 msgid "Accept"
 msgstr "Onartu"
 
@@ -886,100 +858,100 @@ msgstr "%s fitxategia ari zaizu bidaltzen: %s"
 msgid "%s would like permission to see when you are online"
 msgstr "%s(e)k baimena nahiko luke linean noiz zauden jakiteko"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1342
 msgid "Network error"
 msgstr "Sareko errorea"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1344
 msgid "Authentication failed"
 msgstr "Autentifikazioak huts egin du"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Encryption error"
 msgstr "Zifratze-errorea"
 
-#: ../js/ui/components/telepathyClient.js:1347
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Certificate not provided"
 msgstr "Ez da ziurtagiririk eman"
 
-#: ../js/ui/components/telepathyClient.js:1349
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Certificate untrusted"
 msgstr "Ziurtagiria ez da fidagarria"
 
-#: ../js/ui/components/telepathyClient.js:1351
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate expired"
 msgstr "Ziurtagiria iraungituta"
 
-#: ../js/ui/components/telepathyClient.js:1353
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Certificate not activated"
 msgstr "Ziurtagiria aktibatu gabe"
 
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Certificate hostname mismatch"
 msgstr "Ziurtagiriaren ostalari-izena ez dator bat"
 
-#: ../js/ui/components/telepathyClient.js:1357
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Certificate fingerprint mismatch"
 msgstr "Ziurtagiriaren hatz-marka ez dator bat"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "Certificate self-signed"
 msgstr "Ziurtagiria bere buruarekin sinatuta"
 
-#: ../js/ui/components/telepathyClient.js:1361
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "Status is set to offline"
 msgstr "Egoera lineaz kanpo da"
 
-#: ../js/ui/components/telepathyClient.js:1363
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Encryption is not available"
 msgstr "Zifratzea ez dago eskuragarri"
 
-#: ../js/ui/components/telepathyClient.js:1365
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Certificate is invalid"
 msgstr "Ziurtagiria baliogabea da"
 
-#: ../js/ui/components/telepathyClient.js:1367
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Connection has been refused"
 msgstr "Konexioa ukatu egin da"
 
-#: ../js/ui/components/telepathyClient.js:1369
+#: ../js/ui/components/telepathyClient.js:1370
 msgid "Connection can't be established"
 msgstr "Konexioa ezin da burutu"
 
-#: ../js/ui/components/telepathyClient.js:1371
+#: ../js/ui/components/telepathyClient.js:1372
 msgid "Connection has been lost"
 msgstr "Konexioa galdu egin da"
 
-#: ../js/ui/components/telepathyClient.js:1373
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "This account is already connected to the server"
 msgstr "Kontu hau jadanik zerbitzariarekin konektatuta dago"
 
-#: ../js/ui/components/telepathyClient.js:1375
+#: ../js/ui/components/telepathyClient.js:1376
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Konexioa ordezkatu egin da baliabide bera darabilen konexio berri batengatik"
 
-#: ../js/ui/components/telepathyClient.js:1377
+#: ../js/ui/components/telepathyClient.js:1378
 msgid "The account already exists on the server"
 msgstr "Kontua badago lehendik zerbitzarian"
 
-#: ../js/ui/components/telepathyClient.js:1379
+#: ../js/ui/components/telepathyClient.js:1380
 msgid "Server is currently too busy to handle the connection"
 msgstr "Zerbitzaria oso lanpetuta dago konexioa maneiatzeko"
 
-#: ../js/ui/components/telepathyClient.js:1381
+#: ../js/ui/components/telepathyClient.js:1382
 msgid "Certificate has been revoked"
 msgstr "Ziurtagiria errebokatu egin da"
 
-#: ../js/ui/components/telepathyClient.js:1383
+#: ../js/ui/components/telepathyClient.js:1384
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Ziurtagiriak zifratze-algoritmo ez-segurua darabil edo kriptografikoki ahula "
 "da"
 
-#: ../js/ui/components/telepathyClient.js:1385
+#: ../js/ui/components/telepathyClient.js:1386
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -987,22 +959,22 @@ msgstr ""
 "Zerbitzariaren ziurtagiriaren luzerak edo ziurtagiri-katearen sakonerak "
 "liburutegi kriptografikoak ezarritako mugak gainditzen ditu"
 
-#: ../js/ui/components/telepathyClient.js:1387
+#: ../js/ui/components/telepathyClient.js:1388
 msgid "Internal error"
 msgstr "Barneko errorea"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1397
+#: ../js/ui/components/telepathyClient.js:1398
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Ezin da %s(e)ra konektatu"
 
-#: ../js/ui/components/telepathyClient.js:1402
+#: ../js/ui/components/telepathyClient.js:1403
 msgid "View account"
 msgstr "Ikusi kontua"
 
-#: ../js/ui/components/telepathyClient.js:1439
+#: ../js/ui/components/telepathyClient.js:1440
 msgid "Unknown reason"
 msgstr "Arrazoi ezezaguna"
 
@@ -1129,8 +1101,6 @@ msgstr[1] ""
 "segundotan."
 
 #: ../js/ui/endSessionDialog.js:129
-#| msgctxt "button"
-#| msgid "Restart & Install"
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Berrabiarazi eta instalatu"
@@ -1176,7 +1146,6 @@ msgstr "Instalatu"
 
 #: ../js/ui/extensionDownloader.js:204
 #, javascript-format
-#| msgid "Download and install '%s' from extensions.gnome.org?"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Deskargatu eta instalatu '%s' extensions.gnome.org gunetik?"
 
@@ -1202,7 +1171,8 @@ msgstr "Ezkutatu erroreak"
 msgid "Show Errors"
 msgstr "Erakutsi erroreak"
 
-#: ../js/ui/lookingGlass.js:716
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:59
+#: ../js/ui/status/location.js:167
 msgid "Enabled"
 msgstr "Gaituta"
 
@@ -1210,8 +1180,8 @@ msgstr "Gaituta"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/network.js:555
-#: ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:164
+#: ../js/ui/status/network.js:555 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Desgaituta"
 
@@ -1358,7 +1328,7 @@ msgstr "Beste aplikazio batek blokeatu du"
 msgid "Searching…"
 msgstr "Bilatzen…"
 
-#: ../js/ui/search.js:646
+#: ../js/ui/search.js:649
 msgid "No results."
 msgstr "Emaitzarik ez."
 
@@ -1434,8 +1404,7 @@ msgstr "Testu handia"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/location.js:60
-#: ../js/ui/status/location.js:167 ../js/ui/status/network.js:151
+#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:151
 #: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
 #: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
@@ -1454,7 +1423,6 @@ msgstr[0] "Gailu %d konektatuta"
 msgstr[1] "%d gailu konektatuta"
 
 #: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1262
-#| msgid "Connect"
 msgid "Not Connected"
 msgstr "Konektatu gabe"
 
@@ -1467,30 +1435,33 @@ msgid "Show Keyboard Layout"
 msgstr "Erakutsi teklatuaren diseinua"
 
 #: ../js/ui/status/location.js:53
-#| msgid "Notifications"
 msgid "Location"
 msgstr "Kokalekua"
 
-#: ../js/ui/status/location.js:59 ../js/ui/status/location.js:166
-#: ../js/ui/status/rfkill.js:84
-msgid "On"
-msgstr "Aktibatuta"
+#: ../js/ui/status/location.js:60 ../js/ui/status/location.js:168
+#| msgid "Disabled"
+msgid "Disable"
+msgstr "Desgaitu"
 
-#: ../js/ui/status/location.js:163 ../js/ui/status/network.js:420
-#: ../js/ui/status/network.js:1260 ../js/ui/status/network.js:1464
-msgid "Off"
-msgstr "Desaktibatuta"
+#: ../js/ui/status/location.js:165
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Gaitu"
 
-#: ../js/ui/status/location.js:164 ../js/ui/status/network.js:1234
-msgid "Turn On"
-msgstr "Piztu"
+#: ../js/ui/status/location.js:167
+msgid "In Use"
+msgstr "Erabiltzen"
 
 #: ../js/ui/status/network.js:74
 msgid "<unknown>"
 msgstr "<ezezaguna>"
 
+#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1260
+#: ../js/ui/status/network.js:1464
+msgid "Off"
+msgstr "Desaktibatuta"
+
 #: ../js/ui/status/network.js:422
-#| msgid "Connect"
 msgid "Connected"
 msgstr "Konektatuta"
 
@@ -1530,17 +1501,14 @@ msgid "connection failed"
 msgstr "konexioak huts egin du"
 
 #: ../js/ui/status/network.js:467
-#| msgid "Settings"
 msgid "Wired Settings"
 msgstr "Haridunaren ezarpenak"
 
 #: ../js/ui/status/network.js:509 ../js/ui/status/network.js:587
-#| msgid "Mobile broadband"
 msgid "Mobile Broadband Settings"
 msgstr "Bandazabal mugikorraren ezarpenak"
 
 #: ../js/ui/status/network.js:551 ../js/ui/status/network.js:1258
-#| msgid "hardware disabled"
 msgid "Hardware Disabled"
 msgstr "Hardwarea desgaituta"
 
@@ -1549,7 +1517,6 @@ msgid "Use as Internet connection"
 msgstr "Erabili Interneteko konexio gisa"
 
 #: ../js/ui/status/network.js:776
-#| msgid "Airplane Mode"
 msgid "Airplane Mode is On"
 msgstr "Hegazkin modua piztuta"
 
@@ -1558,7 +1525,6 @@ msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Haririk gabekoa desgaitu egiten da hegazkin modua piztean."
 
 #: ../js/ui/status/network.js:778
-#| msgid "Airplane Mode"
 msgid "Turn Off Airplane Mode"
 msgstr "Itzali hegazkin modua"
 
@@ -1571,7 +1537,6 @@ msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Haririk gabekoa piztu egin behar da sare batera konektatzeko."
 
 #: ../js/ui/status/network.js:789
-#| msgid "Turn On"
 msgid "Turn On Wi-Fi"
 msgstr "Piztu haririk gabekoa"
 
@@ -1596,16 +1561,18 @@ msgid "Select Network"
 msgstr "Hautatu sarea"
 
 #: ../js/ui/status/network.js:1142
-#| msgid "Settings"
 msgid "Wi-Fi Settings"
 msgstr "Haririk gabekoaren ezarpenak"
+
+#: ../js/ui/status/network.js:1234
+msgid "Turn On"
+msgstr "Piztu"
 
 #: ../js/ui/status/network.js:1251
 msgid "Hotspot Active"
 msgstr "Wifigune aktiboa"
 
 #: ../js/ui/status/network.js:1254
-#| msgid "Connection"
 msgid "Connecting"
 msgstr "Konektatzen"
 
@@ -1614,7 +1581,6 @@ msgid "Network Settings"
 msgstr "Sarearen ezarpenak"
 
 #: ../js/ui/status/network.js:1435
-#| msgid "Settings"
 msgid "VPN Settings"
 msgstr "VPNaren ezarpenak"
 
@@ -1668,6 +1634,10 @@ msgstr "Bateria"
 msgid "Airplane Mode"
 msgstr "Hegazkin modua"
 
+#: ../js/ui/status/rfkill.js:84
+msgid "On"
+msgstr "Aktibatuta"
+
 #: ../js/ui/status/system.js:314
 msgid "Switch User"
 msgstr "Aldatu erabiltzailea"
@@ -1718,7 +1688,6 @@ msgstr "Bilatu"
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, javascript-format
-#| msgid "'%s' is ready"
 msgid "“%s” is ready"
 msgstr "'%s' prest dago"
 
@@ -1788,7 +1757,6 @@ msgstr "Zerrendatu modu posibleak"
 
 #: ../src/shell-app.c:666
 #, c-format
-#| msgid "Failed to launch '%s'"
 msgid "Failed to launch “%s”"
 msgstr "Huts egin du '%s' abiaraztean"
 
