@@ -12,9 +12,9 @@
 
   <description xml:lang="en">Clutter is an open source software library for creating fast, portable, compelling and dynamic graphical user interfaces. Clutter uses OpenGL (and optionally OpenGL|ES for use on Mobile and embedded platforms) for rendering, but with an API which hides the underlying GL complexity from the developer. The Clutter API is intended to be easy to use, efficient and flexible.</description>
 
-  <homepage rdf:resource="http://www.clutter-project.org" />
+  <homepage rdf:resource="https://wiki.gnome.org/Projects/Clutter" />
   <license rdf:resource="http://usefulinc.com/doap/licenses/lgpl" />
-  <bug-database rdf:resource="http://bugzilla.gnome.org/enter_bug.cgi?product=clutter"/>
+  <bug-database rdf:resource="https://bugzilla.gnome.org/enter_bug.cgi?product=clutter"/>
   <download-page rdf:resource="http://download.gnome.org/sources/clutter" />
   <mailing-list rdf:resource="mailto:clutter-devel-list@clutter-project.org" />
 
