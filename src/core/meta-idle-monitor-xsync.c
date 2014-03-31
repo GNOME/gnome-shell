@@ -33,6 +33,8 @@
 struct _MetaIdleMonitorXSync
 {
   MetaIdleMonitor parent;
+
+  GHashTable *alarms;
 };
 
 struct _MetaIdleMonitorXSyncClass
@@ -168,13 +170,16 @@ init_xsync (MetaIdleMonitor *monitor)
 static void
 meta_idle_monitor_xsync_dispose (GObject *object)
 {
-  MetaIdleMonitor *monitor = META_IDLE_MONITOR (object);
+  MetaIdleMonitorXSync *monitor_xsync = META_IDLE_MONITOR_XSYNC (object);
+  MetaIdleMonitor *monitor = META_IDLE_MONITOR (monitor_xsync);
 
   if (monitor->user_active_alarm != None)
     {
       XSyncDestroyAlarm (monitor->display, monitor->user_active_alarm);
       monitor->user_active_alarm = None;
     }
+
+  g_clear_pointer (&monitor_xsync->alarms, g_hash_table_destroy);
 
   G_OBJECT_CLASS (meta_idle_monitor_xsync_parent_class)->dispose (object);
 }
@@ -228,6 +233,7 @@ free_watch (gpointer data)
   MetaIdleMonitorWatchXSync *watch_xsync = data;
   MetaIdleMonitorWatch *watch = (MetaIdleMonitorWatch *) watch_xsync;
   MetaIdleMonitor *monitor = watch->monitor;
+  MetaIdleMonitorXSync *monitor_xsync = META_IDLE_MONITOR_XSYNC (monitor);
 
   g_object_ref (monitor);
 
@@ -244,7 +250,7 @@ free_watch (gpointer data)
       watch_xsync->xalarm != None)
     {
       XSyncDestroyAlarm (monitor->display, watch_xsync->xalarm);
-      g_hash_table_remove (monitor->alarms, (gpointer) watch_xsync->xalarm);
+      g_hash_table_remove (monitor_xsync->alarms, (gpointer) watch_xsync->xalarm);
     }
 
   g_object_unref (monitor);
@@ -258,6 +264,7 @@ meta_idle_monitor_xsync_make_watch (MetaIdleMonitor           *monitor,
                                     gpointer                   user_data,
                                     GDestroyNotify             notify)
 {
+  MetaIdleMonitorXSync *monitor_xsync = META_IDLE_MONITOR_XSYNC (monitor);
   MetaIdleMonitorWatchXSync *watch_xsync;
   MetaIdleMonitorWatch *watch;
 
@@ -277,7 +284,7 @@ meta_idle_monitor_xsync_make_watch (MetaIdleMonitor           *monitor,
         {
           watch_xsync->xalarm = _xsync_alarm_set (monitor, XSyncPositiveTransition, timeout_msec, TRUE);
 
-          g_hash_table_add (monitor->alarms, (gpointer) watch_xsync->xalarm);
+          g_hash_table_add (monitor_xsync->alarms, (gpointer) watch_xsync->xalarm);
 
           if (meta_idle_monitor_get_idletime (monitor) > (gint64)timeout_msec)
             watch->idle_source_id = g_idle_add (fire_watch_idle, watch);
@@ -312,12 +319,14 @@ meta_idle_monitor_xsync_init (MetaIdleMonitorXSync *monitor_xsync)
   MetaIdleMonitor *monitor = META_IDLE_MONITOR (monitor_xsync);
 
   monitor->watches = g_hash_table_new_full (NULL, NULL, NULL, free_watch);
+  monitor_xsync->alarms = g_hash_table_new (NULL, NULL);
 }
 
 void
 meta_idle_monitor_xsync_handle_xevent (MetaIdleMonitor       *monitor,
                                        XSyncAlarmNotifyEvent *alarm_event)
 {
+  MetaIdleMonitorXSync *monitor_xsync = META_IDLE_MONITOR_XSYNC (monitor);
   XSyncAlarm alarm;
   GList *watches;
   gboolean has_alarm;
@@ -336,7 +345,7 @@ meta_idle_monitor_xsync_handle_xevent (MetaIdleMonitor       *monitor,
                          FALSE);
       has_alarm = TRUE;
     }
-  else if (g_hash_table_contains (monitor->alarms, (gpointer) alarm))
+  else if (g_hash_table_contains (monitor_xsync->alarms, (gpointer) alarm))
     {
       ensure_alarm_rescheduled (monitor->display,
                                 alarm);

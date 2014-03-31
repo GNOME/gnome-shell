@@ -91,7 +91,6 @@ meta_idle_monitor_dispose (GObject *object)
   MetaIdleMonitor *monitor = META_IDLE_MONITOR (object);
 
   g_clear_pointer (&monitor->watches, g_hash_table_destroy);
-  g_clear_pointer (&monitor->alarms, g_hash_table_destroy);
 
   G_OBJECT_CLASS (meta_idle_monitor_parent_class)->dispose (object);
 }
@@ -159,7 +158,6 @@ meta_idle_monitor_class_init (MetaIdleMonitorClass *klass)
 static void
 meta_idle_monitor_init (MetaIdleMonitor *monitor)
 {
-  monitor->alarms = g_hash_table_new (NULL, NULL);
 }
 
 static GType

@@ -45,7 +45,6 @@ struct _MetaIdleMonitor
   GObject parent_instance;
 
   GHashTable  *watches;
-  GHashTable  *alarms;
   int          device_id;
 
   /* X11 implementation */
