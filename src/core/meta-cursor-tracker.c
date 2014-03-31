@@ -887,6 +887,20 @@ get_displayed_cursor (MetaCursorTracker *tracker)
 }
 
 static void
+update_displayed_cursor (MetaCursorTracker *tracker)
+{
+  if (meta_is_wayland_compositor ())
+    {
+      if (tracker->displayed_cursor)
+        cogl_pipeline_set_layer_texture (tracker->pipeline, 0, COGL_TEXTURE (displayed_cursor->texture));
+      else
+        cogl_pipeline_set_layer_texture (tracker->pipeline, 0, NULL);
+
+      update_hw_cursor (tracker);
+    }
+}
+
+static void
 sync_displayed_cursor (MetaCursorTracker *tracker)
 {
   MetaCursorReference *displayed_cursor = get_displayed_cursor (tracker);
@@ -898,16 +912,7 @@ sync_displayed_cursor (MetaCursorTracker *tracker)
   if (displayed_cursor)
     tracker->displayed_cursor = meta_cursor_reference_ref (displayed_cursor);
 
-  if (meta_is_wayland_compositor ())
-    {
-      if (displayed_cursor)
-        cogl_pipeline_set_layer_texture (tracker->pipeline, 0, COGL_TEXTURE (displayed_cursor->texture));
-      else
-        cogl_pipeline_set_layer_texture (tracker->pipeline, 0, NULL);
-
-      update_hw_cursor (tracker);
-    }
-
+  update_displayed_cursor (tracker);
   g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
 }
 
