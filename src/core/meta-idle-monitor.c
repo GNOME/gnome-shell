@@ -358,7 +358,8 @@ meta_idle_monitor_xsync_handle_xevent_all (XEvent *xevent)
 {
   int i;
 
-  g_assert (!meta_is_wayland_compositor ());
+  if (!meta_is_wayland_compositor ())
+    return;
 
   for (i = 0; i <= device_id_max; i++)
     if (device_monitors[i])
