@@ -127,6 +127,9 @@ libmutter_wayland_la_SOURCES =			\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
 	core/main.c				\
+	core/meta-cursor.c			\
+	core/meta-cursor.h			\
+	core/meta-cursor-private.h		\
 	core/meta-cursor-tracker.c		\
 	core/meta-cursor-tracker-private.h	\
 	core/meta-idle-monitor.c		\

@@ -45,19 +45,12 @@
 #include <X11/extensions/Xfixes.h>
 #include <X11/Xcursor/Xcursor.h>
 
+#include "meta-cursor-private.h"
 #include "meta-cursor-tracker-private.h"
 #include "screen-private.h"
 #include "monitor-private.h"
 
 #include "wayland/meta-wayland-private.h"
-
-typedef struct {
-  int ref_count;
-
-  CoglTexture2D *texture;
-  struct gbm_bo *bo;
-  int hot_x, hot_y;
-} MetaCursorReference;
 
 struct _MetaCursorTracker {
   GObject parent_instance;
@@ -122,30 +115,6 @@ static void meta_cursor_tracker_set_crtc_has_hw_cursor (MetaCursorTracker *track
                                                         MetaCRTC          *crtc,
                                                         gboolean           has_hw_cursor);
 static void sync_cursor (MetaCursorTracker *tracker);
-
-static MetaCursorReference *
-meta_cursor_reference_ref (MetaCursorReference *self)
-{
-  g_assert (self->ref_count > 0);
-  self->ref_count++;
-
-  return self;
-}
-
-static void
-meta_cursor_reference_unref (MetaCursorReference *self)
-{
-  self->ref_count--;
-
-  if (self->ref_count == 0)
-    {
-      cogl_object_unref (self->texture);
-      if (self->bo)
-        gbm_bo_destroy (self->bo);
-
-      g_slice_free (MetaCursorReference, self);
-    }
-}
 
 static void
 translate_meta_cursor (MetaCursor   cursor,
