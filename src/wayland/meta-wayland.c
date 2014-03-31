@@ -51,7 +51,6 @@
 #include <meta/types.h>
 #include <meta/main.h>
 #include "frame.h"
-#include "meta-idle-monitor-private.h"
 #include "meta-weston-launch.h"
 #include "monitor-private.h"
 
@@ -520,30 +519,6 @@ void
 meta_wayland_compositor_update (MetaWaylandCompositor *compositor,
                                 const ClutterEvent    *event)
 {
-  ClutterInputDevice *device, *source_device;
-  MetaIdleMonitor *core_monitor, *device_monitor;
-  int device_id;
-
-  device = clutter_event_get_device (event);
-  if (device == NULL)
-    return;
-
-  device_id = clutter_input_device_get_device_id (device);
-
-  core_monitor = meta_idle_monitor_get_core ();
-  device_monitor = meta_idle_monitor_get_for_device (device_id);
-
-  meta_idle_monitor_reset_idletime (core_monitor);
-  meta_idle_monitor_reset_idletime (device_monitor);
-
-  source_device = clutter_event_get_source_device (event);
-  if (source_device != device)
-    {
-      device_id = clutter_input_device_get_device_id (device);
-      device_monitor = meta_idle_monitor_get_for_device (device_id);
-      meta_idle_monitor_reset_idletime (device_monitor);
-    }
-
   meta_wayland_seat_update (compositor->seat, event);
 }
 
