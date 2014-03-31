@@ -342,19 +342,6 @@ meta_cursor_reference_from_theme (MetaCursorTracker  *tracker,
 }
 
 static MetaCursorReference *
-meta_cursor_reference_take_texture (CoglTexture2D *texture)
-{
-  MetaCursorReference *self;
-
-  self = g_slice_new0 (MetaCursorReference);
-  self->ref_count = 1;
-
-  self->texture = texture;
-
-  return self;
-}
-
-static MetaCursorReference *
 meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
                                    struct wl_resource *buffer,
                                    int                 hot_x,
@@ -659,6 +646,22 @@ meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
   return TRUE;
 }
 
+static MetaCursorReference *
+meta_cursor_reference_take_texture (CoglTexture2D *texture,
+                                    int            hot_x,
+                                    int            hot_y)
+{
+  MetaCursorReference *self;
+
+  self = g_slice_new0 (MetaCursorReference);
+  self->ref_count = 1;
+  self->texture = texture;
+  self->hot_x = hot_x;
+  self->hot_y = hot_y;
+
+  return self;
+}
+
 static void
 ensure_xfixes_cursor (MetaCursorTracker *tracker)
 {
@@ -715,10 +718,9 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
 
   if (sprite != NULL)
     {
-      MetaCursorReference *cursor = meta_cursor_reference_take_texture (sprite);
-      cursor->hot_x = cursor_image->xhot;
-      cursor->hot_y = cursor_image->yhot;
-
+      MetaCursorReference *cursor = meta_cursor_reference_take_texture (sprite,
+                                                                        cursor_image->xhot,
+                                                                        cursor_image->yhot);
       set_window_cursor (tracker, TRUE, cursor);
     }
   XFree (cursor_image);
