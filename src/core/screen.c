@@ -1382,6 +1382,12 @@ update_focus_mode (MetaScreen *screen)
 }
 
 void
+meta_screen_update_cursor (MetaScreen *screen)
+{
+  meta_cursor_tracker_set_root_cursor (screen->cursor_tracker, screen->current_cursor);
+}
+
+void
 meta_screen_set_cursor (MetaScreen *screen,
                         MetaCursor  cursor)
 {
@@ -1389,14 +1395,7 @@ meta_screen_set_cursor (MetaScreen *screen,
     return;
 
   screen->current_cursor = cursor;
-  meta_cursor_tracker_set_root_cursor (screen->cursor_tracker, cursor);
-}
-
-void
-meta_screen_update_cursor (MetaScreen *screen)
-{
-  meta_cursor_tracker_set_root_cursor (screen->cursor_tracker,
-                                       screen->current_cursor);
+  meta_screen_update_cursor (screen);
 }
 
 static gboolean
