@@ -315,36 +315,38 @@ meta_cursor_image_load_from_buffer (MetaCursorTracker  *tracker,
   shm_buffer = wl_shm_buffer_get (buffer);
   if (shm_buffer)
     {
-      int rowstride = wl_shm_buffer_get_stride (shm_buffer);
-
-      switch (wl_shm_buffer_get_format (shm_buffer))
-        {
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-        case WL_SHM_FORMAT_ARGB8888:
-          gbm_format = GBM_FORMAT_ARGB8888;
-          break;
-        case WL_SHM_FORMAT_XRGB8888:
-          gbm_format = GBM_FORMAT_XRGB8888;
-          break;
-#else
-        case WL_SHM_FORMAT_ARGB8888:
-          gbm_format = GBM_FORMAT_ARGB8888;
-          break;
-        case WL_SHM_FORMAT_XRGB8888:
-          gbm_format = GBM_FORMAT_XRGB8888;
-          break;
-#endif
-        default:
-          g_warn_if_reached ();
-          gbm_format = GBM_FORMAT_ARGB8888;
-        }
-
       if (tracker->gbm)
-        meta_cursor_image_load_gbm_buffer (tracker->gbm,
-                                           image,
-                                           (uint8_t *) wl_shm_buffer_get_data (shm_buffer),
-                                           width, height, rowstride,
-                                           gbm_format);
+        {
+          int rowstride = wl_shm_buffer_get_stride (shm_buffer);
+
+          switch (wl_shm_buffer_get_format (shm_buffer))
+            {
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+            case WL_SHM_FORMAT_ARGB8888:
+              gbm_format = GBM_FORMAT_ARGB8888;
+              break;
+            case WL_SHM_FORMAT_XRGB8888:
+              gbm_format = GBM_FORMAT_XRGB8888;
+              break;
+#else
+            case WL_SHM_FORMAT_ARGB8888:
+              gbm_format = GBM_FORMAT_ARGB8888;
+              break;
+            case WL_SHM_FORMAT_XRGB8888:
+              gbm_format = GBM_FORMAT_XRGB8888;
+              break;
+#endif
+            default:
+              g_warn_if_reached ();
+              gbm_format = GBM_FORMAT_ARGB8888;
+            }
+
+          meta_cursor_image_load_gbm_buffer (tracker->gbm,
+                                             image,
+                                             (uint8_t *) wl_shm_buffer_get_data (shm_buffer),
+                                             width, height, rowstride,
+                                             gbm_format);
+        }
     }
   else
     {
