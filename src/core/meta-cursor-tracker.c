@@ -338,7 +338,7 @@ meta_cursor_tracker_get_sprite (MetaCursorTracker *tracker)
     ensure_xfixes_cursor (tracker);
 
   if (tracker->displayed_cursor)
-    return COGL_TEXTURE (tracker->displayed_cursor->texture);
+    return meta_cursor_reference_get_cogl_texture (tracker->displayed_cursor, NULL, NULL);
   else
     return NULL;
 }
@@ -361,13 +361,7 @@ meta_cursor_tracker_get_hot (MetaCursorTracker *tracker,
     ensure_xfixes_cursor (tracker);
 
   if (tracker->displayed_cursor)
-    {
-      MetaCursorReference *displayed_cursor = tracker->displayed_cursor;
-      if (x)
-        *x = displayed_cursor->hot_x;
-      if (y)
-        *y = displayed_cursor->hot_y;
-    }
+    meta_cursor_reference_get_cogl_texture (tracker->displayed_cursor, x, y);
   else
     {
       if (x)
@@ -446,6 +440,15 @@ meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
     }
 }
 
+static gboolean
+should_have_hw_cursor (MetaCursorTracker *tracker)
+{
+  if (tracker->displayed_cursor)
+    return (meta_cursor_reference_get_gbm_bo (tracker->displayed_cursor, NULL, NULL) != NULL);
+  else
+    return FALSE;
+}
+
 static void
 update_hw_cursor (MetaCursorTracker *tracker)
 {
@@ -454,7 +457,7 @@ update_hw_cursor (MetaCursorTracker *tracker)
   unsigned int i, n_crtcs;
   gboolean enabled;
 
-  enabled = tracker->displayed_cursor && tracker->displayed_cursor->bo != NULL;
+  enabled = should_have_hw_cursor (tracker);
   tracker->has_hw_cursor = enabled;
 
   monitors = meta_monitor_manager_get ();
@@ -521,7 +524,10 @@ update_displayed_cursor (MetaCursorTracker *tracker)
   if (meta_is_wayland_compositor ())
     {
       if (tracker->displayed_cursor)
-        cogl_pipeline_set_layer_texture (tracker->pipeline, 0, COGL_TEXTURE (displayed_cursor->texture));
+        {
+          CoglTexture *texture = meta_cursor_reference_get_cogl_texture (tracker->displayed_cursor, NULL, NULL);
+          cogl_pipeline_set_layer_texture (tracker->pipeline, 0, texture);
+        }
       else
         cogl_pipeline_set_layer_texture (tracker->pipeline, 0, NULL);
 
@@ -585,10 +591,15 @@ sync_cursor (MetaCursorTracker *tracker)
 
   if (displayed_cursor)
     {
-      tracker->current_rect.x = tracker->current_x - displayed_cursor->hot_x;
-      tracker->current_rect.y = tracker->current_y - displayed_cursor->hot_y;
-      tracker->current_rect.width = cogl_texture_get_width (COGL_TEXTURE (displayed_cursor->texture));
-      tracker->current_rect.height = cogl_texture_get_height (COGL_TEXTURE (displayed_cursor->texture));
+      CoglTexture *texture;
+      int hot_x, hot_y;
+
+      texture = meta_cursor_reference_get_cogl_texture (displayed_cursor, &hot_x, &hot_y);
+
+      tracker->current_rect.x = tracker->current_x - hot_x;
+      tracker->current_rect.y = tracker->current_y - hot_y;
+      tracker->current_rect.width = cogl_texture_get_width (COGL_TEXTURE (texture));
+      tracker->current_rect.height = cogl_texture_get_height (COGL_TEXTURE (texture));
     }
   else
     {
@@ -649,15 +660,16 @@ meta_cursor_tracker_set_crtc_has_hw_cursor (MetaCursorTracker *tracker,
   if (has)
     {
       MetaCursorReference *displayed_cursor = tracker->displayed_cursor;
+      struct gbm_bo *bo;
       union gbm_bo_handle handle;
       int width, height;
       int hot_x, hot_y;
 
-      handle = gbm_bo_get_handle (displayed_cursor->bo);
-      width = gbm_bo_get_width (displayed_cursor->bo);
-      height = gbm_bo_get_height (displayed_cursor->bo);
-      hot_x = displayed_cursor->hot_x;
-      hot_y = displayed_cursor->hot_y;
+      bo = meta_cursor_reference_get_gbm_bo (displayed_cursor, &hot_x, &hot_y);
+
+      handle = gbm_bo_get_handle (bo);
+      width = gbm_bo_get_width (bo);
+      height = gbm_bo_get_height (bo);
 
       drmModeSetCursor2 (tracker->drm_fd, crtc->crtc_id, handle.u32,
                          width, height, hot_x, hot_y);

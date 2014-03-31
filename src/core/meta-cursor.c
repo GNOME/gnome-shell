@@ -377,3 +377,27 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
 
   return self;
 }
+
+CoglTexture *
+meta_cursor_reference_get_cogl_texture (MetaCursorReference *cursor,
+                                        int                 *hot_x,
+                                        int                 *hot_y)
+{
+  if (hot_x)
+    *hot_x = cursor->hot_x;
+  if (hot_y)
+    *hot_y = cursor->hot_y;
+  return COGL_TEXTURE (cursor->texture);
+}
+
+struct gbm_bo *
+meta_cursor_reference_get_gbm_bo (MetaCursorReference *cursor,
+                                  int                 *hot_x,
+                                  int                 *hot_y)
+{
+  if (hot_x)
+    *hot_x = cursor->hot_x;
+  if (hot_y)
+    *hot_y = cursor->hot_y;
+  return cursor->bo;
+}

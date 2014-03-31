@@ -35,4 +35,12 @@ struct _MetaCursorReference {
   int hot_x, hot_y;
 };
 
+CoglTexture *meta_cursor_reference_get_cogl_texture (MetaCursorReference *cursor,
+                                                     int                 *hot_x,
+                                                     int                 *hot_y);
+
+struct gbm_bo *meta_cursor_reference_get_gbm_bo (MetaCursorReference *cursor,
+                                                 int                 *hot_x,
+                                                 int                 *hot_y);
+
 #endif /* META_CURSOR_PRIVATE_H */
