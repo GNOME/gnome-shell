@@ -34,7 +34,8 @@
 #include "window-private.h"
 #include "bell.h"
 #include "workspace-private.h"
-#include "meta-idle-monitor-private.h"
+#include "meta-idle-monitor-xsync.h"
+#include "meta-idle-monitor-native.h"
 
 #include "x11/window-x11.h"
 #include "x11/xprops.h"
@@ -1244,7 +1245,7 @@ handle_other_xevent (MetaDisplay *display,
           bypass_gtk = TRUE; /* GTK doesn't want to see this really */
         }
       else
-        meta_idle_monitor_handle_xevent_all (event);
+        meta_idle_monitor_xsync_handle_xevent_all (event);
 
       goto out;
     }
@@ -1870,15 +1871,15 @@ handle_idletime_for_event (const ClutterEvent *event)
   core_monitor = meta_idle_monitor_get_core ();
   device_monitor = meta_idle_monitor_get_for_device (device_id);
 
-  meta_idle_monitor_reset_idletime (core_monitor);
-  meta_idle_monitor_reset_idletime (device_monitor);
+  meta_idle_monitor_native_reset_idletime (core_monitor);
+  meta_idle_monitor_native_reset_idletime (device_monitor);
 
   source_device = clutter_event_get_source_device (event);
   if (source_device != device)
     {
       device_id = clutter_input_device_get_device_id (device);
       device_monitor = meta_idle_monitor_get_for_device (device_id);
-      meta_idle_monitor_reset_idletime (device_monitor);
+      meta_idle_monitor_native_reset_idletime (device_monitor);
     }
 }
 

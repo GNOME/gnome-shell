@@ -20,8 +20,62 @@
  *         from gnome-desktop/libgnome-desktop/gnome-idle-monitor.c
  */
 
+#ifndef META_IDLE_MONITOR_PRIVATE_H
+#define META_IDLE_MONITOR_PRIVATE_H
+
 #include <meta/meta-idle-monitor.h>
+#include "display-private.h"
 
-void meta_idle_monitor_handle_xevent_all (XEvent *xevent);
+#include <X11/Xlib.h>
+#include <X11/extensions/sync.h>
 
-void meta_idle_monitor_reset_idletime (MetaIdleMonitor *monitor);
+typedef struct
+{
+  MetaIdleMonitor          *monitor;
+  guint	                    id;
+  MetaIdleMonitorWatchFunc  callback;
+  gpointer		    user_data;
+  GDestroyNotify            notify;
+  guint64                   timeout_msec;
+
+  /* x11 */
+  XSyncAlarm                xalarm;
+  int                       idle_source_id;
+
+  /* wayland */
+  GSource                  *timeout_source;
+} MetaIdleMonitorWatch;
+
+struct _MetaIdleMonitor
+{
+  GObject parent_instance;
+
+  GHashTable  *watches;
+  GHashTable  *alarms;
+  int          device_id;
+
+  /* X11 implementation */
+  Display     *display;
+  int          sync_event_base;
+  XSyncCounter counter;
+  XSyncAlarm   user_active_alarm;
+
+  /* Wayland implementation */
+  guint64      last_event_time;
+};
+
+struct _MetaIdleMonitorClass
+{
+  GObjectClass parent_class;
+
+  gint64 (*get_idletime) (MetaIdleMonitor *monitor);
+  MetaIdleMonitorWatch * (*make_watch) (MetaIdleMonitor           *monitor,
+                                        guint64                    timeout_msec,
+                                        MetaIdleMonitorWatchFunc   callback,
+                                        gpointer                   user_data,
+                                        GDestroyNotify             notify);
+};
+
+void _meta_idle_monitor_watch_fire (MetaIdleMonitorWatch *watch);
+
+#endif /* META_IDLE_MONITOR_PRIVATE_H */

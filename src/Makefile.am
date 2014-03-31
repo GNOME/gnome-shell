@@ -133,6 +133,10 @@ libmutter_wayland_la_SOURCES =			\
 	core/meta-idle-monitor-private.h	\
 	core/meta-idle-monitor-dbus.c		\
 	core/meta-idle-monitor-dbus.h		\
+	core/meta-idle-monitor-xsync.c		\
+	core/meta-idle-monitor-xsync.h		\
+	core/meta-idle-monitor-native.c		\
+	core/meta-idle-monitor-native.h		\
 	core/meta-xrandr-shared.h		\
 	core/monitor.c				\
 	core/monitor-config.c			\
