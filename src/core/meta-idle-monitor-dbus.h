@@ -1,8 +1,8 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* 
+/*
  * Copyright 2013 Red Hat, Inc.
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -12,7 +12,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  *
@@ -20,8 +20,9 @@
  *         from gnome-desktop/libgnome-desktop/gnome-idle-monitor.c
  */
 
-#include <meta/meta-idle-monitor.h>
+#ifndef META_IDLE_MONITOR_DBUS_H
+#define META_IDLE_MONITOR_DBUS_H
 
-void meta_idle_monitor_handle_xevent_all (XEvent *xevent);
+void meta_idle_monitor_init_dbus (void);
 
-void meta_idle_monitor_reset_idletime (MetaIdleMonitor *monitor);
+#endif

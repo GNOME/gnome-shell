@@ -48,7 +48,7 @@
 #include <meta/compositor-mutter.h>
 #include <X11/Xatom.h>
 #include "mutter-enum-types.h"
-#include "meta-idle-monitor-private.h"
+#include "meta-idle-monitor-dbus.h"
 #include "meta-cursor-tracker-private.h"
 
 #ifdef HAVE_RANDR

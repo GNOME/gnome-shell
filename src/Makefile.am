@@ -131,6 +131,8 @@ libmutter_wayland_la_SOURCES =			\
 	core/meta-cursor-tracker-private.h	\
 	core/meta-idle-monitor.c		\
 	core/meta-idle-monitor-private.h	\
+	core/meta-idle-monitor-dbus.c		\
+	core/meta-idle-monitor-dbus.h		\
 	core/meta-xrandr-shared.h		\
 	core/monitor.c				\
 	core/monitor-config.c			\
