@@ -96,15 +96,6 @@ G_DEFINE_TYPE (MetaIdleMonitor, meta_idle_monitor, G_TYPE_OBJECT)
 static MetaIdleMonitor *device_monitors[256];
 static int              device_id_max;
 
-static gint64
-_xsyncvalue_to_int64 (XSyncValue value)
-{
-  return ((guint64) XSyncValueHigh32 (value)) << 32
-    | (guint64) XSyncValueLow32 (value);
-}
-
-#define GUINT64_TO_XSYNCVALUE(value, ret) XSyncIntsToValue (ret, (value) & 0xFFFFFFFF, ((guint64)(value)) >> 32)
-
 static void
 fire_watch (MetaIdleMonitorWatch *watch)
 {
@@ -132,6 +123,15 @@ fire_watch (MetaIdleMonitorWatch *watch)
 
   g_object_unref (monitor);
 }
+
+static gint64
+_xsyncvalue_to_int64 (XSyncValue value)
+{
+  return ((guint64) XSyncValueHigh32 (value)) << 32
+    | (guint64) XSyncValueLow32 (value);
+}
+
+#define GUINT64_TO_XSYNCVALUE(value, ret) XSyncIntsToValue (ret, (value) & 0xFFFFFFFF, ((guint64)(value)) >> 32)
 
 static XSyncAlarm
 _xsync_alarm_set (MetaIdleMonitor	*monitor,
@@ -659,6 +659,23 @@ meta_idle_monitor_remove_watch (MetaIdleMonitor *monitor,
   g_object_unref (monitor);
 }
 
+static gint64
+meta_idle_monitor_get_idletime_wayland (MetaIdleMonitor *monitor)
+{
+  return (g_get_monotonic_time () - monitor->last_event_time) / 1000;
+}
+
+static gint64
+meta_idle_monitor_get_idletime_x11 (MetaIdleMonitor *monitor)
+{
+  XSyncValue value;
+
+  if (!XSyncQueryCounter (monitor->display, monitor->counter, &value))
+    return -1;
+
+  return _xsyncvalue_to_int64 (value);
+}
+
 /**
  * meta_idle_monitor_get_idletime:
  * @monitor: A #MetaIdleMonitor
@@ -668,19 +685,10 @@ meta_idle_monitor_remove_watch (MetaIdleMonitor *monitor,
 gint64
 meta_idle_monitor_get_idletime (MetaIdleMonitor *monitor)
 {
-  XSyncValue value;
-
   if (meta_is_wayland_compositor ())
-    {
-      return (g_get_monotonic_time () - monitor->last_event_time) / 1000;
-    }
+    return meta_idle_monitor_get_idletime_wayland (monitor);
   else
-    {
-      if (!XSyncQueryCounter (monitor->display, monitor->counter, &value))
-        return -1;
-
-      return _xsyncvalue_to_int64 (value);
-    }
+    return meta_idle_monitor_get_idletime_x11 (monitor);
 }
 
 typedef struct {
