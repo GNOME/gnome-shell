@@ -191,6 +191,40 @@ load_cursor_on_client (MetaDisplay *display,
 }
 
 static void
+meta_cursor_image_load_gbm_buffer (struct gbm_device *gbm,
+                                   MetaCursorImage   *image,
+                                   uint8_t           *pixels,
+                                   int                width,
+                                   int                height,
+                                   int                rowstride,
+                                   uint32_t           gbm_format)
+{
+  if (width > 64 || height > 64)
+    {
+      meta_warning ("Invalid theme cursor size (must be at most 64x64)\n");
+      return;
+    }
+
+  if (gbm_device_is_format_supported (gbm, gbm_format,
+                                      GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE))
+    {
+      uint8_t buf[4 * 64 * 64];
+      int i;
+
+      image->bo = gbm_bo_create (gbm, 64, 64,
+                                 gbm_format, GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE);
+
+      memset (buf, 0, sizeof(buf));
+      for (i = 0; i < height; i++)
+        memcpy (buf + i * 4 * 64, pixels + i * rowstride, width * 4);
+
+      gbm_bo_write (image->bo, buf, 64 * 64 * 4);
+    }
+  else
+    meta_warning ("HW cursor for format %d not supported\n", gbm_format);
+}
+
+static void
 meta_cursor_image_load_from_xcursor_image (MetaCursorTracker *tracker,
                                            MetaCursorImage   *image,
                                            XcursorImage      *xc_image)
@@ -221,35 +255,15 @@ meta_cursor_image_load_from_xcursor_image (MetaCursorTracker *tracker,
                                                   width, height,
                                                   cogl_format,
                                                   rowstride,
-                                                  (uint8_t*)xc_image->pixels,
+                                                  (uint8_t *) xc_image->pixels,
                                                   NULL);
 
   if (tracker->gbm)
-    {
-      if (width > 64 || height > 64)
-        {
-          meta_warning ("Invalid theme cursor size (must be at most 64x64)\n");
-          return;
-        }
-
-      if (gbm_device_is_format_supported (tracker->gbm, gbm_format,
-                                          GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE))
-        {
-          uint32_t buf[64 * 64];
-          int i;
-
-          image->bo = gbm_bo_create (tracker->gbm, 64, 64,
-                                     gbm_format, GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE);
-
-          memset (buf, 0, sizeof(buf));
-          for (i = 0; i < height; i++)
-            memcpy (buf + i * 64, xc_image->pixels + i * width, width * 4);
-
-          gbm_bo_write (image->bo, buf, 64 * 64 * 4);
-        }
-      else
-        meta_warning ("HW cursor for format %d not supported\n", gbm_format);
-    }
+    meta_cursor_image_load_gbm_buffer (tracker->gbm,
+                                       image,
+                                       (uint8_t *) xc_image->pixels,
+                                       width, height, rowstride,
+                                       gbm_format);
 }
 
 MetaCursorReference *
@@ -325,34 +339,12 @@ meta_cursor_image_load_from_buffer (MetaCursorTracker  *tracker,
           gbm_format = GBM_FORMAT_ARGB8888;
         }
 
-      if (width > 64 || height > 64)
-        {
-          meta_warning ("Invalid cursor size (must be at most 64x64), falling back to software (GL) cursors\n");
-          return;
-        }
-
       if (tracker->gbm)
-        {
-          if (gbm_device_is_format_supported (tracker->gbm, gbm_format,
-                                              GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE))
-            {
-              uint8_t *data;
-              uint8_t buf[4 * 64 * 64];
-              int i;
-
-              image->bo = gbm_bo_create (tracker->gbm, 64, 64,
-                                         gbm_format, GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE);
-
-              data = wl_shm_buffer_get_data (shm_buffer);
-              memset (buf, 0, sizeof(buf));
-              for (i = 0; i < height; i++)
-                memcpy (buf + i * 4 * 64, data + i * rowstride, 4 * width);
-
-              gbm_bo_write (image->bo, buf, 64 * 64 * 4);
-            }
-          else
-            meta_warning ("HW cursor for format %d not supported\n", gbm_format);
-        }
+        meta_cursor_image_load_gbm_buffer (tracker->gbm,
+                                           image,
+                                           (uint8_t *) wl_shm_buffer_get_data (shm_buffer),
+                                           width, height, rowstride,
+                                           gbm_format);
     }
   else
     {
