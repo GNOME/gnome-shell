@@ -34,6 +34,8 @@
 #include "util-private.h"
 #include <meta/errors.h>
 #include "monitor-private.h"
+#include "meta-monitor-manager-kms.h"
+#include "meta-monitor-manager-xrandr.h"
 
 #include "meta-dbus-xrandr.h"
 

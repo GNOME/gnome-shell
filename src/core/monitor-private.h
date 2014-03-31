@@ -335,30 +335,6 @@ void                meta_monitor_manager_apply_configuration (MetaMonitorManager
 void                meta_monitor_manager_confirm_configuration (MetaMonitorManager *manager,
                                                                 gboolean            ok);
 
-#define META_TYPE_MONITOR_MANAGER_XRANDR            (meta_monitor_manager_xrandr_get_type ())
-#define META_MONITOR_MANAGER_XRANDR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_MANAGER_XRANDR, MetaMonitorManagerXrandr))
-#define META_MONITOR_MANAGER_XRANDR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_MANAGER_XRANDR, MetaMonitorManagerXrandrClass))
-#define META_IS_MONITOR_MANAGER_XRANDR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_MONITOR_MANAGER_XRANDR))
-#define META_IS_MONITOR_MANAGER_XRANDR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_MONITOR_MANAGER_XRANDR))
-#define META_MONITOR_MANAGER_XRANDR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_MONITOR_MANAGER_XRANDR, MetaMonitorManagerXrandrClass))
-
-typedef struct _MetaMonitorManagerXrandrClass    MetaMonitorManagerXrandrClass;
-typedef struct _MetaMonitorManagerXrandr         MetaMonitorManagerXrandr;
-
-GType meta_monitor_manager_xrandr_get_type (void);
-
-#define META_TYPE_MONITOR_MANAGER_KMS            (meta_monitor_manager_kms_get_type ())
-#define META_MONITOR_MANAGER_KMS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_MANAGER_KMS, MetaMonitorManagerKms))
-#define META_MONITOR_MANAGER_KMS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_MANAGER_KMS, MetaMonitorManagerKmsClass))
-#define META_IS_MONITOR_MANAGER_KMS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_MONITOR_MANAGER_KMS))
-#define META_IS_MONITOR_MANAGER_KMS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_MONITOR_MANAGER_KMS))
-#define META_MONITOR_MANAGER_KMS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_MONITOR_MANAGER_KMS, MetaMonitorManagerKmsClass))
-
-typedef struct _MetaMonitorManagerKmsClass    MetaMonitorManagerKmsClass;
-typedef struct _MetaMonitorManagerKms         MetaMonitorManagerKms;
-
-GType meta_monitor_manager_kms_get_type (void);
-
 #define META_TYPE_MONITOR_CONFIG            (meta_monitor_config_get_type ())
 #define META_MONITOR_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_CONFIG, MetaMonitorConfig))
 #define META_MONITOR_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_CONFIG, MetaMonitorConfigClass))

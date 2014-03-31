@@ -136,7 +136,9 @@ libmutter_wayland_la_SOURCES =			\
 	core/monitor-config.c			\
 	core/monitor-private.h			\
 	core/meta-monitor-manager-kms.c		\
+	core/meta-monitor-manager-kms.h		\
 	core/meta-monitor-manager-xrandr.c	\
+	core/meta-monitor-manager-xrandr.h	\
 	core/mutter-Xatomtype.h			\
 	core/place.c				\
 	core/place.h				\

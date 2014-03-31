@@ -23,6 +23,8 @@
 
 #include "config.h"
 
+#include "meta-monitor-manager-kms.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <clutter/clutter.h>
@@ -36,7 +38,6 @@
 
 #include <meta/main.h>
 #include <meta/errors.h>
-#include "monitor-private.h"
 #include "edid.h"
 
 #define ALL_WL_TRANSFORMS ((1 << (WL_OUTPUT_TRANSFORM_FLIPPED_270 + 1)) - 1)
