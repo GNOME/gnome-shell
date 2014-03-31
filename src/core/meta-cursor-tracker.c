@@ -949,6 +949,7 @@ meta_cursor_tracker_queue_redraw (MetaCursorTracker *tracker)
 
   g_assert (meta_is_wayland_compositor ());
 
+  /* Clear the location the cursor was at before, if we need to. */
   if (tracker->previous_is_valid)
     {
       clip.x = tracker->previous_rect.x;
