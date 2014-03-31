@@ -46,19 +46,23 @@ meta_cursor_reference_ref (MetaCursorReference *self)
   return self;
 }
 
+static void
+meta_cursor_reference_free (MetaCursorReference *self)
+{
+  cogl_object_unref (self->texture);
+  if (self->bo)
+    gbm_bo_destroy (self->bo);
+
+  g_slice_free (MetaCursorReference, self);
+}
+
 void
 meta_cursor_reference_unref (MetaCursorReference *self)
 {
   self->ref_count--;
 
   if (self->ref_count == 0)
-    {
-      cogl_object_unref (self->texture);
-      if (self->bo)
-        gbm_bo_destroy (self->bo);
-
-      g_slice_free (MetaCursorReference, self);
-    }
+    meta_cursor_reference_free (self);
 }
 
 static void
