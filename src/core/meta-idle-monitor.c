@@ -86,40 +86,6 @@ _meta_idle_monitor_watch_fire (MetaIdleMonitorWatch *watch)
 }
 
 static void
-idle_monitor_watch_free (MetaIdleMonitorWatch *watch)
-{
-  MetaIdleMonitor *monitor;
-
-  if (watch == NULL)
-    return;
-
-  monitor = watch->monitor;
-  g_object_ref (monitor);
-
-  if (watch->idle_source_id)
-    {
-      g_source_remove (watch->idle_source_id);
-      watch->idle_source_id = 0;
-    }
-
-  if (watch->notify != NULL)
-    watch->notify (watch->user_data);
-
-  if (watch->xalarm != monitor->user_active_alarm &&
-      watch->xalarm != None)
-    {
-      XSyncDestroyAlarm (monitor->display, watch->xalarm);
-      g_hash_table_remove (monitor->alarms, (gpointer) watch->xalarm);
-    }
-
-  if (watch->timeout_source != NULL)
-    g_source_destroy (watch->timeout_source);
-
-  g_object_unref (monitor);
-  g_slice_free (MetaIdleMonitorWatch, watch);
-}
-
-static void
 meta_idle_monitor_dispose (GObject *object)
 {
   MetaIdleMonitor *monitor = META_IDLE_MONITOR (object);
@@ -193,11 +159,6 @@ meta_idle_monitor_class_init (MetaIdleMonitorClass *klass)
 static void
 meta_idle_monitor_init (MetaIdleMonitor *monitor)
 {
-  monitor->watches = g_hash_table_new_full (NULL,
-                                                  NULL,
-                                                  NULL,
-                                                  (GDestroyNotify)idle_monitor_watch_free);
-
   monitor->alarms = g_hash_table_new (NULL, NULL);
 }
 

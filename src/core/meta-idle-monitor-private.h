@@ -37,13 +37,7 @@ typedef struct
   gpointer		    user_data;
   GDestroyNotify            notify;
   guint64                   timeout_msec;
-
-  /* x11 */
-  XSyncAlarm                xalarm;
   int                       idle_source_id;
-
-  /* wayland */
-  GSource                  *timeout_source;
 } MetaIdleMonitorWatch;
 
 struct _MetaIdleMonitor

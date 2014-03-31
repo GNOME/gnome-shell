@@ -40,6 +40,12 @@ struct _MetaIdleMonitorNativeClass
   MetaIdleMonitorClass parent_class;
 };
 
+typedef struct {
+  MetaIdleMonitorWatch base;
+
+  GSource *timeout_source;
+} MetaIdleMonitorWatchNative;
+
 G_DEFINE_TYPE (MetaIdleMonitorNative, meta_idle_monitor_native, META_TYPE_IDLE_MONITOR)
 
 static gint64
@@ -61,10 +67,11 @@ native_dispatch_timeout (GSource     *source,
                          GSourceFunc  callback,
                          gpointer     user_data)
 {
-  MetaIdleMonitorWatch *watch = user_data;
+  MetaIdleMonitorWatchNative *watch_native = user_data;
+  MetaIdleMonitorWatch *watch = (MetaIdleMonitorWatch *) watch;
 
   _meta_idle_monitor_watch_fire (watch);
-  g_source_set_ready_time (watch->timeout_source, -1);
+  g_source_set_ready_time (watch_native->timeout_source, -1);
   return TRUE;
 }
 
@@ -75,6 +82,31 @@ static GSourceFuncs native_source_funcs = {
   NULL, /* finalize */
 };
 
+static void
+free_watch (gpointer data)
+{
+  MetaIdleMonitorWatchNative *watch_native = data;
+  MetaIdleMonitorWatch *watch = (MetaIdleMonitorWatch *) watch_native;
+  MetaIdleMonitor *monitor = watch->monitor;
+
+  g_object_ref (monitor);
+
+  if (watch->idle_source_id)
+    {
+      g_source_remove (watch->idle_source_id);
+      watch->idle_source_id = 0;
+    }
+
+  if (watch->notify != NULL)
+    watch->notify (watch->user_data);
+
+  if (watch_native->timeout_source != NULL)
+    g_source_destroy (watch_native->timeout_source);
+
+  g_object_unref (monitor);
+  g_slice_free (MetaIdleMonitorWatchNative, watch_native);
+}
+
 static MetaIdleMonitorWatch *
 meta_idle_monitor_native_make_watch (MetaIdleMonitor           *monitor,
                                     guint64                    timeout_msec,
@@ -82,7 +114,11 @@ meta_idle_monitor_native_make_watch (MetaIdleMonitor           *monitor,
                                     gpointer                   user_data,
                                     GDestroyNotify             notify)
 {
+  MetaIdleMonitorWatchNative *watch_native;
   MetaIdleMonitorWatch *watch;
+
+  watch_native = g_slice_new0 (MetaIdleMonitorWatchNative);
+  watch = (MetaIdleMonitorWatch *) watch_native;
 
   watch = g_slice_new0 (MetaIdleMonitorWatch);
   watch->monitor = monitor;
@@ -101,7 +137,7 @@ meta_idle_monitor_native_make_watch (MetaIdleMonitor           *monitor,
       g_source_attach (source, NULL);
       g_source_unref (source);
 
-      watch->timeout_source = source;
+      watch_native->timeout_source = source;
     }
 
   return watch;
@@ -117,8 +153,11 @@ meta_idle_monitor_native_class_init (MetaIdleMonitorNativeClass *klass)
 }
 
 static void
-meta_idle_monitor_native_init (MetaIdleMonitorNative *monitor)
+meta_idle_monitor_native_init (MetaIdleMonitorNative *monitor_native)
 {
+  MetaIdleMonitor *monitor = META_IDLE_MONITOR (monitor_native);
+
+  monitor->watches = g_hash_table_new_full (NULL, NULL, NULL, free_watch);
 }
 
 typedef struct {
@@ -131,7 +170,8 @@ check_native_watch (gpointer key,
                     gpointer value,
                     gpointer user_data)
 {
-  MetaIdleMonitorWatch *watch = value;
+  MetaIdleMonitorWatchNative *watch_native = value;
+  MetaIdleMonitorWatch *watch = (MetaIdleMonitorWatch *) watch_native;
   CheckNativeClosure *closure = user_data;
   gboolean steal;
 
@@ -142,7 +182,7 @@ check_native_watch (gpointer key,
     }
   else
     {
-      g_source_set_ready_time (watch->timeout_source,
+      g_source_set_ready_time (watch_native->timeout_source,
                                closure->monitor->last_event_time +
                                watch->timeout_msec * 1000);
       steal = FALSE;

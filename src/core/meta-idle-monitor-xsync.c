@@ -40,6 +40,12 @@ struct _MetaIdleMonitorXSyncClass
   MetaIdleMonitorClass parent_class;
 };
 
+typedef struct {
+  MetaIdleMonitorWatch base;
+
+  XSyncAlarm xalarm;
+} MetaIdleMonitorWatchXSync;
+
 G_DEFINE_TYPE (MetaIdleMonitorXSync, meta_idle_monitor_xsync, META_TYPE_IDLE_MONITOR)
 
 static gint64
@@ -101,10 +107,11 @@ static void
 check_x11_watch (gpointer data,
                  gpointer user_data)
 {
-  MetaIdleMonitorWatch *watch = data;
+  MetaIdleMonitorWatchXSync *watch_xsync = data;
+  MetaIdleMonitorWatch *watch = (MetaIdleMonitorWatch *) watch_xsync;
   XSyncAlarm alarm = (XSyncAlarm) user_data;
 
-  if (watch->xalarm != alarm)
+  if (watch_xsync->xalarm != alarm)
     return;
 
   _meta_idle_monitor_watch_fire (watch);
@@ -215,6 +222,35 @@ get_next_watch_serial (void)
   return serial;
 }
 
+static void
+free_watch (gpointer data)
+{
+  MetaIdleMonitorWatchXSync *watch_xsync = data;
+  MetaIdleMonitorWatch *watch = (MetaIdleMonitorWatch *) watch_xsync;
+  MetaIdleMonitor *monitor = watch->monitor;
+
+  g_object_ref (monitor);
+
+  if (watch->idle_source_id)
+    {
+      g_source_remove (watch->idle_source_id);
+      watch->idle_source_id = 0;
+    }
+
+  if (watch->notify != NULL)
+    watch->notify (watch->user_data);
+
+  if (watch_xsync->xalarm != monitor->user_active_alarm &&
+      watch_xsync->xalarm != None)
+    {
+      XSyncDestroyAlarm (monitor->display, watch_xsync->xalarm);
+      g_hash_table_remove (monitor->alarms, (gpointer) watch_xsync->xalarm);
+    }
+
+  g_object_unref (monitor);
+  g_slice_free (MetaIdleMonitorWatchXSync, watch_xsync);
+}
+
 static MetaIdleMonitorWatch *
 meta_idle_monitor_xsync_make_watch (MetaIdleMonitor           *monitor,
                                     guint64                    timeout_msec,
@@ -222,9 +258,12 @@ meta_idle_monitor_xsync_make_watch (MetaIdleMonitor           *monitor,
                                     gpointer                   user_data,
                                     GDestroyNotify             notify)
 {
+  MetaIdleMonitorWatchXSync *watch_xsync;
   MetaIdleMonitorWatch *watch;
 
-  watch = g_slice_new0 (MetaIdleMonitorWatch);
+  watch_xsync = g_slice_new0 (MetaIdleMonitorWatchXSync);
+  watch = (MetaIdleMonitorWatch *) watch_xsync;
+
   watch->monitor = monitor;
   watch->id = get_next_watch_serial ();
   watch->callback = callback;
@@ -236,16 +275,16 @@ meta_idle_monitor_xsync_make_watch (MetaIdleMonitor           *monitor,
     {
       if (timeout_msec != 0)
         {
-          watch->xalarm = _xsync_alarm_set (monitor, XSyncPositiveTransition, timeout_msec, TRUE);
+          watch_xsync->xalarm = _xsync_alarm_set (monitor, XSyncPositiveTransition, timeout_msec, TRUE);
 
-          g_hash_table_add (monitor->alarms, (gpointer) watch->xalarm);
+          g_hash_table_add (monitor->alarms, (gpointer) watch_xsync->xalarm);
 
           if (meta_idle_monitor_get_idletime (monitor) > (gint64)timeout_msec)
             watch->idle_source_id = g_idle_add (fire_watch_idle, watch);
         }
       else
         {
-          watch->xalarm = monitor->user_active_alarm;
+          watch_xsync->xalarm = monitor->user_active_alarm;
 
           set_alarm_enabled (monitor->display, monitor->user_active_alarm, TRUE);
         }
@@ -268,8 +307,11 @@ meta_idle_monitor_xsync_class_init (MetaIdleMonitorXSyncClass *klass)
 }
 
 static void
-meta_idle_monitor_xsync_init (MetaIdleMonitorXSync *monitor)
+meta_idle_monitor_xsync_init (MetaIdleMonitorXSync *monitor_xsync)
 {
+  MetaIdleMonitor *monitor = META_IDLE_MONITOR (monitor_xsync);
+
+  monitor->watches = g_hash_table_new_full (NULL, NULL, NULL, free_watch);
 }
 
 void
