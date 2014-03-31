@@ -399,23 +399,10 @@ void
 meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
                                      MetaCursor         cursor)
 {
-  Cursor xcursor;
-  MetaDisplay *display = tracker->screen->display;
+  g_clear_pointer (&tracker->root_cursor, meta_cursor_reference_unref);
+  tracker->root_cursor = meta_cursor_reference_from_theme (tracker, cursor);
 
-  /* First create a cursor for X11 applications that don't specify their own */
-  xcursor = meta_display_create_x_cursor (display, cursor);
-
-  XDefineCursor (display->xdisplay, tracker->screen->xroot, xcursor);
-  XFlush (display->xdisplay);
-  XFreeCursor (display->xdisplay, xcursor);
-
-  /* Now update the real root cursor */
-  if (meta_is_wayland_compositor ())
-    {
-      g_clear_pointer (&tracker->root_cursor, meta_cursor_reference_unref);
-      tracker->root_cursor = meta_cursor_reference_from_theme (tracker, cursor);
-      sync_cursor (tracker);
-    }
+  sync_cursor (tracker);
 }
 
 static gboolean

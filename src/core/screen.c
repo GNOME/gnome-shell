@@ -1384,7 +1384,18 @@ update_focus_mode (MetaScreen *screen)
 void
 meta_screen_update_cursor (MetaScreen *screen)
 {
-  meta_cursor_tracker_set_root_cursor (screen->cursor_tracker, screen->current_cursor);
+  MetaDisplay *display = screen->display;
+  MetaCursor cursor = screen->current_cursor;
+  Cursor xcursor;
+
+  meta_cursor_tracker_set_root_cursor (screen->cursor_tracker, cursor);
+
+  /* Set a cursor for X11 applications that don't specify their own */
+  xcursor = meta_display_create_x_cursor (display, cursor);
+
+  XDefineCursor (display->xdisplay, screen->xroot, xcursor);
+  XFlush (display->xdisplay);
+  XFreeCursor (display->xdisplay, xcursor);
 }
 
 void
