@@ -24,7 +24,6 @@
 
 #include <meta/meta-cursor-tracker.h>
 #include <wayland-server.h>
-#include <clutter/clutter.h>
 
 gboolean meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
 					    XEvent            *xevent);
