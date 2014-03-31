@@ -396,11 +396,12 @@ meta_cursor_tracker_unset_window_cursor (MetaCursorTracker *tracker)
 }
 
 void
-meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
-                                     MetaCursor         cursor)
+meta_cursor_tracker_set_root_cursor (MetaCursorTracker   *tracker,
+                                     MetaCursorReference *cursor)
 {
   g_clear_pointer (&tracker->root_cursor, meta_cursor_reference_unref);
-  tracker->root_cursor = meta_cursor_reference_from_theme (tracker, cursor);
+  if (cursor)
+    tracker->root_cursor = meta_cursor_reference_ref (cursor);
 
   sync_cursor (tracker);
 }
