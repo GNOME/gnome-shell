@@ -372,12 +372,13 @@ meta_cursor_tracker_get_hot (MetaCursorTracker *tracker,
 }
 
 void
-meta_cursor_tracker_set_grab_cursor (MetaCursorTracker *tracker,
-                                     MetaCursor         cursor)
+meta_cursor_tracker_set_grab_cursor (MetaCursorTracker   *tracker,
+                                     MetaCursorReference *cursor)
 {
   g_clear_pointer (&tracker->grab_cursor, meta_cursor_reference_unref);
-  if (cursor != META_CURSOR_DEFAULT)
-    tracker->grab_cursor = meta_cursor_reference_from_theme (tracker, cursor);
+  if (cursor)
+    tracker->grab_cursor = meta_cursor_reference_ref (cursor);
+
   sync_cursor (tracker);
 }
 

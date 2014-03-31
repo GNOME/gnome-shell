@@ -1839,6 +1839,7 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
   XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
   MetaCursor cursor = meta_cursor_for_grab_op (op);
+  MetaCursorReference *cursor_ref;
 
   XISetMask (mask.mask, XI_ButtonPress);
   XISetMask (mask.mask, XI_ButtonRelease);
@@ -1872,7 +1873,9 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
 
   meta_error_trap_pop (display);
 
-  meta_cursor_tracker_set_grab_cursor (screen->cursor_tracker, cursor);
+  cursor_ref = meta_cursor_reference_from_theme (screen->cursor_tracker, cursor);
+  meta_cursor_tracker_set_grab_cursor (screen->cursor_tracker, cursor_ref);
+  meta_cursor_reference_unref (cursor_ref);
 }
 
 gboolean
@@ -2111,7 +2114,7 @@ meta_display_end_grab_op (MetaDisplay *display,
         meta_screen_ungrab_all_keys (display->screen, timestamp);
     }
 
-  meta_cursor_tracker_set_grab_cursor (display->screen->cursor_tracker, META_CURSOR_DEFAULT);
+  meta_cursor_tracker_set_grab_cursor (display->screen->cursor_tracker, NULL);
 
   display->grab_timestamp = 0;
   display->grab_window = NULL;
