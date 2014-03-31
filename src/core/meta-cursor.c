@@ -47,12 +47,17 @@ meta_cursor_reference_ref (MetaCursorReference *self)
 }
 
 static void
+meta_cursor_image_free (MetaCursorImage *image)
+{
+  cogl_object_unref (image->texture);
+  if (image->bo)
+    gbm_bo_destroy (image->bo);
+}
+
+static void
 meta_cursor_reference_free (MetaCursorReference *self)
 {
-  cogl_object_unref (self->texture);
-  if (self->bo)
-    gbm_bo_destroy (self->bo);
-
+  meta_cursor_image_free (&self->image);
   g_slice_free (MetaCursorReference, self);
 }
 
@@ -209,17 +214,17 @@ meta_cursor_reference_from_xcursor_image (MetaCursorTracker  *tracker,
 
   self = g_slice_new0 (MetaCursorReference);
   self->ref_count = 1;
-  self->hot_x = image->xhot;
-  self->hot_y = image->yhot;
+  self->image.hot_x = image->xhot;
+  self->image.hot_y = image->yhot;
 
   clutter_backend = clutter_get_default_backend ();
   cogl_context = clutter_backend_get_cogl_context (clutter_backend);
-  self->texture = cogl_texture_2d_new_from_data (cogl_context,
-                                                 width, height,
-                                                 cogl_format,
-                                                 rowstride,
-                                                 (uint8_t*)image->pixels,
-                                                 NULL);
+  self->image.texture = cogl_texture_2d_new_from_data (cogl_context,
+                                                       width, height,
+                                                       cogl_format,
+                                                       rowstride,
+                                                       (uint8_t*)image->pixels,
+                                                       NULL);
 
   if (tracker->gbm)
     {
@@ -235,14 +240,14 @@ meta_cursor_reference_from_xcursor_image (MetaCursorTracker  *tracker,
           uint32_t buf[64 * 64];
           int i;
 
-          self->bo = gbm_bo_create (tracker->gbm, 64, 64,
-                                    gbm_format, GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE);
+          self->image.bo = gbm_bo_create (tracker->gbm, 64, 64,
+                                          gbm_format, GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE);
 
           memset (buf, 0, sizeof(buf));
           for (i = 0; i < height; i++)
             memcpy (buf + i * 64, image->pixels + i * width, width * 4);
 
-          gbm_bo_write (self->bo, buf, 64 * 64 * 4);
+          gbm_bo_write (self->image.bo, buf, 64 * 64 * 4);
         }
       else
         meta_warning ("HW cursor for format %d not supported\n", gbm_format);
@@ -287,8 +292,8 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
 
   self = g_slice_new0 (MetaCursorReference);
   self->ref_count = 1;
-  self->hot_x = hot_x;
-  self->hot_y = hot_y;
+  self->image.hot_x = hot_x;
+  self->image.hot_y = hot_y;
 
   backend = clutter_get_default_backend ();
   cogl_context = clutter_backend_get_cogl_context (backend);
@@ -327,12 +332,12 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
             gbm_format = GBM_FORMAT_ARGB8888;
         }
 
-      self->texture = cogl_texture_2d_new_from_data (cogl_context,
-                                                     width, height,
-                                                     cogl_format,
-                                                     rowstride,
-                                                     wl_shm_buffer_get_data (shm_buffer),
-                                                     NULL);
+      self->image.texture = cogl_texture_2d_new_from_data (cogl_context,
+                                                           width, height,
+                                                           cogl_format,
+                                                           rowstride,
+                                                           wl_shm_buffer_get_data (shm_buffer),
+                                                           NULL);
 
       if (width > 64 || height > 64)
         {
@@ -349,15 +354,15 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
               uint8_t buf[4 * 64 * 64];
               int i;
 
-              self->bo = gbm_bo_create (tracker->gbm, 64, 64,
-                                        gbm_format, GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE);
+              self->image.bo = gbm_bo_create (tracker->gbm, 64, 64,
+                                              gbm_format, GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE);
 
               data = wl_shm_buffer_get_data (shm_buffer);
               memset (buf, 0, sizeof(buf));
               for (i = 0; i < height; i++)
                 memcpy (buf + i * 4 * 64, data + i * rowstride, 4 * width);
 
-              gbm_bo_write (self->bo, buf, 64 * 64 * 4);
+              gbm_bo_write (self->image.bo, buf, 64 * 64 * 4);
             }
           else
             meta_warning ("HW cursor for format %d not supported\n", gbm_format);
@@ -367,9 +372,9 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
     {
       int width, height;
 
-      self->texture = cogl_wayland_texture_2d_new_from_buffer (cogl_context, buffer, NULL);
-      width = cogl_texture_get_width (COGL_TEXTURE (self->texture));
-      height = cogl_texture_get_height (COGL_TEXTURE (self->texture));
+      self->image.texture = cogl_wayland_texture_2d_new_from_buffer (cogl_context, buffer, NULL);
+      width = cogl_texture_get_width (COGL_TEXTURE (self->image.texture));
+      height = cogl_texture_get_height (COGL_TEXTURE (self->image.texture));
 
       /* HW cursors must be 64x64, but 64x64 is huge, and no cursor theme actually uses
          that, so themed cursors must be padded with transparent pixels to fill the
@@ -385,9 +390,9 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
 
       if (tracker->gbm)
         {
-          self->bo = gbm_bo_import (tracker->gbm, GBM_BO_IMPORT_WL_BUFFER,
-                                    buffer, GBM_BO_USE_CURSOR_64X64);
-          if (!self->bo)
+          self->image.bo = gbm_bo_import (tracker->gbm, GBM_BO_IMPORT_WL_BUFFER,
+                                          buffer, GBM_BO_USE_CURSOR_64X64);
+          if (!self->image.bo)
             meta_warning ("Importing HW cursor from wl_buffer failed\n");
         }
      }
@@ -401,10 +406,10 @@ meta_cursor_reference_get_cogl_texture (MetaCursorReference *cursor,
                                         int                 *hot_y)
 {
   if (hot_x)
-    *hot_x = cursor->hot_x;
+    *hot_x = cursor->image.hot_x;
   if (hot_y)
-    *hot_y = cursor->hot_y;
-  return COGL_TEXTURE (cursor->texture);
+    *hot_y = cursor->image.hot_y;
+  return COGL_TEXTURE (cursor->image.texture);
 }
 
 struct gbm_bo *
@@ -413,8 +418,8 @@ meta_cursor_reference_get_gbm_bo (MetaCursorReference *cursor,
                                   int                 *hot_y)
 {
   if (hot_x)
-    *hot_x = cursor->hot_x;
+    *hot_x = cursor->image.hot_x;
   if (hot_y)
-    *hot_y = cursor->hot_y;
-  return cursor->bo;
+    *hot_y = cursor->image.hot_y;
+  return cursor->image.bo;
 }

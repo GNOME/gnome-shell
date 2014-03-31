@@ -27,12 +27,16 @@
 #include <cogl/cogl.h>
 #include <gbm.h>
 
-struct _MetaCursorReference {
-  int ref_count;
-
+typedef struct {
   CoglTexture2D *texture;
   struct gbm_bo *bo;
   int hot_x, hot_y;
+} MetaCursorImage;
+
+struct _MetaCursorReference {
+  int ref_count;
+
+  MetaCursorImage image;
 };
 
 CoglTexture *meta_cursor_reference_get_cogl_texture (MetaCursorReference *cursor,

@@ -253,9 +253,9 @@ meta_cursor_reference_take_texture (CoglTexture2D *texture,
 
   self = g_slice_new0 (MetaCursorReference);
   self->ref_count = 1;
-  self->texture = texture;
-  self->hot_x = hot_x;
-  self->hot_y = hot_y;
+  self->image.texture = texture;
+  self->image.hot_x = hot_x;
+  self->image.hot_y = hot_y;
 
   return self;
 }
