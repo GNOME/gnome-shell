@@ -44,16 +44,8 @@ struct _MetaIdleMonitor
 {
   GObject parent_instance;
 
-  GHashTable  *watches;
-  int          device_id;
-
-  /* X11 implementation */
-  Display     *display;
-  XSyncCounter counter;
-  XSyncAlarm   user_active_alarm;
-
-  /* Wayland implementation */
-  guint64      last_event_time;
+  GHashTable *watches;
+  int device_id;
 };
 
 struct _MetaIdleMonitorClass

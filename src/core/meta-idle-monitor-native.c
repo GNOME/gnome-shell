@@ -33,6 +33,8 @@
 struct _MetaIdleMonitorNative
 {
   MetaIdleMonitor parent;
+
+  guint64 last_event_time;
 };
 
 struct _MetaIdleMonitorNativeClass
@@ -51,7 +53,9 @@ G_DEFINE_TYPE (MetaIdleMonitorNative, meta_idle_monitor_native, META_TYPE_IDLE_M
 static gint64
 meta_idle_monitor_native_get_idletime (MetaIdleMonitor *monitor)
 {
-  return (g_get_monotonic_time () - monitor->last_event_time) / 1000;
+  MetaIdleMonitorNative *monitor_native = META_IDLE_MONITOR_NATIVE (monitor);
+
+  return (g_get_monotonic_time () - monitor_native->last_event_time) / 1000;
 }
 
 static guint32
@@ -116,6 +120,7 @@ meta_idle_monitor_native_make_watch (MetaIdleMonitor           *monitor,
 {
   MetaIdleMonitorWatchNative *watch_native;
   MetaIdleMonitorWatch *watch;
+  MetaIdleMonitorNative *monitor_native = META_IDLE_MONITOR_NATIVE (monitor);
 
   watch_native = g_slice_new0 (MetaIdleMonitorWatchNative);
   watch = (MetaIdleMonitorWatch *) watch_native;
@@ -133,7 +138,7 @@ meta_idle_monitor_native_make_watch (MetaIdleMonitor           *monitor,
       GSource *source = g_source_new (&native_source_funcs, sizeof (GSource));
 
       g_source_set_callback (source, NULL, watch, NULL);
-      g_source_set_ready_time (source, monitor->last_event_time + timeout_msec * 1000);
+      g_source_set_ready_time (source, monitor_native->last_event_time + timeout_msec * 1000);
       g_source_attach (source, NULL);
       g_source_unref (source);
 
@@ -161,7 +166,7 @@ meta_idle_monitor_native_init (MetaIdleMonitorNative *monitor_native)
 }
 
 typedef struct {
-  MetaIdleMonitor *monitor;
+  MetaIdleMonitorNative *monitor_native;
   GList *fired_watches;
 } CheckNativeClosure;
 
@@ -183,7 +188,7 @@ check_native_watch (gpointer key,
   else
     {
       g_source_set_ready_time (watch_native->timeout_source,
-                               closure->monitor->last_event_time +
+                               closure->monitor_native->last_event_time +
                                watch->timeout_msec * 1000);
       steal = FALSE;
     }
@@ -201,11 +206,12 @@ fire_native_watch (gpointer watch,
 void
 meta_idle_monitor_native_reset_idletime (MetaIdleMonitor *monitor)
 {
+  MetaIdleMonitorNative *monitor_native = META_IDLE_MONITOR_NATIVE (monitor);
   CheckNativeClosure closure;
 
-  monitor->last_event_time = g_get_monotonic_time ();
+  monitor_native->last_event_time = g_get_monotonic_time ();
 
-  closure.monitor = monitor;
+  closure.monitor_native = monitor_native;
   closure.fired_watches = NULL;
   g_hash_table_foreach_steal (monitor->watches, check_native_watch, &closure);
 

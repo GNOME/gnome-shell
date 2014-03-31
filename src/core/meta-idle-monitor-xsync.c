@@ -34,7 +34,10 @@ struct _MetaIdleMonitorXSync
 {
   MetaIdleMonitor parent;
 
-  GHashTable *alarms;
+  GHashTable  *alarms;
+  Display     *display;
+  XSyncCounter counter;
+  XSyncAlarm   user_active_alarm;
 };
 
 struct _MetaIdleMonitorXSyncClass
@@ -60,7 +63,7 @@ _xsyncvalue_to_int64 (XSyncValue value)
 #define GUINT64_TO_XSYNCVALUE(value, ret) XSyncIntsToValue (ret, (value) & 0xFFFFFFFF, ((guint64)(value)) >> 32)
 
 static XSyncAlarm
-_xsync_alarm_set (MetaIdleMonitor	*monitor,
+_xsync_alarm_set (MetaIdleMonitorXSync	*monitor_xsync,
 		  XSyncTestType          test_type,
 		  guint64                interval,
 		  gboolean               want_events)
@@ -73,14 +76,14 @@ _xsync_alarm_set (MetaIdleMonitor	*monitor,
     XSyncCAValue | XSyncCADelta | XSyncCAEvents;
 
   XSyncIntToValue (&delta, 0);
-  attr.trigger.counter = monitor->counter;
+  attr.trigger.counter = monitor_xsync->counter;
   attr.trigger.value_type = XSyncAbsolute;
   attr.delta = delta;
   attr.events = want_events;
 
   GUINT64_TO_XSYNCVALUE (interval, &attr.trigger.wait_value);
   attr.trigger.test_type = test_type;
-  return XSyncCreateAlarm (monitor->display, flags, &attr);
+  return XSyncCreateAlarm (monitor_xsync->display, flags, &attr);
 }
 
 static void
@@ -129,8 +132,9 @@ counter_name_for_device (int device_id)
 }
 
 static XSyncCounter
-find_idletime_counter (MetaIdleMonitor *monitor)
+find_idletime_counter (MetaIdleMonitorXSync *monitor_xsync)
 {
+  MetaIdleMonitor *monitor = META_IDLE_MONITOR (monitor_xsync);
   int		      i;
   int		      ncounters;
   XSyncSystemCounter *counters;
@@ -138,7 +142,7 @@ find_idletime_counter (MetaIdleMonitor *monitor)
   char               *counter_name;
 
   counter_name = counter_name_for_device (monitor->device_id);
-  counters = XSyncListSystemCounters (monitor->display, &ncounters);
+  counters = XSyncListSystemCounters (monitor_xsync->display, &ncounters);
   for (i = 0; i < ncounters; i++)
     {
       if (counters[i].name != NULL && strcmp (counters[i].name, counter_name) == 0)
@@ -154,29 +158,28 @@ find_idletime_counter (MetaIdleMonitor *monitor)
 }
 
 static void
-init_xsync (MetaIdleMonitor *monitor)
+init_xsync (MetaIdleMonitorXSync *monitor_xsync)
 {
-  monitor->counter = find_idletime_counter (monitor);
+  monitor_xsync->counter = find_idletime_counter (monitor_xsync);
   /* IDLETIME counter not found? */
-  if (monitor->counter == None)
+  if (monitor_xsync->counter == None)
     {
       g_warning ("IDLETIME counter not found\n");
       return;
     }
 
-  monitor->user_active_alarm = _xsync_alarm_set (monitor, XSyncNegativeTransition, 1, FALSE);
+  monitor_xsync->user_active_alarm = _xsync_alarm_set (monitor_xsync, XSyncNegativeTransition, 1, FALSE);
 }
 
 static void
 meta_idle_monitor_xsync_dispose (GObject *object)
 {
   MetaIdleMonitorXSync *monitor_xsync = META_IDLE_MONITOR_XSYNC (object);
-  MetaIdleMonitor *monitor = META_IDLE_MONITOR (monitor_xsync);
 
-  if (monitor->user_active_alarm != None)
+  if (monitor_xsync->user_active_alarm != None)
     {
-      XSyncDestroyAlarm (monitor->display, monitor->user_active_alarm);
-      monitor->user_active_alarm = None;
+      XSyncDestroyAlarm (monitor_xsync->display, monitor_xsync->user_active_alarm);
+      monitor_xsync->user_active_alarm = None;
     }
 
   g_clear_pointer (&monitor_xsync->alarms, g_hash_table_destroy);
@@ -187,12 +190,12 @@ meta_idle_monitor_xsync_dispose (GObject *object)
 static void
 meta_idle_monitor_xsync_constructed (GObject *object)
 {
-  MetaIdleMonitor *monitor = META_IDLE_MONITOR (object);
+  MetaIdleMonitorXSync *monitor_xsync = META_IDLE_MONITOR_XSYNC (object);
 
   g_assert (!meta_is_wayland_compositor ());
 
-  monitor->display = meta_get_display ()->xdisplay;
-  init_xsync (monitor);
+  monitor_xsync->display = meta_get_display ()->xdisplay;
+  init_xsync (monitor_xsync);
 
   G_OBJECT_CLASS (meta_idle_monitor_xsync_parent_class)->constructed (object);
 }
@@ -200,9 +203,10 @@ meta_idle_monitor_xsync_constructed (GObject *object)
 static gint64
 meta_idle_monitor_xsync_get_idletime (MetaIdleMonitor *monitor)
 {
+  MetaIdleMonitorXSync *monitor_xsync = META_IDLE_MONITOR_XSYNC (monitor);
   XSyncValue value;
 
-  if (!XSyncQueryCounter (monitor->display, monitor->counter, &value))
+  if (!XSyncQueryCounter (monitor_xsync->display, monitor_xsync->counter, &value))
     return -1;
 
   return _xsyncvalue_to_int64 (value);
@@ -246,10 +250,10 @@ free_watch (gpointer data)
   if (watch->notify != NULL)
     watch->notify (watch->user_data);
 
-  if (watch_xsync->xalarm != monitor->user_active_alarm &&
+  if (watch_xsync->xalarm != monitor_xsync->user_active_alarm &&
       watch_xsync->xalarm != None)
     {
-      XSyncDestroyAlarm (monitor->display, watch_xsync->xalarm);
+      XSyncDestroyAlarm (monitor_xsync->display, watch_xsync->xalarm);
       g_hash_table_remove (monitor_xsync->alarms, (gpointer) watch_xsync->xalarm);
     }
 
@@ -278,11 +282,11 @@ meta_idle_monitor_xsync_make_watch (MetaIdleMonitor           *monitor,
   watch->notify = notify;
   watch->timeout_msec = timeout_msec;
 
-  if (monitor->user_active_alarm != None)
+  if (monitor_xsync->user_active_alarm != None)
     {
       if (timeout_msec != 0)
         {
-          watch_xsync->xalarm = _xsync_alarm_set (monitor, XSyncPositiveTransition, timeout_msec, TRUE);
+          watch_xsync->xalarm = _xsync_alarm_set (monitor_xsync, XSyncPositiveTransition, timeout_msec, TRUE);
 
           g_hash_table_add (monitor_xsync->alarms, (gpointer) watch_xsync->xalarm);
 
@@ -291,9 +295,9 @@ meta_idle_monitor_xsync_make_watch (MetaIdleMonitor           *monitor,
         }
       else
         {
-          watch_xsync->xalarm = monitor->user_active_alarm;
+          watch_xsync->xalarm = monitor_xsync->user_active_alarm;
 
-          set_alarm_enabled (monitor->display, monitor->user_active_alarm, TRUE);
+          set_alarm_enabled (monitor_xsync->display, monitor_xsync->user_active_alarm, TRUE);
         }
     }
 
@@ -338,16 +342,16 @@ meta_idle_monitor_xsync_handle_xevent (MetaIdleMonitor       *monitor,
 
   has_alarm = FALSE;
 
-  if (alarm == monitor->user_active_alarm)
+  if (alarm == monitor_xsync->user_active_alarm)
     {
-      set_alarm_enabled (monitor->display,
+      set_alarm_enabled (monitor_xsync->display,
                          alarm,
                          FALSE);
       has_alarm = TRUE;
     }
   else if (g_hash_table_contains (monitor_xsync->alarms, (gpointer) alarm))
     {
-      ensure_alarm_rescheduled (monitor->display,
+      ensure_alarm_rescheduled (monitor_xsync->display,
                                 alarm);
       has_alarm = TRUE;
     }
