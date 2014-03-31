@@ -303,28 +303,28 @@ meta_cursor_image_load_from_buffer (MetaCursorTracker  *tracker,
       switch (wl_shm_buffer_get_format (shm_buffer))
         {
 #if G_BYTE_ORDER == G_BIG_ENDIAN
-          case WL_SHM_FORMAT_ARGB8888:
-            cogl_format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
-            gbm_format = GBM_FORMAT_ARGB8888;
-            break;
-          case WL_SHM_FORMAT_XRGB8888:
-            cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
-            gbm_format = GBM_FORMAT_XRGB8888;
-            break;
+        case WL_SHM_FORMAT_ARGB8888:
+          cogl_format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
+          gbm_format = GBM_FORMAT_ARGB8888;
+          break;
+        case WL_SHM_FORMAT_XRGB8888:
+          cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
+          gbm_format = GBM_FORMAT_XRGB8888;
+          break;
 #else
-          case WL_SHM_FORMAT_ARGB8888:
-            cogl_format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
-            gbm_format = GBM_FORMAT_ARGB8888;
-            break;
-          case WL_SHM_FORMAT_XRGB8888:
-            cogl_format = COGL_PIXEL_FORMAT_BGRA_8888;
-            gbm_format = GBM_FORMAT_XRGB8888;
-            break;
+        case WL_SHM_FORMAT_ARGB8888:
+          cogl_format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
+          gbm_format = GBM_FORMAT_ARGB8888;
+          break;
+        case WL_SHM_FORMAT_XRGB8888:
+          cogl_format = COGL_PIXEL_FORMAT_BGRA_8888;
+          gbm_format = GBM_FORMAT_XRGB8888;
+          break;
 #endif
-          default:
-            g_warn_if_reached ();
-            cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
-            gbm_format = GBM_FORMAT_ARGB8888;
+        default:
+          g_warn_if_reached ();
+          cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
+          gbm_format = GBM_FORMAT_ARGB8888;
         }
 
       image->texture = cogl_texture_2d_new_from_data (cogl_context,
@@ -390,7 +390,7 @@ meta_cursor_image_load_from_buffer (MetaCursorTracker  *tracker,
           if (!image->bo)
             meta_warning ("Importing HW cursor from wl_buffer failed\n");
         }
-     }
+    }
 }
 
 MetaCursorReference *
