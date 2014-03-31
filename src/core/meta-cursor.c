@@ -283,9 +283,9 @@ meta_cursor_image_load_from_buffer (MetaCursorTracker  *tracker,
 {
   ClutterBackend *backend;
   CoglContext *cogl_context;
-  CoglPixelFormat cogl_format;
   struct wl_shm_buffer *shm_buffer;
   uint32_t gbm_format;
+  int width, height;
 
   image->hot_x = hot_x;
   image->hot_y = hot_y;
@@ -293,46 +293,37 @@ meta_cursor_image_load_from_buffer (MetaCursorTracker  *tracker,
   backend = clutter_get_default_backend ();
   cogl_context = clutter_backend_get_cogl_context (backend);
 
+  image->texture = cogl_wayland_texture_2d_new_from_buffer (cogl_context, buffer, NULL);
+
+  width = cogl_texture_get_width (COGL_TEXTURE (image->texture));
+  height = cogl_texture_get_height (COGL_TEXTURE (image->texture));
+
   shm_buffer = wl_shm_buffer_get (buffer);
   if (shm_buffer)
     {
       int rowstride = wl_shm_buffer_get_stride (shm_buffer);
-      int width = wl_shm_buffer_get_width (shm_buffer);
-      int height = wl_shm_buffer_get_height (shm_buffer);
 
       switch (wl_shm_buffer_get_format (shm_buffer))
         {
 #if G_BYTE_ORDER == G_BIG_ENDIAN
         case WL_SHM_FORMAT_ARGB8888:
-          cogl_format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
           gbm_format = GBM_FORMAT_ARGB8888;
           break;
         case WL_SHM_FORMAT_XRGB8888:
-          cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
           gbm_format = GBM_FORMAT_XRGB8888;
           break;
 #else
         case WL_SHM_FORMAT_ARGB8888:
-          cogl_format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
           gbm_format = GBM_FORMAT_ARGB8888;
           break;
         case WL_SHM_FORMAT_XRGB8888:
-          cogl_format = COGL_PIXEL_FORMAT_BGRA_8888;
           gbm_format = GBM_FORMAT_XRGB8888;
           break;
 #endif
         default:
           g_warn_if_reached ();
-          cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
           gbm_format = GBM_FORMAT_ARGB8888;
         }
-
-      image->texture = cogl_texture_2d_new_from_data (cogl_context,
-                                                      width, height,
-                                                      cogl_format,
-                                                      rowstride,
-                                                      wl_shm_buffer_get_data (shm_buffer),
-                                                      NULL);
 
       if (width > 64 || height > 64)
         {
@@ -365,12 +356,6 @@ meta_cursor_image_load_from_buffer (MetaCursorTracker  *tracker,
     }
   else
     {
-      int width, height;
-
-      image->texture = cogl_wayland_texture_2d_new_from_buffer (cogl_context, buffer, NULL);
-      width = cogl_texture_get_width (COGL_TEXTURE (image->texture));
-      height = cogl_texture_get_height (COGL_TEXTURE (image->texture));
-
       /* HW cursors must be 64x64, but 64x64 is huge, and no cursor theme actually uses
          that, so themed cursors must be padded with transparent pixels to fill the
          overlay. This is trivial if we have CPU access to the data, but it's not
