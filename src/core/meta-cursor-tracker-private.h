@@ -61,7 +61,7 @@ struct _MetaCursorTracker {
 
   MetaCursorReference *root_cursor;
 
-  MetaCursorReference *default_cursors[META_CURSOR_LAST];
+  MetaCursorReference *theme_cursors[META_CURSOR_LAST];
 
   int current_x, current_y;
   MetaRectangle current_rect;

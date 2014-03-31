@@ -85,8 +85,8 @@ meta_cursor_tracker_finalize (GObject *object)
     meta_cursor_reference_unref (self->root_cursor);
 
   for (i = 0; i < META_CURSOR_LAST; i++)
-    if (self->default_cursors[i])
-      meta_cursor_reference_unref (self->default_cursors[i]);
+    if (self->theme_cursors[i])
+      meta_cursor_reference_unref (self->theme_cursors[i]);
 
   if (self->pipeline)
     cogl_object_unref (self->pipeline);
@@ -371,27 +371,13 @@ meta_cursor_tracker_get_hot (MetaCursorTracker *tracker,
     }
 }
 
-static MetaCursorReference *
-ensure_wayland_cursor (MetaCursorTracker *tracker,
-                       MetaCursor         cursor)
-{
-  if (!tracker->default_cursors[cursor])
-    {
-      tracker->default_cursors[cursor] = meta_cursor_reference_from_theme (tracker, cursor);
-      if (!tracker->default_cursors[cursor])
-        meta_warning ("Failed to load cursor from theme\n");
-    }
-
-  return meta_cursor_reference_ref (tracker->default_cursors[cursor]);
-}
-
 void
 meta_cursor_tracker_set_grab_cursor (MetaCursorTracker *tracker,
                                      MetaCursor         cursor)
 {
   g_clear_pointer (&tracker->grab_cursor, meta_cursor_reference_unref);
   if (cursor != META_CURSOR_DEFAULT)
-    tracker->grab_cursor = ensure_wayland_cursor (tracker, cursor);
+    tracker->grab_cursor = meta_cursor_reference_from_theme (tracker, cursor);
   sync_cursor (tracker);
 }
 
@@ -435,7 +421,7 @@ meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
   if (meta_is_wayland_compositor ())
     {
       g_clear_pointer (&tracker->root_cursor, meta_cursor_reference_unref);
-      tracker->root_cursor = ensure_wayland_cursor (tracker, cursor);
+      tracker->root_cursor = meta_cursor_reference_from_theme (tracker, cursor);
       sync_cursor (tracker);
     }
 }
