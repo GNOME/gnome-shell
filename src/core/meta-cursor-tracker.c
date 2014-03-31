@@ -51,9 +51,6 @@
 
 #include "wayland/meta-wayland-private.h"
 
-#define META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_X 7
-#define META_WAYLAND_DEFAULT_CURSOR_HOTSPOT_Y 4
-
 typedef struct {
   CoglTexture2D *texture;
   struct gbm_bo *bo;
