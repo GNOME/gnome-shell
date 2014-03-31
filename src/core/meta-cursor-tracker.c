@@ -52,11 +52,11 @@
 #include "wayland/meta-wayland-private.h"
 
 typedef struct {
+  int ref_count;
+
   CoglTexture2D *texture;
   struct gbm_bo *bo;
   int hot_x, hot_y;
-
-  int ref_count;
 } MetaCursorReference;
 
 struct _MetaCursorTracker {
