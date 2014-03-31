@@ -181,21 +181,16 @@ load_cursor_on_client (MetaDisplay *display,
   return image;
 }
 
-MetaCursorReference *
-meta_cursor_reference_from_theme (MetaCursorTracker  *tracker,
-                                  MetaCursor          cursor)
+static MetaCursorReference *
+meta_cursor_reference_from_xcursor_image (MetaCursorTracker  *tracker,
+                                          XcursorImage       *image)
 {
-  XcursorImage *image;
   int width, height, rowstride;
   CoglPixelFormat cogl_format;
   uint32_t gbm_format;
   ClutterBackend *clutter_backend;
   CoglContext *cogl_context;
   MetaCursorReference *self;
-
-  image = load_cursor_on_client (tracker->screen->display, cursor);
-  if (!image)
-    return NULL;
 
   width           = image->width;
   height          = image->height;
@@ -250,8 +245,23 @@ meta_cursor_reference_from_theme (MetaCursorTracker  *tracker,
     }
 
  out:
-  XcursorImageDestroy (image);
+  return self;
+}
 
+MetaCursorReference *
+meta_cursor_reference_from_theme (MetaCursorTracker  *tracker,
+                                  MetaCursor          cursor)
+{
+  MetaCursorReference *self;
+  XcursorImage *image;
+
+  image = load_cursor_on_client (tracker->screen->display, cursor);
+  if (!image)
+    return NULL;
+
+  self = meta_cursor_reference_from_xcursor_image (tracker, image);
+
+  XcursorImageDestroy (image);
   return self;
 }
 
