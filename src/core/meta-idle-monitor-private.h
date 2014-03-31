@@ -49,7 +49,6 @@ struct _MetaIdleMonitor
 
   /* X11 implementation */
   Display     *display;
-  int          sync_event_base;
   XSyncCounter counter;
   XSyncAlarm   user_active_alarm;
 
