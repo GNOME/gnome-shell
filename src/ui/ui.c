@@ -228,56 +228,15 @@ maybe_redirect_mouse_event (XEvent *xevent)
   return TRUE;
 }
 
-typedef struct _EventFunc EventFunc;
-
-struct _EventFunc
-{
-  MetaEventFunc func;
-  gpointer data;
-};
-
-static EventFunc *ef = NULL;
-
 static GdkFilterReturn
-filter_func (GdkXEvent *xevent,
-             GdkEvent *event,
-             gpointer data)
+ui_filter_func (GdkXEvent *xevent,
+                GdkEvent *event,
+                gpointer data)
 {
-  g_return_val_if_fail (ef != NULL, GDK_FILTER_CONTINUE);
-
-  if ((* ef->func) (xevent, ef->data) ||
-      maybe_redirect_mouse_event (xevent))
+  if (maybe_redirect_mouse_event (xevent))
     return GDK_FILTER_REMOVE;
   else
     return GDK_FILTER_CONTINUE;
-}
-
-void
-meta_ui_add_event_func (Display       *xdisplay,
-                        MetaEventFunc  func,
-                        gpointer       data)
-{
-  g_return_if_fail (ef == NULL);
-
-  ef = g_new (EventFunc, 1);
-  ef->func = func;
-  ef->data = data;
-
-  gdk_window_add_filter (NULL, filter_func, ef);
-}
-
-/* removal is by data due to proxy function */
-void
-meta_ui_remove_event_func (Display       *xdisplay,
-                           MetaEventFunc  func,
-                           gpointer       data)
-{
-  g_return_if_fail (ef != NULL);
-  
-  gdk_window_remove_filter (NULL, filter_func, ef);
-
-  g_free (ef);
-  ef = NULL;
 }
 
 MetaUI*
@@ -294,6 +253,8 @@ meta_ui_new (Display *xdisplay,
   gdisplay = gdk_x11_lookup_xdisplay (xdisplay);
   g_assert (gdisplay == gdk_display_get_default ());
 
+  gdk_window_add_filter (NULL, ui_filter_func, NULL);
+
   ui->frames = meta_frames_new (XScreenNumberOfScreen (screen));
   /* GTK+ needs the frame-sync protocol to work in order to properly
    * handle style changes. This means that the dummy widget we create
@@ -302,6 +263,8 @@ meta_ui_new (Display *xdisplay,
    * the window is a 1x1 overide redirect window positioned offscreen.
    */
   gtk_widget_show (GTK_WIDGET (ui->frames));
+
+  gdk_window_add_filter (NULL, ui_filter_func, NULL);
 
   g_object_set_data (G_OBJECT (gdisplay), "meta-ui", ui);
 
@@ -317,6 +280,8 @@ meta_ui_free (MetaUI *ui)
 
   gdisplay = gdk_x11_lookup_xdisplay (ui->xdisplay);
   g_object_set_data (G_OBJECT (gdisplay), "meta-ui", NULL);
+
+  gdk_window_remove_filter (NULL, ui_filter_func, NULL);
 
   g_free (ui);
 }

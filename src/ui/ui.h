@@ -46,13 +46,6 @@ Display* meta_ui_get_display (void);
 
 gint meta_ui_get_screen_number (void);
 
-void meta_ui_add_event_func    (Display       *xdisplay,
-                                MetaEventFunc  func,
-                                gpointer       data);
-void meta_ui_remove_event_func (Display       *xdisplay,
-                                MetaEventFunc  func,
-                                gpointer       data);
-
 MetaUI* meta_ui_new (Display *xdisplay,
                      Screen  *screen);
 void    meta_ui_free (MetaUI *ui);

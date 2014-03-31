@@ -2124,13 +2124,17 @@ meta_display_handle_event (MetaDisplay        *display,
   return bypass_clutter;
 }
 
-static gboolean
-xevent_callback (XEvent  *event,
-                 gpointer data)
+static GdkFilterReturn
+xevent_filter (GdkXEvent *xevent,
+               GdkEvent  *event,
+               gpointer   data)
 {
   MetaDisplay *display = data;
 
-  return meta_display_handle_xevent (display, event);
+  if (meta_display_handle_xevent (display, xevent))
+    return GDK_FILTER_REMOVE;
+  else
+    return GDK_FILTER_CONTINUE;
 }
 
 static gboolean
@@ -2145,9 +2149,7 @@ event_callback (const ClutterEvent *event,
 void
 meta_display_init_events (MetaDisplay *display)
 {
-  meta_ui_add_event_func (display->xdisplay,
-                          xevent_callback,
-                          display);
+  gdk_window_add_filter (NULL, xevent_filter, display);
   display->clutter_event_filter = clutter_event_add_filter (NULL,
                                                             event_callback,
                                                             NULL,
@@ -2157,9 +2159,7 @@ meta_display_init_events (MetaDisplay *display)
 void
 meta_display_free_events (MetaDisplay *display)
 {
-  meta_ui_remove_event_func (display->xdisplay,
-                             xevent_callback,
-                             display);
+  gdk_window_remove_filter (NULL, xevent_filter, display);
   clutter_event_remove_filter (display->clutter_event_filter);
   display->clutter_event_filter = 0;
 }
