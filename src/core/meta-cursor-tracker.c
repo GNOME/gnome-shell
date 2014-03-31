@@ -951,12 +951,10 @@ meta_cursor_tracker_queue_redraw (MetaCursorTracker *tracker)
 
   if (tracker->previous_is_valid)
     {
-      cairo_rectangle_int_t clip = {
-        .x = tracker->previous_rect.x,
-        .y = tracker->previous_rect.y,
-        .width = tracker->previous_rect.width,
-        .height = tracker->previous_rect.height
-      };
+      clip.x = tracker->previous_rect.x;
+      clip.y = tracker->previous_rect.y;
+      clip.width = tracker->previous_rect.width;
+      clip.height = tracker->previous_rect.height;
       clutter_actor_queue_redraw_with_clip (stage, &clip);
       tracker->previous_is_valid = FALSE;
     }
