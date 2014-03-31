@@ -68,20 +68,26 @@ set_cursor_surface (MetaWaylandSeat    *seat,
 void
 meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat)
 {
-  struct wl_resource *buffer;
+  MetaCursorReference *cursor;
 
   if (seat->cursor_tracker == NULL)
     return;
 
   if (seat->cursor_surface && seat->cursor_surface->buffer)
-    buffer = seat->cursor_surface->buffer->resource;
+    {
+      struct wl_resource *buffer = seat->cursor_surface->buffer->resource;
+      cursor = meta_cursor_reference_from_buffer (seat->cursor_tracker,
+                                                  buffer,
+                                                  seat->hotspot_x,
+                                                  seat->hotspot_y);
+    }
   else
-    buffer = NULL;
+    cursor = NULL;
 
-  meta_cursor_tracker_set_window_cursor (seat->cursor_tracker,
-                                         buffer,
-                                         seat->hotspot_x,
-                                         seat->hotspot_y);
+  meta_cursor_tracker_set_window_cursor (seat->cursor_tracker, cursor);
+
+  if (cursor)
+    meta_cursor_reference_unref (cursor);
 }
 
 static void

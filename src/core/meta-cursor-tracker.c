@@ -383,18 +383,9 @@ meta_cursor_tracker_set_grab_cursor (MetaCursorTracker   *tracker,
 }
 
 void
-meta_cursor_tracker_set_window_cursor (MetaCursorTracker  *tracker,
-                                       struct wl_resource *buffer,
-                                       int                 hot_x,
-                                       int                 hot_y)
+meta_cursor_tracker_set_window_cursor (MetaCursorTracker   *tracker,
+                                       MetaCursorReference *cursor)
 {
-  MetaCursorReference *cursor;
-
-  if (buffer)
-    cursor = meta_cursor_reference_from_buffer (tracker, buffer, hot_x, hot_y);
-  else
-    cursor = NULL;
-
   set_window_cursor (tracker, TRUE, cursor);
 }
 
