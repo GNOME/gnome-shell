@@ -23,7 +23,7 @@
 #ifndef META_MONITOR_MANAGER_DUMMY_H
 #define META_MONITOR_MANAGER_DUMMY_H
 
-#include "monitor-private.h"
+#include "meta-monitor-manager.h"
 
 #define META_TYPE_MONITOR_MANAGER_DUMMY            (meta_monitor_manager_dummy_get_type ())
 #define META_MONITOR_MANAGER_DUMMY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_MANAGER_DUMMY, MetaMonitorManagerDummy))

@@ -55,7 +55,6 @@
 #include <meta/types.h>
 #include <meta/main.h>
 #include "frame.h"
-#include "monitor-private.h"
 
 #include "meta-surface-actor.h"
 #include "meta-surface-actor-wayland.h"

@@ -23,7 +23,7 @@
 #ifndef META_MONITOR_MANAGER_XRANDR_H
 #define META_MONITOR_MANAGER_XRANDR_H
 
-#include "monitor-private.h"
+#include "meta-monitor-manager.h"
 
 #define META_TYPE_MONITOR_MANAGER_XRANDR            (meta_monitor_manager_xrandr_get_type ())
 #define META_MONITOR_MANAGER_XRANDR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_MANAGER_XRANDR, MetaMonitorManagerXrandr))

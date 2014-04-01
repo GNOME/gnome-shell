@@ -23,7 +23,7 @@
 #ifndef META_MONITOR_MANAGER_KMS_H
 #define META_MONITOR_MANAGER_KMS_H
 
-#include "monitor-private.h"
+#include "meta-monitor-manager.h"
 
 #define META_TYPE_MONITOR_MANAGER_KMS            (meta_monitor_manager_kms_get_type ())
 #define META_MONITOR_MANAGER_KMS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_MANAGER_KMS, MetaMonitorManagerKms))

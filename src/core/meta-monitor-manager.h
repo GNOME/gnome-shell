@@ -227,8 +227,6 @@ struct _MetaMonitorManager
      CRTCs refer to stuff that can drive outputs
      (like encoders, but less tied to the HW),
      while monitor_infos refer to logical ones.
-
-     See also the comment in monitor-private.h
   */
   MetaOutput *outputs;
   unsigned int n_outputs;

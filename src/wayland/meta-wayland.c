@@ -52,7 +52,7 @@
 #include <meta/main.h>
 #include "frame.h"
 #include "meta-weston-launch.h"
-#include "monitor-private.h"
+#include "meta-monitor-manager.h"
 
 static MetaWaylandCompositor _meta_wayland_compositor;
 

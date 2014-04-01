@@ -40,7 +40,7 @@
 
 #include "compositor-private.h"
 #include "meta-window-actor-private.h"
-#include "monitor-private.h"
+#include "meta-monitor-manager.h"
 
 G_DEFINE_ABSTRACT_TYPE (MetaPlugin, meta_plugin, G_TYPE_OBJECT);
 

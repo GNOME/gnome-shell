@@ -27,7 +27,7 @@
 #include "meta-window-actor-private.h"
 #include "meta-texture-rectangle.h"
 #include "region-utils.h"
-#include "monitor-private.h"
+#include "meta-monitor-manager.h"
 #include "meta-cullable.h"
 
 #include "meta-surface-actor.h"

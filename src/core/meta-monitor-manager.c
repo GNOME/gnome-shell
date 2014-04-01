@@ -25,6 +25,8 @@
 
 #include "config.h"
 
+#include "meta-monitor-manager.h"
+
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
@@ -33,7 +35,6 @@
 #include <meta/main.h>
 #include "util-private.h"
 #include <meta/errors.h>
-#include "monitor-private.h"
 #include "meta-monitor-config.h"
 #include "meta-monitor-manager-kms.h"
 #include "meta-monitor-manager-xrandr.h"

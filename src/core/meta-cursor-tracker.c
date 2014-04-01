@@ -44,7 +44,7 @@
 #include "meta-cursor-private.h"
 #include "meta-cursor-tracker-private.h"
 #include "screen-private.h"
-#include "monitor-private.h"
+#include "meta-monitor-manager.h"
 
 #include "wayland/meta-wayland-private.h"
 

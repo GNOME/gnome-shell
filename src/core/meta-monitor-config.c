@@ -42,7 +42,6 @@
 
 #include <meta/main.h>
 #include <meta/errors.h>
-#include "monitor-private.h"
 
 /* These structures represent the intended/persistent configuration,
    as stored in the monitors.xml file.
