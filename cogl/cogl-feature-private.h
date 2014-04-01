@@ -42,7 +42,8 @@
 typedef enum
 {
   COGL_EXT_IN_GLES = (1 << 0),
-  COGL_EXT_IN_GLES2 = (1 << 1)
+  COGL_EXT_IN_GLES2 = (1 << 1),
+  COGL_EXT_IN_GLES3 = (1 << 2)
 } CoglExtGlesAvailability;
 
 typedef struct _CoglFeatureFunction CoglFeatureFunction;

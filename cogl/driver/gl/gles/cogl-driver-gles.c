@@ -220,6 +220,25 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
 }
 
 static CoglBool
+_cogl_get_gl_version (CoglContext *ctx,
+                      int *major_out,
+                      int *minor_out)
+{
+  const char *version_string;
+
+  /* Get the OpenGL version number */
+  if ((version_string = _cogl_context_get_gl_version (ctx)) == NULL)
+    return FALSE;
+
+  if (!g_str_has_prefix (version_string, "OpenGL ES "))
+    return FALSE;
+
+  return _cogl_gl_util_parse_gl_version (version_string + 10,
+                                         major_out,
+                                         minor_out);
+}
+
+static CoglBool
 _cogl_driver_update_features (CoglContext *context,
                               CoglError **error)
 {
@@ -227,6 +246,7 @@ _cogl_driver_update_features (CoglContext *context,
     [COGL_FLAGS_N_LONGS_FOR_SIZE (COGL_N_PRIVATE_FEATURES)] = { 0 };
   CoglFeatureFlags flags = 0;
   char **gl_extensions;
+  int gl_major, gl_minor;
   int i;
 
   /* We have to special case getting the pointer to the glGetString
@@ -263,9 +283,15 @@ _cogl_driver_update_features (CoglContext *context,
 
   _cogl_gpu_info_init (context, &context->gpu);
 
+  if (!_cogl_get_gl_version (context, &gl_major, &gl_minor))
+    {
+      gl_major = 1;
+      gl_minor = 1;
+    }
+
   _cogl_feature_check_ext_functions (context,
-                                     -1 /* GL major version */,
-                                     -1 /* GL minor version */,
+                                     gl_major,
+                                     gl_minor,
                                      gl_extensions);
 
 #ifdef HAVE_COGL_GLES

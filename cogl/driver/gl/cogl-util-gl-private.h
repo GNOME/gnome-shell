@@ -79,4 +79,15 @@ _cogl_gl_util_get_texture_target_string (CoglTextureType texture_type,
                                          const char **target_string_out,
                                          const char **swizzle_out);
 
+/* Parses a GL version number stored in a string. @version_string must
+ * point to the beginning of the version number (ie, it can't point to
+ * the "OpenGL ES" part on GLES). The version number can be followed
+ * by the end of the string, a space or a full stop. Anything else
+ * will be treated as invalid. Returns TRUE and sets major_out and
+ * minor_out if it is succesfully parsed or FALSE otherwise. */
+CoglBool
+_cogl_gl_util_parse_gl_version (const char *version_string,
+                                int *major_out,
+                                int *minor_out);
+
 #endif /* _COGL_UTIL_GL_PRIVATE_H_ */

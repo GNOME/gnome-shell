@@ -290,39 +290,6 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
 }
 
 static CoglBool
-parse_gl_version (const char *version_string,
-                  int *major_out,
-                  int *minor_out)
-{
-  const char *major_end, *minor_end;
-  int major = 0, minor = 0;
-
-  /* Extract the major number */
-  for (major_end = version_string; *major_end >= '0'
-	 && *major_end <= '9'; major_end++)
-    major = (major * 10) + *major_end - '0';
-  /* If there were no digits or the major number isn't followed by a
-     dot then it is invalid */
-  if (major_end == version_string || *major_end != '.')
-    return FALSE;
-
-  /* Extract the minor number */
-  for (minor_end = major_end + 1; *minor_end >= '0'
-	 && *minor_end <= '9'; minor_end++)
-    minor = (minor * 10) + *minor_end - '0';
-  /* If there were no digits or there is an unexpected character then
-     it is invalid */
-  if (minor_end == major_end + 1
-      || (*minor_end && *minor_end != ' ' && *minor_end != '.'))
-    return FALSE;
-
-  *major_out = major;
-  *minor_out = minor;
-
-  return TRUE;
-}
-
-static CoglBool
 _cogl_get_gl_version (CoglContext *ctx,
                       int *major_out,
                       int *minor_out)
@@ -333,7 +300,7 @@ _cogl_get_gl_version (CoglContext *ctx,
   if ((version_string = _cogl_context_get_gl_version (ctx)) == NULL)
     return FALSE;
 
-  return parse_gl_version (version_string, major_out, minor_out);
+  return _cogl_gl_util_parse_gl_version (version_string, major_out, minor_out);
 }
 
 static CoglBool
@@ -444,7 +411,9 @@ _cogl_driver_update_features (CoglContext *ctx,
     {
       const char *glsl_version =
         (char *)ctx->glGetString (GL_SHADING_LANGUAGE_VERSION);
-      parse_gl_version (glsl_version, &ctx->glsl_major, &ctx->glsl_minor);
+      _cogl_gl_util_parse_gl_version (glsl_version,
+                                      &ctx->glsl_major,
+                                      &ctx->glsl_minor);
     }
 
   if (COGL_CHECK_GL_VERSION (ctx->glsl_major, ctx->glsl_minor, 1, 2))
