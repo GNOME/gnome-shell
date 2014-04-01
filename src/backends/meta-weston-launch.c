@@ -42,7 +42,7 @@
 #include <xf86drm.h>
 #include <xf86drmMode.h>
 
-#include "meta-wayland-private.h"
+#include "wayland/meta-wayland-private.h"
 #include "meta-cursor-tracker-private.h"
 #include "meta-weston-launch.h"
 

@@ -75,6 +75,8 @@ libmutter_wayland_la_SOURCES =			\
 	backends/meta-monitor-manager-kms.h	\
 	backends/meta-monitor-manager-xrandr.c	\
 	backends/meta-monitor-manager-xrandr.h	\
+	backends/meta-weston-launch.c		\
+	backends/meta-weston-launch.h		\
 	core/above-tab-keycode.c		\
 	core/barrier.c				\
 	meta/barrier.h				\
@@ -226,8 +228,6 @@ libmutter_wayland_la_SOURCES =			\
 	wayland/meta-wayland-surface.h		\
 	wayland/meta-wayland-types.h		\
 	wayland/meta-wayland-versions.h		\
-	wayland/meta-weston-launch.c		\
-	wayland/meta-weston-launch.h		\
 	wayland/window-wayland.c		\
 	wayland/window-wayland.h
 
@@ -286,7 +286,7 @@ mutter_wayland_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
 
 bin_PROGRAMS+=mutter-launch
 
-mutter_launch_SOURCES = wayland/weston-launch.c wayland/weston-launch.h
+mutter_launch_SOURCES = backends/weston-launch.c backends/weston-launch.h
 
 mutter_launch_CFLAGS = $(MUTTER_LAUNCH_CFLAGS) -DLIBDIR=\"$(libdir)\"
 mutter_launch_LDFLAGS = $(MUTTER_LAUNCH_LIBS) -lpam
