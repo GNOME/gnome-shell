@@ -390,7 +390,8 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	libmutter-wayland.pc.in \
 	mutter-enum-types.h.in \
 	mutter-enum-types.c.in \
-	xrandr.xml idle-monitor.xml
+	org.gnome.Mutter.DisplayConfig.xml	\
+	org.gnome.Mutter.IdleMonitor.xml
 
 BUILT_SOURCES = $(mutter_built_sources)
 MUTTER_STAMP_FILES = stamp-mutter-enum-types.h
@@ -417,21 +418,20 @@ mutter-enum-types.c: stamp-mutter-enum-types.h mutter-enum-types.c.in
 
 dbus_xrandr_built_sources = meta-dbus-xrandr.c meta-dbus-xrandr.h
 
-$(dbus_xrandr_built_sources) : Makefile.am xrandr.xml
+$(dbus_xrandr_built_sources) : Makefile.am org.gnome.Mutter.DisplayConfig.xml
 	$(AM_V_GEN)gdbus-codegen							\
 		--interface-prefix org.gnome.Mutter					\
 		--c-namespace MetaDBus							\
 		--generate-c-code meta-dbus-xrandr					\
-		$(srcdir)/xrandr.xml
+		$(srcdir)/org.gnome.Mutter.DisplayConfig.xml
 
-
-$(dbus_idle_built_sources) : Makefile.am idle-monitor.xml
+$(dbus_idle_built_sources) : Makefile.am org.gnome.Mutter.IdleMonitor.xml
 	$(AM_V_GEN)gdbus-codegen							\
 		--interface-prefix org.gnome.Mutter					\
 		--c-namespace MetaDBus							\
 		--generate-c-code meta-dbus-idle-monitor				\
 		--c-generate-object-manager						\
-		$(srcdir)/idle-monitor.xml
+		$(srcdir)/org.gnome.Mutter.IdleMonitor.xml
 
 %-protocol.c : $(srcdir)/wayland/protocol/%.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
