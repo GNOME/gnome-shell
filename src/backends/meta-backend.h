@@ -25,6 +25,10 @@
 #ifndef META_BACKEND_H
 #define META_BACKEND_H
 
+#include <glib-object.h>
+
 void meta_clutter_init (void);
+
+gboolean meta_activate_vt (int vt, GError **error);
 
 #endif /* META_BACKEND_H */

@@ -53,7 +53,6 @@
 #include <meta/types.h>
 #include <meta/main.h>
 #include "frame.h"
-#include "meta-weston-launch.h"
 #include "meta-monitor-manager.h"
 
 static MetaWaylandCompositor _meta_wayland_compositor;
@@ -629,13 +628,6 @@ meta_wayland_init (void)
 
   clutter_wayland_set_compositor_display (compositor->wayland_display);
 
-  /* If we're running on bare metal, we're a display server,
-   * so start talking to weston-launch. */
-#if defined(CLUTTER_WINDOWING_EGL)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
-    compositor->launcher = meta_launcher_new ();
-#endif
-
   meta_clutter_init ();
 
   meta_monitor_manager_initialize ();
@@ -688,38 +680,4 @@ meta_wayland_finalize (void)
   compositor = meta_wayland_compositor_get_default ();
 
   meta_xwayland_stop (&compositor->xwayland_manager);
-
-  if (compositor->launcher)
-    meta_launcher_free (compositor->launcher);
-}
-
-gboolean
-meta_wayland_compositor_activate_vt (MetaWaylandCompositor  *compositor,
-                                     int                     vt,
-                                     GError                **error)
-{
-  if (compositor->launcher)
-    {
-      return meta_launcher_activate_vt (compositor->launcher, vt, error);
-    }
-  else
-    {
-      g_debug ("Ignoring VT switch keybinding, not running as display server");
-      return TRUE;
-    }
-}
-
-gboolean
-meta_wayland_compositor_activate_session (MetaWaylandCompositor  *compositor,
-                                          GError                **error)
-{
-  if (compositor->launcher)
-    {
-      return meta_launcher_activate_vt (compositor->launcher, -1, error);
-    }
-  else
-    {
-      g_debug ("Ignoring activate_session, not running as display server");
-      return TRUE;
-    }
 }

@@ -43,11 +43,5 @@ void                    meta_wayland_compositor_update          (MetaWaylandComp
                                                                  const ClutterEvent    *event);
 void                    meta_wayland_compositor_paint_finished  (MetaWaylandCompositor *compositor);
 
-gboolean                meta_wayland_compositor_activate_vt     (MetaWaylandCompositor  *compositor,
-                                                                 int                     vt,
-                                                                 GError                **error);
-gboolean                meta_wayland_compositor_activate_session (MetaWaylandCompositor  *compositor,
-                                                                  GError                **error);
-
 #endif
 

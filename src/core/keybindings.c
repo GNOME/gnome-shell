@@ -52,6 +52,7 @@
 #endif
 
 #include "wayland/meta-wayland.h"
+#include "meta-backend.h"
 
 #define SCHEMA_COMMON_KEYBINDINGS "org.gnome.desktop.wm.keybindings"
 #define SCHEMA_MUTTER_KEYBINDINGS "org.gnome.mutter.keybindings"
@@ -3181,10 +3182,9 @@ handle_switch_vt (MetaDisplay     *display,
                   gpointer         dummy)
 {
   gint vt = binding->handler->data;
-  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   GError *error = NULL;
 
-  if (!meta_wayland_compositor_activate_vt (compositor, vt, &error))
+  if (!meta_activate_vt (vt, &error))
     {
       g_warning ("Failed to switch VT: %s", error->message);
       g_error_free (error);

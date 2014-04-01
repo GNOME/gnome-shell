@@ -438,32 +438,6 @@ meta_register_with_session (void)
 }
 
 /**
- * meta_activate_session:
- *
- * Tells mutter to activate the session. When mutter is a
- * Wayland compositor, this tells logind to switch over to
- * the new session.
- */
-gboolean
-meta_activate_session (void)
-{
-  if (meta_is_wayland_compositor ())
-    {
-      MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
-      GError *error = NULL;
-
-      if (!meta_wayland_compositor_activate_session (compositor, &error))
-        {
-          g_warning ("Could not activate session: %s\n", error->message);
-          g_error_free (error);
-          return FALSE;
-        }
-    }
-
-  return TRUE;
-}
-
-/**
  * meta_run: (skip)
  *
  * Runs mutter. Call this after completing initialization that doesn't require

@@ -27,7 +27,6 @@
 #include <cairo.h>
 
 #include "window-private.h"
-#include "meta-weston-launch.h"
 #include <meta/meta-cursor-tracker.h>
 
 #include "meta-wayland.h"
@@ -84,8 +83,6 @@ struct _MetaWaylandCompositor
   struct wl_list frame_callbacks;
 
   MetaXWaylandManager xwayland_manager;
-
-  MetaLauncher *launcher;
 
   MetaWaylandSeat *seat;
 };

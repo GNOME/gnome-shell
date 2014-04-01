@@ -25,10 +25,13 @@
 #include "config.h"
 
 #include "meta-backend.h"
+#include <meta/main.h>
 
 #include <gdk/gdkx.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
+
+#include "meta-weston-launch.h"
 
 /* Mutter is responsible for pulling events off the X queue, so Clutter
  * doesn't need (and shouldn't) run its normal event source which polls
@@ -78,6 +81,8 @@ static GSourceFuncs event_funcs = {
   event_dispatch
 };
 
+static MetaLauncher *launcher;
+
 void
 meta_clutter_init (void)
 {
@@ -86,10 +91,51 @@ meta_clutter_init (void)
   clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
   clutter_x11_disable_event_retrieval ();
 
+  /* If we're running on bare metal, we're a display server,
+   * so start talking to weston-launch. */
+#if defined(CLUTTER_WINDOWING_EGL)
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
+    launcher = meta_launcher_new ();
+#endif
+
   if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
     g_error ("Unable to initialize Clutter.\n");
 
   source = g_source_new (&event_funcs, sizeof (GSource));
   g_source_attach (source, NULL);
   g_source_unref (source);
+}
+
+gboolean
+meta_activate_vt (int vt, GError **error)
+{
+  if (launcher)
+    return meta_launcher_activate_vt (launcher, vt, error);
+  else
+    {
+      g_debug ("Ignoring VT switch keybinding, not running as display server");
+      return TRUE;
+    }
+}
+
+/**
+ * meta_activate_session:
+ *
+ * Tells mutter to activate the session. When mutter is a
+ * Wayland compositor, this tells logind to switch over to
+ * the new session.
+ */
+gboolean
+meta_activate_session (void)
+{
+  GError *error = NULL;
+
+  if (!meta_launcher_activate_vt (launcher, -1, &error))
+    {
+      g_warning ("Could not activate session: %s\n", error->message);
+      g_error_free (error);
+      return FALSE;
+    }
+
+  return TRUE;
 }

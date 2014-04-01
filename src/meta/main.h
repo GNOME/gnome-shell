@@ -28,7 +28,7 @@ GOptionContext *meta_get_option_context     (void);
 void            meta_init                   (void);
 int             meta_run                    (void);
 void            meta_register_with_session  (void);
-gboolean        meta_activate_session       (void);
+gboolean        meta_activate_session       (void);  /* Actually defined in meta-backend.c */
 gboolean        meta_get_replace_current_wm (void);  /* Actually defined in util.c */
 
 void            meta_set_wm_name              (const char *wm_name);
