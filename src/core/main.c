@@ -55,7 +55,6 @@
 
 #include <glib-object.h>
 #include <glib-unix.h>
-#include <gdk/gdkx.h>
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -71,7 +70,6 @@
 #include <unistd.h>
 
 #include <clutter/clutter.h>
-#include <clutter/x11/clutter-x11.h>
 
 #ifdef HAVE_INTROSPECTION
 #include <girepository.h>
@@ -80,6 +78,7 @@
 #include "x11/session.h"
 
 #include "wayland/meta-wayland.h"
+#include "backends/meta-backend.h"
 
 /*
  * The exit code we'll return to our parent process when we eventually die.
@@ -265,70 +264,6 @@ meta_get_option_context (void)
   ctx = g_option_context_new (NULL);
   g_option_context_add_main_entries (ctx, meta_options, GETTEXT_PACKAGE);
   return ctx;
-}
-
-/* Mutter is responsible for pulling events off the X queue, so Clutter
- * doesn't need (and shouldn't) run its normal event source which polls
- * the X fd, but we do have to deal with dispatching events that accumulate
- * in the clutter queue. This happens, for example, when clutter generate
- * enter/leave events on mouse motion - several events are queued in the
- * clutter queue but only one dispatched. It could also happen because of
- * explicit calls to clutter_event_put(). We add a very simple custom
- * event loop source which is simply responsible for pulling events off
- * of the queue and dispatching them before we block for new events.
- */
-
-static gboolean 
-event_prepare (GSource    *source,
-               gint       *timeout_)
-{
-  *timeout_ = -1;
-
-  return clutter_events_pending ();
-}
-
-static gboolean 
-event_check (GSource *source)
-{
-  return clutter_events_pending ();
-}
-
-static gboolean
-event_dispatch (GSource    *source,
-                GSourceFunc callback,
-                gpointer    user_data)
-{
-  ClutterEvent *event = clutter_event_get ();
-
-  if (event)
-    {
-      clutter_do_event (event);
-      clutter_event_free (event);
-    }
-
-  return TRUE;
-}
-
-static GSourceFuncs event_funcs = {
-  event_prepare,
-  event_check,
-  event_dispatch
-};
-
-static void
-meta_clutter_init (void)
-{
-  GSource *source;
-
-  clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
-  clutter_x11_disable_event_retrieval ();
-
-  if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
-    meta_fatal ("Unable to initialize Clutter.\n");
-
-  source = g_source_new (&event_funcs, sizeof (GSource));
-  g_source_attach (source, NULL);
-  g_source_unref (source);
 }
 
 /**

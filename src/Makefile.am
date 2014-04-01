@@ -51,6 +51,8 @@ wayland_protocols = \
 	wayland/protocol/xserver.xml
 
 libmutter_wayland_la_SOURCES =			\
+	backends/meta-backend.c			\
+	backends/meta-backend.h			\
 	backends/meta-cursor.c			\
 	backends/meta-cursor.h			\
 	backends/meta-cursor-private.h		\
