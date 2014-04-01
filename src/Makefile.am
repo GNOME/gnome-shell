@@ -152,7 +152,6 @@ libmutter_wayland_la_SOURCES =			\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
 	core/main.c				\
-	core/mutter-Xatomtype.h			\
 	core/place.c				\
 	core/place.h				\
 	core/prefs.c				\
@@ -207,6 +206,7 @@ libmutter_wayland_la_SOURCES =			\
 	x11/window-x11-private.h		\
 	x11/xprops.c				\
 	x11/xprops.h				\
+	x11/mutter-Xatomtype.h			\
 	wayland/meta-wayland.c			\
 	wayland/meta-wayland.h			\
 	wayland/meta-wayland-private.h		\
