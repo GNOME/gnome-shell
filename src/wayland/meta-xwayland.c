@@ -252,18 +252,6 @@ bind_to_unix_socket (int display)
 }
 
 static void
-uncloexec (gpointer user_data)
-{
-  int fd = GPOINTER_TO_INT (user_data);
-
-  /* Make sure the client end of the socket pair doesn't get closed
-   * when we exec xwayland. */
-  int flags = fcntl (fd, F_GETFD);
-  if (flags != -1)
-    fcntl (fd, F_SETFD, flags & ~FD_CLOEXEC);
-}
-
-static void
 xserver_died (GPid     pid,
               gint     status,
               gpointer user_data)
@@ -341,9 +329,8 @@ meta_xwayland_start (MetaXWaylandManager *manager,
                      struct wl_display   *wl_display)
 {
   int sp[2];
-  pid_t pid;
-  char **env;
-  char *fd_string;
+  int fd;
+  char *socket_fd;
 
   if (!choose_xdisplay (manager))
     return FALSE;
@@ -361,55 +348,41 @@ meta_xwayland_start (MetaXWaylandManager *manager,
       return 1;
     }
 
-  env = g_get_environ ();
-  fd_string = g_strdup_printf ("%d", sp[1]);
-  env = g_environ_setenv (env, "WAYLAND_SOCKET", fd_string, TRUE);
-  g_free (fd_string);
+  manager->pid = fork ();
+  if (manager->pid == 0)
+    {
+      /* We passed SOCK_CLOEXEC, so dup the FD so it isn't
+       * closed on exec.. */
+      fd = dup (sp[1]);
+      socket_fd = g_strdup_printf ("%d", fd);
+      setenv ("WAYLAND_SOCKET", socket_fd, TRUE);
+      g_free (socket_fd);
 
-  {
-    GError *error = NULL;
-    gchar *args[] = { XWAYLAND_PATH,
-                      manager->display_name,
-                      "-wayland",
-                      "-rootless",
-                      "-noreset",
-                      "-nolisten",
-                      "all",
-                      NULL };
-    int flags = 0;
+      /* xwayland, please. */
+      if (g_getenv ("XWAYLAND_STFU"))
+        {
+          int dev_null;
+          dev_null = open ("/dev/null", O_WRONLY);
 
-    flags |= G_SPAWN_LEAVE_DESCRIPTORS_OPEN;
-    flags |= G_SPAWN_DO_NOT_REAP_CHILD;
+          dup2 (dev_null, STDOUT_FILENO);
+          dup2 (dev_null, STDERR_FILENO);
+        }
 
-    /* xwayland, please. */
-    if (getenv ("XWAYLAND_STFU"))
-      {
-        flags |= G_SPAWN_STDOUT_TO_DEV_NULL;
-        flags |= G_SPAWN_STDERR_TO_DEV_NULL;
-      }
+      if (execl (XWAYLAND_PATH, XWAYLAND_PATH,
+                 manager->display_name,
+                 "-wayland",
+                 "-rootless",
+                 "-noreset",
+                 "-nolisten", "all",
+                 NULL) < 0)
+        {
+          g_warning ("Failed to spawn XWayland: %m");
+          exit (EXIT_FAILURE);
+        }
+    }
 
-    if (g_spawn_async (NULL, /* cwd */
-                       args,
-                       env,
-                       flags,
-                       uncloexec,
-                       GINT_TO_POINTER (sp[1]),
-                       &pid,
-                       &error))
-      {
-        close (sp[1]);
-        manager->client = wl_client_create (wl_display, sp[0]);
-
-        manager->pid = pid;
-        g_child_watch_add (pid, xserver_died, NULL);
-      }
-    else
-      {
-        g_error ("Failed to fork for xwayland server: %s", error->message);
-      }
-  }
-
-  g_strfreev (env);
+  g_child_watch_add (manager->pid, xserver_died, NULL);
+  manager->client = wl_client_create (wl_display, sp[0]);
 
   /* We need to run a mainloop until we know xwayland has a binding
    * for our xserver interface at which point we can assume it's
