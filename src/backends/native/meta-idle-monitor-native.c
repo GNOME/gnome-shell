@@ -125,7 +125,6 @@ meta_idle_monitor_native_make_watch (MetaIdleMonitor           *monitor,
   watch_native = g_slice_new0 (MetaIdleMonitorWatchNative);
   watch = (MetaIdleMonitorWatch *) watch_native;
 
-  watch = g_slice_new0 (MetaIdleMonitorWatch);
   watch->monitor = monitor;
   watch->id = get_next_watch_serial ();
   watch->callback = callback;
