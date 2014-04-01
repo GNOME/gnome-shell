@@ -45,7 +45,7 @@
 #include <wayland-server.h>
 #include "meta-xrandr-shared.h"
 
-#include "meta-dbus-xrandr.h"
+#include "meta-dbus-display-config.h"
 
 typedef struct _MetaMonitorManagerClass    MetaMonitorManagerClass;
 typedef struct _MetaMonitorManager         MetaMonitorManager;

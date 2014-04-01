@@ -40,8 +40,6 @@
 #include "meta-monitor-manager-xrandr.h"
 #include "meta-monitor-manager-dummy.h"
 
-#include "meta-dbus-xrandr.h"
-
 enum {
   CONFIRM_DISPLAY_CHANGE,
   SIGNALS_LAST

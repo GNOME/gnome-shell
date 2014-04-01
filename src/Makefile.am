@@ -35,7 +35,7 @@ INCLUDES=								\
 
 mutter_built_sources = \
 	$(dbus_idle_built_sources)		\
-	$(dbus_xrandr_built_sources)		\
+	$(dbus_display_config_built_sources)	\
 	mutter-enum-types.h 			\
 	mutter-enum-types.c			\
 	gtk-shell-protocol.c			\
@@ -416,13 +416,13 @@ mutter-enum-types.c: stamp-mutter-enum-types.h mutter-enum-types.c.in
 	cp xgen-tetc mutter-enum-types.c && \
 	rm -f xgen-tetc
 
-dbus_xrandr_built_sources = meta-dbus-xrandr.c meta-dbus-xrandr.h
+dbus_display_config_built_sources = meta-dbus-display-config.c meta-dbus-display-config.h
 
-$(dbus_xrandr_built_sources) : Makefile.am org.gnome.Mutter.DisplayConfig.xml
+$(dbus_display_config_built_sources) : Makefile.am org.gnome.Mutter.DisplayConfig.xml
 	$(AM_V_GEN)gdbus-codegen							\
 		--interface-prefix org.gnome.Mutter					\
 		--c-namespace MetaDBus							\
-		--generate-c-code meta-dbus-xrandr					\
+		--generate-c-code meta-dbus-display-config				\
 		$(srcdir)/org.gnome.Mutter.DisplayConfig.xml
 
 $(dbus_idle_built_sources) : Makefile.am org.gnome.Mutter.IdleMonitor.xml
