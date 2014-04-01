@@ -32,6 +32,7 @@
 #include <clutter/x11/clutter-x11.h>
 
 #include "backends/native/meta-weston-launch.h"
+#include <meta/util.h>
 
 /* Mutter is responsible for pulling events off the X queue, so Clutter
  * doesn't need (and shouldn't) run its normal event source which polls
