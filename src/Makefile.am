@@ -142,8 +142,9 @@ libmutter_wayland_la_SOURCES =			\
 	core/meta-idle-monitor-native.h		\
 	core/meta-xrandr-shared.h		\
 	core/monitor.c				\
-	core/monitor-config.c			\
 	core/monitor-private.h			\
+	core/monitor-config.c			\
+	core/monitor-config.h			\
 	core/meta-monitor-manager-dummy.c	\
 	core/meta-monitor-manager-dummy.h	\
 	core/meta-monitor-manager-kms.c		\

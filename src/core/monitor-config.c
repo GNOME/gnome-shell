@@ -34,6 +34,8 @@
 
 #include "config.h"
 
+#include "monitor-config.h"
+
 #include <string.h>
 #include <clutter/clutter.h>
 #include <libupower-glib/upower.h>

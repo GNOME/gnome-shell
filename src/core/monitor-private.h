@@ -335,33 +335,6 @@ void                meta_monitor_manager_apply_configuration (MetaMonitorManager
 void                meta_monitor_manager_confirm_configuration (MetaMonitorManager *manager,
                                                                 gboolean            ok);
 
-#define META_TYPE_MONITOR_CONFIG            (meta_monitor_config_get_type ())
-#define META_MONITOR_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_CONFIG, MetaMonitorConfig))
-#define META_MONITOR_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_CONFIG, MetaMonitorConfigClass))
-#define META_IS_MONITOR_CONFIG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_MONITOR_CONFIG))
-#define META_IS_MONITOR_CONFIG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_MONITOR_CONFIG))
-#define META_MONITOR_CONFIG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_MONITOR_CONFIG, MetaMonitorConfigClass))
-
-GType meta_monitor_config_get_type (void) G_GNUC_CONST;
-
-MetaMonitorConfig *meta_monitor_config_new (void);
-
-gboolean           meta_monitor_config_match_current (MetaMonitorConfig  *config,
-                                                      MetaMonitorManager *manager);
-
-gboolean           meta_monitor_config_apply_stored (MetaMonitorConfig  *config,
-                                                     MetaMonitorManager *manager);
-
-void               meta_monitor_config_make_default (MetaMonitorConfig  *config,
-                                                     MetaMonitorManager *manager);
-
-void               meta_monitor_config_update_current (MetaMonitorConfig  *config,
-                                                       MetaMonitorManager *manager);
-void               meta_monitor_config_make_persistent (MetaMonitorConfig *config);
-
-void               meta_monitor_config_restore_previous (MetaMonitorConfig  *config,
-                                                         MetaMonitorManager *manager);
-
 void               meta_crtc_info_free   (MetaCRTCInfo   *info);
 void               meta_output_info_free (MetaOutputInfo *info);
 
