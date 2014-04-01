@@ -88,8 +88,23 @@ meta_clutter_init (void)
 {
   GSource *source;
 
-  clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
-  clutter_x11_disable_event_retrieval ();
+  /* When running as an X11 compositor, we install our own event filter and
+   * pass events to Clutter explicitly, so we need to prevent Clutter from
+   * handling our events.
+   *
+   * However, when running as a Wayland compostior under X11 nested, Clutter
+   * Clutter needs to see events related to its own window. We need to
+   * eventually replace this with a proper frontend / backend split: Clutter
+   * under nested is connecting to the "host X server" to get its events it
+   * needs to put up a window, and GTK+ is connecting to the "inner X server".
+   * The two would the same in the X11 compositor case, but not when running
+   * XWayland as a Wayland compositor.
+   */
+  if (!meta_is_wayland_compositor ())
+    {
+      clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
+      clutter_x11_disable_event_retrieval ();
+    }
 
   /* If we're running on bare metal, we're a display server,
    * so start talking to weston-launch. */
