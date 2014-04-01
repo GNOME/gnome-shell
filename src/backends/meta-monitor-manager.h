@@ -43,8 +43,8 @@
 #include "stack-tracker.h"
 #include "ui.h"
 #include <wayland-server.h>
-#include "meta-xrandr-shared.h"
 
+#include "meta-display-config-shared.h"
 #include "meta-dbus-display-config.h"
 
 typedef struct _MetaMonitorManagerClass    MetaMonitorManagerClass;

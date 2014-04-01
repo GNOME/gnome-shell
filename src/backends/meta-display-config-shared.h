@@ -16,7 +16,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-/* This file is shared between mutter (src/core/meta-xrandr-shared.h)
+/* This file is shared between mutter (src/core/meta-display-config-shared.h)
    and gnome-desktop (libgnome-desktop/meta-xrandr-shared.h).
 
    The canonical place for all changes is mutter.
@@ -24,8 +24,8 @@
    There should be no includes in this file.
 */
 
-#ifndef META_XRANDR_SHARED_H
-#define META_XRANDR_SHARED_H
+#ifndef META_DISPLAY_CONFIG_SHARED_H
+#define META_DISPLAY_CONFIG_SHARED_H
 
 typedef enum {
   META_POWER_SAVE_UNSUPPORTED = -1,
@@ -35,4 +35,4 @@ typedef enum {
   META_POWER_SAVE_OFF,
 } MetaPowerSave;
 
-#endif
+#endif /* META_DISPLAY_CONFIG_SHARED_H */
