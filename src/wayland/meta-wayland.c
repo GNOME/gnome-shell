@@ -37,6 +37,8 @@
 
 #include <wayland-server.h>
 
+#include "backends/meta-backend.h"
+
 #include "meta-wayland-private.h"
 #include "meta-xwayland-private.h"
 #include "meta-wayland-stage.h"
@@ -634,8 +636,7 @@ meta_wayland_init (void)
     compositor->launcher = meta_launcher_new ();
 #endif
 
-  if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
-    g_error ("Failed to initialize Clutter");
+  meta_clutter_init ();
 
   meta_monitor_manager_initialize ();
   monitors = meta_monitor_manager_get ();
