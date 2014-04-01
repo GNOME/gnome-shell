@@ -62,7 +62,7 @@ meta_wayland_stage_init (MetaWaylandStage *self)
 ClutterActor *
 meta_wayland_stage_new (void)
 {
-  return g_object_new (META_WAYLAND_TYPE_STAGE,
+  return g_object_new (META_TYPE_WAYLAND_STAGE,
                        "cursor-visible", FALSE,
                        NULL);
 }

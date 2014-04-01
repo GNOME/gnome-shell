@@ -27,26 +27,12 @@
 
 G_BEGIN_DECLS
 
-#define META_WAYLAND_TYPE_STAGE                                         \
-  (meta_wayland_stage_get_type())
-#define META_WAYLAND_STAGE(obj)                                         \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj),                                   \
-                               META_WAYLAND_TYPE_STAGE,                 \
-                               MetaWaylandStage))
-#define META_WAYLAND_STAGE_CLASS(klass)                                 \
-  (G_TYPE_CHECK_CLASS_CAST ((klass),                                    \
-                            META_WAYLAND_TYPE_STAGE,                    \
-                            MetaWaylandStageClass))
-#define META_WAYLAND_IS_STAGE(obj)                                      \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj),                                   \
-                               META_WAYLAND_TYPE_STAGE))
-#define META_WAYLAND_IS_STAGE_CLASS(klass)                              \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass),                                    \
-                            META_WAYLAND_TYPE_STAGE))
-#define META_WAYLAND_STAGE_GET_CLASS(obj)                               \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj),                                    \
-                              META_WAYLAND_STAGE,                       \
-                              MetaWaylandStageClass))
+#define META_TYPE_WAYLAND_STAGE            (meta_wayland_stage_get_type ())
+#define META_WAYLAND_STAGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_WAYLAND_STAGE, MetaWaylandStage))
+#define META_WAYLAND_STAGE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_WAYLAND_STAGE, MetaWaylandStageClass))
+#define META_IS_WAYLAND_STAGE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_WAYLAND_STAGE))
+#define META_IS_WAYLAND_STAGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_WAYLAND_STAGE))
+#define META_WAYLAND_STAGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_WAYLAND_STAGE, MetaWaylandStageClass))
 
 typedef struct _MetaWaylandStage      MetaWaylandStage;
 typedef struct _MetaWaylandStageClass MetaWaylandStageClass;
