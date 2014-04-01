@@ -64,8 +64,8 @@ typedef struct _CoglRendererWayland
 
 typedef struct _CoglDisplayWayland
 {
-  struct wl_surface *wayland_surface;
-  struct wl_egl_window *wayland_egl_native_window;
+  struct wl_surface *dummy_wayland_surface;
+  struct wl_egl_window *dummy_wayland_egl_native_window;
 } CoglDisplayWayland;
 
 typedef struct _CoglOnscreenWayland
@@ -324,8 +324,8 @@ _cogl_winsys_egl_display_destroy (CoglDisplay *display)
 }
 
 static CoglBool
-_cogl_winsys_egl_context_created (CoglDisplay *display,
-                                  CoglError **error)
+make_dummy_surface (CoglDisplay *display,
+                    CoglError **error)
 {
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
@@ -334,19 +334,19 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
   CoglDisplayWayland *wayland_display = egl_display->platform;
   const char *error_message;
 
-  wayland_display->wayland_surface =
+  wayland_display->dummy_wayland_surface =
     wl_compositor_create_surface (wayland_renderer->wayland_compositor);
-  if (!wayland_display->wayland_surface)
+  if (!wayland_display->dummy_wayland_surface)
     {
       error_message= "Failed to create a dummy wayland surface";
       goto fail;
     }
 
-  wayland_display->wayland_egl_native_window =
-    wl_egl_window_create (wayland_display->wayland_surface,
+  wayland_display->dummy_wayland_egl_native_window =
+    wl_egl_window_create (wayland_display->dummy_wayland_surface,
                           1,
                           1);
-  if (!wayland_display->wayland_egl_native_window)
+  if (!wayland_display->dummy_wayland_egl_native_window)
     {
       error_message= "Failed to create a dummy wayland native egl surface";
       goto fail;
@@ -356,7 +356,7 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
     eglCreateWindowSurface (egl_renderer->edpy,
                             egl_display->egl_config,
                             (EGLNativeWindowType)
-                            wayland_display->wayland_egl_native_window,
+                            wayland_display->dummy_wayland_egl_native_window,
                             NULL);
   if (egl_display->dummy_surface == EGL_NO_SURFACE)
     {
@@ -364,22 +364,42 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
       goto fail;
     }
 
+  return TRUE;
+
+ fail:
+  _cogl_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                   "%s", error_message);
+
+  return FALSE;
+}
+
+static CoglBool
+_cogl_winsys_egl_context_created (CoglDisplay *display,
+                                  CoglError **error)
+{
+  CoglRenderer *renderer = display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglDisplayEGL *egl_display = display->winsys;
+
+  if ((egl_renderer->private_features &
+       COGL_EGL_WINSYS_FEATURE_SURFACELESS_CONTEXT) == 0 &&
+      !make_dummy_surface(display, error))
+    return FALSE;
+
   if (!_cogl_winsys_egl_make_current (display,
                                       egl_display->dummy_surface,
                                       egl_display->dummy_surface,
                                       egl_display->egl_context))
     {
-      error_message = "Unable to eglMakeCurrent with dummy surface";
-      goto fail;
+      _cogl_set_error (error,
+                       COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                       "%s",
+                       "Unable to eglMakeCurrent with dummy surface");
     }
 
   return TRUE;
-
- fail:
-  _cogl_set_error (error, COGL_WINSYS_ERROR,
-               COGL_WINSYS_ERROR_CREATE_CONTEXT,
-               "%s", error_message);
-  return FALSE;
 }
 
 static void
@@ -396,16 +416,16 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
       egl_display->dummy_surface = EGL_NO_SURFACE;
     }
 
-  if (wayland_display->wayland_egl_native_window)
+  if (wayland_display->dummy_wayland_egl_native_window)
     {
-      wl_egl_window_destroy (wayland_display->wayland_egl_native_window);
-      wayland_display->wayland_egl_native_window = NULL;
+      wl_egl_window_destroy (wayland_display->dummy_wayland_egl_native_window);
+      wayland_display->dummy_wayland_egl_native_window = NULL;
     }
 
-  if (wayland_display->wayland_surface)
+  if (wayland_display->dummy_wayland_surface)
     {
-      wl_surface_destroy (wayland_display->wayland_surface);
-      wayland_display->wayland_surface = NULL;
+      wl_surface_destroy (wayland_display->dummy_wayland_surface);
+      wayland_display->dummy_wayland_surface = NULL;
     }
 }
 

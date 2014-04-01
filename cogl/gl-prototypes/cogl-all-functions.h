@@ -318,3 +318,11 @@ COGL_EXT_FUNCTION (void, glDeleteSync,
                    (GLsync sync))
 COGL_EXT_END ()
 #endif
+
+COGL_EXT_BEGIN (draw_buffers, 2, 0,
+                COGL_EXT_IN_GLES3,
+                "ARB\0EXT\0",
+                "draw_buffers\0")
+COGL_EXT_FUNCTION (void, glDrawBuffers,
+                   (GLsizei n, const GLenum *bufs))
+COGL_EXT_END ()

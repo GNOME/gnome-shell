@@ -255,6 +255,35 @@ _cogl_framebuffer_gl_bind (CoglFramebuffer *framebuffer, GLenum target)
       /* glBindFramebuffer is an an extension with OpenGL ES 1.1 */
       if (cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
         GE (ctx, glBindFramebuffer (target, 0));
+
+      /* Initialise the glDrawBuffer state the first time the context
+       * is bound to the default framebuffer. If the winsys is using a
+       * surfaceless context for the initial make current then the
+       * default draw buffer will be GL_NONE so we need to correct
+       * that. We can't do it any earlier because binding GL_BACK when
+       * there is no default framebuffer won't work */
+      if (!ctx->was_bound_to_onscreen)
+        {
+          if (ctx->glDrawBuffer)
+            {
+              GE (ctx, glDrawBuffer (GL_BACK));
+            }
+          else if (ctx->glDrawBuffers)
+            {
+              /* glDrawBuffer isn't available on GLES 3.0 so we need
+               * to be able to use glDrawBuffers as well. On GLES 2
+               * neither is available but the state should always be
+               * GL_BACK anyway so we don't need to set anything. On
+               * desktop GL this must be GL_BACK_LEFT instead of
+               * GL_BACK but as this code path will only be hit for
+               * GLES we can just use GL_BACK. */
+              static const GLenum buffers[] = { GL_BACK };
+
+              GE (ctx, glDrawBuffers (G_N_ELEMENTS (buffers), buffers));
+            }
+
+          ctx->was_bound_to_onscreen = TRUE;
+        }
     }
 }
 

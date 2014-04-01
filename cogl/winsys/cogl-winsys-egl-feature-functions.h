@@ -141,3 +141,9 @@ COGL_WINSYS_FEATURE_FUNCTION (EGLBoolean, eglDestroySync,
                                EGLSyncKHR sync))
 COGL_WINSYS_FEATURE_END ()
 #endif
+
+COGL_WINSYS_FEATURE_BEGIN (surfaceless_context,
+                           "KHR\0",
+                           "surfaceless_context\0",
+                           COGL_EGL_WINSYS_FEATURE_SURFACELESS_CONTEXT)
+COGL_WINSYS_FEATURE_END ()

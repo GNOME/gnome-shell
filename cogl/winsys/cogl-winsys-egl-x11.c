@@ -611,39 +611,47 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
                                     AllocNone);
   attrs.border_pixel = 0;
 
-  xlib_display->dummy_xwin =
-    XCreateWindow (xlib_renderer->xdpy,
-                   DefaultRootWindow (xlib_renderer->xdpy),
-                   -100, -100, 1, 1,
-                   0,
-                   xvisinfo->depth,
-                   CopyFromParent,
-                   xvisinfo->visual,
-                   CWOverrideRedirect |
-                   CWColormap |
-                   CWBorderPixel,
-                   &attrs);
+  if ((egl_renderer->private_features &
+       COGL_EGL_WINSYS_FEATURE_SURFACELESS_CONTEXT) == 0)
+    {
+      xlib_display->dummy_xwin =
+        XCreateWindow (xlib_renderer->xdpy,
+                       DefaultRootWindow (xlib_renderer->xdpy),
+                       -100, -100, 1, 1,
+                       0,
+                       xvisinfo->depth,
+                       CopyFromParent,
+                       xvisinfo->visual,
+                       CWOverrideRedirect |
+                       CWColormap |
+                       CWBorderPixel,
+                       &attrs);
+
+      egl_display->dummy_surface =
+        eglCreateWindowSurface (egl_renderer->edpy,
+                                egl_display->egl_config,
+                                (EGLNativeWindowType) xlib_display->dummy_xwin,
+                                NULL);
+
+      if (egl_display->dummy_surface == EGL_NO_SURFACE)
+        {
+          error_message = "Unable to create an EGL surface";
+          XFree (xvisinfo);
+          goto fail;
+        }
+    }
 
   XFree (xvisinfo);
-
-  egl_display->dummy_surface =
-    eglCreateWindowSurface (egl_renderer->edpy,
-                            egl_display->egl_config,
-                            (EGLNativeWindowType) xlib_display->dummy_xwin,
-                            NULL);
-
-  if (egl_display->dummy_surface == EGL_NO_SURFACE)
-    {
-      error_message = "Unable to create an EGL surface";
-      goto fail;
-    }
 
   if (!_cogl_winsys_egl_make_current (display,
                                       egl_display->dummy_surface,
                                       egl_display->dummy_surface,
                                       egl_display->egl_context))
     {
-      error_message = "Unable to eglMakeCurrent with dummy surface";
+      if (egl_display->dummy_surface == EGL_NO_SURFACE)
+        error_message = "Unable to eglMakeCurrent with no surface";
+      else
+        error_message = "Unable to eglMakeCurrent with dummy surface";
       goto fail;
     }
 

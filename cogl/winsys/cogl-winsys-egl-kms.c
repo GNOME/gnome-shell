@@ -782,29 +782,35 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
 
-  kms_display->dummy_gbm_surface = gbm_surface_create (kms_renderer->gbm,
-                                                       16, 16,
-                                                       GBM_FORMAT_XRGB8888,
-                                                       GBM_BO_USE_RENDERING);
-  if (!kms_display->dummy_gbm_surface)
+  if ((egl_renderer->private_features &
+       COGL_EGL_WINSYS_FEATURE_SURFACELESS_CONTEXT) == 0)
     {
-      _cogl_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                   "Failed to create dummy GBM surface");
-      return FALSE;
-    }
+      kms_display->dummy_gbm_surface =
+        gbm_surface_create (kms_renderer->gbm,
+                            16, 16,
+                            GBM_FORMAT_XRGB8888,
+                            GBM_BO_USE_RENDERING);
+      if (!kms_display->dummy_gbm_surface)
+        {
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
+                           COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                           "Failed to create dummy GBM surface");
+          return FALSE;
+        }
 
-  egl_display->dummy_surface =
-    eglCreateWindowSurface (egl_renderer->edpy,
-                            egl_display->egl_config,
-                            (EGLNativeWindowType) kms_display->dummy_gbm_surface,
-                            NULL);
-  if (egl_display->dummy_surface == EGL_NO_SURFACE)
-    {
-      _cogl_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                   "Failed to create dummy EGL surface");
-      return FALSE;
+      egl_display->dummy_surface =
+        eglCreateWindowSurface (egl_renderer->edpy,
+                                egl_display->egl_config,
+                                (EGLNativeWindowType)
+                                kms_display->dummy_gbm_surface,
+                                NULL);
+      if (egl_display->dummy_surface == EGL_NO_SURFACE)
+        {
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
+                           COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                           "Failed to create dummy EGL surface");
+          return FALSE;
+        }
     }
 
   if (!_cogl_winsys_egl_make_current (display,
