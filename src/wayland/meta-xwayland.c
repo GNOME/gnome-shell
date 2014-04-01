@@ -330,6 +330,7 @@ choose_xdisplay (MetaXWaylandManager *manager)
   while (1);
 
   manager->display_index = display;
+  manager->display_name = g_strdup_printf (":%d", manager->display_index);
   manager->lockfile = lockfile;
 
   return TRUE;
@@ -364,8 +365,6 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   fd_string = g_strdup_printf ("%d", sp[1]);
   env = g_environ_setenv (env, "WAYLAND_SOCKET", fd_string, TRUE);
   g_free (fd_string);
-
-  manager->display_name = g_strdup_printf (":%d", manager->display_index);
 
   {
     GError *error = NULL;
