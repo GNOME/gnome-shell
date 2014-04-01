@@ -38,8 +38,8 @@
 #include <meta/meta-idle-monitor.h>
 #include "meta-idle-monitor-private.h"
 #include "meta-idle-monitor-dbus.h"
-#include "meta-idle-monitor-xsync.h"
-#include "meta-idle-monitor-native.h"
+#include "backends/x11/meta-idle-monitor-xsync.h"
+#include "backends/native/meta-idle-monitor-native.h"
 
 G_STATIC_ASSERT(sizeof(unsigned long) == sizeof(gpointer));
 

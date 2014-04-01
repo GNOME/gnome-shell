@@ -62,23 +62,23 @@ libmutter_wayland_la_SOURCES =			\
 	backends/meta-idle-monitor-private.h	\
 	backends/meta-idle-monitor-dbus.c	\
 	backends/meta-idle-monitor-dbus.h	\
-	backends/meta-idle-monitor-xsync.c	\
-	backends/meta-idle-monitor-xsync.h	\
-	backends/meta-idle-monitor-native.c	\
-	backends/meta-idle-monitor-native.h	\
-	backends/meta-xrandr-shared.h		\
 	backends/meta-monitor-config.c		\
 	backends/meta-monitor-config.h		\
 	backends/meta-monitor-manager.c		\
 	backends/meta-monitor-manager.h		\
 	backends/meta-monitor-manager-dummy.c	\
 	backends/meta-monitor-manager-dummy.h	\
-	backends/meta-monitor-manager-kms.c	\
-	backends/meta-monitor-manager-kms.h	\
-	backends/meta-monitor-manager-xrandr.c	\
-	backends/meta-monitor-manager-xrandr.h	\
-	backends/meta-weston-launch.c		\
-	backends/meta-weston-launch.h		\
+	backends/native/meta-idle-monitor-native.c	\
+	backends/native/meta-idle-monitor-native.h	\
+	backends/native/meta-monitor-manager-kms.c	\
+	backends/native/meta-monitor-manager-kms.h	\
+	backends/native/meta-weston-launch.c		\
+	backends/native/meta-weston-launch.h		\
+	backends/x11/meta-idle-monitor-xsync.c		\
+	backends/x11/meta-idle-monitor-xsync.h		\
+	backends/x11/meta-monitor-manager-xrandr.c	\
+	backends/x11/meta-monitor-manager-xrandr.h	\
+	backends/x11/meta-xrandr-shared.h		\
 	core/above-tab-keycode.c		\
 	core/barrier.c				\
 	meta/barrier.h				\
@@ -288,7 +288,9 @@ mutter_wayland_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
 
 bin_PROGRAMS+=mutter-launch
 
-mutter_launch_SOURCES = backends/weston-launch.c backends/weston-launch.h
+mutter_launch_SOURCES = 			\
+	backends/native/weston-launch.c 	\
+	backends/native/weston-launch.h
 
 mutter_launch_CFLAGS = $(MUTTER_LAUNCH_CFLAGS) -DLIBDIR=\"$(libdir)\"
 mutter_launch_LDFLAGS = $(MUTTER_LAUNCH_LIBS) -lpam

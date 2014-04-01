@@ -36,8 +36,8 @@
 #include "util-private.h"
 #include <meta/errors.h>
 #include "meta-monitor-config.h"
-#include "meta-monitor-manager-kms.h"
-#include "meta-monitor-manager-xrandr.h"
+#include "backends/native/meta-monitor-manager-kms.h"
+#include "backends/x11/meta-monitor-manager-xrandr.h"
 #include "meta-monitor-manager-dummy.h"
 
 enum {
