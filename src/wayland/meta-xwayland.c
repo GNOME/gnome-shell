@@ -204,8 +204,7 @@ bind_to_abstract_socket (int display)
   size = offsetof (struct sockaddr_un, sun_path) + name_size;
   if (bind (fd, (struct sockaddr *) &addr, size) < 0)
     {
-      g_warning ("failed to bind to @%s: %s\n",
-                 addr.sun_path + 1, strerror (errno));
+      g_warning ("failed to bind to @%s: %m", addr.sun_path + 1);
       close (fd);
       return -1;
     }
@@ -237,8 +236,7 @@ bind_to_unix_socket (int display)
   unlink (addr.sun_path);
   if (bind (fd, (struct sockaddr *) &addr, size) < 0)
     {
-      char *msg = strerror (errno);
-      g_warning ("failed to bind to %s (%s)\n", addr.sun_path, msg);
+      g_warning ("failed to bind to %s: %m\n", addr.sun_path);
       close (fd);
       return -1;
     }
