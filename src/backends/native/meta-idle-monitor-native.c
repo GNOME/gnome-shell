@@ -113,10 +113,10 @@ free_watch (gpointer data)
 
 static MetaIdleMonitorWatch *
 meta_idle_monitor_native_make_watch (MetaIdleMonitor           *monitor,
-                                    guint64                    timeout_msec,
-                                    MetaIdleMonitorWatchFunc   callback,
-                                    gpointer                   user_data,
-                                    GDestroyNotify             notify)
+                                     guint64                    timeout_msec,
+                                     MetaIdleMonitorWatchFunc   callback,
+                                     gpointer                   user_data,
+                                     GDestroyNotify             notify)
 {
   MetaIdleMonitorWatchNative *watch_native;
   MetaIdleMonitorWatch *watch;
