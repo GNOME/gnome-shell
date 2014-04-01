@@ -72,7 +72,7 @@ native_dispatch_timeout (GSource     *source,
                          gpointer     user_data)
 {
   MetaIdleMonitorWatchNative *watch_native = user_data;
-  MetaIdleMonitorWatch *watch = (MetaIdleMonitorWatch *) watch;
+  MetaIdleMonitorWatch *watch = (MetaIdleMonitorWatch *) watch_native;
 
   _meta_idle_monitor_watch_fire (watch);
   g_source_set_ready_time (watch_native->timeout_source, -1);
