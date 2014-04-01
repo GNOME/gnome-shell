@@ -68,6 +68,8 @@ libmutter_wayland_la_SOURCES =			\
 	backends/meta-monitor-manager.h		\
 	backends/meta-monitor-manager-dummy.c	\
 	backends/meta-monitor-manager-dummy.h	\
+	backends/edid-parse.c			\
+	backends/edid.h				\
 	backends/native/meta-idle-monitor-native.c	\
 	backends/native/meta-idle-monitor-native.h	\
 	backends/native/meta-monitor-manager-kms.c	\
@@ -143,8 +145,6 @@ libmutter_wayland_la_SOURCES =			\
 	meta/display.h				\
 	core/edge-resistance.c			\
 	core/edge-resistance.h			\
-	core/edid-parse.c			\
-	core/edid.h				\
 	core/events.c				\
 	core/events.h				\
 	core/errors.c				\
