@@ -13,6 +13,7 @@ INCLUDES=								\
 	$(MUTTER_CFLAGS)						\
 	-I$(top_builddir)						\
 	-I$(srcdir)							\
+	-I$(srcdir)/backends						\
 	-I$(srcdir)/core						\
 	-I$(srcdir)/ui							\
 	-I$(srcdir)/compositor						\
@@ -50,6 +51,30 @@ wayland_protocols = \
 	wayland/protocol/xserver.xml
 
 libmutter_wayland_la_SOURCES =			\
+	backends/meta-cursor.c			\
+	backends/meta-cursor.h			\
+	backends/meta-cursor-private.h		\
+	backends/meta-cursor-tracker.c		\
+	backends/meta-cursor-tracker-private.h	\
+	backends/meta-idle-monitor.c		\
+	backends/meta-idle-monitor-private.h	\
+	backends/meta-idle-monitor-dbus.c	\
+	backends/meta-idle-monitor-dbus.h	\
+	backends/meta-idle-monitor-xsync.c	\
+	backends/meta-idle-monitor-xsync.h	\
+	backends/meta-idle-monitor-native.c	\
+	backends/meta-idle-monitor-native.h	\
+	backends/meta-xrandr-shared.h		\
+	backends/meta-monitor-config.c		\
+	backends/meta-monitor-config.h		\
+	backends/meta-monitor-manager.c		\
+	backends/meta-monitor-manager.h		\
+	backends/meta-monitor-manager-dummy.c	\
+	backends/meta-monitor-manager-dummy.h	\
+	backends/meta-monitor-manager-kms.c	\
+	backends/meta-monitor-manager-kms.h	\
+	backends/meta-monitor-manager-xrandr.c	\
+	backends/meta-monitor-manager-xrandr.h	\
 	core/above-tab-keycode.c		\
 	core/barrier.c				\
 	meta/barrier.h				\
@@ -127,30 +152,6 @@ libmutter_wayland_la_SOURCES =			\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
 	core/main.c				\
-	core/meta-cursor.c			\
-	core/meta-cursor.h			\
-	core/meta-cursor-private.h		\
-	core/meta-cursor-tracker.c		\
-	core/meta-cursor-tracker-private.h	\
-	core/meta-idle-monitor.c		\
-	core/meta-idle-monitor-private.h	\
-	core/meta-idle-monitor-dbus.c		\
-	core/meta-idle-monitor-dbus.h		\
-	core/meta-idle-monitor-xsync.c		\
-	core/meta-idle-monitor-xsync.h		\
-	core/meta-idle-monitor-native.c		\
-	core/meta-idle-monitor-native.h		\
-	core/meta-xrandr-shared.h		\
-	core/meta-monitor-config.c		\
-	core/meta-monitor-config.h		\
-	core/meta-monitor-manager.c		\
-	core/meta-monitor-manager.h		\
-	core/meta-monitor-manager-dummy.c	\
-	core/meta-monitor-manager-dummy.h	\
-	core/meta-monitor-manager-kms.c		\
-	core/meta-monitor-manager-kms.h		\
-	core/meta-monitor-manager-xrandr.c	\
-	core/meta-monitor-manager-xrandr.h	\
 	core/mutter-Xatomtype.h			\
 	core/place.c				\
 	core/place.h				\
