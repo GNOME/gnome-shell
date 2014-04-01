@@ -480,7 +480,6 @@ mutter-wayland-$VERSION
 	Session management:       ${found_sm}
 	Shape extension:          ${found_shape}
 	Xsync:                    ${found_xsync}
-	Xcursor:                  ${have_xcursor}
 "
 
 
