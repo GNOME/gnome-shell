@@ -389,6 +389,20 @@ meta_monitor_manager_get_property (GObject      *object,
     }
 }
 
+static GBytes *
+meta_monitor_manager_real_read_edid (MetaMonitorManager *manager,
+                                     MetaOutput         *output)
+{
+  return NULL;
+}
+
+static char *
+meta_monitor_manager_real_get_edid_file (MetaMonitorManager *manager,
+                                         MetaOutput         *output)
+{
+  return NULL;
+}
+
 static void
 meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
 {
@@ -399,6 +413,9 @@ meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
   object_class->set_property = meta_monitor_manager_set_property;
   object_class->dispose = meta_monitor_manager_dispose;
   object_class->finalize = meta_monitor_manager_finalize;
+
+  klass->get_edid_file = meta_monitor_manager_real_get_edid_file;
+  klass->read_edid = meta_monitor_manager_real_read_edid;
 
   signals[CONFIRM_DISPLAY_CHANGE] =
     g_signal_new ("confirm-display-change",

@@ -212,20 +212,6 @@ meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
   meta_monitor_manager_rebuild_derived (manager);
 }
 
-static GBytes *
-meta_monitor_manager_dummy_read_edid (MetaMonitorManager *manager,
-                                      MetaOutput         *output)
-{
-  return NULL;
-}
-
-static char *
-meta_monitor_manager_dummy_get_edid_file (MetaMonitorManager *manager,
-                                          MetaOutput         *output)
-{
-  return NULL;
-}
-
 static void
 meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
 {
@@ -233,8 +219,6 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
 
   manager_class->read_current = meta_monitor_manager_dummy_read_current;
   manager_class->apply_configuration = meta_monitor_manager_dummy_apply_config;
-  manager_class->get_edid_file = meta_monitor_manager_dummy_get_edid_file;
-  manager_class->read_edid = meta_monitor_manager_dummy_read_edid;
 }
 
 static void
