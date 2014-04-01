@@ -34,7 +34,7 @@
 #include "util-private.h"
 #include <meta/errors.h>
 #include "monitor-private.h"
-#include "monitor-config.h"
+#include "meta-monitor-config.h"
 #include "meta-monitor-manager-kms.h"
 #include "meta-monitor-manager-xrandr.h"
 #include "meta-monitor-manager-dummy.h"

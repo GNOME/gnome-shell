@@ -39,7 +39,7 @@
 #include <meta/main.h>
 #include <meta/errors.h>
 #include "edid.h"
-#include "monitor-config.h"
+#include "meta-monitor-config.h"
 
 #define ALL_WL_TRANSFORMS ((1 << (WL_OUTPUT_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
