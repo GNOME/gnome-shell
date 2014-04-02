@@ -54,9 +54,7 @@ xserver_set_window_id (struct wl_client *client,
   if (window->surface)
     window->surface->window = NULL;
 
-  meta_wayland_surface_make_toplevel (surface);
-
-  surface->window = window;
+  meta_wayland_surface_set_window (surface, window);
   window->surface = surface;
 
   meta_compositor_window_surface_changed (display->compositor, window);

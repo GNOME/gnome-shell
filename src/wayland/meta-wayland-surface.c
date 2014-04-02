@@ -549,16 +549,13 @@ const struct wl_surface_interface meta_wayland_surface_interface = {
 };
 
 void
-meta_wayland_surface_make_toplevel (MetaWaylandSurface *surface)
+meta_wayland_surface_set_window (MetaWaylandSurface *surface,
+                                 MetaWindow         *window)
 {
-  clutter_actor_set_reactive (CLUTTER_ACTOR (surface->surface_actor), TRUE);
-}
+  gboolean has_window = (window != NULL);
 
-void
-meta_wayland_surface_window_unmanaged (MetaWaylandSurface *surface)
-{
-  clutter_actor_set_reactive (CLUTTER_ACTOR (surface->surface_actor), FALSE);
-  surface->window = NULL;
+  clutter_actor_set_reactive (CLUTTER_ACTOR (surface->surface_actor), has_window);
+  surface->window = window;
 }
 
 static void
@@ -909,6 +906,7 @@ xdg_shell_get_xdg_surface (struct wl_client *client,
                            struct wl_resource *surface_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  MetaWindow *window;
 
   if (!create_surface_extension (&surface->xdg_surface,
                                  META_XDG_SURFACE_VERSION,
@@ -923,8 +921,8 @@ xdg_shell_get_xdg_surface (struct wl_client *client,
       return;
     }
 
-  meta_wayland_surface_make_toplevel (surface);
-  surface->window = meta_window_wayland_new (meta_get_display (), surface);
+  window = meta_window_wayland_new (meta_get_display (), surface);
+  meta_wayland_surface_set_window (surface, window);
 }
 
 static void
@@ -962,6 +960,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
   MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
+  MetaWindow *window;
 
   if (parent_surf == NULL || parent_surf->window == NULL)
     return;
@@ -979,15 +978,15 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
       return;
     }
 
-  meta_wayland_surface_make_toplevel (surface);
-  surface->window = meta_window_wayland_new (meta_get_display (), surface);
-  surface->window->rect.x = parent_surf->window->rect.x + x;
-  surface->window->rect.y = parent_surf->window->rect.y + y;
-  surface->window->showing_for_first_time = FALSE;
-  surface->window->placed = TRUE;
-  meta_window_set_transient_for (surface->window, parent_surf->window);
+  window = meta_window_wayland_new (meta_get_display (), surface);
+  window->rect.x = parent_surf->window->rect.x + x;
+  window->rect.y = parent_surf->window->rect.y + y;
+  window->showing_for_first_time = FALSE;
+  window->placed = TRUE;
+  meta_window_set_transient_for (window, parent_surf->window);
+  meta_window_set_type (window, META_WINDOW_DROPDOWN_MENU);
 
-  meta_window_set_type (surface->window, META_WINDOW_DROPDOWN_MENU);
+  meta_wayland_surface_set_window (surface, window);
 
   meta_wayland_pointer_start_popup_grab (&seat->pointer, surface);
 }
@@ -1270,6 +1269,7 @@ wl_shell_get_shell_surface (struct wl_client *client,
                             struct wl_resource *surface_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  MetaWindow *window;
 
   if (!create_surface_extension (&surface->wl_shell_surface,
                                  META_WL_SHELL_SURFACE_VERSION,
@@ -1284,8 +1284,8 @@ wl_shell_get_shell_surface (struct wl_client *client,
       return;
     }
 
-  meta_wayland_surface_make_toplevel (surface);
-  surface->window = meta_window_wayland_new (meta_get_display (), surface);
+  window = meta_window_wayland_new (meta_get_display (), surface);
+  meta_wayland_surface_set_window (surface, window);
 }
 
 static const struct wl_shell_interface meta_wayland_wl_shell_interface = {

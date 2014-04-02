@@ -1468,7 +1468,7 @@ meta_window_unmanage (MetaWindow  *window,
   /* This needs to happen for both Wayland and XWayland clients,
    * so it can't be in MetaWindowWayland. */
   if (window->surface)
-    meta_wayland_surface_window_unmanaged (window->surface);
+    meta_wayland_surface_set_window (window->surface, NULL);
 
   if (window->visible_to_compositor)
     {

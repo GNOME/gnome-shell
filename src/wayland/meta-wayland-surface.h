@@ -111,8 +111,8 @@ MetaWaylandSurface *meta_wayland_surface_create (MetaWaylandCompositor *composit
 						 guint32                id,
 						 guint32                version);
 
-void                meta_wayland_surface_make_toplevel (MetaWaylandSurface *surface);
-void                meta_wayland_surface_window_unmanaged (MetaWaylandSurface *surface);
+void                meta_wayland_surface_set_window (MetaWaylandSurface *surface,
+                                                     MetaWindow         *window);
 
 void                meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
 							   int                 width,
