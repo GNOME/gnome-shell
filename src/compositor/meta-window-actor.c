@@ -702,7 +702,6 @@ static gboolean
 meta_window_actor_has_shadow (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  MetaWindowType window_type = meta_window_get_window_type (priv->window);
 
   if (priv->no_shadow)
     return FALSE;
@@ -740,25 +739,6 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
    */
   if (priv->window->override_redirect)
     return TRUE;
-
-  /*
-   * Don't put shadow around DND icon windows
-   */
-  if (window_type == META_WINDOW_DND ||
-      window_type == META_WINDOW_DESKTOP)
-    return FALSE;
-
-  if (window_type == META_WINDOW_MENU
-#if 0
-      || window_type == META_WINDOW_DROPDOWN_MENU
-#endif
-      )
-    return TRUE;
-
-#if 0
-  if (window_type == META_WINDOW_TOOLTIP)
-    return TRUE;
-#endif
 
   return FALSE;
 }
