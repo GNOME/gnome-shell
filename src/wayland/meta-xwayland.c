@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /*
  * X Wayland Support
  *
@@ -19,8 +21,11 @@
  * 02111-1307, USA.
  */
 
-#include <glib.h>
+#include "config.h"
 
+#include "meta-xwayland-private.h"
+
+#include <glib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -29,7 +34,6 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 
-#include "meta-xwayland-private.h"
 #include "meta-window-actor-private.h"
 #include "xserver-server-protocol.h"
 
