@@ -38,6 +38,25 @@
 #include "xserver-server-protocol.h"
 
 static void
+associate_window_with_surface (MetaWindow         *window,
+                               MetaWaylandSurface *surface)
+{
+  MetaDisplay *display = window->display;
+
+  /* If the window has an existing surface, like if we're
+   * undecorating or decorating the window, then we need
+   * to detach the window from its old surface.
+   */
+  if (window->surface)
+    window->surface->window = NULL;
+
+  meta_wayland_surface_set_window (surface, window);
+  window->surface = surface;
+
+  meta_compositor_window_surface_changed (display->compositor, window);
+}
+
+static void
 xserver_set_window_id (struct wl_client *client,
                        struct wl_resource *compositor_resource,
                        struct wl_resource *surface_resource,
@@ -51,17 +70,7 @@ xserver_set_window_id (struct wl_client *client,
   if (!window)
     return;
 
-  /* If the window has an existing surface, like if we're
-   * undecorating or decorating the window, then we need
-   * to detach the window from its old surface.
-   */
-  if (window->surface)
-    window->surface->window = NULL;
-
-  meta_wayland_surface_set_window (surface, window);
-  window->surface = surface;
-
-  meta_compositor_window_surface_changed (display->compositor, window);
+  associate_window_with_surface (window, surface);
 }
 
 static const struct xserver_interface xserver_implementation = {
