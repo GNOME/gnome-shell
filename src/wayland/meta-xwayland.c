@@ -288,16 +288,11 @@ x_io_error (Display *display)
   return 0;
 }
 
-gboolean
-meta_xwayland_start (MetaXWaylandManager *manager,
-                     struct wl_display   *wl_display)
+static gboolean
+choose_xdisplay (MetaXWaylandManager *manager)
 {
   int display = 0;
   char *lockfile = NULL;
-  int sp[2];
-  pid_t pid;
-  char **env;
-  char *fd_string;
 
   do
     {
@@ -337,6 +332,21 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   manager->display_index = display;
   manager->lockfile = lockfile;
 
+  return TRUE;
+}
+
+gboolean
+meta_xwayland_start (MetaXWaylandManager *manager,
+                     struct wl_display   *wl_display)
+{
+  int sp[2];
+  pid_t pid;
+  char **env;
+  char *fd_string;
+
+  if (!choose_xdisplay (manager))
+    return FALSE;
+
   wl_global_create (wl_display, &xserver_interface,
 		    META_XSERVER_VERSION,
 		    manager, bind_xserver);
@@ -346,7 +356,7 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   if (socketpair (AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, sp) < 0)
     {
       g_warning ("socketpair failed\n");
-      unlink (lockfile);
+      unlink (manager->lockfile);
       return 1;
     }
 
