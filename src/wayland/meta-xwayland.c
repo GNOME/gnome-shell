@@ -26,6 +26,8 @@
 #include "meta-xwayland.h"
 #include "meta-xwayland-private.h"
 
+#include "meta-wayland-surface-private.h"
+
 #include <glib.h>
 #include <glib-unix.h>
 #include <unistd.h>
@@ -54,6 +56,12 @@ associate_window_with_surface (MetaWindow         *window,
   window->surface = surface;
 
   meta_compositor_window_surface_changed (display->compositor, window);
+
+  /* Since the association comes in the form of a ClientMessage,
+   * we have no way to know when the surface was set up. Since
+   * commit just breaks if we don't have a window associated with
+   * it, we need to do a commit *again* here. */
+  meta_wayland_surface_commit (surface);
 }
 
 static gboolean

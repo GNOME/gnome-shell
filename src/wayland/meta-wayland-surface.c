@@ -48,6 +48,7 @@
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-data-device.h"
+#include "meta-wayland-surface-private.h"
 
 #include "meta-cursor-tracker-private.h"
 #include "display-private.h"
@@ -365,6 +366,14 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
     toplevel_surface_commit (surface, pending);
   else if (surface->subsurface.resource)
     subsurface_surface_commit (surface, pending);
+  else
+    {
+      /* Unknown surface type. In this case, it's most likely a XWayland
+       * surface that we haven't gotten the ClientMessage for yet. Make
+       * sure *not* to reset the double-buffered state or do anything too
+       * fancy. */
+      return;
+    }
 
   g_list_foreach (surface->subsurfaces,
                   parent_surface_committed,
@@ -383,7 +392,7 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
   double_buffered_state_reset (pending);
 }
 
-static void
+void
 meta_wayland_surface_commit (MetaWaylandSurface *surface)
 {
   commit_double_buffered_state (surface, &surface->pending);
