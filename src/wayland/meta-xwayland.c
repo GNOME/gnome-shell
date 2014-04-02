@@ -299,10 +299,6 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   char **env;
   char *fd_string;
 
-  wl_global_create (wl_display, &xserver_interface,
-		    META_XSERVER_VERSION,
-		    manager, bind_xserver);
-
   do
     {
       lockfile = create_lockfile (display, &display);
@@ -340,6 +336,10 @@ meta_xwayland_start (MetaXWaylandManager *manager,
 
   manager->display_index = display;
   manager->lockfile = lockfile;
+
+  wl_global_create (wl_display, &xserver_interface,
+		    META_XSERVER_VERSION,
+		    manager, bind_xserver);
 
   /* We want xwayland to be a wayland client so we make a socketpair to setup a
    * wayland protocol connection. */
