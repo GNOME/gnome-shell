@@ -398,8 +398,7 @@ meta_xwayland_start (MetaXWaylandManager *manager,
                  "-nolisten", "all",
                  NULL) < 0)
         {
-          g_warning ("Failed to spawn XWayland: %m");
-          exit (EXIT_FAILURE);
+          g_error ("Failed to spawn XWayland: %m");
         }
     }
   else if (manager->pid == -1)
