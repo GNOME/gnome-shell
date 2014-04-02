@@ -144,22 +144,37 @@ ensure_buffer_texture (MetaWaylandBuffer *buffer)
   buffer->texture = texture;
 }
 
-static void
-cursor_surface_commit (MetaWaylandSurface             *surface,
-                       MetaWaylandDoubleBufferedState *pending,
-                       gboolean                        buffer_changed)
+static gboolean
+commit_attached_surface (MetaWaylandSurface             *surface,
+                         MetaWaylandDoubleBufferedState *pending)
 {
-  if (buffer_changed)
-    meta_wayland_seat_update_cursor_surface (surface->compositor->seat);
+  /* wl_surface.attach */
+  if (pending->newly_attached && surface->buffer != pending->buffer)
+    {
+      surface_set_buffer (surface, pending->buffer);
+      return TRUE;
+    }
+  else
+    return FALSE;
 }
 
 static void
+cursor_surface_commit (MetaWaylandSurface             *surface,
+                       MetaWaylandDoubleBufferedState *pending)
+{
+  if (commit_attached_surface (surface, pending))
+    meta_wayland_seat_update_cursor_surface (surface->compositor->seat);
+}
+
+static gboolean
 actor_surface_commit (MetaWaylandSurface             *surface,
-                      MetaWaylandDoubleBufferedState *pending,
-                      gboolean                        buffer_changed)
+                      MetaWaylandDoubleBufferedState *pending)
 {
   MetaSurfaceActor *surface_actor = surface->surface_actor;
   MetaWaylandBuffer *buffer = pending->buffer;
+  gboolean buffer_changed;
+
+  buffer_changed = commit_attached_surface (surface, pending);
 
   if (buffer_changed && buffer)
     {
@@ -173,16 +188,15 @@ actor_surface_commit (MetaWaylandSurface             *surface,
     meta_surface_actor_set_opaque_region (surface_actor, pending->opaque_region);
   if (pending->input_region)
     meta_surface_actor_set_input_region (surface_actor, pending->input_region);
+
+  return buffer_changed;
 }
 
 static void
 toplevel_surface_commit (MetaWaylandSurface             *surface,
-                         MetaWaylandDoubleBufferedState *pending,
-                         gboolean                        buffer_changed)
+                         MetaWaylandDoubleBufferedState *pending)
 {
-  actor_surface_commit (surface, pending, buffer_changed);
-
-  if (buffer_changed)
+  if (actor_surface_commit (surface, pending))
     {
       MetaWindow *window = surface->window;
       MetaWaylandBuffer *buffer = pending->buffer;
@@ -291,8 +305,7 @@ move_double_buffered_state (MetaWaylandDoubleBufferedState *from,
 
 static void
 subsurface_surface_commit (MetaWaylandSurface             *surface,
-                           MetaWaylandDoubleBufferedState *pending,
-                           gboolean                        buffer_changed)
+                           MetaWaylandDoubleBufferedState *pending)
 {
   /*
    * If the sub-surface is in synchronous mode, post-pone the commit of its
@@ -312,9 +325,7 @@ subsurface_surface_commit (MetaWaylandSurface             *surface,
     }
   else
     {
-      actor_surface_commit (surface, pending, buffer_changed);
-
-      if (buffer_changed)
+      if (actor_surface_commit (surface, pending))
         {
           MetaSurfaceActor *surface_actor = surface->surface_actor;
           MetaWaylandBuffer *buffer = pending->buffer;
@@ -347,21 +358,13 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
                               MetaWaylandDoubleBufferedState *pending)
 {
   MetaWaylandCompositor *compositor = surface->compositor;
-  gboolean buffer_changed = FALSE;
-
-  /* wl_surface.attach */
-  if (pending->newly_attached && surface->buffer != pending->buffer)
-    {
-      surface_set_buffer (surface, pending->buffer);
-      buffer_changed = TRUE;
-    }
 
   if (surface == compositor->seat->cursor_surface)
-    cursor_surface_commit (surface, pending, buffer_changed);
+    cursor_surface_commit (surface, pending);
   else if (surface->window)
-    toplevel_surface_commit (surface, pending, buffer_changed);
+    toplevel_surface_commit (surface, pending);
   else if (surface->subsurface.resource)
-    subsurface_surface_commit (surface, pending, buffer_changed);
+    subsurface_surface_commit (surface, pending);
 
   g_list_foreach (surface->subsurfaces,
                   parent_surface_committed,
