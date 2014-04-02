@@ -115,8 +115,16 @@ pointer_set_cursor (struct wl_client *client,
   meta_wayland_seat_update_cursor_surface (seat);
 }
 
+static void
+pointer_release (struct wl_client *client,
+                 struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
 static const struct wl_pointer_interface pointer_interface = {
-  pointer_set_cursor
+  pointer_set_cursor,
+  pointer_release,
 };
 
 static void
@@ -136,6 +144,17 @@ seat_get_pointer (struct wl_client *client,
       wl_resource_get_client (seat->pointer.focus_surface->resource) == client)
     meta_wayland_pointer_set_focus (&seat->pointer, seat->pointer.focus_surface);
 }
+
+static void
+keyboard_release (struct wl_client *client,
+                  struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
+static const struct wl_keyboard_interface keyboard_interface = {
+  keyboard_release,
+};
 
 static void
 seat_get_keyboard (struct wl_client *client,
