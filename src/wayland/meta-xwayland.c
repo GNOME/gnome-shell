@@ -26,9 +26,11 @@
 #include "meta-xwayland-private.h"
 
 #include <glib.h>
+#include <glib-unix.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <signal.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <sys/wait.h>
@@ -36,9 +38,6 @@
 
 #include "meta-window-actor-private.h"
 #include "xserver-server-protocol.h"
-
-static void
-xserver_finished_init (MetaXWaylandManager *manager);
 
 static void
 associate_window_with_surface (MetaWindow         *window,
@@ -106,8 +105,6 @@ bind_xserver (struct wl_client *client,
    * then going to immediately try and connect to those as the window
    * manager. */
   wl_client_flush (client);
-
-  xserver_finished_init (manager);
 }
 
 static char *
@@ -346,6 +343,16 @@ xserver_finished_init (MetaXWaylandManager *manager)
   g_clear_pointer (&manager->init_loop, g_main_loop_unref);
 }
 
+static gboolean
+got_sigusr1 (gpointer user_data)
+{
+  MetaXWaylandManager *manager = user_data;
+
+  xserver_finished_init (manager);
+
+  return G_SOURCE_REMOVE;
+}
+
 gboolean
 meta_xwayland_start (MetaXWaylandManager *manager,
                      struct wl_display   *wl_display)
@@ -390,6 +397,10 @@ meta_xwayland_start (MetaXWaylandManager *manager,
           dup2 (dev_null, STDERR_FILENO);
         }
 
+      /* We have to ignore SIGUSR1 in the child to make sure
+       * that the server will send it to mutter-wayland. */
+      signal(SIGUSR1, SIG_IGN);
+
       if (execl (XWAYLAND_PATH, XWAYLAND_PATH,
                  manager->display_name,
                  "-wayland",
@@ -407,6 +418,7 @@ meta_xwayland_start (MetaXWaylandManager *manager,
     }
 
   g_child_watch_add (manager->pid, xserver_died, NULL);
+  g_unix_signal_add (SIGUSR1, got_sigusr1, manager);
   manager->client = wl_client_create (wl_display, sp[0]);
 
   /* We need to run a mainloop until we know xwayland has a binding
