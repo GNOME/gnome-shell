@@ -38,6 +38,9 @@
 #include "xserver-server-protocol.h"
 
 static void
+xserver_finished_init (MetaXWaylandManager *manager);
+
+static void
 associate_window_with_surface (MetaWindow         *window,
                                MetaWaylandSurface *surface)
 {
@@ -104,12 +107,7 @@ bind_xserver (struct wl_client *client,
    * manager. */
   wl_client_flush (client);
 
-  /* At this point xwayland is all setup to start accepting
-   * connections so we can quit the transient initialization mainloop
-   * and unblock meta_wayland_init() to continue initializing mutter.
-   * */
-  g_main_loop_quit (manager->init_loop);
-  g_clear_pointer (&manager->init_loop, g_main_loop_unref);
+  xserver_finished_init (manager);
 }
 
 static char *
@@ -335,6 +333,17 @@ choose_xdisplay (MetaXWaylandManager *manager)
   manager->lockfile = lockfile;
 
   return TRUE;
+}
+
+static void
+xserver_finished_init (MetaXWaylandManager *manager)
+{
+  /* At this point xwayland is all setup to start accepting
+   * connections so we can quit the transient initialization mainloop
+   * and unblock meta_wayland_init() to continue initializing mutter.
+   * */
+  g_main_loop_quit (manager->init_loop);
+  g_clear_pointer (&manager->init_loop, g_main_loop_unref);
 }
 
 gboolean
