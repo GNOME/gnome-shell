@@ -352,7 +352,6 @@ meta_xwayland_start (MetaXWaylandManager *manager,
 {
   int sp[2];
   int fd;
-  char *socket_fd;
 
   if (!choose_xdisplay (manager))
     return FALSE;
@@ -373,15 +372,16 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   manager->pid = fork ();
   if (manager->pid == 0)
     {
+      char socket_fd[8];
+
       /* We passed SOCK_CLOEXEC, so dup the FD so it isn't
        * closed on exec.. */
       fd = dup (sp[1]);
-      socket_fd = g_strdup_printf ("%d", fd);
+      snprintf (socket_fd, sizeof (socket_fd), "%d", fd);
       setenv ("WAYLAND_SOCKET", socket_fd, TRUE);
-      g_free (socket_fd);
 
       /* xwayland, please. */
-      if (g_getenv ("XWAYLAND_STFU"))
+      if (getenv ("XWAYLAND_STFU"))
         {
           int dev_null;
           dev_null = open ("/dev/null", O_WRONLY);
