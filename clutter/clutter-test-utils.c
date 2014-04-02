@@ -15,6 +15,8 @@
 
 typedef struct {
   ClutterActor *stage;
+
+  guint no_display : 1;
 } ClutterTestEnvironment;
 
 static ClutterTestEnvironment *test_environ = NULL;
@@ -32,6 +34,8 @@ void
 clutter_test_init (int    *argc,
                    char ***argv)
 {
+  gboolean no_display = FALSE;
+
   if (G_UNLIKELY (test_environ != NULL))
     g_error ("Attempting to initialize the test suite more than once, "
              "aborting...\n");
@@ -48,9 +52,12 @@ clutter_test_init (int    *argc,
 
       if (display == NULL || *display == '\0')
         {
-          g_print ("No DISPLAY environment variable found, but we require a "
-                   "DISPLAY set in order to run the conformance test suite.");
-          exit (0);
+          g_test_message ("No DISPLAY environment variable found, but we require a "
+                          "DISPLAY set in order to run the conformance test suite.\n"
+                          "Skipping all tests.\n");
+          no_display = TRUE;
+
+          goto out;
         }
     }
 #endif
@@ -60,14 +67,16 @@ clutter_test_init (int    *argc,
    */
   _clutter_set_sync_to_vblank (FALSE);
 
-  g_test_init (argc, argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=%s");
-
   /* perform the actual initialization */
   g_assert (clutter_init (NULL, NULL) == CLUTTER_INIT_SUCCESS);
 
+out:
+  g_test_init (argc, argv, NULL);
+  g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=%s");
+
   /* our global state, accessible from each test unit */
   test_environ = g_new0 (ClutterTestEnvironment, 1);
+  test_environ->no_display = no_display;
 }
 
 /**
@@ -110,6 +119,12 @@ clutter_test_func_wrapper (gconstpointer data_)
   /* ensure that the previous test state has been cleaned up */
   g_assert_null (test_environ->stage);
 
+  if (test_environ->no_display)
+    {
+      g_test_skip ("No DISPLAY set");
+      goto out;
+    }
+
   if (data->test_data != NULL)
     {
       GTestDataFunc test_func = data->test_func;
@@ -123,6 +138,7 @@ clutter_test_func_wrapper (gconstpointer data_)
       test_func ();
     }
 
+out:
   if (data->test_notify != NULL)
     data->test_notify (data->test_data);
 
