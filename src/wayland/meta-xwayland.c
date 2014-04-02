@@ -402,6 +402,10 @@ meta_xwayland_start (MetaXWaylandManager *manager,
           exit (EXIT_FAILURE);
         }
     }
+  else if (manager->pid == -1)
+    {
+      g_error ("Failed to fork: %m");
+    }
 
   g_child_watch_add (manager->pid, xserver_died, NULL);
   manager->client = wl_client_create (wl_display, sp[0]);
