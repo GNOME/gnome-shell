@@ -118,17 +118,17 @@ surface_process_damage (MetaWaylandSurface *surface,
 }
 
 static void
-meta_wayland_surface_destroy (struct wl_client *client,
-                              struct wl_resource *resource)
+wl_surface_destroy (struct wl_client *client,
+                    struct wl_resource *resource)
 {
   wl_resource_destroy (resource);
 }
 
 static void
-meta_wayland_surface_attach (struct wl_client *client,
-                             struct wl_resource *surface_resource,
-                             struct wl_resource *buffer_resource,
-                             gint32 dx, gint32 dy)
+wl_surface_attach (struct wl_client *client,
+                   struct wl_resource *surface_resource,
+                   struct wl_resource *buffer_resource,
+                   gint32 dx, gint32 dy)
 {
   MetaWaylandSurface *surface =
     wl_resource_get_user_data (surface_resource);
@@ -158,12 +158,12 @@ meta_wayland_surface_attach (struct wl_client *client,
 }
 
 static void
-meta_wayland_surface_damage (struct wl_client *client,
-                             struct wl_resource *surface_resource,
-                             gint32 x,
-                             gint32 y,
-                             gint32 width,
-                             gint32 height)
+wl_surface_damage (struct wl_client *client,
+                   struct wl_resource *surface_resource,
+                   gint32 x,
+                   gint32 y,
+                   gint32 width,
+                   gint32 height)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
   cairo_rectangle_int_t rectangle = { x, y, width, height };
@@ -186,9 +186,9 @@ destroy_frame_callback (struct wl_resource *callback_resource)
 }
 
 static void
-meta_wayland_surface_frame (struct wl_client *client,
-                            struct wl_resource *surface_resource,
-                            guint32 callback_id)
+wl_surface_frame (struct wl_client *client,
+                  struct wl_resource *surface_resource,
+                  guint32 callback_id)
 {
   MetaWaylandFrameCallback *callback;
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
@@ -206,9 +206,9 @@ meta_wayland_surface_frame (struct wl_client *client,
 }
 
 static void
-meta_wayland_surface_set_opaque_region (struct wl_client *client,
-                                        struct wl_resource *surface_resource,
-                                        struct wl_resource *region_resource)
+wl_surface_set_opaque_region (struct wl_client *client,
+                              struct wl_resource *surface_resource,
+                              struct wl_resource *region_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
 
@@ -225,9 +225,9 @@ meta_wayland_surface_set_opaque_region (struct wl_client *client,
 }
 
 static void
-meta_wayland_surface_set_input_region (struct wl_client *client,
-                                       struct wl_resource *surface_resource,
-                                       struct wl_resource *region_resource)
+wl_surface_set_input_region (struct wl_client *client,
+                             struct wl_resource *surface_resource,
+                             struct wl_resource *region_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
 
@@ -507,8 +507,8 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
 }
 
 static void
-meta_wayland_surface_commit (struct wl_client *client,
-                             struct wl_resource *resource)
+wl_surface_commit (struct wl_client *client,
+                   struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
@@ -520,32 +520,32 @@ meta_wayland_surface_commit (struct wl_client *client,
 }
 
 static void
-meta_wayland_surface_set_buffer_transform (struct wl_client *client,
-                                           struct wl_resource *resource,
-                                           int32_t transform)
+wl_surface_set_buffer_transform (struct wl_client *client,
+                                 struct wl_resource *resource,
+                                 int32_t transform)
 {
   g_warning ("TODO: support set_buffer_transform request");
 }
 
 static void
-meta_wayland_surface_set_buffer_scale (struct wl_client *client,
-                                       struct wl_resource *resource,
-                                       int scale)
+wl_surface_set_buffer_scale (struct wl_client *client,
+                             struct wl_resource *resource,
+                             int scale)
 {
   if (scale != 1)
     g_warning ("TODO: support set_buffer_scale request");
 }
 
-const struct wl_surface_interface meta_wayland_surface_interface = {
-  meta_wayland_surface_destroy,
-  meta_wayland_surface_attach,
-  meta_wayland_surface_damage,
-  meta_wayland_surface_frame,
-  meta_wayland_surface_set_opaque_region,
-  meta_wayland_surface_set_input_region,
-  meta_wayland_surface_commit,
-  meta_wayland_surface_set_buffer_transform,
-  meta_wayland_surface_set_buffer_scale
+const struct wl_surface_interface meta_wayland_wl_surface_interface = {
+  wl_surface_destroy,
+  wl_surface_attach,
+  wl_surface_damage,
+  wl_surface_frame,
+  wl_surface_set_opaque_region,
+  wl_surface_set_input_region,
+  wl_surface_commit,
+  wl_surface_set_buffer_transform,
+  wl_surface_set_buffer_scale
 };
 
 void
@@ -609,7 +609,7 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   surface->compositor = compositor;
 
   surface->resource = wl_resource_create (client, &wl_surface_interface, version, id);
-  wl_resource_set_implementation (surface->resource, &meta_wayland_surface_interface, surface, wl_surface_destructor);
+  wl_resource_set_implementation (surface->resource, &meta_wayland_wl_surface_interface, surface, wl_surface_destructor);
 
   surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
   surface->surface_actor = g_object_ref_sink (meta_surface_actor_wayland_new (surface));
