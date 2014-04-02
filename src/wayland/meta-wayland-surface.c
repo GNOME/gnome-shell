@@ -118,132 +118,6 @@ surface_process_damage (MetaWaylandSurface *surface,
 }
 
 static void
-wl_surface_destroy (struct wl_client *client,
-                    struct wl_resource *resource)
-{
-  wl_resource_destroy (resource);
-}
-
-static void
-wl_surface_attach (struct wl_client *client,
-                   struct wl_resource *surface_resource,
-                   struct wl_resource *buffer_resource,
-                   gint32 dx, gint32 dy)
-{
-  MetaWaylandSurface *surface =
-    wl_resource_get_user_data (surface_resource);
-  MetaWaylandBuffer *buffer;
-
-  /* X11 unmanaged window */
-  if (!surface)
-    return;
-
-  if (buffer_resource)
-    buffer = meta_wayland_buffer_from_resource (buffer_resource);
-  else
-    buffer = NULL;
-
-  /* Attach without commit in between does not send wl_buffer.release */
-  if (surface->pending.buffer)
-    wl_list_remove (&surface->pending.buffer_destroy_listener.link);
-
-  surface->pending.dx = dx;
-  surface->pending.dy = dy;
-  surface->pending.buffer = buffer;
-  surface->pending.newly_attached = TRUE;
-
-  if (buffer)
-    wl_signal_add (&buffer->destroy_signal,
-                   &surface->pending.buffer_destroy_listener);
-}
-
-static void
-wl_surface_damage (struct wl_client *client,
-                   struct wl_resource *surface_resource,
-                   gint32 x,
-                   gint32 y,
-                   gint32 width,
-                   gint32 height)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-  cairo_rectangle_int_t rectangle = { x, y, width, height };
-
-  /* X11 unmanaged window */
-  if (!surface)
-    return;
-
-  cairo_region_union_rectangle (surface->pending.damage, &rectangle);
-}
-
-static void
-destroy_frame_callback (struct wl_resource *callback_resource)
-{
-  MetaWaylandFrameCallback *callback =
-    wl_resource_get_user_data (callback_resource);
-
-  wl_list_remove (&callback->link);
-  g_slice_free (MetaWaylandFrameCallback, callback);
-}
-
-static void
-wl_surface_frame (struct wl_client *client,
-                  struct wl_resource *surface_resource,
-                  guint32 callback_id)
-{
-  MetaWaylandFrameCallback *callback;
-  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-
-  /* X11 unmanaged window */
-  if (!surface)
-    return;
-
-  callback = g_slice_new0 (MetaWaylandFrameCallback);
-  callback->compositor = surface->compositor;
-  callback->resource = wl_resource_create (client, &wl_callback_interface, META_WL_CALLBACK_VERSION, callback_id);
-  wl_resource_set_implementation (callback->resource, NULL, callback, destroy_frame_callback);
-
-  wl_list_insert (surface->pending.frame_callback_list.prev, &callback->link);
-}
-
-static void
-wl_surface_set_opaque_region (struct wl_client *client,
-                              struct wl_resource *surface_resource,
-                              struct wl_resource *region_resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-
-  /* X11 unmanaged window */
-  if (!surface)
-    return;
-
-  g_clear_pointer (&surface->pending.opaque_region, cairo_region_destroy);
-  if (region_resource)
-    {
-      MetaWaylandRegion *region = wl_resource_get_user_data (region_resource);
-      surface->pending.opaque_region = cairo_region_copy (region->region);
-    }
-}
-
-static void
-wl_surface_set_input_region (struct wl_client *client,
-                             struct wl_resource *surface_resource,
-                             struct wl_resource *region_resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-
-  /* X11 unmanaged window */
-  if (!surface)
-    return;
-
-  g_clear_pointer (&surface->pending.input_region, cairo_region_destroy);
-  if (region_resource)
-    {
-      MetaWaylandRegion *region = wl_resource_get_user_data (region_resource);
-      surface->pending.input_region = cairo_region_copy (region->region);
-    }
-}
-
-static void
 empty_region (cairo_region_t *region)
 {
   cairo_rectangle_int_t rectangle = { 0, 0, 0, 0 };
@@ -507,6 +381,138 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
 }
 
 static void
+meta_wayland_surface_commit (MetaWaylandSurface *surface)
+{
+  commit_double_buffered_state (surface, &surface->pending);
+}
+
+static void
+wl_surface_destroy (struct wl_client *client,
+                    struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
+static void
+wl_surface_attach (struct wl_client *client,
+                   struct wl_resource *surface_resource,
+                   struct wl_resource *buffer_resource,
+                   gint32 dx, gint32 dy)
+{
+  MetaWaylandSurface *surface =
+    wl_resource_get_user_data (surface_resource);
+  MetaWaylandBuffer *buffer;
+
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
+
+  if (buffer_resource)
+    buffer = meta_wayland_buffer_from_resource (buffer_resource);
+  else
+    buffer = NULL;
+
+  /* Attach without commit in between does not send wl_buffer.release */
+  if (surface->pending.buffer)
+    wl_list_remove (&surface->pending.buffer_destroy_listener.link);
+
+  surface->pending.dx = dx;
+  surface->pending.dy = dy;
+  surface->pending.buffer = buffer;
+  surface->pending.newly_attached = TRUE;
+
+  if (buffer)
+    wl_signal_add (&buffer->destroy_signal,
+                   &surface->pending.buffer_destroy_listener);
+}
+
+static void
+wl_surface_damage (struct wl_client *client,
+                   struct wl_resource *surface_resource,
+                   gint32 x,
+                   gint32 y,
+                   gint32 width,
+                   gint32 height)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  cairo_rectangle_int_t rectangle = { x, y, width, height };
+
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
+
+  cairo_region_union_rectangle (surface->pending.damage, &rectangle);
+}
+
+static void
+destroy_frame_callback (struct wl_resource *callback_resource)
+{
+  MetaWaylandFrameCallback *callback =
+    wl_resource_get_user_data (callback_resource);
+
+  wl_list_remove (&callback->link);
+  g_slice_free (MetaWaylandFrameCallback, callback);
+}
+
+static void
+wl_surface_frame (struct wl_client *client,
+                  struct wl_resource *surface_resource,
+                  guint32 callback_id)
+{
+  MetaWaylandFrameCallback *callback;
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
+
+  callback = g_slice_new0 (MetaWaylandFrameCallback);
+  callback->compositor = surface->compositor;
+  callback->resource = wl_resource_create (client, &wl_callback_interface, META_WL_CALLBACK_VERSION, callback_id);
+  wl_resource_set_implementation (callback->resource, NULL, callback, destroy_frame_callback);
+
+  wl_list_insert (surface->pending.frame_callback_list.prev, &callback->link);
+}
+
+static void
+wl_surface_set_opaque_region (struct wl_client *client,
+                              struct wl_resource *surface_resource,
+                              struct wl_resource *region_resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
+
+  g_clear_pointer (&surface->pending.opaque_region, cairo_region_destroy);
+  if (region_resource)
+    {
+      MetaWaylandRegion *region = wl_resource_get_user_data (region_resource);
+      surface->pending.opaque_region = cairo_region_copy (region->region);
+    }
+}
+
+static void
+wl_surface_set_input_region (struct wl_client *client,
+                             struct wl_resource *surface_resource,
+                             struct wl_resource *region_resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
+
+  g_clear_pointer (&surface->pending.input_region, cairo_region_destroy);
+  if (region_resource)
+    {
+      MetaWaylandRegion *region = wl_resource_get_user_data (region_resource);
+      surface->pending.input_region = cairo_region_copy (region->region);
+    }
+}
+
+static void
 wl_surface_commit (struct wl_client *client,
                    struct wl_resource *resource)
 {
@@ -516,7 +522,7 @@ wl_surface_commit (struct wl_client *client,
   if (!surface)
     return;
 
-  commit_double_buffered_state (surface, &surface->pending);
+  meta_wayland_surface_commit (surface);
 }
 
 static void
