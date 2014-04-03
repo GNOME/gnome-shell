@@ -48,8 +48,6 @@ const _SCROLL_ANIMATION_TIME = 0.5;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 48;
 
-let _loginDialog = null;
-
 const UserListItem = new Lang.Class({
     Name: 'UserListItem',
 
