@@ -948,78 +948,74 @@ const ChatNotification = new Lang.Class({
 
         let desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
         let clockFormat = desktopSettings.get_string(CLOCK_FORMAT_KEY);
+        let hasAmPm = date.toLocaleFormat('%p') != '';
 
-        switch (clockFormat) {
-            case '24h':
-                // Show only the time if date is on today
-                if(daysAgo < 1){
-                    /* Translators: Time in 24h format */
-                    format = _("%H\u2236%M");
-                }
-                // Show the word "Yesterday" and time if date is on yesterday
-                else if(daysAgo <2){
-                    /* Translators: this is the word "Yesterday" followed by a
-                     time string in 24h format. i.e. "Yesterday, 14:30" */
-                    // xgettext:no-c-format
-                    format = _("Yesterday, %H\u2236%M");
-                }
-                // Show a week day and time if date is in the last week
-                else if (daysAgo < 7) {
-                    /* Translators: this is the week day name followed by a time
-                     string in 24h format. i.e. "Monday, 14:30" */
-                    // xgettext:no-c-format
-                    format = _("%A, %H\u2236%M");
+        if (clockFormat == '24h' || !hasAmPm) {
+            // Show only the time if date is on today
+            if(daysAgo < 1){
+                /* Translators: Time in 24h format */
+                format = _("%H\u2236%M");
+            }
+            // Show the word "Yesterday" and time if date is on yesterday
+            else if(daysAgo <2){
+                /* Translators: this is the word "Yesterday" followed by a
+                 time string in 24h format. i.e. "Yesterday, 14:30" */
+                // xgettext:no-c-format
+                format = _("Yesterday, %H\u2236%M");
+            }
+            // Show a week day and time if date is in the last week
+            else if (daysAgo < 7) {
+                /* Translators: this is the week day name followed by a time
+                 string in 24h format. i.e. "Monday, 14:30" */
+                // xgettext:no-c-format
+                format = _("%A, %H\u2236%M");
 
-                } else if (date.getYear() == now.getYear()) {
-                    /* Translators: this is the month name and day number
-                     followed by a time string in 24h format.
-                     i.e. "May 25, 14:30" */
-                    // xgettext:no-c-format
-                    format = _("%B %d, %H\u2236%M");
-                } else {
-                    /* Translators: this is the month name, day number, year
-                     number followed by a time string in 24h format.
-                     i.e. "May 25 2012, 14:30" */
-                    // xgettext:no-c-format
-                    format = _("%B %d %Y, %H\u2236%M");
-                }
-                break;
-        default:
-            /* explicit fall-through */
-            case '12h':
-                // Show only the time if date is on today
-                if(daysAgo < 1){
-                    /* Translators: Time in 24h format */
-                    format = _("%l\u2236%M %p");
-                }
-                // Show the word "Yesterday" and time if date is on yesterday
-                else if(daysAgo <2){
-                    /* Translators: this is the word "Yesterday" followed by a
-                     time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-                    // xgettext:no-c-format
-                    format = _("Yesterday, %l\u2236%M %p");
-                }
-                // Show a week day and time if date is in the last week
-                else if (daysAgo < 7) {
-                    /* Translators: this is the week day name followed by a time
-                     string in 12h format. i.e. "Monday, 2:30 pm" */
-                    // xgettext:no-c-format
-                    format = _("%A, %l\u2236%M %p");
+            } else if (date.getYear() == now.getYear()) {
+                /* Translators: this is the month name and day number
+                 followed by a time string in 24h format.
+                 i.e. "May 25, 14:30" */
+                // xgettext:no-c-format
+                format = _("%B %d, %H\u2236%M");
+            } else {
+                /* Translators: this is the month name, day number, year
+                 number followed by a time string in 24h format.
+                 i.e. "May 25 2012, 14:30" */
+                // xgettext:no-c-format
+                format = _("%B %d %Y, %H\u2236%M");
+            }
+        } else {
+            // Show only the time if date is on today
+            if(daysAgo < 1){
+                /* Translators: Time in 24h format */
+                format = _("%l\u2236%M %p");
+            }
+            // Show the word "Yesterday" and time if date is on yesterday
+            else if(daysAgo <2){
+                /* Translators: this is the word "Yesterday" followed by a
+                 time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+                // xgettext:no-c-format
+                format = _("Yesterday, %l\u2236%M %p");
+            }
+            // Show a week day and time if date is in the last week
+            else if (daysAgo < 7) {
+                /* Translators: this is the week day name followed by a time
+                 string in 12h format. i.e. "Monday, 2:30 pm" */
+                // xgettext:no-c-format
+                format = _("%A, %l\u2236%M %p");
 
-                } else if (date.getYear() == now.getYear()) {
-                    /* Translators: this is the month name and day number
-                     followed by a time string in 12h format.
-                     i.e. "May 25, 2:30 pm" */
-                    // xgettext:no-c-format
-                    format = _("%B %d, %l\u2236%M %p");
-                } else {
-                    /* Translators: this is the month name, day number, year
-                     number followed by a time string in 12h format.
-                     i.e. "May 25 2012, 2:30 pm"*/
-                    // xgettext:no-c-format
-                    format = _("%B %d %Y, %l\u2236%M %p");
-                }
-                break;
+            } else if (date.getYear() == now.getYear()) {
+                /* Translators: this is the month name and day number
+                 followed by a time string in 12h format.
+                 i.e. "May 25, 2:30 pm" */
+                // xgettext:no-c-format
+                format = _("%B %d, %l\u2236%M %p");
+            } else {
+                /* Translators: this is the month name, day number, year
+                 number followed by a time string in 12h format.
+                 i.e. "May 25 2012, 2:30 pm"*/
+                // xgettext:no-c-format
+                format = _("%B %d %Y, %l\u2236%M %p");
+            }
         }
         return date.toLocaleFormat(format);
     },
