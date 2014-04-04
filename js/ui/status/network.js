@@ -423,18 +423,18 @@ const NMConnectionDevice = new Lang.Class({
         case NetworkManager.DeviceState.UNMANAGED:
             /* Translators: this is for network devices that are physically present but are not
                under NetworkManager's control (and thus cannot be used in the menu) */
-            return _("unmanaged");
+            return _("Unmanaged");
         case NetworkManager.DeviceState.DEACTIVATING:
-            return _("disconnecting...");
+            return _("Disconnecting");
         case NetworkManager.DeviceState.PREPARE:
         case NetworkManager.DeviceState.CONFIG:
         case NetworkManager.DeviceState.IP_CONFIG:
         case NetworkManager.DeviceState.IP_CHECK:
         case NetworkManager.DeviceState.SECONDARIES:
-            return _("connecting...");
+            return _("Connecting");
         case NetworkManager.DeviceState.NEED_AUTH:
             /* Translators: this is for network connections that require some kind of key or password */
-            return _("authentication required");
+            return _("Authentication required");
         case NetworkManager.DeviceState.UNAVAILABLE:
             // This state is actually a compound of various states (generically unavailable,
             // firmware missing), that are exposed by different properties (whose state may
@@ -442,13 +442,13 @@ const NMConnectionDevice = new Lang.Class({
             if (this._device.firmware_missing) {
                 /* Translators: this is for devices that require some kind of firmware or kernel
                    module, which is missing */
-                return _("firmware missing");
+                return _("Firmware missing");
             }
             /* Translators: this is for a network device that cannot be activated (for example it
                is disabled by rfkill, or it has no coverage */
-            return _("unavailable");
+            return _("Unavailable");
         case NetworkManager.DeviceState.FAILED:
-            return _("connection failed");
+            return _("Connection failed");
         default:
             log('Device state invalid, is %d'.format(this._device.state));
             return 'invalid';
