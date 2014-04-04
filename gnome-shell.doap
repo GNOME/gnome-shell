@@ -17,17 +17,15 @@ packages. If you are interested in building GNOME Shell from source,
 we would recommend building from version control using the build
 script described at:
 
- http://live.gnome.org/GnomeShell
+ https://wiki.gnome.org/Projects/GnomeShell
 
 Not only will that give you the very latest version of this rapidly
 changing project, it will be much easier than get GNOME Shell and
 its dependencies to build from tarballs.</description>
-  <!--
-  <homepage rdf:resource="http://live.gnome.org/GnomeShell" />
-  -->
+  <homepage rdf:resource="https://wiki.gnome.org/Projects/GnomeShell" />
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/gnome-shell-list" />
   <download-page rdf:resource="http://download.gnome.org/sources/gnome-shell/" />
-  <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=gnome-shell" />
+  <bug-database rdf:resource="https://bugzilla.gnome.org/browse.cgi?product=gnome-shell" />
 
   <category rdf:resource="http://api.gnome.org/doap-extensions#desktop" />
 
