@@ -253,8 +253,6 @@ meta_ui_new (Display *xdisplay,
   gdisplay = gdk_x11_lookup_xdisplay (xdisplay);
   g_assert (gdisplay == gdk_display_get_default ());
 
-  gdk_window_add_filter (NULL, ui_filter_func, NULL);
-
   ui->frames = meta_frames_new (XScreenNumberOfScreen (screen));
   /* GTK+ needs the frame-sync protocol to work in order to properly
    * handle style changes. This means that the dummy widget we create
