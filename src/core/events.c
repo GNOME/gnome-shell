@@ -1754,7 +1754,11 @@ meta_display_handle_xevent (MetaDisplay *display,
 #endif
 
 #ifdef HAVE_STARTUP_NOTIFICATION
-  sn_display_process_event (display->sn_display, event);
+  if (sn_display_process_event (display->sn_display, event))
+    {
+      bypass_gtk = bypass_compositor = TRUE;
+      goto out;
+    }
 #endif
 
   /* Intercept XRandR events early and don't attempt any
