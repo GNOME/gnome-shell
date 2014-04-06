@@ -860,6 +860,17 @@ handle_input_xevent (MetaDisplay *display,
   if (input_event == NULL)
     return FALSE;
 
+  switch (input_event->evtype)
+    {
+    case XI_Enter:
+    case XI_Leave:
+    case XI_FocusIn:
+    case XI_FocusOut:
+      break;
+    default:
+      return FALSE;
+    }
+
   modified = xievent_get_modified_window (display, input_event);
   window = modified != None ? meta_display_lookup_x_window (display, modified) : NULL;
 
@@ -934,12 +945,11 @@ handle_input_xevent (MetaDisplay *display,
             }
 
         }
-
-      /* Don't send FocusIn / FocusOut to Clutter */
-      return TRUE;
+      break;
     }
 
-  return FALSE;
+  /* Don't pass these events through to Clutter / GTK+ */
+  return TRUE;
 }
 
 static void
