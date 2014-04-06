@@ -650,38 +650,6 @@ meta_ui_window_should_not_cause_focus (Display *xdisplay,
     return FALSE;
 }
 
-char*
-meta_text_property_to_utf8 (Display             *xdisplay,
-                            const XTextProperty *prop)
-{
-  GdkDisplay *display;
-  char **list;
-  int count;
-  char *retval;
-  
-  list = NULL;
-
-  display = gdk_x11_lookup_xdisplay (xdisplay);
-  count = gdk_text_property_to_utf8_list_for_display (display,
-                                                      gdk_x11_xatom_to_atom_for_display (display, prop->encoding),
-                                                      prop->format,
-                                                      prop->value,
-                                                      prop->nitems,
-                                                      &list);
-
-  if (count == 0)
-    retval = NULL;
-  else
-    {
-  retval = list[0];
-  list[0] = g_strdup (""); /* something to free */
-    }
-  
-  g_strfreev (list);
-
-  return retval;
-}
-
 void
 meta_ui_theme_get_frame_borders (MetaUI *ui,
                                  MetaFrameType      type,

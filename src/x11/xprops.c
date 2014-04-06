@@ -736,6 +736,29 @@ meta_prop_get_cardinal_with_atom_type (MetaDisplay   *display,
   return cardinal_with_atom_type_from_results (&results, prop_type, cardinal_p);
 }
 
+static char *
+text_property_to_utf8 (Display *xdisplay,
+                       const XTextProperty *prop)
+{
+  char *ret = NULL;
+  char **local_list = NULL;
+  int count = 0;
+  int res;
+
+  res = XmbTextPropertyToTextList (xdisplay, prop, &local_list, &count);
+  if (res == XNoMemory || res == XLocaleNotSupported || res == XConverterNotFound)
+    goto out;
+
+  if (count == 0)
+    goto out;
+
+  ret = g_strdup (local_list[0]);
+
+ out:
+  meta_XFree (local_list);
+  return ret;
+}
+
 static gboolean
 text_property_from_results (GetPropertyResults *results,
                             char              **utf8_str_p)
@@ -743,15 +766,14 @@ text_property_from_results (GetPropertyResults *results,
   XTextProperty tp;
 
   *utf8_str_p = NULL;
-  
+
   tp.value = results->prop;
   results->prop = NULL;
   tp.encoding = results->type;
   tp.format = results->format;
   tp.nitems = results->n_items;  
   
-  *utf8_str_p = meta_text_property_to_utf8 (results->display->xdisplay,
-                                            &tp);
+  *utf8_str_p = text_property_to_utf8 (results->display->xdisplay, &tp);
   
   if (tp.value != NULL)
     XFree (tp.value);
