@@ -1065,7 +1065,7 @@ meta_change_keygrab (MetaDisplay *display,
       mods = (XIGrabModifiers) { modmask | ignored_mask, 0 };
 
       if (meta_is_debugging ())
-        meta_error_trap_push_with_return (display);
+        meta_error_trap_push (display);
       if (grab)
         XIGrabKeycode (display->xdisplay,
                        META_VIRTUAL_CORE_KEYBOARD_ID,
@@ -1410,7 +1410,7 @@ grab_keyboard (MetaDisplay *display,
   /* Grab the keyboard, so we get key releases and all key
    * presses
    */
-  meta_error_trap_push_with_return (display);
+  meta_error_trap_push (display);
 
   /* Strictly, we only need to set grab_mode on the keyboard device
    * while the pointer should always be XIGrabModeAsync. Unfortunately

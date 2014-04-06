@@ -191,7 +191,7 @@ get_property (MetaDisplay        *display,
   results->bytes_after = 0;
   results->format = 0;
   
-  meta_error_trap_push_with_return (display);
+  meta_error_trap_push (display);
   if (XGetWindowProperty (display->xdisplay, xwindow, xatom,
                           0, G_MAXLONG,
                           False, req_type, &results->type, &results->format,

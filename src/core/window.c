@@ -3953,7 +3953,7 @@ meta_window_create_sync_request_alarm (MetaWindow *window)
       window->sync_request_alarm != None)
     return;
 
-  meta_error_trap_push_with_return (window->display);
+  meta_error_trap_push (window->display);
 
   /* In the new (extended style), the counter value is initialized by
    * the client before mapping the window. In the old style, we're
@@ -8038,7 +8038,7 @@ warp_grab_pointer (MetaWindow          *window,
   *x = CLAMP (*x, 0, window->screen->rect.width-1);
   *y = CLAMP (*y, 0, window->screen->rect.height-1);
 
-  meta_error_trap_push_with_return (display);
+  meta_error_trap_push (display);
 
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Warping pointer to %d,%d with window at %d,%d\n",

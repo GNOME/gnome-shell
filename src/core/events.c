@@ -1051,7 +1051,7 @@ convert_property (MetaDisplay *display,
   conversion_targets[2] = display->atom_TIMESTAMP;
   conversion_targets[3] = display->atom_VERSION;
 
-  meta_error_trap_push_with_return (display);
+  meta_error_trap_push (display);
   if (target == display->atom_TARGETS)
     XChangeProperty (display->xdisplay, w, property,
 		     XA_ATOM, 32, PropModeReplace,
@@ -1126,7 +1126,7 @@ process_selection_request (MetaDisplay   *display,
           unsigned long num, rest;
           unsigned char *data;
 
-          meta_error_trap_push_with_return (display);
+          meta_error_trap_push (display);
           if (XGetWindowProperty (display->xdisplay,
                                   event->xselectionrequest.requestor,
                                   event->xselectionrequest.property, 0, 256, False,

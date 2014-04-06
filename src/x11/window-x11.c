@@ -1665,12 +1665,12 @@ meta_window_x11_client_message (MetaWindow *window,
           char *str1;
           char *str2;
 
-          meta_error_trap_push_with_return (display);
+          meta_error_trap_push (display);
           str1 = XGetAtomName (display->xdisplay, first);
           if (meta_error_trap_pop_with_return (display) != Success)
             str1 = NULL;
 
-          meta_error_trap_push_with_return (display);
+          meta_error_trap_push (display);
           str2 = XGetAtomName (display->xdisplay, second);
           if (meta_error_trap_pop_with_return (display) != Success)
             str2 = NULL;
@@ -2298,7 +2298,7 @@ meta_window_x11_new (MetaDisplay       *display,
                     wm_state_to_string (existing_wm_state));
     }
 
-  meta_error_trap_push_with_return (display);
+  meta_error_trap_push (display);
 
   /*
    * XAddToSaveSet can only be called on windows created by a different
@@ -2309,7 +2309,7 @@ meta_window_x11_new (MetaDisplay       *display,
    */
   XAddToSaveSet (display->xdisplay, xwindow);
 
-  meta_error_trap_push_with_return (display);
+  meta_error_trap_push (display);
 
   event_mask = PropertyChangeMask;
   if (attrs.override_redirect)

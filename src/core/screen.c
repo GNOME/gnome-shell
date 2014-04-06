@@ -560,7 +560,7 @@ meta_screen_new (MetaDisplay *display,
         }
 
       /* We want to find out when the current selection owner dies */
-      meta_error_trap_push_with_return (display);
+      meta_error_trap_push (display);
       attrs.event_mask = StructureNotifyMask;
       XChangeWindowAttributes (xdisplay,
                                current_wm_sn_owner, CWEventMask, &attrs);
@@ -619,7 +619,7 @@ meta_screen_new (MetaDisplay *display,
     }
   
   /* select our root window events */
-  meta_error_trap_push_with_return (display);
+  meta_error_trap_push (display);
 
   /* We need to or with the existing event mask since
    * gtk+ may be interested in other events.
@@ -838,7 +838,7 @@ meta_screen_free (MetaScreen *screen,
   meta_stack_free (screen->stack);
   meta_stack_tracker_free (screen->stack_tracker);
 
-  meta_error_trap_push_with_return (screen->display);
+  meta_error_trap_push (screen->display);
   XSelectInput (screen->display->xdisplay, screen->xroot, 0);
   if (meta_error_trap_pop_with_return (screen->display) != Success)
     meta_warning ("Could not release screen %d on display \"%s\"\n",

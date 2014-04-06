@@ -491,7 +491,7 @@ redirect_windows (MetaScreen *screen)
    */
   while (TRUE)
     {
-      meta_error_trap_push_with_return (display);
+      meta_error_trap_push (display);
       XCompositeRedirectSubwindows (xdisplay, xroot, CompositeRedirectManual);
       XSync (xdisplay, FALSE);
 

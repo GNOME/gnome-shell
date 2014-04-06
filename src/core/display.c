@@ -2206,7 +2206,7 @@ meta_change_button_grab (MetaDisplay *display,
       mods = (XIGrabModifiers) { modmask | ignored_mask, 0 };
 
       if (meta_is_debugging ())
-        meta_error_trap_push_with_return (display);
+        meta_error_trap_push (display);
 
       /* GrabModeSync means freeze until XAllowEvents */
       
