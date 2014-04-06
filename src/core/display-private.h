@@ -147,13 +147,10 @@ struct _MetaDisplay
   guint focused_by_us : 1;
   
   /*< private-ish >*/
-  guint error_trap_synced_at_last_pop : 1;
   MetaScreen *screen;
   GHashTable *xids;
   GHashTable *wayland_windows;
-  int error_traps;
-  int (* error_trap_handler) (Display     *display,
-                              XErrorEvent *error);  
+
   int server_grab_count;
 
   /* serials of leave/unmap events that may

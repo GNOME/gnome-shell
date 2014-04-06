@@ -472,9 +472,6 @@ meta_display_open (void)
    */
   the_display->name = g_strdup (XDisplayName (NULL));
   the_display->xdisplay = xdisplay;
-  the_display->error_trap_synced_at_last_pop = TRUE;
-  the_display->error_traps = 0;
-  the_display->error_trap_handler = NULL;
   the_display->server_grab_count = 0;
   the_display->display_opening = TRUE;
 
@@ -1015,9 +1012,6 @@ meta_display_close (MetaDisplay *display,
       /* The display's already been closed. */
       return;
     }
-
-  if (display->error_traps > 0)
-    meta_bug ("Display closed with error traps pending\n");
 
   display->closing += 1;
 
