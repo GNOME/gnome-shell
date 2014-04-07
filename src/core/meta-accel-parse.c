@@ -30,6 +30,10 @@
 #include <string.h>
 #include <stdlib.h>
 
+/* This is copied from GTK+ and modified to work with mutter's
+ * internal structures. Originating code comes from gtk/gtkaccelgroup.c
+ */
+
 static inline gboolean
 is_alt (const gchar *string)
 {
