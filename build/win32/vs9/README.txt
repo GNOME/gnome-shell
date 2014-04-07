@@ -5,7 +5,7 @@ its dependencies can be found on the following GNOME Live! page:
 
 https://live.gnome.org/GTK%2B/Win32/MSVCCompilationOfGTKStack
 
-Please do not attempt to compile COGL in a path that contains spaces
+Please do not attempt to compile Cogl in a path that contains spaces
 to avoid potential problems during compilation, linking or usage.
 
 This VS9 solution and the projects it includes are intented to be used
@@ -14,31 +14,34 @@ first need to use some Unix-like environment or manual work to expand
 the files needed, like config.h.win32.in into config.h.win32 and the
 .vcprojin files here into corresponding actual .vcproj files.
 
-Decide whether you want to build the SDL winsys with your COGL build, and
-use one of the .sln for building COGL (note that both will build the Windows
-OpenGL (WGL) winsys):
--cogl.sln for building COGL without the SDL winsys
--cogl_sdl.sln for building COGL with the SDL winsys
-
 You will need the parts from GNOME: GDK-Pixbuf, Pango* and GLib.
 External dependencies are at least zlib, libpng,
 gettext-runtime* and Cairo*, and glext.h from
 http://www.opengl.org/registry/api/glext.h (which need to be in the GL folder
-in your include directories or in <root>\vs9\<PlatformName>\include\GL).
+in your include directories or in <root>\vs9\<PlatformName>\include\GL).  Please
+note that although the Cogl source package does allow one to build Cogl without
+a previously built and installed GLib, the Visual Studio projects only support
+builds that does depend on GLib.
 
-As Cogl 1.99.x and later will now use C99 types in lieu of GLib types, a
-compatible implementation of stdint.h for Visual C++ is required, such
-as the one from http://code.google.com/p/msinttypes/, so one would need
-to download and extract the .zip file from that website and extract stdint.h
-into <root>\vs9\<PlatformName>\include or somewhere where it can be
+As Cogl use C99 types in lieu of GLib types, a compatible implementation of
+stdint.h for Visual C++ is required, such as the one from
+http://code.google.com/p/msinttypes/, so one would need to download and extract
+the .zip file from that website and extract stdint.h into
+<root>\vs9\<PlatformName>\include or somewhere where it can be found
 automatically found by the compiler.  Note that Visual C++ 2010 and later
 ships with stdint.h, so it is only required for Visual C++ 2008 builds.
 
-If building the SDL winsys is desired, you will also need the SDL libraries
-from www.libsdl.org-building the SDL source package with Visual C++ 2008
-is recommended (working Visual C++ 2005 projects are included with it, upgrade
-the projects one prompted), but one may want to use the VC8 binary packages
-from that website.
+If building the SDL2 winsys is desired (the *_SDL configs), you will also need the
+SDL2 libraries from www.libsdl.org-building the SDL source package with Visual C++ 2008
+is recommended via CMake, but one may want to use the Visual C++ binary packages
+from that website.  Since Cogl-1.18.x, the Visual Studio Projects have been updated
+to support the build of the SDL2 winsys in place of the original SDL-1.3 winsys
+as SDL-2.x has been released for some time.  Please note, as builds with the SDL2
+winsys includes the SDL2 headers, main() will be defined to SDL2's special main()
+implementation on Windows, which will require linking to SDL2.lib and SDL2main.lib
+for all apps that link to Cogl, which means that the SDL2 DLL needs to be shipped with
+your application as well, even though SDL2 functionality is not used directly in the
+application.
 
 Please see the README file in the root directory of this Cogl source package
 for the versions of the dependencies required.  See also
@@ -60,9 +63,10 @@ in the next unstable release):
 -libpng
 -(optional for GLib) PCRE (8.12 or later, building PCRE using CMake is
  recommended-please see build/win32/vs9/README.txt in the GLib source package)
--(for gdk-pixbuf, if GDI+ is not to be used) IJG JPEG
+-(for gdk-pixbuf, if GDI+ is not to be used) IJG JPEG or libjpeg-turbo
 -(for gdk-pixbuf, if GDI+ is not to be used) jasper [JPEG-2000 library]
--(for gdk-pixbuf, if GDI+ is not to be used, requires zlib and IJG JPEG) libtiff
+-(for gdk-pixbuf, if GDI+ is not to be used, requires zlib and IJG JPEG/libjpeg-turbo)
+ libtiff
 -GLib
 -Cairo
 -Pango
@@ -75,15 +79,13 @@ built DLLs go into <root>\vs9\<PlatformName>\bin, built LIBs into
 <root>\vs9\<PlatformName>\include\Cogl-2.0.
 
 *There is no known official VS9 build support for fontconfig
- (required for Pango and Pango at the moment-I will see whether this
- requirement can be made optional for VS builds)
  (along with freetype and expat) and gettext-runtime, so
  please use the binaries from: 
 
   ftp://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/ (32 bit)
   ftp://ftp.gnome.org/pub/GNOME/binaries/win64/dependencies/ (64 bit)
 
-Note: If you see C4819 warnings and you are compiling Cogl on a DBCS
+Note: If you see C4819 errors and you are compiling Cogl on a DBCS
 (Chinese/Korean/Japanese) version of Windows, you may need to switch
 to an English locale in Control Panel->Region and Languages->System->
 Change System Locale, reboot and rebuild to ensure Cogl and its
