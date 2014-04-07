@@ -342,6 +342,25 @@ get_keycodes_for_keysym (MetaDisplay  *display,
   return n_keycodes;
 }
 
+static guint
+get_first_keycode_for_keysym (MetaDisplay *display,
+                              guint        keysym)
+{
+  int *keycodes;
+  int n_keycodes;
+  int keycode;
+
+  n_keycodes = get_keycodes_for_keysym (display, keysym, &keycodes);
+
+  if (n_keycodes > 0)
+    keycode = keycodes[0];
+  else
+    keycode = 0;
+
+  g_free (keycodes);
+  return keycode;
+}
+
 static void
 reload_iso_next_group_combos (MetaDisplay *display)
 {
@@ -472,16 +491,6 @@ reload_iso_next_group_combos (MetaDisplay *display)
   display->iso_next_group_combos = combos;
 }
 
-static guint
-keysym_to_keycode (MetaDisplay *display,
-                   guint        keysym)
-{
-  if (keysym == META_KEY_ABOVE_TAB)
-    return meta_display_get_above_tab_keycode (display);
-  else
-    return XKeysymToKeycode (display->xdisplay, keysym);
-}
-
 static void
 binding_reload_keycode_foreach (gpointer key,
                                 gpointer value,
@@ -491,7 +500,7 @@ binding_reload_keycode_foreach (gpointer key,
   MetaKeyBinding *binding = value;
 
   if (binding->keysym)
-    binding->keycode = keysym_to_keycode (display, binding->keysym);
+    binding->keycode = get_first_keycode_for_keysym (display, binding->keysym);
 }
 
 static void
@@ -503,7 +512,7 @@ reload_keycodes (MetaDisplay *display)
   if (display->overlay_key_combo.keysym != 0)
     {
       display->overlay_key_combo.keycode =
-        keysym_to_keycode (display, display->overlay_key_combo.keysym);
+        get_first_keycode_for_keysym (display, display->overlay_key_combo.keysym);
     }
   else
     {
@@ -1304,7 +1313,7 @@ meta_display_grab_accelerator (MetaDisplay *display,
     }
 
   meta_display_devirtualize_modifiers (display, modifiers, &mask);
-  keycode = keysym_to_keycode (display, keysym);
+  keycode = get_first_keycode_for_keysym (display, keysym);
 
   if (keycode == 0)
     return META_KEYBINDING_ACTION_NONE;
@@ -1356,7 +1365,7 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
     return FALSE;
 
   meta_display_devirtualize_modifiers (display, grab->combo->modifiers, &mask);
-  keycode = keysym_to_keycode (display, grab->combo->keysym);
+  keycode = get_first_keycode_for_keysym (display, grab->combo->keysym);
 
   binding = display_get_keybinding (display, keycode, mask);
   if (binding)
