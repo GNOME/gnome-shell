@@ -43,7 +43,6 @@
 #include "util-private.h"
 #include "meta-accel-parse.h"
 
-#include <X11/keysym.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -250,7 +249,7 @@ reload_modmap (MetaDisplay *display)
                               (1 << ( i / modmap->max_keypermod)));
                 }
 
-              if (syms[j] == XK_Num_Lock)
+              if (syms[j] == XKB_KEY_Num_Lock)
                 {
                   /* Mod1Mask is 1 << 3 for example, i.e. the
                    * fourth modifier, i / keyspermod is the modifier
@@ -259,22 +258,22 @@ reload_modmap (MetaDisplay *display)
 
                   num_lock_mask |= (1 << ( i / modmap->max_keypermod));
                 }
-              else if (syms[j] == XK_Scroll_Lock)
+              else if (syms[j] == XKB_KEY_Scroll_Lock)
                 {
                   scroll_lock_mask |= (1 << ( i / modmap->max_keypermod));
                 }
-              else if (syms[j] == XK_Super_L ||
-                       syms[j] == XK_Super_R)
+              else if (syms[j] == XKB_KEY_Super_L ||
+                       syms[j] == XKB_KEY_Super_R)
                 {
                   display->super_mask |= (1 << ( i / modmap->max_keypermod));
                 }
-              else if (syms[j] == XK_Hyper_L ||
-                       syms[j] == XK_Hyper_R)
+              else if (syms[j] == XKB_KEY_Hyper_L ||
+                       syms[j] == XKB_KEY_Hyper_R)
                 {
                   display->hyper_mask |= (1 << ( i / modmap->max_keypermod));
                 }
-              else if (syms[j] == XK_Meta_L ||
-                       syms[j] == XK_Meta_R)
+              else if (syms[j] == XKB_KEY_Meta_L ||
+                       syms[j] == XKB_KEY_Meta_R)
                 {
                   display->meta_mask |= (1 << ( i / modmap->max_keypermod));
                 }
@@ -382,7 +381,7 @@ reload_iso_next_group_combos (MetaDisplay *display)
   if (iso_next_group_option == NULL)
     return;
 
-  n_keycodes = get_keycodes_for_keysym (display, XK_ISO_Next_Group, &keycodes);
+  n_keycodes = get_keycodes_for_keysym (display, XKB_KEY_ISO_Next_Group, &keycodes);
 
   if (g_str_equal (iso_next_group_option, "toggle") ||
       g_str_equal (iso_next_group_option, "lalt_toggle") ||
@@ -401,7 +400,7 @@ reload_iso_next_group_combos (MetaDisplay *display)
 
       for (i = 0; i < n_keycodes; ++i)
         {
-          combos[i].keysym = XK_ISO_Next_Group;
+          combos[i].keysym = XKB_KEY_ISO_Next_Group;
           combos[i].keycode = keycodes[i];
           combos[i].modifiers = 0;
         }
@@ -414,7 +413,7 @@ reload_iso_next_group_combos (MetaDisplay *display)
 
       for (i = 0; i < n_keycodes; ++i)
         {
-          combos[i].keysym = XK_ISO_Next_Group;
+          combos[i].keysym = XKB_KEY_ISO_Next_Group;
           combos[i].keycode = keycodes[i];
           combos[i].modifiers = ShiftMask;
         }
@@ -427,7 +426,7 @@ reload_iso_next_group_combos (MetaDisplay *display)
 
       for (i = 0; i < n_keycodes; ++i)
         {
-          combos[i].keysym = XK_ISO_Next_Group;
+          combos[i].keysym = XKB_KEY_ISO_Next_Group;
           combos[i].keycode = keycodes[i];
           combos[i].modifiers = Mod1Mask;
         }
@@ -441,11 +440,11 @@ reload_iso_next_group_combos (MetaDisplay *display)
 
       for (i = 0; i < n_keycodes; ++i)
         {
-          combos[i].keysym = XK_ISO_Next_Group;
+          combos[i].keysym = XKB_KEY_ISO_Next_Group;
           combos[i].keycode = keycodes[i];
           combos[i].modifiers = ShiftMask;
 
-          combos[i + n_keycodes].keysym = XK_ISO_Next_Group;
+          combos[i + n_keycodes].keysym = XKB_KEY_ISO_Next_Group;
           combos[i + n_keycodes].keycode = keycodes[i];
           combos[i + n_keycodes].modifiers = ControlMask;
         }
@@ -457,11 +456,11 @@ reload_iso_next_group_combos (MetaDisplay *display)
 
       for (i = 0; i < n_keycodes; ++i)
         {
-          combos[i].keysym = XK_ISO_Next_Group;
+          combos[i].keysym = XKB_KEY_ISO_Next_Group;
           combos[i].keycode = keycodes[i];
           combos[i].modifiers = Mod1Mask;
 
-          combos[i + n_keycodes].keysym = XK_ISO_Next_Group;
+          combos[i + n_keycodes].keysym = XKB_KEY_ISO_Next_Group;
           combos[i + n_keycodes].keycode = keycodes[i];
           combos[i + n_keycodes].modifiers = ControlMask;
         }
@@ -474,11 +473,11 @@ reload_iso_next_group_combos (MetaDisplay *display)
 
       for (i = 0; i < n_keycodes; ++i)
         {
-          combos[i].keysym = XK_ISO_Next_Group;
+          combos[i].keysym = XKB_KEY_ISO_Next_Group;
           combos[i].keycode = keycodes[i];
           combos[i].modifiers = Mod1Mask;
 
-          combos[i + n_keycodes].keysym = XK_ISO_Next_Group;
+          combos[i + n_keycodes].keysym = XKB_KEY_ISO_Next_Group;
           combos[i + n_keycodes].keycode = keycodes[i];
           combos[i + n_keycodes].modifiers = ShiftMask;
         }
