@@ -110,20 +110,6 @@ is_control (const gchar *string)
 }
 
 static inline gboolean
-is_release (const gchar *string)
-{
-  return ((string[0] == '<') &&
-          (string[1] == 'r' || string[1] == 'R') &&
-          (string[2] == 'e' || string[2] == 'E') &&
-          (string[3] == 'l' || string[3] == 'L') &&
-          (string[4] == 'e' || string[4] == 'E') &&
-          (string[5] == 'a' || string[5] == 'A') &&
-          (string[6] == 's' || string[6] == 'S') &&
-          (string[7] == 'e' || string[7] == 'E') &&
-          (string[8] == '>'));
-}
-
-static inline gboolean
 is_meta (const gchar *string)
 {
   return ((string[0] == '<') &&
@@ -208,13 +194,7 @@ accelerator_parse (const gchar     *accelerator,
     {
       if (*accelerator == '<')
         {
-          if (len >= 9 && is_release (accelerator))
-            {
-              accelerator += 9;
-              len -= 9;
-              mods |= GDK_RELEASE_MASK;
-            }
-          else if (len >= 9 && is_primary (accelerator))
+          if (len >= 9 && is_primary (accelerator))
             {
               /* Primary is treated the same as Control */
               accelerator += 9;
@@ -363,9 +343,6 @@ meta_parse_accelerator (const char          *accel,
   if (gdk_sym == None && gdk_code == 0)
     return FALSE;
   
-  if (gdk_mask & GDK_RELEASE_MASK) /* we don't allow this */
-    return FALSE;
-  
   *keysym = gdk_sym;
   *keycode = gdk_code;
 
@@ -411,9 +388,6 @@ meta_parse_modifier (const char          *accel,
     return FALSE;
 
   if (gdk_sym != None || gdk_code != 0)
-    return FALSE;
-  
-  if (gdk_mask & GDK_RELEASE_MASK) /* we don't allow this */
     return FALSE;
 
   if (gdk_mask & GDK_SHIFT_MASK)
