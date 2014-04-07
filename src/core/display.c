@@ -3075,7 +3075,6 @@ meta_display_devirtualize_modifiers (MetaDisplay        *display,
 
 static void
 update_window_grab_modifiers (MetaDisplay *display)
-     
 {
   MetaVirtualModifier virtual_mods;
   unsigned int mods;
