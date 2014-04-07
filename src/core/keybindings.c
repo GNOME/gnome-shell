@@ -311,6 +311,14 @@ get_keycodes_for_keysym (MetaDisplay  *display,
 
   retval = g_array_new (FALSE, FALSE, sizeof (int));
 
+  /* Special-case: Fake mutter keysym */
+  if (keysym == META_KEY_ABOVE_TAB)
+    {
+      keycode = meta_display_get_above_tab_keycode (display);
+      g_array_append_val (retval, keycode);
+      goto out;
+    }
+
   keycode = display->min_keycode;
   while (keycode <= display->max_keycode)
     {
@@ -328,9 +336,9 @@ get_keycodes_for_keysym (MetaDisplay  *display,
       ++keycode;
     }
 
+ out:
   n_keycodes = retval->len;
   *keycodes = (int*) g_array_free (retval, n_keycodes == 0 ? TRUE : FALSE);
-
   return n_keycodes;
 }
 
