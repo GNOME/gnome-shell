@@ -743,7 +743,8 @@ display_get_keybinding (MetaDisplay  *display,
 }
 
 static guint
-next_dynamic_keybinding_action () {
+next_dynamic_keybinding_action (void)
+{
   static guint num_dynamic_bindings = 0;
   return META_KEYBINDING_ACTION_LAST + (++num_dynamic_bindings);
 }
