@@ -26,7 +26,7 @@
 
 #include "meta-accel-parse.h"
 
-#include <gtk/gtk.h>
+#include <xkbcommon/xkbcommon.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -297,8 +297,8 @@ accelerator_parse (const gchar         *accelerator,
             }
           else
 	    {
-	      keyval = gdk_keyval_from_name (accelerator);
-	      if (keyval == GDK_KEY_VoidSymbol)
+              keyval = xkb_keysym_from_name (accelerator, XKB_KEYSYM_CASE_INSENSITIVE);
+	      if (keyval == XKB_KEY_NoSymbol)
 	        {
 	          error = TRUE;
 	          goto out;
@@ -315,7 +315,7 @@ out:
     keyval = keycode = mods = 0;
 
   if (accelerator_key)
-    *accelerator_key = gdk_keyval_to_lower (keyval);
+    *accelerator_key = keyval;
   if (accelerator_keycode)
     *accelerator_keycode = keycode;
   if (accelerator_mods)
