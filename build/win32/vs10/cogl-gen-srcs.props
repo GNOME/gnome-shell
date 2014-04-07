@@ -48,15 +48,15 @@ cd $(SolutionDir)
     </GenCoglEnumsC>
     <GenerateCoglDef>
 echo EXPORTS &gt; $(DefDir)\cogl.def
-cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def
+cl -EP -DCOGL_HAS_GTYPE_SUPPORT -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def
     </GenerateCoglDef>
     <GenerateCoglSDLDef>
 echo EXPORTS &gt; $(DefDir)\cogl.def
-cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def
+cl -EP -DCOGL_HAS_GTYPE_SUPPORT -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def
     </GenerateCoglSDLDef>
     <GenerateCoglPathDef>
 echo EXPORTS &gt; $(DefDir)\cogl-path.def
-cl -EP ..\..\..\cogl-path\cogl-path.symbols &gt;&gt; $(DefDir)\cogl-path.def
+cl -EP -DCOGL_HAS_GTYPE_SUPPORT ..\..\..\cogl-path\cogl-path.symbols &gt;&gt; $(DefDir)\cogl-path.def
      </GenerateCoglPathDef>
     <GenerateCoglPangoDef>
 echo EXPORTS &gt; $(DefDir)\cogl-pango.def

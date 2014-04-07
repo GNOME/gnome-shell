@@ -75,21 +75,21 @@ cd $(SolutionDir)&#x0D;&#x0A;
 		Name="GenerateCoglDef"
 		Value="
 echo EXPORTS &gt; $(DefDir)\cogl.def&#x0D;&#x0A;
-cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def&#x0D;&#x0A;
+cl -EP -DCOGL_HAS_GTYPE_SUPPORT -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def&#x0D;&#x0A;
 			  "
 	/>
 	<UserMacro
 		Name="GenerateCoglSDLDef"
 		Value="
 echo EXPORTS &gt; $(DefDir)\cogl.def&#x0D;&#x0A;
-cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def&#x0D;&#x0A;
+cl -EP -DCOGL_HAS_GTYPE_SUPPORT -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def&#x0D;&#x0A;
 			  "
 	/>
 	<UserMacro
 		Name="GenerateCoglPathDef"
 		Value="
 echo EXPORTS &gt; $(DefDir)\cogl-path.def&#x0D;&#x0A;
-cl -EP ..\..\..\cogl-path\cogl-path.symbols &gt;&gt; $(DefDir)\cogl-path.def&#x0D;&#x0A;
+cl -EP -DCOGL_HAS_GTYPE_SUPPORT ..\..\..\cogl-path\cogl-path.symbols &gt;&gt; $(DefDir)\cogl-path.def&#x0D;&#x0A;
 			  "
 	/>
 	<UserMacro
