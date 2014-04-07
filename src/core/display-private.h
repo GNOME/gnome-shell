@@ -230,7 +230,6 @@ struct _MetaDisplay
   int             max_keycode;
   KeySym *keymap;
   int keysyms_per_keycode;
-  unsigned int above_tab_keycode;
   unsigned int ignored_modifier_mask;
   unsigned int hyper_mask;
   unsigned int super_mask;
@@ -462,9 +461,6 @@ void meta_display_accelerator_activate (MetaDisplay     *display,
                                         guint            action,
                                         ClutterKeyEvent *event);
 gboolean meta_display_modifiers_accelerator_activate (MetaDisplay *display);
-
-/* In above-tab-keycode.c */
-guint meta_display_get_above_tab_keycode (MetaDisplay *display);
 
 #ifdef HAVE_XI23
 gboolean meta_display_process_barrier_event (MetaDisplay *display,

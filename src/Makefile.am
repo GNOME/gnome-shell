@@ -80,7 +80,6 @@ libmutter_wayland_la_SOURCES =			\
 	backends/x11/meta-xrandr-shared.h		\
 	core/meta-accel-parse.c			\
 	core/meta-accel-parse.h			\
-	core/above-tab-keycode.c		\
 	core/barrier.c				\
 	meta/barrier.h				\
 	core/bell.c				\

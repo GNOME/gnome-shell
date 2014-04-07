@@ -47,6 +47,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <linux/input.h>
+
 #include <xkbcommon/xkbcommon.h>
 
 #ifdef HAVE_XKB
@@ -184,10 +186,6 @@ reload_keymap (MetaDisplay *display)
   if (display->keymap)
     meta_XFree (display->keymap);
 
-  /* This is expensive to compute, so we'll lazily load if and when we first
-   * need it */
-  display->above_tab_keycode = 0;
-
   display->keymap = XGetKeyboardMapping (display->xdisplay,
                                          display->min_keycode,
                                          display->max_keycode -
@@ -317,7 +315,7 @@ get_keycodes_for_keysym (MetaDisplay  *display,
   /* Special-case: Fake mutter keysym */
   if (keysym == META_KEY_ABOVE_TAB)
     {
-      keycode = meta_display_get_above_tab_keycode (display);
+      keycode = KEY_GRAVE + 8;
       g_array_append_val (retval, keycode);
       goto out;
     }
