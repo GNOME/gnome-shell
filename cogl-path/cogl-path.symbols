@@ -11,6 +11,9 @@ cogl_path_ellipse
 cogl_path_fill
 cogl_path_fill_preserve
 cogl_path_get_fill_rule
+#ifdef COGL_HAS_GTYPE_SUPPORT
+cogl_path_get_gtype
+#endif
 cogl_path_line
 cogl_path_line_to
 cogl_path_move_to
