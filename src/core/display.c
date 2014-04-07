@@ -1378,19 +1378,6 @@ meta_display_get_current_time_roundtrip (MetaDisplay *display)
 }
 
 /**
- * meta_display_get_ignored_modifier_mask:
- * @display: a #MetaDisplay
- *
- * Returns: a mask of modifiers that should be ignored
- *          when matching keybindings to events
- */
-unsigned int
-meta_display_get_ignored_modifier_mask (MetaDisplay *display)
-{
-  return display->ignored_modifier_mask;
-}
-
-/**
  * meta_display_add_ignored_crossing_serial:
  * @display: a #MetaDisplay
  * @serial: the serial to ignore

@@ -92,8 +92,6 @@ guint32 meta_display_get_last_user_time (MetaDisplay *display);
 guint32 meta_display_get_current_time (MetaDisplay *display);
 guint32 meta_display_get_current_time_roundtrip (MetaDisplay *display);
 
-unsigned int meta_display_get_ignored_modifier_mask (MetaDisplay  *display);
-
 GList* meta_display_get_tab_list (MetaDisplay   *display,
                                   MetaTabList    type,
                                   MetaScreen    *screen,
