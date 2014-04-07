@@ -306,7 +306,12 @@ do_accelerator_parse (const gchar     *accelerator,
               error = TRUE;
               goto out;
             }
-	  else
+	  else if (strcmp (accelerator, "Above_Tab") == 0)
+            {
+              keyval = META_KEY_ABOVE_TAB;
+              goto out;
+            }
+          else
 	    {
 	      keyval = gdk_keyval_from_name (accelerator);
 	      if (keyval == GDK_KEY_VoidSymbol)
@@ -337,8 +342,6 @@ accelerator_parse (const char      *accel,
                    guint           *keycode,
                    GdkModifierType *keymask)
 {
-  const char *above_tab;
-
   if (accel[0] == '0' && accel[1] == 'x')
     {
       *keysym = 0;
@@ -347,38 +350,6 @@ accelerator_parse (const char      *accel,
 
       return;
     }
-
-  /* The key name 'Above_Tab' is special - it's not an actual keysym name,
-   * but rather refers to the key above the tab key. In order to use
-   * the GDK parsing for modifiers in combination with it, we substitute
-   * it with 'Tab' temporarily before calling gtk_accelerator_parse().
-   */
-#define is_word_character(c) (g_ascii_isalnum(c) || ((c) == '_'))
-#define ABOVE_TAB "Above_Tab"
-#define ABOVE_TAB_LEN 9
-
-  above_tab = strstr (accel, ABOVE_TAB);
-  if (above_tab &&
-      (above_tab == accel || !is_word_character (above_tab[-1])) &&
-      !is_word_character (above_tab[ABOVE_TAB_LEN]))
-    {
-      char *before = g_strndup (accel, above_tab - accel);
-      char *after = g_strdup (above_tab + ABOVE_TAB_LEN);
-      char *replaced = g_strconcat (before, "Tab", after, NULL);
-
-      do_accelerator_parse (replaced, NULL, keymask);
-
-      g_free (before);
-      g_free (after);
-      g_free (replaced);
-
-      *keysym = META_KEY_ABOVE_TAB;
-      return;
-    }
-
-#undef is_word_character
-#undef ABOVE_TAB
-#undef ABOVE_TAB_LEN
 
   do_accelerator_parse (accel, keysym, keymask);
 }
