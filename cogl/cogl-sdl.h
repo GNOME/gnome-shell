@@ -52,15 +52,6 @@
 #include <cogl/cogl-onscreen.h>
 #include <SDL.h>
 
-#ifdef _MSC_VER
-/* We need to link to SDL.lib/SDLmain.lib
- * if we are using Cogl
- * that uses the SDL winsys
- */
-#pragma comment (lib, "SDL.lib")
-#pragma comment (lib, "SDLmain.lib")
-#endif
-
 COGL_BEGIN_DECLS
 
 /**
