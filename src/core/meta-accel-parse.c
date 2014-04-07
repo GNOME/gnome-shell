@@ -336,7 +336,7 @@ meta_parse_accelerator (const char          *accel,
 {
   if (!accel[0] || strcmp (accel, "disabled") == 0)
     return TRUE;
-  
+
   return accelerator_parse (accel, keysym, keycode, mask);
 }
 
