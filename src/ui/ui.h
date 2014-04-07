@@ -157,10 +157,6 @@ gboolean meta_ui_parse_accelerator (const char          *accel,
                                     MetaVirtualModifier *mask);
 gboolean meta_ui_parse_modifier    (const char          *accel,
                                     MetaVirtualModifier *mask);
-
-/* Caller responsible for freeing return string of meta_ui_accelerator_name! */
-gchar*   meta_ui_accelerator_name  (unsigned int        keysym,
-                                    MetaVirtualModifier mask);
 gboolean meta_ui_window_is_widget (MetaUI *ui,
                                    Window  xwindow);
 
