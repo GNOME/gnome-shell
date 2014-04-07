@@ -168,13 +168,13 @@ is_keycode (const gchar *string)
 }
 
 static void
-accelerator_parse (const gchar     *accelerator,
-                   guint           *accelerator_key,
-                   guint           *accelerator_keycode,
-                   GdkModifierType *accelerator_mods)
+accelerator_parse (const gchar         *accelerator,
+                   guint               *accelerator_key,
+                   guint               *accelerator_keycode,
+                   MetaVirtualModifier *accelerator_mods)
 {
   guint keyval, keycode;
-  GdkModifierType mods;
+  MetaVirtualModifier mods;
   gint len;
   gboolean error;
 
@@ -199,37 +199,40 @@ accelerator_parse (const gchar     *accelerator,
               /* Primary is treated the same as Control */
               accelerator += 9;
               len -= 9;
-              mods |= GDK_CONTROL_MASK;
+              mods |= META_VIRTUAL_CONTROL_MASK;
             }
           else if (len >= 9 && is_control (accelerator))
             {
               accelerator += 9;
               len -= 9;
-              mods |= GDK_CONTROL_MASK;
+              mods |= META_VIRTUAL_CONTROL_MASK;
             }
           else if (len >= 7 && is_shift (accelerator))
             {
               accelerator += 7;
               len -= 7;
-              mods |= GDK_SHIFT_MASK;
+              mods |= META_VIRTUAL_SHIFT_MASK;
             }
           else if (len >= 6 && is_shft (accelerator))
             {
               accelerator += 6;
               len -= 6;
-              mods |= GDK_SHIFT_MASK;
+              mods |= META_VIRTUAL_SHIFT_MASK;
             }
           else if (len >= 6 && is_ctrl (accelerator))
             {
               accelerator += 6;
               len -= 6;
-              mods |= GDK_CONTROL_MASK;
+              mods |= META_VIRTUAL_CONTROL_MASK;
             }
           else if (len >= 6 && is_modx (accelerator))
             {
               static const guint mod_vals[] = {
-                GDK_MOD1_MASK, GDK_MOD2_MASK, GDK_MOD3_MASK,
-                GDK_MOD4_MASK, GDK_MOD5_MASK
+                META_VIRTUAL_ALT_MASK,
+                META_VIRTUAL_MOD2_MASK,
+                META_VIRTUAL_MOD3_MASK,
+                META_VIRTUAL_MOD4_MASK,
+                META_VIRTUAL_MOD5_MASK,
               };
 
               len -= 6;
@@ -241,31 +244,31 @@ accelerator_parse (const gchar     *accelerator,
             {
               accelerator += 5;
               len -= 5;
-              mods |= GDK_CONTROL_MASK;
+              mods |= META_VIRTUAL_CONTROL_MASK;
             }
           else if (len >= 5 && is_alt (accelerator))
             {
               accelerator += 5;
               len -= 5;
-              mods |= GDK_MOD1_MASK;
+              mods |= META_VIRTUAL_ALT_MASK;
             }
           else if (len >= 6 && is_meta (accelerator))
             {
               accelerator += 6;
               len -= 6;
-              mods |= GDK_META_MASK;
+              mods |= META_VIRTUAL_META_MASK;
             }
           else if (len >= 7 && is_hyper (accelerator))
             {
               accelerator += 7;
               len -= 7;
-              mods |= GDK_HYPER_MASK;
+              mods |= META_VIRTUAL_HYPER_MASK;
             }
           else if (len >= 7 && is_super (accelerator))
             {
               accelerator += 7;
               len -= 7;
-              mods |= GDK_SUPER_MASK;
+              mods |= META_VIRTUAL_SUPER_MASK;
             }
           else
             {
@@ -325,10 +328,10 @@ meta_parse_accelerator (const char          *accel,
                         unsigned int        *keycode,
                         MetaVirtualModifier *mask)
 {
-  GdkModifierType gdk_mask = 0;
+  MetaVirtualModifier gdk_mask = 0;
   guint gdk_sym = 0;
   guint gdk_code = 0;
-  
+
   *keysym = 0;
   *keycode = 0;
   *mask = 0;
@@ -342,30 +345,10 @@ meta_parse_accelerator (const char          *accel,
 
   if (gdk_sym == None && gdk_code == 0)
     return FALSE;
-  
+
   *keysym = gdk_sym;
   *keycode = gdk_code;
-
-  if (gdk_mask & GDK_SHIFT_MASK)
-    *mask |= META_VIRTUAL_SHIFT_MASK;
-  if (gdk_mask & GDK_CONTROL_MASK)
-    *mask |= META_VIRTUAL_CONTROL_MASK;
-  if (gdk_mask & GDK_MOD1_MASK)
-    *mask |= META_VIRTUAL_ALT_MASK;
-  if (gdk_mask & GDK_MOD2_MASK)
-    *mask |= META_VIRTUAL_MOD2_MASK;
-  if (gdk_mask & GDK_MOD3_MASK)
-    *mask |= META_VIRTUAL_MOD3_MASK;
-  if (gdk_mask & GDK_MOD4_MASK)
-    *mask |= META_VIRTUAL_MOD4_MASK;
-  if (gdk_mask & GDK_MOD5_MASK)
-    *mask |= META_VIRTUAL_MOD5_MASK;
-  if (gdk_mask & GDK_SUPER_MASK)
-    *mask |= META_VIRTUAL_SUPER_MASK;
-  if (gdk_mask & GDK_HYPER_MASK)
-    *mask |= META_VIRTUAL_HYPER_MASK;
-  if (gdk_mask & GDK_META_MASK)
-    *mask |= META_VIRTUAL_META_MASK;
+  *mask = gdk_mask;
   
   return TRUE;
 }
@@ -374,7 +357,7 @@ gboolean
 meta_parse_modifier (const char          *accel,
                      MetaVirtualModifier *mask)
 {
-  GdkModifierType gdk_mask = 0;
+  MetaVirtualModifier gdk_mask = 0;
   guint gdk_sym = 0;
   guint gdk_code = 0;
   
@@ -382,7 +365,7 @@ meta_parse_modifier (const char          *accel,
 
   if (accel == NULL || !accel[0] || strcmp (accel, "disabled") == 0)
     return TRUE;
-  
+
   accelerator_parse (accel, &gdk_sym, &gdk_code, &gdk_mask);
   if (gdk_mask == 0 && gdk_sym == 0 && gdk_code == 0)
     return FALSE;
@@ -390,26 +373,7 @@ meta_parse_modifier (const char          *accel,
   if (gdk_sym != None || gdk_code != 0)
     return FALSE;
 
-  if (gdk_mask & GDK_SHIFT_MASK)
-    *mask |= META_VIRTUAL_SHIFT_MASK;
-  if (gdk_mask & GDK_CONTROL_MASK)
-    *mask |= META_VIRTUAL_CONTROL_MASK;
-  if (gdk_mask & GDK_MOD1_MASK)
-    *mask |= META_VIRTUAL_ALT_MASK;
-  if (gdk_mask & GDK_MOD2_MASK)
-    *mask |= META_VIRTUAL_MOD2_MASK;
-  if (gdk_mask & GDK_MOD3_MASK)
-    *mask |= META_VIRTUAL_MOD3_MASK;
-  if (gdk_mask & GDK_MOD4_MASK)
-    *mask |= META_VIRTUAL_MOD4_MASK;
-  if (gdk_mask & GDK_MOD5_MASK)
-    *mask |= META_VIRTUAL_MOD5_MASK;
-  if (gdk_mask & GDK_SUPER_MASK)
-    *mask |= META_VIRTUAL_SUPER_MASK;
-  if (gdk_mask & GDK_HYPER_MASK)
-    *mask |= META_VIRTUAL_HYPER_MASK;
-  if (gdk_mask & GDK_META_MASK)
-    *mask |= META_VIRTUAL_META_MASK;
-  
+  *mask = gdk_mask;
+
   return TRUE;
 }
