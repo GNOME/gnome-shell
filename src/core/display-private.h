@@ -233,8 +233,6 @@ struct _MetaDisplay
   XModifierKeymap *modmap;
   unsigned int above_tab_keycode;
   unsigned int ignored_modifier_mask;
-  unsigned int num_lock_mask;
-  unsigned int scroll_lock_mask;
   unsigned int hyper_mask;
   unsigned int super_mask;
   unsigned int meta_mask;

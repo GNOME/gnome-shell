@@ -200,6 +200,8 @@ reload_modmap (MetaDisplay *display)
   XModifierKeymap *modmap;
   int map_size;
   int i;
+  int num_lock_mask = 0;
+  int scroll_lock_mask = 0;
 
   if (display->modmap)
     XFreeModifiermap (display->modmap);
@@ -210,8 +212,6 @@ reload_modmap (MetaDisplay *display)
   display->ignored_modifier_mask = 0;
 
   /* Multiple bits may get set in each of these */
-  display->num_lock_mask = 0;
-  display->scroll_lock_mask = 0;
   display->meta_mask = 0;
   display->hyper_mask = 0;
   display->super_mask = 0;
@@ -255,11 +255,11 @@ reload_modmap (MetaDisplay *display)
                    * index
                    */
 
-                  display->num_lock_mask |= (1 << ( i / modmap->max_keypermod));
+                  num_lock_mask |= (1 << ( i / modmap->max_keypermod));
                 }
               else if (syms[j] == XK_Scroll_Lock)
                 {
-                  display->scroll_lock_mask |= (1 << ( i / modmap->max_keypermod));
+                  scroll_lock_mask |= (1 << ( i / modmap->max_keypermod));
                 }
               else if (syms[j] == XK_Super_L ||
                        syms[j] == XK_Super_R)
@@ -284,15 +284,15 @@ reload_modmap (MetaDisplay *display)
       ++i;
     }
 
-  display->ignored_modifier_mask = (display->num_lock_mask |
-                                    display->scroll_lock_mask |
+  display->ignored_modifier_mask = (num_lock_mask |
+                                    scroll_lock_mask |
                                     LockMask);
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Ignoring modmask 0x%x num lock 0x%x scroll lock 0x%x hyper 0x%x super 0x%x meta 0x%x\n",
               display->ignored_modifier_mask,
-              display->num_lock_mask,
-              display->scroll_lock_mask,
+              num_lock_mask,
+              scroll_lock_mask,
               display->hyper_mask,
               display->super_mask,
               display->meta_mask);
@@ -3913,8 +3913,6 @@ meta_display_init_keys (MetaDisplay *display)
   display->min_keycode = 0;
   display->max_keycode = 0;
   display->ignored_modifier_mask = 0;
-  display->num_lock_mask = 0;
-  display->scroll_lock_mask = 0;
   display->hyper_mask = 0;
   display->super_mask = 0;
   display->meta_mask = 0;
