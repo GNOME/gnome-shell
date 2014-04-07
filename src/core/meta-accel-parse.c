@@ -167,16 +167,16 @@ is_keycode (const gchar *string)
           g_ascii_isxdigit (string[3]));
 }
 
-static void
+static gboolean
 accelerator_parse (const gchar         *accelerator,
                    guint               *accelerator_key,
                    guint               *accelerator_keycode,
                    MetaVirtualModifier *accelerator_mods)
 {
+  gboolean error = FALSE;
   guint keyval, keycode;
   MetaVirtualModifier mods;
   gint len;
-  gboolean error;
 
   if (accelerator_key)
     *accelerator_key = 0;
@@ -184,9 +184,13 @@ accelerator_parse (const gchar         *accelerator,
     *accelerator_keycode = 0;
   if (accelerator_mods)
     *accelerator_mods = 0;
-  g_return_if_fail (accelerator != NULL);
 
-  error = FALSE;
+  if (accelerator == NULL)
+    {
+      error = TRUE;
+      goto out;
+    }
+
   keyval = 0;
   mods = 0;
   len = strlen (accelerator);
@@ -312,7 +316,7 @@ accelerator_parse (const gchar         *accelerator,
 
 out:
   if (error)
-    keyval = keycode = mods = 0;
+    return FALSE;
 
   if (accelerator_key)
     *accelerator_key = keyval;
@@ -320,6 +324,8 @@ out:
     *accelerator_keycode = keycode;
   if (accelerator_mods)
     *accelerator_mods = mods;
+
+  return TRUE;
 }
 
 gboolean
@@ -328,52 +334,18 @@ meta_parse_accelerator (const char          *accel,
                         unsigned int        *keycode,
                         MetaVirtualModifier *mask)
 {
-  MetaVirtualModifier gdk_mask = 0;
-  guint gdk_sym = 0;
-  guint gdk_code = 0;
-
-  *keysym = 0;
-  *keycode = 0;
-  *mask = 0;
-
   if (!accel[0] || strcmp (accel, "disabled") == 0)
     return TRUE;
   
-  accelerator_parse (accel, &gdk_sym, &gdk_code, &gdk_mask);
-  if (gdk_mask == 0 && gdk_sym == 0 && gdk_code == 0)
-    return FALSE;
-
-  if (gdk_sym == None && gdk_code == 0)
-    return FALSE;
-
-  *keysym = gdk_sym;
-  *keycode = gdk_code;
-  *mask = gdk_mask;
-  
-  return TRUE;
+  return accelerator_parse (accel, keysym, keycode, mask);
 }
 
 gboolean
 meta_parse_modifier (const char          *accel,
                      MetaVirtualModifier *mask)
 {
-  MetaVirtualModifier gdk_mask = 0;
-  guint gdk_sym = 0;
-  guint gdk_code = 0;
-  
-  *mask = 0;
-
   if (accel == NULL || !accel[0] || strcmp (accel, "disabled") == 0)
     return TRUE;
 
-  accelerator_parse (accel, &gdk_sym, &gdk_code, &gdk_mask);
-  if (gdk_mask == 0 && gdk_sym == 0 && gdk_code == 0)
-    return FALSE;
-
-  if (gdk_sym != None || gdk_code != 0)
-    return FALSE;
-
-  *mask = gdk_mask;
-
-  return TRUE;
+  return accelerator_parse (accel, NULL, NULL, mask);
 }
