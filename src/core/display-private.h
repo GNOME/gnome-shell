@@ -196,7 +196,6 @@ struct _MetaDisplay
   int           grab_tile_monitor_number;
   int         grab_latest_motion_x;
   int         grab_latest_motion_y;
-  gulong      grab_mask;
   guint       grab_have_pointer : 1;
   guint       grab_have_keyboard : 1;
   guint       grab_frame_action : 1;

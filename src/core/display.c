@@ -1867,7 +1867,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
                             gboolean     pointer_already_grabbed,
                             gboolean     frame_action,
                             int          button,
-                            gulong       modmask,
+                            gulong       modmask, /* XXX - ignored */
                             guint32      timestamp,
                             int          root_x,
                             int          root_y)
@@ -1962,7 +1962,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_window = grab_window;
   display->grab_xwindow = grab_xwindow;
   display->grab_button = button;
-  display->grab_mask = modmask;
   if (window)
     {
       display->grab_tile_mode = window->tile_mode;

@@ -1763,7 +1763,7 @@ process_overlay_key (MetaDisplay *display,
 
           binding = display_get_keybinding (display,
                                             display->overlay_key_combo.keycode,
-                                            display->grab_mask);
+                                            0);
           if (binding &&
               meta_compositor_filter_keybinding (display->compositor, binding))
             return TRUE;
