@@ -48,6 +48,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <xkbcommon/xkbcommon.h>
+
 #ifdef HAVE_XKB
 #include <X11/XKBlib.h>
 #endif
@@ -203,12 +205,7 @@ reload_modmap (MetaDisplay *display)
   int num_lock_mask = 0;
   int scroll_lock_mask = 0;
 
-  if (display->modmap)
-    XFreeModifiermap (display->modmap);
-
   modmap = XGetModifierMapping (display->xdisplay);
-  display->modmap = modmap;
-
   display->ignored_modifier_mask = 0;
 
   /* Multiple bits may get set in each of these */
@@ -296,6 +293,8 @@ reload_modmap (MetaDisplay *display)
               display->hyper_mask,
               display->super_mask,
               display->meta_mask);
+
+  XFreeModifiermap (modmap);
 }
 
 /* Original code from gdk_x11_keymap_get_entries_for_keyval() in
@@ -1017,9 +1016,6 @@ meta_display_shutdown_keys (MetaDisplay *display)
   if (display->keymap)
     meta_XFree (display->keymap);
 
-  if (display->modmap)
-    XFreeModifiermap (display->modmap);
-
   g_hash_table_destroy (display->key_bindings_index);
   g_hash_table_destroy (display->key_bindings);
 }
@@ -1610,28 +1606,28 @@ meta_display_unfreeze_keyboard (MetaDisplay *display, guint32 timestamp)
 }
 
 static gboolean
-is_modifier (MetaDisplay *display,
-             unsigned int keycode)
+is_modifier (xkb_keysym_t keysym)
 {
-  int i;
-  int map_size;
-  gboolean retval = FALSE;
-
-  g_assert (display->modmap);
-
-  map_size = 8 * display->modmap->max_keypermod;
-  i = 0;
-  while (i < map_size)
+  switch (keysym)
     {
-      if (keycode == display->modmap->modifiermap[i])
-        {
-          retval = TRUE;
-          break;
-        }
-      ++i;
+    case XKB_KEY_Shift_L:
+    case XKB_KEY_Shift_R:
+    case XKB_KEY_Control_L:
+    case XKB_KEY_Control_R:
+    case XKB_KEY_Caps_Lock:
+    case XKB_KEY_Shift_Lock:
+    case XKB_KEY_Meta_L:
+    case XKB_KEY_Meta_R:
+    case XKB_KEY_Alt_L:
+    case XKB_KEY_Alt_R:
+    case XKB_KEY_Super_L:
+    case XKB_KEY_Super_R:
+    case XKB_KEY_Hyper_L:
+    case XKB_KEY_Hyper_R:
+      return TRUE;
+    default:
+      return FALSE;
     }
-
-  return retval;
 }
 
 static void
@@ -2009,7 +2005,7 @@ process_keyboard_move_grab (MetaDisplay     *display,
     return TRUE;
 
   /* don't end grab on modifier key presses */
-  if (is_modifier (display, event->hardware_keycode))
+  if (is_modifier (event->keyval))
     return TRUE;
 
   meta_window_get_position (window, &x, &y);
@@ -2251,7 +2247,7 @@ process_keyboard_resize_grab (MetaDisplay     *display,
     return TRUE;
 
   /* don't end grab on modifier key presses */
-  if (is_modifier (display, event->hardware_keycode))
+  if (is_modifier (event->keyval))
     return TRUE;
 
   if (event->keyval == CLUTTER_KEY_Escape)
@@ -3909,7 +3905,6 @@ meta_display_init_keys (MetaDisplay *display)
   /* Keybindings */
   display->keymap = NULL;
   display->keysyms_per_keycode = 0;
-  display->modmap = NULL;
   display->min_keycode = 0;
   display->max_keycode = 0;
   display->ignored_modifier_mask = 0;

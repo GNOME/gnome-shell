@@ -230,7 +230,6 @@ struct _MetaDisplay
   int             max_keycode;
   KeySym *keymap;
   int keysyms_per_keycode;
-  XModifierKeymap *modmap;
   unsigned int above_tab_keycode;
   unsigned int ignored_modifier_mask;
   unsigned int hyper_mask;
