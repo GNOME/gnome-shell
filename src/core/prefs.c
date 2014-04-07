@@ -36,6 +36,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "keybindings-private.h"
+#include "meta-accel-parse.h"
 
 /* If you add a key, it needs updating in init() and in the gsettings
  * notify listener and of course in the .schemas file.
@@ -1323,7 +1324,7 @@ mouse_button_mods_handler (GVariant *value,
   *result = NULL; /* ignored */
   string_value = g_variant_get_string (value, NULL);
 
-  if (!string_value || !meta_ui_parse_modifier (string_value, &mods))
+  if (!string_value || !meta_parse_modifier (string_value, &mods))
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Failed to parse new GSettings value\n");
@@ -1627,9 +1628,9 @@ overlay_key_handler (GVariant *value,
   *result = NULL; /* ignored */
   string_value = g_variant_get_string (value, NULL);
 
-  if (string_value && meta_ui_parse_accelerator (string_value, &combo.keysym,
-                                                 &combo.keycode,
-                                                 &combo.modifiers))
+  if (string_value && meta_parse_accelerator (string_value, &combo.keysym,
+                                              &combo.keycode,
+                                              &combo.modifiers))
     ;
   else
     {
@@ -1887,7 +1888,7 @@ update_binding (MetaKeyPref *binding,
       keycode = 0;
       mods = 0;
 
-      if (!meta_ui_parse_accelerator (strokes[i], &keysym, &keycode, &mods))
+      if (!meta_parse_accelerator (strokes[i], &keysym, &keycode, &mods))
         {
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Failed to parse new GSettings value\n");

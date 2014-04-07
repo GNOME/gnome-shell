@@ -41,6 +41,7 @@
 #include "screen-private.h"
 #include <meta/prefs.h>
 #include "util-private.h"
+#include "meta-accel-parse.h"
 
 #include <X11/keysym.h>
 #include <string.h>
@@ -1284,7 +1285,7 @@ meta_display_grab_accelerator (MetaDisplay *display,
   guint mask = 0;
   MetaVirtualModifier modifiers = 0;
 
-  if (!meta_ui_parse_accelerator (accelerator, &keysym, &keycode, &modifiers))
+  if (!meta_parse_accelerator (accelerator, &keysym, &keycode, &modifiers))
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Failed to parse accelerator\n");

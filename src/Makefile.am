@@ -78,6 +78,8 @@ libmutter_wayland_la_SOURCES =			\
 	backends/x11/meta-monitor-manager-xrandr.c	\
 	backends/x11/meta-monitor-manager-xrandr.h	\
 	backends/x11/meta-xrandr-shared.h		\
+	core/meta-accel-parse.c			\
+	core/meta-accel-parse.h			\
 	core/above-tab-keycode.c		\
 	core/barrier.c				\
 	meta/barrier.h				\
