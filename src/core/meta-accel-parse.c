@@ -182,17 +182,20 @@ is_keycode (const gchar *string)
 }
 
 static void
-do_accelerator_parse (const gchar     *accelerator,
-                      guint           *accelerator_key,
-                      GdkModifierType *accelerator_mods)
+accelerator_parse (const gchar     *accelerator,
+                   guint           *accelerator_key,
+                   guint           *accelerator_keycode,
+                   GdkModifierType *accelerator_mods)
 {
-  guint keyval;
+  guint keyval, keycode;
   GdkModifierType mods;
   gint len;
   gboolean error;
 
   if (accelerator_key)
     *accelerator_key = 0;
+  if (accelerator_keycode)
+    *accelerator_keycode = 0;
   if (accelerator_mods)
     *accelerator_mods = 0;
   g_return_if_fail (accelerator != NULL);
@@ -301,9 +304,7 @@ do_accelerator_parse (const gchar     *accelerator,
         {
           if (len >= 4 && is_keycode (accelerator))
             {
-              /* There was a keycode in the string, but
-               * we cannot store it, so we have an error */
-              error = TRUE;
+              keycode = strtoul (accelerator, NULL, 16);
               goto out;
             }
 	  else if (strcmp (accelerator, "Above_Tab") == 0)
@@ -328,30 +329,14 @@ do_accelerator_parse (const gchar     *accelerator,
 
 out:
   if (error)
-    keyval = mods = 0;
+    keyval = keycode = mods = 0;
 
   if (accelerator_key)
     *accelerator_key = gdk_keyval_to_lower (keyval);
+  if (accelerator_keycode)
+    *accelerator_keycode = keycode;
   if (accelerator_mods)
     *accelerator_mods = mods;
-}
-
-static void
-accelerator_parse (const char      *accel,
-                   guint           *keysym,
-                   guint           *keycode,
-                   GdkModifierType *keymask)
-{
-  if (accel[0] == '0' && accel[1] == 'x')
-    {
-      *keysym = 0;
-      *keycode = (guint) strtoul (accel, NULL, 16);
-      *keymask = 0;
-
-      return;
-    }
-
-  do_accelerator_parse (accel, keysym, keymask);
 }
 
 gboolean
