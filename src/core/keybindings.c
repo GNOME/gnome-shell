@@ -196,6 +196,14 @@ reload_keymap (MetaDisplay *display)
                                          &display->keysyms_per_keycode);
 }
 
+static const char *
+keysym_name (xkb_keysym_t keysym)
+{
+  static char name[32] = "";
+  xkb_keysym_get_name (keysym, name, sizeof (name));
+  return name;
+}
+
 static void
 reload_modmap (MetaDisplay *display)
 {
@@ -236,12 +244,9 @@ reload_modmap (MetaDisplay *display)
             {
               if (syms[j] != 0)
                 {
-                  const char *str;
-
-                  str = XKeysymToString (syms[j]);
                   meta_topic (META_DEBUG_KEYBINDINGS,
                               "Keysym %s bound to modifier 0x%x\n",
-                              str ? str : "none",
+                              keysym_name (syms[j]),
                               (1 << ( i / modmap->max_keypermod)));
                 }
 
@@ -1018,18 +1023,6 @@ meta_display_shutdown_keys (MetaDisplay *display)
 
   g_hash_table_destroy (display->key_bindings_index);
   g_hash_table_destroy (display->key_bindings);
-}
-
-static const char*
-keysym_name (int keysym)
-{
-  const char *name;
-
-  name = XKeysymToString (keysym);
-  if (name == NULL)
-    name = "(unknown)";
-
-  return name;
 }
 
 /* Grab/ungrab, ignoring all annoying modifiers like NumLock etc. */
