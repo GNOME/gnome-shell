@@ -62,6 +62,9 @@ associate_window_with_surface (MetaWindow         *window,
    * commit just breaks if we don't have a window associated with
    * it, we need to do a commit *again* here. */
   meta_wayland_surface_commit (surface);
+
+  /* Now that we have a surface check if it should have focus. */
+  meta_display_sync_wayland_input_focus (display);
 }
 
 static gboolean
