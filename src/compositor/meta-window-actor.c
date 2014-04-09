@@ -65,18 +65,17 @@ struct _MetaWindowActorPrivate
   /* The region we should clip to when painting the shadow */
   cairo_region_t   *shadow_clip;
 
-  guint              send_frame_messages_timer;
-  gint64             frame_drawn_time;
-
   /* Extracted size-invariant shape used for shadows */
   MetaWindowShape  *shadow_shape;
+  char *            shadow_class;
+
+  guint             send_frame_messages_timer;
+  gint64            frame_drawn_time;
 
   gint              last_width;
   gint              last_height;
 
   gint              freeze_count;
-
-  char *            shadow_class;
 
   /*
    * These need to be counters rather than flags, since more plugins
