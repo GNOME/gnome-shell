@@ -1594,12 +1594,12 @@ reload_window_opacity (MetaWindow    *window,
                        gboolean       initial)
 
 {
-  int requested_value = 0xFF;
+  guint8 opacity = 0xFF;
 
   if (value->type != META_PROP_VALUE_INVALID)
-    requested_value = (int) value->v.cardinal;
+    opacity = (guint8)((gfloat)value->v.cardinal * 255.0 / ((gfloat)0xffffffff));
 
-  meta_window_set_opacity (window, requested_value);
+  meta_window_set_opacity (window, opacity);
 }
 
 #define RELOAD_STRING(var_name, propname) \
