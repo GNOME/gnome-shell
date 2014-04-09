@@ -874,6 +874,10 @@ handle_input_xevent (MetaDisplay *display,
   modified = xievent_get_modified_window (display, input_event);
   window = modified != None ? meta_display_lookup_x_window (display, modified) : NULL;
 
+  /* If this is an event for a GTK+ widget, let GTK+ handle it. */
+  if (meta_ui_window_is_widget (display->screen->ui, modified))
+    return FALSE;
+
   switch (input_event->evtype)
     {
     case XI_Enter:
