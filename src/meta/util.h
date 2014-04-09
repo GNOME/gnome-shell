@@ -31,6 +31,7 @@
 gboolean meta_is_verbose  (void);
 gboolean meta_is_debugging (void);
 gboolean meta_is_syncing (void);
+gboolean meta_is_wayland_compositor (void);
 
 void meta_debug_spew_real (const char *format,
                            ...) G_GNUC_PRINTF (1, 2);

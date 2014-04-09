@@ -1,16 +1,19 @@
 # Flag build for parallelism; see https://savannah.gnu.org/patch/?6905
 .AUTOPARALLEL:
 
-lib_LTLIBRARIES = libmutter.la
+lib_LTLIBRARIES = libmutter-wayland.la
 
 SUBDIRS=compositor/plugins
 
 INCLUDES=								\
+	-DCLUTTER_ENABLE_COMPOSITOR_API					\
 	-DCLUTTER_ENABLE_EXPERIMENTAL_API				\
 	-DCOGL_ENABLE_EXPERIMENTAL_API					\
 	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API                              \
 	$(MUTTER_CFLAGS)						\
+	-I$(top_builddir)						\
 	-I$(srcdir)							\
+	-I$(srcdir)/backends						\
 	-I$(srcdir)/core						\
 	-I$(srcdir)/ui							\
 	-I$(srcdir)/compositor						\
@@ -27,17 +30,56 @@ INCLUDES=								\
 	-DMUTTER_PLUGIN_API_VERSION=$(MUTTER_PLUGIN_API_VERSION)	\
 	-DMUTTER_PKGLIBDIR=\"$(pkglibdir)\"				\
 	-DMUTTER_PLUGIN_DIR=\"@MUTTER_PLUGIN_DIR@\"			\
-	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"
+	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"			\
+	-DXWAYLAND_PATH='"@XWAYLAND_PATH@"'
 
 mutter_built_sources = \
-	$(dbus_idle_built_sources)	\
-	$(dbus_xrandr_built_sources)	\
-	mutter-enum-types.h		\
-	mutter-enum-types.c
+	$(dbus_idle_built_sources)		\
+	$(dbus_display_config_built_sources)	\
+	mutter-enum-types.h 			\
+	mutter-enum-types.c			\
+	gtk-shell-protocol.c			\
+	gtk-shell-server-protocol.h		\
+	xdg-shell-protocol.c			\
+	xdg-shell-server-protocol.h
 
-libmutter_la_SOURCES =				\
-	core/async-getprop.c			\
-	core/async-getprop.h			\
+wayland_protocols = \
+	wayland/protocol/gtk-shell.xml		\
+	wayland/protocol/xdg-shell.xml
+
+libmutter_wayland_la_SOURCES =			\
+	backends/meta-backend.c			\
+	backends/meta-backend.h			\
+	backends/meta-cursor.c			\
+	backends/meta-cursor.h			\
+	backends/meta-cursor-private.h		\
+	backends/meta-cursor-tracker.c		\
+	backends/meta-cursor-tracker-private.h	\
+	backends/meta-idle-monitor.c		\
+	backends/meta-idle-monitor-private.h	\
+	backends/meta-idle-monitor-dbus.c	\
+	backends/meta-idle-monitor-dbus.h	\
+	backends/meta-monitor-config.c		\
+	backends/meta-monitor-config.h		\
+	backends/meta-monitor-manager.c		\
+	backends/meta-monitor-manager.h		\
+	backends/meta-monitor-manager-dummy.c	\
+	backends/meta-monitor-manager-dummy.h	\
+	backends/edid-parse.c			\
+	backends/edid.h				\
+	backends/native/meta-idle-monitor-native.c	\
+	backends/native/meta-idle-monitor-native.h	\
+	backends/native/meta-monitor-manager-kms.c	\
+	backends/native/meta-monitor-manager-kms.h	\
+	backends/native/meta-weston-launch.c		\
+	backends/native/meta-weston-launch.h		\
+	backends/x11/meta-idle-monitor-xsync.c		\
+	backends/x11/meta-idle-monitor-xsync.h		\
+	backends/x11/meta-monitor-manager-xrandr.c	\
+	backends/x11/meta-monitor-manager-xrandr.h	\
+	backends/x11/meta-xrandr-shared.h		\
+	core/meta-accel-parse.c			\
+	core/meta-accel-parse.h			\
 	core/barrier.c				\
 	meta/barrier.h				\
 	core/bell.c				\
@@ -65,7 +107,13 @@ libmutter_la_SOURCES =				\
 	compositor/meta-shadow-factory.c	\
 	compositor/meta-shadow-factory-private.h	\
 	compositor/meta-shaped-texture.c	\
-	compositor/meta-shaped-texture-private.h	\
+	compositor/meta-shaped-texture-private.h 	\
+	compositor/meta-surface-actor.c		\
+	compositor/meta-surface-actor.h		\
+	compositor/meta-surface-actor-x11.c	\
+	compositor/meta-surface-actor-x11.h	\
+	compositor/meta-surface-actor-wayland.c	\
+	compositor/meta-surface-actor-wayland.h	\
 	compositor/meta-texture-rectangle.c	\
 	compositor/meta-texture-rectangle.h	\
 	compositor/meta-texture-tower.c		\
@@ -86,7 +134,6 @@ libmutter_la_SOURCES =				\
 	meta/meta-shadow-factory.h		\
 	meta/meta-window-actor.h		\
 	meta/compositor-mutter.h 		\
-	core/above-tab-keycode.c		\
 	core/constraints.c			\
 	core/constraints.h			\
 	core/core.c				\
@@ -96,34 +143,17 @@ libmutter_la_SOURCES =				\
 	meta/display.h				\
 	core/edge-resistance.c			\
 	core/edge-resistance.h			\
-	core/edid-parse.c			\
-	core/edid.h				\
+	core/events.c				\
+	core/events.h				\
 	core/errors.c				\
 	meta/errors.h				\
 	core/frame.c				\
 	core/frame.h				\
 	ui/gradient.c				\
 	meta/gradient.h				\
-	core/group-private.h			\
-	core/group-props.c			\
-	core/group-props.h			\
-	core/group.c				\
-	meta/group.h				\
-	core/iconcache.c			\
-	core/iconcache.h			\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
 	core/main.c				\
-	core/meta-cursor-tracker.c		\
-	core/meta-cursor-tracker-private.h	\
-	core/meta-idle-monitor.c		\
-	core/meta-idle-monitor-private.h	\
-	core/meta-xrandr-shared.h		\
-	core/monitor.c				\
-	core/monitor-config.c			\
-	core/monitor-private.h			\
-	core/monitor-xrandr.c			\
-	core/mutter-Xatomtype.h			\
 	core/place.c				\
 	core/place.h				\
 	core/prefs.c				\
@@ -132,8 +162,6 @@ libmutter_la_SOURCES =				\
 	core/screen-private.h			\
 	meta/screen.h				\
 	meta/types.h				\
-	core/session.c				\
-	core/session.h				\
 	core/stack.c				\
 	core/stack.h				\
 	core/stack-tracker.c			\
@@ -141,15 +169,11 @@ libmutter_la_SOURCES =				\
 	core/util.c				\
 	meta/util.h				\
 	core/util-private.h			\
-	core/window-props.c			\
-	core/window-props.h			\
 	core/window.c				\
 	core/window-private.h			\
 	meta/window.h				\
 	core/workspace.c			\
 	core/workspace-private.h		\
-	core/xprops.c				\
-	core/xprops.h				\
 	meta/common.h				\
 	core/core.h				\
 	ui/ui.h					\
@@ -165,13 +189,54 @@ libmutter_la_SOURCES =				\
 	ui/theme.c				\
 	meta/theme.h				\
 	ui/theme-private.h			\
-	ui/ui.c
+	ui/ui.c					\
+	x11/iconcache.c				\
+	x11/iconcache.h				\
+	x11/async-getprop.c			\
+	x11/async-getprop.h			\
+	x11/group-private.h			\
+	x11/group-props.c			\
+	x11/group-props.h			\
+	x11/group.c				\
+	meta/group.h				\
+	x11/session.c				\
+	x11/session.h				\
+	x11/window-props.c			\
+	x11/window-props.h			\
+	x11/window-x11.c			\
+	x11/window-x11.h			\
+	x11/window-x11-private.h		\
+	x11/xprops.c				\
+	x11/xprops.h				\
+	x11/mutter-Xatomtype.h			\
+	wayland/meta-wayland.c			\
+	wayland/meta-wayland.h			\
+	wayland/meta-wayland-private.h		\
+	wayland/meta-xwayland.c			\
+	wayland/meta-xwayland.h			\
+	wayland/meta-xwayland-private.h		\
+	wayland/meta-wayland-data-device.c      \
+	wayland/meta-wayland-data-device.h      \
+	wayland/meta-wayland-keyboard.c		\
+	wayland/meta-wayland-keyboard.h		\
+	wayland/meta-wayland-pointer.c		\
+	wayland/meta-wayland-pointer.h		\
+	wayland/meta-wayland-seat.c		\
+	wayland/meta-wayland-seat.h		\
+	wayland/meta-wayland-stage.h		\
+	wayland/meta-wayland-stage.c		\
+	wayland/meta-wayland-surface.c		\
+	wayland/meta-wayland-surface.h		\
+	wayland/meta-wayland-types.h		\
+	wayland/meta-wayland-versions.h		\
+	wayland/window-wayland.c		\
+	wayland/window-wayland.h
 
-nodist_libmutter_la_SOURCES =			\
+nodist_libmutter_wayland_la_SOURCES =		\
 	$(mutter_built_sources)
 
-libmutter_la_LDFLAGS = -no-undefined
-libmutter_la_LIBADD  = $(MUTTER_LIBS)
+libmutter_wayland_la_LDFLAGS = -no-undefined
+libmutter_wayland_la_LIBADD  = $(MUTTER_LIBS)
 
 # Headers installed for plugins; introspected information will
 # be extracted into Mutter-<version>.gir
@@ -209,16 +274,29 @@ libmutterinclude_base_headers =		\
 libmutterinclude_extra_headers =		\
 	meta/atomnames.h
 
-libmutterincludedir = $(includedir)/mutter/meta
+libmutterincludedir = $(includedir)/mutter-wayland/meta
 
 libmutterinclude_HEADERS =			\
 	$(libmutterinclude_base_headers)	\
 	$(libmutterinclude_extra_headers)
 
-bin_PROGRAMS=mutter
+bin_PROGRAMS=mutter-wayland
 
-mutter_SOURCES = core/mutter.c
-mutter_LDADD = $(MUTTER_LIBS) libmutter.la
+mutter_wayland_SOURCES = core/mutter.c
+mutter_wayland_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
+
+bin_PROGRAMS+=mutter-launch
+
+mutter_launch_SOURCES = 			\
+	backends/native/weston-launch.c 	\
+	backends/native/weston-launch.h
+
+mutter_launch_CFLAGS = $(MUTTER_LAUNCH_CFLAGS) -DLIBDIR=\"$(libdir)\"
+mutter_launch_LDFLAGS = $(MUTTER_LAUNCH_LIBS) -lpam
+
+install-exec-hook:
+	-chown root $(DESTDIR)$(bindir)/mutter-launch
+	-chmod u+s $(DESTDIR)$(bindir)/mutter-launch
 
 if HAVE_INTROSPECTION
 include $(INTROSPECTION_MAKEFILE)
@@ -240,40 +318,35 @@ typelib_DATA = Meta-$(api_version).typelib
 
 INTROSPECTION_GIRS = Meta-$(api_version).gir
 
-Meta-$(api_version).gir: libmutter.la
+Meta-$(api_version).gir: libmutter-wayland.la
 @META_GIR@_INCLUDES = GObject-2.0 GDesktopEnums-3.0 Gdk-3.0 Gtk-3.0 Clutter-1.0 xlib-2.0 xfixes-4.0 Cogl-1.0
-@META_GIR@_EXPORT_PACKAGES = libmutter
+@META_GIR@_EXPORT_PACKAGES = libmutter-wayland
 @META_GIR@_CFLAGS = $(INCLUDES)
-@META_GIR@_LIBS = libmutter.la
+@META_GIR@_LIBS = libmutter-wayland.la
 @META_GIR@_FILES =				\
 	mutter-enum-types.h			\
 	$(libmutterinclude_base_headers)	\
-	$(filter %.c,$(libmutter_la_SOURCES) $(nodist_libmutter_la_SOURCES))
+	$(filter %.c,$(libmutter_wayland_la_SOURCES) $(nodist_libmutter_wayland_la_SOURCES))
 @META_GIR@_SCANNERFLAGS = --warn-all --warn-error
 
 endif
 
 testboxes_SOURCES = core/testboxes.c
 testgradient_SOURCES = ui/testgradient.c
-testasyncgetprop_SOURCES = core/testasyncgetprop.c
+testasyncgetprop_SOURCES = x11/testasyncgetprop.c
 
 noinst_PROGRAMS=testboxes testgradient testasyncgetprop
 
-testboxes_LDADD = $(MUTTER_LIBS) libmutter.la
-testgradient_LDADD = $(MUTTER_LIBS) libmutter.la
-testasyncgetprop_LDADD = $(MUTTER_LIBS) libmutter.la
+testboxes_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
+testgradient_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
+testasyncgetprop_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
 
 @INTLTOOL_DESKTOP_RULE@
 
 desktopfilesdir=$(datadir)/applications
-desktopfiles_in_files=mutter.desktop.in
+desktopfiles_in_files=mutter-wayland.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 desktopfiles_DATA = $(desktopfiles_files)
-
-wmpropertiesdir=$(datadir)/gnome/wm-properties
-wmproperties_in_files=mutter-wm.desktop.in
-wmproperties_files=$(wmproperties_in_files:.desktop.in=.desktop)
-wmproperties_DATA = $(wmproperties_files)
 
 xmldir       = @GNOME_KEYBINDINGS_KEYSDIR@
 xml_in_files = \
@@ -282,7 +355,9 @@ xml_in_files = \
         50-mutter-windows.xml.in
 xml_DATA     = $(xml_in_files:.xml.in=.xml)
 
-gsettings_SCHEMAS = org.gnome.mutter.gschema.xml
+dbus_idle_built_sources = meta-dbus-idle-monitor.c meta-dbus-idle-monitor.h
+
+gsettings_SCHEMAS = org.gnome.mutter.gschema.xml org.gnome.mutter.wayland.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
 
@@ -290,9 +365,10 @@ convertdir = $(datadir)/GConf/gsettings
 convert_DATA = mutter-schemas.convert
 
 CLEANFILES =					\
-	mutter.desktop				\
+	mutter-wayland.desktop			\
 	mutter-wm.desktop			\
 	org.gnome.mutter.gschema.xml		\
+	org.gnome.mutter.wayland.gschema.xml	\
 	$(xml_DATA)				\
 	$(mutter_built_sources)			\
 	$(typelib_DATA)				\
@@ -300,7 +376,7 @@ CLEANFILES =					\
 
 pkgconfigdir = $(libdir)/pkgconfig
 
-pkgconfig_DATA = libmutter.pc mutter-plugins.pc
+pkgconfig_DATA = libmutter-wayland.pc
 
 EXTRA_DIST=$(desktopfiles_files) 	\
 	$(wmproperties_files)		\
@@ -308,14 +384,15 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(desktopfiles_in_files)	\
 	$(wmproperties_in_files)	\
 	$(xml_in_files)			\
+	$(wayland_protocols)		\
 	org.gnome.mutter.gschema.xml.in \
-	idle-monitor.xml \
-	xrandr.xml \
+	org.gnome.mutter.wayland.gschema.xml.in \
 	mutter-schemas.convert \
-	libmutter.pc.in \
-	mutter-plugins.pc.in  \
+	libmutter-wayland.pc.in \
 	mutter-enum-types.h.in \
-	mutter-enum-types.c.in
+	mutter-enum-types.c.in \
+	org.gnome.Mutter.DisplayConfig.xml	\
+	org.gnome.Mutter.IdleMonitor.xml
 
 BUILT_SOURCES = $(mutter_built_sources)
 MUTTER_STAMP_FILES = stamp-mutter-enum-types.h
@@ -340,21 +417,24 @@ mutter-enum-types.c: stamp-mutter-enum-types.h mutter-enum-types.c.in
 	cp xgen-tetc mutter-enum-types.c && \
 	rm -f xgen-tetc
 
-dbus_xrandr_built_sources = meta-dbus-xrandr.c meta-dbus-xrandr.h
+dbus_display_config_built_sources = meta-dbus-display-config.c meta-dbus-display-config.h
 
-$(dbus_xrandr_built_sources) : Makefile.am xrandr.xml
+$(dbus_display_config_built_sources) : Makefile.am org.gnome.Mutter.DisplayConfig.xml
 	$(AM_V_GEN)gdbus-codegen							\
 		--interface-prefix org.gnome.Mutter					\
 		--c-namespace MetaDBus							\
-		--generate-c-code meta-dbus-xrandr					\
-		$(srcdir)/xrandr.xml
+		--generate-c-code meta-dbus-display-config				\
+		$(srcdir)/org.gnome.Mutter.DisplayConfig.xml
 
-dbus_idle_built_sources = meta-dbus-idle-monitor.c meta-dbus-idle-monitor.h
-
-$(dbus_idle_built_sources) : Makefile.am idle-monitor.xml
+$(dbus_idle_built_sources) : Makefile.am org.gnome.Mutter.IdleMonitor.xml
 	$(AM_V_GEN)gdbus-codegen							\
 		--interface-prefix org.gnome.Mutter					\
 		--c-namespace MetaDBus							\
 		--generate-c-code meta-dbus-idle-monitor				\
 		--c-generate-object-manager						\
-		$(srcdir)/idle-monitor.xml
+		$(srcdir)/org.gnome.Mutter.IdleMonitor.xml
+
+%-protocol.c : $(srcdir)/wayland/protocol/%.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
+%-server-protocol.h : $(srcdir)/wayland/protocol/%.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@

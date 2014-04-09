@@ -37,6 +37,7 @@
 #include "keybindings-private.h"
 #include <meta/prefs.h>
 #include <meta/barrier.h>
+#include <clutter/clutter.h>
 
 #ifdef HAVE_STARTUP_NOTIFICATION
 #include <libsn/sn.h>
@@ -54,10 +55,9 @@ typedef struct _MetaWindowPropHooks MetaWindowPropHooks;
 
 typedef struct MetaEdgeResistanceData MetaEdgeResistanceData;
 
-typedef void (* MetaWindowPingFunc) (MetaDisplay *display,
-				     Window       xwindow,
-				     guint32      timestamp,
-				     gpointer     user_data);
+typedef void (* MetaWindowPingFunc) (MetaWindow  *window,
+                                     guint32      timestamp,
+                                     gpointer     user_data);
 
 typedef enum {
   META_LIST_DEFAULT                   = 0,      /* normal windows */
@@ -90,6 +90,8 @@ struct _MetaDisplay
   
   char *name;
   Display *xdisplay;
+
+  int clutter_event_filter;
 
   Window leader_window;
   Window timestamp_pinging_window;
@@ -143,17 +145,12 @@ struct _MetaDisplay
    * multiple events with the same serial.
    */
   guint focused_by_us : 1;
-
-  guint static_gravity_works : 1;
   
   /*< private-ish >*/
-  guint error_trap_synced_at_last_pop : 1;
-  GSList *screens;
-  MetaScreen *active_screen;
+  MetaScreen *screen;
   GHashTable *xids;
-  int error_traps;
-  int (* error_trap_handler) (Display     *display,
-                              XErrorEvent *error);  
+  GHashTable *wayland_windows;
+
   int server_grab_count;
 
   /* serials of leave/unmap events that may
@@ -185,11 +182,10 @@ struct _MetaDisplay
   MetaWindow* autoraise_window;
 
   /* Alt+click button grabs */
-  unsigned int window_grab_modifiers;
+  ClutterModifierType window_grab_modifiers;
   
   /* current window operation */
   MetaGrabOp  grab_op;
-  MetaScreen *grab_screen;
   MetaWindow *grab_window;
   Window      grab_xwindow;
   int         grab_button;
@@ -200,7 +196,6 @@ struct _MetaDisplay
   int           grab_tile_monitor_number;
   int         grab_latest_motion_x;
   int         grab_latest_motion_y;
-  gulong      grab_mask;
   guint       grab_have_pointer : 1;
   guint       grab_have_keyboard : 1;
   guint       grab_frame_action : 1;
@@ -212,7 +207,6 @@ struct _MetaDisplay
   gboolean    grab_threshold_movement_reached; /* raise_on_click == FALSE.    */
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
-  guint32     grab_motion_notify_time;
   GList*      grab_old_window_stacking;
   MetaEdgeResistanceData *grab_edge_resistance_data;
   unsigned int grab_last_user_action_was_snap;
@@ -236,11 +230,7 @@ struct _MetaDisplay
   int             max_keycode;
   KeySym *keymap;
   int keysyms_per_keycode;
-  XModifierKeymap *modmap;
-  unsigned int above_tab_keycode;
   unsigned int ignored_modifier_mask;
-  unsigned int num_lock_mask;
-  unsigned int scroll_lock_mask;
   unsigned int hyper_mask;
   unsigned int super_mask;
   unsigned int meta_mask;
@@ -351,10 +341,6 @@ struct _MetaDisplayClass
 gboolean      meta_display_open                (void);
 void          meta_display_close               (MetaDisplay *display,
                                                 guint32      timestamp);
-MetaScreen*   meta_display_screen_for_x_screen (MetaDisplay *display,
-                                                Screen      *screen);
-MetaScreen*   meta_display_screen_for_xwindow  (MetaDisplay *display,
-                                                Window       xindow);
 void          meta_display_grab                (MetaDisplay *display);
 void          meta_display_ungrab              (MetaDisplay *display);
 
@@ -376,6 +362,11 @@ void        meta_display_register_x_window   (MetaDisplay *display,
                                               MetaWindow  *window);
 void        meta_display_unregister_x_window (MetaDisplay *display,
                                               Window       xwindow);
+
+void        meta_display_register_wayland_window   (MetaDisplay *display,
+                                                    MetaWindow  *window);
+void        meta_display_unregister_wayland_window (MetaDisplay *display,
+                                                    MetaWindow  *window);
 
 #ifdef HAVE_XSYNC
 MetaWindow* meta_display_lookup_sync_alarm     (MetaDisplay *display,
@@ -436,20 +427,22 @@ void meta_display_retheme_all (void);
 void meta_display_set_cursor_theme (const char *theme, 
 				    int         size);
 
-void meta_display_ping_window      (MetaDisplay        *display,
-                                    MetaWindow         *window,
+void meta_display_ping_window      (MetaWindow         *window,
                                     guint32             timestamp,
                                     MetaWindowPingFunc  ping_reply_func,
                                     MetaWindowPingFunc  ping_timeout_func,
                                     void               *user_data);
-gboolean meta_display_window_has_pending_pings (MetaDisplay        *display,
-						MetaWindow         *window);
+void meta_display_pong_for_serial  (MetaDisplay        *display,
+                                    guint32             serial);
 
 int meta_resize_gravity_from_grab_op (MetaGrabOp op);
 
 gboolean meta_grab_op_is_moving   (MetaGrabOp op);
 gboolean meta_grab_op_is_resizing (MetaGrabOp op);
 gboolean meta_grab_op_is_mouse    (MetaGrabOp op);
+gboolean meta_grab_op_is_clicking (MetaGrabOp op);
+gboolean meta_grab_op_is_wayland  (MetaGrabOp op);
+gboolean meta_grab_op_is_keyboard (MetaGrabOp op);
 
 void meta_display_devirtualize_modifiers (MetaDisplay        *display,
                                           MetaVirtualModifier modifiers,
@@ -464,23 +457,31 @@ void meta_display_queue_autoraise_callback  (MetaDisplay *display,
 void meta_display_remove_autoraise_callback (MetaDisplay *display);
 
 void meta_display_overlay_key_activate (MetaDisplay *display);
-void meta_display_accelerator_activate (MetaDisplay *display,
-                                        guint        action,
-                                        guint        deviceid,
-                                        guint        timestamp);
+void meta_display_accelerator_activate (MetaDisplay     *display,
+                                        guint            action,
+                                        ClutterKeyEvent *event);
 gboolean meta_display_modifiers_accelerator_activate (MetaDisplay *display);
 
-/* In above-tab-keycode.c */
-guint meta_display_get_above_tab_keycode (MetaDisplay *display);
-
 #ifdef HAVE_XI23
-gboolean meta_display_process_barrier_event (MetaDisplay    *display,
-                                             XIBarrierEvent *event);
+gboolean meta_display_process_barrier_event (MetaDisplay *display,
+                                             XIEvent     *event);
 #endif /* HAVE_XI23 */
 
 void meta_display_set_input_focus_xwindow (MetaDisplay *display,
                                            MetaScreen  *screen,
                                            Window       window,
                                            guint32      timestamp);
+
+void meta_display_sync_wayland_input_focus (MetaDisplay *display);
+void meta_display_update_focus_window (MetaDisplay *display,
+                                       MetaWindow  *window,
+                                       Window       xwindow,
+                                       gulong       serial,
+                                       gboolean     focused_by_us);
+
+void meta_display_sanity_check_timestamps (MetaDisplay *display,
+                                           guint32      timestamp);
+gboolean meta_display_timestamp_too_old (MetaDisplay *display,
+                                         guint32     *timestamp);
 
 #endif

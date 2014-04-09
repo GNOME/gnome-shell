@@ -104,9 +104,9 @@ gboolean meta_window_grab_all_keys          (MetaWindow  *window,
                                              guint32      timestamp);
 void     meta_window_ungrab_all_keys        (MetaWindow  *window,
                                              guint32      timestamp);
-gboolean meta_display_process_key_event     (MetaDisplay   *display,
-                                             MetaWindow    *window,
-                                             XIDeviceEvent *event);
+gboolean meta_display_process_key_event     (MetaDisplay     *display,
+                                             MetaWindow      *window,
+                                             ClutterKeyEvent *event);
 void     meta_display_process_mapping_event (MetaDisplay *display,
                                              XEvent      *event);
 
@@ -122,7 +122,3 @@ void meta_prefs_get_overlay_binding (MetaKeyCombo *combo);
 const char *meta_prefs_get_iso_next_group_option (void);
 
 #endif
-
-
-
-

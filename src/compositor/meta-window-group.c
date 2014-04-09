@@ -122,7 +122,6 @@ meta_window_group_paint (ClutterActor *actor)
 
   MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
   ClutterActor *stage = clutter_actor_get_stage (actor);
-  MetaCompScreen *info = meta_screen_get_compositor_data (window_group->screen);
 
   /* Normally we expect an actor to be drawn at it's position on the screen.
    * However, if we're inside the paint of a ClutterClone, that won't be the
@@ -164,15 +163,6 @@ meta_window_group_paint (ClutterActor *actor)
   paint_x_offset = paint_x_origin - actor_x_origin;
   paint_y_offset = paint_y_origin - actor_y_origin;
   cairo_region_translate (clip_region, -paint_x_offset, -paint_y_offset);
-
-  if (info->unredirected_window != NULL)
-    {
-      cairo_rectangle_int_t unredirected_rect;
-
-      meta_window_get_frame_rect (info->unredirected_window, (MetaRectangle *)&unredirected_rect);
-      cairo_region_subtract_rectangle (unobscured_region, &unredirected_rect);
-      cairo_region_subtract_rectangle (clip_region, &unredirected_rect);
-    }
 
   meta_cullable_cull_out (META_CULLABLE (window_group), unobscured_region, clip_region);
 

@@ -39,7 +39,6 @@
 #include "workspace-private.h"
 #include "keybindings-private.h"
 #include "stack.h"
-#include "xprops.h"
 #include <meta/compositor.h>
 #include "mutter-enum-types.h"
 #include "core.h"
@@ -52,6 +51,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "x11/xprops.h"
 
 static char* get_screen_name (MetaDisplay *display,
                               int          number);
@@ -454,6 +455,7 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
   XSetWindowAttributes attributes;
   Window guard_window;
   gulong create_serial;
+  MetaStackWindow stack_window;
 
   attributes.event_mask = NoEventMask;
   attributes.override_redirect = True;
@@ -488,12 +490,14 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
     XISelectEvents (xdisplay, guard_window, &mask, 1);
   }
 
+  stack_window.any.type = META_WINDOW_CLIENT_TYPE_X11;
+  stack_window.x11.xwindow = guard_window;
   meta_stack_tracker_record_add (screen->stack_tracker,
-                                 guard_window,
+                                 &stack_window,
                                  create_serial);
 
   meta_stack_tracker_record_lower (screen->stack_tracker,
-                                   guard_window,
+                                   &stack_window,
                                    XNextRequest (xdisplay));
   XLowerWindow (xdisplay, guard_window);
   XMapWindow (xdisplay, guard_window);
@@ -559,7 +563,7 @@ meta_screen_new (MetaDisplay *display,
         }
 
       /* We want to find out when the current selection owner dies */
-      meta_error_trap_push_with_return (display);
+      meta_error_trap_push (display);
       attrs.event_mask = StructureNotifyMask;
       XChangeWindowAttributes (xdisplay,
                                current_wm_sn_owner, CWEventMask, &attrs);
@@ -579,7 +583,7 @@ meta_screen_new (MetaDisplay *display,
 
   if (XGetSelectionOwner (xdisplay, wm_sn_atom) != new_wm_sn_owner)
     {
-      meta_warning (_("Could not acquire window manager selection on screen %d display \"%s\"\n"),
+      meta_warning ("Could not acquire window manager selection on screen %d display \"%s\"\n",
                     number, display->name);
 
       XDestroyWindow (xdisplay, new_wm_sn_owner);
@@ -618,7 +622,7 @@ meta_screen_new (MetaDisplay *display,
     }
   
   /* select our root window events */
-  meta_error_trap_push_with_return (display);
+  meta_error_trap_push (display);
 
   /* We need to or with the existing event mask since
    * gtk+ may be interested in other events.
@@ -674,8 +678,9 @@ meta_screen_new (MetaDisplay *display,
   screen->xscreen = ScreenOfDisplay (xdisplay, number);
   screen->xroot = xroot;
   screen->rect.x = screen->rect.y = 0;
-  
-  meta_monitor_manager_initialize ();
+
+  if (!meta_is_wayland_compositor ())
+    meta_monitor_manager_initialize ();
 
   manager = meta_monitor_manager_get ();
   g_signal_connect (manager, "monitors-changed",
@@ -688,7 +693,6 @@ meta_screen_new (MetaDisplay *display,
   screen->current_cursor = -1; /* invalid/unset */
   screen->default_xvisual = DefaultVisualOfScreen (screen->xscreen);
   screen->default_depth = DefaultDepthOfScreen (screen->xscreen);
-  screen->flash_window = None;
 
   screen->wm_sn_selection_window = new_wm_sn_owner;
   screen->wm_sn_atom = wm_sn_atom;
@@ -706,7 +710,6 @@ meta_screen_new (MetaDisplay *display,
   screen->columns_of_workspaces = -1;
   screen->vertical_workspaces = FALSE;
   screen->starting_corner = META_SCREEN_TOPLEFT;
-  screen->compositor_data = NULL;
   screen->guard_window = None;
 
   reload_monitor_infos (screen);
@@ -807,11 +810,7 @@ meta_screen_free (MetaScreen *screen,
   
   meta_display_grab (display);
 
-  if (screen->display->compositor)
-    {
-      meta_compositor_unmanage_screen (screen->display->compositor,
-				       screen);
-    }
+  meta_compositor_unmanage (screen->display->compositor);
   
   meta_display_unmanage_windows_for_screen (display, screen, timestamp);
   
@@ -842,10 +841,10 @@ meta_screen_free (MetaScreen *screen,
   meta_stack_free (screen->stack);
   meta_stack_tracker_free (screen->stack_tracker);
 
-  meta_error_trap_push_with_return (screen->display);
+  meta_error_trap_push (screen->display);
   XSelectInput (screen->display->xdisplay, screen->xroot, 0);
   if (meta_error_trap_pop_with_return (screen->display) != Success)
-    meta_warning (_("Could not release screen %d on display \"%s\"\n"),
+    meta_warning ("Could not release screen %d on display \"%s\"\n",
                   screen->number, screen->display->name);
 
   unset_wm_check_hint (screen);
@@ -873,52 +872,33 @@ meta_screen_free (MetaScreen *screen,
 }
 
 void
+meta_screen_create_guard_window (MetaScreen *screen)
+{
+  if (screen->guard_window == None)
+    screen->guard_window = create_guard_window (screen->display->xdisplay, screen);
+}
+
+void
 meta_screen_manage_all_windows (MetaScreen *screen)
 {
-  Window *_children;
-  Window *children;
+  MetaStackWindow *_children;
+  MetaStackWindow *children;
   int n_children, i;
-
-  if (screen->guard_window == None)
-    screen->guard_window = create_guard_window (screen->display->xdisplay,
-                                                screen);
 
   meta_stack_freeze (screen->stack);
   meta_stack_tracker_get_stack (screen->stack_tracker, &_children, &n_children);
 
   /* Copy the stack as it will be modified as part of the loop */
-  children = g_memdup (_children, sizeof (Window) * n_children);
+  children = g_memdup (_children, sizeof (MetaStackWindow) * n_children);
 
   for (i = 0; i < n_children; ++i)
     {
-      meta_window_new (screen->display, children[i], TRUE,
-                       META_COMP_EFFECT_NONE);
+      meta_window_x11_new (screen->display, children[i].x11.xwindow, TRUE,
+                           META_COMP_EFFECT_NONE);
     }
 
   g_free (children);
   meta_stack_thaw (screen->stack);
-}
-
-/**
- * meta_screen_for_x_screen:
- * @xscreen: an X screen structure.
- *
- * Gets the #MetaScreen corresponding to an X screen structure.
- *
- * Return value: (transfer none): the #MetaScreen for the X screen
- *   %NULL if Metacity is not managing the screen.
- */
-MetaScreen*
-meta_screen_for_x_screen (Screen *xscreen)
-{
-  MetaDisplay *display;
-  
-  display = meta_display_for_x_display (DisplayOfScreen (xscreen));
-
-  if (display == NULL)
-    return NULL;
-  
-  return meta_display_screen_for_x_screen (display, xscreen);
 }
 
 static void
@@ -1405,6 +1385,26 @@ update_focus_mode (MetaScreen *screen)
 }
 
 void
+meta_screen_update_cursor (MetaScreen *screen)
+{
+  MetaDisplay *display = screen->display;
+  MetaCursor cursor = screen->current_cursor;
+  Cursor xcursor;
+  MetaCursorReference *cursor_ref;
+
+  cursor_ref = meta_cursor_reference_from_theme (screen->cursor_tracker, cursor);
+  meta_cursor_tracker_set_root_cursor (screen->cursor_tracker, cursor_ref);
+  meta_cursor_reference_unref (cursor_ref);
+
+  /* Set a cursor for X11 applications that don't specify their own */
+  xcursor = meta_display_create_x_cursor (display, cursor);
+
+  XDefineCursor (display->xdisplay, screen->xroot, xcursor);
+  XFlush (display->xdisplay);
+  XFreeCursor (display->xdisplay, xcursor);
+}
+
+void
 meta_screen_set_cursor (MetaScreen *screen,
                         MetaCursor  cursor)
 {
@@ -1412,14 +1412,7 @@ meta_screen_set_cursor (MetaScreen *screen,
     return;
 
   screen->current_cursor = cursor;
-  meta_cursor_tracker_set_root_cursor (screen->cursor_tracker, cursor);
-}
-
-void
-meta_screen_update_cursor (MetaScreen *screen)
-{
-  meta_cursor_tracker_set_root_cursor (screen->cursor_tracker,
-                                       screen->current_cursor);
+  meta_screen_update_cursor (screen);
 }
 
 static gboolean
@@ -1460,11 +1453,10 @@ meta_screen_update_tile_preview_timeout (gpointer data)
       monitor = meta_window_get_current_tile_monitor_number (window);
       meta_window_get_current_tile_area (window, &tile_rect);
       meta_compositor_show_tile_preview (screen->display->compositor,
-                                         screen, window, &tile_rect, monitor);
+                                         window, &tile_rect, monitor);
     }
   else
-    meta_compositor_hide_tile_preview (screen->display->compositor,
-                                       screen);
+    meta_compositor_hide_tile_preview (screen->display->compositor);
 
   return FALSE;
 }
@@ -1500,8 +1492,7 @@ meta_screen_hide_tile_preview (MetaScreen *screen)
   if (screen->tile_preview_timeout_id > 0)
     g_source_remove (screen->tile_preview_timeout_id);
 
-  meta_compositor_hide_tile_preview (screen->display->compositor,
-                                     screen);
+  meta_compositor_hide_tile_preview (screen->display->compositor);
 }
 
 MetaWindow*
@@ -1509,38 +1500,19 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
                               MetaWindow  *not_this_one)
 {
   MetaWindow *window;
-  Window root_return, child_return;
-  double root_x_return, root_y_return;
-  double win_x_return, win_y_return;
-  XIButtonState buttons;
-  XIModifierState mods;
-  XIGroupState group;
+  int x, y;
 
   if (not_this_one)
     meta_topic (META_DEBUG_FOCUS,
                 "Focusing mouse window excluding %s\n", not_this_one->desc);
 
-  meta_error_trap_push (screen->display);
-  XIQueryPointer (screen->display->xdisplay,
-                  META_VIRTUAL_CORE_POINTER_ID,
-                  screen->xroot,
-                  &root_return,
-                  &child_return,
-                  &root_x_return,
-                  &root_y_return,
-                  &win_x_return,
-                  &win_y_return,
-                  &buttons,
-                  &mods,
-                  &group);
-  meta_error_trap_pop (screen->display);
-  free (buttons.mask);
+  meta_cursor_tracker_get_pointer (screen->cursor_tracker,
+                                   &x, &y, NULL);
 
   window = meta_stack_get_default_focus_window_at_point (screen->stack,
                                                          screen->active_workspace,
                                                          not_this_one,
-                                                         root_x_return,
-                                                         root_y_return);
+                                                         x, y);
 
   return window;
 }
@@ -1822,28 +1794,11 @@ meta_screen_get_current_monitor (MetaScreen *screen)
   
   if (screen->display->monitor_cache_invalidated)
     {
-      Window root_return, child_return;
-      double win_x_return, win_y_return;
-      double root_x_return, root_y_return;
-      XIButtonState buttons;
-      XIModifierState mods;
-      XIGroupState group;
+      int x, y;
 
-      XIQueryPointer (screen->display->xdisplay,
-                      META_VIRTUAL_CORE_POINTER_ID,
-                      screen->xroot,
-                      &root_return,
-                      &child_return,
-                      &root_x_return,
-                      &root_y_return,
-                      &win_x_return,
-                      &win_y_return,
-                      &buttons,
-                      &mods,
-                      &group);
-      free (buttons.mask);
-
-      meta_screen_get_current_monitor_for_pos (screen, root_x_return, root_y_return);
+      meta_cursor_tracker_get_pointer (screen->cursor_tracker,
+                                       &x, &y, NULL);
+      meta_screen_get_current_monitor_for_pos (screen, x, y);
     }
 
   return screen->last_monitor_index;
@@ -2554,10 +2509,8 @@ on_monitors_changed (MetaMonitorManager *manager,
                        &changes);
     }
 
-  if (screen->display->compositor)
-    meta_compositor_sync_screen_size (screen->display->compositor,
-				      screen,
-                                      screen->rect.width, screen->rect.height);
+  meta_compositor_sync_screen_size (screen->display->compositor,
+                                    screen->rect.width, screen->rect.height);
 
   /* Queue a resize on all the windows */
   meta_screen_foreach_window (screen, meta_screen_resize_func, 0);
@@ -3097,24 +3050,6 @@ meta_screen_get_size (MetaScreen *screen,
     *height = screen->rect.height;
 }
 
-/**
- * meta_screen_get_compositor_data: (skip)
- * @screen: A #MetaScreen
- *
- */
-gpointer
-meta_screen_get_compositor_data (MetaScreen *screen)
-{
-  return screen->compositor_data;
-}
-
-void
-meta_screen_set_compositor_data (MetaScreen *screen,
-                                 gpointer    compositor)
-{
-  screen->compositor_data = compositor;
-}
-
 void
 meta_screen_set_cm_selection (MetaScreen *screen)
 {
@@ -3373,10 +3308,6 @@ gboolean
 meta_screen_handle_xevent (MetaScreen *screen,
                            XEvent     *xevent)
 {
-  /* Go through our helpers and see if they want this event.
-     Currently, only MetaCursorTracker.
-  */
-
   if (meta_cursor_tracker_handle_xevent (screen->cursor_tracker, xevent))
     return TRUE;
 

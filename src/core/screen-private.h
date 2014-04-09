@@ -36,7 +36,7 @@
 #include <X11/Xutil.h>
 #include "stack-tracker.h"
 #include "ui.h"
-#include "monitor-private.h"
+#include "meta-monitor-manager.h"
 
 typedef void (* MetaScreenWindowFunc) (MetaScreen *screen, MetaWindow *window,
                                        gpointer user_data);
@@ -82,8 +82,6 @@ struct _MetaScreen
   MetaCursorTracker *cursor_tracker;
   MetaCursor current_cursor;
 
-  Window flash_window;
-
   Window wm_sn_selection_window;
   Atom wm_sn_atom;
   guint32 wm_sn_timestamp;
@@ -118,9 +116,6 @@ struct _MetaScreen
   guint all_keys_grabbed : 1;
   
   int closing;
-
-  /* Managed by compositor.c */
-  gpointer compositor_data;
   
   /* Instead of unmapping withdrawn windows we can leave them mapped
    * and restack them below a guard window. When using a compositor
@@ -223,12 +218,14 @@ void     meta_screen_workspace_switched (MetaScreen         *screen,
 
 void meta_screen_set_active_workspace_hint (MetaScreen *screen);
 
+void meta_screen_create_guard_window (MetaScreen *screen);
+
+gboolean meta_screen_handle_xevent (MetaScreen *screen,
+                                    XEvent     *xevent);
+
 int meta_screen_xinerama_index_to_monitor_index (MetaScreen *screen,
                                                  int         index);
 int meta_screen_monitor_index_to_xinerama_index (MetaScreen *screen,
                                                  int         index);
-
-gboolean meta_screen_handle_xevent (MetaScreen *screen,
-                                    XEvent     *xevent);
 
 #endif

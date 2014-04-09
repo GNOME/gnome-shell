@@ -29,6 +29,7 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/XInput.h>
 #include <X11/extensions/XInput2.h>
+#include <clutter/clutter.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 
@@ -162,13 +163,6 @@ typedef void (* MetaWindowMenuFunc) (MetaWindowMenu *menu,
  * @META_GRAB_OP_KEYBOARD_RESIZING_NE: Resizing NE with keyboard
  * @META_GRAB_OP_KEYBOARD_RESIZING_SW: Resizing SW with keyboard
  * @META_GRAB_OP_KEYBOARD_RESIZING_NW: Resizing NS with keyboard
- * @META_GRAB_OP_KEYBOARD_TABBING_NORMAL: Tabbing
- * @META_GRAB_OP_KEYBOARD_TABBING_DOCK: Tabbing through docks
- * @META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL: Escaping
- * @META_GRAB_OP_KEYBOARD_ESCAPING_DOCK: Escaping through docks
- * @META_GRAB_OP_KEYBOARD_ESCAPING_GROUP: Escaping through groups
- * @META_GRAB_OP_KEYBOARD_TABBING_GROUP: Tabbing through groups
- * @META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING: Switch to another workspace
  * @META_GRAB_OP_CLICKING_MINIMIZE: Clicked minimize button
  * @META_GRAB_OP_CLICKING_MAXIMIZE: Clicked maximize button
  * @META_GRAB_OP_CLICKING_UNMAXIMIZE: Clicked unmaximize button
@@ -227,7 +221,10 @@ typedef enum
   META_GRAB_OP_CLICKING_UNSTICK,
 
   /* Special grab op when the compositor asked for a grab */
-  META_GRAB_OP_COMPOSITOR
+  META_GRAB_OP_COMPOSITOR,
+
+  /* For when a client takes a popup grab */
+  META_GRAB_OP_WAYLAND_CLIENT,
 } MetaGrabOp;
 
 /**

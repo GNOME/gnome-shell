@@ -32,11 +32,6 @@
 #include <stdlib.h>
 #include <cairo-xlib.h>
 
-static void meta_ui_accelerator_parse (const char      *accel,
-                                       guint           *keysym,
-                                       guint           *keycode,
-                                       GdkModifierType *keymask);
-
 struct _MetaUI
 {
   Display *xdisplay;
@@ -54,6 +49,8 @@ struct _MetaUI
 void
 meta_ui_init (void)
 {
+  gdk_set_allowed_backends ("x11");
+
   if (!gtk_init_check (NULL, NULL))
     meta_fatal ("Unable to open X display %s\n", XDisplayName (NULL));
 
@@ -241,56 +238,15 @@ maybe_redirect_mouse_event (XEvent *xevent)
   return TRUE;
 }
 
-typedef struct _EventFunc EventFunc;
-
-struct _EventFunc
-{
-  MetaEventFunc func;
-  gpointer data;
-};
-
-static EventFunc *ef = NULL;
-
 static GdkFilterReturn
-filter_func (GdkXEvent *xevent,
-             GdkEvent *event,
-             gpointer data)
+ui_filter_func (GdkXEvent *xevent,
+                GdkEvent *event,
+                gpointer data)
 {
-  g_return_val_if_fail (ef != NULL, GDK_FILTER_CONTINUE);
-
-  if ((* ef->func) (xevent, ef->data) ||
-      maybe_redirect_mouse_event (xevent))
+  if (maybe_redirect_mouse_event (xevent))
     return GDK_FILTER_REMOVE;
   else
     return GDK_FILTER_CONTINUE;
-}
-
-void
-meta_ui_add_event_func (Display       *xdisplay,
-                        MetaEventFunc  func,
-                        gpointer       data)
-{
-  g_return_if_fail (ef == NULL);
-
-  ef = g_new (EventFunc, 1);
-  ef->func = func;
-  ef->data = data;
-
-  gdk_window_add_filter (NULL, filter_func, ef);
-}
-
-/* removal is by data due to proxy function */
-void
-meta_ui_remove_event_func (Display       *xdisplay,
-                           MetaEventFunc  func,
-                           gpointer       data)
-{
-  g_return_if_fail (ef != NULL);
-  
-  gdk_window_remove_filter (NULL, filter_func, ef);
-
-  g_free (ef);
-  ef = NULL;
 }
 
 MetaUI*
@@ -316,6 +272,8 @@ meta_ui_new (Display *xdisplay,
    */
   gtk_widget_show (GTK_WIDGET (ui->frames));
 
+  gdk_window_add_filter (NULL, ui_filter_func, NULL);
+
   g_object_set_data (G_OBJECT (gdisplay), "meta-ui", ui);
 
   return ui;
@@ -330,6 +288,8 @@ meta_ui_free (MetaUI *ui)
 
   gdisplay = gdk_x11_lookup_xdisplay (ui->xdisplay);
   g_object_set_data (G_OBJECT (gdisplay), "meta-ui", NULL);
+
+  gdk_window_remove_filter (NULL, ui_filter_func, NULL);
 
   g_free (ui);
 }
@@ -700,38 +660,6 @@ meta_ui_window_should_not_cause_focus (Display *xdisplay,
     return FALSE;
 }
 
-char*
-meta_text_property_to_utf8 (Display             *xdisplay,
-                            const XTextProperty *prop)
-{
-  GdkDisplay *display;
-  char **list;
-  int count;
-  char *retval;
-  
-  list = NULL;
-
-  display = gdk_x11_lookup_xdisplay (xdisplay);
-  count = gdk_text_property_to_utf8_list_for_display (display,
-                                                      gdk_x11_xatom_to_atom_for_display (display, prop->encoding),
-                                                      prop->format,
-                                                      prop->value,
-                                                      prop->nitems,
-                                                      &list);
-
-  if (count == 0)
-    retval = NULL;
-  else
-    {
-  retval = list[0];
-  list[0] = g_strdup (""); /* something to free */
-    }
-  
-  g_strfreev (list);
-
-  return retval;
-}
-
 void
 meta_ui_theme_get_frame_borders (MetaUI *ui,
                                  MetaFrameType      type,
@@ -795,196 +723,6 @@ gboolean
 meta_ui_have_a_theme (void)
 {
   return meta_theme_get_current () != NULL;
-}
-
-static void
-meta_ui_accelerator_parse (const char      *accel,
-                           guint           *keysym,
-                           guint           *keycode,
-                           GdkModifierType *keymask)
-{
-  const char *above_tab;
-
-  if (accel[0] == '0' && accel[1] == 'x')
-    {
-      *keysym = 0;
-      *keycode = (guint) strtoul (accel, NULL, 16);
-      *keymask = 0;
-
-      return;
-    }
-
-  /* The key name 'Above_Tab' is special - it's not an actual keysym name,
-   * but rather refers to the key above the tab key. In order to use
-   * the GDK parsing for modifiers in combination with it, we substitute
-   * it with 'Tab' temporarily before calling gtk_accelerator_parse().
-   */
-#define is_word_character(c) (g_ascii_isalnum(c) || ((c) == '_'))
-#define ABOVE_TAB "Above_Tab"
-#define ABOVE_TAB_LEN 9
-
-  above_tab = strstr (accel, ABOVE_TAB);
-  if (above_tab &&
-      (above_tab == accel || !is_word_character (above_tab[-1])) &&
-      !is_word_character (above_tab[ABOVE_TAB_LEN]))
-    {
-      char *before = g_strndup (accel, above_tab - accel);
-      char *after = g_strdup (above_tab + ABOVE_TAB_LEN);
-      char *replaced = g_strconcat (before, "Tab", after, NULL);
-
-      gtk_accelerator_parse (replaced, NULL, keymask);
-
-      g_free (before);
-      g_free (after);
-      g_free (replaced);
-
-      *keysym = META_KEY_ABOVE_TAB;
-      return;
-    }
-
-#undef is_word_character
-#undef ABOVE_TAB
-#undef ABOVE_TAB_LEN
-
-  gtk_accelerator_parse (accel, keysym, keymask);
-}
-
-gboolean
-meta_ui_parse_accelerator (const char          *accel,
-                           unsigned int        *keysym,
-                           unsigned int        *keycode,
-                           MetaVirtualModifier *mask)
-{
-  GdkModifierType gdk_mask = 0;
-  guint gdk_sym = 0;
-  guint gdk_code = 0;
-  
-  *keysym = 0;
-  *keycode = 0;
-  *mask = 0;
-
-  if (!accel[0] || strcmp (accel, "disabled") == 0)
-    return TRUE;
-  
-  meta_ui_accelerator_parse (accel, &gdk_sym, &gdk_code, &gdk_mask);
-  if (gdk_mask == 0 && gdk_sym == 0 && gdk_code == 0)
-    return FALSE;
-
-  if (gdk_sym == None && gdk_code == 0)
-    return FALSE;
-  
-  if (gdk_mask & GDK_RELEASE_MASK) /* we don't allow this */
-    return FALSE;
-  
-  *keysym = gdk_sym;
-  *keycode = gdk_code;
-
-  if (gdk_mask & GDK_SHIFT_MASK)
-    *mask |= META_VIRTUAL_SHIFT_MASK;
-  if (gdk_mask & GDK_CONTROL_MASK)
-    *mask |= META_VIRTUAL_CONTROL_MASK;
-  if (gdk_mask & GDK_MOD1_MASK)
-    *mask |= META_VIRTUAL_ALT_MASK;
-  if (gdk_mask & GDK_MOD2_MASK)
-    *mask |= META_VIRTUAL_MOD2_MASK;
-  if (gdk_mask & GDK_MOD3_MASK)
-    *mask |= META_VIRTUAL_MOD3_MASK;
-  if (gdk_mask & GDK_MOD4_MASK)
-    *mask |= META_VIRTUAL_MOD4_MASK;
-  if (gdk_mask & GDK_MOD5_MASK)
-    *mask |= META_VIRTUAL_MOD5_MASK;
-  if (gdk_mask & GDK_SUPER_MASK)
-    *mask |= META_VIRTUAL_SUPER_MASK;
-  if (gdk_mask & GDK_HYPER_MASK)
-    *mask |= META_VIRTUAL_HYPER_MASK;
-  if (gdk_mask & GDK_META_MASK)
-    *mask |= META_VIRTUAL_META_MASK;
-  
-  return TRUE;
-}
-
-/* Caller responsible for freeing return string of meta_ui_accelerator_name! */
-gchar*
-meta_ui_accelerator_name  (unsigned int        keysym,
-                           MetaVirtualModifier mask)
-{
-  GdkModifierType mods = 0;
-        
-  if (keysym == 0 && mask == 0)
-    {
-      return g_strdup ("disabled");
-    }
-
-  if (mask & META_VIRTUAL_SHIFT_MASK)
-    mods |= GDK_SHIFT_MASK;
-  if (mask & META_VIRTUAL_CONTROL_MASK)
-    mods |= GDK_CONTROL_MASK;
-  if (mask & META_VIRTUAL_ALT_MASK)
-    mods |= GDK_MOD1_MASK;
-  if (mask & META_VIRTUAL_MOD2_MASK)
-    mods |= GDK_MOD2_MASK;
-  if (mask & META_VIRTUAL_MOD3_MASK)
-    mods |= GDK_MOD3_MASK;
-  if (mask & META_VIRTUAL_MOD4_MASK)
-    mods |= GDK_MOD4_MASK;
-  if (mask & META_VIRTUAL_MOD5_MASK)
-    mods |= GDK_MOD5_MASK;
-  if (mask & META_VIRTUAL_SUPER_MASK)
-    mods |= GDK_SUPER_MASK;
-  if (mask & META_VIRTUAL_HYPER_MASK)
-    mods |= GDK_HYPER_MASK;
-  if (mask & META_VIRTUAL_META_MASK)
-    mods |= GDK_META_MASK;
-
-  return gtk_accelerator_name (keysym, mods);
-
-}
-
-gboolean
-meta_ui_parse_modifier (const char          *accel,
-                        MetaVirtualModifier *mask)
-{
-  GdkModifierType gdk_mask = 0;
-  guint gdk_sym = 0;
-  guint gdk_code = 0;
-  
-  *mask = 0;
-
-  if (accel == NULL || !accel[0] || strcmp (accel, "disabled") == 0)
-    return TRUE;
-  
-  meta_ui_accelerator_parse (accel, &gdk_sym, &gdk_code, &gdk_mask);
-  if (gdk_mask == 0 && gdk_sym == 0 && gdk_code == 0)
-    return FALSE;
-
-  if (gdk_sym != None || gdk_code != 0)
-    return FALSE;
-  
-  if (gdk_mask & GDK_RELEASE_MASK) /* we don't allow this */
-    return FALSE;
-
-  if (gdk_mask & GDK_SHIFT_MASK)
-    *mask |= META_VIRTUAL_SHIFT_MASK;
-  if (gdk_mask & GDK_CONTROL_MASK)
-    *mask |= META_VIRTUAL_CONTROL_MASK;
-  if (gdk_mask & GDK_MOD1_MASK)
-    *mask |= META_VIRTUAL_ALT_MASK;
-  if (gdk_mask & GDK_MOD2_MASK)
-    *mask |= META_VIRTUAL_MOD2_MASK;
-  if (gdk_mask & GDK_MOD3_MASK)
-    *mask |= META_VIRTUAL_MOD3_MASK;
-  if (gdk_mask & GDK_MOD4_MASK)
-    *mask |= META_VIRTUAL_MOD4_MASK;
-  if (gdk_mask & GDK_MOD5_MASK)
-    *mask |= META_VIRTUAL_MOD5_MASK;
-  if (gdk_mask & GDK_SUPER_MASK)
-    *mask |= META_VIRTUAL_SUPER_MASK;
-  if (gdk_mask & GDK_HYPER_MASK)
-    *mask |= META_VIRTUAL_HYPER_MASK;
-  if (gdk_mask & GDK_META_MASK)
-    *mask |= META_VIRTUAL_META_MASK;
-  
-  return TRUE;
 }
 
 gboolean

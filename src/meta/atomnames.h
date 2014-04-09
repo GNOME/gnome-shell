@@ -79,7 +79,9 @@ item(TIMESTAMP)
 item(VERSION)
 item(ATOM_PAIR)
 item(Backlight)
+item(_XKB_RULES_NAMES)
 item(hotplug_mode_update)
+item(WL_SURFACE_ID)
 
 /* Oddities: These are used, and we need atoms for them,
  * but when we need all _NET_WM hints (i.e. when we're making
@@ -90,7 +92,6 @@ item(hotplug_mode_update)
 item(_NET_WM_SYNC_REQUEST)
 item(_NET_WM_SYNC_REQUEST_COUNTER)
 item(_NET_WM_VISIBLE_NAME)
-item(_NET_WM_VISIBLE_ICON_NAME)
 item(_NET_SUPPORTING_WM_CHECK)
 
 /* But I suppose it's quite reasonable not to advertise using
@@ -131,7 +132,6 @@ item(_NET_CLIENT_LIST)
 item(_NET_CLIENT_LIST_STACKING)
 item(_NET_WM_STATE_SKIP_TASKBAR)
 item(_NET_WM_STATE_SKIP_PAGER)
-item(_NET_WM_ICON_NAME)
 item(_NET_WM_ICON)
 item(_NET_WM_ICON_GEOMETRY)
 item(_NET_WM_MOVERESIZE)

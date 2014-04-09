@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+_Name=Mutter (wayland compositor)
+Exec=mutter-launch -- mutter --wayland --display-server
+NoDisplay=true
+# name of loadable control center module
+X-GNOME-WMSettingsModule=metacity
+# name we put on the WM spec check window
+X-GNOME-WMName=Mutter
+# back compat only 
+X-GnomeWMSettingsLibrary=metacity
+X-GNOME-Bugzilla-Bugzilla=GNOME
+X-GNOME-Bugzilla-Product=mutter
+X-GNOME-Bugzilla-Component=general
+X-GNOME-Autostart-Phase=DisplayServer
+X-GNOME-Autostart-Notify=true

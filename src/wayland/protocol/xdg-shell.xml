@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocol name="xdg_shell">
+
+  <copyright>
+    Copyright © 2008-2013 Kristian Høgsberg
+    Copyright © 2013      Rafael Antognolli
+    Copyright © 2013      Jasper St. Pierre
+    Copyright © 2010-2013 Intel Corporation
+
+    Permission to use, copy, modify, distribute, and sell this
+    software and its documentation for any purpose is hereby granted
+    without fee, provided that the above copyright notice appear in
+    all copies and that both that copyright notice and this permission
+    notice appear in supporting documentation, and that the name of
+    the copyright holders not be used in advertising or publicity
+    pertaining to distribution of the software without specific,
+    written prior permission.  The copyright holders make no
+    representations about the suitability of this software for any
+    purpose.  It is provided "as is" without express or implied
+    warranty.
+
+    THE COPYRIGHT HOLDERS DISCLAIM ALL WARRANTIES WITH REGARD TO THIS
+    SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+    FITNESS, IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+    AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+    ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+    THIS SOFTWARE.
+  </copyright>
+
+  <interface name="xdg_shell" version="1">
+    <description summary="create desktop-style surfaces">
+      This interface is implemented by servers that provide
+      desktop-style user interfaces.
+
+      It allows clients to associate a xdg_surface with
+      a basic surface.
+    </description>
+
+    <enum name="version">
+      <description summary="latest protocol version">
+	The 'current' member of this enum gives the version of the
+	protocol.  Implementations can compare this to the version
+	they implement using static_assert to ensure the protocol and
+	implementation versions match.
+      </description>
+      <entry name="current" value="3" summary="Always the latest version"/>
+    </enum>
+
+
+    <request name="use_unstable_version">
+      <description summary="enable use of this unstable version">
+	Negotiate the unstable version of the interface.  This
+	mechanism is in place to ensure client and server agree on the
+	unstable versions of the protocol that they speak or exit
+	cleanly if they don't agree.  This request will go away once
+	the xdg-shell protocol is stable.
+      </description>
+      <arg name="version" type="int"/>
+    </request>
+
+    <request name="get_xdg_surface">
+      <description summary="create a shell surface from a surface">
+	Create a shell surface for an existing surface.
+
+	Only one shell or popup surface can be associated with a given
+	surface.
+      </description>
+      <arg name="id" type="new_id" interface="xdg_surface"/>
+      <arg name="surface" type="object" interface="wl_surface"/>
+    </request>
+
+    <request name="get_xdg_popup">
+      <description summary="create a shell surface from a surface">
+	Create a popup surface for an existing surface.
+
+	Only one shell or popup surface can be associated with a given
+	surface.
+      </description>
+      <arg name="id" type="new_id" interface="xdg_popup"/>
+      <arg name="surface" type="object" interface="wl_surface"/>
+      <arg name="parent" type="object" interface="wl_surface"/>
+      <arg name="seat" type="object" interface="wl_seat" summary="the wl_seat whose pointer is used"/>
+      <arg name="serial" type="uint" summary="serial of the implicit grab on the pointer"/>
+      <arg name="x" type="int"/>
+      <arg name="y" type="int"/>
+      <arg name="flags" type="uint"/>
+    </request>
+
+    <event name="ping">
+      <description summary="check if the client is alive">
+        The ping event asks the client if it's still alive. Pass the
+        serial specified in the event back to the compositor by sending
+        a "pong" request back with the specified serial.
+
+        Compositors can use this to determine if the client is still
+        alive. It's unspecified what will happen if the client doesn't
+        respond to the ping request, or in what timeframe. Clients should
+        try to respond in a reasonable amount of time.
+      </description>
+      <arg name="serial" type="uint" summary="pass this to the callback"/>
+    </event>
+
+    <request name="pong">
+      <description summary="respond to a ping event">
+	A client must respond to a ping event with a pong request or
+	the client may be deemed unresponsive.
+      </description>
+      <arg name="serial" type="uint" summary="serial of the ping event"/>
+    </request>
+  </interface>
+
+  <interface name="xdg_surface" version="1">
+
+    <description summary="desktop-style metadata interface">
+      An interface that may be implemented by a wl_surface, for
+      implementations that provide a desktop-style user interface.
+
+      It provides requests to treat surfaces like windows, allowing to set
+      properties like maximized, fullscreen, minimized, and to move and resize
+      them, and associate metadata like title and app id.
+
+      On the server side the object is automatically destroyed when
+      the related wl_surface is destroyed.  On client side,
+      xdg_surface.destroy() must be called before destroying
+      the wl_surface object.
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="remove xdg_surface interface">
+	The xdg_surface interface is removed from the wl_surface object
+	that was turned into a xdg_surface with
+	xdg_shell.get_xdg_surface request. The xdg_surface properties,
+	like maximized and fullscreen, are lost. The wl_surface loses
+	its role as a xdg_surface. The wl_surface is unmapped.
+      </description>
+    </request>
+
+    <request name="set_transient_for">
+      <description summary="surface is a child of another surface">
+	Setting a surface as transient of another means that it is child
+	of another surface.
+
+	Child surfaces are stacked above their parents, and will be
+	unmapped if the parent is unmapped too. They should not appear
+	on task bars and alt+tab.
+      </description>
+      <arg name="parent" type="object" interface="wl_surface" allow-null="true"/>
+    </request>
+
+    <request name="set_margin">
+      <description summary="set the visible frame boundaries">
+        This tells the compositor what the visible size of the window
+        should be, so it can use it to determine what borders to use for
+        constrainment and alignment.
+
+        CSD often has invisible areas for decoration purposes, like drop
+        shadows. These "shadow" drawings need to be subtracted out of the
+        normal boundaries of the window when computing where to place
+        windows (e.g. to set this window so it's centered on top of another,
+        or to put it to the left or right of the screen.)
+
+        This value should change as little as possible at runtime, to
+        prevent flicker.
+
+        This value is also ignored when the window is maximized or
+        fullscreen, and assumed to be 0.
+
+        If never called, this value is assumed to be 0.
+      </description>
+      <arg name="left_margin" type="int"/>
+      <arg name="right_margin" type="int"/>
+      <arg name="top_margin" type="int"/>
+      <arg name="bottom_margin" type="int"/>
+    </request>
+
+    <request name="set_title">
+      <description summary="set surface title">
+	Set a short title for the surface.
+
+	This string may be used to identify the surface in a task bar,
+	window list, or other user interface elements provided by the
+	compositor.
+
+	The string must be encoded in UTF-8.
+      </description>
+      <arg name="title" type="string"/>
+    </request>
+
+    <request name="set_app_id">
+      <description summary="set surface class">
+	Set an id for the surface.
+
+	The app id identifies the general class of applications to which
+	the surface belongs.
+
+	It should be the ID that appears in the new desktop entry
+	specification, the interface name.
+      </description>
+      <arg name="app_id" type="string"/>
+    </request>
+
+    <request name="move">
+      <description summary="start an interactive move">
+	Start a pointer-driven move of the surface.
+
+	This request must be used in response to a button press event.
+	The server may ignore move requests depending on the state of
+	the surface (e.g. fullscreen or maximized).
+      </description>
+      <arg name="seat" type="object" interface="wl_seat" summary="the wl_seat whose pointer is used"/>
+      <arg name="serial" type="uint" summary="serial of the implicit grab on the pointer"/>
+    </request>
+
+    <enum name="resize_edge">
+      <description summary="edge values for resizing">
+	These values are used to indicate which edge of a surface
+	is being dragged in a resize operation. The server may
+	use this information to adapt its behavior, e.g. choose
+	an appropriate cursor image.
+      </description>
+      <entry name="none" value="0"/>
+      <entry name="top" value="1"/>
+      <entry name="bottom" value="2"/>
+      <entry name="left" value="4"/>
+      <entry name="top_left" value="5"/>
+      <entry name="bottom_left" value="6"/>
+      <entry name="right" value="8"/>
+      <entry name="top_right" value="9"/>
+      <entry name="bottom_right" value="10"/>
+    </enum>
+
+    <request name="resize">
+      <description summary="start an interactive resize">
+	Start a pointer-driven resizing of the surface.
+
+	This request must be used in response to a button press event.
+	The server may ignore resize requests depending on the state of
+	the surface (e.g. fullscreen or maximized).
+      </description>
+      <arg name="seat" type="object" interface="wl_seat" summary="the wl_seat whose pointer is used"/>
+      <arg name="serial" type="uint" summary="serial of the implicit grab on the pointer"/>
+      <arg name="edges" type="uint" summary="which edge or corner is being dragged"/>
+    </request>
+
+    <event name="configure">
+      <description summary="suggest resize">
+	The configure event asks the client to resize its surface.
+
+	The size is a hint, in the sense that the client is free to
+	ignore it if it doesn't resize, pick a smaller size (to
+	satisfy aspect ratio or resize in steps of NxM pixels).
+
+	The client is free to dismiss all but the last configure
+	event it received.
+
+	The width and height arguments specify the size of the window
+	in surface local coordinates.
+      </description>
+
+      <arg name="width" type="int"/>
+      <arg name="height" type="int"/>
+    </event>
+
+    <request name="set_output">
+      <description summary="set the default output used by this surface">
+	Set the default output used by this surface when it is first mapped.
+
+	If this value is NULL (default), it's up to the compositor to choose
+	which display will be used to map this surface.
+
+	When fullscreen or maximized state are set on this surface, and it
+	wasn't mapped yet, the output set with this method will be used.
+	Otherwise, the output where the surface is currently mapped will be
+	used.
+      </description>
+      <arg name="output" type="object" interface="wl_output" allow-null="true"/>
+    </request>
+
+    <enum name="state">
+      <description summary="types of state on the surface">
+        The different state values used on the surface. This is designed for
+        state values like maximized, fullscreen. It is paired with the
+        request_change_state event to ensure that both the client and the
+        compositor setting the state can be synchronized.
+
+        States set in this way are double-buffered. They will get applied on
+        the next commit.
+
+        Desktop environments may extend this enum by taking up a range of
+        values and documenting the range they chose in this description.
+        They are not required to document the values for the range that they
+        chose. Ideally, any good extensions from a desktop environment should
+        make its way into standardization into this enum.
+
+        The current reserved ranges are:
+
+        0x0000 - 0x0FFF: xdg-shell core values, documented below.
+        0x1000 - 0x1FFF: GNOME
+      </description>
+      <entry name="maximized" value="1" summary="the surface is maximized">
+        A non-zero value indicates the surface is maximized. Otherwise,
+        the surface is unmaximized.
+      </entry>
+      <entry name="fullscreen" value="2" summary="the surface is fullscreen">
+        A non-zero value indicates the surface is fullscreen. Otherwise,
+        the surface is not fullscreen.
+      </entry>
+    </enum>
+
+    <request name="request_change_state">
+      <description summary="client requests to change a surface's state">
+        This asks the compositor to change the state. If the compositor wants
+        to change the state, it will send a change_state event with the same
+        state_type, value, and serial, and the event flow continues as if it
+        it was initiated by the compositor.
+
+        If the compositor does not want to change the state, it will send a
+        change_state to the client with the old value of the state.
+      </description>
+      <arg name="state_type" type="uint" summary="the state to set"/>
+      <arg name="value" type="uint" summary="the value to change the state to"/>
+      <arg name="serial" type="uint" summary="an event serial">
+        This serial is so the client can know which change_state event corresponds
+        to which request_change_state request it sent out.
+      </arg>
+    </request>
+
+    <event name="change_state">
+      <description summary="compositor wants to change a surface's state">
+        This event tells the client to change a surface's state. The client
+        should respond with an ack_change_state request to the compositor to
+        guarantee that the compositor knows that the client has seen it.
+      </description>
+
+      <arg name="state_type" type="uint" summary="the state to set"/>
+      <arg name="value" type="uint" summary="the value to change the state to"/>
+      <arg name="serial" type="uint" summary="a serial for the compositor's own tracking"/>
+    </event>
+
+    <request name="ack_change_state">
+      <description summary="ack a change_state event">
+        When a change_state event is received, a client should then ack it
+        using the ack_change_state request to ensure that the compositor
+        knows the client has seen the event.
+
+        By this point, the state is confirmed, and the next attach should
+        contain the buffer drawn for the new state value.
+
+        The values here need to be the same as the values in the cooresponding
+        change_state event.
+      </description>
+      <arg name="state_type" type="uint" summary="the state to set"/>
+      <arg name="value" type="uint" summary="the value to change the state to"/>
+      <arg name="serial" type="uint" summary="a serial to pass to change_state"/>
+    </request>
+
+    <request name="set_minimized">
+      <description summary="minimize the surface">
+        Minimize the surface.
+      </description>
+    </request>
+
+    <event name="activated">
+      <description summary="surface was activated">
+	The activated_set event is sent when this surface has been
+	activated, which means that the surface has user attention.
+        Window decorations should be updated accordingly. You should
+        not use this event for anything but the style of decorations
+        you display, use wl_keyboard.enter and wl_keyboard.leave for
+        determining keyboard focus.
+      </description>
+    </event>
+
+    <event name="deactivated">
+      <description summary="surface was deactivated">
+	The deactivate event is sent when this surface has been
+        deactivated, which means that the surface lost user attention.
+        Window decorations should be updated accordingly. You should
+        not use this event for anything but the style of decorations
+        you display, use wl_keyboard.enter and wl_keyboard.leave for
+        determining keyboard focus.
+      </description>
+    </event>
+
+    <event name="delete">
+      <description summary="surface wants to be closed">
+        The delete event is sent by the compositor when the user
+        wants the surface to be closed. This should be equivalent to
+        the user clicking the close button in client-side decorations,
+        if your application has any...
+
+        This is only a request that the user intends to close your
+        window. The client may choose to ignore this request, or show
+        a dialog to ask the user to save their data...
+      </description>
+    </event>
+  </interface>
+
+  <interface name="xdg_popup" version="1">
+    <description summary="desktop-style metadata interface">
+      An interface that may be implemented by a wl_surface, for
+      implementations that provide a desktop-style popups/menus. A popup
+      surface is a transient surface with an added pointer grab.
+
+      An existing implicit grab will be changed to owner-events mode,
+      and the popup grab will continue after the implicit grab ends
+      (i.e. releasing the mouse button does not cause the popup to be
+      unmapped).
+
+      The popup grab continues until the window is destroyed or a mouse
+      button is pressed in any other clients window. A click in any of
+      the clients surfaces is reported as normal, however, clicks in
+      other clients surfaces will be discarded and trigger the callback.
+
+      The x and y arguments specify the locations of the upper left
+      corner of the surface relative to the upper left corner of the
+      parent surface, in surface local coordinates.
+
+      xdg_popup surfaces are always transient for another surface.
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="remove xdg_surface interface">
+	The xdg_surface interface is removed from the wl_surface object
+	that was turned into a xdg_surface with
+	xdg_shell.get_xdg_surface request. The xdg_surface properties,
+	like maximized and fullscreen, are lost. The wl_surface loses
+	its role as a xdg_surface. The wl_surface is unmapped.
+      </description>
+    </request>
+
+    <event name="popup_done">
+      <description summary="popup interaction is done">
+	The popup_done event is sent out when a popup grab is broken,
+	that is, when the users clicks a surface that doesn't belong
+	to the client owning the popup surface.
+      </description>
+      <arg name="serial" type="uint" summary="serial of the implicit grab on the pointer"/>
+    </event>
+
+  </interface>
+</protocol>

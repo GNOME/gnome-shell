@@ -50,12 +50,11 @@
 #include "display-private.h"
 #include <meta/errors.h>
 #include "ui.h"
-#include "session.h"
 #include <meta/prefs.h>
 #include <meta/compositor.h>
 
 #include <glib-object.h>
-#include <gdk/gdkx.h>
+#include <glib-unix.h>
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -71,11 +70,15 @@
 #include <unistd.h>
 
 #include <clutter/clutter.h>
-#include <clutter/x11/clutter-x11.h>
 
 #ifdef HAVE_INTROSPECTION
 #include <girepository.h>
 #endif
+
+#include "x11/session.h"
+
+#include "wayland/meta-wayland.h"
+#include "backends/meta-backend.h"
 
 /*
  * The exit code we'll return to our parent process when we eventually die.
@@ -187,6 +190,8 @@ static gchar    *opt_client_id;
 static gboolean  opt_replace_wm;
 static gboolean  opt_disable_sm;
 static gboolean  opt_sync;
+static gboolean  opt_wayland;
+static gboolean  opt_display_server;
 
 static GOptionEntry meta_options[] = {
   {
@@ -224,6 +229,17 @@ static GOptionEntry meta_options[] = {
     N_("Make X calls synchronous"),
     NULL
   },
+  {
+    "wayland", 0, 0, G_OPTION_ARG_NONE,
+    &opt_wayland,
+    N_("Run as a wayland compositor"),
+    NULL
+  },
+  {
+    "display-server", 0, 0, G_OPTION_ARG_NONE,
+    &opt_display_server,
+    N_("Run as a full display server, rather than nested")
+  },
   {NULL}
 };
 
@@ -247,76 +263,7 @@ meta_get_option_context (void)
 
   ctx = g_option_context_new (NULL);
   g_option_context_add_main_entries (ctx, meta_options, GETTEXT_PACKAGE);
-  g_option_context_add_group (ctx, clutter_get_option_group_without_init ());
-  g_option_context_add_group (ctx, cogl_get_option_group ());
-
   return ctx;
-}
-
-/* Mutter is responsible for pulling events off the X queue, so Clutter
- * doesn't need (and shouldn't) run its normal event source which polls
- * the X fd, but we do have to deal with dispatching events that accumulate
- * in the clutter queue. This happens, for example, when clutter generate
- * enter/leave events on mouse motion - several events are queued in the
- * clutter queue but only one dispatched. It could also happen because of
- * explicit calls to clutter_event_put(). We add a very simple custom
- * event loop source which is simply responsible for pulling events off
- * of the queue and dispatching them before we block for new events.
- */
-
-static gboolean 
-event_prepare (GSource    *source,
-               gint       *timeout_)
-{
-  *timeout_ = -1;
-
-  return clutter_events_pending ();
-}
-
-static gboolean 
-event_check (GSource *source)
-{
-  return clutter_events_pending ();
-}
-
-static gboolean
-event_dispatch (GSource    *source,
-                GSourceFunc callback,
-                gpointer    user_data)
-{
-  ClutterEvent *event = clutter_event_get ();
-
-  if (event)
-    {
-      clutter_do_event (event);
-      clutter_event_free (event);
-    }
-
-  return TRUE;
-}
-
-static GSourceFuncs event_funcs = {
-  event_prepare,
-  event_check,
-  event_dispatch
-};
-
-static void
-meta_clutter_init (void)
-{
-  clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
-  clutter_x11_disable_event_retrieval ();
-
-  if (CLUTTER_INIT_SUCCESS == clutter_init (NULL, NULL))
-    {
-      GSource *source = g_source_new (&event_funcs, sizeof (GSource));
-      g_source_attach (source, NULL);
-      g_source_unref (source);
-    }
-  else
-    {
-	  meta_fatal ("Unable to initialize Clutter.\n");
-    }
 }
 
 /**
@@ -328,16 +275,17 @@ meta_clutter_init (void)
  * also is %NULL, use the default - :0.0
  */
 static void
-meta_select_display (gchar *display_name)
+meta_select_display (char *display_arg)
 {
-  gchar *envVar = "";
+  const char *display_name;
+
+  if (display_arg)
+    display_name = (const char *) display_arg;
+  else
+    display_name = g_getenv ("MUTTER_DISPLAY");
+
   if (display_name)
-    envVar = g_strconcat ("DISPLAY=", display_name, NULL);
-  else if (g_getenv ("MUTTER_DISPLAY"))
-    envVar = g_strconcat ("DISPLAY=",
-      g_getenv ("MUTTER_DISPLAY"), NULL);
-  /* DO NOT FREE envVar, putenv() sucks */
-  putenv (envVar);
+    g_setenv ("DISPLAY", display_name, TRUE);
 }
 
 static void
@@ -348,28 +296,17 @@ meta_finalize (void)
   if (display)
     meta_display_close (display,
                         CurrentTime); /* I doubt correct timestamps matter here */
-}
 
-static int sigterm_pipe_fds[2] = { -1, -1 };
-
-static void
-sigterm_handler (int signum)
-{
-  if (sigterm_pipe_fds[1] >= 0)
-    {
-      int G_GNUC_UNUSED dummy;
-
-      dummy = write (sigterm_pipe_fds[1], "", 1);
-      close (sigterm_pipe_fds[1]);
-      sigterm_pipe_fds[1] = -1;
-    }
+  if (meta_is_wayland_compositor ())
+    meta_wayland_finalize ();
 }
 
 static gboolean
-on_sigterm (void)
+on_sigterm (gpointer user_data)
 {
-  meta_quit (META_EXIT_SUCCESS);
-  return FALSE;
+  meta_quit (EXIT_SUCCESS);
+
+  return G_SOURCE_REMOVE;
 }
 
 /**
@@ -383,9 +320,8 @@ meta_init (void)
 {
   struct sigaction act;
   sigset_t empty_mask;
-  GIOChannel *channel;
   ClutterSettings *clutter_settings;
-  
+
   sigemptyset (&empty_mask);
   act.sa_handler = SIG_IGN;
   act.sa_mask    = empty_mask;
@@ -399,25 +335,17 @@ meta_init (void)
                 g_strerror (errno));
 #endif
 
-  if (pipe (sigterm_pipe_fds) != 0)
-    g_printerr ("Failed to create SIGTERM pipe: %s\n",
-                g_strerror (errno));
-
-  channel = g_io_channel_unix_new (sigterm_pipe_fds[0]);
-  g_io_channel_set_flags (channel, G_IO_FLAG_NONBLOCK, NULL);
-  g_io_add_watch (channel, G_IO_IN, (GIOFunc) on_sigterm, NULL);
-  g_io_channel_set_close_on_unref (channel, TRUE);
-  g_io_channel_unref (channel);
-
-  act.sa_handler = &sigterm_handler;
-  if (sigaction (SIGTERM, &act, NULL) < 0)
-    g_printerr ("Failed to register SIGTERM handler: %s\n",
-		g_strerror (errno));
+  g_unix_signal_add (SIGTERM, on_sigterm, NULL);
 
   if (g_getenv ("MUTTER_VERBOSE"))
     meta_set_verbose (TRUE);
   if (g_getenv ("MUTTER_DEBUG"))
     meta_set_debugging (TRUE);
+
+  if (opt_display_server)
+    clutter_set_windowing_backend (CLUTTER_WINDOWING_EGL);
+
+  meta_set_is_wayland_compositor (opt_wayland);
 
   if (g_get_home_dir ())
     if (chdir (g_get_home_dir ()) < 0)
@@ -430,9 +358,16 @@ meta_init (void)
   g_irepository_prepend_search_path (MUTTER_PKGLIBDIR);
 #endif
 
-  meta_set_syncing (opt_sync || (g_getenv ("MUTTER_SYNC") != NULL));
+  if (meta_is_wayland_compositor ())
+    {
+      /* NB: When running as a hybrid wayland compositor we run our own headless X
+       * server so the user can't control the X display to connect too. */
+      meta_wayland_init ();
+    }
+  else
+    meta_select_display (opt_display_name);
 
-  meta_select_display (opt_display_name);
+  meta_set_syncing (opt_sync || (g_getenv ("MUTTER_SYNC") != NULL));
   
   if (opt_replace_wm)
     meta_set_replace_current_wm (TRUE);
@@ -441,13 +376,20 @@ meta_init (void)
     meta_fatal ("Can't specify both SM save file and SM client id\n");
   
   meta_main_loop = g_main_loop_new (NULL, FALSE);
-  
+
   meta_ui_init ();
 
-  /*
-   * Clutter can only be initialized after the UI.
-   */
-  meta_clutter_init ();
+  /* If we are running with wayland then we don't wait until we have
+   * an X connection before initializing clutter we instead initialize
+   * it earlier since we need to initialize the GL driver so the driver
+   * can register any needed wayland extensions. */
+  if (!meta_is_wayland_compositor ())
+    {
+      /*
+       * Clutter can only be initialized after the UI.
+       */
+      meta_clutter_init ();
+    }
 
   /*
    * XXX: We cannot handle high dpi scaling yet, so fix the scale to 1

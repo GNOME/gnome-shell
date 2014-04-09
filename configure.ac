@@ -17,9 +17,13 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR(src/core/display.c)
 AC_CONFIG_HEADERS(config.h)
 
-AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz tar-ustar])
+AM_INIT_AUTOMAKE([1.11 foreign no-dist-gzip dist-xz tar-ustar subdir-objects])
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])],)
 AM_MAINTAINER_MODE([enable])
+
+# Change pkglibdir and pkgdatadir to mutter-wayland instead of mutter
+PACKAGE="mutter-wayland"
+AC_SUBST([PACKAGE], [$PACKAGE])
 
 MUTTER_MAJOR_VERSION=mutter_major_version
 MUTTER_MINOR_VERSION=mutter_minor_version
@@ -36,7 +40,7 @@ AC_SUBST(MUTTER_PLUGIN_DIR)
 # Honor aclocal flags
 AC_SUBST(ACLOCAL_AMFLAGS, "\${ACLOCAL_FLAGS}")
 
-GETTEXT_PACKAGE=mutter
+GETTEXT_PACKAGE=mutter-wayland
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Name of default gettext domain])
 
@@ -75,7 +79,7 @@ MUTTER_PC_MODULES="
    cairo >= 1.10.0
    gsettings-desktop-schemas >= 3.7.3
    xcomposite >= 0.2 xfixes xrender xdamage xi >= 1.6.0
-   $CLUTTER_PACKAGE >= 1.15.90
+   $CLUTTER_PACKAGE >= 1.17.5
    cogl-1.0 >= 1.17.1
    upower-glib >= 0.99.0
    gnome-desktop-3.0
@@ -117,11 +121,27 @@ AC_ARG_ENABLE(shape,
                  [disable mutter's use of the shaped window extension]),,
   enable_shape=auto)
 
+## Wayland support requires the xserver.xml protocol extension found in the weston
+## repository but since there aren't currently established conventions for
+## installing and discovering these we simply require a location to be given
+## explicitly...
+AC_ARG_WITH([wayland-protocols],
+            [AS_HELP_STRING([--with-wayland-protocols], [Location for wayland extension protocol specs])],
+            [
+            ],
+            [])
+
+AC_ARG_WITH([xwayland-path],
+            [AS_HELP_STRING([--with-xwayland-path], [Absolute path for an X Wayland server])],
+            [XWAYLAND_PATH="$withval"],
+            [XWAYLAND_PATH="$bindir/Xwayland"])
+
 AM_GLIB_GNU_GETTEXT
 
 ## here we get the flags we'll actually use
 # GRegex requires Glib-2.14.0
 PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.14.0)
+PKG_CHECK_MODULES(MUTTER_LAUNCH, libdrm libsystemd-login)
 
 # Unconditionally use this dir to avoid a circular dep with gnomecc
 GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
@@ -186,20 +206,15 @@ if test x$found_introspection != xno; then
   AC_SUBST(META_GIR)
 fi
 
-AC_MSG_CHECKING([Xcursor])
-if $PKG_CONFIG xcursor; then
-     have_xcursor=yes
-  else
-     have_xcursor=no
-  fi
-  AC_MSG_RESULT($have_xcursor)
+MUTTER_PC_MODULES="$MUTTER_PC_MODULES xcursor"
 
-if test x$have_xcursor = xyes; then
-  echo "Building with Xcursor"
-  MUTTER_PC_MODULES="$MUTTER_PC_MODULES xcursor"
-  AC_DEFINE(HAVE_XCURSOR, , [Building with Xcursor support])
-fi
+AC_PATH_PROG([WAYLAND_SCANNER],[wayland-scanner],[no])
+AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
+  AC_MSG_ERROR([Could not find wayland-scanner in your PATH, required for parsing wayland extension protocols]))
+AC_SUBST([WAYLAND_SCANNER])
+AC_SUBST(XWAYLAND_PATH)
 
+MUTTER_PC_MODULES="$MUTTER_PC_MODULES clutter-wayland-1.0 clutter-wayland-compositor-1.0 clutter-egl-1.0 wayland-server libdrm"
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
 
 PKG_CHECK_EXISTS([xi >= 1.6.99.1],
@@ -437,8 +452,7 @@ doc/man/Makefile
 doc/reference/Makefile
 doc/reference/meta-docs.sgml
 src/Makefile
-src/libmutter.pc
-src/mutter-plugins.pc
+src/libmutter-wayland.pc
 src/compositor/plugins/Makefile
 po/Makefile.in
 ])
@@ -455,7 +469,7 @@ fi
 
 dnl ==========================================================================
 echo "
-mutter-$VERSION
+mutter-wayland-$VERSION
 
 	prefix:                   ${prefix}
 	source code location:	  ${srcdir}
@@ -467,7 +481,6 @@ mutter-$VERSION
 	Session management:       ${found_sm}
 	Shape extension:          ${found_shape}
 	Xsync:                    ${found_xsync}
-	Xcursor:                  ${have_xcursor}
 "
 
 

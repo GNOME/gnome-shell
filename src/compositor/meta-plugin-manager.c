@@ -37,7 +37,7 @@ static GType plugin_type = G_TYPE_NONE;
 
 struct MetaPluginManager
 {
-  MetaScreen *screen;
+  MetaCompositor *compositor;
   MetaPlugin *plugin;
 };
 
@@ -91,7 +91,7 @@ on_confirm_display_change (MetaMonitorManager *monitors,
 }
 
 MetaPluginManager *
-meta_plugin_manager_new (MetaScreen *screen)
+meta_plugin_manager_new (MetaCompositor *compositor)
 {
   MetaPluginManager *plugin_mgr;
   MetaPluginClass *klass;
@@ -99,8 +99,10 @@ meta_plugin_manager_new (MetaScreen *screen)
   MetaMonitorManager *monitors;
 
   plugin_mgr = g_new0 (MetaPluginManager, 1);
-  plugin_mgr->screen = screen;
-  plugin_mgr->plugin = plugin = g_object_new (plugin_type, "screen", screen, NULL);
+  plugin_mgr->compositor = compositor;
+  plugin_mgr->plugin = plugin = g_object_new (plugin_type, NULL);
+
+  _meta_plugin_set_compositor (plugin, compositor);
 
   klass = META_PLUGIN_GET_CLASS (plugin);
 
@@ -151,7 +153,7 @@ meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
 {
   MetaPlugin *plugin = plugin_mgr->plugin;
   MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
-  MetaDisplay *display  = meta_screen_get_display (plugin_mgr->screen);
+  MetaDisplay *display = plugin_mgr->compositor->display;
   gboolean retval = FALSE;
 
   if (display->display_opening)
@@ -165,8 +167,6 @@ meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
           retval = TRUE;
           meta_plugin_manager_kill_window_effects (plugin_mgr,
                                                    actor);
-
-          _meta_plugin_effect_started (plugin);
           klass->minimize (plugin, actor);
         }
       break;
@@ -176,8 +176,6 @@ meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
           retval = TRUE;
           meta_plugin_manager_kill_window_effects (plugin_mgr,
                                                    actor);
-
-          _meta_plugin_effect_started (plugin);
           klass->map (plugin, actor);
         }
       break;
@@ -185,7 +183,6 @@ meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
       if (klass->destroy)
         {
           retval = TRUE;
-          _meta_plugin_effect_started (plugin);
           klass->destroy (plugin, actor);
         }
       break;
@@ -216,7 +213,7 @@ meta_plugin_manager_event_maximize (MetaPluginManager *plugin_mgr,
 {
   MetaPlugin *plugin = plugin_mgr->plugin;
   MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
-  MetaDisplay *display = meta_screen_get_display (plugin_mgr->screen);
+  MetaDisplay *display = plugin_mgr->compositor->display;
   gboolean retval = FALSE;
 
   if (display->display_opening)
@@ -230,8 +227,6 @@ meta_plugin_manager_event_maximize (MetaPluginManager *plugin_mgr,
           retval = TRUE;
           meta_plugin_manager_kill_window_effects (plugin_mgr,
                                                    actor);
-
-          _meta_plugin_effect_started (plugin);
           klass->maximize (plugin, actor,
                            target_x, target_y,
                            target_width, target_height);
@@ -243,8 +238,6 @@ meta_plugin_manager_event_maximize (MetaPluginManager *plugin_mgr,
           retval = TRUE;
           meta_plugin_manager_kill_window_effects (plugin_mgr,
                                                    actor);
-
-          _meta_plugin_effect_started (plugin);
           klass->unmaximize (plugin, actor,
                              target_x, target_y,
                              target_width, target_height);
@@ -273,7 +266,7 @@ meta_plugin_manager_switch_workspace (MetaPluginManager   *plugin_mgr,
 {
   MetaPlugin *plugin = plugin_mgr->plugin;
   MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
-  MetaDisplay *display = meta_screen_get_display (plugin_mgr->screen);
+  MetaDisplay *display = plugin_mgr->compositor->display;
   gboolean retval = FALSE;
 
   if (display->display_opening)
@@ -283,8 +276,6 @@ meta_plugin_manager_switch_workspace (MetaPluginManager   *plugin_mgr,
     {
       retval = TRUE;
       meta_plugin_manager_kill_switch_workspace (plugin_mgr);
-
-      _meta_plugin_effect_started (plugin);
       klass->switch_workspace (plugin, from, to, direction);
     }
 
@@ -333,7 +324,7 @@ meta_plugin_manager_show_tile_preview (MetaPluginManager *plugin_mgr,
 {
   MetaPlugin *plugin = plugin_mgr->plugin;
   MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
-  MetaDisplay *display  = meta_screen_get_display (plugin_mgr->screen);
+  MetaDisplay *display = plugin_mgr->compositor->display;
 
   if (display->display_opening)
     return FALSE;
@@ -352,7 +343,7 @@ meta_plugin_manager_hide_tile_preview (MetaPluginManager *plugin_mgr)
 {
   MetaPlugin *plugin = plugin_mgr->plugin;
   MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
-  MetaDisplay *display  = meta_screen_get_display (plugin_mgr->screen);
+  MetaDisplay *display = plugin_mgr->compositor->display;
 
   if (display->display_opening)
     return FALSE;

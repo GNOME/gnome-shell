@@ -665,7 +665,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
    meta_screen_free_workspace_layout (&layout1);
    meta_screen_free_workspace_layout (&layout2);
 
-   meta_compositor_switch_workspace (comp, screen, old, workspace, direction);
+   meta_compositor_switch_workspace (comp, old, workspace, direction);
 
   /* This needs to be done after telling the compositor we are switching
    * workspaces since focusing a window will cause it to be immediately

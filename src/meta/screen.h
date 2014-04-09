@@ -44,12 +44,6 @@ void meta_screen_get_size (MetaScreen *screen,
                            int        *width,
                            int        *height);
 
-gpointer meta_screen_get_compositor_data (MetaScreen *screen);
-void meta_screen_set_compositor_data (MetaScreen *screen,
-                                      gpointer    info);
-
-MetaScreen *meta_screen_for_x_screen (Screen *xscreen);
-
 void meta_screen_set_cm_selection (MetaScreen *screen);
 void meta_screen_unset_cm_selection (MetaScreen *screen);
 

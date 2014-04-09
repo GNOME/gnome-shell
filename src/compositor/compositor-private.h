@@ -11,35 +11,21 @@
 #include "meta-window-actor-private.h"
 #include <clutter/clutter.h>
 
-typedef struct _MetaCompScreen MetaCompScreen;
-
 struct _MetaCompositor
 {
   MetaDisplay    *display;
 
   guint           repaint_func_id;
 
-  ClutterActor   *shadow_src;
-
-  MetaPlugin     *modal_plugin;
-
   gint64          server_time_query_time;
   gint64          server_time_offset;
 
   guint           server_time_is_monotonic_time : 1;
-  guint           show_redraw : 1;
-  guint           debug       : 1;
   guint           no_mipmaps  : 1;
-};
 
-struct _MetaCompScreen
-{
-  MetaScreen            *screen;
-
-  ClutterActor          *stage, *window_group, *top_window_group, *overlay_group;
+  ClutterActor          *stage, *window_group, *top_window_group;
   ClutterActor          *background_actor;
   GList                 *windows;
-  GHashTable            *windows_by_xid;
   Window                 output;
 
   CoglOnscreen          *onscreen;
@@ -57,19 +43,17 @@ struct _MetaCompScreen
 /* Wait 2ms after vblank before starting to draw next frame */
 #define META_SYNC_DELAY 2
 
-void meta_switch_workspace_completed (MetaScreen    *screen);
+void meta_switch_workspace_completed (MetaCompositor *compositor);
 
-gboolean meta_begin_modal_for_plugin (MetaScreen       *screen,
+gboolean meta_begin_modal_for_plugin (MetaCompositor   *compositor,
                                       MetaPlugin       *plugin,
                                       MetaModalOptions  options,
                                       guint32           timestamp);
-void     meta_end_modal_for_plugin   (MetaScreen       *screen,
+void     meta_end_modal_for_plugin   (MetaCompositor   *compositor,
                                       MetaPlugin       *plugin,
                                       guint32           timestamp);
 
 gint64 meta_compositor_monotonic_time_to_server_time (MetaDisplay *display,
                                                       gint64       monotonic_time);
-
-void meta_check_end_modal (MetaScreen *screen);
 
 #endif /* META_COMPOSITOR_PRIVATE_H */

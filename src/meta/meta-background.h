@@ -91,7 +91,6 @@ void meta_background_load_gradient (MetaBackground            *self,
                                     ClutterColor              *second_color);
 void meta_background_load_color (MetaBackground *self,
                                  ClutterColor   *color);
-void meta_background_load_still_frame (MetaBackground *self);
 void meta_background_load_file_async (MetaBackground          *self,
                                       const char              *filename,
                                       GDesktopBackgroundStyle  style,

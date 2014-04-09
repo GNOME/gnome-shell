@@ -35,8 +35,7 @@
                     ButtonPressMask | ButtonReleaseMask |          \
                     PointerMotionMask | PointerMotionHintMask |    \
                     EnterWindowMask | LeaveWindowMask |            \
-                    FocusChangeMask |                              \
-                    ColormapChangeMask)
+                    FocusChangeMask)
 
 void
 meta_window_ensure_frame (MetaWindow *window)
@@ -45,6 +44,7 @@ meta_window_ensure_frame (MetaWindow *window)
   XSetWindowAttributes attrs;
   Visual *visual;
   gulong create_serial;
+  MetaStackWindow stack_window;
   
   if (window->frame)
     return;
@@ -100,8 +100,10 @@ meta_window_ensure_frame (MetaWindow *window)
 						frame->rect.height,
 						frame->window->screen->number,
                                                 &create_serial);
+  stack_window.any.type = META_WINDOW_CLIENT_TYPE_X11;
+  stack_window.x11.xwindow = frame->xwindow;
   meta_stack_tracker_record_add (window->screen->stack_tracker,
-                                 frame->xwindow,
+                                 &stack_window,
                                  create_serial);
 
   meta_verbose ("Frame for %s is 0x%lx\n", frame->window->desc, frame->xwindow);
@@ -125,8 +127,9 @@ meta_window_ensure_frame (MetaWindow *window)
   window->rect.x = 0;
   window->rect.y = 0;
 
+  stack_window.x11.xwindow = window->xwindow;
   meta_stack_tracker_record_remove (window->screen->stack_tracker,
-                                    window->xwindow,
+                                    &stack_window,
                                     XNextRequest (window->display->xdisplay));
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,
@@ -161,6 +164,7 @@ meta_window_destroy_frame (MetaWindow *window)
 {
   MetaFrame *frame;
   MetaFrameBorders borders;
+  MetaStackWindow stack_window;
   
   if (window->frame == NULL)
     return;
@@ -187,8 +191,10 @@ meta_window_destroy_frame (MetaWindow *window)
                   "Incrementing unmaps_pending on %s for reparent back to root\n", window->desc);
       window->unmaps_pending += 1;
     }
+  stack_window.any.type = META_WINDOW_CLIENT_TYPE_X11;
+  stack_window.x11.xwindow = window->xwindow;
   meta_stack_tracker_record_add (window->screen->stack_tracker,
-                                 window->xwindow,
+                                 &stack_window,
                                  XNextRequest (window->display->xdisplay));
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,

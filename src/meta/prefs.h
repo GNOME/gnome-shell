@@ -376,17 +376,17 @@ typedef enum
  * @display: a #MetaDisplay
  * @screen: a #MetaScreen
  * @window: a #MetaWindow
- * @event: (type gpointer): a #XIDeviceEvent
+ * @event: (type gpointer): a #ClutterKeyEvent
  * @binding: a #MetaKeyBinding
  * @user_data: data passed to the function
  *
  */
-typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
-                                     MetaScreen     *screen,
-                                     MetaWindow     *window,
-                                     XIDeviceEvent  *event,
-                                     MetaKeyBinding *binding,
-                                     gpointer        user_data);
+typedef void (* MetaKeyHandlerFunc) (MetaDisplay     *display,
+                                     MetaScreen      *screen,
+                                     MetaWindow      *window,
+                                     ClutterKeyEvent *event,
+                                     MetaKeyBinding  *binding,
+                                     gpointer         user_data);
 
 GType meta_key_binding_get_type    (void);
 

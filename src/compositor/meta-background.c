@@ -26,8 +26,6 @@
 
 #include <config.h>
 
-#include <cogl/cogl-texture-pixmap-x11.h>
-
 #include <clutter/clutter.h>
 
 #include "cogl-utils.h"
@@ -753,88 +751,6 @@ set_filename (MetaBackground *self,
 
   g_free (priv->filename);
   priv->filename = g_strdup (filename);
-}
-
-static Pixmap
-get_still_frame_for_monitor (MetaScreen *screen,
-                             int         monitor)
-{
-  MetaDisplay *display = meta_screen_get_display (screen);
-  Display *xdisplay = meta_display_get_xdisplay (display);
-  Window xroot = meta_screen_get_xroot (screen);
-  Pixmap pixmap;
-  GC gc;
-  XGCValues values;
-  MetaRectangle geometry;
-  int depth;
-
-  meta_screen_get_monitor_geometry (screen, monitor, &geometry);
-
-  depth = DefaultDepth (xdisplay, meta_screen_get_screen_number (screen));
-
-  pixmap = XCreatePixmap (xdisplay,
-                          xroot,
-                          geometry.width, geometry.height, depth);
-
-  values.function = GXcopy;
-  values.plane_mask = AllPlanes;
-  values.fill_style = FillSolid;
-  values.subwindow_mode = IncludeInferiors;
-
-  gc = XCreateGC (xdisplay,
-                  xroot,
-                  GCFunction | GCPlaneMask | GCFillStyle | GCSubwindowMode,
-                  &values);
-
-  XCopyArea (xdisplay,
-             xroot, pixmap, gc,
-             geometry.x, geometry.y,
-             geometry.width, geometry.height,
-             0, 0);
-
-  XFreeGC (xdisplay, gc);
-
-  return pixmap;
-}
-
-/**
- * meta_background_load_still_frame:
- * @self: the #MetaBackground
- *
- * Takes a screenshot of the desktop and uses it as the background
- * source.
- */
-void
-meta_background_load_still_frame (MetaBackground *self)
-{
-  MetaBackgroundPrivate *priv = self->priv;
-  MetaDisplay *display = meta_screen_get_display (priv->screen);
-  Pixmap still_frame;
-  CoglTexture *texture;
-  CoglContext *context = clutter_backend_get_cogl_context (clutter_get_default_backend ());
-  GError *error = NULL;
-
-  ensure_pipeline (self);
-
-  unset_texture (self);
-  set_style (self, G_DESKTOP_BACKGROUND_STYLE_STRETCHED);
-
-  still_frame = get_still_frame_for_monitor (priv->screen, priv->monitor);
-  XSync (meta_display_get_xdisplay (display), False);
-
-  meta_error_trap_push (display);
-  texture = COGL_TEXTURE (cogl_texture_pixmap_x11_new (context, still_frame, FALSE, &error));
-  meta_error_trap_pop (display);
-
-  if (error != NULL)
-    {
-      g_warning ("Failed to create background texture from pixmap: %s",
-                 error->message);
-      g_error_free (error);
-      return;
-    }
-
-  set_texture (self, texture);
 }
 
 /**

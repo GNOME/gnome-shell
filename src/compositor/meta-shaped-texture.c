@@ -28,6 +28,7 @@
 #include <config.h>
 
 #include <meta/meta-shaped-texture.h>
+#include <meta/util.h>
 #include "clutter-utils.h"
 #include "meta-texture-tower.h"
 
@@ -42,8 +43,6 @@
 static void meta_shaped_texture_dispose  (GObject    *object);
 
 static void meta_shaped_texture_paint (ClutterActor       *actor);
-static void meta_shaped_texture_pick  (ClutterActor       *actor,
-				       const ClutterColor *color);
 
 static void meta_shaped_texture_get_preferred_width (ClutterActor *self,
                                                      gfloat        for_height,
@@ -73,8 +72,6 @@ struct _MetaShapedTexturePrivate
   CoglTexture *texture;
   CoglTexture *mask_texture;
 
-  cairo_region_t *input_shape_region;
-
   /* The region containing only fully opaque pixels */
   cairo_region_t *opaque_region;
 
@@ -98,7 +95,6 @@ meta_shaped_texture_class_init (MetaShapedTextureClass *klass)
   actor_class->get_preferred_width = meta_shaped_texture_get_preferred_width;
   actor_class->get_preferred_height = meta_shaped_texture_get_preferred_height;
   actor_class->paint = meta_shaped_texture_paint;
-  actor_class->pick = meta_shaped_texture_pick;
   actor_class->get_paint_volume = meta_shaped_texture_get_paint_volume;
 
   g_type_class_add_private (klass, sizeof (MetaShapedTexturePrivate));
@@ -230,6 +226,54 @@ paint_clipped_rectangle (CoglFramebuffer       *fb,
   cogl_framebuffer_draw_multitextured_rectangle (fb, pipeline,
                                                  x1, y1, x2, y2,
                                                  &coords[0], 8);
+}
+
+static void
+set_cogl_texture (MetaShapedTexture *stex,
+                  CoglTexture       *cogl_tex)
+{
+  MetaShapedTexturePrivate *priv;
+  guint width, height;
+
+  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
+
+  priv = stex->priv;
+
+  if (priv->texture)
+    cogl_object_unref (priv->texture);
+
+  priv->texture = cogl_tex;
+
+  if (cogl_tex != NULL)
+    {
+      cogl_object_ref (cogl_tex);
+      width = cogl_texture_get_width (COGL_TEXTURE (cogl_tex));
+      height = cogl_texture_get_height (COGL_TEXTURE (cogl_tex));
+
+      if (width != priv->tex_width ||
+          height != priv->tex_height)
+        {
+          priv->tex_width = width;
+          priv->tex_height = height;
+
+          clutter_actor_queue_relayout (CLUTTER_ACTOR (stex));
+        }
+    }
+  else
+    {
+      /* size changed to 0 going to an invalid handle */
+      priv->tex_width = 0;
+      priv->tex_height = 0;
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (stex));
+    }
+
+  /* NB: We don't queue a redraw of the actor here because we don't
+   * know how much of the buffer has changed with respect to the
+   * previous buffer. We only queue a redraw in response to surface
+   * damage. */
+
+  if (priv->create_mipmaps)
+    meta_texture_tower_set_base_texture (priv->paint_tower, cogl_tex);
 }
 
 static void
@@ -413,71 +457,6 @@ meta_shaped_texture_paint (ClutterActor *actor)
     cogl_object_unref (pipeline);
   if (blended_region != NULL)
     cairo_region_destroy (blended_region);
-}
-
-static void
-meta_shaped_texture_pick (ClutterActor       *actor,
-			  const ClutterColor *color)
-{
-  MetaShapedTexture *stex = (MetaShapedTexture *) actor;
-  MetaShapedTexturePrivate *priv = stex->priv;
-
-  if (!clutter_actor_should_pick_paint (actor) ||
-      (priv->clip_region && cairo_region_is_empty (priv->clip_region)))
-    return;
-
-  /* If there is no region then use the regular pick */
-  if (priv->input_shape_region == NULL)
-    CLUTTER_ACTOR_CLASS (meta_shaped_texture_parent_class)->pick (actor, color);
-  else
-    {
-      int n_rects;
-      float *rectangles;
-      int i;
-      CoglPipeline *pipeline;
-      CoglContext *ctx;
-      CoglFramebuffer *fb;
-      CoglColor cogl_color;
-
-      /* Note: We don't bother trying to intersect the pick and clip regions
-       * since needing to copy the region, do the intersection, and probably
-       * increase the number of rectangles seems more likely to have a negative
-       * effect.
-       *
-       * NB: Most of the time when just using rectangles for picking then
-       * picking shouldn't involve any rendering, and minimizing the number of
-       * rectangles has more benefit than reducing the area of the pick
-       * region.
-       */
-
-      n_rects = cairo_region_num_rectangles (priv->input_shape_region);
-      rectangles = g_alloca (sizeof (float) * 4 * n_rects);
-
-      for (i = 0; i < n_rects; i++)
-        {
-          cairo_rectangle_int_t rect;
-          int pos = i * 4;
-
-          cairo_region_get_rectangle (priv->input_shape_region, i, &rect);
-
-          rectangles[pos] = rect.x;
-          rectangles[pos + 1] = rect.y;
-          rectangles[pos + 2] = rect.x + rect.width;
-          rectangles[pos + 3] = rect.y + rect.height;
-        }
-
-      ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
-      fb = cogl_get_draw_framebuffer ();
-
-      cogl_color_init_from_4ub (&cogl_color, color->red, color->green, color->blue, color->alpha);
-
-      pipeline = cogl_pipeline_new (ctx);
-      cogl_pipeline_set_color (pipeline, &cogl_color);
-
-      cogl_framebuffer_draw_rectangles (fb, pipeline,
-                                        rectangles, n_rects);
-      cogl_object_unref (pipeline);
-    }
 }
 
 static void
@@ -699,53 +678,6 @@ meta_shaped_texture_update_area (MetaShapedTexture *stex,
     }
 }
 
-static void
-set_cogl_texture (MetaShapedTexture *stex,
-                  CoglTexture       *cogl_tex)
-{
-  MetaShapedTexturePrivate *priv;
-  guint width, height;
-
-  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
-
-  priv = stex->priv;
-
-  if (priv->texture != NULL)
-    cogl_object_unref (priv->texture);
-
-  priv->texture = cogl_tex;
-
-  if (cogl_tex != NULL)
-    {
-      width = cogl_texture_get_width (COGL_TEXTURE (cogl_tex));
-      height = cogl_texture_get_height (COGL_TEXTURE (cogl_tex));
-
-      if (width != priv->tex_width ||
-          height != priv->tex_height)
-        {
-          priv->tex_width = width;
-          priv->tex_height = height;
-
-          clutter_actor_queue_relayout (CLUTTER_ACTOR (stex));
-        }
-    }
-  else
-    {
-      /* size changed to 0 going to an invalid texture */
-      priv->tex_width = 0;
-      priv->tex_height = 0;
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (stex));
-    }
-
-  /* NB: We don't queue a redraw of the actor here because we don't
-   * know how much of the buffer has changed with respect to the
-   * previous buffer. We only queue a redraw in response to surface
-   * damage. */
-
-  if (priv->create_mipmaps)
-    meta_texture_tower_set_base_texture (priv->paint_tower, cogl_tex);
-}
-
 /**
  * meta_shaped_texture_set_texture:
  * @stex: The #MetaShapedTexture
@@ -771,41 +703,6 @@ meta_shaped_texture_get_texture (MetaShapedTexture *stex)
 {
   g_return_val_if_fail (META_IS_SHAPED_TEXTURE (stex), NULL);
   return COGL_TEXTURE (stex->priv->texture);
-}
-
-/**
- * meta_shaped_texture_set_input_shape_region:
- * @stex: a #MetaShapedTexture
- * @shape_region: the region of the texture that should respond to
- *    input.
- *
- * Determines what region of the texture should accept input. For
- * X based windows this is defined by the ShapeInput region of the
- * window.
- */
-void
-meta_shaped_texture_set_input_shape_region (MetaShapedTexture *stex,
-                                            cairo_region_t    *shape_region)
-{
-  MetaShapedTexturePrivate *priv;
-
-  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
-
-  priv = stex->priv;
-
-  if (priv->input_shape_region != NULL)
-    {
-      cairo_region_destroy (priv->input_shape_region);
-      priv->input_shape_region = NULL;
-    }
-
-  if (shape_region != NULL)
-    {
-      cairo_region_reference (shape_region);
-      priv->input_shape_region = shape_region;
-    }
-
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
 }
 
 /**

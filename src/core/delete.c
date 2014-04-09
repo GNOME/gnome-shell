@@ -37,18 +37,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "wayland/meta-wayland-surface.h"
+
 static void meta_window_present_delete_dialog (MetaWindow *window,
                                                guint32     timestamp);
 
 static void
-delete_ping_reply_func (MetaDisplay *display,
-                        Window       xwindow,
+delete_ping_reply_func (MetaWindow  *window,
                         guint32      timestamp,
                         void        *user_data)
 {
-  meta_topic (META_DEBUG_PING,
-              "Got reply to delete ping for %s\n",
-              ((MetaWindow*)user_data)->desc);
+  meta_topic (META_DEBUG_PING, "Got reply to delete ping for %s\n", window->desc);
 
   /* we do nothing */
 }
@@ -66,12 +65,10 @@ dialog_exited (GPid pid, int status, gpointer user_data)
 }
 
 static void
-delete_ping_timeout_func (MetaDisplay *display,
-                          Window       xwindow,
+delete_ping_timeout_func (MetaWindow  *window,
                           guint32      timestamp,
                           void        *user_data)
 {
-  MetaWindow *window = user_data;
   char *window_title;
   gchar *window_content, *tmp;
   GPid dialog_pid;
@@ -135,36 +132,18 @@ void
 meta_window_check_alive (MetaWindow *window,
                          guint32     timestamp)
 {
-  meta_display_ping_window (window->display,
-                            window,
+  meta_display_ping_window (window,
                             timestamp,
                             delete_ping_reply_func,
                             delete_ping_timeout_func,
-                            window);
+                            NULL);
 }
 
 void
 meta_window_delete (MetaWindow  *window,
                     guint32      timestamp)
 {
-  meta_error_trap_push (window->display);
-  if (window->delete_window)
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Deleting %s with delete_window request\n",
-                  window->desc);
-      meta_window_send_icccm_message (window,
-                                      window->display->atom_WM_DELETE_WINDOW,
-                                      timestamp);
-    }
-  else
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Deleting %s with explicit kill\n",
-                  window->desc);
-      XKillClient (window->display->xdisplay, window->xwindow);
-    }
-  meta_error_trap_pop (window->display);
+  META_WINDOW_GET_CLASS (window)->delete (window, timestamp);
 
   meta_window_check_alive (window, timestamp);
 
@@ -197,33 +176,10 @@ meta_window_delete (MetaWindow  *window,
     }
 }
 
-
 void
 meta_window_kill (MetaWindow *window)
 {
-  meta_topic (META_DEBUG_WINDOW_OPS,
-              "Killing %s brutally\n",
-              window->desc);
-
-  if (!meta_window_is_remote (window) &&
-      window->net_wm_pid > 0)
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Killing %s with kill()\n",
-                  window->desc);
-
-      if (kill (window->net_wm_pid, 9) < 0)
-        meta_topic (META_DEBUG_WINDOW_OPS,
-                    "Failed to signal %s: %s\n",
-                    window->desc, strerror (errno));
-    }
-
-  meta_topic (META_DEBUG_WINDOW_OPS,
-              "Disconnecting %s with XKillClient()\n",
-              window->desc);
-  meta_error_trap_push (window->display);
-  XKillClient (window->display->xdisplay, window->xwindow);
-  meta_error_trap_pop (window->display);
+  META_WINDOW_GET_CLASS (window)->kill (window);
 }
 
 void
@@ -258,8 +214,7 @@ meta_window_present_delete_dialog (MetaWindow *window, guint32 timestamp)
         {
           MetaWindow *w = tmp->data;
 
-          if (w->xtransient_for == window->xwindow &&
-              w->res_class &&
+          if (w->transient_for == window && w->res_class &&
               g_ascii_strcasecmp (w->res_class, "mutter-dialog") == 0)
             {
               meta_window_activate (w, timestamp);

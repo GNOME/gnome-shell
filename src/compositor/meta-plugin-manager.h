@@ -44,7 +44,7 @@
  */
 typedef struct MetaPluginManager MetaPluginManager;
 
-MetaPluginManager * meta_plugin_manager_new (MetaScreen *screen);
+MetaPluginManager * meta_plugin_manager_new (MetaCompositor *compositor);
 
 void     meta_plugin_manager_load         (const gchar       *plugin_name);
 
