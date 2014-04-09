@@ -1,9 +1,5 @@
 desktopdir=$(datadir)/applications
-desktop_DATA = gnome-shell.desktop gnome-shell-extension-prefs.desktop
-if HAVE_MUTTER_WAYLAND
-desktop_DATA += gnome-shell-wayland.desktop
-endif HAVE_MUTTER_WAYLAND
-
+desktop_DATA = gnome-shell.desktop gnome-shell-wayland.desktop  gnome-shell-extension-prefs.desktop
 
 # We substitute in bindir so it works as an autostart
 # file when built in a non-system prefix

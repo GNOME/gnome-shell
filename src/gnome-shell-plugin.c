@@ -326,10 +326,8 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
     }
 #endif
 
-#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     return FALSE;
-#endif
 
   /*
    * Pass the event to shell-global for XDND

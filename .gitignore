@@ -78,11 +78,8 @@ src/gnome-shell-calendar-server
 src/gnome-shell-extension-prefs
 src/gnome-shell-extension-tool
 src/gnome-shell-hotplug-sniffer
-src/gnome-shell-jhbuild
 src/gnome-shell-perf-helper
 src/gnome-shell-perf-tool
-src/gnome-shell-real
-src/gnome-shell-wayland
 src/hotplug-sniffer/org.gnome.Shell.HotplugSniffer.service
 src/run-js-test
 src/test-recorder

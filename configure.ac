@@ -112,13 +112,6 @@ fi
 
 PKG_CHECK_MODULES(GNOME_SHELL, $SHARED_PCS)
 PKG_CHECK_MODULES(MUTTER, libmutter >= $MUTTER_MIN_VERSION)
-PKG_CHECK_MODULES(MUTTER_WAYLAND, [libmutter-wayland >= $MUTTER_MIN_VERSION],
-                 [MUTTER_WAYLAND_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter-wayland`
-                  AC_SUBST(MUTTER_WAYLAND_TYPELIB_DIR)
-                  have_mutter_wayland=yes],
-                 [have_mutter_wayland=no])
-
-AM_CONDITIONAL(HAVE_MUTTER_WAYLAND, test $have_mutter_wayland != no)
 
 PKG_CHECK_MODULES(GNOME_SHELL_JS, gio-2.0 gjs-internals-1.0 >= $GJS_MIN_VERSION)
 PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 >= 0.6.8 x11)

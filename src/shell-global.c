@@ -885,7 +885,6 @@ _shell_global_set_plugin (ShellGlobal *global,
 
   global->stage = CLUTTER_STAGE (meta_get_stage_for_screen (global->meta_screen));
 
-#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     {
       /* When Mutter is acting as its own display server then the
@@ -907,7 +906,6 @@ _shell_global_set_plugin (ShellGlobal *global,
       global->stage_xwindow = None;
     }
   else
-#endif
     {
       global->stage_xwindow = clutter_x11_get_stage_window (global->stage);
       global->ibus_window = gdk_x11_window_foreign_new_for_display (global->gdk_display,

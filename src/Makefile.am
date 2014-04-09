@@ -33,10 +33,6 @@ bin_SCRIPTS += gnome-shell-extension-tool gnome-shell-perf-tool
 EXTRA_DIST += gnome-shell-extension-tool.in gnome-shell-perf-tool.in
 bin_PROGRAMS = gnome-shell gnome-shell-extension-prefs
 
-if HAVE_MUTTER_WAYLAND
-bin_PROGRAMS += gnome-shell-wayland
-endif HAVE_MUTTER_WAYLAND
-
 generated_script_substitutions = \
 	    -e "s|@bindir[@]|$(bindir)|g" \
 	    -e "s|@datadir[@]|$(datadir)|g" \
@@ -75,10 +71,6 @@ gnome_shell_cflags =				\
 privlibdir = $(pkglibdir)
 privlib_LTLIBRARIES = libgnome-shell-js.la libgnome-shell-menu.la libgnome-shell.la
 noinst_LTLIBRARIES += libgnome-shell-base.la
-
-if HAVE_MUTTER_WAYLAND
-privlib_LTLIBRARIES += libgnome-shell-wayland.la
-endif HAVE_MUTTER_WAYLAND
 
 shell_built_sources = \
 	shell-enum-types.h \
@@ -197,21 +189,6 @@ gnome_shell_CPPFLAGS = \
 gnome_shell_LDADD = libgnome-shell.la libgnome-shell-js.la $(GNOME_SHELL_LIBS) $(MUTTER_LIBS)
 gnome_shell_DEPENDENCIES = libgnome-shell.la
 
-if HAVE_MUTTER_WAYLAND
-libgnome_shell_wayland_la_SOURCES = $(libgnome_shell_sources)
-nodist_libgnome_shell_wayland_la_SOURCES = $(libgnome_shell_built_sources)
-
-gnome_shell_wayland_SOURCES = main.c
-gnome_shell_wayland_CPPFLAGS = \
-	-DHAVE_WAYLAND \
-	-DMUTTER_TYPELIB_DIR=\"$(MUTTER_WAYLAND_TYPELIB_DIR)\" \
-	$(MUTTER_WAYLAND_CFLAGS) \
-	$(gnome_shell_cflags)
-
-gnome_shell_wayland_LDADD = libgnome-shell-wayland.la libgnome-shell-js.la $(GNOME_SHELL_LIBS) $(MUTTER_WAYLAND_LIBS)
-gnome_shell_wayland_DEPENDENCIES = libgnome-shell-wayland.la
-endif HAVE_MUTTER_WAYLAND
-
 gnome_shell_extension_prefs_SOURCES = \
 	gnome-shell-extension-prefs.c \
 	$(NULL)
@@ -323,12 +300,6 @@ libgnome_shell_la_LDFLAGS = $(libgnome_shell_ldflags)
 libgnome_shell_la_LIBADD = $(GNOME_SHELL_LIBS) $(MUTTER_LIBS) libgnome-shell-base.la
 libgnome_shell_la_CPPFLAGS = $(MUTTER_CFLAGS) $(gnome_shell_cflags)
 
-if HAVE_MUTTER_WAYLAND
-libgnome_shell_wayland_la_LDFLAGS = $(libgnome_shell_ldflags)
-libgnome_shell_wayland_la_LIBADD = $(MUTTER_WAYLAND_LIBS) libgnome-shell-base.la
-libgnome_shell_wayland_la_CPPFLAGS = $(MUTTER_WAYLAND_CFLAGS) -DHAVE_WAYLAND $(gnome_shell_cflags)
-endif HAVE_MUTTER_WAYLAND
-
 ShellMenu-0.1.gir: libgnome-shell-menu.la
 ShellMenu_0_1_gir_INCLUDES = Gio-2.0
 ShellMenu_0_1_gir_CFLAGS = $(libgnome_shell_menu_la_CPPFLAGS) -I $(srcdir)
@@ -354,11 +325,7 @@ if HAVE_NETWORKMANAGER
 Shell_0_1_gir_INCLUDES += NetworkManager-1.0 NMClient-1.0
 endif
 Shell_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
-# Hack! we use PROGRAM instead of LIBS so that the soname is not included
-# in the typelib. This way the symbols will be resolved with the libgnome-shell
-# linked against the executable (which will be libgnome-shell-wayland for
-# gnome-shell-wayland)
-Shell_0_1_gir_PROGRAM = $(builddir)/gnome-shell
+Shell_0_1_gir_LIBS = libgnome-shell.la
 Shell_0_1_gir_FILES = $(libgnome_shell_la_gir_sources)
 Shell_0_1_gir_SCANNERFLAGS =	\
 	--include-uninstalled=$(builddir)/St-1.0.gir \
