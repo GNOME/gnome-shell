@@ -7569,8 +7569,8 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                    */
                   update_tile_mode (window);
                 }
-              meta_display_end_grab_op (window->display, event->any.time);
             }
+          meta_display_end_grab_op (window->display, event->any.time);
         }
       break;
 
