@@ -3,6 +3,7 @@
 src/50-mutter-navigation.xml.in
 src/50-mutter-system.xml.in
 src/50-mutter-windows.xml.in
+src/backends/meta-monitor-manager.c
 src/compositor/compositor.c
 src/compositor/meta-background.c
 src/core/bell.c
@@ -12,15 +13,12 @@ src/core/display.c
 src/core/errors.c
 src/core/keybindings.c
 src/core/main.c
-src/core/monitor.c
 src/core/mutter.c
 src/core/prefs.c
 src/core/screen.c
-src/x11/session.c
 src/core/util.c
 src/core/window.c
-src/x11/window-props.c
-src/x11/xprops.c
+src/mutter.desktop.in
 src/mutter-wayland.desktop.in
 src/org.gnome.mutter.gschema.xml.in
 src/org.gnome.mutter.wayland.gschema.xml.in
@@ -30,3 +28,6 @@ src/ui/metaaccellabel.c
 src/ui/resizepopup.c
 src/ui/theme.c
 src/ui/theme-parser.c
+src/x11/session.c
+src/x11/window-props.c
+src/x11/xprops.c
