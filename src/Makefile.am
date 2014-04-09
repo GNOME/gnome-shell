@@ -1,7 +1,7 @@
 # Flag build for parallelism; see https://savannah.gnu.org/patch/?6905
 .AUTOPARALLEL:
 
-lib_LTLIBRARIES = libmutter-wayland.la
+lib_LTLIBRARIES = libmutter.la
 
 SUBDIRS=compositor/plugins
 
@@ -11,7 +11,6 @@ INCLUDES=								\
 	-DCOGL_ENABLE_EXPERIMENTAL_API					\
 	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API                              \
 	$(MUTTER_CFLAGS)						\
-	-I$(top_builddir)						\
 	-I$(srcdir)							\
 	-I$(srcdir)/backends						\
 	-I$(srcdir)/core						\
@@ -47,7 +46,7 @@ wayland_protocols = \
 	wayland/protocol/gtk-shell.xml		\
 	wayland/protocol/xdg-shell.xml
 
-libmutter_wayland_la_SOURCES =			\
+libmutter_la_SOURCES =				\
 	backends/meta-backend.c			\
 	backends/meta-backend.h			\
 	backends/meta-cursor.c			\
@@ -232,11 +231,11 @@ libmutter_wayland_la_SOURCES =			\
 	wayland/window-wayland.c		\
 	wayland/window-wayland.h
 
-nodist_libmutter_wayland_la_SOURCES =		\
+nodist_libmutter_la_SOURCES =			\
 	$(mutter_built_sources)
 
-libmutter_wayland_la_LDFLAGS = -no-undefined
-libmutter_wayland_la_LIBADD  = $(MUTTER_LIBS)
+libmutter_la_LDFLAGS = -no-undefined
+libmutter_la_LIBADD  = $(MUTTER_LIBS)
 
 # Headers installed for plugins; introspected information will
 # be extracted into Mutter-<version>.gir
@@ -274,16 +273,16 @@ libmutterinclude_base_headers =		\
 libmutterinclude_extra_headers =		\
 	meta/atomnames.h
 
-libmutterincludedir = $(includedir)/mutter-wayland/meta
+libmutterincludedir = $(includedir)/mutter/meta
 
 libmutterinclude_HEADERS =			\
 	$(libmutterinclude_base_headers)	\
 	$(libmutterinclude_extra_headers)
 
-bin_PROGRAMS=mutter-wayland
+bin_PROGRAMS=mutter
 
-mutter_wayland_SOURCES = core/mutter.c
-mutter_wayland_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
+mutter_SOURCES = core/mutter.c
+mutter_LDADD = $(MUTTER_LIBS) libmutter.la
 
 bin_PROGRAMS+=mutter-launch
 
@@ -318,15 +317,15 @@ typelib_DATA = Meta-$(api_version).typelib
 
 INTROSPECTION_GIRS = Meta-$(api_version).gir
 
-Meta-$(api_version).gir: libmutter-wayland.la
+Meta-$(api_version).gir: libmutter.la
 @META_GIR@_INCLUDES = GObject-2.0 GDesktopEnums-3.0 Gdk-3.0 Gtk-3.0 Clutter-1.0 xlib-2.0 xfixes-4.0 Cogl-1.0
-@META_GIR@_EXPORT_PACKAGES = libmutter-wayland
+@META_GIR@_EXPORT_PACKAGES = libmutter
 @META_GIR@_CFLAGS = $(INCLUDES)
-@META_GIR@_LIBS = libmutter-wayland.la
+@META_GIR@_LIBS = libmutter.la
 @META_GIR@_FILES =				\
 	mutter-enum-types.h			\
 	$(libmutterinclude_base_headers)	\
-	$(filter %.c,$(libmutter_wayland_la_SOURCES) $(nodist_libmutter_wayland_la_SOURCES))
+	$(filter %.c,$(libmutter_la_SOURCES) $(nodist_libmutter_la_SOURCES))
 @META_GIR@_SCANNERFLAGS = --warn-all --warn-error
 
 endif
@@ -337,14 +336,14 @@ testasyncgetprop_SOURCES = x11/testasyncgetprop.c
 
 noinst_PROGRAMS=testboxes testgradient testasyncgetprop
 
-testboxes_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
-testgradient_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
-testasyncgetprop_LDADD = $(MUTTER_LIBS) libmutter-wayland.la
+testboxes_LDADD = $(MUTTER_LIBS) libmutter.la
+testgradient_LDADD = $(MUTTER_LIBS) libmutter.la
+testasyncgetprop_LDADD = $(MUTTER_LIBS) libmutter.la
 
 @INTLTOOL_DESKTOP_RULE@
 
 desktopfilesdir=$(datadir)/applications
-desktopfiles_in_files=mutter-wayland.desktop.in
+desktopfiles_in_files=mutter.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 desktopfiles_DATA = $(desktopfiles_files)
 
@@ -365,7 +364,7 @@ convertdir = $(datadir)/GConf/gsettings
 convert_DATA = mutter-schemas.convert
 
 CLEANFILES =					\
-	mutter-wayland.desktop			\
+	mutter.desktop				\
 	mutter-wm.desktop			\
 	org.gnome.mutter.gschema.xml		\
 	org.gnome.mutter.wayland.gschema.xml	\
@@ -376,7 +375,7 @@ CLEANFILES =					\
 
 pkgconfigdir = $(libdir)/pkgconfig
 
-pkgconfig_DATA = libmutter-wayland.pc
+pkgconfig_DATA = libmutter.pc
 
 EXTRA_DIST=$(desktopfiles_files) 	\
 	$(wmproperties_files)		\
@@ -388,7 +387,8 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	org.gnome.mutter.gschema.xml.in \
 	org.gnome.mutter.wayland.gschema.xml.in \
 	mutter-schemas.convert \
-	libmutter-wayland.pc.in \
+	libmutter.pc.in \
+	mutter-plugins.pc.in  \
 	mutter-enum-types.h.in \
 	mutter-enum-types.c.in \
 	org.gnome.Mutter.DisplayConfig.xml	\

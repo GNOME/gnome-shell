@@ -21,10 +21,6 @@ AM_INIT_AUTOMAKE([1.11 foreign no-dist-gzip dist-xz tar-ustar subdir-objects])
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])],)
 AM_MAINTAINER_MODE([enable])
 
-# Change pkglibdir and pkgdatadir to mutter-wayland instead of mutter
-PACKAGE="mutter-wayland"
-AC_SUBST([PACKAGE], [$PACKAGE])
-
 MUTTER_MAJOR_VERSION=mutter_major_version
 MUTTER_MINOR_VERSION=mutter_minor_version
 MUTTER_MICRO_VERSION=mutter_micro_version
@@ -40,7 +36,7 @@ AC_SUBST(MUTTER_PLUGIN_DIR)
 # Honor aclocal flags
 AC_SUBST(ACLOCAL_AMFLAGS, "\${ACLOCAL_FLAGS}")
 
-GETTEXT_PACKAGE=mutter-wayland
+GETTEXT_PACKAGE=mutter
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Name of default gettext domain])
 
@@ -452,7 +448,7 @@ doc/man/Makefile
 doc/reference/Makefile
 doc/reference/meta-docs.sgml
 src/Makefile
-src/libmutter-wayland.pc
+src/libmutter.pc
 src/compositor/plugins/Makefile
 po/Makefile.in
 ])
@@ -469,7 +465,7 @@ fi
 
 dnl ==========================================================================
 echo "
-mutter-wayland-$VERSION
+mutter-$VERSION
 
 	prefix:                   ${prefix}
 	source code location:	  ${srcdir}
