@@ -3,24 +3,24 @@
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Andika Triwidada <andika@gmail.com>, 2010, 2011, 2012, 2013, 2014.
-# Dirgita <dirgitadevina@yahoo.co.id>, 2011, 2012.
+# Dirgita <dirgitadevina@yahoo.co.id>, 2011, 2012, 2014.
 # Wibiharto <wibinem@yahoo.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-28 08:56+0000\n"
-"PO-Revision-Date: 2014-03-28 18:58+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
-"Language-Team: Indonesian <gnome@i15n.org>\n"
+"POT-Creation-Date: 2014-04-05 19:59+0000\n"
+"PO-Revision-Date: 2014-04-09 05:35+0700\n"
+"Last-Translator: Dirgita <dirgitadevina@yahoo.co.id>\n"
+"Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -79,7 +79,7 @@ msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
-"Ijinkan askes ke perkakas pemantauan dan pengawakutuan internal memakai "
+"Izinkan askes ke perkakas pemantauan dan pengawakutuan internal memakai "
 "dialog Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
@@ -236,11 +236,11 @@ msgid ""
 "allow applications to see and they can find user's location on their own "
 "using network resources (albeit with street-level accuracy at best)."
 msgstr ""
-"Menata tingkat maksimum akurasi lokasi yang diijinkan diperoleh aplikasi. "
+"Menata tingkat maksimum akurasi lokasi yang diizinkan diperoleh aplikasi. "
 "Opsi yang valid adalah 'off' (nonaktifkan pelacakan lokasi), "
 "'country' (negara), 'city' (kota), 'neighborhood' (lingkungan tetangga), "
 "'street' (jalan), dan 'exact' (eksak, biasanya perlu penerima GPS). Harap "
-"diingat bahwa ini hanya mengendalikan apa yang diijinkan oleh GeoClue bagi "
+"diingat bahwa ini hanya mengendalikan apa yang diizinkan oleh GeoClue bagi "
 "aplikasi dan mereka bisa menemukan sendiri lokasi pengguna memakai sumber "
 "daya jaringan (walaupun paling baik pada tingkat jalan)."
 
@@ -341,17 +341,17 @@ msgstr "Pilih Sesi"
 msgid "Not listed?"
 msgstr "Tak masuk daftar?"
 
-#: ../js/gdm/loginDialog.js:611
+#: ../js/gdm/loginDialog.js:614
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(cth., pengguna dari %s)"
 
-#: ../js/gdm/loginDialog.js:616 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Nama pengguna: "
 
-#: ../js/gdm/loginDialog.js:917
+#: ../js/gdm/loginDialog.js:920
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
@@ -369,7 +369,7 @@ msgstr "Perintah tidak ditemukan"
 
 #: ../js/misc/util.js:148
 msgid "Could not parse command:"
-msgstr "Tidak dapat mengurai perintah:"
+msgstr "Tak dapat mengurai perintah:"
 
 #: ../js/misc/util.js:156
 #, javascript-format
@@ -550,7 +550,7 @@ msgstr "Bulan selanjutnya"
 #. Translators: Text to show if there are no events */
 #: ../js/ui/calendar.js:772
 msgid "Nothing Scheduled"
-msgstr "Tidak Ada Jadwal"
+msgstr "Tak Ada Jadwal"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year */
 #: ../js/ui/calendar.js:790
@@ -640,7 +640,7 @@ msgstr "Layanan: "
 
 #: ../js/ui/components/networkAgent.js:311
 msgid "Authentication required by wireless network"
-msgstr "Otentikasi dibutuhkan oleh jaringan nirkabel"
+msgstr "Otentikasi diperlukan oleh jaringan nirkabel"
 
 #: ../js/ui/components/networkAgent.js:312
 #, javascript-format
@@ -669,7 +669,7 @@ msgstr "Perlu kode PIN"
 
 #: ../js/ui/components/networkAgent.js:331
 msgid "PIN code is needed for the mobile broadband device"
-msgstr "Kode PIN dibutuhkan untuk perangkat data seluler"
+msgstr "Kode PIN diperlukan untuk perangkat data seluler"
 
 #: ../js/ui/components/networkAgent.js:332
 msgid "PIN: "
@@ -815,13 +815,13 @@ msgstr "%s mengundang Anda untuk bergabung dengan %s"
 #: ../js/ui/components/telepathyClient.js:1164
 #: ../js/ui/components/telepathyClient.js:1199
 #: ../js/ui/components/telepathyClient.js:1233
-#: ../js/ui/components/telepathyClient.js:1290
+#: ../js/ui/components/telepathyClient.js:1291
 msgid "Decline"
 msgstr "Tolak"
 
 #: ../js/ui/components/telepathyClient.js:1170
 #: ../js/ui/components/telepathyClient.js:1239
-#: ../js/ui/components/telepathyClient.js:1295
+#: ../js/ui/components/telepathyClient.js:1296
 msgid "Accept"
 msgstr "Terima"
 
@@ -856,102 +856,102 @@ msgstr "%s sedang mengirimi Anda %s"
 #: ../js/ui/components/telepathyClient.js:1256
 #, javascript-format
 msgid "%s would like permission to see when you are online"
-msgstr "%s ingin minta ijin melihat Anda ketika Anda daring"
+msgstr "%s ingin minta izin melihat Anda ketika Anda daring"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1342
 msgid "Network error"
 msgstr "Galat jaringan"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1344
 msgid "Authentication failed"
 msgstr "Otentikasi gagal"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Encryption error"
 msgstr "Galat enkripsi"
 
-#: ../js/ui/components/telepathyClient.js:1347
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Certificate not provided"
 msgstr "Sertifikat tidak disediakan"
 
-#: ../js/ui/components/telepathyClient.js:1349
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Certificate untrusted"
 msgstr "Sertifikat tidak dipercaya"
 
-#: ../js/ui/components/telepathyClient.js:1351
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate expired"
 msgstr "Sertifikat kadaluarsa"
 
-#: ../js/ui/components/telepathyClient.js:1353
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Certificate not activated"
 msgstr "Sertifikat tidak diaktifkan"
 
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Certificate hostname mismatch"
 msgstr "Nama host sertifikat tidak cocok"
 
-#: ../js/ui/components/telepathyClient.js:1357
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Certificate fingerprint mismatch"
 msgstr "Sidik jari sertifikat tidak cocok"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "Certificate self-signed"
 msgstr "Sertifikat ditandatangani sendiri"
 
-#: ../js/ui/components/telepathyClient.js:1361
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "Status is set to offline"
 msgstr "Status diatur ke luring"
 
-#: ../js/ui/components/telepathyClient.js:1363
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Encryption is not available"
 msgstr "Enkripsi tidak tersedia"
 
-#: ../js/ui/components/telepathyClient.js:1365
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Certificate is invalid"
 msgstr "Sertifikat tidak valid"
 
-#: ../js/ui/components/telepathyClient.js:1367
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Connection has been refused"
 msgstr "Koneksi telah ditolak"
 
-#: ../js/ui/components/telepathyClient.js:1369
+#: ../js/ui/components/telepathyClient.js:1370
 msgid "Connection can't be established"
 msgstr "Koneksi tak dapat dijalin"
 
-#: ../js/ui/components/telepathyClient.js:1371
+#: ../js/ui/components/telepathyClient.js:1372
 msgid "Connection has been lost"
 msgstr "Koneksi telah terputus"
 
-#: ../js/ui/components/telepathyClient.js:1373
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "This account is already connected to the server"
 msgstr "Akun ini telah tersambung pada server"
 
-#: ../js/ui/components/telepathyClient.js:1375
+#: ../js/ui/components/telepathyClient.js:1376
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Koneksi telah digantikan oleh koneksi baru memakai sumberdaya yang sama"
 
-#: ../js/ui/components/telepathyClient.js:1377
+#: ../js/ui/components/telepathyClient.js:1378
 msgid "The account already exists on the server"
 msgstr "Akun ini sudah ada di server"
 
-#: ../js/ui/components/telepathyClient.js:1379
+#: ../js/ui/components/telepathyClient.js:1380
 msgid "Server is currently too busy to handle the connection"
 msgstr "Server kini terlalu sibuk untuk menangani koneksi"
 
-#: ../js/ui/components/telepathyClient.js:1381
+#: ../js/ui/components/telepathyClient.js:1382
 msgid "Certificate has been revoked"
 msgstr "Sertifikat telah dicabut"
 
-#: ../js/ui/components/telepathyClient.js:1383
+#: ../js/ui/components/telepathyClient.js:1384
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Sertifikat memakai algorima cipher yang tak aman atau lemah secara "
 "kriptografi"
 
-#: ../js/ui/components/telepathyClient.js:1385
+#: ../js/ui/components/telepathyClient.js:1386
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -959,22 +959,22 @@ msgstr ""
 "Panjang sertifikat server, atau kedalaman rantai sertifikat server, "
 "melampaui batas yang diberlakukan oleh pustaka kriptografi"
 
-#: ../js/ui/components/telepathyClient.js:1387
+#: ../js/ui/components/telepathyClient.js:1388
 msgid "Internal error"
 msgstr "Galat internal"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1397
+#: ../js/ui/components/telepathyClient.js:1398
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Tak bisa menyambung ke %s"
 
-#: ../js/ui/components/telepathyClient.js:1402
+#: ../js/ui/components/telepathyClient.js:1403
 msgid "View account"
 msgstr "Tilik akun"
 
-#: ../js/ui/components/telepathyClient.js:1439
+#: ../js/ui/components/telepathyClient.js:1440
 msgid "Unknown reason"
 msgstr "Alasan yang tidak diketahui"
 
@@ -1322,7 +1322,7 @@ msgstr "Mencari…"
 
 #: ../js/ui/search.js:649
 msgid "No results."
-msgstr "Tidak ada yang cocok."
+msgstr "Tak ada yang cocok."
 
 #: ../js/ui/shellEntry.js:27
 msgid "Copy"
@@ -1757,3 +1757,5 @@ msgstr "Sandi tidak boleh kosong"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialog otentikasi ditolak oleh pengguna"
+
+
