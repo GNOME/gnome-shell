@@ -7351,6 +7351,8 @@ update_resize (MetaWindow *window,
 	{
 	  window->display->grab_resize_timeout_id =
 	    g_timeout_add ((int)remaining, update_resize_timeout, window);
+	  g_source_set_name_by_id (window->display->grab_resize_timeout_id,
+                                   "[mutter] update_resize_timeout");
 	}
 
       return;
@@ -9275,6 +9277,8 @@ queue_focus_callback (MetaDisplay *display,
                         window_focus_on_pointer_rest_callback,
                         focus_data,
                         g_free);
+  g_source_set_name_by_id (display->focus_timeout_id,
+                           "[mutter] window_focus_on_pointer_rest_callback");
 }
 
 void

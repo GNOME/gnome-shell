@@ -1466,6 +1466,7 @@ meta_display_queue_autoraise_callback (MetaDisplay *display,
                         meta_prefs_get_auto_raise_delay (),
                         window_raise_with_delay_callback,
                         window, NULL);
+  g_source_set_name_by_id (display->autoraise_timeout_id, "[mutter] window_raise_with_delay_callback");
   display->autoraise_window = window;
 }
 
@@ -2580,6 +2581,7 @@ meta_display_ping_window (MetaWindow        *window,
   ping_data->ping_timeout_id = g_timeout_add (PING_TIMEOUT_DELAY,
 					      meta_display_ping_timeout,
 					      ping_data);
+  g_source_set_name_by_id (ping_data->ping_timeout_id, "[mutter] meta_display_ping_timeout");
 
   display->pending_pings = g_slist_prepend (display->pending_pings, ping_data);
 

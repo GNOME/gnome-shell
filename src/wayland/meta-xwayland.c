@@ -114,6 +114,8 @@ meta_xwayland_handle_wl_surface_id (MetaWindow *window,
 
   if (!associate_window_with_surface_id (manager, window, surface_id))
     {
+      guint id;
+
       /* No surface ID yet... it should arrive after the next
        * iteration through the loop, so queue an idle and see
        * what happens.
@@ -122,7 +124,8 @@ meta_xwayland_handle_wl_surface_id (MetaWindow *window,
       op->manager = manager;
       op->window = window;
       op->surface_id = surface_id;
-      g_idle_add (associate_window_with_surface_idle, op);
+      id = g_idle_add (associate_window_with_surface_idle, op);
+      g_source_set_name_by_id (id, "[mutter] associate_window_with_surface_idle");
     }
 }
 

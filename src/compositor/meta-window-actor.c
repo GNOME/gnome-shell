@@ -855,6 +855,7 @@ queue_send_frame_messages_timeout (MetaWindowActor *self)
   * to be drawn when the timer expires.
   */
   priv->send_frame_messages_timer = g_timeout_add_full (META_PRIORITY_REDRAW, offset, send_frame_messages_timeout, self, NULL);
+  g_source_set_name_by_id (priv->send_frame_messages_timer, "[mutter] send_frame_messages_timeout");
 }
 
 void

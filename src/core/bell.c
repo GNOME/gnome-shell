@@ -120,6 +120,7 @@ bell_unflash_frame (gpointer data)
 static void
 bell_flash_window_frame (MetaWindow *window)
 {
+  guint id;
   g_assert (window->frame != NULL);
   window->frame->is_flashing = 1;
   meta_frame_queue_draw (window->frame);
@@ -128,8 +129,9 @@ bell_flash_window_frame (MetaWindow *window)
    * we are guaranteed to get at least one frame drawn in the
    * flashed state, no matter how loaded we are.
    */
-  g_timeout_add_full (META_PRIORITY_REDRAW, 100,
-      bell_unflash_frame, window->frame, NULL);
+  id = g_timeout_add_full (META_PRIORITY_REDRAW, 100,
+        bell_unflash_frame, window->frame, NULL);
+  g_source_set_name_by_id (id, "[mutter] bell_unflash_frame");
 }
 
 /**

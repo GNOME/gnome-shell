@@ -604,6 +604,8 @@ send_sync_request (MetaWindow *window)
   window->sync_request_timeout_id = g_timeout_add (1000,
                                                    sync_request_timeout,
                                                    window);
+  g_source_set_name_by_id (window->sync_request_timeout_id,
+                           "[mutter] sync_request_timeout");
 
   meta_compositor_set_updates_frozen (window->display->compositor, window,
                                       meta_window_updates_are_frozen (window));

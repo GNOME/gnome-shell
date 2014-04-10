@@ -101,6 +101,8 @@ send_message_to_wl (MetaLauncher           *self,
 
   while (reply.header.opcode != ((struct weston_launcher_message*)message)->opcode)
     {
+      guint id;
+
       /* There were events queued */
       g_assert ((reply.header.opcode & WESTON_LAUNCHER_EVENT) == WESTON_LAUNCHER_EVENT);
 
@@ -116,7 +118,8 @@ send_message_to_wl (MetaLauncher           *self,
       switch (reply.header.opcode)
 	{
 	case WESTON_LAUNCHER_SERVER_REQUEST_VT_SWITCH:
-	  g_idle_add (request_vt_switch_idle, self);
+	  id = g_idle_add (request_vt_switch_idle, self);
+	  g_source_set_name_by_id (id, "[mutter] request_vt_switch_idle");
 	  break;
 
 	default:

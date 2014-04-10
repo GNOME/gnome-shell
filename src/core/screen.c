@@ -1476,6 +1476,8 @@ meta_screen_update_tile_preview (MetaScreen *screen,
         g_timeout_add (TILE_PREVIEW_TIMEOUT_MS,
                        meta_screen_update_tile_preview_timeout,
                        screen);
+      g_source_set_name_by_id (screen->tile_preview_timeout_id,
+                               "[mutter] meta_screen_update_tile_preview_timeout");
     }
   else
     {
@@ -2681,9 +2683,13 @@ add_sequence (MetaScreen        *screen,
    * to compute exactly when we may next time out
    */
   if (screen->startup_sequence_timeout == 0)
-    screen->startup_sequence_timeout = g_timeout_add_seconds (1,
-                                                              startup_sequence_timeout,
-                                                              screen);
+    {
+      screen->startup_sequence_timeout = g_timeout_add_seconds (1,
+                                                                startup_sequence_timeout,
+                                                                screen);
+      g_source_set_name_by_id (screen->startup_sequence_timeout,
+                               "[mutter] startup_sequence_timeout");
+    }
 
   update_startup_feedback (screen);
 }

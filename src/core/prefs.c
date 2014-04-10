@@ -916,8 +916,11 @@ queue_changed (MetaPreference pref)
                 meta_preference_to_string (pref));
 
   if (changed_idle == 0)
-    changed_idle = g_idle_add_full (META_PRIORITY_PREFS_NOTIFY,
-                                    changed_idle_handler, NULL, NULL);
+    {
+      changed_idle = g_idle_add_full (META_PRIORITY_PREFS_NOTIFY,
+                                      changed_idle_handler, NULL, NULL);
+      g_source_set_name_by_id (changed_idle, "[mutter] changed_idle_handler");
+    }
 }
 
 

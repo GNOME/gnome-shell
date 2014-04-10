@@ -925,6 +925,7 @@ meta_later_add (MetaLaterType  when,
        * there so it will happen before GTK+ repaints.
        */
       later->source = g_idle_add_full (META_PRIORITY_RESIZE, call_idle_later, later, NULL);
+      g_source_set_name_by_id (later->source, "[mutter] call_idle_later");
       ensure_later_repaint_func ();
       break;
     case META_LATER_CALC_SHOWING:
@@ -935,6 +936,7 @@ meta_later_add (MetaLaterType  when,
       break;
     case META_LATER_IDLE:
       later->source = g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, call_idle_later, later, NULL);
+      g_source_set_name_by_id (later->source, "[mutter] call_idle_later");
       break;
     }
 
