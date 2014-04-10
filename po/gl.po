@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-03 21:29+0100\n"
-"PO-Revision-Date: 2014-03-03 21:30+0200\n"
+"POT-Creation-Date: 2014-04-10 13:26+0200\n"
+"PO-Revision-Date: 2014-04-10 13:27+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -229,9 +229,29 @@ msgstr "Dividir vista á esquerda"
 msgid "View split on right"
 msgstr "Dividir vista á dereita"
 
+#: ../src/backends/meta-monitor-manager.c:465
+msgid "Built-in display"
+msgstr "Pantalla embebida"
+
+#: ../src/backends/meta-monitor-manager.c:490
+msgid "Unknown"
+msgstr "Descoñecido"
+
+#: ../src/backends/meta-monitor-manager.c:492
+msgid "Unknown Display"
+msgstr "Pantalla descoñecida"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: ../src/backends/meta-monitor-manager.c:500
+#, c-format
+msgid "%s %s"
+msgstr "%s %s"
+
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:534
+#: ../src/compositor/compositor.c:505
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -240,29 +260,24 @@ msgstr ""
 "Xa se está a executar outro xestor de composición na pantalla %i na "
 "visualización «%s»"
 
-#: ../src/compositor/meta-background.c:1074
+#: ../src/compositor/meta-background.c:990
 msgid "background texture could not be created from file"
 msgstr "a textura do fondo non puido crearse desde o ficheiro"
 
-#: ../src/core/bell.c:321
+#: ../src/core/bell.c:213
 msgid "Bell event"
 msgstr "Evento de campá"
 
-#: ../src/core/core.c:156
-#, c-format
-msgid "Unknown window information request: %d"
-msgstr "Petición de información de xanela descoñecida: %d"
-
-#: ../src/core/delete.c:109
+#: ../src/core/delete.c:106
 #, c-format
 msgid "“%s” is not responding."
 msgstr "«%s» non está respondendo."
 
-#: ../src/core/delete.c:111
+#: ../src/core/delete.c:108
 msgid "Application is not responding."
 msgstr "O Aplicativo non está respondendo."
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:113
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -270,94 +285,63 @@ msgstr ""
 "Pode elixir esperar un momento para ver se continúa ou forzar ao aplicativo "
 "a pechar completamente."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:120
 msgid "_Wait"
 msgstr "Espe_rar"
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:120
 msgid "_Force Quit"
 msgstr "_Forzar a saída"
 
-#: ../src/core/display.c:405
-#, c-format
-msgid "Missing %s extension required for compositing"
-msgstr "Falta a extensión %s que se require para a composición"
-
-#: ../src/core/display.c:497
+#: ../src/core/display.c:453
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Produciuse un erro ao abrir a visualización do X Window System «%s»\n"
 
-#: ../src/core/keybindings.c:1113
-#, c-format
-msgid ""
-"Some other program is already using the key %s with modifiers %x as a "
-"binding\n"
-msgstr ""
-"Algún outro programa xa está usando a tecla %s cos modificadores %x como "
-"combinación\n"
-
-#: ../src/core/keybindings.c:1310
-#, c-format
-msgid "\"%s\" is not a valid accelerator\n"
-msgstr "«%s» non é un acelerador correcto\n"
-
-#: ../src/core/main.c:195
+#: ../src/core/main.c:200
 msgid "Disable connection to session manager"
 msgstr "Desactivar a conexión ao xestor de sesión"
 
-#: ../src/core/main.c:201
+#: ../src/core/main.c:206
 msgid "Replace the running window manager"
 msgstr "Substituír o xestor de xanelas en execución"
 
-#: ../src/core/main.c:207
+#: ../src/core/main.c:212
 msgid "Specify session management ID"
 msgstr "Especificar o ID de xestión de sesión"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:217
 msgid "X Display to use"
 msgstr "Pantalla X que se vai usar"
 
-#: ../src/core/main.c:218
+#: ../src/core/main.c:223
 msgid "Initialize session from savefile"
 msgstr "Inicializar sesión desde o ficheiro de salvagarda"
 
-#: ../src/core/main.c:224
+#: ../src/core/main.c:229
 msgid "Make X calls synchronous"
 msgstr "Facer que as chamadas a X sexan sincrónicas"
 
-#: ../src/core/main.c:544
+#: ../src/core/main.c:235
+msgid "Run as a wayland compositor"
+msgstr "Executar como compositor de wayland"
+
+#: ../src/core/main.c:241
+msgid "Run as a full display server, rather than nested"
+msgstr "Executar como un servidor de pantalla completo, fronte a un aniñado"
+
+#: ../src/core/main.c:486
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Produciuse un erro ao dixitalizar o directorio de temas: %s\n"
 
-#: ../src/core/main.c:560
+#: ../src/core/main.c:502
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Non foi posíbel atopar ningún tema! Asegúrese de que %s existe e de que "
 "contén os temas habituais.\n"
-
-#: ../src/core/monitor.c:699
-msgid "Built-in display"
-msgstr "Pantalla embebida"
-
-#: ../src/core/monitor.c:724
-msgid "Unknown"
-msgstr "Descoñecido"
-
-#: ../src/core/monitor.c:726
-msgid "Unknown Display"
-msgstr "Pantalla descoñecida"
-
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: ../src/core/monitor.c:734
-#, c-format
-msgid "%s %s"
-msgstr "%s %s"
 
 #: ../src/core/mutter.c:39
 #, c-format
@@ -382,50 +366,17 @@ msgstr "Imprimir versión"
 msgid "Mutter plugin to use"
 msgstr "Engadido de mutter que usar"
 
-#: ../src/core/prefs.c:1190
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-"Desactiváronse os arranxos para aplicativos danados. Pode que algúns "
-"aplicativos non se comporten correctamente.\n"
-
-#: ../src/core/prefs.c:1265
-#, c-format
-msgid "Could not parse font description \"%s\" from GSettings key %s\n"
-msgstr ""
-"Non foi posíbel analizar a descrición do tipo de letra «%s» da chave "
-"GSettings %s\n"
-
-#: ../src/core/prefs.c:1331
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr ""
-"«%s» atopados na base de datos de configuración non é un valor correcto para "
-"o modificador do botón do rato\n"
-
-#: ../src/core/prefs.c:1894
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr ""
-"«%s» atopados na base de datos de configuración non é un valor correcto para "
-"a combinación de teclas «%s»\n"
-
-#: ../src/core/prefs.c:1984
+#: ../src/core/prefs.c:1985
 #, c-format
 msgid "Workspace %d"
 msgstr "Espazo de traballo %d"
 
-#: ../src/core/screen.c:539
+#: ../src/core/screen.c:543
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A pantalla %d na visualización «%s» non é válida\n"
 
-#: ../src/core/screen.c:555
+#: ../src/core/screen.c:559
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -434,193 +385,22 @@ msgstr ""
 "A visualización %d na pantalla «%s» ten xa un xestor de xanelas, tente usar "
 "a opción --replace para substituír o xestor de xanelas.\n"
 
-#: ../src/core/screen.c:582
-#, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"Non foi posíbel obter a selección do xestor de xanelas na pantalla %d na "
-"visualización «%s»\n"
-
-#: ../src/core/screen.c:660
+#: ../src/core/screen.c:664
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A visualización %d na pantalla «%s» ten xa un xestor de xanelas\n"
 
-#: ../src/core/screen.c:848
-#, c-format
-msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Non foi posíbel liberar a visualización %d na pantalla «%s»\n"
-
-#: ../src/core/session.c:842 ../src/core/session.c:849
-#, c-format
-msgid "Could not create directory '%s': %s\n"
-msgstr "Non foi posíbel crear o directorio «%s»: %s\n"
-
-#: ../src/core/session.c:859
-#, c-format
-msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Non foi posíbel abrir o ficheiro de sesión «%s» para escritura: %s\n"
-
-#: ../src/core/session.c:1000
-#, c-format
-msgid "Error writing session file '%s': %s\n"
-msgstr "Produciuse un erro ao escribir o ficheiro de sesión «%s»: %s\n"
-
-#: ../src/core/session.c:1005
-#, c-format
-msgid "Error closing session file '%s': %s\n"
-msgstr "Produciuse un erro ao pechar o ficheiro de sesión «%s»: %s\n"
-
-#: ../src/core/session.c:1135
-#, c-format
-msgid "Failed to parse saved session file: %s\n"
-msgstr "Produciuse un erro ao analizar o ficheiro de sesión gardado: %s\n"
-
-#: ../src/core/session.c:1184
-#, c-format
-msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr "O atributo <mutter_session> foi visto pero xa temos o ID de sesión"
-
-#: ../src/core/session.c:1197 ../src/core/session.c:1272
-#: ../src/core/session.c:1304 ../src/core/session.c:1376
-#: ../src/core/session.c:1436
-#, c-format
-msgid "Unknown attribute %s on <%s> element"
-msgstr "Atributo descoñecido %s no elemento <%s>"
-
-#: ../src/core/session.c:1214
-#, c-format
-msgid "nested <window> tag"
-msgstr "etiqueta <window> aniñada"
-
-#: ../src/core/session.c:1456
-#, c-format
-msgid "Unknown element %s"
-msgstr "Elemento descoñecido %s"
-
-#: ../src/core/session.c:1808
-msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
-msgstr ""
-"Estas xanelas non soportan &quot;save current setup&quot; e terán que "
-"reiniciarse manualmente a próxima vez que inicie a sesión."
-
-#: ../src/core/util.c:82
-#, c-format
-msgid "Failed to open debug log: %s\n"
-msgstr "Produciuse un erro ao abrir o rexistro de depuración: %s\n"
-
-#: ../src/core/util.c:92
-#, c-format
-msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Produciuse un erro ao facer fdopen() no ficheiro de rexistro %s: %s\n"
-
-#: ../src/core/util.c:98
-#, c-format
-msgid "Opened log file %s\n"
-msgstr "Ficheiro de rexistro %s aberto\n"
-
-#: ../src/core/util.c:117
+#: ../src/core/util.c:118
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter foi compilado sen compatibilidade para o modo detallado\n"
 
-#: ../src/core/util.c:262
-msgid "Window manager: "
-msgstr "Xestor de xanelas: "
-
-#: ../src/core/util.c:412
-msgid "Bug in window manager: "
-msgstr "Fallo no xestor de xanelas: "
-
-#: ../src/core/util.c:443
-msgid "Window manager warning: "
-msgstr "Aviso do xestor de xanelas: "
-
-#: ../src/core/util.c:471
-msgid "Window manager error: "
-msgstr "Erro do xestor de xanelas: "
-
-#. first time through
-#: ../src/core/window.c:7564
-#, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
-"A xanela %s estabelece SM_CLIENT_ID sobre si mesma en vez de facelo na "
-"xanela WM_CLIENT_LEADER como está especificado no ICCCM.\n"
-
-#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
-#. * authoritative source for that info. Some apps such as mplayer or
-#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
-#. * leads to e.g. us not fullscreening their windows.  Apps that set
-#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
-#. * about these apps but make them work.
-#.
-#: ../src/core/window.c:8489
-#, c-format
-msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
-"%d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-"A xanela %s estabeleceu a propiedade MWM indicando que non é redimensionábel "
-"mais configurou o tamaño mínimo a %d x %d e o tamaño máximo a %d x %d, isto "
-"non ten moito sentido.\n"
-
-#: ../src/core/window-props.c:349
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "O aplicativo configurou un _NET_WM_PID %lu falso\n"
-
-#: ../src/core/window-props.c:465
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s (en %s)"
-
-#: ../src/core/window-props.c:1548
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr ""
-"WM_TRANSIENT_FOR non válido para a xanela 0x%lx especificada para %s.\n"
-
-#: ../src/core/window-props.c:1559
-#, c-format
-msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
-msgstr "WM_TRANSIENT_FOR xanela 0x%lx para %s crearía un bucle.\n"
-
-#: ../src/core/xprops.c:153
-#, c-format
-msgid ""
-"Window 0x%lx has property %s\n"
-"that was expected to have type %s format %d\n"
-"and actually has type %s format %d n_items %d.\n"
-"This is most likely an application bug, not a window manager bug.\n"
-"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
-msgstr ""
-"A xanela 0x%lx ten a propiedade %s\n"
-"que se esperaba que tivese o tipo %s co formato %d\n"
-"e actualmente ten un tipo %s co formato %d e n_items %d.\n"
-"Isto non parece ser un fallo do aplicativo nin do xestor de xanelas.\n"
-"A xanela ten título=«%s» a clase=«%s» e o nome=«%s»\n"
-
-#: ../src/core/xprops.c:409
-#, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "A propiedade %s na xanela 0x%lx contén UTF-8 non válido\n"
-
-#: ../src/core/xprops.c:492
-#, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"A propiedade %s na xanela 0x%lx contén UTF-8 non válido para o elemento da "
-"lista %d\n"
-
-#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
+#: ../src/mutter.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
+
+#: ../src/mutter-wayland.desktop.in.h:1
+msgid "Mutter (wayland compositor)"
+msgstr "Mutter (compositor de wayland)"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Modifier to use for extended window management operations"
@@ -752,6 +532,34 @@ msgstr "Seleccionar xanela da lapela emerxente"
 #: ../src/org.gnome.mutter.gschema.xml.in.h:20
 msgid "Cancel tab popup"
 msgstr "Cancelar lapela emerxente"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:1
+msgid "Switch to VT 1"
+msgstr "Cambiar á VT 1"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:2
+msgid "Switch to VT 2"
+msgstr "Cambiar á VT 2"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:3
+msgid "Switch to VT 3"
+msgstr "Cambiar á VT 3"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:4
+msgid "Switch to VT 4"
+msgstr "Cambiar á VT 4"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:5
+msgid "Switch to VT 5"
+msgstr "Cambiar á VT 5"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:6
+msgid "Switch to VT 6"
+msgstr "Cambiar á VT 6"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:7
+msgid "Switch to VT 7"
+msgstr "Cambiar á VT 7"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:65
@@ -1638,6 +1446,168 @@ msgstr "<%s> especificada dúas veces para este tema"
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Produciuse un erro ao buscar un ficheiro correcto para o tema %s\n"
 
+#: ../src/x11/session.c:1815
+msgid ""
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
+msgstr ""
+"Estas xanelas non soportan &quot;save current setup&quot; e terán que "
+"reiniciarse manualmente a próxima vez que inicie a sesión."
+
+#: ../src/x11/window-props.c:465
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (en %s)"
+
+#~ msgid "Unknown window information request: %d"
+#~ msgstr "Petición de información de xanela descoñecida: %d"
+
+#~ msgid "Missing %s extension required for compositing"
+#~ msgstr "Falta a extensión %s que se require para a composición"
+
+#~ msgid ""
+#~ "Some other program is already using the key %s with modifiers %x as a "
+#~ "binding\n"
+#~ msgstr ""
+#~ "Algún outro programa xa está usando a tecla %s cos modificadores %x como "
+#~ "combinación\n"
+
+#~ msgid "\"%s\" is not a valid accelerator\n"
+#~ msgstr "«%s» non é un acelerador correcto\n"
+
+#~ msgid ""
+#~ "Workarounds for broken applications disabled. Some applications may not "
+#~ "behave properly.\n"
+#~ msgstr ""
+#~ "Desactiváronse os arranxos para aplicativos danados. Pode que algúns "
+#~ "aplicativos non se comporten correctamente.\n"
+
+#~ msgid "Could not parse font description \"%s\" from GSettings key %s\n"
+#~ msgstr ""
+#~ "Non foi posíbel analizar a descrición do tipo de letra «%s» da chave "
+#~ "GSettings %s\n"
+
+#~ msgid ""
+#~ "\"%s\" found in configuration database is not a valid value for mouse "
+#~ "button modifier\n"
+#~ msgstr ""
+#~ "«%s» atopados na base de datos de configuración non é un valor correcto "
+#~ "para o modificador do botón do rato\n"
+
+#~ msgid ""
+#~ "\"%s\" found in configuration database is not a valid value for "
+#~ "keybinding \"%s\"\n"
+#~ msgstr ""
+#~ "«%s» atopados na base de datos de configuración non é un valor correcto "
+#~ "para a combinación de teclas «%s»\n"
+
+#~ msgid ""
+#~ "Could not acquire window manager selection on screen %d display \"%s\"\n"
+#~ msgstr ""
+#~ "Non foi posíbel obter a selección do xestor de xanelas na pantalla %d na "
+#~ "visualización «%s»\n"
+
+#~ msgid "Could not release screen %d on display \"%s\"\n"
+#~ msgstr "Non foi posíbel liberar a visualización %d na pantalla «%s»\n"
+
+#~ msgid "Could not create directory '%s': %s\n"
+#~ msgstr "Non foi posíbel crear o directorio «%s»: %s\n"
+
+#~ msgid "Could not open session file '%s' for writing: %s\n"
+#~ msgstr ""
+#~ "Non foi posíbel abrir o ficheiro de sesión «%s» para escritura: %s\n"
+
+#~ msgid "Error writing session file '%s': %s\n"
+#~ msgstr "Produciuse un erro ao escribir o ficheiro de sesión «%s»: %s\n"
+
+#~ msgid "Error closing session file '%s': %s\n"
+#~ msgstr "Produciuse un erro ao pechar o ficheiro de sesión «%s»: %s\n"
+
+#~ msgid "Failed to parse saved session file: %s\n"
+#~ msgstr "Produciuse un erro ao analizar o ficheiro de sesión gardado: %s\n"
+
+#~ msgid "<mutter_session> attribute seen but we already have the session ID"
+#~ msgstr "O atributo <mutter_session> foi visto pero xa temos o ID de sesión"
+
+#~ msgid "Unknown attribute %s on <%s> element"
+#~ msgstr "Atributo descoñecido %s no elemento <%s>"
+
+#~ msgid "nested <window> tag"
+#~ msgstr "etiqueta <window> aniñada"
+
+#~ msgid "Unknown element %s"
+#~ msgstr "Elemento descoñecido %s"
+
+#~ msgid "Failed to open debug log: %s\n"
+#~ msgstr "Produciuse un erro ao abrir o rexistro de depuración: %s\n"
+
+#~ msgid "Failed to fdopen() log file %s: %s\n"
+#~ msgstr ""
+#~ "Produciuse un erro ao facer fdopen() no ficheiro de rexistro %s: %s\n"
+
+#~ msgid "Opened log file %s\n"
+#~ msgstr "Ficheiro de rexistro %s aberto\n"
+
+#~ msgid "Window manager: "
+#~ msgstr "Xestor de xanelas: "
+
+#~ msgid "Bug in window manager: "
+#~ msgstr "Fallo no xestor de xanelas: "
+
+#~ msgid "Window manager warning: "
+#~ msgstr "Aviso do xestor de xanelas: "
+
+#~ msgid "Window manager error: "
+#~ msgstr "Erro do xestor de xanelas: "
+
+#~ msgid ""
+#~ "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+#~ "window as specified in the ICCCM.\n"
+#~ msgstr ""
+#~ "A xanela %s estabelece SM_CLIENT_ID sobre si mesma en vez de facelo na "
+#~ "xanela WM_CLIENT_LEADER como está especificado no ICCCM.\n"
+
+#~ msgid ""
+#~ "Window %s sets an MWM hint indicating it isn't resizable, but sets min "
+#~ "size %d x %d and max size %d x %d; this doesn't make much sense.\n"
+#~ msgstr ""
+#~ "A xanela %s estabeleceu a propiedade MWM indicando que non é "
+#~ "redimensionábel mais configurou o tamaño mínimo a %d x %d e o tamaño "
+#~ "máximo a %d x %d, isto non ten moito sentido.\n"
+
+#~ msgid "Application set a bogus _NET_WM_PID %lu\n"
+#~ msgstr "O aplicativo configurou un _NET_WM_PID %lu falso\n"
+
+#~ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+#~ msgstr ""
+#~ "WM_TRANSIENT_FOR non válido para a xanela 0x%lx especificada para %s.\n"
+
+#~ msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
+#~ msgstr "WM_TRANSIENT_FOR xanela 0x%lx para %s crearía un bucle.\n"
+
+#~ msgid ""
+#~ "Window 0x%lx has property %s\n"
+#~ "that was expected to have type %s format %d\n"
+#~ "and actually has type %s format %d n_items %d.\n"
+#~ "This is most likely an application bug, not a window manager bug.\n"
+#~ "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+#~ msgstr ""
+#~ "A xanela 0x%lx ten a propiedade %s\n"
+#~ "que se esperaba que tivese o tipo %s co formato %d\n"
+#~ "e actualmente ten un tipo %s co formato %d e n_items %d.\n"
+#~ "Isto non parece ser un fallo do aplicativo nin do xestor de xanelas.\n"
+#~ "A xanela ten título=«%s» a clase=«%s» e o nome=«%s»\n"
+
+#~ msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+#~ msgstr "A propiedade %s na xanela 0x%lx contén UTF-8 non válido\n"
+
+#~ msgid ""
+#~ "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the "
+#~ "list\n"
+#~ msgstr ""
+#~ "A propiedade %s na xanela 0x%lx contén UTF-8 non válido para o elemento "
+#~ "da lista %d\n"
+
 #~ msgid "Usage: %s\n"
 #~ msgstr "Uso: %s\n"
 
@@ -1835,15 +1805,6 @@ msgstr "Produciuse un erro ao buscar un ficheiro correcto para o tema %s\n"
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "Pór a xanela nun só espazo de traballo"
-
-#~ msgid "Switch to workspace 5"
-#~ msgstr "Cambiar ao espazo de traballo 5"
-
-#~ msgid "Switch to workspace 6"
-#~ msgstr "Cambiar ao espazo de traballo 6"
-
-#~ msgid "Switch to workspace 7"
-#~ msgstr "Cambiar ao espazo de traballo 7"
 
 #~ msgid "Switch to workspace 8"
 #~ msgstr "Cambiar ao espazo de traballo 8"
