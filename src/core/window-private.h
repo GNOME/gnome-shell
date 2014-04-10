@@ -370,8 +370,8 @@ struct _MetaWindow
   /* the input shape region for picking */
   cairo_region_t *input_region;
 
-  /* _NET_WM_WINDOW_OPACITY */
-  guint opacity;
+  /* _NET_WM_WINDOW_OPACITY rescaled to 0xFF */
+  guint8 opacity;
 
   /* if TRUE, the we have the new form of sync request counter which
    * also handles application frames */
@@ -731,7 +731,7 @@ void meta_window_set_transient_for        (MetaWindow *window,
                                            MetaWindow *parent);
 
 void meta_window_set_opacity              (MetaWindow *window,
-                                           guint       opacity);
+                                           guint8      opacity);
 
 void meta_window_set_custom_frame_extents (MetaWindow *window,
                                            GtkBorder  *extents);

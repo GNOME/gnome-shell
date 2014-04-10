@@ -9129,7 +9129,7 @@ meta_window_set_transient_for (MetaWindow *window,
 
 void
 meta_window_set_opacity (MetaWindow *window,
-                         guint       opacity)
+                         guint8      opacity)
 {
   window->opacity = opacity;
 
