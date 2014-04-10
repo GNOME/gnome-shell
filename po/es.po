@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-02 22:51+0000\n"
-"PO-Revision-Date: 2014-03-03 14:51+0100\n"
+"POT-Creation-Date: 2014-04-09 22:40+0000\n"
+"PO-Revision-Date: 2014-04-10 11:04+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -62,22 +62,18 @@ msgid "Move window one workspace down"
 msgstr "Bajar la ventana un área de trabajo"
 
 #: ../src/50-mutter-navigation.xml.in.h:10
-#| msgid "Move window one workspace to the left"
 msgid "Move window one monitor to the left"
 msgstr "Mover la ventana una pantalla a la izquierda"
 
 #: ../src/50-mutter-navigation.xml.in.h:11
-#| msgid "Move window one workspace to the right"
 msgid "Move window one monitor to the right"
 msgstr "Mover la ventana una pantalla a la derecha"
 
 #: ../src/50-mutter-navigation.xml.in.h:12
-#| msgid "Move window one workspace up"
 msgid "Move window one monitor up"
 msgstr "Subir la ventana una pantalla"
 
 #: ../src/50-mutter-navigation.xml.in.h:13
-#| msgid "Move window one workspace down"
 msgid "Move window one monitor down"
 msgstr "Bajar la ventana una pantalla"
 
@@ -233,9 +229,29 @@ msgstr "Ver división a la izquierda"
 msgid "View split on right"
 msgstr "Ver división a la derecha"
 
+#: ../src/backends/meta-monitor-manager.c:465
+msgid "Built-in display"
+msgstr "Pantalla integrada"
+
+#: ../src/backends/meta-monitor-manager.c:490
+msgid "Unknown"
+msgstr "Desconocida"
+
+#: ../src/backends/meta-monitor-manager.c:492
+msgid "Unknown Display"
+msgstr "Pantalla desconocida"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: ../src/backends/meta-monitor-manager.c:500
+#, c-format
+msgid "%s %s"
+msgstr "%s %s"
+
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:534
+#: ../src/compositor/compositor.c:505
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -244,29 +260,24 @@ msgstr ""
 "Ya existe un gestor de composición ejecutándose en la monitor %i, pantalla "
 "«%s»."
 
-#: ../src/compositor/meta-background.c:1074
+#: ../src/compositor/meta-background.c:990
 msgid "background texture could not be created from file"
 msgstr "no se pudo crear la textura de fondo a partir de archivo"
 
-#: ../src/core/bell.c:321
+#: ../src/core/bell.c:213
 msgid "Bell event"
 msgstr "Evento de campana"
 
-#: ../src/core/core.c:156
-#, c-format
-msgid "Unknown window information request: %d"
-msgstr "Petición de información de ventana desconocida: %d"
-
-#: ../src/core/delete.c:109
+#: ../src/core/delete.c:106
 #, c-format
 msgid "“%s” is not responding."
 msgstr "«%s» no está respondiendo."
 
-#: ../src/core/delete.c:111
+#: ../src/core/delete.c:108
 msgid "Application is not responding."
 msgstr "La aplicación no está respondiendo."
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:113
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -274,94 +285,63 @@ msgstr ""
 "Puede elegir esperar un rato para ver si continua o forzar la aplicación "
 "para cerrarla completamente."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:120
 msgid "_Wait"
 msgstr "_Esperar"
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:120
 msgid "_Force Quit"
 msgstr "_Forzar la salida"
 
-#: ../src/core/display.c:405
-#, c-format
-msgid "Missing %s extension required for compositing"
-msgstr "Falta la extensión %s requerida para la composición"
-
-#: ../src/core/display.c:497
+#: ../src/core/display.c:453
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ocurrió un error al abrir la pantalla de X Window System «%s»\n"
 
-#: ../src/core/keybindings.c:1113
-#, c-format
-msgid ""
-"Some other program is already using the key %s with modifiers %x as a "
-"binding\n"
-msgstr ""
-"Algún otro programa ya está usando la clave %s con el modificador %x como "
-"una vinculación\n"
-
-#: ../src/core/keybindings.c:1310
-#, c-format
-msgid "\"%s\" is not a valid accelerator\n"
-msgstr "«%s» no es un acelerador válido\n"
-
-#: ../src/core/main.c:195
+#: ../src/core/main.c:200
 msgid "Disable connection to session manager"
 msgstr "Desactivar conexión al gestor de sesión"
 
-#: ../src/core/main.c:201
+#: ../src/core/main.c:206
 msgid "Replace the running window manager"
 msgstr "Reemplazar el gestor de ventanas en ejecución"
 
-#: ../src/core/main.c:207
+#: ../src/core/main.c:212
 msgid "Specify session management ID"
 msgstr "Especificar el ID se gestión de sesión"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:217
 msgid "X Display to use"
 msgstr "Pantalla X que usar"
 
-#: ../src/core/main.c:218
+#: ../src/core/main.c:223
 msgid "Initialize session from savefile"
 msgstr "Inicializar sesión desde el archivo de salvaguarda"
 
-#: ../src/core/main.c:224
+#: ../src/core/main.c:229
 msgid "Make X calls synchronous"
 msgstr "Hacer que las llamadas a las X sean síncronas"
 
-#: ../src/core/main.c:544
+#: ../src/core/main.c:235
+msgid "Run as a wayland compositor"
+msgstr "Ejecutar como compositor Wayland"
+
+#: ../src/core/main.c:241
+msgid "Run as a full display server, rather than nested"
+msgstr "Ejecutar como servidor completo, en lugar de anidado"
+
+#: ../src/core/main.c:486
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Falló al inspeccionar la carpeta de temas: %s\n"
 
-#: ../src/core/main.c:560
+#: ../src/core/main.c:502
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "No se ha podido encontrar un tema. Asegúrese de que %s existe y contiene los "
 "temas usuales.\n"
-
-#: ../src/core/monitor.c:699
-msgid "Built-in display"
-msgstr "Pantalla integrada"
-
-#: ../src/core/monitor.c:724
-msgid "Unknown"
-msgstr "Desconocida"
-
-#: ../src/core/monitor.c:726
-msgid "Unknown Display"
-msgstr "Pantalla desconocida"
-
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: ../src/core/monitor.c:734
-#, c-format
-msgid "%s %s"
-msgstr "%s %s"
 
 #: ../src/core/mutter.c:39
 #, c-format
@@ -386,50 +366,17 @@ msgstr "Imprimir versión"
 msgid "Mutter plugin to use"
 msgstr "Complemento de mutter que usar"
 
-#: ../src/core/prefs.c:1190
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-"Los arreglos para aplicaciones rotas se han deshabilitado. Algunas "
-"aplicaciones podrían no comportarse correctamente.\n"
-
-#: ../src/core/prefs.c:1265
-#, c-format
-msgid "Could not parse font description \"%s\" from GSettings key %s\n"
-msgstr ""
-"No se pudo analizar la descripción de la tipografía «%s» de la clave "
-"GSettings %s\n"
-
-#: ../src/core/prefs.c:1331
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr ""
-"«%s» encontrado en la base de datos de configuración no es un valor válido "
-"para el modificador del botón del ratón\n"
-
-#: ../src/core/prefs.c:1894
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr ""
-"«%s» encontrado en la base de datos de configuración no es un valor válido "
-"para la combinación de teclas «%s»\n"
-
-#: ../src/core/prefs.c:1984
+#: ../src/core/prefs.c:1985
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de trabajo %d"
 
-#: ../src/core/screen.c:539
+#: ../src/core/screen.c:543
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "La ventana %d en la pantalla «%s» no es válida\n"
 
-#: ../src/core/screen.c:555
+#: ../src/core/screen.c:559
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -438,195 +385,22 @@ msgstr ""
 "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas, intente "
 "usar la opción «--replace» para reemplazar el gestor de ventanas activo.\n"
 
-#: ../src/core/screen.c:582
-#, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"No se ha podido obtener la selección del gestor de ventanas en la ventana %d "
-"en la pantalla «%s»\n"
-
-#: ../src/core/screen.c:660
+#: ../src/core/screen.c:664
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas\n"
 
-#: ../src/core/screen.c:848
-#, c-format
-msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "No se ha podido liberar el monitor %d en la pantalla «%s»\n"
-
-#: ../src/core/session.c:842 ../src/core/session.c:849
-#, c-format
-msgid "Could not create directory '%s': %s\n"
-msgstr "No se ha podido crear la carpeta «%s»: %s\n"
-
-#: ../src/core/session.c:859
-#, c-format
-msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "No se ha podido abrir para escritura el archivo de sesión «%s»: %s\n"
-
-#: ../src/core/session.c:1000
-#, c-format
-msgid "Error writing session file '%s': %s\n"
-msgstr "Ocurrió un error al escribir en el archivo de sesión «%s»: %s\n"
-
-#: ../src/core/session.c:1005
-#, c-format
-msgid "Error closing session file '%s': %s\n"
-msgstr "Ocurrió un error al cerrar el archivo de sesión «%s»: %s\n"
-
-#: ../src/core/session.c:1135
-#, c-format
-msgid "Failed to parse saved session file: %s\n"
-msgstr "Ocurrió un error al interpretar el archivo de sesión guardado: %s\n"
-
-#: ../src/core/session.c:1184
-#, c-format
-msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr ""
-"Se ha visto el atributo <mutter_session> pero ya tenemos el ID de la sesión"
-
-#: ../src/core/session.c:1197 ../src/core/session.c:1272
-#: ../src/core/session.c:1304 ../src/core/session.c:1376
-#: ../src/core/session.c:1436
-#, c-format
-msgid "Unknown attribute %s on <%s> element"
-msgstr "Atributo desconocido %s en el elemento <%s>"
-
-#: ../src/core/session.c:1214
-#, c-format
-msgid "nested <window> tag"
-msgstr "etiqueta <window> anidada"
-
-#: ../src/core/session.c:1456
-#, c-format
-msgid "Unknown element %s"
-msgstr "Elemento desconocido %s"
-
-#: ../src/core/session.c:1808
-msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
-msgstr ""
-"Estas ventanas no soportan «guardar la configuración actual» y tendrán que "
-"reiniciarse manualmente la próxima vez que inicie una sesión."
-
-#: ../src/core/util.c:82
-#, c-format
-msgid "Failed to open debug log: %s\n"
-msgstr "Ocurrió un error al abrir el registro de errores: %s\n"
-
-#: ../src/core/util.c:92
-#, c-format
-msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Ocurrió un error al hacer fdopen() en el archivo de registro %s: %s\n"
-
-#: ../src/core/util.c:98
-#, c-format
-msgid "Opened log file %s\n"
-msgstr "Archivo de registro %s abierto\n"
-
-#: ../src/core/util.c:117
+#: ../src/core/util.c:118
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter fue compilado sin soporte para modo prolijo\n"
 
-#: ../src/core/util.c:262
-msgid "Window manager: "
-msgstr "Administrador de ventanas: "
-
-# Diferenciar de eRRor en el gestor de ventanas, más abajo
-#: ../src/core/util.c:412
-msgid "Bug in window manager: "
-msgstr "Error en el gestor de ventanas: "
-
-#: ../src/core/util.c:443
-msgid "Window manager warning: "
-msgstr "Advertencia del gestor de ventanas: "
-
-#: ../src/core/util.c:471
-msgid "Window manager error: "
-msgstr "Error del gestor de ventanas: "
-
-#. first time through
-#: ../src/core/window.c:7564
-#, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
-"La ventana %s ha establecido SM_CLIENT_ID sobre sí misma en vez de hacerlo "
-"en la ventana WM_CLIENT_LEADER como está especificado en el ICCCM.\n"
-
-#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
-#. * authoritative source for that info. Some apps such as mplayer or
-#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
-#. * leads to e.g. us not fullscreening their windows.  Apps that set
-#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
-#. * about these apps but make them work.
-#.
-#: ../src/core/window.c:8489
-#, c-format
-msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
-"%d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-"La ventana %s ha establecido la propiedad MWM indicando que no es "
-"redimensionable, pero configuró el tamaño mínimo a %d x %d y el tamaño "
-"máximo a %d x %d ; esto no tiene mucho sentido.\n"
-
-#: ../src/core/window-props.c:349
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "La aplicación establecio un _NET_WM_PID %lu erróneo\n"
-
-#: ../src/core/window-props.c:465
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s (on %s)"
-
-#: ../src/core/window-props.c:1548
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr ""
-"WM_TRANSIENT_FOR no válido para la ventana 0x%lx especificada para %s.\n"
-
-#: ../src/core/window-props.c:1559
-#, c-format
-msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
-msgstr "WM_TRANSIENT_FOR ventana 0x%lx para %s crearía un bucle.\n"
-
-#: ../src/core/xprops.c:153
-#, c-format
-msgid ""
-"Window 0x%lx has property %s\n"
-"that was expected to have type %s format %d\n"
-"and actually has type %s format %d n_items %d.\n"
-"This is most likely an application bug, not a window manager bug.\n"
-"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
-msgstr ""
-"La ventana 0x%lx tiene la propiedad %s \n"
-"que se esperaba tuviese el tipo %s con el formato %d\n"
-"y actualmente tiene un tipo %s con el formato %d y n_items %d\n"
-"Esto no parece ser un error de la aplicación ni del gestor de ventanas.\n"
-"La ventana tiene título=«%s» la clase=«%s» y el nombre=«%s»\n"
-
-#: ../src/core/xprops.c:409
-#, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "La propiedad %s en la ventana 0x%lx contiene UTF-8 no válido\n"
-
-#: ../src/core/xprops.c:492
-#, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"La propiedad %s en la ventana 0x%lx contiene UTF-8 no válido para el "
-"elemento %d de la lista\n"
-
-#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
+#: ../src/mutter.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
+
+#: ../src/mutter-wayland.desktop.in.h:1
+msgid "Mutter (wayland compositor)"
+msgstr "Mutter (compositor Wayland)"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Modifier to use for extended window management operations"
@@ -762,6 +536,41 @@ msgstr "Seleccionar ventana de la pestaña emergente"
 #: ../src/org.gnome.mutter.gschema.xml.in.h:20
 msgid "Cancel tab popup"
 msgstr "Cancelar pestaña emergente"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:1
+#| msgid "Switch to workspace 1"
+msgid "Switch to VT 1"
+msgstr "Cambiar al VT 1"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:2
+#| msgid "Switch to workspace 2"
+msgid "Switch to VT 2"
+msgstr "Cambiar al VT 2"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:3
+#| msgid "Switch to workspace 3"
+msgid "Switch to VT 3"
+msgstr "Cambiar al VT 3"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:4
+#| msgid "Switch to workspace 4"
+msgid "Switch to VT 4"
+msgstr "Cambiar al VT 4"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:5
+#| msgid "Switch to workspace 5"
+msgid "Switch to VT 5"
+msgstr "Cambiar al VT 5"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:6
+#| msgid "Switch to workspace 6"
+msgid "Switch to VT 6"
+msgstr "Cambiar al VT 6"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:7
+#| msgid "Switch to workspace 7"
+msgid "Switch to VT 7"
+msgstr "Cambiar al VT 7"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:65
@@ -1660,6 +1469,172 @@ msgstr "<%s> especificado dos veces para este tema"
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Falló al encontrar un archivo válido para el tema%s\n"
 
+#: ../src/x11/session.c:1815
+msgid ""
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
+msgstr ""
+"Estas ventanas no soportan «guardar la configuración actual» y tendrán que "
+"reiniciarse manualmente la próxima vez que inicie una sesión."
+
+#: ../src/x11/window-props.c:465
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (on %s)"
+
+#~ msgid "Unknown window information request: %d"
+#~ msgstr "Petición de información de ventana desconocida: %d"
+
+#~ msgid "Missing %s extension required for compositing"
+#~ msgstr "Falta la extensión %s requerida para la composición"
+
+#~ msgid ""
+#~ "Some other program is already using the key %s with modifiers %x as a "
+#~ "binding\n"
+#~ msgstr ""
+#~ "Algún otro programa ya está usando la clave %s con el modificador %x como "
+#~ "una vinculación\n"
+
+#~ msgid "\"%s\" is not a valid accelerator\n"
+#~ msgstr "«%s» no es un acelerador válido\n"
+
+#~ msgid ""
+#~ "Workarounds for broken applications disabled. Some applications may not "
+#~ "behave properly.\n"
+#~ msgstr ""
+#~ "Los arreglos para aplicaciones rotas se han deshabilitado. Algunas "
+#~ "aplicaciones podrían no comportarse correctamente.\n"
+
+#~ msgid "Could not parse font description \"%s\" from GSettings key %s\n"
+#~ msgstr ""
+#~ "No se pudo analizar la descripción de la tipografía «%s» de la clave "
+#~ "GSettings %s\n"
+
+#~ msgid ""
+#~ "\"%s\" found in configuration database is not a valid value for mouse "
+#~ "button modifier\n"
+#~ msgstr ""
+#~ "«%s» encontrado en la base de datos de configuración no es un valor "
+#~ "válido para el modificador del botón del ratón\n"
+
+#~ msgid ""
+#~ "\"%s\" found in configuration database is not a valid value for "
+#~ "keybinding \"%s\"\n"
+#~ msgstr ""
+#~ "«%s» encontrado en la base de datos de configuración no es un valor "
+#~ "válido para la combinación de teclas «%s»\n"
+
+#~ msgid ""
+#~ "Could not acquire window manager selection on screen %d display \"%s\"\n"
+#~ msgstr ""
+#~ "No se ha podido obtener la selección del gestor de ventanas en la ventana "
+#~ "%d en la pantalla «%s»\n"
+
+#~ msgid "Could not release screen %d on display \"%s\"\n"
+#~ msgstr "No se ha podido liberar el monitor %d en la pantalla «%s»\n"
+
+#~ msgid "Could not create directory '%s': %s\n"
+#~ msgstr "No se ha podido crear la carpeta «%s»: %s\n"
+
+#~ msgid "Could not open session file '%s' for writing: %s\n"
+#~ msgstr ""
+#~ "No se ha podido abrir para escritura el archivo de sesión «%s»: %s\n"
+
+#~ msgid "Error writing session file '%s': %s\n"
+#~ msgstr "Ocurrió un error al escribir en el archivo de sesión «%s»: %s\n"
+
+#~ msgid "Error closing session file '%s': %s\n"
+#~ msgstr "Ocurrió un error al cerrar el archivo de sesión «%s»: %s\n"
+
+#~ msgid "Failed to parse saved session file: %s\n"
+#~ msgstr "Ocurrió un error al interpretar el archivo de sesión guardado: %s\n"
+
+#~ msgid "<mutter_session> attribute seen but we already have the session ID"
+#~ msgstr ""
+#~ "Se ha visto el atributo <mutter_session> pero ya tenemos el ID de la "
+#~ "sesión"
+
+#~ msgid "Unknown attribute %s on <%s> element"
+#~ msgstr "Atributo desconocido %s en el elemento <%s>"
+
+#~ msgid "nested <window> tag"
+#~ msgstr "etiqueta <window> anidada"
+
+#~ msgid "Unknown element %s"
+#~ msgstr "Elemento desconocido %s"
+
+#~ msgid "Failed to open debug log: %s\n"
+#~ msgstr "Ocurrió un error al abrir el registro de errores: %s\n"
+
+#~ msgid "Failed to fdopen() log file %s: %s\n"
+#~ msgstr ""
+#~ "Ocurrió un error al hacer fdopen() en el archivo de registro %s: %s\n"
+
+#~ msgid "Opened log file %s\n"
+#~ msgstr "Archivo de registro %s abierto\n"
+
+#~ msgid "Window manager: "
+#~ msgstr "Administrador de ventanas: "
+
+# Diferenciar de eRRor en el gestor de ventanas, más abajo
+#~ msgid "Bug in window manager: "
+#~ msgstr "Error en el gestor de ventanas: "
+
+#~ msgid "Window manager warning: "
+#~ msgstr "Advertencia del gestor de ventanas: "
+
+#~ msgid "Window manager error: "
+#~ msgstr "Error del gestor de ventanas: "
+
+#~ msgid ""
+#~ "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+#~ "window as specified in the ICCCM.\n"
+#~ msgstr ""
+#~ "La ventana %s ha establecido SM_CLIENT_ID sobre sí misma en vez de "
+#~ "hacerlo en la ventana WM_CLIENT_LEADER como está especificado en el "
+#~ "ICCCM.\n"
+
+#~ msgid ""
+#~ "Window %s sets an MWM hint indicating it isn't resizable, but sets min "
+#~ "size %d x %d and max size %d x %d; this doesn't make much sense.\n"
+#~ msgstr ""
+#~ "La ventana %s ha establecido la propiedad MWM indicando que no es "
+#~ "redimensionable, pero configuró el tamaño mínimo a %d x %d y el tamaño "
+#~ "máximo a %d x %d ; esto no tiene mucho sentido.\n"
+
+#~ msgid "Application set a bogus _NET_WM_PID %lu\n"
+#~ msgstr "La aplicación establecio un _NET_WM_PID %lu erróneo\n"
+
+#~ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+#~ msgstr ""
+#~ "WM_TRANSIENT_FOR no válido para la ventana 0x%lx especificada para %s.\n"
+
+#~ msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
+#~ msgstr "WM_TRANSIENT_FOR ventana 0x%lx para %s crearía un bucle.\n"
+
+#~ msgid ""
+#~ "Window 0x%lx has property %s\n"
+#~ "that was expected to have type %s format %d\n"
+#~ "and actually has type %s format %d n_items %d.\n"
+#~ "This is most likely an application bug, not a window manager bug.\n"
+#~ "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+#~ msgstr ""
+#~ "La ventana 0x%lx tiene la propiedad %s \n"
+#~ "que se esperaba tuviese el tipo %s con el formato %d\n"
+#~ "y actualmente tiene un tipo %s con el formato %d y n_items %d\n"
+#~ "Esto no parece ser un error de la aplicación ni del gestor de ventanas.\n"
+#~ "La ventana tiene título=«%s» la clase=«%s» y el nombre=«%s»\n"
+
+#~ msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+#~ msgstr "La propiedad %s en la ventana 0x%lx contiene UTF-8 no válido\n"
+
+#~ msgid ""
+#~ "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the "
+#~ "list\n"
+#~ msgstr ""
+#~ "La propiedad %s en la ventana 0x%lx contiene UTF-8 no válido para el "
+#~ "elemento %d de la lista\n"
+
 #~ msgid "Usage: %s\n"
 #~ msgstr "Uso: %s\n"
 
@@ -1858,15 +1833,6 @@ msgstr "Falló al encontrar un archivo válido para el tema%s\n"
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "Poner la ventana sólo en un área de trabajo"
-
-#~ msgid "Switch to workspace 5"
-#~ msgstr "Cambiar al área de trabajo 5"
-
-#~ msgid "Switch to workspace 6"
-#~ msgstr "Cambiar al área de trabajo 6"
-
-#~ msgid "Switch to workspace 7"
-#~ msgstr "Cambiar al área de trabajo 7"
 
 #~ msgid "Switch to workspace 8"
 #~ msgstr "Cambiar al área de trabajo 8"
