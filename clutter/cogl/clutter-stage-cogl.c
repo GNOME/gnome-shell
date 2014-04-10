@@ -517,7 +517,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
       }
     }
-  else
+  else if (has_buffer_age)
     {
       CLUTTER_NOTE (CLIPPING, "Unclipped redraw: Resetting damage history list.\n");
       g_slist_free_full (stage_cogl->damage_history, g_free);
