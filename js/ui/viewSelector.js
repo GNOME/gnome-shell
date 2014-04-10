@@ -383,9 +383,11 @@ const ViewSelector = new Lang.Class({
                 this._iconClickedId = this._entry.connect('secondary-icon-clicked',
                     Lang.bind(this, this.reset));
 
-            if (this._searchTimeoutId == 0)
+            if (this._searchTimeoutId == 0) {
                 this._searchTimeoutId = Mainloop.timeout_add(150,
                     Lang.bind(this, this._doSearch));
+                GLib.Source.set_name_by_id(this._searchTimeoutId, '[gnome-shell] this._doSearch');
+            }
         } else {
             if (this._iconClickedId > 0) {
                 this._entry.disconnect(this._iconClickedId);

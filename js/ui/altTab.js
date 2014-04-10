@@ -305,6 +305,7 @@ const AppSwitcherPopup = new Lang.Class({
             this._thumbnailTimeoutId = Mainloop.timeout_add (
                 THUMBNAIL_POPUP_TIME,
                 Lang.bind(this, this._timeoutPopupThumbnails));
+            GLib.Source.set_name_by_id(this._thumbnailTimeoutId, '[gnome-shell] this._timeoutPopupThumbnails');
         }
     },
 
@@ -556,6 +557,7 @@ const AppSwitcher = new Lang.Class({
                                                                             this._mouseTimeOutId = 0;
                                                                             return GLib.SOURCE_REMOVE;
                                                         }));
+            GLib.Source.set_name_by_id(this._mouseTimeOutId, '[gnome-shell] this._enterItem');
         } else
            this._itemEntered(index);
     },

@@ -271,10 +271,11 @@ const BackgroundCache = new Lang.Class({
 
         if (this._animationFilename == params.filename) {
             if (params.onLoaded) {
-                GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
+                let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
                     params.onLoaded(this._animation);
                     return GLib.SOURCE_REMOVE;
                 }));
+                GLib.Source.set_name_by_id(id, '[gnome-shell] params.onLoaded');
             }
         }
 
@@ -286,10 +287,11 @@ const BackgroundCache = new Lang.Class({
                            this._animation = animation;
 
                            if (params.onLoaded) {
-                               GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
+                               let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
                                    params.onLoaded(this._animation);
                                    return GLib.SOURCE_REMOVE;
                                }));
+                               GLib.Source.set_name_by_id(id, '[gnome-shell] params.onLoaded');
                            }
                        }));
     }
@@ -386,10 +388,11 @@ const Background = new Lang.Class({
 
         this.isLoaded = true;
 
-        GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
+        let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
             this.emit('loaded');
             return GLib.SOURCE_REMOVE;
         }));
+        GLib.Source.set_name_by_id(id, '[gnome-shell] this.emit');
     },
 
     _loadPattern: function() {
@@ -532,6 +535,7 @@ const Background = new Lang.Class({
                                                                     this._updateAnimation();
                                                                     return GLib.SOURCE_REMOVE;
                                                                 }));
+        GLib.Source.set_name_by_id(this._updateAnimationTimeoutId, '[gnome-shell] this._updateAnimation');
     },
 
     _loadAnimation: function(filename) {

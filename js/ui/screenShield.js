@@ -850,6 +850,7 @@ const ScreenShield = new Lang.Class({
                                                            this.lock(false);
                                                            return GLib.SOURCE_REMOVE;
                                                        }));
+            GLib.Source.set_name_by_id(this._lockTimeoutId, '[gnome-shell] this.lock');
         }
 
         this._activateFade(this._longLightbox, STANDARD_FADE_TIME);
@@ -1041,6 +1042,7 @@ const ScreenShield = new Lang.Class({
 
         if (!this._arrowAnimationId) {
             this._arrowAnimationId = Mainloop.timeout_add(6000, Lang.bind(this, this._animateArrows));
+            GLib.Source.set_name_by_id(this._arrowAnimationId, '[gnome-shell] this._animateArrows');
             this._animateArrows();
         }
 
@@ -1108,10 +1110,11 @@ const ScreenShield = new Lang.Class({
         if (params.fadeToBlack && params.animateFade) {
             // Take a beat
 
-            Mainloop.timeout_add(1000 * MANUAL_FADE_TIME, Lang.bind(this, function() {
+            let id = Mainloop.timeout_add(1000 * MANUAL_FADE_TIME, Lang.bind(this, function() {
                 this._activateFade(this._shortLightbox, MANUAL_FADE_TIME);
                 return GLib.SOURCE_REMOVE;
             }));
+            GLib.Source.set_name_by_id(id, '[gnome-shell] this._activateFade');
         } else {
             if (params.fadeToBlack)
                 this._activateFade(this._shortLightbox, 0);

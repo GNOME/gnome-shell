@@ -608,5 +608,6 @@ function queueDeferredWork(workId) {
             _deferredTimeoutId = 0;
             return GLib.SOURCE_REMOVE;
         });
+        GLib.Source.set_name_by_id(_deferredTimeoutId, '[gnome-shell] _runAllDeferredWork');
     }
 }

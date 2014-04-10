@@ -483,7 +483,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _ensureUserListLoaded: function() {
-        if (!this._userManager.is_loaded)
+        if (!this._userManager.is_loaded) {
             this._userManagerLoadedId = this._userManager.connect('notify::is-loaded',
                                                                   Lang.bind(this, function() {
                                                                       if (this._userManager.is_loaded) {
@@ -492,8 +492,10 @@ const LoginDialog = new Lang.Class({
                                                                           this._userManagerLoadedId = 0;
                                                                       }
                                                                   }));
-        else
-            GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, this._loadUserList));
+        } else {
+            let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, this._loadUserList));
+            GLib.Source.set_name_by_id(id, '[gnome-shell] _loadUserList');
+        }
     },
 
     _updateDisableUserList: function() {
@@ -686,10 +688,11 @@ const LoginDialog = new Lang.Class({
                            },
                            onUpdateScope: this,
                            onComplete: function() {
-                               Mainloop.idle_add(Lang.bind(this, function() {
+                               let id = Mainloop.idle_add(Lang.bind(this, function() {
                                    this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
                                    return GLib.SOURCE_REMOVE;
                                }));
+                               GLib.Source.set_name_by_id(id, '[gnome-shell] this._greeter.call_start_session_when_ready_sync');
                            },
                            onCompleteScope: this });
     },
@@ -745,6 +748,7 @@ const LoginDialog = new Lang.Class({
                                                                          hold.release();
                                                                          return GLib.SOURCE_REMOVE;
                                                                      });
+        GLib.Source.set_name_by_id(this._timedLoginIdleTimeOutId, '[gnome-shell] this._timedLoginAnimationTime');
         return hold;
     },
 

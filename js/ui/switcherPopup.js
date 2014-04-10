@@ -166,6 +166,7 @@ const SwitcherPopup = new Lang.Class({
                                                                this._initialDelayTimeoutId = 0;
                                                                return GLib.SOURCE_REMOVE;
                                                            }));
+        GLib.Source.set_name_by_id(this._initialDelayTimeoutId, '[gnome-shell] Main.osdWindow.cancel');
         return true;
     },
 
@@ -250,6 +251,7 @@ const SwitcherPopup = new Lang.Class({
             Mainloop.source_remove(this._motionTimeoutId);
 
         this._motionTimeoutId = Mainloop.timeout_add(DISABLE_HOVER_TIMEOUT, Lang.bind(this, this._mouseTimedOut));
+        GLib.Source.set_name_by_id(this._motionTimeoutId, '[gnome-shell] this._mouseTimedOut');
     },
 
     _mouseTimedOut: function() {

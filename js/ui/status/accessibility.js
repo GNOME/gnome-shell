@@ -103,6 +103,7 @@ const ATIndicator = new Lang.Class({
             return;
 
         this._syncMenuVisbilityIdle = Mainloop.idle_add(Lang.bind(this, this._syncMenuVisibility));
+        GLib.Source.set_name_by_id(this._syncMenuVisbilityIdle, '[gnome-shell] this._syncMenuVisibility');
     },
 
     _buildItemExtended: function(string, initial_value, writable, on_set) {

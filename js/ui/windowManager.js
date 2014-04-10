@@ -82,6 +82,7 @@ const DisplayChangeDialog = new Lang.Class({
                                         { expand: false, x_fill: false, x_align: St.Align.END });
 
         this._timeoutId = Mainloop.timeout_add(ONE_SECOND, Lang.bind(this, this._tick));
+        GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._tick');
     },
 
     close: function(timestamp) {
@@ -271,18 +272,20 @@ const WorkspaceTracker = new Lang.Class({
             this._queueCheckWorkspaces();
             return GLib.SOURCE_REMOVE;
         }));
+        GLib.Source.set_name_by_id(workspace._keepAliveId, '[gnome-shell] this._queueCheckWorkspaces');
     },
 
     _windowRemoved: function(workspace, window) {
         workspace._lastRemovedWindow = window;
         this._queueCheckWorkspaces();
-        Mainloop.timeout_add(LAST_WINDOW_GRACE_TIME, Lang.bind(this, function() {
+        let id = Mainloop.timeout_add(LAST_WINDOW_GRACE_TIME, Lang.bind(this, function() {
             if (workspace._lastRemovedWindow == window) {
                 workspace._lastRemovedWindow = null;
                 this._queueCheckWorkspaces();
             }
             return GLib.SOURCE_REMOVE;
         }));
+        GLib.Source.set_name_by_id(id, '[gnome-shell] this._queueCheckWorkspaces');
     },
 
     _windowLeftMonitor: function(metaScreen, monitorIndex, metaWin) {

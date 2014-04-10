@@ -551,6 +551,7 @@ const EndSessionDialog = new Lang.Class({
 
                 return GLib.SOURCE_REMOVE;
             }));
+        GLib.Source.set_name_by_id(this._timerId, '[gnome-shell] this._confirm');
     },
 
     _stopTimer: function() {

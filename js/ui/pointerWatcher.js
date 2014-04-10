@@ -107,6 +107,7 @@ const PointerWatcher = new Lang.Class({
 
         this._timeoutId = Mainloop.timeout_add(minInterval,
                                                Lang.bind(this, this._onTimeout));
+        GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._onTimeout');
     },
 
     _onTimeout: function() {

@@ -43,6 +43,7 @@ const AutomountManager = new Lang.Class({
         this._driveEjectButtonId = this._volumeMonitor.connect('drive-eject-button', Lang.bind(this, this._onDriveEjectButton));
 
         this._mountAllId = Mainloop.idle_add(Lang.bind(this, this._startupMountAll));
+        GLib.Source.set_name_by_id(this._mountAllId, '[gnome-shell] this._startupMountAll');
     },
 
     disable: function() {
@@ -234,10 +235,11 @@ const AutomountManager = new Lang.Class({
     },
 
     _allowAutorunExpire: function(volume) {
-        Mainloop.timeout_add_seconds(AUTORUN_EXPIRE_TIMEOUT_SECS, function() {
+        let id = Mainloop.timeout_add_seconds(AUTORUN_EXPIRE_TIMEOUT_SECS, function() {
             volume.allowAutorun = false;
             return GLib.SOURCE_REMOVE;
         });
+        GLib.Source.set_name_by_id(id, '[gnome-shell] volume.allowAutorun');
     }
 });
 const Component = AutomountManager;

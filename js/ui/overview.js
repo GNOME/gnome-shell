@@ -365,6 +365,7 @@ const Overview = new Lang.Class({
                                                 this._lastHoveredWindow = null;
                                                 return GLib.SOURCE_REMOVE;
                                             }));
+            GLib.Source.set_name_by_id(this._windowSwitchTimeoutId, '[gnome-shell] Main.activateWindow');
         }
 
         return DND.DragMotionResult.CONTINUE;

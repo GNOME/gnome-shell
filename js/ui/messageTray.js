@@ -1987,6 +1987,7 @@ const MessageTray = new Lang.Class({
 
                 this._trayDwellTimeoutId = Mainloop.timeout_add(TRAY_DWELL_TIME,
                                                                 Lang.bind(this, this._trayDwellTimeout));
+                GLib.Source.set_name_by_id(this._trayDwellTimeoutId, '[gnome-shell] this._trayDwellTimeout');
             }
             this._trayDwelling = true;
         } else {
@@ -2316,6 +2317,7 @@ const MessageTray = new Lang.Class({
             // That gives the user more time to mouse away from the notification and mouse back in in order to expand it.
             let timeout = this._useLongerNotificationLeftTimeout ? LONGER_HIDE_TIMEOUT * 1000 : HIDE_TIMEOUT * 1000;
             this._notificationLeftTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._onNotificationLeftTimeout));
+            GLib.Source.set_name_by_id(this._notificationLeftTimeoutId, '[gnome-shell] this._onNotificationLeftTimeout');
         }
     },
 
@@ -2351,6 +2353,7 @@ const MessageTray = new Lang.Class({
             this._notificationLeftMouseX = -1;
             this._notificationLeftTimeoutId = Mainloop.timeout_add(LONGER_HIDE_TIMEOUT * 1000,
                                                              Lang.bind(this, this._onNotificationLeftTimeout));
+            GLib.Source.set_name_by_id(this._notificationLeftTimeoutId, '[gnome-shell] this._onNotificationLeftTimeout');
         } else {
             this._notificationLeftTimeoutId = 0;
             this._useLongerNotificationLeftTimeout = false;
@@ -2668,10 +2671,12 @@ const MessageTray = new Lang.Class({
             Mainloop.source_remove(this._notificationTimeoutId);
             this._notificationTimeoutId = 0;
         }
-        if (timeout > 0)
+        if (timeout > 0) {
             this._notificationTimeoutId =
                 Mainloop.timeout_add(timeout,
                                      Lang.bind(this, this._notificationTimeout));
+            GLib.Source.set_name_by_id(this._notificationTimeoutId, '[gnome-shell] this._notificationTimeout');
+        }
     },
 
     _notificationTimeout: function() {

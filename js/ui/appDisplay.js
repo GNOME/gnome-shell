@@ -1402,6 +1402,7 @@ const AppIcon = new Lang.Class({
                     this.popupMenu();
                     return GLib.SOURCE_REMOVE;
                 }));
+            GLib.Source.set_name_by_id(this._menuTimeoutId, '[gnome-shell] this.popupMenu');
         } else if (button == 3) {
             this.popupMenu();
             return Clutter.EVENT_STOP;

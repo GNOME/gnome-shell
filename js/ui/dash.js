@@ -582,6 +582,7 @@ const Dash = new Lang.Class({
                         this._showLabelTimeoutId = 0;
                         return GLib.SOURCE_REMOVE;
                     }));
+                GLib.Source.set_name_by_id(this._showLabelTimeoutId, '[gnome-shell] item.showLabel');
                 if (this._resetHoverTimeoutId > 0) {
                     Mainloop.source_remove(this._resetHoverTimeoutId);
                     this._resetHoverTimeoutId = 0;
@@ -599,6 +600,7 @@ const Dash = new Lang.Class({
                         this._resetHoverTimeoutId = 0;
                         return GLib.SOURCE_REMOVE;
                     }));
+                GLib.Source.set_name_by_id(this._resetHoverTimeoutId, '[gnome-shell] this._labelShowing');
             }
         }
     },

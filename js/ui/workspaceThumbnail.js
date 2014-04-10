@@ -386,14 +386,15 @@ const WorkspaceThumbnail = new Lang.Class({
         if (!win) {
             // Newly-created windows are added to a workspace before
             // the compositor finds out about them...
-            Mainloop.idle_add(Lang.bind(this,
-                                        function () {
+            let id = Mainloop.idle_add(Lang.bind(this,
+                                       function () {
                                             if (!this._removed &&
                                                 metaWin.get_compositor_private() &&
                                                 metaWin.get_workspace() == this.metaWorkspace)
                                                 this._doAddWindow(metaWin);
                                             return GLib.SOURCE_REMOVE;
                                         }));
+            GLib.Source.set_name_by_id(id, '[gnome-shell] this._doAddWindow');
             return;
         }
 

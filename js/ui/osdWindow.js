@@ -156,6 +156,7 @@ const OsdWindow = new Lang.Class({
             Mainloop.source_remove(this._hideTimeoutId);
         this._hideTimeoutId = Mainloop.timeout_add(HIDE_TIMEOUT,
                                                    Lang.bind(this, this._hide));
+        GLib.Source.set_name_by_id(this._hideTimeoutId, '[gnome-shell] this._hide');
     },
 
     cancel: function() {

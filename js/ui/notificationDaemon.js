@@ -244,11 +244,12 @@ const FdoNotificationDaemon = new Lang.Class({
             // Ignore replacesId since we already sent back a
             // NotificationClosed for that id.
             id = this._nextNotificationId++;
-            Mainloop.idle_add(Lang.bind(this,
-                                        function () {
-                                            this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
-                                            return GLib.SOURCE_REMOVE;
-                                        }));
+            let idle_id = Mainloop.idle_add(Lang.bind(this,
+                                            function () {
+                                                this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
+                                                return GLib.SOURCE_REMOVE;
+                                            }));
+            GLib.Source.set_name_by_id(idle_id, '[gnome-shell] this._emitNotificationClosed');
             return invocation.return_value(GLib.Variant.new('(u)', [id]));
         }
 

@@ -628,10 +628,11 @@ const LayoutManager = new Lang.Class({
         // until the event loop is uncontended and idle.
         // This helps to prevent us from running the animation
         // when the system is bogged down
-        GLib.idle_add(GLib.PRIORITY_LOW, Lang.bind(this, function() {
+        let id = GLib.idle_add(GLib.PRIORITY_LOW, Lang.bind(this, function() {
             this._startupAnimation();
             return GLib.SOURCE_REMOVE;
         }));
+        GLib.Source.set_name_by_id(id, '[gnome-shell] this._startupAnimation');
     },
 
     _startupAnimation: function() {

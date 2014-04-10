@@ -594,11 +594,12 @@ const WindowOverlay = new Lang.Class({
 
             // use an idle handler to avoid mapping problems -
             // see comment in Workspace._windowAdded
-            Mainloop.idle_add(Lang.bind(this,
-                                        function() {
-                                            this._windowClone.emit('selected');
-                                            return GLib.SOURCE_REMOVE;
-                                        }));
+            let id = Mainloop.idle_add(Lang.bind(this,
+                                            function() {
+                                                this._windowClone.emit('selected');
+                                                return GLib.SOURCE_REMOVE;
+                                            }));
+            GLib.Source.set_name_by_id(id, '[gnome-shell] this._windowClone.emit');
         }
     },
 
@@ -669,8 +670,10 @@ const WindowOverlay = new Lang.Class({
     },
 
     _onLeave: function() {
-        if (this._idleToggleCloseId == 0)
+        if (this._idleToggleCloseId == 0) {
             this._idleToggleCloseId = Mainloop.timeout_add(750, Lang.bind(this, this._idleToggleCloseButton));
+            GLib.Source.set_name_by_id(this._idleToggleCloseId, '[gnome-shell] this._idleToggleCloseButton');
+        }
         return Clutter.EVENT_PROPAGATE;
     },
 
@@ -1418,6 +1421,7 @@ const Workspace = new Lang.Class({
         this._currentLayout = null;
         this._repositionWindowsId = Mainloop.timeout_add(750,
             Lang.bind(this, this._delayedWindowRepositioning));
+        GLib.Source.set_name_by_id(this._repositionWindowsId, '[gnome-shell] this._delayedWindowRepositioning');
     },
 
     _doAddWindow : function(metaWin) {
@@ -1429,14 +1433,15 @@ const Workspace = new Lang.Class({
         if (!win) {
             // Newly-created windows are added to a workspace before
             // the compositor finds out about them...
-            Mainloop.idle_add(Lang.bind(this,
-                                        function () {
-                                            if (this.actor &&
-                                                metaWin.get_compositor_private() &&
-                                                metaWin.get_workspace() == this.metaWorkspace)
-                                                this._doAddWindow(metaWin);
-                                            return GLib.SOURCE_REMOVE;
-                                        }));
+            let id = Mainloop.idle_add(Lang.bind(this,
+                                            function () {
+                                                if (this.actor &&
+                                                    metaWin.get_compositor_private() &&
+                                                    metaWin.get_workspace() == this.metaWorkspace)
+                                                    this._doAddWindow(metaWin);
+                                                return GLib.SOURCE_REMOVE;
+                                            }));
+            GLib.Source.set_name_by_id(id, '[gnome-shell] this._doAddWindow');
             return;
         }
 

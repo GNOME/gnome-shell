@@ -140,13 +140,14 @@ function _loadModes() {
 
 function listModes() {
     _loadModes();
-    Mainloop.idle_add(function() {
+    let id = Mainloop.idle_add(function() {
         let names = Object.getOwnPropertyNames(_modes);
         for (let i = 0; i < names.length; i++)
             if (_modes[names[i]].isPrimary)
                 print(names[i]);
         Mainloop.quit('listModes');
     });
+    GLib.Source.set_name_by_id(id, '[gnome-shell] listModes');
     Mainloop.run('listModes');
 }
 

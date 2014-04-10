@@ -395,6 +395,7 @@ const _Draggable = new Lang.Class({
 
         this._updateHoverId = GLib.idle_add(GLib.PRIORITY_DEFAULT,
                                             Lang.bind(this, this._updateDragHover));
+        GLib.Source.set_name_by_id(this._updateHoverId, '[gnome-shell] this._updateDragHover');
     },
 
     _updateDragPosition : function (event) {

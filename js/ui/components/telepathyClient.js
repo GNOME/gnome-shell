@@ -681,6 +681,7 @@ const ChatSource = new Lang.Class({
             Mainloop.source_remove(this._notifyTimeoutId);
         this._notifyTimeoutId = Mainloop.timeout_add(500,
             Lang.bind(this, this._notifyTimeout));
+        GLib.Source.set_name_by_id(this._notifyTimeoutId, '[gnome-shell] this._notifyTimeout');
     },
 
     _notifyTimeout: function() {
@@ -924,14 +925,16 @@ const ChatNotification = new Lang.Class({
                                 realMessage: group != 'meta' });
 
         if (!props.noTimestamp) {
-            if (timestamp < currentTime - SCROLLBACK_IMMEDIATE_TIME)
+            if (timestamp < currentTime - SCROLLBACK_IMMEDIATE_TIME) {
                 this.appendTimestamp();
-            else
+            } else {
                 // Schedule a new timestamp in SCROLLBACK_IMMEDIATE_TIME
                 // from the timestamp of the message.
                 this._timestampTimeoutId = Mainloop.timeout_add_seconds(
                     SCROLLBACK_IMMEDIATE_TIME - (currentTime - timestamp),
                     Lang.bind(this, this.appendTimestamp));
+                GLib.Source.set_name_by_id(this._timestampTimeoutId, '[gnome-shell] this.appendTimestamp');
+            }
         }
 
         this._filterMessages();
@@ -1100,6 +1103,7 @@ const ChatNotification = new Lang.Class({
             this._composingTimeoutId = Mainloop.timeout_add_seconds(
                 COMPOSING_STOP_TIMEOUT,
                 Lang.bind(this, this._composingStopTimeout));
+            GLib.Source.set_name_by_id(this._composingTimeoutId, '[gnome-shell] this._composingStopTimeout');
         } else {
             this.source.setChatState(Tp.ChannelChatState.ACTIVE);
         }

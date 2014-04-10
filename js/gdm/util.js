@@ -252,6 +252,7 @@ const ShellUserVerifier = new Lang.Class({
                                                            this._queueMessageTimeout();
                                                            return GLib.SOURCE_REMOVE;
                                                        }));
+        GLib.Source.set_name_by_id(this._messageQueueTimeoutId, '[gnome-shell] this._queueMessageTimeout');
     },
 
     _queueMessage: function(message, messageType) {

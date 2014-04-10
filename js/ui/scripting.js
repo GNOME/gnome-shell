@@ -39,11 +39,12 @@ const Main = imports.ui.main;
 function sleep(milliseconds) {
     let cb;
 
-    Mainloop.timeout_add(milliseconds, function() {
+    let id = Mainloop.timeout_add(milliseconds, function() {
                              if (cb)
                                  cb();
                              return GLib.SOURCE_REMOVE;
                          });
+    GLib.Source.set_name_by_id(id, '[gnome-shell] sleep');
 
     return function(callback) {
         cb = callback;
