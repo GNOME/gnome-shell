@@ -843,7 +843,7 @@ const LookingGlass = new Lang.Class({
            System.gc();
            this._timeoutId = Mainloop.timeout_add(500, Lang.bind(this, function () {
                 gcIcon.icon_name = 'gnome-fs-trash-full';
-                Mainloop.source_remove(this._timeoutId);
+                this._timeoutId = 0;
                 return GLib.SOURCE_REMOVE;
            }));
            GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] gcIcon.icon_name = \'gnome-fs-trash-full\'');
