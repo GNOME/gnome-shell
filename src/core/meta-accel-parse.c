@@ -309,9 +309,16 @@ accelerator_parse (const gchar         *accelerator,
               keyval = xkb_keysym_from_name (accelerator, XKB_KEYSYM_CASE_INSENSITIVE);
 	      if (keyval == XKB_KEY_NoSymbol)
 	        {
-	          error = TRUE;
-	          goto out;
-		}
+                  char *with_xf86 = g_strconcat ("XF86", accelerator, NULL);
+                  keyval = xkb_keysym_from_name (with_xf86, XKB_KEYSYM_CASE_INSENSITIVE);
+                  g_free (with_xf86);
+
+                  if (keyval == XKB_KEY_NoSymbol)
+                    {
+                      error = TRUE;
+                      goto out;
+                    }
+                }
 	    }
 
           accelerator += len;
