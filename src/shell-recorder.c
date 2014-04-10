@@ -311,6 +311,7 @@ recorder_add_redraw_timeout (ShellRecorder *recorder)
       recorder->redraw_timeout = g_timeout_add (MAXIMUM_PAUSE_TIME,
                                                 recorder_redraw_timeout,
                                                 recorder);
+      g_source_set_name_by_id (recorder->redraw_timeout, "[gnome-shell] recorder_redraw_timeout");
     }
 }
 
@@ -533,8 +534,11 @@ recorder_queue_redraw (ShellRecorder *recorder)
    * we need to queue a "low priority redraw" after timeline updates
    */
   if (recorder->state == RECORDER_STATE_RECORDING && recorder->redraw_idle == 0)
-    recorder->redraw_idle = g_idle_add_full (CLUTTER_PRIORITY_REDRAW + 1,
-                                             recorder_idle_redraw, recorder, NULL);
+    {
+      recorder->redraw_idle = g_idle_add_full (CLUTTER_PRIORITY_REDRAW + 1,
+                                               recorder_idle_redraw, recorder, NULL);
+      g_source_set_name_by_id (recorder->redraw_idle, "[gnome-shell] recorder_idle_redraw");
+    }
 }
 
 static void
@@ -720,9 +724,12 @@ static void
 recorder_add_update_pointer_timeout (ShellRecorder *recorder)
 {
   if (!recorder->update_pointer_timeout)
-    recorder->update_pointer_timeout = g_timeout_add (UPDATE_POINTER_TIME,
-                                                      recorder_update_pointer_timeout,
-                                                      recorder);
+    {
+      recorder->update_pointer_timeout = g_timeout_add (UPDATE_POINTER_TIME,
+                                                        recorder_update_pointer_timeout,
+                                                        recorder);
+      g_source_set_name_by_id (recorder->update_pointer_timeout, "[gnome-shell] recorder_update_pointer_timeout");
+    }
 }
 
 static void
@@ -1336,9 +1343,12 @@ recorder_pipeline_on_memory_used_changed (ShellRecorderSrc *src,
     return;
 
   if (recorder->update_memory_used_timeout == 0)
-    recorder->update_memory_used_timeout = g_timeout_add (UPDATE_MEMORY_USED_DELAY,
-                                                          recorder_update_memory_used_timeout,
-                                                          recorder);
+    {
+      recorder->update_memory_used_timeout = g_timeout_add (UPDATE_MEMORY_USED_DELAY,
+                                                            recorder_update_memory_used_timeout,
+                                                            recorder);
+      g_source_set_name_by_id (recorder->update_memory_used_timeout, "[gnome-shell] recorder_update_memory_used_timeout");
+    }
 }
 
 static void

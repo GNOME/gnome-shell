@@ -81,6 +81,7 @@ establish_timeout ()
     g_source_remove (timeout_id);
 
   timeout_id = g_timeout_add (opt_idle_timeout * 1000, on_timeout, NULL);
+  g_source_set_name_by_id (timeout_id, "[gnome-shell] on_timeout");
 }
 
 static void

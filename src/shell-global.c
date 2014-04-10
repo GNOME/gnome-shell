@@ -1434,9 +1434,12 @@ schedule_leisure_functions (ShellGlobal *global)
    * in another thread.
    */
   if (!global->leisure_function_id)
-    global->leisure_function_id = g_idle_add_full (G_PRIORITY_LOW,
-                                                   run_leisure_functions,
-                                                   global, NULL);
+    {
+      global->leisure_function_id = g_idle_add_full (G_PRIORITY_LOW,
+                                                     run_leisure_functions,
+                                                     global, NULL);
+      g_source_set_name_by_id (global->leisure_function_id, "[gnome-shell] run_leisure_functions");
+    }
 }
 
 /**

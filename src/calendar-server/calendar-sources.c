@@ -369,6 +369,7 @@ backend_died_cb (EClient *client, CalendarSourceData *source_data)
 
   source_data->timeout_id = g_timeout_add_seconds (2, backend_restart,
 		  				   source_data);
+  g_source_set_name_by_id (source_data->timeout_id, "[gnome-shell] backend_restart");
 }
 
 static void

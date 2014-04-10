@@ -76,6 +76,7 @@ ensure_autoquit_on (void)
   autoquit_id = 
     g_timeout_add_seconds (AUTOQUIT_TIMEOUT,
                            autoquit_timeout_cb, NULL);
+  g_source_set_name_by_id (autoquit_id, "[gnome-shell] autoquit_timeout_cb");
 }
 
 typedef struct {

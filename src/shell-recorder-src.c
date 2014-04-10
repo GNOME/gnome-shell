@@ -78,7 +78,10 @@ shell_recorder_src_update_memory_used (ShellRecorderSrc *src,
   g_mutex_lock (src->mutex);
   src->memory_used += delta;
   if (src->memory_used_update_idle == 0)
-    src->memory_used_update_idle = g_idle_add (shell_recorder_src_memory_used_update_idle, src);
+    {
+      src->memory_used_update_idle = g_idle_add (shell_recorder_src_memory_used_update_idle, src);
+      g_source_set_name_by_id (src->memory_used_update_idle, "[gnome-shell] shell_recorder_src_memory_used_update_idle");
+    }
   g_mutex_unlock (src->mutex);
 }
 

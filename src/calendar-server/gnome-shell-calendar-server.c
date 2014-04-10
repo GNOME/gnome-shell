@@ -537,6 +537,7 @@ app_schedule_changed (App *app)
       app->changed_timeout_id = g_timeout_add (2000,
                                                on_app_schedule_changed_cb,
                                                app);
+      g_source_set_name_by_id (app->changed_timeout_id, "[gnome-shell] on_app_schedule_changed_cb");
     }
 }
 

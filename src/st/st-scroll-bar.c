@@ -692,6 +692,7 @@ trough_paging_cb (StScrollBar *self)
         PAGING_INITIAL_REPEAT_TIMEOUT,
         (GSourceFunc) trough_paging_cb,
         self);
+      g_source_set_name_by_id (self->priv->paging_source_id, "[gnome-shell] trough_paging_cb");
     }
   else if (self->priv->paging_event_no == 1)
     {
@@ -703,6 +704,7 @@ trough_paging_cb (StScrollBar *self)
         PAGING_SUBSEQUENT_REPEAT_TIMEOUT,
         (GSourceFunc) trough_paging_cb,
         self);
+      g_source_set_name_by_id (self->priv->paging_source_id, "[gnome-shell] trough_paging_cb");
     }
   else
     {

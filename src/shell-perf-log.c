@@ -223,6 +223,7 @@ shell_perf_log_set_enabled (ShellPerfLog *perf_log,
           perf_log->statistics_timeout_id = g_timeout_add (STATISTIC_COLLECTION_INTERVAL_MS,
                                                            statistics_timeout,
                                                            perf_log);
+          g_source_set_name_by_id (perf_log->statistics_timeout_id, "[gnome-shell] statistics_timeout");
         }
       else
         {

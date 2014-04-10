@@ -246,12 +246,15 @@ static void
 on_icon_theme_changed (StTextureCache *cache,
                        StThemeContext *context)
 {
+  guint id;
+
   /* Note that an icon theme change isn't really a change of the StThemeContext;
    * the style information has changed. But since the style factors into the
    * icon_name => icon lookup, faking a theme context change is a good way
    * to force users such as StIcon to look up icons again.
    */
-  g_idle_add ((GSourceFunc) changed_idle, context);
+  id = g_idle_add ((GSourceFunc) changed_idle, context);
+  g_source_set_name_by_id (id, "[gnome-shell] changed_idle");
 }
 
 /**

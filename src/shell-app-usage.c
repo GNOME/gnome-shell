@@ -567,6 +567,7 @@ ensure_queued_save (ShellAppUsage *self)
   if (self->save_id != 0)
     return;
   self->save_id = g_timeout_add_seconds (SAVE_APPS_TIMEOUT_SECONDS, idle_save_application_usage, self);
+  g_source_set_name_by_id (self->save_id, "[gnome-shell] idle_save_application_usage");
 }
 
 /* Clean up apps we see rarely.

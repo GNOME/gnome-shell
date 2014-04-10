@@ -590,6 +590,7 @@ shell_mime_sniffer_sniff_async (ShellMimeSniffer *self,
   self->priv->watchdog_id =
     g_timeout_add (WATCHDOG_TIMEOUT,
                    watchdog_timeout_reached_cb, self);
+  g_source_set_name_by_id (self->priv->watchdog_id, "[gnome-shell] watchdog_timeout_reached_cb");
 
   start_loading_file (self);
 }
