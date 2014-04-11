@@ -746,15 +746,25 @@ allocate_space (CoglAtlasTexture *atlas_tex,
 
   /* Look for an existing atlas that can hold the texture */
   for (l = ctx->atlases; l; l = l->next)
-    /* Try to make some space in the atlas for the texture */
-    if (_cogl_atlas_reserve_space (atlas = l->data,
-                                   /* Add two pixels for the border */
-                                   width + 2, height + 2,
-                                   atlas_tex))
-      {
-        cogl_object_ref (atlas);
-        break;
-      }
+    {
+      /* We need to take a reference on the atlas before trying to
+       * reserve space because in some circumstances atlas migration
+       * can cause the atlas to be freed */
+      atlas = cogl_object_ref (l->data);
+      /* Try to make some space in the atlas for the texture */
+      if (_cogl_atlas_reserve_space (atlas,
+                                     /* Add two pixels for the border */
+                                     width + 2, height + 2,
+                                     atlas_tex))
+        {
+          /* keep the atlas reference */
+          break;
+        }
+      else
+        {
+          cogl_object_unref (atlas);
+        }
+    }
 
   /* If we couldn't find a suitable atlas then start another */
   if (l == NULL)
