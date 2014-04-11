@@ -3703,11 +3703,13 @@ meta_window_activate_full (MetaWindow     *window,
                            MetaClientType  source_indication,
                            MetaWorkspace  *workspace)
 {
+  gboolean allow_workspace_switch;
   meta_topic (META_DEBUG_FOCUS,
               "_NET_ACTIVE_WINDOW message sent for %s at time %u "
               "by client type %u.\n",
               window->desc, timestamp, source_indication);
 
+  allow_workspace_switch = (timestamp != 0);
   if (timestamp != 0 &&
       XSERVER_TIME_IS_BEFORE (timestamp, window->display->last_user_time))
     {
@@ -3735,6 +3737,7 @@ meta_window_activate_full (MetaWindow     *window,
      rather than move windows or workspaces.
      See http://bugzilla.gnome.org/show_bug.cgi?id=482354 */
   if (window->transient_for == NULL &&
+      !allow_workspace_switch &&
       !meta_window_located_on_workspace (window, workspace))
     {
       meta_window_set_demands_attention (window);
@@ -3745,7 +3748,7 @@ meta_window_activate_full (MetaWindow     *window,
     {
       /* Move transients to current workspace - preference dialogs should appear over
          the source window.  */
-    meta_window_change_workspace (window, workspace);
+      meta_window_change_workspace (window, workspace);
     }
 
   if (window->shaded)
@@ -3760,7 +3763,10 @@ meta_window_activate_full (MetaWindow     *window,
   meta_topic (META_DEBUG_FOCUS,
               "Focusing window %s due to activation\n",
               window->desc);
-  meta_window_focus (window, timestamp);
+  if (meta_window_located_on_workspace (window, workspace))
+    meta_window_focus (window, timestamp);
+  else
+    meta_workspace_activate_with_focus (window->workspace, window, timestamp);
 
   meta_window_check_alive (window, timestamp);
 }
