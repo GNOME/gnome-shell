@@ -3703,23 +3703,13 @@ meta_window_activate_full (MetaWindow     *window,
                            MetaClientType  source_indication,
                            MetaWorkspace  *workspace)
 {
-  gboolean can_ignore_outdated_timestamps;
   meta_topic (META_DEBUG_FOCUS,
               "_NET_ACTIVE_WINDOW message sent for %s at time %u "
               "by client type %u.\n",
               window->desc, timestamp, source_indication);
 
-  /* Older EWMH spec didn't specify a timestamp; we decide to honor these only
-   * if the app specifies that it is a pager.
-   *
-   * Update: Unconditionally honor 0 timestamps for now; we'll fight
-   * that battle later.  Just remove the "FALSE &&" in order to only
-   * honor 0 timestamps for pagers.
-   */
-  can_ignore_outdated_timestamps =
-    (timestamp != 0 || (FALSE && source_indication != META_CLIENT_TYPE_PAGER));
-  if (XSERVER_TIME_IS_BEFORE (timestamp, window->display->last_user_time) &&
-      can_ignore_outdated_timestamps)
+  if (timestamp != 0 &&
+      XSERVER_TIME_IS_BEFORE (timestamp, window->display->last_user_time))
     {
       meta_topic (META_DEBUG_FOCUS,
                   "last_user_time (%u) is more recent; ignoring "
@@ -3729,13 +3719,8 @@ meta_window_activate_full (MetaWindow     *window,
       return;
     }
 
-  /* For those stupid pagers, get a valid timestamp and show a warning */
   if (timestamp == 0)
-    {
-      meta_warning ("meta_window_activate called by a pager with a 0 timestamp; "
-                    "the pager needs to be fixed.\n");
-      timestamp = meta_display_get_current_time_roundtrip (window->display);
-    }
+    timestamp = meta_display_get_current_time_roundtrip (window->display);
 
   meta_window_set_user_time (window, timestamp);
 
