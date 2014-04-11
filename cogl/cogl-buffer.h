@@ -89,7 +89,7 @@ typedef struct _CoglBuffer CoglBuffer;
  * Stability: unstable
  */
 typedef enum { /*< prefix=COGL_BUFFER_ERROR >*/
-  COGL_BUFFER_ERROR_MAP,
+  COGL_BUFFER_ERROR_MAP
 } CoglBufferError;
 
 uint32_t
