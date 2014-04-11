@@ -155,7 +155,7 @@ const CandidatePopup = new Lang.Class({
 
         panelService.connect('set-cursor-location',
                              Lang.bind(this, function(ps, x, y, w, h) {
-                                 Main.layoutManager.setDummyCursorPosition(x, y);
+                                 Main.layoutManager.setDummyCursorGeometry(x, y, w, h);
                                  if (this._boxPointer.actor.visible)
                                      this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
                              }));
