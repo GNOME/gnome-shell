@@ -952,6 +952,10 @@ handle_input_xevent (MetaDisplay *display,
       break;
     }
 
+  /* Don't eat events for GTK frames (we need to update the :hover state on buttons) */
+  if (window && window->frame && modified == window->frame->xwindow)
+    return FALSE;
+
   /* Don't pass these events through to Clutter / GTK+ */
   return TRUE;
 }
