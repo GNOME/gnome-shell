@@ -377,12 +377,6 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
 
   g_list_foreach (surface->subsurfaces, parent_surface_committed, NULL);
 
-  if (pending->buffer)
-    {
-      wl_list_remove (&pending->buffer_destroy_listener.link);
-      pending->buffer = NULL;
-    }
-
   /* wl_surface.frame */
   wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);
   wl_list_init (&pending->frame_callback_list);
