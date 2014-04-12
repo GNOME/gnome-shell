@@ -177,8 +177,6 @@ static void
 toplevel_surface_commit (MetaWaylandSurface             *surface,
                          MetaWaylandDoubleBufferedState *pending)
 {
-  actor_surface_commit (surface, pending);
-
   if (pending->newly_attached)
     {
       MetaWindow *window = surface->window;
@@ -290,8 +288,6 @@ static void
 subsurface_surface_commit (MetaWaylandSurface             *surface,
                            MetaWaylandDoubleBufferedState *pending)
 {
-  actor_surface_commit (surface, pending);
-
   if (pending->newly_attached)
     {
       MetaSurfaceActor *surface_actor = surface->surface_actor;
@@ -340,20 +336,14 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
   if (pending->newly_attached)
     surface_set_buffer (surface, pending->buffer);
 
+  actor_surface_commit (surface, pending);
+
   if (surface == compositor->seat->cursor_surface)
     cursor_surface_commit (surface, pending);
   else if (surface->window)
     toplevel_surface_commit (surface, pending);
   else if (surface->subsurface.resource)
     subsurface_surface_commit (surface, pending);
-  else
-    {
-      /* Unknown surface type. In this case, it's most likely a XWayland
-       * surface that we haven't gotten the ClientMessage for yet. Make
-       * sure *not* to reset the double-buffered state or do anything too
-       * fancy. */
-      return;
-    }
 
   g_list_foreach (surface->subsurfaces, parent_surface_committed, NULL);
 
