@@ -290,42 +290,23 @@ static void
 subsurface_surface_commit (MetaWaylandSurface             *surface,
                            MetaWaylandDoubleBufferedState *pending)
 {
-  /*
-   * If the sub-surface is in synchronous mode, post-pone the commit of its
-   * state until the sub-surface parent commits.
-   *
-   * This is done by moving the various states (damage, input region, buffer
-   * etc.) from the buffered state pending commit to the sub-surface's pending
-   * buffered state.
-   *
-   * The sub-surface's pending buffered state will be committed to the
-   * associated surface when its parent surface is committed, or if the user
-   * issues a wl_subsurface.set_desync request.
-   */
-  if (surface->sub.synchronous)
+  actor_surface_commit (surface, pending);
+
+  if (pending->newly_attached)
     {
-      move_double_buffered_state (pending, &surface->sub.pending_surface_state);
-    }
-  else
-    {
-      actor_surface_commit (surface, pending);
+      MetaSurfaceActor *surface_actor = surface->surface_actor;
+      MetaWaylandBuffer *buffer = pending->buffer;
+      float x, y;
 
-      if (pending->newly_attached)
-        {
-          MetaSurfaceActor *surface_actor = surface->surface_actor;
-          MetaWaylandBuffer *buffer = pending->buffer;
-          float x, y;
+      if (buffer != NULL)
+        clutter_actor_show (CLUTTER_ACTOR (surface_actor));
+      else
+        clutter_actor_hide (CLUTTER_ACTOR (surface_actor));
 
-          if (buffer != NULL)
-            clutter_actor_show (CLUTTER_ACTOR (surface_actor));
-          else
-            clutter_actor_hide (CLUTTER_ACTOR (surface_actor));
-
-          clutter_actor_get_position (CLUTTER_ACTOR (surface_actor), &x, &y);
-          x += pending->dx;
-          y += pending->dy;
-          clutter_actor_set_position (CLUTTER_ACTOR (surface_actor), x, y);
-        }
+      clutter_actor_get_position (CLUTTER_ACTOR (surface_actor), &x, &y);
+      x += pending->dx;
+      y += pending->dy;
+      clutter_actor_set_position (CLUTTER_ACTOR (surface_actor), x, y);
     }
 }
 
@@ -343,6 +324,18 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
                               MetaWaylandDoubleBufferedState *pending)
 {
   MetaWaylandCompositor *compositor = surface->compositor;
+
+  /* If this surface is a subsurface in in synchronous mode, commit
+   * has a special-case and should not apply the pending state immediately.
+   *
+   * Instead, we move it to another pending state, which will be
+   * actually committed when the parent commits.
+   */
+  if (surface->sub.synchronous)
+    {
+      move_double_buffered_state (pending, &surface->sub.pending_surface_state);
+      return;
+    }
 
   if (pending->newly_attached)
     surface_set_buffer (surface, pending->buffer);
