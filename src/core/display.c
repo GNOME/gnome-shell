@@ -1304,6 +1304,9 @@ meta_grab_op_should_block_wayland (MetaGrabOp op)
   if (op == META_GRAB_OP_NONE)
     return FALSE;
 
+  if (op == META_GRAB_OP_WAYLAND_CLIENT)
+    return FALSE;
+
   /* Clicking on a frame button needs us to deliver events to the
    * frame window, since the button is part of the frame here. */
   if (meta_grab_op_is_clicking (op))
