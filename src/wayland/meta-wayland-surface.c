@@ -146,19 +146,9 @@ ensure_buffer_texture (MetaWaylandBuffer *buffer)
 }
 
 static void
-commit_attached_buffer (MetaWaylandSurface             *surface,
-                        MetaWaylandDoubleBufferedState *pending)
-{
-  if (pending->newly_attached)
-    surface_set_buffer (surface, pending->buffer);
-}
-
-static void
 cursor_surface_commit (MetaWaylandSurface             *surface,
                        MetaWaylandDoubleBufferedState *pending)
 {
-  commit_attached_buffer (surface, pending);
-
   if (pending->newly_attached)
     meta_wayland_seat_update_cursor_surface (surface->compositor->seat);
 }
@@ -168,8 +158,6 @@ actor_surface_commit (MetaWaylandSurface             *surface,
                       MetaWaylandDoubleBufferedState *pending)
 {
   MetaSurfaceActor *surface_actor = surface->surface_actor;
-
-  commit_attached_buffer (surface, pending);
 
   if (pending->newly_attached && pending->buffer)
     {
@@ -355,6 +343,9 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
                               MetaWaylandDoubleBufferedState *pending)
 {
   MetaWaylandCompositor *compositor = surface->compositor;
+
+  if (pending->newly_attached)
+    surface_set_buffer (surface, pending->buffer);
 
   if (surface == compositor->seat->cursor_surface)
     cursor_surface_commit (surface, pending);
