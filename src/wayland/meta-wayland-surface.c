@@ -48,7 +48,6 @@
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-data-device.h"
-#include "meta-wayland-surface-private.h"
 
 #include "meta-cursor-tracker-private.h"
 #include "display-private.h"
@@ -354,7 +353,7 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
   double_buffered_state_reset (pending);
 }
 
-void
+static void
 meta_wayland_surface_commit (MetaWaylandSurface *surface)
 {
   commit_double_buffered_state (surface, &surface->pending);
