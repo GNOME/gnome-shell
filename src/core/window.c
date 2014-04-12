@@ -4229,7 +4229,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
   MetaRectangle new_rect;
   MetaRectangle old_rect;
   MetaRectangle requested_rect;
-  MetaMoveResizeResultFlags result;
+  MetaMoveResizeResultFlags result = 0;
   MetaFrameBorders borders;
 
   g_return_if_fail (!window->override_redirect);
