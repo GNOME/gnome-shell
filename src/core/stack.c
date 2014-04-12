@@ -1508,7 +1508,7 @@ stack_sync_to_xserver (MetaStack *stack)
           if (x_ref->any.type != META_WINDOW_CLIENT_TYPE_X11)
             {
               for (x_ref = newp;
-                   x_ref->any.type != META_WINDOW_CLIENT_TYPE_X11 && x_ref > new_stack;
+                   x_ref->any.type != META_WINDOW_CLIENT_TYPE_X11 && x_ref < new_end;
                    x_ref++)
                 ;
             }
