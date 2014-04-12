@@ -461,7 +461,7 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
   MetaWaylandSurface *surface = NULL;
   MetaDisplay        *display = meta_get_display ();
 
-  if (meta_grab_op_is_wayland (display->grab_op))
+  if (meta_grab_op_should_block_wayland (display->grab_op))
     {
       meta_wayland_pointer_update_current_focus (pointer, NULL);
       return;

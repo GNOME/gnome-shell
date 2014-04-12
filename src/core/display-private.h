@@ -441,8 +441,8 @@ gboolean meta_grab_op_is_moving   (MetaGrabOp op);
 gboolean meta_grab_op_is_resizing (MetaGrabOp op);
 gboolean meta_grab_op_is_mouse    (MetaGrabOp op);
 gboolean meta_grab_op_is_clicking (MetaGrabOp op);
-gboolean meta_grab_op_is_wayland  (MetaGrabOp op);
 gboolean meta_grab_op_is_keyboard (MetaGrabOp op);
+gboolean meta_grab_op_should_block_wayland (MetaGrabOp op);
 
 void meta_display_devirtualize_modifiers (MetaDisplay        *display,
                                           MetaVirtualModifier modifiers,
