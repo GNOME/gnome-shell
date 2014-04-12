@@ -421,7 +421,7 @@ popup_grab_focus (MetaWaylandPointerGrab *grab,
   /* Popup grabs are in owner-events mode (ie, events for the same client
      are reported as normal) */
   if (surface && wl_resource_get_client (surface->resource) == popup_grab->grab_client)
-    default_grab_focus (grab, surface);
+    meta_wayland_pointer_set_focus (grab->pointer, surface);
   else
     meta_wayland_pointer_set_focus (grab->pointer, NULL);
 }
