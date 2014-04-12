@@ -707,9 +707,9 @@ xdg_surface_destroy (struct wl_client *client,
 }
 
 static void
-xdg_surface_set_transient_for (struct wl_client *client,
-                               struct wl_resource *resource,
-                               struct wl_resource *parent_resource)
+xdg_surface_set_parent (struct wl_client *client,
+                        struct wl_resource *resource,
+                        struct wl_resource *parent_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
   MetaWindow *transient_for = NULL;
@@ -905,7 +905,7 @@ xdg_surface_set_minimized (struct wl_client *client,
 
 static const struct xdg_surface_interface meta_wayland_xdg_surface_interface = {
   xdg_surface_destroy,
-  xdg_surface_set_transient_for,
+  xdg_surface_set_parent,
   xdg_surface_set_margin,
   xdg_surface_set_title,
   xdg_surface_set_app_id,
