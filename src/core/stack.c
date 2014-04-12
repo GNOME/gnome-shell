@@ -1459,17 +1459,17 @@ stack_sync_to_xserver (MetaStack *stack)
 
                   if (newp->any.type == META_WINDOW_CLIENT_TYPE_X11)
                     {
-                  XWindowChanges changes;
+                      XWindowChanges changes;
                       serial = XNextRequest (stack->screen->display->xdisplay);
 
                       changes.sibling = last_xwindow;
-                  changes.stack_mode = Below;
+                      changes.stack_mode = Below;
 
-                  XConfigureWindow (stack->screen->display->xdisplay,
+                      XConfigureWindow (stack->screen->display->xdisplay,
                                         newp->x11.xwindow,
-                                    CWSibling | CWStackMode,
-                                    &changes);
-                }
+                                        CWSibling | CWStackMode,
+                                        &changes);
+                    }
 
                   meta_stack_tracker_record_lower_below (stack->screen->stack_tracker,
                                                          newp, last_window,
