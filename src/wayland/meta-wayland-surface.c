@@ -150,7 +150,7 @@ commit_attached_buffer (MetaWaylandSurface             *surface,
                         MetaWaylandDoubleBufferedState *pending)
 {
   /* wl_surface.attach */
-  if (pending->newly_attached && surface->buffer != pending->buffer)
+  if (pending->newly_attached)
     {
       surface_set_buffer (surface, pending->buffer);
       return TRUE;
@@ -415,6 +415,9 @@ wl_surface_attach (struct wl_client *client,
     buffer = meta_wayland_buffer_from_resource (buffer_resource);
   else
     buffer = NULL;
+
+  if (surface->buffer == buffer)
+    return;
 
   if (surface->pending.buffer)
     wl_list_remove (&surface->pending.buffer_destroy_listener.link);
