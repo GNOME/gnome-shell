@@ -375,9 +375,7 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
       return;
     }
 
-  g_list_foreach (surface->subsurfaces,
-                  parent_surface_committed,
-                  NULL);
+  g_list_foreach (surface->subsurfaces, parent_surface_committed, NULL);
 
   if (pending->buffer)
     {
