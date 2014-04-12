@@ -1819,7 +1819,7 @@ void
 meta_wayland_surface_delete (MetaWaylandSurface *surface)
 {
   if (surface->xdg_surface.resource)
-    xdg_surface_send_delete (surface->xdg_surface.resource);
+    xdg_surface_send_close (surface->xdg_surface.resource);
 }
 
 void
