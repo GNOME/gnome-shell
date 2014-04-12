@@ -424,7 +424,6 @@ wl_surface_attach (struct wl_client *client,
   else
     buffer = NULL;
 
-  /* Attach without commit in between does not send wl_buffer.release */
   if (surface->pending.buffer)
     wl_list_remove (&surface->pending.buffer_destroy_listener.link);
 
