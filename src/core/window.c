@@ -2968,9 +2968,6 @@ meta_window_maximize_internal (MetaWindow        *window,
   meta_window_recalc_features (window);
   set_net_wm_state (window);
 
-  if (window->surface && window->maximized_horizontally && window->maximized_vertically)
-    meta_wayland_surface_send_maximized (window->surface);
-
   g_object_freeze_notify (G_OBJECT (window));
   g_object_notify (G_OBJECT (window), "maximized-horizontally");
   g_object_notify (G_OBJECT (window), "maximized-vertically");
@@ -3422,9 +3419,6 @@ meta_window_unmaximize_internal (MetaWindow        *window,
       set_net_wm_state (window);
     }
 
-  if (window->surface && !window->maximized_horizontally && !window->maximized_vertically)
-    meta_wayland_surface_send_unmaximized (window->surface);
-
   g_object_freeze_notify (G_OBJECT (window));
   g_object_notify (G_OBJECT (window), "maximized-horizontally");
   g_object_notify (G_OBJECT (window), "maximized-vertically");
@@ -3531,9 +3525,6 @@ meta_window_make_fullscreen_internal (MetaWindow  *window)
       /* For the auto-minimize feature, if we fail to get focus */
       meta_screen_queue_check_fullscreen (window->screen);
 
-      if (window->surface)
-        meta_wayland_surface_send_fullscreened (window->surface);
-
       g_object_notify (G_OBJECT (window), "fullscreen");
     }
 }
@@ -3589,9 +3580,6 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       force_save_user_window_placement (window);
 
       meta_window_update_layer (window);
-
-      if (window->surface)
-        meta_wayland_surface_send_unfullscreened (window->surface);
 
       g_object_notify (G_OBJECT (window), "fullscreen");
     }
@@ -5566,14 +5554,6 @@ meta_window_appears_focused_changed (MetaWindow *window)
 
   if (window->frame)
     meta_frame_queue_draw (window->frame);
-
-  if (window->surface)
-    {
-      if (meta_window_appears_focused (window))
-        meta_wayland_surface_activated (window->surface);
-      else
-        meta_wayland_surface_deactivated (window->surface);
-    }
 }
 
 /**

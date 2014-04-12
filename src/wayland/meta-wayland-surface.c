@@ -519,11 +519,41 @@ sync_reactive (MetaWaylandSurface *surface)
                               surface_should_be_reactive (surface));
 }
 
+static void
+surface_state_changed (MetaWaylandSurface *surface)
+{
+  if (surface->window)
+    meta_wayland_surface_configure_notify (surface,
+                                           surface->window->rect.width,
+                                           surface->window->rect.height);
+}
+
+static void
+window_appears_focused_changed (MetaWindow *window,
+                                GParamSpec *pspec,
+                                gpointer    user_data)
+{
+  MetaWaylandSurface *surface = user_data;
+
+  surface_state_changed (surface);
+}
+
 void
 meta_wayland_surface_set_window (MetaWaylandSurface *surface,
                                  MetaWindow         *window)
 {
+  if (surface->window)
+    {
+      g_signal_handlers_disconnect_by_func (surface->window, window_appears_focused_changed, surface);
+    }
+
   surface->window = window;
+
+  if (surface->window)
+    {
+      g_signal_connect (surface->window, "notify::appears-focused",
+                        G_CALLBACK (window_appears_focused_changed), surface);
+    }
 
   sync_reactive (surface);
 }
@@ -791,46 +821,9 @@ xdg_surface_resize (struct wl_client *client,
 }
 
 static void
-xdg_surface_set_output (struct wl_client *client,
-                        struct wl_resource *resource,
-                        struct wl_resource *output)
-{
-  g_warning ("TODO: support xdg_surface.set_output");
-}
-
-static void
-xdg_surface_request_change_state (struct wl_client *client,
-                                  struct wl_resource *resource,
-                                  uint32_t state_type,
-                                  uint32_t value,
-                                  uint32_t serial)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  surface->state_changed_serial = serial;
-
-  switch (state_type)
-    {
-    case XDG_SURFACE_STATE_MAXIMIZED:
-      if (value)
-        meta_window_maximize (surface->window, META_MAXIMIZE_BOTH);
-      else
-        meta_window_unmaximize (surface->window, META_MAXIMIZE_BOTH);
-      break;
-    case XDG_SURFACE_STATE_FULLSCREEN:
-      if (value)
-        meta_window_make_fullscreen (surface->window);
-      else
-        meta_window_unmake_fullscreen (surface->window);
-    }
-}
-
-static void
-xdg_surface_ack_change_state (struct wl_client *client,
-                              struct wl_resource *resource,
-                              uint32_t state_type,
-                              uint32_t value,
-                              uint32_t serial)
+xdg_surface_ack_configure (struct wl_client *client,
+                           struct wl_resource *resource,
+                           uint32_t serial)
 {
   /* Do nothing for now. In the future, we'd imagine that
    * we'd ignore attaches when we have a state pending that
@@ -840,11 +833,43 @@ xdg_surface_ack_change_state (struct wl_client *client,
 }
 
 static void
+xdg_surface_set_maximized (struct wl_client *client,
+                           struct wl_resource *resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  meta_window_maximize (surface->window, META_MAXIMIZE_BOTH);
+}
+
+static void
+xdg_surface_unset_maximized (struct wl_client *client,
+                             struct wl_resource *resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  meta_window_unmaximize (surface->window, META_MAXIMIZE_BOTH);
+}
+
+static void
+xdg_surface_set_fullscreen (struct wl_client *client,
+                            struct wl_resource *resource,
+                            struct wl_resource *output_resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  meta_window_make_fullscreen (surface->window);
+}
+
+static void
+xdg_surface_unset_fullscreen (struct wl_client *client,
+                              struct wl_resource *resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  meta_window_unmake_fullscreen (surface->window);
+}
+
+static void
 xdg_surface_set_minimized (struct wl_client *client,
                            struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
   meta_window_minimize (surface->window);
 }
 
@@ -856,9 +881,11 @@ static const struct xdg_surface_interface meta_wayland_xdg_surface_interface = {
   xdg_surface_set_app_id,
   xdg_surface_move,
   xdg_surface_resize,
-  xdg_surface_set_output,
-  xdg_surface_request_change_state,
-  xdg_surface_ack_change_state,
+  xdg_surface_ack_configure,
+  xdg_surface_set_maximized,
+  xdg_surface_unset_maximized,
+  xdg_surface_set_fullscreen,
+  xdg_surface_unset_fullscreen,
   xdg_surface_set_minimized,
 };
 
@@ -1661,80 +1688,55 @@ meta_wayland_shell_init (MetaWaylandCompositor *compositor)
     g_error ("Failed to register a global wl-subcompositor object");
 }
 
+static void
+fill_states (struct wl_array *states, MetaWindow *window)
+{
+  uint32_t *s;
+
+  if (META_WINDOW_MAXIMIZED (window))
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = XDG_SURFACE_STATE_MAXIMIZED;
+    }
+  if (meta_window_is_fullscreen (window))
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = XDG_SURFACE_STATE_FULLSCREEN;
+    }
+  if (meta_grab_op_is_resizing (window->display->grab_op))
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = XDG_SURFACE_STATE_RESIZING;
+    }
+  if (meta_window_appears_focused (window))
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = XDG_SURFACE_STATE_ACTIVATED;
+    }
+}
+
 void
 meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
 				       int                 new_width,
 				       int                 new_height)
 {
   if (surface->xdg_surface.resource)
-    xdg_surface_send_configure (surface->xdg_surface.resource,
-                                new_width, new_height);
+    {
+      struct wl_client *client = wl_resource_get_client (surface->xdg_surface.resource);
+      struct wl_display *display = wl_client_get_display (client);
+      uint32_t serial = wl_display_next_serial (display);
+      struct wl_array states;
+
+      wl_array_init (&states);
+      fill_states (&states, surface->window);
+
+      xdg_surface_send_configure (surface->xdg_surface.resource, new_width, new_height, &states, serial);
+
+      wl_array_release (&states);
+    }
   else if (surface->wl_shell_surface.resource)
     wl_shell_surface_send_configure (surface->wl_shell_surface.resource,
                                      0, new_width, new_height);
-}
-
-static void
-send_change_state (MetaWaylandSurface *surface,
-                   uint32_t state_type,
-                   uint32_t value)
-{
-  if (surface->xdg_surface.resource)
-    {
-      uint32_t serial;
-
-      if (surface->state_changed_serial != 0)
-        {
-          serial = surface->state_changed_serial;
-          surface->state_changed_serial = 0;
-        }
-      else
-        {
-          struct wl_client *client = wl_resource_get_client (surface->xdg_surface.resource);
-          struct wl_display *display = wl_client_get_display (client);
-          serial = wl_display_next_serial (display);
-        }
-
-      xdg_surface_send_change_state (surface->xdg_surface.resource, state_type, value, serial);
-    }
-}
-
-void
-meta_wayland_surface_send_maximized (MetaWaylandSurface *surface)
-{
-  send_change_state (surface, XDG_SURFACE_STATE_MAXIMIZED, TRUE);
-}
-
-void
-meta_wayland_surface_send_unmaximized (MetaWaylandSurface *surface)
-{
-  send_change_state (surface, XDG_SURFACE_STATE_MAXIMIZED, FALSE);
-}
-
-void
-meta_wayland_surface_send_fullscreened (MetaWaylandSurface *surface)
-{
-  send_change_state (surface, XDG_SURFACE_STATE_FULLSCREEN, TRUE);
-}
-
-void
-meta_wayland_surface_send_unfullscreened (MetaWaylandSurface *surface)
-{
-  send_change_state (surface, XDG_SURFACE_STATE_FULLSCREEN, FALSE);
-}
-
-void
-meta_wayland_surface_activated (MetaWaylandSurface *surface)
-{
-  if (surface->xdg_surface.resource)
-    xdg_surface_send_activated (surface->xdg_surface.resource);
-}
-
-void
-meta_wayland_surface_deactivated (MetaWaylandSurface *surface)
-{
-  if (surface->xdg_surface.resource)
-    xdg_surface_send_deactivated (surface->xdg_surface.resource);
 }
 
 void
