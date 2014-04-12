@@ -1525,10 +1525,7 @@ meta_display_sync_wayland_input_focus (MetaDisplay *display)
 
   meta_wayland_compositor_set_input_focus (compositor, focus_window);
 
-  if (meta_grab_op_is_wayland (display->grab_op))
-    meta_wayland_pointer_set_focus (&compositor->seat->pointer, NULL);
-  else
-    meta_wayland_seat_repick (compositor->seat, NULL);
+  meta_wayland_seat_repick (compositor->seat, NULL);
 }
 
 void
