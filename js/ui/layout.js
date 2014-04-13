@@ -603,7 +603,7 @@ const LayoutManager = new Lang.Class({
             this._updateBackgrounds();
 
             // We need to force an update of the regions now before we scale
-            // the UI group to get the coorect allocation for the struts.
+            // the UI group to get the correct allocation for the struts.
             this._updateRegions();
 
             this.trayBox.hide();
