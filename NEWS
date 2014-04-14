@@ -1,3 +1,44 @@
+Clutter 1.18.2                                                       2014-04-14
+===============================================================================
+
+  • List of changes since Clutter 1.18.0
+
+    - Fix the list of dependencies
+    Clutter 1.18 depends on Cogl 1.17.5 when building the EGL/KMS backend.
+
+    - Fixes for the Visual Studio build files
+    Use the new symbol visibility annotations when building with MSVC.
+
+    - Fix event handling on Windows
+    An optimization led to a crash on the Windows backend when delivering
+    events without an associated ClutterStage.
+
+    - Ensure that set_child_above/below work on the Stage
+    ClutterStage should respect the paint order when using the Actor API.
+
+    - Skip conformance test suite on X11 when DISPLAY is unset
+    Instead of bailing out when initializing the test suite we should just
+    tell the test suite API to skip the units. This allows the TAP driver
+    to catch the skipped tests and avoid warnings.
+
+    - Translation updates
+    Danish, French, Indonesian, Greek.
+
+  • List of bugs fixed since Clutter 1.18.0
+
+    #728177 - Cannot collect coverage with lcov 1.10
+    #727020 - wayland: Add missing CLUTTER_AVAILABLE annotations
+    #711645 - clutter_actor_set_child_above_sibling() not working in
+              ClutterStage
+    #726762 - Fix Import of Clutter Version Constants
+    #726703 - build error: undefined reference to
+              `cogl_kms_renderer_set_kms_fd'
+
+Many thanks to:
+
+  Chun-wei Fan, Adel Gadllah, Andika Triwidada, Ask H. Larsen, David Warman,
+  Emilio Pozuelo Monfort, Vadim Rutkovsky, maria thukididu, teuf.
+
 Clutter 1.18.0                                                       2014-03-18
 ===============================================================================
 
