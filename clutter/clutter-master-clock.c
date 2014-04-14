@@ -52,8 +52,9 @@
   gint64 __budget = master_clock->remaining_budget;                                     \
   if (__budget > 0 && __delta >= __budget) {                                            \
     _clutter_diagnostic_message ("%s took %" G_GINT64_FORMAT " microseconds "           \
-                                 "over a budget of %" G_GINT64_FORMAT " microseconds",  \
-                                 section, __delta, __budget);                           \
+                                 "more than the remaining budget of %" G_GINT64_FORMAT  \
+                                 " microseconds",                                       \
+                                 section, __delta - __budget, __budget);                \
   }                                                                     } G_STMT_END
 #else
 #define clutter_warn_if_over_budget(master_clock,start_time,section)
