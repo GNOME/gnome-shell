@@ -40,10 +40,10 @@
     </key>
     <key name="app-picker-view" type="u">
       <default>0</default>
-      <summary>App Picker View</summary>
-      <description>
+      <_summary>App Picker View</_summary>
+      <_description>
         Index of the currently selected view in the application picker.
-      </description>
+      </_description>
     </key>
     <key name="command-history" type="as">
       <default>[]</default>
@@ -128,8 +128,8 @@
     </key>
     <key name="pause-resume-tweens" type="as">
       <default>[]</default>
-      <summary>Keybinding that pauses and resumes all running tweens, for debugging purposes</summary>
-      <description></description>
+      <_summary>Keybinding that pauses and resumes all running tweens, for debugging purposes</_summary>
+      <_description></_description>
     </key>
   </schema>
 
@@ -175,11 +175,11 @@
           gettext-domain="@GETTEXT_PACKAGE@">
     <key type="b" name="current-workspace-only">
       <default>false</default>
-      <summary>Limit switcher to current workspace.</summary>
-      <description>
+      <_summary>Limit switcher to current workspace.</_summary>
+      <_description>
 	If true, only applications that have windows on the current workspace are shown in the switcher.
 	Otherwise, all applications are included.
-      </description>
+      </_description>
     </key>
   </schema>
 
@@ -202,11 +202,11 @@
     </key>
     <key type="b" name="current-workspace-only">
       <default>true</default>
-      <summary>Limit switcher to current workspace.</summary>
-      <description>
+      <_summary>Limit switcher to current workspace.</_summary>
+      <_description>
 	If true, only windows from the current workspace are shown in the switcher.
 	Otherwise, all windows are included.
-      </description>
+      </_description>
     </key>
   </schema>
 
