@@ -1530,21 +1530,6 @@ handle_other_xevent (MetaDisplay *display,
           }
       }
       break;
-    case SelectionClear:
-      /* do this here instead of at end of function
-       * so we can return
-       */
-
-      /* FIXME: Clearing display->current_time here makes no sense to
-       * me; who put this here and why?
-       */
-      display->current_time = CurrentTime;
-
-      process_selection_clear (display, event);
-      /* Note that processing that may have resulted in
-       * closing the display... so return right away.
-       */
-      return FALSE;
     case SelectionRequest:
       process_selection_request (display, event);
       break;
@@ -1863,6 +1848,17 @@ meta_display_handle_xevent (MetaDisplay *display,
   if (handle_other_xevent (display, event))
     {
       bypass_gtk = TRUE;
+      goto out;
+    }
+
+  if (event->type == SelectionClear)
+    {
+      /* Do this here so we can return without any further
+       * processing. */
+      process_selection_clear (display, event);
+      /* Note that processing that may have resulted in
+       * closing the display... */
+      bypass_gtk = bypass_compositor = TRUE;
       goto out;
     }
 
