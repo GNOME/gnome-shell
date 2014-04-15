@@ -388,7 +388,6 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	org.gnome.mutter.wayland.gschema.xml.in \
 	mutter-schemas.convert \
 	libmutter.pc.in \
-	mutter-plugins.pc.in  \
 	mutter-enum-types.h.in \
 	mutter-enum-types.c.in \
 	org.gnome.Mutter.DisplayConfig.xml	\
