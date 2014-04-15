@@ -1017,19 +1017,39 @@ const LayoutManager = new Lang.Class({
                     continue;
 
                 // Ensure that the strut rects goes all the way to the screen edge,
-                // as this really what mutter expects.
+                // as this really what mutter expects. However skip this step
+                // in cases where this would render an entire monitor unusable.
                 switch (side) {
                 case Meta.Side.TOP:
-                    y1 = 0;
+                    let hasMonitorsAbove = this.monitors.some(Lang.bind(this,
+                        function(mon) {
+                            return this._isAboveOrBelowPrimary(mon) &&
+                                   mon.y < primary.y;
+                        }));
+                    if (!hasMonitorsAbove)
+                        y1 = 0;
                     break;
                 case Meta.Side.BOTTOM:
-                    y2 = global.screen_height;
+                    if (this.primaryIndex == this.bottomIndex)
+                        y2 = global.screen_height;
                     break;
                 case Meta.Side.LEFT:
-                    x1 = 0;
+                    let hasMonitorsLeft = this.monitors.some(Lang.bind(this,
+                        function(mon) {
+                            return !this._isAboveOrBelowPrimary(mon) &&
+                                   mon.x < primary.x;
+                        }));
+                    if (!hasMonitorsLeft)
+                        x1 = 0;
                     break;
                 case Meta.Side.RIGHT:
-                    x2 = global.screen_width;
+                    let hasMonitorsRight = this.monitors.some(Lang.bind(this,
+                        function(mon) {
+                            return !this._isAboveOrBelowPrimary(mon) &&
+                                   mon.x > primary.x;
+                        }));
+                    if (!hasMonitorsRight)
+                        x2 = global.screen_width;
                     break;
                 }
 
