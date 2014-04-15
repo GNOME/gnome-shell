@@ -764,7 +764,7 @@ const AppDisplay = new Lang.Class({
         this._viewStack = new St.Widget({ x_expand: true, y_expand: true,
                                           layout_manager: this._viewStackLayout });
         this._viewStackLayout.connect('allocated-size-changed', Lang.bind(this, this._onAllocatedSizeChanged));
-        this.actor.add_actor(this._viewStack, { expand: true });
+        this.actor.add_actor(this._viewStack);
         let layout = new ControlsBoxLayout({ homogeneous: true });
         this._controls = new St.Widget({ style_class: 'app-view-controls',
                                          layout_manager: layout });
