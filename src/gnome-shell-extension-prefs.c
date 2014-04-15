@@ -36,7 +36,6 @@ main (int argc, char *argv[])
       return 1;
     }
 
-
   if (!gjs_context_eval (context,
                          "const Main = imports.extensionPrefs.main; Main.main(ARGV);",
                          -1,
