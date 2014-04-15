@@ -1401,10 +1401,6 @@ run_leisure_functions (gpointer data)
   if (global->work_count > 0)
     return FALSE;
 
-  /* This will help avoid both heap fragmentation, 
-     and the GC kicking in when we don't want it to. */
-  gjs_context_maybe_gc (global->js_context);
-
   /* No leisure closures, so we are done */
   if (global->leisure_closures == NULL)
     return FALSE;
