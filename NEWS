@@ -1,3 +1,31 @@
+3.12.1
+======
+* Ensure the currently focused app icon is viewable [Rui; #726759]
+* Improve language in location menu [Zeeshan; #726498]
+* Improve HiDpi support [Cosimo; #726907]
+* Set accessible role for window previews [Alejandro; #726670]
+* Fix bad antialiasing on panel menu buttons [Carlos; #727336]
+* Don't hide location menu [Zeeshan; #727398]
+* Fix IM candidate window obscuring current text [Rui; #727579]
+* Fix extension-prefs tool when linked with --as-needed [Florian; #727948]
+* Don't always extend struts to the screen edge [Florian; #663690]
+
+Contributors:
+  Zeeshan Ali (Khattak), Cosimo Cecchi, Piotr Drąg, Rui Matos, Simon McVittie,
+  Florian Müllner, Alejandro Piñeiro, Carlos Soriano
+
+Translations:
+  Khaled Hosny [ar], Piotr Drąg [pl], Yosef Or Boczko [he],
+  Antonio Fernandes C. Neto [pt_BR], Marek Černocký [cs], maria thukididu [el],
+  Andika Triwidada [id], Daniel Mustieles [es], Changwoo Ryu [ko],
+  Benjamin Steinwender [de], Sphinx Jiang [zh_CN],
+  Inaki Larranaga Murgoitio [eu], Marcus Lundblad [sv], Aurimas Černius [lt],
+  Stas Solovey [ru], Alexandre Franke [fr], Matej Urbančič [sl],
+  Fran Diéguez [gl], Pau Iranzo [ca], Luca Ferretti [it], Milo Casagrande [it],
+  Tiago S [pt], Victor Ibragimov [tg], Dirgita [id], Khoem Sokhem [km],
+  Rūdolfs Mazurs [lv], Balázs Úr [hu], Ask H. Larsen [da], Ikuya Awashiro [ja],
+  Мирослав Николић [sr, sr@latin]
+
 3.12.0
 ======
 * gdm: Reset greeter when coming back to login screen [Jasper; #726989]
