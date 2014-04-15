@@ -6,6 +6,8 @@
 #include <gjs/gjs.h>
 #include <glib/gi18n.h>
 
+#include "shell-js.h"
+
 int
 main (int argc, char *argv[])
 {
