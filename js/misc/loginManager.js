@@ -191,7 +191,7 @@ const LoginManagerSystemd = new Lang.Class({
                 let fd = -1;
                 try {
                     let [outVariant, fdList] = proxy.call_with_unix_fd_list_finish(result);
-                    fd = fdList.steal_fds(outVariant.deep_unpack())[0];
+                    fd = fdList.steal_fds()[0];
                     callback(new Gio.UnixInputStream({ fd: fd }));
                 } catch(e) {
                     logError(e, "Error getting systemd inhibitor");
