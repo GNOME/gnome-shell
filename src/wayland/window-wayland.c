@@ -119,6 +119,8 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
                                           MetaMoveResizeFlags        flags,
                                           MetaMoveResizeResultFlags *result)
 {
+  gboolean should_move = FALSE;
+
   g_assert (window->frame == NULL);
 
   /* For wayland clients, the size is completely determined by the client,
@@ -139,6 +141,10 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 
       window->rect.width = requested_rect.width;
       window->rect.height = requested_rect.height;
+
+      /* This is a commit of an attach. We should move the window to match the
+       * new position the client wants. */
+      should_move = TRUE;
     }
 
   if (constrained_rect.width != window->rect.width ||
@@ -149,9 +155,15 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
                                              constrained_rect.width,
                                              constrained_rect.height);
     }
+  else
+    {
+      /* We're just moving the window, so we don't need to wait for a configure
+       * and then ack to simply move the window. */
+      should_move = TRUE;
+    }
 
-  if (constrained_rect.x != window->rect.x ||
-      constrained_rect.y != window->rect.y)
+  if (should_move && (constrained_rect.x != window->rect.x ||
+                      constrained_rect.y != window->rect.y))
     {
       *result |= META_MOVE_RESIZE_RESULT_MOVED;
       window->rect.x = constrained_rect.x;
