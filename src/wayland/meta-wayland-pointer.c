@@ -347,18 +347,18 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
       pointer->focus_surface = surface;
       wl_resource_add_destroy_listener (pointer->focus_surface->resource, &pointer->focus_surface_listener);
 
+      meta_window_handle_enter (pointer->focus_surface->window,
+                                /* XXX -- can we reliably get a timestamp for setting focus? */
+                                clutter_get_current_event_time (),
+                                wl_fixed_to_int (pointer->x),
+                                wl_fixed_to_int (pointer->y));
+
       pointer->focus_resource = find_resource_for_surface (&pointer->resource_list, surface);
       if (pointer->focus_resource)
         {
           struct wl_client *client = wl_resource_get_client (pointer->focus_resource);
           struct wl_display *display = wl_client_get_display (client);
           uint32_t serial = wl_display_next_serial (display);
-
-          meta_window_handle_enter (pointer->focus_surface->window,
-                                    /* XXX -- can we reliably get a timestamp for setting focus? */
-                                    clutter_get_current_event_time (),
-                                    wl_fixed_to_int (pointer->x),
-                                    wl_fixed_to_int (pointer->y));
 
           {
             wl_fixed_t sx, sy;
