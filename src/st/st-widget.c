@@ -1443,6 +1443,9 @@ st_widget_reactive_notify (StWidget   *widget,
     st_widget_remove_style_pseudo_class (widget, "insensitive");
   else
     st_widget_add_style_pseudo_class (widget, "insensitive");
+
+  if (widget->priv->track_hover)
+    st_widget_sync_hover(widget);
 }
 
 static void
@@ -1727,7 +1730,7 @@ st_widget_sync_hover (StWidget *widget)
   device_manager = clutter_device_manager_get_default ();
   pointer = clutter_device_manager_get_device (device_manager, VIRTUAL_CORE_POINTER_ID);
   pointer_actor = clutter_input_device_get_pointer_actor (pointer);
-  if (pointer_actor)
+  if (pointer_actor && clutter_actor_get_reactive (CLUTTER_ACTOR (widget)))
     st_widget_set_hover (widget, clutter_actor_contains (CLUTTER_ACTOR (widget), pointer_actor));
   else
     st_widget_set_hover (widget, FALSE);
