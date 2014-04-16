@@ -301,12 +301,11 @@ static void
 handle_scroll_event (MetaWaylandSeat    *seat,
                      const ClutterEvent *event)
 {
+  struct wl_resource *resource;
+  struct wl_list *l;
   wl_fixed_t x_value = 0, y_value = 0;
 
   notify_motion (seat, event);
-
-  if (!seat->pointer.focus_resource)
-    return;
 
   if (clutter_event_is_pointer_emulated (event))
     return;
@@ -342,12 +341,16 @@ handle_scroll_event (MetaWaylandSeat    *seat,
       return;
     }
 
-  if (x_value)
-    wl_pointer_send_axis (seat->pointer.focus_resource, clutter_event_get_time (event),
-                          WL_POINTER_AXIS_HORIZONTAL_SCROLL, x_value);
-  if (y_value)
-    wl_pointer_send_axis (seat->pointer.focus_resource, clutter_event_get_time (event),
-                          WL_POINTER_AXIS_VERTICAL_SCROLL, y_value);
+  l = &seat->pointer.focus_resource_list;
+  wl_resource_for_each (resource, l)
+    {
+      if (x_value)
+        wl_pointer_send_axis (resource, clutter_event_get_time (event),
+                              WL_POINTER_AXIS_HORIZONTAL_SCROLL, x_value);
+      if (y_value)
+        wl_pointer_send_axis (resource, clutter_event_get_time (event),
+                              WL_POINTER_AXIS_VERTICAL_SCROLL, y_value);
+    }
 }
 
 static int

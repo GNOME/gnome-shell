@@ -60,7 +60,6 @@ pointer_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
   MetaWaylandPointer *pointer = wl_container_of (listener, pointer, focus_surface_listener);
 
   pointer->focus_surface = NULL;
-  pointer->focus_resource = NULL;
 }
 
 static void
@@ -81,9 +80,10 @@ default_grab_motion (MetaWaylandPointerGrab *grab,
 {
   MetaWaylandPointer *pointer = grab->pointer;
   struct wl_resource *resource;
+  struct wl_list *l;
 
-  resource = pointer->focus_resource;
-  if (resource)
+  l = &pointer->focus_resource_list;
+  wl_resource_for_each(resource, l)
     {
       wl_fixed_t sx, sy;
 
@@ -100,12 +100,13 @@ default_grab_button (MetaWaylandPointerGrab *grab,
 {
   MetaWaylandPointer *pointer = grab->pointer;
   struct wl_resource *resource;
+  struct wl_list *l;
   ClutterEventType event_type;
 
   event_type = clutter_event_type (event);
 
-  resource = pointer->focus_resource;
-  if (resource)
+  l = &grab->pointer->focus_resource_list;
+  wl_resource_for_each(resource, l)
     {
       struct wl_client *client = wl_resource_get_client (pointer->focus_surface->resource);
       struct wl_display *display = wl_client_get_display (client);
@@ -256,6 +257,7 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer)
 
   memset (pointer, 0, sizeof *pointer);
   wl_list_init (&pointer->resource_list);
+  wl_list_init (&pointer->focus_resource_list);
 
   pointer->focus_surface_listener.notify = pointer_handle_focus_surface_destroy;
 
@@ -288,37 +290,54 @@ meta_wayland_pointer_release (MetaWaylandPointer *pointer)
   /* Do nothing. */
 }
 
-static struct wl_resource *
-find_resource_for_surface (struct wl_list *list, MetaWaylandSurface *surface)
+static void
+move_resources (struct wl_list *destination, struct wl_list *source)
 {
-  struct wl_client *client;
+  wl_list_insert_list (destination, source);
+  wl_list_init (source);
+}
 
-  if (!surface)
-    return NULL;
-
-  g_assert (surface->resource);
-  client = wl_resource_get_client (surface->resource);
-
-  return wl_resource_find_for_client (list, client);
+static void
+move_resources_for_client (struct wl_list *destination,
+			   struct wl_list *source,
+			   struct wl_client *client)
+{
+  struct wl_resource *resource, *tmp;
+  wl_resource_for_each_safe (resource, tmp, source)
+    {
+      if (wl_resource_get_client (resource) == client)
+        {
+          wl_list_remove (wl_resource_get_link (resource));
+          wl_list_insert (destination, wl_resource_get_link (resource));
+        }
+    }
 }
 
 void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 MetaWaylandSurface *surface)
 {
-  if (pointer->focus_surface == surface && pointer->focus_resource != NULL)
+  if (pointer->focus_surface == surface && !wl_list_empty (&pointer->focus_resource_list))
     return;
 
   if (pointer->focus_surface)
     {
-      if (pointer->focus_resource)
+      struct wl_resource *resource;
+      struct wl_list *l;
+
+      l = &pointer->focus_resource_list;
+      if (!wl_list_empty (l))
         {
           struct wl_client *client = wl_resource_get_client (pointer->focus_surface->resource);
           struct wl_display *display = wl_client_get_display (client);
           uint32_t serial = wl_display_next_serial (display);
-          wl_pointer_send_leave (pointer->focus_resource, serial, pointer->focus_surface->resource);
 
-          pointer->focus_resource = NULL;
+          wl_resource_for_each (resource, l)
+            {
+              wl_pointer_send_leave (resource, serial, pointer->focus_surface->resource);
+            }
+
+          move_resources (&pointer->resource_list, &pointer->focus_resource_list);
         }
 
       wl_list_remove (&pointer->focus_surface_listener.link);
@@ -327,6 +346,9 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
 
   if (surface != NULL)
     {
+      struct wl_resource *resource;
+      struct wl_list *l;
+
       pointer->focus_surface = surface;
       wl_resource_add_destroy_listener (pointer->focus_surface->resource, &pointer->focus_surface_listener);
 
@@ -336,19 +358,24 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 wl_fixed_to_int (pointer->x),
                                 wl_fixed_to_int (pointer->y));
 
-      pointer->focus_resource = find_resource_for_surface (&pointer->resource_list, surface);
-      if (pointer->focus_resource)
+      move_resources_for_client (&pointer->focus_resource_list,
+                                 &pointer->resource_list,
+                                 wl_resource_get_client (pointer->focus_surface->resource));
+
+      l = &pointer->focus_resource_list;
+      if (!wl_list_empty (l))
         {
           struct wl_client *client = wl_resource_get_client (pointer->focus_surface->resource);
           struct wl_display *display = wl_client_get_display (client);
           uint32_t serial = wl_display_next_serial (display);
 
-          {
-            wl_fixed_t sx, sy;
+          wl_resource_for_each (resource, l)
+            {
+              wl_fixed_t sx, sy;
 
-            meta_wayland_pointer_get_relative_coordinates (pointer, pointer->focus_surface, &sx, &sy);
-            wl_pointer_send_enter (pointer->focus_resource, serial, pointer->focus_surface->resource, sx, sy);
-          }
+              meta_wayland_pointer_get_relative_coordinates (pointer, pointer->focus_surface, &sx, &sy);
+              wl_pointer_send_enter (resource, serial, pointer->focus_surface->resource, sx, sy);
+            }
 
           pointer->focus_serial = serial;
         }
@@ -419,7 +446,6 @@ static void
 popup_grab_button (MetaWaylandPointerGrab *grab,
 		   const ClutterEvent     *event)
 {
-  MetaWaylandPopupGrab *popup_grab = (MetaWaylandPopupGrab*)grab;
   MetaWaylandPointer *pointer = grab->pointer;
 
   if (pointer->focus_surface)
