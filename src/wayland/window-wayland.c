@@ -139,6 +139,7 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
        * update the real client size to match the buffer size.
        */
 
+      *result |= META_MOVE_RESIZE_RESULT_RESIZED;
       window->rect.width = requested_rect.width;
       window->rect.height = requested_rect.height;
 
@@ -150,7 +151,6 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
   if (constrained_rect.width != window->rect.width ||
       constrained_rect.height != window->rect.height)
     {
-      *result |= META_MOVE_RESIZE_RESULT_RESIZED;
       meta_wayland_surface_configure_notify (window->surface,
                                              constrained_rect.width,
                                              constrained_rect.height);
