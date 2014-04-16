@@ -92,16 +92,17 @@ static void
 default_grab_motion (MetaWaylandPointerGrab *grab,
 		     const ClutterEvent     *event)
 {
+  MetaWaylandPointer *pointer = grab->pointer;
   struct wl_resource *resource;
 
-  resource = grab->pointer->focus_resource;
+  resource = pointer->focus_resource;
   if (resource)
     {
       wl_fixed_t sx, sy;
 
-      meta_wayland_pointer_get_relative_coordinates (grab->pointer,
-						     grab->pointer->focus_surface,
-						     &sx, &sy);
+      meta_wayland_pointer_get_relative_coordinates (pointer,
+                                                     pointer->focus_surface,
+                                                     &sx, &sy);
       wl_pointer_send_motion (resource, clutter_event_get_time (event), sx, sy);
     }
 }
