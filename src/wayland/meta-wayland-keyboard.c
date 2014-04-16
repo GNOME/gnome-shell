@@ -532,3 +532,11 @@ meta_wayland_keyboard_set_keymap_names (MetaWaylandKeyboard *keyboard,
 				     flags);
 }
 
+struct wl_client *
+meta_wayland_keyboard_get_focus_client (MetaWaylandKeyboard *keyboard)
+{
+  if (keyboard->focus_surface)
+    return wl_resource_get_client (keyboard->focus_surface->resource);
+  else
+    return NULL;
+}

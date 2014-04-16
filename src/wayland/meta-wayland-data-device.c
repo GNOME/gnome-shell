@@ -360,17 +360,14 @@ destroy_selection_data_source (struct wl_listener *listener, void *data)
   MetaWaylandSeat *seat =
     wl_container_of (listener, seat, selection_data_source_listener);
   struct wl_resource *data_device;
-  struct wl_resource *focus = NULL;
+  struct wl_client *focus_client = NULL;
 
   seat->selection_data_source = NULL;
 
-  focus = seat->keyboard.focus_resource;
-
-  if (focus)
+  focus_client = meta_wayland_keyboard_get_focus_client (&seat->keyboard);
+  if (focus_client)
     {
-      data_device =
-        wl_resource_find_for_client (&seat->data_device_resource_list,
-                                     wl_resource_get_client (focus));
+      data_device = wl_resource_find_for_client (&seat->data_device_resource_list, focus_client);
       if (data_device)
         wl_data_device_send_selection (data_device, NULL);
     }
@@ -382,7 +379,7 @@ meta_wayland_seat_set_selection (MetaWaylandSeat *seat,
                                  guint32 serial)
 {
   struct wl_resource *data_device, *offer;
-  struct wl_resource *focus = NULL;
+  struct wl_client *focus_client;
 
   if (seat->selection_data_source &&
       seat->selection_serial - serial < UINT32_MAX / 2)
@@ -398,13 +395,10 @@ meta_wayland_seat_set_selection (MetaWaylandSeat *seat,
   seat->selection_data_source = source;
   seat->selection_serial = serial;
 
-  focus = seat->keyboard.focus_resource;
-
-  if (focus)
+  focus_client = meta_wayland_keyboard_get_focus_client (&seat->keyboard);
+  if (focus_client)
     {
-      data_device =
-        wl_resource_find_for_client (&seat->data_device_resource_list,
-                                     wl_resource_get_client (focus));
+      data_device = wl_resource_find_for_client (&seat->data_device_resource_list, focus_client);
       if (data_device && source)
         {
           offer =
@@ -515,15 +509,15 @@ bind_manager (struct wl_client *client,
 void
 meta_wayland_data_device_set_keyboard_focus (MetaWaylandSeat *seat)
 {
-  struct wl_resource *data_device, *focus, *offer;
+  struct wl_client *focus_client;
+  struct wl_resource *data_device, *offer;
   MetaWaylandDataSource *source;
 
-  focus = seat->keyboard.focus_resource;
-  if (!focus)
+  focus_client = meta_wayland_keyboard_get_focus_client (&seat->keyboard);
+  if (!focus_client)
     return;
 
-  data_device = wl_resource_find_for_client (&seat->data_device_resource_list,
-                                             wl_resource_get_client (focus));
+  data_device = wl_resource_find_for_client (&seat->data_device_resource_list, focus_client);
   if (!data_device)
     return;
 

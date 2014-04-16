@@ -140,4 +140,7 @@ void
 meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
                               const ClutterKeyEvent *event);
 
+struct wl_client *
+meta_wayland_keyboard_get_focus_client (MetaWaylandKeyboard *keyboard);
+
 #endif /* __META_WAYLAND_KEYBOARD_H__ */
