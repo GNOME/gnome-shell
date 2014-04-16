@@ -439,13 +439,10 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
     {
       if (keyboard->focus_resource)
         {
-          if (keyboard->focus_surface->resource)
-            {
-              struct wl_client *client = wl_resource_get_client (keyboard->focus_resource);
-              struct wl_display *display = wl_client_get_display (client);
-              uint32_t serial = wl_display_next_serial (display);
-              wl_keyboard_send_leave (keyboard->focus_resource, serial, keyboard->focus_surface->resource);
-            }
+          struct wl_client *client = wl_resource_get_client (keyboard->focus_resource);
+          struct wl_display *display = wl_client_get_display (client);
+          uint32_t serial = wl_display_next_serial (display);
+          wl_keyboard_send_leave (keyboard->focus_resource, serial, keyboard->focus_surface->resource);
 
           wl_list_remove (&keyboard->focus_resource_listener.link);
           keyboard->focus_resource = NULL;
