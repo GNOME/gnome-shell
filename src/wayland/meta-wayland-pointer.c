@@ -59,7 +59,7 @@ pointer_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 {
   MetaWaylandPointer *pointer = wl_container_of (listener, pointer, focus_surface_listener);
 
-  pointer->focus_surface = NULL;
+  meta_wayland_pointer_set_focus (pointer, NULL);
 }
 
 static void

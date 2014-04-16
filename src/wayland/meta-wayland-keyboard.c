@@ -210,7 +210,7 @@ keyboard_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 {
   MetaWaylandKeyboard *keyboard = wl_container_of (listener, keyboard, focus_surface_listener);
 
-  keyboard->focus_surface = NULL;
+  meta_wayland_keyboard_set_focus (keyboard, NULL);
 }
 
 static gboolean
