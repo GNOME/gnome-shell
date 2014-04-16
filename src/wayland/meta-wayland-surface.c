@@ -529,14 +529,34 @@ const struct wl_surface_interface meta_wayland_wl_surface_interface = {
   wl_surface_set_buffer_scale
 };
 
+static gboolean
+surface_should_be_reactive (MetaWaylandSurface *surface)
+{
+  /* If we have a toplevel window, we should be reactive */
+  if (surface->window)
+    return TRUE;
+
+  /* If we're a subsurface, we should be reactive */
+  if (surface->subsurface.resource)
+    return TRUE;
+
+  return FALSE;
+}
+
+static void
+sync_reactive (MetaWaylandSurface *surface)
+{
+  clutter_actor_set_reactive (CLUTTER_ACTOR (surface->surface_actor),
+                              surface_should_be_reactive (surface));
+}
+
 void
 meta_wayland_surface_set_window (MetaWaylandSurface *surface,
                                  MetaWindow         *window)
 {
-  gboolean has_window = (window != NULL);
-
-  clutter_actor_set_reactive (CLUTTER_ACTOR (surface->surface_actor), has_window);
   surface->window = window;
+
+  sync_reactive (surface);
 }
 
 static void
@@ -1633,6 +1653,8 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
 
   clutter_actor_add_child (CLUTTER_ACTOR (parent->surface_actor),
                            CLUTTER_ACTOR (surface->surface_actor));
+
+  sync_reactive (surface);
 }
 
 static const struct wl_subcompositor_interface meta_wayland_subcompositor_interface = {
