@@ -149,52 +149,16 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
   if (constrained_rect.width != window->rect.width ||
       constrained_rect.height != window->rect.height)
     {
-      /* We need to resize the client. Resizing is in two parts:
-       * some of the movement happens immediately, and some happens as part
-       * of the resizing (through dx/dy in wl_surface_attach).
-       *
-       * To do so, we need to compute the resize from the point of the view
-       * of the client, and then adjust the immediate resize to match.
-       *
-       * dx/dy are the values we expect from the new attach(), while deltax/
-       * deltay reflect the overall movement.
-       */
-      MetaRectangle old_rect;
-      MetaRectangle client_rect;
-      int dx, dy;
-      int deltax, deltay;
-
-      meta_window_get_client_root_coords (window, &old_rect);
-
-      meta_rectangle_resize_with_gravity (&old_rect,
-                                          &client_rect,
-                                          gravity,
-                                          constrained_rect.width,
-                                          constrained_rect.height);
-
-      deltax = constrained_rect.x - old_rect.x;
-      deltay = constrained_rect.y - old_rect.y;
-      dx = client_rect.x - constrained_rect.x;
-      dy = client_rect.y - constrained_rect.y;
-
-      if (deltax != dx || deltay != dy)
-        *result |= META_MOVE_RESIZE_RESULT_MOVED;
-
-      window->rect.x += (deltax - dx);
-      window->rect.y += (deltay - dy);
-
       *result |= META_MOVE_RESIZE_RESULT_RESIZED;
       meta_wayland_surface_configure_notify (window->surface,
                                              constrained_rect.width,
                                              constrained_rect.height);
     }
-  else
-    {
-      /* No resize happening, we can just move the window and live with it. */
-      if (window->rect.x != constrained_rect.x ||
-          window->rect.y != constrained_rect.y)
-        *result |= META_MOVE_RESIZE_RESULT_MOVED;
 
+  if (constrained_rect.x != window->rect.x ||
+      constrained_rect.y != window->rect.y)
+    {
+      *result |= META_MOVE_RESIZE_RESULT_MOVED;
       window->rect.x = constrained_rect.x;
       window->rect.y = constrained_rect.y;
     }
