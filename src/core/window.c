@@ -4409,8 +4409,7 @@ meta_window_move_resize_wayland (MetaWindow *window,
 
   if (x != window->expected_rect.x || y != window->expected_rect.y)
     flags |= META_IS_MOVE_ACTION;
-  if (width != window->expected_rect.width ||
-      height != window->expected_rect.height)
+  if (width != window->rect.width || height != window->rect.height)
     flags |= META_IS_RESIZE_ACTION;
 
   meta_window_move_resize_internal (window, flags, NorthWestGravity,
