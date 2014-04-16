@@ -60,19 +60,6 @@ pointer_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
   MetaWaylandPointer *pointer = wl_container_of (listener, pointer, focus_surface_listener);
 
   pointer->focus_surface = NULL;
-
-  if (pointer->focus_resource)
-    {
-      wl_list_remove (&pointer->focus_resource_listener.link);
-      pointer->focus_resource = NULL;
-    }
-}
-
-static void
-pointer_handle_focus_resource_destroy (struct wl_listener *listener, void *data)
-{
-  MetaWaylandPointer *pointer = wl_container_of (listener, pointer, focus_resource_listener);
-
   pointer->focus_resource = NULL;
 }
 
@@ -271,7 +258,6 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer)
   wl_list_init (&pointer->resource_list);
 
   pointer->focus_surface_listener.notify = pointer_handle_focus_surface_destroy;
-  pointer->focus_resource_listener.notify = pointer_handle_focus_resource_destroy;
 
   pointer->default_grab.interface = &default_pointer_grab_interface;
   pointer->default_grab.pointer = pointer;
@@ -332,7 +318,6 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
           uint32_t serial = wl_display_next_serial (display);
           wl_pointer_send_leave (pointer->focus_resource, serial, pointer->focus_surface->resource);
 
-          wl_list_remove (&pointer->focus_resource_listener.link);
           pointer->focus_resource = NULL;
         }
 
@@ -365,7 +350,6 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
             wl_pointer_send_enter (pointer->focus_resource, serial, pointer->focus_surface->resource, sx, sy);
           }
 
-          wl_resource_add_destroy_listener (pointer->focus_resource, &pointer->focus_resource_listener);
           pointer->focus_serial = serial;
         }
     }
