@@ -17,6 +17,9 @@
 	<KeyListEntry name="move-to-workspace-4"
 	              _description="Move window to workspace 4" />
 
+        <KeyListEntry name="move-to-workspace-last"
+                      _description="Move window to last workspace" />
+
 	<KeyListEntry name="move-to-workspace-left"
 	              _description="Move window one workspace to the left" />
 
@@ -76,6 +79,9 @@
 
 	<KeyListEntry name="switch-to-workspace-4"
 	              _description="Switch to workspace 4" />
+
+	<KeyListEntry name="switch-to-workspace-last"
+	              _description="Switch to last workspace" />
 
 	<KeyListEntry name="switch-to-workspace-left"
 	              _description="Move to workspace left" />
