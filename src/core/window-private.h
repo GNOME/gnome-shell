@@ -415,12 +415,6 @@ struct _MetaWindow
    */
   MetaRectangle rect;
 
-  /* The size and position we want the window to be (i.e. what we last asked
-   * the client to configure).
-   * This is only used for wayland clients.
-   */
-  MetaRectangle expected_rect;
-
   gboolean has_custom_frame_extents;
   GtkBorder custom_frame_extents;
 

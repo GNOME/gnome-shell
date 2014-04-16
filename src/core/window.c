@@ -4405,14 +4405,23 @@ meta_window_move_resize_wayland (MetaWindow *window,
   flags = META_IS_WAYLAND_RESIZE;
 
   meta_window_get_position (window, &x, &y);
-  x += dx; y += dy;
 
-  if (x != window->expected_rect.x || y != window->expected_rect.y)
-    flags |= META_IS_MOVE_ACTION;
+  /* dx/dy are ignored during resizing */
+  if (!meta_grab_op_is_resizing (window->display->grab_op))
+    {
+      if (dx != 0 || dy != 0)
+        {
+          x += dx;
+          y += dy;
+          flags |= META_IS_MOVE_ACTION;
+        }
+    }
+
   if (width != window->rect.width || height != window->rect.height)
     flags |= META_IS_RESIZE_ACTION;
 
-  meta_window_move_resize_internal (window, flags, NorthWestGravity,
+  meta_window_move_resize_internal (window, flags,
+                                    meta_resize_gravity_from_grab_op (window->display->grab_op),
                                     x, y, width, height);
   save_user_window_placement (window);
 }

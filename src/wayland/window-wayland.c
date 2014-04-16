@@ -131,11 +131,6 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
    * it can be for maximized or fullscreen.
    */
 
-  /* First, save where we would like the client to be. This is used by the next
-   * attach to determine if the client is really moving/resizing or not.
-   */
-  window->expected_rect = constrained_rect;
-
   if (flags & META_IS_WAYLAND_RESIZE)
     {
       /* This is a call to wl_surface_commit(), ignore the constrained_rect and
