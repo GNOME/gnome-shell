@@ -120,7 +120,7 @@ default_grab_button (MetaWaylandPointerGrab *grab,
   resource = pointer->focus_resource;
   if (resource)
     {
-      struct wl_client *client = wl_resource_get_client (resource);
+      struct wl_client *client = wl_resource_get_client (pointer->focus_surface->resource);
       struct wl_display *display = wl_client_get_display (client);
       uint32_t button;
       uint32_t serial;
@@ -327,7 +327,7 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
     {
       if (pointer->focus_resource)
         {
-          struct wl_client *client = wl_resource_get_client (pointer->focus_resource);
+          struct wl_client *client = wl_resource_get_client (pointer->focus_surface->resource);
           struct wl_display *display = wl_client_get_display (client);
           uint32_t serial = wl_display_next_serial (display);
           wl_pointer_send_leave (pointer->focus_resource, serial, pointer->focus_surface->resource);
@@ -354,7 +354,7 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
       pointer->focus_resource = find_resource_for_surface (&pointer->resource_list, surface);
       if (pointer->focus_resource)
         {
-          struct wl_client *client = wl_resource_get_client (pointer->focus_resource);
+          struct wl_client *client = wl_resource_get_client (pointer->focus_surface->resource);
           struct wl_display *display = wl_client_get_display (client);
           uint32_t serial = wl_display_next_serial (display);
 
@@ -438,13 +438,8 @@ popup_grab_button (MetaWaylandPointerGrab *grab,
   MetaWaylandPopupGrab *popup_grab = (MetaWaylandPopupGrab*)grab;
   MetaWaylandPointer *pointer = grab->pointer;
 
-  if (pointer->focus_resource)
-    {
-      /* This is ensured by popup_grab_focus */
-      g_assert (wl_resource_get_client (pointer->focus_resource) == popup_grab->grab_client);
-
-      default_grab_button (grab, event);
-    }
+  if (pointer->focus_surface)
+    default_grab_button (grab, event);
   else if (clutter_event_type (event) == CLUTTER_BUTTON_RELEASE &&
 	   pointer->button_count == 0)
     meta_wayland_pointer_end_popup_grab (grab->pointer);
