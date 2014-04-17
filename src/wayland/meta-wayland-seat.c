@@ -190,13 +190,11 @@ seat_get_touch (struct wl_client *client,
   /* Touch not supported */
 }
 
-static const struct wl_seat_interface
-seat_interface =
-  {
-    seat_get_pointer,
-    seat_get_keyboard,
-    seat_get_touch
-  };
+static const struct wl_seat_interface seat_interface = {
+  seat_get_pointer,
+  seat_get_keyboard,
+  seat_get_touch
+};
 
 static void
 bind_seat (struct wl_client *client,
