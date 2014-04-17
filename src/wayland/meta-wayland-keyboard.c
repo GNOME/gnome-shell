@@ -60,6 +60,12 @@
 
 #include "meta-wayland-private.h"
 
+static void
+unbind_resource (struct wl_resource *resource)
+{
+  wl_list_remove (wl_resource_get_link (resource));
+}
+
 static int
 create_anonymous_file (off_t size,
                        GError **error)
@@ -550,4 +556,37 @@ meta_wayland_keyboard_get_focus_client (MetaWaylandKeyboard *keyboard)
     return wl_resource_get_client (keyboard->focus_surface->resource);
   else
     return NULL;
+}
+
+static void
+keyboard_release (struct wl_client *client,
+                  struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
+static const struct wl_keyboard_interface keyboard_interface = {
+  keyboard_release,
+};
+
+void
+meta_wayland_keyboard_create_new_resource (MetaWaylandKeyboard *keyboard,
+                                           struct wl_client    *client,
+                                           struct wl_resource  *seat_resource,
+                                           uint32_t id)
+{
+  struct wl_resource *cr;
+
+  cr = wl_resource_create (client, &wl_keyboard_interface,
+			   MIN (META_WL_KEYBOARD_VERSION, wl_resource_get_version (seat_resource)), id);
+  wl_resource_set_implementation (cr, NULL, keyboard, unbind_resource);
+  wl_list_insert (&keyboard->resource_list, wl_resource_get_link (cr));
+
+  wl_keyboard_send_keymap (cr,
+                           WL_KEYBOARD_KEYMAP_FORMAT_XKB_V1,
+                           keyboard->xkb_info.keymap_fd,
+                           keyboard->xkb_info.keymap_size);
+
+  if (keyboard->focus_surface && wl_resource_get_client (keyboard->focus_surface->resource) == client)
+    meta_wayland_keyboard_set_focus (keyboard, keyboard->focus_surface);
 }

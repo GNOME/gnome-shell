@@ -143,4 +143,10 @@ meta_wayland_keyboard_set_keymap_names (MetaWaylandKeyboard *keyboard,
 struct wl_client *
 meta_wayland_keyboard_get_focus_client (MetaWaylandKeyboard *keyboard);
 
+void
+meta_wayland_keyboard_create_new_resource (MetaWaylandKeyboard *keyboard,
+                                           struct wl_client    *client,
+                                           struct wl_resource  *seat_resource,
+                                           uint32_t id);
+
 #endif /* __META_WAYLAND_KEYBOARD_H__ */
