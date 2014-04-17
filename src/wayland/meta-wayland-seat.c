@@ -315,11 +315,6 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
   return FALSE;
 }
 
-/* The actor argument can be NULL in which case a Clutter pick will be
-   performed to determine the right actor. An actor should only be
-   passed if the repick is being performed due to an event in which
-   case Clutter will have already performed a pick so we can avoid
-   redundantly doing another one */
 void
 meta_wayland_seat_repick (MetaWaylandSeat    *seat,
 			  const ClutterEvent *for_event)
