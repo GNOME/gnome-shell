@@ -222,7 +222,7 @@ meta_launcher_enter (MetaLauncher *launcher)
      * update. */
 
     clutter_actor_queue_redraw (compositor->stage);
-    meta_cursor_tracker_force_update (compositor->seat->cursor_tracker);
+    meta_cursor_tracker_force_update (compositor->seat->pointer.cursor_tracker);
   }
 }
 

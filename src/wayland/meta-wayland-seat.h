@@ -27,7 +27,6 @@
 #include <clutter/clutter.h>
 #include <glib.h>
 
-#include <meta/meta-cursor-tracker.h>
 #include "meta-wayland-types.h"
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-pointer.h"
@@ -58,11 +57,6 @@ struct _MetaWaylandSeat
   MetaWaylandKeyboard keyboard;
 
   struct wl_display *display;
-
-  MetaCursorTracker *cursor_tracker;
-  MetaWaylandSurface *cursor_surface;
-  int hotspot_x, hotspot_y;
-  struct wl_listener cursor_surface_destroy_listener;
 
   ClutterActor *current_stage;
 };

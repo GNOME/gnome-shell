@@ -49,6 +49,8 @@
 
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-private.h"
+#include "meta-cursor.h"
+#include "meta-cursor-tracker-private.h"
 
 #include <string.h>
 
@@ -598,4 +600,29 @@ meta_wayland_pointer_update_current_focus (MetaWaylandPointer *pointer,
         pointer->grab->interface;
       interface->focus (pointer->grab, surface);
     }
+}
+
+void
+meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
+{
+  MetaCursorReference *cursor;
+
+  if (pointer->cursor_tracker == NULL)
+    return;
+
+  if (pointer->cursor_surface && pointer->cursor_surface->buffer)
+    {
+      struct wl_resource *buffer = pointer->cursor_surface->buffer->resource;
+      cursor = meta_cursor_reference_from_buffer (pointer->cursor_tracker,
+                                                  buffer,
+                                                  pointer->hotspot_x,
+                                                  pointer->hotspot_y);
+    }
+  else
+    cursor = NULL;
+
+  meta_cursor_tracker_set_window_cursor (pointer->cursor_tracker, cursor);
+
+  if (cursor)
+    meta_cursor_reference_unref (cursor);
 }

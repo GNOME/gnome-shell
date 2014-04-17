@@ -147,7 +147,7 @@ make_wayland_cursor_tracker (MetaScreen *screen)
   self->pipeline = cogl_pipeline_new (ctx);
 
   compositor = meta_wayland_compositor_get_default ();
-  compositor->seat->cursor_tracker = self;
+  compositor->seat->pointer.cursor_tracker = self;
   meta_cursor_tracker_update_position (self,
                                        wl_fixed_to_int (compositor->seat->pointer.x),
                                        wl_fixed_to_int (compositor->seat->pointer.y));

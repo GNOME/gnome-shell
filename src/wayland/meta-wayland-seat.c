@@ -52,42 +52,23 @@ static void
 set_cursor_surface (MetaWaylandSeat    *seat,
                     MetaWaylandSurface *surface)
 {
-  if (seat->cursor_surface == surface)
+  if (seat->pointer.cursor_surface == surface)
     return;
 
-  if (seat->cursor_surface)
-    wl_list_remove (&seat->cursor_surface_destroy_listener.link);
+  if (seat->pointer.cursor_surface)
+    wl_list_remove (&seat->pointer.cursor_surface_destroy_listener.link);
 
-  seat->cursor_surface = surface;
+  seat->pointer.cursor_surface = surface;
 
-  if (seat->cursor_surface)
-    wl_resource_add_destroy_listener (seat->cursor_surface->resource,
-                                      &seat->cursor_surface_destroy_listener);
+  if (seat->pointer.cursor_surface)
+    wl_resource_add_destroy_listener (seat->pointer.cursor_surface->resource,
+                                      &seat->pointer.cursor_surface_destroy_listener);
 }
 
 void
 meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat)
 {
-  MetaCursorReference *cursor;
-
-  if (seat->cursor_tracker == NULL)
-    return;
-
-  if (seat->cursor_surface && seat->cursor_surface->buffer)
-    {
-      struct wl_resource *buffer = seat->cursor_surface->buffer->resource;
-      cursor = meta_cursor_reference_from_buffer (seat->cursor_tracker,
-                                                  buffer,
-                                                  seat->hotspot_x,
-                                                  seat->hotspot_y);
-    }
-  else
-    cursor = NULL;
-
-  meta_cursor_tracker_set_window_cursor (seat->cursor_tracker, cursor);
-
-  if (cursor)
-    meta_cursor_reference_unref (cursor);
+  meta_wayland_pointer_update_cursor_surface (&seat->pointer);
 }
 
 static void
@@ -109,8 +90,8 @@ pointer_set_cursor (struct wl_client *client,
   if (seat->pointer.focus_serial - serial > G_MAXUINT32 / 2)
     return;
 
-  seat->hotspot_x = x;
-  seat->hotspot_y = y;
+  seat->pointer.hotspot_x = x;
+  seat->pointer.hotspot_y = y;
   set_cursor_surface (seat, surface);
   meta_wayland_seat_update_cursor_surface (seat);
 }
@@ -221,7 +202,8 @@ bind_seat (struct wl_client *client,
 static void
 pointer_handle_cursor_surface_destroy (struct wl_listener *listener, void *data)
 {
-  MetaWaylandSeat *seat = wl_container_of (listener, seat, cursor_surface_destroy_listener);
+  MetaWaylandPointer *pointer = wl_container_of (listener, pointer, cursor_surface_destroy_listener);
+  MetaWaylandSeat *seat = wl_container_of (pointer, seat, pointer);
 
   set_cursor_surface (seat, NULL);
   meta_wayland_seat_update_cursor_surface (seat);
@@ -243,10 +225,10 @@ meta_wayland_seat_new (struct wl_display *display)
 
   seat->current_stage = 0;
 
-  seat->cursor_surface = NULL;
-  seat->cursor_surface_destroy_listener.notify = pointer_handle_cursor_surface_destroy;
-  seat->hotspot_x = 16;
-  seat->hotspot_y = 16;
+  seat->pointer.cursor_surface = NULL;
+  seat->pointer.cursor_surface_destroy_listener.notify = pointer_handle_cursor_surface_destroy;
+  seat->pointer.hotspot_x = 16;
+  seat->pointer.hotspot_y = 16;
 
   wl_global_create (display, &wl_seat_interface, META_WL_SEAT_VERSION, seat, bind_seat);
 
@@ -397,14 +379,14 @@ meta_wayland_seat_update_pointer (MetaWaylandSeat    *seat,
 
   seat->pointer.button_count = count_buttons (event);
 
-  if (seat->cursor_tracker)
+  if (seat->pointer.cursor_tracker)
     {
-      meta_cursor_tracker_update_position (seat->cursor_tracker,
+      meta_cursor_tracker_update_position (seat->pointer.cursor_tracker,
 					   wl_fixed_to_int (seat->pointer.x),
 					   wl_fixed_to_int (seat->pointer.y));
 
       if (seat->pointer.current == NULL)
-	meta_cursor_tracker_unset_window_cursor (seat->cursor_tracker);
+	meta_cursor_tracker_unset_window_cursor (seat->pointer.cursor_tracker);
     }
 }
 

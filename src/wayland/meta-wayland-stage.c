@@ -41,8 +41,8 @@ meta_wayland_stage_paint (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (meta_wayland_stage_parent_class)->paint (actor);
 
   compositor = meta_wayland_compositor_get_default ();
-  if (compositor->seat->cursor_tracker)
-    meta_cursor_tracker_paint (compositor->seat->cursor_tracker);
+  if (compositor->seat->pointer.cursor_tracker)
+    meta_cursor_tracker_paint (compositor->seat->pointer.cursor_tracker);
 }
 
 static void

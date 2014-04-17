@@ -337,7 +337,7 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
 
   actor_surface_commit (surface, pending);
 
-  if (surface == compositor->seat->cursor_surface)
+  if (surface == compositor->seat->pointer.cursor_surface)
     cursor_surface_commit (surface, pending);
   else if (surface->window)
     toplevel_surface_commit (surface, pending);

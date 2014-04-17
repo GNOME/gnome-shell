@@ -26,6 +26,8 @@
 
 #include "meta-wayland-types.h"
 
+#include <meta/meta-cursor-tracker.h>
+
 struct _MetaWaylandPointerGrabInterface
 {
   void (*focus) (MetaWaylandPointerGrab *grab,
@@ -46,6 +48,11 @@ struct _MetaWaylandPointer
 {
   struct wl_list resource_list;
   struct wl_list focus_resource_list;
+
+  MetaCursorTracker *cursor_tracker;
+  MetaWaylandSurface *cursor_surface;
+  struct wl_listener cursor_surface_destroy_listener;
+  int hotspot_x, hotspot_y;
 
   MetaWaylandSurface *focus_surface;
   struct wl_listener focus_surface_listener;
@@ -96,5 +103,8 @@ meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
 void
 meta_wayland_pointer_update_current_focus (MetaWaylandPointer *pointer,
                                            MetaWaylandSurface *surface);
+
+void
+meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer);
 
 #endif /* __META_WAYLAND_POINTER_H__ */
