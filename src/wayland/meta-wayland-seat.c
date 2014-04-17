@@ -335,14 +335,14 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
       handle_button_event (seat, event);
       break;
 
+    case CLUTTER_SCROLL:
+      handle_scroll_event (seat, event);
+      break;
+
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
       return meta_wayland_keyboard_handle_event (&seat->keyboard,
                                                  (const ClutterKeyEvent *) event);
-
-    case CLUTTER_SCROLL:
-      handle_scroll_event (seat, event);
-      break;
 
     default:
       break;
