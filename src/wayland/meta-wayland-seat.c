@@ -255,6 +255,17 @@ meta_wayland_seat_new (struct wl_display *display)
   return seat;
 }
 
+void
+meta_wayland_seat_free (MetaWaylandSeat *seat)
+{
+  set_cursor_surface (seat, NULL);
+
+  meta_wayland_pointer_release (&seat->pointer);
+  meta_wayland_keyboard_release (&seat->keyboard);
+
+  g_slice_free (MetaWaylandSeat, seat);
+}
+
 static void
 notify_motion (MetaWaylandSeat    *seat,
                const ClutterEvent *event)
@@ -492,15 +503,4 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
     surface = meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (actor));
 
   meta_wayland_pointer_update_current_focus (pointer, surface);
-}
-
-void
-meta_wayland_seat_free (MetaWaylandSeat *seat)
-{
-  set_cursor_surface (seat, NULL);
-
-  meta_wayland_pointer_release (&seat->pointer);
-  meta_wayland_keyboard_release (&seat->keyboard);
-
-  g_slice_free (MetaWaylandSeat, seat);
 }

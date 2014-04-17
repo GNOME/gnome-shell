@@ -71,6 +71,9 @@ MetaWaylandSeat *
 meta_wayland_seat_new (struct wl_display *display);
 
 void
+meta_wayland_seat_free (MetaWaylandSeat *seat);
+
+void
 meta_wayland_seat_update (MetaWaylandSeat    *seat,
                           const ClutterEvent *event);
 
@@ -84,8 +87,5 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
 
 void
 meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat);
-
-void
-meta_wayland_seat_free (MetaWaylandSeat *seat);
 
 #endif /* __META_WAYLAND_SEAT_H__ */
