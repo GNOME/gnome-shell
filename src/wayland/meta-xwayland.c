@@ -28,13 +28,9 @@
 
 #include <glib.h>
 #include <glib-unix.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include <errno.h>
 #include <sys/socket.h>
 #include <sys/un.h>
-#include <sys/wait.h>
-#include <stdlib.h>
 
 static void
 associate_window_with_surface (MetaWindow         *window,
