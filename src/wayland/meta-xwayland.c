@@ -121,72 +121,100 @@ meta_xwayland_handle_wl_surface_id (MetaWindow *window,
     }
 }
 
+static gboolean
+try_display (int    display,
+             char **filename_out,
+             int   *fd_out)
+{
+  gboolean ret = FALSE;
+  char *filename;
+  int fd;
+
+  filename = g_strdup_printf ("/tmp/.X%d-lock", display);
+
+ again:
+  fd = open (filename, O_WRONLY | O_CLOEXEC | O_CREAT | O_EXCL, 0444);
+
+  if (fd < 0 && errno == EEXIST)
+    {
+      char pid[11];
+      char *end;
+      pid_t other;
+
+      fd = open (filename, O_CLOEXEC, O_RDONLY);
+      if (fd < 0 || read (fd, pid, 11) != 11)
+        {
+          g_warning ("can't read lock file %s: %m", filename);
+          goto out;
+        }
+      close (fd);
+      fd = -1;
+
+      other = strtol (pid, &end, 0);
+      if (end != pid + 10)
+        {
+          g_warning ("can't parse lock file %s", filename);
+          goto out;
+        }
+
+      if (kill (other, 0) < 0 && errno == ESRCH)
+        {
+          /* Process is dead. Try unlinking the lockfile and trying again. */
+          if (unlink (filename) < 0)
+            {
+              g_warning ("failed to unlink stale lock file %s: %m", filename);
+              goto out;
+            }
+
+          goto again;
+        }
+
+      goto out;
+    }
+  else if (fd < 0)
+    {
+      g_warning ("failed to create lock file %s: %m", filename);
+      goto out;
+    }
+
+  ret = TRUE;
+
+ out:
+  if (!ret)
+    {
+      g_free (filename);
+      filename = NULL;
+
+      if (fd >= 0)
+        {
+          close (fd);
+          fd = -1;
+        }
+    }
+
+  *filename_out = filename;
+  *fd_out = fd;
+  return ret;
+}
+
 static char *
 create_lockfile (int display, int *display_out)
 {
   char *filename;
-  int size;
-  char pid[11];
   int fd;
 
-  do
+  char pid[11];
+  int size;
+
+  while (!try_display (display, &filename, &fd))
     {
-      char *end;
-      pid_t other;
+      display++;
 
-      filename = g_strdup_printf ("/tmp/.X%d-lock", display);
-      fd = open (filename, O_WRONLY | O_CLOEXEC | O_CREAT | O_EXCL, 0444);
-
-      if (fd < 0 && errno == EEXIST)
-        {
-          fd = open (filename, O_CLOEXEC, O_RDONLY);
-          if (fd < 0 || read (fd, pid, 11) != 11)
-            {
-              g_warning ("can't read lock file %s: %m", filename);
-              g_free (filename);
-
-              /* ignore error and try the next display number */
-              display++;
-              continue;
-            }
-          close (fd);
-
-          other = strtol (pid, &end, 0);
-          if (end != pid + 10)
-            {
-              g_warning ("can't parse lock file %s", filename);
-              g_free (filename);
-
-              /* ignore error and try the next display number */
-              display++;
-              continue;
-            }
-
-          if (kill (other, 0) < 0 && errno == ESRCH)
-            {
-              if (unlink (filename) < 0)
-                {
-                  g_warning ("failed to unlink stale lock file %s: %m", filename);
-                  display++;
-                }
-              g_free (filename);
-              continue;
-            }
-
-          g_free (filename);
-          display++;
-          continue;
-        }
-      else if (fd < 0)
-        {
-          g_warning ("failed to create lock file %s: %m", filename);
-          g_free (filename);
-          return NULL;
-        }
-
-      break;
+      /* If display is above 50, then something's wrong. Just
+       * abort in this case. */
+      if (display > 50)
+        return NULL;
     }
-  while (1);
 
   /* Subtle detail: we use the pid of the wayland compositor, not the xserver
    * in the lock file. */
