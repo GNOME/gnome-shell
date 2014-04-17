@@ -239,29 +239,6 @@ default_grab_key (MetaWaylandKeyboardGrab *grab,
 }
 
 static void
-move_resources (struct wl_list *destination, struct wl_list *source)
-{
-  wl_list_insert_list (destination, source);
-  wl_list_init (source);
-}
-
-static void
-move_resources_for_client (struct wl_list *destination,
-			   struct wl_list *source,
-			   struct wl_client *client)
-{
-  struct wl_resource *resource, *tmp;
-  wl_resource_for_each_safe (resource, tmp, source)
-    {
-      if (wl_resource_get_client (resource) == client)
-        {
-          wl_list_remove (wl_resource_get_link (resource));
-          wl_list_insert (destination, wl_resource_get_link (resource));
-        }
-    }
-}
-
-static void
 default_grab_modifiers (MetaWaylandKeyboardGrab *grab, uint32_t serial,
                         uint32_t mods_depressed, uint32_t mods_latched,
                         uint32_t mods_locked, uint32_t group)
@@ -326,6 +303,16 @@ meta_wayland_xkb_info_destroy (MetaWaylandXkbInfo *xkb_info)
     munmap (xkb_info->keymap_area, xkb_info->keymap_size);
   if (xkb_info->keymap_fd >= 0)
     close (xkb_info->keymap_fd);
+}
+
+void
+meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
+{
+  meta_wayland_xkb_info_destroy (&keyboard->xkb_info);
+  xkb_context_unref (keyboard->xkb_context);
+
+  /* XXX: What about keyboard->resource_list? */
+  wl_array_release (&keyboard->keys);
 }
 
 static void
@@ -429,6 +416,29 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
   return handled;
 }
 
+static void
+move_resources (struct wl_list *destination, struct wl_list *source)
+{
+  wl_list_insert_list (destination, source);
+  wl_list_init (source);
+}
+
+static void
+move_resources_for_client (struct wl_list *destination,
+			   struct wl_list *source,
+			   struct wl_client *client)
+{
+  struct wl_resource *resource, *tmp;
+  wl_resource_for_each_safe (resource, tmp, source)
+    {
+      if (wl_resource_get_client (resource) == client)
+        {
+          wl_list_remove (wl_resource_get_link (resource));
+          wl_list_insert (destination, wl_resource_get_link (resource));
+        }
+    }
+}
+
 void
 meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
                                  MetaWaylandSurface *surface)
@@ -510,16 +520,6 @@ void
 meta_wayland_keyboard_end_grab (MetaWaylandKeyboard *keyboard)
 {
   keyboard->grab = &keyboard->default_grab;
-}
-
-void
-meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
-{
-  meta_wayland_xkb_info_destroy (&keyboard->xkb_info);
-  xkb_context_unref (keyboard->xkb_context);
-
-  /* XXX: What about keyboard->resource_list? */
-  wl_array_release (&keyboard->keys);
 }
 
 void

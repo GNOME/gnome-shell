@@ -105,18 +105,13 @@ gboolean
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
                             struct wl_display   *display);
 
-typedef enum {
-  META_WAYLAND_KEYBOARD_SKIP_XCLIENTS = 1,
-} MetaWaylandKeyboardSetKeymapFlags;
+void
+meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard);
 
 void
-meta_wayland_keyboard_set_keymap_names (MetaWaylandKeyboard *keyboard,
-					const char          *rules,
-					const char          *model,
-					const char          *layout,
-					const char          *variant,
-					const char          *options,
-					int                  flags);
+meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
+                              const ClutterKeyEvent *event);
+
 gboolean
 meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
                                     const ClutterKeyEvent *event);
@@ -132,12 +127,18 @@ meta_wayland_keyboard_start_grab (MetaWaylandKeyboard *device,
 void
 meta_wayland_keyboard_end_grab (MetaWaylandKeyboard *keyboard);
 
-void
-meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard);
+typedef enum {
+  META_WAYLAND_KEYBOARD_SKIP_XCLIENTS = 1,
+} MetaWaylandKeyboardSetKeymapFlags;
 
 void
-meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
-                              const ClutterKeyEvent *event);
+meta_wayland_keyboard_set_keymap_names (MetaWaylandKeyboard *keyboard,
+					const char          *rules,
+					const char          *model,
+					const char          *layout,
+					const char          *variant,
+					const char          *options,
+					int                  flags);
 
 struct wl_client *
 meta_wayland_keyboard_get_focus_client (MetaWaylandKeyboard *keyboard);
