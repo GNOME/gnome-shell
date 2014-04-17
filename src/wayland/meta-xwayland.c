@@ -142,8 +142,7 @@ create_lockfile (int display, int *display_out)
           fd = open (filename, O_CLOEXEC, O_RDONLY);
           if (fd < 0 || read (fd, pid, 11) != 11)
             {
-              const char *msg = strerror (errno);
-              g_warning ("can't read lock file %s: %s", filename, msg);
+              g_warning ("can't read lock file %s: %m", filename);
               g_free (filename);
 
               /* ignore error and try the next display number */
@@ -167,8 +166,7 @@ create_lockfile (int display, int *display_out)
             {
               if (unlink (filename) < 0)
                 {
-                  const char *msg = strerror (errno);
-                  g_warning ("failed to unlink stale lock file: %s", msg);
+                  g_warning ("failed to unlink stale lock file: %m");
                   display++;
                 }
               g_free (filename);
@@ -181,8 +179,7 @@ create_lockfile (int display, int *display_out)
         }
       else if (fd < 0)
         {
-          const char *msg = strerror (errno);
-          g_warning ("failed to create lock file %s: %s", filename , msg);
+          g_warning ("failed to create lock file %s: %m", filename);
           g_free (filename);
           return NULL;
         }
