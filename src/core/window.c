@@ -4560,6 +4560,9 @@ meta_window_move_to_monitor (MetaWindow  *window,
     window->tile_monitor_number = monitor;
 
   meta_window_move_between_rects (window, &old_area, &new_area);
+
+  if (window->fullscreen || window->override_redirect)
+    meta_screen_queue_check_fullscreen (window->screen);
 }
 
 void
