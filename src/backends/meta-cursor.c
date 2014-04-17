@@ -273,9 +273,6 @@ meta_cursor_reference_from_theme (MetaCursorTracker  *tracker,
   MetaCursorReference *self;
   XcursorImage *image;
 
-  if (tracker->theme_cursors[cursor])
-    return meta_cursor_reference_ref (tracker->theme_cursors[cursor]);
-
   image = load_cursor_on_client (tracker->screen->display, cursor);
   if (!image)
     return NULL;

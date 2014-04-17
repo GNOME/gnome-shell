@@ -84,10 +84,6 @@ meta_cursor_tracker_finalize (GObject *object)
   if (self->root_cursor)
     meta_cursor_reference_unref (self->root_cursor);
 
-  for (i = 0; i < META_CURSOR_LAST; i++)
-    if (self->theme_cursors[i])
-      meta_cursor_reference_unref (self->theme_cursors[i]);
-
   if (self->pipeline)
     cogl_object_unref (self->pipeline);
   if (self->gbm)
