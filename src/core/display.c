@@ -1544,7 +1544,7 @@ meta_display_sync_wayland_input_focus (MetaDisplay *display)
 
   meta_wayland_compositor_set_input_focus (compositor, focus_window);
 
-  meta_wayland_seat_repick (compositor->seat, NULL);
+  meta_wayland_seat_repick (compositor->seat);
 }
 
 void

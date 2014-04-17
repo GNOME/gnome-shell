@@ -186,12 +186,51 @@ meta_wayland_seat_update (MetaWaylandSeat    *seat,
 }
 
 static void
+repick_for_event (MetaWaylandSeat    *seat,
+                  const ClutterEvent *for_event)
+{
+  ClutterActor       *actor   = NULL;
+  MetaWaylandPointer *pointer = &seat->pointer;
+  MetaWaylandSurface *surface = NULL;
+  MetaDisplay        *display = meta_get_display ();
+
+  if (meta_grab_op_should_block_wayland (display->grab_op))
+    {
+      meta_wayland_pointer_update_current_focus (pointer, NULL);
+      return;
+    }
+
+  if (for_event)
+    {
+      actor = clutter_event_get_source (for_event);
+    }
+  else if (seat->current_stage)
+    {
+      ClutterStage *stage = CLUTTER_STAGE (seat->current_stage);
+      actor = clutter_stage_get_actor_at_pos (stage,
+                                              CLUTTER_PICK_REACTIVE,
+                                              wl_fixed_to_double (pointer->x),
+                                              wl_fixed_to_double (pointer->y));
+    }
+
+  if (actor)
+    seat->current_stage = clutter_actor_get_stage (actor);
+  else
+    seat->current_stage = NULL;
+
+  if (META_IS_SURFACE_ACTOR_WAYLAND (actor))
+    surface = meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (actor));
+
+  meta_wayland_pointer_update_current_focus (pointer, surface);
+}
+
+static void
 notify_motion (MetaWaylandSeat    *seat,
                const ClutterEvent *event)
 {
   MetaWaylandPointer *pointer = &seat->pointer;
 
-  meta_wayland_seat_repick (seat, event);
+  repick_for_event (seat, event);
 
   pointer->grab->interface->motion (pointer->grab, event);
 }
@@ -316,42 +355,9 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
 }
 
 void
-meta_wayland_seat_repick (MetaWaylandSeat    *seat,
-			  const ClutterEvent *for_event)
+meta_wayland_seat_repick (MetaWaylandSeat *seat)
 {
-  ClutterActor       *actor   = NULL;
-  MetaWaylandPointer *pointer = &seat->pointer;
-  MetaWaylandSurface *surface = NULL;
-  MetaDisplay        *display = meta_get_display ();
-
-  if (meta_grab_op_should_block_wayland (display->grab_op))
-    {
-      meta_wayland_pointer_update_current_focus (pointer, NULL);
-      return;
-    }
-
-  if (for_event)
-    {
-      actor = clutter_event_get_source (for_event);
-    }
-  else if (seat->current_stage)
-    {
-      ClutterStage *stage = CLUTTER_STAGE (seat->current_stage);
-      actor = clutter_stage_get_actor_at_pos (stage,
-                                              CLUTTER_PICK_REACTIVE,
-                                              wl_fixed_to_double (pointer->x),
-                                              wl_fixed_to_double (pointer->y));
-    }
-
-  if (actor)
-    seat->current_stage = clutter_actor_get_stage (actor);
-  else
-    seat->current_stage = NULL;
-
-  if (META_IS_SURFACE_ACTOR_WAYLAND (actor))
-    surface = meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (actor));
-
-  meta_wayland_pointer_update_current_focus (pointer, surface);
+  repick_for_event (seat, NULL);
 }
 
 void

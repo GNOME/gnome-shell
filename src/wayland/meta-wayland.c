@@ -196,7 +196,7 @@ meta_wayland_compositor_set_input_focus (MetaWaylandCompositor *compositor,
 void
 meta_wayland_compositor_repick (MetaWaylandCompositor *compositor)
 {
-  meta_wayland_seat_repick (compositor->seat, NULL);
+  meta_wayland_seat_repick (compositor->seat);
 }
 
 static void

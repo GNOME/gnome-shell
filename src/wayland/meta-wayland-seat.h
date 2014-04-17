@@ -76,8 +76,7 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
                                 const ClutterEvent *event);
 
 void
-meta_wayland_seat_repick (MetaWaylandSeat    *seat,
-			  const ClutterEvent *for_event);
+meta_wayland_seat_repick (MetaWaylandSeat *seat);
 
 void
 meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat);
