@@ -133,16 +133,16 @@ seat_get_pointer (struct wl_client *client,
                   uint32_t id)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
+  MetaWaylandPointer *pointer = &seat->pointer;
   struct wl_resource *cr;
 
   cr = wl_resource_create (client, &wl_pointer_interface,
 			   MIN (META_WL_POINTER_VERSION, wl_resource_get_version (resource)), id);
   wl_resource_set_implementation (cr, &pointer_interface, seat, unbind_resource);
-  wl_list_insert (&seat->pointer.resource_list, wl_resource_get_link (cr));
+  wl_list_insert (&pointer->resource_list, wl_resource_get_link (cr));
 
-  if (seat->pointer.focus_surface &&
-      wl_resource_get_client (seat->pointer.focus_surface->resource) == client)
-    meta_wayland_pointer_set_focus (&seat->pointer, seat->pointer.focus_surface);
+  if (pointer->focus_surface && wl_resource_get_client (pointer->focus_surface->resource) == client)
+    meta_wayland_pointer_set_focus (pointer, pointer->focus_surface);
 }
 
 static void
@@ -162,22 +162,22 @@ seat_get_keyboard (struct wl_client *client,
                    uint32_t id)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
+  MetaWaylandKeyboard *keyboard = &seat->keyboard;
   struct wl_resource *cr;
 
   cr = wl_resource_create (client, &wl_keyboard_interface,
 			   MIN (META_WL_KEYBOARD_VERSION, wl_resource_get_version (resource)), id);
   wl_resource_set_implementation (cr, NULL, seat, unbind_resource);
-  wl_list_insert (&seat->keyboard.resource_list, wl_resource_get_link (cr));
+  wl_list_insert (&keyboard->resource_list, wl_resource_get_link (cr));
 
   wl_keyboard_send_keymap (cr,
                            WL_KEYBOARD_KEYMAP_FORMAT_XKB_V1,
-                           seat->keyboard.xkb_info.keymap_fd,
-                           seat->keyboard.xkb_info.keymap_size);
+                           keyboard->xkb_info.keymap_fd,
+                           keyboard->xkb_info.keymap_size);
 
-  if (seat->keyboard.focus_surface &&
-      wl_resource_get_client (seat->keyboard.focus_surface->resource) == client)
+  if (keyboard->focus_surface && wl_resource_get_client (keyboard->focus_surface->resource) == client)
     {
-      meta_wayland_keyboard_set_focus (&seat->keyboard, seat->keyboard.focus_surface);
+      meta_wayland_keyboard_set_focus (keyboard, keyboard->focus_surface);
       meta_wayland_data_device_set_keyboard_focus (seat);
     }
 }
