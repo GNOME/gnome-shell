@@ -87,10 +87,7 @@ seat_get_keyboard (struct wl_client *client,
                            keyboard->xkb_info.keymap_size);
 
   if (keyboard->focus_surface && wl_resource_get_client (keyboard->focus_surface->resource) == client)
-    {
-      meta_wayland_keyboard_set_focus (keyboard, keyboard->focus_surface);
-      meta_wayland_data_device_set_keyboard_focus (seat);
-    }
+    meta_wayland_keyboard_set_focus (keyboard, keyboard->focus_surface);
 }
 
 static void
