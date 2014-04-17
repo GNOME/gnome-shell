@@ -57,6 +57,32 @@
 static void meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer);
 
 static void
+set_cursor_surface (MetaWaylandPointer *pointer,
+                    MetaWaylandSurface *surface)
+{
+  if (pointer->cursor_surface == surface)
+    return;
+
+  if (pointer->cursor_surface)
+    wl_list_remove (&pointer->cursor_surface_destroy_listener.link);
+
+  pointer->cursor_surface = surface;
+
+  if (pointer->cursor_surface)
+    wl_resource_add_destroy_listener (pointer->cursor_surface->resource,
+                                      &pointer->cursor_surface_destroy_listener);
+}
+
+static void
+pointer_handle_cursor_surface_destroy (struct wl_listener *listener, void *data)
+{
+  MetaWaylandPointer *pointer = wl_container_of (listener, pointer, cursor_surface_destroy_listener);
+
+  set_cursor_surface (pointer, NULL);
+  meta_wayland_pointer_update_cursor_surface (pointer);
+}
+
+static void
 pointer_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 {
   MetaWaylandPointer *pointer = wl_container_of (listener, pointer, focus_surface_listener);
@@ -284,12 +310,17 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer)
   clutter_input_device_get_coords (device, NULL, &current);
   pointer->x = wl_fixed_from_double (current.x);
   pointer->y = wl_fixed_from_double (current.y);
+
+  pointer->cursor_surface = NULL;
+  pointer->cursor_surface_destroy_listener.notify = pointer_handle_cursor_surface_destroy;
+  pointer->hotspot_x = 16;
+  pointer->hotspot_y = 16;
 }
 
 void
 meta_wayland_pointer_release (MetaWaylandPointer *pointer)
 {
-  /* Do nothing. */
+  set_cursor_surface (pointer, NULL);
 }
 
 static void
@@ -625,4 +656,11 @@ meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
 
   if (cursor)
     meta_cursor_reference_unref (cursor);
+}
+
+void
+meta_wayland_pointer_set_cursor_surface (MetaWaylandPointer *pointer,
+                                         MetaWaylandSurface *surface)
+{
+  set_cursor_surface (pointer, surface);
 }

@@ -107,4 +107,8 @@ meta_wayland_pointer_update_current_focus (MetaWaylandPointer *pointer,
 void
 meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer);
 
+void
+meta_wayland_pointer_set_cursor_surface (MetaWaylandPointer *pointer,
+                                         MetaWaylandSurface *surface);
+
 #endif /* __META_WAYLAND_POINTER_H__ */
