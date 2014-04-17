@@ -260,7 +260,7 @@ static const MetaWaylandKeyboardGrabInterface default_keyboard_grab_interface = 
   default_grab_modifiers,
 };
 
-gboolean
+void
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
                             struct wl_display   *display)
 {
@@ -288,8 +288,6 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
 					  "evdev",
 					  "pc105",
 					  "us", "", "", 0);
-
-  return TRUE;
 }
 
 static void

@@ -101,7 +101,7 @@ struct _MetaWaylandKeyboard
   struct wl_resource *input_method_resource;
 };
 
-gboolean
+void
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
                             struct wl_display   *display);
 
