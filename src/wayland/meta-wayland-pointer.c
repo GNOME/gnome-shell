@@ -283,13 +283,17 @@ pointer_constrain_callback (ClutterInputDevice *device,
 }
 
 void
-meta_wayland_pointer_init (MetaWaylandPointer *pointer)
+meta_wayland_pointer_init (MetaWaylandPointer *pointer,
+                           struct wl_display  *display)
 {
   ClutterDeviceManager *manager;
   ClutterInputDevice *device;
   ClutterPoint current;
 
   memset (pointer, 0, sizeof *pointer);
+
+  pointer->display = display;
+
   wl_list_init (&pointer->resource_list);
   wl_list_init (&pointer->focus_resource_list);
 

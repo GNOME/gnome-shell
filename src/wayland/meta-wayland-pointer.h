@@ -46,6 +46,8 @@ struct _MetaWaylandPointerGrab
 
 struct _MetaWaylandPointer
 {
+  struct wl_display *display;
+
   struct wl_list resource_list;
   struct wl_list focus_resource_list;
 
@@ -74,7 +76,8 @@ struct _MetaWaylandPointer
 };
 
 void
-meta_wayland_pointer_init (MetaWaylandPointer *pointer);
+meta_wayland_pointer_init (MetaWaylandPointer *pointer,
+                           struct wl_display  *display);
 
 void
 meta_wayland_pointer_release (MetaWaylandPointer *pointer);

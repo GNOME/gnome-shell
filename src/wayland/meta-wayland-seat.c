@@ -141,7 +141,7 @@ meta_wayland_seat_new (struct wl_display *display)
   wl_list_init (&seat->base_resource_list);
   wl_list_init (&seat->data_device_resource_list);
 
-  meta_wayland_pointer_init (&seat->pointer);
+  meta_wayland_pointer_init (&seat->pointer, display);
   meta_wayland_keyboard_init (&seat->keyboard, display);
 
   seat->display = display;
@@ -184,11 +184,10 @@ meta_wayland_seat_update (MetaWaylandSeat    *seat,
 }
 
 static void
-repick_for_event (MetaWaylandSeat    *seat,
+repick_for_event (MetaWaylandPointer *pointer,
                   const ClutterEvent *for_event)
 {
   ClutterActor       *actor   = NULL;
-  MetaWaylandPointer *pointer = &seat->pointer;
   MetaWaylandSurface *surface = NULL;
   MetaDisplay        *display = meta_get_display ();
 
@@ -222,31 +221,28 @@ repick_for_event (MetaWaylandSeat    *seat,
 }
 
 static void
-notify_motion (MetaWaylandSeat    *seat,
+notify_motion (MetaWaylandPointer *pointer,
                const ClutterEvent *event)
 {
-  MetaWaylandPointer *pointer = &seat->pointer;
-
-  repick_for_event (seat, event);
+  repick_for_event (pointer, event);
 
   pointer->grab->interface->motion (pointer->grab, event);
 }
 
 static void
-handle_motion_event (MetaWaylandSeat    *seat,
+handle_motion_event (MetaWaylandPointer *pointer,
                      const ClutterEvent *event)
 {
-  notify_motion (seat, event);
+  notify_motion (pointer, event);
 }
 
 static void
-handle_button_event (MetaWaylandSeat    *seat,
+handle_button_event (MetaWaylandPointer *pointer,
                      const ClutterEvent *event)
 {
-  MetaWaylandPointer *pointer = &seat->pointer;
   gboolean implicit_grab;
 
-  notify_motion (seat, event);
+  notify_motion (pointer, event);
 
   implicit_grab = (event->type == CLUTTER_BUTTON_PRESS) && (pointer->button_count == 1);
   if (implicit_grab)
@@ -260,19 +256,18 @@ handle_button_event (MetaWaylandSeat    *seat,
   pointer->grab->interface->button (pointer->grab, event);
 
   if (implicit_grab)
-    pointer->grab_serial = wl_display_get_serial (seat->display);
+    pointer->grab_serial = wl_display_get_serial (pointer->display);
 }
 
 static void
-handle_scroll_event (MetaWaylandSeat    *seat,
+handle_scroll_event (MetaWaylandPointer *pointer,
                      const ClutterEvent *event)
 {
-  MetaWaylandPointer *pointer = &seat->pointer;
   struct wl_resource *resource;
   struct wl_list *l;
   wl_fixed_t x_value = 0, y_value = 0;
 
-  notify_motion (seat, event);
+  notify_motion (pointer, event);
 
   if (clutter_event_is_pointer_emulated (event))
     return;
@@ -327,16 +322,16 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
   switch (event->type)
     {
     case CLUTTER_MOTION:
-      handle_motion_event (seat, event);
+      handle_motion_event (&seat->pointer, event);
       break;
 
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
-      handle_button_event (seat, event);
+      handle_button_event (&seat->pointer, event);
       break;
 
     case CLUTTER_SCROLL:
-      handle_scroll_event (seat, event);
+      handle_scroll_event (&seat->pointer, event);
       break;
 
     case CLUTTER_KEY_PRESS:
@@ -354,7 +349,7 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
 void
 meta_wayland_seat_repick (MetaWaylandSeat *seat)
 {
-  repick_for_event (seat, NULL);
+  repick_for_event (&seat->pointer, NULL);
 }
 
 void
