@@ -55,12 +55,6 @@ set_cursor_surface (MetaWaylandSeat    *seat,
   meta_wayland_pointer_set_cursor_surface (&seat->pointer, surface);
 }
 
-void
-meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat)
-{
-  meta_wayland_pointer_update_cursor_surface (&seat->pointer);
-}
-
 static void
 pointer_set_cursor (struct wl_client *client,
                     struct wl_resource *resource,
@@ -83,7 +77,7 @@ pointer_set_cursor (struct wl_client *client,
   seat->pointer.hotspot_x = x;
   seat->pointer.hotspot_y = y;
   set_cursor_surface (seat, surface);
-  meta_wayland_seat_update_cursor_surface (seat);
+  meta_wayland_pointer_update_cursor_surface (&seat->pointer);
 }
 
 static void
@@ -457,4 +451,10 @@ meta_wayland_seat_repick (MetaWaylandSeat    *seat,
     surface = meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (actor));
 
   meta_wayland_pointer_update_current_focus (pointer, surface);
+}
+
+void
+meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat)
+{
+  meta_wayland_pointer_update_cursor_surface (&seat->pointer);
 }
