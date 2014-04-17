@@ -11,6 +11,7 @@
     <CoglBuildDefines>G_LOG_DOMAIN="Cogl";COGL_HAS_WIN32_SUPPORT;COGL_BUILD_EXP;COGL_GL_LIBNAME="";COGL_LOCALEDIR="/some/random/dir"</CoglBuildDefines>
     <CoglPathBuildDefines>G_LOG_DOMAIN="CoglPath"</CoglPathBuildDefines>
     <CoglPangoBuildDefines>G_LOG_DOMAIN="Cogl-Pango"</CoglPangoBuildDefines>
+    <CoglAppAvoidForcedSDLLinkingDefines>SDL_MAIN_HANDLED</CoglAppAvoidForcedSDLLinkingDefines>
   </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>coglbuilddefinesprops</_PropertySheetDisplayName>
@@ -50,6 +51,9 @@
     </BuildMacro>
     <BuildMacro Include="CoglPangoBuildDefines">
       <Value>$(CoglPangoBuildDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglAppAvoidForcedSDLLinkingDefines">
+      <Value>$(CoglAppAvoidForcedSDLLinkingDefines)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>

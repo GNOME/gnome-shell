@@ -46,4 +46,8 @@
 		Name="CoglPangoBuildDefines"
 		Value="G_LOG_DOMAIN=\&quot;Cogl-Pango\&quot;"
 	/>
+	<UserMacro
+		Name="CoglAppAvoidForcedSDLLinkingDefines"
+		Value="SDL_MAIN_HANDLED"
+	/>
 </VisualStudioPropertySheet>

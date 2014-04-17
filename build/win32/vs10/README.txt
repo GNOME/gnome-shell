@@ -38,9 +38,8 @@ to support the build of the SDL2 winsys in place of the original SDL-1.3 winsys
 as SDL-2.x has been released for some time.  Please note, as builds with the SDL2
 winsys includes the SDL2 headers, main() will be defined to SDL2's special main()
 implementation on Windows, which will require linking to SDL2.lib and SDL2main.lib
-for all apps that link to Cogl, which means that the SDL2 DLL needs to be shipped with
-your application as well, even though SDL2 functionality is not used directly in the
-application.
+for all apps that link to Cogl, unless SDL_MAIN_HANDLED is defined in your
+"preprocessor definitions" options.
 
 The recommended build sequence of the dependencies are as follows (the non-GNOME
 packages that are not downloaded as binaries from ftp://ftp.gnome.org have
