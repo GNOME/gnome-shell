@@ -232,11 +232,10 @@ default_grab_key (MetaWaylandKeyboardGrab *grab,
         {
           wl_keyboard_send_key (resource, serial, time, key, state);
         }
-
-      return TRUE;
     }
 
-  return FALSE;
+  /* Eat the key events if we have a focused surface. */
+  return (keyboard->focus_surface != NULL);
 }
 
 static void
