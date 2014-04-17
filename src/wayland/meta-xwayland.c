@@ -31,7 +31,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <signal.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <sys/wait.h>
@@ -383,10 +382,16 @@ xserver_finished_init (MetaXWaylandManager *manager)
 }
 
 static gboolean
-got_sigusr1 (gpointer user_data)
+on_displayfd_ready (int          fd,
+                    GIOCondition condition,
+                    gpointer     user_data)
 {
   MetaXWaylandManager *manager = user_data;
 
+  /* The server writes its display name to the displayfd
+   * socket when it's ready. We don't care about the data
+   * in the socket, just that it wrote something, since
+   * that means it's ready. */
   xserver_finished_init (manager);
 
   return G_SOURCE_REMOVE;
@@ -397,6 +402,7 @@ meta_xwayland_start (MetaXWaylandManager *manager,
                      struct wl_display   *wl_display)
 {
   int xwayland_client_fd[2];
+  int displayfd[2];
   int fd;
 
   if (!choose_xdisplay (manager))
@@ -411,10 +417,17 @@ meta_xwayland_start (MetaXWaylandManager *manager,
       return 1;
     }
 
+  if (socketpair (AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, displayfd) < 0)
+    {
+      g_warning ("displayfd socketpair failed\n");
+      unlink (manager->lockfile);
+      return 1;
+    }
+
   manager->pid = fork ();
   if (manager->pid == 0)
     {
-      char socket_fd[8], unix_fd[8], abstract_fd[8];
+      char socket_fd[8], unix_fd[8], abstract_fd[8], displayfd_fd[8];
 
       /* We passed SOCK_CLOEXEC, so dup the FD so it isn't
        * closed on exec.. */
@@ -428,6 +441,9 @@ meta_xwayland_start (MetaXWaylandManager *manager,
       fd = dup (manager->unix_fd);
       snprintf (unix_fd, sizeof (unix_fd), "%d", fd);
 
+      fd = dup (displayfd[1]);
+      snprintf (displayfd_fd, sizeof (displayfd_fd), "%d", fd);
+
       /* xwayland, please. */
       if (getenv ("XWAYLAND_STFU"))
         {
@@ -438,16 +454,13 @@ meta_xwayland_start (MetaXWaylandManager *manager,
           dup2 (dev_null, STDERR_FILENO);
         }
 
-      /* We have to ignore SIGUSR1 in the child to make sure
-       * that the server will send it to mutter-wayland. */
-      signal(SIGUSR1, SIG_IGN);
-
       if (execl (XWAYLAND_PATH, XWAYLAND_PATH,
                  manager->display_name,
                  "-rootless",
                  "-noreset",
                  "-listen", abstract_fd,
                  "-listen", unix_fd,
+                 "-displayfd", displayfd_fd,
                  NULL) < 0)
         {
           g_error ("Failed to spawn XWayland: %m");
@@ -459,7 +472,7 @@ meta_xwayland_start (MetaXWaylandManager *manager,
     }
 
   g_child_watch_add (manager->pid, xserver_died, NULL);
-  g_unix_signal_add (SIGUSR1, got_sigusr1, manager);
+  g_unix_fd_add (displayfd[0], G_IO_IN, on_displayfd_ready, manager);
   manager->client = wl_client_create (wl_display, xwayland_client_fd[0]);
 
   /* We need to run a mainloop until we know xwayland has a binding
