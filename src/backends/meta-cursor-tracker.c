@@ -77,7 +77,6 @@ static void
 meta_cursor_tracker_finalize (GObject *object)
 {
   MetaCursorTracker *self = META_CURSOR_TRACKER (object);
-  int i;
 
   if (self->displayed_cursor)
     meta_cursor_reference_unref (self->displayed_cursor);
