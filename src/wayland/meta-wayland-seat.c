@@ -146,8 +146,6 @@ meta_wayland_seat_new (struct wl_display *display)
 
   seat->display = display;
 
-  seat->current_stage = 0;
-
   wl_global_create (display, &wl_seat_interface, META_WL_SEAT_VERSION, seat, bind_seat);
 
   return seat;
@@ -204,19 +202,18 @@ repick_for_event (MetaWaylandSeat    *seat,
     {
       actor = clutter_event_get_source (for_event);
     }
-  else if (seat->current_stage)
-    {
-      ClutterStage *stage = CLUTTER_STAGE (seat->current_stage);
-      actor = clutter_stage_get_actor_at_pos (stage,
-                                              CLUTTER_PICK_REACTIVE,
-                                              wl_fixed_to_double (pointer->x),
-                                              wl_fixed_to_double (pointer->y));
-    }
-
-  if (actor)
-    seat->current_stage = clutter_actor_get_stage (actor);
   else
-    seat->current_stage = NULL;
+    {
+      ClutterDeviceManager *device_manager = clutter_device_manager_get_default ();
+      ClutterInputDevice *device = clutter_device_manager_get_device (device_manager, META_VIRTUAL_CORE_POINTER_ID);
+      ClutterStage *stage = clutter_input_device_get_pointer_stage (device);
+
+      if (stage)
+        actor = clutter_stage_get_actor_at_pos (stage,
+                                                CLUTTER_PICK_REACTIVE,
+                                                wl_fixed_to_double (pointer->x),
+                                                wl_fixed_to_double (pointer->y));
+    }
 
   if (META_IS_SURFACE_ACTOR_WAYLAND (actor))
     surface = meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (actor));

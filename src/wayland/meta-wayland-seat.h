@@ -57,8 +57,6 @@ struct _MetaWaylandSeat
   MetaWaylandKeyboard keyboard;
 
   struct wl_display *display;
-
-  ClutterActor *current_stage;
 };
 
 MetaWaylandSeat *
