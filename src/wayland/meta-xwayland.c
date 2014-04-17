@@ -396,7 +396,7 @@ gboolean
 meta_xwayland_start (MetaXWaylandManager *manager,
                      struct wl_display   *wl_display)
 {
-  int sp[2];
+  int xwayland_client_fd[2];
   int fd;
 
   if (!choose_xdisplay (manager))
@@ -404,9 +404,9 @@ meta_xwayland_start (MetaXWaylandManager *manager,
 
   /* We want xwayland to be a wayland client so we make a socketpair to setup a
    * wayland protocol connection. */
-  if (socketpair (AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, sp) < 0)
+  if (socketpair (AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, xwayland_client_fd) < 0)
     {
-      g_warning ("socketpair failed\n");
+      g_warning ("xwayland_client_fd socketpair failed\n");
       unlink (manager->lockfile);
       return 1;
     }
@@ -418,7 +418,7 @@ meta_xwayland_start (MetaXWaylandManager *manager,
 
       /* We passed SOCK_CLOEXEC, so dup the FD so it isn't
        * closed on exec.. */
-      fd = dup (sp[1]);
+      fd = dup (xwayland_client_fd[1]);
       snprintf (socket_fd, sizeof (socket_fd), "%d", fd);
       setenv ("WAYLAND_SOCKET", socket_fd, TRUE);
 
@@ -460,7 +460,7 @@ meta_xwayland_start (MetaXWaylandManager *manager,
 
   g_child_watch_add (manager->pid, xserver_died, NULL);
   g_unix_signal_add (SIGUSR1, got_sigusr1, manager);
-  manager->client = wl_client_create (wl_display, sp[0]);
+  manager->client = wl_client_create (wl_display, xwayland_client_fd[0]);
 
   /* We need to run a mainloop until we know xwayland has a binding
    * for our xserver interface at which point we can assume it's
