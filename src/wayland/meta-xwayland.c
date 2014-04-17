@@ -166,7 +166,7 @@ create_lockfile (int display, int *display_out)
             {
               if (unlink (filename) < 0)
                 {
-                  g_warning ("failed to unlink stale lock file: %m");
+                  g_warning ("failed to unlink stale lock file %s: %m", filename);
                   display++;
                 }
               g_free (filename);
