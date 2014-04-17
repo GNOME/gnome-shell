@@ -2475,7 +2475,19 @@ handle_switch_to_workspace (MetaDisplay     *display,
   gint which = binding->handler->data;
   MetaWorkspace *workspace;
 
-  workspace = meta_screen_get_workspace_by_index (screen, which);
+  if (which < 0)
+    {
+      /* Negative workspace numbers are directions with respect to the
+       * current workspace.
+       */
+
+      workspace = meta_workspace_get_neighbor (screen->active_workspace,
+                                               which);
+    }
+  else
+    {
+      workspace = meta_screen_get_workspace_by_index (screen, which);
+    }
 
   if (workspace)
     {
@@ -3350,28 +3362,28 @@ init_builtin_key_bindings (MetaDisplay *display)
                           common_keybindings,
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_WORKSPACE_LEFT,
-                          NULL, 0);
+                          handle_switch_to_workspace, META_MOTION_LEFT);
 
   add_builtin_keybinding (display,
                           "switch-to-workspace-right",
                           common_keybindings,
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_WORKSPACE_RIGHT,
-                          NULL, 0);
+                          handle_switch_to_workspace, META_MOTION_RIGHT);
 
   add_builtin_keybinding (display,
                           "switch-to-workspace-up",
                           common_keybindings,
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_WORKSPACE_UP,
-                          NULL, 0);
+                          handle_switch_to_workspace, META_MOTION_UP);
 
   add_builtin_keybinding (display,
                           "switch-to-workspace-down",
                           common_keybindings,
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_WORKSPACE_DOWN,
-                          NULL, 0);
+                          handle_switch_to_workspace, META_MOTION_DOWN);
 
   add_builtin_keybinding (display,
                           "switch-to-workspace-last",
