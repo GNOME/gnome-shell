@@ -80,6 +80,10 @@ void
 meta_wayland_pointer_release (MetaWaylandPointer *pointer);
 
 void
+meta_wayland_pointer_update (MetaWaylandPointer *pointer,
+                             const ClutterEvent *event);
+
+void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 MetaWaylandSurface *surface);
 

@@ -162,51 +162,6 @@ meta_wayland_seat_free (MetaWaylandSeat *seat)
   g_slice_free (MetaWaylandSeat, seat);
 }
 
-static int
-count_buttons (const ClutterEvent *event)
-{
-  static gint maskmap[5] =
-    {
-      CLUTTER_BUTTON1_MASK, CLUTTER_BUTTON2_MASK, CLUTTER_BUTTON3_MASK,
-      CLUTTER_BUTTON4_MASK, CLUTTER_BUTTON5_MASK
-    };
-  ClutterModifierType mod_mask;
-  int i, count;
-
-  mod_mask = clutter_event_get_state (event);
-  count = 0;
-  for (i = 0; i < 5; i++)
-    {
-      if (mod_mask & maskmap[i])
-	count++;
-    }
-
-  return count;
-}
-
-static void
-meta_wayland_seat_update_pointer (MetaWaylandSeat    *seat,
-                                  const ClutterEvent *event)
-{
-  float x, y;
-
-  clutter_event_get_coords (event, &x, &y);
-  seat->pointer.x = wl_fixed_from_double (x);
-  seat->pointer.y = wl_fixed_from_double (y);
-
-  seat->pointer.button_count = count_buttons (event);
-
-  if (seat->pointer.cursor_tracker)
-    {
-      meta_cursor_tracker_update_position (seat->pointer.cursor_tracker,
-					   wl_fixed_to_int (seat->pointer.x),
-					   wl_fixed_to_int (seat->pointer.y));
-
-      if (seat->pointer.current == NULL)
-	meta_cursor_tracker_unset_window_cursor (seat->pointer.cursor_tracker);
-    }
-}
-
 void
 meta_wayland_seat_update (MetaWaylandSeat    *seat,
                           const ClutterEvent *event)
@@ -217,12 +172,14 @@ meta_wayland_seat_update (MetaWaylandSeat    *seat,
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_SCROLL:
-      meta_wayland_seat_update_pointer (seat, event);
+      meta_wayland_pointer_update (&seat->pointer, event);
       break;
+
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
       meta_wayland_keyboard_update (&seat->keyboard, (const ClutterKeyEvent *) event);
       break;
+
     default:
       break;
     }

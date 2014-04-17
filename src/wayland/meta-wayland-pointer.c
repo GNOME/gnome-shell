@@ -329,6 +329,76 @@ meta_wayland_pointer_release (MetaWaylandPointer *pointer)
   set_cursor_surface (pointer, NULL);
 }
 
+static int
+count_buttons (const ClutterEvent *event)
+{
+  static gint maskmap[5] =
+    {
+      CLUTTER_BUTTON1_MASK, CLUTTER_BUTTON2_MASK, CLUTTER_BUTTON3_MASK,
+      CLUTTER_BUTTON4_MASK, CLUTTER_BUTTON5_MASK
+    };
+  ClutterModifierType mod_mask;
+  int i, count;
+
+  mod_mask = clutter_event_get_state (event);
+  count = 0;
+  for (i = 0; i < 5; i++)
+    {
+      if (mod_mask & maskmap[i])
+	count++;
+    }
+
+  return count;
+}
+
+void
+meta_wayland_pointer_update (MetaWaylandPointer *pointer,
+                             const ClutterEvent *event)
+{
+  float x, y;
+
+  clutter_event_get_coords (event, &x, &y);
+  pointer->x = wl_fixed_from_double (x);
+  pointer->y = wl_fixed_from_double (y);
+
+  pointer->button_count = count_buttons (event);
+
+  if (pointer->cursor_tracker)
+    {
+      meta_cursor_tracker_update_position (pointer->cursor_tracker,
+					   wl_fixed_to_int (pointer->x),
+					   wl_fixed_to_int (pointer->y));
+
+      if (pointer->current == NULL)
+	meta_cursor_tracker_unset_window_cursor (pointer->cursor_tracker);
+    }
+}
+
+static void
+pointer_set_cursor (struct wl_client *client,
+                    struct wl_resource *resource,
+                    uint32_t serial,
+                    struct wl_resource *surface_resource,
+                    int32_t x, int32_t y)
+{
+  MetaWaylandPointer *pointer = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface;
+
+  surface = (surface_resource ? wl_resource_get_user_data (surface_resource) : NULL);
+
+  if (pointer->focus_surface == NULL)
+    return;
+  if (wl_resource_get_client (pointer->focus_surface->resource) != client)
+    return;
+  if (pointer->focus_serial - serial > G_MAXUINT32 / 2)
+    return;
+
+  pointer->hotspot_x = x;
+  pointer->hotspot_y = y;
+  set_cursor_surface (pointer, surface);
+  meta_wayland_pointer_update_cursor_surface (pointer);
+}
+
 static void
 move_resources (struct wl_list *destination, struct wl_list *source)
 {
@@ -662,31 +732,6 @@ meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
 
   if (cursor)
     meta_cursor_reference_unref (cursor);
-}
-
-static void
-pointer_set_cursor (struct wl_client *client,
-                    struct wl_resource *resource,
-                    uint32_t serial,
-                    struct wl_resource *surface_resource,
-                    int32_t x, int32_t y)
-{
-  MetaWaylandPointer *pointer = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *surface;
-
-  surface = (surface_resource ? wl_resource_get_user_data (surface_resource) : NULL);
-
-  if (pointer->focus_surface == NULL)
-    return;
-  if (wl_resource_get_client (pointer->focus_surface->resource) != client)
-    return;
-  if (pointer->focus_serial - serial > G_MAXUINT32 / 2)
-    return;
-
-  pointer->hotspot_x = x;
-  pointer->hotspot_y = y;
-  set_cursor_surface (pointer, surface);
-  meta_wayland_pointer_update_cursor_surface (pointer);
 }
 
 static void
