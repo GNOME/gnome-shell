@@ -73,14 +73,17 @@ const LevelBar = new Lang.Class({
 const OsdWindow = new Lang.Class({
     Name: 'OsdWindow',
 
-    _init: function() {
+    _init: function(monitorIndex) {
         this._popupSize = 0;
         this.actor = new St.Widget({ x_expand: true,
                                      y_expand: true,
                                      x_align: Clutter.ActorAlign.CENTER,
                                      y_align: Clutter.ActorAlign.CENTER });
-        this._currentMonitor = undefined;
-        this.setMonitor (-1);
+
+        this._monitorIndex = monitorIndex;
+        let constraint = new Layout.MonitorConstraint({ index: monitorIndex });
+        this.actor.add_constraint(constraint);
+
         this._box = new St.BoxLayout({ style_class: 'osd-window',
                                        vertical: true });
         this.actor.add_actor(this._box);
@@ -109,7 +112,6 @@ const OsdWindow = new Lang.Class({
         Main.layoutManager.connect('monitors-changed',
                                    Lang.bind(this, this._monitorsChanged));
         this._monitorsChanged();
-
         Main.uiGroup.add_child(this.actor);
     },
 
@@ -189,12 +191,7 @@ const OsdWindow = new Lang.Class({
 
     _monitorsChanged: function() {
         /* assume 110x110 on a 640x480 display and scale from there */
-        let monitor;
-
-        if (this._currentMonitor >= 0)
-            monitor = Main.layoutManager.monitors[this._currentMonitor];
-        else
-            monitor = Main.layoutManager.primaryMonitor;
+        let monitor = Main.layoutManager.monitors[this._monitorIndex];
 
         let scalew = monitor.width / 640.0;
         let scaleh = monitor.height / 480.0;
@@ -223,23 +220,56 @@ const OsdWindow = new Lang.Class({
         // but the theme takes measures in unscaled dimensions
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         this._box.style = 'min-height: %dpx;'.format(Math.max(minWidth, minHeight) / scaleFactor);
+    }
+});
+
+const OsdWindowManager = new Lang.Class({
+    Name: 'OsdWindowManager',
+
+    _init: function() {
+        this._osdWindows = [];
+        Main.layoutManager.connect('monitors-changed',
+                                    Lang.bind(this, this._monitorsChanged));
+        this._monitorsChanged();
     },
 
-    setMonitor: function(index) {
-        let constraint;
+    _monitorsChanged: function() {
+        for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
+            if (this._osdWindows[i] == undefined)
+                this._osdWindows[i] = new OsdWindow(i);
+        }
 
-        if (index < 0)
-            index = -1;
-        if (this._currentMonitor == index)
-            return;
+        for (let i = Main.layoutManager.monitors.length; i < this._osdWindows.length; i++) {
+            this._osdWindows[i].actor.destroy();
+            this._osdWindows[i] = null;
+        }
 
-        if (index < 0)
-            constraint = new Layout.MonitorConstraint({ primary: true });
-        else
-            constraint = new Layout.MonitorConstraint({ index: index });
+        this._osdWindows.length = Main.layoutManager.monitors.length;
+    },
 
-        this.actor.clear_constraints();
-        this.actor.add_constraint(constraint);
-        this._currentMonitor = index;
+    _showOsdWindow: function(monitorIndex, icon, label, level) {
+        this._osdWindows[monitorIndex].setIcon(icon);
+        this._osdWindows[monitorIndex].setLabel(label);
+        this._osdWindows[monitorIndex].setLevel(level);
+        this._osdWindows[monitorIndex].show();
+    },
+
+    show: function(monitorIndex, icon, label, level) {
+        if (monitorIndex != -1) {
+            for (let i = 0; i < this._osdWindows.length; i++) {
+                if (i == monitorIndex)
+                    this._showOsdWindow(i, icon, label, level);
+                else
+                    this._osdWindows[i].cancel();
+            }
+        } else {
+            for (let i = 0; i < this._osdWindows.length; i++)
+                this._showOsdWindow(i, icon, label, level);
+        }
+    },
+
+    hideAll: function() {
+        for (let i = 0; i < this._osdWindows.length; i++)
+            this._osdWindows[i].cancel();
     }
 });

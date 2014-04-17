@@ -55,7 +55,7 @@ let screenShield = null;
 let notificationDaemon = null;
 let windowAttentionHandler = null;
 let ctrlAltTabManager = null;
-let osdWindow = null;
+let osdWindowManager = null;
 let sessionMode = null;
 let shellDBusService = null;
 let shellMountOpDBusService = null;
@@ -155,7 +155,7 @@ function _initializeUI() {
     screencastService = new Screencast.ScreencastService();
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
-    osdWindow = new OsdWindow.OsdWindow();
+    osdWindowManager = new OsdWindow.OsdWindowManager();
     overview = new Overview.Overview();
     wm = new WindowManager.WindowManager();
     magnifier = new Magnifier.Magnifier();

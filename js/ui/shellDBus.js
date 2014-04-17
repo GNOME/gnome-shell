@@ -141,12 +141,7 @@ const GnomeShell = new Lang.Class({
         if (params['icon'])
             icon = Gio.Icon.new_for_string(params['icon']);
 
-        Main.osdWindow.setIcon(icon);
-        Main.osdWindow.setMonitor (monitorIndex);
-        Main.osdWindow.setLabel(params['label']);
-        Main.osdWindow.setLevel(params['level']);
-
-        Main.osdWindow.show();
+        Main.osdWindowManager.show(monitorIndex, icon, params['label'], params['level']);
     },
 
     FocusApp: function(id) {
