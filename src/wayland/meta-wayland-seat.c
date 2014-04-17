@@ -38,9 +38,6 @@
 #include "meta-shaped-texture-private.h"
 #include "meta-wayland-stage.h"
 #include "meta-cursor-tracker-private.h"
-#include "meta-surface-actor-wayland.h"
-
-#define DEFAULT_AXIS_STEP_DISTANCE wl_fixed_from_int (10)
 
 static void
 unbind_resource (struct wl_resource *resource)
@@ -183,138 +180,6 @@ meta_wayland_seat_update (MetaWaylandSeat    *seat,
     }
 }
 
-static void
-repick_for_event (MetaWaylandPointer *pointer,
-                  const ClutterEvent *for_event)
-{
-  ClutterActor       *actor   = NULL;
-  MetaWaylandSurface *surface = NULL;
-  MetaDisplay        *display = meta_get_display ();
-
-  if (meta_grab_op_should_block_wayland (display->grab_op))
-    {
-      meta_wayland_pointer_update_current_focus (pointer, NULL);
-      return;
-    }
-
-  if (for_event)
-    {
-      actor = clutter_event_get_source (for_event);
-    }
-  else
-    {
-      ClutterDeviceManager *device_manager = clutter_device_manager_get_default ();
-      ClutterInputDevice *device = clutter_device_manager_get_device (device_manager, META_VIRTUAL_CORE_POINTER_ID);
-      ClutterStage *stage = clutter_input_device_get_pointer_stage (device);
-
-      if (stage)
-        actor = clutter_stage_get_actor_at_pos (stage,
-                                                CLUTTER_PICK_REACTIVE,
-                                                wl_fixed_to_double (pointer->x),
-                                                wl_fixed_to_double (pointer->y));
-    }
-
-  if (META_IS_SURFACE_ACTOR_WAYLAND (actor))
-    surface = meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (actor));
-
-  meta_wayland_pointer_update_current_focus (pointer, surface);
-}
-
-static void
-notify_motion (MetaWaylandPointer *pointer,
-               const ClutterEvent *event)
-{
-  repick_for_event (pointer, event);
-
-  pointer->grab->interface->motion (pointer->grab, event);
-}
-
-static void
-handle_motion_event (MetaWaylandPointer *pointer,
-                     const ClutterEvent *event)
-{
-  notify_motion (pointer, event);
-}
-
-static void
-handle_button_event (MetaWaylandPointer *pointer,
-                     const ClutterEvent *event)
-{
-  gboolean implicit_grab;
-
-  notify_motion (pointer, event);
-
-  implicit_grab = (event->type == CLUTTER_BUTTON_PRESS) && (pointer->button_count == 1);
-  if (implicit_grab)
-    {
-      pointer->grab_button = clutter_event_get_button (event);
-      pointer->grab_time = clutter_event_get_time (event);
-      pointer->grab_x = pointer->x;
-      pointer->grab_y = pointer->y;
-    }
-
-  pointer->grab->interface->button (pointer->grab, event);
-
-  if (implicit_grab)
-    pointer->grab_serial = wl_display_get_serial (pointer->display);
-}
-
-static void
-handle_scroll_event (MetaWaylandPointer *pointer,
-                     const ClutterEvent *event)
-{
-  struct wl_resource *resource;
-  struct wl_list *l;
-  wl_fixed_t x_value = 0, y_value = 0;
-
-  notify_motion (pointer, event);
-
-  if (clutter_event_is_pointer_emulated (event))
-    return;
-
-  switch (clutter_event_get_scroll_direction (event))
-    {
-    case CLUTTER_SCROLL_UP:
-      y_value = -DEFAULT_AXIS_STEP_DISTANCE;
-      break;
-
-    case CLUTTER_SCROLL_DOWN:
-      y_value = DEFAULT_AXIS_STEP_DISTANCE;
-      break;
-
-    case CLUTTER_SCROLL_LEFT:
-      x_value = -DEFAULT_AXIS_STEP_DISTANCE;
-      break;
-
-    case CLUTTER_SCROLL_RIGHT:
-      x_value = DEFAULT_AXIS_STEP_DISTANCE;
-      break;
-
-    case CLUTTER_SCROLL_SMOOTH:
-      {
-        double dx, dy;
-        clutter_event_get_scroll_delta (event, &dx, &dy);
-        x_value = wl_fixed_from_double (dx);
-        y_value = wl_fixed_from_double (dy);
-      }
-      break;
-
-    default:
-      return;
-    }
-
-  l = &pointer->focus_resource_list;
-  wl_resource_for_each (resource, l)
-    {
-      if (x_value)
-        wl_pointer_send_axis (resource, clutter_event_get_time (event),
-                              WL_POINTER_AXIS_HORIZONTAL_SCROLL, x_value);
-      if (y_value)
-        wl_pointer_send_axis (resource, clutter_event_get_time (event),
-                              WL_POINTER_AXIS_VERTICAL_SCROLL, y_value);
-    }
-}
-
 gboolean
 meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
                                 const ClutterEvent *event)
@@ -322,17 +187,10 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
   switch (event->type)
     {
     case CLUTTER_MOTION:
-      handle_motion_event (&seat->pointer, event);
-      break;
-
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
-      handle_button_event (&seat->pointer, event);
-      break;
-
     case CLUTTER_SCROLL:
-      handle_scroll_event (&seat->pointer, event);
-      break;
+      return meta_wayland_pointer_handle_event (&seat->pointer, event);
 
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
@@ -349,7 +207,7 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
 void
 meta_wayland_seat_repick (MetaWaylandSeat *seat)
 {
-  repick_for_event (&seat->pointer, NULL);
+  meta_wayland_pointer_repick (&seat->pointer);
 }
 
 void

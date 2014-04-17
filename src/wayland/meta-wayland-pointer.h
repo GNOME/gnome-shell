@@ -86,6 +86,10 @@ void
 meta_wayland_pointer_update (MetaWaylandPointer *pointer,
                              const ClutterEvent *event);
 
+gboolean
+meta_wayland_pointer_handle_event (MetaWaylandPointer *pointer,
+                                   const ClutterEvent *event);
+
 void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 MetaWaylandSurface *surface);
@@ -102,14 +106,13 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
 				       MetaWaylandSurface *popup);
 
 void
+meta_wayland_pointer_repick (MetaWaylandPointer *pointer);
+
+void
 meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
 					       MetaWaylandSurface *surface,
 					       wl_fixed_t         *x,
 					       wl_fixed_t         *y);
-
-void
-meta_wayland_pointer_update_current_focus (MetaWaylandPointer *pointer,
-                                           MetaWaylandSurface *surface);
 
 void
 meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer);
