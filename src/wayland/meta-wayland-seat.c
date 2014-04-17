@@ -310,6 +310,7 @@ static void
 handle_scroll_event (MetaWaylandSeat    *seat,
                      const ClutterEvent *event)
 {
+  MetaWaylandPointer *pointer = &seat->pointer;
   struct wl_resource *resource;
   struct wl_list *l;
   wl_fixed_t x_value = 0, y_value = 0;
@@ -350,7 +351,7 @@ handle_scroll_event (MetaWaylandSeat    *seat,
       return;
     }
 
-  l = &seat->pointer.focus_resource_list;
+  l = &pointer->focus_resource_list;
   wl_resource_for_each (resource, l)
     {
       if (x_value)
