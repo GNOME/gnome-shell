@@ -57,6 +57,12 @@
 static void meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer);
 
 static void
+unbind_resource (struct wl_resource *resource)
+{
+  wl_list_remove (wl_resource_get_link (resource));
+}
+
+static void
 set_cursor_surface (MetaWaylandPointer *pointer,
                     MetaWaylandSurface *surface)
 {
@@ -658,9 +664,56 @@ meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
     meta_cursor_reference_unref (cursor);
 }
 
-void
-meta_wayland_pointer_set_cursor_surface (MetaWaylandPointer *pointer,
-                                         MetaWaylandSurface *surface)
+static void
+pointer_set_cursor (struct wl_client *client,
+                    struct wl_resource *resource,
+                    uint32_t serial,
+                    struct wl_resource *surface_resource,
+                    int32_t x, int32_t y)
 {
+  MetaWaylandPointer *pointer = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface;
+
+  surface = (surface_resource ? wl_resource_get_user_data (surface_resource) : NULL);
+
+  if (pointer->focus_surface == NULL)
+    return;
+  if (wl_resource_get_client (pointer->focus_surface->resource) != client)
+    return;
+  if (pointer->focus_serial - serial > G_MAXUINT32 / 2)
+    return;
+
+  pointer->hotspot_x = x;
+  pointer->hotspot_y = y;
   set_cursor_surface (pointer, surface);
+  meta_wayland_pointer_update_cursor_surface (pointer);
+}
+
+static void
+pointer_release (struct wl_client *client,
+                 struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
+static const struct wl_pointer_interface pointer_interface = {
+  pointer_set_cursor,
+  pointer_release,
+};
+
+void
+meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
+                                          struct wl_client   *client,
+                                          struct wl_resource *seat_resource,
+                                          uint32_t id)
+{
+  struct wl_resource *cr;
+
+  cr = wl_resource_create (client, &wl_pointer_interface,
+			   MIN (META_WL_POINTER_VERSION, wl_resource_get_version (seat_resource)), id);
+  wl_resource_set_implementation (cr, &pointer_interface, pointer, unbind_resource);
+  wl_list_insert (&pointer->resource_list, wl_resource_get_link (cr));
+
+  if (pointer->focus_surface && wl_resource_get_client (pointer->focus_surface->resource) == client)
+    meta_wayland_pointer_set_focus (pointer, pointer->focus_surface);
 }
