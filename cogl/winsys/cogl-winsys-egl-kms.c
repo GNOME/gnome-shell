@@ -283,12 +283,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   egl_renderer->platform = g_slice_new0 (CoglRendererKMS);
   kms_renderer = egl_renderer->platform;
 
-  /* The EGL API doesn't provide for a way to explicitly select a
-   * platform when the driver can support multiple. Mesa allows
-   * selection using an environment variable though so that's what
-   * we're doing here... */
-  g_setenv ("EGL_PLATFORM", "drm", 1);
-
   kms_renderer->fd = -1;
   kms_renderer->opened_fd = -1;
 

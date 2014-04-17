@@ -242,12 +242,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
   egl_renderer->platform_vtable = &_cogl_winsys_egl_vtable;
 
-  /* The EGL API doesn't provide for a way to explicitly select a
-   * platform when the driver can support multiple. Mesa allows
-   * selection using an environment variable though so that's what
-   * we're doing here... */
-  g_setenv ("EGL_PLATFORM", "wayland", 1);
-
   if (renderer->foreign_wayland_display)
     {
       wayland_renderer->wayland_display = renderer->foreign_wayland_display;
