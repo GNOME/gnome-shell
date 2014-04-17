@@ -10,8 +10,9 @@
     <ReleaseLibBuildDefines>$(LibBuildDefines);G_DISABLE_ASSERT;G_DISABLE_CHECKS;G_DISABLE_CAST_CHECKS</ReleaseLibBuildDefines>
     <ClutterBuildDefines>$(BaseWinBuildDef);G_LOG_DOMAIN="Clutter";CLUTTER_LOCALEDIR="../share/locale";CLUTTER_SYSCONFDIR="../etc";COGL_DISABLE_DEPRECATION_WARNINGS</ClutterBuildDefines>
     <ClutterDisableDeprecationWarnings>CLUTTER_DISABLE_DEPRECATION_WARNINGS;GLIB_DISABLE_DEPRECATION_WARNINGS</ClutterDisableDeprecationWarnings>
-    <CallyTestDefs>$(BaseWinBuildDef);PREFIXDIR="/some/dummy/dir";$(ClutterDisableDeprecationWarnings)</CallyTestDefs>
-    <TestProgDef>$(BaseWinBuildDef);TESTS_DATADIR="../share/clutter-$(ApiVersion)/data";TESTS_DATA_DIR="../share/clutter-$(ApiVersion)/data"</TestProgDef>
+    <AvoidSDLMain>SDL_MAIN_HANDLED</AvoidSDLMain>
+    <CallyTestDefs>$(BaseWinBuildDef);PREFIXDIR="/some/dummy/dir";$(ClutterDisableDeprecationWarnings);$(AvoidSDLMain)</CallyTestDefs>
+    <TestProgDef>$(BaseWinBuildDef);TESTS_DATADIR="../share/clutter-$(ApiVersion)/data";TESTS_DATA_DIR="../share/clutter-$(ApiVersion)/data";$(AvoidSDLMain)</TestProgDef>
     <TestPerfProgDef>$(TestProgDef);$(ClutterDisableDeprecationWarnings)</TestPerfProgDef>
   </PropertyGroup>
   <PropertyGroup>
@@ -49,6 +50,9 @@
     </BuildMacro>
     <BuildMacro Include="ClutterDisableDeprecationWarnings">
       <Value>$(ClutterDisableDeprecationWarnings)</Value>
+    </BuildMacro>
+    <BuildMacro Include="AvoidSDLMain">
+      <Value>$(AvoidSDLMain)</Value>
     </BuildMacro>
     <BuildMacro Include="CallyTestDefs">
       <Value>$(CallyTestDefs)</Value>

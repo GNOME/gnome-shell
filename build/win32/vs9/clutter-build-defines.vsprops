@@ -31,12 +31,16 @@
 		Value="CLUTTER_DISABLE_DEPRECATION_WARNINGS;GLIB_DISABLE_DEPRECATION_WARNINGS"
 	/>
 	<UserMacro
+		Name="AvoidSDLMain"
+		Value="SDL_MAIN_HANDLED"
+	/>
+	<UserMacro
 		Name="CallyTestDefs"
-		Value="$(BaseWinBuildDef);PREFIXDIR=\&quot;/some/dummy/dir\&quot;;$(ClutterDisableDeprecationWarnings)"
+		Value="$(BaseWinBuildDef);PREFIXDIR=\&quot;/some/dummy/dir\&quot;;$(ClutterDisableDeprecationWarnings);$(AvoidSDLMain)"
 	/>
 	<UserMacro
 		Name="TestProgDef"
-		Value="$(BaseWinBuildDef);TESTS_DATADIR=\&quot;../share/clutter-$(ApiVersion)/data\&quot;;TESTS_DATA_DIR=\&quot;../share/clutter-$(ApiVersion)/data\&quot;"
+		Value="$(BaseWinBuildDef);TESTS_DATADIR=\&quot;../share/clutter-$(ApiVersion)/data\&quot;;TESTS_DATA_DIR=\&quot;../share/clutter-$(ApiVersion)/data\&quot;;$(AvoidSDLMain)"
 	/>
 	<UserMacro
 		Name="TestPerfProgDef"
