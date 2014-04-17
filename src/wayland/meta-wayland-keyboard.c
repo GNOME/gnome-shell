@@ -255,8 +255,7 @@ default_grab_modifiers (MetaWaylandKeyboardGrab *grab, uint32_t serial,
     }
 }
 
-static const MetaWaylandKeyboardGrabInterface
-  default_keyboard_grab_interface = {
+static const MetaWaylandKeyboardGrabInterface default_keyboard_grab_interface = {
   default_grab_key,
   default_grab_modifiers,
 };
