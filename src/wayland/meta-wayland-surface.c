@@ -1383,8 +1383,6 @@ bind_gtk_shell (struct wl_client *client,
 static void
 subsurface_parent_surface_committed (MetaWaylandSurface *surface)
 {
-  MetaWaylandPendingState *pending_surface_state = &surface->sub.pending_surface_state;
-
   if (surface->sub.pending_pos)
     {
       clutter_actor_set_position (CLUTTER_ACTOR (surface->surface_actor),
@@ -1432,7 +1430,7 @@ subsurface_parent_surface_committed (MetaWaylandSurface *surface)
     }
 
   if (surface->sub.synchronous)
-    commit_pending_state (surface, pending_surface_state);
+    commit_pending_state (surface, &surface->sub.pending_surface_state);
 }
 
 static void
