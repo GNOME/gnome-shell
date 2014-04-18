@@ -732,8 +732,8 @@ begin_grab_op_on_surface (MetaWaylandSurface *surface,
                                      1, /* button. XXX? */
                                      0, /* modmask */
                                      meta_display_get_current_time_roundtrip (window->display),
-                                     wl_fixed_to_int (seat->pointer.grab_x),
-                                     wl_fixed_to_int (seat->pointer.grab_y));
+                                     seat->pointer.grab_x,
+                                     seat->pointer.grab_y);
 }
 
 static void
