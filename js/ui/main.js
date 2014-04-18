@@ -9,6 +9,7 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const GSystem = imports.gi.GSystem;
 
 const Components = imports.ui.components;
 const CtrlAltTab = imports.ui.ctrlAltTab;
@@ -43,6 +44,7 @@ const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
 const STICKY_KEYS_ENABLE = 'stickykeys-enable';
+const GNOMESHELL_STARTED_MESSAGE_ID = 'f3ea493c22934e26811cd62abe8e203a';
 
 let componentManager = null;
 let panel = null;
@@ -188,8 +190,6 @@ function _initializeUI() {
 
     _startDate = new Date();
 
-    log('GNOME Shell started at ' + _startDate);
-
     let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
     if (perfModuleName) {
         let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
@@ -212,6 +212,12 @@ function _initializeUI() {
                               }
                               if (screenShield) {
                                   screenShield.lockIfWasLocked();
+                              }
+                              if (LoginManager.haveSystemd() && sessionMode.currentMode === 'user') {
+                                  GSystem.log_structured_print('GNOME Shell started at ' + _startDate,
+                                                               ['MESSAGE_ID=' + GNOMESHELL_STARTED_MESSAGE_ID]);
+                              } else {
+                                  log('GNOME Shell started at ' + _startDate);
                               }
                           });
 }
