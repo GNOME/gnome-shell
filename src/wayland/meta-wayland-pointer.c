@@ -290,8 +290,6 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
                            struct wl_display  *display)
 {
   ClutterDeviceManager *manager;
-  ClutterInputDevice *device;
-  ClutterPoint current;
 
   memset (pointer, 0, sizeof *pointer);
 
@@ -312,7 +310,7 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
   pointer->grab = &pointer->default_grab;
 
   manager = clutter_device_manager_get_default ();
-  device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
+  pointer->device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
 
 #if defined(CLUTTER_WINDOWING_EGL)
   /* XXX -- the evdev backend can be used regardless of the
@@ -324,10 +322,6 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
                                                     pointer, NULL);
     }
 #endif
-
-  clutter_input_device_get_coords (device, NULL, &current);
-  pointer->x = wl_fixed_from_double (current.x);
-  pointer->y = wl_fixed_from_double (current.y);
 }
 
 void
@@ -391,15 +385,16 @@ repick_for_event (MetaWaylandPointer *pointer,
     }
   else
     {
-      ClutterDeviceManager *device_manager = clutter_device_manager_get_default ();
-      ClutterInputDevice *device = clutter_device_manager_get_device (device_manager, META_VIRTUAL_CORE_POINTER_ID);
-      ClutterStage *stage = clutter_input_device_get_pointer_stage (device);
+      ClutterStage *stage = clutter_input_device_get_pointer_stage (pointer->device);
 
       if (stage)
-        actor = clutter_stage_get_actor_at_pos (stage,
-                                                CLUTTER_PICK_REACTIVE,
-                                                wl_fixed_to_double (pointer->x),
-                                                wl_fixed_to_double (pointer->y));
+        {
+          ClutterPoint pos;
+
+          clutter_input_device_get_coords (pointer->device, NULL, &pos);
+          actor = clutter_stage_get_actor_at_pos (stage, CLUTTER_PICK_REACTIVE,
+                                                  pos.x, pos.y);
+        }
     }
 
   if (META_IS_SURFACE_ACTOR_WAYLAND (actor))
@@ -437,8 +432,7 @@ handle_button_event (MetaWaylandPointer *pointer,
     {
       pointer->grab_button = clutter_event_get_button (event);
       pointer->grab_time = clutter_event_get_time (event);
-      pointer->grab_x = pointer->x;
-      pointer->grab_y = pointer->y;
+      clutter_event_get_coords (event, &pointer->grab_x, &pointer->grab_y);
     }
 
   pointer->grab->interface->button (pointer->grab, event);
@@ -533,19 +527,14 @@ void
 meta_wayland_pointer_update (MetaWaylandPointer *pointer,
                              const ClutterEvent *event)
 {
-  float x, y;
-
-  clutter_event_get_coords (event, &x, &y);
-  pointer->x = wl_fixed_from_double (x);
-  pointer->y = wl_fixed_from_double (y);
-
   pointer->button_count = count_buttons (event);
 
   if (pointer->cursor_tracker)
     {
-      meta_cursor_tracker_update_position (pointer->cursor_tracker,
-					   wl_fixed_to_int (pointer->x),
-					   wl_fixed_to_int (pointer->y));
+      ClutterPoint pos;
+
+      clutter_input_device_get_coords (pointer->device, NULL, &pos);
+      meta_cursor_tracker_update_position (pointer->cursor_tracker, pos.x, pos.y);
 
       if (pointer->current == NULL)
 	meta_cursor_tracker_unset_window_cursor (pointer->cursor_tracker);
@@ -610,15 +599,17 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
     {
       struct wl_resource *resource;
       struct wl_list *l;
+      ClutterPoint pos;
 
       pointer->focus_surface = surface;
       wl_resource_add_destroy_listener (pointer->focus_surface->resource, &pointer->focus_surface_listener);
 
+      clutter_input_device_get_coords (pointer->device, NULL, &pos);
+
       meta_window_handle_enter (pointer->focus_surface->window,
                                 /* XXX -- can we reliably get a timestamp for setting focus? */
                                 clutter_get_current_event_time (),
-                                wl_fixed_to_int (pointer->x),
-                                wl_fixed_to_int (pointer->y));
+                                pos.x, pos.y);
 
       move_resources_for_client (&pointer->focus_resource_list,
                                  &pointer->resource_list,
@@ -805,9 +796,8 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
                                   1, /* button. XXX? */
                                   0, /* modmask */
                                   meta_display_get_current_time_roundtrip (window->display),
-                                  wl_fixed_to_int (pointer->grab_x),
-                                  wl_fixed_to_int (pointer->grab_y));
-
+                                  pointer->grab_x,
+                                  pointer->grab_y);
     }
   else
     grab = (MetaWaylandPopupGrab*)pointer->grab;
@@ -845,10 +835,12 @@ meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
         CLUTTER_ACTOR (meta_window_get_compositor_private (surface->window));
 
       if (actor)
-        clutter_actor_transform_stage_point (actor,
-                                             wl_fixed_to_double (pointer->x),
-                                             wl_fixed_to_double (pointer->y),
-                                             &xf, &yf);
+        {
+          ClutterPoint pos;
+          clutter_input_device_get_coords (pointer->device, NULL, &pos);
+
+          clutter_actor_transform_stage_point (actor, pos.x, pos.y, &xf, &yf);
+        }
     }
 
   *sx = wl_fixed_from_double (xf);

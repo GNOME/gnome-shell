@@ -63,12 +63,12 @@ struct _MetaWaylandPointer
 
   MetaWaylandPointerGrab *grab;
   MetaWaylandPointerGrab default_grab;
-  wl_fixed_t grab_x, grab_y;
   guint32 grab_button;
   guint32 grab_serial;
   guint32 grab_time;
+  float grab_x, grab_y;
 
-  wl_fixed_t x, y; /* TODO: remove, use ClutterInputDevice instead */
+  ClutterInputDevice *device;
   MetaWaylandSurface *current;
 
   guint32 button_count;

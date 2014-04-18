@@ -148,9 +148,7 @@ make_wayland_cursor_tracker (MetaScreen *screen)
 
   compositor = meta_wayland_compositor_get_default ();
   compositor->seat->pointer.cursor_tracker = self;
-  meta_cursor_tracker_update_position (self,
-                                       wl_fixed_to_int (compositor->seat->pointer.x),
-                                       wl_fixed_to_int (compositor->seat->pointer.y));
+  meta_cursor_tracker_update_position (self, 0, 0);
 
 #if defined(CLUTTER_WINDOWING_EGL)
   if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
