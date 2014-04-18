@@ -145,8 +145,8 @@ ensure_buffer_texture (MetaWaylandBuffer *buffer)
 }
 
 static void
-cursor_surface_commit (MetaWaylandSurface             *surface,
-                       MetaWaylandDoubleBufferedState *pending)
+cursor_surface_commit (MetaWaylandSurface      *surface,
+                       MetaWaylandPendingState *pending)
 {
   if (pending->newly_attached)
     meta_wayland_seat_update_cursor_surface (surface->compositor->seat);
@@ -154,7 +154,7 @@ cursor_surface_commit (MetaWaylandSurface             *surface,
 
 static void
 toplevel_surface_commit (MetaWaylandSurface             *surface,
-                         MetaWaylandDoubleBufferedState *pending)
+                         MetaWaylandPendingState *pending)
 {
   if (pending->newly_attached)
     {
@@ -185,14 +185,13 @@ toplevel_surface_commit (MetaWaylandSurface             *surface,
 static void
 surface_handle_pending_buffer_destroy (struct wl_listener *listener, void *data)
 {
-  MetaWaylandDoubleBufferedState *state =
-    wl_container_of (listener, state, buffer_destroy_listener);
+  MetaWaylandPendingState *state = wl_container_of (listener, state, buffer_destroy_listener);
 
   state->buffer = NULL;
 }
 
 static void
-double_buffered_state_init (MetaWaylandDoubleBufferedState *state)
+pending_state_init (MetaWaylandPendingState *state)
 {
   state->newly_attached = FALSE;
   state->buffer = NULL;
@@ -208,7 +207,7 @@ double_buffered_state_init (MetaWaylandDoubleBufferedState *state)
 }
 
 static void
-double_buffered_state_destroy (MetaWaylandDoubleBufferedState *state)
+pending_state_destroy (MetaWaylandPendingState *state)
 {
   MetaWaylandFrameCallback *cb, *next;
 
@@ -223,15 +222,15 @@ double_buffered_state_destroy (MetaWaylandDoubleBufferedState *state)
 }
 
 static void
-double_buffered_state_reset (MetaWaylandDoubleBufferedState *state)
+pending_state_reset (MetaWaylandPendingState *state)
 {
-  double_buffered_state_destroy (state);
-  double_buffered_state_init (state);
+  pending_state_destroy (state);
+  pending_state_init (state);
 }
 
 static void
-move_double_buffered_state (MetaWaylandDoubleBufferedState *from,
-                            MetaWaylandDoubleBufferedState *to)
+move_pending_state (MetaWaylandPendingState *from,
+                    MetaWaylandPendingState *to)
 {
   if (from->buffer)
     wl_list_remove (&from->buffer_destroy_listener.link);
@@ -264,8 +263,8 @@ move_double_buffered_state (MetaWaylandDoubleBufferedState *from,
 }
 
 static void
-subsurface_surface_commit (MetaWaylandSurface             *surface,
-                           MetaWaylandDoubleBufferedState *pending)
+subsurface_surface_commit (MetaWaylandSurface      *surface,
+                           MetaWaylandPendingState *pending)
 {
   if (pending->newly_attached)
     {
@@ -295,8 +294,8 @@ parent_surface_committed (gpointer data, gpointer user_data)
 }
 
 static void
-commit_double_buffered_state (MetaWaylandSurface             *surface,
-                              MetaWaylandDoubleBufferedState *pending)
+commit_pending_state (MetaWaylandSurface      *surface,
+                      MetaWaylandPendingState *pending)
 {
   MetaWaylandCompositor *compositor = surface->compositor;
 
@@ -308,7 +307,7 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
    */
   if (surface->sub.synchronous)
     {
-      move_double_buffered_state (pending, &surface->sub.pending_surface_state);
+      move_pending_state (pending, &surface->sub.pending_surface_state);
       return;
     }
 
@@ -343,13 +342,13 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
   wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);
   wl_list_init (&pending->frame_callback_list);
 
-  double_buffered_state_reset (pending);
+  pending_state_reset (pending);
 }
 
 static void
 meta_wayland_surface_commit (MetaWaylandSurface *surface)
 {
-  commit_double_buffered_state (surface, &surface->pending);
+  commit_pending_state (surface, &surface->pending);
 }
 
 static void
@@ -581,7 +580,7 @@ wl_surface_destructor (struct wl_resource *resource)
   compositor->surfaces = g_list_remove (compositor->surfaces, surface);
 
   surface_set_buffer (surface, NULL);
-  double_buffered_state_destroy (&surface->pending);
+  pending_state_destroy (&surface->pending);
 
   g_object_unref (surface->surface_actor);
 
@@ -608,7 +607,7 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
   surface->surface_actor = g_object_ref_sink (meta_surface_actor_wayland_new (surface));
 
-  double_buffered_state_init (&surface->pending);
+  pending_state_init (&surface->pending);
   return surface;
 }
 
@@ -1384,7 +1383,7 @@ bind_gtk_shell (struct wl_client *client,
 static void
 subsurface_parent_surface_committed (MetaWaylandSurface *surface)
 {
-  MetaWaylandDoubleBufferedState *pending_surface_state = &surface->sub.pending_surface_state;
+  MetaWaylandPendingState *pending_surface_state = &surface->sub.pending_surface_state;
 
   if (surface->sub.pending_pos)
     {
@@ -1433,7 +1432,7 @@ subsurface_parent_surface_committed (MetaWaylandSurface *surface)
     }
 
   if (surface->sub.synchronous)
-    commit_double_buffered_state (surface, pending_surface_state);
+    commit_pending_state (surface, pending_surface_state);
 }
 
 static void
@@ -1458,7 +1457,7 @@ wl_subsurface_destructor (struct wl_resource *resource)
       surface->sub.parent = NULL;
     }
 
-  double_buffered_state_destroy (&surface->sub.pending_surface_state);
+  pending_state_destroy (&surface->sub.pending_surface_state);
   destroy_surface_extension (&surface->subsurface);
 }
 
@@ -1636,7 +1635,7 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
       return;
     }
 
-  double_buffered_state_init (&surface->sub.pending_surface_state);
+  pending_state_init (&surface->sub.pending_surface_state);
   surface->sub.parent = parent;
   surface->sub.parent_destroy_listener.notify =
     surface_handle_parent_surface_destroyed;

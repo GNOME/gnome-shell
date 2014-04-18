@@ -61,7 +61,7 @@ typedef struct
 
   gboolean frame_extents_changed;
   GtkBorder frame_extents;
-} MetaWaylandDoubleBufferedState;
+} MetaWaylandPendingState;
 
 typedef struct
 {
@@ -90,7 +90,7 @@ struct _MetaWaylandSurface
     struct wl_listener parent_destroy_listener;
 
     gboolean synchronous;
-    MetaWaylandDoubleBufferedState pending_surface_state;
+    MetaWaylandPendingState pending_surface_state;
 
     int32_t pending_x;
     int32_t pending_y;
@@ -100,8 +100,8 @@ struct _MetaWaylandSurface
 
   uint32_t state_changed_serial;
 
-  /* All the pending state, that wl_surface.commit will apply. */
-  MetaWaylandDoubleBufferedState pending;
+  /* All the pending state that wl_surface.commit will apply. */
+  MetaWaylandPendingState pending;
 };
 
 void                meta_wayland_init_shell     (MetaWaylandCompositor *compositor);
