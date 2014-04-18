@@ -302,6 +302,11 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
 
   pointer->focus_surface_listener.notify = pointer_handle_focus_surface_destroy;
 
+  pointer->cursor_surface = NULL;
+  pointer->cursor_surface_destroy_listener.notify = pointer_handle_cursor_surface_destroy;
+  pointer->hotspot_x = 16;
+  pointer->hotspot_y = 16;
+
   pointer->default_grab.interface = &default_pointer_grab_interface;
   pointer->default_grab.pointer = pointer;
   pointer->grab = &pointer->default_grab;
@@ -323,11 +328,6 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
   clutter_input_device_get_coords (device, NULL, &current);
   pointer->x = wl_fixed_from_double (current.x);
   pointer->y = wl_fixed_from_double (current.y);
-
-  pointer->cursor_surface = NULL;
-  pointer->cursor_surface_destroy_listener.notify = pointer_handle_cursor_surface_destroy;
-  pointer->hotspot_x = 16;
-  pointer->hotspot_y = 16;
 }
 
 void

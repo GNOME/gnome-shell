@@ -77,6 +77,8 @@ typedef struct
 
 struct _MetaWaylandKeyboard
 {
+  struct wl_display *display;
+
   struct wl_list resource_list;
   struct wl_list focus_resource_list;
 
@@ -91,8 +93,6 @@ struct _MetaWaylandKeyboard
   uint32_t grab_time;
 
   struct wl_array keys;
-
-  struct wl_display *display;
 
   struct xkb_context *xkb_context;
   MetaWaylandXkbInfo xkb_info;

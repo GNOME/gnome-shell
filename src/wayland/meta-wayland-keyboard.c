@@ -271,11 +271,11 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
                             struct wl_display   *display)
 {
   memset (keyboard, 0, sizeof *keyboard);
-  keyboard->xkb_info.keymap_fd = -1;
+
+  keyboard->display = display;
 
   wl_list_init (&keyboard->resource_list);
   wl_list_init (&keyboard->focus_resource_list);
-  wl_array_init (&keyboard->keys);
 
   keyboard->focus_surface_listener.notify = keyboard_handle_focus_surface_destroy;
 
@@ -283,9 +283,10 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
   keyboard->default_grab.keyboard = keyboard;
   keyboard->grab = &keyboard->default_grab;
 
-  keyboard->display = display;
+  wl_array_init (&keyboard->keys);
 
   keyboard->xkb_context = xkb_context_new (0 /* flags */);
+  keyboard->xkb_info.keymap_fd = -1;
 
   /* Compute a default until gnome-settings-daemon starts and sets
      the appropriate values
