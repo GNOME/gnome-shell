@@ -352,6 +352,21 @@ count_buttons (const ClutterEvent *event)
   return count;
 }
 
+void
+meta_wayland_pointer_update (MetaWaylandPointer *pointer,
+                             const ClutterEvent *event)
+{
+  pointer->button_count = count_buttons (event);
+
+  if (pointer->cursor_tracker)
+    {
+      ClutterPoint pos;
+
+      clutter_input_device_get_coords (pointer->device, NULL, &pos);
+      meta_cursor_tracker_update_position (pointer->cursor_tracker, pos.x, pos.y);
+    }
+}
+
 static MetaWaylandSurface *
 get_focus_surface (MetaWaylandPointer *pointer)
 {
@@ -528,21 +543,6 @@ meta_wayland_pointer_handle_event (MetaWaylandPointer *pointer,
     }
 
   return FALSE;
-}
-
-void
-meta_wayland_pointer_update (MetaWaylandPointer *pointer,
-                             const ClutterEvent *event)
-{
-  pointer->button_count = count_buttons (event);
-
-  if (pointer->cursor_tracker)
-    {
-      ClutterPoint pos;
-
-      clutter_input_device_get_coords (pointer->device, NULL, &pos);
-      meta_cursor_tracker_update_position (pointer->cursor_tracker, pos.x, pos.y);
-    }
 }
 
 static void
