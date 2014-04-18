@@ -357,6 +357,10 @@ update_current_focus (MetaWaylandPointer *pointer,
                       MetaWaylandSurface *surface)
 {
   pointer->current = surface;
+
+  if (pointer->cursor_tracker && surface == NULL)
+    meta_cursor_tracker_unset_window_cursor (pointer->cursor_tracker);
+
   if (surface != pointer->focus_surface)
     {
       const MetaWaylandPointerGrabInterface *interface = pointer->grab->interface;
@@ -534,9 +538,6 @@ meta_wayland_pointer_update (MetaWaylandPointer *pointer,
 
       clutter_input_device_get_coords (pointer->device, NULL, &pos);
       meta_cursor_tracker_update_position (pointer->cursor_tracker, pos.x, pos.y);
-
-      if (pointer->current == NULL)
-        meta_cursor_tracker_unset_window_cursor (pointer->cursor_tracker);
     }
 }
 
