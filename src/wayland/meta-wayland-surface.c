@@ -118,13 +118,6 @@ surface_process_damage (MetaWaylandSurface *surface,
 }
 
 static void
-empty_region (cairo_region_t *region)
-{
-  cairo_rectangle_int_t rectangle = { 0, 0, 0, 0 };
-  cairo_region_intersect_rectangle (region, &rectangle);
-}
-
-static void
 ensure_buffer_texture (MetaWaylandBuffer *buffer)
 {
   CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
@@ -198,9 +191,11 @@ pending_state_init (MetaWaylandPendingState *state)
   state->dx = 0;
   state->dy = 0;
 
+  state->input_region = NULL;
+  state->opaque_region = NULL;
+
   state->damage = cairo_region_create ();
-  state->buffer_destroy_listener.notify =
-    surface_handle_pending_buffer_destroy;
+  state->buffer_destroy_listener.notify = surface_handle_pending_buffer_destroy;
   wl_list_init (&state->frame_callback_list);
 
   state->frame_extents_changed = FALSE;
@@ -235,31 +230,14 @@ move_pending_state (MetaWaylandPendingState *from,
   if (from->buffer)
     wl_list_remove (&from->buffer_destroy_listener.link);
 
-  to->newly_attached = from->newly_attached;
-  from->newly_attached = FALSE;
+  wl_list_insert_list (&to->frame_callback_list, &from->frame_callback_list);
 
-  to->buffer = from->buffer;
-  from->buffer = NULL;
+  *to = *from;
+
   if (to->buffer)
     wl_signal_add (&to->buffer->destroy_signal, &to->buffer_destroy_listener);
 
-  to->dx = from->dx;
-  to->dy = from->dy;
-  from->dx = from->dy = 0;
-
-  empty_region (to->damage);
-  cairo_region_union (to->damage, from->damage);
-  empty_region (from->damage);
-
-  g_clear_pointer (&to->input_region, cairo_region_destroy);
-  g_clear_pointer (&to->opaque_region, cairo_region_destroy);
-  to->input_region = from->input_region;
-  to->opaque_region = from->opaque_region;
-  from->input_region = from->opaque_region = NULL;
-
-  wl_list_init (&to->frame_callback_list);
-  wl_list_insert_list (&to->frame_callback_list, &from->frame_callback_list);
-  wl_list_init (&from->frame_callback_list);
+  pending_state_init (from);
 }
 
 static void
