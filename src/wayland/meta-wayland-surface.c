@@ -307,7 +307,7 @@ commit_pending_state (MetaWaylandSurface      *surface,
    */
   if (surface->sub.synchronous)
     {
-      move_pending_state (pending, &surface->sub.pending_surface_state);
+      move_pending_state (pending, &surface->sub.pending);
       return;
     }
 
@@ -1430,7 +1430,7 @@ subsurface_parent_surface_committed (MetaWaylandSurface *surface)
     }
 
   if (surface->sub.synchronous)
-    commit_pending_state (surface, &surface->sub.pending_surface_state);
+    commit_pending_state (surface, &surface->sub.pending);
 }
 
 static void
@@ -1455,7 +1455,7 @@ wl_subsurface_destructor (struct wl_resource *resource)
       surface->sub.parent = NULL;
     }
 
-  pending_state_destroy (&surface->sub.pending_surface_state);
+  pending_state_destroy (&surface->sub.pending);
   destroy_surface_extension (&surface->subsurface);
 }
 
@@ -1633,7 +1633,7 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
       return;
     }
 
-  pending_state_init (&surface->sub.pending_surface_state);
+  pending_state_init (&surface->sub.pending);
   surface->sub.parent = parent;
   surface->sub.parent_destroy_listener.notify =
     surface_handle_parent_surface_destroyed;
