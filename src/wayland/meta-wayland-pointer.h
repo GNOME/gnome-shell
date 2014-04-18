@@ -64,7 +64,6 @@ struct _MetaWaylandPointer
   MetaWaylandPointerGrab *grab;
   MetaWaylandPointerGrab default_grab;
   wl_fixed_t grab_x, grab_y;
-  wl_fixed_t focus_x, focus_y;
   guint32 grab_button;
   guint32 grab_serial;
   guint32 grab_time;
