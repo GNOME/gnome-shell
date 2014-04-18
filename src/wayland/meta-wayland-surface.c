@@ -153,26 +153,6 @@ cursor_surface_commit (MetaWaylandSurface             *surface,
 }
 
 static void
-actor_surface_commit (MetaWaylandSurface             *surface,
-                      MetaWaylandDoubleBufferedState *pending)
-{
-  MetaSurfaceActor *surface_actor = surface->surface_actor;
-
-  if (pending->newly_attached && pending->buffer)
-    {
-      ensure_buffer_texture (pending->buffer);
-      meta_surface_actor_wayland_set_buffer (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor), pending->buffer);
-    }
-
-  surface_process_damage (surface, pending->damage);
-
-  if (pending->opaque_region)
-    meta_surface_actor_set_opaque_region (surface_actor, pending->opaque_region);
-  if (pending->input_region)
-    meta_surface_actor_set_input_region (surface_actor, pending->input_region);
-}
-
-static void
 toplevel_surface_commit (MetaWaylandSurface             *surface,
                          MetaWaylandDoubleBufferedState *pending)
 {
@@ -333,9 +313,22 @@ commit_double_buffered_state (MetaWaylandSurface             *surface,
     }
 
   if (pending->newly_attached)
-    surface_set_buffer (surface, pending->buffer);
+    {
+      surface_set_buffer (surface, pending->buffer);
 
-  actor_surface_commit (surface, pending);
+      if (pending->buffer)
+        {
+          ensure_buffer_texture (pending->buffer);
+          meta_surface_actor_wayland_set_buffer (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor), pending->buffer);
+        }
+    }
+
+  surface_process_damage (surface, pending->damage);
+
+  if (pending->opaque_region)
+    meta_surface_actor_set_opaque_region (surface->surface_actor, pending->opaque_region);
+  if (pending->input_region)
+    meta_surface_actor_set_input_region (surface->surface_actor, pending->input_region);
 
   if (surface == compositor->seat->pointer.cursor_surface)
     cursor_surface_commit (surface, pending);
