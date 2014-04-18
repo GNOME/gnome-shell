@@ -179,10 +179,5 @@ item(_NET_WM_FRAME_DRAWN)
 item(_NET_WM_FRAME_TIMINGS)
 item(_NET_WM_WINDOW_OPACITY)
 
-#if 0
-/* We apparently never use: */
-/* item(_NET_RESTACK_WINDOW) */
-#endif
-
 /* eof atomnames.h */
 

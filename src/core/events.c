@@ -1512,11 +1512,6 @@ handle_other_xevent (MetaDisplay *display,
                      event->xproperty.atom ==
                      display->atom__XKB_RULES_NAMES)
               reload_xkb_rules (display->screen);
-#if 0
-            else if (event->xproperty.atom ==
-                     display->atom__NET_RESTACK_WINDOW)
-              handle_net_restack_window (display, event);
-#endif
 
             /* we just use this property as a sentinel to avoid
              * certain race conditions.  See the comment for the

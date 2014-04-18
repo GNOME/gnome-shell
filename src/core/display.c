@@ -1489,44 +1489,6 @@ meta_display_queue_autoraise_callback (MetaDisplay *display,
   display->autoraise_window = window;
 }
 
-#if 0
-static void
-handle_net_restack_window (MetaDisplay* display,
-                           XEvent *event)
-{
-  MetaWindow *window;
-
-  window = meta_display_lookup_x_window (display,
-                                         event->xclient.window);
-
-  if (window)
-    {
-      /* FIXME: The EWMH includes a sibling for the restack request, but we
-       * (stupidly) don't currently support these types of raises.
-       *
-       * Also, unconditionally following these is REALLY stupid--we should
-       * combine this code with the stuff in
-       * meta_window_x11_configure_request() which is smart about whether to
-       * follow the request or do something else (though not smart enough
-       * and is also too stupid to handle the sibling stuff).
-       */
-      switch (event->xclient.data.l[2])
-        {
-        case Above:
-          meta_window_raise (window);
-          break;
-        case Below:
-          meta_window_lower (window);
-          break;
-        case TopIf:
-        case BottomIf:
-        case Opposite:
-          break;          
-        }
-    }
-}
-#endif
-
 void
 meta_display_sync_wayland_input_focus (MetaDisplay *display)
 {
