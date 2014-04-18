@@ -74,6 +74,7 @@
 #include "frame.h"
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
+#include "meta-sync-ring.h"
 
 #include "backends/x11/meta-backend-x11.h"
 
@@ -120,7 +121,11 @@ meta_switch_workspace_completed (MetaCompositor *compositor)
 void
 meta_compositor_destroy (MetaCompositor *compositor)
 {
-  clutter_threads_remove_repaint_func (compositor->repaint_func_id);
+  clutter_threads_remove_repaint_func (compositor->pre_paint_func_id);
+  clutter_threads_remove_repaint_func (compositor->post_paint_func_id);
+
+  if (compositor->have_x11_sync_object)
+    meta_sync_ring_destroy ();
 }
 
 static void
@@ -463,13 +468,11 @@ meta_compositor_manage (MetaCompositor *compositor)
   MetaDisplay *display = compositor->display;
   Display *xdisplay = display->xdisplay;
   MetaScreen *screen = display->screen;
+  MetaBackend *backend = meta_get_backend ();
 
   meta_screen_set_cm_selection (display->screen);
 
-  {
-    MetaBackend *backend = meta_get_backend ();
-    compositor->stage = meta_backend_get_stage (backend);
-  }
+  compositor->stage = meta_backend_get_stage (backend);
 
   /* We use connect_after() here to accomodate code in GNOME Shell that,
    * when benchmarking drawing performance, connects to ::after-paint
@@ -505,7 +508,7 @@ meta_compositor_manage (MetaCompositor *compositor)
 
       compositor->output = screen->composite_overlay_window;
 
-      xwin = meta_backend_x11_get_xwindow (META_BACKEND_X11 (meta_get_backend ()));
+      xwin = meta_backend_x11_get_xwindow (META_BACKEND_X11 (backend));
 
       XReparentWindow (xdisplay, xwin, compositor->output, 0, 0);
 
@@ -525,6 +528,9 @@ meta_compositor_manage (MetaCompositor *compositor)
        * contents until we show the stage.
        */
       XMapWindow (xdisplay, compositor->output);
+
+      compositor->have_x11_sync_object =
+        meta_sync_ring_init (meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend)));
     }
 
   redirect_windows (display->screen);
@@ -1030,11 +1036,12 @@ frame_callback (CoglOnscreen  *onscreen,
     }
 }
 
-static void
-pre_paint_windows (MetaCompositor *compositor)
+static gboolean
+meta_pre_paint_func (gpointer data)
 {
   GList *l;
   MetaWindowActor *top_window;
+  MetaCompositor *compositor = data;
 
   if (compositor->onscreen == NULL)
     {
@@ -1046,7 +1053,7 @@ pre_paint_windows (MetaCompositor *compositor)
     }
 
   if (compositor->windows == NULL)
-    return;
+    return TRUE;
 
   top_window = g_list_last (compositor->windows)->data;
 
@@ -1063,10 +1070,12 @@ pre_paint_windows (MetaCompositor *compositor)
     {
       /* We need to make sure that any X drawing that happens before
        * the XDamageSubtract() for each window above is visible to
-       * subsequent GL rendering; the only standardized way to do this
-       * is EXT_x11_sync_object, which isn't yet widely available. For
-       * now, we count on details of Xorg and the open source drivers,
-       * and hope for the best otherwise.
+       * subsequent GL rendering; the standardized way to do this is
+       * GL_EXT_X11_sync_object. Since this isn't implemented yet in
+       * mesa, we also have a path that relies on the implementation
+       * of the open source drivers.
+       *
+       * Anything else, we just hope for the best.
        *
        * Xorg and open source driver specifics:
        *
@@ -1081,17 +1090,28 @@ pre_paint_windows (MetaCompositor *compositor)
        * round trip request at this point is sufficient to flush the
        * GLX buffers.
        */
-      XSync (compositor->display->xdisplay, False);
-
-      compositor->frame_has_updated_xsurfaces = FALSE;
+      if (compositor->have_x11_sync_object)
+        compositor->have_x11_sync_object = meta_sync_ring_insert_wait ();
+      else
+        XSync (compositor->display->xdisplay, False);
     }
+
+  return TRUE;
 }
 
 static gboolean
-meta_repaint_func (gpointer data)
+meta_post_paint_func (gpointer data)
 {
   MetaCompositor *compositor = data;
-  pre_paint_windows (compositor);
+
+  if (compositor->frame_has_updated_xsurfaces)
+    {
+      if (compositor->have_x11_sync_object)
+        compositor->have_x11_sync_object = meta_sync_ring_after_frame ();
+
+      compositor->frame_has_updated_xsurfaces = FALSE;
+    }
+
   return TRUE;
 }
 
@@ -1126,10 +1146,16 @@ meta_compositor_new (MetaDisplay *display)
                     G_CALLBACK (on_shadow_factory_changed),
                     compositor);
 
-  compositor->repaint_func_id = clutter_threads_add_repaint_func (meta_repaint_func,
-                                                                  compositor,
-                                                                  NULL);
-
+  compositor->pre_paint_func_id =
+    clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_PRE_PAINT,
+                                           meta_pre_paint_func,
+                                           compositor,
+                                           NULL);
+  compositor->post_paint_func_id =
+    clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
+                                           meta_post_paint_func,
+                                           compositor,
+                                           NULL);
   return compositor;
 }
 

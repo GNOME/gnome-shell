@@ -15,7 +15,8 @@ struct _MetaCompositor
 {
   MetaDisplay    *display;
 
-  guint           repaint_func_id;
+  guint           pre_paint_func_id;
+  guint           post_paint_func_id;
 
   gint64          server_time_query_time;
   gint64          server_time_offset;
@@ -40,6 +41,7 @@ struct _MetaCompositor
   MetaPluginManager *plugin_mgr;
 
   gboolean frame_has_updated_xsurfaces;
+  gboolean have_x11_sync_object;
 };
 
 /* Wait 2ms after vblank before starting to draw next frame */
