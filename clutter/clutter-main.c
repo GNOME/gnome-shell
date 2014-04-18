@@ -847,14 +847,6 @@ void
 clutter_main (void)
 {
   GMainLoop *loop;
-  CLUTTER_STATIC_TIMER (mainloop_timer,
-                        NULL, /* no parent */
-                        "Mainloop",
-                        "The time spent in the clutter mainloop",
-                        0 /* no application private data */);
-
-  if (clutter_main_loop_level == 0)
-    CLUTTER_TIMER_START (uprof_get_mainloop_context (), mainloop_timer);
 
   if (!_clutter_context_is_initialized ())
     {
@@ -888,9 +880,6 @@ clutter_main (void)
   g_main_loop_unref (loop);
 
   clutter_main_loop_level--;
-
-  if (clutter_main_loop_level == 0)
-    CLUTTER_TIMER_STOP (uprof_get_mainloop_context (), mainloop_timer);
 }
 
 /**
@@ -1379,6 +1368,14 @@ clutter_init_real (GError **error)
   ClutterMainContext *ctx;
   ClutterBackend *backend;
 
+#ifdef CLUTTER_ENABLE_PROFILE
+  CLUTTER_STATIC_TIMER (mainloop_timer,
+                        NULL, /* no parent */
+                        "Mainloop",
+                        "The time spent in the clutter mainloop",
+                        0 /* no application private data */);
+#endif
+
   /* Note, creates backend if not already existing, though parse args will
    * have likely created it
    */
@@ -1439,6 +1436,8 @@ clutter_init_real (GError **error)
    */
   uprof_init (NULL, NULL);
   _clutter_uprof_init ();
+
+  CLUTTER_TIMER_START (uprof_get_mainloop_context (), mainloop_timer);
 
   if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
     _clutter_profile_suspend ();
