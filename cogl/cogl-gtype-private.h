@@ -133,9 +133,9 @@ cogl_##name##_get_gtype (void)                                      \
     return type_id__volatile;                                           \
   }
 
-#define COGL_GTYPE_DEFINE_BASE_CLASS(Name,name,interfaces...)      \
-  _COGL_GTYPE_DEFINE_BASE_CLASS_BEGIN(Name,name)                   \
-  {interfaces;}                                                    \
+#define COGL_GTYPE_DEFINE_BASE_CLASS(Name,name,...)      \
+  _COGL_GTYPE_DEFINE_BASE_CLASS_BEGIN(Name,name)         \
+  {__VA_ARGS__;}                                         \
   _COGL_GTYPE_DEFINE_BASE_CLASS_END()
 
 #define _COGL_GTYPE_DEFINE_INTERFACE_EXTENDED_BEGIN(Name,name)          \
@@ -230,7 +230,7 @@ cogl_##name##_get_gtype (void)                                      \
     } /* closes name##_get_type() */
 
 
-#define COGL_GTYPE_DEFINE_CLASS(Name,name,interfaces...)                \
+#define COGL_GTYPE_DEFINE_CLASS(Name,name,...)                          \
   typedef struct _Cogl##Name##Class Cogl##Name##Class;                  \
   struct _Cogl##Name##Class {                                           \
     CoglObjectClass parent_class;                                       \
@@ -239,7 +239,7 @@ cogl_##name##_get_gtype (void)                                      \
                                          cogl_##name,                   \
                                          cogl_object_get_gtype(),       \
                                          0)                             \
-  {interfaces;}                                                         \
+  {__VA_ARGS__;}                                                        \
   _COGL_GTYPE_DEFINE_TYPE_EXTENDED_END()                                \
   static void                                                           \
   cogl_##name##_init (Cogl##Name *instance)                             \
