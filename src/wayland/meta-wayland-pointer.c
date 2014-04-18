@@ -353,12 +353,28 @@ count_buttons (const ClutterEvent *event)
 }
 
 static void
+sync_focus_surface (MetaWaylandPointer *pointer)
+{
+  MetaWaylandSurface *focus_surface;
+  MetaDisplay *display = meta_get_display ();
+
+  if (meta_grab_op_should_block_wayland (display->grab_op))
+    focus_surface = NULL;
+  else
+    focus_surface = pointer->current;
+
+  if (focus_surface != pointer->focus_surface)
+    {
+      const MetaWaylandPointerGrabInterface *interface = pointer->grab->interface;
+      interface->focus (pointer->grab, focus_surface);
+    }
+}
+
+static void
 repick_for_event (MetaWaylandPointer *pointer,
                   const ClutterEvent *for_event)
 {
   ClutterActor *actor = NULL;
-  MetaDisplay *display = meta_get_display ();
-  MetaWaylandSurface *focus_surface;
 
   if (for_event)
     {
@@ -386,16 +402,7 @@ repick_for_event (MetaWaylandPointer *pointer,
   if (pointer->cursor_tracker && pointer->current == NULL)
     meta_cursor_tracker_unset_window_cursor (pointer->cursor_tracker);
 
-  if (meta_grab_op_should_block_wayland (display->grab_op))
-    focus_surface = NULL;
-  else
-    focus_surface = pointer->current;
-
-  if (focus_surface != pointer->focus_surface)
-    {
-      const MetaWaylandPointerGrabInterface *interface = pointer->grab->interface;
-      interface->focus (pointer->grab, focus_surface);
-    }
+  sync_focus_surface (pointer);
 }
 
 static void
