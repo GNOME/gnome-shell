@@ -1949,24 +1949,15 @@ meta_display_handle_event (MetaDisplay        *display,
 
       display->overlay_key_only_pressed = FALSE;
 
-      if ((window &&
-           meta_grab_op_is_mouse (display->grab_op) &&
-           (event->button.modifier_state & display->window_grab_modifiers) &&
-           display->grab_button != (int) event->button.button &&
-           display->grab_window == window) ||
-          meta_grab_op_is_keyboard (display->grab_op))
+      if (display->grab_window == window &&
+          meta_grab_op_is_moving_or_resizing (display->grab_op))
         {
-          meta_topic (META_DEBUG_WINDOW_OPS,
-                      "Ending grab op %u on window %s due to button press\n",
-                      display->grab_op,
-                      (display->grab_window ?
-                       display->grab_window->desc :
-                       "none"));
-          meta_display_end_grab_op (display, event->any.time);
+          meta_window_handle_mouse_grab_op_event (window, event);
           bypass_clutter = TRUE;
           bypass_wayland = TRUE;
         }
-      else if (window && display->grab_op == META_GRAB_OP_NONE)
+
+      if (window && display->grab_op == META_GRAB_OP_NONE)
         {
           ClutterModifierType grab_mask;
           gboolean unmodified;

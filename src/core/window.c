@@ -7518,56 +7518,77 @@ meta_window_update_sync_request_counter (MetaWindow *window,
 }
 #endif /* HAVE_XSYNC */
 
+static void
+end_grab_op (MetaWindow *window,
+             const ClutterEvent *event)
+{
+  meta_display_check_threshold_reached (window->display,
+                                        event->button.x,
+                                        event->button.y);
+  /* If the user was snap moving then ignore the button
+   * release because they may have let go of shift before
+   * releasing the mouse button and they almost certainly do
+   * not want a non-snapped movement to occur from the button
+   * release.
+   */
+  if (!window->display->grab_last_user_action_was_snap)
+    {
+      if (meta_grab_op_is_moving (window->display->grab_op))
+        {
+          if (window->tile_mode != META_TILE_NONE)
+            meta_window_tile (window);
+          else
+            update_move (window,
+                         event->button.modifier_state & CLUTTER_SHIFT_MASK,
+                         event->button.x,
+                         event->button.y);
+        }
+      else if (meta_grab_op_is_resizing (window->display->grab_op))
+        {
+          update_resize (window,
+                         event->button.modifier_state & CLUTTER_SHIFT_MASK,
+                         event->button.x,
+                         event->button.y,
+                         TRUE);
+
+          /* If a tiled window has been dragged free with a
+           * mouse resize without snapping back to the tiled
+           * state, it will end up with an inconsistent tile
+           * mode on mouse release; cleaning the mode earlier
+           * would break the ability to snap back to the tiled
+           * state, so we wait until mouse release.
+           */
+          update_tile_mode (window);
+        }
+    }
+  meta_display_end_grab_op (window->display, event->any.time);
+}
+
 void
 meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                          const ClutterEvent *event)
 {
   switch (event->type)
     {
+    case CLUTTER_BUTTON_PRESS:
+      /* This is the keybinding or menu case where we've
+       * been dragging around the window without the button
+       * pressed. */
+
+      if ((meta_grab_op_is_mouse (window->display->grab_op) &&
+           (event->button.modifier_state & window->display->window_grab_modifiers) &&
+           window->display->grab_button != (int) event->button.button) ||
+          meta_grab_op_is_keyboard (window->display->grab_op))
+        {
+          end_grab_op (window, event);
+        }
+      break;
+
     case CLUTTER_BUTTON_RELEASE:
       if (event->button.button == 1 ||
           event->button.button == (unsigned int) meta_prefs_get_mouse_button_resize ())
         {
-          meta_display_check_threshold_reached (window->display,
-                                                event->button.x,
-                                                event->button.y);
-          /* If the user was snap moving then ignore the button
-           * release because they may have let go of shift before
-           * releasing the mouse button and they almost certainly do
-           * not want a non-snapped movement to occur from the button
-           * release.
-           */
-          if (!window->display->grab_last_user_action_was_snap)
-            {
-              if (meta_grab_op_is_moving (window->display->grab_op))
-                {
-                  if (window->tile_mode != META_TILE_NONE)
-                    meta_window_tile (window);
-                  else
-                    update_move (window,
-                                 event->button.modifier_state & CLUTTER_SHIFT_MASK,
-                                 event->button.x,
-                                 event->button.y);
-                }
-              else if (meta_grab_op_is_resizing (window->display->grab_op))
-                {
-                  update_resize (window,
-                                 event->button.modifier_state & CLUTTER_SHIFT_MASK,
-                                 event->button.x,
-                                 event->button.y,
-                                 TRUE);
-
-                  /* If a tiled window has been dragged free with a
-                   * mouse resize without snapping back to the tiled
-                   * state, it will end up with an inconsistent tile
-                   * mode on mouse release; cleaning the mode earlier
-                   * would break the ability to snap back to the tiled
-                   * state, so we wait until mouse release.
-                   */
-                  update_tile_mode (window);
-                }
-            }
-          meta_display_end_grab_op (window->display, event->any.time);
+          end_grab_op (window, event);
         }
       break;
 
