@@ -352,17 +352,6 @@ count_buttons (const ClutterEvent *event)
   return count;
 }
 
-static MetaWaylandSurface *
-get_focus_surface (MetaWaylandPointer *pointer)
-{
-  MetaDisplay *display = meta_get_display ();
-
-  if (meta_grab_op_should_block_wayland (display->grab_op))
-    return NULL;
-
-  return pointer->current;
-}
-
 static void
 sync_focus_surface (MetaWaylandPointer *pointer)
 {
@@ -373,7 +362,10 @@ sync_focus_surface (MetaWaylandPointer *pointer)
   if (meta_grab_op_is_mouse (display->grab_op))
     return;
 
-  focus_surface = get_focus_surface (pointer);
+  if (meta_grab_op_should_block_wayland (display->grab_op))
+    focus_surface = NULL;
+  else
+    focus_surface = pointer->current;
 
   if (focus_surface != pointer->focus_surface)
     {
