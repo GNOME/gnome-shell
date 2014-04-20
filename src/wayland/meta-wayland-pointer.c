@@ -352,21 +352,6 @@ count_buttons (const ClutterEvent *event)
   return count;
 }
 
-void
-meta_wayland_pointer_update (MetaWaylandPointer *pointer,
-                             const ClutterEvent *event)
-{
-  pointer->button_count = count_buttons (event);
-
-  if (pointer->cursor_tracker)
-    {
-      ClutterPoint pos;
-
-      clutter_input_device_get_coords (pointer->device, NULL, &pos);
-      meta_cursor_tracker_update_position (pointer->cursor_tracker, pos.x, pos.y);
-    }
-}
-
 static MetaWaylandSurface *
 get_focus_surface (MetaWaylandPointer *pointer)
 {
@@ -381,7 +366,15 @@ get_focus_surface (MetaWaylandPointer *pointer)
 static void
 sync_focus_surface (MetaWaylandPointer *pointer)
 {
-  MetaWaylandSurface *focus_surface = get_focus_surface (pointer);
+  MetaDisplay *display = meta_get_display ();
+  MetaWaylandSurface *focus_surface;
+
+  /* Don't update the focus surface while we have a special grab. */
+  if (meta_grab_op_is_mouse (display->grab_op) &&
+      display->grab_op != META_GRAB_OP_COMPOSITOR)
+    return;
+
+  focus_surface = get_focus_surface (pointer);
 
   if (focus_surface != pointer->focus_surface)
     {
@@ -425,12 +418,27 @@ repick_for_event (MetaWaylandPointer *pointer,
   sync_focus_surface (pointer);
 }
 
+void
+meta_wayland_pointer_update (MetaWaylandPointer *pointer,
+                             const ClutterEvent *event)
+{
+  pointer->button_count = count_buttons (event);
+
+  repick_for_event (pointer, event);
+
+  if (pointer->cursor_tracker)
+    {
+      ClutterPoint pos;
+
+      clutter_input_device_get_coords (pointer->device, NULL, &pos);
+      meta_cursor_tracker_update_position (pointer->cursor_tracker, pos.x, pos.y);
+    }
+}
+
 static void
 notify_motion (MetaWaylandPointer *pointer,
                const ClutterEvent *event)
 {
-  repick_for_event (pointer, event);
-
   pointer->grab->interface->motion (pointer->grab, event);
 }
 
