@@ -207,7 +207,6 @@ struct _MetaDisplay
   gboolean    grab_threshold_movement_reached; /* raise_on_click == FALSE.    */
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
-  GList*      grab_old_window_stacking;
   MetaEdgeResistanceData *grab_edge_resistance_data;
   unsigned int grab_last_user_action_was_snap;
   guint32     grab_timestamp;

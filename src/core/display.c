@@ -482,7 +482,6 @@ meta_display_open (void)
   the_display->focus_serial = 0;
   the_display->server_focus_window = None;
   the_display->server_focus_serial = 0;
-  the_display->grab_old_window_stacking = NULL;
 
   the_display->mouse_mode = TRUE; /* Only relevant for mouse or sloppy focus */
   the_display->allow_terminal_deactivation = TRUE; /* Only relevant for when a
@@ -1022,9 +1021,6 @@ meta_display_close (MetaDisplay *display,
   if (display->focus_timeout_id)
     g_source_remove (display->focus_timeout_id);
   display->focus_timeout_id = 0;
-
-  if (display->grab_old_window_stacking)
-    g_list_free (display->grab_old_window_stacking);
 
   /* Stop caring about events */
   meta_display_free_events (display);
@@ -1931,7 +1927,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_latest_motion_y = root_y;
   display->grab_last_moveresize_time.tv_sec = 0;
   display->grab_last_moveresize_time.tv_usec = 0;
-  display->grab_old_window_stacking = NULL;
 #ifdef HAVE_XSYNC
   display->grab_last_user_action_was_snap = FALSE;
 #endif
@@ -2011,15 +2006,6 @@ meta_display_end_grab_op (MetaDisplay *display,
       if (!meta_prefs_get_raise_on_click () &&
           display->grab_threshold_movement_reached)
         meta_window_raise (display->grab_window);
-    }
-
-  if (display->grab_old_window_stacking != NULL)
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Clearing out the old stack position, which was %p.\n",
-                  display->grab_old_window_stacking);
-      g_list_free (display->grab_old_window_stacking);
-      display->grab_old_window_stacking = NULL;
     }
 
   if (display->grab_have_pointer)
