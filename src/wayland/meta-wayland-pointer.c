@@ -370,8 +370,7 @@ sync_focus_surface (MetaWaylandPointer *pointer)
   MetaWaylandSurface *focus_surface;
 
   /* Don't update the focus surface while we have a special grab. */
-  if (meta_grab_op_is_mouse (display->grab_op) &&
-      display->grab_op != META_GRAB_OP_COMPOSITOR)
+  if (meta_grab_op_is_mouse (display->grab_op))
     return;
 
   focus_surface = get_focus_surface (pointer);

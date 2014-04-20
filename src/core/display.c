@@ -1193,7 +1193,6 @@ meta_grab_op_is_mouse (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_RESIZING_SW:
     case META_GRAB_OP_KEYBOARD_RESIZING_NW:
     case META_GRAB_OP_KEYBOARD_MOVING:
-    case META_GRAB_OP_COMPOSITOR:
       return TRUE;
 
     default:
@@ -1216,7 +1215,6 @@ meta_grab_op_is_keyboard (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_RESIZING_NE:
     case META_GRAB_OP_KEYBOARD_RESIZING_SW:
     case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-    case META_GRAB_OP_COMPOSITOR:
       return TRUE;
 
     default:
