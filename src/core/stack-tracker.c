@@ -862,7 +862,7 @@ resync_verified_stack_with_xserver_stack (MetaStackTracker *tracker)
   GList *l;
   unsigned int i, j;
   MetaStackWindow *expected_xwindow;
-  gboolean modified_stack;
+  gboolean modified_stack = FALSE;
 
   /* Overview of the algorithm:
    *
