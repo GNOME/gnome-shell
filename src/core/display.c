@@ -1891,7 +1891,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
     }
 
   /* Grab keys for keyboard ops and mouse move/resizes; see #126497 */
-  if (meta_grab_op_is_keyboard (op) || meta_grab_op_is_mouse (op))
+  if (meta_grab_op_is_moving_or_resizing (op))
     {
       if (grab_window)
         display->grab_have_keyboard =
