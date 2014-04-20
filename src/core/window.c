@@ -7522,12 +7522,6 @@ void
 meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                          const ClutterEvent *event)
 {
-  gboolean is_window_root = (event->any.stage != NULL &&
-                             window &&
-                             window->screen &&
-                             CLUTTER_ACTOR (event->any.stage) ==
-                             meta_get_stage_for_screen (window->screen));
-
   switch (event->type)
     {
     case CLUTTER_BUTTON_RELEASE:
@@ -7549,7 +7543,7 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                 {
                   if (window->tile_mode != META_TILE_NONE)
                     meta_window_tile (window);
-                  else if (is_window_root)
+                  else
                     update_move (window,
                                  event->button.modifier_state & CLUTTER_SHIFT_MASK,
                                  event->button.x,
@@ -7557,12 +7551,11 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                 }
               else if (meta_grab_op_is_resizing (window->display->grab_op))
                 {
-                  if (is_window_root)
-                    update_resize (window,
-                                   event->button.modifier_state & CLUTTER_SHIFT_MASK,
-                                   event->button.x,
-                                   event->button.y,
-                                   TRUE);
+                  update_resize (window,
+                                 event->button.modifier_state & CLUTTER_SHIFT_MASK,
+                                 event->button.x,
+                                 event->button.y,
+                                 TRUE);
 
                   /* If a tiled window has been dragged free with a
                    * mouse resize without snapping back to the tiled
@@ -7584,24 +7577,18 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                             event->motion.y);
       if (meta_grab_op_is_moving (window->display->grab_op))
         {
-          if (is_window_root)
-            {
-              update_move (window,
-                           event->button.modifier_state & CLUTTER_SHIFT_MASK,
-                           event->motion.x,
-                           event->motion.y);
-            }
+          update_move (window,
+                       event->button.modifier_state & CLUTTER_SHIFT_MASK,
+                       event->motion.x,
+                       event->motion.y);
         }
       else if (meta_grab_op_is_resizing (window->display->grab_op))
         {
-          if (is_window_root)
-            {
-              update_resize (window,
-                             event->button.modifier_state & CLUTTER_SHIFT_MASK,
-                             event->motion.x,
-                             event->motion.y,
-                             FALSE);
-            }
+          update_resize (window,
+                         event->button.modifier_state & CLUTTER_SHIFT_MASK,
+                         event->motion.x,
+                         event->motion.y,
+                         FALSE);
         }
       break;
 
