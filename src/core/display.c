@@ -1994,29 +1994,23 @@ meta_display_end_grab_op (MetaDisplay *display,
   g_signal_emit (display, display_signals[GRAB_OP_END], 0,
                  display->screen, display->grab_window, display->grab_op);
 
-  if (display->grab_window != NULL)
-    display->grab_window->shaken_loose = FALSE;
-
   if (display->grab_window != NULL &&
-      !meta_prefs_get_raise_on_click () &&
       meta_grab_op_is_moving_or_resizing (display->grab_op))
     {
+      /* Clear out the edge cache */
+      meta_display_cleanup_edges (display);
+
+      display->grab_window->shaken_loose = FALSE;
+
       /* Only raise the window in orthogonal raise
        * ('do-not-raise-on-click') mode if the user didn't try to move
        * or resize the given window by at least a threshold amount.
        * For raise on click mode, the window was raised at the
        * beginning of the grab_op.
        */
-      if (!display->grab_threshold_movement_reached)
+      if (!meta_prefs_get_raise_on_click () &&
+          display->grab_threshold_movement_reached)
         meta_window_raise (display->grab_window);
-    }
-
-  /* If this was a move or resize clear out the edge cache */
-  if (meta_grab_op_is_moving_or_resizing (display->grab_op))
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Clearing out the edges for resistance/snapping");
-      meta_display_cleanup_edges (display);
     }
 
   if (display->grab_old_window_stacking != NULL)
