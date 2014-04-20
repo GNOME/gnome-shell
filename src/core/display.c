@@ -1302,7 +1302,7 @@ meta_grab_op_should_block_wayland (MetaGrabOp op)
   if (op == META_GRAB_OP_NONE)
     return FALSE;
 
-  if (op == META_GRAB_OP_WAYLAND_CLIENT)
+  if (op == META_GRAB_OP_WAYLAND_POPUP)
     return FALSE;
 
   /* Clicking on a frame button needs us to deliver events to the

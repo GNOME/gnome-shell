@@ -223,8 +223,8 @@ typedef enum
   /* Special grab op when the compositor asked for a grab */
   META_GRAB_OP_COMPOSITOR,
 
-  /* For when a client takes a popup grab */
-  META_GRAB_OP_WAYLAND_CLIENT,
+  /* For when a Wayland client takes a popup grab */
+  META_GRAB_OP_WAYLAND_POPUP,
 } MetaGrabOp;
 
 /**

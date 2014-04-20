@@ -1703,7 +1703,7 @@ grab_op_should_block_mouse_events (MetaGrabOp op)
 {
   switch (op)
     {
-    case META_GRAB_OP_WAYLAND_CLIENT:
+    case META_GRAB_OP_WAYLAND_POPUP:
     case META_GRAB_OP_COMPOSITOR:
       return TRUE;
 
@@ -2165,7 +2165,7 @@ meta_display_handle_event (MetaDisplay        *display,
     bypass_wayland = TRUE;
 
   /* If a Wayland client has a grab, don't pass that through to Clutter */
-  if (display->grab_op == META_GRAB_OP_WAYLAND_CLIENT)
+  if (display->grab_op == META_GRAB_OP_WAYLAND_POPUP)
     bypass_clutter = TRUE;
 
   if (compositor && !bypass_wayland)

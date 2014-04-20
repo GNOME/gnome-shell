@@ -793,7 +793,7 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
       meta_display_begin_grab_op (window->display,
                                   window->screen,
                                   window,
-                                  META_GRAB_OP_WAYLAND_CLIENT,
+                                  META_GRAB_OP_WAYLAND_POPUP,
                                   FALSE, /* pointer_already_grabbed */
                                   FALSE, /* frame_action */
                                   1, /* button. XXX? */
