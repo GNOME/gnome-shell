@@ -33,6 +33,8 @@
 
 #include <cogl/cogl-macros.h>
 
+COGL_BEGIN_DECLS
+
 /**
  * cogl_set_framebuffer:
  * @buffer: A #CoglFramebuffer object, either onscreen or offscreen.
@@ -256,5 +258,7 @@ cogl_read_pixels (int x,
 COGL_DEPRECATED_IN_1_18
 CoglPixelFormat
 cogl_framebuffer_get_color_format (CoglFramebuffer *framebuffer);
+
+COGL_END_DECLS
 
 #endif /* __COGL_FRAMEBUFFER_DEPRECATED_H__ */
