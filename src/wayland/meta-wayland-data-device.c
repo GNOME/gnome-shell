@@ -399,16 +399,17 @@ meta_wayland_seat_set_selection (MetaWaylandSeat *seat,
   if (focus_client)
     {
       data_device = wl_resource_find_for_client (&seat->data_device_resource_list, focus_client);
-      if (data_device && source)
+      if (data_device)
         {
-          offer =
-            meta_wayland_data_source_send_offer (seat->selection_data_source,
-                                                 data_device);
-          wl_data_device_send_selection (data_device, offer);
-        }
-      else if (data_device)
-        {
-          wl_data_device_send_selection (data_device, NULL);
+          if (seat->selection_data_source)
+            {
+              offer = meta_wayland_data_source_send_offer (seat->selection_data_source, data_device);
+              wl_data_device_send_selection (data_device, offer);
+            }
+          else
+            {
+              wl_data_device_send_selection (data_device, NULL);
+            }
         }
     }
 
