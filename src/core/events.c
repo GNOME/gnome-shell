@@ -2146,6 +2146,7 @@ meta_display_handle_event (MetaDisplay        *display,
           bypass_clutter = TRUE;
           bypass_wayland = TRUE;
         }
+      break;
 
     default:
       break;
