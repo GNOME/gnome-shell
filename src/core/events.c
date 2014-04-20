@@ -2122,7 +2122,7 @@ meta_display_handle_event (MetaDisplay        *display,
       display->overlay_key_only_pressed = FALSE;
 
       if (display->grab_window == window &&
-          meta_grab_op_is_mouse (display->grab_op))
+          meta_grab_op_is_moving_or_resizing (display->grab_op))
         {
           meta_window_handle_mouse_grab_op_event (window, event);
           bypass_clutter = TRUE;
@@ -2134,7 +2134,7 @@ meta_display_handle_event (MetaDisplay        *display,
         break;
 
       if (display->grab_window == window &&
-          meta_grab_op_is_mouse (display->grab_op))
+          meta_grab_op_is_moving_or_resizing (display->grab_op))
         {
           meta_window_handle_mouse_grab_op_event (window, event);
           bypass_clutter = TRUE;

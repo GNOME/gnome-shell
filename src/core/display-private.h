@@ -439,7 +439,7 @@ int meta_resize_gravity_from_grab_op (MetaGrabOp op);
 
 gboolean meta_grab_op_is_moving   (MetaGrabOp op);
 gboolean meta_grab_op_is_resizing (MetaGrabOp op);
-gboolean meta_grab_op_is_mouse    (MetaGrabOp op);
+gboolean meta_grab_op_is_moving_or_resizing (MetaGrabOp op);
 gboolean meta_grab_op_is_mouse_only (MetaGrabOp op);
 gboolean meta_grab_op_is_clicking (MetaGrabOp op);
 gboolean meta_grab_op_is_keyboard (MetaGrabOp op);

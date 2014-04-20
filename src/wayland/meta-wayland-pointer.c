@@ -358,8 +358,8 @@ sync_focus_surface (MetaWaylandPointer *pointer)
   MetaDisplay *display = meta_get_display ();
   MetaWaylandSurface *focus_surface;
 
-  /* Don't update the focus surface while we have a special grab. */
-  if (meta_grab_op_is_mouse (display->grab_op))
+  /* Don't update the focus surface while we have a move/resize grab. */
+  if (meta_grab_op_is_moving_or_resizing (display->grab_op))
     return;
 
   if (meta_grab_op_should_block_wayland (display->grab_op))
