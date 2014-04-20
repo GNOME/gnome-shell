@@ -1149,7 +1149,7 @@ meta_get_display (void)
 }
 
 gboolean
-meta_grab_op_is_mouse_only (MetaGrabOp op)
+meta_grab_op_is_mouse (MetaGrabOp op)
 {
   switch (op)
     {
@@ -1891,7 +1891,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
     }
 
   /* Grab keys for keyboard ops and mouse move/resizes; see #126497 */
-  if (meta_grab_op_is_keyboard (op) || meta_grab_op_is_mouse_only (op))
+  if (meta_grab_op_is_keyboard (op) || meta_grab_op_is_mouse (op))
     {
       if (grab_window)
         display->grab_have_keyboard =

@@ -1950,7 +1950,7 @@ meta_display_handle_event (MetaDisplay        *display,
       display->overlay_key_only_pressed = FALSE;
 
       if ((window &&
-           meta_grab_op_is_mouse_only (display->grab_op) &&
+           meta_grab_op_is_mouse (display->grab_op) &&
            (event->button.modifier_state & display->window_grab_modifiers) &&
            display->grab_button != (int) event->button.button &&
            display->grab_window == window) ||
