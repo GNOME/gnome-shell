@@ -70,12 +70,16 @@ libmutter_la_SOURCES =				\
 	backends/meta-monitor-manager-dummy.h	\
 	backends/edid-parse.c			\
 	backends/edid.h				\
+	backends/native/meta-backend-native.c		\
+	backends/native/meta-backend-native.h		\
 	backends/native/meta-idle-monitor-native.c	\
 	backends/native/meta-idle-monitor-native.h	\
 	backends/native/meta-monitor-manager-kms.c	\
 	backends/native/meta-monitor-manager-kms.h	\
 	backends/native/meta-weston-launch.c		\
 	backends/native/meta-weston-launch.h		\
+	backends/x11/meta-backend-x11.c			\
+	backends/x11/meta-backend-x11.h			\
 	backends/x11/meta-idle-monitor-xsync.c		\
 	backends/x11/meta-idle-monitor-xsync.h		\
 	backends/x11/meta-monitor-manager-xrandr.c	\

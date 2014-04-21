@@ -35,7 +35,7 @@
 #include "bell.h"
 #include "workspace-private.h"
 #include "backends/meta-backend.h"
-#include "backends/x11/meta-idle-monitor-xsync.h"
+#include "backends/x11/meta-backend-x11.h"
 #include "backends/native/meta-idle-monitor-native.h"
 
 #include "x11/window-x11.h"

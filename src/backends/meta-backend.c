@@ -32,11 +32,11 @@
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 
+#include "backends/x11/meta-backend-x11.h"
+#include "backends/native/meta-backend-native.h"
+
 #include "backends/native/meta-weston-launch.h"
 #include <meta/util.h>
-
-#include "backends/x11/meta-idle-monitor-xsync.h"
-#include "backends/native/meta-idle-monitor-native.h"
 
 static MetaBackend *_backend;
 
@@ -46,7 +46,7 @@ meta_get_backend (void)
   return _backend;
 }
 
-G_DEFINE_TYPE (MetaBackend, meta_backend, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (MetaBackend, meta_backend, G_TYPE_OBJECT);
 
 static void
 meta_backend_finalize (GObject *object)
@@ -77,17 +77,6 @@ meta_backend_init (MetaBackend *backend)
   _backend = backend;
 }
 
-static GType
-get_idle_monitor_type (void)
-{
-#if defined(CLUTTER_WINDOWING_X11)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
-    return META_TYPE_IDLE_MONITOR_XSYNC;
-#endif
-
-  return META_TYPE_IDLE_MONITOR_NATIVE;
-}
-
 /* FIXME -- destroy device monitors at some point */
 G_GNUC_UNUSED static void
 destroy_device_monitor (MetaBackend *backend,
@@ -98,6 +87,13 @@ destroy_device_monitor (MetaBackend *backend,
     backend->device_id_max--;
 }
 
+static MetaIdleMonitor *
+meta_backend_create_idle_monitor (MetaBackend *backend,
+                                  int          device_id)
+{
+  return META_BACKEND_GET_CLASS (backend)->create_idle_monitor (backend, device_id);
+}
+
 MetaIdleMonitor *
 meta_backend_get_idle_monitor (MetaBackend *backend,
                                int          device_id)
@@ -106,37 +102,27 @@ meta_backend_get_idle_monitor (MetaBackend *backend,
 
   if (!backend->device_monitors[device_id])
     {
-      backend->device_monitors[device_id] = g_object_new (get_idle_monitor_type (),
-                                                          "device-id", device_id,
-                                                          NULL);
+      backend->device_monitors[device_id] = meta_backend_create_idle_monitor (backend, device_id);
       backend->device_id_max = MAX (backend->device_id_max, device_id);
     }
 
   return backend->device_monitors[device_id];
 }
 
-void
-meta_backend_x11_handle_alarm_notify (MetaBackend *backend,
-                                      XEvent      *xevent)
-{
-  int i;
-
-  for (i = 0; i <= backend->device_id_max; i++)
-    {
-      if (backend->device_monitors[i])
-        {
-          if (!META_IS_IDLE_MONITOR_XSYNC (backend->device_monitors[i]))
-            return;
-
-          meta_idle_monitor_xsync_handle_xevent (backend->device_monitors[i], (XSyncAlarmNotifyEvent*)xevent);
-        }
-    }
-}
-
 static GType
 get_backend_type (void)
 {
-  return META_TYPE_BACKEND;
+#if defined(CLUTTER_WINDOWING_X11)
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
+    return META_TYPE_BACKEND_X11;
+#endif
+
+#if defined(CLUTTER_WINDOWING_EGL)
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
+    return META_TYPE_BACKEND_NATIVE;
+#endif
+
+  g_assert_not_reached ();
 }
 
 static void

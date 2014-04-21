@@ -22,25 +22,32 @@
  *     Jasper St. Pierre <jstpierre@mecheye.net>
  */
 
-#ifndef META_BACKEND_H
-#define META_BACKEND_H
+#include "config.h"
 
-#include <glib-object.h>
+#include "meta-backend-native.h"
 
-#include <meta/meta-idle-monitor.h>
+#include "meta-idle-monitor-native.h"
 
-typedef struct _MetaBackend        MetaBackend;
-typedef struct _MetaBackendClass   MetaBackendClass;
+G_DEFINE_TYPE (MetaBackendNative, meta_backend_native, META_TYPE_BACKEND);
 
-GType meta_backend_get_type (void);
+static MetaIdleMonitor *
+meta_backend_native_create_idle_monitor (MetaBackend *backend,
+                                         int          device_id)
+{
+  return g_object_new (META_TYPE_IDLE_MONITOR_NATIVE,
+                       "device-id", device_id,
+                       NULL);
+}
 
-MetaBackend * meta_get_backend (void);
+static void
+meta_backend_native_class_init (MetaBackendNativeClass *klass)
+{
+  MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
 
-MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
-                                                 int          device_id);
+  backend_class->create_idle_monitor = meta_backend_native_create_idle_monitor;
+}
 
-void meta_clutter_init (void);
-
-gboolean meta_activate_vt (int vt, GError **error);
-
-#endif /* META_BACKEND_H */
+static void
+meta_backend_native_init (MetaBackendNative *native)
+{
+}
