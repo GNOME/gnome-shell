@@ -36,7 +36,6 @@
 #include <cogl/cogl.h>
 #include <cogl/cogl-wayland-server.h>
 #include <clutter/clutter.h>
-#include <gbm.h>
 
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
@@ -728,4 +727,10 @@ meta_cursor_tracker_force_update (MetaCursorTracker *tracker)
 
   update_hw_cursor (tracker);
   sync_cursor (tracker);
+}
+
+struct gbm_device *
+meta_cursor_tracker_get_gbm_device (MetaCursorTracker *tracker)
+{
+  return tracker->gbm;
 }

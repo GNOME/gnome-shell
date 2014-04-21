@@ -27,7 +27,7 @@
 
 #include "display-private.h"
 #include "screen-private.h"
-#include "meta-cursor-tracker-private.h" /* for tracker->gbm */
+#include "meta-cursor-tracker-private.h"
 
 #include <string.h>
 
@@ -234,6 +234,7 @@ meta_cursor_image_load_from_xcursor_image (MetaCursorTracker *tracker,
   uint32_t gbm_format;
   ClutterBackend *clutter_backend;
   CoglContext *cogl_context;
+  struct gbm_device *gbm;
 
   width           = xc_image->width;
   height          = xc_image->height;
@@ -258,8 +259,9 @@ meta_cursor_image_load_from_xcursor_image (MetaCursorTracker *tracker,
                                                   (uint8_t *) xc_image->pixels,
                                                   NULL);
 
-  if (tracker->gbm)
-    meta_cursor_image_load_gbm_buffer (tracker->gbm,
+  gbm = meta_cursor_tracker_get_gbm_device (tracker);
+  if (gbm)
+    meta_cursor_image_load_gbm_buffer (gbm,
                                        image,
                                        (uint8_t *) xc_image->pixels,
                                        width, height, rowstride,
@@ -297,6 +299,7 @@ meta_cursor_image_load_from_buffer (MetaCursorTracker  *tracker,
   struct wl_shm_buffer *shm_buffer;
   uint32_t gbm_format;
   int width, height;
+  struct gbm_device *gbm = meta_cursor_tracker_get_gbm_device (tracker);
 
   image->hot_x = hot_x;
   image->hot_y = hot_y;
@@ -312,7 +315,7 @@ meta_cursor_image_load_from_buffer (MetaCursorTracker  *tracker,
   shm_buffer = wl_shm_buffer_get (buffer);
   if (shm_buffer)
     {
-      if (tracker->gbm)
+      if (gbm)
         {
           int rowstride = wl_shm_buffer_get_stride (shm_buffer);
 
@@ -338,7 +341,7 @@ meta_cursor_image_load_from_buffer (MetaCursorTracker  *tracker,
               gbm_format = GBM_FORMAT_ARGB8888;
             }
 
-          meta_cursor_image_load_gbm_buffer (tracker->gbm,
+          meta_cursor_image_load_gbm_buffer (gbm,
                                              image,
                                              (uint8_t *) wl_shm_buffer_get_data (shm_buffer),
                                              width, height, rowstride,
@@ -359,9 +362,9 @@ meta_cursor_image_load_from_buffer (MetaCursorTracker  *tracker,
           return;
         }
 
-      if (tracker->gbm)
+      if (gbm)
         {
-          image->bo = gbm_bo_import (tracker->gbm, GBM_BO_IMPORT_WL_BUFFER,
+          image->bo = gbm_bo_import (gbm, GBM_BO_IMPORT_WL_BUFFER,
                                      buffer, GBM_BO_USE_CURSOR_64X64);
           if (!image->bo)
             meta_warning ("Importing HW cursor from wl_buffer failed\n");
