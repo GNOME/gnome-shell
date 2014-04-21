@@ -2109,14 +2109,12 @@ meta_display_handle_event (MetaDisplay        *display,
             }
         }
       break;
+
     case CLUTTER_BUTTON_RELEASE:
       if (grab_op_should_block_mouse_events (display->grab_op))
         break;
 
       display->overlay_key_only_pressed = FALSE;
-      break;
-
-    case CLUTTER_MOTION:
       break;
 
     case CLUTTER_KEY_PRESS:
