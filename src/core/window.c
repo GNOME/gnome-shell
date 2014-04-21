@@ -6534,14 +6534,14 @@ menu_callback (MetaWindowMenu *menu,
         case META_MENU_OP_MOVE:
           meta_window_begin_grab_op (window,
                                      META_GRAB_OP_KEYBOARD_MOVING,
-                                     TRUE,
+                                     FALSE,
                                      timestamp);
           break;
 
         case META_MENU_OP_RESIZE:
           meta_window_begin_grab_op (window,
                                      META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
-                                     TRUE,
+                                     FALSE,
                                      timestamp);
           break;
 
