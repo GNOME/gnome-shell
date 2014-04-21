@@ -31,6 +31,8 @@
 
 #include <meta/util.h>
 #include "meta-idle-monitor-xsync.h"
+#include "meta-monitor-manager-xrandr.h"
+#include "backends/meta-monitor-manager-dummy.h"
 
 G_DEFINE_TYPE (MetaBackendX11, meta_backend_x11, META_TYPE_BACKEND);
 
@@ -43,12 +45,25 @@ meta_backend_x11_create_idle_monitor (MetaBackend *backend,
                        NULL);
 }
 
+static MetaMonitorManager *
+meta_backend_x11_create_monitor_manager (MetaBackend *backend)
+{
+  /* If we're a Wayland compositor using the X11 backend,
+   * we're a nested configuration, so return the dummy
+   * monitor setup. */
+  if (meta_is_wayland_compositor ())
+    return g_object_new (META_TYPE_MONITOR_MANAGER_DUMMY, NULL);
+
+  return g_object_new (META_TYPE_MONITOR_MANAGER_XRANDR, NULL);
+}
+
 static void
 meta_backend_x11_class_init (MetaBackendX11Class *klass)
 {
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
 
   backend_class->create_idle_monitor = meta_backend_x11_create_idle_monitor;
+  backend_class->create_monitor_manager = meta_backend_x11_create_monitor_manager;
 }
 
 static void

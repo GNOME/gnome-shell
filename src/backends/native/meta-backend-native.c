@@ -28,6 +28,7 @@
 #include "meta-backend-native.h"
 
 #include "meta-idle-monitor-native.h"
+#include "meta-monitor-manager-kms.h"
 #include "meta-weston-launch.h"
 
 struct _MetaBackendNativePrivate
@@ -47,12 +48,19 @@ meta_backend_native_create_idle_monitor (MetaBackend *backend,
                        NULL);
 }
 
+static MetaMonitorManager *
+meta_backend_native_create_monitor_manager (MetaBackend *backend)
+{
+  return g_object_new (META_TYPE_MONITOR_MANAGER_KMS, NULL);
+}
+
 static void
 meta_backend_native_class_init (MetaBackendNativeClass *klass)
 {
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
 
   backend_class->create_idle_monitor = meta_backend_native_create_idle_monitor;
+  backend_class->create_monitor_manager = meta_backend_native_create_monitor_manager;
 }
 
 static void

@@ -28,6 +28,7 @@
 #include <glib-object.h>
 
 #include <meta/meta-idle-monitor.h>
+#include "meta-monitor-manager.h"
 
 typedef struct _MetaBackend        MetaBackend;
 typedef struct _MetaBackendClass   MetaBackendClass;
@@ -38,6 +39,7 @@ MetaBackend * meta_get_backend (void);
 
 MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
                                                  int          device_id);
+MetaMonitorManager * meta_backend_get_monitor_manager (MetaBackend *backend);
 
 void meta_clutter_init (void);
 

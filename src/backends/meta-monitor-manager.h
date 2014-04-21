@@ -292,7 +292,6 @@ struct _MetaMonitorManagerClass
 
 GType meta_monitor_manager_get_type (void);
 
-void                meta_monitor_manager_initialize (void);
 MetaMonitorManager *meta_monitor_manager_get  (void);
 
 void                meta_monitor_manager_rebuild_derived   (MetaMonitorManager *manager);

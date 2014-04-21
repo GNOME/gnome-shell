@@ -630,7 +630,6 @@ meta_wayland_init (void)
 
   meta_clutter_init ();
 
-  meta_monitor_manager_initialize ();
   monitors = meta_monitor_manager_get ();
   g_signal_connect (monitors, "monitors-changed",
                     G_CALLBACK (on_monitors_changed), compositor);

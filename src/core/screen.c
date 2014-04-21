@@ -679,9 +679,6 @@ meta_screen_new (MetaDisplay *display,
   screen->xroot = xroot;
   screen->rect.x = screen->rect.y = 0;
 
-  if (!meta_is_wayland_compositor ())
-    meta_monitor_manager_initialize ();
-
   manager = meta_monitor_manager_get ();
   g_signal_connect (manager, "monitors-changed",
                     G_CALLBACK (on_monitors_changed), screen);

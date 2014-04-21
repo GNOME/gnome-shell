@@ -42,13 +42,31 @@ meta_get_backend (void)
   return _backend;
 }
 
-G_DEFINE_ABSTRACT_TYPE (MetaBackend, meta_backend, G_TYPE_OBJECT);
+struct _MetaBackendPrivate
+{
+  MetaMonitorManager *monitor_manager;
+};
+typedef struct _MetaBackendPrivate MetaBackendPrivate;
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (MetaBackend, meta_backend, G_TYPE_OBJECT);
+
+static void
+meta_backend_constructed (GObject *object)
+{
+  MetaBackend *backend = META_BACKEND (object);
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  priv->monitor_manager = META_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend);
+}
 
 static void
 meta_backend_finalize (GObject *object)
 {
   MetaBackend *backend = META_BACKEND (object);
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
   int i;
+
+  g_clear_object (&priv->monitor_manager);
 
   for (i = 0; i <= backend->device_id_max; i++)
     {
@@ -64,6 +82,7 @@ meta_backend_class_init (MetaBackendClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+  object_class->constructed = meta_backend_constructed;
   object_class->finalize = meta_backend_finalize;
 }
 
@@ -103,6 +122,14 @@ meta_backend_get_idle_monitor (MetaBackend *backend,
     }
 
   return backend->device_monitors[device_id];
+}
+
+MetaMonitorManager *
+meta_backend_get_monitor_manager (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return priv->monitor_manager;
 }
 
 static GType

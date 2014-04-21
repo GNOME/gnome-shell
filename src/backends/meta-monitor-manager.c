@@ -36,9 +36,8 @@
 #include "util-private.h"
 #include <meta/errors.h>
 #include "meta-monitor-config.h"
-#include "backends/native/meta-monitor-manager-kms.h"
 #include "backends/x11/meta-monitor-manager-xrandr.h"
-#include "meta-monitor-manager-dummy.h"
+#include "meta-backend.h"
 
 enum {
   CONFIRM_DISPLAY_CHANGE,
@@ -166,46 +165,6 @@ make_logical_config (MetaMonitorManager *manager)
 
   manager->n_monitor_infos = monitor_infos->len;
   manager->monitor_infos = (void*)g_array_free (monitor_infos, FALSE);
-}
-
-static GType
-get_default_backend (void)
-{
-#if defined(CLUTTER_WINDOWING_EGL)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
-    return META_TYPE_MONITOR_MANAGER_KMS;
-#endif
-
-#if defined(CLUTTER_WINDOWING_X11)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
-    {
-      /* If we're a Wayland compositor using the X11 backend,
-       * we're a nested configuration, so return the dummy
-       * monitor setup. */
-      if (meta_is_wayland_compositor ())
-        return META_TYPE_MONITOR_MANAGER_DUMMY;
-      else
-        return META_TYPE_MONITOR_MANAGER_XRANDR;
-    }
-#endif
-
-#if defined(CLUTTER_WINDOWING_WAYLAND)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_WAYLAND))
-    {
-      /* Use the dummy implementation on Wayland for now.
-       * In the future, we should support wl_fullscreen_output
-       * which will have CRTC management in the protocol. */
-      return META_TYPE_MONITOR_MANAGER_DUMMY;
-    }
-#endif
-
-  g_assert_not_reached ();
-}
-
-static MetaMonitorManager *
-meta_monitor_manager_new (void)
-{
-  return g_object_new (get_default_backend (), NULL);
 }
 
 static void
@@ -1167,20 +1126,12 @@ initialize_dbus_interface (MetaMonitorManager *manager)
                                           g_object_unref);
 }
 
-static MetaMonitorManager *global_monitor_manager;
-
-void
-meta_monitor_manager_initialize (void)
-{
-  global_monitor_manager = meta_monitor_manager_new ();
-}
-
 MetaMonitorManager *
 meta_monitor_manager_get (void)
 {
-  g_assert (global_monitor_manager != NULL);
+  MetaBackend *backend = meta_get_backend ();
 
-  return global_monitor_manager;
+  return meta_backend_get_monitor_manager (backend);
 }
 
 MetaMonitorInfo *
