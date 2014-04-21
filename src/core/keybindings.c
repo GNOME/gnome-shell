@@ -56,7 +56,7 @@
 #endif
 
 #include "wayland/meta-wayland.h"
-#include "meta-backend.h"
+#include "backends/native/meta-backend-native.h"
 
 #define SCHEMA_COMMON_KEYBINDINGS "org.gnome.desktop.wm.keybindings"
 #define SCHEMA_MUTTER_KEYBINDINGS "org.gnome.mutter.keybindings"

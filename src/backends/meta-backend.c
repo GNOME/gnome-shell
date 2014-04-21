@@ -26,17 +26,13 @@
 
 #include "meta-backend.h"
 #include "meta-backend-private.h"
-#include <meta/main.h>
 
-#include <gdk/gdkx.h>
 #include <clutter/clutter.h>
-#include <clutter/x11/clutter-x11.h>
 
 #include "backends/x11/meta-backend-x11.h"
 #include "backends/native/meta-backend-native.h"
 
 #include "backends/native/meta-weston-launch.h"
-#include <meta/util.h>
 
 static MetaBackend *_backend;
 
@@ -181,8 +177,6 @@ static GSourceFuncs event_funcs = {
   event_dispatch
 };
 
-static MetaLauncher *launcher;
-
 void
 meta_clutter_init (void)
 {
@@ -190,69 +184,10 @@ meta_clutter_init (void)
 
   meta_create_backend ();
 
-  /* When running as an X11 compositor, we install our own event filter and
-   * pass events to Clutter explicitly, so we need to prevent Clutter from
-   * handling our events.
-   *
-   * However, when running as a Wayland compostior under X11 nested, Clutter
-   * Clutter needs to see events related to its own window. We need to
-   * eventually replace this with a proper frontend / backend split: Clutter
-   * under nested is connecting to the "host X server" to get its events it
-   * needs to put up a window, and GTK+ is connecting to the "inner X server".
-   * The two would the same in the X11 compositor case, but not when running
-   * XWayland as a Wayland compositor.
-   */
-  if (!meta_is_wayland_compositor ())
-    {
-      clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
-      clutter_x11_disable_event_retrieval ();
-    }
-
-  /* If we're running on bare metal, we're a display server,
-   * so start talking to weston-launch. */
-#if defined(CLUTTER_WINDOWING_EGL)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
-    launcher = meta_launcher_new ();
-#endif
-
   if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
     g_error ("Unable to initialize Clutter.\n");
 
   source = g_source_new (&event_funcs, sizeof (GSource));
   g_source_attach (source, NULL);
   g_source_unref (source);
-}
-
-gboolean
-meta_activate_vt (int vt, GError **error)
-{
-  if (launcher)
-    return meta_launcher_activate_vt (launcher, vt, error);
-  else
-    {
-      g_debug ("Ignoring VT switch keybinding, not running as display server");
-      return TRUE;
-    }
-}
-
-/**
- * meta_activate_session:
- *
- * Tells mutter to activate the session. When mutter is a
- * Wayland compositor, this tells logind to switch over to
- * the new session.
- */
-gboolean
-meta_activate_session (void)
-{
-  GError *error = NULL;
-
-  if (!meta_launcher_activate_vt (launcher, -1, &error))
-    {
-      g_warning ("Could not activate session: %s\n", error->message);
-      g_error_free (error);
-      return FALSE;
-    }
-
-  return TRUE;
 }

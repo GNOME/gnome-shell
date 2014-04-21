@@ -49,4 +49,6 @@ struct _MetaBackendNativeClass
 
 GType meta_backend_native_get_type (void) G_GNUC_CONST;
 
+gboolean meta_activate_vt (int vt, GError **error);
+
 #endif /* META_BACKEND_NATIVE_H */

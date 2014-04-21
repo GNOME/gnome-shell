@@ -41,6 +41,4 @@ MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
 
 void meta_clutter_init (void);
 
-gboolean meta_activate_vt (int vt, GError **error);
-
 #endif /* META_BACKEND_H */

@@ -24,11 +24,19 @@
 
 #include "config.h"
 
+#include <meta/main.h>
 #include "meta-backend-native.h"
 
 #include "meta-idle-monitor-native.h"
+#include "meta-weston-launch.h"
 
-G_DEFINE_TYPE (MetaBackendNative, meta_backend_native, META_TYPE_BACKEND);
+struct _MetaBackendNativePrivate
+{
+  MetaLauncher *launcher;
+};
+typedef struct _MetaBackendNativePrivate MetaBackendNativePrivate;
+
+G_DEFINE_TYPE_WITH_PRIVATE (MetaBackendNative, meta_backend_native, META_TYPE_BACKEND);
 
 static MetaIdleMonitor *
 meta_backend_native_create_idle_monitor (MetaBackend *backend,
@@ -50,4 +58,48 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
 static void
 meta_backend_native_init (MetaBackendNative *native)
 {
+  MetaBackendNativePrivate *priv = meta_backend_native_get_instance_private (native);
+
+  /* We're a display server, so start talking to weston-launch. */
+  priv->launcher = meta_launcher_new ();
+}
+
+gboolean
+meta_activate_vt (int vt, GError **error)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaBackendNative *native = META_BACKEND_NATIVE (backend);
+  MetaBackendNativePrivate *priv = meta_backend_native_get_instance_private (native);
+
+  return meta_launcher_activate_vt (priv->launcher, vt, error);
+}
+
+/**
+ * meta_activate_session:
+ *
+ * Tells mutter to activate the session. When mutter is a
+ * Wayland compositor, this tells logind to switch over to
+ * the new session.
+ */
+gboolean
+meta_activate_session (void)
+{
+  GError *error = NULL;
+  MetaBackend *backend = meta_get_backend ();
+
+  /* Do nothing. */
+  if (!META_IS_BACKEND_NATIVE (backend))
+    return TRUE;
+
+  MetaBackendNative *native = META_BACKEND_NATIVE (backend);
+  MetaBackendNativePrivate *priv = meta_backend_native_get_instance_private (native);
+
+  if (!meta_launcher_activate_vt (priv->launcher, -1, &error))
+    {
+      g_warning ("Could not activate session: %s\n", error->message);
+      g_error_free (error);
+      return FALSE;
+    }
+
+  return TRUE;
 }
