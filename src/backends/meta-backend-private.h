@@ -22,29 +22,32 @@
  *     Jasper St. Pierre <jstpierre@mecheye.net>
  */
 
-#ifndef META_BACKEND_H
-#define META_BACKEND_H
+
+#ifndef META_BACKEND_PRIVATE_H
+#define META_BACKEND_PRIVATE_H
 
 #include <glib-object.h>
 
-#include <X11/Xlib.h>
-#include <meta/meta-idle-monitor.h>
+#include "meta-backend.h"
 
-typedef struct _MetaBackend        MetaBackend;
-typedef struct _MetaBackendClass   MetaBackendClass;
+#define META_TYPE_BACKEND             (meta_backend_get_type ())
+#define META_BACKEND(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_BACKEND, MetaBackend))
+#define META_BACKEND_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_BACKEND, MetaBackendClass))
+#define META_IS_BACKEND(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_BACKEND))
+#define META_IS_BACKEND_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_BACKEND))
+#define META_BACKEND_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_BACKEND, MetaBackendClass))
 
-GType meta_backend_get_type (void);
+struct _MetaBackend
+{
+  GObject parent;
 
-MetaBackend * meta_get_backend (void);
+  MetaIdleMonitor *device_monitors[256];
+  int device_id_max;
+};
 
-MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
-                                                 int          device_id);
+struct _MetaBackendClass
+{
+  GObjectClass parent_class;
+};
 
-void meta_backend_x11_handle_alarm_notify (MetaBackend *backend,
-                                           XEvent      *event);
-
-void meta_clutter_init (void);
-
-gboolean meta_activate_vt (int vt, GError **error);
-
-#endif /* META_BACKEND_H */
+#endif /* META_BACKEND_PRIVATE_H */

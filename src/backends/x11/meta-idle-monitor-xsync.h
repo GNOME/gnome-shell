@@ -44,6 +44,4 @@ GType meta_idle_monitor_xsync_get_type (void);
 void meta_idle_monitor_xsync_handle_xevent (MetaIdleMonitor       *monitor,
                                             XSyncAlarmNotifyEvent *xevent);
 
-void meta_idle_monitor_xsync_handle_xevent_all (XEvent *xevent);
-
 #endif /* META_IDLE_MONITOR_XSYNC_H */

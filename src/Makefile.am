@@ -49,6 +49,7 @@ wayland_protocols = \
 libmutter_la_SOURCES =				\
 	backends/meta-backend.c			\
 	backends/meta-backend.h			\
+	backends/meta-backend-private.h		\
 	backends/meta-cursor.c			\
 	backends/meta-cursor.h			\
 	backends/meta-cursor-private.h		\

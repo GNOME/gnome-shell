@@ -38,8 +38,7 @@
 #include <meta/meta-idle-monitor.h>
 #include "meta-idle-monitor-private.h"
 #include "meta-idle-monitor-dbus.h"
-#include "backends/x11/meta-idle-monitor-xsync.h"
-#include "backends/native/meta-idle-monitor-native.h"
+#include "meta-backend.h"
 
 G_STATIC_ASSERT(sizeof(unsigned long) == sizeof(gpointer));
 
@@ -53,9 +52,6 @@ enum
 static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (MetaIdleMonitor, meta_idle_monitor, G_TYPE_OBJECT)
-
-static MetaIdleMonitor *device_monitors[256];
-static int              device_id_max;
 
 void
 _meta_idle_monitor_watch_fire (MetaIdleMonitorWatch *watch)
@@ -160,38 +156,6 @@ meta_idle_monitor_init (MetaIdleMonitor *monitor)
 {
 }
 
-static GType
-get_idle_monitor_type (void)
-{
-#if defined(CLUTTER_WINDOWING_X11)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
-    return META_TYPE_IDLE_MONITOR_XSYNC;
-#endif
-
-  return META_TYPE_IDLE_MONITOR_NATIVE;
-}
-
-static void
-ensure_device_monitor (int device_id)
-{
-  if (device_monitors[device_id])
-    return;
-
-  device_monitors[device_id] = g_object_new (get_idle_monitor_type (),
-                                             "device-id", device_id,
-                                             NULL);
-  device_id_max = MAX (device_id_max, device_id);
-}
-
-/* FIXME -- destroy device monitors at some point */
-G_GNUC_UNUSED static void
-destroy_device_monitor (int device_id)
-{
-  g_clear_object (&device_monitors[device_id]);
-  if (device_id == device_id_max)
-    device_id_max--;
-}
-
 /**
  * meta_idle_monitor_get_core:
  *
@@ -202,8 +166,8 @@ destroy_device_monitor (int device_id)
 MetaIdleMonitor *
 meta_idle_monitor_get_core (void)
 {
-  ensure_device_monitor (0);
-  return device_monitors[0];
+  MetaBackend *backend = meta_get_backend ();
+  return meta_backend_get_idle_monitor (backend, 0);
 }
 
 /**
@@ -217,10 +181,8 @@ meta_idle_monitor_get_core (void)
 MetaIdleMonitor *
 meta_idle_monitor_get_for_device (int device_id)
 {
-  g_return_val_if_fail (device_id > 0 && device_id < 256, NULL);
-
-  ensure_device_monitor (device_id);
-  return device_monitors[device_id];
+  MetaBackend *backend = meta_get_backend ();
+  return meta_backend_get_idle_monitor (backend, device_id);
 }
 
 static MetaIdleMonitorWatch *
@@ -353,21 +315,4 @@ gint64
 meta_idle_monitor_get_idletime (MetaIdleMonitor *monitor)
 {
   return META_IDLE_MONITOR_GET_CLASS (monitor)->get_idletime (monitor);
-}
-
-void
-meta_idle_monitor_xsync_handle_xevent_all (XEvent *xevent)
-{
-  int i;
-
-  for (i = 0; i <= device_id_max; i++)
-    {
-      if (device_monitors[i])
-        {
-          if (!META_IS_IDLE_MONITOR_XSYNC (device_monitors[i]))
-            return;
-
-          meta_idle_monitor_xsync_handle_xevent (device_monitors[i], (XSyncAlarmNotifyEvent*)xevent);
-        }
-    }
 }

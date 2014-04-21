@@ -25,6 +25,7 @@
 #include "config.h"
 
 #include "meta-backend.h"
+#include "meta-backend-private.h"
 #include <meta/main.h>
 
 #include <gdk/gdkx.h>
@@ -33,6 +34,118 @@
 
 #include "backends/native/meta-weston-launch.h"
 #include <meta/util.h>
+
+#include "backends/x11/meta-idle-monitor-xsync.h"
+#include "backends/native/meta-idle-monitor-native.h"
+
+static MetaBackend *_backend;
+
+MetaBackend *
+meta_get_backend (void)
+{
+  return _backend;
+}
+
+G_DEFINE_TYPE (MetaBackend, meta_backend, G_TYPE_OBJECT);
+
+static void
+meta_backend_finalize (GObject *object)
+{
+  MetaBackend *backend = META_BACKEND (object);
+  int i;
+
+  for (i = 0; i <= backend->device_id_max; i++)
+    {
+      if (backend->device_monitors[i])
+        g_object_unref (backend->device_monitors[i]);
+    }
+
+  G_OBJECT_CLASS (meta_backend_parent_class)->finalize (object);
+}
+
+static void
+meta_backend_class_init (MetaBackendClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_backend_finalize;
+}
+
+static void
+meta_backend_init (MetaBackend *backend)
+{
+  _backend = backend;
+}
+
+static GType
+get_idle_monitor_type (void)
+{
+#if defined(CLUTTER_WINDOWING_X11)
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
+    return META_TYPE_IDLE_MONITOR_XSYNC;
+#endif
+
+  return META_TYPE_IDLE_MONITOR_NATIVE;
+}
+
+/* FIXME -- destroy device monitors at some point */
+G_GNUC_UNUSED static void
+destroy_device_monitor (MetaBackend *backend,
+                        int          device_id)
+{
+  g_clear_object (&backend->device_monitors[device_id]);
+  if (device_id == backend->device_id_max)
+    backend->device_id_max--;
+}
+
+MetaIdleMonitor *
+meta_backend_get_idle_monitor (MetaBackend *backend,
+                               int          device_id)
+{
+  g_return_val_if_fail (device_id >= 0 && device_id < 256, NULL);
+
+  if (!backend->device_monitors[device_id])
+    {
+      backend->device_monitors[device_id] = g_object_new (get_idle_monitor_type (),
+                                                          "device-id", device_id,
+                                                          NULL);
+      backend->device_id_max = MAX (backend->device_id_max, device_id);
+    }
+
+  return backend->device_monitors[device_id];
+}
+
+void
+meta_backend_x11_handle_alarm_notify (MetaBackend *backend,
+                                      XEvent      *xevent)
+{
+  int i;
+
+  for (i = 0; i <= backend->device_id_max; i++)
+    {
+      if (backend->device_monitors[i])
+        {
+          if (!META_IS_IDLE_MONITOR_XSYNC (backend->device_monitors[i]))
+            return;
+
+          meta_idle_monitor_xsync_handle_xevent (backend->device_monitors[i], (XSyncAlarmNotifyEvent*)xevent);
+        }
+    }
+}
+
+static GType
+get_backend_type (void)
+{
+  return META_TYPE_BACKEND;
+}
+
+static void
+meta_create_backend (void)
+{
+  /* The initializer above installs it in _backend so meta_get_backend
+   * is valid during initialization. */
+  g_object_new (get_backend_type (), NULL);
+}
 
 /* Mutter is responsible for pulling events off the X queue, so Clutter
  * doesn't need (and shouldn't) run its normal event source which polls
@@ -88,6 +201,8 @@ void
 meta_clutter_init (void)
 {
   GSource *source;
+
+  meta_create_backend ();
 
   /* When running as an X11 compositor, we install our own event filter and
    * pass events to Clutter explicitly, so we need to prevent Clutter from

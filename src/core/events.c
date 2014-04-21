@@ -34,6 +34,7 @@
 #include "window-private.h"
 #include "bell.h"
 #include "workspace-private.h"
+#include "backends/meta-backend.h"
 #include "backends/x11/meta-idle-monitor-xsync.h"
 #include "backends/native/meta-idle-monitor-native.h"
 
@@ -1264,7 +1265,10 @@ handle_other_xevent (MetaDisplay *display,
           bypass_gtk = TRUE; /* GTK doesn't want to see this really */
         }
       else
-        meta_idle_monitor_xsync_handle_xevent_all (event);
+        {
+          MetaBackend *backend = meta_get_backend ();
+          meta_backend_x11_handle_alarm_notify (backend, event);
+        }
 
       goto out;
     }
