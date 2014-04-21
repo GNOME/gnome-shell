@@ -27,14 +27,15 @@
 #include <gbm.h>
 
 #include "meta-cursor.h"
+#include "meta-cursor-renderer.h"
 
 struct _MetaCursorTracker {
   GObject parent_instance;
 
   MetaScreen *screen;
+  MetaCursorRenderer *renderer;
 
   gboolean is_showing;
-  gboolean has_hw_cursor;
 
   /* The cursor tracker stores the cursor for the current grab
    * operation, the cursor for the window with pointer focus, and
@@ -61,15 +62,6 @@ struct _MetaCursorTracker {
   MetaCursorReference *window_cursor;
 
   MetaCursorReference *root_cursor;
-
-  int current_x, current_y;
-  MetaRectangle current_rect;
-  MetaRectangle previous_rect;
-  gboolean previous_is_valid;
-
-  CoglPipeline *pipeline;
-  int drm_fd;
-  struct gbm_device *gbm;
 };
 
 struct _MetaCursorTrackerClass {
@@ -90,7 +82,6 @@ void     meta_cursor_tracker_set_root_cursor     (MetaCursorTracker   *tracker,
 void     meta_cursor_tracker_update_position (MetaCursorTracker *tracker,
 					      int                new_x,
 					      int                new_y);
-void     meta_cursor_tracker_paint           (MetaCursorTracker *tracker);
 
 void     meta_cursor_tracker_force_update (MetaCursorTracker *tracker);
 

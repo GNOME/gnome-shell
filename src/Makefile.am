@@ -54,6 +54,8 @@ libmutter_la_SOURCES =				\
 	backends/meta-cursor-private.h		\
 	backends/meta-cursor-tracker.c		\
 	backends/meta-cursor-tracker-private.h	\
+	backends/meta-cursor-renderer.c		\
+	backends/meta-cursor-renderer.h		\
 	backends/meta-display-config-shared.h	\
 	backends/meta-idle-monitor.c		\
 	backends/meta-idle-monitor-private.h	\
