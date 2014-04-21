@@ -83,7 +83,7 @@ const Indicator = new Lang.Class({
         this._item.icon.icon_name = 'airplane-mode-symbolic';
         this._item.status.text = _("On");
         this._offItem = this._item.menu.addAction(_("Turn Off"), Lang.bind(this, function() {
-            this._proxy.AirplaneMode = false;
+            this._manager.airplaneMode = false;
         }));
         this._item.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
         this.menu.addMenuItem(this._item);
