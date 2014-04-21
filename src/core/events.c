@@ -1941,6 +1941,17 @@ meta_display_handle_event (MetaDisplay        *display,
         }
     }
 
+  if (display->grab_window == window &&
+      meta_grab_op_is_moving_or_resizing (display->grab_op))
+    {
+      if (meta_window_handle_mouse_grab_op_event (window, event))
+        {
+          bypass_clutter = TRUE;
+          bypass_wayland = TRUE;
+          goto out;
+        }
+    }
+
   switch (event->type)
     {
     case CLUTTER_BUTTON_PRESS:
@@ -1948,14 +1959,6 @@ meta_display_handle_event (MetaDisplay        *display,
         break;
 
       display->overlay_key_only_pressed = FALSE;
-
-      if (display->grab_window == window &&
-          meta_grab_op_is_moving_or_resizing (display->grab_op))
-        {
-          meta_window_handle_mouse_grab_op_event (window, event);
-          bypass_clutter = TRUE;
-          bypass_wayland = TRUE;
-        }
 
       if (window && display->grab_op == META_GRAB_OP_NONE)
         {
@@ -2111,26 +2114,9 @@ meta_display_handle_event (MetaDisplay        *display,
         break;
 
       display->overlay_key_only_pressed = FALSE;
-
-      if (display->grab_window == window &&
-          meta_grab_op_is_moving_or_resizing (display->grab_op))
-        {
-          meta_window_handle_mouse_grab_op_event (window, event);
-          bypass_clutter = TRUE;
-          bypass_wayland = TRUE;
-        }
       break;
-    case CLUTTER_MOTION:
-      if (grab_op_should_block_mouse_events (display->grab_op))
-        break;
 
-      if (display->grab_window == window &&
-          meta_grab_op_is_moving_or_resizing (display->grab_op))
-        {
-          meta_window_handle_mouse_grab_op_event (window, event);
-          bypass_clutter = TRUE;
-          bypass_wayland = TRUE;
-        }
+    case CLUTTER_MOTION:
       break;
 
     case CLUTTER_KEY_PRESS:
@@ -2152,6 +2138,7 @@ meta_display_handle_event (MetaDisplay        *display,
       break;
     }
 
+ out:
   /* If the compositor has a grab, don't pass that through to Wayland */
   if (display->grab_op == META_GRAB_OP_COMPOSITOR)
     bypass_wayland = TRUE;

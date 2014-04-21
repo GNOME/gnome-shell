@@ -7564,7 +7564,7 @@ end_grab_op (MetaWindow *window,
   meta_display_end_grab_op (window->display, event->any.time);
 }
 
-void
+gboolean
 meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                          const ClutterEvent *event)
 {
@@ -7582,7 +7582,7 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
         {
           end_grab_op (window, event);
         }
-      break;
+      return TRUE;
 
     case CLUTTER_BUTTON_RELEASE:
       if (event->button.button == 1 ||
@@ -7590,7 +7590,7 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
         {
           end_grab_op (window, event);
         }
-      break;
+      return TRUE;
 
     case CLUTTER_MOTION:
       meta_display_check_threshold_reached (window->display,
@@ -7611,10 +7611,10 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                          event->motion.y,
                          FALSE);
         }
-      break;
+      return TRUE;
 
     default:
-      break;
+      return FALSE;
     }
 }
 
