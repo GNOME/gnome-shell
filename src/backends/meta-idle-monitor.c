@@ -163,10 +163,12 @@ meta_idle_monitor_init (MetaIdleMonitor *monitor)
 static GType
 get_idle_monitor_type (void)
 {
-  if (meta_is_wayland_compositor ())
-    return META_TYPE_IDLE_MONITOR_NATIVE;
-  else
+#if defined(CLUTTER_WINDOWING_X11)
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
     return META_TYPE_IDLE_MONITOR_XSYNC;
+#endif
+
+  return META_TYPE_IDLE_MONITOR_NATIVE;
 }
 
 static void
@@ -358,10 +360,14 @@ meta_idle_monitor_xsync_handle_xevent_all (XEvent *xevent)
 {
   int i;
 
-  if (meta_is_wayland_compositor ())
-    return;
-
   for (i = 0; i <= device_id_max; i++)
-    if (device_monitors[i])
-      meta_idle_monitor_xsync_handle_xevent (device_monitors[i], (XSyncAlarmNotifyEvent*)xevent);
+    {
+      if (device_monitors[i])
+        {
+          if (!META_IS_IDLE_MONITOR_XSYNC (device_monitors[i]))
+            return;
+
+          meta_idle_monitor_xsync_handle_xevent (device_monitors[i], (XSyncAlarmNotifyEvent*)xevent);
+        }
+    }
 }

@@ -1877,8 +1877,10 @@ handle_idletime_for_event (const ClutterEvent *event)
   int device_id;
 
   /* This is handled by XSync under X11. */
-  if (!meta_is_wayland_compositor ())
+#if defined(CLUTTER_WINDOWING_X11)
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
     return;
+#endif
 
   device = clutter_event_get_device (event);
   if (device == NULL)

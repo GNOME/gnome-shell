@@ -25,6 +25,8 @@
 #include "meta-idle-monitor-xsync.h"
 #include "meta-idle-monitor-private.h"
 
+#include <clutter/x11/clutter-x11.h>
+
 #include <meta/util.h>
 #include "display-private.h"
 
@@ -192,9 +194,7 @@ meta_idle_monitor_xsync_constructed (GObject *object)
 {
   MetaIdleMonitorXSync *monitor_xsync = META_IDLE_MONITOR_XSYNC (object);
 
-  g_assert (!meta_is_wayland_compositor ());
-
-  monitor_xsync->display = meta_get_display ()->xdisplay;
+  monitor_xsync->display = clutter_x11_get_default_display ();;
   init_xsync (monitor_xsync);
 
   G_OBJECT_CLASS (meta_idle_monitor_xsync_parent_class)->constructed (object);
