@@ -645,8 +645,6 @@ void meta_window_update_sync_request_counter (MetaWindow *window,
 
 void meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                               const ClutterEvent *event);
-void meta_window_handle_mouse_grab_op_xevent (MetaWindow         *window,
-                                              XIDeviceEvent      *xevent);
 
 GList* meta_window_get_workspaces (MetaWindow *window);
 
