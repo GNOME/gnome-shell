@@ -205,19 +205,7 @@ get_default_backend (void)
 static MetaMonitorManager *
 meta_monitor_manager_new (void)
 {
-  const char *env;
-  GType type;
-
-  env = g_getenv ("META_DEBUG_MULTIMONITOR");
-
-  if (env == NULL)
-    type = get_default_backend ();
-  else if (strcmp (env, "xrandr") == 0)
-    type = META_TYPE_MONITOR_MANAGER_XRANDR;
-  else
-    type = META_TYPE_MONITOR_MANAGER;
-
-  return g_object_new (type, NULL);
+  return g_object_new (get_default_backend (), NULL);
 }
 
 static void
