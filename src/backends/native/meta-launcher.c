@@ -64,11 +64,11 @@ request_vt_switch_idle (gpointer user_data)
 
 static gboolean
 send_message_to_wl (MetaLauncher           *self,
-		    void                   *message,
-		    gsize                   size,
-		    GSocketControlMessage  *out_cmsg,
-		    GSocketControlMessage **in_cmsg,
-		    GError                **error)
+                    void                   *message,
+                    gsize                   size,
+                    GSocketControlMessage  *out_cmsg,
+                    GSocketControlMessage **in_cmsg,
+                    GError                **error)
 {
   struct weston_launcher_reply reply;
   GInputVector in_iov = { &reply, sizeof (reply) };
@@ -81,15 +81,15 @@ send_message_to_wl (MetaLauncher           *self,
   out_all_cmsg[0] = out_cmsg;
   out_all_cmsg[1] = NULL;
   if (g_socket_send_message (self->weston_launch, NULL,
-			     &out_iov, 1,
-			     out_all_cmsg, -1,
-			     flags, NULL, error) != (gssize)size)
+                             &out_iov, 1,
+                             out_all_cmsg, -1,
+                             flags, NULL, error) != (gssize)size)
     return FALSE;
 
   if (g_socket_receive_message (self->weston_launch, NULL,
-				&in_iov, 1,
-			        &in_all_cmsg, NULL,
-				&flags, NULL, error) != sizeof (reply))
+                                &in_iov, 1,
+                                &in_all_cmsg, NULL,
+                                &flags, NULL, error) != sizeof (reply))
     return FALSE;
 
   while (reply.header.opcode != ((struct weston_launcher_message*)message)->opcode)
@@ -109,34 +109,34 @@ send_message_to_wl (MetaLauncher           *self,
       g_assert (reply.header.opcode != WESTON_LAUNCHER_SERVER_VT_ENTER);
 
       switch (reply.header.opcode)
-	{
-	case WESTON_LAUNCHER_SERVER_REQUEST_VT_SWITCH:
-	  id = g_idle_add (request_vt_switch_idle, self);
-	  g_source_set_name_by_id (id, "[mutter] request_vt_switch_idle");
-	  break;
+        {
+        case WESTON_LAUNCHER_SERVER_REQUEST_VT_SWITCH:
+          id = g_idle_add (request_vt_switch_idle, self);
+          g_source_set_name_by_id (id, "[mutter] request_vt_switch_idle");
+          break;
 
-	default:
-	  g_assert_not_reached ();
-	}
+        default:
+          g_assert_not_reached ();
+        }
 
       if (g_socket_receive_message (self->weston_launch, NULL,
-				    &in_iov, 1,
-				    NULL, NULL,
-				    &flags, NULL, error) != sizeof (reply))
-	return FALSE;
+                                    &in_iov, 1,
+                                    NULL, NULL,
+                                    &flags, NULL, error) != sizeof (reply))
+        return FALSE;
     }
 
   if (reply.ret != 0)
     {
       if (reply.ret == -1)
-	g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		     "Got failure from weston-launch");
+        g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                     "Got failure from weston-launch");
       else
-	g_set_error (error, G_IO_ERROR, g_io_error_from_errno (-reply.ret),
-		     "Got failure from weston-launch: %s", strerror (-reply.ret));
+        g_set_error (error, G_IO_ERROR, g_io_error_from_errno (-reply.ret),
+                     "Got failure from weston-launch: %s", strerror (-reply.ret));
 
       for (i = 0; in_all_cmsg && in_all_cmsg[i]; i++)
-	g_object_unref (in_all_cmsg[i]);
+        g_object_unref (in_all_cmsg[i]);
       g_free (in_all_cmsg);
 
       return FALSE;
@@ -145,7 +145,7 @@ send_message_to_wl (MetaLauncher           *self,
   if (in_all_cmsg && in_all_cmsg[0])
     {
       for (i = 1; in_all_cmsg[i]; i++)
-	g_object_unref (in_all_cmsg[i]);
+        g_object_unref (in_all_cmsg[i]);
       *in_cmsg = in_all_cmsg[0];
     }
 
@@ -229,9 +229,9 @@ meta_launcher_leave (MetaLauncher *launcher)
 
 static int
 on_evdev_device_open (const char  *path,
-		      int          flags,
-		      gpointer     user_data,
-		      GError     **error)
+                      int          flags,
+                      gpointer     user_data,
+                      GError     **error)
 {
   MetaLauncher *launcher = user_data;
 
@@ -239,8 +239,8 @@ on_evdev_device_open (const char  *path,
 }
 
 static void
-on_evdev_device_close (int          fd,
-                       gpointer     user_data)
+on_evdev_device_close (int      fd,
+                       gpointer user_data)
 {
   close (fd);
 }
@@ -289,8 +289,8 @@ handle_request_vt_switch (MetaLauncher *launcher)
 
 static gboolean
 on_socket_readable (GSocket      *socket,
-		    GIOCondition  condition,
-		    gpointer      user_data)
+                    GIOCondition  condition,
+                    gpointer      user_data)
 {
   MetaLauncher *launcher = user_data;
   struct weston_launcher_event event;
@@ -398,8 +398,8 @@ meta_launcher_activate_session (MetaLauncher  *launcher,
 
 gboolean
 meta_launcher_activate_vt (MetaLauncher  *launcher,
-			   signed char    vt,
-			   GError       **error)
+                           signed char    vt,
+                           GError       **error)
 {
   struct weston_launcher_activate_vt message;
 
