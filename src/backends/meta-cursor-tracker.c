@@ -172,6 +172,8 @@ meta_cursor_tracker_new (MetaScreen *screen)
     return make_x11_cursor_tracker (screen);
 }
 
+static MetaCursorTracker *_cursor_tracker;
+
 /**
  * meta_cursor_tracker_get_for_screen:
  * @screen: the #MetaScreen
@@ -183,14 +185,10 @@ meta_cursor_tracker_new (MetaScreen *screen)
 MetaCursorTracker *
 meta_cursor_tracker_get_for_screen (MetaScreen *screen)
 {
-  MetaCursorTracker *self;
+  if (!_cursor_tracker)
+    _cursor_tracker = meta_cursor_tracker_new (screen);
 
-  if (screen->cursor_tracker)
-    return screen->cursor_tracker;
-
-  self = meta_cursor_tracker_new (screen);
-  screen->cursor_tracker = self;
-  return self;
+  return _cursor_tracker;
 }
 
 static void

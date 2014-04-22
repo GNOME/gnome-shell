@@ -79,7 +79,6 @@ struct _MetaScreen
   MetaStack *stack;
   MetaStackTracker *stack_tracker;
 
-  MetaCursorTracker *cursor_tracker;
   MetaCursor current_cursor;
 
   Window wm_sn_selection_window;
