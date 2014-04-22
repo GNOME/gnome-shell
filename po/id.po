@@ -2,23 +2,23 @@
 # Copyright (C) 2010 Intel Corporation
 # This file is distributed under the same license as the clutter package.
 #
-# Andika Triwidada <andika@gmail.com>, 2010-2014.
-# Dirgita <dirgitadevina@yahoo.co.id>, 2012.
+# Andika Triwidada <andika@gmail.com>, 2010, 2011, 2012, 2013, 2014.
+# Dirgita <dirgitadevina@yahoo.co.id>, 2012, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter clutter-1.18\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-21 08:31+0000\n"
-"PO-Revision-Date: 2014-03-21 17:37+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
-"Language-Team: Indonesian <gnome@i15n.org>\n"
+"POT-Creation-Date: 2014-04-05 15:11+0000\n"
+"PO-Revision-Date: 2014-04-09 05:39+0700\n"
+"Last-Translator: Dirgita <dirgitadevina@yahoo.co.id>\n"
+"Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: ../clutter/clutter-actor.c:6224
 msgid "X coordinate"
@@ -1676,7 +1676,7 @@ msgstr "Perspektif"
 
 #: ../clutter/clutter-stage.c:1994
 msgid "Perspective projection parameters"
-msgstr "Parameter projeksi perspektif"
+msgstr "Parameter proyeksi perspektif"
 
 #: ../clutter/clutter-stage.c:2009
 msgid "Title"
@@ -2827,3 +2827,4 @@ msgstr "Pengalihan Penimpaan Jendela"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:636
 msgid "If this is an override-redirect window"
 msgstr "Bila ini adalah jendela pengalihan-penimpaan"
+
