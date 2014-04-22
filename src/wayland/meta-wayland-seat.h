@@ -19,8 +19,8 @@
  * 02111-1307, USA.
  */
 
-#ifndef __META_WAYLAND_SEAT_H__
-#define __META_WAYLAND_SEAT_H__
+#ifndef META_WAYLAND_SEAT_H
+#define META_WAYLAND_SEAT_H
 
 #include <wayland-server.h>
 #include <clutter/clutter.h>
@@ -57,24 +57,17 @@ struct _MetaWaylandSeat
   struct wl_display *display;
 };
 
-void
-meta_wayland_seat_init (MetaWaylandCompositor *compositor);
+void meta_wayland_seat_init (MetaWaylandCompositor *compositor);
 
-void
-meta_wayland_seat_free (MetaWaylandSeat *seat);
+void meta_wayland_seat_free (MetaWaylandSeat *seat);
 
-void
-meta_wayland_seat_update (MetaWaylandSeat    *seat,
-                          const ClutterEvent *event);
+void meta_wayland_seat_update (MetaWaylandSeat    *seat,
+                               const ClutterEvent *event);
 
-gboolean
-meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
-                                const ClutterEvent *event);
+gboolean meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
+                                         const ClutterEvent *event);
 
-void
-meta_wayland_seat_repick (MetaWaylandSeat *seat);
+void meta_wayland_seat_repick (MetaWaylandSeat *seat);
+void meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat);
 
-void
-meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat);
-
-#endif /* __META_WAYLAND_SEAT_H__ */
+#endif /* META_WAYLAND_SEAT_H */

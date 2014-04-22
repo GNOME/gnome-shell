@@ -20,17 +20,15 @@
  * OF THIS SOFTWARE.
  */
 
-#ifndef __META_WAYLAND_DATA_DEVICE_H__
-#define __META_WAYLAND_DATA_DEVICE_H__
+#ifndef META_WAYLAND_DATA_DEVICE_H
+#define META_WAYLAND_DATA_DEVICE_H
 
 #include <wayland-server.h>
 
 #include "meta-wayland-private.h"
 
-void
-meta_wayland_data_device_manager_init (MetaWaylandCompositor *compositor);
+void meta_wayland_data_device_manager_init (MetaWaylandCompositor *compositor);
 
-void
-meta_wayland_data_device_set_keyboard_focus (MetaWaylandSeat *seat);
+void meta_wayland_data_device_set_keyboard_focus (MetaWaylandSeat *seat);
 
-#endif /* __META_WAYLAND_DATA_DEVICE_H__ */
+#endif /* META_WAYLAND_DATA_DEVICE_H */

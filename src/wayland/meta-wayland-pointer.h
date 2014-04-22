@@ -17,8 +17,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __META_WAYLAND_POINTER_H__
-#define __META_WAYLAND_POINTER_H__
+#ifndef META_WAYLAND_POINTER_H
+#define META_WAYLAND_POINTER_H
 
 #include <wayland-server.h>
 
@@ -74,52 +74,40 @@ struct _MetaWaylandPointer
   guint32 button_count;
 };
 
-void
-meta_wayland_pointer_init (MetaWaylandPointer *pointer,
-                           struct wl_display  *display);
+void meta_wayland_pointer_init (MetaWaylandPointer *pointer,
+                                struct wl_display  *display);
 
-void
-meta_wayland_pointer_release (MetaWaylandPointer *pointer);
+void meta_wayland_pointer_release (MetaWaylandPointer *pointer);
 
-void
-meta_wayland_pointer_update (MetaWaylandPointer *pointer,
-                             const ClutterEvent *event);
+void meta_wayland_pointer_update (MetaWaylandPointer *pointer,
+                                  const ClutterEvent *event);
 
-gboolean
-meta_wayland_pointer_handle_event (MetaWaylandPointer *pointer,
-                                   const ClutterEvent *event);
+gboolean meta_wayland_pointer_handle_event (MetaWaylandPointer *pointer,
+                                            const ClutterEvent *event);
 
-void
-meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
-                                MetaWaylandSurface *surface);
+void meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
+                                     MetaWaylandSurface *surface);
 
-void
-meta_wayland_pointer_start_grab (MetaWaylandPointer *pointer,
-                                 MetaWaylandPointerGrab *grab);
+void meta_wayland_pointer_start_grab (MetaWaylandPointer *pointer,
+                                      MetaWaylandPointerGrab *grab);
 
-void
-meta_wayland_pointer_end_grab (MetaWaylandPointer *pointer);
+void meta_wayland_pointer_end_grab (MetaWaylandPointer *pointer);
 
-gboolean
-meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
-				       MetaWaylandSurface *popup);
+gboolean meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
+                                                MetaWaylandSurface *popup);
 
-void
-meta_wayland_pointer_repick (MetaWaylandPointer *pointer);
+void meta_wayland_pointer_repick (MetaWaylandPointer *pointer);
 
-void
-meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
-					       MetaWaylandSurface *surface,
-					       wl_fixed_t         *x,
-					       wl_fixed_t         *y);
+void meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
+                                                    MetaWaylandSurface *surface,
+                                                    wl_fixed_t         *x,
+                                                    wl_fixed_t         *y);
 
-void
-meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer);
+void meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer);
 
-void
-meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
-                                          struct wl_client   *client,
-                                          struct wl_resource *seat_resource,
-                                          uint32_t id);
+void meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
+                                               struct wl_client   *client,
+                                               struct wl_resource *seat_resource,
+                                               uint32_t id);
 
-#endif /* __META_WAYLAND_POINTER_H__ */
+#endif /* META_WAYLAND_POINTER_H */
