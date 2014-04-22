@@ -269,11 +269,10 @@ update_cursor (MetaCursorRenderer *renderer)
 
   if (meta_is_wayland_compositor ())
     {
+      update_hw_cursor (renderer);
+
       if (priv->has_hw_cursor)
-        {
-          update_hw_cursor (renderer);
-          move_hw_cursor (renderer);
-        }
+        move_hw_cursor (renderer);
       else
         queue_redraw (renderer);
     }
