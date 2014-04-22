@@ -21,14 +21,9 @@
 
 #include <config.h>
 
-#include <clutter/clutter.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
-#include <cogl/cogl-wayland-server.h>
-
 #include "meta-wayland-stage.h"
+
 #include "meta-wayland-private.h"
-#include "meta/meta-window-actor.h"
-#include "meta/meta-shaped-texture.h"
 #include "meta-cursor-tracker-private.h"
 
 G_DEFINE_TYPE (MetaWaylandStage, meta_wayland_stage, CLUTTER_TYPE_STAGE);

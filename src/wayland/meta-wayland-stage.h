@@ -21,9 +21,6 @@
 #define META_WAYLAND_STAGE_H
 
 #include <clutter/clutter.h>
-#include <wayland-server.h>
-
-#include "window-private.h"
 
 G_BEGIN_DECLS
 
