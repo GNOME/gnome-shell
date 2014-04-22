@@ -236,6 +236,10 @@ queue_redraw (MetaCursorRenderer *renderer)
 
   g_assert (meta_is_wayland_compositor ());
 
+  /* During early initialization, we can have no stage */
+  if (!stage)
+    return;
+
   /* Clear the location the cursor was at before, if we need to. */
   if (priv->previous_is_valid)
     {
