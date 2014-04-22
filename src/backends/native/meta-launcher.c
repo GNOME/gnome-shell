@@ -395,6 +395,13 @@ meta_launcher_free (MetaLauncher *launcher)
 }
 
 gboolean
+meta_launcher_activate_session (MetaLauncher  *launcher,
+                                GError       **error)
+{
+  return meta_launcher_activate_vt (launcher, -1, error);
+}
+
+gboolean
 meta_launcher_activate_vt (MetaLauncher  *launcher,
 			   signed char    vt,
 			   GError       **error)
@@ -406,4 +413,3 @@ meta_launcher_activate_vt (MetaLauncher  *launcher,
 
   return send_message_to_wl (launcher, &message, sizeof (message), NULL, NULL, error);
 }
-

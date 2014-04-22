@@ -221,7 +221,7 @@ meta_activate_session (void)
   MetaBackendNative *native = META_BACKEND_NATIVE (backend);
   MetaBackendNativePrivate *priv = meta_backend_native_get_instance_private (native);
 
-  if (!meta_launcher_activate_vt (priv->launcher, -1, &error))
+  if (!meta_launcher_activate_session (priv->launcher, &error))
     {
       g_warning ("Could not activate session: %s\n", error->message);
       g_error_free (error);
