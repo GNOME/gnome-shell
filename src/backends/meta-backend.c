@@ -151,8 +151,8 @@ get_backend_type (void)
 static void
 meta_create_backend (void)
 {
-  /* The initializer above installs it in _backend so meta_get_backend
-   * is valid during initialization. */
+  /* meta_backend_init() above install the backend globally so
+   * so meta_get_backend() works even during initialization. */
   g_object_new (get_backend_type (), NULL);
 }
 
