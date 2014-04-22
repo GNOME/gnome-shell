@@ -21,7 +21,6 @@
 #define META_LAUNCHER_H
 
 #include <glib-object.h>
-#include "weston-launch.h"
 
 typedef struct _MetaLauncher MetaLauncher;
 

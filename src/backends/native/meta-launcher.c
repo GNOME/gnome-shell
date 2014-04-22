@@ -17,35 +17,27 @@
  * 02111-1307, USA.
  */
 
-#include <config.h>
+#include "config.h"
 
-#include <gio/gio.h>
+#include "meta-launcher.h"
+#include "weston-launch.h"
+
 #include <gio/gunixfdmessage.h>
 
 #include <clutter/clutter.h>
 #include <clutter/egl/clutter-egl.h>
 #include <clutter/evdev/clutter-evdev.h>
 
-#include <glib.h>
-#include <sys/time.h>
-#include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <sys/socket.h>
-#include <sys/un.h>
 #include <stdlib.h>
-#include <sys/wait.h>
-
-#include <drm.h>
-#include <xf86drm.h>
-#include <xf86drmMode.h>
+#include <string.h>
 
 #include "wayland/meta-wayland-private.h"
 #include "backends/meta-backend.h"
 #include "meta-cursor-renderer-native.h"
-#include "meta-launcher.h"
 
 struct _MetaLauncher
 {
