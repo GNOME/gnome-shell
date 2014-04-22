@@ -488,9 +488,3 @@ meta_cursor_tracker_force_update (MetaCursorTracker *tracker)
 
   meta_cursor_renderer_force_update (tracker->renderer);
 }
-
-struct gbm_device *
-meta_cursor_tracker_get_gbm_device (MetaCursorTracker *tracker)
-{
-  return meta_cursor_renderer_get_gbm_device (tracker->renderer);
-}

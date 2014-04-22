@@ -27,6 +27,7 @@
 
 #include "display-private.h"
 #include "screen-private.h"
+#include "meta-backend.h"
 #include "meta-cursor-tracker-private.h"
 
 #include <string.h>
@@ -175,6 +176,14 @@ meta_cursor_image_load_gbm_buffer (struct gbm_device *gbm,
     meta_warning ("HW cursor for format %d not supported\n", gbm_format);
 }
 
+static struct gbm_device *
+get_gbm_device (void)
+{
+  MetaBackend *meta_backend = meta_get_backend ();
+  MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (meta_backend);
+  return meta_cursor_renderer_get_gbm_device (renderer);
+}
+
 static void
 meta_cursor_image_load_from_xcursor_image (MetaCursorTracker *tracker,
                                            MetaCursorImage   *image,
@@ -210,7 +219,7 @@ meta_cursor_image_load_from_xcursor_image (MetaCursorTracker *tracker,
                                                   (uint8_t *) xc_image->pixels,
                                                   NULL);
 
-  gbm = meta_cursor_tracker_get_gbm_device (tracker);
+  gbm = get_gbm_device ();
   if (gbm)
     meta_cursor_image_load_gbm_buffer (gbm,
                                        image,
@@ -239,18 +248,18 @@ meta_cursor_reference_from_theme (MetaCursorTracker  *tracker,
 }
 
 static void
-meta_cursor_image_load_from_buffer (MetaCursorTracker  *tracker,
-                                    MetaCursorImage    *image,
+meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
                                     struct wl_resource *buffer,
                                     int                 hot_x,
                                     int                 hot_y)
 {
+  struct gbm_device *gbm = get_gbm_device ();
+
   ClutterBackend *backend;
   CoglContext *cogl_context;
   struct wl_shm_buffer *shm_buffer;
   uint32_t gbm_format;
   int width, height;
-  struct gbm_device *gbm = meta_cursor_tracker_get_gbm_device (tracker);
 
   image->hot_x = hot_x;
   image->hot_y = hot_y;
@@ -333,7 +342,7 @@ meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
 
   self = g_slice_new0 (MetaCursorReference);
   self->ref_count = 1;
-  meta_cursor_image_load_from_buffer (tracker, &self->image, buffer, hot_x, hot_y);
+  meta_cursor_image_load_from_buffer (&self->image, buffer, hot_x, hot_y);
 
   return self;
 }

@@ -85,6 +85,4 @@ void     meta_cursor_tracker_update_position (MetaCursorTracker *tracker,
 
 void     meta_cursor_tracker_force_update (MetaCursorTracker *tracker);
 
-struct gbm_device * meta_cursor_tracker_get_gbm_device (MetaCursorTracker *tracker);
-
 #endif
