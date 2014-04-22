@@ -163,6 +163,15 @@ make_x11_cursor_tracker (MetaScreen *screen)
   return self;
 }
 
+static MetaCursorTracker *
+meta_cursor_tracker_new (MetaScreen *screen)
+{
+  if (meta_is_wayland_compositor ())
+    return make_wayland_cursor_tracker (screen);
+  else
+    return make_x11_cursor_tracker (screen);
+}
+
 /**
  * meta_cursor_tracker_get_for_screen:
  * @screen: the #MetaScreen
@@ -179,11 +188,7 @@ meta_cursor_tracker_get_for_screen (MetaScreen *screen)
   if (screen->cursor_tracker)
     return screen->cursor_tracker;
 
-  if (meta_is_wayland_compositor ())
-    self = make_wayland_cursor_tracker (screen);
-  else
-    self = make_x11_cursor_tracker (screen);
-
+  self = meta_cursor_tracker_new (screen);
   screen->cursor_tracker = self;
   return self;
 }
