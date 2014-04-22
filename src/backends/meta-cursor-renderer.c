@@ -33,6 +33,7 @@
 #include <gbm.h>
 
 #include "meta-monitor-manager.h"
+#include "meta-stage.h"
 
 #include "wayland/meta-wayland-private.h"
 
@@ -42,10 +43,7 @@ struct _MetaCursorRendererPrivate
 
   int current_x, current_y;
   MetaRectangle current_rect;
-  MetaRectangle previous_rect;
-  gboolean previous_is_valid;
 
-  CoglPipeline *pipeline;
   int drm_fd;
   struct gbm_device *gbm;
 
@@ -120,8 +118,6 @@ meta_cursor_renderer_finalize (GObject *object)
   MetaCursorRenderer *renderer = META_CURSOR_RENDERER (object);
   MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
 
-  if (priv->pipeline)
-    cogl_object_unref (priv->pipeline);
   if (priv->gbm)
     gbm_device_destroy (priv->gbm);
 
@@ -146,8 +142,6 @@ meta_cursor_renderer_init (MetaCursorRenderer *renderer)
   monitors = meta_monitor_manager_get ();
   g_signal_connect_object (monitors, "monitors-changed",
                            G_CALLBACK (on_monitors_changed), renderer, 0);
-
-  priv->pipeline = cogl_pipeline_new (ctx);
 
 #if defined(CLUTTER_WINDOWING_EGL)
   if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
@@ -232,7 +226,6 @@ queue_redraw (MetaCursorRenderer *renderer)
   MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   ClutterActor *stage = compositor->stage;
-  cairo_rectangle_int_t clip;
 
   g_assert (meta_is_wayland_compositor ());
 
@@ -240,25 +233,13 @@ queue_redraw (MetaCursorRenderer *renderer)
   if (!stage)
     return;
 
-  /* Clear the location the cursor was at before, if we need to. */
-  if (priv->previous_is_valid)
-    {
-      clip.x = priv->previous_rect.x;
-      clip.y = priv->previous_rect.y;
-      clip.width = priv->previous_rect.width;
-      clip.height = priv->previous_rect.height;
-      clutter_actor_queue_redraw_with_clip (stage, &clip);
-      priv->previous_is_valid = FALSE;
-    }
-
-  if (priv->has_hw_cursor || !priv->displayed_cursor)
+  /* If we're not using a MetaStage, quit early */
+  if (!META_IS_STAGE (stage))
     return;
 
-  clip.x = priv->current_rect.x;
-  clip.y = priv->current_rect.y;
-  clip.width = priv->current_rect.width;
-  clip.height = priv->current_rect.height;
-  clutter_actor_queue_redraw_with_clip (stage, &clip);
+  meta_stage_set_cursor (META_STAGE (stage),
+                         priv->displayed_cursor,
+                         &priv->current_rect);
 }
 
 static void
@@ -289,28 +270,12 @@ update_cursor (MetaCursorRenderer *renderer)
   if (meta_is_wayland_compositor ())
     {
       if (priv->has_hw_cursor)
-        move_hw_cursor (renderer);
-      else
-        queue_redraw (renderer);
-    }
-}
-
-static void
-update_pipeline (MetaCursorRenderer *renderer)
-{
-  MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
-
-  if (meta_is_wayland_compositor ())
-    {
-      if (priv->displayed_cursor)
         {
-          CoglTexture *texture = meta_cursor_reference_get_cogl_texture (priv->displayed_cursor, NULL, NULL);
-          cogl_pipeline_set_layer_texture (priv->pipeline, 0, texture);
+          update_hw_cursor (renderer);
+          move_hw_cursor (renderer);
         }
       else
-        cogl_pipeline_set_layer_texture (priv->pipeline, 0, NULL);
-
-      update_hw_cursor (renderer);
+        queue_redraw (renderer);
     }
 }
 
@@ -330,7 +295,6 @@ meta_cursor_renderer_set_cursor (MetaCursorRenderer  *renderer,
     return;
 
   priv->displayed_cursor = cursor;
-  update_pipeline (renderer);
   update_cursor (renderer);
 }
 
@@ -346,29 +310,6 @@ meta_cursor_renderer_set_position (MetaCursorRenderer *renderer,
   priv->current_y = y;
 
   update_cursor (renderer);
-}
-
-void
-meta_cursor_renderer_paint (MetaCursorRenderer *renderer)
-{
-  MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
-
-  g_assert (meta_is_wayland_compositor ());
-
-  if (priv->has_hw_cursor || !priv->displayed_cursor)
-    return;
-
-  cogl_framebuffer_draw_rectangle (cogl_get_draw_framebuffer (),
-                                   priv->pipeline,
-                                   priv->current_rect.x,
-                                   priv->current_rect.y,
-                                   priv->current_rect.x +
-                                   priv->current_rect.width,
-                                   priv->current_rect.y +
-                                   priv->current_rect.height);
-
-  priv->previous_rect = priv->current_rect;
-  priv->previous_is_valid = TRUE;
 }
 
 void

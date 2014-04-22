@@ -22,6 +22,9 @@
 
 #include <clutter/clutter.h>
 
+#include "meta-cursor.h"
+#include <meta/boxes.h>
+
 G_BEGIN_DECLS
 
 #define META_TYPE_STAGE            (meta_stage_get_type ())
@@ -48,6 +51,9 @@ GType             meta_stage_get_type                (void) G_GNUC_CONST;
 
 ClutterActor     *meta_stage_new                     (void);
 
+void meta_stage_set_cursor (MetaStage           *stage,
+                            MetaCursorReference *cursor,
+                            MetaRectangle       *rect);
 G_END_DECLS
 
 #endif /* META_STAGE_H */

@@ -62,8 +62,6 @@ void meta_cursor_renderer_set_cursor (MetaCursorRenderer  *renderer,
 void meta_cursor_renderer_set_position (MetaCursorRenderer *renderer,
                                         int x, int y);
 
-void meta_cursor_renderer_paint (MetaCursorRenderer *renderer);
-
 void meta_cursor_renderer_force_update (MetaCursorRenderer *renderer);
 
 struct gbm_device * meta_cursor_renderer_get_gbm_device (MetaCursorRenderer *renderer);
