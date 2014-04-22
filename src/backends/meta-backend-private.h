@@ -54,6 +54,7 @@ struct _MetaBackendClass
   MetaIdleMonitor * (* create_idle_monitor) (MetaBackend *backend,
                                              int          device_id);
   MetaMonitorManager * (* create_monitor_manager) (MetaBackend *backend);
+  MetaCursorRenderer * (* create_cursor_renderer) (MetaBackend *backend);
 };
 
 #endif /* META_BACKEND_PRIVATE_H */

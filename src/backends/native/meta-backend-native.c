@@ -30,6 +30,7 @@
 
 #include "meta-idle-monitor-native.h"
 #include "meta-monitor-manager-kms.h"
+#include "meta-cursor-renderer-native.h"
 #include "meta-weston-launch.h"
 
 struct _MetaBackendNativePrivate
@@ -164,6 +165,12 @@ meta_backend_native_create_monitor_manager (MetaBackend *backend)
   return g_object_new (META_TYPE_MONITOR_MANAGER_KMS, NULL);
 }
 
+static MetaCursorRenderer *
+meta_backend_native_create_cursor_renderer (MetaBackend *backend)
+{
+  return g_object_new (META_TYPE_CURSOR_RENDERER_NATIVE, NULL);
+}
+
 static void
 meta_backend_native_class_init (MetaBackendNativeClass *klass)
 {
@@ -172,6 +179,7 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
   backend_class->post_init = meta_backend_native_post_init;
   backend_class->create_idle_monitor = meta_backend_native_create_idle_monitor;
   backend_class->create_monitor_manager = meta_backend_native_create_monitor_manager;
+  backend_class->create_cursor_renderer = meta_backend_native_create_cursor_renderer;
 }
 
 static void

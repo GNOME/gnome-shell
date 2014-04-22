@@ -29,6 +29,7 @@
 #include "screen-private.h"
 #include "meta-backend.h"
 #include "meta-cursor-tracker-private.h"
+#include "backends/native/meta-cursor-renderer-native.h"
 
 #include <string.h>
 
@@ -181,7 +182,11 @@ get_gbm_device (void)
 {
   MetaBackend *meta_backend = meta_get_backend ();
   MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (meta_backend);
-  return meta_cursor_renderer_get_gbm_device (renderer);
+
+  if (META_IS_CURSOR_RENDERER_NATIVE (renderer))
+    return meta_cursor_renderer_native_get_gbm_device (META_CURSOR_RENDERER_NATIVE (renderer));
+  else
+    return NULL;
 }
 
 static void

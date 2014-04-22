@@ -72,6 +72,8 @@ libmutter_la_SOURCES =				\
 	backends/edid.h				\
 	backends/native/meta-backend-native.c		\
 	backends/native/meta-backend-native.h		\
+	backends/native/meta-cursor-renderer-native.c	\
+	backends/native/meta-cursor-renderer-native.h	\
 	backends/native/meta-idle-monitor-native.c	\
 	backends/native/meta-idle-monitor-native.h	\
 	backends/native/meta-monitor-manager-kms.c	\

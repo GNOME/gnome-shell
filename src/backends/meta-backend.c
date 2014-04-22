@@ -78,12 +78,24 @@ meta_backend_finalize (GObject *object)
   G_OBJECT_CLASS (meta_backend_parent_class)->finalize (object);
 }
 
+static MetaCursorRenderer *
+meta_backend_create_cursor_renderer (MetaBackend *backend)
+{
+  return META_BACKEND_GET_CLASS (backend)->create_cursor_renderer (backend);
+}
+
 static void
 meta_backend_real_post_init (MetaBackend *backend)
 {
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
-  priv->cursor_renderer = meta_cursor_renderer_new ();
+  priv->cursor_renderer = meta_backend_create_cursor_renderer (backend);
+}
+
+static MetaCursorRenderer *
+meta_backend_real_create_cursor_renderer (MetaBackend *backend)
+{
+  return meta_cursor_renderer_new ();
 }
 
 static void
@@ -95,6 +107,7 @@ meta_backend_class_init (MetaBackendClass *klass)
   object_class->finalize = meta_backend_finalize;
 
   klass->post_init = meta_backend_real_post_init;
+  klass->create_cursor_renderer = meta_backend_real_create_cursor_renderer;
 }
 
 static void

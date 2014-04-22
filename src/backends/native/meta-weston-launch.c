@@ -44,6 +44,7 @@
 
 #include "wayland/meta-wayland-private.h"
 #include "backends/meta-backend.h"
+#include "meta-cursor-renderer-native.h"
 #include "meta-weston-launch.h"
 
 struct _MetaLauncher
@@ -224,7 +225,7 @@ meta_launcher_enter (MetaLauncher *launcher)
      * update. */
 
     clutter_actor_queue_redraw (compositor->stage);
-    meta_cursor_renderer_force_update (renderer);
+    meta_cursor_renderer_native_force_update (META_CURSOR_RENDERER_NATIVE (renderer));
   }
 }
 

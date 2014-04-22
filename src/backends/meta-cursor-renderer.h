@@ -50,6 +50,8 @@ struct _MetaCursorRenderer
 struct _MetaCursorRendererClass
 {
   GObjectClass parent_class;
+
+  void (* update_cursor) (MetaCursorRenderer *renderer);
 };
 
 GType meta_cursor_renderer_get_type (void) G_GNUC_CONST;
@@ -62,8 +64,7 @@ void meta_cursor_renderer_set_cursor (MetaCursorRenderer  *renderer,
 void meta_cursor_renderer_set_position (MetaCursorRenderer *renderer,
                                         int x, int y);
 
-void meta_cursor_renderer_force_update (MetaCursorRenderer *renderer);
-
-struct gbm_device * meta_cursor_renderer_get_gbm_device (MetaCursorRenderer *renderer);
+MetaCursorReference * meta_cursor_renderer_get_cursor (MetaCursorRenderer *renderer);
+const MetaRectangle * meta_cursor_renderer_get_rect (MetaCursorRenderer *renderer);
 
 #endif /* META_CURSOR_RENDERER_H */
