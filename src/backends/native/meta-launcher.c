@@ -286,7 +286,7 @@ handle_request_vt_switch (MetaLauncher *launcher)
   g_assert (launcher->vt_switched);
   launcher->vt_switched = FALSE;
 
-  meta_launcher_enter (launcher);
+  session_unpause ();
 }
 
 static gboolean
