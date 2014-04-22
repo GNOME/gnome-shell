@@ -594,13 +594,6 @@ destroy_surface_extension (MetaWaylandSurfaceExtension *extension)
   extension->resource = NULL;
 }
 
-static int
-get_resource_version (struct wl_resource *master_resource,
-                      int                 max_version)
-{
-  return MIN (max_version, wl_resource_get_version (master_resource));
-}
-
 static gboolean
 create_surface_extension (MetaWaylandSurfaceExtension *extension,
                           int                          max_version,
@@ -617,7 +610,8 @@ create_surface_extension (MetaWaylandSurfaceExtension *extension,
     return FALSE;
 
   client = wl_resource_get_client (surface->resource);
-  extension->resource = wl_resource_create (client, interface, get_resource_version (master_resource, max_version), id);
+  extension->resource = wl_resource_create (client, interface,
+                                            MIN (max_version, wl_resource_get_version (master_resource)), id);
   wl_resource_set_implementation (extension->resource, implementation, surface, destructor);
 
   return TRUE;
