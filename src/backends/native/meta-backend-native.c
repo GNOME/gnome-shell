@@ -40,31 +40,6 @@ typedef struct _MetaBackendNativePrivate MetaBackendNativePrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaBackendNative, meta_backend_native, META_TYPE_BACKEND);
 
-static MetaIdleMonitor *
-meta_backend_native_create_idle_monitor (MetaBackend *backend,
-                                         int          device_id)
-{
-  return g_object_new (META_TYPE_IDLE_MONITOR_NATIVE,
-                       "device-id", device_id,
-                       NULL);
-}
-
-static MetaMonitorManager *
-meta_backend_native_create_monitor_manager (MetaBackend *backend)
-{
-  return g_object_new (META_TYPE_MONITOR_MANAGER_KMS, NULL);
-}
-
-static void
-meta_backend_native_class_init (MetaBackendNativeClass *klass)
-{
-  MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
-
-  backend_class->create_idle_monitor = meta_backend_native_create_idle_monitor;
-  backend_class->create_monitor_manager = meta_backend_native_create_monitor_manager;
-}
-
-
 /*
  * The pointer constrain code is mostly a rip-off of the XRandR code from Xorg.
  * (from xserver/randr/rrcrtc.c, RRConstrainCursorHarder)
@@ -167,18 +142,45 @@ pointer_constrain_callback (ClutterInputDevice *device,
 }
 
 static void
+meta_backend_native_post_init (MetaBackend *backend)
+{
+  ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+  clutter_evdev_set_pointer_constrain_callback (manager, pointer_constrain_callback,
+                                                NULL, NULL);
+}
+
+static MetaIdleMonitor *
+meta_backend_native_create_idle_monitor (MetaBackend *backend,
+                                         int          device_id)
+{
+  return g_object_new (META_TYPE_IDLE_MONITOR_NATIVE,
+                       "device-id", device_id,
+                       NULL);
+}
+
+static MetaMonitorManager *
+meta_backend_native_create_monitor_manager (MetaBackend *backend)
+{
+  return g_object_new (META_TYPE_MONITOR_MANAGER_KMS, NULL);
+}
+
+static void
+meta_backend_native_class_init (MetaBackendNativeClass *klass)
+{
+  MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
+
+  backend_class->post_init = meta_backend_native_post_init;
+  backend_class->create_idle_monitor = meta_backend_native_create_idle_monitor;
+  backend_class->create_monitor_manager = meta_backend_native_create_monitor_manager;
+}
+
+static void
 meta_backend_native_init (MetaBackendNative *native)
 {
   MetaBackendNativePrivate *priv = meta_backend_native_get_instance_private (native);
 
   /* We're a display server, so start talking to weston-launch. */
   priv->launcher = meta_launcher_new ();
-
-  {
-    ClutterDeviceManager *manager = clutter_device_manager_get_default ();
-    clutter_evdev_set_pointer_constrain_callback (manager, pointer_constrain_callback,
-                                                  NULL, NULL);
-  }
 }
 
 gboolean
