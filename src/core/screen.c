@@ -711,7 +711,6 @@ meta_screen_new (MetaDisplay *display,
 
   reload_monitor_infos (screen);
 
-  meta_cursor_tracker_get_for_screen (screen);
   meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
 
   /* Handle creating a no_focus_window for this screen */  
