@@ -38,8 +38,6 @@
 
 struct _MetaCursorRendererPrivate
 {
-  MetaScreen *screen;
-
   gboolean has_hw_cursor;
 
   int current_x, current_y;
@@ -313,16 +311,9 @@ update_pipeline (MetaCursorRenderer *renderer)
 }
 
 MetaCursorRenderer *
-meta_cursor_renderer_new (MetaScreen *screen)
+meta_cursor_renderer_new (void)
 {
-  MetaCursorRenderer *renderer;
-  MetaCursorRendererPrivate *priv;
-
-  renderer = META_CURSOR_RENDERER (g_object_new (META_TYPE_CURSOR_RENDERER, NULL));
-  priv = meta_cursor_renderer_get_instance_private (renderer);
-  priv->screen = screen;
-
-  return renderer;
+  return g_object_new (META_TYPE_CURSOR_RENDERER, NULL);
 }
 
 void

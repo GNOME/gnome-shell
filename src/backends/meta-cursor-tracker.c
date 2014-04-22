@@ -139,7 +139,7 @@ make_wayland_cursor_tracker (MetaScreen *screen)
 
   self = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
   self->screen = screen;
-  self->renderer = meta_cursor_renderer_new (screen);
+  self->renderer = meta_cursor_renderer_new ();
 
   compositor = meta_wayland_compositor_get_default ();
   compositor->seat->pointer.cursor_tracker = self;
@@ -154,7 +154,7 @@ make_x11_cursor_tracker (MetaScreen *screen)
   MetaCursorTracker *self = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
 
   self->screen = screen;
-  self->renderer = meta_cursor_renderer_new (screen);
+  self->renderer = meta_cursor_renderer_new ();
 
   XFixesSelectCursorInput (screen->display->xdisplay,
                            screen->xroot,
