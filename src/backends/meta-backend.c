@@ -32,8 +32,6 @@
 #include "backends/x11/meta-backend-x11.h"
 #include "backends/native/meta-backend-native.h"
 
-#include "backends/native/meta-weston-launch.h"
-
 static MetaBackend *_backend;
 
 MetaBackend *
