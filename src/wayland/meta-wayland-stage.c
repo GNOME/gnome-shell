@@ -54,12 +54,11 @@ static void
 meta_wayland_stage_init (MetaWaylandStage *self)
 {
   clutter_stage_set_user_resizable (CLUTTER_STAGE (self), FALSE);
+  clutter_stage_set_cursor_visible (CLUTTER_STAGE (self), FALSE);
 }
 
 ClutterActor *
 meta_wayland_stage_new (void)
 {
-  return g_object_new (META_TYPE_WAYLAND_STAGE,
-                       "cursor-visible", FALSE,
-                       NULL);
+  return g_object_new (META_TYPE_WAYLAND_STAGE, NULL);
 }
