@@ -161,10 +161,8 @@ meta_backend_x11_post_init (MetaBackend *backend)
 
   priv->source = x_event_source_new (backend);
 
-  if (!XSyncQueryExtension (priv->xdisplay, &priv->xsync_event_base, &priv->xsync_error_base))
-    meta_fatal ("Could not initialize XSync");
-
-  if (!XSyncInitialize (priv->xdisplay, &major, &minor))
+  if (!XSyncQueryExtension (priv->xdisplay, &priv->xsync_event_base, &priv->xsync_error_base) ||
+      !XSyncInitialize (priv->xdisplay, &major, &minor))
     meta_fatal ("Could not initialize XSync");
 
   META_BACKEND_CLASS (meta_backend_x11_parent_class)->post_init (backend);
