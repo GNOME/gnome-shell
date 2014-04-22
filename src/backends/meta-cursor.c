@@ -70,97 +70,59 @@ meta_cursor_reference_unref (MetaCursorReference *self)
     meta_cursor_reference_free (self);
 }
 
-static void
-translate_meta_cursor (MetaCursor   cursor,
-                       guint       *glyph_out,
-                       const char **name_out)
+static const char *
+translate_meta_cursor (MetaCursor cursor)
 {
-  guint glyph = XC_num_glyphs;
-  const char *name = NULL;
-
   switch (cursor)
     {
     case META_CURSOR_DEFAULT:
-      glyph = XC_left_ptr;
-      break;
+      return "left_ptr";
     case META_CURSOR_NORTH_RESIZE:
-      glyph = XC_top_side;
-      break;
+      return "top_side";
     case META_CURSOR_SOUTH_RESIZE:
-      glyph = XC_bottom_side;
-      break;
+      return "bottom_side";
     case META_CURSOR_WEST_RESIZE:
-      glyph = XC_left_side;
-      break;
+      return "left_side";
     case META_CURSOR_EAST_RESIZE:
-      glyph = XC_right_side;
-      break;
+      return "right_side";
     case META_CURSOR_SE_RESIZE:
-      glyph = XC_bottom_right_corner;
-      break;
+      return "bottom_right_corner";
     case META_CURSOR_SW_RESIZE:
-      glyph = XC_bottom_left_corner;
-      break;
+      return "bottom_left_corner";
     case META_CURSOR_NE_RESIZE:
-      glyph = XC_top_right_corner;
-      break;
+      return "top_right_corner";
     case META_CURSOR_NW_RESIZE:
-      glyph = XC_top_left_corner;
-      break;
+      return "top_left_corner";
     case META_CURSOR_MOVE_OR_RESIZE_WINDOW:
-      glyph = XC_fleur;
-      break;
+      return "fleur";
     case META_CURSOR_BUSY:
-      glyph = XC_watch;
-      break;
+      return "watch";
     case META_CURSOR_DND_IN_DRAG:
-      name = "dnd-none";
-      break;
+      return "dnd-none";
     case META_CURSOR_DND_MOVE:
-      name = "dnd-move";
-      break;
+      return "dnd-move";
     case META_CURSOR_DND_COPY:
-      name = "dnd-copy";
-      break;
+      return "dnd-copy";
     case META_CURSOR_DND_UNSUPPORTED_TARGET:
-      name = "dnd-none";
-      break;
+      return "dnd-none";
     case META_CURSOR_POINTING_HAND:
-      glyph = XC_hand2;
-      break;
+      return "hand2";
     case META_CURSOR_CROSSHAIR:
-      glyph = XC_crosshair;
-      break;
+      return "crosshair";
     case META_CURSOR_IBEAM:
-      glyph = XC_xterm;
-      break;
-
+      return "xterm";
     default:
-      g_assert_not_reached ();
-      glyph = 0; /* silence compiler */
       break;
     }
 
-  *glyph_out = glyph;
-  *name_out = name;
+  g_assert_not_reached ();
 }
 
 static Cursor
 load_cursor_on_server (MetaDisplay *display,
                        MetaCursor   cursor)
 {
-  Cursor xcursor;
-  guint glyph;
-  const char *name;
-
-  translate_meta_cursor (cursor, &glyph, &name);
-
-  if (name != NULL)
-    xcursor = XcursorLibraryLoadCursor (display->xdisplay, name);
-  else
-    xcursor = XCreateFontCursor (display->xdisplay, glyph);
-
-  return xcursor;
+  return XcursorLibraryLoadCursor (display->xdisplay, translate_meta_cursor (cursor));
 }
 
 Cursor
@@ -174,20 +136,9 @@ static XcursorImage *
 load_cursor_on_client (MetaDisplay *display,
                        MetaCursor   cursor)
 {
-  XcursorImage *image;
-  guint glyph;
-  const char *name;
-  const char *theme = meta_prefs_get_cursor_theme ();
-  int size = meta_prefs_get_cursor_size ();
-
-  translate_meta_cursor (cursor, &glyph, &name);
-
-  if (name != NULL)
-    image = XcursorLibraryLoadImage (name, theme, size);
-  else
-    image = XcursorShapeLoadImage (glyph, theme, size);
-
-  return image;
+  return XcursorLibraryLoadImage (translate_meta_cursor (cursor),
+                                  meta_prefs_get_cursor_theme (),
+                                  meta_prefs_get_cursor_size ());
 }
 
 static void
