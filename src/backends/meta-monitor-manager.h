@@ -46,6 +46,7 @@
 
 #include "meta-display-config-shared.h"
 #include "meta-dbus-display-config.h"
+#include "meta-cursor.h"
 
 typedef struct _MetaMonitorManagerClass    MetaMonitorManagerClass;
 typedef struct _MetaMonitorManager         MetaMonitorManager;
@@ -123,8 +124,7 @@ struct _MetaCRTC
   /* Used when changing configuration */
   gboolean is_dirty;
 
-  /* Updated by MetaCursorTracker */
-  gboolean has_hw_cursor;
+  MetaCursorReference *cursor;
 };
 
 struct _MetaMonitorMode

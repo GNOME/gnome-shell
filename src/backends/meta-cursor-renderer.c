@@ -54,21 +54,26 @@ typedef struct _MetaCursorRendererPrivate MetaCursorRendererPrivate;
 G_DEFINE_TYPE_WITH_PRIVATE (MetaCursorRenderer, meta_cursor_renderer, G_TYPE_OBJECT);
 
 static void
-set_crtc_has_hw_cursor (MetaCursorRenderer *renderer,
-                        MetaCRTC           *crtc,
-                        gboolean            has)
+set_crtc_cursor (MetaCursorRenderer  *renderer,
+                 MetaCRTC            *crtc,
+                 MetaCursorReference *cursor,
+                 gboolean             force)
 {
   MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
 
-  if (has)
+  if (crtc->cursor == cursor && !force)
+    return;
+
+  crtc->cursor = cursor;
+
+  if (cursor)
     {
-      MetaCursorReference *displayed_cursor = priv->displayed_cursor;
       struct gbm_bo *bo;
       union gbm_bo_handle handle;
       int width, height;
       int hot_x, hot_y;
 
-      bo = meta_cursor_reference_get_gbm_bo (displayed_cursor, &hot_x, &hot_y);
+      bo = meta_cursor_reference_get_gbm_bo (cursor, &hot_x, &hot_y);
 
       handle = gbm_bo_get_handle (bo);
       width = gbm_bo_get_width (bo);
@@ -76,12 +81,48 @@ set_crtc_has_hw_cursor (MetaCursorRenderer *renderer,
 
       drmModeSetCursor2 (priv->drm_fd, crtc->crtc_id, handle.u32,
                          width, height, hot_x, hot_y);
-      crtc->has_hw_cursor = TRUE;
     }
   else
     {
       drmModeSetCursor2 (priv->drm_fd, crtc->crtc_id, 0, 0, 0, 0, 0);
-      crtc->has_hw_cursor = FALSE;
+    }
+}
+
+static void
+update_hw_cursor (MetaCursorRenderer *renderer,
+                  gboolean            force)
+{
+  MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
+  MetaRectangle *cursor_rect = &priv->current_rect;
+  MetaMonitorManager *monitors;
+  MetaCRTC *crtcs;
+  unsigned int i, n_crtcs;
+
+  monitors = meta_monitor_manager_get ();
+  meta_monitor_manager_get_resources (monitors, NULL, NULL, &crtcs, &n_crtcs, NULL, NULL);
+
+  for (i = 0; i < n_crtcs; i++)
+    {
+      gboolean crtc_should_have_cursor;
+      MetaCursorReference *cursor;
+      MetaRectangle *crtc_rect;
+
+      crtc_rect = &crtcs[i].rect;
+
+      crtc_should_have_cursor = (priv->has_hw_cursor && meta_rectangle_overlap (cursor_rect, crtc_rect));
+      if (crtc_should_have_cursor)
+        cursor = priv->displayed_cursor;
+      else
+        cursor = NULL;
+
+      set_crtc_cursor (renderer, &crtcs[i], cursor, force);
+
+      if (cursor)
+        {
+          drmModeMoveCursor (priv->drm_fd, crtcs[i].crtc_id,
+                             cursor_rect->x - crtc_rect->x,
+                             cursor_rect->y - crtc_rect->y);
+        }
     }
 }
 
@@ -89,27 +130,8 @@ static void
 on_monitors_changed (MetaMonitorManager *monitors,
                      MetaCursorRenderer *renderer)
 {
-  MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
-  MetaCRTC *crtcs;
-  unsigned int i, n_crtcs;
-
-  if (!priv->has_hw_cursor)
-    return;
-
-  /* Go through the new list of monitors, find out where the cursor is */
-  meta_monitor_manager_get_resources (monitors, NULL, NULL, &crtcs, &n_crtcs, NULL, NULL);
-
-  for (i = 0; i < n_crtcs; i++)
-    {
-      MetaRectangle *rect = &crtcs[i].rect;
-      gboolean has;
-
-      has = meta_rectangle_overlap (&priv->current_rect, rect);
-
-      /* Need to do it unconditionally here, our tracking is
-         wrong because we reloaded the CRTCs */
-      set_crtc_has_hw_cursor (renderer, &crtcs[i], has);
-    }
+  /* Our tracking is all messed up, so force an update. */
+  update_hw_cursor (renderer, TRUE);
 }
 
 static void
@@ -153,73 +175,6 @@ meta_cursor_renderer_init (MetaCursorRenderer *renderer)
 #endif
 }
 
-static gboolean
-should_have_hw_cursor (MetaCursorRenderer *renderer)
-{
-  MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
-
-  if (priv->displayed_cursor)
-    return (meta_cursor_reference_get_gbm_bo (priv->displayed_cursor, NULL, NULL) != NULL);
-  else
-    return FALSE;
-}
-
-static void
-update_hw_cursor (MetaCursorRenderer *renderer)
-{
-  MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
-  MetaMonitorManager *monitors;
-  MetaCRTC *crtcs;
-  unsigned int i, n_crtcs;
-  gboolean enabled;
-
-  enabled = should_have_hw_cursor (renderer);
-  priv->has_hw_cursor = enabled;
-
-  monitors = meta_monitor_manager_get ();
-  meta_monitor_manager_get_resources (monitors, NULL, NULL, &crtcs, &n_crtcs, NULL, NULL);
-
-  for (i = 0; i < n_crtcs; i++)
-    {
-      MetaRectangle *rect = &crtcs[i].rect;
-      gboolean has;
-
-      has = enabled && meta_rectangle_overlap (&priv->current_rect, rect);
-
-      if (has || crtcs[i].has_hw_cursor)
-        set_crtc_has_hw_cursor (renderer, &crtcs[i], has);
-    }
-}
-
-static void
-move_hw_cursor (MetaCursorRenderer *renderer)
-{
-  MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
-  MetaMonitorManager *monitors;
-  MetaCRTC *crtcs;
-  unsigned int i, n_crtcs;
-
-  monitors = meta_monitor_manager_get ();
-  meta_monitor_manager_get_resources (monitors, NULL, NULL, &crtcs, &n_crtcs, NULL, NULL);
-
-  g_assert (priv->has_hw_cursor);
-
-  for (i = 0; i < n_crtcs; i++)
-    {
-      MetaRectangle *rect = &crtcs[i].rect;
-      gboolean has;
-
-      has = meta_rectangle_overlap (&priv->current_rect, rect);
-
-      if (has != crtcs[i].has_hw_cursor)
-        set_crtc_has_hw_cursor (renderer, &crtcs[i], has);
-      if (has)
-        drmModeMoveCursor (priv->drm_fd, crtcs[i].crtc_id,
-                           priv->current_rect.x - rect->x,
-                           priv->current_rect.y - rect->y);
-    }
-}
-
 static void
 queue_redraw (MetaCursorRenderer *renderer)
 {
@@ -240,6 +195,17 @@ queue_redraw (MetaCursorRenderer *renderer)
   meta_stage_set_cursor (META_STAGE (stage),
                          priv->displayed_cursor,
                          &priv->current_rect);
+}
+
+static gboolean
+should_have_hw_cursor (MetaCursorRenderer *renderer)
+{
+  MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
+
+  if (priv->displayed_cursor)
+    return (meta_cursor_reference_get_gbm_bo (priv->displayed_cursor, NULL, NULL) != NULL);
+  else
+    return FALSE;
 }
 
 static void
@@ -269,11 +235,10 @@ update_cursor (MetaCursorRenderer *renderer)
 
   if (meta_is_wayland_compositor ())
     {
-      update_hw_cursor (renderer);
+      priv->has_hw_cursor = should_have_hw_cursor (renderer);
+      update_hw_cursor (renderer, FALSE);
 
-      if (priv->has_hw_cursor)
-        move_hw_cursor (renderer);
-      else
+      if (!priv->has_hw_cursor)
         queue_redraw (renderer);
     }
 }
@@ -316,7 +281,7 @@ meta_cursor_renderer_force_update (MetaCursorRenderer *renderer)
 {
   g_assert (meta_is_wayland_compositor ());
 
-  update_hw_cursor (renderer);
+  update_hw_cursor (renderer, TRUE);
 }
 
 struct gbm_device *
