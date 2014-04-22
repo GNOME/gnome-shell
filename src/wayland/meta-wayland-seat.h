@@ -23,9 +23,7 @@
 #define __META_WAYLAND_SEAT_H__
 
 #include <wayland-server.h>
-#include <xkbcommon/xkbcommon.h>
 #include <clutter/clutter.h>
-#include <glib.h>
 
 #include "meta-wayland-types.h"
 #include "meta-wayland-keyboard.h"

@@ -21,21 +21,9 @@
 
 #include "config.h"
 
-#include <cogl/cogl-wayland-server.h>
-#include <clutter/clutter.h>
-#include <clutter/wayland/clutter-wayland-compositor.h>
-#include <clutter/wayland/clutter-wayland-surface.h>
-#include <linux/input.h>
-#include <stdlib.h>
-#include <string.h>
 #include "meta-wayland-seat.h"
-#include "meta-wayland-private.h"
-#include "meta-wayland-keyboard.h"
-#include "meta-wayland-pointer.h"
-#include "meta-window-actor-private.h"
-#include "meta/meta-shaped-texture.h"
-#include "meta-shaped-texture-private.h"
-#include "meta-cursor-tracker-private.h"
+
+#include "meta-wayland-versions.h"
 
 static void
 unbind_resource (struct wl_resource *resource)
