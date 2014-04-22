@@ -68,6 +68,9 @@ const SearchSystem = new Lang.Class({
     _unregisterProvider: function (provider) {
         let index = this._providers.indexOf(provider);
         this._providers.splice(index, 1);
+
+        if (provider.display)
+            provider.display.destroy();
     },
 
     getProviders: function() {
