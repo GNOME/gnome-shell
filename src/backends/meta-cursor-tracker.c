@@ -40,6 +40,8 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 
+#include "meta-backend.h"
+
 #include "meta-cursor-private.h"
 #include "meta-cursor-tracker-private.h"
 #include "screen-private.h"
@@ -134,12 +136,13 @@ meta_cursor_tracker_class_init (MetaCursorTrackerClass *klass)
 static MetaCursorTracker *
 make_wayland_cursor_tracker (MetaScreen *screen)
 {
+  MetaBackend *backend = meta_get_backend ();
   MetaWaylandCompositor *compositor;
   MetaCursorTracker *self;
 
   self = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
   self->screen = screen;
-  self->renderer = meta_cursor_renderer_new ();
+  self->renderer = meta_backend_get_cursor_renderer (backend);
 
   compositor = meta_wayland_compositor_get_default ();
   compositor->seat->pointer.cursor_tracker = self;
@@ -151,11 +154,12 @@ make_wayland_cursor_tracker (MetaScreen *screen)
 static MetaCursorTracker *
 make_x11_cursor_tracker (MetaScreen *screen)
 {
+  MetaBackend *backend = meta_get_backend ();
   MetaCursorTracker *self;
 
   self = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
   self->screen = screen;
-  self->renderer = meta_cursor_renderer_new ();
+  self->renderer = meta_backend_get_cursor_renderer (backend);
 
   XFixesSelectCursorInput (screen->display->xdisplay,
                            screen->xroot,

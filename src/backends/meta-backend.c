@@ -45,6 +45,7 @@ meta_get_backend (void)
 struct _MetaBackendPrivate
 {
   MetaMonitorManager *monitor_manager;
+  MetaCursorRenderer *cursor_renderer;
 };
 typedef struct _MetaBackendPrivate MetaBackendPrivate;
 
@@ -80,7 +81,9 @@ meta_backend_finalize (GObject *object)
 static void
 meta_backend_real_post_init (MetaBackend *backend)
 {
-  /* Do nothing */
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  priv->cursor_renderer = meta_cursor_renderer_new ();
 }
 
 static void
@@ -144,6 +147,14 @@ meta_backend_get_monitor_manager (MetaBackend *backend)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   return priv->monitor_manager;
+}
+
+MetaCursorRenderer *
+meta_backend_get_cursor_renderer (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return priv->cursor_renderer;
 }
 
 static GType
