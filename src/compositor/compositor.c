@@ -72,6 +72,7 @@
 #include <meta/meta-shadow-factory.h>
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
+#include "meta-stage.h"
 #include "window-private.h" /* to check window->hidden */
 #include "display-private.h" /* for meta_display_lookup_x_window() */
 #include "util-private.h"
@@ -79,7 +80,6 @@
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 
-#include "wayland/meta-wayland-stage.h"
 #include "wayland/meta-wayland-private.h"
 
 static gboolean
@@ -527,7 +527,7 @@ meta_compositor_manage (MetaCompositor *compositor)
     {
       MetaWaylandCompositor *wayland_compositor = meta_wayland_compositor_get_default ();
 
-      compositor->stage = meta_wayland_stage_new ();
+      compositor->stage = meta_stage_new ();
       clutter_actor_show (compositor->stage);
 
       wayland_compositor->stage = compositor->stage;

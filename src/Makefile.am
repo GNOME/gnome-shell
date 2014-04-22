@@ -120,6 +120,8 @@ libmutter_la_SOURCES =				\
 	compositor/meta-surface-actor-x11.h	\
 	compositor/meta-surface-actor-wayland.c	\
 	compositor/meta-surface-actor-wayland.h	\
+	compositor/meta-stage.h			\
+	compositor/meta-stage.c			\
 	compositor/meta-texture-rectangle.c	\
 	compositor/meta-texture-rectangle.h	\
 	compositor/meta-texture-tower.c		\
@@ -229,8 +231,6 @@ libmutter_la_SOURCES =				\
 	wayland/meta-wayland-pointer.h		\
 	wayland/meta-wayland-seat.c		\
 	wayland/meta-wayland-seat.h		\
-	wayland/meta-wayland-stage.h		\
-	wayland/meta-wayland-stage.c		\
 	wayland/meta-wayland-surface.c		\
 	wayland/meta-wayland-surface.h		\
 	wayland/meta-wayland-types.h		\

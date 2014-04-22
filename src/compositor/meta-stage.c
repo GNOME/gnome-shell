@@ -1,7 +1,5 @@
 /*
- * Wayland Support
- *
- * Copyright (C) 2012 Intel Corporation
+ * Copyright (C) 2014 Red Hat
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,21 +15,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ *
+ * Written by:
+ *     Jasper St. Pierre <jstpierre@mecheye.net>
  */
 
 #include <config.h>
 
-#include "meta-wayland-stage.h"
+#include "meta-stage.h"
 
 #include "meta-backend.h"
 #include <meta/util.h>
 
-G_DEFINE_TYPE (MetaWaylandStage, meta_wayland_stage, CLUTTER_TYPE_STAGE);
+G_DEFINE_TYPE (MetaStage, meta_stage, CLUTTER_TYPE_STAGE);
 
 static void
-meta_wayland_stage_paint (ClutterActor *actor)
+meta_stage_paint (ClutterActor *actor)
 {
-  CLUTTER_ACTOR_CLASS (meta_wayland_stage_parent_class)->paint (actor);
+  CLUTTER_ACTOR_CLASS (meta_stage_parent_class)->paint (actor);
 
   if (meta_is_wayland_compositor ())
     {
@@ -42,23 +43,23 @@ meta_wayland_stage_paint (ClutterActor *actor)
 }
 
 static void
-meta_wayland_stage_class_init (MetaWaylandStageClass *klass)
+meta_stage_class_init (MetaStageClass *klass)
 {
   ClutterActorClass *actor_class = (ClutterActorClass *) klass;
 
-  actor_class->paint = meta_wayland_stage_paint;
+  actor_class->paint = meta_stage_paint;
 }
 
 static void
-meta_wayland_stage_init (MetaWaylandStage *self)
+meta_stage_init (MetaStage *self)
 {
   clutter_stage_set_user_resizable (CLUTTER_STAGE (self), FALSE);
 }
 
 ClutterActor *
-meta_wayland_stage_new (void)
+meta_stage_new (void)
 {
-  return g_object_new (META_TYPE_WAYLAND_STAGE,
+  return g_object_new (META_TYPE_STAGE,
                        "cursor-visible", FALSE,
                        NULL);
 }
