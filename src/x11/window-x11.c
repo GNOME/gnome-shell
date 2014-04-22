@@ -1560,11 +1560,11 @@ meta_window_x11_property_notify (MetaWindow *window,
 static int
 query_pressed_buttons (MetaWindow *window)
 {
+  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (window->screen);
   ClutterModifierType mods;
   int button = 0;
 
-  meta_cursor_tracker_get_pointer (window->screen->cursor_tracker,
-                                   NULL, NULL, &mods);
+  meta_cursor_tracker_get_pointer (tracker, NULL, NULL, &mods);
 
   if (mods & CLUTTER_BUTTON1_MASK)
     button |= 1 << 1;

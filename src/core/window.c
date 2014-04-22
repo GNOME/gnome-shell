@@ -9220,6 +9220,7 @@ window_focus_on_pointer_rest_callback (gpointer data)
   MetaWindow *window = focus_data->window;
   MetaDisplay *display = window->display;
   MetaScreen *screen = window->screen;
+  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
   int root_x, root_y;
   guint32 timestamp;
   ClutterActor *child;
@@ -9227,8 +9228,7 @@ window_focus_on_pointer_rest_callback (gpointer data)
   if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_CLICK)
     goto out;
 
-  meta_cursor_tracker_get_pointer (screen->cursor_tracker,
-                                   &root_x, &root_y, NULL);
+  meta_cursor_tracker_get_pointer (tracker, &root_x, &root_y, NULL);
 
   if (root_x != focus_data->pointer_x ||
       root_y != focus_data->pointer_y)

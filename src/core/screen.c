@@ -1388,9 +1388,10 @@ meta_screen_update_cursor (MetaScreen *screen)
   MetaCursor cursor = screen->current_cursor;
   Cursor xcursor;
   MetaCursorReference *cursor_ref;
+  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
 
-  cursor_ref = meta_cursor_reference_from_theme (screen->cursor_tracker, cursor);
-  meta_cursor_tracker_set_root_cursor (screen->cursor_tracker, cursor_ref);
+  cursor_ref = meta_cursor_reference_from_theme (tracker, cursor);
+  meta_cursor_tracker_set_root_cursor (tracker, cursor_ref);
   meta_cursor_reference_unref (cursor_ref);
 
   /* Set a cursor for X11 applications that don't specify their own */
@@ -1498,6 +1499,7 @@ MetaWindow*
 meta_screen_get_mouse_window (MetaScreen  *screen,
                               MetaWindow  *not_this_one)
 {
+  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
   MetaWindow *window;
   int x, y;
 
@@ -1505,8 +1507,7 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
     meta_topic (META_DEBUG_FOCUS,
                 "Focusing mouse window excluding %s\n", not_this_one->desc);
 
-  meta_cursor_tracker_get_pointer (screen->cursor_tracker,
-                                   &x, &y, NULL);
+  meta_cursor_tracker_get_pointer (tracker, &x, &y, NULL);
 
   window = meta_stack_get_default_focus_window_at_point (screen->stack,
                                                          screen->active_workspace,
@@ -1785,6 +1786,8 @@ meta_screen_get_current_monitor_for_pos (MetaScreen *screen,
 int
 meta_screen_get_current_monitor (MetaScreen *screen)
 {
+  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
+
   if (screen->n_monitor_infos == 1)
     return 0;
   
@@ -1795,8 +1798,7 @@ meta_screen_get_current_monitor (MetaScreen *screen)
     {
       int x, y;
 
-      meta_cursor_tracker_get_pointer (screen->cursor_tracker,
-                                       &x, &y, NULL);
+      meta_cursor_tracker_get_pointer (tracker, &x, &y, NULL);
       meta_screen_get_current_monitor_for_pos (screen, x, y);
     }
 
@@ -3311,7 +3313,9 @@ gboolean
 meta_screen_handle_xevent (MetaScreen *screen,
                            XEvent     *xevent)
 {
-  if (meta_cursor_tracker_handle_xevent (screen->cursor_tracker, xevent))
+  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
+
+  if (meta_cursor_tracker_handle_xevent (tracker, xevent))
     return TRUE;
 
   return FALSE;
