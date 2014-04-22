@@ -112,7 +112,7 @@ struct _MetaWaylandSurface
   MetaWaylandPendingState pending;
 };
 
-void                meta_wayland_init_shell     (MetaWaylandCompositor *compositor);
+void                meta_wayland_shell_init     (MetaWaylandCompositor *compositor);
 
 MetaWaylandSurface *meta_wayland_surface_create (MetaWaylandCompositor *compositor,
 						 struct wl_client      *client,

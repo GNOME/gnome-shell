@@ -57,8 +57,8 @@ struct _MetaWaylandSeat
   struct wl_display *display;
 };
 
-MetaWaylandSeat *
-meta_wayland_seat_new (struct wl_display *display);
+void
+meta_wayland_seat_init (MetaWaylandCompositor *compositor);
 
 void
 meta_wayland_seat_free (MetaWaylandSeat *seat);

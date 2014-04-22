@@ -23,6 +23,7 @@
 
 #include "meta-wayland-seat.h"
 
+#include "meta-wayland-private.h"
 #include "meta-wayland-versions.h"
 
 static void
@@ -89,7 +90,7 @@ bind_seat (struct wl_client *client,
     wl_seat_send_name (resource, "seat0");
 }
 
-MetaWaylandSeat *
+static MetaWaylandSeat *
 meta_wayland_seat_new (struct wl_display *display)
 {
   MetaWaylandSeat *seat = g_new0 (MetaWaylandSeat, 1);
@@ -106,6 +107,12 @@ meta_wayland_seat_new (struct wl_display *display)
   wl_global_create (display, &wl_seat_interface, META_WL_SEAT_VERSION, seat, bind_seat);
 
   return seat;
+}
+
+void
+meta_wayland_seat_init (MetaWaylandCompositor *compositor)
+{
+  compositor->seat = meta_wayland_seat_new (compositor->wayland_display);
 }
 
 void

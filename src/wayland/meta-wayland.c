@@ -430,12 +430,10 @@ meta_wayland_init (void)
 
   meta_clutter_init ();
 
-  meta_wayland_init_outputs (compositor);
-  meta_wayland_data_device_manager_init (compositor->wayland_display);
-
-  compositor->seat = meta_wayland_seat_new (compositor->wayland_display);
-
-  meta_wayland_init_shell (compositor);
+  meta_wayland_outputs_init (compositor);
+  meta_wayland_data_device_manager_init (compositor);
+  meta_wayland_shell_init (compositor);
+  meta_wayland_seat_init (compositor);
 
   /* FIXME: find the first free name instead */
   compositor->display_name = g_strdup ("wayland-0");

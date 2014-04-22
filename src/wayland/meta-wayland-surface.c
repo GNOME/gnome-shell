@@ -1643,7 +1643,7 @@ bind_subcompositor (struct wl_client *client,
 }
 
 void
-meta_wayland_init_shell (MetaWaylandCompositor *compositor)
+meta_wayland_shell_init (MetaWaylandCompositor *compositor)
 {
   if (wl_global_create (compositor->wayland_display,
 			&xdg_shell_interface, 1,

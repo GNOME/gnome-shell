@@ -508,6 +508,16 @@ bind_manager (struct wl_client *client,
 }
 
 void
+meta_wayland_data_device_manager_init (MetaWaylandCompositor *compositor)
+{
+  if (wl_global_create (compositor->wayland_display,
+			&wl_data_device_manager_interface,
+			META_WL_DATA_DEVICE_MANAGER_VERSION,
+			NULL, bind_manager) == NULL)
+    g_error ("Could not create data_device");
+}
+
+void
 meta_wayland_data_device_set_keyboard_focus (MetaWaylandSeat *seat)
 {
   struct wl_client *focus_client;
@@ -528,16 +538,4 @@ meta_wayland_data_device_set_keyboard_focus (MetaWaylandSeat *seat)
       offer = meta_wayland_data_source_send_offer (source, data_device);
       wl_data_device_send_selection (data_device, offer);
     }
-}
-
-int
-meta_wayland_data_device_manager_init (struct wl_display *display)
-{
-  if (wl_global_create (display,
-			&wl_data_device_manager_interface,
-			META_WL_DATA_DEVICE_MANAGER_VERSION,
-			NULL, bind_manager) == NULL)
-    return -1;
-
-  return 0;
 }

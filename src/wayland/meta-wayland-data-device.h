@@ -25,12 +25,12 @@
 
 #include <wayland-server.h>
 
-#include "meta-wayland-seat.h"
+#include "meta-wayland-private.h"
+
+void
+meta_wayland_data_device_manager_init (MetaWaylandCompositor *compositor);
 
 void
 meta_wayland_data_device_set_keyboard_focus (MetaWaylandSeat *seat);
-
-int
-meta_wayland_data_device_manager_init (struct wl_display *display);
 
 #endif /* __META_WAYLAND_DATA_DEVICE_H__ */
