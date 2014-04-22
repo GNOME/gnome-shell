@@ -23,7 +23,6 @@
 
 #include "meta-wayland-stage.h"
 
-#include "meta-wayland-private.h"
 #include "meta-cursor-tracker-private.h"
 
 G_DEFINE_TYPE (MetaWaylandStage, meta_wayland_stage, CLUTTER_TYPE_STAGE);
@@ -31,13 +30,16 @@ G_DEFINE_TYPE (MetaWaylandStage, meta_wayland_stage, CLUTTER_TYPE_STAGE);
 static void
 meta_wayland_stage_paint (ClutterActor *actor)
 {
-  MetaWaylandCompositor *compositor;
+  MetaDisplay *display = meta_get_display ();
+  MetaScreen *screen = display->screen;
+  MetaCursorTracker *tracker;
 
   CLUTTER_ACTOR_CLASS (meta_wayland_stage_parent_class)->paint (actor);
 
-  compositor = meta_wayland_compositor_get_default ();
-  if (compositor->seat->pointer.cursor_tracker)
-    meta_cursor_renderer_paint (compositor->seat->pointer.cursor_tracker->renderer);
+  tracker = meta_cursor_tracker_get_for_screen (display->screen);
+
+  if (tracker)
+    meta_cursor_renderer_paint (tracker->renderer);
 }
 
 static void
