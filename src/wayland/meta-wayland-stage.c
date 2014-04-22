@@ -32,7 +32,6 @@ static void
 meta_wayland_stage_paint (ClutterActor *actor)
 {
   MetaDisplay *display = meta_get_display ();
-  MetaScreen *screen = display->screen;
   MetaCursorTracker *tracker;
 
   CLUTTER_ACTOR_CLASS (meta_wayland_stage_parent_class)->paint (actor);
