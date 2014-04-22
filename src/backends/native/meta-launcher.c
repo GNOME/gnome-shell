@@ -45,7 +45,7 @@
 #include "wayland/meta-wayland-private.h"
 #include "backends/meta-backend.h"
 #include "meta-cursor-renderer-native.h"
-#include "meta-weston-launch.h"
+#include "meta-launcher.h"
 
 struct _MetaLauncher
 {

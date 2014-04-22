@@ -31,7 +31,7 @@
 #include "meta-idle-monitor-native.h"
 #include "meta-monitor-manager-kms.h"
 #include "meta-cursor-renderer-native.h"
-#include "meta-weston-launch.h"
+#include "meta-launcher.h"
 
 struct _MetaBackendNativePrivate
 {

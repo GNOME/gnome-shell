@@ -17,8 +17,8 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_WESTON_LAUNCH_H
-#define META_WESTON_LAUNCH_H
+#ifndef META_LAUNCHER_H
+#define META_LAUNCHER_H
 
 #include <glib-object.h>
 #include "weston-launch.h"
@@ -31,4 +31,4 @@ void              meta_launcher_free                    (MetaLauncher  *self);
 gboolean          meta_launcher_activate_vt             (MetaLauncher  *self,
 							 signed char    vt,
 							 GError       **error);
-#endif
+#endif /* META_LAUNCHER_H */

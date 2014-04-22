@@ -78,8 +78,8 @@ libmutter_la_SOURCES =				\
 	backends/native/meta-idle-monitor-native.h	\
 	backends/native/meta-monitor-manager-kms.c	\
 	backends/native/meta-monitor-manager-kms.h	\
-	backends/native/meta-weston-launch.c		\
-	backends/native/meta-weston-launch.h		\
+	backends/native/meta-launcher.c			\
+	backends/native/meta-launcher.h			\
 	backends/x11/meta-backend-x11.c			\
 	backends/x11/meta-backend-x11.h			\
 	backends/x11/meta-idle-monitor-xsync.c		\
