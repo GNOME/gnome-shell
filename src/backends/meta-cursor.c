@@ -177,8 +177,8 @@ load_cursor_on_client (MetaDisplay *display,
   XcursorImage *image;
   guint glyph;
   const char *name;
-  const char *theme = XcursorGetTheme (display->xdisplay);
-  int size = XcursorGetDefaultSize (display->xdisplay);
+  const char *theme = meta_prefs_get_cursor_theme ();
+  int size = meta_prefs_get_cursor_size ();
 
   translate_meta_cursor (cursor, &glyph, &name);
 
