@@ -151,8 +151,9 @@ make_wayland_cursor_tracker (MetaScreen *screen)
 static MetaCursorTracker *
 make_x11_cursor_tracker (MetaScreen *screen)
 {
-  MetaCursorTracker *self = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
+  MetaCursorTracker *self;
 
+  self = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
   self->screen = screen;
   self->renderer = meta_cursor_renderer_new ();
 
