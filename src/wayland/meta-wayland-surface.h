@@ -115,9 +115,9 @@ struct _MetaWaylandSurface
 void                meta_wayland_shell_init     (MetaWaylandCompositor *compositor);
 
 MetaWaylandSurface *meta_wayland_surface_create (MetaWaylandCompositor *compositor,
-						 struct wl_client      *client,
-						 guint32                id,
-						 guint32                version);
+                                                 struct wl_client      *client,
+                                                 struct wl_resource    *compositor_resource,
+                                                 guint32                id);
 
 void                meta_wayland_surface_set_window (MetaWaylandSurface *surface,
                                                      MetaWindow         *window);
@@ -138,6 +138,5 @@ void                meta_wayland_surface_ping (MetaWaylandSurface *surface,
 void                meta_wayland_surface_delete (MetaWaylandSurface *surface);
 
 void                meta_wayland_surface_popup_done (MetaWaylandSurface *surface);
-
 
 #endif

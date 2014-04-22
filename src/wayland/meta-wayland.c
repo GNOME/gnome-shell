@@ -199,16 +199,13 @@ meta_wayland_compositor_repick (MetaWaylandCompositor *compositor)
 }
 
 static void
-meta_wayland_compositor_create_surface (struct wl_client *wayland_client,
-                                        struct wl_resource *wayland_compositor_resource,
+meta_wayland_compositor_create_surface (struct wl_client *client,
+                                        struct wl_resource *resource,
                                         guint32 id)
 {
-  MetaWaylandCompositor *compositor =
-    wl_resource_get_user_data (wayland_compositor_resource);
+  MetaWaylandCompositor *compositor = wl_resource_get_user_data (resource);
 
-  meta_wayland_surface_create (compositor, wayland_client, id,
-                               MIN (META_WL_SURFACE_VERSION,
-                                    wl_resource_get_version (wayland_compositor_resource)));
+  meta_wayland_surface_create (compositor, client, resource, id);
 }
 
 static void

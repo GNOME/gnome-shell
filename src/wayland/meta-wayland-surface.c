@@ -568,15 +568,16 @@ wl_surface_destructor (struct wl_resource *resource)
 
 MetaWaylandSurface *
 meta_wayland_surface_create (MetaWaylandCompositor *compositor,
-			     struct wl_client      *client,
-			     guint32                id,
-			     guint32                version)
+                             struct wl_client      *client,
+                             struct wl_resource    *compositor_resource,
+                             guint32                id)
 {
   MetaWaylandSurface *surface = g_slice_new0 (MetaWaylandSurface);
 
   surface->compositor = compositor;
 
-  surface->resource = wl_resource_create (client, &wl_surface_interface, version, id);
+  surface->resource = wl_resource_create (client, &wl_surface_interface,
+                                          MIN (META_WL_SURFACE_VERSION, wl_resource_get_version (compositor_resource)), id);
   wl_resource_set_implementation (surface->resource, &meta_wayland_wl_surface_interface, surface, wl_surface_destructor);
 
   surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
