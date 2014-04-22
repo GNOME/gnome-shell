@@ -380,7 +380,6 @@ struct _MetaWindow
   /* Note: can be NULL */
   GSList *struts;
 
-#ifdef HAVE_XSYNC
   /* XSync update counter */
   XSyncCounter sync_request_counter;
   gint64 sync_request_serial;
@@ -388,7 +387,6 @@ struct _MetaWindow
   guint sync_request_timeout_id;
   /* alarm monitoring client's _NET_WM_SYNC_REQUEST_COUNTER */
   XSyncAlarm sync_request_alarm;
-#endif
   
   /* Number of UnmapNotify that are caused by us, if
    * we get UnmapNotify with none pending then the client
@@ -638,10 +636,8 @@ void meta_window_show_menu (MetaWindow *window,
                             int         button,
                             guint32     timestamp);
 
-#ifdef HAVE_XSYNC
 void meta_window_update_sync_request_counter (MetaWindow *window,
                                               gint64      new_counter_value);
-#endif /* HAVE_XSYNC */
 
 gboolean meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                                   const ClutterEvent *event);

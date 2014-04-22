@@ -54,9 +54,7 @@
 #ifdef HAVE_RANDR
 #include <X11/extensions/Xrandr.h>
 #endif
-#ifdef HAVE_SHAPE
 #include <X11/extensions/shape.h>
-#endif
 #include <X11/Xcursor/Xcursor.h>
 #include <X11/extensions/Xcomposite.h>
 #include <X11/extensions/Xdamage.h>
@@ -561,7 +559,6 @@ meta_display_open (void)
 
   the_display->grab_edge_resistance_data = NULL;
 
-#ifdef HAVE_XSYNC
   {
     int major, minor;
 
@@ -594,12 +591,7 @@ meta_display_open (void)
                   the_display->xsync_error_base,
                   the_display->xsync_event_base);
   }
-#else  /* HAVE_XSYNC */
-  meta_verbose ("Not compiled with Xsync support\n");
-#endif /* !HAVE_XSYNC */
 
-
-#ifdef HAVE_SHAPE
   {
     the_display->have_shape = FALSE;
     
@@ -620,9 +612,6 @@ meta_display_open (void)
                   the_display->shape_error_base,
                   the_display->shape_event_base);
   }
-#else  /* HAVE_SHAPE */
-  meta_verbose ("Not compiled with Shape support\n");
-#endif /* !HAVE_SHAPE */
 
   {
     the_display->have_composite = FALSE;
@@ -1630,7 +1619,6 @@ meta_display_unregister_wayland_window (MetaDisplay *display,
   g_hash_table_remove (display->wayland_windows, window);
 }
 
-#ifdef HAVE_XSYNC
 /* We store sync alarms in the window ID hash table, because they are
  * just more types of XIDs in the same global space, but we have
  * typesafe functions to register/unregister for readability.
@@ -1661,7 +1649,6 @@ meta_display_unregister_sync_alarm (MetaDisplay *display,
 
   g_hash_table_remove (display->xids, &alarm);
 }
-#endif /* HAVE_XSYNC */
 
 void
 meta_display_notify_window_created (MetaDisplay  *display,
@@ -1904,9 +1891,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_latest_motion_y = root_y;
   display->grab_last_moveresize_time.tv_sec = 0;
   display->grab_last_moveresize_time.tv_usec = 0;
-#ifdef HAVE_XSYNC
   display->grab_last_user_action_was_snap = FALSE;
-#endif
   display->grab_frame_action = frame_action;
   display->grab_resize_unmaximize = 0;
   display->grab_timestamp = timestamp;
@@ -1923,13 +1908,11 @@ meta_display_begin_grab_op (MetaDisplay *display,
                                           &display->grab_initial_window_pos);
       display->grab_anchor_window_pos = display->grab_initial_window_pos;
 
-#ifdef HAVE_XSYNC
       if ( meta_grab_op_is_resizing (display->grab_op) &&
            display->grab_window->sync_request_counter != None)
         {
           meta_window_create_sync_request_alarm (display->grab_window);
         }
-#endif
     }
   
   meta_topic (META_DEBUG_WINDOW_OPS,
@@ -3278,13 +3261,11 @@ meta_display_get_damage_event_base (MetaDisplay *display)
   return display->damage_event_base;
 }
 
-#ifdef HAVE_SHAPE
 int
 meta_display_get_shape_event_base (MetaDisplay *display)
 {
   return display->shape_event_base;
 }
-#endif
 
 /**
  * meta_display_clear_mouse_mode:

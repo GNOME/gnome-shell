@@ -125,16 +125,6 @@ log_handler (const gchar   *log_domain,
 static void
 meta_print_compilation_info (void)
 {
-#ifdef HAVE_SHAPE
-  meta_verbose ("Compiled with shape extension\n");
-#else
-  meta_verbose ("Compiled without shape extension\n");
-#endif
-#ifdef HAVE_XSYNC
-  meta_verbose ("Compiled with sync extension\n");
-#else
-  meta_verbose ("Compiled without sync extension\n");
-#endif
 #ifdef HAVE_RANDR
   meta_verbose ("Compiled with randr extension\n");
 #else

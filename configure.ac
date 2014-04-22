@@ -74,7 +74,7 @@ MUTTER_PC_MODULES="
    pango >= 1.2.0
    cairo >= 1.10.0
    gsettings-desktop-schemas >= 3.7.3
-   xcomposite >= 0.2 xfixes xdamage xi >= 1.6.0
+   xcomposite >= 0.2 xfixes xext xdamage xi >= 1.6.0
    $CLUTTER_PACKAGE >= 1.17.5
    cogl-1.0 >= 1.17.1
    upower-glib >= 0.99.0
@@ -249,28 +249,6 @@ if test x$have_xinerama = xno; then
    AC_MSG_ERROR([Xinerama extension was not found])
 fi
 
-SHAPE_LIBS=
-found_shape=no
-AC_CHECK_LIB(Xext, XShapeQueryExtension,
-               [AC_CHECK_HEADER(X11/extensions/shape.h,
-                                SHAPE_LIBS=-lXext found_shape=yes)],
-               , $ALL_X_LIBS)
-
-if test x$enable_shape = xno; then
-   found_shape=no
-fi
-
-if test x$enable_shape = xyes; then
-   if test "$found_shape" = "no"; then
-      AC_MSG_ERROR([--enable-shape forced and Shape not found])
-      exit 1
-   fi
-fi
-
-if test "x$found_shape" = "xyes"; then
-   AC_DEFINE(HAVE_SHAPE, , [Have the shape extension library])
-fi
-
 found_xkb=no
 AC_CHECK_LIB(X11, XkbQueryExtension,
                [AC_CHECK_HEADER(X11/XKBlib.h,
@@ -294,31 +272,7 @@ if test "x$found_randr" = "xyes"; then
    AC_DEFINE(HAVE_RANDR, , [Have the Xrandr extension library])
 fi
 
-XSYNC_LIBS=
-found_xsync=no
-AC_CHECK_LIB(Xext, XSyncQueryExtension,
-               [AC_CHECK_HEADER(X11/extensions/sync.h,
-                                found_xsync=yes,,
-				[#include <X11/Xlib.h>])],
-               , $ALL_X_LIBS)
-
-if test x$enable_xsync = xno; then
-   found_xsync=no
-fi
-
-if test x$enable_xsync = xyes; then
-   if test "$found_xsync" = "no"; then
-      AC_MSG_ERROR([--enable-xsync forced and XSync not found])
-      exit 1
-   fi
-fi
-
-if test "x$found_xsync" = "xyes"; then
-   XSYNC_LIBS=-lXext
-   AC_DEFINE(HAVE_XSYNC, , [Have the Xsync extension library])
-fi
-
-MUTTER_LIBS="$MUTTER_LIBS $XSYNC_LIBS $RANDR_LIBS $SHAPE_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS -lm"
+MUTTER_LIBS="$MUTTER_LIBS $RANDR_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS -lm"
 
 found_sm=no
 case "$MUTTER_LIBS" in
@@ -475,8 +429,6 @@ mutter-$VERSION
 	libcanberra:              ${have_libcanberra}
 	Introspection:            ${found_introspection}
 	Session management:       ${found_sm}
-	Shape extension:          ${found_shape}
-	Xsync:                    ${found_xsync}
 "
 
 

@@ -43,9 +43,7 @@
 #include <libsn/sn.h>
 #endif
 
-#ifdef HAVE_XSYNC
 #include <X11/extensions/sync.h>
-#endif
 
 typedef struct _MetaStack      MetaStack;
 typedef struct _MetaUISlave    MetaUISlave;
@@ -280,26 +278,14 @@ struct _MetaDisplay
 #ifdef HAVE_STARTUP_NOTIFICATION
   SnDisplay *sn_display;
 #endif
-#ifdef HAVE_XSYNC
   int xsync_event_base;
   int xsync_error_base;
-#endif
-#ifdef HAVE_SHAPE
   int shape_event_base;
   int shape_error_base;
-#endif
-#ifdef HAVE_XSYNC
   unsigned int have_xsync : 1;
 #define META_DISPLAY_HAS_XSYNC(display) ((display)->have_xsync)
-#else
-#define META_DISPLAY_HAS_XSYNC(display) FALSE
-#endif
-#ifdef HAVE_SHAPE
   unsigned int have_shape : 1;
 #define META_DISPLAY_HAS_SHAPE(display) ((display)->have_shape)
-#else
-#define META_DISPLAY_HAS_SHAPE(display) FALSE
-#endif
   unsigned int have_composite : 1;
   unsigned int have_damage : 1;
 #define META_DISPLAY_HAS_COMPOSITE(display) ((display)->have_composite)
@@ -362,7 +348,6 @@ void        meta_display_register_wayland_window   (MetaDisplay *display,
 void        meta_display_unregister_wayland_window (MetaDisplay *display,
                                                     MetaWindow  *window);
 
-#ifdef HAVE_XSYNC
 MetaWindow* meta_display_lookup_sync_alarm     (MetaDisplay *display,
                                                 XSyncAlarm   alarm);
 void        meta_display_register_sync_alarm   (MetaDisplay *display,
@@ -370,7 +355,6 @@ void        meta_display_register_sync_alarm   (MetaDisplay *display,
                                                 MetaWindow  *window);
 void        meta_display_unregister_sync_alarm (MetaDisplay *display,
                                                 XSyncAlarm   alarm);
-#endif /* HAVE_XSYNC */
 
 void        meta_display_notify_window_created (MetaDisplay  *display,
                                                 MetaWindow   *window);

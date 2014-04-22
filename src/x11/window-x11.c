@@ -29,9 +29,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xlibint.h> /* For display->resource_mask */
 
-#ifdef HAVE_SHAPE
 #include <X11/extensions/shape.h>
-#endif
 
 #include <X11/extensions/Xcomposite.h>
 #include "core.h"
@@ -344,10 +342,8 @@ meta_window_x11_unmanage (MetaWindow *window)
       window->user_time_window = None;
     }
 
-#ifdef HAVE_SHAPE
   if (META_DISPLAY_HAS_SHAPE (window->display))
     XShapeSelectInput (window->display->xdisplay, window->xwindow, NoEventMask);
-#endif
 
   /* The XReparentWindow call in meta_window_destroy_frame() moves the
    * window so we need to send a configure notify; see bug 399552.  (We
@@ -526,7 +522,6 @@ update_net_frame_extents (MetaWindow *window)
   meta_error_trap_pop (window->display);
 }
 
-#ifdef HAVE_XSYNC
 static gboolean
 sync_request_timeout (gpointer data)
 {
@@ -610,7 +605,6 @@ send_sync_request (MetaWindow *window)
   meta_compositor_set_updates_frozen (window->display->compositor, window,
                                       meta_window_updates_are_frozen (window));
 }
-#endif
 
 static void
 meta_window_x11_move_resize_internal (MetaWindow                *window,
@@ -866,7 +860,6 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
 
       meta_error_trap_push (window->display);
 
-#ifdef HAVE_XSYNC
       if (window == window->display->grab_window &&
           meta_grab_op_is_resizing (window->display->grab_op) &&
           !window->disable_sync &&
@@ -876,7 +869,6 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
         {
           send_sync_request (window);
         }
-#endif
 
       XConfigureWindow (window->display->xdisplay,
                         window->xwindow,
@@ -1275,7 +1267,6 @@ meta_window_x11_update_input_region (MetaWindow *window)
       return;
     }
 
-#ifdef HAVE_SHAPE
   if (META_DISPLAY_HAS_SHAPE (window->display))
     {
       /* Translate the set of XShape rectangles that we
@@ -1307,7 +1298,6 @@ meta_window_x11_update_input_region (MetaWindow *window)
           XFree (rects);
         }
     }
-#endif /* HAVE_SHAPE */
 
   if (region != NULL)
     {
@@ -1349,7 +1339,6 @@ meta_window_x11_update_shape_region (MetaWindow *window)
 {
   cairo_region_t *region = NULL;
 
-#ifdef HAVE_SHAPE
   if (META_DISPLAY_HAS_SHAPE (window->display))
     {
       /* Translate the set of XShape rectangles that we
@@ -1384,7 +1373,6 @@ meta_window_x11_update_shape_region (MetaWindow *window)
           XFree (rects);
         }
     }
-#endif /* HAVE_SHAPE */
 
   if (region != NULL)
     {
@@ -2337,10 +2325,8 @@ meta_window_x11_new (MetaDisplay       *display,
     XISelectEvents (display->xdisplay, xwindow, &mask, 1);
   }
 
-#ifdef HAVE_SHAPE
   if (META_DISPLAY_HAS_SHAPE (display))
     XShapeSelectInput (display->xdisplay, xwindow, ShapeNotifyMask);
-#endif
 
   /* Get rid of any borders */
   if (attrs.border_width != 0)

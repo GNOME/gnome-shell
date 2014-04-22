@@ -25,9 +25,7 @@
 
 #include <X11/Xatom.h>
 #include <X11/extensions/Xdamage.h>
-#ifdef HAVE_SHAPE
 #include <X11/extensions/shape.h>
-#endif
 
 #include <meta/errors.h>
 #include "display-private.h"
@@ -214,14 +212,12 @@ event_get_modified_window (MetaDisplay *display,
       return None;
 
     default:
-#ifdef HAVE_SHAPE
       if (META_DISPLAY_HAS_SHAPE (display) &&
           event->type == (display->shape_event_base + ShapeNotify))
         {
           XShapeEvent *sev = (XShapeEvent*) event;
           return sev->window;
         }
-#endif
 
       return None;
     }
@@ -351,7 +347,6 @@ stack_mode_to_string (int mode)
   return "Unknown";
 }
 
-#ifdef HAVE_XSYNC
 G_GNUC_UNUSED static gint64
 sync_value_to_64 (const XSyncValue *value)
 {
@@ -378,7 +373,6 @@ alarm_state_to_string (XSyncAlarmState state)
       return "(unknown)";
     }
 }
-#endif /* HAVE_XSYNC */
 
 G_GNUC_UNUSED static void
 meta_spew_xi2_event (MetaDisplay *display,
@@ -612,7 +606,6 @@ meta_spew_core_event (MetaDisplay *display,
       name = "MappingNotify";
       break;
     default:
-#ifdef HAVE_XSYNC
       if (META_DISPLAY_HAS_XSYNC (display) &&
           event->type == (display->xsync_event_base + XSyncAlarmNotify))
         {
@@ -631,8 +624,6 @@ meta_spew_core_event (MetaDisplay *display,
                              alarm_state_to_string (aevent->state));
         }
       else
-#endif /* HAVE_XSYNC */
-#ifdef HAVE_SHAPE
         if (META_DISPLAY_HAS_SHAPE (display) &&
             event->type == (display->shape_event_base + ShapeNotify))
           {
@@ -652,7 +643,6 @@ meta_spew_core_event (MetaDisplay *display,
                                sev->shaped);
           }
         else
-#endif /* HAVE_SHAPE */
           {
             name = "(Unknown event)";
             extra = g_strdup_printf ("type: %d", event->xany.type);
@@ -1248,7 +1238,6 @@ handle_other_xevent (MetaDisplay *display,
       window = NULL;
     }
 
-#ifdef HAVE_XSYNC
   if (META_DISPLAY_HAS_XSYNC (display) &&
       event->type == (display->xsync_event_base + XSyncAlarmNotify))
     {
@@ -1266,9 +1255,7 @@ handle_other_xevent (MetaDisplay *display,
 
       goto out;
     }
-#endif /* HAVE_XSYNC */
 
-#ifdef HAVE_SHAPE
   if (META_DISPLAY_HAS_SHAPE (display) &&
       event->type == (display->shape_event_base + ShapeNotify))
     {
@@ -1293,7 +1280,6 @@ handle_other_xevent (MetaDisplay *display,
 
       goto out;
     }
-#endif /* HAVE_SHAPE */
 
   switch (event->type)
     {

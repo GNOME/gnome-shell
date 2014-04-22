@@ -35,10 +35,6 @@
 
 #include <cairo-xlib.h>
 
-#ifdef HAVE_SHAPE
-#include <X11/extensions/shape.h>
-#endif
-
 #define DEFAULT_INNER_BUTTON_BORDER 3
 
 static void meta_frames_destroy       (GtkWidget       *object);

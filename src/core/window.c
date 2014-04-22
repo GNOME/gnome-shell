@@ -50,10 +50,6 @@
 #include <string.h>
 #include <math.h>
 
-#ifdef HAVE_SHAPE
-#include <X11/extensions/shape.h>
-#endif
-
 #include "meta/compositor-mutter.h"
 
 #include "x11/window-x11.h"
@@ -797,12 +793,10 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->display = display;
   window->workspace = NULL;
 
-#ifdef HAVE_XSYNC
   window->sync_request_counter = None;
   window->sync_request_serial = 0;
   window->sync_request_timeout_id = 0;
   window->sync_request_alarm = None;
-#endif
 
   window->screen = screen;
 
@@ -3936,7 +3930,6 @@ adjust_for_gravity (MetaWindow        *window,
 void
 meta_window_create_sync_request_alarm (MetaWindow *window)
 {
-#ifdef HAVE_XSYNC
   XSyncAlarmAttributes values;
   XSyncValue init;
 
@@ -4002,13 +3995,11 @@ meta_window_create_sync_request_alarm (MetaWindow *window)
       window->sync_request_alarm = None;
       window->sync_request_counter = None;
     }
-#endif
 }
 
 void
 meta_window_destroy_sync_request_alarm (MetaWindow *window)
 {
-#ifdef HAVE_XSYNC
   if (window->sync_request_alarm != None)
     {
       /* Has to be unregistered _before_ clearing the structure field */
@@ -4017,7 +4008,6 @@ meta_window_destroy_sync_request_alarm (MetaWindow *window)
                          window->sync_request_alarm);
       window->sync_request_alarm = None;
     }
-#endif /* HAVE_XSYNC */
 }
 
 /**
@@ -4035,14 +4025,12 @@ meta_window_destroy_sync_request_alarm (MetaWindow *window)
 gboolean
 meta_window_updates_are_frozen (MetaWindow *window)
 {
-#ifdef HAVE_XSYNC
   if (window->extended_sync_request_counter &&
       window->sync_request_serial % 2 == 1)
     return TRUE;
 
   if (window->sync_request_serial < window->sync_request_wait_serial)
     return TRUE;
-#endif
 
   return FALSE;
 }
@@ -6822,13 +6810,11 @@ check_moveresize_frequency (MetaWindow *window,
 
   g_get_current_time (&current_time);
 
-#ifdef HAVE_XSYNC
   /* If we are throttling via _NET_WM_SYNC_REQUEST, we don't need
    * an artificial timeout-based throttled */
   if (!window->disable_sync &&
       window->sync_request_alarm != None)
     return TRUE;
-#endif /* HAVE_XSYNC */
 
   elapsed = time_diff (&current_time, &window->display->grab_last_moveresize_time);
 
@@ -7333,14 +7319,12 @@ update_resize (MetaWindow *window,
       break;
     }
 
-#ifdef HAVE_XSYNC
   /* If we're waiting for a request for _NET_WM_SYNC_REQUEST, we'll
    * resize the window when the window responds, or when we time
    * the response out.
    */
   if (window->sync_request_timeout_id != 0)
     return;
-#endif
 
   if (!check_moveresize_frequency (window, &remaining) && !force)
     {
@@ -7465,7 +7449,6 @@ meta_window_update_resize (MetaWindow *window,
   update_resize (window, snap, x, y, force);
 }
 
-#ifdef HAVE_XSYNC
 void
 meta_window_update_sync_request_counter (MetaWindow *window,
                                          gint64      new_counter_value)
@@ -7516,7 +7499,6 @@ meta_window_update_sync_request_counter (MetaWindow *window,
     meta_compositor_queue_frame_drawn (window->display->compositor, window,
                                        no_delay_frame);
 }
-#endif /* HAVE_XSYNC */
 
 static void
 end_grab_op (MetaWindow *window,

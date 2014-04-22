@@ -900,7 +900,6 @@ reload_update_counter (MetaWindow    *window,
       meta_window_destroy_sync_request_alarm (window);
       window->sync_request_counter = None;
 
-#ifdef HAVE_XSYNC
       if (value->v.xcounter_list.n_counters == 0)
         {
           meta_warning ("_NET_WM_SYNC_REQUEST_COUNTER is empty\n");
@@ -923,7 +922,6 @@ reload_update_counter (MetaWindow    *window,
 
       if (window->extended_sync_request_counter)
         meta_window_create_sync_request_alarm (window);
-#endif
     }
 }
 

@@ -27,9 +27,7 @@
 #include <meta/display.h>
 #include <X11/Xutil.h>
 
-#ifdef HAVE_XSYNC
 #include <X11/extensions/sync.h>
-#endif
 
 /* Copied from Lesstif by way of GTK. Rudimentary docs can be
  * found in some Motif reference guides online.
@@ -179,14 +177,12 @@ typedef struct
     gulong cardinal;
     XWMHints *wm_hints;
     XClassHint class_hint;
-#ifdef HAVE_XSYNC
     XSyncCounter xcounter;
     struct
     {
       gulong *counters;
       int     n_counters;
     } xcounter_list;
-#endif
     
     struct
     {
