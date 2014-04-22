@@ -74,7 +74,7 @@ MUTTER_PC_MODULES="
    pango >= 1.2.0
    cairo >= 1.10.0
    gsettings-desktop-schemas >= 3.7.3
-   xcomposite >= 0.2 xfixes xrender xdamage xi >= 1.6.0
+   xcomposite >= 0.2 xfixes xdamage xi >= 1.6.0
    $CLUTTER_PACKAGE >= 1.17.5
    cogl-1.0 >= 1.17.1
    upower-glib >= 0.99.0
@@ -288,7 +288,7 @@ AC_CHECK_LIB(Xrandr, XRRUpdateConfiguration,
                [AC_CHECK_HEADER(X11/extensions/Xrandr.h,
                                 RANDR_LIBS=-lXrandr found_randr=yes,,
 				[#include <X11/Xlib.h>])],
-               , -lXrender -lXext $ALL_X_LIBS)
+               , -lXext $ALL_X_LIBS)
 
 if test "x$found_randr" = "xyes"; then
    AC_DEFINE(HAVE_RANDR, , [Have the Xrandr extension library])

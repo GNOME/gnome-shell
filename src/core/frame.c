@@ -27,8 +27,6 @@
 #include <meta/errors.h>
 #include "keybindings-private.h"
 
-#include <X11/extensions/Xrender.h>
-
 #define EVENT_MASK (SubstructureRedirectMask |                     \
                     StructureNotifyMask | SubstructureNotifyMask | \
                     ExposureMask |                                 \

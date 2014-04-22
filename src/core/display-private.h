@@ -265,9 +265,6 @@ struct _MetaDisplay
   /* Managed by compositor.c */
   MetaCompositor *compositor;
 
-  int render_event_base;
-  int render_error_base;
-
   int composite_event_base;
   int composite_error_base;
   int composite_major_version;
@@ -303,8 +300,6 @@ struct _MetaDisplay
 #else
 #define META_DISPLAY_HAS_SHAPE(display) FALSE
 #endif
-  unsigned int have_render : 1;
-#define META_DISPLAY_HAS_RENDER(display) ((display)->have_render)
   unsigned int have_composite : 1;
   unsigned int have_damage : 1;
 #define META_DISPLAY_HAS_COMPOSITE(display) ((display)->have_composite)

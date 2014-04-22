@@ -58,7 +58,6 @@
 #include <X11/extensions/shape.h>
 #endif
 #include <X11/Xcursor/Xcursor.h>
-#include <X11/extensions/Xrender.h>
 #include <X11/extensions/Xcomposite.h>
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/Xfixes.h>
@@ -363,12 +362,10 @@ static void
 enable_compositor (MetaDisplay *display)
 {
   if (!META_DISPLAY_HAS_COMPOSITE (display) ||
-      !META_DISPLAY_HAS_DAMAGE (display) ||
-      !META_DISPLAY_HAS_RENDER (display))
+      !META_DISPLAY_HAS_DAMAGE (display))
     {
       meta_warning ("Missing %s extension required for compositing",
-                    !META_DISPLAY_HAS_COMPOSITE (display) ? "composite" :
-                    !META_DISPLAY_HAS_DAMAGE (display) ? "damage" : "render");
+                    !META_DISPLAY_HAS_COMPOSITE (display) ? "composite" : "damage");
       return;
     }
 
@@ -626,27 +623,6 @@ meta_display_open (void)
 #else  /* HAVE_SHAPE */
   meta_verbose ("Not compiled with Shape support\n");
 #endif /* !HAVE_SHAPE */
-
-  {
-    the_display->have_render = FALSE;
-    
-    the_display->render_error_base = 0;
-    the_display->render_event_base = 0;
-    
-    if (!XRenderQueryExtension (the_display->xdisplay,
-                                &the_display->render_event_base,
-                                &the_display->render_error_base))
-      {
-        the_display->render_error_base = 0;
-        the_display->render_event_base = 0;
-      }
-    else
-      the_display->have_render = TRUE;
-    
-    meta_verbose ("Attempted to init Render, found error base %d event base %d\n",
-                  the_display->render_error_base,
-                  the_display->render_event_base);
-  }
 
   {
     the_display->have_composite = FALSE;
