@@ -194,7 +194,7 @@ meta_launcher_open_device (MetaLauncher  *self,
 }
 
 static void
-meta_launcher_enter (MetaLauncher *launcher)
+session_unpause (void)
 {
   ClutterBackend *backend;
   CoglContext *cogl_context;
@@ -222,7 +222,7 @@ meta_launcher_enter (MetaLauncher *launcher)
 }
 
 static void
-meta_launcher_leave (MetaLauncher *launcher)
+session_pause (void)
 {
   clutter_evdev_release_devices ();
 }
@@ -251,6 +251,8 @@ handle_vt_enter (MetaLauncher *launcher)
   g_assert (launcher->vt_switched);
 
   g_main_loop_quit (launcher->nested_loop);
+
+  session_unpause ();
 }
 
 static void
@@ -260,7 +262,7 @@ handle_request_vt_switch (MetaLauncher *launcher)
   GError *error;
   gboolean ok;
 
-  meta_launcher_leave (launcher);
+  session_pause ();
 
   message.opcode = WESTON_LAUNCHER_CONFIRM_VT_SWITCH;
 
