@@ -340,7 +340,9 @@ MetaLauncher *
 meta_launcher_new (void)
 {
   MetaLauncher *self = g_slice_new0 (MetaLauncher);
+  GError *error = NULL;
   int launch_fd;
+  int kms_fd;
 
   launch_fd = env_get_fd ("WESTON_LAUNCHER_SOCK");
   if (launch_fd < 0)
@@ -361,21 +363,14 @@ meta_launcher_new (void)
   g_source_attach (self->inner_source, self->nested_context);
   g_source_unref (self->inner_source);
 
+  kms_fd = meta_launcher_open_device (self, "/dev/dri/card0", O_RDWR, &error);
+  if (error)
+    g_error ("Failed to open /dev/dri/card0: %s", error->message);
+
+  clutter_egl_set_kms_fd (kms_fd);
   clutter_evdev_set_device_callbacks (on_evdev_device_open,
                                       on_evdev_device_close,
                                       self);
-
-#if defined(CLUTTER_WINDOWING_EGL)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
-    {
-      GError *error = NULL;
-      int fd = meta_launcher_open_device (self, "/dev/dri/card0", O_RDWR, &error);
-      if (error)
-        g_error ("Failed to open /dev/dri/card0: %s", error->message);
-
-      clutter_egl_set_kms_fd (fd);
-    }
-#endif
 
   return self;
 }
