@@ -6,8 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-04-02 07:58+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-04-22 07:25+0000\n"
 "PO-Revision-Date: 2014-04-03 10:34+0700\n"
 "Last-Translator: Sophea Sok <sophea@open.org.kh>\n"
 "Language-Team: Khmer <>\n"
@@ -67,17 +68,13 @@ msgstr "GNOME សែល (wayland compositor)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"បើក​ឧបករណ៍​ខាងក្នុង មាន​ប្រយោជន៍​សម្រាប់​អ្នក​អភិវឌ្ឍន៍ "
-"និង​អ្នក​សាកល្បង​ចេញពី Alt-F2"
+msgstr "បើក​ឧបករណ៍​ខាងក្នុង មាន​ប្រយោជន៍​សម្រាប់​អ្នក​អភិវឌ្ឍន៍ និង​អ្នក​សាកល្បង​ចេញពី Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"អនុញ្ញាត​ឲ្យ​ចូល​ដំណើរការ​ឧបករណ៍​តាមដាន "
-"និង​ឧបករណ៍​បំបាត់​កំហុស​ខាងក្នុង​ដោយ​ប្រើ​ប្រអប់ Alt-F2 ។"
+msgstr "អនុញ្ញាត​ឲ្យ​ចូល​ដំណើរការ​ឧបករណ៍​តាមដាន និង​ឧបករណ៍​បំបាត់​កំហុស​ខាងក្នុង​ដោយ​ប្រើ​ប្រអប់ Alt-F2 ។"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "UUIDs of extensions to enable"
@@ -90,11 +87,10 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"ផ្នែក​បន្ថែម​របស់ GNOME សែល​ដែល​មាន​លក្ខណសម្បត្តិ UUID ។ "
-"ពាក្យ​គន្លឹះ​នេះ​គឺ​រាយ​ផ្នែក​បន្ថែម​ដែល​គួរ​ត្រូវ​បាន​ផ្ទុក។ "
-"ផ្នែក​បន្ថែម​ណា​ដែល​ត្រូវ​ផ្ទុក គឺ​ត្រូវតែ​នៅ​ក្នុង​បញ្ជី​នេះ។ "
-"អ្នក​ក៏​អាច​រៀបចំ​បញ្ជី​នេះ​ដោយ​ប្រើ​វិធីសាស្ត្រ EnableExtension និង "
-"DisableExtension D-Bus បាន​ផង​ដែរ​នៅ​លើ org.gnome.Shell ។"
+"ផ្នែក​បន្ថែម​របស់ GNOME សែល​ដែល​មាន​លក្ខណសម្បត្តិ UUID ។ ពាក្យ​គន្លឹះ​នេះ​គឺ​រាយ​ផ្នែក​បន្ថែម​ដែល​គួរ​ត្រូវ​"
+"បាន​ផ្ទុក។ ផ្នែក​បន្ថែម​ណា​ដែល​ត្រូវ​ផ្ទុក គឺ​ត្រូវតែ​នៅ​ក្នុង​បញ្ជី​នេះ។ អ្នក​ក៏​អាច​រៀបចំ​បញ្ជី​នេះ​ដោយ​ប្រើ​"
+"វិធីសាស្ត្រ EnableExtension និង DisableExtension D-Bus បាន​ផង​ដែរ​នៅ​លើ org.gnome."
+"Shell ។"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Disables the validation of extension version compatibility"
@@ -106,10 +102,9 @@ msgid ""
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
-"GNOME សែល​នឹង​ផ្ទុក​តែ​ផ្នែក​បន្ថែម​ដែល​ប្រកាស​ដើម្បី​គាំទ្រ​កំណែ​កំពុង​ដំណើ"
-"រការ​បច្ចុប្បន្ន​ប៉ុណ្ណោះ។ ការ​បើក​ជម្រើស​នេះ "
-"គឺ​វា​នឹង​បិទ​ការ​ពិនិត្យមើល​នេះ ហើយ​ព្យាយាម​ផ្ទុក​ផ្នែក​បន្ថែម​ទាំងអស់​ដោយ​"
-"មិន​គិត​អំពី​កំណែ​ដែល​ពួកគេ​ប្រកាស​ដើម្បី​គាំទ្រ​ឡើយ។"
+"GNOME សែល​នឹង​ផ្ទុក​តែ​ផ្នែក​បន្ថែម​ដែល​ប្រកាស​ដើម្បី​គាំទ្រ​កំណែ​កំពុង​ដំណើរការ​បច្ចុប្បន្ន​ប៉ុណ្ណោះ។ ការ​បើក​"
+"ជម្រើស​នេះ គឺ​វា​នឹង​បិទ​ការ​ពិនិត្យមើល​នេះ ហើយ​ព្យាយាម​ផ្ទុក​ផ្នែក​បន្ថែម​ទាំងអស់​ដោយ​មិន​គិត​អំពី​កំណែ​ដែល​ពួកគេ​"
+"ប្រកាស​ដើម្បី​គាំទ្រ​ឡើយ។"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -119,9 +114,7 @@ msgstr "បញ្ជី​លេខ​សម្គាល់​ឯកសារ​
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
-msgstr ""
-"កម្មវិធី​ដែល​ត្រូវគ្នា​ជាមួយ​កម្មវិធី​កំណត់​អត្តសញ្ញាណ​ទាំងនេះ "
-"នឹង​ត្រូវ​បាន​បង្ហាញ​នៅ​ក្នុង​ផ្ទៃ​សំណព្វ។"
+msgstr "កម្មវិធី​ដែល​ត្រូវគ្នា​ជាមួយ​កម្មវិធី​កំណត់​អត្តសញ្ញាណ​ទាំងនេះ នឹង​ត្រូវ​បាន​បង្ហាញ​នៅ​ក្នុង​ផ្ទៃ​សំណព្វ។"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
@@ -140,15 +133,13 @@ msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
 msgstr ""
-"ពាក្យ​គន្លឹះ​នេះ​បដិសេធ​ការ​លាក់​ធាតុ​ម៉ឺនុយ 'ចេញ' "
-"ស្វ័យប្រវត្តិ​នៅ​ក្នុង​ស្ថានភាព​អ្នកប្រើ​តែមួយ សម័យ​តែមួយ។"
+"ពាក្យ​គន្លឹះ​នេះ​បដិសេធ​ការ​លាក់​ធាតុ​ម៉ឺនុយ 'ចេញ' ស្វ័យប្រវត្តិ​នៅ​ក្នុង​ស្ថានភាព​អ្នកប្រើ​តែមួយ សម័យ​តែមួយ។"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
-"ថា​តើ​ត្រូវ​ចងចាំ​ពាក្យសម្ងាត់​សម្រាប់​ការ​ម៉ោន​ប្រព័ន្ធ​ឯកសារ​ពី​ចម្ងាយ "
-"ឬ​ឯកសារ​ដែល​បាន​ដាក់​លេខ​កូដ​ដែរ​ឬទេ"
+"ថា​តើ​ត្រូវ​ចងចាំ​ពាក្យសម្ងាត់​សម្រាប់​ការ​ម៉ោន​ប្រព័ន្ធ​ឯកសារ​ពី​ចម្ងាយ ឬ​ឯកសារ​ដែល​បាន​ដាក់​លេខ​កូដ​ដែរ​ឬទេ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
@@ -157,10 +148,8 @@ msgid ""
 "'Remember Password' checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"សែល​នឹង​ស្នើ​ពាក្យសម្ងាត់ នៅ​ពេល​ដែល​ឧបករណ៍​ដាក់​លេខ​កូដ "
-"ឬ​ប្រព័ន្ធ​ឯកសារ​ពី​ចម្ងាយ​ត្រូវ​បាន​ម៉ោន។ "
-"ប្រសិនបើ​ពាក្យសម្ងាត់​អាច​ត្រូវ​បាន​រក្សាទុក​សម្រាប់​ប្រើ​នៅ​ពេល​អនាគត "
-"ប្រអប់​ធីក 'ចងចាំ​ពាក្យសម្ងាត់' នឹង​បង្ហាញ។ "
+"សែល​នឹង​ស្នើ​ពាក្យសម្ងាត់ នៅ​ពេល​ដែល​ឧបករណ៍​ដាក់​លេខ​កូដ ឬ​ប្រព័ន្ធ​ឯកសារ​ពី​ចម្ងាយ​ត្រូវ​បាន​ម៉ោន។ ប្រសិនបើ​"
+"ពាក្យសម្ងាត់​អាច​ត្រូវ​បាន​រក្សាទុក​សម្រាប់​ប្រើ​នៅ​ពេល​អនាគត ប្រអប់​ធីក 'ចងចាំ​ពាក្យសម្ងាត់' នឹង​បង្ហាញ។ "
 "ពាក្យ​គន្លឹះ​នេះ​កំណត់​សភាព​លំនាំដើម​នៃ​ប្រអប់​ធីក។"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
@@ -186,9 +175,7 @@ msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​ប
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
-msgstr ""
-"បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ទិដ្ឋភាព \"កម្មវិធី​បង្ហាញ\" "
-"របស់​ទិដ្ឋភាព​សកម្មភាព។"
+msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ទិដ្ឋភាព \"កម្មវិធី​បង្ហាញ\" របស់​ទិដ្ឋភាព​សកម្មភាព។"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to open the overview"
@@ -235,13 +222,11 @@ msgid ""
 "allow applications to see and they can find user's location on their own "
 "using network resources (albeit with street-level accuracy at best)."
 msgstr ""
-"កំណត់​រចនាសម្ព័ន្ធ​កម្រិត​អតិបរមា​របស់​កម្មវិធី​សុក្រឹតភាព​ទីតាំង​ដែល​បាន​អន"
-"ុញ្ញាត​ឲ្យ​មើល​ឃើញ។ ជម្រើស​ដែល​ត្រឹមត្រូវ​គឺ 'off' (បិទ​ការ​តាមដាន​ទីតាំង), "
-"'country', 'city', 'neighborhood', 'street', និង 'exact' "
-"(ត្រូវ​មានឧបករណ៍​ទទួល GPS) ។ សូម​ចងចាំ​ថា​វា​គ្រប់គ្រង​អ្វី​ដែល GeoClue "
-"នឹង​អនុញ្ញាត​ឲ្យ​កម្មវិធី​មើល​ឃើញ "
-"ហើយ​ពួកគេ​អាច​រក​ឃើញ​ទីតាំង​របស់​អ្នកប្រើ​ដោយ​ប្រើ​ធនធាន​បណ្ដាញ​ផ្ទាល់ខ្លួន "
-"(សូម្បីតែ​សុក្រឹតភាព​កម្រិត​ផ្លូវ​ក៏​ល្អ​ដែរ)"
+"កំណត់​រចនាសម្ព័ន្ធ​កម្រិត​អតិបរមា​របស់​កម្មវិធី​សុក្រឹតភាព​ទីតាំង​ដែល​បាន​អនុញ្ញាត​ឲ្យ​មើល​ឃើញ។ ជម្រើស​ដែល​ត្រឹមត្រូវ​"
+"គឺ 'off' (បិទ​ការ​តាមដាន​ទីតាំង), 'country', 'city', 'neighborhood', 'street', និង "
+"'exact' (ត្រូវ​មានឧបករណ៍​ទទួល GPS) ។ សូម​ចងចាំ​ថា​វា​គ្រប់គ្រង​អ្វី​ដែល GeoClue នឹង​អនុញ្ញាត​ឲ្យ​កម្មវិធី​"
+"មើល​ឃើញ ហើយ​ពួកគេ​អាច​រក​ឃើញ​ទីតាំង​របស់​អ្នកប្រើ​ដោយ​ប្រើ​ធនធាន​បណ្ដាញ​ផ្ទាល់ខ្លួន (សូម្បីតែ​សុក្រឹតភាព​កម្រិត​"
+"ផ្លូវ​ក៏​ល្អ​ដែរ)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "The application icon mode."
@@ -253,10 +238,9 @@ msgid ""
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
 "only' (shows only the application icon) or 'both'."
 msgstr ""
-"កំណត់​រចនាសម្ព័ន្ធ​អំពី​របៀប​បង្ហាញ​បង្អួច​នៅ​ក្នុង​កម្មវិធី​ប្ដូរ។ "
-"តម្លៃ​ត្រឹមត្រូវ​ដែល​អាច​ប្រើ​បាន​គឺ 'thumbnail-only' "
-"(បង្ហាញ​រូបភាព​តូច​របស់​បង្អួច), 'app-icon-only' "
-"(បង្ហាញ​តែ​រូបតំណាង​កម្មវិធី​ប៉ុណ្ណោះ) ឬ 'both'។"
+"កំណត់​រចនាសម្ព័ន្ធ​អំពី​របៀប​បង្ហាញ​បង្អួច​នៅ​ក្នុង​កម្មវិធី​ប្ដូរ។ តម្លៃ​ត្រឹមត្រូវ​ដែល​អាច​ប្រើ​បាន​គឺ 'thumbnail-"
+"only' (បង្ហាញ​រូបភាព​តូច​របស់​បង្អួច), 'app-icon-only' (បង្ហាញ​តែ​រូបតំណាង​កម្មវិធី​ប៉ុណ្ណោះ) ឬ "
+"'both'។"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Attach modal dialog to the parent window"
@@ -265,9 +249,7 @@ msgstr "ភ្ជាប់​ប្រអប់​បែបបទ​ទៅ​ប
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"ពាក្យ​គន្លឹះ​នេះ​បដិសេធ​ពាក្យ​គន្លឹះ​នៅ​ក្នុង org.gnome.mutter ពេល​ដំណើរការ "
-"GNOME សែល។"
+msgstr "ពាក្យ​គន្លឹះ​នេះ​បដិសេធ​ពាក្យ​គន្លឹះ​នៅ​ក្នុង org.gnome.mutter ពេល​ដំណើរការ GNOME សែល។"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Arrangement of buttons on the titlebar"
@@ -278,8 +260,8 @@ msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
 msgstr ""
-"ពាក្យ​គន្លឹះ​នេះ​បដិសេធ​ពាក្យ​គន្លឹះ​នៅ​ក្នុង "
-"org.gnome.desktop.wm.preferences ពេល​ដំណើរការ GNOME សែល។"
+"ពាក្យ​គន្លឹះ​នេះ​បដិសេធ​ពាក្យ​គន្លឹះ​នៅ​ក្នុង org.gnome.desktop.wm.preferences ពេល​ដំណើរការ "
+"GNOME សែល។"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -295,9 +277,7 @@ msgstr "តំបន់​ធ្វើការ​មានតែ​នៅ​ល
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr ""
-"ប្ដូរ​ការ​ពន្យារពេល​ផ្ដោត​នៅ​ក្នុង​របៀប​កណ្ដុរ​រហូតដល់​ព្រួញ​កណ្ដុរ​លែង​ផ្លា"
-"ស់ទី"
+msgstr "ប្ដូរ​ការ​ពន្យារពេល​ផ្ដោត​នៅ​ក្នុង​របៀប​កណ្ដុរ​រហូតដល់​ព្រួញ​កណ្ដុរ​លែង​ផ្លាស់ទី"
 
 #: ../js/extensionPrefs/main.js:127
 #, javascript-format
@@ -310,8 +290,7 @@ msgstr "ផ្នែក​បន្ថែម"
 
 #: ../js/extensionPrefs/main.js:191
 msgid "Select an extension to configure using the combobox above."
-msgstr ""
-"ជ្រើស​ផ្នែក​បន្ថែម​ដើម្បី​កំណត់​រចនាសម្ព័ន្ធ​ដោយ​ប្រើ​​ប្រអប់​បន្សំ​ខាង​លើ។"
+msgstr "ជ្រើស​ផ្នែក​បន្ថែម​ដើម្បី​កំណត់​រចនាសម្ព័ន្ធ​ដោយ​ប្រើ​​ប្រអប់​បន្សំ​ខាង​លើ។"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
@@ -342,25 +321,25 @@ msgstr "ជ្រើស​សម័យ"
 msgid "Not listed?"
 msgstr "មិន​បាន​រាយ?"
 
-#: ../js/gdm/loginDialog.js:614
+#: ../js/gdm/loginDialog.js:616
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ឧ., អ្នកប្រើ ឬ %s)"
 
-#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:621 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "ឈ្មោះ​អ្នកប្រើ៖"
 
-#: ../js/gdm/loginDialog.js:920
+#: ../js/gdm/loginDialog.js:924
 msgid "Login Window"
 msgstr "បង្អួច​ចូល"
 
-#: ../js/gdm/util.js:322
+#: ../js/gdm/util.js:323
 msgid "Authentication error"
 msgstr "កំហុស​ការ​ផ្ទៀងផ្ទាត់"
 
-#: ../js/gdm/util.js:452
+#: ../js/gdm/util.js:453
 msgid "(or swipe finger)"
 msgstr "(ឬ​អូស​ម្រាមដៃ)"
 
@@ -389,15 +368,15 @@ msgstr "ញឹកញាប់"
 msgid "All"
 msgstr "ទាំងអស់"
 
-#: ../js/ui/appDisplay.js:1566
+#: ../js/ui/appDisplay.js:1567
 msgid "New Window"
 msgstr "បង្អួច​ថ្មី"
 
-#: ../js/ui/appDisplay.js:1588 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1589 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "យកចេញ​ពី​សំណព្វ"
 
-#: ../js/ui/appDisplay.js:1594
+#: ../js/ui/appDisplay.js:1595
 msgid "Add to Favorites"
 msgstr "បន្ថែម​ទៅ​សំណព្វ"
 
@@ -411,7 +390,7 @@ msgstr "បាន​បន្ថែម %s ទៅកាន់​សំណព្�
 msgid "%s has been removed from your favorites."
 msgstr "បាន​យក %s ចេញពី​សំណព្វ​របស់​អ្នក។"
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:809
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:810
 #: ../js/ui/status/system.js:334
 msgid "Settings"
 msgstr "ការ​កំណត់"
@@ -581,11 +560,11 @@ msgstr "សប្ដាហ៍​នេះ"
 msgid "Next week"
 msgstr "សប្ដាហ៍​បន្ទាប់"
 
-#: ../js/ui/components/automountManager.js:90
+#: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
 msgstr "បាន​ភ្ជាប់​ដ្រាយ​ខាងក្រៅ"
 
-#: ../js/ui/components/automountManager.js:101
+#: ../js/ui/components/automountManager.js:102
 msgid "External drive disconnected"
 msgstr "បាន​ផ្ដាច់​ដ្រាយ​ខាងក្រៅ"
 
@@ -648,9 +627,7 @@ msgstr "បាន​ទាមទារ​ការ​ផ្ទៀងផ្ទា
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr ""
-"បាន​ទាមទារ​ពាក្យសម្ងាត់ ឬ​សោ​លេខ​កូដ​ដើម្បី​ចូល​ដំណើរការ​បណ្ដាញ​ឥត​ខ្សែ “%s” "
-"។"
+msgstr "បាន​ទាមទារ​ពាក្យសម្ងាត់ ឬ​សោ​លេខ​កូដ​ដើម្បី​ចូល​ដំណើរការ​បណ្ដាញ​ឥត​ខ្សែ “%s” ។"
 
 #: ../js/ui/components/networkAgent.js:316
 msgid "Wired 802.1X authentication"
@@ -730,77 +707,77 @@ msgid "Mute"
 msgstr "បិទ​សំឡេង"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:955
+#: ../js/ui/components/telepathyClient.js:958
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:962
+#: ../js/ui/components/telepathyClient.js:965
 msgid "Yesterday, %H∶%M"
 msgstr "ម្សិលមិញ %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:969
+#: ../js/ui/components/telepathyClient.js:972
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:976
+#: ../js/ui/components/telepathyClient.js:979
 msgid "%B %d, %H∶%M"
 msgstr "%B %d, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:982
+#: ../js/ui/components/telepathyClient.js:985
 msgid "%B %d %Y, %H∶%M"
 msgstr "%B %d %Y, %H∶%M"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:991
+#: ../js/ui/components/telepathyClient.js:994
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:998
+#: ../js/ui/components/telepathyClient.js:1001
 msgid "Yesterday, %l∶%M %p"
 msgstr "ម្សិលមិញ %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1005
+#: ../js/ui/components/telepathyClient.js:1008
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1012
+#: ../js/ui/components/telepathyClient.js:1015
 msgid "%B %d, %l∶%M %p"
 msgstr "%B %d, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1018
+#: ../js/ui/components/telepathyClient.js:1021
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%B %d %Y, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1051
+#: ../js/ui/components/telepathyClient.js:1054
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s បាន​ស្គាល់​ជា %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1154
+#: ../js/ui/components/telepathyClient.js:1158
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "ការ​អញ្ជើញ​មកកាន់ %s"
@@ -808,38 +785,38 @@ msgstr "ការ​អញ្ជើញ​មកកាន់ %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1162
+#: ../js/ui/components/telepathyClient.js:1166
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s អញ្ជើញ​អ្នក​ឲ្យ​ចូលរួម %s"
 
-#: ../js/ui/components/telepathyClient.js:1164
-#: ../js/ui/components/telepathyClient.js:1199
-#: ../js/ui/components/telepathyClient.js:1233
-#: ../js/ui/components/telepathyClient.js:1291
+#: ../js/ui/components/telepathyClient.js:1168
+#: ../js/ui/components/telepathyClient.js:1203
+#: ../js/ui/components/telepathyClient.js:1237
+#: ../js/ui/components/telepathyClient.js:1295
 msgid "Decline"
 msgstr "បដិសេធ"
 
-#: ../js/ui/components/telepathyClient.js:1170
-#: ../js/ui/components/telepathyClient.js:1239
-#: ../js/ui/components/telepathyClient.js:1296
+#: ../js/ui/components/telepathyClient.js:1174
+#: ../js/ui/components/telepathyClient.js:1243
+#: ../js/ui/components/telepathyClient.js:1300
 msgid "Accept"
 msgstr "ព្រម​ទទួល"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1189
+#: ../js/ui/components/telepathyClient.js:1193
 #, javascript-format
 msgid "Video call from %s"
 msgstr "ហៅ​ជា​វីដេអូ​ពី %s"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1192
+#: ../js/ui/components/telepathyClient.js:1196
 #, javascript-format
 msgid "Call from %s"
 msgstr "ហៅ​ពី %s"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1206
+#: ../js/ui/components/telepathyClient.js:1210
 msgid "Answer"
 msgstr "ឆ្លើយ"
 
@@ -848,133 +825,131 @@ msgstr "ឆ្លើយ"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1227
+#: ../js/ui/components/telepathyClient.js:1231
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s កំពុង​ផ្ញើ %s ឲ្យ​អ្នក"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1256
+#: ../js/ui/components/telepathyClient.js:1260
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s ចង់​បាន​សិទ្ធិ​ដើម្បី​មើល ពេល​អ្នក​នៅ​ក្រៅ​បណ្ដាញ"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Network error"
 msgstr "កំហុស​បណ្ដាញ"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Authentication failed"
 msgstr "ការ​ផ្ទៀងផ្ទាត់​បាន​បរាជ័យ"
 
-#: ../js/ui/components/telepathyClient.js:1346
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Encryption error"
 msgstr "កំហុស​ការ​ដាក់​លេខ​កូដ"
 
-#: ../js/ui/components/telepathyClient.js:1348
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate not provided"
 msgstr "មិន​បាន​ផ្ដល់​វិញ្ញាបនបត្រ"
 
-#: ../js/ui/components/telepathyClient.js:1350
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Certificate untrusted"
 msgstr "វិញ្ញាបនបត្រ​មិន​ទុកចិត្ត"
 
-#: ../js/ui/components/telepathyClient.js:1352
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Certificate expired"
 msgstr "វិញ្ញាបនបត្រ​ផុត​កំណត់"
 
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Certificate not activated"
 msgstr "វិញ្ញាបនបត្រ​មិន​បាន​ធ្វើឲ្យ​សកម្ម"
 
-#: ../js/ui/components/telepathyClient.js:1356
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "Certificate hostname mismatch"
 msgstr "វិញ្ញាបនបត្រ​ឈ្មោះ​ម៉ាស៊ីន​មិន​ផ្គូផ្គង"
 
-#: ../js/ui/components/telepathyClient.js:1358
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "Certificate fingerprint mismatch"
 msgstr "វិញ្ញាបនបត្រ​ស្នាម​ម្រាមដៃ​មិន​ផ្គូផ្គង"
 
-#: ../js/ui/components/telepathyClient.js:1360
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Certificate self-signed"
 msgstr "វិញ្ញាបនបត្រ​ចុះហត្ថលេខា​ខ្លួន​ឯង"
 
-#: ../js/ui/components/telepathyClient.js:1362
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Status is set to offline"
 msgstr "បាន​កំណត់​ស្ថានភាព​ទៅ​ក្រៅ​បណ្ដាញ"
 
-#: ../js/ui/components/telepathyClient.js:1364
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Encryption is not available"
 msgstr "មិន​មាន​ការ​ដាក់​លេខ​កូដ"
 
-#: ../js/ui/components/telepathyClient.js:1366
+#: ../js/ui/components/telepathyClient.js:1370
 msgid "Certificate is invalid"
 msgstr "វិញ្ញាបនបត្រ​មិន​ត្រឹមត្រូវ"
 
-#: ../js/ui/components/telepathyClient.js:1368
+#: ../js/ui/components/telepathyClient.js:1372
 msgid "Connection has been refused"
 msgstr "បាន​បដិសេធ​ការ​តភ្ជាប់"
 
-#: ../js/ui/components/telepathyClient.js:1370
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "Connection can't be established"
 msgstr "មិន​អាច​បង្កើត​ការ​តភ្ជាប់"
 
-#: ../js/ui/components/telepathyClient.js:1372
+#: ../js/ui/components/telepathyClient.js:1376
 msgid "Connection has been lost"
 msgstr "ការ​តភ្ជាប់​បាន​ដាច់"
 
-#: ../js/ui/components/telepathyClient.js:1374
+#: ../js/ui/components/telepathyClient.js:1378
 msgid "This account is already connected to the server"
 msgstr "គណនី​នេះ​បាន​ភ្ជាប់​ទៅ​ម៉ាស៊ីន​មេ​រួចហើយ"
 
-#: ../js/ui/components/telepathyClient.js:1376
+#: ../js/ui/components/telepathyClient.js:1380
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "បាន​ជំនួស​ការ​តភ្ជាប់​ថ្មី​ដោយ​ប្រើ​ធនធាន​ដូចគ្នា"
 
-#: ../js/ui/components/telepathyClient.js:1378
+#: ../js/ui/components/telepathyClient.js:1382
 msgid "The account already exists on the server"
 msgstr "គណនី​មាន​នៅ​លើ​ម៉ាស៊ីន​មេ​រួចហើយ"
 
-#: ../js/ui/components/telepathyClient.js:1380
+#: ../js/ui/components/telepathyClient.js:1384
 msgid "Server is currently too busy to handle the connection"
 msgstr "ម៉ាស៊ីន​មេ​កំពុង​រវល់​ក្នុង​ការ​តភ្ជាប់"
 
-#: ../js/ui/components/telepathyClient.js:1382
+#: ../js/ui/components/telepathyClient.js:1386
 msgid "Certificate has been revoked"
 msgstr "បាន​ដកហូត​វិញ្ញាបនបត្រ"
 
-#: ../js/ui/components/telepathyClient.js:1384
+#: ../js/ui/components/telepathyClient.js:1388
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr ""
-"វិញ្ញាបនបត្រ​ប្រើ​ក្បួន​ដោះស្រាយ​ការ​សរសេរ​សម្ងាត់​ដែល​គ្មាន​សុវត្ថិភាព "
-"ឬ​ការ​ដាក់​លេខ​កូដ​ខ្សោយ"
+msgstr "វិញ្ញាបនបត្រ​ប្រើ​ក្បួន​ដោះស្រាយ​ការ​សរសេរ​សម្ងាត់​ដែល​គ្មាន​សុវត្ថិភាព ឬ​ការ​ដាក់​លេខ​កូដ​ខ្សោយ"
 
-#: ../js/ui/components/telepathyClient.js:1386
+#: ../js/ui/components/telepathyClient.js:1390
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
 msgstr ""
-"ប្រវែង​វិញ្ញាបនបត្រ​ម៉ាស៊ីន​មេ ឬ​ជម្រៅ​ច្រវាក់​វិញ្ញាបនបត្រ​ម៉ាស៊ីន​មេ​បាន​ល"
-"ើស​ដែន​កំណត់​ដែល​បាន​បង្ខំ​ដោយ​បណ្ណាល័យ​ការ​ដាក់​លេខ​កូដ"
+"ប្រវែង​វិញ្ញាបនបត្រ​ម៉ាស៊ីន​មេ ឬ​ជម្រៅ​ច្រវាក់​វិញ្ញាបនបត្រ​ម៉ាស៊ីន​មេ​បាន​លើស​ដែន​កំណត់​ដែល​បាន​បង្ខំ​ដោយ​បណ្ណាល័យ​"
+"ការ​ដាក់​លេខ​កូដ"
 
-#: ../js/ui/components/telepathyClient.js:1388
+#: ../js/ui/components/telepathyClient.js:1392
 msgid "Internal error"
 msgstr "កំហុស​ខាងក្នុង"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1398
+#: ../js/ui/components/telepathyClient.js:1402
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "មិន​អាច​តភ្ជាប់​ទៅ %s"
 
-#: ../js/ui/components/telepathyClient.js:1403
+#: ../js/ui/components/telepathyClient.js:1407
 msgid "View account"
 msgstr "មើល​គណនី"
 
-#: ../js/ui/components/telepathyClient.js:1440
+#: ../js/ui/components/telepathyClient.js:1444
 msgid "Unknown reason"
 msgstr "មិន​ស្គាល់​មូលហេតុ"
 
@@ -1077,8 +1052,7 @@ msgstr "ចាប់ផ្ដើម​ឡើងវិញ"
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] ""
-"ប្រព័ន្ធ​នឹង​ចាប់ផ្ដើម​ឡើងវិញ​ដោយ​ស្វ័យប្រវត្តិ​ក្នុង​រយៈពេល  %d វិនាទី។"
+msgstr[0] "ប្រព័ន្ធ​នឹង​ចាប់ផ្ដើម​ឡើងវិញ​ដោយ​ស្វ័យប្រវត្តិ​ក្នុង​រយៈពេល  %d វិនាទី។"
 
 #: ../js/ui/endSessionDialog.js:121
 msgctxt "title"
@@ -1090,9 +1064,7 @@ msgstr "ចាប់ផ្ដើម​ឡើងវិញ រួច​ដំឡ�
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] ""
-"ប្រព័ន្ធ​នឹង​ចាប់ផ្ដើម​ឡើងវិញ "
-"រួច​ដំឡើង​បច្ចុប្បន្នភាព​ដោយ​ស្វ័យប្រវត្តិ​ក្នុង​រយៈពេល  %d វិនាទី។"
+msgstr[0] "ប្រព័ន្ធ​នឹង​ចាប់ផ្ដើម​ឡើងវិញ រួច​ដំឡើង​បច្ចុប្បន្នភាព​ដោយ​ស្វ័យប្រវត្តិ​ក្នុង​រយៈពេល  %d វិនាទី។"
 
 #: ../js/ui/endSessionDialog.js:129
 msgctxt "button"
@@ -1111,8 +1083,7 @@ msgstr "បិទ​បន្ទាប់ពី​បាន​ដំឡើង​
 
 #: ../js/ui/endSessionDialog.js:315
 msgid "Running on battery power: please plug in before installing updates."
-msgstr ""
-"កំពុង​ដំណើរការ​ដោយសារ​ថាមពល​ថ្ម៖ សូម​ដោត​ខ្សែ​មុន​នឹង​ដំឡើង​បច្ចុប្បន្នភាព។"
+msgstr "កំពុង​ដំណើរការ​ដោយសារ​ថាមពល​ថ្ម៖ សូម​ដោត​ខ្សែ​មុន​នឹង​ដំឡើង​បច្ចុប្បន្នភាព។"
 
 #: ../js/ui/endSessionDialog.js:332
 msgid "Some applications are busy or have unsaved work."
@@ -1123,13 +1094,13 @@ msgid "Other users are logged in."
 msgstr "អ្នកប្រើ​ផ្សេង​បាន​ចូល។"
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:618
+#: ../js/ui/endSessionDialog.js:619
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (ពី​ចម្ងាយ)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:621
+#: ../js/ui/endSessionDialog.js:622
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (កុងសូល)"
@@ -1143,7 +1114,7 @@ msgstr "ដំឡើង"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "ទាញ​យក និង​ដំឡើង “%s” ពី extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:641 ../js/ui/status/keyboard.js:335
+#: ../js/ui/keyboard.js:645 ../js/ui/status/keyboard.js:335
 msgid "Keyboard"
 msgstr "ក្ដារចុច"
 
@@ -1231,11 +1202,11 @@ msgstr "មិន​មាន​សារ"
 msgid "Message Tray"
 msgstr "ថាស​សារ"
 
-#: ../js/ui/messageTray.js:2962
+#: ../js/ui/messageTray.js:2967
 msgid "System Information"
 msgstr "ព័ត៌មាន​ប្រព័ន្ធ"
 
-#: ../js/ui/notificationDaemon.js:515 ../src/shell-app.c:425
+#: ../js/ui/notificationDaemon.js:516 ../src/shell-app.c:425
 msgctxt "program"
 msgid "Unknown"
 msgstr "មិន​ស្គាល់"
@@ -1272,7 +1243,7 @@ msgstr "បោះបង់"
 msgid "Activities"
 msgstr "សកម្មភាព"
 
-#: ../js/ui/panel.js:914
+#: ../js/ui/panel.js:915
 msgid "Top Bar"
 msgstr "របារ​កំពូល"
 
@@ -1308,19 +1279,19 @@ msgstr "ចាក់សោ"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME ត្រូវការ​ចាក់សោ​អេក្រង់"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1309
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1312
 msgid "Unable to lock"
 msgstr "មិន​អាច​ចាក់សោ"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1310
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1313
 msgid "Lock was blocked by an application"
 msgstr "បាន​ទប់ស្កាត់​ការ​ចាក់សោ​ដោយ​កម្មវិធី"
 
-#: ../js/ui/search.js:603
+#: ../js/ui/search.js:606
 msgid "Searching…"
 msgstr "កំពុង​ស្វែងរក..."
 
-#: ../js/ui/search.js:649
+#: ../js/ui/search.js:652
 msgid "No results."
 msgstr "មិន​មាន​លទ្ធផល។"
 
@@ -1384,11 +1355,11 @@ msgstr "គ្រាប់ចុច​លោត"
 msgid "Mouse Keys"
 msgstr "ប៊ូតុង​កណ្ដុរ"
 
-#: ../js/ui/status/accessibility.js:143
+#: ../js/ui/status/accessibility.js:144
 msgid "High Contrast"
 msgstr "កម្រិត​ពណ៌​ខ្ពស់"
 
-#: ../js/ui/status/accessibility.js:192
+#: ../js/ui/status/accessibility.js:193
 msgid "Large Text"
 msgstr "អត្ថបទ​ធំ"
 
@@ -1457,36 +1428,41 @@ msgstr "បាន​តភ្ជាប់"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:426
-msgid "unmanaged"
+#| msgid "unmanaged"
+msgid "Unmanaged"
 msgstr "មិន​បាន​គ្រប់គ្រង"
 
 #: ../js/ui/status/network.js:428
-msgid "disconnecting..."
-msgstr "កំពុង​ផ្ដាច់..."
+#| msgid "disconnecting..."
+msgid "Disconnecting"
+msgstr "​ផ្ដាច់"
 
-#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1362
-msgid "connecting..."
-msgstr "កំពុង​តភ្ជាប់"
+#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1254
+msgid "Connecting"
+msgstr "ការ​តភ្ជាប់"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:437 ../js/ui/status/network.js:1365
-msgid "authentication required"
+#: ../js/ui/status/network.js:437
+#| msgid "authentication required"
+msgid "Authentication required"
 msgstr "ទាមទារ​ការ​ផ្ទៀងផ្ទាត់"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
 #: ../js/ui/status/network.js:445
-msgid "firmware missing"
+#| msgid "firmware missing"
+msgid "Firmware missing"
 msgstr "បាត់​កម្មវិធី​បង្កប់"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
 #: ../js/ui/status/network.js:449
-msgid "unavailable"
+#| msgid "unavailable"
+msgid "Unavailable"
 msgstr "មិន​មាន"
 
-#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1367
-msgid "connection failed"
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1646
+msgid "Connection failed"
 msgstr "ការ​តភ្ជាប់​បាន​បរាជ័យ"
 
 #: ../js/ui/status/network.js:467
@@ -1561,9 +1537,18 @@ msgstr "បើក"
 msgid "Hotspot Active"
 msgstr "ហតស្ប៉ត​សកម្ម"
 
-#: ../js/ui/status/network.js:1254
-msgid "Connecting"
-msgstr "ការ​តភ្ជាប់"
+#: ../js/ui/status/network.js:1362
+msgid "connecting..."
+msgstr "កំពុង​តភ្ជាប់"
+
+#. Translators: this is for network connections that require some kind of key or password */
+#: ../js/ui/status/network.js:1365
+msgid "authentication required"
+msgstr "ទាមទារ​ការ​ផ្ទៀងផ្ទាត់"
+
+#: ../js/ui/status/network.js:1367
+msgid "connection failed"
+msgstr "ការ​តភ្ជាប់​បាន​បរាជ័យ"
 
 #: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:88
 msgid "Network Settings"
@@ -1580,10 +1565,6 @@ msgstr "វីភីអិន"
 #: ../js/ui/status/network.js:1607
 msgid "Network Manager"
 msgstr "កម្មវិធី​គ្រប់គ្រង​បណ្ដាញ"
-
-#: ../js/ui/status/network.js:1646
-msgid "Connection failed"
-msgstr "ការ​តភ្ជាប់​បាន​បរាជ័យ"
 
 #: ../js/ui/status/network.js:1647
 msgid "Activation of network connection failed"
@@ -1695,7 +1676,7 @@ msgstr "ត្រឡប់​ការ​កំណត់​ទៅ​ដើម"
 msgid "Keep Changes"
 msgstr "រក្សា​ការ​ផ្លាស់ប្ដូរ"
 
-#: ../js/ui/windowManager.js:97
+#: ../js/ui/windowManager.js:98
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -1754,6 +1735,6 @@ msgstr "ពាក្យសម្ងាត់​មិន​ផ្គូរផ្
 msgid "Password cannot be blank"
 msgstr "ពាក្យសម្ងាត់​មិន​អាចទទេ"
 
-#: ../src/shell-polkit-authentication-agent.c:343
+#: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "បាន​បដិសេធ​ប្រអប់​ផ្ទៀងផ្ទាត់​ដោយ​អ្នកប្រើ"
