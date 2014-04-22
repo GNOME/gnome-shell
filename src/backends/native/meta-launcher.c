@@ -47,6 +47,8 @@ struct _MetaLauncher
   gboolean vt_switched;
 };
 
+/* AAA BBB CCC */
+
 static void handle_request_vt_switch (MetaLauncher *self);
 
 static gboolean
@@ -188,6 +190,8 @@ meta_launcher_open_device (MetaLauncher  *self,
   return ret;
 }
 
+/* QQQ RRR SSS */
+
 static void
 session_unpause (void)
 {
@@ -241,6 +245,8 @@ on_evdev_device_close (int      fd,
 {
   close (fd);
 }
+
+/* TTT UUU VVV */
 
 static void
 handle_vt_enter (MetaLauncher *launcher)
@@ -324,6 +330,8 @@ env_get_fd (const char *env)
   else
     return g_ascii_strtoll (value, NULL, 10);
 }
+
+/* XXX YYY ZZZ */
 
 MetaLauncher *
 meta_launcher_new (void)
