@@ -41,7 +41,6 @@
 
 #include "meta-wayland-private.h"
 #include "meta-xwayland-private.h"
-#include "meta-wayland-stage.h"
 #include "meta-window-actor-private.h"
 #include "meta-wayland-seat.h"
 #include "meta-wayland-keyboard.h"
@@ -631,15 +630,11 @@ meta_wayland_init (void)
   compositor->outputs = g_hash_table_new_full (NULL, NULL, NULL, wayland_output_destroy_notify);
   compositor->outputs = meta_wayland_compositor_update_outputs (compositor, monitors);
 
-  compositor->stage = meta_wayland_stage_new ();
-
   meta_wayland_data_device_manager_init (compositor->wayland_display);
 
   compositor->seat = meta_wayland_seat_new (compositor->wayland_display);
 
   meta_wayland_init_shell (compositor);
-
-  clutter_actor_show (compositor->stage);
 
   /* FIXME: find the first free name instead */
   compositor->display_name = g_strdup ("wayland-0");

@@ -79,6 +79,7 @@
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 
+#include "wayland/meta-wayland-stage.h"
 #include "wayland/meta-wayland-private.h"
 
 static gboolean
@@ -519,16 +520,17 @@ meta_compositor_manage (MetaCompositor *compositor)
   MetaScreen *screen = display->screen;
   Window xwin = 0;
   gint width, height;
-  MetaWaylandCompositor *wayland_compositor;
 
   meta_screen_set_cm_selection (display->screen);
 
-  /* We will have already created a stage if running as a wayland
-   * compositor... */
   if (meta_is_wayland_compositor ())
     {
-      wayland_compositor = meta_wayland_compositor_get_default ();
-      compositor->stage = wayland_compositor->stage;
+      MetaWaylandCompositor *wayland_compositor = meta_wayland_compositor_get_default ();
+
+      compositor->stage = meta_wayland_stage_new ();
+      clutter_actor_show (compositor->stage);
+
+      wayland_compositor->stage = compositor->stage;
 
       meta_screen_get_size (screen, &width, &height);
       clutter_actor_set_size (compositor->stage, width, height);
