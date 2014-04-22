@@ -35,7 +35,6 @@
 #include "bell.h"
 #include "workspace-private.h"
 #include "backends/meta-backend.h"
-#include "backends/x11/meta-backend-x11.h"
 #include "backends/native/meta-idle-monitor-native.h"
 
 #include "x11/window-x11.h"
@@ -1263,11 +1262,6 @@ handle_other_xevent (MetaDisplay *display,
           new_counter_value = XSyncValueLow32 (value) + ((gint64)XSyncValueHigh32 (value) << 32);
           meta_window_update_sync_request_counter (alarm_window, new_counter_value);
           bypass_gtk = TRUE; /* GTK doesn't want to see this really */
-        }
-      else
-        {
-          MetaBackend *backend = meta_get_backend ();
-          meta_backend_x11_handle_alarm_notify (backend, event);
         }
 
       goto out;

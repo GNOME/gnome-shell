@@ -78,12 +78,20 @@ meta_backend_finalize (GObject *object)
 }
 
 static void
+meta_backend_real_post_init (MetaBackend *backend)
+{
+  /* Do nothing */
+}
+
+static void
 meta_backend_class_init (MetaBackendClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->constructed = meta_backend_constructed;
   object_class->finalize = meta_backend_finalize;
+
+  klass->post_init = meta_backend_real_post_init;
 }
 
 static void
@@ -107,6 +115,12 @@ meta_backend_create_idle_monitor (MetaBackend *backend,
                                   int          device_id)
 {
   return META_BACKEND_GET_CLASS (backend)->create_idle_monitor (backend, device_id);
+}
+
+static void
+meta_backend_post_init (MetaBackend *backend)
+{
+  META_BACKEND_GET_CLASS (backend)->post_init (backend);
 }
 
 MetaIdleMonitor *
@@ -217,4 +231,6 @@ meta_clutter_init (void)
   source = g_source_new (&event_funcs, sizeof (GSource));
   g_source_attach (source, NULL);
   g_source_unref (source);
+
+  meta_backend_post_init (_backend);
 }

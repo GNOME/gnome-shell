@@ -49,6 +49,8 @@ struct _MetaBackendClass
 {
   GObjectClass parent_class;
 
+  void (* post_init) (MetaBackend *backend);
+
   MetaIdleMonitor * (* create_idle_monitor) (MetaBackend *backend,
                                              int          device_id);
   MetaMonitorManager * (* create_monitor_manager) (MetaBackend *backend);

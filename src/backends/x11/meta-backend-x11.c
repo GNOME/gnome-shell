@@ -26,15 +26,149 @@
 
 #include "meta-backend-x11.h"
 
-#include <gdk/gdkx.h>
 #include <clutter/x11/clutter-x11.h>
+
+#include <X11/extensions/sync.h>
 
 #include <meta/util.h>
 #include "meta-idle-monitor-xsync.h"
 #include "meta-monitor-manager-xrandr.h"
 #include "backends/meta-monitor-manager-dummy.h"
 
-G_DEFINE_TYPE (MetaBackendX11, meta_backend_x11, META_TYPE_BACKEND);
+struct _MetaBackendX11Private
+{
+  /* The host X11 display */
+  Display *xdisplay;
+  GSource *source;
+
+  int xsync_event_base;
+  int xsync_error_base;
+};
+typedef struct _MetaBackendX11Private MetaBackendX11Private;
+
+G_DEFINE_TYPE_WITH_PRIVATE (MetaBackendX11, meta_backend_x11, META_TYPE_BACKEND);
+
+static void
+handle_alarm_notify (MetaBackend *backend,
+                     XEvent      *xevent)
+{
+  int i;
+
+  for (i = 0; i <= backend->device_id_max; i++)
+    if (backend->device_monitors[i])
+      meta_idle_monitor_xsync_handle_xevent (backend->device_monitors[i], (XSyncAlarmNotifyEvent*)xevent);
+}
+
+static void
+handle_host_xevent (MetaBackend *backend,
+                    XEvent      *xevent)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  if (xevent->type == (priv->xsync_event_base + XSyncAlarmNotify))
+    handle_alarm_notify (backend, xevent);
+
+  clutter_x11_handle_event (xevent);
+}
+
+typedef struct {
+  GSource base;
+  GPollFD event_poll_fd;
+  MetaBackend *backend;
+} XEventSource;
+
+static gboolean
+x_event_source_prepare (GSource *source,
+                        int     *timeout)
+{
+  XEventSource *x_source = (XEventSource *) source;
+  MetaBackend *backend = x_source->backend;
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  *timeout = -1;
+
+  return XPending (priv->xdisplay);
+}
+
+static gboolean
+x_event_source_check (GSource *source)
+{
+  XEventSource *x_source = (XEventSource *) source;
+  MetaBackend *backend = x_source->backend;
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  return XPending (priv->xdisplay);
+}
+
+static gboolean
+x_event_source_dispatch (GSource     *source,
+                         GSourceFunc  callback,
+                         gpointer     user_data)
+{
+  XEventSource *x_source = (XEventSource *) source;
+  MetaBackend *backend = x_source->backend;
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  while (XPending (priv->xdisplay))
+    {
+      XEvent xev;
+
+      XNextEvent (priv->xdisplay, &xev);
+
+      handle_host_xevent (backend, &xev);
+    }
+
+  return TRUE;
+}
+
+static GSourceFuncs x_event_funcs = {
+  x_event_source_prepare,
+  x_event_source_check,
+  x_event_source_dispatch,
+};
+
+static GSource *
+x_event_source_new (MetaBackend *backend)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  GSource *source;
+  XEventSource *x_source;
+
+  source = g_source_new (&x_event_funcs, sizeof (XEventSource));
+  x_source = (XEventSource *) source;
+  x_source->backend = backend;
+  x_source->event_poll_fd.fd = ConnectionNumber (priv->xdisplay);
+  x_source->event_poll_fd.events = G_IO_IN;
+  g_source_add_poll (source, &x_source->event_poll_fd);
+
+  g_source_attach (source, NULL);
+  return source;
+}
+
+static void
+meta_backend_x11_post_init (MetaBackend *backend)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  int major, minor;
+
+  priv->xdisplay = clutter_x11_get_default_display ();
+
+  priv->source = x_event_source_new (backend);
+
+  if (!XSyncQueryExtension (priv->xdisplay, &priv->xsync_event_base, &priv->xsync_error_base))
+    meta_fatal ("Could not initialize XSync");
+
+  if (!XSyncInitialize (priv->xdisplay, &major, &minor))
+    meta_fatal ("Could not initialize XSync");
+
+  META_BACKEND_CLASS (meta_backend_x11_parent_class)->post_init (backend);
+}
 
 static MetaIdleMonitor *
 meta_backend_x11_create_idle_monitor (MetaBackend *backend,
@@ -62,6 +196,7 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
 {
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
 
+  backend_class->post_init = meta_backend_x11_post_init;
   backend_class->create_idle_monitor = meta_backend_x11_create_idle_monitor;
   backend_class->create_monitor_manager = meta_backend_x11_create_monitor_manager;
 }
@@ -69,35 +204,6 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
 static void
 meta_backend_x11_init (MetaBackendX11 *x11)
 {
-  /* When running as an X11 compositor, we install our own event filter and
-   * pass events to Clutter explicitly, so we need to prevent Clutter from
-   * handling our events.
-   *
-   * However, when running as a Wayland compostior under X11 nested, Clutter
-   * Clutter needs to see events related to its own window. We need to
-   * eventually replace this with a proper frontend / backend split: Clutter
-   * under nested is connecting to the "host X server" to get its events it
-   * needs to put up a window, and GTK+ is connecting to the "inner X server".
-   * The two would the same in the X11 compositor case, but not when running
-   * XWayland as a Wayland compositor.
-   */
-  if (!meta_is_wayland_compositor ())
-    {
-      clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
-      clutter_x11_disable_event_retrieval ();
-    }
-}
-
-void
-meta_backend_x11_handle_alarm_notify (MetaBackend *backend,
-                                      XEvent      *xevent)
-{
-  int i;
-
-  if (!META_IS_BACKEND_X11 (backend))
-    return;
-
-  for (i = 0; i <= backend->device_id_max; i++)
-    if (backend->device_monitors[i])
-      meta_idle_monitor_xsync_handle_xevent (backend->device_monitors[i], (XSyncAlarmNotifyEvent*)xevent);
+  /* We do X11 event retrieval ourselves */
+  clutter_x11_disable_event_retrieval ();
 }
