@@ -23,6 +23,7 @@
 
 #include "meta-wayland-stage.h"
 
+#include "display-private.h"
 #include "meta-cursor-tracker-private.h"
 
 G_DEFINE_TYPE (MetaWaylandStage, meta_wayland_stage, CLUTTER_TYPE_STAGE);
