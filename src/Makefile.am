@@ -237,6 +237,8 @@ libmutter_la_SOURCES =				\
 	wayland/meta-wayland-surface.h		\
 	wayland/meta-wayland-types.h		\
 	wayland/meta-wayland-versions.h		\
+	wayland/meta-wayland-outputs.c		\
+	wayland/meta-wayland-outputs.h		\
 	wayland/window-wayland.c		\
 	wayland/window-wayland.h
 
