@@ -53,8 +53,6 @@ struct _MetaLauncher
   gboolean session_active;
 };
 
-/* AAA BBB CCC */
-
 static Login1Session *
 get_session_proxy (GCancellable *cancellable)
 {
@@ -86,8 +84,6 @@ get_seat_proxy (GCancellable *cancellable)
                                              "/org/freedesktop/login1/seat/self",
                                              cancellable, NULL);
 }
-
-/* QQQ RRR SSS */
 
 static void
 session_unpause (void)
@@ -257,8 +253,6 @@ on_evdev_device_close (int      fd,
     }
 }
 
-/* TTT UUU VVV */
-
 static void
 sync_active (MetaLauncher *self)
 {
@@ -310,8 +304,6 @@ get_kms_fd (Login1Session *session_proxy,
 
   return TRUE;
 }
-
-/* XXX YYY ZZZ */
 
 MetaLauncher *
 meta_launcher_new (void)
