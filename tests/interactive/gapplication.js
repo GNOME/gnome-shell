@@ -24,7 +24,7 @@ function do_action_state_change(action) {
 }
 
 function main() {
-    Gtk.init(null, null);
+    Gtk.init(null);
     Gdk.set_program_class('test-gjsgapp');
 
     let app = new Gtk.Application({ application_id: 'org.gnome.Shell.GtkApplicationTest' });
