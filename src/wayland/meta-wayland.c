@@ -501,12 +501,6 @@ compositor_bind (struct wl_client *client,
   wl_resource_set_implementation (resource, &meta_wayland_compositor_interface, compositor, NULL);
 }
 
-static void
-stage_destroy_cb (void)
-{
-  meta_quit (META_EXIT_SUCCESS);
-}
-
 /**
  * meta_wayland_compositor_update:
  * @compositor: the #MetaWaylandCompositor instance
@@ -638,8 +632,6 @@ meta_wayland_init (void)
   compositor->outputs = meta_wayland_compositor_update_outputs (compositor, monitors);
 
   compositor->stage = meta_wayland_stage_new ();
-  g_signal_connect (compositor->stage, "destroy",
-                    G_CALLBACK (stage_destroy_cb), NULL);
 
   meta_wayland_data_device_manager_init (compositor->wayland_display);
 
