@@ -36,6 +36,10 @@ meta_wayland_stage_paint (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (meta_wayland_stage_parent_class)->paint (actor);
 
+  /* Early in initialization, we can hit this. */
+  if (!display)
+    return;
+
   tracker = meta_cursor_tracker_get_for_screen (display->screen);
 
   if (tracker)
