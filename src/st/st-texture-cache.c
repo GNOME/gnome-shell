@@ -1197,7 +1197,7 @@ load_sliced_image (GSimpleAsyncResult *result,
   if (!g_file_get_contents (data->path, &buffer, &length, NULL))
     goto out;
 
-  if (!gdk_pixbuf_loader_write (loader, buffer, length, NULL))
+  if (!gdk_pixbuf_loader_write (loader, (const guchar *) buffer, length, NULL))
     goto out;
 
   if (!gdk_pixbuf_loader_close (loader, NULL))
