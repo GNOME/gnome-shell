@@ -480,11 +480,3 @@ meta_cursor_tracker_set_pointer_visible (MetaCursorTracker *tracker,
                           tracker->screen->xroot);
     }
 }
-
-void
-meta_cursor_tracker_force_update (MetaCursorTracker *tracker)
-{
-  g_assert (meta_is_wayland_compositor ());
-
-  meta_cursor_renderer_force_update (tracker->renderer);
-}

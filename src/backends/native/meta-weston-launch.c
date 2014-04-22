@@ -43,7 +43,7 @@
 #include <xf86drmMode.h>
 
 #include "wayland/meta-wayland-private.h"
-#include "meta-cursor-tracker-private.h"
+#include "backends/meta-backend.h"
 #include "meta-weston-launch.h"
 
 struct _MetaLauncher
@@ -216,13 +216,15 @@ meta_launcher_enter (MetaLauncher *launcher)
 
   {
     MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+    MetaBackend *backend = meta_get_backend ();
+    MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (backend);
 
     /* When we mode-switch back, we need to immediately queue a redraw
      * in case nothing else queued one for us, and force the cursor to
      * update. */
 
     clutter_actor_queue_redraw (compositor->stage);
-    meta_cursor_tracker_force_update (compositor->seat->pointer.cursor_tracker);
+    meta_cursor_renderer_force_update (renderer);
   }
 }
 

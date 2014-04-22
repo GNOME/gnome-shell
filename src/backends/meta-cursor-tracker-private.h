@@ -83,6 +83,4 @@ void     meta_cursor_tracker_update_position (MetaCursorTracker *tracker,
 					      int                new_x,
 					      int                new_y);
 
-void     meta_cursor_tracker_force_update (MetaCursorTracker *tracker);
-
 #endif
