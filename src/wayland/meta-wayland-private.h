@@ -79,7 +79,6 @@ struct _MetaWaylandCompositor
   ClutterActor *stage;
   GHashTable *outputs;
   GSource *wayland_event_source;
-  GList *surfaces;
   struct wl_list frame_callbacks;
 
   MetaXWaylandManager xwayland_manager;

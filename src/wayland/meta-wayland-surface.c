@@ -554,8 +554,6 @@ wl_surface_destructor (struct wl_resource *resource)
   if (surface->window)
     destroy_window (surface);
 
-  compositor->surfaces = g_list_remove (compositor->surfaces, surface);
-
   surface_set_buffer (surface, NULL);
   pending_state_destroy (&surface->pending);
 

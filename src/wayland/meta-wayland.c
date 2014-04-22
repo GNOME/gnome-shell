@@ -205,14 +205,10 @@ meta_wayland_compositor_create_surface (struct wl_client *wayland_client,
 {
   MetaWaylandCompositor *compositor =
     wl_resource_get_user_data (wayland_compositor_resource);
-  MetaWaylandSurface *surface;
 
-  surface = meta_wayland_surface_create (compositor,
-					 wayland_client, id,
-					 MIN (META_WL_SURFACE_VERSION,
-					      wl_resource_get_version (wayland_compositor_resource)));
-  
-  compositor->surfaces = g_list_prepend (compositor->surfaces, surface);
+  meta_wayland_surface_create (compositor, wayland_client, id,
+                               MIN (META_WL_SURFACE_VERSION,
+                                    wl_resource_get_version (wayland_compositor_resource)));
 }
 
 static void
