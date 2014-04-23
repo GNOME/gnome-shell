@@ -30,10 +30,13 @@
 
 #include <X11/extensions/sync.h>
 
-#include <meta/util.h>
 #include "meta-idle-monitor-xsync.h"
 #include "meta-monitor-manager-xrandr.h"
 #include "backends/meta-monitor-manager-dummy.h"
+
+#include "meta-cursor-tracker-private.h"
+#include "meta-cursor.h"
+#include <meta/util.h>
 
 struct _MetaBackendX11Private
 {
@@ -189,6 +192,52 @@ meta_backend_x11_create_monitor_manager (MetaBackend *backend)
   return g_object_new (META_TYPE_MONITOR_MANAGER_XRANDR, NULL);
 }
 
+static gboolean
+meta_backend_x11_grab_device (MetaBackend *backend,
+                              int          device_id,
+                              uint32_t     timestamp)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+  XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+  int ret;
+
+  XISetMask (mask.mask, XI_ButtonPress);
+  XISetMask (mask.mask, XI_ButtonRelease);
+  XISetMask (mask.mask, XI_Enter);
+  XISetMask (mask.mask, XI_Leave);
+  XISetMask (mask.mask, XI_Motion);
+
+  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (NULL);
+  MetaCursorReference *cursor_ref = meta_cursor_tracker_get_displayed_cursor (tracker);
+  MetaCursor cursor = meta_cursor_reference_get_meta_cursor (cursor_ref);
+
+  ret = XIGrabDevice (priv->xdisplay, device_id,
+                      DefaultRootWindow (priv->xdisplay),
+                      timestamp,
+                      meta_cursor_create_x_cursor (priv->xdisplay, cursor),
+                      XIGrabModeAsync, XIGrabModeAsync,
+                      False, /* owner_events */
+                      &mask);
+
+  return (ret == Success);
+}
+
+static gboolean
+meta_backend_x11_ungrab_device (MetaBackend *backend,
+                                int          device_id,
+                                uint32_t     timestamp)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  int ret;
+
+  ret = XIUngrabDevice (priv->xdisplay, device_id, timestamp);
+
+  return (ret == Success);
+}
+
 static void
 meta_backend_x11_class_init (MetaBackendX11Class *klass)
 {
@@ -197,6 +246,9 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
   backend_class->post_init = meta_backend_x11_post_init;
   backend_class->create_idle_monitor = meta_backend_x11_create_idle_monitor;
   backend_class->create_monitor_manager = meta_backend_x11_create_monitor_manager;
+
+  backend_class->grab_device = meta_backend_x11_grab_device;
+  backend_class->ungrab_device = meta_backend_x11_ungrab_device;
 }
 
 static void

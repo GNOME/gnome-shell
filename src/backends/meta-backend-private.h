@@ -55,6 +55,13 @@ struct _MetaBackendClass
                                              int          device_id);
   MetaMonitorManager * (* create_monitor_manager) (MetaBackend *backend);
   MetaCursorRenderer * (* create_cursor_renderer) (MetaBackend *backend);
+
+  gboolean (* grab_device) (MetaBackend *backend,
+                            int          device_id,
+                            uint32_t     timestamp);
+  gboolean (* ungrab_device) (MetaBackend *backend,
+                              int          device_id,
+                              uint32_t     timestamp);
 };
 
 #endif /* META_BACKEND_PRIVATE_H */

@@ -50,6 +50,7 @@
 #include "mutter-enum-types.h"
 #include "meta-idle-monitor-dbus.h"
 #include "meta-cursor-tracker-private.h"
+#include "meta-backend.h"
 
 #ifdef HAVE_RANDR
 #include <X11/extensions/Xrandr.h>
@@ -1728,54 +1729,17 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
                                  guint32      timestamp)
 {
   /* Set root cursor */
-  {
-    MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (display->screen);
-    MetaCursor cursor = meta_cursor_for_grab_op (op);
-    MetaCursorReference *cursor_ref;
+  MetaBackend *backend = meta_get_backend ();
+  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (display->screen);
+  MetaCursor cursor = meta_cursor_for_grab_op (op);
+  MetaCursorReference *cursor_ref;
 
-    cursor_ref = meta_cursor_reference_from_theme (cursor);
-    meta_cursor_tracker_set_grab_cursor (tracker, cursor_ref);
-    meta_cursor_reference_unref (cursor_ref);
-  }
+  cursor_ref = meta_cursor_reference_from_theme (cursor);
+  meta_cursor_tracker_set_grab_cursor (tracker, cursor_ref);
+  meta_cursor_reference_unref (cursor_ref);
 
-  /* Take grab */
-  {
-    unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-    XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-
-    XISetMask (mask.mask, XI_ButtonPress);
-    XISetMask (mask.mask, XI_ButtonRelease);
-    XISetMask (mask.mask, XI_Enter);
-    XISetMask (mask.mask, XI_Leave);
-    XISetMask (mask.mask, XI_Motion);
-
-    MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (display->screen);
-    MetaCursorReference *cursor_ref = meta_cursor_tracker_get_displayed_cursor (tracker);
-    MetaCursor cursor = meta_cursor_reference_get_meta_cursor (cursor_ref);
-
-    meta_error_trap_push (display);
-    if (XIGrabDevice (display->xdisplay,
-                      META_VIRTUAL_CORE_POINTER_ID,
-                      display->screen->xroot,
-                      timestamp,
-                      meta_display_create_x_cursor (display, cursor),
-                      XIGrabModeAsync, XIGrabModeAsync,
-                      False, /* owner_events */
-                      &mask) == Success)
-      {
-        display->grab_have_pointer = TRUE;
-        meta_topic (META_DEBUG_WINDOW_OPS,
-                    "XIGrabDevice() returned GrabSuccess time %u\n",
-                    timestamp);
-      }
-    else
-      {
-        meta_topic (META_DEBUG_WINDOW_OPS,
-                    "XIGrabDevice() failed time %u\n",
-                    timestamp);
-      }
-    meta_error_trap_pop (display);
-  }
+  if (meta_backend_grab_device (backend, META_VIRTUAL_CORE_POINTER_ID, timestamp))
+    display->grab_have_pointer = TRUE;
 }
 
 gboolean
@@ -1839,8 +1803,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
 
   if (!display->grab_have_pointer && !meta_grab_op_is_keyboard (op))
     {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "XIGrabDevice() failed\n");
+      meta_topic (META_DEBUG_WINDOW_OPS, "XIGrabDevice() failed\n");
       return FALSE;
     }
 
@@ -1854,12 +1817,12 @@ meta_display_begin_grab_op (MetaDisplay *display,
       else
         display->grab_have_keyboard =
                      meta_screen_grab_all_keys (screen, timestamp);
-      
+
       if (!display->grab_have_keyboard)
         {
-          meta_topic (META_DEBUG_WINDOW_OPS,
-                      "grabbing all keys failed, ungrabbing pointer\n");
-          XIUngrabDevice (display->xdisplay, META_VIRTUAL_CORE_POINTER_ID, timestamp);
+          MetaBackend *backend = meta_get_backend ();
+          meta_topic (META_DEBUG_WINDOW_OPS, "grabbing all keys failed, ungrabbing pointer\n");
+          meta_backend_ungrab_device (backend, META_VIRTUAL_CORE_POINTER_ID, timestamp);
           display->grab_have_pointer = FALSE;
           return FALSE;
         }
@@ -1965,9 +1928,8 @@ meta_display_end_grab_op (MetaDisplay *display,
 
   if (display->grab_have_pointer)
     {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Ungrabbing pointer with timestamp %u\n", timestamp);
-      XIUngrabDevice (display->xdisplay, META_VIRTUAL_CORE_POINTER_ID, timestamp);
+      MetaBackend *backend = meta_get_backend ();
+      meta_backend_ungrab_device (backend, META_VIRTUAL_CORE_POINTER_ID, timestamp);
     }
 
   if (display->grab_have_keyboard)

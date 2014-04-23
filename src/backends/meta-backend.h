@@ -43,6 +43,13 @@ MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
 MetaMonitorManager * meta_backend_get_monitor_manager (MetaBackend *backend);
 MetaCursorRenderer * meta_backend_get_cursor_renderer (MetaBackend *backend);
 
+gboolean meta_backend_grab_device (MetaBackend *backend,
+                                   int          device_id,
+                                   uint32_t     timestamp);
+gboolean meta_backend_ungrab_device (MetaBackend *backend,
+                                     int          device_id,
+                                     uint32_t     timestamp);
+
 void meta_clutter_init (void);
 
 #endif /* META_BACKEND_H */

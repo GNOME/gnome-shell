@@ -82,6 +82,24 @@ meta_backend_real_create_cursor_renderer (MetaBackend *backend)
   return meta_cursor_renderer_new ();
 }
 
+static gboolean
+meta_backend_real_grab_device (MetaBackend *backend,
+                               int          device_id,
+                               uint32_t     timestamp)
+{
+  /* Do nothing */
+  return TRUE;
+}
+
+static gboolean
+meta_backend_real_ungrab_device (MetaBackend *backend,
+                                 int          device_id,
+                                 uint32_t     timestamp)
+{
+  /* Do nothing */
+  return TRUE;
+}
+
 static void
 meta_backend_class_init (MetaBackendClass *klass)
 {
@@ -91,6 +109,8 @@ meta_backend_class_init (MetaBackendClass *klass)
 
   klass->post_init = meta_backend_real_post_init;
   klass->create_cursor_renderer = meta_backend_real_create_cursor_renderer;
+  klass->grab_device = meta_backend_real_grab_device;
+  klass->ungrab_device = meta_backend_real_ungrab_device;
 }
 
 static void
@@ -151,6 +171,22 @@ meta_backend_get_cursor_renderer (MetaBackend *backend)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   return priv->cursor_renderer;
+}
+
+gboolean
+meta_backend_grab_device (MetaBackend *backend,
+                          int          device_id,
+                          uint32_t     timestamp)
+{
+  return META_BACKEND_GET_CLASS (backend)->grab_device (backend, device_id, timestamp);
+}
+
+gboolean
+meta_backend_ungrab_device (MetaBackend *backend,
+                            int          device_id,
+                            uint32_t     timestamp)
+{
+  return META_BACKEND_GET_CLASS (backend)->ungrab_device (backend, device_id, timestamp);
 }
 
 static GType
