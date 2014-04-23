@@ -8104,7 +8104,6 @@ meta_window_update_keyboard_resize (MetaWindow *window,
       meta_display_set_grab_op_cursor (window->display,
                                        window->screen,
                                        window->display->grab_op,
-                                       window->display->grab_xwindow,
                                        window->display->grab_timestamp);
     }
 }

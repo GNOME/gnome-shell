@@ -1726,7 +1726,6 @@ void
 meta_display_set_grab_op_cursor (MetaDisplay *display,
                                  MetaScreen  *screen,
                                  MetaGrabOp   op,
-                                 Window       grab_xwindow,
                                  guint32      timestamp)
 {
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
@@ -1746,7 +1745,7 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
   meta_error_trap_push (display);
   if (XIGrabDevice (display->xdisplay,
                     META_VIRTUAL_CORE_POINTER_ID,
-                    grab_xwindow,
+                    display->grab_xwindow,
                     timestamp,
                     meta_display_create_x_cursor (display, cursor),
                     XIGrabModeAsync, XIGrabModeAsync,
@@ -1764,7 +1763,6 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
                   "XIGrabDevice() failed time %u\n",
                   timestamp);
     }
-
   meta_error_trap_pop (display);
 
   cursor_ref = meta_cursor_reference_from_theme (cursor);
@@ -1840,8 +1838,9 @@ meta_display_begin_grab_op (MetaDisplay *display,
 
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
-  
-  meta_display_set_grab_op_cursor (display, screen, op, grab_xwindow, timestamp);
+
+  display->grab_xwindow = grab_xwindow;
+  meta_display_set_grab_op_cursor (display, screen, op, timestamp);
 
   if (!display->grab_have_pointer && !meta_grab_op_is_keyboard (op))
     {
@@ -1873,7 +1872,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   
   display->grab_op = op;
   display->grab_window = grab_window;
-  display->grab_xwindow = grab_xwindow;
   display->grab_button = button;
   if (window)
     {
