@@ -37,6 +37,8 @@
 #include "meta-cursor-tracker-private.h"
 #include "meta-cursor.h"
 #include <meta/util.h>
+#include "display-private.h"
+#include "compositor/compositor-private.h"
 
 struct _MetaBackendX11Private
 {
@@ -95,7 +97,9 @@ maybe_spoof_event_as_stage_event (MetaBackendX11 *x11,
         case XI_KeyPress:
         case XI_KeyRelease:
           {
-            ClutterStage *stage = CLUTTER_STAGE (clutter_stage_get_default ());
+            MetaDisplay *display = meta_get_display ();
+            MetaCompositor *compositor = display->compositor;
+            ClutterStage *stage = CLUTTER_STAGE (compositor->stage);
             device_event->event = clutter_x11_get_stage_window (stage);
             break;
           }
