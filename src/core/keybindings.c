@@ -56,6 +56,7 @@
 #endif
 
 #include "wayland/meta-wayland.h"
+#include "backends/x11/meta-backend-x11.h"
 #include "backends/native/meta-backend-native.h"
 
 #define SCHEMA_COMMON_KEYBINDINGS "org.gnome.desktop.wm.keybindings"
@@ -703,8 +704,6 @@ ungrab_key_bindings (MetaDisplay *display)
   GSList *tmp;
   GSList *windows;
 
-  meta_error_trap_push (display); /* for efficiency push outer trap */
-
   meta_screen_ungrab_keys (display->screen);
 
   windows = meta_display_list_windows (display, META_LIST_DEFAULT);
@@ -717,7 +716,6 @@ ungrab_key_bindings (MetaDisplay *display)
 
       tmp = tmp->next;
     }
-  meta_error_trap_pop (display);
 
   g_slist_free (windows);
 }
@@ -727,8 +725,6 @@ grab_key_bindings (MetaDisplay *display)
 {
   GSList *tmp;
   GSList *windows;
-
-  meta_error_trap_push (display); /* for efficiency push outer trap */
 
   meta_screen_grab_keys (display->screen);
 
@@ -742,7 +738,6 @@ grab_key_bindings (MetaDisplay *display)
 
       tmp = tmp->next;
     }
-  meta_error_trap_pop (display);
 
   g_slist_free (windows);
 }
@@ -1011,8 +1006,6 @@ bindings_changed_callback (MetaPreference pref,
 void
 meta_display_shutdown_keys (MetaDisplay *display)
 {
-  /* Note that display->xdisplay is invalid in this function */
-
   meta_prefs_remove_listener (bindings_changed_callback, display);
 
   if (display->keymap)
@@ -1039,6 +1032,9 @@ meta_change_keygrab (MetaDisplay *display,
   XISetMask (mask.mask, XI_KeyPress);
   XISetMask (mask.mask, XI_KeyRelease);
 
+  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+  Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
+
   /* Grab keycode/modmask, together with
    * all combinations of ignored modifiers.
    * X provides no better way to do this.
@@ -1049,9 +1045,6 @@ meta_change_keygrab (MetaDisplay *display,
               grab ? "Grabbing" : "Ungrabbing",
               keysym_name (keysym), keycode,
               modmask, xwindow);
-
-  /* efficiency, avoid so many XSync() */
-  meta_error_trap_push (display);
 
   ignored_mask = 0;
   while (ignored_mask <= display->ignored_modifier_mask)
@@ -1069,40 +1062,19 @@ meta_change_keygrab (MetaDisplay *display,
 
       mods = (XIGrabModifiers) { modmask | ignored_mask, 0 };
 
-      if (meta_is_debugging ())
-        meta_error_trap_push (display);
       if (grab)
-        XIGrabKeycode (display->xdisplay,
+        XIGrabKeycode (xdisplay,
                        META_VIRTUAL_CORE_KEYBOARD_ID,
                        keycode, xwindow,
                        XIGrabModeSync, XIGrabModeAsync,
                        False, &mask, 1, &mods);
       else
-        XIUngrabKeycode (display->xdisplay,
+        XIUngrabKeycode (xdisplay,
                          META_VIRTUAL_CORE_KEYBOARD_ID,
                          keycode, xwindow, 1, &mods);
 
-      if (meta_is_debugging ())
-        {
-          int result;
-
-          result = meta_error_trap_pop_with_return (display);
-
-          if (grab && result != Success)
-            {
-              if (result == BadAccess)
-                meta_warning ("Some other program is already using the key %s with modifiers %x as a binding\n", keysym_name (keysym), modmask | ignored_mask);
-              else
-                meta_topic (META_DEBUG_KEYBINDINGS,
-                            "Failed to grab key %s with modifiers %x\n",
-                            keysym_name (keysym), modmask | ignored_mask);
-            }
-        }
-
       ++ignored_mask;
     }
-
-  meta_error_trap_pop (display);
 }
 
 typedef struct
@@ -1145,9 +1117,7 @@ change_binding_keygrabs (MetaDisplay    *display,
   data.binding_per_window = binding_per_window;
   data.grab = grab;
 
-  meta_error_trap_push (display);
   g_hash_table_foreach (display->key_bindings, change_keygrab_foreach, &data);
-  meta_error_trap_pop (display);
 }
 
 static void
@@ -1415,7 +1385,9 @@ grab_keyboard (MetaDisplay *display,
   /* Grab the keyboard, so we get key releases and all key
    * presses
    */
-  meta_error_trap_push (display);
+
+  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+  Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
 
   /* Strictly, we only need to set grab_mode on the keyboard device
    * while the pointer should always be XIGrabModeAsync. Unfortunately
@@ -1426,7 +1398,7 @@ grab_keyboard (MetaDisplay *display,
    *
    * http://cgit.freedesktop.org/xorg/xserver/commit/?id=9003399708936481083424b4ff8f18a16b88b7b3
    */
-  grab_status = XIGrabDevice (display->xdisplay,
+  grab_status = XIGrabDevice (xdisplay,
                               META_VIRTUAL_CORE_KEYBOARD_ID,
                               xwindow,
                               timestamp,
@@ -1463,19 +1435,20 @@ grab_keyboard (MetaDisplay *display,
 static void
 ungrab_keyboard (MetaDisplay *display, guint32 timestamp)
 {
-  meta_error_trap_push (display);
+  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+  Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
 
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Ungrabbing keyboard with timestamp %u\n",
-              timestamp);
-  XIUngrabDevice (display->xdisplay, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
-  meta_error_trap_pop (display);
+  XIUngrabDevice (xdisplay, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
 }
 
 gboolean
 meta_screen_grab_all_keys (MetaScreen *screen, guint32 timestamp)
 {
   gboolean retval;
+  MetaBackend *backend = meta_get_backend ();
+
+  if (!META_IS_BACKEND_X11 (backend))
+    return TRUE;
 
   if (screen->all_keys_grabbed)
     return FALSE;
@@ -1519,9 +1492,9 @@ meta_window_grab_all_keys (MetaWindow  *window,
 {
   Window grabwindow;
   gboolean retval;
+  MetaBackend *backend = meta_get_backend ();
 
-  /* We don't need to grab Wayland clients */
-  if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+  if (!META_IS_BACKEND_X11 (backend))
     return TRUE;
 
   if (window->all_keys_grabbed)
@@ -1584,15 +1557,20 @@ meta_display_ungrab_keyboard (MetaDisplay *display, guint32 timestamp)
 void
 meta_display_unfreeze_keyboard (MetaDisplay *display, guint32 timestamp)
 {
-  meta_error_trap_push (display);
-  XIAllowEvents (display->xdisplay, META_VIRTUAL_CORE_KEYBOARD_ID,
+  MetaBackend *backend = meta_get_backend ();
+
+  if (!META_IS_BACKEND_X11 (backend))
+    return;
+
+  Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
+
+  XIAllowEvents (xdisplay, META_VIRTUAL_CORE_KEYBOARD_ID,
                  XIAsyncDevice, timestamp);
   /* We shouldn't need to unfreeze the pointer device here, however we
    * have to, due to the workaround we do in grab_keyboard().
    */
-  XIAllowEvents (display->xdisplay, META_VIRTUAL_CORE_POINTER_ID,
+  XIAllowEvents (xdisplay, META_VIRTUAL_CORE_POINTER_ID,
                  XIAsyncDevice, timestamp);
-  meta_error_trap_pop (display);
 }
 
 static gboolean
@@ -1698,6 +1676,13 @@ process_overlay_key (MetaDisplay *display,
                      ClutterKeyEvent *event,
                      MetaWindow *window)
 {
+  MetaBackend *backend = meta_get_backend ();
+
+  if (!META_IS_BACKEND_X11 (backend))
+    return FALSE;
+
+  Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
+
   if (display->overlay_key_only_pressed)
     {
       if (event->hardware_keycode != (int)display->overlay_key_combo.keycode)
@@ -1722,7 +1707,7 @@ process_overlay_key (MetaDisplay *display,
                * binding, we unfreeze the keyboard but keep the grab
                * (this is important for something like cycling
                * windows */
-              XIAllowEvents (display->xdisplay,
+              XIAllowEvents (xdisplay,
                              clutter_input_device_get_device_id (event->device),
                              XIAsyncDevice, event->time);
             }
@@ -1730,7 +1715,7 @@ process_overlay_key (MetaDisplay *display,
             {
               /* Replay the event so it gets delivered to our
                * per-window key bindings or to the application */
-              XIAllowEvents (display->xdisplay,
+              XIAllowEvents (xdisplay,
                              clutter_input_device_get_device_id (event->device),
                              XIReplayDevice, event->time);
             }
@@ -1743,7 +1728,7 @@ process_overlay_key (MetaDisplay *display,
 
           /* We want to unfreeze events, but keep the grab so that if the user
            * starts typing into the overlay we get all the keys */
-          XIAllowEvents (display->xdisplay,
+          XIAllowEvents (xdisplay,
                          clutter_input_device_get_device_id (event->device),
                          XIAsyncDevice, event->time);
 
@@ -1769,7 +1754,7 @@ process_overlay_key (MetaDisplay *display,
            *
            * https://bugzilla.gnome.org/show_bug.cgi?id=666101
            */
-          XIAllowEvents (display->xdisplay,
+          XIAllowEvents (xdisplay,
                          clutter_input_device_get_device_id (event->device),
                          XIAsyncDevice, event->time);
         }
@@ -1782,7 +1767,7 @@ process_overlay_key (MetaDisplay *display,
       display->overlay_key_only_pressed = TRUE;
       /* We keep the keyboard frozen - this allows us to use ReplayKeyboard
        * on the next event if it's not the release of the overlay key */
-      XIAllowEvents (display->xdisplay,
+      XIAllowEvents (xdisplay,
                      clutter_input_device_get_device_id (event->device),
                      XISyncDevice, event->time);
 
