@@ -80,6 +80,7 @@
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 
+#include "backends/meta-backend.h"
 #include "backends/x11/meta-backend-x11.h"
 
 #include "wayland/meta-wayland-private.h"
@@ -329,38 +330,16 @@ meta_stage_is_focused (MetaScreen *screen)
 }
 
 static gboolean
-begin_modal_x11 (MetaCompositor   *compositor,
-                 MetaPlugin       *plugin,
-                 MetaModalOptions  options,
-                 guint32           timestamp)
+grab_devices (MetaModalOptions  options,
+              guint32           timestamp)
 {
-  MetaDisplay    *display     = compositor->display;
-  Display        *xdpy        = meta_display_get_xdisplay (display);
-  Window          grab_window = clutter_x11_get_stage_window (CLUTTER_STAGE (compositor->stage));
-  int             result;
-  gboolean        pointer_grabbed = FALSE;
-  gboolean        keyboard_grabbed = FALSE;
+  MetaBackend *backend = META_BACKEND (meta_get_backend ());
+  gboolean pointer_grabbed = FALSE;
+  gboolean keyboard_grabbed = FALSE;
 
   if ((options & META_MODAL_POINTER_ALREADY_GRABBED) == 0)
     {
-      unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-      XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-
-      XISetMask (mask.mask, XI_ButtonPress);
-      XISetMask (mask.mask, XI_ButtonRelease);
-      XISetMask (mask.mask, XI_Enter);
-      XISetMask (mask.mask, XI_Leave);
-      XISetMask (mask.mask, XI_Motion);
-
-      result = XIGrabDevice (xdpy,
-                             META_VIRTUAL_CORE_POINTER_ID,
-                             grab_window,
-                             timestamp,
-                             None,
-                             XIGrabModeAsync, XIGrabModeAsync,
-                             False, /* owner_events */
-                             &mask);
-      if (result != Success)
+      if (!meta_backend_grab_device (backend, META_VIRTUAL_CORE_POINTER_ID, timestamp))
         goto fail;
 
       pointer_grabbed = TRUE;
@@ -368,22 +347,7 @@ begin_modal_x11 (MetaCompositor   *compositor,
 
   if ((options & META_MODAL_KEYBOARD_ALREADY_GRABBED) == 0)
     {
-      unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-      XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-
-      XISetMask (mask.mask, XI_KeyPress);
-      XISetMask (mask.mask, XI_KeyRelease);
-
-      result = XIGrabDevice (xdpy,
-                             META_VIRTUAL_CORE_KEYBOARD_ID,
-                             grab_window,
-                             timestamp,
-                             None,
-                             XIGrabModeAsync, XIGrabModeAsync,
-                             False, /* owner_events */
-                             &mask);
-
-      if (result != Success)
+      if (!meta_backend_grab_device (backend, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp))
         goto fail;
 
       keyboard_grabbed = TRUE;
@@ -393,9 +357,9 @@ begin_modal_x11 (MetaCompositor   *compositor,
 
  fail:
   if (pointer_grabbed)
-    XIUngrabDevice (xdpy, META_VIRTUAL_CORE_POINTER_ID, timestamp);
+    meta_backend_ungrab_device (backend, META_VIRTUAL_CORE_POINTER_ID, timestamp);
   if (keyboard_grabbed)
-    XIUngrabDevice (xdpy, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
+    meta_backend_ungrab_device (backend, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
 
   return FALSE;
 }
@@ -415,9 +379,8 @@ meta_begin_modal_for_plugin (MetaCompositor   *compositor,
   if (is_modal (display) || display->grab_op != META_GRAB_OP_NONE)
     return FALSE;
 
-  if (!meta_is_wayland_compositor ())
-    if (!begin_modal_x11 (compositor, plugin, options, timestamp))
-      return FALSE;
+  if (!grab_devices (options, timestamp))
+    return FALSE;
 
   display->grab_op = META_GRAB_OP_COMPOSITOR;
   display->grab_window = NULL;
@@ -436,7 +399,7 @@ meta_end_modal_for_plugin (MetaCompositor *compositor,
                            guint32         timestamp)
 {
   MetaDisplay *display = compositor->display;
-  Display *xdpy = meta_display_get_xdisplay (display);
+  MetaBackend *backend = meta_get_backend ();
 
   g_return_if_fail (is_modal (display));
 
@@ -445,15 +408,11 @@ meta_end_modal_for_plugin (MetaCompositor *compositor,
   display->grab_have_pointer = FALSE;
   display->grab_have_keyboard = FALSE;
 
+  meta_backend_ungrab_device (backend, META_VIRTUAL_CORE_POINTER_ID, timestamp);
+  meta_backend_ungrab_device (backend, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
+
   if (meta_is_wayland_compositor ())
-    {
-      meta_display_sync_wayland_input_focus (display);
-    }
-  else
-    {
-      XIUngrabDevice (xdpy, META_VIRTUAL_CORE_POINTER_ID, timestamp);
-      XIUngrabDevice (xdpy, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
-    }
+    meta_display_sync_wayland_input_focus (display);
 }
 
 static void
