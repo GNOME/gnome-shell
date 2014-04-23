@@ -1727,44 +1727,53 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
                                  MetaGrabOp   op,
                                  guint32      timestamp)
 {
-  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-  XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (display->screen);
-  MetaCursor cursor = meta_cursor_for_grab_op (op);
-  MetaCursorReference *cursor_ref;
+  /* Set root cursor */
+  {
+    MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (display->screen);
+    MetaCursor cursor = meta_cursor_for_grab_op (op);
+    MetaCursorReference *cursor_ref;
 
-  XISetMask (mask.mask, XI_ButtonPress);
-  XISetMask (mask.mask, XI_ButtonRelease);
-  XISetMask (mask.mask, XI_Enter);
-  XISetMask (mask.mask, XI_Leave);
-  XISetMask (mask.mask, XI_Motion);
+    cursor_ref = meta_cursor_reference_from_theme (cursor);
+    meta_cursor_tracker_set_grab_cursor (tracker, cursor_ref);
+    meta_cursor_reference_unref (cursor_ref);
+  }
 
-  meta_error_trap_push (display);
-  if (XIGrabDevice (display->xdisplay,
-                    META_VIRTUAL_CORE_POINTER_ID,
-                    display->screen->xroot,
-                    timestamp,
-                    meta_display_create_x_cursor (display, cursor),
-                    XIGrabModeAsync, XIGrabModeAsync,
-                    False, /* owner_events */
-                    &mask) == Success)
-    {
-      display->grab_have_pointer = TRUE;
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "XIGrabDevice() returned GrabSuccess time %u\n",
-                  timestamp);
-    }
-  else
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "XIGrabDevice() failed time %u\n",
-                  timestamp);
-    }
-  meta_error_trap_pop (display);
+  /* Take grab */
+  {
+    unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+    XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
 
-  cursor_ref = meta_cursor_reference_from_theme (cursor);
-  meta_cursor_tracker_set_grab_cursor (tracker, cursor_ref);
-  meta_cursor_reference_unref (cursor_ref);
+    XISetMask (mask.mask, XI_ButtonPress);
+    XISetMask (mask.mask, XI_ButtonRelease);
+    XISetMask (mask.mask, XI_Enter);
+    XISetMask (mask.mask, XI_Leave);
+    XISetMask (mask.mask, XI_Motion);
+
+    MetaCursor cursor = meta_cursor_for_grab_op (op);
+
+    meta_error_trap_push (display);
+    if (XIGrabDevice (display->xdisplay,
+                      META_VIRTUAL_CORE_POINTER_ID,
+                      display->screen->xroot,
+                      timestamp,
+                      meta_display_create_x_cursor (display, cursor),
+                      XIGrabModeAsync, XIGrabModeAsync,
+                      False, /* owner_events */
+                      &mask) == Success)
+      {
+        display->grab_have_pointer = TRUE;
+        meta_topic (META_DEBUG_WINDOW_OPS,
+                    "XIGrabDevice() returned GrabSuccess time %u\n",
+                    timestamp);
+      }
+    else
+      {
+        meta_topic (META_DEBUG_WINDOW_OPS,
+                    "XIGrabDevice() failed time %u\n",
+                    timestamp);
+      }
+    meta_error_trap_pop (display);
+  }
 }
 
 gboolean
