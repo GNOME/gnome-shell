@@ -27,9 +27,6 @@
 
 #include "meta-backend-x11.h"
 
-#include <meta/util.h>
-#include "display-private.h"
-
 #include <string.h>
 
 struct _MetaIdleMonitorXSync
