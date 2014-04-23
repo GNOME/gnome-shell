@@ -36,6 +36,7 @@ typedef struct {
 struct _MetaCursorReference {
   int ref_count;
 
+  MetaCursor cursor;
   MetaCursorImage image;
 };
 

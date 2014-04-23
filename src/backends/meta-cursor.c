@@ -235,6 +235,7 @@ meta_cursor_reference_from_theme (MetaCursor cursor)
 
   self = g_slice_new0 (MetaCursorReference);
   self->ref_count = 1;
+  self->cursor = cursor;
   meta_cursor_image_load_from_xcursor_image (&self->image, image);
 
   XcursorImageDestroy (image);
@@ -362,4 +363,10 @@ meta_cursor_reference_get_gbm_bo (MetaCursorReference *cursor,
   if (hot_y)
     *hot_y = cursor->image.hot_y;
   return cursor->image.bo;
+}
+
+MetaCursor
+meta_cursor_reference_get_meta_cursor (MetaCursorReference *cursor)
+{
+  return cursor->cursor;
 }

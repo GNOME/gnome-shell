@@ -36,6 +36,8 @@ MetaCursorReference * meta_cursor_reference_from_buffer (struct wl_resource *buf
                                                          int                 hot_x,
                                                          int                 hot_y);
 
+MetaCursor meta_cursor_reference_get_meta_cursor (MetaCursorReference *cursor);
+
 Cursor meta_cursor_create_x_cursor (Display    *xdisplay,
                                     MetaCursor  cursor);
 
