@@ -80,6 +80,8 @@
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 
+#include "backends/x11/meta-backend-x11.h"
+
 #include "wayland/meta-wayland-private.h"
 
 static gboolean
@@ -148,16 +150,15 @@ process_damage (MetaCompositor     *compositor,
 static Window
 get_output_window (MetaCompositor *compositor)
 {
-  MetaDisplay *display = compositor->display;
-  Display *xdisplay = display->xdisplay;
-  Window output, xroot;
+  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+  Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
+  Window output;
   XWindowAttributes attr;
   long event_mask;
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
   XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
 
-  xroot = display->screen->xroot;
-  output = XCompositeGetOverlayWindow (xdisplay, xroot);
+  output = XCompositeGetOverlayWindow (xdisplay, DefaultRootWindow (xdisplay));
 
   meta_core_add_old_event_mask (xdisplay, output, &mask);
 
