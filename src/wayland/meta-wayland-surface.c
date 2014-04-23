@@ -105,7 +105,19 @@ static void
 surface_process_damage (MetaWaylandSurface *surface,
                         cairo_region_t *region)
 {
-  int i, n_rectangles = cairo_region_num_rectangles (region);
+  int i, n_rectangles;
+  cairo_rectangle_int_t buffer_rect;
+
+  buffer_rect.x = 0;
+  buffer_rect.y = 0;
+  buffer_rect.width = cogl_texture_get_width (surface->buffer->texture);
+  buffer_rect.height = cogl_texture_get_height (surface->buffer->texture);
+
+  /* The region will get destroyed after this call anyway so we can
+     just modify it here to avoid a copy */
+  cairo_region_intersect_rectangle (region, &buffer_rect);
+
+  n_rectangles = cairo_region_num_rectangles (region);
 
   for (i = 0; i < n_rectangles; i++)
     {
