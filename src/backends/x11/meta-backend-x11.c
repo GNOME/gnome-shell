@@ -46,6 +46,10 @@ struct _MetaBackendX11Private
 
   int xsync_event_base;
   int xsync_error_base;
+
+  int xinput_opcode;
+  int xinput_event_base;
+  int xinput_error_base;
 };
 typedef struct _MetaBackendX11Private MetaBackendX11Private;
 
@@ -60,6 +64,47 @@ handle_alarm_notify (MetaBackend *backend,
   for (i = 0; i <= backend->device_id_max; i++)
     if (backend->device_monitors[i])
       meta_idle_monitor_xsync_handle_xevent (backend->device_monitors[i], (XSyncAlarmNotifyEvent*)xevent);
+}
+
+/* Clutter makes the assumption that there is only one X window
+ * per stage, which is a valid assumption to make for a generic
+ * application toolkit. As such, it will ignore any events sent
+ * to the a stage that isn't its X window.
+ *
+ * When running as an X window manager, we need to respond to
+ * events from lots of windows. Trick Clutter into translating
+ * these events by pretending we got an event on the stage window.
+ */
+static void
+maybe_spoof_event_as_stage_event (MetaBackendX11 *x11,
+                                  XEvent         *event)
+{
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  if (event->type == GenericEvent &&
+      event->xcookie.extension == priv->xinput_opcode)
+    {
+      XGetEventData (priv->xdisplay, &event->xcookie);
+
+      XIEvent *input_event = (XIEvent *) event->xcookie.data;
+      XIDeviceEvent *device_event = ((XIDeviceEvent *) input_event);
+
+      switch (input_event->evtype)
+        {
+        case XI_Motion:
+        case XI_ButtonPress:
+        case XI_ButtonRelease:
+        case XI_KeyPress:
+        case XI_KeyRelease:
+          {
+            ClutterStage *stage = CLUTTER_STAGE (clutter_stage_get_default ());
+            device_event->event = clutter_x11_get_stage_window (stage);
+            break;
+          }
+        default:
+          break;
+        }
+    }
 }
 
 static void
@@ -82,6 +127,8 @@ handle_host_xevent (MetaBackend *backend,
         goto out;
       }
   }
+
+  maybe_spoof_event_as_stage_event (x11, xevent);
 
  out:
   if (!bypass_clutter)
@@ -180,6 +227,28 @@ meta_backend_x11_post_init (MetaBackend *backend)
   if (!XSyncQueryExtension (priv->xdisplay, &priv->xsync_event_base, &priv->xsync_error_base) ||
       !XSyncInitialize (priv->xdisplay, &major, &minor))
     meta_fatal ("Could not initialize XSync");
+
+  {
+    int major = 2, minor = 3;
+    gboolean has_xi = FALSE;
+
+    if (XQueryExtension (priv->xdisplay,
+                         "XInputExtension",
+                         &priv->xinput_opcode,
+                         &priv->xinput_error_base,
+                         &priv->xinput_event_base))
+      {
+        if (XIQueryVersion (priv->xdisplay, &major, &minor) == Success)
+          {
+            int version = (major * 10) + minor;
+            if (version >= 22)
+              has_xi = TRUE;
+          }
+      }
+
+    if (!has_xi)
+      meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
+  }
 
   META_BACKEND_CLASS (meta_backend_x11_parent_class)->post_init (backend);
 }

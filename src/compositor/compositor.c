@@ -752,82 +752,6 @@ meta_compositor_window_surface_changed (MetaCompositor *compositor,
   meta_window_actor_update_surface (window_actor);
 }
 
-static gboolean
-event_is_passive_button_grab (MetaDisplay   *display,
-                              XIDeviceEvent *device_event)
-{
-  /* see display.c for which events are passive button
-     grabs (meta_display_grab_window_buttons() and
-     meta_display_handle_events())
-     we need to filter them here because normally they
-     would be sent to gtk+ (they are on gtk+ frame xwindow),
-     but we want to redirect them to clutter
-  */
-
-  if (device_event->evtype != XI_ButtonPress)
-    return FALSE;
-
-  if (display->window_grab_modifiers == 0)
-    return FALSE;
-
-  if ((device_event->mods.effective & display->window_grab_modifiers) !=
-      display->window_grab_modifiers)
-    return FALSE;
-
-  return device_event->detail < 4;
-}
-
-/* Clutter makes the assumption that there is only one X window
- * per stage, which is a valid assumption to make for a generic
- * application toolkit. As such, it will ignore any events sent
- * to the a stage that isn't its X window.
- *
- * When running as an X window manager, we need to respond to
- * events from lots of windows. Trick Clutter into translating
- * these events by pretending we got an event on the stage window.
- */
-static void
-maybe_spoof_event_as_stage_event (MetaCompositor *compositor,
-                                  MetaWindow     *window,
-                                  XEvent         *event)
-{
-  MetaDisplay *display = compositor->display;
-
-  if (event->type == GenericEvent &&
-      event->xcookie.extension == display->xinput_opcode)
-    {
-      XIEvent *input_event = (XIEvent *) event->xcookie.data;
-      XIDeviceEvent *device_event = ((XIDeviceEvent *) input_event);
-
-      switch (input_event->evtype)
-        {
-        case XI_Motion:
-        case XI_ButtonPress:
-        case XI_ButtonRelease:
-          /* If this is a window frame, and we think GTK+ needs to handle the event,
-             let GTK+ handle it without mangling */
-          if (window && window->frame && device_event->event == window->frame->xwindow &&
-              (meta_grab_op_is_clicking (display->grab_op) ||
-               (display->grab_op == META_GRAB_OP_NONE && !event_is_passive_button_grab (display, device_event))))
-            break;
-
-        case XI_KeyPress:
-        case XI_KeyRelease:
-            /* If this is a GTK+ widget, like a window menu, let GTK+ handle
-             * it as-is without mangling. */
-            if (meta_ui_window_is_widget (display->screen->ui, device_event->event))
-              break;
-
-            device_event->event = clutter_x11_get_stage_window (CLUTTER_STAGE (compositor->stage));
-            device_event->event_x = device_event->root_x;
-            device_event->event_y = device_event->root_y;
-          break;
-        default:
-          break;
-        }
-    }
-}
-
 /**
  * meta_compositor_process_event: (skip)
  * @compositor: 
@@ -840,11 +764,6 @@ meta_compositor_process_event (MetaCompositor *compositor,
                                XEvent         *event,
                                MetaWindow     *window)
 {
-  MetaDisplay *display = compositor->display;
-
-  if (!meta_is_wayland_compositor ())
-    maybe_spoof_event_as_stage_event (compositor, window, event);
-
   if (meta_plugin_manager_xevent_filter (compositor->plugin_mgr, event))
     return TRUE;
 
