@@ -221,6 +221,8 @@ meta_backend_x11_grab_device (MetaBackend *backend,
   XISetMask (mask.mask, XI_Enter);
   XISetMask (mask.mask, XI_Leave);
   XISetMask (mask.mask, XI_Motion);
+  XISetMask (mask.mask, XI_KeyPress);
+  XISetMask (mask.mask, XI_KeyRelease);
 
   MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (NULL);
   MetaCursorReference *cursor_ref = meta_cursor_tracker_get_displayed_cursor (tracker);
