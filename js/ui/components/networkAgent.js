@@ -510,10 +510,12 @@ const VPNRequestHandler = new Lang.Class({
 
     _showNewStyleDialog: function() {
         let keyfile = new GLib.KeyFile();
+        let data;
         let contentOverride;
 
         try {
-            let data = this._dataStdout.peek_buffer();
+            data = this._dataStdout.peek_buffer();
+
             keyfile.load_from_data(data.toString(), data.length,
                                    GLib.KeyFileFlags.NONE);
 
@@ -546,13 +548,16 @@ const VPNRequestHandler = new Lang.Class({
                 }
             }
         } catch(e) {
-            logError(e, 'error while reading VPN plugin output keyfile');
+            // No output is a valid case it means "both secrets are stored"
+            if (data.length > 0) {
+                logError(e, 'error while reading VPN plugin output keyfile');
 
-            this._agent.respond(this._requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
-            return;
+                this._agent.respond(this._requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
+                return;
+            }
         }
 
-        if (contentOverride.secrets.length) {
+        if (contentOverride && contentOverride.secrets.length) {
             // Only show the dialog if we actually have something to ask
             this._shellDialog = new NetworkSecretDialog(this._agent, this._requestId, this._connection, 'vpn', [], contentOverride);
             this._shellDialog.open(global.get_current_time());
