@@ -1217,16 +1217,3 @@ meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
   g_free (old_monitor_infos);
 }
 
-gboolean
-meta_monitor_manager_handle_xevent (MetaMonitorManager *manager,
-                                    XEvent             *event)
-{
-  MetaMonitorManagerClass *klass;
-
-  klass = META_MONITOR_MANAGER_GET_CLASS (manager);
-  if (klass->handle_xevent)
-    return klass->handle_xevent (manager, event);
-  else
-    return FALSE;
-}
-

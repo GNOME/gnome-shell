@@ -285,9 +285,6 @@ struct _MetaMonitorManagerClass
                           unsigned short     *,
                           unsigned short     *,
                           unsigned short     *);
-
-  gboolean (*handle_xevent) (MetaMonitorManager *,
-                             XEvent             *);
 };
 
 GType meta_monitor_manager_get_type (void);
@@ -311,9 +308,6 @@ void                meta_monitor_manager_get_resources     (MetaMonitorManager  
                                                             unsigned int        *n_outputs);
 
 int                 meta_monitor_manager_get_primary_index (MetaMonitorManager *manager);
-
-gboolean            meta_monitor_manager_handle_xevent     (MetaMonitorManager *manager,
-                                                            XEvent             *event);
 
 void                meta_monitor_manager_get_screen_size   (MetaMonitorManager *manager,
                                                             int                *width,

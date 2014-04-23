@@ -37,4 +37,7 @@ typedef struct _MetaMonitorManagerXrandr         MetaMonitorManagerXrandr;
 
 GType meta_monitor_manager_xrandr_get_type (void);
 
+gboolean meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager,
+                                                    XEvent                   *event);
+
 #endif /* META_MONITOR_MANAGER_XRANDR_H */

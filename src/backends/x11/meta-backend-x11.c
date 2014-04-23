@@ -75,7 +75,8 @@ handle_host_xevent (MetaBackend *backend,
 
   {
     MetaMonitorManager *manager = meta_backend_get_monitor_manager (backend);
-    if (meta_monitor_manager_handle_xevent (manager, xevent))
+    if (META_IS_MONITOR_MANAGER_XRANDR (manager) &&
+        meta_monitor_manager_xrandr_handle_xevent (META_MONITOR_MANAGER_XRANDR (manager), xevent))
       {
         bypass_clutter = TRUE;
         goto out;

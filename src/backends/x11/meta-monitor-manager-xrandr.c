@@ -994,11 +994,65 @@ meta_monitor_manager_xrandr_rebuild_derived (MetaMonitorManager *manager)
   meta_monitor_manager_rebuild_derived (manager);
 }
 
-static gboolean
-meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManager *manager,
-					   XEvent             *event)
+static void
+meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
 {
-  MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
+  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+
+  manager_xrandr->xdisplay = meta_backend_x11_get_xdisplay (backend);
+
+  if (!XRRQueryExtension (manager_xrandr->xdisplay,
+			  &manager_xrandr->rr_event_base,
+			  &manager_xrandr->rr_error_base))
+    {
+      return;
+    }
+  else
+    {
+      /* We only use ScreenChangeNotify, but GDK uses the others,
+	 and we don't want to step on its toes */
+      XRRSelectInput (manager_xrandr->xdisplay,
+		      DefaultRootWindow (manager_xrandr->xdisplay),
+		      RRScreenChangeNotifyMask
+		      | RRCrtcChangeNotifyMask
+		      | RROutputPropertyNotifyMask);
+    }
+}
+
+static void
+meta_monitor_manager_xrandr_finalize (GObject *object)
+{
+  MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (object);
+
+  if (manager_xrandr->resources)
+    XRRFreeScreenResources (manager_xrandr->resources);
+  manager_xrandr->resources = NULL;
+
+  G_OBJECT_CLASS (meta_monitor_manager_xrandr_parent_class)->finalize (object);
+}
+
+static void
+meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
+{
+  MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_monitor_manager_xrandr_finalize;
+
+  manager_class->read_current = meta_monitor_manager_xrandr_read_current;
+  manager_class->read_edid = meta_monitor_manager_xrandr_read_edid;
+  manager_class->apply_configuration = meta_monitor_manager_xrandr_apply_configuration;
+  manager_class->set_power_save_mode = meta_monitor_manager_xrandr_set_power_save_mode;
+  manager_class->change_backlight = meta_monitor_manager_xrandr_change_backlight;
+  manager_class->get_crtc_gamma = meta_monitor_manager_xrandr_get_crtc_gamma;
+  manager_class->set_crtc_gamma = meta_monitor_manager_xrandr_set_crtc_gamma;
+}
+
+gboolean
+meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xrandr,
+					   XEvent                   *event)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_xrandr);
   MetaOutput *old_outputs;
   MetaCRTC *old_crtcs;
   MetaMonitorMode *old_modes;
@@ -1058,59 +1112,4 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManager *manager,
   g_free (old_crtcs);
 
   return TRUE;
-}
-
-static void
-meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
-{
-  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
-
-  manager_xrandr->xdisplay = meta_backend_x11_get_xdisplay (backend);
-
-  if (!XRRQueryExtension (manager_xrandr->xdisplay,
-			  &manager_xrandr->rr_event_base,
-			  &manager_xrandr->rr_error_base))
-    {
-      return;
-    }
-  else
-    {
-      /* We only use ScreenChangeNotify, but GDK uses the others,
-	 and we don't want to step on its toes */
-      XRRSelectInput (manager_xrandr->xdisplay,
-		      DefaultRootWindow (manager_xrandr->xdisplay),
-		      RRScreenChangeNotifyMask
-		      | RRCrtcChangeNotifyMask
-		      | RROutputPropertyNotifyMask);
-    }
-}
-
-static void
-meta_monitor_manager_xrandr_finalize (GObject *object)
-{
-  MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (object);
-
-  if (manager_xrandr->resources)
-    XRRFreeScreenResources (manager_xrandr->resources);
-  manager_xrandr->resources = NULL;
-
-  G_OBJECT_CLASS (meta_monitor_manager_xrandr_parent_class)->finalize (object);
-}
-
-static void
-meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
-{
-  MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_CLASS (klass);
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  object_class->finalize = meta_monitor_manager_xrandr_finalize;
-
-  manager_class->read_current = meta_monitor_manager_xrandr_read_current;
-  manager_class->read_edid = meta_monitor_manager_xrandr_read_edid;
-  manager_class->apply_configuration = meta_monitor_manager_xrandr_apply_configuration;
-  manager_class->set_power_save_mode = meta_monitor_manager_xrandr_set_power_save_mode;
-  manager_class->change_backlight = meta_monitor_manager_xrandr_change_backlight;
-  manager_class->get_crtc_gamma = meta_monitor_manager_xrandr_get_crtc_gamma;
-  manager_class->set_crtc_gamma = meta_monitor_manager_xrandr_set_crtc_gamma;
-  manager_class->handle_xevent = meta_monitor_manager_xrandr_handle_xevent;
 }
