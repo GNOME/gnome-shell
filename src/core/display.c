@@ -1745,7 +1745,7 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
   meta_error_trap_push (display);
   if (XIGrabDevice (display->xdisplay,
                     META_VIRTUAL_CORE_POINTER_ID,
-                    display->grab_xwindow,
+                    display->screen->xroot,
                     timestamp,
                     meta_display_create_x_cursor (display, cursor),
                     XIGrabModeAsync, XIGrabModeAsync,
@@ -1784,7 +1784,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
                             int          root_y)
 {
   MetaWindow *grab_window = NULL;
-  Window grab_xwindow;
   
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Doing grab op %u on window %s button %d pointer already grabbed: %d pointer pos %d,%d\n",
@@ -1823,23 +1822,11 @@ meta_display_begin_grab_op (MetaDisplay *display,
   if (grab_window == NULL)
     grab_window = window;
 
-  /* FIXME:
-   *   If we have no MetaWindow we do our best
-   *   and try to do the grab on the RootWindow.
-   *   This will fail if anyone else has any
-   *   key grab on the RootWindow.
-   */
-  if (grab_window)
-    grab_xwindow = meta_window_get_toplevel_xwindow (grab_window);
-  else
-    grab_xwindow = screen->xroot;
-
   display->grab_have_pointer = FALSE;
 
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
 
-  display->grab_xwindow = grab_xwindow;
   meta_display_set_grab_op_cursor (display, screen, op, timestamp);
 
   if (!display->grab_have_pointer && !meta_grab_op_is_keyboard (op))
@@ -1990,7 +1977,6 @@ meta_display_end_grab_op (MetaDisplay *display,
 
   display->grab_timestamp = 0;
   display->grab_window = NULL;
-  display->grab_xwindow = None;
   display->grab_tile_mode = META_TILE_NONE;
   display->grab_tile_monitor_number = -1;
   display->grab_op = META_GRAB_OP_NONE;
