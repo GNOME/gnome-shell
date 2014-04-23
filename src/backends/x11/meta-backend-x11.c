@@ -57,13 +57,13 @@ G_DEFINE_TYPE_WITH_PRIVATE (MetaBackendX11, meta_backend_x11, META_TYPE_BACKEND)
 
 static void
 handle_alarm_notify (MetaBackend *backend,
-                     XEvent      *xevent)
+                     XEvent      *event)
 {
   int i;
 
   for (i = 0; i <= backend->device_id_max; i++)
     if (backend->device_monitors[i])
-      meta_idle_monitor_xsync_handle_xevent (backend->device_monitors[i], (XSyncAlarmNotifyEvent*)xevent);
+      meta_idle_monitor_xsync_handle_xevent (backend->device_monitors[i], (XSyncAlarmNotifyEvent*) event);
 }
 
 /* Clutter makes the assumption that there is only one X window
@@ -109,30 +109,30 @@ maybe_spoof_event_as_stage_event (MetaBackendX11 *x11,
 
 static void
 handle_host_xevent (MetaBackend *backend,
-                    XEvent      *xevent)
+                    XEvent      *event)
 {
   MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
   gboolean bypass_clutter = FALSE;
 
-  if (xevent->type == (priv->xsync_event_base + XSyncAlarmNotify))
-    handle_alarm_notify (backend, xevent);
+  if (event->type == (priv->xsync_event_base + XSyncAlarmNotify))
+    handle_alarm_notify (backend, event);
 
   {
     MetaMonitorManager *manager = meta_backend_get_monitor_manager (backend);
     if (META_IS_MONITOR_MANAGER_XRANDR (manager) &&
-        meta_monitor_manager_xrandr_handle_xevent (META_MONITOR_MANAGER_XRANDR (manager), xevent))
+        meta_monitor_manager_xrandr_handle_xevent (META_MONITOR_MANAGER_XRANDR (manager), event))
       {
         bypass_clutter = TRUE;
         goto out;
       }
   }
 
-  maybe_spoof_event_as_stage_event (x11, xevent);
+  maybe_spoof_event_as_stage_event (x11, event);
 
  out:
   if (!bypass_clutter)
-    clutter_x11_handle_event (xevent);
+    clutter_x11_handle_event (event);
 }
 
 typedef struct {
@@ -178,11 +178,11 @@ x_event_source_dispatch (GSource     *source,
 
   while (XPending (priv->xdisplay))
     {
-      XEvent xev;
+      XEvent event;
 
-      XNextEvent (priv->xdisplay, &xev);
+      XNextEvent (priv->xdisplay, &event);
 
-      handle_host_xevent (backend, &xev);
+      handle_host_xevent (backend, &event);
     }
 
   return TRUE;
