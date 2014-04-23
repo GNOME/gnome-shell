@@ -1724,13 +1724,12 @@ meta_cursor_for_grab_op (MetaGrabOp op)
 
 void
 meta_display_set_grab_op_cursor (MetaDisplay *display,
-                                 MetaScreen  *screen,
                                  MetaGrabOp   op,
                                  guint32      timestamp)
 {
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
   XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
+  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (display->screen);
   MetaCursor cursor = meta_cursor_for_grab_op (op);
   MetaCursorReference *cursor_ref;
 
@@ -1739,8 +1738,6 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
   XISetMask (mask.mask, XI_Enter);
   XISetMask (mask.mask, XI_Leave);
   XISetMask (mask.mask, XI_Motion);
-
-  g_assert (screen != NULL);
 
   meta_error_trap_push (display);
   if (XIGrabDevice (display->xdisplay,
@@ -1827,7 +1824,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
 
-  meta_display_set_grab_op_cursor (display, screen, op, timestamp);
+  meta_display_set_grab_op_cursor (display, op, timestamp);
 
   if (!display->grab_have_pointer && !meta_grab_op_is_keyboard (op))
     {

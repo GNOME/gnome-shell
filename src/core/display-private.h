@@ -369,7 +369,6 @@ Cursor         meta_display_create_x_cursor (MetaDisplay *display,
                                              MetaCursor   cursor);
 
 void     meta_display_set_grab_op_cursor (MetaDisplay *display,
-                                          MetaScreen  *screen,
                                           MetaGrabOp   op,
                                           guint32      timestamp);
 
