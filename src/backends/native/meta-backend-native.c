@@ -146,6 +146,9 @@ static void
 meta_backend_native_post_init (MetaBackend *backend)
 {
   ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+
+  META_BACKEND_CLASS (meta_backend_native_parent_class)->post_init (backend);
+
   clutter_evdev_set_pointer_constrain_callback (manager, pointer_constrain_callback,
                                                 NULL, NULL);
 }
