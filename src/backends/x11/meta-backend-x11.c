@@ -205,3 +205,12 @@ meta_backend_x11_init (MetaBackendX11 *x11)
   /* We do X11 event retrieval ourselves */
   clutter_x11_disable_event_retrieval ();
 }
+
+Display *
+meta_backend_x11_get_xdisplay (MetaBackendX11 *x11)
+{
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  return priv->xdisplay;
+}
+

@@ -51,7 +51,6 @@ struct _MetaBackendX11Class
 
 GType meta_backend_x11_get_type (void) G_GNUC_CONST;
 
-void meta_backend_x11_handle_alarm_notify (MetaBackend *backend,
-                                           XEvent      *event);
+Display * meta_backend_x11_get_xdisplay (MetaBackendX11 *backend);
 
 #endif /* META_BACKEND_X11_H */

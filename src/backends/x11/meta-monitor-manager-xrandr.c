@@ -36,6 +36,7 @@
 #include <X11/extensions/Xrandr.h>
 #include <X11/extensions/dpms.h>
 
+#include "meta-backend-x11.h"
 #include <meta/main.h>
 #include <meta/errors.h>
 #include "edid.h"
@@ -141,16 +142,16 @@ static gboolean
 output_get_presentation_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
                                 MetaOutput               *output)
 {
-  MetaDisplay *display = meta_get_display ();
   gboolean value;
-  Atom actual_type;
+  Atom atom, actual_type;
   int actual_format;
   unsigned long nitems, bytes_after;
   unsigned char *buffer;
 
+  atom = XInternAtom (manager_xrandr->xdisplay, "_MUTTER_PRESENTATION_OUTPUT", False);
   XRRGetOutputProperty (manager_xrandr->xdisplay,
                         (XID)output->output_id,
-                        display->atom__MUTTER_PRESENTATION_OUTPUT,
+                        atom,
                         0, G_MAXLONG, False, False, XA_CARDINAL,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
@@ -177,16 +178,16 @@ static int
 output_get_backlight_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
                              MetaOutput               *output)
 {
-  MetaDisplay *display = meta_get_display ();
   gboolean value;
-  Atom actual_type;
+  Atom atom, actual_type;
   int actual_format;
   unsigned long nitems, bytes_after;
   unsigned char *buffer;
 
+  atom = XInternAtom (manager_xrandr->xdisplay, "Backlight", False);
   XRRGetOutputProperty (manager_xrandr->xdisplay,
                         (XID)output->output_id,
-                        display->atom_Backlight,
+                        atom,
                         0, G_MAXLONG, False, False, XA_INTEGER,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
@@ -205,14 +206,13 @@ static void
 output_get_backlight_limits_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
                                     MetaOutput               *output)
 {
-  MetaDisplay *display = meta_get_display ();
+  Atom atom;
   XRRPropertyInfo *info;
 
-  meta_error_trap_push (display);
+  atom = XInternAtom (manager_xrandr->xdisplay, "Backlight", False);
   info = XRRQueryOutputProperty (manager_xrandr->xdisplay,
                                  (XID)output->output_id,
-                                 display->atom_Backlight);
-  meta_error_trap_pop (display);
+                                 atom);
 
   if (info == NULL)
     {
@@ -314,14 +314,13 @@ static gboolean
 output_get_hotplug_mode_update (MetaMonitorManagerXrandr *manager_xrandr,
                                 XID                       output_id)
 {
-  MetaDisplay *display = meta_get_display ();
+  Atom atom;
   XRRPropertyInfo *info;
   gboolean result = FALSE;
 
-  meta_error_trap_push (display);
+  atom = XInternAtom (manager_xrandr->xdisplay, "hotplug_mode_update", False);
   info = XRRQueryOutputProperty (manager_xrandr->xdisplay, output_id,
-                                 display->atom_hotplug_mode_update);
-  meta_error_trap_pop (display);
+                                 atom);
 
   if (info)
     {
@@ -350,9 +349,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
     XRRFreeScreenResources (manager_xrandr->resources);
   manager_xrandr->resources = NULL;
 
-  meta_error_trap_push (meta_get_display ());
   dpms_capable = DPMSCapable (manager_xrandr->xdisplay);
-  meta_error_trap_pop (meta_get_display ());
 
   if (dpms_capable &&
       DPMSInfo (manager_xrandr->xdisplay, &dpms_state, &dpms_enabled) &&
@@ -452,10 +449,8 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
       XRRFreeCrtcInfo (crtc);
     }
 
-  meta_error_trap_push (meta_get_display ());
   primary_output = XRRGetOutputPrimary (manager_xrandr->xdisplay,
 					DefaultRootWindow (manager_xrandr->xdisplay));
-  meta_error_trap_pop (meta_get_display ());
 
   n_actual_outputs = 0;
   for (i = 0; i < (unsigned)resources->noutput; i++)
@@ -637,10 +632,8 @@ meta_monitor_manager_xrandr_set_power_save_mode (MetaMonitorManager *manager,
     return;
   }
 
-  meta_error_trap_push (meta_get_display ());
   DPMSForceLevel (manager_xrandr->xdisplay, state);
   DPMSSetTimeouts (manager_xrandr->xdisplay, 0, 0, 0);
-  meta_error_trap_pop (meta_get_display ());
 }
 
 static Rotation
@@ -674,16 +667,15 @@ output_set_presentation_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
                                 MetaOutput               *output,
                                 gboolean                  presentation)
 {
-  MetaDisplay *display = meta_get_display ();
+  Atom atom;
   int value = presentation;
 
-  meta_error_trap_push (display);
+  atom = XInternAtom (manager_xrandr->xdisplay, "_MUTTER_PRESENTATION_OUTPUT", False);
   XRRChangeOutputProperty (manager_xrandr->xdisplay,
                            (XID)output->output_id,
-                           display->atom__MUTTER_PRESENTATION_OUTPUT,
+                           atom,
                            XA_CARDINAL, 32, PropModeReplace,
                            (unsigned char*) &value, 1);
-  meta_error_trap_pop (display);
 }
 
 static void
@@ -694,11 +686,10 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
 						 unsigned int         n_outputs)
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
-  MetaDisplay *display = meta_get_display ();
   unsigned i;
   int width, height, width_mm, height_mm;
 
-  meta_display_grab (display);
+  XGrabServer (manager_xrandr->xdisplay);
 
   /* First compute the new size of the screen (framebuffer) */
   width = 0; height = 0;
@@ -792,10 +783,8 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
    */
   width_mm = (width / DPI_FALLBACK) * 25.4 + 0.5;
   height_mm = (height / DPI_FALLBACK) * 25.4 + 0.5;
-  meta_error_trap_push (display);
   XRRSetScreenSize (manager_xrandr->xdisplay, DefaultRootWindow (manager_xrandr->xdisplay),
                     width, height, width_mm, height_mm);
-  meta_error_trap_pop (display);
 
   for (i = 0; i < n_crtcs; i++)
     {
@@ -852,7 +841,6 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
               goto next;
             }
 
-          meta_error_trap_push (display);
           ok = XRRSetCrtcConfig (manager_xrandr->xdisplay,
                                  manager_xrandr->resources,
                                  (XID)crtc->crtc_id,
@@ -861,7 +849,6 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
                                  (XID)mode->mode_id,
                                  wl_transform_to_xrandr (crtc_info->transform),
                                  outputs, n_outputs);
-          meta_error_trap_pop (display);
 
           if (ok != Success)
             {
@@ -902,11 +889,9 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
 
       if (output_info->is_primary)
         {
-          meta_error_trap_push (display);
           XRRSetOutputPrimary (manager_xrandr->xdisplay,
                                DefaultRootWindow (manager_xrandr->xdisplay),
                                (XID)output_info->output->output_id);
-          meta_error_trap_pop (display);
         }
 
       output_set_presentation_xrandr (manager_xrandr,
@@ -932,7 +917,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
       output->is_primary = FALSE;
     }
 
-  meta_display_ungrab (display);
+  XUngrabServer (manager_xrandr->xdisplay);
 }
 
 static void
@@ -941,18 +926,17 @@ meta_monitor_manager_xrandr_change_backlight (MetaMonitorManager *manager,
 					      gint                value)
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
-  MetaDisplay *display = meta_get_display ();
+  Atom atom;
   int hw_value;
 
   hw_value = round ((double)value / 100.0 * output->backlight_max + output->backlight_min);
 
-  meta_error_trap_push (display);
+  atom = XInternAtom (manager_xrandr->xdisplay, "Backlight", False);
   XRRChangeOutputProperty (manager_xrandr->xdisplay,
                            (XID)output->output_id,
-                           display->atom_Backlight,
+                           atom,
                            XA_INTEGER, 32, PropModeReplace,
                            (unsigned char *) &hw_value, 1);
-  meta_error_trap_pop (display);
 
   /* We're not selecting for property notifies, so update the value immediately */
   output->backlight = normalize_backlight (output, hw_value);
@@ -1079,9 +1063,9 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManager *manager,
 static void
 meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
 {
-  MetaDisplay *display = meta_get_display ();
+  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
 
-  manager_xrandr->xdisplay = display->xdisplay;
+  manager_xrandr->xdisplay = meta_backend_x11_get_xdisplay (backend);
 
   if (!XRRQueryExtension (manager_xrandr->xdisplay,
 			  &manager_xrandr->rr_event_base,
@@ -1130,4 +1114,3 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
   manager_class->set_crtc_gamma = meta_monitor_manager_xrandr_set_crtc_gamma;
   manager_class->handle_xevent = meta_monitor_manager_xrandr_handle_xevent;
 }
-

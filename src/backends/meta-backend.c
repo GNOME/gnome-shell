@@ -50,15 +50,6 @@ typedef struct _MetaBackendPrivate MetaBackendPrivate;
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (MetaBackend, meta_backend, G_TYPE_OBJECT);
 
 static void
-meta_backend_constructed (GObject *object)
-{
-  MetaBackend *backend = META_BACKEND (object);
-  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-
-  priv->monitor_manager = META_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend);
-}
-
-static void
 meta_backend_finalize (GObject *object)
 {
   MetaBackend *backend = META_BACKEND (object);
@@ -88,6 +79,7 @@ meta_backend_real_post_init (MetaBackend *backend)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   priv->cursor_renderer = meta_backend_create_cursor_renderer (backend);
+  priv->monitor_manager = META_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend);
 }
 
 static MetaCursorRenderer *
@@ -101,7 +93,6 @@ meta_backend_class_init (MetaBackendClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructed = meta_backend_constructed;
   object_class->finalize = meta_backend_finalize;
 
   klass->post_init = meta_backend_real_post_init;
