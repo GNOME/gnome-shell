@@ -68,11 +68,23 @@ handle_host_xevent (MetaBackend *backend,
 {
   MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  gboolean bypass_clutter = FALSE;
 
   if (xevent->type == (priv->xsync_event_base + XSyncAlarmNotify))
     handle_alarm_notify (backend, xevent);
 
-  clutter_x11_handle_event (xevent);
+  {
+    MetaMonitorManager *manager = meta_backend_get_monitor_manager (backend);
+    if (meta_monitor_manager_handle_xevent (manager, xevent))
+      {
+        bypass_clutter = TRUE;
+        goto out;
+      }
+  }
+
+ out:
+  if (!bypass_clutter)
+    clutter_x11_handle_event (xevent);
 }
 
 typedef struct {

@@ -1729,7 +1729,6 @@ meta_display_handle_xevent (MetaDisplay *display,
   Window modified;
   gboolean bypass_compositor = FALSE, bypass_gtk = FALSE;
   XIEvent *input_event;
-  MetaMonitorManager *monitor;
 
 #if 0
   meta_spew_event (display, event);
@@ -1742,17 +1741,6 @@ meta_display_handle_xevent (MetaDisplay *display,
       goto out;
     }
 #endif
-
-  /* Intercept XRandR events early and don't attempt any
-     processing for them. We still let them through to Gdk though,
-     so it can update its own internal state.
-  */
-  monitor = meta_monitor_manager_get ();
-  if (meta_monitor_manager_handle_xevent (monitor, event))
-    {
-      bypass_compositor = TRUE;
-      goto out;
-    }
 
   display->monitor_cache_invalidated = TRUE;
 
