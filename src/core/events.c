@@ -34,6 +34,7 @@
 #include "workspace-private.h"
 #include "backends/meta-backend.h"
 #include "backends/native/meta-idle-monitor-native.h"
+#include "backends/x11/meta-backend-x11.h"
 
 #include "x11/window-x11.h"
 #include "x11/xprops.h"
@@ -1995,8 +1996,16 @@ meta_display_handle_event (MetaDisplay        *display,
               meta_verbose ("Allowing events time %u\n",
                             (unsigned int)event->button.time);
 
-              XIAllowEvents (display->xdisplay, clutter_input_device_get_device_id (event->button.device),
-                             XIReplayDevice, event->button.time);
+              {
+                MetaBackend *backend = meta_get_backend ();
+                if (META_IS_BACKEND_X11 (backend))
+                  {
+                    Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
+                    XIAllowEvents (xdisplay, clutter_input_device_get_device_id (event->button.device),
+                                   XIReplayDevice, event->button.time);
+                  }
+              }
+
               bypass_clutter = TRUE;
             }
           else if (fully_modified && (int) event->button.button == meta_prefs_get_mouse_button_resize ())

@@ -51,6 +51,7 @@
 #include "meta-idle-monitor-dbus.h"
 #include "meta-cursor-tracker-private.h"
 #include "meta-backend.h"
+#include "backends/x11/meta-backend-x11.h"
 
 #ifdef HAVE_RANDR
 #include <X11/extensions/Xrandr.h>
@@ -2007,8 +2008,10 @@ meta_change_button_grab (MetaDisplay *display,
                          int          button,
                          int          modmask)
 {
-  unsigned int ignored_mask;
+  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+  Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
 
+  unsigned int ignored_mask;
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
   XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
 
@@ -2016,13 +2019,6 @@ meta_change_button_grab (MetaDisplay *display,
   XISetMask (mask.mask, XI_ButtonRelease);
   XISetMask (mask.mask, XI_Motion);
 
-  meta_verbose ("%s 0x%lx sync = %d button = %d modmask 0x%x\n",
-                grab ? "Grabbing" : "Ungrabbing",
-                xwindow,
-                sync, button, modmask);
-  
-  meta_error_trap_push (display);
-  
   ignored_mask = 0;
   while (ignored_mask <= display->ignored_modifier_mask)
     {
@@ -2039,45 +2035,34 @@ meta_change_button_grab (MetaDisplay *display,
 
       mods = (XIGrabModifiers) { modmask | ignored_mask, 0 };
 
-      if (meta_is_debugging ())
-        meta_error_trap_push (display);
-
       /* GrabModeSync means freeze until XAllowEvents */
       
       if (grab)
-        XIGrabButton (display->xdisplay,
+        XIGrabButton (xdisplay,
                       META_VIRTUAL_CORE_POINTER_ID,
                       button, xwindow, None,
                       sync ? XIGrabModeSync : XIGrabModeAsync,
                       XIGrabModeAsync, False,
                       &mask, 1, &mods);
       else
-        XIUngrabButton (display->xdisplay,
+        XIUngrabButton (xdisplay,
                         META_VIRTUAL_CORE_POINTER_ID,
                         button, xwindow, 1, &mods);
 
-      if (meta_is_debugging ())
-        {
-          int result;
-          
-          result = meta_error_trap_pop_with_return (display);
-          
-          if (result != Success)
-            meta_verbose ("Failed to %s button %d with mask 0x%x for window 0x%lx error code %d\n",
-                          grab ? "grab" : "ungrab",
-                          button, modmask | ignored_mask, xwindow, result);
-        }
-      
       ++ignored_mask;
     }
-
-  meta_error_trap_pop (display);
 }
 
 void
 meta_display_grab_window_buttons (MetaDisplay *display,
                                   Window       xwindow)
 {  
+  MetaBackend *backend = meta_get_backend ();
+
+  /* Do nothing under non-X11 backends */
+  if (!META_IS_BACKEND_X11 (backend))
+    return;
+
   /* Grab Alt + button1 for moving window.
    * Grab Alt + button2 for resizing window.
    * Grab Alt + button3 for popping up window menu.
@@ -2128,6 +2113,12 @@ void
 meta_display_ungrab_window_buttons  (MetaDisplay *display,
                                      Window       xwindow)
 {
+  MetaBackend *backend = meta_get_backend ();
+
+  /* Do nothing under non-X11 backends */
+  if (!META_IS_BACKEND_X11 (backend))
+    return;
+
   gboolean debug;
   int i;
 
