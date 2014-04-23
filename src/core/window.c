@@ -9194,6 +9194,13 @@ mouse_mode_focus (MetaWindow  *window,
 }
 
 static gboolean
+window_has_pointer (MetaWindow *window)
+{
+  ClutterActor *actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
+  return clutter_actor_has_pointer (actor);
+}
+
+static gboolean
 window_focus_on_pointer_rest_callback (gpointer data)
 {
   MetaFocusData *focus_data = data;
@@ -9203,7 +9210,6 @@ window_focus_on_pointer_rest_callback (gpointer data)
   MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
   int root_x, root_y;
   guint32 timestamp;
-  ClutterActor *child;
 
   if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_CLICK)
     goto out;
@@ -9218,17 +9224,7 @@ window_focus_on_pointer_rest_callback (gpointer data)
       return TRUE;
     }
 
-  child = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (clutter_stage_get_default ()),
-                                          CLUTTER_PICK_REACTIVE, root_x, root_y);
-  if (!META_IS_SURFACE_ACTOR (child))
-    goto out;
-
-  window =
-    meta_stack_get_default_focus_window_at_point (screen->stack,
-                                                  screen->active_workspace,
-                                                  NULL, root_x, root_y);
-
-  if (window == NULL)
+  if (!window_has_pointer (window))
     goto out;
 
   timestamp = meta_display_get_current_time_roundtrip (display);
