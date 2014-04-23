@@ -84,8 +84,6 @@ maybe_spoof_event_as_stage_event (MetaBackendX11 *x11,
   if (event->type == GenericEvent &&
       event->xcookie.extension == priv->xinput_opcode)
     {
-      XGetEventData (priv->xdisplay, &event->xcookie);
-
       XIEvent *input_event = (XIEvent *) event->xcookie.data;
       XIDeviceEvent *device_event = ((XIDeviceEvent *) input_event);
 
@@ -115,6 +113,8 @@ handle_host_xevent (MetaBackend *backend,
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
   gboolean bypass_clutter = FALSE;
 
+  XGetEventData (priv->xdisplay, &event->xcookie);
+
   if (event->type == (priv->xsync_event_base + XSyncAlarmNotify))
     handle_alarm_notify (backend, event);
 
@@ -133,6 +133,8 @@ handle_host_xevent (MetaBackend *backend,
  out:
   if (!bypass_clutter)
     clutter_x11_handle_event (event);
+
+  XFreeEventData (priv->xdisplay, &event->xcookie);
 }
 
 typedef struct {
