@@ -3281,3 +3281,10 @@ meta_display_clear_mouse_mode (MetaDisplay *display)
 {
   display->mouse_mode = FALSE;
 }
+
+Cursor
+meta_display_create_x_cursor (MetaDisplay *display,
+                              MetaCursor   cursor)
+{
+  return meta_cursor_create_x_cursor (display->xdisplay, cursor);
+}

@@ -119,18 +119,11 @@ translate_meta_cursor (MetaCursor cursor)
   g_assert_not_reached ();
 }
 
-static Cursor
-load_cursor_on_server (MetaDisplay *display,
-                       MetaCursor   cursor)
-{
-  return XcursorLibraryLoadCursor (display->xdisplay, translate_meta_cursor (cursor));
-}
-
 Cursor
-meta_display_create_x_cursor (MetaDisplay *display,
-                              MetaCursor cursor)
+meta_cursor_create_x_cursor (Display    *xdisplay,
+                             MetaCursor  cursor)
 {
-  return load_cursor_on_server (display, cursor);
+  return XcursorLibraryLoadCursor (xdisplay, translate_meta_cursor (cursor));
 }
 
 static XcursorImage *
