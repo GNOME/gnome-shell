@@ -1749,7 +1749,9 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
     XISetMask (mask.mask, XI_Leave);
     XISetMask (mask.mask, XI_Motion);
 
-    MetaCursor cursor = meta_cursor_for_grab_op (op);
+    MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (display->screen);
+    MetaCursorReference *cursor_ref = meta_cursor_tracker_get_displayed_cursor (tracker);
+    MetaCursor cursor = meta_cursor_reference_get_meta_cursor (cursor_ref);
 
     meta_error_trap_push (display);
     if (XIGrabDevice (display->xdisplay,

@@ -480,3 +480,9 @@ meta_cursor_tracker_set_pointer_visible (MetaCursorTracker *tracker,
                           tracker->screen->xroot);
     }
 }
+
+MetaCursorReference *
+meta_cursor_tracker_get_displayed_cursor (MetaCursorTracker *tracker)
+{
+  return tracker->displayed_cursor;
+}
