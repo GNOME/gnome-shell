@@ -28,7 +28,6 @@
 #include "display-private.h"
 #include "screen-private.h"
 #include "meta-backend.h"
-#include "meta-cursor-tracker-private.h"
 #include "backends/native/meta-cursor-renderer-native.h"
 
 #include <string.h>
@@ -135,8 +134,7 @@ meta_display_create_x_cursor (MetaDisplay *display,
 }
 
 static XcursorImage *
-load_cursor_on_client (MetaDisplay *display,
-                       MetaCursor   cursor)
+load_cursor_on_client (MetaCursor cursor)
 {
   return XcursorLibraryLoadImage (translate_meta_cursor (cursor),
                                   meta_prefs_get_cursor_theme (),
@@ -190,8 +188,7 @@ get_gbm_device (void)
 }
 
 static void
-meta_cursor_image_load_from_xcursor_image (MetaCursorTracker *tracker,
-                                           MetaCursorImage   *image,
+meta_cursor_image_load_from_xcursor_image (MetaCursorImage   *image,
                                            XcursorImage      *xc_image)
 {
   int width, height, rowstride;
@@ -234,19 +231,18 @@ meta_cursor_image_load_from_xcursor_image (MetaCursorTracker *tracker,
 }
 
 MetaCursorReference *
-meta_cursor_reference_from_theme (MetaCursorTracker  *tracker,
-                                  MetaCursor          cursor)
+meta_cursor_reference_from_theme (MetaCursor cursor)
 {
   MetaCursorReference *self;
   XcursorImage *image;
 
-  image = load_cursor_on_client (tracker->screen->display, cursor);
+  image = load_cursor_on_client (cursor);
   if (!image)
     return NULL;
 
   self = g_slice_new0 (MetaCursorReference);
   self->ref_count = 1;
-  meta_cursor_image_load_from_xcursor_image (tracker, &self->image, image);
+  meta_cursor_image_load_from_xcursor_image (&self->image, image);
 
   XcursorImageDestroy (image);
   return self;
@@ -338,8 +334,7 @@ meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
 }
 
 MetaCursorReference *
-meta_cursor_reference_from_buffer (MetaCursorTracker  *tracker,
-                                   struct wl_resource *buffer,
+meta_cursor_reference_from_buffer (struct wl_resource *buffer,
                                    int                 hot_x,
                                    int                 hot_y)
 {

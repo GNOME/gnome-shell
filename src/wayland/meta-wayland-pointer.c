@@ -748,8 +748,7 @@ meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
   if (pointer->cursor_surface && pointer->cursor_surface->buffer)
     {
       struct wl_resource *buffer = pointer->cursor_surface->buffer->resource;
-      cursor = meta_cursor_reference_from_buffer (pointer->cursor_tracker,
-                                                  buffer,
+      cursor = meta_cursor_reference_from_buffer (buffer,
                                                   pointer->hotspot_x,
                                                   pointer->hotspot_y);
     }

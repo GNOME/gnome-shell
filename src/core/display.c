@@ -1767,7 +1767,7 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
 
   meta_error_trap_pop (display);
 
-  cursor_ref = meta_cursor_reference_from_theme (tracker, cursor);
+  cursor_ref = meta_cursor_reference_from_theme (cursor);
   meta_cursor_tracker_set_grab_cursor (tracker, cursor_ref);
   meta_cursor_reference_unref (cursor_ref);
 }
@@ -1837,7 +1837,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
     grab_xwindow = screen->xroot;
 
   display->grab_have_pointer = FALSE;
-  
+
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
   
