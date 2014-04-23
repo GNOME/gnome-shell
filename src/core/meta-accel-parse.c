@@ -196,6 +196,7 @@ accelerator_parse (const gchar         *accelerator,
     }
 
   keyval = 0;
+  keycode = 0;
   mods = 0;
   len = strlen (accelerator);
   while (len)
