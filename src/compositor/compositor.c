@@ -716,29 +716,6 @@ meta_compositor_queue_frame_drawn (MetaCompositor *compositor,
   meta_window_actor_queue_frame_drawn (window_actor, no_delay_frame);
 }
 
-static gboolean
-is_grabbed_event (MetaDisplay *display,
-                  XEvent      *event)
-{
-  if (event->type == GenericEvent &&
-      event->xcookie.extension == display->xinput_opcode)
-    {
-      XIEvent *xev = (XIEvent *) event->xcookie.data;
-
-      switch (xev->evtype)
-        {
-        case XI_Motion:
-        case XI_ButtonPress:
-        case XI_ButtonRelease:
-        case XI_KeyPress:
-        case XI_KeyRelease:
-          return TRUE;
-        }
-    }
-
-  return FALSE;
-}
-
 void
 meta_compositor_window_shape_changed (MetaCompositor *compositor,
                                       MetaWindow     *window)
@@ -864,15 +841,6 @@ meta_compositor_process_event (MetaCompositor *compositor,
                                MetaWindow     *window)
 {
   MetaDisplay *display = compositor->display;
-
-  if (is_modal (display) && is_grabbed_event (display, event))
-    {
-      meta_plugin_manager_xevent_filter (compositor->plugin_mgr, event);
-
-      /* We always consume events even if the plugin says it didn't handle them;
-       * exclusive is exclusive */
-      return TRUE;
-    }
 
   if (!meta_is_wayland_compositor ())
     maybe_spoof_event_as_stage_event (compositor, window, event);
