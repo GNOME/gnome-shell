@@ -53,8 +53,6 @@ queue_redraw (MetaCursorRenderer *renderer)
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   ClutterActor *stage = compositor->stage;
 
-  g_assert (meta_is_wayland_compositor ());
-
   /* During early initialization, we can have no stage */
   if (!stage)
     return;
