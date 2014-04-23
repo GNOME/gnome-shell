@@ -25,7 +25,7 @@
 #include "meta-idle-monitor-xsync.h"
 #include "meta-idle-monitor-private.h"
 
-#include <clutter/x11/clutter-x11.h>
+#include "meta-backend-x11.h"
 
 #include <meta/util.h>
 #include "display-private.h"
@@ -193,8 +193,9 @@ static void
 meta_idle_monitor_xsync_constructed (GObject *object)
 {
   MetaIdleMonitorXSync *monitor_xsync = META_IDLE_MONITOR_XSYNC (object);
+  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
 
-  monitor_xsync->display = clutter_x11_get_default_display ();;
+  monitor_xsync->display = meta_backend_x11_get_xdisplay (backend);
   init_xsync (monitor_xsync);
 
   G_OBJECT_CLASS (meta_idle_monitor_xsync_parent_class)->constructed (object);
