@@ -1035,13 +1035,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   if (window->decorated)
     meta_window_ensure_frame (window);
 
-  meta_window_grab_keys (window);
-  if (window->type != META_WINDOW_DOCK && !window->override_redirect)
-    {
-      meta_display_grab_window_buttons (window->display, window->xwindow);
-      meta_display_grab_focus_window_button (window->display, window);
-    }
-
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK)
     {
@@ -1614,9 +1607,6 @@ meta_window_unmanage (MetaWindow  *window,
    */
   meta_stack_tracker_queue_sync_stack (window->screen->stack_tracker);
 
-  meta_window_ungrab_keys (window);
-  meta_display_ungrab_window_buttons (window->display, window->xwindow);
-  meta_display_ungrab_focus_window_button (window->display, window);
   if (window->display->autoraise_window == window)
     meta_display_remove_autoraise_callback (window->display);
 
