@@ -903,7 +903,10 @@ const ThumbnailsBox = new Lang.Class({
     },
 
     _workspacesChanged: function() {
-        let oldNumWorkspaces = this._thumbnails.length;
+        let validThumbnails = this._thumbnails.filter(function(t) {
+            return t.state <= ThumbnailState.NORMAL;
+        });
+        let oldNumWorkspaces = validThumbnails.length;
         let newNumWorkspaces = global.screen.n_workspaces;
         let active = global.screen.get_active_workspace_index();
 
