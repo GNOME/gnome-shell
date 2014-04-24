@@ -4,22 +4,22 @@
 #
 # Mohammad DAMT <mdamt@bisnisweb.com>, 2003-2005.
 # Ahmad Riza H Nst  <rizahnst@eriagempita.co.id>, 2006.
-# Dirgita <dirgitadevina@yahoo.co.id>, 2011, 2012.
+# Dirgita <dirgitadevina@yahoo.co.id>, 2011, 2012, 2014.
 # Andika Triwidada <andika@gmail.com>, 2011, 2012, 2013, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-20 22:58+0000\n"
-"PO-Revision-Date: 2014-03-21 17:41+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
-"Language-Team: Indonesian <gnome@i15n.org>\n"
-"Language: id\n"
+"POT-Creation-Date: 2014-04-22 20:56+0000\n"
+"PO-Revision-Date: 2014-04-22 21:23+0700\n"
+"Last-Translator: Dirgita <dirgitadevina@yahoo.co.id>\n"
+"Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
+"Language: Indonesian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/50-mutter-navigation.xml.in.h:1
@@ -43,98 +43,108 @@ msgid "Move window to workspace 4"
 msgstr "Pindahkan jendela ke area kerja 4"
 
 #: ../src/50-mutter-navigation.xml.in.h:6
+#| msgid "Move window to workspace 1"
+msgid "Move window to last workspace"
+msgstr "Pindahkan jendela ke area kerja terakhir"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
 msgid "Move window one workspace to the left"
 msgstr "Pindahkan jendela satu area kerja ke kiri"
 
-#: ../src/50-mutter-navigation.xml.in.h:7
+#: ../src/50-mutter-navigation.xml.in.h:8
 msgid "Move window one workspace to the right"
 msgstr "Pindahkan jendela satu area kerja ke kanan"
 
-#: ../src/50-mutter-navigation.xml.in.h:8
+#: ../src/50-mutter-navigation.xml.in.h:9
 msgid "Move window one workspace up"
 msgstr "Pindahkan jendela ke area kerja atas"
 
-#: ../src/50-mutter-navigation.xml.in.h:9
+#: ../src/50-mutter-navigation.xml.in.h:10
 msgid "Move window one workspace down"
 msgstr "Pindahkan jendela ke area kerja bawah"
 
-#: ../src/50-mutter-navigation.xml.in.h:10
+#: ../src/50-mutter-navigation.xml.in.h:11
 msgid "Move window one monitor to the left"
 msgstr "Pindahkan jendela satu monitor ke kiri"
 
-#: ../src/50-mutter-navigation.xml.in.h:11
+#: ../src/50-mutter-navigation.xml.in.h:12
 msgid "Move window one monitor to the right"
 msgstr "Pindahkan jendela satu monitor ke kanan"
 
-#: ../src/50-mutter-navigation.xml.in.h:12
+#: ../src/50-mutter-navigation.xml.in.h:13
 msgid "Move window one monitor up"
 msgstr "Pindahkan jendela satu monitor ke atas"
 
-#: ../src/50-mutter-navigation.xml.in.h:13
+#: ../src/50-mutter-navigation.xml.in.h:14
 msgid "Move window one monitor down"
 msgstr "Pindahkan jendela satu monitor ke bawah"
 
-#: ../src/50-mutter-navigation.xml.in.h:14
+#: ../src/50-mutter-navigation.xml.in.h:15
 msgid "Switch applications"
 msgstr "Berpindah aplikasi"
 
-#: ../src/50-mutter-navigation.xml.in.h:15
+#: ../src/50-mutter-navigation.xml.in.h:16
 msgid "Switch windows"
 msgstr "Berpindah jendela"
 
-#: ../src/50-mutter-navigation.xml.in.h:16
+#: ../src/50-mutter-navigation.xml.in.h:17
 msgid "Switch windows of an application"
 msgstr "Berpindah jendela aplikasi"
 
-#: ../src/50-mutter-navigation.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:18
 msgid "Switch system controls"
 msgstr "Berpindah kendali sistem"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
+#: ../src/50-mutter-navigation.xml.in.h:19
 msgid "Switch windows directly"
 msgstr "Berpindah jendela secara langsung"
 
-#: ../src/50-mutter-navigation.xml.in.h:19
+#: ../src/50-mutter-navigation.xml.in.h:20
 msgid "Switch windows of an app directly"
 msgstr "Berpindah jendela aplikasi secara langsung"
 
-#: ../src/50-mutter-navigation.xml.in.h:20
+#: ../src/50-mutter-navigation.xml.in.h:21
 msgid "Switch system controls directly"
 msgstr "Berpindah kendali sistem secara langsung"
 
-#: ../src/50-mutter-navigation.xml.in.h:21
+#: ../src/50-mutter-navigation.xml.in.h:22
 msgid "Hide all normal windows"
 msgstr "Menyembunyikan semua jendela normal"
 
-#: ../src/50-mutter-navigation.xml.in.h:22
+#: ../src/50-mutter-navigation.xml.in.h:23
 msgid "Switch to workspace 1"
 msgstr "Pindah ke area kerja 1"
 
-#: ../src/50-mutter-navigation.xml.in.h:23
+#: ../src/50-mutter-navigation.xml.in.h:24
 msgid "Switch to workspace 2"
 msgstr "Pindah ke area kerja 2"
 
-#: ../src/50-mutter-navigation.xml.in.h:24
+#: ../src/50-mutter-navigation.xml.in.h:25
 msgid "Switch to workspace 3"
 msgstr "Pindah ke area kerja 3"
 
-#: ../src/50-mutter-navigation.xml.in.h:25
+#: ../src/50-mutter-navigation.xml.in.h:26
 msgid "Switch to workspace 4"
 msgstr "Pindah ke area kerja 4"
 
-#: ../src/50-mutter-navigation.xml.in.h:26
+#: ../src/50-mutter-navigation.xml.in.h:27
+#| msgid "Switch to workspace 1"
+msgid "Switch to last workspace"
+msgstr "Pindah ke area kerja terakhir"
+
+#: ../src/50-mutter-navigation.xml.in.h:28
 msgid "Move to workspace left"
 msgstr "Pindah ke area kerja kiri"
 
-#: ../src/50-mutter-navigation.xml.in.h:27
+#: ../src/50-mutter-navigation.xml.in.h:29
 msgid "Move to workspace right"
 msgstr "Pindah ke area kerja kanan"
 
-#: ../src/50-mutter-navigation.xml.in.h:28
+#: ../src/50-mutter-navigation.xml.in.h:30
 msgid "Move to workspace above"
 msgstr "Pindah ke area kerja atas"
 
-#: ../src/50-mutter-navigation.xml.in.h:29
+#: ../src/50-mutter-navigation.xml.in.h:31
 msgid "Move to workspace below"
 msgstr "Pindah ke area kerja bawah"
 
@@ -226,9 +236,29 @@ msgstr "Tampilan dipisah ke kiri"
 msgid "View split on right"
 msgstr "Tampilan dipisah ke kanan"
 
+#: ../src/backends/meta-monitor-manager.c:412
+msgid "Built-in display"
+msgstr "Tampilan bawaan"
+
+#: ../src/backends/meta-monitor-manager.c:437
+msgid "Unknown"
+msgstr "Tak Dikenal"
+
+#: ../src/backends/meta-monitor-manager.c:439
+msgid "Unknown Display"
+msgstr "Tampilan Tak Dikenal"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: ../src/backends/meta-monitor-manager.c:447
+#, c-format
+msgid "%s %s"
+msgstr "%s %s"
+
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:534
+#: ../src/compositor/compositor.c:506
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -236,119 +266,85 @@ msgid ""
 msgstr ""
 "Manajer komposit lain telah berjalan pada layar %i pada tampilan \"%s\"."
 
-#: ../src/compositor/meta-background.c:1074
+#: ../src/compositor/meta-background.c:990
 msgid "background texture could not be created from file"
 msgstr "tekstur latar tak bisa dibuat dari berkas"
 
-#: ../src/core/bell.c:321
+#: ../src/core/bell.c:215
 msgid "Bell event"
 msgstr "Bel peristiwa"
 
-#: ../src/core/core.c:156
-#, c-format
-msgid "Unknown window information request: %d"
-msgstr "Permintaan informasi jendela tak dikenal: %d"
-
-#: ../src/core/delete.c:109
+#: ../src/core/delete.c:106
 #, c-format
 msgid "“%s” is not responding."
 msgstr "\"%s\" tak merespon."
 
-#: ../src/core/delete.c:111
+#: ../src/core/delete.c:108
 msgid "Application is not responding."
 msgstr "Aplikasi tak merespon."
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:113
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
 "Anda bisa memilih untuk menunggu sebentar atau memaksa aplikasi keluar."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:120
 msgid "_Wait"
 msgstr "_Tunggu"
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:120
 msgid "_Force Quit"
 msgstr "_Matikan Paksa"
 
-#: ../src/core/display.c:405
-#, c-format
-msgid "Missing %s extension required for compositing"
-msgstr "Kehilangan ekstensi %s yang diperlukan untuk pengkomposisian"
-
-#: ../src/core/display.c:497
+#: ../src/core/display.c:448
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Gagal membuka tampilan X Window System '%s'\n"
 
-#: ../src/core/keybindings.c:1105
-#, c-format
-msgid ""
-"Some other program is already using the key %s with modifiers %x as a "
-"binding\n"
-msgstr "Ada program lain yang menggunakan tombol %s dengan kombinasi %x\n"
-
-#: ../src/core/keybindings.c:1308
-#, c-format
-msgid "\"%s\" is not a valid accelerator\n"
-msgstr "\"%s\" bukan akselerator yang valid\n"
-
-#: ../src/core/main.c:195
+#: ../src/core/main.c:190
 msgid "Disable connection to session manager"
 msgstr "Menonaktifkan koneksi ke manajer sesi"
 
-#: ../src/core/main.c:201
+#: ../src/core/main.c:196
 msgid "Replace the running window manager"
 msgstr "Mengganti manajer jendela yang tengah berjalan"
 
-#: ../src/core/main.c:207
+#: ../src/core/main.c:202
 msgid "Specify session management ID"
 msgstr "Tentukan kode pengaturan sesi"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:207
 msgid "X Display to use"
 msgstr "Tampilan X yang digunakna"
 
-#: ../src/core/main.c:218
+#: ../src/core/main.c:213
 msgid "Initialize session from savefile"
 msgstr "Aktifkan sesi dari berkas simpanan"
 
-#: ../src/core/main.c:224
+#: ../src/core/main.c:219
 msgid "Make X calls synchronous"
 msgstr "Buat panggilan X selaras"
 
-#: ../src/core/main.c:544
+#: ../src/core/main.c:225
+msgid "Run as a wayland compositor"
+msgstr "Jalankan sebagai kompositor wayland"
+
+#: ../src/core/main.c:231
+msgid "Run as a full display server, rather than nested"
+msgstr "Jalankan sebagai server tampilan penuh, ketimbang tampilan bersarang"
+
+#: ../src/core/main.c:476
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Gagal memeriksa direktori tema: %s\n"
 
-#: ../src/core/main.c:560
+#: ../src/core/main.c:492
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Tak menemukan tema! Pastikan %s ada dan berisi tema yang biasa.\n"
-
-#: ../src/core/monitor.c:699
-msgid "Built-in display"
-msgstr "Tampilan bawaan"
-
-#: ../src/core/monitor.c:724
-msgid "Unknown"
-msgstr "Tidak Dikenal"
-
-#: ../src/core/monitor.c:726
-msgid "Unknown Display"
-msgstr "Tampilan Tidak Dikenal"
-
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: ../src/core/monitor.c:734
-#, c-format
-msgid "%s %s"
-msgstr "%s %s"
 
 #: ../src/core/mutter.c:39
 #, c-format
@@ -374,48 +370,17 @@ msgstr "Cetak versi"
 msgid "Mutter plugin to use"
 msgstr "Pengaya Mutter yang dipakai"
 
-#: ../src/core/prefs.c:1190
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-"Pencegahan kesalahan bagi aplikasi yang rusak sedang dinonaktifkan. Mungkin "
-"nanti ada beberapa aplikasi yang akan bertingkah aneh.\n"
-
-#: ../src/core/prefs.c:1265
-#, c-format
-msgid "Could not parse font description \"%s\" from GSettings key %s\n"
-msgstr "Tak dapat mengurai deskripsi fonta \"%s\" dari kunci GSettings %s\n"
-
-#: ../src/core/prefs.c:1331
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr ""
-"\"%s\" yang ada pada database konfigurasi bukanlah nilai yang benar untuk "
-"tombol mouse.\n"
-
-#: ../src/core/prefs.c:1894
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr ""
-"\"%s\" yang ada pada database konfigurasi bernilai tidak benar untuk "
-"kombinasi tombol \"%s\"\n"
-
-#: ../src/core/prefs.c:1984
+#: ../src/core/prefs.c:1988
 #, c-format
 msgid "Workspace %d"
 msgstr "Area kerja %d"
 
-#: ../src/core/screen.c:539
+#: ../src/core/screen.c:543
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Layar %d pada tampilan '%s' tidak benar\n"
 
-#: ../src/core/screen.c:555
+#: ../src/core/screen.c:559
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -424,191 +389,22 @@ msgstr ""
 "Layar %d pada tampilan \"%s\" sudah memiliki pengatur jendela. Cobalah "
 "gunakan pilihan --replace untuk mengganti pengatur jendela yang aktif.\n"
 
-#: ../src/core/screen.c:582
-#, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"Tidak dapat mendapatkan pilihan pengatur jendela pada layar %d tampilan \"%s"
-"\"\n"
-
-#: ../src/core/screen.c:660
+#: ../src/core/screen.c:664
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Layar %d pada tampilan \"%s\" sudah ada pengatur jendelanya\n"
 
-#: ../src/core/screen.c:848
-#, c-format
-msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Layar %d pada tampilan \"%s\" tidak dapat dilepas\n"
-
-#: ../src/core/session.c:842 ../src/core/session.c:849
-#, c-format
-msgid "Could not create directory '%s': %s\n"
-msgstr "Tidak dapat membuat direktori '%s': %s\n"
-
-#: ../src/core/session.c:859
-#, c-format
-msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Tidak dapat menulis ke dalam berkas sesi '%s': %s\n"
-
-#: ../src/core/session.c:1000
-#, c-format
-msgid "Error writing session file '%s': %s\n"
-msgstr "Ada error saat menulisi berkas sesi '%s': %s\n"
-
-#: ../src/core/session.c:1005
-#, c-format
-msgid "Error closing session file '%s': %s\n"
-msgstr "Ada error saat menutup berkas sesi '%s': %s\n"
-
-#: ../src/core/session.c:1135
-#, c-format
-msgid "Failed to parse saved session file: %s\n"
-msgstr "Gagal membaca berkas sesi simpanan: %s\n"
-
-#: ../src/core/session.c:1184
-#, c-format
-msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr "Atribut <mutter_session> terlihat tapi kode sesi sudah ada sebelumnya"
-
-#: ../src/core/session.c:1197 ../src/core/session.c:1272
-#: ../src/core/session.c:1304 ../src/core/session.c:1376
-#: ../src/core/session.c:1436
-#, c-format
-msgid "Unknown attribute %s on <%s> element"
-msgstr "Atribut %s tidak dikenal pada elemen <%s>"
-
-#: ../src/core/session.c:1214
-#, c-format
-msgid "nested <window> tag"
-msgstr "Ada tag <window> bersarang"
-
-#: ../src/core/session.c:1456
-#, c-format
-msgid "Unknown element %s"
-msgstr "Elemen %s tidak dikenal"
-
-#: ../src/core/session.c:1808
-msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
-msgstr ""
-"Jendela ini tidak bisa &quot;menyimpan setelan aktif saat ini&quot; dan bila "
-"log masuk kali lain Anda harus menjalankannya ulang."
-
-#: ../src/core/util.c:82
-#, c-format
-msgid "Failed to open debug log: %s\n"
-msgstr "Gagal membuka log debug: %s\n"
-
-#: ../src/core/util.c:92
-#, c-format
-msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Gagal melakukan fdopen pada berkas log %s: %s\n"
-
-#: ../src/core/util.c:98
-#, c-format
-msgid "Opened log file %s\n"
-msgstr "Berkas log yang dibuka %s\n"
-
-#: ../src/core/util.c:117
+#: ../src/core/util.c:118
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Muter dikompilasi tanpa dukungan mode riuh\n"
 
-#: ../src/core/util.c:262
-msgid "Window manager: "
-msgstr "Pengatur jendela: "
-
-#: ../src/core/util.c:412
-msgid "Bug in window manager: "
-msgstr "Bug pada pengatur jendela: "
-
-#: ../src/core/util.c:443
-msgid "Window manager warning: "
-msgstr "Peringatan pengatur jendela: "
-
-#: ../src/core/util.c:471
-msgid "Window manager error: "
-msgstr "Eror pengatur jendela: "
-
-#. first time through
-#: ../src/core/window.c:7562
-#, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
-"Jendela %s menyetel SM_CLIENT_ID pada dirinya sendiri, padahal seharusnya "
-"disetel pada jendela WM_CLIENT_LEADER sesuai aturan ICCCM.\n"
-
-#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
-#. * authoritative source for that info. Some apps such as mplayer or
-#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
-#. * leads to e.g. us not fullscreening their windows.  Apps that set
-#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
-#. * about these apps but make them work.
-#.
-#: ../src/core/window.c:8487
-#, c-format
-msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
-"%d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-"Jendela %s menyetel hint MWM yang menandakan bahwa ia tidak dapat dirubah "
-"ukurannya, sedangkan ukuran minimalnya adalah %d x %d dan maksimal %d x %d "
-"yang tidak masuk di akal.\n"
-
-#: ../src/core/window-props.c:349
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "Aplikasi telah membuat _NET_WM_PID %lu bohongan\n"
-
-#: ../src/core/window-props.c:465
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s (pada %s)"
-
-#: ../src/core/window-props.c:1548
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr "WM_TRANSIENT_FOR salah jendela 0x%lx ditentukan untuk %s.\n"
-
-#: ../src/core/window-props.c:1559
-#, c-format
-msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
-msgstr "Jendela WM_TRANSIENT_FOR 0x%lx untuk %s akan membuat loop.\n"
-
-#: ../src/core/xprops.c:153
-#, c-format
-msgid ""
-"Window 0x%lx has property %s\n"
-"that was expected to have type %s format %d\n"
-"and actually has type %s format %d n_items %d.\n"
-"This is most likely an application bug, not a window manager bug.\n"
-"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
-msgstr ""
-"Jendela 0x%lx memiliki properti %s\n"
-"yang seharusnya memiliki tipe %s format %d.\n"
-"Sekarang dia memiliki tipe %s format %d n_items %d.\n"
-"Sepertinya ini adalah bug aplikasinya, bukan bug pengatur jendela.\n"
-"Judul jendelanya adalah \"%s\" class=\"%s\" dan bernama=\"%s\"\n"
-
-#: ../src/core/xprops.c:409
-#, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "Properti %s pada jendela 0x%lx berisi karakter UTF-8 yang salah\n"
-
-#: ../src/core/xprops.c:492
-#, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"Properti %s pada jendela 0x%lx di obyek %d berisi karakter UTF-8 yang salah\n"
-
-#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
+#: ../src/mutter.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
+
+#: ../src/mutter-wayland.desktop.in.h:1
+msgid "Mutter (wayland compositor)"
+msgstr "Mutter (kompositor wayland)"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Modifier to use for extended window management operations"
@@ -737,6 +533,34 @@ msgstr "Pilih jendela dari popup tab"
 #: ../src/org.gnome.mutter.gschema.xml.in.h:20
 msgid "Cancel tab popup"
 msgstr "Batalkan popup tab"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:1
+msgid "Switch to VT 1"
+msgstr "Pindah ke VT 1"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:2
+msgid "Switch to VT 2"
+msgstr "Pindah ke VT 2"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:3
+msgid "Switch to VT 3"
+msgstr "Pindah ke VT 3"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:4
+msgid "Switch to VT 4"
+msgstr "Pindah ke VT 4"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:5
+msgid "Switch to VT 5"
+msgstr "Pindah ke VT 5"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:6
+msgid "Switch to VT 6"
+msgstr "Pindah ke VT 6"
+
+#: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:7
+msgid "Switch to VT 7"
+msgstr "Pindah ke VT 7"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:65
@@ -1045,7 +869,7 @@ msgstr ""
 #: ../src/ui/theme.c:1354
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Tidak dapat membaca nilai alpha \"%s\" pada pencampuran warna"
+msgstr "Tak dapat membaca nilai alpha \"%s\" pada pencampuran warna"
 
 #: ../src/ui/theme.c:1364
 #, c-format
@@ -1065,7 +889,7 @@ msgstr ""
 #: ../src/ui/theme.c:1422
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Tidak dapat membaca faktor bayangan \"%s\" pada warna berbayang"
+msgstr "Tak dapat membaca faktor bayangan \"%s\" pada warna berbayang"
 
 #: ../src/ui/theme.c:1432
 #, c-format
@@ -1075,7 +899,7 @@ msgstr "Faktor bayangan \"%s\" pada warna berbayang bernilai negatif"
 #: ../src/ui/theme.c:1461
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr "Tidak dapat membaca warna \"%s\""
+msgstr "Tak dapat membaca warna \"%s\""
 
 #: ../src/ui/theme.c:1778
 #, c-format
@@ -1202,7 +1026,7 @@ msgstr "Gagal membuka tema \"%s\": %s\n"
 #: ../src/ui/theme.c:5237 ../src/ui/theme.c:5244
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "Tidak ada <%s> yang ditentukan untuk tema \"%s\""
+msgstr "Tak ada <%s> yang ditentukan untuk tema \"%s\""
 
 #: ../src/ui/theme.c:5252
 #, c-format
@@ -1210,7 +1034,7 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Tidak ada gaya frame untuk tipe window \"%s\" pada tema \"%s\". Tambah dulu "
+"Tak ada gaya frame untuk tipe window \"%s\" pada tema \"%s\". Tambah dulu "
 "elemen <window type=\"%s\" style_set=\"whatever\"/>"
 
 #: ../src/ui/theme.c:5659 ../src/ui/theme.c:5721 ../src/ui/theme.c:5784
@@ -1231,7 +1055,7 @@ msgstr "Konstanta \"%s\" telah didefinisikan sebelumnya"
 #: ../src/ui/theme-parser.c:234
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "Tidak ada atribut \"%s\" pada elemen <%s>"
+msgstr "Tak ada atribut \"%s\" pada elemen <%s>"
 
 #: ../src/ui/theme-parser.c:263 ../src/ui/theme-parser.c:281
 #, c-format
@@ -1251,12 +1075,12 @@ msgstr "Atribut \"%s\" tidak diperkenankan pada elemen <%s> pada konteks ini"
 #: ../src/ui/theme-parser.c:596
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "Tidak dapat menguraikan \"%s\" sebagai integer"
+msgstr "Tak dapat menguraikan \"%s\" sebagai integer"
 
 #: ../src/ui/theme-parser.c:605 ../src/ui/theme-parser.c:660
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Tidak mengerti karakter \"%s\" kenapa ada dibuntut string \"%s\""
+msgstr "Tak mengerti karakter \"%s\" kenapa ada dibuntut string \"%s\""
 
 #: ../src/ui/theme-parser.c:615
 #, c-format
@@ -1271,7 +1095,7 @@ msgstr "Integer %ld terlalu besar, maksimal %d"
 #: ../src/ui/theme-parser.c:651 ../src/ui/theme-parser.c:767
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr "Tidak dapat membaca \"%s\" sebagai angka floating point"
+msgstr "Tak dapat membaca \"%s\" sebagai angka floating point"
 
 #: ../src/ui/theme-parser.c:682 ../src/ui/theme-parser.c:710
 #, c-format
@@ -1356,8 +1180,8 @@ msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
 msgstr ""
-"Tidak dapat menyatakan \"button_width\"/\"button_height\" dan \"aspect_ratio"
-"\" sekaligus untuk tombol"
+"Tak dapat menyatakan \"button_width\"/\"button_height\" dan \"aspect_ratio\" "
+"sekaligus untuk tombol"
 
 #: ../src/ui/theme-parser.c:1452
 #, c-format
@@ -1377,12 +1201,12 @@ msgstr "Batas \"%s\" tidak dikenal"
 #: ../src/ui/theme-parser.c:1870
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "Tidak ada atribut \"start_angle\" atau \"from\" pada elemen <%s>"
+msgstr "Tak ada atribut \"start_angle\" atau \"from\" pada elemen <%s>"
 
 #: ../src/ui/theme-parser.c:1877
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "Tidak ada atribut \"extent_angle\" atau \"to\" pada elemen <%s>"
+msgstr "Tak ada atribut \"extent_angle\" atau \"to\" pada elemen <%s>"
 
 #: ../src/ui/theme-parser.c:2117
 #, c-format
@@ -1413,7 +1237,7 @@ msgstr "Panah \"%s\" tidak dikenal untuk elemen <%s>"
 #: ../src/ui/theme-parser.c:2696 ../src/ui/theme-parser.c:2792
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "Tidak ada <draw_ops> bernama \"%s\" yang telah didefinisikan"
+msgstr "Tak ada <draw_ops> bernama \"%s\" yang telah didefinisikan"
 
 #: ../src/ui/theme-parser.c:2708 ../src/ui/theme-parser.c:2804
 #, c-format
@@ -1434,7 +1258,7 @@ msgstr "Gaya frame sudah memiliki bagian pada posisi %s"
 #: ../src/ui/theme-parser.c:2944 ../src/ui/theme-parser.c:3021
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "Tidak ada <draw_ops> dengan nama \"%s\" yang didefinisikan"
+msgstr "Tak ada <draw_ops> dengan nama \"%s\" yang didefinisikan"
 
 #: ../src/ui/theme-parser.c:2974
 #, c-format
@@ -1511,7 +1335,7 @@ msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Tidak boleh ada dua draw_ops untuk elemen <piece> (tema menyebutkan atribut "
+"Tak boleh ada dua draw_ops untuk elemen <piece> (tema menyebutkan atribut "
 "draw_ops dan juga elemen <draw_ops> atau meyebutkan dua elemen tersebut "
 
 #: ../src/ui/theme-parser.c:3331
@@ -1519,7 +1343,7 @@ msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Tidak boleh ada dua draw_ops untuk elemen <button> (tema menyebutkan atribut "
+"Tak boleh ada dua draw_ops untuk elemen <button> (tema menyebutkan atribut "
 "draw_ops dan juga elemen <draw_ops> atau meyebutkan dua elemen tersebut "
 
 #: ../src/ui/theme-parser.c:3369
@@ -1527,7 +1351,7 @@ msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Tidak boleh ada dua draw_ops untuk elemen <menu_icon> (tema menyebutkan "
+"Tak boleh ada dua draw_ops untuk elemen <menu_icon> (tema menyebutkan "
 "atribut draw_ops dan juga elemen <draw_ops> atau meyebutkan dua elemen "
 "tersebut "
 
@@ -1586,16 +1410,16 @@ msgstr "Elemen <%s> tidak boleh ada di dalam elemen <%s>"
 
 #: ../src/ui/theme-parser.c:3898
 msgid "No draw_ops provided for frame piece"
-msgstr "Tidak ada draw_ops yang disediakan untuk bagian frame"
+msgstr "Tak ada draw_ops yang disediakan untuk bagian frame"
 
 #: ../src/ui/theme-parser.c:3913
 msgid "No draw_ops provided for button"
-msgstr "Tidak ada draw_ops yang disediakan untuk tombol"
+msgstr "Tak ada draw_ops yang disediakan untuk tombol"
 
 #: ../src/ui/theme-parser.c:3967
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr "Tidak boleh ada teks di dalam elemen <%s>"
+msgstr "Tak boleh ada teks di dalam elemen <%s>"
 
 #: ../src/ui/theme-parser.c:4025 ../src/ui/theme-parser.c:4037
 #: ../src/ui/theme-parser.c:4049 ../src/ui/theme-parser.c:4061
@@ -1608,3 +1432,159 @@ msgstr "<%s> disebutkan dua kali pada tema ini"
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Gagal menemukan berkas yang sah untuk tema %s\n"
+
+#: ../src/x11/session.c:1815
+msgid ""
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
+msgstr ""
+"Jendela ini tidak bisa &quot;menyimpan setelan aktif saat ini&quot; dan bila "
+"log masuk kali lain Anda harus menjalankannya ulang."
+
+#: ../src/x11/window-props.c:465
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (pada %s)"
+
+#~ msgid "Unknown window information request: %d"
+#~ msgstr "Permintaan informasi jendela tak dikenal: %d"
+
+#~ msgid "Missing %s extension required for compositing"
+#~ msgstr "Kehilangan ekstensi %s yang diperlukan untuk pengkomposisian"
+
+#~ msgid ""
+#~ "Some other program is already using the key %s with modifiers %x as a "
+#~ "binding\n"
+#~ msgstr "Ada program lain yang menggunakan tombol %s dengan kombinasi %x\n"
+
+#~ msgid "\"%s\" is not a valid accelerator\n"
+#~ msgstr "\"%s\" bukan akselerator yang valid\n"
+
+#~ msgid ""
+#~ "Workarounds for broken applications disabled. Some applications may not "
+#~ "behave properly.\n"
+#~ msgstr ""
+#~ "Pencegahan kesalahan bagi aplikasi yang rusak sedang dinonaktifkan. "
+#~ "Mungkin nanti ada beberapa aplikasi yang akan bertingkah aneh.\n"
+
+#~ msgid "Could not parse font description \"%s\" from GSettings key %s\n"
+#~ msgstr "Tak dapat mengurai deskripsi fonta \"%s\" dari kunci GSettings %s\n"
+
+#~ msgid ""
+#~ "\"%s\" found in configuration database is not a valid value for mouse "
+#~ "button modifier\n"
+#~ msgstr ""
+#~ "\"%s\" yang ada pada database konfigurasi bukanlah nilai yang benar untuk "
+#~ "tombol mouse.\n"
+
+#~ msgid ""
+#~ "\"%s\" found in configuration database is not a valid value for "
+#~ "keybinding \"%s\"\n"
+#~ msgstr ""
+#~ "\"%s\" yang ada pada database konfigurasi bernilai tidak benar untuk "
+#~ "kombinasi tombol \"%s\"\n"
+
+#~ msgid ""
+#~ "Could not acquire window manager selection on screen %d display \"%s\"\n"
+#~ msgstr ""
+#~ "Tak dapat mendapatkan pilihan pengatur jendela pada layar %d tampilan \"%s"
+#~ "\"\n"
+
+#~ msgid "Could not release screen %d on display \"%s\"\n"
+#~ msgstr "Layar %d pada tampilan \"%s\" tidak dapat dilepas\n"
+
+#~ msgid "Could not create directory '%s': %s\n"
+#~ msgstr "Tak dapat membuat direktori '%s': %s\n"
+
+#~ msgid "Could not open session file '%s' for writing: %s\n"
+#~ msgstr "Tak dapat menulis ke dalam berkas sesi '%s': %s\n"
+
+#~ msgid "Error writing session file '%s': %s\n"
+#~ msgstr "Ada error saat menulisi berkas sesi '%s': %s\n"
+
+#~ msgid "Error closing session file '%s': %s\n"
+#~ msgstr "Ada error saat menutup berkas sesi '%s': %s\n"
+
+#~ msgid "Failed to parse saved session file: %s\n"
+#~ msgstr "Gagal membaca berkas sesi simpanan: %s\n"
+
+#~ msgid "<mutter_session> attribute seen but we already have the session ID"
+#~ msgstr ""
+#~ "Atribut <mutter_session> terlihat tapi kode sesi sudah ada sebelumnya"
+
+#~ msgid "Unknown attribute %s on <%s> element"
+#~ msgstr "Atribut %s tidak dikenal pada elemen <%s>"
+
+#~ msgid "nested <window> tag"
+#~ msgstr "Ada tag <window> bersarang"
+
+#~ msgid "Unknown element %s"
+#~ msgstr "Elemen %s tidak dikenal"
+
+#~ msgid "Failed to open debug log: %s\n"
+#~ msgstr "Gagal membuka log debug: %s\n"
+
+#~ msgid "Failed to fdopen() log file %s: %s\n"
+#~ msgstr "Gagal melakukan fdopen pada berkas log %s: %s\n"
+
+#~ msgid "Opened log file %s\n"
+#~ msgstr "Berkas log yang dibuka %s\n"
+
+#~ msgid "Window manager: "
+#~ msgstr "Pengatur jendela: "
+
+#~ msgid "Bug in window manager: "
+#~ msgstr "Bug pada pengatur jendela: "
+
+#~ msgid "Window manager warning: "
+#~ msgstr "Peringatan pengatur jendela: "
+
+#~ msgid "Window manager error: "
+#~ msgstr "Eror pengatur jendela: "
+
+#~ msgid ""
+#~ "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+#~ "window as specified in the ICCCM.\n"
+#~ msgstr ""
+#~ "Jendela %s menyetel SM_CLIENT_ID pada dirinya sendiri, padahal seharusnya "
+#~ "disetel pada jendela WM_CLIENT_LEADER sesuai aturan ICCCM.\n"
+
+#~ msgid ""
+#~ "Window %s sets an MWM hint indicating it isn't resizable, but sets min "
+#~ "size %d x %d and max size %d x %d; this doesn't make much sense.\n"
+#~ msgstr ""
+#~ "Jendela %s menyetel hint MWM yang menandakan bahwa ia tidak dapat dirubah "
+#~ "ukurannya, sedangkan ukuran minimalnya adalah %d x %d dan maksimal %d x "
+#~ "%d yang tidak masuk di akal.\n"
+
+#~ msgid "Application set a bogus _NET_WM_PID %lu\n"
+#~ msgstr "Aplikasi telah membuat _NET_WM_PID %lu bohongan\n"
+
+#~ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+#~ msgstr "WM_TRANSIENT_FOR salah jendela 0x%lx ditentukan untuk %s.\n"
+
+#~ msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
+#~ msgstr "Jendela WM_TRANSIENT_FOR 0x%lx untuk %s akan membuat loop.\n"
+
+#~ msgid ""
+#~ "Window 0x%lx has property %s\n"
+#~ "that was expected to have type %s format %d\n"
+#~ "and actually has type %s format %d n_items %d.\n"
+#~ "This is most likely an application bug, not a window manager bug.\n"
+#~ "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+#~ msgstr ""
+#~ "Jendela 0x%lx memiliki properti %s\n"
+#~ "yang seharusnya memiliki tipe %s format %d.\n"
+#~ "Sekarang dia memiliki tipe %s format %d n_items %d.\n"
+#~ "Sepertinya ini adalah bug aplikasinya, bukan bug pengatur jendela.\n"
+#~ "Judul jendelanya adalah \"%s\" class=\"%s\" dan bernama=\"%s\"\n"
+
+#~ msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+#~ msgstr "Properti %s pada jendela 0x%lx berisi karakter UTF-8 yang salah\n"
+
+#~ msgid ""
+#~ "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the "
+#~ "list\n"
+#~ msgstr ""
+#~ "Properti %s pada jendela 0x%lx di obyek %d berisi karakter UTF-8 yang "
+#~ "salah\n"
