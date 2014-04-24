@@ -464,8 +464,6 @@ const WindowManager = new Lang.Class({
 
         this._dimmedWindows = [];
 
-        this._animationBlockCount = 0;
-
         this._allowedKeybindings = {};
 
         this._switchData = null;
@@ -708,16 +706,8 @@ const WindowManager = new Lang.Class({
         this._allowedKeybindings[name] = modes;
     },
 
-    blockAnimations: function() {
-        this._animationBlockCount++;
-    },
-
-    unblockAnimations: function() {
-        this._animationBlockCount = Math.max(0, this._animationBlockCount - 1);
-    },
-
     _shouldAnimate: function() {
-        return !(Main.overview.visible || this._animationBlockCount > 0);
+        return !Main.overview.visible;
     },
 
     _shouldAnimateActor: function(actor) {
