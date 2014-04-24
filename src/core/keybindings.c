@@ -1355,28 +1355,6 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
   return TRUE;
 }
 
-#ifdef WITH_VERBOSE_MODE
-static const char*
-grab_status_to_string (int status)
-{
-  switch (status)
-    {
-    case AlreadyGrabbed:
-      return "AlreadyGrabbed";
-    case GrabSuccess:
-      return "GrabSuccess";
-    case GrabNotViewable:
-      return "GrabNotViewable";
-    case GrabFrozen:
-      return "GrabFrozen";
-    case GrabInvalidTime:
-      return "GrabInvalidTime";
-    default:
-      return "(unknown)";
-    }
-}
-#endif /* WITH_VERBOSE_MODE */
-
 static gboolean
 grab_keyboard (MetaDisplay *display,
                Window       xwindow,
@@ -1416,18 +1394,7 @@ grab_keyboard (MetaDisplay *display,
                               False, /* owner_events */
                               &mask);
 
-  if (grab_status != Success)
-    {
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "XIGrabDevice() returned failure status %s time %u\n",
-                  grab_status_to_string (grab_status),
-                  timestamp);
-      return FALSE;
-    }
-
-  meta_topic (META_DEBUG_KEYBINDINGS, "Grabbed all keys\n");
-
-  return TRUE;
+  return (grab_status == Success);
 }
 
 static void
