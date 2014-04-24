@@ -1190,8 +1190,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
       return meta_frame_double_click_event (frame, event);
     }
 
-  if (meta_core_get_grab_op (display) !=
-      META_GRAB_OP_NONE)
+  if (meta_core_get_grab_op (display) != META_GRAB_OP_NONE)
     return FALSE; /* already up to something */  
 
   if (event->button == 1 &&
@@ -1207,70 +1206,21 @@ meta_frames_button_press_event (GtkWidget      *widget,
        control == META_FRAME_CONTROL_UNSTICK ||
        control == META_FRAME_CONTROL_MENU))
     {
-      MetaGrabOp op = META_GRAB_OP_NONE;
+      frames->grab_xwindow = frame->xwindow;
 
-      switch (control)
-        {
-        case META_FRAME_CONTROL_MINIMIZE:
-          op = META_GRAB_OP_CLICKING_MINIMIZE;
-          break;
-        case META_FRAME_CONTROL_MAXIMIZE:
-          op = META_GRAB_OP_CLICKING_MAXIMIZE;
-          break;
-        case META_FRAME_CONTROL_UNMAXIMIZE:
-          op = META_GRAB_OP_CLICKING_UNMAXIMIZE;
-          break;
-        case META_FRAME_CONTROL_DELETE:
-          op = META_GRAB_OP_CLICKING_DELETE;
-          break;
-        case META_FRAME_CONTROL_MENU:
-          op = META_GRAB_OP_CLICKING_MENU;
-          break;
-        case META_FRAME_CONTROL_SHADE:
-          op = META_GRAB_OP_CLICKING_SHADE;
-          break;
-        case META_FRAME_CONTROL_UNSHADE:
-          op = META_GRAB_OP_CLICKING_UNSHADE;
-          break;
-        case META_FRAME_CONTROL_ABOVE:
-          op = META_GRAB_OP_CLICKING_ABOVE;
-          break;
-        case META_FRAME_CONTROL_UNABOVE:
-          op = META_GRAB_OP_CLICKING_UNABOVE;
-          break;
-        case META_FRAME_CONTROL_STICK:
-          op = META_GRAB_OP_CLICKING_STICK;
-          break;
-        case META_FRAME_CONTROL_UNSTICK:
-          op = META_GRAB_OP_CLICKING_UNSTICK;
-          break;
-        default:
-          g_assert_not_reached ();
-          break;
-        }
-
-      meta_core_begin_grab_op (display,
-                               frame->xwindow,
-                               op,
-                               TRUE,
-                               TRUE,
-                               event->button,
-                               0,
-                               event->time,
-                               event->x_root,
-                               event->y_root);      
-      
+      frame->grab_button = event->button;
+      frame->button_state = META_BUTTON_STATE_PRESSED;
       frame->prelit_control = control;
       redraw_control (frames, frame, control);
 
-      if (op == META_GRAB_OP_CLICKING_MENU)
+      if (control == META_FRAME_CONTROL_MENU)
         {
           MetaFrameGeometry fgeom;
           GdkRectangle *rect;
           int dx, dy;
-          
+
           meta_frames_calc_geometry (frames, frame, &fgeom);
-          
+
           rect = control_rect (META_FRAME_CONTROL_MENU, &fgeom);
 
           /* get delta to convert to root coords */
@@ -1302,7 +1252,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
       MetaGrabOp op;
       
       op = META_GRAB_OP_NONE;
-      
+
       switch (control)
         {
         case META_FRAME_CONTROL_RESIZE_SE:
@@ -1380,146 +1330,63 @@ meta_frames_button_press_event (GtkWidget      *widget,
   return TRUE;
 }
 
-void
-meta_frames_notify_menu_hide (MetaFrames *frames)
-{
-  Display *display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
-  if (meta_core_get_grab_op (display) ==
-      META_GRAB_OP_CLICKING_MENU)
-    {
-      Window grab_frame;
-
-      grab_frame = meta_core_get_grab_frame (display);
-
-      if (grab_frame != None)
-        {
-          MetaUIFrame *frame;
-
-          frame = meta_frames_lookup_window (frames, grab_frame);
-
-          if (frame)
-            {
-              redraw_control (frames, frame,
-                              META_FRAME_CONTROL_MENU);
-              meta_core_end_grab_op (display, CurrentTime);
-            }
-        }
-    }
-}
-
 static gboolean
 meta_frames_button_release_event    (GtkWidget           *widget,
                                      GdkEventButton      *event)
 {
   MetaUIFrame *frame;
   MetaFrames *frames;
-  MetaGrabOp op;
   Display *display;
   
   frames = META_FRAMES (widget);
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
-  
+
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
   if (frame == NULL)
-    return FALSE;
-
-  op = meta_core_get_grab_op (display);
-
-  if (op == META_GRAB_OP_NONE)
     return FALSE;
 
   /* We only handle the releases we handled the presses for (things
    * involving frame controls). Window ops that don't require a
    * frame are handled in the Xlib part of the code, display.c/window.c
    */
-  if (frame->xwindow == meta_core_get_grab_frame (display) &&
-      ((int) event->button) == meta_core_get_grab_button (display))
+  if (frame->xwindow == frames->grab_xwindow &&
+      ((int) event->button) == frame->grab_button &&
+      frame->button_state == META_BUTTON_STATE_PRESSED)
     {
-      MetaFrameControl control;
-
-      control = get_control (frames, frame, event->x, event->y);
-      
-      switch (op)
+      switch (frame->prelit_control)
         {
-        case META_GRAB_OP_CLICKING_MINIMIZE:
-          if (control == META_FRAME_CONTROL_MINIMIZE)
-            meta_core_minimize (display, frame->xwindow);
-          
-          meta_core_end_grab_op (display, event->time);
+        case META_FRAME_CONTROL_MINIMIZE:
+          meta_core_minimize (display, frame->xwindow);
           break;
-
-        case META_GRAB_OP_CLICKING_MAXIMIZE:
-          if (control == META_FRAME_CONTROL_MAXIMIZE)
-          {
-            /* Focus the window on the maximize */
-            meta_core_user_focus (display,
-                            frame->xwindow,
-                            event->time);      
-            meta_core_maximize (display, frame->xwindow);
-          }
-          meta_core_end_grab_op (display, event->time);
+        case META_FRAME_CONTROL_MAXIMIZE:
+          /* Focus the window on the maximize */
+          meta_core_user_focus (display, frame->xwindow, event->time);      
+          meta_core_maximize (display, frame->xwindow);
           break;
-
-        case META_GRAB_OP_CLICKING_UNMAXIMIZE:
-          if (control == META_FRAME_CONTROL_UNMAXIMIZE)
-            meta_core_unmaximize (display, frame->xwindow);
-          
-          meta_core_end_grab_op (display, event->time);
+        case META_FRAME_CONTROL_UNMAXIMIZE:
+          meta_core_unmaximize (display, frame->xwindow);
           break;
-          
-        case META_GRAB_OP_CLICKING_DELETE:
-          if (control == META_FRAME_CONTROL_DELETE)
-            meta_core_delete (display, frame->xwindow, event->time);
-          
-          meta_core_end_grab_op (display, event->time);
+        case META_FRAME_CONTROL_DELETE:
+          meta_core_delete (display, frame->xwindow, event->time);
           break;
-          
-        case META_GRAB_OP_CLICKING_MENU:
-          meta_core_end_grab_op (display, event->time);
+        case META_FRAME_CONTROL_SHADE:
+          meta_core_shade (display, frame->xwindow, event->time);
           break;
-
-        case META_GRAB_OP_CLICKING_SHADE:
-          if (control == META_FRAME_CONTROL_SHADE)
-            meta_core_shade (display, frame->xwindow, event->time);
-          
-          meta_core_end_grab_op (display, event->time);
+        case META_FRAME_CONTROL_UNSHADE:
+          meta_core_unshade (display, frame->xwindow, event->time);
           break;
- 
-        case META_GRAB_OP_CLICKING_UNSHADE:
-          if (control == META_FRAME_CONTROL_UNSHADE)
-            meta_core_unshade (display, frame->xwindow, event->time);
-
-          meta_core_end_grab_op (display, event->time);
+        case META_FRAME_CONTROL_ABOVE:
+          meta_core_make_above (display, frame->xwindow);
           break;
-
-        case META_GRAB_OP_CLICKING_ABOVE:
-          if (control == META_FRAME_CONTROL_ABOVE)
-            meta_core_make_above (display, frame->xwindow);
-          
-          meta_core_end_grab_op (display, event->time);
+        case META_FRAME_CONTROL_UNABOVE:
+          meta_core_unmake_above (display, frame->xwindow);
           break;
- 
-        case META_GRAB_OP_CLICKING_UNABOVE:
-          if (control == META_FRAME_CONTROL_UNABOVE)
-            meta_core_unmake_above (display, frame->xwindow);
-
-          meta_core_end_grab_op (display, event->time);
+        case META_FRAME_CONTROL_STICK:
+          meta_core_stick (display, frame->xwindow);
           break;
-
-        case META_GRAB_OP_CLICKING_STICK:
-          if (control == META_FRAME_CONTROL_STICK)
-            meta_core_stick (display, frame->xwindow);
-
-          meta_core_end_grab_op (display, event->time);
+        case META_FRAME_CONTROL_UNSTICK:
+          meta_core_unstick (display, frame->xwindow);
           break;
- 
-        case META_GRAB_OP_CLICKING_UNSTICK:
-          if (control == META_FRAME_CONTROL_UNSTICK)
-            meta_core_unstick (display, frame->xwindow);
-
-          meta_core_end_grab_op (display, event->time);
-          break;
-          
         default:
           break;
         }
@@ -1529,6 +1396,7 @@ meta_frames_button_release_event    (GtkWidget           *widget,
        * prelit so to let the user know that it can now be pressed.
        * :)
        */
+      MetaFrameControl control = get_control (frames, frame, event->x, event->y);
       meta_frames_update_prelit_control (frames, frame, control);
     }
   
@@ -1542,7 +1410,6 @@ meta_frames_update_prelit_control (MetaFrames      *frames,
 {
   MetaFrameControl old_control;
   MetaCursor cursor;
-
 
   meta_verbose ("Updating prelit control from %u to %u\n",
                 frame->prelit_control, control);
@@ -1637,6 +1504,7 @@ meta_frames_update_prelit_control (MetaFrames      *frames,
   /* Save the old control so we can unprelight it */
   old_control = frame->prelit_control;
 
+  frame->button_state = META_BUTTON_STATE_PRELIGHT;
   frame->prelit_control = control;
 
   redraw_control (frames, frame, old_control);
@@ -1649,89 +1517,34 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
 {
   MetaUIFrame *frame;
   MetaFrames *frames;
-  MetaGrabOp grab_op;
-  Display *display;
-  
+  MetaFrameControl control;
+  int x, y;
+
   frames = META_FRAMES (widget);
-  display = GDK_DISPLAY_XDISPLAY (gdk_window_get_display (event->window));
-  
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
   if (frame == NULL)
     return FALSE;
 
   frames->last_motion_frame = frame;
 
-  grab_op = meta_core_get_grab_op (display);
-  
-  switch (grab_op)
+  gdk_window_get_device_position (frame->window, event->device,
+                                  &x, &y, NULL);
+  control = get_control (frames, frame, x, y);
+
+  if (frame->button_state == META_BUTTON_STATE_PRESSED)
     {
-    case META_GRAB_OP_CLICKING_MENU:
-    case META_GRAB_OP_CLICKING_DELETE:
-    case META_GRAB_OP_CLICKING_MINIMIZE:
-    case META_GRAB_OP_CLICKING_MAXIMIZE:
-    case META_GRAB_OP_CLICKING_UNMAXIMIZE:
-    case META_GRAB_OP_CLICKING_SHADE:
-    case META_GRAB_OP_CLICKING_UNSHADE:
-    case META_GRAB_OP_CLICKING_ABOVE:
-    case META_GRAB_OP_CLICKING_UNABOVE:
-    case META_GRAB_OP_CLICKING_STICK:
-    case META_GRAB_OP_CLICKING_UNSTICK:
-      {
-        MetaFrameControl control;
-        int x, y;
-        
-        gdk_window_get_device_position (frame->window, event->device,
-                                        &x, &y, NULL);
-
-        /* Control is set to none unless it matches
-         * the current grab
-         */
-        control = get_control (frames, frame, x, y);
-        if (! ((control == META_FRAME_CONTROL_MENU &&
-                grab_op == META_GRAB_OP_CLICKING_MENU) ||
-               (control == META_FRAME_CONTROL_DELETE &&
-                grab_op == META_GRAB_OP_CLICKING_DELETE) ||
-               (control == META_FRAME_CONTROL_MINIMIZE &&
-                grab_op == META_GRAB_OP_CLICKING_MINIMIZE) ||
-               ((control == META_FRAME_CONTROL_MAXIMIZE ||
-                 control == META_FRAME_CONTROL_UNMAXIMIZE) &&
-                (grab_op == META_GRAB_OP_CLICKING_MAXIMIZE ||
-                 grab_op == META_GRAB_OP_CLICKING_UNMAXIMIZE)) ||
-               (control == META_FRAME_CONTROL_SHADE &&
-                grab_op == META_GRAB_OP_CLICKING_SHADE) ||
-               (control == META_FRAME_CONTROL_UNSHADE &&
-                grab_op == META_GRAB_OP_CLICKING_UNSHADE) ||
-               (control == META_FRAME_CONTROL_ABOVE &&
-                grab_op == META_GRAB_OP_CLICKING_ABOVE) ||
-               (control == META_FRAME_CONTROL_UNABOVE &&
-                grab_op == META_GRAB_OP_CLICKING_UNABOVE) ||
-               (control == META_FRAME_CONTROL_STICK &&
-                grab_op == META_GRAB_OP_CLICKING_STICK) ||
-               (control == META_FRAME_CONTROL_UNSTICK &&
-                grab_op == META_GRAB_OP_CLICKING_UNSTICK)))
-           control = META_FRAME_CONTROL_NONE;
-        
-        /* Update prelit control and cursor */
-        meta_frames_update_prelit_control (frames, frame, control);
-      }
-      break;
-    case META_GRAB_OP_NONE:
-      {
-        MetaFrameControl control;
-        int x, y;
-        
-        gdk_window_get_device_position (frame->window, event->device,
-                                        &x, &y, NULL);
-
-        control = get_control (frames, frame, x, y);
-
-        /* Update prelit control and cursor */
-        meta_frames_update_prelit_control (frames, frame, control);
-      }
-      break;
-
-    default:
-      break;
+      /* If the user leaves the frame button, set the state
+       * back to normal and redraw. */
+      if (frame->prelit_control != control)
+        {
+          frame->button_state = META_BUTTON_STATE_NORMAL;
+          redraw_control (frames, frame, frame->prelit_control);
+        }
+    }
+  else
+    {
+      /* Update prelit control and cursor */
+      meta_frames_update_prelit_control (frames, frame, control);
     }
       
   return TRUE;
@@ -1970,95 +1783,59 @@ meta_frames_paint (MetaFrames   *frames,
   GdkPixbuf *icon;
   int w, h;
   MetaButtonState button_states[META_BUTTON_TYPE_LAST];
-  Window grab_frame;
   int i;
+  int button_type = -1;
   MetaButtonLayout button_layout;
-  MetaGrabOp grab_op;
   Display *display;
-  
+
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 
   for (i = 0; i < META_BUTTON_TYPE_LAST; i++)
     button_states[i] = META_BUTTON_STATE_NORMAL;
-
-  grab_frame = meta_core_get_grab_frame (display);
-  grab_op = meta_core_get_grab_op (display);
-  if (grab_frame != frame->xwindow)
-    grab_op = META_GRAB_OP_NONE;
   
   /* Set prelight state */
   switch (frame->prelit_control)
     {
     case META_FRAME_CONTROL_MENU:
-      if (grab_op == META_GRAB_OP_CLICKING_MENU)
-        button_states[META_BUTTON_TYPE_MENU] = META_BUTTON_STATE_PRESSED;
-      else
-        button_states[META_BUTTON_TYPE_MENU] = META_BUTTON_STATE_PRELIGHT;
+      button_type = META_BUTTON_TYPE_MENU;
       break;
     case META_FRAME_CONTROL_MINIMIZE:
-      if (grab_op == META_GRAB_OP_CLICKING_MINIMIZE)
-        button_states[META_BUTTON_TYPE_MINIMIZE] = META_BUTTON_STATE_PRESSED;
-      else
-        button_states[META_BUTTON_TYPE_MINIMIZE] = META_BUTTON_STATE_PRELIGHT;
+      button_type = META_BUTTON_TYPE_MINIMIZE;
       break;
     case META_FRAME_CONTROL_MAXIMIZE:
-      if (grab_op == META_GRAB_OP_CLICKING_MAXIMIZE)
-        button_states[META_BUTTON_TYPE_MAXIMIZE] = META_BUTTON_STATE_PRESSED;
-      else
-        button_states[META_BUTTON_TYPE_MAXIMIZE] = META_BUTTON_STATE_PRELIGHT;
+      button_type = META_BUTTON_TYPE_MAXIMIZE;
       break;
     case META_FRAME_CONTROL_UNMAXIMIZE:
-      if (grab_op == META_GRAB_OP_CLICKING_UNMAXIMIZE)
-        button_states[META_BUTTON_TYPE_MAXIMIZE] = META_BUTTON_STATE_PRESSED;
-      else
-        button_states[META_BUTTON_TYPE_MAXIMIZE] = META_BUTTON_STATE_PRELIGHT;
+      button_type = META_BUTTON_TYPE_MAXIMIZE;
       break;
     case META_FRAME_CONTROL_SHADE:
-      if (grab_op == META_GRAB_OP_CLICKING_SHADE)
-        button_states[META_BUTTON_TYPE_SHADE] = META_BUTTON_STATE_PRESSED;
-      else
-        button_states[META_BUTTON_TYPE_SHADE] = META_BUTTON_STATE_PRELIGHT;
+      button_type = META_BUTTON_TYPE_SHADE;
       break;
     case META_FRAME_CONTROL_UNSHADE:
-      if (grab_op == META_GRAB_OP_CLICKING_UNSHADE)
-        button_states[META_BUTTON_TYPE_UNSHADE] = META_BUTTON_STATE_PRESSED;
-      else
-        button_states[META_BUTTON_TYPE_UNSHADE] = META_BUTTON_STATE_PRELIGHT;
+      button_type = META_BUTTON_TYPE_UNSHADE;
       break;
     case META_FRAME_CONTROL_ABOVE:
-      if (grab_op == META_GRAB_OP_CLICKING_ABOVE)
-        button_states[META_BUTTON_TYPE_ABOVE] = META_BUTTON_STATE_PRESSED;
-      else
-        button_states[META_BUTTON_TYPE_ABOVE] = META_BUTTON_STATE_PRELIGHT;
+      button_type = META_BUTTON_TYPE_ABOVE;
       break;
     case META_FRAME_CONTROL_UNABOVE:
-      if (grab_op == META_GRAB_OP_CLICKING_UNABOVE)
-        button_states[META_BUTTON_TYPE_UNABOVE] = META_BUTTON_STATE_PRESSED;
-      else
-        button_states[META_BUTTON_TYPE_UNABOVE] = META_BUTTON_STATE_PRELIGHT;
+      button_type = META_BUTTON_TYPE_UNABOVE;
       break;
     case META_FRAME_CONTROL_STICK:
-      if (grab_op == META_GRAB_OP_CLICKING_STICK)
-        button_states[META_BUTTON_TYPE_STICK] = META_BUTTON_STATE_PRESSED;
-      else
-        button_states[META_BUTTON_TYPE_STICK] = META_BUTTON_STATE_PRELIGHT;
+      button_type = META_BUTTON_TYPE_STICK;
       break;
     case META_FRAME_CONTROL_UNSTICK:
-      if (grab_op == META_GRAB_OP_CLICKING_UNSTICK)
-        button_states[META_BUTTON_TYPE_UNSTICK] = META_BUTTON_STATE_PRESSED;
-      else
-        button_states[META_BUTTON_TYPE_UNSTICK] = META_BUTTON_STATE_PRELIGHT;
+      button_type = META_BUTTON_TYPE_UNSTICK;
       break;
     case META_FRAME_CONTROL_DELETE:
-      if (grab_op == META_GRAB_OP_CLICKING_DELETE)
-        button_states[META_BUTTON_TYPE_CLOSE] = META_BUTTON_STATE_PRESSED;
-      else
-        button_states[META_BUTTON_TYPE_CLOSE] = META_BUTTON_STATE_PRELIGHT;
+      button_type = META_BUTTON_TYPE_CLOSE;
       break;
     default:
       break;
     }
-  
+
+  if (button_type > -1)
+    button_states[button_type] = frame->button_state;
+
   meta_core_get (display, frame->xwindow,
                  META_CORE_GET_FRAME_FLAGS, &flags,
                  META_CORE_GET_FRAME_TYPE, &type,

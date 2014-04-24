@@ -182,8 +182,6 @@ gboolean   meta_core_begin_grab_op (Display    *xdisplay,
 void       meta_core_end_grab_op   (Display    *xdisplay,
                                     guint32     timestamp);
 MetaGrabOp meta_core_get_grab_op     (Display    *xdisplay);
-Window     meta_core_get_grab_frame  (Display   *xdisplay);
-int        meta_core_get_grab_button (Display  *xdisplay);
 
 
 void       meta_core_grab_buttons  (Display *xdisplay,

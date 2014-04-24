@@ -82,6 +82,8 @@ struct _MetaUIFrame
   
   /* FIXME get rid of this, it can just be in the MetaFrames struct */
   MetaFrameControl prelit_control;
+  MetaButtonState button_state;
+  int grab_button;
 };
 
 struct _MetaFrames
@@ -95,6 +97,8 @@ struct _MetaFrames
 
   GtkStyleContext *normal_style;
   GHashTable *style_variants;
+
+  Window grab_xwindow;
 };
 
 struct _MetaFramesClass
@@ -152,8 +156,6 @@ void meta_frames_move_resize_frame (MetaFrames *frames,
 				    int         height);
 void meta_frames_queue_draw (MetaFrames *frames,
                              Window      xwindow);
-
-void meta_frames_notify_menu_hide (MetaFrames *frames);
 
 Window meta_frames_get_moving_frame (MetaFrames *frames);
 

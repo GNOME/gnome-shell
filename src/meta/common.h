@@ -163,17 +163,6 @@ typedef void (* MetaWindowMenuFunc) (MetaWindowMenu *menu,
  * @META_GRAB_OP_KEYBOARD_RESIZING_NE: Resizing NE with keyboard
  * @META_GRAB_OP_KEYBOARD_RESIZING_SW: Resizing SW with keyboard
  * @META_GRAB_OP_KEYBOARD_RESIZING_NW: Resizing NS with keyboard
- * @META_GRAB_OP_CLICKING_MINIMIZE: Clicked minimize button
- * @META_GRAB_OP_CLICKING_MAXIMIZE: Clicked maximize button
- * @META_GRAB_OP_CLICKING_UNMAXIMIZE: Clicked unmaximize button
- * @META_GRAB_OP_CLICKING_DELETE: Clicked delete button
- * @META_GRAB_OP_CLICKING_MENU: Clicked on menu
- * @META_GRAB_OP_CLICKING_SHADE: Clicked shade button
- * @META_GRAB_OP_CLICKING_UNSHADE: Clicked unshade button
- * @META_GRAB_OP_CLICKING_ABOVE: Clicked above button
- * @META_GRAB_OP_CLICKING_UNABOVE: Clicked unabove button
- * @META_GRAB_OP_CLICKING_STICK: Clicked stick button
- * @META_GRAB_OP_CLICKING_UNSTICK: Clicked unstick button
  * @META_GRAB_OP_COMPOSITOR: Compositor asked for grab
  */
 
@@ -206,19 +195,6 @@ typedef enum
   META_GRAB_OP_KEYBOARD_RESIZING_NE,
   META_GRAB_OP_KEYBOARD_RESIZING_SW,
   META_GRAB_OP_KEYBOARD_RESIZING_NW,
-
-  /* Frame button ops */
-  META_GRAB_OP_CLICKING_MINIMIZE,
-  META_GRAB_OP_CLICKING_MAXIMIZE,
-  META_GRAB_OP_CLICKING_UNMAXIMIZE,
-  META_GRAB_OP_CLICKING_DELETE,
-  META_GRAB_OP_CLICKING_MENU,
-  META_GRAB_OP_CLICKING_SHADE,
-  META_GRAB_OP_CLICKING_UNSHADE,
-  META_GRAB_OP_CLICKING_ABOVE,
-  META_GRAB_OP_CLICKING_UNABOVE,
-  META_GRAB_OP_CLICKING_STICK,
-  META_GRAB_OP_CLICKING_UNSTICK,
 
   /* Special grab op when the compositor asked for a grab */
   META_GRAB_OP_COMPOSITOR,

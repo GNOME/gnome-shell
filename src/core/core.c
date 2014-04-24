@@ -659,36 +659,6 @@ meta_core_get_grab_op (Display *xdisplay)
   return display->grab_op;
 }
 
-Window
-meta_core_get_grab_frame (Display *xdisplay)
-{
-  MetaDisplay *display;
-  
-  display = meta_display_for_x_display (xdisplay);
-
-  g_assert (display != NULL);
-  
-  if (display->grab_op != META_GRAB_OP_NONE &&
-      display->grab_window &&
-      display->grab_window->frame)
-    return display->grab_window->frame->xwindow;
-  else
-    return None;
-}
-
-int
-meta_core_get_grab_button (Display  *xdisplay)
-{
-  MetaDisplay *display;
-  
-  display = meta_display_for_x_display (xdisplay);
-
-  if (display->grab_op == META_GRAB_OP_NONE)
-    return -1;
-  
-  return display->grab_button;
-}
-
 void
 meta_core_grab_buttons  (Display *xdisplay,
                          Window   frame_xwindow)

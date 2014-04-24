@@ -1203,29 +1203,6 @@ meta_grab_op_is_moving_or_resizing (MetaGrabOp op)
           meta_grab_op_is_resizing (op));
 }
 
-gboolean
-meta_grab_op_is_clicking (MetaGrabOp grab_op)
-{
-  switch (grab_op)
-    {
-    case META_GRAB_OP_CLICKING_MINIMIZE:
-    case META_GRAB_OP_CLICKING_MAXIMIZE:
-    case META_GRAB_OP_CLICKING_UNMAXIMIZE:
-    case META_GRAB_OP_CLICKING_DELETE:
-    case META_GRAB_OP_CLICKING_MENU:
-    case META_GRAB_OP_CLICKING_SHADE:
-    case META_GRAB_OP_CLICKING_UNSHADE:
-    case META_GRAB_OP_CLICKING_ABOVE:
-    case META_GRAB_OP_CLICKING_UNABOVE:
-    case META_GRAB_OP_CLICKING_STICK:
-    case META_GRAB_OP_CLICKING_UNSTICK:
-      return TRUE;
-
-    default:
-      return FALSE;
-    }
-}
-
 /**
  * meta_grab_op_should_block_wayland:
  * @op: A #MetaGrabOp
@@ -1237,18 +1214,14 @@ meta_grab_op_is_clicking (MetaGrabOp grab_op)
 gboolean
 meta_grab_op_should_block_wayland (MetaGrabOp op)
 {
-  if (op == META_GRAB_OP_NONE)
-    return FALSE;
-
-  if (op == META_GRAB_OP_WAYLAND_POPUP)
-    return FALSE;
-
-  /* Clicking on a frame button needs us to deliver events to the
-   * frame window, since the button is part of the frame here. */
-  if (meta_grab_op_is_clicking (op))
-    return FALSE;
-
-  return TRUE;
+  switch (op)
+    {
+    case META_GRAB_OP_WAYLAND_POPUP:
+    case META_GRAB_OP_NONE:
+      return FALSE;
+    default:
+      return TRUE;
+    }
 }
 
 /**
