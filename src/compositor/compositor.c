@@ -513,12 +513,14 @@ meta_compositor_manage (MetaCompositor *compositor)
       XResizeWindow (xdisplay, xwin, width, height);
 
         {
+          MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+          Display *backend_xdisplay = meta_backend_x11_get_xdisplay (backend);
           long event_mask;
           unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
           XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
           XWindowAttributes attr;
 
-          meta_core_add_old_event_mask (xdisplay, xwin, &mask);
+          meta_core_add_old_event_mask (backend_xdisplay, xwin, &mask);
 
           XISetMask (mask.mask, XI_KeyPress);
           XISetMask (mask.mask, XI_KeyRelease);
@@ -532,13 +534,13 @@ meta_compositor_manage (MetaCompositor *compositor)
           XIClearMask (mask.mask, XI_TouchBegin);
           XIClearMask (mask.mask, XI_TouchEnd);
           XIClearMask (mask.mask, XI_TouchUpdate);
-          XISelectEvents (xdisplay, xwin, &mask, 1);
+          XISelectEvents (backend_xdisplay, xwin, &mask, 1);
 
           event_mask = ExposureMask | PropertyChangeMask | StructureNotifyMask;
-          if (XGetWindowAttributes (xdisplay, xwin, &attr))
+          if (XGetWindowAttributes (backend_xdisplay, xwin, &attr))
             event_mask |= attr.your_event_mask;
 
-          XSelectInput (xdisplay, xwin, event_mask);
+          XSelectInput (backend_xdisplay, xwin, event_mask);
         }
     }
 
