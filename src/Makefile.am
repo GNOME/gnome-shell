@@ -222,6 +222,8 @@ libmutter_la_SOURCES =				\
 	wayland/meta-wayland-pointer.h		\
 	wayland/meta-wayland-seat.c		\
 	wayland/meta-wayland-seat.h		\
+	wayland/meta-wayland-touch.c		\
+	wayland/meta-wayland-touch.h		\
 	wayland/meta-wayland-surface.c		\
 	wayland/meta-wayland-surface.h		\
 	wayland/meta-wayland-types.h		\

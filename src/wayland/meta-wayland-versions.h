@@ -51,7 +51,7 @@
 #define META_WL_SURFACE_VERSION             3 /* from wl_compositor */
 #define META_WL_POINTER_VERSION             3 /* from wl_seat */
 #define META_WL_KEYBOARD_VERSION            3 /* from wl_seat */
-#define META_WL_TOUCH_VERSION               0 /* from wl_seat; wl_touch not supported */
+#define META_WL_TOUCH_VERSION               3 /* from wl_seat */
 #define META_WL_REGION_VERSION              1 /* from wl_compositor */
 #define META_XDG_SURFACE_VERSION            1 /* from xdg_shell */
 #define META_XDG_POPUP_VERSION              1 /* from xdg_shell */

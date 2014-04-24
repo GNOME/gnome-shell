@@ -59,7 +59,10 @@ seat_get_touch (struct wl_client *client,
                 struct wl_resource *resource,
                 uint32_t id)
 {
-  /* Touch not supported */
+  MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
+  MetaWaylandTouch *touch = &seat->touch;
+
+  meta_wayland_touch_create_new_resource (touch, client, resource, id);
 }
 
 static const struct wl_seat_interface seat_interface = {
@@ -84,7 +87,8 @@ bind_seat (struct wl_client *client,
 
   wl_seat_send_capabilities (resource,
                              WL_SEAT_CAPABILITY_POINTER |
-                             WL_SEAT_CAPABILITY_KEYBOARD);
+                             WL_SEAT_CAPABILITY_KEYBOARD |
+                             WL_SEAT_CAPABILITY_TOUCH);
 
   if (version >= WL_SEAT_NAME_SINCE_VERSION)
     wl_seat_send_name (resource, "seat0");
@@ -101,6 +105,7 @@ meta_wayland_seat_new (struct wl_display *display)
 
   meta_wayland_pointer_init (&seat->pointer, display);
   meta_wayland_keyboard_init (&seat->keyboard, display);
+  meta_wayland_touch_init (&seat->touch, display);
 
   seat->display = display;
 
@@ -120,6 +125,7 @@ meta_wayland_seat_free (MetaWaylandSeat *seat)
 {
   meta_wayland_pointer_release (&seat->pointer);
   meta_wayland_keyboard_release (&seat->keyboard);
+  meta_wayland_touch_release (&seat->touch);
 
   g_slice_free (MetaWaylandSeat, seat);
 }
@@ -140,6 +146,12 @@ meta_wayland_seat_update (MetaWaylandSeat    *seat,
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
       meta_wayland_keyboard_update (&seat->keyboard, (const ClutterKeyEvent *) event);
+      break;
+
+    case CLUTTER_TOUCH_BEGIN:
+    case CLUTTER_TOUCH_UPDATE:
+    case CLUTTER_TOUCH_END:
+      meta_wayland_touch_update (&seat->touch, event);
       break;
 
     default:
@@ -163,6 +175,10 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
     case CLUTTER_KEY_RELEASE:
       return meta_wayland_keyboard_handle_event (&seat->keyboard,
                                                  (const ClutterKeyEvent *) event);
+    case CLUTTER_TOUCH_BEGIN:
+    case CLUTTER_TOUCH_UPDATE:
+    case CLUTTER_TOUCH_END:
+      return meta_wayland_touch_handle_event (&seat->touch, event);
 
     default:
       break;

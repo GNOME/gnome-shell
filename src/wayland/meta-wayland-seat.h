@@ -28,6 +28,7 @@
 #include "meta-wayland-types.h"
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-pointer.h"
+#include "meta-wayland-touch.h"
 
 struct _MetaWaylandDataOffer
 {
@@ -53,6 +54,7 @@ struct _MetaWaylandSeat
   struct wl_list data_device_resource_list;
   MetaWaylandPointer pointer;
   MetaWaylandKeyboard keyboard;
+  MetaWaylandTouch touch;
 
   struct wl_display *display;
 };
