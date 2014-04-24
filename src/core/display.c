@@ -144,10 +144,12 @@ static MetaDisplay *the_display = NULL;
 static const char *gnome_wm_keybindings = "Mutter";
 static const char *net_wm_name = "Mutter";
 
+static void update_cursor_theme (void);
 static void    update_window_grab_modifiers (MetaDisplay *display);
 
 static void    prefs_changed_callback    (MetaPreference pref,
                                           void          *data);
+
 static void
 meta_display_get_property(GObject         *object,
                           guint            prop_id,
@@ -722,10 +724,7 @@ meta_display_open (void)
       meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
   }
 
-  {
-    XcursorSetTheme (the_display->xdisplay, meta_prefs_get_cursor_theme ());
-    XcursorSetDefaultSize (the_display->xdisplay, meta_prefs_get_cursor_size ());
-  }
+  update_cursor_theme ();
 
   /* Create the leader window here. Set its properties and
    * use the timestamp from one of the PropertyNotify events
@@ -2281,16 +2280,23 @@ meta_display_retheme_all (void)
   meta_display_queue_retheme_all_windows (meta_get_display ());
 }
 
-void 
-meta_display_set_cursor_theme (const char *theme, 
-			       int         size)
+static void
+set_cursor_theme (Display *xdisplay)
 {
-  MetaDisplay *display = meta_get_display ();
+  XcursorSetTheme (xdisplay, meta_prefs_get_cursor_theme ());
+  XcursorSetDefaultSize (xdisplay, meta_prefs_get_cursor_size ());
+}
 
-  XcursorSetTheme (display->xdisplay, theme);
-  XcursorSetDefaultSize (display->xdisplay, size);
+static void
+update_cursor_theme (void)
+{
+  {
+    MetaDisplay *display = meta_get_display ();
+    set_cursor_theme (display->xdisplay);
 
-  meta_screen_update_cursor (display->screen);
+    if (display->screen)
+      meta_screen_update_cursor (display->screen);
+  }
 }
 
 /*
@@ -2972,6 +2978,11 @@ prefs_changed_callback (MetaPreference pref,
   else if (pref == META_PREF_AUDIBLE_BELL)
     {
       meta_bell_set_audible (display, meta_prefs_bell_is_audible ());
+    }
+  else if (pref == META_PREF_CURSOR_THEME ||
+           pref == META_PREF_CURSOR_SIZE)
+    {
+      update_cursor_theme ();
     }
 }
 

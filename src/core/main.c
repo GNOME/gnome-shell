@@ -544,11 +544,6 @@ prefs_changed_callback (MetaPreference pref,
       meta_display_retheme_all ();
       break;
 
-    case META_PREF_CURSOR_THEME:
-    case META_PREF_CURSOR_SIZE:
-      meta_display_set_cursor_theme (meta_prefs_get_cursor_theme (),
-				     meta_prefs_get_cursor_size ());
-      break;
     default:
       /* handled elsewhere or otherwise */
       break;

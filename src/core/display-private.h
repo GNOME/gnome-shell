@@ -400,9 +400,6 @@ const char* meta_event_detail_to_string (int d);
 void meta_display_queue_retheme_all_windows (MetaDisplay *display);
 void meta_display_retheme_all (void);
 
-void meta_display_set_cursor_theme (const char *theme, 
-				    int         size);
-
 void meta_display_ping_window      (MetaWindow         *window,
                                     guint32             timestamp,
                                     MetaWindowPingFunc  ping_reply_func,
