@@ -68,6 +68,19 @@ handle_alarm_notify (MetaBackend *backend,
       meta_idle_monitor_xsync_handle_xevent (backend->device_monitors[i], (XSyncAlarmNotifyEvent*) event);
 }
 
+static void
+translate_device_event (MetaBackendX11 *x11,
+                        XIDeviceEvent  *device_event)
+{
+  MetaDisplay *display = meta_get_display ();
+  MetaCompositor *compositor = display->compositor;
+  ClutterStage *stage = CLUTTER_STAGE (compositor->stage);
+
+  device_event->event = clutter_x11_get_stage_window (stage);
+  device_event->event_x = device_event->root_x;
+  device_event->event_y = device_event->root_y;
+}
+
 /* Clutter makes the assumption that there is only one X window
  * per stage, which is a valid assumption to make for a generic
  * application toolkit. As such, it will ignore any events sent
@@ -87,7 +100,6 @@ maybe_spoof_event_as_stage_event (MetaBackendX11 *x11,
       event->xcookie.extension == priv->xinput_opcode)
     {
       XIEvent *input_event = (XIEvent *) event->xcookie.data;
-      XIDeviceEvent *device_event = ((XIDeviceEvent *) input_event);
 
       switch (input_event->evtype)
         {
@@ -96,15 +108,8 @@ maybe_spoof_event_as_stage_event (MetaBackendX11 *x11,
         case XI_ButtonRelease:
         case XI_KeyPress:
         case XI_KeyRelease:
-          {
-            MetaDisplay *display = meta_get_display ();
-            MetaCompositor *compositor = display->compositor;
-            ClutterStage *stage = CLUTTER_STAGE (compositor->stage);
-            device_event->event = clutter_x11_get_stage_window (stage);
-            device_event->event_x = device_event->root_x;
-            device_event->event_y = device_event->root_y;
-            break;
-          }
+          translate_device_event (x11, (XIDeviceEvent *) input_event);
+          break;
         default:
           break;
         }
