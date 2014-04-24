@@ -379,6 +379,12 @@ meta_begin_modal_for_plugin (MetaCompositor   *compositor,
   if (is_modal (display) || display->grab_op != META_GRAB_OP_NONE)
     return FALSE;
 
+  /* XXX: why is this needed? */
+  XIUngrabDevice (display->xdisplay,
+                  META_VIRTUAL_CORE_POINTER_ID,
+                  timestamp);
+  XSync (display->xdisplay, False);
+
   if (!grab_devices (options, timestamp))
     return FALSE;
 
