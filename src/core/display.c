@@ -2297,6 +2297,15 @@ update_cursor_theme (void)
     if (display->screen)
       meta_screen_update_cursor (display->screen);
   }
+
+  {
+    MetaBackend *backend = meta_get_backend ();
+    if (META_IS_BACKEND_X11 (backend))
+      {
+        Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
+        set_cursor_theme (xdisplay);
+      }
+  }
 }
 
 /*
