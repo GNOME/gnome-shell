@@ -154,8 +154,6 @@ get_output_window (MetaCompositor *compositor)
   MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
   Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
   Window output;
-  XWindowAttributes attr;
-  long event_mask;
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
   XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
 
@@ -173,12 +171,6 @@ get_output_window (MetaCompositor *compositor)
   XISetMask (mask.mask, XI_FocusOut);
   XISetMask (mask.mask, XI_Motion);
   XISelectEvents (xdisplay, output, &mask, 1);
-
-  event_mask = ExposureMask | PropertyChangeMask;
-  if (XGetWindowAttributes (xdisplay, output, &attr))
-    event_mask |= attr.your_event_mask;
-
-  XSelectInput (xdisplay, output, event_mask);
 
   return output;
 }
@@ -515,10 +507,8 @@ meta_compositor_manage (MetaCompositor *compositor)
         {
           MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
           Display *backend_xdisplay = meta_backend_x11_get_xdisplay (backend);
-          long event_mask;
           unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
           XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-          XWindowAttributes attr;
 
           meta_core_add_old_event_mask (backend_xdisplay, xwin, &mask);
 
@@ -535,12 +525,6 @@ meta_compositor_manage (MetaCompositor *compositor)
           XIClearMask (mask.mask, XI_TouchEnd);
           XIClearMask (mask.mask, XI_TouchUpdate);
           XISelectEvents (backend_xdisplay, xwin, &mask, 1);
-
-          event_mask = ExposureMask | PropertyChangeMask | StructureNotifyMask;
-          if (XGetWindowAttributes (backend_xdisplay, xwin, &attr))
-            event_mask |= attr.your_event_mask;
-
-          XSelectInput (backend_xdisplay, xwin, event_mask);
         }
     }
 
