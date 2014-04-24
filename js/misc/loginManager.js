@@ -46,32 +46,6 @@ const SystemdLoginSessionIface = '<node> \
 const SystemdLoginManager = Gio.DBusProxy.makeProxyWrapper(SystemdLoginManagerIface);
 const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIface);
 
-const ConsoleKitManagerIface = '<node> \
-<interface name="org.freedesktop.ConsoleKit.Manager"> \
-<method name="CanRestart"> \
-    <arg type="b" direction="out"/> \
-</method> \
-<method name="CanStop"> \
-    <arg type="b" direction="out"/> \
-</method> \
-<method name="Restart" /> \
-<method name="Stop" /> \
-<method name="GetCurrentSession"> \
-    <arg type="o" direction="out" /> \
-</method> \
-</interface> \
-</node>';
-
-const ConsoleKitSessionIface = '<node> \
-<interface name="org.freedesktop.ConsoleKit.Session"> \
-<signal name="Lock" /> \
-<signal name="Unlock" /> \
-</interface> \
-</node>';
-
-const ConsoleKitSession = Gio.DBusProxy.makeProxyWrapper(ConsoleKitSessionIface);
-const ConsoleKitManager = Gio.DBusProxy.makeProxyWrapper(ConsoleKitManagerIface);
-
 function haveSystemd() {
     return GLib.access("/run/systemd/seats", 0) >= 0;
 }
@@ -101,7 +75,7 @@ function canLock() {
                                                -1, null);
 
         let version = result.deep_unpack()[0].deep_unpack();
-        return versionCompare('3.5.91', version);
+        return haveSystemd() && versionCompare('3.5.91', version);
     } catch(e) {
         return false;
     }
@@ -119,7 +93,7 @@ function getLoginManager() {
         if (haveSystemd())
             _loginManager = new LoginManagerSystemd();
         else
-            _loginManager = new LoginManagerConsoleKit();
+            _loginManager = new LoginManagerDummy();
     }
 
     return _loginManager;
@@ -136,9 +110,6 @@ const LoginManagerSystemd = new Lang.Class({
                                   Lang.bind(this, this._prepareForSleep));
     },
 
-    // Having this function is a bit of a hack since the Systemd and ConsoleKit
-    // session objects have different interfaces - but in both cases there are
-    // Lock/Unlock signals, and that's all we count upon at the moment.
     getCurrentSessionProxy: function(callback) {
         if (this._currentSession) {
             callback (this._currentSession);
@@ -206,35 +177,13 @@ const LoginManagerSystemd = new Lang.Class({
 });
 Signals.addSignalMethods(LoginManagerSystemd.prototype);
 
-const LoginManagerConsoleKit = new Lang.Class({
-    Name: 'LoginManagerConsoleKit',
+const LoginManagerDummy = new Lang.Class({
+    Name: 'LoginManagerDummy',
 
-    _init: function() {
-        this._proxy = new ConsoleKitManager(Gio.DBus.system,
-                                            'org.freedesktop.ConsoleKit',
-                                            '/org/freedesktop/ConsoleKit/Manager');
-    },
-
-    // Having this function is a bit of a hack since the Systemd and ConsoleKit
-    // session objects have different interfaces - but in both cases there are
-    // Lock/Unlock signals, and that's all we count upon at the moment.
     getCurrentSessionProxy: function(callback) {
-        if (this._currentSession) {
-            callback (this._currentSession);
-            return;
-        }
-
-        this._proxy.GetCurrentSessionRemote(Lang.bind(this,
-            function(result, error) {
-                if (error) {
-                    logError(error, 'Could not get a proxy for the current session');
-                } else {
-                    this._currentSession = new ConsoleKitSession(Gio.DBus.system,
-                                                                 'org.freedesktop.ConsoleKit',
-                                                                 result[0]);
-                    callback(this._currentSession);
-                }
-            }));
+        // we could return a DummySession object that fakes whatever callers
+        // expect (at the time of writing: connect() and connectSignal()
+        // methods), but just never calling the callback should be safer
     },
 
     canSuspend: function(asyncCallback) {
@@ -254,4 +203,4 @@ const LoginManagerConsoleKit = new Lang.Class({
         callback(null);
     }
 });
-Signals.addSignalMethods(LoginManagerConsoleKit.prototype);
+Signals.addSignalMethods(LoginManagerDummy.prototype);
