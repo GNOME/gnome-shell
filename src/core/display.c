@@ -1762,7 +1762,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
               "Doing grab op %u on window %s button %d pointer already grabbed: %d pointer pos %d,%d\n",
               op, window ? window->desc : "none", button, pointer_already_grabbed,
               root_x, root_y);
-  
+
   if (display->grab_op != META_GRAB_OP_NONE)
     {
       if (window)
@@ -1799,6 +1799,15 @@ meta_display_begin_grab_op (MetaDisplay *display,
 
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
+
+  /* Since grab operations often happen as a result of implicit
+   * pointer operations on the display X11 connection, we need
+   * to ungrab here to ensure that the backend's X11 can take
+   * the device grab. */
+  XIUngrabDevice (display->xdisplay,
+                  META_VIRTUAL_CORE_POINTER_ID,
+                  timestamp);
+  XSync (display->xdisplay, False);
 
   meta_display_set_grab_op_cursor (display, op, timestamp);
 
