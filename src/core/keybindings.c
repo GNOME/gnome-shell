@@ -1154,6 +1154,11 @@ meta_screen_change_keygrabs (MetaScreen *screen,
 void
 meta_screen_grab_keys (MetaScreen *screen)
 {
+  MetaBackend *backend = meta_get_backend ();
+
+  if (!META_IS_BACKEND_X11 (backend))
+    return;
+
   if (screen->all_keys_grabbed)
     return;
 
@@ -1187,6 +1192,11 @@ meta_window_change_keygrabs (MetaWindow *window,
 void
 meta_window_grab_keys (MetaWindow  *window)
 {
+  MetaBackend *backend = meta_get_backend ();
+
+  if (!META_IS_BACKEND_X11 (backend))
+    return;
+
   if (window->all_keys_grabbed)
     return;
 
