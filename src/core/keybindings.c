@@ -1383,7 +1383,6 @@ grab_keyboard (MetaDisplay *display,
                guint32      timestamp,
                int          grab_mode)
 {
-  int result;
   int grab_status;
 
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
@@ -1419,22 +1418,11 @@ grab_keyboard (MetaDisplay *display,
 
   if (grab_status != Success)
     {
-      meta_error_trap_pop_with_return (display);
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "XIGrabDevice() returned failure status %s time %u\n",
                   grab_status_to_string (grab_status),
                   timestamp);
       return FALSE;
-    }
-  else
-    {
-      result = meta_error_trap_pop_with_return (display);
-      if (result != Success)
-        {
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "XIGrabDevice() resulted in an error\n");
-          return FALSE;
-        }
     }
 
   meta_topic (META_DEBUG_KEYBINDINGS, "Grabbed all keys\n");
