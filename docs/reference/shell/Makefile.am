@@ -66,6 +66,7 @@ IGNORE_HFILES=					\
 	gactionmuxer.h				\
 	gactionobservable.h			\
 	gactionobserver.h			\
+	shell-network-agent.h			\
 	shell-recorder-src.h
 
 if !BUILD_RECORDER

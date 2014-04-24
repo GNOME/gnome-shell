@@ -50,7 +50,6 @@
     <xi:include href="xml/shell-wm.xml"/>
     <xi:include href="xml/shell-util.xml"/>
     <xi:include href="xml/shell-mount-operation.xml"/>
-    <xi:include href="xml/shell-network-agent.xml"/>
     <xi:include href="xml/shell-polkit-authentication-agent.xml"/>
     <xi:include href="xml/shell-tp-client.xml"/>
   </chapter>
