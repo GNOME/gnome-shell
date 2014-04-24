@@ -101,6 +101,8 @@ maybe_spoof_event_as_stage_event (MetaBackendX11 *x11,
             MetaCompositor *compositor = display->compositor;
             ClutterStage *stage = CLUTTER_STAGE (compositor->stage);
             device_event->event = clutter_x11_get_stage_window (stage);
+            device_event->event_x = device_event->root_x;
+            device_event->event_y = device_event->root_y;
             break;
           }
         default:
