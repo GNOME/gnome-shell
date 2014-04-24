@@ -196,6 +196,31 @@ free_current_bo (CoglOnscreen *onscreen)
 }
 
 static void
+queue_swap_notify_for_onscreen (CoglOnscreen *onscreen)
+{
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
+  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+
+  /* We only want to notify that the swap is complete when the
+   * application calls cogl_context_dispatch so instead of
+   * immediately notifying we queue an idle callback */
+  if (!kms_renderer->swap_notify_idle)
+    {
+      kms_renderer->swap_notify_idle =
+        _cogl_poll_renderer_add_idle (renderer,
+                                      flush_pending_swap_notify_idle,
+                                      context,
+                                      NULL);
+    }
+
+  kms_onscreen->pending_swap_notify = TRUE;
+}
+
+static void
 page_flip_handler (int fd,
                    unsigned int frame,
                    unsigned int sec,
@@ -217,19 +242,7 @@ page_flip_handler (int fd,
       CoglRendererEGL *egl_renderer = renderer->winsys;
       CoglRendererKMS *kms_renderer = egl_renderer->platform;
 
-      /* We only want to notify that the swap is complete when the
-       * application calls cogl_context_dispatch so instead of
-       * immediately notifying we queue an idle callback */
-      if (!kms_renderer->swap_notify_idle)
-        {
-          kms_renderer->swap_notify_idle =
-            _cogl_poll_renderer_add_idle (renderer,
-                                          flush_pending_swap_notify_idle,
-                                          context,
-                                          NULL);
-        }
-
-      kms_onscreen->pending_swap_notify = TRUE;
+      queue_swap_notify_for_onscreen (onscreen);
 
       free_current_bo (onscreen);
 
@@ -903,6 +916,8 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
       kms_onscreen->next_fb_id = 0;
       g_slice_free (CoglFlipKMS, flip);
       flip = NULL;
+
+      queue_swap_notify_for_onscreen (onscreen);
     }
   else
     {
