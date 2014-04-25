@@ -721,8 +721,7 @@ meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
 
   if (surface->window)
     {
-      ClutterActor *actor =
-        CLUTTER_ACTOR (meta_window_get_compositor_private (surface->window));
+      ClutterActor *actor = CLUTTER_ACTOR (surface->surface_actor);
 
       if (actor)
         {
