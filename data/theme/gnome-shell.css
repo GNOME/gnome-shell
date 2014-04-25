@@ -221,9 +221,6 @@ StScrollBar StButton#vhandle:active {
     color: #9f9f9f;
 }
 
-.popup-image-menu-item {
-}
-
 .popup-separator-menu-item {
     -gradient-height: 1px;
     -gradient-start: rgba(255,255,255,0.0);
@@ -231,10 +228,6 @@ StScrollBar StButton#vhandle:active {
     -margin-horizontal: 24px;
     height: 1px;
     padding: 8px 0px;
-}
-
-.popup-alternating-menu-item:alternate {
-    font-weight: bold;
 }
 
 .popup-status-menu-item {
@@ -580,11 +573,6 @@ StScrollBar StButton#vhandle:active {
 .panel-button:checked #appMenuIcon,
 .panel-button:focus #appMenuIcon {
     app-icon-bottom-clip: 2px;
-}
-
-.app-menu-icon {
-    width: 24px;
-    height: 24px;
 }
 
 .panel-button {
@@ -1157,11 +1145,6 @@ StScrollBar StButton#vhandle:active {
     text-shadow: black 0px 2px 2px;
 }
 
-#LookingGlassDialog .lg-inspector-title {
-    font-weight: bold;
-    padding-bottom: 8px;
-}
-
 .lg-dialog StEntry {
     selection-background-color: #bbbbbb;
     selected-color: #333333;
@@ -1239,10 +1222,6 @@ StScrollBar StButton#vhandle:active {
     -stipple-width: 1px;
     -stipple-color: #505050;
     width: 0.3em;
-}
-
-#calendarPopup .calendar {
-    padding: 10px;
 }
 
 .calendar {
@@ -1773,26 +1752,6 @@ StScrollBar StButton#vhandle:active {
     spacing: 8px;
 }
 
-.thumbnail-scroll-gradient-left {
-    background-gradient-direction: horizontal;
-    background-gradient-start: rgba(51, 51, 51, 1.0);
-    background-gradient-end: rgba(51, 51, 51, 0);
-    border-radius: 24px;
-    border-radius-topright: 0px;
-    border-radius-bottomright: 0px;
-    width: 60px;
-}
-
-.thumbnail-scroll-gradient-right {
-    background-gradient-direction: horizontal;
-    background-gradient-start: rgba(51, 51, 51, 0);
-    background-gradient-end: rgba(51, 51, 51, 1.0);
-    border-radius: 24px;
-    border-radius-topleft: 0px;
-    border-radius-bottomleft: 0px;
-    width: 60px;
-}
-
 .switcher-list .item-box {
     padding: 8px;
     border-radius: 8px;
@@ -2060,10 +2019,6 @@ StScrollBar StButton#vhandle:active {
 /* ShellMountOperation Dialogs */
 .shell-mount-operation-icon {
     icon-size: 48px;
-}
-
-.mount-password-reask {
-    color: red;
 }
 
 .show-processes-dialog,
@@ -2361,13 +2316,6 @@ StScrollBar StButton#vhandle:active {
     padding-bottom: 1em;
 }
 
-.login-dialog-title {
-    font-size: 14pt;
-    font-weight: bold;
-    color: #666666;
-    padding-bottom: 2em;
-}
-
 .login-dialog {
     /* Reset border and background */
     border: none;
@@ -2414,10 +2362,6 @@ StScrollBar StButton#vhandle:active {
 .login-dialog-user-list:expanded .login-dialog-user-list-item:logged-in {
     background-image: url("logged-in-indicator.svg");
     background-size: contain;
-}
-
-.login-dialog-user-list-item-text-box {
-    padding: 0 0.5em;
 }
 
 .login-dialog-user-list-item .login-dialog-timed-login-indicator {
