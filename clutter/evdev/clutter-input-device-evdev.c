@@ -222,3 +222,23 @@ clutter_evdev_input_device_get_libinput_device (ClutterInputDevice *device)
 
   return device_evdev->libinput_device;
 }
+
+/**
+ * clutter_evdev_event_sequence_get_slot:
+ * @sequence: a #ClutterEventSequence
+ *
+ * Retrieves the touch slot triggered by this @sequence
+ *
+ * Returns: the libinput touch slot.
+ *
+ * Since: 1.20
+ * Stability: unstable
+ **/
+gint32
+clutter_evdev_event_sequence_get_slot (const ClutterEventSequence *sequence)
+{
+  if (!sequence)
+    return -1;
+
+  return GPOINTER_TO_INT (sequence) - 1;
+}

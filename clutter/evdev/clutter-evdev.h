@@ -116,6 +116,9 @@ void clutter_evdev_remove_filter (ClutterEvdevFilterFunc func,
 CLUTTER_AVAILABLE_IN_1_20
 struct libinput_device * clutter_evdev_input_device_get_libinput_device (ClutterInputDevice *device);
 
+CLUTTER_AVAILABLE_IN_1_20
+gint32 clutter_evdev_event_sequence_get_slot (const ClutterEventSequence *sequence);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_EVDEV_H__ */
