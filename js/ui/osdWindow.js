@@ -127,7 +127,7 @@ const OsdWindow = new Lang.Class({
 
     setLevel: function(level) {
         this._level.actor.visible = (level != undefined);
-        if (level) {
+        if (level != undefined) {
             if (this.actor.visible)
                 Tweener.addTween(this._level,
                                  { level: level,
