@@ -28,6 +28,7 @@
 #include <glib-object.h>
 #include <xkbcommon/xkbcommon.h>
 #include <clutter/clutter.h>
+#include <libinput.h>
 
 G_BEGIN_DECLS
 
@@ -112,6 +113,8 @@ void clutter_evdev_add_filter    (ClutterEvdevFilterFunc func,
 CLUTTER_AVAILABLE_IN_1_20
 void clutter_evdev_remove_filter (ClutterEvdevFilterFunc func,
                                   gpointer               data);
+CLUTTER_AVAILABLE_IN_1_20
+struct libinput_device * clutter_evdev_input_device_get_libinput_device (ClutterInputDevice *device);
 
 G_END_DECLS
 

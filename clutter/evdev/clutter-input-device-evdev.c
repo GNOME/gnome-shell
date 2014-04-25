@@ -29,6 +29,7 @@
 
 #include "clutter/clutter-device-manager-private.h"
 #include "clutter-private.h"
+#include "clutter-evdev.h"
 
 #include "clutter-input-device-evdev.h"
 
@@ -197,4 +198,27 @@ _clutter_input_device_evdev_determine_type (struct libinput_device *ldev)
     return CLUTTER_TOUCHSCREEN_DEVICE;
   else
     return CLUTTER_EXTENSION_DEVICE;
+}
+
+/**
+ * clutter_evdev_input_device_get_libinput_device:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the libinput_device struct held in @device.
+ *
+ * Returns: The libinput_device struct
+ *
+ * Since: 1.20
+ * Stability: unstable
+ **/
+struct libinput_device *
+clutter_evdev_input_device_get_libinput_device (ClutterInputDevice *device)
+{
+  ClutterInputDeviceEvdev *device_evdev;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE_EVDEV (device), NULL);
+
+  device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (device);
+
+  return device_evdev->libinput_device;
 }
