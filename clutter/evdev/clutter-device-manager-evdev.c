@@ -62,6 +62,8 @@
 #define INITIAL_POINTER_X 16
 #define INITIAL_POINTER_Y 16
 
+typedef struct _ClutterEventFilter ClutterEventFilter;
+
 struct _ClutterSeatEvdev
 {
   struct libinput_seat *libinput_seat;
@@ -88,6 +90,13 @@ struct _ClutterSeatEvdev
   ClutterInputDevice *repeat_device;
 };
 
+struct _ClutterEventFilter
+{
+  ClutterEvdevFilterFunc func;
+  gpointer data;
+  GDestroyNotify destroy_notify;
+};
+
 typedef struct _ClutterEventSource  ClutterEventSource;
 
 struct _ClutterDeviceManagerEvdevPrivate
@@ -111,6 +120,8 @@ struct _ClutterDeviceManagerEvdevPrivate
   ClutterStageManager *stage_manager;
   guint stage_added_handler;
   guint stage_removed_handler;
+
+  GSList *event_filters;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (ClutterDeviceManagerEvdev,
@@ -1098,10 +1109,40 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
   return handled;
 }
 
+static gboolean
+filter_event (ClutterDeviceManagerEvdev *manager_evdev,
+              struct libinput_event     *event)
+{
+  gboolean retval = CLUTTER_EVENT_PROPAGATE;
+  ClutterEventFilter *filter;
+  GSList *tmp_list;
+
+  tmp_list = manager_evdev->priv->event_filters;
+
+  while (tmp_list)
+    {
+      filter = tmp_list->data;
+      retval = filter->func (event, filter->data);
+      tmp_list = tmp_list->next;
+
+      if (retval != CLUTTER_EVENT_PROPAGATE)
+        break;
+    }
+
+  return retval;
+}
+
 static void
 process_event (ClutterDeviceManagerEvdev *manager_evdev,
                struct libinput_event *event)
 {
+  gboolean retval;
+
+  retval = filter_event (manager_evdev, event);
+
+  if (retval != CLUTTER_EVENT_PROPAGATE)
+    return;
+
   if (process_base_event (manager_evdev, event))
     return;
   if (process_device_event (manager_evdev, event))
@@ -1638,4 +1679,95 @@ clutter_evdev_set_keyboard_repeat (ClutterDeviceManager *evdev,
   seat->repeat = repeat;
   seat->repeat_delay = delay;
   seat->repeat_interval = interval;
+}
+
+/**
+ * clutter_evdev_add_filter: (skip)
+ * @func: (closure data): a filter function
+ * @data: (allow-none): user data to be passed to the filter function, or %NULL
+ * @destroy_notify: (allow-none): function to call on @data when the filter is removed, or %NULL
+ *
+ * Adds an event filter function.
+ *
+ * Since: 1.20
+ * Stability: unstable
+ */
+void
+clutter_evdev_add_filter (ClutterEvdevFilterFunc func,
+                          gpointer               data,
+                          GDestroyNotify         destroy_notify)
+{
+  ClutterDeviceManagerEvdev *manager_evdev;
+  ClutterDeviceManager *manager;
+  ClutterEventFilter *filter;
+
+  g_return_if_fail (func != NULL);
+
+  manager = clutter_device_manager_get_default ();
+
+  if (!CLUTTER_IS_DEVICE_MANAGER_EVDEV (manager))
+    {
+      g_critical ("The Clutter input backend is not a evdev backend");
+      return;
+    }
+
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (manager);
+
+  filter = g_new0 (ClutterEventFilter, 1);
+  filter->func = func;
+  filter->data = data;
+  filter->destroy_notify = destroy_notify;
+
+  manager_evdev->priv->event_filters =
+    g_slist_append (manager_evdev->priv->event_filters, filter);
+}
+
+/**
+ * clutter_evdev_remove_filter: (skip)
+ * @func: a filter function
+ * @data: (allow-none): user data to be passed to the filter function, or %NULL
+ *
+ * Removes the given filter function.
+ *
+ * Since: 1.20
+ * Stability: unstable
+ */
+void
+clutter_evdev_remove_filter (ClutterEvdevFilterFunc func,
+                             gpointer               data)
+{
+  ClutterDeviceManagerEvdev *manager_evdev;
+  ClutterDeviceManager *manager;
+  ClutterEventFilter *filter;
+  GSList *tmp_list;
+
+  g_return_if_fail (func != NULL);
+
+  manager = clutter_device_manager_get_default ();
+
+  if (!CLUTTER_IS_DEVICE_MANAGER_EVDEV (manager))
+    {
+      g_critical ("The Clutter input backend is not a evdev backend");
+      return;
+    }
+
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (manager);
+  tmp_list = manager_evdev->priv->event_filters;
+
+  while (tmp_list)
+    {
+      filter = tmp_list->data;
+
+      if (filter->func == func && filter->data == data)
+        {
+          if (filter->destroy_notify)
+            filter->destroy_notify (filter->data);
+          g_free (filter);
+          manager_evdev->priv->event_filters =
+            g_slist_delete_link (manager_evdev->priv->event_filters, tmp_list);
+          return;
+        }
+
+      tmp_list = tmp_list->next;
+    }
 }

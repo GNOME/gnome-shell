@@ -102,6 +102,17 @@ void clutter_evdev_set_keyboard_repeat (ClutterDeviceManager *evdev,
                                         guint32               delay,
                                         guint32               interval);
 
+typedef gboolean (* ClutterEvdevFilterFunc) (struct libinput_event *event,
+                                             gpointer               data);
+
+CLUTTER_AVAILABLE_IN_1_20
+void clutter_evdev_add_filter    (ClutterEvdevFilterFunc func,
+                                  gpointer               data,
+                                  GDestroyNotify         destroy_notify);
+CLUTTER_AVAILABLE_IN_1_20
+void clutter_evdev_remove_filter (ClutterEvdevFilterFunc func,
+                                  gpointer               data);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_EVDEV_H__ */
