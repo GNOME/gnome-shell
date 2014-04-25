@@ -380,7 +380,10 @@ notify_absolute_motion (ClutterInputDevice *input_device,
   _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
   event->motion.x = x;
   event->motion.y = y;
+  clutter_event_set_device (event, seat->core_pointer);
   clutter_event_set_source_device (event, input_device);
+
+  _clutter_input_device_set_stage (seat->core_pointer, stage);
 
   queue_event (event);
 }
@@ -456,6 +459,7 @@ notify_scroll (ClutterInputDevice *input_device,
   clutter_input_device_get_coords (seat->core_pointer, NULL, &point);
   event->scroll.x = point.x;
   event->scroll.y = point.y;
+  clutter_event_set_device (event, seat->core_pointer);
   clutter_event_set_source_device (event, input_device);
 
   queue_event (event);
@@ -535,6 +539,7 @@ notify_button (ClutterInputDevice *input_device,
   clutter_input_device_get_coords (seat->core_pointer, NULL, &point);
   event->button.x = point.x;
   event->button.y = point.y;
+  clutter_event_set_device (event, seat->core_pointer);
   clutter_event_set_source_device (event, input_device);
 
   queue_event (event);
