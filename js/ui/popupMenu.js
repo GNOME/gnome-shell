@@ -922,8 +922,10 @@ const PopupSubMenu = new Lang.Class({
             let [minHeight, naturalHeight] = this.actor.get_preferred_height(-1);
             this.actor.height = 0;
             this.actor._arrowRotation = this._arrow.rotation_angle_z;
+            let angle = this.actor._arrowRotation;
+            // animate to the first multiple of 90 greater than current angle
             Tweener.addTween(this.actor,
-                             { _arrowRotation: this.actor._arrowRotation + 90,
+                             { _arrowRotation: angle - angle % 90 + 90,
                                height: naturalHeight,
                                time: 0.25,
                                onUpdateScope: this,
@@ -955,8 +957,10 @@ const PopupSubMenu = new Lang.Class({
 
         if (animate) {
             this.actor._arrowRotation = this._arrow.rotation_angle_z;
+            let angle = this.actor._arrowRotation;
+            // animate to the first multiple of 90 less than current angle
             Tweener.addTween(this.actor,
-                             { _arrowRotation: this.actor._arrowRotation - 90,
+                             { _arrowRotation: (angle - 1) - (angle - 1) % 90,
                                height: 0,
                                time: 0.25,
                                onUpdateScope: this,
