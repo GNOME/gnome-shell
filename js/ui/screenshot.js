@@ -11,6 +11,7 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
+const GrabHelper = imports.ui.grabHelper;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
@@ -139,6 +140,7 @@ const SelectArea = new Lang.Class({
         this._startY = -1;
         this._lastX = 0;
         this._lastY = 0;
+        this._result = null;
 
         this._initRubberbandColors();
 
@@ -148,12 +150,12 @@ const SelectArea = new Lang.Class({
                                       y: 0 });
         Main.uiGroup.add_actor(this._group);
 
+        this._grabHelper = new GrabHelper.GrabHelper(this._group);
+
         this._group.connect('button-press-event',
                             Lang.bind(this, this._onButtonPress));
         this._group.connect('button-release-event',
                             Lang.bind(this, this._onButtonRelease));
-        this._group.connect('key-press-event',
-                            Lang.bind(this, this._onKeyPress));
         this._group.connect('motion-event',
                             Lang.bind(this, this._onMotionEvent));
 
@@ -169,10 +171,12 @@ const SelectArea = new Lang.Class({
     },
 
     show: function() {
-        if (!Main.pushModal(this._group) || this._group.visible)
+        if (!this._grabHelper.grab({ actor: this._group,
+                                     onUngrab: Lang.bind(this, this._onUngrab) }))
             return;
 
         global.screen.set_cursor(Meta.Cursor.CROSSHAIR);
+        Main.uiGroup.set_child_above_sibling(this._group, null);
         this._group.visible = true;
     },
 
@@ -202,13 +206,6 @@ const SelectArea = new Lang.Class({
                  height: Math.abs(this._startY - this._lastY) };
     },
 
-    _onKeyPress: function(actor, event) {
-        if (event.get_key_symbol() == Clutter.Escape)
-            this._destroy(null, false);
-
-        return Clutter.EVENT_PROPAGATE;
-    },
-
     _onMotionEvent: function(actor, event) {
         if (this._startX == -1 || this._startY == -1)
             return Clutter.EVENT_PROPAGATE;
@@ -230,24 +227,28 @@ const SelectArea = new Lang.Class({
     },
 
     _onButtonRelease: function(actor, event) {
-        this._destroy(this._getGeometry(), true);
-        return Clutter.EVENT_PROPAGATE;
-    },
-
-    _destroy: function(geometry, fade) {
+        this._result = this._getGeometry();
         Tweener.addTween(this._group,
                          { opacity: 0,
-                           time: fade ? 0.2 : 0,
+                           time: 0.2,
                            transition: 'easeOutQuad',
                            onComplete: Lang.bind(this,
                                function() {
-                                   Main.popModal(this._group);
-                                   this._group.destroy();
-                                   global.screen.set_cursor(Meta.Cursor.DEFAULT);
-
-                                   this.emit('finished', geometry);
+                                   this._grabHelper.ungrab();
                                })
                          });
+        return Clutter.EVENT_PROPAGATE;
+    },
+
+    _onUngrab: function() {
+        global.screen.set_cursor(Meta.Cursor.DEFAULT);
+        this.emit('finished', this._result);
+
+        GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this,
+            function() {
+                this._group.destroy();
+                return GLib.SOURCE_REMOVE;
+            }));
     }
 });
 Signals.addSignalMethods(SelectArea.prototype);
