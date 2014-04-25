@@ -80,6 +80,7 @@ static MetaKeyCombo overlay_key_combo = { 0, 0, 0 };
 static GDesktopFocusMode focus_mode = G_DESKTOP_FOCUS_MODE_CLICK;
 static GDesktopFocusNewWindows focus_new_windows = G_DESKTOP_FOCUS_NEW_WINDOWS_SMART;
 static gboolean raise_on_click = TRUE;
+static gboolean center_new_windows = FALSE;
 static gboolean attach_modal_dialogs = FALSE;
 static char* current_theme = NULL;
 static int num_workspaces = 4;
@@ -271,6 +272,13 @@ static MetaBoolPreference preferences_bool[] =
         META_PREF_ATTACH_MODAL_DIALOGS,
       },
       &attach_modal_dialogs,
+    },
+    {
+      { "center-new-windows",
+        SCHEMA_MUTTER,
+        META_PREF_CENTER_NEW_WINDOWS,
+      },
+      &center_new_windows,
     },
     {
       { "raise-on-click",
@@ -1215,6 +1223,12 @@ meta_prefs_get_focus_new_windows (void)
 }
 
 gboolean
+meta_prefs_get_center_new_windows (void)
+{
+  return center_new_windows;
+}
+
+gboolean
 meta_prefs_get_attach_modal_dialogs (void)
 {
   return attach_modal_dialogs;
@@ -1728,6 +1742,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_FOCUS_NEW_WINDOWS:
       return "FOCUS_NEW_WINDOWS";
+
+    case META_PREF_CENTER_NEW_WINDOWS:
+      return "CENTER_NEW_WINDOWS";
 
     case META_PREF_ATTACH_MODAL_DIALOGS:
       return "ATTACH_MODAL_DIALOGS";

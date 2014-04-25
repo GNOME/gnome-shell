@@ -93,6 +93,15 @@
       </_description>
     </key>
 
+    <key name="center-new-windows" type="b">
+      <default>false</default>
+      <_summary>Place new windows in the center</_summary>
+      <_description>
+        When true, the new windows will always be put in the center of the
+        active screen of the monitor.
+      </_description>
+    </key>
+
     <child name="keybindings" schema="org.gnome.mutter.keybindings"/>
 
   </schema>
