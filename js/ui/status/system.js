@@ -56,7 +56,10 @@ const AltSwitcher = new Lang.Class({
         }
 
         if (this.actor.get_child() != childToShow) {
+            let hasFocus = this.actor.contains(global.stage.get_key_focus());
             this.actor.set_child(childToShow);
+            if (hasFocus)
+                childToShow.grab_key_focus();
 
             // The actors might respond to hover, so
             // sync the pointer to make sure they update.
