@@ -826,10 +826,14 @@ const ThumbnailsBox = new Lang.Class({
                 window.change_workspace_by_index(window.get_workspace().index() + 1, true);
             });
 
-            if (isWindow)
+            if (isWindow) {
                 // ... and bam, a workspace, good as new.
+                // Move the window to our monitor first if necessary.
+                let thumbMonitor = this._thumbnails[newWorkspaceIndex].monitorIndex;
+                if (source.metaWindow.get_monitor() != thumbMonitor)
+                    source.metaWindow.move_to_monitor(thumbMonitor);
                 source.metaWindow.change_workspace_by_index(newWorkspaceIndex, true);
-            else if (source.shellWorkspaceLaunch) {
+            } else if (source.shellWorkspaceLaunch) {
                 source.shellWorkspaceLaunch({ workspace: newWorkspaceIndex,
                                               timestamp: time });
                 // This new workspace will be automatically removed if the application fails
