@@ -599,8 +599,10 @@ st_entry_key_press_event (ClutterActor    *actor,
      didn't handle them */
 
   /* paste */
-  if ((event->modifier_state & CLUTTER_CONTROL_MASK)
-      && event->keyval == CLUTTER_v)
+  if (((event->modifier_state & CLUTTER_CONTROL_MASK)
+       && event->keyval == CLUTTER_KEY_v) ||
+      ((event->modifier_state & CLUTTER_SHIFT_MASK)
+       && event->keyval == CLUTTER_KEY_Insert))
     {
       StClipboard *clipboard;
 
