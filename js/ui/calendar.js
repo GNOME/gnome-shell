@@ -14,6 +14,9 @@ const Shell = imports.gi.Shell;
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
 
+// alias to prevent xgettext from picking up strings translated in GTK+
+const gtk30_ = Gettext_gtk30.gettext;
+
 // in org.gnome.desktop.interface
 const CLOCK_FORMAT_KEY        = 'clock-format';
 
@@ -387,7 +390,7 @@ const Calendar = new Lang.Class({
 
         // Find the ordering for month/year in the calendar heading
         this._headerFormatWithoutYear = '%B';
-        switch (Gettext_gtk30.gettext('calendar:MY')) {
+        switch (gtk30_('calendar:MY')) {
         case 'calendar:MY':
             this._headerFormat = '%B %Y';
             break;
