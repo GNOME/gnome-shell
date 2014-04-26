@@ -209,6 +209,28 @@ clutter_image_new (void)
  *
  * The image data is copied in texture memory.
  *
+ * The image data is expected to be a linear array of RGBA or RGB pixel data;
+ * how to retrieve that data is left to platform specific image loaders. For
+ * instance, if you use the GdkPixbuf library:
+ *
+ * |[<!-- language="C" -->
+ *   ClutterContent *image = clutter_image_new ();
+ *
+ *   GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
+ *
+ *   clutter_image_set_data (CLUTTER_IMAGE (image),
+ *                           gdk_pixbuf_get_pixels (pixbuf),
+ *                           gdk_pixbuf_has_alpha (pixbuf)
+ *                             ? COGL_PIXEL_FORMAT_RGBA_8888
+ *                             : COGL_PIXEL_FORMAT_RGB_888,
+ *                           gdk_pixbuf_get_width (pixbuf),
+ *                           gdk_pixbuf_get_height (pixbuf),
+ *                           gdk_pixbuf_get_rowstride (pixbuf),
+ *                           &error);
+ *
+ *   g_object_unref (pixbuf);
+ * ]|
+ *
  * Return value: %TRUE if the image data was successfully loaded,
  *   and %FALSE otherwise.
  *
