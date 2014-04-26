@@ -324,6 +324,7 @@ commit_pending_state (MetaWaylandSurface      *surface,
                       MetaWaylandPendingState *pending)
 {
   MetaWaylandCompositor *compositor = surface->compositor;
+  double output_scale;
 
   /* If this surface is a subsurface in in synchronous mode, commit
    * has a special-case and should not apply the pending state immediately.
@@ -373,6 +374,11 @@ commit_pending_state (MetaWaylandSurface      *surface,
     subsurface_surface_commit (surface, pending);
 
   g_list_foreach (surface->subsurfaces, parent_surface_committed, NULL);
+
+  /* scale surface texture */
+  output_scale = meta_surface_actor_wayland_get_scale (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor));
+  clutter_actor_set_scale (CLUTTER_ACTOR (meta_surface_actor_get_texture (surface->surface_actor)),
+                           output_scale, output_scale);
 
   /* wl_surface.frame */
   wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);

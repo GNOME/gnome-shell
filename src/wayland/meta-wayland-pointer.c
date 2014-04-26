@@ -721,7 +721,7 @@ meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
   ClutterPoint pos;
 
   clutter_input_device_get_coords (pointer->device, NULL, &pos);
-  clutter_actor_transform_stage_point (CLUTTER_ACTOR (surface->surface_actor),
+  clutter_actor_transform_stage_point (CLUTTER_ACTOR (meta_surface_actor_get_texture (surface->surface_actor)),
                                        pos.x, pos.y, &xf, &yf);
 
   *sx = wl_fixed_from_double (xf) / surface->scale;
