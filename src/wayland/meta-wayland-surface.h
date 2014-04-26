@@ -50,6 +50,8 @@ typedef struct
   int32_t dx;
   int32_t dy;
 
+  int scale;
+
   /* wl_surface.damage */
   cairo_region_t *damage;
 
@@ -79,6 +81,7 @@ struct _MetaWaylandSurface
   MetaWaylandSurfaceExtension wl_shell_surface;
   MetaWaylandSurfaceExtension gtk_surface;
   MetaWaylandSurfaceExtension subsurface;
+  int scale;
 
   MetaWaylandBuffer *buffer;
   struct wl_listener buffer_destroy_listener;

@@ -724,8 +724,8 @@ meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
   clutter_actor_transform_stage_point (CLUTTER_ACTOR (surface->surface_actor),
                                        pos.x, pos.y, &xf, &yf);
 
-  *sx = wl_fixed_from_double (xf);
-  *sy = wl_fixed_from_double (yf);
+  *sx = wl_fixed_from_double (xf) / surface->scale;
+  *sy = wl_fixed_from_double (yf) / surface->scale;
 }
 
 void

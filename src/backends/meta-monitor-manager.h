@@ -73,6 +73,7 @@ struct _MetaOutput
   int width_mm;
   int height_mm;
   CoglSubpixelOrder subpixel_order;
+  int scale;
 
   MetaMonitorMode *preferred_mode;
   MetaMonitorMode **modes;

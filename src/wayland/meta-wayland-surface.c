@@ -108,6 +108,7 @@ surface_process_damage (MetaWaylandSurface *surface,
 {
   int i, n_rectangles;
   cairo_rectangle_int_t buffer_rect;
+  int scale = surface->scale;
 
   /* Damage without a buffer makes no sense so ignore that, otherwise we would crash */
   if (!surface->buffer)
@@ -129,7 +130,7 @@ surface_process_damage (MetaWaylandSurface *surface,
       cairo_rectangle_int_t rect;
       cairo_region_get_rectangle (region, i, &rect);
       meta_surface_actor_process_damage (surface->surface_actor,
-                                         rect.x, rect.y, rect.width, rect.height);
+                                         rect.x * scale, rect.y * scale, rect.width * scale, rect.height * scale);
     }
 }
 
@@ -206,6 +207,7 @@ pending_state_init (MetaWaylandPendingState *state)
   state->buffer = NULL;
   state->dx = 0;
   state->dy = 0;
+  state->scale = 0;
 
   state->input_region = NULL;
   state->opaque_region = NULL;
@@ -287,6 +289,36 @@ parent_surface_committed (gpointer data, gpointer user_data)
   subsurface_parent_surface_committed (data);
 }
 
+static cairo_region_t*
+scale_region (cairo_region_t *region, int scale)
+{
+  int n_rects, i;
+  cairo_rectangle_int_t *rects;
+  cairo_region_t *scaled_region;
+
+  if (scale == 1)
+    return region;
+
+  n_rects = cairo_region_num_rectangles (region);
+
+  rects = g_malloc (sizeof(cairo_rectangle_int_t) * n_rects);
+  for (i = 0; i < n_rects; i++)
+    {
+      cairo_region_get_rectangle (region, i, &rects[i]);
+      rects[i].x *= scale;
+      rects[i].y *= scale;
+      rects[i].width *= scale;
+      rects[i].height *= scale;
+    }
+
+  scaled_region = cairo_region_create_rectangles (rects, n_rects);
+
+  g_free (rects);
+  cairo_region_destroy (region);
+
+  return scaled_region;
+}
+
 static void
 commit_pending_state (MetaWaylandSurface      *surface,
                       MetaWaylandPendingState *pending)
@@ -316,13 +348,22 @@ commit_pending_state (MetaWaylandSurface      *surface,
         }
     }
 
+  if (pending->scale > 0)
+    surface->scale = pending->scale;
+
   if (!cairo_region_is_empty (pending->damage))
     surface_process_damage (surface, pending->damage);
 
   if (pending->opaque_region)
-    meta_surface_actor_set_opaque_region (surface->surface_actor, pending->opaque_region);
+    {
+      pending->opaque_region = scale_region (pending->opaque_region, surface->scale);
+      meta_surface_actor_set_opaque_region (surface->surface_actor, pending->opaque_region);
+    }
   if (pending->input_region)
-    meta_surface_actor_set_input_region (surface->surface_actor, pending->input_region);
+    {
+      pending->input_region = scale_region (pending->input_region, surface->scale);
+      meta_surface_actor_set_input_region (surface->surface_actor, pending->input_region);
+    }
 
   if (surface == compositor->seat->pointer.cursor_surface)
     cursor_surface_commit (surface, pending);
@@ -500,8 +541,11 @@ wl_surface_set_buffer_scale (struct wl_client *client,
                              struct wl_resource *resource,
                              int scale)
 {
-  if (scale != 1)
-    g_warning ("TODO: support set_buffer_scale request");
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  if (scale > 0)
+    surface->pending.scale = scale;
+  else
+    g_warning ("Trying to set invalid buffer_scale of %d\n", scale);
 }
 
 const struct wl_surface_interface meta_wayland_wl_surface_interface = {
@@ -593,6 +637,7 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   MetaWaylandSurface *surface = g_slice_new0 (MetaWaylandSurface);
 
   surface->compositor = compositor;
+  surface->scale = 1;
 
   surface->resource = wl_resource_create (client, &wl_surface_interface,
                                           MIN (META_WL_SURFACE_VERSION, wl_resource_get_version (compositor_resource)), id);
@@ -1684,6 +1729,12 @@ meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
 				       int                 new_width,
 				       int                 new_height)
 {
+  /* new_width and new_height comes from window->rect,
+   * which is based on the buffer size, not the surface
+   * size. The configure event requires surface size. */
+  new_width /= surface->scale;
+  new_height /= surface->scale;
+
   if (surface->xdg_surface.resource)
     xdg_surface_send_configure (surface->xdg_surface.resource,
                                 new_width, new_height);
