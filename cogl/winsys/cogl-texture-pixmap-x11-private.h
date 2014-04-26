@@ -55,9 +55,26 @@ struct _CoglDamageRectangle
   unsigned int y2;
 };
 
+/* For stereo, there are a pair of textures, but we want to share most
+ * other state (the GLXPixmap, visual, etc.) The way we do this is that
+ * the left-eye texture has all the state (there is in fact, no internal
+ * difference between the a MONO and a LEFT texture ), and the
+ * right-eye texture simply points to the left eye texture, with all
+ * other fields ignored.
+ */
+typedef enum
+{
+  COGL_TEXTURE_PIXMAP_MONO,
+  COGL_TEXTURE_PIXMAP_LEFT,
+  COGL_TEXTURE_PIXMAP_RIGHT
+} CoglTexturePixmapStereoMode;
+
 struct _CoglTexturePixmapX11
 {
   CoglTexture _parent;
+
+  CoglTexturePixmapStereoMode stereo_mode;
+  CoglTexturePixmapX11 *left; /* Set only if stereo_mode=RIGHT */
 
   Pixmap pixmap;
   CoglTexture *tex;
@@ -81,5 +98,6 @@ struct _CoglTexturePixmapX11
      texture */
   CoglBool use_winsys_texture;
 };
+
 
 #endif /* __COGL_TEXTURE_PIXMAP_X11_PRIVATE_H */

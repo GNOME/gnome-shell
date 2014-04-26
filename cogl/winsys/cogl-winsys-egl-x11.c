@@ -784,6 +784,7 @@ _cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
 
 static CoglBool
 _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
+                                        CoglBool right,
                                         CoglBool needs_mipmap)
 {
   if (needs_mipmap)
@@ -798,7 +799,8 @@ _cogl_winsys_texture_pixmap_x11_damage_notify (CoglTexturePixmapX11 *tex_pixmap)
 }
 
 static CoglTexture *
-_cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
+_cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap,
+                                             CoglBool right)
 {
   CoglTexturePixmapEGL *egl_tex_pixmap = tex_pixmap->winsys;
 

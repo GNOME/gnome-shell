@@ -166,13 +166,15 @@ typedef struct _CoglWinsysVtable
 
   CoglBool
   (*texture_pixmap_x11_update) (CoglTexturePixmapX11 *tex_pixmap,
+                                CoglTexturePixmapStereoMode stereo_mode,
                                 CoglBool needs_mipmap);
 
   void
   (*texture_pixmap_x11_damage_notify) (CoglTexturePixmapX11 *tex_pixmap);
 
   CoglTexture *
-  (*texture_pixmap_x11_get_texture) (CoglTexturePixmapX11 *tex_pixmap);
+  (*texture_pixmap_x11_get_texture) (CoglTexturePixmapX11 *tex_pixmap,
+                                     CoglTexturePixmapStereoMode stereo_mode);
 #endif
 
   void

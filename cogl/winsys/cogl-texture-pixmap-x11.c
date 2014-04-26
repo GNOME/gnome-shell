@@ -284,11 +284,12 @@ set_damage_object_internal (CoglContext *ctx,
                                    tex_pixmap);
 }
 
-CoglTexturePixmapX11 *
-cogl_texture_pixmap_x11_new (CoglContext *ctxt,
-                             uint32_t pixmap,
-                             CoglBool automatic_updates,
-                             CoglError **error)
+static CoglTexturePixmapX11 *
+_cogl_texture_pixmap_x11_new (CoglContext *ctxt,
+                              uint32_t pixmap,
+                              CoglBool automatic_updates,
+                              CoglTexturePixmapStereoMode stereo_mode,
+                              CoglError **error)
 {
   CoglTexturePixmapX11 *tex_pixmap = g_new (CoglTexturePixmapX11, 1);
   Display *display = cogl_xlib_renderer_get_display (ctxt->display->renderer);
@@ -327,6 +328,8 @@ cogl_texture_pixmap_x11_new (CoglContext *ctxt,
                       &cogl_texture_pixmap_x11_vtable);
 
   tex_pixmap->pixmap = pixmap;
+  tex_pixmap->stereo_mode = stereo_mode;
+  tex_pixmap->left = NULL;
   tex_pixmap->image = NULL;
   tex_pixmap->shm_info.shmid = -1;
   tex_pixmap->tex = NULL;
@@ -385,6 +388,59 @@ cogl_texture_pixmap_x11_new (CoglContext *ctxt,
                                pixmap_width, pixmap_height);
 
   return _cogl_texture_pixmap_x11_object_new (tex_pixmap);
+}
+
+CoglTexturePixmapX11 *
+cogl_texture_pixmap_x11_new (CoglContext *ctxt,
+                             uint32_t pixmap,
+                             CoglBool automatic_updates,
+                             CoglError **error)
+
+{
+  return _cogl_texture_pixmap_x11_new (ctxt, pixmap,
+                                       automatic_updates, COGL_TEXTURE_PIXMAP_MONO,
+                                       error);
+}
+
+CoglTexturePixmapX11 *
+cogl_texture_pixmap_x11_new_left (CoglContext *ctxt,
+                                  uint32_t pixmap,
+                                  CoglBool automatic_updates,
+                                  CoglError **error)
+{
+  return _cogl_texture_pixmap_x11_new (ctxt, pixmap,
+                                       automatic_updates, COGL_TEXTURE_PIXMAP_LEFT,
+                                       error);
+}
+
+CoglTexturePixmapX11 *
+cogl_texture_pixmap_x11_new_right (CoglTexturePixmapX11 *tfp_left)
+{
+  CoglTexture *texture_left = COGL_TEXTURE (tfp_left);
+  CoglTexturePixmapX11 *tfp_right;
+  CoglPixelFormat internal_format;
+
+  g_return_val_if_fail (tfp_left->stereo_mode == COGL_TEXTURE_PIXMAP_LEFT, NULL);
+
+  tfp_right = g_new0 (CoglTexturePixmapX11, 1);
+  tfp_right->stereo_mode = COGL_TEXTURE_PIXMAP_RIGHT;
+  tfp_right->left = cogl_object_ref (tfp_left);
+
+  internal_format = (tfp_left->depth >= 32
+		     ? COGL_PIXEL_FORMAT_RGBA_8888_PRE
+		     : COGL_PIXEL_FORMAT_RGB_888);
+  _cogl_texture_init (COGL_TEXTURE (tfp_right),
+		      texture_left->context,
+		      texture_left->width,
+		      texture_left->height,
+		      internal_format,
+		      NULL, /* no loader */
+		      &cogl_texture_pixmap_x11_vtable);
+
+  _cogl_texture_set_allocated (COGL_TEXTURE (tfp_right), internal_format,
+                               texture_left->width, texture_left->height);
+
+  return _cogl_texture_pixmap_x11_object_new (tfp_right);
 }
 
 static CoglBool
@@ -478,6 +534,9 @@ cogl_texture_pixmap_x11_update_area (CoglTexturePixmapX11 *tex_pixmap,
      texture because we can't determine which will be needed until we
      actually render something */
 
+  if (tex_pixmap->stereo_mode == COGL_TEXTURE_PIXMAP_RIGHT)
+    tex_pixmap = tex_pixmap->left;
+
   if (tex_pixmap->winsys)
     {
       const CoglWinsysVtable *winsys;
@@ -492,6 +551,9 @@ cogl_texture_pixmap_x11_update_area (CoglTexturePixmapX11 *tex_pixmap,
 CoglBool
 cogl_texture_pixmap_x11_is_using_tfp_extension (CoglTexturePixmapX11 *tex_pixmap)
 {
+  if (tex_pixmap->stereo_mode == COGL_TEXTURE_PIXMAP_RIGHT)
+    tex_pixmap = tex_pixmap->left;
+
   return !!tex_pixmap->winsys;
 }
 
@@ -504,6 +566,8 @@ cogl_texture_pixmap_x11_set_damage_object (CoglTexturePixmapX11 *tex_pixmap,
   int damage_base;
 
   _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
+
+  g_return_if_fail (tex_pixmap->stereo_mode != COGL_TEXTURE_PIXMAP_RIGHT);
 
   damage_base = _cogl_xlib_get_damage_base ();
   if (damage_base >= 0)
@@ -717,12 +781,16 @@ static void
 _cogl_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
                                  CoglBool needs_mipmap)
 {
+  CoglTexturePixmapStereoMode stereo_mode = tex_pixmap->stereo_mode;
+  if (stereo_mode == COGL_TEXTURE_PIXMAP_RIGHT)
+    tex_pixmap = tex_pixmap->left;
+
   if (tex_pixmap->winsys)
     {
       const CoglWinsysVtable *winsys =
         _cogl_texture_pixmap_x11_get_winsys (tex_pixmap);
 
-      if (winsys->texture_pixmap_x11_update (tex_pixmap, needs_mipmap))
+      if (winsys->texture_pixmap_x11_update (tex_pixmap, stereo_mode, needs_mipmap))
         {
           _cogl_texture_pixmap_x11_set_use_winsys_texture (tex_pixmap, TRUE);
           return;
@@ -739,8 +807,13 @@ _cogl_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
 static CoglTexture *
 _cogl_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
 {
+  CoglTexturePixmapX11 *original_pixmap = tex_pixmap;
   CoglTexture *tex;
   int i;
+  CoglTexturePixmapStereoMode stereo_mode = tex_pixmap->stereo_mode;
+
+  if (stereo_mode == COGL_TEXTURE_PIXMAP_RIGHT)
+    tex_pixmap = tex_pixmap->left;
 
   /* We try getting the texture twice, once without flushing the
      updates and once with. If pre_paint has been called already then
@@ -757,7 +830,7 @@ _cogl_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
         {
           const CoglWinsysVtable *winsys =
             _cogl_texture_pixmap_x11_get_winsys (tex_pixmap);
-          tex = winsys->texture_pixmap_x11_get_texture (tex_pixmap);
+          tex = winsys->texture_pixmap_x11_get_texture (tex_pixmap, stereo_mode);
         }
       else
         tex = tex_pixmap->tex;
@@ -765,7 +838,7 @@ _cogl_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
       if (tex)
         return tex;
 
-      _cogl_texture_pixmap_x11_update (tex_pixmap, FALSE);
+      _cogl_texture_pixmap_x11_update (original_pixmap, FALSE);
     }
 
   g_assert_not_reached ();
@@ -1046,6 +1119,16 @@ _cogl_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
   Display *display;
 
   _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
+
+  if (tex_pixmap->stereo_mode == COGL_TEXTURE_PIXMAP_RIGHT)
+    {
+      cogl_object_unref (tex_pixmap->left);
+
+      /* Chain up */
+      _cogl_texture_free (COGL_TEXTURE (tex_pixmap));
+
+      return;
+    }
 
   display = cogl_xlib_renderer_get_display (ctxt->display->renderer);
 

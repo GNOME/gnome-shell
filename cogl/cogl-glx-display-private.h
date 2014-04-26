@@ -39,10 +39,11 @@ typedef struct _CoglGLXCachedConfig
   int depth;
   CoglBool found;
   GLXFBConfig fb_config;
+  CoglBool stereo;
   CoglBool can_mipmap;
 } CoglGLXCachedConfig;
 
-#define COGL_GLX_N_CACHED_CONFIGS 3
+#define COGL_GLX_N_CACHED_CONFIGS 6
 
 typedef struct _CoglGLXDisplay
 {

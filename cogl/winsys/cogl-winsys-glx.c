@@ -97,16 +97,21 @@ typedef struct _CoglOnscreenGLX
   CoglBool pending_resize_notify;
 } CoglOnscreenGLX;
 
+typedef struct _CoglPixmapTextureEyeGLX
+{
+  CoglTexture *glx_tex;
+  CoglBool bind_tex_image_queued;
+  CoglBool pixmap_bound;
+} CoglPixmapTextureEyeGLX;
+
 typedef struct _CoglTexturePixmapGLX
 {
   GLXPixmap glx_pixmap;
   CoglBool has_mipmap_space;
   CoglBool can_mipmap;
 
-  CoglTexture *glx_tex;
-
-  CoglBool bind_tex_image_queued;
-  CoglBool pixmap_bound;
+  CoglPixmapTextureEyeGLX left;
+  CoglPixmapTextureEyeGLX right;
 } CoglTexturePixmapGLX;
 
 /* Define a set of arrays containing the functions required from GL
@@ -2101,6 +2106,7 @@ _cogl_winsys_xlib_get_visual_info (void)
 static CoglBool
 get_fbconfig_for_depth (CoglContext *context,
                         unsigned int depth,
+                        CoglBool stereo,
                         GLXFBConfig *fbconfig_ret,
                         CoglBool *can_mipmap_ret)
 {
@@ -2118,11 +2124,12 @@ get_fbconfig_for_depth (CoglContext *context,
   glx_renderer = context->display->renderer->winsys;
   glx_display = context->display->winsys;
 
-  /* Check if we've already got a cached config for this depth */
+  /* Check if we've already got a cached config for this depth and stereo */
   for (i = 0; i < COGL_GLX_N_CACHED_CONFIGS; i++)
     if (glx_display->glx_cached_configs[i].depth == -1)
       spare_cache_slot = i;
-    else if (glx_display->glx_cached_configs[i].depth == depth)
+    else if (glx_display->glx_cached_configs[i].depth == depth &&
+             glx_display->glx_cached_configs[i].stereo == stereo)
       {
         *fbconfig_ret = glx_display->glx_cached_configs[i].fb_config;
         *can_mipmap_ret = glx_display->glx_cached_configs[i].can_mipmap;
@@ -2164,6 +2171,13 @@ get_fbconfig_for_depth (CoglContext *context,
                                           GLX_BUFFER_SIZE,
                                           &value);
       if (value != depth && (value - alpha) != depth)
+        continue;
+
+      glx_renderer->glXGetFBConfigAttrib (dpy,
+                                          fbconfigs[i],
+                                          GLX_STEREO,
+                                          &value);
+      if (!!value != !!stereo)
         continue;
 
       if (glx_renderer->glx_major == 1 && glx_renderer->glx_minor >= 4)
@@ -2323,7 +2337,9 @@ try_create_glx_pixmap (CoglContext *context,
   glx_renderer = renderer->winsys;
   dpy = xlib_renderer->xdpy;
 
-  if (!get_fbconfig_for_depth (context, depth, &fb_config,
+  if (!get_fbconfig_for_depth (context, depth,
+                               tex_pixmap->stereo_mode != COGL_TEXTURE_PIXMAP_MONO,
+                               &fb_config,
                                &glx_tex_pixmap->can_mipmap))
     {
       COGL_NOTE (TEXTURE_PIXMAP, "No suitable FBConfig found for depth %i",
@@ -2412,10 +2428,13 @@ _cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
   glx_tex_pixmap->can_mipmap = FALSE;
   glx_tex_pixmap->has_mipmap_space = FALSE;
 
-  glx_tex_pixmap->glx_tex = NULL;
+  glx_tex_pixmap->left.glx_tex = NULL;
+  glx_tex_pixmap->right.glx_tex = NULL;
 
-  glx_tex_pixmap->bind_tex_image_queued = TRUE;
-  glx_tex_pixmap->pixmap_bound = FALSE;
+  glx_tex_pixmap->left.bind_tex_image_queued = TRUE;
+  glx_tex_pixmap->right.bind_tex_image_queued = TRUE;
+  glx_tex_pixmap->left.pixmap_bound = FALSE;
+  glx_tex_pixmap->right.pixmap_bound = FALSE;
 
   tex_pixmap->winsys = glx_tex_pixmap;
 
@@ -2442,10 +2461,14 @@ free_glx_pixmap (CoglContext *context,
   xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
   glx_renderer = renderer->winsys;
 
-  if (glx_tex_pixmap->pixmap_bound)
+  if (glx_tex_pixmap->left.pixmap_bound)
     glx_renderer->glXReleaseTexImage (xlib_renderer->xdpy,
                                       glx_tex_pixmap->glx_pixmap,
                                       GLX_FRONT_LEFT_EXT);
+  if (glx_tex_pixmap->right.pixmap_bound)
+    glx_renderer->glXReleaseTexImage (xlib_renderer->xdpy,
+                                      glx_tex_pixmap->glx_pixmap,
+                                      GLX_FRONT_RIGHT_EXT);
 
   /* FIXME - we need to trap errors and synchronize here because
    * of ordering issues between the XPixmap destruction and the
@@ -2470,7 +2493,8 @@ free_glx_pixmap (CoglContext *context,
   _cogl_xlib_renderer_untrap_errors (renderer, &trap_state);
 
   glx_tex_pixmap->glx_pixmap = None;
-  glx_tex_pixmap->pixmap_bound = FALSE;
+  glx_tex_pixmap->left.pixmap_bound = FALSE;
+  glx_tex_pixmap->right.pixmap_bound = FALSE;
 }
 
 static void
@@ -2485,8 +2509,11 @@ _cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
 
   free_glx_pixmap (COGL_TEXTURE (tex_pixmap)->context, glx_tex_pixmap);
 
-  if (glx_tex_pixmap->glx_tex)
-    cogl_object_unref (glx_tex_pixmap->glx_tex);
+  if (glx_tex_pixmap->left.glx_tex)
+    cogl_object_unref (glx_tex_pixmap->left.glx_tex);
+
+  if (glx_tex_pixmap->right.glx_tex)
+    cogl_object_unref (glx_tex_pixmap->right.glx_tex);
 
   tex_pixmap->winsys = NULL;
   g_free (glx_tex_pixmap);
@@ -2494,12 +2521,26 @@ _cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
 
 static CoglBool
 _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
+                                        CoglTexturePixmapStereoMode stereo_mode,
                                         CoglBool needs_mipmap)
 {
   CoglTexture *tex = COGL_TEXTURE (tex_pixmap);
   CoglContext *ctx = COGL_TEXTURE (tex_pixmap)->context;
   CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;
+  CoglPixmapTextureEyeGLX *texture_info;
+  int buffer;
   CoglGLXRenderer *glx_renderer;
+
+  if (stereo_mode == COGL_TEXTURE_PIXMAP_RIGHT)
+    {
+      texture_info = &glx_tex_pixmap->right;
+      buffer = GLX_FRONT_RIGHT_EXT;
+    }
+  else
+    {
+      texture_info = &glx_tex_pixmap->left;
+      buffer = GLX_FRONT_LEFT_EXT;
+    }
 
   /* If we don't have a GLX pixmap then fallback */
   if (glx_tex_pixmap->glx_pixmap == None)
@@ -2508,7 +2549,7 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
   glx_renderer = ctx->display->renderer->winsys;
 
   /* Lazily create a texture to hold the pixmap */
-  if (glx_tex_pixmap->glx_tex == NULL)
+  if (texture_info->glx_tex == NULL)
     {
       CoglPixelFormat texture_format;
       CoglError *error = NULL;
@@ -2519,14 +2560,14 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
 
       if (should_use_rectangle (ctx))
         {
-          glx_tex_pixmap->glx_tex = COGL_TEXTURE (
+          texture_info->glx_tex = COGL_TEXTURE (
             cogl_texture_rectangle_new_with_size (ctx,
                                                   tex->width,
                                                   tex->height));
 
           _cogl_texture_set_internal_format (tex, texture_format);
 
-          if (cogl_texture_allocate (glx_tex_pixmap->glx_tex, &error))
+          if (cogl_texture_allocate (texture_info->glx_tex, &error))
             COGL_NOTE (TEXTURE_PIXMAP, "Created a texture rectangle for %p",
                        tex_pixmap);
           else
@@ -2541,14 +2582,14 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
         }
       else
         {
-          glx_tex_pixmap->glx_tex = COGL_TEXTURE (
+          texture_info->glx_tex = COGL_TEXTURE (
             cogl_texture_2d_new_with_size (ctx,
                                            tex->width,
                                            tex->height));
 
           _cogl_texture_set_internal_format (tex, texture_format);
 
-          if (cogl_texture_allocate (glx_tex_pixmap->glx_tex, &error))
+          if (cogl_texture_allocate (texture_info->glx_tex, &error))
             COGL_NOTE (TEXTURE_PIXMAP, "Created a texture 2d for %p",
                        tex_pixmap);
           else
@@ -2586,36 +2627,37 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
                          "updates for %p because creating the GLXPixmap "
                          "with mipmap support failed", tex_pixmap);
 
-              if (glx_tex_pixmap->glx_tex)
-                cogl_object_unref (glx_tex_pixmap->glx_tex);
+              if (texture_info->glx_tex)
+                cogl_object_unref (texture_info->glx_tex);
               return FALSE;
             }
 
-          glx_tex_pixmap->bind_tex_image_queued = TRUE;
+          glx_tex_pixmap->left.bind_tex_image_queued = TRUE;
+          glx_tex_pixmap->right.bind_tex_image_queued = TRUE;
         }
     }
 
-  if (glx_tex_pixmap->bind_tex_image_queued)
+  if (texture_info->bind_tex_image_queued)
     {
       GLuint gl_handle, gl_target;
       CoglXlibRenderer *xlib_renderer =
         _cogl_xlib_renderer_get_data (ctx->display->renderer);
 
-      cogl_texture_get_gl_texture (glx_tex_pixmap->glx_tex,
+      cogl_texture_get_gl_texture (texture_info->glx_tex,
                                    &gl_handle, &gl_target);
 
       COGL_NOTE (TEXTURE_PIXMAP, "Rebinding GLXPixmap for %p", tex_pixmap);
 
       _cogl_bind_gl_texture_transient (gl_target, gl_handle, FALSE);
 
-      if (glx_tex_pixmap->pixmap_bound)
+      if (texture_info->pixmap_bound)
         glx_renderer->glXReleaseTexImage (xlib_renderer->xdpy,
                                           glx_tex_pixmap->glx_pixmap,
-                                          GLX_FRONT_LEFT_EXT);
+                                          buffer);
 
       glx_renderer->glXBindTexImage (xlib_renderer->xdpy,
                                      glx_tex_pixmap->glx_pixmap,
-                                     GLX_FRONT_LEFT_EXT,
+                                     buffer,
                                      NULL);
 
       /* According to the recommended usage in the spec for
@@ -2628,10 +2670,10 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
        * on Mesa and NVidia drivers and it is also what Compiz does so
        * it is probably ok */
 
-      glx_tex_pixmap->bind_tex_image_queued = FALSE;
-      glx_tex_pixmap->pixmap_bound = TRUE;
+      texture_info->bind_tex_image_queued = FALSE;
+      texture_info->pixmap_bound = TRUE;
 
-      _cogl_texture_2d_externally_modified (glx_tex_pixmap->glx_tex);
+      _cogl_texture_2d_externally_modified (texture_info->glx_tex);
     }
 
   return TRUE;
@@ -2642,15 +2684,20 @@ _cogl_winsys_texture_pixmap_x11_damage_notify (CoglTexturePixmapX11 *tex_pixmap)
 {
   CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;
 
-  glx_tex_pixmap->bind_tex_image_queued = TRUE;
+  glx_tex_pixmap->left.bind_tex_image_queued = TRUE;
+  glx_tex_pixmap->right.bind_tex_image_queued = TRUE;
 }
 
 static CoglTexture *
-_cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
+_cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap,
+                                             CoglTexturePixmapStereoMode stereo_mode)
 {
   CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;
 
-  return glx_tex_pixmap->glx_tex;
+  if (stereo_mode == COGL_TEXTURE_PIXMAP_RIGHT)
+    return glx_tex_pixmap->right.glx_tex;
+  else
+    return glx_tex_pixmap->left.glx_tex;
 }
 
 static CoglWinsysVtable _cogl_winsys_vtable =
