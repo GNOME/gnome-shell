@@ -30,7 +30,7 @@
  * #ClutterImage is a #ClutterContent implementation that displays
  * image data inside a #ClutterActor.
  *
- * See [image.c](https://git.gnome.org/browse/clutter/tree/examples/image.c?h=clutter-1.18)
+ * See [image.c](https://git.gnome.org/browse/clutter/tree/examples/image-content.c?h=clutter-1.18)
  * for an example of how to use #ClutterImage.
  *
  * #ClutterImage is available since Clutter 1.10.
