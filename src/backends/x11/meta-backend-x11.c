@@ -33,6 +33,7 @@
 #include "meta-idle-monitor-xsync.h"
 #include "meta-monitor-manager-xrandr.h"
 #include "backends/meta-monitor-manager-dummy.h"
+#include "meta-cursor-renderer-x11.h"
 
 #include <meta/util.h>
 #include "display-private.h"
@@ -66,21 +67,11 @@ handle_alarm_notify (MetaBackend *backend,
       meta_idle_monitor_xsync_handle_xevent (backend->device_monitors[i], (XSyncAlarmNotifyEvent*) event);
 }
 
-static Window
-get_stage_window (MetaBackendX11 *x11)
-{
-  MetaDisplay *display = meta_get_display ();
-  MetaCompositor *compositor = display->compositor;
-  ClutterStage *stage = CLUTTER_STAGE (compositor->stage);
-
-  return clutter_x11_get_stage_window (stage);
-}
-
 static void
 translate_device_event (MetaBackendX11 *x11,
                         XIDeviceEvent  *device_event)
 {
-  Window stage_window = get_stage_window (x11);
+  Window stage_window = meta_backend_x11_get_xwindow (x11);
 
   if (device_event->event != stage_window)
     {
@@ -305,6 +296,12 @@ meta_backend_x11_create_monitor_manager (MetaBackend *backend)
   return g_object_new (META_TYPE_MONITOR_MANAGER_XRANDR, NULL);
 }
 
+static MetaCursorRenderer *
+meta_backend_x11_create_cursor_renderer (MetaBackend *backend)
+{
+  return g_object_new (META_TYPE_CURSOR_RENDERER_X11, NULL);
+}
+
 static gboolean
 meta_backend_x11_grab_device (MetaBackend *backend,
                               int          device_id,
@@ -325,7 +322,7 @@ meta_backend_x11_grab_device (MetaBackend *backend,
   XISetMask (mask.mask, XI_KeyRelease);
 
   ret = XIGrabDevice (priv->xdisplay, device_id,
-                      get_stage_window (x11),
+                      meta_backend_x11_get_xwindow (x11),
                       timestamp,
                       None,
                       XIGrabModeAsync, XIGrabModeAsync,
@@ -357,6 +354,7 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
   backend_class->post_init = meta_backend_x11_post_init;
   backend_class->create_idle_monitor = meta_backend_x11_create_idle_monitor;
   backend_class->create_monitor_manager = meta_backend_x11_create_monitor_manager;
+  backend_class->create_cursor_renderer = meta_backend_x11_create_cursor_renderer;
 
   backend_class->grab_device = meta_backend_x11_grab_device;
   backend_class->ungrab_device = meta_backend_x11_ungrab_device;
@@ -377,3 +375,15 @@ meta_backend_x11_get_xdisplay (MetaBackendX11 *x11)
   return priv->xdisplay;
 }
 
+Window
+meta_backend_x11_get_xwindow (MetaBackendX11 *x11)
+{
+  MetaDisplay *display = meta_get_display ();
+  MetaCompositor *compositor = display->compositor;
+
+  if (compositor == NULL)
+    return None;
+
+  ClutterStage *stage = CLUTTER_STAGE (compositor->stage);
+  return clutter_x11_get_stage_window (stage);
+}

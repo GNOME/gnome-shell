@@ -97,11 +97,6 @@ sync_cursor (MetaCursorTracker *tracker)
 static void
 meta_cursor_tracker_init (MetaCursorTracker *self)
 {
-  /* (JS) Best (?) that can be assumed since XFixes doesn't provide a way of
-     detecting if the system mouse cursor is showing or not.
-
-     On wayland we start with the cursor showing
-  */
   self->is_showing = TRUE;
 }
 
@@ -473,19 +468,7 @@ meta_cursor_tracker_set_pointer_visible (MetaCursorTracker *tracker,
     return;
   tracker->is_showing = visible;
 
-  if (meta_is_wayland_compositor ())
-    {
-      sync_cursor (tracker);
-    }
-  else
-    {
-      if (visible)
-        XFixesShowCursor (tracker->screen->display->xdisplay,
-                          tracker->screen->xroot);
-      else
-        XFixesHideCursor (tracker->screen->display->xdisplay,
-                          tracker->screen->xroot);
-    }
+  sync_cursor (tracker);
 }
 
 MetaCursorReference *

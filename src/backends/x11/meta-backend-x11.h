@@ -53,4 +53,6 @@ GType meta_backend_x11_get_type (void) G_GNUC_CONST;
 
 Display * meta_backend_x11_get_xdisplay (MetaBackendX11 *backend);
 
+Window meta_backend_x11_get_xwindow (MetaBackendX11 *backend);
+
 #endif /* META_BACKEND_X11_H */

@@ -82,6 +82,8 @@ libmutter_la_SOURCES =				\
 	backends/native/meta-launcher.h			\
 	backends/x11/meta-backend-x11.c			\
 	backends/x11/meta-backend-x11.h			\
+	backends/x11/meta-cursor-renderer-x11.c		\
+	backends/x11/meta-cursor-renderer-x11.h		\
 	backends/x11/meta-idle-monitor-xsync.c		\
 	backends/x11/meta-idle-monitor-xsync.h		\
 	backends/x11/meta-monitor-manager-xrandr.c	\
