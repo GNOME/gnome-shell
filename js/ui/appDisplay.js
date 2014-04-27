@@ -81,6 +81,10 @@ function _getFolderName(folder) {
     return name;
 }
 
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
+
 const BaseAppView = new Lang.Class({
     Name: 'BaseAppView',
     Abstract: true,
@@ -439,8 +443,8 @@ const AllView = new Lang.Class({
     },
 
     goToPage: function(pageNumber) {
-        if(pageNumber < 0 || pageNumber > this._grid.nPages() - 1)
-            return;
+        pageNumber = clamp(pageNumber, 0, this._grid.nPages() - 1);
+
         if (this._currentPage == pageNumber && this._displayingPopup && this._currentPopup)
             return;
         if (this._displayingPopup && this._currentPopup)
