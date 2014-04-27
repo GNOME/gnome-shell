@@ -147,7 +147,8 @@ main (int argc, char **argv)
                                     DefaultRootWindow (xdpy),
                                     xvisinfo->visual,
                                     AllocNone);
-  mask = CWBorderPixel | CWColormap;
+  xattr.event_mask = StructureNotifyMask;
+  mask = CWBorderPixel | CWColormap | CWEventMask;
 
   xwin = XCreateWindow (xdpy,
                         DefaultRootWindow (xdpy),
@@ -178,6 +179,14 @@ main (int argc, char **argv)
   XMapWindow (xdpy, tfp_xwin);
 
   gc = XCreateGC (xdpy, tfp_xwin, 0, NULL);
+
+  while (TRUE)
+    {
+      XWindowEvent (xdpy, xwin, StructureNotifyMask, &xev);
+
+      if (xev.xany.type == MapNotify)
+        break;
+    }
 
   pixmap = XCompositeNameWindowPixmap (xdpy, tfp_xwin);
 
