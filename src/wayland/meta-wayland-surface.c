@@ -311,7 +311,8 @@ commit_pending_state (MetaWaylandSurface      *surface,
         }
     }
 
-  surface_process_damage (surface, pending->damage);
+  if (!cairo_region_is_empty (pending->damage))
+    surface_process_damage (surface, pending->damage);
 
   if (pending->opaque_region)
     meta_surface_actor_set_opaque_region (surface->surface_actor, pending->opaque_region);
