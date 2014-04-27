@@ -718,16 +718,11 @@ meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
 					       wl_fixed_t         *sy)
 {
   float xf = 0.0f, yf = 0.0f;
+  ClutterPoint pos;
 
-  ClutterActor *actor = CLUTTER_ACTOR (surface->surface_actor);
-
-  if (actor)
-    {
-      ClutterPoint pos;
-      clutter_input_device_get_coords (pointer->device, NULL, &pos);
-
-      clutter_actor_transform_stage_point (actor, pos.x, pos.y, &xf, &yf);
-    }
+  clutter_input_device_get_coords (pointer->device, NULL, &pos);
+  clutter_actor_transform_stage_point (CLUTTER_ACTOR (surface->surface_actor),
+                                       pos.x, pos.y, &xf, &yf);
 
   *sx = wl_fixed_from_double (xf);
   *sy = wl_fixed_from_double (yf);
