@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-17 19:57+0300\n"
-"PO-Revision-Date: 2014-04-17 20:01+0300\n"
+"POT-Creation-Date: 2014-04-27 03:52+0300\n"
+"PO-Revision-Date: 2014-04-27 03:52+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gnome.org>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -233,29 +233,29 @@ msgstr "פיצול הצפייה משמאל"
 msgid "View split on right"
 msgstr "פיצול הצפייה מימין"
 
-#: ../src/backends/meta-monitor-manager.c:465
+#: ../src/backends/meta-monitor-manager.c:412
 msgid "Built-in display"
 msgstr "תצוגה מובנית"
 
-#: ../src/backends/meta-monitor-manager.c:490
+#: ../src/backends/meta-monitor-manager.c:437
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: ../src/backends/meta-monitor-manager.c:492
+#: ../src/backends/meta-monitor-manager.c:439
 msgid "Unknown Display"
 msgstr "תצוגה לא ידועה"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:500
+#: ../src/backends/meta-monitor-manager.c:447
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:505
+#: ../src/compositor/compositor.c:464
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -294,49 +294,49 @@ msgstr "ה_מתנה"
 msgid "_Force Quit"
 msgstr "_אילוץ סגירה"
 
-#: ../src/core/display.c:453
+#: ../src/core/display.c:452
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Failed to open X Window System display '%s'\n"
 
-#: ../src/core/main.c:200
+#: ../src/core/main.c:190
 msgid "Disable connection to session manager"
 msgstr "Disable connection to session manager"
 
-#: ../src/core/main.c:206
+#: ../src/core/main.c:196
 msgid "Replace the running window manager"
 msgstr "Replace the running window manager"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:202
 msgid "Specify session management ID"
 msgstr "Specify session management ID"
 
-#: ../src/core/main.c:217
+#: ../src/core/main.c:207
 msgid "X Display to use"
 msgstr "X Display to use"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:213
 msgid "Initialize session from savefile"
 msgstr "Initialize session from savefile"
 
-#: ../src/core/main.c:229
+#: ../src/core/main.c:219
 msgid "Make X calls synchronous"
 msgstr "Make X calls synchronous"
 
-#: ../src/core/main.c:235
+#: ../src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "Run as a wayland compositor"
 
-#: ../src/core/main.c:241
+#: ../src/core/main.c:231
 msgid "Run as a full display server, rather than nested"
 msgstr "Run as a full display server, rather than nested"
 
-#: ../src/core/main.c:486
+#: ../src/core/main.c:476
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Failed to scan themes directory: %s\n"
 
-#: ../src/core/main.c:502
+#: ../src/core/main.c:492
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -365,7 +365,7 @@ msgstr "Print version"
 msgid "Mutter plugin to use"
 msgstr "תוסף ה־mutter לשימוש"
 
-#: ../src/core/prefs.c:1988
+#: ../src/core/prefs.c:2005
 #, c-format
 msgid "Workspace %d"
 msgstr "מרחב עבודה %d"
@@ -522,10 +522,22 @@ msgstr ""
 "automatically get maximized."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:19
+msgid "Place new windows in the center"
+msgstr "Place new windows in the center"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:20
+msgid ""
+"When true, the new windows will always be put in the center of the active "
+"screen of the monitor."
+msgstr ""
+"When true, the new windows will always be put in the center of the active "
+"screen of the monitor."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:21
 msgid "Select window from tab popup"
 msgstr "Select window from tab popup"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:20
+#: ../src/org.gnome.mutter.gschema.xml.in.h:22
 msgid "Cancel tab popup"
 msgstr "Cancel tab popup"
 
@@ -639,22 +651,22 @@ msgstr "הזזת החלון למרחב העבודה שלמ_טה"
 msgid "_Close"
 msgstr "_סגור"
 
-#: ../src/ui/menu.c:200
+#: ../src/ui/menu.c:198
 #, c-format
 msgid "Workspace %d%n"
 msgstr "מרחב עבודה %d%n"
 
-#: ../src/ui/menu.c:210
+#: ../src/ui/menu.c:208
 #, c-format
 msgid "Workspace 1_0"
 msgstr "מרחב עבודה 1_0"
 
-#: ../src/ui/menu.c:212
+#: ../src/ui/menu.c:210
 #, c-format
 msgid "Workspace %s%d"
 msgstr "מרחב עבודה %s%d"
 
-#: ../src/ui/menu.c:382
+#: ../src/ui/menu.c:380
 msgid "Move to Another _Workspace"
 msgstr "הזז_ת החלון למרחב עבודה אחר"
 
