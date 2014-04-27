@@ -56,6 +56,8 @@ main (int argc, char **argv)
   XSetWindowAttributes xattr;
   unsigned long mask;
   Window xwin;
+  Atom atom_wm_protocols;
+  Atom atom_wm_delete_window;
   int screen;
   Window tfp_xwin;
   Pixmap pixmap;
@@ -160,6 +162,10 @@ main (int argc, char **argv)
                         xvisinfo->visual,
                         mask, &xattr);
 
+  atom_wm_protocols = XInternAtom (xdpy, "WM_PROTOCOLS", False);
+  atom_wm_delete_window = XInternAtom (xdpy, "WM_DELETE_WINDOW", False);
+  XSetWMProtocols (xdpy, xwin, &atom_wm_delete_window, 1);
+
   XFree (xvisinfo);
 
   cogl_x11_onscreen_set_foreign_window_xid (onscreen, xwin,
@@ -216,6 +222,12 @@ main (int argc, char **argv)
               keysym = XLookupKeysym (&event.xkey, 0);
               if (keysym == XK_q || keysym == XK_Q || keysym == XK_Escape)
                 return 0;
+              break;
+            case ClientMessage:
+              if (event.xclient.message_type == atom_wm_protocols &&
+                  event.xclient.data.l[0] == atom_wm_delete_window)
+                goto out;
+              break;
             }
           cogl_xlib_renderer_handle_event (renderer, &event);
         }
