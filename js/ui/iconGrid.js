@@ -645,6 +645,10 @@ const PaginatedIconGrid = new Lang.Class({
         return this._nPages;
     },
 
+    getPageHeight: function() {
+        return this._availableHeightPerPageForItems();
+    },
+
     getPageY: function(pageNumber) {
         if (!this._nPages)
             return 0;

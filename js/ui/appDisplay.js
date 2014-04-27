@@ -41,9 +41,7 @@ const MIN_FREQUENT_APPS_COUNT = 3;
 const INDICATORS_BASE_TIME = 0.25;
 const INDICATORS_ANIMATION_DELAY = 0.125;
 const INDICATORS_ANIMATION_MAX_TIME = 0.75;
-// Fraction of page height the finger or mouse must reach
-// to change page
-const PAGE_SWITCH_TRESHOLD = 0.2;
+
 const PAGE_SWITCH_TIME = 0.3;
 
 const VIEWS_SWITCH_TIME = 0.4;
@@ -528,15 +526,19 @@ const AllView = new Lang.Class({
     _onPanEnd: function(action) {
          if (this._displayingPopup)
             return;
-        let diffCurrentPage = this._diffToPage(this._currentPage);
-        if (diffCurrentPage > this._scrollView.height * PAGE_SWITCH_TRESHOLD) {
-            if (action.get_velocity(0)[2] > 0)
-                this.goToPage(this._currentPage - 1);
-            else
-                this.goToPage(this._currentPage + 1);
-        } else {
-            this.goToPage(this._currentPage);
-        }
+
+        let pageHeight = this._grid.getPageHeight();
+
+        // Calculate the scroll value we'd be at, which is our current
+        // scroll plus any velocity the user had when they released
+        // their finger.
+
+        let velocity = -action.get_velocity(0)[2];
+        let endPanValue = this._adjustment.value + velocity;
+
+        let closestPage = Math.round(endPanValue / pageHeight);
+        this.goToPage(closestPage);
+
         this._panning = false;
     },
 
