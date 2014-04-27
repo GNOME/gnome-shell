@@ -3,9 +3,14 @@
 #include <cogl/winsys/cogl-texture-pixmap-x11.h>
 #include <glib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <signal.h>
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <X11/Xatom.h>
 
 #include <X11/extensions/Xcomposite.h>
 
@@ -18,6 +23,84 @@
 
 #define TFP_XWIN_WIDTH 200
 #define TFP_XWIN_HEIGHT 200
+
+static pid_t gears_pid = 0;
+
+static void
+spawn_gears (void)
+{
+  pid_t pid = fork();
+
+  if (pid == 0)
+    execlp ("glxgears", "glxgears",
+            NULL);
+
+  gears_pid = pid;
+}
+
+static XID
+find_gears_toplevel (Display *xdpy,
+		     Window   window)
+{
+  Atom window_state = XInternAtom (xdpy, "WM_STATE", False);
+  Atom type;
+  int format;
+  unsigned long n_items;
+  unsigned long bytes_after;
+  unsigned char *data;
+  CoglBool result = FALSE;
+
+  if (window == None)
+    window = DefaultRootWindow (xdpy);
+
+  XGetWindowProperty (xdpy, window, window_state,
+                      0, G_MAXLONG, False, window_state,
+                      &type, &format, &n_items, &bytes_after, &data);
+
+  if (type == window_state)
+    {
+      XFree (data);
+
+      XGetWindowProperty (xdpy, window, XA_WM_NAME,
+                          0, G_MAXLONG, False, XA_STRING,
+                          &type, &format, &n_items, &bytes_after, &data);
+
+      if (type == XA_STRING)
+        {
+          if (format == 8 && strcmp ((char *)data, "glxgears") == 0)
+            result = window;
+
+          XFree (data);
+        }
+    }
+  else
+    {
+      Window root, parent;
+      Window *children;
+      unsigned int n_children;
+      unsigned int i;
+
+      XQueryTree (xdpy, window,
+                  &root, &parent, &children, &n_children);
+
+      for (i = 0; i < n_children; i++)
+        {
+          result = find_gears_toplevel (xdpy, children[i]);
+	  if (result != None)
+	    break;
+        }
+
+      XFree (children);
+    }
+
+  return result;
+}
+
+static void
+kill_gears (void)
+{
+  kill (gears_pid, SIGTERM);
+}
 
 static void
 update_cogl_x11_event_mask (CoglOnscreen *onscreen,
@@ -59,10 +142,24 @@ main (int argc, char **argv)
   Atom atom_wm_protocols;
   Atom atom_wm_delete_window;
   int screen;
-  Window tfp_xwin;
+  CoglBool gears = FALSE;
+  Window tfp_xwin = None;
   Pixmap pixmap;
   CoglTexturePixmapX11 *tfp;
-  GC gc;
+  CoglTexture *right_texture;
+  GC gc = None;
+  int i;
+
+  for (i = 1; i < argc; i++)
+    {
+      if (strcmp (argv[i], "--gears") == 0)
+        gears = TRUE;
+      else
+        {
+          g_printerr ("Usage: cogl-x11-tfp [--gears]\n");
+          return 1;
+        }
+    }
 
   g_print ("NB: Don't use this example as a benchmark since there is "
            "no synchonization between X window updates and onscreen "
@@ -89,6 +186,19 @@ main (int argc, char **argv)
         }
     }
 
+  if (gears)
+    {
+      spawn_gears ();
+      while (TRUE)
+        {
+          tfp_xwin = find_gears_toplevel (xdpy, None);
+          if (tfp_xwin != None)
+            break;
+
+          g_usleep (10000);
+        }
+    }
+
   /* Conceptually choose a GPU... */
   renderer = cogl_renderer_new ();
   /* FIXME: This should conceptually be part of the configuration of
@@ -101,7 +211,7 @@ main (int argc, char **argv)
     }
 
   chain = cogl_swap_chain_new ();
-  cogl_swap_chain_set_has_alpha (chain, TRUE);
+  cogl_swap_chain_set_has_alpha (chain, FALSE);
 
   /* Conceptually declare upfront the kinds of windows we anticipate
    * creating so that when we configure the display pipeline we can avoid
@@ -173,27 +283,37 @@ main (int argc, char **argv)
                                             xdpy);
 
   XMapWindow (xdpy, xwin);
-
-  XCompositeRedirectSubwindows (xdpy, xwin, CompositeRedirectManual);
+  cogl_onscreen_show (onscreen);
 
   screen = DefaultScreen (xdpy);
-  tfp_xwin = XCreateSimpleWindow (xdpy, xwin,
-				  0, 0, TFP_XWIN_WIDTH, TFP_XWIN_HEIGHT,
-				  0,
-				  WhitePixel (xdpy, screen),
-				  WhitePixel (xdpy, screen));
-  XMapWindow (xdpy, tfp_xwin);
 
-  gc = XCreateGC (xdpy, tfp_xwin, 0, NULL);
-
-  while (TRUE)
+  if (gears)
+    {
+      XCompositeRedirectWindow (xdpy, tfp_xwin, CompositeRedirectAutomatic);
+    }
+  else
     {
       XEvent xev;
 
-      XWindowEvent (xdpy, xwin, StructureNotifyMask, &xev);
+      XCompositeRedirectSubwindows (xdpy, xwin, CompositeRedirectManual);
 
-      if (xev.xany.type == MapNotify)
-        break;
+      tfp_xwin = XCreateSimpleWindow (xdpy, xwin,
+                                      0, 0, TFP_XWIN_WIDTH, TFP_XWIN_HEIGHT,
+                                      0,
+                                      WhitePixel (xdpy, screen),
+                                      WhitePixel (xdpy, screen));
+
+      XMapWindow (xdpy, tfp_xwin);
+
+      while (TRUE)
+        {
+          XWindowEvent (xdpy, xwin, StructureNotifyMask, &xev);
+
+          if (xev.xany.type == MapNotify)
+            break;
+        }
+
+      gc = XCreateGC (xdpy, tfp_xwin, 0, NULL);
     }
 
   pixmap = XCompositeNameWindowPixmap (xdpy, tfp_xwin);
@@ -223,25 +343,28 @@ main (int argc, char **argv)
             case KeyRelease:
               keysym = XLookupKeysym (&event.xkey, 0);
               if (keysym == XK_q || keysym == XK_Q || keysym == XK_Escape)
-                return 0;
+                goto out;
               break;
             case ClientMessage:
               if (event.xclient.message_type == atom_wm_protocols &&
                   event.xclient.data.l[0] == atom_wm_delete_window)
-                return 0;
+                goto out;
               break;
             }
           cogl_xlib_renderer_handle_event (renderer, &event);
         }
 
-      pixel =
-        g_random_int_range (0, 255) << 24 |
-        g_random_int_range (0, 255) << 16 |
-        g_random_int_range (0, 255) << 8;
-        g_random_int_range (0, 255);
-      XSetForeground (xdpy, gc, pixel);
-      XFillRectangle (xdpy, tfp_xwin, gc, 0, 0, TFP_XWIN_WIDTH, TFP_XWIN_HEIGHT);
-      XFlush (xdpy);
+      if (!gears)
+        {
+          pixel =
+            g_random_int_range (0, 255) << 24 |
+            g_random_int_range (0, 255) << 16 |
+            g_random_int_range (0, 255) << 8;
+          g_random_int_range (0, 255);
+          XSetForeground (xdpy, gc, pixel);
+          XFillRectangle (xdpy, tfp_xwin, gc, 0, 0, TFP_XWIN_WIDTH, TFP_XWIN_HEIGHT);
+          XFlush (xdpy);
+        }
 
       cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
       pipeline = cogl_pipeline_new (ctx);
@@ -251,5 +374,7 @@ main (int argc, char **argv)
       cogl_onscreen_swap_buffers (onscreen);
     }
 
+ out:
+  kill_gears ();
   return 0;
 }
