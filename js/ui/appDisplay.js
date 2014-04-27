@@ -472,14 +472,12 @@ const AllView = new Lang.Class({
         // longer than PAGE_SWITCH_TIME
         time = Math.min(time, PAGE_SWITCH_TIME);
 
-        if (pageNumber < this._grid.nPages() && pageNumber >= 0) {
-            this._currentPage = pageNumber;
-            Tweener.addTween(this._adjustment,
-                             { value: this._grid.getPageY(this._currentPage),
-                               time: time,
-                               transition: 'easeOutQuad' });
-            this._pageIndicators.setCurrentPage(pageNumber);
-        }
+        this._currentPage = pageNumber;
+        Tweener.addTween(this._adjustment,
+                         { value: this._grid.getPageY(this._currentPage),
+                           time: time,
+                           transition: 'easeOutQuad' });
+        this._pageIndicators.setCurrentPage(pageNumber);
     },
 
     _diffToPage: function (pageNumber) {
