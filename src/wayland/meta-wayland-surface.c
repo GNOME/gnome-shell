@@ -108,6 +108,10 @@ surface_process_damage (MetaWaylandSurface *surface,
   int i, n_rectangles;
   cairo_rectangle_int_t buffer_rect;
 
+  /* Damage without a buffer makes no sense so ignore that, otherwise we would crash */
+  if (!surface->buffer)
+    return;
+
   buffer_rect.x = 0;
   buffer_rect.y = 0;
   buffer_rect.width = cogl_texture_get_width (surface->buffer->texture);
