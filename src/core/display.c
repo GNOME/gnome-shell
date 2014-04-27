@@ -2128,6 +2128,12 @@ void
 meta_display_grab_focus_window_button (MetaDisplay *display,
                                        MetaWindow  *window)
 {
+  MetaBackend *backend = meta_get_backend ();
+
+  /* Do nothing under non-X11 backends */
+  if (!META_IS_BACKEND_X11 (backend))
+    return;
+
   /* Grab button 1 for activating unfocused windows */
   meta_verbose ("Grabbing unfocused window buttons for %s\n", window->desc);
 
@@ -2177,6 +2183,12 @@ void
 meta_display_ungrab_focus_window_button (MetaDisplay *display,
                                          MetaWindow  *window)
 {
+  MetaBackend *backend = meta_get_backend ();
+
+  /* Do nothing under non-X11 backends */
+  if (!META_IS_BACKEND_X11 (backend))
+    return;
+
   meta_verbose ("Ungrabbing unfocused window buttons for %s\n", window->desc);
 
   if (!window->have_focus_click_grab)
