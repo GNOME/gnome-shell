@@ -125,7 +125,6 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 {
   MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
   gboolean should_move = FALSE;
-  gboolean use_saved_pos = FALSE;
 
   g_assert (window->frame == NULL);
 
@@ -152,7 +151,6 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
       /* This is a commit of an attach. We should move the window to match the
        * new position the client wants. */
       should_move = TRUE;
-      use_saved_pos = TRUE;
     }
 
   if (constrained_rect.width != window->rect.width ||
@@ -175,26 +173,8 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 
   if (should_move)
     {
-      int new_x, new_y;
-
-      if (use_saved_pos && wl_window->has_saved_pos)
-        {
-          int dx, dy;
-
-          /* The dx/dy that the client asked for. */
-          dx = requested_rect.x - window->rect.x;
-          dy = requested_rect.y - window->rect.y;
-
-          new_x = wl_window->saved_x + dx;
-          new_y = wl_window->saved_y + dy;
-
-          wl_window->has_saved_pos = FALSE;
-        }
-      else
-        {
-          new_x = constrained_rect.x;
-          new_y = constrained_rect.y;
-        }
+      int new_x = constrained_rect.x;
+      int new_y = constrained_rect.y;
 
       if (new_x != window->rect.x || new_y != window->rect.y)
         {
@@ -236,12 +216,23 @@ meta_window_wayland_move_resize (MetaWindow *window,
                                  int         dx,
                                  int         dy)
 {
+  MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
   int x, y;
   MetaMoveResizeFlags flags;
 
   flags = META_IS_WAYLAND_RESIZE;
 
-  meta_window_get_position (window, &x, &y);
+  if (wl_window->has_saved_pos)
+    {
+      x = wl_window->saved_x;
+      y = wl_window->saved_y;
+      wl_window->has_saved_pos = FALSE;
+      flags |= META_IS_MOVE_ACTION;
+    }
+  else
+    {
+      meta_window_get_position (window, &x, &y);
+    }
 
   /* dx/dy are ignored during resizing */
   if (!meta_grab_op_is_resizing (window->display->grab_op))
