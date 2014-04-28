@@ -1767,6 +1767,9 @@ meta_display_begin_grab_op (MetaDisplay *display,
   if (grab_window == NULL)
     grab_window = window;
 
+  g_assert (grab_window != NULL);
+  g_assert (op != META_GRAB_OP_NONE);
+
   display->grab_have_pointer = FALSE;
 
   if (pointer_already_grabbed)
@@ -1792,12 +1795,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   /* Grab keys for keyboard ops and mouse move/resizes; see #126497 */
   if (meta_grab_op_is_moving_or_resizing (op))
     {
-      if (grab_window)
-        display->grab_have_keyboard =
-                     meta_window_grab_all_keys (grab_window, timestamp);
-      else
-        display->grab_have_keyboard =
-                     meta_screen_grab_all_keys (screen, timestamp);
+      display->grab_have_keyboard = meta_window_grab_all_keys (grab_window, timestamp);
 
       if (!display->grab_have_keyboard)
         {
@@ -1812,16 +1810,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_op = op;
   display->grab_window = grab_window;
   display->grab_button = button;
-  if (window)
-    {
-      display->grab_tile_mode = window->tile_mode;
-      display->grab_tile_monitor_number = window->tile_monitor_number;
-    }
-  else
-    {
-      display->grab_tile_mode = META_TILE_NONE;
-      display->grab_tile_monitor_number = -1;
-    }
+  display->grab_tile_mode = window->tile_mode;
+  display->grab_tile_monitor_number = window->tile_monitor_number;
   display->grab_anchor_root_x = root_x;
   display->grab_anchor_root_y = root_y;
   display->grab_latest_motion_x = root_x;
@@ -1839,26 +1829,19 @@ meta_display_begin_grab_op (MetaDisplay *display,
       display->grab_resize_timeout_id = 0;
     }
 
-  if (display->grab_window)
-    {
-      meta_window_get_client_root_coords (display->grab_window,
-                                          &display->grab_initial_window_pos);
-      display->grab_anchor_window_pos = display->grab_initial_window_pos;
-
-      if (meta_grab_op_is_resizing (display->grab_op) &&
-          display->grab_window->sync_request_counter != None)
-        meta_window_create_sync_request_alarm (display->grab_window);
-    }
-  
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Grab op %u on window %s successful\n",
               display->grab_op, window ? window->desc : "(null)");
 
-  g_assert (display->grab_window != NULL);
-  g_assert (display->grab_op != META_GRAB_OP_NONE);
+  meta_window_get_client_root_coords (display->grab_window,
+                                      &display->grab_initial_window_pos);
+  display->grab_anchor_window_pos = display->grab_initial_window_pos;
 
-  if (display->grab_window)
-    meta_window_refresh_resize_popup (display->grab_window);
+  if (meta_grab_op_is_resizing (display->grab_op) &&
+      display->grab_window->sync_request_counter != None)
+    meta_window_create_sync_request_alarm (display->grab_window);
+
+  meta_window_refresh_resize_popup (display->grab_window);
 
   if (meta_is_wayland_compositor ())
     meta_display_sync_wayland_input_focus (display);
