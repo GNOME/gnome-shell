@@ -32,7 +32,4 @@ gboolean meta_keybindings_set_custom_handler (const gchar        *name,
 					      MetaKeyHandlerFunc  handler,
 					      gpointer            user_data,
 					      GDestroyNotify      free_data);
-
-void     meta_screen_ungrab_all_keys (MetaScreen *screen, guint32 timestamp);
-gboolean meta_screen_grab_all_keys (MetaScreen *screen, guint32 timestamp);
 #endif

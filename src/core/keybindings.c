@@ -1159,9 +1159,6 @@ meta_screen_grab_keys (MetaScreen *screen)
   if (!META_IS_BACKEND_X11 (backend))
     return;
 
-  if (screen->all_keys_grabbed)
-    return;
-
   if (screen->keys_grabbed)
     return;
 
@@ -1404,51 +1401,6 @@ ungrab_keyboard (MetaDisplay *display, guint32 timestamp)
   Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
 
   XIUngrabDevice (xdisplay, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
-}
-
-gboolean
-meta_screen_grab_all_keys (MetaScreen *screen, guint32 timestamp)
-{
-  gboolean retval;
-  MetaBackend *backend = meta_get_backend ();
-
-  if (!META_IS_BACKEND_X11 (backend))
-    return TRUE;
-
-  if (screen->all_keys_grabbed)
-    return FALSE;
-
-  if (screen->keys_grabbed)
-    meta_screen_ungrab_keys (screen);
-
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Grabbing all keys on RootWindow\n");
-  retval = grab_keyboard (screen->display, screen->xroot, timestamp, XIGrabModeAsync);
-  if (retval)
-    {
-      screen->all_keys_grabbed = TRUE;
-      g_object_notify (G_OBJECT (screen), "keyboard-grabbed");
-    }
-  else
-    meta_screen_grab_keys (screen);
-
-  return retval;
-}
-
-void
-meta_screen_ungrab_all_keys (MetaScreen *screen, guint32 timestamp)
-{
-  if (screen->all_keys_grabbed)
-    {
-      ungrab_keyboard (screen->display, timestamp);
-
-      screen->all_keys_grabbed = FALSE;
-      screen->keys_grabbed = FALSE;
-
-      /* Re-establish our standard bindings */
-      meta_screen_grab_keys (screen);
-      g_object_notify (G_OBJECT (screen), "keyboard-grabbed");
-    }
 }
 
 gboolean
@@ -1803,7 +1755,7 @@ meta_display_process_key_event (MetaDisplay     *display,
 
   screen = display->screen;
 
-  all_keys_grabbed = window ? window->all_keys_grabbed : screen->all_keys_grabbed;
+  all_keys_grabbed = window ? window->all_keys_grabbed : FALSE;
   if (!all_keys_grabbed)
     {
       handled = process_overlay_key (display, screen, event, window);
