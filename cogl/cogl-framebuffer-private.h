@@ -61,6 +61,7 @@ typedef struct
   int samples_per_pixel;
   CoglBool swap_throttled;
   CoglBool depth_texture_enabled;
+  CoglBool stereo_enabled;
 } CoglFramebufferConfig;
 
 /* Flags to pass to _cogl_offscreen_new_with_texture_full */
@@ -86,7 +87,8 @@ typedef enum _CoglFramebufferStateIndex
   COGL_FRAMEBUFFER_STATE_INDEX_COLOR_MASK         = 6,
   COGL_FRAMEBUFFER_STATE_INDEX_FRONT_FACE_WINDING = 7,
   COGL_FRAMEBUFFER_STATE_INDEX_DEPTH_WRITE        = 8,
-  COGL_FRAMEBUFFER_STATE_INDEX_MAX                = 9
+  COGL_FRAMEBUFFER_STATE_INDEX_STEREO_MODE        = 9,
+  COGL_FRAMEBUFFER_STATE_INDEX_MAX                = 10
 } CoglFramebufferStateIndex;
 
 typedef enum _CoglFramebufferState
@@ -99,7 +101,8 @@ typedef enum _CoglFramebufferState
   COGL_FRAMEBUFFER_STATE_PROJECTION         = 1<<5,
   COGL_FRAMEBUFFER_STATE_COLOR_MASK         = 1<<6,
   COGL_FRAMEBUFFER_STATE_FRONT_FACE_WINDING = 1<<7,
-  COGL_FRAMEBUFFER_STATE_DEPTH_WRITE        = 1<<8
+  COGL_FRAMEBUFFER_STATE_DEPTH_WRITE        = 1<<8,
+  COGL_FRAMEBUFFER_STATE_STEREO_MODE        = 1<<9
 } CoglFramebufferState;
 
 #define COGL_FRAMEBUFFER_STATE_ALL ((1<<COGL_FRAMEBUFFER_STATE_INDEX_MAX) - 1)
@@ -154,6 +157,7 @@ struct _CoglFramebuffer
   CoglBool            dither_enabled;
   CoglBool            depth_writing_enabled;
   CoglColorMask       color_mask;
+  CoglStereoMode      stereo_mode;
 
   /* We journal the textured rectangles we want to submit to OpenGL so
    * we have an oppertunity to batch them together into less draw

@@ -270,6 +270,7 @@ struct _CoglContext
 
   CoglBool current_gl_dither_enabled;
   CoglColorMask current_gl_color_mask;
+  GLenum current_gl_draw_buffer;
 
   /* Clipping */
   /* TRUE if we have a valid clipping stack flushed. In that case

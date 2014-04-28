@@ -920,6 +920,21 @@ typedef enum { /*< prefix=COGL_READ_PIXELS >*/
   COGL_READ_PIXELS_COLOR_BUFFER = 1L << 0
 } CoglReadPixelsFlags;
 
+/**
+ * CoglStereoMode:
+ * @COGL_STEREO_BOTH: draw to both stereo buffers
+ * @COGL_STEREO_LEFT: draw only to the left stereo buffer
+ * @COGL_STEREO_RIGHT: draw only to the left stereo buffer
+ *
+ * Represents how draw should affect the two buffers
+ * of a stereo framebuffer. See cogl_framebuffer_set_stereo_mode().
+ */
+typedef enum {
+  COGL_STEREO_BOTH,
+  COGL_STEREO_LEFT,
+  COGL_STEREO_RIGHT
+} CoglStereoMode;
+
 COGL_END_DECLS
 
 #endif /* __COGL_TYPES_H__ */

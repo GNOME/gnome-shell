@@ -95,3 +95,11 @@ cogl_onscreen_template_set_swap_throttled (
 {
   onscreen_template->config.swap_throttled = throttled;
 }
+
+void
+cogl_onscreen_template_set_stereo_enabled (
+					   CoglOnscreenTemplate *onscreen_template,
+					   CoglBool enabled)
+{
+  onscreen_template->config.stereo_enabled = enabled;
+}

@@ -737,6 +737,23 @@ cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer);
 int
 cogl_framebuffer_get_depth_bits (CoglFramebuffer *framebuffer);
 
+/*
+ * cogl_framebuffer_get_is_stereo:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ *
+ * Retrieves whether @framebuffer has separate left and right
+ * buffers for use with stereo drawing. See
+ * cogl_framebuffer_set_stereo_mode().
+ *
+ * Return value: %TRUE if @framebuffer has separate left and
+ * right buffers.
+ *
+ * Since: 1.20
+ * Stability: unstable
+ */
+CoglBool
+cogl_framebuffer_get_is_stereo (CoglFramebuffer *framebuffer);
+
 /**
  * cogl_framebuffer_get_dither_enabled:
  * @framebuffer: a pointer to a #CoglFramebuffer
@@ -845,6 +862,41 @@ cogl_framebuffer_get_color_mask (CoglFramebuffer *framebuffer);
 void
 cogl_framebuffer_set_color_mask (CoglFramebuffer *framebuffer,
                                  CoglColorMask color_mask);
+
+/**
+ * cogl_framebuffer_get_stereo_mode:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ *
+ * Gets the current #CoglStereoMode, which defines which stereo buffers
+ * should be drawn to. See cogl_framebuffer_set_stereo_mode().
+ *
+ * Returns: A #CoglStereoMode
+ * Since: 1.20
+ * Stability: unstable
+ */
+CoglStereoMode
+cogl_framebuffer_get_stereo_mode (CoglFramebuffer *framebuffer);
+
+/**
+ * cogl_framebuffer_set_stereo_mode:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ * @stereo_mode: A #CoglStereoMode specifying which stereo buffers
+ *               should be drawn tow.
+ *
+ * Sets which stereo buffers should be drawn to. The default
+ * is %COGL_STEREO_BOTH, which means that both the left and
+ * right buffers will be affected by drawing. For this to have
+ * an effect, the display system must support stereo drawables,
+ * and the framebuffer must have been created with stereo
+ * enabled. (See cogl_onscreen_template_set_stereo_enabled(),
+ * cogl_framebuffer_get_is_stereo().)
+ *
+ * Since: 1.20
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_set_stereo_mode (CoglFramebuffer *framebuffer,
+				  CoglStereoMode stereo_mode);
 
 /**
  * cogl_framebuffer_set_depth_texture_enabled:

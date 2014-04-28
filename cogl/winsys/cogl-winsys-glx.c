@@ -909,6 +909,11 @@ glx_attributes_from_framebuffer_config (CoglDisplay *display,
   attributes[i++] = 1;
   attributes[i++] = GLX_STENCIL_SIZE;
   attributes[i++] = config->need_stencil ? 1: GLX_DONT_CARE;
+  if (config->stereo_enabled)
+    {
+      attributes[i++] = GLX_STEREO;
+      attributes[i++] = TRUE;
+    }
 
   if (glx_renderer->glx_major == 1 && glx_renderer->glx_minor >= 4 &&
       config->samples_per_pixel)
@@ -948,6 +953,7 @@ find_fbconfig (CoglDisplay *display,
                                              xscreen_num,
                                              attributes,
                                              &n_configs);
+
   if (!configs || n_configs == 0)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
@@ -1856,7 +1862,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
                                       rect[0], rect[1], x2, y2,
                                       GL_COLOR_BUFFER_BIT, GL_NEAREST);
         }
-      context->glDrawBuffer (GL_BACK);
+      context->glDrawBuffer (context->current_gl_draw_buffer);
     }
 
   /* NB: unlike glXSwapBuffers, glXCopySubBuffer and
