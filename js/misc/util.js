@@ -129,7 +129,7 @@ function trySpawn(argv)
     // Dummy child watch; we don't want to double-fork internally
     // because then we lose the parent-child relationship, which
     // can break polkit.  See https://bugzilla.redhat.com//show_bug.cgi?id=819275
-    GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, function () {}, null);
+    GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, function () {});
 }
 
 // trySpawnCommandLine:
