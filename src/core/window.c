@@ -1842,8 +1842,6 @@ implement_showing (MetaWindow *window,
     }
   else
     meta_window_show (window);
-
-  window->pending_compositor_effect = META_COMP_EFFECT_NONE;
 }
 
 void
@@ -2619,6 +2617,7 @@ meta_window_show (MetaWindow *window)
 
       meta_compositor_show_window (window->display->compositor,
                                    window, effect);
+      window->pending_compositor_effect = META_COMP_EFFECT_NONE;
     }
 
   /* We don't want to worry about all cases from inside
@@ -2708,6 +2707,7 @@ meta_window_hide (MetaWindow *window)
         }
 
       meta_compositor_hide_window (window->display->compositor, window, effect);
+      window->pending_compositor_effect = META_COMP_EFFECT_NONE;
     }
 
   did_hide = FALSE;
