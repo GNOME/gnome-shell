@@ -1729,7 +1729,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
                             int          root_y)
 {
   MetaWindow *grab_window = NULL;
-  
+
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Doing grab op %u on window %s button %d pointer already grabbed: %d pointer pos %d,%d\n",
               op, window ? window->desc : "none", button, pointer_already_grabbed,
@@ -1795,7 +1795,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
       if (grab_window)
         display->grab_have_keyboard =
                      meta_window_grab_all_keys (grab_window, timestamp);
-
       else
         display->grab_have_keyboard =
                      meta_screen_grab_all_keys (screen, timestamp);
@@ -1809,7 +1808,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
           return FALSE;
         }
     }
-  
+
   display->grab_op = op;
   display->grab_window = grab_window;
   display->grab_button = button;
@@ -1839,18 +1838,16 @@ meta_display_begin_grab_op (MetaDisplay *display,
       g_source_remove (display->grab_resize_timeout_id);
       display->grab_resize_timeout_id = 0;
     }
-	
+
   if (display->grab_window)
     {
       meta_window_get_client_root_coords (display->grab_window,
                                           &display->grab_initial_window_pos);
       display->grab_anchor_window_pos = display->grab_initial_window_pos;
 
-      if ( meta_grab_op_is_resizing (display->grab_op) &&
-           display->grab_window->sync_request_counter != None)
-        {
-          meta_window_create_sync_request_alarm (display->grab_window);
-        }
+      if (meta_grab_op_is_resizing (display->grab_op) &&
+          display->grab_window->sync_request_counter != None)
+        meta_window_create_sync_request_alarm (display->grab_window);
     }
   
   meta_topic (META_DEBUG_WINDOW_OPS,
@@ -1861,16 +1858,14 @@ meta_display_begin_grab_op (MetaDisplay *display,
   g_assert (display->grab_op != META_GRAB_OP_NONE);
 
   if (display->grab_window)
-    {
-      meta_window_refresh_resize_popup (display->grab_window);
-    }
+    meta_window_refresh_resize_popup (display->grab_window);
 
   if (meta_is_wayland_compositor ())
     meta_display_sync_wayland_input_focus (display);
 
   g_signal_emit (display, display_signals[GRAB_OP_BEGIN], 0,
                  screen, display->grab_window, display->grab_op);
-  
+
   return TRUE;
 }
 
