@@ -4197,7 +4197,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
   gboolean is_configure_request;
   gboolean do_gravity_adjust;
   gboolean is_user_action;
-  gboolean is_wayland_resize;
   gboolean did_placement;
   /* used for the configure request, but may not be final
    * destination due to StaticGravity etc.
@@ -4213,7 +4212,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
   is_configure_request = (flags & META_IS_CONFIGURE_REQUEST) != 0;
   do_gravity_adjust = (flags & META_DO_GRAVITY_ADJUST) != 0;
   is_user_action = (flags & META_IS_USER_ACTION) != 0;
-  is_wayland_resize = (flags & META_IS_WAYLAND_RESIZE) != 0;
 
   /* The action has to be a move, a resize or the wayland client
    * acking our choice of size.
@@ -4306,7 +4304,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
     g_signal_emit (window, window_signals[SIZE_CHANGED], 0);
 
   if ((result & (META_MOVE_RESIZE_RESULT_MOVED | META_MOVE_RESIZE_RESULT_RESIZED)) != 0 ||
-      did_placement || is_wayland_resize)
+      did_placement)
     {
       int newx, newy;
       meta_window_get_position (window, &newx, &newy);
