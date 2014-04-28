@@ -483,6 +483,7 @@ struct _MetaWindowClass
                                   MetaRectangle              constrained_rect,
                                   MetaMoveResizeFlags        flags,
                                   MetaMoveResizeResultFlags *result);
+  gboolean (*update_struts)      (MetaWindow *window);
   void (*get_default_skip_hints) (MetaWindow *window,
                                   gboolean   *skip_taskbar_out,
                                   gboolean   *skip_pager_out);

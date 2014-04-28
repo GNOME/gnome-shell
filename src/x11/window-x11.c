@@ -40,6 +40,7 @@
 #include <meta/meta-cursor-tracker.h>
 
 #include "frame.h"
+#include "boxes-private.h"
 #include "window-private.h"
 #include "window-props.h"
 #include "xprops.h"
@@ -898,6 +899,169 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
     *result |= META_MOVE_RESIZE_RESULT_RESIZED;
 }
 
+static gboolean
+meta_window_x11_update_struts (MetaWindow *window)
+{
+  GSList *old_struts;
+  GSList *new_struts;
+  GSList *old_iter, *new_iter;
+  gulong *struts = NULL;
+  int nitems;
+  gboolean changed;
+
+  g_return_val_if_fail (!window->override_redirect, FALSE);
+
+  meta_verbose ("Updating struts for %s\n", window->desc);
+
+  old_struts = window->struts;
+  new_struts = NULL;
+
+  if (meta_prop_get_cardinal_list (window->display,
+                                   window->xwindow,
+                                   window->display->atom__NET_WM_STRUT_PARTIAL,
+                                   &struts, &nitems))
+    {
+      if (nitems != 12)
+        meta_verbose ("_NET_WM_STRUT_PARTIAL on %s has %d values instead "
+                      "of 12\n",
+                      window->desc, nitems);
+      else
+        {
+          /* Pull out the strut info for each side in the hint */
+          int i;
+          for (i=0; i<4; i++)
+            {
+              MetaStrut *temp;
+              int thickness, strut_begin, strut_end;
+
+              thickness = struts[i];
+              if (thickness == 0)
+                continue;
+              strut_begin = struts[4+(i*2)];
+              strut_end   = struts[4+(i*2)+1];
+
+              temp = g_new (MetaStrut, 1);
+              temp->side = 1 << i; /* See MetaSide def.  Matches nicely, eh? */
+              temp->rect = window->screen->rect;
+              switch (temp->side)
+                {
+                case META_SIDE_RIGHT:
+                  temp->rect.x = BOX_RIGHT(temp->rect) - thickness;
+                  /* Intentionally fall through without breaking */
+                case META_SIDE_LEFT:
+                  temp->rect.width  = thickness;
+                  temp->rect.y      = strut_begin;
+                  temp->rect.height = strut_end - strut_begin + 1;
+                  break;
+                case META_SIDE_BOTTOM:
+                  temp->rect.y = BOX_BOTTOM(temp->rect) - thickness;
+                  /* Intentionally fall through without breaking */
+                case META_SIDE_TOP:
+                  temp->rect.height = thickness;
+                  temp->rect.x      = strut_begin;
+                  temp->rect.width  = strut_end - strut_begin + 1;
+                  break;
+                default:
+                  g_assert_not_reached ();
+                }
+
+              new_struts = g_slist_prepend (new_struts, temp);
+            }
+
+          meta_verbose ("_NET_WM_STRUT_PARTIAL struts %lu %lu %lu %lu for "
+                        "window %s\n",
+                        struts[0], struts[1], struts[2], struts[3],
+                        window->desc);
+        }
+      meta_XFree (struts);
+    }
+  else
+    {
+      meta_verbose ("No _NET_WM_STRUT property for %s\n",
+                    window->desc);
+    }
+
+  if (!new_struts &&
+      meta_prop_get_cardinal_list (window->display,
+                                   window->xwindow,
+                                   window->display->atom__NET_WM_STRUT,
+                                   &struts, &nitems))
+    {
+      if (nitems != 4)
+        meta_verbose ("_NET_WM_STRUT on %s has %d values instead of 4\n",
+                      window->desc, nitems);
+      else
+        {
+          /* Pull out the strut info for each side in the hint */
+          int i;
+          for (i=0; i<4; i++)
+            {
+              MetaStrut *temp;
+              int thickness;
+
+              thickness = struts[i];
+              if (thickness == 0)
+                continue;
+
+              temp = g_new (MetaStrut, 1);
+              temp->side = 1 << i;
+              temp->rect = window->screen->rect;
+              switch (temp->side)
+                {
+                case META_SIDE_RIGHT:
+                  temp->rect.x = BOX_RIGHT(temp->rect) - thickness;
+                  /* Intentionally fall through without breaking */
+                case META_SIDE_LEFT:
+                  temp->rect.width  = thickness;
+                  break;
+                case META_SIDE_BOTTOM:
+                  temp->rect.y = BOX_BOTTOM(temp->rect) - thickness;
+                  /* Intentionally fall through without breaking */
+                case META_SIDE_TOP:
+                  temp->rect.height = thickness;
+                  break;
+                default:
+                  g_assert_not_reached ();
+                }
+
+              new_struts = g_slist_prepend (new_struts, temp);
+            }
+
+          meta_verbose ("_NET_WM_STRUT struts %lu %lu %lu %lu for window %s\n",
+                        struts[0], struts[1], struts[2], struts[3],
+                        window->desc);
+        }
+      meta_XFree (struts);
+    }
+  else if (!new_struts)
+    {
+      meta_verbose ("No _NET_WM_STRUT property for %s\n",
+                    window->desc);
+    }
+
+  /* Determine whether old_struts and new_struts are the same */
+  old_iter = old_struts;
+  new_iter = new_struts;
+  while (old_iter && new_iter)
+    {
+      MetaStrut *old_strut = (MetaStrut*) old_iter->data;
+      MetaStrut *new_strut = (MetaStrut*) new_iter->data;
+
+      if (old_strut->side != new_strut->side ||
+          !meta_rectangle_equal (&old_strut->rect, &new_strut->rect))
+        break;
+
+      old_iter = old_iter->next;
+      new_iter = new_iter->next;
+    }
+  changed = (old_iter != NULL || new_iter != NULL);
+
+  /* Update appropriately */
+  meta_free_gslist_and_elements (old_struts);
+  window->struts = new_struts;
+  return changed;
+}
+
 static void
 meta_window_x11_get_default_skip_hints (MetaWindow *window,
                                         gboolean   *skip_taskbar_out,
@@ -922,6 +1086,7 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
   window_class->kill = meta_window_x11_kill;
   window_class->focus = meta_window_x11_focus;
   window_class->move_resize_internal = meta_window_x11_move_resize_internal;
+  window_class->update_struts = meta_window_x11_update_struts;
   window_class->get_default_skip_hints = meta_window_x11_get_default_skip_hints;
 }
 
