@@ -49,23 +49,6 @@
 #include <wayland-server.h>
 #include <xkbcommon/xkbcommon.h>
 
-struct _MetaWaylandKeyboardGrabInterface
-{
-  gboolean (*key) (MetaWaylandKeyboardGrab * grab, uint32_t time,
-		   uint32_t key, uint32_t state);
-  void (*modifiers) (MetaWaylandKeyboardGrab * grab, uint32_t serial,
-                     uint32_t mods_depressed, uint32_t mods_latched,
-                     uint32_t mods_locked, uint32_t group);
-};
-
-struct _MetaWaylandKeyboardGrab
-{
-  const MetaWaylandKeyboardGrabInterface *interface;
-  MetaWaylandKeyboard *keyboard;
-  MetaWaylandSurface *focus;
-  uint32_t key;
-};
-
 typedef struct
 {
   struct xkb_keymap *keymap;
@@ -86,19 +69,10 @@ struct _MetaWaylandKeyboard
   struct wl_listener focus_surface_listener;
   uint32_t focus_serial;
 
-  MetaWaylandKeyboardGrab *grab;
-  MetaWaylandKeyboardGrab default_grab;
-  uint32_t grab_key;
-  uint32_t grab_serial;
-  uint32_t grab_time;
-
   struct wl_array keys;
 
   struct xkb_context *xkb_context;
   MetaWaylandXkbInfo xkb_info;
-
-  MetaWaylandKeyboardGrab input_method_grab;
-  struct wl_resource *input_method_resource;
 };
 
 void meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,

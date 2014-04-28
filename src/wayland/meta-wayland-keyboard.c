@@ -220,10 +220,9 @@ keyboard_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 }
 
 static gboolean
-default_grab_key (MetaWaylandKeyboardGrab *grab,
-                  uint32_t time, uint32_t key, uint32_t state)
+notify_key (MetaWaylandKeyboard *keyboard,
+            uint32_t time, uint32_t key, uint32_t state)
 {
-  MetaWaylandKeyboard *keyboard = grab->keyboard;
   struct wl_resource *resource;
   struct wl_list *l;
 
@@ -245,11 +244,10 @@ default_grab_key (MetaWaylandKeyboardGrab *grab,
 }
 
 static void
-default_grab_modifiers (MetaWaylandKeyboardGrab *grab, uint32_t serial,
-                        uint32_t mods_depressed, uint32_t mods_latched,
-                        uint32_t mods_locked, uint32_t group)
+notify_modifiers (MetaWaylandKeyboard *keyboard, uint32_t serial,
+                  uint32_t mods_depressed, uint32_t mods_latched,
+                  uint32_t mods_locked, uint32_t group)
 {
-  MetaWaylandKeyboard *keyboard = grab->keyboard;
   struct wl_resource *resource;
   struct wl_list *l;
 
@@ -260,11 +258,6 @@ default_grab_modifiers (MetaWaylandKeyboardGrab *grab, uint32_t serial,
                                   mods_latched, mods_locked, group);
     }
 }
-
-static const MetaWaylandKeyboardGrabInterface default_keyboard_grab_interface = {
-  default_grab_key,
-  default_grab_modifiers,
-};
 
 void
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
@@ -278,10 +271,6 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
   wl_list_init (&keyboard->focus_resource_list);
 
   keyboard->focus_surface_listener.notify = keyboard_handle_focus_surface_destroy;
-
-  keyboard->default_grab.interface = &default_keyboard_grab_interface;
-  keyboard->default_grab.keyboard = keyboard;
-  keyboard->grab = &keyboard->default_grab;
 
   wl_array_init (&keyboard->keys);
 
@@ -370,7 +359,6 @@ void
 meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
                               const ClutterKeyEvent *event)
 {
-  MetaWaylandKeyboardGrab *grab = keyboard->grab;
   gboolean is_press = event->type == CLUTTER_KEY_PRESS;
   struct xkb_state *state = keyboard->xkb_info.state;
   enum xkb_state_component changed_state;
@@ -383,12 +371,12 @@ meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
   if (changed_state == 0)
     return;
 
-  grab->interface->modifiers (grab,
-                              wl_display_next_serial (keyboard->display),
-                              xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
-                              xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
-                              xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
-                              xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
+  notify_modifiers (keyboard,
+                    wl_display_next_serial (keyboard->display),
+                    xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
+                    xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
+                    xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
+                    xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
 }
 
 gboolean
@@ -407,10 +395,7 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
 		is_press ? "press" : "release",
 		event->hardware_keycode);
 
-  handled = keyboard->grab->interface->key (keyboard->grab,
-					    event->time,
-					    evdev_code (event),
-					    is_press);
+  handled = notify_key (keyboard, event->time, evdev_code (event), is_press);
 
   if (handled)
     meta_verbose ("Sent event to wayland client\n");
