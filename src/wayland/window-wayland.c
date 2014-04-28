@@ -34,6 +34,9 @@
 struct _MetaWindowWayland
 {
   MetaWindow parent;
+
+  int saved_x;
+  int saved_y;
 };
 
 struct _MetaWindowWaylandClass
@@ -119,8 +122,10 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
                                           MetaMoveResizeFlags        flags,
                                           MetaMoveResizeResultFlags *result)
 {
+  MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
   gboolean should_move = FALSE;
   gboolean is_wayland_resize = FALSE;
+  int new_x, new_y;
 
   g_assert (window->frame == NULL);
 
@@ -138,6 +143,8 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 
   if (is_wayland_resize)
     {
+      int dx, dy;
+
       /* This is a call to wl_surface_commit(), ignore the constrained_rect and
        * update the real client size to match the buffer size.
        */
@@ -149,11 +156,21 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
       /* This is a commit of an attach. We should move the window to match the
        * new position the client wants. */
       should_move = TRUE;
+
+      /* The dx/dy that the client asked for. */
+      dx = requested_rect.x - window->rect.x;
+      dy = requested_rect.y - window->rect.y;
+
+      new_x = wl_window->saved_x + dx;
+      new_y = wl_window->saved_y + dy;
     }
 
   if (constrained_rect.width != window->rect.width ||
       constrained_rect.height != window->rect.height)
     {
+      wl_window->saved_x = constrained_rect.x;
+      wl_window->saved_y = constrained_rect.y;
+
       meta_wayland_surface_configure_notify (window->surface,
                                              constrained_rect.width,
                                              constrained_rect.height);
@@ -163,13 +180,13 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
       /* We're just moving the window, so we don't need to wait for a configure
        * and then ack to simply move the window. */
       should_move = TRUE;
+
+      new_x = constrained_rect.x;
+      new_y = constrained_rect.y;
     }
 
   if (should_move)
     {
-      int new_x = constrained_rect.x;
-      int new_y = constrained_rect.y;
-
       if (new_x != window->rect.x || new_y != window->rect.y)
         {
           *result |= META_MOVE_RESIZE_RESULT_MOVED;
