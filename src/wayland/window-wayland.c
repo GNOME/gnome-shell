@@ -164,12 +164,14 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 
   if (should_move)
     {
-      if (constrained_rect.x != window->rect.x ||
-          constrained_rect.y != window->rect.y)
+      int new_x = constrained_rect.x;
+      int new_y = constrained_rect.y;
+
+      if (new_x != window->rect.x || new_y != window->rect.y)
         {
           *result |= META_MOVE_RESIZE_RESULT_MOVED;
-          window->rect.x = constrained_rect.x;
-          window->rect.y = constrained_rect.y;
+          window->rect.x = new_x;
+          window->rect.y = new_y;
         }
     }
 }
