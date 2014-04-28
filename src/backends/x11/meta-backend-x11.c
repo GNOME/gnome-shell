@@ -68,15 +68,21 @@ handle_alarm_notify (MetaBackend *backend,
       meta_idle_monitor_xsync_handle_xevent (backend->device_monitors[i], (XSyncAlarmNotifyEvent*) event);
 }
 
-static void
-translate_device_event (MetaBackendX11 *x11,
-                        XIDeviceEvent  *device_event)
+static Window
+get_stage_window (MetaBackendX11 *x11)
 {
   MetaDisplay *display = meta_get_display ();
   MetaCompositor *compositor = display->compositor;
   ClutterStage *stage = CLUTTER_STAGE (compositor->stage);
 
-  device_event->event = clutter_x11_get_stage_window (stage);
+  return clutter_x11_get_stage_window (stage);
+}
+
+static void
+translate_device_event (MetaBackendX11 *x11,
+                        XIDeviceEvent  *device_event)
+{
+  device_event->event = get_stage_window (x11);
   device_event->event_x = device_event->root_x;
   device_event->event_y = device_event->root_y;
 }
@@ -311,7 +317,7 @@ meta_backend_x11_grab_device (MetaBackend *backend,
   MetaCursor cursor = meta_cursor_reference_get_meta_cursor (cursor_ref);
 
   ret = XIGrabDevice (priv->xdisplay, device_id,
-                      DefaultRootWindow (priv->xdisplay),
+                      get_stage_window (x11),
                       timestamp,
                       meta_cursor_create_x_cursor (priv->xdisplay, cursor),
                       XIGrabModeAsync, XIGrabModeAsync,
