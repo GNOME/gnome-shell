@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the clutter-1.0 package.
 #
 # Launchpad, 2010.
-# Matej Urbančič <mateju@svn.gnome.org>, 2011 - 2012.
+# Matej Urbančič <mateju@svn.gnome.org>, 2011 - 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-16 14:28+0000\n"
-"PO-Revision-Date: 2013-08-19 23:09+0100\n"
+"POT-Creation-Date: 2014-04-28 15:04+0000\n"
+"PO-Revision-Date: 2014-04-28 21:32+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -23,664 +23,664 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: ../clutter/clutter-actor.c:6177
+#: ../clutter/clutter-actor.c:6224
 msgid "X coordinate"
 msgstr "Koordinata X"
 
-#: ../clutter/clutter-actor.c:6178
+#: ../clutter/clutter-actor.c:6225
 msgid "X coordinate of the actor"
 msgstr "X koordinata predmeta"
 
-#: ../clutter/clutter-actor.c:6196
+#: ../clutter/clutter-actor.c:6243
 msgid "Y coordinate"
 msgstr "Koordinata Y"
 
-#: ../clutter/clutter-actor.c:6197
+#: ../clutter/clutter-actor.c:6244
 msgid "Y coordinate of the actor"
 msgstr "Y koordinata predmeta"
 
-#: ../clutter/clutter-actor.c:6219
+#: ../clutter/clutter-actor.c:6266
 msgid "Position"
 msgstr "Položaj"
 
-#: ../clutter/clutter-actor.c:6220
+#: ../clutter/clutter-actor.c:6267
 msgid "The position of the origin of the actor"
 msgstr "Položaj začetka gradnika"
 
-#: ../clutter/clutter-actor.c:6237 ../clutter/clutter-canvas.c:224
+#: ../clutter/clutter-actor.c:6284 ../clutter/clutter-canvas.c:242
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
 msgstr "Širina"
 
-#: ../clutter/clutter-actor.c:6238
+#: ../clutter/clutter-actor.c:6285
 msgid "Width of the actor"
 msgstr "Širina predmeta"
 
-#: ../clutter/clutter-actor.c:6256 ../clutter/clutter-canvas.c:240
+#: ../clutter/clutter-actor.c:6303 ../clutter/clutter-canvas.c:258
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
 msgstr "Višina"
 
-#: ../clutter/clutter-actor.c:6257
+#: ../clutter/clutter-actor.c:6304
 msgid "Height of the actor"
 msgstr "Višina predmeta"
 
-#: ../clutter/clutter-actor.c:6278
+#: ../clutter/clutter-actor.c:6325
 msgid "Size"
 msgstr "Velikost"
 
-#: ../clutter/clutter-actor.c:6279
+#: ../clutter/clutter-actor.c:6326
 msgid "The size of the actor"
 msgstr "Velikost gradnika"
 
-#: ../clutter/clutter-actor.c:6297
+#: ../clutter/clutter-actor.c:6344
 msgid "Fixed X"
 msgstr "Stalen X"
 
-#: ../clutter/clutter-actor.c:6298
+#: ../clutter/clutter-actor.c:6345
 msgid "Forced X position of the actor"
 msgstr "Vsiljen položaj X predmeta"
 
-#: ../clutter/clutter-actor.c:6315
+#: ../clutter/clutter-actor.c:6362
 msgid "Fixed Y"
 msgstr "Stalen Y"
 
-#: ../clutter/clutter-actor.c:6316
+#: ../clutter/clutter-actor.c:6363
 msgid "Forced Y position of the actor"
 msgstr "Vsiljen Y položaj predmeta"
 
-#: ../clutter/clutter-actor.c:6331
+#: ../clutter/clutter-actor.c:6378
 msgid "Fixed position set"
 msgstr "Stalen položaj je nastavljen"
 
-#: ../clutter/clutter-actor.c:6332
+#: ../clutter/clutter-actor.c:6379
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Ali naj se za predmet uporabi stalen položaj"
 
-#: ../clutter/clutter-actor.c:6350
+#: ../clutter/clutter-actor.c:6397
 msgid "Min Width"
 msgstr "Najmanjša širina"
 
-#: ../clutter/clutter-actor.c:6351
+#: ../clutter/clutter-actor.c:6398
 msgid "Forced minimum width request for the actor"
 msgstr "Vsiljena najmanjša zahteva širine za predmet"
 
-#: ../clutter/clutter-actor.c:6369
+#: ../clutter/clutter-actor.c:6416
 msgid "Min Height"
 msgstr "Najmanjša višina"
 
-#: ../clutter/clutter-actor.c:6370
+#: ../clutter/clutter-actor.c:6417
 msgid "Forced minimum height request for the actor"
 msgstr "Vsiljena najmanjša zahteva višine za predmet"
 
-#: ../clutter/clutter-actor.c:6388
+#: ../clutter/clutter-actor.c:6435
 msgid "Natural Width"
 msgstr "Naravna širina"
 
-#: ../clutter/clutter-actor.c:6389
+#: ../clutter/clutter-actor.c:6436
 msgid "Forced natural width request for the actor"
 msgstr "Vsiljena zahteva naravne širine za predmet"
 
-#: ../clutter/clutter-actor.c:6407
+#: ../clutter/clutter-actor.c:6454
 msgid "Natural Height"
 msgstr "Naravna višina"
 
-#: ../clutter/clutter-actor.c:6408
+#: ../clutter/clutter-actor.c:6455
 msgid "Forced natural height request for the actor"
 msgstr "Vsiljena naravna višina za predmet"
 
-#: ../clutter/clutter-actor.c:6423
+#: ../clutter/clutter-actor.c:6470
 msgid "Minimum width set"
 msgstr "Najmanjša nastavljena širina"
 
-#: ../clutter/clutter-actor.c:6424
+#: ../clutter/clutter-actor.c:6471
 msgid "Whether to use the min-width property"
 msgstr "Ali naj se uporabi lastnost najmanjša širina"
 
-#: ../clutter/clutter-actor.c:6438
+#: ../clutter/clutter-actor.c:6485
 msgid "Minimum height set"
 msgstr "Najmanjša nastavljena višina"
 
-#: ../clutter/clutter-actor.c:6439
+#: ../clutter/clutter-actor.c:6486
 msgid "Whether to use the min-height property"
 msgstr "Ali naj se uporabi lastnost najmanjša višina"
 
-#: ../clutter/clutter-actor.c:6453
+#: ../clutter/clutter-actor.c:6500
 msgid "Natural width set"
 msgstr "Nastavljena naravna širina"
 
-#: ../clutter/clutter-actor.c:6454
+#: ../clutter/clutter-actor.c:6501
 msgid "Whether to use the natural-width property"
 msgstr "Ali naj se uporabi lastnost naravna širina"
 
-#: ../clutter/clutter-actor.c:6468
+#: ../clutter/clutter-actor.c:6515
 msgid "Natural height set"
 msgstr "Nastavljena naravna višina"
 
-#: ../clutter/clutter-actor.c:6469
+#: ../clutter/clutter-actor.c:6516
 msgid "Whether to use the natural-height property"
 msgstr "Ali naj se uporabi lastnost naravna višina"
 
-#: ../clutter/clutter-actor.c:6485
+#: ../clutter/clutter-actor.c:6532
 msgid "Allocation"
 msgstr "Dodelitev"
 
-#: ../clutter/clutter-actor.c:6486
+#: ../clutter/clutter-actor.c:6533
 msgid "The actor's allocation"
 msgstr "Dodelitev predmeta"
 
-#: ../clutter/clutter-actor.c:6543
+#: ../clutter/clutter-actor.c:6590
 msgid "Request Mode"
 msgstr "Način zahteve"
 
-#: ../clutter/clutter-actor.c:6544
+#: ../clutter/clutter-actor.c:6591
 msgid "The actor's request mode"
 msgstr "Način zahteve predmeta"
 
-#: ../clutter/clutter-actor.c:6568
+#: ../clutter/clutter-actor.c:6615
 msgid "Depth"
 msgstr "Globina"
 
-#: ../clutter/clutter-actor.c:6569
+#: ../clutter/clutter-actor.c:6616
 msgid "Position on the Z axis"
 msgstr "Položaj na Z osi"
 
-#: ../clutter/clutter-actor.c:6596
+#: ../clutter/clutter-actor.c:6643
 msgid "Z Position"
 msgstr "Položaj Z"
 
-#: ../clutter/clutter-actor.c:6597
+#: ../clutter/clutter-actor.c:6644
 msgid "The actor's position on the Z axis"
 msgstr "Položaj premeta na osi Z"
 
-#: ../clutter/clutter-actor.c:6614
+#: ../clutter/clutter-actor.c:6661
 msgid "Opacity"
 msgstr "Prekrivnost"
 
-#: ../clutter/clutter-actor.c:6615
+#: ../clutter/clutter-actor.c:6662
 msgid "Opacity of an actor"
 msgstr "Prekrivnost predmeta"
 
-#: ../clutter/clutter-actor.c:6635
+#: ../clutter/clutter-actor.c:6682
 msgid "Offscreen redirect"
 msgstr "Izven-zaslonska preusmeritev"
 
-#: ../clutter/clutter-actor.c:6636
+#: ../clutter/clutter-actor.c:6683
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr "Ali naj se predmet splošči v enojno sliko"
 
-#: ../clutter/clutter-actor.c:6650
+#: ../clutter/clutter-actor.c:6697
 msgid "Visible"
 msgstr "Vidno"
 
-#: ../clutter/clutter-actor.c:6651
+#: ../clutter/clutter-actor.c:6698
 msgid "Whether the actor is visible or not"
 msgstr "Ali je predmet viden ali ne"
 
-#: ../clutter/clutter-actor.c:6665
+#: ../clutter/clutter-actor.c:6712
 msgid "Mapped"
 msgstr "Preslikano"
 
-#: ../clutter/clutter-actor.c:6666
+#: ../clutter/clutter-actor.c:6713
 msgid "Whether the actor will be painted"
 msgstr "Ali bo predmet naslikan"
 
-#: ../clutter/clutter-actor.c:6679
+#: ../clutter/clutter-actor.c:6726
 msgid "Realized"
 msgstr "Realizirano"
 
-#: ../clutter/clutter-actor.c:6680
+#: ../clutter/clutter-actor.c:6727
 msgid "Whether the actor has been realized"
 msgstr "Ali je predmet izveden"
 
-#: ../clutter/clutter-actor.c:6695
+#: ../clutter/clutter-actor.c:6742
 msgid "Reactive"
 msgstr "Ponovno omogoči"
 
-#: ../clutter/clutter-actor.c:6696
+#: ../clutter/clutter-actor.c:6743
 msgid "Whether the actor is reactive to events"
 msgstr "Ali je predmet omogočen v dogodkih"
 
-#: ../clutter/clutter-actor.c:6707
+#: ../clutter/clutter-actor.c:6754
 msgid "Has Clip"
 msgstr "Ima izrez"
 
-#: ../clutter/clutter-actor.c:6708
+#: ../clutter/clutter-actor.c:6755
 msgid "Whether the actor has a clip set"
 msgstr "Ali ima predmet nastavljen izrez"
 
-#: ../clutter/clutter-actor.c:6721
+#: ../clutter/clutter-actor.c:6768
 msgid "Clip"
 msgstr "Izrez"
 
-#: ../clutter/clutter-actor.c:6722
+#: ../clutter/clutter-actor.c:6769
 msgid "The clip region for the actor"
 msgstr "Območje izreza za predmet"
 
-#: ../clutter/clutter-actor.c:6741
+#: ../clutter/clutter-actor.c:6788
 msgid "Clip Rectangle"
 msgstr "Pravokotnik porezave"
 
-#: ../clutter/clutter-actor.c:6742
+#: ../clutter/clutter-actor.c:6789
 msgid "The visible region of the actor"
 msgstr "Vidno območje za predmet"
 
-#: ../clutter/clutter-actor.c:6756 ../clutter/clutter-actor-meta.c:205
-#: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:258
+#: ../clutter/clutter-actor.c:6803 ../clutter/clutter-actor-meta.c:205
+#: ../clutter/clutter-binding-pool.c:318 ../clutter/clutter-input-device.c:247
 msgid "Name"
 msgstr "Ime"
 
-#: ../clutter/clutter-actor.c:6757
+#: ../clutter/clutter-actor.c:6804
 msgid "Name of the actor"
 msgstr "Ime predmeta"
 
-#: ../clutter/clutter-actor.c:6778
+#: ../clutter/clutter-actor.c:6825
 msgid "Pivot Point"
 msgstr "Vrtilna točka"
 
-#: ../clutter/clutter-actor.c:6779
+#: ../clutter/clutter-actor.c:6826
 msgid "The point around which the scaling and rotation occur"
 msgstr "Točka, okoli katere se vrši sprememba merila in sukanje"
 
-#: ../clutter/clutter-actor.c:6797
+#: ../clutter/clutter-actor.c:6844
 msgid "Pivot Point Z"
 msgstr "Vrtilna točka Z"
 
-#: ../clutter/clutter-actor.c:6798
+#: ../clutter/clutter-actor.c:6845
 msgid "Z component of the pivot point"
 msgstr "Sestavni del vrtilne točke"
 
-#: ../clutter/clutter-actor.c:6816
+#: ../clutter/clutter-actor.c:6863
 msgid "Scale X"
 msgstr "Merilo X"
 
-#: ../clutter/clutter-actor.c:6817
+#: ../clutter/clutter-actor.c:6864
 msgid "Scale factor on the X axis"
 msgstr "Faktor merila na osi X"
 
-#: ../clutter/clutter-actor.c:6835
+#: ../clutter/clutter-actor.c:6882
 msgid "Scale Y"
 msgstr "Merilo Y"
 
-#: ../clutter/clutter-actor.c:6836
+#: ../clutter/clutter-actor.c:6883
 msgid "Scale factor on the Y axis"
 msgstr "Faktor merila na osi Y"
 
-#: ../clutter/clutter-actor.c:6854
+#: ../clutter/clutter-actor.c:6901
 msgid "Scale Z"
 msgstr "Merilo Z"
 
-#: ../clutter/clutter-actor.c:6855
+#: ../clutter/clutter-actor.c:6902
 msgid "Scale factor on the Z axis"
 msgstr "Faktor merila na osi Z"
 
-#: ../clutter/clutter-actor.c:6873
+#: ../clutter/clutter-actor.c:6920
 msgid "Scale Center X"
 msgstr "Merilo sredine X"
 
-#: ../clutter/clutter-actor.c:6874
+#: ../clutter/clutter-actor.c:6921
 msgid "Horizontal scale center"
 msgstr "Vodoravno merilo sredine"
 
-#: ../clutter/clutter-actor.c:6892
+#: ../clutter/clutter-actor.c:6939
 msgid "Scale Center Y"
 msgstr "Merilo sredine Y"
 
-#: ../clutter/clutter-actor.c:6893
+#: ../clutter/clutter-actor.c:6940
 msgid "Vertical scale center"
 msgstr "Navpično merilo sredine"
 
-#: ../clutter/clutter-actor.c:6911
+#: ../clutter/clutter-actor.c:6958
 msgid "Scale Gravity"
 msgstr "Vrednost poravnave"
 
-#: ../clutter/clutter-actor.c:6912
+#: ../clutter/clutter-actor.c:6959
 msgid "The center of scaling"
 msgstr "Sredina merila"
 
-#: ../clutter/clutter-actor.c:6930
+#: ../clutter/clutter-actor.c:6977
 msgid "Rotation Angle X"
 msgstr "Vrtenje kota X"
 
-#: ../clutter/clutter-actor.c:6931
+#: ../clutter/clutter-actor.c:6978
 msgid "The rotation angle on the X axis"
 msgstr "Vrtenje kota na osi X"
 
-#: ../clutter/clutter-actor.c:6949
+#: ../clutter/clutter-actor.c:6996
 msgid "Rotation Angle Y"
 msgstr "Vrtenje kota Y"
 
-#: ../clutter/clutter-actor.c:6950
+#: ../clutter/clutter-actor.c:6997
 msgid "The rotation angle on the Y axis"
 msgstr "Vrtenje kota na osi Y"
 
-#: ../clutter/clutter-actor.c:6968
+#: ../clutter/clutter-actor.c:7015
 msgid "Rotation Angle Z"
 msgstr "Vrtenje kota Z"
 
-#: ../clutter/clutter-actor.c:6969
+#: ../clutter/clutter-actor.c:7016
 msgid "The rotation angle on the Z axis"
 msgstr "Vrtenje kota na osi Z"
 
-#: ../clutter/clutter-actor.c:6987
+#: ../clutter/clutter-actor.c:7034
 msgid "Rotation Center X"
 msgstr "Vrtenje sredine X"
 
-#: ../clutter/clutter-actor.c:6988
+#: ../clutter/clutter-actor.c:7035
 msgid "The rotation center on the X axis"
 msgstr "Vrtenje sredine na osi X"
 
-#: ../clutter/clutter-actor.c:7005
+#: ../clutter/clutter-actor.c:7052
 msgid "Rotation Center Y"
 msgstr "Vrtenje sredine Y"
 
-#: ../clutter/clutter-actor.c:7006
+#: ../clutter/clutter-actor.c:7053
 msgid "The rotation center on the Y axis"
 msgstr "Vrtenje sredine na osi Y"
 
-#: ../clutter/clutter-actor.c:7023
+#: ../clutter/clutter-actor.c:7070
 msgid "Rotation Center Z"
 msgstr "Vrtenje sredine Z"
 
-#: ../clutter/clutter-actor.c:7024
+#: ../clutter/clutter-actor.c:7071
 msgid "The rotation center on the Z axis"
 msgstr "Vrtenje sredine na osi Z"
 
-#: ../clutter/clutter-actor.c:7041
+#: ../clutter/clutter-actor.c:7088
 msgid "Rotation Center Z Gravity"
 msgstr "Sredina poravnave vrtenja po osi Z"
 
-#: ../clutter/clutter-actor.c:7042
+#: ../clutter/clutter-actor.c:7089
 msgid "Center point for rotation around the Z axis"
 msgstr "Sredina točke za vrtenje okoli osi Z"
 
-#: ../clutter/clutter-actor.c:7070
+#: ../clutter/clutter-actor.c:7117
 msgid "Anchor X"
 msgstr "Sidro X"
 
-#: ../clutter/clutter-actor.c:7071
+#: ../clutter/clutter-actor.c:7118
 msgid "X coordinate of the anchor point"
 msgstr "X koordinata točke sidra"
 
-#: ../clutter/clutter-actor.c:7099
+#: ../clutter/clutter-actor.c:7146
 msgid "Anchor Y"
 msgstr "Sidro Y"
 
-#: ../clutter/clutter-actor.c:7100
+#: ../clutter/clutter-actor.c:7147
 msgid "Y coordinate of the anchor point"
 msgstr "Y koordinata točke sidra"
 
-#: ../clutter/clutter-actor.c:7127
+#: ../clutter/clutter-actor.c:7174
 msgid "Anchor Gravity"
 msgstr "Sidro poravnave"
 
-#: ../clutter/clutter-actor.c:7128
+#: ../clutter/clutter-actor.c:7175
 msgid "The anchor point as a ClutterGravity"
 msgstr "Točka sidra poravnave"
 
-#: ../clutter/clutter-actor.c:7147
+#: ../clutter/clutter-actor.c:7194
 msgid "Translation X"
 msgstr "Translacija X"
 
-#: ../clutter/clutter-actor.c:7148
+#: ../clutter/clutter-actor.c:7195
 msgid "Translation along the X axis"
 msgstr "Translacija vzdolž osi X"
 
-#: ../clutter/clutter-actor.c:7167
+#: ../clutter/clutter-actor.c:7214
 msgid "Translation Y"
 msgstr "Translacija Y"
 
-#: ../clutter/clutter-actor.c:7168
+#: ../clutter/clutter-actor.c:7215
 msgid "Translation along the Y axis"
 msgstr "Translacija vzdolž osi Y"
 
-#: ../clutter/clutter-actor.c:7187
+#: ../clutter/clutter-actor.c:7234
 msgid "Translation Z"
 msgstr "Translacija Z"
 
-#: ../clutter/clutter-actor.c:7188
+#: ../clutter/clutter-actor.c:7235
 msgid "Translation along the Z axis"
 msgstr "Translacija vzdolž osi Z"
 
-#: ../clutter/clutter-actor.c:7218
+#: ../clutter/clutter-actor.c:7265
 msgid "Transform"
 msgstr "Preoblikovanje"
 
-#: ../clutter/clutter-actor.c:7219
+#: ../clutter/clutter-actor.c:7266
 msgid "Transformation matrix"
 msgstr "Matrika preoblikovanja"
 
-#: ../clutter/clutter-actor.c:7234
+#: ../clutter/clutter-actor.c:7281
 msgid "Transform Set"
 msgstr "Preoblikovanje je nastavljeno"
 
-#: ../clutter/clutter-actor.c:7235
+#: ../clutter/clutter-actor.c:7282
 msgid "Whether the transform property is set"
 msgstr "Ali je lastnost preoblikovanja nastavljena"
 
-#: ../clutter/clutter-actor.c:7256
+#: ../clutter/clutter-actor.c:7303
 msgid "Child Transform"
 msgstr "Preoblikovanje podrejenega predmeta"
 
-#: ../clutter/clutter-actor.c:7257
+#: ../clutter/clutter-actor.c:7304
 msgid "Children transformation matrix"
 msgstr "Matrika preoblikovanja podrejenega predmeta"
 
-#: ../clutter/clutter-actor.c:7272
+#: ../clutter/clutter-actor.c:7319
 msgid "Child Transform Set"
 msgstr "Preoblikovanje podrejenega predmeta je določeno"
 
-#: ../clutter/clutter-actor.c:7273
+#: ../clutter/clutter-actor.c:7320
 msgid "Whether the child-transform property is set"
 msgstr "Ali je lastnost preoblikovanja podrejenega predmeta nastavljena"
 
-#: ../clutter/clutter-actor.c:7290
+#: ../clutter/clutter-actor.c:7337
 msgid "Show on set parent"
 msgstr "Pokaži na nastavljenem nadrejenem predmetu"
 
-#: ../clutter/clutter-actor.c:7291
+#: ../clutter/clutter-actor.c:7338
 msgid "Whether the actor is shown when parented"
 msgstr "Ali je predmet prikazan, ko je nastavljen na nadrejeni predmet"
 
-#: ../clutter/clutter-actor.c:7308
+#: ../clutter/clutter-actor.c:7355
 msgid "Clip to Allocation"
 msgstr "Izrez za dodelitev"
 
-#: ../clutter/clutter-actor.c:7309
+#: ../clutter/clutter-actor.c:7356
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "Nastavi območje izreza za sledenje dodelitve predmeta"
 
-#: ../clutter/clutter-actor.c:7322
+#: ../clutter/clutter-actor.c:7369
 msgid "Text Direction"
 msgstr "Smer besedila"
 
-#: ../clutter/clutter-actor.c:7323
+#: ../clutter/clutter-actor.c:7370
 msgid "Direction of the text"
 msgstr "Smer besedila"
 
-#: ../clutter/clutter-actor.c:7338
+#: ../clutter/clutter-actor.c:7385
 msgid "Has Pointer"
 msgstr "Ima kazalec"
 
-#: ../clutter/clutter-actor.c:7339
+#: ../clutter/clutter-actor.c:7386
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Ali predmet vsebuje kazalnik vhodne naprave"
 
-#: ../clutter/clutter-actor.c:7352
+#: ../clutter/clutter-actor.c:7399
 msgid "Actions"
 msgstr "Dejanja"
 
-#: ../clutter/clutter-actor.c:7353
+#: ../clutter/clutter-actor.c:7400
 msgid "Adds an action to the actor"
 msgstr "Dodajanje dejanja predmeta"
 
-#: ../clutter/clutter-actor.c:7366
+#: ../clutter/clutter-actor.c:7413
 msgid "Constraints"
 msgstr "Omejitve"
 
-#: ../clutter/clutter-actor.c:7367
+#: ../clutter/clutter-actor.c:7414
 msgid "Adds a constraint to the actor"
 msgstr "Dodajanje omejitev predmeta"
 
-#: ../clutter/clutter-actor.c:7380
+#: ../clutter/clutter-actor.c:7427
 msgid "Effect"
 msgstr "Učinek"
 
-#: ../clutter/clutter-actor.c:7381
+#: ../clutter/clutter-actor.c:7428
 msgid "Add an effect to be applied on the actor"
 msgstr "Dodajanje učinka predmeta"
 
-#: ../clutter/clutter-actor.c:7395
+#: ../clutter/clutter-actor.c:7442
 msgid "Layout Manager"
 msgstr "Upravljalnik razporeditev"
 
-#: ../clutter/clutter-actor.c:7396
+#: ../clutter/clutter-actor.c:7443
 msgid "The object controlling the layout of an actor's children"
 msgstr "Predmet, ki nadzira porazdelitev podrejenih predmetov."
 
-#: ../clutter/clutter-actor.c:7410
+#: ../clutter/clutter-actor.c:7457
 msgid "X Expand"
 msgstr "Razširi X"
 
-#: ../clutter/clutter-actor.c:7411
+#: ../clutter/clutter-actor.c:7458
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr "Ali naj se gradniku dodeli dodatni vodoravni prostor"
 
-#: ../clutter/clutter-actor.c:7426
+#: ../clutter/clutter-actor.c:7473
 msgid "Y Expand"
 msgstr "Razširi Y"
 
-#: ../clutter/clutter-actor.c:7427
+#: ../clutter/clutter-actor.c:7474
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr "Ali naj se gradniku dodeli dodatni navpični prostor"
 
-#: ../clutter/clutter-actor.c:7443
+#: ../clutter/clutter-actor.c:7490
 msgid "X Alignment"
 msgstr "Poravnava X"
 
-#: ../clutter/clutter-actor.c:7444
+#: ../clutter/clutter-actor.c:7491
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "Poravnava nadrejenega predmeta na osi X znotraj dodeljenega prostora."
 
-#: ../clutter/clutter-actor.c:7459
+#: ../clutter/clutter-actor.c:7506
 msgid "Y Alignment"
 msgstr "Poravnava Y"
 
-#: ../clutter/clutter-actor.c:7460
+#: ../clutter/clutter-actor.c:7507
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "Poravnava nadrejenega predmeta na osi Y znotraj dodeljenega prostora."
 
-#: ../clutter/clutter-actor.c:7479
+#: ../clutter/clutter-actor.c:7526
 msgid "Margin Top"
 msgstr "Zgornji rob"
 
-#: ../clutter/clutter-actor.c:7480
+#: ../clutter/clutter-actor.c:7527
 msgid "Extra space at the top"
 msgstr "Dodaten prostor zgoraj"
 
-#: ../clutter/clutter-actor.c:7501
+#: ../clutter/clutter-actor.c:7548
 msgid "Margin Bottom"
 msgstr "Spodnji rob"
 
-#: ../clutter/clutter-actor.c:7502
+#: ../clutter/clutter-actor.c:7549
 msgid "Extra space at the bottom"
 msgstr "Dodaten prostor na dnu"
 
-#: ../clutter/clutter-actor.c:7523
+#: ../clutter/clutter-actor.c:7570
 msgid "Margin Left"
 msgstr "Levi rob"
 
-#: ../clutter/clutter-actor.c:7524
+#: ../clutter/clutter-actor.c:7571
 msgid "Extra space at the left"
 msgstr "Dodaten prostor na levi strani"
 
-#: ../clutter/clutter-actor.c:7545
+#: ../clutter/clutter-actor.c:7592
 msgid "Margin Right"
 msgstr "Desni rob"
 
-#: ../clutter/clutter-actor.c:7546
+#: ../clutter/clutter-actor.c:7593
 msgid "Extra space at the right"
 msgstr "Dodaten prostor na desni strani"
 
-#: ../clutter/clutter-actor.c:7562
+#: ../clutter/clutter-actor.c:7609
 msgid "Background Color Set"
 msgstr "Nastavitev barve ozadja"
 
-#: ../clutter/clutter-actor.c:7563 ../clutter/deprecated/clutter-box.c:271
+#: ../clutter/clutter-actor.c:7610 ../clutter/deprecated/clutter-box.c:269
 msgid "Whether the background color is set"
 msgstr "Ali je barva ozadja nastavljena"
 
-#: ../clutter/clutter-actor.c:7579
+#: ../clutter/clutter-actor.c:7626
 msgid "Background color"
 msgstr "Barva ozadja"
 
-#: ../clutter/clutter-actor.c:7580
+#: ../clutter/clutter-actor.c:7627
 msgid "The actor's background color"
 msgstr "Barva ozadja nadrejenega predmeta"
 
-#: ../clutter/clutter-actor.c:7595
+#: ../clutter/clutter-actor.c:7642
 msgid "First Child"
 msgstr "Prvi podrejen predmet"
 
-#: ../clutter/clutter-actor.c:7596
+#: ../clutter/clutter-actor.c:7643
 msgid "The actor's first child"
 msgstr "Prvi podrejeni predmet"
 
-#: ../clutter/clutter-actor.c:7609
+#: ../clutter/clutter-actor.c:7656
 msgid "Last Child"
 msgstr "Zadnji podrejeni predmet"
 
-#: ../clutter/clutter-actor.c:7610
+#: ../clutter/clutter-actor.c:7657
 msgid "The actor's last child"
 msgstr "Zadnji podrejeni predmet"
 
-#: ../clutter/clutter-actor.c:7624
+#: ../clutter/clutter-actor.c:7671
 msgid "Content"
 msgstr "Vsebina"
 
-#: ../clutter/clutter-actor.c:7625
+#: ../clutter/clutter-actor.c:7672
 msgid "Delegate object for painting the actor's content"
 msgstr "Določitev načina izrisa vsebine predmeta"
 
-#: ../clutter/clutter-actor.c:7650
+#: ../clutter/clutter-actor.c:7697
 msgid "Content Gravity"
 msgstr "Poravnava vsebine"
 
-#: ../clutter/clutter-actor.c:7651
+#: ../clutter/clutter-actor.c:7698
 msgid "Alignment of the actor's content"
 msgstr "Poravnava vsebine predmeta"
 
-#: ../clutter/clutter-actor.c:7671
+#: ../clutter/clutter-actor.c:7718
 msgid "Content Box"
 msgstr "Okvirjen prostor"
 
-#: ../clutter/clutter-actor.c:7672
+#: ../clutter/clutter-actor.c:7719
 msgid "The bounding box of the actor's content"
 msgstr "Okvirjen prostor vsebine predmeta"
 
-#: ../clutter/clutter-actor.c:7680
+#: ../clutter/clutter-actor.c:7727
 msgid "Minification Filter"
 msgstr "Filter oddaljevanja"
 
-#: ../clutter/clutter-actor.c:7681
+#: ../clutter/clutter-actor.c:7728
 msgid "The filter used when reducing the size of the content"
 msgstr "Filter, uporabljen za oddaljevanje vsebine"
 
-#: ../clutter/clutter-actor.c:7688
+#: ../clutter/clutter-actor.c:7735
 msgid "Magnification Filter"
 msgstr "FIlter približanja"
 
-#: ../clutter/clutter-actor.c:7689
+#: ../clutter/clutter-actor.c:7736
 msgid "The filter used when increasing the size of the content"
 msgstr "Filter, uporabljen za približanje vsebine"
 
-#: ../clutter/clutter-actor.c:7703
+#: ../clutter/clutter-actor.c:7750
 msgid "Content Repeat"
 msgstr "Ponavljanje vsebine"
 
-#: ../clutter/clutter-actor.c:7704
+#: ../clutter/clutter-actor.c:7751
 msgid "The repeat policy for the actor's content"
 msgstr "Načela ponavljanja vsebine predmeta"
 
@@ -696,7 +696,7 @@ msgstr "Predmet je pritrjen na meta predmet"
 msgid "The name of the meta"
 msgstr "Ime mete"
 
-#: ../clutter/clutter-actor-meta.c:219 ../clutter/clutter-input-device.c:337
+#: ../clutter/clutter-actor-meta.c:219 ../clutter/clutter-input-device.c:326
 #: ../clutter/deprecated/clutter-shader.c:309
 msgid "Enabled"
 msgstr "Omogočeno"
@@ -706,7 +706,7 @@ msgid "Whether the meta is enabled"
 msgstr "Ali je meta omogočena"
 
 #: ../clutter/clutter-align-constraint.c:279
-#: ../clutter/clutter-bind-constraint.c:358 ../clutter/clutter-clone.c:341
+#: ../clutter/clutter-bind-constraint.c:343 ../clutter/clutter-clone.c:341
 #: ../clutter/clutter-snap-constraint.c:321
 msgid "Source"
 msgstr "Vir"
@@ -732,80 +732,84 @@ msgstr "Faktor"
 msgid "The alignment factor, between 0.0 and 1.0"
 msgstr "Faktor poravnave med 0.0 in 1.0"
 
-#: ../clutter/clutter-backend.c:376
+#: ../clutter/clutter-backend.c:380
 msgid "Unable to initialize the Clutter backend"
 msgstr "Ni mogoče zagnati ozadnjega programa Clutter"
 
-#: ../clutter/clutter-backend.c:450
+#: ../clutter/clutter-backend.c:454
 #, c-format
 msgid "The backend of type '%s' does not support creating multiple stages"
 msgstr "Ozadnji program vrste '%s' ne podpira ustvarjanja več ravni dejanj"
 
-#: ../clutter/clutter-bind-constraint.c:359
+#: ../clutter/clutter-bind-constraint.c:344
 msgid "The source of the binding"
 msgstr "Vir vezave"
 
-#: ../clutter/clutter-bind-constraint.c:372
+#: ../clutter/clutter-bind-constraint.c:357
 msgid "Coordinate"
 msgstr "Koordinata"
 
-#: ../clutter/clutter-bind-constraint.c:373
+#: ../clutter/clutter-bind-constraint.c:358
 msgid "The coordinate to bind"
 msgstr "Koordinata za vezavo"
 
-#: ../clutter/clutter-bind-constraint.c:387
+#: ../clutter/clutter-bind-constraint.c:372
 #: ../clutter/clutter-path-constraint.c:226
 #: ../clutter/clutter-snap-constraint.c:366
 msgid "Offset"
 msgstr "Odmik"
 
-#: ../clutter/clutter-bind-constraint.c:388
+#: ../clutter/clutter-bind-constraint.c:373
 msgid "The offset in pixels to apply to the binding"
 msgstr "Odmik v slikovnih točkah za uveljavitev vezave"
 
-#: ../clutter/clutter-binding-pool.c:320
+#: ../clutter/clutter-binding-pool.c:319
 msgid "The unique name of the binding pool"
 msgstr "Edinstveno ime obsega vezave"
 
-#: ../clutter/clutter-bin-layout.c:238 ../clutter/clutter-bin-layout.c:651
-#: ../clutter/clutter-box-layout.c:388 ../clutter/clutter-table-layout.c:604
+#: ../clutter/clutter-bin-layout.c:220 ../clutter/clutter-bin-layout.c:633
+#: ../clutter/clutter-box-layout.c:374
+#: ../clutter/deprecated/clutter-table-layout.c:602
 msgid "Horizontal Alignment"
 msgstr "Vodoravna poravnava"
 
-#: ../clutter/clutter-bin-layout.c:239
+#: ../clutter/clutter-bin-layout.c:221
 msgid "Horizontal alignment for the actor inside the layout manager"
 msgstr "Vodoravna poravnava predmeta v upravljalniku razporeditve"
 
-#: ../clutter/clutter-bin-layout.c:247 ../clutter/clutter-bin-layout.c:671
-#: ../clutter/clutter-box-layout.c:397 ../clutter/clutter-table-layout.c:619
+#: ../clutter/clutter-bin-layout.c:229 ../clutter/clutter-bin-layout.c:653
+#: ../clutter/clutter-box-layout.c:383
+#: ../clutter/deprecated/clutter-table-layout.c:617
 msgid "Vertical Alignment"
 msgstr "Navpična poravnava"
 
-#: ../clutter/clutter-bin-layout.c:248
+#: ../clutter/clutter-bin-layout.c:230
 msgid "Vertical alignment for the actor inside the layout manager"
 msgstr "Navpična poravnava predmeta v upravljalniku razporeditev"
 
-#: ../clutter/clutter-bin-layout.c:652
+#: ../clutter/clutter-bin-layout.c:634
 msgid "Default horizontal alignment for the actors inside the layout manager"
 msgstr "Privzeta vodoravna poravnava predmetov v upravljalniku razporeditev"
 
-#: ../clutter/clutter-bin-layout.c:672
+#: ../clutter/clutter-bin-layout.c:654
 msgid "Default vertical alignment for the actors inside the layout manager"
 msgstr "Privzeta navpična poravnava predmetov v upravljalniku razporeditev"
 
-#: ../clutter/clutter-box-layout.c:363
+#: ../clutter/clutter-box-layout.c:349
 msgid "Expand"
 msgstr "Razširi"
 
-#: ../clutter/clutter-box-layout.c:364
+#: ../clutter/clutter-box-layout.c:350
 msgid "Allocate extra space for the child"
 msgstr "Dodeli dodaten prostor za podrejeni predmet"
 
-#: ../clutter/clutter-box-layout.c:370 ../clutter/clutter-table-layout.c:583
+#: ../clutter/clutter-box-layout.c:356
+#: ../clutter/deprecated/clutter-table-layout.c:581
 msgid "Horizontal Fill"
 msgstr "Vodoravna zapolnitev"
 
-#: ../clutter/clutter-box-layout.c:371 ../clutter/clutter-table-layout.c:584
+#: ../clutter/clutter-box-layout.c:357
+#: ../clutter/deprecated/clutter-table-layout.c:582
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the horizontal axis"
@@ -813,11 +817,13 @@ msgstr ""
 "Ali naj podrejeni predmet dobi prednost, ko vsebnik dodeljuje preostali "
 "prostor na vodoravni osi"
 
-#: ../clutter/clutter-box-layout.c:379 ../clutter/clutter-table-layout.c:590
+#: ../clutter/clutter-box-layout.c:365
+#: ../clutter/deprecated/clutter-table-layout.c:588
 msgid "Vertical Fill"
 msgstr "Navpična zapolnitev"
 
-#: ../clutter/clutter-box-layout.c:380 ../clutter/clutter-table-layout.c:591
+#: ../clutter/clutter-box-layout.c:366
+#: ../clutter/deprecated/clutter-table-layout.c:589
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the vertical axis"
@@ -825,80 +831,88 @@ msgstr ""
 "Ali naj podrejeni predmet dobi prednost, ko vsebnik dodeljuje preostali "
 "prostor na navpični osi"
 
-#: ../clutter/clutter-box-layout.c:389 ../clutter/clutter-table-layout.c:605
+#: ../clutter/clutter-box-layout.c:375
+#: ../clutter/deprecated/clutter-table-layout.c:603
 msgid "Horizontal alignment of the actor within the cell"
 msgstr "Vodoravna poravnava predmeta znotraj celice"
 
-#: ../clutter/clutter-box-layout.c:398 ../clutter/clutter-table-layout.c:620
+#: ../clutter/clutter-box-layout.c:384
+#: ../clutter/deprecated/clutter-table-layout.c:618
 msgid "Vertical alignment of the actor within the cell"
 msgstr "Navpična poravnava predmeta znotraj celice"
 
-#: ../clutter/clutter-box-layout.c:1361
+#: ../clutter/clutter-box-layout.c:1345
 msgid "Vertical"
 msgstr "Navpično"
 
-#: ../clutter/clutter-box-layout.c:1362
+#: ../clutter/clutter-box-layout.c:1346
 msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Ali naj bo osnutek raje navpičen kot vodoraven"
 
-#: ../clutter/clutter-box-layout.c:1379 ../clutter/clutter-flow-layout.c:942
+#: ../clutter/clutter-box-layout.c:1363 ../clutter/clutter-flow-layout.c:927
 #: ../clutter/clutter-grid-layout.c:1549
 msgid "Orientation"
 msgstr "Usmerjenost"
 
-#: ../clutter/clutter-box-layout.c:1380 ../clutter/clutter-flow-layout.c:943
+#: ../clutter/clutter-box-layout.c:1364 ../clutter/clutter-flow-layout.c:928
 #: ../clutter/clutter-grid-layout.c:1550
 msgid "The orientation of the layout"
 msgstr "Usmerjenost razporeditve"
 
-#: ../clutter/clutter-box-layout.c:1396 ../clutter/clutter-flow-layout.c:958
+#: ../clutter/clutter-box-layout.c:1380 ../clutter/clutter-flow-layout.c:943
 msgid "Homogeneous"
 msgstr "Homogeno"
 
-#: ../clutter/clutter-box-layout.c:1397
+#: ../clutter/clutter-box-layout.c:1381
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
 "Ali naj bo razporeditev enotna. To pomeni, da so vsi podrejeni predmeti "
 "enake velikosti."
 
-#: ../clutter/clutter-box-layout.c:1412
+#: ../clutter/clutter-box-layout.c:1396
 msgid "Pack Start"
 msgstr "Začni pakiranje"
 
-#: ../clutter/clutter-box-layout.c:1413
+#: ../clutter/clutter-box-layout.c:1397
 msgid "Whether to pack items at the start of the box"
 msgstr "Ali se zapakirajo predmeti na začetku polja"
 
-#: ../clutter/clutter-box-layout.c:1426
+#: ../clutter/clutter-box-layout.c:1410
 msgid "Spacing"
 msgstr "Razmik"
 
-#: ../clutter/clutter-box-layout.c:1427
+#: ../clutter/clutter-box-layout.c:1411
 msgid "Spacing between children"
 msgstr "Razmik med podrejenimi elementi"
 
-#: ../clutter/clutter-box-layout.c:1444 ../clutter/clutter-table-layout.c:1667
+#: ../clutter/clutter-box-layout.c:1428
+#: ../clutter/deprecated/clutter-table-layout.c:1669
 msgid "Use Animations"
 msgstr "Uporabi animacije"
 
-#: ../clutter/clutter-box-layout.c:1445 ../clutter/clutter-table-layout.c:1668
+#: ../clutter/clutter-box-layout.c:1429
+#: ../clutter/deprecated/clutter-table-layout.c:1670
 msgid "Whether layout changes should be animated"
 msgstr "Ali naj bodo spremembe v razporeditvi animirane"
 
-#: ../clutter/clutter-box-layout.c:1469 ../clutter/clutter-table-layout.c:1692
+#: ../clutter/clutter-box-layout.c:1453
+#: ../clutter/deprecated/clutter-table-layout.c:1694
 msgid "Easing Mode"
 msgstr "Način blaženja"
 
-#: ../clutter/clutter-box-layout.c:1470 ../clutter/clutter-table-layout.c:1693
+#: ../clutter/clutter-box-layout.c:1454
+#: ../clutter/deprecated/clutter-table-layout.c:1695
 msgid "The easing mode of the animations"
 msgstr "Način blaženja animacij"
 
-#: ../clutter/clutter-box-layout.c:1490 ../clutter/clutter-table-layout.c:1713
+#: ../clutter/clutter-box-layout.c:1474
+#: ../clutter/deprecated/clutter-table-layout.c:1715
 msgid "Easing Duration"
 msgstr "Trajanje blaženja"
 
-#: ../clutter/clutter-box-layout.c:1491 ../clutter/clutter-table-layout.c:1714
+#: ../clutter/clutter-box-layout.c:1475
+#: ../clutter/deprecated/clutter-table-layout.c:1716
 msgid "The duration of the animations"
 msgstr "Trajanje animacije"
 
@@ -918,13 +932,29 @@ msgstr "Kontrast"
 msgid "The contrast change to apply"
 msgstr "Spremembe kontrasta za uveljavitev"
 
-#: ../clutter/clutter-canvas.c:225
+#: ../clutter/clutter-canvas.c:243
 msgid "The width of the canvas"
 msgstr "Širina platna slike."
 
-#: ../clutter/clutter-canvas.c:241
+#: ../clutter/clutter-canvas.c:259
 msgid "The height of the canvas"
 msgstr "Višina platna slike."
+
+#: ../clutter/clutter-canvas.c:278
+msgid "Scale Factor Set"
+msgstr "Nastavitev določila povečave"
+
+#: ../clutter/clutter-canvas.c:279
+msgid "Whether the scale-factor property is set"
+msgstr "Ali je določena lastnost določila povečave"
+
+#: ../clutter/clutter-canvas.c:300
+msgid "Scale Factor"
+msgstr "Določilo povečave"
+
+#: ../clutter/clutter-canvas.c:301
+msgid "The scaling factor for the surface"
+msgstr "Določilo povečave površine"
 
 #: ../clutter/clutter-child-meta.c:127
 msgid "Container"
@@ -938,35 +968,35 @@ msgstr "Vsebnik, ki je ustvaril to datoteko"
 msgid "The actor wrapped by this data"
 msgstr "Predmet, ki je ovit s podatki"
 
-#: ../clutter/clutter-click-action.c:557
+#: ../clutter/clutter-click-action.c:586
 msgid "Pressed"
 msgstr "Pritisnjeno"
 
-#: ../clutter/clutter-click-action.c:558
+#: ../clutter/clutter-click-action.c:587
 msgid "Whether the clickable should be in pressed state"
 msgstr "Ali naj bo kliknjeno v pritisnjenem stanju"
 
-#: ../clutter/clutter-click-action.c:571
+#: ../clutter/clutter-click-action.c:600
 msgid "Held"
 msgstr "Zadržano"
 
-#: ../clutter/clutter-click-action.c:572
+#: ../clutter/clutter-click-action.c:601
 msgid "Whether the clickable has a grab"
 msgstr "Ali naj ima kliknjeno zagrabek"
 
-#: ../clutter/clutter-click-action.c:589 ../clutter/clutter-settings.c:607
+#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:651
 msgid "Long Press Duration"
 msgstr "Trajanje doglega pritiska gumba"
 
-#: ../clutter/clutter-click-action.c:590
+#: ../clutter/clutter-click-action.c:619
 msgid "The minimum duration of a long press to recognize the gesture"
 msgstr "Najkrajše trajanje dolgega pritiska gumba za prepoznavanje poteze"
 
-#: ../clutter/clutter-click-action.c:608
+#: ../clutter/clutter-click-action.c:637
 msgid "Long Press Threshold"
 msgstr "Prag dolgega pritiska gumba"
 
-#: ../clutter/clutter-click-action.c:609
+#: ../clutter/clutter-click-action.c:638
 msgid "The maximum threshold before a long press is cancelled"
 msgstr "Največji prag preden je dogotrajni pritisk gumba preklican"
 
@@ -982,27 +1012,27 @@ msgstr "Črnilo"
 msgid "The tint to apply"
 msgstr "Črnilo za uveljavitev"
 
-#: ../clutter/clutter-deform-effect.c:592
+#: ../clutter/clutter-deform-effect.c:591
 msgid "Horizontal Tiles"
 msgstr "Vodoravne ploščice"
 
-#: ../clutter/clutter-deform-effect.c:593
+#: ../clutter/clutter-deform-effect.c:592
 msgid "The number of horizontal tiles"
 msgstr "Število vodoravnih ploščic"
 
-#: ../clutter/clutter-deform-effect.c:608
+#: ../clutter/clutter-deform-effect.c:607
 msgid "Vertical Tiles"
 msgstr "Navpične ploščice"
 
-#: ../clutter/clutter-deform-effect.c:609
+#: ../clutter/clutter-deform-effect.c:608
 msgid "The number of vertical tiles"
 msgstr "Število navpičnih ploščic"
 
-#: ../clutter/clutter-deform-effect.c:626
+#: ../clutter/clutter-deform-effect.c:625
 msgid "Back Material"
 msgstr "Hrbtno gradivo"
 
-#: ../clutter/clutter-deform-effect.c:627
+#: ../clutter/clutter-deform-effect.c:626
 msgid "The material to be used when painting the back of the actor"
 msgstr "Gradivo, ki bo uporabljeno za slikanje hrbtne strani predmeta"
 
@@ -1011,8 +1041,8 @@ msgid "The desaturation factor"
 msgstr "Faktor odstranitve zasičenosti"
 
 #: ../clutter/clutter-device-manager.c:127
-#: ../clutter/clutter-input-device.c:366
-#: ../clutter/x11/clutter-keymap-x11.c:321
+#: ../clutter/clutter-input-device.c:355
+#: ../clutter/x11/clutter-keymap-x11.c:457
 msgid "Backend"
 msgstr "Zaledje"
 
@@ -1020,117 +1050,143 @@ msgstr "Zaledje"
 msgid "The ClutterBackend of the device manager"
 msgstr "ClutterZaledje upravljalnika naprav"
 
-#: ../clutter/clutter-drag-action.c:740
+#: ../clutter/clutter-drag-action.c:733
 msgid "Horizontal Drag Threshold"
 msgstr "Prag vodoravnega vlečenja"
 
-#: ../clutter/clutter-drag-action.c:741
+#: ../clutter/clutter-drag-action.c:734
 msgid "The horizontal amount of pixels required to start dragging"
 msgstr "Vodoravna količina slikovnih točk zahtevanih za začetek vlečenja"
 
-#: ../clutter/clutter-drag-action.c:768
+#: ../clutter/clutter-drag-action.c:761
 msgid "Vertical Drag Threshold"
 msgstr "Prag navpičnega vlečenja"
 
-#: ../clutter/clutter-drag-action.c:769
+#: ../clutter/clutter-drag-action.c:762
 msgid "The vertical amount of pixels required to start dragging"
 msgstr "Navpična količina slikovnih točk zahtevanih za začetek vlečenja"
 
-#: ../clutter/clutter-drag-action.c:790
+#: ../clutter/clutter-drag-action.c:783
 msgid "Drag Handle"
 msgstr "Ročica vlečenja"
 
-#: ../clutter/clutter-drag-action.c:791
+#: ../clutter/clutter-drag-action.c:784
 msgid "The actor that is being dragged"
 msgstr "Predmet, ki je povlečen"
 
-#: ../clutter/clutter-drag-action.c:804
+#: ../clutter/clutter-drag-action.c:797
 msgid "Drag Axis"
 msgstr "Os vlečenja"
 
-#: ../clutter/clutter-drag-action.c:805
+#: ../clutter/clutter-drag-action.c:798
 msgid "Constraints the dragging to an axis"
 msgstr "Omejitve vlečenja na osi"
 
-#: ../clutter/clutter-drag-action.c:821
+#: ../clutter/clutter-drag-action.c:814
 msgid "Drag Area"
 msgstr "Vlečno območje"
 
-#: ../clutter/clutter-drag-action.c:822
+#: ../clutter/clutter-drag-action.c:815
 msgid "Constrains the dragging to a rectangle"
 msgstr "Omeji vleko na pravokotnik"
 
-#: ../clutter/clutter-drag-action.c:835
+#: ../clutter/clutter-drag-action.c:828
 msgid "Drag Area Set"
 msgstr "Vlečno območje je določeno"
 
-#: ../clutter/clutter-drag-action.c:836
+#: ../clutter/clutter-drag-action.c:829
 msgid "Whether the drag area is set"
 msgstr "Ali je vlečno območje nastavljeno"
 
-#: ../clutter/clutter-flow-layout.c:959
+#: ../clutter/clutter-flow-layout.c:944
 msgid "Whether each item should receive the same allocation"
 msgstr "Ali naj vsi predmeti prejmejo enako dodelitev"
 
-#: ../clutter/clutter-flow-layout.c:974 ../clutter/clutter-table-layout.c:1629
+#: ../clutter/clutter-flow-layout.c:959
+#: ../clutter/deprecated/clutter-table-layout.c:1629
 msgid "Column Spacing"
 msgstr "Razmik med stolpci"
 
-#: ../clutter/clutter-flow-layout.c:975
+#: ../clutter/clutter-flow-layout.c:960
 msgid "The spacing between columns"
 msgstr "Prazen prostor med stolpci"
 
-#: ../clutter/clutter-flow-layout.c:991 ../clutter/clutter-table-layout.c:1643
+#: ../clutter/clutter-flow-layout.c:976
+#: ../clutter/deprecated/clutter-table-layout.c:1645
 msgid "Row Spacing"
 msgstr "Razmik med vrsticami"
 
-#: ../clutter/clutter-flow-layout.c:992
+#: ../clutter/clutter-flow-layout.c:977
 msgid "The spacing between rows"
 msgstr "Prazen prostor med vrsticami"
 
-#: ../clutter/clutter-flow-layout.c:1006
+#: ../clutter/clutter-flow-layout.c:991
 msgid "Minimum Column Width"
 msgstr "Najmanjša širina stolpca"
 
-#: ../clutter/clutter-flow-layout.c:1007
+#: ../clutter/clutter-flow-layout.c:992
 msgid "Minimum width for each column"
 msgstr "Najmanjša širina vsakega stolpca"
 
-#: ../clutter/clutter-flow-layout.c:1022
+#: ../clutter/clutter-flow-layout.c:1007
 msgid "Maximum Column Width"
 msgstr "Največja širina stolpca"
 
-#: ../clutter/clutter-flow-layout.c:1023
+#: ../clutter/clutter-flow-layout.c:1008
 msgid "Maximum width for each column"
 msgstr "Največja širina vsakega stolpca"
 
-#: ../clutter/clutter-flow-layout.c:1037
+#: ../clutter/clutter-flow-layout.c:1022
 msgid "Minimum Row Height"
 msgstr "Najmanjša višina vrstice"
 
-#: ../clutter/clutter-flow-layout.c:1038
+#: ../clutter/clutter-flow-layout.c:1023
 msgid "Minimum height for each row"
 msgstr "Najmanjša višina vsake vrstice"
 
-#: ../clutter/clutter-flow-layout.c:1053
+#: ../clutter/clutter-flow-layout.c:1038
 msgid "Maximum Row Height"
 msgstr "Največja višina vrstice"
 
-#: ../clutter/clutter-flow-layout.c:1054
+#: ../clutter/clutter-flow-layout.c:1039
 msgid "Maximum height for each row"
 msgstr "Največja višina vsake vrstice"
 
-#: ../clutter/clutter-flow-layout.c:1069 ../clutter/clutter-flow-layout.c:1070
+#: ../clutter/clutter-flow-layout.c:1054 ../clutter/clutter-flow-layout.c:1055
 msgid "Snap to grid"
 msgstr "Povleci na mrežo"
 
-#: ../clutter/clutter-gesture-action.c:646
+#: ../clutter/clutter-gesture-action.c:668
 msgid "Number touch points"
 msgstr "Število dotičnih točk"
 
-#: ../clutter/clutter-gesture-action.c:647
+#: ../clutter/clutter-gesture-action.c:669
 msgid "Number of touch points"
 msgstr "Število dotičnih točk"
+
+#: ../clutter/clutter-gesture-action.c:684
+msgid "Threshold Trigger Edge"
+msgstr "Prag območja robu sprožilnika"
+
+#: ../clutter/clutter-gesture-action.c:685
+msgid "The trigger edge used by the action"
+msgstr "Rob sprožilnika, ki ga določa dejanje"
+
+#: ../clutter/clutter-gesture-action.c:704
+msgid "Threshold Trigger Horizontal Distance"
+msgstr "Prag razdalje vodoravnega sprožilnika"
+
+#: ../clutter/clutter-gesture-action.c:705
+msgid "The horizontal trigger distance used by the action"
+msgstr "Vodoravna razdalja sprožilnika, ki ga določa dejanje"
+
+#: ../clutter/clutter-gesture-action.c:723
+msgid "Threshold Trigger Vertical Distance"
+msgstr "Prag razdalje navpičnega sprožilnika"
+
+#: ../clutter/clutter-gesture-action.c:724
+msgid "The vertical trigger distance used by the action"
+msgstr "Navpična razdalja sprožilnika, ki ga določa dejanje"
 
 #: ../clutter/clutter-grid-layout.c:1223
 msgid "Left attachment"
@@ -1189,92 +1245,92 @@ msgstr "Homogeni stolpci"
 msgid "If TRUE, the columns are all the same width"
 msgstr "Izbrana možnost omogoča, da imajo vsi stolpci enako širino"
 
-#: ../clutter/clutter-image.c:246 ../clutter/clutter-image.c:309
-#: ../clutter/clutter-image.c:397
+#: ../clutter/clutter-image.c:268 ../clutter/clutter-image.c:331
+#: ../clutter/clutter-image.c:419
 msgid "Unable to load image data"
 msgstr "Ni mogoče naložiti podatkov slike"
 
-#: ../clutter/clutter-input-device.c:242
+#: ../clutter/clutter-input-device.c:231
 msgid "Id"
 msgstr "ID"
 
-#: ../clutter/clutter-input-device.c:243
+#: ../clutter/clutter-input-device.c:232
 msgid "Unique identifier of the device"
 msgstr "Edinstveno določilo naprave"
 
-#: ../clutter/clutter-input-device.c:259
+#: ../clutter/clutter-input-device.c:248
 msgid "The name of the device"
 msgstr "Ime naprave"
 
-#: ../clutter/clutter-input-device.c:273
+#: ../clutter/clutter-input-device.c:262
 msgid "Device Type"
 msgstr "Vrsta naprave"
 
-#: ../clutter/clutter-input-device.c:274
+#: ../clutter/clutter-input-device.c:263
 msgid "The type of the device"
 msgstr "Vrsta naprave"
 
-#: ../clutter/clutter-input-device.c:289
+#: ../clutter/clutter-input-device.c:278
 msgid "Device Manager"
 msgstr "Upravljalnik naprav"
 
-#: ../clutter/clutter-input-device.c:290
+#: ../clutter/clutter-input-device.c:279
 msgid "The device manager instance"
 msgstr "Primerek upravitelja naprav"
 
-#: ../clutter/clutter-input-device.c:303
+#: ../clutter/clutter-input-device.c:292
 msgid "Device Mode"
 msgstr "Način naprave"
 
-#: ../clutter/clutter-input-device.c:304
+#: ../clutter/clutter-input-device.c:293
 msgid "The mode of the device"
 msgstr "Način naprave"
 
-#: ../clutter/clutter-input-device.c:318
+#: ../clutter/clutter-input-device.c:307
 msgid "Has Cursor"
 msgstr "Ima kazalec"
 
-#: ../clutter/clutter-input-device.c:319
+#: ../clutter/clutter-input-device.c:308
 msgid "Whether the device has a cursor"
 msgstr "Ali naj ima naprava kazalec"
 
-#: ../clutter/clutter-input-device.c:338
+#: ../clutter/clutter-input-device.c:327
 msgid "Whether the device is enabled"
 msgstr "Ali naj bo naprava omogočena"
 
-#: ../clutter/clutter-input-device.c:351
+#: ../clutter/clutter-input-device.c:340
 msgid "Number of Axes"
 msgstr "Število osi"
 
-#: ../clutter/clutter-input-device.c:352
+#: ../clutter/clutter-input-device.c:341
 msgid "The number of axes on the device"
 msgstr "Število osi na napravi"
 
-#: ../clutter/clutter-input-device.c:367
+#: ../clutter/clutter-input-device.c:356
 msgid "The backend instance"
 msgstr "Primerek zaledja"
 
-#: ../clutter/clutter-interval.c:503
+#: ../clutter/clutter-interval.c:557
 msgid "Value Type"
 msgstr "Vrsta vrednosti"
 
-#: ../clutter/clutter-interval.c:504
+#: ../clutter/clutter-interval.c:558
 msgid "The type of the values in the interval"
 msgstr "Vrsta vrednosti v razmiku"
 
-#: ../clutter/clutter-interval.c:519
+#: ../clutter/clutter-interval.c:573
 msgid "Initial Value"
 msgstr "Začetna vrednost"
 
-#: ../clutter/clutter-interval.c:520
+#: ../clutter/clutter-interval.c:574
 msgid "Initial value of the interval"
 msgstr "Začetna vrednost razmika"
 
-#: ../clutter/clutter-interval.c:534
+#: ../clutter/clutter-interval.c:588
 msgid "Final Value"
 msgstr "Končna vrednost"
 
-#: ../clutter/clutter-interval.c:535
+#: ../clutter/clutter-interval.c:589
 msgid "Final value of the interval"
 msgstr "Končna vrednost razmika"
 
@@ -1293,91 +1349,91 @@ msgstr "Upravljalnik, ki je ustvaril te podatke"
 #. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
 #. * it isn't default:LTR or default:RTL it will not work.
 #.
-#: ../clutter/clutter-main.c:795
+#: ../clutter/clutter-main.c:751
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1669
+#: ../clutter/clutter-main.c:1577
 msgid "Show frames per second"
 msgstr "Prikaži število sličic na sekundo (fps)"
 
-#: ../clutter/clutter-main.c:1671
+#: ../clutter/clutter-main.c:1579
 msgid "Default frame rate"
 msgstr "Privzeta hitrost sličic"
 
-#: ../clutter/clutter-main.c:1673
+#: ../clutter/clutter-main.c:1581
 msgid "Make all warnings fatal"
 msgstr "Vsa opozorila naj bodo usodna"
 
-#: ../clutter/clutter-main.c:1676
+#: ../clutter/clutter-main.c:1584
 msgid "Direction for the text"
 msgstr "Smer besedila"
 
-#: ../clutter/clutter-main.c:1679
+#: ../clutter/clutter-main.c:1587
 msgid "Disable mipmapping on text"
 msgstr "Pri besedilu izklopi mipmap"
 
-#: ../clutter/clutter-main.c:1682
+#: ../clutter/clutter-main.c:1590
 msgid "Use 'fuzzy' picking"
 msgstr "Uporabi 'mehko' izbiranje"
 
-#: ../clutter/clutter-main.c:1685
+#: ../clutter/clutter-main.c:1593
 msgid "Clutter debugging flags to set"
 msgstr "Clutterjeve razhroščevalne zastavice, ki naj bodo dvignjene"
 
-#: ../clutter/clutter-main.c:1687
+#: ../clutter/clutter-main.c:1595
 msgid "Clutter debugging flags to unset"
 msgstr "Cluttterjeve razhroščevalne zastavice, ki naj bodo spuščene"
 
-#: ../clutter/clutter-main.c:1691
+#: ../clutter/clutter-main.c:1599
 msgid "Clutter profiling flags to set"
 msgstr "Clutterjeve profilirne zastavice, ki naj bodo dvignjene"
 
-#: ../clutter/clutter-main.c:1693
+#: ../clutter/clutter-main.c:1601
 msgid "Clutter profiling flags to unset"
 msgstr "Clultterjeve profilirne zastavice, ki naj bodo spuščene"
 
-#: ../clutter/clutter-main.c:1696
+#: ../clutter/clutter-main.c:1604
 msgid "Enable accessibility"
 msgstr "Omogoči dostopnost"
 
-#: ../clutter/clutter-main.c:1888
+#: ../clutter/clutter-main.c:1796
 msgid "Clutter Options"
 msgstr "Možnosti Cluttra"
 
-#: ../clutter/clutter-main.c:1889
+#: ../clutter/clutter-main.c:1797
 msgid "Show Clutter Options"
 msgstr "Prikaže možnosti Cluttra"
 
-#: ../clutter/clutter-pan-action.c:445
+#: ../clutter/clutter-pan-action.c:455
 msgid "Pan Axis"
 msgstr "Zamakni os"
 
-#: ../clutter/clutter-pan-action.c:446
+#: ../clutter/clutter-pan-action.c:456
 msgid "Constraints the panning to an axis"
 msgstr "Omeji zamikanje na os"
 
-#: ../clutter/clutter-pan-action.c:460
+#: ../clutter/clutter-pan-action.c:470
 msgid "Interpolate"
 msgstr "Interpoliraj"
 
-#: ../clutter/clutter-pan-action.c:461
+#: ../clutter/clutter-pan-action.c:471
 msgid "Whether interpolated events emission is enabled."
 msgstr "Ali naj bo oddajanje interpoliranih dogodkov omogočeno"
 
-#: ../clutter/clutter-pan-action.c:477
+#: ../clutter/clutter-pan-action.c:487
 msgid "Deceleration"
 msgstr "Upočasnitev"
 
-#: ../clutter/clutter-pan-action.c:478
+#: ../clutter/clutter-pan-action.c:488
 msgid "Rate at which the interpolated panning will decelerate in"
 msgstr "Vrednost, s katero se bo interpolirani zamik pojenjal"
 
-#: ../clutter/clutter-pan-action.c:495
+#: ../clutter/clutter-pan-action.c:505
 msgid "Initial acceleration factor"
 msgstr "Začetni faktor pospeška"
 
-#: ../clutter/clutter-pan-action.c:496
+#: ../clutter/clutter-pan-action.c:506
 msgid "Factor applied to the momentum when starting the interpolated phase"
 msgstr "Faktor za pospešek ob začetku interpolirane faze"
 
@@ -1427,52 +1483,52 @@ msgstr "Domena prevajanja"
 msgid "The translation domain used to localize string"
 msgstr "Uporabljena domena prevajanja za krajevno prilagajanje niza"
 
-#: ../clutter/clutter-scroll-actor.c:189
+#: ../clutter/clutter-scroll-actor.c:184
 msgid "Scroll Mode"
 msgstr "Način drsenja"
 
-#: ../clutter/clutter-scroll-actor.c:190
+#: ../clutter/clutter-scroll-actor.c:185
 msgid "The scrolling direction"
 msgstr "Smer drsenja"
 
-#: ../clutter/clutter-settings.c:448
+#: ../clutter/clutter-settings.c:486
 msgid "Double Click Time"
 msgstr "Čas dvojnega klika"
 
-#: ../clutter/clutter-settings.c:449
+#: ../clutter/clutter-settings.c:487
 msgid "The time between clicks necessary to detect a multiple click"
 msgstr "Časovni razmik med kliki za zaznavanje večkratnega klika"
 
-#: ../clutter/clutter-settings.c:464
+#: ../clutter/clutter-settings.c:502
 msgid "Double Click Distance"
 msgstr "Razmik dvojnega klika"
 
-#: ../clutter/clutter-settings.c:465
+#: ../clutter/clutter-settings.c:503
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr "Razmik med kliki za zaznavanje večkratnega klika"
 
-#: ../clutter/clutter-settings.c:480
+#: ../clutter/clutter-settings.c:518
 msgid "Drag Threshold"
 msgstr "Prag vleke"
 
-#: ../clutter/clutter-settings.c:481
+#: ../clutter/clutter-settings.c:519
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "Pot, ki naj jo kazalka prepotuje, preden začne delovati vleka predmeta"
 
-#: ../clutter/clutter-settings.c:496 ../clutter/clutter-text.c:3393
+#: ../clutter/clutter-settings.c:534 ../clutter/clutter-text.c:3437
 msgid "Font Name"
 msgstr "Ime pisave"
 
-#: ../clutter/clutter-settings.c:497
+#: ../clutter/clutter-settings.c:535
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
 msgstr "Opis privzete pisave, ki jo lahko razčleni sistem Pango"
 
-#: ../clutter/clutter-settings.c:512
+#: ../clutter/clutter-settings.c:550
 msgid "Font Antialias"
 msgstr "Glajenje robov pisave"
 
-#: ../clutter/clutter-settings.c:513
+#: ../clutter/clutter-settings.c:551
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
@@ -1480,71 +1536,79 @@ msgstr ""
 "Ali naj bo uporabljeno glajenje (1 za omogočanje, 0 za onemogočanje in -1 za "
 "uporabo privzete vrednosti)"
 
-#: ../clutter/clutter-settings.c:529
+#: ../clutter/clutter-settings.c:567 ../clutter/clutter-settings.c:575
 msgid "Font DPI"
 msgstr "Vrednost DPI pisave"
 
-#: ../clutter/clutter-settings.c:530
+#: ../clutter/clutter-settings.c:568 ../clutter/clutter-settings.c:576
 msgid ""
 "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr ""
 "Ločljivost pisave, določena kot 1024 * točk/palec, ali pa -1 za uporabo "
 "privzete vrednosti."
 
-#: ../clutter/clutter-settings.c:546
+#: ../clutter/clutter-settings.c:592
 msgid "Font Hinting"
 msgstr "Glajenje pisave"
 
-#: ../clutter/clutter-settings.c:547
+#: ../clutter/clutter-settings.c:593
 msgid ""
 "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr ""
 "Ali naj bo uporabljeno glajenje pisav (1 za omogočanje, 0 za onemogočanje in "
 "-1 za uporabo privzete vrednosti)"
 
-#: ../clutter/clutter-settings.c:568
+#: ../clutter/clutter-settings.c:613
 msgid "Font Hint Style"
 msgstr "Slog glajenja pisave"
 
-#: ../clutter/clutter-settings.c:569
+#: ../clutter/clutter-settings.c:614
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
 msgstr "Slog glajenja robov (brez, delno, srednje in polno)"
 
-#: ../clutter/clutter-settings.c:590
+#: ../clutter/clutter-settings.c:634
 msgid "Font Subpixel Order"
 msgstr "Podtočkovni red pisave"
 
-#: ../clutter/clutter-settings.c:591
+#: ../clutter/clutter-settings.c:635
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
 msgstr "Vrsta podtočkovnega glajenja robov (brez, rgb, bgr, vrgb, vbgr)"
 
-#: ../clutter/clutter-settings.c:608
+#: ../clutter/clutter-settings.c:652
 msgid "The minimum duration for a long press gesture to be recognized"
 msgstr "Najkrajše trajanje dolgega pritiska gumba pred prepoznavanjem poteze"
 
-#: ../clutter/clutter-settings.c:615
+#: ../clutter/clutter-settings.c:659
+msgid "Window Scaling Factor"
+msgstr "Določilo razmerja povečave"
+
+#: ../clutter/clutter-settings.c:660
+msgid "The scaling factor to be applied to windows"
+msgstr "Določilo razmerja povečave, ki bo uporabljeno pri izrisu okna"
+
+#: ../clutter/clutter-settings.c:667
 msgid "Fontconfig configuration timestamp"
 msgstr "Časovni žig prilagoditev za fontconfig"
 
-#: ../clutter/clutter-settings.c:616
+#: ../clutter/clutter-settings.c:668
 msgid "Timestamp of the current fontconfig configuration"
 msgstr "Časovni žig trenutne prilagoditve fontconfig"
 
-#: ../clutter/clutter-settings.c:633
+#: ../clutter/clutter-settings.c:685
 msgid "Password Hint Time"
 msgstr "Čas namiga za geslo"
 
-#: ../clutter/clutter-settings.c:634
+#: ../clutter/clutter-settings.c:686
 msgid "How long to show the last input character in hidden entries"
 msgstr ""
 "Kako dolgo naj bo prikazan zadnji vpisan znak pri vpisovanje skritih vnosov "
 "gesla."
 
-#: ../clutter/clutter-shader-effect.c:485
+#: ../clutter/clutter-shader-effect.c:487
 msgid "Shader Type"
 msgstr "Vrsta senčilnika"
 
-#: ../clutter/clutter-shader-effect.c:486
+#: ../clutter/clutter-shader-effect.c:488
 msgid "The type of shader used"
 msgstr "Vrsta uporabljenega senčilnika"
 
@@ -1572,168 +1636,112 @@ msgstr "Rob vira, ki je povlečen"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Odmik v slikovnih točkah za uveljavitev omejitev"
 
-#: ../clutter/clutter-stage.c:1945
+#: ../clutter/clutter-stage.c:1918
 msgid "Fullscreen Set"
 msgstr "Celozaslonska nastavitev"
 
-#: ../clutter/clutter-stage.c:1946
+#: ../clutter/clutter-stage.c:1919
 msgid "Whether the main stage is fullscreen"
 msgstr "Ali je glavna postavitev celozaslonska"
 
-#: ../clutter/clutter-stage.c:1960
+#: ../clutter/clutter-stage.c:1933
 msgid "Offscreen"
 msgstr "Izven zaslona"
 
-#: ../clutter/clutter-stage.c:1961
+#: ../clutter/clutter-stage.c:1934
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Ali naj bo glavna postavitev izrisana izven zaslona"
 
-#: ../clutter/clutter-stage.c:1973 ../clutter/clutter-text.c:3507
+#: ../clutter/clutter-stage.c:1946 ../clutter/clutter-text.c:3551
 msgid "Cursor Visible"
 msgstr "Viden kazalec"
 
-#: ../clutter/clutter-stage.c:1974
+#: ../clutter/clutter-stage.c:1947
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Ali je miškin kazalec viden na glavni postavitvi"
 
-#: ../clutter/clutter-stage.c:1988
+#: ../clutter/clutter-stage.c:1961
 msgid "User Resizable"
 msgstr "Uporabnik lahko spreminja velikost"
 
-#: ../clutter/clutter-stage.c:1989
+#: ../clutter/clutter-stage.c:1962
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Ali lahko uporabnik spreminja velikost postavitve"
 
-#: ../clutter/clutter-stage.c:2004 ../clutter/deprecated/clutter-box.c:256
+#: ../clutter/clutter-stage.c:1977 ../clutter/deprecated/clutter-box.c:254
 #: ../clutter/deprecated/clutter-rectangle.c:270
 msgid "Color"
 msgstr "Barva"
 
-#: ../clutter/clutter-stage.c:2005
+#: ../clutter/clutter-stage.c:1978
 msgid "The color of the stage"
 msgstr "Barva postavitve"
 
-#: ../clutter/clutter-stage.c:2020
+#: ../clutter/clutter-stage.c:1993
 msgid "Perspective"
 msgstr "Perspektiva"
 
-#: ../clutter/clutter-stage.c:2021
+#: ../clutter/clutter-stage.c:1994
 msgid "Perspective projection parameters"
 msgstr "Perspektiva nastavitvenih parametrov"
 
-#: ../clutter/clutter-stage.c:2036
+#: ../clutter/clutter-stage.c:2009
 msgid "Title"
 msgstr "Naslov"
 
-#: ../clutter/clutter-stage.c:2037
+#: ../clutter/clutter-stage.c:2010
 msgid "Stage Title"
 msgstr "Naziv postavitve"
 
-#: ../clutter/clutter-stage.c:2054
+#: ../clutter/clutter-stage.c:2027
 msgid "Use Fog"
 msgstr "Uporabi meglo"
 
-#: ../clutter/clutter-stage.c:2055
+#: ../clutter/clutter-stage.c:2028
 msgid "Whether to enable depth cueing"
 msgstr "Ali naj se omogoči globinska izravnava"
 
-#: ../clutter/clutter-stage.c:2071
+#: ../clutter/clutter-stage.c:2044
 msgid "Fog"
 msgstr "Megla"
 
-#: ../clutter/clutter-stage.c:2072
+#: ../clutter/clutter-stage.c:2045
 msgid "Settings for the depth cueing"
 msgstr "Nastavitve globinske izravnave"
 
-#: ../clutter/clutter-stage.c:2088
+#: ../clutter/clutter-stage.c:2061
 msgid "Use Alpha"
 msgstr "Uporabi alfo"
 
-#: ../clutter/clutter-stage.c:2089
+#: ../clutter/clutter-stage.c:2062
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Ali naj se upošteva alfa sestavni del barve postavitve"
 
-#: ../clutter/clutter-stage.c:2105
+#: ../clutter/clutter-stage.c:2078
 msgid "Key Focus"
 msgstr "Žarišče tipke"
 
-#: ../clutter/clutter-stage.c:2106
+#: ../clutter/clutter-stage.c:2079
 msgid "The currently key focused actor"
 msgstr "Trenutna tipka predmeta v žarišču"
 
-#: ../clutter/clutter-stage.c:2122
+#: ../clutter/clutter-stage.c:2095
 msgid "No Clear Hint"
 msgstr "Ni jasnega namiga"
 
-#: ../clutter/clutter-stage.c:2123
+#: ../clutter/clutter-stage.c:2096
 msgid "Whether the stage should clear its contents"
 msgstr "Ali naj postavitev počisti svojo vsebino"
 
-#: ../clutter/clutter-stage.c:2136
+#: ../clutter/clutter-stage.c:2109
 msgid "Accept Focus"
 msgstr "Sprejmi žarišče"
 
-#: ../clutter/clutter-stage.c:2137
+#: ../clutter/clutter-stage.c:2110
 msgid "Whether the stage should accept focus on show"
 msgstr "Ali naj postavitev potrdi žarišče na prikazu"
 
-#: ../clutter/clutter-table-layout.c:537
-msgid "Column Number"
-msgstr "Številka stolpca"
-
-#: ../clutter/clutter-table-layout.c:538
-msgid "The column the widget resides in"
-msgstr "Stolpec v katerem je postavljen gradnik"
-
-#: ../clutter/clutter-table-layout.c:545
-msgid "Row Number"
-msgstr "Številka vrstice"
-
-#: ../clutter/clutter-table-layout.c:546
-msgid "The row the widget resides in"
-msgstr "Vrstica v kateri je postavljen gradnik"
-
-#: ../clutter/clutter-table-layout.c:553
-msgid "Column Span"
-msgstr "Razpon stolpca"
-
-#: ../clutter/clutter-table-layout.c:554
-msgid "The number of columns the widget should span"
-msgstr "Število stolpcev preko katerih je razpet gradnik"
-
-#: ../clutter/clutter-table-layout.c:561
-msgid "Row Span"
-msgstr "Razpon vrstice"
-
-#: ../clutter/clutter-table-layout.c:562
-msgid "The number of rows the widget should span"
-msgstr "Število vrstic preko katerih je razpet gradnik"
-
-#: ../clutter/clutter-table-layout.c:569
-msgid "Horizontal Expand"
-msgstr "Vodoravno razširjanje"
-
-#: ../clutter/clutter-table-layout.c:570
-msgid "Allocate extra space for the child in horizontal axis"
-msgstr "Dodeli dodaten prostor za podrejeni predmet na vodoravni osi"
-
-#: ../clutter/clutter-table-layout.c:576
-msgid "Vertical Expand"
-msgstr "Navpično razširjanje"
-
-#: ../clutter/clutter-table-layout.c:577
-msgid "Allocate extra space for the child in vertical axis"
-msgstr "Dodeli dodaten prostor za podrejeni predmet na navpični osi"
-
-#: ../clutter/clutter-table-layout.c:1630
-msgid "Spacing between columns"
-msgstr "razmik med stolpci"
-
-#: ../clutter/clutter-table-layout.c:1644
-msgid "Spacing between rows"
-msgstr "Razmik med vrsticami"
-
-#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3428
+#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3472
 msgid "Text"
 msgstr "Besedilo"
 
@@ -1758,267 +1766,267 @@ msgid "Maximum number of characters for this entry. Zero if no maximum"
 msgstr ""
 "Največje število znakov v tem vnosu. Vrednost nič določa neomejeno število."
 
-#: ../clutter/clutter-text.c:3375
+#: ../clutter/clutter-text.c:3419
 msgid "Buffer"
 msgstr "Medpomnilnik"
 
-#: ../clutter/clutter-text.c:3376
+#: ../clutter/clutter-text.c:3420
 msgid "The buffer for the text"
 msgstr "Medpomnilnik besedila"
 
-#: ../clutter/clutter-text.c:3394
+#: ../clutter/clutter-text.c:3438
 msgid "The font to be used by the text"
 msgstr "Pisava, ki jo uporablja besedilo"
 
-#: ../clutter/clutter-text.c:3411
+#: ../clutter/clutter-text.c:3455
 msgid "Font Description"
 msgstr "Opis pisave"
 
-#: ../clutter/clutter-text.c:3412
+#: ../clutter/clutter-text.c:3456
 msgid "The font description to be used"
 msgstr "Opis pisave, ki se uporablja"
 
-#: ../clutter/clutter-text.c:3429
+#: ../clutter/clutter-text.c:3473
 msgid "The text to render"
 msgstr "Besedilo, ki bo izrisano"
 
-#: ../clutter/clutter-text.c:3443
+#: ../clutter/clutter-text.c:3487
 msgid "Font Color"
 msgstr "Barva pisave"
 
-#: ../clutter/clutter-text.c:3444
+#: ../clutter/clutter-text.c:3488
 msgid "Color of the font used by the text"
 msgstr "Barva pisave, ki jo uporablja besedilo"
 
-#: ../clutter/clutter-text.c:3459
+#: ../clutter/clutter-text.c:3503
 msgid "Editable"
 msgstr "Uredljivo"
 
-#: ../clutter/clutter-text.c:3460
+#: ../clutter/clutter-text.c:3504
 msgid "Whether the text is editable"
 msgstr "Ali naj je besedilo uredljivo"
 
-#: ../clutter/clutter-text.c:3475
+#: ../clutter/clutter-text.c:3519
 msgid "Selectable"
 msgstr "Izberljivo"
 
-#: ../clutter/clutter-text.c:3476
+#: ../clutter/clutter-text.c:3520
 msgid "Whether the text is selectable"
 msgstr "Ali naj je besedilo izberljivo"
 
-#: ../clutter/clutter-text.c:3490
+#: ../clutter/clutter-text.c:3534
 msgid "Activatable"
 msgstr "Zagonljiv"
 
-#: ../clutter/clutter-text.c:3491
+#: ../clutter/clutter-text.c:3535
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "Ali naj se ob pritisku vračalke omogoči signal za oddajanje"
 
-#: ../clutter/clutter-text.c:3508
+#: ../clutter/clutter-text.c:3552
 msgid "Whether the input cursor is visible"
 msgstr "Ali naj je vnosni kazalec viden"
 
-#: ../clutter/clutter-text.c:3522 ../clutter/clutter-text.c:3523
+#: ../clutter/clutter-text.c:3566 ../clutter/clutter-text.c:3567
 msgid "Cursor Color"
 msgstr "Barva kazalce"
 
-#: ../clutter/clutter-text.c:3538
+#: ../clutter/clutter-text.c:3582
 msgid "Cursor Color Set"
 msgstr "Nastavitev barv kazalke"
 
-#: ../clutter/clutter-text.c:3539
+#: ../clutter/clutter-text.c:3583
 msgid "Whether the cursor color has been set"
 msgstr "Ali je bila barva kazalca nastavljena"
 
-#: ../clutter/clutter-text.c:3554
+#: ../clutter/clutter-text.c:3598
 msgid "Cursor Size"
 msgstr "Velikost kazalca"
 
-#: ../clutter/clutter-text.c:3555
+#: ../clutter/clutter-text.c:3599
 msgid "The width of the cursor, in pixels"
 msgstr "Širina kazalca, v slikovnih točkah"
 
-#: ../clutter/clutter-text.c:3571 ../clutter/clutter-text.c:3589
+#: ../clutter/clutter-text.c:3615 ../clutter/clutter-text.c:3633
 msgid "Cursor Position"
 msgstr "Položaj kazalca"
 
-#: ../clutter/clutter-text.c:3572 ../clutter/clutter-text.c:3590
+#: ../clutter/clutter-text.c:3616 ../clutter/clutter-text.c:3634
 msgid "The cursor position"
 msgstr "Položaj kazalca"
 
-#: ../clutter/clutter-text.c:3605
+#: ../clutter/clutter-text.c:3649
 msgid "Selection-bound"
 msgstr "Meja Izbora"
 
-#: ../clutter/clutter-text.c:3606
+#: ../clutter/clutter-text.c:3650
 msgid "The cursor position of the other end of the selection"
 msgstr "Položaj kazalke drugega konca izbora"
 
-#: ../clutter/clutter-text.c:3621 ../clutter/clutter-text.c:3622
+#: ../clutter/clutter-text.c:3665 ../clutter/clutter-text.c:3666
 msgid "Selection Color"
 msgstr "Barva izbora"
 
-#: ../clutter/clutter-text.c:3637
+#: ../clutter/clutter-text.c:3681
 msgid "Selection Color Set"
 msgstr "Nastavljena barva izbora"
 
-#: ../clutter/clutter-text.c:3638
+#: ../clutter/clutter-text.c:3682
 msgid "Whether the selection color has been set"
 msgstr "Ali je bila barva izbire nastavljena"
 
-#: ../clutter/clutter-text.c:3653
+#: ../clutter/clutter-text.c:3697
 msgid "Attributes"
 msgstr "Atributi"
 
-#: ../clutter/clutter-text.c:3654
+#: ../clutter/clutter-text.c:3698
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "Seznam slogovnih atributov za uveljavitev vsebine predmeta"
 
-#: ../clutter/clutter-text.c:3676
+#: ../clutter/clutter-text.c:3720
 msgid "Use markup"
 msgstr "Uporabi označevanje"
 
-#: ../clutter/clutter-text.c:3677
+#: ../clutter/clutter-text.c:3721
 msgid "Whether or not the text includes Pango markup"
 msgstr "Ali naj besedilo vsebuje označevanje Pango"
 
-#: ../clutter/clutter-text.c:3693
+#: ../clutter/clutter-text.c:3737
 msgid "Line wrap"
 msgstr "Prelom vrstic"
 
-#: ../clutter/clutter-text.c:3694
+#: ../clutter/clutter-text.c:3738
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "Izbrana možnost prelomi vrstice, če je besedilo preširoko"
 
-#: ../clutter/clutter-text.c:3709
+#: ../clutter/clutter-text.c:3753
 msgid "Line wrap mode"
 msgstr "Način preloma vrstic"
 
-#: ../clutter/clutter-text.c:3710
+#: ../clutter/clutter-text.c:3754
 msgid "Control how line-wrapping is done"
 msgstr "Nadzor preloma vrstic"
 
-#: ../clutter/clutter-text.c:3725
+#: ../clutter/clutter-text.c:3769
 msgid "Ellipsize"
 msgstr "Elipsiraj"
 
-#: ../clutter/clutter-text.c:3726
+#: ../clutter/clutter-text.c:3770
 msgid "The preferred place to ellipsize the string"
 msgstr "Prednostno mesto za elipsiranje niza"
 
-#: ../clutter/clutter-text.c:3742
+#: ../clutter/clutter-text.c:3786
 msgid "Line Alignment"
 msgstr "Poravnava vrstice"
 
-#: ../clutter/clutter-text.c:3743
+#: ../clutter/clutter-text.c:3787
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "Prednostna poravnava niza za večvrstično besedilo"
 
-#: ../clutter/clutter-text.c:3759
+#: ../clutter/clutter-text.c:3803
 msgid "Justify"
 msgstr "Obojestranska poravnava"
 
-#: ../clutter/clutter-text.c:3760
+#: ../clutter/clutter-text.c:3804
 msgid "Whether the text should be justified"
 msgstr "Ali naj je besedilo obojestransko poravnano"
 
-#: ../clutter/clutter-text.c:3775
+#: ../clutter/clutter-text.c:3819
 msgid "Password Character"
 msgstr "Lastnost gesla"
 
-#: ../clutter/clutter-text.c:3776
+#: ../clutter/clutter-text.c:3820
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr ""
 "V kolikor vrednost ni nič, uporabi to lastnost za prikaz vsebine predmeta"
 
-#: ../clutter/clutter-text.c:3790
+#: ../clutter/clutter-text.c:3834
 msgid "Max Length"
 msgstr "Največja dolžina"
 
-#: ../clutter/clutter-text.c:3791
+#: ../clutter/clutter-text.c:3835
 msgid "Maximum length of the text inside the actor"
 msgstr "Največja dolžina besedila predmeta"
 
-#: ../clutter/clutter-text.c:3814
+#: ../clutter/clutter-text.c:3858
 msgid "Single Line Mode"
 msgstr "Enovrstični način"
 
-#: ../clutter/clutter-text.c:3815
+#: ../clutter/clutter-text.c:3859
 msgid "Whether the text should be a single line"
 msgstr "Ali naj je besedilo v eni vrstici"
 
-#: ../clutter/clutter-text.c:3829 ../clutter/clutter-text.c:3830
+#: ../clutter/clutter-text.c:3873 ../clutter/clutter-text.c:3874
 msgid "Selected Text Color"
 msgstr "Barva izbora"
 
-#: ../clutter/clutter-text.c:3845
+#: ../clutter/clutter-text.c:3889
 msgid "Selected Text Color Set"
 msgstr "Nastavljena barva izbora"
 
-#: ../clutter/clutter-text.c:3846
+#: ../clutter/clutter-text.c:3890
 msgid "Whether the selected text color has been set"
 msgstr "Ali je bila barva izbire nastavljena"
 
-#: ../clutter/clutter-timeline.c:593
-#: ../clutter/deprecated/clutter-animation.c:557
+#: ../clutter/clutter-timeline.c:591
+#: ../clutter/deprecated/clutter-animation.c:506
 msgid "Loop"
 msgstr "Zanka"
 
-#: ../clutter/clutter-timeline.c:594
+#: ../clutter/clutter-timeline.c:592
 msgid "Should the timeline automatically restart"
 msgstr "Ali naj se časovni potek samodejno ponovno zažene"
 
-#: ../clutter/clutter-timeline.c:608
+#: ../clutter/clutter-timeline.c:606
 msgid "Delay"
 msgstr "Časovni zamik"
 
-#: ../clutter/clutter-timeline.c:609
+#: ../clutter/clutter-timeline.c:607
 msgid "Delay before start"
 msgstr "Časovni zamik pred začetkom"
 
-#: ../clutter/clutter-timeline.c:624
-#: ../clutter/deprecated/clutter-animation.c:541
-#: ../clutter/deprecated/clutter-animator.c:1801
+#: ../clutter/clutter-timeline.c:622
+#: ../clutter/deprecated/clutter-animation.c:490
+#: ../clutter/deprecated/clutter-animator.c:1792
 #: ../clutter/deprecated/clutter-media.c:224
-#: ../clutter/deprecated/clutter-state.c:1517
+#: ../clutter/deprecated/clutter-state.c:1515
 msgid "Duration"
 msgstr "Trajanje"
 
-#: ../clutter/clutter-timeline.c:625
+#: ../clutter/clutter-timeline.c:623
 msgid "Duration of the timeline in milliseconds"
 msgstr "Trajanje časovnega poteka v milisekundah."
 
-#: ../clutter/clutter-timeline.c:640
+#: ../clutter/clutter-timeline.c:638
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:521
 #: ../clutter/deprecated/clutter-behaviour-rotate.c:330
 msgid "Direction"
 msgstr "Smer"
 
-#: ../clutter/clutter-timeline.c:641
+#: ../clutter/clutter-timeline.c:639
 msgid "Direction of the timeline"
 msgstr "Smer časovnega poteka"
 
-#: ../clutter/clutter-timeline.c:656
+#: ../clutter/clutter-timeline.c:654
 msgid "Auto Reverse"
 msgstr "Samodejno obračanje"
 
-#: ../clutter/clutter-timeline.c:657
+#: ../clutter/clutter-timeline.c:655
 msgid "Whether the direction should be reversed when reaching the end"
 msgstr "Ali naj se smer obrne ob dosegu konca"
 
-#: ../clutter/clutter-timeline.c:675
+#: ../clutter/clutter-timeline.c:673
 msgid "Repeat Count"
 msgstr "Ponovi štetje"
 
-#: ../clutter/clutter-timeline.c:676
+#: ../clutter/clutter-timeline.c:674
 msgid "How many times the timeline should repeat"
 msgstr "Kolikokrat naj se časovnica ponovi"
 
-#: ../clutter/clutter-timeline.c:690
+#: ../clutter/clutter-timeline.c:688
 msgid "Progress Mode"
 msgstr "Način napredka"
 
-#: ../clutter/clutter-timeline.c:691
+#: ../clutter/clutter-timeline.c:689
 msgid "How the timeline should compute the progress"
 msgstr "Kako naj časovnica izračunava napredek opravila"
 
@@ -2046,79 +2054,79 @@ msgstr "Odstrani po končanju"
 msgid "Detach the transition when completed"
 msgstr "Odstrani prehod po končanju"
 
-#: ../clutter/clutter-zoom-action.c:354
+#: ../clutter/clutter-zoom-action.c:365
 msgid "Zoom Axis"
 msgstr "Približaj po osi"
 
-#: ../clutter/clutter-zoom-action.c:355
+#: ../clutter/clutter-zoom-action.c:366
 msgid "Constraints the zoom to an axis"
 msgstr "Omeji približevanje na os"
 
-#: ../clutter/deprecated/clutter-alpha.c:354
-#: ../clutter/deprecated/clutter-animation.c:572
-#: ../clutter/deprecated/clutter-animator.c:1818
+#: ../clutter/deprecated/clutter-alpha.c:347
+#: ../clutter/deprecated/clutter-animation.c:521
+#: ../clutter/deprecated/clutter-animator.c:1809
 msgid "Timeline"
 msgstr "Časovnica"
 
-#: ../clutter/deprecated/clutter-alpha.c:355
+#: ../clutter/deprecated/clutter-alpha.c:348
 msgid "Timeline used by the alpha"
 msgstr "Časovnica, ki jo uporablja alfa"
 
-#: ../clutter/deprecated/clutter-alpha.c:371
+#: ../clutter/deprecated/clutter-alpha.c:364
 msgid "Alpha value"
 msgstr "Vrednost alfe"
 
-#: ../clutter/deprecated/clutter-alpha.c:372
+#: ../clutter/deprecated/clutter-alpha.c:365
 msgid "Alpha value as computed by the alpha"
 msgstr "Vrednost alfe je izračunana z alfo"
 
-#: ../clutter/deprecated/clutter-alpha.c:393
-#: ../clutter/deprecated/clutter-animation.c:525
+#: ../clutter/deprecated/clutter-alpha.c:386
+#: ../clutter/deprecated/clutter-animation.c:474
 msgid "Mode"
 msgstr "Način"
 
-#: ../clutter/deprecated/clutter-alpha.c:394
+#: ../clutter/deprecated/clutter-alpha.c:387
 msgid "Progress mode"
 msgstr "Način napredka"
 
-#: ../clutter/deprecated/clutter-animation.c:508
+#: ../clutter/deprecated/clutter-animation.c:457
 msgid "Object"
 msgstr "Objekt"
 
-#: ../clutter/deprecated/clutter-animation.c:509
+#: ../clutter/deprecated/clutter-animation.c:458
 msgid "Object to which the animation applies"
 msgstr "Predmet na katerega se animacija nanaša"
 
-#: ../clutter/deprecated/clutter-animation.c:526
+#: ../clutter/deprecated/clutter-animation.c:475
 msgid "The mode of the animation"
 msgstr "Način animacije"
 
-#: ../clutter/deprecated/clutter-animation.c:542
+#: ../clutter/deprecated/clutter-animation.c:491
 msgid "Duration of the animation, in milliseconds"
 msgstr "Trajanje animacije v milisekundah"
 
-#: ../clutter/deprecated/clutter-animation.c:558
+#: ../clutter/deprecated/clutter-animation.c:507
 msgid "Whether the animation should loop"
 msgstr "Ali naj se animacija ponavlja"
 
-#: ../clutter/deprecated/clutter-animation.c:573
+#: ../clutter/deprecated/clutter-animation.c:522
 msgid "The timeline used by the animation"
 msgstr "Časovnica, ki jo uporablja animacija"
 
-#: ../clutter/deprecated/clutter-animation.c:589
+#: ../clutter/deprecated/clutter-animation.c:538
 #: ../clutter/deprecated/clutter-behaviour.c:237
 msgid "Alpha"
 msgstr "Alfa"
 
-#: ../clutter/deprecated/clutter-animation.c:590
+#: ../clutter/deprecated/clutter-animation.c:539
 msgid "The alpha used by the animation"
 msgstr "Alfa, ki jo uporablja animacija"
 
-#: ../clutter/deprecated/clutter-animator.c:1802
+#: ../clutter/deprecated/clutter-animator.c:1793
 msgid "The duration of the animation"
 msgstr "Trajanje animacije"
 
-#: ../clutter/deprecated/clutter-animator.c:1819
+#: ../clutter/deprecated/clutter-animator.c:1810
 msgid "The timeline of the animation"
 msgstr "Časovnica animacije"
 
@@ -2297,35 +2305,35 @@ msgstr "Y končna velikost"
 msgid "Final scale on the Y axis"
 msgstr "Končna velikost na Y osi"
 
-#: ../clutter/deprecated/clutter-box.c:257
+#: ../clutter/deprecated/clutter-box.c:255
 msgid "The background color of the box"
 msgstr "Barva ozadja polja"
 
-#: ../clutter/deprecated/clutter-box.c:270
+#: ../clutter/deprecated/clutter-box.c:268
 msgid "Color Set"
 msgstr "Nabor barv"
 
-#: ../clutter/deprecated/clutter-cairo-texture.c:593
+#: ../clutter/deprecated/clutter-cairo-texture.c:585
 msgid "Surface Width"
 msgstr "Širina površine"
 
-#: ../clutter/deprecated/clutter-cairo-texture.c:594
+#: ../clutter/deprecated/clutter-cairo-texture.c:586
 msgid "The width of the Cairo surface"
 msgstr "Širina površine Cairo"
 
-#: ../clutter/deprecated/clutter-cairo-texture.c:611
+#: ../clutter/deprecated/clutter-cairo-texture.c:603
 msgid "Surface Height"
 msgstr "Višina površine"
 
-#: ../clutter/deprecated/clutter-cairo-texture.c:612
+#: ../clutter/deprecated/clutter-cairo-texture.c:604
 msgid "The height of the Cairo surface"
 msgstr "Višina površine Cairo"
 
-#: ../clutter/deprecated/clutter-cairo-texture.c:632
+#: ../clutter/deprecated/clutter-cairo-texture.c:624
 msgid "Auto Resize"
 msgstr "Samodejno prilagajanje velikosti"
 
-#: ../clutter/deprecated/clutter-cairo-texture.c:633
+#: ../clutter/deprecated/clutter-cairo-texture.c:625
 msgid "Whether the surface should match the allocation"
 msgstr "Ali naj se površina ujema z dodelitvijo"
 
@@ -2466,17 +2474,73 @@ msgstr "Senčenje vertex"
 msgid "Fragment shader"
 msgstr "Senčenje delcev"
 
-#: ../clutter/deprecated/clutter-state.c:1499
+#: ../clutter/deprecated/clutter-state.c:1497
 msgid "State"
 msgstr "Stanje"
 
-#: ../clutter/deprecated/clutter-state.c:1500
+#: ../clutter/deprecated/clutter-state.c:1498
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr "Trenutno nastavljeno stanje (prehod na to stanje morda ni popoln)"
 
-#: ../clutter/deprecated/clutter-state.c:1518
+#: ../clutter/deprecated/clutter-state.c:1516
 msgid "Default transition duration"
 msgstr "Privzeto trajanje prehoda"
+
+#: ../clutter/deprecated/clutter-table-layout.c:535
+msgid "Column Number"
+msgstr "Številka stolpca"
+
+#: ../clutter/deprecated/clutter-table-layout.c:536
+msgid "The column the widget resides in"
+msgstr "Stolpec v katerem je postavljen gradnik"
+
+#: ../clutter/deprecated/clutter-table-layout.c:543
+msgid "Row Number"
+msgstr "Številka vrstice"
+
+#: ../clutter/deprecated/clutter-table-layout.c:544
+msgid "The row the widget resides in"
+msgstr "Vrstica v kateri je postavljen gradnik"
+
+#: ../clutter/deprecated/clutter-table-layout.c:551
+msgid "Column Span"
+msgstr "Razpon stolpca"
+
+#: ../clutter/deprecated/clutter-table-layout.c:552
+msgid "The number of columns the widget should span"
+msgstr "Število stolpcev preko katerih je razpet gradnik"
+
+#: ../clutter/deprecated/clutter-table-layout.c:559
+msgid "Row Span"
+msgstr "Razpon vrstice"
+
+#: ../clutter/deprecated/clutter-table-layout.c:560
+msgid "The number of rows the widget should span"
+msgstr "Število vrstic preko katerih je razpet gradnik"
+
+#: ../clutter/deprecated/clutter-table-layout.c:567
+msgid "Horizontal Expand"
+msgstr "Vodoravno razširjanje"
+
+#: ../clutter/deprecated/clutter-table-layout.c:568
+msgid "Allocate extra space for the child in horizontal axis"
+msgstr "Dodeli dodaten prostor za podrejeni predmet na vodoravni osi"
+
+#: ../clutter/deprecated/clutter-table-layout.c:574
+msgid "Vertical Expand"
+msgstr "Navpično razširjanje"
+
+#: ../clutter/deprecated/clutter-table-layout.c:575
+msgid "Allocate extra space for the child in vertical axis"
+msgstr "Dodeli dodaten prostor za podrejeni predmet na navpični osi"
+
+#: ../clutter/deprecated/clutter-table-layout.c:1630
+msgid "Spacing between columns"
+msgstr "razmik med stolpci"
+
+#: ../clutter/deprecated/clutter-table-layout.c:1646
+msgid "Spacing between rows"
+msgstr "Razmik med vrsticami"
 
 #: ../clutter/deprecated/clutter-texture.c:992
 msgid "Sync size of actor"
@@ -2620,22 +2684,6 @@ msgstr "Teksture YUV niso podprte"
 msgid "YUV2 textues are not supported"
 msgstr "Teksture YUV2 niso podprte"
 
-#: ../clutter/evdev/clutter-input-device-evdev.c:154
-msgid "sysfs Path"
-msgstr "Pot do sysfs"
-
-#: ../clutter/evdev/clutter-input-device-evdev.c:155
-msgid "Path of the device in sysfs"
-msgstr "Pot do naprave v sysfs"
-
-#: ../clutter/evdev/clutter-input-device-evdev.c:170
-msgid "Device Path"
-msgstr "Pot naprave"
-
-#: ../clutter/evdev/clutter-input-device-evdev.c:171
-msgid "Path of the device node"
-msgstr "Pot do vozlišča naprave"
-
 #: ../clutter/gdk/clutter-backend-gdk.c:289
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
@@ -2681,7 +2729,7 @@ msgstr "Časovno uskladi klice X"
 msgid "Disable XInput support"
 msgstr "Onemogoči podporo XInput"
 
-#: ../clutter/x11/clutter-keymap-x11.c:322
+#: ../clutter/x11/clutter-keymap-x11.c:458
 msgid "The Clutter backend"
 msgstr "Ozadnji program Clutter"
 
@@ -2784,3 +2832,15 @@ msgstr "Preusmeritev prepisa okna"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:636
 msgid "If this is an override-redirect window"
 msgstr "Ali je to okno preusmeritve prepisa"
+
+#~ msgid "sysfs Path"
+#~ msgstr "Pot do sysfs"
+
+#~ msgid "Path of the device in sysfs"
+#~ msgstr "Pot do naprave v sysfs"
+
+#~ msgid "Device Path"
+#~ msgstr "Pot naprave"
+
+#~ msgid "Path of the device node"
+#~ msgstr "Pot do vozlišča naprave"
