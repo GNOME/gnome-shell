@@ -4272,11 +4272,16 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
     {
+      meta_window_client_rect_to_frame_rect (window, &old_rect, &old_rect);
+      meta_window_client_rect_to_frame_rect (window, &new_rect, &new_rect);
+
       meta_window_constrain (window,
                              flags,
                              gravity,
                              &old_rect,
                              &new_rect);
+
+      meta_window_frame_rect_to_client_rect (window, &new_rect, &new_rect);
     }
 
   /* Do the protocol-specific move/resize logic */
