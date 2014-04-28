@@ -120,7 +120,6 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
                                           MetaMoveResizeResultFlags *result)
 {
   gboolean should_move = FALSE;
-  gboolean is_wayland_resize = FALSE;
 
   g_assert (window->frame == NULL);
 
@@ -134,9 +133,7 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
    * it can be for maximized or fullscreen.
    */
 
-  is_wayland_resize = (flags & META_IS_WAYLAND_RESIZE);
-
-  if (is_wayland_resize)
+  if (flags & META_IS_WAYLAND_RESIZE)
     {
       /* This is a call to wl_surface_commit(), ignore the constrained_rect and
        * update the real client size to match the buffer size.
@@ -158,7 +155,7 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
                                              constrained_rect.width,
                                              constrained_rect.height);
     }
-  else if (!is_wayland_resize)
+  else
     {
       /* We're just moving the window, so we don't need to wait for a configure
        * and then ack to simply move the window. */
