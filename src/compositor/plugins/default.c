@@ -83,12 +83,6 @@ static void maximize   (MetaPlugin      *plugin,
                         gint             y,
                         gint             width,
                         gint             height);
-static void unmaximize (MetaPlugin      *plugin,
-                        MetaWindowActor *actor,
-                        gint             x,
-                        gint             y,
-                        gint             width,
-                        gint             height);
 
 static void switch_workspace (MetaPlugin          *plugin,
                               gint                 from,
@@ -214,7 +208,6 @@ meta_default_plugin_class_init (MetaDefaultPluginClass *klass)
   plugin_class->map              = map;
   plugin_class->minimize         = minimize;
   plugin_class->maximize         = maximize;
-  plugin_class->unmaximize       = unmaximize;
   plugin_class->destroy          = destroy;
   plugin_class->switch_workspace = switch_workspace;
   plugin_class->show_tile_preview = show_tile_preview;
@@ -620,23 +613,6 @@ maximize (MetaPlugin *plugin,
     }
 
   meta_plugin_maximize_completed (plugin, window_actor);
-}
-
-/*
- * See comments on the maximize() function.
- *
- * (Just a skeleton code.)
- */
-static void
-unmaximize (MetaPlugin *plugin,
-            MetaWindowActor *window_actor,
-            gint end_x, gint end_y, gint end_width, gint end_height)
-{
-  MetaWindow *meta_window = meta_window_actor_get_meta_window (window_actor);
-  MetaWindowType type = meta_window_get_window_type (meta_window);
-
-  /* Do this conditionally, if the effect requires completion callback. */
-  meta_plugin_unmaximize_completed (plugin, window_actor);
 }
 
 static void
