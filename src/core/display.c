@@ -1877,8 +1877,7 @@ meta_display_end_grab_op (MetaDisplay *display,
   g_signal_emit (display, display_signals[GRAB_OP_END], 0,
                  display->screen, display->grab_window, display->grab_op);
 
-  if (display->grab_window != NULL &&
-      meta_grab_op_is_moving_or_resizing (display->grab_op))
+  if (meta_grab_op_is_moving_or_resizing (display->grab_op))
     {
       /* Clear out the edge cache */
       meta_display_cleanup_edges (display);
@@ -1906,10 +1905,7 @@ meta_display_end_grab_op (MetaDisplay *display,
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Ungrabbing all keys timestamp %u\n", timestamp);
-      if (display->grab_window)
-        meta_window_ungrab_all_keys (display->grab_window, timestamp);
-      else
-        meta_screen_ungrab_all_keys (display->screen, timestamp);
+      meta_window_ungrab_all_keys (display->grab_window, timestamp);
     }
 
   tracker = meta_cursor_tracker_get_for_screen (display->screen);
