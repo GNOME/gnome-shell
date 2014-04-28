@@ -74,6 +74,9 @@ struct _ClutterCanvasPrivate
   int width;
   int height;
 
+  CoglTexture *texture;
+  gboolean dirty;
+
   CoglBitmap *buffer;
 };
 
@@ -136,6 +139,8 @@ clutter_canvas_finalize (GObject *gobject)
       cogl_object_unref (priv->buffer);
       priv->buffer = NULL;
     }
+
+  g_clear_pointer (&priv->texture, cogl_object_unref);
 
   G_OBJECT_CLASS (clutter_canvas_parent_class)->finalize (gobject);
 }
@@ -289,21 +294,26 @@ clutter_canvas_paint_content (ClutterContent   *content,
                               ClutterPaintNode *root)
 {
   ClutterCanvas *self = CLUTTER_CANVAS (content);
+  ClutterCanvasPrivate *priv = self->priv;
   ClutterPaintNode *node;
-  CoglTexture *texture;
   ClutterActorBox box;
   ClutterColor color;
   guint8 paint_opacity;
   ClutterScalingFilter min_f, mag_f;
   ClutterContentRepeat repeat;
 
-  if (self->priv->buffer == NULL)
+  if (priv->buffer == NULL)
     return;
 
-  texture = cogl_texture_new_from_bitmap (self->priv->buffer,
-                                          COGL_TEXTURE_NO_SLICING,
-                                          CLUTTER_CAIRO_FORMAT_ARGB32);
-  if (texture == NULL)
+  if (priv->texture && priv->dirty)
+    g_clear_pointer (&priv->texture, cogl_object_unref);
+
+  if (!priv->texture)
+    priv->texture = cogl_texture_new_from_bitmap (self->priv->buffer,
+                                                  COGL_TEXTURE_NO_SLICING,
+                                                  CLUTTER_CAIRO_FORMAT_ARGB32);
+
+  if (priv->texture == NULL)
     return;
 
   clutter_actor_get_content_box (actor, &box);
@@ -316,8 +326,7 @@ clutter_canvas_paint_content (ClutterContent   *content,
   color.blue = paint_opacity;
   color.alpha = paint_opacity;
 
-  node = clutter_texture_node_new (texture, &color, min_f, mag_f);
-  cogl_object_unref (texture);
+  node = clutter_texture_node_new (priv->texture, &color, min_f, mag_f);
 
   clutter_paint_node_set_name (node, "Canvas");
 
@@ -328,10 +337,10 @@ clutter_canvas_paint_content (ClutterContent   *content,
       float t_w = 1.f, t_h = 1.f;
 
       if ((repeat & CLUTTER_REPEAT_X_AXIS) != FALSE)
-        t_w = (box.x2 - box.x1) / cogl_texture_get_width (texture);
+        t_w = (box.x2 - box.x1) / cogl_texture_get_width (priv->texture);
 
       if ((repeat & CLUTTER_REPEAT_Y_AXIS) != FALSE)
-        t_h = (box.y2 - box.y1) / cogl_texture_get_height (texture);
+        t_h = (box.y2 - box.y1) / cogl_texture_get_height (priv->texture);
 
       clutter_paint_node_add_texture_rectangle (node, &box,
                                                 0.f, 0.f,
@@ -340,6 +349,8 @@ clutter_canvas_paint_content (ClutterContent   *content,
 
   clutter_paint_node_add_child (root, node);
   clutter_paint_node_unref (node);
+
+  priv->dirty = FALSE;
 }
 
 static void
@@ -354,6 +365,8 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
   cairo_t *cr;
 
   g_assert (priv->width > 0 && priv->width > 0);
+
+  priv->dirty = TRUE;
 
   if (priv->buffer == NULL)
     {
