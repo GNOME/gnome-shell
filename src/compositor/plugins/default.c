@@ -138,9 +138,6 @@ typedef struct _ActorPrivate
   ClutterTimeline *tml_maximize;
   ClutterTimeline *tml_destroy;
   ClutterTimeline *tml_map;
-
-  gboolean      is_minimized : 1;
-  gboolean      is_maximized : 1;
 } ActorPrivate;
 
 /* callback data for when animations complete */
@@ -522,8 +519,6 @@ minimize (MetaPlugin *plugin, MetaWindowActor *window_actor)
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
       ActorPrivate *apriv = get_actor_private (window_actor);
 
-      apriv->is_minimized = TRUE;
-
       animation = clutter_actor_animate (actor,
                                          CLUTTER_EASE_IN_SINE,
                                          MINIMIZE_TIMEOUT,
@@ -599,8 +594,6 @@ maximize (MetaPlugin *plugin,
       gfloat width, height;
       gfloat x, y;
 
-      apriv->is_maximized = TRUE;
-
       clutter_actor_get_size (actor, &width, &height);
       clutter_actor_get_position (actor, &x, &y);
 
@@ -641,13 +634,6 @@ unmaximize (MetaPlugin *plugin,
 {
   MetaWindow *meta_window = meta_window_actor_get_meta_window (window_actor);
   MetaWindowType type = meta_window_get_window_type (meta_window);
-
-  if (type == META_WINDOW_NORMAL)
-    {
-      ActorPrivate *apriv = get_actor_private (window_actor);
-
-      apriv->is_maximized = FALSE;
-    }
 
   /* Do this conditionally, if the effect requires completion callback. */
   meta_plugin_unmaximize_completed (plugin, window_actor);
@@ -708,9 +694,6 @@ map (MetaPlugin *plugin, MetaWindowActor *window_actor)
       g_signal_connect (apriv->tml_map, "completed",
                         G_CALLBACK (on_map_effect_complete),
                         data);
-
-      apriv->is_minimized = FALSE;
-
     }
   else
     meta_plugin_map_completed (plugin, window_actor);
