@@ -115,11 +115,6 @@ gboolean meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
 void meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
                                       MetaWaylandSurface *surface);
 
-void meta_wayland_keyboard_start_grab (MetaWaylandKeyboard *device,
-                                       MetaWaylandKeyboardGrab *grab);
-
-void meta_wayland_keyboard_end_grab (MetaWaylandKeyboard *keyboard);
-
 typedef enum {
   META_WAYLAND_KEYBOARD_SKIP_XCLIENTS = 1,
 } MetaWaylandKeyboardSetKeymapFlags;

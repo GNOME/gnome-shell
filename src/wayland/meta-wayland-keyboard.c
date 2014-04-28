@@ -511,22 +511,6 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
 }
 
 void
-meta_wayland_keyboard_start_grab (MetaWaylandKeyboard *keyboard,
-                                  MetaWaylandKeyboardGrab *grab)
-{
-  keyboard->grab = grab;
-  grab->keyboard = keyboard;
-
-  /* XXX focus? */
-}
-
-void
-meta_wayland_keyboard_end_grab (MetaWaylandKeyboard *keyboard)
-{
-  keyboard->grab = &keyboard->default_grab;
-}
-
-void
 meta_wayland_keyboard_set_keymap_names (MetaWaylandKeyboard *keyboard,
 					const char          *rules,
 					const char          *model,
