@@ -619,11 +619,6 @@ void     meta_window_move_resize_request(MetaWindow *window,
                                          int         y,
                                          int         width,
                                          int         height);
-void     meta_window_move_resize_wayland (MetaWindow *window,
-                                          int         width,
-                                          int         height,
-                                          int         dx,
-                                          int         dy);
 void     meta_window_set_focused_internal (MetaWindow *window,
                                            gboolean    focused);
 
@@ -754,5 +749,14 @@ void meta_window_update_resize (MetaWindow *window,
                                 gboolean    snap,
                                 int x, int y,
                                 gboolean force);
+
+void meta_window_move_resize_internal (MetaWindow          *window,
+                                       MetaMoveResizeFlags  flags,
+                                       int                  gravity,
+                                       int                  root_x_nw,
+                                       int                  root_y_nw,
+                                       int                  w,
+                                       int                  h);
+void meta_window_save_user_window_placement (MetaWindow *window);
 
 #endif

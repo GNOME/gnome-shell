@@ -51,6 +51,7 @@
 #include "meta-cursor-tracker-private.h"
 #include "display-private.h"
 #include "window-private.h"
+#include "window-wayland.h"
 #include <meta/types.h>
 #include <meta/main.h>
 #include "frame.h"
@@ -182,7 +183,7 @@ toplevel_surface_commit (MetaWaylandSurface             *surface,
               new_height != window->rect.height ||
               pending->dx != 0 ||
               pending->dy != 0)
-            meta_window_move_resize_wayland (window, new_width, new_height, pending->dx, pending->dy);
+            meta_window_wayland_move_resize (window, new_width, new_height, pending->dx, pending->dy);
         }
     }
 

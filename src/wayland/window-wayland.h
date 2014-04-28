@@ -41,4 +41,10 @@ GType meta_window_wayland_get_type (void);
 typedef struct _MetaWindowWayland      MetaWindowWayland;
 typedef struct _MetaWindowWaylandClass MetaWindowWaylandClass;
 
+void meta_window_wayland_move_resize (MetaWindow *window,
+                                      int         width,
+                                      int         height,
+                                      int         dx,
+                                      int         dy);
+
 #endif

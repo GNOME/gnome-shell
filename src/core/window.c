@@ -81,16 +81,7 @@ static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
 
 static void     meta_window_save_rect         (MetaWindow    *window);
-static void     save_user_window_placement    (MetaWindow    *window);
 static void     force_save_user_window_placement (MetaWindow    *window);
-
-static void meta_window_move_resize_internal (MetaWindow         *window,
-                                              MetaMoveResizeFlags flags,
-                                              int                 resize_gravity,
-                                              int                 root_x_nw,
-                                              int                 root_y_nw,
-                                              int                 w,
-                                              int                 h);
 
 static void     ensure_mru_position_after (MetaWindow *window,
                                            MetaWindow *after_this_one);
@@ -2907,8 +2898,8 @@ force_save_user_window_placement (MetaWindow *window)
  * fullscreen, otherwise the window may snap back to those dimensions
  * (bug #461927).
  */
-static void
-save_user_window_placement (MetaWindow *window)
+void
+meta_window_save_user_window_placement (MetaWindow *window)
 {
   if (!(META_WINDOW_MAXIMIZED (window) || META_WINDOW_TILED_SIDE_BY_SIDE (window) || window->fullscreen))
     {
@@ -4147,7 +4138,7 @@ meta_window_update_monitor (MetaWindow *window)
     }
 }
 
-static void
+void
 meta_window_move_resize_internal (MetaWindow          *window,
                                   MetaMoveResizeFlags  flags,
                                   int                  gravity,
@@ -4295,7 +4286,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
   if (!window->placed && window->force_save_user_rect && !window->fullscreen)
     force_save_user_window_placement (window);
   else if (is_user_action)
-    save_user_window_placement (window);
+    meta_window_save_user_window_placement (window);
 
   if (result & META_MOVE_RESIZE_RESULT_MOVED)
     g_signal_emit (window, window_signals[POSITION_CHANGED], 0);
@@ -4372,46 +4363,6 @@ meta_window_resize (MetaWindow  *window,
                                     flags,
                                     NorthWestGravity,
                                     x, y, w, h);
-}
-
-/*
- * meta_window_move_resize_wayland:
- *
- * Complete a resize operation from a wayland client.
- *
- */
-void
-meta_window_move_resize_wayland (MetaWindow *window,
-                                 int         width,
-                                 int         height,
-                                 int         dx,
-                                 int         dy)
-{
-  int x, y;
-  MetaMoveResizeFlags flags;
-
-  flags = META_IS_WAYLAND_RESIZE;
-
-  meta_window_get_position (window, &x, &y);
-
-  /* dx/dy are ignored during resizing */
-  if (!meta_grab_op_is_resizing (window->display->grab_op))
-    {
-      if (dx != 0 || dy != 0)
-        {
-          x += dx;
-          y += dy;
-          flags |= META_IS_MOVE_ACTION;
-        }
-    }
-
-  if (width != window->rect.width || height != window->rect.height)
-    flags |= META_IS_RESIZE_ACTION;
-
-  meta_window_move_resize_internal (window, flags,
-                                    meta_resize_gravity_from_grab_op (window->display->grab_op),
-                                    x, y, width, height);
-  save_user_window_placement (window);
 }
 
 /**
@@ -5516,7 +5467,7 @@ meta_window_move_resize_request (MetaWindow *window,
    *
    * See also bug 426519.
    */
-  save_user_window_placement (window);
+  meta_window_save_user_window_placement (window);
 }
 
 /*

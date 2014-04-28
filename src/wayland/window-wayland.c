@@ -223,3 +223,42 @@ meta_window_wayland_class_init (MetaWindowWaylandClass *klass)
   window_class->focus = meta_window_wayland_focus;
   window_class->move_resize_internal = meta_window_wayland_move_resize_internal;
 }
+
+/**
+ * meta_window_move_resize_wayland:
+ *
+ * Complete a resize operation from a wayland client.
+ */
+void
+meta_window_wayland_move_resize (MetaWindow *window,
+                                 int         width,
+                                 int         height,
+                                 int         dx,
+                                 int         dy)
+{
+  int x, y;
+  MetaMoveResizeFlags flags;
+
+  flags = META_IS_WAYLAND_RESIZE;
+
+  meta_window_get_position (window, &x, &y);
+
+  /* dx/dy are ignored during resizing */
+  if (!meta_grab_op_is_resizing (window->display->grab_op))
+    {
+      if (dx != 0 || dy != 0)
+        {
+          x += dx;
+          y += dy;
+          flags |= META_IS_MOVE_ACTION;
+        }
+    }
+
+  if (width != window->rect.width || height != window->rect.height)
+    flags |= META_IS_RESIZE_ACTION;
+
+  meta_window_move_resize_internal (window, flags,
+                                    meta_resize_gravity_from_grab_op (window->display->grab_op),
+                                    x, y, width, height);
+  meta_window_save_user_window_placement (window);
+}
