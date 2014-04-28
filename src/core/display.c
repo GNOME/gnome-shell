@@ -1810,8 +1810,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_op = op;
   display->grab_window = grab_window;
   display->grab_button = button;
-  display->grab_tile_mode = window->tile_mode;
-  display->grab_tile_monitor_number = window->tile_monitor_number;
+  display->grab_tile_mode = grab_window->tile_mode;
+  display->grab_tile_monitor_number = grab_window->tile_monitor_number;
   display->grab_anchor_root_x = root_x;
   display->grab_anchor_root_y = root_y;
   display->grab_latest_motion_x = root_x;
