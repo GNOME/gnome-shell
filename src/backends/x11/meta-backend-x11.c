@@ -82,9 +82,23 @@ static void
 translate_device_event (MetaBackendX11 *x11,
                         XIDeviceEvent  *device_event)
 {
-  device_event->event = get_stage_window (x11);
-  device_event->event_x = device_event->root_x;
-  device_event->event_y = device_event->root_y;
+  Window stage_window = get_stage_window (x11);
+
+  if (device_event->event != stage_window)
+    {
+      /* This codepath should only ever trigger as an X11 compositor,
+       * and never under nested, as under nested all backend events
+       * should be reported with respect to the stage window. */
+      g_assert (!meta_is_wayland_compositor ());
+
+      device_event->event = stage_window;
+
+      /* As an X11 compositor, the stage window is always at 0,0, so
+       * using root coordinates will give us correct stage coordinates
+       * as well... */
+      device_event->event_x = device_event->root_x;
+      device_event->event_y = device_event->root_y;
+    }
 }
 
 /* Clutter makes the assumption that there is only one X window
