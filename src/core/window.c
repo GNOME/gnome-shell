@@ -8942,3 +8942,29 @@ meta_window_set_urgent (MetaWindow *window,
   if (urgent)
     g_signal_emit_by_name (window->display, "window-marked-urgent", window);
 }
+
+void
+meta_window_grab_op_began (MetaWindow *window,
+                           MetaGrabOp  op)
+{
+  if (meta_grab_op_is_resizing (op) &&
+      window->sync_request_counter != None)
+    meta_window_create_sync_request_alarm (window);
+
+  meta_window_refresh_resize_popup (window);
+}
+
+void
+meta_window_grab_op_ended (MetaWindow *window,
+                           MetaGrabOp  op)
+{
+  MetaDisplay *display = window->display;
+
+  window->shaken_loose = FALSE;
+
+  if (display->grab_resize_popup)
+    {
+      meta_ui_resize_popup_free (display->grab_resize_popup);
+      display->grab_resize_popup = NULL;
+    }
+}

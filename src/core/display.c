@@ -1848,17 +1848,13 @@ meta_display_begin_grab_op (MetaDisplay *display,
                                       &display->grab_initial_window_pos);
   display->grab_anchor_window_pos = display->grab_initial_window_pos;
 
-  if (meta_grab_op_is_resizing (display->grab_op) &&
-      display->grab_window->sync_request_counter != None)
-    meta_window_create_sync_request_alarm (display->grab_window);
-
-  meta_window_refresh_resize_popup (display->grab_window);
-
   if (meta_is_wayland_compositor ())
     meta_display_sync_wayland_input_focus (display);
 
   g_signal_emit (display, display_signals[GRAB_OP_BEGIN], 0,
                  screen, display->grab_window, display->grab_op);
+
+  meta_window_grab_op_began (display->grab_window, display->grab_op);
 
   return TRUE;
 }
@@ -1878,12 +1874,12 @@ meta_display_end_grab_op (MetaDisplay *display,
   g_signal_emit (display, display_signals[GRAB_OP_END], 0,
                  display->screen, display->grab_window, display->grab_op);
 
+  meta_window_grab_op_ended (display->grab_window, display->grab_op);
+
   if (meta_grab_op_is_moving_or_resizing (display->grab_op))
     {
       /* Clear out the edge cache */
       meta_display_cleanup_edges (display);
-
-      display->grab_window->shaken_loose = FALSE;
 
       /* Only raise the window in orthogonal raise
        * ('do-not-raise-on-click') mode if the user didn't try to move
@@ -1917,12 +1913,6 @@ meta_display_end_grab_op (MetaDisplay *display,
   display->grab_tile_mode = META_TILE_NONE;
   display->grab_tile_monitor_number = -1;
   display->grab_op = META_GRAB_OP_NONE;
-
-  if (display->grab_resize_popup)
-    {
-      meta_ui_resize_popup_free (display->grab_resize_popup);
-      display->grab_resize_popup = NULL;
-    }
 
   if (display->grab_resize_timeout_id)
     {
