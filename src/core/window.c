@@ -867,10 +867,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   /* if already mapped we don't want to do the placement thing;
    * override-redirect windows are placed by the app */
   window->placed = ((window->mapped && !window->hidden) || window->override_redirect);
-  if (window->placed)
-    meta_topic (META_DEBUG_PLACEMENT,
-                "Not placing window 0x%lx since it's already mapped\n",
-                xwindow);
   window->force_save_user_rect = TRUE;
   window->denied_focus_and_not_transient = FALSE;
   window->unmanaging = FALSE;
@@ -1448,7 +1444,7 @@ meta_window_unmanage (MetaWindow  *window,
 {
   GList *tmp;
 
-  meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
+  meta_verbose ("Unmanaging %s\n", window->desc);
 
   /* This needs to happen for both Wayland and XWayland clients,
    * so it can't be in MetaWindowWayland. */
