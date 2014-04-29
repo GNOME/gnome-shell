@@ -462,6 +462,8 @@ struct _MetaWindow
 
   /* Bypass compositor hints */
   guint bypass_compositor;
+
+  MetaResizePopup *grab_resize_popup;
 };
 
 struct _MetaWindowClass
@@ -649,8 +651,6 @@ gboolean meta_window_same_application (MetaWindow *window,
   (((w)->input || (w)->take_focus) && (! META_WINDOW_IN_NORMAL_TAB_CHAIN_TYPE (w) || (w)->skip_taskbar))
 #define META_WINDOW_IN_GROUP_TAB_CHAIN(w, g) \
   (((w)->input || (w)->take_focus) && (!g || meta_window_get_group(w)==g))
-
-void meta_window_refresh_resize_popup (MetaWindow *window);
 
 void meta_window_free_delete_dialog (MetaWindow *window);
 

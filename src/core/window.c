@@ -4141,6 +4141,23 @@ meta_window_update_monitor (MetaWindow *window)
     }
 }
 
+static void
+meta_window_refresh_resize_popup (MetaWindow *window)
+{
+  MetaRectangle rect;
+
+  meta_window_get_client_root_coords (window, &rect);
+
+  meta_ui_resize_popup_set (window->grab_resize_popup,
+                            rect,
+                            window->size_hints.base_width,
+                            window->size_hints.base_height,
+                            window->size_hints.width_inc,
+                            window->size_hints.height_inc);
+
+  meta_ui_resize_popup_set_showing (window->grab_resize_popup, TRUE);
+}
+
 void
 meta_window_move_resize_internal (MetaWindow          *window,
                                   MetaMoveResizeFlags  flags,
@@ -4317,7 +4334,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
       meta_topic (META_DEBUG_GEOMETRY, "Size/position not modified\n");
     }
 
-  meta_window_refresh_resize_popup (window);
+  if (window->grab_resize_popup)
+    meta_window_refresh_resize_popup (window);
 
   meta_window_update_monitor (window);
 
@@ -7331,42 +7349,6 @@ meta_window_is_client_decorated (MetaWindow *window)
     }
 }
 
-void
-meta_window_refresh_resize_popup (MetaWindow *window)
-{
-  if (!meta_grab_op_is_resizing (window->display->grab_op))
-    return;
-
-  if (window->display->grab_window != window)
-    return;
-
-  if (window->display->grab_resize_popup == NULL)
-    {
-      if (window->size_hints.width_inc > 1 ||
-          window->size_hints.height_inc > 1)
-        window->display->grab_resize_popup =
-          meta_ui_resize_popup_new (window->display->xdisplay,
-                                    window->screen->number);
-    }
-
-  if (window->display->grab_resize_popup != NULL)
-    {
-      MetaRectangle rect;
-
-      meta_window_get_client_root_coords (window, &rect);
-
-      meta_ui_resize_popup_set (window->display->grab_resize_popup,
-                                rect,
-                                window->size_hints.base_width,
-                                window->size_hints.base_height,
-                                window->size_hints.width_inc,
-                                window->size_hints.height_inc);
-
-      meta_ui_resize_popup_set_showing (window->display->grab_resize_popup,
-                                        TRUE);
-    }
-}
-
 /**
  * meta_window_foreach_transient:
  * @window: a #MetaWindow
@@ -8921,24 +8903,29 @@ void
 meta_window_grab_op_began (MetaWindow *window,
                            MetaGrabOp  op)
 {
-  if (meta_grab_op_is_resizing (op) &&
-      window->sync_request_counter != None)
-    meta_window_create_sync_request_alarm (window);
+  if (meta_grab_op_is_resizing (op))
+    {
+      if (window->sync_request_counter != None)
+        meta_window_create_sync_request_alarm (window);
 
-  meta_window_refresh_resize_popup (window);
+      if (window->size_hints.width_inc > 1 || window->size_hints.height_inc > 1)
+        {
+          window->grab_resize_popup = meta_ui_resize_popup_new (window->display->xdisplay,
+                                                                window->screen->number);
+          meta_window_refresh_resize_popup (window);
+        }
+    }
 }
 
 void
 meta_window_grab_op_ended (MetaWindow *window,
                            MetaGrabOp  op)
 {
-  MetaDisplay *display = window->display;
-
   window->shaken_loose = FALSE;
 
-  if (display->grab_resize_popup)
+  if (window->grab_resize_popup)
     {
-      meta_ui_resize_popup_free (display->grab_resize_popup);
-      display->grab_resize_popup = NULL;
+      meta_ui_resize_popup_free (window->grab_resize_popup);
+      window->grab_resize_popup = NULL;
     }
 }

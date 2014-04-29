@@ -41,7 +41,6 @@
 #include <meta/errors.h>
 #include "keybindings-private.h"
 #include <meta/prefs.h>
-#include "resizepopup.h"
 #include "workspace-private.h"
 #include "bell.h"
 #include <meta/compositor.h>
@@ -557,7 +556,6 @@ meta_display_open (void)
 
   the_display->grab_op = META_GRAB_OP_NONE;
   the_display->grab_window = NULL;
-  the_display->grab_resize_popup = NULL;
   the_display->grab_tile_mode = META_TILE_NONE;
   the_display->grab_tile_monitor_number = -1;
 
