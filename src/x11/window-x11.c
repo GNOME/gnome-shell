@@ -1583,6 +1583,171 @@ meta_window_same_client (MetaWindow *window,
           (other_window->xwindow & ~resource_mask));
 }
 
+static void
+meta_window_move_resize_request (MetaWindow *window,
+                                 guint       value_mask,
+                                 int         gravity,
+                                 int         new_x,
+                                 int         new_y,
+                                 int         new_width,
+                                 int         new_height)
+{
+  int x, y, width, height;
+  gboolean allow_position_change;
+  gboolean in_grab_op;
+  MetaMoveResizeFlags flags;
+
+  /* We ignore configure requests while the user is moving/resizing
+   * the window, since these represent the app sucking and fighting
+   * the user, most likely due to a bug in the app (e.g. pfaedit
+   * seemed to do this)
+   *
+   * Still have to do the ConfigureNotify and all, but pretend the
+   * app asked for the current size/position instead of the new one.
+   */
+  in_grab_op = FALSE;
+  if (window->display->grab_op != META_GRAB_OP_NONE &&
+      window == window->display->grab_window)
+    {
+      switch (window->display->grab_op)
+        {
+        case META_GRAB_OP_MOVING:
+        case META_GRAB_OP_RESIZING_SE:
+        case META_GRAB_OP_RESIZING_S:
+        case META_GRAB_OP_RESIZING_SW:
+        case META_GRAB_OP_RESIZING_N:
+        case META_GRAB_OP_RESIZING_NE:
+        case META_GRAB_OP_RESIZING_NW:
+        case META_GRAB_OP_RESIZING_W:
+        case META_GRAB_OP_RESIZING_E:
+          in_grab_op = TRUE;
+          break;
+        default:
+          break;
+        }
+    }
+
+  /* it's essential to use only the explicitly-set fields,
+   * and otherwise use our current up-to-date position.
+   *
+   * Otherwise you get spurious position changes when the app changes
+   * size, for example, if window->rect is not in sync with the
+   * server-side position in effect when the configure request was
+   * generated.
+   */
+  meta_window_get_gravity_position (window,
+                                    gravity,
+                                    &x, &y);
+
+  allow_position_change = FALSE;
+
+  if (meta_prefs_get_disable_workarounds ())
+    {
+      if (window->type == META_WINDOW_DIALOG ||
+          window->type == META_WINDOW_MODAL_DIALOG ||
+          window->type == META_WINDOW_SPLASHSCREEN)
+        ; /* No position change for these */
+      else if ((window->size_hints.flags & PPosition) ||
+               /* USPosition is just stale if window is placed;
+                * no --geometry involved here.
+                */
+               ((window->size_hints.flags & USPosition) &&
+                !window->placed))
+        allow_position_change = TRUE;
+    }
+  else
+    {
+      allow_position_change = TRUE;
+    }
+
+  if (in_grab_op)
+    allow_position_change = FALSE;
+
+  if (allow_position_change)
+    {
+      if (value_mask & CWX)
+        x = new_x;
+      if (value_mask & CWY)
+        y = new_y;
+      if (value_mask & (CWX | CWY))
+        {
+          /* Once manually positioned, windows shouldn't be placed
+           * by the window manager.
+           */
+          window->placed = TRUE;
+        }
+    }
+  else
+    {
+      meta_topic (META_DEBUG_GEOMETRY,
+		  "Not allowing position change for window %s PPosition 0x%lx USPosition 0x%lx type %u\n",
+		  window->desc, window->size_hints.flags & PPosition,
+		  window->size_hints.flags & USPosition,
+		  window->type);
+    }
+
+  width = window->rect.width;
+  height = window->rect.height;
+  if (!in_grab_op)
+    {
+      if (value_mask & CWWidth)
+        width = new_width;
+
+      if (value_mask & CWHeight)
+        height = new_height;
+    }
+
+  /* ICCCM 4.1.5 */
+
+  /* We're ignoring the value_mask here, since sizes
+   * not in the mask will be the current window geometry.
+   */
+  window->size_hints.x = x;
+  window->size_hints.y = y;
+  window->size_hints.width = width;
+  window->size_hints.height = height;
+
+  /* NOTE: We consider ConfigureRequests to be "user" actions in one
+   * way, but not in another.  Explanation of the two cases are in the
+   * next two big comments.
+   */
+
+  /* The constraints code allows user actions to move windows
+   * offscreen, etc., and configure request actions would often send
+   * windows offscreen when users don't want it if not constrained
+   * (e.g. hitting a dropdown triangle in a fileselector to show more
+   * options, which makes the window bigger).  Thus we do not set
+   * META_IS_USER_ACTION in flags to the
+   * meta_window_move_resize_internal() call.
+   */
+  flags = META_IS_CONFIGURE_REQUEST;
+  if (value_mask & (CWX | CWY))
+    flags |= META_IS_MOVE_ACTION;
+  if (value_mask & (CWWidth | CWHeight))
+    flags |= META_IS_RESIZE_ACTION;
+
+  if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
+    meta_window_move_resize_internal (window,
+                                      flags,
+                                      gravity,
+                                      x,
+                                      y,
+                                      width,
+                                      height);
+
+  /* window->user_rect exists to allow "snapping-back" the window if a
+   * new strut is set (causing the window to move) and then the strut
+   * is later removed without the user moving the window in the
+   * interim.  We'd like to "snap-back" to the position specified by
+   * ConfigureRequest events (at least the constrained version of the
+   * ConfigureRequest, since that is guaranteed to be onscreen) so we
+   * set user_rect here.
+   *
+   * See also bug 426519.
+   */
+  meta_window_save_user_window_placement (window);
+}
+
 gboolean
 meta_window_x11_configure_request (MetaWindow *window,
                                    XEvent     *event)

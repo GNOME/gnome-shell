@@ -612,13 +612,6 @@ void        meta_window_get_geometry         (MetaWindow  *window,
 
 void        meta_window_update_unfocused_button_grabs (MetaWindow *window);
 
-void     meta_window_move_resize_request(MetaWindow *window,
-                                         guint       value_mask,
-                                         int         gravity,
-                                         int         x,
-                                         int         y,
-                                         int         width,
-                                         int         height);
 void     meta_window_set_focused_internal (MetaWindow *window,
                                            gboolean    focused);
 
