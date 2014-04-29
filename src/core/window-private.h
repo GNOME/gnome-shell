@@ -462,8 +462,6 @@ struct _MetaWindow
 
   /* Bypass compositor hints */
   guint bypass_compositor;
-
-  MetaResizePopup *grab_resize_popup;
 };
 
 struct _MetaWindowClass
@@ -479,6 +477,10 @@ struct _MetaWindowClass
   void (*kill)                   (MetaWindow *window);
   void (*focus)                  (MetaWindow *window,
                                   guint32     timestamp);
+  void (*grab_op_began)          (MetaWindow *window,
+                                  MetaGrabOp  op);
+  void (*grab_op_ended)          (MetaWindow *window,
+                                  MetaGrabOp  op);
   void (*move_resize_internal)   (MetaWindow                *window,
                                   int                        gravity,
                                   MetaRectangle              requested_rect,

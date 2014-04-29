@@ -40,7 +40,6 @@
 #include "place.h"
 #include <meta/prefs.h>
 #include <meta/group.h>
-#include "resizepopup.h"
 #include "constraints.h"
 #include "mutter-enum-types.h"
 #include "core.h"
@@ -192,6 +191,19 @@ prefs_changed_callback (MetaPreference pref,
       meta_window_recalc_features (window);
       meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
     }
+}
+
+static void
+meta_window_real_grab_op_began (MetaWindow *window,
+                                MetaGrabOp  op)
+{
+}
+
+static void
+meta_window_real_grab_op_ended (MetaWindow *window,
+                                MetaGrabOp  op)
+{
+  window->shaken_loose = FALSE;
 }
 
 static gboolean
@@ -365,6 +377,8 @@ meta_window_class_init (MetaWindowClass *klass)
   object_class->get_property = meta_window_get_property;
   object_class->set_property = meta_window_set_property;
 
+  klass->grab_op_began = meta_window_real_grab_op_began;
+  klass->grab_op_ended = meta_window_real_grab_op_ended;
   klass->update_struts = meta_window_real_update_struts;
   klass->get_default_skip_hints = meta_window_real_get_default_skip_hints;
 
@@ -4141,23 +4155,6 @@ meta_window_update_monitor (MetaWindow *window)
     }
 }
 
-static void
-meta_window_refresh_resize_popup (MetaWindow *window)
-{
-  MetaRectangle rect;
-
-  meta_window_get_client_root_coords (window, &rect);
-
-  meta_ui_resize_popup_set (window->grab_resize_popup,
-                            rect,
-                            window->size_hints.base_width,
-                            window->size_hints.base_height,
-                            window->size_hints.width_inc,
-                            window->size_hints.height_inc);
-
-  meta_ui_resize_popup_set_showing (window->grab_resize_popup, TRUE);
-}
-
 void
 meta_window_move_resize_internal (MetaWindow          *window,
                                   MetaMoveResizeFlags  flags,
@@ -4333,9 +4330,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
     {
       meta_topic (META_DEBUG_GEOMETRY, "Size/position not modified\n");
     }
-
-  if (window->grab_resize_popup)
-    meta_window_refresh_resize_popup (window);
 
   meta_window_update_monitor (window);
 
@@ -8903,29 +8897,12 @@ void
 meta_window_grab_op_began (MetaWindow *window,
                            MetaGrabOp  op)
 {
-  if (meta_grab_op_is_resizing (op))
-    {
-      if (window->sync_request_counter != None)
-        meta_window_create_sync_request_alarm (window);
-
-      if (window->size_hints.width_inc > 1 || window->size_hints.height_inc > 1)
-        {
-          window->grab_resize_popup = meta_ui_resize_popup_new (window->display->xdisplay,
-                                                                window->screen->number);
-          meta_window_refresh_resize_popup (window);
-        }
-    }
+  META_WINDOW_GET_CLASS (window)->grab_op_began (window, op);
 }
 
 void
 meta_window_grab_op_ended (MetaWindow *window,
                            MetaGrabOp  op)
 {
-  window->shaken_loose = FALSE;
-
-  if (window->grab_resize_popup)
-    {
-      meta_ui_resize_popup_free (window->grab_resize_popup);
-      window->grab_resize_popup = NULL;
-    }
+  META_WINDOW_GET_CLASS (window)->grab_op_ended (window, op);
 }

@@ -44,6 +44,7 @@
 #include "window-private.h"
 #include "window-props.h"
 #include "xprops.h"
+#include "resizepopup.h"
 
 struct _MetaWindowX11Class
 {
@@ -499,6 +500,60 @@ meta_window_x11_focus (MetaWindow *window,
 }
 
 static void
+meta_window_refresh_resize_popup (MetaWindow *window)
+{
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+  MetaRectangle rect;
+
+  meta_window_get_client_root_coords (window, &rect);
+
+  meta_ui_resize_popup_set (priv->grab_resize_popup,
+                            rect,
+                            window->size_hints.base_width,
+                            window->size_hints.base_height,
+                            window->size_hints.width_inc,
+                            window->size_hints.height_inc);
+
+  meta_ui_resize_popup_set_showing (priv->grab_resize_popup, TRUE);
+}
+
+static void
+meta_window_x11_grab_op_began (MetaWindow *window,
+                               MetaGrabOp  op)
+{
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+
+  if (meta_grab_op_is_resizing (op))
+    {
+      if (window->sync_request_counter != None)
+        meta_window_create_sync_request_alarm (window);
+
+      if (window->size_hints.width_inc > 1 || window->size_hints.height_inc > 1)
+        {
+          priv->grab_resize_popup = meta_ui_resize_popup_new (window->display->xdisplay,
+                                                              window->screen->number);
+          meta_window_refresh_resize_popup (window);
+        }
+    }
+}
+
+static void
+meta_window_x11_grab_op_ended (MetaWindow *window,
+                               MetaGrabOp  op)
+{
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+
+  if (priv->grab_resize_popup)
+    {
+      meta_ui_resize_popup_free (priv->grab_resize_popup);
+      priv->grab_resize_popup = NULL;
+    }
+}
+
+static void
 update_net_frame_extents (MetaWindow *window)
 {
   unsigned long data[4];
@@ -619,6 +674,8 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
                                       MetaMoveResizeFlags        flags,
                                       MetaMoveResizeResultFlags *result)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   int root_x_nw, root_y_nw;
   int w, h;
   int client_move_x, client_move_y;
@@ -891,6 +948,9 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
   if (need_configure_notify)
     send_configure_notify (window);
 
+  if (priv->grab_resize_popup)
+    meta_window_refresh_resize_popup (window);
+
   if (frame_shape_changed)
     *result |= META_MOVE_RESIZE_RESULT_FRAME_SHAPE_CHANGED;
   if (need_move_client || need_move_frame)
@@ -1085,6 +1145,8 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
   window_class->delete = meta_window_x11_delete;
   window_class->kill = meta_window_x11_kill;
   window_class->focus = meta_window_x11_focus;
+  window_class->grab_op_began = meta_window_x11_grab_op_began;
+  window_class->grab_op_ended = meta_window_x11_grab_op_ended;
   window_class->move_resize_internal = meta_window_x11_move_resize_internal;
   window_class->update_struts = meta_window_x11_update_struts;
   window_class->get_default_skip_hints = meta_window_x11_get_default_skip_hints;

@@ -50,6 +50,8 @@ struct _MetaWindowX11Private
   guint using_net_wm_visible_name      : 1; /* tracked so we can clear it */
 
   Atom type_atom;
+
+  MetaResizePopup *grab_resize_popup;
 };
 
 G_END_DECLS
