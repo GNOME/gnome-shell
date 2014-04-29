@@ -1709,7 +1709,8 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
 
   cursor_ref = meta_cursor_reference_from_theme (cursor);
   meta_cursor_tracker_set_grab_cursor (tracker, cursor_ref);
-  meta_cursor_reference_unref (cursor_ref);
+  if (cursor_ref)
+    meta_cursor_reference_unref (cursor_ref);
 
   if (meta_backend_grab_device (backend, META_VIRTUAL_CORE_POINTER_ID, timestamp))
     display->grab_have_pointer = TRUE;
