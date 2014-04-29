@@ -262,45 +262,6 @@ meta_core_user_lower_and_unfocus (Display *xdisplay,
 }
 
 void
-meta_core_lower_beneath_grab_window (Display *xdisplay,
-                                     Window   xwindow,
-                                     guint32  timestamp)
-{
-  XWindowChanges changes;
-  MetaDisplay *display;
-  MetaScreen *screen;
-  MetaWindow *grab_window;
-  MetaStackWindow stack_window;
-  MetaStackWindow stack_sibling;
-
-  display = meta_display_for_x_display (xdisplay);
-  screen = display->screen;
-  grab_window = display->grab_window;
-
-  if (grab_window == NULL)
-    return;
-
-  changes.stack_mode = Below;
-  changes.sibling = meta_window_get_toplevel_xwindow (grab_window);
-
-  stack_window.any.type = META_WINDOW_CLIENT_TYPE_X11;
-  stack_window.x11.xwindow = xwindow;
-  stack_sibling.any.type = META_WINDOW_CLIENT_TYPE_X11;
-  stack_sibling.x11.xwindow = changes.sibling;
-  meta_stack_tracker_record_lower_below (screen->stack_tracker,
-                                         &stack_window,
-                                         &stack_sibling,
-                                         XNextRequest (screen->display->xdisplay));
-
-  meta_error_trap_push (display);
-  XConfigureWindow (xdisplay,
-                    xwindow,
-                    CWSibling | CWStackMode,
-                    &changes);
-  meta_error_trap_pop (display);
-}
-
-void
 meta_core_user_focus (Display *xdisplay,
                       Window   frame_xwindow,
                       guint32  timestamp)
