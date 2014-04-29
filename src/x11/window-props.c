@@ -897,7 +897,7 @@ reload_update_counter (MetaWindow    *window,
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
-      meta_window_destroy_sync_request_alarm (window);
+      meta_window_x11_destroy_sync_request_alarm (window);
       window->sync_request_counter = None;
 
       if (value->v.xcounter_list.n_counters == 0)
@@ -921,7 +921,7 @@ reload_update_counter (MetaWindow    *window,
                     window->extended_sync_request_counter ? "true" : "false");
 
       if (window->extended_sync_request_counter)
-        meta_window_create_sync_request_alarm (window);
+        meta_window_x11_create_sync_request_alarm (window);
     }
 }
 

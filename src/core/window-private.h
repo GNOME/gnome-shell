@@ -629,9 +629,6 @@ void meta_window_show_menu (MetaWindow *window,
                             int         button,
                             guint32     timestamp);
 
-void meta_window_update_sync_request_counter (MetaWindow *window,
-                                              gint64      new_counter_value);
-
 gboolean meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                                   const ClutterEvent *event);
 
@@ -655,9 +652,6 @@ gboolean meta_window_same_application (MetaWindow *window,
   (((w)->input || (w)->take_focus) && (!g || meta_window_get_group(w)==g))
 
 void meta_window_free_delete_dialog (MetaWindow *window);
-
-void meta_window_create_sync_request_alarm  (MetaWindow *window);
-void meta_window_destroy_sync_request_alarm (MetaWindow *window);
 
 void meta_window_update_keyboard_resize (MetaWindow *window,
                                          gboolean    update_cursor);

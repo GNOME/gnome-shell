@@ -275,6 +275,8 @@ meta_window_x11_unmanage (MetaWindow *window)
 {
   meta_error_trap_push (window->display);
 
+  meta_window_x11_destroy_sync_request_alarm (window);
+
   if (window->withdrawn)
     {
       /* We need to clean off the window's state so it
@@ -528,7 +530,7 @@ meta_window_x11_grab_op_began (MetaWindow *window,
   if (meta_grab_op_is_resizing (op))
     {
       if (window->sync_request_counter != None)
-        meta_window_create_sync_request_alarm (window);
+        meta_window_x11_create_sync_request_alarm (window);
 
       if (window->size_hints.width_inc > 1 || window->size_hints.height_inc > 1)
         {
@@ -2988,4 +2990,138 @@ meta_window_x11_set_allowed_actions_hint (MetaWindow *window)
                    32, PropModeReplace, (guchar*) data, i);
   meta_error_trap_pop (window->display);
 #undef MAX_N_ACTIONS
+}
+
+void
+meta_window_x11_create_sync_request_alarm (MetaWindow *window)
+{
+  XSyncAlarmAttributes values;
+  XSyncValue init;
+
+  if (window->sync_request_counter == None ||
+      window->sync_request_alarm != None)
+    return;
+
+  meta_error_trap_push (window->display);
+
+  /* In the new (extended style), the counter value is initialized by
+   * the client before mapping the window. In the old style, we're
+   * responsible for setting the initial value of the counter.
+   */
+  if (window->extended_sync_request_counter)
+    {
+      if (!XSyncQueryCounter(window->display->xdisplay,
+                             window->sync_request_counter,
+                             &init))
+        {
+          meta_error_trap_pop_with_return (window->display);
+          window->sync_request_counter = None;
+          return;
+        }
+
+      window->sync_request_serial =
+        XSyncValueLow32 (init) + ((gint64)XSyncValueHigh32 (init) << 32);
+    }
+  else
+    {
+      XSyncIntToValue (&init, 0);
+      XSyncSetCounter (window->display->xdisplay,
+                       window->sync_request_counter, init);
+      window->sync_request_serial = 0;
+    }
+
+  values.trigger.counter = window->sync_request_counter;
+  values.trigger.test_type = XSyncPositiveComparison;
+
+  /* Initialize to one greater than the current value */
+  values.trigger.value_type = XSyncRelative;
+  XSyncIntToValue (&values.trigger.wait_value, 1);
+
+  /* After triggering, increment test_value by this until
+   * until the test condition is false */
+  XSyncIntToValue (&values.delta, 1);
+
+  /* we want events (on by default anyway) */
+  values.events = True;
+
+  window->sync_request_alarm = XSyncCreateAlarm (window->display->xdisplay,
+                                                 XSyncCACounter |
+                                                 XSyncCAValueType |
+                                                 XSyncCAValue |
+                                                 XSyncCATestType |
+                                                 XSyncCADelta |
+                                                 XSyncCAEvents,
+                                                 &values);
+
+  if (meta_error_trap_pop_with_return (window->display) == Success)
+    meta_display_register_sync_alarm (window->display, &window->sync_request_alarm, window);
+  else
+    {
+      window->sync_request_alarm = None;
+      window->sync_request_counter = None;
+    }
+}
+
+void
+meta_window_x11_destroy_sync_request_alarm (MetaWindow *window)
+{
+  if (window->sync_request_alarm != None)
+    {
+      /* Has to be unregistered _before_ clearing the structure field */
+      meta_display_unregister_sync_alarm (window->display, window->sync_request_alarm);
+      XSyncDestroyAlarm (window->display->xdisplay,
+                         window->sync_request_alarm);
+      window->sync_request_alarm = None;
+    }
+}
+
+void
+meta_window_x11_update_sync_request_counter (MetaWindow *window,
+                                             gint64      new_counter_value)
+{
+  gboolean needs_frame_drawn = FALSE;
+  gboolean no_delay_frame = FALSE;
+
+  if (window->extended_sync_request_counter && new_counter_value % 2 == 0)
+    {
+      needs_frame_drawn = TRUE;
+      no_delay_frame = new_counter_value == window->sync_request_serial + 1;
+    }
+
+  window->sync_request_serial = new_counter_value;
+  meta_compositor_set_updates_frozen (window->display->compositor, window,
+                                      meta_window_updates_are_frozen (window));
+
+  if (window == window->display->grab_window &&
+      meta_grab_op_is_resizing (window->display->grab_op) &&
+      new_counter_value >= window->sync_request_wait_serial &&
+      (!window->extended_sync_request_counter || new_counter_value % 2 == 0) &&
+      window->sync_request_timeout_id)
+    {
+      meta_topic (META_DEBUG_RESIZING,
+                  "Alarm event received last motion x = %d y = %d\n",
+                  window->display->grab_latest_motion_x,
+                  window->display->grab_latest_motion_y);
+
+      g_source_remove (window->sync_request_timeout_id);
+      window->sync_request_timeout_id = 0;
+
+      /* This means we are ready for another configure;
+       * no pointer round trip here, to keep in sync */
+      meta_window_update_resize (window,
+                                 window->display->grab_last_user_action_was_snap,
+                                 window->display->grab_latest_motion_x,
+                                 window->display->grab_latest_motion_y,
+                                 TRUE);
+    }
+
+  /* If sync was previously disabled, turn it back on and hope
+   * the application has come to its senses (maybe it was just
+   * busy with a pagefault or a long computation).
+   */
+  window->disable_sync = FALSE;
+
+  if (needs_frame_drawn)
+    meta_compositor_queue_frame_drawn (window->display->compositor, window,
+                                       no_delay_frame);
 }
