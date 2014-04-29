@@ -1688,6 +1688,13 @@ set_net_wm_state (MetaWindow *window)
     meta_window_x11_set_net_wm_state (window);
 }
 
+static void
+set_allowed_actions_hint (MetaWindow *window)
+{
+  if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
+    meta_window_x11_set_allowed_actions_hint (window);
+}
+
 /**
  * meta_window_located_on_workspace:
  * @window: a #MetaWindow
@@ -5728,77 +5735,6 @@ meta_window_frame_size_changed (MetaWindow *window)
 {
   if (window->frame)
     meta_frame_clear_cached_borders (window->frame);
-}
-
-static void
-set_allowed_actions_hint (MetaWindow *window)
-{
-#define MAX_N_ACTIONS 12
-  unsigned long data[MAX_N_ACTIONS];
-  int i;
-
-  i = 0;
-  if (window->has_move_func)
-    {
-      data[i] = window->display->atom__NET_WM_ACTION_MOVE;
-      ++i;
-    }
-  if (window->has_resize_func)
-    {
-      data[i] = window->display->atom__NET_WM_ACTION_RESIZE;
-      ++i;
-    }
-  if (window->has_fullscreen_func)
-    {
-      data[i] = window->display->atom__NET_WM_ACTION_FULLSCREEN;
-      ++i;
-    }
-  if (window->has_minimize_func)
-    {
-      data[i] = window->display->atom__NET_WM_ACTION_MINIMIZE;
-      ++i;
-    }
-  if (window->has_shade_func)
-    {
-      data[i] = window->display->atom__NET_WM_ACTION_SHADE;
-      ++i;
-    }
-  /* sticky according to EWMH is different from mutter's sticky;
-   * mutter doesn't support EWMH sticky
-   */
-  if (window->has_maximize_func)
-    {
-      data[i] = window->display->atom__NET_WM_ACTION_MAXIMIZE_HORZ;
-      ++i;
-      data[i] = window->display->atom__NET_WM_ACTION_MAXIMIZE_VERT;
-      ++i;
-    }
-  /* We always allow this */
-  data[i] = window->display->atom__NET_WM_ACTION_CHANGE_DESKTOP;
-  ++i;
-  if (window->has_close_func)
-    {
-      data[i] = window->display->atom__NET_WM_ACTION_CLOSE;
-      ++i;
-    }
-
-  /* I guess we always allow above/below operations */
-  data[i] = window->display->atom__NET_WM_ACTION_ABOVE;
-  ++i;
-  data[i] = window->display->atom__NET_WM_ACTION_BELOW;
-  ++i;
-
-  g_assert (i <= MAX_N_ACTIONS);
-
-  meta_verbose ("Setting _NET_WM_ALLOWED_ACTIONS with %d atoms\n", i);
-
-  meta_error_trap_push (window->display);
-  XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom__NET_WM_ALLOWED_ACTIONS,
-                   XA_ATOM,
-                   32, PropModeReplace, (guchar*) data, i);
-  meta_error_trap_pop (window->display);
-#undef MAX_N_ACTIONS
 }
 
 static void

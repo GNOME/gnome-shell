@@ -42,6 +42,7 @@ typedef struct _MetaWindowX11Class MetaWindowX11Class;
 
 void meta_window_x11_set_net_wm_state            (MetaWindow *window);
 void meta_window_x11_set_wm_state                (MetaWindow *window);
+void meta_window_x11_set_allowed_actions_hint    (MetaWindow *window);
 
 void meta_window_x11_update_role                 (MetaWindow *window);
 void meta_window_x11_update_net_wm_type          (MetaWindow *window);
