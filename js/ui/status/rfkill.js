@@ -4,6 +4,7 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
+const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
@@ -87,6 +88,14 @@ const Indicator = new Lang.Class({
         }));
         this._item.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
         this.menu.addMenuItem(this._item);
+
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        this._sessionUpdated();
+    },
+
+    _sessionUpdated: function() {
+        let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        this.menu.setSensitive(sensitive);
     },
 
     _sync: function() {
