@@ -1469,7 +1469,7 @@ msgstr "Disabilitato"
 #: ../js/ui/status/location.js:165
 #| msgid "Enabled"
 msgid "Enable"
-msgstr "Abilitato"
+msgstr "Abilita"
 
 #: ../js/ui/status/location.js:167
 msgid "In Use"
@@ -1543,15 +1543,15 @@ msgstr "Usa come connessione a Internet"
 
 #: ../js/ui/status/network.js:776
 msgid "Airplane Mode is On"
-msgstr "La modalità aero è attiva"
+msgstr "La modalità aereo è attiva"
 
 #: ../js/ui/status/network.js:777
 msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "Il Wi-Fi è disabilitato quando la modalità aero è attiva"
+msgstr "Il Wi-Fi è disabilitato quando la modalità aereo è attiva"
 
 #: ../js/ui/status/network.js:778
 msgid "Turn Off Airplane Mode"
-msgstr "Disattiva modalità aero"
+msgstr "Disattiva modalità aereo"
 
 #: ../js/ui/status/network.js:787
 msgid "Wi-Fi is Off"
@@ -1658,7 +1658,7 @@ msgstr "Batteria"
 
 #: ../js/ui/status/rfkill.js:82
 msgid "Airplane Mode"
-msgstr "Modalità aero"
+msgstr "Modalità aereo"
 
 #: ../js/ui/status/rfkill.js:84
 msgid "On"
