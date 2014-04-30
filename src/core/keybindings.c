@@ -1767,9 +1767,16 @@ meta_display_process_key_event (MetaDisplay     *display,
         return TRUE;
     }
 
-  XIAllowEvents (display->xdisplay,
-                 clutter_input_device_get_device_id (event->device),
-                 XIAsyncDevice, event->time);
+  {
+    MetaBackend *backend = meta_get_backend ();
+    if (META_IS_BACKEND_X11 (backend))
+      {
+        Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
+        XIAllowEvents (xdisplay,
+                       clutter_input_device_get_device_id (event->device),
+                       XIAsyncDevice, event->time);
+      }
+  }
 
   keep_grab = TRUE;
   if (all_keys_grabbed)
