@@ -1716,9 +1716,7 @@ process_iso_next_group (MetaDisplay *display,
              remain frozen. It's the signal handler's responsibility
              to unfreeze it. */
           if (!meta_display_modifiers_accelerator_activate (display))
-            XIAllowEvents (display->xdisplay,
-                           clutter_input_device_get_device_id (event->device),
-                           XIAsyncDevice, event->time);
+            meta_display_unfreeze_keyboard (display, event->time);
           activate = TRUE;
           break;
         }
