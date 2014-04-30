@@ -19,7 +19,6 @@ src/core/screen.c
 src/core/util.c
 src/core/window.c
 src/mutter.desktop.in
-src/mutter-wayland.desktop.in
 src/org.gnome.mutter.gschema.xml.in
 src/org.gnome.mutter.wayland.gschema.xml.in
 src/ui/frames.c
