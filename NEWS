@@ -1,3 +1,47 @@
+3.13.1
+======
+* Ensure the currently focused app icon is viewable [Rui; #726759]
+* Improve language in location menu [Zeeshan; #726498]
+* Improve HiDpi support [Cosimo; #726907]
+* Set accessible role for window previews [Alejandro; #726670]
+* Fix bad antialiasing on panel menu buttons [Carlos; #727336]
+* Don't hide location menu [Zeeshan; #727398]
+* Fix IM candidate window obscuring current text [Rui; #727579]
+* Don't always extend struts to the screen edge [Florian; #663690]
+* Add shortcuts for switching to the last workspace [Elad; #659288]
+* Show OSD window on all monitors [Adel; #722684]
+* Improve consistency of labels in network menu [Paul; #727163]
+* Fix zombie search providers showing up [Jasper; #728597]
+* Remove ConsoleKit support [Florian; #686626]
+* Fix region screenshots with open shell menus [Florian; #709126]
+* Support <shift>insert in text entries [Florian; #648318]
+* Improve app picker scrolling on touch [Jasper; #729064]
+* Don't make date button clickable when on current date [Carlos; #726724]
+* Tweak heuristic for hiding workspace switcher [Florian; #662457]
+* Add option to show in Software to app context menu [Matthias; #643043]
+* Misc. bug fixes and cleanups [Bastien, Florian, Giovanni, Adel, Vadim,
+  Carlos; #727983, #727948, #728512, #728681, #728897, #727384, #728820,
+  #715042, #728449, #728343]
+
+Contributors:
+  Elad Alfassa, Zeeshan Ali (Khattak), Giovanni Campagna, Cosimo Cecchi,
+  Matthias Clasen, Piotr Drąg, Adel Gadllah, Paul Lange, Rui Matos,
+  Simon McVittie, Florian Müllner, Bastien Nocera, Alejandro Piñeiro,
+  Vadim Rutkovsky, Carlos Soriano, Jasper St. Pierre
+
+Translations:
+  Khaled Hosny [ar], Piotr Drąg [pl], Yosef Or Boczko [he],
+  Antonio Fernandes C. Neto [pt_BR], Marek Černocký [cs], maria thukididu [el],
+  Andika Triwidada [id], Daniel Mustieles [es], Changwoo Ryu [ko],
+  Benjamin Steinwender [de], Sphinx Jiang [zh_CN],
+  Inaki Larranaga Murgoitio [eu], Marcus Lundblad [sv], Aurimas Černius [lt],
+  Stas Solovey [ru], Alexandre Franke [fr], Matej Urbančič [sl],
+  Fran Diéguez [gl], Pau Iranzo [ca], Luca Ferretti [it], Milo Casagrande [it],
+  Tiago S [pt], Victor Ibragimov [tg], Dirgita [id], Khoem Sokhem [km],
+  Rūdolfs Mazurs [lv], Balázs Úr [hu], Ask H. Larsen [da], Ikuya Awashiro [ja],
+  Wouter Bolsterlee [nl], Daniel Korostil [uk], Daniel Șerbănescu [ro],
+  Enrico Nicoletto [pt_BR]
+
 3.12.0
 ======
 * gdm: Reset greeter when coming back to login screen [Jasper; #726989]
