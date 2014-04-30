@@ -1,3 +1,33 @@
+3.13.1
+======
+* Fix opacity values from _NET_WM_WINDOW_OPACITY [Nirbheek; #727874]
+* Merge wayland branch [Jasper, Giovanni, Robert B., Neil, Adel, Rui, Jonas,
+  Lionel, Tim, Owen, Florian, Colin W., Cosimo, Ray, Kalev, Pavel, Robert A.,
+  Magdalen, Marek, Matthias, Alban, Seán, Daniel, Stefano, Carlos, Colin G.,
+  Andreas, Alexander, Ryan, Marc-André, Asad, Alberto, Bastien, Hans,
+  Debarshi, Sindhu, Andika, Rico, Olav]
+* Don't prevent workspace switches for present_with_time() [Florian; #728018]
+* Add shortcuts for switching to the last workspace [Elad; #659288]
+* Make move/resize menu items behave like the keybindings [Jasper; #728617]
+* Misc. bug fixes and cleanups  [Jasper, Bastien, Florian, Adel; #720631,
+  #727979, #728423, #728395, #729044]
+
+Contributors:
+  Jonas Ådahl, Elad Alfassa, Robert Ancell, Magdalen Berns, Robert Bragg,
+  Giovanni Campagna, Cosimo Cecchi, Marek Chalupa, Nirbheek Chauhan,
+  Matthias Clasen, Alban Crequy, Seán de Búrca, Daniel Drake, Jason Ekstrand,
+  Stefano Facchini, Adel Gadllah, Carlos Garnacho, Colin Guthrie,
+  Andreas Heider, Lionel Landwerlin, Alexander Larsson, Kalev Lember,
+  Ryan Lortie, Tim Lunn, Marc-André Lureau, Rui Matos, Asad Mehmood,
+  Alberto Milone, Florian Müllner, Bastien Nocera, Hans Petter Jansson,
+  Debarshi Ray, Neil Roberts, Sindhu S, Jasper St. Pierre, Ray Strode,
+  Andika Triwidada, Rico Tzschichholz, Pavel Vasin, Olav Vitters,
+  Colin Walters, A. Walton, Owen W. Taylor
+
+Translations:
+  Inaki Larranaga Murgoitio [eu], marablack3 [el], Daniel Mustieles [es],
+  Fran Diéguez [gl], Yosef Or Boczko [he], Dirgita [id]
+
 3.12.0
 ======
 * Fix grab issue with SSD xwayland windows [Rui; #726123]
