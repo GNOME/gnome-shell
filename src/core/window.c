@@ -3785,12 +3785,13 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   g_return_if_fail (!window->override_redirect);
 
-  is_user_action = (flags & META_IS_USER_ACTION) != 0;
-
   /* The action has to be a move, a resize or the wayland client
    * acking our choice of size.
    */
   g_assert (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION | META_IS_WAYLAND_RESIZE));
+
+  is_user_action = (flags & META_IS_USER_ACTION) != 0;
+  did_placement = !window->placed && window->calc_placement;
 
   /* We don't need it in the idle queue anymore. */
   meta_window_unqueue (window, META_QUEUE_MOVE_RESIZE);
@@ -3814,8 +3815,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
     }
 
   new_rect = requested_rect;
-
-  did_placement = !window->placed && window->calc_placement;
 
   if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
     {
