@@ -3806,12 +3806,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   meta_window_get_client_root_coords (window, &old_rect);
 
-  meta_topic (META_DEBUG_GEOMETRY,
-              "Move/resize %s to %d,%d %dx%d%s from %d,%d %dx%d\n",
-              window->desc, root_x_nw, root_y_nw, w, h,
-              is_user_action ? " (user move/resize)" : "",
-              old_rect.x, old_rect.y, old_rect.width, old_rect.height);
-
   /* If this is only a resize, then ignore the position given in
    * the parameters and instead calculate the new position from
    * resizing the old rectangle with the given gravity. */
@@ -3861,24 +3855,12 @@ meta_window_move_resize_internal (MetaWindow          *window,
   if (result & META_MOVE_RESIZE_RESULT_RESIZED)
     g_signal_emit (window, window_signals[SIZE_CHANGED], 0);
 
-  if ((result & (META_MOVE_RESIZE_RESULT_MOVED | META_MOVE_RESIZE_RESULT_RESIZED)) != 0 ||
-      did_placement)
+  if ((result & (META_MOVE_RESIZE_RESULT_MOVED | META_MOVE_RESIZE_RESULT_RESIZED)) != 0 || did_placement)
     {
-      int newx, newy;
-      meta_window_get_position (window, &newx, &newy);
-      meta_topic (META_DEBUG_GEOMETRY,
-                  "New size/position %d,%d %dx%d (user %d,%d %dx%d)\n",
-                  newx, newy, window->rect.width, window->rect.height,
-                  window->user_rect.x, window->user_rect.y,
-                  window->user_rect.width, window->user_rect.height);
       if (window->known_to_compositor)
         meta_compositor_sync_window_geometry (window->display->compositor,
                                               window,
                                               did_placement);
-    }
-  else
-    {
-      meta_topic (META_DEBUG_GEOMETRY, "Size/position not modified\n");
     }
 
   meta_window_update_monitor (window);
