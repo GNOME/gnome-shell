@@ -54,7 +54,6 @@
 #include "x11/window-x11.h"
 #include "x11/window-props.h"
 #include "x11/xprops.h"
-#include "x11/session.h"
 
 #include "wayland/window-wayland.h"
 #include "wayland/meta-wayland-private.h"
@@ -108,8 +107,6 @@ static void meta_window_flush_calc_showing   (MetaWindow *window);
 static gboolean queue_calc_showing_func (MetaWindow *window,
                                          void       *data);
 
-static void meta_window_apply_session_info (MetaWindow                  *window,
-                                            const MetaWindowSessionInfo *info);
 static void meta_window_move_between_rects (MetaWindow          *window,
                                             const MetaRectangle *old_area,
                                             const MetaRectangle *new_area);
@@ -771,7 +768,6 @@ _meta_window_shared_new (MetaDisplay         *display,
 {
   MetaWindow *window;
   MetaWorkspace *space;
-  MetaMoveResizeFlags flags;
 
   g_assert (attrs != NULL);
 
@@ -1153,34 +1149,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   else
     window->layer = META_LAYER_OVERRIDE_REDIRECT; /* otherwise set by MetaStack */
 
-  /* Put our state back where it should be,
-   * passing TRUE for is_configure_request, ICCCM says
-   * initial map is handled same as configure request
-   */
-  flags =
-    META_IS_CONFIGURE_REQUEST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
-  if (!window->override_redirect)
-    meta_window_move_resize_internal (window,
-                                      flags,
-                                      window->size_hints.win_gravity,
-                                      window->size_hints.x,
-                                      window->size_hints.y,
-                                      window->size_hints.width,
-                                      window->size_hints.height);
-
-  /* Now try applying saved stuff from the session */
-  {
-    const MetaWindowSessionInfo *info;
-
-    info = meta_window_lookup_saved_state (window);
-
-    if (info)
-      {
-        meta_window_apply_session_info (window, info);
-        meta_window_release_saved_state (info);
-      }
-  }
-
   if (!window->override_redirect)
     {
       /* FIXME we have a tendency to set this then immediately
@@ -1294,144 +1262,6 @@ meta_window_wayland_new (MetaDisplay        *display,
   meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
 
   return window;
-}
-
-/* This function should only be called from the end of meta_window_new_with_attrs () */
-static void
-meta_window_apply_session_info (MetaWindow *window,
-                                const MetaWindowSessionInfo *info)
-{
-  if (info->stack_position_set)
-    {
-      meta_topic (META_DEBUG_SM,
-                  "Restoring stack position %d for window %s\n",
-                  info->stack_position, window->desc);
-
-      /* FIXME well, I'm not sure how to do this. */
-    }
-
-  if (info->minimized_set)
-    {
-      meta_topic (META_DEBUG_SM,
-                  "Restoring minimized state %d for window %s\n",
-                  info->minimized, window->desc);
-
-      if (window->has_minimize_func && info->minimized)
-        meta_window_minimize (window);
-    }
-
-  if (info->maximized_set)
-    {
-      meta_topic (META_DEBUG_SM,
-                  "Restoring maximized state %d for window %s\n",
-                  info->maximized, window->desc);
-
-      if (window->has_maximize_func && info->maximized)
-        {
-          meta_window_maximize (window, META_MAXIMIZE_BOTH);
-
-          if (info->saved_rect_set)
-            {
-              meta_topic (META_DEBUG_SM,
-                          "Restoring saved rect %d,%d %dx%d for window %s\n",
-                          info->saved_rect.x,
-                          info->saved_rect.y,
-                          info->saved_rect.width,
-                          info->saved_rect.height,
-                          window->desc);
-
-              window->saved_rect.x = info->saved_rect.x;
-              window->saved_rect.y = info->saved_rect.y;
-              window->saved_rect.width = info->saved_rect.width;
-              window->saved_rect.height = info->saved_rect.height;
-            }
-	}
-    }
-
-  if (info->on_all_workspaces_set)
-    {
-      window->on_all_workspaces_requested = info->on_all_workspaces;
-      meta_window_update_on_all_workspaces (window);
-      meta_topic (META_DEBUG_SM,
-                  "Restoring sticky state %d for window %s\n",
-                  window->on_all_workspaces_requested, window->desc);
-    }
-
-  if (info->workspace_indices)
-    {
-      GSList *tmp;
-      GSList *spaces;
-
-      spaces = NULL;
-
-      tmp = info->workspace_indices;
-      while (tmp != NULL)
-        {
-          MetaWorkspace *space;
-
-          space =
-            meta_screen_get_workspace_by_index (window->screen,
-                                                GPOINTER_TO_INT (tmp->data));
-
-          if (space)
-            spaces = g_slist_prepend (spaces, space);
-
-          tmp = tmp->next;
-        }
-
-      if (spaces)
-        {
-          /* This briefly breaks the invariant that we are supposed
-           * to always be on some workspace. But we paranoically
-           * ensured that one of the workspaces from the session was
-           * indeed valid, so we know we'll go right back to one.
-           */
-          if (window->workspace)
-            meta_workspace_remove_window (window->workspace, window);
-
-          /* Only restore to the first workspace if the window
-           * happened to be on more than one, since we have replaces
-           * window->workspaces with window->workspace
-           */
-          meta_workspace_add_window (spaces->data, window);
-
-          meta_topic (META_DEBUG_SM,
-                      "Restoring saved window %s to workspace %d\n",
-                      window->desc,
-                      meta_workspace_index (spaces->data));
-
-          g_slist_free (spaces);
-        }
-    }
-
-  if (info->geometry_set)
-    {
-      int x, y, w, h;
-      MetaMoveResizeFlags flags;
-
-      window->placed = TRUE; /* don't do placement algorithms later */
-
-      x = info->rect.x;
-      y = info->rect.y;
-
-      w = window->size_hints.base_width +
-        info->rect.width * window->size_hints.width_inc;
-      h = window->size_hints.base_height +
-        info->rect.height * window->size_hints.height_inc;
-
-      /* Force old gravity, ignoring anything now set */
-      window->size_hints.win_gravity = info->gravity;
-
-      meta_topic (META_DEBUG_SM,
-                  "Restoring pos %d,%d size %d x %d for %s\n",
-                  x, y, w, h, window->desc);
-
-      flags = META_DO_GRAVITY_ADJUST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
-      meta_window_move_resize_internal (window,
-                                        flags,
-                                        window->size_hints.win_gravity,
-                                        x, y, w, h);
-    }
 }
 
 static gboolean
