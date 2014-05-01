@@ -222,21 +222,21 @@ meta_window_wayland_move_resize (MetaWindow *window,
 
   flags = META_IS_WAYLAND_RESIZE;
 
-  if (wl_window->has_saved_pos)
-    {
-      x = wl_window->saved_x;
-      y = wl_window->saved_y;
-      wl_window->has_saved_pos = FALSE;
-      flags |= META_IS_MOVE_ACTION;
-    }
-  else
-    {
-      meta_window_get_position (window, &x, &y);
-    }
-
-  /* dx/dy are ignored during resizing */
+  /* x/y are ignored when we're doing interactive resizing */
   if (!meta_grab_op_is_resizing (window->display->grab_op))
     {
+      if (wl_window->has_saved_pos)
+        {
+          x = wl_window->saved_x;
+          y = wl_window->saved_y;
+          wl_window->has_saved_pos = FALSE;
+          flags |= META_IS_MOVE_ACTION;
+        }
+      else
+        {
+          meta_window_get_position (window, &x, &y);
+        }
+
       if (dx != 0 || dy != 0)
         {
           x += dx;
