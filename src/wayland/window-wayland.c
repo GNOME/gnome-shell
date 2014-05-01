@@ -217,7 +217,8 @@ meta_window_wayland_move_resize (MetaWindow *window,
                                  int         dy)
 {
   MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
-  int x, y;
+  int gravity;
+  MetaRectangle rect;
   MetaMoveResizeFlags flags;
 
   flags = META_IS_WAYLAND_RESIZE;
@@ -227,29 +228,31 @@ meta_window_wayland_move_resize (MetaWindow *window,
     {
       if (wl_window->has_saved_pos)
         {
-          x = wl_window->saved_x;
-          y = wl_window->saved_y;
+          rect.x = wl_window->saved_x;
+          rect.y = wl_window->saved_y;
           wl_window->has_saved_pos = FALSE;
           flags |= META_IS_MOVE_ACTION;
         }
       else
         {
-          meta_window_get_position (window, &x, &y);
+          meta_window_get_position (window, &rect.x, &rect.y);
         }
 
       if (dx != 0 || dy != 0)
         {
-          x += dx;
-          y += dy;
+          rect.x += dx;
+          rect.y += dy;
           flags |= META_IS_MOVE_ACTION;
         }
     }
 
-  if (width != window->rect.width || height != window->rect.height)
+  rect.width = width;
+  rect.height = height;
+
+  if (rect.width != window->rect.width || rect.height != window->rect.height)
     flags |= META_IS_RESIZE_ACTION;
 
-  meta_window_move_resize_internal (window, flags,
-                                    meta_resize_gravity_from_grab_op (window->display->grab_op),
-                                    x, y, width, height);
+  gravity = meta_resize_gravity_from_grab_op (window->display->grab_op);
+  meta_window_move_resize_internal (window, flags, gravity, rect);
   meta_window_save_user_window_placement (window);
 }

@@ -741,10 +741,7 @@ void meta_window_update_resize (MetaWindow *window,
 void meta_window_move_resize_internal (MetaWindow          *window,
                                        MetaMoveResizeFlags  flags,
                                        int                  gravity,
-                                       int                  root_x_nw,
-                                       int                  root_y_nw,
-                                       int                  w,
-                                       int                  h);
+                                       MetaRectangle        client_rect);
 void meta_window_save_user_window_placement (MetaWindow *window);
 
 void meta_window_grab_op_began (MetaWindow *window, MetaGrabOp op);
