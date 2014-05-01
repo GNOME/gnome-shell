@@ -3839,95 +3839,83 @@ adjust_for_gravity (MetaWindow        *window,
    * their formulas assume we're honoring the border width, rather
    * than compensating for having turned it off)
    */
+
+  /* Calculate the the reference point, which is the corner of the
+   * outer window specified by the gravity. So, NorthEastGravity
+   * would have the reference point as the top-right corner of the
+   * outer window. */
+  ref_x = rect->x;
+  ref_y = rect->y;
+
   switch (gravity)
     {
-    case NorthWestGravity:
-      ref_x = rect->x;
-      ref_y = rect->y;
-      break;
     case NorthGravity:
-      ref_x = rect->x + rect->width / 2 + bw;
-      ref_y = rect->y;
+    case CenterGravity:
+    case SouthGravity:
+      ref_x += rect->width / 2 + bw;
       break;
     case NorthEastGravity:
-      ref_x = rect->x + rect->width + bw * 2;
-      ref_y = rect->y;
-      break;
-    case WestGravity:
-      ref_x = rect->x;
-      ref_y = rect->y + rect->height / 2 + bw;
-      break;
-    case CenterGravity:
-      ref_x = rect->x + rect->width / 2 + bw;
-      ref_y = rect->y + rect->height / 2 + bw;
-      break;
     case EastGravity:
-      ref_x = rect->x + rect->width + bw * 2;
-      ref_y = rect->y + rect->height / 2 + bw;
-      break;
-    case SouthWestGravity:
-      ref_x = rect->x;
-      ref_y = rect->y + rect->height + bw * 2;
-      break;
-    case SouthGravity:
-      ref_x = rect->x + rect->width / 2 + bw;
-      ref_y = rect->y + rect->height + bw * 2;
-      break;
     case SouthEastGravity:
-      ref_x = rect->x + rect->width + bw * 2;
-      ref_y = rect->y + rect->height + bw * 2;
+      ref_x += rect->width + bw * 2;
       break;
-    case StaticGravity:
     default:
-      ref_x = rect->x;
-      ref_y = rect->y;
       break;
     }
 
   switch (gravity)
     {
-    case NorthWestGravity:
-      rect->x = ref_x + child_x;
-      rect->y = ref_y + child_y;
-      break;
-    case NorthGravity:
-      rect->x = ref_x - frame_width / 2 + child_x;
-      rect->y = ref_y + child_y;
-      break;
-    case NorthEastGravity:
-      rect->x = ref_x - frame_width + child_x;
-      rect->y = ref_y + child_y;
-      break;
     case WestGravity:
-      rect->x = ref_x + child_x;
-      rect->y = ref_y - frame_height / 2 + child_y;
-      break;
     case CenterGravity:
-      rect->x = ref_x - frame_width / 2 + child_x;
-      rect->y = ref_y - frame_height / 2 + child_y;
-      break;
     case EastGravity:
-      rect->x = ref_x - frame_width + child_x;
-      rect->y = ref_y - frame_height / 2 + child_y;
+      ref_y += rect->height / 2 + bw;
       break;
     case SouthWestGravity:
-      rect->x = ref_x + child_x;
-      rect->y = ref_y - frame_height + child_y;
-      break;
     case SouthGravity:
-      rect->x = ref_x - frame_width / 2 + child_x;
-      rect->y = ref_y - frame_height + child_y;
-      break;
     case SouthEastGravity:
-      rect->x = ref_x - frame_width + child_x;
-      rect->y = ref_y - frame_height + child_y;
+      ref_y += rect->height + bw * 2;
       break;
-    case StaticGravity:
     default:
-      rect->x = ref_x;
-      rect->y = ref_y;
       break;
     }
+
+  /* Find the top-left corner of the outer window from
+   * the reference point. */
+
+  rect->x = ref_x;
+  rect->y = ref_y;
+
+  switch (gravity)
+    {
+    case NorthGravity:
+    case CenterGravity:
+    case SouthGravity:
+      rect->x -= frame_width / 2;
+      break;
+    case NorthEastGravity:
+    case EastGravity:
+    case SouthEastGravity:
+      rect->x -= frame_width;
+      break;
+    }
+
+  switch (gravity)
+    {
+    case WestGravity:
+    case CenterGravity:
+    case EastGravity:
+      rect->y -= frame_height / 2;
+      break;
+    case SouthWestGravity:
+    case SouthGravity:
+    case SouthEastGravity:
+      rect->y -= frame_height;
+      break;
+    }
+
+  /* Adjust to get the top-left corner of the inner window. */
+  rect->x += child_x;
+  rect->y += child_y;
 }
 
 /**
