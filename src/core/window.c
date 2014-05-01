@@ -3802,7 +3802,6 @@ meta_window_activate_with_workspace (MetaWindow     *window,
  */
 static void
 adjust_for_gravity (MetaWindow        *window,
-                    MetaFrameBorders  *borders,
                     gboolean           coords_assume_border,
                     int                gravity,
                     MetaRectangle     *rect)
@@ -3811,26 +3810,19 @@ adjust_for_gravity (MetaWindow        *window,
   int bw;
   int child_x, child_y;
   int frame_width, frame_height;
+  MetaFrameBorders borders;
 
   if (coords_assume_border)
     bw = window->border_width;
   else
     bw = 0;
 
-  if (borders)
-    {
-      child_x = borders->visible.left;
-      child_y = borders->visible.top;
-      frame_width = child_x + rect->width + borders->visible.right;
-      frame_height = child_y + rect->height + borders->visible.bottom;
-    }
-  else
-    {
-      child_x = 0;
-      child_y = 0;
-      frame_width = rect->width;
-      frame_height = rect->height;
-    }
+  meta_frame_calc_borders (window->frame, &borders);
+
+  child_x = borders.visible.left;
+  child_y = borders.visible.top;
+  frame_width = child_x + rect->width + borders.visible.right;
+  frame_height = child_y + rect->height + borders.visible.bottom;
 
   /* We're computing position to pass to window_move, which is
    * the position of the client window (StaticGravity basically)
@@ -4116,7 +4108,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
   MetaRectangle old_rect;
   MetaRectangle requested_rect;
   MetaMoveResizeResultFlags result = 0;
-  MetaFrameBorders borders;
 
   g_return_if_fail (!window->override_redirect);
 
@@ -4140,8 +4131,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
               is_configure_request ? " (configure request)" : "",
               is_user_action ? " (user move/resize)" : "",
               old_rect.x, old_rect.y, old_rect.width, old_rect.height);
-
-  meta_frame_calc_borders (window->frame, &borders);
 
   requested_rect.x = root_x_nw;
   requested_rect.y = root_y_nw;
@@ -4170,7 +4159,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
   else if (is_configure_request || do_gravity_adjust)
     {
       adjust_for_gravity (window,
-                          window->frame ? &borders : NULL,
                           /* configure request coords assume
                            * the border width existed
                            */
