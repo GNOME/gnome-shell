@@ -251,6 +251,116 @@ send_configure_notify (MetaWindow *window)
 }
 
 static void
+adjust_for_gravity (MetaWindow        *window,
+                    gboolean           coords_assume_border,
+                    int                gravity,
+                    MetaRectangle     *rect)
+{
+  int ref_x, ref_y;
+  int bw;
+  int child_x, child_y;
+  int frame_width, frame_height;
+  MetaFrameBorders borders;
+
+  if (coords_assume_border)
+    bw = window->border_width;
+  else
+    bw = 0;
+
+  meta_frame_calc_borders (window->frame, &borders);
+
+  child_x = borders.visible.left;
+  child_y = borders.visible.top;
+  frame_width = child_x + rect->width + borders.visible.right;
+  frame_height = child_y + rect->height + borders.visible.bottom;
+
+  /* We're computing position to pass to window_move, which is
+   * the position of the client window (StaticGravity basically)
+   *
+   * (see WM spec description of gravity computation, but note that
+   * their formulas assume we're honoring the border width, rather
+   * than compensating for having turned it off)
+   */
+
+  /* Calculate the the reference point, which is the corner of the
+   * outer window specified by the gravity. So, NorthEastGravity
+   * would have the reference point as the top-right corner of the
+   * outer window. */
+  ref_x = rect->x;
+  ref_y = rect->y;
+
+  switch (gravity)
+    {
+    case NorthGravity:
+    case CenterGravity:
+    case SouthGravity:
+      ref_x += rect->width / 2 + bw;
+      break;
+    case NorthEastGravity:
+    case EastGravity:
+    case SouthEastGravity:
+      ref_x += rect->width + bw * 2;
+      break;
+    default:
+      break;
+    }
+
+  switch (gravity)
+    {
+    case WestGravity:
+    case CenterGravity:
+    case EastGravity:
+      ref_y += rect->height / 2 + bw;
+      break;
+    case SouthWestGravity:
+    case SouthGravity:
+    case SouthEastGravity:
+      ref_y += rect->height + bw * 2;
+      break;
+    default:
+      break;
+    }
+
+  /* Find the top-left corner of the outer window from
+   * the reference point. */
+
+  rect->x = ref_x;
+  rect->y = ref_y;
+
+  switch (gravity)
+    {
+    case NorthGravity:
+    case CenterGravity:
+    case SouthGravity:
+      rect->x -= frame_width / 2;
+      break;
+    case NorthEastGravity:
+    case EastGravity:
+    case SouthEastGravity:
+      rect->x -= frame_width;
+      break;
+    }
+
+  switch (gravity)
+    {
+    case WestGravity:
+    case CenterGravity:
+    case EastGravity:
+      rect->y -= frame_height / 2;
+      break;
+    case SouthWestGravity:
+    case SouthGravity:
+    case SouthEastGravity:
+      rect->y -= frame_height;
+      break;
+    }
+
+  /* Adjust to get the top-left corner of the inner window. */
+  rect->x += child_x;
+  rect->y += child_y;
+}
+
+static void
 meta_window_apply_session_info (MetaWindow *window,
                                 const MetaWindowSessionInfo *info)
 {
@@ -359,31 +469,31 @@ meta_window_apply_session_info (MetaWindow *window,
 
   if (info->geometry_set)
     {
-      int x, y, w, h;
+      MetaRectangle rect;
       MetaMoveResizeFlags flags;
 
       window->placed = TRUE; /* don't do placement algorithms later */
 
-      x = info->rect.x;
-      y = info->rect.y;
+      rect.x = info->rect.x;
+      rect.y = info->rect.y;
 
-      w = window->size_hints.base_width +
-        info->rect.width * window->size_hints.width_inc;
-      h = window->size_hints.base_height +
-        info->rect.height * window->size_hints.height_inc;
+      rect.width = window->size_hints.base_width + info->rect.width * window->size_hints.width_inc;
+      rect.height = window->size_hints.base_height + info->rect.height * window->size_hints.height_inc;
 
       /* Force old gravity, ignoring anything now set */
       window->size_hints.win_gravity = info->gravity;
 
-      meta_topic (META_DEBUG_SM,
-                  "Restoring pos %d,%d size %d x %d for %s\n",
-                  x, y, w, h, window->desc);
+      flags = META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
 
-      flags = META_DO_GRAVITY_ADJUST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
+      adjust_for_gravity (window,
+                          FALSE,
+                          window->size_hints.win_gravity,
+                          &rect);
+
       meta_window_move_resize_internal (window,
                                         flags,
                                         window->size_hints.win_gravity,
-                                        x, y, w, h);
+                                        rect.x, rect.y, rect.width, rect.height);
     }
 }
 
@@ -428,13 +538,24 @@ meta_window_x11_manage (MetaWindow *window)
    */
   flags = META_IS_CONFIGURE_REQUEST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
   if (!window->override_redirect)
-    meta_window_move_resize_internal (window,
-                                      flags,
-                                      window->size_hints.win_gravity,
-                                      window->size_hints.x,
-                                      window->size_hints.y,
-                                      window->size_hints.width,
-                                      window->size_hints.height);
+    {
+      MetaRectangle rect;
+
+      rect.x = window->size_hints.x;
+      rect.y = window->size_hints.y;
+      rect.width = window->size_hints.width;
+      rect.height = window->size_hints.height;
+
+      adjust_for_gravity (window,
+                          TRUE,
+                          window->size_hints.win_gravity,
+                          &rect);
+
+      meta_window_move_resize_internal (window,
+                                        flags,
+                                        window->size_hints.win_gravity,
+                                        rect.x, rect.y, rect.width, rect.height);
+    }
 }
 
 static void
@@ -1958,13 +2079,24 @@ meta_window_move_resize_request (MetaWindow *window,
     flags |= META_IS_RESIZE_ACTION;
 
   if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
-    meta_window_move_resize_internal (window,
-                                      flags,
-                                      gravity,
-                                      x,
-                                      y,
-                                      width,
-                                      height);
+    {
+      MetaRectangle rect;
+
+      rect.x = x;
+      rect.y = y;
+      rect.width = width;
+      rect.height = height;
+
+      adjust_for_gravity (window,
+                          TRUE,
+                          window->size_hints.win_gravity,
+                          &rect);
+
+      meta_window_move_resize_internal (window,
+                                        flags,
+                                        gravity,
+                                        rect.x, rect.y, rect.width, rect.height);
+    }
 
   /* window->user_rect exists to allow "snapping-back" the window if a
    * new strut is set (causing the window to move) and then the strut

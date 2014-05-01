@@ -3625,121 +3625,6 @@ meta_window_activate_with_workspace (MetaWindow     *window,
   meta_window_activate_full (window, timestamp, META_CLIENT_TYPE_APPLICATION, workspace);
 }
 
-/* Manually fix all the weirdness explained in the big comment at the
- * beginning of meta_window_move_resize_internal() giving positions
- * expected by meta_window_constrain (i.e. positions & sizes of the
- * internal or client window).
- */
-static void
-adjust_for_gravity (MetaWindow        *window,
-                    gboolean           coords_assume_border,
-                    int                gravity,
-                    MetaRectangle     *rect)
-{
-  int ref_x, ref_y;
-  int bw;
-  int child_x, child_y;
-  int frame_width, frame_height;
-  MetaFrameBorders borders;
-
-  if (coords_assume_border)
-    bw = window->border_width;
-  else
-    bw = 0;
-
-  meta_frame_calc_borders (window->frame, &borders);
-
-  child_x = borders.visible.left;
-  child_y = borders.visible.top;
-  frame_width = child_x + rect->width + borders.visible.right;
-  frame_height = child_y + rect->height + borders.visible.bottom;
-
-  /* We're computing position to pass to window_move, which is
-   * the position of the client window (StaticGravity basically)
-   *
-   * (see WM spec description of gravity computation, but note that
-   * their formulas assume we're honoring the border width, rather
-   * than compensating for having turned it off)
-   */
-
-  /* Calculate the the reference point, which is the corner of the
-   * outer window specified by the gravity. So, NorthEastGravity
-   * would have the reference point as the top-right corner of the
-   * outer window. */
-  ref_x = rect->x;
-  ref_y = rect->y;
-
-  switch (gravity)
-    {
-    case NorthGravity:
-    case CenterGravity:
-    case SouthGravity:
-      ref_x += rect->width / 2 + bw;
-      break;
-    case NorthEastGravity:
-    case EastGravity:
-    case SouthEastGravity:
-      ref_x += rect->width + bw * 2;
-      break;
-    default:
-      break;
-    }
-
-  switch (gravity)
-    {
-    case WestGravity:
-    case CenterGravity:
-    case EastGravity:
-      ref_y += rect->height / 2 + bw;
-      break;
-    case SouthWestGravity:
-    case SouthGravity:
-    case SouthEastGravity:
-      ref_y += rect->height + bw * 2;
-      break;
-    default:
-      break;
-    }
-
-  /* Find the top-left corner of the outer window from
-   * the reference point. */
-
-  rect->x = ref_x;
-  rect->y = ref_y;
-
-  switch (gravity)
-    {
-    case NorthGravity:
-    case CenterGravity:
-    case SouthGravity:
-      rect->x -= frame_width / 2;
-      break;
-    case NorthEastGravity:
-    case EastGravity:
-    case SouthEastGravity:
-      rect->x -= frame_width;
-      break;
-    }
-
-  switch (gravity)
-    {
-    case WestGravity:
-    case CenterGravity:
-    case EastGravity:
-      rect->y -= frame_height / 2;
-      break;
-    case SouthWestGravity:
-    case SouthGravity:
-    case SouthEastGravity:
-      rect->y -= frame_height;
-      break;
-    }
-
-  /* Adjust to get the top-left corner of the inner window. */
-  rect->x += child_x;
-  rect->y += child_y;
-}
-
 /**
  * meta_window_updates_are_frozen:
  * @window: a #MetaWindow
@@ -3889,46 +3774,14 @@ meta_window_move_resize_internal (MetaWindow          *window,
                                   int                  w,
                                   int                  h)
 {
-  /* meta_window_move_resize_internal gets called with very different
-   * meanings for root_x_nw and root_y_nw.  w & h are always the area
-   * of the inner or client window (i.e. excluding the frame) and
-   * gravity is the relevant gravity associated with the request (note
-   * that gravity is ignored for move-only operations unless its
-   * e.g. a configure request).  The location is different for
-   * different cases because of how this function gets called; note
-   * that in all cases what we want to find out is the upper left
-   * corner of the position of the inner window:
+  /* The rectangle here that's passed in is always the root position
+   * of the client window. For undecorated or client-decorated windows,
+   * this is the root position of the X11 window. For server-decorated
+   * windows, this is the root position of the client area of the window.
    *
-   *   Case | Called from (flags; gravity)
-   *   -----+-----------------------------------------------
-   *    1   | A resize only ConfigureRequest
-   *    1   | meta_window_resize
-   *    1   | meta_window_resize_with_gravity
-   *    2   | New window
-   *    2   | Session restore
-   *    2   | A not-resize-only ConfigureRequest/net_moveresize_window request
-   *    3   | meta_window_move
-   *    3   | meta_window_move_resize
-   *    4   | meta_window_move_resize_wayland
-   *
-   * For each of the cases, root_x_nw and root_y_nw must be treated as follows:
-   *
-   *   (1) They should be entirely ignored; instead the previous position
-   *       and size of the window should be resized according to the given
-   *       gravity in order to determine the new position of the window.
-   *   (2) Needs to be fixed up by adjust_for_gravity() as these
-   *       coordinates are relative to some corner or side of the outer
-   *       window (except for the case of StaticGravity) and we want to
-   *       know the location of the upper left corner of the inner window.
-   *   (3) These values are already the desired position of the NW corner
-   *       of the inner window
-   *   (4) These values are already the desired position of the NW corner
-   *       of the inner window (which is also the outer window, because
-   *       we don't decorate wayland clients), and the client has acknowledged
-   *       the window size change.
+   * Similarly, the width and height passed in are in client window
+   * coordinates as well.
    */
-  gboolean is_configure_request;
-  gboolean do_gravity_adjust;
   gboolean is_user_action;
   gboolean did_placement;
   /* used for the configure request, but may not be final
@@ -3941,8 +3794,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   g_return_if_fail (!window->override_redirect);
 
-  is_configure_request = (flags & META_IS_CONFIGURE_REQUEST) != 0;
-  do_gravity_adjust = (flags & META_DO_GRAVITY_ADJUST) != 0;
   is_user_action = (flags & META_IS_USER_ACTION) != 0;
 
   /* The action has to be a move, a resize or the wayland client
@@ -3956,9 +3807,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
   meta_window_get_client_root_coords (window, &old_rect);
 
   meta_topic (META_DEBUG_GEOMETRY,
-              "Move/resize %s to %d,%d %dx%d%s%s from %d,%d %dx%d\n",
+              "Move/resize %s to %d,%d %dx%d%s from %d,%d %dx%d\n",
               window->desc, root_x_nw, root_y_nw, w, h,
-              is_configure_request ? " (configure request)" : "",
               is_user_action ? " (user move/resize)" : "",
               old_rect.x, old_rect.y, old_rect.width, old_rect.height);
 
@@ -3984,21 +3834,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
       meta_topic (META_DEBUG_GEOMETRY,
                   "Compensated for gravity in resize action; new pos %d,%d\n",
-                  new_rect.x, new_rect.y);
-    }
-  else if (is_configure_request || do_gravity_adjust)
-    {
-      adjust_for_gravity (window,
-                          /* configure request coords assume
-                           * the border width existed
-                           */
-                          is_configure_request,
-                          gravity,
-                          &new_rect);
-
-      meta_topic (META_DEBUG_GEOMETRY,
-                  "Compensated for configure_request/do_gravity_adjust needing "
-                  "weird positioning; new pos %d,%d\n",
                   new_rect.x, new_rect.y);
     }
 
