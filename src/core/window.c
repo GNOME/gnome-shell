@@ -3779,7 +3779,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
    * destination due to StaticGravity etc.
    */
   MetaRectangle new_rect;
-  MetaRectangle old_rect;
   MetaRectangle requested_rect;
   MetaMoveResizeResultFlags result = 0;
 
@@ -3796,13 +3795,14 @@ meta_window_move_resize_internal (MetaWindow          *window,
   /* We don't need it in the idle queue anymore. */
   meta_window_unqueue (window, META_QUEUE_MOVE_RESIZE);
 
-  meta_window_get_client_root_coords (window, &old_rect);
-
   /* If this is only a resize, then ignore the position given in
    * the parameters and instead calculate the new position from
    * resizing the old rectangle with the given gravity. */
   if ((flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION)) == META_IS_RESIZE_ACTION)
     {
+      MetaRectangle old_rect;
+
+      meta_window_get_client_root_coords (window, &old_rect);
       meta_rectangle_resize_with_gravity (&old_rect,
                                           &requested_rect,
                                           gravity,
@@ -3818,7 +3818,9 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
     {
-      meta_window_client_rect_to_frame_rect (window, &old_rect, &old_rect);
+      MetaRectangle old_rect;
+      meta_window_get_frame_rect (window, &old_rect);
+
       meta_window_client_rect_to_frame_rect (window, &new_rect, &new_rect);
 
       meta_window_constrain (window,
