@@ -487,14 +487,8 @@ meta_window_apply_session_info (MetaWindow *window,
 
       flags = META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
 
-      adjust_for_gravity (window,
-                          FALSE,
-                          gravity,
-                          &rect);
-
-      meta_window_move_resize_internal (window,
-                                        flags,
-                                        gravity,
+      adjust_for_gravity (window, FALSE, gravity, &rect);
+      meta_window_move_resize_internal (window, flags, gravity,
                                         rect.x, rect.y, rect.width, rect.height);
     }
 }
@@ -549,14 +543,8 @@ meta_window_x11_manage (MetaWindow *window)
       rect.width = window->size_hints.width;
       rect.height = window->size_hints.height;
 
-      adjust_for_gravity (window,
-                          TRUE,
-                          gravity,
-                          &rect);
-
-      meta_window_move_resize_internal (window,
-                                        flags,
-                                        gravity,
+      adjust_for_gravity (window, TRUE, gravity, &rect);
+      meta_window_move_resize_internal (window, flags, gravity,
                                         rect.x, rect.y, rect.width, rect.height);
     }
 }
@@ -2090,14 +2078,8 @@ meta_window_move_resize_request (MetaWindow *window,
       rect.width = width;
       rect.height = height;
 
-      adjust_for_gravity (window,
-                          TRUE,
-                          gravity,
-                          &rect);
-
-      meta_window_move_resize_internal (window,
-                                        flags,
-                                        gravity,
+      adjust_for_gravity (window, TRUE, gravity, &rect);
+      meta_window_move_resize_internal (window, flags, gravity,
                                         rect.x, rect.y, rect.width, rect.height);
     }
 
