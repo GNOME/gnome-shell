@@ -275,11 +275,6 @@ meta_window_constrain (MetaWindow          *window,
   ConstraintPriority priority = PRIORITY_MINIMUM;
   gboolean satisfied = FALSE;
 
-  /* WARNING: orig and new specify positions and sizes of the inner window,
-   * not the outer.  This is a common gotcha since half the constraints
-   * deal with inner window position/size and half deal with outer.  See
-   * doc/how-constraints-works.txt for more information.
-   */
   meta_topic (META_DEBUG_GEOMETRY,
               "Constraining %s in move from %d,%d %dx%d to %d,%d %dx%d\n",
               window->desc,
