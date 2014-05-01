@@ -3936,7 +3936,7 @@ adjust_for_gravity (MetaWindow        *window,
  *
  * Gets whether the compositor should be updating the window contents;
  * window content updates may be frozen at client request by setting
- * an odd value in the extended _NET_WM_SYNC_REQUEST_COUNTER counter r
+ * an odd value in the extended _NET_WM_SYNC_REQUEST_COUNTER counter
  * by the window manager during a resize operation while waiting for
  * the client to redraw.
  *
