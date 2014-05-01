@@ -2089,7 +2089,7 @@ meta_window_move_resize_request (MetaWindow *window,
 
       adjust_for_gravity (window,
                           TRUE,
-                          window->size_hints.win_gravity,
+                          gravity,
                           &rect);
 
       meta_window_move_resize_internal (window,
