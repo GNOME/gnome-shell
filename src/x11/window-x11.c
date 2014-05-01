@@ -471,6 +471,7 @@ meta_window_apply_session_info (MetaWindow *window,
     {
       MetaRectangle rect;
       MetaMoveResizeFlags flags;
+      int gravity;
 
       window->placed = TRUE; /* don't do placement algorithms later */
 
@@ -482,17 +483,18 @@ meta_window_apply_session_info (MetaWindow *window,
 
       /* Force old gravity, ignoring anything now set */
       window->size_hints.win_gravity = info->gravity;
+      gravity = window->size_hints.win_gravity;
 
       flags = META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
 
       adjust_for_gravity (window,
                           FALSE,
-                          window->size_hints.win_gravity,
+                          gravity,
                           &rect);
 
       meta_window_move_resize_internal (window,
                                         flags,
-                                        window->size_hints.win_gravity,
+                                        gravity,
                                         rect.x, rect.y, rect.width, rect.height);
     }
 }
@@ -540,6 +542,7 @@ meta_window_x11_manage (MetaWindow *window)
   if (!window->override_redirect)
     {
       MetaRectangle rect;
+      int gravity = window->size_hints.win_gravity;
 
       rect.x = window->size_hints.x;
       rect.y = window->size_hints.y;
@@ -548,12 +551,12 @@ meta_window_x11_manage (MetaWindow *window)
 
       adjust_for_gravity (window,
                           TRUE,
-                          window->size_hints.win_gravity,
+                          gravity,
                           &rect);
 
       meta_window_move_resize_internal (window,
                                         flags,
-                                        window->size_hints.win_gravity,
+                                        gravity,
                                         rect.x, rect.y, rect.width, rect.height);
     }
 }
