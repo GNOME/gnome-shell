@@ -3812,30 +3812,24 @@ meta_window_move_resize_internal (MetaWindow          *window,
               is_user_action ? " (user move/resize)" : "",
               old_rect.x, old_rect.y, old_rect.width, old_rect.height);
 
-  requested_rect.x = root_x_nw;
-  requested_rect.y = root_y_nw;
-  requested_rect.width  = w;
-  requested_rect.height = h;
-
-  new_rect = requested_rect;
-
-  /* If this is a resize only, the position should be ignored and
-   * instead obtained by resizing the old rectangle according to the
-   * relevant gravity.
-   */
-  if ((flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION)) ==
-      META_IS_RESIZE_ACTION)
+  /* If this is only a resize, then ignore the position given in
+   * the parameters and instead calculate the new position from
+   * resizing the old rectangle with the given gravity. */
+  if ((flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION)) == META_IS_RESIZE_ACTION)
     {
       meta_rectangle_resize_with_gravity (&old_rect,
-                                          &new_rect,
-                                          gravity,
-                                          new_rect.width,
-                                          new_rect.height);
-
-      meta_topic (META_DEBUG_GEOMETRY,
-                  "Compensated for gravity in resize action; new pos %d,%d\n",
-                  new_rect.x, new_rect.y);
+                                          &requested_rect,
+                                          gravity, w, h);
     }
+  else
+    {
+      requested_rect.x = root_x_nw;
+      requested_rect.y = root_y_nw;
+      requested_rect.width  = w;
+      requested_rect.height = h;
+    }
+
+  new_rect = requested_rect;
 
   did_placement = !window->placed && window->calc_placement;
 
