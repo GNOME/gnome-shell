@@ -93,19 +93,6 @@ void meta_core_get (Display *xdisplay,
 void meta_core_queue_frame_resize (Display *xdisplay,
                                    Window frame_xwindow);
 
-/* Move as a result of user operation */
-void meta_core_user_move    (Display *xdisplay,
-                             Window   frame_xwindow,
-                             int      x,
-                             int      y);
-void meta_core_user_resize  (Display *xdisplay,
-                             Window   frame_xwindow,
-                             int      gravity,
-                             int      width,
-                             int      height);
-
-void meta_core_user_raise   (Display *xdisplay,
-                             Window   frame_xwindow);
 void meta_core_user_lower_and_unfocus (Display *xdisplay,
                                        Window   frame_xwindow,
                                        guint32  timestamp);

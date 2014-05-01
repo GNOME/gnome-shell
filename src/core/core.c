@@ -173,38 +173,6 @@ meta_core_queue_frame_resize (Display *xdisplay,
   meta_window_frame_size_changed (window);
 }
 
-void
-meta_core_user_move (Display *xdisplay,
-                     Window   frame_xwindow,
-                     int      x,
-                     int      y)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  meta_window_move (window, TRUE, x, y);
-}
-
-void
-meta_core_user_resize  (Display *xdisplay,
-                        Window   frame_xwindow,
-                        int      gravity,
-                        int      width,
-                        int      height)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  meta_window_resize_with_gravity (window, TRUE, width, height, gravity);
-}
-
-void
-meta_core_user_raise (Display *xdisplay,
-                      Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-  
-  meta_window_raise (window);
-}
-
 static gboolean
 lower_window_and_transients (MetaWindow *window,
                              gpointer   data)
